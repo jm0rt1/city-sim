@@ -25,6 +25,7 @@ EVIDENCE_RELATIVE = Path(
     "blender-north-art-v12/process-a-schedule-adapter-v01/"
     "TRUSTED-CURRENT-ZERO-CHILD-READINESS.json"
 )
+TRUSTED_MASTER_COMMIT = "5d86e804be679c765c2465c60ceaee72f3702c48"
 
 
 def arguments() -> argparse.Namespace:
@@ -162,7 +163,16 @@ def fixture(
                     else hashlib.sha256(direction.encode()).hexdigest()
                 ),
                 "baseCommit": contract["publishedBaseCommit"],
-                "orchestrator": contract["processAOrchestrator"],
+                "orchestrator": (
+                    contract["directionScheduleAdapter"]
+                    if direction == "north"
+                    else {
+                        "path": f"{roots[0]}/schedule-adapter.py",
+                        "sha256": hashlib.sha256(
+                            f"{direction}:schedule-adapter".encode()
+                        ).hexdigest(),
+                    }
+                ),
                 "exclusiveRoots": roots,
                 "processes": processes,
             }
@@ -221,6 +231,16 @@ def main() -> None:
         raise RuntimeError("exact zero-child readiness output required")
     if output.exists() or output.is_symlink():
         raise RuntimeError("zero-child readiness output must be absent")
+    candidate_head = git(repository_root, "rev-parse", "HEAD")
+    if (
+        subprocess.run(
+            ["git", "merge-base", "--is-ancestor", TRUSTED_MASTER_COMMIT, candidate_head],
+            cwd=repository_root,
+            check=False,
+        ).returncode
+        != 0
+    ):
+        raise RuntimeError("trusted Integration master is not an ancestor of candidate")
     source_root = repository_root / SOURCE_ROOT
     adapter_path = source_root / "consume_north_process_a_schedule.py"
     contract_path = source_root / "ADAPTER-CONTRACT.json"
@@ -301,7 +321,7 @@ def main() -> None:
         lambda item: item["directionGrants"][0].update(
             orchestrator=contract["scheduleValidator"]
         ),
-        "orchestrator binding drift",
+        "direction schedule-adapter binding drift",
     )
     case(
         "prelock-appearance-lock-present",
@@ -598,6 +618,9 @@ def main() -> None:
         "process": contract["process"],
         "phase": contract["phase"],
         "branch": contract["branch"],
+        "trustedIntegrationMaster": TRUSTED_MASTER_COMMIT,
+        "candidateHead": candidate_head,
+        "trustedMasterIsAncestor": True,
         "authorityBaseCommit": contract["publishedBaseCommit"],
         "publishedAuthorityCommit": "2eb5ddcb97a84376d66a008f8a7ad6ab3c97209b",
         "claimSHA256": contract["claim"]["sha256"],

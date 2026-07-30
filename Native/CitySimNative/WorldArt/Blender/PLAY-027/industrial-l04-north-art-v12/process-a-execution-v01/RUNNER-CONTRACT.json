@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "batch": "industrial_l04_directional_family",
+  "direction": "north",
+  "process": "A",
+  "phase": "prelock_north_a",
+  "entrypointMode": "high-level-orchestrator-only",
+  "directInvocationAllowed": false,
+  "maximumChildStarts": 1,
+  "executionClosure": {
+    "schema": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-direction-execution-authority-schema-v1.json",
+      "sha256": "2796e224780c259b29d68b50cb12cdbbe45452535da681bba3522af920459491"
+    },
+    "validator": {
+      "path": ".agents/skills/operate-citysim-integration/scripts/validate_industrial_l04_direction_execution_authority_v1.py",
+      "sha256": "b212d2776d34b3334910c6b0b02ffba244919f4a83d5c0019c30bca87648d8ae"
+    },
+    "testProtocolRevision": 6,
+    "requiredAtRunner": true
+  },
+  "requiredGrantBindings": [
+    "grantId",
+    "slotId",
+    "schedulePath",
+    "scheduleSHA256",
+    "schedulePublicationCommit",
+    "executionAuthorityPath",
+    "executionAuthoritySHA256",
+    "executionAuthorityPublicationCommit",
+    "trustedIntegrationHead",
+    "workerHead",
+    "executionClosureValidatorSHA256",
+    "contractSHA256",
+    "launcherSHA256",
+    "launcherPID",
+    "runnerContractSHA256",
+    "childEntrypointSHA256",
+    "outputRoot",
+    "outputRootDevice",
+    "outputRootInode",
+    "authorizationSecretSHA256",
+    "sessionSecretSHA256",
+    "attemptRecordPath",
+    "attemptRecordSHA256",
+    "maximumDCCChildStarts"
+  ],
+  "capabilityTransport": "anonymous-pipe-hmac-sha256",
+  "rawSecretPersisted": false,
+  "outputDirectoryFDBound": true,
+  "parentPIDBound": true,
+  "sourceAuthority": false,
+  "candidateReadyForIndependentReview": false,
+  "productionSelected": false
+}

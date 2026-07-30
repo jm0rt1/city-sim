@@ -132,6 +132,10 @@ def verify_capability(
             "schedulePublicationCommit",
             "executionAuthoritySHA256",
             "executionAuthorityPublicationCommit",
+            "trustedIntegrationHead",
+            "workerHead",
+            "executionClosureValidatorSHA256",
+            "runnerContractSHA256",
             "outputRootDevice",
             "outputRootInode",
         },
@@ -165,9 +169,13 @@ def verify_capability(
             "executionAuthorityPath",
             "executionAuthoritySHA256",
             "executionAuthorityPublicationCommit",
+            "trustedIntegrationHead",
+            "workerHead",
+            "executionClosureValidatorSHA256",
             "contractSHA256",
             "launcherSHA256",
             "launcherPID",
+            "runnerContractSHA256",
             "childEntrypointSHA256",
             "outputRoot",
             "outputRootDevice",
@@ -198,6 +206,22 @@ def verify_capability(
     require(
         grant["childEntrypointSHA256"] == contract["childEntrypoint"]["sha256"],
         "child entrypoint hash drift",
+    )
+    require(
+        grant["runnerContractSHA256"] == contract["runnerContract"]["sha256"],
+        "child runner contract hash drift",
+    )
+    runner_contract_path = repository_root / contract["runnerContract"]["path"]
+    require(
+        runner_contract_path.is_file()
+        and not runner_contract_path.is_symlink()
+        and sha256(runner_contract_path) == contract["runnerContract"]["sha256"],
+        "child runner contract bytes drift",
+    )
+    require(
+        grant["executionClosureValidatorSHA256"]
+        == contract["executionClosure"]["validator"]["sha256"],
+        "child execution-closure validator hash drift",
     )
     try:
         authorization_secret = base64.b64decode(
@@ -259,6 +283,16 @@ def verify_capability(
         == grant["executionAuthorityPublicationCommit"],
         "launcher capability authority publication drift",
     )
+    for field in (
+        "trustedIntegrationHead",
+        "workerHead",
+        "executionClosureValidatorSHA256",
+        "runnerContractSHA256",
+    ):
+        require(
+            capability_payload[field] == grant[field],
+            f"launcher capability {field} drift",
+        )
     require(
         capability_payload["outputRootDevice"] == output_stat.st_dev
         and capability_payload["outputRootInode"] == output_stat.st_ino,
@@ -271,11 +305,42 @@ def verify_capability(
         and sha256(authority_path) == grant["executionAuthoritySHA256"],
         "child execution authority bytes drift",
     )
+    validator_path = repository_root / contract["executionClosure"]["validator"]["path"]
+    require(
+        validator_path.is_file()
+        and not validator_path.is_symlink()
+        and sha256(validator_path)
+        == contract["executionClosure"]["validator"]["sha256"],
+        "child shared execution-closure validator drift",
+    )
+    validator = load_module(
+        validator_path,
+        "play027_child_execution_closure_validator",
+    )
+    closure_validation = validator.validate(
+        repository_root,
+        authority_path,
+        trusted_head=grant["trustedIntegrationHead"],
+        worker_head=grant["workerHead"],
+        authority_publication_commit=grant["executionAuthorityPublicationCommit"],
+    )
+    require(
+        closure_validation["result"] == "PASS"
+        and closure_validation["grantId"] == grant["grantId"]
+        and closure_validation["process"] == "A",
+        "child shared execution closure did not pass",
+    )
     authority = load_json(authority_path)
     require(
-        authority["authorizationSecretSHA256"]
+        authority["authentication"]["secretSha256"]
         == grant["authorizationSecretSHA256"],
         "child execution authority secret binding drift",
+    )
+    require(
+        authority["artifacts"]["runnerContract"] == contract["runnerContract"]
+        and authority["artifacts"]["runnerEntrypoint"]
+        == contract["childEntrypoint"],
+        "child runner closure binding drift",
     )
     schedule_relative = grant["schedulePath"]
     require(

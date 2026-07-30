@@ -22,6 +22,7 @@ SOURCE_ROOT = Path(
     "Native/CitySimNative/WorldArt/Blender/PLAY-027/"
     "industrial-l04-north-art-v12/process-a-execution-v01"
 )
+CONTRACT_RELATIVE = SOURCE_ROOT / "EXECUTION-CONTRACT.json"
 ADAPTER_ROOT = Path(
     "Native/CitySimNative/WorldArt/Blender/PLAY-027/"
     "industrial-l04-north-art-v12/process-a-schedule-adapter-v01"
@@ -31,6 +32,7 @@ EVIDENCE_ROOT = Path(
     "blender-north-art-v12/process-a-execution-v01"
 )
 EVIDENCE_RELATIVE = EVIDENCE_ROOT / "TRUSTED-CURRENT-ZERO-CHILD-PRELAUNCH.json"
+TRUSTED_MASTER_COMMIT = "5d86e804be679c765c2465c60ceaee72f3702c48"
 
 
 def arguments() -> argparse.Namespace:
@@ -164,6 +166,321 @@ def source_ast(path: Path) -> ast.Module:
     return ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
 
 
+def exercise_shared_closure(
+    repository_root: Path,
+    launcher: Any,
+    contract: dict[str, Any],
+) -> list[dict[str, Any]]:
+    with tempfile.TemporaryDirectory(
+        prefix="play027-north-shared-closure-",
+        dir="/private/tmp",
+    ) as directory:
+        root = Path(directory)
+
+        def write(relative: str, payload: bytes) -> None:
+            target = root / relative
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes(payload)
+
+        def commit(message: str) -> str:
+            run_git(root, "add", ".")
+            run_git(
+                root,
+                "-c",
+                "user.name=PLAY-027 Test",
+                "-c",
+                "user.email=play027@example.invalid",
+                "-c",
+                "commit.gpgsign=false",
+                "commit",
+                "-m",
+                message,
+            )
+            return run_git(root, "rev-parse", "HEAD")
+
+        run_git(root, "init", "-q")
+        run_git(root, "checkout", "-b", "codex/citysim-world-art")
+        claim_path = contract["claim"]["path"]
+        family_path = contract["familyContract"]["path"]
+        write(claim_path, (repository_root / claim_path).read_bytes())
+        write(family_path, (repository_root / family_path).read_bytes())
+        closure = contract["executionClosure"]
+        for binding in closure.values():
+            write(binding["path"], (repository_root / binding["path"]).read_bytes())
+        base = commit("foundation")
+
+        schedule_path = (
+            "docs/production/evidence/INTEGRATION/"
+            "industrial-l04-test-prelock-north-a-schedule-v1.json"
+        )
+        direction_specs = {
+            "north": (
+                "PLAY-027",
+                "codex/citysim-world-art",
+                contract["claim"]["sha256"],
+                contract["scheduleAdapter"]["consumer"],
+                [
+                    "Native/CitySimNative/WorldArt/Blender/PLAY-027/"
+                    "industrial-l04-north-art-v12/schedule-exclusive",
+                    "docs/production/evidence/PLAY-027/industrial-l04/l04/"
+                    "blender-north-art-v12/schedule-exclusive",
+                ],
+            ),
+            "east": (
+                "PLAY-079",
+                "codex/citysim-world-art-east",
+                "1" * 64,
+                {"path": "Native/east-adapter.py", "sha256": "2" * 64},
+                ["Native/east-exclusive", "docs/east-exclusive"],
+            ),
+            "south": (
+                "PLAY-080",
+                "codex/citysim-world-art-south",
+                "3" * 64,
+                {"path": "Native/south-adapter.py", "sha256": "4" * 64},
+                ["Native/south-exclusive", "docs/south-exclusive"],
+            ),
+            "west": (
+                "PLAY-081",
+                "codex/citysim-world-art-west",
+                "5" * 64,
+                {"path": "Native/west-adapter.py", "sha256": "6" * 64},
+                ["Native/west-exclusive", "docs/west-exclusive"],
+            ),
+        }
+        direction_grants = []
+        for direction, (
+            task,
+            branch,
+            claim_hash,
+            adapter_binding,
+            roots,
+        ) in direction_specs.items():
+            processes = []
+            for process in ("A", "B", "C"):
+                granted = direction == "north" and process == "A"
+                processes.append(
+                    {
+                        "grantId": (
+                            "north:A" if granted else f"{direction}:{process}:blocked"
+                        ),
+                        "process": process,
+                        "state": "granted" if granted else "blocked",
+                        "slotId": "dcc-1" if granted else None,
+                        "maximumChildStarts": 1 if granted else 0,
+                        "orchestratorOnly": True,
+                        "directLowLevelInvocationAllowed": False,
+                    }
+                )
+            direction_grants.append(
+                {
+                    "direction": direction,
+                    "claim": task,
+                    "branch": branch,
+                    "claimSha256": claim_hash,
+                    "baseCommit": base,
+                    "orchestrator": adapter_binding,
+                    "exclusiveRoots": roots,
+                    "processes": processes,
+                }
+            )
+        schedule = {
+            "schema": 1,
+            "batch": contract["batch"],
+            "phase": contract["phase"],
+            "issuedAt": "2026-07-30T14:00:00Z",
+            "integrationAuthorityCommit": base,
+            "familyContract": contract["familyContract"],
+            "appearanceLock": None,
+            "sourceProductionProfile": None,
+            "computeEnvelope": {
+                "maximumSimultaneousDCCProcesses": 1,
+                "slotIds": ["dcc-1"],
+                "queueOrder": ["north:A"],
+            },
+            "directionGrants": direction_grants,
+        }
+        write(schedule_path, canonical(schedule))
+        schedule_publication = commit("publish schedule")
+
+        secret = b"north-closure-test-secret-0000001"
+        artifact_bindings = {
+            "executionContract": {
+                "path": str(CONTRACT_RELATIVE),
+                "sha256": sha256(repository_root / CONTRACT_RELATIVE),
+            },
+            "directionScheduleAdapter": contract["scheduleAdapter"]["consumer"],
+            "highLevelOrchestrator": contract["launcher"],
+            "runnerContract": contract["runnerContract"],
+            "runnerEntrypoint": contract["childEntrypoint"],
+            "scene": contract["frozenNorthV12Inputs"]["scene"],
+            "materials": contract["frozenNorthV12Inputs"]["materials"],
+            "toolchain": contract["frozenNorthV12Inputs"]["loweringContract"],
+        }
+        suffix = hashlib.sha256(canonical(schedule)).hexdigest()[:16]
+        authority_path = (
+            "docs/production/evidence/INTEGRATION/"
+            "INDUSTRIAL-L04-TEST-NORTH-PROCESS-A-CLOSURE.json"
+        )
+        authority = {
+            "$schema": (
+                "citysim://integration/"
+                "industrial-l04-direction-execution-authority-v1"
+            ),
+            "schemaVersion": 1,
+            "testProtocolRevision": 6,
+            "batch": contract["batch"],
+            "mode": "validation_only",
+            "issuedAt": "2026-07-30T14:01:00Z",
+            "task": {
+                "taskId": "PLAY-027",
+                "direction": "north",
+                "branch": contract["branch"],
+                "claimPath": claim_path,
+                "claimRevision": 1,
+                "claimSha256": contract["claim"]["sha256"],
+                "publishedBaseCommit": base,
+            },
+            "schedule": {
+                "path": schedule_path,
+                "sha256": hashlib.sha256(canonical(schedule)).hexdigest(),
+                "publicationCommit": schedule_publication,
+                "phase": contract["phase"],
+            },
+            "appearanceLock": None,
+            "sourceProductionProfile": None,
+            "grant": {
+                "grantId": "north:A",
+                "process": "A",
+                "queueId": "north:A",
+                "slotId": "dcc-1",
+                "maximumChildStarts": 1,
+                "exactlyOneInvocation": True,
+                "orchestratorOnly": True,
+                "directLowLevelInvocationAllowed": False,
+            },
+            "artifacts": artifact_bindings,
+            "exclusiveRoots": contract["executionRoots"],
+            "executionEnvelope": {
+                "timeoutSeconds": contract["processEnvelope"]["timeoutSeconds"],
+                "maximumRSSBytes": (
+                    contract["processEnvelope"]["maximumProcessGroupRSSMiB"]
+                    * 1024
+                    * 1024
+                ),
+                "cpuThreadLimit": 1,
+                "startNewProcessGroup": True,
+                "killProcessGroupOnLimit": True,
+                "postReapProcessGroupExhaustionRequired": True,
+                "networkAllowed": False,
+                "leasePath": f"/private/tmp/citysim-industrial-l04-north-{suffix}.lock",
+                "leaseMustBeFresh": True,
+                "replayAllowed": False,
+            },
+            "authentication": {
+                "secretTransport": "anonymous_pipe",
+                "secretSha256": hashlib.sha256(secret).hexdigest(),
+                "rawSecretPersisted": False,
+                "childCapability": {
+                    "algorithm": "HMAC-SHA256",
+                    "capabilityId": f"north-A-{suffix}",
+                    "audience": "industrial-l04-direction-child",
+                    "boundGrantId": "north:A",
+                    "payloadSha256": "7" * 64,
+                    "macSha256": "8" * 64,
+                    "oneTime": True,
+                    "replayAllowed": False,
+                },
+            },
+            "disposition": {
+                "validationOnly": True,
+                "liveLeaseAuthorized": False,
+                "childStartAuthorized": False,
+                "dccExecutionAuthorized": False,
+                "renderAuthorized": False,
+                "pixelAuthorized": False,
+                "sourceCandidateReady": False,
+                "appearanceAccepted": False,
+                "sourceProfileActivated": False,
+                "integrationAdmitted": False,
+                "rendererQuarantined": False,
+                "productionSelected": False,
+                "shippingAuthorized": False,
+            },
+        }
+        write(authority_path, canonical(authority))
+        authority_publication = commit("publish closure")
+        run_git(
+            root,
+            "update-ref",
+            "refs/remotes/origin/master",
+            authority_publication,
+        )
+        artifact_paths = {item["path"] for item in artifact_bindings.values()}
+        for relative in artifact_paths:
+            write(relative, (repository_root / relative).read_bytes())
+        worker_head = commit("publish worker artifacts")
+        local_contract = copy.deepcopy(contract)
+        local_contract["integrationTrust"]["minimumAuthorityCommit"] = base
+        output_root = root / authority["exclusiveRoots"]["output"]
+        positive = launcher.validate_execution_closure(
+            root,
+            local_contract,
+            root / authority_path,
+            authority_publication,
+            root / schedule_path,
+            schedule_publication,
+            output_root,
+            secret,
+            authority_publication,
+        )
+        if positive["closureValidation"]["workerHead"] != worker_head:
+            raise RuntimeError("shared closure worker-head binding drift")
+
+        legacy = {
+            "schema": 1,
+            "task": "PLAY-027",
+            "direction": "north",
+            "process": "A",
+        }
+        write(authority_path, canonical(legacy))
+        legacy_publication = commit("publish legacy authority")
+        run_git(
+            root,
+            "update-ref",
+            "refs/remotes/origin/master",
+            legacy_publication,
+        )
+        return [
+            {
+                "name": "shared-closure-v1-reaches-high-level-orchestrator",
+                "closureSchema": authority["$schema"],
+                "validatorResult": positive["closureValidation"]["result"],
+                "grantId": positive["grantId"],
+                "childStarts": positive["closureValidation"]["childStarts"],
+                "dccStarts": positive["closureValidation"]["dccStarts"],
+                "renders": positive["closureValidation"]["renders"],
+                "pixels": positive["closureValidation"]["pixels"],
+                "passed": True,
+            },
+            expect_failure(
+                "legacy-north-authority-rejected-by-shared-closure",
+                lambda: launcher.validate_execution_closure(
+                    root,
+                    local_contract,
+                    root / authority_path,
+                    legacy_publication,
+                    root / schedule_path,
+                    schedule_publication,
+                    output_root,
+                    secret,
+                    legacy_publication,
+                ),
+                "authority fields do not match v1",
+            ),
+        ]
+
+
 def attribute_calls(syntax: ast.Module, attribute: str) -> list[ast.Call]:
     return [
         node
@@ -224,7 +541,20 @@ def run_fault_case(
                 output_relative.parent / "attempt-consumption-v01/north-A.json"
             ),
             "attemptId": "north:A",
+            "terminalRoot": str(
+                output_relative.parent / "terminals" / stage
+            ),
+            "executionEnvelope": {
+                "leasePath": (
+                    f"/private/tmp/citysim-industrial-l04-north-"
+                    f"fault-{stage}-{os.getpid()}.lock"
+                )
+            },
             "authorizationSecretSHA256": hashlib.sha256(b"x" * 32).hexdigest(),
+            "closureValidation": {
+                "trustedHead": "a" * 40,
+                "workerHead": "b" * 40,
+            },
         }
         grant = valid_grant(local_contract)
 
@@ -240,7 +570,7 @@ def run_fault_case(
             "validate_execution_contract": launcher.validate_execution_contract,
             "normalize_repository_file": launcher.normalize_repository_file,
             "read_authorization_secret": launcher.read_authorization_secret,
-            "validate_execution_authority": launcher.validate_execution_authority,
+            "validate_execution_closure": launcher.validate_execution_closure,
             "load_module": launcher.load_module,
             "validate_grant_plan": launcher.validate_grant_plan,
             "verify_blender_executable": launcher.verify_blender_executable,
@@ -254,7 +584,7 @@ def run_fault_case(
             launcher.validate_execution_contract = lambda *_args: local_contract
             launcher.normalize_repository_file = lambda *_args: schedule
             launcher.read_authorization_secret = lambda _fd: b"x" * 32
-            launcher.validate_execution_authority = lambda *_args: local_authority
+            launcher.validate_execution_closure = lambda *_args: local_authority
             launcher.load_module = lambda *_args: FakeAdapter
             launcher.validate_grant_plan = lambda *_args, **_kwargs: {
                 "grant": grant,
@@ -324,7 +654,7 @@ def run_fault_case(
             attempt_relative = Path(local_authority["attemptRecordPath"])
             terminal = (
                 root
-                / attempt_relative.parent
+                / local_authority["terminalRoot"]
                 / "north-A.TERMINAL.json"
             )
             if stage != "lease" and not terminal.is_file():
@@ -387,6 +717,9 @@ def run_fault_case(
                 "passed": True,
             }
         finally:
+            Path(
+                local_authority["executionEnvelope"]["leasePath"]
+            ).unlink(missing_ok=True)
             for name, value in saved.items():
                 if name == "platform":
                     launcher.sys.platform = value
@@ -407,6 +740,16 @@ def main() -> None:
         raise RuntimeError("exact current zero-child prelaunch output required")
     if output.exists() or output.is_symlink():
         raise RuntimeError("current zero-child prelaunch output must be absent")
+    candidate_head = run_git(repository_root, "rev-parse", "HEAD")
+    if (
+        subprocess.run(
+            ["git", "merge-base", "--is-ancestor", TRUSTED_MASTER_COMMIT, candidate_head],
+            cwd=repository_root,
+            check=False,
+        ).returncode
+        != 0
+    ):
+        raise RuntimeError("trusted Integration master is not an ancestor of candidate")
 
     source_root = repository_root / SOURCE_ROOT
     launcher_path = source_root / "launch_north_process_a.py"
@@ -426,6 +769,7 @@ def main() -> None:
         output_exists=lambda _: False,
     )
     cases: list[dict[str, Any]] = []
+    cases.extend(exercise_shared_closure(repository_root, launcher, contract))
 
     for name, field, value, expected in [
         ("wrong-grant", "grantId", "forged", "grant"),
@@ -597,9 +941,15 @@ def main() -> None:
             "executionAuthorityPath": "docs/production/evidence/INTEGRATION/a.json",
             "executionAuthoritySHA256": "c" * 64,
             "executionAuthorityPublicationCommit": "d" * 40,
+            "trustedIntegrationHead": "f" * 40,
+            "workerHead": "1" * 40,
+            "executionClosureValidatorSHA256": contract["executionClosure"][
+                "validator"
+            ]["sha256"],
             "contractSHA256": sha256(contract_path),
             "launcherSHA256": contract["launcher"]["sha256"],
             "launcherPID": os.getppid(),
+            "runnerContractSHA256": contract["runnerContract"]["sha256"],
             "childEntrypointSHA256": contract["childEntrypoint"]["sha256"],
             "outputRoot": contract["processOutputRoot"],
             "outputRootDevice": os.fstat(output_fd).st_dev,
@@ -624,6 +974,12 @@ def main() -> None:
                 "schedulePublicationCommit": "b" * 40,
                 "executionAuthoritySHA256": "c" * 64,
                 "executionAuthorityPublicationCommit": "d" * 40,
+                "trustedIntegrationHead": "f" * 40,
+                "workerHead": "1" * 40,
+                "executionClosureValidatorSHA256": contract["executionClosure"][
+                    "validator"
+                ]["sha256"],
+                "runnerContractSHA256": contract["runnerContract"]["sha256"],
                 "outputRootDevice": os.fstat(output_fd).st_dev,
                 "outputRootInode": os.fstat(output_fd).st_ino,
             },
@@ -759,6 +1115,9 @@ def main() -> None:
         "task": "PLAY-027",
         "direction": "north",
         "process": "A",
+        "trustedIntegrationMaster": TRUSTED_MASTER_COMMIT,
+        "candidateHead": candidate_head,
+        "trustedMasterIsAncestor": True,
         "authorityBaseCommit": contract["authorityBaseCommit"],
         "publicationCommit": contract["publicationCommit"],
         "executionContract": {
@@ -766,8 +1125,10 @@ def main() -> None:
             "sha256": sha256(contract_path),
         },
         "launcher": contract["launcher"],
+        "runnerContract": contract["runnerContract"],
         "childEntrypoint": contract["childEntrypoint"],
         "scheduleAdapter": contract["scheduleAdapter"],
+        "executionClosure": contract["executionClosure"],
         "prelockProcessPolicy": contract["prelockProcessPolicy"],
         "directionRootMap": contract["directionRootMap"],
         "futureDirectionHandoff": contract["futureDirectionHandoff"],
@@ -783,6 +1144,10 @@ def main() -> None:
             "trustedOriginMasterPublication": True,
             "externalSchedulePublicationCommit": True,
             "externalExecutionAuthorityRequired": True,
+            "sharedClosureV1Required": True,
+            "sharedClosureV1InvokedByHighLevelOrchestrator": True,
+            "sharedClosureV1RevalidatedByRunner": True,
+            "legacyNorthAuthorityRejected": True,
             "integrationSecretRequired": True,
             "launcherSessionHMAC": True,
             "durableAttemptRecord": True,

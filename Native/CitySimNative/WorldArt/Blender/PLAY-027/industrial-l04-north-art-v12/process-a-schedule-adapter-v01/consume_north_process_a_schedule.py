@@ -33,6 +33,7 @@ EXPECTED_CONTRACT_FIELDS = {
     "publishedBaseCommit",
     "claim",
     "processAPrelaunchAuthority",
+    "directionScheduleAdapter",
     "processAOrchestrator",
     "adapterAuthority",
     "scheduleSchema",
@@ -233,7 +234,7 @@ def validate_contract(repository_root: Path, contract_path: Path) -> dict[str, A
             "Native/CitySimNative/WorldArt/Blender/PLAY-027/"
             "industrial-l04-north-art-v12/process-a-execution-v01/"
             "launch_north_process_a.py",
-            "062a00eb8c81c52c3d783b6b556a8c7a18edce836c493cd8d17b0b7a28f42f0d",
+            "e368e837a6eb5b5050d1b7e2ab589ccedb0f54915555e7bd2f6b1ea0aa8d39ce",
         ),
         "adapterAuthority": (
             "docs/production/evidence/INTEGRATION/"
@@ -263,6 +264,12 @@ def validate_contract(repository_root: Path, contract_path: Path) -> dict[str, A
             expected_path=path,
             expected_sha256=digest,
         )
+    verify_file_binding(
+        repository_root,
+        contract["directionScheduleAdapter"],
+        "directionScheduleAdapter",
+        expected_path=str(ADAPTER_RELATIVE),
+    )
     frozen = contract["frozenNorthV12Inputs"]
     require(
         isinstance(frozen, dict)
@@ -338,8 +345,11 @@ def validate_north_grant(
         contract["processAOrchestrator"],
         "processAOrchestrator",
     )
+    require(
+        direction["orchestrator"] == contract["directionScheduleAdapter"],
+        "direction schedule-adapter binding drift",
+    )
     expected_orchestrator = contract["processAOrchestrator"]
-    require(direction["orchestrator"] == expected_orchestrator, "orchestrator binding drift")
     grant = process_grant(direction, contract["process"])
     require(grant["state"] == "granted", "North Process A grant is blocked")
     require(grant["slotId"] == contract["expectedSlotId"], "DCC slot drift")

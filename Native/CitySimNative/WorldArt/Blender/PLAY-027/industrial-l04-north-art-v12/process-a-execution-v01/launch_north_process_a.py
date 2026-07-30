@@ -249,7 +249,7 @@ def read_authorization_secret(descriptor: int) -> bytes:
     return secret
 
 
-def validate_execution_authority(
+def validate_execution_closure(
     repository_root: Path,
     contract: dict[str, Any],
     authority_path: Path,
@@ -265,123 +265,124 @@ def validate_execution_authority(
         contract,
         trusted_integration_head,
     )
-    authority_binding = verify_integration_publication(
-        repository_root,
-        authority_path,
-        authority_publication_commit,
-        trusted_integration_head,
-        "executionAuthority",
-    )
-    schedule_binding = verify_integration_publication(
-        repository_root,
-        schedule_path,
-        schedule_publication_commit,
-        trusted_integration_head,
-        "schedule",
-    )
-    authority = load_json(
-        repository_root / authority_binding["path"]
-    )
-    expected_fields = {
-        "schema",
-        "task",
-        "direction",
-        "process",
-        "grantId",
-        "slotId",
-        "schedule",
-        "executionContract",
-        "launcher",
-        "childEntrypoint",
-        "processOutputRoot",
-        "attemptRecordPath",
-        "attemptId",
-        "maximumConcurrentDCCProcesses",
-        "maximumChildStarts",
-        "timeoutSeconds",
-        "maximumProcessGroupRSSMiB",
-        "stopDisposition",
-        "authorizationSecretSHA256",
-        "sourceAuthority",
-        "productionSelected",
-    }
-    require(set(authority) == expected_fields, "execution authority fields drift")
-    exact = {
-        "schema": 1,
-        "task": "PLAY-027",
-        "direction": "north",
-        "process": "A",
-        "grantId": "north:A",
-        "slotId": "dcc-1",
-        "processOutputRoot": contract["processOutputRoot"],
-        "maximumConcurrentDCCProcesses": 1,
-        "maximumChildStarts": 1,
-        "timeoutSeconds": contract["processEnvelope"]["timeoutSeconds"],
-        "maximumProcessGroupRSSMiB": contract["processEnvelope"][
-            "maximumProcessGroupRSSMiB"
-        ],
-        "stopDisposition": "STOP_AFTER_ONE_FRESH_NORTH_SOURCE_CANDIDATE",
-        "sourceAuthority": False,
-        "productionSelected": False,
-    }
-    for field, value in exact.items():
-        require(authority.get(field) == value, f"execution authority drift: {field}")
-    require(
-        isinstance(authority["attemptId"], str)
-        and authority["attemptId"] == "north:A",
-        "execution authority attemptId drift",
-    )
     normalized_schedule = normalize_repository_file(
         repository_root,
         schedule_path,
         "schedule",
     )
-    expected_schedule = {
-        "path": str(normalized_schedule.relative_to(repository_root)),
-        "sha256": sha256(normalized_schedule),
-        "publicationCommit": schedule_publication_commit,
+    normalized_authority = normalize_repository_file(
+        repository_root,
+        authority_path,
+        "executionClosureAuthority",
+    )
+    closure = contract["executionClosure"]
+    closure_validator_path = verify_binding(
+        repository_root,
+        closure["validator"],
+        "executionClosure.validator",
+    )
+    validator = load_module(
+        closure_validator_path,
+        "play027_integration_execution_closure_validator",
+    )
+    require(
+        callable(getattr(validator, "validate", None)),
+        "shared execution-closure validator entrypoint missing",
+    )
+    worker_head = git_check(repository_root, ["rev-parse", "--verify", "HEAD"])
+    validation = validator.validate(
+        repository_root,
+        normalized_authority,
+        trusted_head=trusted_integration_head,
+        worker_head=worker_head,
+        authority_publication_commit=authority_publication_commit,
+    )
+    require(validation["result"] == "PASS", "shared execution closure did not pass")
+    authority = load_json(normalized_authority)
+    require(
+        authority["schedule"]
+        == {
+            "path": str(normalized_schedule.relative_to(repository_root)),
+            "sha256": sha256(normalized_schedule),
+            "publicationCommit": schedule_publication_commit,
+            "phase": contract["phase"],
+        },
+        "shared execution closure schedule drift",
+    )
+    expected_artifacts = {
+        "executionContract": {
+            "path": str(CONTRACT_RELATIVE),
+            "sha256": sha256(repository_root / CONTRACT_RELATIVE),
+        },
+        "directionScheduleAdapter": contract["scheduleAdapter"]["consumer"],
+        "highLevelOrchestrator": contract["launcher"],
+        "runnerContract": contract["runnerContract"],
+        "runnerEntrypoint": contract["childEntrypoint"],
+        "scene": contract["frozenNorthV12Inputs"]["scene"],
+        "materials": contract["frozenNorthV12Inputs"]["materials"],
+        "toolchain": contract["frozenNorthV12Inputs"]["loweringContract"],
     }
-    require(authority["schedule"] == expected_schedule, "execution authority schedule drift")
     require(
-        schedule_binding
-        == {"path": expected_schedule["path"], "sha256": expected_schedule["sha256"]},
-        "trusted schedule publication drift",
+        authority["artifacts"] == expected_artifacts,
+        "shared execution closure artifact binding drift",
+    )
+    grant = authority["grant"]
+    require(
+        grant
+        == {
+            "grantId": "north:A",
+            "process": "A",
+            "queueId": "north:A",
+            "slotId": "dcc-1",
+            "maximumChildStarts": 1,
+            "exactlyOneInvocation": True,
+            "orchestratorOnly": True,
+            "directLowLevelInvocationAllowed": False,
+        },
+        "shared execution closure grant drift",
+    )
+    roots = authority["exclusiveRoots"]
+    require(
+        roots == contract["executionRoots"],
+        "shared execution closure exclusive-root drift",
     )
     require(
-        authority["executionContract"]
-        == {"path": str(CONTRACT_RELATIVE), "sha256": sha256(repository_root / CONTRACT_RELATIVE)},
-        "execution authority contract drift",
+        output_root.absolute() == (repository_root / roots["output"]).absolute(),
+        "shared execution closure output root drift",
     )
-    require(authority["launcher"] == contract["launcher"], "execution authority launcher drift")
+    envelope = authority["executionEnvelope"]
     require(
-        authority["childEntrypoint"] == contract["childEntrypoint"],
-        "execution authority child drift",
+        envelope["timeoutSeconds"] == contract["processEnvelope"]["timeoutSeconds"],
+        "shared execution closure timeout drift",
     )
     require(
-        authority["authorizationSecretSHA256"] == sha256_bytes(authorization_secret),
-        "execution authority secret mismatch",
+        envelope["maximumRSSBytes"]
+        == contract["processEnvelope"]["maximumProcessGroupRSSMiB"] * 1024 * 1024,
+        "shared execution closure RSS drift",
     )
-    requested = output_root.absolute()
     require(
-        requested == (repository_root / authority["processOutputRoot"]).absolute(),
-        "execution authority output root drift",
-    )
-    attempt_path = Path(authority["attemptRecordPath"])
-    require(
-        not attempt_path.is_absolute()
-        and attempt_path.name == "north-A.json"
-        and attempt_path.parent
-        == Path(contract["processOutputRoot"]).parent / "attempt-consumption-v01",
-        "execution authority attempt record path drift",
+        authority["authentication"]["secretSha256"]
+        == sha256_bytes(authorization_secret),
+        "shared execution closure secret mismatch",
     )
     require(
         git_check(repository_root, ["status", "--porcelain=v1"]) == "",
         "execution requires a clean worktree",
     )
     return {
-        **authority,
-        "path": authority_binding["path"],
-        "sha256": authority_binding["sha256"],
+        "grantId": grant["grantId"],
+        "slotId": grant["slotId"],
+        "attemptId": grant["grantId"],
+        "attemptRecordPath": str(Path(roots["attempt"]) / "north-A.json"),
+        "terminalRoot": roots["terminal"],
+        "authorizationSecretSHA256": authority["authentication"]["secretSha256"],
+        "schedule": authority["schedule"],
+        "exclusiveRoots": roots,
+        "executionEnvelope": envelope,
+        "authentication": authority["authentication"],
+        "closureValidation": validation,
+        "path": str(normalized_authority.relative_to(repository_root)),
+        "sha256": sha256(normalized_authority),
         "publicationCommit": authority_publication_commit,
         "trustedIntegrationHead": integration_trust,
     }
@@ -419,6 +420,8 @@ def validate_execution_contract(
         "prelaunchAuthority",
         "familyContract",
         "scheduleAdapter",
+        "executionClosure",
+        "runnerContract",
         "frozenNorthV12Inputs",
         "launcher",
         "childEntrypoint",
@@ -427,6 +430,7 @@ def validate_execution_contract(
         "cycles",
         "processEnvelope",
         "processOutputRoot",
+        "executionRoots",
         "directionRootMap",
         "futureDirectionHandoff",
         "capabilityChannel",
@@ -448,8 +452,9 @@ def validate_execution_contract(
         "authorityBaseCommit": "ffb3db1a35aec5067a07a5405ee721ff379ecd51",
         "publicationCommit": "2eb5ddcb97a84376d66a008f8a7ad6ab3c97209b",
         "processOutputRoot": (
-            "docs/production/evidence/PLAY-027/industrial-l04/l04/"
-            "blender-north-art-v12/process-a-execution-v01/process-a"
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027/"
+            "industrial-l04-north-art-v12/process-a-execution-v01/"
+            "outputs/process-a"
         ),
         "sourceAuthority": False,
         "candidateReadyForIndependentReview": False,
@@ -504,7 +509,7 @@ def validate_execution_contract(
         require(not path.is_absolute() and ".." not in path.parts, f"{label} path drift")
         expected_prefix = (
             north_source_prefix
-            if label in {"sceneRoot", "processRoot"}
+            if label in {"sceneRoot", "processRoot", "rawRoot", "outputRoot"}
             else north_evidence_prefix
         )
         require(
@@ -519,6 +524,25 @@ def validate_execution_contract(
         root_map["rawRoot"] == root_map["outputRoot"]
         and root_map["outputRoot"] == contract["processOutputRoot"],
         "Process-A raw/output root binding drift",
+    )
+    require(
+        contract["executionRoots"]
+        == {
+            "output": contract["processOutputRoot"],
+            "evidence": (
+                "docs/production/evidence/PLAY-027/industrial-l04/l04/"
+                "blender-north-art-v12/process-a-execution-v01/evidence/process-a"
+            ),
+            "attempt": (
+                "docs/production/evidence/PLAY-027/industrial-l04/l04/"
+                "blender-north-art-v12/process-a-execution-v01/attempts/north-A"
+            ),
+            "terminal": (
+                "docs/production/evidence/PLAY-027/industrial-l04/l04/"
+                "blender-north-art-v12/process-a-execution-v01/terminals/north-A"
+            ),
+        },
+        "execution-closure root binding drift",
     )
     future_handoff = contract["futureDirectionHandoff"]
     require(
@@ -575,6 +599,43 @@ def validate_execution_contract(
     )
     for label, binding in adapter.items():
         verify_binding(repository_root, binding, f"scheduleAdapter.{label}")
+    closure = contract["executionClosure"]
+    require(
+        isinstance(closure, dict)
+        and set(closure) == {"authority", "schema", "validator", "validatorTests"},
+        "execution-closure inventory drift",
+    )
+    expected_closure = {
+        "authority": (
+            "docs/production/evidence/INTEGRATION/"
+            "INDUSTRIAL-L04-DIRECTION-EXECUTION-CLOSURE-V1-AUTHORITY.md",
+            "0125539f015ab8069c11093e755ac6e43d7b37994c86515fc06894e401b7eb54",
+        ),
+        "schema": (
+            "docs/production/evidence/INTEGRATION/"
+            "industrial-l04-direction-execution-authority-schema-v1.json",
+            "2796e224780c259b29d68b50cb12cdbbe45452535da681bba3522af920459491",
+        ),
+        "validator": (
+            ".agents/skills/operate-citysim-integration/scripts/"
+            "validate_industrial_l04_direction_execution_authority_v1.py",
+            "b212d2776d34b3334910c6b0b02ffba244919f4a83d5c0019c30bca87648d8ae",
+        ),
+        "validatorTests": (
+            ".agents/skills/operate-citysim-integration/scripts/"
+            "test_validate_industrial_l04_direction_execution_authority_v1.py",
+            "0be62c7886a2106c81e7e05d56eb3ec3c0756365e416686489f8ffe8c76b2520",
+        ),
+    }
+    for label, (path, digest) in expected_closure.items():
+        verify_binding(
+            repository_root,
+            closure[label],
+            f"executionClosure.{label}",
+            expected_path=path,
+            expected_sha256=digest,
+        )
+    verify_binding(repository_root, contract["runnerContract"], "runnerContract")
     frozen = contract["frozenNorthV12Inputs"]
     require(
         isinstance(frozen, dict)
@@ -957,6 +1018,53 @@ def write_exclusive_at(directory_fd: int, name: str, value: Any) -> None:
         os.close(descriptor)
 
 
+def create_exclusive_directory(repository_root: Path, relative: Path) -> int:
+    require(
+        not relative.is_absolute() and ".." not in relative.parts,
+        "exclusive directory path drift",
+    )
+    parent_fd = open_or_create_directory_chain(repository_root, relative.parent)
+    try:
+        os.mkdir(relative.name, 0o755, dir_fd=parent_fd)
+        return os.open(
+            relative.name,
+            os.O_RDONLY | os.O_DIRECTORY | getattr(os, "O_NOFOLLOW", 0),
+            dir_fd=parent_fd,
+        )
+    except FileExistsError as error:
+        raise LaunchError("exclusive execution root already exists") from error
+    finally:
+        os.close(parent_fd)
+
+
+def consume_external_lease(authority: dict[str, Any]) -> Path:
+    lease = Path(authority["executionEnvelope"]["leasePath"])
+    require(lease.is_absolute(), "execution lease must be absolute")
+    descriptor = os.open(
+        lease,
+        os.O_WRONLY
+        | os.O_CREAT
+        | os.O_EXCL
+        | getattr(os, "O_NOFOLLOW", 0),
+        0o600,
+    )
+    try:
+        payload = canonical_bytes(
+            {
+                "schema": 1,
+                "grantId": authority["grantId"],
+                "attemptId": authority["attemptId"],
+                "executionAuthoritySHA256": authority["sha256"],
+                "consumed": True,
+            }
+        )
+        os.write(descriptor, payload)
+        os.fsync(descriptor)
+    finally:
+        os.close(descriptor)
+    return lease
+
+
 def create_attempt_record(
     repository_root: Path,
     authority: dict[str, Any],
@@ -991,7 +1099,7 @@ def create_attempt_record(
 
 
 def write_attempt_terminal(
-    attempt_directory_fd: int,
+    terminal_directory_fd: int,
     authority: dict[str, Any],
     *,
     output_root_created: bool,
@@ -1011,7 +1119,7 @@ def write_attempt_terminal(
         "sourceAuthority": False,
         "productionSelected": False,
     }
-    write_exclusive_at(attempt_directory_fd, "north-A.TERMINAL.json", value)
+    write_exclusive_at(terminal_directory_fd, "north-A.TERMINAL.json", value)
     return value
 
 
@@ -1111,7 +1219,7 @@ def run_one_child(
         "schedule",
     )
     authorization_secret = read_authorization_secret(authorization_secret_fd)
-    authority = validate_execution_authority(
+    authority = validate_execution_closure(
         repository_root,
         contract,
         execution_authority_path,
@@ -1153,10 +1261,19 @@ def run_one_child(
     verify_blender_executable(contract)
     require(sys.platform == "darwin", "Process-A child launch requires Darwin")
     fault("lease")
-    attempt_directory_fd, attempt_record = create_attempt_record(
+    consume_external_lease(authority)
+    terminal_directory_fd = create_exclusive_directory(
         repository_root,
-        authority,
+        Path(authority["terminalRoot"]),
     )
+    try:
+        attempt_directory_fd, attempt_record = create_attempt_record(
+            repository_root,
+            authority,
+        )
+    except BaseException:
+        os.close(terminal_directory_fd)
+        raise
     output_root_fd = -1
     output_identity: dict[str, int] = {}
     try:
@@ -1178,13 +1295,14 @@ def run_one_child(
             remaining_members=[],
         )
         write_attempt_terminal(
-            attempt_directory_fd,
+            terminal_directory_fd,
             authority,
             output_root_created=False,
             terminal_receipt=disposition,
             process_receipt=None,
         )
         os.close(attempt_directory_fd)
+        os.close(terminal_directory_fd)
         return 1
     capability_read_fd = -1
     capability_write_fd = -1
@@ -1233,9 +1351,15 @@ def run_one_child(
             "executionAuthorityPath": authority["path"],
             "executionAuthoritySHA256": authority["sha256"],
             "executionAuthorityPublicationCommit": authority["publicationCommit"],
+            "trustedIntegrationHead": authority["closureValidation"]["trustedHead"],
+            "workerHead": authority["closureValidation"]["workerHead"],
+            "executionClosureValidatorSHA256": contract["executionClosure"]["validator"][
+                "sha256"
+            ],
             "contractSHA256": sha256(contract_path),
             "launcherSHA256": contract["launcher"]["sha256"],
             "launcherPID": os.getpid(),
+            "runnerContractSHA256": contract["runnerContract"]["sha256"],
             "childEntrypointSHA256": contract["childEntrypoint"]["sha256"],
             "outputRoot": plan["outputRoot"],
             "outputRootDevice": output_identity["device"],
@@ -1287,6 +1411,14 @@ def run_one_child(
                 "schedulePublicationCommit": schedule_publication_commit,
                 "executionAuthoritySHA256": authority["sha256"],
                 "executionAuthorityPublicationCommit": authority["publicationCommit"],
+                "trustedIntegrationHead": authority["closureValidation"][
+                    "trustedHead"
+                ],
+                "workerHead": authority["closureValidation"]["workerHead"],
+                "executionClosureValidatorSHA256": contract["executionClosure"][
+                    "validator"
+                ]["sha256"],
+                "runnerContractSHA256": contract["runnerContract"]["sha256"],
                 "outputRootDevice": output_identity["device"],
                 "outputRootInode": output_identity["inode"],
                 },
@@ -1436,7 +1568,7 @@ def run_one_child(
     finally:
         try:
             write_attempt_terminal(
-                attempt_directory_fd,
+                terminal_directory_fd,
                 authority,
                 output_root_created=True,
                 terminal_receipt=terminal_disposition(
@@ -1454,6 +1586,7 @@ def run_one_child(
             )
         finally:
             os.close(attempt_directory_fd)
+            os.close(terminal_directory_fd)
             os.close(output_root_fd)
     require(receipt_written, "terminal Process-A receipt was not written")
     if violation is not None or return_code != 0:

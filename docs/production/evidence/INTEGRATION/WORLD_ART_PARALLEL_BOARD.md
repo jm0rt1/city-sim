@@ -10,11 +10,11 @@
 
 | Cell | Branch / claim | Current state | Head | Next release boundary |
 |---|---|---|---|---|
-| North | `codex/citysim-world-art` / `PLAY-027` | `returned` | `56e4f484ac07ca3fcf11e72f69a7fb56170d9792` | v01 module-import failure retained; v02 one-start module bootstrap sent |
+| North | `codex/citysim-world-art` / `PLAY-027` | `returned` | `9233f9796a39fd62adf04f5d77a433e9a310ed48` | v02 authority merged cleanly; module-bootstrap implementation active |
 | East | `codex/citysim-world-art-east` / `PLAY-079` | `predesign` | `bcb5cba1495aade19009f4e4407cd55b7bf03c39` | zero-pixel A/B/C orchestration prep integrated; wait for post-lock release |
 | South | `codex/citysim-world-art-south` / `PLAY-080` | `predesign` | `d8332051c8665410f90684ba8f034fd2a1846a53` | zero-pixel validation fan-out prep integrated; wait for post-lock release |
 | West | `codex/citysim-world-art-west` / `PLAY-081` | `predesign` | `76386c7dba4c3f9b86c6662361cc670ef1e6ed1f` | zero-pixel review assembly prep integrated; wait for post-lock release |
-| Renderer | `codex/citysim-world-rendering` / `PLAY-073` | `intake_ready` | `cc3112fee68948d8f723c00810077b6abafb53db` | canonical admission schema published; synthetic intake-harness adoption sent |
+| Renderer | `codex/citysim-world-rendering` / `PLAY-073` | `intake_ready` | `b7dfeadf4ddedcaab9a80744c06ee86698eb3b39` | canonical admission authority merged cleanly; synthetic harness adoption active |
 | QA | `codex/citysim-playtest-quality` / `PLAY-075` | `exact_candidate_active` | `8e68cf11c6a943ab44d83232659585134c17f260` | run one same-SHA `472ffa85…` gate when Computer Use lock check resolves |
 
 ## Dispatch invariant
@@ -24,7 +24,7 @@ integration boundaries. A waiting cell receives non-conflicting preparation,
 validation, fixture, audit, or evidence work. A failed East, South, or West
 source returns only that direction; it does not stop accepted siblings.
 
-At the `03:09Z` refresh, Industrial L3 is integrated at exact candidate
+At the `03:13Z` acknowledgement refresh, Industrial L3 is integrated at exact candidate
 `472ffa85cd35639a675c1c2e4ede748c94446a7f`; its complete technical gate is
 green and QA owns the sole same-SHA player-facing gate. East, South, and West
 zero-pixel execution, validation, and review-assembly preparations are
@@ -47,6 +47,11 @@ in parallel to adopt that exact receipt shape in its synthetic intake harness;
 it may not consume a real source or activate shipping. When North later earns
 an appearance lock, a new release will schedule all four source cells and
 their direction-local A/B/C process fan-outs.
+
+North and Renderer both acknowledged their exact authorities, merged published
+master without conflict, and began their disjoint bounded work. QA remains a
+third active stream, externally waiting only on the Computer Use lock-state
+approval for the unchanged exact L3 candidate.
 
 The following remain serialized: family-contract publication, shared toolchain
 changes, shipping atlas/manifest mutation, production selection, the final

@@ -1,6 +1,6 @@
 # World Art Parallel Workstream Board
 
-- **Parallel operating authority:** `73300af6f2ae6e31c4f818c078f82cc73ce4c70b`
+- **Parallel operating authority:** `fcfad4602aef55d2decd8eb2153401a8e5ef1b3c`
 - **Batch:** Industrial L4 directional family
 - **Updated:** 2026-07-29
 - **Machine-readable ledger:**
@@ -10,7 +10,7 @@
 
 | Cell | Branch / claim | Current state | Head | Next release boundary |
 |---|---|---|---|---|
-| North | `codex/citysim-world-art` / `PLAY-027` | `predesign` | `81d51486fb2086e26ab08dd200221c5eb8d79edb` | static-B failed closed on RSS sampling interval; exact failure preserved, no retry |
+| North | `codex/citysim-world-art` / `PLAY-027` | `predesign` | `be30fac8167b4de82605addccd7d7d483c49482d` | v03 exact-child resource authority merged; zero-DCC prelaunch active |
 | East | `codex/citysim-world-art-east` / `PLAY-079` | `predesign` | `bcb5cba1495aade19009f4e4407cd55b7bf03c39` | zero-pixel A/B/C orchestration prep integrated; wait for post-lock release |
 | South | `codex/citysim-world-art-south` / `PLAY-080` | `predesign` | `d8332051c8665410f90684ba8f034fd2a1846a53` | zero-pixel validation fan-out prep integrated; wait for post-lock release |
 | West | `codex/citysim-world-art-west` / `PLAY-081` | `predesign` | `76386c7dba4c3f9b86c6662361cc670ef1e6ed1f` | zero-pixel review assembly prep integrated; wait for post-lock release |
@@ -24,7 +24,7 @@ integration boundaries. A waiting cell receives non-conflicting preparation,
 validation, fixture, audit, or evidence work. A failed East, South, or West
 source returns only that direction; it does not stop accepted siblings.
 
-At the `04:19Z` acknowledgement refresh, Industrial L3 remains integrated at exact candidate
+At the `04:52Z` acknowledgement refresh, Industrial L3 remains integrated at exact candidate
 `472ffa85cd35639a675c1c2e4ede748c94446a7f`; its complete technical gate is
 green and QA owns the sole same-SHA player-facing gate. East, South, and West
 zero-pixel execution, validation, and review-assembly preparations are

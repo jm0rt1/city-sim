@@ -1,0 +1,75 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "batch": "industrial_l04_directional_family",
+  "direction": "north",
+  "process": "A",
+  "phase": "prelock_north_a",
+  "branch": "codex/citysim-world-art",
+  "publishedBaseCommit": "401eb2ce19c5f5c932442ace72e66fbd734cfa35",
+  "claim": {
+    "path": "docs/production/claims/PLAY-027.world-art.md",
+    "sha256": "618ea95ffac855aa28e29f8cf09cb6529ec0774e685e6761a8e2985ecb9e1335"
+  },
+  "adapterAuthority": {
+    "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTION-SCHEDULE-ADAPTER-AUTHORITY.md",
+    "sha256": "3638f960a9394f9c4c0c09e3aa75ba842ec4d093eada04762eb51f0b1c57dd34"
+  },
+  "scheduleSchema": {
+    "path": "docs/production/evidence/INTEGRATION/industrial-l04-parallel-execution-schedule-schema-v1.json",
+    "sha256": "6eba2291f9cb548a8ddd08961bdffe3a18c9546b293a08f094711b38aa0840c6"
+  },
+  "scheduleValidator": {
+    "path": ".agents/skills/operate-citysim-integration/scripts/validate_industrial_l04_parallel_execution_schedule_v1.py",
+    "sha256": "086ff2f2cb7d0c030d0039b48b3b66f7e6c314dd97a705b8f0a8a41fda0bbb04"
+  },
+  "familyContract": {
+    "path": "docs/production/decisions/CONTRACT-010-directional-building-art.md",
+    "sha256": "0ee2d68a9dba4694d92a864bfeb5a91970c88fe87d893e1898de7b26d38609af"
+  },
+  "frozenNorthV12Inputs": {
+    "scene": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/SCENE.json",
+      "sha256": "dad20722f4770c82992040861074188c604b46cd226e5f739291ac22683594e2"
+    },
+    "materials": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/MATERIALS.json",
+      "sha256": "e683feed89f6878903d1ec0b255d0d5e8a36c74f431a2fb723287bf955c54d09"
+    },
+    "loweringContract": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/blender-lowering-v01/LOWERING-CONTRACT.json",
+      "sha256": "21480cd8c1dbb66f33b3ccd4987fea169198f2640b793a220d8d22c9c8505aa8"
+    },
+    "importer": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/blender-lowering-v01/import_v12_scene.py",
+      "sha256": "ec726d584ce4b22253fca486e82bc6a198616debed94358d76f6dac7a1f62988"
+    },
+    "lowerer": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/blender-lowering-v01/lower_v12_scene.py",
+      "sha256": "7dc01ddc56bfff3ee9efca417ad0f70265d92daf99281dd53f7231c691e53a42"
+    },
+    "acceptedStaticBContract": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/blender-lowering-v01/static-b-confirmation-v03/CONFIRMATION-CONTRACT.json",
+      "sha256": "9a7449cdc76116bdd12879e17f99e8162828ba6c01507310a627816f9202d08f"
+    }
+  },
+  "expectedExclusiveRoots": [
+    "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12",
+    "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12"
+  ],
+  "expectedSlotId": "dcc-1",
+  "expectedQueue": [
+    "north:A"
+  ],
+  "maximumChildStarts": 1,
+  "orchestratorOnly": true,
+  "directLowLevelInvocationAllowed": false,
+  "adapterMode": "validate-and-return-grant-plan-only",
+  "blenderChildStartCount": 0,
+  "dccProcessCount": 0,
+  "renderInvocationCount": 0,
+  "sourcePixelCount": 0,
+  "sourceAuthority": false,
+  "candidateReadyForIndependentReview": false,
+  "productionSelected": false
+}

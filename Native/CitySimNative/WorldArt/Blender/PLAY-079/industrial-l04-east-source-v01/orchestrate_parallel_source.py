@@ -939,6 +939,7 @@ def validate_execution_closure(
             authenticated,
             fixture_contract=fixture_contract,
         )
+        durable_attempt = authenticated.durable_attempt_result()
     except closure.ClosureRejected as error:
         raise OrchestrationRejected(error.code, error.detail) from error
     except runner.GuardRejected as error:
@@ -955,6 +956,7 @@ def validate_execution_closure(
             "workerHead": args.worker_head,
         },
         "runnerBoundary": result,
+        "durableAttempt": durable_attempt,
         "sourceReady": False,
         "productionSelected": False,
         "liveLeaseCreated": False,
@@ -963,7 +965,7 @@ def validate_execution_closure(
         "blenderProcessInvocations": 0,
         "renderApiCalls": 0,
         "pixelFilesCreated": 0,
-        "repositoryWrites": 0,
+        "repositoryWrites": 1,
     }
 
 

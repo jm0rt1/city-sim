@@ -4,8 +4,10 @@
 The Integration validator establishes Git publication, ancestry, schedule,
 grant, slot, root, artifact, and disposition truth. This direction-local
 consumer adds the anonymous-pipe secret and one-time HMAC checks that cannot be
-performed from the persisted authority alone. It never creates a lease, root,
-child, process, render, pixel, or receipt.
+performed from the persisted authority alone. After authentication it
+atomically claims the authority's exact task-owned attempt root and writes one
+nonsecret consumed marker. It never creates the live lease or starts a child,
+DCC process, render, pixel, normalization, or source packet.
 """
 
 from __future__ import annotations
@@ -171,16 +173,190 @@ def _require_equal(actual: object, expected: object, code: str) -> None:
         reject(code, f"{actual!r} != {expected!r}")
 
 
+def normalized_attempt_root(
+    repository_root: pathlib.Path,
+    authority: dict[str, Any],
+    contract: dict[str, Any],
+) -> tuple[pathlib.PurePosixPath, pathlib.Path]:
+    value = authority["exclusiveRoots"]["attempt"]
+    if not isinstance(value, str) or not value or value.startswith("/"):
+        reject("durable_attempt_path_invalid", value)
+    relative = pathlib.PurePosixPath(value)
+    if (
+        relative.as_posix() != value
+        or any(part in {"", ".", ".."} for part in relative.parts)
+    ):
+        reject("durable_attempt_path_invalid", value)
+    prefix = pathlib.PurePosixPath(contract["durableReplay"]["attemptRootPrefix"])
+    if relative.parent != prefix:
+        reject(
+            "durable_attempt_path_outside_east_prefix",
+            f"{relative.parent} != {prefix}",
+        )
+    root = repository_root.resolve()
+    absolute = root / relative.as_posix()
+    if absolute.parent.resolve() != (root / prefix.as_posix()).resolve():
+        reject("durable_attempt_parent_redirect", value)
+    return relative, absolute
+
+
+def _open_directory_component(
+    parent_fd: int,
+    component: str,
+    *,
+    create: bool,
+) -> int:
+    flags = os.O_RDONLY | os.O_DIRECTORY
+    if hasattr(os, "O_NOFOLLOW"):
+        flags |= os.O_NOFOLLOW
+    try:
+        return os.open(component, flags, dir_fd=parent_fd)
+    except FileNotFoundError:
+        if not create:
+            raise
+        try:
+            os.mkdir(component, 0o755, dir_fd=parent_fd)
+        except FileExistsError:
+            pass
+        return os.open(component, flags, dir_fd=parent_fd)
+
+
+def claim_durable_attempt(
+    *,
+    repository_root: pathlib.Path,
+    authority_path: pathlib.Path,
+    authority_publication_commit: str,
+    trusted_head: str,
+    worker_head: str,
+    authority: dict[str, Any],
+    contract: dict[str, Any],
+) -> dict[str, Any]:
+    relative, _absolute = normalized_attempt_root(
+        repository_root,
+        authority,
+        contract,
+    )
+    replay_contract = contract["durableReplay"]
+    marker_name = replay_contract["markerFileName"]
+    if (
+        not isinstance(marker_name, str)
+        or not marker_name
+        or pathlib.PurePosixPath(marker_name).name != marker_name
+    ):
+        reject("durable_marker_name_invalid", marker_name)
+    repository = repository_root.resolve()
+    try:
+        authority_relative = authority_path.resolve().relative_to(repository).as_posix()
+    except ValueError as error:
+        raise ClosureRejected("authority_path_outside_repository", authority_path) from error
+    marker_payload = canonical_bytes(
+        {
+            "schema": "citysim.play-079.east-execution-attempt-consumed.v1",
+            "taskId": "PLAY-079",
+            "direction": "east",
+            "validationOnly": True,
+            "authorityPath": authority_relative,
+            "authorityPublicationCommit": authority_publication_commit,
+            "trustedHead": trusted_head,
+            "workerHead": worker_head,
+            "capabilityId": authority["authentication"]["childCapability"][
+                "capabilityId"
+            ],
+            "grantId": authority["grant"]["grantId"],
+            "leasePath": authority["executionEnvelope"]["leasePath"],
+            "liveLeaseCreated": False,
+            "sourceChildStarts": 0,
+            "dccStarts": 0,
+            "renders": 0,
+            "pixels": 0,
+        }
+    )
+
+    root_flags = os.O_RDONLY | os.O_DIRECTORY
+    if hasattr(os, "O_NOFOLLOW"):
+        root_flags |= os.O_NOFOLLOW
+    current_fd = os.open(repository, root_flags)
+    attempt_fd: int | None = None
+    try:
+        for component in relative.parent.parts:
+            next_fd = _open_directory_component(
+                current_fd,
+                component,
+                create=True,
+            )
+            os.close(current_fd)
+            current_fd = next_fd
+        try:
+            os.mkdir(relative.name, 0o700, dir_fd=current_fd)
+        except FileExistsError as error:
+            raise ClosureRejected(
+                "replayed_capability",
+                authority["authentication"]["childCapability"]["capabilityId"],
+            ) from error
+        except OSError as error:
+            raise ClosureRejected("durable_attempt_claim_failed", error) from error
+        os.fsync(current_fd)
+        attempt_fd = _open_directory_component(
+            current_fd,
+            relative.name,
+            create=False,
+        )
+        marker_flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL
+        if hasattr(os, "O_NOFOLLOW"):
+            marker_flags |= os.O_NOFOLLOW
+        marker_fd = os.open(
+            marker_name,
+            marker_flags,
+            0o600,
+            dir_fd=attempt_fd,
+        )
+        try:
+            written = 0
+            while written < len(marker_payload):
+                count = os.write(marker_fd, marker_payload[written:])
+                if count <= 0:
+                    reject("durable_attempt_marker_short_write", written)
+                written += count
+            os.fsync(marker_fd)
+        finally:
+            os.close(marker_fd)
+        os.fsync(attempt_fd)
+    except ClosureRejected:
+        raise
+    except OSError as error:
+        raise ClosureRejected("durable_attempt_path_unsafe", error) from error
+    finally:
+        if attempt_fd is not None:
+            os.close(attempt_fd)
+        os.close(current_fd)
+    return {
+        "attemptRoot": relative.as_posix(),
+        "marker": f"{relative.as_posix()}/{marker_name}",
+        "markerSha256": sha256_bytes(marker_payload),
+        "atomicDirectoryClaim": True,
+        "noFollow": True,
+        "noOverwrite": True,
+        "liveLeaseCreated": False,
+    }
+
+
 class AuthenticatedExecutionClosure:
     """Opaque in-process handoff accepted only after shared and HMAC checks."""
 
-    __slots__ = ("_authority", "_shared_result", "_capability_id", "_seal")
+    __slots__ = (
+        "_authority",
+        "_shared_result",
+        "_capability_id",
+        "_durable_attempt",
+        "_seal",
+    )
 
     def __init__(
         self,
         authority: dict[str, Any],
         shared_result: dict[str, Any],
         capability_id: str,
+        durable_attempt: dict[str, Any],
         seal: object,
     ) -> None:
         if seal is not _AUTHENTICATED_SEAL:
@@ -188,6 +364,7 @@ class AuthenticatedExecutionClosure:
         self._authority = authority
         self._shared_result = shared_result
         self._capability_id = capability_id
+        self._durable_attempt = durable_attempt
         self._seal = seal
 
     def consume_for_runner(self) -> tuple[dict[str, Any], dict[str, Any]]:
@@ -197,6 +374,11 @@ class AuthenticatedExecutionClosure:
             reject("replayed_capability", self._capability_id)
         _CONSUMED_CAPABILITIES.add(self._capability_id)
         return self._authority, self._shared_result
+
+    def durable_attempt_result(self) -> dict[str, Any]:
+        if self._seal is not _AUTHENTICATED_SEAL:
+            reject("unauthenticated_runner_input", "invalid closure seal")
+        return dict(self._durable_attempt)
 
 
 def authenticate(
@@ -227,6 +409,8 @@ def authenticate(
             authority_publication_commit=authority_publication_commit,
         )
     except (OSError, ValueError) as error:
+        if "exclusiveRoots.attempt already exists; replay is forbidden" in str(error):
+            raise ClosureRejected("replayed_capability", error) from error
         raise ClosureRejected("shared_authority_rejected", error) from error
     try:
         authority = shared_validator.load_strict_json_bytes(
@@ -261,10 +445,20 @@ def authenticate(
     computed_mac = hmac.new(secret, payload, hashlib.sha256).hexdigest()
     if not hmac.compare_digest(computed_mac, capability["macSha256"]):
         reject("forged_capability_mac", capability["capabilityId"])
+    durable_attempt = claim_durable_attempt(
+        repository_root=repository_root,
+        authority_path=authority_path,
+        authority_publication_commit=authority_publication_commit,
+        trusted_head=trusted_head,
+        worker_head=worker_head,
+        authority=authority,
+        contract=contract,
+    )
     return AuthenticatedExecutionClosure(
         authority,
         shared_result,
         capability["capabilityId"],
+        durable_attempt,
         _AUTHENTICATED_SEAL,
     )
 

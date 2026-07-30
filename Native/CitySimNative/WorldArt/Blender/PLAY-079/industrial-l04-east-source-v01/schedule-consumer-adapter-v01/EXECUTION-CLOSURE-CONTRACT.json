@@ -51,6 +51,16 @@
     "replayAllowed": false,
     "rawSecretPersisted": false
   },
+  "durableReplay": {
+    "attemptRootPrefix": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/attempts",
+    "markerFileName": "ATTEMPT-CONSUMED.json",
+    "atomicDirectoryClaim": true,
+    "noFollow": true,
+    "noOverwrite": true,
+    "fsyncFileAndDirectories": true,
+    "markerContainsRawSecret": false,
+    "crashAfterDirectoryClaimConsumesAttempt": true
+  },
   "runnerBoundary": {
     "mode": "validation_only",
     "directLowLevelInvocationAllowed": false,

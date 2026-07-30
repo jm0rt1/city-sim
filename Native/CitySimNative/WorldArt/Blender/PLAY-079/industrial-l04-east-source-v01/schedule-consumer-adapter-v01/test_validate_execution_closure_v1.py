@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Adversarial zero-child proof for PLAY-079 East execution closure v1."""
+"""Adversarial zero-child proof for PLAY-079 East closure candidate revision 7."""
 
 from __future__ import annotations
 
@@ -191,6 +191,173 @@ def assert_direct_runner_cli_rejected() -> None:
         raise RuntimeError(f"direct runner CLI did not fail closed: {output}")
 
 
+def fixture_consume_cli(args: argparse.Namespace) -> int:
+    contract = json.loads(pathlib.Path(args.contract_path).read_text(encoding="utf-8"))
+    request = SimpleNamespace(
+        execution_authority=args.execution_authority,
+        trusted_head=args.trusted_head,
+        worker_head=args.worker_head,
+        authority_publication_commit=args.authority_publication_commit,
+        secret_fd=args.secret_fd,
+    )
+    try:
+        result = orchestrator.validate_execution_closure(
+            request,
+            repository_root=pathlib.Path(args.repo_root),
+            contract=contract,
+            shared_validator=SHARED_VALIDATOR,
+            fixture_contract=contract,
+        )
+        result["_fixtureProcessId"] = os.getpid()
+        sys.stdout.buffer.write(canonical_bytes(result))
+        return 0
+    except (orchestrator.OrchestrationRejected, runner.GuardRejected) as error:
+        sys.stdout.buffer.write(
+            canonical_bytes(
+                {
+                    "result": "REJECTED_ZERO_CHILD",
+                    "_fixtureProcessId": os.getpid(),
+                    "code": error.code,
+                    "detail": error.detail,
+                    "sourceChildStarts": 0,
+                    "dccStarts": 0,
+                    "renders": 0,
+                    "pixels": 0,
+                }
+            )
+        )
+        return 2
+
+
+def subprocess_consume(
+    fixture: Any,
+    contract_path: pathlib.Path,
+) -> tuple[int, dict[str, Any]]:
+    read_fd, _ = pipe_with_secret()
+    try:
+        completed = subprocess.run(
+            [
+                sys.executable,
+                "-B",
+                str(pathlib.Path(__file__).resolve()),
+                "--fixture-consume",
+                "--repo-root",
+                str(fixture.root),
+                "--contract-path",
+                str(contract_path),
+                "--execution-authority",
+                str(fixture.root / fixture.authority_path),
+                "--trusted-head",
+                fixture.trusted_head,
+                "--worker-head",
+                fixture.worker_head,
+                "--authority-publication-commit",
+                fixture.authority_publication,
+                "--secret-fd",
+                str(read_fd),
+            ],
+            cwd=REPOSITORY_ROOT,
+            check=False,
+            capture_output=True,
+            pass_fds=(read_fd,),
+        )
+    finally:
+        os.close(read_fd)
+    if completed.stderr:
+        raise RuntimeError(
+            f"fixture child wrote stderr: {completed.stderr.decode('utf-8', 'replace')}"
+        )
+    return completed.returncode, json.loads(completed.stdout)
+
+
+def cross_process_replay() -> dict[str, Any]:
+    fixture = fresh_fixture()
+    try:
+        contract = fixture_contract(fixture)
+        with tempfile.NamedTemporaryFile(
+            mode="w",
+            encoding="utf-8",
+            prefix="play079-east-closure-contract-",
+            suffix=".json",
+        ) as contract_stream:
+            json.dump(contract, contract_stream, sort_keys=True)
+            contract_stream.flush()
+            first_code, first = subprocess_consume(
+                fixture,
+                pathlib.Path(contract_stream.name),
+            )
+            second_code, second = subprocess_consume(
+                fixture,
+                pathlib.Path(contract_stream.name),
+            )
+        distinct_processes = (
+            isinstance(first.get("_fixtureProcessId"), int)
+            and isinstance(second.get("_fixtureProcessId"), int)
+            and first["_fixtureProcessId"] != second["_fixtureProcessId"]
+        )
+        if (
+            first_code != 0
+            or first.get("result") != "PASS"
+            or first.get("repositoryWrites") != 1
+            or first.get("sourceChildStarts") != 0
+            or first.get("dccInvocations") != 0
+            or first.get("renderApiCalls") != 0
+            or first.get("pixelFilesCreated") != 0
+            or not distinct_processes
+        ):
+            raise RuntimeError(f"first fresh interpreter did not pass safely: {first}")
+        if (
+            second_code != 2
+            or second.get("code") != "replayed_capability"
+            or second.get("sourceChildStarts") != 0
+            or second.get("dccStarts") != 0
+            or second.get("renders") != 0
+            or second.get("pixels") != 0
+        ):
+            raise RuntimeError(
+                f"second fresh interpreter did not reject replay: {second}"
+            )
+        attempt_root = fixture.root / fixture.authority["exclusiveRoots"]["attempt"]
+        marker = attempt_root / "ATTEMPT-CONSUMED.json"
+        marker_payload = marker.read_bytes()
+        marker_record = json.loads(marker_payload)
+        if (
+            marker_record.get("capabilityId")
+            != fixture.authority["authentication"]["childCapability"]["capabilityId"]
+            or marker_record.get("grantId") != fixture.authority["grant"]["grantId"]
+            or marker_record.get("leasePath")
+            != fixture.authority["executionEnvelope"]["leasePath"]
+            or marker_record.get("liveLeaseCreated") is not False
+            or SECRET in marker_payload
+        ):
+            raise RuntimeError("durable attempt marker identity or secrecy mismatch")
+        if pathlib.Path(fixture.authority["executionEnvelope"]["leasePath"]).exists():
+            raise RuntimeError("validation-only replay test created the live lease")
+        return {
+            "result": "PASS",
+            "freshInterpreterStarts": 2,
+            "distinctProcessIds": True,
+            "moduleStateResetBetweenConsumes": True,
+            "sameAuthority": True,
+            "sameCapability": True,
+            "sameLease": True,
+            "firstConsume": "PASS_DURABLY_CLAIMED",
+            "secondConsume": "REJECTED_REPLAYED_CAPABILITY",
+            "markerRelativeToAttemptRoot": "ATTEMPT-CONSUMED.json",
+            "atomicDirectoryClaim": True,
+            "markerNoFollow": True,
+            "markerNoOverwrite": True,
+            "rawSecretPersisted": False,
+            "liveLeaseCreated": False,
+            "sourceChildStarts": 0,
+            "dccStarts": 0,
+            "renders": 0,
+            "pixels": 0,
+        }
+    finally:
+        fixture.close()
+
+
 def positive_run() -> dict[str, Any]:
     fixture = fresh_fixture()
     try:
@@ -238,6 +405,7 @@ def mutated_case(
 def run_cases() -> dict[str, Any]:
     closure.reset_test_replay_state()
     assert_direct_runner_cli_rejected()
+    cross_process = cross_process_replay()
     first = positive_run()
     second = positive_run()
     if canonical_bytes(first) != canonical_bytes(second):
@@ -405,11 +573,13 @@ def run_cases() -> dict[str, Any]:
     if {case["id"] for case in cases} != expected:
         raise RuntimeError("adversarial case set is incomplete")
     return {
-        "schema": "citysim.play-079.east-execution-closure-proof.v1",
+        "schema": "citysim.play-079.east-execution-closure-proof.v2",
         "taskId": "PLAY-079",
         "direction": "east",
         "claimRevision": 6,
+        "candidateRevision": 7,
         "result": "PASS_ZERO_CHILD",
+        "crossProcessReplay": cross_process,
         "freshRootValidations": 2,
         "freshRootResultsByteIdentical": True,
         "adversarialRejectedCount": len(cases),
@@ -427,7 +597,8 @@ def run_cases() -> dict[str, Any]:
             "pixelFilesCreated": 0,
             "normalizationRuns": 0,
             "sourcePackets": 0,
-            "repositoryWrites": 0,
+            "governedWorktreeWrites": 0,
+            "durableAttemptMarkersInDisposableFixtures": 4,
         },
         "disposition": {
             "validationOnly": True,
@@ -442,7 +613,28 @@ def run_cases() -> dict[str, Any]:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--packet", action="store_true")
+    parser.add_argument("--fixture-consume", action="store_true")
+    parser.add_argument("--repo-root")
+    parser.add_argument("--contract-path")
+    parser.add_argument("--execution-authority")
+    parser.add_argument("--trusted-head")
+    parser.add_argument("--worker-head")
+    parser.add_argument("--authority-publication-commit")
+    parser.add_argument("--secret-fd", type=int)
     args = parser.parse_args()
+    if args.fixture_consume:
+        required = (
+            args.repo_root,
+            args.contract_path,
+            args.execution_authority,
+            args.trusted_head,
+            args.worker_head,
+            args.authority_publication_commit,
+            args.secret_fd,
+        )
+        if any(value is None for value in required):
+            raise RuntimeError("fixture-consume requires every fixture binding")
+        return fixture_consume_cli(args)
     packet = run_cases()
     if args.packet:
         sys.stdout.buffer.write(canonical_bytes(packet))

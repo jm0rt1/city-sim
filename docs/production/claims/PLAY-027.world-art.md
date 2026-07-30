@@ -17,7 +17,7 @@
 - **Accepted v06 bridge candidate:**
   `3e01ca6738d7574718f9aeff4b66771eee109feb`
 - **Validation/proof:** alias/coverage matrix; prompt/provenance/hash completeness; four-direction geometry and pivot reports; alpha/chroma checks; grayscale family recognition; actual-scale contact sheets; independent source-art review
-- **Status:** Active. Residential L1–L4, Commercial L1–L4, Industrial L1, and Industrial L2 have accepted source and shipping outcomes. Industrial L3 source authority is complete; replacement-R2 renderer ingestion is integrated and production selection remains pending its exact independent QA. Industrial L4 North v11 is durably rejected at `bd6a460024b8b6ebffde4b5894d69063100d3d9b`. North v12 zero-pixel compound-pier implementation, replay identity, and mechanical internal-face proof are integrated through `aef61b2c27ec295a3f088f41031f35e20bc13bc9`. The task-local lowering and recovered `static-a` result are integrated through `28103902a75c8232644a998a34dcaf33ca643a63`. Static-B confirmation v01 returned clean before mutation because its INPUT-BINDINGS byte-identity rule contradicted the required new claim and contract hashes. Integration now authorizes exactly one fresh no-render `static-b` confirmation under the repaired `INDUSTRIAL-L04-NORTH-V12-STATIC-B-CONFIRMATION-V02-AUTHORITY.md`. No rendered/Cycles/appearance/source compatibility claim, source pixels, Process A/B/C, appearance lock, sibling release, admission, or shipping are authorized.
+- **Status:** Active. Residential L1–L4, Commercial L1–L4, Industrial L1, and Industrial L2 have accepted source and shipping outcomes. Industrial L3 source authority is complete; replacement-R2 renderer ingestion is integrated and production selection remains pending its exact independent QA. Industrial L4 North v11 is durably rejected at `bd6a460024b8b6ebffde4b5894d69063100d3d9b`. North v12 zero-pixel compound-pier implementation, replay identity, and mechanical internal-face proof are integrated through `aef61b2c27ec295a3f088f41031f35e20bc13bc9`. The task-local lowering and recovered `static-a` result are integrated through `28103902a75c8232644a998a34dcaf33ca643a63`. Static-B confirmation v01 returned clean before mutation because its INPUT-BINDINGS byte-identity rule contradicted the required new claim and contract hashes. Static-B v02 then returned exact semantic/static outputs but remains rejected as resource-envelope proof because its host-side full-system `ps` observer missed the 50 ms sampling interval. Exact failure evidence is preserved at `81d51486fb2086e26ab08dd200221c5eb8d79edb`. Integration now authorizes exactly one fresh no-render `static-b` confirmation under `INDUSTRIAL-L04-NORTH-V12-STATIC-B-CONFIRMATION-V03-AUTHORITY.md`, replacing cadence-as-proof with exact-child terminal kernel resource accounting while retaining online process-group enforcement. No rendered/Cycles/appearance/source compatibility claim, source pixels, Process A/B/C, appearance lock, sibling release, admission, or shipping are authorized.
 - **Latest L4 disposition:** Integration accepted the v06 zero-pixel global
   coordinate bridge from `3e01ca67`. Canonical North is `z = -28`, the global
   basis is `B(x,y,z)=(z,x,y)`, descriptor order is `[0,1,2,3]`, and the North
@@ -35,9 +35,10 @@
   The first Z-only v12 proposal was rejected in memory. The separately reviewed
   compound-pier v12 topology, two sequential analytic replays, and mechanical
   removal of six internal same-owner face fragments are now integrated. The
-  next bounded slice may author only the additive static-B confirmation
+  next bounded slice may author only the additive static-B v03 confirmation
   contract, launcher, tests, and evidence, then execute exactly one fresh
-  no-render `static-b` child under the published v02 confirmation authority.
+  no-render `static-b` child under the published v03 confirmation authority.
+  V02 remains rejected and immutable; it may not be reclassified as passing.
   The unchanged v10 emission value is not luma proof and must be re-proved in a
   later separately authorized Process A.
   North Process A/B/C, sibling source pixels, appearance-lock publication,

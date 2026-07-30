@@ -1,0 +1,84 @@
+{
+  "schema": "citysim.play-081.west-review-assembly-prep-cases.v1",
+  "schemaVersion": 1,
+  "cases": [
+    {
+      "name": "appearance-lock-caller-release",
+      "mutationPath": "releaseInputs.appearanceLock.state",
+      "value": "published",
+      "expectedError": "release:appearanceLock"
+    },
+    {
+      "name": "source-profile-caller-release",
+      "mutationPath": "releaseInputs.sourceProductionProfile.state",
+      "value": "published",
+      "expectedError": "release:sourceProductionProfile"
+    },
+    {
+      "name": "early-assembly-ready",
+      "mutationPath": "assembler.assemblyReady",
+      "value": true,
+      "expectedError": "assembler:assemblyReady"
+    },
+    {
+      "name": "overwrite-policy-disabled",
+      "mutationPath": "assembler.writePolicy.noOverwrite",
+      "value": false,
+      "expectedError": "assembler:writePolicy"
+    },
+    {
+      "name": "sibling-review-path",
+      "mutationPath": "reviewArtifacts.sourceSizeColor.path",
+      "value": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/review/SOURCE-COLOR.png",
+      "expectedError": "artifact:sourceSizeColor:path"
+    },
+    {
+      "name": "transformed-geometry",
+      "mutationPath": "identity.orientationTransform",
+      "value": "rotate_y_180",
+      "expectedError": "identity:orientationTransform"
+    },
+    {
+      "name": "fallback-enabled",
+      "mutationPath": "identitySafety.fallbackAllowed",
+      "value": true,
+      "expectedError": "identitySafety:fallbackAllowed"
+    },
+    {
+      "name": "alias-enabled",
+      "mutationPath": "identitySafety.aliasAllowed",
+      "value": true,
+      "expectedError": "identitySafety:aliasAllowed"
+    },
+    {
+      "name": "dcc-invocation",
+      "mutationPath": "invocations.blenderProcessLaunches",
+      "value": 1,
+      "expectedError": "invocations:not-zero"
+    },
+    {
+      "name": "render-invocation",
+      "mutationPath": "invocations.renderInvocations",
+      "value": 1,
+      "expectedError": "invocations:not-zero"
+    },
+    {
+      "name": "pixel-invocation",
+      "mutationPath": "invocations.pixelFiles",
+      "value": 1,
+      "expectedError": "invocations:not-zero"
+    },
+    {
+      "name": "artifact-claimed-produced",
+      "mutationPath": "reviewArtifacts.actualGameScaleColor.state",
+      "value": "produced",
+      "expectedError": "artifact:actualGameScaleColor:state"
+    },
+    {
+      "name": "unsafe-future-packet-path",
+      "mutationPath": "assembler.futureOutputs.sourceCandidatePacket.path",
+      "value": "../outside/SOURCE-STAGE-HANDOFF-V2.json",
+      "expectedError": "futureOutput:sourceCandidatePacket:path"
+    }
+  ]
+}

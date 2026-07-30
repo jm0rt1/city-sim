@@ -1,8 +1,8 @@
 # World Art Parallel Workstream Board
 
-- **Parallel operating authority:** `a8b30be4a4a12515d934b035b63946af82247b1f`
+- **Parallel operating authority:** `8f2520aec2723320c7cb7d286b878c3f32a04a3d`
 - **Batch:** Industrial L4 directional family
-- **Updated:** 2026-07-30 12:32Z
+- **Updated:** 2026-07-30 15:04Z
 - **Machine-readable ledger:**
   `WORLD_ART_PARALLEL_BATCH_LEDGER.json`
 - **Production rule:** direction work is independent; production selection and
@@ -10,12 +10,12 @@
 
 | Cell | Branch / claim | Current state | Head | Next release boundary |
 |---|---|---|---|---|
-| North | `codex/citysim-world-art` / `PLAY-027` | `predesign` | `73940b56e2b10dba76bae80449b7db8ff59669ee` | closure-v1 prelaunch independently approved; live Process-A authority next |
-| East | `codex/citysim-world-art-east` / `PLAY-079` | `predesign` | `e7d526246232e5e39ba2c8975372e086e2d7c85b` | closure-v1 prelock candidate independently approved |
-| South | `codex/citysim-world-art-south` / `PLAY-080` | `predesign` | `41bc192bfbe047c81e157df6e1cf38172c11ab88` | closure-v1 prelock candidate independently approved |
-| West | `codex/citysim-world-art-west` / `PLAY-081` | `predesign` | `17fa71db0f3b4fe0aacf57ed57e3deb9a2d1ff16` | closure-v1 prelock candidate independently approved |
-| Renderer | `codex/citysim-world-rendering` / `PLAY-073` | `intake_ready` | `7c2ee61d4f62a8836edc6bc74dd2ddb0daf5999e` | current-master accounting repair complete; independent review active |
-| QA | `codex/citysim-playtest-quality` / `PLAY-075` | `preregistering` | `8e68cf11c6a943ab44d83232659585134c17f260` | exact-batch machine packet repair queued behind the non-overlapping L3 gate |
+| North | `codex/citysim-world-art` / `PLAY-027` | `predesign` | `8e0079b3c38f0aace49ca61b8ea4d8e3ed3af038` | synchronized release-readiness receipt accepted; exact live Process-A authority next |
+| East | `codex/citysim-world-art-east` / `PLAY-079` | `predesign` | `2511d24cc132cf16466fa13235ec4964589d8efc` | synchronized zero-DCC receipt accepted; A/B/C awaits the appearance lock |
+| South | `codex/citysim-world-art-south` / `PLAY-080` | `predesign` | `8db7b8daf4d40c85963ccac261202bde4fc53937` | synchronized zero-DCC receipt accepted; A/B/C awaits the appearance lock |
+| West | `codex/citysim-world-art-west` / `PLAY-081` | `predesign` | `baa8bac1d955a78d348bcb36b556fe196966f162` | synchronized zero-DCC receipt accepted; A/B/C awaits the appearance lock |
+| Renderer | `codex/citysim-world-rendering` / `PLAY-073` | `intake_ready` | `9506bf5aafd93725574f51b114ca177709b7aaec` | candidate-neutral intake epoch accepted; quarantine awaits source-admission receipts |
+| QA | `codex/citysim-playtest-quality` / `PLAY-075` | `preregistering` | `8e68cf11c6a943ab44d83232659585134c17f260` | serialized behind the active non-overlapping L3 exact-candidate gate |
 
 ## Dispatch invariant
 
@@ -110,6 +110,18 @@ as independent workstreams. QA remains serialized behind its separate exact
 candidate gate. This snapshot authorizes zero DCC processes and zero new
 pixels; the next dispatch will publish one exact North Process-A lease rather
 than reopening the department-wide mutex.
+
+At the `15:04Z` refresh, the complete synchronized prelock epoch is accepted
+and integrated as five receipt-only candidates. Canonical rows now distinguish
+each clean live receipt commit from the immutable parent actually observed by
+its retained jobs; no historical job identity was rewritten. South camera and
+frontage validation, West fresh-root reproducibility, and Renderer authority
+audit prove real three-cell overlap from `14:19:55.446Z` through
+`14:21:03Z`. North, East, South, West, and Renderer are truthfully complete at
+their current non-production boundaries with structured refills. QA remains
+serialized behind its separate exact-candidate gate. The shared accepted-master
+non-alias authority must now be refreshed to current shipping-manifest truth
+before Integration releases the exact North Process-A slot.
 
 The following remain serialized: family-contract publication, shared toolchain
 changes, shipping atlas/manifest mutation, production selection, the final

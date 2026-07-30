@@ -17,7 +17,7 @@ INPUT_PATH = (
     "docs/production/evidence/INTEGRATION/"
     "industrial-l04-accepted-master-non-alias-input-v1.json"
 )
-INPUT_SHA256 = "c281dd8f3527363ad3ff56746f50e9110b2166898bdf4918ed628b5a429d27fb"
+INPUT_SHA256 = "d1d75fdc30d9a2f21d49b59fd13dbc6fe7d81669f76f801d1087b35a7fb70044"
 INVENTORY_SHA256 = "9a5f561327ba5ed3a5178c03caae19d79204401b9b7dfd5c53ac716d2e6ab3af"
 FORBIDDEN_SET_SHA256 = (
     "265c564785a5fa4ce14fbd04898ef04aaed883e2ca56f6a0660a9937464926ea"

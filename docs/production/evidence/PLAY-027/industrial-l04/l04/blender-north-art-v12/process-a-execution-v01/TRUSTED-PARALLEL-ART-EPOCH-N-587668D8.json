@@ -1,0 +1,412 @@
+{
+  "authorityBindings": {
+    "accountingValidator": {
+      "path": ".agents/skills/operate-citysim-integration/scripts/validate_world_art_parallel_state.py",
+      "sha256": "00549dbdf8992e08841edfe63ac4fbf6817ff5977253e410b705c992fb7b4c8f"
+    },
+    "accountingValidatorTests": {
+      "path": ".agents/skills/operate-citysim-integration/scripts/test_validate_world_art_parallel_state.py",
+      "sha256": "6a9d443ec755b8b67c9cb82838396b8655215bf619bb9c1c65bc1887923982ea"
+    },
+    "claim": {
+      "path": "docs/production/claims/PLAY-027.world-art.md",
+      "sha256": "b7eb42ccacf323a3149a4c25faa587a0e6557afb6784d08e19fbe9d108e9434a"
+    },
+    "closureAuthority": {
+      "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTION-EXECUTION-CLOSURE-V1-AUTHORITY.md",
+      "sha256": "0125539f015ab8069c11093e755ac6e43d7b37994c86515fc06894e401b7eb54"
+    },
+    "closureSchema": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-direction-execution-authority-schema-v1.json",
+      "sha256": "2796e224780c259b29d68b50cb12cdbbe45452535da681bba3522af920459491"
+    },
+    "closureValidator": {
+      "path": ".agents/skills/operate-citysim-integration/scripts/validate_industrial_l04_direction_execution_authority_v1.py",
+      "sha256": "b212d2776d34b3334910c6b0b02ffba244919f4a83d5c0019c30bca87648d8ae"
+    },
+    "closureValidatorTests": {
+      "path": ".agents/skills/operate-citysim-integration/scripts/test_validate_industrial_l04_direction_execution_authority_v1.py",
+      "sha256": "0be62c7886a2106c81e7e05d56eb3ec3c0756365e416686489f8ffe8c76b2520"
+    },
+    "parallelBoard": {
+      "path": "docs/production/evidence/INTEGRATION/WORLD_ART_PARALLEL_BOARD.md",
+      "sha256": "574b60dd3647b806938d8eef702b96282285f2a02e09058438d43213d6a0d463"
+    },
+    "parallelLedger": {
+      "path": "docs/production/evidence/INTEGRATION/WORLD_ART_PARALLEL_BATCH_LEDGER.json",
+      "sha256": "f325c7bf3b1241dc599d33ad66630c852cbfb9c72f51348985e86d8c266aba87"
+    },
+    "prelaunchAuthority": {
+      "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-NORTH-V12-PROCESS-A-PRELAUNCH-AUTHORITY.md",
+      "sha256": "889fd6f87a0d7eb112fe392d66901e927658a86a6d3aa311e53178d61cb4725e"
+    },
+    "scheduleAdapterAuthority": {
+      "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTION-SCHEDULE-ADAPTER-AUTHORITY.md",
+      "sha256": "3638f960a9394f9c4c0c09e3aa75ba842ec4d093eada04762eb51f0b1c57dd34"
+    },
+    "scheduleAuthority": {
+      "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-PARALLEL-EXECUTION-SCHEDULE-V1-AUTHORITY.md",
+      "sha256": "87e3e05b461abf8beac862d20804a73f033dc23795f409813ca2c0f79a3d952d"
+    },
+    "scheduleSchema": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-parallel-execution-schedule-schema-v1.json",
+      "sha256": "6eba2291f9cb548a8ddd08961bdffe3a18c9546b293a08f094711b38aa0840c6"
+    },
+    "scheduleValidator": {
+      "path": ".agents/skills/operate-citysim-integration/scripts/validate_industrial_l04_parallel_execution_schedule_v1.py",
+      "sha256": "086ff2f2cb7d0c030d0039b48b3b66f7e6c314dd97a705b8f0a8a41fda0bbb04"
+    },
+    "scheduleValidatorTests": {
+      "path": ".agents/skills/operate-citysim-integration/scripts/test_validate_industrial_l04_parallel_execution_schedule_v1.py",
+      "sha256": "3d344f039aa1fd1d53882e0f092faeac736c77749bfdf2c246a61b91d6e338a5"
+    }
+  },
+  "authorityEpoch": {
+    "laterSharedRemoteTrackingObservation": {
+      "candidateContainsObservedCommit": false,
+      "mergePerformed": false,
+      "observedOriginMaster": "0b4b1b6b0b5fa5063d51a8d92414210bbd9e5d65",
+      "reason": "a concurrent fetch advanced the shared remote-tracking ref after the exact 587668d8 authority epoch was fetched, verified, and merged; replacement fresh roots pin the explicitly dispatched authority"
+    },
+    "frozenNorthParent": "16f40a87d83dbe89b46aeb9a36df7b90d8f27a86",
+    "normalMergeCommit": "675f02de3905c97e3813602f4b7a4472890652e6",
+    "publishedMasterIsAncestor": true,
+    "publishedOriginMaster": "587668d85ad8f706087223881030047dd054dd7d",
+    "remoteTrustState": "passed"
+  },
+  "direction": "north",
+  "freshRootIdentity": {
+    "adapterAdversarialCasesPassed": 26,
+    "adapterEvidenceSHA256": "8b83d89ce7485974fe2efdecd569e63ad5f978e98f1ac1accdeb2ce0e82fa935",
+    "branch": "codex/citysim-world-art",
+    "head": "675f02de3905c97e3813602f4b7a4472890652e6",
+    "prelaunchAdversarialCasesPassed": 29,
+    "prelaunchEvidenceSHA256": "31cc091f22cb3f20ef64165056a782fcfefd0d21fda0bb19ab4b500808d95dc9",
+    "rootA": "/private/tmp/citysim-play-027-epoch-n-pinned-a-587668d8",
+    "rootAEqualsRootB": true,
+    "rootB": "/private/tmp/citysim-play-027-epoch-n-pinned-b-587668d8",
+    "rootsAttachedToExpectedBranch": true,
+    "rootsClean": true,
+    "rootsDistinct": true
+  },
+  "jobEvidence": {
+    "fresh-root-a": {
+      "adapter": {
+        "cases": 26,
+        "endedAt": "2026-07-30T14:26:56.135902Z",
+        "sha256": "8b83d89ce7485974fe2efdecd569e63ad5f978e98f1ac1accdeb2ce0e82fa935",
+        "startedAt": "2026-07-30T14:26:54.412706Z"
+      },
+      "prelaunch": {
+        "cases": 29,
+        "endedAt": "2026-07-30T14:26:57.435651Z",
+        "sha256": "31cc091f22cb3f20ef64165056a782fcfefd0d21fda0bb19ab4b500808d95dc9",
+        "startedAt": "2026-07-30T14:26:56.137659Z"
+      }
+    },
+    "fresh-root-b": {
+      "adapter": {
+        "cases": 26,
+        "endedAt": "2026-07-30T14:26:41.191106Z",
+        "sha256": "8b83d89ce7485974fe2efdecd569e63ad5f978e98f1ac1accdeb2ce0e82fa935",
+        "startedAt": "2026-07-30T14:26:39.338826Z"
+      },
+      "prelaunch": {
+        "cases": 29,
+        "endedAt": "2026-07-30T14:26:42.556469Z",
+        "sha256": "31cc091f22cb3f20ef64165056a782fcfefd0d21fda0bb19ab4b500808d95dc9",
+        "startedAt": "2026-07-30T14:26:41.205378Z"
+      }
+    },
+    "remote-trust-69": {
+      "cases": 69,
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 .agents/skills/operate-citysim-integration/scripts/test_validate_world_art_parallel_state.py",
+      "isolatedRoot": "/private/tmp/citysim-play-027-epoch-n-audit.gqmv2d/repo"
+    },
+    "shared-closure": {
+      "cases": 33,
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 .agents/skills/operate-citysim-integration/scripts/test_validate_industrial_l04_direction_execution_authority_v1.py"
+    }
+  },
+  "unadmittedHarnessProbes": [
+    {
+      "blenderChildStarts": 0,
+      "dccProcesses": 0,
+      "reason": "mktemp supplied uppercase suffixes that violate the canonical lowercase claim-scoped isolated-temp root rule; proof outputs passed but are excluded from projection",
+      "renderInvocations": 0,
+      "roots": [
+        "/private/tmp/citysim-play-027-epoch-n-a.JQlAOR",
+        "/private/tmp/citysim-play-027-epoch-n-b.0ycW4g"
+      ],
+      "sourcePixelProcesses": 0
+    },
+    {
+      "blenderChildStarts": 0,
+      "dccProcesses": 0,
+      "reason": "the shared remote-tracking ref advanced after the authority epoch froze; adapter passed and prelaunch rejected the unpinned clone before any child or pixel activity",
+      "renderInvocations": 0,
+      "root": "/private/tmp/citysim-play-027-epoch-n-fresh-b-675f02de",
+      "sourcePixelProcesses": 0
+    }
+  ],
+  "liveExecutionAuthorityCreated": false,
+  "liveGrantCreated": false,
+  "liveLeaseCreated": false,
+  "liveScheduleCreated": false,
+  "northToolBindings": {
+    "adapterConsumerSHA256": "6fc7d1d0ab5adcf5b29780b1cced0db5d9b99424aa33a84ffeaca404d9d3a512",
+    "adapterContractSHA256": "e96f902bcea59936777201d5f24ef50089529e4b95611eda6ecdbcb6b492709a",
+    "adapterTestSHA256": "caa58899b40c22f1b5f5c8eedf43b1d8cb9316c4ad2f7534932a1506080ae79e",
+    "childEntrypointSHA256": "72cde879a4d8cc2060fbcc2ee0ee65e6ae23f32e8e7508bc693a9ccee880f994",
+    "executionContractSHA256": "ffda9d0939b084af9fc8dc0537b2e83828e4c6f8e3ab28874294de335b98a7c7",
+    "launcherSHA256": "e368e837a6eb5b5050d1b7e2ab589ccedb0f54915555e7bd2f6b1ea0aa8d39ce",
+    "prelaunchTestSHA256": "b1b14dbf2c1245f247a14db0c541ce27202842d87899f401c9442e1fb6e49a10",
+    "runnerContractSHA256": "32d3b27a793c8d315ba38c82bea878c428238fd132cd207e9e44c00c003f3379"
+  },
+  "process": "A",
+  "processAReady": false,
+  "processCounts": {
+    "blenderChildStarts": 0,
+    "dccProcesses": 0,
+    "helperVerificationJobs": 4,
+    "normalizerProcesses": 0,
+    "renderInvocations": 0,
+    "siblingProcesses": 0,
+    "sourcePixelProcesses": 0
+  },
+  "productionSelected": false,
+  "projectionRow": {
+    "acknowledgedAt": "2026-07-30T14:18:34Z",
+    "batch": "industrial_l04_directional_family",
+    "blocker": "process_a_remains_closed_until_integration_publishes_the_exact_live_north_a_closure_schedule_grant_lease_secret_and_compute_slot",
+    "boundedDeliverable": "one_current_authority_parallel_art_epoch_n_receipt_with_remote_trust_schedule_adapter_prelaunch_projection_two_attached_fresh_roots_and_exact_execution_accounting",
+    "branch": "codex/citysim-world-art",
+    "claim": "PLAY-027",
+    "claimRevision": "b7eb42ccacf323a3149a4c25faa587a0e6557afb6784d08e19fbe9d108e9434a",
+    "cleanState": "clean_at_frozen_replay_baseline_before_task_owned_receipt",
+    "direction": "north",
+    "dispatchState": "completed",
+    "executionAccounting": {
+      "capacity": {
+        "dccSlots": 0,
+        "helperSlots": 4
+      },
+      "join": {
+        "completedJobs": [
+          "remote-trust-69",
+          "shared-closure",
+          "fresh-root-a",
+          "fresh-root-b"
+        ],
+        "requiredJobs": [
+          "remote-trust-69",
+          "shared-closure",
+          "fresh-root-a",
+          "fresh-root-b"
+        ],
+        "state": "joined"
+      },
+      "launchedJobs": [
+        {
+          "batch": "industrial_l04_directional_family",
+          "branch": "codex/citysim-world-art",
+          "claim": "PLAY-027",
+          "claimRevision": "b7eb42ccacf323a3149a4c25faa587a0e6557afb6784d08e19fbe9d108e9434a",
+          "dccSlot": null,
+          "endedAt": "2026-07-30T14:18:50.519144Z",
+          "evidenceId": "thread:019f96e0-3793-7542-9172-060a9ca09b0a/turn:parallel-art-epoch-n/item:remote-trust-69",
+          "exclusiveRoot": null,
+          "head": "675f02de3905c97e3813602f4b7a4472890652e6",
+          "id": "remote-trust-69",
+          "mutation": "read_only",
+          "processId": null,
+          "publishedBase": "587668d85ad8f706087223881030047dd054dd7d",
+          "resourceClass": "helper",
+          "startedAt": "2026-07-30T14:18:50.043487Z",
+          "state": "completed",
+          "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+          "worktree": "/Users/James/.codex/worktrees/0648/city-sim"
+        },
+        {
+          "batch": "industrial_l04_directional_family",
+          "branch": "codex/citysim-world-art",
+          "claim": "PLAY-027",
+          "claimRevision": "b7eb42ccacf323a3149a4c25faa587a0e6557afb6784d08e19fbe9d108e9434a",
+          "dccSlot": null,
+          "endedAt": "2026-07-30T14:19:03.678675Z",
+          "evidenceId": "thread:019f96e0-3793-7542-9172-060a9ca09b0a/turn:parallel-art-epoch-n/item:shared-closure",
+          "exclusiveRoot": null,
+          "head": "675f02de3905c97e3813602f4b7a4472890652e6",
+          "id": "shared-closure",
+          "mutation": "read_only",
+          "processId": null,
+          "publishedBase": "587668d85ad8f706087223881030047dd054dd7d",
+          "resourceClass": "helper",
+          "startedAt": "2026-07-30T14:18:43.744690Z",
+          "state": "completed",
+          "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+          "worktree": "/Users/James/.codex/worktrees/0648/city-sim"
+        },
+        {
+          "batch": "industrial_l04_directional_family",
+          "branch": "codex/citysim-world-art",
+          "claim": "PLAY-027",
+          "claimRevision": "b7eb42ccacf323a3149a4c25faa587a0e6557afb6784d08e19fbe9d108e9434a",
+          "dccSlot": null,
+          "endedAt": "2026-07-30T14:26:57.437233Z",
+          "evidenceId": "thread:019f96e0-3793-7542-9172-060a9ca09b0a/turn:parallel-art-epoch-n/item:fresh-root-a",
+          "exclusiveRoot": "/private/tmp/citysim-play-027-epoch-n-pinned-a-587668d8",
+          "head": "675f02de3905c97e3813602f4b7a4472890652e6",
+          "id": "fresh-root-a",
+          "mutation": "isolated_temp",
+          "processId": null,
+          "publishedBase": "587668d85ad8f706087223881030047dd054dd7d",
+          "resourceClass": "helper",
+          "startedAt": "2026-07-30T14:26:54.411072Z",
+          "state": "completed",
+          "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+          "worktree": "/Users/James/.codex/worktrees/0648/city-sim"
+        },
+        {
+          "batch": "industrial_l04_directional_family",
+          "branch": "codex/citysim-world-art",
+          "claim": "PLAY-027",
+          "claimRevision": "b7eb42ccacf323a3149a4c25faa587a0e6557afb6784d08e19fbe9d108e9434a",
+          "dccSlot": null,
+          "endedAt": "2026-07-30T14:26:42.571608Z",
+          "evidenceId": "thread:019f96e0-3793-7542-9172-060a9ca09b0a/turn:parallel-art-epoch-n/item:fresh-root-b",
+          "exclusiveRoot": "/private/tmp/citysim-play-027-epoch-n-pinned-b-587668d8",
+          "head": "675f02de3905c97e3813602f4b7a4472890652e6",
+          "id": "fresh-root-b",
+          "mutation": "isolated_temp",
+          "processId": null,
+          "publishedBase": "587668d85ad8f706087223881030047dd054dd7d",
+          "resourceClass": "helper",
+          "startedAt": "2026-07-30T14:26:22.522793Z",
+          "state": "completed",
+          "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+          "worktree": "/Users/James/.codex/worktrees/0648/city-sim"
+        }
+      ],
+      "nextRefill": "integration_publish_the_exact_live_north_a_closure_schedule_one_attempt_grant_lease_secret_and_compute_slot_then_dispatch_north_only",
+      "overlap": {
+        "endedAt": "2026-07-30T14:18:50.519144Z",
+        "jobIds": [
+          "remote-trust-69",
+          "shared-closure"
+        ],
+        "reason": "the remote trust 69-test audit and shared closure audit overlap as the complete observed maximum-concurrency set among admitted jobs",
+        "startedAt": "2026-07-30T14:18:50.043487Z",
+        "status": "observed"
+      },
+      "readyNow": [],
+      "running": [],
+      "serializedAuthority": {
+        "branch": "codex/citysim-world-art",
+        "gitIndexWriter": "019f96e0-3793-7542-9172-060a9ca09b0a",
+        "governedEvidenceWriter": "019f96e0-3793-7542-9172-060a9ca09b0a",
+        "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+        "worktree": "/Users/James/.codex/worktrees/0648/city-sim"
+      },
+      "unusedCapacityReasons": [
+        {
+          "dependencyAuthority": {
+            "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTION-EXECUTION-CLOSURE-V1-AUTHORITY.md",
+            "sha256": "0125539f015ab8069c11093e755ac6e43d7b37994c86515fc06894e401b7eb54"
+          },
+          "nextRefillJob": "integration_publish_the_exact_live_north_a_closure_schedule_one_attempt_grant_lease_secret_and_compute_slot_then_dispatch_north_only",
+          "owner": "019f96e0-3793-7542-9172-060a9ca09b0a",
+          "reasonCode": "completed_before_observation",
+          "resourceClass": "helper",
+          "resumptionEvent": "Integration publishes and dispatches the exact live North-A closure-v1 instance, schedule publication, one-attempt grant, lease, secret, and compute slot",
+          "slots": 1
+        },
+        {
+          "dependencyAuthority": {
+            "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTION-EXECUTION-CLOSURE-V1-AUTHORITY.md",
+            "sha256": "0125539f015ab8069c11093e755ac6e43d7b37994c86515fc06894e401b7eb54"
+          },
+          "nextRefillJob": "integration_publish_the_exact_live_north_a_closure_schedule_one_attempt_grant_lease_secret_and_compute_slot_then_dispatch_north_only",
+          "owner": "019f96e0-3793-7542-9172-060a9ca09b0a",
+          "reasonCode": "completed_before_observation",
+          "resourceClass": "helper",
+          "resumptionEvent": "Integration publishes and dispatches the exact live North-A closure-v1 instance, schedule publication, one-attempt grant, lease, secret, and compute slot",
+          "slots": 1
+        },
+        {
+          "dependencyAuthority": {
+            "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTION-EXECUTION-CLOSURE-V1-AUTHORITY.md",
+            "sha256": "0125539f015ab8069c11093e755ac6e43d7b37994c86515fc06894e401b7eb54"
+          },
+          "nextRefillJob": "integration_publish_the_exact_live_north_a_closure_schedule_one_attempt_grant_lease_secret_and_compute_slot_then_dispatch_north_only",
+          "owner": "019f96e0-3793-7542-9172-060a9ca09b0a",
+          "reasonCode": "completed_before_observation",
+          "resourceClass": "helper",
+          "resumptionEvent": "Integration publishes and dispatches the exact live North-A closure-v1 instance, schedule publication, one-attempt grant, lease, secret, and compute slot",
+          "slots": 1
+        },
+        {
+          "dependencyAuthority": {
+            "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTION-EXECUTION-CLOSURE-V1-AUTHORITY.md",
+            "sha256": "0125539f015ab8069c11093e755ac6e43d7b37994c86515fc06894e401b7eb54"
+          },
+          "nextRefillJob": "integration_publish_the_exact_live_north_a_closure_schedule_one_attempt_grant_lease_secret_and_compute_slot_then_dispatch_north_only",
+          "owner": "019f96e0-3793-7542-9172-060a9ca09b0a",
+          "reasonCode": "completed_before_observation",
+          "resourceClass": "helper",
+          "resumptionEvent": "Integration publishes and dispatches the exact live North-A closure-v1 instance, schedule publication, one-attempt grant, lease, secret, and compute slot",
+          "slots": 1
+        }
+      ],
+      "waitingOnJoin": []
+    },
+    "head": "675f02de3905c97e3813602f4b7a4472890652e6",
+    "lane": "world_art",
+    "nextAction": "integration_publish_the_exact_live_north_a_closure_schedule_one_attempt_grant_lease_secret_and_compute_slot_then_dispatch_north_only",
+    "parallelismExemption": {
+      "dependencyAuthority": {
+        "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTION-EXECUTION-CLOSURE-V1-AUTHORITY.md",
+        "sha256": "0125539f015ab8069c11093e755ac6e43d7b37994c86515fc06894e401b7eb54"
+      },
+      "nextRefillJob": "integration_publish_the_exact_live_north_a_closure_schedule_one_attempt_grant_lease_secret_and_compute_slot_then_dispatch_north_only",
+      "owner": {
+        "id": "integration",
+        "role": "integration"
+      },
+      "reasonCode": "exclusive_gate_owned_elsewhere",
+      "resumptionEvent": "Integration publishes and dispatches the exact live North-A closure-v1 instance, schedule publication, one-attempt grant, lease, secret, and compute-slot authority",
+      "stageProhibition": {
+        "batchState": "appearance_lock_pending",
+        "rule": "North completed current-authority zero-child trust, schedule-adapter, prelaunch, closure, and attached fresh-root verification and cannot start Process A without Integration's exact live North-A authorities"
+      }
+    },
+    "publishedBase": "587668d85ad8f706087223881030047dd054dd7d",
+    "state": "predesign",
+    "stopCondition": "stop_clean_with_no_live_grant_lease_secret_child_blender_dcc_render_pixels_normalization_sibling_shared_surface_push_or_self_acceptance",
+    "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+    "updatedAt": "2026-07-30T14:28:44Z",
+    "worktree": "/Users/James/.codex/worktrees/0648/city-sim"
+  },
+  "receiptType": "north_owned_parallel_art_epoch_n_release_readiness_closure",
+  "scheduleProjection": {
+    "liveAuthorityConsumed": false,
+    "prelockProposalOnly": {
+      "path": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/process-a-execution-v01/PRELOCK-NORTH-A-PROPOSAL-ONLY.json",
+      "sha256": "2fc1373ce7da9ab83c2b1a3666b1cbaff1e0206cffd32f2a28923bd5439ec594"
+    },
+    "state": "validated_zero_child_proposal_only"
+  },
+  "schema": 1,
+  "sourceAuthority": false,
+  "task": "PLAY-027",
+  "verificationResults": {
+    "accountingProjectionDiagnostics": 0,
+    "adapter": "PASS_26_OF_26_IN_TWO_DISTINCT_ATTACHED_FRESH_ROOTS",
+    "freshRootByteIdentity": true,
+    "northActiveFloorEligibleRowsAfterExemption": 0,
+    "parallelismExemptionDiagnostics": 0,
+    "prelaunch": "PASS_29_OF_29_IN_TWO_DISTINCT_ATTACHED_FRESH_ROOTS",
+    "remoteTrustAndAccountingSchema": "PASS_REMOTE_TRUST_AND_69_OF_69",
+    "sharedClosure": "PASS_33_OF_33"
+  }
+}

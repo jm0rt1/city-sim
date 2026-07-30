@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "disposition": "PASS_CANDIDATE_NEUTRAL_NONSHIPPING_INTAKE_PREPARATION",
+  "preservedRendererCandidate": "302b260cdd35e41cf74794726468e473256d810a",
+  "publishedAuthority": "112556e151a365cde9475927817616a867729753",
+  "mergedHead": "5b6ce2b2e58c98b2a19113664b80aeff673bd49c",
+  "descriptorCommit": "ceb24b12ac343d2c273128edf86de52d66789a8d",
+  "claimRevision": "47a260aea5ab9d38a98ceaaefb61e89e00322110b5a833e964a59d13157d7a49",
+  "ancestry": {
+    "preservedRendererCandidate": "PASS",
+    "publishedAuthority": "PASS"
+  },
+  "preservation": {
+    "v4MeasurementPath": "docs/production/evidence/PLAY-073/r4-a-candidate-526ff4f",
+    "diffFromPreservedCandidate": "UNCHANGED"
+  },
+  "gates": [
+    {
+      "name": "canonical_plan_schema_and_semantic_validation",
+      "command": "PYTHONPYCACHEPREFIX=/private/tmp/citysim-intake-pycache python3 .agents/skills/operate-citysim-integration/scripts/validate_industrial_l04_renderer_intake_plan_v1.py",
+      "startedAt": "2026-07-30T14:02:57Z",
+      "endedAt": "2026-07-30T14:02:57Z",
+      "exitCode": 0,
+      "result": "PASS",
+      "boundInputs": 20,
+      "directions": 4,
+      "lodSlots": 12,
+      "quarantineJobs": 4,
+      "assemblyState": "template_only_unbound",
+      "runtimeActivated": false,
+      "shippingResourcesMutated": false,
+      "productionSelected": false
+    },
+    {
+      "name": "canonical_plan_adversarial_suite",
+      "command": "PYTHONPYCACHEPREFIX=/private/tmp/citysim-intake-pycache python3 .agents/skills/operate-citysim-integration/scripts/test_validate_industrial_l04_renderer_intake_plan_v1.py",
+      "startedAt": "2026-07-30T14:03:01Z",
+      "endedAt": "2026-07-30T14:03:03Z",
+      "exitCode": 0,
+      "result": "PASS",
+      "executed": 37,
+      "failures": 0
+    },
+    {
+      "name": "focused_native_intake_harness",
+      "command": "CLANG_MODULE_CACHE_PATH=/private/tmp/citysim-intake-clang-cache SWIFTPM_MODULECACHE_OVERRIDE=/private/tmp/citysim-intake-swift-cache swift test --package-path Native/CitySimNative --filter IndustrialL4V2SourceAdmissionHarnessTests",
+      "sandboxAttempt": {
+        "startedAt": "2026-07-30T14:03:09Z",
+        "endedAt": "2026-07-30T14:03:11Z",
+        "exitCode": 1,
+        "classification": "managed_sandbox_manifest_compilation_block",
+        "error": "sandbox_apply: Operation not permitted"
+      },
+      "authorizedExactRerun": {
+        "startedAt": "2026-07-30T14:03:23Z",
+        "endedAt": "2026-07-30T14:03:25Z",
+        "exitCode": 0,
+        "result": "PASS",
+        "executed": 17,
+        "passed": 15,
+        "expectedSkips": 2,
+        "failures": 0
+      }
+    },
+    {
+      "name": "descriptor_projection",
+      "result": "PASS",
+      "jsonFiles": 7,
+      "directionDescriptors": 4,
+      "lodSlots": 12,
+      "cameraStates": 6,
+      "liveInputsBound": 0,
+      "runtimeActivated": false,
+      "shippingResourcesMutated": false,
+      "productionSelected": false
+    },
+    {
+      "name": "post_checkpoint_read_only_join",
+      "result": "PASS",
+      "descriptorScopeFiles": 7,
+      "authorityAndGateBlobsUnchanged": true,
+      "gitDiffCheck": "PASS"
+    }
+  ],
+  "descriptorHashes": {
+    "ATOMIC-ASSEMBLER-JOB-DESCRIPTOR.json": "c3478e85bcacf1b94c1a487ba85bc4ad21c46b79ff68884de657085fe7117d83",
+    "CAMERA-LOD-EXPECTATIONS.json": "1f60bdaedc981213ec00dc3ce5e0baff73f6d2b9d7ea4c40f152208e4c1b3ee5",
+    "WORK-GRAPH.json": "d71107768f725f5c00e7e5d76001144115548d89a09a8c27bbe4eccf013a573c",
+    "east/JOB-DESCRIPTOR.json": "194079f394b449df3151ecf2b8bb8a0761b81f75290acc99b2837314f25c0418",
+    "north/JOB-DESCRIPTOR.json": "f10d0a8a2ebeaaaaa4bd8478fe783c45aaf0647099d0d46522f98726039c4edf",
+    "south/JOB-DESCRIPTOR.json": "c141b8dd63ae1be47f47e49c3ec2f3a6e45bab1da4ee18f5ae613933d67b504f",
+    "west/JOB-DESCRIPTOR.json": "658fbfa84ee8990839ce8da96a0ae79e222466e410a5899738be81bed1f8595a"
+  },
+  "unrunByAuthority": [
+    "l4_source_consumption",
+    "renderer_quarantine_acceptance",
+    "atomic_assembly",
+    "shipping_or_runtime_mutation",
+    "fixture_mutation",
+    "staged_app_build_or_launch",
+    "qa_journey_or_score",
+    "v4_remeasurement"
+  ]
+}

@@ -1,0 +1,352 @@
+{
+  "schema": "citysim.world-art.direction-postlock-launch-readiness-closure.v1",
+  "taskId": "PLAY-081",
+  "direction": "west",
+  "stage": "prelock",
+  "branch": "codex/citysim-world-art-west",
+  "worktree": "/Users/James/.codex/worktrees/ef17/city-sim",
+  "claim": {
+    "path": "docs/production/claims/PLAY-081.world-art-west.md",
+    "revision": 6,
+    "sha256": "52f90aafd67d7bb8083b84e3704ea8eb14c577db7bf9f20145016f36bc6c14aa"
+  },
+  "authority": {
+    "publishedMaster": "587668d85ad8f706087223881030047dd054dd7d",
+    "mergeCommit": "244c14aea2e59b3154837f8739b9d38f99825172",
+    "ledgerPath": "docs/production/evidence/INTEGRATION/WORLD_ART_PARALLEL_BATCH_LEDGER.json",
+    "ledgerSha256": "f325c7bf3b1241dc599d33ad66630c852cbfb9c72f51348985e86d8c266aba87",
+    "validatorPath": ".agents/skills/operate-citysim-integration/scripts/validate_world_art_parallel_state.py",
+    "validatorSha256": "00549dbdf8992e08841edfe63ac4fbf6817ff5977253e410b705c992fb7b4c8f"
+  },
+  "frozenInputs": {
+    "familyContract": {
+      "path": "docs/production/decisions/CONTRACT-010-directional-building-art.md",
+      "sha256": "0ee2d68a9dba4694d92a864bfeb5a91970c88fe87d893e1898de7b26d38609af",
+      "status": "published"
+    },
+    "scene": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-predesign-v01/PREDESIGN-CONTRACT.json",
+      "sha256": "9376538d66a653be4a07f7c8d511626f16dbb4b0d4ef42e0354efb737f1f1b9c"
+    },
+    "materials": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-predesign-v01/MATERIAL-ROLE-BINDING.json",
+      "sha256": "3d3588a57d7c42f09c3978aa2f2a1ac68b5ccba0cc591eba8ef3172242976463"
+    },
+    "runnerContract": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/RUNNER-CONTRACT.json",
+      "sha256": "ac87bd1013daaa8e21a6204bdd09969489a4e237698b3e95c135949968fe6be1"
+    },
+    "executionContract": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/WEST-EXECUTION-ORCHESTRATION-V2.json",
+      "sha256": "434bbf95c1f225773b72f5087a31995c89482f8d18e112ae4daf410c85fcc890"
+    },
+    "staticProof": {
+      "path": "docs/production/evidence/PLAY-081/STATIC-PREDESIGN-PROOF.json",
+      "sha256": "2dd6c5b77734f0bc1dd101a38ab7f4f69be2a4ac6b2a26c4b3ec6c6872a22727"
+    },
+    "actualCameraProof": {
+      "path": "docs/production/evidence/PLAY-081/ACTUAL-CAMERA-PREDESIGN-PROOF.json",
+      "sha256": "7fa5fdde4f3cd18439b220189c6efac9f0118e3dc5e8d9bb2fe8a0705bfa951d"
+    },
+    "repeatIdentity": {
+      "path": "docs/production/evidence/PLAY-081/REPEAT-IDENTITY.json",
+      "sha256": "14d5f5b3115426a28d85518f2f27e467cf841dcb0ae8b55796160d833490de8a"
+    },
+    "inputManifest": {
+      "path": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/FROZEN-INPUT-MANIFEST.json",
+      "sha256": "683ccd6186ef7dbc61d4564c4e6b747e13d5cf8d153d3385531ce5cb45de9ca9"
+    },
+    "postlockPreparation": {
+      "path": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/POSTLOCK-ABC-EXECUTION-HANDOFF-PREP.json",
+      "sha256": "e720a306c544b6d432b2ce8426ce4a58ade87e269e4f913a96415cdb63bca183"
+    }
+  },
+  "westGeometry": {
+    "orientationTransform": "none",
+    "siblingGeometryConsumed": false,
+    "cameraProjection": "orthographic-2:1",
+    "frontage": "west",
+    "citySimSocket": [
+      -28,
+      0,
+      0
+    ],
+    "sourceSocket": [
+      640,
+      704
+    ],
+    "actualCameraRegistrationPassed": true,
+    "portalLiteral192Passed": true,
+    "minimumSilhouetteBreaks": 3,
+    "observedSilhouetteBreaks": 6,
+    "processOcclusionAreaPixels": 0,
+    "renderInvocationCount": 0,
+    "pixelOutputCount": 0
+  },
+  "prospectiveProcessRoots": {
+    "A": {
+      "processRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-A",
+      "rawRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-A/raw",
+      "semanticRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-A/semantic",
+      "evidenceRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-A/evidence"
+    },
+    "B": {
+      "processRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-B",
+      "rawRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-B/raw",
+      "semanticRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-B/semantic",
+      "evidenceRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-B/evidence"
+    },
+    "C": {
+      "processRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-C",
+      "rawRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-C/raw",
+      "semanticRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-C/semantic",
+      "evidenceRoot": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-C/evidence"
+    },
+    "processRootsPairwiseDisjoint": true,
+    "leafRootsPairwiseDisjoint": true,
+    "leafRootCount": 9,
+    "existingPixelFiles": 0
+  },
+  "postlockReadiness": {
+    "contractAndRootPreparationPassed": true,
+    "freshRootPacketReproducibility": "PASS_5_OF_5_TWO_FRESH_ROOTS_BYTE_IDENTICAL",
+    "sourceReady": false,
+    "launchReady": false,
+    "appearanceLock": null,
+    "sourceProductionProfile": null,
+    "liveSchedule": null,
+    "liveGrants": {
+      "A": null,
+      "B": null,
+      "C": null
+    },
+    "blocker": "Integration has not published the accepted North appearance lock, source-production profile, postlock schedule, or exact West A/B/C grants"
+  },
+  "rowProjection": {
+    "batch": "industrial_l04_directional_family",
+    "lane": "world_art",
+    "direction": "west",
+    "threadId": "019fab72-b2c9-7d60-a397-27d01d06cbbd",
+    "branch": "codex/citysim-world-art-west",
+    "worktree": "/Users/James/.codex/worktrees/ef17/city-sim",
+    "claim": "PLAY-081",
+    "publishedBase": "587668d85ad8f706087223881030047dd054dd7d",
+    "head": "244c14aea2e59b3154837f8739b9d38f99825172",
+    "state": "predesign",
+    "dispatchState": "completed",
+    "acknowledgedAt": "2026-07-30T14:16:19Z",
+    "claimRevision": "52f90aafd67d7bb8083b84e3704ea8eb14c577db7bf9f20145016f36bc6c14aa",
+    "cleanState": "clean_zero_dcc_postlock_launch_readiness_closure",
+    "blocker": "west_pixels_wait_on_the_accepted_north_appearance_lock_source_profile_postlock_schedule_and_exact_direction_grants",
+    "nextAction": "after_the_appearance_lock_sync_published_master_and_launch_west_a_b_c_into_disjoint_roots",
+    "boundedDeliverable": "one_task_owned_zero_dcc_postlock_launch_readiness_closure_with_current_authority_projection",
+    "stopCondition": "stop_clean_after_readiness_validation_with_no_blender_dcc_live_grants_pixels_source_mutation_sibling_shared_write_push_or_self_acceptance",
+    "updatedAt": "2026-07-30T14:21:17.618Z",
+    "executionAccounting": {
+      "readyNow": [],
+      "running": [],
+      "waitingOnJoin": [],
+      "serializedAuthority": {
+        "threadId": "019fab72-b2c9-7d60-a397-27d01d06cbbd",
+        "branch": "codex/citysim-world-art-west",
+        "worktree": "/Users/James/.codex/worktrees/ef17/city-sim",
+        "gitIndexWriter": "019fab72-b2c9-7d60-a397-27d01d06cbbd",
+        "governedEvidenceWriter": "019fab72-b2c9-7d60-a397-27d01d06cbbd"
+      },
+      "nextRefill": "after_the_appearance_lock_sync_published_master_and_launch_west_a_b_c_into_disjoint_roots",
+      "capacity": {
+        "helperSlots": 3,
+        "dccSlots": 0
+      },
+      "launchedJobs": [
+        {
+          "id": "west-authority-runner",
+          "batch": "industrial_l04_directional_family",
+          "claim": "PLAY-081",
+          "claimRevision": "52f90aafd67d7bb8083b84e3704ea8eb14c577db7bf9f20145016f36bc6c14aa",
+          "publishedBase": "587668d85ad8f706087223881030047dd054dd7d",
+          "head": "244c14aea2e59b3154837f8739b9d38f99825172",
+          "threadId": "019fab72-b2c9-7d60-a397-27d01d06cbbd",
+          "branch": "codex/citysim-world-art-west",
+          "worktree": "/Users/James/.codex/worktrees/ef17/city-sim",
+          "resourceClass": "helper",
+          "mutation": "read_only",
+          "exclusiveRoot": null,
+          "state": "completed",
+          "startedAt": "2026-07-30T14:19:55.444Z",
+          "endedAt": "2026-07-30T14:20:01.963Z",
+          "evidenceId": "thread:019fab72-b2c9-7d60-a397-27d01d06cbbd/turn:019fb362-1d3e-7e12-9a93-c230e02a94bc/item:item-692",
+          "dccSlot": null,
+          "processId": null
+        },
+        {
+          "id": "west-geometry-integrity",
+          "batch": "industrial_l04_directional_family",
+          "claim": "PLAY-081",
+          "claimRevision": "52f90aafd67d7bb8083b84e3704ea8eb14c577db7bf9f20145016f36bc6c14aa",
+          "publishedBase": "587668d85ad8f706087223881030047dd054dd7d",
+          "head": "244c14aea2e59b3154837f8739b9d38f99825172",
+          "threadId": "019fab72-b2c9-7d60-a397-27d01d06cbbd",
+          "branch": "codex/citysim-world-art-west",
+          "worktree": "/Users/James/.codex/worktrees/ef17/city-sim",
+          "resourceClass": "helper",
+          "mutation": "read_only",
+          "exclusiveRoot": null,
+          "state": "completed",
+          "startedAt": "2026-07-30T14:19:55.446Z",
+          "endedAt": "2026-07-30T14:19:55.944Z",
+          "evidenceId": "thread:019fab72-b2c9-7d60-a397-27d01d06cbbd/turn:019fb362-1d3e-7e12-9a93-c230e02a94bc/item:item-692",
+          "dccSlot": null,
+          "processId": null
+        },
+        {
+          "id": "west-fresh-root-reproducibility",
+          "batch": "industrial_l04_directional_family",
+          "claim": "PLAY-081",
+          "claimRevision": "52f90aafd67d7bb8083b84e3704ea8eb14c577db7bf9f20145016f36bc6c14aa",
+          "publishedBase": "587668d85ad8f706087223881030047dd054dd7d",
+          "head": "244c14aea2e59b3154837f8739b9d38f99825172",
+          "threadId": "019fab72-b2c9-7d60-a397-27d01d06cbbd",
+          "branch": "codex/citysim-world-art-west",
+          "worktree": "/Users/James/.codex/worktrees/ef17/city-sim",
+          "resourceClass": "helper",
+          "mutation": "read_only",
+          "exclusiveRoot": null,
+          "state": "completed",
+          "startedAt": "2026-07-30T14:19:55.446Z",
+          "endedAt": "2026-07-30T14:21:17.618Z",
+          "evidenceId": "thread:019fab72-b2c9-7d60-a397-27d01d06cbbd/turn:019fb362-1d3e-7e12-9a93-c230e02a94bc/item:item-692",
+          "dccSlot": null,
+          "processId": null
+        }
+      ],
+      "unusedCapacityReasons": [
+        {
+          "resourceClass": "helper",
+          "slots": 1,
+          "reasonCode": "completed_before_observation",
+          "owner": "019fab72-b2c9-7d60-a397-27d01d06cbbd",
+          "dependencyAuthority": {
+            "path": ".agents/skills/operate-citysim-integration/scripts/validate_world_art_parallel_state.py",
+            "sha256": "00549dbdf8992e08841edfe63ac4fbf6817ff5977253e410b705c992fb7b4c8f"
+          },
+          "resumptionEvent": "Integration dispatches another closed-input West validation job",
+          "nextRefillJob": "after_the_appearance_lock_sync_published_master_and_launch_west_a_b_c_into_disjoint_roots"
+        },
+        {
+          "resourceClass": "helper",
+          "slots": 1,
+          "reasonCode": "serialized_writer",
+          "owner": "019fab72-b2c9-7d60-a397-27d01d06cbbd",
+          "dependencyAuthority": {
+            "path": "docs/production/claims/PLAY-081.world-art-west.md",
+            "sha256": "52f90aafd67d7bb8083b84e3704ea8eb14c577db7bf9f20145016f36bc6c14aa"
+          },
+          "resumptionEvent": "The visible West owner begins the next governed task-owned evidence checkpoint",
+          "nextRefillJob": "after_the_appearance_lock_sync_published_master_and_launch_west_a_b_c_into_disjoint_roots"
+        },
+        {
+          "resourceClass": "helper",
+          "slots": 1,
+          "reasonCode": "authority_prohibited",
+          "owner": "integration",
+          "dependencyAuthority": {
+            "path": "docs/production/claims/PLAY-081.world-art-west.md",
+            "sha256": "52f90aafd67d7bb8083b84e3704ea8eb14c577db7bf9f20145016f36bc6c14aa"
+          },
+          "resumptionEvent": "Integration publishes the accepted North appearance lock, source-production profile, postlock schedule, and exact West grants",
+          "nextRefillJob": "after_the_appearance_lock_sync_published_master_and_launch_west_a_b_c_into_disjoint_roots"
+        }
+      ],
+      "overlap": {
+        "status": "observed",
+        "jobIds": [
+          "west-authority-runner",
+          "west-geometry-integrity",
+          "west-fresh-root-reproducibility"
+        ],
+        "startedAt": "2026-07-30T14:19:55.446Z",
+        "endedAt": "2026-07-30T14:19:55.944Z",
+        "reason": "three contract-independent West helpers occupied all three helper slots after the merged inputs froze"
+      },
+      "join": {
+        "state": "joined",
+        "requiredJobs": [
+          "west-authority-runner",
+          "west-geometry-integrity",
+          "west-fresh-root-reproducibility"
+        ],
+        "completedJobs": [
+          "west-authority-runner",
+          "west-geometry-integrity",
+          "west-fresh-root-reproducibility"
+        ]
+      }
+    },
+    "parallelismExemption": {
+      "reasonCode": "stage_prohibited_by_authority",
+      "stageProhibition": {
+        "batchState": "appearance_lock_pending",
+        "rule": "PLAY-081 revision 6 authorizes zero-DCC closure only; West A/B/C remain prohibited until the exact appearance lock, source-production profile, postlock schedule, and grants publish"
+      },
+      "owner": {
+        "role": "integration",
+        "id": "integration"
+      },
+      "dependencyAuthority": {
+        "path": "docs/production/claims/PLAY-081.world-art-west.md",
+        "sha256": "52f90aafd67d7bb8083b84e3704ea8eb14c577db7bf9f20145016f36bc6c14aa"
+      },
+      "resumptionEvent": "Integration publishes the accepted North appearance lock, source-production profile, postlock schedule, and exact West grants",
+      "nextRefillJob": "after_the_appearance_lock_sync_published_master_and_launch_west_a_b_c_into_disjoint_roots"
+    }
+  },
+  "validationRuns": [
+    {
+      "jobId": "west-authority-runner",
+      "result": "PASS_124_OF_124",
+      "suites": [
+        "current-master-prelock-bundle:7/7",
+        "review-assembly-prep:8/8",
+        "west-execution-orchestration-v2:32/32",
+        "schedule-consumer-v1:8/8",
+        "published-world-art-parallel-validator:69/69"
+      ],
+      "sourceOrDccChildren": 0
+    },
+    {
+      "jobId": "west-geometry-integrity",
+      "result": "PASS_FAMILY_SCENE_MATERIAL_CAMERA_SOCKET_FRONTAGE_ROOTS_AND_HASHES",
+      "checkedAssetCount": 11,
+      "prospectiveLeafRootCount": 9,
+      "sourceOrDccChildren": 0
+    },
+    {
+      "jobId": "west-fresh-root-reproducibility",
+      "testPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/execution-closure-v01/test_west_execution_closure_v1.py",
+      "testSha256": "e702336091bb71ee0556805b8e5b62941e967b4494f19ae1e7ff9c11a09bc4de",
+      "result": "PASS_5_OF_5_TWO_FRESH_ROOTS_BYTE_IDENTICAL",
+      "sourceOrDccChildren": 0
+    }
+  ],
+  "activity": {
+    "liveLease": false,
+    "liveGrantConsumption": false,
+    "sourceChildren": 0,
+    "dccProcesses": 0,
+    "blenderInvocations": 0,
+    "renderInvocations": 0,
+    "pixelFiles": 0,
+    "normalizationInvocations": 0,
+    "sourcePacketEmitted": false,
+    "sourceMutation": false,
+    "sceneMutation": false,
+    "materialMutation": false,
+    "siblingReads": false,
+    "sharedWrites": false,
+    "push": false,
+    "integration": false,
+    "selfAcceptance": false
+  },
+  "result": "PASS_ZERO_DCC_POSTLOCK_LAUNCH_READINESS_PREPARATION_BLOCKED_ON_INTEGRATION_AUTHORITIES"
+}

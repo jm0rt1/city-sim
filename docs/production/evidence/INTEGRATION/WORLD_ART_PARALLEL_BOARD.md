@@ -1,6 +1,6 @@
 # World Art Parallel Workstream Board
 
-- **Parallel operating authority:** `69b62e78f6012115d5d1221cea3a34e26cae5683`
+- **Parallel operating authority:** `a0aa52118e26e80e45df19a84acd2049845a92e8`
 - **Batch:** Industrial L4 directional family
 - **Updated:** 2026-07-29
 - **Machine-readable ledger:**
@@ -24,13 +24,16 @@ integration boundaries. A waiting cell receives non-conflicting preparation,
 validation, fixture, audit, or evidence work. A failed East, South, or West
 source returns only that direction; it does not stop accepted siblings.
 
-At the `01:26Z` refresh, West's exact merge-only successor and East/South's
+At the `01:29Z` refresh, West's exact merge-only successor and East/South's
 narrow additive successors are integrated on master. North, East, South, and
 West have each acknowledged a new contract-independent task: North audits the
 recovery contract read-only; East prepares future A/B/C process orchestration;
 South prepares post-raw validation fan-out; West prepares review assembly.
 Renderer is concurrently finishing the exact Industrial L3 recovery gate and
-has dirty task-owned evidence in progress. QA remains preregistered; its
+has committed the exact technical-evidence candidate and is finishing its
+same-SHA noninteractive check. East and West now have dirty task-owned
+preparation files in progress; North, South, and Renderer remain clean at the
+recorded heads. QA remains preregistered; its
 candidate-neutral preparation is exhausted and final scoring waits for one
 immutable renderer candidate. Five useful rows are active; QA is the only
 stage-prohibited row.

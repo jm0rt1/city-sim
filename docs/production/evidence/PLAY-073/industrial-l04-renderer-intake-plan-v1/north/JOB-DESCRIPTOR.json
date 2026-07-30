@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "evidenceClass": "synthetic_candidate_neutral_renderer_quarantine_job",
+  "job": {
+    "id": "quarantine-north",
+    "direction": "north",
+    "dependsOn": ["integration_source_admission_receipt"],
+    "state": "prepared_blocked_waiting_source_admission",
+    "exclusiveOutputRoot": "docs/production/evidence/PLAY-073/industrial-l04-renderer-intake-plan-v1/north",
+    "failureIsolation": "return_this_direction_only",
+    "shippingMutationAllowed": false
+  },
+  "intake": {
+    "sourceTask": "PLAY-027",
+    "logicalID": "industrial_l04_v0_north",
+    "lods": [
+      {"detail": "city", "atlasSlot": "industrial_l04_v0_north/city", "canvasPixels": [256, 171]},
+      {"detail": "neighborhood", "atlasSlot": "industrial_l04_v0_north/neighborhood", "canvasPixels": [512, 342]},
+      {"detail": "block", "atlasSlot": "industrial_l04_v0_north/block", "canvasPixels": [1024, 683]}
+    ],
+    "registration": {
+      "frontageEdge": "north",
+      "frontageSocketSource": [896, 704],
+      "frontageSource": [[768, 640], [1024, 768]],
+      "socketCitySim": [0, 0, -28]
+    }
+  },
+  "futureInputs": {
+    "sourcePacket": {"path": null, "sha256": null, "status": "unbound_until_integration_admitted"},
+    "sourceAdmission": {"path": null, "sha256": null, "status": "unbound_until_integration_admitted"},
+    "quarantineReceipt": {"path": null, "sha256": null, "status": "unbound_until_integration_admitted"}
+  },
+  "rendererQuarantineAccepted": false,
+  "runtimeActivated": false,
+  "productionSelected": false
+}

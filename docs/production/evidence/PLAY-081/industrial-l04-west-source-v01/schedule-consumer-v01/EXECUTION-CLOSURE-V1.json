@@ -1,0 +1,189 @@
+{
+  "activity": {
+    "blenderProcesses": 0,
+    "childStarts": 0,
+    "contactSheetInvocations": 0,
+    "dccStarts": 0,
+    "imageGenInvocations": 0,
+    "normalizerInvocations": 0,
+    "pixelFiles": 0,
+    "productionReceipts": 0,
+    "renders": 0,
+    "sourceCandidatePackets": 0
+  },
+  "adversarialCoverage": [
+    "missing authority inputs",
+    "stale working-tree authority bytes",
+    "non-ancestral worker commit",
+    "replayed preexisting output root",
+    "forged task-owned authority path",
+    "wrong direction",
+    "wrong process",
+    "wrong exclusive root",
+    "wrong slot",
+    "wrong claim hash",
+    "wrong published base",
+    "wrong high-level orchestrator",
+    "direct low-level runner invocation",
+    "unauthenticated secret transport"
+  ],
+  "branch": "codex/citysim-world-art-west",
+  "claim": {
+    "path": "docs/production/claims/PLAY-081.world-art-west.md",
+    "revision": 6,
+    "sha256": "52f90aafd67d7bb8083b84e3704ea8eb14c577db7bf9f20145016f36bc6c14aa"
+  },
+  "deterministicPacket": {
+    "activity": {
+      "childStarts": 0,
+      "dccStarts": 0,
+      "normalizerInvocations": 0,
+      "pixels": 0,
+      "productionReceipts": 0,
+      "renders": 0,
+      "sourcePackets": 0
+    },
+    "artifacts": {
+      "directionScheduleAdapter": {
+        "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/schedule-consumer-v01/consume_west_parallel_schedule_v1.py",
+        "sha256": "65eca83d2709d8082bd72b6bca794f0e7e4109f123b801e724b934c351e34492"
+      },
+      "executionContract": {
+        "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/WEST-EXECUTION-ORCHESTRATION-V2.json",
+        "sha256": "005d6c980232a212b5566f33ffeab0d293e001c1e98de754819ba550c6caf56e"
+      },
+      "highLevelOrchestrator": {
+        "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/west_execution_orchestration_v2.py",
+        "sha256": "ac1d5de2350fc195a734ace7429bdd2b9a72d5cd1ca9ffa56b50152402925a73"
+      },
+      "materials": {
+        "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/execution-closure-v01/MATERIALS-BINDING.json",
+        "sha256": "7a2792ef6ff66c1324ec87ffbdf54af2d20d6016e8478c3916d70cdb70f9202e"
+      },
+      "runnerContract": {
+        "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/RUNNER-CONTRACT.json",
+        "sha256": "ac87bd1013daaa8e21a6204bdd09969489a4e237698b3e95c135949968fe6be1"
+      },
+      "runnerEntrypoint": {
+        "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/run_west_source.py",
+        "sha256": "4c77e5b66d325aef46ddfc368145ced007255900e9d2bba4c32ea01d315780e9"
+      },
+      "scene": {
+        "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/execution-closure-v01/SCENE-BINDING.json",
+        "sha256": "e90f4592b3af03bedbaa0d07a79ed68e3137c757b504207b3e668c0345b85832"
+      },
+      "toolchain": {
+        "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/execution-closure-v01/TOOLCHAIN-BINDING.json",
+        "sha256": "bde7fe25a7e7930cd8310363bdc86f52fd153442583879477bcdb0c1d673c139"
+      }
+    },
+    "authorityPath": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-WEST-EXECUTION-CLOSURE-TEST-V1.json",
+    "authorityPublicationCommit": "a952890ed6e5c83950d669caa491b815a0125b29",
+    "childStartAuthorized": false,
+    "consumer": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/schedule-consumer-v01/consume_west_parallel_schedule_v1.py",
+      "sha256": "65eca83d2709d8082bd72b6bca794f0e7e4109f123b801e724b934c351e34492"
+    },
+    "consumerInvoked": true,
+    "direction": "west",
+    "exclusiveRoots": {
+      "attempt": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/attempts/execution-closure-v1",
+      "evidence": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/evidence/execution-closure-v1",
+      "output": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/outputs/execution-closure-v1",
+      "terminal": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/terminals/execution-closure-v1"
+    },
+    "grantId": "grant-west-A",
+    "highLevelOrchestratorInvoked": true,
+    "highLevelOrchestratorReached": true,
+    "process": "A",
+    "queueId": "west:A",
+    "result": "PASS",
+    "runnerValidationBoundaryReached": true,
+    "schema": "citysim.play-081.west-execution-closure.v1",
+    "slotId": "dcc-3",
+    "taskId": "PLAY-081",
+    "trustedHead": "a952890ed6e5c83950d669caa491b815a0125b29",
+    "validationOnly": true,
+    "workerHead": "5c606e5d1bed48c1c744969d59d101af977afd4a"
+  },
+  "direction": "west",
+  "implementationCommit": "879430f10c8dcf11bccd48a3bcbda439c71d1aa9",
+  "operatingUpgrade": {
+    "mergeCommit": "10a20bdbe9a396b2327b03e9a207a9f32b9e188c",
+    "publishedCommit": "75aa7376cae973dff6eb70a487380dfeb9056bfb",
+    "skillSha256": "e98703ac98be88906286e2fb0a02a07f8665804abae859ad30773fdb830585f5"
+  },
+  "parallelValidation": {
+    "actualOverlapObserved": true,
+    "jobsLaunchedTogether": [
+      "West schedule consumer tests",
+      "West orchestration tests",
+      "West execution-closure fresh-root tests"
+    ],
+    "joinEvidence": "The 8-test and 32-test jobs joined while the 5-test fresh-root job remained running.",
+    "maximumHelperCapacity": 3,
+    "safeJobsLaunched": 3,
+    "unusedCapacityReason": "The visible West lane owner was reserved as the sole governed-evidence and Git writer."
+  },
+  "proof": {
+    "firstFreshRoot": {
+      "authorityPublicationCommit": "a952890ed6e5c83950d669caa491b815a0125b29",
+      "schedulePublicationCommit": "f51507916ab0c04db855ac80b721c575440f6a58",
+      "trustedHead": "a952890ed6e5c83950d669caa491b815a0125b29",
+      "workerHead": "5c606e5d1bed48c1c744969d59d101af977afd4a"
+    },
+    "packetSha256": "5177015549c0cd160b08bae03afcd1eadde3d34d49e28ced4085b6c9bb1042f5",
+    "packetsByteIdentical": true,
+    "secondFreshRoot": {
+      "authorityPublicationCommit": "a952890ed6e5c83950d669caa491b815a0125b29",
+      "schedulePublicationCommit": "f51507916ab0c04db855ac80b721c575440f6a58",
+      "trustedHead": "a952890ed6e5c83950d669caa491b815a0125b29",
+      "workerHead": "5c606e5d1bed48c1c744969d59d101af977afd4a"
+    },
+    "twoFreshRoots": true
+  },
+  "publishedBase": "cda04083bd50df3a0cd99923c8ad571afd62509b",
+  "releaseState": {
+    "appearanceLock": null,
+    "executionAuthorityInstance": null,
+    "liveLeaseAuthorized": false,
+    "sourceProductionProfile": null,
+    "sourceReady": false
+  },
+  "result": "PASS_VALIDATION_ONLY_ZERO_CHILD",
+  "schema": "citysim.play-081.west-execution-closure-evidence.v1",
+  "sharedBindings": {
+    "authority": {
+      "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTION-EXECUTION-CLOSURE-V1-AUTHORITY.md",
+      "sha256": "0125539f015ab8069c11093e755ac6e43d7b37994c86515fc06894e401b7eb54"
+    },
+    "schema": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-direction-execution-authority-schema-v1.json",
+      "sha256": "2796e224780c259b29d68b50cb12cdbbe45452535da681bba3522af920459491"
+    },
+    "validator": {
+      "path": ".agents/skills/operate-citysim-integration/scripts/validate_industrial_l04_direction_execution_authority_v1.py",
+      "sha256": "b212d2776d34b3334910c6b0b02ffba244919f4a83d5c0019c30bca87648d8ae"
+    }
+  },
+  "stage": "execution_closure_validation_only",
+  "taskId": "PLAY-081",
+  "testResults": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 .agents/skills/operate-citysim-integration/scripts/test_validate_industrial_l04_direction_execution_authority_v1.py",
+      "result": "PASS_33_OF_33"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/schedule-consumer-v01/test_consume_west_parallel_schedule_v1.py",
+      "result": "PASS_8_OF_8"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/test_west_execution_orchestration_v2.py",
+      "result": "PASS_32_OF_32"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/execution-closure-v01/test_west_execution_closure_v1.py",
+      "result": "PASS_5_OF_5"
+    }
+  ]
+}

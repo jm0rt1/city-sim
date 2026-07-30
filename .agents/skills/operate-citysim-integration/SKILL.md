@@ -72,6 +72,14 @@ thread as an active family workstream. Every active row must carry a structured
 commit, claim revision, acknowledgement time, bounded deliverable, and stop
 condition, plus the visible thread turn/item identifier used as evidence.
 
+A QA row may reach `preregistered` only after Integration acknowledges one
+task-owned machine-readable preregistration packet bound to the exact batch,
+claim hash, published base, family-contract hash, expected N/E/S/W logical
+keys, current ledger revision, Renderer intake-plan hash, fixture/camera/rubric
+hashes, and exclusive evidence root, with
+`rendererCandidateReceipt: null`. Record that packet path/hash in the QA row.
+A generic, prior-family, or prose-only QA plan does not satisfy the row.
+
 For directional World Art, the canonical control surfaces are
 `docs/production/evidence/INTEGRATION/WORLD_ART_PARALLEL_BATCH_LEDGER.json`,
 `docs/production/evidence/INTEGRATION/WORLD_ART_PARALLEL_BOARD.md`, and one
@@ -94,6 +102,22 @@ semantic-validator state and hash. Use explicit `null` plus a blocking status
 when an authority does not yet exist; never imply it from a nearby artifact.
 `abc_active` is illegal until the post-lock schedule and per-process
 launch-grant validator are published.
+
+The canonical executable schedule controls are:
+
+- schema:
+  `docs/production/evidence/INTEGRATION/industrial-l04-parallel-execution-schedule-schema-v1.json`;
+- semantic validator:
+  `.agents/skills/operate-citysim-integration/scripts/validate_industrial_l04_parallel_execution_schedule_v1.py`;
+- no-DCC adversarial tests:
+  `.agents/skills/operate-citysim-integration/scripts/test_validate_industrial_l04_parallel_execution_schedule_v1.py`; and
+- authority:
+  `docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-PARALLEL-EXECUTION-SCHEDULE-V1-AUTHORITY.md`.
+
+Run the semantic validator on every proposed schedule before publication and
+again before describing any process grant as active. A pre-lock schedule may
+grant only North A. A post-lock schedule must grant North B/C plus
+East/South/West A/B/C with at least three DCC slots.
 
 Advance each batch through this explicit state machine:
 

@@ -1,0 +1,218 @@
+{
+  "appearanceLock": {
+    "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/schedule-consumer-adapter-v01/fixtures/POSTLOCK-APPEARANCE-LOCK.json",
+    "sha256": "20158b0b5473f7e43f2592296e7314df280d84897e1feaa2779235c1f1387c3f"
+  },
+  "batch": "industrial_l04_directional_family",
+  "computeEnvelope": {
+    "maximumSimultaneousDCCProcesses": 3,
+    "queueOrder": [
+      "north:B",
+      "north:C",
+      "east:A",
+      "east:B",
+      "east:C",
+      "south:A",
+      "south:B",
+      "south:C",
+      "west:A",
+      "west:B",
+      "west:C"
+    ],
+    "slotIds": [
+      "fixture-dcc-1",
+      "fixture-dcc-2",
+      "fixture-dcc-3"
+    ]
+  },
+  "directionGrants": [
+    {
+      "baseCommit": "401eb2ce19c5f5c932442ace72e66fbd734cfa35",
+      "branch": "codex/citysim-world-art",
+      "claim": "PLAY-027",
+      "claimSha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "direction": "north",
+      "exclusiveRoots": [
+        "Native/nonproduction/north/",
+        "docs/nonproduction/north/"
+      ],
+      "orchestrator": {
+        "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/prepare_launch_binding.py",
+        "sha256": "49869c480fd590422433b181263e332cc314e8a8bfce1f297e4fc774738a6896"
+      },
+      "processes": [
+        {
+          "directLowLevelInvocationAllowed": false,
+          "grantId": "fixture-north-A",
+          "maximumChildStarts": 0,
+          "orchestratorOnly": true,
+          "process": "A",
+          "slotId": null,
+          "state": "blocked"
+        },
+        {
+          "directLowLevelInvocationAllowed": false,
+          "grantId": "fixture-north-B",
+          "maximumChildStarts": 1,
+          "orchestratorOnly": true,
+          "process": "B",
+          "slotId": "fixture-dcc-1",
+          "state": "granted"
+        },
+        {
+          "directLowLevelInvocationAllowed": false,
+          "grantId": "fixture-north-C",
+          "maximumChildStarts": 1,
+          "orchestratorOnly": true,
+          "process": "C",
+          "slotId": "fixture-dcc-2",
+          "state": "granted"
+        }
+      ]
+    },
+    {
+      "baseCommit": "401eb2ce19c5f5c932442ace72e66fbd734cfa35",
+      "branch": "codex/citysim-world-art-east",
+      "claim": "PLAY-079",
+      "claimSha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "direction": "east",
+      "exclusiveRoots": [
+        "Native/nonproduction/east/",
+        "docs/nonproduction/east/"
+      ],
+      "orchestrator": {
+        "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/prepare_launch_binding.py",
+        "sha256": "49869c480fd590422433b181263e332cc314e8a8bfce1f297e4fc774738a6896"
+      },
+      "processes": [
+        {
+          "directLowLevelInvocationAllowed": false,
+          "grantId": "fixture-east-A",
+          "maximumChildStarts": 1,
+          "orchestratorOnly": true,
+          "process": "A",
+          "slotId": "fixture-dcc-1",
+          "state": "granted"
+        },
+        {
+          "directLowLevelInvocationAllowed": false,
+          "grantId": "fixture-east-B",
+          "maximumChildStarts": 1,
+          "orchestratorOnly": true,
+          "process": "B",
+          "slotId": "fixture-dcc-2",
+          "state": "granted"
+        },
+        {
+          "directLowLevelInvocationAllowed": false,
+          "grantId": "fixture-east-C",
+          "maximumChildStarts": 1,
+          "orchestratorOnly": true,
+          "process": "C",
+          "slotId": "fixture-dcc-3",
+          "state": "granted"
+        }
+      ]
+    },
+    {
+      "baseCommit": "401eb2ce19c5f5c932442ace72e66fbd734cfa35",
+      "branch": "codex/citysim-world-art-south",
+      "claim": "PLAY-080",
+      "claimSha256": "f5bb4fa75f3a6170699966a4fe6f8c2fc5656d7765983999cf11ff179656ac82",
+      "direction": "south",
+      "exclusiveRoots": [
+        "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/",
+        "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/"
+      ],
+      "orchestrator": {
+        "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/prepare_launch_binding.py",
+        "sha256": "49869c480fd590422433b181263e332cc314e8a8bfce1f297e4fc774738a6896"
+      },
+      "processes": [
+        {
+          "directLowLevelInvocationAllowed": false,
+          "grantId": "fixture-south-A",
+          "maximumChildStarts": 1,
+          "orchestratorOnly": true,
+          "process": "A",
+          "slotId": "fixture-dcc-1",
+          "state": "granted"
+        },
+        {
+          "directLowLevelInvocationAllowed": false,
+          "grantId": "fixture-south-B",
+          "maximumChildStarts": 1,
+          "orchestratorOnly": true,
+          "process": "B",
+          "slotId": "fixture-dcc-2",
+          "state": "granted"
+        },
+        {
+          "directLowLevelInvocationAllowed": false,
+          "grantId": "fixture-south-C",
+          "maximumChildStarts": 1,
+          "orchestratorOnly": true,
+          "process": "C",
+          "slotId": "fixture-dcc-3",
+          "state": "granted"
+        }
+      ]
+    },
+    {
+      "baseCommit": "401eb2ce19c5f5c932442ace72e66fbd734cfa35",
+      "branch": "codex/citysim-world-art-west",
+      "claim": "PLAY-081",
+      "claimSha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "direction": "west",
+      "exclusiveRoots": [
+        "Native/nonproduction/west/",
+        "docs/nonproduction/west/"
+      ],
+      "orchestrator": {
+        "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/prepare_launch_binding.py",
+        "sha256": "49869c480fd590422433b181263e332cc314e8a8bfce1f297e4fc774738a6896"
+      },
+      "processes": [
+        {
+          "directLowLevelInvocationAllowed": false,
+          "grantId": "fixture-west-A",
+          "maximumChildStarts": 1,
+          "orchestratorOnly": true,
+          "process": "A",
+          "slotId": "fixture-dcc-1",
+          "state": "granted"
+        },
+        {
+          "directLowLevelInvocationAllowed": false,
+          "grantId": "fixture-west-B",
+          "maximumChildStarts": 1,
+          "orchestratorOnly": true,
+          "process": "B",
+          "slotId": "fixture-dcc-2",
+          "state": "granted"
+        },
+        {
+          "directLowLevelInvocationAllowed": false,
+          "grantId": "fixture-west-C",
+          "maximumChildStarts": 1,
+          "orchestratorOnly": true,
+          "process": "C",
+          "slotId": "fixture-dcc-3",
+          "state": "granted"
+        }
+      ]
+    }
+  ],
+  "familyContract": {
+    "path": "docs/production/decisions/CONTRACT-010-directional-building-art.md",
+    "sha256": "0ee2d68a9dba4694d92a864bfeb5a91970c88fe87d893e1898de7b26d38609af"
+  },
+  "integrationAuthorityCommit": "401eb2ce19c5f5c932442ace72e66fbd734cfa35",
+  "issuedAt": "2026-07-30T00:00:00Z",
+  "phase": "postlock_abc",
+  "schema": 1,
+  "sourceProductionProfile": {
+    "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/schedule-consumer-adapter-v01/fixtures/POSTLOCK-SOURCE-PRODUCTION-PROFILE.json",
+    "sha256": "5edf57eaf42d5adb8c4ed892ed07fedff2900c935d55a883be29e6e3a662c1b8"
+  }
+}

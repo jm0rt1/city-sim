@@ -124,6 +124,17 @@ that grant or remain non-invocable directly. Do not begin A/B/C while the
 parallel schedule schema, strict validator, adversarial tests, or launch grant
 is missing, proposed, stale, or unvalidated.
 
+A passing schedule consumer or adapter is preparation, not launch readiness.
+The direction must also consume the Integration-owned execution-closure
+authority and prove, at a validation-only zero-child boundary, that the exact
+schedule plus authenticated one-attempt authority reaches its named
+high-level orchestrator and runner contract. Never report `launch_ready` while
+the high-level orchestrator intentionally rejects a future interface, while a
+consumer stops before launch-bundle preparation, or while the runner lacks the
+schedule/grant entrypoint. Direction-local closure code may bind the shared
+interface read-only but may not copy North's launcher, constants, evidence, or
+task paths.
+
 For Industrial L4, validate the exact Integration schedule with
 `.agents/skills/operate-citysim-integration/scripts/validate_industrial_l04_parallel_execution_schedule_v1.py`.
 Treat

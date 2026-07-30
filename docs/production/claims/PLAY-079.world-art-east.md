@@ -1,11 +1,12 @@
 # PLAY-079 Claim
 
-- **Claim revision:** 5
-- **Title:** Predesign the Industrial L4 East source in parallel
+- **Claim revision:** 6
+- **Title:** Close the Industrial L4 East execution boundary in parallel
 - **Lane:** World Art East cell
 - **Branch:** `codex/citysim-world-art-east`
-- **Worktree:** Integration-provisioned Codex worktree
-- **Base authority:** Published master containing CONTRACT-021 and this claim
+- **Worktree:** `/Users/James/.codex/worktrees/92c2/city-sim`
+- **Base authority:** Published master containing execution-closure authority
+  commit `f609460f0b8fffa3d4db2ee2b5b1b3396be85244` and this claim
 - **Planned surfaces:** East-only task-owned Blender text scene/tools under
   `Native/CitySimNative/WorldArt/Blender/PLAY-079/` and
   `docs/production/evidence/PLAY-079/`
@@ -32,6 +33,10 @@
   Integration-published schedule and per-process grant, with adversarial no-DCC
   tests and zero-child evidence under
   `INDUSTRIAL-L04-DIRECTION-SCHEDULE-ADAPTER-AUTHORITY.md`.
+  Current-master replay is clean at
+  `edc1741456cd1b32781d10b491a55b5a2d0cae18` and proves the adapter still
+  stops at `future_integration_validator_interface_not_published`. Revision 6
+  authorizes zero-DCC execution closure only.
 - **Validation/proof:** Independent East geometry; East road-facing portal and
   socket; actual-camera footprint/pivot/projection; alpha-free zero-pixel
   occlusion and silhouette proof; no sibling transform or alias
@@ -40,3 +45,29 @@ Do not edit accepted East predesign, North, South, West, renderer/shipping,
 package, gameplay, simulation, UI, build, claim, or shared-manifest surfaces.
 Do not render A/B/C, push, integrate, or self-accept. Do not edit the shared
 schema, non-alias input, ledger, or sibling roots.
+
+## Revision-6 execution-closure authority
+
+Consume read-only:
+
+- schema SHA-256
+  `2796e224780c259b29d68b50cb12cdbbe45452535da681bba3522af920459491`;
+- validator SHA-256
+  `b212d2776d34b3334910c6b0b02ffba244919f4a83d5c0019c30bca87648d8ae`;
+- authority SHA-256
+  `0125539f015ab8069c11093e755ac6e43d7b37994c86515fc06894e401b7eb54`.
+
+Own only the East schedule-consumer contract/consumer/tests,
+`orchestrate_parallel_source.py`, `run_production.py`, `RUNNER-CONTRACT.json`,
+and East-exclusive closure evidence inside the existing revision-2 exclusive
+roots. Bind the exact trusted-master schedule and authenticated one-attempt
+authority through the high-level orchestrator to the runner's validation-only
+boundary.
+
+Missing, stale, non-ancestral, replayed, forged, wrong-direction,
+wrong-process, wrong-root, wrong-slot, wrong-claim, wrong-base,
+wrong-orchestrator, direct-runner, or unauthenticated inputs must start zero
+children. Stop after one clean deterministic zero-DCC closure packet. This
+claim authorizes no live lease, child, Blender/DCC, render, pixel,
+normalization, source packet, admission, quarantine, selection, shipping,
+push, integration, or self-acceptance.

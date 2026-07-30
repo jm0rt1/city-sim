@@ -273,7 +273,7 @@ def validate_contract(repository_root: Path, contract_path: Path) -> dict[str, A
         "process": "A",
         "phase": "prelock_north_a",
         "branch": "codex/citysim-world-art",
-        "publishedBaseCommit": "aaee294718a8176b70a4688b738b517f216dd3a7",
+        "publishedBaseCommit": "22144bffacbf255f04952d28ccdc9683227b535f",
         "expectedSlotId": "dcc-1",
         "expectedQueue": ["north:A"],
         "maximumChildStarts": 1,
@@ -301,7 +301,7 @@ def validate_contract(repository_root: Path, contract_path: Path) -> dict[str, A
     bindings = {
         "claim": (
             "docs/production/claims/PLAY-027.world-art.md",
-            "53efe6f2f7931fa50cfd20af48892ea4237a4ddc4a7ec645696f0d4f4fb420a0",
+            "d28bf14bb3d2d5441f3df6278eef758a5babb4453d22e06fc8bd4075ad5c80a1",
         ),
         "processAPrelaunchAuthority": (
             "docs/production/evidence/INTEGRATION/"
@@ -312,7 +312,7 @@ def validate_contract(repository_root: Path, contract_path: Path) -> dict[str, A
             "Native/CitySimNative/WorldArt/Blender/PLAY-027/"
             "industrial-l04-north-art-v12/process-a-execution-v01/"
             "launch_north_process_a.py",
-            "64f83eb87cb7896bd7c4b5e5f703b37d63ab54c06136b7064622b5b9c5b7e7ed",
+            "0301cd4412e40a71cf187e53e4022ef730df7d6c83777689e07613bde270f222",
         ),
         "adapterAuthority": (
             "docs/production/evidence/INTEGRATION/"

@@ -13,7 +13,7 @@
   "batch": "industrial_l04_directional_family",
   "blenderChildStartCount": 0,
   "branch": "codex/citysim-world-art",
-  "candidateHead": "3df6bf09c2d50bc4126d99cf2e0eb2fae33d5ff4",
+  "candidateHead": "1680332e07c1dff7172015a77a08616513267a0f",
   "claimSHA256": "b7eb42ccacf323a3149a4c25faa587a0e6557afb6784d08e19fbe9d108e9434a",
   "contract": {
     "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-schedule-adapter-v01/ADAPTER-CONTRACT.json",
@@ -310,9 +310,9 @@
       }
     ],
     "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-schedule-adapter-v01/test_north_process_a_schedule_adapter.py",
-    "sha256": "7e041e2f891d1e2a018555988c7319a5da98b76938b9acdd8950f71da0f1a2f2"
+    "sha256": "caa58899b40c22f1b5f5c8eedf43b1d8cb9316c4ad2f7534932a1506080ae79e"
   },
-  "trustedIntegrationMaster": "5d86e804be679c765c2465c60ceaee72f3702c48",
+  "trustedIntegrationMaster": "d4f18ea3b1ccfd522f3b5e877bc7cb742fd9be09",
   "trustedMasterIsAncestor": true,
   "validationPassed": true,
   "worktreeScope": {

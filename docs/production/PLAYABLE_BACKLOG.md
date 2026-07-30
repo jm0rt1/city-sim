@@ -1099,3 +1099,80 @@ This is the authoritative first-wave task source. The shared target is one coher
   required; a product repair is necessary; staged identity is ambiguous; or
   any critical pointer, keyboard, compact, AX, or Reduced Motion route fails.
 - **Claim:** `docs/production/claims/PLAY-086.playtest-quality.md`.
+
+### [ ] PLAY-087: Unify map diagnostics into one compact palette
+
+- **Player outcome:** The player can switch, understand, and clear every map
+  diagnostic from one compact, truthful palette without losing the selected
+  place, action feedback, or valuable map aperture.
+- **Owning lane:** UI and input.
+- **Requirement IDs:** UX-003, UX-004, UX-006, UX-009, ART-002, AUD-001.
+- **Dependencies:** PLAY-084 accepted and synchronized; existing
+  CityCommandCatalog overlay routes; CONTRACT-013 diagnostic semantics.
+- **In scope:** `OverlayPickerView.swift`, `OverlayLegendView.swift`,
+  `BuildToolbarView.swift`, `ContentView.swift`, one focused palette test,
+  PLAY-087 evidence, and completion.
+- **Out of scope:** DataOverlay/store/command/simulation/snapshot/renderer
+  contracts, GameTheme, PLAY-084 files, world art, save/package/build changes,
+  or legacy Python.
+- **Work checklist:** Replace the detached overlay menu and floating legend
+  with one responsive bottom-deck diagnostics palette; keep a direct City/clear
+  action; name the active layer, normalized scale, applicability/no-data,
+  source/freshness, and click-through meaning; use `Traffic pressure`, never
+  measured-flow or congestion claims; preserve selection, build preview,
+  feedback, compact height, and map dominance.
+- **Acceptance:** City and all five overlays work through pointer, menu,
+  `⌃0…⌃5`, Full Keyboard Access, VoiceOver, Escape, and City-clear routes at
+  regular `1278 x 768` and exact `900 x 600`. Text/pattern meaning survives
+  grayscale; the palette never intersects the selected target, preview, or
+  action feedback; toolbar height and accepted map aperture do not regress.
+- **Validation:** Focused palette/command/layout/AX tests; complete native
+  suite; exact staged regular/compact journey; color/grayscale captures;
+  measured chrome and map aperture.
+- **Proof:** Exact overlay matrix, interaction/AX ledger, measured layout,
+  selection/preview/feedback coexistence frames, and candidate identity under
+  `docs/production/evidence/PLAY-087/`.
+- **Stop conditions:** A new overlay/store/renderer contract is required;
+  semantics imply measured traffic flow; compact height or map obstruction
+  grows; meaning becomes color-only; PLAY-084 is not frozen; or live evidence
+  is unavailable.
+- **Claim:** `docs/production/claims/PLAY-087.ui-input.md`.
+
+### [ ] PLAY-088: Prove storm-recovery persistence without rewriting history
+
+- **Player outcome:** The exact damaged and recovering neighborhood survives
+  save, relaunch, replay, message dismissal, Undo, and legacy-load boundaries
+  without healing unrelated buildings or corrupting established saves.
+- **Owning lane:** Simulation platform.
+- **Requirement IDs:** SIM-001, SIM-002, SIM-003, TEC-002, REL-001.
+- **Dependencies:** CONTRACT-022 published; PLAY-085 revision-2 product
+  integrated before candidate-bound phase B.
+- **In scope:** A pre-adoption canonical-byte/fingerprint inventory,
+  simulation-owned `StormRecoveryPlatformTests.swift` after PLAY-085
+  integration, task-local validators, PLAY-088 evidence, and completion.
+- **Out of scope:** CityGameState/CitySimulation/SaveGameService product edits,
+  schema or fingerprint version changes, fixture rewrites, UI/renderer/art,
+  package/build changes, or gameplay balancing.
+- **Work checklist:** Phase A freezes existing new-city and accepted-fixture
+  canonical bytes, fingerprints, schemas, replay/save/Undo paths, and a
+  fail-closed candidate contract. Phase B independently proves legacy
+  missing-key decode, nil-byte identity, active/recovered round trips,
+  message-dismissal/cap independence, overlapping storms, invalid-target
+  retirement, replay/fingerprint repetition, backup recovery, snapshots, and
+  exact Undo on the integrated product.
+- **Acceptance:** Historical nil-state bytes and fixture digests are unchanged;
+  active/recovered state changes the existing version-1 fingerprint
+  deterministically; save/load/backup/replay/snapshot/Undo preserve exact
+  ownership and conditions; no message or replacement building becomes
+  recovery authority.
+- **Validation:** Independent two-root materialization, focused platform tests,
+  non-renderer suite, complete suite with unrelated failures classified,
+  schema/fingerprint inventory, and `git diff --check`.
+- **Proof:** Frozen pre-adoption inventory, candidate-bound matrix, two-root
+  identities, fail-closed negatives, performance, and disposition under
+  `docs/production/evidence/PLAY-088/`.
+- **Stop conditions:** Product mutation is needed; historical bytes move;
+  schema/fingerprint versioning changes; gameplay and platform candidates are
+  mixed; a generic healing path appears; or the exact integrated PLAY-085
+  identity is unavailable.
+- **Claim:** `docs/production/claims/PLAY-088.simulation-platform.md`.

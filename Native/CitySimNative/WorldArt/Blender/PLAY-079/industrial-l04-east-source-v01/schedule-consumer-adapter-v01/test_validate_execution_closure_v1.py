@@ -11,6 +11,7 @@ import importlib.util
 import json
 import os
 import pathlib
+import subprocess
 import sys
 import tempfile
 from types import SimpleNamespace
@@ -164,6 +165,32 @@ def fresh_fixture() -> Any:
     return fixture
 
 
+def assert_direct_runner_cli_rejected() -> None:
+    completed = subprocess.run(
+        [
+            sys.executable,
+            "-B",
+            str(SOURCE_ROOT / "run_production.py"),
+            "--mode",
+            "A",
+            "--appearance-lock",
+            "docs/production/evidence/INTEGRATION/forged-lock.json",
+        ],
+        cwd=REPOSITORY_ROOT,
+        check=False,
+        capture_output=True,
+    )
+    output = json.loads(completed.stdout)
+    if (
+        completed.returncode != 2
+        or output.get("code") != "unauthenticated_runner_input"
+        or output.get("blenderProcessLaunches") != 0
+        or output.get("blenderRenderApiCalls") != 0
+        or output.get("pixelFiles") != 0
+    ):
+        raise RuntimeError(f"direct runner CLI did not fail closed: {output}")
+
+
 def positive_run() -> dict[str, Any]:
     fixture = fresh_fixture()
     try:
@@ -210,6 +237,7 @@ def mutated_case(
 
 def run_cases() -> dict[str, Any]:
     closure.reset_test_replay_state()
+    assert_direct_runner_cli_rejected()
     first = positive_run()
     second = positive_run()
     if canonical_bytes(first) != canonical_bytes(second):

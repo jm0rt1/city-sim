@@ -1095,6 +1095,15 @@ def main() -> int:
     arguments = sys.argv[sys.argv.index("--") + 1 :] if "--" in sys.argv else sys.argv[1:]
     args = parse_arguments(arguments)
     try:
+        if args.mode in {"A", "B", "C"}:
+            raise GuardRejected(
+                "unauthenticated_runner_input",
+                (
+                    "A/B/C are unavailable through the low-level CLI; a future "
+                    "live authority must extend the authenticated high-level "
+                    "orchestrator boundary explicitly"
+                ),
+            )
         if args.blender_worker:
             if args.mode == "validate" or args.appearance_lock is None:
                 raise GuardRejected("invalid_blender_worker_request", "worker requires A/B/C and lock")

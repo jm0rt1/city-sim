@@ -41,6 +41,9 @@ Begin non-shipping renderer preparation as soon as Integration publishes an immu
 
 1. Freeze the exact family identity, contract hash, expected North/East/South/West source keys, scale, camera, footprint, pivot, sockets, frontage, light, shadow, palette, LOD sizes, and deterministic selection rules. Stop rather than inventing a missing value or editing the family contract locally.
 2. Prepare claimed quarantine mapping, logical atlas-slot reservations, LOD validation, pivot/socket/frontage tests, alias and transformed-sibling rejection, fallback rejection, fixture placement, and staged-camera acceptance states before final pixels arrive. Keep these changes non-shipping; shared atlas pages, production manifests, package topology, and production selection remain serialized Integration-controlled mutations.
+   Record these reservations in a renderer-owned intake plan keyed by the exact
+   family contract and expected direction IDs so the fourth direction triggers
+   assembly immediately rather than entering an undefined queue.
 3. Quarantine each Integration-admitted direction independently in a task-owned quarantine. Consume the exact Integration source-admission receipt; never treat a worker return, `source_candidate`, or worker-authored readiness boolean as admission authority. Bind its exact source commit and decoded-pixel hashes, then validate provenance, semantic direction, unique geometry, registration, alpha/chroma/padding, every LOD, deterministic reruns, and absence of mirroring, rotation, sibling aliasing, or fallback substitution. Record success as renderer quarantine acceptance, never source admission, QA, or production acceptance.
 4. Preserve a passing direction while returning only a failing direction to its source cell. Never make East wait for South or invalidate North because West failed. Emit one task-owned, versioned quarantine packet per direction with the source handoff schema/hash, exact source commit, decoded hashes, validation result, and disposition. Integration alone updates the shared batch ledger with columns for North, East, South, West, renderer preparation, and QA preparation. Renderer owns only its claimed quarantine/intake paths and never edits World Art source roots.
 5. Do not expose a quarantined source to normal runtime lookup, fixture fallback, or production selection. A family is activatable only when the exact contract-bound North/East/South/West packets are all Integration-admitted and independently Renderer-quarantined, and Integration authorizes the shipping mutation.
@@ -92,6 +95,13 @@ direction jobs consume that frozen harness and may not edit it. Join the
 results only after every job completes, preserve passing directions, and
 return failing directions independently. Atomic 4/4 assembly remains a
 separate serialized mutation after all four exact packet identities pass.
+
+The Renderer row in Integration's shared ledger may advance only through
+`intake_preparing → intake_ready → quarantining → 4of4_assembled`. Renderer
+reports its task-owned evidence and proposed state; Integration remains the
+single writer that records the transition. A worker packet can trigger focused
+inspection, but only an Integration admission receipt can trigger quarantine
+acceptance.
 
 ## Implement and prove
 

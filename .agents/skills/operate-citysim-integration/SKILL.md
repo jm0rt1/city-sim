@@ -156,6 +156,24 @@ before committing a directional World Art management checkpoint. Treat any
 stale, partial, non-resolving, or contradictory control-surface result as a
 hard stop.
 
+The validator is the executable parallelism gate. It must fail closed on the
+canonical direction/lane/thread/branch/claim/base mapping, exact claim-file
+hashes, governed batch and cross-cell states, authority file hashes,
+timezone-bearing observations, exact dispatch-to-ledger row projection,
+mandatory `ledgerSha256`, and the published compute envelope. A direction
+recorded as `integration_admitted` must bind its exact
+`sourceAdmissionReceipt`; a direction recorded as `renderer_quarantined` must
+also bind its exact `rendererQuarantinePacket`. Do not waive a failure in
+prose. Repair the canonical ledger or receipt, rerun focused validator tests,
+and publish one new coherent management checkpoint.
+
+Every compute envelope declares the simultaneous DCC cap, exclusive slot
+owners, queue identities, machine/resource assumptions, prohibited work, and
+exception owner. Logical World Art cells may all remain active while the
+expensive DCC queue runs in waves, but assigned simultaneous slots may never
+exceed the cap. This distinction prevents resource serialization from
+becoming department-wide idleness.
+
 For directional World Art, use this default fan-out:
 
 - North is the hero/design-calibration cell and authors the proposed family

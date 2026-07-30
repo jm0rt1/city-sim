@@ -2588,7 +2588,7 @@ final class CityScene: SKScene {
                 )
             )?.logicalID
         }
-        if tile.kind == .industrial && (1...2).contains(tile.level) {
+        if tile.kind == .industrial && (1...3).contains(tile.level) {
             return IndustrialGeneratedAssetIdentity(
                 level: tile.level,
                 adjacentRoads: RoadConnectionMask.resolving(

@@ -11,10 +11,12 @@
   `docs/production/completed/PLAY-076.gameplay-loop.md`
 - **Dependencies:** Accepted PLAY-071; exact PLAY-073 real-app sparse-opening finding; published clean baseline; existing building/frontage/progression/recovery contracts
 - **Validation/proof:** Exact topology/frontage ledger; Day 1/11 no-choice, Commercial, and Industrial balance; four recovery identities; Charter and Regional Capital inside tick 2,800; PLAY-071 upgrade behavior; deterministic replay; Codable/legacy/save/load/backup/undo; full suite; staged regular/compact pointer and keyboard journeys; additive fixture-adoption packet
-- **Status:** Topology and narrow two-axis simulation authority published by
-  integration. The gameplay lane may adopt this expansion without syncing its
-  active exact-candidate worktree, using the exact containing master commit as
-  external claim authority.
+- **Status:** Product integrated at patch-equivalent commit
+  `a2e984a57db0cb83e00d3be515df32d0cea438e8`; worker evidence and completion
+  integrated at `70448c79d958a0d3b701b0c69dbafc75b55ef301` and
+  `c2213f69e6956d9545416341e0e0796911623c5f`. Independent combined Day 1/11
+  regular and exact `900 x 600` color/grayscale renderer closeout remains
+  pending, so the claim is not accepted or closed.
 
 Build the smallest authoritative opening that reads as a town instead of asking
 the renderer to invent population. The corrected, machine-checked target is

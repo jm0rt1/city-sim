@@ -65,6 +65,13 @@ action, and update time. Reserve the intended renderer-ingestion window and
 independent-QA window in the same ledger so completed sources do not enter an
 undefined queue.
 
+Count only work bound to the ledger's exact batch. Do not count an unrelated
+renderer feature, prior-family QA gate, generic audit, or merely available
+thread as an active family workstream. Every active row must carry a structured
+`authorityAcknowledgement` that exactly repeats its visible thread, authority
+commit, claim revision, acknowledgement time, bounded deliverable, and stop
+condition, plus the visible thread turn/item identifier used as evidence.
+
 For directional World Art, the canonical control surfaces are
 `docs/production/evidence/INTEGRATION/WORLD_ART_PARALLEL_BATCH_LEDGER.json`,
 `docs/production/evidence/INTEGRATION/WORLD_ART_PARALLEL_BOARD.md`, and one
@@ -81,10 +88,28 @@ Integration checkpoint, and do not describe a sent, completed, blocked, dirty,
 or mismatched row as active. Each row must also record `dispatchState`,
 `acknowledgedAt`, `claimRevision`, `cleanState`, `boundedDeliverable`, and
 `stopCondition`. The batch artifact must bind the immutable family contract,
-appearance-lock state and hash, source-production-profile state and hash, and
-Integration semantic-validator state and hash. Use explicit `null` plus a
-blocking status when an authority does not yet exist; never imply it from a
-nearby artifact.
+appearance-lock state and hash, source-production-profile state and hash,
+validated parallel-execution schedule/schema/validator, and Integration
+semantic-validator state and hash. Use explicit `null` plus a blocking status
+when an authority does not yet exist; never imply it from a nearby artifact.
+`abc_active` is illegal until the post-lock schedule and per-process
+launch-grant validator are published.
+
+The canonical executable schedule controls are:
+
+- schema:
+  `docs/production/evidence/INTEGRATION/industrial-l04-parallel-execution-schedule-schema-v1.json`;
+- semantic validator:
+  `.agents/skills/operate-citysim-integration/scripts/validate_industrial_l04_parallel_execution_schedule_v1.py`;
+- no-DCC adversarial tests:
+  `.agents/skills/operate-citysim-integration/scripts/test_validate_industrial_l04_parallel_execution_schedule_v1.py`; and
+- authority:
+  `docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-PARALLEL-EXECUTION-SCHEDULE-V1-AUTHORITY.md`.
+
+Run the semantic validator on every proposed schedule before publication and
+again before describing any process grant as active. A pre-lock schedule may
+grant only North A. A post-lock schedule must grant North B/C plus
+East/South/West A/B/C with at least three DCC slots.
 
 Advance each batch through this explicit state machine:
 
@@ -118,6 +143,14 @@ Track QA separately:
 Keep the batch at `abc_active` while only some directions have advanced.
 Derive `4of4_ready` only when the exact North, East, South, and West packet
 identities are all Integration-admitted and Renderer-quarantined.
+
+The fourth quarantine is a same-turn trigger, not a queue entry. In the same
+management receipt, move Renderer to `quarantining`, bind the exact atomic
+assembly manifest, and dispatch its acknowledged batch-local assembler. A
+`4of4_assembled` row must bind the exact Renderer candidate receipt; an
+`exact_candidate_active` QA row must bind its exclusive one-attempt gate lease;
+and `passed` must bind the immutable QA result. Unrelated Renderer or QA work
+never satisfies these states.
 
 Publish a dispatch receipt for every management turn that changes work:
 
@@ -155,6 +188,24 @@ Run
 before committing a directional World Art management checkpoint. Treat any
 stale, partial, non-resolving, or contradictory control-surface result as a
 hard stop.
+
+The validator is the executable parallelism gate. It must fail closed on the
+canonical direction/lane/thread/branch/claim/base mapping, exact claim-file
+hashes, governed batch and cross-cell states, authority file hashes,
+timezone-bearing observations, exact dispatch-to-ledger row projection,
+mandatory `ledgerSha256`, and the published compute envelope. A direction
+recorded as `integration_admitted` must bind its exact
+`sourceAdmissionReceipt`; a direction recorded as `renderer_quarantined` must
+also bind its exact `rendererQuarantinePacket`. Do not waive a failure in
+prose. Repair the canonical ledger or receipt, rerun focused validator tests,
+and publish one new coherent management checkpoint.
+
+Every compute envelope declares the simultaneous DCC cap, exclusive slot
+owners, queue identities, machine/resource assumptions, prohibited work, and
+exception owner. Logical World Art cells may all remain active while the
+expensive DCC queue runs in waves, but assigned simultaneous slots may never
+exceed the cap. This distinction prevents resource serialization from
+becoming department-wide idleness.
 
 For directional World Art, use this default fan-out:
 

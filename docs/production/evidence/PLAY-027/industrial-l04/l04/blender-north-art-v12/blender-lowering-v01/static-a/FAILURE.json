@@ -1,0 +1,39 @@
+{
+  "candidateReadyForIndependentReview": false,
+  "childCommand": [
+    "/Applications/Blender.app/Contents/MacOS/Blender",
+    "--background",
+    "--factory-startup",
+    "--disable-autoexec",
+    "--threads",
+    "1",
+    "--python-exit-code",
+    "1",
+    "--python",
+    "/Users/James/.codex/worktrees/0648/city-sim/Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/blender-lowering-v01/import_v12_scene.py",
+    "--",
+    "--repository-root",
+    "/Users/James/.codex/worktrees/0648/city-sim",
+    "--contract",
+    "/Users/James/.codex/worktrees/0648/city-sim/Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/blender-lowering-v01/LOWERING-CONTRACT.json",
+    "--output-root",
+    "/Users/James/.codex/worktrees/0648/city-sim/docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/blender-lowering-v01/static-a",
+    "--process-id",
+    "static-a"
+  ],
+  "childStarted": true,
+  "failure": {
+    "reason": "child-nonzero-exit",
+    "returnCode": 1
+  },
+  "partialFiles": [],
+  "pixelFiles": [],
+  "processID": "static-a",
+  "productionSelected": false,
+  "renderInvocationCount": 0,
+  "schema": 1,
+  "sourceAuthority": false,
+  "stage": "industrial-l04-north-v12-blender-lowering-v01",
+  "stdoutSHA256": "a11ae931a33a201fa3ac3b079dd4771abb73fc13ccf62765b2448243b3fab8c7",
+  "task": "PLAY-027"
+}

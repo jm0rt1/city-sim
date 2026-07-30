@@ -37,7 +37,12 @@
   File-backed packet-intake and baseline-neutral semantic-slot preparation are
   additionally active under
   `INDUSTRIAL-L04-ARRIVAL-GATE-PREP-AUTHORITY.md`; this remains test/evidence
-  only and cannot ingest or activate actual source art.
+  only and cannot ingest or activate actual source art. The canonical
+  admission-receipt harness is integrated through
+  `b72272e1a41b272c9ba549f05760a72f8ed92fd8`. Industrial L4 shipping
+  ingestion is now explicitly deferred while its source cells continue, and
+  Renderer is released for the bounded authored-opening R4-A slice under
+  `PLAY-073-R4-A-AUTHORITY.md`.
 
 Recompose the visible world as one authored district. The developed city must
 dominate the intended camera while retaining useful buildable context. Roads,

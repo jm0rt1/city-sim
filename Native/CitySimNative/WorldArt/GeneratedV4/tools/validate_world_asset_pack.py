@@ -69,6 +69,10 @@ def validate_pack(atlas: Path, staged_atlas: Path | None) -> dict[str, object]:
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     pages = {item["id"]: item for item in manifest.get("pages", [])}
     inventory = {item["file"]: item for item in manifest.get("inventory", [])}
+    source_inventory = {
+        (item.get("file"), item.get("role")): item.get("sha256")
+        for item in manifest.get("source_inventory", [])
+    }
     page_images: dict[str, Image.Image] = {}
     rectangles: dict[str, list[tuple[str, list[int]]]] = defaultdict(list)
     payload_checks = 0
@@ -98,7 +102,7 @@ def validate_pack(atlas: Path, staged_atlas: Path | None) -> dict[str, object]:
     family_levels = {
         "residential": range(1, 5),
         "commercial": range(1, 5),
-        "industrial": range(1, 3),
+        "industrial": range(1, 4),
     }
     for family, levels in family_levels.items():
         family_assets = [
@@ -159,9 +163,38 @@ def validate_pack(atlas: Path, staged_atlas: Path | None) -> dict[str, object]:
                 "normalization_record_sha256",
                 "scene_descriptor_file",
                 "scene_descriptor_sha256",
+                "material_library_file",
+                "material_library_sha256",
             ):
                 if not asset.get(field):
                     failures.append(f"{logical_id} is missing {field}")
+            for file_field, hash_field, role in (
+                ("raw_source_file", "source_sha256", "accepted-raw-master"),
+                ("provenance_file", "provenance_sha256", "provenance"),
+                (
+                    "normalization_record_file",
+                    "normalization_record_sha256",
+                    "normalization-record",
+                ),
+                (
+                    "scene_descriptor_file",
+                    "scene_descriptor_sha256",
+                    "offline-scene-descriptor",
+                ),
+                ("material_library_file", "material_library_sha256", "material-library"),
+            ):
+                source_file = asset.get(file_field)
+                source_hash = asset.get(hash_field)
+                inventory_candidates = [source_file]
+                if isinstance(source_file, str) and source_file.startswith("Native/"):
+                    inventory_candidates.append(source_file.removeprefix("Native/"))
+                if not any(
+                    source_inventory.get((candidate, role)) == source_hash
+                    for candidate in inventory_candidates
+                ):
+                    failures.append(
+                        f"{logical_id} {role} provenance differs from source inventory"
+                    )
 
     for family, raw_hashes in directional_raw_hashes.items():
         other_raw_hashes = set().union(

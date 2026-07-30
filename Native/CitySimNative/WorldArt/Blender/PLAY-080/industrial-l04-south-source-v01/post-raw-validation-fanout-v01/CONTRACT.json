@@ -1,0 +1,259 @@
+{
+  "activity": {
+    "assemblerInvocations": 0,
+    "blenderProcessLaunches": 0,
+    "blenderRenderApiCalls": 0,
+    "contactSheetInvocations": 0,
+    "dccProcessLaunches": 0,
+    "imageGenInvocations": 0,
+    "normalizerInvocations": 0,
+    "pixelFiles": 0,
+    "renderInvocations": 0,
+    "sourcePackets": 0,
+    "validationJobInvocations": 0
+  },
+  "branch": "codex/citysim-world-art-south",
+  "claim": {
+    "authorityCommit": "69b62e78f6012115d5d1221cea3a34e26cae5683",
+    "blobOid": "f58988aeeba6f034cc74b4a13a3336782eedaacb",
+    "path": "docs/production/claims/PLAY-080.world-art-south.md",
+    "sha256": "6ccd0313c078b24fc1b1a42806434480f46fd9fe705dd51c26015b174be95973"
+  },
+  "direction": "south",
+  "disposition": "BLOCKED_MISSING_APPEARANCE_LOCK_AND_SOURCE_PRODUCTION_PROFILE",
+  "fanout": {
+    "assembler": {
+      "dependsOn": [
+        "literal-color:settled",
+        "literal-grayscale:settled",
+        "contact-sheet:settled"
+      ],
+      "evidenceRoot": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/post-raw-validation-fanout-v01/assembler/",
+      "invocations": 0,
+      "packetPath": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/FUTURE-SOURCE-STAGE-V2-HANDOFF.json",
+      "singleWriter": true,
+      "singleWriterId": "play-080-south-source-assembler-v01",
+      "state": "not_run"
+    },
+    "identityJoin": {
+      "dependsOn": [
+        "provenance-rgba-A:settled",
+        "provenance-rgba-B:settled",
+        "provenance-rgba-C:settled"
+      ],
+      "evidenceRoot": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/post-raw-validation-fanout-v01/identity-join/",
+      "invocations": 0,
+      "released": false,
+      "state": "not_run"
+    },
+    "literalScale": {
+      "dependsOn": [
+        "normalization-repeat-A:settled",
+        "normalization-repeat-B:settled",
+        "normalization-repeat-C:settled"
+      ],
+      "jobs": {
+        "color": {
+          "evidenceRoot": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/post-raw-validation-fanout-v01/literal-scale/color/",
+          "invocations": 0,
+          "outputRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/post-raw-validation-fanout-v01/literal-scale/color/",
+          "state": "not_run"
+        },
+        "contactSheet": {
+          "evidenceRoot": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/post-raw-validation-fanout-v01/literal-scale/contact-sheet/",
+          "invocations": 0,
+          "outputRoot": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/post-raw-validation-fanout-v01/literal-scale/contact-sheet-pixels/",
+          "state": "not_run"
+        },
+        "grayscale": {
+          "evidenceRoot": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/post-raw-validation-fanout-v01/literal-scale/grayscale/",
+          "invocations": 0,
+          "outputRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/post-raw-validation-fanout-v01/literal-scale/grayscale/",
+          "state": "not_run"
+        }
+      },
+      "released": false
+    },
+    "normalizationRepeat": {
+      "dependsOn": [
+        "identity-join:settled"
+      ],
+      "jobs": {
+        "A": {
+          "evidenceRoot": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/post-raw-validation-fanout-v01/normalization-repeat/process-A/",
+          "invocations": 0,
+          "outputRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/post-raw-validation-fanout-v01/normalization-repeat/process-A/",
+          "state": "not_run"
+        },
+        "B": {
+          "evidenceRoot": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/post-raw-validation-fanout-v01/normalization-repeat/process-B/",
+          "invocations": 0,
+          "outputRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/post-raw-validation-fanout-v01/normalization-repeat/process-B/",
+          "state": "not_run"
+        },
+        "C": {
+          "evidenceRoot": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/post-raw-validation-fanout-v01/normalization-repeat/process-C/",
+          "invocations": 0,
+          "outputRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/post-raw-validation-fanout-v01/normalization-repeat/process-C/",
+          "state": "not_run"
+        }
+      },
+      "released": false
+    },
+    "provenanceRgba": {
+      "dependsOn": [
+        "raw-A:closed",
+        "raw-B:closed",
+        "raw-C:closed"
+      ],
+      "jobs": {
+        "A": {
+          "evidenceRoot": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/post-raw-validation-fanout-v01/provenance-rgba/process-A/",
+          "invocations": 0,
+          "state": "not_run"
+        },
+        "B": {
+          "evidenceRoot": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/post-raw-validation-fanout-v01/provenance-rgba/process-B/",
+          "invocations": 0,
+          "state": "not_run"
+        },
+        "C": {
+          "evidenceRoot": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/post-raw-validation-fanout-v01/provenance-rgba/process-C/",
+          "invocations": 0,
+          "state": "not_run"
+        }
+      },
+      "released": false
+    }
+  },
+  "frozenInputs": {
+    "bridge": {
+      "blobOid": "2b82ae30e5468cd79dee29ef78ab8c41a20debcb",
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-direction-bridge-v06/MAPPING-CONTRACT.json",
+      "sha256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7"
+    },
+    "canonicalDecoder": {
+      "blobOid": "dfc7c60c2e970084d8a08f4914eae60683acc42e",
+      "path": "Native/CitySimNative/WorldArt/Shared/canonical_rgba_v1.swift",
+      "sha256": "2be2b57d0c9bb73e8a4438c69aa4230eba08c4b87937fae4d4e048244b9beaab"
+    },
+    "materials": {
+      "blobOid": "3a11708434c1df4e85e699b84bcf7a88fbf439e9",
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-predesign-v01.materials.json",
+      "sha256": "624b34f10354c79e0ced914ed55cf4dcb05468997d4efb679f881477984244fb"
+    },
+    "predecessorHandoff": {
+      "blobOid": "3602a1713b3b44196bc43fec665aadd83b7d315b",
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/prelock-successor-v01.json",
+      "sha256": "487fc9edf01b94d74d781c18d0178d676ae75c7f1eed85de5bb845abaf30ace9"
+    },
+    "predecessorProof": {
+      "blobOid": "706ec64f4284cac8b2d538651372aeb792ac14d7",
+      "path": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/PRELOCK-SUCCESSOR-V01-VALIDATION.json",
+      "sha256": "a578c520afcaeed2a13490e296bb08fdb2e72d5af3fdb0f336efbc6a166ff66a"
+    },
+    "predecessorValidator": {
+      "blobOid": "b93a0d2fb3f7a5aa54c149f700a2c39d6598c4fa",
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/validate_prelock_successor_v01.py",
+      "sha256": "c0ac7fb514f9a6f80bac11c8f95ca41acf0b56f2d19f0c65b106080b3b06b00f"
+    },
+    "runner": {
+      "blobOid": "bde316b55999a03b63316e89b02cdd8443b0bc33",
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/runner-contract.json",
+      "sha256": "bc74613e9fdcc5b7c378488b0a5c3b5404087fb231da2b528b719597a1df03a2"
+    },
+    "scene": {
+      "blobOid": "d04d7630436430907caaeb4eaa9c2d04304190ad",
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-predesign-v01.scene.json",
+      "sha256": "e0c8dd02f261844daa3d78ba05c482acbbe9b08eac835a0f863621f48010b07d"
+    },
+    "semanticValidator": {
+      "blobOid": "4e64b273321ed62096bfa5d6f82a9260ed0a3c10",
+      "path": "Native/CitySimNative/WorldArt/Shared/validate_source_stage_handoff_v2.py",
+      "sha256": "7a0613af9998a222a583a70930ce3afc5ec1902793f03201f899a2bb4129f340"
+    },
+    "sourceStageSchema": {
+      "blobOid": "198937fd641a9e117a4e96136052ae8607025675",
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-source-stage-handoff-schema-v2.json",
+      "sha256": "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7"
+    }
+  },
+  "gates": {
+    "admissionAuthorized": false,
+    "appearanceLockPresent": false,
+    "candidateReadyForIndependentReview": false,
+    "consumersReleased": false,
+    "dccAuthorized": false,
+    "integrationAdmitted": false,
+    "pixelProductionAuthorized": false,
+    "postLockProductionAuthorityPresent": false,
+    "productionSelected": false,
+    "rendererQuarantined": false,
+    "shippingAuthorized": false,
+    "sourceProductionProfilePresent": false,
+    "sourceReady": false
+  },
+  "integrationAuthority": {
+    "commit": "69b62e78f6012115d5d1221cea3a34e26cae5683",
+    "runtimeHeadPolicy": "integration-authority-is-ancestor",
+    "treeOid": "6884b4755a2389fc56a70ec2bc4019172aa5d8c4"
+  },
+  "mode": "zero-pixel-post-raw-validation-fanout-prep",
+  "orientationTransform": "none",
+  "outputs": {
+    "contract": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/post-raw-validation-fanout-v01/CONTRACT.json",
+    "proof": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/POST-RAW-VALIDATION-FANOUT-V01-PROOF.json",
+    "tests": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/post-raw-validation-fanout-v01/test_validate_post_raw_fanout_v01.py",
+    "validator": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/post-raw-validation-fanout-v01/validate_post_raw_fanout_v01.py"
+  },
+  "releaseAuthorities": {
+    "appearanceLock": {
+      "appearanceLockCommit": null,
+      "appearanceLockSha256": null,
+      "documentPath": null,
+      "northProcessADecodedRgbaSha256": null,
+      "northProcessASourceSha256": null
+    },
+    "postLockProductionAuthority": {
+      "commit": null,
+      "path": null,
+      "sha256": null
+    },
+    "sourceProductionProfile": {
+      "commit": null,
+      "path": null,
+      "sha256": null
+    },
+    "state": "blocked_missing_appearance_lock_and_source_production_profile"
+  },
+  "rootPolicy": {
+    "allowedEvidencePrefix": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/",
+    "allowedSourcePrefix": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/",
+    "disjointRootsRequired": true,
+    "noFollow": true,
+    "noOverwrite": true
+  },
+  "schema": "citysim.play-080.south-post-raw-validation-fanout.v1",
+  "sourceState": {
+    "rawFanoutSettled": false,
+    "rawProcesses": {
+      "A": {
+        "rawPath": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/process-A/raw.png",
+        "semanticPath": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/process-A/semantic.png",
+        "state": "not_produced"
+      },
+      "B": {
+        "rawPath": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/process-B/raw.png",
+        "semanticPath": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/process-B/semantic.png",
+        "state": "not_produced"
+      },
+      "C": {
+        "rawPath": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/process-C/raw.png",
+        "semanticPath": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/process-C/semantic.png",
+        "state": "not_produced"
+      }
+    }
+  },
+  "stage": "prelock_post_raw_validation_fanout_prep",
+  "taskId": "PLAY-080"
+}

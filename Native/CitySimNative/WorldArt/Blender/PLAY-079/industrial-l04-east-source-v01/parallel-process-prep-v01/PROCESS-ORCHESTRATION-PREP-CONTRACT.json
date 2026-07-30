@@ -1,0 +1,138 @@
+{
+  "schema": "citysim.play-079.east-process-orchestration-prep.v1",
+  "schemaVersion": 1,
+  "taskId": "PLAY-079",
+  "direction": "east",
+  "branch": "codex/citysim-world-art-east",
+  "integrationMaster": "69b62e78f6012115d5d1221cea3a34e26cae5683",
+  "disposition": "ZERO_PIXEL_NONPRODUCTION_PREPARATION",
+  "bindings": {
+    "claim": {
+      "path": "docs/production/claims/PLAY-079.world-art-east.md",
+      "sha256": "5439d720e0a4c90e7310a7fd94ad1a94dd18497df4ef048de726e33405670fab"
+    },
+    "runner": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/RUNNER-CONTRACT.json",
+      "sha256": "5302750257a0bc158f6b460f78a48dccd22c2194f169deb8e46e5c61f1204da8"
+    },
+    "existingOrchestrator": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/orchestrate_parallel_source.py",
+      "sha256": "50045214378cf19c10fda0b1da6b74be496201b8bae4e961b4ee3210a63d530c"
+    },
+    "outputSafety": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/east_output_safety.py",
+      "sha256": "a4d316d0b40ca16b714f12740c3a840ac140dda1dec5d322bee275b56fa5c458"
+    },
+    "prelockSuccessorContract": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/prelock-successor-v01/SUCCESSOR-CONTRACT.json",
+      "sha256": "9c07f6e969916ff225ca745cbc07c0d7a8a5e442f683faea5b486e7b6b2cb200"
+    },
+    "prelockSuccessorValidator": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/prelock-successor-v01/validate_prelock_successor_v01.py",
+      "sha256": "95c676be0f366c29114e01839ceb496eafaeabec55ab10e57f0e523053b69305"
+    },
+    "scene": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-predesign-v01/scene.json",
+      "sha256": "e19c70693ea57a7f23669d5e93354eee0a8fa42be16e68b38d00f5608a500db7"
+    },
+    "materials": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-predesign-v01/materials.json",
+      "sha256": "1d0eda7be1e50d9fd98247cb63035443e904a2724583df1fbb328140b63ef9b9"
+    },
+    "parallelExecutionDesign": {
+      "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-PARALLEL-EXECUTION-CONTRACT-CANDIDATE.md",
+      "sha256": "a2c726585fa83f9a795c02cb4e97fd476ae3969587db7c5e133ecc9889636e36"
+    },
+    "sourceStageSchema": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-source-stage-handoff-schema-v2.json",
+      "sha256": "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7"
+    },
+    "sourceStageSemanticValidator": {
+      "path": "Native/CitySimNative/WorldArt/Shared/validate_source_stage_handoff_v2.py",
+      "sha256": "7a0613af9998a222a583a70930ce3afc5ec1902793f03201f899a2bb4129f340"
+    }
+  },
+  "futureIntegrationAuthorities": {
+    "appearanceLock": {"state": "missing", "path": null, "commit": null, "sha256": null},
+    "sourceProductionProfile": {"state": "missing", "path": null, "commit": null, "sha256": null},
+    "strictReceiptSchema": {"state": "missing", "path": null, "commit": null, "sha256": null},
+    "strictReceiptValidator": {"state": "missing", "path": null, "commit": null, "sha256": null},
+    "globalScheduleSchema": {"state": "missing", "path": null, "commit": null, "sha256": null},
+    "globalSchedule": {"state": "missing", "path": null, "commit": null, "sha256": null},
+    "computeEnvelope": {"state": "missing", "path": null, "commit": null, "sha256": null},
+    "launchGrant": {"state": "missing", "path": null, "commit": null, "sha256": null}
+  },
+  "gates": {
+    "launchAllowed": false,
+    "dccAllowed": false,
+    "renderAllowed": false,
+    "pixelProductionAllowed": false,
+    "normalizationAllowed": false,
+    "packetAssemblyAllowed": false,
+    "sourceReady": false,
+    "integrationAdmitted": false,
+    "productionSelected": false
+  },
+  "processes": {
+    "A": {
+      "state": "reserved_not_launched",
+      "invocationCount": 0,
+      "rawRoot": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/renders/process-a/",
+      "evidenceRoot": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/execution/process-a/",
+      "invocationReceipt": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/execution/process-a/INVOCATION-RECEIPT.json"
+    },
+    "B": {
+      "state": "reserved_not_launched",
+      "invocationCount": 0,
+      "rawRoot": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/renders/process-b/",
+      "evidenceRoot": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/execution/process-b/",
+      "invocationReceipt": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/execution/process-b/INVOCATION-RECEIPT.json"
+    },
+    "C": {
+      "state": "reserved_not_launched",
+      "invocationCount": 0,
+      "rawRoot": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/renders/process-c/",
+      "evidenceRoot": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/execution/process-c/",
+      "invocationReceipt": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/execution/process-c/INVOCATION-RECEIPT.json"
+    }
+  },
+  "jobs": [
+    {"id": "raw-A", "kind": "reserved-process", "dependsOn": [], "root": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/renders/process-a/"},
+    {"id": "raw-B", "kind": "reserved-process", "dependsOn": [], "root": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/renders/process-b/"},
+    {"id": "raw-C", "kind": "reserved-process", "dependsOn": [], "root": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/renders/process-c/"},
+    {"id": "provenance-rgba-A", "kind": "validation", "dependsOn": ["raw-A"], "root": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/execution/validation-jobs/provenance-rgba-a/"},
+    {"id": "provenance-rgba-B", "kind": "validation", "dependsOn": ["raw-B"], "root": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/execution/validation-jobs/provenance-rgba-b/"},
+    {"id": "provenance-rgba-C", "kind": "validation", "dependsOn": ["raw-C"], "root": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/execution/validation-jobs/provenance-rgba-c/"},
+    {"id": "identity-join", "kind": "join", "dependsOn": ["provenance-rgba-A", "provenance-rgba-B", "provenance-rgba-C"], "root": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/execution/validation-jobs/identity-join/"},
+    {"id": "normalization-repeat-A", "kind": "reserved-validation", "dependsOn": ["identity-join"], "root": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/execution/validation-jobs/normalization-repeat-a/"},
+    {"id": "normalization-repeat-B", "kind": "reserved-validation", "dependsOn": ["identity-join"], "root": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/execution/validation-jobs/normalization-repeat-b/"},
+    {"id": "normalization-repeat-C", "kind": "reserved-validation", "dependsOn": ["identity-join"], "root": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/execution/validation-jobs/normalization-repeat-c/"},
+    {"id": "literal-color-A", "kind": "reserved-validation", "dependsOn": ["normalization-repeat-A"], "root": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/execution/validation-jobs/literal-color-a/"},
+    {"id": "literal-color-B", "kind": "reserved-validation", "dependsOn": ["normalization-repeat-B"], "root": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/execution/validation-jobs/literal-color-b/"},
+    {"id": "literal-color-C", "kind": "reserved-validation", "dependsOn": ["normalization-repeat-C"], "root": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/execution/validation-jobs/literal-color-c/"},
+    {"id": "grayscale-A", "kind": "reserved-validation", "dependsOn": ["normalization-repeat-A"], "root": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/execution/validation-jobs/grayscale-a/"},
+    {"id": "grayscale-B", "kind": "reserved-validation", "dependsOn": ["normalization-repeat-B"], "root": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/execution/validation-jobs/grayscale-b/"},
+    {"id": "grayscale-C", "kind": "reserved-validation", "dependsOn": ["normalization-repeat-C"], "root": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/execution/validation-jobs/grayscale-c/"},
+    {"id": "contact-sheet-A", "kind": "reserved-validation", "dependsOn": ["normalization-repeat-A"], "root": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/execution/validation-jobs/contact-sheet-a/"},
+    {"id": "contact-sheet-B", "kind": "reserved-validation", "dependsOn": ["normalization-repeat-B"], "root": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/execution/validation-jobs/contact-sheet-b/"},
+    {"id": "contact-sheet-C", "kind": "reserved-validation", "dependsOn": ["normalization-repeat-C"], "root": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/execution/validation-jobs/contact-sheet-c/"},
+    {"id": "packet-assembly", "kind": "single-assembler", "dependsOn": ["literal-color-A", "literal-color-B", "literal-color-C", "grayscale-A", "grayscale-B", "grayscale-C", "contact-sheet-A", "contact-sheet-B", "contact-sheet-C"], "root": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/execution/packet-assembly/"}
+  ],
+  "singleAssembler": {
+    "jobId": "packet-assembly",
+    "invocationCount": 0,
+    "packetPath": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/SOURCE-STAGE-HANDOFF.json",
+    "packetExists": false
+  },
+  "safety": {
+    "siblingInputs": [],
+    "sharedWrites": [],
+    "subprocessInvocations": 0,
+    "dccInvocations": 0,
+    "blenderInvocations": 0,
+    "renderApiCalls": 0,
+    "pixelFilesCreated": 0,
+    "normalizerInvocations": 0,
+    "sourcePacketsCreated": 0
+  }
+}

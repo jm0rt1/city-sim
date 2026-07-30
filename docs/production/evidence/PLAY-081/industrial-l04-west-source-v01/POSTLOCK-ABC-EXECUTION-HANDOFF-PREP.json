@@ -14,7 +14,7 @@
   "assemblerJoin": {
     "contract": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/REVIEW-ASSEMBLY-PREP-CONTRACT.json",
-      "sha256": "78a081b81ac75b0eeaf227ae9d8057ce364a6a595a39d89cfd593765192a426f"
+      "sha256": "25c622f28cca91d053c20c79651aff663b7bad3bcef57fe119aa508b2a96e1d8"
     },
     "currentValidation": {
       "errors": [],
@@ -24,7 +24,7 @@
     },
     "entrypoint": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/validate_review_assembly_prep.py",
-      "sha256": "27089eb3808bb26a46375c9129a2ae81115654904d4e5414d24908fdd1c8004b"
+      "sha256": "2a52fbc30c8ac6021a1636555bf0e5c99e50e710e9dc332de26326c0371c1b91"
     },
     "requiredSettledGates": [
       "appearanceLockBound",
@@ -68,11 +68,11 @@
     },
     "directionScheduleConsumer": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/schedule-consumer-v01/consume_west_parallel_schedule_v1.py",
-      "sha256": "65eca83d2709d8082bd72b6bca794f0e7e4109f123b801e724b934c351e34492"
+      "sha256": "44384b0b9983b91312f87bef6d2302a5c2dec5bb3153103fea01e4ad48ca3451"
     },
     "highLevelOrchestrator": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/west_execution_orchestration_v2.py",
-      "sha256": "ac1d5de2350fc195a734ace7429bdd2b9a72d5cd1ca9ffa56b50152402925a73"
+      "sha256": "ad73320de9d6b778e460a1b55c45bc60c881b5e9bd1b3435504b97909b870870"
     },
     "lowLevelRunnerValidationBoundary": {
       "directInvocationAllowed": false,
@@ -102,18 +102,18 @@
       "phase1": {
         "joinedWhileFreshRootReplayRunning": [
           {
-            "durationSeconds": 0.614,
-            "job": "review-assembly-bindings",
+            "durationSeconds": 0.022,
+            "job": "west-schedule-consumer",
             "result": "PASS_8_OF_8"
           },
           {
-            "durationSeconds": 2.253,
+            "durationSeconds": 2.66,
             "job": "west-orchestration",
             "result": "PASS_32_OF_32"
           }
         ],
         "launchedTogether": [
-          "review-assembly-bindings",
+          "west-schedule-consumer",
           "west-orchestration",
           "fresh-root-execution-closure"
         ]
@@ -122,13 +122,18 @@
         "freshRootReplayStillRunning": true,
         "launchedIntoFreedSlots": [
           {
-            "job": "packet-hash-check",
-            "result": "EXPECTED_REGEN_ONLY_REVIEW_BINDINGS"
+            "job": "west-current-authority-binding",
+            "result": "PASS_BINDINGS_5_ROOTS_9"
+          },
+          {
+            "durationSeconds": 0.653,
+            "job": "west-review-assembler",
+            "result": "PASS_8_OF_8"
           }
         ]
       },
       "phase3": {
-        "durationSeconds": 78.925,
+        "durationSeconds": 84.303,
         "job": "fresh-root-execution-closure",
         "result": "PASS_5_OF_5"
       }
@@ -141,18 +146,18 @@
     "nextRefill": [
       "Integration publishes exact appearance lock and locked material mapping",
       "Integration publishes source-production profile, production schedule, per-process grants, authority instance, and lease",
-      "Integration reviews the regenerated West post-lock preparation packet"
+      "Integration publishes exact live authority and lease after the postlock schedule and grants"
     ],
     "readyNow": [],
     "running": [],
-    "safeJobsActuallyLaunched": 4,
+    "safeJobsActuallyLaunched": 5,
     "serializedAuthority": [
       "visible West lane owner is sole governed handoff and Git writer",
       "future direction-local assembler is the sole final packet writer",
       "Integration remains sole shared-authority publisher"
     ],
     "unusedCapacityReasons": [
-      "no DCC capacity is authorized before post-lock authority publication",
+      "published current compute capacity is zero DCC slots",
       "after the final fresh-root replay joined there were no remaining eligible independent checks",
       "governed handoff assembly and Git operations are single-writer"
     ],
@@ -168,13 +173,13 @@
       "sha256": "9376538d66a653be4a07f7c8d511626f16dbb4b0d4ef42e0354efb737f1f1b9c"
     },
     "closureEvidence": {
-      "packetSha256": "5177015549c0cd160b08bae03afcd1eadde3d34d49e28ced4085b6c9bb1042f5",
+      "packetSha256": "a70124a9dfe3dc1a534be857ca8f1ca72092523aec1693550e74456f71df7a3f",
       "path": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/schedule-consumer-v01/EXECUTION-CLOSURE-V1.json",
-      "sha256": "5acb90c58b860d211a4afe93237f13834f67deead51fbe902352b896857e46fd"
+      "sha256": "fd02f58d5ad7171af41898ff21fc91a39b86ad5b7b015432a279fb44ccf019c7"
     },
     "executionContract": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/WEST-EXECUTION-ORCHESTRATION-V2.json",
-      "sha256": "005d6c980232a212b5566f33ffeab0d293e001c1e98de754819ba550c6caf56e"
+      "sha256": "434bbf95c1f225773b72f5087a31995c89482f8d18e112ae4daf410c85fcc890"
     },
     "pathSafety": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/west_path_safety.py",
@@ -186,7 +191,7 @@
     },
     "scheduleConsumerContract": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/schedule-consumer-v01/WEST-SCHEDULE-CONSUMER-CONTRACT-V1.json",
-      "sha256": "82bb1ab81cea52b04c75d93a75a595e60fca439dcbf86a8dbcf04a6ad61129d9"
+      "sha256": "432a1fb229ead9237ec3f6e9ff33fcae8e85e2794486eb8412d97ec4f81c495b"
     }
   },
   "grantConsumptionBoundary": {
@@ -206,11 +211,13 @@
     ]
   },
   "head": {
-    "currentPublishedMaster": "5d86e804be679c765c2465c60ceaee72f3702c48",
-    "preparedAt": "f47b4cc74f635f091dd555c0f9c6dbb7383b1cf7",
+    "currentPublishedMaster": "d4f18ea3b1ccfd522f3b5e877bc7cb742fd9be09",
+    "preparedAt": "d4813a0def539d704260b95ec4bb236118d8b6b4",
     "publishedMasterIsAncestor": true
   },
   "jobGraph": {
+    "authority": false,
+    "proposalOnly": true,
     "directionJoin": {
       "receiptOrder": [
         [
@@ -251,6 +258,7 @@
         ],
         "jobId": "W-A",
         "ordinal": 4,
+        "proposedSlotId": "dcc-3",
         "roots": {
           "evidence": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-A/evidence",
           "raw": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-A/raw",
@@ -269,6 +277,7 @@
         ],
         "jobId": "W-B",
         "ordinal": 8,
+        "proposedSlotId": "dcc-1",
         "roots": {
           "evidence": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-B/evidence",
           "raw": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-B/raw",
@@ -287,6 +296,7 @@
         ],
         "jobId": "W-C",
         "ordinal": 11,
+        "proposedSlotId": "dcc-2",
         "roots": {
           "evidence": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-C/evidence",
           "raw": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-C/raw",

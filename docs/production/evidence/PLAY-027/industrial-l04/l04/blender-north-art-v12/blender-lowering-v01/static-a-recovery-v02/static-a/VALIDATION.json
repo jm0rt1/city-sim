@@ -1,0 +1,25 @@
+{
+  "blendFiles": [],
+  "candidateReadyForIndependentReview": false,
+  "gates": {
+    "actualBlenderCameraRegistrationExact": true,
+    "bevelDisabled": true,
+    "blendFilesAbsent": true,
+    "blenderFingerprintExact": true,
+    "canonicalLoweringReproduced": true,
+    "identityObjectTransforms": true,
+    "materialsExact": true,
+    "physicalMappingComplete": true,
+    "pixelsAbsent": true,
+    "renderDisabled": true,
+    "semanticObjectCountExact": true
+  },
+  "pixelFiles": [],
+  "productionSelected": false,
+  "renderInvocationCount": 0,
+  "schema": 1,
+  "sourceAuthority": false,
+  "stage": "industrial-l04-north-v12-blender-lowering-v01",
+  "task": "PLAY-027",
+  "validationPassed": true
+}

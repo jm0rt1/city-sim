@@ -1,0 +1,64 @@
+{
+  "bindings": {
+    "analyticReplayIdentity": {
+      "file": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/REPLAY-IDENTITY.json",
+      "sha256": "791cdaef240baed03a7a8a380b8fddb50f4039f375a1022ce7eaa7003a28c99e"
+    },
+    "authority": {
+      "file": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-NORTH-V12-BLENDER-LOWERING-AUTHORITY.md",
+      "sha256": "e90f676ca76d65ec7a351ff7e09eeb278c58173a92a8f5036fb9ac18647d66c9"
+    },
+    "bridge": {
+      "file": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-direction-bridge-v06/MAPPING-CONTRACT.json",
+      "sha256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7"
+    },
+    "claim": {
+      "file": "docs/production/claims/PLAY-027.world-art.md",
+      "sha256": "83fa2894bd822c5b7b25d8da37903dec5f039b30fc334f7b59ca3d8eba82bf0d"
+    },
+    "compoundAdversaries": {
+      "file": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/boundary-proof-repair-v01/ADVERSARIAL-RESULTS.json",
+      "sha256": "9315b8e778d130ad1a31d3fe30727e6eafce6ba4dffbe66154853f64ef9f5d6c"
+    },
+    "compoundAudit": {
+      "file": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/boundary-proof-repair-v01/COMPOUND-MESH-AUDIT.json",
+      "sha256": "03f6e9f1460c87251e525b977d9684a2e92b4e80eb8145563be0a5fb4f39266e"
+    },
+    "compoundAuditTool": {
+      "file": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/audit_compound_mesh.py",
+      "sha256": "eba59bae87676c80d7271897cd3ff478e8ca771bc1f8a9ad322d264985d534c8"
+    },
+    "compoundDisposition": {
+      "file": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/boundary-proof-repair-v01/DISPOSITION.json",
+      "sha256": "8725454f888b3d0c299c4d6bb0bb8fbb46d1bd313b27e2e3cb1826ecb1828c88"
+    },
+    "materials": {
+      "file": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/MATERIALS.json",
+      "sha256": "e683feed89f6878903d1ec0b255d0d5e8a36c74f431a2fb723287bf955c54d09"
+    },
+    "replayPreservation": {
+      "file": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/boundary-proof-repair-v01/REPLAY-PRESERVATION.json",
+      "sha256": "e9818cd8b4e3349c83f6438448582faf1adcdec59318c75202bd5945dd7cc1dd"
+    },
+    "scene": {
+      "file": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/SCENE.json",
+      "sha256": "dad20722f4770c82992040861074188c604b46cd226e5f739291ac22683594e2"
+    }
+  },
+  "blenderApplication": {
+    "buildHash": "84afd5f785f7",
+    "executableSHA256": "8485107307b16bd0899f3c259261494b0c80e383db239c04e2c9fcd14d305fb4",
+    "version": "4.5.12 LTS"
+  },
+  "contractSHA256": "c3cf003c8c123d2fdcad1d2c04f4ae0f450b41ab80f4dcb4b5e056f6835df6e7",
+  "loweringTool": {
+    "file": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/blender-lowering-v01/lower_v12_scene.py",
+    "sha256": "7dc01ddc56bfff3ee9efca417ad0f70265d92daf99281dd53f7231c691e53a42"
+  },
+  "schema": 1,
+  "staticImporter": {
+    "file": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/blender-lowering-v01/import_v12_scene.py",
+    "sha256": "ec726d584ce4b22253fca486e82bc6a198616debed94358d76f6dac7a1f62988"
+  },
+  "task": "PLAY-027"
+}

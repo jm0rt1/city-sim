@@ -65,6 +65,13 @@ action, and update time. Reserve the intended renderer-ingestion window and
 independent-QA window in the same ledger so completed sources do not enter an
 undefined queue.
 
+Count only work bound to the ledger's exact batch. Do not count an unrelated
+renderer feature, prior-family QA gate, generic audit, or merely available
+thread as an active family workstream. Every active row must carry a structured
+`authorityAcknowledgement` that exactly repeats its visible thread, authority
+commit, claim revision, acknowledgement time, bounded deliverable, and stop
+condition, plus the visible thread turn/item identifier used as evidence.
+
 For directional World Art, the canonical control surfaces are
 `docs/production/evidence/INTEGRATION/WORLD_ART_PARALLEL_BATCH_LEDGER.json`,
 `docs/production/evidence/INTEGRATION/WORLD_ART_PARALLEL_BOARD.md`, and one
@@ -81,10 +88,12 @@ Integration checkpoint, and do not describe a sent, completed, blocked, dirty,
 or mismatched row as active. Each row must also record `dispatchState`,
 `acknowledgedAt`, `claimRevision`, `cleanState`, `boundedDeliverable`, and
 `stopCondition`. The batch artifact must bind the immutable family contract,
-appearance-lock state and hash, source-production-profile state and hash, and
-Integration semantic-validator state and hash. Use explicit `null` plus a
-blocking status when an authority does not yet exist; never imply it from a
-nearby artifact.
+appearance-lock state and hash, source-production-profile state and hash,
+validated parallel-execution schedule/schema/validator, and Integration
+semantic-validator state and hash. Use explicit `null` plus a blocking status
+when an authority does not yet exist; never imply it from a nearby artifact.
+`abc_active` is illegal until the post-lock schedule and per-process
+launch-grant validator are published.
 
 Advance each batch through this explicit state machine:
 
@@ -118,6 +127,14 @@ Track QA separately:
 Keep the batch at `abc_active` while only some directions have advanced.
 Derive `4of4_ready` only when the exact North, East, South, and West packet
 identities are all Integration-admitted and Renderer-quarantined.
+
+The fourth quarantine is a same-turn trigger, not a queue entry. In the same
+management receipt, move Renderer to `quarantining`, bind the exact atomic
+assembly manifest, and dispatch its acknowledged batch-local assembler. A
+`4of4_assembled` row must bind the exact Renderer candidate receipt; an
+`exact_candidate_active` QA row must bind its exclusive one-attempt gate lease;
+and `passed` must bind the immutable QA result. Unrelated Renderer or QA work
+never satisfies these states.
 
 Publish a dispatch receipt for every management turn that changes work:
 

@@ -108,6 +108,15 @@ and evidence roots; source revision; compute-slot and queue policy; bounded
 deliverable; and stop condition. A prelock claim or an appearance lock by
 itself never authorizes pixels.
 
+Launch production only through the Integration-approved orchestrator and an
+exact validated per-process launch grant. The grant must bind the global
+schedule, compute lease, direction, claim revision, published base, frozen
+scene/material/toolchain hashes, process ID, exclusive input/output/evidence
+roots, and exactly-one child start. A low-level direction runner must verify
+that grant or remain non-invocable directly. Do not begin A/B/C while the
+parallel schedule schema, strict validator, adversarial tests, or launch grant
+is missing, proposed, stale, or unvalidated.
+
 ### Parallelize inside each direction cell
 
 Scene and material authoring remain single-writer until the exact
@@ -268,6 +277,11 @@ Use this direction-local commit sequence unless the claim narrows it further:
 2. A/B/C source plus deterministic validation checkpoint after production is
    authorized;
 3. machine-readable handoff and completion checkpoint.
+
+When the claim explicitly defines predesign as its complete deliverable, the
+passing zero-pixel and predesign-handoff commits complete that claim stage
+normally; they do not imply directional source completion. Use incomplete
+checkpoint wording only when a required gate remains failing or unrun.
 
 Do not collapse these boundaries when doing so would hide a rejected attempt,
 an unrun gate, or a change in source authority.

@@ -1,0 +1,591 @@
+{
+  "schema": "citysim.play-080.south-postlock-abc-execution-handoff-preparation.v1",
+  "taskId": "PLAY-080",
+  "direction": "south",
+  "branch": "codex/citysim-world-art-south",
+  "stage": "prelock_validation_only_handoff_prepared_blocked",
+  "preparedFromHead": "565c7f0bab461d7c90b8a6f731c23849424a5bb7",
+  "sourceReady": false,
+  "authorities": {
+    "publishedMaster": {
+      "commit": "5d86e804be679c765c2465c60ceaee72f3702c48",
+      "ancestryVerified": true
+    },
+    "claim": {
+      "path": "docs/production/claims/PLAY-080.world-art-south.md",
+      "revision": 6,
+      "sha256": "5e07bef53399485140a710b6297825c5276cb48f61a6e15032eb1c358d8bcde6"
+    },
+    "appearanceLock": {
+      "path": null,
+      "commit": null,
+      "sha256": null,
+      "state": "missing_unpublished"
+    },
+    "sourceProductionProfile": {
+      "path": null,
+      "commit": null,
+      "sha256": null,
+      "state": "missing_unpublished"
+    },
+    "postLockProductionAuthority": {
+      "path": null,
+      "commit": null,
+      "sha256": null,
+      "state": "missing_unpublished"
+    },
+    "parallelExecutionSchedule": {
+      "path": null,
+      "commit": null,
+      "sha256": null,
+      "state": "missing_unpublished_instance"
+    },
+    "perProcessGrants": {
+      "A": null,
+      "B": null,
+      "C": null
+    },
+    "executionClosure": {
+      "authorityPath": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTION-EXECUTION-CLOSURE-V1-AUTHORITY.md",
+      "authoritySha256": "0125539f015ab8069c11093e755ac6e43d7b37994c86515fc06894e401b7eb54",
+      "schemaPath": "docs/production/evidence/INTEGRATION/industrial-l04-direction-execution-authority-schema-v1.json",
+      "schemaSha256": "2796e224780c259b29d68b50cb12cdbbe45452535da681bba3522af920459491",
+      "validatorPath": ".agents/skills/operate-citysim-integration/scripts/validate_industrial_l04_direction_execution_authority_v1.py",
+      "validatorSha256": "b212d2776d34b3334910c6b0b02ffba244919f4a83d5c0019c30bca87648d8ae"
+    }
+  },
+  "frozenInputs": {
+    "scene": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-predesign-v01.scene.json",
+      "sha256": "e0c8dd02f261844daa3d78ba05c482acbbe9b08eac835a0f863621f48010b07d"
+    },
+    "materials": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-predesign-v01.materials.json",
+      "sha256": "624b34f10354c79e0ced914ed55cf4dcb05468997d4efb679f881477984244fb"
+    },
+    "coordinateBridge": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-direction-bridge-v06/MAPPING-CONTRACT.json",
+      "sha256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7"
+    },
+    "sourceStageSchema": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-source-stage-handoff-schema-v2.json",
+      "sha256": "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7"
+    },
+    "sourceStageSemanticValidator": {
+      "path": "Native/CitySimNative/WorldArt/Shared/validate_source_stage_handoff_v2.py",
+      "sha256": "7a0613af9998a222a583a70930ce3afc5ec1902793f03201f899a2bb4129f340"
+    },
+    "runnerContract": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/runner-contract.json",
+      "sha256": "bc74613e9fdcc5b7c378488b0a5c3b5404087fb231da2b528b719597a1df03a2"
+    },
+    "scheduleConsumer": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/schedule-consumer-adapter-v01/consume_schedule_v01.py",
+      "sha256": "d2b5a2bf5348c529ced690d4bac7c72ce4140e5e15b05af1f4335ac75e608da2"
+    },
+    "launchBinding": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/prepare_launch_binding.py",
+      "sha256": "10d255e6279d7a1778adbc4b1d0f7409e2f98e669c9f640c01857f7ee15abcc9"
+    },
+    "runnerEntrypoint": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/run_production.py",
+      "sha256": "e5292949d3f9c6f4fd4005076e86f72a329f33110994fce7a59d546df84fdb3b"
+    },
+    "postRawFanoutContract": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/post-raw-validation-fanout-v01/CONTRACT.json",
+      "sha256": "4db0ec45245602848da5905565dd9008e2133a0547c4104e17619d9bc96a7489"
+    },
+    "postRawFanoutValidator": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/post-raw-validation-fanout-v01/validate_post_raw_fanout_v01.py",
+      "sha256": "a9b08104cb10029a42080f62d490c9c79e798f511ab1a25203e1b33c0f3dde45",
+      "currentResult": "BLOCKED_STALE_CLAIM_BINDING"
+    }
+  },
+  "directionRoots": {
+    "sourcePrefix": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/",
+    "evidencePrefix": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/",
+    "processes": {
+      "A": {
+        "processOutputRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/process-A/",
+        "processEvidenceRoot": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/process-A/",
+        "state": "missing_reserved"
+      },
+      "B": {
+        "processOutputRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/process-B/",
+        "processEvidenceRoot": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/process-B/",
+        "state": "missing_reserved"
+      },
+      "C": {
+        "processOutputRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/process-C/",
+        "processEvidenceRoot": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/process-C/",
+        "state": "missing_reserved"
+      }
+    },
+    "rootPolicy": {
+      "pairwiseDisjoint": true,
+      "insideDirectionExclusivePrefixes": true,
+      "noFollowRequired": true,
+      "noOverwriteRequired": true,
+      "siblingSubstitutionForbidden": true,
+      "orientationTransform": "none"
+    },
+    "verification": {
+      "entrypoint": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/test_renderer_locator_inventory.py",
+      "entrypointSha256": "624342daa84cac80e67035ef08df57a714617091636b7485ae00368083b886cd",
+      "result": "PASS_1_OF_1"
+    }
+  },
+  "grantConsumptionBoundary": {
+    "orderedEntrypoints": [
+      "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/schedule-consumer-adapter-v01/consume_schedule_v01.py",
+      "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/prepare_launch_binding.py",
+      "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/run_production.py"
+    ],
+    "requirements": [
+      "exact trusted-master schedule",
+      "exact direction and process grant",
+      "authenticated one-attempt execution authority",
+      "exclusive process output and evidence roots",
+      "matching slot, queue, claim, base, and orchestrator",
+      "exactly one child start only after all guards pass"
+    ],
+    "directLowLevelRunnerInvocable": false,
+    "replayAccepted": false,
+    "currentChildStartAuthorized": false,
+    "verification": {
+      "entrypoint": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/schedule-consumer-adapter-v01/test_consume_schedule_v01.py",
+      "entrypointSha256": "ddd3e7b3d7407d17bd0e3cf8f39b1423b4908acff5dab808714e927c3a733640",
+      "result": "PASS_17_OF_17"
+    }
+  },
+  "jobGraph": {
+    "fixedDag": [
+      "raw-A/B/C",
+      "provenance-rgba-A/B/C",
+      "identity-join",
+      "normalization-repeat-A/B/C",
+      "literal-color/grayscale/contact-sheet",
+      "packet-assembly"
+    ],
+    "jobs": [
+      {
+        "jobId": "raw-A",
+        "frozenInputs": [
+          "scene",
+          "materials",
+          "coordinateBridge",
+          "runnerContract",
+          "appearanceLock",
+          "sourceProductionProfile",
+          "parallelExecutionSchedule",
+          "grant-A"
+        ],
+        "exclusiveOutputRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/process-A/",
+        "exclusiveEvidenceRoot": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/process-A/",
+        "dependsOn": [],
+        "executionOwner": "integration-approved-south-high-level-orchestrator",
+        "state": "blocked",
+        "joinCondition": "process A exactly-once grant consumed; fresh child exits zero; immutable raw, semantic, provenance, and runner report close"
+      },
+      {
+        "jobId": "raw-B",
+        "frozenInputs": [
+          "scene",
+          "materials",
+          "coordinateBridge",
+          "runnerContract",
+          "appearanceLock",
+          "sourceProductionProfile",
+          "parallelExecutionSchedule",
+          "grant-B"
+        ],
+        "exclusiveOutputRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/process-B/",
+        "exclusiveEvidenceRoot": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/process-B/",
+        "dependsOn": [],
+        "executionOwner": "integration-approved-south-high-level-orchestrator",
+        "state": "blocked",
+        "joinCondition": "process B exactly-once grant consumed; fresh child exits zero; immutable raw, semantic, provenance, and runner report close"
+      },
+      {
+        "jobId": "raw-C",
+        "frozenInputs": [
+          "scene",
+          "materials",
+          "coordinateBridge",
+          "runnerContract",
+          "appearanceLock",
+          "sourceProductionProfile",
+          "parallelExecutionSchedule",
+          "grant-C"
+        ],
+        "exclusiveOutputRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/process-C/",
+        "exclusiveEvidenceRoot": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/process-C/",
+        "dependsOn": [],
+        "executionOwner": "integration-approved-south-high-level-orchestrator",
+        "state": "blocked",
+        "joinCondition": "process C exactly-once grant consumed; fresh child exits zero; immutable raw, semantic, provenance, and runner report close"
+      },
+      {
+        "jobId": "provenance-rgba-A",
+        "frozenInputs": [
+          "raw-A"
+        ],
+        "exclusiveOutputRoot": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/post-raw-validation-fanout-v01/provenance-rgba/process-A/",
+        "exclusiveEvidenceRoot": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/post-raw-validation-fanout-v01/provenance-rgba/process-A/",
+        "dependsOn": [
+          "raw-A:closed"
+        ],
+        "executionOwner": "south-cpu-validator-A",
+        "state": "blocked",
+        "joinCondition": "process A provenance and canonical decoded RGBA records settle"
+      },
+      {
+        "jobId": "provenance-rgba-B",
+        "frozenInputs": [
+          "raw-B"
+        ],
+        "exclusiveOutputRoot": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/post-raw-validation-fanout-v01/provenance-rgba/process-B/",
+        "exclusiveEvidenceRoot": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/post-raw-validation-fanout-v01/provenance-rgba/process-B/",
+        "dependsOn": [
+          "raw-B:closed"
+        ],
+        "executionOwner": "south-cpu-validator-B",
+        "state": "blocked",
+        "joinCondition": "process B provenance and canonical decoded RGBA records settle"
+      },
+      {
+        "jobId": "provenance-rgba-C",
+        "frozenInputs": [
+          "raw-C"
+        ],
+        "exclusiveOutputRoot": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/post-raw-validation-fanout-v01/provenance-rgba/process-C/",
+        "exclusiveEvidenceRoot": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/post-raw-validation-fanout-v01/provenance-rgba/process-C/",
+        "dependsOn": [
+          "raw-C:closed"
+        ],
+        "executionOwner": "south-cpu-validator-C",
+        "state": "blocked",
+        "joinCondition": "process C provenance and canonical decoded RGBA records settle"
+      },
+      {
+        "jobId": "identity-join",
+        "frozenInputs": [
+          "provenance-rgba-A",
+          "provenance-rgba-B",
+          "provenance-rgba-C"
+        ],
+        "exclusiveOutputRoot": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/post-raw-validation-fanout-v01/identity-join/",
+        "exclusiveEvidenceRoot": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/post-raw-validation-fanout-v01/identity-join/",
+        "dependsOn": [
+          "provenance-rgba-A:settled",
+          "provenance-rgba-B:settled",
+          "provenance-rgba-C:settled"
+        ],
+        "executionOwner": "south-identity-join-validator",
+        "state": "blocked",
+        "joinCondition": "A/B/C decoded RGBA, geometry, registration, and semantic identities are byte-consistent"
+      },
+      {
+        "jobId": "normalization-repeat-A",
+        "frozenInputs": [
+          "identity-join",
+          "raw-A"
+        ],
+        "exclusiveOutputRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/post-raw-validation-fanout-v01/normalization-repeat/process-A/",
+        "exclusiveEvidenceRoot": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/post-raw-validation-fanout-v01/normalization-repeat/process-A/",
+        "dependsOn": [
+          "identity-join:settled"
+        ],
+        "executionOwner": "south-normalization-repeat-A",
+        "state": "blocked",
+        "joinCondition": "process A normalization repeat closes with deterministic identity"
+      },
+      {
+        "jobId": "normalization-repeat-B",
+        "frozenInputs": [
+          "identity-join",
+          "raw-B"
+        ],
+        "exclusiveOutputRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/post-raw-validation-fanout-v01/normalization-repeat/process-B/",
+        "exclusiveEvidenceRoot": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/post-raw-validation-fanout-v01/normalization-repeat/process-B/",
+        "dependsOn": [
+          "identity-join:settled"
+        ],
+        "executionOwner": "south-normalization-repeat-B",
+        "state": "blocked",
+        "joinCondition": "process B normalization repeat closes with deterministic identity"
+      },
+      {
+        "jobId": "normalization-repeat-C",
+        "frozenInputs": [
+          "identity-join",
+          "raw-C"
+        ],
+        "exclusiveOutputRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/post-raw-validation-fanout-v01/normalization-repeat/process-C/",
+        "exclusiveEvidenceRoot": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/post-raw-validation-fanout-v01/normalization-repeat/process-C/",
+        "dependsOn": [
+          "identity-join:settled"
+        ],
+        "executionOwner": "south-normalization-repeat-C",
+        "state": "blocked",
+        "joinCondition": "process C normalization repeat closes with deterministic identity"
+      },
+      {
+        "jobId": "literal-color",
+        "frozenInputs": [
+          "normalization-repeat-A",
+          "normalization-repeat-B",
+          "normalization-repeat-C"
+        ],
+        "exclusiveOutputRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/post-raw-validation-fanout-v01/literal-scale/color/",
+        "exclusiveEvidenceRoot": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/post-raw-validation-fanout-v01/literal-scale/color/",
+        "dependsOn": [
+          "normalization-repeat-A:settled",
+          "normalization-repeat-B:settled",
+          "normalization-repeat-C:settled"
+        ],
+        "executionOwner": "south-literal-color-validator",
+        "state": "blocked",
+        "joinCondition": "literal-192 color validation settles"
+      },
+      {
+        "jobId": "literal-grayscale",
+        "frozenInputs": [
+          "normalization-repeat-A",
+          "normalization-repeat-B",
+          "normalization-repeat-C"
+        ],
+        "exclusiveOutputRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/outputs/post-raw-validation-fanout-v01/literal-scale/grayscale/",
+        "exclusiveEvidenceRoot": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/post-raw-validation-fanout-v01/literal-scale/grayscale/",
+        "dependsOn": [
+          "normalization-repeat-A:settled",
+          "normalization-repeat-B:settled",
+          "normalization-repeat-C:settled"
+        ],
+        "executionOwner": "south-literal-grayscale-validator",
+        "state": "blocked",
+        "joinCondition": "literal-192 grayscale recognition validation settles"
+      },
+      {
+        "jobId": "contact-sheet",
+        "frozenInputs": [
+          "normalization-repeat-A",
+          "normalization-repeat-B",
+          "normalization-repeat-C"
+        ],
+        "exclusiveOutputRoot": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/post-raw-validation-fanout-v01/literal-scale/contact-sheet-pixels/",
+        "exclusiveEvidenceRoot": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/post-raw-validation-fanout-v01/literal-scale/contact-sheet/",
+        "dependsOn": [
+          "normalization-repeat-A:settled",
+          "normalization-repeat-B:settled",
+          "normalization-repeat-C:settled"
+        ],
+        "executionOwner": "south-contact-sheet-job",
+        "state": "blocked",
+        "joinCondition": "source/native-2x/literal-192 contact-sheet evidence settles"
+      },
+      {
+        "jobId": "packet-assembly",
+        "frozenInputs": [
+          "literal-color",
+          "literal-grayscale",
+          "contact-sheet",
+          "sourceStageSchema",
+          "sourceStageSemanticValidator"
+        ],
+        "exclusiveOutputRoot": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/FUTURE-SOURCE-STAGE-V2-HANDOFF.json",
+        "exclusiveEvidenceRoot": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/post-raw-validation-fanout-v01/assembler/",
+        "dependsOn": [
+          "literal-color:settled",
+          "literal-grayscale:settled",
+          "contact-sheet:settled"
+        ],
+        "executionOwner": "play-080-south-source-assembler-v01",
+        "state": "blocked",
+        "joinCondition": "all required jobs settle; exactly one assembler validates and exclusively writes the source-stage-v2 packet"
+      }
+    ]
+  },
+  "deterministicValidatorEntrypoints": [
+    {
+      "role": "grant_boundary_and_fresh_process",
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/schedule-consumer-adapter-v01/test_consume_schedule_v01.py",
+      "sha256": "ddd3e7b3d7407d17bd0e3cf8f39b1423b4908acff5dab808714e927c3a733640",
+      "result": "PASS_17_OF_17"
+    },
+    {
+      "role": "reserved_root_and_locator_boundary",
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/test_renderer_locator_inventory.py",
+      "sha256": "624342daa84cac80e67035ef08df57a714617091636b7485ae00368083b886cd",
+      "result": "PASS_1_OF_1"
+    },
+    {
+      "role": "post_raw_job_graph_and_join_boundary",
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/post-raw-validation-fanout-v01/test_validate_post_raw_fanout_v01.py",
+      "sha256": "b6581c70f6db92fdfd8d5de24799cc739ffc7fb3ff7a3cf465a6a6009de9036b",
+      "result": "BLOCKED_12_PASS_1_FAIL_1_ERROR",
+      "rejectionCode": "BOUND_INPUT_HASH_MISMATCH",
+      "details": {
+        "role": "claim",
+        "expectedSha256": "6ccd0313c078b24fc1b1a42806434480f46fd9fe705dd51c26015b174be95973",
+        "actualSha256": "5e07bef53399485140a710b6297825c5276cb48f61a6e15032eb1c358d8bcde6"
+      },
+      "reportWritten": false
+    }
+  ],
+  "reusedPassingEvidence": [
+    {
+      "path": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/EXECUTION-CLOSURE-V01-VALIDATION.json",
+      "sha256": "13b03e373907979c84874135e28a34eb607f0e15ddd5df913ad2b25fd655e6a7",
+      "result": "PASS_VALIDATION_ONLY_ZERO_CHILD"
+    },
+    {
+      "path": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/EXECUTION-CLOSURE-POST-UPGRADE-REPLAY-5D86E804.json",
+      "sha256": "4c746ad32b36248e382338e36debd498870a0ce2f3b2c0c4130314032ceb2dfc",
+      "result": "PASS_VALIDATION_ONLY_POST_UPGRADE_REPLAY"
+    },
+    {
+      "path": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/POST-RAW-VALIDATION-FANOUT-V01-PROOF.json",
+      "sha256": "161db06394d82af83c0977bc5575838495f6e4f8c242da61635f5e15b0590643",
+      "result": "HISTORICAL_PASS_PRELOCK_BLOCKED"
+    },
+    {
+      "path": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/RENDERER-LOCATOR-INVENTORY.json",
+      "sha256": "b95b36fd7d08699ef48b7b73984530597ce132ff94f377729c53288a8e786213",
+      "result": "PASS_TASK_OWNED_ROOT_INVENTORY"
+    }
+  ],
+  "executionAccounting": {
+    "readyNow": 0,
+    "running": 0,
+    "waitingOnJoin": 0,
+    "waitingOnJoinPeak": 3,
+    "serializedAuthority": {
+      "owner": "visible South lane owner",
+      "scope": [
+        "visible worktree mutation",
+        "Git index and commit",
+        "governed evidence and handoff assembly"
+      ]
+    },
+    "nextRefill": "Integration review must authorize a versioned revision-6 post-raw fanout validator successor or a scoped task-owned repair; A/B/C additionally remain blocked until exact appearance lock, source-production profile, post-lock authority, schedule instance, and A/B/C grants publish",
+    "capacity": {
+      "availableVisibleLaneOwners": 1,
+      "availableInternalHelperSlots": 3,
+      "availableDccProcessSlots": 0,
+      "eligibleIndependentValidationJobs": 3,
+      "launchedIndependentValidationJobs": 3,
+      "peakRunningValidationJobs": 3
+    },
+    "actualOverlap": {
+      "proven": true,
+      "scope": "read-only validation helpers only; not DCC or source production",
+      "basis": "coordinator-observed concurrent tool-call intervals",
+      "startUtc": "2026-07-30T11:45:02.311Z",
+      "endUtc": "2026-07-30T11:45:02.541Z",
+      "minimumAllThreeOverlapMilliseconds": 230,
+      "jobIds": [
+        "grant-and-fresh-process-boundary",
+        "job-graph-root-and-join-boundary",
+        "reserved-root-and-locator-boundary"
+      ]
+    },
+    "jobs": [
+      {
+        "jobId": "grant-and-fresh-process-boundary",
+        "executionOwner": "parallel-read-only-tool-call-1",
+        "state": "joined",
+        "startUtc": "2026-07-30T11:45:02.311Z",
+        "endUtc": "2026-07-30T11:45:05.670Z",
+        "joinCondition": "exitCode=0 and PASS_17_OF_17",
+        "result": "PASS_17_OF_17",
+        "exclusiveOutputRoot": "suite-owned temporary roots outside the visible worktree"
+      },
+      {
+        "jobId": "job-graph-root-and-join-boundary",
+        "executionOwner": "parallel-read-only-tool-call-2",
+        "state": "blocked",
+        "startUtc": "2026-07-30T11:45:02.311Z",
+        "endUtc": "2026-07-30T11:45:02.765Z",
+        "joinCondition": "exitCode=0 and all tests pass",
+        "result": "BLOCKED_12_PASS_1_FAIL_1_ERROR",
+        "exclusiveOutputRoot": "no output; read-only test and dry-run verifier"
+      },
+      {
+        "jobId": "reserved-root-and-locator-boundary",
+        "executionOwner": "parallel-read-only-tool-call-3",
+        "state": "joined",
+        "startUtc": "2026-07-30T11:45:02.311Z",
+        "endUtc": "2026-07-30T11:45:02.541Z",
+        "joinCondition": "exitCode=0 and PASS_1_OF_1",
+        "result": "PASS_1_OF_1",
+        "exclusiveOutputRoot": "suite-owned temporary root outside the visible worktree"
+      }
+    ],
+    "unusedCapacityReasons": [
+      {
+        "capacity": "DCC process slots",
+        "reason": "claim revision 6 and this dispatch authorize zero DCC, Blender, render, and pixel activity"
+      }
+    ]
+  },
+  "blockers": [
+    {
+      "code": "MISSING_APPEARANCE_LOCK",
+      "owner": "Integration",
+      "effect": "raw A/B/C remain blocked"
+    },
+    {
+      "code": "MISSING_SOURCE_PRODUCTION_PROFILE",
+      "owner": "Integration",
+      "effect": "raw A/B/C remain blocked"
+    },
+    {
+      "code": "MISSING_POSTLOCK_PRODUCTION_AUTHORITY",
+      "owner": "Integration",
+      "effect": "raw A/B/C remain blocked"
+    },
+    {
+      "code": "MISSING_PARALLEL_EXECUTION_SCHEDULE_INSTANCE",
+      "owner": "Integration",
+      "effect": "no process lease or queue order exists"
+    },
+    {
+      "code": "MISSING_PER_PROCESS_GRANTS",
+      "owner": "Integration",
+      "effect": "authenticated launch boundary must start zero children"
+    },
+    {
+      "code": "STALE_POST_RAW_FANOUT_CLAIM_BINDING",
+      "owner": "South only if Integration issues scoped revision-6 repair authority",
+      "effect": "post-raw validator entrypoint rejects current claim before root and join validation",
+      "expectedClaimSha256": "6ccd0313c078b24fc1b1a42806434480f46fd9fe705dd51c26015b174be95973",
+      "actualClaimSha256": "5e07bef53399485140a710b6297825c5276cb48f61a6e15032eb1c358d8bcde6"
+    }
+  ],
+  "activity": {
+    "blenderDccProcesses": 0,
+    "childStarts": 0,
+    "contactSheetInvocations": 0,
+    "imageGenInvocations": 0,
+    "liveLeases": 0,
+    "normalizerInvocations": 0,
+    "pixelFiles": 0,
+    "renderInvocations": 0,
+    "sourcePackets": 0
+  },
+  "disposition": {
+    "handoffPrepared": true,
+    "launchReady": false,
+    "sourceReady": false,
+    "childStartAuthorized": false,
+    "dccExecutionAuthorized": false,
+    "pixelAuthorized": false,
+    "normalizationAuthorized": false,
+    "admissionAuthorized": false,
+    "shippingAuthorized": false,
+    "selfAccepted": false,
+    "independentIntegrationReviewRequired": true
+  },
+  "result": "BLOCKED_PREPARED_POSTLOCK_ABC_EXECUTION_HANDOFF"
+}

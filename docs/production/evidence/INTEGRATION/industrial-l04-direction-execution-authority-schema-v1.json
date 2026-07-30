@@ -1,0 +1,480 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "citysim://integration/industrial-l04-direction-execution-authority-v1",
+  "title": "Industrial L4 direction execution-closure authority v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schemaVersion",
+    "testProtocolRevision",
+    "batch",
+    "mode",
+    "issuedAt",
+    "task",
+    "schedule",
+    "appearanceLock",
+    "sourceProductionProfile",
+    "grant",
+    "artifacts",
+    "exclusiveRoots",
+    "executionEnvelope",
+    "authentication",
+    "disposition"
+  ],
+  "properties": {
+    "$schema": {
+      "const": "citysim://integration/industrial-l04-direction-execution-authority-v1"
+    },
+    "schemaVersion": {
+      "const": 1
+    },
+    "testProtocolRevision": {
+      "const": 6
+    },
+    "batch": {
+      "const": "industrial_l04_directional_family"
+    },
+    "mode": {
+      "const": "validation_only"
+    },
+    "issuedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "task": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "taskId",
+        "direction",
+        "branch",
+        "claimPath",
+        "claimRevision",
+        "claimSha256",
+        "publishedBaseCommit"
+      ],
+      "properties": {
+        "taskId": {
+          "enum": [
+            "PLAY-027",
+            "PLAY-079",
+            "PLAY-080",
+            "PLAY-081"
+          ]
+        },
+        "direction": {
+          "enum": [
+            "north",
+            "east",
+            "south",
+            "west"
+          ]
+        },
+        "branch": {
+          "pattern": "^codex/citysim-world-art(-east|-south|-west)?$"
+        },
+        "claimPath": {
+          "type": "string",
+          "minLength": 1
+        },
+        "claimRevision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "claimSha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "publishedBaseCommit": {
+          "$ref": "#/$defs/gitCommit"
+        }
+      }
+    },
+    "schedule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "sha256",
+        "publicationCommit",
+        "phase"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "publicationCommit": {
+          "$ref": "#/$defs/gitCommit"
+        },
+        "phase": {
+          "enum": [
+            "prelock_north_a",
+            "postlock_abc"
+          ]
+        }
+      }
+    },
+    "appearanceLock": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/$defs/publishedFileBinding"
+        }
+      ]
+    },
+    "sourceProductionProfile": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/$defs/publishedFileBinding"
+        }
+      ]
+    },
+    "grant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "grantId",
+        "process",
+        "queueId",
+        "slotId",
+        "maximumChildStarts",
+        "exactlyOneInvocation",
+        "orchestratorOnly",
+        "directLowLevelInvocationAllowed"
+      ],
+      "properties": {
+        "grantId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "process": {
+          "enum": [
+            "A",
+            "B",
+            "C"
+          ]
+        },
+        "queueId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "slotId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "maximumChildStarts": {
+          "const": 1
+        },
+        "exactlyOneInvocation": {
+          "const": true
+        },
+        "orchestratorOnly": {
+          "const": true
+        },
+        "directLowLevelInvocationAllowed": {
+          "const": false
+        }
+      }
+    },
+    "artifacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "executionContract",
+        "directionScheduleAdapter",
+        "highLevelOrchestrator",
+        "runnerContract",
+        "runnerEntrypoint",
+        "scene",
+        "materials",
+        "toolchain"
+      ],
+      "properties": {
+        "executionContract": {
+          "$ref": "#/$defs/workerFileBinding"
+        },
+        "directionScheduleAdapter": {
+          "$ref": "#/$defs/workerFileBinding"
+        },
+        "highLevelOrchestrator": {
+          "$ref": "#/$defs/workerFileBinding"
+        },
+        "runnerContract": {
+          "$ref": "#/$defs/workerFileBinding"
+        },
+        "runnerEntrypoint": {
+          "$ref": "#/$defs/workerFileBinding"
+        },
+        "scene": {
+          "$ref": "#/$defs/workerFileBinding"
+        },
+        "materials": {
+          "$ref": "#/$defs/workerFileBinding"
+        },
+        "toolchain": {
+          "$ref": "#/$defs/workerFileBinding"
+        }
+      }
+    },
+    "exclusiveRoots": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "output",
+        "evidence",
+        "attempt",
+        "terminal"
+      ],
+      "properties": {
+        "output": {
+          "$ref": "#/$defs/repositoryPath"
+        },
+        "evidence": {
+          "$ref": "#/$defs/repositoryPath"
+        },
+        "attempt": {
+          "$ref": "#/$defs/repositoryPath"
+        },
+        "terminal": {
+          "$ref": "#/$defs/repositoryPath"
+        }
+      }
+    },
+    "executionEnvelope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "timeoutSeconds",
+        "maximumRSSBytes",
+        "cpuThreadLimit",
+        "startNewProcessGroup",
+        "killProcessGroupOnLimit",
+        "postReapProcessGroupExhaustionRequired",
+        "networkAllowed",
+        "leasePath",
+        "leaseMustBeFresh",
+        "replayAllowed"
+      ],
+      "properties": {
+        "timeoutSeconds": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 7200
+        },
+        "maximumRSSBytes": {
+          "type": "integer",
+          "minimum": 1048576,
+          "maximum": 68719476736
+        },
+        "cpuThreadLimit": {
+          "const": 1
+        },
+        "startNewProcessGroup": {
+          "const": true
+        },
+        "killProcessGroupOnLimit": {
+          "const": true
+        },
+        "postReapProcessGroupExhaustionRequired": {
+          "const": true
+        },
+        "networkAllowed": {
+          "const": false
+        },
+        "leasePath": {
+          "type": "string",
+          "pattern": "^/private/tmp/citysim-industrial-l04-(north|east|south|west)-[a-z0-9._-]+\\.lock$"
+        },
+        "leaseMustBeFresh": {
+          "const": true
+        },
+        "replayAllowed": {
+          "const": false
+        }
+      }
+    },
+    "authentication": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "secretTransport",
+        "secretSha256",
+        "rawSecretPersisted",
+        "childCapability"
+      ],
+      "properties": {
+        "secretTransport": {
+          "const": "anonymous_pipe"
+        },
+        "secretSha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "rawSecretPersisted": {
+          "const": false
+        },
+        "childCapability": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "algorithm",
+            "capabilityId",
+            "audience",
+            "boundGrantId",
+            "payloadSha256",
+            "macSha256",
+            "oneTime",
+            "replayAllowed"
+          ],
+          "properties": {
+            "algorithm": {
+              "const": "HMAC-SHA256"
+            },
+            "capabilityId": {
+              "type": "string",
+              "minLength": 1
+            },
+            "audience": {
+              "const": "industrial-l04-direction-child"
+            },
+            "boundGrantId": {
+              "type": "string",
+              "minLength": 1
+            },
+            "payloadSha256": {
+              "$ref": "#/$defs/sha256"
+            },
+            "macSha256": {
+              "$ref": "#/$defs/sha256"
+            },
+            "oneTime": {
+              "const": true
+            },
+            "replayAllowed": {
+              "const": false
+            }
+          }
+        }
+      }
+    },
+    "disposition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "validationOnly",
+        "liveLeaseAuthorized",
+        "childStartAuthorized",
+        "dccExecutionAuthorized",
+        "renderAuthorized",
+        "pixelAuthorized",
+        "sourceCandidateReady",
+        "appearanceAccepted",
+        "sourceProfileActivated",
+        "integrationAdmitted",
+        "rendererQuarantined",
+        "productionSelected",
+        "shippingAuthorized"
+      ],
+      "properties": {
+        "validationOnly": {
+          "const": true
+        },
+        "liveLeaseAuthorized": {
+          "const": false
+        },
+        "childStartAuthorized": {
+          "const": false
+        },
+        "dccExecutionAuthorized": {
+          "const": false
+        },
+        "renderAuthorized": {
+          "const": false
+        },
+        "pixelAuthorized": {
+          "const": false
+        },
+        "sourceCandidateReady": {
+          "const": false
+        },
+        "appearanceAccepted": {
+          "const": false
+        },
+        "sourceProfileActivated": {
+          "const": false
+        },
+        "integrationAdmitted": {
+          "const": false
+        },
+        "rendererQuarantined": {
+          "const": false
+        },
+        "productionSelected": {
+          "const": false
+        },
+        "shippingAuthorized": {
+          "const": false
+        }
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "gitCommit": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "repositoryPath": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[^/].*$"
+    },
+    "workerFileBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "properties": {
+        "path": {
+          "$ref": "#/$defs/repositoryPath"
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "publishedFileBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "sha256",
+        "publicationCommit"
+      ],
+      "properties": {
+        "path": {
+          "$ref": "#/$defs/repositoryPath"
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "publicationCommit": {
+          "$ref": "#/$defs/gitCommit"
+        }
+      }
+    }
+  }
+}

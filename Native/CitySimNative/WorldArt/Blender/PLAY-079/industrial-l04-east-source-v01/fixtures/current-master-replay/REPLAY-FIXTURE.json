@@ -84,5 +84,19 @@
       "value": "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/",
       "expectedCode": "output_root_mismatch"
     }
+  ],
+  "captureAdversaries": [
+    {
+      "id": "symlinked_git_blob",
+      "expectedCode": "git_symlink_mode_rejected"
+    },
+    {
+      "id": "terminal_replacement",
+      "expectedCode": "input_terminal_replaced"
+    },
+    {
+      "id": "in_place_mutation",
+      "expectedCode": "input_changed_during_read"
+    }
   ]
 }

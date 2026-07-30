@@ -17,7 +17,7 @@
 - **Accepted v06 bridge candidate:**
   `3e01ca6738d7574718f9aeff4b66771eee109feb`
 - **Validation/proof:** alias/coverage matrix; prompt/provenance/hash completeness; four-direction geometry and pivot reports; alpha/chroma checks; grayscale family recognition; actual-scale contact sheets; independent source-art review
-- **Status:** Active. Residential L1–L4, Commercial L1–L4, Industrial L1, and Industrial L2 have accepted source and shipping outcomes. Industrial L3 source authority is complete; replacement-R2 renderer ingestion is active and production selection remains pending staged and independent QA. Industrial L4 North v11 is durably rejected at `bd6a460024b8b6ebffde4b5894d69063100d3d9b`. North v12 zero-pixel compound-pier implementation, replay identity, and mechanical internal-face proof are integrated through `aef61b2c27ec295a3f088f41031f35e20bc13bc9`. Integration now authorizes only a task-local, pure-data `blender-lowering-v01` implementation plus exactly two sequential no-render static Blender imports under `INDUSTRIAL-L04-NORTH-V12-BLENDER-LOWERING-AUTHORITY.md`. No rendered/Cycles/appearance/source compatibility claim, source pixels, Process A/B/C, appearance lock, sibling release, admission, or shipping are authorized.
+- **Status:** Active. Residential L1–L4, Commercial L1–L4, Industrial L1, and Industrial L2 have accepted source and shipping outcomes. Industrial L3 replacement-R2 is integrated at `472ffa85cd35639a675c1c2e4ede748c94446a7f` and awaits its sole same-SHA player-facing QA gate. Industrial L4 North v11 is durably rejected at `bd6a460024b8b6ebffde4b5894d69063100d3d9b`. North v12 zero-pixel compound-pier implementation, replay identity, and mechanical internal-face proof are integrated through `aef61b2c27ec295a3f088f41031f35e20bc13bc9`. The first `static-a` import is durably rejected at `12bcb1a2c740d30cebdc975c2f0882f63de6b6cf`. Integration now authorizes only an additive task-local `static-a-recovery-v01` contract, launcher, validator, tests, and exactly one replacement no-render `static-a` process under `INDUSTRIAL-L04-NORTH-V12-STATIC-A-RECOVERY-AUTHORITY.md`. The original failure root is immutable. No `static-b`, rendered/Cycles/appearance/source compatibility claim, source pixels, Process A/B/C, appearance lock, sibling release, admission, or shipping are authorized.
 - **Latest L4 disposition:** Integration accepted the v06 zero-pixel global
   coordinate bridge from `3e01ca67`. Canonical North is `z = -28`, the global
   basis is `B(x,y,z)=(z,x,y)`, descriptor order is `[0,1,2,3]`, and the North
@@ -35,9 +35,13 @@
   The first Z-only v12 proposal was rejected in memory. The separately reviewed
   compound-pier v12 topology, two sequential analytic replays, and mechanical
   removal of six internal same-owner face fragments are now integrated. The
-  next bounded slice may author only a North/v12-local canonical mesh IR and a
-  thin static Blender importer, then execute exactly two sequential no-render
-  static imports under the published lowering authority.
+  North/v12-local canonical mesh IR and thin static Blender importer are
+  retained at `c609d1cd44c8a188f702894002a0fdd7d79a1d47`; the first static import
+  failure is retained at `12bcb1a2c740d30cebdc975c2f0882f63de6b6cf`.
+  The next bounded slice may add only the recovery contract, launcher,
+  validator, tests, and immutable replacement `static-a` evidence authorized
+  by the published recovery authority. The original implementation and failed
+  evidence remain unchanged, and `static-b` remains blocked.
   The unchanged v10 emission value is not luma proof and must be re-proved in a
   later separately authorized Process A.
   North Process A/B/C, sibling source pixels, appearance-lock publication,

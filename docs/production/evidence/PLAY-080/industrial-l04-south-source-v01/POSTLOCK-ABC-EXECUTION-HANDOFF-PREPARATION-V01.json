@@ -4,7 +4,7 @@
   "direction": "south",
   "branch": "codex/citysim-world-art-south",
   "stage": "prelock_validation_only_handoff_prepared_blocked",
-  "preparedFromHead": "565c7f0bab461d7c90b8a6f731c23849424a5bb7",
+  "preparedFromHead": "8a5124d578c6278505c1c7bc68d77c1951aca81f",
   "sourceReady": false,
   "authorities": {
     "publishedMaster": {
@@ -93,13 +93,24 @@
     },
     "postRawFanoutContract": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/post-raw-validation-fanout-v01/CONTRACT.json",
-      "sha256": "4db0ec45245602848da5905565dd9008e2133a0547c4104e17619d9bc96a7489"
+      "sha256": "3c2ae40bd59134cdb866a4a8daebc9dddadde2f8078cae4aa40cc2176d98cb5c"
     },
     "postRawFanoutValidator": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/post-raw-validation-fanout-v01/validate_post_raw_fanout_v01.py",
-      "sha256": "a9b08104cb10029a42080f62d490c9c79e798f511ab1a25203e1b33c0f3dde45",
-      "currentResult": "BLOCKED_STALE_CLAIM_BINDING"
+      "sha256": "44c9bd0fb33a9f53f6eb9c6d794f35777a243e97b1dc5296eb1f2f2ae034bfb2",
+      "currentResult": "PASS_REVISION_6_CLAIM_BINDING"
     }
+  },
+  "bindingRepair": {
+    "commit": "8a5124d578c6278505c1c7bc68d77c1951aca81f",
+    "publishedMaster": "5d86e804be679c765c2465c60ceaee72f3702c48",
+    "publishedMasterTree": "a1784f69bba2c7352093502fc4700140c4887171",
+    "claimBlobOid": "5b16e18a8a646d24133c58fcd5275b9f49516abd",
+    "claimSha256": "5e07bef53399485140a710b6297825c5276cb48f61a6e15032eb1c358d8bcde6",
+    "completeValidatorResult": "PASS_14_OF_14",
+    "deterministicDryRun": "PASS_REPEAT_IDENTICAL_NO_WRITE",
+    "deterministicDryRunProofSha256": "ddc40fc56256353bbb3c25f7c38ee6d244598d370e759ec0d3b8d69992b328e1",
+    "deterministicDryRunReportWritten": false
   },
   "directionRoots": {
     "sourcePrefix": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/",
@@ -423,13 +434,8 @@
       "role": "post_raw_job_graph_and_join_boundary",
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/post-raw-validation-fanout-v01/test_validate_post_raw_fanout_v01.py",
       "sha256": "b6581c70f6db92fdfd8d5de24799cc739ffc7fb3ff7a3cf465a6a6009de9036b",
-      "result": "BLOCKED_12_PASS_1_FAIL_1_ERROR",
-      "rejectionCode": "BOUND_INPUT_HASH_MISMATCH",
-      "details": {
-        "role": "claim",
-        "expectedSha256": "6ccd0313c078b24fc1b1a42806434480f46fd9fe705dd51c26015b174be95973",
-        "actualSha256": "5e07bef53399485140a710b6297825c5276cb48f61a6e15032eb1c358d8bcde6"
-      },
+      "result": "PASS_14_OF_14",
+      "deterministicDryRun": "PASS_REPEAT_IDENTICAL_NO_WRITE",
       "reportWritten": false
     }
   ],
@@ -468,7 +474,7 @@
         "governed evidence and handoff assembly"
       ]
     },
-    "nextRefill": "Integration review must authorize a versioned revision-6 post-raw fanout validator successor or a scoped task-owned repair; A/B/C additionally remain blocked until exact appearance lock, source-production profile, post-lock authority, schedule instance, and A/B/C grants publish",
+    "nextRefill": "A/B/C remain blocked until Integration publishes the exact appearance lock, source-production profile, post-lock authority, schedule instance, and A/B/C grants",
     "capacity": {
       "availableVisibleLaneOwners": 1,
       "availableInternalHelperSlots": 3,
@@ -481,44 +487,44 @@
       "proven": true,
       "scope": "read-only validation helpers only; not DCC or source production",
       "basis": "coordinator-observed concurrent tool-call intervals",
-      "startUtc": "2026-07-30T11:45:02.311Z",
-      "endUtc": "2026-07-30T11:45:02.541Z",
-      "minimumAllThreeOverlapMilliseconds": 230,
+      "startUtc": "2026-07-30T12:00:34.188Z",
+      "endUtc": "2026-07-30T12:00:34.384Z",
+      "minimumAllThreeOverlapMilliseconds": 196,
       "jobIds": [
-        "grant-and-fresh-process-boundary",
-        "job-graph-root-and-join-boundary",
-        "reserved-root-and-locator-boundary"
+        "fanout-binding-and-determinism",
+        "reserved-root-isolation",
+        "fresh-process-and-grant-boundary"
       ]
     },
     "jobs": [
       {
-        "jobId": "grant-and-fresh-process-boundary",
+        "jobId": "fanout-binding-and-determinism",
         "executionOwner": "parallel-read-only-tool-call-1",
         "state": "joined",
-        "startUtc": "2026-07-30T11:45:02.311Z",
-        "endUtc": "2026-07-30T11:45:05.670Z",
-        "joinCondition": "exitCode=0 and PASS_17_OF_17",
-        "result": "PASS_17_OF_17",
+        "startUtc": "2026-07-30T12:00:34.188Z",
+        "endUtc": "2026-07-30T12:00:35.574Z",
+        "joinCondition": "exitCode=0 and PASS_14_OF_14",
+        "result": "PASS_14_OF_14",
         "exclusiveOutputRoot": "suite-owned temporary roots outside the visible worktree"
       },
       {
-        "jobId": "job-graph-root-and-join-boundary",
+        "jobId": "reserved-root-isolation",
         "executionOwner": "parallel-read-only-tool-call-2",
-        "state": "blocked",
-        "startUtc": "2026-07-30T11:45:02.311Z",
-        "endUtc": "2026-07-30T11:45:02.765Z",
-        "joinCondition": "exitCode=0 and all tests pass",
-        "result": "BLOCKED_12_PASS_1_FAIL_1_ERROR",
-        "exclusiveOutputRoot": "no output; read-only test and dry-run verifier"
-      },
-      {
-        "jobId": "reserved-root-and-locator-boundary",
-        "executionOwner": "parallel-read-only-tool-call-3",
         "state": "joined",
-        "startUtc": "2026-07-30T11:45:02.311Z",
-        "endUtc": "2026-07-30T11:45:02.541Z",
+        "startUtc": "2026-07-30T12:00:34.188Z",
+        "endUtc": "2026-07-30T12:00:34.384Z",
         "joinCondition": "exitCode=0 and PASS_1_OF_1",
         "result": "PASS_1_OF_1",
+        "exclusiveOutputRoot": "suite-owned temporary root outside the visible worktree"
+      },
+      {
+        "jobId": "fresh-process-and-grant-boundary",
+        "executionOwner": "parallel-read-only-tool-call-3",
+        "state": "joined",
+        "startUtc": "2026-07-30T12:00:34.188Z",
+        "endUtc": "2026-07-30T12:00:37.688Z",
+        "joinCondition": "exitCode=0 and PASS_17_OF_17",
+        "result": "PASS_17_OF_17",
         "exclusiveOutputRoot": "suite-owned temporary root outside the visible worktree"
       }
     ],
@@ -554,13 +560,6 @@
       "code": "MISSING_PER_PROCESS_GRANTS",
       "owner": "Integration",
       "effect": "authenticated launch boundary must start zero children"
-    },
-    {
-      "code": "STALE_POST_RAW_FANOUT_CLAIM_BINDING",
-      "owner": "South only if Integration issues scoped revision-6 repair authority",
-      "effect": "post-raw validator entrypoint rejects current claim before root and join validation",
-      "expectedClaimSha256": "6ccd0313c078b24fc1b1a42806434480f46fd9fe705dd51c26015b174be95973",
-      "actualClaimSha256": "5e07bef53399485140a710b6297825c5276cb48f61a6e15032eb1c358d8bcde6"
     }
   ],
   "activity": {
@@ -587,5 +586,5 @@
     "selfAccepted": false,
     "independentIntegrationReviewRequired": true
   },
-  "result": "BLOCKED_PREPARED_POSTLOCK_ABC_EXECUTION_HANDOFF"
+  "result": "PASS_PREPARED_POSTLOCK_ABC_EXECUTION_HANDOFF_BLOCKED_AUTHORITIES"
 }

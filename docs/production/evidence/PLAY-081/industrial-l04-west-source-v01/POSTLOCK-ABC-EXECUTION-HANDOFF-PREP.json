@@ -14,20 +14,17 @@
   "assemblerJoin": {
     "contract": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/REVIEW-ASSEMBLY-PREP-CONTRACT.json",
-      "sha256": "bd280eabb97332c8e1fddff16a127b0fb565d4cb4407234f0c2b9b3533927059"
+      "sha256": "78a081b81ac75b0eeaf227ae9d8057ce364a6a595a39d89cfd593765192a426f"
     },
     "currentValidation": {
-      "errors": [
-        "binding:claim:content",
-        "binding:executionContract:content"
-      ],
-      "passedTests": 6,
-      "state": "blocked_stale_task_owned_bindings",
+      "errors": [],
+      "passedTests": 8,
+      "state": "passed_zero_pixel_prelock",
       "testsRun": 8
     },
     "entrypoint": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/validate_review_assembly_prep.py",
-      "sha256": "da0dce31202e1ef72e6a26991d79ccf2397b9373e9846513d42228acd8a3c564"
+      "sha256": "27089eb3808bb26a46375c9129a2ae81115654904d4e5414d24908fdd1c8004b"
     },
     "requiredSettledGates": [
       "appearanceLockBound",
@@ -56,8 +53,7 @@
     "West process B launch grant is not published or bound",
     "West process C launch grant is not published or bound",
     "live execution-authority instance and lease are not published",
-    "production execution and production receipt emission remain disabled",
-    "review-assembly contract still binds the revision-4 claim and pre-closure execution-contract hashes"
+    "production execution and production receipt emission remain disabled"
   ],
   "branch": "codex/citysim-world-art-west",
   "claim": {
@@ -106,17 +102,18 @@
       "phase1": {
         "joinedWhileFreshRootReplayRunning": [
           {
-            "job": "root-path-fresh-absence",
-            "result": "PASS_3_PROCESSES_9_ROOTS_10_RECEIPTS_ABSENT"
+            "durationSeconds": 0.614,
+            "job": "review-assembly-bindings",
+            "result": "PASS_8_OF_8"
           },
           {
-            "durationSeconds": 2.358,
+            "durationSeconds": 2.253,
             "job": "west-orchestration",
             "result": "PASS_32_OF_32"
           }
         ],
         "launchedTogether": [
-          "root-path-fresh-absence",
+          "review-assembly-bindings",
           "west-orchestration",
           "fresh-root-execution-closure"
         ]
@@ -125,19 +122,13 @@
         "freshRootReplayStillRunning": true,
         "launchedIntoFreedSlots": [
           {
-            "durationSeconds": 0.023,
-            "job": "schedule-consumer",
-            "result": "PASS_8_OF_8"
-          },
-          {
-            "durationSeconds": 0.656,
-            "job": "review-assembly",
-            "result": "RETURN_6_OF_8"
+            "job": "packet-hash-check",
+            "result": "EXPECTED_REGEN_ONLY_REVIEW_BINDINGS"
           }
         ]
       },
       "phase3": {
-        "durationSeconds": 79.967,
+        "durationSeconds": 78.925,
         "job": "fresh-root-execution-closure",
         "result": "PASS_5_OF_5"
       }
@@ -150,11 +141,11 @@
     "nextRefill": [
       "Integration publishes exact appearance lock and locked material mapping",
       "Integration publishes source-production profile, production schedule, per-process grants, authority instance, and lease",
-      "Integration grants a focused repair for the stale review-assembly contract and validator bindings"
+      "Integration reviews the regenerated West post-lock preparation packet"
     ],
     "readyNow": [],
     "running": [],
-    "safeJobsActuallyLaunched": 5,
+    "safeJobsActuallyLaunched": 4,
     "serializedAuthority": [
       "visible West lane owner is sole governed handoff and Git writer",
       "future direction-local assembler is the sole final packet writer",
@@ -216,7 +207,7 @@
   },
   "head": {
     "currentPublishedMaster": "5d86e804be679c765c2465c60ceaee72f3702c48",
-    "preparedAt": "81211bf47def632b19f094d756ae0a7078646331",
+    "preparedAt": "f47b4cc74f635f091dd555c0f9c6dbb7383b1cf7",
     "publishedMasterIsAncestor": true
   },
   "jobGraph": {

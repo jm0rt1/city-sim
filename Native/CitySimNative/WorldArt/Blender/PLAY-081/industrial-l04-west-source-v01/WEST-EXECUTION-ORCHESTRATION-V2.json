@@ -6,14 +6,14 @@
   "branch": "codex/citysim-world-art-west",
   "implementationBaseline": {
     "preservedWestAncestor": "73cd3d408ff6cb65e8137f26f8d25c1f42f7a81d",
-    "publishedMaster": "cda04083bd50df3a0cd99923c8ad571afd62509b",
+    "publishedMaster": "d4f18ea3b1ccfd522f3b5e877bc7cb742fd9be09",
     "claimRevision": 6,
     "claimSha256": "52f90aafd67d7bb8083b84e3704ea8eb14c577db7bf9f20145016f36bc6c14aa"
   },
   "executionClosureV1": {
     "mode": "validation_only",
     "testProtocolRevision": 6,
-    "publishedBase": "cda04083bd50df3a0cd99923c8ad571afd62509b",
+    "publishedBase": "d4f18ea3b1ccfd522f3b5e877bc7cb742fd9be09",
     "claim": {
       "path": "docs/production/claims/PLAY-081.world-art-west.md",
       "revision": 6,

@@ -236,7 +236,7 @@ def execution_closure_contract_errors(
     if closure.get("testProtocolRevision") != 6:
         errors.append("execution-closure:protocol-revision")
     if closure.get("publishedBase") != (
-        "cda04083bd50df3a0cd99923c8ad571afd62509b"
+        "d4f18ea3b1ccfd522f3b5e877bc7cb742fd9be09"
     ):
         errors.append("execution-closure:published-base")
     if closure.get("claim") != {

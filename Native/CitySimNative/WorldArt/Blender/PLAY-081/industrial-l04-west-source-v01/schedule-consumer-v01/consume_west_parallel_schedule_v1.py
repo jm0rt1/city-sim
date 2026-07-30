@@ -198,7 +198,7 @@ def contract_errors(root: Path, contract: dict[str, Any]) -> list[str]:
         "direction": "west",
         "branch": "codex/citysim-world-art-west",
         "stage": "execution_closure_validation_only",
-        "publishedBase": "cda04083bd50df3a0cd99923c8ad571afd62509b",
+        "publishedBase": "d4f18ea3b1ccfd522f3b5e877bc7cb742fd9be09",
         "sourceReady": False,
         "productionSelected": False,
     }

@@ -2,7 +2,7 @@
   "schema": "citysim.play-081.west-review-assembly-prep.v1",
   "schemaVersion": 1,
   "stage": "zero_pixel_prelock",
-  "currentIntegrationBaseline": "69b62e78f6012115d5d1221cea3a34e26cae5683",
+  "currentIntegrationBaseline": "d4f18ea3b1ccfd522f3b5e877bc7cb742fd9be09",
   "identity": {
     "taskId": "PLAY-081",
     "direction": "west",
@@ -21,7 +21,7 @@
     },
     "executionContract": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/WEST-EXECUTION-ORCHESTRATION-V2.json",
-      "sha256": "005d6c980232a212b5566f33ffeab0d293e001c1e98de754819ba550c6caf56e"
+      "sha256": "434bbf95c1f225773b72f5087a31995c89482f8d18e112ae4daf410c85fcc890"
     },
     "pathSafety": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/west_path_safety.py",

@@ -25,7 +25,7 @@ DEFAULT_CONTRACT = f"{SOURCE_ROOT}/REVIEW-ASSEMBLY-PREP-CONTRACT.json"
 DEFAULT_CASES = (
     f"{SOURCE_ROOT}/fixtures/review-assembly-prep/FAIL-CLOSED-CASES.json"
 )
-CURRENT_INTEGRATION = "69b62e78f6012115d5d1221cea3a34e26cae5683"
+CURRENT_INTEGRATION = "d4f18ea3b1ccfd522f3b5e877bc7cb742fd9be09"
 EXPECTED_IDENTITY = {
     "taskId": "PLAY-081",
     "direction": "west",
@@ -49,7 +49,7 @@ EXPECTED_BINDINGS = {
     "executionContract": {
         "path": f"{SOURCE_ROOT}/WEST-EXECUTION-ORCHESTRATION-V2.json",
         "sha256": (
-            "005d6c980232a212b5566f33ffeab0d293e001c1e98de754819ba550c6caf56e"
+            "434bbf95c1f225773b72f5087a31995c89482f8d18e112ae4daf410c85fcc890"
         ),
     },
     "pathSafety": {

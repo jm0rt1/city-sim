@@ -27,7 +27,7 @@ import consume_west_parallel_schedule_v1 as consumer  # noqa: E402
 import run_west_source as low_level_runner  # noqa: E402
 
 
-PUBLISHED_BASE = "cda04083bd50df3a0cd99923c8ad571afd62509b"
+PUBLISHED_BASE = "d4f18ea3b1ccfd522f3b5e877bc7cb742fd9be09"
 AUTHORITY_PATH = (
     "docs/production/evidence/INTEGRATION/"
     "INDUSTRIAL-L04-WEST-EXECUTION-CLOSURE-TEST-V1.json"

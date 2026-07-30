@@ -1,7 +1,7 @@
 {
   "adapter": {
     "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/schedule-consumer-v01/consume_west_parallel_schedule_v1.py",
-    "sha256": "65eca83d2709d8082bd72b6bca794f0e7e4109f123b801e724b934c351e34492"
+    "sha256": "44384b0b9983b91312f87bef6d2302a5c2dec5bb3153103fea01e4ad48ca3451"
   },
   "adapterAuthority": {
     "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTION-SCHEDULE-ADAPTER-AUTHORITY.md",
@@ -42,14 +42,14 @@
   },
   "orchestrationContract": {
     "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/WEST-EXECUTION-ORCHESTRATION-V2.json",
-    "sha256": "005d6c980232a212b5566f33ffeab0d293e001c1e98de754819ba550c6caf56e"
+    "sha256": "434bbf95c1f225773b72f5087a31995c89482f8d18e112ae4daf410c85fcc890"
   },
   "orchestrator": {
     "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/west_execution_orchestration_v2.py",
-    "sha256": "ac1d5de2350fc195a734ace7429bdd2b9a72d5cd1ca9ffa56b50152402925a73"
+    "sha256": "ad73320de9d6b778e460a1b55c45bc60c881b5e9bd1b3435504b97909b870870"
   },
   "productionSelected": false,
-  "publishedBase": "cda04083bd50df3a0cd99923c8ad571afd62509b",
+  "publishedBase": "d4f18ea3b1ccfd522f3b5e877bc7cb742fd9be09",
   "readinessEvidence": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/schedule-consumer-v01/EXECUTION-CLOSURE-V1.json",
   "releaseInputs": {
     "appearanceLock": {

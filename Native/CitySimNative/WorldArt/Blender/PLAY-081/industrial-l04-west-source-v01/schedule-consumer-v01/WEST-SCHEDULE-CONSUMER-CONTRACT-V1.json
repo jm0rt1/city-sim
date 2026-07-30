@@ -1,7 +1,7 @@
 {
   "adapter": {
     "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/schedule-consumer-v01/consume_west_parallel_schedule_v1.py",
-    "sha256": "6fe3c7eb521e14c41157dcf7991f9cf709d273a943da0312b31f619ad8b3d45e"
+    "sha256": "44384b0b9983b91312f87bef6d2302a5c2dec5bb3153103fea01e4ad48ca3451"
   },
   "adapterAuthority": {
     "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTION-SCHEDULE-ADAPTER-AUTHORITY.md",
@@ -9,15 +9,15 @@
   },
   "branch": "codex/citysim-world-art-west",
   "childPolicy": {
-    "adapterInvokesOrchestrator": false,
+    "adapterInvokesHighLevelOrchestratorForValidationOnly": true,
     "adapterStartsChildren": false,
     "directLowLevelInvocationAllowed": false,
     "maximumChildStartsWhileBlocked": 0
   },
   "claim": {
     "path": "docs/production/claims/PLAY-081.world-art-west.md",
-    "revision": 5,
-    "sha256": "1217b496e8b8f1645a848db5fc4c0e858a1c7341aba3cd755a6808ae67e037d3"
+    "revision": 6,
+    "sha256": "52f90aafd67d7bb8083b84e3704ea8eb14c577db7bf9f20145016f36bc6c14aa"
   },
   "direction": "west",
   "exclusiveRoots": [
@@ -28,17 +28,29 @@
     "path": "docs/production/decisions/CONTRACT-010-directional-building-art.md",
     "sha256": "0ee2d68a9dba4694d92a864bfeb5a91970c88fe87d893e1898de7b26d38609af"
   },
+  "executionClosureAuthority": {
+    "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTION-EXECUTION-CLOSURE-V1-AUTHORITY.md",
+    "sha256": "0125539f015ab8069c11093e755ac6e43d7b37994c86515fc06894e401b7eb54"
+  },
+  "executionClosureSchema": {
+    "path": "docs/production/evidence/INTEGRATION/industrial-l04-direction-execution-authority-schema-v1.json",
+    "sha256": "2796e224780c259b29d68b50cb12cdbbe45452535da681bba3522af920459491"
+  },
+  "executionClosureValidator": {
+    "path": ".agents/skills/operate-citysim-integration/scripts/validate_industrial_l04_direction_execution_authority_v1.py",
+    "sha256": "b212d2776d34b3334910c6b0b02ffba244919f4a83d5c0019c30bca87648d8ae"
+  },
   "orchestrationContract": {
     "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/WEST-EXECUTION-ORCHESTRATION-V2.json",
-    "sha256": "f1e7a4c6d4aa0198b5bed92d1993b3630d205b3862f0fbbcc2e00757c7da74c0"
+    "sha256": "434bbf95c1f225773b72f5087a31995c89482f8d18e112ae4daf410c85fcc890"
   },
   "orchestrator": {
-    "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/run_west_source.py",
-    "sha256": "c8dd97a111bf898afe4a81de5557fa94d788581ee2ed37110e4f691011ec64e9"
+    "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/west_execution_orchestration_v2.py",
+    "sha256": "ad73320de9d6b778e460a1b55c45bc60c881b5e9bd1b3435504b97909b870870"
   },
   "productionSelected": false,
-  "publishedBase": "a2c9bde77233a167d60ae7afa6ea77021d39c92b",
-  "readinessEvidence": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/schedule-consumer-v01/ZERO-CHILD-READINESS.json",
+  "publishedBase": "d4f18ea3b1ccfd522f3b5e877bc7cb742fd9be09",
+  "readinessEvidence": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/schedule-consumer-v01/EXECUTION-CLOSURE-V1.json",
   "releaseInputs": {
     "appearanceLock": {
       "path": null,
@@ -75,6 +87,10 @@
     "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/RUNNER-CONTRACT.json",
     "sha256": "ac87bd1013daaa8e21a6204bdd09969489a4e237698b3e95c135949968fe6be1"
   },
+  "runnerEntrypoint": {
+    "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/run_west_source.py",
+    "sha256": "4c77e5b66d325aef46ddfc368145ced007255900e9d2bba4c32ea01d315780e9"
+  },
   "scheduleSchema": {
     "path": "docs/production/evidence/INTEGRATION/industrial-l04-parallel-execution-schedule-schema-v1.json",
     "sha256": "6eba2291f9cb548a8ddd08961bdffe3a18c9546b293a08f094711b38aa0840c6"
@@ -86,7 +102,7 @@
     "sha256": "086ff2f2cb7d0c030d0039b48b3b66f7e6c314dd97a705b8f0a8a41fda0bbb04"
   },
   "sourceReady": false,
-  "stage": "parallel_zero_pixel_launch_readiness",
+  "stage": "execution_closure_validation_only",
   "target": {
     "phase": "postlock_abc",
     "processes": [

@@ -5,10 +5,54 @@
   "direction": "west",
   "branch": "codex/citysim-world-art-west",
   "implementationBaseline": {
-    "preservedWestAncestor": "c4a8b8f5bac5b864eb4595514a983f54a273aef3",
-    "publishedMaster": "aeaecb0bef4e7fe1e9670b1d57bd49b50b4eeab7",
-    "claimRevision": 4,
-    "claimSha256": "da46ae05307fa9fcff2af889e15b5270dca461c85ad136dce52ba72e921c35e8"
+    "preservedWestAncestor": "73cd3d408ff6cb65e8137f26f8d25c1f42f7a81d",
+    "publishedMaster": "d4f18ea3b1ccfd522f3b5e877bc7cb742fd9be09",
+    "claimRevision": 6,
+    "claimSha256": "52f90aafd67d7bb8083b84e3704ea8eb14c577db7bf9f20145016f36bc6c14aa"
+  },
+  "executionClosureV1": {
+    "mode": "validation_only",
+    "testProtocolRevision": 6,
+    "publishedBase": "d4f18ea3b1ccfd522f3b5e877bc7cb742fd9be09",
+    "claim": {
+      "path": "docs/production/claims/PLAY-081.world-art-west.md",
+      "revision": 6,
+      "sha256": "52f90aafd67d7bb8083b84e3704ea8eb14c577db7bf9f20145016f36bc6c14aa"
+    },
+    "sharedSchema": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-direction-execution-authority-schema-v1.json",
+      "sha256": "2796e224780c259b29d68b50cb12cdbbe45452535da681bba3522af920459491"
+    },
+    "sharedValidator": {
+      "path": ".agents/skills/operate-citysim-integration/scripts/validate_industrial_l04_direction_execution_authority_v1.py",
+      "sha256": "b212d2776d34b3334910c6b0b02ffba244919f4a83d5c0019c30bca87648d8ae"
+    },
+    "sharedAuthority": {
+      "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTION-EXECUTION-CLOSURE-V1-AUTHORITY.md",
+      "sha256": "0125539f015ab8069c11093e755ac6e43d7b37994c86515fc06894e401b7eb54"
+    },
+    "directionScheduleAdapter": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/schedule-consumer-v01/consume_west_parallel_schedule_v1.py",
+    "highLevelOrchestrator": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/west_execution_orchestration_v2.py",
+    "lowLevelRunner": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/run_west_source.py",
+    "frozenArtifacts": {
+      "scene": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/execution-closure-v01/SCENE-BINDING.json",
+      "materials": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/execution-closure-v01/MATERIALS-BINDING.json",
+      "toolchain": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/execution-closure-v01/TOOLCHAIN-BINDING.json"
+    },
+    "authorityInstance": {
+      "state": "not_published",
+      "path": null,
+      "publicationCommit": null,
+      "sha256": null
+    },
+    "zeroChildBoundary": {
+      "validationOnly": true,
+      "liveLeaseAuthorized": false,
+      "childStartAuthorized": false,
+      "dccExecutionAuthorized": false,
+      "renderAuthorized": false,
+      "pixelAuthorized": false
+    }
   },
   "frozenDesignAuthority": {
     "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-PARALLEL-EXECUTION-CONTRACT-CANDIDATE.md",

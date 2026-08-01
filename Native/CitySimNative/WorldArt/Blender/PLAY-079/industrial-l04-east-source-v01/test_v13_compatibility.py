@@ -22,7 +22,7 @@ EAST_MATERIALS = ROOT.parent / "industrial-l04-east-predesign-v01" / "materials.
 SEMANTIC_AUTHORITY = ROOT.parents[5] / "docs" / "production" / "evidence" / "PLAY-027" / "industrial-l04" / "l04" / "blender-north-art-v13" / "design-authority-v01" / "DESIGN-AUTHORITY.json"
 SEMANTIC_MATERIALS = ROOT.parents[5] / "Native" / "CitySimNative" / "WorldArt" / "Blender" / "PLAY-027" / "industrial-l04-north-art-v13" / "DESIGN-MATERIALS.json"
 BRIDGE = ROOT.parents[5] / "Native" / "CitySimNative" / "WorldArt" / "Blender" / "PLAY-027" / "industrial-l04-direction-bridge-v06" / "MAPPING-CONTRACT.json"
-PARENT_CANDIDATE = "073a4d2c141ec8d7d93c98b8679d73ffe3e70c1e"
+PARENT_CANDIDATE = "bfcb9622c23413e82202298e38718792996b385c"
 EXPECTED_SOURCE_MAPPING = {
     "v13-grounded-foundation": "formed-concrete",
     "v13-integrated-operating-apron": "contact-shadow",
@@ -36,6 +36,21 @@ EXPECTED_SOURCE_MAPPING = {
     "v13-oxidized-process-machinery": "safety-oxide",
     "v13-restrained-hot-process": "hot-process",
     "v13-warm-staff-glazing": "glazing-louver",
+}
+EXPECTED_COMPONENT_BINDINGS = {
+    "east-v13-grounded-foundation": ("foundation", "v13-grounded-foundation", "formed-concrete"),
+    "east-v13-operating-apron": ("apron", "v13-integrated-operating-apron", "contact-shadow"),
+    "east-v13-foundry-hall": ("mass", "v13-warm-foundry-masonry", "warm-weathered-masonry"),
+    "east-v13-portal-south-jamb": ("portal-frame", "v13-charcoal-structural-steel", "dark-painted-steel"),
+    "east-v13-portal-north-jamb": ("portal-frame", "v13-charcoal-structural-steel", "dark-painted-steel"),
+    "east-v13-portal-header": ("portal-frame", "v13-warm-control-masonry", "formed-concrete"),
+    "east-v13-deep-freight-void": ("portal-inset", "v13-deep-freight-void", "portal-void"),
+    "east-v13-crown-lower": ("portal-crown", "v13-portal-crown-steel", "roof-edge-metal"),
+    "east-v13-crown-middle": ("portal-crown", "v13-weathered-bluegreen-roof", "roof-edge-metal"),
+    "east-v13-crown-high": ("portal-crown", "v13-clerestory-and-roof-edge", "glazing-louver"),
+    "east-v13-hot-process": ("hot-process", "v13-restrained-hot-process", "hot-process"),
+    "east-v13-northwest-process-stack": ("process-stack", "v13-oxidized-process-machinery", "safety-oxide"),
+    "east-v13-south-staff-annex": ("staff-annex", "v13-warm-staff-glazing", "glazing-louver"),
 }
 
 
@@ -116,20 +131,53 @@ def union_bounds(items: list[dict[str, float]]) -> dict[str, float]:
     return {key: (min(item[key] for item in items) if key.endswith("Min") else max(item[key] for item in items)) for key in ("xMin", "xMax", "yMin", "yMax", "zMin", "zMax")}
 
 
-def expected_camera_position(camera: dict) -> list[float]:
-    yaw = math.radians(camera["yawDegrees"])
-    elevation = math.radians(camera["elevationDegrees"])
-    horizontal = camera["distance"] * math.cos(elevation)
-    return [
-        camera["target"][0] + horizontal * math.cos(yaw),
-        camera["target"][1] - horizontal * math.sin(yaw),
-        camera["target"][2] + camera["distance"] * math.sin(elevation),
-    ]
-
-
 def derived_component_signature(components: list[dict]) -> str:
     payload = [{key: item[key] for key in ("id", "kind", "bounds", "semanticRole", "targetRole", "materialRole")} for item in components]
     return hashlib.sha256(canonical(payload)).hexdigest()
+
+
+def flatten_components(components: list[dict]) -> list[dict]:
+    flattened = []
+    for component in components:
+        flattened.append(component)
+        children = component.get("children", [])
+        if not isinstance(children, list):
+            fail("recursive_geometry")
+        flattened.extend(flatten_components(children))
+    return flattened
+
+
+def derived_raw_geometry_signature(components: list[dict]) -> str:
+    payload = [{"id": item["id"], "bounds": item["bounds"]} for item in flatten_components(components)]
+    return hashlib.sha256(canonical(payload)).hexdigest()
+
+
+def _bounds_key(bounds: dict[str, float]) -> tuple[float, ...]:
+    return tuple(round(float(bounds[key]), 9) for key in ("xMin", "xMax", "yMin", "yMax", "zMin", "zMax"))
+
+
+def _moving_interval_overlap(center: float, half_width: float, direction: float, low: float, high: float) -> tuple[float, float]:
+    other_center = (low + high) / 2.0
+    combined_half_width = half_width + (high - low) / 2.0
+    if abs(direction) < 1e-12:
+        return (-float("inf"), float("inf")) if abs(center - other_center) < combined_half_width else (1.0, 0.0)
+    endpoints = (
+        (other_center - center - combined_half_width) / direction,
+        (other_center - center + combined_half_width) / direction,
+    )
+    return min(endpoints), max(endpoints)
+
+
+def camera_occludes_aperture(bounds: dict[str, float], aperture: dict[str, float], camera: dict) -> bool:
+    direction = _normalize(_subtract(camera["position"], camera["target"]))
+    intervals = [
+        _moving_interval_overlap((aperture["xMin"] + aperture["xMax"]) / 2.0, (aperture["xMax"] - aperture["xMin"]) / 2.0, direction[0], bounds["xMin"], bounds["xMax"]),
+        _moving_interval_overlap(aperture["yMax"], 0.0, direction[1], bounds["yMin"], bounds["yMax"]),
+        _moving_interval_overlap((aperture["zMin"] + aperture["zMax"]) / 2.0, (aperture["zMax"] - aperture["zMin"]) / 2.0, direction[2], bounds["zMin"], bounds["zMax"]),
+    ]
+    near = max(1e-6, *(interval[0] for interval in intervals))
+    far = min(interval[1] for interval in intervals)
+    return near < far
 
 
 def validate_packet(packet: dict, check_files: bool = True) -> dict:
@@ -146,7 +194,12 @@ def validate_packet(packet: dict, check_files: bool = True) -> dict:
 
     authority = packet["authority"]
     if authority["authorityCommit"] != "d010d453af87c040ac13e8b3b7280366cb5094c1" or authority["baseCommit"] != authority["authorityCommit"]: fail("authority")
-    if authority["routeId"] != "quality-v1:east-v13-derived-proof-repair-r2b" or authority["routeSha256"] != "7bb3e27a97e347f368478da5fb4a2acb035ccff7dc23bc5fc54dea3632dba5a0": fail("route_binding")
+    if authority["routeId"] != "quality-v1:east-v13-frontier-recovery" or authority["routeSha256"] != "44d2b3bd77ebc10d2d94e7352ac8ef6f166410b946100f4429e44a45ea688f6c": fail("route_binding")
+    if authority["dispatchReceipt"] != {
+        "carrierCommit": "e92afb8c4c91a16876379003d60698ce690d4519",
+        "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-EAST-V13-FRONTIER-RECOVERY-V1.json",
+        "sha256": "97711459fb59382bd6a35676473dce8e63fb37996ecca2532365d3f69d4f740c",
+    }: fail("route_binding")
     if authority["claim"]["sha256"] != "abccb0be0550e092565ecca076db717f73f45ed833fe485853338a8de1bff017": fail("claim_binding")
     if check_files:
         if sha(CLAIM) != authority["claim"]["sha256"]: fail("claim_hash")
@@ -154,39 +207,48 @@ def validate_packet(packet: dict, check_files: bool = True) -> dict:
         if sha(SEMANTIC_MATERIALS) != authority["publishedSemanticInputs"][1]["sha256"]: fail("semantic_materials_hash")
         if sha(BRIDGE) != packet["coordinateBridge"]["sha256"]: fail("bridge_hash")
 
+    bridge_contract = load(BRIDGE)
+    bridge_direction = bridge_contract["directions"]["east"]
+    bridge_registration = bridge_contract["registration"]
+    bridge_camera = bridge_contract["camera"]
     registration = packet["eastRegistration"]
     if registration["citySimFootprint"] != {"width": 72.0, "depth": 72.0}: fail("citysim_footprint")
     if registration["dccFootprint"] != {"width": 56.0, "depth": 56.0, "halfExtent": 28.0}: fail("dcc_footprint")
     if registration["citySimSocket"] != [28.0, 0.0, 0.0] or registration["sourceSocket"] != [896.0, 832.0]: fail("east_socket")
-    if registration["groundPivot"] != [28.0, -28.0, 0.0] or registration["sourceGroundPivot"] != [768.0, 896.0]: fail("east_pivot")
+    if registration["groundPivot"] != bridge_registration["pivotBlender"] or registration["sourceGroundPivot"] != bridge_registration["pivotSource"]: fail("east_pivot")
     if registration["orientationTransform"] != "none": fail("registration_transform")
-    expected_pivot = [registration["citySimSocket"][0], registration["citySimSocket"][1] - registration["dccFootprint"]["halfExtent"], registration["citySimSocket"][2]]
-    if registration["groundPivot"] != expected_pivot: fail("east_pivot")
+    if registration["citySimSocket"] != bridge_direction["socketCitySim"] or registration["sourceSocket"] != bridge_direction["socketSource"]: fail("east_socket")
 
     camera = packet["camera"]
     if camera["projection"] != "orthographic" or camera["view"] != "southeast-looking-northwest": fail("camera_kind")
-    if camera["target"] != [0.0, 0.0, 22.861902498201186] or camera["distance"] != 420.0: fail("camera_drift")
-    if any(not math.isclose(actual, expected, rel_tol=0, abs_tol=1e-9) for actual, expected in zip(camera["position"], expected_camera_position(camera))): fail("camera_drift")
-    if camera["yawDegrees"] != 45.0 or camera["elevationDegrees"] != 30.0: fail("camera_drift")
-    if camera["shift"] != [0.0, 0.08333333333333333] or camera.get("derivedFromBridge") is not True: fail("camera_drift")
-    if camera["resolution"] != [1536, 1024] or camera["literalResolution"] != [192, 128]: fail("camera_resolution")
-    if camera["orthoScale"] != 237.5878601074218: fail("camera_drift")
+    expected_position = bridge_camera["blenderPosition"]
+    expected_target = bridge_camera["blenderTarget"]
+    expected_distance = math.sqrt(sum((actual - target) ** 2 for actual, target in zip(expected_position, expected_target)))
+    camera_delta = _subtract(camera["position"], camera["target"])
+    derived_yaw = math.degrees(math.atan2(camera_delta[1], camera_delta[0]))
+    derived_elevation = math.degrees(math.asin(camera_delta[2] / camera["distance"]))
+    if camera["position"] != expected_position or camera["target"] != expected_target or not math.isclose(camera["distance"], expected_distance, rel_tol=0, abs_tol=1e-9): fail("camera_drift")
+    if not math.isclose(camera["yawDegrees"], derived_yaw, rel_tol=0, abs_tol=1e-9) or not math.isclose(camera["elevationDegrees"], derived_elevation, rel_tol=0, abs_tol=1e-9): fail("camera_drift")
+    if camera["shift"] != [bridge_camera["shiftX"], bridge_camera["shiftY"]] or camera.get("derivedFromBridge") is not True: fail("camera_drift")
+    if camera["resolution"] != bridge_camera["renderViewportPixels"] or camera["literalResolution"] != [192, 128]: fail("camera_resolution")
+    if camera["orthoScale"] != bridge_camera["blenderOrthographicScale"]: fail("camera_drift")
     if check_files:
         east_scene = load(EAST_SCENE)
         east_materials = load(EAST_MATERIALS)
-        if camera["orthoScale"] != east_scene["camera"]["orthoScale"] or camera["shift"] != [east_scene["camera"]["shiftX"], east_scene["camera"]["shiftY"]] or camera["distance"] != east_scene["camera"]["distance"]: fail("camera_drift")
         if camera["literalResolution"] != east_scene["camera"]["literalResolution"]: fail("camera_literal_drift")
         scene_registration = east_scene["registration"]
         if registration["citySimFootprint"] != scene_registration["citySimFootprint"] or registration["dccFootprint"]["width"] != scene_registration["dccFootprint"]["width"] or registration["dccFootprint"]["depth"] != scene_registration["dccFootprint"]["depth"]: fail("east_registration")
-        if registration["citySimSocket"] != scene_registration["frontageSocket"] or registration["groundPivot"] != scene_registration["groundPivot"]: fail("east_registration")
+        if registration["citySimSocket"] != scene_registration["frontageSocket"]: fail("east_registration")
         if registration["sourceSocket"] != scene_registration["expectedSourcePixels"]["frontageSocket"] or registration["sourceGroundPivot"] != scene_registration["expectedSourcePixels"]["groundPivot"]: fail("east_registration")
+        if packet["sourceBindings"]["eastScene"]["sha256"] != sha(EAST_SCENE) or packet["sourceBindings"]["eastScene"]["consumedAs"] != "historical-byte-preservation-only": fail("east_scene_binding")
+        if packet["sourceBindings"]["eastMaterials"]["sha256"] != sha(EAST_MATERIALS) or packet["sourceBindings"]["eastMaterials"]["consumedAs"] != "existing-role-inventory-only": fail("east_material_binding")
     else:
         east_materials = load(EAST_MATERIALS)
 
     bridge = packet["coordinateBridge"]
     if bridge["formula"] != "B(CitySim[x,y,z])=Blender[z,x,y]" or bridge["matrixRows"] != [[0, 0, 1], [1, 0, 0], [0, 1, 0]]: fail("bridge_formula")
     if bridge["determinant"] != 1 or bridge["perDirectionTransforms"] is not False or bridge["windingChange"] is not False: fail("bridge_transform")
-    if bridge["eastSocketBlender"] != [0.0, 28.0, 0.0] or bridge["eastOutwardBlender"] != [0.0, 1.0, 0.0]: fail("bridge_east_socket")
+    if bridge["eastSocketBlender"] != bridge_direction["socketBlender"] or bridge["eastOutwardBlender"] != bridge_direction["outwardBlender"]: fail("bridge_east_socket")
     city_socket = registration["citySimSocket"]
     expected_blender_socket = [city_socket[2], city_socket[0], city_socket[1]]
     if bridge["eastSocketBlender"] != expected_blender_socket: fail("bridge_east_socket")
@@ -208,9 +270,13 @@ def validate_packet(packet: dict, check_files: bool = True) -> dict:
     components = plan["components"]
     ids = [item["id"] for item in components]
     if plan["roadFacing"] != "east" or len(ids) != len(set(ids)): fail("portal_identity")
+    if set(ids) != set(EXPECTED_COMPONENT_BINDINGS): fail("component_identity")
     if any(not item["id"].startswith("east-v13-") for item in components): fail("structural_alias")
     if any(item.get("semanticRole") not in mapping or item.get("targetRole") != item.get("semanticRole") or item.get("materialRole") not in existing_roles for item in components): fail("unresolved_material")
     for item in components:
+        expected_kind, expected_semantic, expected_source = EXPECTED_COMPONENT_BINDINGS[item["id"]]
+        if (item["kind"], item["semanticRole"], item["materialRole"]) != (expected_kind, expected_semantic, expected_source): fail("component_material_binding", item["id"])
+        if item["targetRole"] != expected_semantic or item["materialRole"] != source_mapping[expected_semantic]: fail("component_material_binding", item["id"])
         bounds = item["bounds"]
         if not (-28.0 <= bounds["xMin"] <= bounds["xMax"] <= 28.0 and -28.0 <= bounds["yMin"] <= bounds["yMax"] <= 28.0 and 0.0 <= bounds["zMin"] <= bounds["zMax"]): fail("component_bounds", item["id"])
 
@@ -219,7 +285,9 @@ def validate_packet(packet: dict, check_files: bool = True) -> dict:
     by_id = {item["id"]: item for item in components}
     for rule in rules:
         item = by_id[rule["componentId"]]
+        expected_kind, expected_semantic, expected_source = EXPECTED_COMPONENT_BINDINGS[rule["componentId"]]
         if rule["semanticRole"] != item["semanticRole"] or rule["targetRole"] != item["targetRole"] or rule["sourceRole"] != item["materialRole"]: fail("unresolved_material", rule["componentId"])
+        if rule["semanticRole"] != expected_semantic or rule["targetRole"] != expected_semantic or rule["sourceRole"] != expected_source or rule["sourceRole"] != source_mapping[expected_semantic]: fail("lowering_material_binding", rule["componentId"])
         if rule["targetRole"] not in semantic_roles or rule["sourceRole"] not in existing_roles: fail("unresolved_material", rule["componentId"])
         if city_to_blender(rule["citySimBounds"]) != item["bounds"]: fail("lowering_projection", rule["componentId"])
     if len({item["targetRole"] for item in components}) != 12 or len({rule["targetRole"] for rule in rules}) != 12: fail("target_role_injective")
@@ -231,16 +299,33 @@ def validate_packet(packet: dict, check_files: bool = True) -> dict:
     if set(portal["jambComponentIDs"]) != {"east-v13-portal-south-jamb", "east-v13-portal-north-jamb"} or portal["headerComponentID"] != "east-v13-portal-header": fail("missing_portal")
     if portal["freightBeatCount"] != 3 or portal["minimumProcessOccluders"] != 0 or portal["apronTerminatesAtSocket"] is not True: fail("portal_requirements")
     if portal["clearInsetWidthWorld"] < 14.0 or portal["clearInsetHeightWorld"] < 12.0 or portal["jambThicknessWorld"] < 3.0 or portal["headerThicknessWorld"] < 3.0: fail("portal_literal_targets")
+    aperture_bounds = by_id[portal["apertureComponentID"]]["bounds"]
+    outward = bridge["eastOutwardBlender"]
+    if outward != [0.0, 1.0, 0.0]: fail("bridge_east_socket")
+    frontage_coordinate = bridge["eastSocketBlender"][1]
+    if aperture_bounds["yMax"] != frontage_coordinate or aperture_bounds["yMin"] >= frontage_coordinate: fail("east_aperture_placement")
+    if not math.isclose((aperture_bounds["xMin"] + aperture_bounds["xMax"]) / 2.0, bridge["eastSocketBlender"][0], rel_tol=0, abs_tol=1e-9): fail("east_aperture_placement")
+    frontage_ids = portal["jambComponentIDs"] + [portal["headerComponentID"], "east-v13-operating-apron"]
+    if any(by_id[component_id]["bounds"]["yMax"] != frontage_coordinate for component_id in frontage_ids): fail("east_aperture_placement")
     crown_ids = plan["silhouette"]["crownComponentIDs"]
     crown_spans = {tuple((by_id[item]["bounds"]["zMin"], by_id[item]["bounds"]["zMax"])) for item in crown_ids}
     derived_break_count = len({by_id[item]["bounds"]["zMin"] for item in crown_ids})
     if len(crown_ids) != 3 or len(crown_spans) != 3 or plan["silhouette"]["distinctRoofHeightBreaks"] != derived_break_count or derived_break_count < 3: fail("crown_collapse" if len(crown_spans) != 3 else "silhouette_breaks")
+    ordered_crowns = [by_id[item]["bounds"] for item in crown_ids]
+    minimum_world = plan["silhouette"].get("minimumTierEnvelopeSeparationWorld")
+    if minimum_world != 4.0 or any(
+        upper["zMin"] - lower["zMin"] < minimum_world or upper["zMax"] - lower["zMax"] < minimum_world
+        for lower, upper in zip(ordered_crowns, ordered_crowns[1:])
+    ): fail("crown_envelope_collapse")
 
     measured = packet["measuredLiteral192"]
     portal_projection = projected_bounds(union_bounds([by_id[item]["bounds"] for item in portal["jambComponentIDs"] + [portal["headerComponentID"], portal["apertureComponentID"]]]), camera)
     void_projection = projected_bounds(by_id[portal["apertureComponentID"]]["bounds"], camera)
     crown_projection = projected_bounds(union_bounds([by_id[item]["bounds"] for item in crown_ids]), camera)
     crown_band_heights = [projected_bounds(by_id[item]["bounds"], camera)["height"] for item in crown_ids]
+    crown_projected_tops = [projected_bounds(by_id[item]["bounds"], camera)["minY"] for item in crown_ids]
+    minimum_projected = plan["silhouette"].get("minimumProjectedTierBreakSeparationPixels")
+    if minimum_projected != 1.0 or any(abs(upper - lower) < minimum_projected for lower, upper in zip(crown_projected_tops, crown_projected_tops[1:])): fail("crown_envelope_collapse")
     if not math.isclose(measured["portalBoundsPixels"]["outerWidth"], portal_projection["width"], rel_tol=0, abs_tol=0.001) or not math.isclose(measured["portalBoundsPixels"]["outerHeight"], portal_projection["height"], rel_tol=0, abs_tol=0.001): fail("inflated_literal_metric")
     if not math.isclose(measured["portalBoundsPixels"]["clearInsetWidth"], void_projection["width"], rel_tol=0, abs_tol=0.001) or not math.isclose(measured["portalBoundsPixels"]["clearInsetHeight"], void_projection["height"], rel_tol=0, abs_tol=0.001): fail("inflated_literal_metric")
     jamb_widths = [projected_bounds(by_id[item]["bounds"], camera)["width"] for item in portal["jambComponentIDs"]]
@@ -259,22 +344,36 @@ def validate_packet(packet: dict, check_files: bool = True) -> dict:
     if measured["portalBoundsPixels"]["outerWidth"] < 20 or measured["portalBoundsPixels"]["outerHeight"] < 18 or measured["portalBoundsPixels"]["clearInsetWidth"] < 14 or measured["portalBoundsPixels"]["clearInsetHeight"] < 12: fail("literal_portal_bounds")
     if measured["crownBoundsPixels"]["width"] < 20 or len(measured["crownBoundsPixels"]["heightBreaks"]) != 3: fail("literal_crown_bounds")
     apron = by_id["east-v13-operating-apron"]["bounds"]
-    socket_gap_world = max(0.0, registration["citySimSocket"][0] - apron["xMax"])
+    socket_gap_world = max(0.0, bridge["eastSocketBlender"][1] - apron["yMax"])
     expected_socket_gap = socket_gap_world * camera["literalResolution"][0] / camera["resolution"][0]
     if measured["processOccluderCount"] != 0 or not math.isclose(measured["socketApronGapPixels"], expected_socket_gap, rel_tol=0, abs_tol=0.001) or measured["socketApronGapPixels"] > 2: fail("literal_occlusion")
 
     aperture = packet["apertureAudit"]["clearApertureBounds"]
     void_id = "east-v13-deep-freight-void"
-    non_void = [item for item in components if item["id"] != void_id]
+    all_components = flatten_components(components)
+    all_ids = [item["id"] for item in all_components]
+    if len(all_ids) != len(set(all_ids)): fail("raw_geometry_alias")
+    for item in all_components:
+        semantic = item.get("semanticRole")
+        if semantic not in source_mapping or item.get("targetRole") != semantic or item.get("materialRole") != source_mapping[semantic]: fail("component_material_binding", item.get("id", "missing-id"))
+    non_void = [item for item in all_components if item["id"] != void_id]
     audit = packet["apertureAudit"]["auditedComponents"]
-    if packet["apertureAudit"]["nonApertureSolidCount"] != len(non_void) or {item["componentId"] for item in audit} != {item["id"] for item in non_void}: fail("aperture_coverage")
+    if packet["apertureAudit"]["nonApertureSolidCount"] != len(non_void) or packet["apertureAudit"]["recursivelyAuditedSolidCount"] != len(non_void): fail("aperture_coverage")
+    if {item["componentId"] for item in audit} != {item["id"] for item in components if item["id"] != void_id}: fail("aperture_coverage")
+    projected_occluders = []
     for item in non_void:
         if overlap(item["bounds"], aperture) > 0: fail("aperture_collision", item["id"])
+        if camera_occludes_aperture(item["bounds"], aperture, camera):
+            projected_occluders.append(item["id"])
+    if projected_occluders: fail("camera_projected_occlusion", projected_occluders[0])
+    if packet["apertureAudit"].get("cameraProjectedOccluderCount") != 0: fail("camera_projected_occlusion")
     if packet["apertureAudit"]["allIntrusions"] is not False or any(item["intrudes"] or item["overlapAreaWorld2"] != 0.0 for item in audit): fail("aperture_collision")
 
     alias = packet["nonAliasProof"]
     expected_signature = "east-v13-portal-crown::foundation-apron-hall-jamb-jamb-header-void-crown-crown-crown-hot-stack-annex"
-    if alias["structuralSignature"] != expected_signature or alias["derivedComponentSignatureSHA256"] != derived_component_signature(components) or alias["targetCollapse"] is not False or alias["siblingInputsConsumed"] != []: fail("structural_alias")
+    geometry_keys = [_bounds_key(item["bounds"]) for item in all_components]
+    if len(geometry_keys) != len(set(geometry_keys)): fail("raw_geometry_alias")
+    if alias["structuralSignature"] != expected_signature or alias["derivedComponentSignatureSHA256"] != derived_component_signature(components) or alias["derivedRawGeometrySHA256"] != derived_raw_geometry_signature(components) or alias["targetCollapse"] is not False or alias["siblingInputsConsumed"] != []: fail("structural_alias")
     if any(old_id in ids for old_id in alias["priorEastRevisionComponentIDs"]): fail("structural_alias")
 
     changed = packet["changedPathAudit"]
@@ -297,11 +396,11 @@ def validate_packet(packet: dict, check_files: bool = True) -> dict:
         "task": "PLAY-079", "direction": "east", "phase": "V13_ZERO_PIXEL_COMPATIBILITY", "result": "PASS",
         "logicalBuildingID": packet["logicalBuildingID"], "variant": packet["variant"],
         "authority": {"commit": packet["authority"]["authorityCommit"], "routeId": packet["authority"]["routeId"], "routeSha256": packet["authority"]["routeSha256"], "dispatchReceipt": packet["authority"]["dispatchReceipt"]},
-        "checks": {"routeAndAuthority": "PASS", "bridgeAndLowering": "PASS", "eastSocketAndPivot": "PASS", "cameraAndLiteral192": "PASS", "portalAndSilhouette": "PASS", "materialResolution": "PASS", "apertureAudit": "PASS", "nonAlias": "PASS", "pathIsolation": "PASS"},
+        "checks": {"routeAndAuthority": "PASS", "bridgeAndLowering": "PASS", "eastSocketAndPivot": "PASS", "cameraAndLiteral192": "PASS", "eastAperturePlacement": "PASS", "portalAndSilhouette": "PASS", "materialResolution": "PASS", "recursiveApertureAudit": "PASS", "cameraProjectedOcclusion": "PASS", "rawGeometryNonAlias": "PASS", "pathIsolation": "PASS"},
         "socket": {"citySim": registration["citySimSocket"], "blender": bridge["eastSocketBlender"], "source": registration["sourceSocket"]},
         "literal192": measured, "componentCount": len(components), "loweringRuleCount": len(rules), "silhouetteBreakCount": plan["silhouette"]["distinctRoofHeightBreaks"],
         "changedPaths": changed["changedPaths"], "apertureAudit": packet["apertureAudit"],
-        "materialRoleCount": len(mapping), "adversarialCases": ["missing_portal", "unresolved_material", "target_collapse", "camera_drift", "yaw_drift", "elevation_drift", "inflated_literal_metric", "relocated_aperture", "aperture_collision", "crown_collapse", "empty_changed_paths", "wrong_known_material_role", "structural_alias", "path_escape"],
+        "materialRoleCount": len(mapping), "adversarialCases": ["missing_portal", "unresolved_material", "target_collapse", "camera_drift", "yaw_drift", "elevation_drift", "inflated_literal_metric", "relocated_aperture", "aperture_collision", "nested_aperture_occluder", "camera_projected_occluder", "coherent_west_aperture_relocation", "crown_collapse", "near_identical_crown_envelopes", "empty_changed_paths", "wrong_known_material_membership", "duplicate_raw_geometry", "structural_alias", "path_escape"],
         "siblingSceneInputs": [], "renderInvocations": 0, "imagesWritten": 0, "sourceAuthority": False, "productionSelected": False,
         "sourceHashes": {"packetSHA256": sha(PACKET), "eastSceneSHA256": sha(EAST_SCENE), "eastMaterialsSHA256": sha(EAST_MATERIALS), "claimSHA256": sha(CLAIM), "semanticAuthoritySHA256": sha(SEMANTIC_AUTHORITY), "semanticMaterialsSHA256": sha(SEMANTIC_MATERIALS), "bridgeSHA256": sha(BRIDGE)},
     }
@@ -309,6 +408,49 @@ def validate_packet(packet: dict, check_files: bool = True) -> dict:
 
 def adversarial_cases(base: dict) -> list[dict[str, str]]:
     cases = []
+
+    def add_nested(packet: dict, bounds: dict[str, float], child_id: str) -> None:
+        parent = packet["eastFacadePlan"]["components"][2]
+        parent["children"] = [{
+            "id": child_id, "kind": "nested-solid", "bounds": bounds,
+            "semanticRole": parent["semanticRole"], "targetRole": parent["targetRole"], "materialRole": parent["materialRole"],
+        }]
+        packet["apertureAudit"]["nonApertureSolidCount"] += 1
+        packet["apertureAudit"]["recursivelyAuditedSolidCount"] += 1
+
+    def relocate_west(packet: dict) -> None:
+        component_ids = {
+            "east-v13-operating-apron", "east-v13-portal-south-jamb", "east-v13-portal-north-jamb",
+            "east-v13-portal-header", "east-v13-deep-freight-void",
+        }
+        for component in packet["eastFacadePlan"]["components"]:
+            if component["id"] in component_ids:
+                bounds = component["bounds"]
+                bounds["yMin"], bounds["yMax"] = -bounds["yMax"], -bounds["yMin"]
+        for rule in packet["loweringRules"]:
+            if rule["componentId"] in component_ids:
+                bounds = rule["citySimBounds"]
+                bounds["xMin"], bounds["xMax"] = -bounds["xMax"], -bounds["xMin"]
+        aperture = packet["eastFacadePlan"]["components"][6]["bounds"]
+        packet["apertureAudit"]["clearApertureBounds"] = copy.deepcopy(aperture)
+
+    def near_identical_crown(packet: dict) -> None:
+        middle = packet["eastFacadePlan"]["components"][8]["bounds"]
+        high = packet["eastFacadePlan"]["components"][9]["bounds"]
+        high.update({key: value + 0.0001 for key, value in middle.items()})
+        packet["loweringRules"][9]["citySimBounds"] = {
+            "xMin": high["yMin"], "xMax": high["yMax"], "yMin": high["zMin"],
+            "yMax": high["zMax"], "zMin": high["xMin"], "zMax": high["xMax"],
+        }
+
+    def duplicate_raw_geometry(packet: dict) -> None:
+        source = packet["eastFacadePlan"]["components"][10]["bounds"]
+        packet["eastFacadePlan"]["components"][12]["bounds"] = copy.deepcopy(source)
+        packet["loweringRules"][12]["citySimBounds"] = {
+            "xMin": source["yMin"], "xMax": source["yMax"], "yMin": source["zMin"],
+            "yMax": source["zMax"], "zMin": source["xMin"], "zMax": source["xMax"],
+        }
+
     mutations = {
         "missing_portal": lambda p: p["eastFacadePlan"].update({"portal": None}),
         "unresolved_material": lambda p: p["eastFacadePlan"]["components"][0].update({"semanticRole": "missing-role"}),
@@ -317,11 +459,16 @@ def adversarial_cases(base: dict) -> list[dict[str, str]]:
         "yaw_drift": lambda p: p["camera"].update({"yawDegrees": 44.0}),
         "elevation_drift": lambda p: p["camera"].update({"elevationDegrees": 29.0}),
         "inflated_literal_metric": lambda p: p["measuredLiteral192"]["portalBoundsPixels"].update({"outerWidth": 999.0}),
-        "relocated_aperture": lambda p: p["apertureAudit"].update({"clearApertureBounds": {"xMin": 20.0, "xMax": 25.0, "yMin": -11.0, "yMax": 11.0, "zMin": 2.0, "zMax": 22.0}}),
-        "aperture_collision": lambda p: (p["eastFacadePlan"]["components"][0]["bounds"].update({"xMin": 24.0, "xMax": 26.0, "yMin": -2.0, "yMax": 2.0, "zMin": 4.0, "zMax": 8.0}), p["loweringRules"][0].update({"citySimBounds": {"xMin": -2.0, "xMax": 2.0, "yMin": 4.0, "yMax": 8.0, "zMin": 24.0, "zMax": 26.0}})),
+        "relocated_aperture": lambda p: p["apertureAudit"].update({"clearApertureBounds": {"xMin": -8.0, "xMax": 8.0, "yMin": 23.0, "yMax": 28.0, "zMin": 2.0, "zMax": 22.0}}),
+        "aperture_collision": lambda p: (p["eastFacadePlan"]["components"][0]["bounds"].update({"xMin": -2.0, "xMax": 2.0, "yMin": 24.0, "yMax": 26.0, "zMin": 4.0, "zMax": 8.0}), p["loweringRules"][0].update({"citySimBounds": {"xMin": 24.0, "xMax": 26.0, "yMin": 4.0, "yMax": 8.0, "zMin": -2.0, "zMax": 2.0}})),
+        "nested_aperture_occluder": lambda p: add_nested(p, {"xMin": -2.0, "xMax": 2.0, "yMin": 24.0, "yMax": 26.0, "zMin": 4.0, "zMax": 8.0}, "east-v13-nested-aperture-occluder"),
+        "camera_projected_occluder": lambda p: add_nested(p, {"xMin": 3.0, "xMax": 7.0, "yMin": 31.0, "yMax": 35.0, "zMin": 14.0, "zMax": 19.0}, "east-v13-camera-projected-occluder"),
+        "coherent_west_aperture_relocation": relocate_west,
         "crown_collapse": lambda p: (p["eastFacadePlan"]["components"][9]["bounds"].update(copy.deepcopy(p["eastFacadePlan"]["components"][8]["bounds"])), p["loweringRules"][9].update({"citySimBounds": copy.deepcopy(p["loweringRules"][8]["citySimBounds"])})),
+        "near_identical_crown_envelopes": near_identical_crown,
         "empty_changed_paths": lambda p: p["changedPathAudit"].update({"changedPaths": []}),
-        "wrong_known_material_role": lambda p: (p["eastFacadePlan"]["components"][0].update({"materialRole": "dark-painted-steel"}), p["loweringRules"][0].update({"sourceRole": "dark-painted-steel"}), p["sourceRoleMapping"].update({"v13-grounded-foundation": "dark-painted-steel"})),
+        "wrong_known_material_membership": lambda p: (p["eastFacadePlan"]["components"][0].update({"materialRole": "dark-painted-steel"}), p["loweringRules"][0].update({"sourceRole": "dark-painted-steel"})),
+        "duplicate_raw_geometry": duplicate_raw_geometry,
         "structural_alias": lambda p: p["eastFacadePlan"]["components"][0].update({"id": "east-monumental-portal-inset"}),
         "path_escape": lambda p: p["changedPathAudit"].update({"changedPaths": ["../PLAY-080/foreign.json"]}),
     }
@@ -329,8 +476,11 @@ def adversarial_cases(base: dict) -> list[dict[str, str]]:
         "missing_portal": "missing_portal", "unresolved_material": "unresolved_material", "target_collapse": "target_collapse",
         "camera_drift": "camera_drift", "yaw_drift": "camera_drift", "elevation_drift": "camera_drift",
         "inflated_literal_metric": "inflated_literal_metric", "relocated_aperture": "aperture_relocated",
-        "aperture_collision": "aperture_collision", "crown_collapse": "crown_collapse", "empty_changed_paths": "changed_path_inventory",
-        "wrong_known_material_role": "source_material_mapping", "structural_alias": "structural_alias", "path_escape": "path_escape",
+        "aperture_collision": "aperture_collision", "nested_aperture_occluder": "aperture_collision",
+        "camera_projected_occluder": "camera_projected_occlusion", "coherent_west_aperture_relocation": "east_aperture_placement",
+        "crown_collapse": "crown_collapse", "near_identical_crown_envelopes": "crown_envelope_collapse",
+        "empty_changed_paths": "changed_path_inventory", "wrong_known_material_membership": "component_material_binding",
+        "duplicate_raw_geometry": "raw_geometry_alias", "structural_alias": "component_identity", "path_escape": "path_escape",
     }
     for name, mutate in mutations.items():
         candidate = copy.deepcopy(base)

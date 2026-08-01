@@ -3,10 +3,10 @@
   "authorityCommit": "d010d453af87c040ac13e8b3b7280366cb5094c1",
   "assignments": [
     {
-      "modelRouteSha256": "f59bd7fd7ff3edb334e8ae17c9e50201a779338a972161d2a1b65d2e75998c2e",
+      "modelRouteSha256": "7bb3e27a97e347f368478da5fb4a2acb035ccff7dc23bc5fc54dea3632dba5a0",
       "modelRoute": {
         "schema": 1,
-        "routeId": "quality-v1:east-v13-derived-proof-repair-r2",
+        "routeId": "quality-v1:east-v13-derived-proof-repair-r2b",
         "taskId": "PLAY-079",
         "packetKind": "local_debug",
         "classification": "LUNA_LOCAL_DEBUG",
@@ -32,10 +32,6 @@
             {
               "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/DESIGN-MATERIALS.json",
               "sha256": "c8179b77a184e41b723e26b34e7da2ef256b09e93b54a47e76cc5103f22b8cab"
-            },
-            {
-              "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-DIRECTION-V13-PROOF-REPAIRS-V1.json",
-              "sha256": "04d50bc3556f5f169394ad83484de15c34d81acaf1f319a2d60dfc60e69d29d3"
             }
           ]
         },
@@ -124,8 +120,8 @@
               "sha256": "583c5d7be25a7ffdb95f354c6279fe7c309358f65445365203431c51f0e53247"
             },
             {
-              "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-DIRECTION-V13-PROOF-REPAIRS-V1.json",
-              "sha256": "04d50bc3556f5f169394ad83484de15c34d81acaf1f319a2d60dfc60e69d29d3"
+              "path": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/design-authority-v01/DESIGN-AUTHORITY.json",
+              "sha256": "1b1006403081c3933c54451b6c506af74493a2ac3b253fdd9f1f79098d7c1bed"
             }
           ]
         }

@@ -1,9 +1,9 @@
-"""Deterministic, zero-child North v13 Process-A prelaunch closure.
+"""Fail-closed, zero-DCC North v13 Process-A prelaunch recovery.
 
-The prelaunch runner verifies immutable inputs and proves that live authority is
-not present.  It never creates the future process root, starts a child, imports
-Blender, or emits pixels.  A later Integration authority must replace the
-missing-by-design state before any source process can be considered.
+This task-local adapter verifies its Integration carrier from Git, binds an
+explicit execution base, accepts only a closed zero-activity test authority,
+and proves atomic one-shot consumption in an isolated fixture store.  It never
+starts Blender, imports bpy, creates a live grant, or emits source pixels.
 """
 
 from __future__ import annotations
@@ -11,355 +11,435 @@ from __future__ import annotations
 import hashlib
 import hmac
 import json
-from datetime import datetime, timezone
+import os
 from pathlib import Path
+import subprocess
 import sys
 
 
-ROUTE_ID = "quality-v1:north-v13-prelaunch-repair"
-ROUTE_CANONICAL_SHA256 = "f180cedfe88001c7d7d4591b4edd65fd4b654e5c31e0b9ee6e0ad7db8576a2f4"
-EXPECTED_CARRIER = "c791878749416e2caeb03650c8abd859b6bc9525"
-EXPECTED_RECEIPT_PATH = "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-NORTH-V13-PRELAUNCH-REPAIR-V1.json"
-EXPECTED_RECEIPT_SHA256 = "405dbdac13ec2771b3e0f23e061afa77d94b7832f940babe1d4080dc2a81e107"
-EXPECTED_HEAD = "db9ea3d8779127d52d25d536310544aaf58193be"
+ROUTE_ID = "quality-v1:north-v13-prelaunch-frontier-recovery"
+ROUTE_CANONICAL_SHA256 = "e6c4eaff2e2b2121cf3615a1ee29e064b011808b814ae310deebc75fdcd717ee"
+EXPECTED_CARRIER = "3c6023f8331c669d80ae0628246ffbf36ddf4ffc"
+EXPECTED_RECEIPT_PATH = "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-NORTH-V13-PRELAUNCH-FRONTIER-RECOVERY-V1.json"
+EXPECTED_RECEIPT_SHA256 = "bb8697df8ddb0c500b200440d264ee5fb83d93f5b304ef3de03a956a1def9924"
+EXECUTION_BASE_HEAD = "0972e6425fc1be99714689f542773d9a9d631c76"
 EXPECTED_CLAIM = "7d42ba7c38a55d7681171499aad50e15c2d3eba0878cabf508d0e42ee97cdc83"
 EXPECTED_BASE = "73b72fce27d1bcfedcf48b76940ddfa688baa48c"
 EXPECTED_SCENE_ID = "industrial-l04-north-v13-portal-crown-foundry"
 EXPECTED_EXCLUSIVE_ROOT = "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a"
 EXPECTED_RUN_ROOT = EXPECTED_EXCLUSIVE_ROOT + "/run-a"
 EXPECTED_EVIDENCE_ROOT = "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-prelaunch-v01"
-EXPECTED_ALLOWED_ROOTS = (
-    "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-prelaunch-v01",
-    EXPECTED_EVIDENCE_ROOT,
-    EXPECTED_RUN_ROOT,
-)
+EXPECTED_SOURCE_ROOT = "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-prelaunch-v01"
+EXPECTED_ALLOWED_ROOTS = (EXPECTED_SOURCE_ROOT, EXPECTED_EVIDENCE_ROOT, EXPECTED_RUN_ROOT)
 EXPECTED_THREAD = "019f96e0-3793-7542-9172-060a9ca09b0a"
 EXPECTED_WORKTREE = "/Users/James/.codex/worktrees/0648/city-sim"
 EXPECTED_CONSUMPTION_ID = "test-only-north-v13-process-a-attempt-0001"
 
+CONTRACT_KEYS = {
+    "schema", "stage", "task", "route", "claim", "assignment", "identity",
+    "inputs", "output", "authorityState", "registration", "forbiddenActions",
+}
+AUTHORITY_KEYS = {"schema", "kind", "binding", "signature"}
+BINDING_KEYS = {
+    "routeId", "routeCanonicalSHA256", "carrierCommit", "receiptPath",
+    "receiptSHA256", "claimPath", "claimSHA256", "claimRevision",
+    "authorityBase", "assignmentThreadId", "executionBaseHEAD",
+    "logicalBuildingID", "variantID", "viewDirection", "processID", "slotID",
+    "grantId", "dccChildLimit", "exclusiveOutputRoot", "evidenceRoot",
+    "allowedRoots", "consumptionId", "testOnly", "activity",
+}
+ACTIVITY_KEYS = {
+    "childStarts", "processAStarts", "blenderStarts", "dccStarts",
+    "renderStarts", "normalizerStarts", "pixelWrites",
+}
+
+
+def canonical_bytes(value: object) -> bytes:
+    return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+
+
+def bytes_sha256(value: bytes) -> str:
+    return hashlib.sha256(value).hexdigest()
+
 
 def sha256(path: Path) -> str:
     h = hashlib.sha256()
-    with path.open("rb") as f:
-        for block in iter(lambda: f.read(1024 * 1024), b""):
+    with path.open("rb") as stream:
+        for block in iter(lambda: stream.read(1024 * 1024), b""):
             h.update(block)
     return h.hexdigest()
 
 
 def load_json(path: Path) -> dict:
-    with path.open(encoding="utf-8") as f:
-        value = json.load(f)
+    value = json.loads(path.read_text(encoding="utf-8"))
     if not isinstance(value, dict):
         raise ValueError(f"object required: {path}")
     return value
 
 
-def _git_head(root: Path) -> str | None:
-    git_marker = root / ".git"
-    if git_marker.is_file():
-        marker = git_marker.read_text(encoding="utf-8").strip()
-        if marker.startswith("gitdir: "):
-            git_dir = Path(marker[8:])
-        else:
-            git_dir = git_marker
-    else:
-        git_dir = git_marker
-    head = git_dir / "HEAD"
-    if not head.is_file():
-        return None
-    value = head.read_text(encoding="utf-8").strip()
-    if value.startswith("ref: "):
-        ref = git_dir / value[5:]
-        if ref.is_file():
-            return ref.read_text(encoding="utf-8").strip()
-        commondir = git_dir / "commondir"
-        if commondir.is_file():
-            common = Path(commondir.read_text(encoding="utf-8").strip())
-            if not common.is_absolute():
-                common = git_dir / common
-            ref = common / value[5:]
-            return ref.read_text(encoding="utf-8").strip() if ref.is_file() else None
-        return None
-    return value
+def _run_git(root: Path, *args: str, allow_failure: bool = False) -> bytes:
+    allowed = {"cat-file", "show", "rev-parse", "merge-base", "diff", "ls-files"}
+    if not args or args[0] not in allowed:
+        raise ValueError("unapproved helper command")
+    result = subprocess.run(
+        ["git", *args], cwd=root, stdin=subprocess.DEVNULL,
+        stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False,
+    )
+    if result.returncode and not allow_failure:
+        raise ValueError(f"git {' '.join(args)} failed: {result.stderr.decode('utf-8', 'replace').strip()}")
+    return result.stdout
+
+
+def _git_head(root: Path) -> str:
+    return _run_git(root, "rev-parse", "HEAD").decode("ascii").strip()
+
+
+def _git_branch(root: Path) -> str:
+    return _run_git(root, "rev-parse", "--abbrev-ref", "HEAD").decode("utf-8").strip()
 
 
 def _assert_no_symlink(path: Path, root: Path) -> None:
-    current = root
     try:
-        rel_parts = path.relative_to(root).parts
+        parts = path.relative_to(root).parts
     except ValueError as exc:
         raise ValueError(f"path outside repository: {path}") from exc
-    for part in rel_parts:
+    current = root
+    for part in parts:
         current /= part
         if current.is_symlink():
             raise ValueError(f"symlink path rejected: {current}")
 
 
-def validate_contract(root: Path, contract: dict, *, expected_head: str | None = None) -> dict:
+def _changed_paths_from_execution_base(root: Path) -> list[str]:
+    tracked = _run_git(root, "diff", "--name-only", EXECUTION_BASE_HEAD, "--")
+    untracked = _run_git(root, "ls-files", "--others", "--exclude-standard")
+    return sorted({
+        line
+        for raw in (tracked, untracked)
+        for line in raw.decode("utf-8").splitlines()
+        if line
+    })
+
+
+def _path_is_allowed(path: str) -> bool:
+    return any(path == prefix or path.startswith(prefix + "/") for prefix in (EXPECTED_SOURCE_ROOT, EXPECTED_EVIDENCE_ROOT))
+
+
+def verify_carrier_route(root: Path) -> dict:
+    _run_git(root, "cat-file", "-e", EXPECTED_CARRIER + "^{commit}")
+    receipt = _run_git(root, "show", f"{EXPECTED_CARRIER}:{EXPECTED_RECEIPT_PATH}")
+    if bytes_sha256(receipt) != EXPECTED_RECEIPT_SHA256:
+        raise ValueError("carrier receipt byte hash mismatch")
+    dispatch = json.loads(receipt)
+    assignments = dispatch.get("assignments")
+    if not isinstance(assignments, list):
+        raise ValueError("carrier receipt assignments missing")
+    matches = [a for a in assignments if isinstance(a, dict) and isinstance(a.get("modelRoute"), dict) and a["modelRoute"].get("routeId") == ROUTE_ID]
+    if len(matches) != 1:
+        raise ValueError("carrier route row missing or duplicated")
+    wrapper = matches[0]
+    route = wrapper["modelRoute"]
+    route_hash = bytes_sha256(canonical_bytes(route))
+    if route_hash != ROUTE_CANONICAL_SHA256 or wrapper.get("modelRouteSha256") != route_hash:
+        raise ValueError("canonical carrier route mismatch")
+    assignment = route.get("assignment", {})
+    authority = route.get("authority", {})
+    claim = authority.get("claim", {})
+    path_policy = route.get("pathPolicy", {})
+    if assignment != {
+        "branch": "codex/citysim-world-art", "expectedHead": EXECUTION_BASE_HEAD,
+        "featureAuthorThreadId": None, "finalQAOwnership": False,
+        "sharedAuthorityOwnership": False, "subjectiveJudgmentRequired": False,
+        "threadId": EXPECTED_THREAD, "worktree": EXPECTED_WORKTREE,
+    }:
+        raise ValueError("carrier assignment mismatch")
+    if authority.get("authorityCommit") != EXPECTED_BASE or authority.get("baseCommit") != EXPECTED_BASE:
+        raise ValueError("carrier authority/base mismatch")
+    if claim != {"path": "docs/production/claims/PLAY-027.world-art.md", "sha256": EXPECTED_CLAIM}:
+        raise ValueError("carrier claim mismatch")
+    if tuple(path_policy.get("allowed", ())) != EXPECTED_ALLOWED_ROOTS[:2]:
+        raise ValueError("carrier allowed roots mismatch")
+    return {
+        "carrierCommit": EXPECTED_CARRIER,
+        "receiptPath": EXPECTED_RECEIPT_PATH,
+        "receiptSHA256": EXPECTED_RECEIPT_SHA256,
+        "canonicalRouteSHA256": route_hash,
+        "routeId": ROUTE_ID,
+    }
+
+
+def validate_contract(root: Path, contract: dict) -> dict:
+    if set(contract) != CONTRACT_KEYS:
+        raise ValueError("execution contract has unknown or missing top-level fields")
     route = contract["route"]
-    claim = contract["claim"]
-    identity = contract["identity"]
-    if route["routeId"] != ROUTE_ID or route["canonicalSHA256"] != ROUTE_CANONICAL_SHA256:
-        raise ValueError("wrong route")
-    if route.get("carrierCommit") != EXPECTED_CARRIER or route.get("receiptPath") != EXPECTED_RECEIPT_PATH or route.get("receiptSHA256") != EXPECTED_RECEIPT_SHA256:
-        raise ValueError("wrong carrier or receipt binding")
-    if route["authorityCommit"] != EXPECTED_BASE or route["baseCommit"] != EXPECTED_BASE:
-        raise ValueError("wrong authority/base")
-    if route["expectedStartingHEAD"] != EXPECTED_HEAD:
-        raise ValueError("wrong expected starting HEAD")
-    if claim["sha256"] != EXPECTED_CLAIM:
-        raise ValueError("wrong claim hash")
-    if identity["viewDirection"] != "north" or identity["processID"] != "A":
-        raise ValueError("wrong direction/process")
-    if identity.get("slotID") != "north:A":
-        raise ValueError("wrong slot")
-    if identity["sceneGeometryID"] != EXPECTED_SCENE_ID:
-        raise ValueError("wrong scene geometry")
-    assignment = contract["assignment"]
-    if assignment.get("threadId") != EXPECTED_THREAD or assignment.get("branch") != "codex/citysim-world-art" or assignment.get("worktree") != EXPECTED_WORKTREE:
+    expected_route = {
+        "routeId": ROUTE_ID, "canonicalSHA256": ROUTE_CANONICAL_SHA256,
+        "carrierCommit": EXPECTED_CARRIER, "receiptPath": EXPECTED_RECEIPT_PATH,
+        "receiptSHA256": EXPECTED_RECEIPT_SHA256, "authorityCommit": EXPECTED_BASE,
+        "baseCommit": EXPECTED_BASE, "executionBaseHEAD": EXECUTION_BASE_HEAD,
+    }
+    if route != expected_route:
+        raise ValueError("wrong route or execution-base binding")
+    if contract["claim"] != {
+        "path": "docs/production/claims/PLAY-027.world-art.md",
+        "sha256": EXPECTED_CLAIM, "revision": 8,
+    }:
+        raise ValueError("wrong claim binding")
+    if contract["assignment"] != {
+        "threadId": EXPECTED_THREAD, "branch": "codex/citysim-world-art",
+        "worktree": EXPECTED_WORKTREE,
+    }:
         raise ValueError("wrong assignment binding")
+    identity = contract["identity"]
+    if identity.get("viewDirection") != "north" or identity.get("processID") != "A" or identity.get("slotID") != "north:A" or identity.get("sceneGeometryID") != EXPECTED_SCENE_ID:
+        raise ValueError("wrong identity binding")
     output = contract["output"]
-    if output["exclusiveFutureProcessRoot"] != EXPECTED_EXCLUSIVE_ROOT or output["runRoot"] != EXPECTED_RUN_ROOT or output["evidenceRoot"] != EXPECTED_EVIDENCE_ROOT:
-        raise ValueError("wrong output root")
-    if tuple(output.get("allowedRoots", ())) != EXPECTED_ALLOWED_ROOTS:
-        raise ValueError("wrong allowed roots")
-    if contract["authorityState"].get("maximumDCCChildStarts") != 1 or contract["authorityState"].get("maximumProcessAStarts") != 1:
-        raise ValueError("wrong DCC child limit")
-    actual_claim = root / claim["path"]
-    _assert_no_symlink(actual_claim, root)
-    if sha256(actual_claim) != EXPECTED_CLAIM:
+    if output.get("exclusiveFutureProcessRoot") != EXPECTED_EXCLUSIVE_ROOT or output.get("runRoot") != EXPECTED_RUN_ROOT or output.get("evidenceRoot") != EXPECTED_EVIDENCE_ROOT or tuple(output.get("allowedRoots", ())) != EXPECTED_ALLOWED_ROOTS:
+        raise ValueError("wrong output binding")
+    authority = contract["authorityState"]
+    if authority.get("maximumDCCChildStarts") != 1 or authority.get("maximumProcessAStarts") != 1:
+        raise ValueError("wrong child limit")
+    if any(authority.get(key) for key in ("scheduleCreated", "leaseCreated", "secretCreated", "grantCreated")):
+        raise ValueError("live authority claimed")
+    claim_path = root / contract["claim"]["path"]
+    _assert_no_symlink(claim_path, root)
+    if sha256(claim_path) != EXPECTED_CLAIM:
         raise ValueError("claim bytes do not match")
     for item in contract["inputs"]:
         path = root / item["path"]
         _assert_no_symlink(path, root)
         if not path.is_file() or sha256(path) != item["sha256"]:
             raise ValueError(f"immutable input mismatch: {item['path']}")
+    if _git_branch(root) != "codex/citysim-world-art":
+        raise ValueError("wrong branch")
     actual_head = _git_head(root)
-    if actual_head != EXPECTED_HEAD:
-        raise ValueError(f"candidate HEAD mismatch: expected {EXPECTED_HEAD}, actual {actual_head}")
-    if expected_head is not None and expected_head != actual_head:
-        raise ValueError("unexpected starting HEAD")
-    future = root / contract["output"]["runRoot"]
+    _run_git(root, "merge-base", "--is-ancestor", EXECUTION_BASE_HEAD, actual_head)
+    changed_paths = _changed_paths_from_execution_base(root)
+    if any(not _path_is_allowed(path) for path in changed_paths):
+        raise ValueError("execution-base delta escapes task-owned roots")
+    carrier = verify_carrier_route(root)
+    future = root / EXPECTED_RUN_ROOT
     _assert_no_symlink(future, root)
     if future.exists():
         raise ValueError("future Process-A output root already exists")
     for marker in ("schedule.json", "lease.json", "secret", "grant.json", "execution-authority.json"):
-        if (root / contract["output"]["exclusiveFutureProcessRoot"] / marker).exists():
+        if (root / EXPECTED_EXCLUSIVE_ROOT / marker).exists():
             raise ValueError(f"live authority present: {marker}")
-    if any(contract["authorityState"].get(k) for k in ("scheduleCreated", "leaseCreated", "secretCreated", "grantCreated")):
-        raise ValueError("prelaunch contract claims a live authority")
     return {
-        "claimSHA256": sha256(actual_claim),
+        "claimSHA256": EXPECTED_CLAIM,
         "inputCount": len(contract["inputs"]),
+        "executionBaseHEAD": EXECUTION_BASE_HEAD,
+        "executionBaseIsAncestor": True,
+        "descendantDeltaRestrictedToTaskRoots": True,
+        "changedPaths": changed_paths,
         "futureProcessRootAbsent": True,
         "liveAuthorityAbsent": True,
-        "currentHead": actual_head,
+        "carrier": carrier,
     }
-
-
-def _canonical_binding(binding: dict) -> bytes:
-    return json.dumps(binding, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
 
 
 def _fixture_signature(binding: dict, fixture_key: bytes) -> str:
-    return hmac.new(fixture_key, _canonical_binding(binding), hashlib.sha256).hexdigest()
+    return hmac.new(fixture_key, canonical_bytes(binding), hashlib.sha256).hexdigest()
+
+
+def _expected_binding(contract: dict) -> dict:
+    return {
+        "routeId": ROUTE_ID, "routeCanonicalSHA256": ROUTE_CANONICAL_SHA256,
+        "carrierCommit": EXPECTED_CARRIER, "receiptPath": EXPECTED_RECEIPT_PATH,
+        "receiptSHA256": EXPECTED_RECEIPT_SHA256,
+        "claimPath": contract["claim"]["path"], "claimSHA256": EXPECTED_CLAIM,
+        "claimRevision": 8, "authorityBase": EXPECTED_BASE,
+        "assignmentThreadId": EXPECTED_THREAD, "executionBaseHEAD": EXECUTION_BASE_HEAD,
+        "logicalBuildingID": "industrial_l04", "variantID": "variant-0",
+        "viewDirection": "north", "processID": "A", "slotID": "north:A",
+        "grantId": "north:A", "dccChildLimit": 1,
+        "exclusiveOutputRoot": EXPECTED_RUN_ROOT, "evidenceRoot": EXPECTED_EVIDENCE_ROOT,
+        "allowedRoots": list(EXPECTED_ALLOWED_ROOTS), "consumptionId": EXPECTED_CONSUMPTION_ID,
+        "testOnly": True,
+        "activity": {key: 0 for key in sorted(ACTIVITY_KEYS)},
+    }
 
 
 def build_test_fixture_authority(contract: dict, fixture_key: bytes, root: Path) -> dict:
-    """Build authority only in test memory; never write a grant/secret file."""
     validate_contract(root, contract)
-    binding = {
-        "routeId": ROUTE_ID,
-        "routeCanonicalSHA256": ROUTE_CANONICAL_SHA256,
-        "carrierCommit": EXPECTED_CARRIER,
-        "receiptPath": EXPECTED_RECEIPT_PATH,
-        "receiptSHA256": EXPECTED_RECEIPT_SHA256,
-        "claimPath": contract["claim"]["path"],
-        "claimSHA256": EXPECTED_CLAIM,
-        "claimRevision": contract["claim"]["revision"],
-        "authorityBase": EXPECTED_BASE,
-        "assignmentThreadId": EXPECTED_THREAD,
-        "candidateHead": EXPECTED_HEAD,
-        "logicalBuildingID": "industrial_l04",
-        "variantID": "variant-0",
-        "viewDirection": "north",
-        "processID": "A",
-        "slotID": "north:A",
-        "grantId": "north:A",
-        "dccChildLimit": 1,
-        "exclusiveOutputRoot": EXPECTED_RUN_ROOT,
-        "evidenceRoot": EXPECTED_EVIDENCE_ROOT,
-        "allowedRoots": list(EXPECTED_ALLOWED_ROOTS),
-        "consumptionId": EXPECTED_CONSUMPTION_ID,
-        "testOnly": True,
-        "childStarts": 0,
-        "dccStarts": 0,
-        "renderedPixels": 0,
-        "consumed": False,
+    binding = _expected_binding(contract)
+    return {
+        "schema": 1, "kind": "test-only-fixture-authority", "binding": binding,
+        "signature": _fixture_signature(binding, fixture_key),
     }
-    return {"schema": 1, "kind": "test-only-fixture-authority", "binding": binding, "signature": _fixture_signature(binding, fixture_key)}
 
 
 def validate_fixture_authority(authority: dict, contract: dict, root: Path, fixture_key: bytes) -> dict:
-    if authority.get("schema") != 1 or authority.get("kind") != "test-only-fixture-authority":
-        raise ValueError("wrong fixture authority kind")
+    if set(authority) != AUTHORITY_KEYS or authority.get("schema") != 1 or authority.get("kind") != "test-only-fixture-authority":
+        raise ValueError("fixture authority schema is not closed")
     binding = authority.get("binding")
-    if not isinstance(binding, dict) or not hmac.compare_digest(authority.get("signature", ""), _fixture_signature(binding, fixture_key)):
-        raise ValueError("fixture authority signature mismatch")
-    expected = {
-        "routeId": ROUTE_ID, "routeCanonicalSHA256": ROUTE_CANONICAL_SHA256, "carrierCommit": EXPECTED_CARRIER,
-        "receiptPath": EXPECTED_RECEIPT_PATH, "receiptSHA256": EXPECTED_RECEIPT_SHA256,
-        "claimPath": contract["claim"]["path"], "claimSHA256": EXPECTED_CLAIM, "claimRevision": contract["claim"]["revision"],
-        "authorityBase": EXPECTED_BASE, "assignmentThreadId": EXPECTED_THREAD, "candidateHead": EXPECTED_HEAD,
-        "logicalBuildingID": "industrial_l04", "variantID": "variant-0", "viewDirection": "north", "processID": "A",
-        "slotID": "north:A", "grantId": "north:A", "dccChildLimit": 1, "exclusiveOutputRoot": EXPECTED_RUN_ROOT,
-        "evidenceRoot": EXPECTED_EVIDENCE_ROOT, "allowedRoots": list(EXPECTED_ALLOWED_ROOTS),
-        "consumptionId": EXPECTED_CONSUMPTION_ID,
-        "testOnly": True, "childStarts": 0, "dccStarts": 0, "renderedPixels": 0, "consumed": False,
-    }
-    for key, value in expected.items():
-        if binding.get(key) != value:
-            raise ValueError(f"fixture binding mismatch: {key}")
-    if _git_head(root) != binding["candidateHead"]:
-        raise ValueError("fixture candidate HEAD mismatch")
+    if not isinstance(binding, dict) or set(binding) != BINDING_KEYS:
+        raise ValueError("fixture binding schema is not closed")
+    activity = binding.get("activity")
+    if not isinstance(activity, dict) or set(activity) != ACTIVITY_KEYS or any(value != 0 for value in activity.values()):
+        raise ValueError("fixture activity must be exact closed zero state")
+    if not hmac.compare_digest(str(authority.get("signature", "")), _fixture_signature(binding, fixture_key)):
+        raise ValueError("fixture signature mismatch")
+    if binding != _expected_binding(contract):
+        raise ValueError("fixture binding mismatch")
+    validate_contract(root, contract)
     return binding
 
 
-def validate_owned_output(root: Path, output_root: str, contract: dict) -> None:
-    if output_root != EXPECTED_RUN_ROOT or output_root not in contract["output"]["allowedRoots"]:
-        raise ValueError("output is outside exclusive allowed root")
-    path = root / output_root
-    _assert_no_symlink(path, root)
-    if path.exists():
-        raise ValueError("output overwrite or replay")
+class TestOneShotAdapter:
+    """Adapter-owned atomic durable fixture state; never used for live grants."""
+
+    def __init__(self, parent: Path, consumption_id: str):
+        if parent.is_symlink() or not parent.is_dir():
+            raise ValueError("fixture state parent must be an existing real directory")
+        self.parent = parent
+        self.consumption_id = consumption_id
+        self.state_name = "attempt-" + hashlib.sha256(consumption_id.encode("utf-8")).hexdigest()
+        parent_fd = os.open(parent, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+        try:
+            os.mkdir(self.state_name, mode=0o700, dir_fd=parent_fd)
+            self.state_fd = os.open(self.state_name, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW, dir_fd=parent_fd)
+        except FileExistsError as exc:
+            raise ValueError("fixture attempt state already exists") from exc
+        finally:
+            os.close(parent_fd)
+        self.closed = False
+
+    def consume(self, binding: dict) -> dict:
+        if self.closed or binding["consumptionId"] != self.consumption_id:
+            raise ValueError("fixture consumption identity mismatch")
+        flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW
+        try:
+            marker_fd = os.open("CONSUMED.json", flags, 0o600, dir_fd=self.state_fd)
+        except FileExistsError as exc:
+            raise ValueError("fixture grant replay") from exc
+        try:
+            payload = canonical_bytes({"consumptionId": self.consumption_id, "consumed": True}) + b"\n"
+            os.write(marker_fd, payload)
+            os.fsync(marker_fd)
+        finally:
+            os.close(marker_fd)
+        return {
+            "consumed": True, "startedDCCChild": False, "dccStarts": 0,
+            "renderStarts": 0, "pixelWrites": 0, "outputCreated": False,
+        }
+
+    def close(self) -> None:
+        if not self.closed:
+            os.close(self.state_fd)
+            self.closed = True
 
 
-def consume_test_fixture(authority: dict, contract: dict, root: Path, fixture_key: bytes, state: dict) -> dict:
+def consume_test_fixture(authority: dict, contract: dict, root: Path, fixture_key: bytes, adapter: TestOneShotAdapter) -> dict:
     binding = validate_fixture_authority(authority, contract, root, fixture_key)
-    if state.get("consumptionId") != binding["consumptionId"] or state.get("consumed"):
-        raise ValueError("fixture grant replay")
-    validate_owned_output(root, binding["exclusiveOutputRoot"], contract)
-    state["consumed"] = True
-    return {"consumed": True, "startedChild": False, "dccStarts": 0, "renderedPixels": 0, "outputCreated": False}
+    if (root / binding["exclusiveOutputRoot"]).exists():
+        raise ValueError("output overwrite or replay")
+    return adapter.consume(binding)
 
 
-def _stable_receipt(contract: dict, root: Path, *, started_at: str | None = None, ended_at: str | None = None) -> tuple[dict, dict]:
+def _canonical_documents(contract: dict, root: Path) -> tuple[dict, dict]:
     script = Path(__file__).resolve()
-    child = script.with_name("render_north_v13_process_a_child.py")
-    contract_path = script.with_name("EXECUTION-CONTRACT.json")
     checks = validate_contract(root, contract)
     common = {
-        "schema": 1,
-        "task": "PLAY-027",
-        "stage": contract["stage"],
-        "route": contract["route"],
-        "claim": contract["claim"],
-        "identity": contract["identity"],
-        "inputs": contract["inputs"],
+        "schema": 1, "task": "PLAY-027", "stage": contract["stage"],
+        "route": contract["route"], "claim": contract["claim"],
+        "identity": contract["identity"], "inputs": contract["inputs"],
         "adapter": {
-            "mode": "test-only-fixture",
-            "signature": "HMAC-SHA256",
-            "routeCanonicalBound": True,
-            "carrierBound": True,
-            "candidateHeadBound": True,
-            "exclusiveRootBound": True,
-            "oneAttemptConsumption": True,
-            "replayRejected": True,
+            "mode": "test-only-atomic-fixture", "closedSchema": True,
+            "allActivityCountersZero": True, "repositoryBackedCarrier": True,
+            "executionBaseBound": True, "atomicOneShotState": True,
+            "callerStateAccepted": False, "replayRejected": True,
             "authorityFilesCreated": 0,
         },
         "toolHashes": {
-            "executionContract": sha256(contract_path),
+            "executionContract": sha256(script.with_name("EXECUTION-CONTRACT.json")),
+            "runnerContract": sha256(script.with_name("RUNNER-CONTRACT.json")),
             "runner": sha256(script),
-            "child": sha256(child),
+            "child": sha256(script.with_name("render_north_v13_process_a_child.py")),
         },
         "checks": checks,
-        "authority": {
-            "schedule": {"status": "missing-by-design", "created": False},
-            "oneAttemptLease": {"status": "missing-by-design", "created": False},
-            "secret": {"status": "missing-by-design", "created": False},
-            "grant": {"status": "missing-by-design", "created": False},
-        },
         "counts": {
             "processA": 0, "blender": 0, "dcc": 0, "renders": 0,
             "pixels": 0, "normalizer": 0, "processB": 0, "processC": 0,
         },
-        "sourceAuthority": False,
-        "productionSelected": False,
+        "sourceAuthority": False, "productionSelected": False,
+        "canonicalWallClockFieldCount": 0,
     }
     validation = dict(common)
     validation.update({
-        "result": "PASS_ZERO_CHILD_PRELAUNCH",
+        "result": "PASS_ZERO_CHILD_FRONTIER_RECOVERY",
         "prelaunchOnly": True,
         "forbiddenOutputsAbsent": ["future-process-root", "raw-png", "blend", "normalization", "live-grant"],
     })
-    accounting = {
-        "readyNow": [],
-        "running": [],
-        "waitingOnJoin": [],
-        "joined": [{
-            "jobId": "north-v13-prelaunch-repair-validation",
-            "batch": "north-v13-prelaunch-repair-v01",
-            "claim": contract["claim"]["path"],
-            "claimRevision": contract["claim"]["revision"],
-            "publishedBase": contract["route"]["baseCommit"],
-            "head": contract["route"]["expectedStartingHEAD"],
-            "threadId": contract["assignment"]["threadId"],
-            "branch": contract["assignment"]["branch"],
-            "worktree": contract["assignment"]["worktree"],
-            "resourceClass": "helper",
-            "mutation": "write-task-owned-prelaunch-evidence",
-            "exclusiveRoot": contract["output"]["evidenceRoot"],
-            "state": "joined",
-            "processId": None,
-            "dccSlot": None,
-            "evidenceId": "ZERO-CHILD-CLOSURE.json",
-            "startedAt": started_at,
-            "endedAt": ended_at,
-        }],
-        "overlap": {"status": "none", "jobIds": [], "reason": "single deterministic helper; no concurrent child"},
-        "serializedAuthority": {
-            "threadId": contract["assignment"]["threadId"],
-            "branch": contract["assignment"]["branch"],
-            "worktree": contract["assignment"]["worktree"],
-            "gitIndexWriter": contract["assignment"]["threadId"],
-            "governedEvidenceWriter": contract["assignment"]["threadId"],
-        },
-        "capacity": {"helperSlots": 1, "dccSlots": 0, "maximumDCCChildStarts": 1},
-        "unusedCapacityReasons": [{
-            "reasonCode": "DCC_AUTHORITY_NOT_PUBLISHED",
-            "owner": "019f7686-4491-7891-86a6-95a78d67e5c8",
-            "dependencyAuthority": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-NORTH-V13-PRELAUNCH-REPAIR-V1.json#quality-v1:north-v13-prelaunch-repair",
-            "resumptionEvent": "Integration publishes schedule, lease, authenticated grant, and compute slot",
-            "nextRefillJob": "north-v13-process-a",
-        }],
-        "nextRefill": "Integration-published Process-A schedule + authenticated one-attempt grant/lease/secret",
-    }
     closure = dict(common)
     closure.update({
-        "result": "READY_FOR_INTEGRATION_REVIEW_ONLY",
-        "prelaunchReady": True,
+        "result": "READY_FOR_INDEPENDENT_REVIEW_ONLY", "prelaunchReady": True,
         "launchReady": False,
-        "executionAccounting": accounting,
         "requiredNextAuthority": ["published schedule", "one-attempt lease", "authenticated grant/secret", "named compute slot"],
-        "hardStop": "No live authority or child is issued by this packet.",
+        "hardStop": "No live authority or DCC child is issued by this packet.",
+        "executionAccountingPath": EXPECTED_EVIDENCE_ROOT + "/EXECUTION-ACCOUNTING.json",
     })
     return validation, closure
 
 
-def write_evidence(root: Path, evidence_root: Path) -> tuple[Path, Path]:
-    contract_path = Path(__file__).with_name("EXECUTION-CONTRACT.json")
-    contract = load_json(contract_path)
-    validate_contract(root, contract)
-    evidence_root.mkdir(parents=True, exist_ok=True)
-    started_at = datetime.now(timezone.utc).isoformat(timespec="microseconds").replace("+00:00", "Z")
-    validation, closure = _stable_receipt(contract, root, started_at=started_at, ended_at=None)
-    ended_at = datetime.now(timezone.utc).isoformat(timespec="microseconds").replace("+00:00", "Z")
-    validation, closure = _stable_receipt(contract, root, started_at=started_at, ended_at=ended_at)
-    vp = evidence_root / "PRELAUNCH-VALIDATION.json"
-    cp = evidence_root / "ZERO-CHILD-CLOSURE.json"
-    for path, value in ((vp, validation), (cp, closure)):
-        path.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    return vp, cp
+def _write_exclusive(dir_fd: int, name: str, payload: bytes) -> None:
+    fd = os.open(name, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600, dir_fd=dir_fd)
+    try:
+        os.write(fd, payload)
+        os.fsync(fd)
+    finally:
+        os.close(fd)
+
+
+def write_canonical_evidence(root: Path, target_root: Path) -> dict:
+    """Write canonical receipts only into one absent, non-symlink root."""
+    contract = load_json(Path(__file__).with_name("EXECUTION-CONTRACT.json"))
+    validation, closure = _canonical_documents(contract, root)
+    if target_root.exists() or target_root.is_symlink():
+        raise ValueError("canonical evidence root must be absent")
+    parent = target_root.parent
+    if parent.is_symlink() or not parent.is_dir():
+        raise ValueError("canonical evidence parent must be an existing real directory")
+    parent_fd = os.open(parent, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+    try:
+        os.mkdir(target_root.name, mode=0o700, dir_fd=parent_fd)
+        out_fd = os.open(target_root.name, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW, dir_fd=parent_fd)
+    finally:
+        os.close(parent_fd)
+    try:
+        _write_exclusive(out_fd, "PRELAUNCH-VALIDATION.json", json.dumps(validation, indent=2, sort_keys=True).encode("utf-8") + b"\n")
+        _write_exclusive(out_fd, "ZERO-CHILD-CLOSURE.json", json.dumps(closure, indent=2, sort_keys=True).encode("utf-8") + b"\n")
+    finally:
+        os.close(out_fd)
+    return {name: sha256(target_root / name) for name in ("PRELAUNCH-VALIDATION.json", "ZERO-CHILD-CLOSURE.json")}
+
+
+def snapshot_topology(root: Path) -> dict:
+    files: dict[str, str] = {}
+    directories: list[str] = []
+    symlinks: dict[str, str] = {}
+    for base, dir_names, file_names in os.walk(root, topdown=True, followlinks=False):
+        base_path = Path(base)
+        relative_base = base_path.relative_to(root).as_posix()
+        if relative_base != ".":
+            directories.append(relative_base)
+        kept: list[str] = []
+        for name in sorted(dir_names):
+            path = base_path / name
+            rel = path.relative_to(root).as_posix()
+            if path.is_symlink():
+                symlinks[rel] = os.readlink(path)
+            elif name != ".git":
+                kept.append(name)
+        dir_names[:] = kept
+        for name in sorted(file_names):
+            path = base_path / name
+            rel = path.relative_to(root).as_posix()
+            if path.is_symlink():
+                symlinks[rel] = os.readlink(path)
+            else:
+                files[rel] = sha256(path)
+    return {"directories": sorted(directories), "files": dict(sorted(files.items())), "symlinks": dict(sorted(symlinks.items()))}
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -367,20 +447,20 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--repository-root", required=True)
     parser.add_argument("--contract", required=True)
-    parser.add_argument("--evidence-root", required=True)
+    parser.add_argument("--evidence-root")
     parser.add_argument("--write-evidence", action="store_true")
     args = parser.parse_args(argv)
     repo = Path(args.repository_root).resolve()
     contract_path = (repo / args.contract).resolve()
-    if contract_path.name != "EXECUTION-CONTRACT.json":
+    if contract_path != Path(__file__).with_name("EXECUTION-CONTRACT.json").resolve():
         raise SystemExit("wrong contract")
     contract = load_json(contract_path)
     validate_contract(repo, contract)
     if args.write_evidence:
-        evidence = (repo / args.evidence_root).resolve()
-        _assert_no_symlink(evidence, repo)
-        write_evidence(repo, evidence)
-    print("PASS ZERO_CHILD_PRELAUNCH processA=0 blender=0 dcc=0 pixels=0")
+        if not args.evidence_root:
+            raise SystemExit("missing evidence root")
+        write_canonical_evidence(repo, Path(args.evidence_root).resolve())
+    print("PASS ZERO_CHILD_FRONTIER_RECOVERY processA=0 blender=0 dcc=0 pixels=0")
     return 0
 
 

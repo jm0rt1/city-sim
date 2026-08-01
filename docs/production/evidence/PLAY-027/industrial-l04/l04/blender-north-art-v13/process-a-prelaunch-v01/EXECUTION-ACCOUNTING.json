@@ -1,0 +1,62 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "stage": "north-v13-process-a-prelaunch-frontier-recovery-v01",
+  "routeId": "quality-v1:north-v13-prelaunch-frontier-recovery",
+  "executionBaseHEAD": "0972e6425fc1be99714689f542773d9a9d631c76",
+  "nonCanonicalOperationalMetadata": true,
+  "readyNow": [],
+  "running": [],
+  "waitingOnJoin": [],
+  "joined": [
+    {
+      "jobId": "north-v13-prelaunch-frontier-recovery",
+      "batch": "north-v13-process-a-prelaunch-frontier-recovery-v01",
+      "claim": "docs/production/claims/PLAY-027.world-art.md",
+      "claimRevision": 8,
+      "publishedBase": "73b72fce27d1bcfedcf48b76940ddfa688baa48c",
+      "head": "0972e6425fc1be99714689f542773d9a9d631c76",
+      "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+      "branch": "codex/citysim-world-art",
+      "worktree": "/Users/James/.codex/worktrees/0648/city-sim",
+      "resourceClass": "helper",
+      "mutation": "write-task-owned-frontier-recovery-evidence",
+      "exclusiveRoot": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-prelaunch-v01",
+      "state": "joined",
+      "startedAt": "2026-08-01T17:56:20.220374Z",
+      "endedAt": "2026-08-01T18:05:27.525959Z",
+      "evidenceId": "ZERO-CHILD-CLOSURE.json",
+      "dccSlot": null,
+      "processId": null
+    }
+  ],
+  "overlap": {
+    "status": "none",
+    "jobIds": [],
+    "startedAt": null,
+    "endedAt": null,
+    "reason": "One bounded helper owned the task-local recovery; DCC capacity was zero."
+  },
+  "serializedAuthority": {
+    "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+    "branch": "codex/citysim-world-art",
+    "worktree": "/Users/James/.codex/worktrees/0648/city-sim",
+    "gitIndexWriter": "019f96e0-3793-7542-9172-060a9ca09b0a",
+    "governedEvidenceWriter": "019f96e0-3793-7542-9172-060a9ca09b0a"
+  },
+  "capacity": {
+    "helperSlots": 1,
+    "dccSlots": 0
+  },
+  "unusedCapacityReasons": [],
+  "activity": {
+    "helperJobs": 1,
+    "dccChildren": 0,
+    "processAStarts": 0,
+    "blenderStarts": 0,
+    "renderStarts": 0,
+    "normalizerStarts": 0,
+    "pixelWrites": 0
+  },
+  "nextRefill": "Integration-published North Process-A schedule, authenticated one-attempt grant/lease/secret, and compute slot"
+}

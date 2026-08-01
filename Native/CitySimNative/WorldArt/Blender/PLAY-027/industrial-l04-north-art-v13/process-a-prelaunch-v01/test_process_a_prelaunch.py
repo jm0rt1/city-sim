@@ -1,10 +1,9 @@
-"""Pure-data/adversarial closure tests; intentionally starts no child process."""
+"""Adversarial zero-DCC tests for the North v13 frontier recovery."""
 
 from __future__ import annotations
 
 import ast
 import copy
-import hashlib
 import importlib.util
 import json
 import os
@@ -14,9 +13,9 @@ import tempfile
 
 sys.dont_write_bytecode = True
 
-
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[6]
+FIXTURE_KEY = b"north-v13-frontier-recovery-test-fixture-v01"
 
 
 def load(name: str, path: Path):
@@ -27,26 +26,30 @@ def load(name: str, path: Path):
     return module
 
 
-runner = load("north_prelaunch_runner", HERE / "launch_north_v13_prelaunch.py")
-child = load("north_prelaunch_child", HERE / "render_north_v13_process_a_child.py")
+runner = load("north_v13_frontier_runner", HERE / "launch_north_v13_prelaunch.py")
+child = load("north_v13_frontier_child", HERE / "render_north_v13_process_a_child.py")
 contract = runner.load_json(HERE / "EXECUTION-CONTRACT.json")
-FIXTURE_KEY = b"north-v13-test-only-fixture-key-v01"
 
 
-def expect_failure(mutator, label: str) -> None:
+def expect_contract_failure(mutator, label: str) -> None:
     candidate = copy.deepcopy(contract)
     mutator(candidate)
     try:
         runner.validate_contract(ROOT, candidate)
-    except (ValueError, OSError, KeyError):
+    except (ValueError, OSError, KeyError, json.JSONDecodeError):
         return
-    raise AssertionError(f"adversary passed: {label}")
+    raise AssertionError(f"contract adversary passed: {label}")
 
 
-def expect_fixture_failure(mutator, label: str) -> None:
-    authority = runner.build_test_fixture_authority(contract, FIXTURE_KEY, ROOT)
-    mutator(authority["binding"])
-    authority["signature"] = runner._fixture_signature(authority["binding"], FIXTURE_KEY)
+def fixture() -> dict:
+    return runner.build_test_fixture_authority(contract, FIXTURE_KEY, ROOT)
+
+
+def expect_fixture_failure(mutator, label: str, *, resign: bool = True) -> None:
+    authority = fixture()
+    mutator(authority)
+    if resign and isinstance(authority.get("binding"), dict):
+        authority["signature"] = runner._fixture_signature(authority["binding"], FIXTURE_KEY)
     try:
         runner.validate_fixture_authority(authority, contract, ROOT, FIXTURE_KEY)
     except (ValueError, OSError, KeyError):
@@ -54,109 +57,118 @@ def expect_fixture_failure(mutator, label: str) -> None:
     raise AssertionError(f"fixture adversary passed: {label}")
 
 
-def snapshot(root: Path) -> dict[str, str]:
-    result: dict[str, str] = {}
-    for base, dirs, files in os.walk(root, followlinks=False):
-        dirs[:] = [d for d in dirs if d != ".git"]
-        base_path = Path(base)
-        for name in files:
-            path = base_path / name
-            rel = path.relative_to(root).as_posix()
-            if path.is_symlink():
-                result[rel] = "symlink:" + os.readlink(path)
-            else:
-                result[rel] = hashlib.sha256(path.read_bytes()).hexdigest()
-    return result
+def assert_same_fresh_roots(first: Path, second: Path) -> dict:
+    first_topology = runner.snapshot_topology(first)
+    second_topology = runner.snapshot_topology(second)
+    assert first_topology == second_topology
+    assert first_topology["directories"] == []
+    assert sorted(first_topology["files"]) == ["PRELAUNCH-VALIDATION.json", "ZERO-CHILD-CLOSURE.json"]
+    assert first_topology["symlinks"] == {}
+    return first_topology
 
 
 def main() -> int:
-    before = snapshot(ROOT)
+    repository_before = runner.snapshot_topology(ROOT)
     result = runner.validate_contract(ROOT, contract)
     assert result["inputCount"] == 6
+    assert result["executionBaseHEAD"] == runner.EXECUTION_BASE_HEAD
+    assert result["executionBaseIsAncestor"] is True
+    assert result["descendantDeltaRestrictedToTaskRoots"] is True
     assert result["futureProcessRootAbsent"] is True
     assert result["liveAuthorityAbsent"] is True
+    assert result["carrier"]["receiptSHA256"] == runner.EXPECTED_RECEIPT_SHA256
+    assert result["carrier"]["canonicalRouteSHA256"] == runner.ROUTE_CANONICAL_SHA256
 
-    expect_failure(lambda c: c["route"].__setitem__("routeId", "forged"), "route")
-    expect_failure(lambda c: c["route"].__setitem__("baseCommit", "0" * 40), "base")
-    expect_failure(lambda c: c["claim"].__setitem__("sha256", "0" * 64), "claim")
-    expect_failure(lambda c: c["identity"].__setitem__("viewDirection", "west"), "direction")
-    expect_failure(lambda c: c["identity"].__setitem__("processID", "B"), "process")
-    expect_failure(lambda c: c["identity"].__setitem__("slotID", "south:A"), "slot")
-    expect_failure(lambda c: c["identity"].__setitem__("sceneGeometryID", "wrong"), "geometry")
-    expect_failure(lambda c: c["inputs"][0].__setitem__("sha256", "0" * 64), "input")
-    expect_failure(lambda c: c["authorityState"].__setitem__("scheduleCreated", True), "schedule")
-    expect_failure(lambda c: c["authorityState"].__setitem__("leaseCreated", True), "lease")
-    expect_failure(lambda c: c["authorityState"].__setitem__("secretCreated", True), "secret")
-    expect_failure(lambda c: c["authorityState"].__setitem__("grantCreated", True), "grant")
-    expect_failure(lambda c: c["output"].__setitem__("runRoot", "docs/production/evidence/PLAY-027/other"), "wrong root")
-    expect_failure(lambda c: c.__setitem__("route", dict(c["route"], expectedStartingHEAD="0" * 40)), "head")
+    contract_adversaries = (
+        (lambda c: c.__setitem__("unknown", 1), "unknown top-level field"),
+        (lambda c: c.pop("registration"), "missing top-level field"),
+        (lambda c: c["route"].__setitem__("routeId", "forged"), "route"),
+        (lambda c: c["route"].__setitem__("canonicalSHA256", "0" * 64), "canonical route"),
+        (lambda c: c["route"].__setitem__("carrierCommit", "0" * 40), "carrier"),
+        (lambda c: c["route"].__setitem__("receiptSHA256", "0" * 64), "receipt hash"),
+        (lambda c: c["route"].__setitem__("executionBaseHEAD", "0" * 40), "execution base"),
+        (lambda c: c["route"].__setitem__("baseCommit", "0" * 40), "base"),
+        (lambda c: c["claim"].__setitem__("sha256", "0" * 64), "claim"),
+        (lambda c: c["assignment"].__setitem__("threadId", "forged"), "thread"),
+        (lambda c: c["identity"].__setitem__("viewDirection", "west"), "direction"),
+        (lambda c: c["identity"].__setitem__("processID", "B"), "process"),
+        (lambda c: c["identity"].__setitem__("slotID", "south:A"), "slot"),
+        (lambda c: c["identity"].__setitem__("sceneGeometryID", "wrong"), "geometry"),
+        (lambda c: c["inputs"][0].__setitem__("sha256", "0" * 64), "input"),
+        (lambda c: c["authorityState"].__setitem__("scheduleCreated", True), "schedule"),
+        (lambda c: c["authorityState"].__setitem__("leaseCreated", True), "lease"),
+        (lambda c: c["authorityState"].__setitem__("secretCreated", True), "secret"),
+        (lambda c: c["authorityState"].__setitem__("grantCreated", True), "grant"),
+        (lambda c: c["output"].__setitem__("runRoot", "docs/production/evidence/PLAY-027/escape"), "root"),
+    )
+    for mutator, label in contract_adversaries:
+        expect_contract_failure(mutator, label)
 
-    with tempfile.TemporaryDirectory(prefix="north-v13-prelaunch-adversary-") as tmp:
-        temp_root = Path(tmp)
-        existing = temp_root / contract["output"]["runRoot"]
-        existing.mkdir(parents=True, exist_ok=True)
-        try:
-            runner.validate_owned_output(temp_root, contract["output"]["runRoot"], contract)
-        except ValueError:
-            pass
-        else:
-            raise AssertionError("preexisting future output root accepted")
-        try:
-            runner.validate_owned_output(ROOT, "docs/production/claims", contract)
-        except ValueError:
-            pass
-        else:
-            raise AssertionError("path escape accepted")
-        # Distinct fresh evidence roots receive the same canonical bytes.
-        outputs = []
-        for suffix in ("a", "b"):
-            out = Path(tmp) / suffix
-            out.mkdir()
-            validation, closure = runner._stable_receipt(contract, ROOT)
-            for name, value in (("PRELAUNCH-VALIDATION.json", validation), ("ZERO-CHILD-CLOSURE.json", closure)):
-                p = out / name
-                p.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-                outputs.append(p.read_bytes())
-        assert outputs[0] == outputs[2] and outputs[1] == outputs[3]
-
-    # A signed test-only fixture binds every route, authority, identity, root,
-    # child-limit, and zero-activity field. It is never written or consumed as
-    # a live schedule/grant.
-    authority = runner.build_test_fixture_authority(contract, FIXTURE_KEY, ROOT)
-    state = {"consumptionId": runner.EXPECTED_CONSUMPTION_ID, "consumed": False}
-    consumed = runner.consume_test_fixture(authority, contract, ROOT, FIXTURE_KEY, state)
-    assert consumed == {"consumed": True, "startedChild": False, "dccStarts": 0, "renderedPixels": 0, "outputCreated": False}
-    try:
-        runner.consume_test_fixture(authority, contract, ROOT, FIXTURE_KEY, state)
-    except ValueError as exc:
-        assert "replay" in str(exc)
-    else:
-        raise AssertionError("replayed fixture authority accepted")
-
-    for mutator, label in (
-        (lambda b: b.__setitem__("routeCanonicalSHA256", "0" * 64), "canonical route"),
-        (lambda b: b.__setitem__("carrierCommit", "0" * 40), "carrier"),
-        (lambda b: b.__setitem__("receiptPath", "docs/production/claims"), "receipt path"),
-        (lambda b: b.__setitem__("receiptSHA256", "0" * 64), "receipt hash"),
-        (lambda b: b.__setitem__("assignmentThreadId", "forged"), "thread"),
-        (lambda b: b.__setitem__("grantId", "south:A"), "grant"),
-        (lambda b: b.__setitem__("evidenceRoot", "docs/production/claims"), "evidence root"),
-        (lambda b: b.__setitem__("allowedRoots", ["docs/production/claims"]), "allowed roots"),
-        (lambda b: b.__setitem__("dccChildLimit", 2), "DCC child limit"),
-        (lambda b: b.__setitem__("candidateHead", "0" * 40), "candidate HEAD"),
-        (lambda b: b.__setitem__("childStarts", 1), "child activity"),
-        (lambda b: b.__setitem__("dccStarts", 1), "DCC activity"),
-        (lambda b: b.__setitem__("renderedPixels", 1), "pixel activity"),
-    ):
+    binding_adversaries = (
+        (lambda a: a["binding"].__setitem__("unknownActivity", 0), "unknown binding field"),
+        (lambda a: a["binding"].pop("grantId"), "missing binding field"),
+        (lambda a: a["binding"].__setitem__("carrierCommit", "0" * 40), "signed carrier"),
+        (lambda a: a["binding"].__setitem__("executionBaseHEAD", "0" * 40), "signed execution base"),
+        (lambda a: a["binding"].__setitem__("assignmentThreadId", "forged"), "signed thread"),
+        (lambda a: a["binding"].__setitem__("grantId", "south:A"), "signed grant"),
+        (lambda a: a["binding"].__setitem__("evidenceRoot", "docs/production/claims"), "signed evidence root"),
+        (lambda a: a["binding"].__setitem__("allowedRoots", ["docs/production/claims"]), "signed allowed roots"),
+        (lambda a: a["binding"].__setitem__("dccChildLimit", 2), "signed child limit"),
+        (lambda a: a["binding"]["activity"].__setitem__("mystery", 0), "unknown activity"),
+        (lambda a: a["binding"]["activity"].pop("pixelWrites"), "missing activity"),
+        (lambda a: a["binding"]["activity"].__setitem__("childStarts", 1), "child activity"),
+        (lambda a: a["binding"]["activity"].__setitem__("processAStarts", 1), "Process-A activity"),
+        (lambda a: a["binding"]["activity"].__setitem__("blenderStarts", 1), "Blender activity"),
+        (lambda a: a["binding"]["activity"].__setitem__("dccStarts", 1), "DCC activity"),
+        (lambda a: a["binding"]["activity"].__setitem__("renderStarts", 1), "render activity"),
+        (lambda a: a["binding"]["activity"].__setitem__("normalizerStarts", 1), "normalizer activity"),
+        (lambda a: a["binding"]["activity"].__setitem__("pixelWrites", 1), "pixel activity"),
+    )
+    for mutator, label in binding_adversaries:
         expect_fixture_failure(mutator, label)
-    forged = runner.build_test_fixture_authority(contract, FIXTURE_KEY, ROOT)
-    forged["signature"] = "0" * 64
-    try:
-        runner.validate_fixture_authority(forged, contract, ROOT, FIXTURE_KEY)
-    except ValueError:
-        pass
-    else:
-        raise AssertionError("forged fixture signature accepted")
+    expect_fixture_failure(lambda a: a.__setitem__("unknown", True), "unknown authority field", resign=False)
+    expect_fixture_failure(lambda a: a.__setitem__("signature", "0" * 64), "forged signature", resign=False)
+
+    # The adapter, not the caller, owns the durable attempt directory and
+    # atomic marker. The API accepts no mutable caller state object.
+    with tempfile.TemporaryDirectory(prefix="north-v13-one-shot-") as tmp:
+        parent = Path(tmp)
+        adapter = runner.TestOneShotAdapter(parent, runner.EXPECTED_CONSUMPTION_ID)
+        authority = fixture()
+        consumed = runner.consume_test_fixture(authority, contract, ROOT, FIXTURE_KEY, adapter)
+        assert consumed == {
+            "consumed": True, "startedDCCChild": False, "dccStarts": 0,
+            "renderStarts": 0, "pixelWrites": 0, "outputCreated": False,
+        }
+        try:
+            runner.consume_test_fixture(authority, contract, ROOT, FIXTURE_KEY, adapter)
+        except ValueError as exc:
+            assert "replay" in str(exc)
+        else:
+            raise AssertionError("same adapter replay accepted")
+        adapter.close()
+        try:
+            runner.TestOneShotAdapter(parent, runner.EXPECTED_CONSUMPTION_ID)
+        except ValueError as exc:
+            assert "already exists" in str(exc)
+        else:
+            raise AssertionError("caller reset recreated consumed adapter state")
+
+    with tempfile.TemporaryDirectory(prefix="north-v13-writer-") as tmp:
+        parent = Path(tmp)
+        first = parent / "fresh-a"
+        second = parent / "fresh-b"
+        first_hashes = runner.write_canonical_evidence(ROOT, first)
+        second_hashes = runner.write_canonical_evidence(ROOT, second)
+        assert first_hashes == second_hashes
+        topology = assert_same_fresh_roots(first, second)
+        try:
+            runner.write_canonical_evidence(ROOT, first)
+        except ValueError as exc:
+            assert "absent" in str(exc)
+        else:
+            raise AssertionError("writer overwrote existing root")
+        assert len(topology["files"]) == 2
 
     try:
         child.main([])
@@ -165,25 +177,37 @@ def main() -> int:
     else:
         raise AssertionError("direct child invocation accepted")
 
+    runner_tree = ast.parse((HERE / "launch_north_v13_prelaunch.py").read_text(encoding="utf-8"))
+    subprocess_calls = [
+        node for node in ast.walk(runner_tree)
+        if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute)
+        and isinstance(node.func.value, ast.Name) and node.func.value.id == "subprocess"
+    ]
+    assert len(subprocess_calls) == 1 and subprocess_calls[0].func.attr == "run"
     for path in (HERE / "launch_north_v13_prelaunch.py", HERE / "render_north_v13_process_a_child.py"):
-        tree = ast.parse(path.read_text(encoding="utf-8"))
+        source = path.read_text(encoding="utf-8")
+        tree = ast.parse(source)
         imports = {alias.name.split(".")[0] for node in ast.walk(tree) if isinstance(node, ast.Import) for alias in node.names}
         imports |= {node.module.split(".")[0] for node in ast.walk(tree) if isinstance(node, ast.ImportFrom) and node.module}
-        assert not imports.intersection({"bpy", "subprocess", "PIL", "Metal", "SceneKit"})
-        source = path.read_text(encoding="utf-8")
+        assert not imports.intersection({"bpy", "PIL", "Metal", "SceneKit"})
         assert "render(" not in source and "Popen" not in source
 
-    validation, closure = runner._stable_receipt(contract, ROOT)
+    validation, closure = runner._canonical_documents(contract, ROOT)
     assert validation["counts"]["processA"] == 0
     assert validation["counts"]["blender"] == 0
     assert validation["counts"]["pixels"] == 0
-    assert closure["executionAccounting"]["readyNow"] == []
-    assert closure["executionAccounting"]["running"] == []
-    assert closure["executionAccounting"]["capacity"]["dccSlots"] == 0
+    assert validation["canonicalWallClockFieldCount"] == 0
+    assert closure["launchReady"] is False
     assert not (ROOT / contract["output"]["exclusiveFutureProcessRoot"]).exists()
-    after = snapshot(ROOT)
-    assert before == after, "prelaunch test mutated repository filesystem"
-    print("PASS north-v13 zero-child prelaunch-repair adversaries=29 freshRoots=2 children=0 dcc=0 pixels=0 filesystem=unchanged")
+    repository_after = runner.snapshot_topology(ROOT)
+    assert repository_before == repository_after, "test changed repository file/directory/symlink topology"
+
+    adversary_count = len(contract_adversaries) + len(binding_adversaries) + 8
+    print(
+        "PASS north-v13 frontier-recovery "
+        f"adversaries={adversary_count} freshRoots=2 carrierGit=verified "
+        "files=2 directories=0 dccChildren=0 processA=0 pixels=0 topology=unchanged"
+    )
     return 0
 
 

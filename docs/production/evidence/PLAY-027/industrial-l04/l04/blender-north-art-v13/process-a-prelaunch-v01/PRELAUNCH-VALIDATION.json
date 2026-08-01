@@ -1,36 +1,38 @@
 {
   "adapter": {
+    "allActivityCountersZero": true,
+    "atomicOneShotState": true,
     "authorityFilesCreated": 0,
-    "candidateHeadBound": true,
-    "carrierBound": true,
-    "exclusiveRootBound": true,
-    "mode": "test-only-fixture",
-    "oneAttemptConsumption": true,
+    "callerStateAccepted": false,
+    "closedSchema": true,
+    "executionBaseBound": true,
+    "mode": "test-only-atomic-fixture",
     "replayRejected": true,
-    "routeCanonicalBound": true,
-    "signature": "HMAC-SHA256"
+    "repositoryBackedCarrier": true
   },
-  "authority": {
-    "grant": {
-      "created": false,
-      "status": "missing-by-design"
-    },
-    "oneAttemptLease": {
-      "created": false,
-      "status": "missing-by-design"
-    },
-    "schedule": {
-      "created": false,
-      "status": "missing-by-design"
-    },
-    "secret": {
-      "created": false,
-      "status": "missing-by-design"
-    }
-  },
+  "canonicalWallClockFieldCount": 0,
   "checks": {
+    "carrier": {
+      "canonicalRouteSHA256": "e6c4eaff2e2b2121cf3615a1ee29e064b011808b814ae310deebc75fdcd717ee",
+      "carrierCommit": "3c6023f8331c669d80ae0628246ffbf36ddf4ffc",
+      "receiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-NORTH-V13-PRELAUNCH-FRONTIER-RECOVERY-V1.json",
+      "receiptSHA256": "bb8697df8ddb0c500b200440d264ee5fb83d93f5b304ef3de03a956a1def9924",
+      "routeId": "quality-v1:north-v13-prelaunch-frontier-recovery"
+    },
+    "changedPaths": [
+      "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-prelaunch-v01/EXECUTION-CONTRACT.json",
+      "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-prelaunch-v01/RUNNER-CONTRACT.json",
+      "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-prelaunch-v01/launch_north_v13_prelaunch.py",
+      "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-prelaunch-v01/test_process_a_prelaunch.py",
+      "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-prelaunch-v01/EXECUTION-ACCOUNTING.json",
+      "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-prelaunch-v01/FRESH-ROOT-TOPOLOGY.json",
+      "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-prelaunch-v01/PRELAUNCH-VALIDATION.json",
+      "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-prelaunch-v01/ZERO-CHILD-CLOSURE.json"
+    ],
     "claimSHA256": "7d42ba7c38a55d7681171499aad50e15c2d3eba0878cabf508d0e42ee97cdc83",
-    "currentHead": "db9ea3d8779127d52d25d536310544aaf58193be",
+    "descendantDeltaRestrictedToTaskRoots": true,
+    "executionBaseHEAD": "0972e6425fc1be99714689f542773d9a9d631c76",
+    "executionBaseIsAncestor": true,
     "futureProcessRootAbsent": true,
     "inputCount": 6,
     "liveAuthorityAbsent": true
@@ -97,24 +99,25 @@
   ],
   "prelaunchOnly": true,
   "productionSelected": false,
-  "result": "PASS_ZERO_CHILD_PRELAUNCH",
+  "result": "PASS_ZERO_CHILD_FRONTIER_RECOVERY",
   "route": {
     "authorityCommit": "73b72fce27d1bcfedcf48b76940ddfa688baa48c",
     "baseCommit": "73b72fce27d1bcfedcf48b76940ddfa688baa48c",
-    "canonicalSHA256": "f180cedfe88001c7d7d4591b4edd65fd4b654e5c31e0b9ee6e0ad7db8576a2f4",
-    "carrierCommit": "c791878749416e2caeb03650c8abd859b6bc9525",
-    "expectedStartingHEAD": "db9ea3d8779127d52d25d536310544aaf58193be",
-    "receiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-NORTH-V13-PRELAUNCH-REPAIR-V1.json",
-    "receiptSHA256": "405dbdac13ec2771b3e0f23e061afa77d94b7832f940babe1d4080dc2a81e107",
-    "routeId": "quality-v1:north-v13-prelaunch-repair"
+    "canonicalSHA256": "e6c4eaff2e2b2121cf3615a1ee29e064b011808b814ae310deebc75fdcd717ee",
+    "carrierCommit": "3c6023f8331c669d80ae0628246ffbf36ddf4ffc",
+    "executionBaseHEAD": "0972e6425fc1be99714689f542773d9a9d631c76",
+    "receiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-NORTH-V13-PRELAUNCH-FRONTIER-RECOVERY-V1.json",
+    "receiptSHA256": "bb8697df8ddb0c500b200440d264ee5fb83d93f5b304ef3de03a956a1def9924",
+    "routeId": "quality-v1:north-v13-prelaunch-frontier-recovery"
   },
   "schema": 1,
   "sourceAuthority": false,
-  "stage": "north-v13-process-a-prelaunch-repair-v01",
+  "stage": "north-v13-process-a-prelaunch-frontier-recovery-v01",
   "task": "PLAY-027",
   "toolHashes": {
     "child": "0d8a0d2703311aa3a782b1397902e6c3dac5d688a04367dac1d6ac995d18dccd",
-    "executionContract": "d7d316d7275f70898f469a1ff5b72e9ee459edb2332edbbe1291137e9b1de7f9",
-    "runner": "d69d3e4558a4837b833df507aee0862da3363d5e5b2b2d2d08b6cc4761196a50"
+    "executionContract": "d19399d9bb4632856c4dde477a9967268ebde7afeb2da27bb1b1f6c45fd0e990",
+    "runner": "d0d8491b4dc3500b8a0454c74ba690b6bc975522b264978540c354f4e8922fcc",
+    "runnerContract": "5f2af7a9a0792ff807738abeb1a6fecd163336bbc43b264a072b21cc43271b82"
   }
 }

@@ -2,13 +2,49 @@
   "schema": 1,
   "runner": "launch_north_v13_prelaunch.py",
   "child": "render_north_v13_process_a_child.py",
-  "mode": "zero-child-prelaunch-repair",
-  "childStarts": 0,
+  "mode": "zero-child-prelaunch-frontier-recovery",
+  "dccChildStarts": 0,
+  "helperProcesses": ["git cat-file", "git show", "git rev-parse", "git merge-base", "git diff", "git ls-files"],
   "requiredInputs": ["EXECUTION-CONTRACT.json"],
-  "liveAuthorityInputs": {"schedule": "absent", "lease": "absent", "secret": "absent", "grant": "absent"},
-  "adapter": {"signature": "HMAC-SHA256 test-only fixture", "oneAttempt": true, "replayRejected": true, "consumptionPersistent": "in-memory test fixture only"},
-  "failClosed": ["wrong route/canonical/carrier/claim/base/thread/head", "wrong direction/process/slot/grant", "wrong evidence/allowed/exclusive root", "wrong DCC limit", "input hash mismatch", "present live authority", "direct child invocation", "replay", "future output root exists", "symlinked path", "overwrite", "nonzero child/DCC/render/pixel activity", "repository mutation"],
-  "noSubprocess": true,
+  "repositoryBackedAuthority": {
+    "carrierGitObjectRequired": true,
+    "receiptBytesExtractedFromCarrier": true,
+    "receiptFileSHA256Required": true,
+    "canonicalRouteRowRequired": true,
+    "executionBaseAncestryRequired": true,
+    "executionBaseDeltaRestrictedToAllowedRoots": true
+  },
+  "testOnlyAdapter": {
+    "signature": "HMAC-SHA256 fixture only",
+    "closedSchema": true,
+    "allActivityCountersZero": true,
+    "atomicOneShotMarker": "O_CREAT|O_EXCL|O_NOFOLLOW",
+    "adapterOwnsOpenDirectoryIdentity": true,
+    "replayRejected": true,
+    "callerStateAccepted": false
+  },
+  "canonicalWriter": {
+    "requiresAbsentRoot": true,
+    "noOverwrite": true,
+    "wallClockFields": 0,
+    "freshRootIdentityRequired": true,
+    "fileAndDirectoryTopologySnapshotted": true
+  },
+  "liveAuthorityInputs": {
+    "schedule": "absent",
+    "lease": "absent",
+    "secret": "absent",
+    "grant": "absent"
+  },
+  "failClosed": [
+    "wrong or missing carrier Git object/receipt bytes/file hash/canonical row",
+    "wrong execution base or out-of-root descendant delta",
+    "wrong claim/base/thread/direction/process/slot/root/input hash",
+    "unknown, missing, or nonzero signed activity field",
+    "caller-provided or resettable consumption state",
+    "replay, symlink, preexisting root, overwrite, or topology drift",
+    "present live authority or direct child invocation"
+  ],
   "noBpy": true,
   "noPixels": true,
   "noDCC": true,

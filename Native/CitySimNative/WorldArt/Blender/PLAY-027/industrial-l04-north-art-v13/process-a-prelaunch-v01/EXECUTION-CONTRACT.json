@@ -1,16 +1,16 @@
 {
   "schema": 1,
-  "stage": "north-v13-process-a-prelaunch-repair-v01",
+  "stage": "north-v13-process-a-prelaunch-frontier-recovery-v01",
   "task": "PLAY-027",
   "route": {
-    "routeId": "quality-v1:north-v13-prelaunch-repair",
-    "canonicalSHA256": "f180cedfe88001c7d7d4591b4edd65fd4b654e5c31e0b9ee6e0ad7db8576a2f4",
-    "carrierCommit": "c791878749416e2caeb03650c8abd859b6bc9525",
-    "receiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-NORTH-V13-PRELAUNCH-REPAIR-V1.json",
-    "receiptSHA256": "405dbdac13ec2771b3e0f23e061afa77d94b7832f940babe1d4080dc2a81e107",
+    "routeId": "quality-v1:north-v13-prelaunch-frontier-recovery",
+    "canonicalSHA256": "e6c4eaff2e2b2121cf3615a1ee29e064b011808b814ae310deebc75fdcd717ee",
+    "carrierCommit": "3c6023f8331c669d80ae0628246ffbf36ddf4ffc",
+    "receiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-NORTH-V13-PRELAUNCH-FRONTIER-RECOVERY-V1.json",
+    "receiptSHA256": "bb8697df8ddb0c500b200440d264ee5fb83d93f5b304ef3de03a956a1def9924",
     "authorityCommit": "73b72fce27d1bcfedcf48b76940ddfa688baa48c",
     "baseCommit": "73b72fce27d1bcfedcf48b76940ddfa688baa48c",
-    "expectedStartingHEAD": "db9ea3d8779127d52d25d536310544aaf58193be"
+    "executionBaseHEAD": "0972e6425fc1be99714689f542773d9a9d631c76"
   },
   "claim": {
     "path": "docs/production/claims/PLAY-027.world-art.md",
@@ -35,12 +35,30 @@
     "productionSelected": false
   },
   "inputs": [
-    {"path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/DESIGN-SCENE.json", "sha256": "0f7a8e40a07f5c2b7320ab42fe5e1bcb2dc23fb508ff6b04e8ea49cf6c974060"},
-    {"path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/DESIGN-MATERIALS.json", "sha256": "c8179b77a184e41b723e26b34e7da2ef256b09e93b54a47e76cc5103f22b8cab"},
-    {"path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/lowering-v01/LOWERING-CONTRACT.json", "sha256": "41125b2ee110085451a787879825cefe9a724cafa8ed3347db5a2688b063e111"},
-    {"path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-direction-bridge-v06/MAPPING-CONTRACT.json", "sha256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7"},
-    {"path": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/design-authority-v01/DESIGN-AUTHORITY.json", "sha256": "1b1006403081c3933c54451b6c506af74493a2ac3b253fdd9f1f79098d7c1bed"},
-    {"path": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/lowering-v01/ACTUAL-CAMERA-ZERO-PIXEL-PROOF.json", "sha256": "e4bbe982e47f4bf96703e75848d8bdad1d9c0cc2aa4d227749005fa039273470"}
+    {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/DESIGN-SCENE.json",
+      "sha256": "0f7a8e40a07f5c2b7320ab42fe5e1bcb2dc23fb508ff6b04e8ea49cf6c974060"
+    },
+    {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/DESIGN-MATERIALS.json",
+      "sha256": "c8179b77a184e41b723e26b34e7da2ef256b09e93b54a47e76cc5103f22b8cab"
+    },
+    {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/lowering-v01/LOWERING-CONTRACT.json",
+      "sha256": "41125b2ee110085451a787879825cefe9a724cafa8ed3347db5a2688b063e111"
+    },
+    {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-direction-bridge-v06/MAPPING-CONTRACT.json",
+      "sha256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7"
+    },
+    {
+      "path": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/design-authority-v01/DESIGN-AUTHORITY.json",
+      "sha256": "1b1006403081c3933c54451b6c506af74493a2ac3b253fdd9f1f79098d7c1bed"
+    },
+    {
+      "path": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/lowering-v01/ACTUAL-CAMERA-ZERO-PIXEL-PROOF.json",
+      "sha256": "e4bbe982e47f4bf96703e75848d8bdad1d9c0cc2aa4d227749005fa039273470"
+    }
   ],
   "output": {
     "evidenceRoot": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-prelaunch-v01",
@@ -77,17 +95,18 @@
     "maximumProcessAStarts": 1
   },
   "registration": {
-    "footprintWorldXZ": [[-28,-28],[28,-28],[28,28],[-28,28]],
-    "footprintSource": [[768,640],[1024,768],[768,896],[512,768]],
-    "pivotWorld": [28,0,28],
-    "pivotSource": [768,896],
-    "socketWorld": [0,0,-28],
-    "socketSource": [896,704],
+    "footprintWorldXZ": [[-28, -28], [28, -28], [28, 28], [-28, 28]],
+    "footprintSource": [[768, 640], [1024, 768], [768, 896], [512, 768]],
+    "pivotWorld": [28, 0, 28],
+    "pivotSource": [768, 896],
+    "socketWorld": [0, 0, -28],
+    "socketSource": [896, 704],
     "camera": "fixed v13 design-authority camera; no prelaunch mutation"
   },
   "forbiddenActions": [
-    "issue-schedule", "create-lease", "generate-secret", "start-child", "import-bpy",
-    "run-blender", "run-dcc", "render", "emit-pixels", "normalize", "run-b-or-c",
-    "mutate-siblings", "mutate-shared-or-shipping", "set-source-authority", "self-accept"
+    "issue-schedule", "create-lease", "generate-secret", "start-child",
+    "import-bpy", "run-blender", "run-dcc", "render", "emit-pixels",
+    "normalize", "run-b-or-c", "mutate-siblings", "mutate-shared-or-shipping",
+    "set-source-authority", "self-accept"
   ]
 }

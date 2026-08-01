@@ -1,0 +1,28 @@
+{
+  "allowedShoulderOverhangs": [
+    "v13-main-foundry-shell:east-shoulder",
+    "v13-main-foundry-shell:west-shoulder"
+  ],
+  "apertureBoundsCitySim": [
+    [
+      -11,
+      0.6,
+      -16
+    ],
+    [
+      11,
+      19,
+      -6.5
+    ]
+  ],
+  "internalSharedFaces": "mechanically-unioned",
+  "objectCount": 20,
+  "processOrCraneIntrusions": [],
+  "rayOrder": [
+    "emptyPortalVolume",
+    "v13-portal-inset"
+  ],
+  "schema": 1,
+  "semanticOwnerCount": 13,
+  "solidIntrusions": []
+}

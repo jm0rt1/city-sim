@@ -1,0 +1,18 @@
+{
+  "blenderInvocationCount": 0,
+  "imageGenInvocationCount": 0,
+  "normalizerInvocationCount": 0,
+  "orientationTransform": "none",
+  "physicalComponentCount": 20,
+  "processIntrusionCount": 0,
+  "productionSelected": false,
+  "registrationMaximumSourcePixels": 0.0,
+  "renderInvocationCount": 0,
+  "schema": 1,
+  "semanticOwnerCount": 13,
+  "solidIntrusionCount": 0,
+  "sourceAuthority": false,
+  "stage": "north-v13-lowering-v01",
+  "validationPassed": true,
+  "zeroPixel": true
+}

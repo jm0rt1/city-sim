@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "runner": "launch_north_v13_process_a_v02.py",
+  "mode": "integration_direct",
+  "child": "render_north_v13_process_a_child.py",
+  "childBoundary": "child accepts no direct invocation and is constructed only by a later Integration-owned launch",
+  "zeroChildMode": "preflight-only; no child command construction; writes only readiness evidence",
+  "authority": "Integration-owned schedule, process receipt, attempt marker, and compute slot",
+  "workerCapabilities": ["read-frozen-inputs", "validate-identity", "write-task-owned-readiness"],
+  "workerForbidden": ["sign", "build-authority", "create-secret", "consume-attempt", "create-receipt", "start-child", "render", "write-pixels"],
+  "outputPolicy": {"exclusive": true, "overwrite": false, "symlinks": false, "futureProcessRootCreated": false},
+  "sourceAuthority": false,
+  "productionSelected": false
+}

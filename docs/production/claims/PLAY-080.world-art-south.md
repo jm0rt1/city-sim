@@ -1,6 +1,6 @@
 # PLAY-080 Claim
 
-- **Claim revision:** 8
+- **Claim revision:** 9
 - **Title:** Close the Industrial L4 South execution boundary in parallel
 - **Lane:** World Art South cell
 - **Branch:** `codex/citysim-world-art-south`
@@ -37,7 +37,9 @@
   Current-master replay is clean at
   `9d81095a9845d39c1b3aaf45bef6516d204f5c6b` and proves the consumer stops
   before launch-bundle preparation and the high-level dispatcher. Revision 7
-  authorizes only current-authority zero-DCC rebinding and replay.
+  authorizes only current-authority zero-DCC rebinding and replay. Exact v13
+  candidate `27a79304bf17997ce09721d85f860fd0233cd5bf` is preserved but
+  returned for the bounded revision-9 literal and identity repair below.
 - **Validation/proof:** Independent South geometry; South road-facing portal
   and socket; actual-camera footprint/pivot/projection; alpha-free zero-pixel
   occlusion and silhouette proof; no sibling transform or alias
@@ -105,3 +107,17 @@ Stop after one clean candidate-ready-for-independent-review commit. This
 revision authorizes no Blender/DCC child, source process A/B/C, pixel,
 normalization, source admission, renderer activation, production selection,
 shipping, push, integration, or self-acceptance.
+
+## Revision-9 v13 literal and identity repair
+
+Consume
+`docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-V13-LITERAL-REPAIR-AUTHORITY-V1.md`.
+Within the existing South-exclusive v13 source and evidence roots, raise every
+governed freight beat to at least 4 x 8 source pixels, raise the staff entry to
+at least 5 x 8 source pixels, normalize the family identity to
+`industrial_l04`, and add missing, below-target, stale-measurement, and
+wrong-family adversaries. Preserve the passing socket, portal, crown,
+occlusion, camera, pivot, footprint, material, and non-alias proofs. Stop after
+one zero-pixel candidate-ready-for-independent-review commit. DCC, pixels,
+normalization, admission, activation, shipping, push, integration, and
+self-acceptance remain prohibited.

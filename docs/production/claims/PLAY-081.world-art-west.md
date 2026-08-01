@@ -1,6 +1,6 @@
 # PLAY-081 Claim
 
-- **Claim revision:** 7
+- **Claim revision:** 8
 - **Title:** Close the Industrial L4 West execution boundary in parallel
 - **Lane:** World Art West cell
 - **Branch:** `codex/citysim-world-art-west`
@@ -90,3 +90,22 @@ and new prospective replay evidence; preserve historical packets and accepted
 predesign. Return one clean deterministic zero-child closure. A/B/C remains
 blocked until the exact North Process-A appearance lock and post-lock
 production grant.
+
+## Revision-8 v13 zero-pixel compatibility
+
+Consume the Integration-accepted Portal Crown Foundry design and material-role
+requirements published at `017ce817fece2c54d11e398f5aeed2e9fb6167ef` as
+read-only semantic requirements. Own only new West-exclusive v13
+design/lowering inputs, focused validators, and evidence within the existing
+revision-2 exclusive roots. Preserve accepted predesign, current-authority
+closure, and every historical packet byte-for-byte.
+
+Independently author a West road-facing monumental portal/crown massing,
+lowering contract, actual-camera proof, and literal-192 feasibility report.
+Do not open, copy, transform, mirror, rotate, or derive North or sibling
+geometry. Prove West socket/pivot/camera registration, a distinct L4
+silhouette, material-role completeness, no aperture intrusion, and no alias.
+Stop after one clean candidate-ready-for-independent-review commit. This
+revision authorizes no Blender/DCC child, source process A/B/C, pixel,
+normalization, source admission, renderer activation, production selection,
+shipping, push, integration, or self-acceptance.

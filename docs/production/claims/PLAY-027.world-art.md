@@ -1,6 +1,6 @@
 # PLAY-027 Claim
 
-- **Claim revision:** 9
+- **Claim revision:** 10
 - **Title:** Author the four-direction production building catalog
 - **Lane:** World art generation cell
 - **Branch:** `codex/citysim-world-art`
@@ -60,8 +60,13 @@
   reclassified as passing. The unchanged v10 emission value is not luma proof
   and must be re-proved in the later separately granted Process A.
   North v13 integration-direct Process-A implementation candidate
-  `aaea9fda4249e88a82791d9a418408575e5f32ff` remains returned pending
-  retirement of the older public fixture-authority surface. North Process
+  `c95029d4a6efa1ceb6a93860a96c87ecc5a6f7b9` has retired the older public
+  fixture-authority surface and passed its hostile-import zero-side-effect
+  gate. The prospective `process-a-v02` boundary remains blocked because its
+  current constants and contracts bind superseded authority
+  `23f1836892f19d9579609f523397aea068202859` and revision-8 claim hash
+  `7d42ba7c38a55d7681171499aad50e15c2d3eba0878cabf508d0e42ee97cdc83`.
+  Revision 10 authorizes only the exact current-authority rebind below. North Process
   A/B/C, sibling source pixels, appearance-lock publication,
   source admission, Renderer activation, and shipping remain blocked.
 
@@ -154,3 +159,28 @@ pixel, schedule, live lease, attempt marker, appearance lock, source
 admission, production selection, Renderer activation, push, integration, or
 self-acceptance. Independent frontier review must accept the complete current
 tree before Integration may issue the separate direct Process-A launch.
+
+## Revision-10 rebind the v13 Process-A boundary to current authority
+
+Consume the Integration-owned
+`INDUSTRIAL-L04-NORTH-V13-PROCESS-A-V02-CURRENT-AUTHORITY-REPAIR-V1.md`.
+Within the existing `process-a-v02/` source/evidence roots only, replace every
+superseded authority, claim, route, and execution-base binding with the exact
+published revision-10 authority and live worker HEAD. Preserve the accepted
+design, materials, lowering, coordinate bridge, camera, socket, pivot, fixed
+Blender command, one-child ceiling, outside-root attempt marker, committed
+schedule-blob proof, child-side checks, nonblocking capture, and every
+`process-a-prelaunch-v01/` retirement byte.
+
+Add adversaries proving that the revision-8 claim hash, old authority/base,
+old execution base, old carrier/route receipt, stale worker HEAD, forged
+schedule publication, direct child invocation, replay, wrong root, or changed
+frozen input starts zero children and emits zero pixels. Update only the exact
+v02 contracts, launcher, child, focused test, handoff/readiness records, and
+one new current-authority rebind receipt named by the published model route.
+
+Stop after one clean deterministic zero-DCC candidate-ready-for-independent-
+review commit. This revision grants no schedule, attempt marker, live lease,
+Blender/DCC child, render, pixel, normalization, Process B/C, appearance lock,
+source admission, production selection, Renderer activation, shipping, push,
+integration, or self-acceptance.

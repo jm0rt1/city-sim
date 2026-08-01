@@ -1,0 +1,142 @@
+{
+  "schema": "citysim.world-art.blender-compatibility-design.v13",
+  "task": "PLAY-080",
+  "logicalBuildingID": "industrial-l04",
+  "variant": "variant-0",
+  "revision": "south-compatibility-v13",
+  "sourceKey": "industrial-l04/variant-0/south/blender-art-v13-south-compatibility",
+  "direction": "south",
+  "orientationTransform": "none",
+  "sourceAuthority": false,
+  "productionSelected": false,
+  "pixelRenderAuthorized": false,
+  "authorship": {
+    "method": "independent-south-semantic-compatibility-design",
+    "siblingSceneOpened": false,
+    "siblingSceneCopied": false,
+    "siblingGeometryConsumed": false,
+    "geometryAlias": null,
+    "nonAliasProof": {
+      "sourceKey": "industrial-l04/variant-0/south/blender-art-v13-south-compatibility",
+      "viewDirection": "south",
+      "orientationTransform": "none",
+      "siblingGeometryConsumed": false,
+      "geometryAlias": null,
+      "proof": "explicit_no_alias"
+    },
+    "publishedSemanticInputs": [
+      "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/design-authority-v01/DESIGN-AUTHORITY.json",
+      "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/DESIGN-MATERIALS.json",
+      "docs/production/decisions/CONTRACT-010-directional-building-art.md"
+    ]
+  },
+  "registration": {
+    "tileBasisWorldPoints": [72, 36],
+    "footprintWorld": {
+      "size": [56, 56],
+      "corners": [[-28, 0, -28], [28, 0, -28], [28, 0, 28], [-28, 0, 28]]
+    },
+    "groundOrigin": [0, 0, 0],
+    "groundPivot": [28, 0, 28],
+    "frontageSocket": {
+      "direction": "south",
+      "position": [0, 0, 28],
+      "outwardVector": [0, 0, 1]
+    },
+    "contactPolygon": [[-24, 0, 16], [24, 0, 16], [24, 0, 28], [-24, 0, 28]],
+    "entranceExclusionZone": {"x": [-13, 13], "y": [0, 26], "z": [27.5, 28]}
+  },
+  "coordinateBridge": {
+    "formula": "B(CitySim[x,y,z])=Blender[z,x,y]",
+    "canonicalCitySimSouthSocket": [0, 0, 28],
+    "blenderSouthSocket": [28, 0, 0],
+    "sourceSouthSocket": [640, 832],
+    "orientationTransform": "none",
+    "registrationToleranceSourcePixels": 1
+  },
+  "camera": {
+    "tool": "Blender",
+    "type": "ORTHO",
+    "citysimPosition": [96, 101.24557426726288, 96],
+    "citysimTarget": [0, 22.861902498201186, 0],
+    "orthoScale": 237.5878601074218,
+    "shiftX": 0,
+    "shiftY": 0.08333333333333333,
+    "renderViewportPixels": [1536, 1024],
+    "literalViewportPixels": [192, 128],
+    "projectionTargets": {
+      "footprint": [[768, 640], [1024, 768], [768, 896], [512, 768]],
+      "groundOrigin": [768, 768],
+      "groundPivot": [768, 896],
+      "frontageSocket": [640, 832],
+      "toleranceSourcePixels": 1
+    }
+  },
+  "lighting": {
+    "keyLabel": "northwest",
+    "contactLabel": "southeast",
+    "keySourceDirection": [-1, 2, -1],
+    "contactShadowVector": [1, 0, 1]
+  },
+  "semanticDesign": {
+    "conceptName": "South Freight Portal Bastion",
+    "massing": "broad-grounded-freight-hall-with-offset-portal-bastion-and-stepped-crown",
+    "roadFacingOpenings": 3,
+    "separateStaffEntrance": true,
+    "silhouetteLanguage": "low-control-wing, deep-south-portal, three-step-crane-crown, offset-rear-process-stack",
+    "forbiddenReads": ["compact-office-tower", "generic-warehouse", "airport-or-transit-canopy", "retail-storefront-rhythm"]
+  },
+  "literal192Targets": {
+    "measurementMethod": "analytic-camera-lowering-no-pixels",
+    "occupiedBoundsPixels": {"width": 64.000005, "height": 59.936447, "opaquePixels": null},
+    "minimumDistinctRoofHeightBreaks": 3,
+    "measuredDistinctRoofHeightBreaks": 6,
+    "portalCrownWidthPixels": 34.285717,
+    "stackSilhouetteShare": 0.01148,
+    "portal": {
+      "outerWidthPixels": 21.142859,
+      "outerHeightPixels": 29.467495,
+      "clearInsetWidthPixels": 15.428573,
+      "clearInsetHeightPixels": 21.711372,
+      "jambWidthPixelsEach": 4.0,
+      "jambHeightPixelsEach": 18.796503,
+      "headerWidthPixels": 21.142859,
+      "headerThicknessPixels": 13.370846,
+      "insetAreaPixels": 334.975474,
+      "occludedShare": 0,
+      "processOrCranePixelsInsideInset": 0,
+      "nameableWithoutOverlay": true
+    },
+    "freightAndStaff": {
+      "freightBeatCount": 3,
+      "freightBeatMinimumPixelsEach": [2.857143, 8.427114],
+      "freightSeparatorPixels": 2.285715,
+      "staffEntryPixels": [4.0, 8.998543],
+      "staffSubordinate": true
+    },
+    "feasibilityOnly": true,
+    "pixelFilesProduced": 0
+  },
+  "components": [
+    {"id": "south-foundation-plinth", "geometry": "box", "center": [0, 1, 0], "size": [56, 2, 56], "materialRole": "v13-grounded-foundation", "tags": ["foundation", "primary-mass"]},
+    {"id": "south-integrated-apron", "geometry": "box", "center": [0, 0.15, 25], "size": [48, 0.3, 6], "materialRole": "v13-integrated-operating-apron", "tags": ["contact", "frontage-apron"]},
+    {"id": "south-foundry-hall", "geometry": "box", "center": [-3, 13, 4], "size": [46, 26, 40], "materialRole": "v13-warm-foundry-masonry", "tags": ["primary-mass", "broad-hall", "silhouette-break"]},
+    {"id": "south-control-wing", "geometry": "box", "center": [7, 6, -20], "size": [30, 12, 14], "materialRole": "v13-warm-control-masonry", "tags": ["control-wing", "staff-scale", "silhouette-break"]},
+    {"id": "south-staff-entry", "geometry": "box", "center": [-22, 5, 27], "size": [5, 10, 2], "materialRole": "v13-warm-staff-glazing", "tags": ["staff-entrance", "south-frontage"]},
+    {"id": "south-portal-left-jamb", "geometry": "box", "center": [-15, 12, 26.5], "size": [4, 24, 3], "materialRole": "v13-charcoal-structural-steel", "tags": ["portal-frame", "portal-jamb", "south-frontage"]},
+    {"id": "south-portal-right-jamb", "geometry": "box", "center": [15, 12, 26.5], "size": [4, 24, 3], "materialRole": "v13-charcoal-structural-steel", "tags": ["portal-frame", "portal-jamb", "south-frontage"]},
+    {"id": "south-portal-header", "geometry": "box", "center": [0, 25, 26.5], "size": [34, 4, 3], "materialRole": "v13-portal-crown-steel", "tags": ["portal-frame", "portal-header", "south-frontage"]},
+    {"id": "south-portal-deep-void", "geometry": "box", "center": [0, 12, 27.5], "size": [26, 20, 1], "materialRole": "v13-deep-freight-void", "tags": ["primary-freight-portal", "portal-inset", "south-frontage"]},
+    {"id": "south-freight-beat-a", "geometry": "box", "center": [-9, 6, 27.5], "size": [4, 10, 1], "materialRole": "v13-deep-freight-void", "tags": ["freight-opening", "south-frontage"]},
+    {"id": "south-freight-beat-b", "geometry": "box", "center": [0, 6, 27.5], "size": [4, 10, 1], "materialRole": "v13-deep-freight-void", "tags": ["freight-opening", "south-frontage"]},
+    {"id": "south-freight-beat-c", "geometry": "box", "center": [9, 6, 27.5], "size": [4, 10, 1], "materialRole": "v13-deep-freight-void", "tags": ["freight-opening", "south-frontage"]},
+    {"id": "south-crown-low", "geometry": "box", "center": [-4, 29, 4], "size": [42, 4, 18], "materialRole": "v13-portal-crown-steel", "tags": ["portal-crown", "silhouette-break"]},
+    {"id": "south-crown-mid", "geometry": "box", "center": [-4, 34, 4], "size": [34, 4, 12], "materialRole": "v13-clerestory-and-roof-edge", "tags": ["portal-crown", "silhouette-break"]},
+    {"id": "south-crown-high", "geometry": "box", "center": [-4, 39, 4], "size": [24, 4, 8], "materialRole": "v13-weathered-bluegreen-roof", "tags": ["portal-crown", "silhouette-break"]},
+    {"id": "south-rear-process-spine", "geometry": "box", "center": [-18, 16, 18], "size": [10, 32, 14], "materialRole": "v13-oxidized-process-machinery", "tags": ["rear-process", "process", "process-occluder", "silhouette-break"]},
+    {"id": "south-offset-stack", "geometry": "box", "center": [-20, 22, -20], "size": [6, 44, 6], "materialRole": "v13-charcoal-structural-steel", "tags": ["rear-process", "process", "singular-stack", "silhouette-break"]},
+    {"id": "south-gantry", "geometry": "box", "center": [-8, 23, -24], "size": [28, 4, 3], "materialRole": "v13-charcoal-structural-steel", "tags": ["rear-process", "process", "gantry"]},
+    {"id": "south-process-machine", "geometry": "box", "center": [-10, 7, 18], "size": [10, 14, 8], "materialRole": "v13-oxidized-process-machinery", "tags": ["rear-process", "process"]},
+    {"id": "south-hot-process-cue", "geometry": "box", "center": [-10, 12, 18], "size": [4, 4, 4], "materialRole": "v13-restrained-hot-process", "tags": ["rear-process", "process", "hot-process"]}
+  ]
+}

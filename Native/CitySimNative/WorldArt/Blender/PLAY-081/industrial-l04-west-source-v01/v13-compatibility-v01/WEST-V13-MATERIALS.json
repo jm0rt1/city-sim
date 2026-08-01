@@ -1,0 +1,39 @@
+{
+  "schema": 1,
+  "task": "PLAY-081",
+  "direction": "west",
+  "libraryID": "industrial-l04-west-v13-material-role-lowering",
+  "sourceAuthority": false,
+  "productionSelected": false,
+  "pixelProduction": false,
+  "publishedRoleAuthority": {
+    "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/DESIGN-MATERIALS.json",
+    "sha256": "c8179b77a184e41b723e26b34e7da2ef256b09e93b54a47e76cc5103f22b8cab",
+    "roleOnly": true,
+    "siblingGeometryConsumed": false
+  },
+  "roleBindings": [
+    {"role": "grounded-foundation", "usedBy": ["west-v13-foundation"]},
+    {"role": "integrated-operating-apron", "usedBy": ["west-v13-operating-apron"]},
+    {"role": "warm-foundry-masonry", "usedBy": ["west-v13-foundry-hall"]},
+    {"role": "warm-control-masonry", "usedBy": ["west-v13-staff-annex"]},
+    {"role": "charcoal-structural-steel", "usedBy": ["west-v13-portal-left-jamb", "west-v13-portal-right-jamb"]},
+    {"role": "portal-crown-steel", "usedBy": ["west-v13-portal-header", "west-v13-crown-west", "west-v13-crown-center", "west-v13-crown-east"]},
+    {"role": "weathered-bluegreen-roof", "usedBy": ["west-v13-roof-ridge"]},
+    {"role": "clerestory-and-roof-edge", "usedBy": ["west-v13-inner-reveal", "west-v13-roof-edge"]},
+    {"role": "deep-freight-void", "usedBy": ["west-v13-deep-freight-aperture"]},
+    {"role": "oxidized-process-machinery", "usedBy": ["west-v13-stack"]},
+    {"role": "restrained-hot-process", "usedBy": ["west-v13-hot-process"]},
+    {"role": "warm-staff-glazing", "usedBy": ["west-v13-staff-glazing"]}
+  ],
+  "paletteRules": {
+    "dominantWhiteForbidden": true,
+    "cyanOrIceBlueForbidden": true,
+    "magentaForbidden": true,
+    "neonOutlineForbidden": true,
+    "hotProcessMaximumOpaqueShare": 0.04,
+    "warmMasonryMinimumOpaqueShare": 0.28,
+    "darkSteelMaximumOpaqueShare": 0.24
+  },
+  "lockApplicationRule": "Apply numeric family values only after Integration publishes the accepted appearance lock; never alter West geometry or consume a sibling scene."
+}

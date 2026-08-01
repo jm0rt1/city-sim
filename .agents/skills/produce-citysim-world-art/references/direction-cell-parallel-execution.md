@@ -104,25 +104,38 @@ and evidence roots; source revision; compute-slot and queue policy; bounded
 deliverable; and stop condition. A prelock claim or an appearance lock by
 itself never authorizes pixels.
 
-Launch production only through the Integration-approved orchestrator and an
-exact validated per-process launch grant. The grant must bind the global
-schedule, compute lease, direction, claim revision, published base, frozen
-scene/material/toolchain hashes, process ID, exclusive input/output/evidence
-roots, and exactly-one child start. A low-level direction runner must verify
-that grant or remain non-invocable directly. Do not begin A/B/C while the
-parallel schedule schema, strict validator, adversarial tests, or launch grant
-is missing, proposed, stale, or unvalidated.
+Launch production only through one Integration-published execution mode:
+
+- `delegated_authenticated`: a direction cell invokes the approved
+  orchestrator with an exact validated per-process grant. The grant binds the
+  global schedule, compute lease, direction, claim revision, published base,
+  frozen scene/material/toolchain hashes, process ID, exclusive roots, and one
+  child start. No module that verifies this authority may also expose a public
+  builder or accept a caller-selected verification key.
+- `integration_direct`: the Integration captain, not the direction cell,
+  invokes the exact approved high-level orchestrator from the governed
+  worktree after validating the schedule, lease, branch, HEAD, claim, hashes,
+  command, roots, and unused attempt marker. The direction cell may author and
+  zero-child test that orchestrator, but cannot execute it. Integration records
+  the child PID, command hash, start/end time, output roots, and exactly-one
+  attempt before handing the closed output back to the visible cell.
+
+Do not pretend repository-local Python can authenticate a hostile caller that
+may import the verifier and choose its secret. If delegated authentication
+cannot establish a real external trust root, use `integration_direct` and keep
+the launch authority outside the worker process. In either mode, low-level
+direction runners remain non-invocable directly, and A/B/C cannot begin while
+the family schedule, strict validator, execution-mode authority, exact
+orchestrator binding, or per-process grant is missing, stale, or unvalidated.
 
 A passing schedule consumer or adapter is preparation, not launch readiness.
-The direction must also consume the Integration-owned execution-closure
-authority and prove, at a validation-only zero-child boundary, that the exact
-schedule plus authenticated one-attempt authority reaches its named
-high-level orchestrator and runner contract. Never report `launch_ready` while
-the high-level orchestrator intentionally rejects a future interface, while a
-consumer stops before launch-bundle preparation, or while the runner lacks the
-schedule/grant entrypoint. Direction-local closure code may bind the shared
-interface read-only but may not copy North's launcher, constants, evidence, or
-task paths.
+The execution-closure proof must show either a valid external delegated trust
+root or an Integration-owned direct-launch boundary reaching the exact
+high-level orchestrator and runner contract. A zero-child worker proof may
+establish orchestrator readiness in `integration_direct` mode, but only the
+later Integration-owned process receipt establishes that a launch occurred.
+Direction-local closure code may bind the shared interface read-only but may
+not copy a sibling launcher, constants, evidence, or task paths.
 
 For Industrial L4, validate the exact Integration schedule with
 `.agents/skills/operate-citysim-integration/scripts/validate_industrial_l04_parallel_execution_schedule_v1.py`.

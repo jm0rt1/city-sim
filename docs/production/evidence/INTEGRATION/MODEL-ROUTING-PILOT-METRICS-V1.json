@@ -1,0 +1,52 @@
+{
+  "schema": 1,
+  "pilot": "citysim-model-routing-v1",
+  "authorityCommit": "2753f42134fa85d8570849b57302cce0bc924566",
+  "dispatchReceipt": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PILOT-DISPATCH-V1.json",
+  "status": "ready_for_dispatch_acknowledgements",
+  "startedAt": "2026-08-01T11:50:45-04:00",
+  "routingMix": {
+    "frontierAuthorityActive": 2,
+    "lunaEligibleExecution": 8,
+    "lunaAssignedExecution": 8,
+    "queuedFrontierFinalQA": 1,
+    "eligibleWorkerExecutionLunaShare": 1.0,
+    "initialTarget": 0.6
+  },
+  "contextEfficiency": {
+    "sevenSkillCoreBytesBefore": 91078,
+    "sevenSkillCoreBytesAfter": 39454,
+    "coreByteReduction": 51624,
+    "coreByteReductionRatio": 0.5668,
+    "priorFixedPerPromptRangeBytes": [27640, 70185],
+    "newUnchangedContinuationMode": "lane core plus hash-verified compact context packet and only triggered references",
+    "expectedUnchangedContinuationReductionRange": [0.6, 0.9]
+  },
+  "validationEfficiency": {
+    "workerPolicy": "focused owner and directly affected gates only",
+    "aggregatePolicy": "one full Swift suite and staged build per exact aggregate identity",
+    "finalPolicy": "one independent same-SHA real-app journey",
+    "duplicateFullSuiteMinutesBefore": null,
+    "duplicateFullSuiteMinutesPilot": 0,
+    "note": "No pilot worker has been asked to run an aggregate full gate. Historical elapsed full-suite minutes were not reliably exposed and were not invented."
+  },
+  "packets": [
+    {"routeId":"pilot-v1:north","model":"gpt-5.6-sol","effort":"high","turns":0,"elapsedSeconds":null,"approximateTokens":null,"validationSeconds":null,"reworkCount":0,"acceptedResult":null,"frontierEscalationReason":null},
+    {"routeId":"pilot-v1:east","model":"gpt-5.6-luna","effort":"high","turns":0,"elapsedSeconds":null,"approximateTokens":null,"validationSeconds":null,"reworkCount":0,"acceptedResult":null,"frontierEscalationReason":null},
+    {"routeId":"pilot-v1:south","model":"gpt-5.6-luna","effort":"high","turns":0,"elapsedSeconds":null,"approximateTokens":null,"validationSeconds":null,"reworkCount":0,"acceptedResult":null,"frontierEscalationReason":null},
+    {"routeId":"pilot-v1:west","model":"gpt-5.6-luna","effort":"high","turns":0,"elapsedSeconds":null,"approximateTokens":null,"validationSeconds":null,"reworkCount":0,"acceptedResult":null,"frontierEscalationReason":null},
+    {"routeId":"pilot-v1:renderer","model":"gpt-5.6-luna","effort":"high","turns":0,"elapsedSeconds":null,"approximateTokens":null,"validationSeconds":null,"reworkCount":0,"acceptedResult":null,"frontierEscalationReason":null},
+    {"routeId":"pilot-v1:qa-prep","model":"gpt-5.6-luna","effort":"medium","turns":0,"elapsedSeconds":null,"approximateTokens":null,"validationSeconds":null,"reworkCount":0,"acceptedResult":null,"frontierEscalationReason":null},
+    {"routeId":"pilot-v1:gameplay","model":"gpt-5.6-luna","effort":"high","turns":0,"elapsedSeconds":null,"approximateTokens":null,"validationSeconds":null,"reworkCount":0,"acceptedResult":null,"frontierEscalationReason":null},
+    {"routeId":"pilot-v1:ui","model":"gpt-5.6-luna","effort":"high","turns":0,"elapsedSeconds":null,"approximateTokens":null,"validationSeconds":null,"reworkCount":0,"acceptedResult":null,"frontierEscalationReason":null},
+    {"routeId":"pilot-v1:simulation","model":"gpt-5.6-luna","effort":"medium","turns":0,"elapsedSeconds":null,"approximateTokens":null,"validationSeconds":null,"reworkCount":0,"acceptedResult":null,"frontierEscalationReason":null},
+    {"routeId":"pilot-v1:qa-final","model":"gpt-5.6-sol","effort":"high","turns":0,"elapsedSeconds":null,"approximateTokens":null,"validationSeconds":null,"reworkCount":0,"acceptedResult":null,"frontierEscalationReason":"queued until exact 4-of-4 renderer candidate lease"}
+  ],
+  "outcomes": {
+    "acceptedOutcomesPerFrontierTurn": null,
+    "lunaReturnRate": null,
+    "dispatchToAcceptedCandidateSeconds": null,
+    "totalTokenTrend": null,
+    "pricingEstimate": null
+  }
+}

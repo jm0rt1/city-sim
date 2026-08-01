@@ -182,6 +182,8 @@ class ModelRouteTests(unittest.TestCase):
         route = self.route()
         route["validation"]["focusedCommands"] = ["swift test --package-path Native/CitySimNative"]
         self.assert_invalid(route, "aggregate/final command")
+        route["validation"]["focusedCommands"] = ["swift test --package-path Native/CitySimNative --filter FocusedTests"]
+        self.assert_valid(route)
 
     def test_final_qa_cannot_use_feature_author_task(self) -> None:
         route = self.route("FRONTIER_AUTHORITY", "acceptance")

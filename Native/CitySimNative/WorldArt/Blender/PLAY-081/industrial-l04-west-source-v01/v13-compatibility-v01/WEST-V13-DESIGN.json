@@ -5,6 +5,7 @@
   "designID": "industrial-l04-west-v13-freight-crown",
   "logicalBuildingID": "industrial_l04",
   "variantID": "variant-0",
+  "variantIndex": 0,
   "direction": "west",
   "sourceRevision": "west-v13-compatibility-01",
   "massingProfile": "west-road-facing-stepped-freight-crown",
@@ -29,6 +30,14 @@
       "published material-role requirements",
       "CONTRACT-010/020/021 registration and camera requirements"
     ]
+  },
+  "coordinateBridge": {
+    "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-direction-bridge-v06/MAPPING-CONTRACT.json",
+    "sha256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7",
+    "sourceRevision": "direction-bridge-v06",
+    "basisFormula": "B(CitySim[x,y,z])=Blender[z,x,y]",
+    "basisMatrixRows": [[0, 0, 1], [1, 0, 0], [0, 1, 0]],
+    "sourceOrder": [0, 1, 2, 3]
   },
   "authorityBindings": {
     "publishedBase": "d010d453af87c040ac13e8b3b7280366cb5094c1",
@@ -99,23 +108,23 @@
     "processOcclusionAreaPixels": 0
   },
   "components": [
-    {"id": "west-v13-foundry-hall", "role": "warm-foundry-masonry", "aabb": {"min": [-14, 1, -28], "max": [28, 28, 28]}},
-    {"id": "west-v13-operating-apron", "role": "integrated-operating-apron", "aabb": {"min": [-28, 0, -22], "max": [-22, 1, 22]}},
-    {"id": "west-v13-portal-left-jamb", "role": "charcoal-structural-steel", "aabb": {"min": [-24, 2, -20], "max": [-18, 34, -14]}},
-    {"id": "west-v13-portal-right-jamb", "role": "charcoal-structural-steel", "aabb": {"min": [-24, 2, 14], "max": [-18, 34, 20]}},
-    {"id": "west-v13-portal-header", "role": "portal-crown-steel", "aabb": {"min": [-24, 30, -20], "max": [-18, 35, 20]}},
-    {"id": "west-v13-deep-freight-aperture", "role": "deep-freight-void", "aabb": {"min": [-18, 4, -14], "max": [-15, 30, 14]}, "isAperture": true},
-    {"id": "west-v13-inner-reveal", "role": "clerestory-and-roof-edge", "aabb": {"min": [-21, 4, -16], "max": [-19, 30, 16]}},
-    {"id": "west-v13-crown-west", "role": "portal-crown-steel", "aabb": {"min": [-12, 34, -24], "max": [4, 39, -8]}},
-    {"id": "west-v13-crown-center", "role": "portal-crown-steel", "aabb": {"min": [-10, 39, -8], "max": [6, 44, 8]}},
-    {"id": "west-v13-crown-east", "role": "portal-crown-steel", "aabb": {"min": [-12, 35, 8], "max": [4, 40, 24]}},
-    {"id": "west-v13-roof-ridge", "role": "weathered-bluegreen-roof", "aabb": {"min": [3, 28, -26], "max": [24, 34, 2]}},
-    {"id": "west-v13-staff-annex", "role": "warm-control-masonry", "aabb": {"min": [2, 1, 12], "max": [24, 19, 26]}},
-    {"id": "west-v13-hot-process", "role": "restrained-hot-process", "aabb": {"min": [8, 1, -25], "max": [19, 24, -17]}, "processOccluder": true},
-    {"id": "west-v13-stack", "role": "oxidized-process-machinery", "aabb": {"min": [17, 1, -10], "max": [24, 32, -4]}, "processOccluder": true},
-    {"id": "west-v13-staff-glazing", "role": "warm-staff-glazing", "aabb": {"min": [1, 5, 22], "max": [3, 13, 25]}},
-    {"id": "west-v13-foundation", "role": "grounded-foundation", "aabb": {"min": [-28, 0, -28], "max": [28, 1, 28]}},
-    {"id": "west-v13-roof-edge", "role": "clerestory-and-roof-edge", "aabb": {"min": [3, 27, -26], "max": [24, 29, 26]}}
+    {"id": "west-v13-foundry-hall", "kind": "surrounding-shell", "role": "warm-foundry-masonry", "aabb": {"min": [-14, 1, -28], "max": [28, 28, 28]}},
+    {"id": "west-v13-operating-apron", "kind": "frontage-apron", "role": "integrated-operating-apron", "aabb": {"min": [-28, 0, -22], "max": [-22, 1, 22]}},
+    {"id": "west-v13-portal-left-jamb", "kind": "portal-frame-jamb", "role": "charcoal-structural-steel", "aabb": {"min": [-24, 2, -20], "max": [-18, 34, -14]}},
+    {"id": "west-v13-portal-right-jamb", "kind": "portal-frame-jamb", "role": "charcoal-structural-steel", "aabb": {"min": [-24, 2, 14], "max": [-18, 34, 20]}},
+    {"id": "west-v13-portal-header", "kind": "portal-frame-header", "role": "portal-crown-steel", "aabb": {"min": [-24, 30, -20], "max": [-18, 35, 20]}},
+    {"id": "west-v13-deep-freight-aperture", "kind": "aperture-void", "role": "deep-freight-void", "aabb": {"min": [-18, 4, -14], "max": [-15, 30, 14]}, "isAperture": true},
+    {"id": "west-v13-inner-reveal", "kind": "portal-depth-reveal", "role": "clerestory-and-roof-edge", "aabb": {"min": [-21, 4, -16], "max": [-19, 30, 16]}},
+    {"id": "west-v13-crown-west", "kind": "crown-segment", "role": "portal-crown-steel", "aabb": {"min": [-12, 34, -24], "max": [4, 39, -8]}},
+    {"id": "west-v13-crown-center", "kind": "crown-segment", "role": "portal-crown-steel", "aabb": {"min": [-10, 39, -8], "max": [6, 44, 8]}},
+    {"id": "west-v13-crown-east", "kind": "crown-segment", "role": "portal-crown-steel", "aabb": {"min": [-12, 35, 8], "max": [4, 40, 24]}},
+    {"id": "west-v13-roof-ridge", "kind": "roof-ridge", "role": "weathered-bluegreen-roof", "aabb": {"min": [3, 28, -26], "max": [24, 34, 2]}},
+    {"id": "west-v13-staff-annex", "kind": "control-annex", "role": "warm-control-masonry", "aabb": {"min": [2, 1, 12], "max": [24, 19, 26]}},
+    {"id": "west-v13-hot-process", "kind": "hot-process-vessel", "role": "restrained-hot-process", "aabb": {"min": [8, 1, -25], "max": [19, 24, -17]}, "processOccluder": true},
+    {"id": "west-v13-stack", "kind": "process-stack", "role": "oxidized-process-machinery", "aabb": {"min": [17, 1, -10], "max": [24, 32, -4]}, "processOccluder": true},
+    {"id": "west-v13-staff-glazing", "kind": "staff-glazing", "role": "warm-staff-glazing", "aabb": {"min": [1, 5, 22], "max": [3, 13, 25]}},
+    {"id": "west-v13-foundation", "kind": "foundation", "role": "grounded-foundation", "aabb": {"min": [-28, 0, -28], "max": [28, 1, 28]}},
+    {"id": "west-v13-roof-edge", "kind": "roof-edge", "role": "clerestory-and-roof-edge", "aabb": {"min": [3, 27, -26], "max": [24, 29, 26]}}
   ],
   "geometryProof": {
     "aabbSchema": "min/max finite numeric arrays of length 3; strict min < max; flags live on component",
@@ -128,15 +137,30 @@
     "silhouetteComponentIDs": ["west-v13-portal-header", "west-v13-crown-west", "west-v13-crown-center", "west-v13-crown-east"],
     "nonApertureSolidsAudited": true,
     "nestedOccluderFlagsAudited": true,
-    "nonAliasIdentity": "component-id-and-material-role-usage"
+    "nonAliasIdentity": "component-id-and-material-role-usage",
+    "portalProjectionAllowlist": {
+      "west-v13-foundry-hall": "surrounding-shell-authored-portal-cutout",
+      "west-v13-operating-apron": "frontage-portal-connectivity",
+      "west-v13-portal-left-jamb": "portal-frame-member",
+      "west-v13-portal-header": "portal-frame-member",
+      "west-v13-inner-reveal": "portal-depth-content",
+      "west-v13-crown-west": "crown-boundary",
+      "west-v13-crown-center": "crown-boundary",
+      "west-v13-crown-east": "crown-boundary",
+      "west-v13-staff-annex": "side-control-mass",
+      "west-v13-foundation": "portal-foundation",
+      "west-v13-roof-edge": "portal-roof-edge"
+    },
+    "nonAliasSignatureFields": ["kind", "role", "aabb", "sourceProjection", "literalProjection", "silhouetteHeight"],
+    "duplicateStructuralGeometry": "reject-identical-kind-role-aabb-projection-signatures"
   },
   "literal192Feasibility": {
     "portalInsetWidthPixels": 19,
-    "portalInsetHeightPixels": 36,
+    "portalInsetHeightPixels": 28,
     "portalOuterWidthPixels": 28,
-    "portalOuterHeightPixels": 47,
+    "portalOuterHeightPixels": 38,
     "portalJambThicknessPixels": 8,
-    "portalHeaderThicknessPixels": 19,
+    "portalHeaderThicknessPixels": 18,
     "minimumSilhouetteBreaks": 3,
     "observedSilhouetteBreaks": 4,
     "portalFrameToVoidGrayscaleDelta": 30,

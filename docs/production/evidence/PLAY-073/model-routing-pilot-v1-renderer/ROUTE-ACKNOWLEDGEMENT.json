@@ -1,0 +1,424 @@
+{
+  "schemaVersion": 1,
+  "kind": "model_routing_pilot_v1_renderer_acknowledgement",
+  "routeId": "pilot-v1:renderer",
+  "routeSha256": "1e321f3b895ca3d79768744ac7b10985a38fdb14160968d24a07f85f54ebd8ec",
+  "classification": "LUNA_IMPLEMENTATION",
+  "model": "gpt-5.6-luna",
+  "effort": "high",
+  "claim": "PLAY-073",
+  "claimSha256": "47a260aea5ab9d38a98ceaaefb61e89e00322110b5a833e964a59d13157d7a49",
+  "branch": "codex/citysim-world-rendering",
+  "worktree": "/Users/James/.codex/worktrees/cac1/city-sim",
+  "head": "2f1fad1e4100a83da826f80758fdc8418c9dee06",
+  "expectedStartingHead": "2f1fad1e4100a83da826f80758fdc8418c9dee06",
+  "routeAuthority": {
+    "commit": "2753f42134fa85d8570849b57302cce0bc924566",
+    "dispatchReceiptCommit": "70c49f394a0920e26dffc945bd996cf67af7b1fe",
+    "dispatchReceiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PILOT-DISPATCH-V1.json",
+    "dispatchReceiptSha256": "79b5132e8144c5f0e81c592b746becffb7fe99aa97d3ac3b2a62bf997a24f42b",
+    "authorityIsAncestor": true,
+    "routeValidator": "PASS"
+  },
+  "currentAuthority": {
+    "requestedPublishedOriginMaster": "a0c8932f9a318ee20cb173b92a5224b4ea80cc35",
+    "requestedAuthorityIsAncestorOfHead": true,
+    "fetchedOriginMasterObserved": "70c49f394a0920e26dffc945bd996cf67af7b1fe",
+    "fetchedRemoteAdvanceConsumed": false,
+    "syncDisposition": "route-local_snapshot_already_contains_requested_authority; sibling_remote_transition_not_consumed"
+  },
+  "contracts": {
+    "familyContract": {
+      "path": "docs/production/decisions/CONTRACT-010-directional-building-art.md",
+      "sha256": "0ee2d68a9dba4694d92a864bfeb5a91970c88fe87d893e1898de7b26d38609af"
+    },
+    "sharedLedger": {
+      "path": "docs/production/evidence/INTEGRATION/WORLD_ART_PARALLEL_BATCH_LEDGER.json",
+      "sha256": "cfbb229060715838d87dca882e10dc24ec072628011ec63c327b6802495e25e4"
+    },
+    "intakeAuthority": {
+      "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-RENDERER-INTAKE-PLAN-V1-AUTHORITY.md",
+      "sha256": "a98aad537113666809e20d963bb6c20d58e277f0b8bad0655506133969c790da"
+    },
+    "canonicalPlan": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-renderer-intake-plan-v1.json",
+      "sha256": "ca6c31bbafe0afcf537d1b58093c11c8485d3af734ac1e9a041438c271e68abe"
+    }
+  },
+  "identities": {
+    "intakePlanRoot": "docs/production/evidence/PLAY-073/industrial-l04-renderer-intake-plan-v1",
+    "workGraph": {
+      "path": "docs/production/evidence/PLAY-073/industrial-l04-renderer-intake-plan-v1/WORK-GRAPH.json",
+      "sha256": "ef042670b16f1dd2a992e8ba8777cc41b069071cb1aebb040655f9a6902e6bc0"
+    },
+    "cameraExpectations": {
+      "path": "docs/production/evidence/PLAY-073/industrial-l04-renderer-intake-plan-v1/CAMERA-LOD-EXPECTATIONS.json",
+      "sha256": "1f60bdaedc981213ec00dc3ce5e0baff73f6d2b9d7ea4c40f152208e4c1b3ee5"
+    },
+    "assemblerDescriptor": {
+      "path": "docs/production/evidence/PLAY-073/industrial-l04-renderer-intake-plan-v1/ATOMIC-ASSEMBLER-JOB-DESCRIPTOR.json",
+      "sha256": "808f306649762b62568cb2954d7378bf8d7cdca527e26da80f2b219c51744fda"
+    },
+    "assemblerTool": {
+      "path": "docs/production/evidence/PLAY-073/industrial-l04-v2-atomic-assembly-prep/tools/assemble_quarantined_family.sh",
+      "sha256": "f5a4c672a76b005385fb66fbcf87a55b71477b9cd67f59a63ae313371cf8a5ab"
+    },
+    "quarantineHarness": {
+      "path": "Native/CitySimNative/Tests/CitySimNativeTests/IndustrialL4V2SourceAdmissionHarnessTests.swift",
+      "sha256": "bebe5b098a6d4603d5a680a123eded0a0b5cb5fd8dde6c2c1a5cff7b9aeffdc1"
+    },
+    "qaFixture": {
+      "path": "docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/fixtures/industrial-l03-directional-mature-city-v1.json",
+      "sha256": "b8875422a277b59f6797aef03ca93175a502df5963a5c972684ca47be40e7aa5",
+      "mutationAllowed": false
+    }
+  },
+  "focusedGate": {
+    "command": "python3 .agents/skills/operate-citysim-integration/scripts/test_validate_industrial_l04_renderer_intake_plan_v1.py",
+    "actualCommand": "python3 .agents/skills/operate-citysim-integration/scripts/test_validate_industrial_l04_renderer_intake_plan_v1.py",
+    "executedTests": 37,
+    "failures": 0,
+    "result": "PASS",
+    "elapsedSeconds": 1.388
+  },
+  "rehearsal": {
+    "firstJobStartedAt": "2026-08-01T15:59:04.527Z",
+    "lastJobEndedAt": "2026-08-01T15:59:05.529Z",
+    "elapsedSeconds": 1.002,
+    "jobs": [
+      {
+        "id": "mapping-contract-preflight",
+        "result": "PASS",
+        "startedAt": "2026-08-01T15:59:04.527Z",
+        "endedAt": "2026-08-01T15:59:04.553Z",
+        "outputSha256": "acb7b48c29c6d7049a044b443f8f736d1c3819598b4a4e45259d45a588526731"
+      },
+      {
+        "id": "registration-lod-preflight",
+        "result": "PASS",
+        "startedAt": "2026-08-01T15:59:04.528Z",
+        "endedAt": "2026-08-01T15:59:04.554Z",
+        "outputSha256": "471fa31eb7291a42f67ac097d607d7ec7ceec5ea7112f99b4f8a005652ee3b6d"
+      },
+      {
+        "id": "alias-transform-fallback-preflight",
+        "result": "PASS_37_OF_37",
+        "startedAt": "2026-08-01T15:59:04.529Z",
+        "endedAt": "2026-08-01T15:59:05.529Z",
+        "outputSha256": "f0ef68e9674c19762e5e5e30ff57e75c3df526d11b9d622abff7a38ae8ccca8f"
+      },
+      {
+        "id": "fixture-camera-preflight",
+        "result": "PASS",
+        "startedAt": "2026-08-01T15:59:04.529Z",
+        "endedAt": "2026-08-01T15:59:04.557Z",
+        "outputSha256": "1dc5bcc4b01c5c218ed74767f9ff9f20f396f218a8eac6fde98a1664f2e124eb"
+      },
+      {
+        "id": "resource-integrity-preflight",
+        "result": "PASS",
+        "startedAt": "2026-08-01T15:59:04.530Z",
+        "endedAt": "2026-08-01T15:59:04.558Z",
+        "outputSha256": "24bfaf951ce6ecb901c2e10090bab8d041915bf8d256c918cf811d469023d19c"
+      },
+      {
+        "id": "receipt-projection-preflight",
+        "result": "PASS",
+        "startedAt": "2026-08-01T15:59:04.532Z",
+        "endedAt": "2026-08-01T15:59:04.665Z",
+        "outputSha256": "7a7a52fb1a506660254b590f0bef90e21ff4ca025e0bffbdfef4bcbaae915580"
+      }
+    ],
+    "overlap": {
+      "status": "observed",
+      "jobIds": [
+        "mapping-contract-preflight",
+        "registration-lod-preflight",
+        "alias-transform-fallback-preflight",
+        "fixture-camera-preflight",
+        "resource-integrity-preflight",
+        "receipt-projection-preflight"
+      ],
+      "startedAt": "2026-08-01T15:59:04.532Z",
+      "endedAt": "2026-08-01T15:59:04.553Z",
+      "reason": "six independent read-only helper jobs overlapped"
+    },
+    "reworkCount": 1,
+    "reworkNote": "Initial temporary assertions assumed one source task and one socket; corrected to direction-local PLAY-027/079/080/081 and N/E/S/W sockets, then reran all six jobs successfully. No product or governed evidence was changed during rework."
+  },
+  "executionAccounting": {
+    "readyNow": [],
+    "running": [],
+    "waitingOnJoin": [],
+    "serializedAuthority": {
+      "threadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+      "branch": "codex/citysim-world-rendering",
+      "worktree": "/Users/James/.codex/worktrees/cac1/city-sim",
+      "gitIndexWriter": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+      "governedEvidenceWriter": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0"
+    },
+    "nextRefill": "await_exact_integration_source_admission_receipts_then_run_direction_local_renderer_quarantine",
+    "capacity": {
+      "helperSlots": 6,
+      "dccSlots": 0
+    },
+    "launchedJobs": [
+      {
+        "id": "mapping-contract-preflight",
+        "batch": "industrial_l04_directional_family",
+        "claim": "PLAY-073",
+        "claimRevision": "47a260aea5ab9d38a98ceaaefb61e89e00322110b5a833e964a59d13157d7a49",
+        "publishedBase": "2753f42134fa85d8570849b57302cce0bc924566",
+        "head": "2f1fad1e4100a83da826f80758fdc8418c9dee06",
+        "threadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+        "branch": "codex/citysim-world-rendering",
+        "worktree": "/Users/James/.codex/worktrees/cac1/city-sim",
+        "resourceClass": "helper",
+        "mutation": "read_only",
+        "exclusiveRoot": null,
+        "state": "completed",
+        "startedAt": "2026-08-01T15:59:04.527Z",
+        "endedAt": "2026-08-01T15:59:04.553Z",
+        "evidenceId": "thread:019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0/turn:pilot-v1-renderer-20260801/item:mapping-contract-preflight",
+        "dccSlot": null,
+        "processId": null
+      },
+      {
+        "id": "registration-lod-preflight",
+        "batch": "industrial_l04_directional_family",
+        "claim": "PLAY-073",
+        "claimRevision": "47a260aea5ab9d38a98ceaaefb61e89e00322110b5a833e964a59d13157d7a49",
+        "publishedBase": "2753f42134fa85d8570849b57302cce0bc924566",
+        "head": "2f1fad1e4100a83da826f80758fdc8418c9dee06",
+        "threadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+        "branch": "codex/citysim-world-rendering",
+        "worktree": "/Users/James/.codex/worktrees/cac1/city-sim",
+        "resourceClass": "helper",
+        "mutation": "read_only",
+        "exclusiveRoot": null,
+        "state": "completed",
+        "startedAt": "2026-08-01T15:59:04.528Z",
+        "endedAt": "2026-08-01T15:59:04.554Z",
+        "evidenceId": "thread:019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0/turn:pilot-v1-renderer-20260801/item:registration-lod-preflight",
+        "dccSlot": null,
+        "processId": null
+      },
+      {
+        "id": "alias-transform-fallback-preflight",
+        "batch": "industrial_l04_directional_family",
+        "claim": "PLAY-073",
+        "claimRevision": "47a260aea5ab9d38a98ceaaefb61e89e00322110b5a833e964a59d13157d7a49",
+        "publishedBase": "2753f42134fa85d8570849b57302cce0bc924566",
+        "head": "2f1fad1e4100a83da826f80758fdc8418c9dee06",
+        "threadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+        "branch": "codex/citysim-world-rendering",
+        "worktree": "/Users/James/.codex/worktrees/cac1/city-sim",
+        "resourceClass": "helper",
+        "mutation": "read_only",
+        "exclusiveRoot": null,
+        "state": "completed",
+        "startedAt": "2026-08-01T15:59:04.529Z",
+        "endedAt": "2026-08-01T15:59:05.529Z",
+        "evidenceId": "thread:019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0/turn:pilot-v1-renderer-20260801/item:alias-transform-fallback-preflight",
+        "dccSlot": null,
+        "processId": null
+      },
+      {
+        "id": "fixture-camera-preflight",
+        "batch": "industrial_l04_directional_family",
+        "claim": "PLAY-073",
+        "claimRevision": "47a260aea5ab9d38a98ceaaefb61e89e00322110b5a833e964a59d13157d7a49",
+        "publishedBase": "2753f42134fa85d8570849b57302cce0bc924566",
+        "head": "2f1fad1e4100a83da826f80758fdc8418c9dee06",
+        "threadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+        "branch": "codex/citysim-world-rendering",
+        "worktree": "/Users/James/.codex/worktrees/cac1/city-sim",
+        "resourceClass": "helper",
+        "mutation": "read_only",
+        "exclusiveRoot": null,
+        "state": "completed",
+        "startedAt": "2026-08-01T15:59:04.529Z",
+        "endedAt": "2026-08-01T15:59:04.557Z",
+        "evidenceId": "thread:019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0/turn:pilot-v1-renderer-20260801/item:fixture-camera-preflight",
+        "dccSlot": null,
+        "processId": null
+      },
+      {
+        "id": "resource-integrity-preflight",
+        "batch": "industrial_l04_directional_family",
+        "claim": "PLAY-073",
+        "claimRevision": "47a260aea5ab9d38a98ceaaefb61e89e00322110b5a833e964a59d13157d7a49",
+        "publishedBase": "2753f42134fa85d8570849b57302cce0bc924566",
+        "head": "2f1fad1e4100a83da826f80758fdc8418c9dee06",
+        "threadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+        "branch": "codex/citysim-world-rendering",
+        "worktree": "/Users/James/.codex/worktrees/cac1/city-sim",
+        "resourceClass": "helper",
+        "mutation": "read_only",
+        "exclusiveRoot": null,
+        "state": "completed",
+        "startedAt": "2026-08-01T15:59:04.530Z",
+        "endedAt": "2026-08-01T15:59:04.558Z",
+        "evidenceId": "thread:019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0/turn:pilot-v1-renderer-20260801/item:resource-integrity-preflight",
+        "dccSlot": null,
+        "processId": null
+      },
+      {
+        "id": "receipt-projection-preflight",
+        "batch": "industrial_l04_directional_family",
+        "claim": "PLAY-073",
+        "claimRevision": "47a260aea5ab9d38a98ceaaefb61e89e00322110b5a833e964a59d13157d7a49",
+        "publishedBase": "2753f42134fa85d8570849b57302cce0bc924566",
+        "head": "2f1fad1e4100a83da826f80758fdc8418c9dee06",
+        "threadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+        "branch": "codex/citysim-world-rendering",
+        "worktree": "/Users/James/.codex/worktrees/cac1/city-sim",
+        "resourceClass": "helper",
+        "mutation": "read_only",
+        "exclusiveRoot": null,
+        "state": "completed",
+        "startedAt": "2026-08-01T15:59:04.532Z",
+        "endedAt": "2026-08-01T15:59:04.665Z",
+        "evidenceId": "thread:019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0/turn:pilot-v1-renderer-20260801/item:receipt-projection-preflight",
+        "dccSlot": null,
+        "processId": null
+      }
+    ],
+    "overlap": {
+      "status": "observed",
+      "jobIds": [
+        "mapping-contract-preflight",
+        "registration-lod-preflight",
+        "alias-transform-fallback-preflight",
+        "fixture-camera-preflight",
+        "resource-integrity-preflight",
+        "receipt-projection-preflight"
+      ],
+      "startedAt": "2026-08-01T15:59:04.532Z",
+      "endedAt": "2026-08-01T15:59:04.553Z",
+      "reason": "six independent read-only helper jobs overlapped"
+    },
+    "join": {
+      "state": "joined",
+      "requiredJobs": [
+        "mapping-contract-preflight",
+        "registration-lod-preflight",
+        "alias-transform-fallback-preflight",
+        "fixture-camera-preflight",
+        "resource-integrity-preflight",
+        "receipt-projection-preflight"
+      ],
+      "completedJobs": [
+        "mapping-contract-preflight",
+        "registration-lod-preflight",
+        "alias-transform-fallback-preflight",
+        "fixture-camera-preflight",
+        "resource-integrity-preflight",
+        "receipt-projection-preflight"
+      ]
+    },
+    "unusedCapacityReasons": [
+      {
+        "resourceClass": "helper",
+        "slots": 1,
+        "reasonCode": "completed_before_observation",
+        "owner": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+        "dependencyAuthority": {
+          "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+          "sha256": "eef78d7775afab255e680455d0ac8d91105008f25bbd0f6b2c964245c8a70ceb"
+        },
+        "resumptionEvent": "integration_publishes_exact_source_admission_receipts",
+        "nextRefillJob": "await_exact_integration_source_admission_receipts_then_run_direction_local_renderer_quarantine"
+      },
+      {
+        "resourceClass": "helper",
+        "slots": 1,
+        "reasonCode": "completed_before_observation",
+        "owner": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+        "dependencyAuthority": {
+          "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+          "sha256": "eef78d7775afab255e680455d0ac8d91105008f25bbd0f6b2c964245c8a70ceb"
+        },
+        "resumptionEvent": "integration_publishes_exact_source_admission_receipts",
+        "nextRefillJob": "await_exact_integration_source_admission_receipts_then_run_direction_local_renderer_quarantine"
+      },
+      {
+        "resourceClass": "helper",
+        "slots": 1,
+        "reasonCode": "completed_before_observation",
+        "owner": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+        "dependencyAuthority": {
+          "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+          "sha256": "eef78d7775afab255e680455d0ac8d91105008f25bbd0f6b2c964245c8a70ceb"
+        },
+        "resumptionEvent": "integration_publishes_exact_source_admission_receipts",
+        "nextRefillJob": "await_exact_integration_source_admission_receipts_then_run_direction_local_renderer_quarantine"
+      },
+      {
+        "resourceClass": "helper",
+        "slots": 1,
+        "reasonCode": "completed_before_observation",
+        "owner": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+        "dependencyAuthority": {
+          "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+          "sha256": "eef78d7775afab255e680455d0ac8d91105008f25bbd0f6b2c964245c8a70ceb"
+        },
+        "resumptionEvent": "integration_publishes_exact_source_admission_receipts",
+        "nextRefillJob": "await_exact_integration_source_admission_receipts_then_run_direction_local_renderer_quarantine"
+      },
+      {
+        "resourceClass": "helper",
+        "slots": 1,
+        "reasonCode": "completed_before_observation",
+        "owner": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+        "dependencyAuthority": {
+          "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+          "sha256": "eef78d7775afab255e680455d0ac8d91105008f25bbd0f6b2c964245c8a70ceb"
+        },
+        "resumptionEvent": "integration_publishes_exact_source_admission_receipts",
+        "nextRefillJob": "await_exact_integration_source_admission_receipts_then_run_direction_local_renderer_quarantine"
+      },
+      {
+        "resourceClass": "helper",
+        "slots": 1,
+        "reasonCode": "completed_before_observation",
+        "owner": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+        "dependencyAuthority": {
+          "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+          "sha256": "eef78d7775afab255e680455d0ac8d91105008f25bbd0f6b2c964245c8a70ceb"
+        },
+        "resumptionEvent": "integration_publishes_exact_source_admission_receipts",
+        "nextRefillJob": "await_exact_integration_source_admission_receipts_then_run_direction_local_renderer_quarantine"
+      }
+    ]
+  },
+  "proposedState": "intake_ready",
+  "liveInputs": {
+    "sourceAdmissions": 0,
+    "rendererQuarantineAcceptances": 0,
+    "assemblerInputs": 0,
+    "runtimeActivated": false,
+    "shippingResourcesMutated": false,
+    "productionSelected": false,
+    "stagedAppLaunched": false,
+    "qaDisposition": null
+  },
+  "immediateFourthDirectionTrigger": "When the exact Integration source-admission receipt for the fourth direction arrives and that direction's isolated quarantine passes, invoke the existing atomic assembler in the same worker turn; require all four receipts, all four quarantine receipts, exact 4-of-4 manifest, and no alias/transform/fallback before any candidate-only resource step.",
+  "stopCondition": "no_source_admission_or_renderer_quarantine_acceptance_no_assembly_runtime_shipping_atlas_manifest_fixture_package_app_or_QA_mutation_no_push_integration_or_self_acceptance",
+  "independentReviewer": {
+    "required": true,
+    "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+    "model": "gpt-5.6-sol",
+    "effort": "high"
+  },
+  "pilotMeasurement": {
+    "turnCount": 2,
+    "elapsedSeconds": 1.002,
+    "validationSeconds": 1.388,
+    "reworkCount": 1,
+    "acceptedCommit": null,
+    "acceptedResult": "focused route validation and nonshipping intake rehearsal passed; awaiting independent review",
+    "approximateTokens": null,
+    "frontierEscalationReason": null
+  }
+}

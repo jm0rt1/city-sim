@@ -12,6 +12,7 @@ These instructions apply to every task in this repository and every linked workt
 | `master` | `.agents/skills/operate-citysim-integration/SKILL.md` |
 | `codex/citysim-gameplay-loop` | `.agents/skills/build-citysim-gameplay-loop/SKILL.md` |
 | `codex/citysim-world-rendering` | `.agents/skills/render-citysim-world/SKILL.md` |
+| `codex/citysim-world-rendering-r4b-current` | `.agents/skills/render-citysim-world/SKILL.md` |
 | `codex/citysim-world-art` | `.agents/skills/produce-citysim-world-art/SKILL.md` |
 | `codex/citysim-world-art-east` | `.agents/skills/produce-citysim-world-art/SKILL.md` |
 | `codex/citysim-world-art-south` | `.agents/skills/produce-citysim-world-art/SKILL.md` |

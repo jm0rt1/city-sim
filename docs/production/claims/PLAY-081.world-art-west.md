@@ -1,6 +1,6 @@
 # PLAY-081 Claim
 
-- **Claim revision:** 9
+- **Claim revision:** 10
 - **Title:** Close the Industrial L4 West execution boundary in parallel
 - **Lane:** World Art West cell
 - **Branch:** `codex/citysim-world-art-west`
@@ -126,3 +126,19 @@ footprint, material, and non-alias proofs. Stop after one zero-pixel
 candidate-ready-for-independent-review commit. DCC, pixels, normalization,
 admission, activation, shipping, push, integration, and self-acceptance remain
 prohibited.
+
+## Revision-10 relocate the v02 validator to its authorized path
+
+Consume
+`docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-WEST-V13-LITERAL-REPAIR-PATH-CORRECTION-V1.md`.
+Preserve exact candidate `93f5a132d3334f9e76cf31aac2ea5e3638f72c08`
+and every passing design/lowering metric. Move only the v02 validator from the
+unauthorized versioned subdirectory to the exact source-root path, update its
+relative path resolution without weakening a check, and regenerate only the
+v02 result so changed-path and validator-hash bindings are truthful.
+
+The repair must delete the wrong-path validator, add the exact authorized-path
+validator, preserve the design and lowering bytes, reproduce all nine
+adversarial rejections and the byte-identical replay twice, and return one clean
+candidate. No DCC, pixels, normalization, admission, activation, shipping,
+push, integration, or self-acceptance is authorized.

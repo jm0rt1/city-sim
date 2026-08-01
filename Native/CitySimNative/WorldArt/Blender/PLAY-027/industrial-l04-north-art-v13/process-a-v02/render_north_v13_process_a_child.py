@@ -13,12 +13,18 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import subprocess
 import sys
 
 
 BLENDER_DIRECT_FLAG = "--integration-direct"
 SOURCE_ROOT = "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13"
 PROCESS_ROOT = "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a"
+EVIDENCE_ROOT = "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-v02"
+WORKTREE = "/Users/James/.codex/worktrees/0648/city-sim"
+ATTEMPT_MARKER_PATH = "docs/production/evidence/INTEGRATION/PLAY-027-NORTH-V13-PROCESS-A-ATTEMPT.json"
+AUTHORITY_BASE = "23f1836892f19d9579609f523397aea068202859"
+CLAIM_SHA256 = "7d42ba7c38a55d7681171499aad50e15c2d3eba0878cabf508d0e42ee97cdc83"
 
 
 def canonical(value: object) -> bytes:
@@ -36,6 +42,29 @@ def load(path: Path) -> dict:
     return value
 
 
+def _git(root: Path, *arguments: str) -> bytes:
+    if not arguments or arguments[0] not in {"cat-file", "show", "rev-parse", "merge-base"}:
+        raise RuntimeError("unapproved Git helper")
+    result = subprocess.run(["git", *arguments], cwd=root, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
+    if result.returncode:
+        raise RuntimeError("Git authority check failed")
+    return result.stdout
+
+
+def _no_symlink(root: Path, relative: str) -> Path:
+    path = root / relative
+    try:
+        parts = path.relative_to(root).parts
+    except ValueError as exc:
+        raise RuntimeError("path escapes assigned repository") from exc
+    current = root
+    for part in parts:
+        current /= part
+        if current.is_symlink():
+            raise RuntimeError("symlink path rejected")
+    return path
+
+
 def args(values: list[str] | None = None) -> argparse.Namespace:
     if values is None:
         if "--" not in sys.argv:
@@ -47,12 +76,114 @@ def args(values: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--contract", required=True)
     parser.add_argument("--schedule-path", required=True)
     parser.add_argument("--process-receipt-path", required=True)
+    parser.add_argument("--attempt-marker-path", required=True)
     parser.add_argument("--output-root", required=True)
     parser.add_argument("--evidence-root", required=True)
     parsed = parser.parse_args(values)
-    if not parsed.integration_direct or os.environ.get("CITYSIM_INTEGRATION_DIRECT") != "1":
-        raise RuntimeError("direct child invocation forbidden; Integration direct boundary missing")
+    if not parsed.integration_direct:
+        raise RuntimeError("direct child invocation forbidden; Integration flag missing")
     return parsed
+
+
+def _require_full_sha(value: object, label: str) -> str:
+    if type(value) is not str or len(value) != 64 or any(ch not in "0123456789abcdef" for ch in value):
+        raise RuntimeError(f"{label} must be a full lowercase SHA-256")
+    return value
+
+
+def _require_commit(value: object, label: str) -> str:
+    if type(value) is not str or len(value) != 40 or any(ch not in "0123456789abcdef" for ch in value):
+        raise RuntimeError(f"{label} must be a full lowercase commit")
+    return value
+
+
+def _exact_int(value: object, expected: int) -> bool:
+    return type(value) is int and value == expected
+
+
+def _normalized_integration_path(root: Path, value: str, label: str) -> Path:
+    if type(value) is not str or not value or Path(value).is_absolute() or Path(value).as_posix() != value or value.endswith("/") or ".." in Path(value).parts or "." in Path(value).parts:
+        raise RuntimeError(f"{label} is not a normalized repository path")
+    if not value.startswith("docs/production/evidence/INTEGRATION/"):
+        raise RuntimeError(f"{label} is outside Integration authority")
+    return _no_symlink(root, value)
+
+
+def _claim_child_start(marker_path: Path, marker: dict) -> None:
+    child_start = Path(os.fspath(marker_path) + ".child-start")
+    if child_start.exists() or child_start.is_symlink():
+        raise RuntimeError("attempt has already started a child")
+    fd = os.open(child_start, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+    with os.fdopen(fd, "wb") as stream:
+        stream.write(canonical(marker))
+        stream.flush()
+        os.fsync(stream.fileno())
+
+
+def validate_launch(parsed: argparse.Namespace) -> dict:
+    root = Path(parsed.repository_root)
+    if str(root) != WORKTREE or not root.is_absolute() or os.path.realpath(root) != WORKTREE or root.is_symlink() or not root.is_dir():
+        raise RuntimeError("repository root is not the assigned worktree")
+    contract_path = _no_symlink(root, f"{SOURCE_ROOT}/process-a-v02/EXECUTION-CONTRACT.json")
+    if Path(parsed.contract) != contract_path:
+        raise RuntimeError("caller-selected contract path is not the committed contract")
+    contract = load(contract_path)
+    identity = contract.get("identity", {})
+    if identity.get("logicalBuildingID") != "industrial_l04" or identity.get("variantID") != "variant-0" or identity.get("viewDirection") != "north" or identity.get("processID") != "A" or identity.get("slotID") != "north:A" or identity.get("sourceAuthority") is not False or identity.get("productionSelected") is not False:
+        raise RuntimeError("child identity mismatch")
+    if contract.get("claim", {}).get("sha256") != CLAIM_SHA256:
+        raise RuntimeError("child claim mismatch")
+    if contract.get("route", {}).get("authorityCommit") != AUTHORITY_BASE:
+        raise RuntimeError("child authority mismatch")
+    expected_output = root / PROCESS_ROOT
+    output = Path(parsed.output_root)
+    if output != expected_output or output.is_symlink() or not output.is_dir():
+        raise RuntimeError("child output root mismatch")
+    evidence = _no_symlink(root, EVIDENCE_ROOT)
+    if Path(parsed.evidence_root) != evidence:
+        raise RuntimeError("child evidence root mismatch")
+    schedule_path = parsed.schedule_path
+    schedule_file = _normalized_integration_path(root, schedule_path, "schedule path")
+    receipt_path = parsed.process_receipt_path
+    receipt_file = _normalized_integration_path(root, receipt_path, "process receipt path")
+    marker_path = _no_symlink(root, parsed.attempt_marker_path)
+    if marker_path != root / ATTEMPT_MARKER_PATH or marker_path.is_symlink() or not marker_path.is_file():
+        raise RuntimeError("child attempt marker path mismatch")
+    schedule_bytes = schedule_file.read_bytes()
+    receipt_bytes = receipt_file.read_bytes()
+    schedule = load(schedule_file)
+    receipt = load(receipt_file)
+    current_head = _git(root, "rev-parse", "HEAD").decode().strip()
+    runner_path = root / SOURCE_ROOT / "process-a-v02" / "launch_north_v13_process_a_v02.py"
+    child_path = root / SOURCE_ROOT / "process-a-v02" / "render_north_v13_process_a_child.py"
+    if not _exact_int(schedule.get("schema"), 1) or schedule.get("task") != "PLAY-027" or schedule.get("batch") != "industrial_l04_directional_family" or schedule.get("direction") != "north" or schedule.get("process") != "A" or schedule.get("slot") != "north:A" or not _exact_int(schedule.get("maximumChildStarts"), 1) or schedule.get("schedulePath") != schedule_path or schedule.get("attemptMarkerPath") != ATTEMPT_MARKER_PATH or schedule.get("outputRoot") != PROCESS_ROOT or schedule.get("evidenceRoot") != EVIDENCE_ROOT or schedule.get("workerHead") is not None or schedule.get("claimSHA256") != CLAIM_SHA256 or schedule.get("trustedIntegrationHead") != AUTHORITY_BASE:
+        raise RuntimeError("child schedule identity mismatch")
+    if schedule.get("orchestratorPath") != f"{SOURCE_ROOT}/process-a-v02/launch_north_v13_process_a_v02.py" or schedule.get("childPath") != f"{SOURCE_ROOT}/process-a-v02/render_north_v13_process_a_child.py" or schedule.get("orchestratorSHA256") != sha256(runner_path) or schedule.get("childSHA256") != sha256(child_path):
+        raise RuntimeError("child tool identity mismatch")
+    publication = _require_commit(schedule.get("schedulePublicationCommit"), "schedule publication commit")
+    _git(root, "cat-file", "-e", publication + "^{commit}")
+    _git(root, "merge-base", "--is-ancestor", publication, current_head)
+    if _git(root, "show", f"{publication}:{schedule_path}") != schedule_bytes:
+        raise RuntimeError("committed schedule blob differs from consumed schedule")
+    if not _exact_int(receipt.get("schema"), 1) or receipt.get("kind") != "integration-process-receipt" or receipt.get("task") != "PLAY-027" or receipt.get("direction") != "north" or receipt.get("process") != "A" or receipt.get("slot") != "north:A" or not _exact_int(receipt.get("maximumChildStarts"), 1) or receipt.get("claimSHA256") != CLAIM_SHA256 or receipt.get("schedulePath") != schedule_path or receipt.get("scheduleSHA256") != sha256(schedule_file) or receipt.get("schedulePublicationCommit") != publication or receipt.get("workerHead") != current_head or receipt.get("outputRoot") != PROCESS_ROOT or receipt.get("evidenceRoot") != EVIDENCE_ROOT or receipt.get("attemptMarkerPath") != ATTEMPT_MARKER_PATH or receipt.get("receiptPath") != receipt_path or receipt.get("attemptConsumed") is not True:
+        raise RuntimeError("child process receipt identity mismatch")
+    if receipt.get("childPath") != f"{SOURCE_ROOT}/process-a-v02/render_north_v13_process_a_child.py" or receipt.get("orchestratorPath") != f"{SOURCE_ROOT}/process-a-v02/launch_north_v13_process_a_v02.py" or receipt.get("orchestratorSHA256") != sha256(runner_path) or receipt.get("childSHA256") != sha256(child_path):
+        raise RuntimeError("child command identity mismatch")
+    marker = load(marker_path)
+    if not _exact_int(marker.get("schema"), 1) or marker.get("kind") != "integration-process-attempt" or marker.get("task") != "PLAY-027" or marker.get("slot") != "north:A" or marker.get("state") != "consumed" or marker.get("attemptConsumed") is not True or marker.get("schedulePath") != schedule_path or marker.get("scheduleSHA256") != sha256(schedule_file) or marker.get("schedulePublicationCommit") != publication or marker.get("receiptPath") != receipt_path or marker.get("receiptSHA256") != sha256(receipt_file) or marker.get("workerHead") != current_head or marker.get("outputRoot") != PROCESS_ROOT or marker.get("evidenceRoot") != EVIDENCE_ROOT or marker.get("childPath") != receipt.get("childPath") or marker.get("orchestratorPath") != receipt.get("orchestratorPath") or not _exact_int(marker.get("maximumChildStarts"), 1):
+        raise RuntimeError("child consumed-attempt binding mismatch")
+    for item in contract.get("inputs", []):
+        frozen = _no_symlink(root, item["path"])
+        if not frozen.is_file() or sha256(frozen) != item["sha256"]:
+            raise RuntimeError("frozen input identity mismatch")
+    claim_path = _no_symlink(root, contract["claim"]["path"])
+    if not claim_path.is_file() or sha256(claim_path) != CLAIM_SHA256:
+        raise RuntimeError("child claim bytes mismatch")
+    if any(output.iterdir()):
+        raise RuntimeError("exclusive output root is not empty")
+    if marker.get("childStartMarker") != ATTEMPT_MARKER_PATH + ".child-start":
+        raise RuntimeError("child start marker binding mismatch")
+    return {"root": root, "contract": contract, "scenePath": root / SOURCE_ROOT / "DESIGN-SCENE.json", "materialsPath": root / SOURCE_ROOT / "DESIGN-MATERIALS.json", "loweringPath": root / SOURCE_ROOT / "lowering-v01" / "LOWERING-CONTRACT.json", "markerPath": marker_path, "schedulePath": schedule_file, "receiptPath": receipt_file, "marker": marker}
 
 
 def citysim_to_blender(point: list[float]) -> tuple[float, float, float]:
@@ -138,28 +269,21 @@ def write_exclusive(path: Path, value: object) -> None:
         stream.write(canonical(value))
 
 
-def render_process(parsed: argparse.Namespace) -> int:
+def render_process(parsed: argparse.Namespace, binding: dict) -> int:
     import bpy  # Imported only inside Blender's Integration-owned child.
 
-    root = Path(parsed.repository_root)
-    contract_path = root / parsed.contract
-    contract = load(contract_path)
-    scene_path = root / SOURCE_ROOT / "DESIGN-SCENE.json"
-    materials_path = root / SOURCE_ROOT / "DESIGN-MATERIALS.json"
-    lowering_path = root / SOURCE_ROOT / "lowering-v01" / "LOWERING-CONTRACT.json"
-    for path in (scene_path, materials_path, lowering_path):
-        if path.is_symlink() or not path.is_file():
-            raise RuntimeError("frozen input path invalid")
+    root = binding["root"]
+    contract = binding["contract"]
+    contract_path = root / SOURCE_ROOT / "process-a-v02" / "EXECUTION-CONTRACT.json"
+    scene_path = binding["scenePath"]
+    materials_path = binding["materialsPath"]
+    lowering_path = binding["loweringPath"]
     scene = load(scene_path)
     materials = load(materials_path)
     lowering = load(lowering_path)
     if contract["identity"]["viewDirection"] != "north" or contract["identity"]["processID"] != "A":
         raise RuntimeError("North/A identity mismatch")
     output = Path(parsed.output_root)
-    if output != (root / PROCESS_ROOT).resolve():
-        raise RuntimeError("output root mismatch")
-    if not output.is_dir() or output.is_symlink():
-        raise RuntimeError("exclusive output root is not a directory")
 
     bpy.ops.wm.read_factory_settings(use_empty=True)
     render_scene = bpy.context.scene
@@ -186,7 +310,9 @@ def render_process(parsed: argparse.Namespace) -> int:
 
 def main(values: list[str] | None = None) -> int:
     parsed = args(values)
-    return render_process(parsed)
+    binding = validate_launch(parsed)
+    _claim_child_start(binding["markerPath"], binding["marker"])
+    return render_process(parsed, binding)
 
 
 if __name__ == "__main__":

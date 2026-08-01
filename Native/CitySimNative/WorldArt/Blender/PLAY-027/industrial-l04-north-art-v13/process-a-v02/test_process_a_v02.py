@@ -9,6 +9,7 @@ import importlib.util
 import json
 import os
 from pathlib import Path
+import subprocess
 import tempfile
 
 os.environ["PYTHONDONTWRITEBYTECODE"] = "1"
@@ -99,11 +100,11 @@ def main() -> int:
     schedule = {
         "schema": 1, "task": "PLAY-027", "batch": "industrial_l04_directional_family",
         "claimSHA256": runner.CLAIM_SHA256, "authorityBase": runner.AUTHORITY_BASE, "trustedIntegrationHead": runner.AUTHORITY_BASE,
-        "direction": "north", "process": "A", "slot": "north:A",
+        "direction": "north", "process": "A", "slot": "north:A", "schedulePath": SCHEDULE,
         "orchestratorPath": runner.SOURCE_ROOT + "/launch_north_v13_process_a_v02.py", "orchestratorSHA256": runner.sha256_file(HERE / "launch_north_v13_process_a_v02.py"),
         "childPath": runner.SOURCE_ROOT + "/render_north_v13_process_a_child.py", "childSHA256": runner.sha256_file(HERE / "render_north_v13_process_a_child.py"),
         "outputRoot": runner.FUTURE_PROCESS_ROOT, "evidenceRoot": runner.EVIDENCE_ROOT,
-        "attemptMarkerPath": runner.FUTURE_PROCESS_ROOT + "/ATTEMPT.json", "schedulePublicationCommit": runner.AUTHORITY_BASE,
+        "attemptMarkerPath": runner.ATTEMPT_MARKER_PATH, "schedulePublicationCommit": runner.AUTHORITY_BASE,
         "maximumChildStarts": 1,
     }
     schedule_bytes = runner.canonical_bytes(schedule)
@@ -120,10 +121,29 @@ def main() -> int:
         "maximumChildStarts": 1, "receiptPath": RECEIPT,
     }
     receipt_bytes = runner.canonical_bytes(receipt)
-    validated = runner.validate_direct_documents(ROOT, contract, SCHEDULE, RECEIPT, schedule_bytes, receipt_bytes)
-    assert validated["scheduleSHA256"] == runner.sha256_bytes(schedule_bytes)
+    # A caller-authored schedule that is merely an ancestor-shaped object is
+    # rejected because its exact path/blob is not present at the publication
+    # commit.  The positive publication proof below uses a real temporary Git
+    # repository rather than a mocked Git response.
+    must_fail(lambda: runner.validate_direct_documents(ROOT, contract, SCHEDULE, RECEIPT, schedule_bytes, receipt_bytes), "ancestor-only uncommitted schedule forgery")
+    with tempfile.TemporaryDirectory(prefix="north-v13-publication-") as temp:
+        publication_root = Path(temp)
+        subprocess.run(["git", "init", "-q"], cwd=publication_root, check=True)
+        subprocess.run(["git", "config", "user.email", "test@example.invalid"], cwd=publication_root, check=True)
+        subprocess.run(["git", "config", "user.name", "North Test"], cwd=publication_root, check=True)
+        published_path = "docs/production/evidence/INTEGRATION/SCHEDULE.json"
+        published_file = publication_root / published_path
+        published_file.parent.mkdir(parents=True)
+        published_bytes = b'{"schema":1}\n'
+        published_file.write_bytes(published_bytes)
+        subprocess.run(["git", "add", published_path], cwd=publication_root, check=True)
+        subprocess.run(["git", "commit", "-qm", "publish schedule"], cwd=publication_root, check=True)
+        publication_commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=publication_root, text=True).strip()
+        runner._validate_publication(publication_root, publication_commit, published_path, published_bytes, publication_commit)
+        published_file.write_bytes(b'{"schema":2}\n')
+        must_fail(lambda: runner._validate_publication(publication_root, publication_commit, published_path, published_file.read_bytes(), publication_commit), "working-tree schedule differs from committed blob")
     command = runner.build_launch_command(ROOT, contract, SCHEDULE, RECEIPT)
-    assert command[0] == runner.BLENDER and command.count(runner.BLENDER) == 1 and command.count("--python") == 1
+    assert command[0] == runner.BLENDER and command.count(runner.BLENDER) == 1 and command.count("--python") == 1 and runner.ATTEMPT_MARKER_PATH in command
     for mutate, label in (
         (lambda d: d.__setitem__("scheduleSHA256", "0" * 64), "receipt schedule hash"),
         (lambda d: d.__setitem__("workerHead", "0" * 40), "receipt worker head"),
@@ -137,6 +157,9 @@ def main() -> int:
     forged_schedule = copy.deepcopy(schedule)
     forged_schedule["orchestratorSHA256"] = "0" * 64
     must_fail(lambda: runner.validate_direct_documents(ROOT, contract, SCHEDULE, RECEIPT, runner.canonical_bytes(forged_schedule), receipt_bytes), "wrong orchestrator command binding")
+    impossible = copy.deepcopy(schedule)
+    impossible["attemptMarkerPath"] = runner.FUTURE_PROCESS_ROOT + "/ATTEMPT.json"
+    must_fail(lambda: runner.validate_direct_documents(ROOT, contract, SCHEDULE, RECEIPT, runner.canonical_bytes(impossible), receipt_bytes), "impossible marker inside absent output root")
     incomplete = copy.deepcopy(receipt)
     incomplete.pop("receiptPath")
     must_fail(lambda: runner.validate_direct_documents(ROOT, contract, SCHEDULE, RECEIPT, schedule_bytes, runner.canonical_bytes(incomplete)), "incomplete receipt")
@@ -160,12 +183,44 @@ def main() -> int:
     mutated["inputs"] = []
     must_fail(lambda: runner.validate_frozen_inputs(ROOT, mutated), "empty immutable input set")
 
-    # The child is a hard-stop contract, never a direct runnable surface.
+    # The child is a hard-stop contract until it proves the consumed
+    # Integration marker and all repository-backed identities.  Env/flags
+    # alone cannot cross that boundary and bpy is not imported on failure.
     must_fail(child.main, "direct child invocation")
+    must_fail(lambda: child.main(["--integration-direct", "--repository-root", str(ROOT), "--contract", str(ROOT / runner.SOURCE_ROOT / "EXECUTION-CONTRACT.json"), "--schedule-path", SCHEDULE, "--process-receipt-path", RECEIPT, "--attempt-marker-path", runner.ATTEMPT_MARKER_PATH, "--output-root", str(ROOT / runner.FUTURE_PROCESS_ROOT), "--evidence-root", str(ROOT / runner.EVIDENCE_ROOT)]), "forged direct child env/flags")
     assert not hasattr(runner, "build_signer")
     assert not hasattr(runner, "build_token")
     assert not hasattr(runner, "consume_attempt")
     assert not hasattr(runner, "create_attempt")
+
+    # A replayed consumed marker is a distinct state and cannot be reused as
+    # the available one-shot lease.  The actual file transition is Integration
+    # owned and therefore not performed by this worker suite.
+    available_marker = runner._marker_template(schedule, receipt, SCHEDULE, RECEIPT, "available", False, runner.sha256_bytes(schedule_bytes), runner.sha256_bytes(receipt_bytes))
+    consumed_marker = runner._marker_template(schedule, receipt, SCHEDULE, RECEIPT, "consumed", True, runner.sha256_bytes(schedule_bytes), runner.sha256_bytes(receipt_bytes))
+    assert available_marker["state"] == "available" and consumed_marker["state"] == "consumed" and available_marker != consumed_marker
+
+    # Mock the one child and return output larger than a pipe buffer.  The
+    # launcher must use communicate(), never wait() with undrained pipes.
+    class FakeProcess:
+        returncode = 0
+        def communicate(self):
+            return (b"x" * (256 * 1024), b"y" * (256 * 1024))
+    original_popen = runner.subprocess.Popen
+    original_consume = runner._atomic_consume_attempt
+    original_future = runner.FUTURE_PROCESS_ROOT
+    with tempfile.TemporaryDirectory(prefix="north-v13-pipe-") as temp:
+        temp_root = Path(temp)
+        runner.FUTURE_PROCESS_ROOT = "output"
+        runner.subprocess.Popen = lambda *args, **kwargs: FakeProcess()
+        runner._atomic_consume_attempt = lambda *args, **kwargs: consumed_marker
+        try:
+            code = runner.execute_integration_direct({"attemptMarkerPath": runner.ATTEMPT_MARKER_PATH, "binding": {"schedule": schedule, "receipt": receipt, "scheduleSHA256": runner.sha256_bytes(schedule_bytes), "receiptSHA256": runner.sha256_bytes(receipt_bytes)}, "command": ["mock-blender"]}, temp_root)
+        finally:
+            runner.subprocess.Popen = original_popen
+            runner._atomic_consume_attempt = original_consume
+            runner.FUTURE_PROCESS_ROOT = original_future
+        assert code == 0
 
     # Two fresh packet roots receive the same deterministic documents. No
     # wall-clock, PID, temporary path, or live authority is admitted.
@@ -199,7 +254,7 @@ def main() -> int:
             assert "bpy" not in source
         assert "render(" not in source or path.name == "render_north_v13_process_a_child.py"
 
-    print("PASS north-v13 integration-direct-v1 zeroChild=1 adversaries=27 freshRoots=2 carrierGit=verified dccChildren=0 processA=0 pixels=0 topology=unchanged")
+    print("PASS north-v13 integration-direct-r2 zeroChild=1 adversaries=33 freshRoots=2 carrierGit=verified dccChildren=0 processA=0 pixels=0 topology=unchanged")
     return 0
 
 

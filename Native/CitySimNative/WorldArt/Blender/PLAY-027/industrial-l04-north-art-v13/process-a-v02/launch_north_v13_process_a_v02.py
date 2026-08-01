@@ -31,6 +31,7 @@ BRANCH = "codex/citysim-world-art"
 SOURCE_ROOT = "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-v02"
 EVIDENCE_ROOT = "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-v02"
 FUTURE_PROCESS_ROOT = "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a"
+ATTEMPT_MARKER_PATH = "docs/production/evidence/INTEGRATION/PLAY-027-NORTH-V13-PROCESS-A-ATTEMPT.json"
 CHILD_NAME = "render_north_v13_process_a_child.py"
 BLENDER = "/Applications/Blender.app/Contents/MacOS/Blender"
 
@@ -202,12 +203,16 @@ def _verify_contract_bindings(root: Path, contract: dict) -> dict:
     launch = contract["directLaunch"]
     if launch != {
         "scheduleSchema": 1, "receiptSchema": 1,
-        "schedulePublicationCommitRequired": True, "receiptMustBindScheduleBytes": True,
-        "receiptMustBindWorkerHead": True, "attemptMarkerMustPreexist": True,
+        "schedulePublicationCommitRequired": True, "schedulePublicationBlobRequired": True,
+        "receiptMustBindScheduleBytes": True, "receiptMustBindWorkerHead": True,
+        "attemptMarkerPath": ATTEMPT_MARKER_PATH, "attemptMarkerOutsideOutputRoot": True,
+        "attemptMarkerMustPreexist": True, "attemptMarkerAtomicConsumption": True,
+        "attemptMarkerStates": ["available", "consumed"], "childRequiresConsumedAttempt": True,
         "outputRootMustBeAbsentBeforeLaunch": True, "fixedBlenderExecutable": BLENDER,
         "fixedBlenderArgs": ["--background", "--factory-startup", "--disable-autoexec", "--python-exit-code", "1"],
         "childFlag": "--integration-direct",
         "childOutputs": ["raw.png", "provenance.json", "OBJECT-MANIFEST.json", "INPUT-BINDINGS.json"],
+        "childStartMarkerSuffix": ".child-start", "captureMode": "communicate",
         "maximumSubprocessStarts": 1,
     }:
         raise ValueError("integration-direct launch contract mismatch")
@@ -253,10 +258,44 @@ def _full_commit(value: object, label: str) -> str:
     return value
 
 
-def _validate_publication(root: Path, commit: str, current_head: str) -> None:
+def _validate_publication(root: Path, commit: str, schedule_path: str, schedule_bytes: bytes, current_head: str) -> None:
     _full_commit(commit, "schedule publication commit")
     _git(root, "cat-file", "-e", commit + "^{commit}")
     _git(root, "merge-base", "--is-ancestor", commit, current_head)
+    try:
+        published = _git(root, "show", f"{commit}:{schedule_path}")
+    except ValueError as exc:
+        raise ValueError("schedule publication commit does not contain the exact schedule path") from exc
+    if published != schedule_bytes:
+        raise ValueError("published schedule blob differs from consumed schedule bytes")
+
+
+def _marker_template(schedule: dict, receipt: dict, schedule_path: str, receipt_path: str, state: str, consumed: bool, schedule_sha256: str | None = None, receipt_sha256: str | None = None) -> dict:
+    return {
+        "schema": 1, "kind": "integration-process-attempt",
+        "task": "PLAY-027", "slot": "north:A", "state": state, "attemptConsumed": consumed,
+        "schedulePath": schedule_path, "scheduleSHA256": schedule_sha256 or sha256_bytes(canonical_bytes(schedule)),
+        "schedulePublicationCommit": schedule["schedulePublicationCommit"],
+        "receiptPath": receipt_path, "receiptSHA256": receipt_sha256 or sha256_bytes(canonical_bytes(receipt)),
+        "workerHead": receipt["workerHead"], "outputRoot": FUTURE_PROCESS_ROOT, "evidenceRoot": EVIDENCE_ROOT,
+        "orchestratorPath": schedule["orchestratorPath"], "orchestratorSHA256": schedule["orchestratorSHA256"],
+        "childPath": schedule["childPath"], "childSHA256": schedule["childSHA256"],
+        "maximumChildStarts": 1, "childStartMarker": ATTEMPT_MARKER_PATH + ".child-start",
+    }
+
+
+def _validate_attempt_marker(root: Path, marker_path: str, schedule: dict, receipt: dict, schedule_path: str, receipt_path: str, expected_state: str, schedule_sha256: str, receipt_sha256: str) -> dict:
+    if marker_path != ATTEMPT_MARKER_PATH or marker_path.startswith(FUTURE_PROCESS_ROOT + "/"):
+        raise ValueError("attempt marker must be the Integration-owned sibling outside the output root")
+    marker_file = _assert_no_symlink(root, marker_path)
+    if not marker_file.is_file():
+        raise ValueError("Integration attempt marker must preexist")
+    marker = load_json(marker_file)
+    expected = _marker_template(schedule, receipt, schedule_path, receipt_path, expected_state, expected_state == "consumed", schedule_sha256, receipt_sha256)
+    _required_fields(marker, expected, "attempt marker")
+    if marker != expected:
+        raise ValueError("attempt marker does not bind exact schedule/receipt/worker/output identities")
+    return marker
 
 
 def validate_direct_documents(root: Path, contract: dict, schedule_path: str, receipt_path: str, schedule_bytes: bytes, receipt_bytes: bytes) -> dict:
@@ -267,13 +306,18 @@ def validate_direct_documents(root: Path, contract: dict, schedule_path: str, re
         "schema": 1, "task": "PLAY-027", "batch": "industrial_l04_directional_family",
         "claimSHA256": CLAIM_SHA256, "authorityBase": AUTHORITY_BASE, "trustedIntegrationHead": AUTHORITY_BASE,
         "direction": "north", "process": "A", "slot": "north:A",
+        "schedulePath": schedule_path,
         "orchestratorPath": SOURCE_ROOT + "/launch_north_v13_process_a_v02.py", "orchestratorSHA256": sha256_file(Path(__file__)),
         "childPath": SOURCE_ROOT + "/render_north_v13_process_a_child.py", "childSHA256": sha256_file(Path(__file__).with_name(CHILD_NAME)),
         "outputRoot": FUTURE_PROCESS_ROOT, "evidenceRoot": EVIDENCE_ROOT,
-        "attemptMarkerPath": FUTURE_PROCESS_ROOT + "/ATTEMPT.json", "schedulePublicationCommit": AUTHORITY_BASE,
+        "attemptMarkerPath": ATTEMPT_MARKER_PATH, "schedulePublicationCommit": "0" * 40,
         "maximumChildStarts": 1,
     }
     _required_fields(schedule, schedule_template, "schedule")
+    _full_commit(schedule["schedulePublicationCommit"], "schedule publication commit")
+    if schedule["attemptMarkerPath"] != ATTEMPT_MARKER_PATH or schedule["schedulePath"] != schedule_path:
+        raise ValueError("schedule marker/path identity mismatch")
+    schedule_template["schedulePublicationCommit"] = schedule["schedulePublicationCommit"]
     if schedule != schedule_template:
         raise ValueError("schedule identity does not match the frozen North contract")
     receipt_template = {
@@ -291,10 +335,10 @@ def validate_direct_documents(root: Path, contract: dict, schedule_path: str, re
     _required_fields(receipt, receipt_template, "process receipt")
     if receipt != receipt_template:
         raise ValueError("process receipt identity or schedule-byte binding mismatch")
-    _validate_publication(root, schedule["schedulePublicationCommit"], current_head)
+    _validate_publication(root, schedule["schedulePublicationCommit"], schedule_path, schedule_bytes, current_head)
     if schedule["trustedIntegrationHead"] != AUTHORITY_BASE:
         raise ValueError("trusted Integration head mismatch")
-    return {"schedule": schedule, "receipt": receipt, "currentHead": current_head, "scheduleSHA256": receipt["scheduleSHA256"]}
+    return {"schedule": schedule, "receipt": receipt, "currentHead": current_head, "scheduleSHA256": receipt["scheduleSHA256"], "receiptSHA256": sha256_bytes(receipt_bytes)}
 
 
 def build_launch_command(root: Path, contract: dict, schedule_path: str, receipt_path: str) -> list[str]:
@@ -304,6 +348,7 @@ def build_launch_command(root: Path, contract: dict, schedule_path: str, receipt
         "--python", str(child), "--", "--integration-direct",
         "--repository-root", str(root), "--contract", str(root / SOURCE_ROOT / "EXECUTION-CONTRACT.json"),
         "--schedule-path", schedule_path, "--process-receipt-path", receipt_path,
+        "--attempt-marker-path", ATTEMPT_MARKER_PATH,
         "--output-root", str(root / FUTURE_PROCESS_ROOT), "--evidence-root", str(root / EVIDENCE_ROOT),
     ]
 
@@ -317,26 +362,57 @@ def prepare_integration_launch(repository_root: str | Path, contract_path: str, 
     if not schedule_file.is_file() or not receipt_file.is_file():
         raise ValueError("Integration schedule and process receipt bytes are required")
     binding = validate_direct_documents(root, contract, schedule_path, process_receipt_path, schedule_file.read_bytes(), receipt_file.read_bytes())
-    marker = _assert_no_symlink(root, binding["schedule"]["attemptMarkerPath"])
-    if not marker.is_file():
-        raise ValueError("Integration attempt marker must preexist")
+    _validate_attempt_marker(root, binding["schedule"]["attemptMarkerPath"], binding["schedule"], binding["receipt"], schedule_path, process_receipt_path, "available", binding["scheduleSHA256"], binding["receiptSHA256"])
     output_root = _assert_no_symlink(root, FUTURE_PROCESS_ROOT)
     if output_root.exists():
         raise ValueError("exclusive output root must be absent before launch")
     command = build_launch_command(root, contract, schedule_path, process_receipt_path)
     if command.count(BLENDER) != 1 or command.count("--python") != 1:
         raise ValueError("fixed one-child command shape invalid")
-    return {"preflight": preflight_result, "binding": binding, "command": command, "commandSHA256": sha256_bytes(canonical_bytes(command)), "launchReady": True, "childStarts": 0}
+    return {"preflight": preflight_result, "binding": binding, "attemptMarkerPath": ATTEMPT_MARKER_PATH, "command": command, "commandSHA256": sha256_bytes(canonical_bytes(command)), "launchReady": True, "childStarts": 0}
+
+
+def _atomic_consume_attempt(prepared: dict, root: Path) -> dict:
+    marker_path = _assert_no_symlink(root, prepared["attemptMarkerPath"])
+    before = marker_path.stat()
+    marker = _validate_attempt_marker(root, prepared["attemptMarkerPath"], prepared["binding"]["schedule"], prepared["binding"]["receipt"], prepared["binding"]["schedule"]["schedulePath"], prepared["binding"]["receipt"]["receiptPath"], "available", prepared["binding"]["scheduleSHA256"], prepared["binding"]["receiptSHA256"])
+    consumed = _marker_template(prepared["binding"]["schedule"], prepared["binding"]["receipt"], prepared["binding"]["schedule"]["schedulePath"], prepared["binding"]["receipt"]["receiptPath"], "consumed", True, prepared["binding"]["scheduleSHA256"], prepared["binding"]["receiptSHA256"])
+    temporary = marker_path.with_name(marker_path.name + ".consuming")
+    flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL
+    fd = os.open(temporary, flags, 0o600)
+    try:
+        with os.fdopen(fd, "wb") as stream:
+            stream.write(canonical_bytes(consumed))
+            stream.flush()
+            os.fsync(stream.fileno())
+        if marker_path.stat().st_ino != before.st_ino or marker_path.stat().st_dev != before.st_dev:
+            raise ValueError("attempt marker changed before atomic consumption")
+        os.replace(temporary, marker_path)
+        directory = os.open(str(marker_path.parent), os.O_RDONLY)
+        try:
+            os.fsync(directory)
+        finally:
+            os.close(directory)
+    except Exception:
+        try:
+            temporary.unlink()
+        except FileNotFoundError:
+            pass
+        raise
+    return consumed
 
 
 def execute_integration_direct(prepared: dict, root: Path) -> int:
     """Integration-only execution hook; worker validation never calls this."""
+    _atomic_consume_attempt(prepared, root)
     output_root = root / FUTURE_PROCESS_ROOT
     output_root.mkdir(mode=0o700)
     environment = os.environ.copy()
     environment["CITYSIM_INTEGRATION_DIRECT"] = "1"
     process = subprocess.Popen(prepared["command"], cwd=root, env=environment, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.PIPE, start_new_session=True)
-    return process.wait()
+    stdout, stderr = process.communicate()
+    prepared["capture"] = {"stdoutSHA256": sha256_bytes(stdout), "stderrSHA256": sha256_bytes(stderr), "returncode": process.returncode}
+    return process.returncode
 
 
 def preflight(repository_root: str | Path, contract_path: str, schedule_path: str | None, process_receipt_path: str | None, output_root: str | None) -> dict:
@@ -397,7 +473,7 @@ def build_documents(preflight_result: dict, contract: dict, root: Path) -> tuple
         "identity": contract["identity"],
         "frozenInputs": contract["inputs"],
         "roots": {"source": SOURCE_ROOT, "evidence": EVIDENCE_ROOT, "futureProcess": FUTURE_PROCESS_ROOT},
-        "directLaunch": {"executableForIntegration": True, "launchReady": False, "fixedBlenderExecutable": BLENDER, "fixedBlenderArgs": ["--background", "--factory-startup", "--disable-autoexec", "--python-exit-code", "1"], "childOutputs": ["raw.png", "provenance.json", "OBJECT-MANIFEST.json", "INPUT-BINDINGS.json"], "commandConstruction": "deferred until exact schedule and process-receipt bytes are present"},
+        "directLaunch": {"executableForIntegration": True, "launchReady": False, "fixedBlenderExecutable": BLENDER, "fixedBlenderArgs": ["--background", "--factory-startup", "--disable-autoexec", "--python-exit-code", "1"], "childOutputs": ["raw.png", "provenance.json", "OBJECT-MANIFEST.json", "INPUT-BINDINGS.json"], "attemptMarkerPath": ATTEMPT_MARKER_PATH, "attemptMarkerOutsideOutputRoot": True, "schedulePublicationBlobRequired": True, "captureMode": "communicate", "commandConstruction": "deferred until exact schedule, committed schedule blob, process-receipt, and available attempt marker bytes are present"},
         "toolHashes": {"runner": sha256_file(runner), "child": sha256_file(child), "executionContract": sha256_file(runner.with_name("EXECUTION-CONTRACT.json")), "runnerContract": sha256_file(runner.with_name("RUNNER-CONTRACT.json"))},
         "preflight": preflight_result,
         "executionAccounting": {"readyNow": 0, "running": [], "waitingOnJoin": [], "serializedAuthority": "Integration direct launch", "nextRefill": "published schedule and one-attempt process receipt", "helperCapacity": 0, "dccCapacity": 0, "launchedJobs": [], "join": "joined", "unusedCapacityReasons": [{"reasonCode": "waiting_on_integration_direct_authority", "owner": "Integration", "dependencyAuthority": RECEIPT_PATH, "resumptionEvent": "published schedule/receipt", "nextRefillJob": "north:A"}]},

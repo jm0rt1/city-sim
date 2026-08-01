@@ -1,0 +1,125 @@
+{
+  "objects": [
+    {
+      "materialID": "v13-grounded-foundation",
+      "objectName": "play027-v13-foundation",
+      "physicalComponentID": "v13-foundation",
+      "semanticOwnerID": "v13-foundation"
+    },
+    {
+      "materialID": "v13-integrated-operating-apron",
+      "objectName": "play027-v13-socket-apron",
+      "physicalComponentID": "v13-socket-apron",
+      "semanticOwnerID": "v13-socket-apron"
+    },
+    {
+      "materialID": "v13-warm-foundry-masonry",
+      "objectName": "play027-v13-main-foundry-shell:west-shoulder",
+      "physicalComponentID": "v13-main-foundry-shell:west-shoulder",
+      "semanticOwnerID": "v13-main-foundry-shell"
+    },
+    {
+      "materialID": "v13-warm-foundry-masonry",
+      "objectName": "play027-v13-main-foundry-shell:east-shoulder",
+      "physicalComponentID": "v13-main-foundry-shell:east-shoulder",
+      "semanticOwnerID": "v13-main-foundry-shell"
+    },
+    {
+      "materialID": "v13-warm-foundry-masonry",
+      "objectName": "play027-v13-main-foundry-shell:rear-hall",
+      "physicalComponentID": "v13-main-foundry-shell:rear-hall",
+      "semanticOwnerID": "v13-main-foundry-shell"
+    },
+    {
+      "materialID": "v13-portal-crown-steel",
+      "objectName": "play027-v13-monumental-portal-frame:west-jamb",
+      "physicalComponentID": "v13-monumental-portal-frame:west-jamb",
+      "semanticOwnerID": "v13-monumental-portal-frame"
+    },
+    {
+      "materialID": "v13-portal-crown-steel",
+      "objectName": "play027-v13-monumental-portal-frame:east-jamb",
+      "physicalComponentID": "v13-monumental-portal-frame:east-jamb",
+      "semanticOwnerID": "v13-monumental-portal-frame"
+    },
+    {
+      "materialID": "v13-portal-crown-steel",
+      "objectName": "play027-v13-monumental-portal-frame:header",
+      "physicalComponentID": "v13-monumental-portal-frame:header",
+      "semanticOwnerID": "v13-monumental-portal-frame"
+    },
+    {
+      "materialID": "v13-deep-freight-void",
+      "objectName": "play027-v13-portal-inset",
+      "physicalComponentID": "v13-portal-inset",
+      "semanticOwnerID": "v13-portal-inset"
+    },
+    {
+      "materialID": "v13-deep-freight-void",
+      "objectName": "play027-v13-three-bay-freight-rhythm:west-bay",
+      "physicalComponentID": "v13-three-bay-freight-rhythm:west-bay",
+      "semanticOwnerID": "v13-three-bay-freight-rhythm"
+    },
+    {
+      "materialID": "v13-deep-freight-void",
+      "objectName": "play027-v13-three-bay-freight-rhythm:center-bay",
+      "physicalComponentID": "v13-three-bay-freight-rhythm:center-bay",
+      "semanticOwnerID": "v13-three-bay-freight-rhythm"
+    },
+    {
+      "materialID": "v13-deep-freight-void",
+      "objectName": "play027-v13-three-bay-freight-rhythm:east-bay",
+      "physicalComponentID": "v13-three-bay-freight-rhythm:east-bay",
+      "semanticOwnerID": "v13-three-bay-freight-rhythm"
+    },
+    {
+      "materialID": "v13-weathered-bluegreen-roof",
+      "objectName": "play027-v13-portal-crown-lower",
+      "physicalComponentID": "v13-portal-crown-lower",
+      "semanticOwnerID": "v13-portal-crown-lower"
+    },
+    {
+      "materialID": "v13-clerestory-and-roof-edge",
+      "objectName": "play027-v13-portal-crown-clerestory",
+      "physicalComponentID": "v13-portal-crown-clerestory",
+      "semanticOwnerID": "v13-portal-crown-clerestory"
+    },
+    {
+      "materialID": "v13-charcoal-structural-steel",
+      "objectName": "play027-v13-crane-lantern",
+      "physicalComponentID": "v13-crane-lantern",
+      "semanticOwnerID": "v13-crane-lantern"
+    },
+    {
+      "materialID": "v13-oxidized-process-machinery",
+      "objectName": "play027-v13-east-hot-process-vessel",
+      "physicalComponentID": "v13-east-hot-process-vessel",
+      "semanticOwnerID": "v13-east-hot-process-vessel"
+    },
+    {
+      "materialID": "v13-warm-control-masonry",
+      "objectName": "play027-v13-west-staff-annex",
+      "physicalComponentID": "v13-west-staff-annex",
+      "semanticOwnerID": "v13-west-staff-annex"
+    },
+    {
+      "materialID": "v13-warm-staff-glazing",
+      "objectName": "play027-v13-west-staff-annex:staff-door",
+      "physicalComponentID": "v13-west-staff-annex:staff-door",
+      "semanticOwnerID": "v13-west-staff-annex"
+    },
+    {
+      "materialID": "v13-charcoal-structural-steel",
+      "objectName": "play027-v13-subordinate-boiler-stack",
+      "physicalComponentID": "v13-subordinate-boiler-stack",
+      "semanticOwnerID": "v13-subordinate-boiler-stack"
+    },
+    {
+      "materialID": "v13-oxidized-process-machinery",
+      "objectName": "play027-v13-roof-plant-cluster",
+      "physicalComponentID": "v13-roof-plant-cluster",
+      "semanticOwnerID": "v13-roof-plant-cluster"
+    }
+  ],
+  "schema": 1
+}

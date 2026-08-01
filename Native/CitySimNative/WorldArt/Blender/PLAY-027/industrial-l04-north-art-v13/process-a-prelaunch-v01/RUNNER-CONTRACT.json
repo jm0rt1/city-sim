@@ -1,61 +1,19 @@
 {
   "schema": 1,
-  "runner": "launch_north_v13_prelaunch.py",
-  "child": "render_north_v13_process_a_child.py",
-  "mode": "zero-child-prelaunch-frontier-repair-r4",
-  "dccChildStarts": 0,
-  "helperProcesses": ["git cat-file", "git show", "git rev-parse", "git merge-base", "git diff", "git ls-files"],
-  "requiredInputs": ["EXECUTION-CONTRACT.json"],
-  "repositoryBackedAuthority": {
-    "carrierGitObjectRequired": true,
-    "receiptBytesExtractedFromCarrier": true,
-    "receiptFileSHA256Required": true,
-    "canonicalRouteRowRequired": true,
-    "executionBaseAncestryRequired": true,
-    "executionBaseDeltaRestrictedToAllowedRoots": true
-  },
-  "testOnlyAdapter": {
-    "signature": "HMAC-SHA256 fixture only",
-    "closedSchema": true,
-    "allActivityCountersZero": true,
-    "atomicOneShotMarker": "O_CREAT|O_EXCL|O_NOFOLLOW",
-    "adapterOwnsOpenDirectoryIdentity": true,
-    "adapterOwnsImmutableStoreLocation": true,
-    "singleAuthenticatedConsumptionSurface": true,
-    "exactRecursiveJSONTypes": true,
-    "exactAssignedRootIdentity": true,
-    "replayRejected": true,
-    "callerStateAccepted": false
-  },
-  "canonicalWriter": {
-    "requiresAbsentRoot": true,
-    "noOverwrite": true,
-    "wallClockFields": 0,
-    "freshRootIdentityRequired": true,
-    "fileAndDirectoryTopologySnapshotted": true
-  },
-  "liveAuthorityInputs": {
-    "schedule": "absent",
-    "lease": "absent",
-    "secret": "absent",
-    "grant": "absent"
-  },
-  "failClosed": [
-    "wrong or missing carrier Git object/receipt bytes/file hash/canonical row",
-    "wrong execution base or out-of-root descendant delta",
-    "wrong claim/base/thread/logical building/variant/direction/process/slot/root/input set or hash",
-    "wrong sourceAuthority or productionSelected boolean",
-    "bool/int or any other JSON type substitution before value comparison",
-    "unknown, missing, or nonzero signed activity field",
-    "caller-selected, caller-provided, or resettable consumption state",
-    "module-import token, factory, or direct consumption without repository-backed authenticated fixture authority",
-    "symlink, dot, dot-dot, lexical alias, copied checkout, or alternate repository root",
-    "replay, symlink, preexisting root, overwrite, or topology drift",
-    "present live authority or direct child invocation"
-  ],
-  "noBpy": true,
-  "noPixels": true,
-  "noDCC": true,
-  "futureProcessARequiresIntegrationGrant": true,
-  "futureProcessARequiresOneAttemptLease": true
+  "status": "retired",
+  "task": "PLAY-027",
+  "surface": "industrial_l04_north_v13_process_a_prelaunch_v01",
+  "retiredAt": "2026-08-01-retirement-r1",
+  "runner": "retired",
+  "child": "retired",
+  "executable": false,
+  "childStartCapability": false,
+  "writerCapability": false,
+  "surfaceState": "removed",
+  "sourceAuthority": false,
+  "productionSelected": false,
+  "forbidden": [
+    "command", "secret", "token", "authority", "schedule", "receipt", "attempt",
+    "lease", "grant", "child", "bpy", "blender", "dcc", "render", "pixels", "normalize"
+  ]
 }

@@ -1,13 +1,10 @@
-"""Adversarial zero-DCC tests for the North v13 frontier repair R4."""
+"""Hostile import/call proof for the retired North v13 prelaunch surface."""
 
 from __future__ import annotations
 
-import ast
-from concurrent.futures import ThreadPoolExecutor
-import copy
+import hashlib
 import importlib.util
 import json
-import os
 from pathlib import Path
 import sys
 import tempfile
@@ -15,341 +12,106 @@ import tempfile
 sys.dont_write_bytecode = True
 
 HERE = Path(__file__).resolve().parent
-ROOT = HERE.parents[6]
-FIXTURE_KEY = b"north-v13-frontier-repair-r4-test-fixture-v01"
+REPO = HERE.parents[6]
+V02 = REPO / "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-v02"
+HISTORICAL_EVIDENCE = REPO / "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-prelaunch-v01"
+LEGACY_PREFIX = "citysim-play027-north-v13-test-attempt-"
+FORBIDDEN_NAMES = (
+    "build", "sign", "validat", "consume", "fixture", "schedule", "attempt",
+    "child_start", "launcher", "token", "authority", "writer",
+)
 
 
 def load(name: str, path: Path):
     spec = importlib.util.spec_from_file_location(name, path)
-    assert spec and spec.loader
+    assert spec is not None and spec.loader is not None
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
 
 
-runner = load("north_v13_frontier_runner", HERE / "launch_north_v13_prelaunch.py")
-child = load("north_v13_frontier_child", HERE / "render_north_v13_process_a_child.py")
-contract = runner.load_json(HERE / "EXECUTION-CONTRACT.json")
+def digest(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def expect_contract_failure(mutator, label: str) -> None:
-    candidate = copy.deepcopy(contract)
-    mutator(candidate)
+def topology(root: Path) -> tuple[tuple[str, ...], tuple[str, ...]]:
+    files: list[str] = []
+    directories: list[str] = []
+    if root.exists():
+        for path in sorted(root.rglob("*")):
+            relative = path.relative_to(root).as_posix()
+            (directories if path.is_dir() else files).append(relative)
+    return tuple(files), tuple(directories)
+
+
+def legacy_topology() -> tuple[str, ...]:
+    return tuple(sorted(path.name for path in Path("/private/tmp").glob(LEGACY_PREFIX + "*")))
+
+
+def assert_surface_is_inert(module, label: str) -> None:
+    names = {name for name in vars(module) if not name.startswith("_")}
+    assert names <= {"RETIREMENT_STATE", "SOURCE_AUTHORITY", "PRODUCTION_SELECTED", "main", "annotations"}, (label, names)
+    semantic_names = names - {"RETIREMENT_STATE", "SOURCE_AUTHORITY", "PRODUCTION_SELECTED", "annotations", "main"}
+    assert not any(any(term in name.lower() for term in FORBIDDEN_NAMES) for name in semantic_names)
+    assert not any(name in vars(module) for name in ("subprocess", "bpy", "hmac", "hashlib", "json", "Path"))
+    assert getattr(module, "RETIREMENT_STATE") == "retired"
+    if hasattr(module, "SOURCE_AUTHORITY"):
+        assert module.SOURCE_AUTHORITY is False
+        assert module.PRODUCTION_SELECTED is False
+    else:
+        assert not hasattr(module, "PRODUCTION_SELECTED")
     try:
-        runner.validate_contract(ROOT, candidate)
-    except (ValueError, OSError, KeyError, json.JSONDecodeError):
-        return
-    raise AssertionError(f"contract adversary passed: {label}")
-
-
-def fixture() -> dict:
-    return runner.build_test_fixture_authority(contract, FIXTURE_KEY, ROOT)
-
-
-def expect_fixture_failure(mutator, label: str, *, resign: bool = True) -> None:
-    authority = fixture()
-    mutator(authority)
-    if resign and isinstance(authority.get("binding"), dict):
-        authority["signature"] = runner._fixture_signature(authority["binding"], FIXTURE_KEY)
-    try:
-        runner.validate_fixture_authority(authority, contract, ROOT, FIXTURE_KEY)
-    except (ValueError, OSError, KeyError):
-        return
-    raise AssertionError(f"fixture adversary passed: {label}")
-
-
-def assert_same_fresh_roots(first: Path, second: Path) -> dict:
-    first_topology = runner.snapshot_topology(first)
-    second_topology = runner.snapshot_topology(second)
-    assert first_topology == second_topology
-    assert first_topology["directories"] == []
-    assert sorted(first_topology["files"]) == ["PRELAUNCH-VALIDATION.json", "ZERO-CHILD-CLOSURE.json"]
-    assert first_topology["symlinks"] == {}
-    return first_topology
-
-
-def fixture_state_path(authority: dict) -> Path:
-    return Path("/private/tmp") / runner._fixture_state_name(authority["binding"])
-
-
-def remove_fixture_state(authority: dict) -> None:
-    state = fixture_state_path(authority)
-    marker = state / "CONSUMED.json"
-    if marker.exists():
-        marker.unlink()
-    if state.exists():
-        state.rmdir()
+        module.main(["--integration-direct", "--attempt", "forged"])
+    except RuntimeError:
+        pass
+    else:
+        raise AssertionError(f"retired {label} call unexpectedly succeeded")
 
 
 def main() -> int:
-    repository_before = runner.snapshot_topology(ROOT)
-    result = runner.validate_contract(ROOT, contract)
-    assert result["inputCount"] == 6
-    assert result["executionBaseHEAD"] == runner.EXECUTION_BASE_HEAD
-    assert result["executionBaseIsAncestor"] is True
-    assert result["descendantDeltaRestrictedToTaskRoots"] is True
-    assert result["futureProcessRootAbsent"] is True
-    assert result["liveAuthorityAbsent"] is True
-    assert result["carrier"]["receiptSHA256"] == runner.EXPECTED_RECEIPT_SHA256
-    assert result["carrier"]["canonicalRouteSHA256"] == runner.ROUTE_CANONICAL_SHA256
+    contract = json.loads((HERE / "EXECUTION-CONTRACT.json").read_text(encoding="utf-8"))
+    runner_contract = json.loads((HERE / "RUNNER-CONTRACT.json").read_text(encoding="utf-8"))
+    assert contract["status"] == "retired" and contract["executable"] is False
+    assert runner_contract["status"] == "retired" and runner_contract["executable"] is False
+    assert runner_contract["childStartCapability"] is False
+    assert runner_contract["writerCapability"] is False
 
-    contract_adversaries = (
-        (lambda c: c.__setitem__("schema", True), "boolean contract schema"),
-        (lambda c: c.__setitem__("unknown", 1), "unknown top-level field"),
-        (lambda c: c.pop("registration"), "missing top-level field"),
-        (lambda c: c["route"].__setitem__("routeId", "forged"), "route"),
-        (lambda c: c["route"].__setitem__("canonicalSHA256", "0" * 64), "canonical route"),
-        (lambda c: c["route"].__setitem__("carrierCommit", "0" * 40), "carrier"),
-        (lambda c: c["route"].__setitem__("receiptSHA256", "0" * 64), "receipt hash"),
-        (lambda c: c["route"].__setitem__("executionBaseHEAD", "0" * 40), "execution base"),
-        (lambda c: c["route"].__setitem__("baseCommit", "0" * 40), "base"),
-        (lambda c: c["claim"].__setitem__("sha256", "0" * 64), "claim"),
-        (lambda c: c["assignment"].__setitem__("threadId", "forged"), "thread"),
-        (lambda c: c["identity"].__setitem__("logicalBuildingID", "industrial_l03"), "logical building"),
-        (lambda c: c["identity"].__setitem__("variantID", "variant-1"), "variant"),
-        (lambda c: c["identity"].__setitem__("viewDirection", "west"), "direction"),
-        (lambda c: c["identity"].__setitem__("processID", "B"), "process"),
-        (lambda c: c["identity"].__setitem__("slotID", "south:A"), "slot"),
-        (lambda c: c["identity"].__setitem__("sceneGeometryID", "wrong"), "geometry"),
-        (lambda c: c["identity"].__setitem__("sourceAuthority", True), "source authority boolean"),
-        (lambda c: c["identity"].__setitem__("productionSelected", True), "production selection boolean"),
-        (lambda c: c["identity"].__setitem__("sourceAuthority", 0), "integer source authority"),
-        (lambda c: c["identity"].__setitem__("productionSelected", 0), "integer production selection"),
-        (lambda c: c["inputs"][0].__setitem__("sha256", "0" * 64), "input"),
-        (lambda c: c.__setitem__("inputs", []), "empty input set"),
-        (lambda c: c["inputs"].pop(), "missing input"),
-        (lambda c: c["inputs"].append({"path": "extra", "sha256": "0" * 64}), "extra input"),
-        (lambda c: c.__setitem__("inputs", list(reversed(c["inputs"]))), "reordered inputs"),
-        (lambda c: c["authorityState"].__setitem__("scheduleCreated", True), "schedule"),
-        (lambda c: c["authorityState"].__setitem__("leaseCreated", True), "lease"),
-        (lambda c: c["authorityState"].__setitem__("secretCreated", True), "secret"),
-        (lambda c: c["authorityState"].__setitem__("grantCreated", True), "grant"),
-        (lambda c: c["authorityState"].__setitem__("maximumDCCChildStarts", True), "boolean child limit"),
-        (lambda c: c["authorityState"].__setitem__("maximumProcessAStarts", True), "boolean process limit"),
-        (lambda c: c["output"].__setitem__("runRoot", "docs/production/evidence/PLAY-027/escape"), "root"),
+    source_paths = (
+        HERE / "EXECUTION-CONTRACT.json",
+        HERE / "RUNNER-CONTRACT.json",
+        HERE / "launch_north_v13_prelaunch.py",
+        HERE / "render_north_v13_process_a_child.py",
+        HERE / "test_process_a_prelaunch.py",
     )
-    for mutator, label in contract_adversaries:
-        expect_contract_failure(mutator, label)
+    preserved = {str(path): digest(path) for path in source_paths}
+    preserved.update({str(path): digest(path) for path in HISTORICAL_EVIDENCE.glob("*") if path.is_file()})
+    if V02.exists():
+        preserved.update({str(path): digest(path) for path in V02.rglob("*") if path.is_file()})
 
-    binding_adversaries = (
-        (lambda a: a["binding"].__setitem__("unknownActivity", 0), "unknown binding field"),
-        (lambda a: a["binding"].pop("grantId"), "missing binding field"),
-        (lambda a: a["binding"].__setitem__("carrierCommit", "0" * 40), "signed carrier"),
-        (lambda a: a["binding"].__setitem__("executionBaseHEAD", "0" * 40), "signed execution base"),
-        (lambda a: a["binding"].__setitem__("assignmentThreadId", "forged"), "signed thread"),
-        (lambda a: a["binding"].__setitem__("logicalBuildingID", "industrial_l03"), "signed logical building"),
-        (lambda a: a["binding"].__setitem__("variantID", "variant-1"), "signed variant"),
-        (lambda a: a["binding"].__setitem__("sourceAuthority", True), "signed source authority"),
-        (lambda a: a["binding"].__setitem__("productionSelected", True), "signed production selection"),
-        (lambda a: a["binding"].__setitem__("sourceAuthority", 0), "signed integer source authority"),
-        (lambda a: a["binding"].__setitem__("productionSelected", 0), "signed integer production selection"),
-        (lambda a: a["binding"].__setitem__("dccChildLimit", True), "signed boolean child limit"),
-        (lambda a: a["binding"].__setitem__("testOnly", 1), "signed integer test-only"),
-        (lambda a: a["binding"].__setitem__("inputs", []), "signed empty inputs"),
-        (lambda a: a["binding"]["inputs"].pop(), "signed missing input"),
-        (lambda a: a["binding"]["inputs"].append({"path": "extra", "sha256": "0" * 64}), "signed extra input"),
-        (lambda a: a["binding"].__setitem__("inputs", list(reversed(a["binding"]["inputs"]))), "signed reordered inputs"),
-        (lambda a: a["binding"].__setitem__("grantId", "south:A"), "signed grant"),
-        (lambda a: a["binding"].__setitem__("evidenceRoot", "docs/production/claims"), "signed evidence root"),
-        (lambda a: a["binding"].__setitem__("allowedRoots", ["docs/production/claims"]), "signed allowed roots"),
-        (lambda a: a["binding"].__setitem__("dccChildLimit", 2), "signed child limit"),
-        (lambda a: a["binding"]["activity"].__setitem__("mystery", 0), "unknown activity"),
-        (lambda a: a["binding"]["activity"].pop("pixelWrites"), "missing activity"),
-        (lambda a: a["binding"]["activity"].__setitem__("childStarts", 1), "child activity"),
-        (lambda a: a["binding"]["activity"].__setitem__("processAStarts", 1), "Process-A activity"),
-        (lambda a: a["binding"]["activity"].__setitem__("blenderStarts", 1), "Blender activity"),
-        (lambda a: a["binding"]["activity"].__setitem__("dccStarts", 1), "DCC activity"),
-        (lambda a: a["binding"]["activity"].__setitem__("renderStarts", 1), "render activity"),
-        (lambda a: a["binding"]["activity"].__setitem__("normalizerStarts", 1), "normalizer activity"),
-        (lambda a: a["binding"]["activity"].__setitem__("pixelWrites", 1), "pixel activity"),
-        (lambda a: a["binding"]["activity"].__setitem__("childStarts", False), "boolean child activity"),
-        (lambda a: a["binding"]["activity"].__setitem__("processAStarts", False), "boolean Process-A activity"),
-        (lambda a: a["binding"]["activity"].__setitem__("blenderStarts", False), "boolean Blender activity"),
-        (lambda a: a["binding"]["activity"].__setitem__("dccStarts", False), "boolean DCC activity"),
-        (lambda a: a["binding"]["activity"].__setitem__("renderStarts", False), "boolean render activity"),
-        (lambda a: a["binding"]["activity"].__setitem__("normalizerStarts", False), "boolean normalizer activity"),
-        (lambda a: a["binding"]["activity"].__setitem__("pixelWrites", False), "boolean pixel activity"),
-    )
-    for mutator, label in binding_adversaries:
-        expect_fixture_failure(mutator, label)
-    expect_fixture_failure(lambda a: a.__setitem__("unknown", True), "unknown authority field", resign=False)
-    expect_fixture_failure(lambda a: a.__setitem__("signature", "0" * 64), "forged signature", resign=False)
+    launch = load("retired_north_v13_prelaunch", HERE / "launch_north_v13_prelaunch.py")
+    child = load("retired_north_v13_child", HERE / "render_north_v13_process_a_child.py")
+    assert_surface_is_inert(launch, "launcher")
+    assert_surface_is_inert(child, "child")
 
-    def coherent_type_substitution(authority: dict) -> None:
-        binding = authority["binding"]
-        binding["sourceAuthority"] = 0
-        binding["productionSelected"] = 0
-        binding["dccChildLimit"] = True
-        binding["testOnly"] = 1
-        binding["activity"] = {key: False for key in binding["activity"]}
-
-    expect_fixture_failure(coherent_type_substitution, "coherently resigned bool/int substitution")
-
-    # Root identity is exact and is checked before Git/content validation.
-    with tempfile.TemporaryDirectory(prefix="north-v13-root-attacks-") as tmp:
-        attack_root = Path(tmp)
-        symlink_alias = attack_root / "symlink-repository"
-        symlink_alias.symlink_to(ROOT, target_is_directory=True)
-        copied_root = attack_root / "copied-repository"
-        copied_root.mkdir()
-        (copied_root / ".git").write_text("gitdir: attacker-selected\n", encoding="utf-8")
-        root_attacks = (
-            (str(symlink_alias), "symlink alias"),
-            (str(ROOT) + "/.", "dot lexical alias"),
-            (str(ROOT) + "/../city-sim", "dot-dot lexical alias"),
-            (str(ROOT) + "/", "trailing-separator lexical alias"),
-            (str(copied_root), "copied checkout"),
-        )
-        for candidate_root, label in root_attacks:
+    before_legacy = legacy_topology()
+    with tempfile.TemporaryDirectory(prefix="play027-retirement-", dir="/private/tmp") as fresh:
+        fresh_root = Path(fresh)
+        before = topology(fresh_root)
+        assert before == ((), ())
+        for module in (launch, child):
             try:
-                runner.validate_contract(candidate_root, contract)
-            except ValueError as exc:
-                assert "root" in str(exc) or "worktree" in str(exc), (label, str(exc))
+                module.main(["--root", str(fresh_root), "--write", "forged"])
+            except RuntimeError:
+                pass
             else:
-                raise AssertionError(f"repository-root adversary passed: {label}")
+                raise AssertionError("forged attempted call succeeded")
+        assert topology(fresh_root) == before
+    assert legacy_topology() == before_legacy
 
-    # Import the module as an attacker would. R2's module-visible tokens,
-    # factory, adapter class, and separately callable verified-consume method
-    # must not exist. The one remaining consumption callable authenticates the
-    # repository-backed authority before it can create adapter state.
-    attacker = load("north_v13_frontier_r3_attacker", HERE / "launch_north_v13_prelaunch.py")
-    for removed_name in (
-        "_ADAPTER_FACTORY_TOKEN",
-        "_VERIFIED_CONSUMPTION_TOKEN",
-        "_AuthenticatedTestOneShotAdapter",
-    ):
-        assert not hasattr(attacker, removed_name), f"importable bypass remains: {removed_name}"
-    consumption_callables = sorted(
-        name for name, value in vars(attacker).items()
-        if callable(value) and ("consume" in name.lower() or "adapter" in name.lower())
-    )
-    assert consumption_callables == ["consume_test_fixture"]
-    forged_direct = {
-        "schema": 1,
-        "kind": "test-only-fixture-authority",
-        "binding": attacker._expected_binding(contract),
-        "signature": "0" * 64,
-    }
-    forged_state = Path("/private/tmp") / attacker._fixture_state_name(forged_direct["binding"])
-    assert not forged_state.exists()
-    try:
-        attacker.consume_test_fixture(forged_direct, contract, ROOT, FIXTURE_KEY)
-    except ValueError as exc:
-        assert "signature" in str(exc)
-    else:
-        raise AssertionError("module-import direct-consume reproduction succeeded")
-    assert not forged_state.exists(), "unauthenticated call created adapter state"
-
-    # The adapter derives one immutable store from the authenticated binding;
-    # no caller-selected parent is accepted. Two simultaneous authenticated
-    # consumers of the same signed authority race for one marker.
-    authority = fixture()
-    state = fixture_state_path(authority)
-    assert not state.exists(), f"stale fixture state: {state}"
-    binding = authority["binding"]
-    for caller_store in (Path("/private/tmp/caller-store-a"), Path("/private/tmp/caller-store-b")):
-        try:
-            runner.consume_test_fixture(authority, contract, ROOT, FIXTURE_KEY, store_parent=caller_store)
-        except TypeError as exc:
-            assert "store_parent" in str(exc)
-        else:
-            raise AssertionError("caller-selected fixture store accepted")
-
-    try:
-        with ThreadPoolExecutor(max_workers=2) as executor:
-            futures = [
-                executor.submit(runner.consume_test_fixture, authority, contract, ROOT, FIXTURE_KEY)
-                for _ in range(2)
-            ]
-            outcomes = []
-            for future in futures:
-                try:
-                    outcomes.append(("success", future.result()))
-                except ValueError as exc:
-                    outcomes.append(("failure", str(exc)))
-        successes = [value for kind, value in outcomes if kind == "success"]
-        failures = [value for kind, value in outcomes if kind == "failure"]
-        assert successes == [{
-            "consumed": True, "startedDCCChild": False, "dccStarts": 0,
-            "renderStarts": 0, "pixelWrites": 0, "outputCreated": False,
-        }]
-        assert len(failures) == 1 and "already exists or consumed" in failures[0]
-        try:
-            runner.consume_test_fixture(authority, contract, ROOT, FIXTURE_KEY)
-        except ValueError as exc:
-            assert "already exists or consumed" in str(exc)
-        else:
-            raise AssertionError("same signed consumption replay accepted")
-    finally:
-        remove_fixture_state(authority)
-    assert not state.exists()
-
-    with tempfile.TemporaryDirectory(prefix="north-v13-writer-") as tmp:
-        parent = Path(tmp)
-        first = parent / "fresh-a"
-        second = parent / "fresh-b"
-        first_hashes = runner.write_canonical_evidence(ROOT, first)
-        second_hashes = runner.write_canonical_evidence(ROOT, second)
-        assert first_hashes == second_hashes
-        topology = assert_same_fresh_roots(first, second)
-        try:
-            runner.write_canonical_evidence(ROOT, first)
-        except ValueError as exc:
-            assert "absent" in str(exc)
-        else:
-            raise AssertionError("writer overwrote existing root")
-        assert len(topology["files"]) == 2
-
-    evidence_root = ROOT / runner.EXPECTED_EVIDENCE_ROOT
-    topology_receipt = runner.load_json(evidence_root / "FRESH-ROOT-TOPOLOGY.json")
-    expected_inventory = runner.bytes_sha256(runner.canonical_bytes(topology))
-    assert topology_receipt["inventorySHA256"] == expected_inventory
-    assert topology_receipt["replayCount"] == 2
-    assert topology_receipt["byteIdentical"] is True
-    assert topology_receipt["fileAndDirectoryTopologyIdentical"] is True
-    for replay in topology_receipt["replays"]:
-        assert replay["directories"] == topology["directories"]
-        assert replay["files"] == topology["files"]
-        assert replay["symlinks"] == topology["symlinks"]
-
-    try:
-        child.main([])
-    except RuntimeError as exc:
-        assert "forbidden" in str(exc)
-    else:
-        raise AssertionError("direct child invocation accepted")
-
-    runner_tree = ast.parse((HERE / "launch_north_v13_prelaunch.py").read_text(encoding="utf-8"))
-    subprocess_calls = [
-        node for node in ast.walk(runner_tree)
-        if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute)
-        and isinstance(node.func.value, ast.Name) and node.func.value.id == "subprocess"
-    ]
-    assert len(subprocess_calls) == 1 and subprocess_calls[0].func.attr == "run"
-    for path in (HERE / "launch_north_v13_prelaunch.py", HERE / "render_north_v13_process_a_child.py"):
-        source = path.read_text(encoding="utf-8")
-        tree = ast.parse(source)
-        imports = {alias.name.split(".")[0] for node in ast.walk(tree) if isinstance(node, ast.Import) for alias in node.names}
-        imports |= {node.module.split(".")[0] for node in ast.walk(tree) if isinstance(node, ast.ImportFrom) and node.module}
-        assert not imports.intersection({"bpy", "PIL", "Metal", "SceneKit"})
-        assert "render(" not in source and "Popen" not in source
-
-    validation, closure = runner._canonical_documents(contract, ROOT)
-    assert validation["counts"]["processA"] == 0
-    assert validation["counts"]["blender"] == 0
-    assert validation["counts"]["pixels"] == 0
-    assert validation["canonicalWallClockFieldCount"] == 0
-    assert closure["launchReady"] is False
-    assert not (ROOT / contract["output"]["exclusiveFutureProcessRoot"]).exists()
-    repository_after = runner.snapshot_topology(ROOT)
-    assert repository_before == repository_after, "test changed repository file/directory/symlink topology"
-
-    adversary_count = len(contract_adversaries) + len(binding_adversaries) + 22
-    print(
-        "PASS north-v13 frontier-repair-r4 "
-        f"adversaries={adversary_count} freshRoots=2 carrierGit=verified "
-        "files=2 directories=0 dccChildren=0 processA=0 pixels=0 topology=unchanged"
-    )
+    for raw_path, before_hash in preserved.items():
+        assert digest(Path(raw_path)) == before_hash, raw_path
+    assert not any((HERE / name).exists() for name in ("PRELAUNCH.json", "ATTEMPT.json", "GRANT.json"))
+    print("PASS retired v13 hostile imports/calls; files=0 directories=0 childStarts=0 dccStarts=0 pixelWrites=0")
     return 0
 
 

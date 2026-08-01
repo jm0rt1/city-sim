@@ -1,26 +1,22 @@
-"""Sealed future child entrypoint.
-
-This module intentionally has no Blender/bpy/subprocess/render imports.  A live
-Process-A child may only be admitted by a later Integration-owned launcher and
-grant; direct invocation is a hard failure before any output is touched.
-"""
+"""Retired North v13 child surface; import and invocation are inert."""
 
 from __future__ import annotations
 
-import sys
+
+RETIREMENT_STATE = "retired"
 
 
 def main(argv: list[str] | None = None) -> int:
+    """Reject direct or caller-authored child invocation before any side effect."""
     del argv
     raise RuntimeError(
-        "direct North v13 Process-A child invocation forbidden: "
-        "Integration schedule, one-attempt lease, and authenticated grant are absent"
+        "North v13 process-a-prelaunch-v01 child is retired; no DCC child exists"
     )
 
 
 if __name__ == "__main__":
     try:
-        main(sys.argv[1:])
+        main()
     except RuntimeError as exc:
-        print(str(exc), file=sys.stderr)
+        print(str(exc))
         raise SystemExit(78)

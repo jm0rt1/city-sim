@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "claim": "PLAY-073",
+  "routeId": "quality-v1:play-073-r4-b-current-master-luna-v1",
+  "routeSHA256": "48d4d758512bd9c4aae8d6f3f3789082bd5cd09d05c8c0ecf93850155189c2d2",
+  "carrier": "3ae202efad3e53589bb89b5229f165ddeafc460d",
+  "authorityBase": "6305d0f87f8f31b30e681d94a1882245c403efc9",
+  "claimSHA256": "51b347c22df6b04e33b0cb59046c774b65f770465bea21d1073db55cca75b897",
+  "productCommit": "1bcaad26cd4685038c327381b897084e569e8e93",
+  "status": "focused_pass_nonacceptance",
+  "scope": {
+    "productPaths": [
+      "Native/CitySimNative/Sources/CitySimNative/Rendering/LotContextRenderer.swift",
+      "Native/CitySimNative/Sources/CitySimNative/Rendering/TerrainRenderer.swift",
+      "Native/CitySimNative/Tests/CitySimNativeTests/WorldRenderingTests.swift"
+    ],
+    "evidenceRoot": "docs/production/evidence/PLAY-073/r4-b-current-master-v1",
+    "forbiddenSurfacesUnchanged": true,
+    "reconstructionRules": {
+      "existingMaterialPatchCount": 121,
+      "materialSpan": 2,
+      "newRegionalMaterialCount": 3,
+      "visibleVariantCounts": {
+        "residential": 4,
+        "commercial": 2,
+        "industrialAndService": 3,
+        "civicAndPark": 1
+      }
+    }
+  },
+  "focusedGate": {
+    "command": "swift test --package-path Native/CitySimNative --filter WorldRenderingTests",
+    "startedAt": "2026-08-01T18:16:55.260Z",
+    "finishedAt": "2026-08-01T18:17:44.306Z",
+    "elapsedSeconds": 49.046,
+    "executed": 67,
+    "skipped": 0,
+    "failures": 0,
+    "unexpectedFailures": 0,
+    "diffCheck": "pass",
+    "jsonValidation": "pass"
+  },
+  "diagnostics": {
+    "nodes": 1866,
+    "drawables": 927,
+    "totalRenderMilliseconds": 7.712,
+    "coldWorldUpdateMilliseconds": 4.626,
+    "fallbacks": 0,
+    "reducedMotionActions": 0,
+    "residencyBytes": 50331648,
+    "repeatIdentity": "pass"
+  },
+  "productFileSHA256": {
+    "Native/CitySimNative/Sources/CitySimNative/Rendering/LotContextRenderer.swift": "9c07443d820166649dd77b74d817acec0ef9fb84f6366c5760578ac955235e53",
+    "Native/CitySimNative/Sources/CitySimNative/Rendering/TerrainRenderer.swift": "9a9344946ae5adb7dadfd9e94117cf50721c0e1b992fa89c6f750c82074e57b4",
+    "Native/CitySimNative/Tests/CitySimNativeTests/WorldRenderingTests.swift": "603e4fa0a5d445b038ed3aa6cfb894c8355f9dd8a0ac3fc1ce0535cf246bc750"
+  },
+  "executionAccounting": {
+    "routingReworkCount": 1,
+    "workerReworkCount": 0,
+    "launchedJobs": [
+      {
+        "jobId": "r4b-current-master-adjacency-and-region-focused",
+        "resourceClass": "helper",
+        "state": "passed",
+        "interval": "2026-08-01T18:16:44.887Z/2026-08-01T18:16:44.892Z"
+      },
+      {
+        "jobId": "r4b-current-master-world-rendering-focused",
+        "resourceClass": "helper",
+        "state": "passed",
+        "interval": "2026-08-01T18:16:55.260Z/2026-08-01T18:17:44.306Z"
+      }
+    ],
+    "serializedAuthority": "visible-renderer-writer",
+    "overlap": "read-only route/authority inspection completed before serialized product edit; focused jobs were sequential",
+    "join": "product checkpoint joined before evidence generation",
+    "unusedCapacityReasons": [
+      "No DCC or sibling mutation was authorized",
+      "Full Swift suite, staged build, and player-facing QA are Integration/QA-owned"
+    ]
+  },
+  "limitations": [
+    "Full native suite, staged app, subjective visual disposition, AX hands-on proof, and independent final QA were not run under this Luna route.",
+    "This is a focused renderer checkpoint and does not claim acceptance."
+  ]
+}

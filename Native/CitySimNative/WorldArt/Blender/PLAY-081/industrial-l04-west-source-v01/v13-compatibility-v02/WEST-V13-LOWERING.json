@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "successor": "west-v13-literal-repair-v02",
+  "task": "PLAY-081",
+  "direction": "west",
+  "stage": "zero-pixel-analytic-lowering",
+  "designPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v13-compatibility-v02/WEST-V13-DESIGN.json",
+  "baseLoweringPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v13-compatibility-v01/WEST-V13-LOWERING.json",
+  "baseLoweringSHA256": "a9a316c8050e39779f806398f5f1ef5982c7ddf7d357c84cbf2eaf0700ea2743",
+  "orientationTransform": "none",
+  "coordinateBridge": {
+    "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-direction-bridge-v06/MAPPING-CONTRACT.json",
+    "sha256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7",
+    "sourceRevision": "direction-bridge-v06",
+    "basisFormula": "B(CitySim[x,y,z])=Blender[z,x,y]",
+    "basisMatrixRows": [[0, 0, 1], [1, 0, 0], [0, 1, 0]],
+    "sourceOrder": [0, 1, 2, 3]
+  },
+  "coordinateBridgeSHA256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7",
+  "projection": {
+    "sourceToLiteral192": "source / 8",
+    "rounding": "floor(sourceMin/8), ceil(sourceMax/8)",
+    "freightBeatSourceBounds": [
+      {"min": [623, 530], "max": [663, 740]},
+      {"min": [666, 530], "max": [706, 740]},
+      {"min": [709, 530], "max": [749, 740]}
+    ],
+    "separatorWidthsSourcePixels": [3, 3],
+    "staffSourceBounds": {"min": [649.1428571428571, 745.5008705864235], "max": [685.7142857142857, 808.5772579178551]},
+    "staffLiteralBounds": {"min": [81, 93], "max": [86, 102]},
+    "registrationErrorSourcePixels": 0
+  },
+  "stackShare": {
+    "componentID": "west-v13-stack",
+    "role": "oxidized-process-machinery",
+    "mode": "distinct-process-stack-not-freight-beat",
+    "authorityKey": "west-v13-stack|oxidized-process-machinery|distinct-process-stack"
+  },
+  "zeroPixelBoundary": {
+    "blenderProcessLaunches": 0,
+    "dccInvocations": 0,
+    "renderInvocations": 0,
+    "imageGenInvocations": 0,
+    "normalizerInvocations": 0,
+    "pixelFiles": 0,
+    "sourceReady": false,
+    "candidateReadyForIndependentReview": true
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "result": "PASS",
+  "task": "PLAY-081",
+  "direction": "west",
+  "successor": "west-v13-literal-repair-v02",
+  "sourceReady": false,
+  "candidateReadyForIndependentReview": true,
+  "route": {
+    "routeId": "quality-v1:west-v13-literal-repair-v1",
+    "canonicalRouteSha256": "a9f46c2fded9ef441ad98ae160dd28aa1ad4827b75fac0eb3b7bd695a87b8852",
+    "carrierCommit": "af89c2fc2a542535fea8162b9f7ca78d38506d30",
+    "receiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-INDUSTRIAL-L04-V13-LITERAL-REPAIR-LUNA-V1.json",
+    "receiptSha256": "59c87bf291a8545e29e09be2c0e8c3d8b2e8ccb1021619b2bcf18bedcc00e838",
+    "authorityCommit": "87178f7cbd2723283163dd6ce03437498a21dce5",
+    "expectedStartingHead": "d891e9fed75ac155ffd9d89d2a5ec8ef19671878"
+  },
+  "claim": {
+    "path": "docs/production/claims/PLAY-081.world-art-west.md",
+    "revision": 9,
+    "sha256": "289f7e55cdb2721dde5728708dca92e5a785d65417ae1600190c599f54153ad4"
+  },
+  "baseProof": {
+    "designPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v13-compatibility-v01/WEST-V13-DESIGN.json",
+    "designSHA256": "265ea5b27e0dd7982cb587b2efb944de462bf67650bb41b2000597deebc0b621",
+    "loweringPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v13-compatibility-v01/WEST-V13-LOWERING.json",
+    "loweringSHA256": "a9a316c8050e39779f806398f5f1ef5982c7ddf7d357c84cbf2eaf0700ea2743",
+    "validatorPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/test_v13_compatibility.py",
+    "validatorSHA256": "d0c330a13c84331c7742db062fafee00380d148f30a99b09aa1dc0c0c546675a",
+    "evidencePath": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/v13-compatibility-v01/V13-COMPATIBILITY-RESULT.json",
+    "evidenceSHA256": "65848132d2eb042161c90530a134dfe55bfe9380ac397c7cf9ba9d9e3ad6f94b",
+    "preserveAllBytes": true
+  },
+  "freightAndStaff": {
+    "freightBeatCount": 3,
+    "freightBeatIDs": ["west-v13-freight-beat-1", "west-v13-freight-beat-2", "west-v13-freight-beat-3"],
+    "minimumFreightBeatSourcePixels": [4, 8],
+    "separatorWidthsSourcePixels": [3, 3],
+    "minimumSeparatorWidthSourcePixels": 2,
+    "staffGlazingComponentID": "west-v13-staff-glazing",
+    "staffBoundsLiteral192": {"min": [81, 93], "max": [86, 102]},
+    "minimumStaffSourcePixels": [5, 8],
+    "stackShare": {
+      "componentID": "west-v13-stack",
+      "role": "oxidized-process-machinery",
+      "mode": "distinct-process-stack-not-freight-beat"
+    }
+  },
+  "adversaries": {
+    "count": 9,
+    "names": ["missing-freight", "below-freight", "freight-alias", "missing-separators", "below-separator", "staff-missing", "staff-below", "stack-share-alias", "stack-share-role"],
+    "allRejected": true,
+    "zeroCounters": true
+  },
+  "freshReplay": {
+    "independentProcessCount": 2,
+    "byteIdentical": true,
+    "outputSHA256": "19f7eb6989f1941a19d3086cefd172b55e3c6832dcc27dda0a80f8a52004610c",
+    "outputBytes": 858,
+    "processIsolation": true
+  },
+  "zeroPixelBoundary": {
+    "blenderProcessLaunches": 0,
+    "dccInvocations": 0,
+    "renderInvocations": 0,
+    "imageGenInvocations": 0,
+    "normalizerInvocations": 0,
+    "pixelFiles": 0
+  },
+  "blockers": ["appearance lock absent", "source production profile absent"],
+  "implementation": {
+    "versionedPredecessorPreserved": true,
+    "acceptedWestProofBytesPreserved": true,
+    "directionExclusive": true,
+    "orientationTransform": "none"
+  }
+}

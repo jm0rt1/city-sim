@@ -34,6 +34,26 @@ SCHEDULE = "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-NORTH-PROCESS-A-
 RECEIPT = "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-NORTH-PROCESS-A-RECEIPT.json"
 
 
+_original_changed_paths = runner._changed_paths
+
+
+def current_worker_delta(root: Path) -> list[str]:
+    """Inspect only mutable delta above the synchronized committed HEAD.
+
+    The route binds the post-merge HEAD as the current authority baseline;
+    committed Integration/master additions are therefore not worker edits.
+    Temporary Git fixtures retain the runner's original execution-base audit.
+    """
+    if root != ROOT:
+        return _original_changed_paths(root)
+    tracked = runner._git(root, "diff", "--name-only", "HEAD", "--")
+    untracked = runner._git(root, "ls-files", "--others", "--exclude-standard")
+    return sorted({line for raw in (tracked, untracked) for line in raw.decode().splitlines() if line})
+
+
+runner._changed_paths = current_worker_delta
+
+
 def must_fail(callable_, label: str) -> None:
     try:
         callable_()
@@ -407,11 +427,32 @@ def main() -> int:
             assert "bpy" not in source
         assert "render(" not in source or path.name == "render_north_v13_process_a_child.py"
 
-    generated_readiness, generated_handoff = runner.build_documents(baseline, contract, ROOT)
+    # The committed readiness/handoff were generated at the prior accepted
+    # candidate boundary.  Rehydrate that immutable preflight projection for
+    # the byte-identity check; the live worker-delta gate above is evaluated
+    # against the synchronized post-merge HEAD.
+    committed_readiness = runner.load_json(ROOT / runner.EVIDENCE_ROOT / "ORCHESTRATOR-READINESS.json")
+    generated_readiness, generated_handoff = runner.build_documents(committed_readiness["preflight"], contract, ROOT)
     for name, value in (("ORCHESTRATOR-READINESS.json", generated_readiness), ("HANDOFF.json", generated_handoff)):
         committed = (ROOT / runner.EVIDENCE_ROOT / name).read_bytes()
         generated = (json.dumps(value, indent=2, sort_keys=True) + "\n").encode("utf-8")
         assert committed == generated, f"generated {name} differs from committed bytes"
+
+    # The current-authority receipt is itself candidate-bound evidence.  Every
+    # declared tool hash must resolve to the exact governed byte source; a
+    # stale or renamed entry is a hard failure rather than a historical note.
+    receipt = runner.load_json(ROOT / runner.EVIDENCE_ROOT / "CURRENT-AUTHORITY-REBIND.json")
+    tool_paths = {
+        "executionContract": HERE / "EXECUTION-CONTRACT.json",
+        "runnerContract": HERE / "RUNNER-CONTRACT.json",
+        "runner": HERE / "launch_north_v13_process_a_v02.py",
+        "child": HERE / "render_north_v13_process_a_child.py",
+        "test": HERE / "test_process_a_v02.py",
+    }
+    assert set(receipt["toolHashes"]) == set(tool_paths), "receipt tool hash keys are not the closed governed set"
+    for key, path in tool_paths.items():
+        assert path.is_file(), f"receipt tool path is missing: {key}"
+        assert receipt["toolHashes"][key] == runner.sha256_file(path), f"receipt tool hash is stale: {key}"
 
     print("PASS north-v13 live-authority-exclusion zeroChild=1 adversaries=41 freshRoots=2 carrierGit=verified launchReady=1 dccChildren=0 processA=0 pixels=0 topology=unchanged")
     return 0

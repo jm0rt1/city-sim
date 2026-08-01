@@ -60,6 +60,9 @@ class ModelRouteTests(unittest.TestCase):
             },
             "assignment": {
                 "threadId": assignment_thread,
+                "branch": "master",
+                "worktree": str(self.repo),
+                "expectedHead": self.head,
                 "featureAuthorThreadId": None,
                 "sharedAuthorityOwnership": False,
                 "finalQAOwnership": False,

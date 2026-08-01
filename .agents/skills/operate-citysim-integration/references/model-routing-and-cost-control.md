@@ -36,7 +36,8 @@ identified by `routeId` and the SHA-256 of its canonical JSON, and validated by
 - classification, model, effort, and rationale;
 - exact authority commit, base commit, claim path and claim hash;
 - immutable input paths and hashes;
-- assignment thread, feature-author thread when applicable, and ownership
+- assignment thread, branch, absolute worktree, expected starting HEAD,
+  feature-author thread when applicable, and ownership
   booleans for shared authority, subjective judgment, and final QA;
 - claim-owned roots plus exact allowed and forbidden path prefixes;
 - one bounded deliverable and stop condition;

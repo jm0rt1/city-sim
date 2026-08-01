@@ -3,7 +3,7 @@
 - **Title:** Operate a low-overhead CitySim intelligence optimization loop
 - **Lane:** Operating-system optimization
 - **Branch:** `codex/citysim-os-optimization`
-- **Worktree:** Codex app-provisioned; exact path must be bound by Integration before mutation
+- **Worktree:** `/Users/James/.codex/worktrees/c92d/city-sim`
 - **Base authority:** The published Integration commit containing this claim
 - **Default owned surfaces:** `.agents/skills/optimize-citysim-operating-system/`,
   `docs/production/evidence/PLAY-089/`, and
@@ -16,8 +16,8 @@
 - **Validation/proof:** Receipt inventory, before/after byte and gate counts,
   focused adversarial tests, route projection, `git diff --check`, and an
   exception-driven improvement receipt
-- **Status:** Provisioning; read-only startup only until Integration binds the
-  exact worktree path and first model route
+- **Status:** Worktree bound and ready for the first Integration-published
+  observation route; no mutation before exact route acknowledgement
 
 The lane observes execution at four event boundaries: dispatch publication,
 first return, candidate handoff, and integration close. It measures context

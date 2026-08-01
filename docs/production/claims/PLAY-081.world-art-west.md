@@ -1,6 +1,6 @@
 # PLAY-081 Claim
 
-- **Claim revision:** 8
+- **Claim revision:** 9
 - **Title:** Close the Industrial L4 West execution boundary in parallel
 - **Lane:** World Art West cell
 - **Branch:** `codex/citysim-world-art-west`
@@ -40,7 +40,9 @@
   `orchestratorInvoked:false`; the consumer must bind
   `west_execution_orchestration_v2.py` as the high-level orchestrator and
   `run_west_source.py` only as the low-level runner. Revision 7 authorizes only
-  current-authority zero-DCC rebinding and replay.
+  current-authority zero-DCC rebinding and replay. Exact v13 candidate
+  `0bb1bb49c195249221be82b37b68991bde015230` is preserved but returned for
+  the bounded revision-9 freight/staff/validator repair below.
 - **Validation/proof:** Independent West geometry; West road-facing portal and
   socket; actual-camera footprint/pivot/projection; alpha-free zero-pixel
   occlusion and silhouette proof; no sibling transform or alias
@@ -109,3 +111,18 @@ Stop after one clean candidate-ready-for-independent-review commit. This
 revision authorizes no Blender/DCC child, source process A/B/C, pixel,
 normalization, source admission, renderer activation, production selection,
 shipping, push, integration, or self-acceptance.
+
+## Revision-9 v13 freight and staff repair
+
+Consume
+`docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-V13-LITERAL-REPAIR-AUTHORITY-V1.md`.
+Within the existing West-exclusive v13 source and evidence roots, author and
+prove three separately readable freight recess beats with at least two
+source-pixel separators, raise governed staff glazing to at least 5 x 8 source
+pixels, and enforce freight-beat count, separator width, staff minimum, and
+stack-share authority with missing, below-target, and alias adversaries.
+Preserve the accepted portal, crown, silhouette, camera, socket, pivot,
+footprint, material, and non-alias proofs. Stop after one zero-pixel
+candidate-ready-for-independent-review commit. DCC, pixels, normalization,
+admission, activation, shipping, push, integration, and self-acceptance remain
+prohibited.

@@ -2959,6 +2959,114 @@ final class WorldRenderingTests: XCTestCase {
     }
 
     @MainActor
+    func testOrdinaryContextAlternatesGeometryAcrossEWAndNSWithoutGameplaySemantics() {
+        let renderer = LotContextRenderer(style: WorldVisualStyle())
+        XCTAssertEqual(LotContextRenderer.visibleVariantCount(for: .residential), 4)
+        XCTAssertEqual(LotContextRenderer.visibleVariantCount(for: .commercial), 2)
+        XCTAssertEqual(LotContextRenderer.visibleVariantCount(for: .industrial), 3)
+        XCTAssertEqual(LotContextRenderer.visibleVariantCount(for: .cityHall), 1)
+
+        func renderTreatment(_ tile: CityTile, frontage: RoadConnectionMask) -> SKShapeNode {
+            let city = SKNode()
+            let neighborhood = SKNode()
+            let block = SKNode()
+            renderer.addContext(
+                for: tile,
+                adjacentRoads: frontage,
+                selectedFrontage: frontage,
+                city: city,
+                neighborhood: neighborhood,
+                block: block
+            )
+            var treatments: [SKShapeNode] = []
+            neighborhood.enumerateChildNodes(
+                withName: "//lot.lod.neighborhood.variant-ground.commercial.*"
+            ) { node, _ in
+                if let shape = node as? SKShapeNode { treatments.append(shape) }
+            }
+            return treatments[0]
+        }
+
+        func renderShadow(_ tile: CityTile, frontage: RoadConnectionMask) -> SKShapeNode {
+            let city = SKNode()
+            let neighborhood = SKNode()
+            let block = SKNode()
+            renderer.addContext(
+                for: tile,
+                adjacentRoads: frontage,
+                selectedFrontage: frontage,
+                city: city,
+                neighborhood: neighborhood,
+                block: block
+            )
+            var shadows: [SKShapeNode] = []
+            city.enumerateChildNodes(withName: "//lot.context.city.commercial.contact-shadow.*") {
+                node, _ in
+                if let shape = node as? SKShapeNode { shadows.append(shape) }
+            }
+            return shadows[0]
+        }
+
+        let ewA = renderTreatment(
+            CityTile(coordinate: GridCoordinate(x: 8, y: 8), kind: .commercial, level: 1),
+            frontage: .south
+        )
+        let ewB = renderTreatment(
+            CityTile(coordinate: GridCoordinate(x: 9, y: 8), kind: .commercial, level: 1),
+            frontage: .south
+        )
+        let nsA = renderTreatment(
+            CityTile(coordinate: GridCoordinate(x: 8, y: 8), kind: .commercial, level: 1),
+            frontage: .south
+        )
+        let nsB = renderTreatment(
+            CityTile(coordinate: GridCoordinate(x: 8, y: 9), kind: .commercial, level: 1),
+            frontage: .south
+        )
+        XCTAssertNotEqual(ewA.position, ewB.position)
+        XCTAssertNotEqual(nsA.position, nsB.position)
+        XCTAssertFalse(ewA.fillColor.isEqual(ewB.fillColor))
+        XCTAssertFalse(nsA.fillColor.isEqual(nsB.fillColor))
+        XCTAssertEqual(ewA.path?.boundingBoxOfPath, ewB.path?.boundingBoxOfPath)
+        let ewShadowA = renderShadow(
+            CityTile(coordinate: GridCoordinate(x: 8, y: 8), kind: .commercial, level: 1),
+            frontage: .south
+        )
+        let ewShadowB = renderShadow(
+            CityTile(coordinate: GridCoordinate(x: 9, y: 8), kind: .commercial, level: 1),
+            frontage: .south
+        )
+        XCTAssertNotEqual(
+            ewShadowA.path?.boundingBoxOfPath.width,
+            ewShadowB.path?.boundingBoxOfPath.width
+        )
+        XCTAssertEqual(ewShadowA.position, ewShadowB.position)
+
+        let style = WorldVisualStyle()
+        for treatment in [ewA, ewB, nsA, nsB] {
+            let bounds = treatment.path?.boundingBoxOfPath ?? .zero
+            for point in [
+                CGPoint(x: bounds.minX, y: bounds.minY),
+                CGPoint(x: bounds.minX, y: bounds.maxY),
+                CGPoint(x: bounds.maxX, y: bounds.minY),
+                CGPoint(x: bounds.maxX, y: bounds.maxY),
+            ] {
+                let world = CGPoint(
+                    x: point.x + treatment.position.x,
+                    y: point.y + treatment.position.y
+                )
+                XCTAssertLessThanOrEqual(
+                    abs(world.x) / (style.tileWidth / 2)
+                        + abs(world.y) / (style.tileHeight / 2),
+                    1.0,
+                    "variant ground treatment must remain inside the lot diamond"
+                )
+            }
+            XCTAssertEqual(recursiveActiveActionCount(treatment), 0)
+        }
+    }
+
+    @MainActor
     func testCompletedLotsExposeDistinctCityNeighborhoodAndBlockContextWithoutLabelsOrActions() {
         let style = WorldVisualStyle()
         let renderer = LotRenderer(style: style, assets: WorldAssetCatalog())
@@ -3093,6 +3201,23 @@ final class WorldRenderingTests: XCTestCase {
             backdropNames.filter { $0.hasPrefix("terrain.macro.material.patch.") }.count,
             121
         )
+        XCTAssertEqual(
+            backdropNames.filter { $0.hasPrefix("terrain.macro.regional.material.") }.count,
+            3
+        )
+        let repeatedBackdrop = renderer.makeBackdrop(gridWidth: 24, gridHeight: 24)
+        var regions: [SKNode] = []
+        backdrop.enumerateChildNodes(withName: "//terrain.macro.regional.material.*") {
+            node, _ in regions.append(node)
+        }
+        var repeatedRegions: [SKNode] = []
+        repeatedBackdrop.enumerateChildNodes(withName: "//terrain.macro.regional.material.*") {
+            node, _ in repeatedRegions.append(node)
+        }
+        XCTAssertEqual(regions.map { $0.name }, repeatedRegions.map { $0.name })
+        XCTAssertEqual(regions.map { $0.position.x }, repeatedRegions.map { $0.position.x })
+        XCTAssertEqual(regions.map { $0.position.y }, repeatedRegions.map { $0.position.y })
+        XCTAssertEqual(regions.map { $0.zPosition }, repeatedRegions.map { $0.zPosition })
         XCTAssertGreaterThan(
             backdropNames.filter { $0.hasPrefix("terrain.macro.meadow.patch.") }.count,
             15

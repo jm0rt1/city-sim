@@ -75,12 +75,7 @@ final class LotContextRenderer {
             ?? ResidentialGeneratedAssetIdentity.authoritativeFrontagePriority.first(
                 where: adjacentRoads.contains
             )
-        let variant = WorldVisualSeed.variant(
-            count: 4,
-            for: tile.coordinate,
-            kind: tile.kind,
-            salt: 0x6600
-        )
+        let variant = Self.districtMaterialVariant(for: tile)
         let key = TemplateKey(
             family: family.rawValue,
             variant: variant,
@@ -243,12 +238,23 @@ final class LotContextRenderer {
         let neighborhood = SKNode()
         let block = SKNode()
         addCityLotRhythm(family: family, variant: variant, to: city)
+        if Self.isOrdinaryFamily(family) {
+            addContactShadow(family: family, variant: variant, to: city)
+        }
         addBoundary(
             family: family,
             frontage: frontage,
             variant: variant,
             to: neighborhood
         )
+        if Self.isOrdinaryFamily(family), let frontage {
+            addVariantGroundTreatment(
+                family: family,
+                variant: variant,
+                frontage: frontage,
+                to: neighborhood
+            )
+        }
         if let frontage {
             let placements = placementLedger(
                 family: family,
@@ -293,20 +299,31 @@ final class LotContextRenderer {
         templates.count
     }
 
+    static func visibleVariantCount(for kind: BuildingKind) -> Int {
+        switch kind {
+        case .residential:
+            4
+        case .commercial:
+            2
+        case .industrial, .powerPlant, .waterTower:
+            3
+        case .cityHall, .fireStation, .policeStation, .school, .park,
+             .empty, .road:
+            1
+        }
+    }
+
     /// Four-neighbor parcels never receive the same immediate site treatment.
     /// This renderer-owned material choice does not alter building identity,
     /// occupancy, frontage, or gameplay state.
     static func districtMaterialVariant(for tile: CityTile) -> Int {
-        let familyOffset: Int = switch tile.kind {
-        case .residential: 0
-        case .commercial: 1
-        case .industrial, .powerPlant, .waterTower: 2
-        case .cityHall, .fireStation, .policeStation, .school: 3
-        case .park: 1
-        case .empty, .road: 0
-        }
-        let value = tile.coordinate.x + tile.coordinate.y * 2 + familyOffset
-        return ((value % 4) + 4) % 4
+        let count = visibleVariantCount(for: tile.kind)
+        let value = tile.coordinate.x + tile.coordinate.y
+        return ((value % count) + count) % count
+    }
+
+    private static func isOrdinaryFamily(_ family: Family) -> Bool {
+        family == .residential || family == .commercial || family == .industrial
     }
 
     private func family(for kind: BuildingKind) -> Family? {
@@ -338,6 +355,78 @@ final class LotContextRenderer {
         rhythm.lineWidth = family == .industrial ? 1.25 : 0.9
         rhythm.zPosition = -3.1
         node.addChild(rhythm)
+    }
+
+    private func addContactShadow(
+        family: Family,
+        variant: Int,
+        to node: SKNode
+    ) {
+        let width: CGFloat = switch family {
+        case .residential: 58
+        case .commercial: 62
+        case .industrial: 66
+        case .civic, .park: 0
+        }
+        let shadow = SKShapeNode(path: style.diamondPath(
+            width: width + CGFloat(variant % 2),
+            height: width / 2 + CGFloat(variant % 2) * 0.5
+        ))
+        shadow.name = "lot.context.city.\(family.rawValue).contact-shadow.\(variant)"
+        shadow.fillColor = NSColor.black.withAlphaComponent(0.13)
+        shadow.strokeColor = .clear
+        shadow.position = CGPoint(x: 1.4, y: -1.2)
+        shadow.zPosition = -3.2
+        node.addChild(shadow)
+    }
+
+    private func addVariantGroundTreatment(
+        family: Family,
+        variant: Int,
+        frontage: RoadConnectionMask,
+        to node: SKNode
+    ) {
+        let front = normalized(style.roadSocket(for: frontage))
+        let across = CGPoint(x: -front.y, y: front.x)
+        let side: CGFloat = variant.isMultiple(of: 2) ? -1 : 1
+        let center = CGPoint(
+            x: front.x * -8.5 + across.x * side * 4.5,
+            y: front.y * -8.5 + across.y * side * 4.5
+        )
+        let width: CGFloat = switch family {
+        case .residential: 13
+        case .commercial: 18
+        case .industrial: 20
+        case .civic, .park: 0
+        }
+        let height: CGFloat = family == .industrial ? 6 : 5
+        let treatment = SKShapeNode(path: style.diamondPath(width: width, height: height))
+        treatment.name = "lot.lod.neighborhood.variant-ground.\(family.rawValue).\(variant)"
+        treatment.fillColor = switch family {
+        case .residential:
+            style.palette.parkGrass.blended(withFraction: 0.18, of: style.palette.lotGrass)
+                ?? style.palette.parkGrass
+        case .commercial:
+            variant == 0
+                ? style.palette.concreteLight.blended(withFraction: 0.30, of: style.palette.parkGrass)
+                    ?? style.palette.concreteLight
+                : style.palette.asphaltLight.blended(withFraction: 0.42, of: style.palette.concrete)
+                    ?? style.palette.asphaltLight
+        case .industrial:
+            variant == 0
+                ? style.palette.soil.blended(withFraction: 0.20, of: style.palette.concrete)
+                    ?? style.palette.soil
+                : style.palette.asphaltLight.blended(withFraction: 0.35, of: style.palette.soil)
+                    ?? style.palette.asphaltLight
+        case .civic, .park:
+            style.palette.concrete
+        }
+        treatment.fillColor = treatment.fillColor.withAlphaComponent(0.56)
+        treatment.strokeColor = style.palette.mapEarthDark.withAlphaComponent(0.30)
+        treatment.lineWidth = 0.55
+        treatment.position = center
+        treatment.zPosition = 4.35
+        node.addChild(treatment)
     }
 
     private func addBoundary(

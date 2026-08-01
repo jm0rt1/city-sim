@@ -314,7 +314,9 @@ def validate_route(route: Any, repo: Path) -> list[str]:
         errors.append("fullCommands must be a non-empty string list")
     if is_luna and isinstance(focused_commands, list):
         for command in focused_commands:
-            if any(marker in command for marker in FULL_GATE_MARKERS):
+            unfiltered_swift = FULL_GATE_MARKERS[0] in command and "--filter" not in command
+            other_full_gate = any(marker in command for marker in FULL_GATE_MARKERS[1:])
+            if unfiltered_swift or other_full_gate:
                 errors.append(f"Luna focused gate contains aggregate/final command: {command}")
 
     result = route["expectedResult"]

@@ -23,8 +23,12 @@ PROCESS_ROOT = "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-nor
 EVIDENCE_ROOT = "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-v02"
 WORKTREE = "/Users/James/.codex/worktrees/0648/city-sim"
 ATTEMPT_MARKER_PATH = "docs/production/evidence/INTEGRATION/PLAY-027-NORTH-V13-PROCESS-A-ATTEMPT.json"
-AUTHORITY_BASE = "23f1836892f19d9579609f523397aea068202859"
-CLAIM_SHA256 = "7d42ba7c38a55d7681171499aad50e15c2d3eba0878cabf508d0e42ee97cdc83"
+AUTHORITY_BASE = "1f2a3dd62bff4e12002afd1348000bcf25ad4687"
+CLAIM_SHA256 = "bf0b167a1d1e6f7007d609aeb657917fe9d3d0866d5a7a6e36b0e5a32faefa6f"
+ROUTE_ID = "quality-v1:north-v13-process-a-v02-current-authority-rebind-v1"
+ROUTE_SHA256 = "2c60020aa23e0c0a746a1ab8b09d1abd6af084b9e28541181b638ec877b5a6fd"
+CARRIER_COMMIT = "a23a3690a6996f0a18ec6d5f02ce10253f3784dc"
+EXECUTION_BASE = "cffa19a528d1192794dea31a99dc4eb6db29579a"
 
 
 def canonical(value: object) -> bytes:
@@ -131,7 +135,10 @@ def validate_launch(parsed: argparse.Namespace) -> dict:
     identity = contract.get("identity", {})
     if identity.get("logicalBuildingID") != "industrial_l04" or identity.get("variantID") != "variant-0" or identity.get("viewDirection") != "north" or identity.get("processID") != "A" or identity.get("slotID") != "north:A" or identity.get("sourceAuthority") is not False or identity.get("productionSelected") is not False:
         raise RuntimeError("child identity mismatch")
-    if contract.get("claim", {}).get("sha256") != CLAIM_SHA256:
+    contract_route = contract.get("route", {})
+    if contract_route.get("routeId") != ROUTE_ID or contract_route.get("canonicalSHA256") != ROUTE_SHA256 or contract_route.get("carrierCommit") != CARRIER_COMMIT or contract_route.get("authorityCommit") != AUTHORITY_BASE or contract_route.get("executionBaseHEAD") != EXECUTION_BASE:
+        raise RuntimeError("child route or execution-base mismatch")
+    if contract.get("claim", {}).get("sha256") != CLAIM_SHA256 or contract.get("claim", {}).get("revision") != 10:
         raise RuntimeError("child claim mismatch")
     if contract.get("route", {}).get("authorityCommit") != AUTHORITY_BASE:
         raise RuntimeError("child authority mismatch")
@@ -154,6 +161,7 @@ def validate_launch(parsed: argparse.Namespace) -> dict:
     schedule = load(schedule_file)
     receipt = load(receipt_file)
     current_head = _git(root, "rev-parse", "HEAD").decode().strip()
+    _git(root, "merge-base", "--is-ancestor", EXECUTION_BASE, current_head)
     runner_path = root / SOURCE_ROOT / "process-a-v02" / "launch_north_v13_process_a_v02.py"
     child_path = root / SOURCE_ROOT / "process-a-v02" / "render_north_v13_process_a_child.py"
     if not _exact_int(schedule.get("schema"), 1) or schedule.get("task") != "PLAY-027" or schedule.get("batch") != "industrial_l04_directional_family" or schedule.get("direction") != "north" or schedule.get("process") != "A" or schedule.get("slot") != "north:A" or not _exact_int(schedule.get("maximumChildStarts"), 1) or schedule.get("schedulePath") != schedule_path or schedule.get("attemptMarkerPath") != ATTEMPT_MARKER_PATH or schedule.get("outputRoot") != PROCESS_ROOT or schedule.get("evidenceRoot") != EVIDENCE_ROOT or schedule.get("workerHead") is not None or schedule.get("claimSHA256") != CLAIM_SHA256 or schedule.get("trustedIntegrationHead") != AUTHORITY_BASE:

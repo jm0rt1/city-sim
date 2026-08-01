@@ -1,11 +1,12 @@
 {
   "assignment": {
     "branch": "codex/citysim-world-art",
+    "head": "cffa19a528d1192794dea31a99dc4eb6db29579a",
     "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
     "worktree": "/Users/James/.codex/worktrees/0648/city-sim"
   },
-  "authorityBase": "23f1836892f19d9579609f523397aea068202859",
-  "claimSHA256": "7d42ba7c38a55d7681171499aad50e15c2d3eba0878cabf508d0e42ee97cdc83",
+  "authorityBase": "1f2a3dd62bff4e12002afd1348000bcf25ad4687",
+  "claimSHA256": "bf0b167a1d1e6f7007d609aeb657917fe9d3d0866d5a7a6e36b0e5a32faefa6f",
   "directLaunch": {
     "attemptMarkerOutsideOutputRoot": true,
     "attemptMarkerPath": "docs/production/evidence/INTEGRATION/PLAY-027-NORTH-V13-PROCESS-A-ATTEMPT.json",
@@ -35,13 +36,13 @@
     "helperCapacity": 0,
     "join": "joined",
     "launchedJobs": [],
-    "nextRefill": "published schedule and one-attempt process receipt",
+    "nextRefill": "published revision-10 schedule and one-attempt process receipt",
     "readyNow": 0,
     "running": [],
     "serializedAuthority": "Integration direct launch",
     "unusedCapacityReasons": [
       {
-        "dependencyAuthority": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-NORTH-V13-INTEGRATION-DIRECT-ORCHESTRATOR-V1.json",
+        "dependencyAuthority": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-027-NORTH-V13-PROCESS-A-V02-REBIND-LUNA-V1.json",
         "nextRefillJob": "north:A",
         "owner": "Integration",
         "reasonCode": "waiting_on_integration_direct_authority",
@@ -107,10 +108,13 @@
       "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-v02/RUNNER-CONTRACT.json",
       "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-v02/launch_north_v13_process_a_v02.py",
       "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-v02/render_north_v13_process_a_child.py",
-      "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-v02/test_process_a_v02.py"
+      "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-v02/test_process_a_v02.py",
+      "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-v02/HANDOFF.json",
+      "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-v02/ORCHESTRATOR-READINESS.json",
+      "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-v02/CURRENT-AUTHORITY-REBIND.json"
     ],
     "dccChildStarts": 0,
-    "executionBaseHEAD": "3485ff76543ef9be595f9640deab925f17ac8eb5",
+    "executionBaseHEAD": "cffa19a528d1192794dea31a99dc4eb6db29579a",
     "frozenInputCount": 6,
     "futureProcessRootAbsent": true,
     "observedHeadMustDescendFromBase": true,
@@ -119,10 +123,10 @@
     "processReceiptPath": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-NORTH-PROCESS-A-RECEIPT.json",
     "processReceiptPresent": false,
     "route": {
-      "carrierCommit": "c1aa663655f444c091fd1d9ac98aaa2af2f7cbc6",
-      "receiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-NORTH-V13-INTEGRATION-DIRECT-ORCHESTRATOR-V1.json",
-      "receiptSHA256": "465df80128979aa90ba4f680ab852a54f15285f002d5cffa40afb697a0ae8ea6",
-      "routeSHA256": "ec2ae5ea2d8f2d9e4caa537e5a209dfea6746cea6e3bd6528e4300e0be2ee782"
+      "carrierCommit": "a23a3690a6996f0a18ec6d5f02ce10253f3784dc",
+      "receiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-027-NORTH-V13-PROCESS-A-V02-REBIND-LUNA-V1.json",
+      "receiptSHA256": "63f965d9f32c4645565eab1fda94a6748e5e03cfd8ecefb4d183bdb9ac66a65c",
+      "routeSHA256": "2c60020aa23e0c0a746a1ab8b09d1abd6af084b9e28541181b638ec877b5a6fd"
     },
     "schedulePath": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-NORTH-PROCESS-A-SCHEDULE.json",
     "schedulePresent": false,
@@ -140,16 +144,16 @@
     "futureProcess": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a",
     "source": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-v02"
   },
-  "routeId": "quality-v1:north-v13-integration-direct-orchestrator-v1",
-  "routeSHA256": "ec2ae5ea2d8f2d9e4caa537e5a209dfea6746cea6e3bd6528e4300e0be2ee782",
+  "routeId": "quality-v1:north-v13-process-a-v02-current-authority-rebind-v1",
+  "routeSHA256": "2c60020aa23e0c0a746a1ab8b09d1abd6af084b9e28541181b638ec877b5a6fd",
   "schema": 1,
   "sourceAuthority": false,
   "task": "PLAY-027",
   "toolHashes": {
-    "child": "5a1b1fc4e71f84f553c087540bdcc9b428ae2bd14e13a339bee3d82c4ce8f3a3",
-    "executionContract": "56a4f723d1580423979358d99a5722a1fd43b1689f36291398f1a38865d96510",
-    "runner": "0eaa6a0e82a9a1dbf4ae817cfb2ad26ff5db4e5971f42eee6cfe02ab045fb5d7",
-    "runnerContract": "56aa25615d171c1290035d067e0559a45d8b77125b74f35e3e2b9e16d1186f34"
+    "child": "7fbfbac615dd516b3113312114574bb4d471e172288c69ce36d6659c012b15f2",
+    "executionContract": "57861b8beb334c25c7d1af1c0b21d2afe92c63be42389dd5234c3bbe6e0c85c5",
+    "runner": "373d2a450373b1e5adcde23c15af4d7f4e16f20129d79bf2622c7421e5c6f7c3",
+    "runnerContract": "c7e08bbb3ef3483290ab64015fd72767e1d5a80ceebc9834be601706e5aa8969"
   },
   "writeScope": "task-owned evidence only"
 }

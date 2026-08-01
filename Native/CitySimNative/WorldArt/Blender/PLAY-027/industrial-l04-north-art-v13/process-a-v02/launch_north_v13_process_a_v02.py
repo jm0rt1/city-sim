@@ -17,14 +17,14 @@ import subprocess
 import sys
 
 
-ROUTE_ID = "quality-v1:north-v13-integration-direct-orchestrator-v1"
-ROUTE_SHA256 = "ec2ae5ea2d8f2d9e4caa537e5a209dfea6746cea6e3bd6528e4300e0be2ee782"
-CARRIER_COMMIT = "c1aa663655f444c091fd1d9ac98aaa2af2f7cbc6"
-RECEIPT_PATH = "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-NORTH-V13-INTEGRATION-DIRECT-ORCHESTRATOR-V1.json"
-RECEIPT_SHA256 = "465df80128979aa90ba4f680ab852a54f15285f002d5cffa40afb697a0ae8ea6"
-AUTHORITY_BASE = "23f1836892f19d9579609f523397aea068202859"
-EXECUTION_BASE = "3485ff76543ef9be595f9640deab925f17ac8eb5"
-CLAIM_SHA256 = "7d42ba7c38a55d7681171499aad50e15c2d3eba0878cabf508d0e42ee97cdc83"
+ROUTE_ID = "quality-v1:north-v13-process-a-v02-current-authority-rebind-v1"
+ROUTE_SHA256 = "2c60020aa23e0c0a746a1ab8b09d1abd6af084b9e28541181b638ec877b5a6fd"
+CARRIER_COMMIT = "a23a3690a6996f0a18ec6d5f02ce10253f3784dc"
+RECEIPT_PATH = "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-027-NORTH-V13-PROCESS-A-V02-REBIND-LUNA-V1.json"
+RECEIPT_SHA256 = "63f965d9f32c4645565eab1fda94a6748e5e03cfd8ecefb4d183bdb9ac66a65c"
+AUTHORITY_BASE = "1f2a3dd62bff4e12002afd1348000bcf25ad4687"
+EXECUTION_BASE = "cffa19a528d1192794dea31a99dc4eb6db29579a"
+CLAIM_SHA256 = "bf0b167a1d1e6f7007d609aeb657917fe9d3d0866d5a7a6e36b0e5a32faefa6f"
 THREAD_ID = "019f96e0-3793-7542-9172-060a9ca09b0a"
 WORKTREE = "/Users/James/.codex/worktrees/0648/city-sim"
 BRANCH = "codex/citysim-world-art"
@@ -34,6 +34,16 @@ FUTURE_PROCESS_ROOT = "docs/production/evidence/PLAY-027/industrial-l04/l04/blen
 ATTEMPT_MARKER_PATH = "docs/production/evidence/INTEGRATION/PLAY-027-NORTH-V13-PROCESS-A-ATTEMPT.json"
 CHILD_NAME = "render_north_v13_process_a_child.py"
 BLENDER = "/Applications/Blender.app/Contents/MacOS/Blender"
+ALLOWED_PATHS = [
+    f"{SOURCE_ROOT}/EXECUTION-CONTRACT.json",
+    f"{SOURCE_ROOT}/RUNNER-CONTRACT.json",
+    f"{SOURCE_ROOT}/launch_north_v13_process_a_v02.py",
+    f"{SOURCE_ROOT}/{CHILD_NAME}",
+    f"{SOURCE_ROOT}/test_process_a_v02.py",
+    f"{EVIDENCE_ROOT}/HANDOFF.json",
+    f"{EVIDENCE_ROOT}/ORCHESTRATOR-READINESS.json",
+    f"{EVIDENCE_ROOT}/CURRENT-AUTHORITY-REBIND.json",
+]
 
 
 def canonical_bytes(value: object) -> bytes:
@@ -120,7 +130,7 @@ def _changed_paths(root: Path) -> list[str]:
 
 
 def _allowed_changed_path(path: str) -> bool:
-    return path == SOURCE_ROOT or path.startswith(SOURCE_ROOT + "/") or path == EVIDENCE_ROOT or path.startswith(EVIDENCE_ROOT + "/")
+    return path in ALLOWED_PATHS
 
 
 def _load_contract(root: Path, contract_path: str) -> dict:
@@ -162,7 +172,7 @@ def _verify_carrier(root: Path) -> dict:
     if claim.get("path") != "docs/production/claims/PLAY-027.world-art.md" or claim.get("sha256") != CLAIM_SHA256:
         raise ValueError("published claim mismatch")
     allowed = route.get("pathPolicy", {}).get("allowed", [])
-    if allowed != [SOURCE_ROOT, EVIDENCE_ROOT]:
+    if allowed != ALLOWED_PATHS:
         raise ValueError("published allowed roots mismatch")
     return {"carrierCommit": CARRIER_COMMIT, "receiptPath": RECEIPT_PATH, "receiptSHA256": RECEIPT_SHA256, "routeSHA256": ROUTE_SHA256}
 
@@ -174,7 +184,7 @@ def _verify_contract_bindings(root: Path, contract: dict) -> dict:
         "authorityCommit": AUTHORITY_BASE, "baseCommit": AUTHORITY_BASE, "executionBaseHEAD": EXECUTION_BASE,
     }:
         raise ValueError("contract route binding mismatch")
-    if contract["claim"] != {"path": "docs/production/claims/PLAY-027.world-art.md", "sha256": CLAIM_SHA256, "revision": 8}:
+    if contract["claim"] != {"path": "docs/production/claims/PLAY-027.world-art.md", "sha256": CLAIM_SHA256, "revision": 10}:
         raise ValueError("contract claim binding mismatch")
     if contract["assignment"] != {"threadId": THREAD_ID, "branch": BRANCH, "worktree": WORKTREE}:
         raise ValueError("contract assignment mismatch")

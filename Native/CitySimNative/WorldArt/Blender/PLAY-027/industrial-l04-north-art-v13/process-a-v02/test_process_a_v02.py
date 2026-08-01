@@ -65,6 +65,13 @@ def main() -> int:
     assert baseline["workerCreatedSchedule"] is False
     assert baseline["workerCreatedProcessReceipt"] is False
     assert baseline["workerCreatedAttemptMarker"] is False
+    assert runner.ROUTE_ID == "quality-v1:north-v13-process-a-v02-current-authority-rebind-v1"
+    assert runner.CARRIER_COMMIT == "a23a3690a6996f0a18ec6d5f02ce10253f3784dc"
+    assert runner.AUTHORITY_BASE == "1f2a3dd62bff4e12002afd1348000bcf25ad4687"
+    assert runner.EXECUTION_BASE == "cffa19a528d1192794dea31a99dc4eb6db29579a"
+    assert runner.CLAIM_SHA256 == "bf0b167a1d1e6f7007d609aeb657917fe9d3d0866d5a7a6e36b0e5a32faefa6f"
+    assert contract["claim"]["revision"] == 10
+    assert len(runner.ALLOWED_PATHS) == 8
 
     # The direct launch surface requires both explicit Integration paths.
     must_fail(lambda: runner.preflight(ROOT, f"{runner.SOURCE_ROOT}/EXECUTION-CONTRACT.json", None, RECEIPT, runner.FUTURE_PROCESS_ROOT), "missing schedule path")
@@ -254,7 +261,7 @@ def main() -> int:
             assert "bpy" not in source
         assert "render(" not in source or path.name == "render_north_v13_process_a_child.py"
 
-    print("PASS north-v13 integration-direct-r2 zeroChild=1 adversaries=33 freshRoots=2 carrierGit=verified dccChildren=0 processA=0 pixels=0 topology=unchanged")
+    print("PASS north-v13 current-authority-rebind zeroChild=1 adversaries=33 freshRoots=2 carrierGit=verified dccChildren=0 processA=0 pixels=0 topology=unchanged")
     return 0
 
 

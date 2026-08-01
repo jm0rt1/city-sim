@@ -29,9 +29,9 @@ model, lower effort, or nearby classification is implied by availability.
 
 ## Mandatory `modelRoute` packet
 
-Every worker dispatch must bind one committed machine-readable route packet
-validated by
-`scripts/validate_model_route_v1.py`. The packet contains:
+Every worker dispatch must bind one committed machine-readable route object,
+identified by `routeId` and the SHA-256 of its canonical JSON, and validated by
+`scripts/validate_model_route_v1.py`. The route object contains:
 
 - classification, model, effort, and rationale;
 - exact authority commit, base commit, claim path and claim hash;
@@ -47,10 +47,11 @@ validated by
 - independent reviewer identity; and
 - context-loading mode plus verified context hashes.
 
-The visible-thread prompt and dispatch receipt must project the exact packet
-path, SHA-256, and content. A worker independently resolves the committed
-packet, claim, inputs, base, and authority before acknowledging. Prompt text is
-not authority. Any mismatch is a zero-mutation stop.
+The visible-thread prompt must identify the committed dispatch-receipt path,
+route ID, canonical route SHA-256, and exact model/effort. The receipt embeds
+the complete route object beside that hash. A worker independently resolves
+the receipt object, claim, inputs, base, and authority before acknowledging.
+Prompt text is not authority. Any mismatch is a zero-mutation stop.
 
 ## Mandatory escalation triggers
 
@@ -158,8 +159,9 @@ exception-driven review replace duplicate prose, not proof.
 
 ## Dispatch and acknowledgement
 
-Integration sends the canonical visible task with the route packet's exact
-model and effort override. The worker must acknowledge the route packet hash,
+Integration sends the canonical visible task with the route object's exact
+model and effort override. The worker must acknowledge the receipt path, route
+ID, canonical route hash,
 authority, claim, allowed roots, bounded deliverable, focused gate, full-gate
 owner, escalation triggers, and stop condition before work begins. Never pin a
 task.

@@ -202,17 +202,15 @@ class ModelRouteTests(unittest.TestCase):
 
     def test_dispatch_projects_exact_route(self) -> None:
         route = self.route()
-        packet = self.repo / "owned" / "evidence" / "route.json"
-        packet.write_text(json.dumps(route, indent=2) + "\n", encoding="utf-8")
         dispatch = {
             "schema": 1,
             "authorityCommit": self.head,
-            "assignments": [{"routePacket": self._binding("owned/evidence/route.json"), "modelRoute": copy.deepcopy(route)}],
+            "assignments": [{"modelRouteSha256": validator.canonical_sha(route), "modelRoute": copy.deepcopy(route)}],
         }
         self.assertEqual([], validator.validate_dispatch(dispatch, self.repo))
         dispatch["assignments"][0]["modelRoute"]["effort"] = "medium"
         errors = validator.validate_dispatch(dispatch, self.repo)
-        self.assertTrue(any("exact packet projection" in error for error in errors), errors)
+        self.assertTrue(any("canonical route JSON" in error for error in errors), errors)
 
     def test_unchanged_passing_sibling_cannot_be_demoted(self) -> None:
         previous = {"cells": [

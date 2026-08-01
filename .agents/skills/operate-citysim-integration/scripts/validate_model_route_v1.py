@@ -355,24 +355,16 @@ def validate_dispatch(dispatch: Any, repo: Path) -> list[str]:
     if not isinstance(dispatch["assignments"], list) or not dispatch["assignments"]:
         return errors + ["dispatch assignments must be non-empty"]
     for idx, row in enumerate(dispatch["assignments"]):
-        if not isinstance(row, dict) or set(row) != {"routePacket", "modelRoute"}:
-            errors.append(f"assignments[{idx}] must contain exactly routePacket and modelRoute")
+        if not isinstance(row, dict) or set(row) != {"modelRouteSha256", "modelRoute"}:
+            errors.append(f"assignments[{idx}] must contain exactly modelRouteSha256 and modelRoute")
             continue
-        binding = row["routePacket"]
-        _check_binding(repo, binding, f"assignments[{idx}].routePacket", errors)
-        if not isinstance(binding, dict) or not isinstance(binding.get("path"), str):
-            continue
-        path = repo / binding["path"]
-        if path.is_file():
-            try:
-                packet = load_json(path)
-                if packet != row["modelRoute"]:
-                    errors.append(f"assignments[{idx}] modelRoute is not an exact packet projection")
-                errors.extend(f"assignments[{idx}]: {e}" for e in validate_route(packet, repo))
-                if packet.get("authority", {}).get("authorityCommit") != dispatch["authorityCommit"]:
-                    errors.append(f"assignments[{idx}] authority does not match dispatch authority")
-            except ValidationError as exc:
-                errors.append(str(exc))
+        packet = row["modelRoute"]
+        digest = row["modelRouteSha256"]
+        if not _is_hex(digest, 64) or canonical_sha(packet) != digest:
+            errors.append(f"assignments[{idx}] modelRouteSha256 does not match canonical route JSON")
+        errors.extend(f"assignments[{idx}]: {e}" for e in validate_route(packet, repo))
+        if isinstance(packet, dict) and packet.get("authority", {}).get("authorityCommit") != dispatch["authorityCommit"]:
+            errors.append(f"assignments[{idx}] authority does not match dispatch authority")
     return errors
 
 

@@ -212,7 +212,10 @@ def validate_route(route: Any, repo: Path) -> list[str]:
                 _check_binding(repo, binding, f"authority.immutableInputs[{idx}]", errors)
 
     assignment = route["assignment"]
-    assignment_fields = {"threadId", "featureAuthorThreadId", "sharedAuthorityOwnership", "finalQAOwnership", "subjectiveJudgmentRequired"}
+    assignment_fields = {
+        "threadId", "branch", "worktree", "expectedHead", "featureAuthorThreadId",
+        "sharedAuthorityOwnership", "finalQAOwnership", "subjectiveJudgmentRequired",
+    }
     if not isinstance(assignment, dict) or set(assignment) != assignment_fields:
         errors.append("assignment has unsupported or missing fields")
         assignment = {}
@@ -220,6 +223,35 @@ def validate_route(route: Any, repo: Path) -> list[str]:
     is_luna = isinstance(classification, str) and classification.startswith("LUNA_")
     if not isinstance(thread, str) or not thread:
         errors.append("assignment.threadId must be non-empty")
+    branch = assignment.get("branch")
+    worktree = assignment.get("worktree")
+    expected_head = assignment.get("expectedHead")
+    if not isinstance(branch, str) or not branch:
+        errors.append("assignment.branch must be non-empty")
+    if not isinstance(worktree, str) or not Path(worktree).is_absolute():
+        errors.append("assignment.worktree must be absolute")
+    if not _is_hex(expected_head, 40):
+        errors.append("assignment.expectedHead must be a full lowercase Git SHA")
+    else:
+        try:
+            _git(repo, "cat-file", "-e", f"{expected_head}^{{commit}}")
+            authority_commit = authority.get("authorityCommit") if isinstance(authority, dict) else None
+            if _is_hex(authority_commit, 40):
+                ancestry = subprocess.run(["git", "-C", str(repo), "merge-base", "--is-ancestor", authority_commit, expected_head])
+                if ancestry.returncode != 0:
+                    errors.append("authorityCommit is not an ancestor of assignment.expectedHead")
+        except ValidationError as exc:
+            errors.append(str(exc))
+    if isinstance(worktree, str) and Path(worktree).is_dir():
+        try:
+            live_branch = _git(Path(worktree), "branch", "--show-current")
+            live_head = _git(Path(worktree), "rev-parse", "HEAD")
+            if isinstance(branch, str) and live_branch != branch:
+                errors.append(f"assignment branch mismatch: expected {branch}, live {live_branch}")
+            if _is_hex(expected_head, 40) and live_head != expected_head:
+                errors.append(f"assignment HEAD mismatch: expected {expected_head}, live {live_head}")
+        except ValidationError as exc:
+            errors.append(str(exc))
     if is_luna and any(assignment.get(key) for key in ("sharedAuthorityOwnership", "finalQAOwnership", "subjectiveJudgmentRequired")):
         errors.append("Luna cannot own shared authority, final QA, or subjective judgment")
 

@@ -7,10 +7,10 @@
   "maximumStartCount": 1,
   "candidateReceipt": {
     "path": "docs/production/evidence/INTEGRATION/PLAY-073-R4-A-0E899145-CANDIDATE-RECEIPT-V1.json",
-    "sha256": "c7f3ffb73007472c00e9965296a09c26bf5f275259115433c7cad7c42c9f2fe0"
+    "sha256": "d2b7a9069552d2a09f2fe4af7b8a19701ed619ed23ca2e778c9d78a66107e2c6"
   },
   "candidate": {
-    "commit": "0e89914566ba4593b25e2cd52b4b4c9a2cac940c",
+    "commit": "0e89914566ba4593b25e2cd52b4b788d204b7331",
     "tree": "e368d22cdd408d015d6ee6883c252c4c37337a95",
     "bundleIdentifier": "com.jfmortensen.citysim.codex-r4a-qa-candidate.w63e632e37e58",
     "preferenceDomain": "com.jfmortensen.citysim.codex-r4a-qa-candidate.w63e632e37e58",

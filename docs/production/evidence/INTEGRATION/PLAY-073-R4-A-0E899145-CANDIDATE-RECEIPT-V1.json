@@ -9,7 +9,7 @@
   "candidate": {
     "taskId": "PLAY-073",
     "scope": "R4-A authored starter-district composition without Industrial L4 source activation",
-    "commit": "0e89914566ba4593b25e2cd52b4b4c9a2cac940c",
+    "commit": "0e89914566ba4593b25e2cd52b4b788d204b7331",
     "parent": "11e2470b8bdfe24a7717b5724b4b4c9a2cac940c",
     "tree": "e368d22cdd408d015d6ee6883c252c4c37337a95",
     "integratedBranch": "master",
@@ -37,7 +37,7 @@
   "aggregateValidation": {
     "swiftSuite": {
       "command": "swift test --package-path Native/CitySimNative",
-      "candidateCommit": "0e89914566ba4593b25e2cd52b4b4c9a2cac940c",
+      "candidateCommit": "0e89914566ba4593b25e2cd52b4b788d204b7331",
       "status": "pass",
       "executed": 325,
       "skipped": 3,
@@ -45,7 +45,7 @@
       "durationSeconds": 260.731
     },
     "diffCheck": {
-      "command": "git diff --check 11e2470b8bdfe24a7717b5724b4b4c9a2cac940c..0e89914566ba4593b25e2cd52b4b4c9a2cac940c",
+      "command": "git diff --check 11e2470b8bdfe24a7717b5724b4b4c9a2cac940c..0e89914566ba4593b25e2cd52b4b788d204b7331",
       "status": "pass"
     },
     "buildScriptSyntax": {

@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "stage": "industrial-l04-north-v13-lowering-v01",
+  "direction": "north",
+  "routeId": "quality-v1:north-v13-lowering",
+  "routeCanonicalSHA256": "383ba3d63a33d4d63649615edaf0137596b68b8703396f10a7e687f42d784a79",
+  "publishedBase": "017ce817fece2c54d11e398f5aeed2e9fb6167ef",
+  "claim": {
+    "file": "docs/production/claims/PLAY-027.world-art.md",
+    "sha256": "d28bf14bb3d2d5441f3df6278eef758a5babb4453d22e06fc8bd4075ad5c80a1"
+  },
+  "authority": {
+    "carrier": "7d219545a5f60cf87f0b0b307efc50c4ab136d35",
+    "file": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-NORTH-V13-LOWERING-V1.json",
+    "sha256": "d9397eb90d9ec9aa6bd1362178b01cae3889872c135220d410f07e8bb6a487ff",
+    "authorityCommit": "017ce817fece2c54d11e398f5aeed2e9fb6167ef"
+  },
+  "inputs": {
+    "scene": {
+      "file": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/DESIGN-SCENE.json",
+      "sha256": "0f7a8e40a07f5c2b7320ab42fe5e1bcb2dc23fb508ff6b04e8ea49cf6c974060"
+    },
+    "materials": {
+      "file": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/DESIGN-MATERIALS.json",
+      "sha256": "c8179b77a184e41b723e26b34e7da2ef256b09e93b54a47e76cc5103f22b8cab"
+    },
+    "bridge": {
+      "file": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-direction-bridge-v06/MAPPING-CONTRACT.json",
+      "sha256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7"
+    }
+  },
+  "outputs": {
+    "evidenceRoot": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/lowering-v01",
+    "runNeutralFiles": [
+      "CANONICAL-MESH-IR.json",
+      "OBJECT-MAPPING.json",
+      "PROJECTION.json",
+      "TOPOLOGY.json",
+      "INPUT-BINDINGS.json",
+      "VALIDATION.json"
+    ],
+    "authority": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/lowering-v01/LOWERING-AUTHORITY.json",
+    "proof": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/lowering-v01/ACTUAL-CAMERA-ZERO-PIXEL-PROOF.json"
+  },
+  "registration": {
+    "footprintWorldXZ": [[-28, -28], [28, -28], [28, 28], [-28, 28]],
+    "footprintSource": [[768, 640], [1024, 768], [768, 896], [512, 768]],
+    "pivotWorld": [28, 0, 28],
+    "pivotSource": [768, 896],
+    "socketWorld": [0, 0, -28],
+    "socketSource": [896, 704],
+    "maximumDeltaSourcePixels": 0.001
+  },
+  "forbidden": {
+    "blender": true,
+    "dcc": true,
+    "renderedPixels": true,
+    "normalizer": true,
+    "imageGen": true,
+    "sceneKit": true,
+    "metal": true,
+    "siblings": true,
+    "sharedOrShipping": true
+  },
+  "sourceAuthority": false,
+  "productionSelected": false
+}

@@ -9,19 +9,33 @@ missing-by-design state before any source process can be considered.
 from __future__ import annotations
 
 import hashlib
+import hmac
 import json
-import os
+from datetime import datetime, timezone
 from pathlib import Path
 import sys
 
 
-ROUTE_ID = "quality-v1:north-v13-prelaunch"
-EXPECTED_HEAD = "41427d773cb12594a4eb723b7291a38ed6321a0f"
+ROUTE_ID = "quality-v1:north-v13-prelaunch-repair"
+ROUTE_CANONICAL_SHA256 = "f180cedfe88001c7d7d4591b4edd65fd4b654e5c31e0b9ee6e0ad7db8576a2f4"
+EXPECTED_CARRIER = "c791878749416e2caeb03650c8abd859b6bc9525"
+EXPECTED_RECEIPT_PATH = "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-NORTH-V13-PRELAUNCH-REPAIR-V1.json"
+EXPECTED_RECEIPT_SHA256 = "405dbdac13ec2771b3e0f23e061afa77d94b7832f940babe1d4080dc2a81e107"
+EXPECTED_HEAD = "db9ea3d8779127d52d25d536310544aaf58193be"
 EXPECTED_CLAIM = "7d42ba7c38a55d7681171499aad50e15c2d3eba0878cabf508d0e42ee97cdc83"
 EXPECTED_BASE = "73b72fce27d1bcfedcf48b76940ddfa688baa48c"
 EXPECTED_SCENE_ID = "industrial-l04-north-v13-portal-crown-foundry"
 EXPECTED_EXCLUSIVE_ROOT = "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a"
 EXPECTED_RUN_ROOT = EXPECTED_EXCLUSIVE_ROOT + "/run-a"
+EXPECTED_EVIDENCE_ROOT = "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-prelaunch-v01"
+EXPECTED_ALLOWED_ROOTS = (
+    "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-prelaunch-v01",
+    EXPECTED_EVIDENCE_ROOT,
+    EXPECTED_RUN_ROOT,
+)
+EXPECTED_THREAD = "019f96e0-3793-7542-9172-060a9ca09b0a"
+EXPECTED_WORKTREE = "/Users/James/.codex/worktrees/0648/city-sim"
+EXPECTED_CONSUMPTION_ID = "test-only-north-v13-process-a-attempt-0001"
 
 
 def sha256(path: Path) -> str:
@@ -56,7 +70,16 @@ def _git_head(root: Path) -> str | None:
     value = head.read_text(encoding="utf-8").strip()
     if value.startswith("ref: "):
         ref = git_dir / value[5:]
-        return ref.read_text(encoding="utf-8").strip() if ref.is_file() else None
+        if ref.is_file():
+            return ref.read_text(encoding="utf-8").strip()
+        commondir = git_dir / "commondir"
+        if commondir.is_file():
+            common = Path(commondir.read_text(encoding="utf-8").strip())
+            if not common.is_absolute():
+                common = git_dir / common
+            ref = common / value[5:]
+            return ref.read_text(encoding="utf-8").strip() if ref.is_file() else None
+        return None
     return value
 
 
@@ -76,8 +99,10 @@ def validate_contract(root: Path, contract: dict, *, expected_head: str | None =
     route = contract["route"]
     claim = contract["claim"]
     identity = contract["identity"]
-    if route["routeId"] != ROUTE_ID:
+    if route["routeId"] != ROUTE_ID or route["canonicalSHA256"] != ROUTE_CANONICAL_SHA256:
         raise ValueError("wrong route")
+    if route.get("carrierCommit") != EXPECTED_CARRIER or route.get("receiptPath") != EXPECTED_RECEIPT_PATH or route.get("receiptSHA256") != EXPECTED_RECEIPT_SHA256:
+        raise ValueError("wrong carrier or receipt binding")
     if route["authorityCommit"] != EXPECTED_BASE or route["baseCommit"] != EXPECTED_BASE:
         raise ValueError("wrong authority/base")
     if route["expectedStartingHEAD"] != EXPECTED_HEAD:
@@ -90,8 +115,16 @@ def validate_contract(root: Path, contract: dict, *, expected_head: str | None =
         raise ValueError("wrong slot")
     if identity["sceneGeometryID"] != EXPECTED_SCENE_ID:
         raise ValueError("wrong scene geometry")
-    if contract["output"]["exclusiveFutureProcessRoot"] != EXPECTED_EXCLUSIVE_ROOT or contract["output"]["runRoot"] != EXPECTED_RUN_ROOT:
+    assignment = contract["assignment"]
+    if assignment.get("threadId") != EXPECTED_THREAD or assignment.get("branch") != "codex/citysim-world-art" or assignment.get("worktree") != EXPECTED_WORKTREE:
+        raise ValueError("wrong assignment binding")
+    output = contract["output"]
+    if output["exclusiveFutureProcessRoot"] != EXPECTED_EXCLUSIVE_ROOT or output["runRoot"] != EXPECTED_RUN_ROOT or output["evidenceRoot"] != EXPECTED_EVIDENCE_ROOT:
         raise ValueError("wrong output root")
+    if tuple(output.get("allowedRoots", ())) != EXPECTED_ALLOWED_ROOTS:
+        raise ValueError("wrong allowed roots")
+    if contract["authorityState"].get("maximumDCCChildStarts") != 1 or contract["authorityState"].get("maximumProcessAStarts") != 1:
+        raise ValueError("wrong DCC child limit")
     actual_claim = root / claim["path"]
     _assert_no_symlink(actual_claim, root)
     if sha256(actual_claim) != EXPECTED_CLAIM:
@@ -101,7 +134,10 @@ def validate_contract(root: Path, contract: dict, *, expected_head: str | None =
         _assert_no_symlink(path, root)
         if not path.is_file() or sha256(path) != item["sha256"]:
             raise ValueError(f"immutable input mismatch: {item['path']}")
-    if expected_head is not None and expected_head != EXPECTED_HEAD:
+    actual_head = _git_head(root)
+    if actual_head != EXPECTED_HEAD:
+        raise ValueError(f"candidate HEAD mismatch: expected {EXPECTED_HEAD}, actual {actual_head}")
+    if expected_head is not None and expected_head != actual_head:
         raise ValueError("unexpected starting HEAD")
     future = root / contract["output"]["runRoot"]
     _assert_no_symlink(future, root)
@@ -117,11 +153,97 @@ def validate_contract(root: Path, contract: dict, *, expected_head: str | None =
         "inputCount": len(contract["inputs"]),
         "futureProcessRootAbsent": True,
         "liveAuthorityAbsent": True,
-        "currentHead": _git_head(root),
+        "currentHead": actual_head,
     }
 
 
-def _stable_receipt(contract: dict, root: Path) -> tuple[dict, dict]:
+def _canonical_binding(binding: dict) -> bytes:
+    return json.dumps(binding, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+
+
+def _fixture_signature(binding: dict, fixture_key: bytes) -> str:
+    return hmac.new(fixture_key, _canonical_binding(binding), hashlib.sha256).hexdigest()
+
+
+def build_test_fixture_authority(contract: dict, fixture_key: bytes, root: Path) -> dict:
+    """Build authority only in test memory; never write a grant/secret file."""
+    validate_contract(root, contract)
+    binding = {
+        "routeId": ROUTE_ID,
+        "routeCanonicalSHA256": ROUTE_CANONICAL_SHA256,
+        "carrierCommit": EXPECTED_CARRIER,
+        "receiptPath": EXPECTED_RECEIPT_PATH,
+        "receiptSHA256": EXPECTED_RECEIPT_SHA256,
+        "claimPath": contract["claim"]["path"],
+        "claimSHA256": EXPECTED_CLAIM,
+        "claimRevision": contract["claim"]["revision"],
+        "authorityBase": EXPECTED_BASE,
+        "assignmentThreadId": EXPECTED_THREAD,
+        "candidateHead": EXPECTED_HEAD,
+        "logicalBuildingID": "industrial_l04",
+        "variantID": "variant-0",
+        "viewDirection": "north",
+        "processID": "A",
+        "slotID": "north:A",
+        "grantId": "north:A",
+        "dccChildLimit": 1,
+        "exclusiveOutputRoot": EXPECTED_RUN_ROOT,
+        "evidenceRoot": EXPECTED_EVIDENCE_ROOT,
+        "allowedRoots": list(EXPECTED_ALLOWED_ROOTS),
+        "consumptionId": EXPECTED_CONSUMPTION_ID,
+        "testOnly": True,
+        "childStarts": 0,
+        "dccStarts": 0,
+        "renderedPixels": 0,
+        "consumed": False,
+    }
+    return {"schema": 1, "kind": "test-only-fixture-authority", "binding": binding, "signature": _fixture_signature(binding, fixture_key)}
+
+
+def validate_fixture_authority(authority: dict, contract: dict, root: Path, fixture_key: bytes) -> dict:
+    if authority.get("schema") != 1 or authority.get("kind") != "test-only-fixture-authority":
+        raise ValueError("wrong fixture authority kind")
+    binding = authority.get("binding")
+    if not isinstance(binding, dict) or not hmac.compare_digest(authority.get("signature", ""), _fixture_signature(binding, fixture_key)):
+        raise ValueError("fixture authority signature mismatch")
+    expected = {
+        "routeId": ROUTE_ID, "routeCanonicalSHA256": ROUTE_CANONICAL_SHA256, "carrierCommit": EXPECTED_CARRIER,
+        "receiptPath": EXPECTED_RECEIPT_PATH, "receiptSHA256": EXPECTED_RECEIPT_SHA256,
+        "claimPath": contract["claim"]["path"], "claimSHA256": EXPECTED_CLAIM, "claimRevision": contract["claim"]["revision"],
+        "authorityBase": EXPECTED_BASE, "assignmentThreadId": EXPECTED_THREAD, "candidateHead": EXPECTED_HEAD,
+        "logicalBuildingID": "industrial_l04", "variantID": "variant-0", "viewDirection": "north", "processID": "A",
+        "slotID": "north:A", "grantId": "north:A", "dccChildLimit": 1, "exclusiveOutputRoot": EXPECTED_RUN_ROOT,
+        "evidenceRoot": EXPECTED_EVIDENCE_ROOT, "allowedRoots": list(EXPECTED_ALLOWED_ROOTS),
+        "consumptionId": EXPECTED_CONSUMPTION_ID,
+        "testOnly": True, "childStarts": 0, "dccStarts": 0, "renderedPixels": 0, "consumed": False,
+    }
+    for key, value in expected.items():
+        if binding.get(key) != value:
+            raise ValueError(f"fixture binding mismatch: {key}")
+    if _git_head(root) != binding["candidateHead"]:
+        raise ValueError("fixture candidate HEAD mismatch")
+    return binding
+
+
+def validate_owned_output(root: Path, output_root: str, contract: dict) -> None:
+    if output_root != EXPECTED_RUN_ROOT or output_root not in contract["output"]["allowedRoots"]:
+        raise ValueError("output is outside exclusive allowed root")
+    path = root / output_root
+    _assert_no_symlink(path, root)
+    if path.exists():
+        raise ValueError("output overwrite or replay")
+
+
+def consume_test_fixture(authority: dict, contract: dict, root: Path, fixture_key: bytes, state: dict) -> dict:
+    binding = validate_fixture_authority(authority, contract, root, fixture_key)
+    if state.get("consumptionId") != binding["consumptionId"] or state.get("consumed"):
+        raise ValueError("fixture grant replay")
+    validate_owned_output(root, binding["exclusiveOutputRoot"], contract)
+    state["consumed"] = True
+    return {"consumed": True, "startedChild": False, "dccStarts": 0, "renderedPixels": 0, "outputCreated": False}
+
+
+def _stable_receipt(contract: dict, root: Path, *, started_at: str | None = None, ended_at: str | None = None) -> tuple[dict, dict]:
     script = Path(__file__).resolve()
     child = script.with_name("render_north_v13_process_a_child.py")
     contract_path = script.with_name("EXECUTION-CONTRACT.json")
@@ -129,11 +251,22 @@ def _stable_receipt(contract: dict, root: Path) -> tuple[dict, dict]:
     common = {
         "schema": 1,
         "task": "PLAY-027",
-        "stage": "north-v13-process-a-prelaunch-v01",
+        "stage": contract["stage"],
         "route": contract["route"],
         "claim": contract["claim"],
         "identity": contract["identity"],
         "inputs": contract["inputs"],
+        "adapter": {
+            "mode": "test-only-fixture",
+            "signature": "HMAC-SHA256",
+            "routeCanonicalBound": True,
+            "carrierBound": True,
+            "candidateHeadBound": True,
+            "exclusiveRootBound": True,
+            "oneAttemptConsumption": True,
+            "replayRejected": True,
+            "authorityFilesCreated": 0,
+        },
         "toolHashes": {
             "executionContract": sha256(contract_path),
             "runner": sha256(script),
@@ -144,6 +277,7 @@ def _stable_receipt(contract: dict, root: Path) -> tuple[dict, dict]:
             "schedule": {"status": "missing-by-design", "created": False},
             "oneAttemptLease": {"status": "missing-by-design", "created": False},
             "secret": {"status": "missing-by-design", "created": False},
+            "grant": {"status": "missing-by-design", "created": False},
         },
         "counts": {
             "processA": 0, "blender": 0, "dcc": 0, "renders": 0,
@@ -163,8 +297,8 @@ def _stable_receipt(contract: dict, root: Path) -> tuple[dict, dict]:
         "running": [],
         "waitingOnJoin": [],
         "joined": [{
-            "jobId": "north-v13-prelaunch-validation",
-            "batch": "north-v13-prelaunch-v01",
+            "jobId": "north-v13-prelaunch-repair-validation",
+            "batch": "north-v13-prelaunch-repair-v01",
             "claim": contract["claim"]["path"],
             "claimRevision": contract["claim"]["revision"],
             "publishedBase": contract["route"]["baseCommit"],
@@ -179,6 +313,8 @@ def _stable_receipt(contract: dict, root: Path) -> tuple[dict, dict]:
             "processId": None,
             "dccSlot": None,
             "evidenceId": "ZERO-CHILD-CLOSURE.json",
+            "startedAt": started_at,
+            "endedAt": ended_at,
         }],
         "overlap": {"status": "none", "jobIds": [], "reason": "single deterministic helper; no concurrent child"},
         "serializedAuthority": {
@@ -192,7 +328,7 @@ def _stable_receipt(contract: dict, root: Path) -> tuple[dict, dict]:
         "unusedCapacityReasons": [{
             "reasonCode": "DCC_AUTHORITY_NOT_PUBLISHED",
             "owner": "019f7686-4491-7891-86a6-95a78d67e5c8",
-            "dependencyAuthority": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-NORTH-V13-PRELAUNCH-AND-QA-ID-REPAIR-V1.json#quality-v1:north-v13-prelaunch",
+            "dependencyAuthority": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-NORTH-V13-PRELAUNCH-REPAIR-V1.json#quality-v1:north-v13-prelaunch-repair",
             "resumptionEvent": "Integration publishes schedule, lease, authenticated grant, and compute slot",
             "nextRefillJob": "north-v13-process-a",
         }],
@@ -215,7 +351,10 @@ def write_evidence(root: Path, evidence_root: Path) -> tuple[Path, Path]:
     contract = load_json(contract_path)
     validate_contract(root, contract)
     evidence_root.mkdir(parents=True, exist_ok=True)
-    validation, closure = _stable_receipt(contract, root)
+    started_at = datetime.now(timezone.utc).isoformat(timespec="microseconds").replace("+00:00", "Z")
+    validation, closure = _stable_receipt(contract, root, started_at=started_at, ended_at=None)
+    ended_at = datetime.now(timezone.utc).isoformat(timespec="microseconds").replace("+00:00", "Z")
+    validation, closure = _stable_receipt(contract, root, started_at=started_at, ended_at=ended_at)
     vp = evidence_root / "PRELAUNCH-VALIDATION.json"
     cp = evidence_root / "ZERO-CHILD-CLOSURE.json"
     for path, value in ((vp, validation), (cp, closure)):

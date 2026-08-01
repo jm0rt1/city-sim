@@ -1,5 +1,20 @@
 {
+  "adapter": {
+    "authorityFilesCreated": 0,
+    "candidateHeadBound": true,
+    "carrierBound": true,
+    "exclusiveRootBound": true,
+    "mode": "test-only-fixture",
+    "oneAttemptConsumption": true,
+    "replayRejected": true,
+    "routeCanonicalBound": true,
+    "signature": "HMAC-SHA256"
+  },
   "authority": {
+    "grant": {
+      "created": false,
+      "status": "missing-by-design"
+    },
     "oneAttemptLease": {
       "created": false,
       "status": "missing-by-design"
@@ -15,7 +30,7 @@
   },
   "checks": {
     "claimSHA256": "7d42ba7c38a55d7681171499aad50e15c2d3eba0878cabf508d0e42ee97cdc83",
-    "currentHead": null,
+    "currentHead": "db9ea3d8779127d52d25d536310544aaf58193be",
     "futureProcessRootAbsent": true,
     "inputCount": 6,
     "liveAuthorityAbsent": true
@@ -86,18 +101,20 @@
   "route": {
     "authorityCommit": "73b72fce27d1bcfedcf48b76940ddfa688baa48c",
     "baseCommit": "73b72fce27d1bcfedcf48b76940ddfa688baa48c",
-    "canonicalSHA256": "ab211ea591d3712a24880d363afae5ec1ff608bfe845cbc5371cbb0cd217bc3e",
-    "carrierCommit": "0ce4e46b11d808bef328c9819e5ea6a3e180fb73",
-    "expectedStartingHEAD": "41427d773cb12594a4eb723b7291a38ed6321a0f",
-    "routeId": "quality-v1:north-v13-prelaunch"
+    "canonicalSHA256": "f180cedfe88001c7d7d4591b4edd65fd4b654e5c31e0b9ee6e0ad7db8576a2f4",
+    "carrierCommit": "c791878749416e2caeb03650c8abd859b6bc9525",
+    "expectedStartingHEAD": "db9ea3d8779127d52d25d536310544aaf58193be",
+    "receiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-NORTH-V13-PRELAUNCH-REPAIR-V1.json",
+    "receiptSHA256": "405dbdac13ec2771b3e0f23e061afa77d94b7832f940babe1d4080dc2a81e107",
+    "routeId": "quality-v1:north-v13-prelaunch-repair"
   },
   "schema": 1,
   "sourceAuthority": false,
-  "stage": "north-v13-process-a-prelaunch-v01",
+  "stage": "north-v13-process-a-prelaunch-repair-v01",
   "task": "PLAY-027",
   "toolHashes": {
     "child": "0d8a0d2703311aa3a782b1397902e6c3dac5d688a04367dac1d6ac995d18dccd",
-    "executionContract": "c287f7426e396fd9b74580fcf4879324e1ab144e44b86c21170b9519f427f203",
-    "runner": "64a451482237ae5d48e91600b3f505954ce7a16ab6f37291bd7ee3d518632b50"
+    "executionContract": "d7d316d7275f70898f469a1ff5b72e9ee459edb2332edbbe1291137e9b1de7f9",
+    "runner": "d69d3e4558a4837b833df507aee0862da3363d5e5b2b2d2d08b6cc4761196a50"
   }
 }

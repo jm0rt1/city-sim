@@ -1,14 +1,16 @@
 {
   "schema": 1,
-  "stage": "north-v13-process-a-prelaunch-v01",
+  "stage": "north-v13-process-a-prelaunch-repair-v01",
   "task": "PLAY-027",
   "route": {
-    "routeId": "quality-v1:north-v13-prelaunch",
-    "canonicalSHA256": "ab211ea591d3712a24880d363afae5ec1ff608bfe845cbc5371cbb0cd217bc3e",
-    "carrierCommit": "0ce4e46b11d808bef328c9819e5ea6a3e180fb73",
+    "routeId": "quality-v1:north-v13-prelaunch-repair",
+    "canonicalSHA256": "f180cedfe88001c7d7d4591b4edd65fd4b654e5c31e0b9ee6e0ad7db8576a2f4",
+    "carrierCommit": "c791878749416e2caeb03650c8abd859b6bc9525",
+    "receiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-NORTH-V13-PRELAUNCH-REPAIR-V1.json",
+    "receiptSHA256": "405dbdac13ec2771b3e0f23e061afa77d94b7832f940babe1d4080dc2a81e107",
     "authorityCommit": "73b72fce27d1bcfedcf48b76940ddfa688baa48c",
     "baseCommit": "73b72fce27d1bcfedcf48b76940ddfa688baa48c",
-    "expectedStartingHEAD": "41427d773cb12594a4eb723b7291a38ed6321a0f"
+    "expectedStartingHEAD": "db9ea3d8779127d52d25d536310544aaf58193be"
   },
   "claim": {
     "path": "docs/production/claims/PLAY-027.world-art.md",
@@ -46,7 +48,8 @@
     "runRoot": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a/run-a",
     "allowedRoots": [
       "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-prelaunch-v01",
-      "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-prelaunch-v01"
+      "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-prelaunch-v01",
+      "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a/run-a"
     ],
     "forbiddenPrefixes": [
       "Native/CitySimNative/Rendering",

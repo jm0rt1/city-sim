@@ -32,6 +32,7 @@ SOURCE_ROOT = "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-nor
 EVIDENCE_ROOT = "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-v02"
 FUTURE_PROCESS_ROOT = "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a"
 CHILD_NAME = "render_north_v13_process_a_child.py"
+BLENDER = "/Applications/Blender.app/Contents/MacOS/Blender"
 
 
 def canonical_bytes(value: object) -> bytes:
@@ -193,10 +194,23 @@ def _verify_contract_bindings(root: Path, contract: dict) -> dict:
         "schedulePathRequired": True, "scheduleCreatedByWorker": False,
         "processReceiptPathRequired": True, "processReceiptCreatedByWorker": False,
         "attemptMarkerCreatedByWorker": False, "childConstructionAllowedInZeroChild": False,
+        "executableForIntegration": True,
         "maximumDCCChildStarts": 1, "maximumProcessAStarts": 1,
         "executionOwner": "Integration", "workerMode": "validation-only",
     }:
         raise ValueError("integration-direct contract mismatch")
+    launch = contract["directLaunch"]
+    if launch != {
+        "scheduleSchema": 1, "receiptSchema": 1,
+        "schedulePublicationCommitRequired": True, "receiptMustBindScheduleBytes": True,
+        "receiptMustBindWorkerHead": True, "attemptMarkerMustPreexist": True,
+        "outputRootMustBeAbsentBeforeLaunch": True, "fixedBlenderExecutable": BLENDER,
+        "fixedBlenderArgs": ["--background", "--factory-startup", "--disable-autoexec", "--python-exit-code", "1"],
+        "childFlag": "--integration-direct",
+        "childOutputs": ["raw.png", "provenance.json", "OBJECT-MANIFEST.json", "INPUT-BINDINGS.json"],
+        "maximumSubprocessStarts": 1,
+    }:
+        raise ValueError("integration-direct launch contract mismatch")
     return direct
 
 
@@ -225,6 +239,104 @@ def validate_schedule_path(root: Path, value: str | None, label: str) -> str:
         raise ValueError(f"{label} is outside the Integration authority namespace")
     _assert_no_symlink(root, value)
     return value
+
+
+def _required_fields(value: dict, expected: dict, label: str) -> None:
+    exact_types(value, expected, label)
+    if value.keys() != expected.keys():
+        raise ValueError(f"{label} fields are not closed")
+
+
+def _full_commit(value: object, label: str) -> str:
+    if type(value) is not str or len(value) != 40 or any(ch not in "0123456789abcdef" for ch in value):
+        raise ValueError(f"{label} must be a full lowercase commit")
+    return value
+
+
+def _validate_publication(root: Path, commit: str, current_head: str) -> None:
+    _full_commit(commit, "schedule publication commit")
+    _git(root, "cat-file", "-e", commit + "^{commit}")
+    _git(root, "merge-base", "--is-ancestor", commit, current_head)
+
+
+def validate_direct_documents(root: Path, contract: dict, schedule_path: str, receipt_path: str, schedule_bytes: bytes, receipt_bytes: bytes) -> dict:
+    current_head = _git(root, "rev-parse", "HEAD").decode().strip()
+    schedule = json.loads(schedule_bytes.decode("utf-8"))
+    receipt = json.loads(receipt_bytes.decode("utf-8"))
+    schedule_template = {
+        "schema": 1, "task": "PLAY-027", "batch": "industrial_l04_directional_family",
+        "claimSHA256": CLAIM_SHA256, "authorityBase": AUTHORITY_BASE, "trustedIntegrationHead": AUTHORITY_BASE,
+        "direction": "north", "process": "A", "slot": "north:A",
+        "orchestratorPath": SOURCE_ROOT + "/launch_north_v13_process_a_v02.py", "orchestratorSHA256": sha256_file(Path(__file__)),
+        "childPath": SOURCE_ROOT + "/render_north_v13_process_a_child.py", "childSHA256": sha256_file(Path(__file__).with_name(CHILD_NAME)),
+        "outputRoot": FUTURE_PROCESS_ROOT, "evidenceRoot": EVIDENCE_ROOT,
+        "attemptMarkerPath": FUTURE_PROCESS_ROOT + "/ATTEMPT.json", "schedulePublicationCommit": AUTHORITY_BASE,
+        "maximumChildStarts": 1,
+    }
+    _required_fields(schedule, schedule_template, "schedule")
+    if schedule != schedule_template:
+        raise ValueError("schedule identity does not match the frozen North contract")
+    receipt_template = {
+        "schema": 1, "kind": "integration-process-receipt", "task": "PLAY-027",
+        "schedulePath": schedule_path, "scheduleSHA256": sha256_bytes(schedule_bytes),
+        "schedulePublicationCommit": schedule["schedulePublicationCommit"], "claimSHA256": CLAIM_SHA256,
+        "authorityBase": AUTHORITY_BASE, "trustedIntegrationHead": AUTHORITY_BASE,
+        "workerHead": current_head, "direction": "north", "process": "A", "slot": "north:A",
+        "orchestratorPath": schedule_template["orchestratorPath"], "orchestratorSHA256": schedule_template["orchestratorSHA256"],
+        "childPath": schedule_template["childPath"], "childSHA256": schedule_template["childSHA256"],
+        "outputRoot": FUTURE_PROCESS_ROOT, "evidenceRoot": EVIDENCE_ROOT,
+        "attemptMarkerPath": schedule["attemptMarkerPath"], "attemptConsumed": True,
+        "maximumChildStarts": 1, "receiptPath": receipt_path,
+    }
+    _required_fields(receipt, receipt_template, "process receipt")
+    if receipt != receipt_template:
+        raise ValueError("process receipt identity or schedule-byte binding mismatch")
+    _validate_publication(root, schedule["schedulePublicationCommit"], current_head)
+    if schedule["trustedIntegrationHead"] != AUTHORITY_BASE:
+        raise ValueError("trusted Integration head mismatch")
+    return {"schedule": schedule, "receipt": receipt, "currentHead": current_head, "scheduleSHA256": receipt["scheduleSHA256"]}
+
+
+def build_launch_command(root: Path, contract: dict, schedule_path: str, receipt_path: str) -> list[str]:
+    child = root / SOURCE_ROOT / CHILD_NAME
+    return [
+        BLENDER, "--background", "--factory-startup", "--disable-autoexec", "--python-exit-code", "1",
+        "--python", str(child), "--", "--integration-direct",
+        "--repository-root", str(root), "--contract", str(root / SOURCE_ROOT / "EXECUTION-CONTRACT.json"),
+        "--schedule-path", schedule_path, "--process-receipt-path", receipt_path,
+        "--output-root", str(root / FUTURE_PROCESS_ROOT), "--evidence-root", str(root / EVIDENCE_ROOT),
+    ]
+
+
+def prepare_integration_launch(repository_root: str | Path, contract_path: str, schedule_path: str, process_receipt_path: str) -> dict:
+    root = exact_repository_root(repository_root)
+    contract = _load_contract(root, contract_path)
+    preflight_result = preflight(root, contract_path, schedule_path, process_receipt_path, FUTURE_PROCESS_ROOT)
+    schedule_file = _assert_no_symlink(root, schedule_path)
+    receipt_file = _assert_no_symlink(root, process_receipt_path)
+    if not schedule_file.is_file() or not receipt_file.is_file():
+        raise ValueError("Integration schedule and process receipt bytes are required")
+    binding = validate_direct_documents(root, contract, schedule_path, process_receipt_path, schedule_file.read_bytes(), receipt_file.read_bytes())
+    marker = _assert_no_symlink(root, binding["schedule"]["attemptMarkerPath"])
+    if not marker.is_file():
+        raise ValueError("Integration attempt marker must preexist")
+    output_root = _assert_no_symlink(root, FUTURE_PROCESS_ROOT)
+    if output_root.exists():
+        raise ValueError("exclusive output root must be absent before launch")
+    command = build_launch_command(root, contract, schedule_path, process_receipt_path)
+    if command.count(BLENDER) != 1 or command.count("--python") != 1:
+        raise ValueError("fixed one-child command shape invalid")
+    return {"preflight": preflight_result, "binding": binding, "command": command, "commandSHA256": sha256_bytes(canonical_bytes(command)), "launchReady": True, "childStarts": 0}
+
+
+def execute_integration_direct(prepared: dict, root: Path) -> int:
+    """Integration-only execution hook; worker validation never calls this."""
+    output_root = root / FUTURE_PROCESS_ROOT
+    output_root.mkdir(mode=0o700)
+    environment = os.environ.copy()
+    environment["CITYSIM_INTEGRATION_DIRECT"] = "1"
+    process = subprocess.Popen(prepared["command"], cwd=root, env=environment, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.PIPE, start_new_session=True)
+    return process.wait()
 
 
 def preflight(repository_root: str | Path, contract_path: str, schedule_path: str | None, process_receipt_path: str | None, output_root: str | None) -> dict:
@@ -285,6 +397,7 @@ def build_documents(preflight_result: dict, contract: dict, root: Path) -> tuple
         "identity": contract["identity"],
         "frozenInputs": contract["inputs"],
         "roots": {"source": SOURCE_ROOT, "evidence": EVIDENCE_ROOT, "futureProcess": FUTURE_PROCESS_ROOT},
+        "directLaunch": {"executableForIntegration": True, "launchReady": False, "fixedBlenderExecutable": BLENDER, "fixedBlenderArgs": ["--background", "--factory-startup", "--disable-autoexec", "--python-exit-code", "1"], "childOutputs": ["raw.png", "provenance.json", "OBJECT-MANIFEST.json", "INPUT-BINDINGS.json"], "commandConstruction": "deferred until exact schedule and process-receipt bytes are present"},
         "toolHashes": {"runner": sha256_file(runner), "child": sha256_file(child), "executionContract": sha256_file(runner.with_name("EXECUTION-CONTRACT.json")), "runnerContract": sha256_file(runner.with_name("RUNNER-CONTRACT.json"))},
         "preflight": preflight_result,
         "executionAccounting": {"readyNow": 0, "running": [], "waitingOnJoin": [], "serializedAuthority": "Integration direct launch", "nextRefill": "published schedule and one-attempt process receipt", "helperCapacity": 0, "dccCapacity": 0, "launchedJobs": [], "join": "joined", "unusedCapacityReasons": [{"reasonCode": "waiting_on_integration_direct_authority", "owner": "Integration", "dependencyAuthority": RECEIPT_PATH, "resumptionEvent": "published schedule/receipt", "nextRefillJob": "north:A"}]},
@@ -295,9 +408,9 @@ def build_documents(preflight_result: dict, contract: dict, root: Path) -> tuple
         "pixels": "not_produced",
     }
     readiness = dict(common)
-    readiness.update({"result": "PASS_ZERO_CHILD_ORCHESTRATOR_PREFLIGHT", "prelaunchOnly": True, "launchReady": False, "writeScope": "task-owned evidence only", "forbiddenOutputsAbsent": ["schedule", "lease", "secret", "attempt-marker", "child", "blend", "raw-png", "normalized-png"]})
+    readiness.update({"result": "PASS_ZERO_CHILD_ORCHESTRATOR_PREFLIGHT", "prelaunchOnly": True, "executableForIntegration": True, "launchReady": False, "writeScope": "task-owned evidence only", "forbiddenOutputsAbsent": ["schedule", "lease", "secret", "attempt-marker", "child", "blend", "raw-png", "normalized-png"]})
     handoff = dict(common)
-    handoff.update({"stage": "predesign", "disposition": "predesign_ready", "candidateReadyForIndependentReview": False, "knownBlockers": ["Integration must publish and consume the exact schedule, one-attempt receipt, and compute slot"], "stopCondition": "Stop before any child or pixel; Integration owns the later direct launch."})
+    handoff.update({"stage": "predesign", "disposition": "predesign_ready", "executableForIntegration": True, "launchReady": False, "candidateReadyForIndependentReview": False, "knownBlockers": ["Integration must publish and consume the exact schedule, one-attempt receipt, and compute slot"], "stopCondition": "Stop before any child or pixel; Integration owns the later direct launch."})
     return readiness, handoff
 
 
@@ -334,12 +447,16 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--process-receipt-path", required=True)
     parser.add_argument("--output-root", required=True)
     parser.add_argument("--zero-child", action="store_true")
+    parser.add_argument("--integration-direct", action="store_true")
     parser.add_argument("--write-evidence", action="store_true")
     args = parser.parse_args(argv)
-    if not args.zero_child:
-        raise SystemExit("integration_direct launch is reserved for Integration; use --zero-child")
+    if args.zero_child == args.integration_direct:
+        raise SystemExit("choose exactly one of --zero-child or --integration-direct")
     root = exact_repository_root(args.repository_root)
     contract = _load_contract(root, args.contract)
+    if args.integration_direct:
+        prepared = prepare_integration_launch(root, args.contract, args.schedule_path, args.process_receipt_path)
+        return execute_integration_direct(prepared, root)
     result = preflight(root, args.contract, args.schedule_path, args.process_receipt_path, args.output_root)
     readiness, handoff = build_documents(result, contract, root)
     if args.write_evidence:

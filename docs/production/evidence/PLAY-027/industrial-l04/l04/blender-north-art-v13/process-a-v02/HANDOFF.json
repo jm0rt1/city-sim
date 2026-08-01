@@ -7,7 +7,27 @@
   "authorityBase": "23f1836892f19d9579609f523397aea068202859",
   "candidateReadyForIndependentReview": false,
   "claimSHA256": "7d42ba7c38a55d7681171499aad50e15c2d3eba0878cabf508d0e42ee97cdc83",
+  "directLaunch": {
+    "childOutputs": [
+      "raw.png",
+      "provenance.json",
+      "OBJECT-MANIFEST.json",
+      "INPUT-BINDINGS.json"
+    ],
+    "commandConstruction": "deferred until exact schedule and process-receipt bytes are present",
+    "executableForIntegration": true,
+    "fixedBlenderArgs": [
+      "--background",
+      "--factory-startup",
+      "--disable-autoexec",
+      "--python-exit-code",
+      "1"
+    ],
+    "fixedBlenderExecutable": "/Applications/Blender.app/Contents/MacOS/Blender",
+    "launchReady": false
+  },
   "disposition": "predesign_ready",
+  "executableForIntegration": true,
   "executionAccounting": {
     "dccCapacity": 0,
     "helperCapacity": 0,
@@ -69,6 +89,7 @@
   "knownBlockers": [
     "Integration must publish and consume the exact schedule, one-attempt receipt, and compute slot"
   ],
+  "launchReady": false,
   "pixels": "not_produced",
   "preflight": {
     "branch": "codex/citysim-world-art",
@@ -116,9 +137,9 @@
   "stopCondition": "Stop before any child or pixel; Integration owns the later direct launch.",
   "task": "PLAY-027",
   "toolHashes": {
-    "child": "34a94582e43dcefd26d837ebf2ac74b8da950ec7578431d9bd4f2f0f716af764",
-    "executionContract": "913bbb47958fe7de6f0b16b44285d606492b6d016769702b94c10e47b74517f9",
-    "runner": "c9ff3347ebed1b495be9af42b89dffc4f5b8e191ced22ec9772515f92de07803",
-    "runnerContract": "c534cf14af06f12c7583831224c4fc7d36038dfef2b59644bdcab7d87aeccf7e"
+    "child": "4a734566b15effe7fcf22adbb4e210177fa7f537e91908493547d3e17bb76b12",
+    "executionContract": "e71a435999f4d72e7a4527aa5923e91f108ee16cb0ba734a75487cb08662969f",
+    "runner": "a00396e6190c80e303e9f7b7bc1cbca05597cbdbe3d666211344bd7bd645e48f",
+    "runnerContract": "caa2e331971f430a17cde3e570eb5c9d5126f7970ad12c390631531924446285"
   }
 }

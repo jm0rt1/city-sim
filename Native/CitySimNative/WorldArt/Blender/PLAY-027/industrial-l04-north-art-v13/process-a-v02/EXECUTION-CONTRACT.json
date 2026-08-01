@@ -68,10 +68,25 @@
     "processReceiptCreatedByWorker": false,
     "attemptMarkerCreatedByWorker": false,
     "childConstructionAllowedInZeroChild": false,
+    "executableForIntegration": true,
     "maximumDCCChildStarts": 1,
     "maximumProcessAStarts": 1,
     "executionOwner": "Integration",
     "workerMode": "validation-only"
+  },
+  "directLaunch": {
+    "scheduleSchema": 1,
+    "receiptSchema": 1,
+    "schedulePublicationCommitRequired": true,
+    "receiptMustBindScheduleBytes": true,
+    "receiptMustBindWorkerHead": true,
+    "attemptMarkerMustPreexist": true,
+    "outputRootMustBeAbsentBeforeLaunch": true,
+    "fixedBlenderExecutable": "/Applications/Blender.app/Contents/MacOS/Blender",
+    "fixedBlenderArgs": ["--background", "--factory-startup", "--disable-autoexec", "--python-exit-code", "1"],
+    "childFlag": "--integration-direct",
+    "childOutputs": ["raw.png", "provenance.json", "OBJECT-MANIFEST.json", "INPUT-BINDINGS.json"],
+    "maximumSubprocessStarts": 1
   },
   "registration": {
     "footprintWorldXZ": [[-28, -28], [28, -28], [28, 28], [-28, 28]],

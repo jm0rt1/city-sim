@@ -93,6 +93,55 @@ def main() -> int:
     mutated["integrationDirect"]["maximumDCCChildStarts"] = True
     must_fail(lambda: runner.exact_types(mutated, contract), "bool/int child limit")
 
+    # Exercise the executable path purely in memory: the schedule and receipt
+    # are real-byte validated, but no repository authority files are created
+    # and no subprocess call is made.
+    schedule = {
+        "schema": 1, "task": "PLAY-027", "batch": "industrial_l04_directional_family",
+        "claimSHA256": runner.CLAIM_SHA256, "authorityBase": runner.AUTHORITY_BASE, "trustedIntegrationHead": runner.AUTHORITY_BASE,
+        "direction": "north", "process": "A", "slot": "north:A",
+        "orchestratorPath": runner.SOURCE_ROOT + "/launch_north_v13_process_a_v02.py", "orchestratorSHA256": runner.sha256_file(HERE / "launch_north_v13_process_a_v02.py"),
+        "childPath": runner.SOURCE_ROOT + "/render_north_v13_process_a_child.py", "childSHA256": runner.sha256_file(HERE / "render_north_v13_process_a_child.py"),
+        "outputRoot": runner.FUTURE_PROCESS_ROOT, "evidenceRoot": runner.EVIDENCE_ROOT,
+        "attemptMarkerPath": runner.FUTURE_PROCESS_ROOT + "/ATTEMPT.json", "schedulePublicationCommit": runner.AUTHORITY_BASE,
+        "maximumChildStarts": 1,
+    }
+    schedule_bytes = runner.canonical_bytes(schedule)
+    receipt = {
+        "schema": 1, "kind": "integration-process-receipt", "task": "PLAY-027",
+        "schedulePath": SCHEDULE, "scheduleSHA256": runner.sha256_bytes(schedule_bytes),
+        "schedulePublicationCommit": runner.AUTHORITY_BASE, "claimSHA256": runner.CLAIM_SHA256,
+        "authorityBase": runner.AUTHORITY_BASE, "trustedIntegrationHead": runner.AUTHORITY_BASE,
+        "workerHead": runner._git(ROOT, "rev-parse", "HEAD").decode().strip(), "direction": "north", "process": "A", "slot": "north:A",
+        "orchestratorPath": schedule["orchestratorPath"], "orchestratorSHA256": schedule["orchestratorSHA256"],
+        "childPath": schedule["childPath"], "childSHA256": schedule["childSHA256"],
+        "outputRoot": runner.FUTURE_PROCESS_ROOT, "evidenceRoot": runner.EVIDENCE_ROOT,
+        "attemptMarkerPath": schedule["attemptMarkerPath"], "attemptConsumed": True,
+        "maximumChildStarts": 1, "receiptPath": RECEIPT,
+    }
+    receipt_bytes = runner.canonical_bytes(receipt)
+    validated = runner.validate_direct_documents(ROOT, contract, SCHEDULE, RECEIPT, schedule_bytes, receipt_bytes)
+    assert validated["scheduleSHA256"] == runner.sha256_bytes(schedule_bytes)
+    command = runner.build_launch_command(ROOT, contract, SCHEDULE, RECEIPT)
+    assert command[0] == runner.BLENDER and command.count(runner.BLENDER) == 1 and command.count("--python") == 1
+    for mutate, label in (
+        (lambda d: d.__setitem__("scheduleSHA256", "0" * 64), "receipt schedule hash"),
+        (lambda d: d.__setitem__("workerHead", "0" * 40), "receipt worker head"),
+        (lambda d: d.__setitem__("maximumChildStarts", 2), "receipt multi-child"),
+        (lambda d: d.__setitem__("attemptConsumed", False), "replayed receipt"),
+        (lambda d: d.__setitem__("outputRoot", "docs/production/claims/escape"), "receipt output root"),
+    ):
+        forged = copy.deepcopy(receipt)
+        mutate(forged)
+        must_fail(lambda forged=forged: runner.validate_direct_documents(ROOT, contract, SCHEDULE, RECEIPT, schedule_bytes, runner.canonical_bytes(forged)), label)
+    forged_schedule = copy.deepcopy(schedule)
+    forged_schedule["orchestratorSHA256"] = "0" * 64
+    must_fail(lambda: runner.validate_direct_documents(ROOT, contract, SCHEDULE, RECEIPT, runner.canonical_bytes(forged_schedule), receipt_bytes), "wrong orchestrator command binding")
+    incomplete = copy.deepcopy(receipt)
+    incomplete.pop("receiptPath")
+    must_fail(lambda: runner.validate_direct_documents(ROOT, contract, SCHEDULE, RECEIPT, schedule_bytes, runner.canonical_bytes(incomplete)), "incomplete receipt")
+    must_fail(lambda: runner.prepare_integration_launch(ROOT, f"{runner.SOURCE_ROOT}/EXECUTION-CONTRACT.json", SCHEDULE, RECEIPT), "missing live authority files")
+
     # Assigned worktree identity is exact; aliases and copied roots fail before
     # Git/content inspection.
     with tempfile.TemporaryDirectory(prefix="north-v13-v02-root-") as temp:
@@ -142,13 +191,15 @@ def main() -> int:
 
     tree = ast.parse((HERE / "launch_north_v13_process_a_v02.py").read_text(encoding="utf-8"))
     calls = [node for node in ast.walk(tree) if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute) and isinstance(node.func.value, ast.Name) and node.func.value.id == "subprocess"]
-    assert len(calls) == 1 and calls[0].func.attr == "run"
+    assert sorted(call.func.attr for call in calls) == ["Popen", "run"]
     for path in (HERE / "launch_north_v13_process_a_v02.py", HERE / "render_north_v13_process_a_child.py"):
         source = path.read_text(encoding="utf-8")
-        assert "bpy" not in source and "PIL" not in source and "SceneKit" not in source and "Metal" not in source
-        assert "Popen" not in source and "render(" not in source
+        assert "PIL" not in source and "SceneKit" not in source
+        if path.name == "launch_north_v13_process_a_v02.py":
+            assert "bpy" not in source
+        assert "render(" not in source or path.name == "render_north_v13_process_a_child.py"
 
-    print("PASS north-v13 integration-direct-v1 zeroChild=1 adversaries=21 freshRoots=2 carrierGit=verified dccChildren=0 processA=0 pixels=0 topology=unchanged")
+    print("PASS north-v13 integration-direct-v1 zeroChild=1 adversaries=27 freshRoots=2 carrierGit=verified dccChildren=0 processA=0 pixels=0 topology=unchanged")
     return 0
 
 

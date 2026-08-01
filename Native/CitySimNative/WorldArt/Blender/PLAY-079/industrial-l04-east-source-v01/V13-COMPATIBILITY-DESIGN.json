@@ -1,0 +1,435 @@
+{
+  "schema": "citysim.play-079.east-v13-compatibility-design.v1",
+  "schemaVersion": 1,
+  "task": "PLAY-079",
+  "direction": "east",
+  "phase": "V13_ZERO_PIXEL_COMPATIBILITY",
+  "sourceRevision": "east-v13-compatibility-v04-frontier-recovery-r2",
+  "logicalBuildingID": "industrial_l04",
+  "variant": 0,
+  "sourceAuthority": false,
+  "sourceReady": false,
+  "productionSelected": false,
+  "pixelRenderingAllowed": false,
+  "provenance": {
+    "geometryOrigin": "independently-authored-east-from-published-v13-semantic-requirements",
+    "siblingSceneInputs": [],
+    "copiedGeometry": false,
+    "mirroredGeometry": false,
+    "rotatedGeometry": false,
+    "transformedSiblingGeometry": false,
+    "orientationTransform": "none"
+  },
+  "authority": {
+    "authorityCommit": "d010d453af87c040ac13e8b3b7280366cb5094c1",
+    "baseCommit": "d010d453af87c040ac13e8b3b7280366cb5094c1",
+    "routeId": "quality-v1:east-v13-frontier-recovery-r2",
+    "routeSha256": "427d5725f3522bb6ddc60bffe15e38191bec55a77d77eff8c4a251301479b16d",
+    "dispatchReceipt": {
+      "carrierCommit": "bd40076f8506b50578002cec6d0e9b9aac3f5a44",
+      "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-EAST-V13-FRONTIER-RECOVERY-R2.json",
+      "sha256": "03c5626c7d9e6135184f1741342ee448ef0a2d7349eec2be51a3950579b7142d"
+    },
+    "claim": {
+      "path": "docs/production/claims/PLAY-079.world-art-east.md",
+      "sha256": "abccb0be0550e092565ecca076db717f73f45ed833fe485853338a8de1bff017"
+    },
+    "publishedSemanticInputs": [
+      {
+        "path": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/design-authority-v01/DESIGN-AUTHORITY.json",
+        "sha256": "1b1006403081c3933c54451b6c506af74493a2ac3b253fdd9f1f79098d7c1bed",
+        "consumedAs": "semantic-requirements-only"
+      },
+      {
+        "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/DESIGN-MATERIALS.json",
+        "sha256": "c8179b77a184e41b723e26b34e7da2ef256b09e93b54a47e76cc5103f22b8cab",
+        "consumedAs": "published-material-roles-only"
+      }
+    ]
+  },
+  "eastRegistration": {
+    "citySimFootprint": {
+      "width": 72.0,
+      "depth": 72.0
+    },
+    "dccFootprint": {
+      "width": 56.0,
+      "depth": 56.0,
+      "halfExtent": 28.0
+    },
+    "citySimSocket": [28.0, 0.0, 0.0],
+    "sourceSocket": [896.0, 832.0],
+    "groundPivot": [28.0, 28.0, 0.0],
+    "sourceGroundPivot": [768.0, 896.0],
+    "orientationTransform": "none",
+    "sourcePixelTolerance": 0.5
+  },
+  "camera": {
+    "projection": "orthographic",
+    "view": "southeast-looking-northwest",
+    "position": [96.0, 96.0, 101.24557426726288],
+    "target": [0.0, 0.0, 22.861902498201186],
+    "distance": 156.76734353812338,
+    "resolution": [1536, 1024],
+    "literalResolution": [192, 128],
+    "orthoScale": 237.5878601074218,
+    "shift": [0.0, 0.08333333333333333],
+    "yawDegrees": 45.0,
+    "elevationDegrees": 30.0,
+    "registrationSource": "v06 bridge camera contract",
+    "derivedFromBridge": true
+  },
+  "coordinateBridge": {
+    "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-direction-bridge-v06/MAPPING-CONTRACT.json",
+    "sha256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7",
+    "formula": "B(CitySim[x,y,z])=Blender[z,x,y]",
+    "matrixRows": [[0, 0, 1], [1, 0, 0], [0, 1, 0]],
+    "determinant": 1,
+    "perDirectionTransforms": false,
+    "eastSocketBlender": [0.0, 28.0, 0.0],
+    "eastOutwardBlender": [0.0, 1.0, 0.0],
+    "windingChange": false
+  },
+  "lowering": {
+    "method": "pure-data-v13-semantic-to-east-blender-bounds",
+    "inputCoordinateSpace": "CitySim",
+    "outputCoordinateSpace": "Blender",
+    "dimensionRule": "Blender[dx,dy,dz]=CitySim[dz,dx,dy]",
+    "positionRule": "Blender[x,y,z]=CitySim[z,x,y]",
+    "rounding": "decimal-exact-no-transform",
+    "targetCollapse": false,
+    "unresolvedComponents": [],
+    "fallbackRoles": [],
+    "cameraProjection": {
+      "projection": "orthographic",
+      "sourcePixelsPerWorldUnit": [6.464976785032367, 4.3099845233549114],
+      "literalPixelsPerWorldUnit": [0.8081220981290459, 0.5387480654193639],
+      "sourceGroundCenter": [768.0, 768.0],
+      "postProjectionOffsetPixels": [0.0, 128.0]
+    }
+  },
+  "light": {
+    "keySemantic": "northwest-key-southeast-contact",
+    "keyOriginQuadrant": "northwest",
+    "contactQuadrant": "southeast",
+    "shadowVectorSign": [1.0, -1.0]
+  },
+  "eastFacadePlan": {
+    "identity": "East Freight Portal Crown",
+    "roadFacing": "east",
+    "readOrder": [
+      "deep east freight portal",
+      "broad stepped foundry hall",
+      "three-level portal crown",
+      "subordinate northwest process stack",
+      "south staff annex"
+    ],
+    "components": [
+      {
+        "id": "east-v13-grounded-foundation",
+        "kind": "foundation",
+        "bounds": {"xMin": -24.0, "xMax": 24.0, "yMin": -24.0, "yMax": 24.0, "zMin": 0.0, "zMax": 1.0},
+        "semanticRole": "v13-grounded-foundation",
+        "targetRole": "v13-grounded-foundation",
+        "materialRole": "formed-concrete",
+        "silhouetteTier": 0
+      },
+      {
+        "id": "east-v13-operating-apron",
+        "kind": "apron",
+        "bounds": {"xMin": -14.0, "xMax": 14.0, "yMin": 22.0, "yMax": 28.0, "zMin": 0.0, "zMax": 0.4},
+        "semanticRole": "v13-integrated-operating-apron",
+        "targetRole": "v13-integrated-operating-apron",
+        "materialRole": "contact-shadow",
+        "silhouetteTier": 0
+      },
+      {
+        "id": "east-v13-foundry-hall",
+        "kind": "mass",
+        "bounds": {"xMin": -20.0, "xMax": 20.0, "yMin": -22.0, "yMax": 22.0, "zMin": 0.0, "zMax": 26.0},
+        "semanticRole": "v13-warm-foundry-masonry",
+        "targetRole": "v13-warm-foundry-masonry",
+        "materialRole": "warm-weathered-masonry",
+        "silhouetteTier": 1
+      },
+      {
+        "id": "east-v13-portal-south-jamb",
+        "kind": "portal-frame",
+        "bounds": {"xMin": 11.0, "xMax": 15.0, "yMin": 23.0, "yMax": 28.0, "zMin": 0.0, "zMax": 23.0},
+        "semanticRole": "v13-charcoal-structural-steel",
+        "targetRole": "v13-charcoal-structural-steel",
+        "materialRole": "dark-painted-steel",
+        "silhouetteTier": 2
+      },
+      {
+        "id": "east-v13-portal-north-jamb",
+        "kind": "portal-frame",
+        "bounds": {"xMin": -15.0, "xMax": -11.0, "yMin": 23.0, "yMax": 28.0, "zMin": 0.0, "zMax": 23.0},
+        "semanticRole": "v13-charcoal-structural-steel",
+        "targetRole": "v13-charcoal-structural-steel",
+        "materialRole": "dark-painted-steel",
+        "silhouetteTier": 2
+      },
+      {
+        "id": "east-v13-portal-header",
+        "kind": "portal-frame",
+        "bounds": {"xMin": -15.0, "xMax": 15.0, "yMin": 23.0, "yMax": 28.0, "zMin": 23.0, "zMax": 27.0},
+        "semanticRole": "v13-warm-control-masonry",
+        "targetRole": "v13-warm-control-masonry",
+        "materialRole": "formed-concrete",
+        "silhouetteTier": 2
+      },
+      {
+        "id": "east-v13-deep-freight-void",
+        "kind": "portal-inset",
+        "bounds": {"xMin": -11.0, "xMax": 11.0, "yMin": 23.0, "yMax": 28.0, "zMin": 2.0, "zMax": 22.0},
+        "semanticRole": "v13-deep-freight-void",
+        "targetRole": "v13-deep-freight-void",
+        "materialRole": "portal-void",
+        "silhouetteTier": 0
+      },
+      {
+        "id": "east-v13-crown-lower",
+        "kind": "portal-crown",
+        "bounds": {"xMin": -13.0, "xMax": 13.0, "yMin": 18.0, "yMax": 25.0, "zMin": 24.0, "zMax": 29.0},
+        "semanticRole": "v13-portal-crown-steel",
+        "targetRole": "v13-portal-crown-steel",
+        "materialRole": "roof-edge-metal",
+        "silhouetteTier": 3
+      },
+      {
+        "id": "east-v13-crown-middle",
+        "kind": "portal-crown",
+        "bounds": {"xMin": -11.0, "xMax": 11.0, "yMin": 14.0, "yMax": 23.0, "zMin": 29.0, "zMax": 35.0},
+        "semanticRole": "v13-weathered-bluegreen-roof",
+        "targetRole": "v13-weathered-bluegreen-roof",
+        "materialRole": "roof-edge-metal",
+        "silhouetteTier": 4
+      },
+      {
+        "id": "east-v13-crown-high",
+        "kind": "portal-crown",
+        "bounds": {"xMin": -8.0, "xMax": 8.0, "yMin": 10.0, "yMax": 20.0, "zMin": 35.0, "zMax": 41.0},
+        "semanticRole": "v13-clerestory-and-roof-edge",
+        "targetRole": "v13-clerestory-and-roof-edge",
+        "materialRole": "glazing-louver",
+        "silhouetteTier": 5
+      },
+      {
+        "id": "east-v13-hot-process",
+        "kind": "hot-process",
+        "bounds": {"xMin": -12.0, "xMax": -6.0, "yMin": 8.0, "yMax": 16.0, "zMin": 8.0, "zMax": 18.0},
+        "semanticRole": "v13-restrained-hot-process",
+        "targetRole": "v13-restrained-hot-process",
+        "materialRole": "hot-process",
+        "silhouetteTier": 2
+      },
+      {
+        "id": "east-v13-northwest-process-stack",
+        "kind": "process-stack",
+        "bounds": {"xMin": -24.0, "xMax": -18.0, "yMin": 12.0, "yMax": 20.0, "zMin": 0.0, "zMax": 36.0},
+        "semanticRole": "v13-oxidized-process-machinery",
+        "targetRole": "v13-oxidized-process-machinery",
+        "materialRole": "safety-oxide",
+        "silhouetteTier": 6
+      },
+      {
+        "id": "east-v13-south-staff-annex",
+        "kind": "staff-annex",
+        "bounds": {"xMin": -20.0, "xMax": -12.0, "yMin": -22.0, "yMax": -14.0, "zMin": 0.0, "zMax": 12.0},
+        "semanticRole": "v13-warm-staff-glazing",
+        "targetRole": "v13-warm-staff-glazing",
+        "materialRole": "glazing-louver",
+        "silhouetteTier": 1
+      }
+    ],
+    "portal": {
+      "apertureComponentID": "east-v13-deep-freight-void",
+      "jambComponentIDs": ["east-v13-portal-south-jamb", "east-v13-portal-north-jamb"],
+      "headerComponentID": "east-v13-portal-header",
+      "outerWidthWorld": 24.0,
+      "outerHeightWorld": 24.0,
+      "clearInsetWidthWorld": 18.0,
+      "clearInsetHeightWorld": 16.0,
+      "jambThicknessWorld": 3.0,
+      "jambHeightWorld": 21.0,
+      "headerThicknessWorld": 3.0,
+      "freightBeatCount": 3,
+      "minimumProcessOccluders": 0,
+      "apronTerminatesAtSocket": true
+    },
+    "silhouette": {
+      "distinctRoofHeightBreaks": 3,
+      "crownComponentIDs": ["east-v13-crown-lower", "east-v13-crown-middle", "east-v13-crown-high"],
+      "crownWidthWorld": 16.0,
+      "minimumTierEnvelopeSeparationWorld": 4.0,
+      "minimumProjectedTierBreakSeparationPixels": 1.0,
+      "stackSilhouetteShareMaximum": 0.06
+    }
+  },
+  "materialRoleMapping": {
+    "v13-grounded-foundation": "v13-grounded-foundation",
+    "v13-integrated-operating-apron": "v13-integrated-operating-apron",
+    "v13-warm-foundry-masonry": "v13-warm-foundry-masonry",
+    "v13-warm-control-masonry": "v13-warm-control-masonry",
+    "v13-charcoal-structural-steel": "v13-charcoal-structural-steel",
+    "v13-portal-crown-steel": "v13-portal-crown-steel",
+    "v13-weathered-bluegreen-roof": "v13-weathered-bluegreen-roof",
+    "v13-clerestory-and-roof-edge": "v13-clerestory-and-roof-edge",
+    "v13-deep-freight-void": "v13-deep-freight-void",
+    "v13-oxidized-process-machinery": "v13-oxidized-process-machinery",
+    "v13-restrained-hot-process": "v13-restrained-hot-process",
+    "v13-warm-staff-glazing": "v13-warm-staff-glazing"
+  },
+  "sourceRoleMapping": {
+    "v13-grounded-foundation": "formed-concrete",
+    "v13-integrated-operating-apron": "contact-shadow",
+    "v13-warm-foundry-masonry": "warm-weathered-masonry",
+    "v13-warm-control-masonry": "formed-concrete",
+    "v13-charcoal-structural-steel": "dark-painted-steel",
+    "v13-portal-crown-steel": "roof-edge-metal",
+    "v13-weathered-bluegreen-roof": "roof-edge-metal",
+    "v13-clerestory-and-roof-edge": "glazing-louver",
+    "v13-deep-freight-void": "portal-void",
+    "v13-oxidized-process-machinery": "safety-oxide",
+    "v13-restrained-hot-process": "hot-process",
+    "v13-warm-staff-glazing": "glazing-louver"
+  },
+  "targetMaterialRoles": [
+    "v13-grounded-foundation",
+    "v13-integrated-operating-apron",
+    "v13-warm-foundry-masonry",
+    "v13-warm-control-masonry",
+    "v13-charcoal-structural-steel",
+    "v13-portal-crown-steel",
+    "v13-weathered-bluegreen-roof",
+    "v13-clerestory-and-roof-edge",
+    "v13-deep-freight-void",
+    "v13-oxidized-process-machinery",
+    "v13-restrained-hot-process",
+    "v13-warm-staff-glazing"
+  ],
+  "loweringRules": [
+    {"componentId": "east-v13-grounded-foundation", "semanticRole": "v13-grounded-foundation", "targetRole": "v13-grounded-foundation", "sourceRole": "formed-concrete", "citySimBounds": {"xMin": -24.0, "xMax": 24.0, "yMin": 0.0, "yMax": 1.0, "zMin": -24.0, "zMax": 24.0}},
+    {"componentId": "east-v13-operating-apron", "semanticRole": "v13-integrated-operating-apron", "targetRole": "v13-integrated-operating-apron", "sourceRole": "contact-shadow", "citySimBounds": {"xMin": 22.0, "xMax": 28.0, "yMin": 0.0, "yMax": 0.4, "zMin": -14.0, "zMax": 14.0}},
+    {"componentId": "east-v13-foundry-hall", "semanticRole": "v13-warm-foundry-masonry", "targetRole": "v13-warm-foundry-masonry", "sourceRole": "warm-weathered-masonry", "citySimBounds": {"xMin": -22.0, "xMax": 22.0, "yMin": 0.0, "yMax": 26.0, "zMin": -20.0, "zMax": 20.0}},
+    {"componentId": "east-v13-portal-south-jamb", "semanticRole": "v13-charcoal-structural-steel", "targetRole": "v13-charcoal-structural-steel", "sourceRole": "dark-painted-steel", "citySimBounds": {"xMin": 23.0, "xMax": 28.0, "yMin": 0.0, "yMax": 23.0, "zMin": 11.0, "zMax": 15.0}},
+    {"componentId": "east-v13-portal-north-jamb", "semanticRole": "v13-charcoal-structural-steel", "targetRole": "v13-charcoal-structural-steel", "sourceRole": "dark-painted-steel", "citySimBounds": {"xMin": 23.0, "xMax": 28.0, "yMin": 0.0, "yMax": 23.0, "zMin": -15.0, "zMax": -11.0}},
+    {"componentId": "east-v13-portal-header", "semanticRole": "v13-warm-control-masonry", "targetRole": "v13-warm-control-masonry", "sourceRole": "formed-concrete", "citySimBounds": {"xMin": 23.0, "xMax": 28.0, "yMin": 23.0, "yMax": 27.0, "zMin": -15.0, "zMax": 15.0}},
+    {"componentId": "east-v13-deep-freight-void", "semanticRole": "v13-deep-freight-void", "targetRole": "v13-deep-freight-void", "sourceRole": "portal-void", "citySimBounds": {"xMin": 23.0, "xMax": 28.0, "yMin": 2.0, "yMax": 22.0, "zMin": -11.0, "zMax": 11.0}},
+    {"componentId": "east-v13-crown-lower", "semanticRole": "v13-portal-crown-steel", "targetRole": "v13-portal-crown-steel", "sourceRole": "roof-edge-metal", "citySimBounds": {"xMin": 18.0, "xMax": 25.0, "yMin": 24.0, "yMax": 29.0, "zMin": -13.0, "zMax": 13.0}},
+    {"componentId": "east-v13-crown-middle", "semanticRole": "v13-weathered-bluegreen-roof", "targetRole": "v13-weathered-bluegreen-roof", "sourceRole": "roof-edge-metal", "citySimBounds": {"xMin": 14.0, "xMax": 23.0, "yMin": 29.0, "yMax": 35.0, "zMin": -11.0, "zMax": 11.0}},
+    {"componentId": "east-v13-crown-high", "semanticRole": "v13-clerestory-and-roof-edge", "targetRole": "v13-clerestory-and-roof-edge", "sourceRole": "glazing-louver", "citySimBounds": {"xMin": 10.0, "xMax": 20.0, "yMin": 35.0, "yMax": 41.0, "zMin": -8.0, "zMax": 8.0}},
+    {"componentId": "east-v13-hot-process", "semanticRole": "v13-restrained-hot-process", "targetRole": "v13-restrained-hot-process", "sourceRole": "hot-process", "citySimBounds": {"xMin": 8.0, "xMax": 16.0, "yMin": 8.0, "yMax": 18.0, "zMin": -12.0, "zMax": -6.0}},
+    {"componentId": "east-v13-northwest-process-stack", "semanticRole": "v13-oxidized-process-machinery", "targetRole": "v13-oxidized-process-machinery", "sourceRole": "safety-oxide", "citySimBounds": {"xMin": 12.0, "xMax": 20.0, "yMin": 0.0, "yMax": 36.0, "zMin": -24.0, "zMax": -18.0}},
+    {"componentId": "east-v13-south-staff-annex", "semanticRole": "v13-warm-staff-glazing", "targetRole": "v13-warm-staff-glazing", "sourceRole": "glazing-louver", "citySimBounds": {"xMin": -22.0, "xMax": -14.0, "yMin": 0.0, "yMax": 12.0, "zMin": -20.0, "zMax": -12.0}}
+  ],
+  "literal192Targets": {
+    "frame": [192, 128],
+    "minimumOccupiedWidthPixels": 60,
+    "minimumOccupiedHeightPixels": 58,
+    "minimumSilhouetteBreaks": 3,
+    "portalCrownMinimumWidthPixels": 20,
+    "minimumOuterPortalWidthPixels": 20,
+    "minimumOuterPortalHeightPixels": 18,
+    "minimumClearInsetWidthPixels": 14,
+    "minimumClearInsetHeightPixels": 12,
+    "minimumFreightBeatCount": 3,
+    "maximumPortalProcessOccluders": 0,
+    "socketApronMaximumGapPixels": 2
+  },
+  "measuredLiteral192": {
+    "method": "orthographic-analytic-bounds-no-raster",
+    "sourceProjectionDerived": true,
+    "portalBoundsPixels": {
+      "outerWidth": 20.0000015464812,
+      "outerHeight": 19.264043976268425,
+      "clearInsetWidth": 15.42857262157122,
+      "clearInsetHeight": 14.474247758381537,
+      "jambThicknessEach": 5.1428575405237495,
+      "headerThickness": 8.532945225731964
+    },
+    "crownBoundsPixels": {
+      "width": 23.42857324016373,
+      "height": 15.741206098567034,
+      "heightBreaks": [8.618562326215695, 8.704179426699426, 7.751798400676506]
+    },
+    "freightBeatBoundsPixels": [[5.14285754052374, 14.474247758381537], [5.14285754052374, 14.474247758381537], [5.14285754052374, 14.474247758381537]],
+    "processOccluderCount": 0,
+    "socketApronGapPixels": 0.0,
+    "pixelAuthority": false
+  },
+  "apertureAudit": {
+    "clearApertureBounds": {"xMin": -11.0, "xMax": 11.0, "yMin": 23.0, "yMax": 28.0, "zMin": 2.0, "zMax": 22.0},
+    "nonApertureSolidCount": 12,
+    "recursivelyAuditedSolidCount": 12,
+    "cameraProjectedOccluderCount": 0,
+    "allIntrusions": false,
+    "auditedComponents": [
+      {"componentId": "east-v13-grounded-foundation", "intrudes": false, "overlapAreaWorld2": 0.0},
+      {"componentId": "east-v13-operating-apron", "intrudes": false, "overlapAreaWorld2": 0.0},
+      {"componentId": "east-v13-foundry-hall", "intrudes": false, "overlapAreaWorld2": 0.0},
+      {"componentId": "east-v13-portal-south-jamb", "intrudes": false, "overlapAreaWorld2": 0.0},
+      {"componentId": "east-v13-portal-north-jamb", "intrudes": false, "overlapAreaWorld2": 0.0},
+      {"componentId": "east-v13-portal-header", "intrudes": false, "overlapAreaWorld2": 0.0},
+      {"componentId": "east-v13-crown-lower", "intrudes": false, "overlapAreaWorld2": 0.0},
+      {"componentId": "east-v13-crown-middle", "intrudes": false, "overlapAreaWorld2": 0.0},
+      {"componentId": "east-v13-crown-high", "intrudes": false, "overlapAreaWorld2": 0.0},
+      {"componentId": "east-v13-hot-process", "intrudes": false, "overlapAreaWorld2": 0.0},
+      {"componentId": "east-v13-northwest-process-stack", "intrudes": false, "overlapAreaWorld2": 0.0},
+      {"componentId": "east-v13-south-staff-annex", "intrudes": false, "overlapAreaWorld2": 0.0}
+    ]
+  },
+  "nonAliasProof": {
+    "structuralSignature": "east-v13-portal-crown::foundation-apron-hall-jamb-jamb-header-void-crown-crown-crown-hot-stack-annex",
+    "derivedComponentSignatureSHA256": "c8aef663b87e052b41cf23013e4b1734c2858708c3b75c37b00f8d5d5b8c954f",
+    "derivedRawGeometrySHA256": "1df0d402d90abf28325b57f5eb7dc1bdc0fe978dc006bc528ec76712314177c9",
+    "signatureMethod": "ordered-component-kinds-bounds-and-semantic-roles",
+    "priorEastRevisionComponentIDs": [
+      "east-monumental-portal-inset",
+      "east-monumental-portal-header",
+      "east-high-bay-hall"
+    ],
+    "sharedGeometryConsumed": false,
+    "siblingInputsConsumed": [],
+    "meaningfulDifferences": [
+      "three-level-east-portal-crown",
+      "deep-void-with-separated-jambs",
+      "south-staff-annex-and-northwest-process-stack"
+    ],
+    "targetCollapse": false
+  },
+  "changedPathAudit": {
+    "parentCandidate": "d0214c95d6d6bcc2395d56c2d10e768b8d7197e5",
+    "changedPaths": [
+      "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/V13-COMPATIBILITY-DESIGN.json",
+      "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/test_v13_compatibility.py",
+      "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/v13-compatibility-v01/V13-COMPATIBILITY-RESULT.json"
+    ],
+    "allWithinAllowedRoots": true,
+    "siblingInputsConsumed": []
+  },
+  "sourceBindings": {
+    "eastScene": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-predesign-v01/scene.json",
+      "sha256": "e19c70693ea57a7f23669d5e93354eee0a8fa42be16e68b38d00f5608a500db7",
+      "consumedAs": "historical-byte-preservation-only"
+    },
+    "eastMaterials": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-predesign-v01/materials.json",
+      "sha256": "1d0eda7be1e50d9fd98247cb63035443e904a2724583df1fbb328140b63ef9b9",
+      "consumedAs": "existing-role-inventory-only"
+    }
+  },
+  "zeroPixelBoundary": {
+    "blenderInvocations": 0,
+    "dccInvocations": 0,
+    "renderInvocations": 0,
+    "pixelFilesCreated": 0,
+    "normalizationRuns": 0,
+    "sourcePacketsCreated": 0,
+    "productionSelection": false,
+    "independentReviewRequired": true,
+    "candidateReadyForIndependentReview": true
+  }
+}

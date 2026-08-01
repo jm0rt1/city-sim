@@ -1,0 +1,147 @@
+{
+  "schema": 1,
+  "authorityCommit": "61fa4fcf14b9c469e4e34f58dfef75ebcbfec316",
+  "assignments": [
+    {
+      "modelRouteSha256": "bbc4fc297ccc50341a99a8c64eb4d1138d85971be5f98c7178d0d038e32b3305",
+      "modelRoute": {
+        "schema": 1,
+        "routeId": "play-089:v13-repair-dispatch-observation:v1",
+        "taskId": "PLAY-089",
+        "packetKind": "mechanical",
+        "classification": "LUNA_MECHANICAL",
+        "model": "gpt-5.6-luna",
+        "effort": "medium",
+        "rationale": "The Industrial L4 v13 repair wave has reached a frozen dispatch-publication boundary: North escalated to frontier authority after two unsuccessful Luna repairs, while East, South, and West received direction-local final Luna repair routes. A low-cost observer can measure exposed Integration versus worker rework, route correctness, sibling isolation, escalation compliance, and context/validation duplication without product, visual, shared-authority, acceptance, or integration judgment.",
+        "authority": {
+          "authorityCommit": "61fa4fcf14b9c469e4e34f58dfef75ebcbfec316",
+          "baseCommit": "61fa4fcf14b9c469e4e34f58dfef75ebcbfec316",
+          "claim": {
+            "path": "docs/production/claims/PLAY-089.operating-system-optimization.md",
+            "sha256": "6276c96d96965805df6a1a9c779ecde7dc609824053c7e0eb00e35f67134cc47"
+          },
+          "immutableInputs": [
+            {
+              "path": ".agents/skills/optimize-citysim-operating-system/SKILL.md",
+              "sha256": "6d4a9e121ec307f7378d253ed112b0ffdd25e0c0d4d1a52b5f7d405f74a8b1ef"
+            },
+            {
+              "path": ".agents/skills/optimize-citysim-operating-system/references/observation-and-upgrade-protocol.md",
+              "sha256": "a9404e046f8c8c68fa3c22d6830b3bbac883a2238e0ad709598038bce87c78a2"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-NORTH-V13-PRELAUNCH-FRONTIER-RECOVERY-V1.json",
+              "sha256": "bb8697df8ddb0c500b200440d264ee5fb83d93f5b304ef3de03a956a1def9924"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-EAST-V13-DERIVED-PROOF-REPAIR-R2.json",
+              "sha256": "4b2cd3fb19edc2977c17d9784ae26022e5fe563dd4d05f42195f7a0b656dbfb8"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-SOUTH-WEST-V13-DERIVED-PROOF-REPAIR-R2.json",
+              "sha256": "343c9fe3efc2515542d12a8d6b63de4edd5c7a947eb7ed2ab60d51a8ffab9396"
+            }
+          ]
+        },
+        "assignment": {
+          "threadId": "019fbe2b-cc97-71f3-a762-63680ac85c76",
+          "branch": "codex/citysim-os-optimization",
+          "worktree": "/Users/James/.codex/worktrees/c92d/city-sim",
+          "expectedHead": "4c427febe4922203336d8a65727fc44c09f0ebdb",
+          "featureAuthorThreadId": null,
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": [
+            "docs/production/evidence/PLAY-089"
+          ],
+          "allowed": [
+            "docs/production/evidence/PLAY-089"
+          ],
+          "forbidden": [
+            "Native",
+            "AGENTS.md",
+            ".agents/skills",
+            "docs/production/CITYSIM_WORKTREE_OPERATING_SYSTEM.md",
+            "docs/production/PLAYABLE_BACKLOG.md",
+            "docs/production/claims",
+            "docs/production/decisions",
+            "docs/production/evidence/INTEGRATION"
+          ]
+        },
+        "boundedDeliverable": "Observe only the published Industrial L4 v13 repair-dispatch boundary represented by the three immutable Integration receipts. Commit one compact machine-readable receipt that distinguishes exposed Integration-authored route/setup rework from worker repair returns; verifies North's two-repair frontier escalation and East/South/West direction-local isolation; records exposed context bytes, elapsed, turns, validation, idle, duplicate-gate, return, and rework values or null; identifies any repeated high-impact operating defect; and concludes with NO_CHANGE or one exact bounded proposal. Do not inspect or judge visual quality, implement shared changes, or observe this PLAY-089 route as an input to itself.",
+        "validation": {
+          "focusedGateOwner": {
+            "threadId": "019fbe2b-cc97-71f3-a762-63680ac85c76",
+            "role": "lane_focused_gate"
+          },
+          "focusedCommands": [
+            "python3 -m json.tool docs/production/evidence/PLAY-089/INDUSTRIAL-L04-V13-REPAIR-DISPATCH-OBSERVATION-V1.json",
+            "git diff --check"
+          ],
+          "fullGateOwner": {
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "role": "aggregate_full_gate",
+            "model": "gpt-5.6-sol",
+            "effort": "high"
+          },
+          "fullCommands": [
+            "python3 .agents/skills/operate-citysim-integration/scripts/test_validate_model_route_v1.py",
+            "swift test --package-path Native/CitySimNative",
+            "./script/build_and_run.sh --verify",
+            "fresh-player real-app aggregate journey"
+          ]
+        },
+        "expectedResult": {
+          "evidencePaths": [
+            "docs/production/evidence/PLAY-089/INDUSTRIAL-L04-V13-REPAIR-DISPATCH-OBSERVATION-V1.json"
+          ],
+          "commitRequired": true,
+          "commitMessagePattern": "PLAY-089:"
+        },
+        "escalationTriggers": [
+          "baseline_or_candidate_identity_mismatch",
+          "cross_lane_semantic_conflict",
+          "failure_outside_focused_scope",
+          "path_outside_claim",
+          "save_or_migration_uncertainty",
+          "shared_contract_or_schema_decision",
+          "subjective_acceptance_required",
+          "two_unsuccessful_repair_attempts",
+          "unresolved_product_visual_or_interaction_judgment"
+        ],
+        "stopCondition": "Stop after one coherent repair-dispatch observation receipt commit or immediately on an escalation trigger. Never mutate product, shared skills, shared authority, claims, contracts, tasks, other worktrees, integration, push, full gates, final QA, or the current PLAY-089 dispatch receipt.",
+        "independentReviewer": {
+          "required": true,
+          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+          "model": "gpt-5.6-sol",
+          "effort": "high"
+        },
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {
+              "path": ".agents/skills/optimize-citysim-operating-system/SKILL.md",
+              "sha256": "6d4a9e121ec307f7378d253ed112b0ffdd25e0c0d4d1a52b5f7d405f74a8b1ef"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-NORTH-V13-PRELAUNCH-FRONTIER-RECOVERY-V1.json",
+              "sha256": "bb8697df8ddb0c500b200440d264ee5fb83d93f5b304ef3de03a956a1def9924"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-EAST-V13-DERIVED-PROOF-REPAIR-R2.json",
+              "sha256": "4b2cd3fb19edc2977c17d9784ae26022e5fe563dd4d05f42195f7a0b656dbfb8"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-SOUTH-WEST-V13-DERIVED-PROOF-REPAIR-R2.json",
+              "sha256": "343c9fe3efc2515542d12a8d6b63de4edd5c7a947eb7ed2ab60d51a8ffab9396"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

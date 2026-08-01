@@ -213,13 +213,22 @@ launch-grant validator are published.
 
 Schedule validation alone is never `launch_ready`. Before a direction can be
 described as launch-ready, an independently reviewed, Integration-owned
-execution-closure contract must prove that the exact trusted-master-published
-schedule and one-attempt process authority reach the direction's approved
-high-level orchestrator and runner validation boundary. The proof must reject
-forged worker authority, replay, wrong claim/base/direction/process/slot/root,
-direct low-level invocation, and unauthenticated delegation with zero child,
-DCC, render, normalizer, or pixel activity. Keep the cell at `predesign` and
-name the missing closure explicitly until that proof is accepted.
+execution-closure contract must select one exact mode:
+
+- `delegated_authenticated`, backed by a trust root the worker cannot choose;
+  or
+- `integration_direct`, where Integration itself validates and executes the
+  one authorized high-level orchestrator and the worker has no launch grant.
+
+The closure must bind the trusted-master schedule, claim, base, direction,
+process, slot, roots, orchestrator, and exactly-one attempt. It must reject
+replay, wrong identity, and direct low-level invocation. A delegated mode must
+also reject forged worker authority; an Integration-direct mode instead proves
+that the direction cell cannot start a child and that only an Integration-owned
+process receipt can advance launch state. Never use a repository-local public
+builder plus caller-selected key as authentication. Keep the cell at
+`predesign` and name the missing closure explicitly until the selected mode is
+accepted.
 
 Resolve the executable schedule controls from the exact batch ledger and family
 contract. Every family must bind its own versioned schedule schema, semantic

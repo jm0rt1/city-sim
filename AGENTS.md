@@ -5,8 +5,7 @@ These instructions apply to every task in this repository and every linked workt
 ## Required startup on every prompt
 
 1. Run `pwd`, `git branch --show-current`, and `git status --short --branch` before planning or editing.
-2. Read `docs/production/CITYSIM_WORKTREE_OPERATING_SYSTEM.md` completely.
-3. Load and follow the lane skill matching the current branch:
+2. Load and follow the lane skill matching the current branch:
 
 | Branch | Required skill |
 |---|---|
@@ -21,8 +20,10 @@ These instructions apply to every task in this repository and every linked workt
 | `codex/citysim-simulation-platform` | `.agents/skills/evolve-citysim-simulation/SKILL.md` |
 | `codex/citysim-playtest-quality` | `.agents/skills/verify-citysim-playability/SKILL.md` |
 
-4. State the active lane and mission in the first work update.
-5. For mutations, require a lane-appropriate `PLAY-*` claim unless the user explicitly requests integration/bootstrap work that creates the task system itself.
+3. Read `.agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md` and apply its context-loading rule. A complete applicable authority read, including `docs/production/CITYSIM_WORKTREE_OPERATING_SYSTEM.md`, the lane skill, the active claim, and required conditional references, is mandatory for a new thread, new or revised claim, changed claim/authority/skill/routing/conditional-reference hash, branch/worktree/task mismatch, context loss or compaction without a valid compact packet, or a stale/missing/contradictory packet.
+4. On an unchanged same-thread continuation, still run step 1, verify the exact Git revisions and every recorded file hash, and consume the compact lane-context packet. Any mismatch fails closed to the complete-read path.
+5. State the active lane and mission in the first work update.
+6. For mutations, require a lane-appropriate `PLAY-*` claim unless the user explicitly requests integration/bootstrap work that creates the task system itself.
 
 If the branch is detached, unexpected, or does not match the requested lane, do not make product changes. Report the mismatch and obtain an explicit routing decision.
 
@@ -37,5 +38,7 @@ If the branch is detached, unexpected, or does not match the requested lane, do 
 - Use `PLAY-###: Imperative outcome` for task commits and identify incomplete preservation commits as checkpoints. Completed-but-uncommitted work is invalid.
 - Tests alone do not prove UI/gameplay completion. Require the staged app, hands-on flow, visible proof, and affected accessibility/performance/save evidence.
 - Stop on ownership conflicts, missing claims, ambiguous requirements, unrelated dirty state, failed validation, or material contract changes without integration approval.
+- Every dispatch must carry a validated machine-readable `modelRoute`. Break substantial `PLAY-*` work at judgment boundaries: frontier authority, disjoint Luna execution packet(s), and independent frontier acceptance.
+- Luna packets run focused owner/affected gates only. The lane coordinator joins coherent packets; the full Swift suite, staged build, and real-app journey run once against the exact aggregated/integrated tree unless identity changes or focused evidence is stale. Independent final QA remains mandatory.
 
 Task-specific skills such as UI audit/remediation may be used in addition to the required lane skill; they never replace lane ownership and integration rules.

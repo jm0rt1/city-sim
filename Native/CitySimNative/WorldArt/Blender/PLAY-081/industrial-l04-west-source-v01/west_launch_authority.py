@@ -32,7 +32,7 @@ SOURCE_SCHEMA_PATH = (
     "industrial-l04-source-stage-handoff-schema-v2.json"
 )
 SOURCE_SCHEMA_SHA256 = (
-    "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7"
+    "85f6a2824c273a1e63354df79a97e5a59c2909a68771613b325664d649ac53ec"
 )
 EXPECTED_DIRECTION_PROCESSES = {
     "north": ["B", "C"],

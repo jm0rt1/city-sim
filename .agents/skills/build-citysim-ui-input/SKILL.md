@@ -11,8 +11,16 @@ Make every important action quick, understandable, reversible, discoverable, and
 
 1. Run `pwd`, `git branch --show-current`, and `git status --short --branch`.
 2. Require `codex/citysim-ui-input` for mutations.
-3. Read `docs/production/CITYSIM_WORKTREE_OPERATING_SYSTEM.md`, the claimed `PLAY-*` task, linked UX requirements, and applicable UI/keyboard/audit plans.
-4. Confirm a UI/input claim and preserve all unrelated work.
+3. Read and follow [the shared model-routing and cost-control contract](../operate-citysim-integration/references/model-routing-and-cost-control.md). Complete the applicable authority read for a new thread or claim, changed authority/skill/reference hash, routing mismatch, context loss, or stale compact packet. On an unchanged same-thread continuation, verify every recorded hash and Git revision before consuming the compact lane-context packet.
+4. When a complete read is required, read `docs/production/CITYSIM_WORKTREE_OPERATING_SYSTEM.md`, this skill, the claimed `PLAY-*` task, linked UX requirements, and applicable UI/keyboard/audit plans completely.
+5. Confirm a UI/input claim and preserve all unrelated work.
+
+## Route work at judgment boundaries
+
+- `LUNA_IMPLEMENTATION` implements approved components, command mappings, shortcuts, focus behavior, and accessibility tests; `LUNA_MECHANICAL` owns inventories, command/AX fixtures, focused checks, and packet assembly; `LUNA_LOCAL_DEBUG` may repair only a reproducible lane-local defect with frozen inputs and stops after two unsuccessful attempts.
+- `FRONTIER_AUTHORITY` owns information architecture, HUD hierarchy, interaction tradeoffs, shared-contract decisions, and final usability judgment.
+- A substantial `PLAY-*` task must arrive as a frontier authority packet, one or more disjoint Luna execution packets, and an independent frontier acceptance packet. Stop on every escalation trigger in the shared contract.
+- Luna runs only the focused owner and affected gates in its validated `modelRoute`. The lane coordinator aggregates coherent packets; the full Swift suite, staged build, pointer and keyboard journey, and default/compact real-app proof run once against the exact aggregate/integrated candidate unless identity changes or evidence is stale.
 
 ## Own player interaction
 
@@ -34,15 +42,10 @@ Before editing, state:
 - exact state owner and renderer bridge;
 - evidence required to prove the interaction.
 
-## Implement and prove
+## Execute and prove conditionally
 
-1. Add store/command/focus tests alongside behavior.
-2. Run the complete Swift suite and `git diff --check`.
-3. Build and operate the staged app using mouse/trackpad and keyboard-only flows.
-4. Test text-entry suppression, Escape priority, destructive targeting, focus stability, and Reduce Motion.
-5. Capture real default and compact proof for every changed surface.
-6. Check HUD terminology and denominators against simulation analytics.
-7. Report VoiceOver and Full Keyboard Access separately.
+For implementation, focused evidence, and aggregate acceptance requirements,
+read [references/ui-input-execution-and-evidence.md](references/ui-input-execution-and-evidence.md).
 
 ## Shared-contract rule
 
@@ -59,4 +62,5 @@ Do not change shared model enums, snapshot contracts, save schemas, or package b
 
 ## Completion
 
-Commit focused work and write the completion record with automated and hands-on evidence. Do not push or merge. A control that exists but is not discoverable, keyboard-operable, accessible, or proven in compact layout is incomplete.
+Use the completion requirements in
+[references/ui-input-execution-and-evidence.md](references/ui-input-execution-and-evidence.md).

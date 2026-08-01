@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "kind": "play_073_execution_receipt_schema_repair",
+  "claim": "PLAY-073",
+  "claimRevision": "47a260aea5ab9d38a98ceaaefb61e89e00322110b5a833e964a59d13157d7a49",
+  "publishedBase": "9e99e2df9e1acd9d167147b5705852fe9c7cab88",
+  "implementationHead": "bef68100ce0d4bc93c55b09e53f353daeb5d32c7",
+  "returnedReceiptHead": "a8ea22d1998cf3c9c8a38ddfcf94c73e18dfa4c7",
+  "observedHead": "7244b9b0a1363fe9ef3f834b854490a4f74dce8f",
+  "candidateHead": null,
+  "candidateHeadWriter": "integration_after_receipt_commit",
+  "candidateHeadProjectionRule": "project_the_containing_receipt_commit_as_head_and_preserve_observedHead_and_all_job_heads",
+  "receipt": {
+    "path": "docs/production/evidence/PLAY-073/industrial-l04-renderer-intake-plan-v1/current-authority-aaee2947/EXECUTION-RECEIPT.json",
+    "sha256": "f3ee63b34b9a109fcb87024a9edf22f625a4981417039f85c92a0c2622c67760"
+  },
+  "validator": {
+    "path": ".agents/skills/operate-citysim-integration/scripts/validate_world_art_parallel_state.py",
+    "sha256": "9c88e08e87be6a4f8d35d9eaeb7fe5406a57942b71d9e1b5bbda0480cfbca1d3"
+  },
+  "adversarialValidator": {
+    "path": ".agents/skills/operate-citysim-integration/scripts/test_validate_world_art_parallel_state.py",
+    "sha256": "ce045c791f6d45e2b791be28d1beaa0c7412803b220713253c17ff9e213d5728"
+  },
+  "cleanProjectionReplay": {
+    "projectionHead": "3eaf2b54ce79dd401329f12e61cb48521f5e17a7",
+    "projectionParent": "7244b9b0a1363fe9ef3f834b854490a4f74dce8f",
+    "projectionDelta": [
+      "docs/production/evidence/PLAY-073/industrial-l04-renderer-intake-plan-v1/current-authority-aaee2947/EXECUTION-RECEIPT.json"
+    ],
+    "outputSha256": "93e009dbd1c9bc60a7b291ca38b4aebc5c3c515cb9cd165311a186e7d7fda300",
+    "replays": [
+      {
+        "id": "receipt-projection-validation-a",
+        "result": "pass",
+        "diagnostics": 0,
+        "outputSha256": "93e009dbd1c9bc60a7b291ca38b4aebc5c3c515cb9cd165311a186e7d7fda300"
+      },
+      {
+        "id": "receipt-projection-validation-b",
+        "result": "pass",
+        "diagnostics": 0,
+        "outputSha256": "93e009dbd1c9bc60a7b291ca38b4aebc5c3c515cb9cd165311a186e7d7fda300"
+      }
+    ],
+    "byteIdentical": true
+  },
+  "observedHeadValidation": {
+    "head": "7244b9b0a1363fe9ef3f834b854490a4f74dce8f",
+    "jobs": [
+      {
+        "id": "renderer-plan-semantic-gate",
+        "result": "pass",
+        "inputs": 20,
+        "directions": 4,
+        "lodBindings": 12,
+        "quarantineJobs": 4
+      },
+      {
+        "id": "renderer-plan-adversarial-gate",
+        "result": "pass",
+        "tests": 37
+      },
+      {
+        "id": "source-admission-adversarial-gate",
+        "result": "pass",
+        "tests": 17
+      },
+      {
+        "id": "parallel-state-adversarial-gate",
+        "result": "pass",
+        "tests": 77
+      }
+    ],
+    "sourceAdmissions": 0,
+    "quarantineAcceptances": 0,
+    "runtimeActivated": false,
+    "shippingActivated": false,
+    "productionSelected": false
+  },
+  "status": "ready_for_integration_receipt_projection_review"
+}

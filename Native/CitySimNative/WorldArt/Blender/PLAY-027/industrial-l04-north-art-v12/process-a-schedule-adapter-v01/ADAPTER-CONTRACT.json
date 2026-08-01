@@ -6,10 +6,42 @@
   "process": "A",
   "phase": "prelock_north_a",
   "branch": "codex/citysim-world-art",
-  "publishedBaseCommit": "401eb2ce19c5f5c932442ace72e66fbd734cfa35",
+  "publishedBaseCommit": "22144bffacbf255f04952d28ccdc9683227b535f",
   "claim": {
     "path": "docs/production/claims/PLAY-027.world-art.md",
-    "sha256": "618ea95ffac855aa28e29f8cf09cb6529ec0774e685e6761a8e2985ecb9e1335"
+    "sha256": "d28bf14bb3d2d5441f3df6278eef758a5babb4453d22e06fc8bd4075ad5c80a1"
+  },
+  "currentAuthorityReplay": {
+    "refreshAuthority": {
+      "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-CURRENT-MASTER-AUTHORITY-REFRESH-2026-07-30.md",
+      "sha256": "75ec7518371b5a822f2650a8b8427289112debbe806e3e82b5809fd43865a46c"
+    },
+    "sourceStageSchema": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-source-stage-handoff-schema-v2.json",
+      "sha256": "85f6a2824c273a1e63354df79a97e5a59c2909a68771613b325664d649ac53ec"
+    },
+    "nonAliasInput": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-accepted-master-non-alias-input-v1.json",
+      "sha256": "d1d75fdc30d9a2f21d49b59fd13dbc6fe7d81669f76f801d1087b35a7fb70044"
+    },
+    "nonAliasLoader": {
+      "path": "Native/CitySimNative/WorldArt/Shared/accepted_master_non_alias_v1.py",
+      "sha256": "83716838d310b5a5a3be51091b255d2a5eabb1b2f28d9af72a89a885779f3a7d"
+    },
+    "acceptedMasterCount": 44,
+    "forbiddenSetSHA256": "265c564785a5fa4ce14fbd04898ef04aaed883e2ca56f6a0660a9937464926ea"
+  },
+  "processAPrelaunchAuthority": {
+    "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-NORTH-V12-PROCESS-A-PRELAUNCH-AUTHORITY.md",
+    "sha256": "889fd6f87a0d7eb112fe392d66901e927658a86a6d3aa311e53178d61cb4725e"
+  },
+  "directionScheduleAdapter": {
+    "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-schedule-adapter-v01/consume_north_process_a_schedule.py",
+    "sha256": "2c23a36797c06beb61919219f73a8b349c6c2486df50ad54733c467ebd4a3761"
+  },
+  "processAOrchestrator": {
+    "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/launch_north_process_a.py",
+    "sha256": "0301cd4412e40a71cf187e53e4022ef730df7d6c83777689e07613bde270f222"
   },
   "adapterAuthority": {
     "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTION-SCHEDULE-ADAPTER-AUTHORITY.md",

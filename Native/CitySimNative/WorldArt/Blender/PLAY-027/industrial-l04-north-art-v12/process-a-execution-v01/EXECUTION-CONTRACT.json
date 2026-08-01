@@ -1,0 +1,255 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "batch": "industrial_l04_directional_family",
+  "direction": "north",
+  "process": "A",
+  "phase": "prelock_north_a",
+  "prelockProcessPolicy": {
+    "authorizedProcess": "A",
+    "maximumScheduledAndGrantedProcesses": 1,
+    "processB": "post-lock-only",
+    "processC": "post-lock-only",
+    "stopAfterProcessA": true
+  },
+  "branch": "codex/citysim-world-art",
+  "authorityBaseCommit": "22144bffacbf255f04952d28ccdc9683227b535f",
+  "publicationCommit": "22144bffacbf255f04952d28ccdc9683227b535f",
+  "integrationTrust": {
+    "remoteRef": "refs/remotes/origin/master",
+    "minimumAuthorityCommit": "22144bffacbf255f04952d28ccdc9683227b535f"
+  },
+  "claim": {
+    "path": "docs/production/claims/PLAY-027.world-art.md",
+    "sha256": "d28bf14bb3d2d5441f3df6278eef758a5babb4453d22e06fc8bd4075ad5c80a1"
+  },
+  "currentAuthorityReplay": {
+    "refreshAuthority": {
+      "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-CURRENT-MASTER-AUTHORITY-REFRESH-2026-07-30.md",
+      "sha256": "75ec7518371b5a822f2650a8b8427289112debbe806e3e82b5809fd43865a46c"
+    },
+    "sourceStageSchema": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-source-stage-handoff-schema-v2.json",
+      "sha256": "85f6a2824c273a1e63354df79a97e5a59c2909a68771613b325664d649ac53ec"
+    },
+    "nonAliasInput": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-accepted-master-non-alias-input-v1.json",
+      "sha256": "d1d75fdc30d9a2f21d49b59fd13dbc6fe7d81669f76f801d1087b35a7fb70044"
+    },
+    "nonAliasLoader": {
+      "path": "Native/CitySimNative/WorldArt/Shared/accepted_master_non_alias_v1.py",
+      "sha256": "83716838d310b5a5a3be51091b255d2a5eabb1b2f28d9af72a89a885779f3a7d"
+    },
+    "acceptedMasterCount": 44,
+    "forbiddenSetSHA256": "265c564785a5fa4ce14fbd04898ef04aaed883e2ca56f6a0660a9937464926ea"
+  },
+  "prelaunchAuthority": {
+    "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-NORTH-V12-PROCESS-A-PRELAUNCH-AUTHORITY.md",
+    "sha256": "889fd6f87a0d7eb112fe392d66901e927658a86a6d3aa311e53178d61cb4725e"
+  },
+  "familyContract": {
+    "path": "docs/production/decisions/CONTRACT-010-directional-building-art.md",
+    "sha256": "0ee2d68a9dba4694d92a864bfeb5a91970c88fe87d893e1898de7b26d38609af"
+  },
+  "scheduleAdapter": {
+    "contract": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-schedule-adapter-v01/ADAPTER-CONTRACT.json",
+      "sha256": "7b40ef687b8483ba4d064b0af21fcebd4cdc1dfe287c5e85a36efdef7bbd192a"
+    },
+    "consumer": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-schedule-adapter-v01/consume_north_process_a_schedule.py",
+      "sha256": "2c23a36797c06beb61919219f73a8b349c6c2486df50ad54733c467ebd4a3761"
+    },
+    "acceptedReadiness": {
+      "path": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/process-a-schedule-adapter-v01/REVISION-7-FINAL-AUTHORITY-ZERO-CHILD-READINESS-R4.json",
+      "sha256": "d90e4270e132b1a27fe04fd671dc9d020d7913ce7a349f6340c2dad491fdd894"
+    }
+  },
+  "executionClosure": {
+    "authority": {
+      "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTION-EXECUTION-CLOSURE-V1-AUTHORITY.md",
+      "sha256": "0125539f015ab8069c11093e755ac6e43d7b37994c86515fc06894e401b7eb54"
+    },
+    "schema": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-direction-execution-authority-schema-v1.json",
+      "sha256": "2796e224780c259b29d68b50cb12cdbbe45452535da681bba3522af920459491"
+    },
+    "validator": {
+      "path": ".agents/skills/operate-citysim-integration/scripts/validate_industrial_l04_direction_execution_authority_v1.py",
+      "sha256": "b212d2776d34b3334910c6b0b02ffba244919f4a83d5c0019c30bca87648d8ae"
+    },
+    "validatorTests": {
+      "path": ".agents/skills/operate-citysim-integration/scripts/test_validate_industrial_l04_direction_execution_authority_v1.py",
+      "sha256": "0be62c7886a2106c81e7e05d56eb3ec3c0756365e416686489f8ffe8c76b2520"
+    }
+  },
+  "runnerContract": {
+    "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/RUNNER-CONTRACT.json",
+    "sha256": "5ef480a373194402f71a386b1aedf9768d5ef1ff3f2682aac85ad15bdb573a43"
+  },
+  "frozenNorthV12Inputs": {
+    "scene": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/SCENE.json",
+      "sha256": "dad20722f4770c82992040861074188c604b46cd226e5f739291ac22683594e2"
+    },
+    "materials": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/MATERIALS.json",
+      "sha256": "e683feed89f6878903d1ec0b255d0d5e8a36c74f431a2fb723287bf955c54d09"
+    },
+    "loweringContract": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/blender-lowering-v01/LOWERING-CONTRACT.json",
+      "sha256": "21480cd8c1dbb66f33b3ccd4987fea169198f2640b793a220d8d22c9c8505aa8"
+    },
+    "lowerer": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/blender-lowering-v01/lower_v12_scene.py",
+      "sha256": "7dc01ddc56bfff3ee9efca417ad0f70265d92daf99281dd53f7231c691e53a42"
+    },
+    "importer": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/blender-lowering-v01/import_v12_scene.py",
+      "sha256": "ec726d584ce4b22253fca486e82bc6a198616debed94358d76f6dac7a1f62988"
+    },
+    "acceptedStaticBContract": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/blender-lowering-v01/static-b-confirmation-v03/CONFIRMATION-CONTRACT.json",
+      "sha256": "9a7449cdc76116bdd12879e17f99e8162828ba6c01507310a627816f9202d08f"
+    }
+  },
+  "launcher": {
+    "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/launch_north_process_a.py",
+    "sha256": "0301cd4412e40a71cf187e53e4022ef730df7d6c83777689e07613bde270f222"
+  },
+  "childEntrypoint": {
+    "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/render_north_process_a_child.py",
+    "sha256": "bf6ce386b27db6130d75da647233c7b06d0231d21b75453cc6cfa73414127fa8"
+  },
+  "tests": {
+    "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/test_process_a_prelaunch.py",
+    "sha256": "8b51c0d5144772a8c980349a21c518b5ca376c771a109bc6c37d99e27e624e26"
+  },
+  "blender": {
+    "executable": "/Applications/Blender.app/Contents/MacOS/Blender",
+    "executableSHA256": "8485107307b16bd0899f3c259261494b0c80e383db239c04e2c9fcd14d305fb4",
+    "version": "4.5.12 LTS",
+    "buildHash": "84afd5f785f7",
+    "factoryStartup": true,
+    "autoexecDisabled": true,
+    "pythonExitCode": 1
+  },
+  "cycles": {
+    "device": "CPU",
+    "threads": 1,
+    "seed": 2704,
+    "samples": 64,
+    "adaptiveSampling": false,
+    "denoising": false,
+    "motionBlur": false,
+    "transparentFilm": true,
+    "resolution": [
+      1536,
+      1024
+    ],
+    "resolutionPercentage": 100,
+    "pixelAspect": [
+      1,
+      1
+    ],
+    "worldStrength": 0.28,
+    "northwestSunEnergy": 1.4,
+    "northwestSunAngleRadians": 0.08,
+    "maxBounces": 4,
+    "colorManagement": {
+      "displayDevice": "sRGB",
+      "viewTransform": "Standard",
+      "look": "None",
+      "exposure": 0,
+      "gamma": 1
+    }
+  },
+  "processEnvelope": {
+    "maximumChildStarts": 1,
+    "maximumConcurrentDCCProcesses": 1,
+    "timeoutSeconds": 120,
+    "maximumProcessGroupRSSMiB": 1024,
+    "newProcessGroup": true,
+    "killProcessGroupOnViolation": true
+  },
+  "processOutputRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/outputs/process-a",
+  "executionRoots": {
+    "output": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/outputs/process-a",
+    "evidence": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/process-a-execution-v01/evidence/process-a",
+    "attempt": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/process-a-execution-v01/attempts/north-A",
+    "terminal": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/process-a-execution-v01/terminals/north-A"
+  },
+  "directionRootMap": {
+    "sceneRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12",
+    "rawRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/outputs/process-a",
+    "normalizedRoot": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/direction-handoff-v01/normalized",
+    "processRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01",
+    "outputRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/outputs/process-a",
+    "evidenceRoot": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12",
+    "handoffRoot": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/direction-handoff-v01"
+  },
+  "futureDirectionHandoff": {
+    "currentState": "not_produced",
+    "requiredClaimBinding": {
+      "path": "docs/production/claims/PLAY-027.world-art.md",
+      "sha256": "d28bf14bb3d2d5441f3df6278eef758a5babb4453d22e06fc8bd4075ad5c80a1"
+    },
+    "requiredBindings": [
+      "exact-scene-hash",
+      "exact-raw-hash",
+      "exact-normalized-hashes",
+      "exact-process-root",
+      "exact-output-root",
+      "exact-evidence-root",
+      "exact-handoff-root"
+    ],
+    "parallelExecutionReceipt": {
+      "path": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/direction-handoff-v01/PARALLEL-EXECUTION-RECEIPT.json",
+      "sha256RequiredAtHandoff": true,
+      "currentSHA256": null
+    },
+    "rootAssertions": {
+      "allRootsInsideNorthClaimPrefixes": true,
+      "siblingRootIntersectionAllowed": false,
+      "sharedContractRootIntersectionAllowed": false,
+      "futureProcessOutputRootsPairwiseDisjoint": true,
+      "rawRootEqualsSingleProcessAOutputRoot": true
+    }
+  },
+  "capabilityChannel": {
+    "type": "integration-secret-plus-launcher-session-hmac",
+    "oneUse": true,
+    "parentPIDBound": true,
+    "executionAuthorityBound": true,
+    "outputDirectoryFDBound": true,
+    "durableAttemptRecordBound": true,
+    "secretTransport": "inherited-anonymous-pipe-only",
+    "payloadMaximumBytes": 8192,
+    "hashAlgorithm": "HMAC-SHA-256"
+  },
+  "allowedProcessOutputs": [
+    "CHILD-GRANT.json",
+    "GROUND-PROJECTION.json",
+    "INPUT-BINDINGS.json",
+    "OBJECT-MANIFEST.json",
+    "PROCESS-RECEIPT.json",
+    "provenance.json",
+    "raw.png",
+    "semantic.png"
+  ],
+  "prohibitedSurfaces": [
+    "Process B",
+    "Process C",
+    "sibling directions",
+    "ImageGen",
+    "normalization",
+    "renderer",
+    "shipping atlas",
+    "runtime",
+    "Package.swift",
+    "shared schedule controls"
+  ],
+  "sourceAuthority": false,
+  "candidateReadyForIndependentReview": false,
+  "productionSelected": false
+}

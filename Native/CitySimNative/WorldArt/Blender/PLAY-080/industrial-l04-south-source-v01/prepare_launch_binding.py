@@ -23,7 +23,7 @@ REPOSITORY_ROOT = SOURCE_DIR.parents[5]
 DEFAULT_CONTRACT = SOURCE_DIR / "runner-contract.json"
 HEX_40 = re.compile(r"^[0-9a-f]{40}$")
 SCHEMA_SHA256 = (
-    "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7"
+    "85f6a2824c273a1e63354df79a97e5a59c2909a68771613b325664d649ac53ec"
 )
 SCHEMA_PATH = (
     "docs/production/evidence/INTEGRATION/"

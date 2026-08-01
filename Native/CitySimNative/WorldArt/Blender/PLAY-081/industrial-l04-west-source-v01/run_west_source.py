@@ -439,7 +439,7 @@ def frozen_input_errors(root: Path, contract: dict[str, Any]) -> list[str]:
             "industrial-l04-source-stage-handoff-schema-v2.json"
         )
         or schema_binding.get("sha256")
-        != "93efe9ca6d000a2d145098f722338c8e85829d6de6724c3f231a93c06eadf3d7"
+        != "85f6a2824c273a1e63354df79a97e5a59c2909a68771613b325664d649ac53ec"
         or schema_binding.get("schemaId")
         != "citysim://integration/industrial-l04-source-stage-handoff-v2"
     ):

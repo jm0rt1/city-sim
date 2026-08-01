@@ -1,0 +1,355 @@
+{
+  "schema": "citysim.play-081.west-current-authority-replay.v1",
+  "schemaVersion": 1,
+  "taskId": "PLAY-081",
+  "direction": "west",
+  "branch": "codex/citysim-world-art-west",
+  "state": "prelock_zero_child_current_authority_replay_passed",
+  "sourceReady": false,
+  "publishedAuthority": {
+    "originMaster": "aaee294718a8176b70a4688b738b517f216dd3a7",
+    "mergeCommit": "80e0cadf8bd879a2af4e2d48d04bae91eae5ab66",
+    "implementationCommit": "9de73a6bf5cf24ce0428ad59d12d75fe66b5882e",
+    "claim": {
+      "path": "docs/production/claims/PLAY-081.world-art-west.md",
+      "revision": 7,
+      "sha256": "aa5e0acb5988807d1c934326fd6b3da7f594def8dde84b01ab273905f9753ed3"
+    }
+  },
+  "sourceStageAuthorities": {
+    "schemaV2": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-source-stage-handoff-schema-v2.json",
+      "sha256": "85f6a2824c273a1e63354df79a97e5a59c2909a68771613b325664d649ac53ec"
+    },
+    "nonAliasInput": {
+      "path": "docs/production/evidence/INTEGRATION/industrial-l04-accepted-master-non-alias-input-v1.json",
+      "sha256": "d1d75fdc30d9a2f21d49b59fd13dbc6fe7d81669f76f801d1087b35a7fb70044",
+      "forbiddenDecodedRgbaSha256Count": 44,
+      "forbiddenSetSha256": "265c564785a5fa4ce14fbd04898ef04aaed883e2ca56f6a0660a9937464926ea"
+    },
+    "nonAliasLoader": {
+      "path": "Native/CitySimNative/WorldArt/Shared/accepted_master_non_alias_v1.py",
+      "sha256": "83716838d310b5a5a3be51091b255d2a5eabb1b2f28d9af72a89a885779f3a7d"
+    }
+  },
+  "directionBinding": {
+    "claimedDirection": "west",
+    "frontFace": "west",
+    "frontageSocketCitySimXYZ": [
+      -28,
+      0,
+      0
+    ],
+    "frontageSocketBlenderXYZ": [
+      0,
+      -28,
+      0
+    ],
+    "frontageSocketSourceXY": [
+      640,
+      704
+    ],
+    "orientationTransform": "none",
+    "siblingInputsConsumed": []
+  },
+  "currentBindings": [
+    {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/RUNNER-CONTRACT.json",
+      "sha256": "33296a529298f9c2b1f299a2a0c1e0e41f02cf0f184d34cf16cc3f448a3284f5"
+    },
+    {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/WEST-EXECUTION-ORCHESTRATION-V2.json",
+      "sha256": "6f4adda204c53d22f50e9ed609980ae77d32045ac5b4218446e4828e543a5774"
+    },
+    {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/execution-closure-v01/test_west_execution_closure_v1.py",
+      "sha256": "ccaa12bee425a89fcd12d54ceeb7887954f8114f0084720f6cf8548842140838"
+    },
+    {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/fixtures/prelock-direction-isolation/VALID-WEST.json",
+      "sha256": "1ecd2d73e378a6b9b23673ef09acbc82336684d0da2f1931051715644826277f"
+    },
+    {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/run_west_source.py",
+      "sha256": "ee7bbec81175c3277a8cc5dbb14b4166024628d0ed58f5a41fa078efadb9aa4c"
+    },
+    {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/schedule-consumer-v01/WEST-SCHEDULE-CONSUMER-CONTRACT-V1.json",
+      "sha256": "7b854b7052a980655c6e5c3ac2cd4e97f1042ccb7aa37655408adf47f3a9d64b"
+    },
+    {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/schedule-consumer-v01/consume_west_parallel_schedule_v1.py",
+      "sha256": "4c72d5bf1b7c9d8decbe538f6926fd1ef40eb55362172235f1e62e68ec749414"
+    },
+    {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/validate_current_master_prelock_bundle.py",
+      "sha256": "a3fe22b40986d5a2975d16870b549d06428688d4ea577177319e458d9a60a918"
+    },
+    {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/validate_prelock_handoff.py",
+      "sha256": "d2321edcade32818e177c7a9495d70c9871cdaf843ee53c2d671c78f8b133a27"
+    },
+    {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/validate_prelock_runner.py",
+      "sha256": "6e464a7a466bd1681faf5362fc673352675403a453d33125bf1e52c12d871bf3"
+    },
+    {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/validate_source_outputs.py",
+      "sha256": "455250377b556aebb9c02bcdfa64f794dd79b42e6f77f6d80636db17cac2830e"
+    },
+    {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/west_execution_orchestration_v2.py",
+      "sha256": "9a1db7b18c235c8e77c5c2280e0f9f101c6d76960fd50ee9f8abd13ab46d0951"
+    },
+    {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/west_launch_authority.py",
+      "sha256": "536ef1c6fc247540fde44ed45a482ebe8600339d0a54a6df1cafe671e3e90b24"
+    }
+  ],
+  "prospectiveRoots": {
+    "A": {
+      "raw": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-A/raw",
+      "semantic": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-A/semantic",
+      "evidence": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-A/evidence"
+    },
+    "B": {
+      "raw": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-B/raw",
+      "semantic": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-B/semantic",
+      "evidence": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-B/evidence"
+    },
+    "C": {
+      "raw": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-C/raw",
+      "semantic": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-C/semantic",
+      "evidence": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/process-C/evidence"
+    },
+    "allDistinct": true,
+    "created": false
+  },
+  "validation": {
+    "frozenHead": "9de73a6bf5cf24ce0428ad59d12d75fe66b5882e",
+    "currentPrelockBundle": {
+      "passed": 7,
+      "failed": 0
+    },
+    "executionOrchestration": {
+      "passed": 32,
+      "failed": 0
+    },
+    "scheduleConsumer": {
+      "passed": 8,
+      "failed": 0
+    },
+    "zeroChildClosure": {
+      "passed": 5,
+      "failed": 0,
+      "twoFreshRepositoriesByteIdentical": true
+    },
+    "freshRootPrelockReplay": {
+      "rootCount": 2,
+      "byteIdentical": true,
+      "artifactSha256": {
+        "BLOCKOUT-CAMERA-SOCKET-V2-PROOF.json": "95c933f135eadf94a0b02b8d67df849af3919a8722ea18bb3e9b092b4feb6517",
+        "BRIDGE-REPEAT-IDENTITY.json": "1c0d26bd72bcb175973d93005f3aeb6107b4f26e3289a6977077faddba065e69",
+        "INTEGRATED-PROOF-GUARD.json": "d11b364bfd2d18df628ae05f4dfbe70bebb5b3c2729d2a855de01e4fc8f8ee03",
+        "MISSING-LOCK-REJECTION.json": "93c95bb8efa0f74508fa50765f81a9b8fbda6c74bafcf793a2f09a7386f44753",
+        "MISSING-SOURCE-PRODUCTION-PROFILE-REJECTION.json": "58ebfdb58e819fc28f87af3842e46648b88f5d1e6efd13f800fc747e2c1e0017",
+        "RUNNER-STATIC-VALIDATION.json": "669065b32e51c45a89f25b80e81fc65777bddb6fcd6b6573e37f03af9eb99c22",
+        "SOURCE-STAGE-SCHEMA-GATE.json": "aeed9e086dd9f9f7229ad97b263125842a0eb15437534ab0245c5f64c77d052d",
+        "SOURCE-VALIDATOR-DESCRIBE.json": "9fc01a8f8e0892166bce984bfe255ce767b9a5559216322bf2cebd353040e5ba",
+        "WRONG-LOCK-REJECTION.json": "fc660eafbb337dce4ab34873983d5f28dcce4f5b612a8f206cdfbe6a4021d6b0"
+      }
+    },
+    "activity": {
+      "blenderProcessLaunches": 0,
+      "dccChildStarts": 0,
+      "blenderRenderApiCalls": 0,
+      "imageGenInvocations": 0,
+      "renderInvocations": 0,
+      "normalizerInvocations": 0,
+      "contactSheetInvocations": 0,
+      "sourceCandidatePackets": 0,
+      "productionReceipts": 0,
+      "pixelFiles": 0,
+      "pixelFilesRead": 0
+    }
+  },
+  "executionAccounting": {
+    "readyNow": [],
+    "running": [],
+    "waitingOnJoin": [],
+    "serializedAuthority": {
+      "threadId": "019fab72-b2c9-7d60-a397-27d01d06cbbd",
+      "branch": "codex/citysim-world-art-west",
+      "worktree": "/Users/James/.codex/worktrees/ef17/city-sim",
+      "gitIndexWriter": "019fab72-b2c9-7d60-a397-27d01d06cbbd",
+      "governedEvidenceWriter": "019fab72-b2c9-7d60-a397-27d01d06cbbd"
+    },
+    "nextRefill": "after_integration_publishes_the_accepted_north_process_a_appearance_lock_source_production_profile_postlock_schedule_and_exact_west_grants_launch_west_a_b_c_into_disjoint_roots",
+    "capacity": {
+      "helperSlots": 3,
+      "dccSlots": 0,
+      "authorizedChildStarts": 0
+    },
+    "launchedJobs": [
+      {
+        "id": "west-rev7-zero-child-closure",
+        "resourceClass": "helper",
+        "mutation": "read_only",
+        "state": "completed",
+        "frozenHead": "9de73a6bf5cf24ce0428ad59d12d75fe66b5882e",
+        "startedAt": "2026-07-30T15:40:30.965Z",
+        "endedAt": "2026-07-30T15:41:55.392Z",
+        "exitCode": 0,
+        "result": "PASS_5_OF_5",
+        "dccSlot": null,
+        "processId": null
+      },
+      {
+        "id": "west-rev7-live-contract-suites",
+        "resourceClass": "helper",
+        "mutation": "read_only",
+        "state": "completed",
+        "frozenHead": "9de73a6bf5cf24ce0428ad59d12d75fe66b5882e",
+        "startedAt": "2026-07-30T15:40:30.965Z",
+        "endedAt": "2026-07-30T15:40:36.630Z",
+        "exitCode": 0,
+        "result": "PASS_47_OF_47",
+        "dccSlot": null,
+        "processId": null
+      },
+      {
+        "id": "west-rev7-fresh-root-reproducibility",
+        "resourceClass": "helper",
+        "mutation": "temporary_roots_only",
+        "state": "completed",
+        "frozenHead": "9de73a6bf5cf24ce0428ad59d12d75fe66b5882e",
+        "startedAt": "2026-07-30T15:40:30.965Z",
+        "endedAt": "2026-07-30T15:40:34.685Z",
+        "exitCode": 0,
+        "result": "PASS_TWO_ROOT_BYTE_IDENTITY",
+        "dccSlot": null,
+        "processId": null
+      }
+    ],
+    "unusedCapacityReasons": [
+      {
+        "resourceClass": "helper",
+        "slots": 2,
+        "reasonCode": "completed_before_join",
+        "owner": "PLAY-081",
+        "resumptionEvent": "Integration dispatches another closed-input West validation job",
+        "nextRefillJob": "consume_the_postlock_west_grants_after_all_required_authorities_publish"
+      },
+      {
+        "resourceClass": "helper",
+        "slots": 1,
+        "reasonCode": "serialized_writer",
+        "owner": "019fab72-b2c9-7d60-a397-27d01d06cbbd",
+        "resumptionEvent": "The visible West owner completes the task-owned replay-evidence checkpoint",
+        "nextRefillJob": "consume_the_postlock_west_grants_after_all_required_authorities_publish"
+      }
+    ],
+    "overlap": {
+      "status": "observed",
+      "jobIds": [
+        "west-rev7-zero-child-closure",
+        "west-rev7-live-contract-suites",
+        "west-rev7-fresh-root-reproducibility"
+      ],
+      "startedAt": "2026-07-30T15:40:30.965Z",
+      "endedAt": "2026-07-30T15:40:34.685Z",
+      "durationMilliseconds": 3720,
+      "peakConcurrentHelpers": 3
+    },
+    "join": {
+      "state": "joined",
+      "joinedAt": "2026-07-30T15:41:55.392Z",
+      "requiredJobs": [
+        "west-rev7-zero-child-closure",
+        "west-rev7-live-contract-suites",
+        "west-rev7-fresh-root-reproducibility"
+      ],
+      "completedJobs": [
+        "west-rev7-zero-child-closure",
+        "west-rev7-live-contract-suites",
+        "west-rev7-fresh-root-reproducibility"
+      ]
+    }
+  },
+  "parallelismExemption": {
+    "reasonCode": "stage_prohibited_by_authority",
+    "stageProhibition": {
+      "batchState": "appearance_lock_and_postlock_grants_pending",
+      "rule": "PLAY-081 revision 7 authorizes current-authority zero-DCC replay only; West A/B/C remain prohibited until the exact North Process-A appearance lock and post-lock production grant publish"
+    },
+    "owner": {
+      "role": "integration",
+      "id": "integration"
+    },
+    "dependencyAuthority": {
+      "path": "docs/production/claims/PLAY-081.world-art-west.md",
+      "sha256": "aa5e0acb5988807d1c934326fd6b3da7f594def8dde84b01ab273905f9753ed3"
+    },
+    "resumptionEvent": "Integration publishes the accepted North Process-A appearance lock, source-production profile, postlock schedule, and exact West grants",
+    "nextRefillJob": "launch_west_a_b_c_into_the_predeclared_disjoint_roots"
+  },
+  "preservedHistoricalBytes": [
+    {
+      "path": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/schedule-consumer-v01/CURRENT-AUTHORITY-SYNCHRONIZATION-112556E1.json",
+      "sha256": "e3480603402747922bccf27b2b22b5c7f7cbd3cda295a43e857664cfcc9e9f92"
+    },
+    {
+      "path": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/schedule-consumer-v01/POSTLOCK-LAUNCH-READINESS-CLOSURE-587668D8.json",
+      "sha256": "3ca047b0b63261ec0ebecc61c5dbd2c6b9a82ac4485cbd9ab9205c5e6049053c"
+    },
+    {
+      "path": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/schedule-consumer-v01/EXECUTION-CLOSURE-V1.json",
+      "sha256": "34ac205361c7c621adb169cea298ab0970d8866318419b48531c9f8f115a444e"
+    },
+    {
+      "path": "docs/production/evidence/PLAY-081/PREDESIGN-HANDOFF.json",
+      "sha256": "0bfe22cb607708e21e446f7e11dbc91876f107b3910bf23fcf474e9ee428e978"
+    },
+    {
+      "path": "docs/production/evidence/PLAY-081/STATIC-PREDESIGN-PROOF.json",
+      "sha256": "2dd6c5b77734f0bc1dd101a38ab7f4f69be2a4ac6b2a26c4b3ec6c6872a22727"
+    },
+    {
+      "path": "docs/production/evidence/PLAY-081/ACTUAL-CAMERA-PREDESIGN-PROOF.json",
+      "sha256": "7fa5fdde4f3cd18439b220189c6efac9f0118e3dc5e8d9bb2fe8a0705bfa951d"
+    },
+    {
+      "path": "docs/production/evidence/PLAY-081/REPEAT-IDENTITY.json",
+      "sha256": "14d5f5b3115426a28d85518f2f27e467cf841dcb0ae8b55796160d833490de8a"
+    }
+  ],
+  "changedPathAudit": {
+    "comparisonBase": "80e0cadf8bd879a2af4e2d48d04bae91eae5ab66",
+    "implementationHead": "9de73a6bf5cf24ce0428ad59d12d75fe66b5882e",
+    "allowedPathPrefixes": [
+      "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/",
+      "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/"
+    ],
+    "implementationChangedPathCount": 13,
+    "outOfScopeChangedPaths": [],
+    "historicalPacketsChanged": false,
+    "acceptedPredesignChanged": false,
+    "sharedFilesChanged": false,
+    "siblingFilesChanged": false
+  },
+  "disposition": {
+    "currentAuthorityReplay": "passed",
+    "validationOnly": true,
+    "childStartAuthorized": false,
+    "dccExecutionAuthorized": false,
+    "renderAuthorized": false,
+    "pixelAuthorized": false,
+    "sourceCandidateReady": false,
+    "appearanceAccepted": false,
+    "integrationAdmitted": false,
+    "rendererQuarantined": false,
+    "productionSelected": false,
+    "shippingAuthorized": false,
+    "nextLegalAction": "wait_for_separately_accepted_north_appearance_lock_and_postlock_west_grant"
+  }
+}

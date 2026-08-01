@@ -47,10 +47,10 @@
   },
   "branch": "codex/citysim-world-art-south",
   "claim": {
-    "blobOid": "5b16e18a8a646d24133c58fcd5275b9f49516abd",
+    "blobOid": "bbff05a8840376bb061271f7a63e1b4ef8744362",
     "path": "docs/production/claims/PLAY-080.world-art-south.md",
-    "revision": 6,
-    "sha256": "5e07bef53399485140a710b6297825c5276cb48f61a6e15032eb1c358d8bcde6"
+    "revision": 7,
+    "sha256": "6f159c360545edbfbfb68b4eac9bb136f3a1dbaa923800b429bd62e7d962a23e"
   },
   "currentInputs": {
     "appearanceLock": {
@@ -76,8 +76,8 @@
   "executionClosure": {
     "authorityInstance": null,
     "childStartAuthorized": false,
-    "claimRevision": 6,
-    "claimSha256": "5e07bef53399485140a710b6297825c5276cb48f61a6e15032eb1c358d8bcde6",
+    "claimRevision": 7,
+    "claimSha256": "6f159c360545edbfbfb68b4eac9bb136f3a1dbaa923800b429bd62e7d962a23e",
     "dccExecutionAuthorized": false,
     "liveLeaseAuthorized": false,
     "mode": "validation_only",
@@ -86,7 +86,7 @@
       "sha256": "0125539f015ab8069c11093e755ac6e43d7b37994c86515fc06894e401b7eb54"
     },
     "pixelAuthorized": false,
-    "publishedBaseCommit": "cda04083bd50df3a0cd99923c8ad571afd62509b",
+    "publishedBaseCommit": "aaee294718a8176b70a4688b738b517f216dd3a7",
     "renderAuthorized": false,
     "schema": {
       "path": "docs/production/evidence/INTEGRATION/industrial-l04-direction-execution-authority-schema-v1.json",
@@ -112,9 +112,9 @@
     "sourceReady": false
   },
   "integrationAuthority": {
-    "commit": "cda04083bd50df3a0cd99923c8ad571afd62509b",
+    "commit": "aaee294718a8176b70a4688b738b517f216dd3a7",
     "runtimeHeadPolicy": "integration-authority-is-ancestor",
-    "treeOid": "b1a5bbea9e401a601d4d8e0f6cb9e84fc259af91"
+    "treeOid": "7ee544ea6616be88d1e035eb4c618ce73805525c"
   },
   "mode": "zero-pixel-direction-schedule-consumer-readiness",
   "nonproductionPostlockFixture": {
@@ -129,7 +129,7 @@
     },
     "schedule": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/schedule-consumer-adapter-v01/fixtures/POSTLOCK-SCHEDULE.json",
-      "sha256": "b0691abda2d50c742bd92e0b15667caff91e231bba4bdd40988f5a099d763772"
+      "sha256": "307d1920671316e2c959e9dbd940b805e86b2a127e694e7c72da3fc5a10cd686"
     },
     "sourceProductionProfile": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/schedule-consumer-adapter-v01/fixtures/POSTLOCK-SOURCE-PRODUCTION-PROFILE.json",
@@ -138,15 +138,15 @@
   },
   "orchestration": {
     "approvedHighLevelOrchestrator": {
-      "blobOid": "92155d1cf68efa78e3d2396c8cfe7c4794c9662c",
+      "blobOid": "d157277bf859f1ccdf0adecac63c440c52b867d4",
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/prepare_launch_binding.py",
-      "sha256": "10d255e6279d7a1778adbc4b1d0f7409e2f98e669c9f640c01857f7ee15abcc9"
+      "sha256": "f33852d82f0d9707f0b20aff899302d708955fe68b85eb36dbacba0d006edd57"
     },
     "directLowLevelInvocationAllowed": false,
     "forbiddenLowLevelRunner": {
-      "blobOid": "51d220d89de07e9550a03c4f849a2dd699238353",
+      "blobOid": "8ab0ea5f743b40c35c7723a576883f7233248474",
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/run_production.py",
-      "sha256": "80ac231be0b312d69eb55f10a8acee5ef2617a723570ca243d89c419718d5b27"
+      "sha256": "43a1338f6e4293820609e7e887f9dddaaa8607a8a21d483ec58d9aaa7d1202ca"
     },
     "maximumChildStartsPerGrant": 1,
     "orchestratorOnly": true,
@@ -160,15 +160,15 @@
     "tests": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/schedule-consumer-adapter-v01/test_consume_schedule_v01.py"
   },
   "runnerContract": {
-    "blobOid": "bde316b55999a03b63316e89b02cdd8443b0bc33",
+    "blobOid": "970b604ee1b4fb7d60ad383b8853f6597e8fcfb1",
     "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/runner-contract.json",
-    "sha256": "bc74613e9fdcc5b7c378488b0a5c3b5404087fb231da2b528b719597a1df03a2"
+    "sha256": "e8327aab984ca7b73cdc843cb1f5477d61215784fa86ea1a7ee9d8f9ae47afd7"
   },
   "schema": "citysim.play-080.south-schedule-consumer-adapter.v2",
   "target": {
-    "baseCommit": "cda04083bd50df3a0cd99923c8ad571afd62509b",
-    "claimRevision": 6,
-    "claimSha256": "5e07bef53399485140a710b6297825c5276cb48f61a6e15032eb1c358d8bcde6",
+    "baseCommit": "aaee294718a8176b70a4688b738b517f216dd3a7",
+    "claimRevision": 7,
+    "claimSha256": "6f159c360545edbfbfb68b4eac9bb136f3a1dbaa923800b429bd62e7d962a23e",
     "exclusiveRoots": [
       "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/",
       "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/"

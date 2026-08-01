@@ -32,6 +32,10 @@ EXPECTED_CONTRACT_FIELDS = {
     "branch",
     "publishedBaseCommit",
     "claim",
+    "currentAuthorityReplay",
+    "processAPrelaunchAuthority",
+    "directionScheduleAdapter",
+    "processAOrchestrator",
     "adapterAuthority",
     "scheduleSchema",
     "scheduleValidator",
@@ -51,6 +55,38 @@ EXPECTED_CONTRACT_FIELDS = {
     "sourceAuthority",
     "candidateReadyForIndependentReview",
     "productionSelected",
+}
+EXPECTED_CURRENT_AUTHORITY_REPLAY = {
+    "refreshAuthority": {
+        "path": (
+            "docs/production/evidence/INTEGRATION/"
+            "INDUSTRIAL-L04-CURRENT-MASTER-AUTHORITY-REFRESH-2026-07-30.md"
+        ),
+        "sha256": "75ec7518371b5a822f2650a8b8427289112debbe806e3e82b5809fd43865a46c",
+    },
+    "sourceStageSchema": {
+        "path": (
+            "docs/production/evidence/INTEGRATION/"
+            "industrial-l04-source-stage-handoff-schema-v2.json"
+        ),
+        "sha256": "85f6a2824c273a1e63354df79a97e5a59c2909a68771613b325664d649ac53ec",
+    },
+    "nonAliasInput": {
+        "path": (
+            "docs/production/evidence/INTEGRATION/"
+            "industrial-l04-accepted-master-non-alias-input-v1.json"
+        ),
+        "sha256": "d1d75fdc30d9a2f21d49b59fd13dbc6fe7d81669f76f801d1087b35a7fb70044",
+    },
+    "nonAliasLoader": {
+        "path": (
+            "Native/CitySimNative/WorldArt/Shared/"
+            "accepted_master_non_alias_v1.py"
+        ),
+        "sha256": "83716838d310b5a5a3be51091b255d2a5eabb1b2f28d9af72a89a885779f3a7d",
+    },
+    "acceptedMasterCount": 44,
+    "forbiddenSetSHA256": "265c564785a5fa4ce14fbd04898ef04aaed883e2ca56f6a0660a9937464926ea",
 }
 
 
@@ -149,6 +185,24 @@ def assert_commit_ancestor(repository_root: Path, commit: str, label: str) -> No
     git_output(repository_root, ["merge-base", "--is-ancestor", commit, "HEAD"])
 
 
+def assert_commit_ancestor_of(
+    repository_root: Path,
+    ancestor: str,
+    descendant: str,
+    label: str,
+) -> None:
+    assert_commit_ancestor(repository_root, ancestor, f"{label}.ancestor")
+    require(
+        len(descendant) == 40
+        and all(character in "0123456789abcdef" for character in descendant),
+        f"{label}.descendant must be a full commit",
+    )
+    git_output(repository_root, ["cat-file", "-e", f"{descendant}^{{commit}}"])
+    git_output(repository_root, ["merge-base", "--is-ancestor", descendant, "HEAD"])
+    require(ancestor != descendant, f"{label} requires a preexisting authority commit")
+    git_output(repository_root, ["merge-base", "--is-ancestor", ancestor, descendant])
+
+
 def load_shared_validator(repository_root: Path, path: Path) -> Any:
     spec = importlib.util.spec_from_file_location(
         "play027_integration_schedule_validator",
@@ -159,6 +213,51 @@ def load_shared_validator(repository_root: Path, path: Path) -> Any:
     spec.loader.exec_module(module)
     require(callable(getattr(module, "validate", None)), "schedule validator entrypoint missing")
     return module
+
+
+def validate_current_authority_replay(
+    repository_root: Path,
+    value: Any,
+) -> dict[str, Any]:
+    require(
+        value == EXPECTED_CURRENT_AUTHORITY_REPLAY,
+        "current authority replay binding drift",
+    )
+    for label in (
+        "refreshAuthority",
+        "sourceStageSchema",
+        "nonAliasInput",
+        "nonAliasLoader",
+    ):
+        verify_file_binding(
+            repository_root,
+            value[label],
+            f"currentAuthorityReplay.{label}",
+            expected_path=EXPECTED_CURRENT_AUTHORITY_REPLAY[label]["path"],
+            expected_sha256=EXPECTED_CURRENT_AUTHORITY_REPLAY[label]["sha256"],
+        )
+    loader_path = repository_root / value["nonAliasLoader"]["path"]
+    spec = importlib.util.spec_from_file_location(
+        "play027_current_non_alias_loader",
+        loader_path,
+    )
+    require(spec is not None and spec.loader is not None, "non-alias loader import failed")
+    loader = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(loader)
+    require(
+        callable(getattr(loader, "load_forbidden_decoded_rgba", None)),
+        "non-alias loader entrypoint missing",
+    )
+    require(
+        getattr(loader, "INPUT_SHA256", None) == value["nonAliasInput"]["sha256"],
+        "non-alias loader input binding drift",
+    )
+    require(
+        getattr(loader, "FORBIDDEN_SET_SHA256", None)
+        == value["forbiddenSetSHA256"],
+        "non-alias loader forbidden-set binding drift",
+    )
+    return value
 
 
 def validate_contract(repository_root: Path, contract_path: Path) -> dict[str, Any]:
@@ -174,7 +273,7 @@ def validate_contract(repository_root: Path, contract_path: Path) -> dict[str, A
         "process": "A",
         "phase": "prelock_north_a",
         "branch": "codex/citysim-world-art",
-        "publishedBaseCommit": "401eb2ce19c5f5c932442ace72e66fbd734cfa35",
+        "publishedBaseCommit": "22144bffacbf255f04952d28ccdc9683227b535f",
         "expectedSlotId": "dcc-1",
         "expectedQueue": ["north:A"],
         "maximumChildStarts": 1,
@@ -202,7 +301,18 @@ def validate_contract(repository_root: Path, contract_path: Path) -> dict[str, A
     bindings = {
         "claim": (
             "docs/production/claims/PLAY-027.world-art.md",
-            "618ea95ffac855aa28e29f8cf09cb6529ec0774e685e6761a8e2985ecb9e1335",
+            "d28bf14bb3d2d5441f3df6278eef758a5babb4453d22e06fc8bd4075ad5c80a1",
+        ),
+        "processAPrelaunchAuthority": (
+            "docs/production/evidence/INTEGRATION/"
+            "INDUSTRIAL-L04-NORTH-V12-PROCESS-A-PRELAUNCH-AUTHORITY.md",
+            "889fd6f87a0d7eb112fe392d66901e927658a86a6d3aa311e53178d61cb4725e",
+        ),
+        "processAOrchestrator": (
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027/"
+            "industrial-l04-north-art-v12/process-a-execution-v01/"
+            "launch_north_process_a.py",
+            "0301cd4412e40a71cf187e53e4022ef730df7d6c83777689e07613bde270f222",
         ),
         "adapterAuthority": (
             "docs/production/evidence/INTEGRATION/"
@@ -232,6 +342,16 @@ def validate_contract(repository_root: Path, contract_path: Path) -> dict[str, A
             expected_path=path,
             expected_sha256=digest,
         )
+    validate_current_authority_replay(
+        repository_root,
+        contract["currentAuthorityReplay"],
+    )
+    verify_file_binding(
+        repository_root,
+        contract["directionScheduleAdapter"],
+        "directionScheduleAdapter",
+        expected_path=str(ADAPTER_RELATIVE),
+    )
     frozen = contract["frozenNorthV12Inputs"]
     require(
         isinstance(frozen, dict)
@@ -276,8 +396,6 @@ def validate_north_grant(
     repository_root: Path,
     contract: dict[str, Any],
     schedule: dict[str, Any],
-    *,
-    adapter_relative: Path = ADAPTER_RELATIVE,
 ) -> dict[str, Any]:
     require(schedule["phase"] == contract["phase"], "wrong schedule phase")
     require(schedule["batch"] == contract["batch"], "wrong schedule batch")
@@ -304,12 +422,16 @@ def validate_north_grant(
         direction["exclusiveRoots"] == contract["expectedExclusiveRoots"],
         "exclusive roots drift",
     )
-    adapter_path = resolve_regular(repository_root, str(adapter_relative), "North orchestrator")
-    expected_orchestrator = {
-        "path": str(adapter_relative),
-        "sha256": sha256(adapter_path),
-    }
-    require(direction["orchestrator"] == expected_orchestrator, "orchestrator binding drift")
+    verify_file_binding(
+        repository_root,
+        contract["processAOrchestrator"],
+        "processAOrchestrator",
+    )
+    require(
+        direction["orchestrator"] == contract["directionScheduleAdapter"],
+        "direction schedule-adapter binding drift",
+    )
+    expected_orchestrator = contract["processAOrchestrator"]
     grant = process_grant(direction, contract["process"])
     require(grant["state"] == "granted", "North Process A grant is blocked")
     require(grant["slotId"] == contract["expectedSlotId"], "DCC slot drift")
@@ -341,6 +463,7 @@ def validate_north_grant(
         "integrationAuthorityCommit": schedule["integrationAuthorityCommit"],
         "publishedBaseCommit": direction["baseCommit"],
         "claimSHA256": direction["claimSha256"],
+        "currentAuthorityReplay": contract["currentAuthorityReplay"],
         "frozenNorthV12Inputs": contract["frozenNorthV12Inputs"],
         "adapterMode": contract["adapterMode"],
         "directLowLevelInvocationAllowed": False,
@@ -360,6 +483,7 @@ def verify_published_schedule(
     repository_root: Path,
     schedule_path: Path,
     schedule: dict[str, Any],
+    schedule_publication_commit: str,
 ) -> None:
     integration_root = (repository_root / INTEGRATION_SCHEDULE_ROOT).resolve(strict=True)
     lexical = schedule_path.absolute()
@@ -371,6 +495,12 @@ def verify_published_schedule(
     resolved = lexical.resolve(strict=True)
     require(resolved.is_relative_to(integration_root), "schedule is outside Integration authority root")
     relative = resolved.relative_to(repository_root)
+    assert_commit_ancestor_of(
+        repository_root,
+        schedule["integrationAuthorityCommit"],
+        schedule_publication_commit,
+        "schedulePublication",
+    )
     status = git_output(
         repository_root,
         ["status", "--porcelain=v1", "--", str(relative)],
@@ -378,15 +508,16 @@ def verify_published_schedule(
     require(not status, "published schedule worktree bytes are dirty")
     tracked = git_bytes(
         repository_root,
-        ["show", f"{schedule['integrationAuthorityCommit']}:{relative}"],
+        ["show", f"{schedule_publication_commit}:{relative}"],
     )
-    require(tracked == resolved.read_bytes(), "schedule bytes are not frozen at authority commit")
+    require(tracked == resolved.read_bytes(), "schedule bytes are not frozen at publication commit")
 
 
 def consume_published_schedule(
     repository_root: Path,
     contract_path: Path,
     schedule_path: Path,
+    schedule_publication_commit: str,
 ) -> dict[str, Any]:
     repository_root = repository_root.resolve(strict=True)
     contract = validate_contract(repository_root, contract_path)
@@ -409,7 +540,12 @@ def consume_published_schedule(
     )
     validator = load_shared_validator(repository_root, validator_path)
     validator.validate(repository_root, schedule_path)
-    verify_published_schedule(repository_root, schedule_path, schedule)
+    verify_published_schedule(
+        repository_root,
+        schedule_path,
+        schedule,
+        schedule_publication_commit,
+    )
     return validate_north_grant(repository_root, contract, schedule)
 
 
@@ -418,6 +554,7 @@ def arguments() -> argparse.Namespace:
     parser.add_argument("--repository-root", required=True)
     parser.add_argument("--contract", required=True)
     parser.add_argument("--schedule", required=True)
+    parser.add_argument("--schedule-publication-commit", required=True)
     return parser.parse_args()
 
 
@@ -428,6 +565,7 @@ def main() -> int:
             Path(options.repository_root),
             Path(options.contract),
             Path(options.schedule),
+            options.schedule_publication_commit,
         )
     except (OSError, json.JSONDecodeError, AdapterError, ValueError) as error:
         print(

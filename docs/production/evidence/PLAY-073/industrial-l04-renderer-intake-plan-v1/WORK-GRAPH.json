@@ -6,8 +6,8 @@
   "claimRevision": "47a260aea5ab9d38a98ceaaefb61e89e00322110b5a833e964a59d13157d7a49",
   "preservedRendererCandidate": "302b260cdd35e41cf74794726468e473256d810a",
   "currentAuthorityEpoch": {
-    "publishedMaster": "112556e151a365cde9475927817616a867729753",
-    "mergedRendererHead": "5b6ce2b2e58c98b2a19113664b80aeff673bd49c"
+    "publishedMaster": "aaee294718a8176b70a4688b738b517f216dd3a7",
+    "mergedRendererHead": "ad16f1af847308bdc9a046a5fe0e7ca859282e0b"
   },
   "intakeAuthority": {
     "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-RENDERER-INTAKE-PLAN-V1-AUTHORITY.md",
@@ -15,7 +15,7 @@
   },
   "canonicalPlan": {
     "path": "docs/production/evidence/INTEGRATION/industrial-l04-renderer-intake-plan-v1.json",
-    "sha256": "1f3877c85f665ac4d35ecf2b8ec883e3cd2b0d125ffe0c385a31829137f0887e",
+    "sha256": "ca6c31bbafe0afcf537d1b58093c11c8485d3af734ac1e9a041438c271e68abe",
     "publishedBase": "9217e64c796fef3e9d45d0726453157e70b4ef16"
   },
   "preparationJobs": [

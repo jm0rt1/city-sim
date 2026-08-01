@@ -54,6 +54,14 @@ the complete route object beside that hash. A worker independently resolves
 the receipt object, claim, inputs, base, and authority before acknowledging.
 Prompt text is not authority. Any mismatch is a zero-mutation stop.
 
+For a multi-row dispatch, a worker validates its exact row with
+`validate_model_route_v1.py --dispatch <receipt> --dispatch-route-id <routeId>`.
+The validator still checks receipt-wide row shape, canonical hashes, shared
+authority projection, and unique route IDs, but applies live branch/HEAD and
+full route checks only to the selected row. Unrelated sibling HEAD movement
+must not demote a correctly bound worker; an unknown or duplicate route ID and
+any selected-row identity mismatch fail closed.
+
 ## Mandatory escalation triggers
 
 Every Luna packet must carry all of these fail-closed triggers:

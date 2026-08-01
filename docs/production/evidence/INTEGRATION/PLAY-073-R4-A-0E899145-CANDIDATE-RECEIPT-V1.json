@@ -1,0 +1,82 @@
+{
+  "schema": 1,
+  "receiptId": "play-073-r4-a-0e899145-candidate-v1",
+  "issuedAt": "2026-08-01T19:57:58Z",
+  "issuedBy": {
+    "lane": "integration",
+    "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8"
+  },
+  "candidate": {
+    "taskId": "PLAY-073",
+    "scope": "R4-A authored starter-district composition without Industrial L4 source activation",
+    "commit": "0e89914566ba4593b25e2cd52b4b788d204b7331",
+    "parent": "11e2470b8bdfe24a7717b5724b4b4c9a2cac940c",
+    "tree": "e368d22cdd408d015d6ee6883c252c4c37337a95",
+    "integratedBranch": "master",
+    "isolatedBuildBranch": "codex/r4a-qa-candidate",
+    "isolatedBuildWorktree": "/private/tmp/citysim-r4a-qa-0e899145",
+    "sourceWorktreeClean": true,
+    "featureAuthorThreadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0"
+  },
+  "authority": {
+    "path": "docs/production/evidence/INTEGRATION/PLAY-073-R4-A-AUTHORITY.md",
+    "sha256": "cbbc75c1f8672e980f03413a8b2810e7f34c7108365811bfba20313c65ffd3a3",
+    "rendererValidation": {
+      "path": "docs/production/evidence/PLAY-073/r4-a-candidate-526ff4f/VALIDATION.json",
+      "sha256": "9f5f8ab989754ad075ffc8e8ddd6c0fba5d024eb27419123ebf4140a41beb17b"
+    },
+    "rendererHandoff": {
+      "path": "docs/production/evidence/PLAY-073/r4-a-candidate-526ff4f/HANDOFF.md",
+      "sha256": "da40351bc063538e5453342e3a5d07d6807bb6b0c22cc546daf760161e8b3947"
+    },
+    "currentMasterRevalidation": {
+      "path": "docs/production/evidence/PLAY-073/r4-a-current-master-revalidation-v1/RESULT.json",
+      "sha256": "d168a5d81ddfc43df41a34ca9580e7718d77b120d1fbd5de8d2785fe5fc06220"
+    }
+  },
+  "aggregateValidation": {
+    "swiftSuite": {
+      "command": "swift test --package-path Native/CitySimNative",
+      "candidateCommit": "0e89914566ba4593b25e2cd52b4b788d204b7331",
+      "status": "pass",
+      "executed": 325,
+      "skipped": 3,
+      "unexpectedFailures": 0,
+      "durationSeconds": 260.731
+    },
+    "diffCheck": {
+      "command": "git diff --check 11e2470b8bdfe24a7717b5724b4b4c9a2cac940c..0e89914566ba4593b25e2cd52b4b788d204b7331",
+      "status": "pass"
+    },
+    "buildScriptSyntax": {
+      "command": "bash -n script/build_and_run.sh",
+      "status": "pass"
+    },
+    "stagedBuild": {
+      "command": "./script/build_and_run.sh --verify",
+      "status": "pass",
+      "buildSeconds": 7.54,
+      "candidateId": "codex-r4a-qa-candidate-w63e632e37e58",
+      "bundleIdentifier": "com.jfmortensen.citysim.codex-r4a-qa-candidate.w63e632e37e58",
+      "preferenceDomain": "com.jfmortensen.citysim.codex-r4a-qa-candidate.w63e632e37e58",
+      "displayName": "CitySim [codex-r4a-qa-candidate w63e632e37e58]",
+      "dataRoot": "/private/tmp/citysim-r4a-qa-0e899145/dist/test-data/codex-r4a-qa-candidate-w63e632e37e58",
+      "bundlePath": "/private/tmp/citysim-r4a-qa-0e899145/dist/CitySim-codex-r4a-qa-candidate-w63e632e37e58.app",
+      "executablePath": "/private/tmp/citysim-r4a-qa-0e899145/dist/CitySim-codex-r4a-qa-candidate-w63e632e37e58.app/Contents/MacOS/CitySimNative-w63e632e37e58",
+      "resourceBundlePath": "/private/tmp/citysim-r4a-qa-0e899145/dist/CitySim-codex-r4a-qa-candidate-w63e632e37e58.app/CitySimNative_CitySimNative.bundle",
+      "manifestPath": "/private/tmp/citysim-r4a-qa-0e899145/dist/manifests/codex-r4a-qa-candidate-w63e632e37e58.manifest",
+      "manifestSha256": "b3127b04f4c26c4b8a390be28561a7193bedd136736e978917333b77685f6f4d",
+      "executableSha256": "83641837a8039dc787f13e44c228e22014332d3b50bcbc7dcb08f33ec58cfec7",
+      "infoPlistSha256": "9ec4c44ebbe5cb90197b6704812f9e097eb856608c4cb84005aae7b18bd3894b",
+      "resourceInventoryFileCount": 79,
+      "resourceInventorySha256": "7e5c22eab2eed001f774c218a8e1c1d05f5580359ce90dedbb199b2eee2c7ff4"
+    }
+  },
+  "launchBoundary": {
+    "smokeProcessId": 19044,
+    "smokeProcessStoppedBeforeLease": true,
+    "matchingCandidateProcessesAtLeasePreflight": 0,
+    "qaMustLaunchExistingStagedExecutableWithoutRebuilding": true
+  },
+  "disposition": "candidate_ready_for_one_independent_frontier_real_app_gate"
+}

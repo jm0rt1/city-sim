@@ -41,8 +41,15 @@
   admission-receipt harness is integrated through
   `b72272e1a41b272c9ba549f05760a72f8ed92fd8`. Industrial L4 shipping
   ingestion is now explicitly deferred while its source cells continue, and
-  Renderer is released for the bounded authored-opening R4-A slice under
-  `PLAY-073-R4-A-AUTHORITY.md`.
+  Renderer was released for the bounded authored-opening R4-A slice under
+  `PLAY-073-R4-A-AUTHORITY.md`. Exact R4-A candidate
+  `0e89914566ba4593b25e2cd52b4b788d204b7331` is preserved but returned by
+  independent PLAY-075 at clean evidence commit
+  `35ff256581d8f5f14c74309f52ee0853658c937a`: it scored 18/20 and failed the
+  broad-green-terrain and adjacent-building-repetition automatic returns. Its
+  product was explicitly rolled back on Integration master while the QA packet
+  remains durable. Renderer is now released for the bounded R4-B return repair
+  under `PLAY-073-R4-B-RETURN-REPAIR-AUTHORITY.md`.
 
 Recompose the visible world as one authored district. The developed city must
 dominate the intended camera while retaining useful buildable context. Roads,

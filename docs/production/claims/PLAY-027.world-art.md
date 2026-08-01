@@ -1,6 +1,6 @@
 # PLAY-027 Claim
 
-- **Claim revision:** 8
+- **Claim revision:** 9
 - **Title:** Author the four-direction production building catalog
 - **Lane:** World art generation cell
 - **Branch:** `codex/citysim-world-art`
@@ -28,10 +28,13 @@
   prelaunch closure and its synchronized parallel-art epoch are independently
   reviewed and integrated. North v13 design authority and deterministic
   actual-camera zero-pixel lowering are also independently reviewed and
-  integrated. Revision 8 authorizes only the v13 zero-child prelaunch
-  adaptation below. Process A remains blocked until Integration separately
-  accepts that closure and publishes its exact schedule, one-process lease,
-  secret, and compute slot.
+  integrated. Revision 8's v13 zero-child prelaunch lineage is retained as
+  rejected history because its public test-fixture API allowed a caller to
+  choose the signing key and create consumed attempt state. Revision 9
+  authorizes only the bounded retirement repair below. Process A remains
+  blocked until Integration accepts the complete current-tree closure and
+  publishes its exact schedule, one-process lease, process receipt, and
+  compute slot.
 - **Latest L4 disposition:** Integration accepted the v06 zero-pixel global
   coordinate bridge from `3e01ca67`. Canonical North is `z = -28`, the global
   basis is `B(x,y,z)=(z,x,y)`, descriptor order is `[0,1,2,3]`, and the North
@@ -56,7 +59,10 @@
   design or grant execution. V02 remains rejected and immutable; it may not be
   reclassified as passing. The unchanged v10 emission value is not luma proof
   and must be re-proved in the later separately granted Process A.
-  North Process A/B/C, sibling source pixels, appearance-lock publication,
+  North v13 integration-direct Process-A implementation candidate
+  `aaea9fda4249e88a82791d9a418408575e5f32ff` remains returned pending
+  retirement of the older public fixture-authority surface. North Process
+  A/B/C, sibling source pixels, appearance-lock publication,
   source admission, Renderer activation, and shipping remain blocked.
 
 The first durable batch is the 48-source R/C/I variant-zero spine: residential,
@@ -122,3 +128,29 @@ pixel, issue a live lease, generate a secret, publish a schedule, accept an
 appearance lock, run Process B/C, alter any sibling direction, edit renderer or
 shipping surfaces, push, integrate, or self-accept. Integration independently
 reviews this prelaunch closure before any separately published Process-A grant.
+
+## Revision-9 retire the rejected v13 prelaunch authority surface
+
+Consume the Integration-owned
+`INDUSTRIAL-L04-INTEGRATION-DIRECT-LAUNCH-AUTHORITY-V2.md`. The revision-8
+`process-a-prelaunch-v01/` implementation is rejected and has no launch,
+fixture, authentication, lease, attempt, or source authority. Its original
+bytes remain durable in Git history and its retained evidence remains
+historical only.
+
+In one bounded repair, make the current-tree `process-a-prelaunch-v01/`
+launcher and child unconditionally inert, mark both task-owned contracts
+retired, replace their focused test with adversaries proving the module exports
+no authority builder, signer, validator, consumer, launcher, or child-start
+capability, and add one task-owned retirement receipt. The repair must prove
+that hostile imports and attempted calls create no file or directory anywhere
+under the fresh isolated test root or the legacy `/private/tmp` attempt-name
+prefix. Preserve every `process-a-v02/` byte, all design/lowering inputs,
+pixels, sibling paths, Renderer/shipping surfaces, and historical evidence
+byte-for-byte.
+
+This revision authorizes no DCC/Blender process, render, normalization, source
+pixel, schedule, live lease, attempt marker, appearance lock, source
+admission, production selection, Renderer activation, push, integration, or
+self-acceptance. Independent frontier review must accept the complete current
+tree before Integration may issue the separate direct Process-A launch.

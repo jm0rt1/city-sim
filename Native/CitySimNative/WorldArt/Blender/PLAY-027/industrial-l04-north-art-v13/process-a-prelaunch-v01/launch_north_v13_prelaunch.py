@@ -17,12 +17,12 @@ import subprocess
 import sys
 
 
-ROUTE_ID = "quality-v1:north-v13-prelaunch-frontier-repair-r2"
-ROUTE_CANONICAL_SHA256 = "9dfb7462e4f1981b91ee3cdbdacb7d7b25ec43c2290e306731928cac41c9fea9"
-EXPECTED_CARRIER = "0b81392aaa3dfda2e4ef6294ddf8693db7f87b5f"
-EXPECTED_RECEIPT_PATH = "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-NORTH-V13-PRELAUNCH-FRONTIER-REPAIR-R2.json"
-EXPECTED_RECEIPT_SHA256 = "392408d45cfe4a75888d3629a0fbc184477fbc851028b8ee9fbe01c6dee7b4ec"
-EXECUTION_BASE_HEAD = "e40f4dcc95340af353b65c7e667ca5617d0e4497"
+ROUTE_ID = "quality-v1:north-v13-prelaunch-frontier-repair-r3"
+ROUTE_CANONICAL_SHA256 = "8648d109475cfffc17a77e9e4b089a2cdadbc957d9481bd006687af8196a76f5"
+EXPECTED_CARRIER = "f8832635dd008d9c86d2050931783f2b91cef89f"
+EXPECTED_RECEIPT_PATH = "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-NORTH-V13-PRELAUNCH-FRONTIER-REPAIR-R3.json"
+EXPECTED_RECEIPT_SHA256 = "d47fcd970f83ad333bdfa4cbbc2f67f441e09d27cb9f4d6991adad18ea5e6e78"
+EXECUTION_BASE_HEAD = "e022653746b4ac3b554bb9842f0193c66c409236"
 EXPECTED_CLAIM = "7d42ba7c38a55d7681171499aad50e15c2d3eba0878cabf508d0e42ee97cdc83"
 EXPECTED_BASE = "73b72fce27d1bcfedcf48b76940ddfa688baa48c"
 EXPECTED_SCENE_ID = "industrial-l04-north-v13-portal-crown-foundry"
@@ -54,8 +54,6 @@ EXPECTED_INPUT_ITEMS = (
     ("docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/design-authority-v01/DESIGN-AUTHORITY.json", "1b1006403081c3933c54451b6c506af74493a2ac3b253fdd9f1f79098d7c1bed"),
     ("docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/lowering-v01/ACTUAL-CAMERA-ZERO-PIXEL-PROOF.json", "e4bbe982e47f4bf96703e75848d8bdad1d9c0cc2aa4d227749005fa039273470"),
 )
-_ADAPTER_FACTORY_TOKEN = object()
-_VERIFIED_CONSUMPTION_TOKEN = object()
 
 CONTRACT_KEYS = {
     "schema", "stage", "task", "route", "claim", "assignment", "identity",
@@ -317,52 +315,6 @@ def validate_fixture_authority(authority: dict, contract: dict, root: Path, fixt
     return binding
 
 
-class _AuthenticatedTestOneShotAdapter:
-    """Private adapter with one immutable, adapter-derived fixture store."""
-
-    def __init__(self, factory_token: object, binding: dict):
-        if factory_token is not _ADAPTER_FACTORY_TOKEN:
-            raise ValueError("direct adapter construction forbidden")
-        self.binding = binding
-        self.consumption_id = binding["consumptionId"]
-        self.state_name = _fixture_state_name(binding)
-        self.closed = False
-
-    def consume(self, binding: dict) -> dict:
-        raise ValueError("direct adapter consumption forbidden")
-
-    def _consume_verified(self, binding: dict, verified_token: object) -> dict:
-        if verified_token is not _VERIFIED_CONSUMPTION_TOKEN or binding != self.binding:
-            raise ValueError("authenticated adapter boundary required")
-        parent = Path("/private/tmp")
-        if parent.is_symlink() or not parent.is_dir():
-            raise ValueError("adapter-owned fixture state parent unavailable")
-        parent_fd = os.open(parent, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
-        try:
-            os.mkdir(self.state_name, mode=0o700, dir_fd=parent_fd)
-            state_fd = os.open(self.state_name, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW, dir_fd=parent_fd)
-        except FileExistsError as exc:
-            raise ValueError("fixture attempt state already exists or consumed") from exc
-        finally:
-            os.close(parent_fd)
-        flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW
-        try:
-            marker_fd = os.open("CONSUMED.json", flags, 0o600, dir_fd=state_fd)
-        except FileExistsError as exc:
-            raise ValueError("fixture grant replay") from exc
-        try:
-            payload = canonical_bytes({"consumptionId": self.consumption_id, "consumed": True}) + b"\n"
-            os.write(marker_fd, payload)
-            os.fsync(marker_fd)
-        finally:
-            os.close(marker_fd)
-            os.close(state_fd)
-        return {
-            "consumed": True, "startedDCCChild": False, "dccStarts": 0,
-            "renderStarts": 0, "pixelWrites": 0, "outputCreated": False,
-        }
-
-
 def _fixture_state_name(binding: dict) -> str:
     immutable_key = {
         "routeId": binding["routeId"],
@@ -374,11 +326,39 @@ def _fixture_state_name(binding: dict) -> str:
 
 
 def consume_test_fixture(authority: dict, contract: dict, root: Path, fixture_key: bytes) -> dict:
+    """Authenticate first, then atomically consume at one adapter-owned store."""
     binding = validate_fixture_authority(authority, contract, root, fixture_key)
     if (root / binding["exclusiveOutputRoot"]).exists():
         raise ValueError("output overwrite or replay")
-    adapter = _AuthenticatedTestOneShotAdapter(_ADAPTER_FACTORY_TOKEN, binding)
-    return adapter._consume_verified(binding, _VERIFIED_CONSUMPTION_TOKEN)
+    parent = Path("/private/tmp")
+    if parent.is_symlink() or not parent.is_dir():
+        raise ValueError("adapter-owned fixture state parent unavailable")
+    state_name = _fixture_state_name(binding)
+    parent_fd = os.open(parent, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+    try:
+        os.mkdir(state_name, mode=0o700, dir_fd=parent_fd)
+        state_fd = os.open(state_name, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW, dir_fd=parent_fd)
+    except FileExistsError as exc:
+        raise ValueError("fixture attempt state already exists or consumed") from exc
+    finally:
+        os.close(parent_fd)
+    flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW
+    try:
+        marker_fd = os.open("CONSUMED.json", flags, 0o600, dir_fd=state_fd)
+    except FileExistsError as exc:
+        os.close(state_fd)
+        raise ValueError("fixture grant replay") from exc
+    try:
+        payload = canonical_bytes({"consumptionId": binding["consumptionId"], "consumed": True}) + b"\n"
+        os.write(marker_fd, payload)
+        os.fsync(marker_fd)
+    finally:
+        os.close(marker_fd)
+        os.close(state_fd)
+    return {
+        "consumed": True, "startedDCCChild": False, "dccStarts": 0,
+        "renderStarts": 0, "pixelWrites": 0, "outputCreated": False,
+    }
 
 
 def _canonical_documents(contract: dict, root: Path) -> tuple[dict, dict]:
@@ -393,7 +373,7 @@ def _canonical_documents(contract: dict, root: Path) -> tuple[dict, dict]:
             "allActivityCountersZero": True, "repositoryBackedCarrier": True,
             "executionBaseBound": True, "atomicOneShotState": True,
             "immutableAdapterOwnedStore": True,
-            "directConsumeForbidden": True,
+            "singleAuthenticatedConsumptionSurface": True,
             "exactCandidateIdentityBound": True,
             "exactSixInputSetBound": True,
             "callerStateAccepted": False, "replayRejected": True,
@@ -415,7 +395,7 @@ def _canonical_documents(contract: dict, root: Path) -> tuple[dict, dict]:
     }
     validation = dict(common)
     validation.update({
-        "result": "PASS_ZERO_CHILD_FRONTIER_REPAIR_R2",
+        "result": "PASS_ZERO_CHILD_FRONTIER_REPAIR_R3",
         "prelaunchOnly": True,
         "forbiddenOutputsAbsent": ["future-process-root", "raw-png", "blend", "normalization", "live-grant"],
     })
@@ -508,7 +488,7 @@ def main(argv: list[str] | None = None) -> int:
         if not args.evidence_root:
             raise SystemExit("missing evidence root")
         write_canonical_evidence(repo, Path(args.evidence_root).resolve())
-    print("PASS ZERO_CHILD_FRONTIER_REPAIR_R2 processA=0 blender=0 dcc=0 pixels=0")
+    print("PASS ZERO_CHILD_FRONTIER_REPAIR_R3 processA=0 blender=0 dcc=0 pixels=0")
     return 0
 
 

@@ -2,7 +2,7 @@
   "schema": 1,
   "runner": "launch_north_v13_prelaunch.py",
   "child": "render_north_v13_process_a_child.py",
-  "mode": "zero-child-prelaunch-frontier-repair-r2",
+  "mode": "zero-child-prelaunch-frontier-repair-r3",
   "dccChildStarts": 0,
   "helperProcesses": ["git cat-file", "git show", "git rev-parse", "git merge-base", "git diff", "git ls-files"],
   "requiredInputs": ["EXECUTION-CONTRACT.json"],
@@ -21,7 +21,7 @@
     "atomicOneShotMarker": "O_CREAT|O_EXCL|O_NOFOLLOW",
     "adapterOwnsOpenDirectoryIdentity": true,
     "adapterOwnsImmutableStoreLocation": true,
-    "directConsumeForbidden": true,
+    "singleAuthenticatedConsumptionSurface": true,
     "replayRejected": true,
     "callerStateAccepted": false
   },
@@ -45,7 +45,7 @@
     "wrong sourceAuthority or productionSelected boolean",
     "unknown, missing, or nonzero signed activity field",
     "caller-selected, caller-provided, or resettable consumption state",
-    "direct adapter consumption without authenticated fixture authority",
+    "module-import token, factory, or direct consumption without repository-backed authenticated fixture authority",
     "replay, symlink, preexisting root, overwrite, or topology drift",
     "present live authority or direct child invocation"
   ],

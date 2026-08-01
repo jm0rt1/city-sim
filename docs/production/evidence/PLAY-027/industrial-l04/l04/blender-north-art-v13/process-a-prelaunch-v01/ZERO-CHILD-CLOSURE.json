@@ -5,23 +5,23 @@
     "authorityFilesCreated": 0,
     "callerStateAccepted": false,
     "closedSchema": true,
-    "directConsumeForbidden": true,
     "exactCandidateIdentityBound": true,
     "exactSixInputSetBound": true,
     "executionBaseBound": true,
     "immutableAdapterOwnedStore": true,
     "mode": "test-only-atomic-fixture",
     "replayRejected": true,
-    "repositoryBackedCarrier": true
+    "repositoryBackedCarrier": true,
+    "singleAuthenticatedConsumptionSurface": true
   },
   "canonicalWallClockFieldCount": 0,
   "checks": {
     "carrier": {
-      "canonicalRouteSHA256": "9dfb7462e4f1981b91ee3cdbdacb7d7b25ec43c2290e306731928cac41c9fea9",
-      "carrierCommit": "0b81392aaa3dfda2e4ef6294ddf8693db7f87b5f",
-      "receiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-NORTH-V13-PRELAUNCH-FRONTIER-REPAIR-R2.json",
-      "receiptSHA256": "392408d45cfe4a75888d3629a0fbc184477fbc851028b8ee9fbe01c6dee7b4ec",
-      "routeId": "quality-v1:north-v13-prelaunch-frontier-repair-r2"
+      "canonicalRouteSHA256": "8648d109475cfffc17a77e9e4b089a2cdadbc957d9481bd006687af8196a76f5",
+      "carrierCommit": "f8832635dd008d9c86d2050931783f2b91cef89f",
+      "receiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-NORTH-V13-PRELAUNCH-FRONTIER-REPAIR-R3.json",
+      "receiptSHA256": "d47fcd970f83ad333bdfa4cbbc2f67f441e09d27cb9f4d6991adad18ea5e6e78",
+      "routeId": "quality-v1:north-v13-prelaunch-frontier-repair-r3"
     },
     "changedPaths": [
       "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-prelaunch-v01/EXECUTION-CONTRACT.json",
@@ -35,7 +35,7 @@
     ],
     "claimSHA256": "7d42ba7c38a55d7681171499aad50e15c2d3eba0878cabf508d0e42ee97cdc83",
     "descendantDeltaRestrictedToTaskRoots": true,
-    "executionBaseHEAD": "e40f4dcc95340af353b65c7e667ca5617d0e4497",
+    "executionBaseHEAD": "e022653746b4ac3b554bb9842f0193c66c409236",
     "executionBaseIsAncestor": true,
     "futureProcessRootAbsent": true,
     "inputCount": 6,
@@ -109,21 +109,21 @@
   "route": {
     "authorityCommit": "73b72fce27d1bcfedcf48b76940ddfa688baa48c",
     "baseCommit": "73b72fce27d1bcfedcf48b76940ddfa688baa48c",
-    "canonicalSHA256": "9dfb7462e4f1981b91ee3cdbdacb7d7b25ec43c2290e306731928cac41c9fea9",
-    "carrierCommit": "0b81392aaa3dfda2e4ef6294ddf8693db7f87b5f",
-    "executionBaseHEAD": "e40f4dcc95340af353b65c7e667ca5617d0e4497",
-    "receiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-NORTH-V13-PRELAUNCH-FRONTIER-REPAIR-R2.json",
-    "receiptSHA256": "392408d45cfe4a75888d3629a0fbc184477fbc851028b8ee9fbe01c6dee7b4ec",
-    "routeId": "quality-v1:north-v13-prelaunch-frontier-repair-r2"
+    "canonicalSHA256": "8648d109475cfffc17a77e9e4b089a2cdadbc957d9481bd006687af8196a76f5",
+    "carrierCommit": "f8832635dd008d9c86d2050931783f2b91cef89f",
+    "executionBaseHEAD": "e022653746b4ac3b554bb9842f0193c66c409236",
+    "receiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-NORTH-V13-PRELAUNCH-FRONTIER-REPAIR-R3.json",
+    "receiptSHA256": "d47fcd970f83ad333bdfa4cbbc2f67f441e09d27cb9f4d6991adad18ea5e6e78",
+    "routeId": "quality-v1:north-v13-prelaunch-frontier-repair-r3"
   },
   "schema": 1,
   "sourceAuthority": false,
-  "stage": "north-v13-process-a-prelaunch-frontier-repair-r2",
+  "stage": "north-v13-process-a-prelaunch-frontier-repair-r3",
   "task": "PLAY-027",
   "toolHashes": {
     "child": "0d8a0d2703311aa3a782b1397902e6c3dac5d688a04367dac1d6ac995d18dccd",
-    "executionContract": "5ce0e058b9691749aafe03ac6c3f6e8f9f47a66736bcf592ba9b08aba78ce841",
-    "runner": "d8939a820a72180b52f5a08613af7d4711c1b96cdd03d36dc8fee1d8d7ca945a",
-    "runnerContract": "801f0cb39856453ed72ca1c49c2d18533f1f5d7b7354077e07a47a52dcaafb17"
+    "executionContract": "316f5802ec25364a80f6b04166a4f8c9c006f912a3f7a6f63ad33671a63ff655",
+    "runner": "9c76cff3bdc2b66ac3a46487ce0a3fd2014a1e330a186a185401330fb07fb22f",
+    "runnerContract": "bb61115f3bb949ee4504f90877a1569622f784b5e4b88503e1633fdbf3b1a38e"
   }
 }

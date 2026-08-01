@@ -1,4 +1,4 @@
-"""Adversarial zero-DCC tests for the North v13 frontier repair R2."""
+"""Adversarial zero-DCC tests for the North v13 frontier repair R3."""
 
 from __future__ import annotations
 
@@ -16,7 +16,7 @@ sys.dont_write_bytecode = True
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[6]
-FIXTURE_KEY = b"north-v13-frontier-repair-r2-test-fixture-v01"
+FIXTURE_KEY = b"north-v13-frontier-repair-r3-test-fixture-v01"
 
 
 def load(name: str, path: Path):
@@ -159,26 +159,45 @@ def main() -> int:
     expect_fixture_failure(lambda a: a.__setitem__("unknown", True), "unknown authority field", resign=False)
     expect_fixture_failure(lambda a: a.__setitem__("signature", "0" * 64), "forged signature", resign=False)
 
+    # Import the module as an attacker would. R2's module-visible tokens,
+    # factory, adapter class, and separately callable verified-consume method
+    # must not exist. The one remaining consumption callable authenticates the
+    # repository-backed authority before it can create adapter state.
+    attacker = load("north_v13_frontier_r3_attacker", HERE / "launch_north_v13_prelaunch.py")
+    for removed_name in (
+        "_ADAPTER_FACTORY_TOKEN",
+        "_VERIFIED_CONSUMPTION_TOKEN",
+        "_AuthenticatedTestOneShotAdapter",
+    ):
+        assert not hasattr(attacker, removed_name), f"importable bypass remains: {removed_name}"
+    consumption_callables = sorted(
+        name for name, value in vars(attacker).items()
+        if callable(value) and ("consume" in name.lower() or "adapter" in name.lower())
+    )
+    assert consumption_callables == ["consume_test_fixture"]
+    forged_direct = {
+        "schema": 1,
+        "kind": "test-only-fixture-authority",
+        "binding": attacker._expected_binding(contract),
+        "signature": "0" * 64,
+    }
+    forged_state = Path("/private/tmp") / attacker._fixture_state_name(forged_direct["binding"])
+    assert not forged_state.exists()
+    try:
+        attacker.consume_test_fixture(forged_direct, contract, ROOT, FIXTURE_KEY)
+    except ValueError as exc:
+        assert "signature" in str(exc)
+    else:
+        raise AssertionError("module-import direct-consume reproduction succeeded")
+    assert not forged_state.exists(), "unauthenticated call created adapter state"
+
     # The adapter derives one immutable store from the authenticated binding;
-    # no caller-selected parent or direct consume surface is accepted. Two
-    # simultaneous consumers of the same signed authority race for one marker.
+    # no caller-selected parent is accepted. Two simultaneous authenticated
+    # consumers of the same signed authority race for one marker.
     authority = fixture()
     state = fixture_state_path(authority)
     assert not state.exists(), f"stale fixture state: {state}"
     binding = authority["binding"]
-    direct = runner._AuthenticatedTestOneShotAdapter(runner._ADAPTER_FACTORY_TOKEN, binding)
-    try:
-        direct.consume(binding)
-    except ValueError as exc:
-        assert "direct adapter" in str(exc)
-    else:
-        raise AssertionError("direct adapter.consume bypass accepted")
-    try:
-        runner._AuthenticatedTestOneShotAdapter(object(), binding)
-    except ValueError as exc:
-        assert "construction" in str(exc)
-    else:
-        raise AssertionError("caller constructed an adapter")
     for caller_store in (Path("/private/tmp/caller-store-a"), Path("/private/tmp/caller-store-b")):
         try:
             runner.consume_test_fixture(authority, contract, ROOT, FIXTURE_KEY, store_parent=caller_store)
@@ -276,9 +295,9 @@ def main() -> int:
     repository_after = runner.snapshot_topology(ROOT)
     assert repository_before == repository_after, "test changed repository file/directory/symlink topology"
 
-    adversary_count = len(contract_adversaries) + len(binding_adversaries) + 14
+    adversary_count = len(contract_adversaries) + len(binding_adversaries) + 16
     print(
-        "PASS north-v13 frontier-repair-r2 "
+        "PASS north-v13 frontier-repair-r3 "
         f"adversaries={adversary_count} freshRoots=2 carrierGit=verified "
         "files=2 directories=0 dccChildren=0 processA=0 pixels=0 topology=unchanged"
     )

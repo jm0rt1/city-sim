@@ -1,6 +1,6 @@
 # PLAY-027 Claim
 
-- **Claim revision:** 7
+- **Claim revision:** 8
 - **Title:** Author the four-direction production building catalog
 - **Lane:** World art generation cell
 - **Branch:** `codex/citysim-world-art`
@@ -26,10 +26,12 @@
   same-SHA PLAY-075 gate and was published at
   `fcccf2bce4a31ee096bfd40580af30e6f90c51cc`. Industrial L4 North v12
   prelaunch closure and its synchronized parallel-art epoch are independently
-  reviewed and integrated. Revision 7 authorizes only the zero-child
-  current-authority replay below. Process A remains blocked until Integration
-  separately publishes its exact schedule, one-process lease, secret, and
-  compute slot.
+  reviewed and integrated. North v13 design authority and deterministic
+  actual-camera zero-pixel lowering are also independently reviewed and
+  integrated. Revision 8 authorizes only the v13 zero-child prelaunch
+  adaptation below. Process A remains blocked until Integration separately
+  accepts that closure and publishes its exact schedule, one-process lease,
+  secret, and compute slot.
 - **Latest L4 disposition:** Integration accepted the v06 zero-pixel global
   coordinate bridge from `3e01ca67`. Canonical North is `z = -28`, the global
   basis is `B(x,y,z)=(z,x,y)`, descriptor order is `[0,1,2,3]`, and the North
@@ -99,3 +101,24 @@ Renderer activation, production selection, shipping, push, integration, or
 self-acceptance. Integration will publish the exact North Process-A schedule,
 one-process lease, secret, and compute slot separately after this replay is
 accepted.
+
+## Revision-8 North v13 zero-child prelaunch adaptation
+
+Consume read-only the independently accepted and published North v13 design
+and lowering authorities at exact integrated master. Own only a new
+`process-a-prelaunch-v01/` subtree beneath the existing North v13 task root and
+its matching task-owned evidence subtree. Build a deterministic high-level
+orchestrator, authenticated one-attempt schedule adapter, child entrypoint,
+immutable execution/runner contracts, and adversarial zero-child closure that
+bind the exact v13 scene, materials, lowering contract, coordinate bridge,
+camera, pivot, socket, output root, and Process-A identity.
+
+The closure must reject forged Integration authority, wrong claim/base,
+direction/process/slot/root, replayed grant, direct child invocation,
+unauthenticated delegation, mismatched immutable input, or nonzero preflight
+side effects. All tests must prove zero Blender/DCC child starts, renders,
+pixels, normalizations, or source authority. Do not execute Blender, emit a
+pixel, issue a live lease, generate a secret, publish a schedule, accept an
+appearance lock, run Process B/C, alter any sibling direction, edit renderer or
+shipping surfaces, push, integrate, or self-accept. Integration independently
+reviews this prelaunch closure before any separately published Process-A grant.

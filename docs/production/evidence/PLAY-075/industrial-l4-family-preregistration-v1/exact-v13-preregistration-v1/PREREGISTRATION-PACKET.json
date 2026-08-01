@@ -1,0 +1,113 @@
+{
+  "schemaVersion": 1,
+  "documentType": "PLAY-075_INDUSTRIAL_L04_V13_EXACT_BATCH_PREREGISTRATION",
+  "status": "blocked_candidate_neutral",
+  "task": "PLAY-075",
+  "route": {
+    "routeId": "quality-v1:qa-v13-logical-id-repair",
+    "routeSha256": "f422b0a035ccaa46a8d2d331a9bd27b52e89980d9eae9eb089d266839d73a682",
+    "authorityCommit": "73b72fce27d1bcfedcf48b76940ddfa688baa48c",
+    "carrierCommit": "0ce4e46b11d808bef328c9819e5ea6a3e180fb73",
+    "expectedStartingHead": "3f84c6e0f0a8d7ca9d39c230553e045efb52aa89"
+  },
+  "claim": {
+    "path": "docs/production/claims/PLAY-075.playtest-quality.md",
+    "sha256": "5dd3aeef1ffe8abf5e0c93486e27fe2d15495854be096fb105bff55a48dc0362"
+  },
+  "lane": {
+    "branch": "codex/citysim-playtest-quality",
+    "worktree": "/Users/James/.codex/worktrees/71b0/city-sim",
+    "headBeforeMutation": "8794ca994a993c0e7a406536a2d76a1faa014e31"
+  },
+  "family": {
+    "batch": "industrial_l04_directional_family",
+    "contract": {
+      "path": "docs/production/decisions/CONTRACT-010-directional-building-art.md",
+      "sha256": "0ee2d68a9dba4694d92a864bfeb5a91970c88fe87d893e1898de7b26d38609af"
+    },
+    "runtimeDirectionOrder": ["north", "east", "south", "west"],
+    "logicalKeys": {
+      "north": "industrial_l04_v0_north",
+      "east": "industrial_l04_v0_east",
+      "south": "industrial_l04_v0_south",
+      "west": "industrial_l04_v0_west"
+    },
+    "atomic4Of4Required": true,
+    "directionCellsMayReceiveQAProductionAcceptance": false
+  },
+  "designAuthority": {
+    "path": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/design-authority-v01/DESIGN-AUTHORITY.json",
+    "sha256": "1b1006403081c3933c54451b6c506af74493a2ac3b253fdd9f1f79098d7c1bed",
+    "role": "north_v13_zero_pixel_design_authority"
+  },
+  "crossLaneIdentity": {
+    "status": "FAIL_CLOSED_ASSERTION_BOUND",
+    "canonicalLogicalIds": [
+      "industrial_l04_v0_north",
+      "industrial_l04_v0_east",
+      "industrial_l04_v0_south",
+      "industrial_l04_v0_west"
+    ],
+    "rendererIntakeResult": {
+      "path": "docs/production/evidence/PLAY-073/industrial-l04-v13-intake-delta-v1/RESULT.json",
+      "sha256": "4bf06049668d02a3b9af995c3f34136b229292f03b2db76fb486aa8a6805768c"
+    },
+    "sourceStageValidator": {
+      "path": "Native/CitySimNative/WorldArt/Shared/validate_source_stage_handoff_v2.py",
+      "sha256": "7a0613af9998a222a583a70930ce3afc5ec1902793f03201f899a2bb4129f340"
+    },
+    "assertions": [
+      "every renderer/source-stage/fixture/shipping logical ID must equal one canonical industrial_l04_v0_* ID",
+      "unknown, v13-suffixed, duplicate, alias, mirror, or transformed IDs reject closed",
+      "renderer intake result and source-stage validator hashes must match before candidate admission",
+      "failure leaves rendererCandidateReceipt null and blocks launch/scoring"
+    ]
+  },
+  "integrationLedger": {
+    "path": "docs/production/evidence/INTEGRATION/WORLD_ART_PARALLEL_BATCH_LEDGER.json",
+    "sha256": "cfbb229060715838d87dca882e10dc24ec072628011ec63c327b6802495e25e4",
+    "revision": "schema-3/2026-07-30T16:58:11Z",
+    "batchState": "appearance_lock_pending",
+    "acknowledged": false
+  },
+  "fixture": {
+    "path": "docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/fixtures/industrial-l03-directional-mature-city-v1.json",
+    "sha256": "b8875422a277b59f6797aef03ca93175a502df5963a5c972684ca47be40e7aa5",
+    "manifestPath": "docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/fixtures/industrial-l03-directional-mature-city-manifest-v1.json",
+    "manifestSha256": "48b23638572993f76c087c95113475b2c0e3d59e89525a12fcb7ee38005f2a2d",
+    "stateDigest": "dbe6860011f43063a39e228531db4b49303d64a918e7884301b3de80360dd97f",
+    "placements": [
+      {"direction":"north","playerBlock":[11,11],"stateCoordinate":[10,10],"roadCoordinate":[10,9],"sourcePixelSocket":[896,704]},
+      {"direction":"east","playerBlock":[4,10],"stateCoordinate":[3,9],"roadCoordinate":[4,9],"sourcePixelSocket":[896,832]},
+      {"direction":"south","playerBlock":[5,9],"stateCoordinate":[4,8],"roadCoordinate":[4,9],"sourcePixelSocket":[640,832]},
+      {"direction":"west","playerBlock":[18,12],"stateCoordinate":[17,11],"roadCoordinate":[16,11],"sourcePixelSocket":[640,704]}
+    ]
+  },
+  "cameraAndRubric": {
+    "preflightPath": "docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/production-quality-rubric-v2/FIXTURE-CAMERA-PREFLIGHT.json",
+    "preflightSha256": "d8cf5a73c4f23e13aa6be939eedda303627856f4c202cf1e38ac81f9a24ac985",
+    "views": ["regular-city","regular-neighborhood","regular-block","compact-city","compact-neighborhood","compact-block"],
+    "compactContentPixels": [900,600],
+    "regularDecoratedCapturePixels": [1278,768],
+    "regularContentPixels": null,
+    "regularContentPixelsStatus": "derived_live_after_exact_candidate_admission",
+    "cameraReset": "Frame Developed City / player-visible key 0",
+    "rubricPath": "docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/production-quality-rubric-v2/RUBRIC-CONTRACT.json",
+    "rubricSha256": "4fda22ccc76c2cf5548858524bf72226c462f0ebc1103e06b730a9c274274aba",
+    "executionPlanPath": "docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/production-quality-rubric-v2/EXECUTION-PLAN.json",
+    "executionPlanSha256": "16a83c5be545eb3ba72bbd1ed5023fdcb9c1703c15cf4cbe74b1dc5d878ec0e4"
+  },
+  "interactionAccessibility": {
+    "segments": ["pointer_hover_and_selection","keyboard_same_lot_selection","construction_and_condition","demolition_and_exact_undo","full_keyboard_access","voiceover_and_ax","escape_and_layering","reduce_motion","performance_and_resource_capture"],
+    "requiredBindings": ["pointer_keyboard_target_parity","full_keyboard_access","ax_identity","voiceover_identity","reduce_motion_meaning"],
+    "measurementStatus": "unmeasured_until_exact_candidate"
+  },
+  "rendererCandidateReceipt": null,
+  "gate": {
+    "candidateLaunch": false,
+    "candidateScoring": false,
+    "aggregateFullGate": "Integration-owned",
+    "independentFinalQA": "required after exclusive exact 4-of-4 candidate lease",
+    "stopCondition": "Stop after one coherent candidate-neutral preregistration commit or immediately on any escalation trigger; no launch, score, acceptance, product mutation, full gate, push, integration, pin, or self-acceptance."
+  }
+}

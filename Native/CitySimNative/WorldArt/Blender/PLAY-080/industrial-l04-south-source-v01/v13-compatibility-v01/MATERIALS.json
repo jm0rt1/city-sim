@@ -1,0 +1,44 @@
+{
+  "schema": "citysim.world-art.material-role-bindings.v13",
+  "task": "PLAY-080",
+  "direction": "south",
+  "revision": "south-compatibility-v13",
+  "sourceAuthority": false,
+  "pixelRenderAuthorized": false,
+  "publishedRoleAuthority": {
+    "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/DESIGN-MATERIALS.json",
+    "sha256": "c8179b77a184e41b723e26b34e7da2ef256b09e93b54a47e76cc5103f22b8cab",
+    "numericValuesConsumed": false
+  },
+  "requiredRoles": [
+    "v13-grounded-foundation",
+    "v13-integrated-operating-apron",
+    "v13-warm-foundry-masonry",
+    "v13-warm-control-masonry",
+    "v13-charcoal-structural-steel",
+    "v13-portal-crown-steel",
+    "v13-weathered-bluegreen-roof",
+    "v13-clerestory-and-roof-edge",
+    "v13-deep-freight-void",
+    "v13-oxidized-process-machinery",
+    "v13-restrained-hot-process",
+    "v13-warm-staff-glazing"
+  ],
+  "roleSources": {
+    "v13-grounded-foundation": "grounded-foundation",
+    "v13-integrated-operating-apron": "integrated-operating-apron",
+    "v13-warm-foundry-masonry": "warm-foundry-masonry",
+    "v13-warm-control-masonry": "warm-control-masonry",
+    "v13-charcoal-structural-steel": "charcoal-structural-steel",
+    "v13-portal-crown-steel": "portal-crown-steel",
+    "v13-weathered-bluegreen-roof": "weathered-bluegreen-roof",
+    "v13-clerestory-and-roof-edge": "clerestory-and-roof-edge",
+    "v13-deep-freight-void": "deep-freight-void",
+    "v13-oxidized-process-machinery": "oxidized-process-machinery",
+    "v13-restrained-hot-process": "restrained-hot-process",
+    "v13-warm-staff-glazing": "warm-staff-glazing"
+  },
+  "numericValuesRequireIntegrationReconciliation": true,
+  "renderAuthority": false,
+  "productionSelected": false
+}

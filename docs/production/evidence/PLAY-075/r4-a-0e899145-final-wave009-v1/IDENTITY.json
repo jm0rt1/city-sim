@@ -1,0 +1,87 @@
+{
+  "schema": 1,
+  "taskId": "PLAY-075",
+  "disposition": "RETURN",
+  "route": {
+    "carrier": "70a1cddcc1135f6fcbe566a66d2ddae122728465",
+    "receiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-075-R4-A-0E899145-FINAL-QA-V1.json",
+    "receiptSha256": "28d166abf9fa5708b5dc3ecdaab9fa75b7e8e400cecf9a1ae20cac0bef977b5b",
+    "routeId": "quality-v1:play-075-r4-a-0e899145-final-qa",
+    "canonicalRouteSha256": "8d3b08c20b434eeaf5f176ed8a91966d0df562b799edc78c7d98975f7d8904bf",
+    "model": "gpt-5.6-sol",
+    "effort": "high"
+  },
+  "qualityCarrier": {
+    "branch": "codex/citysim-playtest-quality",
+    "headBeforeEvidence": "bc9b82aa5992bef401dec419591b307171c84d84",
+    "worktree": "/Users/James/.codex/worktrees/71b0/city-sim",
+    "featureAuthorSeparated": true,
+    "featureAuthorThreadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+    "qaThreadId": "019f9a0a-35fa-75b1-92c4-73c182390a25"
+  },
+  "candidate": {
+    "commit": "0e89914566ba4593b25e2cd52b4b788d204b7331",
+    "tree": "e368d22cdd408d015d6ee6883c252c4c37337a95",
+    "sourceWorktree": "/private/tmp/citysim-r4a-qa-0e899145",
+    "sourceBranch": "codex/r4a-qa-candidate",
+    "sourceCleanBeforeAndAfter": true,
+    "candidateReceiptPath": "docs/production/evidence/INTEGRATION/PLAY-073-R4-A-0E899145-CANDIDATE-RECEIPT-V1.json",
+    "candidateReceiptSha256": "d2b7a9069552d2a09f2fe4af7b8a19701ed619ed23ca2e778c9d78a66107e2c6"
+  },
+  "lease": {
+    "path": "docs/production/evidence/INTEGRATION/PLAY-075-R4-A-0E899145-EXCLUSIVE-QA-LEASE-V1.json",
+    "sha256": "377d24bea92eab22f96e16aec9c9800109edb907177b0c745e945b2aa32db70e",
+    "leaseId": "play-075-r4-a-0e899145-exclusive-final-v1",
+    "maximumStartCount": 1,
+    "observedStartCount": 1
+  },
+  "stagedBuild": {
+    "candidateId": "codex-r4a-qa-candidate-w63e632e37e58",
+    "bundleIdentifier": "com.jfmortensen.citysim.codex-r4a-qa-candidate.w63e632e37e58",
+    "preferenceDomain": "com.jfmortensen.citysim.codex-r4a-qa-candidate.w63e632e37e58",
+    "dataRoot": "/private/tmp/citysim-r4a-qa-0e899145/dist/test-data/codex-r4a-qa-candidate-w63e632e37e58",
+    "bundlePath": "/private/tmp/citysim-r4a-qa-0e899145/dist/CitySim-codex-r4a-qa-candidate-w63e632e37e58.app",
+    "executablePath": "/private/tmp/citysim-r4a-qa-0e899145/dist/CitySim-codex-r4a-qa-candidate-w63e632e37e58.app/Contents/MacOS/CitySimNative-w63e632e37e58",
+    "executableSha256": "83641837a8039dc787f13e44c228e22014332d3b50bcbc7dcb08f33ec58cfec7",
+    "manifestPath": "/private/tmp/citysim-r4a-qa-0e899145/dist/manifests/codex-r4a-qa-candidate-w63e632e37e58.manifest",
+    "manifestSha256": "b3127b04f4c26c4b8a390be28561a7193bedd136736e978917333b77685f6f4d",
+    "resourceInventoryFileCount": 79,
+    "resourceInventorySha256": "7e5c22eab2eed001f774c218a8e1c1d05f5580359ce90dedbb199b2eee2c7ff4"
+  },
+  "process": {
+    "matchingProcessesBeforeLaunch": 0,
+    "qaPid": 20602,
+    "sample": {
+      "rssKiB": 239328,
+      "virtualKiB": 436139904,
+      "elapsed": "33:16",
+      "cpuPercent": 0.8
+    },
+    "termination": "SIGTERM exact PID 20602",
+    "matchingProcessesAfterTermination": 0
+  },
+  "layouts": {
+    "regular": {
+      "decoratedCapturePixels": [1278, 768],
+      "contentPixels": null,
+      "lods": ["city", "neighborhood", "block"]
+    },
+    "compact": {
+      "governedContentPixels": [900, 600],
+      "computerUseCaptureEnvelopePixels": [904, 652],
+      "captureEnvelopeNote": "Computer Use retained the uncropped two-pixel outer window border on each horizontal edge.",
+      "lods": ["city", "neighborhood", "block"]
+    }
+  },
+  "baseline": {
+    "commit": "87e1e682566b68d20deb1a9e2028e2b885e0423a",
+    "retainedEvidenceCommit": "776cc9b7dfd9532bbf9eee09aca3359373b875a7",
+    "regularFramePath": "docs/production/evidence/PLAY-068/candidate-87e1e68/live/regular/staged-verify-day27.png",
+    "regularFrameSha256": "cb9a833527019567b6423e3f25a191f3f5076db41564ab45412bfe9e6957e8c2",
+    "compactCitySha256": "dca7ae026d44badc819aa73b43c633f148137bd4f484f49330f9e39208949bd1",
+    "compactNeighborhoodSha256": "32f13daa69237c7e33453fb369f4d3bbfd3ae92fa2f4800cd437736f62debdd2",
+    "compactBlockSha256": "ee6d3b3f9d3c993eb6931e70c8086f9d9035eb62f8c361cf9d4070747bdb2775"
+  },
+  "productMutation": "NONE",
+  "evidenceMutation": "QA_OWNED_ONLY"
+}

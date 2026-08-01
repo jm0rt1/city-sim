@@ -18,7 +18,7 @@ from contextlib import redirect_stdout
 from pathlib import Path
 from typing import Any
 
-ROOT = Path(__file__).resolve().parents[7]
+ROOT = Path(__file__).resolve().parents[6]
 SOURCE = ROOT / "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01"
 V01 = SOURCE / "v13-compatibility-v01"
 V02 = SOURCE / "v13-compatibility-v02"
@@ -32,19 +32,21 @@ BASE_VALIDATOR = SOURCE / "test_v13_compatibility.py"
 BASE_EVIDENCE = ROOT / "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/v13-compatibility-v01/V13-COMPATIBILITY-RESULT.json"
 CLAIM_SHA = "289f7e55cdb2721dde5728708dca92e5a785d65417ae1600190c599f54153ad4"
 BASE = "87178f7cbd2723283163dd6ce03437498a21dce5"
+CURRENT_CLAIM_SHA = "6b9608a7854afc60676ac27e7c7a8a7c4420161805a4ef59c68649acdd6a901d"
+CURRENT_BASE = "097d7e006ad6c5c367eaf24da3facb96ffb34d30"
 BRIDGE_SHA = "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7"
 DESIGN_SHA = "265ea5b27e0dd7982cb587b2efb944de462bf67650bb41b2000597deebc0b621"
 LOWERING_SHA = "a9a316c8050e39779f806398f5f1ef5982c7ddf7d357c84cbf2eaf0700ea2743"
 VALIDATOR_SHA = "d0c330a13c84331c7742db062fafee00380d148f30a99b09aa1dc0c0c546675a"
 EVIDENCE_SHA = "65848132d2eb042161c90530a134dfe55bfe9380ac397c7cf9ba9d9e3ad6f94b"
 ROUTE = {
-    "routeId": "quality-v1:west-v13-literal-repair-v1",
-    "canonicalRouteSha256": "a9f46c2fded9ef441ad98ae160dd28aa1ad4827b75fac0eb3b7bd695a87b8852",
-    "carrierCommit": "af89c2fc2a542535fea8162b9f7ca78d38506d30",
-    "receiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-INDUSTRIAL-L04-V13-LITERAL-REPAIR-LUNA-V1.json",
-    "receiptSha256": "59c87bf291a8545e29e09be2c0e8c3d8b2e8ccb1021619b2bcf18bedcc00e838",
-    "authorityCommit": BASE,
-    "expectedStartingHead": "d891e9fed75ac155ffd9d89d2a5ec8ef19671878",
+    "routeId": "quality-v1:west-v13-literal-repair-path-correction-v1",
+    "canonicalRouteSha256": "0a2dbce68496120a5310ef9926dd11f8662cd9edc9e9b2a91042864855b67cb0",
+    "carrierCommit": "23fc04ddf50bc3599211f5b9d5139a04d1ad7409",
+    "receiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-081-WEST-V13-PATH-CORRECTION-LUNA-V1.json",
+    "receiptSha256": "4098e2ee93813cdb1c1280581d5912d3c1558d2a5de1985fa6fdc8c9ad0b55e0",
+    "authorityCommit": CURRENT_BASE,
+    "expectedStartingHead": "a60eaffc0ffac3c054f0c17757043a907d41308d",
 }
 
 
@@ -192,6 +194,9 @@ def main() -> int:
     names = adversaries(design, lowering, bridge)
     evidence = load(EVIDENCE_PATH)
     if evidence.get("result") != "PASS" or evidence.get("route") != ROUTE or evidence.get("sourceReady") is not False: fail("evidence binding/readiness")
+    if evidence.get("claim", {}).get("sha256") != CURRENT_CLAIM_SHA or evidence.get("claim", {}).get("revision") != 10: fail("evidence current claim")
+    validator_binding = evidence.get("validator", {})
+    if validator_binding.get("path") != str(Path(__file__).resolve().relative_to(ROOT)) or validator_binding.get("sha256") != sha(Path(__file__)): fail("evidence validator binding")
     if evidence.get("baseProof", {}).get("designSHA256") != DESIGN_SHA or evidence.get("baseProof", {}).get("loweringSHA256") != LOWERING_SHA: fail("evidence base proof")
     if evidence.get("freightAndStaff", {}).get("freightBeatCount") != 3 or evidence.get("freightAndStaff", {}).get("minimumSeparatorWidthSourcePixels") != 2 or evidence.get("freightAndStaff", {}).get("minimumStaffSourcePixels") != [5, 8]: fail("evidence metrics")
     if evidence.get("adversaries", {}).get("count") != len(names): fail("evidence adversary count")

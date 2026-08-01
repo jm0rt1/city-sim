@@ -1,0 +1,136 @@
+{
+  "schema": 1,
+  "authorityCommit": "340fbc9e9d891afc64513d401736fe3286d57552",
+  "assignments": [
+    {
+      "modelRouteSha256": "da70ef030c73e9f017a1458ac9e44c698816fbb4ff94068654cc8796b3b06206",
+      "modelRoute": {
+        "schema": 1,
+        "routeId": "quality-v1:play-073-r4-b-luna-implementation",
+        "taskId": "PLAY-073",
+        "packetKind": "implementation",
+        "classification": "LUNA_IMPLEMENTATION",
+        "model": "gpt-5.6-luna",
+        "effort": "high",
+        "rationale": "Integration has frozen the exact R4-B visual outcome, automatic returns, mutable files, and acceptance boundary. Renderer implementation is now bounded deterministic work under that authority; subjective scoring, the aggregate gate, acceptance, integration, and push remain frontier-owned.",
+        "authority": {
+          "authorityCommit": "340fbc9e9d891afc64513d401736fe3286d57552",
+          "baseCommit": "340fbc9e9d891afc64513d401736fe3286d57552",
+          "claim": {
+            "path": "docs/production/claims/PLAY-073.world-rendering.md",
+            "sha256": "88d95d953e013e4dd5b3747343fb0f0f0fe5ff606afb27be00092c8ea1b95d3a"
+          },
+          "immutableInputs": [
+            {
+              "path": ".agents/skills/render-citysim-world/SKILL.md",
+              "sha256": "031c42e09bc3e79759181f4c52652850b19de8887b4dc460680e9640a75b9671"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/PLAY-073-R4-B-RETURN-REPAIR-AUTHORITY.md",
+              "sha256": "d73661ecf7d9c1f2c83b27e55fb83ca39f66c65094c6c0de705a78576c1681a6"
+            }
+          ]
+        },
+        "assignment": {
+          "threadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+          "branch": "codex/citysim-world-rendering",
+          "worktree": "/Users/James/.codex/worktrees/cac1/city-sim",
+          "expectedHead": "1fb7e1502ac4ce071175b06d9e18230479a64de4",
+          "featureAuthorThreadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": [
+            "Native/CitySimNative/Sources/CitySimNative/Rendering",
+            "Native/CitySimNative/Tests/CitySimNativeTests/WorldRenderingTests.swift",
+            "docs/production/evidence/PLAY-073"
+          ],
+          "allowed": [
+            "Native/CitySimNative/Sources/CitySimNative/Rendering/CityScene.swift",
+            "Native/CitySimNative/Sources/CitySimNative/Rendering/LotContextRenderer.swift",
+            "Native/CitySimNative/Sources/CitySimNative/Rendering/TerrainRenderer.swift",
+            "Native/CitySimNative/Tests/CitySimNativeTests/WorldRenderingTests.swift",
+            "docs/production/evidence/PLAY-073/r4-b-v1"
+          ],
+          "forbidden": [
+            "Native/CitySimNative/WorldArt",
+            "Native/CitySimNative/Resources",
+            "Native/CitySimNative/Package.swift",
+            "Native/CitySimNative/Sources/CitySimNative/App",
+            "Native/CitySimNative/Sources/CitySimNative/Models",
+            "Native/CitySimNative/Sources/CitySimNative/Services",
+            "Native/CitySimNative/Sources/CitySimNative/Stores",
+            "Native/CitySimNative/Sources/CitySimNative/Views",
+            "docs/production/evidence/INTEGRATION",
+            "docs/production/claims",
+            "script"
+          ]
+        },
+        "boundedDeliverable": "Starting from the exact synchronized R4-A product lineage, implement one coherent R4-B successor that breaks the oversized upper-right plain-terrain mass while retaining a buildable parcel band, removes adjacent duplicate visual signatures through stable neighbor-aware accepted identity and truthful lot-context composition, and aligns ordinary building ground contact, shadow depth, outline weight, value hierarchy, and screen-space scale with the civic landmark. Preserve every previously passing interaction, accessibility, compact-layout, resource, determinism, and performance behavior. Commit one product checkpoint followed by one evidence checkpoint under r4-b-v1; return the candidate if any frozen automatic return remains.",
+        "validation": {
+          "focusedGateOwner": {
+            "threadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+            "role": "renderer_r4_b_focused_gate"
+          },
+          "focusedCommands": [
+            "swift test --package-path Native/CitySimNative --filter WorldRenderingTests",
+            "python3 -m json.tool docs/production/evidence/PLAY-073/r4-b-v1/RESULT.json",
+            "git diff --check"
+          ],
+          "fullGateOwner": {
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "role": "aggregate_full_gate",
+            "model": "gpt-5.6-sol",
+            "effort": "high"
+          },
+          "fullCommands": [
+            "swift test --package-path Native/CitySimNative",
+            "./script/build_and_run.sh --verify",
+            "fresh-player real-app R4-B journey"
+          ]
+        },
+        "expectedResult": {
+          "evidencePaths": [
+            "docs/production/evidence/PLAY-073/r4-b-v1"
+          ],
+          "commitRequired": true,
+          "commitMessagePattern": "PLAY-073:"
+        },
+        "escalationTriggers": [
+          "baseline_or_candidate_identity_mismatch",
+          "cross_lane_semantic_conflict",
+          "failure_outside_focused_scope",
+          "path_outside_claim",
+          "save_or_migration_uncertainty",
+          "shared_contract_or_schema_decision",
+          "subjective_acceptance_required",
+          "two_unsuccessful_repair_attempts",
+          "unresolved_product_visual_or_interaction_judgment"
+        ],
+        "stopCondition": "Stop after one clean product commit plus one clean evidence commit, or immediately on any mandatory escalation trigger. Do not change shared authority, run the aggregate full suite or staged final journey, self-score, self-accept, integrate, push, or pin.",
+        "independentReviewer": {
+          "required": true,
+          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+          "model": "gpt-5.6-sol",
+          "effort": "high"
+        },
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {
+              "path": ".agents/skills/render-citysim-world/SKILL.md",
+              "sha256": "031c42e09bc3e79759181f4c52652850b19de8887b4dc460680e9640a75b9671"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/PLAY-073-R4-B-RETURN-REPAIR-AUTHORITY.md",
+              "sha256": "d73661ecf7d9c1f2c83b27e55fb83ca39f66c65094c6c0de705a78576c1681a6"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

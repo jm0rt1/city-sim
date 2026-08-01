@@ -1,0 +1,559 @@
+{
+  "schema": 1,
+  "authorityCommit": "87178f7cbd2723283163dd6ce03437498a21dce5",
+  "assignments": [
+    {
+      "modelRouteSha256": "4937f14b4f1e0c911f77d5ee829e2e99b8755c387d34d79c970ced98679ba46c",
+      "modelRoute": {
+        "schema": 1,
+        "routeId": "quality-v1:north-v13-retire-rejected-prelaunch-v1",
+        "taskId": "PLAY-027",
+        "packetKind": "implementation",
+        "classification": "LUNA_IMPLEMENTATION",
+        "model": "gpt-5.6-luna",
+        "effort": "high",
+        "rationale": "Integration has rejected the obsolete v01 prelaunch authority surface and frozen the exact inert-retirement outcome, six mutable paths, hostile-import proof, and zero-DCC boundary. This is bounded implementation; North hero design and visual disposition remain frontier-owned.",
+        "authority": {
+          "authorityCommit": "87178f7cbd2723283163dd6ce03437498a21dce5",
+          "baseCommit": "87178f7cbd2723283163dd6ce03437498a21dce5",
+          "claim": {
+            "path": "docs/production/claims/PLAY-027.world-art.md",
+            "sha256": "2c20998e7466634ad0b5a598d52651034b5420e18c3ec595baa27495b34cb014"
+          },
+          "immutableInputs": [
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "62e077c88730fda5664e5fa6d23200ade77418bd43f1c721c0bff84eaac1c971"
+            },
+            {
+              "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+              "sha256": "583c5d7be25a7ffdb95f354c6279fe7c309358f65445365203431c51f0e53247"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-INTEGRATION-DIRECT-LAUNCH-AUTHORITY-V2.md",
+              "sha256": "58ebb61ba677155ed9bdee4a0ca78e396d0f3fb637d4fe6bc81b8e60753bf2c9"
+            }
+          ]
+        },
+        "assignment": {
+          "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+          "branch": "codex/citysim-world-art",
+          "worktree": "/Users/James/.codex/worktrees/0648/city-sim",
+          "expectedHead": "a2cda2639e7d94418dcc9a97a2816c40764515e3",
+          "featureAuthorThreadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027",
+            "docs/production/evidence/PLAY-027"
+          ],
+          "allowed": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-prelaunch-v01/EXECUTION-CONTRACT.json",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-prelaunch-v01/RUNNER-CONTRACT.json",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-prelaunch-v01/launch_north_v13_prelaunch.py",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-prelaunch-v01/render_north_v13_process_a_child.py",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-prelaunch-v01/test_process_a_prelaunch.py",
+            "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-prelaunch-v01/RETIREMENT.json"
+          ],
+          "forbidden": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-v02",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-079",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-080",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-081",
+            "Native/CitySimNative/Rendering",
+            "docs/production/evidence/INTEGRATION"
+          ]
+        },
+        "boundedDeliverable": "Retire only the rejected current-tree process-a-prelaunch-v01 authority surface: make launcher and child unconditionally inert, mark both task-owned contracts retired, replace the focused test with hostile-import and attempted-call adversaries proving no authority builder, signer, validator, consumer, launcher, child-start capability, file, or directory creation under a fresh root or legacy attempt prefix, and add one retirement receipt. Preserve every process-a-v02 byte and all historical evidence.",
+        "validation": {
+          "focusedGateOwner": {
+            "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+            "role": "lane_focused_gate"
+          },
+          "focusedCommands": [
+            "python3 Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-prelaunch-v01/test_process_a_prelaunch.py",
+            "python3 -m json.tool docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-prelaunch-v01/RETIREMENT.json",
+            "git diff --check"
+          ],
+          "fullGateOwner": {
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "role": "aggregate_full_gate",
+            "model": "gpt-5.6-sol",
+            "effort": "high"
+          },
+          "fullCommands": [
+            "swift test --package-path Native/CitySimNative",
+            "./script/build_and_run.sh --verify",
+            "fresh-player real-app aggregate journey"
+          ]
+        },
+        "expectedResult": {
+          "evidencePaths": [
+            "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-prelaunch-v01/RETIREMENT.json"
+          ],
+          "commitRequired": true,
+          "commitMessagePattern": "PLAY-027:"
+        },
+        "escalationTriggers": [
+          "baseline_or_candidate_identity_mismatch",
+          "cross_lane_semantic_conflict",
+          "failure_outside_focused_scope",
+          "path_outside_claim",
+          "save_or_migration_uncertainty",
+          "shared_contract_or_schema_decision",
+          "subjective_acceptance_required",
+          "two_unsuccessful_repair_attempts",
+          "unresolved_product_visual_or_interaction_judgment"
+        ],
+        "stopCondition": "Stop after one coherent zero-DCC retirement commit or immediately on any mandatory escalation trigger. Do not change process-a-v02, run Blender/DCC/Process A, create pixels, change siblings/shared/renderer/shipping surfaces, run the aggregate full gate, self-score, self-accept, integrate, push, or pin.",
+        "independentReviewer": {
+          "required": true,
+          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+          "model": "gpt-5.6-sol",
+          "effort": "high"
+        },
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {
+              "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+              "sha256": "583c5d7be25a7ffdb95f354c6279fe7c309358f65445365203431c51f0e53247"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-INTEGRATION-DIRECT-LAUNCH-AUTHORITY-V2.md",
+              "sha256": "58ebb61ba677155ed9bdee4a0ca78e396d0f3fb637d4fe6bc81b8e60753bf2c9"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "modelRouteSha256": "01ba44d5c7b275a0298725440f9baaa0856664f28c3cc36530f25c02d243f2ef",
+      "modelRoute": {
+        "schema": 1,
+        "routeId": "quality-v1:east-v13-literal-repair-v1",
+        "taskId": "PLAY-079",
+        "packetKind": "implementation",
+        "classification": "LUNA_IMPLEMENTATION",
+        "model": "gpt-5.6-luna",
+        "effort": "high",
+        "rationale": "Integration has frozen the exact East literal-scale failure, required source-pixel envelope, headroom, mutable versioned files, and zero-pixel acceptance boundary. The repair is bounded implementation with no remaining visual or shared-contract judgment.",
+        "authority": {
+          "authorityCommit": "87178f7cbd2723283163dd6ce03437498a21dce5",
+          "baseCommit": "87178f7cbd2723283163dd6ce03437498a21dce5",
+          "claim": {
+            "path": "docs/production/claims/PLAY-079.world-art-east.md",
+            "sha256": "93bcc57e69bc4cd1ff492ce0dfbf5d6244c3782db524e7e16fc0d9dd78431a77"
+          },
+          "immutableInputs": [
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "62e077c88730fda5664e5fa6d23200ade77418bd43f1c721c0bff84eaac1c971"
+            },
+            {
+              "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+              "sha256": "583c5d7be25a7ffdb95f354c6279fe7c309358f65445365203431c51f0e53247"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-V13-LITERAL-REPAIR-AUTHORITY-V1.md",
+              "sha256": "c0dd0fef61ef841394488ee00f4498748ef780fea6a3ce652c08b2eed43600bc"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/design-authority-v01/DESIGN-AUTHORITY.json",
+              "sha256": "1b1006403081c3933c54451b6c506af74493a2ac3b253fdd9f1f79098d7c1bed"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/DESIGN-MATERIALS.json",
+              "sha256": "c8179b77a184e41b723e26b34e7da2ef256b09e93b54a47e76cc5103f22b8cab"
+            }
+          ]
+        },
+        "assignment": {
+          "threadId": "019fab72-b2c8-76c1-b430-6c6f8431733f",
+          "branch": "codex/citysim-world-art-east",
+          "worktree": "/Users/James/.codex/worktrees/92c2/city-sim",
+          "expectedHead": "c297e663bc0f1c5b4ca9cf6b733b21bc6a3fb66f",
+          "featureAuthorThreadId": "019fab72-b2c8-76c1-b430-6c6f8431733f",
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01",
+            "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01"
+          ],
+          "allowed": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/V13-COMPATIBILITY-DESIGN-V05.json",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/test_v13_compatibility_v05.py",
+            "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/v13-compatibility-v02"
+          ],
+          "forbidden": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-080",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-081",
+            "Native/CitySimNative/Rendering",
+            "docs/production/evidence/INTEGRATION"
+          ]
+        },
+        "boundedDeliverable": "Create a versioned East v05 zero-pixel successor that measures exact-camera post-quantization whole-building occupied bounds, enforces at least 60 x 58 source pixels, adds missing/undersized/stale adversaries, and strengthens portal, freight, and crown headroom while preserving camera, socket, pivot, footprint, material vocabulary, non-alias proof, and every passing adversary. Preserve all prior bytes.",
+        "validation": {
+          "focusedGateOwner": {
+            "threadId": "019fab72-b2c8-76c1-b430-6c6f8431733f",
+            "role": "lane_focused_gate"
+          },
+          "focusedCommands": [
+            "python3 Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/test_v13_compatibility_v05.py",
+            "python3 -m json.tool docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/v13-compatibility-v02/V13-COMPATIBILITY-RESULT.json",
+            "git diff --check"
+          ],
+          "fullGateOwner": {
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "role": "aggregate_full_gate",
+            "model": "gpt-5.6-sol",
+            "effort": "high"
+          },
+          "fullCommands": [
+            "swift test --package-path Native/CitySimNative",
+            "./script/build_and_run.sh --verify",
+            "fresh-player real-app aggregate journey"
+          ]
+        },
+        "expectedResult": {
+          "evidencePaths": [
+            "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/v13-compatibility-v02"
+          ],
+          "commitRequired": true,
+          "commitMessagePattern": "PLAY-079:"
+        },
+        "escalationTriggers": [
+          "baseline_or_candidate_identity_mismatch",
+          "cross_lane_semantic_conflict",
+          "failure_outside_focused_scope",
+          "path_outside_claim",
+          "save_or_migration_uncertainty",
+          "shared_contract_or_schema_decision",
+          "subjective_acceptance_required",
+          "two_unsuccessful_repair_attempts",
+          "unresolved_product_visual_or_interaction_judgment"
+        ],
+        "stopCondition": "Stop after one coherent zero-pixel candidate-ready-for-independent-review commit or immediately on any mandatory escalation trigger. Do not run Blender/DCC, create or normalize pixels, admit or activate art, change siblings/shared/renderer/shipping surfaces, run the aggregate full gate, self-score, self-accept, integrate, push, or pin.",
+        "independentReviewer": {
+          "required": true,
+          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+          "model": "gpt-5.6-sol",
+          "effort": "high"
+        },
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {
+              "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+              "sha256": "583c5d7be25a7ffdb95f354c6279fe7c309358f65445365203431c51f0e53247"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-V13-LITERAL-REPAIR-AUTHORITY-V1.md",
+              "sha256": "c0dd0fef61ef841394488ee00f4498748ef780fea6a3ce652c08b2eed43600bc"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/design-authority-v01/DESIGN-AUTHORITY.json",
+              "sha256": "1b1006403081c3933c54451b6c506af74493a2ac3b253fdd9f1f79098d7c1bed"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/DESIGN-MATERIALS.json",
+              "sha256": "c8179b77a184e41b723e26b34e7da2ef256b09e93b54a47e76cc5103f22b8cab"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "modelRouteSha256": "463ca59951c4b1d2032229f126f5d03f4b7b1c16e6b59f5f20af316653d49304",
+      "modelRoute": {
+        "schema": 1,
+        "routeId": "quality-v1:south-v13-literal-repair-v1",
+        "taskId": "PLAY-080",
+        "packetKind": "implementation",
+        "classification": "LUNA_IMPLEMENTATION",
+        "model": "gpt-5.6-luna",
+        "effort": "high",
+        "rationale": "Integration has frozen the exact South freight, staff-entry, and family-identity defects plus the versioned mutation boundary. Correcting those numeric and identity failures is bounded implementation; appearance disposition remains Integration-owned.",
+        "authority": {
+          "authorityCommit": "87178f7cbd2723283163dd6ce03437498a21dce5",
+          "baseCommit": "87178f7cbd2723283163dd6ce03437498a21dce5",
+          "claim": {
+            "path": "docs/production/claims/PLAY-080.world-art-south.md",
+            "sha256": "8b66e47ace2bfb072420a650a641ba289588e5767272e3c56067fc3f6ffaff22"
+          },
+          "immutableInputs": [
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "62e077c88730fda5664e5fa6d23200ade77418bd43f1c721c0bff84eaac1c971"
+            },
+            {
+              "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+              "sha256": "583c5d7be25a7ffdb95f354c6279fe7c309358f65445365203431c51f0e53247"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-V13-LITERAL-REPAIR-AUTHORITY-V1.md",
+              "sha256": "c0dd0fef61ef841394488ee00f4498748ef780fea6a3ce652c08b2eed43600bc"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/design-authority-v01/DESIGN-AUTHORITY.json",
+              "sha256": "1b1006403081c3933c54451b6c506af74493a2ac3b253fdd9f1f79098d7c1bed"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/DESIGN-MATERIALS.json",
+              "sha256": "c8179b77a184e41b723e26b34e7da2ef256b09e93b54a47e76cc5103f22b8cab"
+            }
+          ]
+        },
+        "assignment": {
+          "threadId": "019fab72-b2c9-7d60-a397-27f4fde85950",
+          "branch": "codex/citysim-world-art-south",
+          "worktree": "/Users/James/.codex/worktrees/4247/city-sim",
+          "expectedHead": "2378d7793e061448c0802c7cf9552886a64db525",
+          "featureAuthorThreadId": "019fab72-b2c9-7d60-a397-27f4fde85950",
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01",
+            "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01"
+          ],
+          "allowed": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/v13-compatibility-v02/SCENE.json",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/test_v13_compatibility_v02.py",
+            "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/v13-compatibility-v02"
+          ],
+          "forbidden": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-079",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-081",
+            "Native/CitySimNative/Rendering",
+            "docs/production/evidence/INTEGRATION"
+          ]
+        },
+        "boundedDeliverable": "Create a versioned South v02 zero-pixel successor that raises every governed freight beat to at least 4 x 8 source pixels, raises the staff entry to at least 5 x 8, normalizes the current packet family identity to industrial_l04, and adds missing/below/stale/wrong-family adversaries while preserving socket, portal, crown, occlusion, camera, pivot, footprint, material, and non-alias proofs. Preserve all prior bytes.",
+        "validation": {
+          "focusedGateOwner": {
+            "threadId": "019fab72-b2c9-7d60-a397-27f4fde85950",
+            "role": "lane_focused_gate"
+          },
+          "focusedCommands": [
+            "python3 Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/test_v13_compatibility_v02.py",
+            "python3 -m json.tool docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/v13-compatibility-v02/V13-COMPATIBILITY-RESULT.json",
+            "git diff --check"
+          ],
+          "fullGateOwner": {
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "role": "aggregate_full_gate",
+            "model": "gpt-5.6-sol",
+            "effort": "high"
+          },
+          "fullCommands": [
+            "swift test --package-path Native/CitySimNative",
+            "./script/build_and_run.sh --verify",
+            "fresh-player real-app aggregate journey"
+          ]
+        },
+        "expectedResult": {
+          "evidencePaths": [
+            "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/v13-compatibility-v02"
+          ],
+          "commitRequired": true,
+          "commitMessagePattern": "PLAY-080:"
+        },
+        "escalationTriggers": [
+          "baseline_or_candidate_identity_mismatch",
+          "cross_lane_semantic_conflict",
+          "failure_outside_focused_scope",
+          "path_outside_claim",
+          "save_or_migration_uncertainty",
+          "shared_contract_or_schema_decision",
+          "subjective_acceptance_required",
+          "two_unsuccessful_repair_attempts",
+          "unresolved_product_visual_or_interaction_judgment"
+        ],
+        "stopCondition": "Stop after one coherent zero-pixel candidate-ready-for-independent-review commit or immediately on any mandatory escalation trigger. Do not run Blender/DCC, create or normalize pixels, admit or activate art, change siblings/shared/renderer/shipping surfaces, run the aggregate full gate, self-score, self-accept, integrate, push, or pin.",
+        "independentReviewer": {
+          "required": true,
+          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+          "model": "gpt-5.6-sol",
+          "effort": "high"
+        },
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {
+              "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+              "sha256": "583c5d7be25a7ffdb95f354c6279fe7c309358f65445365203431c51f0e53247"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-V13-LITERAL-REPAIR-AUTHORITY-V1.md",
+              "sha256": "c0dd0fef61ef841394488ee00f4498748ef780fea6a3ce652c08b2eed43600bc"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/design-authority-v01/DESIGN-AUTHORITY.json",
+              "sha256": "1b1006403081c3933c54451b6c506af74493a2ac3b253fdd9f1f79098d7c1bed"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/DESIGN-MATERIALS.json",
+              "sha256": "c8179b77a184e41b723e26b34e7da2ef256b09e93b54a47e76cc5103f22b8cab"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "modelRouteSha256": "a9f46c2fded9ef441ad98ae160dd28aa1ad4827b75fac0eb3b7bd695a87b8852",
+      "modelRoute": {
+        "schema": 1,
+        "routeId": "quality-v1:west-v13-literal-repair-v1",
+        "taskId": "PLAY-081",
+        "packetKind": "implementation",
+        "classification": "LUNA_IMPLEMENTATION",
+        "model": "gpt-5.6-luna",
+        "effort": "high",
+        "rationale": "Integration has frozen the exact West freight-beat, separator, staff-glazing, and validator omissions plus the versioned mutation boundary. The required geometry and adversarial proof are bounded implementation under accepted portal and crown authority.",
+        "authority": {
+          "authorityCommit": "87178f7cbd2723283163dd6ce03437498a21dce5",
+          "baseCommit": "87178f7cbd2723283163dd6ce03437498a21dce5",
+          "claim": {
+            "path": "docs/production/claims/PLAY-081.world-art-west.md",
+            "sha256": "289f7e55cdb2721dde5728708dca92e5a785d65417ae1600190c599f54153ad4"
+          },
+          "immutableInputs": [
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "62e077c88730fda5664e5fa6d23200ade77418bd43f1c721c0bff84eaac1c971"
+            },
+            {
+              "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+              "sha256": "583c5d7be25a7ffdb95f354c6279fe7c309358f65445365203431c51f0e53247"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-V13-LITERAL-REPAIR-AUTHORITY-V1.md",
+              "sha256": "c0dd0fef61ef841394488ee00f4498748ef780fea6a3ce652c08b2eed43600bc"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/design-authority-v01/DESIGN-AUTHORITY.json",
+              "sha256": "1b1006403081c3933c54451b6c506af74493a2ac3b253fdd9f1f79098d7c1bed"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/DESIGN-MATERIALS.json",
+              "sha256": "c8179b77a184e41b723e26b34e7da2ef256b09e93b54a47e76cc5103f22b8cab"
+            }
+          ]
+        },
+        "assignment": {
+          "threadId": "019fab72-b2c9-7d60-a397-27d01d06cbbd",
+          "branch": "codex/citysim-world-art-west",
+          "worktree": "/Users/James/.codex/worktrees/ef17/city-sim",
+          "expectedHead": "d891e9fed75ac155ffd9d89d2a5ec8ef19671878",
+          "featureAuthorThreadId": "019fab72-b2c9-7d60-a397-27d01d06cbbd",
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01",
+            "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01"
+          ],
+          "allowed": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v13-compatibility-v02/WEST-V13-DESIGN.json",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v13-compatibility-v02/WEST-V13-LOWERING.json",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/test_v13_compatibility_v02.py",
+            "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/v13-compatibility-v02"
+          ],
+          "forbidden": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-079",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-080",
+            "Native/CitySimNative/Rendering",
+            "docs/production/evidence/INTEGRATION"
+          ]
+        },
+        "boundedDeliverable": "Create a versioned West v02 zero-pixel successor with three separately readable freight recess beats, at least two source-pixel separators, at least 5 x 8 staff glazing, and exact freight-count, separator, staff-minimum, and stack-share validation with missing/below/alias adversaries. Preserve the accepted portal, crown, silhouette, camera, socket, pivot, footprint, materials, and non-alias proofs. Preserve all prior bytes.",
+        "validation": {
+          "focusedGateOwner": {
+            "threadId": "019fab72-b2c9-7d60-a397-27d01d06cbbd",
+            "role": "lane_focused_gate"
+          },
+          "focusedCommands": [
+            "python3 Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/test_v13_compatibility_v02.py",
+            "python3 -m json.tool docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/v13-compatibility-v02/V13-COMPATIBILITY-RESULT.json",
+            "git diff --check"
+          ],
+          "fullGateOwner": {
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "role": "aggregate_full_gate",
+            "model": "gpt-5.6-sol",
+            "effort": "high"
+          },
+          "fullCommands": [
+            "swift test --package-path Native/CitySimNative",
+            "./script/build_and_run.sh --verify",
+            "fresh-player real-app aggregate journey"
+          ]
+        },
+        "expectedResult": {
+          "evidencePaths": [
+            "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/v13-compatibility-v02"
+          ],
+          "commitRequired": true,
+          "commitMessagePattern": "PLAY-081:"
+        },
+        "escalationTriggers": [
+          "baseline_or_candidate_identity_mismatch",
+          "cross_lane_semantic_conflict",
+          "failure_outside_focused_scope",
+          "path_outside_claim",
+          "save_or_migration_uncertainty",
+          "shared_contract_or_schema_decision",
+          "subjective_acceptance_required",
+          "two_unsuccessful_repair_attempts",
+          "unresolved_product_visual_or_interaction_judgment"
+        ],
+        "stopCondition": "Stop after one coherent zero-pixel candidate-ready-for-independent-review commit or immediately on any mandatory escalation trigger. Do not run Blender/DCC, create or normalize pixels, admit or activate art, change siblings/shared/renderer/shipping surfaces, run the aggregate full gate, self-score, self-accept, integrate, push, or pin.",
+        "independentReviewer": {
+          "required": true,
+          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+          "model": "gpt-5.6-sol",
+          "effort": "high"
+        },
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {
+              "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+              "sha256": "583c5d7be25a7ffdb95f354c6279fe7c309358f65445365203431c51f0e53247"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-V13-LITERAL-REPAIR-AUTHORITY-V1.md",
+              "sha256": "c0dd0fef61ef841394488ee00f4498748ef780fea6a3ce652c08b2eed43600bc"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/design-authority-v01/DESIGN-AUTHORITY.json",
+              "sha256": "1b1006403081c3933c54451b6c506af74493a2ac3b253fdd9f1f79098d7c1bed"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/DESIGN-MATERIALS.json",
+              "sha256": "c8179b77a184e41b723e26b34e7da2ef256b09e93b54a47e76cc5103f22b8cab"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,141 @@
+{
+  "schema": 1,
+  "authorityCommit": "017ce817fece2c54d11e398f5aeed2e9fb6167ef",
+  "assignments": [
+    {
+      "modelRouteSha256": "bf829fe2418fe64ccba34281a4a5eea3e3f3ae7e98ea684d565b1861ec796c03",
+      "modelRoute": {
+        "schema": 1,
+        "routeId": "play-089:route-preflight-prototype:v1",
+        "taskId": "PLAY-089",
+        "packetKind": "implementation",
+        "classification": "LUNA_IMPLEMENTATION",
+        "model": "gpt-5.6-luna",
+        "effort": "high",
+        "rationale": "The accepted observation identified a reproducible bounded routing defect. Luna can implement and adversarially test a proposal-only preflight prototype under PLAY-089 evidence without changing shared Integration authority.",
+        "authority": {
+          "authorityCommit": "017ce817fece2c54d11e398f5aeed2e9fb6167ef",
+          "baseCommit": "017ce817fece2c54d11e398f5aeed2e9fb6167ef",
+          "claim": {
+            "path": "docs/production/claims/PLAY-089.operating-system-optimization.md",
+            "sha256": "6276c96d96965805df6a1a9c779ecde7dc609824053c7e0eb00e35f67134cc47"
+          },
+          "immutableInputs": [
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "62e077c88730fda5664e5fa6d23200ade77418bd43f1c721c0bff84eaac1c971"
+            },
+            {
+              "path": ".agents/skills/optimize-citysim-operating-system/SKILL.md",
+              "sha256": "6d4a9e121ec307f7378d253ed112b0ffdd25e0c0d4d1a52b5f7d405f74a8b1ef"
+            },
+            {
+              "path": ".agents/skills/optimize-citysim-operating-system/references/observation-and-upgrade-protocol.md",
+              "sha256": "a9404e046f8c8c68fa3c22d6830b3bbac883a2238e0ad709598038bce87c78a2"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-089/PILOT-CLOSE-OBSERVATION-V1.json",
+              "sha256": "5b77b43ffd3d76fe4e0f0f7f6ccb13f63ca67ed20856a6c4bf693dd1c1da41e8"
+            }
+          ]
+        },
+        "assignment": {
+          "threadId": "019fbe2b-cc97-71f3-a762-63680ac85c76",
+          "branch": "codex/citysim-os-optimization",
+          "worktree": "/Users/James/.codex/worktrees/c92d/city-sim",
+          "expectedHead": "04ac64187415fcf58c4c9aa9bd2087acf3894fdb",
+          "featureAuthorThreadId": null,
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": [
+            "docs/production/evidence/PLAY-089"
+          ],
+          "allowed": [
+            "docs/production/evidence/PLAY-089"
+          ],
+          "forbidden": [
+            "Native",
+            "AGENTS.md",
+            ".agents/skills",
+            "docs/production/CITYSIM_WORKTREE_OPERATING_SYSTEM.md",
+            "docs/production/PLAYABLE_BACKLOG.md",
+            "docs/production/claims",
+            "docs/production/decisions",
+            "docs/production/evidence/INTEGRATION"
+          ]
+        },
+        "boundedDeliverable": "Create a proposal-only offline route-preflight prototype and adversarial tests under docs/production/evidence/PLAY-089/route-prevalidation-v1. It must reject missing or invalid repository-root arguments, output paths outside exact claim-owned roots, missing producer/output contracts, and invalid focused commands; it must accept a valid exact route. Record a compact result receipt and proposed promotion manifest. Do not edit or execute the shared Integration validator.",
+        "validation": {
+          "focusedGateOwner": {
+            "threadId": "019fbe2b-cc97-71f3-a762-63680ac85c76",
+            "role": "lane_focused_gate"
+          },
+          "focusedCommands": [
+            "python3 docs/production/evidence/PLAY-089/route-prevalidation-v1/test_validate_route_preflight.py",
+            "python3 -m json.tool docs/production/evidence/PLAY-089/route-prevalidation-v1/PROPOSAL-RESULT.json",
+            "git diff --check"
+          ],
+          "fullGateOwner": {
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "role": "aggregate_full_gate",
+            "model": "gpt-5.6-sol",
+            "effort": "high"
+          },
+          "fullCommands": [
+            "python3 .agents/skills/operate-citysim-integration/scripts/test_validate_model_route_v1.py",
+            "swift test --package-path Native/CitySimNative",
+            "./script/build_and_run.sh --verify",
+            "fresh-player real-app aggregate journey"
+          ]
+        },
+        "expectedResult": {
+          "evidencePaths": [
+            "docs/production/evidence/PLAY-089/route-prevalidation-v1/validate_route_preflight.py",
+            "docs/production/evidence/PLAY-089/route-prevalidation-v1/test_validate_route_preflight.py",
+            "docs/production/evidence/PLAY-089/route-prevalidation-v1/PROPOSAL-RESULT.json"
+          ],
+          "commitRequired": true,
+          "commitMessagePattern": "PLAY-089:"
+        },
+        "escalationTriggers": [
+          "baseline_or_candidate_identity_mismatch",
+          "cross_lane_semantic_conflict",
+          "failure_outside_focused_scope",
+          "path_outside_claim",
+          "save_or_migration_uncertainty",
+          "shared_contract_or_schema_decision",
+          "subjective_acceptance_required",
+          "two_unsuccessful_repair_attempts",
+          "unresolved_product_visual_or_interaction_judgment"
+        ],
+        "stopCondition": "Stop after one coherent proposal-only prototype commit or immediately on a mandatory escalation trigger. Never mutate shared skills, authority, product files, tasks, threads, integration, push, full gates, or final QA.",
+        "independentReviewer": {
+          "required": true,
+          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+          "model": "gpt-5.6-sol",
+          "effort": "high"
+        },
+        "context": {
+          "mode": "compact_continuation",
+          "packet": {
+            "path": "docs/production/evidence/PLAY-089/PILOT-CLOSE-OBSERVATION-V1.json",
+            "sha256": "5b77b43ffd3d76fe4e0f0f7f6ccb13f63ca67ed20856a6c4bf693dd1c1da41e8"
+          },
+          "verifiedHashes": [
+            {
+              "path": ".agents/skills/optimize-citysim-operating-system/SKILL.md",
+              "sha256": "6d4a9e121ec307f7378d253ed112b0ffdd25e0c0d4d1a52b5f7d405f74a8b1ef"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-089/PILOT-CLOSE-OBSERVATION-V1.json",
+              "sha256": "5b77b43ffd3d76fe4e0f0f7f6ccb13f63ca67ed20856a6c4bf693dd1c1da41e8"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

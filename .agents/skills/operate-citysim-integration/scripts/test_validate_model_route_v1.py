@@ -217,6 +217,70 @@ class ModelRouteTests(unittest.TestCase):
         errors = validator.validate_dispatch(dispatch, self.repo)
         self.assertTrue(any("canonical route JSON" in error for error in errors), errors)
 
+    def _route_local_dispatch(self) -> tuple[dict, str, str]:
+        stale_sibling = self.route()
+        stale_sibling["routeId"] = "PLAY-999:sibling:v1"
+        stale_sibling["assignment"]["threadId"] = "sibling-thread"
+        stale_sibling["validation"]["focusedGateOwner"]["threadId"] = "sibling-thread"
+        stale_sibling["independentReviewer"]["threadId"] = "sibling-review-thread"
+
+        (self.repo / "inputs" / "live-head.txt").write_text("advance\n", encoding="utf-8")
+        subprocess.run(
+            ["git", "-C", str(self.repo), "add", "inputs/live-head.txt"], check=True
+        )
+        subprocess.run(
+            ["git", "-C", str(self.repo), "commit", "-qm", "advance live head"], check=True
+        )
+        live_head = subprocess.check_output(
+            ["git", "-C", str(self.repo), "rev-parse", "HEAD"], text=True
+        ).strip()
+
+        selected = self.route()
+        selected["routeId"] = "PLAY-999:selected:v1"
+        selected["assignment"]["expectedHead"] = live_head
+        dispatch = {
+            "schema": 1,
+            "authorityCommit": self.head,
+            "assignments": [
+                {
+                    "modelRouteSha256": validator.canonical_sha(stale_sibling),
+                    "modelRoute": stale_sibling,
+                },
+                {
+                    "modelRouteSha256": validator.canonical_sha(selected),
+                    "modelRoute": selected,
+                },
+            ],
+        }
+        return dispatch, stale_sibling["routeId"], selected["routeId"]
+
+    def test_dispatch_route_selection_is_exact_and_isolates_sibling_drift(self) -> None:
+        dispatch, _, selected_id = self._route_local_dispatch()
+        all_errors = validator.validate_dispatch(dispatch, self.repo)
+        self.assertTrue(any("assignment HEAD mismatch" in error for error in all_errors), all_errors)
+        self.assertEqual(
+            [], validator.validate_dispatch(dispatch, self.repo, selected_id)
+        )
+
+    def test_dispatch_route_selection_rejects_unknown_route(self) -> None:
+        dispatch, _, _ = self._route_local_dispatch()
+        errors = validator.validate_dispatch(dispatch, self.repo, "PLAY-999:missing:v1")
+        self.assertTrue(any("routeId not found" in error for error in errors), errors)
+
+    def test_dispatch_route_selection_rejects_duplicate_route_ids(self) -> None:
+        dispatch, _, selected_id = self._route_local_dispatch()
+        dispatch["assignments"][0]["modelRoute"]["routeId"] = selected_id
+        dispatch["assignments"][0]["modelRouteSha256"] = validator.canonical_sha(
+            dispatch["assignments"][0]["modelRoute"]
+        )
+        errors = validator.validate_dispatch(dispatch, self.repo, selected_id)
+        self.assertTrue(any("duplicate routeId" in error for error in errors), errors)
+
+    def test_dispatch_route_selection_enforces_selected_live_identity(self) -> None:
+        dispatch, stale_id, _ = self._route_local_dispatch()
+        errors = validator.validate_dispatch(dispatch, self.repo, stale_id)
+        self.assertTrue(any("assignment HEAD mismatch" in error for error in errors), errors)
+
     def test_unchanged_passing_sibling_cannot_be_demoted(self) -> None:
         previous = {"cells": [
             {"direction": "east", "state": "returned", "claimRevision": "a"},

@@ -1,6 +1,6 @@
 # PLAY-079 Claim
 
-- **Claim revision:** 8
+- **Claim revision:** 9
 - **Title:** Close the Industrial L4 East execution boundary in parallel
 - **Lane:** World Art East cell
 - **Branch:** `codex/citysim-world-art-east`
@@ -36,7 +36,9 @@
   Current-master replay is clean at
   `edc1741456cd1b32781d10b491a55b5a2d0cae18` and proves the adapter still
   stops at `future_integration_validator_interface_not_published`. Revision 7
-  authorizes only current-authority zero-DCC rebinding and replay.
+  authorizes only current-authority zero-DCC rebinding and replay. Exact v13
+  candidate `ca3f1978691ec6d01589751f14c2bcc71962fd94` is preserved but
+  returned for the bounded revision-9 literal-scale repair below.
 - **Validation/proof:** Independent East geometry; East road-facing portal and
   socket; actual-camera footprint/pivot/projection; alpha-free zero-pixel
   occlusion and silhouette proof; no sibling transform or alias
@@ -104,3 +106,16 @@ Stop after one clean candidate-ready-for-independent-review commit. This
 revision authorizes no Blender/DCC child, source process A/B/C, pixel,
 normalization, source admission, renderer activation, production selection,
 shipping, push, integration, or self-acceptance.
+
+## Revision-9 v13 literal-scale repair
+
+Consume
+`docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-V13-LITERAL-REPAIR-AUTHORITY-V1.md`.
+Within the existing East-exclusive v13 source and evidence roots, measure and
+enforce the 60 x 58 source-pixel whole-building occupied envelope, add missing
+and below-target adversaries, and strengthen the portal, freight, and crown
+read with post-quantization headroom. Preserve the immutable camera, socket,
+pivot, footprint, materials, all passing proofs, historical evidence, and
+sibling bytes. Stop after one zero-pixel candidate-ready-for-independent-review
+commit. DCC, pixels, normalization, admission, activation, shipping, push,
+integration, and self-acceptance remain prohibited.

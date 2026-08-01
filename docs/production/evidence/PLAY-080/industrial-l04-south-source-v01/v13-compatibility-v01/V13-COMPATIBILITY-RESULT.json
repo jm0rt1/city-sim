@@ -1,0 +1,371 @@
+{
+  "schema": "citysim.play-080.south-v13-compatibility-result.v1",
+  "taskId": "PLAY-080",
+  "direction": "south",
+  "branch": "codex/citysim-world-art-south",
+  "route": {
+    "routeId": "quality-v1:south-v13-frontier-recovery-r2",
+    "routeSha256": "b1c5dc8c8d89b468f1cc8cc30eda46b87e90e4f4455778f7a442a5479c7873d0",
+    "receiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-SOUTH-V13-FRONTIER-RECOVERY-R2.json",
+    "receiptSha256": "567aa6f0bc2ffc984caaf80f22f738154e5751664c21939f0289b15dcbea5cc5",
+    "carrierCommit": "bd40076f8506b50578002cec6d0e9b9aac3f5a44",
+    "authorityCommit": "d010d453af87c040ac13e8b3b7280366cb5094c1",
+    "baseCommit": "d010d453af87c040ac13e8b3b7280366cb5094c1",
+    "expectedStartingHead": "87d5cbd7701de2267d65c512ebeed01eafcba74f",
+    "model": "gpt-5.6-sol",
+    "effort": "high",
+    "classification": "FRONTIER_AUTHORITY"
+  },
+  "claim": {
+    "path": "docs/production/claims/PLAY-080.world-art-south.md",
+    "revision": 8,
+    "sha256": "84689cf07c2227287f2111adf700b0a77031d119c4224f698eb28ed9fb0668d4"
+  },
+  "authorityInputs": {
+    "worldArtSkill": {
+      "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+      "sha256": "583c5d7be25a7ffdb95f354c6279fe7c309358f65445365203431c51f0e53247"
+    },
+    "routingContract": {
+      "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+      "sha256": "62e077c88730fda5664e5fa6d23200ade77418bd43f1c721c0bff84eaac1c971"
+    },
+    "familyContract": {
+      "path": "docs/production/decisions/CONTRACT-010-directional-building-art.md",
+      "sha256": "0ee2d68a9dba4694d92a864bfeb5a91970c88fe87d893e1898de7b26d38609af"
+    },
+    "northDesignAuthority": {
+      "path": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/design-authority-v01/DESIGN-AUTHORITY.json",
+      "sha256": "1b1006403081c3933c54451b6c506af74493a2ac3b253fdd9f1f79098d7c1bed",
+      "consumedAs": "semantic-requirements-only"
+    },
+    "northMaterialRoles": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/DESIGN-MATERIALS.json",
+      "sha256": "c8179b77a184e41b723e26b34e7da2ef256b09e93b54a47e76cc5103f22b8cab",
+      "consumedAs": "material-role-vocabulary-only"
+    },
+    "coordinateBridgeMapping": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-direction-bridge-v06/MAPPING-CONTRACT.json",
+      "sha256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7",
+      "consumedAs": "frozen-camera-and-citysim-to-blender-basis"
+    }
+  },
+  "candidateProjection": {
+    "observedHead": "87d5cbd7701de2267d65c512ebeed01eafcba74f",
+    "candidateCommitEmbedded": false,
+    "candidateCommitResolution": "containing-commit-after-commit",
+    "requiredDirectParent": "87d5cbd7701de2267d65c512ebeed01eafcba74f",
+    "allowedDiffRoots": [
+      "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01",
+      "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/v13-compatibility-v01"
+    ]
+  },
+  "packet": {
+    "scene": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/v13-compatibility-v01/SCENE.json",
+      "sha256": "571ffe158be090663a7dcf823d53930d036ac4ef375840289605c7fc3a4f942d"
+    },
+    "materials": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/v13-compatibility-v01/MATERIALS.json",
+      "sha256": "92595350e8fcf6dfeba0c50c94440efff9fab2c59ae4c716fc8592143972ee6b"
+    },
+    "validator": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/test_v13_compatibility.py",
+      "sha256": "f1e526cc9d04cd4de19b1d35877c2913440185f0a3d17766217e23bc60415dad"
+    }
+  },
+  "southRegistration": {
+    "footprintWorld": [56, 56],
+    "groundPivot": [28, 0, 28],
+    "frontageSocket": [0, 0, 28],
+    "canonicalCitySimSocket": [0, 0, 28],
+    "sourceSocket": [640, 832],
+    "bridge": "B(CitySim[x,y,z])=Blender[z,x,y]",
+    "orientationTransform": "none",
+    "camera": "orthographic literal-192 projection targets bound to South socket and pivot",
+    "lighting": "northwest key / southeast contact"
+  },
+  "compatibilityProof": {
+    "measurementMethod": "analytic-camera-lowering-v06-no-pixels",
+    "derivedFrom": [
+      "authored component centers and sizes",
+      "frozen v06 camera position/target/scale/shift/viewport",
+      "published v06 CitySim-to-Blender matrix and sourceGroundCenter"
+    ],
+    "projection": {
+      "citySimPosition": [96, 101.24557426726288, 96],
+      "citySimTarget": [0, 22.861902498201186, 0],
+      "blenderPosition": [96, 96, 101.24557426726288],
+      "blenderTarget": [0, 0, 22.861902498201186],
+      "blenderOrthographicScale": 237.5878601074218,
+      "sourceScaleRenderPixelsPerWorld": 6.464976785032369,
+      "literalViewportPixels": [192, 128],
+      "cameraRight": [-0.707106781, 0.707106781, 0.0],
+      "cameraUp": [-0.353553391, -0.353553391, 0.866025404],
+      "sourceGroundCenter": [768, 768],
+      "shiftX": 0,
+      "shiftY": 0.08333333333333333,
+      "postProjectionOffsetPixels": [0, 128],
+      "basis": [[0, 0, 1], [1, 0, 0], [0, 1, 0]]
+    },
+    "occupiedEnvelope": {
+      "widthPixels": 64.000005,
+      "heightPixels": 59.936447
+    },
+    "registration": {
+      "frontageSocketCitySim": [0, 0, 28],
+      "frontageSocketBlender": [28, 0, 0],
+      "frontageSocketSourceDerived": [639.999990, 832.000005],
+      "groundPivotCitySim": [28, 0, 28],
+      "groundPivotBlender": [28, 28, 0],
+      "groundPivotSourceDerived": [768.000000, 896.000010],
+      "registrationToleranceSourcePixels": 0.001
+    },
+    "southFrontageCoupling": {
+      "citySimPlaneAxis": "z",
+      "citySimPlaneCoordinate": 28,
+      "citySimOutwardNormal": [0, 0, 1],
+      "blenderPlaneAxis": "x",
+      "blenderPlaneCoordinate": 28,
+      "blenderOutwardNormal": [1, 0, 0],
+      "thresholdCitySim": [0, 0, 28],
+      "thresholdBlender": [28, 0, 0],
+      "thresholdSourceDerived": [639.999990, 832.000005],
+      "expectedSourceSocket": [640, 832],
+      "portalProjectedCentroidSource": [639.999990, 764.813995],
+      "portalProjectedCentroidHorizontalDeltaPixels": -0.000010,
+      "portalProjectedContainsSocketX": true,
+      "apronProjectedContainsSocketX": true,
+      "apronRoadEdgeCitySim": 28,
+      "componentOuterPlaneDistancesWorld": {
+        "south-freight-beat-a": 0,
+        "south-freight-beat-b": 0,
+        "south-freight-beat-c": 0,
+        "south-portal-deep-void": 0,
+        "south-portal-header": 0,
+        "south-portal-left-jamb": 0,
+        "south-portal-right-jamb": 0,
+        "south-staff-entry": 0
+      },
+      "worldTolerance": 0.000000001,
+      "sourceTolerancePixels": 0.001
+    },
+    "portal": {
+      "outerWidthPixels": 21.142859,
+      "outerHeightPixels": 29.467495,
+      "clearInsetWidthPixels": 15.428573,
+      "clearInsetHeightPixels": 21.711372,
+      "jambWidthPixelsEach": 4.000000,
+      "jambHeightPixelsEach": 18.796503,
+      "headerWidthPixels": 21.142859,
+      "headerThicknessPixels": 13.370846,
+      "insetAreaPixels": 334.975474,
+      "occludedShare": 0,
+      "processOrCranePixelsInsideInset": 0,
+      "intrusiveProcessComponents": [],
+      "intrusivePortalFrameComponents": [],
+      "intrusiveNonApertureSolids": [],
+      "intrusiveSourceProjectedSolids": [],
+      "sourceSpacePortalOccluders": [],
+      "sourceApertureAreaPixels": 13309.229591,
+      "sourceAperturePolygonPixels": [
+        [580.571414, 679.111366],
+        [699.428566, 738.539942],
+        [699.428566, 850.516625],
+        [580.571414, 791.088049]
+      ],
+      "sourceSpaceDepthMethod": "orthographic-ray-box-near-depth-before-camera-nearest-aperture-face",
+      "everyNonPortalSystemSolidChecked": true
+    },
+    "silhouette": {
+      "distinctRoofHeightBreaks": 6,
+      "minimumRequiredBreaks": 3,
+      "portalCrownWidthPixels": 34.285717,
+      "stackSilhouetteShare": 0.011480,
+      "silhouetteRowsPixels": [53.777840, 67.305975, 70.805246, 73.604663, 78.089503, 83.887463]
+    },
+    "freightAndStaff": {
+      "freightBeatCount": 3,
+      "freightBeatMinimumPixelsEach": [2.857143, 8.427114],
+      "freightSeparatorPixels": 2.285714,
+      "staffEntryPixels": [4.000000, 8.998543],
+      "staffEntrancePresent": true,
+      "staffSubordinate": true
+    },
+    "materialCompleteness": {
+      "requiredRoleCount": 12,
+      "assignedRoleCount": 12,
+      "allPublishedRolesCovered": true,
+      "exactPublishedRoleAuthority": true,
+      "exactRoleSourceMapping": true,
+      "exactComponentRoleBindings": true,
+      "numericValuesRequireIntegrationReconciliation": true
+    },
+    "aliasAndTransform": {
+      "logicalBuildingID": "industrial-l04",
+      "variant": "variant-0",
+      "orientationTransform": "none",
+      "siblingGeometryConsumed": false,
+      "geometryAlias": null,
+      "explicitNonAliasProof": "explicit_no_alias",
+      "geometryKinds": ["box"],
+      "rawGeometrySetSha256": "f428a4494c97a1ff530c649e771357f038e7a88329f7071d0d679c1467701348",
+      "rawGeometryComponentCount": 20,
+      "rawGeometryUniqueSignatureCount": 20,
+      "rawGeometrySignatureInputs": ["center", "size"],
+      "rawGeometryExcludedMetadata": ["id", "geometry", "materialRole", "tags"],
+      "pixelFilesProduced": 0
+    },
+    "literal192": {
+      "feasibilityOnly": true,
+      "analyticTargetsPassed": true,
+      "pixelRenderAuthorized": false,
+      "cameraDerived": true
+    }
+  },
+  "derivedProof": {
+    "independentReplay": {
+      "replayCount": 2,
+      "replayMode": "fresh-python-process",
+      "distinctProcessIds": true,
+      "outputIdentity": "byte-identical",
+      "serializedOutputBytes": 7146,
+      "serializedOutputSha256": "b7eaf47d65808789ec52e49ec59f7cd7fb0a1ddebfb5267791877bd041c482be"
+    },
+    "rawGeometryNonAlias": {
+      "signatureInputs": ["center", "size"],
+      "metadataExcludedFromSignature": ["id", "geometry", "materialRole", "tags"],
+      "componentCount": 20,
+      "uniqueSignatureCount": 20,
+      "rawGeometrySetSha256": "f428a4494c97a1ff530c649e771357f038e7a88329f7071d0d679c1467701348",
+      "perComponent": {
+        "south-foundation-plinth": "c3ce05ee8d5c96455a1f39d416af00a16d1c80ef128d7a8394db9ffc321486e0",
+        "south-integrated-apron": "51b7681ca41fc09b4d3470d4eace0bafba618c13a7bfa92543a14d99c123744b",
+        "south-foundry-hall": "e71d214d82d4c5ba8b4ac3f10bd7564428d7829b725cc10e3c6f7559284f4e9e",
+        "south-control-wing": "e984c2698b540511180fb26d36daf47f57974a047f1ec41bed084e2c8559f9b3",
+        "south-staff-entry": "6273d46559d4843264d017960cd7f480ce9609bc09e2d60beb42dff5c6f1cb03",
+        "south-portal-left-jamb": "4da38b2a0a4f3430a94bc9abb58221ff785f43245855576e2f05095b4386ffb5",
+        "south-portal-right-jamb": "805596a542dbb6ddd4c93538e3ea58f125f64b783564a96a8be5eb4e600ad53d",
+        "south-portal-header": "d001c6e5576879ae5d331dcf43d25e13cd1d1e58f0f84d6214398bad7787579c",
+        "south-portal-deep-void": "c4f05b228a221108d1038bec2650294970a350ec4153ce68bfd614806ff4f7e0",
+        "south-freight-beat-a": "6f43ff22eb96f696e80087123bdec259ce4d887ef342d1c418a495d14aa67787",
+        "south-freight-beat-b": "b25ed8444677f1698387be91ff8425e29f0db8f57ee9851209003b5e649a7d87",
+        "south-freight-beat-c": "7603827626af4c888405047b7e49743e10f3764ef9ce2e1354425ae06c8ed7a7",
+        "south-crown-low": "810f6544c39ba49cef9dfb1bcf864c0f64d5a3c3486eb6121a9d3c94f19efe41",
+        "south-crown-mid": "94fb81c69a2a75302b1232d63bf509ceac6bd0b753f33c4d9533e7e55d9341db",
+        "south-crown-high": "94ee5f3008e8c8c32d950394a7712a36e261ead7797a74e4b6ded98ca9ab5b2f",
+        "south-rear-process-spine": "5b7965ebd132a9723767a9f8408b6c37ca697dac1704e12978d33e882930ba36",
+        "south-offset-stack": "08639d0b10d746e6ae5dc461fe5d94025c57368e01f0615ea89a0083f5e45d9f",
+        "south-gantry": "c322cb00c6b62201c7567087bb79e066f9bf14bd8df03d3b8056bc7de3025865",
+        "south-process-machine": "1801e28c2a300aae9023d9498da89f3d4100a66c788b2c32aebef12cd18da407",
+        "south-hot-process-cue": "73b64f10353f3cb8666113be29c7c036445bed542f89ed30e62cd1118f8ab252"
+      }
+    },
+    "adversaries": {
+      "missingPortal": "rejected",
+      "collapsedPortal": "rejected",
+      "occludedPortal": "rejected",
+      "intrusivePortalFrame": "rejected",
+      "genericFullApertureSolid": "rejected",
+      "cameraDrift": "rejected",
+      "frozenMappingCameraDrift": "rejected",
+      "socketDrift": "rejected",
+      "pivotDrift": "rejected",
+      "literalDeclarationMismatch": "rejected",
+      "aliasProofMutation": "rejected",
+      "malformedNonAliasProof": "rejected",
+      "coherentEastFacingGeometryUnderSouthHashes": "rejected",
+      "cameraAxisWorldDisjointFullApertureSolid": "rejected",
+      "nestedApertureFlag": "rejected",
+      "logicalBuildingIdentityMutation": "rejected",
+      "variantIdentityMutation": "rejected",
+      "materialRoleSourceMutation": "rejected",
+      "componentMaterialBindingMutation": "rejected",
+      "geometryKindMutation": "rejected",
+      "rawGeometryAliasUnderRelabeling": "rejected",
+      "pathEscape": "rejected",
+      "sameMemoryReplay": "rejected"
+    },
+    "allFailClosed": true
+  },
+  "focusedValidation": {
+    "commands": [
+      "python3 Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/test_v13_compatibility.py",
+      "python3 -m json.tool docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/v13-compatibility-v01/V13-COMPATIBILITY-RESULT.json",
+      "git diff --check"
+    ],
+    "result": "PASS",
+    "testsRun": 12,
+    "testsPassed": 12,
+    "exitCode": 0,
+    "replayCount": 2,
+    "adversaryCases": 22,
+    "freshProcessReplayAdversaryCases": 1,
+    "priorLunaRepairCount": 2,
+    "frontierRecoveryCount": 2,
+    "reworkCount": 3
+  },
+  "zeroPixelBoundary": {
+    "blenderInvocations": 0,
+    "dccInvocations": 0,
+    "renderInvocations": 0,
+    "pixelFiles": 0,
+    "imageGenInvocations": 0,
+    "normalizerInvocations": 0,
+    "contactSheetInvocations": 0,
+    "sourceAuthority": false,
+    "productionSelected": false,
+    "selfAccepted": false,
+    "candidateReadyForIndependentReview": true
+  },
+  "executionAccounting": {
+    "startedAt": "2026-08-01T18:54:57.000Z",
+    "endedAt": "2026-08-01T19:01:40.000Z",
+    "elapsedSecondsApproximate": 403,
+    "turnCount": 1,
+    "tokenAvailability": "not-exposed",
+    "plannedFocusedValidationTiming": "within-15-minutes",
+    "validationSecondsApproximate": 1,
+    "priorLunaRepairCount": 2,
+    "frontierRecoveryCount": 2,
+    "reworkCount": 3,
+    "stage": "revision-8-zero-pixel-frontier-recovery-r2",
+    "readyNow": [],
+    "capacity": {"helperSlots": 0, "dccSlots": 0},
+    "launchedJobs": [],
+    "running": [],
+    "waitingOnJoin": [],
+    "actualOverlap": false,
+    "unusedCapacityReasons": [
+      {
+        "resourceClass": "dcc",
+        "slots": 0,
+        "reasonCode": "ROUTE_PROHIBITS_DCC",
+        "owner": "Integration",
+        "dependencyAuthority": {
+          "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-SOUTH-V13-FRONTIER-RECOVERY-R2.json",
+          "sha256": "567aa6f0bc2ffc984caaf80f22f738154e5751664c21939f0289b15dcbea5cc5"
+        },
+        "resumptionEvent": "Integration publishes the accepted North appearance lock and exact post-lock South grant",
+        "nextRefillJob": "independent-frontier-review"
+      },
+      {
+        "resourceClass": "helper",
+        "slots": 0,
+        "reasonCode": "SINGLE_WRITER_COUPLED_FRONTIER_PROOF",
+        "owner": "visible-south-owner",
+        "dependencyAuthority": {
+          "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-SOUTH-V13-FRONTIER-RECOVERY-R2.json",
+          "sha256": "567aa6f0bc2ffc984caaf80f22f738154e5751664c21939f0289b15dcbea5cc5"
+        },
+        "resumptionEvent": "focused proof and candidate-bound evidence commit complete",
+        "nextRefillJob": "independent-frontier-review"
+      }
+    ],
+    "serializedAuthority": {"role": "visible-south-owner", "threadId": "019fab72-b2c9-7d60-a397-27f4fde85950"},
+    "nextRefill": {"role": "independent-frontier-review", "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8"}
+  },
+  "result": "PASS_SOUTH_V13_FRONTIER_RECOVERY_R2_CANDIDATE_READY_FOR_INDEPENDENT_REVIEW",
+  "sourceReady": false,
+  "stopCondition": "North appearance/material acceptance, DCC grants, pixel production, integration admission, renderer selection, shipping, push, and self-acceptance remain outside this packet."
+}

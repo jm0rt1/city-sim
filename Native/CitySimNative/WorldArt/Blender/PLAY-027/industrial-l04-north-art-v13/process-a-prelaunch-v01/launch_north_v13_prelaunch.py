@@ -17,12 +17,12 @@ import subprocess
 import sys
 
 
-ROUTE_ID = "quality-v1:north-v13-prelaunch-frontier-recovery"
-ROUTE_CANONICAL_SHA256 = "e6c4eaff2e2b2121cf3615a1ee29e064b011808b814ae310deebc75fdcd717ee"
-EXPECTED_CARRIER = "3c6023f8331c669d80ae0628246ffbf36ddf4ffc"
-EXPECTED_RECEIPT_PATH = "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-NORTH-V13-PRELAUNCH-FRONTIER-RECOVERY-V1.json"
-EXPECTED_RECEIPT_SHA256 = "bb8697df8ddb0c500b200440d264ee5fb83d93f5b304ef3de03a956a1def9924"
-EXECUTION_BASE_HEAD = "0972e6425fc1be99714689f542773d9a9d631c76"
+ROUTE_ID = "quality-v1:north-v13-prelaunch-frontier-repair-r2"
+ROUTE_CANONICAL_SHA256 = "9dfb7462e4f1981b91ee3cdbdacb7d7b25ec43c2290e306731928cac41c9fea9"
+EXPECTED_CARRIER = "0b81392aaa3dfda2e4ef6294ddf8693db7f87b5f"
+EXPECTED_RECEIPT_PATH = "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-NORTH-V13-PRELAUNCH-FRONTIER-REPAIR-R2.json"
+EXPECTED_RECEIPT_SHA256 = "392408d45cfe4a75888d3629a0fbc184477fbc851028b8ee9fbe01c6dee7b4ec"
+EXECUTION_BASE_HEAD = "e40f4dcc95340af353b65c7e667ca5617d0e4497"
 EXPECTED_CLAIM = "7d42ba7c38a55d7681171499aad50e15c2d3eba0878cabf508d0e42ee97cdc83"
 EXPECTED_BASE = "73b72fce27d1bcfedcf48b76940ddfa688baa48c"
 EXPECTED_SCENE_ID = "industrial-l04-north-v13-portal-crown-foundry"
@@ -34,6 +34,28 @@ EXPECTED_ALLOWED_ROOTS = (EXPECTED_SOURCE_ROOT, EXPECTED_EVIDENCE_ROOT, EXPECTED
 EXPECTED_THREAD = "019f96e0-3793-7542-9172-060a9ca09b0a"
 EXPECTED_WORKTREE = "/Users/James/.codex/worktrees/0648/city-sim"
 EXPECTED_CONSUMPTION_ID = "test-only-north-v13-process-a-attempt-0001"
+EXPECTED_IDENTITY = {
+    "logicalBuildingID": "industrial_l04",
+    "variantID": "variant-0",
+    "viewDirection": "north",
+    "processID": "A",
+    "slotID": "north:A",
+    "sourceRevision": "blender-art-v13-design-authority",
+    "sceneGeometryID": EXPECTED_SCENE_ID,
+    "samplingContract": "blender-cycles-cpu-v13-design-authority",
+    "sourceAuthority": False,
+    "productionSelected": False,
+}
+EXPECTED_INPUT_ITEMS = (
+    ("Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/DESIGN-SCENE.json", "0f7a8e40a07f5c2b7320ab42fe5e1bcb2dc23fb508ff6b04e8ea49cf6c974060"),
+    ("Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/DESIGN-MATERIALS.json", "c8179b77a184e41b723e26b34e7da2ef256b09e93b54a47e76cc5103f22b8cab"),
+    ("Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/lowering-v01/LOWERING-CONTRACT.json", "41125b2ee110085451a787879825cefe9a724cafa8ed3347db5a2688b063e111"),
+    ("Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-direction-bridge-v06/MAPPING-CONTRACT.json", "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7"),
+    ("docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/design-authority-v01/DESIGN-AUTHORITY.json", "1b1006403081c3933c54451b6c506af74493a2ac3b253fdd9f1f79098d7c1bed"),
+    ("docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/lowering-v01/ACTUAL-CAMERA-ZERO-PIXEL-PROOF.json", "e4bbe982e47f4bf96703e75848d8bdad1d9c0cc2aa4d227749005fa039273470"),
+)
+_ADAPTER_FACTORY_TOKEN = object()
+_VERIFIED_CONSUMPTION_TOKEN = object()
 
 CONTRACT_KEYS = {
     "schema", "stage", "task", "route", "claim", "assignment", "identity",
@@ -45,6 +67,7 @@ BINDING_KEYS = {
     "receiptSHA256", "claimPath", "claimSHA256", "claimRevision",
     "authorityBase", "assignmentThreadId", "executionBaseHEAD",
     "logicalBuildingID", "variantID", "viewDirection", "processID", "slotID",
+    "sourceAuthority", "productionSelected", "inputs",
     "grantId", "dccChildLimit", "exclusiveOutputRoot", "evidenceRoot",
     "allowedRoots", "consumptionId", "testOnly", "activity",
 }
@@ -75,6 +98,10 @@ def load_json(path: Path) -> dict:
     if not isinstance(value, dict):
         raise ValueError(f"object required: {path}")
     return value
+
+
+def _expected_inputs() -> list[dict[str, str]]:
+    return [{"path": path, "sha256": digest} for path, digest in EXPECTED_INPUT_ITEMS]
 
 
 def _run_git(root: Path, *args: str, allow_failure: bool = False) -> bytes:
@@ -191,8 +218,10 @@ def validate_contract(root: Path, contract: dict) -> dict:
     }:
         raise ValueError("wrong assignment binding")
     identity = contract["identity"]
-    if identity.get("viewDirection") != "north" or identity.get("processID") != "A" or identity.get("slotID") != "north:A" or identity.get("sceneGeometryID") != EXPECTED_SCENE_ID:
+    if identity != EXPECTED_IDENTITY:
         raise ValueError("wrong identity binding")
+    if contract["inputs"] != _expected_inputs():
+        raise ValueError("wrong immutable input set")
     output = contract["output"]
     if output.get("exclusiveFutureProcessRoot") != EXPECTED_EXCLUSIVE_ROOT or output.get("runRoot") != EXPECTED_RUN_ROOT or output.get("evidenceRoot") != EXPECTED_EVIDENCE_ROOT or tuple(output.get("allowedRoots", ())) != EXPECTED_ALLOWED_ROOTS:
         raise ValueError("wrong output binding")
@@ -205,7 +234,7 @@ def validate_contract(root: Path, contract: dict) -> dict:
     _assert_no_symlink(claim_path, root)
     if sha256(claim_path) != EXPECTED_CLAIM:
         raise ValueError("claim bytes do not match")
-    for item in contract["inputs"]:
+    for item in _expected_inputs():
         path = root / item["path"]
         _assert_no_symlink(path, root)
         if not path.is_file() or sha256(path) != item["sha256"]:
@@ -252,6 +281,8 @@ def _expected_binding(contract: dict) -> dict:
         "assignmentThreadId": EXPECTED_THREAD, "executionBaseHEAD": EXECUTION_BASE_HEAD,
         "logicalBuildingID": "industrial_l04", "variantID": "variant-0",
         "viewDirection": "north", "processID": "A", "slotID": "north:A",
+        "sourceAuthority": False, "productionSelected": False,
+        "inputs": _expected_inputs(),
         "grantId": "north:A", "dccChildLimit": 1,
         "exclusiveOutputRoot": EXPECTED_RUN_ROOT, "evidenceRoot": EXPECTED_EVIDENCE_ROOT,
         "allowedRoots": list(EXPECTED_ALLOWED_ROOTS), "consumptionId": EXPECTED_CONSUMPTION_ID,
@@ -286,31 +317,37 @@ def validate_fixture_authority(authority: dict, contract: dict, root: Path, fixt
     return binding
 
 
-class TestOneShotAdapter:
-    """Adapter-owned atomic durable fixture state; never used for live grants."""
+class _AuthenticatedTestOneShotAdapter:
+    """Private adapter with one immutable, adapter-derived fixture store."""
 
-    def __init__(self, parent: Path, consumption_id: str):
-        if parent.is_symlink() or not parent.is_dir():
-            raise ValueError("fixture state parent must be an existing real directory")
-        self.parent = parent
-        self.consumption_id = consumption_id
-        self.state_name = "attempt-" + hashlib.sha256(consumption_id.encode("utf-8")).hexdigest()
-        parent_fd = os.open(parent, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
-        try:
-            os.mkdir(self.state_name, mode=0o700, dir_fd=parent_fd)
-            self.state_fd = os.open(self.state_name, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW, dir_fd=parent_fd)
-        except FileExistsError as exc:
-            raise ValueError("fixture attempt state already exists") from exc
-        finally:
-            os.close(parent_fd)
+    def __init__(self, factory_token: object, binding: dict):
+        if factory_token is not _ADAPTER_FACTORY_TOKEN:
+            raise ValueError("direct adapter construction forbidden")
+        self.binding = binding
+        self.consumption_id = binding["consumptionId"]
+        self.state_name = _fixture_state_name(binding)
         self.closed = False
 
     def consume(self, binding: dict) -> dict:
-        if self.closed or binding["consumptionId"] != self.consumption_id:
-            raise ValueError("fixture consumption identity mismatch")
+        raise ValueError("direct adapter consumption forbidden")
+
+    def _consume_verified(self, binding: dict, verified_token: object) -> dict:
+        if verified_token is not _VERIFIED_CONSUMPTION_TOKEN or binding != self.binding:
+            raise ValueError("authenticated adapter boundary required")
+        parent = Path("/private/tmp")
+        if parent.is_symlink() or not parent.is_dir():
+            raise ValueError("adapter-owned fixture state parent unavailable")
+        parent_fd = os.open(parent, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+        try:
+            os.mkdir(self.state_name, mode=0o700, dir_fd=parent_fd)
+            state_fd = os.open(self.state_name, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW, dir_fd=parent_fd)
+        except FileExistsError as exc:
+            raise ValueError("fixture attempt state already exists or consumed") from exc
+        finally:
+            os.close(parent_fd)
         flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW
         try:
-            marker_fd = os.open("CONSUMED.json", flags, 0o600, dir_fd=self.state_fd)
+            marker_fd = os.open("CONSUMED.json", flags, 0o600, dir_fd=state_fd)
         except FileExistsError as exc:
             raise ValueError("fixture grant replay") from exc
         try:
@@ -319,22 +356,29 @@ class TestOneShotAdapter:
             os.fsync(marker_fd)
         finally:
             os.close(marker_fd)
+            os.close(state_fd)
         return {
             "consumed": True, "startedDCCChild": False, "dccStarts": 0,
             "renderStarts": 0, "pixelWrites": 0, "outputCreated": False,
         }
 
-    def close(self) -> None:
-        if not self.closed:
-            os.close(self.state_fd)
-            self.closed = True
+
+def _fixture_state_name(binding: dict) -> str:
+    immutable_key = {
+        "routeId": binding["routeId"],
+        "carrierCommit": binding["carrierCommit"],
+        "executionBaseHEAD": binding["executionBaseHEAD"],
+        "consumptionId": binding["consumptionId"],
+    }
+    return "citysim-play027-north-v13-test-attempt-" + bytes_sha256(canonical_bytes(immutable_key))
 
 
-def consume_test_fixture(authority: dict, contract: dict, root: Path, fixture_key: bytes, adapter: TestOneShotAdapter) -> dict:
+def consume_test_fixture(authority: dict, contract: dict, root: Path, fixture_key: bytes) -> dict:
     binding = validate_fixture_authority(authority, contract, root, fixture_key)
     if (root / binding["exclusiveOutputRoot"]).exists():
         raise ValueError("output overwrite or replay")
-    return adapter.consume(binding)
+    adapter = _AuthenticatedTestOneShotAdapter(_ADAPTER_FACTORY_TOKEN, binding)
+    return adapter._consume_verified(binding, _VERIFIED_CONSUMPTION_TOKEN)
 
 
 def _canonical_documents(contract: dict, root: Path) -> tuple[dict, dict]:
@@ -348,6 +392,10 @@ def _canonical_documents(contract: dict, root: Path) -> tuple[dict, dict]:
             "mode": "test-only-atomic-fixture", "closedSchema": True,
             "allActivityCountersZero": True, "repositoryBackedCarrier": True,
             "executionBaseBound": True, "atomicOneShotState": True,
+            "immutableAdapterOwnedStore": True,
+            "directConsumeForbidden": True,
+            "exactCandidateIdentityBound": True,
+            "exactSixInputSetBound": True,
             "callerStateAccepted": False, "replayRejected": True,
             "authorityFilesCreated": 0,
         },
@@ -367,7 +415,7 @@ def _canonical_documents(contract: dict, root: Path) -> tuple[dict, dict]:
     }
     validation = dict(common)
     validation.update({
-        "result": "PASS_ZERO_CHILD_FRONTIER_RECOVERY",
+        "result": "PASS_ZERO_CHILD_FRONTIER_REPAIR_R2",
         "prelaunchOnly": True,
         "forbiddenOutputsAbsent": ["future-process-root", "raw-png", "blend", "normalization", "live-grant"],
     })
@@ -460,7 +508,7 @@ def main(argv: list[str] | None = None) -> int:
         if not args.evidence_root:
             raise SystemExit("missing evidence root")
         write_canonical_evidence(repo, Path(args.evidence_root).resolve())
-    print("PASS ZERO_CHILD_FRONTIER_RECOVERY processA=0 blender=0 dcc=0 pixels=0")
+    print("PASS ZERO_CHILD_FRONTIER_REPAIR_R2 processA=0 blender=0 dcc=0 pixels=0")
     return 0
 
 

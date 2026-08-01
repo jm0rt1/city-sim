@@ -5,7 +5,11 @@
     "authorityFilesCreated": 0,
     "callerStateAccepted": false,
     "closedSchema": true,
+    "directConsumeForbidden": true,
+    "exactCandidateIdentityBound": true,
+    "exactSixInputSetBound": true,
     "executionBaseBound": true,
+    "immutableAdapterOwnedStore": true,
     "mode": "test-only-atomic-fixture",
     "replayRejected": true,
     "repositoryBackedCarrier": true
@@ -13,11 +17,11 @@
   "canonicalWallClockFieldCount": 0,
   "checks": {
     "carrier": {
-      "canonicalRouteSHA256": "e6c4eaff2e2b2121cf3615a1ee29e064b011808b814ae310deebc75fdcd717ee",
-      "carrierCommit": "3c6023f8331c669d80ae0628246ffbf36ddf4ffc",
-      "receiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-NORTH-V13-PRELAUNCH-FRONTIER-RECOVERY-V1.json",
-      "receiptSHA256": "bb8697df8ddb0c500b200440d264ee5fb83d93f5b304ef3de03a956a1def9924",
-      "routeId": "quality-v1:north-v13-prelaunch-frontier-recovery"
+      "canonicalRouteSHA256": "9dfb7462e4f1981b91ee3cdbdacb7d7b25ec43c2290e306731928cac41c9fea9",
+      "carrierCommit": "0b81392aaa3dfda2e4ef6294ddf8693db7f87b5f",
+      "receiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-NORTH-V13-PRELAUNCH-FRONTIER-REPAIR-R2.json",
+      "receiptSHA256": "392408d45cfe4a75888d3629a0fbc184477fbc851028b8ee9fbe01c6dee7b4ec",
+      "routeId": "quality-v1:north-v13-prelaunch-frontier-repair-r2"
     },
     "changedPaths": [
       "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-prelaunch-v01/EXECUTION-CONTRACT.json",
@@ -31,7 +35,7 @@
     ],
     "claimSHA256": "7d42ba7c38a55d7681171499aad50e15c2d3eba0878cabf508d0e42ee97cdc83",
     "descendantDeltaRestrictedToTaskRoots": true,
-    "executionBaseHEAD": "0972e6425fc1be99714689f542773d9a9d631c76",
+    "executionBaseHEAD": "e40f4dcc95340af353b65c7e667ca5617d0e4497",
     "executionBaseIsAncestor": true,
     "futureProcessRootAbsent": true,
     "inputCount": 6,
@@ -99,25 +103,25 @@
   ],
   "prelaunchOnly": true,
   "productionSelected": false,
-  "result": "PASS_ZERO_CHILD_FRONTIER_RECOVERY",
+  "result": "PASS_ZERO_CHILD_FRONTIER_REPAIR_R2",
   "route": {
     "authorityCommit": "73b72fce27d1bcfedcf48b76940ddfa688baa48c",
     "baseCommit": "73b72fce27d1bcfedcf48b76940ddfa688baa48c",
-    "canonicalSHA256": "e6c4eaff2e2b2121cf3615a1ee29e064b011808b814ae310deebc75fdcd717ee",
-    "carrierCommit": "3c6023f8331c669d80ae0628246ffbf36ddf4ffc",
-    "executionBaseHEAD": "0972e6425fc1be99714689f542773d9a9d631c76",
-    "receiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-NORTH-V13-PRELAUNCH-FRONTIER-RECOVERY-V1.json",
-    "receiptSHA256": "bb8697df8ddb0c500b200440d264ee5fb83d93f5b304ef3de03a956a1def9924",
-    "routeId": "quality-v1:north-v13-prelaunch-frontier-recovery"
+    "canonicalSHA256": "9dfb7462e4f1981b91ee3cdbdacb7d7b25ec43c2290e306731928cac41c9fea9",
+    "carrierCommit": "0b81392aaa3dfda2e4ef6294ddf8693db7f87b5f",
+    "executionBaseHEAD": "e40f4dcc95340af353b65c7e667ca5617d0e4497",
+    "receiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-NORTH-V13-PRELAUNCH-FRONTIER-REPAIR-R2.json",
+    "receiptSHA256": "392408d45cfe4a75888d3629a0fbc184477fbc851028b8ee9fbe01c6dee7b4ec",
+    "routeId": "quality-v1:north-v13-prelaunch-frontier-repair-r2"
   },
   "schema": 1,
   "sourceAuthority": false,
-  "stage": "north-v13-process-a-prelaunch-frontier-recovery-v01",
+  "stage": "north-v13-process-a-prelaunch-frontier-repair-r2",
   "task": "PLAY-027",
   "toolHashes": {
     "child": "0d8a0d2703311aa3a782b1397902e6c3dac5d688a04367dac1d6ac995d18dccd",
-    "executionContract": "d19399d9bb4632856c4dde477a9967268ebde7afeb2da27bb1b1f6c45fd0e990",
-    "runner": "d0d8491b4dc3500b8a0454c74ba690b6bc975522b264978540c354f4e8922fcc",
-    "runnerContract": "5f2af7a9a0792ff807738abeb1a6fecd163336bbc43b264a072b21cc43271b82"
+    "executionContract": "5ce0e058b9691749aafe03ac6c3f6e8f9f47a66736bcf592ba9b08aba78ce841",
+    "runner": "d8939a820a72180b52f5a08613af7d4711c1b96cdd03d36dc8fee1d8d7ca945a",
+    "runnerContract": "801f0cb39856453ed72ca1c49c2d18533f1f5d7b7354077e07a47a52dcaafb17"
   }
 }

@@ -1,16 +1,16 @@
 {
   "schema": 1,
-  "stage": "north-v13-process-a-prelaunch-frontier-recovery-v01",
+  "stage": "north-v13-process-a-prelaunch-frontier-repair-r2",
   "task": "PLAY-027",
   "route": {
-    "routeId": "quality-v1:north-v13-prelaunch-frontier-recovery",
-    "canonicalSHA256": "e6c4eaff2e2b2121cf3615a1ee29e064b011808b814ae310deebc75fdcd717ee",
-    "carrierCommit": "3c6023f8331c669d80ae0628246ffbf36ddf4ffc",
-    "receiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-NORTH-V13-PRELAUNCH-FRONTIER-RECOVERY-V1.json",
-    "receiptSHA256": "bb8697df8ddb0c500b200440d264ee5fb83d93f5b304ef3de03a956a1def9924",
+    "routeId": "quality-v1:north-v13-prelaunch-frontier-repair-r2",
+    "canonicalSHA256": "9dfb7462e4f1981b91ee3cdbdacb7d7b25ec43c2290e306731928cac41c9fea9",
+    "carrierCommit": "0b81392aaa3dfda2e4ef6294ddf8693db7f87b5f",
+    "receiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-NORTH-V13-PRELAUNCH-FRONTIER-REPAIR-R2.json",
+    "receiptSHA256": "392408d45cfe4a75888d3629a0fbc184477fbc851028b8ee9fbe01c6dee7b4ec",
     "authorityCommit": "73b72fce27d1bcfedcf48b76940ddfa688baa48c",
     "baseCommit": "73b72fce27d1bcfedcf48b76940ddfa688baa48c",
-    "executionBaseHEAD": "0972e6425fc1be99714689f542773d9a9d631c76"
+    "executionBaseHEAD": "e40f4dcc95340af353b65c7e667ca5617d0e4497"
   },
   "claim": {
     "path": "docs/production/claims/PLAY-027.world-art.md",

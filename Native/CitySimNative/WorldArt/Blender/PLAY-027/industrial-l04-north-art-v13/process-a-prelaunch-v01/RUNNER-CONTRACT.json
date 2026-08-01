@@ -2,7 +2,7 @@
   "schema": 1,
   "runner": "launch_north_v13_prelaunch.py",
   "child": "render_north_v13_process_a_child.py",
-  "mode": "zero-child-prelaunch-frontier-recovery",
+  "mode": "zero-child-prelaunch-frontier-repair-r2",
   "dccChildStarts": 0,
   "helperProcesses": ["git cat-file", "git show", "git rev-parse", "git merge-base", "git diff", "git ls-files"],
   "requiredInputs": ["EXECUTION-CONTRACT.json"],
@@ -20,6 +20,8 @@
     "allActivityCountersZero": true,
     "atomicOneShotMarker": "O_CREAT|O_EXCL|O_NOFOLLOW",
     "adapterOwnsOpenDirectoryIdentity": true,
+    "adapterOwnsImmutableStoreLocation": true,
+    "directConsumeForbidden": true,
     "replayRejected": true,
     "callerStateAccepted": false
   },
@@ -39,9 +41,11 @@
   "failClosed": [
     "wrong or missing carrier Git object/receipt bytes/file hash/canonical row",
     "wrong execution base or out-of-root descendant delta",
-    "wrong claim/base/thread/direction/process/slot/root/input hash",
+    "wrong claim/base/thread/logical building/variant/direction/process/slot/root/input set or hash",
+    "wrong sourceAuthority or productionSelected boolean",
     "unknown, missing, or nonzero signed activity field",
-    "caller-provided or resettable consumption state",
+    "caller-selected, caller-provided, or resettable consumption state",
+    "direct adapter consumption without authenticated fixture authority",
     "replay, symlink, preexisting root, overwrite, or topology drift",
     "present live authority or direct child invocation"
   ],

@@ -1,8 +1,9 @@
-"""Adversarial zero-DCC tests for the North v13 frontier recovery."""
+"""Adversarial zero-DCC tests for the North v13 frontier repair R2."""
 
 from __future__ import annotations
 
 import ast
+from concurrent.futures import ThreadPoolExecutor
 import copy
 import importlib.util
 import json
@@ -15,7 +16,7 @@ sys.dont_write_bytecode = True
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[6]
-FIXTURE_KEY = b"north-v13-frontier-recovery-test-fixture-v01"
+FIXTURE_KEY = b"north-v13-frontier-repair-r2-test-fixture-v01"
 
 
 def load(name: str, path: Path):
@@ -67,6 +68,19 @@ def assert_same_fresh_roots(first: Path, second: Path) -> dict:
     return first_topology
 
 
+def fixture_state_path(authority: dict) -> Path:
+    return Path("/private/tmp") / runner._fixture_state_name(authority["binding"])
+
+
+def remove_fixture_state(authority: dict) -> None:
+    state = fixture_state_path(authority)
+    marker = state / "CONSUMED.json"
+    if marker.exists():
+        marker.unlink()
+    if state.exists():
+        state.rmdir()
+
+
 def main() -> int:
     repository_before = runner.snapshot_topology(ROOT)
     result = runner.validate_contract(ROOT, contract)
@@ -90,11 +104,19 @@ def main() -> int:
         (lambda c: c["route"].__setitem__("baseCommit", "0" * 40), "base"),
         (lambda c: c["claim"].__setitem__("sha256", "0" * 64), "claim"),
         (lambda c: c["assignment"].__setitem__("threadId", "forged"), "thread"),
+        (lambda c: c["identity"].__setitem__("logicalBuildingID", "industrial_l03"), "logical building"),
+        (lambda c: c["identity"].__setitem__("variantID", "variant-1"), "variant"),
         (lambda c: c["identity"].__setitem__("viewDirection", "west"), "direction"),
         (lambda c: c["identity"].__setitem__("processID", "B"), "process"),
         (lambda c: c["identity"].__setitem__("slotID", "south:A"), "slot"),
         (lambda c: c["identity"].__setitem__("sceneGeometryID", "wrong"), "geometry"),
+        (lambda c: c["identity"].__setitem__("sourceAuthority", True), "source authority boolean"),
+        (lambda c: c["identity"].__setitem__("productionSelected", True), "production selection boolean"),
         (lambda c: c["inputs"][0].__setitem__("sha256", "0" * 64), "input"),
+        (lambda c: c.__setitem__("inputs", []), "empty input set"),
+        (lambda c: c["inputs"].pop(), "missing input"),
+        (lambda c: c["inputs"].append({"path": "extra", "sha256": "0" * 64}), "extra input"),
+        (lambda c: c.__setitem__("inputs", list(reversed(c["inputs"]))), "reordered inputs"),
         (lambda c: c["authorityState"].__setitem__("scheduleCreated", True), "schedule"),
         (lambda c: c["authorityState"].__setitem__("leaseCreated", True), "lease"),
         (lambda c: c["authorityState"].__setitem__("secretCreated", True), "secret"),
@@ -110,6 +132,14 @@ def main() -> int:
         (lambda a: a["binding"].__setitem__("carrierCommit", "0" * 40), "signed carrier"),
         (lambda a: a["binding"].__setitem__("executionBaseHEAD", "0" * 40), "signed execution base"),
         (lambda a: a["binding"].__setitem__("assignmentThreadId", "forged"), "signed thread"),
+        (lambda a: a["binding"].__setitem__("logicalBuildingID", "industrial_l03"), "signed logical building"),
+        (lambda a: a["binding"].__setitem__("variantID", "variant-1"), "signed variant"),
+        (lambda a: a["binding"].__setitem__("sourceAuthority", True), "signed source authority"),
+        (lambda a: a["binding"].__setitem__("productionSelected", True), "signed production selection"),
+        (lambda a: a["binding"].__setitem__("inputs", []), "signed empty inputs"),
+        (lambda a: a["binding"]["inputs"].pop(), "signed missing input"),
+        (lambda a: a["binding"]["inputs"].append({"path": "extra", "sha256": "0" * 64}), "signed extra input"),
+        (lambda a: a["binding"].__setitem__("inputs", list(reversed(a["binding"]["inputs"]))), "signed reordered inputs"),
         (lambda a: a["binding"].__setitem__("grantId", "south:A"), "signed grant"),
         (lambda a: a["binding"].__setitem__("evidenceRoot", "docs/production/claims"), "signed evidence root"),
         (lambda a: a["binding"].__setitem__("allowedRoots", ["docs/production/claims"]), "signed allowed roots"),
@@ -129,30 +159,62 @@ def main() -> int:
     expect_fixture_failure(lambda a: a.__setitem__("unknown", True), "unknown authority field", resign=False)
     expect_fixture_failure(lambda a: a.__setitem__("signature", "0" * 64), "forged signature", resign=False)
 
-    # The adapter, not the caller, owns the durable attempt directory and
-    # atomic marker. The API accepts no mutable caller state object.
-    with tempfile.TemporaryDirectory(prefix="north-v13-one-shot-") as tmp:
-        parent = Path(tmp)
-        adapter = runner.TestOneShotAdapter(parent, runner.EXPECTED_CONSUMPTION_ID)
-        authority = fixture()
-        consumed = runner.consume_test_fixture(authority, contract, ROOT, FIXTURE_KEY, adapter)
-        assert consumed == {
+    # The adapter derives one immutable store from the authenticated binding;
+    # no caller-selected parent or direct consume surface is accepted. Two
+    # simultaneous consumers of the same signed authority race for one marker.
+    authority = fixture()
+    state = fixture_state_path(authority)
+    assert not state.exists(), f"stale fixture state: {state}"
+    binding = authority["binding"]
+    direct = runner._AuthenticatedTestOneShotAdapter(runner._ADAPTER_FACTORY_TOKEN, binding)
+    try:
+        direct.consume(binding)
+    except ValueError as exc:
+        assert "direct adapter" in str(exc)
+    else:
+        raise AssertionError("direct adapter.consume bypass accepted")
+    try:
+        runner._AuthenticatedTestOneShotAdapter(object(), binding)
+    except ValueError as exc:
+        assert "construction" in str(exc)
+    else:
+        raise AssertionError("caller constructed an adapter")
+    for caller_store in (Path("/private/tmp/caller-store-a"), Path("/private/tmp/caller-store-b")):
+        try:
+            runner.consume_test_fixture(authority, contract, ROOT, FIXTURE_KEY, store_parent=caller_store)
+        except TypeError as exc:
+            assert "store_parent" in str(exc)
+        else:
+            raise AssertionError("caller-selected fixture store accepted")
+
+    try:
+        with ThreadPoolExecutor(max_workers=2) as executor:
+            futures = [
+                executor.submit(runner.consume_test_fixture, authority, contract, ROOT, FIXTURE_KEY)
+                for _ in range(2)
+            ]
+            outcomes = []
+            for future in futures:
+                try:
+                    outcomes.append(("success", future.result()))
+                except ValueError as exc:
+                    outcomes.append(("failure", str(exc)))
+        successes = [value for kind, value in outcomes if kind == "success"]
+        failures = [value for kind, value in outcomes if kind == "failure"]
+        assert successes == [{
             "consumed": True, "startedDCCChild": False, "dccStarts": 0,
             "renderStarts": 0, "pixelWrites": 0, "outputCreated": False,
-        }
+        }]
+        assert len(failures) == 1 and "already exists or consumed" in failures[0]
         try:
-            runner.consume_test_fixture(authority, contract, ROOT, FIXTURE_KEY, adapter)
+            runner.consume_test_fixture(authority, contract, ROOT, FIXTURE_KEY)
         except ValueError as exc:
-            assert "replay" in str(exc)
+            assert "already exists or consumed" in str(exc)
         else:
-            raise AssertionError("same adapter replay accepted")
-        adapter.close()
-        try:
-            runner.TestOneShotAdapter(parent, runner.EXPECTED_CONSUMPTION_ID)
-        except ValueError as exc:
-            assert "already exists" in str(exc)
-        else:
-            raise AssertionError("caller reset recreated consumed adapter state")
+            raise AssertionError("same signed consumption replay accepted")
+    finally:
+        remove_fixture_state(authority)
+    assert not state.exists()
 
     with tempfile.TemporaryDirectory(prefix="north-v13-writer-") as tmp:
         parent = Path(tmp)
@@ -169,6 +231,18 @@ def main() -> int:
         else:
             raise AssertionError("writer overwrote existing root")
         assert len(topology["files"]) == 2
+
+    evidence_root = ROOT / runner.EXPECTED_EVIDENCE_ROOT
+    topology_receipt = runner.load_json(evidence_root / "FRESH-ROOT-TOPOLOGY.json")
+    expected_inventory = runner.bytes_sha256(runner.canonical_bytes(topology))
+    assert topology_receipt["inventorySHA256"] == expected_inventory
+    assert topology_receipt["replayCount"] == 2
+    assert topology_receipt["byteIdentical"] is True
+    assert topology_receipt["fileAndDirectoryTopologyIdentical"] is True
+    for replay in topology_receipt["replays"]:
+        assert replay["directories"] == topology["directories"]
+        assert replay["files"] == topology["files"]
+        assert replay["symlinks"] == topology["symlinks"]
 
     try:
         child.main([])
@@ -202,9 +276,9 @@ def main() -> int:
     repository_after = runner.snapshot_topology(ROOT)
     assert repository_before == repository_after, "test changed repository file/directory/symlink topology"
 
-    adversary_count = len(contract_adversaries) + len(binding_adversaries) + 8
+    adversary_count = len(contract_adversaries) + len(binding_adversaries) + 14
     print(
-        "PASS north-v13 frontier-recovery "
+        "PASS north-v13 frontier-repair-r2 "
         f"adversaries={adversary_count} freshRoots=2 carrierGit=verified "
         "files=2 directories=0 dccChildren=0 processA=0 pixels=0 topology=unchanged"
     )

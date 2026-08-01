@@ -11,8 +11,16 @@ Build the trustworthy foundation on which gameplay, rendering, UI, saves, and ev
 
 1. Run `pwd`, `git branch --show-current`, and `git status --short --branch`.
 2. Require `codex/citysim-simulation-platform` for mutations.
-3. Read `docs/production/CITYSIM_WORKTREE_OPERATING_SYSTEM.md`, the claimed `PLAY-*` task, linked technical requirements, ADRs, and save/performance contracts.
-4. Confirm a platform-lane claim and preserve unrelated work.
+3. Read and follow [the shared model-routing and cost-control contract](../operate-citysim-integration/references/model-routing-and-cost-control.md). Complete the applicable authority read for a new thread or claim, changed authority/skill/reference hash, routing mismatch, context loss, or stale compact packet. On an unchanged same-thread continuation, verify every recorded hash and Git revision before consuming the compact lane-context packet.
+4. When a complete read is required, read `docs/production/CITYSIM_WORKTREE_OPERATING_SYSTEM.md`, this skill, the claimed `PLAY-*` task, linked technical requirements, ADRs, and save/performance contracts completely.
+5. Confirm a platform-lane claim and preserve unrelated work.
+
+## Route work at judgment boundaries
+
+- `LUNA_IMPLEMENTATION` implements replay, diagnostics, profiling, fixtures, and frozen-schema slices; `LUNA_MECHANICAL` owns inventories, hashes, fixture generation, focused measurements, and packet assembly; `LUNA_LOCAL_DEBUG` may repair only a reproducible lane-local defect with frozen inputs and stops after two unsuccessful attempts.
+- `FRONTIER_AUTHORITY` owns schemas, snapshot contracts, migrations, persistence decisions, subtle nondeterminism, shared-contract decisions, and final acceptance.
+- A substantial `PLAY-*` task must arrive as a frontier authority packet, one or more disjoint Luna execution packets, and an independent frontier acceptance packet. Stop on every escalation trigger in the shared contract.
+- Luna runs only the focused owner and affected gates in its validated `modelRoute`. The lane coordinator aggregates coherent packets; the full Swift suite, staged build, and real-app journey run once against the exact aggregate/integrated candidate unless identity changes or evidence is stale.
 
 ## Own runtime trust
 
@@ -37,14 +45,10 @@ Before editing, record:
 
 Shared contract changes require integration approval before dependent implementations diverge.
 
-## Implement and prove
+## Execute and prove conditionally
 
-1. Add deterministic, migration, recovery, malformed-input, or performance tests with the change.
-2. Verify repeated runs from the same seed/commands produce the promised state.
-3. Verify save/load/undo and renderer/UI snapshot consumers when affected.
-4. Run the complete Swift suite, `git diff --check`, and build-script syntax check.
-5. Launch the staged app for every runtime change and complete the affected player journey.
-6. Record measured performance and save evidence, not estimates.
+For implementation, focused evidence, and aggregate acceptance requirements,
+read [references/simulation-execution-and-evidence.md](references/simulation-execution-and-evidence.md).
 
 ## Commit intelligently
 
@@ -57,4 +61,5 @@ Shared contract changes require integration approval before dependent implementa
 
 ## Completion
 
-Commit the focused contract and implementation with a completion record containing hashes, fixtures, measurements, compatibility, and adoption notes. Do not push or merge. A technically elegant subsystem that has not survived real app use, recovery, and dependent consumers is incomplete.
+Use the completion requirements in
+[references/simulation-execution-and-evidence.md](references/simulation-execution-and-evidence.md).

@@ -39,6 +39,19 @@ bytes. The focused adversarial and exact-context tests each passed before the
 70-test suite. `git diff --check` and JSON validation are required for this
 packet.
 
+The independently verified worker stack was applied in this exact order:
+
+1. `1bcaad26cd4685038c327381b897084e569e8e93` — initial R4-B product;
+2. `9b63056cfaeb591dd03da9af6e0ff0c80655649a` — initial evidence;
+3. `1ce6600bf109828962ca85740151965d4219a8c0` — containment repair;
+4. `9cd49210476e589ad848110e6d6061db41c87bac` — repaired evidence; and
+5. `5f0b97e14452202759cdb0d937068919849ab675` — lossless repeat proof.
+
+Synchronization merges `a4ce4e3c0e47cc3ea39a3b341c2b1e11be98c5dd`
+and `a01ad44c563d9b2fbf3d9d3a59208ddd896d52c7` are explicitly excluded.
+The corresponding cherry-picked master commits are `d79973bd`, `2fa624d3`,
+`32864b0a`, `77c48741`, and `0af7f069`.
+
 This candidate deliberately excludes the aggregate Swift suite, staged app,
 subjective visual judgment, and independent QA journey. Integration owns those
-gates and must review this exact two-commit candidate before acceptance.
+gates and must review this exact five-commit candidate before acceptance.

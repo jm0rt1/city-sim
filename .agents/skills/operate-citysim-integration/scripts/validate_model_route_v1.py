@@ -377,7 +377,16 @@ def validate_route(route: Any, repo: Path) -> list[str]:
     return errors
 
 
-def validate_dispatch(dispatch: Any, repo: Path) -> list[str]:
+def validate_dispatch(
+    dispatch: Any, repo: Path, route_id: str | None = None
+) -> list[str]:
+    """Validate a dispatch receipt, optionally resolving one exact route row.
+
+    Receipt-wide row shape, canonical hashes, authority projection, and route-ID
+    uniqueness always remain mandatory. When ``route_id`` is supplied, only
+    that exact route receives live worktree/HEAD and full route validation, so
+    unrelated sibling movement cannot invalidate a worker acknowledgement.
+    """
     errors: list[str] = []
     expected = {"schema", "authorityCommit", "assignments"}
     if not isinstance(dispatch, dict) or set(dispatch) != expected:
@@ -388,6 +397,8 @@ def validate_dispatch(dispatch: Any, repo: Path) -> list[str]:
         errors.append("dispatch authorityCommit must be a full lowercase Git SHA")
     if not isinstance(dispatch["assignments"], list) or not dispatch["assignments"]:
         return errors + ["dispatch assignments must be non-empty"]
+    route_rows: dict[str, list[int]] = {}
+    selected_rows = 0
     for idx, row in enumerate(dispatch["assignments"]):
         if not isinstance(row, dict) or set(row) != {"modelRouteSha256", "modelRoute"}:
             errors.append(f"assignments[{idx}] must contain exactly modelRouteSha256 and modelRoute")
@@ -396,9 +407,23 @@ def validate_dispatch(dispatch: Any, repo: Path) -> list[str]:
         digest = row["modelRouteSha256"]
         if not _is_hex(digest, 64) or canonical_sha(packet) != digest:
             errors.append(f"assignments[{idx}] modelRouteSha256 does not match canonical route JSON")
-        errors.extend(f"assignments[{idx}]: {e}" for e in validate_route(packet, repo))
+        packet_route_id = packet.get("routeId") if isinstance(packet, dict) else None
+        if not isinstance(packet_route_id, str) or not packet_route_id:
+            errors.append(f"assignments[{idx}] modelRoute.routeId must be non-empty")
+        else:
+            route_rows.setdefault(packet_route_id, []).append(idx)
+        if route_id is None or packet_route_id == route_id:
+            selected_rows += 1
+            errors.extend(f"assignments[{idx}]: {e}" for e in validate_route(packet, repo))
         if isinstance(packet, dict) and packet.get("authority", {}).get("authorityCommit") != dispatch["authorityCommit"]:
             errors.append(f"assignments[{idx}] authority does not match dispatch authority")
+    for duplicate_id, indexes in sorted(route_rows.items()):
+        if len(indexes) > 1:
+            errors.append(
+                f"dispatch contains duplicate routeId {duplicate_id!r} at assignments {indexes}"
+            )
+    if route_id is not None and selected_rows == 0:
+        errors.append(f"dispatch routeId not found: {route_id!r}")
     return errors
 
 
@@ -426,6 +451,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--repo-root", default=".")
     parser.add_argument("--route")
     parser.add_argument("--dispatch")
+    parser.add_argument("--dispatch-route-id")
     parser.add_argument("--previous-ledger")
     parser.add_argument("--current-ledger")
     parser.add_argument("--failed-direction")
@@ -435,8 +461,14 @@ def main(argv: list[str] | None = None) -> int:
     try:
         if args.route:
             errors.extend(validate_route(load_json(Path(args.route)), repo))
+        if args.dispatch_route_id and not args.dispatch:
+            errors.append("--dispatch-route-id requires --dispatch")
         if args.dispatch:
-            errors.extend(validate_dispatch(load_json(Path(args.dispatch)), repo))
+            errors.extend(
+                validate_dispatch(
+                    load_json(Path(args.dispatch)), repo, args.dispatch_route_id
+                )
+            )
         ledger_args = (args.previous_ledger, args.current_ledger, args.failed_direction)
         if any(ledger_args) and not all(ledger_args):
             errors.append("sibling validation requires previous ledger, current ledger, and failed direction")

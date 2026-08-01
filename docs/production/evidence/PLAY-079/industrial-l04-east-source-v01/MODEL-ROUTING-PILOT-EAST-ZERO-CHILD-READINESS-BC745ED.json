@@ -1,0 +1,198 @@
+{
+  "schema": "citysim.play-079.east.model-routing-pilot-zero-child-readiness.v1",
+  "schemaVersion": 1,
+  "taskId": "PLAY-079",
+  "direction": "east",
+  "route": {
+    "routeId": "pilot-v1:east",
+    "canonicalRouteSha256": "033641b4249ab1a35801bc29eb5d006a3f41dae4bacbf97930276f88eea9e725",
+    "classification": "LUNA_IMPLEMENTATION",
+    "model": "gpt-5.6-luna",
+    "effort": "high",
+    "dispatchReceipt": {
+      "carrierCommit": "70c49f394a0920e26dffc945bd996cf67af7b1fe",
+      "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PILOT-DISPATCH-V1.json",
+      "sha256": "79b5132e8144c5f0e81c592b746becffb7fe99aa97d3ac3b2a62bf997a24f42b"
+    },
+    "authorityCommit": "2753f42134fa85d8570849b57302cce0bc924566",
+    "baseCommit": "2753f42134fa85d8570849b57302cce0bc924566",
+    "authorityIsAncestor": true,
+    "expectedHead": "bc745edacf29fa98575f9cadf10f98c65a46dc6d",
+    "claim": {
+      "path": "docs/production/claims/PLAY-079.world-art-east.md",
+      "sha256": "4cfefea0dc0502af8123305356df131ca2b19a13bedf26e82161ea052706469a"
+    },
+    "branch": "codex/citysim-world-art-east",
+    "worktree": "/Users/James/.codex/worktrees/92c2/city-sim",
+    "allowedRoots": [
+      "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01",
+      "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01"
+    ],
+    "forbiddenRoots": [
+      "Native/CitySimNative/WorldArt/Blender/PLAY-027",
+      "Native/CitySimNative/WorldArt/Blender/PLAY-080",
+      "Native/CitySimNative/WorldArt/Blender/PLAY-081"
+    ]
+  },
+  "observed": {
+    "head": "bc745edacf29fa98575f9cadf10f98c65a46dc6d",
+    "cleanAtStart": true,
+    "cleanAfterValidation": true,
+    "scene": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-predesign-v01/scene.json",
+      "sha256": "e19c70693ea57a7f23669d5e93354eee0a8fa42be16e68b38d00f5608a500db7"
+    },
+    "materials": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-predesign-v01/materials.json",
+      "sha256": "1d0eda7be1e50d9fd98247cb63035443e904a2724583df1fbb328140b63ef9b9"
+    },
+    "orchestrator": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/orchestrate_parallel_source.py",
+      "sha256": "5c9f5ffcebc2a804bb43d593a3be35d280908afeaf7f02b2860675035ad16406"
+    },
+    "runner": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/run_production.py",
+      "sha256": "74a519c6a7be0a9e73f0eee16549569a99c209e38783b4478680336e12234c30"
+    },
+    "closureContract": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/schedule-consumer-adapter-v01/EXECUTION-CLOSURE-CONTRACT.json",
+      "sha256": "4d8cbccf39a65d8ade0088babf2ca6884165aff348f13a67fc186b1e78d79d93"
+    },
+    "closureValidator": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/schedule-consumer-adapter-v01/validate_execution_closure_v1.py",
+      "sha256": "7932901ce454446c3eb78a0e2c3d5267df0ad97fb036c2a6a98e95133b80c2c3"
+    }
+  },
+  "focusedGate": {
+    "command": "python3 Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/schedule-consumer-adapter-v01/test_validate_execution_closure_v1.py",
+    "result": "PASS_ZERO_CHILD",
+    "freshRoots": 2,
+    "adversarialCases": 16,
+    "stdout": "PASS: 2 fresh roots; 16 adversaries; zero source/DCC children or pixels",
+    "stdoutSha256": "78980a602300d194ee5f8bd533a7a68c03ad626c4114eb43b1e32a9e3917fb6d",
+    "repeatValidation": {
+      "runs": 2,
+      "byteIdentical": true,
+      "runStdoutSha256": [
+        "78980a602300d194ee5f8bd533a7a68c03ad626c4114eb43b1e32a9e3917fb6d",
+        "78980a602300d194ee5f8bd533a7a68c03ad626c4114eb43b1e32a9e3917fb6d"
+      ]
+    }
+  },
+  "routeGate": {
+    "command": "validate_model_route_v1.validate_route(extracted pilot-v1:east)",
+    "result": "PASS",
+    "receiptSha256": "79b5132e8144c5f0e81c592b746becffb7fe99aa97d3ac3b2a62bf997a24f42b",
+    "routeSha256": "033641b4249ab1a35801bc29eb5d006a3f41dae4bacbf97930276f88eea9e725",
+    "stdoutSha256": "36856b7d3a3a8c477cd56b54d61a8b796a58e6aa2e7cd15bb9b90a803ed46b0d",
+    "siblingRoutesValidated": 0
+  },
+  "executionAccounting": {
+    "capacity": {
+      "helperSlots": 4,
+      "dccSlots": 0
+    },
+    "launchedJobs": [
+      {
+        "id": "pilot-v1-east-route-object-validate",
+        "resourceClass": "helper",
+        "mutation": "read_only",
+        "startedAt": "2026-08-01T15:59:20.421Z",
+        "endedAt": "2026-08-01T15:59:20.567Z",
+        "elapsedSeconds": 0.146,
+        "state": "completed",
+        "head": "bc745edacf29fa98575f9cadf10f98c65a46dc6d"
+      },
+      {
+        "id": "pilot-v1-east-zero-child-closure",
+        "resourceClass": "helper",
+        "mutation": "isolated_temp",
+        "startedAt": "2026-08-01T15:59:20.422Z",
+        "endedAt": "2026-08-01T15:59:34.532Z",
+        "elapsedSeconds": 14.11,
+        "state": "completed",
+        "head": "bc745edacf29fa98575f9cadf10f98c65a46dc6d"
+      }
+    ],
+    "overlap": {
+      "status": "observed",
+      "jobIds": [
+        "pilot-v1-east-route-object-validate",
+        "pilot-v1-east-zero-child-closure"
+      ],
+      "startedAt": "2026-08-01T15:59:20.422Z",
+      "endedAt": "2026-08-01T15:59:20.567Z",
+      "reason": "route audit and focused closure interval overlapped"
+    },
+    "join": {
+      "state": "joined",
+      "completedJobs": [
+        "pilot-v1-east-route-object-validate",
+        "pilot-v1-east-zero-child-closure"
+      ],
+      "joinedAt": "2026-08-01T15:59:34.532Z"
+    },
+    "readyNow": [],
+    "running": [],
+    "waitingOnJoin": [],
+    "serializedAuthority": {
+      "branch": "codex/citysim-world-art-east",
+      "worktree": "/Users/James/.codex/worktrees/92c2/city-sim",
+      "evidenceWriter": "019fab72-b2c8-76c1-b430-6c6f8431733f"
+    },
+    "unusedCapacityReasons": [
+      {
+        "resourceClass": "helper",
+        "slots": 2,
+        "reasonCode": "no_additional_owner_scoped_gate",
+        "owner": "019fab72-b2c8-76c1-b430-6c6f8431733f",
+        "dependencyAuthority": {
+          "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PILOT-DISPATCH-V1.json",
+          "sha256": "79b5132e8144c5f0e81c592b746becffb7fe99aa97d3ac3b2a62bf997a24f42b"
+        },
+        "resumptionEvent": "North publishes accepted appearance lock and Integration issues East per-process grant",
+        "nextRefillJob": "rerun East closure gate before any A/B/C launch"
+      },
+      {
+        "resourceClass": "dcc",
+        "slots": 0,
+        "reasonCode": "stage_prohibited_by_route",
+        "owner": "019fab72-b2c8-76c1-b430-6c6f8431733f",
+        "dependencyAuthority": {
+          "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PILOT-DISPATCH-V1.json",
+          "sha256": "79b5132e8144c5f0e81c592b746becffb7fe99aa97d3ac3b2a62bf997a24f42b"
+        },
+        "resumptionEvent": "North publishes accepted appearance lock and Integration issues East per-process grant",
+        "nextRefillJob": "do not allocate DCC until post-lock authority is published"
+      }
+    ],
+    "firstJobStartAt": "2026-08-01T15:59:20.421Z",
+    "nextRefill": "after North appearance lock and authenticated East per-process grant"
+  },
+  "activity": {
+    "sourceChildren": 0,
+    "blenderChildren": 0,
+    "dccChildren": 0,
+    "renderInvocations": 0,
+    "pixelFilesCreated": 0,
+    "normalizationRuns": 0,
+    "sourcePackets": 0,
+    "liveLeases": 0
+  },
+  "readiness": {
+    "sourceReady": false,
+    "launchReady": false,
+    "production": false,
+    "appearanceLock": "missing",
+    "sourceProductionProfile": "missing",
+    "perProcessGrant": "missing",
+    "status": "BLOCKED_AWAITING_NORTH_APPEARANCE_LOCK_AND_EAST_GRANT"
+  },
+  "boundedDeliverable": "one deterministic East zero-child launch-readiness packet; no DCC or source production",
+  "disposition": {
+    "prelock": true,
+    "proposalOnly": true,
+    "integrationAdmitted": false,
+    "selfAccepted": false
+  }
+}

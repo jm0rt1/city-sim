@@ -3,8 +3,9 @@
   "pilot": "citysim-model-routing-v1",
   "authorityCommit": "2753f42134fa85d8570849b57302cce0bc924566",
   "dispatchReceipt": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PILOT-DISPATCH-V1.json",
-  "status": "ready_for_dispatch_acknowledgements",
+  "status": "pilot_wave_complete_quality_goal_continues",
   "startedAt": "2026-08-01T11:50:45-04:00",
+  "finishedAt": "2026-08-01T12:21:55-04:00",
   "routingMix": {
     "frontierAuthorityActive": 2,
     "lunaEligibleExecution": 8,
@@ -31,22 +32,31 @@
     "note": "No pilot worker has been asked to run an aggregate full gate. Historical elapsed full-suite minutes were not reliably exposed and were not invented."
   },
   "packets": [
-    {"routeId":"pilot-v1:north","model":"gpt-5.6-sol","effort":"high","turns":0,"elapsedSeconds":null,"approximateTokens":null,"validationSeconds":null,"reworkCount":0,"acceptedResult":null,"frontierEscalationReason":null},
-    {"routeId":"pilot-v1:east","model":"gpt-5.6-luna","effort":"high","turns":0,"elapsedSeconds":null,"approximateTokens":null,"validationSeconds":null,"reworkCount":0,"acceptedResult":null,"frontierEscalationReason":null},
-    {"routeId":"pilot-v1:south","model":"gpt-5.6-luna","effort":"high","turns":0,"elapsedSeconds":null,"approximateTokens":null,"validationSeconds":null,"reworkCount":0,"acceptedResult":null,"frontierEscalationReason":null},
-    {"routeId":"pilot-v1:west","model":"gpt-5.6-luna","effort":"high","turns":0,"elapsedSeconds":null,"approximateTokens":null,"validationSeconds":null,"reworkCount":0,"acceptedResult":null,"frontierEscalationReason":null},
-    {"routeId":"pilot-v1:renderer","model":"gpt-5.6-luna","effort":"high","turns":0,"elapsedSeconds":null,"approximateTokens":null,"validationSeconds":null,"reworkCount":0,"acceptedResult":null,"frontierEscalationReason":null},
-    {"routeId":"pilot-v1:qa-prep","model":"gpt-5.6-luna","effort":"medium","turns":0,"elapsedSeconds":null,"approximateTokens":null,"validationSeconds":null,"reworkCount":0,"acceptedResult":null,"frontierEscalationReason":null},
-    {"routeId":"pilot-v1:gameplay","model":"gpt-5.6-luna","effort":"high","turns":0,"elapsedSeconds":null,"approximateTokens":null,"validationSeconds":null,"reworkCount":0,"acceptedResult":null,"frontierEscalationReason":null},
-    {"routeId":"pilot-v1:ui","model":"gpt-5.6-luna","effort":"high","turns":0,"elapsedSeconds":null,"approximateTokens":null,"validationSeconds":null,"reworkCount":0,"acceptedResult":null,"frontierEscalationReason":null},
-    {"routeId":"pilot-v1:simulation","model":"gpt-5.6-luna","effort":"medium","turns":0,"elapsedSeconds":null,"approximateTokens":null,"validationSeconds":null,"reworkCount":0,"acceptedResult":null,"frontierEscalationReason":null},
-    {"routeId":"pilot-v1:qa-final","model":"gpt-5.6-sol","effort":"high","turns":0,"elapsedSeconds":null,"approximateTokens":null,"validationSeconds":null,"reworkCount":0,"acceptedResult":null,"frontierEscalationReason":"queued until exact 4-of-4 renderer candidate lease"}
+    {"routeId":"pilot-v1:north","model":"gpt-5.6-sol","effort":"high","turns":2,"elapsedSeconds":332.0,"approximateTokens":null,"validationSeconds":4.0,"reworkCount":1,"workerReworkCount":0,"integrationRoutingReworkCount":1,"status":"returned_invalid_integration_focused_command","acceptedCommit":"e176400f5c7b95bd53e72a2f98c9960d9e5dbfcb","acceptedResult":"RETURN_FOCUSED_GATE_COMMAND_INVALID","frontierEscalationReason":"Integration route omitted required --repository-root and --output arguments; no art mutation occurred."},
+    {"routeId":"pilot-v1:north-r1","model":"gpt-5.6-sol","effort":"high","turns":2,"elapsedSeconds":22.0,"approximateTokens":null,"validationSeconds":1.0,"reworkCount":2,"workerReworkCount":0,"integrationRoutingReworkCount":2,"status":"returned_exact_output_contract_mismatch","acceptedCommit":"5a80bebac07f186fff645b2686531f2bf5cfb74c","acceptedResult":"RETURN_EXACT_FOCUSED_OUTPUT_CONTRACT_MISMATCH","frontierEscalationReason":"The command wrote to /private/tmp while the immutable test accepts only its repository evidence path; no art mutation occurred."},
+    {"routeId":"pilot-v1:north-r2","model":"gpt-5.6-sol","effort":"high","turns":1,"elapsedSeconds":114.0,"approximateTokens":null,"validationSeconds":1.0,"visualReviewSeconds":110.0,"reworkCount":0,"workerReworkCount":0,"integrationRoutingReworkCount":0,"status":"integrated_strict_visual_return","acceptedCommit":"0a76f81259c286f63706e215a0eca3efc34221eb","acceptedResult":"RETURN_LITERAL_192_HERO_READ_INSUFFICIENT","frontierEscalationReason":"Frontier visual judgment found the portal unreadable at literal 192, a 64x59 composition without a clear L4-over-L3 leap, and v12 silhouette identity with v11 (IoU 1.0)."},
+    {"routeId":"pilot-v1:east","model":"gpt-5.6-luna","effort":"high","turns":2,"elapsedSeconds":148.6,"approximateTokens":null,"validationSeconds":null,"reworkCount":1,"workerReworkCount":0,"integrationRoutingReworkCount":1,"status":"candidate_received","acceptedCommit":"57fae194c75a84331d6228b82b58e36a3f98de35","acceptedResult":"PASS_ZERO_CHILD_READY_BLOCKED_PENDING_POSTLOCK_AUTHORITIES","frontierEscalationReason":null},
+    {"routeId":"pilot-v1:south","model":"gpt-5.6-luna","effort":"high","turns":1,"elapsedSeconds":null,"approximateTokens":null,"validationSeconds":null,"reworkCount":1,"workerReworkCount":0,"integrationRoutingReworkCount":1,"status":"superseded_after_expected_head_mismatch","acceptedCommit":null,"acceptedResult":"STOPPED_ZERO_MUTATION","frontierEscalationReason":"South merged the receipt carrier before the clarification, changing the expected head."},
+    {"routeId":"pilot-v1:south-r1","model":"gpt-5.6-luna","effort":"high","turns":1,"elapsedSeconds":null,"approximateTokens":null,"validationSeconds":null,"reworkCount":1,"workerReworkCount":0,"integrationRoutingReworkCount":1,"status":"returned_invalid_integration_focused_command","acceptedCommit":null,"acceptedResult":"STOPPED_ZERO_MUTATION","frontierEscalationReason":"Integration route named a nonexistent focused test command."},
+    {"routeId":"pilot-v1:south-r2","model":"gpt-5.6-luna","effort":"high","turns":1,"elapsedSeconds":232.046,"approximateTokens":null,"validationSeconds":2.677,"reworkCount":0,"workerReworkCount":0,"integrationRoutingReworkCount":0,"status":"candidate_received","acceptedCommit":"edd7f66db7635e7500a910b8ba64057f4559eb15","acceptedResult":"PASS_ZERO_CHILD_READY_BLOCKED_PENDING_POSTLOCK_AUTHORITIES","frontierEscalationReason":null},
+    {"routeId":"pilot-v1:west","model":"gpt-5.6-luna","effort":"high","turns":1,"elapsedSeconds":585.93,"approximateTokens":null,"validationSeconds":83.762791,"reworkCount":0,"workerReworkCount":0,"integrationRoutingReworkCount":0,"status":"candidate_received","acceptedCommit":"6c78a001817af19992e4ce8de0920d2ad2c1e073","acceptedResult":"PASS_ZERO_CHILD_READY_BLOCKED_PENDING_POSTLOCK_AUTHORITIES","frontierEscalationReason":null},
+    {"routeId":"pilot-v1:renderer","model":"gpt-5.6-luna","effort":"high","turns":2,"elapsedSeconds":518.803,"approximateTokens":null,"validationSeconds":1.388,"reworkCount":1,"workerReworkCount":1,"integrationRoutingReworkCount":0,"status":"candidate_received","acceptedCommit":"4052d0e781b0a67235f371bab88b94ee2d59691a","acceptedResult":"PASS_INTAKE_REHEARSAL_AWAITING_FOUR_ADMISSIONS","frontierEscalationReason":null},
+    {"routeId":"pilot-v1:qa-prep","model":"gpt-5.6-luna","effort":"medium","turns":1,"elapsedSeconds":300.0,"approximateTokens":null,"validationSeconds":0.02,"reworkCount":0,"workerReworkCount":0,"integrationRoutingReworkCount":0,"status":"candidate_received","acceptedCommit":"562a35ced7b936e5ad77223c4f68b37dc77ef4b3","acceptedResult":"PASS_PREREGISTERED_CANDIDATE_NEUTRAL","frontierEscalationReason":null},
+    {"routeId":"pilot-v1:gameplay","model":"gpt-5.6-luna","effort":"high","turns":1,"elapsedSeconds":325.92,"approximateTokens":null,"validationSeconds":21.432,"reworkCount":0,"workerReworkCount":0,"integrationRoutingReworkCount":0,"status":"candidate_received","acceptedCommit":"c299e4f25d55a2c597fc7af60a4453be411c25e0","acceptedResult":"PASS_40_OF_40_NO_PRODUCT_DEFECT","frontierEscalationReason":null},
+    {"routeId":"pilot-v1:ui","model":"gpt-5.6-luna","effort":"high","turns":1,"elapsedSeconds":391.187,"approximateTokens":null,"validationSeconds":49.323,"reworkCount":0,"workerReworkCount":0,"integrationRoutingReworkCount":0,"status":"candidate_received","acceptedCommit":"c5544991391eca904a9779412c330941c32582ab","acceptedResult":"PASS_15_OF_15_NO_PRODUCT_DEFECT","frontierEscalationReason":null},
+    {"routeId":"pilot-v1:simulation","model":"gpt-5.6-luna","effort":"medium","turns":3,"elapsedSeconds":345.46,"approximateTokens":null,"validationSeconds":0.02,"reworkCount":0,"workerReworkCount":0,"integrationRoutingReworkCount":0,"status":"candidate_received","acceptedCommit":"fef8576e12cac7d83d2b2ba1c47411123f775e26","acceptedResult":"PASS_PHASE_A_REGENERATED_IDENTICALLY","frontierEscalationReason":null},
+    {"routeId":"pilot-v1:qa-final","model":"gpt-5.6-sol","effort":"high","turns":0,"elapsedSeconds":null,"approximateTokens":null,"validationSeconds":null,"reworkCount":0,"workerReworkCount":0,"integrationRoutingReworkCount":0,"status":"queued_for_exact_candidate_lease","acceptedCommit":null,"acceptedResult":null,"frontierEscalationReason":"queued until exact 4-of-4 renderer candidate lease"}
   ],
   "outcomes": {
-    "acceptedOutcomesPerFrontierTurn": null,
-    "lunaReturnRate": null,
+    "acceptedOutcomesPerFrontierTurn": 0.2,
+    "acceptedOutcomesPerFrontierTurnBasis": "One valid North visual disposition across five recorded North frontier worker turns; Integration captain turns are not exposed and are excluded.",
+    "lunaCandidateReceipts": 8,
+    "lunaWorkerReturns": 0,
+    "integrationAuthoredRouteReturns": 4,
+    "integratedPilotEvidenceResults": 9,
+    "lunaReturnRate": 0.0,
     "dispatchToAcceptedCandidateSeconds": null,
-    "totalTokenTrend": null,
+    "totalTokenTrend": "unavailable_no_token_counters_exposed",
     "pricingEstimate": null
   }
 }

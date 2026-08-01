@@ -1,17 +1,15 @@
 {
   "schemaVersion": 1,
   "claim": "PLAY-073",
-  "routeId": "quality-v1:play-073-r4-b-current-master-technical-return-v1",
-  "routeSHA256": "2b48889c2e215dfb063fce3e197bdc1fb8cacad2d58e8149496110f1f566f5b2",
-  "carrier": "45e1422304443a012a2f121c90be3e7d31b82c59",
-  "authorityBase": "68ef9bdf213b9b7f659f4a049f2f2708bcae166c",
+  "routeId": "quality-v1:play-073-r4-b-device-rgb-proof-luna-v2",
+  "routeSHA256": "ce55d83ff1938f1295874a71f291736d5c73365e3e0af0f10859be726833db5d",
+  "carrier": "5d84d521b3b25f9ddf11d7b88e81c885a5e86946",
+  "authorityBase": "5ac54021604e25117f4ccb63bc0914209724754c",
   "claimSHA256": "51b347c22df6b04e33b0cb59046c774b65f770465bea21d1073db55cca75b897",
   "productCommit": "1ce6600bf109828962ca85740151965d4219a8c0",
   "status": "focused_pass_nonacceptance",
   "scope": {
     "productPaths": [
-      "Native/CitySimNative/Sources/CitySimNative/Rendering/LotContextRenderer.swift",
-      "Native/CitySimNative/Sources/CitySimNative/Rendering/TerrainRenderer.swift",
       "Native/CitySimNative/Tests/CitySimNativeTests/WorldRenderingTests.swift"
     ],
     "evidenceRoot": "docs/production/evidence/PLAY-073/r4-b-current-master-v1",
@@ -30,10 +28,10 @@
   },
   "focusedGate": {
     "command": "swift test --package-path Native/CitySimNative --filter WorldRenderingTests",
-    "startedAt": "2026-08-01T18:45:19.265Z",
-    "finishedAt": "2026-08-01T18:46:09.089Z",
-    "elapsedSeconds": 49.823,
-    "executed": 69,
+    "startedAt": "2026-08-01T19:26:40.358Z",
+    "finishedAt": "2026-08-01T19:27:29.677Z",
+    "elapsedSeconds": 49.319,
+    "executed": 70,
     "skipped": 0,
     "failures": 0,
     "unexpectedFailures": 0,
@@ -43,8 +41,8 @@
   "diagnostics": {
     "nodes": 1866,
     "drawables": 927,
-    "totalRenderMilliseconds": 7.845,
-    "coldWorldUpdateMilliseconds": 5.187,
+    "totalRenderMilliseconds": 7.416,
+    "coldWorldUpdateMilliseconds": 4.669,
     "fallbacks": 0,
     "reducedMotionActions": 0,
     "residencyBytes": 50331648,
@@ -53,7 +51,7 @@
   "productFileSHA256": {
     "Native/CitySimNative/Sources/CitySimNative/Rendering/LotContextRenderer.swift": "5ca79464427baad5110af62650dad8e26d309c7fe895f3fbf0f920ceff2fdd57",
     "Native/CitySimNative/Sources/CitySimNative/Rendering/TerrainRenderer.swift": "afd525dd07dca09f86f7bc0110cd98430e51f46e150effb5497238dabfdfd328",
-    "Native/CitySimNative/Tests/CitySimNativeTests/WorldRenderingTests.swift": "1b208dbec9a57077c7ce0b1695a881e9a47c6cdb54488064532829bbe0234fc2"
+    "Native/CitySimNative/Tests/CitySimNativeTests/WorldRenderingTests.swift": "629fb118355bcbc9fbabbad457a5595225f4bbccdb261385976c88e53604ce5e"
   },
   "executionAccounting": {
     "routingReworkCount": 1,

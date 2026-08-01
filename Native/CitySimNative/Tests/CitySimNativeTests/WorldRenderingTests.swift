@@ -3188,6 +3188,77 @@ final class WorldRenderingTests: XCTestCase {
     }
 
     @MainActor
+    func testRepeatSignatureDetectsOneBitScalarDrift() {
+        let originalX = CGFloat(1.25)
+        let driftedX = CGFloat(Double(bitPattern: Double(originalX).bitPattern ^ 1))
+        XCTAssertNotEqual(
+            Double(originalX).bitPattern,
+            Double(driftedX).bitPattern,
+            "the adversarial coordinate must remain a distinct representable scalar"
+        )
+
+        func makePath(x: CGFloat) -> CGPath {
+            let path = CGMutablePath()
+            path.move(to: CGPoint(x: x, y: -2.5))
+            path.addLine(to: CGPoint(x: 3.5, y: 4.75))
+            path.closeSubpath()
+            return path
+        }
+
+        XCTAssertNotEqual(
+            pathSignature(makePath(x: originalX)),
+            pathSignature(makePath(x: driftedX)),
+            "a one-bit coordinate drift must not compare equal"
+        )
+
+        let originalRed = CGFloat(0.25)
+        let driftedRed = CGFloat(0.2500002)
+        let originalColor = NSColor(
+            deviceRed: originalRed,
+            green: 0.5,
+            blue: 0.75,
+            alpha: 1
+        )
+        let driftedColor = NSColor(
+            deviceRed: driftedRed,
+            green: 0.5,
+            blue: 0.75,
+            alpha: 1
+        )
+        func oldRoundedColorSignature(_ color: NSColor) -> String {
+            guard let rgb = color.usingColorSpace(.deviceRGB) else {
+                return color.description
+            }
+            return [
+                rgb.redComponent,
+                rgb.greenComponent,
+                rgb.blueComponent,
+                rgb.alphaComponent,
+            ].map { String(format: "%.6f", $0) }.joined(separator: ",")
+        }
+        XCTAssertEqual(
+            oldRoundedColorSignature(originalColor),
+            oldRoundedColorSignature(driftedColor),
+            "the approved color adversary must alias under the retired six-decimal proof"
+        )
+        guard let originalRGB = originalColor.usingColorSpace(.deviceRGB),
+              let driftedRGB = driftedColor.usingColorSpace(.deviceRGB) else {
+            XCTFail("the approved color adversary must realize in device RGB")
+            return
+        }
+        XCTAssertNotEqual(
+            Double(originalRGB.redComponent).bitPattern,
+            Double(driftedRGB.redComponent).bitPattern,
+            "the approved color adversary must survive device-RGB realization"
+        )
+        XCTAssertNotEqual(
+            colorSignature(originalColor),
+            colorSignature(driftedColor),
+            "an old-rounding-equivalent realized color drift must not compare equal"
+        )
+    }
+
+    @MainActor
     func testServiceCampusContactVerticesStayInsideTheirAuthoritativeGroundCells() {
         let style = WorldVisualStyle()
         let renderer = TerrainRenderer(style: style)
@@ -5189,12 +5260,22 @@ final class WorldRenderingTests: XCTestCase {
 
     private struct ShapeSignature: Equatable {
         let name: String
-        let path: [String]
+        let path: [PathElementSignature]
         let position: CGPoint
         let zPosition: CGFloat
-        let fill: String
-        let stroke: String
+        let fill: ColorSignature
+        let stroke: ColorSignature
         let lineWidth: CGFloat
+    }
+
+    private struct PathElementSignature: Equatable {
+        let type: Int32
+        let scalarBits: [UInt64]
+    }
+
+    private struct ColorSignature: Equatable {
+        let scalarBits: [UInt64]
+        let fallbackDescription: String?
     }
 
     @MainActor
@@ -5225,9 +5306,9 @@ final class WorldRenderingTests: XCTestCase {
         )
     }
 
-    private func pathSignature(_ path: CGPath?) -> [String] {
+    private func pathSignature(_ path: CGPath?) -> [PathElementSignature] {
         guard let path else { return [] }
-        var result: [String] = []
+        var result: [PathElementSignature] = []
         path.applyWithBlock { elementPointer in
             let element = elementPointer.pointee
             let count: Int
@@ -5243,25 +5324,39 @@ final class WorldRenderingTests: XCTestCase {
             @unknown default:
                 count = 0
             }
-            let points = (0..<count).map { index in
+            let scalarBits = (0..<count).flatMap { index in
                 let point = element.points[index]
-                return String(format: "%.4f,%.4f", point.x, point.y)
-            }.joined(separator: ";")
-            result.append("\(String(describing: element.type)):\(points)")
+                return [
+                    Double(point.x).bitPattern,
+                    Double(point.y).bitPattern,
+                ]
+            }
+            result.append(
+                PathElementSignature(
+                    type: element.type.rawValue,
+                    scalarBits: scalarBits
+                )
+            )
         }
         return result
     }
 
-    private func colorSignature(_ color: NSColor) -> String {
+    private func colorSignature(_ color: NSColor) -> ColorSignature {
         guard let rgb = color.usingColorSpace(.deviceRGB) else {
-            return color.description
+            return ColorSignature(
+                scalarBits: [],
+                fallbackDescription: color.description
+            )
         }
-        return [
-            rgb.redComponent,
-            rgb.greenComponent,
-            rgb.blueComponent,
-            rgb.alphaComponent,
-        ].map { String(format: "%.6f", $0) }.joined(separator: ",")
+        return ColorSignature(
+            scalarBits: [
+                Double(rgb.redComponent).bitPattern,
+                Double(rgb.greenComponent).bitPattern,
+                Double(rgb.blueComponent).bitPattern,
+                Double(rgb.alphaComponent).bitPattern,
+            ],
+            fallbackDescription: nil
+        )
     }
 
     @MainActor

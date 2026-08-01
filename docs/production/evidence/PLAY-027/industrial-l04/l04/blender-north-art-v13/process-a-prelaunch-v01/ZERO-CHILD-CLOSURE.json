@@ -1,0 +1,156 @@
+{
+  "authority": {
+    "oneAttemptLease": {
+      "created": false,
+      "status": "missing-by-design"
+    },
+    "schedule": {
+      "created": false,
+      "status": "missing-by-design"
+    },
+    "secret": {
+      "created": false,
+      "status": "missing-by-design"
+    }
+  },
+  "checks": {
+    "claimSHA256": "7d42ba7c38a55d7681171499aad50e15c2d3eba0878cabf508d0e42ee97cdc83",
+    "currentHead": null,
+    "futureProcessRootAbsent": true,
+    "inputCount": 6,
+    "liveAuthorityAbsent": true
+  },
+  "claim": {
+    "path": "docs/production/claims/PLAY-027.world-art.md",
+    "revision": 8,
+    "sha256": "7d42ba7c38a55d7681171499aad50e15c2d3eba0878cabf508d0e42ee97cdc83"
+  },
+  "counts": {
+    "blender": 0,
+    "dcc": 0,
+    "normalizer": 0,
+    "pixels": 0,
+    "processA": 0,
+    "processB": 0,
+    "processC": 0,
+    "renders": 0
+  },
+  "executionAccounting": {
+    "capacity": {
+      "dccSlots": 0,
+      "helperSlots": 1,
+      "maximumDCCChildStarts": 1
+    },
+    "joined": [
+      {
+        "batch": "north-v13-prelaunch-v01",
+        "branch": "codex/citysim-world-art",
+        "claim": "docs/production/claims/PLAY-027.world-art.md",
+        "claimRevision": 8,
+        "dccSlot": null,
+        "evidenceId": "ZERO-CHILD-CLOSURE.json",
+        "exclusiveRoot": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-prelaunch-v01",
+        "head": "41427d773cb12594a4eb723b7291a38ed6321a0f",
+        "jobId": "north-v13-prelaunch-validation",
+        "mutation": "write-task-owned-prelaunch-evidence",
+        "processId": null,
+        "publishedBase": "73b72fce27d1bcfedcf48b76940ddfa688baa48c",
+        "resourceClass": "helper",
+        "state": "joined",
+        "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+        "worktree": "/Users/James/.codex/worktrees/0648/city-sim"
+      }
+    ],
+    "nextRefill": "Integration-published Process-A schedule + authenticated one-attempt grant/lease/secret",
+    "overlap": {
+      "jobIds": [],
+      "reason": "single deterministic helper; no concurrent child",
+      "status": "none"
+    },
+    "readyNow": [],
+    "running": [],
+    "serializedAuthority": {
+      "branch": "codex/citysim-world-art",
+      "gitIndexWriter": "019f96e0-3793-7542-9172-060a9ca09b0a",
+      "governedEvidenceWriter": "019f96e0-3793-7542-9172-060a9ca09b0a",
+      "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+      "worktree": "/Users/James/.codex/worktrees/0648/city-sim"
+    },
+    "unusedCapacityReasons": [
+      {
+        "dependencyAuthority": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-NORTH-V13-PRELAUNCH-AND-QA-ID-REPAIR-V1.json#quality-v1:north-v13-prelaunch",
+        "nextRefillJob": "north-v13-process-a",
+        "owner": "019f7686-4491-7891-86a6-95a78d67e5c8",
+        "reasonCode": "DCC_AUTHORITY_NOT_PUBLISHED",
+        "resumptionEvent": "Integration publishes schedule, lease, authenticated grant, and compute slot"
+      }
+    ],
+    "waitingOnJoin": []
+  },
+  "hardStop": "No live authority or child is issued by this packet.",
+  "identity": {
+    "logicalBuildingID": "industrial_l04",
+    "processID": "A",
+    "productionSelected": false,
+    "samplingContract": "blender-cycles-cpu-v13-design-authority",
+    "sceneGeometryID": "industrial-l04-north-v13-portal-crown-foundry",
+    "slotID": "north:A",
+    "sourceAuthority": false,
+    "sourceRevision": "blender-art-v13-design-authority",
+    "variantID": "variant-0",
+    "viewDirection": "north"
+  },
+  "inputs": [
+    {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/DESIGN-SCENE.json",
+      "sha256": "0f7a8e40a07f5c2b7320ab42fe5e1bcb2dc23fb508ff6b04e8ea49cf6c974060"
+    },
+    {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/DESIGN-MATERIALS.json",
+      "sha256": "c8179b77a184e41b723e26b34e7da2ef256b09e93b54a47e76cc5103f22b8cab"
+    },
+    {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/lowering-v01/LOWERING-CONTRACT.json",
+      "sha256": "41125b2ee110085451a787879825cefe9a724cafa8ed3347db5a2688b063e111"
+    },
+    {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-direction-bridge-v06/MAPPING-CONTRACT.json",
+      "sha256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7"
+    },
+    {
+      "path": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/design-authority-v01/DESIGN-AUTHORITY.json",
+      "sha256": "1b1006403081c3933c54451b6c506af74493a2ac3b253fdd9f1f79098d7c1bed"
+    },
+    {
+      "path": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/lowering-v01/ACTUAL-CAMERA-ZERO-PIXEL-PROOF.json",
+      "sha256": "e4bbe982e47f4bf96703e75848d8bdad1d9c0cc2aa4d227749005fa039273470"
+    }
+  ],
+  "launchReady": false,
+  "prelaunchReady": true,
+  "productionSelected": false,
+  "requiredNextAuthority": [
+    "published schedule",
+    "one-attempt lease",
+    "authenticated grant/secret",
+    "named compute slot"
+  ],
+  "result": "READY_FOR_INTEGRATION_REVIEW_ONLY",
+  "route": {
+    "authorityCommit": "73b72fce27d1bcfedcf48b76940ddfa688baa48c",
+    "baseCommit": "73b72fce27d1bcfedcf48b76940ddfa688baa48c",
+    "canonicalSHA256": "ab211ea591d3712a24880d363afae5ec1ff608bfe845cbc5371cbb0cd217bc3e",
+    "carrierCommit": "0ce4e46b11d808bef328c9819e5ea6a3e180fb73",
+    "expectedStartingHEAD": "41427d773cb12594a4eb723b7291a38ed6321a0f",
+    "routeId": "quality-v1:north-v13-prelaunch"
+  },
+  "schema": 1,
+  "sourceAuthority": false,
+  "stage": "north-v13-process-a-prelaunch-v01",
+  "task": "PLAY-027",
+  "toolHashes": {
+    "child": "0d8a0d2703311aa3a782b1397902e6c3dac5d688a04367dac1d6ac995d18dccd",
+    "executionContract": "c287f7426e396fd9b74580fcf4879324e1ab144e44b86c21170b9519f427f203",
+    "runner": "64a451482237ae5d48e91600b3f505954ce7a16ab6f37291bd7ee3d518632b50"
+  }
+}

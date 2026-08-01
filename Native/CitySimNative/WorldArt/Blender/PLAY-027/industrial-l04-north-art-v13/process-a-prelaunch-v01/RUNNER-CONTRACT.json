@@ -1,0 +1,16 @@
+{
+  "schema": 1,
+  "runner": "launch_north_v13_prelaunch.py",
+  "child": "render_north_v13_process_a_child.py",
+  "mode": "zero-child-prelaunch",
+  "childStarts": 0,
+  "requiredInputs": ["EXECUTION-CONTRACT.json"],
+  "liveAuthorityInputs": {"schedule": "absent", "lease": "absent", "secret": "absent", "grant": "absent"},
+  "failClosed": ["wrong route/claim/base", "wrong direction/process/slot/root", "input hash mismatch", "present live authority", "direct child invocation", "future output root exists", "symlinked path", "nonzero preflight side effect"],
+  "noSubprocess": true,
+  "noBpy": true,
+  "noPixels": true,
+  "noDCC": true,
+  "futureProcessARequiresIntegrationGrant": true,
+  "futureProcessARequiresOneAttemptLease": true
+}

@@ -11,9 +11,17 @@ Make CitySim worth playing: every important choice must create measurable, visib
 
 1. Run `pwd`, `git branch --show-current`, and `git status --short --branch`.
 2. Require `codex/citysim-gameplay-loop` for mutations.
-3. Read `docs/production/CITYSIM_WORKTREE_OPERATING_SYSTEM.md`, the claimed `PLAY-*` task, and linked requirements/design sources.
-4. Confirm a gameplay-lane claim exists and record the current base commit.
-5. Preserve unrelated changes and legacy Python code.
+3. Read and follow [the shared model-routing and cost-control contract](../operate-citysim-integration/references/model-routing-and-cost-control.md). Complete the applicable authority read for a new thread or claim, changed authority/skill/reference hash, routing mismatch, context loss, or stale compact packet. On an unchanged same-thread continuation, verify every recorded hash and Git revision before consuming the compact lane-context packet.
+4. When a complete read is required, read `docs/production/CITYSIM_WORKTREE_OPERATING_SYSTEM.md`, this skill, the claimed `PLAY-*` task, and linked requirements/design sources completely.
+5. Confirm a gameplay-lane claim exists and record the current base commit.
+6. Preserve unrelated changes and legacy Python code.
+
+## Route work at judgment boundaries
+
+- `LUNA_IMPLEMENTATION` implements frozen rule slices, fixtures, analytics, and deterministic tests; `LUNA_MECHANICAL` may build inventories, fixtures, receipts, and focused evidence; `LUNA_LOCAL_DEBUG` may repair only a reproducible lane-local defect with frozen inputs and stops after two unsuccessful attempts.
+- `FRONTIER_AUTHORITY` owns tradeoff design, pacing, economy balance, recovery quality, cross-system tuning, shared-contract decisions, and final subjective acceptance.
+- A substantial `PLAY-*` task must arrive as a frontier authority packet, one or more disjoint Luna execution packets, and an independent frontier acceptance packet. Stop on every escalation trigger in the shared contract.
+- Luna runs only the focused owner and affected gates in its validated `modelRoute`. The lane coordinator aggregates coherent packets; the full Swift suite, staged build, and real-app journey run once against the exact aggregate/integrated candidate unless identity changes or evidence is stale.
 
 ## Own the gameplay outcome
 
@@ -37,15 +45,10 @@ Before editing, state:
 
 Split work that cannot reach an integrated player outcome within one iteration.
 
-## Implement and prove
+## Execute and prove conditionally
 
-1. Add focused deterministic tests and scenario fixtures with the behavior.
-2. Test early, pressured, recovery, and established states; do not tune one save.
-3. Verify conservation, caps, denominators, time units, and failure behavior.
-4. Run the complete Swift suite and `git diff --check`.
-5. Build and operate the staged app through the claimed loop.
-6. Confirm HUD and world feedback agree with simulation truth.
-7. Capture hands-on evidence of decision, consequence, diagnosis, and recovery.
+For implementation, focused evidence, and aggregate acceptance requirements,
+read [references/gameplay-execution-and-evidence.md](references/gameplay-execution-and-evidence.md).
 
 ## Shared-contract rule
 
@@ -62,4 +65,5 @@ If blocked by a shared store, snapshot, save, command, or rendering contract, wr
 
 ## Completion
 
-Commit focused work on the lane branch and write the required completion record with exact commands, results, scenario outcomes, proof, and limitations. Do not push or merge. A balanced spreadsheet without an understandable play session is incomplete.
+Use the completion requirements in
+[references/gameplay-execution-and-evidence.md](references/gameplay-execution-and-evidence.md).

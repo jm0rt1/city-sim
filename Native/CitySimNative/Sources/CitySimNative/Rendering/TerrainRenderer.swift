@@ -13,16 +13,6 @@ final class TerrainRenderer {
     private static var backdropTemplates: [BackdropTemplateKey: SKNode] = [:]
     private static let maximumBackdropTemplateCount = 4
 
-    private struct MapEdgeTemplateKey: Hashable {
-        let boundaryMask: UInt8
-        let detail: CameraDetailLevel
-        let tileWidthHundredths: Int
-        let tileHeightHundredths: Int
-    }
-
-    private static var mapEdgeTemplates: [MapEdgeTemplateKey: SKNode] = [:]
-    private static let maximumMapEdgeTemplateCount = 32
-
     private struct DevelopedGroundRole: Hashable {
         let x: Int
         let y: Int
@@ -224,11 +214,6 @@ final class TerrainRenderer {
             completed: completed
         )
         let enclosedBlocks = enclosedDistrictBlocks(in: state)
-        let buildableFrontageEdges = buildableFrontageEdges(
-            in: state,
-            developedRoads: developedRoads,
-            enclosedBlocks: enclosedBlocks
-        )
 
         let cityLayer = style.makeDetailLayer(.city, visibleAt: .block)
         let neighborhoodLayer = style.makeDetailLayer(.neighborhood, visibleAt: .block)
@@ -255,45 +240,6 @@ final class TerrainRenderer {
             width: style.tileWidth + 1.5,
             height: style.tileHeight + 0.75
         )
-        let vergeContactPath = CGMutablePath()
-        vergeContactPath.addPath(combinedDiamondPath(
-            coordinates: developedRoads.map(\.coordinate),
-            width: style.tileWidth + 9,
-            height: style.tileHeight + 4.5,
-            offset: CGPoint(x: 1.2, y: -1.05)
-        ))
-        vergeContactPath.addPath(buildableFrontageBandPath(
-            edges: buildableFrontageEdges,
-            depth: 19,
-            offset: CGPoint(x: 1.2, y: -1.05)
-        ))
-        let vergeContact = SKShapeNode(path: vergeContactPath)
-        vergeContact.name = "district.ground.road-verge.contact"
-        vergeContact.fillColor = NSColor.black.withAlphaComponent(0.10)
-        vergeContact.strokeColor = .clear
-        vergeContact.zPosition = 0.2
-        root.addChild(vergeContact)
-
-        let vergePath = CGMutablePath()
-        vergePath.addPath(combinedDiamondPath(
-            coordinates: developedRoads.map(\.coordinate),
-            width: style.tileWidth + 7,
-            height: style.tileHeight + 3.5
-        ))
-        vergePath.addPath(buildableFrontageBandPath(
-            edges: buildableFrontageEdges,
-            depth: 16
-        ))
-        let verge = SKShapeNode(path: vergePath)
-        verge.name = "district.ground.road-verge.material"
-        verge.fillColor = style.palette.lotGrass.blended(
-            withFraction: 0.30,
-            of: style.palette.sidewalk
-        )?.withAlphaComponent(0.94) ?? style.palette.lotGrass
-        verge.strokeColor = .clear
-        verge.zPosition = 0.4
-        root.addChild(verge)
-
         let publicRealm = SKShapeNode(path: roadPath)
         publicRealm.name = "district.ground.authoritative-public-realm"
         publicRealm.fillColor = style.palette.sidewalk.blended(
@@ -398,8 +344,7 @@ final class TerrainRenderer {
         )
         addServiceCampusGround(
             coordinates: serviceCampus,
-            base: root,
-            detail: neighborhoodLayer
+            to: neighborhoodLayer
         )
 
         let familyGroups = Dictionary(grouping: completed, by: \.kind)
@@ -408,7 +353,7 @@ final class TerrainRenderer {
                 addSpecialParcelMaterial(
                     kind: kind,
                     tiles: tiles,
-                    to: root
+                    to: neighborhoodLayer
                 )
                 continue
             }
@@ -473,102 +418,9 @@ final class TerrainRenderer {
         return Set(serviceCampusCoordinates(in: state, completed: completed))
     }
 
-    func buildableFrontageBandCoordinatesForTesting(
-        in state: CityGameState
-    ) -> Set<GridCoordinate> {
-        let completed = state.tiles.filter {
-            $0.kind != .empty && $0.kind != .road && $0.constructionProgress >= 1
-        }
-        let developedRoads = connectedFrontageRoads(in: state, completed: completed)
-        let enclosedBlocks = enclosedDistrictBlocks(in: state)
-        return Set(buildableFrontageEdges(
-            in: state,
-            developedRoads: developedRoads,
-            enclosedBlocks: enclosedBlocks
-        ).map(\.empty))
-    }
-
     private struct EnclosedDistrictBlock {
         let componentCoordinates: [GridCoordinate]
         let vacantCoordinates: [GridCoordinate]
-    }
-
-    private struct BuildableFrontageEdge {
-        let empty: GridCoordinate
-        let road: GridCoordinate
-    }
-
-    private func buildableFrontageEdges(
-        in state: CityGameState,
-        developedRoads: [CityTile],
-        enclosedBlocks: [EnclosedDistrictBlock]
-    ) -> [BuildableFrontageEdge] {
-        let roadCoordinates = Set(developedRoads.map(\.coordinate))
-        let enclosedVacant = Set(enclosedBlocks.flatMap(\.vacantCoordinates))
-        return state.tiles
-            .filter {
-                $0.kind == .empty && !enclosedVacant.contains($0.coordinate)
-            }
-            .flatMap { tile in
-                cardinalNeighbors(of: tile.coordinate)
-                    .filter(roadCoordinates.contains)
-                    .map {
-                        BuildableFrontageEdge(
-                            empty: tile.coordinate,
-                            road: $0
-                        )
-                    }
-            }
-            .sorted {
-                if $0.empty != $1.empty {
-                    return coordinateComesBefore($0.empty, $1.empty)
-                }
-                return coordinateComesBefore($0.road, $1.road)
-            }
-    }
-
-    private func buildableFrontageBandPath(
-        edges: [BuildableFrontageEdge],
-        depth: CGFloat,
-        offset: CGPoint = .zero
-    ) -> CGPath {
-        let path = CGMutablePath()
-        for edge in edges {
-            let emptyCenter = style.isoPosition(edge.empty)
-            let roadCenter = style.isoPosition(edge.road)
-            let vector = CGPoint(
-                x: roadCenter.x - emptyCenter.x,
-                y: roadCenter.y - emptyCenter.y
-            )
-            let length = max(0.001, hypot(vector.x, vector.y))
-            let normal = CGPoint(x: vector.x / length, y: vector.y / length)
-            let tangent = CGPoint(x: -normal.y, y: normal.x)
-            let midpoint = CGPoint(
-                x: (emptyCenter.x + roadCenter.x) / 2 + offset.x,
-                y: (emptyCenter.y + roadCenter.y) / 2 + offset.y
-            )
-            let halfEdge = length * 0.48
-            let halfDepth = depth / 2
-            path.addPath(style.polygonPath([
-                CGPoint(
-                    x: midpoint.x - tangent.x * halfEdge - normal.x * halfDepth,
-                    y: midpoint.y - tangent.y * halfEdge - normal.y * halfDepth
-                ),
-                CGPoint(
-                    x: midpoint.x + tangent.x * halfEdge - normal.x * halfDepth,
-                    y: midpoint.y + tangent.y * halfEdge - normal.y * halfDepth
-                ),
-                CGPoint(
-                    x: midpoint.x + tangent.x * halfEdge + normal.x * halfDepth,
-                    y: midpoint.y + tangent.y * halfEdge + normal.y * halfDepth
-                ),
-                CGPoint(
-                    x: midpoint.x - tangent.x * halfEdge + normal.x * halfDepth,
-                    y: midpoint.y - tangent.y * halfEdge + normal.y * halfDepth
-                ),
-            ]))
-        }
-        return path
     }
 
     private func connectedFrontageRoads(
@@ -735,17 +587,11 @@ final class TerrainRenderer {
                     withFraction: 0.72,
                     of: style.palette.lotGrass
                 )
-            texture.fillColor = fill?.withAlphaComponent(0.28)
-                ?? style.palette.parkGrass.withAlphaComponent(0.28)
+            texture.fillColor = fill?.withAlphaComponent(0.18)
+                ?? style.palette.parkGrass.withAlphaComponent(0.18)
             texture.strokeColor = .clear
             texture.zPosition = 4
-            city.addChild(texture)
-
-            if let neighborhoodTexture = texture.copy() as? SKShapeNode {
-                neighborhoodTexture.fillColor = fill?.withAlphaComponent(0.34)
-                    ?? style.palette.parkGrass.withAlphaComponent(0.34)
-                neighborhood.addChild(neighborhoodTexture)
-            }
+            neighborhood.addChild(texture)
         }
 
         guard index == 0,
@@ -991,8 +837,7 @@ final class TerrainRenderer {
 
     private func addServiceCampusGround(
         coordinates: [GridCoordinate],
-        base: SKNode,
-        detail: SKNode
+        to layer: SKNode
     ) {
         guard !coordinates.isEmpty else { return }
         let contact = SKShapeNode(path: combinedDiamondPath(
@@ -1005,7 +850,7 @@ final class TerrainRenderer {
         contact.fillColor = NSColor.black.withAlphaComponent(0.15)
         contact.strokeColor = .clear
         contact.zPosition = 1.7
-        base.addChild(contact)
+        layer.addChild(contact)
 
         let ground = SKShapeNode(path: combinedDiamondPath(
             coordinates: coordinates,
@@ -1019,7 +864,7 @@ final class TerrainRenderer {
         )?.withAlphaComponent(0.90) ?? style.palette.soil
         ground.strokeColor = .clear
         ground.zPosition = 1.9
-        base.addChild(ground)
+        layer.addChild(ground)
 
         let variationPath = CGMutablePath()
         for (index, coordinate) in coordinates.enumerated() {
@@ -1043,13 +888,28 @@ final class TerrainRenderer {
         )?.withAlphaComponent(0.34) ?? style.palette.asphaltLight
         variation.strokeColor = .clear
         variation.zPosition = 2.05
-        detail.addChild(variation)
+        layer.addChild(variation)
     }
 
-    /// Breaks the board into one continuous deterministic material field.
-    /// The low-resolution texture is deliberately smooth and non-semantic: it
-    /// has no parcel edges, shared diagonals, occupancy marks, or hit targets.
-    /// A single cached texture also replaces the former lattice of shape nodes.
+    private func macroFieldColor(variant: Int) -> NSColor {
+        switch variant {
+        case 0:
+            NSColor(calibratedRed: 0.12, green: 0.25, blue: 0.15, alpha: 0.17)
+        case 1:
+            NSColor(calibratedRed: 0.45, green: 0.46, blue: 0.22, alpha: 0.145)
+        case 2:
+            NSColor(calibratedRed: 0.16, green: 0.34, blue: 0.22, alpha: 0.16)
+        case 3:
+            NSColor(calibratedRed: 0.34, green: 0.39, blue: 0.18, alpha: 0.145)
+        default:
+            NSColor(calibratedRed: 0.32, green: 0.25, blue: 0.14, alpha: 0.135)
+        }
+    }
+
+    /// Breaks the board into overlapping, low-contrast material swatches.
+    /// Unlike parcel-sized polygons, each swatch has a short irregular contour
+    /// with no shared edge, so a continuous diagonal seam cannot be traced
+    /// through the aperture. Every mark is ground-only and deterministic.
     private func addContinuousTerrainComposition(
         gridWidth: Int,
         gridHeight: Int,
@@ -1058,61 +918,25 @@ final class TerrainRenderer {
         block: SKNode
     ) {
         guard gridWidth >= 5, gridHeight >= 5 else { return }
-        if let texture = continuousTerrainTexture(
-            gridWidth: gridWidth,
-            gridHeight: gridHeight
-        ) {
-            let bounds = style.polygonPath(
-                mapCorners(gridWidth: gridWidth, gridHeight: gridHeight)
-            ).boundingBoxOfPath
-            // Detail layers are cumulative, so the city layer supplies this
-            // common material once at every LOD.
-            let material = SKSpriteNode(texture: texture)
-            material.name = "terrain.macro.material.patch.continuous-field"
-            material.position = CGPoint(x: bounds.midX, y: bounds.midY)
-            material.size = bounds.size
-            material.zPosition = 0.1
-            city.addChild(material)
-        }
-
-        // Neighborhood and block retain sparse scale-appropriate accents over
-        // the continuous field. Their irregular placement is intentionally
-        // much coarser than a parcel lattice.
-        let materialSpan = 6
+        let materialSpan = 2
         var materialIndex = 0
         for y in stride(from: 2, to: gridHeight - 1, by: materialSpan) {
             for x in stride(from: 2, to: gridWidth - 1, by: materialSpan) {
                 let anchor = GridCoordinate(x: x, y: y)
-                let anchorCenter = style.isoPosition(anchor)
-                let center = CGPoint(
-                    x: anchorCenter.x + (
-                        WorldVisualSeed.unit(
-                            for: anchor,
-                            kind: .empty,
-                            salt: 0x7E24
-                        ) - 0.5
-                    ) * style.tileWidth * 1.8,
-                    y: anchorCenter.y + (
-                        WorldVisualSeed.unit(
-                            for: anchor,
-                            kind: .empty,
-                            salt: 0x7E25
-                        ) - 0.5
-                    ) * style.tileHeight * 1.25
-                )
+                let center = style.isoPosition(anchor)
                 let radiusX = style.tileWidth * (
-                    1.55 + WorldVisualSeed.unit(
+                    1.18 + WorldVisualSeed.unit(
                         for: anchor,
                         kind: .empty,
                         salt: 0x7E22
-                    ) * 0.55
+                    ) * 0.38
                 )
                 let radiusY = style.tileHeight * (
-                    0.72 + WorldVisualSeed.unit(
+                    0.62 + WorldVisualSeed.unit(
                         for: anchor,
                         kind: .empty,
                         salt: 0x7E23
-                    ) * 0.30
+                    ) * 0.22
                 )
                 let variant = WorldVisualSeed.variant(
                     count: 5,
@@ -1120,6 +944,16 @@ final class TerrainRenderer {
                     kind: .empty,
                     salt: 0x7E21
                 )
+                let material = SKShapeNode(path: organicSwatchPath(
+                    center: center,
+                    anchor: anchor,
+                    radiusX: radiusX,
+                    radiusY: radiusY
+                ))
+                material.name = "terrain.macro.material.patch.\(materialIndex)"
+                material.fillColor = macroFieldColor(variant: variant)
+                material.strokeColor = .clear
+                city.addChild(material)
 
                 if (materialIndex + variant).isMultiple(of: 2) {
                     let meadow = SKShapeNode(path: organicSwatchPath(
@@ -1134,10 +968,10 @@ final class TerrainRenderer {
                     ))
                     meadow.name = "terrain.macro.meadow.patch.\(materialIndex)"
                     meadow.fillColor = NSColor(
-                        calibratedRed: 0.48,
-                        green: 0.53,
-                        blue: 0.28,
-                        alpha: 0.10
+                        calibratedRed: 0.54,
+                        green: 0.58,
+                        blue: 0.29,
+                        alpha: 0.068
                     )
                     meadow.strokeColor = .clear
                     neighborhood.addChild(meadow)
@@ -1157,163 +991,6 @@ final class TerrainRenderer {
                 materialIndex += 1
             }
         }
-    }
-
-    private func continuousTerrainTexture(
-        gridWidth: Int,
-        gridHeight: Int
-    ) -> SKTexture? {
-        // The field is deliberately low-frequency world material and is
-        // linearly filtered across the complete map diamond. Rendering it at
-        // parcel-adjacent density only repeats identical low-frequency
-        // samples and makes authentic first-grid construction pay for pixels
-        // that cannot survive any shipping camera. Keep the raster derived
-        // from both grid dimensions, but bound it to the actual material
-        // bandwidth instead of the screen-space extent.
-        let width = min(192, max(64, (gridWidth + gridHeight) * 2))
-        let height = width / 2
-        var pixels = [UInt8](repeating: 0, count: width * height * 4)
-
-        func hashedUnit(_ x: Int, _ y: Int, salt: UInt64) -> Double {
-            var value = UInt64(bitPattern: Int64(x &* 73_856_093))
-            value ^= UInt64(bitPattern: Int64(y &* 19_349_663))
-            value ^= salt &* 0x9E37_79B9_7F4A_7C15
-            value ^= value >> 30
-            value &*= 0xBF58_476D_1CE4_E5B9
-            value ^= value >> 27
-            value &*= 0x94D0_49BB_1331_11EB
-            value ^= value >> 31
-            return Double(value & 0x00FF_FFFF) / Double(0x00FF_FFFF)
-        }
-
-        func smoothstep(_ value: Double) -> Double {
-            value * value * (3 - 2 * value)
-        }
-
-        func valueNoise(
-            x: Double,
-            y: Double,
-            frequencyX: Double,
-            frequencyY: Double,
-            salt: UInt64
-        ) -> Double {
-            let sampleX = x * frequencyX
-            let sampleY = y * frequencyY
-            let x0 = Int(floor(sampleX))
-            let y0 = Int(floor(sampleY))
-            let tx = smoothstep(sampleX - Double(x0))
-            let ty = smoothstep(sampleY - Double(y0))
-            let north = hashedUnit(x0, y0, salt: salt) * (1 - tx)
-                + hashedUnit(x0 + 1, y0, salt: salt) * tx
-            let south = hashedUnit(x0, y0 + 1, salt: salt) * (1 - tx)
-                + hashedUnit(x0 + 1, y0 + 1, salt: salt) * tx
-            return north * (1 - ty) + south * ty
-        }
-
-        func rgb(_ color: NSColor) -> (red: Double, green: Double, blue: Double) {
-            let resolved = color.usingColorSpace(.deviceRGB) ?? color
-            return (
-                Double(resolved.redComponent * 255),
-                Double(resolved.greenComponent * 255),
-                Double(resolved.blueComponent * 255)
-            )
-        }
-        let cool = rgb(
-            style.palette.lotGrass.blended(
-                withFraction: 0.62,
-                of: style.palette.grass[2]
-            ) ?? style.palette.lotGrass
-        )
-        let meadow = rgb(
-            style.palette.lotGrass.blended(
-                withFraction: 0.68,
-                of: style.palette.parkGrass
-            ) ?? style.palette.parkGrass
-        )
-        let earth = rgb(
-            style.palette.soil.blended(
-                withFraction: 0.28,
-                of: style.palette.lotGrass
-            ) ?? style.palette.soil
-        )
-        let broadFrequencyX = max(2.0, Double(gridWidth) / 8.0)
-        let broadFrequencyY = max(2.0, Double(gridHeight) / 8.0)
-        let regionalFrequencyX = max(4.0, Double(gridWidth) / 3.0)
-        let regionalFrequencyY = max(4.0, Double(gridHeight) / 3.0)
-        for pixelY in 0..<height {
-            let v = (Double(pixelY) + 0.5) / Double(height)
-            for pixelX in 0..<width {
-                let u = (Double(pixelX) + 0.5) / Double(width)
-                let diamond = abs(u - 0.5) / 0.5 + abs(v - 0.5) / 0.5
-                guard diamond <= 1 else { continue }
-
-                let broad = valueNoise(
-                    x: u,
-                    y: v,
-                    frequencyX: broadFrequencyX,
-                    frequencyY: broadFrequencyY,
-                    salt: 0x73A4
-                )
-                let regional = valueNoise(
-                    x: u,
-                    y: v,
-                    frequencyX: regionalFrequencyX,
-                    frequencyY: regionalFrequencyY,
-                    salt: 0x73B9
-                )
-                let soil = max(
-                    0,
-                    valueNoise(
-                        x: u,
-                        y: v,
-                        frequencyX: max(3.0, Double(gridWidth) / 5.0),
-                        frequencyY: max(3.0, Double(gridHeight) / 5.0),
-                        salt: 0x73D1
-                    ) - 0.57
-                ) / 0.43
-                let blend = min(1, max(0, broad * 0.72 + regional * 0.28))
-                let baseRed = cool.red + (meadow.red - cool.red) * blend
-                let baseGreen = cool.green + (meadow.green - cool.green) * blend
-                let baseBlue = cool.blue + (meadow.blue - cool.blue) * blend
-                let materialVariation = (regional - 0.5) * 34
-                let red = min(
-                    255,
-                    max(
-                        0,
-                        baseRed + (earth.red - baseRed) * soil * 0.72
-                            + materialVariation * 0.60
-                    )
-                )
-                let green = min(
-                    255,
-                    max(
-                        0,
-                        baseGreen + (earth.green - baseGreen) * soil * 0.72
-                            + materialVariation
-                    )
-                )
-                let blue = min(
-                    255,
-                    max(
-                        0,
-                        baseBlue + (earth.blue - baseBlue) * soil * 0.72
-                            + materialVariation * 0.45
-                    )
-                )
-                let alpha = 188.0 + regional * 28.0
-                let offset = (pixelY * width + pixelX) * 4
-                pixels[offset] = UInt8((red * alpha / 255).rounded())
-                pixels[offset + 1] = UInt8((green * alpha / 255).rounded())
-                pixels[offset + 2] = UInt8((blue * alpha / 255).rounded())
-                pixels[offset + 3] = UInt8(alpha.rounded())
-            }
-        }
-        let texture = SKTexture(
-            data: Data(pixels),
-            size: CGSize(width: width, height: height)
-        )
-        texture.filteringMode = .linear
-        return texture
     }
 
     private func organicSwatchPath(
@@ -1486,29 +1163,9 @@ final class TerrainRenderer {
         gridHeight: Int,
         detail: CameraDetailLevel
     ) -> SKNode {
-        guard gridWidth > 0, gridHeight > 0 else {
-            let root = SKNode()
-            root.name = "terrain.edge"
-            return root
-        }
-        var boundaryMask: UInt8 = 0
-        if coordinate.y == 0 { boundaryMask |= 1 << 0 }
-        if coordinate.x == gridWidth - 1 { boundaryMask |= 1 << 1 }
-        if coordinate.y == gridHeight - 1 { boundaryMask |= 1 << 2 }
-        if coordinate.x == 0 { boundaryMask |= 1 << 3 }
-        let key = MapEdgeTemplateKey(
-            boundaryMask: boundaryMask,
-            detail: detail,
-            tileWidthHundredths: Int((style.tileWidth * 100).rounded()),
-            tileHeightHundredths: Int((style.tileHeight * 100).rounded())
-        )
-        if let prototype = Self.mapEdgeTemplates[key],
-           let copy = prototype.copy() as? SKNode {
-            return copy
-        }
-
         let root = SKNode()
         root.name = "terrain.edge"
+        guard gridWidth > 0, gridHeight > 0 else { return root }
 
         let blockLayer = style.makeDetailLayer(.block, visibleAt: detail)
         root.addChild(blockLayer)
@@ -1519,7 +1176,7 @@ final class TerrainRenderer {
         let left = CGPoint(x: -style.tileWidth / 2, y: 0)
         let drop: CGFloat = 7
 
-        if boundaryMask & (1 << 1) != 0 {
+        if coordinate.x == gridWidth - 1 {
             let face = SKShapeNode(path: style.polygonPath([
                 right, bottom,
                 CGPoint(x: bottom.x, y: bottom.y - drop),
@@ -1532,7 +1189,7 @@ final class TerrainRenderer {
             root.addChild(face)
         }
 
-        if boundaryMask & (1 << 2) != 0 {
+        if coordinate.y == gridHeight - 1 {
             let face = SKShapeNode(path: style.polygonPath([
                 bottom, left,
                 CGPoint(x: left.x, y: left.y - drop),
@@ -1545,30 +1202,18 @@ final class TerrainRenderer {
             root.addChild(face)
         }
 
-        if boundaryMask & (1 << 0) != 0 {
-            root.addChild(edgeStroke(from: top, to: right))
-        }
-        if boundaryMask & (1 << 3) != 0 {
-            root.addChild(edgeStroke(from: left, to: top))
-        }
-        if boundaryMask & (1 << 1) != 0 {
-            root.addChild(edgeStroke(from: right, to: bottom))
-        }
-        if boundaryMask & (1 << 2) != 0 {
-            root.addChild(edgeStroke(from: bottom, to: left))
-        }
+        if coordinate.y == 0 { root.addChild(edgeStroke(from: top, to: right)) }
+        if coordinate.x == 0 { root.addChild(edgeStroke(from: left, to: top)) }
+        if coordinate.x == gridWidth - 1 { root.addChild(edgeStroke(from: right, to: bottom)) }
+        if coordinate.y == gridHeight - 1 { root.addChild(edgeStroke(from: bottom, to: left)) }
 
-        if boundaryMask & ((1 << 1) | (1 << 2)) != 0 {
+        if coordinate.x == gridWidth - 1 || coordinate.y == gridHeight - 1 {
             let pebble = SKShapeNode(ellipseOf: CGSize(width: 4, height: 1.8))
             pebble.fillColor = style.palette.mapEarthDark.withAlphaComponent(0.5)
             pebble.strokeColor = .clear
             pebble.position = CGPoint(x: 4, y: -style.tileHeight / 2 - 3.5)
             pebble.zPosition = -2.5
             blockLayer.addChild(pebble)
-        }
-        if Self.mapEdgeTemplates.count < Self.maximumMapEdgeTemplateCount,
-           let prototype = root.copy() as? SKNode {
-            Self.mapEdgeTemplates[key] = prototype
         }
         return root
     }

@@ -26,14 +26,6 @@ final class LotContextRenderer {
         let groundOnly: Bool
     }
 
-    struct ContextSignature: Equatable, Sendable {
-        let family: String
-        let materialVariant: Int
-        let availableMaterialVariants: [Int]
-        let frontage: UInt8
-        let placements: [Placement]
-    }
-
     private enum Family: String {
         case residential
         case commercial
@@ -79,15 +71,16 @@ final class LotContextRenderer {
         block: SKNode
     ) {
         guard let family = family(for: tile.kind) else { return }
-        // Rendering needs only the effective appearance identity. The full
-        // context signature also allocates the evidence-only alternative and
-        // placement ledgers; keep that richer path for diagnostics rather than
-        // rebuilding it for every occupied tile on the authentic first grid.
-        let variant = Self.districtMaterialVariant(for: tile)
         let frontage = selectedFrontage
             ?? ResidentialGeneratedAssetIdentity.authoritativeFrontagePriority.first(
                 where: adjacentRoads.contains
             )
+        let variant = WorldVisualSeed.variant(
+            count: 4,
+            for: tile.coordinate,
+            kind: tile.kind,
+            salt: 0x6600
+        )
         let key = TemplateKey(
             family: family.rawValue,
             variant: variant,
@@ -95,24 +88,22 @@ final class LotContextRenderer {
             tileWidthHundredths: Int((style.tileWidth * 100).rounded()),
             tileHeightHundredths: Int((style.tileHeight * 100).rounded())
         )
+        let template: ContextTemplate
         if let cached = Self.templates[key] {
-            addCopies(of: cached.cityChildren, to: city)
-            addCopies(of: cached.neighborhoodChildren, to: neighborhood)
-            addCopies(of: cached.blockChildren, to: block)
-            return
+            template = cached
+        } else {
+            template = makeTemplate(
+                family: family,
+                variant: variant,
+                frontage: frontage
+            )
+            if Self.templates.count < Self.maximumTemplateCount {
+                Self.templates[key] = template
+            }
         }
-        let rendered = makeTemplate(
-            family: family,
-            variant: variant,
-            frontage: frontage
-        )
-        if Self.templates.count < Self.maximumTemplateCount,
-           let prototype = copiedTemplate(rendered) {
-            Self.templates[key] = prototype
-        }
-        addOriginals(of: rendered.cityChildren, to: city)
-        addOriginals(of: rendered.neighborhoodChildren, to: neighborhood)
-        addOriginals(of: rendered.blockChildren, to: block)
+        addCopies(of: template.cityChildren, to: city)
+        addCopies(of: template.neighborhoodChildren, to: neighborhood)
+        addCopies(of: template.blockChildren, to: block)
     }
 
     func placementLedger(
@@ -120,39 +111,14 @@ final class LotContextRenderer {
         adjacentRoads: RoadConnectionMask,
         selectedFrontage: RoadConnectionMask? = nil
     ) -> [Placement] {
-        contextSignature(
-            for: tile,
-            adjacentRoads: adjacentRoads,
-            selectedFrontage: selectedFrontage
-        )?.placements ?? []
-    }
-
-    func contextSignature(
-        for tile: CityTile,
-        adjacentRoads: RoadConnectionMask,
-        selectedFrontage: RoadConnectionMask? = nil
-    ) -> ContextSignature? {
-        guard let family = family(for: tile.kind) else { return nil }
+        guard let family = family(for: tile.kind) else { return [] }
         let variant = Self.districtMaterialVariant(for: tile)
         let frontage = selectedFrontage
             ?? ResidentialGeneratedAssetIdentity.authoritativeFrontagePriority.first(
                 where: adjacentRoads.contains
             )
-        return ContextSignature(
-            family: family.rawValue,
-            materialVariant: variant,
-            availableMaterialVariants: Array(
-                0..<Self.districtMaterialVariantCount(for: tile.kind)
-            ),
-            frontage: frontage?.rawValue ?? 0,
-            placements: frontage.map {
-                placementLedger(
-                    family: family,
-                    frontage: $0,
-                    variant: variant
-                )
-            } ?? []
-        )
+        guard let frontage else { return [] }
+        return placementLedger(family: family, frontage: frontage, variant: variant)
     }
 
     private func placementLedger(
@@ -323,59 +289,24 @@ final class LotContextRenderer {
         }
     }
 
-    private func addOriginals(of children: [SKNode], to destination: SKNode) {
-        for child in children {
-            destination.addChild(child)
-        }
-    }
-
-    private func copiedTemplate(_ template: ContextTemplate) -> ContextTemplate? {
-        func copies(of children: [SKNode]) -> [SKNode]? {
-            var copied: [SKNode] = []
-            copied.reserveCapacity(children.count)
-            for child in children {
-                guard let copy = child.copy() as? SKNode else { return nil }
-                copied.append(copy)
-            }
-            return copied
-        }
-        guard let city = copies(of: template.cityChildren),
-              let neighborhood = copies(of: template.neighborhoodChildren),
-              let block = copies(of: template.blockChildren) else {
-            return nil
-        }
-        return ContextTemplate(
-            cityChildren: city,
-            neighborhoodChildren: neighborhood,
-            blockChildren: block
-        )
-    }
-
     static var cachedTemplateCountForTesting: Int {
         templates.count
     }
 
-    /// Four-neighbor parcels never receive the same visibly distinct immediate
-    /// site treatment when that family has an alternative. Variants whose
-    /// differences are node labels only are intentionally collapsed.
+    /// Four-neighbor parcels never receive the same immediate site treatment.
+    /// This renderer-owned material choice does not alter building identity,
+    /// occupancy, frontage, or gameplay state.
     static func districtMaterialVariant(for tile: CityTile) -> Int {
-        let count = districtMaterialVariantCount(for: tile.kind)
-        let value = tile.coordinate.x + tile.coordinate.y
-        return ((value % count) + count) % count
-    }
-
-    static func districtMaterialVariantCount(for kind: BuildingKind) -> Int {
-        switch kind {
-        case .residential:
-            4
-        case .commercial:
-            2
-        case .industrial, .powerPlant, .waterTower:
-            3
-        case .cityHall, .fireStation, .policeStation, .school, .park,
-             .empty, .road:
-            1
+        let familyOffset: Int = switch tile.kind {
+        case .residential: 0
+        case .commercial: 1
+        case .industrial, .powerPlant, .waterTower: 2
+        case .cityHall, .fireStation, .policeStation, .school: 3
+        case .park: 1
+        case .empty, .road: 0
         }
+        let value = tile.coordinate.x + tile.coordinate.y * 2 + familyOffset
+        return ((value % 4) + 4) % 4
     }
 
     private func family(for kind: BuildingKind) -> Family? {

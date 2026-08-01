@@ -1,4 +1,0 @@
-pack_a=/private/tmp/play073-r4a-pack-a.gGBEur
-pack_b=/private/tmp/play073-r4a-pack-b.pFOSIq
-build_a_status=0
-build_b_status=0

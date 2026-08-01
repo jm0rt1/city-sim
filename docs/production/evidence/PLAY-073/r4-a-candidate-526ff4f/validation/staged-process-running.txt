@@ -1,4 +1,0 @@
-26465     1   0.5  41776 Thu Jul 30 07:32:14 2026     /private/tmp/citysim-play075-r2-472ffa85/dist/CitySim-playtest-quality-r2-472ffa85-wa778da7360e3.app/Contents/MacOS/CitySimNative-wa778da7360e3
-43455     1  10.3 302896 Thu Jul 30 09:42:33 2026     /Users/James/.codex/worktrees/cac1/city-sim/dist/CitySim-world-rendering-w5f893ad1da1b.app/Contents/MacOS/CitySimNative-w5f893ad1da1b
-44393 26070   0.0   2432 Thu Jul 30 09:42:53 2026     /bin/zsh -c cp dist/manifests/world-rendering-w5f893ad1da1b.manifest docs/production/evidence/PLAY-073/r4-a-candidate-526ff4f/validation/staged-manifest.txt\012ps -axo pid,ppid,%cpu,rss,lstart,command | rg 'CitySimNative-w5f893ad1da1b|CitySimNative-wa778da7360e3' > docs/production/evidence/PLAY-073/r4-a-candidate-526ff4f/validation/staged-process-running.txt\012kill -TERM 43455
-44397 44393   0.0    176 Thu Jul 30 09:42:53 2026     rg CitySimNative-w5f893ad1da1b|CitySimNative-wa778da7360e3

@@ -10,6 +10,12 @@
     "formulaSourceX": "768 + (32/7) * (cityX - cityZ)",
     "formulaSourceY": "768 + (16/7) * (cityX + cityZ) - 8 * cityY",
     "sourceToLiteral192": "source / 8",
+    "affine": {
+      "sourceOriginXY": [768, 768],
+      "sourceXCoefficients": {"cityX": 4.571428571428571, "cityY": 0, "cityZ": -4.571428571428571},
+      "sourceYCoefficients": {"cityX": 2.285714285714286, "cityY": -8, "cityZ": 2.285714285714286}
+    },
+    "literalRounding": "floor(sourceMin/8), ceil(sourceMax/8)",
     "registrationErrorSourcePixels": 0,
     "registrationProof": "socket[-28,0,0]->[640,704]; pivot[28,0,28]->[768,896]"
   },
@@ -20,6 +26,8 @@
     "orthographicScaleWorld": 79.1959533691406,
     "renderViewportPixels": [1536, 1024],
     "literalViewportPixels": [192, 128],
+    "shiftX": 0,
+    "shiftY": 0.08333333333333333,
     "actualCameraProof": "analytic-only; no DCC or render API invoked"
   },
   "registration": {
@@ -34,19 +42,27 @@
   },
   "portalAperture": {
     "worldAABB": {"min": [-18, 4, -14], "max": [-15, 30, 14]},
-    "sourceAnalyticBounds": {"min": [631, 390], "max": [759, 682]},
-    "literal192Bounds": {"min": [78, 49], "max": [95, 85]},
-    "literal192WidthPixels": 16,
-    "literal192HeightPixels": 26,
-    "clearApertureAreaPixels": 416,
+    "sourceAnalyticBounds": {"min": [621.7142857142858, 454.8571428571429], "max": [763.4285714285714, 733.7142857142857]},
+    "literal192Bounds": {"min": [77, 56], "max": [96, 92]},
+    "literal192WidthPixels": 19,
+    "literal192HeightPixels": 36,
+    "clearApertureAreaPixels": 684,
     "processOcclusionAreaPixels": 0,
     "apronPathConnected": true
   },
+  "portalFrame": {
+    "componentIDs": ["west-v13-portal-left-jamb", "west-v13-portal-right-jamb", "west-v13-portal-header"],
+    "sourceAnalyticBounds": {"min": [566.8571428571429, 387.42857142857144], "max": [777.1428571428571, 756.5714285714286]},
+    "literal192Bounds": {"min": [70, 48], "max": [98, 95]},
+    "literal192WidthPixels": 28,
+    "literal192HeightPixels": 47
+  },
   "silhouette": {
-    "breakHeightsWorld": [34, 39, 35, 43],
+    "componentIDs": ["west-v13-portal-header", "west-v13-crown-west", "west-v13-crown-center", "west-v13-crown-east"],
+    "breakHeightsWorld": [35, 39, 44, 40],
     "breakCount": 4,
     "minimumRequiredBreaks": 3,
-    "portalCrownWidthPixels": 21,
+    "portalCrownWidthPixels": 37,
     "portalCrownFirstRead": true
   },
   "materialCompleteness": {

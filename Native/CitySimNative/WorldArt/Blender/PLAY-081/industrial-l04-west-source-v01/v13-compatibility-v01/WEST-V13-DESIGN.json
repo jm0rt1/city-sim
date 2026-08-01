@@ -1,0 +1,144 @@
+{
+  "schema": 1,
+  "task": "PLAY-081",
+  "stage": "west-v13-zero-pixel-compatibility",
+  "designID": "industrial-l04-west-v13-freight-crown",
+  "logicalBuildingID": "industrial_l04",
+  "variantID": "variant-0",
+  "direction": "west",
+  "sourceRevision": "west-v13-compatibility-01",
+  "massingProfile": "west-road-facing-stepped-freight-crown",
+  "disposition": "CANDIDATE_READY_FOR_INDEPENDENT_REVIEW",
+  "sourceAuthority": false,
+  "candidateReadyForIndependentReview": true,
+  "productionSelected": false,
+  "pixelRenderingAuthorized": false,
+  "normalizationAuthorized": false,
+  "rendererIngestionAuthorized": false,
+  "independence": {
+    "authoredFromSiblingScene": false,
+    "siblingSceneOpened": false,
+    "siblingGeometryConsumed": false,
+    "mirror": false,
+    "rotation": false,
+    "transform": false,
+    "orientationTransform": "none",
+    "siblingInputsConsumed": [],
+    "semanticInputsOnly": [
+      "published Portal Crown Foundry design vocabulary",
+      "published material-role requirements",
+      "CONTRACT-010/020/021 registration and camera requirements"
+    ]
+  },
+  "authorityBindings": {
+    "publishedBase": "d010d453af87c040ac13e8b3b7280366cb5094c1",
+    "northDesignAuthority": {
+      "path": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/design-authority-v01/DESIGN-AUTHORITY.json",
+      "sha256": "1b1006403081c3933c54451b6c506af74493a2ac3b253fdd9f1f79098d7c1bed",
+      "role": "semantic-vocabulary-only"
+    },
+    "northMaterialRoles": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/DESIGN-MATERIALS.json",
+      "sha256": "c8179b77a184e41b723e26b34e7da2ef256b09e93b54a47e76cc5103f22b8cab",
+      "role": "role-names-and-palette-rules-only"
+    },
+    "claim": {
+      "path": "docs/production/claims/PLAY-081.world-art-west.md",
+      "revision": 8,
+      "sha256": "f3b51269139bef088e4661f578dd882139a685d1c7fde26db8473f15c536882e"
+    }
+  },
+  "registration": {
+    "tileBasisPoints": [72, 36],
+    "footprintTiles": [1, 1],
+    "contactPolygonWorldXZ": [[-28, -28], [28, -28], [28, 28], [-28, 28]],
+    "groundOriginWorldXYZ": [0, 0, 0],
+    "groundPivotWorldXYZ": [28, 0, 28],
+    "groundPivotSourceXY": [768, 896],
+    "frontageEdge": "west",
+    "frontageSocketWorldXYZ": [-28, 0, 0],
+    "frontageSocketBlenderXYZ": [0, -28, 0],
+    "frontageSocketSourceXY": [640, 704],
+    "verticalEnvelopeWorld": [0, 45],
+    "maximumProjectionErrorSourcePixels": 0
+  },
+  "camera": {
+    "projection": "orthographic-2:1",
+    "positionWorldXYZ": [96, 101.24557426726288, 96],
+    "targetWorldXYZ": [0, 22.861902498201186, 0],
+    "orthographicScaleWorld": 79.1959533691406,
+    "renderViewportPixels": [1536, 1024],
+    "literalViewportPixels": [192, 128],
+    "shiftX": 0,
+    "shiftY": 0.08333333333333333,
+    "registrationProof": "analytic-affine-west-v13"
+  },
+  "lightAndContact": {
+    "keyDirection": "northwest",
+    "contactDirection": "southeast",
+    "contactVectorSourcePixels": [2, 1],
+    "broadDarkMatForbidden": true
+  },
+  "portalCrown": {
+    "roadFacingAxis": "negative-x",
+    "socketConnectionPolylineWorldXYZ": [[-28, 0, 0], [-25, 0, 0], [-22, 0, 0]],
+    "portalCenterWorldXYZ": [-21, 18, 0],
+    "apertureInteriorAABBWorldXYZ": {
+      "min": [-18, 4, -14],
+      "max": [-15, 30, 14]
+    },
+    "apertureClearanceWorldUnits": 2,
+    "portalOuterWidthWorld": 36,
+    "portalOuterHeightWorld": 34,
+    "portalJambThicknessWorld": 4,
+    "portalHeaderThicknessWorld": 5,
+    "crownBreakHeightsWorld": [34, 39, 35, 43],
+    "silhouetteBreakCount": 4,
+    "portalAndCrownFirstRead": true,
+    "processOccluderIDs": ["west-v13-hot-process", "west-v13-stack"],
+    "processOcclusionAreaPixels": 0
+  },
+  "components": [
+    {"id": "west-v13-foundry-hall", "role": "warm-foundry-masonry", "aabb": {"min": [-14, 1, -28], "max": [28, 28, 28]}},
+    {"id": "west-v13-operating-apron", "role": "integrated-operating-apron", "aabb": {"min": [-28, 0, -22], "max": [-22, 1, 22]}},
+    {"id": "west-v13-portal-left-jamb", "role": "charcoal-structural-steel", "aabb": {"min": [-24, 2, -20], "max": [-18, 34, -14]}},
+    {"id": "west-v13-portal-right-jamb", "role": "charcoal-structural-steel", "aabb": {"min": [-24, 2, 14], "max": [-18, 34, 20]}},
+    {"id": "west-v13-portal-header", "role": "portal-crown-steel", "aabb": {"min": [-24, 30, -20], "max": [-18, 35, 20]}},
+    {"id": "west-v13-deep-freight-aperture", "role": "deep-freight-void", "aabb": {"min": [-18, 4, -14], "max": [-15, 30, 14], "isAperture": true}},
+    {"id": "west-v13-inner-reveal", "role": "clerestory-and-roof-edge", "aabb": {"min": [-19, 4, -16], "max": [-17, 30, 16]}},
+    {"id": "west-v13-crown-west", "role": "portal-crown-steel", "aabb": {"min": [-12, 34, -24], "max": [4, 39, -8]}},
+    {"id": "west-v13-crown-center", "role": "portal-crown-steel", "aabb": {"min": [-10, 39, -8], "max": [6, 44, 8]}},
+    {"id": "west-v13-crown-east", "role": "portal-crown-steel", "aabb": {"min": [-12, 35, 8], "max": [4, 40, 24]}},
+    {"id": "west-v13-roof-ridge", "role": "weathered-bluegreen-roof", "aabb": {"min": [3, 28, -26], "max": [24, 34, 2]}},
+    {"id": "west-v13-staff-annex", "role": "warm-control-masonry", "aabb": {"min": [2, 1, 12], "max": [24, 19, 26]}},
+    {"id": "west-v13-hot-process", "role": "restrained-hot-process", "aabb": {"min": [8, 1, -25], "max": [19, 24, -17], "processOccluder": true}},
+    {"id": "west-v13-stack", "role": "oxidized-process-machinery", "aabb": {"min": [17, 1, -10], "max": [24, 32, -4], "processOccluder": true}},
+    {"id": "west-v13-staff-glazing", "role": "warm-staff-glazing", "aabb": {"min": [1, 5, 22], "max": [3, 13, 25]}},
+    {"id": "west-v13-foundation", "role": "grounded-foundation", "aabb": {"min": [-28, 0, -28], "max": [28, 1, 28]}},
+    {"id": "west-v13-roof-edge", "role": "clerestory-and-roof-edge", "aabb": {"min": [3, 27, -26], "max": [24, 29, 26]}}
+  ],
+  "literal192Feasibility": {
+    "portalInsetWidthPixels": 16,
+    "portalInsetHeightPixels": 26,
+    "portalOuterWidthPixels": 21,
+    "portalOuterHeightPixels": 34,
+    "portalJambThicknessPixels": 4,
+    "portalHeaderThicknessPixels": 4,
+    "minimumSilhouetteBreaks": 3,
+    "observedSilhouetteBreaks": 4,
+    "portalFrameToVoidGrayscaleDelta": 30,
+    "portalFrameToMasonryGrayscaleDelta": 18,
+    "processOcclusionAreaPixels": 0,
+    "registrationErrorPixels": 0,
+    "unaidedPortalRead": true
+  },
+  "zeroPixelBoundary": {
+    "blenderProcessLaunches": 0,
+    "dccInvocations": 0,
+    "renderInvocations": 0,
+    "pixelFiles": 0,
+    "sourceCandidatePacket": false,
+    "appearanceLockConsumed": false,
+    "sourceProductionProfileConsumed": false
+  }
+}

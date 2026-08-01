@@ -1,0 +1,254 @@
+{
+  "schema": 1,
+  "authorityCommit": "73b72fce27d1bcfedcf48b76940ddfa688baa48c",
+  "assignments": [
+    {
+      "modelRouteSha256": "ab211ea591d3712a24880d363afae5ec1ff608bfe845cbc5371cbb0cd217bc3e",
+      "modelRoute": {
+        "schema": 1,
+        "routeId": "quality-v1:north-v13-prelaunch",
+        "taskId": "PLAY-027",
+        "packetKind": "implementation",
+        "classification": "LUNA_IMPLEMENTATION",
+        "model": "gpt-5.6-luna",
+        "effort": "high",
+        "rationale": "North v13 design and deterministic lowering are independently accepted. The next bounded step is a zero-child prelaunch adaptation under the frozen revision-8 claim; appearance judgment and live Process A remain frontier-owned.",
+        "authority": {
+          "authorityCommit": "73b72fce27d1bcfedcf48b76940ddfa688baa48c",
+          "baseCommit": "73b72fce27d1bcfedcf48b76940ddfa688baa48c",
+          "claim": {
+            "path": "docs/production/claims/PLAY-027.world-art.md",
+            "sha256": "7d42ba7c38a55d7681171499aad50e15c2d3eba0878cabf508d0e42ee97cdc83"
+          },
+          "immutableInputs": [
+            {
+              "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+              "sha256": "583c5d7be25a7ffdb95f354c6279fe7c309358f65445365203431c51f0e53247"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/design-authority-v01/DESIGN-AUTHORITY.json",
+              "sha256": "1b1006403081c3933c54451b6c506af74493a2ac3b253fdd9f1f79098d7c1bed"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/lowering-v01/LOWERING-AUTHORITY.json",
+              "sha256": "bf95dc1ba2947d9a1ede7d3ce41facacb20e2460c20ed3567abd9d8d9454ebe6"
+            }
+          ]
+        },
+        "assignment": {
+          "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+          "branch": "codex/citysim-world-art",
+          "worktree": "/Users/James/.codex/worktrees/0648/city-sim",
+          "expectedHead": "41427d773cb12594a4eb723b7291a38ed6321a0f",
+          "featureAuthorThreadId": null,
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027",
+            "docs/production/evidence/PLAY-027"
+          ],
+          "allowed": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-prelaunch-v01",
+            "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-prelaunch-v01"
+          ],
+          "forbidden": [
+            "Native/CitySimNative/Rendering",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-079",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-080",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-081",
+            "docs/production/evidence/INTEGRATION",
+            "docs/production/claims"
+          ]
+        },
+        "boundedDeliverable": "Implement one deterministic v13 North Process-A zero-child prelaunch subtree: high-level orchestrator, authenticated one-attempt schedule adapter, sealed child entrypoint, immutable execution and runner contracts, plus adversarial closure evidence. Bind the exact v13 design/lowering/bridge/camera/pivot/socket/output identity and prove forged authority, wrong claim/base/direction/process/slot/root, replay, direct child invocation, unauthenticated delegation, input mismatch, and nonzero preflight side effects fail closed. Do not run Blender or create pixels.",
+        "validation": {
+          "focusedGateOwner": {
+            "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+            "role": "lane_focused_gate"
+          },
+          "focusedCommands": [
+            "python3 Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-prelaunch-v01/test_process_a_prelaunch.py",
+            "python3 -m json.tool docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-prelaunch-v01/ZERO-CHILD-CLOSURE.json",
+            "git diff --check"
+          ],
+          "fullGateOwner": {
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "role": "aggregate_full_gate",
+            "model": "gpt-5.6-sol",
+            "effort": "high"
+          },
+          "fullCommands": [
+            "swift test --package-path Native/CitySimNative",
+            "./script/build_and_run.sh --verify",
+            "fresh-player real-app aggregate journey"
+          ]
+        },
+        "expectedResult": {
+          "evidencePaths": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-prelaunch-v01",
+            "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-prelaunch-v01/ZERO-CHILD-CLOSURE.json"
+          ],
+          "commitRequired": true,
+          "commitMessagePattern": "PLAY-027:"
+        },
+        "escalationTriggers": [
+          "baseline_or_candidate_identity_mismatch",
+          "cross_lane_semantic_conflict",
+          "failure_outside_focused_scope",
+          "path_outside_claim",
+          "save_or_migration_uncertainty",
+          "shared_contract_or_schema_decision",
+          "subjective_acceptance_required",
+          "two_unsuccessful_repair_attempts",
+          "unresolved_product_visual_or_interaction_judgment"
+        ],
+        "stopCondition": "Stop after one coherent zero-child prelaunch commit or immediately on any escalation trigger. Never issue a live schedule/lease/secret, start Blender/DCC, create pixels, normalize, accept appearance, run B/C, mutate siblings/renderer/shipping, push, integrate, or self-accept.",
+        "independentReviewer": {
+          "required": true,
+          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+          "model": "gpt-5.6-sol",
+          "effort": "high"
+        },
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {
+              "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+              "sha256": "583c5d7be25a7ffdb95f354c6279fe7c309358f65445365203431c51f0e53247"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/lowering-v01/LOWERING-AUTHORITY.json",
+              "sha256": "bf95dc1ba2947d9a1ede7d3ce41facacb20e2460c20ed3567abd9d8d9454ebe6"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "modelRouteSha256": "f422b0a035ccaa46a8d2d331a9bd27b52e89980d9eae9eb089d266839d73a682",
+      "modelRoute": {
+        "schema": 1,
+        "routeId": "quality-v1:qa-v13-logical-id-repair",
+        "taskId": "PLAY-075",
+        "packetKind": "local_debug",
+        "classification": "LUNA_LOCAL_DEBUG",
+        "model": "gpt-5.6-luna",
+        "effort": "max",
+        "rationale": "Independent Integration review reproduced one lane-local preregistration defect: the candidate invented v13-suffixed logical IDs instead of the frozen v0 identities used by Renderer, source validation, fixtures, and shipping. Inputs and repair are exact and require no product judgment.",
+        "authority": {
+          "authorityCommit": "73b72fce27d1bcfedcf48b76940ddfa688baa48c",
+          "baseCommit": "73b72fce27d1bcfedcf48b76940ddfa688baa48c",
+          "claim": {
+            "path": "docs/production/claims/PLAY-075.playtest-quality.md",
+            "sha256": "5dd3aeef1ffe8abf5e0c93486e27fe2d15495854be096fb105bff55a48dc0362"
+          },
+          "immutableInputs": [
+            {
+              "path": ".agents/skills/verify-citysim-playability/SKILL.md",
+              "sha256": "a632f4afff412dc9d61d7018fa2376859c5f05d0e9eea7d06fc8990cff2f2960"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-073/industrial-l04-v13-intake-delta-v1/RESULT.json",
+              "sha256": "4bf06049668d02a3b9af995c3f34136b229292f03b2db76fb486aa8a6805768c"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Shared/validate_source_stage_handoff_v2.py",
+              "sha256": "7a0613af9998a222a583a70930ce3afc5ec1902793f03201f899a2bb4129f340"
+            }
+          ]
+        },
+        "assignment": {
+          "threadId": "019f9a0a-35fa-75b1-92c4-73c182390a25",
+          "branch": "codex/citysim-playtest-quality",
+          "worktree": "/Users/James/.codex/worktrees/71b0/city-sim",
+          "expectedHead": "3f84c6e0f0a8d7ca9d39c230553e045efb52aa89",
+          "featureAuthorThreadId": null,
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": [
+            "docs/production/evidence/PLAY-075"
+          ],
+          "allowed": [
+            "docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/exact-v13-preregistration-v1"
+          ],
+          "forbidden": [
+            "Native",
+            "docs/production/evidence/PLAY-073",
+            "docs/production/evidence/INTEGRATION",
+            "docs/production/claims"
+          ]
+        },
+        "boundedDeliverable": "Repair only the existing exact-v13 preregistration packet and its validation receipt. Preserve the v13 visual design revision as metadata, but restore the four immutable logical IDs to industrial_l04_v0_north/east/south/west; bind and verify the accepted Renderer v13 intake result plus the source-stage validator; add a fail-closed cross-lane identity assertion; commit one focused descendant without app launch or scoring.",
+        "validation": {
+          "focusedGateOwner": {
+            "threadId": "019f9a0a-35fa-75b1-92c4-73c182390a25",
+            "role": "lane_focused_gate"
+          },
+          "focusedCommands": [
+            "python3 -m json.tool docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/exact-v13-preregistration-v1/PREREGISTRATION-PACKET.json",
+            "python3 -m json.tool docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/exact-v13-preregistration-v1/VALIDATION.json",
+            "git diff --check"
+          ],
+          "fullGateOwner": {
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "role": "aggregate_full_gate",
+            "model": "gpt-5.6-sol",
+            "effort": "high"
+          },
+          "fullCommands": [
+            "swift test --package-path Native/CitySimNative",
+            "./script/build_and_run.sh --verify",
+            "fresh-player real-app aggregate journey"
+          ]
+        },
+        "expectedResult": {
+          "evidencePaths": [
+            "docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/exact-v13-preregistration-v1/PREREGISTRATION-PACKET.json",
+            "docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/exact-v13-preregistration-v1/VALIDATION.json"
+          ],
+          "commitRequired": true,
+          "commitMessagePattern": "PLAY-075:"
+        },
+        "escalationTriggers": [
+          "baseline_or_candidate_identity_mismatch",
+          "cross_lane_semantic_conflict",
+          "failure_outside_focused_scope",
+          "path_outside_claim",
+          "save_or_migration_uncertainty",
+          "shared_contract_or_schema_decision",
+          "subjective_acceptance_required",
+          "two_unsuccessful_repair_attempts",
+          "unresolved_product_visual_or_interaction_judgment"
+        ],
+        "stopCondition": "Stop after one focused logical-ID repair commit or immediately on any escalation trigger. Never launch or score the app, change Renderer/source/shared authority, run aggregate full gates, push, integrate, pin, or self-accept.",
+        "independentReviewer": {
+          "required": true,
+          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+          "model": "gpt-5.6-sol",
+          "effort": "high"
+        },
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {
+              "path": ".agents/skills/verify-citysim-playability/SKILL.md",
+              "sha256": "a632f4afff412dc9d61d7018fa2376859c5f05d0e9eea7d06fc8990cff2f2960"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-073/industrial-l04-v13-intake-delta-v1/RESULT.json",
+              "sha256": "4bf06049668d02a3b9af995c3f34136b229292f03b2db76fb486aa8a6805768c"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

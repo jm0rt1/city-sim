@@ -3067,6 +3067,155 @@ final class WorldRenderingTests: XCTestCase {
     }
 
     @MainActor
+    func testContextGeometryIsContainedAndRepeatsExactlyAcrossFamiliesAndFrontages() {
+        let style = WorldVisualStyle()
+        let renderer = LotContextRenderer(style: style)
+        let frontages: [RoadConnectionMask] = [.north, .east, .south, .west]
+        let ordinaryKinds: [BuildingKind] = [
+            .residential, .commercial, .industrial, .powerPlant, .waterTower,
+        ]
+
+        for kind in ordinaryKinds {
+            let variantCount = LotContextRenderer.visibleVariantCount(for: kind)
+            for variant in 0..<variantCount {
+                // The coordinate sum selects every visible material variant
+                // without changing the authoritative tile kind or frontage.
+                let tile = CityTile(
+                    coordinate: GridCoordinate(x: 8 + variant, y: 8),
+                    kind: kind,
+                    level: 1,
+                    constructionProgress: 1
+                )
+                for frontage in frontages {
+                    let firstCity = SKNode()
+                    let firstNeighborhood = SKNode()
+                    let firstBlock = SKNode()
+                    renderer.addContext(
+                        for: tile,
+                        adjacentRoads: frontage,
+                        selectedFrontage: frontage,
+                        city: firstCity,
+                        neighborhood: firstNeighborhood,
+                        block: firstBlock
+                    )
+
+                    let secondCity = SKNode()
+                    let secondNeighborhood = SKNode()
+                    let secondBlock = SKNode()
+                    renderer.addContext(
+                        for: tile,
+                        adjacentRoads: frontage,
+                        selectedFrontage: frontage,
+                        city: secondCity,
+                        neighborhood: secondNeighborhood,
+                        block: secondBlock
+                    )
+
+                    XCTAssertEqual(
+                        shapeSignatures(in: firstCity),
+                        shapeSignatures(in: secondCity),
+                        "city repeat drift for \(kind)/variant \(variant)/\(frontage)"
+                    )
+                    XCTAssertEqual(
+                        shapeSignatures(in: firstNeighborhood),
+                        shapeSignatures(in: secondNeighborhood),
+                        "neighborhood repeat drift for \(kind)/variant \(variant)/\(frontage)"
+                    )
+                    XCTAssertEqual(
+                        shapeSignatures(in: firstBlock),
+                        shapeSignatures(in: secondBlock),
+                        "block repeat drift for \(kind)/variant \(variant)/\(frontage)"
+                    )
+
+                    let contactShapes = shapeNodes(in: firstCity) {
+                        $0.contains("contact-shadow")
+                    }
+                    let treatmentShapes = shapeNodes(in: firstNeighborhood) {
+                        $0.hasPrefix("lot.lod.neighborhood.variant-ground.")
+                    }
+                    XCTAssertFalse(contactShapes.isEmpty)
+                    XCTAssertFalse(treatmentShapes.isEmpty)
+                    for shape in contactShapes + treatmentShapes {
+                        assertPathVerticesInsideLot(
+                            shape,
+                            root: shape.parent ?? firstCity,
+                            style: style,
+                            message: "\(kind)/variant \(variant)/\(frontage)"
+                        )
+                    }
+
+                    let contextRoots = [firstCity, firstNeighborhood, firstBlock]
+                    XCTAssertTrue(contextRoots.allSatisfy { descendantLabels(in: $0).isEmpty })
+                    XCTAssertTrue(
+                        contextRoots.allSatisfy {
+                            recursiveActiveActionCount($0) == 0
+                        }
+                    )
+                    XCTAssertFalse(
+                        contextRoots.flatMap { descendantNames(in: $0) }.contains {
+                            $0.hasPrefix("interaction.")
+                        }
+                    )
+                }
+            }
+        }
+
+        // Civic and park context remains the accepted boundary/forecourt
+        // presentation; it receives no ordinary variant treatment or shadow.
+        for kind in [BuildingKind.cityHall, .park] {
+            let city = SKNode()
+            let neighborhood = SKNode()
+            let block = SKNode()
+            renderer.addContext(
+                for: CityTile(
+                    coordinate: GridCoordinate(x: 11, y: 11),
+                    kind: kind,
+                    level: 1,
+                    constructionProgress: 1
+                ),
+                adjacentRoads: .south,
+                selectedFrontage: .south,
+                city: city,
+                neighborhood: neighborhood,
+                block: block
+            )
+            let names = descendantNames(in: city)
+                + descendantNames(in: neighborhood)
+                + descendantNames(in: block)
+            XCTAssertFalse(names.contains { $0.contains("contact-shadow") })
+            XCTAssertFalse(names.contains { $0.contains("variant-ground") })
+        }
+    }
+
+    @MainActor
+    func testServiceCampusContactVerticesStayInsideTheirAuthoritativeGroundCells() {
+        let style = WorldVisualStyle()
+        let renderer = TerrainRenderer(style: style)
+        let state = CityGameState.newCity(seed: 42)
+        let campus = renderer.serviceCampusGroundCoordinatesForTesting(in: state)
+        let ground = renderer.makeDevelopedDistrictGround(in: state)
+        let contact = shapeNodes(in: ground) {
+            $0 == "district.ground.service-campus.contact"
+        }
+        XCTAssertEqual(contact.count, 1)
+        for point in pathPoints(in: contact[0], relativeTo: ground) {
+            XCTAssertTrue(
+                campus.contains { coordinate in
+                    let center = style.isoPosition(coordinate)
+                    let relative = CGPoint(
+                        x: point.x - center.x,
+                        y: point.y - center.y
+                    )
+                    return abs(relative.x) / (style.tileWidth / 2)
+                        + abs(relative.y) / (style.tileHeight / 2) <= 1.0001
+                },
+                "service-campus contact vertex must remain inside one authoritative ground cell: \(point)"
+            )
+        }
+        XCTAssertEqual(recursiveActiveActionCount(ground), 0)
+    }
+
+    @MainActor
     func testCompletedLotsExposeDistinctCityNeighborhoodAndBlockContextWithoutLabelsOrActions() {
         let style = WorldVisualStyle()
         let renderer = LotRenderer(style: style, assets: WorldAssetCatalog())
@@ -3218,6 +3367,10 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertEqual(regions.map { $0.position.x }, repeatedRegions.map { $0.position.x })
         XCTAssertEqual(regions.map { $0.position.y }, repeatedRegions.map { $0.position.y })
         XCTAssertEqual(regions.map { $0.zPosition }, repeatedRegions.map { $0.zPosition })
+        XCTAssertEqual(
+            regions.compactMap { $0 as? SKShapeNode }.map(shapeSignature(for:)),
+            repeatedRegions.compactMap { $0 as? SKShapeNode }.map(shapeSignature(for:))
+        )
         XCTAssertGreaterThan(
             backdropNames.filter { $0.hasPrefix("terrain.macro.meadow.patch.") }.count,
             15
@@ -5032,6 +5185,178 @@ final class WorldRenderingTests: XCTestCase {
     private func export(_ data: Data, environmentKey: String) throws {
         guard let path = ProcessInfo.processInfo.environment[environmentKey] else { return }
         try data.write(to: URL(fileURLWithPath: path), options: .atomic)
+    }
+
+    private struct ShapeSignature: Equatable {
+        let name: String
+        let path: [String]
+        let position: CGPoint
+        let zPosition: CGFloat
+        let fill: String
+        let stroke: String
+        let lineWidth: CGFloat
+    }
+
+    @MainActor
+    private func shapeSignatures(in node: SKNode) -> [ShapeSignature] {
+        var result: [ShapeSignature] = []
+        func visit(_ current: SKNode) {
+            if let shape = current as? SKShapeNode {
+                result.append(shapeSignature(for: shape))
+            }
+            for child in current.children {
+                visit(child)
+            }
+        }
+        visit(node)
+        return result
+    }
+
+    @MainActor
+    private func shapeSignature(for shape: SKShapeNode) -> ShapeSignature {
+        ShapeSignature(
+            name: shape.name ?? "",
+            path: pathSignature(shape.path),
+            position: shape.position,
+            zPosition: shape.zPosition,
+            fill: colorSignature(shape.fillColor),
+            stroke: colorSignature(shape.strokeColor),
+            lineWidth: shape.lineWidth
+        )
+    }
+
+    private func pathSignature(_ path: CGPath?) -> [String] {
+        guard let path else { return [] }
+        var result: [String] = []
+        path.applyWithBlock { elementPointer in
+            let element = elementPointer.pointee
+            let count: Int
+            switch element.type {
+            case .moveToPoint, .addLineToPoint:
+                count = 1
+            case .addQuadCurveToPoint:
+                count = 2
+            case .addCurveToPoint:
+                count = 3
+            case .closeSubpath:
+                count = 0
+            @unknown default:
+                count = 0
+            }
+            let points = (0..<count).map { index in
+                let point = element.points[index]
+                return String(format: "%.4f,%.4f", point.x, point.y)
+            }.joined(separator: ";")
+            result.append("\(String(describing: element.type)):\(points)")
+        }
+        return result
+    }
+
+    private func colorSignature(_ color: NSColor) -> String {
+        guard let rgb = color.usingColorSpace(.deviceRGB) else {
+            return color.description
+        }
+        return [
+            rgb.redComponent,
+            rgb.greenComponent,
+            rgb.blueComponent,
+            rgb.alphaComponent,
+        ].map { String(format: "%.6f", $0) }.joined(separator: ",")
+    }
+
+    @MainActor
+    private func shapeNodes(
+        in node: SKNode,
+        matching predicate: (String) -> Bool
+    ) -> [SKShapeNode] {
+        var result: [SKShapeNode] = []
+        func visit(_ current: SKNode) {
+            if let shape = current as? SKShapeNode,
+               predicate(shape.name ?? "") {
+                result.append(shape)
+            }
+            for child in current.children {
+                visit(child)
+            }
+        }
+        visit(node)
+        return result
+    }
+
+    @MainActor
+    private func pathPoints(in shape: SKShapeNode, relativeTo root: SKNode) -> [CGPoint] {
+        guard let path = shape.path else { return [] }
+        var points: [CGPoint] = []
+        path.applyWithBlock { elementPointer in
+            let element = elementPointer.pointee
+            let count: Int
+            switch element.type {
+            case .moveToPoint, .addLineToPoint:
+                count = 1
+            case .addQuadCurveToPoint:
+                count = 2
+            case .addCurveToPoint:
+                count = 3
+            case .closeSubpath:
+                count = 0
+            @unknown default:
+                count = 0
+            }
+            for index in 0..<count {
+                points.append(transformedPoint(
+                    element.points[index],
+                    from: shape,
+                    to: root
+                ))
+            }
+        }
+        return points
+    }
+
+    @MainActor
+    private func transformedPoint(
+        _ point: CGPoint,
+        from node: SKNode,
+        to root: SKNode
+    ) -> CGPoint {
+        var chain: [SKNode] = []
+        var current: SKNode? = node
+        while let item = current, item !== root {
+            chain.append(item)
+            current = item.parent
+        }
+        var result = point
+        for item in chain.reversed() {
+            result.x *= item.xScale
+            result.y *= item.yScale
+            let cosine = cos(item.zRotation)
+            let sine = sin(item.zRotation)
+            result = CGPoint(
+                x: result.x * cosine - result.y * sine + item.position.x,
+                y: result.x * sine + result.y * cosine + item.position.y
+            )
+        }
+        return result
+    }
+
+    @MainActor
+    private func assertPathVerticesInsideLot(
+        _ shape: SKShapeNode,
+        root: SKNode,
+        style: WorldVisualStyle,
+        message: String
+    ) {
+        let points = pathPoints(in: shape, relativeTo: root)
+        XCTAssertFalse(points.isEmpty, "missing geometry for \(message)")
+        for point in points {
+            let normalized = abs(point.x) / (style.tileWidth / 2)
+                + abs(point.y) / (style.tileHeight / 2)
+            XCTAssertLessThanOrEqual(
+                normalized,
+                1.0001,
+                "\(message) path vertex escaped the authoritative lot: \(point)"
+            )
+        }
     }
 
     @MainActor

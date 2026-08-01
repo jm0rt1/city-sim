@@ -842,9 +842,9 @@ final class TerrainRenderer {
         guard !coordinates.isEmpty else { return }
         let contact = SKShapeNode(path: combinedDiamondPath(
             coordinates: coordinates,
-            width: style.tileWidth - 1,
-            height: style.tileHeight - 0.5,
-            offset: CGPoint(x: 1.4, y: -1.25)
+            width: style.tileWidth - 3,
+            height: style.tileHeight - 2,
+            offset: CGPoint(x: 0.45, y: -0.25)
         ))
         contact.name = "district.ground.service-campus.contact"
         contact.fillColor = NSColor.black.withAlphaComponent(0.15)

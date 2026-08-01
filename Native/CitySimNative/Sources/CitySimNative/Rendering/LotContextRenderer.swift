@@ -375,7 +375,11 @@ final class LotContextRenderer {
         shadow.name = "lot.context.city.\(family.rawValue).contact-shadow.\(variant)"
         shadow.fillColor = NSColor.black.withAlphaComponent(0.13)
         shadow.strokeColor = .clear
-        shadow.position = CGPoint(x: 1.4, y: -1.2)
+        // Keep the NW-lit/SE-contact bias, but leave a deterministic margin
+        // inside the authoritative 72x36 lot diamond. The old 1.4/-1.2
+        // offset pushed the industrial variant-1 right vertex outside its
+        // lot and could bleed into a road or adjacent parcel.
+        shadow.position = CGPoint(x: 0.55, y: -0.35)
         shadow.zPosition = -3.2
         node.addChild(shadow)
     }

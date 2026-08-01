@@ -1,0 +1,142 @@
+{
+  "schema": 1,
+  "authorityCommit": "830ec69ad153382babbd4224d8346d5b66fbfa32",
+  "assignments": [
+    {
+      "modelRouteSha256": "6932fe89d6a7e26297bcbccd68fdc65b263e1bc15c8ed8b57274eb78eb03bbea",
+      "modelRoute": {
+        "schema": 1,
+        "routeId": "play-089:pilot-close-observation:v1",
+        "taskId": "PLAY-089",
+        "packetKind": "mechanical",
+        "classification": "LUNA_MECHANICAL",
+        "model": "gpt-5.6-luna",
+        "effort": "medium",
+        "rationale": "The first OS-optimization event is a bounded read-only integration-close receipt audit with exact committed inputs and no product or shared-authority judgment.",
+        "authority": {
+          "authorityCommit": "830ec69ad153382babbd4224d8346d5b66fbfa32",
+          "baseCommit": "830ec69ad153382babbd4224d8346d5b66fbfa32",
+          "claim": {
+            "path": "docs/production/claims/PLAY-089.operating-system-optimization.md",
+            "sha256": "6276c96d96965805df6a1a9c779ecde7dc609824053c7e0eb00e35f67134cc47"
+          },
+          "immutableInputs": [
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "62e077c88730fda5664e5fa6d23200ade77418bd43f1c721c0bff84eaac1c971"
+            },
+            {
+              "path": ".agents/skills/optimize-citysim-operating-system/SKILL.md",
+              "sha256": "6d4a9e121ec307f7378d253ed112b0ffdd25e0c0d4d1a52b5f7d405f74a8b1ef"
+            },
+            {
+              "path": ".agents/skills/optimize-citysim-operating-system/references/observation-and-upgrade-protocol.md",
+              "sha256": "a9404e046f8c8c68fa3c22d6830b3bbac883a2238e0ad709598038bce87c78a2"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PILOT-METRICS-V1.json",
+              "sha256": "fa35ca349b5721e2bfe9d9d47400aaa1f90bab335358737d0ab2f4a5bda8f30a"
+            }
+          ]
+        },
+        "assignment": {
+          "threadId": "019fbe2b-cc97-71f3-a762-63680ac85c76",
+          "branch": "codex/citysim-os-optimization",
+          "worktree": "/Users/James/.codex/worktrees/c92d/city-sim",
+          "expectedHead": "830ec69ad153382babbd4224d8346d5b66fbfa32",
+          "featureAuthorThreadId": null,
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": [
+            "docs/production/evidence/PLAY-089"
+          ],
+          "allowed": [
+            "docs/production/evidence/PLAY-089"
+          ],
+          "forbidden": [
+            "Native",
+            "AGENTS.md",
+            "docs/production/CITYSIM_WORKTREE_OPERATING_SYSTEM.md",
+            "docs/production/PLAYABLE_BACKLOG.md",
+            "docs/production/claims",
+            "docs/production/decisions",
+            ".agents/skills/operate-citysim-integration"
+          ]
+        },
+        "boundedDeliverable": "Observe the exact published model-routing pilot integration-close boundary and commit one compact machine-readable PLAY-089 receipt. It must distinguish worker from Integration rework, bind exposed context/model/elapsed/validation/duplicate-gate/result metrics, use null for unavailable values, and conclude with NO_CHANGE or one exact proposal manifest. Do not implement a shared change in this packet.",
+        "validation": {
+          "focusedGateOwner": {
+            "threadId": "019fbe2b-cc97-71f3-a762-63680ac85c76",
+            "role": "lane_focused_gate"
+          },
+          "focusedCommands": [
+            "python3 -m json.tool docs/production/evidence/INTEGRATION/MODEL-ROUTING-PILOT-METRICS-V1.json",
+            "python3 -m json.tool docs/production/evidence/PLAY-089/PILOT-CLOSE-OBSERVATION-V1.json"
+          ],
+          "fullGateOwner": {
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "role": "aggregate_full_gate",
+            "model": "gpt-5.6-sol",
+            "effort": "high"
+          },
+          "fullCommands": [
+            "python3 .agents/skills/operate-citysim-integration/scripts/test_validate_model_route_v1.py",
+            "swift test --package-path Native/CitySimNative",
+            "./script/build_and_run.sh --verify",
+            "fresh-player real-app aggregate journey"
+          ]
+        },
+        "expectedResult": {
+          "evidencePaths": [
+            "docs/production/evidence/PLAY-089/PILOT-CLOSE-OBSERVATION-V1.json"
+          ],
+          "commitRequired": true,
+          "commitMessagePattern": "PLAY-089:"
+        },
+        "escalationTriggers": [
+          "baseline_or_candidate_identity_mismatch",
+          "cross_lane_semantic_conflict",
+          "failure_outside_focused_scope",
+          "path_outside_claim",
+          "save_or_migration_uncertainty",
+          "shared_contract_or_schema_decision",
+          "subjective_acceptance_required",
+          "two_unsuccessful_repair_attempts",
+          "unresolved_product_visual_or_interaction_judgment"
+        ],
+        "stopCondition": "Stop after one compact observation commit or immediately on any mandatory escalation trigger; never change shared authority, product files, tasks, threads, final QA, integration, push, or the aggregate full gate.",
+        "independentReviewer": {
+          "required": true,
+          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+          "model": "gpt-5.6-sol",
+          "effort": "high"
+        },
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "62e077c88730fda5664e5fa6d23200ade77418bd43f1c721c0bff84eaac1c971"
+            },
+            {
+              "path": ".agents/skills/optimize-citysim-operating-system/SKILL.md",
+              "sha256": "6d4a9e121ec307f7378d253ed112b0ffdd25e0c0d4d1a52b5f7d405f74a8b1ef"
+            },
+            {
+              "path": ".agents/skills/optimize-citysim-operating-system/references/observation-and-upgrade-protocol.md",
+              "sha256": "a9404e046f8c8c68fa3c22d6830b3bbac883a2238e0ad709598038bce87c78a2"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PILOT-METRICS-V1.json",
+              "sha256": "fa35ca349b5721e2bfe9d9d47400aaa1f90bab335358737d0ab2f4a5bda8f30a"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

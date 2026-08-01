@@ -3,7 +3,7 @@
   "authorityCommit": "61fa4fcf14b9c469e4e34f58dfef75ebcbfec316",
   "assignments": [
     {
-      "modelRouteSha256": "ac054bbc0799359e64dffa34b4a8b73c3979b636c22f042e5b08a55709d30153",
+      "modelRouteSha256": "bbc4fc297ccc50341a99a8c64eb4d1138d85971be5f98c7178d0d038e32b3305",
       "modelRoute": {
         "schema": 1,
         "routeId": "play-089:v13-repair-dispatch-observation:v1",
@@ -47,7 +47,7 @@
           "threadId": "019fbe2b-cc97-71f3-a762-63680ac85c76",
           "branch": "codex/citysim-os-optimization",
           "worktree": "/Users/James/.codex/worktrees/c92d/city-sim",
-          "expectedHead": "97eeb6962899fd3b5407aa1fc872e6dcc281491b",
+          "expectedHead": "4c427febe4922203336d8a65727fc44c09f0ebdb",
           "featureAuthorThreadId": null,
           "sharedAuthorityOwnership": false,
           "finalQAOwnership": false,

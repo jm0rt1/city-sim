@@ -1,0 +1,130 @@
+{
+  "schema": 1,
+  "authorityCommit": "70c49f394a0920e26dffc945bd996cf67af7b1fe",
+  "assignments": [
+    {
+      "modelRouteSha256": "63a2ce86d35519721cccb18cbc30332e524d4f2bd6b0b2f8797ae537affe09e9",
+      "modelRoute": {
+        "schema": 1,
+        "routeId": "pilot-v1:south-r2",
+        "taskId": "PLAY-080",
+        "packetKind": "implementation",
+        "classification": "LUNA_IMPLEMENTATION",
+        "model": "gpt-5.6-luna",
+        "effort": "high",
+        "rationale": "Successor route correcting the Integration-authored focused command after the R1 route failed closed with zero mutation.",
+        "authority": {
+          "authorityCommit": "70c49f394a0920e26dffc945bd996cf67af7b1fe",
+          "baseCommit": "70c49f394a0920e26dffc945bd996cf67af7b1fe",
+          "claim": {
+            "path": "docs/production/claims/PLAY-080.world-art-south.md",
+            "sha256": "6f159c360545edbfbfb68b4eac9bb136f3a1dbaa923800b429bd62e7d962a23e"
+          },
+          "immutableInputs": [
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "eef78d7775afab255e680455d0ac8d91105008f25bbd0f6b2c964245c8a70ceb"
+            },
+            {
+              "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+              "sha256": "583c5d7be25a7ffdb95f354c6279fe7c309358f65445365203431c51f0e53247"
+            },
+            {
+              "path": "docs/production/decisions/CONTRACT-010-directional-building-art.md",
+              "sha256": "0ee2d68a9dba4694d92a864bfeb5a91970c88fe87d893e1898de7b26d38609af"
+            }
+          ]
+        },
+        "assignment": {
+          "threadId": "019fab72-b2c9-7d60-a397-27f4fde85950",
+          "branch": "codex/citysim-world-art-south",
+          "worktree": "/Users/James/.codex/worktrees/4247/city-sim",
+          "expectedHead": "2c98868d9693abe327f0c84a48fad0ef5083dd45",
+          "featureAuthorThreadId": null,
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01",
+            "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01"
+          ],
+          "allowed": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01",
+            "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01"
+          ],
+          "forbidden": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-079",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-081"
+          ]
+        },
+        "boundedDeliverable": "Refresh one deterministic South zero-child launch-readiness packet under frozen inputs; stop before DCC until the North appearance lock and per-process grant exist.",
+        "validation": {
+          "focusedGateOwner": {
+            "threadId": "019fab72-b2c9-7d60-a397-27f4fde85950",
+            "role": "lane_focused_gate"
+          },
+          "focusedCommands": [
+            "python3 Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/schedule-consumer-adapter-v01/test_consume_schedule_v01.py"
+          ],
+          "fullGateOwner": {
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "role": "aggregate_full_gate",
+            "model": "gpt-5.6-sol",
+            "effort": "high"
+          },
+          "fullCommands": [
+            "swift test --package-path Native/CitySimNative",
+            "./script/build_and_run.sh --verify",
+            "fresh-player real-app aggregate journey"
+          ]
+        },
+        "expectedResult": {
+          "evidencePaths": [
+            "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01"
+          ],
+          "commitRequired": true,
+          "commitMessagePattern": "PLAY-080:"
+        },
+        "escalationTriggers": [
+          "baseline_or_candidate_identity_mismatch",
+          "cross_lane_semantic_conflict",
+          "failure_outside_focused_scope",
+          "path_outside_claim",
+          "save_or_migration_uncertainty",
+          "shared_contract_or_schema_decision",
+          "subjective_acceptance_required",
+          "two_unsuccessful_repair_attempts",
+          "unresolved_product_visual_or_interaction_judgment"
+        ],
+        "stopCondition": "Stop after one coherent focused result/commit or immediately on any mandatory escalation trigger; never push, integrate, self-accept, or run the full gate.",
+        "independentReviewer": {
+          "required": true,
+          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+          "model": "gpt-5.6-sol",
+          "effort": "high"
+        },
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "eef78d7775afab255e680455d0ac8d91105008f25bbd0f6b2c964245c8a70ceb"
+            },
+            {
+              "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+              "sha256": "583c5d7be25a7ffdb95f354c6279fe7c309358f65445365203431c51f0e53247"
+            },
+            {
+              "path": "docs/production/decisions/CONTRACT-010-directional-building-art.md",
+              "sha256": "0ee2d68a9dba4694d92a864bfeb5a91970c88fe87d893e1898de7b26d38609af"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

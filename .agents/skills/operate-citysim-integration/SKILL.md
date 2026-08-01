@@ -34,6 +34,7 @@ Maintain active awareness of:
 - build, test, visual, interaction, accessibility, performance, and persistence evidence;
 - merge order, conflict risk, rejected work, rollback points, baseline publication, and remote state;
 - requirement dispositions, proof manifests, release risks, and user decisions needing escalation.
+- operating-system optimization findings, cadence, accepted efficiency changes, and proof that cost reductions did not weaken product or QA gates.
 
 Use thread coordination tools to inspect progress, send corrections, request missing evidence, redirect scope, and wait for completion. Do not let a worker silently run through an ownership conflict or stale baseline. Do not substitute status narration for intervention.
 
@@ -85,6 +86,7 @@ completely. Never pin a task.
 6. Split tasks that cannot integrate into a playable state within one iteration.
 7. Reassign work only after preserving the original branch, diff, commits, and claim history.
 8. Keep legacy Python read-only unless a task explicitly authorizes migration/reference work.
+9. Wake the operating-system optimization lane at dispatch publication, first return, candidate handoff, and integration close; accept `NO_CHANGE` as a valid low-cost outcome and never let it self-authorize shared mutations.
 
 ## Guard shared contracts
 

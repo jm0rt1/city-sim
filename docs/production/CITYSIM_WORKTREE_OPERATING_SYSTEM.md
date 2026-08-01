@@ -42,9 +42,10 @@ When sources conflict, use this order:
 
 ## 3. Repository topology
 
-The system has one integration command center, five product specialist
-worktrees, and direction-exclusive World Art cells that may run concurrently
-only under disjoint Integration-issued claims.
+The system has one integration command center, product specialist worktrees,
+direction-exclusive World Art cells, and one low-overhead operating-system
+optimization observer. Concurrent mutation still requires disjoint
+Integration-issued claims.
 
 | Lane | Branch | Default worktree path | Mission |
 |---|---|---|---|
@@ -58,6 +59,7 @@ only under disjoint Integration-issued claims.
 | UI and input | `codex/citysim-ui-input` | `/Users/James/.codex/worktrees/citysim/ui-input` | Make every command discoverable, responsive, accessible, and keyboard-operable |
 | Simulation platform | `codex/citysim-simulation-platform` | `/Users/James/.codex/worktrees/citysim/simulation-platform` | Own deterministic state, persistence, performance, diagnostics, and system contracts |
 | Playtest quality | `codex/citysim-playtest-quality` | `/Users/James/.codex/worktrees/citysim/playtest-quality` | Prove or disprove playability with golden cities, journeys, visual evidence, balance findings, and regressions |
+| Operating-system optimization | `codex/citysim-os-optimization` | Codex app-provisioned | Observe execution receipts and improve intelligence routing, task design, skills, validators, context efficiency, and coordination without owning product acceptance |
 
 The paths are defaults, not instructions to create worktrees before the integration baseline is clean. Each branch may be checked out by only one worktree at a time.
 
@@ -197,6 +199,27 @@ derive geometry from a sibling direction. Shared art contracts and family
 materials are read-only inputs unless Integration assigns one explicit writer.
 No art cell may run concurrently as a second writer on the world-rendering
 worktree.
+
+### 4.8 Operating-system optimization lane
+
+Primary ownership:
+
+- read-only observation of dispatch receipts, acknowledgements, route results,
+  validation duration, rework, idle time, context size, and integration latency;
+- task-owned cost/quality baselines, machine-readable findings, adversarial
+  validators, and compact improvement proposals;
+- bounded implementations to routing, task-management, skill, and evidence
+  infrastructure only after Integration freezes the exact shared paths;
+- recurring recommendations that increase accepted outcomes per frontier turn
+  and reduce duplicate work without weakening claims, identity, proof, or QA.
+
+Default surfaces are its own skill, `docs/production/evidence/PLAY-089/`, and
+task-owned optimizer tests. `AGENTS.md`, this operating system, shared skills,
+claims, backlog, schemas, validators used by other lanes, and thread authority
+remain Integration-controlled unless a published route names each exact file.
+The lane never owns product architecture, product code, integration acceptance,
+final real-app QA, merge conflict resolution, or push. Observation is
+read-only by default; proposals are exception-driven and compact.
 
 ## 5. Shared surfaces and contract locks
 
@@ -366,6 +389,8 @@ git worktree add -b codex/citysim-simulation-platform \
   /Users/James/.codex/worktrees/citysim/simulation-platform <baseline-commit>
 git worktree add -b codex/citysim-playtest-quality \
   /Users/James/.codex/worktrees/citysim/playtest-quality <baseline-commit>
+git worktree add -b codex/citysim-os-optimization \
+  /Users/James/.codex/worktrees/citysim/os-optimization <baseline-commit>
 ```
 
 If a branch already exists, attach it rather than recreating it. Validate `git worktree list`, branch identity, clean status, and baseline ancestry in every worktree before dispatching tasks.
@@ -386,6 +411,13 @@ The system uses short vertical integration waves rather than long-lived independ
 6. Operate the staged app when player-facing behavior changes.
 7. Commit focused work and write the completion record.
 8. Stop at `ready-for-integration`; do not self-merge.
+
+The operating-system optimization lane instead runs a low-overhead audit at
+dispatch publication, first return, candidate handoff, and integration close.
+It remains idle between those event boundaries unless Integration assigns a
+specific improvement. Each audit must end in one of: `NO_CHANGE`, one bounded
+Luna implementation packet, or one frontier escalation. It must not create
+work merely to justify its existence.
 
 ### Integration wave
 

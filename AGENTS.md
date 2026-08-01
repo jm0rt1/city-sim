@@ -19,6 +19,7 @@ These instructions apply to every task in this repository and every linked workt
 | `codex/citysim-ui-input` | `.agents/skills/build-citysim-ui-input/SKILL.md` |
 | `codex/citysim-simulation-platform` | `.agents/skills/evolve-citysim-simulation/SKILL.md` |
 | `codex/citysim-playtest-quality` | `.agents/skills/verify-citysim-playability/SKILL.md` |
+| `codex/citysim-os-optimization` | `.agents/skills/optimize-citysim-operating-system/SKILL.md` |
 
 3. Read `.agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md` and apply its context-loading rule. A complete applicable authority read, including `docs/production/CITYSIM_WORKTREE_OPERATING_SYSTEM.md`, the lane skill, the active claim, and required conditional references, is mandatory for a new thread, new or revised claim, changed claim/authority/skill/routing/conditional-reference hash, branch/worktree/task mismatch, context loss or compaction without a valid compact packet, or a stale/missing/contradictory packet.
 4. On an unchanged same-thread continuation, still run step 1, verify the exact Git revisions and every recorded file hash, and consume the compact lane-context packet. Any mismatch fails closed to the complete-read path.

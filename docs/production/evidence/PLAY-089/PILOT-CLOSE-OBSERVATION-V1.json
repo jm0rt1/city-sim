@@ -1,0 +1,99 @@
+{
+  "schema": 1,
+  "taskId": "PLAY-089",
+  "observationBoundary": "integration_close",
+  "result": "PROPOSAL",
+  "proposalManifest": {
+    "id": "PLAY-089-PROPOSAL-INTEGRATION-ROUTE-PREVALIDATION-V1",
+    "owner": "Integration",
+    "scope": "Dispatch setup and focused-command prevalidation only",
+    "exactOutcome": "Before publishing a Luna route, Integration must validate every focused command against the exact repository-root and exact claim-owned output path; reject the dispatch when command arguments or output contracts are invalid.",
+    "basis": [
+      "Four Integration-authored route returns were exposed in the pilot metrics.",
+      "The exposed returns include an omitted repository-root/output command contract and a focused output path outside the repository evidence contract.",
+      "No Luna worker returns were exposed in the pilot metrics."
+    ],
+    "rollback": "Disable the prevalidation check and restore the prior dispatch publication path; no product or shared-authority bytes are changed by this receipt.",
+    "acceptance": "A later pilot boundary exposes zero Integration-authored route returns attributable to invalid focused-command or output-path contracts, while preserving the existing claim, candidate identity, focused/full gate split, and independent QA."
+  },
+  "binding": {
+    "authorityCommit": "830ec69ad153382babbd4224d8346d5b66fbfa32",
+    "baseCommit": "830ec69ad153382babbd4224d8346d5b66fbfa32",
+    "carrierCommit": "538a81943e21bda757b67aac9f2d85a10fa60d7a",
+    "dispatchReceipt": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-089-PILOT-CLOSE-V1.json",
+    "dispatchReceiptSha256": "ceefd48a87adb9999b97143e7a52ef089cea3836c3d351cfced170dcb645f871",
+    "routeId": "play-089:pilot-close-observation:v1",
+    "modelRouteSha256": "6932fe89d6a7e26297bcbccd68fdc65b263e1bc15c8ed8b57274eb78eb03bbea",
+    "claimPath": "docs/production/claims/PLAY-089.operating-system-optimization.md",
+    "claimSha256": "6276c96d96965805df6a1a9c779ecde7dc609824053c7e0eb00e35f67134cc47",
+    "branch": "codex/citysim-os-optimization",
+    "worktree": "/Users/James/.codex/worktrees/c92d/city-sim",
+    "startingCommit": "830ec69ad153382babbd4224d8346d5b66fbfa32",
+    "resultCommit": null,
+    "allowedPath": "docs/production/evidence/PLAY-089"
+  },
+  "execution": {
+    "classification": "LUNA_MECHANICAL",
+    "model": "gpt-5.6-luna",
+    "effort": "medium",
+    "threadId": "019fbe2b-cc97-71f3-a762-63680ac85c76",
+    "elapsedSeconds": null,
+    "turns": null,
+    "validationSeconds": null,
+    "workerRework": 0,
+    "integrationRework": 4,
+    "acceptedResult": "PROPOSAL",
+    "escalationReason": null
+  },
+  "exposedPilotMeasurements": {
+    "routingMix": {
+      "frontierAuthorityActive": 2,
+      "lunaEligibleExecution": 8,
+      "lunaAssignedExecution": 8,
+      "queuedFrontierFinalQA": 1,
+      "eligibleWorkerExecutionLunaShare": 1.0,
+      "initialTarget": 0.6
+    },
+    "contextEfficiency": {
+      "sevenSkillCoreBytesBefore": 91078,
+      "sevenSkillCoreBytesAfter": 39454,
+      "coreByteReduction": 51624,
+      "coreByteReductionRatio": 0.5668,
+      "priorFixedPerPromptRangeBytes": [27640, 70185],
+      "expectedUnchangedContinuationReductionRange": [0.6, 0.9]
+    },
+    "validationEfficiency": {
+      "duplicateFullSuiteMinutesBefore": null,
+      "duplicateFullSuiteMinutesPilot": 0,
+      "workerPolicy": "focused owner and directly affected gates only",
+      "aggregatePolicy": "one full Swift suite and staged build per exact aggregate identity",
+      "finalPolicy": "one independent same-SHA real-app journey"
+    },
+    "outcomes": {
+      "acceptedOutcomesPerFrontierTurn": 0.2,
+      "acceptedOutcomesPerFrontierTurnBasis": "One valid North visual disposition across five recorded North frontier worker turns; Integration captain turns are not exposed and are excluded.",
+      "lunaCandidateReceipts": 8,
+      "lunaWorkerReturns": 0,
+      "integrationAuthoredRouteReturns": 4,
+      "integratedPilotEvidenceResults": 9,
+      "lunaReturnRate": 0.0,
+      "dispatchToAcceptedCandidateSeconds": null,
+      "totalTokenTrend": "unavailable_no_token_counters_exposed",
+      "pricingEstimate": null
+    }
+  },
+  "validation": {
+    "receiptJson": "PASS",
+    "selectedRoute": "PASS: validate_model_route_v1.py --dispatch-route-id play-089:pilot-close-observation:v1",
+    "focusedMetricsJson": "PASS",
+    "focusedOutputJson": "PASS",
+    "gitDiffCheck": "PASS",
+    "fullGate": null,
+    "realAppJourney": null
+  },
+  "limitations": [
+    "Elapsed time, turns, and validation duration for this observation were not exposed and are recorded as null.",
+    "Token counts, pricing, dispatch-to-accepted-candidate time, and historical duplicate full-suite minutes were not exposed and remain null or as the source metric states.",
+    "This is an observation/proposal receipt, not Integration acceptance or an implementation of the proposal."
+  ]
+}

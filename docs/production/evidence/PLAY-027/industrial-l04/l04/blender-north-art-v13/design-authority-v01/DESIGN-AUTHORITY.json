@@ -1,0 +1,268 @@
+{
+  "schemaVersion": 1,
+  "task": "PLAY-027",
+  "stage": "north-v13-zero-pixel-design-authority",
+  "route": {
+    "routeId": "quality-v1:north-v13-design",
+    "routeCanonicalSHA256": "8cd616334e5c773f862de1c122c718e020a595739270fa553cc58f18a168dcf2",
+    "carrierCommit": "0c6f3f9406ed771ef6b32e94ebd8f2f8053cb758",
+    "receiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-NORTH-V13-DESIGN-V1.json",
+    "receiptSHA256": "352608216d0d11f611f7d9d5464dfed70f56a716ea05a243d2df1a5255ccadd9",
+    "authorityCommit": "54afe533d9f66330f2ce4190470013d44a1a237c",
+    "baseCommit": "54afe533d9f66330f2ce4190470013d44a1a237c",
+    "expectedStartingHEAD": "14b0ad8f5031590ffa10462076f1f691759131a7"
+  },
+  "compactContinuation": {
+    "path": "docs/production/evidence/PLAY-027/model-routing-pilot-v1/north-r2/ROUTE-RESULT.json",
+    "sha256": "13c48aa18aa35e8877f65b75deec52641733e987ea64c82212a6d603a6f50c26",
+    "disposition": "RETURN_LITERAL_192_HERO_READ_INSUFFICIENT"
+  },
+  "claim": {
+    "path": "docs/production/claims/PLAY-027.world-art.md",
+    "sha256": "d28bf14bb3d2d5441f3df6278eef758a5babb4453d22e06fc8bd4075ad5c80a1",
+    "branch": "codex/citysim-world-art",
+    "worktree": "/Users/James/.codex/worktrees/0648/city-sim"
+  },
+  "design": {
+    "conceptName": "Portal Crown Foundry",
+    "sourceRevision": "blender-art-v13-design-authority",
+    "sceneGeometryID": "industrial-l04-north-v13-portal-crown-foundry",
+    "oneSentenceRead": "A broad stepped foundry hall is split by one immense, deep North freight portal whose crane crown and dark inset remain the first recognizable feature at gameplay scale.",
+    "materiallyDifferentFromV12": true,
+    "silhouetteStrategy": [
+      "Replace v12's side-return compound-pier read with a frontal 28-world-unit portal frame centered on the North court.",
+      "Replace the compact stacked-block skyline with a 36-world-unit-wide, three-stage portal crown at heights 30, 36, and 40.",
+      "Keep the 44-world-unit boiler stack below six percent of silhouette area so it cannot substitute for building mass.",
+      "Make the warm masonry shoulders and portal crown occupy the footprint edges while keeping the court visibly integrated."
+    ],
+    "functionalHierarchy": [
+      "monumental portal frame and deep inset",
+      "broad primary foundry shoulders and rear hall",
+      "portal crown high-bay and crane lantern",
+      "three freight recess beats inside the inset",
+      "east hot-process vessel",
+      "west human-scale staff annex",
+      "subordinate boiler stack and bounded roof plant"
+    ],
+    "forbiddenReads": [
+      "compact-office-tower",
+      "generic-warehouse",
+      "airport-or-transit-canopy",
+      "retail-storefront-rhythm",
+      "empty-or-missing-building-court",
+      "portal-visible-only-in-semantic-mask"
+    ]
+  },
+  "frozenTextInputs": {
+    "scene": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/DESIGN-SCENE.json",
+      "sha256": "0f7a8e40a07f5c2b7320ab42fe5e1bcb2dc23fb508ff6b04e8ea49cf6c974060"
+    },
+    "materials": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/DESIGN-MATERIALS.json",
+      "sha256": "c8179b77a184e41b723e26b34e7da2ef256b09e93b54a47e76cc5103f22b8cab"
+    },
+    "coordinateBridge": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-direction-bridge-v06/MAPPING-CONTRACT.json",
+      "sha256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7"
+    },
+    "v12ComparisonScene": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/SCENE.json",
+      "sha256": "dad20722f4770c82992040861074188c604b46cd226e5f739291ac22683594e2",
+      "role": "returned-comparison-only"
+    },
+    "v12ComparisonMaterials": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/MATERIALS.json",
+      "sha256": "e683feed89f6878903d1ec0b255d0d5e8a36c74f431a2fb723287bf955c54d09",
+      "role": "returned-comparison-only"
+    },
+    "acceptedL3Comparison": {
+      "path": "docs/production/evidence/PLAY-027/industrial-l03/l03/source-v06-complete-family-v01/review/BLOCK-ACTUAL-COLOR-GRAYSCALE.png",
+      "sha256": "976c89fbe4552081f545e82e2ba60e1e1951bf7f6b334cc87646562c1c43bef1",
+      "role": "accepted-scale-and-identity-comparison-only"
+    }
+  },
+  "preservedRegistration": {
+    "coordinateBridgeFormula": "B(CitySim[x,y,z])=Blender[z,x,y]",
+    "cameraProjection": "orthographic-2-to-1",
+    "cameraOrthographicScale": 79.1959533691406,
+    "cameraPositionWorld": [96, 101.24557426726288, 96],
+    "cameraTargetWorld": [0, 22.861902498201186, 0],
+    "footprintWorldXZ": [[-28, -28], [28, -28], [28, 28], [-28, 28]],
+    "groundPivotSource": [768, 896],
+    "frontageSocketSource": [896, 704],
+    "frontageSocketWorld": [0, 0, -28],
+    "frontageOutwardNormal": [0, 0, -1],
+    "northRoadEdgeZ": -28,
+    "northwestKeyOrigin": [-80, 120, -80],
+    "southeastShadowVectorSource": [2, 1],
+    "orientationTransform": "none"
+  },
+  "literal192ExitCriteria": {
+    "frame": [192, 128],
+    "unaidedColorAndLiteralGrayscaleRequired": true,
+    "semanticMaskSupportingOnly": true,
+    "occupiedBounds": {
+      "minimumWidthPixels": 60,
+      "maximumWidthPixels": 64,
+      "minimumHeightPixels": 58,
+      "maximumHeightPixels": 60,
+      "minimumOpaquePixels": 2900
+    },
+    "silhouette": {
+      "maximumIoUAgainstV12": 0.8,
+      "minimumDistinctRoofHeightBreaks": 3,
+      "portalCrownMinimumWidthPixels": 20,
+      "stackMaximumSilhouetteShare": 0.06,
+      "connectedStackExcludedComponentCount": 1
+    },
+    "monumentalPortal": {
+      "minimumOuterWidthPixels": 20,
+      "minimumOuterHeightPixels": 18,
+      "minimumClearInsetWidthPixels": 14,
+      "minimumClearInsetHeightPixels": 12,
+      "minimumJambWidthPixelsEach": 3,
+      "minimumJambHeightPixelsEach": 14,
+      "minimumHeaderWidthPixels": 20,
+      "minimumHeaderThicknessPixels": 3,
+      "minimumInsetAreaPixels": 168,
+      "maximumOccludedPortalShare": 0.05,
+      "processOrCranePixelsInsideInset": 0,
+      "mustBeNameableWithoutOverlay": true
+    },
+    "freightAndStaff": {
+      "freightBeatCount": 3,
+      "minimumFreightBeatPixelsEach": [4, 8],
+      "minimumFreightSeparatorPixels": 2,
+      "minimumStaffEntryPixels": [5, 8],
+      "staffMustRemainSubordinate": true
+    },
+    "valueHierarchy": {
+      "minimumRoofMinusFacadeMedianLuma": 24,
+      "minimumPortalFrameFacadeAbsoluteMedianLumaDelta": 18,
+      "minimumFrameMinusInsetMedianLuma": 30,
+      "minimumHotProcessMinusSurroundMedianLuma": 30,
+      "minimumCoherentGrayscaleGroups": 4,
+      "exactOrNearChromaAtNonzeroAlpha": 0,
+      "hiddenRGB": 0
+    },
+    "roadAndContact": {
+      "socketToApronMaximumGapPixels": 2,
+      "apronConnectedComponentCount": 1,
+      "thresholdAndSocketMustShareVisibleComponent": true,
+      "bakedPublicRoadForbidden": true,
+      "cropOrRegistrationDriftPixels": 0
+    },
+    "l4OverAcceptedL3": {
+      "minimumSilhouetteAreaRatio": 1.2,
+      "minimumTopHeightAdvantagePixels": 8,
+      "minimumPortalAreaRatioAgainstLargestL3Opening": 2.5,
+      "blindReviewerMinimumNameableFoundryVotes": 4,
+      "blindReviewerCount": 5,
+      "twoSecondRecognitionRequired": true
+    }
+  },
+  "zeroPixelDesignChecks": {
+    "portalApertureHasNoSolidOverlap": true,
+    "processAndCraneOutsidePortalAperture": true,
+    "socketApronThresholdWorldPathContinuous": true,
+    "componentIDsUnique": true,
+    "materialRolesComplete": true,
+    "registrationValuesCopiedExactlyFromV12": true,
+    "v12GeometryOrSilhouetteAliased": false,
+    "siblingsConsumed": [],
+    "pixelClaimsMade": false
+  },
+  "futureProcessA": {
+    "authorizedNow": false,
+    "maximumFutureProcessCount": 1,
+    "processID": "A",
+    "requiredSourceRevision": "blender-art-v13",
+    "requiredSceneGeometryID": "industrial-l04-north-v13-portal-crown-foundry",
+    "designSceneSHA256": "0f7a8e40a07f5c2b7320ab42fe5e1bcb2dc23fb508ff6b04e8ea49cf6c974060",
+    "designMaterialsSHA256": "c8179b77a184e41b723e26b34e7da2ef256b09e93b54a47e76cc5103f22b8cab",
+    "proposedSourceRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13",
+    "proposedProcessRoot": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a",
+    "proposedOutputRoot": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a/run-a",
+    "proposedReviewRoot": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a/review",
+    "requiredToolchain": {
+      "blenderVersion": "4.5.12 LTS",
+      "blenderBuild": "84afd5f785f7",
+      "engine": "Cycles CPU",
+      "threads": 1,
+      "minimumSamples": 64,
+      "adaptiveSampling": false,
+      "denoise": false,
+      "motionBlur": false,
+      "transparentFilm": true
+    },
+    "missingAuthorities": [
+      "Integration approval of this exact design-authority packet",
+      "task-owned lowering and actual-camera zero-pixel proof bound to exact implementation hashes",
+      "Integration-published Process-A schedule",
+      "one-process lease and authenticated grant",
+      "named compute slot and exact execution authority"
+    ],
+    "hardStopBeforeDCC": true
+  },
+  "focusedGateResults": [
+    {
+      "command": "python3 Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/test_compound_mesh_audit.py",
+      "result": "PASS 1023.0 6"
+    },
+    {
+      "command": "python3 -m json.tool docs/production/evidence/PLAY-027/model-routing-pilot-v1/north-r2/ROUTE-RESULT.json",
+      "result": "PASS"
+    }
+  ],
+  "designValidation": {
+    "result": "PASS v13-design-contract 13 12 12",
+    "componentCount": 13,
+    "uniqueComponentIDCount": 13,
+    "declaredMaterialRoleCount": 12,
+    "usedMaterialRoleCount": 12,
+    "hashBindingsExact": true,
+    "registrationExact": true,
+    "portalApertureSolidOverlapCount": 0,
+    "portalFrameMemberApertureOverlapCount": 0,
+    "thresholdsInternallyFeasible": true,
+    "validationHarnessCorrectionCount": 1,
+    "designReworkCount": 0
+  },
+  "changedPathAudit": {
+    "authorityBase": "54afe533d9f66330f2ce4190470013d44a1a237c",
+    "newPaths": [
+      "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/DESIGN-SCENE.json",
+      "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/DESIGN-MATERIALS.json",
+      "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/design-authority-v01/DESIGN-AUTHORITY.json"
+    ],
+    "allNewPathsWithinClaimOwnedRoots": true,
+    "siblingInputsConsumed": []
+  },
+  "executionMetrics": {
+    "startedAt": "2026-08-01T16:28:22Z",
+    "endedAt": "2026-08-01T16:35:18Z",
+    "elapsedSecondsApproximate": 416,
+    "turnCount": 1,
+    "validationSecondsApproximate": 2,
+    "priorIntegrationAuthoredRoutingFailures": 2,
+    "workerDesignReworkCount": 0,
+    "availableApproximateTokens": null,
+    "frontierEscalationReason": null
+  },
+  "disposition": "V13_DESIGN_AUTHORITY_CANDIDATE",
+  "candidateReadyForIndependentReview": true,
+  "sourceAuthority": false,
+  "productionSelected": false,
+  "sharedAppearanceLockPublished": false,
+  "processCounts": {
+    "A": 0,
+    "B": 0,
+    "C": 0,
+    "blender": 0,
+    "cycles": 0,
+    "imageGen": 0,
+    "normalizer": 0,
+    "renderedPixels": 0
+  }
+}

@@ -1,0 +1,38 @@
+[0/1] Planning build
+Building for debugging...
+[0/4] Write swift-version--58304C5D6DBC2206.txt
+Build complete! (0.13s)
+Test Suite 'Selected tests' started at 2026-07-30 09:44:23.926.
+Test Suite 'CitySimNativePackageTests.xctest' started at 2026-07-30 09:44:23.926.
+Test Suite 'WorldRenderingTests' started at 2026-07-30 09:44:23.926.
+Test Case '-[CitySimNativeTests.WorldRenderingTests testR4AFreshProcessColdPathWritesGovernedReceipt]' started.
+Test Case '-[CitySimNativeTests.WorldRenderingTests testR4AFreshProcessColdPathWritesGovernedReceipt]' passed (0.337 seconds).
+Test Suite 'WorldRenderingTests' passed at 2026-07-30 09:44:24.263.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.337 (0.337) seconds
+Test Suite 'CitySimNativePackageTests.xctest' passed at 2026-07-30 09:44:24.263.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.337 (0.337) seconds
+Test Suite 'Selected tests' passed at 2026-07-30 09:44:24.263.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.337 (0.338) seconds
+PLAY073_R4A_GOVERNED_COLD_RECEIPT mode=scene-first-grid sample=1 pid=45470 cache_before=0 cache_after_cold=1 cache_after_warm=1 path=/Users/James/.codex/worktrees/cac1/city-sim/docs/production/evidence/PLAY-073/r4-a-candidate-526ff4f/performance/five-fresh-processes/sample-1.json
+◇ Test run started.
+↳ Testing Library Version: 1902
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.
+        2.13 real         0.75 user         0.83 sys
+           185286656  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+               66856  page reclaims
+               10122  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                   0  messages sent
+                   0  messages received
+                   0  signals received
+                3099  voluntary context switches
+                4365  involuntary context switches
+          2875714606  instructions retired
+          1113033729  cycles elapsed
+            17384072  peak memory footprint

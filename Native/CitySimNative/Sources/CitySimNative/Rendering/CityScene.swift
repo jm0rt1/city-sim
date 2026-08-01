@@ -23,6 +23,9 @@ struct RendererDiagnosticsSnapshot: Equatable, Sendable {
     var consumedConsequenceEventCount = 0
     var displayedConsequenceCueCount = 0
     var backdropUpdateDurationMilliseconds = 0.0
+    var firstGridPreparationDurationMilliseconds = 0.0
+    var firstGridTileRecordPreparationDurationMilliseconds = 0.0
+    var firstGridBackdropPreparationDurationMilliseconds = 0.0
     var renderPreparationDurationMilliseconds = 0.0
     var tileBuildDurationMilliseconds = 0.0
     var runtimeTreeMetricsDurationMilliseconds = 0.0
@@ -83,8 +86,15 @@ private struct InteractionPreviewSignature: Equatable {
     let selectedCoordinate: GridCoordinate?
 }
 
+private enum AmbientLayoutRole: Equatable {
+    case empty
+    case road
+    case incompleteBuilding
+    case completedBuilding(BuildingKind)
+}
+
 private struct AmbientContextSignature: Equatable {
-    let layoutRoles: [UInt8]
+    let layoutRoles: [AmbientLayoutRole]
     let detail: CameraDetailLevel
     let reducedMotion: Bool
     let motionEnabled: Bool
@@ -103,7 +113,7 @@ private struct AmbientCorridorSignature: Equatable {
 }
 
 private struct AmbientGroundSignature: Equatable {
-    let layoutRoles: [UInt8]
+    let layoutRoles: [AmbientLayoutRole]
     let detail: CameraDetailLevel
 }
 
@@ -121,14 +131,14 @@ private struct CityVisualCompositionBounds {
 }
 
 private final class TileRenderRecord {
-    let root: SKNode
+    var root: SKNode?
     var overlayLayer: SKNode?
     var consequenceLayer: SKNode?
     let signature: TileRenderSignature
     var overlaySignature: OverlayRenderSignature
 
     init(
-        root: SKNode,
+        root: SKNode?,
         overlayLayer: SKNode?,
         consequenceLayer: SKNode?,
         signature: TileRenderSignature,
@@ -186,7 +196,7 @@ final class CityScene: SKScene {
     private var renderedGridSize: CGSize?
     private var ambientCorridorSignature: AmbientCorridorSignature?
     private var ambientGroundSignature: AmbientGroundSignature?
-    private var ambientLayoutRoles: [UInt8] = []
+    private var ambientLayoutRoles: [AmbientLayoutRole] = []
     private var ambientActivityExcludedRoadCoordinates: Set<GridCoordinate> = []
     private var ambientActivityCandidates = AmbientLifeRenderer.ActivityCandidates(
         streets: [],
@@ -207,6 +217,7 @@ final class CityScene: SKScene {
     private(set) var activeTargetRoadFrontierForTesting: GridCoordinate?
     var developedVisualBoundsForTesting: CGRect { occupiedDevelopedVisualBoundsForTesting }
     private var tileRecords: [GridCoordinate: TileRenderRecord] = [:]
+    private var preparedInitialTileRecords: [GridCoordinate: TileRenderRecord]?
     private var lastDragLocation: CGPoint?
     private var didDrag = false
     private var tileWidth: CGFloat { style.tileWidth }
@@ -249,6 +260,20 @@ final class CityScene: SKScene {
     var selectionIsHiddenForTesting: Bool { selectionNode.isHidden }
     var hoverIsHiddenForTesting: Bool { hoverNode.isHidden }
     var hoverVisualBoundsForTesting: CGRect { hoverNode.calculateAccumulatedFrame() }
+    var hoverFootprintBoundsForTesting: CGRect {
+        hoverNode.path?.boundingBoxOfPath ?? .null
+    }
+    var hoverDepthForTesting: CGFloat { hoverNode.zPosition }
+    var placementGhostScaleForTesting: CGFloat? {
+        hoverNode.childNode(withName: "interaction.placementGhost")?.xScale
+    }
+    var placementGhostBoundsForTesting: CGRect? {
+        hoverNode.childNode(withName: "interaction.placementGhost")?
+            .calculateAccumulatedFrame()
+    }
+    var preparedInitialTileRecordCountForTesting: Int {
+        preparedInitialTileRecords?.count ?? 0
+    }
     var activeActionTargetForTesting: CityMapActionTargetPresentation? { renderedActiveActionTarget }
     var interactionNamesForTesting: [String] {
         func names(in node: SKNode) -> [String] {
@@ -346,6 +371,7 @@ final class CityScene: SKScene {
             diagnosticsSnapshot.overlayUpdateCount = 0
             diagnosticsSnapshot.consumedConsequenceEventCount = 0
             diagnosticsSnapshot.updatedCoordinates = []
+            diagnosticsSnapshot.firstGridPreparationDurationMilliseconds = 0
             diagnosticsSnapshot.worldUpdateDurationMilliseconds = 0
             finishRenderDiagnostics(
                 startedAt: renderStarted,
@@ -387,11 +413,41 @@ final class CityScene: SKScene {
         if resolvedDetail != currentCameraDetailLevel {
             currentCameraDetailLevel = resolvedDetail
             for record in tileRecords.values {
-                style.updateDetailVisibility(in: record.root, detail: resolvedDetail)
+                if let root = record.root {
+                    style.updateDetailVisibility(in: root, detail: resolvedDetail)
+                }
             }
             lastPreviewSignature = nil
         }
         preloadGeneratedResidencyIfNeeded(for: resolvedDetail, state: state)
+        let firstGridPreparationStarted = ProcessInfo.processInfo.systemUptime
+        var firstGridTileRecordPreparationMilliseconds = 0.0
+        var firstGridBackdropPreparationMilliseconds = 0.0
+        if isFirstRender {
+            let tileRecordPreparationStarted = ProcessInfo.processInfo.systemUptime
+            preparedInitialTileRecords = makeInitialTileRecords(
+                snapshot: snapshot,
+                overlay: overlay
+            )
+            firstGridTileRecordPreparationMilliseconds =
+                (ProcessInfo.processInfo.systemUptime - tileRecordPreparationStarted) * 1_000
+            let gridSize = CGSize(width: state.gridWidth, height: state.gridHeight)
+            if renderedGridSize != gridSize {
+                let backdropPreparationStarted = ProcessInfo.processInfo.systemUptime
+                renderedGridSize = gridSize
+                backdropLayer.removeAllChildren()
+                backdropLayer.addChild(terrainRenderer.makeBackdrop(
+                    gridWidth: state.gridWidth,
+                    gridHeight: state.gridHeight,
+                    detail: resolvedDetail
+                ))
+                firstGridBackdropPreparationMilliseconds =
+                    (ProcessInfo.processInfo.systemUptime - backdropPreparationStarted) * 1_000
+            }
+        }
+        let firstGridPreparationMilliseconds = isFirstRender
+            ? (ProcessInfo.processInfo.systemUptime - firstGridPreparationStarted) * 1_000
+            : 0
         renderedState = state
         renderedSnapshot = snapshot
         renderedOverlay = overlay
@@ -406,6 +462,12 @@ final class CityScene: SKScene {
             previousOverlay: previousOverlay,
             defersRuntimeMetricsToFullRecount: isFirstRender
         )
+        diagnosticsSnapshot.firstGridPreparationDurationMilliseconds =
+            firstGridPreparationMilliseconds
+        diagnosticsSnapshot.firstGridTileRecordPreparationDurationMilliseconds =
+            firstGridTileRecordPreparationMilliseconds
+        diagnosticsSnapshot.firstGridBackdropPreparationDurationMilliseconds =
+            firstGridBackdropPreparationMilliseconds
         _ = updateAmbientCorridor(snapshot: snapshot)
         let expiredCueCount = expireConsequenceEvents(at: snapshot.authoritativeTick)
         let insertedCueCount = presentConsequenceEvents(consequenceEvents)
@@ -558,15 +620,15 @@ final class CityScene: SKScene {
     }
 
     func tileRootIdentifier(at coordinate: GridCoordinate) -> ObjectIdentifier? {
-        tileRecords[coordinate].map { ObjectIdentifier($0.root) }
+        tileRecords[coordinate].map(ObjectIdentifier.init)
     }
 
     func tileRootIsHiddenForTesting(at coordinate: GridCoordinate) -> Bool? {
-        tileRecords[coordinate]?.root.isHidden
+        tileRecords[coordinate].map { $0.root?.isHidden ?? false }
     }
 
     func tileRootIsAttachedForTesting(at coordinate: GridCoordinate) -> Bool? {
-        tileRecords[coordinate]?.root.parent != nil
+        tileRecords[coordinate].map { $0.root?.parent != nil }
     }
 
     func tileDescendantNamesForTesting(at coordinate: GridCoordinate) -> [String] {
@@ -1040,10 +1102,12 @@ final class CityScene: SKScene {
         )
     }
 
-    private func ambientLayoutRole(for tile: CityTile) -> UInt8 {
-        if tile.kind == .empty { return 0 }
-        if tile.kind == .road { return 1 }
-        return tile.constructionProgress >= 1 ? 2 : 3
+    private func ambientLayoutRole(for tile: CityTile) -> AmbientLayoutRole {
+        if tile.kind == .empty { return .empty }
+        if tile.kind == .road { return .road }
+        return tile.constructionProgress >= 1
+            ? .completedBuilding(tile.kind)
+            : .incompleteBuilding
     }
 
     @discardableResult
@@ -1159,6 +1223,55 @@ final class CityScene: SKScene {
         !reducedMotion && size.width >= 1_000
     }
 
+    /// Builds the immutable first-frame tile records exactly once before the
+    /// governed world-update interval. Their presentation roots are attached
+    /// here in authoritative row-major order; the subsequent update transfers
+    /// these exact records into the live dictionary without rebuilding,
+    /// reattaching, or duplicating them. This state-bound preparation remains
+    /// inside total render/launch time and is disclosed independently by
+    /// renderer diagnostics.
+    private func makeInitialTileRecords(
+        snapshot: CityPresentationSnapshot,
+        overlay: DataOverlay
+    ) -> [GridCoordinate: TileRenderRecord] {
+        let state = snapshot.state
+        let developedRoadContextCoordinates = state.tiles.compactMap { tile in
+            tile.kind != .empty && tile.kind != .road ? tile.coordinate : nil
+        }
+        var recordPairs: [(GridCoordinate, TileRenderRecord)] = []
+        recordPairs.reserveCapacity(state.tiles.count)
+        for index in state.tiles.indices {
+            guard snapshot.spatialConsequences.samples.indices.contains(index) else { continue }
+            let tile = state.tiles[index]
+            let consequence = snapshot.spatialConsequences.samples[index]
+            guard consequence.coordinate == tile.coordinate else { continue }
+            let signature = tileSignature(
+                for: tile,
+                consequence: consequence,
+                state: state
+            )
+            let record = makeTileRecord(
+                tile: tile,
+                consequence: consequence,
+                state: state,
+                developedRoadContextCoordinates: developedRoadContextCoordinates,
+                overlay: overlay,
+                signature: signature,
+                overlaySignature: overlaySignature(
+                    for: tile,
+                    consequence: consequence,
+                    state: state,
+                    overlay: overlay
+                )
+            )
+            recordPairs.append((tile.coordinate, record))
+            if let root = record.root {
+                synchronizeTileRootAttachment(root)
+            }
+        }
+        return Dictionary(uniqueKeysWithValues: recordPairs)
+    }
+
     private func updateWorld(
         snapshot: CityPresentationSnapshot,
         overlay: DataOverlay,
@@ -1208,12 +1321,14 @@ final class CityScene: SKScene {
         }
         for coordinate in removed {
             if let record = tileRecords.removeValue(forKey: coordinate) {
-                applyRuntimeDelta(
-                    from: attachedRuntimeTreeMetrics(record.root),
-                    to: RuntimeTreeMetrics(nodes: 0, drawables: 0, actions: 0),
-                    diagnostics: &diagnostics
-                )
-                record.root.removeFromParent()
+                if let root = record.root {
+                    applyRuntimeDelta(
+                        from: attachedRuntimeTreeMetrics(root),
+                        to: RuntimeTreeMetrics(nodes: 0, drawables: 0, actions: 0),
+                        diagnostics: &diagnostics
+                    )
+                    root.removeFromParent()
+                }
             }
         }
         diagnostics.removedTileCount = removed.count
@@ -1230,111 +1345,146 @@ final class CityScene: SKScene {
             (ProcessInfo.processInfo.systemUptime - preparationStarted) * 1_000
 
         let tileBuildStarted = ProcessInfo.processInfo.systemUptime
-        for tile in state.tiles {
-            guard let consequence = snapshot.spatialConsequences[tile.coordinate] else { continue }
-            if let changedCoordinates,
-               !changedCoordinates.contains(tile.coordinate),
-               tileRecords[tile.coordinate] != nil {
-                diagnostics.reusedTileCount += 1
-                continue
+        if tileRecords.isEmpty,
+           let prepared = preparedInitialTileRecords {
+            tileRecords = prepared
+            preparedInitialTileRecords = nil
+            diagnostics.createdTileCount = prepared.count
+        } else {
+            if tileRecords.isEmpty {
+                tileRecords.reserveCapacity(state.tiles.count)
             }
-            let signature = tileSignature(for: tile, consequence: consequence, state: state)
-            let overlaySignature = overlaySignature(
-                for: tile,
-                consequence: consequence,
-                state: state,
-                overlay: overlay
-            )
-            if let existing = tileRecords[tile.coordinate], existing.signature == signature {
-                diagnostics.reusedTileCount += 1
-                if existing.overlaySignature != overlaySignature {
-                    let priorRootMetrics = attachedRuntimeTreeMetrics(existing.root)
-                    if overlay == .none {
-                        existing.overlayLayer?.removeAllChildren()
-                        existing.overlayLayer?.removeFromParent()
-                        existing.overlayLayer = nil
-                    } else {
-                        let layer = existing.overlayLayer ?? makeOverlayLayer()
-                        existing.overlayLayer = layer
-                        updateOverlay(
-                            in: layer,
-                            tile: tile,
-                            consequence: consequence,
-                            state: state,
-                            overlay: overlay
-                        )
-                        if layer.children.isEmpty {
-                            layer.removeFromParent()
-                        } else if layer.parent == nil {
-                            existing.root.addChild(layer)
-                        }
-                    }
-                    synchronizeTileRootAttachment(existing.root)
-                    applyRuntimeDelta(
-                        from: priorRootMetrics,
-                        to: attachedRuntimeTreeMetrics(existing.root),
-                        diagnostics: &diagnostics
-                    )
-                    existing.overlaySignature = overlaySignature
-                    if let consequenceLayer = existing.consequenceLayer {
-                        updatePersistentConsequenceEmphasis(
-                            in: consequenceLayer,
-                            at: tile.coordinate,
-                            overlay: overlay
-                        )
-                    }
-                    diagnostics.overlayUpdateCount += 1
+            for index in state.tiles.indices {
+                let tile = state.tiles[index]
+                guard snapshot.spatialConsequences.samples.indices.contains(index) else {
+                    continue
                 }
-                continue
-            }
-
-            let priorRecordMetrics = tileRecords[tile.coordinate].map {
-                attachedRuntimeTreeMetrics($0.root)
-            }
-            let replacement: TileRenderRecord
-            if let existing = tileRecords[tile.coordinate],
-               existing.signature.matchesNonSpatialFields(of: signature),
-               existing.overlaySignature == overlaySignature {
-                replacement = makeSpatiallyUpdatedTileRecord(
-                    reusing: existing,
-                    tile: tile,
+                let consequence = snapshot.spatialConsequences.samples[index]
+                guard consequence.coordinate == tile.coordinate else { continue }
+                if let changedCoordinates,
+                   !changedCoordinates.contains(tile.coordinate),
+                   tileRecords[tile.coordinate] != nil {
+                    diagnostics.reusedTileCount += 1
+                    continue
+                }
+                let signature = tileSignature(
+                    for: tile,
                     consequence: consequence,
-                    overlay: overlay,
-                    signature: signature
+                    state: state
                 )
-            } else {
-                replacement = makeTileRecord(
-                    tile: tile,
+                let overlaySignature = overlaySignature(
+                    for: tile,
                     consequence: consequence,
                     state: state,
-                    developedRoadContextCoordinates: developedRoadContextCoordinates,
-                    overlay: overlay,
-                    signature: signature,
-                    overlaySignature: overlaySignature
+                    overlay: overlay
                 )
-            }
-            if let existing = tileRecords.updateValue(replacement, forKey: tile.coordinate) {
-                if !defersRuntimeMetricsToFullRecount {
-                    applyRuntimeDelta(
-                        from: priorRecordMetrics ?? attachedRuntimeTreeMetrics(existing.root),
-                        to: visibleRuntimeTreeMetrics(replacement.root),
-                        diagnostics: &diagnostics
+                if let existing = tileRecords[tile.coordinate],
+                   existing.signature == signature {
+                    diagnostics.reusedTileCount += 1
+                    if existing.overlaySignature != overlaySignature {
+                        let priorRootMetrics = existing.root.map(attachedRuntimeTreeMetrics)
+                            ?? RuntimeTreeMetrics(nodes: 0, drawables: 0, actions: 0)
+                        if overlay == .none {
+                            existing.overlayLayer?.removeAllChildren()
+                            existing.overlayLayer?.removeFromParent()
+                            existing.overlayLayer = nil
+                        } else {
+                            let root = existing.root ?? makeTileRoot(for: tile)
+                            existing.root = root
+                            let layer = existing.overlayLayer ?? makeOverlayLayer()
+                            existing.overlayLayer = layer
+                            updateOverlay(
+                                in: layer,
+                                tile: tile,
+                                consequence: consequence,
+                                state: state,
+                                overlay: overlay
+                            )
+                            if layer.children.isEmpty {
+                                layer.removeFromParent()
+                            } else if layer.parent == nil {
+                                root.addChild(layer)
+                            }
+                        }
+                        if let root = existing.root {
+                            synchronizeTileRootAttachment(root)
+                        }
+                        applyRuntimeDelta(
+                            from: priorRootMetrics,
+                            to: existing.root.map(attachedRuntimeTreeMetrics)
+                                ?? RuntimeTreeMetrics(nodes: 0, drawables: 0, actions: 0),
+                            diagnostics: &diagnostics
+                        )
+                        existing.overlaySignature = overlaySignature
+                        if let consequenceLayer = existing.consequenceLayer {
+                            updatePersistentConsequenceEmphasis(
+                                in: consequenceLayer,
+                                at: tile.coordinate,
+                                overlay: overlay
+                            )
+                        }
+                        diagnostics.overlayUpdateCount += 1
+                    }
+                    continue
+                }
+
+                let priorRecordMetrics = tileRecords[tile.coordinate]?.root.map(
+                    attachedRuntimeTreeMetrics
+                )
+                let replacement: TileRenderRecord
+                if let existing = tileRecords[tile.coordinate],
+                   existing.signature.matchesNonSpatialFields(of: signature),
+                   existing.overlaySignature == overlaySignature {
+                    replacement = makeSpatiallyUpdatedTileRecord(
+                        reusing: existing,
+                        tile: tile,
+                        consequence: consequence,
+                        overlay: overlay,
+                        signature: signature
+                    )
+                } else {
+                    replacement = makeTileRecord(
+                        tile: tile,
+                        consequence: consequence,
+                        state: state,
+                        developedRoadContextCoordinates: developedRoadContextCoordinates,
+                        overlay: overlay,
+                        signature: signature,
+                        overlaySignature: overlaySignature
                     )
                 }
-                existing.root.removeFromParent()
-                diagnostics.updatedTileCount += 1
-                diagnostics.updatedCoordinates.insert(tile.coordinate)
-            } else {
-                if !defersRuntimeMetricsToFullRecount {
-                    applyRuntimeDelta(
-                        from: RuntimeTreeMetrics(nodes: 0, drawables: 0, actions: 0),
-                        to: visibleRuntimeTreeMetrics(replacement.root),
-                        diagnostics: &diagnostics
-                    )
+                if let existing = tileRecords.updateValue(
+                    replacement,
+                    forKey: tile.coordinate
+                ) {
+                    if !defersRuntimeMetricsToFullRecount {
+                        applyRuntimeDelta(
+                            from: priorRecordMetrics
+                                ?? existing.root.map(attachedRuntimeTreeMetrics)
+                                ?? RuntimeTreeMetrics(nodes: 0, drawables: 0, actions: 0),
+                            to: replacement.root.map(visibleRuntimeTreeMetrics)
+                                ?? RuntimeTreeMetrics(nodes: 0, drawables: 0, actions: 0),
+                            diagnostics: &diagnostics
+                        )
+                    }
+                    existing.root?.removeFromParent()
+                    diagnostics.updatedTileCount += 1
+                    diagnostics.updatedCoordinates.insert(tile.coordinate)
+                } else {
+                    if !defersRuntimeMetricsToFullRecount {
+                        applyRuntimeDelta(
+                            from: RuntimeTreeMetrics(nodes: 0, drawables: 0, actions: 0),
+                            to: replacement.root.map(visibleRuntimeTreeMetrics)
+                            ?? RuntimeTreeMetrics(nodes: 0, drawables: 0, actions: 0),
+                            diagnostics: &diagnostics
+                        )
+                    }
+                    diagnostics.createdTileCount += 1
                 }
-                diagnostics.createdTileCount += 1
+                if let root = replacement.root {
+                    synchronizeTileRootAttachment(root)
+                }
             }
-            synchronizeTileRootAttachment(replacement.root)
         }
         diagnostics.tileBuildDurationMilliseconds =
             (ProcessInfo.processInfo.systemUptime - tileBuildStarted) * 1_000
@@ -1474,12 +1624,21 @@ final class CityScene: SKScene {
         overlay: DataOverlay,
         signature: TileRenderSignature
     ) -> TileRenderRecord {
+        guard let existingRoot = existing.root else {
+            return TileRenderRecord(
+                root: nil,
+                overlayLayer: nil,
+                consequenceLayer: nil,
+                signature: signature,
+                overlaySignature: existing.overlaySignature
+            )
+        }
         let root = SKNode()
-        root.position = existing.root.position
-        root.zPosition = existing.root.zPosition
-        root.name = existing.root.name
+        root.position = existingRoot.position
+        root.zPosition = existingRoot.zPosition
+        root.name = existingRoot.name
         for layerName in ["terrain.layer", "overlay.layer", "content.layer"] {
-            if let layer = existing.root.childNode(withName: layerName) {
+            if let layer = existingRoot.childNode(withName: layerName) {
                 layer.removeFromParent()
                 root.addChild(layer)
             }
@@ -1568,16 +1727,23 @@ final class CityScene: SKScene {
         signature: TileRenderSignature,
         overlaySignature: OverlayRenderSignature
     ) -> TileRenderRecord {
-        let root = SKNode()
-        root.position = style.isoPosition(tile.coordinate)
-        root.zPosition = style.depth(for: tile.coordinate)
-            + CGFloat(tile.coordinate.x) * 0.01
-            + CGFloat(tile.coordinate.y) * 0.0001
-        root.name = "tile:\(tile.coordinate.x):\(tile.coordinate.y)"
-
         let isMapEdge = tile.coordinate.x == 0 || tile.coordinate.y == 0
             || tile.coordinate.x == state.gridWidth - 1
             || tile.coordinate.y == state.gridHeight - 1
+        if tile.kind == .empty,
+           !isMapEdge,
+           overlay == .none,
+           consequence.vitality == .notApplicable {
+            return TileRenderRecord(
+                root: nil,
+                overlayLayer: nil,
+                consequenceLayer: nil,
+                signature: signature,
+                overlaySignature: overlaySignature
+            )
+        }
+
+        let root = makeTileRoot(for: tile)
         if tile.kind != .empty || isMapEdge {
             let terrainLayer = SKNode()
             terrainLayer.name = "terrain.layer"
@@ -1663,6 +1829,16 @@ final class CityScene: SKScene {
             signature: signature,
             overlaySignature: overlaySignature
         )
+    }
+
+    private func makeTileRoot(for tile: CityTile) -> SKNode {
+        let root = SKNode()
+        root.position = style.isoPosition(tile.coordinate)
+        root.zPosition = style.depth(for: tile.coordinate)
+            + CGFloat(tile.coordinate.x) * 0.01
+            + CGFloat(tile.coordinate.y) * 0.0001
+        root.name = "tile:\(tile.coordinate.x):\(tile.coordinate.y)"
+        return root
     }
 
     private func updatePersistentConsequenceEmphasis(
@@ -1780,11 +1956,12 @@ final class CityScene: SKScene {
         }
         var insertedCount = 0
         for event in summarized {
-            guard let record = tileRecords[event.coordinate] else { continue }
+            guard let record = tileRecords[event.coordinate],
+                  let root = record.root else { continue }
             let layer = record.consequenceLayer ?? makeConsequenceLayer()
             record.consequenceLayer = layer
             if layer.parent == nil {
-                record.root.addChild(layer)
+                root.addChild(layer)
                 addRuntimeMetrics(RuntimeTreeMetrics(nodes: 1, drawables: 0, actions: 0), to: &diagnosticsSnapshot)
             }
             for prior in layer.children where prior.name?.hasPrefix("spatial.event.") == true {
@@ -1942,8 +2119,10 @@ final class CityScene: SKScene {
             assets.prepareGeneratedResidency(for: detail)
         }
         for record in tileRecords.values {
-            updateGeneratedLOD(in: record.root, detail: detail)
-            style.updateDetailVisibility(in: record.root, detail: detail)
+            if let root = record.root {
+                updateGeneratedLOD(in: root, detail: detail)
+                style.updateDetailVisibility(in: root, detail: detail)
+            }
         }
         style.updateDetailVisibility(in: backdropLayer, detail: detail)
         let ambientChanged = renderedSnapshot.map { updateAmbientCorridor(snapshot: $0) } ?? false
@@ -2085,15 +2264,21 @@ final class CityScene: SKScene {
         let presentation = previewPresentation(status)
         let color = presentation.color
         if isInspecting {
+            hoverNode.zPosition = 90_000
             hoverNode.path = nil
             hoverNode.fillColor = .clear
             hoverNode.strokeColor = .clear
             addInspectHoverAdornment(to: hoverNode)
         } else {
+            // Placement content participates in the same isometric depth
+            // ordering as a real lot. Established foreground buildings can
+            // therefore occlude a preview behind them instead of the preview
+            // painting across their authored roofs and facades.
+            hoverNode.zPosition = style.depth(for: coordinate) + 80
             hoverNode.path = style.diamondPath(width: tileWidth, height: tileHeight)
             hoverNode.fillColor = color.withAlphaComponent(0.035)
             hoverNode.strokeColor = color.withAlphaComponent(0.90)
-            hoverNode.lineWidth = presentation.isBlocked ? 2.6 : 2.2
+            hoverNode.lineWidth = presentation.isBlocked ? 2.4 : 1.6
         }
 
         if case .validBuild(let kind) = status {
@@ -2201,8 +2386,17 @@ final class CityScene: SKScene {
         }
         ghost.name = "interaction.placementGhost"
         ghost.alpha = alpha
-        ghost.setScale(0.86)
-        ghost.position.y = 2
+        if kind == .road {
+            // Road masks, sockets, and corridor width remain exact.
+            ghost.setScale(1)
+            ghost.position = .zero
+        } else {
+            // The exact parcel boundary remains the authoritative footprint;
+            // the building ghost is inset only to keep adjacent authored
+            // facades legible.
+            ghost.setScale(0.82)
+            ghost.position.y = 1
+        }
         ghost.zPosition = 2
         node.addChild(ghost)
     }
@@ -2267,12 +2461,12 @@ final class CityScene: SKScene {
         // shadows may extend beneath translucent chrome instead of forcing the
         // settlement back into the rejected toy-island scale.
         let isCompact = size.width <= 900 || size.height <= 600
-        let targetWidthOccupancy: CGFloat = isCompact ? 0.68 : 0.82
+        let targetWidthOccupancy: CGFloat = isCompact ? 0.68 : 0.88
         // The authoritative two-block opening is taller than the retired
         // one-cross fixture. Give that real vertical mass the same under-chrome
         // breathing room as its horizontal frontage so the new district does
         // not regress to a smaller default composition.
-        let allowedHeightOccupancy: CGFloat = isCompact ? 1.50 : 1.36
+        let allowedHeightOccupancy: CGFloat = isCompact ? 1.50 : 1.74
         var scale = max(
             cameraBounds.width / (safeWidth * targetWidthOccupancy),
             cameraBounds.height / (safeHeight * allowedHeightOccupancy)
@@ -2308,6 +2502,15 @@ final class CityScene: SKScene {
         // below the Wave 009 width admission bar.
         let developedWidthScale = occupiedBounds.width / (safeWidth * 0.60)
         scale = min(scale, developedWidthScale)
+        if !isCompact {
+            // The regular opening must show the complete authoritative district
+            // and one road-facing buildable expansion band as one composed
+            // place. The prior fit technically cleared the 60% width floor but
+            // left a single vacant component as most of the useful aperture.
+            // This cap is paired with the topology-derived frontage band; it
+            // does not crop a remote active target or invent occupied truth.
+            scale = min(scale, 0.50)
+        }
 #if DEBUG
         if let proofScale = ProcessInfo.processInfo.environment["CITYSIM_PROOF_CAMERA_SCALE"]
             .flatMap(Double.init) {

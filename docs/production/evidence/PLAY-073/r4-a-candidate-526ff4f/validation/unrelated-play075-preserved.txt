@@ -1,0 +1,2 @@
+  PID  PPID  %CPU    RSS STARTED                      COMMAND
+26465     1   0.5 135024 Thu Jul 30 07:32:14 2026     /private/tmp/citysim-play075-r2-472ffa85/dist/CitySim-playtest-quality-r2-472ffa85-wa778da7360e3.app/Contents/MacOS/CitySimNative-wa778da7360e3

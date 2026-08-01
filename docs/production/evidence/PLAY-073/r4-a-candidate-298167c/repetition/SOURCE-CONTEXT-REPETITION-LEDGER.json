@@ -1,0 +1,575 @@
+{
+  "definition" : "cardinally adjacent completed placements compare exact generated source identity plus renderer context family, material variant, frontage, and placement geometry",
+  "disposition" : "pass",
+  "fixtures" : [
+    {
+      "adjacentPairs" : [
+        {
+          "availableAlternatives" : [
+
+          ],
+          "disposition" : "pass_distinct",
+          "firstCoordinate" : "6-10",
+          "firstSignature" : "residential_l01_v0_north@c2eb31e53dd00b6da1afa5940169931c48e3e9e7c6b746de7d26f3c326dc7b02|residential:0:frontage-1",
+          "identicalSourceAndContext" : false,
+          "secondCoordinate" : "6-11",
+          "secondSignature" : "residential_l01_v0_south@01896e22f790bd0d44a80db716f77b9221c3e283b78a2b89609822574bbae0b1|residential:1:frontage-4"
+        },
+        {
+          "availableAlternatives" : [
+
+          ],
+          "disposition" : "pass_distinct",
+          "firstCoordinate" : "10-11",
+          "firstSignature" : "residential_l01_v0_south@01896e22f790bd0d44a80db716f77b9221c3e283b78a2b89609822574bbae0b1|residential:1:frontage-4",
+          "identicalSourceAndContext" : false,
+          "secondCoordinate" : "11-11",
+          "secondSignature" : "city_hall_l01@4fa4e2d0d7407cc798c4fefa165b165f59d4117efb17286e990802d610e9758a|civic:0:frontage-4"
+        },
+        {
+          "availableAlternatives" : [
+
+          ],
+          "disposition" : "pass_distinct",
+          "firstCoordinate" : "13-11",
+          "firstSignature" : "commercial_l01_v0_south@3786264c9543281d0377b776ce001f46eff8d7f8ead8b65c775d2de7eace016e|commercial:0:frontage-4",
+          "identicalSourceAndContext" : false,
+          "secondCoordinate" : "14-11",
+          "secondSignature" : "industrial_l01_v0_south@f3588cf71e689055a2bd0a184262b24df0af8c4e41be1665af5c8eb6f8edca2e|industrial:1:frontage-4"
+        }
+      ],
+      "fixture" : "starter-seed-42",
+      "placements" : [
+        {
+          "contextFamily" : "residential",
+          "contextFrontage" : 2,
+          "contextMaterialVariant" : 1,
+          "contextPlacements" : [
+            "planting-bed:-3.175:13.327:11.000:4.000:ground",
+            "lamp:5.143:-12.075:2.400:2.400:prop"
+          ],
+          "coordinate" : "3-10",
+          "kind" : "residential",
+          "level" : 1,
+          "sourceContextSignature" : "residential_l01_v0_east@f2bb3860470f7202ac3398d7d459259745de05c3f9c0462bf8f694a1091109b2|residential:1:frontage-2",
+          "sourceLogicalID" : "residential_l01_v0_east",
+          "sourceSHA256" : "f2bb3860470f7202ac3398d7d459259745de05c3f9c0462bf8f694a1091109b2"
+        },
+        {
+          "contextFamily" : "residential",
+          "contextFrontage" : 1,
+          "contextMaterialVariant" : 0,
+          "contextPlacements" : [
+            "planting-bed:-3.175:-13.327:11.000:4.000:ground",
+            "lamp:5.143:12.075:2.400:2.400:prop"
+          ],
+          "coordinate" : "6-10",
+          "kind" : "residential",
+          "level" : 1,
+          "sourceContextSignature" : "residential_l01_v0_north@c2eb31e53dd00b6da1afa5940169931c48e3e9e7c6b746de7d26f3c326dc7b02|residential:0:frontage-1",
+          "sourceLogicalID" : "residential_l01_v0_north",
+          "sourceSHA256" : "c2eb31e53dd00b6da1afa5940169931c48e3e9e7c6b746de7d26f3c326dc7b02"
+        },
+        {
+          "contextFamily" : "residential",
+          "contextFrontage" : 1,
+          "contextMaterialVariant" : 3,
+          "contextPlacements" : [
+            "planting-bed:-12.567:5.456:11.000:4.000:ground",
+            "lamp:12.746:-3.130:2.400:2.400:prop"
+          ],
+          "coordinate" : "9-10",
+          "kind" : "residential",
+          "level" : 1,
+          "sourceContextSignature" : "residential_l01_v0_north@c2eb31e53dd00b6da1afa5940169931c48e3e9e7c6b746de7d26f3c326dc7b02|residential:3:frontage-1",
+          "sourceLogicalID" : "residential_l01_v0_north",
+          "sourceSHA256" : "c2eb31e53dd00b6da1afa5940169931c48e3e9e7c6b746de7d26f3c326dc7b02"
+        },
+        {
+          "contextFamily" : "residential",
+          "contextFrontage" : 8,
+          "contextMaterialVariant" : 3,
+          "contextPlacements" : [
+            "planting-bed:3.175:-13.327:11.000:4.000:ground",
+            "lamp:-5.143:12.075:2.400:2.400:prop"
+          ],
+          "coordinate" : "17-10",
+          "kind" : "residential",
+          "level" : 1,
+          "sourceContextSignature" : "residential_l01_v0_west@8bb0a794259a7afd65e8427e68d65ab21dca74d46ff418aa74737cbdeeeaeaca|residential:3:frontage-8",
+          "sourceLogicalID" : "residential_l01_v0_west",
+          "sourceSHA256" : "8bb0a794259a7afd65e8427e68d65ab21dca74d46ff418aa74737cbdeeeaeaca"
+        },
+        {
+          "contextFamily" : "residential",
+          "contextFrontage" : 4,
+          "contextMaterialVariant" : 1,
+          "contextPlacements" : [
+            "planting-bed:12.567:-5.456:11.000:4.000:ground",
+            "lamp:-12.746:3.130:2.400:2.400:prop"
+          ],
+          "coordinate" : "6-11",
+          "kind" : "residential",
+          "level" : 1,
+          "sourceContextSignature" : "residential_l01_v0_south@01896e22f790bd0d44a80db716f77b9221c3e283b78a2b89609822574bbae0b1|residential:1:frontage-4",
+          "sourceLogicalID" : "residential_l01_v0_south",
+          "sourceSHA256" : "01896e22f790bd0d44a80db716f77b9221c3e283b78a2b89609822574bbae0b1"
+        },
+        {
+          "contextFamily" : "residential",
+          "contextFrontage" : 4,
+          "contextMaterialVariant" : 1,
+          "contextPlacements" : [
+            "planting-bed:12.567:-5.456:11.000:4.000:ground",
+            "lamp:-12.746:3.130:2.400:2.400:prop"
+          ],
+          "coordinate" : "10-11",
+          "kind" : "residential",
+          "level" : 1,
+          "sourceContextSignature" : "residential_l01_v0_south@01896e22f790bd0d44a80db716f77b9221c3e283b78a2b89609822574bbae0b1|residential:1:frontage-4",
+          "sourceLogicalID" : "residential_l01_v0_south",
+          "sourceSHA256" : "01896e22f790bd0d44a80db716f77b9221c3e283b78a2b89609822574bbae0b1"
+        },
+        {
+          "contextFamily" : "civic",
+          "contextFrontage" : 4,
+          "contextMaterialVariant" : 0,
+          "contextPlacements" : [
+            "civic-forecourt:-6.708:-3.354:26.000:8.000:ground",
+            "lamp:-14.087:4.696:2.400:2.400:prop",
+            "wayfinding:-2.236:-14.534:3.500:2.500:prop"
+          ],
+          "coordinate" : "11-11",
+          "kind" : "cityHall",
+          "level" : 1,
+          "sourceContextSignature" : "city_hall_l01@4fa4e2d0d7407cc798c4fefa165b165f59d4117efb17286e990802d610e9758a|civic:0:frontage-4",
+          "sourceLogicalID" : "city_hall_l01",
+          "sourceSHA256" : "4fa4e2d0d7407cc798c4fefa165b165f59d4117efb17286e990802d610e9758a"
+        },
+        {
+          "contextFamily" : "commercial",
+          "contextFrontage" : 4,
+          "contextMaterialVariant" : 0,
+          "contextPlacements" : [
+            "parking-bay:7.379:7.603:24.000:8.000:ground",
+            "wayfinding:-5.367:-14.982:3.500:2.500:prop"
+          ],
+          "coordinate" : "13-11",
+          "kind" : "commercial",
+          "level" : 1,
+          "sourceContextSignature" : "commercial_l01_v0_south@3786264c9543281d0377b776ce001f46eff8d7f8ead8b65c775d2de7eace016e|commercial:0:frontage-4",
+          "sourceLogicalID" : "commercial_l01_v0_south",
+          "sourceSHA256" : "3786264c9543281d0377b776ce001f46eff8d7f8ead8b65c775d2de7eace016e"
+        },
+        {
+          "contextFamily" : "industrial",
+          "contextFrontage" : 4,
+          "contextMaterialVariant" : 1,
+          "contextPlacements" : [
+            "service-yard:8.497:4.249:29.000:9.000:ground",
+            "service-prop:4.472:11.180:5.000:3.000:prop",
+            "lamp:-15.205:4.696:2.400:2.400:prop"
+          ],
+          "coordinate" : "14-11",
+          "kind" : "industrial",
+          "level" : 1,
+          "sourceContextSignature" : "industrial_l01_v0_south@f3588cf71e689055a2bd0a184262b24df0af8c4e41be1665af5c8eb6f8edca2e|industrial:1:frontage-4",
+          "sourceLogicalID" : "industrial_l01_v0_south",
+          "sourceSHA256" : "f3588cf71e689055a2bd0a184262b24df0af8c4e41be1665af5c8eb6f8edca2e"
+        },
+        {
+          "contextFamily" : "park",
+          "contextFrontage" : 1,
+          "contextMaterialVariant" : 0,
+          "contextPlacements" : [
+            "park-terrace:5.814:2.907:24.000:9.000:ground",
+            "bench:-2.683:-10.286:8.000:3.000:prop",
+            "wayfinding:9.391:-5.367:3.500:2.500:prop"
+          ],
+          "coordinate" : "11-13",
+          "kind" : "park",
+          "level" : 1,
+          "sourceContextSignature" : "park_l01@0e98bc03b14d636509e310cb628372cd74fc6354ebac27f055e8d418f92b6fdc|park:0:frontage-1",
+          "sourceLogicalID" : "park_l01",
+          "sourceSHA256" : "0e98bc03b14d636509e310cb628372cd74fc6354ebac27f055e8d418f92b6fdc"
+        },
+        {
+          "contextFamily" : "industrial",
+          "contextFrontage" : 1,
+          "contextMaterialVariant" : 2,
+          "contextPlacements" : [
+            "service-yard:-8.497:-4.249:29.000:9.000:ground",
+            "service-prop:-4.472:-11.180:5.000:3.000:prop",
+            "lamp:15.205:-4.696:2.400:2.400:prop"
+          ],
+          "coordinate" : "13-13",
+          "kind" : "powerPlant",
+          "level" : 1,
+          "sourceContextSignature" : "industrial_l01@22dbf75f35d66f86b108c8e5ab9d7b3f753df74489d0b9e9877fc81ba86a2515|industrial:2:frontage-1",
+          "sourceLogicalID" : "industrial_l01",
+          "sourceSHA256" : "22dbf75f35d66f86b108c8e5ab9d7b3f753df74489d0b9e9877fc81ba86a2515"
+        },
+        {
+          "contextFamily" : "industrial",
+          "contextFrontage" : 1,
+          "contextMaterialVariant" : 1,
+          "contextPlacements" : [
+            "service-yard:-8.497:-4.249:29.000:9.000:ground",
+            "service-prop:-4.472:-11.180:5.000:3.000:prop",
+            "lamp:15.205:-4.696:2.400:2.400:prop"
+          ],
+          "coordinate" : "15-13",
+          "kind" : "waterTower",
+          "level" : 1,
+          "sourceContextSignature" : "water_tower_l01@825c4566cc989a58a76b02bca8b433fd0c826cb72c85ce86a41851c5e6c61db2|industrial:1:frontage-1",
+          "sourceLogicalID" : "water_tower_l01",
+          "sourceSHA256" : "825c4566cc989a58a76b02bca8b433fd0c826cb72c85ce86a41851c5e6c61db2"
+        }
+      ],
+      "stateSHA256" : "ee95ebc98d8314e2ae2661baa03bc11809a70811cec1fdfb5633930ee78186d3",
+      "violations" : [
+
+      ]
+    },
+    {
+      "adjacentPairs" : [
+        {
+          "availableAlternatives" : [
+
+          ],
+          "disposition" : "pass_distinct",
+          "firstCoordinate" : "6-8",
+          "firstSignature" : "industrial_l01@22dbf75f35d66f86b108c8e5ab9d7b3f753df74489d0b9e9877fc81ba86a2515|industrial:2:frontage-4",
+          "identicalSourceAndContext" : false,
+          "secondCoordinate" : "7-8",
+          "secondSignature" : "water_tower_l01@825c4566cc989a58a76b02bca8b433fd0c826cb72c85ce86a41851c5e6c61db2|industrial:0:frontage-4"
+        },
+        {
+          "availableAlternatives" : [
+
+          ],
+          "disposition" : "pass_distinct",
+          "firstCoordinate" : "3-9",
+          "firstSignature" : "industrial_l03_v0_east@5ba539536c4363d71ddae79a128f42bfd8e22cce248f4aa0c852dd22a24fb84e|industrial:0:frontage-2",
+          "identicalSourceAndContext" : false,
+          "secondCoordinate" : "3-10",
+          "secondSignature" : "residential_l01_v0_east@f2bb3860470f7202ac3398d7d459259745de05c3f9c0462bf8f694a1091109b2|residential:1:frontage-2"
+        },
+        {
+          "availableAlternatives" : [
+
+          ],
+          "disposition" : "pass_distinct",
+          "firstCoordinate" : "6-10",
+          "firstSignature" : "residential_l01_v0_north@c2eb31e53dd00b6da1afa5940169931c48e3e9e7c6b746de7d26f3c326dc7b02|residential:0:frontage-1",
+          "identicalSourceAndContext" : false,
+          "secondCoordinate" : "6-11",
+          "secondSignature" : "residential_l01_v0_south@01896e22f790bd0d44a80db716f77b9221c3e283b78a2b89609822574bbae0b1|residential:1:frontage-4"
+        },
+        {
+          "availableAlternatives" : [
+
+          ],
+          "disposition" : "pass_distinct",
+          "firstCoordinate" : "9-10",
+          "firstSignature" : "residential_l01_v0_north@c2eb31e53dd00b6da1afa5940169931c48e3e9e7c6b746de7d26f3c326dc7b02|residential:3:frontage-1",
+          "identicalSourceAndContext" : false,
+          "secondCoordinate" : "10-10",
+          "secondSignature" : "industrial_l03_v0_north@91b3fb983e294eeff288b13f6d89a19366393cfaf084b52527633e88ed0507ea|industrial:2:frontage-1"
+        },
+        {
+          "availableAlternatives" : [
+
+          ],
+          "disposition" : "pass_distinct",
+          "firstCoordinate" : "10-10",
+          "firstSignature" : "industrial_l03_v0_north@91b3fb983e294eeff288b13f6d89a19366393cfaf084b52527633e88ed0507ea|industrial:2:frontage-1",
+          "identicalSourceAndContext" : false,
+          "secondCoordinate" : "10-11",
+          "secondSignature" : "residential_l01_v0_south@01896e22f790bd0d44a80db716f77b9221c3e283b78a2b89609822574bbae0b1|residential:1:frontage-4"
+        },
+        {
+          "availableAlternatives" : [
+
+          ],
+          "disposition" : "pass_distinct",
+          "firstCoordinate" : "17-10",
+          "firstSignature" : "residential_l01_v0_west@8bb0a794259a7afd65e8427e68d65ab21dca74d46ff418aa74737cbdeeeaeaca|residential:3:frontage-8",
+          "identicalSourceAndContext" : false,
+          "secondCoordinate" : "17-11",
+          "secondSignature" : "industrial_l03_v0_west@ceaa2948be0f37cbd8f6288c9c125f15502a864ce683bc3eaa1cd0d7563477d4|industrial:1:frontage-8"
+        },
+        {
+          "availableAlternatives" : [
+
+          ],
+          "disposition" : "pass_distinct",
+          "firstCoordinate" : "10-11",
+          "firstSignature" : "residential_l01_v0_south@01896e22f790bd0d44a80db716f77b9221c3e283b78a2b89609822574bbae0b1|residential:1:frontage-4",
+          "identicalSourceAndContext" : false,
+          "secondCoordinate" : "11-11",
+          "secondSignature" : "city_hall_l01@4fa4e2d0d7407cc798c4fefa165b165f59d4117efb17286e990802d610e9758a|civic:0:frontage-4"
+        }
+      ],
+      "fixture" : "industrial-l03-directional-mature-city-v1",
+      "placements" : [
+        {
+          "contextFamily" : "industrial",
+          "contextFrontage" : 4,
+          "contextMaterialVariant" : 0,
+          "contextPlacements" : [
+            "service-yard:8.497:4.249:29.000:9.000:ground",
+            "service-prop:4.472:11.180:5.000:3.000:prop",
+            "lamp:-15.205:4.696:2.400:2.400:prop"
+          ],
+          "coordinate" : "4-8",
+          "kind" : "industrial",
+          "level" : 3,
+          "sourceContextSignature" : "industrial_l03_v0_south@5267ef34929114af987ec586cb4802fa5316f4383ecac4ae6807a7be099baed5|industrial:0:frontage-4",
+          "sourceLogicalID" : "industrial_l03_v0_south",
+          "sourceSHA256" : "5267ef34929114af987ec586cb4802fa5316f4383ecac4ae6807a7be099baed5"
+        },
+        {
+          "contextFamily" : "industrial",
+          "contextFrontage" : 4,
+          "contextMaterialVariant" : 2,
+          "contextPlacements" : [
+            "service-yard:8.497:4.249:29.000:9.000:ground",
+            "service-prop:4.472:11.180:5.000:3.000:prop",
+            "lamp:-15.205:4.696:2.400:2.400:prop"
+          ],
+          "coordinate" : "6-8",
+          "kind" : "powerPlant",
+          "level" : 1,
+          "sourceContextSignature" : "industrial_l01@22dbf75f35d66f86b108c8e5ab9d7b3f753df74489d0b9e9877fc81ba86a2515|industrial:2:frontage-4",
+          "sourceLogicalID" : "industrial_l01",
+          "sourceSHA256" : "22dbf75f35d66f86b108c8e5ab9d7b3f753df74489d0b9e9877fc81ba86a2515"
+        },
+        {
+          "contextFamily" : "industrial",
+          "contextFrontage" : 4,
+          "contextMaterialVariant" : 0,
+          "contextPlacements" : [
+            "service-yard:8.497:4.249:29.000:9.000:ground",
+            "service-prop:4.472:11.180:5.000:3.000:prop",
+            "lamp:-15.205:4.696:2.400:2.400:prop"
+          ],
+          "coordinate" : "7-8",
+          "kind" : "waterTower",
+          "level" : 1,
+          "sourceContextSignature" : "water_tower_l01@825c4566cc989a58a76b02bca8b433fd0c826cb72c85ce86a41851c5e6c61db2|industrial:0:frontage-4",
+          "sourceLogicalID" : "water_tower_l01",
+          "sourceSHA256" : "825c4566cc989a58a76b02bca8b433fd0c826cb72c85ce86a41851c5e6c61db2"
+        },
+        {
+          "contextFamily" : "industrial",
+          "contextFrontage" : 2,
+          "contextMaterialVariant" : 0,
+          "contextPlacements" : [
+            "service-yard:-8.497:4.249:29.000:9.000:ground",
+            "service-prop:-11.628:-3.130:5.000:3.000:prop",
+            "lamp:5.367:-14.982:2.400:2.400:prop"
+          ],
+          "coordinate" : "3-9",
+          "kind" : "industrial",
+          "level" : 3,
+          "sourceContextSignature" : "industrial_l03_v0_east@5ba539536c4363d71ddae79a128f42bfd8e22cce248f4aa0c852dd22a24fb84e|industrial:0:frontage-2",
+          "sourceLogicalID" : "industrial_l03_v0_east",
+          "sourceSHA256" : "5ba539536c4363d71ddae79a128f42bfd8e22cce248f4aa0c852dd22a24fb84e"
+        },
+        {
+          "contextFamily" : "residential",
+          "contextFrontage" : 2,
+          "contextMaterialVariant" : 1,
+          "contextPlacements" : [
+            "planting-bed:-3.175:13.327:11.000:4.000:ground",
+            "lamp:5.143:-12.075:2.400:2.400:prop"
+          ],
+          "coordinate" : "3-10",
+          "kind" : "residential",
+          "level" : 1,
+          "sourceContextSignature" : "residential_l01_v0_east@f2bb3860470f7202ac3398d7d459259745de05c3f9c0462bf8f694a1091109b2|residential:1:frontage-2",
+          "sourceLogicalID" : "residential_l01_v0_east",
+          "sourceSHA256" : "f2bb3860470f7202ac3398d7d459259745de05c3f9c0462bf8f694a1091109b2"
+        },
+        {
+          "contextFamily" : "residential",
+          "contextFrontage" : 1,
+          "contextMaterialVariant" : 0,
+          "contextPlacements" : [
+            "planting-bed:-3.175:-13.327:11.000:4.000:ground",
+            "lamp:5.143:12.075:2.400:2.400:prop"
+          ],
+          "coordinate" : "6-10",
+          "kind" : "residential",
+          "level" : 1,
+          "sourceContextSignature" : "residential_l01_v0_north@c2eb31e53dd00b6da1afa5940169931c48e3e9e7c6b746de7d26f3c326dc7b02|residential:0:frontage-1",
+          "sourceLogicalID" : "residential_l01_v0_north",
+          "sourceSHA256" : "c2eb31e53dd00b6da1afa5940169931c48e3e9e7c6b746de7d26f3c326dc7b02"
+        },
+        {
+          "contextFamily" : "residential",
+          "contextFrontage" : 1,
+          "contextMaterialVariant" : 3,
+          "contextPlacements" : [
+            "planting-bed:-12.567:5.456:11.000:4.000:ground",
+            "lamp:12.746:-3.130:2.400:2.400:prop"
+          ],
+          "coordinate" : "9-10",
+          "kind" : "residential",
+          "level" : 1,
+          "sourceContextSignature" : "residential_l01_v0_north@c2eb31e53dd00b6da1afa5940169931c48e3e9e7c6b746de7d26f3c326dc7b02|residential:3:frontage-1",
+          "sourceLogicalID" : "residential_l01_v0_north",
+          "sourceSHA256" : "c2eb31e53dd00b6da1afa5940169931c48e3e9e7c6b746de7d26f3c326dc7b02"
+        },
+        {
+          "contextFamily" : "industrial",
+          "contextFrontage" : 1,
+          "contextMaterialVariant" : 2,
+          "contextPlacements" : [
+            "service-yard:-8.497:-4.249:29.000:9.000:ground",
+            "service-prop:-4.472:-11.180:5.000:3.000:prop",
+            "lamp:15.205:-4.696:2.400:2.400:prop"
+          ],
+          "coordinate" : "10-10",
+          "kind" : "industrial",
+          "level" : 3,
+          "sourceContextSignature" : "industrial_l03_v0_north@91b3fb983e294eeff288b13f6d89a19366393cfaf084b52527633e88ed0507ea|industrial:2:frontage-1",
+          "sourceLogicalID" : "industrial_l03_v0_north",
+          "sourceSHA256" : "91b3fb983e294eeff288b13f6d89a19366393cfaf084b52527633e88ed0507ea"
+        },
+        {
+          "contextFamily" : "residential",
+          "contextFrontage" : 8,
+          "contextMaterialVariant" : 3,
+          "contextPlacements" : [
+            "planting-bed:3.175:-13.327:11.000:4.000:ground",
+            "lamp:-5.143:12.075:2.400:2.400:prop"
+          ],
+          "coordinate" : "17-10",
+          "kind" : "residential",
+          "level" : 1,
+          "sourceContextSignature" : "residential_l01_v0_west@8bb0a794259a7afd65e8427e68d65ab21dca74d46ff418aa74737cbdeeeaeaca|residential:3:frontage-8",
+          "sourceLogicalID" : "residential_l01_v0_west",
+          "sourceSHA256" : "8bb0a794259a7afd65e8427e68d65ab21dca74d46ff418aa74737cbdeeeaeaca"
+        },
+        {
+          "contextFamily" : "residential",
+          "contextFrontage" : 4,
+          "contextMaterialVariant" : 1,
+          "contextPlacements" : [
+            "planting-bed:12.567:-5.456:11.000:4.000:ground",
+            "lamp:-12.746:3.130:2.400:2.400:prop"
+          ],
+          "coordinate" : "6-11",
+          "kind" : "residential",
+          "level" : 1,
+          "sourceContextSignature" : "residential_l01_v0_south@01896e22f790bd0d44a80db716f77b9221c3e283b78a2b89609822574bbae0b1|residential:1:frontage-4",
+          "sourceLogicalID" : "residential_l01_v0_south",
+          "sourceSHA256" : "01896e22f790bd0d44a80db716f77b9221c3e283b78a2b89609822574bbae0b1"
+        },
+        {
+          "contextFamily" : "residential",
+          "contextFrontage" : 4,
+          "contextMaterialVariant" : 1,
+          "contextPlacements" : [
+            "planting-bed:12.567:-5.456:11.000:4.000:ground",
+            "lamp:-12.746:3.130:2.400:2.400:prop"
+          ],
+          "coordinate" : "10-11",
+          "kind" : "residential",
+          "level" : 1,
+          "sourceContextSignature" : "residential_l01_v0_south@01896e22f790bd0d44a80db716f77b9221c3e283b78a2b89609822574bbae0b1|residential:1:frontage-4",
+          "sourceLogicalID" : "residential_l01_v0_south",
+          "sourceSHA256" : "01896e22f790bd0d44a80db716f77b9221c3e283b78a2b89609822574bbae0b1"
+        },
+        {
+          "contextFamily" : "civic",
+          "contextFrontage" : 4,
+          "contextMaterialVariant" : 0,
+          "contextPlacements" : [
+            "civic-forecourt:-6.708:-3.354:26.000:8.000:ground",
+            "lamp:-14.087:4.696:2.400:2.400:prop",
+            "wayfinding:-2.236:-14.534:3.500:2.500:prop"
+          ],
+          "coordinate" : "11-11",
+          "kind" : "cityHall",
+          "level" : 1,
+          "sourceContextSignature" : "city_hall_l01@4fa4e2d0d7407cc798c4fefa165b165f59d4117efb17286e990802d610e9758a|civic:0:frontage-4",
+          "sourceLogicalID" : "city_hall_l01",
+          "sourceSHA256" : "4fa4e2d0d7407cc798c4fefa165b165f59d4117efb17286e990802d610e9758a"
+        },
+        {
+          "contextFamily" : "industrial",
+          "contextFrontage" : 8,
+          "contextMaterialVariant" : 1,
+          "contextPlacements" : [
+            "service-yard:8.497:-4.249:29.000:9.000:ground",
+            "service-prop:11.628:3.130:5.000:3.000:prop",
+            "lamp:-5.367:14.982:2.400:2.400:prop"
+          ],
+          "coordinate" : "17-11",
+          "kind" : "industrial",
+          "level" : 3,
+          "sourceContextSignature" : "industrial_l03_v0_west@ceaa2948be0f37cbd8f6288c9c125f15502a864ce683bc3eaa1cd0d7563477d4|industrial:1:frontage-8",
+          "sourceLogicalID" : "industrial_l03_v0_west",
+          "sourceSHA256" : "ceaa2948be0f37cbd8f6288c9c125f15502a864ce683bc3eaa1cd0d7563477d4"
+        },
+        {
+          "contextFamily" : "park",
+          "contextFrontage" : 1,
+          "contextMaterialVariant" : 0,
+          "contextPlacements" : [
+            "park-terrace:5.814:2.907:24.000:9.000:ground",
+            "bench:-2.683:-10.286:8.000:3.000:prop",
+            "wayfinding:9.391:-5.367:3.500:2.500:prop"
+          ],
+          "coordinate" : "11-13",
+          "kind" : "park",
+          "level" : 1,
+          "sourceContextSignature" : "park_l01@0e98bc03b14d636509e310cb628372cd74fc6354ebac27f055e8d418f92b6fdc|park:0:frontage-1",
+          "sourceLogicalID" : "park_l01",
+          "sourceSHA256" : "0e98bc03b14d636509e310cb628372cd74fc6354ebac27f055e8d418f92b6fdc"
+        },
+        {
+          "contextFamily" : "industrial",
+          "contextFrontage" : 1,
+          "contextMaterialVariant" : 2,
+          "contextPlacements" : [
+            "service-yard:-8.497:-4.249:29.000:9.000:ground",
+            "service-prop:-4.472:-11.180:5.000:3.000:prop",
+            "lamp:15.205:-4.696:2.400:2.400:prop"
+          ],
+          "coordinate" : "13-13",
+          "kind" : "powerPlant",
+          "level" : 1,
+          "sourceContextSignature" : "industrial_l01@22dbf75f35d66f86b108c8e5ab9d7b3f753df74489d0b9e9877fc81ba86a2515|industrial:2:frontage-1",
+          "sourceLogicalID" : "industrial_l01",
+          "sourceSHA256" : "22dbf75f35d66f86b108c8e5ab9d7b3f753df74489d0b9e9877fc81ba86a2515"
+        },
+        {
+          "contextFamily" : "industrial",
+          "contextFrontage" : 1,
+          "contextMaterialVariant" : 1,
+          "contextPlacements" : [
+            "service-yard:-8.497:-4.249:29.000:9.000:ground",
+            "service-prop:-4.472:-11.180:5.000:3.000:prop",
+            "lamp:15.205:-4.696:2.400:2.400:prop"
+          ],
+          "coordinate" : "15-13",
+          "kind" : "waterTower",
+          "level" : 1,
+          "sourceContextSignature" : "water_tower_l01@825c4566cc989a58a76b02bca8b433fd0c826cb72c85ce86a41851c5e6c61db2|industrial:1:frontage-1",
+          "sourceLogicalID" : "water_tower_l01",
+          "sourceSHA256" : "825c4566cc989a58a76b02bca8b433fd0c826cb72c85ce86a41851c5e6c61db2"
+        }
+      ],
+      "stateSHA256" : "dbe6860011f43063a39e228531db4b49303d64a918e7884301b3de80360dd97f",
+      "violations" : [
+
+      ]
+    }
+  ],
+  "productCommit" : "298167c74a7d28042857d7f87c1f7b9130f779ed",
+  "schemaVersion" : 1
+}

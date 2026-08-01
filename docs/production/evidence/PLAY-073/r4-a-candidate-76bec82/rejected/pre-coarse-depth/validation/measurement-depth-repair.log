@@ -1,0 +1,28 @@
+[0/1] Planning build
+Building for debugging...
+[0/5] Write sources
+[1/5] Write swift-version--58304C5D6DBC2206.txt
+[3/7] Emitting module CitySimNative
+[4/7] Compiling CitySimNative TerrainRenderer.swift
+[4/9] Write Objects.LinkFileList
+[5/9] Linking CitySimNative
+[6/9] Applying CitySimNative
+[8/10] Emitting module CitySimNativeTests
+[8/10] Write Objects.LinkFileList
+[9/10] Linking CitySimNativePackageTests
+Build complete! (13.55s)
+Test Suite 'Selected tests' started at 2026-07-30 06:08:46.865.
+Test Suite 'CitySimNativePackageTests.xctest' started at 2026-07-30 06:08:46.868.
+Test Suite 'WorldRenderingTests' started at 2026-07-30 06:08:46.869.
+Test Case '-[CitySimNativeTests.WorldRenderingTests testR4ARenderedPixelMeasurementBaselineIsDeterministic]' started.
+Test Case '-[CitySimNativeTests.WorldRenderingTests testR4ARenderedPixelMeasurementBaselineIsDeterministic]' passed (147.310 seconds).
+Test Suite 'WorldRenderingTests' passed at 2026-07-30 06:11:14.180.
+	 Executed 1 test, with 0 failures (0 unexpected) in 147.310 (147.311) seconds
+Test Suite 'CitySimNativePackageTests.xctest' passed at 2026-07-30 06:11:14.180.
+	 Executed 1 test, with 0 failures (0 unexpected) in 147.310 (147.311) seconds
+Test Suite 'Selected tests' passed at 2026-07-30 06:11:14.180.
+	 Executed 1 test, with 0 failures (0 unexpected) in 147.310 (147.315) seconds
+◇ Test run started.
+↳ Testing Library Version: 1902
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.

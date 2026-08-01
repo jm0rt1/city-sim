@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "productCommit": "76bec82739c8487d170c8725af45fe6f1025aacb",
+  "builder": "Native/CitySimNative/WorldArt/GeneratedV4/tools/build_world_asset_pack.py",
+  "runtime": "/Users/James/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+  "buildAInventory": "build-full-a-inventory.sha256",
+  "buildBInventory": "build-full-b-inventory.sha256",
+  "fileCountEach": 79,
+  "buildAInventorySha256": "58d452d4cdb3237d06037e0a4bf90ffc3f4177d33063dd047882479e26b80a4b",
+  "buildBInventorySha256": "58d452d4cdb3237d06037e0a4bf90ffc3f4177d33063dd047882479e26b80a4b",
+  "byteIdentical": true,
+  "canonicalSourceMutated": false,
+  "sharedStagedAppMutated": false
+}

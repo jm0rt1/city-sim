@@ -1,0 +1,20 @@
+[0/1] Planning build
+Building for debugging...
+[0/4] Write swift-version--58304C5D6DBC2206.txt
+Build complete! (0.15s)
+Test Suite 'Selected tests' started at 2026-07-30 09:01:26.632.
+Test Suite 'CitySimNativePackageTests.xctest' started at 2026-07-30 09:01:26.633.
+Test Suite 'WorldRenderingTests' started at 2026-07-30 09:01:26.633.
+Test Case '-[CitySimNativeTests.WorldRenderingTests testR4AFreshProcessColdPathWritesGovernedReceipt]' started.
+Test Case '-[CitySimNativeTests.WorldRenderingTests testR4AFreshProcessColdPathWritesGovernedReceipt]' passed (0.037 seconds).
+Test Suite 'WorldRenderingTests' passed at 2026-07-30 09:01:26.671.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.037 (0.038) seconds
+Test Suite 'CitySimNativePackageTests.xctest' passed at 2026-07-30 09:01:26.671.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.037 (0.038) seconds
+Test Suite 'Selected tests' passed at 2026-07-30 09:01:26.671.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.037 (0.038) seconds
+PLAY073_R4A_GOVERNED_COLD_RECEIPT mode=make-backdrop sample=3 pid=2314 cache_before=0 cache_after_cold=1 cache_after_warm=1 path=/private/tmp/play073-r4a-profile-4395f000/direct-3.json
+◇ Test run started.
+↳ Testing Library Version: 1902
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.

@@ -1,0 +1,128 @@
+[
+  {
+    "cameraPosition" : [
+      0,
+      -396
+    ],
+    "cameraScale" : 0.7400000095367432,
+    "center" : "11-11",
+    "colorSHA256" : "123bb24639edd0d34613986b37c233b16e24011147a1cd635d84182855aa8868",
+    "detail" : "city",
+    "drawables" : 720,
+    "grayscaleSHA256" : "a896a2e7684864d36d47f3a03c43a288729da98f2179e4c1ed43c8b83d9227d8",
+    "layout" : "regular",
+    "nodes" : 1653,
+    "semanticRoleNames" : [
+      "lot.generated-v4.city_hall_l01.city",
+      "lot.lod.city.mass.cityHall"
+    ]
+  },
+  {
+    "cameraPosition" : [
+      0,
+      -396
+    ],
+    "cameraScale" : 0.6600000262260437,
+    "center" : "11-11",
+    "colorSHA256" : "bf7b0ce81ec73fcd504149e910108d54dbb0db120ed11f03d18bc3924d5d049c",
+    "detail" : "neighborhood",
+    "drawables" : 734,
+    "grayscaleSHA256" : "1f8420e37debf048160d1b541c143dd9f9eb336ec2530cd2c86f10d01eb2330f",
+    "layout" : "regular",
+    "nodes" : 1673,
+    "semanticRoleNames" : [
+      "lot.frontage.apron.civic.4",
+      "lot.frontage.civic.4",
+      "lot.frontage.curb-break.4",
+      "lot.generated-v4.city_hall_l01.neighborhood",
+      "lot.lod.city.mass.cityHall",
+      "lot.lod.neighborhood.public-realm.civic"
+    ]
+  },
+  {
+    "cameraPosition" : [
+      0,
+      -396
+    ],
+    "cameraScale" : 0.5,
+    "center" : "11-11",
+    "colorSHA256" : "5cca782e2fd868eb0378cb9dec6c255cba4412dabd3b4956d5349535cbbc1368",
+    "detail" : "block",
+    "drawables" : 734,
+    "grayscaleSHA256" : "7e634232b90d810d1538f38cfa59bc3f6cc0fe53503deb1b57e8569822035cf9",
+    "layout" : "regular",
+    "nodes" : 1673,
+    "semanticRoleNames" : [
+      "lot.frontage.apron.civic.4",
+      "lot.frontage.civic.4",
+      "lot.frontage.curb-break.4",
+      "lot.generated-v4.city_hall_l01.block",
+      "lot.lod.block.entrance.cityHall",
+      "lot.lod.city.mass.cityHall",
+      "lot.lod.neighborhood.public-realm.civic"
+    ]
+  },
+  {
+    "cameraPosition" : [
+      0,
+      -396
+    ],
+    "cameraScale" : 0.7400000095367432,
+    "center" : "11-11",
+    "colorSHA256" : "eb006241845b2c8e53ca18d4fcef3eba21952441b86f1232103c21d6552f1019",
+    "detail" : "city",
+    "drawables" : 678,
+    "grayscaleSHA256" : "65c14c177604744efe35adbc239e7388e4338768f891d7e751c8586d70cab3b8",
+    "layout" : "compact",
+    "nodes" : 1611,
+    "semanticRoleNames" : [
+      "lot.generated-v4.city_hall_l01.city",
+      "lot.lod.city.mass.cityHall"
+    ]
+  },
+  {
+    "cameraPosition" : [
+      0,
+      -396
+    ],
+    "cameraScale" : 0.6600000262260437,
+    "center" : "11-11",
+    "colorSHA256" : "fcc1ff494c16835c4d7d0bfe59cf47efc72c210afd9c7b29a12f113f6690ef46",
+    "detail" : "neighborhood",
+    "drawables" : 692,
+    "grayscaleSHA256" : "9c34cf9becd87592394ff4b8b6ed39cb959ed590b7fdd8e1793a9acaa8bae22b",
+    "layout" : "compact",
+    "nodes" : 1631,
+    "semanticRoleNames" : [
+      "lot.frontage.apron.civic.4",
+      "lot.frontage.civic.4",
+      "lot.frontage.curb-break.4",
+      "lot.generated-v4.city_hall_l01.neighborhood",
+      "lot.lod.city.mass.cityHall",
+      "lot.lod.neighborhood.public-realm.civic"
+    ]
+  },
+  {
+    "cameraPosition" : [
+      0,
+      -396
+    ],
+    "cameraScale" : 0.5,
+    "center" : "11-11",
+    "colorSHA256" : "2bd19cf70553023ad2c0637b6fbb342509b2477e680e43f699a6621acfc4d05c",
+    "detail" : "block",
+    "drawables" : 692,
+    "grayscaleSHA256" : "75d7bb74f999bb36dbb7a8a2766252773004e00c5d723f833ed875ffda2ce8cb",
+    "layout" : "compact",
+    "nodes" : 1631,
+    "semanticRoleNames" : [
+      "lot.frontage.apron.civic.4",
+      "lot.frontage.civic.4",
+      "lot.frontage.curb-break.4",
+      "lot.generated-v4.city_hall_l01.block",
+      "lot.lod.block.entrance.cityHall",
+      "lot.lod.city.mass.cityHall",
+      "lot.lod.neighborhood.public-realm.civic"
+    ]
+  }
+]

@@ -1,0 +1,107 @@
+^DBuilding for debugging...
+[0/13] /private/tmp/play073-r4a-fa3a768.j5rFTV/scratch/arm64-apple-macosx/debug/CitySimNativePackageTests.derived/runner.swift
+[0/13] Write sources
+[0/13] Write CitySimNative-entitlement.plist
+[0/13] Write sources
+[5/13] Copying Fixtures
+[6/13] Copying WorldAssets.atlas
+[7/13] Write swift-version--58304C5D6DBC2206.txt
+[9/60] Compiling CitySimNative WorldVisualStyle.swift
+[10/60] Compiling CitySimNative CitySimulation.swift
+[11/60] Compiling CitySimNative CitySimulationCommand.swift
+[12/62] Compiling CitySimNative RoadRenderer.swift
+[13/62] Compiling CitySimNative SpatialConsequenceRenderer.swift
+[14/62] Compiling CitySimNative StrategyDistrictVisualIdentity.swift
+[15/62] Compiling CitySimNative LotContextRenderer.swift
+[16/62] Compiling CitySimNative LotLifecycleRenderer.swift
+[17/62] Compiling CitySimNative LotRenderer.swift
+[18/62] Emitting module CitySimNative
+[19/62] Compiling CitySimNative CityScene.swift
+[20/62] Compiling CitySimNative CitySceneView.swift
+[21/62] Compiling CitySimNative GeneratedWorldAssetManifest.swift
+[22/62] Compiling CitySimNative CitySimNativeApp.swift
+[23/62] Compiling CitySimNative CityGameState.swift
+[24/62] Compiling CitySimNative CityModels.swift
+[25/62] Compiling CitySimNative CityMapPointerTransitionGate.swift
+[26/62] Compiling CitySimNative GameTheme.swift
+[27/62] Compiling CitySimNative ProofWindowConfigurator.swift
+[28/62] Compiling CitySimNative InspectorView.swift
+[29/62] Compiling CitySimNative MetricCard.swift
+[30/62] Compiling CitySimNative CityPresentationSnapshot.swift
+[31/62] Compiling CitySimNative CitySpatialConsequences.swift
+[32/62] Compiling CitySimNative AmbientLifeRenderer.swift
+[33/62] Compiling CitySimNative TerrainRenderer.swift
+[34/62] Compiling CitySimNative WorldAssetCatalog.swift
+[35/62] Compiling CitySimNative WorldOverlayRenderer.swift
+[36/62] Compiling CitySimNative GoldenDistrictRenderer.swift
+[37/62] Compiling CitySimNative IsometricGridCoordinateResolver.swift
+[38/62] Compiling CitySimNative LotConsequencePresentation.swift
+[39/62] Compiling CitySimNative EventFeedView.swift
+[40/62] Compiling CitySimNative GameStatusOverlay.swift
+[41/62] Compiling CitySimNative CityAnalytics.swift
+[42/62] Compiling CitySimNative CityCommandCatalog.swift
+[43/62] Compiling CitySimNative CityDirectActionPresentation.swift
+[44/62] Compiling CitySimNative ObjectivesView.swift
+[45/62] Compiling CitySimNative OverlayLegendView.swift
+[46/62] Compiling CitySimNative OverlayPickerView.swift
+[47/62] Compiling CitySimNative SettingsView.swift
+[48/62] Compiling CitySimNative StrategyCommandCenterView.swift
+[49/62] Compiling CitySimNative TopHUDView.swift
+[50/62] Compiling CitySimNative BuildToolbarView.swift
+[51/62] Compiling CitySimNative CommandGuideView.swift
+[52/62] Compiling CitySimNative ContentView.swift
+[53/62] Compiling CitySimNative CityStateFingerprint.swift
+[54/62] Compiling CitySimNative SaveGameService.swift
+[55/62] Compiling CitySimNative CityGameStore.swift
+[56/62] Compiling CitySimNative WelcomeView.swift
+[57/62] Compiling CitySimNative resource_bundle_accessor.swift
+[57/62] Write Objects.LinkFileList
+[58/62] Linking CitySimNative
+[59/62] Applying CitySimNative
+[61/88] Compiling CitySimNativeTests StrategyResolutionPlatformTests.swift
+[62/88] Compiling CitySimNativeTests TerminalVictoryPlatformTests.swift
+[63/88] Compiling CitySimNativeTests StarterDistrictTests.swift
+[64/89] Compiling CitySimNativeTests resource_bundle_accessor.swift
+[65/89] Compiling CitySimNativeTests VisibleCityStateFixtureTests.swift
+[66/89] Compiling CitySimNativeTests IndustrialL4SourceStageAdapterPrototypeTests.swift
+[67/89] Compiling CitySimNativeTests IndustrialL4V2SourceAdmissionHarnessTests.swift
+[68/89] Compiling CitySimNativeTests VisibleCityStateFixtureSupport.swift
+[69/89] Compiling CitySimNativeTests SpatialConsequenceTests.swift
+[70/89] Compiling CitySimNativeTests ProductionStoryStateFixtureSupport.swift
+[71/89] Compiling CitySimNativeTests ProductionStoryStateFixtureTests.swift
+[72/89] Compiling CitySimNativeTests SessionPlatformTests.swift
+[73/89] Compiling CitySimNativeTests IsometricGridCoordinateResolverTests.swift
+[74/89] Compiling CitySimNativeTests PLAY083LifecycleBindingTests.swift
+[75/89] Compiling CitySimNativeTests IndustrialL4DirectionPacketSchemaTests.swift
+[76/89] Compiling CitySimNativeTests IndustrialL4DirectionQuarantineMatrixTests.swift
+[77/89] Compiling CitySimNativeTests ProofWindowConfiguratorTests.swift
+[78/89] Compiling CitySimNativeTests IndustrialL4DirectionQuarantineSupport.swift
+[79/89] Compiling CitySimNativeTests IndustrialL4ReservedLocatorAuthorityTests.swift
+[80/89] Compiling CitySimNativeTests GameplayLoopTests.swift
+[81/89] Compiling CitySimNativeTests IndustrialL3DirectionalFixtureIntakeTests.swift
+[82/89] Compiling CitySimNativeTests CitySimulationTests.swift
+[83/89] Compiling CitySimNativeTests GameStatusOverlayTests.swift
+[84/89] Compiling CitySimNativeTests BackupLoadAvailabilityTests.swift
+[85/89] Compiling CitySimNativeTests CityCommandCatalogTests.swift
+[86/89] Compiling CitySimNativeTests WorldRenderingTests.swift
+[87/89] Emitting module CitySimNativeTests
+[88/91] Emitting module CitySimNativePackageTests
+[89/91] Compiling CitySimNativePackageTests runner.swift
+[89/91] Write Objects.LinkFileList
+[90/91] Linking CitySimNativePackageTests
+Build complete! (15.12s)
+Test Suite 'Selected tests' started at 2026-07-30 03:03:57.249.
+Test Suite 'CitySimNativePackageTests.xctest' started at 2026-07-30 03:03:57.250.
+Test Suite 'WorldRenderingTests' started at 2026-07-30 03:03:57.250.
+Test Case '-[CitySimNativeTests.WorldRenderingTests testR4ACoarseDistrictMassDefinitionBindsFrozenBaselineAndRejectsTerrainOnlyPass]' started.
+Test Case '-[CitySimNativeTests.WorldRenderingTests testR4ACoarseDistrictMassDefinitionBindsFrozenBaselineAndRejectsTerrainOnlyPass]' passed (2.109 seconds).
+Test Suite 'WorldRenderingTests' passed at 2026-07-30 03:03:59.359.
+	 Executed 1 test, with 0 failures (0 unexpected) in 2.109 (2.109) seconds
+Test Suite 'CitySimNativePackageTests.xctest' passed at 2026-07-30 03:03:59.359.
+	 Executed 1 test, with 0 failures (0 unexpected) in 2.109 (2.109) seconds
+Test Suite 'Selected tests' passed at 2026-07-30 03:03:59.359.
+	 Executed 1 test, with 0 failures (0 unexpected) in 2.109 (2.110) seconds
+◇ Test run started.
+↳ Testing Library Version: 1902
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.

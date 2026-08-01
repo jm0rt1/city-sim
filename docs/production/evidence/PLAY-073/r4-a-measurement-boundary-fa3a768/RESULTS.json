@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "status": "rejected_before_product_repair",
+  "synchronizedMergeCommit": "0a86c2eaceff2579938c1c8a216864ffc3a63d4d",
+  "measurementHarnessCommit": "fa3a768785dc3d09ee0bb8c54a39c095323c0a02",
+  "testBinarySHA256": "60c2c38a3039d369ddb5b677ff8f5a403d26b5f76c808145debb53655089e046",
+  "coldBudgetMilliseconds": 6.03,
+  "directBackdrop": {
+    "coldMilliseconds": [
+      48.68679167702794,
+      36.19383322075009,
+      36.66791692376137,
+      36.39370808377862,
+      38.22670830413699
+    ],
+    "coldMedianMilliseconds": 36.66791692376137,
+    "warmMilliseconds": [
+      0.20025018602609634,
+      0.20095845684409142,
+      0.20504137501120567,
+      0.20595872774720192,
+      0.19783293828368187
+    ],
+    "warmMedianMilliseconds": 0.20095845684409142,
+    "cacheCountsAllSamples": [0, 1, 1]
+  },
+  "sceneFirstGrid": {
+    "coldWorldUpdateMilliseconds": [
+      27.064417023211718,
+      22.135041654109955,
+      21.69512491673231,
+      22.02183334156871,
+      21.86195831745863
+    ],
+    "coldWorldUpdateMedianMilliseconds": 22.02183334156871,
+    "coldBackdropMilliseconds": [
+      11.99674978852272,
+      12.064583599567413,
+      12.149375397711992,
+      12.281791772693396,
+      12.130166869610548
+    ],
+    "coldBackdropMedianMilliseconds": 12.130166869610548,
+    "warmWorldUpdateMilliseconds": [
+      7.4009583331644535,
+      7.823958061635494,
+      7.807291578501463,
+      7.687042001634836,
+      7.684208452701569
+    ],
+    "warmWorldUpdateMedianMilliseconds": 7.687042001634836,
+    "passingColdSamples": 0,
+    "sampleCount": 5,
+    "cacheCountsAllSamples": [0, 1, 1]
+  },
+  "coarseDistrictMass": {
+    "definition": "play073-r4-a-coarse-semantic-district-mass-v2",
+    "blockSizePixels": 32,
+    "minimumDistrictCoverage": 0.1,
+    "ledgerReplaySHA256": "46e721aa6ab95f3b898e9a71e329231f1dd24a85b28de05862169cb08a15de33",
+    "regular": {
+      "baselineDistrictWidthShare": 0.708198051948052,
+      "candidateDistrictWidthShare": 0.716314935064935,
+      "baselineDistrictPixelShare": 0.19374098965400272,
+      "candidateDistrictPixelShare": 0.20723190056212445,
+      "baselineLargestCoarsePlainComponentShare": 0.7459893048128342,
+      "candidateLargestCoarsePlainComponentShare": 0.7425515660809778
+    },
+    "compact": {
+      "baselineDistrictWidthShare": 1,
+      "candidateDistrictWidthShare": 1,
+      "baselineDistrictPixelShare": 0.4391477424388641,
+      "candidateDistrictPixelShare": 0.45913624417387017,
+      "baselineLargestCoarsePlainComponentShare": 0.2419753086419753,
+      "candidateLargestCoarsePlainComponentShare": 0.24074074074074073
+    }
+  },
+  "disposition": {
+    "coldPath": "fail",
+    "regularCoarsePlainComponent": "fail",
+    "productMutationPerformed": false,
+    "contractConflictDeclared": false
+  }
+}

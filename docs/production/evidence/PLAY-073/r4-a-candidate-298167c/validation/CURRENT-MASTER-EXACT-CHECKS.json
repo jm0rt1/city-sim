@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "generatedAtUTC": "2026-07-30T12:44:02Z",
+  "branch": "codex/citysim-world-rendering",
+  "worktree": "/Users/James/.codex/worktrees/cac1/city-sim",
+  "preMergeCandidate": "c05fd806d632107e43b1cb0309cdcde219c88ec6",
+  "publishedMaster": "a8b30be4a4a12515d934b035b63946af82247b1f",
+  "mergeCommit": "ed46ecb0d775c1a99ad82c12dd5de6b953d49b6e",
+  "productCommit": "298167c74a7d28042857d7f87c1f7b9130f779ed",
+  "claimRevision": "47a260aea5ab9d38a98ceaaefb61e89e00322110b5a833e964a59d13157d7a49",
+  "ancestry": {
+    "preMergeCandidateIsAncestor": true,
+    "publishedMasterIsAncestor": true,
+    "productCommitIsAncestor": true
+  },
+  "mergeScope": {
+    "changedPaths": [
+      ".agents/skills/operate-citysim-integration/SKILL.md",
+      ".agents/skills/operate-citysim-integration/scripts/test_validate_world_art_parallel_state.py",
+      ".agents/skills/operate-citysim-integration/scripts/validate_world_art_parallel_state.py",
+      ".agents/skills/produce-citysim-world-art/SKILL.md",
+      ".agents/skills/render-citysim-world/SKILL.md"
+    ],
+    "nativeProductDelta": false,
+    "candidateEvidenceDeltaBeforeThisRepair": false
+  },
+  "focusedRendererRecheck": {
+    "executed": 6,
+    "expectedSkips": 0,
+    "failures": 0,
+    "logPath": "validation/CURRENT-MASTER-FOCUSED-RECHECK.log",
+    "logSha256": "eb93fd6cf91f547495ce7c50441f04a569a222c9b9ff397a8e8ebabbebe27b9e"
+  },
+  "executionAccountingSchema": {
+    "validatorPath": ".agents/skills/operate-citysim-integration/scripts/validate_world_art_parallel_state.py",
+    "validatorSha256": "36e54295735fd94a79a96a88d193eb4a044bcce7debace962bc494207638add2",
+    "diagnosticCount": 0
+  },
+  "uiOwnedAssertions": {
+    "path": "Native/CitySimNative/Tests/CitySimNativeTests/CityCommandCatalogTests.swift",
+    "currentBlob": "394ed6be506e52b4e431561ebbe0041eff724ee9",
+    "publishedMasterBlob": "394ed6be506e52b4e431561ebbe0041eff724ee9",
+    "rendererModified": false,
+    "preservedFullNativeFailures": 2
+  },
+  "preservedPerformanceMiss": {
+    "firstGridPreparationBudgetMilliseconds": 16.666666666666668,
+    "maximumMilliseconds": 18.394041806459427,
+    "passedSamples": 4,
+    "failedSamples": 1,
+    "samplesReplaced": 0
+  },
+  "disposition": "focused_renderer_recheck_passed_preserved_candidate_remains_blocked"
+}

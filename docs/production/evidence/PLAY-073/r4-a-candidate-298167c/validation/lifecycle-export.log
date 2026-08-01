@@ -1,0 +1,20 @@
+[0/1] Planning build
+Building for debugging...
+[0/4] Write swift-version--58304C5D6DBC2206.txt
+Build complete! (0.13s)
+Test Suite 'Selected tests' started at 2026-07-30 08:12:42.996.
+Test Suite 'CitySimNativePackageTests.xctest' started at 2026-07-30 08:12:42.997.
+Test Suite 'WorldRenderingTests' started at 2026-07-30 08:12:42.997.
+Test Case '-[CitySimNativeTests.WorldRenderingTests testLifecycleProofFramesDistinguishConstructionDeclineAndRecovery]' started.
+Test Case '-[CitySimNativeTests.WorldRenderingTests testLifecycleProofFramesDistinguishConstructionDeclineAndRecovery]' passed (1.936 seconds).
+Test Suite 'WorldRenderingTests' passed at 2026-07-30 08:12:44.933.
+	 Executed 1 test, with 0 failures (0 unexpected) in 1.936 (1.936) seconds
+Test Suite 'CitySimNativePackageTests.xctest' passed at 2026-07-30 08:12:44.933.
+	 Executed 1 test, with 0 failures (0 unexpected) in 1.936 (1.936) seconds
+Test Suite 'Selected tests' passed at 2026-07-30 08:12:44.933.
+	 Executed 1 test, with 0 failures (0 unexpected) in 1.936 (1.937) seconds
+CITYSIM_PLAY020_DIAGNOSTICS lifecycle_nodes=913 lifecycle_drawables=475 lifecycle_actions=0 lifecycle_update_ms=0.000 recovery_nodes=881 recovery_drawables=450 recovery_actions=0 recovery_update_ms=0.000 compact_nodes=910 city_nodes=893 block_nodes=913 detail=neighborhood
+◇ Test run started.
+↳ Testing Library Version: 1902
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.

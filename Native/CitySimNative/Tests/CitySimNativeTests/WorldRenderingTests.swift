@@ -1,4 +1,5 @@
 import AppKit
+import CryptoKit
 import Foundation
 import SpriteKit
 import XCTest
@@ -2133,9 +2134,9 @@ final class WorldRenderingTests: XCTestCase {
                 CGSize(width: 1_280, height: 800),
                 CityMapViewportInsets(top: 104, leading: 24, bottom: 160, trailing: 24),
                 "CITYSIM_PLAY022_M2_DEFAULT",
-                CameraDetailLevel.city,
-                CGFloat(0.6633707860015013),
-                CGFloat(0.7877528083767829)
+                CameraDetailLevel.block,
+                CGFloat(0.935064935064935),
+                CGFloat(1.1103896103896105)
             ),
             (
                 CGSize(width: 900, height: 600),
@@ -2838,12 +2839,19 @@ final class WorldRenderingTests: XCTestCase {
     func testLotContextIsDeterministicTruthBoundedAndProtectsFrontage() {
         let style = WorldVisualStyle()
         let renderer = LotContextRenderer(style: style)
-        let cases: [(BuildingKind, RoadConnectionMask, Set<LotContextRenderer.PlacementRole>)] = [
-            (.residential, .north, [.plantingBed, .lamp]),
-            (.commercial, .east, [.parkingBay, .wayfinding]),
-            (.industrial, .south, [.serviceYard, .serviceProp, .lamp]),
-            (.cityHall, .west, [.civicForecourt, .lamp, .wayfinding]),
-            (.park, .south, [.parkTerrace, .bench, .wayfinding]),
+        let cases: [
+            (
+                BuildingKind,
+                RoadConnectionMask,
+                Set<LotContextRenderer.PlacementRole>,
+                Int
+            )
+        ] = [
+            (.residential, .north, [.plantingBed, .lamp], 4),
+            (.commercial, .east, [.parkingBay, .wayfinding], 2),
+            (.industrial, .south, [.serviceYard, .serviceProp, .lamp], 3),
+            (.cityHall, .west, [.civicForecourt, .lamp, .wayfinding], 1),
+            (.park, .south, [.parkTerrace, .bench, .wayfinding], 1),
         ]
 
         for (index, entry) in cases.enumerated() {
@@ -2857,6 +2865,11 @@ final class WorldRenderingTests: XCTestCase {
                 adjacentRoads: entry.1,
                 selectedFrontage: entry.1
             )
+            let appearance = renderer.contextSignature(
+                for: tile,
+                adjacentRoads: entry.1,
+                selectedFrontage: entry.1
+            )
             let repeated = renderer.placementLedger(
                 for: tile,
                 adjacentRoads: entry.1,
@@ -2864,6 +2877,11 @@ final class WorldRenderingTests: XCTestCase {
             )
             XCTAssertEqual(first, repeated)
             XCTAssertEqual(Set(first.map(\.role)), entry.2)
+            XCTAssertEqual(appearance?.availableMaterialVariants.count, entry.3)
+            XCTAssertEqual(
+                appearance?.materialVariant,
+                LotContextRenderer.districtMaterialVariant(for: tile)
+            )
 
             let socket = style.roadSocket(for: entry.1)
             let entrance = CGPoint(x: 0, y: -13.5)
@@ -2952,10 +2970,177 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertFalse(firstCity.children[0] === secondCity.children[0])
         firstCity.children[0].alpha = 0
         XCTAssertEqual(secondCity.children[0].alpha, 1)
+        let appearance = try? XCTUnwrap(
+            renderer.contextSignature(
+                for: tile,
+                adjacentRoads: [.south],
+                selectedFrontage: .south
+            )
+        )
+        XCTAssertTrue(
+            descendantNames(in: secondCity).contains(
+                "lot.context.city.industrial.material.\(appearance?.materialVariant ?? -1)"
+            ),
+            "The rendered template and placement ledger must share one context identity"
+        )
         XCTAssertLessThanOrEqual(
             LotContextRenderer.cachedTemplateCountForTesting,
             5 * 4 * 5
         )
+    }
+
+    @MainActor
+    func testR4ASourceContextRepetitionLedgerPassesStarterAndMatureFixtures() throws {
+        let starter = CityGameState.newCity(seed: 42)
+        let fixtureURL = r4aRepositoryRoot()
+            .appending(path: "docs/production/evidence/PLAY-075")
+            .appending(path: "industrial-l4-family-preregistration-v1")
+            .appending(path: "fixtures")
+            .appending(path: "industrial-l03-directional-mature-city-v1.json")
+        let fixtureData = try Data(contentsOf: fixtureURL)
+        XCTAssertEqual(
+            r4aSHA256(fixtureData),
+            "b8875422a277b59f6797aef03ca93175a502df5963a5c972684ca47be40e7aa5"
+        )
+        let fixtureRoot = FileManager.default.temporaryDirectory.appending(
+            path: "play073-r4a-repetition-\(UUID().uuidString)",
+            directoryHint: .isDirectory
+        )
+        defer { try? FileManager.default.removeItem(at: fixtureRoot) }
+        try FileManager.default.createDirectory(
+            at: fixtureRoot,
+            withIntermediateDirectories: true
+        )
+        try fixtureData.write(
+            to: fixtureRoot.appending(path: "quicksave.json"),
+            options: .atomic
+        )
+        let mature = try SaveGameService(rootURL: fixtureRoot).load().state
+        let fixtures = [
+            try r4aRepetitionFixtureLedger(
+                name: "starter-seed-42",
+                state: starter
+            ),
+            try r4aRepetitionFixtureLedger(
+                name: "industrial-l03-directional-mature-city-v1",
+                state: mature
+            ),
+        ]
+        XCTAssertTrue(fixtures.allSatisfy(\.violations.isEmpty))
+        XCTAssertTrue(fixtures.allSatisfy { !$0.placements.isEmpty })
+        XCTAssertTrue(fixtures.allSatisfy {
+            $0.adjacentPairs.allSatisfy { pair in
+                !pair.identicalSourceAndContext || pair.availableAlternatives.isEmpty
+            }
+        })
+
+        let ledger = R4ARepetitionLedger(
+            schemaVersion: 1,
+            definition:
+                "cardinally adjacent completed placements compare exact generated source identity "
+                + "plus renderer context family, material variant, frontage, and placement geometry",
+            productCommit: ProcessInfo.processInfo.environment[
+                "CITYSIM_PLAY073_R4A_PRODUCT_COMMIT"
+            ] ?? "worktree",
+            fixtures: fixtures,
+            disposition: "pass"
+        )
+        if let path = ProcessInfo.processInfo.environment[
+            "CITYSIM_PLAY073_R4A_REPETITION_LEDGER_PATH"
+        ] {
+            try r4aWriteSortedJSON(ledger, to: URL(fileURLWithPath: path))
+        }
+    }
+
+    @MainActor
+    func testR4ASourceContextRepetitionGateRejectsAvailableAlternativeButPermitsUnavoidableReuse() throws {
+        XCTAssertEqual(
+            r4aRepetitionDisposition(
+                identicalSourceAndContext: true,
+                availableAlternatives: ["residential|variant=1"]
+            ),
+            "fail_available_alternative"
+        )
+        XCTAssertEqual(
+            r4aRepetitionDisposition(
+                identicalSourceAndContext: true,
+                availableAlternatives: []
+            ),
+            "pass_no_alternative"
+        )
+        XCTAssertEqual(
+            r4aRepetitionDisposition(
+                identicalSourceAndContext: false,
+                availableAlternatives: ["residential|variant=1"]
+            ),
+            "pass_distinct"
+        )
+
+        var parkState = CityGameState.newCity(seed: 42)
+        for tile in parkState.tiles where tile.kind != .empty {
+            parkState.updateTile(at: tile.coordinate) { $0.kind = .empty }
+        }
+        for coordinate in [
+            GridCoordinate(x: 0, y: 0),
+            GridCoordinate(x: 1, y: 0),
+        ] {
+            parkState.updateTile(at: coordinate) {
+                $0.kind = .park
+                $0.constructionProgress = 1
+            }
+        }
+        for coordinate in [
+            GridCoordinate(x: 0, y: 1),
+            GridCoordinate(x: 1, y: 1),
+        ] {
+            parkState.updateTile(at: coordinate) { $0.kind = .road }
+        }
+        let noAlternative = try r4aRepetitionFixtureLedger(
+            name: "synthetic-adjacent-park-no-alternative",
+            state: parkState
+        )
+        let parkPair = try XCTUnwrap(
+            noAlternative.adjacentPairs.first {
+                $0.firstCoordinate == "0-0" && $0.secondCoordinate == "1-0"
+            }
+        )
+        XCTAssertTrue(parkPair.identicalSourceAndContext)
+        XCTAssertTrue(parkPair.availableAlternatives.isEmpty)
+        XCTAssertEqual(parkPair.disposition, "pass_no_alternative")
+        XCTAssertTrue(noAlternative.violations.isEmpty)
+
+        let repeatedResidential = R4ARepetitionPlacement(
+            coordinate: "0-0",
+            kind: BuildingKind.residential.rawValue,
+            level: 1,
+            sourceLogicalID: "residential_l01_v0_south",
+            sourceSHA256: "synthetic-source",
+            contextFamily: "residential",
+            contextMaterialVariant: 0,
+            contextFrontage: RoadConnectionMask.south.rawValue,
+            contextPlacements: ["planting-bed"],
+            sourceContextSignature:
+                "residential_l01_v0_south@synthetic-source|residential:0:frontage-4"
+        )
+        let avoidablePairs = r4aRepetitionAdjacencies(for: [
+            repeatedResidential,
+            R4ARepetitionPlacement(
+                coordinate: "1-0",
+                kind: repeatedResidential.kind,
+                level: repeatedResidential.level,
+                sourceLogicalID: repeatedResidential.sourceLogicalID,
+                sourceSHA256: repeatedResidential.sourceSHA256,
+                contextFamily: repeatedResidential.contextFamily,
+                contextMaterialVariant: repeatedResidential.contextMaterialVariant,
+                contextFrontage: repeatedResidential.contextFrontage,
+                contextPlacements: repeatedResidential.contextPlacements,
+                sourceContextSignature: repeatedResidential.sourceContextSignature
+            ),
+        ])
+        let avoidable = try XCTUnwrap(avoidablePairs.first)
+        XCTAssertTrue(avoidable.identicalSourceAndContext)
+        XCTAssertEqual(avoidable.availableAlternatives.count, 3)
+        XCTAssertEqual(avoidable.disposition, "fail_available_alternative")
     }
 
     @MainActor
@@ -3091,25 +3276,45 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertTrue(backdropNames.contains("terrain.macro.turf"))
         XCTAssertEqual(
             backdropNames.filter { $0.hasPrefix("terrain.macro.material.patch.") }.count,
-            121
+            1
         )
         XCTAssertGreaterThan(
             backdropNames.filter { $0.hasPrefix("terrain.macro.meadow.patch.") }.count,
-            15
+            2
         )
         XCTAssertGreaterThan(
             backdropNames.filter { $0.hasPrefix("terrain.macro.furrows.") }.count,
-            10
+            2
         )
-        var maximumMaterialPatchSize = CGSize.zero
-        backdrop.enumerateChildNodes(withName: "//terrain.macro.material.patch.*") { node, _ in
-            guard let shape = node as? SKShapeNode,
-                  let bounds = shape.path?.boundingBoxOfPath else { return }
-            maximumMaterialPatchSize.width = max(maximumMaterialPatchSize.width, bounds.width)
-            maximumMaterialPatchSize.height = max(maximumMaterialPatchSize.height, bounds.height)
+        var continuousFields: [SKSpriteNode] = []
+        backdrop.enumerateChildNodes(
+            withName: "//terrain.macro.material.patch.continuous-field"
+        ) { node, _ in
+            if let sprite = node as? SKSpriteNode {
+                continuousFields.append(sprite)
+            }
         }
-        XCTAssertLessThanOrEqual(maximumMaterialPatchSize.width, 72 * 3.2)
-        XCTAssertLessThanOrEqual(maximumMaterialPatchSize.height, 36 * 2.1)
+        XCTAssertEqual(continuousFields.count, 1)
+        XCTAssertEqual(continuousFields.first?.texture?.size(), CGSize(width: 96, height: 48))
+        let rectangularBackdrop = renderer.makeBackdrop(gridWidth: 12, gridHeight: 18)
+        var rectangularFields: [SKSpriteNode] = []
+        rectangularBackdrop.enumerateChildNodes(
+            withName: "//terrain.macro.material.patch.continuous-field"
+        ) { node, _ in
+            if let sprite = node as? SKSpriteNode {
+                rectangularFields.append(sprite)
+            }
+        }
+        XCTAssertEqual(rectangularFields.count, 1)
+        XCTAssertEqual(
+            rectangularFields.first?.texture?.size(),
+            CGSize(width: 64, height: 32),
+            "The deterministic field derives its raster from grid dimensions"
+        )
+        XCTAssertNotEqual(
+            continuousFields.first?.texture?.size(),
+            rectangularFields.first?.texture?.size()
+        )
         var furrowNodes: [SKShapeNode] = []
         backdrop.enumerateChildNodes(withName: "//terrain.macro.furrows.*") { node, _ in
             if let shape = node as? SKShapeNode { furrowNodes.append(shape) }
@@ -3147,6 +3352,8 @@ final class WorldRenderingTests: XCTestCase {
         let districtGround = renderer.makeDevelopedDistrictGround(in: state)
         let districtNames = descendantNames(in: districtGround)
         XCTAssertTrue(districtNames.contains("district.ground.shared-contact"))
+        XCTAssertTrue(districtNames.contains("district.ground.road-verge.contact"))
+        XCTAssertTrue(districtNames.contains("district.ground.road-verge.material"))
         XCTAssertTrue(districtNames.contains("district.ground.authoritative-public-realm"))
         XCTAssertTrue(districtNames.contains("district.ground.frontage-links.contact"))
         XCTAssertTrue(districtNames.contains("district.ground.frontage-links.material"))
@@ -3203,6 +3410,29 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertFalse(commons.contains(GridCoordinate(x: 11, y: 11)))
         XCTAssertFalse(commons.contains(GridCoordinate(x: 13, y: 11)))
 
+        let buildableBand = renderer.buildableFrontageBandCoordinatesForTesting(
+            in: state
+        )
+        XCTAssertGreaterThanOrEqual(buildableBand.count, 4)
+        XCTAssertTrue(buildableBand.isDisjoint(with: commons))
+        XCTAssertTrue(buildableBand.allSatisfy { coordinate in
+            guard state.tile(at: coordinate)?.kind == .empty else { return false }
+            guard case .success = CitySimulation.validateBuild(
+                .residential,
+                at: coordinate,
+                in: state
+            ) else {
+                return false
+            }
+            return RoadConnectionMask.cardinalEdges.contains { edge in
+                let delta = edge.coordinateDelta
+                return state.tile(at: GridCoordinate(
+                    x: coordinate.x + delta.x,
+                    y: coordinate.y + delta.y
+                ))?.kind == .road
+            }
+        })
+
         let city = renderer.makeDevelopedDistrictGround(in: state, detail: .city)
         let cityNames = descendantNames(in: city)
         XCTAssertEqual(
@@ -3211,17 +3441,18 @@ final class WorldRenderingTests: XCTestCase {
         )
         XCTAssertEqual(
             cityNames.filter { $0.hasPrefix("district.commons.natural-texture.") }.count,
-            3
+            6
         )
         XCTAssertEqual(
             cityNames.filter { $0.hasPrefix("district.commons.existing-foliage.") }.count,
             1
         )
-        XCTAssertFalse(cityNames.contains { $0.contains("plaza") })
-        XCTAssertFalse(cityNames.contains { $0.contains("path") })
-        XCTAssertFalse(cityNames.contains { $0.contains("bench") })
-        XCTAssertFalse(cityNames.contains { $0.contains("road") })
-        XCTAssertFalse(cityNames.contains { $0.contains("building") })
+        let commonsNames = cityNames.filter { $0.hasPrefix("district.commons.") }
+        XCTAssertFalse(commonsNames.contains { $0.contains("plaza") })
+        XCTAssertFalse(commonsNames.contains { $0.contains("path") })
+        XCTAssertFalse(commonsNames.contains { $0.contains("bench") })
+        XCTAssertFalse(commonsNames.contains { $0.contains("road") })
+        XCTAssertFalse(commonsNames.contains { $0.contains("building") })
         XCTAssertTrue(city.childNode(withName: "detail.city")?.isHidden == false)
         XCTAssertTrue(city.childNode(withName: "detail.neighborhood")?.isHidden == true)
         XCTAssertTrue(city.childNode(withName: "detail.block")?.isHidden == true)
@@ -3313,6 +3544,110 @@ final class WorldRenderingTests: XCTestCase {
     }
 
     @MainActor
+    func testCompletedBuildingKindReplacementInvalidatesDevelopedGroundExactlyOnce() {
+        var state = CityGameState.newCity(seed: 42)
+        let coordinate = GridCoordinate(x: 11, y: 11)
+        let scene = CityScene(size: CGSize(width: 1_280, height: 800))
+        scene.reducedMotion = true
+        scene.render(
+            state: state,
+            overlay: .none,
+            selection: nil,
+            interactionMode: .inspect
+        )
+        let initialRebuildCount = scene.ambientGroundRebuildCountForTesting
+        XCTAssertTrue(
+            scene.ambientEnvironmentNamesForTesting.contains(
+                "district.ground.authoritative-parcels.cityHall"
+            )
+        )
+
+        state.updateTile(at: coordinate) {
+            $0.kind = .fireStation
+            $0.constructionProgress = 1
+        }
+        scene.render(
+            state: state,
+            overlay: .none,
+            selection: nil,
+            interactionMode: .inspect
+        )
+        XCTAssertEqual(
+            scene.ambientGroundRebuildCountForTesting,
+            initialRebuildCount + 1
+        )
+        XCTAssertTrue(
+            scene.ambientEnvironmentNamesForTesting.contains(
+                "district.ground.authoritative-parcels.fireStation"
+            )
+        )
+        XCTAssertFalse(
+            scene.ambientEnvironmentNamesForTesting.contains(
+                "district.ground.authoritative-parcels.cityHall"
+            )
+        )
+
+        scene.render(
+            state: state,
+            overlay: .none,
+            selection: nil,
+            interactionMode: .inspect
+        )
+        XCTAssertEqual(
+            scene.ambientGroundRebuildCountForTesting,
+            initialRebuildCount + 1,
+            "An unchanged completed kind must preserve the rebuilt ground tree"
+        )
+    }
+
+    @MainActor
+    func testCompletedIndustrialReplacementInvalidatesServiceCampusGround() {
+        var state = CityGameState.newCity(seed: 42)
+        let coordinate = GridCoordinate(x: 14, y: 11)
+        let terrain = TerrainRenderer(style: WorldVisualStyle())
+        let originalCampus = terrain.serviceCampusGroundCoordinatesForTesting(in: state)
+        XCTAssertTrue(originalCampus.contains(coordinate))
+
+        let scene = CityScene(size: CGSize(width: 1_280, height: 800))
+        scene.reducedMotion = true
+        scene.render(
+            state: state,
+            overlay: .none,
+            selection: nil,
+            interactionMode: .inspect
+        )
+        let initialRebuildCount = scene.ambientGroundRebuildCountForTesting
+        state.updateTile(at: coordinate) {
+            $0.kind = .commercial
+            $0.constructionProgress = 1
+        }
+        let replacementCampus = terrain.serviceCampusGroundCoordinatesForTesting(in: state)
+        XCTAssertNotEqual(replacementCampus, originalCampus)
+        XCTAssertFalse(replacementCampus.contains(coordinate))
+
+        scene.render(
+            state: state,
+            overlay: .none,
+            selection: nil,
+            interactionMode: .inspect
+        )
+        XCTAssertEqual(
+            scene.ambientGroundRebuildCountForTesting,
+            initialRebuildCount + 1
+        )
+        XCTAssertTrue(
+            scene.ambientEnvironmentNamesForTesting.contains(
+                "district.ground.authoritative-parcels.commercial"
+            )
+        )
+        XCTAssertFalse(
+            scene.ambientEnvironmentNamesForTesting.contains(
+                "district.ground.authoritative-parcels.industrial"
+            )
+        )
+    }
+
+    @MainActor
     func testStarterUtilityCampusGroundBridgesRealAnchorsAndAccessWithoutChangingBuildTruth() {
         let state = CityGameState.newCity(seed: 42)
         let renderer = TerrainRenderer(style: WorldVisualStyle())
@@ -3367,11 +3702,12 @@ final class WorldRenderingTests: XCTestCase {
         defaultScene.reducedMotion = true
         defaultScene.updateViewportInsets(defaultInsets)
         defaultScene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
-        XCTAssertEqual(defaultScene.currentCameraDetailLevel, .city)
+        XCTAssertEqual(defaultScene.currentCameraDetailLevel, .block)
+        XCTAssertEqual(defaultScene.cameraScaleForTesting, 0.50, accuracy: 0.000_001)
         let defaultOccupancy = defaultScene.occupiedDevelopedViewportOccupancyForTesting()
         let defaultPriorityOccupancy = defaultScene.cameraPriorityViewportOccupancyForTesting()
-        XCTAssertEqual(defaultOccupancy.width, 0.6633707860015013, accuracy: 0.000_001)
-        XCTAssertEqual(defaultPriorityOccupancy.width, 0.7877528083767829, accuracy: 0.000_001)
+        XCTAssertEqual(defaultOccupancy.width, 0.935064935064935, accuracy: 0.000_001)
+        XCTAssertEqual(defaultPriorityOccupancy.width, 1.1103896103896105, accuracy: 0.000_001)
         XCTAssertEqual(defaultScene.occupiedDevelopedVisualBoundsForTesting.width, 576, accuracy: 0.001)
         XCTAssertEqual(defaultScene.occupiedDevelopedVisualBoundsForTesting.height, 318.43652344, accuracy: 0.001)
         XCTAssertEqual(defaultScene.networkOpportunityVisualBoundsForTesting.width, 684, accuracy: 0.001)
@@ -3383,6 +3719,11 @@ final class WorldRenderingTests: XCTestCase {
         compactScene.updateViewportInsets(compactInsets)
         compactScene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
         XCTAssertEqual(compactScene.currentCameraDetailLevel, .neighborhood)
+        XCTAssertEqual(
+            compactScene.cameraScaleForTesting,
+            0.6549999713897705,
+            accuracy: 0.000_001
+        )
         let compactOccupancy = compactScene.occupiedDevelopedViewportOccupancyForTesting()
         let compactPriorityOccupancy = compactScene.cameraPriorityViewportOccupancyForTesting()
         XCTAssertEqual(compactOccupancy.width, 1.0201732614716905, accuracy: 0.000_001)
@@ -3415,7 +3756,19 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertEqual(cityHallRoadMask, 11)
         let defaultCityHallRoot = defaultScene.tileRootIdentifier(at: cityHall)
         XCTAssertTrue(defaultScene.tileDescendantNamesForTesting(at: cityHall)
-            .contains("lot.generated-v4.city_hall_l01.city"))
+            .contains("lot.generated-v4.city_hall_l01.block"))
+        let buildableBand = TerrainRenderer(style: WorldVisualStyle())
+            .buildableFrontageBandCoordinatesForTesting(in: state)
+        let visibleBuildableBand = buildableBand.filter {
+            defaultScene.safeViewportRectForTesting(defaultInsets).contains(
+                defaultScene.tileGroundBoundsForTesting(at: $0)
+            )
+        }
+        XCTAssertGreaterThanOrEqual(
+            visibleBuildableBand.count,
+            4,
+            "The regular opening retains a complete useful road-facing expansion run"
+        )
 
         defaultScene.configureProofCamera(detail: .city, centeredOn: cityHall)
         let defaultCityScale = defaultScene.cameraScaleForTesting
@@ -3500,7 +3853,8 @@ final class WorldRenderingTests: XCTestCase {
 
         defaultScene.configureProofCamera(detail: .city, centeredOn: GridCoordinate(x: 0, y: 0))
         defaultScene.frameCity()
-        XCTAssertEqual(defaultScene.currentCameraDetailLevel, .city)
+        XCTAssertEqual(defaultScene.currentCameraDetailLevel, .block)
+        XCTAssertEqual(defaultScene.cameraScaleForTesting, 0.50, accuracy: 0.000_001)
         XCTAssertEqual(
             defaultScene.cameraPositionForTesting.x,
             defaultScene.cameraPriorityVisualBoundsForTesting.midX - defaultOffset.x,
@@ -3532,8 +3886,8 @@ final class WorldRenderingTests: XCTestCase {
         }
         scene.render(state: firstPulse, overlay: .none, selection: nil, interactionMode: .inspect)
         let settledScale = scene.cameraScaleForTesting
-        XCTAssertGreaterThan(settledScale, provisionalScale)
-        XCTAssertEqual(settledScale, 0.704783022403717, accuracy: 0.001)
+        XCTAssertLessThan(settledScale, provisionalScale)
+        XCTAssertEqual(settledScale, 0.50, accuracy: 0.001)
         XCTAssertGreaterThanOrEqual(
             scene.occupiedDevelopedViewportOccupancyForTesting().width,
             0.60
@@ -3565,8 +3919,8 @@ final class WorldRenderingTests: XCTestCase {
             (
                 CGSize(width: 1_280, height: 800),
                 CityMapViewportInsets(top: 104, leading: 24, bottom: 160, trailing: 24),
-                CGFloat(0.704783022403717),
-                CGSize(width: 0.7877528083767829, height: 0.926523209964918)
+                CGFloat(0.50),
+                CGSize(width: 1.1103896103896105, height: 1.3059956564925372)
             ),
             (
                 CGSize(width: 900, height: 600),
@@ -3787,6 +4141,201 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertEqual(names.filter { $0 == "interaction.selection.frontage-anchor" }.count, 1)
         XCTAssertFalse(names.contains { $0.hasPrefix("interaction.preview.") })
         XCTAssertTrue(descendantLabels(in: scene).isEmpty)
+    }
+
+    @MainActor
+    func testR4APlacementToolsPreserveFootprintsDepthAndRejectionMeaningAtShippingSizes() throws {
+        let style = WorldVisualStyle()
+        let opening = CityGameState.newCity(seed: 42)
+        let behind = GridCoordinate(x: 10, y: 10)
+        let ahead = GridCoordinate(x: 10, y: 13)
+        let occupied = GridCoordinate(x: 10, y: 11)
+        let exactGroundFootprint = CGRect(
+            x: -style.tileWidth / 2,
+            y: -style.tileHeight / 2,
+            width: style.tileWidth,
+            height: style.tileHeight
+        )
+
+        for (label, size) in [
+            ("regular", CGSize(width: 1_280, height: 800)),
+            ("compact", CGSize(width: 900, height: 600)),
+        ] {
+            let scene = CityScene(size: size)
+            scene.reducedMotion = true
+
+            for coordinate in [behind, ahead] {
+                let tile = try XCTUnwrap(opening.tile(at: coordinate))
+                let target = CityMapActionTargetPresentation(
+                    coordinate: coordinate,
+                    primaryAction: CityMapPrimaryActionPresentation.make(
+                        interactionMode: .build(.residential),
+                        tile: tile,
+                        state: opening
+                    )
+                )
+                XCTAssertTrue(
+                    target.primaryAction.isAvailable,
+                    "\(label) \(coordinate.id) residential is the valid control"
+                )
+                scene.render(
+                    state: opening,
+                    overlay: .none,
+                    selection: coordinate,
+                    interactionMode: .build(.residential),
+                    activeActionTarget: target
+                )
+                XCTAssertEqual(
+                    scene.hoverFootprintBoundsForTesting,
+                    exactGroundFootprint,
+                    "\(label) residential keeps the exact ground diamond"
+                )
+                XCTAssertEqual(
+                    try XCTUnwrap(scene.placementGhostScaleForTesting),
+                    0.82,
+                    accuracy: 0.001
+                )
+                XCTAssertEqual(
+                    scene.hoverDepthForTesting,
+                    style.depth(for: coordinate) + 80,
+                    accuracy: 0.001
+                )
+                XCTAssertFalse(scene.interactionNamesForTesting.contains(
+                    "interaction.invalidHatch"
+                ))
+            }
+            XCTAssertLessThan(
+                style.depth(for: behind) + 80,
+                style.depth(for: occupied) + 80,
+                "\(label) behind preview remains behind the occupied frontage"
+            )
+            XCTAssertGreaterThan(
+                style.depth(for: ahead) + 80,
+                style.depth(for: occupied) + 80,
+                "\(label) foreground preview remains in front of the occupied frontage"
+            )
+
+            let roadTile = try XCTUnwrap(opening.tile(at: ahead))
+            let roadTarget = CityMapActionTargetPresentation(
+                coordinate: ahead,
+                primaryAction: CityMapPrimaryActionPresentation.make(
+                    interactionMode: .build(.road),
+                    tile: roadTile,
+                    state: opening
+                )
+            )
+            XCTAssertTrue(roadTarget.primaryAction.isAvailable)
+            scene.render(
+                state: opening,
+                overlay: .none,
+                selection: ahead,
+                interactionMode: .build(.road),
+                activeActionTarget: roadTarget
+            )
+            XCTAssertEqual(
+                try XCTUnwrap(scene.placementGhostScaleForTesting),
+                1,
+                accuracy: 0.001,
+                "\(label) road preview may not shrink its sockets or footprint"
+            )
+            XCTAssertEqual(
+                scene.hoverFootprintBoundsForTesting,
+                exactGroundFootprint
+            )
+            let expectedRoad = RoadRenderer(style: style).makeRoad(
+                at: ahead,
+                connections: RoadConnectionMask.resolving(at: ahead, in: opening),
+                detail: .neighborhood,
+                reducedMotion: true
+            )
+            XCTAssertEqual(
+                try XCTUnwrap(scene.placementGhostBoundsForTesting).integral,
+                expectedRoad.calculateAccumulatedFrame().integral,
+                "\(label) road ghost preserves the authored road geometry"
+            )
+
+            var serviceState = opening
+            serviceState.updateTile(at: GridCoordinate(x: 13, y: 13)) {
+                $0 = CityTile(coordinate: $0.coordinate, kind: .empty)
+            }
+            let serviceTile = try XCTUnwrap(serviceState.tile(at: behind))
+            let serviceTarget = CityMapActionTargetPresentation(
+                coordinate: behind,
+                primaryAction: CityMapPrimaryActionPresentation.make(
+                    interactionMode: .build(.powerPlant),
+                    tile: serviceTile,
+                    state: serviceState
+                )
+            )
+            XCTAssertTrue(
+                serviceTarget.primaryAction.isAvailable,
+                "\(label) service/tall-lot control must be semantically valid"
+            )
+            scene.render(
+                state: serviceState,
+                overlay: .none,
+                selection: behind,
+                interactionMode: .build(.powerPlant),
+                activeActionTarget: serviceTarget
+            )
+            XCTAssertEqual(
+                scene.hoverFootprintBoundsForTesting,
+                exactGroundFootprint
+            )
+            XCTAssertEqual(
+                try XCTUnwrap(scene.placementGhostScaleForTesting),
+                0.82,
+                accuracy: 0.001
+            )
+
+            let occupiedTile = try XCTUnwrap(opening.tile(at: occupied))
+            let validBulldoze = CityMapActionTargetPresentation(
+                coordinate: occupied,
+                primaryAction: CityMapPrimaryActionPresentation.make(
+                    interactionMode: .bulldoze,
+                    tile: occupiedTile,
+                    state: opening
+                )
+            )
+            XCTAssertTrue(validBulldoze.primaryAction.isAvailable)
+            scene.render(
+                state: opening,
+                overlay: .none,
+                selection: occupied,
+                interactionMode: .bulldoze,
+                activeActionTarget: validBulldoze
+            )
+            XCTAssertNil(scene.placementGhostScaleForTesting)
+            XCTAssertFalse(scene.interactionNamesForTesting.contains(
+                "interaction.invalidHatch"
+            ))
+
+            let emptyTile = try XCTUnwrap(opening.tile(at: behind))
+            let invalidBulldoze = CityMapActionTargetPresentation(
+                coordinate: behind,
+                primaryAction: CityMapPrimaryActionPresentation.make(
+                    interactionMode: .bulldoze,
+                    tile: emptyTile,
+                    state: opening
+                )
+            )
+            XCTAssertFalse(invalidBulldoze.primaryAction.isAvailable)
+            scene.render(
+                state: opening,
+                overlay: .none,
+                selection: behind,
+                interactionMode: .bulldoze,
+                activeActionTarget: invalidBulldoze
+            )
+            XCTAssertNil(scene.placementGhostScaleForTesting)
+            XCTAssertEqual(
+                scene.interactionNamesForTesting.filter {
+                    $0 == "interaction.invalidHatch"
+                }.count,
+                3,
+                "\(label) blocked bulldoze retains its non-color hatch"
+            )
+        }
     }
 
     @MainActor
@@ -4569,6 +5118,290 @@ final class WorldRenderingTests: XCTestCase {
     }
 
     @MainActor
+    func testR4ABackdropDisclosesCacheColdAndWarmTimingWithoutTreeDrift() {
+        let renderer = TerrainRenderer(style: WorldVisualStyle())
+        let cacheBefore = TerrainRenderer.cachedBackdropTemplateCountForTesting
+        let coldStarted = ProcessInfo.processInfo.systemUptime
+        let cold = renderer.makeBackdrop(
+            gridWidth: 24,
+            gridHeight: 24,
+            detail: .block
+        )
+        let coldMilliseconds =
+            (ProcessInfo.processInfo.systemUptime - coldStarted) * 1_000
+        let cacheAfterCold = TerrainRenderer.cachedBackdropTemplateCountForTesting
+
+        let warmStarted = ProcessInfo.processInfo.systemUptime
+        let warm = renderer.makeBackdrop(
+            gridWidth: 24,
+            gridHeight: 24,
+            detail: .block
+        )
+        let warmMilliseconds =
+            (ProcessInfo.processInfo.systemUptime - warmStarted) * 1_000
+        let cacheAfterWarm = TerrainRenderer.cachedBackdropTemplateCountForTesting
+
+        XCTAssertEqual(descendantNames(in: cold), descendantNames(in: warm))
+        XCTAssertEqual(recursiveNodeCount(cold), recursiveNodeCount(warm))
+        XCTAssertEqual(recursiveDrawableCount(cold), recursiveDrawableCount(warm))
+        XCTAssertEqual(cacheAfterCold, cacheAfterWarm)
+        XCTAssertGreaterThanOrEqual(cacheAfterCold, cacheBefore)
+        print(
+            "PLAY073_R4A_TERRAIN_CACHE " +
+            "cache_before=\(cacheBefore) cache_after_cold=\(cacheAfterCold) " +
+            "cache_after_warm=\(cacheAfterWarm) " +
+            "cold_ms=\(String(format: "%.3f", coldMilliseconds)) " +
+            "warm_ms=\(String(format: "%.3f", warmMilliseconds)) " +
+            "nodes=\(recursiveNodeCount(cold)) " +
+            "drawables=\(recursiveDrawableCount(cold))"
+        )
+    }
+
+    @MainActor
+    func testR4AFreshProcessColdPathWritesGovernedReceipt() throws {
+        let environment = ProcessInfo.processInfo.environment
+        guard let mode = environment["CITYSIM_PLAY073_R4A_COLD_MODE"],
+              let receiptPath = environment["CITYSIM_PLAY073_R4A_COLD_RECEIPT_PATH"]
+        else {
+            throw XCTSkip(
+                "Fresh-process receipt requires explicit mode and output path"
+            )
+        }
+        let cacheBefore = TerrainRenderer.cachedBackdropTemplateCountForTesting
+        XCTAssertEqual(
+            cacheBefore,
+            0,
+            "A governed process-cold receipt must begin before any backdrop cache entry"
+        )
+
+        let productCommit = environment[
+            "CITYSIM_PLAY073_R4A_PRODUCT_COMMIT"
+        ] ?? "unbound"
+        let sampleIndex = Int(
+            environment["CITYSIM_PLAY073_R4A_SAMPLE_INDEX"] ?? ""
+        ) ?? 0
+        let commandLabel = environment[
+            "CITYSIM_PLAY073_R4A_COMMAND_LABEL"
+        ] ?? "unbound"
+        let coldBudgetMilliseconds = 6.03
+        // The R4-A authority permits first-grid preparation outside the
+        // world-update timer only when it remains explicitly accounted inside
+        // total render and cannot consume a complete 60 Hz frame on its own.
+        let firstGridPreparationBudgetMilliseconds = 1_000.0 / 60.0
+        let process = ProcessInfo.processInfo
+        let testBundle = Bundle(for: type(of: self))
+        let testBundlePath = testBundle.bundleURL.path
+        let testBinaryPath = try XCTUnwrap(testBundle.executableURL?.path)
+        XCTAssertTrue(
+            testBinaryPath.contains("CitySimNativePackageTests.xctest"),
+            "Receipt must bind the package test executable, not the generic XCTest launcher"
+        )
+        let testBinarySHA256 = r4aSHA256(
+            try Data(contentsOf: URL(fileURLWithPath: testBinaryPath))
+        )
+        let receipt: R4AColdPathReceipt
+
+        switch mode {
+        case "make-backdrop":
+            let renderer = TerrainRenderer(style: WorldVisualStyle())
+            let coldStarted = ProcessInfo.processInfo.systemUptime
+            let cold = renderer.makeBackdrop(
+                gridWidth: 24,
+                gridHeight: 24,
+                detail: .block
+            )
+            let coldMilliseconds =
+                (ProcessInfo.processInfo.systemUptime - coldStarted) * 1_000
+            let cacheAfterCold =
+                TerrainRenderer.cachedBackdropTemplateCountForTesting
+
+            let warmStarted = ProcessInfo.processInfo.systemUptime
+            let warm = renderer.makeBackdrop(
+                gridWidth: 24,
+                gridHeight: 24,
+                detail: .block
+            )
+            let warmMilliseconds =
+                (ProcessInfo.processInfo.systemUptime - warmStarted) * 1_000
+            let cacheAfterWarm =
+                TerrainRenderer.cachedBackdropTemplateCountForTesting
+
+            let coldNames = descendantNames(in: cold)
+            let warmNames = descendantNames(in: warm)
+            XCTAssertEqual(coldNames, warmNames)
+            XCTAssertEqual(recursiveNodeCount(cold), recursiveNodeCount(warm))
+            XCTAssertEqual(
+                recursiveDrawableCount(cold),
+                recursiveDrawableCount(warm)
+            )
+            XCTAssertEqual(cacheAfterCold, 1)
+            XCTAssertEqual(cacheAfterWarm, 1)
+
+            receipt = R4AColdPathReceipt(
+                schemaVersion: 2,
+                definition: "play073-r4-a-governed-cold-path-v2",
+                mode: mode,
+                sampleIndex: sampleIndex,
+                productCommit: productCommit,
+                commandLabel: commandLabel,
+                testBundlePath: testBundlePath,
+                testBinaryPath: testBinaryPath,
+                testBinarySHA256: testBinarySHA256,
+                processID: process.processIdentifier,
+                operatingSystemVersion: process.operatingSystemVersionString,
+                activeProcessorCount: process.activeProcessorCount,
+                physicalMemoryBytes: process.physicalMemory,
+                gridWidth: 24,
+                gridHeight: 24,
+                coldBudgetMilliseconds: coldBudgetMilliseconds,
+                firstGridPreparationBudgetMilliseconds: nil,
+                cacheBefore: cacheBefore,
+                cacheAfterCold: cacheAfterCold,
+                cacheAfterWarm: cacheAfterWarm,
+                direct: R4ADirectBackdropTiming(
+                    coldMilliseconds: coldMilliseconds,
+                    warmMilliseconds: warmMilliseconds,
+                    nodeCount: recursiveNodeCount(cold),
+                    drawableCount: recursiveDrawableCount(cold),
+                    descendantNameSHA256: r4aSHA256(
+                        Data(coldNames.joined(separator: "\n").utf8)
+                    )
+                ),
+                coldScene: nil,
+                warmScene: nil,
+                meetsColdWorldUpdateBudget: nil,
+                meetsFirstGridPreparationBudget: nil,
+                preparationIncludedInTotalRender: nil
+            )
+        case "scene-first-grid":
+            let state = CityGameState.newCity(seed: 42)
+            let coldScene = CityScene(size: CGSize(width: 1_280, height: 800))
+            coldScene.reducedMotion = true
+            coldScene.render(
+                state: state,
+                overlay: .none,
+                selection: nil,
+                interactionMode: .inspect
+            )
+            let cold = coldScene.diagnosticsSnapshot
+            let cacheAfterCold =
+                TerrainRenderer.cachedBackdropTemplateCountForTesting
+
+            let warmScene = CityScene(size: CGSize(width: 1_280, height: 800))
+            warmScene.reducedMotion = true
+            warmScene.render(
+                state: state,
+                overlay: .none,
+                selection: nil,
+                interactionMode: .inspect
+            )
+            let warm = warmScene.diagnosticsSnapshot
+            let cacheAfterWarm =
+                TerrainRenderer.cachedBackdropTemplateCountForTesting
+
+            XCTAssertEqual(cacheAfterCold, 1)
+            XCTAssertEqual(cacheAfterWarm, 1)
+            XCTAssertGreaterThanOrEqual(
+                cold.worldUpdateDurationMilliseconds,
+                cold.backdropUpdateDurationMilliseconds
+            )
+            XCTAssertGreaterThanOrEqual(
+                warm.worldUpdateDurationMilliseconds,
+                warm.backdropUpdateDurationMilliseconds
+            )
+            XCTAssertEqual(cold.createdTileCount, state.tiles.count)
+            XCTAssertEqual(warm.createdTileCount, state.tiles.count)
+            XCTAssertEqual(coldScene.preparedInitialTileRecordCountForTesting, 0)
+            XCTAssertEqual(warmScene.preparedInitialTileRecordCountForTesting, 0)
+            XCTAssertGreaterThan(cold.firstGridPreparationDurationMilliseconds, 0)
+            XCTAssertGreaterThan(warm.firstGridPreparationDurationMilliseconds, 0)
+            XCTAssertGreaterThan(
+                cold.firstGridTileRecordPreparationDurationMilliseconds,
+                0
+            )
+            XCTAssertGreaterThan(
+                cold.firstGridBackdropPreparationDurationMilliseconds,
+                0
+            )
+            XCTAssertGreaterThanOrEqual(
+                cold.firstGridPreparationDurationMilliseconds,
+                cold.firstGridTileRecordPreparationDurationMilliseconds
+                    + cold.firstGridBackdropPreparationDurationMilliseconds
+            )
+            XCTAssertGreaterThanOrEqual(
+                cold.totalRenderDurationMilliseconds,
+                cold.firstGridPreparationDurationMilliseconds
+                    + cold.worldUpdateDurationMilliseconds
+            )
+            XCTAssertGreaterThanOrEqual(
+                warm.totalRenderDurationMilliseconds,
+                warm.firstGridPreparationDurationMilliseconds
+                    + warm.worldUpdateDurationMilliseconds
+            )
+            receipt = R4AColdPathReceipt(
+                schemaVersion: 2,
+                definition: "play073-r4-a-governed-cold-path-v2",
+                mode: mode,
+                sampleIndex: sampleIndex,
+                productCommit: productCommit,
+                commandLabel: commandLabel,
+                testBundlePath: testBundlePath,
+                testBinaryPath: testBinaryPath,
+                testBinarySHA256: testBinarySHA256,
+                processID: process.processIdentifier,
+                operatingSystemVersion: process.operatingSystemVersionString,
+                activeProcessorCount: process.activeProcessorCount,
+                physicalMemoryBytes: process.physicalMemory,
+                gridWidth: state.gridWidth,
+                gridHeight: state.gridHeight,
+                coldBudgetMilliseconds: coldBudgetMilliseconds,
+                firstGridPreparationBudgetMilliseconds:
+                    firstGridPreparationBudgetMilliseconds,
+                cacheBefore: cacheBefore,
+                cacheAfterCold: cacheAfterCold,
+                cacheAfterWarm: cacheAfterWarm,
+                direct: nil,
+                coldScene: R4ASceneColdTiming(
+                    cold,
+                    preparedInitialTileRecordCountAfterRender:
+                        coldScene.preparedInitialTileRecordCountForTesting
+                ),
+                warmScene: R4ASceneColdTiming(
+                    warm,
+                    preparedInitialTileRecordCountAfterRender:
+                        warmScene.preparedInitialTileRecordCountForTesting
+                ),
+                meetsColdWorldUpdateBudget:
+                    cold.worldUpdateDurationMilliseconds
+                        <= coldBudgetMilliseconds,
+                meetsFirstGridPreparationBudget:
+                    cold.firstGridPreparationDurationMilliseconds
+                        <= firstGridPreparationBudgetMilliseconds,
+                preparationIncludedInTotalRender:
+                    cold.totalRenderDurationMilliseconds
+                        >= cold.firstGridPreparationDurationMilliseconds
+                            + cold.worldUpdateDurationMilliseconds
+            )
+        default:
+            XCTFail("Unknown cold receipt mode \(mode)")
+            return
+        }
+
+        try r4aWriteSortedJSON(
+            receipt,
+            to: URL(fileURLWithPath: receiptPath)
+        )
+        print(
+            "PLAY073_R4A_GOVERNED_COLD_RECEIPT " +
+            "mode=\(receipt.mode) sample=\(receipt.sampleIndex) " +
+            "pid=\(receipt.processID) cache_before=\(receipt.cacheBefore) " +
+            "cache_after_cold=\(receipt.cacheAfterCold) " +
+            "cache_after_warm=\(receipt.cacheAfterWarm) " +
+            "path=\(receiptPath)"
+        )
+    }
+
+    @MainActor
     func testCitySceneInvalidatesOnlyVisibleLifecycleBandChanges() throws {
         var state = CityGameState.newCity(seed: 42)
         let target = GridCoordinate(x: 10, y: 11)
@@ -4873,6 +5706,1994 @@ final class WorldRenderingTests: XCTestCase {
         return state
     }
 
+    @MainActor
+    func testR4ARenderedPixelMeasurementBaselineIsDeterministic() throws {
+        let layouts = r4aShippingMeasurementLayouts
+        let state = CityGameState.newCity(seed: 42)
+        let first = try layouts.map { try r4aMeasurement(layout: $0, state: state) }
+        let second = try layouts.map { try r4aMeasurement(layout: $0, state: state) }
+
+        XCTAssertEqual(first.map(\.metrics), second.map(\.metrics))
+        for (lhs, rhs) in zip(first, second) {
+            XCTAssertEqual(lhs.districtPublicRealm.pixels, rhs.districtPublicRealm.pixels)
+            XCTAssertEqual(lhs.plainTerrain.pixels, rhs.plainTerrain.pixels)
+            XCTAssertEqual(lhs.opaqueBuildings.pixels, rhs.opaqueBuildings.pixels)
+            XCTAssertEqual(lhs.normalFrameSHA256, rhs.normalFrameSHA256)
+            XCTAssertFalse(lhs.districtPublicRealm.pixels.isEmpty)
+            XCTAssertFalse(lhs.opaqueBuildings.pixels.isEmpty)
+        }
+
+        guard let outputPath = ProcessInfo.processInfo.environment[
+            "CITYSIM_PLAY073_R4A_MEASUREMENT_ROOT"
+        ] else { return }
+        let outputRoot = URL(fileURLWithPath: outputPath, isDirectory: true)
+        try FileManager.default.createDirectory(
+            at: outputRoot,
+            withIntermediateDirectories: true
+        )
+        for result in first {
+            try result.write(to: outputRoot)
+        }
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.prettyPrinted, .sortedKeys, .withoutEscapingSlashes]
+        let fixtureEncoder = JSONEncoder()
+        fixtureEncoder.outputFormatting = [.sortedKeys, .withoutEscapingSlashes]
+        let ledger = R4AMeasurementLedger(
+            schemaVersion: 1,
+            definition: "play073-r4-a-rendered-pixel-v1",
+            phase: ProcessInfo.processInfo.environment[
+                "CITYSIM_PLAY073_R4A_MEASUREMENT_PHASE"
+            ] ?? "unspecified",
+            productCommit: ProcessInfo.processInfo.environment[
+                "CITYSIM_PLAY073_R4A_PRODUCT_COMMIT"
+            ] ?? "unbound",
+            fixture: "CityGameState.newCity(seed:42)",
+            fixtureStateSHA256: r4aSHA256(try fixtureEncoder.encode(state)),
+            coordinateCategories: r4aCoordinateCategoryLedger(state: state),
+            layouts: first.map(\.metrics)
+        )
+        var ledgerData = try encoder.encode(ledger)
+        ledgerData.append(0x0A)
+        try ledgerData.write(
+            to: outputRoot.appending(path: "MEASUREMENT-LEDGER.json"),
+            options: .atomic
+        )
+    }
+
+    func testR4ACoarseDistrictMassDefinitionBindsFrozenBaselineAndRejectsTerrainOnlyPass()
+        throws
+    {
+        let repositoryRoot = r4aRepositoryRoot()
+        let baselineRoot = repositoryRoot.appending(
+            path: "docs/production/evidence/PLAY-073/r4-a-baseline-b69a9b7"
+        )
+        let candidateRoot = repositoryRoot.appending(
+            path: "docs/production/evidence/PLAY-073/r4-a-candidate-570f4c8/measurement"
+        )
+        let blockSize = 32
+        let minimumDistrictCoverage = 0.10
+        let layouts = ["regular", "compact"]
+        let baseline = try layouts.map {
+            try r4aCoarseDistrictMassMetrics(
+                phase: "baseline",
+                productCommit: "b69a9b7c83156ebdd9d0d126198942becdacafc3",
+                layout: $0,
+                root: baselineRoot,
+                blockSize: blockSize,
+                minimumDistrictCoverage: minimumDistrictCoverage
+            )
+        }
+        let candidate = try layouts.map {
+            try r4aCoarseDistrictMassMetrics(
+                phase: "candidate",
+                productCommit: "570f4c8d4598a05ad3ef263e28c5df24722d6558",
+                layout: $0,
+                root: candidateRoot,
+                blockSize: blockSize,
+                minimumDistrictCoverage: minimumDistrictCoverage
+            )
+        }
+
+        for layout in layouts {
+            let before = try XCTUnwrap(
+                baseline.first(where: { $0.layout == layout })
+            )
+            let after = try XCTUnwrap(
+                candidate.first(where: { $0.layout == layout })
+            )
+            XCTAssertEqual(before.safeAperturePixels, after.safeAperturePixels)
+            XCTAssertEqual(before.coarseGrid, after.coarseGrid)
+        }
+        let candidateRegular = try XCTUnwrap(
+            candidate.first(where: { $0.layout == "regular" })
+        )
+        XCTAssertGreaterThan(
+            candidateRegular.largestCoarsePlainComponentShare,
+            0.25,
+            "Whole-board terrain modulation cannot satisfy the authored-district mass gate"
+        )
+
+        let comparisons = try layouts.map { layout in
+            let before = try XCTUnwrap(
+                baseline.first(where: { $0.layout == layout })
+            )
+            let after = try XCTUnwrap(
+                candidate.first(where: { $0.layout == layout })
+            )
+            return R4ACoarseDistrictMassDelta(
+                layout: layout,
+                districtWidthShareDelta:
+                    after.districtPublicRealmWidthShare
+                        - before.districtPublicRealmWidthShare,
+                districtPixelShareDelta:
+                    after.districtPublicRealmPixelShare
+                        - before.districtPublicRealmPixelShare,
+                largestCoarsePlainComponentShareDelta:
+                    after.largestCoarsePlainComponentShare
+                        - before.largestCoarsePlainComponentShare
+            )
+        }
+        let ledger = R4ACoarseDistrictMassLedger(
+            schemaVersion: 1,
+            definition: "play073-r4-a-coarse-semantic-district-mass-v2",
+            blockSizePixels: blockSize,
+            minimumDistrictCoverage: minimumDistrictCoverage,
+            colorOrNoiseCanChangeClassification: false,
+            baseline: baseline,
+            candidate: candidate,
+            deltas: comparisons,
+            disposition:
+                "rejected_candidate_regular_coarse_plain_component_above_0_25"
+        )
+        guard let outputPath = ProcessInfo.processInfo.environment[
+            "CITYSIM_PLAY073_R4A_COARSE_COMPARISON_PATH"
+        ] else { return }
+        try r4aWriteSortedJSON(
+            ledger,
+            to: URL(fileURLWithPath: outputPath)
+        )
+    }
+
+    func testR4AFinalCoarseDistrictMassImprovesFrozenBaselineWithoutColorCredit()
+        throws
+    {
+        let repositoryRoot = r4aRepositoryRoot()
+        let baselineRoot = repositoryRoot.appending(
+            path: "docs/production/evidence/PLAY-073/r4-a-baseline-b69a9b7"
+        )
+        let candidateRoot = repositoryRoot.appending(
+            path: "docs/production/evidence/PLAY-073/r4-a-candidate-76bec82/measurement"
+        )
+        let blockSize = 32
+        let minimumDistrictCoverage = 0.10
+        let layouts = ["regular", "compact"]
+        let baseline = try layouts.map {
+            try r4aCoarseDistrictMassMetrics(
+                phase: "baseline",
+                productCommit: "b69a9b7c83156ebdd9d0d126198942becdacafc3",
+                layout: $0,
+                root: baselineRoot,
+                blockSize: blockSize,
+                minimumDistrictCoverage: minimumDistrictCoverage
+            )
+        }
+        let candidate = try layouts.map {
+            try r4aCoarseDistrictMassMetrics(
+                phase: "candidate",
+                productCommit: "76bec82739c8487d170c8725af45fe6f1025aacb",
+                layout: $0,
+                root: candidateRoot,
+                blockSize: blockSize,
+                minimumDistrictCoverage: minimumDistrictCoverage
+            )
+        }
+
+        var comparisons: [R4ACoarseDistrictMassDelta] = []
+        for layout in layouts {
+            let before = try XCTUnwrap(
+                baseline.first(where: { $0.layout == layout })
+            )
+            let after = try XCTUnwrap(
+                candidate.first(where: { $0.layout == layout })
+            )
+            XCTAssertEqual(before.safeAperturePixels, after.safeAperturePixels)
+            XCTAssertEqual(before.coarseGrid, after.coarseGrid)
+            XCTAssertGreaterThanOrEqual(after.districtPublicRealmWidthShare, 0.60)
+            XCTAssertGreaterThan(
+                after.districtPublicRealmPixelShare,
+                before.districtPublicRealmPixelShare
+            )
+            XCTAssertLessThanOrEqual(after.largestCoarsePlainComponentShare, 0.25)
+            XCTAssertLessThan(
+                after.largestCoarsePlainComponentShare,
+                before.largestCoarsePlainComponentShare
+            )
+            comparisons.append(
+                R4ACoarseDistrictMassDelta(
+                    layout: layout,
+                    districtWidthShareDelta:
+                        after.districtPublicRealmWidthShare
+                            - before.districtPublicRealmWidthShare,
+                    districtPixelShareDelta:
+                        after.districtPublicRealmPixelShare
+                            - before.districtPublicRealmPixelShare,
+                    largestCoarsePlainComponentShareDelta:
+                        after.largestCoarsePlainComponentShare
+                            - before.largestCoarsePlainComponentShare
+                )
+            )
+        }
+
+        guard let outputPath = ProcessInfo.processInfo.environment[
+            "CITYSIM_PLAY073_R4A_FINAL_COARSE_COMPARISON_PATH"
+        ] else { return }
+        try r4aWriteSortedJSON(
+            R4ACoarseDistrictMassLedger(
+                schemaVersion: 1,
+                definition: "play073-r4-a-coarse-semantic-district-mass-v2",
+                blockSizePixels: blockSize,
+                minimumDistrictCoverage: minimumDistrictCoverage,
+                colorOrNoiseCanChangeClassification: false,
+                baseline: baseline,
+                candidate: candidate,
+                deltas: comparisons,
+                disposition: "candidate_meets_authored_district_mass_gate"
+            ),
+            to: URL(fileURLWithPath: outputPath)
+        )
+    }
+
+    @MainActor
+    func testR4ACandidateMeetsFrozenRenderedPixelGates() throws {
+        let state = CityGameState.newCity(seed: 42)
+        for result in try r4aShippingMeasurementLayouts.map({
+            try r4aMeasurement(layout: $0, state: state)
+        }) {
+            let metrics = result.metrics
+            XCTAssertGreaterThanOrEqual(
+                metrics.districtPublicRealmWidthShare,
+                0.60,
+                "\(metrics.layout) district/public-realm safe-width share"
+            )
+            XCTAssertLessThanOrEqual(
+                metrics.largestPlainTerrainComponentShare,
+                0.25,
+                "\(metrics.layout) largest perceptually plain terrain component"
+            )
+            XCTAssertLessThanOrEqual(
+                metrics.lowFrequencyLargestPlainTerrainComponentShare,
+                0.25,
+                "\(metrics.layout) largest low-frequency plain terrain component"
+            )
+            XCTAssertLessThanOrEqual(
+                metrics.semanticCoarseLargestPlainComponentShare,
+                0.25,
+                "\(metrics.layout) largest color-independent semantic plain component"
+            )
+            XCTAssertGreaterThanOrEqual(
+                metrics.lowFrequencyDistrictEdgeEnergyShare,
+                0.50,
+                "\(metrics.layout) authored district must dominate coarse visual structure"
+            )
+            XCTAssertLessThan(
+                metrics.selectionAffectedOpaqueBuildingShare,
+                0.10,
+                "\(metrics.layout) selection obscures opaque building pixels"
+            )
+            XCTAssertLessThan(
+                metrics.previewAffectedOpaqueBuildingShare,
+                0.10,
+                "\(metrics.layout) preview obscures opaque building pixels"
+            )
+        }
+    }
+
+    @MainActor
+    func testR4ALODMatrixUsesOneCenterAndDistinctSemanticThresholds() throws {
+        let state = CityGameState.newCity(seed: 42)
+        let center = GridCoordinate(x: 11, y: 11)
+        var receipts: [R4ALODReceipt] = []
+
+        for layout in r4aShippingMeasurementLayouts {
+            let view = SKView(frame: CGRect(origin: .zero, size: layout.size))
+            let scene = CityScene(size: layout.size)
+            scene.reducedMotion = true
+            scene.updateViewportInsets(layout.insets)
+            view.presentScene(scene)
+            scene.render(
+                state: state,
+                overlay: .none,
+                selection: nil,
+                interactionMode: .inspect
+            )
+
+            var layoutReceipts: [R4ALODReceipt] = []
+            for detail in CameraDetailLevel.allCases {
+                scene.configureProofCamera(detail: detail, centeredOn: center)
+                RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.08))
+                XCTAssertEqual(scene.currentCameraDetailLevel, detail)
+                let image = try r4aSnapshot(view: view, scene: scene)
+                let color = try r4aPNG(image)
+                let grayscale = try r4aGrayscalePNG(image)
+                let runtime = scene.recountedRuntimeMetricsForTesting()
+                let semanticRoleNames = scene
+                    .tileVisibleDescendantNamesForTesting(at: center)
+                    .filter {
+                        $0.hasPrefix("lot.generated-v4.")
+                            || $0.hasPrefix("lot.lod.")
+                            || $0.hasPrefix("lot.frontage.")
+                    }
+                    .sorted()
+                let receipt = R4ALODReceipt(
+                    layout: layout.name,
+                    detail: detail.assetSuffix,
+                    center: center.id,
+                    cameraPosition: [
+                        Double(scene.cameraPositionForTesting.x),
+                        Double(scene.cameraPositionForTesting.y),
+                    ],
+                    cameraScale: Double(scene.cameraScaleForTesting),
+                    nodes: runtime.nodes,
+                    drawables: runtime.drawables,
+                    semanticRoleNames: semanticRoleNames,
+                    colorSHA256: r4aSHA256(color),
+                    grayscaleSHA256: r4aSHA256(grayscale)
+                )
+                layoutReceipts.append(receipt)
+
+                if let outputPath = ProcessInfo.processInfo.environment[
+                    "CITYSIM_PLAY073_R4A_LOD_ROOT"
+                ] {
+                    let root = URL(fileURLWithPath: outputPath, isDirectory: true)
+                        .appending(path: layout.name, directoryHint: .isDirectory)
+                    try FileManager.default.createDirectory(
+                        at: root,
+                        withIntermediateDirectories: true
+                    )
+                    try color.write(
+                        to: root.appending(path: "\(detail.assetSuffix)-color.png"),
+                        options: .atomic
+                    )
+                    try grayscale.write(
+                        to: root.appending(path: "\(detail.assetSuffix)-grayscale.png"),
+                        options: .atomic
+                    )
+                }
+            }
+
+            XCTAssertEqual(Set(layoutReceipts.map(\.colorSHA256)).count, 3)
+            XCTAssertEqual(Set(layoutReceipts.map(\.grayscaleSHA256)).count, 3)
+            XCTAssertEqual(Set(layoutReceipts.map(\.cameraPosition)).count, 1)
+            XCTAssertEqual(
+                Set(layoutReceipts.map { $0.semanticRoleNames.joined(separator: "|") }).count,
+                3,
+                "\(layout.name) must change visible semantic roles, not stack/darken one geometry"
+            )
+            let city = try XCTUnwrap(layoutReceipts.first { $0.detail == "city" })
+            let neighborhood = try XCTUnwrap(
+                layoutReceipts.first { $0.detail == "neighborhood" }
+            )
+            let block = try XCTUnwrap(layoutReceipts.first { $0.detail == "block" })
+            XCTAssertGreaterThan(
+                city.cameraScale,
+                Double(CameraDetailLevel.neighborhoodMaximumCameraScale)
+            )
+            XCTAssertGreaterThan(
+                neighborhood.cameraScale,
+                Double(CameraDetailLevel.blockMaximumCameraScale)
+            )
+            XCTAssertLessThanOrEqual(
+                neighborhood.cameraScale,
+                Double(CameraDetailLevel.neighborhoodMaximumCameraScale)
+            )
+            XCTAssertLessThanOrEqual(
+                block.cameraScale,
+                Double(CameraDetailLevel.blockMaximumCameraScale)
+            )
+            receipts.append(contentsOf: layoutReceipts)
+        }
+
+        guard let outputPath = ProcessInfo.processInfo.environment[
+            "CITYSIM_PLAY073_R4A_LOD_ROOT"
+        ] else { return }
+        let root = URL(fileURLWithPath: outputPath, isDirectory: true)
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.prettyPrinted, .sortedKeys, .withoutEscapingSlashes]
+        var data = try encoder.encode(receipts)
+        data.append(0x0A)
+        try data.write(
+            to: root.appending(path: "LOD-RECEIPTS.json"),
+            options: .atomic
+        )
+    }
+
+    private var r4aShippingMeasurementLayouts: [R4AMeasurementLayout] {
+        [
+            R4AMeasurementLayout(
+                name: "regular",
+                size: CGSize(width: 1_280, height: 800),
+                insets: CityMapViewportInsets(
+                    top: 104,
+                    leading: 24,
+                    bottom: 160,
+                    trailing: 24
+                )
+            ),
+            R4AMeasurementLayout(
+                name: "compact",
+                size: CGSize(width: 900, height: 600),
+                insets: CityMapViewportInsets(
+                    top: 138,
+                    leading: 19,
+                    bottom: 236,
+                    trailing: 19
+                )
+            ),
+        ]
+    }
+
+    private struct R4AMeasurementLayout {
+        let name: String
+        let size: CGSize
+        let insets: CityMapViewportInsets
+    }
+
+    private struct R4ADirectBackdropTiming: Codable {
+        let coldMilliseconds: Double
+        let warmMilliseconds: Double
+        let nodeCount: Int
+        let drawableCount: Int
+        let descendantNameSHA256: String
+    }
+
+    private struct R4ASceneColdTiming: Codable {
+        let firstGridPreparationMilliseconds: Double
+        let firstGridTileRecordPreparationMilliseconds: Double
+        let firstGridBackdropPreparationMilliseconds: Double
+        let backdropMilliseconds: Double
+        let preparationMilliseconds: Double
+        let tileBuildMilliseconds: Double
+        let runtimeTreeMetricsMilliseconds: Double
+        let assetDecodeLoadCount: Int
+        let assetDecodeLoadMilliseconds: Double
+        let worldUpdateMilliseconds: Double
+        let totalRenderMilliseconds: Double
+        let nodeCount: Int
+        let drawableNodeCount: Int
+        let activeActionCount: Int
+        let totalTileCount: Int
+        let createdTileCount: Int
+        let preparedInitialTileRecordCountAfterRender: Int
+
+        init(
+            _ diagnostics: RendererDiagnosticsSnapshot,
+            preparedInitialTileRecordCountAfterRender: Int
+        ) {
+            firstGridPreparationMilliseconds =
+                diagnostics.firstGridPreparationDurationMilliseconds
+            firstGridTileRecordPreparationMilliseconds =
+                diagnostics.firstGridTileRecordPreparationDurationMilliseconds
+            firstGridBackdropPreparationMilliseconds =
+                diagnostics.firstGridBackdropPreparationDurationMilliseconds
+            backdropMilliseconds =
+                diagnostics.backdropUpdateDurationMilliseconds
+            preparationMilliseconds =
+                diagnostics.renderPreparationDurationMilliseconds
+            tileBuildMilliseconds =
+                diagnostics.tileBuildDurationMilliseconds
+            runtimeTreeMetricsMilliseconds =
+                diagnostics.runtimeTreeMetricsDurationMilliseconds
+            assetDecodeLoadCount = diagnostics.assetDecodeLoadCount
+            assetDecodeLoadMilliseconds =
+                diagnostics.assetDecodeLoadDurationMilliseconds
+            worldUpdateMilliseconds =
+                diagnostics.worldUpdateDurationMilliseconds
+            totalRenderMilliseconds =
+                diagnostics.totalRenderDurationMilliseconds
+            nodeCount = diagnostics.nodeCount
+            drawableNodeCount = diagnostics.drawableNodeCount
+            activeActionCount = diagnostics.activeActionCount
+            totalTileCount = diagnostics.totalTileCount
+            createdTileCount = diagnostics.createdTileCount
+            self.preparedInitialTileRecordCountAfterRender =
+                preparedInitialTileRecordCountAfterRender
+        }
+    }
+
+    private struct R4AColdPathReceipt: Codable {
+        let schemaVersion: Int
+        let definition: String
+        let mode: String
+        let sampleIndex: Int
+        let productCommit: String
+        let commandLabel: String
+        let testBundlePath: String
+        let testBinaryPath: String
+        let testBinarySHA256: String
+        let processID: Int32
+        let operatingSystemVersion: String
+        let activeProcessorCount: Int
+        let physicalMemoryBytes: UInt64
+        let gridWidth: Int
+        let gridHeight: Int
+        let coldBudgetMilliseconds: Double
+        let firstGridPreparationBudgetMilliseconds: Double?
+        let cacheBefore: Int
+        let cacheAfterCold: Int
+        let cacheAfterWarm: Int
+        let direct: R4ADirectBackdropTiming?
+        let coldScene: R4ASceneColdTiming?
+        let warmScene: R4ASceneColdTiming?
+        let meetsColdWorldUpdateBudget: Bool?
+        let meetsFirstGridPreparationBudget: Bool?
+        let preparationIncludedInTotalRender: Bool?
+    }
+
+    private struct R4ACoarseDistrictMassMetrics: Codable {
+        let phase: String
+        let productCommit: String
+        let layout: String
+        let districtMaskPath: String
+        let districtMaskSHA256: String
+        let safeAperturePixels: [Int]
+        let safeAperturePixelCount: Int
+        let districtPublicRealmPixels: Int
+        let districtPublicRealmPixelShare: Double
+        let districtWidthNumeratorPixels: Int
+        let districtWidthDenominatorPixels: Int
+        let districtPublicRealmWidthShare: Double
+        let blockSizePixels: Int
+        let minimumDistrictCoverage: Double
+        let coarseGrid: [Int]
+        let coarseBlockCount: Int
+        let authoredDistrictBlockCount: Int
+        let coarsePlainComponentBlocksDescending: [Int]
+        let largestCoarsePlainComponentBlocks: Int
+        let largestCoarsePlainComponentDenominatorBlocks: Int
+        let largestCoarsePlainComponentShare: Double
+    }
+
+    private struct R4ACoarseDistrictMassDelta: Codable {
+        let layout: String
+        let districtWidthShareDelta: Double
+        let districtPixelShareDelta: Double
+        let largestCoarsePlainComponentShareDelta: Double
+    }
+
+    private struct R4ACoarseDistrictMassLedger: Codable {
+        let schemaVersion: Int
+        let definition: String
+        let blockSizePixels: Int
+        let minimumDistrictCoverage: Double
+        let colorOrNoiseCanChangeClassification: Bool
+        let baseline: [R4ACoarseDistrictMassMetrics]
+        let candidate: [R4ACoarseDistrictMassMetrics]
+        let deltas: [R4ACoarseDistrictMassDelta]
+        let disposition: String
+    }
+
+    private struct R4ALODReceipt: Codable {
+        let layout: String
+        let detail: String
+        let center: String
+        let cameraPosition: [Double]
+        let cameraScale: Double
+        let nodes: Int
+        let drawables: Int
+        let semanticRoleNames: [String]
+        let colorSHA256: String
+        let grayscaleSHA256: String
+    }
+
+    private struct R4ARepetitionPlacement: Codable {
+        let coordinate: String
+        let kind: String
+        let level: Int
+        let sourceLogicalID: String
+        let sourceSHA256: String
+        let contextFamily: String
+        let contextMaterialVariant: Int
+        let contextFrontage: UInt8
+        let contextPlacements: [String]
+        let sourceContextSignature: String
+    }
+
+    private struct R4ARepetitionAdjacency: Codable {
+        let firstCoordinate: String
+        let secondCoordinate: String
+        let firstSignature: String
+        let secondSignature: String
+        let identicalSourceAndContext: Bool
+        let availableAlternatives: [String]
+        let disposition: String
+    }
+
+    private struct R4ARepetitionFixtureLedger: Codable {
+        let fixture: String
+        let stateSHA256: String
+        let placements: [R4ARepetitionPlacement]
+        let adjacentPairs: [R4ARepetitionAdjacency]
+        let violations: [R4ARepetitionAdjacency]
+    }
+
+    private struct R4ARepetitionLedger: Codable {
+        let schemaVersion: Int
+        let definition: String
+        let productCommit: String
+        let fixtures: [R4ARepetitionFixtureLedger]
+        let disposition: String
+    }
+
+    private struct R4AMeasurementLedger: Codable {
+        let schemaVersion: Int
+        let definition: String
+        let phase: String
+        let productCommit: String
+        let fixture: String
+        let fixtureStateSHA256: String
+        let coordinateCategories: R4ACoordinateCategoryLedger
+        let layouts: [R4AMeasurementMetrics]
+    }
+
+    private struct R4ACoordinateCategoryLedger: Codable {
+        let authoritativeRoadCoordinates: [String]
+        let authoritativeOccupiedCoordinates: [R4AOccupiedCoordinate]
+        let emptyRoadEnclosedCommonsCoordinates: [String]
+        let emptyCommonsClassification: String
+        let emptyCommonsCountedAsDistrictPublicRealm: Bool
+        let emptyBuildableFrontageBandCoordinates: [String]
+        let emptyBuildableFrontageBandClassification: String
+        let emptyBuildableFrontageBandCountedAsDistrictPublicRealm: Bool
+        let emptyBuildableFrontageBandCountedAsOccupied: Bool
+        let districtMaskNodePrefixes: [String]
+    }
+
+    private struct R4AOccupiedCoordinate: Codable {
+        let coordinate: String
+        let kind: String
+    }
+
+    private struct R4AMeasurementMetrics: Codable, Equatable {
+        let layout: String
+        let scenePointSize: [Double]
+        let renderedPixelSize: [Int]
+        let backingScale: Double
+        let hudInsetsPoints: [Double]
+        let safeAperturePixels: [Int]
+        let cameraDetail: String
+        let cameraScale: Double
+        let cameraPosition: [Double]
+        let districtPublicRealmPixels: Int
+        let districtPublicRealmWidthShare: Double
+        let plainTerrainPixels: Int
+        let plainTerrainShare: Double
+        let plainTerrainComponentPixelsDescending: [Int]
+        let largestPlainTerrainComponentPixels: Int
+        let largestPlainTerrainComponentShare: Double
+        let lowFrequencyBlockSizePixels: Int
+        let semanticCoarseDistrictCoverageThreshold: Double
+        let semanticCoarsePlainComponentBlocksDescending: [Int]
+        let semanticCoarseLargestPlainComponentShare: Double
+        let lowFrequencyPlainTerrainComponentBlocksDescending: [Int]
+        let lowFrequencyLargestPlainTerrainComponentShare: Double
+        let lowFrequencyDistrictEdgeEnergyShare: Double
+        let opaqueBuildingPixels: Int
+        let selectionAffectedOpaqueBuildingPixels: Int
+        let selectionAffectedOpaqueBuildingShare: Double
+        let previewAffectedOpaqueBuildingPixels: Int
+        let previewAffectedOpaqueBuildingShare: Double
+        let normalFrameSHA256: String
+        let selectionFrameSHA256: String
+        let previewFrameSHA256: String
+        let districtPublicRealmMaskSHA256: String
+        let plainTerrainMaskSHA256: String
+        let opaqueBuildingMaskSHA256: String
+        let normalGrayscaleFrameSHA256: String
+    }
+
+    @MainActor
+    private func r4aCoordinateCategoryLedger(
+        state: CityGameState
+    ) -> R4ACoordinateCategoryLedger {
+        let roads = state.tiles
+            .filter { $0.kind == .road }
+            .map(\.coordinate)
+            .sorted { ($0.y, $0.x) < ($1.y, $1.x) }
+        let occupied = state.tiles
+            .filter { $0.kind != .empty && $0.kind != .road }
+            .sorted { ($0.coordinate.y, $0.coordinate.x) < ($1.coordinate.y, $1.coordinate.x) }
+        let commons = TerrainRenderer(style: WorldVisualStyle())
+            .enclosedVacantCoordinatesForTesting(in: state)
+            .sorted { ($0.y, $0.x) < ($1.y, $1.x) }
+        let buildableBand = TerrainRenderer(style: WorldVisualStyle())
+            .buildableFrontageBandCoordinatesForTesting(in: state)
+            .sorted { ($0.y, $0.x) < ($1.y, $1.x) }
+        return R4ACoordinateCategoryLedger(
+            authoritativeRoadCoordinates: roads.map(\.id),
+            authoritativeOccupiedCoordinates: occupied.map {
+                R4AOccupiedCoordinate(
+                    coordinate: $0.coordinate.id,
+                    kind: $0.kind.rawValue
+                )
+            },
+            emptyRoadEnclosedCommonsCoordinates: commons.map(\.id),
+            emptyCommonsClassification:
+                "empty_buildable_natural_decoration_excluded_from_district_public_realm",
+            emptyCommonsCountedAsDistrictPublicRealm: false,
+            emptyBuildableFrontageBandCoordinates: buildableBand.map(\.id),
+            emptyBuildableFrontageBandClassification:
+                "empty_buildable_road_frontage_ground_not_occupied_or_special",
+            emptyBuildableFrontageBandCountedAsDistrictPublicRealm: true,
+            emptyBuildableFrontageBandCountedAsOccupied: false,
+            districtMaskNodePrefixes: [
+                "district.ground.",
+                "road.",
+                "lot.frontage.",
+                "lot.lod.",
+                "lot.context.",
+            ]
+        )
+    }
+
+    private struct R4ABinaryRaster: Equatable {
+        let width: Int
+        let height: Int
+        let pixels: [UInt8]
+
+        var count: Int { pixels.reduce(0) { $0 + ($1 == 0 ? 0 : 1) } }
+
+        func union(_ other: Self) -> Self {
+            precondition(width == other.width && height == other.height)
+            return Self(
+                width: width,
+                height: height,
+                pixels: zip(pixels, other.pixels).map {
+                    $0 == 0 && $1 == 0 ? 0 : 1
+                }
+            )
+        }
+
+        func subtracting(_ other: Self) -> Self {
+            precondition(width == other.width && height == other.height)
+            return Self(
+                width: width,
+                height: height,
+                pixels: zip(pixels, other.pixels).map {
+                    $0 != 0 && $1 == 0 ? 1 : 0
+                }
+            )
+        }
+
+        func retainingPerceptuallyPlainPixels(
+            base: R4AColorRaster,
+            composed: R4AColorRaster,
+            maximumChannelDelta: UInt8
+        ) -> Self {
+            precondition(
+                width == base.width && height == base.height
+                    && width == composed.width && height == composed.height
+            )
+            return Self(
+                width: width,
+                height: height,
+                pixels: pixels.indices.map { index in
+                    guard pixels[index] != 0 else { return 0 }
+                    let offset = index * 4
+                    let maximumDifference = (0..<3).map { channel in
+                        abs(
+                            Int(base.rgba[offset + channel])
+                                - Int(composed.rgba[offset + channel])
+                        )
+                    }.max() ?? 0
+                    return maximumDifference <= Int(maximumChannelDelta) ? 1 : 0
+                }
+            )
+        }
+
+        func horizontalCoverage() -> Double {
+            var minimum = width
+            var maximum = -1
+            for index in pixels.indices where pixels[index] != 0 {
+                let x = index % width
+                minimum = min(minimum, x)
+                maximum = max(maximum, x)
+            }
+            guard maximum >= minimum else { return 0 }
+            return Double(maximum - minimum + 1) / Double(max(1, width))
+        }
+
+        func connectedComponentSizes() -> [Int] {
+            var visited = [Bool](repeating: false, count: pixels.count)
+            var result: [Int] = []
+            for origin in pixels.indices where pixels[origin] != 0 && !visited[origin] {
+                visited[origin] = true
+                var pending = [origin]
+                var componentCount = 0
+                while let index = pending.popLast() {
+                    componentCount += 1
+                    let x = index % width
+                    let y = index / width
+                    if x > 0 {
+                        let neighbor = index - 1
+                        if pixels[neighbor] != 0 && !visited[neighbor] {
+                            visited[neighbor] = true
+                            pending.append(neighbor)
+                        }
+                    }
+                    if x + 1 < width {
+                        let neighbor = index + 1
+                        if pixels[neighbor] != 0 && !visited[neighbor] {
+                            visited[neighbor] = true
+                            pending.append(neighbor)
+                        }
+                    }
+                    if y > 0 {
+                        let neighbor = index - width
+                        if pixels[neighbor] != 0 && !visited[neighbor] {
+                            visited[neighbor] = true
+                            pending.append(neighbor)
+                        }
+                    }
+                    if y + 1 < height {
+                        let neighbor = index + width
+                        if pixels[neighbor] != 0 && !visited[neighbor] {
+                            visited[neighbor] = true
+                            pending.append(neighbor)
+                        }
+                    }
+                }
+                result.append(componentCount)
+            }
+            return result.sorted(by: >)
+        }
+
+        func lowFrequencyPlainRegions(
+            base: R4AColorRaster,
+            composed: R4AColorRaster,
+            blockSize: Int,
+            minimumTerrainCoverage: Double = 0.70,
+            maximumAverageChannelDelta: Double = 12
+        ) -> Self {
+            precondition(
+                width == base.width && height == base.height
+                    && width == composed.width && height == composed.height
+            )
+            let coarseWidth = (width + blockSize - 1) / blockSize
+            let coarseHeight = (height + blockSize - 1) / blockSize
+            var coarse = [UInt8](repeating: 0, count: coarseWidth * coarseHeight)
+            for coarseY in 0..<coarseHeight {
+                for coarseX in 0..<coarseWidth {
+                    let startX = coarseX * blockSize
+                    let startY = coarseY * blockSize
+                    let endX = min(width, startX + blockSize)
+                    let endY = min(height, startY + blockSize)
+                    let sampleCount = max(1, (endX - startX) * (endY - startY))
+                    var terrainCount = 0
+                    var channelDelta = 0
+                    for y in startY..<endY {
+                        for x in startX..<endX {
+                            let index = y * width + x
+                            guard pixels[index] != 0 else { continue }
+                            terrainCount += 1
+                            let offset = index * 4
+                            for channel in 0..<3 {
+                                channelDelta += abs(
+                                    Int(base.rgba[offset + channel])
+                                        - Int(composed.rgba[offset + channel])
+                                )
+                            }
+                        }
+                    }
+                    let terrainCoverage = Double(terrainCount) / Double(sampleCount)
+                    let averageDelta = terrainCount == 0
+                        ? Double.greatestFiniteMagnitude
+                        : Double(channelDelta) / Double(terrainCount * 3)
+                    if terrainCoverage >= minimumTerrainCoverage,
+                       averageDelta <= maximumAverageChannelDelta {
+                        coarse[coarseY * coarseWidth + coarseX] = 1
+                    }
+                }
+            }
+            return Self(width: coarseWidth, height: coarseHeight, pixels: coarse)
+        }
+
+        func coarseOccupancy(blockSize: Int, minimumCoverage: Double = 0.10) -> Self {
+            let coarseWidth = (width + blockSize - 1) / blockSize
+            let coarseHeight = (height + blockSize - 1) / blockSize
+            var coarse = [UInt8](repeating: 0, count: coarseWidth * coarseHeight)
+            for coarseY in 0..<coarseHeight {
+                for coarseX in 0..<coarseWidth {
+                    let startX = coarseX * blockSize
+                    let startY = coarseY * blockSize
+                    let endX = min(width, startX + blockSize)
+                    let endY = min(height, startY + blockSize)
+                    let sampleCount = max(1, (endX - startX) * (endY - startY))
+                    var occupied = 0
+                    for y in startY..<endY {
+                        for x in startX..<endX
+                            where pixels[y * width + x] != 0 {
+                            occupied += 1
+                        }
+                    }
+                    if Double(occupied) / Double(sampleCount) >= minimumCoverage {
+                        coarse[coarseY * coarseWidth + coarseX] = 1
+                    }
+                }
+            }
+            return Self(width: coarseWidth, height: coarseHeight, pixels: coarse)
+        }
+
+        func pngData() throws -> Data {
+            var rgba = [UInt8](repeating: 0, count: pixels.count * 4)
+            for y in 0..<height {
+                let outputY = height - y - 1
+                for x in 0..<width {
+                    let sourceIndex = y * width + x
+                    let outputIndex = (outputY * width + x) * 4
+                    let value: UInt8 = pixels[sourceIndex] == 0 ? 0 : 255
+                    rgba[outputIndex] = value
+                    rgba[outputIndex + 1] = value
+                    rgba[outputIndex + 2] = value
+                    rgba[outputIndex + 3] = 255
+                }
+            }
+            let provider = try XCTUnwrap(
+                CGDataProvider(data: Data(rgba) as CFData)
+            )
+            let image = try XCTUnwrap(CGImage(
+                width: width,
+                height: height,
+                bitsPerComponent: 8,
+                bitsPerPixel: 32,
+                bytesPerRow: width * 4,
+                space: CGColorSpaceCreateDeviceRGB(),
+                bitmapInfo: CGBitmapInfo(
+                    rawValue: CGImageAlphaInfo.premultipliedLast.rawValue
+                ),
+                provider: provider,
+                decode: nil,
+                shouldInterpolate: false,
+                intent: .defaultIntent
+            ))
+            let representation = NSBitmapImageRep(cgImage: image)
+            return try XCTUnwrap(
+                representation.representation(using: .png, properties: [:])
+            )
+        }
+    }
+
+    private struct R4AColorRaster {
+        let width: Int
+        let height: Int
+        let rgba: [UInt8]
+
+        func affectedPixelCount(
+            comparedWith other: Self,
+            within mask: R4ABinaryRaster,
+            threshold: UInt8 = 12
+        ) -> Int {
+            precondition(
+                width == other.width && height == other.height
+                    && width == mask.width && height == mask.height
+            )
+            var result = 0
+            for index in mask.pixels.indices where mask.pixels[index] != 0 {
+                let offset = index * 4
+                let maximumDifference = (0..<4).map { channel in
+                    abs(
+                        Int(rgba[offset + channel])
+                            - Int(other.rgba[offset + channel])
+                    )
+                }.max() ?? 0
+                if maximumDifference > Int(threshold) { result += 1 }
+            }
+            return result
+        }
+
+        func lowFrequencyEdgeEnergyShare(
+            within district: R4ABinaryRaster,
+            blockSize: Int
+        ) -> Double {
+            precondition(width == district.width && height == district.height)
+            let coarseDistrict = district.coarseOccupancy(blockSize: blockSize)
+            let coarseWidth = coarseDistrict.width
+            let coarseHeight = coarseDistrict.height
+            var luminance = [Double](repeating: 0, count: coarseWidth * coarseHeight)
+            for coarseY in 0..<coarseHeight {
+                for coarseX in 0..<coarseWidth {
+                    let startX = coarseX * blockSize
+                    let startY = coarseY * blockSize
+                    let endX = min(width, startX + blockSize)
+                    let endY = min(height, startY + blockSize)
+                    var total = 0.0
+                    var samples = 0
+                    for y in startY..<endY {
+                        for x in startX..<endX {
+                            let offset = (y * width + x) * 4
+                            total += 0.2126 * Double(rgba[offset])
+                                + 0.7152 * Double(rgba[offset + 1])
+                                + 0.0722 * Double(rgba[offset + 2])
+                            samples += 1
+                        }
+                    }
+                    luminance[coarseY * coarseWidth + coarseX] =
+                        total / Double(max(1, samples))
+                }
+            }
+
+            var allEnergy = 0.0
+            var districtEnergy = 0.0
+            for y in 0..<coarseHeight {
+                for x in 0..<coarseWidth {
+                    let index = y * coarseWidth + x
+                    if x > 0 {
+                        let neighbor = index - 1
+                        let energy = abs(luminance[index] - luminance[neighbor])
+                        allEnergy += energy
+                        if coarseDistrict.pixels[index] != 0
+                            || coarseDistrict.pixels[neighbor] != 0 {
+                            districtEnergy += energy
+                        }
+                    }
+                    if y > 0 {
+                        let neighbor = index - coarseWidth
+                        let energy = abs(luminance[index] - luminance[neighbor])
+                        allEnergy += energy
+                        if coarseDistrict.pixels[index] != 0
+                            || coarseDistrict.pixels[neighbor] != 0 {
+                            districtEnergy += energy
+                        }
+                    }
+                }
+            }
+            guard allEnergy > 0 else { return 0 }
+            return districtEnergy / allEnergy
+        }
+    }
+
+    private struct R4AMeasurementResult {
+        let metrics: R4AMeasurementMetrics
+        let districtPublicRealm: R4ABinaryRaster
+        let plainTerrain: R4ABinaryRaster
+        let opaqueBuildings: R4ABinaryRaster
+        let normalFrame: Data
+        let normalGrayscaleFrame: Data
+        let selectedFrame: Data
+        let previewFrame: Data
+        let normalFrameSHA256: String
+
+        func write(to root: URL) throws {
+            let frameRoot = root.appending(path: "frames", directoryHint: .isDirectory)
+            let maskRoot = root.appending(path: "masks", directoryHint: .isDirectory)
+            try FileManager.default.createDirectory(
+                at: frameRoot,
+                withIntermediateDirectories: true
+            )
+            try FileManager.default.createDirectory(
+                at: maskRoot,
+                withIntermediateDirectories: true
+            )
+            try normalFrame.write(
+                to: frameRoot.appending(path: "\(metrics.layout)-normal.png"),
+                options: .atomic
+            )
+            try normalGrayscaleFrame.write(
+                to: frameRoot.appending(path: "\(metrics.layout)-normal-grayscale.png"),
+                options: .atomic
+            )
+            try selectedFrame.write(
+                to: frameRoot.appending(path: "\(metrics.layout)-selection.png"),
+                options: .atomic
+            )
+            try previewFrame.write(
+                to: frameRoot.appending(path: "\(metrics.layout)-preview.png"),
+                options: .atomic
+            )
+            try districtPublicRealm.pngData().write(
+                to: maskRoot.appending(
+                    path: "\(metrics.layout)-district-public-realm.png"
+                ),
+                options: .atomic
+            )
+            try plainTerrain.pngData().write(
+                to: maskRoot.appending(path: "\(metrics.layout)-plain-terrain.png"),
+                options: .atomic
+            )
+            try opaqueBuildings.pngData().write(
+                to: maskRoot.appending(path: "\(metrics.layout)-opaque-buildings.png"),
+                options: .atomic
+            )
+        }
+    }
+
+    private enum R4AMaskCategory {
+        case turf
+        case terrainBaseColor
+        case terrainComposedColor
+        case districtPublicRealm
+        case opaqueBuildings
+    }
+
+    @MainActor
+    private func r4aMeasurement(
+        layout: R4AMeasurementLayout,
+        state: CityGameState
+    ) throws -> R4AMeasurementResult {
+        _ = NSApplication.shared
+        let view = SKView(frame: CGRect(origin: .zero, size: layout.size))
+        let scene = CityScene(size: layout.size)
+        scene.reducedMotion = true
+        scene.updateViewportInsets(layout.insets)
+        view.presentScene(scene)
+        scene.render(
+            state: state,
+            overlay: .none,
+            selection: nil,
+            interactionMode: .inspect
+        )
+        scene.frameCity()
+        RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.12))
+        let cameraScale = scene.cameraScaleForTesting
+        let cameraPosition = scene.cameraPositionForTesting
+        let detail = scene.currentCameraDetailLevel
+        let normalImage = try r4aSnapshot(view: view, scene: scene)
+        let normalFrame = try r4aPNG(normalImage)
+        let normalGrayscaleFrame = try r4aGrayscalePNG(normalImage)
+
+        let cityHall = try XCTUnwrap(
+            state.tiles.first(where: { $0.kind == .cityHall })?.coordinate
+        )
+        scene.render(
+            state: state,
+            overlay: .none,
+            selection: cityHall,
+            interactionMode: .inspect
+        )
+        scene.frameCity()
+        RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.04))
+        let selectionImage = try r4aSnapshot(view: view, scene: scene)
+        let selectedFrame = try r4aPNG(selectionImage)
+
+        let previewTile = try XCTUnwrap(
+            state.tiles
+                .filter { tile in
+                    guard tile.kind == .empty,
+                          case .success = CitySimulation.validateBuild(
+                              .residential,
+                              at: tile.coordinate,
+                              in: state
+                          ) else { return false }
+                    return true
+                }
+                .min { lhs, rhs in
+                    let lhsPoint = scene.scenePointForTesting(at: lhs.coordinate)
+                    let rhsPoint = scene.scenePointForTesting(at: rhs.coordinate)
+                    let lhsDistance = hypot(
+                        lhsPoint.x - cameraPosition.x,
+                        lhsPoint.y - cameraPosition.y
+                    )
+                    let rhsDistance = hypot(
+                        rhsPoint.x - cameraPosition.x,
+                        rhsPoint.y - cameraPosition.y
+                    )
+                    return lhsDistance < rhsDistance
+                }
+        )
+        let previewTarget = CityMapActionTargetPresentation(
+            coordinate: previewTile.coordinate,
+            primaryAction: CityMapPrimaryActionPresentation.make(
+                interactionMode: .build(.residential),
+                tile: previewTile,
+                state: state
+            )
+        )
+        scene.render(
+            state: state,
+            overlay: .none,
+            selection: previewTile.coordinate,
+            interactionMode: .build(.residential),
+            activeActionTarget: previewTarget
+        )
+        scene.frameCity()
+        RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.04))
+        let previewImage = try r4aSnapshot(view: view, scene: scene)
+        let previewFrame = try r4aPNG(previewImage)
+
+        let turfImage = try r4aMaskImage(
+            layout: layout,
+            state: state,
+            detail: detail,
+            cameraScale: cameraScale,
+            cameraPosition: cameraPosition,
+            category: .turf
+        )
+        let terrainBaseImage = try r4aMaskImage(
+            layout: layout,
+            state: state,
+            detail: detail,
+            cameraScale: cameraScale,
+            cameraPosition: cameraPosition,
+            category: .terrainBaseColor
+        )
+        let terrainComposedImage = try r4aMaskImage(
+            layout: layout,
+            state: state,
+            detail: detail,
+            cameraScale: cameraScale,
+            cameraPosition: cameraPosition,
+            category: .terrainComposedColor
+        )
+        let districtImage = try r4aMaskImage(
+            layout: layout,
+            state: state,
+            detail: detail,
+            cameraScale: cameraScale,
+            cameraPosition: cameraPosition,
+            category: .districtPublicRealm
+        )
+        let buildingsImage = try r4aMaskImage(
+            layout: layout,
+            state: state,
+            detail: detail,
+            cameraScale: cameraScale,
+            cameraPosition: cameraPosition,
+            category: .opaqueBuildings
+        )
+
+        let turf = try r4aBinaryRaster(
+            image: turfImage,
+            layout: layout
+        )
+        let terrainBase = try r4aColorRaster(
+            image: terrainBaseImage,
+            layout: layout
+        )
+        let terrainComposed = try r4aColorRaster(
+            image: terrainComposedImage,
+            layout: layout
+        )
+        let district = try r4aBinaryRaster(
+            image: districtImage,
+            layout: layout
+        )
+        let buildings = try r4aBinaryRaster(
+            image: buildingsImage,
+            layout: layout
+        )
+        // A material mark must move at least one rendered color channel by
+        // more than 12/255 to stop counting as plain terrain. This keeps the
+        // gate tied to perceptible final pixels rather than the mere presence
+        // of a nearly transparent procedural node.
+        let plainTerrain = turf
+            .subtracting(district)
+            .retainingPerceptuallyPlainPixels(
+                base: terrainBase,
+                composed: terrainComposed,
+                maximumChannelDelta: 12
+            )
+        let normalPixels = try r4aColorRaster(
+            image: normalImage,
+            layout: layout
+        )
+        let selectedPixels = try r4aColorRaster(
+            image: selectionImage,
+            layout: layout
+        )
+        let previewPixels = try r4aColorRaster(
+            image: previewImage,
+            layout: layout
+        )
+        let selectionAffected = normalPixels.affectedPixelCount(
+            comparedWith: selectedPixels,
+            within: buildings
+        )
+        let previewAffected = normalPixels.affectedPixelCount(
+            comparedWith: previewPixels,
+            within: buildings
+        )
+        let components = plainTerrain.connectedComponentSizes()
+        let lowFrequencyBlockSize = 32
+        let semanticCoarseDistrictCoverageThreshold = 0.10
+        let semanticCoarseDistrict = district.coarseOccupancy(
+            blockSize: lowFrequencyBlockSize,
+            minimumCoverage: semanticCoarseDistrictCoverageThreshold
+        )
+        let semanticCoarsePlain = R4ABinaryRaster(
+            width: semanticCoarseDistrict.width,
+            height: semanticCoarseDistrict.height,
+            pixels: semanticCoarseDistrict.pixels.map { $0 == 0 ? 1 : 0 }
+        )
+        let semanticCoarsePlainComponents =
+            semanticCoarsePlain.connectedComponentSizes()
+        let semanticCoarseApertureBlocks = max(
+            1,
+            semanticCoarsePlain.width * semanticCoarsePlain.height
+        )
+        let lowFrequencyPlain = turf
+            .subtracting(district)
+            .lowFrequencyPlainRegions(
+                base: terrainBase,
+                composed: terrainComposed,
+                blockSize: lowFrequencyBlockSize
+            )
+        let lowFrequencyComponents = lowFrequencyPlain.connectedComponentSizes()
+        let lowFrequencyApertureBlocks = max(
+            1,
+            lowFrequencyPlain.width * lowFrequencyPlain.height
+        )
+        let lowFrequencyDistrictEdgeEnergyShare =
+            normalPixels.lowFrequencyEdgeEnergyShare(
+                within: district,
+                blockSize: lowFrequencyBlockSize
+            )
+        let aperturePixels = max(1, plainTerrain.width * plainTerrain.height)
+        let buildingPixels = max(1, buildings.count)
+        let backingScale = Double(normalImage.width) / Double(layout.size.width)
+        let districtPNG = try district.pngData()
+        let plainPNG = try plainTerrain.pngData()
+        let buildingsPNG = try buildings.pngData()
+        let metrics = R4AMeasurementMetrics(
+            layout: layout.name,
+            scenePointSize: [Double(layout.size.width), Double(layout.size.height)],
+            renderedPixelSize: [normalImage.width, normalImage.height],
+            backingScale: backingScale,
+            hudInsetsPoints: [
+                Double(layout.insets.top),
+                Double(layout.insets.leading),
+                Double(layout.insets.bottom),
+                Double(layout.insets.trailing),
+            ],
+            safeAperturePixels: [district.width, district.height],
+            cameraDetail: String(describing: detail),
+            cameraScale: Double(cameraScale),
+            cameraPosition: [
+                Double(cameraPosition.x),
+                Double(cameraPosition.y),
+            ],
+            districtPublicRealmPixels: district.count,
+            districtPublicRealmWidthShare: district.horizontalCoverage(),
+            plainTerrainPixels: plainTerrain.count,
+            plainTerrainShare: Double(plainTerrain.count) / Double(aperturePixels),
+            plainTerrainComponentPixelsDescending: components,
+            largestPlainTerrainComponentPixels: components.first ?? 0,
+            largestPlainTerrainComponentShare:
+                Double(components.first ?? 0) / Double(aperturePixels),
+            lowFrequencyBlockSizePixels: lowFrequencyBlockSize,
+            semanticCoarseDistrictCoverageThreshold:
+                semanticCoarseDistrictCoverageThreshold,
+            semanticCoarsePlainComponentBlocksDescending:
+                semanticCoarsePlainComponents,
+            semanticCoarseLargestPlainComponentShare:
+                Double(semanticCoarsePlainComponents.first ?? 0)
+                    / Double(semanticCoarseApertureBlocks),
+            lowFrequencyPlainTerrainComponentBlocksDescending:
+                lowFrequencyComponents,
+            lowFrequencyLargestPlainTerrainComponentShare:
+                Double(lowFrequencyComponents.first ?? 0)
+                    / Double(lowFrequencyApertureBlocks),
+            lowFrequencyDistrictEdgeEnergyShare:
+                lowFrequencyDistrictEdgeEnergyShare,
+            opaqueBuildingPixels: buildings.count,
+            selectionAffectedOpaqueBuildingPixels: selectionAffected,
+            selectionAffectedOpaqueBuildingShare:
+                Double(selectionAffected) / Double(buildingPixels),
+            previewAffectedOpaqueBuildingPixels: previewAffected,
+            previewAffectedOpaqueBuildingShare:
+                Double(previewAffected) / Double(buildingPixels),
+            normalFrameSHA256: r4aSHA256(normalFrame),
+            selectionFrameSHA256: r4aSHA256(selectedFrame),
+            previewFrameSHA256: r4aSHA256(previewFrame),
+            districtPublicRealmMaskSHA256: r4aSHA256(districtPNG),
+            plainTerrainMaskSHA256: r4aSHA256(plainPNG),
+            opaqueBuildingMaskSHA256: r4aSHA256(buildingsPNG),
+            normalGrayscaleFrameSHA256: r4aSHA256(normalGrayscaleFrame)
+        )
+        return R4AMeasurementResult(
+            metrics: metrics,
+            districtPublicRealm: district,
+            plainTerrain: plainTerrain,
+            opaqueBuildings: buildings,
+            normalFrame: normalFrame,
+            normalGrayscaleFrame: normalGrayscaleFrame,
+            selectedFrame: selectedFrame,
+            previewFrame: previewFrame,
+            normalFrameSHA256: r4aSHA256(normalFrame)
+        )
+    }
+
+    @MainActor
+    private func r4aMaskImage(
+        layout: R4AMeasurementLayout,
+        state: CityGameState,
+        detail: CameraDetailLevel,
+        cameraScale: CGFloat,
+        cameraPosition: CGPoint,
+        category: R4AMaskCategory
+    ) throws -> CGImage {
+        let style = WorldVisualStyle()
+        let scene = SKScene(size: layout.size)
+        scene.scaleMode = .resizeFill
+        scene.backgroundColor = .black
+        let camera = SKCameraNode()
+        camera.position = cameraPosition
+        camera.setScale(cameraScale)
+        scene.addChild(camera)
+        scene.camera = camera
+
+        switch category {
+        case .turf, .terrainBaseColor, .terrainComposedColor:
+            let backdrop = TerrainRenderer(style: style).makeBackdrop(
+                gridWidth: state.gridWidth,
+                gridHeight: state.gridHeight,
+                detail: detail
+            )
+            let terrainPredicate: (String) -> Bool = { name in
+                name == "terrain.macro.turf"
+                    || name.hasPrefix("terrain.macro.material.patch.")
+                    || name.hasPrefix("terrain.macro.meadow.patch.")
+                    || name.hasPrefix("terrain.macro.furrows.")
+            }
+            if category == .turf {
+                r4aMonochromize(backdrop) { $0 == "terrain.macro.turf" }
+            } else if category == .terrainBaseColor {
+                r4aRetainActualColor(backdrop) { $0 == "terrain.macro.turf" }
+            } else {
+                r4aRetainActualColor(backdrop, predicate: terrainPredicate)
+            }
+            scene.addChild(backdrop)
+        case .districtPublicRealm:
+            let developedGround = TerrainRenderer(style: style)
+                .makeDevelopedDistrictGround(in: state, detail: detail)
+            r4aMonochromize(developedGround) {
+                $0.hasPrefix("district.ground.")
+            }
+            scene.addChild(developedGround)
+            let developed = state.tiles.compactMap { tile in
+                tile.kind != .empty && tile.kind != .road ? tile.coordinate : nil
+            }
+            for tile in state.tiles where tile.kind == .road {
+                let road = RoadRenderer(style: style).makeRoad(
+                    at: tile.coordinate,
+                    in: state,
+                    detail: detail,
+                    reducedMotion: true,
+                    developedCoordinates: developed
+                )
+                road.position = style.isoPosition(tile.coordinate)
+                r4aMonochromize(road) { $0.hasPrefix("road.") }
+                scene.addChild(road)
+            }
+            for tile in state.tiles
+                where tile.kind != .empty && tile.kind != .road {
+                let lot = LotRenderer(style: style).makeLot(
+                    for: tile,
+                    adjacentRoads: RoadConnectionMask.resolving(
+                        at: tile.coordinate,
+                        in: state
+                    ),
+                    detail: detail,
+                    reducedMotion: true
+                )
+                lot.position = style.isoPosition(tile.coordinate)
+                lot.zPosition = style.depth(for: tile.coordinate)
+                r4aMonochromize(lot) { name in
+                    name.hasPrefix("lot.frontage.")
+                        || name.hasPrefix("lot.lod.city.mass.")
+                        || name.hasPrefix("lot.lod.neighborhood.public-realm.")
+                        || name.hasPrefix("lot.lod.block.entrance.")
+                        || name.hasPrefix("lot.context.planting.soil")
+                        || name.hasPrefix("lot.context.parking.material.")
+                        || name.hasPrefix("lot.context.service-yard.material.")
+                        || name.hasPrefix("lot.context.civic.forecourt-stone")
+                        || name.hasPrefix("lot.context.park.terrace.")
+                        || name.hasSuffix(".contact")
+                }
+                scene.addChild(lot)
+            }
+        case .opaqueBuildings:
+            for tile in state.tiles
+                where tile.kind != .empty && tile.kind != .road {
+                let lot = LotRenderer(style: style).makeLot(
+                    for: tile,
+                    adjacentRoads: RoadConnectionMask.resolving(
+                        at: tile.coordinate,
+                        in: state
+                    ),
+                    detail: detail,
+                    reducedMotion: true
+                )
+                lot.position = style.isoPosition(tile.coordinate)
+                lot.zPosition = style.depth(for: tile.coordinate)
+                r4aMonochromize(lot) {
+                    $0.hasPrefix("lot.generated-v4.")
+                }
+                scene.addChild(lot)
+            }
+        }
+
+        let view = SKView(frame: CGRect(origin: .zero, size: layout.size))
+        view.presentScene(scene)
+        RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.04))
+        return try r4aSnapshot(view: view, scene: scene)
+    }
+
+    @MainActor
+    private func r4aMonochromize(
+        _ node: SKNode,
+        predicate: (String) -> Bool
+    ) {
+        let keep = node.name.map(predicate) ?? false
+        if let sprite = node as? SKSpriteNode {
+            sprite.color = .white
+            sprite.colorBlendFactor = 1
+            sprite.alpha = keep ? 1 : 0
+        } else if let shape = node as? SKShapeNode {
+            shape.fillColor = keep ? .white : .clear
+            shape.strokeColor = keep ? .white : .clear
+            shape.alpha = 1
+        } else if let emitter = node as? SKEmitterNode {
+            emitter.isHidden = true
+        } else if let label = node as? SKLabelNode {
+            label.isHidden = true
+        }
+        for child in node.children {
+            r4aMonochromize(child, predicate: predicate)
+        }
+    }
+
+    @MainActor
+    private func r4aRetainActualColor(
+        _ node: SKNode,
+        predicate: (String) -> Bool
+    ) {
+        let keep = node.name.map(predicate) ?? false
+        if let sprite = node as? SKSpriteNode {
+            if !keep { sprite.alpha = 0 }
+        } else if let shape = node as? SKShapeNode {
+            if !keep {
+                shape.fillColor = .clear
+                shape.strokeColor = .clear
+            }
+        } else if node is SKEmitterNode || node is SKLabelNode {
+            node.isHidden = true
+        }
+        for child in node.children {
+            r4aRetainActualColor(child, predicate: predicate)
+        }
+    }
+
+    @MainActor
+    private func r4aSnapshot(view: SKView, scene: SKScene) throws -> CGImage {
+        try XCTUnwrap(view.texture(from: scene)?.cgImage())
+    }
+
+    private func r4aPNG(_ image: CGImage) throws -> Data {
+        let representation = NSBitmapImageRep(cgImage: image)
+        return try XCTUnwrap(
+            representation.representation(using: .png, properties: [:])
+        )
+    }
+
+    private func r4aGrayscalePNG(_ image: CGImage) throws -> Data {
+        var luminance = [UInt8](repeating: 0, count: image.width * image.height)
+        let context = try luminance.withUnsafeMutableBytes { bytes in
+            try XCTUnwrap(CGContext(
+                data: bytes.baseAddress,
+                width: image.width,
+                height: image.height,
+                bitsPerComponent: 8,
+                bytesPerRow: image.width,
+                space: CGColorSpaceCreateDeviceGray(),
+                bitmapInfo: CGImageAlphaInfo.none.rawValue
+            ))
+        }
+        context.interpolationQuality = .none
+        context.draw(
+            image,
+            in: CGRect(x: 0, y: 0, width: image.width, height: image.height)
+        )
+        return try r4aPNG(try XCTUnwrap(context.makeImage()))
+    }
+
+    private func r4aBinaryRaster(
+        image: CGImage,
+        layout: R4AMeasurementLayout
+    ) throws -> R4ABinaryRaster {
+        let color = try r4aColorRaster(image: image, layout: layout)
+        let pixels = stride(from: 0, to: color.rgba.count, by: 4).map { offset in
+            let maximum = max(
+                color.rgba[offset],
+                color.rgba[offset + 1],
+                color.rgba[offset + 2]
+            )
+            return maximum > 8 ? UInt8(1) : UInt8(0)
+        }
+        return R4ABinaryRaster(
+            width: color.width,
+            height: color.height,
+            pixels: pixels
+        )
+    }
+
+    private func r4aColorRaster(
+        image: CGImage,
+        layout: R4AMeasurementLayout
+    ) throws -> R4AColorRaster {
+        let scaleX = CGFloat(image.width) / max(1, layout.size.width)
+        let scaleY = CGFloat(image.height) / max(1, layout.size.height)
+        let crop = CGRect(
+            x: layout.insets.leading * scaleX,
+            y: layout.insets.top * scaleY,
+            width: (
+                layout.size.width
+                    - layout.insets.leading
+                    - layout.insets.trailing
+            ) * scaleX,
+            height: (
+                layout.size.height
+                    - layout.insets.top
+                    - layout.insets.bottom
+            ) * scaleY
+        ).integral
+        let cropped = try XCTUnwrap(image.cropping(to: crop))
+        let width = cropped.width
+        let height = cropped.height
+        var rgba = [UInt8](repeating: 0, count: width * height * 4)
+        let context = try rgba.withUnsafeMutableBytes { bytes in
+            try XCTUnwrap(CGContext(
+                data: bytes.baseAddress,
+                width: width,
+                height: height,
+                bitsPerComponent: 8,
+                bytesPerRow: width * 4,
+                space: CGColorSpaceCreateDeviceRGB(),
+                bitmapInfo: CGBitmapInfo(
+                    rawValue: CGImageAlphaInfo.premultipliedLast.rawValue
+                ).rawValue
+            ))
+        }
+        context.interpolationQuality = .none
+        context.draw(
+            cropped,
+            in: CGRect(x: 0, y: 0, width: width, height: height)
+        )
+        return R4AColorRaster(width: width, height: height, rgba: rgba)
+    }
+
+    private func r4aSHA256(_ data: Data) -> String {
+        SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined()
+    }
+
+    private func r4aRepositoryRoot() -> URL {
+        var root = URL(fileURLWithPath: #filePath)
+        for _ in 0..<5 { root.deleteLastPathComponent() }
+        return root
+    }
+
+    @MainActor
+    private func r4aRepetitionFixtureLedger(
+        name: String,
+        state: CityGameState
+    ) throws -> R4ARepetitionFixtureLedger {
+        let renderer = LotContextRenderer(style: WorldVisualStyle())
+        let catalog = WorldAssetCatalog()
+        let placements = try state.tiles
+            .filter {
+                $0.kind != .empty
+                    && $0.kind != .road
+                    && $0.constructionProgress >= 1
+            }
+            .sorted { ($0.coordinate.y, $0.coordinate.x) < ($1.coordinate.y, $1.coordinate.x) }
+            .map { tile -> R4ARepetitionPlacement in
+                let roads = RoadConnectionMask.resolving(
+                    at: tile.coordinate,
+                    in: state
+                )
+                let context = try XCTUnwrap(
+                    renderer.contextSignature(
+                        for: tile,
+                        adjacentRoads: roads
+                    )
+                )
+                let logicalID = try XCTUnwrap(
+                    r4aGeneratedLogicalID(for: tile, adjacentRoads: roads)
+                )
+                let sourceSHA = try XCTUnwrap(
+                    catalog.generatedAsset(logicalID: logicalID)?.sourceSHA256
+                )
+                let placementSignatures = context.placements.map {
+                    [
+                        $0.role.rawValue,
+                        String(format: "%.3f", $0.center.x),
+                        String(format: "%.3f", $0.center.y),
+                        String(format: "%.3f", $0.size.width),
+                        String(format: "%.3f", $0.size.height),
+                        $0.groundOnly ? "ground" : "prop",
+                    ].joined(separator: ":")
+                }
+                let signature = r4aSourceContextSignature(
+                    logicalID: logicalID,
+                    sourceSHA256: sourceSHA,
+                    family: context.family,
+                    materialVariant: context.materialVariant,
+                    frontage: context.frontage
+                )
+                return R4ARepetitionPlacement(
+                    coordinate: tile.coordinate.id,
+                    kind: tile.kind.rawValue,
+                    level: tile.level,
+                    sourceLogicalID: logicalID,
+                    sourceSHA256: sourceSHA,
+                    contextFamily: context.family,
+                    contextMaterialVariant: context.materialVariant,
+                    contextFrontage: context.frontage,
+                    contextPlacements: placementSignatures,
+                    sourceContextSignature: signature
+                )
+            }
+        let adjacentPairs = r4aRepetitionAdjacencies(for: placements)
+        let violations = adjacentPairs.filter {
+            $0.disposition == "fail_available_alternative"
+        }
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.sortedKeys]
+        let stateSHA = r4aSHA256(try encoder.encode(state))
+        return R4ARepetitionFixtureLedger(
+            fixture: name,
+            stateSHA256: stateSHA,
+            placements: placements,
+            adjacentPairs: adjacentPairs,
+            violations: violations
+        )
+    }
+
+    @MainActor
+    private func r4aRepetitionAdjacencies(
+        for placements: [R4ARepetitionPlacement]
+    ) -> [R4ARepetitionAdjacency] {
+        var adjacentPairs: [R4ARepetitionAdjacency] = []
+        for firstIndex in placements.indices {
+            for secondIndex in placements.indices where secondIndex > firstIndex {
+                let first = placements[firstIndex]
+                let second = placements[secondIndex]
+                guard let firstCoordinate = r4aCoordinate(first.coordinate),
+                      let secondCoordinate = r4aCoordinate(second.coordinate) else {
+                    continue
+                }
+                guard abs(firstCoordinate.x - secondCoordinate.x)
+                    + abs(firstCoordinate.y - secondCoordinate.y) == 1 else {
+                    continue
+                }
+                let identical =
+                    first.sourceContextSignature == second.sourceContextSignature
+                let alternatives: [String]
+                if identical {
+                    alternatives = (0..<LotContextRenderer
+                        .districtMaterialVariantCount(for: BuildingKind(
+                            rawValue: first.kind
+                        ) ?? .empty))
+                        .filter { $0 != first.contextMaterialVariant }
+                        .map {
+                            r4aSourceContextSignature(
+                                logicalID: first.sourceLogicalID,
+                                sourceSHA256: first.sourceSHA256,
+                                family: first.contextFamily,
+                                materialVariant: $0,
+                                frontage: first.contextFrontage
+                            )
+                        }
+                } else {
+                    alternatives = []
+                }
+                adjacentPairs.append(R4ARepetitionAdjacency(
+                    firstCoordinate: first.coordinate,
+                    secondCoordinate: second.coordinate,
+                    firstSignature: first.sourceContextSignature,
+                    secondSignature: second.sourceContextSignature,
+                    identicalSourceAndContext: identical,
+                    availableAlternatives: alternatives,
+                    disposition: r4aRepetitionDisposition(
+                        identicalSourceAndContext: identical,
+                        availableAlternatives: alternatives
+                    )
+                ))
+            }
+        }
+        return adjacentPairs
+    }
+
+    private func r4aRepetitionDisposition(
+        identicalSourceAndContext: Bool,
+        availableAlternatives: [String]
+    ) -> String {
+        guard identicalSourceAndContext else { return "pass_distinct" }
+        return availableAlternatives.isEmpty
+            ? "pass_no_alternative"
+            : "fail_available_alternative"
+    }
+
+    private func r4aSourceContextSignature(
+        logicalID: String,
+        sourceSHA256: String,
+        family: String,
+        materialVariant: Int,
+        frontage: UInt8
+    ) -> String {
+        "\(logicalID)@\(sourceSHA256)|\(family):\(materialVariant):frontage-\(frontage)"
+    }
+
+    private func r4aCoordinate(_ id: String) -> GridCoordinate? {
+        let components = id.split(separator: "-")
+        guard components.count == 2,
+              let x = components.first.flatMap({ Int($0) }),
+              let y = components.last.flatMap({ Int($0) }) else {
+            return nil
+        }
+        return GridCoordinate(x: x, y: y)
+    }
+
+    private func r4aGeneratedLogicalID(
+        for tile: CityTile,
+        adjacentRoads: RoadConnectionMask
+    ) -> String? {
+        switch tile.kind {
+        case .residential:
+            ResidentialGeneratedAssetIdentity(
+                level: tile.level,
+                adjacentRoads: adjacentRoads
+            )?.logicalID
+        case .commercial:
+            CommercialGeneratedAssetIdentity(
+                level: tile.level,
+                adjacentRoads: adjacentRoads
+            )?.logicalID
+        case .industrial:
+            IndustrialGeneratedAssetIdentity(
+                level: tile.level,
+                adjacentRoads: adjacentRoads
+            )?.logicalID
+        case .park:
+            "park_l01"
+        case .cityHall:
+            "city_hall_l01"
+        case .waterTower:
+            "water_tower_l01"
+        case .powerPlant:
+            "industrial_l01"
+        case .fireStation:
+            "commercial_l01"
+        case .policeStation:
+            "city_hall_l01"
+        case .school:
+            "residential_l01"
+        case .empty, .road:
+            nil
+        }
+    }
+
+    private func r4aBinaryRaster(data: Data) throws -> R4ABinaryRaster {
+        let representation = try XCTUnwrap(NSBitmapImageRep(data: data))
+        let image = try XCTUnwrap(representation.cgImage)
+        let width = image.width
+        let height = image.height
+        var rgba = [UInt8](repeating: 0, count: width * height * 4)
+        let context = try rgba.withUnsafeMutableBytes { bytes in
+            try XCTUnwrap(CGContext(
+                data: bytes.baseAddress,
+                width: width,
+                height: height,
+                bitsPerComponent: 8,
+                bytesPerRow: width * 4,
+                space: CGColorSpaceCreateDeviceRGB(),
+                bitmapInfo: CGBitmapInfo(
+                    rawValue: CGImageAlphaInfo.premultipliedLast.rawValue
+                ).rawValue
+            ))
+        }
+        context.interpolationQuality = .none
+        context.draw(
+            image,
+            in: CGRect(x: 0, y: 0, width: width, height: height)
+        )
+        let decodedPixels = stride(from: 0, to: rgba.count, by: 4).map { offset in
+            max(rgba[offset], rgba[offset + 1], rgba[offset + 2]) > 8
+                ? UInt8(1)
+                : UInt8(0)
+        }
+        // CGContext's persisted-PNG decode is bottom-origin while the live
+        // safe-aperture raster is top-origin. Normalize before coarse-block
+        // partitioning so partial edge rows cannot change the metric.
+        let pixels = (0..<height).flatMap { row -> ArraySlice<UInt8> in
+            let sourceRow = height - 1 - row
+            let start = sourceRow * width
+            return decodedPixels[start..<(start + width)]
+        }
+        return R4ABinaryRaster(width: width, height: height, pixels: pixels)
+    }
+
+    private func r4aCoarseDistrictMassMetrics(
+        phase: String,
+        productCommit: String,
+        layout: String,
+        root: URL,
+        blockSize: Int,
+        minimumDistrictCoverage: Double
+    ) throws -> R4ACoarseDistrictMassMetrics {
+        let relativePath = "masks/\(layout)-district-public-realm.png"
+        let maskURL = root.appending(path: relativePath)
+        let data = try Data(contentsOf: maskURL)
+        let district = try r4aBinaryRaster(data: data)
+        let coarseDistrict = district.coarseOccupancy(
+            blockSize: blockSize,
+            minimumCoverage: minimumDistrictCoverage
+        )
+        let coarsePlain = R4ABinaryRaster(
+            width: coarseDistrict.width,
+            height: coarseDistrict.height,
+            pixels: coarseDistrict.pixels.map { $0 == 0 ? 1 : 0 }
+        )
+        let components = coarsePlain.connectedComponentSizes()
+        var minimumX = district.width
+        var maximumX = -1
+        for index in district.pixels.indices
+            where district.pixels[index] != 0 {
+            let x = index % district.width
+            minimumX = min(minimumX, x)
+            maximumX = max(maximumX, x)
+        }
+        let widthNumerator = maximumX >= minimumX
+            ? maximumX - minimumX + 1
+            : 0
+        let aperturePixels = max(1, district.width * district.height)
+        let coarseBlocks = max(1, coarseDistrict.width * coarseDistrict.height)
+        let largestComponent = components.first ?? 0
+        return R4ACoarseDistrictMassMetrics(
+            phase: phase,
+            productCommit: productCommit,
+            layout: layout,
+            districtMaskPath: relativePath,
+            districtMaskSHA256: r4aSHA256(data),
+            safeAperturePixels: [district.width, district.height],
+            safeAperturePixelCount: aperturePixels,
+            districtPublicRealmPixels: district.count,
+            districtPublicRealmPixelShare:
+                Double(district.count) / Double(aperturePixels),
+            districtWidthNumeratorPixels: widthNumerator,
+            districtWidthDenominatorPixels: district.width,
+            districtPublicRealmWidthShare:
+                Double(widthNumerator) / Double(max(1, district.width)),
+            blockSizePixels: blockSize,
+            minimumDistrictCoverage: minimumDistrictCoverage,
+            coarseGrid: [coarseDistrict.width, coarseDistrict.height],
+            coarseBlockCount: coarseBlocks,
+            authoredDistrictBlockCount: coarseDistrict.count,
+            coarsePlainComponentBlocksDescending: components,
+            largestCoarsePlainComponentBlocks: largestComponent,
+            largestCoarsePlainComponentDenominatorBlocks: coarseBlocks,
+            largestCoarsePlainComponentShare:
+                Double(largestComponent) / Double(coarseBlocks)
+        )
+    }
+
+    private func r4aWriteSortedJSON<T: Encodable>(
+        _ value: T,
+        to url: URL
+    ) throws {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [
+            .prettyPrinted,
+            .sortedKeys,
+            .withoutEscapingSlashes,
+        ]
+        var data = try encoder.encode(value)
+        data.append(0x0A)
+        try FileManager.default.createDirectory(
+            at: url.deletingLastPathComponent(),
+            withIntermediateDirectories: true
+        )
+        try data.write(to: url, options: .atomic)
+    }
+
     private func retiredGoldenDistrictReferenceState() -> CityGameState {
         var state = CityGameState.newCity(seed: 42)
         for tile in state.tiles where tile.kind != .empty {
@@ -4914,6 +7735,21 @@ final class WorldRenderingTests: XCTestCase {
         var result = node.name.map { [$0] } ?? []
         for child in node.children { result.append(contentsOf: descendantNames(in: child)) }
         return result
+    }
+
+    @MainActor
+    private func recursiveNodeCount(_ node: SKNode) -> Int {
+        1 + node.children.reduce(0) { $0 + recursiveNodeCount($1) }
+    }
+
+    @MainActor
+    private func recursiveDrawableCount(_ node: SKNode) -> Int {
+        let local = node is SKSpriteNode
+            || node is SKShapeNode
+            || node is SKLabelNode
+            || node is SKEmitterNode
+        return (local ? 1 : 0)
+            + node.children.reduce(0) { $0 + recursiveDrawableCount($1) }
     }
 
     @MainActor

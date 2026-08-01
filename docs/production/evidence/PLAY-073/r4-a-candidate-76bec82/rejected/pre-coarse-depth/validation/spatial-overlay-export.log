@@ -1,0 +1,20 @@
+[0/1] Planning build
+Building for debugging...
+[0/4] Write swift-version--58304C5D6DBC2206.txt
+Build complete! (0.11s)
+Test Suite 'Selected tests' started at 2026-07-30 06:04:12.980.
+Test Suite 'CitySimNativePackageTests.xctest' started at 2026-07-30 06:04:12.980.
+Test Suite 'WorldRenderingTests' started at 2026-07-30 06:04:12.980.
+Test Case '-[CitySimNativeTests.WorldRenderingTests testSpatialConsequenceProofExportsSameCityWorseningRecoveryAndCompact]' started.
+Test Case '-[CitySimNativeTests.WorldRenderingTests testSpatialConsequenceProofExportsSameCityWorseningRecoveryAndCompact]' passed (1.546 seconds).
+Test Suite 'WorldRenderingTests' passed at 2026-07-30 06:04:14.526.
+	 Executed 1 test, with 0 failures (0 unexpected) in 1.546 (1.546) seconds
+Test Suite 'CitySimNativePackageTests.xctest' passed at 2026-07-30 06:04:14.526.
+	 Executed 1 test, with 0 failures (0 unexpected) in 1.546 (1.546) seconds
+Test Suite 'Selected tests' passed at 2026-07-30 06:04:14.526.
+	 Executed 1 test, with 0 failures (0 unexpected) in 1.546 (1.547) seconds
+CITYSIM_PLAY022_SPATIAL_PROOF focus=13,11 strained_utility=severe strained_pollution=severe strained_vitality=strained recovered_utility=strained recovered_pollution=strained recovered_vitality=prosperous event_ids=spatial-v1:1:0c85fec44deb22f3eb58b1ffbf3aebfd80adb7c6fb1299db0f2bfd0bd39274d2:13:11:utility:0:1,spatial-v1:1:0c85fec44deb22f3eb58b1ffbf3aebfd80adb7c6fb1299db0f2bfd0bd39274d2:13:11:pollution:0:1,spatial-v1:1:0c85fec44deb22f3eb58b1ffbf3aebfd80adb7c6fb1299db0f2bfd0bd39274d2:13:11:vitality:0:2
+◇ Test run started.
+↳ Testing Library Version: 1902
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.

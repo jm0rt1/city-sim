@@ -1,0 +1,33 @@
+[0/1] Planning build
+Building for debugging...
+[0/3] Write swift-version--58304C5D6DBC2206.txt
+Build complete! (0.15s)
+branch=codex/citysim-world-rendering
+commit=298167c74a7d28042857d7f87c1f7b9130f779ed
+worktree_root=/Users/James/.codex/worktrees/cac1/city-sim
+worktree_token=w5f893ad1da1b
+candidate_id=world-rendering-w5f893ad1da1b
+bundle_identifier=com.jfmortensen.citysim.world-rendering.w5f893ad1da1b
+preference_domain=com.jfmortensen.citysim.world-rendering.w5f893ad1da1b
+display_name=CitySim [World w5f893ad1da1b]
+data_root=/Users/James/.codex/worktrees/cac1/city-sim/dist/test-data/world-rendering-w5f893ad1da1b
+staged_bundle_path=/Users/James/.codex/worktrees/cac1/city-sim/dist/CitySim-world-rendering-w5f893ad1da1b.app
+executable_path=/Users/James/.codex/worktrees/cac1/city-sim/dist/CitySim-world-rendering-w5f893ad1da1b.app/Contents/MacOS/CitySimNative-w5f893ad1da1b
+resource_bundle_path=/Users/James/.codex/worktrees/cac1/city-sim/dist/CitySim-world-rendering-w5f893ad1da1b.app/CitySimNative_CitySimNative.bundle
+manifest_path=/Users/James/.codex/worktrees/cac1/city-sim/dist/manifests/world-rendering-w5f893ad1da1b.manifest
+process_id=87185
+process_observed=87185 Thu Jul 30 08:22:44 2026 /Users/James/.codex/worktrees/cac1/city-sim/dist/CitySim-world-rendering-w5f893ad1da1b.app/Contents/MacOS/CitySimNative-w5f893ad1da1b
+executable_sha256=a0ba7bc836dc2dae61b084e00375febc4d04bcbe92e495d5b7cba58e64d567f3
+info_plist_sha256=f2a807f26fb559d5a505f2a15282d4b49e09de2c3887ca8fd35389d170387a72
+staging_manifest_sha256=3c478c18d69b927d0c4904a5423f3c9d9af9e0d82348fa864acd2c61e3a65fbb
+source_resource_inventory_sha256=a72eb94a85f268eba6402beebaeb4b7629cb9e201db60c7bfedbb26e7e62b874
+staged_resource_inventory_sha256=a72eb94a85f268eba6402beebaeb4b7629cb9e201db60c7bfedbb26e7e62b874
+source_atlas_manifest_sha256=411934e492a66216787f8c93dd91d3f68cc16637110dba9ed7186b22dda96d3d
+staged_atlas_manifest_sha256=411934e492a66216787f8c93dd91d3f68cc16637110dba9ed7186b22dda96d3d
+source_staged_manifest_parity=true
+terrain_probe_present=true
+termination_signal=TERM
+matching_processes_after_termination=0
+player_interaction=false
+ax_journey=false
+reduce_motion_journey=false

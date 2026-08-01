@@ -1,0 +1,302 @@
+{
+  "coordinateCategories" : {
+    "authoritativeOccupiedCoordinates" : [
+      {
+        "coordinate" : "3-10",
+        "kind" : "residential"
+      },
+      {
+        "coordinate" : "6-10",
+        "kind" : "residential"
+      },
+      {
+        "coordinate" : "9-10",
+        "kind" : "residential"
+      },
+      {
+        "coordinate" : "17-10",
+        "kind" : "residential"
+      },
+      {
+        "coordinate" : "6-11",
+        "kind" : "residential"
+      },
+      {
+        "coordinate" : "10-11",
+        "kind" : "residential"
+      },
+      {
+        "coordinate" : "11-11",
+        "kind" : "cityHall"
+      },
+      {
+        "coordinate" : "13-11",
+        "kind" : "commercial"
+      },
+      {
+        "coordinate" : "14-11",
+        "kind" : "industrial"
+      },
+      {
+        "coordinate" : "11-13",
+        "kind" : "park"
+      },
+      {
+        "coordinate" : "13-13",
+        "kind" : "powerPlant"
+      },
+      {
+        "coordinate" : "15-13",
+        "kind" : "waterTower"
+      }
+    ],
+    "authoritativeRoadCoordinates" : [
+      "4-9",
+      "5-9",
+      "6-9",
+      "7-9",
+      "8-9",
+      "9-9",
+      "10-9",
+      "11-9",
+      "12-9",
+      "13-9",
+      "14-9",
+      "15-9",
+      "16-9",
+      "4-10",
+      "8-10",
+      "12-10",
+      "16-10",
+      "4-11",
+      "8-11",
+      "12-11",
+      "16-11",
+      "4-12",
+      "5-12",
+      "6-12",
+      "7-12",
+      "8-12",
+      "9-12",
+      "10-12",
+      "11-12",
+      "12-12",
+      "13-12",
+      "14-12",
+      "15-12",
+      "16-12"
+    ],
+    "districtMaskNodePrefixes" : [
+      "district.ground.",
+      "road.",
+      "lot.frontage.",
+      "lot.lod.",
+      "lot.context."
+    ],
+    "emptyBuildableFrontageBandClassification" : "empty_buildable_road_frontage_ground_not_occupied_or_special",
+    "emptyBuildableFrontageBandCoordinates" : [
+      "4-8",
+      "5-8",
+      "6-8",
+      "7-8",
+      "8-8",
+      "9-8",
+      "10-8",
+      "11-8",
+      "12-8",
+      "13-8",
+      "14-8",
+      "15-8",
+      "16-8",
+      "3-9",
+      "17-9",
+      "3-11",
+      "17-11",
+      "3-12",
+      "17-12",
+      "4-13",
+      "5-13",
+      "6-13",
+      "7-13",
+      "8-13",
+      "9-13",
+      "10-13",
+      "12-13",
+      "14-13",
+      "16-13"
+    ],
+    "emptyBuildableFrontageBandCountedAsDistrictPublicRealm" : true,
+    "emptyBuildableFrontageBandCountedAsOccupied" : false,
+    "emptyCommonsClassification" : "empty_buildable_natural_decoration_excluded_from_district_public_realm",
+    "emptyCommonsCountedAsDistrictPublicRealm" : false,
+    "emptyRoadEnclosedCommonsCoordinates" : [
+      "5-10",
+      "7-10",
+      "10-10",
+      "11-10",
+      "13-10",
+      "14-10",
+      "15-10",
+      "5-11",
+      "7-11",
+      "9-11",
+      "15-11"
+    ]
+  },
+  "definition" : "play073-r4-a-rendered-pixel-v1",
+  "fixture" : "CityGameState.newCity(seed:42)",
+  "fixtureStateSHA256" : "ee95ebc98d8314e2ae2661baa03bc11809a70811cec1fdfb5633930ee78186d3",
+  "layouts" : [
+    {
+      "backingScale" : 2,
+      "cameraDetail" : "block",
+      "cameraPosition" : [
+        -18,
+        -383
+      ],
+      "cameraScale" : 0.5,
+      "districtPublicRealmMaskSHA256" : "195297ff3824ab8f2daf85ea263d9a049754aeac7001f5720b6f7969acaecd79",
+      "districtPublicRealmPixels" : 1143760,
+      "districtPublicRealmWidthShare" : 1,
+      "hudInsetsPoints" : [
+        104,
+        24,
+        160,
+        24
+      ],
+      "largestPlainTerrainComponentPixels" : 251879,
+      "largestPlainTerrainComponentShare" : 0.09535785459875945,
+      "layout" : "regular",
+      "lowFrequencyBlockSizePixels" : 32,
+      "lowFrequencyDistrictEdgeEnergyShare" : 0.9379557218318849,
+      "lowFrequencyLargestPlainTerrainComponentShare" : 0.19633307868601987,
+      "lowFrequencyPlainTerrainComponentBlocksDescending" : [
+        514,
+        61
+      ],
+      "normalFrameSHA256" : "3178584e6300dcb297f7024d6a12b247c577c956f937f0fe8e57f97a72f478e7",
+      "normalGrayscaleFrameSHA256" : "bb3baa8c3e4948658ccc966805fb2841056f1dc1190073832b2ba115ba5f3ddf",
+      "opaqueBuildingMaskSHA256" : "ec3e2c56af2c6d1a24122ca228e0abfe4487d17fb0a48bfa6cd6301bcc00eaf9",
+      "opaqueBuildingPixels" : 275194,
+      "plainTerrainComponentPixelsDescending" : [
+        251879,
+        26514,
+        2,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "plainTerrainMaskSHA256" : "b4dc98b8388d77ecd6440be5e002c7cee3a13459ed3b9d96c47ee9901645bec6",
+      "plainTerrainPixels" : 278401,
+      "plainTerrainShare" : 0.10539871159623958,
+      "previewAffectedOpaqueBuildingPixels" : 3258,
+      "previewAffectedOpaqueBuildingShare" : 0.011838920906705816,
+      "previewFrameSHA256" : "1b5eff0fc1267631d3b24506150bd2bab9df4b2500031d65f9556f7aefb0e736",
+      "renderedPixelSize" : [
+        2560,
+        1600
+      ],
+      "safeAperturePixels" : [
+        2464,
+        1072
+      ],
+      "scenePointSize" : [
+        1280,
+        800
+      ],
+      "selectionAffectedOpaqueBuildingPixels" : 4350,
+      "selectionAffectedOpaqueBuildingShare" : 0.015807030676540913,
+      "selectionFrameSHA256" : "859fb2ea1200bd6bd6102689f1a944c026abb6dac133923f35bbfb412f64c5cf",
+      "semanticCoarseDistrictCoverageThreshold" : 0.1,
+      "semanticCoarseLargestPlainComponentShare" : 0.23834988540870894,
+      "semanticCoarsePlainComponentBlocksDescending" : [
+        624,
+        590,
+        46,
+        22,
+        21,
+        21,
+        20,
+        9,
+        5,
+        4,
+        3,
+        2
+      ]
+    },
+    {
+      "backingScale" : 2,
+      "cameraDetail" : "neighborhood",
+      "cameraPosition" : [
+        -18,
+        -401.0950012207031
+      ],
+      "cameraScale" : 0.6549999713897705,
+      "districtPublicRealmMaskSHA256" : "246e4026beae4d4fde11553147ba228e167dea002817807eb8dbac74d75b97bf",
+      "districtPublicRealmPixels" : 399331,
+      "districtPublicRealmWidthShare" : 1,
+      "hudInsetsPoints" : [
+        138,
+        19,
+        236,
+        19
+      ],
+      "largestPlainTerrainComponentPixels" : 51125,
+      "largestPlainTerrainComponentShare" : 0.06560812475617518,
+      "layout" : "compact",
+      "lowFrequencyBlockSizePixels" : 32,
+      "lowFrequencyDistrictEdgeEnergyShare" : 0.9633924584509637,
+      "lowFrequencyLargestPlainTerrainComponentShare" : 0.1345679012345679,
+      "lowFrequencyPlainTerrainComponentBlocksDescending" : [
+        109
+      ],
+      "normalFrameSHA256" : "72f37819bf7de0f32593570c16473b70cb5eb87a8d4f8581a675c918af7d65da",
+      "normalGrayscaleFrameSHA256" : "8b23db1efe01deb2b0f3bb5b0294d3986d8ed977e6fe3e9221f2bfd635d20c2c",
+      "opaqueBuildingMaskSHA256" : "9ef3fe36c7374a0628f0f76fe3bea95a258f50e7edb1792448fb8c6d8ad03f99",
+      "opaqueBuildingPixels" : 93164,
+      "plainTerrainComponentPixelsDescending" : [
+        51125,
+        1,
+        1
+      ],
+      "plainTerrainMaskSHA256" : "32965b2220fae688eb2deb336b84b6f527291371a5237fb6db71a8a645ae9d56",
+      "plainTerrainPixels" : 51127,
+      "plainTerrainShare" : 0.06561069133318276,
+      "previewAffectedOpaqueBuildingPixels" : 9142,
+      "previewAffectedOpaqueBuildingShare" : 0.09812803228714954,
+      "previewFrameSHA256" : "a44f7e6b975946c1ab41d23b37b2712a6e00214ba07f016f264ca9b9946dc01d",
+      "renderedPixelSize" : [
+        1800,
+        1200
+      ],
+      "safeAperturePixels" : [
+        1724,
+        452
+      ],
+      "scenePointSize" : [
+        900,
+        600
+      ],
+      "selectionAffectedOpaqueBuildingPixels" : 2423,
+      "selectionAffectedOpaqueBuildingShare" : 0.026007900047228544,
+      "selectionFrameSHA256" : "1d08de53abdecc3f878c22f3ed184ce1ab8059bf9887c267bf286eca7e16f586",
+      "semanticCoarseDistrictCoverageThreshold" : 0.1,
+      "semanticCoarseLargestPlainComponentShare" : 0.18271604938271604,
+      "semanticCoarsePlainComponentBlocksDescending" : [
+        148,
+        145,
+        18,
+        14,
+        11,
+        5,
+        2
+      ]
+    }
+  ],
+  "phase" : "exact-product-candidate",
+  "productCommit" : "298167c74a7d28042857d7f87c1f7b9130f779ed",
+  "schemaVersion" : 1
+}

@@ -1,0 +1,33 @@
+utc=2026-07-30T10:38:42Z
+ 6:38  up 51 days, 10:25, 1 user, load averages: 3.28 6.54 5.65
+The system has 25769803776 (1572864 pages with a page size of 16384).
+
+Stats:
+Pages free: 12700
+Pages purgeable: 3913
+Pages purged: 551174634
+
+Swap I/O:
+Swapins: 24484721
+Swapouts: 33156060
+
+Page Q counts:
+Pages active: 333837
+Pages inactive: 299878
+Pages speculative: 32494
+Pages throttled: 0
+Pages wired down: 313726
+
+Compressor Stats:
+Pages used by compressor: 519993
+Pages decompressed: 2161134233
+Pages compressed: 2563728503
+
+File I/O:
+Pageins: 804872245
+Pageouts: 6550969
+
+System-wide memory free percentage: 44%
+Note: No thermal warning level has been recorded
+Note: No performance warning level has been recorded
+Note: No CPU power status has been recorded

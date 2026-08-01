@@ -1,0 +1,39 @@
+utc=2026-07-30T11:03:40Z
+head=565cf32df59d755bbf745fbf6446cf6328ed020c
+product=76bec82739c8487d170c8725af45fe6f1025aacb
+product_is_ancestor=true
+tracked_status_begin
+tracked_status_end
+command=swift test --package-path Native/CitySimNative --filter WorldRenderingTests.testR4AFreshProcessColdPathWritesGovernedReceipt
+ 7:03  up 51 days, 10:50, 1 user, load averages: 2.31 3.75 4.46
+The system has 25769803776 (1572864 pages with a page size of 16384).
+
+Stats:
+Pages free: 29040
+Pages purgeable: 2305
+Pages purged: 551819765
+
+Swap I/O:
+Swapins: 24485785
+Swapouts: 33156060
+
+Page Q counts:
+Pages active: 284123
+Pages inactive: 315383
+Pages speculative: 44280
+Pages throttled: 0
+Pages wired down: 313807
+
+Compressor Stats:
+Pages used by compressor: 526189
+Pages decompressed: 2162833847
+Pages compressed: 2565965042
+
+File I/O:
+Pageins: 805699669
+Pageouts: 6565721
+
+System-wide memory free percentage: 44%
+Note: No thermal warning level has been recorded
+Note: No performance warning level has been recorded
+Note: No CPU power status has been recorded

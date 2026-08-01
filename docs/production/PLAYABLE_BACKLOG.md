@@ -1196,3 +1196,34 @@ This is the authoritative first-wave task source. The shared target is one coher
   mixed; a generic healing path appears; or the exact integrated PLAY-085
   identity is unavailable.
 - **Claim:** `docs/production/claims/PLAY-088.simulation-platform.md`.
+
+### [ ] PLAY-089: Operate a low-overhead intelligence optimization loop
+
+- **Player outcome:** CitySim improves faster and more reliably because bounded
+  work uses the cheapest capable model while architecture, visual judgment,
+  integration, and final real-app acceptance retain frontier ownership.
+- **Owning lane:** Operating-system optimization.
+- **Requirement IDs:** TEC-002, REL-001.
+- **Dependencies:** Published model-routing contract and exact canonical lane
+  receipts; Integration approval for every shared mutation.
+- **In scope:** Read-only execution observation, task-owned metrics/evidence,
+  the lane skill, adversarial route/task validators, and only exact shared
+  files named by a later Integration route.
+- **Out of scope:** Product code, gameplay/visual decisions, final QA,
+  integration, push, speculative process work, or weakening any quality gate.
+- **Work checklist:** Observe the four event boundaries; distinguish worker
+  from Integration rework; measure context, validation, idle, route, and model
+  cost signals; return `NO_CHANGE`, a bounded proposal, or one focused commit.
+- **Acceptance:** At least one repeated cost source is either measurably removed
+  with adversarial proof or explicitly left unchanged; no authority, identity,
+  claim, deterministic/save, staged-app, independent-QA, art-activation, or
+  publication invariant regresses.
+- **Validation:** Focused optimizer and routing tests, exact route projection,
+  affected skill validation, JSON validation, and `git diff --check`.
+- **Proof:** Machine-readable before/after receipts under
+  `docs/production/evidence/PLAY-089/`, with unavailable measurements recorded
+  as null and no invented pricing.
+- **Stop conditions:** Shared paths are not frozen; evidence is insufficient;
+  the proposal requires product judgment; two repairs fail; or savings would
+  weaken a protected quality gate.
+- **Claim:** `docs/production/claims/PLAY-089.operating-system-optimization.md`.

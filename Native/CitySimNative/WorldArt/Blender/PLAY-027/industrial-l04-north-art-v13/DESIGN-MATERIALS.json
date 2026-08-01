@@ -1,0 +1,107 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "stage": "north-v13-zero-pixel-design-authority",
+  "libraryID": "industrial-l04-north-v13-portal-crown-material-design",
+  "materials": [
+    {
+      "id": "v13-grounded-foundation",
+      "role": "grounded-foundation",
+      "baseColorRGBA": [0.18, 0.20, 0.19, 1],
+      "roughness": 0.9,
+      "metalness": 0.02
+    },
+    {
+      "id": "v13-integrated-operating-apron",
+      "role": "integrated-operating-apron",
+      "baseColorRGBA": [0.34, 0.31, 0.25, 1],
+      "roughness": 0.92,
+      "metalness": 0.01
+    },
+    {
+      "id": "v13-warm-foundry-masonry",
+      "role": "warm-foundry-masonry",
+      "baseColorRGBA": [0.50, 0.31, 0.18, 1],
+      "roughness": 0.86,
+      "metalness": 0.02
+    },
+    {
+      "id": "v13-warm-control-masonry",
+      "role": "warm-control-masonry",
+      "baseColorRGBA": [0.61, 0.43, 0.27, 1],
+      "roughness": 0.82,
+      "metalness": 0.02
+    },
+    {
+      "id": "v13-charcoal-structural-steel",
+      "role": "charcoal-structural-steel",
+      "baseColorRGBA": [0.14, 0.20, 0.20, 1],
+      "roughness": 0.64,
+      "metalness": 0.55
+    },
+    {
+      "id": "v13-portal-crown-steel",
+      "role": "portal-crown-steel",
+      "baseColorRGBA": [0.33, 0.39, 0.35, 1],
+      "roughness": 0.68,
+      "metalness": 0.42
+    },
+    {
+      "id": "v13-weathered-bluegreen-roof",
+      "role": "weathered-bluegreen-roof",
+      "baseColorRGBA": [0.29, 0.43, 0.39, 1],
+      "roughness": 0.72,
+      "metalness": 0.38
+    },
+    {
+      "id": "v13-clerestory-and-roof-edge",
+      "role": "clerestory-and-roof-edge",
+      "baseColorRGBA": [0.53, 0.59, 0.50, 1],
+      "roughness": 0.66,
+      "metalness": 0.28
+    },
+    {
+      "id": "v13-deep-freight-void",
+      "role": "deep-freight-void",
+      "baseColorRGBA": [0.025, 0.035, 0.034, 1],
+      "roughness": 0.94,
+      "metalness": 0.03
+    },
+    {
+      "id": "v13-oxidized-process-machinery",
+      "role": "oxidized-process-machinery",
+      "baseColorRGBA": [0.44, 0.52, 0.38, 1],
+      "roughness": 0.7,
+      "metalness": 0.45
+    },
+    {
+      "id": "v13-restrained-hot-process",
+      "role": "restrained-hot-process",
+      "baseColorRGBA": [0.95, 0.39, 0.06, 1],
+      "roughness": 0.48,
+      "metalness": 0.02,
+      "emissionStrength": 0.2
+    },
+    {
+      "id": "v13-warm-staff-glazing",
+      "role": "warm-staff-glazing",
+      "baseColorRGBA": [0.72, 0.55, 0.28, 1],
+      "roughness": 0.38,
+      "metalness": 0.04,
+      "emissionStrength": 0.08
+    }
+  ],
+  "paletteRules": {
+    "dominantWhiteForbidden": true,
+    "cyanOrIceBlueForbidden": true,
+    "magentaForbidden": true,
+    "neonOutlineForbidden": true,
+    "hotProcessMaximumOpaqueShare": 0.04,
+    "warmMasonryMinimumOpaqueShare": 0.28,
+    "darkSteelMaximumOpaqueShare": 0.24
+  },
+  "renderAuthority": false,
+  "pixelProduction": false,
+  "sourceAuthority": false,
+  "productionSelected": false
+}

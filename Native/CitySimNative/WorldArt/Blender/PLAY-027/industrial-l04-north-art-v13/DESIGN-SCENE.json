@@ -1,0 +1,205 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "stage": "north-v13-zero-pixel-design-authority",
+  "logicalBuildingID": "industrial_l04",
+  "variantID": "variant-0",
+  "viewDirection": "north",
+  "sourceRevision": "blender-art-v13-design-authority",
+  "sceneGeometryID": "industrial-l04-north-v13-portal-crown-foundry",
+  "concept": "portal-crown-foundry",
+  "designIntent": "A broad warm-masonry foundry is organized around one frontal monumental portal and a three-stage crane-crown skyline. The portal, not a stack or empty court, is the first compact read.",
+  "authoredIndependently": true,
+  "inheritsGeometryFrom": null,
+  "v12SilhouetteReuse": false,
+  "orientationTransform": "none",
+  "geometryUnits": "CitySimWorld",
+  "coordinateBridge": {
+    "file": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-direction-bridge-v06/MAPPING-CONTRACT.json",
+    "sha256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7",
+    "formula": "B(CitySim[x,y,z])=Blender[z,x,y]",
+    "descriptorOrder": [0, 1, 2, 3]
+  },
+  "camera": {
+    "projection": "orthographic-2-to-1",
+    "orthographicScale": 79.1959533691406,
+    "positionWorld": [96, 101.24557426726288, 96],
+    "targetWorld": [0, 22.861902498201186, 0],
+    "renderViewportPixels": [1536, 1024],
+    "postProjectionOffsetPixels": [0, 128],
+    "sourceGroundCenter": [768, 768]
+  },
+  "registration": {
+    "footprintWorldXZ": [[-28, -28], [28, -28], [28, 28], [-28, 28]],
+    "footprintPolygonSource": [[768, 640], [1024, 768], [768, 896], [512, 768]],
+    "groundPivotWorld": [28, 0, 28],
+    "groundPivotSource": [768, 896],
+    "frontageSocketWorld": [0, 0, -28],
+    "frontageSocketSource": [896, 704],
+    "roadEdgeZ": -28,
+    "outwardNormal": [0, 0, -1],
+    "contactPolygonWorldXZ": [[-28, -28], [28, -28], [28, 28], [-28, 28]],
+    "presentationEnvelopeSource": [256, 64, 1280, 896],
+    "tileBasisPoints": [72, 36]
+  },
+  "light": {
+    "keyOrigin": [-80, 120, -80],
+    "shadowDirection": "southeast",
+    "shadowVectorSource": [2, 1]
+  },
+  "shadow": {
+    "polygonWorldXZ": [[-25, -18], [25, -18], [25, 25], [-25, 25]],
+    "offsetWorldXZ": [3.5, 1.75],
+    "opacity": 0.07
+  },
+  "architecturalEnvelope": {
+    "footprintMaximum": [56, 56],
+    "nonStackHeightMaximum": 40,
+    "stackHeightMaximum": 44,
+    "portalAxis": "negative-z",
+    "portalThresholdZ": -16,
+    "courtBoundsXZ": [[-14, -28], [14, -16]]
+  },
+  "components": [
+    {
+      "id": "v13-foundation",
+      "owner": "foundation",
+      "primitive": "box",
+      "boundsXYZ": [[-28, 0, -28], [28, 0.6, 28]],
+      "materialRole": "grounded-foundation"
+    },
+    {
+      "id": "v13-socket-apron",
+      "owner": "operating-court",
+      "primitive": "box",
+      "boundsXYZ": [[-14, 0.62, -28], [14, 0.82, -16]],
+      "materialRole": "integrated-operating-apron",
+      "requiredConnectivity": "frontageSocketWorld-to-portal-threshold"
+    },
+    {
+      "id": "v13-main-foundry-shell",
+      "owner": "primary-foundry-mass",
+      "primitive": "single-segmented-shell",
+      "materialRole": "warm-foundry-masonry",
+      "solidRegions": [
+        {"id": "west-shoulder", "boundsXYZ": [[-28, 0.6, -16], [-14, 24, 26]]},
+        {"id": "east-shoulder", "boundsXYZ": [[14, 0.6, -16], [28, 22, 26]]},
+        {"id": "rear-hall", "boundsXYZ": [[-14, 0.6, -6], [14, 24, 26]]}
+      ],
+      "emptyPortalVolumeXYZ": [[-11, 0.6, -16], [11, 19, -6.5]],
+      "internalSharedFaces": "mechanically-unioned"
+    },
+    {
+      "id": "v13-monumental-portal-frame",
+      "owner": "monumental-portal-frame",
+      "primitive": "single-compound-frame",
+      "materialRole": "portal-crown-steel",
+      "outerBoundsXYZ": [[-14, 0.6, -16], [14, 24, -7]],
+      "apertureBoundsXYZ": [[-11, 0.6, -16], [11, 19, -6.5]],
+      "members": [
+        {"id": "west-jamb", "boundsXYZ": [[-14, 0.6, -16], [-11, 24, -7]]},
+        {"id": "east-jamb", "boundsXYZ": [[11, 0.6, -16], [14, 24, -7]]},
+        {"id": "header", "boundsXYZ": [[-11, 19, -16], [11, 24, -7]]}
+      ],
+      "internalSharedFaces": "mechanically-unioned"
+    },
+    {
+      "id": "v13-portal-inset",
+      "owner": "monumental-portal-inset",
+      "primitive": "box",
+      "boundsXYZ": [[-11, 1, -6.4], [11, 18, -6]],
+      "materialRole": "deep-freight-void",
+      "requiredRayOrder": ["empty-aperture", "inset"]
+    },
+    {
+      "id": "v13-three-bay-freight-rhythm",
+      "owner": "freight-logistics-zone",
+      "primitive": "three-segmented-recesses",
+      "materialRole": "deep-freight-void",
+      "recesses": [
+        {"id": "west-bay", "boundsXYZ": [[-10, 1, -5.9], [-4, 13, -1]]},
+        {"id": "center-bay", "boundsXYZ": [[-3, 1, -5.9], [3, 13, -1]]},
+        {"id": "east-bay", "boundsXYZ": [[4, 1, -5.9], [10, 13, -1]]}
+      ],
+      "separatorMinimumWorld": 1
+    },
+    {
+      "id": "v13-portal-crown-lower",
+      "owner": "portal-crown-high-bay",
+      "primitive": "box",
+      "boundsXYZ": [[-18, 24, -5], [18, 30, 22]],
+      "materialRole": "weathered-bluegreen-roof"
+    },
+    {
+      "id": "v13-portal-crown-clerestory",
+      "owner": "portal-crown-high-bay",
+      "primitive": "box",
+      "boundsXYZ": [[-14, 30, -2], [14, 36, 20]],
+      "materialRole": "clerestory-and-roof-edge"
+    },
+    {
+      "id": "v13-crane-lantern",
+      "owner": "portal-crown-high-bay",
+      "primitive": "braced-lantern",
+      "boundsXYZ": [[-8, 36, 2], [8, 40, 17]],
+      "materialRole": "charcoal-structural-steel",
+      "portalOcclusionForbidden": true
+    },
+    {
+      "id": "v13-east-hot-process-vessel",
+      "owner": "hot-process-landmark",
+      "primitive": "octagonal-vessel",
+      "centerXYZ": [21, 9, -9],
+      "radius": 4,
+      "height": 16,
+      "materialRole": "oxidized-process-machinery",
+      "heatCap": {"height": 4, "materialRole": "restrained-hot-process"},
+      "portalOcclusionForbidden": true
+    },
+    {
+      "id": "v13-west-staff-annex",
+      "owner": "staff-control-annex",
+      "primitive": "segmented-annex",
+      "boundsXYZ": [[-28, 0.6, -27], [-17, 10, -17]],
+      "materialRole": "warm-control-masonry",
+      "door": {"boundsXYZ": [[-23, 1, -16.9], [-18, 9, -16.5]], "materialRole": "warm-staff-glazing"}
+    },
+    {
+      "id": "v13-subordinate-boiler-stack",
+      "owner": "boiler-stack",
+      "primitive": "cylinder",
+      "centerXYZ": [-23, 22, 18],
+      "radius": 2,
+      "height": 44,
+      "materialRole": "charcoal-structural-steel",
+      "maximumSilhouetteShare": 0.06
+    },
+    {
+      "id": "v13-roof-plant-cluster",
+      "owner": "roof-plant",
+      "primitive": "bounded-equipment-cluster",
+      "boundsXYZ": [[15, 22, 8], [26, 30, 22]],
+      "materialRole": "oxidized-process-machinery",
+      "maximumCompactFeatureCount": 5
+    }
+  ],
+  "intentionalInterfaces": [
+    "main-shell-to-portal-frame-welded",
+    "main-shell-to-portal-crown-welded",
+    "main-shell-to-staff-annex-grounded-contact"
+  ],
+  "forbiddenConditions": [
+    "any-solid-overlap-with-emptyPortalVolumeXYZ",
+    "any-process-or-crane-overlap-with-portal-aperture",
+    "detached-highlight-or-floating-prop",
+    "dominant-stack-silhouette",
+    "white-cyan-or-clinical-dominant-plane",
+    "baked-road",
+    "mirror-rotation-alias-or-fallback"
+  ],
+  "renderAuthority": false,
+  "dccRunnable": false,
+  "pixelProduction": false,
+  "sourceAuthority": false,
+  "productionSelected": false
+}

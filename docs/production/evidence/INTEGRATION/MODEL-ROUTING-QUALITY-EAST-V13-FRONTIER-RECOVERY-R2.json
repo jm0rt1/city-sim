@@ -1,0 +1,135 @@
+{
+  "schema": 1,
+  "authorityCommit": "d010d453af87c040ac13e8b3b7280366cb5094c1",
+  "assignments": [
+    {
+      "modelRouteSha256": "427d5725f3522bb6ddc60bffe15e38191bec55a77d77eff8c4a251301479b16d",
+      "modelRoute": {
+        "schema": 1,
+        "routeId": "quality-v1:east-v13-frontier-recovery-r2",
+        "taskId": "PLAY-079",
+        "packetKind": "authority",
+        "classification": "FRONTIER_AUTHORITY",
+        "model": "gpt-5.6-sol",
+        "effort": "high",
+        "rationale": "Independent review of the bounded East frontier recovery passed its declared 19 adversaries, exact path and identity gates, fresh-process determinism, and zero-activity boundary, but found three remaining fail-open proof classes: mutable provenance/authority paths and source revision, contradictory readiness booleans, and recursively nested solids without lowering or audit coverage. This successor remains frontier-routed because East already crossed the mandatory two-unsuccessful-repair escalation boundary.",
+        "authority": {
+          "authorityCommit": "d010d453af87c040ac13e8b3b7280366cb5094c1",
+          "baseCommit": "d010d453af87c040ac13e8b3b7280366cb5094c1",
+          "claim": {
+            "path": "docs/production/claims/PLAY-079.world-art-east.md",
+            "sha256": "abccb0be0550e092565ecca076db717f73f45ed833fe485853338a8de1bff017"
+          },
+          "immutableInputs": [
+            {
+              "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+              "sha256": "583c5d7be25a7ffdb95f354c6279fe7c309358f65445365203431c51f0e53247"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/design-authority-v01/DESIGN-AUTHORITY.json",
+              "sha256": "1b1006403081c3933c54451b6c506af74493a2ac3b253fdd9f1f79098d7c1bed"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/DESIGN-MATERIALS.json",
+              "sha256": "c8179b77a184e41b723e26b34e7da2ef256b09e93b54a47e76cc5103f22b8cab"
+            }
+          ]
+        },
+        "assignment": {
+          "threadId": "019fab72-b2c8-76c1-b430-6c6f8431733f",
+          "branch": "codex/citysim-world-art-east",
+          "worktree": "/Users/James/.codex/worktrees/92c2/city-sim",
+          "expectedHead": "d0214c95d6d6bcc2395d56c2d10e768b8d7197e5",
+          "featureAuthorThreadId": null,
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-079",
+            "docs/production/evidence/PLAY-079"
+          ],
+          "allowed": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01",
+            "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/v13-compatibility-v01"
+          ],
+          "forbidden": [
+            "Native/CitySimNative/Rendering",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-080",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-081",
+            "docs/production/evidence/INTEGRATION",
+            "docs/production/claims"
+          ]
+        },
+        "boundedDeliverable": "Repair only the independently reproduced East v13 proof escapes on top of d0214c95d6d6bcc2395d56c2d10e768b8d7197e5: bind and fail closed on the exact sourceRevision, provenance.geometryOrigin, claim path, semantic-input path, and East-scene binding path; require explicit sourceReady=false and productionSelected=false and reject missing, duplicate, or contradictory readiness/selection fields anywhere in the packet; recursively enumerate every solid and require an exact lowering rule plus corresponding audit row so any extra nested solid rejects even after coherent count/hash updates; add adversaries for each returned mutation; preserve all 19 passing occlusion, relocation, material, crown, alias, camera, identity, and fresh-process gates; refresh exact evidence; and commit one coherent descendant. No DCC, pixels, source readiness, sibling changes, shared-contract decisions, or production authority.",
+        "validation": {
+          "focusedGateOwner": {
+            "threadId": "019fab72-b2c8-76c1-b430-6c6f8431733f",
+            "role": "frontier_lane_gate"
+          },
+          "focusedCommands": [
+            "python3 Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/test_v13_compatibility.py",
+            "python3 -m json.tool docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/v13-compatibility-v01/V13-COMPATIBILITY-RESULT.json",
+            "git diff --check"
+          ],
+          "fullGateOwner": {
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "role": "aggregate_full_gate",
+            "model": "gpt-5.6-sol",
+            "effort": "high"
+          },
+          "fullCommands": [
+            "swift test --package-path Native/CitySimNative",
+            "./script/build_and_run.sh --verify",
+            "fresh-player real-app aggregate journey"
+          ]
+        },
+        "expectedResult": {
+          "evidencePaths": [
+            "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/v13-compatibility-v01/V13-COMPATIBILITY-RESULT.json"
+          ],
+          "commitRequired": true,
+          "commitMessagePattern": "PLAY-079:"
+        },
+        "escalationTriggers": [
+          "baseline_or_candidate_identity_mismatch",
+          "cross_lane_semantic_conflict",
+          "failure_outside_focused_scope",
+          "path_outside_claim",
+          "save_or_migration_uncertainty",
+          "shared_contract_or_schema_decision",
+          "subjective_acceptance_required",
+          "two_unsuccessful_repair_attempts",
+          "unresolved_product_visual_or_interaction_judgment"
+        ],
+        "stopCondition": "Stop after one coherent successor frontier-recovery commit or immediately if closure requires a shared-contract, family-design, sibling, renderer, or pixel-production change. Do not attempt unbounded repair, DCC, source production, push, integration, or self-acceptance.",
+        "independentReviewer": {
+          "required": true,
+          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+          "model": "gpt-5.6-sol",
+          "effort": "high"
+        },
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {
+              "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+              "sha256": "583c5d7be25a7ffdb95f354c6279fe7c309358f65445365203431c51f0e53247"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/design-authority-v01/DESIGN-AUTHORITY.json",
+              "sha256": "1b1006403081c3933c54451b6c506af74493a2ac3b253fdd9f1f79098d7c1bed"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/DESIGN-MATERIALS.json",
+              "sha256": "c8179b77a184e41b723e26b34e7da2ef256b09e93b54a47e76cc5103f22b8cab"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

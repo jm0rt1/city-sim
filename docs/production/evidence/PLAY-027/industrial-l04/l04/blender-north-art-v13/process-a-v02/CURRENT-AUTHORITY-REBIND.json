@@ -3,12 +3,12 @@
   "task": "PLAY-027",
   "stage": "predesign",
   "disposition": "PASS_ZERO_DCC_LIVE_AUTHORITY_EXCLUSION",
-  "routeId": "quality-v1:north-v13-process-a-v02-live-authority-local-debug-v1",
-  "routeSHA256": "167301b26d50810952c841a160194cb4bac051f5078dacb43232796c9adf9dc8",
-  "carrierCommit": "45e1422304443a012a2f121c90be3e7d31b82c59",
-  "carrierReceiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-027-073-TECHNICAL-RETURNS-LUNA-V1.json",
-  "carrierReceiptSHA256": "bc83e9ae8b85acb1a40adf0a657ee11e3e95e5491745c5553889f90b85ae2692",
-  "authorityBase": "68ef9bdf213b9b7f659f4a049f2f2708bcae166c",
+  "routeId": "quality-v1:play-027-north-current-head-preflight-luna-v1",
+  "routeSHA256": "d1c3a1c8b2c6afd747b42641d29afc5e4d85320f267ffe19c89efc447cdb1940",
+  "carrierCommit": "5d84d521b3b25f9ddf11d7b88e81c885a5e86946",
+  "carrierReceiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-027-073-TECHNICAL-RETURNS-LUNA-V2.json",
+  "carrierReceiptSHA256": "e6ff8f69553ece4a322d60e976a124b2bc0a1ecf566f72586b1a0215a67b161a",
+  "authorityBase": "5ac54021604e25117f4ccb63bc0914209724754c",
   "claim": {
     "path": "docs/production/claims/PLAY-027.world-art.md",
     "revision": 10,
@@ -18,7 +18,7 @@
     "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
     "branch": "codex/citysim-world-art",
     "worktree": "/Users/James/.codex/worktrees/0648/city-sim",
-    "workerHead": "57a89b916f3c97801f7f26e83ad3b6422bae3065"
+    "workerHead": "d25d7a2767d92a8628849ca3911d28f4203dd674"
   },
   "authorityDelta": {
     "validatedExclusions": [
@@ -27,7 +27,7 @@
       "docs/production/evidence/INTEGRATION/PLAY-027-NORTH-V13-PROCESS-A-ATTEMPT.json"
     ],
     "schedulePublicationBinding": "receipt.schedulePublicationCommit identifies the committed schedule blob; schedule.schedulePublicationCommit binds the trusted Integration authority base",
-    "workerDeltaPolicy": "exclude only the three validated authority paths; every other changed path must be one of the eight task-owned files"
+    "workerDeltaPolicy": "exclude only the three validated authority paths; every other changed path must be one of the seven task-owned files"
   },
   "frozenInputs": [
     {"path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/DESIGN-SCENE.json", "sha256": "0f7a8e40a07f5c2b7320ab42fe5e1bcb2dc23fb508ff6b04e8ea49cf6c974060"},
@@ -47,11 +47,11 @@
     "direct child and multiple-child invocation"
   ],
   "toolHashes": {
-    "executionContract": "9da1b157a56a7d382ff5c7acb55da10fb86499f06e09b4e72c318ad05a3b8b00",
-    "runnerContract": "4151d75e91a79d8da4a829b7e7fd516317103c3a0b6e77878bb31cfa257027f7",
-    "runner": "67c9dcebd6af1b2f7002bcd7230de977b76a7bdd876fd31913cb2df1065111d5",
+    "executionContract": "4dd0d524621fad585f2de28c0e535bd188e0ced468b74268c47ddb22fd0642ca",
+    "runnerContract": "fc433d8289ad18ee0f0502b2fcd137882f26eae899c6eaa9405daf34ff2987c6",
+    "runner": "2db1edec76aeb0a0e80955771ad8e8dab63863f1be856207613473e0554beb9f",
     "child": "38e42d29a33ae281b5fdc14b635cc5bb232b76f28f030258052cea21f7938401",
-    "test": "d6114bdc7d3a45d49c70d326c9de1bb3fc0151cdd826bc8fb75a4a6eac512f34"
+    "test": "c0f39ece0c77a082ffad79f16cdd2d31f15ed63daa411f7bc3abfa7cd59d8e53"
   },
   "focusedValidation": {
     "command": "PYTHONDONTWRITEBYTECODE=1 python3 Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-v02/test_process_a_v02.py",
@@ -79,7 +79,7 @@
       {
         "reasonCode": "waiting_on_integration_direct_authority",
         "owner": "Integration",
-        "dependencyAuthority": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-027-073-TECHNICAL-RETURNS-LUNA-V1.json",
+        "dependencyAuthority": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-027-073-TECHNICAL-RETURNS-LUNA-V2.json",
         "resumptionEvent": "published schedule/receipt",
         "nextRefillJob": "north:A"
       }

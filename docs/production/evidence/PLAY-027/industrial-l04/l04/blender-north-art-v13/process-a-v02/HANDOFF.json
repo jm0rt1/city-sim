@@ -4,7 +4,7 @@
     "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
     "worktree": "/Users/James/.codex/worktrees/0648/city-sim"
   },
-  "authorityBase": "68ef9bdf213b9b7f659f4a049f2f2708bcae166c",
+  "authorityBase": "5ac54021604e25117f4ccb63bc0914209724754c",
   "candidateReadyForIndependentReview": false,
   "claimSHA256": "bf0b167a1d1e6f7007d609aeb657917fe9d3d0866d5a7a6e36b0e5a32faefa6f",
   "directLaunch": {
@@ -43,7 +43,7 @@
     "serializedAuthority": "Integration direct launch",
     "unusedCapacityReasons": [
       {
-        "dependencyAuthority": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-027-073-TECHNICAL-RETURNS-LUNA-V1.json",
+        "dependencyAuthority": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-027-073-TECHNICAL-RETURNS-LUNA-V2.json",
         "nextRefillJob": "north:A",
         "owner": "Integration",
         "reasonCode": "waiting_on_integration_direct_authority",
@@ -101,14 +101,13 @@
       "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-v02/EXECUTION-CONTRACT.json",
       "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-v02/RUNNER-CONTRACT.json",
       "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-v02/launch_north_v13_process_a_v02.py",
-      "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-v02/render_north_v13_process_a_child.py",
       "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-v02/test_process_a_v02.py",
       "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-v02/CURRENT-AUTHORITY-REBIND.json",
       "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-v02/HANDOFF.json",
       "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-v02/ORCHESTRATOR-READINESS.json"
     ],
     "dccChildStarts": 0,
-    "executionBaseHEAD": "57a89b916f3c97801f7f26e83ad3b6422bae3065",
+    "executionBaseHEAD": "d25d7a2767d92a8628849ca3911d28f4203dd674",
     "frozenInputCount": 6,
     "futureProcessRootAbsent": true,
     "observedHeadMustDescendFromBase": true,
@@ -117,10 +116,10 @@
     "processReceiptPath": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-NORTH-PROCESS-A-RECEIPT.json",
     "processReceiptPresent": false,
     "route": {
-      "carrierCommit": "45e1422304443a012a2f121c90be3e7d31b82c59",
-      "receiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-027-073-TECHNICAL-RETURNS-LUNA-V1.json",
-      "receiptSHA256": "bc83e9ae8b85acb1a40adf0a657ee11e3e95e5491745c5553889f90b85ae2692",
-      "routeSHA256": "167301b26d50810952c841a160194cb4bac051f5078dacb43232796c9adf9dc8"
+      "carrierCommit": "5d84d521b3b25f9ddf11d7b88e81c885a5e86946",
+      "receiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-027-073-TECHNICAL-RETURNS-LUNA-V2.json",
+      "receiptSHA256": "e6ff8f69553ece4a322d60e976a124b2bc0a1ecf566f72586b1a0215a67b161a",
+      "routeSHA256": "d1c3a1c8b2c6afd747b42641d29afc5e4d85320f267ffe19c89efc447cdb1940"
     },
     "schedulePath": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-NORTH-PROCESS-A-SCHEDULE.json",
     "schedulePresent": false,
@@ -137,8 +136,8 @@
     "futureProcess": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a",
     "source": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-v02"
   },
-  "routeId": "quality-v1:north-v13-process-a-v02-live-authority-local-debug-v1",
-  "routeSHA256": "167301b26d50810952c841a160194cb4bac051f5078dacb43232796c9adf9dc8",
+  "routeId": "quality-v1:play-027-north-current-head-preflight-luna-v1",
+  "routeSHA256": "d1c3a1c8b2c6afd747b42641d29afc5e4d85320f267ffe19c89efc447cdb1940",
   "schema": 1,
   "sourceAuthority": false,
   "stage": "predesign",
@@ -146,8 +145,8 @@
   "task": "PLAY-027",
   "toolHashes": {
     "child": "38e42d29a33ae281b5fdc14b635cc5bb232b76f28f030258052cea21f7938401",
-    "executionContract": "9da1b157a56a7d382ff5c7acb55da10fb86499f06e09b4e72c318ad05a3b8b00",
-    "runner": "67c9dcebd6af1b2f7002bcd7230de977b76a7bdd876fd31913cb2df1065111d5",
-    "runnerContract": "4151d75e91a79d8da4a829b7e7fd516317103c3a0b6e77878bb31cfa257027f7"
+    "executionContract": "4dd0d524621fad585f2de28c0e535bd188e0ced468b74268c47ddb22fd0642ca",
+    "runner": "2db1edec76aeb0a0e80955771ad8e8dab63863f1be856207613473e0554beb9f",
+    "runnerContract": "fc433d8289ad18ee0f0502b2fcd137882f26eae899c6eaa9405daf34ff2987c6"
   }
 }

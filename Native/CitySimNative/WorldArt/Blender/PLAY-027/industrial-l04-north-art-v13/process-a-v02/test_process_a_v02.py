@@ -34,26 +34,6 @@ SCHEDULE = "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-NORTH-PROCESS-A-
 RECEIPT = "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-NORTH-PROCESS-A-RECEIPT.json"
 
 
-_original_changed_paths = runner._changed_paths
-
-
-def current_worker_delta(root: Path) -> list[str]:
-    """Inspect only mutable delta above the synchronized committed HEAD.
-
-    The route binds the post-merge HEAD as the current authority baseline;
-    committed Integration/master additions are therefore not worker edits.
-    Temporary Git fixtures retain the runner's original execution-base audit.
-    """
-    if root != ROOT:
-        return _original_changed_paths(root)
-    tracked = runner._git(root, "diff", "--name-only", "HEAD", "--")
-    untracked = runner._git(root, "ls-files", "--others", "--exclude-standard")
-    return sorted({line for raw in (tracked, untracked) for line in raw.decode().splitlines() if line})
-
-
-runner._changed_paths = current_worker_delta
-
-
 def must_fail(callable_, label: str) -> None:
     try:
         callable_()
@@ -146,13 +126,13 @@ def main() -> int:
     assert baseline["workerCreatedSchedule"] is False
     assert baseline["workerCreatedProcessReceipt"] is False
     assert baseline["workerCreatedAttemptMarker"] is False
-    assert runner.ROUTE_ID == "quality-v1:north-v13-process-a-v02-live-authority-local-debug-v1"
-    assert runner.CARRIER_COMMIT == "45e1422304443a012a2f121c90be3e7d31b82c59"
-    assert runner.AUTHORITY_BASE == "68ef9bdf213b9b7f659f4a049f2f2708bcae166c"
-    assert runner.EXECUTION_BASE == "57a89b916f3c97801f7f26e83ad3b6422bae3065"
+    assert runner.ROUTE_ID == "quality-v1:play-027-north-current-head-preflight-luna-v1"
+    assert runner.CARRIER_COMMIT == "5d84d521b3b25f9ddf11d7b88e81c885a5e86946"
+    assert runner.AUTHORITY_BASE == "5ac54021604e25117f4ccb63bc0914209724754c"
+    assert runner.EXECUTION_BASE == "d25d7a2767d92a8628849ca3911d28f4203dd674"
     assert runner.CLAIM_SHA256 == "bf0b167a1d1e6f7007d609aeb657917fe9d3d0866d5a7a6e36b0e5a32faefa6f"
     assert contract["claim"]["revision"] == 10
-    assert len(runner.ALLOWED_PATHS) == 8
+    assert len(runner.ALLOWED_PATHS) == 7
 
     # The direct launch surface requires both explicit Integration paths.
     must_fail(lambda: runner.preflight(ROOT, f"{runner.SOURCE_ROOT}/EXECUTION-CONTRACT.json", None, RECEIPT, runner.FUTURE_PROCESS_ROOT), "missing schedule path")

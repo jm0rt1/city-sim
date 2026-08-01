@@ -62,7 +62,8 @@
   not be cherry-picked, merged, or used as a product base. The clean successor
   branch starts from published current `master` and may implement only the net
   current-tree repair frozen by
-  `PLAY-073-R4-B-CURRENT-MASTER-RECONSTRUCTION-AUTHORITY.md`.
+  `PLAY-073-R4-B-CURRENT-MASTER-RECONSTRUCTION-AUTHORITY.md` and its exact
+  `PLAY-073-R4-B-CURRENT-MASTER-IMPLEMENTATION-ADDENDUM.md` geometry rules.
 
 Recompose the visible world as one authored district. The developed city must
 dominate the intended camera while retaining useful buildable context. Roads,

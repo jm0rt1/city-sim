@@ -17,12 +17,12 @@ import subprocess
 import sys
 
 
-ROUTE_ID = "quality-v1:north-v13-prelaunch-frontier-repair-r3"
-ROUTE_CANONICAL_SHA256 = "8648d109475cfffc17a77e9e4b089a2cdadbc957d9481bd006687af8196a76f5"
-EXPECTED_CARRIER = "f8832635dd008d9c86d2050931783f2b91cef89f"
-EXPECTED_RECEIPT_PATH = "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-NORTH-V13-PRELAUNCH-FRONTIER-REPAIR-R3.json"
-EXPECTED_RECEIPT_SHA256 = "d47fcd970f83ad333bdfa4cbbc2f67f441e09d27cb9f4d6991adad18ea5e6e78"
-EXECUTION_BASE_HEAD = "e022653746b4ac3b554bb9842f0193c66c409236"
+ROUTE_ID = "quality-v1:north-v13-prelaunch-frontier-repair-r4"
+ROUTE_CANONICAL_SHA256 = "b285ac5913960241f28d9a70d7fe6132bbb20c41d05a654e71b6b5aa7a2c2b93"
+EXPECTED_CARRIER = "4025b85c68d5cd85f0612532ede18b0ec5ec8f0c"
+EXPECTED_RECEIPT_PATH = "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-NORTH-V13-PRELAUNCH-FRONTIER-REPAIR-R4.json"
+EXPECTED_RECEIPT_SHA256 = "2eab208d8f3066088c5d567f5628b364882cefc5632e2a9ba96808e1d4071a0b"
+EXECUTION_BASE_HEAD = "4febf8067c0a68e5e43a8a26bdeea1ecdc6290c4"
 EXPECTED_CLAIM = "7d42ba7c38a55d7681171499aad50e15c2d3eba0878cabf508d0e42ee97cdc83"
 EXPECTED_BASE = "73b72fce27d1bcfedcf48b76940ddfa688baa48c"
 EXPECTED_SCENE_ID = "industrial-l04-north-v13-portal-crown-foundry"
@@ -100,6 +100,39 @@ def load_json(path: Path) -> dict:
 
 def _expected_inputs() -> list[dict[str, str]]:
     return [{"path": path, "sha256": digest} for path, digest in EXPECTED_INPUT_ITEMS]
+
+
+def _require_exact_json_types(actual: object, expected: object, path: str) -> None:
+    if type(actual) is not type(expected):
+        raise ValueError(
+            f"exact type mismatch at {path}: {type(actual).__name__} != {type(expected).__name__}"
+        )
+    if isinstance(expected, dict):
+        if set(actual) != set(expected):
+            raise ValueError(f"exact object fields mismatch at {path}")
+        for key in expected:
+            _require_exact_json_types(actual[key], expected[key], f"{path}/{key}")
+    elif isinstance(expected, list):
+        if len(actual) != len(expected):
+            raise ValueError(f"exact list length mismatch at {path}")
+        for index, (actual_item, expected_item) in enumerate(zip(actual, expected)):
+            _require_exact_json_types(actual_item, expected_item, f"{path}/{index}")
+
+
+def _validate_repository_root(root: Path | str) -> Path:
+    raw = os.fspath(root)
+    if type(raw) is not str or raw != EXPECTED_WORKTREE:
+        raise ValueError("caller root is not the exact assigned absolute worktree")
+    if not os.path.isabs(raw) or os.path.abspath(raw) != raw or os.path.realpath(raw) != raw:
+        raise ValueError("caller root contains a lexical or symlink alias")
+    expected = Path(EXPECTED_WORKTREE)
+    if expected.is_symlink() or not expected.is_dir():
+        raise ValueError("assigned worktree is not a real directory")
+    actual_stat = os.stat(raw, follow_symlinks=False)
+    expected_stat = os.stat(EXPECTED_WORKTREE, follow_symlinks=False)
+    if (actual_stat.st_dev, actual_stat.st_ino) != (expected_stat.st_dev, expected_stat.st_ino):
+        raise ValueError("caller root is not the assigned worktree inode")
+    return expected
 
 
 def _run_git(root: Path, *args: str, allow_failure: bool = False) -> bytes:
@@ -193,7 +226,12 @@ def verify_carrier_route(root: Path) -> dict:
     }
 
 
-def validate_contract(root: Path, contract: dict) -> dict:
+def validate_contract(root: Path | str, contract: dict) -> dict:
+    root = _validate_repository_root(root)
+    expected_contract = load_json(Path(__file__).with_name("EXECUTION-CONTRACT.json"))
+    _require_exact_json_types(contract, expected_contract, "contract")
+    if contract != expected_contract:
+        raise ValueError("execution contract differs from the frozen contract")
     if set(contract) != CONTRACT_KEYS:
         raise ValueError("execution contract has unknown or missing top-level fields")
     route = contract["route"]
@@ -299,19 +337,28 @@ def build_test_fixture_authority(contract: dict, fixture_key: bytes, root: Path)
 
 
 def validate_fixture_authority(authority: dict, contract: dict, root: Path, fixture_key: bytes) -> dict:
-    if set(authority) != AUTHORITY_KEYS or authority.get("schema") != 1 or authority.get("kind") != "test-only-fixture-authority":
+    validate_contract(root, contract)
+    if type(authority) is not dict or set(authority) != AUTHORITY_KEYS:
+        raise ValueError("fixture authority schema is not closed")
+    if type(authority.get("schema")) is not int or authority.get("schema") != 1:
+        raise ValueError("fixture authority schema is not exact integer one")
+    if type(authority.get("kind")) is not str or authority.get("kind") != "test-only-fixture-authority":
         raise ValueError("fixture authority schema is not closed")
     binding = authority.get("binding")
-    if not isinstance(binding, dict) or set(binding) != BINDING_KEYS:
+    if type(binding) is not dict or set(binding) != BINDING_KEYS:
         raise ValueError("fixture binding schema is not closed")
+    expected_binding = _expected_binding(contract)
+    _require_exact_json_types(binding, expected_binding, "fixture/binding")
     activity = binding.get("activity")
-    if not isinstance(activity, dict) or set(activity) != ACTIVITY_KEYS or any(value != 0 for value in activity.values()):
+    if type(activity) is not dict or set(activity) != ACTIVITY_KEYS:
+        raise ValueError("fixture activity schema is not closed")
+    if any(type(value) is not int or value != 0 for value in activity.values()):
         raise ValueError("fixture activity must be exact closed zero state")
-    if not hmac.compare_digest(str(authority.get("signature", "")), _fixture_signature(binding, fixture_key)):
+    signature = authority.get("signature")
+    if type(signature) is not str or not hmac.compare_digest(signature, _fixture_signature(binding, fixture_key)):
         raise ValueError("fixture signature mismatch")
-    if binding != _expected_binding(contract):
+    if binding != expected_binding:
         raise ValueError("fixture binding mismatch")
-    validate_contract(root, contract)
     return binding
 
 
@@ -376,6 +423,8 @@ def _canonical_documents(contract: dict, root: Path) -> tuple[dict, dict]:
             "singleAuthenticatedConsumptionSurface": True,
             "exactCandidateIdentityBound": True,
             "exactSixInputSetBound": True,
+            "exactRecursiveJSONTypes": True,
+            "exactAssignedRootIdentity": True,
             "callerStateAccepted": False, "replayRejected": True,
             "authorityFilesCreated": 0,
         },
@@ -395,7 +444,7 @@ def _canonical_documents(contract: dict, root: Path) -> tuple[dict, dict]:
     }
     validation = dict(common)
     validation.update({
-        "result": "PASS_ZERO_CHILD_FRONTIER_REPAIR_R3",
+        "result": "PASS_ZERO_CHILD_FRONTIER_REPAIR_R4",
         "prelaunchOnly": True,
         "forbiddenOutputsAbsent": ["future-process-root", "raw-png", "blend", "normalization", "live-grant"],
     })
@@ -478,7 +527,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--evidence-root")
     parser.add_argument("--write-evidence", action="store_true")
     args = parser.parse_args(argv)
-    repo = Path(args.repository_root).resolve()
+    repo = _validate_repository_root(args.repository_root)
     contract_path = (repo / args.contract).resolve()
     if contract_path != Path(__file__).with_name("EXECUTION-CONTRACT.json").resolve():
         raise SystemExit("wrong contract")
@@ -488,7 +537,7 @@ def main(argv: list[str] | None = None) -> int:
         if not args.evidence_root:
             raise SystemExit("missing evidence root")
         write_canonical_evidence(repo, Path(args.evidence_root).resolve())
-    print("PASS ZERO_CHILD_FRONTIER_REPAIR_R3 processA=0 blender=0 dcc=0 pixels=0")
+    print("PASS ZERO_CHILD_FRONTIER_REPAIR_R4 processA=0 blender=0 dcc=0 pixels=0")
     return 0
 
 

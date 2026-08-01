@@ -1,4 +1,4 @@
-"""Adversarial zero-DCC tests for the North v13 frontier repair R3."""
+"""Adversarial zero-DCC tests for the North v13 frontier repair R4."""
 
 from __future__ import annotations
 
@@ -16,7 +16,7 @@ sys.dont_write_bytecode = True
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[6]
-FIXTURE_KEY = b"north-v13-frontier-repair-r3-test-fixture-v01"
+FIXTURE_KEY = b"north-v13-frontier-repair-r4-test-fixture-v01"
 
 
 def load(name: str, path: Path):
@@ -94,6 +94,7 @@ def main() -> int:
     assert result["carrier"]["canonicalRouteSHA256"] == runner.ROUTE_CANONICAL_SHA256
 
     contract_adversaries = (
+        (lambda c: c.__setitem__("schema", True), "boolean contract schema"),
         (lambda c: c.__setitem__("unknown", 1), "unknown top-level field"),
         (lambda c: c.pop("registration"), "missing top-level field"),
         (lambda c: c["route"].__setitem__("routeId", "forged"), "route"),
@@ -112,6 +113,8 @@ def main() -> int:
         (lambda c: c["identity"].__setitem__("sceneGeometryID", "wrong"), "geometry"),
         (lambda c: c["identity"].__setitem__("sourceAuthority", True), "source authority boolean"),
         (lambda c: c["identity"].__setitem__("productionSelected", True), "production selection boolean"),
+        (lambda c: c["identity"].__setitem__("sourceAuthority", 0), "integer source authority"),
+        (lambda c: c["identity"].__setitem__("productionSelected", 0), "integer production selection"),
         (lambda c: c["inputs"][0].__setitem__("sha256", "0" * 64), "input"),
         (lambda c: c.__setitem__("inputs", []), "empty input set"),
         (lambda c: c["inputs"].pop(), "missing input"),
@@ -121,6 +124,8 @@ def main() -> int:
         (lambda c: c["authorityState"].__setitem__("leaseCreated", True), "lease"),
         (lambda c: c["authorityState"].__setitem__("secretCreated", True), "secret"),
         (lambda c: c["authorityState"].__setitem__("grantCreated", True), "grant"),
+        (lambda c: c["authorityState"].__setitem__("maximumDCCChildStarts", True), "boolean child limit"),
+        (lambda c: c["authorityState"].__setitem__("maximumProcessAStarts", True), "boolean process limit"),
         (lambda c: c["output"].__setitem__("runRoot", "docs/production/evidence/PLAY-027/escape"), "root"),
     )
     for mutator, label in contract_adversaries:
@@ -136,6 +141,10 @@ def main() -> int:
         (lambda a: a["binding"].__setitem__("variantID", "variant-1"), "signed variant"),
         (lambda a: a["binding"].__setitem__("sourceAuthority", True), "signed source authority"),
         (lambda a: a["binding"].__setitem__("productionSelected", True), "signed production selection"),
+        (lambda a: a["binding"].__setitem__("sourceAuthority", 0), "signed integer source authority"),
+        (lambda a: a["binding"].__setitem__("productionSelected", 0), "signed integer production selection"),
+        (lambda a: a["binding"].__setitem__("dccChildLimit", True), "signed boolean child limit"),
+        (lambda a: a["binding"].__setitem__("testOnly", 1), "signed integer test-only"),
         (lambda a: a["binding"].__setitem__("inputs", []), "signed empty inputs"),
         (lambda a: a["binding"]["inputs"].pop(), "signed missing input"),
         (lambda a: a["binding"]["inputs"].append({"path": "extra", "sha256": "0" * 64}), "signed extra input"),
@@ -153,11 +162,51 @@ def main() -> int:
         (lambda a: a["binding"]["activity"].__setitem__("renderStarts", 1), "render activity"),
         (lambda a: a["binding"]["activity"].__setitem__("normalizerStarts", 1), "normalizer activity"),
         (lambda a: a["binding"]["activity"].__setitem__("pixelWrites", 1), "pixel activity"),
+        (lambda a: a["binding"]["activity"].__setitem__("childStarts", False), "boolean child activity"),
+        (lambda a: a["binding"]["activity"].__setitem__("processAStarts", False), "boolean Process-A activity"),
+        (lambda a: a["binding"]["activity"].__setitem__("blenderStarts", False), "boolean Blender activity"),
+        (lambda a: a["binding"]["activity"].__setitem__("dccStarts", False), "boolean DCC activity"),
+        (lambda a: a["binding"]["activity"].__setitem__("renderStarts", False), "boolean render activity"),
+        (lambda a: a["binding"]["activity"].__setitem__("normalizerStarts", False), "boolean normalizer activity"),
+        (lambda a: a["binding"]["activity"].__setitem__("pixelWrites", False), "boolean pixel activity"),
     )
     for mutator, label in binding_adversaries:
         expect_fixture_failure(mutator, label)
     expect_fixture_failure(lambda a: a.__setitem__("unknown", True), "unknown authority field", resign=False)
     expect_fixture_failure(lambda a: a.__setitem__("signature", "0" * 64), "forged signature", resign=False)
+
+    def coherent_type_substitution(authority: dict) -> None:
+        binding = authority["binding"]
+        binding["sourceAuthority"] = 0
+        binding["productionSelected"] = 0
+        binding["dccChildLimit"] = True
+        binding["testOnly"] = 1
+        binding["activity"] = {key: False for key in binding["activity"]}
+
+    expect_fixture_failure(coherent_type_substitution, "coherently resigned bool/int substitution")
+
+    # Root identity is exact and is checked before Git/content validation.
+    with tempfile.TemporaryDirectory(prefix="north-v13-root-attacks-") as tmp:
+        attack_root = Path(tmp)
+        symlink_alias = attack_root / "symlink-repository"
+        symlink_alias.symlink_to(ROOT, target_is_directory=True)
+        copied_root = attack_root / "copied-repository"
+        copied_root.mkdir()
+        (copied_root / ".git").write_text("gitdir: attacker-selected\n", encoding="utf-8")
+        root_attacks = (
+            (str(symlink_alias), "symlink alias"),
+            (str(ROOT) + "/.", "dot lexical alias"),
+            (str(ROOT) + "/../city-sim", "dot-dot lexical alias"),
+            (str(ROOT) + "/", "trailing-separator lexical alias"),
+            (str(copied_root), "copied checkout"),
+        )
+        for candidate_root, label in root_attacks:
+            try:
+                runner.validate_contract(candidate_root, contract)
+            except ValueError as exc:
+                assert "root" in str(exc) or "worktree" in str(exc), (label, str(exc))
+            else:
+                raise AssertionError(f"repository-root adversary passed: {label}")
 
     # Import the module as an attacker would. R2's module-visible tokens,
     # factory, adapter class, and separately callable verified-consume method
@@ -295,9 +344,9 @@ def main() -> int:
     repository_after = runner.snapshot_topology(ROOT)
     assert repository_before == repository_after, "test changed repository file/directory/symlink topology"
 
-    adversary_count = len(contract_adversaries) + len(binding_adversaries) + 16
+    adversary_count = len(contract_adversaries) + len(binding_adversaries) + 22
     print(
-        "PASS north-v13 frontier-repair-r3 "
+        "PASS north-v13 frontier-repair-r4 "
         f"adversaries={adversary_count} freshRoots=2 carrierGit=verified "
         "files=2 directories=0 dccChildren=0 processA=0 pixels=0 topology=unchanged"
     )

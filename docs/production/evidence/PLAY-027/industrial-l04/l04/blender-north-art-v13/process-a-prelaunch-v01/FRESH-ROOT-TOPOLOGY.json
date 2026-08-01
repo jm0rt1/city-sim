@@ -1,21 +1,21 @@
 {
   "schema": 1,
   "task": "PLAY-027",
-  "stage": "north-v13-process-a-prelaunch-frontier-repair-r3",
+  "stage": "north-v13-process-a-prelaunch-frontier-repair-r4",
   "writer": "launch_north_v13_prelaunch.py",
   "replayCount": 2,
   "rootsWereAbsentBeforeWrite": true,
   "rootsWereDistinct": true,
   "byteIdentical": true,
   "fileAndDirectoryTopologyIdentical": true,
-  "inventorySHA256": "4ad9a79f9a562844d812edc1c3a6ba7e4c69a20277b173a566babad7c31f6d0e",
+  "inventorySHA256": "6d2cc235cd328f922b8b5cd775953361458c9906e384b1bf2b0499ad74048666",
   "replays": [
     {
       "replayId": "A",
       "directories": [],
       "files": {
-        "PRELAUNCH-VALIDATION.json": "a10011e21801ae76d1e1fbd2f6d1018d6ff1adb4b3b09e8447b112e64f0e3cde",
-        "ZERO-CHILD-CLOSURE.json": "7d7f42847945a05298c63f30b0282dffe1a05cf6043e76609de19a50a335adeb"
+        "PRELAUNCH-VALIDATION.json": "a7c3ff42be5bc1abc215d48451c3578fcb1ae81944dc87dc4d2afe095e081d62",
+        "ZERO-CHILD-CLOSURE.json": "ed8de6b98869aa5d95d6aae200152020a2e68a6bab287fef0441adb2f97b210b"
       },
       "symlinks": {}
     },
@@ -23,8 +23,8 @@
       "replayId": "B",
       "directories": [],
       "files": {
-        "PRELAUNCH-VALIDATION.json": "a10011e21801ae76d1e1fbd2f6d1018d6ff1adb4b3b09e8447b112e64f0e3cde",
-        "ZERO-CHILD-CLOSURE.json": "7d7f42847945a05298c63f30b0282dffe1a05cf6043e76609de19a50a335adeb"
+        "PRELAUNCH-VALIDATION.json": "a7c3ff42be5bc1abc215d48451c3578fcb1ae81944dc87dc4d2afe095e081d62",
+        "ZERO-CHILD-CLOSURE.json": "ed8de6b98869aa5d95d6aae200152020a2e68a6bab287fef0441adb2f97b210b"
       },
       "symlinks": {}
     }

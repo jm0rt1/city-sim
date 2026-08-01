@@ -5,7 +5,9 @@
     "authorityFilesCreated": 0,
     "callerStateAccepted": false,
     "closedSchema": true,
+    "exactAssignedRootIdentity": true,
     "exactCandidateIdentityBound": true,
+    "exactRecursiveJSONTypes": true,
     "exactSixInputSetBound": true,
     "executionBaseBound": true,
     "immutableAdapterOwnedStore": true,
@@ -17,11 +19,11 @@
   "canonicalWallClockFieldCount": 0,
   "checks": {
     "carrier": {
-      "canonicalRouteSHA256": "8648d109475cfffc17a77e9e4b089a2cdadbc957d9481bd006687af8196a76f5",
-      "carrierCommit": "f8832635dd008d9c86d2050931783f2b91cef89f",
-      "receiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-NORTH-V13-PRELAUNCH-FRONTIER-REPAIR-R3.json",
-      "receiptSHA256": "d47fcd970f83ad333bdfa4cbbc2f67f441e09d27cb9f4d6991adad18ea5e6e78",
-      "routeId": "quality-v1:north-v13-prelaunch-frontier-repair-r3"
+      "canonicalRouteSHA256": "b285ac5913960241f28d9a70d7fe6132bbb20c41d05a654e71b6b5aa7a2c2b93",
+      "carrierCommit": "4025b85c68d5cd85f0612532ede18b0ec5ec8f0c",
+      "receiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-NORTH-V13-PRELAUNCH-FRONTIER-REPAIR-R4.json",
+      "receiptSHA256": "2eab208d8f3066088c5d567f5628b364882cefc5632e2a9ba96808e1d4071a0b",
+      "routeId": "quality-v1:north-v13-prelaunch-frontier-repair-r4"
     },
     "changedPaths": [
       "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-prelaunch-v01/EXECUTION-CONTRACT.json",
@@ -35,7 +37,7 @@
     ],
     "claimSHA256": "7d42ba7c38a55d7681171499aad50e15c2d3eba0878cabf508d0e42ee97cdc83",
     "descendantDeltaRestrictedToTaskRoots": true,
-    "executionBaseHEAD": "e022653746b4ac3b554bb9842f0193c66c409236",
+    "executionBaseHEAD": "4febf8067c0a68e5e43a8a26bdeea1ecdc6290c4",
     "executionBaseIsAncestor": true,
     "futureProcessRootAbsent": true,
     "inputCount": 6,
@@ -103,25 +105,25 @@
   ],
   "prelaunchOnly": true,
   "productionSelected": false,
-  "result": "PASS_ZERO_CHILD_FRONTIER_REPAIR_R3",
+  "result": "PASS_ZERO_CHILD_FRONTIER_REPAIR_R4",
   "route": {
     "authorityCommit": "73b72fce27d1bcfedcf48b76940ddfa688baa48c",
     "baseCommit": "73b72fce27d1bcfedcf48b76940ddfa688baa48c",
-    "canonicalSHA256": "8648d109475cfffc17a77e9e4b089a2cdadbc957d9481bd006687af8196a76f5",
-    "carrierCommit": "f8832635dd008d9c86d2050931783f2b91cef89f",
-    "executionBaseHEAD": "e022653746b4ac3b554bb9842f0193c66c409236",
-    "receiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-NORTH-V13-PRELAUNCH-FRONTIER-REPAIR-R3.json",
-    "receiptSHA256": "d47fcd970f83ad333bdfa4cbbc2f67f441e09d27cb9f4d6991adad18ea5e6e78",
-    "routeId": "quality-v1:north-v13-prelaunch-frontier-repair-r3"
+    "canonicalSHA256": "b285ac5913960241f28d9a70d7fe6132bbb20c41d05a654e71b6b5aa7a2c2b93",
+    "carrierCommit": "4025b85c68d5cd85f0612532ede18b0ec5ec8f0c",
+    "executionBaseHEAD": "4febf8067c0a68e5e43a8a26bdeea1ecdc6290c4",
+    "receiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-NORTH-V13-PRELAUNCH-FRONTIER-REPAIR-R4.json",
+    "receiptSHA256": "2eab208d8f3066088c5d567f5628b364882cefc5632e2a9ba96808e1d4071a0b",
+    "routeId": "quality-v1:north-v13-prelaunch-frontier-repair-r4"
   },
   "schema": 1,
   "sourceAuthority": false,
-  "stage": "north-v13-process-a-prelaunch-frontier-repair-r3",
+  "stage": "north-v13-process-a-prelaunch-frontier-repair-r4",
   "task": "PLAY-027",
   "toolHashes": {
     "child": "0d8a0d2703311aa3a782b1397902e6c3dac5d688a04367dac1d6ac995d18dccd",
-    "executionContract": "316f5802ec25364a80f6b04166a4f8c9c006f912a3f7a6f63ad33671a63ff655",
-    "runner": "9c76cff3bdc2b66ac3a46487ce0a3fd2014a1e330a186a185401330fb07fb22f",
-    "runnerContract": "bb61115f3bb949ee4504f90877a1569622f784b5e4b88503e1633fdbf3b1a38e"
+    "executionContract": "12dc8dd63c1518d2128f9486cce003cbd70e935cf4dce09b92736a7a31da7ff0",
+    "runner": "21ff5cd9b5293da625a054ab297469b662afc1d8a568d001c33f96d71a1f65b4",
+    "runnerContract": "0c06f3f2917ecda91fa0506b43d7d04baba75d57f0bbc06849fed24100a84c4d"
   }
 }

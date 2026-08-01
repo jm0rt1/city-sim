@@ -22,7 +22,23 @@ EAST_MATERIALS = ROOT.parent / "industrial-l04-east-predesign-v01" / "materials.
 SEMANTIC_AUTHORITY = ROOT.parents[5] / "docs" / "production" / "evidence" / "PLAY-027" / "industrial-l04" / "l04" / "blender-north-art-v13" / "design-authority-v01" / "DESIGN-AUTHORITY.json"
 SEMANTIC_MATERIALS = ROOT.parents[5] / "Native" / "CitySimNative" / "WorldArt" / "Blender" / "PLAY-027" / "industrial-l04-north-art-v13" / "DESIGN-MATERIALS.json"
 BRIDGE = ROOT.parents[5] / "Native" / "CitySimNative" / "WorldArt" / "Blender" / "PLAY-027" / "industrial-l04-direction-bridge-v06" / "MAPPING-CONTRACT.json"
-PARENT_CANDIDATE = "bfcb9622c23413e82202298e38718792996b385c"
+PARENT_CANDIDATE = "d0214c95d6d6bcc2395d56c2d10e768b8d7197e5"
+EXPECTED_SOURCE_REVISION = "east-v13-compatibility-v04-frontier-recovery-r2"
+EXPECTED_GEOMETRY_ORIGIN = "independently-authored-east-from-published-v13-semantic-requirements"
+EXPECTED_CLAIM_PATH = "docs/production/claims/PLAY-079.world-art-east.md"
+EXPECTED_EAST_SCENE_PATH = "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-predesign-v01/scene.json"
+EXPECTED_SEMANTIC_INPUTS = [
+    {
+        "path": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/design-authority-v01/DESIGN-AUTHORITY.json",
+        "sha256": "1b1006403081c3933c54451b6c506af74493a2ac3b253fdd9f1f79098d7c1bed",
+        "consumedAs": "semantic-requirements-only",
+    },
+    {
+        "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/DESIGN-MATERIALS.json",
+        "sha256": "c8179b77a184e41b723e26b34e7da2ef256b09e93b54a47e76cc5103f22b8cab",
+        "consumedAs": "published-material-roles-only",
+    },
+]
 EXPECTED_SOURCE_MAPPING = {
     "v13-grounded-foundation": "formed-concrete",
     "v13-integrated-operating-apron": "contact-shadow",
@@ -62,11 +78,24 @@ def canonical(value: object) -> bytes:
     return (json.dumps(value, sort_keys=True, separators=(",", ":")) + "\n").encode()
 
 
-def load(path: Path) -> dict:
-    value = json.loads(path.read_text(encoding="utf-8"))
-    if not isinstance(value, dict):
-        raise AssertionError(f"not_object:{path}")
+def _unique_object(pairs: list[tuple[str, object]]) -> dict:
+    value = {}
+    for key, item in pairs:
+        if key in value:
+            raise AssertionError(f"duplicate_json_field:{key}")
+        value[key] = item
     return value
+
+
+def parse_json(text: str) -> dict:
+    value = json.loads(text, object_pairs_hook=_unique_object)
+    if not isinstance(value, dict):
+        raise AssertionError("not_object")
+    return value
+
+
+def load(path: Path) -> dict:
+    return parse_json(path.read_text(encoding="utf-8"))
 
 
 def fail(code: str, detail: str = "") -> None:
@@ -147,6 +176,20 @@ def flatten_components(components: list[dict]) -> list[dict]:
     return flattened
 
 
+def field_occurrences(value: object, field: str, path: str = "$") -> list[tuple[str, object]]:
+    occurrences = []
+    if isinstance(value, dict):
+        for key, item in value.items():
+            item_path = f"{path}.{key}"
+            if key == field:
+                occurrences.append((item_path, item))
+            occurrences.extend(field_occurrences(item, field, item_path))
+    elif isinstance(value, list):
+        for index, item in enumerate(value):
+            occurrences.extend(field_occurrences(item, field, f"{path}[{index}]"))
+    return occurrences
+
+
 def derived_raw_geometry_signature(components: list[dict]) -> str:
     payload = [{"id": item["id"], "bounds": item["bounds"]} for item in flatten_components(components)]
     return hashlib.sha256(canonical(payload)).hexdigest()
@@ -185,22 +228,29 @@ def validate_packet(packet: dict, check_files: bool = True) -> dict:
     if packet.get("task") != "PLAY-079" or packet.get("direction") != "east": fail("identity")
     if packet.get("logicalBuildingID") != "industrial_l04" or packet.get("variant") != 0: fail("logical_identity")
     if packet.get("phase") != "V13_ZERO_PIXEL_COMPATIBILITY": fail("phase")
-    if packet.get("sourceAuthority") is not False or packet.get("productionSelected") is not False or packet.get("pixelRenderingAllowed") is not False: fail("authority_boundary")
+    if packet.get("sourceRevision") != EXPECTED_SOURCE_REVISION: fail("source_revision_binding")
+    source_ready = field_occurrences(packet, "sourceReady")
+    production_selected = field_occurrences(packet, "productionSelected")
+    if source_ready != [("$.sourceReady", False)]: fail("source_ready_boundary")
+    if production_selected != [("$.productionSelected", False)]: fail("production_selection_boundary")
+    if packet.get("sourceAuthority") is not False or packet.get("pixelRenderingAllowed") is not False: fail("authority_boundary")
 
     provenance = packet["provenance"]
+    if provenance.get("geometryOrigin") != EXPECTED_GEOMETRY_ORIGIN: fail("geometry_origin_binding")
     if provenance["siblingSceneInputs"] != []: fail("sibling_geometry_input")
     if any(provenance[key] is not False for key in ("copiedGeometry", "mirroredGeometry", "rotatedGeometry", "transformedSiblingGeometry")): fail("geometry_alias")
     if provenance["orientationTransform"] != "none": fail("orientation_transform")
 
     authority = packet["authority"]
     if authority["authorityCommit"] != "d010d453af87c040ac13e8b3b7280366cb5094c1" or authority["baseCommit"] != authority["authorityCommit"]: fail("authority")
-    if authority["routeId"] != "quality-v1:east-v13-frontier-recovery" or authority["routeSha256"] != "44d2b3bd77ebc10d2d94e7352ac8ef6f166410b946100f4429e44a45ea688f6c": fail("route_binding")
+    if authority["routeId"] != "quality-v1:east-v13-frontier-recovery-r2" or authority["routeSha256"] != "427d5725f3522bb6ddc60bffe15e38191bec55a77d77eff8c4a251301479b16d": fail("route_binding")
     if authority["dispatchReceipt"] != {
-        "carrierCommit": "e92afb8c4c91a16876379003d60698ce690d4519",
-        "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-EAST-V13-FRONTIER-RECOVERY-V1.json",
-        "sha256": "97711459fb59382bd6a35676473dce8e63fb37996ecca2532365d3f69d4f740c",
+        "carrierCommit": "bd40076f8506b50578002cec6d0e9b9aac3f5a44",
+        "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-EAST-V13-FRONTIER-RECOVERY-R2.json",
+        "sha256": "03c5626c7d9e6135184f1741342ee448ef0a2d7349eec2be51a3950579b7142d",
     }: fail("route_binding")
-    if authority["claim"]["sha256"] != "abccb0be0550e092565ecca076db717f73f45ed833fe485853338a8de1bff017": fail("claim_binding")
+    if authority["claim"] != {"path": EXPECTED_CLAIM_PATH, "sha256": "abccb0be0550e092565ecca076db717f73f45ed833fe485853338a8de1bff017"}: fail("claim_binding")
+    if authority["publishedSemanticInputs"] != EXPECTED_SEMANTIC_INPUTS: fail("semantic_input_binding")
     if check_files:
         if sha(CLAIM) != authority["claim"]["sha256"]: fail("claim_hash")
         if sha(SEMANTIC_AUTHORITY) != authority["publishedSemanticInputs"][0]["sha256"]: fail("semantic_authority_hash")
@@ -232,6 +282,11 @@ def validate_packet(packet: dict, check_files: bool = True) -> dict:
     if camera["shift"] != [bridge_camera["shiftX"], bridge_camera["shiftY"]] or camera.get("derivedFromBridge") is not True: fail("camera_drift")
     if camera["resolution"] != bridge_camera["renderViewportPixels"] or camera["literalResolution"] != [192, 128]: fail("camera_resolution")
     if camera["orthoScale"] != bridge_camera["blenderOrthographicScale"]: fail("camera_drift")
+    if packet["sourceBindings"]["eastScene"] != {
+        "path": EXPECTED_EAST_SCENE_PATH,
+        "sha256": "e19c70693ea57a7f23669d5e93354eee0a8fa42be16e68b38d00f5608a500db7",
+        "consumedAs": "historical-byte-preservation-only",
+    }: fail("east_scene_binding")
     if check_files:
         east_scene = load(EAST_SCENE)
         east_materials = load(EAST_MATERIALS)
@@ -240,7 +295,7 @@ def validate_packet(packet: dict, check_files: bool = True) -> dict:
         if registration["citySimFootprint"] != scene_registration["citySimFootprint"] or registration["dccFootprint"]["width"] != scene_registration["dccFootprint"]["width"] or registration["dccFootprint"]["depth"] != scene_registration["dccFootprint"]["depth"]: fail("east_registration")
         if registration["citySimSocket"] != scene_registration["frontageSocket"]: fail("east_registration")
         if registration["sourceSocket"] != scene_registration["expectedSourcePixels"]["frontageSocket"] or registration["sourceGroundPivot"] != scene_registration["expectedSourcePixels"]["groundPivot"]: fail("east_registration")
-        if packet["sourceBindings"]["eastScene"]["sha256"] != sha(EAST_SCENE) or packet["sourceBindings"]["eastScene"]["consumedAs"] != "historical-byte-preservation-only": fail("east_scene_binding")
+        if packet["sourceBindings"]["eastScene"]["sha256"] != sha(EAST_SCENE): fail("east_scene_binding")
         if packet["sourceBindings"]["eastMaterials"]["sha256"] != sha(EAST_MATERIALS) or packet["sourceBindings"]["eastMaterials"]["consumedAs"] != "existing-role-inventory-only": fail("east_material_binding")
     else:
         east_materials = load(EAST_MATERIALS)
@@ -269,6 +324,9 @@ def validate_packet(packet: dict, check_files: bool = True) -> dict:
     plan = packet["eastFacadePlan"]
     components = plan["components"]
     ids = [item["id"] for item in components]
+    all_components = flatten_components(components)
+    all_ids = [item["id"] for item in all_components]
+    if len(all_ids) != len(set(all_ids)): fail("raw_geometry_alias")
     if plan["roadFacing"] != "east" or len(ids) != len(set(ids)): fail("portal_identity")
     if set(ids) != set(EXPECTED_COMPONENT_BINDINGS): fail("component_identity")
     if any(not item["id"].startswith("east-v13-") for item in components): fail("structural_alias")
@@ -281,16 +339,17 @@ def validate_packet(packet: dict, check_files: bool = True) -> dict:
         if not (-28.0 <= bounds["xMin"] <= bounds["xMax"] <= 28.0 and -28.0 <= bounds["yMin"] <= bounds["yMax"] <= 28.0 and 0.0 <= bounds["zMin"] <= bounds["zMax"]): fail("component_bounds", item["id"])
 
     rules = packet["loweringRules"]
-    if len(rules) != len(components) or {rule["componentId"] for rule in rules} != set(ids): fail("lowering_coverage")
-    by_id = {item["id"]: item for item in components}
+    if len(rules) != len(all_components) or {rule["componentId"] for rule in rules} != set(all_ids): fail("lowering_coverage")
+    by_id = {item["id"]: item for item in all_components}
     for rule in rules:
         item = by_id[rule["componentId"]]
-        expected_kind, expected_semantic, expected_source = EXPECTED_COMPONENT_BINDINGS[rule["componentId"]]
+        expected_semantic = item["semanticRole"]
+        expected_source = source_mapping[expected_semantic]
         if rule["semanticRole"] != item["semanticRole"] or rule["targetRole"] != item["targetRole"] or rule["sourceRole"] != item["materialRole"]: fail("unresolved_material", rule["componentId"])
         if rule["semanticRole"] != expected_semantic or rule["targetRole"] != expected_semantic or rule["sourceRole"] != expected_source or rule["sourceRole"] != source_mapping[expected_semantic]: fail("lowering_material_binding", rule["componentId"])
         if rule["targetRole"] not in semantic_roles or rule["sourceRole"] not in existing_roles: fail("unresolved_material", rule["componentId"])
         if city_to_blender(rule["citySimBounds"]) != item["bounds"]: fail("lowering_projection", rule["componentId"])
-    if len({item["targetRole"] for item in components}) != 12 or len({rule["targetRole"] for rule in rules}) != 12: fail("target_role_injective")
+    if len({item["targetRole"] for item in all_components}) != 12 or len({rule["targetRole"] for rule in rules}) != 12: fail("target_role_injective")
 
     portal = plan["portal"]
     if not isinstance(portal, dict): fail("missing_portal")
@@ -350,16 +409,14 @@ def validate_packet(packet: dict, check_files: bool = True) -> dict:
 
     aperture = packet["apertureAudit"]["clearApertureBounds"]
     void_id = "east-v13-deep-freight-void"
-    all_components = flatten_components(components)
-    all_ids = [item["id"] for item in all_components]
-    if len(all_ids) != len(set(all_ids)): fail("raw_geometry_alias")
     for item in all_components:
         semantic = item.get("semanticRole")
         if semantic not in source_mapping or item.get("targetRole") != semantic or item.get("materialRole") != source_mapping[semantic]: fail("component_material_binding", item.get("id", "missing-id"))
     non_void = [item for item in all_components if item["id"] != void_id]
     audit = packet["apertureAudit"]["auditedComponents"]
     if packet["apertureAudit"]["nonApertureSolidCount"] != len(non_void) or packet["apertureAudit"]["recursivelyAuditedSolidCount"] != len(non_void): fail("aperture_coverage")
-    if {item["componentId"] for item in audit} != {item["id"] for item in components if item["id"] != void_id}: fail("aperture_coverage")
+    audit_ids = [item["componentId"] for item in audit]
+    if len(audit_ids) != len(set(audit_ids)) or set(audit_ids) != {item["id"] for item in non_void}: fail("aperture_coverage")
     projected_occluders = []
     for item in non_void:
         if overlap(item["bounds"], aperture) > 0: fail("aperture_collision", item["id"])
@@ -389,6 +446,7 @@ def validate_packet(packet: dict, check_files: bool = True) -> dict:
 
     boundary = packet["zeroPixelBoundary"]
     if any(boundary[key] != 0 for key in ("blenderInvocations", "dccInvocations", "renderInvocations", "pixelFilesCreated", "normalizationRuns", "sourcePacketsCreated")): fail("pixel_boundary")
+    if boundary.get("productionSelection") is not False: fail("production_selection_boundary")
     if boundary["candidateReadyForIndependentReview"] is not True or boundary["independentReviewRequired"] is not True: fail("review_boundary")
 
     return {
@@ -396,12 +454,12 @@ def validate_packet(packet: dict, check_files: bool = True) -> dict:
         "task": "PLAY-079", "direction": "east", "phase": "V13_ZERO_PIXEL_COMPATIBILITY", "result": "PASS",
         "logicalBuildingID": packet["logicalBuildingID"], "variant": packet["variant"],
         "authority": {"commit": packet["authority"]["authorityCommit"], "routeId": packet["authority"]["routeId"], "routeSha256": packet["authority"]["routeSha256"], "dispatchReceipt": packet["authority"]["dispatchReceipt"]},
-        "checks": {"routeAndAuthority": "PASS", "bridgeAndLowering": "PASS", "eastSocketAndPivot": "PASS", "cameraAndLiteral192": "PASS", "eastAperturePlacement": "PASS", "portalAndSilhouette": "PASS", "materialResolution": "PASS", "recursiveApertureAudit": "PASS", "cameraProjectedOcclusion": "PASS", "rawGeometryNonAlias": "PASS", "pathIsolation": "PASS"},
+        "checks": {"routeAndAuthority": "PASS", "immutableIdentityBindings": "PASS", "readinessSelectionBoundary": "PASS", "bridgeAndLowering": "PASS", "recursiveLoweringCoverage": "PASS", "eastSocketAndPivot": "PASS", "cameraAndLiteral192": "PASS", "eastAperturePlacement": "PASS", "portalAndSilhouette": "PASS", "materialResolution": "PASS", "recursiveApertureAudit": "PASS", "cameraProjectedOcclusion": "PASS", "rawGeometryNonAlias": "PASS", "pathIsolation": "PASS"},
         "socket": {"citySim": registration["citySimSocket"], "blender": bridge["eastSocketBlender"], "source": registration["sourceSocket"]},
         "literal192": measured, "componentCount": len(components), "loweringRuleCount": len(rules), "silhouetteBreakCount": plan["silhouette"]["distinctRoofHeightBreaks"],
         "changedPaths": changed["changedPaths"], "apertureAudit": packet["apertureAudit"],
         "materialRoleCount": len(mapping), "adversarialCases": ["missing_portal", "unresolved_material", "target_collapse", "camera_drift", "yaw_drift", "elevation_drift", "inflated_literal_metric", "relocated_aperture", "aperture_collision", "nested_aperture_occluder", "camera_projected_occluder", "coherent_west_aperture_relocation", "crown_collapse", "near_identical_crown_envelopes", "empty_changed_paths", "wrong_known_material_membership", "duplicate_raw_geometry", "structural_alias", "path_escape"],
-        "siblingSceneInputs": [], "renderInvocations": 0, "imagesWritten": 0, "sourceAuthority": False, "productionSelected": False,
+        "siblingSceneInputs": [], "renderInvocations": 0, "imagesWritten": 0, "sourceAuthority": False, "sourceReady": False, "productionSelected": False,
         "sourceHashes": {"packetSHA256": sha(PACKET), "eastSceneSHA256": sha(EAST_SCENE), "eastMaterialsSHA256": sha(EAST_MATERIALS), "claimSHA256": sha(CLAIM), "semanticAuthoritySHA256": sha(SEMANTIC_AUTHORITY), "semanticMaterialsSHA256": sha(SEMANTIC_MATERIALS), "bridgeSHA256": sha(BRIDGE)},
     }
 
@@ -409,14 +467,30 @@ def validate_packet(packet: dict, check_files: bool = True) -> dict:
 def adversarial_cases(base: dict) -> list[dict[str, str]]:
     cases = []
 
-    def add_nested(packet: dict, bounds: dict[str, float], child_id: str) -> None:
+    def add_nested(packet: dict, bounds: dict[str, float], child_id: str, include_rule: bool = True, include_audit: bool = True) -> None:
         parent = packet["eastFacadePlan"]["components"][2]
-        parent["children"] = [{
+        child = {
             "id": child_id, "kind": "nested-solid", "bounds": bounds,
             "semanticRole": parent["semanticRole"], "targetRole": parent["targetRole"], "materialRole": parent["materialRole"],
-        }]
+        }
+        parent["children"] = [child]
+        if include_rule:
+            packet["loweringRules"].append({
+                "componentId": child_id,
+                "semanticRole": child["semanticRole"],
+                "targetRole": child["targetRole"],
+                "sourceRole": child["materialRole"],
+                "citySimBounds": {
+                    "xMin": bounds["yMin"], "xMax": bounds["yMax"],
+                    "yMin": bounds["zMin"], "yMax": bounds["zMax"],
+                    "zMin": bounds["xMin"], "zMax": bounds["xMax"],
+                },
+            })
+        if include_audit:
+            packet["apertureAudit"]["auditedComponents"].append({"componentId": child_id, "intrudes": False, "overlapAreaWorld2": 0.0})
         packet["apertureAudit"]["nonApertureSolidCount"] += 1
         packet["apertureAudit"]["recursivelyAuditedSolidCount"] += 1
+        packet["nonAliasProof"]["derivedRawGeometrySHA256"] = derived_raw_geometry_signature(packet["eastFacadePlan"]["components"])
 
     def relocate_west(packet: dict) -> None:
         component_ids = {
@@ -452,6 +526,18 @@ def adversarial_cases(base: dict) -> list[dict[str, str]]:
         }
 
     mutations = {
+        "forged_source_revision": lambda p: p.update({"sourceRevision": "east-v13-forged"}),
+        "forged_geometry_origin": lambda p: p["provenance"].update({"geometryOrigin": "caller-authored-shape-only"}),
+        "forged_claim_path": lambda p: p["authority"]["claim"].update({"path": "docs/production/claims/PLAY-080.world-art-south.md"}),
+        "forged_semantic_authority_path": lambda p: p["authority"]["publishedSemanticInputs"][0].update({"path": "docs/production/evidence/PLAY-080/forged.json"}),
+        "forged_semantic_material_path": lambda p: p["authority"]["publishedSemanticInputs"][1].update({"path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/forged.json"}),
+        "forged_east_scene_path": lambda p: p["sourceBindings"]["eastScene"].update({"path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-predesign-v01/scene.json"}),
+        "missing_source_ready": lambda p: p.pop("sourceReady"),
+        "contradictory_source_ready": lambda p: p.update({"sourceReady": True}),
+        "duplicate_source_ready_declaration": lambda p: p["zeroPixelBoundary"].update({"sourceReady": False}),
+        "missing_production_selected": lambda p: p.pop("productionSelected"),
+        "contradictory_production_selected": lambda p: p.update({"productionSelected": True}),
+        "duplicate_production_selected_declaration": lambda p: p["zeroPixelBoundary"].update({"productionSelected": False}),
         "missing_portal": lambda p: p["eastFacadePlan"].update({"portal": None}),
         "unresolved_material": lambda p: p["eastFacadePlan"]["components"][0].update({"semanticRole": "missing-role"}),
         "target_collapse": lambda p: p["lowering"].update({"targetCollapse": True}),
@@ -463,6 +549,8 @@ def adversarial_cases(base: dict) -> list[dict[str, str]]:
         "aperture_collision": lambda p: (p["eastFacadePlan"]["components"][0]["bounds"].update({"xMin": -2.0, "xMax": 2.0, "yMin": 24.0, "yMax": 26.0, "zMin": 4.0, "zMax": 8.0}), p["loweringRules"][0].update({"citySimBounds": {"xMin": 24.0, "xMax": 26.0, "yMin": 4.0, "yMax": 8.0, "zMin": -2.0, "zMax": 2.0}})),
         "nested_aperture_occluder": lambda p: add_nested(p, {"xMin": -2.0, "xMax": 2.0, "yMin": 24.0, "yMax": 26.0, "zMin": 4.0, "zMax": 8.0}, "east-v13-nested-aperture-occluder"),
         "camera_projected_occluder": lambda p: add_nested(p, {"xMin": 3.0, "xMax": 7.0, "yMin": 31.0, "yMax": 35.0, "zMin": 14.0, "zMax": 19.0}, "east-v13-camera-projected-occluder"),
+        "nested_without_lowering_rule": lambda p: add_nested(p, {"xMin": -6.0, "xMax": -4.0, "yMin": 2.0, "yMax": 4.0, "zMin": 2.0, "zMax": 4.0}, "east-v13-unlowered-nested-solid", include_rule=False),
+        "nested_without_audit_row": lambda p: add_nested(p, {"xMin": -6.0, "xMax": -4.0, "yMin": 2.0, "yMax": 4.0, "zMin": 2.0, "zMax": 4.0}, "east-v13-unaudited-nested-solid", include_audit=False),
         "coherent_west_aperture_relocation": relocate_west,
         "crown_collapse": lambda p: (p["eastFacadePlan"]["components"][9]["bounds"].update(copy.deepcopy(p["eastFacadePlan"]["components"][8]["bounds"])), p["loweringRules"][9].update({"citySimBounds": copy.deepcopy(p["loweringRules"][8]["citySimBounds"])})),
         "near_identical_crown_envelopes": near_identical_crown,
@@ -473,11 +561,18 @@ def adversarial_cases(base: dict) -> list[dict[str, str]]:
         "path_escape": lambda p: p["changedPathAudit"].update({"changedPaths": ["../PLAY-080/foreign.json"]}),
     }
     expected_codes = {
+        "forged_source_revision": "source_revision_binding", "forged_geometry_origin": "geometry_origin_binding",
+        "forged_claim_path": "claim_binding", "forged_semantic_authority_path": "semantic_input_binding",
+        "forged_semantic_material_path": "semantic_input_binding", "forged_east_scene_path": "east_scene_binding",
+        "missing_source_ready": "source_ready_boundary", "contradictory_source_ready": "source_ready_boundary",
+        "duplicate_source_ready_declaration": "source_ready_boundary", "missing_production_selected": "production_selection_boundary",
+        "contradictory_production_selected": "production_selection_boundary", "duplicate_production_selected_declaration": "production_selection_boundary",
         "missing_portal": "missing_portal", "unresolved_material": "unresolved_material", "target_collapse": "target_collapse",
         "camera_drift": "camera_drift", "yaw_drift": "camera_drift", "elevation_drift": "camera_drift",
         "inflated_literal_metric": "inflated_literal_metric", "relocated_aperture": "aperture_relocated",
         "aperture_collision": "aperture_collision", "nested_aperture_occluder": "aperture_collision",
         "camera_projected_occluder": "camera_projected_occlusion", "coherent_west_aperture_relocation": "east_aperture_placement",
+        "nested_without_lowering_rule": "lowering_coverage", "nested_without_audit_row": "aperture_coverage",
         "crown_collapse": "crown_collapse", "near_identical_crown_envelopes": "crown_envelope_collapse",
         "empty_changed_paths": "changed_path_inventory", "wrong_known_material_membership": "component_material_binding",
         "duplicate_raw_geometry": "raw_geometry_alias", "structural_alias": "component_identity", "path_escape": "path_escape",
@@ -493,6 +588,19 @@ def adversarial_cases(base: dict) -> list[dict[str, str]]:
             cases.append({"case": name, "result": "REJECTED", "code": str(error).split(":", 1)[0]})
         else:
             fail("adversary_accepted", name)
+    for field in ("sourceReady", "productionSelected"):
+        raw = json.dumps(base)
+        marker = f'"{field}": false'
+        duplicate = raw.replace(marker, marker + ", " + marker, 1)
+        name = f"duplicate_json_{field}"
+        try:
+            parse_json(duplicate)
+        except AssertionError as error:
+            if not str(error).startswith("duplicate_json_field"):
+                fail("adversary_wrong_rejection", name + ":" + str(error))
+            cases.append({"case": name, "result": "REJECTED", "code": "duplicate_json_field"})
+        else:
+            fail("adversary_accepted", name)
     return cases
 
 
@@ -500,8 +608,10 @@ def main() -> int:
     base = load(PACKET)
     first = validate_packet(base, check_files=True)
     adversaries = adversarial_cases(base)
+    first["adversarialCases"] = [item["case"] for item in adversaries]
     first["adversarialResults"] = adversaries
     second = validate_packet(load(PACKET), check_files=True)
+    second["adversarialCases"] = [item["case"] for item in adversaries]
     second["adversarialResults"] = adversaries
     first_bytes = canonical(first)
     second_bytes = canonical(second)

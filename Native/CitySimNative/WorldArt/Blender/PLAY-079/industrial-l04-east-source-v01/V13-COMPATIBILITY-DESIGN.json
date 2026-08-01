@@ -4,10 +4,11 @@
   "task": "PLAY-079",
   "direction": "east",
   "phase": "V13_ZERO_PIXEL_COMPATIBILITY",
-  "sourceRevision": "east-v13-compatibility-v03-frontier-recovery",
+  "sourceRevision": "east-v13-compatibility-v04-frontier-recovery-r2",
   "logicalBuildingID": "industrial_l04",
   "variant": 0,
   "sourceAuthority": false,
+  "sourceReady": false,
   "productionSelected": false,
   "pixelRenderingAllowed": false,
   "provenance": {
@@ -22,12 +23,12 @@
   "authority": {
     "authorityCommit": "d010d453af87c040ac13e8b3b7280366cb5094c1",
     "baseCommit": "d010d453af87c040ac13e8b3b7280366cb5094c1",
-    "routeId": "quality-v1:east-v13-frontier-recovery",
-    "routeSha256": "44d2b3bd77ebc10d2d94e7352ac8ef6f166410b946100f4429e44a45ea688f6c",
+    "routeId": "quality-v1:east-v13-frontier-recovery-r2",
+    "routeSha256": "427d5725f3522bb6ddc60bffe15e38191bec55a77d77eff8c4a251301479b16d",
     "dispatchReceipt": {
-      "carrierCommit": "e92afb8c4c91a16876379003d60698ce690d4519",
-      "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-EAST-V13-FRONTIER-RECOVERY-V1.json",
-      "sha256": "97711459fb59382bd6a35676473dce8e63fb37996ecca2532365d3f69d4f740c"
+      "carrierCommit": "bd40076f8506b50578002cec6d0e9b9aac3f5a44",
+      "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-EAST-V13-FRONTIER-RECOVERY-R2.json",
+      "sha256": "03c5626c7d9e6135184f1741342ee448ef0a2d7349eec2be51a3950579b7142d"
     },
     "claim": {
       "path": "docs/production/claims/PLAY-079.world-art-east.md",
@@ -399,7 +400,7 @@
     "targetCollapse": false
   },
   "changedPathAudit": {
-    "parentCandidate": "bfcb9622c23413e82202298e38718792996b385c",
+    "parentCandidate": "d0214c95d6d6bcc2395d56c2d10e768b8d7197e5",
     "changedPaths": [
       "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/V13-COMPATIBILITY-DESIGN.json",
       "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/test_v13_compatibility.py",

@@ -1,0 +1,277 @@
+{
+  "schema": 1,
+  "authorityCommit": "5ac54021604e25117f4ccb63bc0914209724754c",
+  "assignments": [
+    {
+      "modelRouteSha256": "ce55d83ff1938f1295874a71f291736d5c73365e3e0af0f10859be726833db5d",
+      "modelRoute": {
+        "schema": 1,
+        "routeId": "quality-v1:play-073-r4-b-device-rgb-proof-luna-v2",
+        "taskId": "PLAY-073",
+        "packetKind": "implementation",
+        "classification": "LUNA_IMPLEMENTATION",
+        "model": "gpt-5.6-luna",
+        "effort": "high",
+        "rationale": "Frontier has frozen the semantic boundary and exact device-RGB adversary; the remaining test and evidence update is bounded implementation.",
+        "authority": {
+          "authorityCommit": "5ac54021604e25117f4ccb63bc0914209724754c",
+          "baseCommit": "5ac54021604e25117f4ccb63bc0914209724754c",
+          "claim": {
+            "path": "docs/production/claims/PLAY-073.world-rendering.md",
+            "sha256": "51b347c22df6b04e33b0cb59046c774b65f770465bea21d1073db55cca75b897"
+          },
+          "immutableInputs": [
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "62e077c88730fda5664e5fa6d23200ade77418bd43f1c721c0bff84eaac1c971"
+            },
+            {
+              "path": ".agents/skills/render-citysim-world/SKILL.md",
+              "sha256": "fbd37c5f4730c61f95a344266b61d3fb37ce39adcefbaaba6e94f8939d8b72e2"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/PLAY-027-073-TECHNICAL-RETURNS-FRONTIER-RESOLUTION-V2.md",
+              "sha256": "31c605a6b176e3c508fbe5a8f71668f2cf8c3c2230e9d1e39d8e1857ab6c7a83"
+            }
+          ]
+        },
+        "assignment": {
+          "threadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+          "branch": "codex/citysim-world-rendering-r4b-current",
+          "worktree": "/Users/James/.codex/worktrees/cac1/city-sim",
+          "expectedHead": "a01ad44c563d9b2fbf3d9d3a59208ddd896d52c7",
+          "featureAuthorThreadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": [
+            "Native/CitySimNative/Tests/CitySimNativeTests/WorldRenderingTests.swift",
+            "docs/production/evidence/PLAY-073"
+          ],
+          "allowed": [
+            "Native/CitySimNative/Tests/CitySimNativeTests/WorldRenderingTests.swift",
+            "docs/production/evidence/PLAY-073/r4-b-current-master-v1/RESULT.json",
+            "docs/production/evidence/PLAY-073/r4-b-current-master-v1/HANDOFF.md"
+          ],
+          "forbidden": [
+            ".agents",
+            "AGENTS.md",
+            "Native/CitySimNative/Package.swift",
+            "Native/CitySimNative/Resources",
+            "Native/CitySimNative/Sources",
+            "Native/CitySimNative/WorldArt",
+            "docs/production/claims",
+            "docs/production/evidence/INTEGRATION",
+            "script"
+          ]
+        },
+        "boundedDeliverable": "Verify preserved WorldRenderingTests.swift binary diff SHA-256 1aacd511530347913df7da4d178db5d05b8f84b16ad252ce3f967ab9816068df; replace only the adversary construction with direct device-RGB colors at red 0.25 and 0.2500002; retain exact realized device-RGB and path-bit signatures; assert retired-rounding alias and realized-bit difference; refresh RESULT/HANDOFF; commit one clean three-path result.",
+        "validation": {
+          "focusedGateOwner": {
+            "threadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+            "role": "renderer_device_rgb_proof_implementation"
+          },
+          "focusedCommands": [
+            "swift test --package-path Native/CitySimNative --filter WorldRenderingTests/testRepeatSignatureDetectsOneBitScalarDrift",
+            "swift test --package-path Native/CitySimNative --filter WorldRenderingTests/testContextGeometryIsContainedAndRepeatsExactlyAcrossFamiliesAndFrontages",
+            "swift test --package-path Native/CitySimNative --filter WorldRenderingTests",
+            "python3 -m json.tool docs/production/evidence/PLAY-073/r4-b-current-master-v1/RESULT.json",
+            "git diff --check a01ad44c563d9b2fbf3d9d3a59208ddd896d52c7..HEAD"
+          ],
+          "fullGateOwner": {
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "role": "independent_aggregate_and_real_app_acceptance",
+            "model": "gpt-5.6-sol",
+            "effort": "high"
+          },
+          "fullCommands": [
+            "swift test --package-path Native/CitySimNative",
+            "./script/build_and_run.sh --verify",
+            "fresh-player real-app R4-B default and compact visual journey"
+          ]
+        },
+        "expectedResult": {
+          "evidencePaths": [
+            "docs/production/evidence/PLAY-073/r4-b-current-master-v1/RESULT.json",
+            "docs/production/evidence/PLAY-073/r4-b-current-master-v1/HANDOFF.md"
+          ],
+          "commitRequired": true,
+          "commitMessagePattern": "PLAY-073:"
+        },
+        "escalationTriggers": [
+          "baseline_or_candidate_identity_mismatch",
+          "cross_lane_semantic_conflict",
+          "failure_outside_focused_scope",
+          "path_outside_claim",
+          "save_or_migration_uncertainty",
+          "shared_contract_or_schema_decision",
+          "subjective_acceptance_required",
+          "two_unsuccessful_repair_attempts",
+          "unresolved_product_visual_or_interaction_judgment"
+        ],
+        "stopCondition": "Stop after one clean three-path Luna implementation commit with all focused gates passing, or immediately on any remaining failure, path expansion, product/source mutation, or new ambiguity. Do not run aggregate/staged/final visual QA, self-accept, integrate, push, or pin.",
+        "independentReviewer": {
+          "required": true,
+          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+          "model": "gpt-5.6-sol",
+          "effort": "high"
+        },
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {
+              "path": ".agents/skills/render-citysim-world/SKILL.md",
+              "sha256": "fbd37c5f4730c61f95a344266b61d3fb37ce39adcefbaaba6e94f8939d8b72e2"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/PLAY-027-073-TECHNICAL-RETURNS-FRONTIER-RESOLUTION-V2.md",
+              "sha256": "31c605a6b176e3c508fbe5a8f71668f2cf8c3c2230e9d1e39d8e1857ab6c7a83"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "modelRouteSha256": "d1c3a1c8b2c6afd747b42641d29afc5e4d85320f267ffe19c89efc447cdb1940",
+      "modelRoute": {
+        "schema": 1,
+        "routeId": "quality-v1:play-027-north-current-head-preflight-luna-v1",
+        "taskId": "PLAY-027",
+        "packetKind": "implementation",
+        "classification": "LUNA_IMPLEMENTATION",
+        "model": "gpt-5.6-luna",
+        "effort": "high",
+        "rationale": "Independent review found a test-only path-discovery override; Integration has frozen exact current-HEAD production semantics, leaving a bounded task-owned implementation and proof repair.",
+        "authority": {
+          "authorityCommit": "5ac54021604e25117f4ccb63bc0914209724754c",
+          "baseCommit": "5ac54021604e25117f4ccb63bc0914209724754c",
+          "claim": {
+            "path": "docs/production/claims/PLAY-027.world-art.md",
+            "sha256": "bf0b167a1d1e6f7007d609aeb657917fe9d3d0866d5a7a6e36b0e5a32faefa6f"
+          },
+          "immutableInputs": [
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "62e077c88730fda5664e5fa6d23200ade77418bd43f1c721c0bff84eaac1c971"
+            },
+            {
+              "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+              "sha256": "583c5d7be25a7ffdb95f354c6279fe7c309358f65445365203431c51f0e53247"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/PLAY-027-073-TECHNICAL-RETURNS-FRONTIER-RESOLUTION-V2.md",
+              "sha256": "31c605a6b176e3c508fbe5a8f71668f2cf8c3c2230e9d1e39d8e1857ab6c7a83"
+            }
+          ]
+        },
+        "assignment": {
+          "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+          "branch": "codex/citysim-world-art",
+          "worktree": "/Users/James/.codex/worktrees/0648/city-sim",
+          "expectedHead": "d25d7a2767d92a8628849ca3911d28f4203dd674",
+          "featureAuthorThreadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027",
+            "docs/production/evidence/PLAY-027"
+          ],
+          "allowed": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-v02/EXECUTION-CONTRACT.json",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-v02/RUNNER-CONTRACT.json",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-v02/launch_north_v13_process_a_v02.py",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-v02/test_process_a_v02.py",
+            "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-v02/CURRENT-AUTHORITY-REBIND.json",
+            "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-v02/HANDOFF.json",
+            "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-v02/ORCHESTRATOR-READINESS.json"
+          ],
+          "forbidden": [
+            ".agents",
+            "AGENTS.md",
+            "Native/CitySimNative/Package.swift",
+            "Native/CitySimNative/Rendering",
+            "Native/CitySimNative/Resources",
+            "Native/CitySimNative/Sources",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-079",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-080",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-081",
+            "docs/production/claims",
+            "docs/production/evidence/INTEGRATION",
+            "script"
+          ]
+        },
+        "boundedDeliverable": "Rebind the production runner and immutable task-owned contracts to exact worker base d25d7a2767d92a8628849ca3911d28f4203dd674 and this published route; remove the real-checkout _changed_paths monkeypatch; make unmodified production preflight pass at the final exact HEAD while rejecting untracked/out-of-set changes; refresh current receipt/readiness/handoff hashes; commit one clean allowed-path result with zero launch, DCC, child, Process-A, output, render, or pixels.",
+        "validation": {
+          "focusedGateOwner": {
+            "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+            "role": "north_current_head_preflight_implementation"
+          },
+          "focusedCommands": [
+            "PYTHONDONTWRITEBYTECODE=1 python3 Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-v02/test_process_a_v02.py",
+            "PYTHONDONTWRITEBYTECODE=1 python3 Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-v02/test_process_a_v02.py",
+            "python3 -m json.tool docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-v02/CURRENT-AUTHORITY-REBIND.json",
+            "git diff --check d25d7a2767d92a8628849ca3911d28f4203dd674..HEAD"
+          ],
+          "fullGateOwner": {
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "role": "independent_north_launch_boundary_acceptance",
+            "model": "gpt-5.6-sol",
+            "effort": "high"
+          },
+          "fullCommands": [
+            "independent unmodified-runner preflight at exact candidate HEAD",
+            "independent five-tool-hash and path-scope audit",
+            "Integration-owned one-shot Process-A only after separate launch authority"
+          ]
+        },
+        "expectedResult": {
+          "evidencePaths": [
+            "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-v02/CURRENT-AUTHORITY-REBIND.json",
+            "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-v02/HANDOFF.json",
+            "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-v02/ORCHESTRATOR-READINESS.json"
+          ],
+          "commitRequired": true,
+          "commitMessagePattern": "PLAY-027:"
+        },
+        "escalationTriggers": [
+          "baseline_or_candidate_identity_mismatch",
+          "cross_lane_semantic_conflict",
+          "failure_outside_focused_scope",
+          "path_outside_claim",
+          "save_or_migration_uncertainty",
+          "shared_contract_or_schema_decision",
+          "subjective_acceptance_required",
+          "two_unsuccessful_repair_attempts",
+          "unresolved_product_visual_or_interaction_judgment"
+        ],
+        "stopCondition": "Stop after one clean allowed-path Luna implementation commit with unmodified production preflight and all focused gates passing, or immediately on any route/identity mismatch, path expansion, launch/DCC/pixel activity, remaining test override, failure, or new ambiguity. Do not self-accept, integrate, push, or pin.",
+        "independentReviewer": {
+          "required": true,
+          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+          "model": "gpt-5.6-sol",
+          "effort": "high"
+        },
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {
+              "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+              "sha256": "583c5d7be25a7ffdb95f354c6279fe7c309358f65445365203431c51f0e53247"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/PLAY-027-073-TECHNICAL-RETURNS-FRONTIER-RESOLUTION-V2.md",
+              "sha256": "31c605a6b176e3c508fbe5a8f71668f2cf8c3c2230e9d1e39d8e1857ab6c7a83"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

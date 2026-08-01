@@ -17,16 +17,17 @@ import subprocess
 import sys
 
 
-ROUTE_ID = "quality-v1:north-v13-process-a-v02-current-authority-rebind-v1"
-ROUTE_SHA256 = "2c60020aa23e0c0a746a1ab8b09d1abd6af084b9e28541181b638ec877b5a6fd"
-CARRIER_COMMIT = "a23a3690a6996f0a18ec6d5f02ce10253f3784dc"
-RECEIPT_PATH = "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-027-NORTH-V13-PROCESS-A-V02-REBIND-LUNA-V1.json"
-RECEIPT_SHA256 = "63f965d9f32c4645565eab1fda94a6748e5e03cfd8ecefb4d183bdb9ac66a65c"
-AUTHORITY_BASE = "1f2a3dd62bff4e12002afd1348000bcf25ad4687"
-EXECUTION_BASE = "cffa19a528d1192794dea31a99dc4eb6db29579a"
+ROUTE_ID = "quality-v1:north-v13-process-a-v02-live-authority-local-debug-v1"
+ROUTE_SHA256 = "167301b26d50810952c841a160194cb4bac051f5078dacb43232796c9adf9dc8"
+CARRIER_COMMIT = "45e1422304443a012a2f121c90be3e7d31b82c59"
+RECEIPT_PATH = "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-027-073-TECHNICAL-RETURNS-LUNA-V1.json"
+RECEIPT_SHA256 = "bc83e9ae8b85acb1a40adf0a657ee11e3e95e5491745c5553889f90b85ae2692"
+AUTHORITY_BASE = "68ef9bdf213b9b7f659f4a049f2f2708bcae166c"
+EXECUTION_BASE = "57a89b916f3c97801f7f26e83ad3b6422bae3065"
 CLAIM_SHA256 = "bf0b167a1d1e6f7007d609aeb657917fe9d3d0866d5a7a6e36b0e5a32faefa6f"
 THREAD_ID = "019f96e0-3793-7542-9172-060a9ca09b0a"
 WORKTREE = "/Users/James/.codex/worktrees/0648/city-sim"
+ASSIGNED_WORKTREE = WORKTREE
 BRANCH = "codex/citysim-world-art"
 SOURCE_ROOT = "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-v02"
 EVIDENCE_ROOT = "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-v02"
@@ -163,7 +164,7 @@ def _verify_carrier(root: Path) -> dict:
     if sha256_bytes(canonical_bytes(route)) != ROUTE_SHA256 or wrapper.get("modelRouteSha256") != ROUTE_SHA256:
         raise ValueError("published canonical route hash mismatch")
     assignment = route.get("assignment", {})
-    if assignment.get("branch") != BRANCH or assignment.get("worktree") != WORKTREE or assignment.get("expectedHead") != EXECUTION_BASE:
+    if assignment.get("branch") != "codex/citysim-world-art" or assignment.get("worktree") != ASSIGNED_WORKTREE or assignment.get("expectedHead") != EXECUTION_BASE:
         raise ValueError("published assignment mismatch")
     authority = route.get("authority", {})
     if authority.get("authorityCommit") != AUTHORITY_BASE or authority.get("baseCommit") != AUTHORITY_BASE:
@@ -256,6 +257,16 @@ def validate_schedule_path(root: Path, value: str | None, label: str) -> str:
     return value
 
 
+def _authority_exclusion_paths(schedule_path: str, receipt_path: str) -> tuple[str, str, str]:
+    if type(schedule_path) is not str or type(receipt_path) is not str:
+        raise ValueError("validated authority paths must be strings")
+    if schedule_path == receipt_path or schedule_path == ATTEMPT_MARKER_PATH or receipt_path == ATTEMPT_MARKER_PATH:
+        raise ValueError("schedule, receipt, and attempt marker paths must be distinct")
+    if not schedule_path.startswith("docs/production/evidence/INTEGRATION/") or not receipt_path.startswith("docs/production/evidence/INTEGRATION/"):
+        raise ValueError("validated authority paths must remain in the Integration namespace")
+    return (schedule_path, receipt_path, ATTEMPT_MARKER_PATH)
+
+
 def _required_fields(value: dict, expected: dict, label: str) -> None:
     exact_types(value, expected, label)
     if value.keys() != expected.keys():
@@ -285,7 +296,7 @@ def _marker_template(schedule: dict, receipt: dict, schedule_path: str, receipt_
         "schema": 1, "kind": "integration-process-attempt",
         "task": "PLAY-027", "slot": "north:A", "state": state, "attemptConsumed": consumed,
         "schedulePath": schedule_path, "scheduleSHA256": schedule_sha256 or sha256_bytes(canonical_bytes(schedule)),
-        "schedulePublicationCommit": schedule["schedulePublicationCommit"],
+        "schedulePublicationCommit": receipt["schedulePublicationCommit"],
         "receiptPath": receipt_path, "receiptSHA256": receipt_sha256 or sha256_bytes(canonical_bytes(receipt)),
         "workerHead": receipt["workerHead"], "outputRoot": FUTURE_PROCESS_ROOT, "evidenceRoot": EVIDENCE_ROOT,
         "orchestratorPath": schedule["orchestratorPath"], "orchestratorSHA256": schedule["orchestratorSHA256"],
@@ -320,20 +331,22 @@ def validate_direct_documents(root: Path, contract: dict, schedule_path: str, re
         "orchestratorPath": SOURCE_ROOT + "/launch_north_v13_process_a_v02.py", "orchestratorSHA256": sha256_file(Path(__file__)),
         "childPath": SOURCE_ROOT + "/render_north_v13_process_a_child.py", "childSHA256": sha256_file(Path(__file__).with_name(CHILD_NAME)),
         "outputRoot": FUTURE_PROCESS_ROOT, "evidenceRoot": EVIDENCE_ROOT,
-        "attemptMarkerPath": ATTEMPT_MARKER_PATH, "schedulePublicationCommit": "0" * 40,
+        "attemptMarkerPath": ATTEMPT_MARKER_PATH, "schedulePublicationCommit": AUTHORITY_BASE,
         "maximumChildStarts": 1,
     }
     _required_fields(schedule, schedule_template, "schedule")
     _full_commit(schedule["schedulePublicationCommit"], "schedule publication commit")
     if schedule["attemptMarkerPath"] != ATTEMPT_MARKER_PATH or schedule["schedulePath"] != schedule_path:
         raise ValueError("schedule marker/path identity mismatch")
-    schedule_template["schedulePublicationCommit"] = schedule["schedulePublicationCommit"]
     if schedule != schedule_template:
         raise ValueError("schedule identity does not match the frozen North contract")
+    if schedule["schedulePublicationCommit"] != AUTHORITY_BASE:
+        raise ValueError("schedule must bind the published Integration authority base")
+    publication_commit = _full_commit(receipt.get("schedulePublicationCommit"), "receipt schedule publication commit")
     receipt_template = {
         "schema": 1, "kind": "integration-process-receipt", "task": "PLAY-027",
         "schedulePath": schedule_path, "scheduleSHA256": sha256_bytes(schedule_bytes),
-        "schedulePublicationCommit": schedule["schedulePublicationCommit"], "claimSHA256": CLAIM_SHA256,
+        "schedulePublicationCommit": publication_commit, "claimSHA256": CLAIM_SHA256,
         "authorityBase": AUTHORITY_BASE, "trustedIntegrationHead": AUTHORITY_BASE,
         "workerHead": current_head, "direction": "north", "process": "A", "slot": "north:A",
         "orchestratorPath": schedule_template["orchestratorPath"], "orchestratorSHA256": schedule_template["orchestratorSHA256"],
@@ -345,7 +358,7 @@ def validate_direct_documents(root: Path, contract: dict, schedule_path: str, re
     _required_fields(receipt, receipt_template, "process receipt")
     if receipt != receipt_template:
         raise ValueError("process receipt identity or schedule-byte binding mismatch")
-    _validate_publication(root, schedule["schedulePublicationCommit"], schedule_path, schedule_bytes, current_head)
+    _validate_publication(root, publication_commit, schedule_path, schedule_bytes, current_head)
     if schedule["trustedIntegrationHead"] != AUTHORITY_BASE:
         raise ValueError("trusted Integration head mismatch")
     return {"schedule": schedule, "receipt": receipt, "currentHead": current_head, "scheduleSHA256": receipt["scheduleSHA256"], "receiptSHA256": sha256_bytes(receipt_bytes)}
@@ -366,20 +379,23 @@ def build_launch_command(root: Path, contract: dict, schedule_path: str, receipt
 def prepare_integration_launch(repository_root: str | Path, contract_path: str, schedule_path: str, process_receipt_path: str) -> dict:
     root = exact_repository_root(repository_root)
     contract = _load_contract(root, contract_path)
-    preflight_result = preflight(root, contract_path, schedule_path, process_receipt_path, FUTURE_PROCESS_ROOT)
+    schedule_path = validate_schedule_path(root, schedule_path, "schedule path")
+    process_receipt_path = validate_schedule_path(root, process_receipt_path, "process receipt path")
     schedule_file = _assert_no_symlink(root, schedule_path)
     receipt_file = _assert_no_symlink(root, process_receipt_path)
     if not schedule_file.is_file() or not receipt_file.is_file():
         raise ValueError("Integration schedule and process receipt bytes are required")
     binding = validate_direct_documents(root, contract, schedule_path, process_receipt_path, schedule_file.read_bytes(), receipt_file.read_bytes())
     _validate_attempt_marker(root, binding["schedule"]["attemptMarkerPath"], binding["schedule"], binding["receipt"], schedule_path, process_receipt_path, "available", binding["scheduleSHA256"], binding["receiptSHA256"])
+    authority_paths = _authority_exclusion_paths(schedule_path, process_receipt_path)
+    preflight_result = _preflight(root, contract_path, schedule_path, process_receipt_path, FUTURE_PROCESS_ROOT, authority_paths)
     output_root = _assert_no_symlink(root, FUTURE_PROCESS_ROOT)
     if output_root.exists():
         raise ValueError("exclusive output root must be absent before launch")
     command = build_launch_command(root, contract, schedule_path, process_receipt_path)
     if command.count(BLENDER) != 1 or command.count("--python") != 1:
         raise ValueError("fixed one-child command shape invalid")
-    return {"preflight": preflight_result, "binding": binding, "attemptMarkerPath": ATTEMPT_MARKER_PATH, "command": command, "commandSHA256": sha256_bytes(canonical_bytes(command)), "launchReady": True, "childStarts": 0}
+    return {"preflight": preflight_result, "binding": binding, "attemptMarkerPath": ATTEMPT_MARKER_PATH, "validatedAuthorityExclusions": list(authority_paths), "command": command, "commandSHA256": sha256_bytes(canonical_bytes(command)), "launchReady": True, "childStarts": 0}
 
 
 def _atomic_consume_attempt(prepared: dict, root: Path) -> dict:
@@ -425,7 +441,7 @@ def execute_integration_direct(prepared: dict, root: Path) -> int:
     return process.returncode
 
 
-def preflight(repository_root: str | Path, contract_path: str, schedule_path: str | None, process_receipt_path: str | None, output_root: str | None) -> dict:
+def _preflight(repository_root: str | Path, contract_path: str, schedule_path: str | None, process_receipt_path: str | None, output_root: str | None, validated_authority_paths: tuple[str, str, str] = ()) -> dict:
     root = exact_repository_root(repository_root)
     contract = _load_contract(root, contract_path)
     _verify_contract_bindings(root, contract)
@@ -433,12 +449,16 @@ def preflight(repository_root: str | Path, contract_path: str, schedule_path: st
     if _git(root, "rev-parse", "--abbrev-ref", "HEAD").decode().strip() != BRANCH:
         raise ValueError("wrong branch")
     _git(root, "merge-base", "--is-ancestor", EXECUTION_BASE, _git(root, "rev-parse", "HEAD").decode().strip())
-    changed = _changed_paths(root)
+    schedule = validate_schedule_path(root, schedule_path, "schedule path")
+    receipt = validate_schedule_path(root, process_receipt_path, "process receipt path")
+    if validated_authority_paths:
+        expected_authority_paths = _authority_exclusion_paths(schedule, receipt)
+        if validated_authority_paths != expected_authority_paths:
+            raise ValueError("authority exclusions do not match the validated schedule, receipt, and marker")
+    changed = [path for path in _changed_paths(root) if path not in validated_authority_paths]
     if any(not _allowed_changed_path(path) for path in changed):
         raise ValueError("current delta escapes the two task-owned roots")
     validate_frozen_inputs(root, contract)
-    schedule = validate_schedule_path(root, schedule_path, "schedule path")
-    receipt = validate_schedule_path(root, process_receipt_path, "process receipt path")
     expected_output = contract["output"]["futureProcessRoot"]
     if output_root is not None and output_root != expected_output:
         raise ValueError("output root is not the exact future Process-A root")
@@ -454,6 +474,7 @@ def preflight(repository_root: str | Path, contract_path: str, schedule_path: st
         "executionBaseHEAD": EXECUTION_BASE,
         "observedHeadMustDescendFromBase": True,
         "changedPaths": changed,
+        "validatedAuthorityExclusions": list(validated_authority_paths),
         "frozenInputCount": len(contract["inputs"]),
         "schedulePath": schedule,
         "schedulePresent": (root / schedule).is_file(),
@@ -467,6 +488,10 @@ def preflight(repository_root: str | Path, contract_path: str, schedule_path: st
         "processAStarts": 0,
         "pixelWrites": 0,
     }
+
+
+def preflight(repository_root: str | Path, contract_path: str, schedule_path: str | None, process_receipt_path: str | None, output_root: str | None) -> dict:
+    return _preflight(repository_root, contract_path, schedule_path, process_receipt_path, output_root)
 
 
 def build_documents(preflight_result: dict, contract: dict, root: Path) -> tuple[dict, dict]:

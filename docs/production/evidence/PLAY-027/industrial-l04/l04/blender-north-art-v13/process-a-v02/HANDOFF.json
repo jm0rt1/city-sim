@@ -1,11 +1,10 @@
 {
   "assignment": {
     "branch": "codex/citysim-world-art",
-    "head": "cffa19a528d1192794dea31a99dc4eb6db29579a",
     "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
     "worktree": "/Users/James/.codex/worktrees/0648/city-sim"
   },
-  "authorityBase": "1f2a3dd62bff4e12002afd1348000bcf25ad4687",
+  "authorityBase": "68ef9bdf213b9b7f659f4a049f2f2708bcae166c",
   "candidateReadyForIndependentReview": false,
   "claimSHA256": "bf0b167a1d1e6f7007d609aeb657917fe9d3d0866d5a7a6e36b0e5a32faefa6f",
   "directLaunch": {
@@ -38,13 +37,13 @@
     "helperCapacity": 0,
     "join": "joined",
     "launchedJobs": [],
-    "nextRefill": "published revision-10 schedule and one-attempt process receipt",
+    "nextRefill": "published schedule and one-attempt process receipt",
     "readyNow": 0,
     "running": [],
     "serializedAuthority": "Integration direct launch",
     "unusedCapacityReasons": [
       {
-        "dependencyAuthority": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-027-NORTH-V13-PROCESS-A-V02-REBIND-LUNA-V1.json",
+        "dependencyAuthority": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-027-073-TECHNICAL-RETURNS-LUNA-V1.json",
         "nextRefillJob": "north:A",
         "owner": "Integration",
         "reasonCode": "waiting_on_integration_direct_authority",
@@ -92,7 +91,7 @@
     "viewDirection": "north"
   },
   "knownBlockers": [
-    "Integration must publish revision-10 schedule, one-attempt receipt, and compute slot"
+    "Integration must publish and consume the exact schedule, one-attempt receipt, and compute slot"
   ],
   "launchReady": false,
   "pixels": "not_produced",
@@ -104,12 +103,12 @@
       "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-v02/launch_north_v13_process_a_v02.py",
       "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-v02/render_north_v13_process_a_child.py",
       "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-v02/test_process_a_v02.py",
+      "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-v02/CURRENT-AUTHORITY-REBIND.json",
       "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-v02/HANDOFF.json",
-      "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-v02/ORCHESTRATOR-READINESS.json",
-      "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-v02/CURRENT-AUTHORITY-REBIND.json"
+      "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-v02/ORCHESTRATOR-READINESS.json"
     ],
     "dccChildStarts": 0,
-    "executionBaseHEAD": "cffa19a528d1192794dea31a99dc4eb6db29579a",
+    "executionBaseHEAD": "57a89b916f3c97801f7f26e83ad3b6422bae3065",
     "frozenInputCount": 6,
     "futureProcessRootAbsent": true,
     "observedHeadMustDescendFromBase": true,
@@ -118,13 +117,14 @@
     "processReceiptPath": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-NORTH-PROCESS-A-RECEIPT.json",
     "processReceiptPresent": false,
     "route": {
-      "carrierCommit": "a23a3690a6996f0a18ec6d5f02ce10253f3784dc",
-      "receiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-027-NORTH-V13-PROCESS-A-V02-REBIND-LUNA-V1.json",
-      "receiptSHA256": "63f965d9f32c4645565eab1fda94a6748e5e03cfd8ecefb4d183bdb9ac66a65c",
-      "routeSHA256": "2c60020aa23e0c0a746a1ab8b09d1abd6af084b9e28541181b638ec877b5a6fd"
+      "carrierCommit": "45e1422304443a012a2f121c90be3e7d31b82c59",
+      "receiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-027-073-TECHNICAL-RETURNS-LUNA-V1.json",
+      "receiptSHA256": "bc83e9ae8b85acb1a40adf0a657ee11e3e95e5491745c5553889f90b85ae2692",
+      "routeSHA256": "167301b26d50810952c841a160194cb4bac051f5078dacb43232796c9adf9dc8"
     },
     "schedulePath": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-NORTH-PROCESS-A-SCHEDULE.json",
     "schedulePresent": false,
+    "validatedAuthorityExclusions": [],
     "workerCreatedAttemptMarker": false,
     "workerCreatedProcessReceipt": false,
     "workerCreatedSchedule": false
@@ -137,17 +137,17 @@
     "futureProcess": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a",
     "source": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-v02"
   },
-  "routeId": "quality-v1:north-v13-process-a-v02-current-authority-rebind-v1",
-  "routeSHA256": "2c60020aa23e0c0a746a1ab8b09d1abd6af084b9e28541181b638ec877b5a6fd",
+  "routeId": "quality-v1:north-v13-process-a-v02-live-authority-local-debug-v1",
+  "routeSHA256": "167301b26d50810952c841a160194cb4bac051f5078dacb43232796c9adf9dc8",
   "schema": 1,
   "sourceAuthority": false,
   "stage": "predesign",
   "stopCondition": "Stop before any child or pixel; Integration owns the later direct launch.",
   "task": "PLAY-027",
   "toolHashes": {
-    "child": "7fbfbac615dd516b3113312114574bb4d471e172288c69ce36d6659c012b15f2",
-    "executionContract": "57861b8beb334c25c7d1af1c0b21d2afe92c63be42389dd5234c3bbe6e0c85c5",
-    "runner": "373d2a450373b1e5adcde23c15af4d7f4e16f20129d79bf2622c7421e5c6f7c3",
-    "runnerContract": "c7e08bbb3ef3483290ab64015fd72767e1d5a80ceebc9834be601706e5aa8969"
+    "child": "38e42d29a33ae281b5fdc14b635cc5bb232b76f28f030258052cea21f7938401",
+    "executionContract": "9da1b157a56a7d382ff5c7acb55da10fb86499f06e09b4e72c318ad05a3b8b00",
+    "runner": "67c9dcebd6af1b2f7002bcd7230de977b76a7bdd876fd31913cb2df1065111d5",
+    "runnerContract": "4151d75e91a79d8da4a829b7e7fd516317103c3a0b6e77878bb31cfa257027f7"
   }
 }

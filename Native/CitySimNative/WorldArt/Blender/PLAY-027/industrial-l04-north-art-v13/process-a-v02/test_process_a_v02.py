@@ -9,6 +9,7 @@ import importlib.util
 import json
 import os
 from pathlib import Path
+import shutil
 import subprocess
 import tempfile
 
@@ -53,6 +54,66 @@ def fresh_packet(root: Path, readiness: dict, handoff: dict) -> dict:
     return {"directories": [], "files": files, "symlinks": {}}
 
 
+def _git_fixture() -> tuple[tempfile.TemporaryDirectory, Path, dict, dict, dict]:
+    """Create a real Git publication fixture without touching the worker tree."""
+    holder = tempfile.TemporaryDirectory(prefix="north-v13-live-authority-")
+    fixture = (Path(holder.name).resolve() / "repo").resolve()
+    subprocess.run(["git", "clone", "--no-hardlinks", "-q", str(ROOT), str(fixture)], check=True)
+    subprocess.run(["git", "checkout", "-q", "-b", "fixture-north", runner.EXECUTION_BASE], cwd=fixture, check=True)
+    subprocess.run(["git", "config", "user.email", "north-fixture@example.invalid"], cwd=fixture, check=True)
+    subprocess.run(["git", "config", "user.name", "North Fixture"], cwd=fixture, check=True)
+    source = ROOT / runner.SOURCE_ROOT
+    destination = fixture / runner.SOURCE_ROOT
+    shutil.copytree(source, destination, dirs_exist_ok=True)
+    contract_path = destination / "EXECUTION-CONTRACT.json"
+    fixture_contract = runner.load_json(contract_path)
+    fixture_contract["assignment"]["branch"] = "fixture-north"
+    fixture_contract["assignment"]["worktree"] = str(fixture)
+    contract_path.write_text(json.dumps(fixture_contract, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+    schedule_path = fixture / SCHEDULE
+    schedule_path.parent.mkdir(parents=True, exist_ok=True)
+    runner_path = destination / "launch_north_v13_process_a_v02.py"
+    child_path = destination / "render_north_v13_process_a_child.py"
+    schedule = {
+        "schema": 1, "task": "PLAY-027", "batch": "industrial_l04_directional_family",
+        "claimSHA256": runner.CLAIM_SHA256, "authorityBase": runner.AUTHORITY_BASE, "trustedIntegrationHead": runner.AUTHORITY_BASE,
+        "direction": "north", "process": "A", "slot": "north:A", "schedulePath": SCHEDULE,
+        "orchestratorPath": runner.SOURCE_ROOT + "/launch_north_v13_process_a_v02.py", "orchestratorSHA256": hashlib.sha256(runner_path.read_bytes()).hexdigest(),
+        "childPath": runner.SOURCE_ROOT + "/render_north_v13_process_a_child.py", "childSHA256": hashlib.sha256(child_path.read_bytes()).hexdigest(),
+        "outputRoot": runner.FUTURE_PROCESS_ROOT, "evidenceRoot": runner.EVIDENCE_ROOT,
+        "attemptMarkerPath": runner.ATTEMPT_MARKER_PATH, "schedulePublicationCommit": runner.AUTHORITY_BASE,
+        "maximumChildStarts": 1,
+    }
+    schedule_bytes = runner.canonical_bytes(schedule)
+    schedule_path.write_bytes(schedule_bytes)
+    subprocess.run(["git", "add", SCHEDULE], cwd=fixture, check=True)
+    subprocess.run(["git", "commit", "-qm", "publish schedule fixture"], cwd=fixture, check=True)
+    publication_commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=fixture, text=True).strip()
+
+    receipt_path = fixture / RECEIPT
+    receipt_path.parent.mkdir(parents=True, exist_ok=True)
+    receipt = {
+        "schema": 1, "kind": "integration-process-receipt", "task": "PLAY-027",
+        "schedulePath": SCHEDULE, "scheduleSHA256": runner.sha256_bytes(schedule_bytes),
+        "schedulePublicationCommit": publication_commit, "claimSHA256": runner.CLAIM_SHA256,
+        "authorityBase": runner.AUTHORITY_BASE, "trustedIntegrationHead": runner.AUTHORITY_BASE,
+        "workerHead": publication_commit, "direction": "north", "process": "A", "slot": "north:A",
+        "orchestratorPath": schedule["orchestratorPath"], "orchestratorSHA256": schedule["orchestratorSHA256"],
+        "childPath": schedule["childPath"], "childSHA256": schedule["childSHA256"],
+        "outputRoot": runner.FUTURE_PROCESS_ROOT, "evidenceRoot": runner.EVIDENCE_ROOT,
+        "attemptMarkerPath": runner.ATTEMPT_MARKER_PATH, "attemptConsumed": True,
+        "maximumChildStarts": 1, "receiptPath": RECEIPT,
+    }
+    receipt_bytes = runner.canonical_bytes(receipt)
+    receipt_path.write_bytes(receipt_bytes)
+    marker_path = fixture / runner.ATTEMPT_MARKER_PATH
+    marker_path.parent.mkdir(parents=True, exist_ok=True)
+    marker = runner._marker_template(schedule, receipt, SCHEDULE, RECEIPT, "available", False, runner.sha256_bytes(schedule_bytes), runner.sha256_bytes(receipt_bytes))
+    marker_path.write_bytes(runner.canonical_bytes(marker))
+    return holder, fixture, fixture_contract, schedule, receipt
+
+
 def main() -> int:
     before = runner._changed_paths(ROOT)
     baseline = runner.preflight(ROOT, f"{runner.SOURCE_ROOT}/EXECUTION-CONTRACT.json", SCHEDULE, RECEIPT, runner.FUTURE_PROCESS_ROOT)
@@ -65,10 +126,10 @@ def main() -> int:
     assert baseline["workerCreatedSchedule"] is False
     assert baseline["workerCreatedProcessReceipt"] is False
     assert baseline["workerCreatedAttemptMarker"] is False
-    assert runner.ROUTE_ID == "quality-v1:north-v13-process-a-v02-current-authority-rebind-v1"
-    assert runner.CARRIER_COMMIT == "a23a3690a6996f0a18ec6d5f02ce10253f3784dc"
-    assert runner.AUTHORITY_BASE == "1f2a3dd62bff4e12002afd1348000bcf25ad4687"
-    assert runner.EXECUTION_BASE == "cffa19a528d1192794dea31a99dc4eb6db29579a"
+    assert runner.ROUTE_ID == "quality-v1:north-v13-process-a-v02-live-authority-local-debug-v1"
+    assert runner.CARRIER_COMMIT == "45e1422304443a012a2f121c90be3e7d31b82c59"
+    assert runner.AUTHORITY_BASE == "68ef9bdf213b9b7f659f4a049f2f2708bcae166c"
+    assert runner.EXECUTION_BASE == "57a89b916f3c97801f7f26e83ad3b6422bae3065"
     assert runner.CLAIM_SHA256 == "bf0b167a1d1e6f7007d609aeb657917fe9d3d0866d5a7a6e36b0e5a32faefa6f"
     assert contract["claim"]["revision"] == 10
     assert len(runner.ALLOWED_PATHS) == 8
@@ -172,6 +233,91 @@ def main() -> int:
     must_fail(lambda: runner.validate_direct_documents(ROOT, contract, SCHEDULE, RECEIPT, schedule_bytes, runner.canonical_bytes(incomplete)), "incomplete receipt")
     must_fail(lambda: runner.prepare_integration_launch(ROOT, f"{runner.SOURCE_ROOT}/EXECUTION-CONTRACT.json", SCHEDULE, RECEIPT), "missing live authority files")
 
+    # A real temporary Git publication carries the exact schedule blob.  The
+    # schedule binds the trusted Integration base; the receipt binds the
+    # concrete publication commit that contains that immutable blob.  The
+    # launch preparation reaches launchReady without invoking Popen or
+    # creating the future output root, and only these three validated paths
+    # are removed from the worker delta.
+    holder, fixture, fixture_contract, fixture_schedule, fixture_receipt = _git_fixture()
+    original_worktree, original_branch, original_popen = runner.WORKTREE, runner.BRANCH, runner.subprocess.Popen
+    runner.WORKTREE = str(fixture)
+    runner.BRANCH = "fixture-north"
+    def reject_blender(*args, **kwargs):
+        command = args[0] if args else kwargs.get("args", [])
+        if command and command[0] == runner.BLENDER:
+            raise AssertionError("Blender Popen must not run in preflight")
+        return original_popen(*args, **kwargs)
+    runner.subprocess.Popen = reject_blender
+    try:
+        prepared = runner.prepare_integration_launch(fixture, f"{runner.SOURCE_ROOT}/EXECUTION-CONTRACT.json", SCHEDULE, RECEIPT)
+        assert prepared["launchReady"] is True
+        assert prepared["childStarts"] == 0
+        assert prepared["validatedAuthorityExclusions"] == [SCHEDULE, RECEIPT, runner.ATTEMPT_MARKER_PATH]
+        assert SCHEDULE not in prepared["preflight"]["changedPaths"]
+        assert RECEIPT not in prepared["preflight"]["changedPaths"]
+        assert runner.ATTEMPT_MARKER_PATH not in prepared["preflight"]["changedPaths"]
+        assert prepared["preflight"]["futureProcessRootAbsent"] is True
+        assert not (fixture / runner.FUTURE_PROCESS_ROOT).exists()
+
+        # A namespace neighbor and any unvalidated exact authority file remain
+        # worker-delta failures; the validator never whitelists a namespace.
+        neighbor = fixture / "docs/production/evidence/INTEGRATION/NORTH-NEIGHBOR.json"
+        neighbor.write_bytes(b"{}\n")
+        must_fail(lambda: runner.prepare_integration_launch(fixture, f"{runner.SOURCE_ROOT}/EXECUTION-CONTRACT.json", SCHEDULE, RECEIPT), "Integration namespace neighbor")
+        neighbor.unlink()
+        must_fail(lambda: runner.preflight(fixture, f"{runner.SOURCE_ROOT}/EXECUTION-CONTRACT.json", SCHEDULE, RECEIPT, runner.FUTURE_PROCESS_ROOT), "unvalidated exact authority paths")
+
+        schedule_file = fixture / SCHEDULE
+        receipt_file = fixture / RECEIPT
+        marker_file = fixture / runner.ATTEMPT_MARKER_PATH
+        original_schedule = schedule_file.read_bytes()
+        original_receipt = receipt_file.read_bytes()
+        original_marker = marker_file.read_bytes()
+        try:
+            schedule_file.write_bytes(original_schedule + b"\n")
+            must_fail(lambda: runner.prepare_integration_launch(fixture, f"{runner.SOURCE_ROOT}/EXECUTION-CONTRACT.json", SCHEDULE, RECEIPT), "forged publication blob")
+            schedule_file.write_bytes(original_schedule)
+
+            forged_receipt = json.loads(original_receipt.decode("utf-8"))
+            forged_receipt["schedulePublicationCommit"] = runner.AUTHORITY_BASE
+            receipt_file.write_bytes(runner.canonical_bytes(forged_receipt))
+            must_fail(lambda: runner.prepare_integration_launch(fixture, f"{runner.SOURCE_ROOT}/EXECUTION-CONTRACT.json", SCHEDULE, RECEIPT), "wrong publication commit")
+            receipt_file.write_bytes(original_receipt)
+
+            forged_receipt = json.loads(original_receipt.decode("utf-8"))
+            forged_receipt["receiptPath"] = RECEIPT + ".wrong"
+            receipt_file.write_bytes(runner.canonical_bytes(forged_receipt))
+            must_fail(lambda: runner.prepare_integration_launch(fixture, f"{runner.SOURCE_ROOT}/EXECUTION-CONTRACT.json", SCHEDULE, RECEIPT), "wrong receipt identity")
+            receipt_file.write_bytes(original_receipt)
+
+            forged_marker = json.loads(original_marker.decode("utf-8"))
+            forged_marker["state"] = "consumed"
+            forged_marker["attemptConsumed"] = True
+            marker_file.write_bytes(runner.canonical_bytes(forged_marker))
+            must_fail(lambda: runner.prepare_integration_launch(fixture, f"{runner.SOURCE_ROOT}/EXECUTION-CONTRACT.json", SCHEDULE, RECEIPT), "wrong marker state")
+            marker_file.write_bytes(original_marker)
+
+            extra = fixture / "docs/production/evidence/PLAY-027/UNOWNED.json"
+            extra.write_bytes(b"{}\n")
+            must_fail(lambda: runner.prepare_integration_launch(fixture, f"{runner.SOURCE_ROOT}/EXECUTION-CONTRACT.json", SCHEDULE, RECEIPT), "extra untracked file")
+            extra.unlink()
+
+            alias = fixture / "docs/production/evidence/INTEGRATION/NORTH-SCHEDULE-ALIAS.json"
+            alias.symlink_to(schedule_file)
+            must_fail(lambda: runner.prepare_integration_launch(fixture, f"{runner.SOURCE_ROOT}/EXECUTION-CONTRACT.json", str(alias.relative_to(fixture)), RECEIPT), "schedule path alias")
+            alias.unlink()
+        finally:
+            schedule_file.write_bytes(original_schedule)
+            receipt_file.write_bytes(original_receipt)
+            marker_file.write_bytes(original_marker)
+        assert not (fixture / runner.FUTURE_PROCESS_ROOT).exists()
+    finally:
+        runner.subprocess.Popen = original_popen
+        runner.WORKTREE = original_worktree
+        runner.BRANCH = original_branch
+        holder.cleanup()
+
     # Assigned worktree identity is exact; aliases and copied roots fail before
     # Git/content inspection.
     with tempfile.TemporaryDirectory(prefix="north-v13-v02-root-") as temp:
@@ -261,7 +407,13 @@ def main() -> int:
             assert "bpy" not in source
         assert "render(" not in source or path.name == "render_north_v13_process_a_child.py"
 
-    print("PASS north-v13 current-authority-rebind zeroChild=1 adversaries=33 freshRoots=2 carrierGit=verified dccChildren=0 processA=0 pixels=0 topology=unchanged")
+    generated_readiness, generated_handoff = runner.build_documents(baseline, contract, ROOT)
+    for name, value in (("ORCHESTRATOR-READINESS.json", generated_readiness), ("HANDOFF.json", generated_handoff)):
+        committed = (ROOT / runner.EVIDENCE_ROOT / name).read_bytes()
+        generated = (json.dumps(value, indent=2, sort_keys=True) + "\n").encode("utf-8")
+        assert committed == generated, f"generated {name} differs from committed bytes"
+
+    print("PASS north-v13 live-authority-exclusion zeroChild=1 adversaries=41 freshRoots=2 carrierGit=verified launchReady=1 dccChildren=0 processA=0 pixels=0 topology=unchanged")
     return 0
 
 

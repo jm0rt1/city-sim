@@ -23,12 +23,12 @@ PROCESS_ROOT = "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-nor
 EVIDENCE_ROOT = "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-v02"
 WORKTREE = "/Users/James/.codex/worktrees/0648/city-sim"
 ATTEMPT_MARKER_PATH = "docs/production/evidence/INTEGRATION/PLAY-027-NORTH-V13-PROCESS-A-ATTEMPT.json"
-AUTHORITY_BASE = "1f2a3dd62bff4e12002afd1348000bcf25ad4687"
+AUTHORITY_BASE = "68ef9bdf213b9b7f659f4a049f2f2708bcae166c"
 CLAIM_SHA256 = "bf0b167a1d1e6f7007d609aeb657917fe9d3d0866d5a7a6e36b0e5a32faefa6f"
-ROUTE_ID = "quality-v1:north-v13-process-a-v02-current-authority-rebind-v1"
-ROUTE_SHA256 = "2c60020aa23e0c0a746a1ab8b09d1abd6af084b9e28541181b638ec877b5a6fd"
-CARRIER_COMMIT = "a23a3690a6996f0a18ec6d5f02ce10253f3784dc"
-EXECUTION_BASE = "cffa19a528d1192794dea31a99dc4eb6db29579a"
+ROUTE_ID = "quality-v1:north-v13-process-a-v02-live-authority-local-debug-v1"
+ROUTE_SHA256 = "167301b26d50810952c841a160194cb4bac051f5078dacb43232796c9adf9dc8"
+CARRIER_COMMIT = "45e1422304443a012a2f121c90be3e7d31b82c59"
+EXECUTION_BASE = "57a89b916f3c97801f7f26e83ad3b6422bae3065"
 
 
 def canonical(value: object) -> bytes:
@@ -164,11 +164,11 @@ def validate_launch(parsed: argparse.Namespace) -> dict:
     _git(root, "merge-base", "--is-ancestor", EXECUTION_BASE, current_head)
     runner_path = root / SOURCE_ROOT / "process-a-v02" / "launch_north_v13_process_a_v02.py"
     child_path = root / SOURCE_ROOT / "process-a-v02" / "render_north_v13_process_a_child.py"
-    if not _exact_int(schedule.get("schema"), 1) or schedule.get("task") != "PLAY-027" or schedule.get("batch") != "industrial_l04_directional_family" or schedule.get("direction") != "north" or schedule.get("process") != "A" or schedule.get("slot") != "north:A" or not _exact_int(schedule.get("maximumChildStarts"), 1) or schedule.get("schedulePath") != schedule_path or schedule.get("attemptMarkerPath") != ATTEMPT_MARKER_PATH or schedule.get("outputRoot") != PROCESS_ROOT or schedule.get("evidenceRoot") != EVIDENCE_ROOT or schedule.get("workerHead") is not None or schedule.get("claimSHA256") != CLAIM_SHA256 or schedule.get("trustedIntegrationHead") != AUTHORITY_BASE:
+    if not _exact_int(schedule.get("schema"), 1) or schedule.get("task") != "PLAY-027" or schedule.get("batch") != "industrial_l04_directional_family" or schedule.get("direction") != "north" or schedule.get("process") != "A" or schedule.get("slot") != "north:A" or not _exact_int(schedule.get("maximumChildStarts"), 1) or schedule.get("schedulePath") != schedule_path or schedule.get("attemptMarkerPath") != ATTEMPT_MARKER_PATH or schedule.get("outputRoot") != PROCESS_ROOT or schedule.get("evidenceRoot") != EVIDENCE_ROOT or schedule.get("workerHead") is not None or schedule.get("claimSHA256") != CLAIM_SHA256 or schedule.get("trustedIntegrationHead") != AUTHORITY_BASE or schedule.get("schedulePublicationCommit") != AUTHORITY_BASE:
         raise RuntimeError("child schedule identity mismatch")
     if schedule.get("orchestratorPath") != f"{SOURCE_ROOT}/process-a-v02/launch_north_v13_process_a_v02.py" or schedule.get("childPath") != f"{SOURCE_ROOT}/process-a-v02/render_north_v13_process_a_child.py" or schedule.get("orchestratorSHA256") != sha256(runner_path) or schedule.get("childSHA256") != sha256(child_path):
         raise RuntimeError("child tool identity mismatch")
-    publication = _require_commit(schedule.get("schedulePublicationCommit"), "schedule publication commit")
+    publication = _require_commit(receipt.get("schedulePublicationCommit"), "receipt schedule publication commit")
     _git(root, "cat-file", "-e", publication + "^{commit}")
     _git(root, "merge-base", "--is-ancestor", publication, current_head)
     if _git(root, "show", f"{publication}:{schedule_path}") != schedule_bytes:

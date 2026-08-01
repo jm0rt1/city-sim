@@ -2,13 +2,13 @@
   "schema": 1,
   "task": "PLAY-027",
   "stage": "predesign",
-  "disposition": "PASS_ZERO_DCC_CURRENT_AUTHORITY_REBIND",
-  "routeId": "quality-v1:north-v13-process-a-v02-current-authority-rebind-v1",
-  "routeSHA256": "2c60020aa23e0c0a746a1ab8b09d1abd6af084b9e28541181b638ec877b5a6fd",
-  "carrierCommit": "a23a3690a6996f0a18ec6d5f02ce10253f3784dc",
-  "carrierReceiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-027-NORTH-V13-PROCESS-A-V02-REBIND-LUNA-V1.json",
-  "carrierReceiptSHA256": "63f965d9f32c4645565eab1fda94a6748e5e03cfd8ecefb4d183bdb9ac66a65c",
-  "authorityBase": "1f2a3dd62bff4e12002afd1348000bcf25ad4687",
+  "disposition": "PASS_ZERO_DCC_LIVE_AUTHORITY_EXCLUSION",
+  "routeId": "quality-v1:north-v13-process-a-v02-live-authority-local-debug-v1",
+  "routeSHA256": "167301b26d50810952c841a160194cb4bac051f5078dacb43232796c9adf9dc8",
+  "carrierCommit": "45e1422304443a012a2f121c90be3e7d31b82c59",
+  "carrierReceiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-027-073-TECHNICAL-RETURNS-LUNA-V1.json",
+  "carrierReceiptSHA256": "bc83e9ae8b85acb1a40adf0a657ee11e3e95e5491745c5553889f90b85ae2692",
+  "authorityBase": "68ef9bdf213b9b7f659f4a049f2f2708bcae166c",
   "claim": {
     "path": "docs/production/claims/PLAY-027.world-art.md",
     "revision": 10,
@@ -18,7 +18,16 @@
     "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
     "branch": "codex/citysim-world-art",
     "worktree": "/Users/James/.codex/worktrees/0648/city-sim",
-    "workerHead": "cffa19a528d1192794dea31a99dc4eb6db29579a"
+    "workerHead": "57a89b916f3c97801f7f26e83ad3b6422bae3065"
+  },
+  "authorityDelta": {
+    "validatedExclusions": [
+      "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-NORTH-PROCESS-A-SCHEDULE.json",
+      "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-NORTH-PROCESS-A-RECEIPT.json",
+      "docs/production/evidence/INTEGRATION/PLAY-027-NORTH-V13-PROCESS-A-ATTEMPT.json"
+    ],
+    "schedulePublicationBinding": "receipt.schedulePublicationCommit identifies the committed schedule blob; schedule.schedulePublicationCommit binds the trusted Integration authority base",
+    "workerDeltaPolicy": "exclude only the three validated authority paths; every other changed path must be one of the eight task-owned files"
   },
   "frozenInputs": [
     {"path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/DESIGN-SCENE.json", "sha256": "0f7a8e40a07f5c2b7320ab42fe5e1bcb2dc23fb508ff6b04e8ea49cf6c974060"},
@@ -42,24 +51,27 @@
     "runnerContract": "c7e08bbb3ef3483290ab64015fd72767e1d5a80ceebc9834be601706e5aa8969",
     "runner": "373d2a450373b1e5adcde23c15af4d7f4e16f20129d79bf2622c7421e5c6f7c3",
     "child": "7fbfbac615dd516b3113312114574bb4d471e172288c69ce36d6659c012b15f2",
-    "test": "c484d4d4f6ae627e289e73a55b929ed4446396858810cab2a835cb75f4063c7c"
+    "test": "501e7c0fe75fd12ade9d3095c2cf3791c4a7f4cc5ea462a1d1ab7d9ec549bad8"
   },
   "focusedValidation": {
-    "command": "python3 Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-v02/test_process_a_v02.py",
+    "command": "PYTHONDONTWRITEBYTECODE=1 python3 Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-v02/test_process_a_v02.py",
     "runs": 2,
     "results": ["PASS", "PASS"],
     "freshRoots": 2,
     "zeroDCC": true,
     "zeroProcessA": true,
     "zeroPixels": true,
-    "topologyUnchanged": true
+    "topologyUnchanged": true,
+    "positiveLaunchReady": true,
+    "validatedAuthorityExclusionCount": 3,
+    "adversaries": 41
   },
   "executionAccounting": {
     "readyNow": 0,
     "running": [],
     "waitingOnJoin": [],
     "serializedAuthority": "Integration direct launch",
-    "nextRefill": "published revision-10 schedule and one-attempt process receipt",
+    "nextRefill": "published schedule and one-attempt process receipt",
     "helperCapacity": 1,
     "dccCapacity": 0,
     "launchedJobs": [],
@@ -67,7 +79,7 @@
       {
         "reasonCode": "waiting_on_integration_direct_authority",
         "owner": "Integration",
-        "dependencyAuthority": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-027-NORTH-V13-PROCESS-A-V02-REBIND-LUNA-V1.json",
+        "dependencyAuthority": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-027-073-TECHNICAL-RETURNS-LUNA-V1.json",
         "resumptionEvent": "published schedule/receipt",
         "nextRefillJob": "north:A"
       }

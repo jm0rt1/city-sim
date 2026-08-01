@@ -3,14 +3,14 @@
   "stage": "north-v13-process-a-v02-integration-direct",
   "task": "PLAY-027",
   "route": {
-    "routeId": "quality-v1:north-v13-process-a-v02-current-authority-rebind-v1",
-    "canonicalSHA256": "2c60020aa23e0c0a746a1ab8b09d1abd6af084b9e28541181b638ec877b5a6fd",
-    "carrierCommit": "a23a3690a6996f0a18ec6d5f02ce10253f3784dc",
-    "receiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-027-NORTH-V13-PROCESS-A-V02-REBIND-LUNA-V1.json",
-    "receiptSHA256": "63f965d9f32c4645565eab1fda94a6748e5e03cfd8ecefb4d183bdb9ac66a65c",
-    "authorityCommit": "1f2a3dd62bff4e12002afd1348000bcf25ad4687",
-    "baseCommit": "1f2a3dd62bff4e12002afd1348000bcf25ad4687",
-    "executionBaseHEAD": "cffa19a528d1192794dea31a99dc4eb6db29579a"
+    "routeId": "quality-v1:north-v13-process-a-v02-live-authority-local-debug-v1",
+    "canonicalSHA256": "167301b26d50810952c841a160194cb4bac051f5078dacb43232796c9adf9dc8",
+    "carrierCommit": "45e1422304443a012a2f121c90be3e7d31b82c59",
+    "receiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-027-073-TECHNICAL-RETURNS-LUNA-V1.json",
+    "receiptSHA256": "bc83e9ae8b85acb1a40adf0a657ee11e3e95e5491745c5553889f90b85ae2692",
+    "authorityCommit": "68ef9bdf213b9b7f659f4a049f2f2708bcae166c",
+    "baseCommit": "68ef9bdf213b9b7f659f4a049f2f2708bcae166c",
+    "executionBaseHEAD": "57a89b916f3c97801f7f26e83ad3b6422bae3065"
   },
   "claim": {
     "path": "docs/production/claims/PLAY-027.world-art.md",

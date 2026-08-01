@@ -37,13 +37,13 @@ EXPECTED_BRIDGE_SHA = "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea
 EXPECTED_CLAIM_SHA = "f3b51269139bef088e4661f578dd882139a685d1c7fde26db8473f15c536882e"
 EXPECTED_BASE = "d010d453af87c040ac13e8b3b7280366cb5094c1"
 EXPECTED_ROUTE = {
-    "routeId": "quality-v1:west-v13-derived-proof-repair-r2",
-    "canonicalRouteSha256": "74bc8a904b9c1cc930973278e88b5f8304a315af53d5b752cbb5b8f2695cd676",
-    "carrierCommit": "98cf70d6109ced15999601b1577717db3bd7046f",
-    "receiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-SOUTH-WEST-V13-DERIVED-PROOF-REPAIR-R2.json",
-    "receiptSha256": "343c9fe3efc2515542d12a8d6b63de4edd5c7a947eb7ed2ab60d51a8ffab9396",
+    "routeId": "quality-v1:west-v13-frontier-recovery",
+    "canonicalRouteSha256": "2bb82b131d0369d2cb4bb896d138cacbcbb406bd27a2bcef58ea6476e99f42d9",
+    "carrierCommit": "a07c8c9d10852b3fda7aeff3bfe0e78bec373a39",
+    "receiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-SOUTH-WEST-V13-FRONTIER-RECOVERY-V1.json",
+    "receiptSha256": "6deba0b456b4f2ce55d1ee806bac99100daa3ea1d6d42994f627212b85ab9bef",
     "authorityCommit": "d010d453af87c040ac13e8b3b7280366cb5094c1",
-    "expectedStartingHead": "50407d47400f042892149d2680c79ef448546500",
+    "expectedStartingHead": "b9a9a59930e5e6562d4b5ff389e4045fb8e6c1f2",
 }
 EXPECTED_ROLES = {
     "grounded-foundation", "integrated-operating-apron", "warm-foundry-masonry",
@@ -154,14 +154,25 @@ def process_flags(component: dict[str, Any], errors: list[str]) -> tuple[bool | 
         add_error(errors, "occluder-flag-schema", str(component.get("id")))
         top = None
     nested_values: list[bool] = []
-    for container_key in ("metadata", "validation", "proof"):
-        container = component.get(container_key)
-        if isinstance(container, dict) and "processOccluder" in container:
-            value = container["processOccluder"]
-            if not isinstance(value, bool):
-                add_error(errors, "occluder-flag-schema", f"{component.get('id')}:{container_key}")
-            else:
-                nested_values.append(value)
+
+    def visit(value: Any, path: str) -> None:
+        if isinstance(value, dict):
+            for key, child in value.items():
+                child_path = f"{path}.{key}" if path else key
+                if key == "processOccluder":
+                    if not isinstance(child, bool):
+                        add_error(errors, "occluder-flag-schema", f"{component.get('id')}:{child_path}")
+                    else:
+                        nested_values.append(child)
+                else:
+                    visit(child, child_path)
+        elif isinstance(value, list):
+            for index, child in enumerate(value):
+                visit(child, f"{path}[{index}]")
+
+    for key, value in component.items():
+        if key != "processOccluder":
+            visit(value, key)
     nested = nested_values[0] if nested_values else None
     if len(set(nested_values)) > 1:
         add_error(errors, "occluder-flag-disagreement", str(component.get("id")))
@@ -308,8 +319,8 @@ def signature_records(design: dict[str, Any], boxes: dict[str, tuple[tuple[float
         projection = projections[component_id]
         record = {
             "id": component_id,
-            "geometry": digest({"kind": component["kind"], "role": component["role"], "aabb": component["aabb"]}),
-            "kind": digest({"kind": component["kind"], "dimensions": [box[1][axis] - box[0][axis] for axis in (0, 1, 2)]}),
+            "geometry": digest({"shape": "axis-aligned-box", "aabb": {"min": list(box[0]), "max": list(box[1])}}),
+            "kind": digest({"kind": component["kind"]}),
             "role": digest({"role": component["role"]}),
             "silhouette": digest({"topY": box[1][1], "literalMin": projection["literalMin"], "literalMax": projection["literalMax"]}),
             "projection": digest({"min": projection["min"], "max": projection["max"]}),
@@ -449,6 +460,9 @@ def audit_bundle(design: dict[str, Any], materials: dict[str, Any], lowering: di
             add_error(errors, "non-alias", "signature")
         allowlist = design.get("geometryProof", {}).get("portalProjectionAllowlist", {})
         overlap_ids = set(derived["sourceOverlapIDs"])
+        process_overlap_ids = sorted(overlap_ids & process_ids)
+        for component_id in process_overlap_ids:
+            add_error(errors, "process-occluder-source-overlap", component_id)
         if not isinstance(allowlist, dict):
             add_error(errors, "projection", "allowlist-schema")
         else:
@@ -460,6 +474,10 @@ def audit_bundle(design: dict[str, Any], materials: dict[str, Any], lowering: di
                     add_error(errors, "projection", f"allowlist:{component_id}")
         if derived["sourceOverlapIDs"] != lowering.get("projectionAudit", {}).get("sourceOverlapIDs"):
             add_error(errors, "projection", "audit-record")
+        if process_overlap_ids != lowering.get("projectionAudit", {}).get("processOccluderOverlapIDs"):
+            add_error(errors, "projection", "process-occluder-audit-record")
+        if process_overlap_ids != result.get("derivedProof", {}).get("processOccluderSourceOverlapIDs"):
+            add_error(errors, "evidence-derived-drift", "process-occluder-overlap")
         if lowering.get("projectionAudit", {}).get("solidCount") != len(design.get("components", [])):
             add_error(errors, "projection", "solid-count")
         metrics = derived["metrics"]
@@ -592,7 +610,7 @@ def audit_bundle(design: dict[str, Any], materials: dict[str, Any], lowering: di
         add_error(errors, "evidence", "claim")
     if result.get("westBinding", {}).get("siblingInputsConsumed") != [] or result.get("westBinding", {}).get("orientationTransform") != "none":
         add_error(errors, "evidence", "direction-isolation")
-    if result.get("proofRepair", {}).get("repairAttempt") != 2:
+    if result.get("proofRepair", {}).get("repairAttempt") != 2 or result.get("proofRepair", {}).get("frontierRecoveryAttempt") != 1:
         add_error(errors, "evidence", "repair-attempt")
     fresh = result.get("freshReplay", {})
     if fresh.get("independentProcessCount") != 2 or fresh.get("byteIdentical") is not True or fresh.get("processIsolation") is not True:
@@ -633,12 +651,16 @@ def audit_bundle(design: dict[str, Any], materials: dict[str, Any], lowering: di
 def run_adversaries(bundle: tuple[dict[str, Any], dict[str, Any], dict[str, Any], dict[str, Any], dict[str, Any]]) -> dict[str, str]:
     names: dict[str, str] = {}
 
-    def expect_reject(label: str, mutate: Any) -> None:
+    def expect_reject(label: str, mutate: Any, expected_error: str | None = None) -> None:
         candidate = tuple(copy.deepcopy(item) for item in bundle)
         mutate(candidate)
         errors = audit_bundle(candidate[0], candidate[1], candidate[2], candidate[3], candidate[4], verify_files=False)
         require(errors, f"adversary accepted: {label}")
-        names[label] = errors[0]
+        if expected_error is not None:
+            require(any(error.startswith(expected_error) for error in errors), f"adversary missed required failure {label}: {errors}")
+            names[label] = next(error for error in errors if error.startswith(expected_error))
+        else:
+            names[label] = errors[0]
 
     def nested_flag_only(candidate: tuple[Any, ...]) -> None:
         component = next(item for item in candidate[0]["components"] if item["id"] == "west-v13-stack")
@@ -669,6 +691,31 @@ def run_adversaries(bundle: tuple[dict[str, Any], dict[str, Any], dict[str, Any]
         for key in ("kind", "role", "aabb"):
             target[key] = copy.deepcopy(source[key])
 
+    def raw_geometry_alias_relabel(candidate: tuple[Any, ...]) -> None:
+        source = next(item for item in candidate[0]["components"] if item["id"] == "west-v13-hot-process")
+        target = next(item for item in candidate[0]["components"] if item["id"] == "west-v13-stack")
+        target["aabb"] = copy.deepcopy(source["aabb"])
+
+    def allowlisted_process_occluder(candidate: tuple[Any, ...]) -> None:
+        design = candidate[0]
+        component = next(item for item in design["components"] if item["id"] == "west-v13-foundry-hall")
+        component["processOccluder"] = True
+        design["portalCrown"]["processOccluderIDs"].append(component["id"])
+
+    def allowlisted_process_occluder_nested_coherent(candidate: tuple[Any, ...]) -> None:
+        design = candidate[0]
+        component = next(item for item in design["components"] if item["id"] == "west-v13-roof-edge")
+        component["processOccluder"] = True
+        component["metadata"] = {"processOccluder": True}
+        component["proof"] = {"processOccluder": True}
+        design["portalCrown"]["processOccluderIDs"].append(component["id"])
+
+    def allowlisted_process_occluder_deep_nested(candidate: tuple[Any, ...]) -> None:
+        design = candidate[0]
+        component = next(item for item in design["components"] if item["id"] == "west-v13-staff-annex")
+        component["metadata"] = {"validation": {"flags": [{"processOccluder": True}]}}
+        design["portalCrown"]["processOccluderIDs"].append(component["id"])
+
     def invalid_aabb(candidate: tuple[Any, ...]) -> None:
         candidate[0]["components"][0]["aabb"]["min"][0] = "not-a-number"
 
@@ -694,24 +741,28 @@ def run_adversaries(bundle: tuple[dict[str, Any], dict[str, Any], dict[str, Any]
         candidate[3]["freshReplay"]["processIsolation"] = False
         candidate[3]["freshReplay"]["independentProcessCount"] = 1
 
-    adversaries = {
-        "nested-flag-only": nested_flag_only,
-        "camera-null-axis-occlusion": camera_null_axis,
-        "camera-position-drift": camera_position,
-        "camera-viewport-drift": camera_viewport,
-        "camera-shift-drift": camera_shift,
-        "identity-drift": identity,
-        "geometry-alias": geometry_alias,
-        "invalid-aabb": invalid_aabb,
-        "solid-aperture-collision": collision,
-        "width-drift": width_drift,
-        "bounds-drift": bounds_drift,
-        "material-alias": material_alias,
-        "path-escape": path_escape,
-        "same-memory-replay": same_memory_replay,
+    adversaries: dict[str, tuple[Any, str | None]] = {
+        "nested-flag-only": (nested_flag_only, None),
+        "camera-null-axis-occlusion": (camera_null_axis, None),
+        "camera-position-drift": (camera_position, None),
+        "camera-viewport-drift": (camera_viewport, None),
+        "camera-shift-drift": (camera_shift, None),
+        "identity-drift": (identity, None),
+        "geometry-alias": (geometry_alias, "derived:duplicate geometry signature"),
+        "raw-geometry-alias-relabel": (raw_geometry_alias_relabel, "derived:duplicate geometry signature"),
+        "allowlisted-process-occluder": (allowlisted_process_occluder, "process-occluder-source-overlap:"),
+        "allowlisted-process-occluder-nested-coherent": (allowlisted_process_occluder_nested_coherent, "process-occluder-source-overlap:"),
+        "allowlisted-process-occluder-deep-nested": (allowlisted_process_occluder_deep_nested, "process-occluder-source-overlap:"),
+        "invalid-aabb": (invalid_aabb, None),
+        "solid-aperture-collision": (collision, None),
+        "width-drift": (width_drift, None),
+        "bounds-drift": (bounds_drift, None),
+        "material-alias": (material_alias, None),
+        "path-escape": (path_escape, None),
+        "same-memory-replay": (same_memory_replay, None),
     }
-    for label, mutate in adversaries.items():
-        expect_reject(label, mutate)
+    for label, (mutate, expected_error) in adversaries.items():
+        expect_reject(label, mutate, expected_error)
     return names
 
 
@@ -755,13 +806,13 @@ def main() -> int:
     errors = audit_bundle(*bundle, verify_files=True)
     require(not errors, "proof audit failed: " + "; ".join(errors))
     adversaries = run_adversaries(bundle)
-    require(len(adversaries) == 14, "adversary coverage")
+    require(len(adversaries) == 18, "adversary coverage")
     identical, replay_sha, replay_seconds = fresh_process_replay()
     require(identical and replay_sha == result.get("freshReplay", {}).get("outputSha256"), "fresh replay evidence drift")
 
     generated = [path for path in V13_ROOT.rglob("*") if path.is_file() and path.suffix.lower() in PIXEL_SUFFIXES]
     require(not generated, f"pixel or binary output present: {generated}")
-    print("PASS v13-west-derived-proof-r2 bridge=PASS camera=DERIVED sourceProjection=PASS occluderFlags=PASS identity=PASS nonAlias=PASS freshReplay=BYTE_IDENTICAL adversaries=14 zeroPixel=PASS")
+    print("PASS v13-west-frontier-recovery bridge=PASS camera=DERIVED sourceProjection=PASS processOccluderOverlap=REJECTED identity=PASS rawGeometryNonAlias=PASS freshReplay=BYTE_IDENTICAL adversaries=18 zeroPixel=PASS")
     return 0
 
 

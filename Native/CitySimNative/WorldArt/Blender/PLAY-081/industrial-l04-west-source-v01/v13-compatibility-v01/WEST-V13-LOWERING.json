@@ -102,11 +102,12 @@
   },
   "projectionAudit": {
     "solidCount": 17,
-    "sourceOverlapIDs": ["west-v13-crown-center", "west-v13-crown-east", "west-v13-crown-west", "west-v13-foundation", "west-v13-foundry-hall", "west-v13-inner-reveal", "west-v13-operating-apron", "west-v13-portal-header", "west-v13-portal-left-jamb", "west-v13-roof-edge", "west-v13-staff-annex"]
+    "sourceOverlapIDs": ["west-v13-crown-center", "west-v13-crown-east", "west-v13-crown-west", "west-v13-foundation", "west-v13-foundry-hall", "west-v13-inner-reveal", "west-v13-operating-apron", "west-v13-portal-header", "west-v13-portal-left-jamb", "west-v13-roof-edge", "west-v13-staff-annex"],
+    "processOccluderOverlapIDs": []
   },
   "nonAliasSignatures": {
-    "geometry": "404c51c7912d45f66135d6f22e30b7a8b8f234806ddf6398e0ecc9d026cb5e78",
-    "kind": "521c2a4cfe9ed68bf4b276bdfb52e6c8c45334f5a83514396714bc418589b4cb",
+    "geometry": "29129b1cd92bd4874ec4542163d766e890f0e829d2044beae6abd32742d9071b",
+    "kind": "375e9eff52cfba07b3114f13be953c93f2d8dfa4a47770dc30d3c9bc2c95874b",
     "role": "2a71a736180d0b3d4694969a0e1c2a32b64fc925d26b7adc1c4edee534097efb",
     "silhouette": "c60224101c7020d7e5d8d8e3d54d009fcdfe8f88f8af4a8fd6d274996c103efb",
     "projection": "ec939a1b9a9d9ee5cec245e35fd45521ab66e90f38cf49f8a21454ef0ef02d32"

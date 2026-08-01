@@ -10,13 +10,13 @@
   "pixelProduction": false,
   "productionSelected": false,
   "route": {
-    "routeId": "quality-v1:west-v13-derived-proof-repair-r2",
-    "canonicalRouteSha256": "74bc8a904b9c1cc930973278e88b5f8304a315af53d5b752cbb5b8f2695cd676",
-    "carrierCommit": "98cf70d6109ced15999601b1577717db3bd7046f",
-    "receiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-SOUTH-WEST-V13-DERIVED-PROOF-REPAIR-R2.json",
-    "receiptSha256": "343c9fe3efc2515542d12a8d6b63de4edd5c7a947eb7ed2ab60d51a8ffab9396",
+    "routeId": "quality-v1:west-v13-frontier-recovery",
+    "canonicalRouteSha256": "2bb82b131d0369d2cb4bb896d138cacbcbb406bd27a2bcef58ea6476e99f42d9",
+    "carrierCommit": "a07c8c9d10852b3fda7aeff3bfe0e78bec373a39",
+    "receiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-SOUTH-WEST-V13-FRONTIER-RECOVERY-V1.json",
+    "receiptSha256": "6deba0b456b4f2ce55d1ee806bac99100daa3ea1d6d42994f627212b85ab9bef",
     "authorityCommit": "d010d453af87c040ac13e8b3b7280366cb5094c1",
-    "expectedStartingHead": "50407d47400f042892149d2680c79ef448546500"
+    "expectedStartingHead": "b9a9a59930e5e6562d4b5ff389e4045fb8e6c1f2"
   },
   "publishedAuthority": {
     "baseCommit": "d010d453af87c040ac13e8b3b7280366cb5094c1",
@@ -39,7 +39,7 @@
   "bindings": {
     "design": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v13-compatibility-v01/WEST-V13-DESIGN.json",
-      "sha256": "ae492f56c4e01c2880f09a5df38ac4ead3c3801597590172213da61034e4e423"
+      "sha256": "265ea5b27e0dd7982cb587b2efb944de462bf67650bb41b2000597deebc0b621"
     },
     "materials": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v13-compatibility-v01/WEST-V13-MATERIALS.json",
@@ -47,11 +47,11 @@
     },
     "lowering": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v13-compatibility-v01/WEST-V13-LOWERING.json",
-      "sha256": "28e537c8d44c1346328cb547efe36661826245224734c2a0af154aa34afe452c"
+      "sha256": "a9a316c8050e39779f806398f5f1ef5982c7ddf7d357c84cbf2eaf0700ea2743"
     },
     "validator": {
       "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/test_v13_compatibility.py",
-      "sha256": "5f52a5d9defc60df2f988a3517bac88e8a55e132e4198b5367d04f638293fe9d"
+      "sha256": "d0c330a13c84331c7742db062fafee00380d148f30a99b09aa1dc0c0c546675a"
     }
   },
   "westBinding": {
@@ -119,18 +119,19 @@
       "v06 bridge-derived camera basis and West socket/pivot/footprint registration",
       "strict AABB schema and every non-aperture world/source projection clearance",
       "derived source/literal bounds and four silhouette breaks",
-      "nested occluder disagreement, camera-axis occlusion, identity, alias, and path adversaries",
+      "nested/coherent process-occluder source overlap, camera-axis occlusion, identity, raw geometry alias, and path adversaries",
       "complete non-alias material-role lowering",
       "two independent fresh-process serialized replay outputs",
       "zero-pixel and no-transform boundary"
     ]
   },
   "proofRepair": {
-    "parentCandidateHead": "50407d47400f042892149d2680c79ef448546500",
+    "parentCandidateHead": "b9a9a59930e5e6562d4b5ff389e4045fb8e6c1f2",
     "repairAttempt": 2,
+    "frontierRecoveryAttempt": 1,
     "derivedGeometry": true,
     "aabbContract": "strict min/max numeric arrays; component-level aperture/process flags; all non-aperture world and source projections audited",
-    "adversaryCount": 14,
+    "adversaryCount": 18,
     "adversaries": [
       {"id": "nested-flag-only", "result": "REJECTED"},
       {"id": "camera-null-axis-occlusion", "result": "REJECTED"},
@@ -139,6 +140,10 @@
       {"id": "camera-shift-drift", "result": "REJECTED"},
       {"id": "identity-drift", "result": "REJECTED"},
       {"id": "geometry-alias", "result": "REJECTED"},
+      {"id": "raw-geometry-alias-relabel", "result": "REJECTED"},
+      {"id": "allowlisted-process-occluder", "result": "REJECTED"},
+      {"id": "allowlisted-process-occluder-nested-coherent", "result": "REJECTED"},
+      {"id": "allowlisted-process-occluder-deep-nested", "result": "REJECTED"},
       {"id": "invalid-aabb", "result": "REJECTED"},
       {"id": "solid-aperture-collision", "result": "REJECTED"},
       {"id": "width-drift", "result": "REJECTED"},
@@ -154,32 +159,35 @@
     "coordinateBridgeSHA256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7",
     "sourceProjectionSignature": "ec939a1b9a9d9ee5cec245e35fd45521ab66e90f38cf49f8a21454ef0ef02d32",
     "sourceProjectionOverlapIDs": ["west-v13-crown-center", "west-v13-crown-east", "west-v13-crown-west", "west-v13-foundation", "west-v13-foundry-hall", "west-v13-inner-reveal", "west-v13-operating-apron", "west-v13-portal-header", "west-v13-portal-left-jamb", "west-v13-roof-edge", "west-v13-staff-annex"],
+    "processOccluderSourceOverlapIDs": [],
     "nonAliasSignatures": {
-      "geometry": "404c51c7912d45f66135d6f22e30b7a8b8f234806ddf6398e0ecc9d026cb5e78",
-      "kind": "521c2a4cfe9ed68bf4b276bdfb52e6c8c45334f5a83514396714bc418589b4cb",
+      "geometry": "29129b1cd92bd4874ec4542163d766e890f0e829d2044beae6abd32742d9071b",
+      "kind": "375e9eff52cfba07b3114f13be953c93f2d8dfa4a47770dc30d3c9bc2c95874b",
       "role": "2a71a736180d0b3d4694969a0e1c2a32b64fc925d26b7adc1c4edee534097efb",
       "silhouette": "c60224101c7020d7e5d8d8e3d54d009fcdfe8f88f8af4a8fd6d274996c103efb",
       "projection": "ec939a1b9a9d9ee5cec245e35fd45521ab66e90f38cf49f8a21454ef0ef02d32"
     },
     "cameraAxisOcclusionRejected": true,
+    "allowlistedProcessOccluderSourceOverlapRejected": true,
     "nestedFlagAgreementRejected": true,
-    "duplicateStructuralGeometryRejected": true
+    "duplicateStructuralGeometryRejected": true,
+    "rawStructuralGeometrySeparatedFromMetadata": true
   },
   "freshReplay": {
     "independentProcessCount": 2,
     "processIsolation": true,
     "byteIdentical": true,
     "outputBytes": 12596,
-    "outputSha256": "ae645a5f2328bf59b826c8ea141ed94ba59967d49d221151131084316ac2f1e3"
+    "outputSha256": "8f0593a1285a297b0a68dbfca5cb67609096441c8f376ef46cf17a64fdcb2063"
   },
   "executionMetrics": {
-    "startedAt": "2026-08-01T18:04:35.383652Z",
-    "endedAt": "2026-08-01T18:04:35.482153Z",
-    "elapsedSeconds": 0.098516,
+    "startedAt": "2026-08-01T18:20:39.867938Z",
+    "endedAt": "2026-08-01T18:28:19.935862Z",
+    "elapsedSeconds": 460.067924,
     "turnCount": 1,
-    "validationSeconds": 0.098516,
+    "validationSeconds": 0.108452,
     "reworkCount": 2,
     "availableApproximateTokens": null,
-    "frontierEscalationReason": null
+    "frontierEscalationReason": "two_unsuccessful_repair_attempts"
   }
 }

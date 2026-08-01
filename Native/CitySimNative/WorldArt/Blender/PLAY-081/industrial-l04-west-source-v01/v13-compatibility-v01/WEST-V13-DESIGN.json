@@ -137,7 +137,8 @@
     "silhouetteComponentIDs": ["west-v13-portal-header", "west-v13-crown-west", "west-v13-crown-center", "west-v13-crown-east"],
     "nonApertureSolidsAudited": true,
     "nestedOccluderFlagsAudited": true,
-    "nonAliasIdentity": "component-id-and-material-role-usage",
+    "nonAliasIdentity": "raw-structural-geometry-plus-independent-kind-and-material-role-usage",
+    "processOccluderPortalProjectionPolicy": "reject-source-overlap-before-allowlist-regardless-of-top-level-or-coherent-nested-flag",
     "portalProjectionAllowlist": {
       "west-v13-foundry-hall": "surrounding-shell-authored-portal-cutout",
       "west-v13-operating-apron": "frontage-portal-connectivity",
@@ -151,8 +152,10 @@
       "west-v13-foundation": "portal-foundation",
       "west-v13-roof-edge": "portal-roof-edge"
     },
-    "nonAliasSignatureFields": ["kind", "role", "aabb", "sourceProjection", "literalProjection", "silhouetteHeight"],
-    "duplicateStructuralGeometry": "reject-identical-kind-role-aabb-projection-signatures"
+    "rawStructuralGeometrySignatureFields": ["shape", "normalizedAABB"],
+    "metadataSignatureFields": ["kind", "role"],
+    "nonAliasSignatureFields": ["rawStructuralGeometry", "kind", "role", "sourceProjection", "literalProjection", "silhouetteHeight"],
+    "duplicateStructuralGeometry": "reject-identical-shape-and-aabb-regardless-of-kind-or-role"
   },
   "literal192Feasibility": {
     "portalInsetWidthPixels": 19,

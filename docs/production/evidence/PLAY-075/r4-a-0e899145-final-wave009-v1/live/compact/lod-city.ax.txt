@@ -1,0 +1,53 @@
+Window: "CitySim", App: CitySim [codex-r4a-qa-candidate w63e632e37e58].
+0 standard window CitySim, ID: main-AppWindow-1, Secondary Actions: Raise
+	1 container
+		2 container City command status
+			3 button Description: Open New Arcadia command center, Value: Day 255. Paused, ID: hud.city.identity
+			4 progress indicator Description: Show objectives, Help: Close the $61 operating gap, Value: 0.7562000000000002, ID: hud.objective.summary
+			5 container City status
+				6 unknown Description: Treasury, Details: $4,274, Net -$61, ID: hud.metric.treasury
+				7 unknown Description: Residents, Details: 404, Open 1.3K, ID: hud.metric.population
+				8 unknown Description: Happiness, Details: 58%, Appr 18%, ID: hud.metric.happiness
+				9 unknown Description: Jobs filled, Details: 282, Open 18, ID: hud.metric.employment
+				10 unknown Description: Utilities, Details: 100%, P 249 · W 230, ID: hud.metric.utilities
+			11 button Description: Pause simulation, Help: Pause simulation · Space, Value: Selected, ID: hud.speed.0
+			12 button Description: Set simulation speed to 1x, Help: Set simulation to 1x · 1, Value: Not selected, ID: hud.speed.1
+			13 button Description: Set simulation speed to 2x, Help: Set simulation to 2x · 2, Value: Not selected, ID: hud.speed.2
+			14 button Description: Set simulation speed to 3x, Help: Set simulation to 3x · 3, Value: Not selected, ID: hud.speed.3
+			15 button Description: Open city notices, Value: 11 notices, highest severity critical, ID: hud.notices
+			16 container Description: City priority: Utility expansion locked in, Details: STORY COMPLETE. The industrial outcome is recorded in the authoritative city state., ID: hud.strategy.priority
+				17 text Help: The industrial outcome is recorded in the authoritative city state., Value: FREIGHT RESULT STORY COMPLETE Utility expansion locked in Losing $61 per cycle
+				18 button Description: Utility capacity, Help: The industrial outcome is recorded in the authoritative city state.
+		19 container City command deck
+			20 button (selected) Description: Inspect mode, Value: Selected
+			21 button Description: Build mode, Value: Not selected
+			22 button Description: Bulldoze mode, Value: Not selected
+			23 menu button Catalog, Description: Open categorized build catalog, Value: Selected Water Tower, ID: square.grid.2x2
+			24 unknown Description: Open details for Residential at block 10, 11, Help: Opens Details for the selected target, Details: Available. Opens details for the selected target., ID: hud.selected.context
+			25 button Description: Enter Focus City, Help: Give the city maximum space while retaining critical operating truth., Value: ⇧⌘F, ID: hud.focus-city.enter
+			26 button Description: Open command guide, Help: Search every command, shortcut, and availability rule. ⌘/, Value: ⌘/, ID: hud.command.guide
+			27 button Description: Open command-center details, Value: Closed, ID: hud.command.details
+			28 menu button Description: Choose city data layer, Help: Choose a city data layer. Select City to clear diagnostics., Value: City
+		29 container Description: City map, Help: Available. Opens details for the selected target., Secondary Actions: Inspect Residential at block 10, 11, Value: Selected Residential, block 10, 11. Completed, maintained condition. Power service is severe at 42%; Water service is severe at 25%. This block is stable at 60% vitality.. Primary action: Inspect Residential at block 10, 11. Available. Opens details for the selected target.
+	30 toolbar
+		31 button Description: Objectives, Secondary Actions: Increment, Decrement, Delete, Cancel, Move next, Remove from toolbar
+		32 button Description: Command Center, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Move next, Remove from toolbar
+		33 button Description: Commands, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Move next, Remove from toolbar
+		34 button Description: Save, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Move next, Remove from toolbar
+		35 button Description: Undo, Secondary Actions: Increment, Decrement, Delete, Cancel, Move previous, Remove from toolbar
+	36 close button
+	37 full screen button Help: this button also has an action to zoom the window, Secondary Actions: zoom the window
+	38 minimize button
+	39 text CitySim
+40 menu bar
+	41 CitySim [codex-r4a-qa-candidate w63e632e37e58]
+	42 File
+	43 Edit
+	44 View
+	45 Simulation
+	46 Tools
+	47 City Data
+	48 Window
+	49 Help
+
+The focused UI element is 29 container Description: City map, Help: Available. Opens details for the selected target., Secondary Actions: Inspect Residential at block 10, 11, Value: Selected Residential, block 10, 11. Completed, maintained condition. Power service is severe at 42%; Water service is severe at 25%. This block is stable at 60% vitality.. Primary action: Inspect Residential at block 10, 11. Available. Opens details for the selected target.

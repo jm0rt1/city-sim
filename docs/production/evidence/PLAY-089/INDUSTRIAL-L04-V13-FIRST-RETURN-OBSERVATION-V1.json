@@ -1,0 +1,128 @@
+{
+  "schema": 1,
+  "taskId": "PLAY-089",
+  "observationBoundary": "east_south_west_first_return_and_same_turn_proof_repair_dispatch",
+  "result": "NO_CHANGE",
+  "binding": {
+    "carrierCommit": "197901f92cc9f7380184482838fe78945a94a473",
+    "authorityCommit": "61fa4fcf14b9c469e4e34f58dfef75ebcbfec316",
+    "baseCommit": "61fa4fcf14b9c469e4e34f58dfef75ebcbfec316",
+    "dispatchReceipt": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-089-V13-FIRST-RETURN-OBSERVATION-V1.json",
+    "dispatchReceiptSha256": "c704bee6c0635e5fd3d325fe69346d3dab02ad4a5d58a82ac5cd9a0d30b8c619",
+    "dispatchReceiptBytes": 6305,
+    "routeId": "play-089:v13-first-return-observation:v1",
+    "modelRouteSha256": "91c9b3d8e5ec12e77a9925f1ca897b5fa33794708fe941c47fd86ae7258af41d",
+    "claimPath": "docs/production/claims/PLAY-089.operating-system-optimization.md",
+    "claimSha256": "6276c96d96965805df6a1a9c779ecde7dc609824053c7e0eb00e35f67134cc47",
+    "branch": "codex/citysim-os-optimization",
+    "worktree": "/Users/James/.codex/worktrees/c92d/city-sim",
+    "startingCommit": "9b07e0906edd7ef46bbbfd280f90e090434c49dc",
+    "resultCommit": null,
+    "allowedRoot": "docs/production/evidence/PLAY-089"
+  },
+  "execution": {
+    "classification": "LUNA_MECHANICAL",
+    "model": "gpt-5.6-luna",
+    "effort": "medium",
+    "threadId": "019fbe2b-cc97-71f3-a762-63680ac85c76",
+    "elapsedSeconds": null,
+    "turns": null,
+    "validationSeconds": null,
+    "reworkCount": null,
+    "workerRework": null,
+    "integrationRework": null,
+    "acceptedResult": "NO_CHANGE",
+    "escalationReason": null,
+    "pricing": null
+  },
+  "repairInput": {
+    "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-DIRECTION-V13-PROOF-REPAIRS-V1.json",
+    "sha256": "04d50bc3556f5f169394ad83484de15c34d81acaf1f319a2d60dfc60e69d29d3",
+    "bytes": 21119,
+    "assignmentCount": 3,
+    "classification": "LUNA_LOCAL_DEBUG",
+    "model": "gpt-5.6-luna",
+    "effort": "max"
+  },
+  "firstReturnWorkerDefects": [
+    {
+      "direction": "East",
+      "taskId": "PLAY-079",
+      "defect": "Independent review reproduced a false-positive proof: self-attested camera/literal/aperture/alias/path gates, collapsed 12 semantic material roles to 9 targets, seven unresolved component roles, and omitted frozen industrial_l04 variant-0 identity."
+    },
+    {
+      "direction": "South",
+      "taskId": "PLAY-080",
+      "defect": "Independent review reproduced a false-positive proof: all portal components removed, camera/literal/aperture values copied as declarations, determinism replayed identical inputs, non-alias accepted null, and evidence overstated claim revision 13 instead of 8."
+    },
+    {
+      "direction": "West",
+      "taskId": "PLAY-081",
+      "defect": "Independent review reproduced a false-positive proof: occluder flags read from the wrong object level, an invalid AABB helper was unexercised, inner-reveal intersected the aperture, portal/literal bounds contradicted authored geometry, and analytic proof was not camera-derived."
+    }
+  ],
+  "integrationDefects": null,
+  "siblingIsolationAndRefill": {
+    "isolation": {
+      "status": "PASS",
+      "basis": "East, South, and West repair assignments use separate branches, worktrees, and pairwise-disjoint allowed roots; no shared Integration or sibling direction root is allowed."
+    },
+    "refill": {
+      "status": "PASS",
+      "firstReturnDirectionCells": 3,
+      "sameTurnRepairAssignments": 3,
+      "basis": "East, South, and West each received one disjoint proof-repair assignment."
+    }
+  },
+  "repairCandidates": [
+    {
+      "routeId": "quality-v1:east-v13-proof-repair",
+      "taskId": "PLAY-079",
+      "modelRouteSha256": "99481b7ae4bfb254a8a01f909650641a482c2122b02712eaa81e9d2cd27633d2",
+      "expectedHead": "cafc6178856ede400af19927a2fdf3f1bfdb8bf4",
+      "machineResult": "PASS",
+      "acceptance": null
+    },
+    {
+      "routeId": "quality-v1:south-v13-proof-repair",
+      "taskId": "PLAY-080",
+      "modelRouteSha256": "86f2e25a6db9d6c4252a828586aeb4f6bbaea8a3259e49dedb212eb8049b2d8c",
+      "expectedHead": "aebed957030a3a11342228cc0b972ebca6fb7f63",
+      "machineResult": "PASS_SOUTH_V13_ZERO_PIXEL_COMPATIBILITY_CANDIDATE_READY_FOR_INDEPENDENT_REVIEW",
+      "acceptance": null
+    },
+    {
+      "routeId": "quality-v1:west-v13-proof-repair",
+      "taskId": "PLAY-081",
+      "modelRouteSha256": "acc25d6756a8e8882eaca36e51938673411646006da9aefc5663d42412281394",
+      "expectedHead": "b173ecefea76319d7a5e3303072d34991e2c55ef",
+      "machineResult": "PASS",
+      "acceptance": null
+    }
+  ],
+  "measurements": {
+    "firstReturnElapsedSeconds": null,
+    "firstReturnTurns": null,
+    "repairDispatchElapsedSeconds": null,
+    "repairValidationSeconds": null,
+    "workerIdleGaps": null,
+    "duplicateFullGateMinutes": null,
+    "acceptedOutcomes": null,
+    "tokenCounters": null
+  },
+  "validation": {
+    "carrierReceiptJson": "PASS",
+    "selectedRoute": "PASS: validate_model_route_v1.py --dispatch-route-id play-089:v13-first-return-observation:v1",
+    "repairInputHash": "PASS",
+    "focusedOutputJson": "PASS",
+    "gitDiffCheck": "PASS",
+    "fullGate": null,
+    "realAppJourney": null
+  },
+  "recommendation": null,
+  "limitations": [
+    "This observation does not inspect or judge visual quality.",
+    "Machine results from repair expected heads are candidate evidence only, not acceptance.",
+    "The bound inputs expose defect descriptions and disjoint repair assignments but do not expose elapsed timing, turns, idle gaps, duplicate full-gate minutes, token counts, or acceptance outcomes."
+  ]
+}

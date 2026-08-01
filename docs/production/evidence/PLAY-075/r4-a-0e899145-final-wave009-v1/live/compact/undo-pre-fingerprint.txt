@@ -1,0 +1,6 @@
+sha256 81416f6f3b30169d49631dc6ddf8f2889dbffeb9e46fa6f285f7528f87a835db
+30 container Selected block command center, Residential, block 10, 11
+38 button Description: Demolish Residential for $144, Help: Demolition costs $144. Undo is available after activation.
+39 text IDENTITY Type, Residential Level, 1 Operational RESIDENTS Residents, 67 Capacity, 280
+48 container Description: City map, Help: Available. Opens details for the selected target., Secondary Actions: Inspect Residential at block 10, 11, Value: Selected Residential, block 10, 11. Completed, maintained condition. Pollution overlay active. Power service is severe at 42%; Water service is severe at 25%. This block is stable at 60% vitality.. Primary action: Inspect Residential at block 10, 11. Available. Opens details for the selected target.
+The focused UI element is 48 container Description: City map, Help: Available. Opens details for the selected target., Secondary Actions: Inspect Residential at block 10, 11, Value: Selected Residential, block 10, 11. Completed, maintained condition. Pollution overlay active. Power service is severe at 42%; Water service is severe at 25%. This block is stable at 60% vitality.. Primary action: Inspect Residential at block 10, 11. Available. Opens details for the selected target.

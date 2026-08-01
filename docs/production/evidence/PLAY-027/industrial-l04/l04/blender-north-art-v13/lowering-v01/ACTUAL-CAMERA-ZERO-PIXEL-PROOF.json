@@ -1,0 +1,246 @@
+{
+  "bridgeSHA256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7",
+  "camera": {
+    "forward": [
+      -0.6123724356957946,
+      -0.6123724356957946,
+      -0.5
+    ],
+    "position": [
+      96.0,
+      96.0,
+      101.24557426726288
+    ],
+    "right": [
+      0.6324555320336759,
+      0.0,
+      -0.7745966692414834
+    ],
+    "target": [
+      0.0,
+      0.0,
+      22.861902498201186
+    ],
+    "up": [
+      -0.47434164902525694,
+      0.7905694150420949,
+      -0.38729833462074176
+    ]
+  },
+  "frontage": {
+    "maximumSocketGapCompactPixels": 0,
+    "socketApronObject": {
+      "compact": [
+        24,
+        13
+      ],
+      "source": [
+        777.142857143,
+        669.946822711,
+        960.0,
+        761.876169088
+      ]
+    },
+    "staffDoor": {
+      "compact": [
+        4,
+        5
+      ],
+      "source": [
+        738.285714286,
+        654.26512732,
+        762.971428571,
+        686.638982401
+      ]
+    },
+    "thresholdToSocketConnectedByDescriptor": true
+  },
+  "literal192": {
+    "expectedThresholdsBound": true,
+    "semanticMaskSupportingOnly": true,
+    "status": "not-rendered; deferred to separately authorized DCC Process A",
+    "visualAcceptance": "unrun"
+  },
+  "loweringToolSHA256": "c29e524ec1163d9e2cf33aa69ce614f75d239ef347b5bedb543d266edf309844",
+  "materialsSHA256": "c8179b77a184e41b723e26b34e7da2ef256b09e93b54a47e76cc5103f22b8cab",
+  "method": "frozen-v06-camera-affine-registration",
+  "pixelInvocationCounts": {
+    "blender": 0,
+    "dcc": 0,
+    "imageGen": 0,
+    "normalizer": 0,
+    "pixels": 0,
+    "render": 0
+  },
+  "portal": {
+    "apertureBoundsCitySim": [
+      [
+        -11,
+        0.6,
+        -16
+      ],
+      [
+        11,
+        19,
+        -6.5
+      ]
+    ],
+    "frameMembers": {
+      "v13-monumental-portal-frame:east-jamb": {
+        "compact": [
+          8,
+          11
+        ],
+        "source": [
+          850.285714286,
+          696.478434759,
+          905.142857143,
+          782.497675155
+        ]
+      },
+      "v13-monumental-portal-frame:header": {
+        "compact": [
+          19,
+          12
+        ],
+        "source": [
+          749.714285714,
+          646.192720473,
+          891.428571429,
+          729.569237041
+        ]
+      },
+      "v13-monumental-portal-frame:west-jamb": {
+        "compact": [
+          7,
+          12
+        ],
+        "source": [
+          736.0,
+          639.335577616,
+          790.857142857,
+          725.354818012
+        ]
+      }
+    },
+    "inset": {
+      "compact": [
+        13,
+        13
+      ],
+      "source": [
+        745.142857143,
+        683.158826069,
+        847.542857143,
+        776.924696686
+      ]
+    },
+    "processOrCraneOverlapCount": 0,
+    "rayOrder": [
+      "emptyPortalVolume",
+      "v13-portal-inset"
+    ],
+    "solidOverlapCount": 0,
+    "threeFreightBeats": [
+      {
+        "compact": [
+          8,
+          8
+        ],
+        "source": [
+          726.857142857,
+          699.106771208,
+          776.685714286,
+          754.067553829
+        ]
+      },
+      {
+        "compact": [
+          8,
+          8
+        ],
+        "source": [
+          758.857142857,
+          715.106771208,
+          808.685714286,
+          770.067553829
+        ]
+      },
+      {
+        "compact": [
+          8,
+          8
+        ],
+        "source": [
+          790.857142857,
+          731.106771208,
+          840.685714286,
+          786.067553829
+        ]
+      }
+    ]
+  },
+  "productionSelected": false,
+  "registration": {
+    "footprintActualSource": [
+      [
+        768.0,
+        640.0
+      ],
+      [
+        1024.0,
+        768.0
+      ],
+      [
+        768.0,
+        896.0
+      ],
+      [
+        512.0,
+        768.0
+      ]
+    ],
+    "footprintExpectedSource": [
+      [
+        768,
+        640
+      ],
+      [
+        1024,
+        768
+      ],
+      [
+        768,
+        896
+      ],
+      [
+        512,
+        768
+      ]
+    ],
+    "maximumAbsoluteDeltaSourcePixels": 0.0,
+    "pivotActualSource": [
+      768.0,
+      896.0
+    ],
+    "pivotExpectedSource": [
+      768,
+      896
+    ],
+    "socketActualSource": [
+      896.0,
+      704.0
+    ],
+    "socketExpectedSource": [
+      896,
+      704
+    ],
+    "toleranceSourcePixels": 0.001
+  },
+  "sceneSHA256": "0f7a8e40a07f5c2b7320ab42fe5e1bcb2dc23fb508ff6b04e8ea49cf6c974060",
+  "schema": 1,
+  "sourceAuthority": false,
+  "stage": "north-v13-actual-camera-zero-pixel-proof",
+  "task": "PLAY-027",
+  "validationPassed": true
+}

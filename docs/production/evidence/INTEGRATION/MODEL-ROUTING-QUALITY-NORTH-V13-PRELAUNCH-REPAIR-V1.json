@@ -1,0 +1,136 @@
+{
+  "schema": 1,
+  "authorityCommit": "73b72fce27d1bcfedcf48b76940ddfa688baa48c",
+  "assignments": [
+    {
+      "modelRouteSha256": "f180cedfe88001c7d7d4591b4edd65fd4b654e5c31e0b9ee6e0ad7db8576a2f4",
+      "modelRoute": {
+        "schema": 1,
+        "routeId": "quality-v1:north-v13-prelaunch-repair",
+        "taskId": "PLAY-027",
+        "packetKind": "local_debug",
+        "classification": "LUNA_LOCAL_DEBUG",
+        "model": "gpt-5.6-luna",
+        "effort": "max",
+        "rationale": "Independent review reproduced a North-local fail-open prelaunch defect: the candidate has no authenticated one-attempt schedule adapter, accepts forged route/carrier/thread/grant/path/child-limit bindings, does not require the actual candidate HEAD, permits output outside the exclusive evidence root, and leaves a test-created directory. The defect has frozen inputs and exact repairs; Process A and appearance judgment remain frontier-owned.",
+        "authority": {
+          "authorityCommit": "73b72fce27d1bcfedcf48b76940ddfa688baa48c",
+          "baseCommit": "73b72fce27d1bcfedcf48b76940ddfa688baa48c",
+          "claim": {
+            "path": "docs/production/claims/PLAY-027.world-art.md",
+            "sha256": "7d42ba7c38a55d7681171499aad50e15c2d3eba0878cabf508d0e42ee97cdc83"
+          },
+          "immutableInputs": [
+            {
+              "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+              "sha256": "583c5d7be25a7ffdb95f354c6279fe7c309358f65445365203431c51f0e53247"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/design-authority-v01/DESIGN-AUTHORITY.json",
+              "sha256": "1b1006403081c3933c54451b6c506af74493a2ac3b253fdd9f1f79098d7c1bed"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/lowering-v01/LOWERING-AUTHORITY.json",
+              "sha256": "bf95dc1ba2947d9a1ede7d3ce41facacb20e2460c20ed3567abd9d8d9454ebe6"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-NORTH-V13-PRELAUNCH-AND-QA-ID-REPAIR-V1.json",
+              "sha256": "79938a4fb95153bb06b9f953e6c797ab4acd7c1233563a494e4ff8f7d142785f"
+            }
+          ]
+        },
+        "assignment": {
+          "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+          "branch": "codex/citysim-world-art",
+          "worktree": "/Users/James/.codex/worktrees/0648/city-sim",
+          "expectedHead": "db9ea3d8779127d52d25d536310544aaf58193be",
+          "featureAuthorThreadId": null,
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027",
+            "docs/production/evidence/PLAY-027"
+          ],
+          "allowed": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-prelaunch-v01",
+            "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-prelaunch-v01"
+          ],
+          "forbidden": [
+            "Native/CitySimNative/Rendering",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-079",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-080",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-081",
+            "docs/production/evidence/INTEGRATION",
+            "docs/production/claims"
+          ]
+        },
+        "boundedDeliverable": "Repair the preserved North v13 prelaunch candidate in one descendant commit. Implement a real zero-child schedule/grant adapter that cryptographically binds the exact route canonical hash, carrier, claim revision/hash, assignment thread, actual candidate HEAD, direction/process/slot, DCC child limit, exclusive allowed output root, delegation, consumption state, and replay rejection. Enforce no-overwrite exact output ownership. Add adversaries for every reproduced forgery plus wrong root, direct child invocation, replay, nonzero child/DCC/render/pixel activity, and candidate-HEAD drift. Prove the focused suite leaves the repository filesystem byte-for-byte unchanged. Use test-only fixture authority; do not issue a live schedule, lease, secret, or launch grant and do not run Blender or create pixels.",
+        "validation": {
+          "focusedGateOwner": {
+            "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+            "role": "lane_focused_gate"
+          },
+          "focusedCommands": [
+            "python3 Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-prelaunch-v01/test_process_a_prelaunch.py",
+            "python3 -m json.tool docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-prelaunch-v01/ZERO-CHILD-CLOSURE.json",
+            "git diff --check"
+          ],
+          "fullGateOwner": {
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "role": "aggregate_full_gate",
+            "model": "gpt-5.6-sol",
+            "effort": "high"
+          },
+          "fullCommands": [
+            "swift test --package-path Native/CitySimNative",
+            "./script/build_and_run.sh --verify",
+            "fresh-player real-app aggregate journey"
+          ]
+        },
+        "expectedResult": {
+          "evidencePaths": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-prelaunch-v01",
+            "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-prelaunch-v01/ZERO-CHILD-CLOSURE.json"
+          ],
+          "commitRequired": true,
+          "commitMessagePattern": "PLAY-027:"
+        },
+        "escalationTriggers": [
+          "baseline_or_candidate_identity_mismatch",
+          "cross_lane_semantic_conflict",
+          "failure_outside_focused_scope",
+          "path_outside_claim",
+          "save_or_migration_uncertainty",
+          "shared_contract_or_schema_decision",
+          "subjective_acceptance_required",
+          "two_unsuccessful_repair_attempts",
+          "unresolved_product_visual_or_interaction_judgment"
+        ],
+        "stopCondition": "Stop after one coherent North prelaunch repair commit or immediately on any escalation trigger. This is the second repair attempt: escalate instead of a third unsuccessful repair. Never issue live execution authority, start Blender/DCC, create pixels, normalize, run B/C, accept appearance, mutate siblings/renderer/shipping, push, integrate, or self-accept.",
+        "independentReviewer": {
+          "required": true,
+          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+          "model": "gpt-5.6-sol",
+          "effort": "high"
+        },
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {
+              "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+              "sha256": "583c5d7be25a7ffdb95f354c6279fe7c309358f65445365203431c51f0e53247"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/lowering-v01/LOWERING-AUTHORITY.json",
+              "sha256": "bf95dc1ba2947d9a1ede7d3ce41facacb20e2460c20ed3567abd9d8d9454ebe6"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

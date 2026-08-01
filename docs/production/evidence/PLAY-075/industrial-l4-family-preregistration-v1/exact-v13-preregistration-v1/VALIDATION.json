@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "packetPath": "docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/exact-v13-preregistration-v1/PREREGISTRATION-PACKET.json",
+  "packetJson": "PASS",
+  "claimHash": "PASS",
+  "designAuthorityHash": "PASS",
+  "ledgerHash": "PASS",
+  "fixtureAndManifestHashes": "PASS",
+  "preflightHash": "PASS",
+  "rubricAndExecutionPlanHashes": "PASS",
+  "routeId": "quality-v1:qa-v13-logical-id-repair",
+  "routeSha256": "f422b0a035ccaa46a8d2d331a9bd27b52e89980d9eae9eb089d266839d73a682",
+  "logicalIds": {
+    "status": "PASS",
+    "values": ["industrial_l04_v0_north", "industrial_l04_v0_east", "industrial_l04_v0_south", "industrial_l04_v0_west"],
+    "unknownOrV13SuffixedRejected": true
+  },
+  "rendererIntakeResultSha256": "4bf06049668d02a3b9af995c3f34136b229292f03b2db76fb486aa8a6805768c",
+  "sourceStageValidatorSha256": "7a0613af9998a222a583a70930ce3afc5ec1902793f03201f899a2bb4129f340",
+  "crossLaneIdentityAssertion": "PASS_FAIL_CLOSED",
+  "rendererCandidateReceipt": null,
+  "candidateNeutral": true,
+  "appLaunched": false,
+  "appScored": false,
+  "status": "BLOCKED_UNTIL_EXACT_4_OF_4_RENDERER_CANDIDATE_AND_CROSS_LANE_IDENTITY_ADMISSION",
+  "focusedCommands": [
+    "python3 -m json.tool PREREGISTRATION-PACKET.json",
+    "python3 -m json.tool FIXTURE-CAMERA-PREFLIGHT.json",
+    "git diff --check"
+  ]
+}

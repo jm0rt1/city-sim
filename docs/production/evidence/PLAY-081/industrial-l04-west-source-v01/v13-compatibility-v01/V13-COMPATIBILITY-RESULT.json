@@ -1,0 +1,193 @@
+{
+  "schema": "citysim.play-081.west-v13-compatibility-result.v1",
+  "schemaVersion": 1,
+  "task": "PLAY-081",
+  "direction": "west",
+  "stage": "zero-pixel-compatibility",
+  "result": "PASS",
+  "candidateReadyForIndependentReview": true,
+  "sourceReady": false,
+  "pixelProduction": false,
+  "productionSelected": false,
+  "route": {
+    "routeId": "quality-v1:west-v13-frontier-recovery",
+    "canonicalRouteSha256": "2bb82b131d0369d2cb4bb896d138cacbcbb406bd27a2bcef58ea6476e99f42d9",
+    "carrierCommit": "a07c8c9d10852b3fda7aeff3bfe0e78bec373a39",
+    "receiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-SOUTH-WEST-V13-FRONTIER-RECOVERY-V1.json",
+    "receiptSha256": "6deba0b456b4f2ce55d1ee806bac99100daa3ea1d6d42994f627212b85ab9bef",
+    "authorityCommit": "d010d453af87c040ac13e8b3b7280366cb5094c1",
+    "expectedStartingHead": "b9a9a59930e5e6562d4b5ff389e4045fb8e6c1f2"
+  },
+  "publishedAuthority": {
+    "baseCommit": "d010d453af87c040ac13e8b3b7280366cb5094c1",
+    "designAuthority": {
+      "path": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/design-authority-v01/DESIGN-AUTHORITY.json",
+      "sha256": "1b1006403081c3933c54451b6c506af74493a2ac3b253fdd9f1f79098d7c1bed",
+      "role": "published-semantic-requirements-only"
+    },
+    "materialAuthority": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/DESIGN-MATERIALS.json",
+      "sha256": "c8179b77a184e41b723e26b34e7da2ef256b09e93b54a47e76cc5103f22b8cab",
+      "role": "published-material-roles-only"
+    }
+  },
+  "claim": {
+    "path": "docs/production/claims/PLAY-081.world-art-west.md",
+    "revision": 8,
+    "sha256": "f3b51269139bef088e4661f578dd882139a685d1c7fde26db8473f15c536882e"
+  },
+  "bindings": {
+    "design": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v13-compatibility-v01/WEST-V13-DESIGN.json",
+      "sha256": "265ea5b27e0dd7982cb587b2efb944de462bf67650bb41b2000597deebc0b621"
+    },
+    "materials": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v13-compatibility-v01/WEST-V13-MATERIALS.json",
+      "sha256": "d867f8dd3cc49c8899b4b6a48e65337c76a1c20e2f68ec0024535cdf43d0cf11"
+    },
+    "lowering": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v13-compatibility-v01/WEST-V13-LOWERING.json",
+      "sha256": "a9a316c8050e39779f806398f5f1ef5982c7ddf7d357c84cbf2eaf0700ea2743"
+    },
+    "validator": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/test_v13_compatibility.py",
+      "sha256": "d0c330a13c84331c7742db062fafee00380d148f30a99b09aa1dc0c0c546675a"
+    }
+  },
+  "westBinding": {
+    "frontage": "west",
+    "orientationTransform": "none",
+    "citySimSocket": [-28, 0, 0],
+    "blenderSocket": [0, -28, 0],
+    "sourceSocketXY": [640, 704],
+    "groundPivotWorldXYZ": [28, 0, 28],
+    "groundPivotSourceXY": [768, 896],
+    "footprintWorldXZ": [[-28, -28], [28, -28], [28, 28], [-28, 28]],
+    "cameraProjection": "orthographic-2:1",
+    "keyDirection": "northwest",
+    "contactDirection": "southeast",
+    "siblingInputsConsumed": []
+  },
+  "analyticProof": {
+    "projectionFormula": "derived from v06 bridge camera basis, ground registration samples, and sceneKitOrthographicScale",
+    "bridgeSHA256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7",
+    "socketSourceXY": [640, 704],
+    "pivotSourceXY": [768, 896],
+    "registrationErrorSourcePixels": 0,
+    "portalInsetWidthPixels": 19,
+    "portalInsetHeightPixels": 28,
+    "portalOuterWidthPixels": 28,
+    "portalOuterHeightPixels": 38,
+    "silhouetteBreaks": 4,
+    "minimumSilhouetteBreaks": 3,
+    "processOcclusionAreaPixels": 0,
+    "sourceProjectionOverlapAudited": true,
+    "sourceProjectionAllowlistApplied": true,
+    "apertureClearanceProved": true,
+    "literal192Feasible": true,
+    "actualCameraProof": "analytic-zero-pixel; no Blender process or render API"
+  },
+  "materialProof": {
+    "requiredRoleCount": 12,
+    "assignedRoleCount": 12,
+    "missingRoles": [],
+    "unapprovedRoles": [],
+    "aliasDetected": false,
+    "paletteRulesBound": true
+  },
+  "activity": {
+    "blenderProcessLaunches": 0,
+    "dccInvocations": 0,
+    "renderInvocations": 0,
+    "blenderRenderApiCalls": 0,
+    "imageGenInvocations": 0,
+    "normalizerInvocations": 0,
+    "contactSheetInvocations": 0,
+    "sourceProcessABC": 0,
+    "pixelFiles": 0,
+    "sourceCandidatePackets": 0
+  },
+  "blockers": [
+    "North appearance lock is not a West source-production authority.",
+    "Source-production profile and A/B/C grants are absent; sourceReady remains false."
+  ],
+  "validation": {
+    "command": "python3 Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/test_v13_compatibility.py",
+    "result": "PASS",
+    "checks": [
+      "published semantic authority hashes",
+      "v06 bridge-derived camera basis and West socket/pivot/footprint registration",
+      "strict AABB schema and every non-aperture world/source projection clearance",
+      "derived source/literal bounds and four silhouette breaks",
+      "nested/coherent process-occluder source overlap, camera-axis occlusion, identity, raw geometry alias, and path adversaries",
+      "complete non-alias material-role lowering",
+      "two independent fresh-process serialized replay outputs",
+      "zero-pixel and no-transform boundary"
+    ]
+  },
+  "proofRepair": {
+    "parentCandidateHead": "b9a9a59930e5e6562d4b5ff389e4045fb8e6c1f2",
+    "repairAttempt": 2,
+    "frontierRecoveryAttempt": 1,
+    "derivedGeometry": true,
+    "aabbContract": "strict min/max numeric arrays; component-level aperture/process flags; all non-aperture world and source projections audited",
+    "adversaryCount": 18,
+    "adversaries": [
+      {"id": "nested-flag-only", "result": "REJECTED"},
+      {"id": "camera-null-axis-occlusion", "result": "REJECTED"},
+      {"id": "camera-position-drift", "result": "REJECTED"},
+      {"id": "camera-viewport-drift", "result": "REJECTED"},
+      {"id": "camera-shift-drift", "result": "REJECTED"},
+      {"id": "identity-drift", "result": "REJECTED"},
+      {"id": "geometry-alias", "result": "REJECTED"},
+      {"id": "raw-geometry-alias-relabel", "result": "REJECTED"},
+      {"id": "allowlisted-process-occluder", "result": "REJECTED"},
+      {"id": "allowlisted-process-occluder-nested-coherent", "result": "REJECTED"},
+      {"id": "allowlisted-process-occluder-deep-nested", "result": "REJECTED"},
+      {"id": "invalid-aabb", "result": "REJECTED"},
+      {"id": "solid-aperture-collision", "result": "REJECTED"},
+      {"id": "width-drift", "result": "REJECTED"},
+      {"id": "bounds-drift", "result": "REJECTED"},
+      {"id": "material-alias", "result": "REJECTED"},
+      {"id": "path-escape", "result": "REJECTED"},
+      {"id": "same-memory-replay", "result": "REJECTED"}
+    ],
+    "pixelBoundary": "zero-pixel; no DCC or render API"
+  },
+  "derivedProof": {
+    "coordinateBridgePath": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-direction-bridge-v06/MAPPING-CONTRACT.json",
+    "coordinateBridgeSHA256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7",
+    "sourceProjectionSignature": "ec939a1b9a9d9ee5cec245e35fd45521ab66e90f38cf49f8a21454ef0ef02d32",
+    "sourceProjectionOverlapIDs": ["west-v13-crown-center", "west-v13-crown-east", "west-v13-crown-west", "west-v13-foundation", "west-v13-foundry-hall", "west-v13-inner-reveal", "west-v13-operating-apron", "west-v13-portal-header", "west-v13-portal-left-jamb", "west-v13-roof-edge", "west-v13-staff-annex"],
+    "processOccluderSourceOverlapIDs": [],
+    "nonAliasSignatures": {
+      "geometry": "29129b1cd92bd4874ec4542163d766e890f0e829d2044beae6abd32742d9071b",
+      "kind": "375e9eff52cfba07b3114f13be953c93f2d8dfa4a47770dc30d3c9bc2c95874b",
+      "role": "2a71a736180d0b3d4694969a0e1c2a32b64fc925d26b7adc1c4edee534097efb",
+      "silhouette": "c60224101c7020d7e5d8d8e3d54d009fcdfe8f88f8af4a8fd6d274996c103efb",
+      "projection": "ec939a1b9a9d9ee5cec245e35fd45521ab66e90f38cf49f8a21454ef0ef02d32"
+    },
+    "cameraAxisOcclusionRejected": true,
+    "allowlistedProcessOccluderSourceOverlapRejected": true,
+    "nestedFlagAgreementRejected": true,
+    "duplicateStructuralGeometryRejected": true,
+    "rawStructuralGeometrySeparatedFromMetadata": true
+  },
+  "freshReplay": {
+    "independentProcessCount": 2,
+    "processIsolation": true,
+    "byteIdentical": true,
+    "outputBytes": 12596,
+    "outputSha256": "8f0593a1285a297b0a68dbfca5cb67609096441c8f376ef46cf17a64fdcb2063"
+  },
+  "executionMetrics": {
+    "startedAt": "2026-08-01T18:20:39.867938Z",
+    "endedAt": "2026-08-01T18:28:19.935862Z",
+    "elapsedSeconds": 460.067924,
+    "turnCount": 1,
+    "validationSeconds": 0.108452,
+    "reworkCount": 2,
+    "availableApproximateTokens": null,
+    "frontierEscalationReason": "two_unsuccessful_repair_attempts"
+  }
+}

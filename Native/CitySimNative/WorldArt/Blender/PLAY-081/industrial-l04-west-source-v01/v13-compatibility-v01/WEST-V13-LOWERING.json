@@ -1,0 +1,128 @@
+{
+  "schema": 1,
+  "task": "PLAY-081",
+  "direction": "west",
+  "stage": "zero-pixel-analytic-lowering",
+  "designPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v13-compatibility-v01/WEST-V13-DESIGN.json",
+  "materialsPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v13-compatibility-v01/WEST-V13-MATERIALS.json",
+  "orientationTransform": "none",
+  "coordinateBridge": {
+    "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-direction-bridge-v06/MAPPING-CONTRACT.json",
+    "sha256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7",
+    "sourceRevision": "direction-bridge-v06",
+    "basisFormula": "B(CitySim[x,y,z])=Blender[z,x,y]",
+    "basisMatrixRows": [[0, 0, 1], [1, 0, 0], [0, 1, 0]],
+    "sourceOrder": [0, 1, 2, 3]
+  },
+  "projection": {
+    "formulaSourceX": "derived from bridge camera and west/east registration samples",
+    "formulaSourceY": "derived from bridge camera vertical basis and north/south registration samples",
+    "sourceToLiteral192": "source / 8",
+    "affineDerivation": {
+      "groundScaleFormula": "renderViewportPixels.height / (2 * sceneKitOrthographicScale)",
+      "horizontalBasisFormula": "normalize(cross(normalize(citySimTarget-citySimPosition), citySimUp))",
+      "verticalBasisFormula": "normalize(cross(horizontalBasis, forwardBasis))",
+      "groundRegistrationSamples": ["origin", "directions.west.socket", "directions.east.socket", "directions.north.socket", "directions.south.socket"],
+      "cameraAxis": "CitySim basis before bridge B; bridge matrix is validated separately"
+    },
+    "derivedAffine": {
+      "sourceOriginXY": [768, 768],
+      "sourceXCoefficients": {"cityX": 4.571428571428571, "cityY": 0.0, "cityZ": -4.571428571428571},
+      "sourceYCoefficients": {"cityX": 2.285714285714286, "cityY": -5.598834130714679, "cityZ": 2.285714285714286}
+    },
+    "cameraBasis": {
+      "bridgeBasis": "B(CitySim[x,y,z])=Blender[z,x,y]",
+      "forwardCitySim": [-0.6123724356957946, -0.5, -0.6123724356957946],
+      "rightCitySim": [0.7071067811865476, 0.0, -0.7071067811865476],
+      "upCitySim": [-0.35355339059327373, 0.8660254037844386, -0.35355339059327373],
+      "groundScale": 6.464976785032369
+    },
+    "sourceProjectionSignature": "ec939a1b9a9d9ee5cec245e35fd45521ab66e90f38cf49f8a21454ef0ef02d32",
+    "literalRounding": "floor(sourceMin/8), ceil(sourceMax/8)",
+    "registrationErrorSourcePixels": 0,
+    "registrationProof": "socket[-28,0,0]->[640,704]; pivot[28,0,28]->[768,896]"
+  },
+  "camera": {
+    "projection": "orthographic-2:1",
+    "positionWorldXYZ": [96, 101.24557426726288, 96],
+    "targetWorldXYZ": [0, 22.861902498201186, 0],
+    "orthographicScaleWorld": 79.1959533691406,
+    "renderViewportPixels": [1536, 1024],
+    "literalViewportPixels": [192, 128],
+    "shiftX": 0,
+    "shiftY": 0.08333333333333333,
+    "blenderPositionXYZ": [96, 96, 101.24557426726288],
+    "blenderTargetXYZ": [0, 0, 22.861902498201186],
+    "blenderOrthographicScale": 237.5878601074218,
+    "postProjectionOffsetPixels": [0, 128],
+    "sourceGroundCenter": [768, 768],
+    "actualCameraProof": "analytic-only; no DCC or render API invoked"
+  },
+  "registration": {
+    "tileBasisPoints": [72, 36],
+    "footprintWorldXZ": [[-28, -28], [28, -28], [28, 28], [-28, 28]],
+    "groundPivotWorldXYZ": [28, 0, 28],
+    "groundPivotSourceXY": [768, 896],
+    "frontage": "west",
+    "citySimSocket": [-28, 0, 0],
+    "blenderSocket": [0, -28, 0],
+    "sourceSocket": [640, 704]
+  },
+  "portalAperture": {
+    "worldAABB": {"min": [-18, 4, -14], "max": [-15, 30, 14]},
+    "sourceAnalyticBounds": {"min": [621.7142857142858, 526.8921189357025], "max": [763.4285714285714, 743.3189491914269]},
+    "literal192Bounds": {"min": [77, 65], "max": [96, 93]},
+    "literal192WidthPixels": 19,
+    "literal192HeightPixels": 28,
+    "clearApertureAreaPixels": 532,
+    "processOcclusionAreaPixels": 0,
+    "apronPathConnected": true
+  },
+  "portalFrame": {
+    "componentIDs": ["west-v13-portal-left-jamb", "west-v13-portal-right-jamb", "west-v13-portal-header"],
+    "sourceAnalyticBounds": {"min": [566.8571428571429, 471.46937685355766], "max": [777.1428571428572, 761.3737603099992]},
+    "literal192Bounds": {"min": [70, 58], "max": [98, 96]},
+    "literal192WidthPixels": 28,
+    "literal192HeightPixels": 38
+  },
+  "silhouette": {
+    "componentIDs": ["west-v13-portal-header", "west-v13-crown-west", "west-v13-crown-center", "west-v13-crown-east"],
+    "breakHeightsWorld": [35, 39, 44, 40],
+    "breakCount": 4,
+    "minimumRequiredBreaks": 3,
+    "portalCrownWidthPixels": 37,
+    "portalCrownFirstRead": true
+  },
+  "materialCompleteness": {
+    "requiredRoleCount": 12,
+    "assignedRoleCount": 12,
+    "missingRoles": [],
+    "unapprovedRoles": [],
+    "aliasDetected": false
+  },
+  "projectionAudit": {
+    "solidCount": 17,
+    "sourceOverlapIDs": ["west-v13-crown-center", "west-v13-crown-east", "west-v13-crown-west", "west-v13-foundation", "west-v13-foundry-hall", "west-v13-inner-reveal", "west-v13-operating-apron", "west-v13-portal-header", "west-v13-portal-left-jamb", "west-v13-roof-edge", "west-v13-staff-annex"],
+    "processOccluderOverlapIDs": []
+  },
+  "nonAliasSignatures": {
+    "geometry": "29129b1cd92bd4874ec4542163d766e890f0e829d2044beae6abd32742d9071b",
+    "kind": "375e9eff52cfba07b3114f13be953c93f2d8dfa4a47770dc30d3c9bc2c95874b",
+    "role": "2a71a736180d0b3d4694969a0e1c2a32b64fc925d26b7adc1c4edee534097efb",
+    "silhouette": "c60224101c7020d7e5d8d8e3d54d009fcdfe8f88f8af4a8fd6d274996c103efb",
+    "projection": "ec939a1b9a9d9ee5cec245e35fd45521ab66e90f38cf49f8a21454ef0ef02d32"
+  },
+  "zeroPixelBoundary": {
+    "blenderProcessLaunches": 0,
+    "dccInvocations": 0,
+    "renderInvocations": 0,
+    "imageGenInvocations": 0,
+    "normalizerInvocations": 0,
+    "pixelFiles": 0,
+    "sourceReady": false,
+    "candidateReadyForIndependentReview": true,
+    "appearanceLock": null,
+    "sourceProductionProfile": null,
+    "blocker": "North appearance lock and source-production profile are not published for West source production."
+  }
+}

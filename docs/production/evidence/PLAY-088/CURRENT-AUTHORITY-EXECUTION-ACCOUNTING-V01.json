@@ -1,0 +1,124 @@
+{
+  "documentType": "PLAY-088_CURRENT_AUTHORITY_EXECUTION_ACCOUNTING_V01",
+  "schema": 1,
+  "route": {
+    "routeId": "pilot-v1:simulation",
+    "routeSha256": "d1ec46cec492409792f45ba61db01fba8256b90ffb4db2f0d05bb08975970deb",
+    "routeCanonicalization": "UTF-8 JSON with recursively sorted keys and compact separators",
+    "routeCanonicalHashVerified": true,
+    "classification": "LUNA_MECHANICAL",
+    "model": "gpt-5.6-luna",
+    "effort": "medium",
+    "receiptCommit": "70c49f394a0920e26dffc945bd996cf67af7b1fe",
+    "receiptSha256": "79b5132e8144c5f0e81c592b746becffb7fe99aa97d3ac3b2a62bf997a24f42b",
+    "authorityCommit": "2753f42134fa85d8570849b57302cce0bc924566",
+    "expectedStartingHead": "3b4ef0ef3fc0fc9fb4c3b7ef84c4ed2819f02fad",
+    "threadId": "019f7c8a-6c6f-7343-9b23-a2d97f5b3433",
+    "branch": "codex/citysim-simulation-platform",
+    "worktree": "/Users/James/.codex/worktrees/e909/city-sim"
+  },
+  "claim": {
+    "path": "docs/production/claims/PLAY-088.simulation-platform.md",
+    "sha256": "516234a4496b6c643557397d03e4feef3e375355965d2e50de7fbc44ab50a282"
+  },
+  "boundedDeliverable": "Revalidate and compact the completed PLAY-088 phase-A replay, fixture, lifecycle, and diagnostic packet against the new authority; remain evidence-only until PLAY-085 is integrated.",
+  "authorityLineage": {
+    "authorityIsAncestorOfReceipt": true,
+    "authorityIsAncestorOfStartingHead": true,
+    "startingHeadMatchesReceipt": true,
+    "netProductOrTestDiffFromAuthority": [],
+    "priorPhaseACommit": "e43bc89f86be16b807c42bfa44621cc8f3adde9a",
+    "currentHead": "3b4ef0ef3fc0fc9fb4c3b7ef84c4ed2819f02fad"
+  },
+  "preservation": {
+    "productMutation": false,
+    "testMutation": false,
+    "fixtureMutation": false,
+    "manifestMutation": false,
+    "schemaOrFingerprintVersionChange": false,
+    "legacyPythonTouched": false,
+    "priorPacketRegeneration": {
+      "generator": "docs/production/evidence/PLAY-088/generate_phase_a_packet.py",
+      "root": "/private/tmp/citysim-play088-route.AGhf6U",
+      "phaseACurrentInputsDiff": "",
+      "futureAcceptanceMatrixDiff": "",
+      "result": "PASS_BYTE_IDENTICAL_TO_COMMITTED_PHASE_A_PACKET"
+    },
+    "preservedEvidence": [
+      {
+        "path": "docs/production/evidence/PLAY-088/VALIDATION.md",
+        "sha256": "f562ef31bec3e34864e80cf3ced0ef899e6fa21eac82641a2cb89d6afa9bac19"
+      },
+      {
+        "path": "docs/production/evidence/PLAY-088/future-play085-acceptance-matrix.json",
+        "sha256": "178f4fd3b575fa877c6b943cb9712e77396b16cfa0c01b910c9a7a8e4c8b338e"
+      },
+      {
+        "path": "docs/production/evidence/PLAY-088/phase-a-current-inputs.json",
+        "sha256": "4dcf6578e6435be90ff3a191ddba8facca5d906ef085bf8672b1ad40c20db656"
+      },
+      {
+        "path": "docs/production/evidence/PLAY-088/repeat-identity.json",
+        "sha256": "002e185b03d4d1c3a4a0df3c5d1f467496dd3629f5b62b5832e43435f42bdb7e"
+      },
+      {
+        "path": "docs/production/evidence/PLAY-088/generate_phase_a_packet.py",
+        "sha256": "bc539c030fc527787b6cdacb08749cdc55632809ab0246dcb43510d462a1f909"
+      }
+    ]
+  },
+  "focusedGate": {
+    "ownerThreadId": "019f7c8a-6c6f-7343-9b23-a2d97f5b3433",
+    "command": "python3 -m json.tool docs/production/evidence/PLAY-088/CURRENT-AUTHORITY-EXECUTION-ACCOUNTING-V01.json",
+    "status": "PASS",
+    "result": "VALID_JSON"
+  },
+  "aggregateGate": {
+    "ownerThreadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+    "model": "gpt-5.6-sol",
+    "effort": "high",
+    "commands": [
+      "swift test --package-path Native/CitySimNative",
+      "./script/build_and_run.sh --verify",
+      "fresh-player real-app aggregate journey"
+    ],
+    "runByThisRoute": false,
+    "status": "DEFERRED_TO_AGGREGATE_OWNER"
+  },
+  "pilotAccounting": {
+    "elapsedTimeSeconds": null,
+    "elapsedTimeStatus": "NOT_EXPOSED_BY_RUNTIME",
+    "turnCount": 3,
+    "validationTimeSeconds": 0.02,
+    "validationTimeStatus": "MEASURED_BY_ROUTE_WORKER",
+    "reworkCount": 0,
+    "acceptedCommit": null,
+    "acceptedResult": "READY_FOR_FRONTIER_REVIEW_AFTER_FOCUSED_GATE",
+    "approximateTokens": null,
+    "tokenStatus": "NOT_EXPOSED_BY_RUNTIME",
+    "frontierEscalationReason": null
+  },
+  "stopCondition": "Stop after one coherent focused result/commit or immediately on any mandatory escalation trigger; never push, integrate, self-accept, or run the full gate.",
+  "phaseB": {
+    "status": "BLOCKED_PENDING_EXACT_INTEGRATED_PLAY085_REVISION2",
+    "productAuthorityBound": false,
+    "newTypesOrTestsAdded": false
+  },
+  "escalationTriggers": [
+    "shared_contract_or_schema_decision",
+    "unresolved_product_visual_or_interaction_judgment",
+    "path_outside_claim",
+    "baseline_or_candidate_identity_mismatch",
+    "failure_outside_focused_scope",
+    "save_or_migration_uncertainty",
+    "cross_lane_semantic_conflict",
+    "two_unsuccessful_repair_attempts",
+    "subjective_acceptance_required"
+  ],
+  "independentReviewer": {
+    "required": true,
+    "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+    "model": "gpt-5.6-sol",
+    "effort": "high"
+  }
+}

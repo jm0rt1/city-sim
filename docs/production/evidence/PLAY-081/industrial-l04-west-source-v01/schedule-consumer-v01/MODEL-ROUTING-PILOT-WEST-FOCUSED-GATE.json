@@ -1,0 +1,108 @@
+{
+  "schema": "citysim.play-081.west.model-routing-pilot-focused-gate.v1",
+  "taskId": "PLAY-081",
+  "direction": "west",
+  "state": "focused_gate_passed_zero_dcc",
+  "route": {
+    "receiptCommit": "70c49f394a0920e26dffc945bd996cf67af7b1fe",
+    "receiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PILOT-DISPATCH-V1.json",
+    "receiptSha256": "79b5132e8144c5f0e81c592b746becffb7fe99aa97d3ac3b2a62bf997a24f42b",
+    "authorityCommit": "2753f42134fa85d8570849b57302cce0bc924566",
+    "authorityIsAncestorOfReceipt": true,
+    "routeId": "pilot-v1:west",
+    "canonicalRouteSha256": "ad77b06c707651f4cc6b7ab907e578af4b37f153260cd19c9841e46810c58000",
+    "canonicalRouteSha256Recomputed": "ad77b06c707651f4cc6b7ab907e578af4b37f153260cd19c9841e46810c58000",
+    "taskId": "PLAY-081",
+    "classification": "LUNA_IMPLEMENTATION",
+    "model": "gpt-5.6-luna",
+    "effort": "high",
+    "expectedHead": "c0a3668150bef5136e4c16000ca76147fc830861",
+    "observedHead": "c0a3668150bef5136e4c16000ca76147fc830861",
+    "authorityIsAncestorOfExpectedHead": true,
+    "routeValidation": "PASS",
+    "receiptObjectValidation": "PASS_ROUTE_SCOPED",
+    "siblingIsolation": {
+      "scope": "pilot-v1:west",
+      "dispatchWideLiveHeadValidation": "not_run_by_design",
+      "reason": "Integration-authorized route validation must not be demoted by unrelated sibling worktree transitions."
+    }
+  },
+  "binding": {
+    "branch": "codex/citysim-world-art-west",
+    "worktree": "/Users/James/.codex/worktrees/ef17/city-sim",
+    "claimPath": "docs/production/claims/PLAY-081.world-art-west.md",
+    "claimSha256": "aa5e0acb5988807d1c934326fd6b3da7f594def8dde84b01ab273905f9753ed3",
+    "allowedRoots": [
+      "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01",
+      "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01"
+    ],
+    "forbiddenRoots": [
+      "Native/CitySimNative/WorldArt/Blender/PLAY-027",
+      "Native/CitySimNative/WorldArt/Blender/PLAY-079",
+      "Native/CitySimNative/WorldArt/Blender/PLAY-080"
+    ],
+    "siblingInputsConsumed": []
+  },
+  "focusedGate": {
+    "ownerRole": "lane_focused_gate",
+    "command": "PYTHONDONTWRITEBYTECODE=1 python3 Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/execution-closure-v01/test_west_execution_closure_v1.py",
+    "result": "PASS_5_OF_5",
+    "startedAt": "2026-08-01T15:58:07.901155Z",
+    "endedAt": "2026-08-01T15:59:31.663946Z",
+    "elapsedSeconds": 83.762791,
+    "exitCode": 0,
+    "deterministicFixtureRoots": "PASS",
+    "zeroChildBoundary": true
+  },
+  "activity": {
+    "blenderProcessLaunches": 0,
+    "dccInvocations": 0,
+    "renderInvocations": 0,
+    "blenderRenderApiCalls": 0,
+    "imageGenInvocations": 0,
+    "normalizerInvocations": 0,
+    "contactSheetInvocations": 0,
+    "productionChildStarts": 0,
+    "sourceCandidatePackets": 0,
+    "productionReceipts": 0,
+    "pixelFiles": 0,
+    "pixelFilesRead": 0
+  },
+  "currentBindings": {
+    "focusedTest": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/execution-closure-v01/test_west_execution_closure_v1.py",
+      "sha256": "ccaa12bee425a89fcd12d54ceeb7887954f8114f0084720f6cf8548842140838"
+    },
+    "executionContract": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/WEST-EXECUTION-ORCHESTRATION-V2.json",
+      "sha256": "6f4adda204c53d22f50e9ed609980ae77d32045ac5b4218446e4828e543a5774"
+    },
+    "runnerContract": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/RUNNER-CONTRACT.json",
+      "sha256": "33296a529298f9c2b1f299a2a0c1e0e41f02cf0f184d34cf16cc3f448a3284f5"
+    }
+  },
+  "readiness": {
+    "sourceReady": false,
+    "launchReady": false,
+    "appearanceLock": null,
+    "sourceProductionProfile": null,
+    "blocker": "Integration has not published the accepted North appearance lock, source-production profile, postlock schedule, or exact West A/B/C grants."
+  },
+  "pilotMeasurement": {
+    "classification": "LUNA_IMPLEMENTATION",
+    "model": "gpt-5.6-luna",
+    "effort": "high",
+    "turnCount": 1,
+    "validationTimeSeconds": 83.762791,
+    "reworkCount": 0,
+    "acceptedResult": "focused West zero-child closure PASS_5_OF_5",
+    "frontierEscalationReason": null,
+    "approximateTokens": null
+  },
+  "changedPaths": [
+    "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/schedule-consumer-v01/MODEL-ROUTING-PILOT-WEST-FOCUSED-GATE.json"
+  ],
+  "commitRequired": true,
+  "noSharedOrSiblingWrites": true
+}

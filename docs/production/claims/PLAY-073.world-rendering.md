@@ -11,6 +11,11 @@
   `1c590e446e718024f4848d22b33b05db4c73555a` is integrated on local
   integration candidate `fbbff0c7a633be81ae7779709a76ff3202d928fb`
 - **Planned surfaces:** renderer-owned camera composition, terrain/public-realm/parcel/place/activity rendering, deterministic variation and collision tooling, renderer tests/diagnostics, staged proof, and `docs/production/evidence/PLAY-073/`
+- **R4-B exact owned roots:**
+  `Native/CitySimNative/Sources/CitySimNative/Rendering/`,
+  `Native/CitySimNative/Tests/CitySimNativeTests/WorldRenderingTests.swift`,
+  and `docs/production/evidence/PLAY-073/`; the active R4-B authority narrows
+  these roots to its four named source/test files and one new evidence root
 - **Dependencies:** accepted PLAY-024/062/065/066 product; PLAY-072 fixtures when available; separately accepted PLAY-027 art only
 - **Validation/proof:** same-state regular/compact early/pressure/recovery/upgraded/terminal comparisons at all LODs; developed-district occupancy; light/shadow/material/value/outline coherence; repetition ledger; zero seams/overlaps/fallback; pointer/keyboard/AX/Reduce Motion; pack parity; residency/RSS/frame budgets; PLAY-075
 - **Status:** returned after integration's real-app visual rejection; focused

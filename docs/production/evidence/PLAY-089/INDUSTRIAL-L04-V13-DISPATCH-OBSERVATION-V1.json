@@ -1,0 +1,149 @@
+{
+  "schema": 1,
+  "taskId": "PLAY-089",
+  "observationBoundary": "dispatch_publication_first_return",
+  "result": "NO_CHANGE",
+  "binding": {
+    "carrierCommit": "a0c0573b700d8c186aaebd0207e62a0dfa47827a",
+    "authorityCommit": "8a0180ce0e55c0272f76cfa76dbf2f2071e32c9e",
+    "baseCommit": "8a0180ce0e55c0272f76cfa76dbf2f2071e32c9e",
+    "dispatchReceipt": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-089-V13-DISPATCH-OBSERVATION-V1.json",
+    "dispatchReceiptSha256": "ab92f6a447ef855bd95b1b561dcc32db18f0e83f5d3f10b4197c2bce4fc3bf9f",
+    "dispatchReceiptBytes": 6233,
+    "routeId": "play-089:v13-dispatch-observation:v1",
+    "modelRouteSha256": "00948f385d5eaf4d805c683ede4f61ac9d8b321bbb1d10dbb2c869e0477068ea",
+    "branch": "codex/citysim-os-optimization",
+    "worktree": "/Users/James/.codex/worktrees/c92d/city-sim",
+    "startingCommit": "bd0d32d40e77a15c7f362a63f032c67a5ef1c570",
+    "resultCommit": null,
+    "allowedRoot": "docs/production/evidence/PLAY-089"
+  },
+  "execution": {
+    "classification": "LUNA_MECHANICAL",
+    "model": "gpt-5.6-luna",
+    "effort": "medium",
+    "threadId": "019fbe2b-cc97-71f3-a762-63680ac85c76",
+    "reworkCount": 1,
+    "workerRework": 0,
+    "integrationRework": 1,
+    "reworkAttribution": "Integration-authored carrier identity typo; corrected before route validation.",
+    "elapsedSeconds": null,
+    "turns": null,
+    "validationSeconds": null,
+    "acceptedResult": "NO_CHANGE",
+    "escalationReason": null,
+    "pricing": null
+  },
+  "fanoutInput": {
+    "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-QUALITY-INDUSTRIAL-L04-V13-FANOUT-V1.json",
+    "sha256": "c12106a866ec548daf5d8cfbbdbf3acca502b981ff6a6c04eef73bfc6fed0eb1",
+    "bytes": 32713,
+    "authorityCommit": "d010d453af87c040ac13e8b3b7280366cb5094c1",
+    "assignmentCount": 5,
+    "contextModeCounts": {
+      "full_authority_read": 5,
+      "compact_continuation": 0
+    }
+  },
+  "fiveCellFanout": [
+    {
+      "routeId": "quality-v1:east-v13-compatibility",
+      "taskId": "PLAY-079",
+      "modelRouteSha256": "8479bc9cc5fab282d7bac4f67967b828e8c6bc045a8bc7051e996da2f3d03e4a",
+      "classification": "LUNA_IMPLEMENTATION",
+      "model": "gpt-5.6-luna",
+      "effort": "high",
+      "threadId": "019fab72-b2c8-76c1-b430-6c6f8431733f",
+      "expectedHead": "b80faac5d7d1e65838f637cf385e57e8b1006c48",
+      "acknowledgement": null,
+      "validationSeconds": null,
+      "firstReturn": null,
+      "acceptedOutcome": null
+    },
+    {
+      "routeId": "quality-v1:south-v13-compatibility",
+      "taskId": "PLAY-080",
+      "modelRouteSha256": "da04bd63998631763680380db4ee32db1ead2dbc496b5b7bdc287a73b88cd065",
+      "classification": "LUNA_IMPLEMENTATION",
+      "model": "gpt-5.6-luna",
+      "effort": "high",
+      "threadId": "019fab72-b2c9-7d60-a397-27f4fde85950",
+      "expectedHead": "c4aaf2784734bb196a289612b6686c67391423b0",
+      "acknowledgement": null,
+      "validationSeconds": null,
+      "firstReturn": null,
+      "acceptedOutcome": null
+    },
+    {
+      "routeId": "quality-v1:west-v13-compatibility",
+      "taskId": "PLAY-081",
+      "modelRouteSha256": "23bdff263c3be2669ee2eef4da0337a3df128c2a8afd841df898c679e44dfacc",
+      "classification": "LUNA_IMPLEMENTATION",
+      "model": "gpt-5.6-luna",
+      "effort": "high",
+      "threadId": "019fab72-b2c9-7d60-a397-27d01d06cbbd",
+      "expectedHead": "3e46cea550744b6d479b8959d58b8028d2dc49b8",
+      "acknowledgement": null,
+      "validationSeconds": null,
+      "firstReturn": null,
+      "acceptedOutcome": null
+    },
+    {
+      "routeId": "quality-v1:renderer-v13-intake",
+      "taskId": "PLAY-073",
+      "modelRouteSha256": "3c5077a03a6ee707c1080037cb7f39f3fddaf7e2d9ff25321304ac6d81bf6d8c",
+      "classification": "LUNA_IMPLEMENTATION",
+      "model": "gpt-5.6-luna",
+      "effort": "high",
+      "threadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+      "expectedHead": "9193a2ffc1019373752412f71a51fc0e6eaedb08",
+      "acknowledgement": null,
+      "validationSeconds": null,
+      "firstReturn": null,
+      "acceptedOutcome": null
+    },
+    {
+      "routeId": "quality-v1:qa-v13-preregistration",
+      "taskId": "PLAY-075",
+      "modelRouteSha256": "2a7b6f00ab5047da0862032034869ece18c931de84b9e6fe6c01eb9befa1a58e",
+      "classification": "LUNA_MECHANICAL",
+      "model": "gpt-5.6-luna",
+      "effort": "medium",
+      "threadId": "019f9a0a-35fa-75b1-92c4-73c182390a25",
+      "expectedHead": "8794ca994a993c0e7a406536a2d76a1faa014e31",
+      "acknowledgement": null,
+      "validationSeconds": null,
+      "firstReturn": null,
+      "acceptedOutcome": null
+    }
+  ],
+  "measurements": {
+    "lunaEligibleCells": 5,
+    "lunaAssignedCells": 5,
+    "lunaEligibleShare": 1.0,
+    "frontierCells": 0,
+    "fullGateMinutes": null,
+    "duplicateFullGateMinutes": null,
+    "workerIdleGaps": null,
+    "dispatchToFirstReturnSeconds": null,
+    "acceptedOutcomes": null,
+    "acknowledgementTimings": null,
+    "validationTimings": null,
+    "tokenCounters": null
+  },
+  "validation": {
+    "carrierReceiptJson": "PASS",
+    "selectedRoute": "PASS: validate_model_route_v1.py --dispatch-route-id play-089:v13-dispatch-observation:v1",
+    "fanoutInputHash": "PASS",
+    "focusedOutputJson": "PASS",
+    "gitDiffCheck": "PASS",
+    "fullGate": null,
+    "realAppJourney": null
+  },
+  "recommendation": null,
+  "limitations": [
+    "The bound dispatch and fan-out inputs expose route definitions and expected heads but no worker acknowledgements, first-return receipts, timings, idle intervals, or accepted outcomes.",
+    "No full gate, product validation, pricing estimate, or self-acceptance was performed.",
+    "NO_CHANGE is limited to this dispatch/first-return observation boundary; it does not accept the five-cell fan-out."
+  ]
+}

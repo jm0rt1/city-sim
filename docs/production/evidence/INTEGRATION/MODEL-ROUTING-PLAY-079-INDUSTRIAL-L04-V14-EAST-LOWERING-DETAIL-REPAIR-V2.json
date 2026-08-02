@@ -1,0 +1,144 @@
+{
+  "schema": 1,
+  "authorityCommit": "1d7c6510fd99299c88d3f4412caa982e020c1941",
+  "assignments": [
+    {
+      "modelRouteSha256": "bacc8acf259ef2e904fe73a1a957573ed20c23292daeb2f40f1115366823ba19",
+      "modelRoute": {
+        "schema": 1,
+        "routeId": "quality-v1:play-079-industrial-l04-v14-east-lowering-detail-repair-v2",
+        "taskId": "PLAY-079",
+        "packetKind": "implementation",
+        "classification": "LUNA_IMPLEMENTATION",
+        "model": "gpt-5.6-luna",
+        "effort": "high",
+        "rationale": "Independent Integration review accepts East direction isolation, v06 registration, portal visibility, literal envelope, and packet shape but returns the predesign because it has only bounding-box semantic descriptors, no deterministic component-to-object lowering, no pipe cluster or vessel, and insufficient v14 service/material detail. The frozen family outcome defines the bounded repair.",
+        "authority": {
+          "authorityCommit": "1d7c6510fd99299c88d3f4412caa982e020c1941",
+          "baseCommit": "ea26fdac05169e0375b65d7c5dc65b4fbe00d977",
+          "claim": {
+            "path": "docs/production/claims/PLAY-079.world-art-east.md",
+            "sha256": "93bcc57e69bc4cd1ff492ce0dfbf5d6244c3782db524e7e16fc0d9dd78431a77"
+          },
+          "immutableInputs": [
+            {
+              "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+              "sha256": "583c5d7be25a7ffdb95f354c6279fe7c309358f65445365203431c51f0e53247"
+            },
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "62e077c88730fda5664e5fa6d23200ade77418bd43f1c721c0bff84eaac1c971"
+            },
+            {
+              "path": "docs/production/decisions/CONTRACT-020-deterministic-dcc-world-art.md",
+              "sha256": "1495292c86044c07ba3751907b78d1e688e19a6d828aec255e11a1732c4e7bec"
+            },
+            {
+              "path": "docs/production/decisions/CONTRACT-021-parallel-directional-art-cells.md",
+              "sha256": "f80844c928d904498510b8b151381f40315e072d52d81695aafcd6b91081ae4c"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-NORTH-V14-HERO-REBUILD-AUTHORITY-V1.md",
+              "sha256": "e439d9f8de08474bbaf31c2308491dad486ec953bf45605c043731f68b44edbb"
+            }
+          ]
+        },
+        "assignment": {
+          "threadId": "019fab72-b2c8-76c1-b430-6c6f8431733f",
+          "branch": "codex/citysim-world-art-east",
+          "worktree": "/Users/James/.codex/worktrees/92c2/city-sim",
+          "expectedHead": "fd5d9a0e4cba2da8efbb6100c685c10988230837",
+          "featureAuthorThreadId": "019fab72-b2c8-76c1-b430-6c6f8431733f",
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-079",
+            "docs/production/evidence/PLAY-079"
+          ],
+          "allowed": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01",
+            "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01"
+          ],
+          "forbidden": [
+            "docs/production/evidence/INTEGRATION",
+            "docs/production/claims",
+            "docs/production/decisions",
+            "Native/CitySimNative/Sources",
+            "Native/CitySimNative/Resources",
+            "Native/CitySimNative/Package.swift",
+            "script",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-080",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-081"
+          ]
+        },
+        "boundedDeliverable": "Preserve fd5d9a0 as an ancestor. Expand the East v14 design with a direction-specific capped process vessel, deterministic pipe cluster with elbows/supports, roof plant/vents, service doors, mullioned glazing or louvers, gutters/roof edges, loading/safety markings, seams and wear bands sized for literal 192, while retaining the accepted East portal, camera, registration and height envelope. Add LOWERING.json with an explicit supported builder for every component and a unique named object manifest; require 100 percent component-to-object coverage, no silent omission, and no generic-box downgrade for semantic primitives. Extend the validator and adversaries for required family components, builder schema/support, object uniqueness/count, omission, downgrade, portal preservation, literal thresholds, and zero-pixel boundary. Update HANDOFF and VALIDATION in place.",
+        "validation": {
+          "focusedGateOwner": {
+            "threadId": "019fab72-b2c8-76c1-b430-6c6f8431733f",
+            "role": "east_v14_lowering_detail_repair_gate"
+          },
+          "focusedCommands": [
+            "PYTHONDONTWRITEBYTECODE=1 python3 Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/test_v14_compatibility.py",
+            "PYTHONDONTWRITEBYTECODE=1 python3 Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/test_v14_compatibility.py",
+            "python3 -m json.tool docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/HANDOFF.json",
+            "python3 -m json.tool docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/VALIDATION.json",
+            "git diff --check fd5d9a0e4cba2da8efbb6100c685c10988230837..HEAD"
+          ],
+          "fullGateOwner": {
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "role": "independent_frontier_zero_pixel_and_visual_authority_review",
+            "model": "gpt-5.6-sol",
+            "effort": "high"
+          },
+          "fullCommands": [
+            "independent review of v14 family completeness, semantic primitive fidelity, lowering coverage, East direction isolation, portal and registration, and zero-pixel boundary"
+          ]
+        },
+        "expectedResult": {
+          "evidencePaths": [
+            "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/HANDOFF.json",
+            "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/VALIDATION.json"
+          ],
+          "commitRequired": true,
+          "commitMessagePattern": "PLAY-079:"
+        },
+        "escalationTriggers": [
+          "shared_contract_or_schema_decision",
+          "unresolved_product_visual_or_interaction_judgment",
+          "path_outside_claim",
+          "baseline_or_candidate_identity_mismatch",
+          "failure_outside_focused_scope",
+          "save_or_migration_uncertainty",
+          "cross_lane_semantic_conflict",
+          "two_unsuccessful_repair_attempts",
+          "subjective_acceptance_required"
+        ],
+        "stopCondition": "Stop after one clean descendant repair with both focused runs and updated exact packet files passing. On a second unsuccessful repair, need for sibling/North geometry, shared toolchain change, or subjective decision, escalate. Do not run Blender/DCC, create pixels, normalize, activate, ship, integrate, push, self-accept, or pin.",
+        "independentReviewer": {
+          "required": true,
+          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+          "model": "gpt-5.6-sol",
+          "effort": "high"
+        },
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {
+              "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+              "sha256": "583c5d7be25a7ffdb95f354c6279fe7c309358f65445365203431c51f0e53247"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-NORTH-V14-HERO-REBUILD-AUTHORITY-V1.md",
+              "sha256": "e439d9f8de08474bbaf31c2308491dad486ec953bf45605c043731f68b44edbb"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "schema": 1,
+  "runner": "north-v14-process-a-execution-v01",
+  "contract": "EXECUTION-CONTRACT.json",
+  "childStartSiteCount": 1,
+  "childCommand": ["/Applications/Blender.app/Contents/MacOS/Blender", "--factory-startup", "--background", "--python", "render_north_process_a_child.py", "--", "--direction", "north"],
+  "childInput": "frozen v14 scene/material/lighting/lowering bytes",
+  "semanticConstruction": {"components": 33, "parameterizedObjects": 97, "coveragePercent": 100.0, "portalVoid": true, "socketRegistration": true},
+  "outputPolicy": {"rootMustBeAbsent": true, "immutableLeaves": true, "allowedOutputs": ["raw.png", "semantic.png", "OBJECT-MANIFEST.json", "GROUND-PROJECTION.json", "INPUT-BINDINGS.json", "provenance.json", "PROCESS-RECEIPT.json"]},
+  "processPolicy": {"maximumChildStarts": 1, "maximumConcurrentDCCProcesses": 1, "stopAfterA": true, "childStartsInPrelaunch": 0},
+  "sourceAuthority": false,
+  "productionSelected": false
+}

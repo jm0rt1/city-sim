@@ -1,0 +1,16 @@
+{
+  "schema": 1,
+  "replay": "normalized-fresh-root",
+  "normalizedRoot": "<exclusive-temp-root>",
+  "contractIdentity": "industrial-l04-north-v14-process-a-execution-v01",
+  "componentCount": 33,
+  "objectCount": 97,
+  "coveragePercent": 100.0,
+  "socket": {"citySim": [0, 0, -28], "blender": [-28, 0, 0], "source": [896, 704]},
+  "childStarts": 0,
+  "dccProcessCount": 0,
+  "pixelWrites": 0,
+  "outputRootCreated": false,
+  "sourceAuthority": false,
+  "productionSelected": false
+}

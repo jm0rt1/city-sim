@@ -12,16 +12,21 @@ EXPECTED_TRIGGERS = {
     "authority_acknowledged",
     "candidate_handoff",
     "claim_or_baseline_mismatch",
+    "delegation_acknowledgement_failed",
     "dispatch_published",
     "duplicate_full_gate_requested",
     "eligible_lane_became_idle",
     "exact_candidate_qa_started",
     "first_focused_gate_failure",
     "first_return",
+    "frontier_route_assigned",
     "independent_return_after_focused_pass",
     "integration_closed",
     "model_route_mismatch",
     "no_progress_two_snapshots",
+    "repeated_context_load_detected",
+    "task_completed_or_stopped",
+    "useful_concurrency_below_floor",
     "second_unsuccessful_repair",
 }
 EXPECTED_DECISIONS = {"NO_CHANGE", "PROPOSE", "REFILL", "RETURN", "ESCALATE"}
@@ -55,6 +60,32 @@ EXPECTED_FALSE_GREEN_ESCALATIONS = [
     "cross_lane_semantic_conflict",
     "subjective_acceptance_required",
 ]
+EXPECTED_EVENT_REQUIREMENTS = {
+    "frontier_route_assigned": (
+        ["classification", "frontierRationale", "authorityBoundary", "lunaDecompositionChecked"],
+        ["NO_CHANGE", "PROPOSE", "ESCALATE"],
+    ),
+    "task_completed_or_stopped": (
+        ["terminalState", "resultOrStopReason", "commitOrBlockedReason", "evidenceOrBlockedReason", "nextDependencyOrRefill"],
+        ["NO_CHANGE", "REFILL", "RETURN", "ESCALATE"],
+    ),
+    "useful_concurrency_below_floor": (
+        ["usefulActiveCount", "minimumUsefulActiveWorkstreams", "protectedOperationsExcluded", "readyDisjointWork", "refillOrSerializedDependency"],
+        ["NO_CHANGE", "REFILL", "ESCALATE"],
+    ),
+    "repeated_context_load_detected": (
+        ["threadId", "unchangedAuthorityHash", "unchangedClaimHash", "unchangedSkillHashes", "repeatedFullReadBytes", "compactPacketAvailable"],
+        ["NO_CHANGE", "PROPOSE"],
+    ),
+    "delegation_acknowledgement_failed": (
+        ["dispatchReceiptHash", "modelRouteHash", "claimHash", "allowedPathBinding", "acknowledgementDefect"],
+        ["RETURN", "ESCALATE"],
+    ),
+    "duplicate_full_gate_requested": (
+        ["candidateIdentity", "priorGateReceiptHash", "priorGateCandidateIdentity", "evidenceStale", "identityChanged"],
+        ["NO_CHANGE", "RETURN", "ESCALATE"],
+    ),
+}
 
 
 def validate(policy: object) -> list[str]:
@@ -70,13 +101,14 @@ def validate(policy: object) -> list[str]:
         "falseGreenRecovery",
         "coverage",
         "noProgress",
+        "eventRequirements",
         "allowedDecisions",
         "triggers",
     }
     if set(policy) != expected_top:
         errors.append("policy top-level fields must match the exact schema")
-    if policy.get("schema") != 2:
-        errors.append("schema must be 2")
+    if policy.get("schema") != 3:
+        errors.append("schema must be 3")
     if policy.get("defaultRoute") != {
         "classification": "LUNA_MECHANICAL",
         "model": "gpt-5.6-luna",
@@ -94,6 +126,14 @@ def validate(policy: object) -> list[str]:
             errors.append("each event is limited to one review and one turn")
         if budget.get("contextMode") != "compact_hash_bound":
             errors.append("review context must be compact and hash-bound")
+        if budget.get("maxCompactContextBytes") != 32768:
+            errors.append("compact review context must be capped at 32768 bytes")
+        if budget.get("threadPollingAllowed") is not False:
+            errors.append("thread polling must be forbidden")
+        if budget.get("reviewCanSpawnReviews") is not False:
+            errors.append("review fan-out must be forbidden")
+        if budget.get("receiptMode") != "machine_readable_exception_first":
+            errors.append("review receipts must be machine-readable and exception-first")
         if budget.get("missingMetricValue", "missing") is not None:
             errors.append("missing metrics must be null")
         for key in (
@@ -192,6 +232,20 @@ def validate(policy: object) -> list[str]:
         protected = progress.get("protectedActiveOperations")
         if not isinstance(protected, list) or len(protected) != len(set(protected)) or set(protected) != EXPECTED_PROTECTED:
             errors.append("protected active operations must be exact and unique")
+
+    requirements = policy.get("eventRequirements")
+    if not isinstance(requirements, dict) or set(requirements) != set(EXPECTED_EVENT_REQUIREMENTS):
+        errors.append("event requirements must cover the exact managed trigger set")
+    else:
+        for trigger, (required_evidence, allowed_decisions) in EXPECTED_EVENT_REQUIREMENTS.items():
+            rule = requirements.get(trigger)
+            if not isinstance(rule, dict) or set(rule) != {"requiredEvidence", "allowedDecisions"}:
+                errors.append(f"{trigger} requirement fields must be exact")
+                continue
+            if rule.get("requiredEvidence") != required_evidence:
+                errors.append(f"{trigger} required evidence must be exact and ordered")
+            if rule.get("allowedDecisions") != allowed_decisions:
+                errors.append(f"{trigger} decisions must be exact and ordered")
 
     decisions = policy.get("allowedDecisions")
     if not isinstance(decisions, list) or len(decisions) != len(set(decisions)) or set(decisions) != EXPECTED_DECISIONS:

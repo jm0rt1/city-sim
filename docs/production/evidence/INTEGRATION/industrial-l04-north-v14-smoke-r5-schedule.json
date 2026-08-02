@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "batch": "industrial_l04_directional_family",
+  "direction": "north",
+  "process": "A",
+  "slot": "north:A",
+  "maximumChildStarts": 1,
+  "contractSHA256": "99e9b3f7fc8838c09791ff6fd4aee1e2571ff8bb31028aaf1aa0c8d3ac4205f1",
+  "launcherSHA256": "76e30d924c6e3941d7af85794e194fdbb943786ec0346c1e60fa83d061805222",
+  "childSHA256": "1239a739d3063b74f9f2597a789f4d5d188df1339ad60577e6b2e6989c209fb8",
+  "frozenInputs": {
+    "scene": {"path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/DESIGN-SCENE.json", "sha256": "85203e23d212b354cb9615092b098059568fb081c0efc550ee8aad85a21f9fe7"},
+    "materials": {"path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/DESIGN-MATERIALS.json", "sha256": "87ae5510eca2b4bc25c5b76f2506e0c199ac11da2a8a5ced02c8e4cecd95d56e"},
+    "lighting": {"path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/LIGHTING-CONTRACT.json", "sha256": "3b136be153ef61dedb4e6645344b84e9e9f490997900dc95e0e7f2d617e83634"},
+    "loweringContract": {"path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/LOWERING-CONTRACT.json", "sha256": "3a4dbba579c93833b0be885e294e2dbd6797d932a3055417755575ecc1e76875"},
+    "lowerer": {"path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/lower_v14_scene.py", "sha256": "3c3995e09a2c5a197f3156b3023c22d38aad67b77b13c4f38110879585a40c32"}
+  },
+  "outputRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/process-a-execution-v01/process-a-output"
+}

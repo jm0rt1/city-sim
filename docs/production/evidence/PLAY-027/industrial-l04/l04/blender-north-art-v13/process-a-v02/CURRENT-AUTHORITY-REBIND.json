@@ -51,7 +51,7 @@
     "runnerContract": "fc433d8289ad18ee0f0502b2fcd137882f26eae899c6eaa9405daf34ff2987c6",
     "runner": "2db1edec76aeb0a0e80955771ad8e8dab63863f1be856207613473e0554beb9f",
     "child": "fdd64bee2179be9596dbb7f0b72f9bfb8442b50c4eaa82557fbf4d4e3b5cf0ab",
-    "test": "1f2ab86784bfae1d9d6d6d88b3082553b9ffa8404c38a4349179691f60d2248c"
+    "test": "8f7bd8f2a9549849cf6908f30c55bf37ea5a49a52841bdf460a323ce80604412"
   },
   "focusedValidation": {
     "command": "PYTHONDONTWRITEBYTECODE=1 python3 Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-v02/test_process_a_v02.py",
@@ -62,10 +62,10 @@
     "zeroProcessA": true,
     "zeroPixels": true,
     "topologyUnchanged": true,
-    "positiveLaunchReady": false,
+    "positiveLaunchReady": true,
     "positiveChildValidation": true,
     "validatedAuthorityExclusionCount": 3,
-    "adversaries": 22
+    "adversaries": 41
   },
   "executionAccounting": {
     "readyNow": 0,

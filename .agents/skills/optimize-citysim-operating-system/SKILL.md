@@ -43,12 +43,18 @@ At dispatch publication, first return, candidate handoff, or integration close:
 1. Read only the exact receipts and compact context needed for that boundary.
 2. Separate worker defects from Integration-authored routing/setup defects.
 3. Quantify repeated context, duplicate validation, idle waits, route returns,
-   unbounded handoffs, and frontier work that could be frozen Luna execution.
+   unbounded handoffs, false-green worker PASS results, and frontier work that
+   could be frozen Luna execution.
 4. Preserve non-negotiable claims, exact identity, shared-contract control,
    deterministic/save compatibility, staged-app proof, independent QA,
    intelligent commits, atomic art activation, and clean publication.
 5. Return exactly one of: `NO_CHANGE`, a bounded proposal, or one claimed
    implementation commit. Never open speculative cleanup.
+
+Treat a false-green as a first-class cost defect: a task reports PASS while the
+claimed behavior was never executed, its artifact is absent/undecodable, or
+independent review finds an immediate runtime failure. Prefer strengthening the
+proof boundary before changing models or adding more retries.
 
 ## Commit and hand off
 

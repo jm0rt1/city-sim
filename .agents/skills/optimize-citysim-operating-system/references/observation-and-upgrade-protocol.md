@@ -21,14 +21,16 @@ Use `null` for unavailable measurements. Never infer tokens, pricing, or time.
 
 Prefer, in order:
 
-1. eliminate an Integration-authored route/setup return;
-2. isolate contract-independent siblings;
-3. move frozen mechanical work from frontier to Luna;
-4. replace repeated full reads with hash-bound compact context;
-5. replace duplicate full gates with focused worker gates and one aggregate
+1. eliminate false-green proof that lets static checks impersonate runtime,
+   deterministic, visual, or interaction evidence;
+2. eliminate an Integration-authored route/setup return;
+3. isolate contract-independent siblings;
+4. move proven-reference mechanical work from frontier to Luna;
+5. replace repeated full reads with hash-bound compact context;
+6. replace duplicate full gates with focused worker gates and one aggregate
    exact-tree gate;
-6. shorten handoffs through canonical machine-readable receipts;
-7. remove a stale or contradictory authority path.
+7. shorten handoffs through canonical machine-readable receipts;
+8. remove a stale or contradictory authority path.
 
 Do not optimize away independent QA, real-app proof, candidate identity,
 claims, save/determinism gates, or atomic four-direction activation.

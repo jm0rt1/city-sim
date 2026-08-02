@@ -137,6 +137,25 @@ later Integration-owned process receipt establishes that a launch occurred.
 Direction-local closure code may bind the shared interface read-only but may
 not copy a sibling launcher, constants, evidence, or task paths.
 
+Zero-child checks certify only static prelaunch structure. They may not certify
+that Blender starts, the child reaches its builder, the camera/lights/world are
+valid, output directories exist at write time, paths remain contained, meshes
+are renderable, or a PNG is decodable. Before Integration grants a production
+attempt, the exact high-level orchestrator must pass one Integration-owned,
+contained Blender smoke using the same launch/build/render path and a disposable
+exclusive output root. The smoke must record the real Blender command and exit
+status, process identity, created object/camera/light counts, output containment,
+nonempty decodable render dimensions, and cleanup/retention disposition. It has
+no source authority and cannot satisfy Process A/B/C, determinism, appearance,
+or production selection. Static token or AST checks may supplement but never
+replace this smoke.
+
+After two unsuccessful implementation repairs, freeze the rejected descendants
+and return the execution architecture to `FRONTIER_AUTHORITY`. Do not assign a
+third Luna repair. Once the frontier reference passes the contained smoke and
+is accepted, Luna siblings may implement against its exact bound bytes and
+must run their own direction-local contained smoke before A/B/C production.
+
 For Industrial L4, validate the exact Integration schedule with
 `.agents/skills/operate-citysim-integration/scripts/validate_industrial_l04_parallel_execution_schedule_v1.py`.
 Treat

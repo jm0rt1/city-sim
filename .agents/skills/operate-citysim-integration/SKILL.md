@@ -59,6 +59,10 @@ independent frontier acceptance packet.
 - Worker packets run focused owner/affected gates. Integration runs the full
   Swift suite, staged build, and real-app journey once against the exact
   aggregated/integrated candidate unless identity changes or evidence is stale.
+- Treat the schema-2 `proofPolicy` as an acceptance boundary. Never accept an
+  executable, deterministic-output, visual, or interaction claim from static
+  source/AST/token checks. A novel execution architecture stays frontier-owned
+  until a contained real runtime smoke establishes one accepted reference.
 
 ## Enforce useful parallelism
 

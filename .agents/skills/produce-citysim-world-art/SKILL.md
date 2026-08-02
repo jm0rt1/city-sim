@@ -71,6 +71,12 @@ West as that writer. Never push, integrate, or self-accept.
 - `FRONTIER_AUTHORITY` owns North hero design, family vocabulary, appearance lock, unresolved art direction, shared toolchain decisions, and subjective source or production acceptance.
 - `LUNA_IMPLEMENTATION` owns Integration-authorized East/South/West DCC production under frozen contracts; `LUNA_MECHANICAL` owns provenance, normalization, deterministic checks, contact sheets, hashes, and handoff packets. North mechanical validation may use Luna, but North visual disposition remains frontier-owned.
 - `LUNA_LOCAL_DEBUG` may repair only a reproducible direction-local defect with frozen inputs and no shared-contract ambiguity; stop after two unsuccessful repair attempts.
+- Luna may reproduce a DCC pipeline only after Integration binds an accepted
+  executable reference whose real Blender smoke completed successfully. A
+  zero-child/static prelaunch packet proves structure only; it never proves
+  Blender launch, scene construction, rendering, output containment, or pixel
+  validity. Novel or repeatedly false-green DCC architecture returns to
+  frontier authority.
 - A substantial `PLAY-*` family is split into the frontier North/design authority, disjoint direction execution packets, and independent frontier acceptance. Stop on every escalation trigger in the shared contract.
 - Each Luna direction runs only its focused source gates. Passing siblings remain immutable when one direction returns. Renderer runs the full suite/resource smoke once at exact 4/4 assembly; independent frontier QA runs the single final app journey.
 

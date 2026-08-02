@@ -1,18 +1,19 @@
 #!/usr/bin/env python3
-"""Authenticated West Process-A Blender child entrypoint.
+"""Authenticated West Process-A Blender child.
 
-This module is intentionally not imported or launched by the prelaunch tests.
-It contains explicit semantic builders for every frozen v14 component and a
-single Blender scene construction boundary for a future Integration grant.
+The future child has explicit mesh/curve builders for every v14 semantic
+primitive.  The prelaunch validator uses only ``--emit-manifest``; that mode
+does not import Blender, start a child, or create output.
 """
 from __future__ import annotations
 
 import hashlib
 import json
+import math
 import os
 import sys
 from pathlib import Path
-from typing import Any
+from typing import Any, Iterable
 
 ROOT = Path(__file__).resolve().parents[8]
 PACKAGE = Path(__file__).resolve().parent
@@ -41,7 +42,7 @@ def semantic_manifest() -> dict[str, Any]:
     for component in components:
         item = lowered[component["id"]]
         if item["objects"] != component["builderObjects"] or item["builder"] not in contract["builderKinds"]:
-            raise ValueError("generic or missing semantic builder")
+            raise ValueError("missing semantic builder")
         for object_id in item["objects"]:
             objects.append({"id": object_id, "component": component["id"], "builder": item["builder"], "role": component["role"], "aabb": component["aabb"]})
     if len({item["id"] for item in objects}) != len(objects):
@@ -49,73 +50,251 @@ def semantic_manifest() -> dict[str, Any]:
     return {"task": contract["task"], "direction": contract["direction"], "processID": contract["processID"], "camera": contract["camera"], "registration": contract["registration"], "materialRoles": contract["materialRoles"], "objects": objects, "componentCount": len(components), "objectCount": len(objects)}
 
 
-def _make_materials(bpy: Any, roles: list[str]) -> dict[str, Any]:
-    materials = {}
-    for role in roles:
-        material = bpy.data.materials.new(name=f"PLAY081-{role}")
-        material.diffuse_color = (0.35, 0.35, 0.35, 1.0)
-        materials[role] = material
-    return materials
+def load_exact_profile() -> dict[str, Any]:
+    """Resolve the future Integration profile before any bpy import."""
+    contract = load(CONTRACT)
+    if contract.get("appearanceLock") is None or contract.get("sourceProductionProfile") is None:
+        raise PermissionError("appearance lock and source profile are required")
+    profile_path = contract.get("sourceProductionProfilePath")
+    profile_sha = contract.get("sourceProductionProfileSHA256")
+    if not isinstance(profile_path, str) or not isinstance(profile_sha, str):
+        raise PermissionError("source profile binding is incomplete")
+    profile_file = ROOT / profile_path
+    if not profile_file.is_file() or digest(profile_file) != profile_sha:
+        raise PermissionError("source profile is absent or drifted")
+    profile = load(profile_file)
+    required = contract["profileRequiredFields"]
+    if any(field not in profile for field in required):
+        raise PermissionError("source profile omits required numeric domains")
+    for role in contract["materialRoles"]:
+        material = profile.get("materials", {}).get(role)
+        if not isinstance(material, dict) or not all(key in material for key in ("baseColorRGBA", "metallic", "roughness")):
+            raise PermissionError("material profile closure is incomplete")
+    return profile
 
 
-def _add_box(bpy: Any, name: str, center: tuple[float, float, float], size: tuple[float, float, float], material: Any) -> Any:
-    bpy.ops.mesh.primitive_cube_add(size=1.0, location=center)
-    obj = bpy.context.object
-    obj.name = name
-    obj.dimensions = size
+def _mesh_object(bpy: Any, name: str, vertices: list[tuple[float, float, float]], faces: list[tuple[int, ...]], material: Any) -> Any:
+    if not vertices or not faces:
+        raise ValueError("nonzero topology required")
+    mesh = bpy.data.meshes.new(name + "Mesh")
+    mesh.from_pydata(vertices, [], faces)
+    mesh.update()
+    obj = bpy.data.objects.new(name, mesh)
+    bpy.context.collection.objects.link(obj)
     obj.data.materials.append(material)
-    bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
     return obj
 
 
-def _add_cylinder(bpy: Any, name: str, center: tuple[float, float, float], size: tuple[float, float, float], material: Any) -> Any:
-    bpy.ops.mesh.primitive_cylinder_add(vertices=32, radius=0.5, depth=1.0, location=center)
-    obj = bpy.context.object
-    obj.name = name
-    obj.dimensions = size
+def _box_parts(lower: Iterable[float], upper: Iterable[float], offset: int = 0) -> tuple[list[tuple[float, float, float]], list[tuple[int, ...]]]:
+    lo, hi = tuple(float(x) for x in lower), tuple(float(x) for x in upper)
+    vertices = [(x, y, z) for x in (lo[0], hi[0]) for y in (lo[1], hi[1]) for z in (lo[2], hi[2])]
+    faces = [(offset + 0, offset + 1, offset + 3, offset + 2), (offset + 4, offset + 6, offset + 7, offset + 5), (offset + 0, offset + 4, offset + 5, offset + 1), (offset + 2, offset + 3, offset + 7, offset + 6), (offset + 0, offset + 2, offset + 6, offset + 4), (offset + 1, offset + 5, offset + 7, offset + 3)]
+    return vertices, faces
+
+
+def _add_box_mesh(bpy: Any, name: str, lower: list[float], upper: list[float], material: Any) -> Any:
+    vertices, faces = _box_parts(lower, upper)
+    return _mesh_object(bpy, name, vertices, faces, material)
+
+
+def _add_wedge_mesh(bpy: Any, name: str, lower: list[float], upper: list[float], material: Any) -> Any:
+    lo, hi = tuple(float(x) for x in lower), tuple(float(x) for x in upper)
+    vertices = [(lo[0], lo[1], lo[2]), (hi[0], lo[1], lo[2]), (hi[0], hi[1] - 1.5, lo[2]), (lo[0], hi[1], lo[2]), (lo[0], lo[1], hi[2]), (hi[0], lo[1], hi[2]), (hi[0], hi[1] - 1.5, hi[2]), (lo[0], hi[1], hi[2])]
+    faces = [(0, 1, 2, 3), (4, 7, 6, 5), (0, 4, 5, 1), (1, 5, 6, 2), (2, 6, 7, 3), (4, 0, 3, 7)]
+    return _mesh_object(bpy, name, vertices, faces, material)
+
+
+def _add_portal_frame_mesh(bpy: Any, name: str, lower: list[float], upper: list[float], material: Any) -> Any:
+    lo, hi = tuple(float(x) for x in lower), tuple(float(x) for x in upper)
+    bars = [(lo, (hi[0], hi[1], lo[2] + 1.5)), ((lo[0], lo[1], hi[2] - 1.5), hi), (lo, (hi[0], lo[1] + 2.0, hi[2])), ((lo[0], hi[1] - 2.0, lo[2]), hi)]
+    vertices: list[tuple[float, float, float]] = []
+    faces: list[tuple[int, ...]] = []
+    for bar_lo, bar_hi in bars:
+        part_vertices, part_faces = _box_parts(bar_lo, bar_hi, len(vertices))
+        vertices.extend(part_vertices)
+        faces.extend(part_faces)
+    return _mesh_object(bpy, name, vertices, faces, material)
+
+
+def _add_cylinder_mesh(bpy: Any, name: str, lower: list[float], upper: list[float], material: Any, sides: int = 20) -> Any:
+    lo, hi = tuple(float(x) for x in lower), tuple(float(x) for x in upper)
+    radius = min(hi[0] - lo[0], hi[2] - lo[2]) / 2.0
+    cx, cz = (lo[0] + hi[0]) / 2.0, (lo[2] + hi[2]) / 2.0
+    vertices = [(cx + radius * math.cos(2 * math.pi * i / sides), lo[1], cz + radius * math.sin(2 * math.pi * i / sides)) for i in range(sides)] + [(cx + radius * math.cos(2 * math.pi * i / sides), hi[1], cz + radius * math.sin(2 * math.pi * i / sides)) for i in range(sides)]
+    faces = [(i, (i + 1) % sides, sides + (i + 1) % sides, sides + i) for i in range(sides)] + [tuple(range(sides - 1, -1, -1)), tuple(range(sides, 2 * sides))]
+    return _mesh_object(bpy, name, vertices, faces, material)
+
+
+def _add_mullion_mesh(bpy: Any, name: str, lower: list[float], upper: list[float], material: Any) -> Any:
+    lo, hi = tuple(float(x) for x in lower), tuple(float(x) for x in upper)
+    bars = [(lo, (hi[0], hi[1], lo[2] + 0.35)), ((lo[0], lo[1], hi[2] - 0.35), hi)]
+    for z in (-0.33, 0.0, 0.33):
+        bars.append(((lo[0], lo[1], (lo[2] + hi[2]) / 2 + z - 0.07), (hi[0], hi[1], (lo[2] + hi[2]) / 2 + z + 0.07)))
+    vertices: list[tuple[float, float, float]] = []
+    faces: list[tuple[int, ...]] = []
+    for bar_lo, bar_hi in bars:
+        pv, pf = _box_parts(bar_lo, bar_hi, len(vertices))
+        vertices.extend(pv); faces.extend(pf)
+    return _mesh_object(bpy, name, vertices, faces, material)
+
+
+def _add_rail_mesh(bpy: Any, name: str, lower: list[float], upper: list[float], material: Any) -> Any:
+    lo, hi = tuple(float(x) for x in lower), tuple(float(x) for x in upper)
+    bars = [(lo, (hi[0], hi[1], lo[2] + 0.3)), ((lo[0], hi[1] - 0.3, lo[2]), hi)]
+    for z in (lo[2], (lo[2] + hi[2]) / 2, hi[2]): bars.append(((lo[0], lo[1], z - 0.08), (hi[0], hi[1], z + 0.08)))
+    vertices: list[tuple[float, float, float]] = []; faces: list[tuple[int, ...]] = []
+    for bar_lo, bar_hi in bars:
+        pv, pf = _box_parts(bar_lo, bar_hi, len(vertices)); vertices.extend(pv); faces.extend(pf)
+    return _mesh_object(bpy, name, vertices, faces, material)
+
+
+def _add_gutter_mesh(bpy: Any, name: str, lower: list[float], upper: list[float], material: Any) -> Any:
+    return _add_rail_mesh(bpy, name, lower, upper, material)
+
+
+def _add_pipe_segment(bpy: Any, name: str, start: tuple[float, float, float], end: tuple[float, float, float], material: Any) -> Any:
+    curve = bpy.data.curves.new(name + "Curve", type="CURVE")
+    curve.dimensions = "3D"
+    curve.bevel_depth = 0.22
+    curve.bevel_resolution = 3
+    spline = curve.splines.new("POLY")
+    spline.points.add(1)
+    spline.points[0].co = (*start, 1.0)
+    spline.points[1].co = (*end, 1.0)
+    obj = bpy.data.objects.new(name, curve)
+    bpy.context.collection.objects.link(obj)
     obj.data.materials.append(material)
-    bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
     return obj
+
+
+def _add_pipe_cluster(bpy: Any, names: list[str], lower: list[float], upper: list[float], material: Any) -> list[Any]:
+    lo, hi = tuple(float(x) for x in lower), tuple(float(x) for x in upper)
+    return [_add_pipe_segment(bpy, names[0], (lo[0], lo[1], lo[2]), (hi[0], hi[1], lo[2]), material), _add_pipe_segment(bpy, names[1], (hi[0], hi[1], lo[2]), (hi[0], hi[1], hi[2]), material), _add_pipe_segment(bpy, names[2], (lo[0], lo[1], hi[2]), (hi[0], lo[1], hi[2]), material)]
+
+
+def _add_truss_mesh(bpy: Any, name: str, lower: list[float], upper: list[float], material: Any) -> Any:
+    lo, hi = tuple(float(x) for x in lower), tuple(float(x) for x in upper)
+    vertices = [(lo[0], lo[1], lo[2]), (hi[0], lo[1], lo[2]), (lo[0], hi[1], hi[2]), (hi[0], hi[1], hi[2])]
+    faces = [(0, 1), (0, 2), (1, 3), (2, 3)]
+    return _mesh_object(bpy, name, vertices, faces, material)
 
 
 def _build_component(bpy: Any, component: dict[str, Any], material: Any) -> list[Any]:
     lower, upper = component["aabb"]["min"], component["aabb"]["max"]
-    center = tuple((float(a) + float(b)) / 2.0 for a, b in zip(lower, upper))
-    size = tuple(float(b) - float(a) for a, b in zip(lower, upper))
-    shape = component["shape"]
-    if shape in {"box", "roof-wedge", "void-content", "surface-detail", "railing", "pipe-run"}:
-        return [_add_box(bpy, object_id, center, size, material) for object_id in component["builderObjects"]]
-    if shape == "cylinder":
-        return [_add_cylinder(bpy, object_id, center, size, material) for object_id in component["builderObjects"]]
-    if shape == "void":
+    builder = next(item for item in load(LOWERING)["componentLowering"]["components"] if item["id"] == component["id"])["builder"]
+    names = component["builderObjects"]
+    if builder == "recessed_void":
         return []
-    raise ValueError(f"unsupported semantic shape: {shape}")
+    if builder == "compound_portal_frame": return [_add_portal_frame_mesh(bpy, names[0], lower, upper, material)]
+    if builder == "pitched_roof_wedge": return [_add_wedge_mesh(bpy, names[0], lower, upper, material)]
+    if builder == "capped_vessel" or builder == "capped_stack": return [_add_cylinder_mesh(bpy, names[0], lower, upper, material)]
+    if builder == "pipe_run_with_elbows": return _add_pipe_cluster(bpy, names, lower, upper, material)
+    if builder == "mullioned_glazing_band": return [_add_mullion_mesh(bpy, names[0], lower, upper, material)]
+    if builder == "railing_run": return [_add_rail_mesh(bpy, names[0], lower, upper, material)]
+    if builder == "gutter_and_edge": return [_add_gutter_mesh(bpy, names[0], lower, upper, material)]
+    if builder == "truss_chords_diagonals": return [_add_truss_mesh(bpy, names[0], lower, upper, material)]
+    return [_add_box_mesh(bpy, name, lower, upper, material) for name in names]
+
+
+def _make_materials(bpy: Any, roles: list[str], profile: dict[str, Any]) -> dict[str, Any]:
+    materials = {}
+    for role in roles:
+        spec = profile["materials"][role]
+        material = bpy.data.materials.new(name=f"PLAY081-{role}")
+        material.diffuse_color = tuple(spec["baseColorRGBA"])
+        material.metallic = float(spec["metallic"])
+        material.roughness = float(spec["roughness"])
+        materials[role] = material
+    return materials
+
+
+def _configure_camera(bpy: Any, contract: dict[str, Any]) -> Any:
+    from mathutils import Vector
+    spec = contract["camera"]
+    data = bpy.data.cameras.new("PLAY081-west-v14-camera-data")
+    data.type = "ORTHO"
+    data.ortho_scale = float(spec["orthographicScaleWorld"])
+    data.shift_x = float(spec["shiftX"])
+    data.shift_y = float(spec["shiftY"])
+    camera = bpy.data.objects.new("PLAY081-west-v14-camera", data)
+    bpy.context.collection.objects.link(camera)
+    camera.location = tuple(spec["positionWorldXYZ"])
+    target = Vector(spec["targetWorldXYZ"])
+    camera.rotation_euler = (target - camera.location).to_track_quat("-Z", "Y").to_euler()
+    bpy.context.scene.camera = camera
+    return camera
+
+
+def _configure_lighting(bpy: Any, contract: dict[str, Any], profile: dict[str, Any]) -> None:
+    scene = bpy.context.scene
+    scene.world.use_nodes = True
+    scene.world.node_tree.nodes["Background"].inputs["Color"].default_value = tuple(profile["world"]["colorRGBA"])
+    scene.world.node_tree.nodes["Background"].inputs["Strength"].default_value = float(profile["world"]["strength"])
+    for name, spec in (("PLAY081-NW-key", profile["keyLight"]), ("PLAY081-sky-fill", profile["fillLight"])):
+        data = bpy.data.lights.new(name, type="AREA")
+        data.energy = float(spec["energy"])
+        data.color = tuple(spec["colorRGBA"])
+        data.shape = "DISK"
+        data.size = float(spec["size"])
+        light = bpy.data.objects.new(name, data)
+        bpy.context.collection.objects.link(light)
+        light.location = tuple(spec["positionWorldXYZ"])
+    shadow = profile["shadowReceiver"]
+    _add_box_mesh(bpy, "PLAY081-southeast-shadow-receiver", shadow["min"], shadow["max"], _make_materials(bpy, [contract["materialRoles"][8]], profile)[contract["materialRoles"][8]])
+
+
+def _configure_render(bpy: Any, contract: dict[str, Any], profile: dict[str, Any], output_root: Path) -> None:
+    scene = bpy.context.scene
+    scene.render.engine = "CYCLES"
+    scene.cycles.device = "CPU"
+    scene.cycles.samples = int(profile["cycles"]["samples"])
+    scene.cycles.seed = int(profile["cycles"]["seed"])
+    scene.cycles.max_bounces = int(profile["cycles"]["maxBounces"])
+    scene.cycles.use_denoising = False
+    scene.render.resolution_x, scene.render.resolution_y = contract["camera"]["renderViewportPixels"]
+    scene.render.resolution_percentage = 100
+    scene.render.film_transparent = True
+    scene.view_settings.look = profile["colorManagement"]["look"]
+    scene.view_settings.exposure = float(profile["colorManagement"]["exposure"])
+    scene.view_settings.gamma = float(profile["colorManagement"]["gamma"])
+    scene.render.image_settings.file_format = "PNG"
+    scene.render.filepath = str(output_root / contract["futureOutputFiles"][0])
+    bpy.ops.render.render(write_still=True)
+    bpy.ops.wm.save_as_mainfile(filepath=str(output_root / contract["futureOutputFiles"][1]))
+
+
+def write_provenance(output_root: Path, manifest: dict[str, Any], contract: dict[str, Any]) -> None:
+    output_root.mkdir(parents=False, exist_ok=False)
+    (output_root / "manifest.json").write_bytes(json.dumps(manifest, sort_keys=True, separators=(",", ":")).encode() + b"\n")
+    (output_root / "provenance.json").write_bytes(json.dumps({"contract": contract["processID"], "designSHA256": contract["designSHA256"], "loweringSHA256": contract["loweringSHA256"]}, sort_keys=True).encode() + b"\n")
+    (output_root / "receipt.json").write_bytes(json.dumps({"childStarts": 1, "dccInvocations": 1, "sourceReady": False}, sort_keys=True).encode() + b"\n")
 
 
 def build_scene() -> dict[str, Any]:
-    if os.environ.get("PLAY081_PROCESS_A_AUTHENTICATED") != "1":
-        raise PermissionError("authenticated Integration grant required")
+    profile = load_exact_profile()
     import bpy
     contract, design = load(CONTRACT), load(DESIGN)
+    output_root = ROOT / contract["futureOutputRoot"]
+    if output_root.exists() or output_root.is_symlink():
+        raise FileExistsError("immutable Process-A output root already exists")
     bpy.ops.wm.read_factory_settings(use_empty=True)
-    materials = _make_materials(bpy, contract["materialRoles"])
+    materials = _make_materials(bpy, contract["materialRoles"], profile)
     for component in design["components"]:
-        if component["shape"] == "void":
-            continue
         _build_component(bpy, component, materials[component["role"]])
-    scene = bpy.context.scene
-    scene.render.engine = "BLENDER_EEVEE_NEXT"
-    scene.render.film_transparent = True
-    scene.render.resolution_x, scene.render.resolution_y = contract["camera"]["renderViewportPixels"]
-    scene.camera = bpy.data.objects.new("PLAY081-west-v14-camera", None)
-    scene.world.color = (0.08, 0.08, 0.08)
-    return semantic_manifest()
+    _configure_camera(bpy, contract)
+    _configure_lighting(bpy, contract, profile)
+    _configure_render(bpy, contract, profile, output_root)
+    manifest = semantic_manifest()
+    write_provenance(output_root, manifest, contract)
+    return manifest
 
 
 def main() -> int:
     if "--emit-manifest" in sys.argv[1:]:
         sys.stdout.write(json.dumps(semantic_manifest(), sort_keys=True, separators=(",", ":")) + "\n")
         return 0
+    if os.environ.get("PLAY081_PROCESS_A_AUTHENTICATED") != "1":
+        raise PermissionError("authenticated Integration grant required")
     build_scene()
     return 0
 

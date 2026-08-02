@@ -26,8 +26,8 @@ CLAIM_SHA = "6b9608a7854afc60676ac27e7c7a8a7c4420161805a4ef59c68649acdd6a901d"
 DESIGN_SHA = "334ab5ed19734d6a4f90e499cf8f15872a3c11677a2cb437a912b6a96d0617ad"
 LOWERING_SHA = "b15466c78dedc19d1009ddc9cb691002ed7d5dd192c1caf8be05023fb42376dd"
 BRIDGE_SHA = "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7"
-ROUTE = "quality-v1:play-081-industrial-l04-v14-west-process-a-prelaunch-v1"
-ROUTE_SHA = "5bc7a82740c48fb778b4d081022da629e686af214bdf79598a670492fe880ea3"
+ROUTE = "quality-v1:play-081-industrial-l04-v14-west-process-a-prelaunch-repair-v2"
+ROUTE_SHA = "05884249492edfdc1c4c295a6b479470b6fe17dacf661285682cd34bc13163ec"
 PIXEL_SUFFIXES = {".png", ".jpg", ".jpeg", ".tif", ".tiff", ".exr", ".blend"}
 
 
@@ -73,6 +73,10 @@ def static_checks(contract: dict[str, Any]) -> None:
     popen_calls = [n for n in ast.walk(launcher) if isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute) and n.func.attr == "Popen"]
     if len(popen_calls) != 1 or "subprocess.run" in launcher_source or "os.system" in launcher_source: fail("launcher child-start boundary")
     if "--factory-startup" not in launcher_source or "--disable-autoexec" not in launcher_source or "PLAY081_PROCESS_A_AUTHENTICATED" not in launcher_source: fail("launcher flags/auth")
+    required_child = ("load_exact_profile", "_add_wedge_mesh", "_add_portal_frame_mesh", "_add_mullion_mesh", "_add_pipe_segment", "_add_truss_mesh", "_configure_camera", "_configure_lighting", "bpy.data.cameras.new", "to_track_quat", "CYCLES", "world", "AREA", "film_transparent", "write_still=True", "save_as_mainfile", "sourceProductionProfile")
+    if any(token not in child_source for token in required_child): fail("real Blender construction contract")
+    if "bpy.ops.mesh.primitive_cube_add" in child_source or "bpy.ops.mesh.primitive_cylinder_add" in child_source or "diffuse_color = (0.35" in child_source: fail("semantic primitive/material downgrade")
+    if child_source.index("profile = load_exact_profile()") > child_source.index("import bpy"): fail("profile gate after bpy import")
     top_level_bpy = [n for n in child.body if isinstance(n, ast.Import) and any(a.name == "bpy" for a in n.names)]
     if top_level_bpy: fail("top-level Blender import")
     for forbidden in ("requests", "urllib", "socket", "ImageGen", "normaliz", "Package.swift", "Rendering/", "PLAY-079", "PLAY-080", "PLAY-027"):
@@ -81,6 +85,19 @@ def static_checks(contract: dict[str, Any]) -> None:
     if "placeholder" in child_source.lower(): fail("placeholder builder")
     if not any(isinstance(n, ast.Import) and any(a.name == "bpy" for a in n.names) for n in ast.walk(child)): fail("Blender child import missing")
     if 'contract["sourceRoot"]' not in launcher_source or 'contract["futureOutputRoot"]' not in launcher_source: fail("root binding")
+
+
+def static_adversaries() -> list[str]:
+    source = CHILD_PATH.read_text(encoding="utf-8")
+    required = ("_add_wedge_mesh", "_add_portal_frame_mesh", "_add_mullion_mesh", "_add_pipe_segment", "_configure_camera", "_configure_lighting", "bpy.data.cameras.new", "to_track_quat", "write_still=True", "save_as_mainfile", "PLAY081_PROCESS_A_AUTHENTICATED")
+    cases = [("cube-downgrade", "_add_wedge_mesh"), ("missing-topology", "_add_portal_frame_mesh"), ("camera-without-data", "bpy.data.cameras.new"), ("camera-without-aim", "to_track_quat"), ("missing-light-world", "_configure_lighting"), ("missing-render", "write_still=True"), ("missing-blend-write", "save_as_mainfile"), ("low-level-bypass", "PLAY081_PROCESS_A_AUTHENTICATED")]
+    passed = []
+    for name, token in cases:
+        mutant = source.replace(token, "")
+        if all(item in mutant for item in required):
+            fail("static adversary accepted: " + name)
+        passed.append(name)
+    return passed
 
 
 def child_manifest_replay() -> tuple[bytes, str]:
@@ -137,11 +154,12 @@ def main() -> int:
     manifest, manifest_sha = child_manifest_replay()
     if (ROOT / contract["futureOutputRoot"]).exists(): fail("future output root exists")
     if any(p.is_file() and p.suffix.lower() in PIXEL_SUFFIXES for p in PACKAGE.rglob("*")): fail("pixel/binary output present")
-    names = adversaries(contract)
+    names = adversaries(contract) + static_adversaries()
     handoff, validation = load(HANDOFF_PATH), load(VALIDATION_PATH)
     expected_validator = str(Path(__file__).resolve().relative_to(ROOT))
     if handoff.get("stage") != "prelaunch" or handoff.get("sourceReady") is not False or handoff.get("execution", {}).get("childStarts") != 0: fail("handoff boundary")
     if validation.get("result") != "PASS" or validation.get("routeId") != ROUTE or validation.get("routeSHA256") != ROUTE_SHA or validation.get("validatorPath") != expected_validator or validation.get("validatorSHA256") != sha(Path(__file__)): fail("validation binding")
+    if validation.get("contractSHA256") != sha(CONTRACT_PATH) or validation.get("childSHA256") != sha(CHILD_PATH) or validation.get("launcherSHA256") != sha(LAUNCHER_PATH): fail("implementation hash binding")
     if validation.get("adversaries", {}).get("count") != len(names) or validation.get("freshReplay", {}).get("manifestSHA256") != manifest_sha or validation.get("freshReplay", {}).get("byteIdentical") is not True: fail("validation proof")
     print(f"PASS west-v14-process-a-prelaunch contract=PASS semanticManifest=PASS materialClosure=PASS cameraRegistration=PASS adversaries={len(names)} freshReplay=BYTE_IDENTICAL childStarts=0 dcc=0 pixels=0")
     return 0

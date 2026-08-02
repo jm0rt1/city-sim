@@ -34,6 +34,8 @@ def validate_grant(grant: dict[str, Any]) -> dict[str, Any]:
         raise PermissionError("schedule/slot/direction grant mismatch")
     if contract["schedule"] != grant or contract["direction"] != "west" or contract["processID"] != "west-v14-process-a":
         raise PermissionError("contract authority mismatch")
+    if contract.get("appearanceLock") is None or contract.get("sourceProductionProfile") is None or contract.get("executionReady") is not True:
+        raise PermissionError("future North appearance profile is not published")
     if sha(ROOT / contract["designPath"]) != contract["designSHA256"] or sha(ROOT / contract["loweringPath"]) != contract["loweringSHA256"]:
         raise PermissionError("frozen input hash mismatch")
     output = ROOT / contract["futureOutputRoot"]

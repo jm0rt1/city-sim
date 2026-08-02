@@ -1,0 +1,243 @@
+{
+  "schema": 1,
+  "authorityCommit": "f5562c1bd3b38a1d002a64e5930cd82370a3fe81",
+  "routeId": "quality-v2:play-089-industrial-l04-repair-handoff-review-v1",
+  "eventKeys": [
+    {
+      "authorityCommit": "f5562c1bd3b38a1d002a64e5930cd82370a3fe81",
+      "taskId": "PLAY-089",
+      "routeId": "quality-v2:play-089-industrial-l04-repair-handoff-review-v1",
+      "trigger": "candidate_handoff",
+      "candidateOrResultCommit": "5ade43b991695f9fb05a023ef7dd1de2a775a27d"
+    },
+    {
+      "authorityCommit": "f5562c1bd3b38a1d002a64e5930cd82370a3fe81",
+      "taskId": "PLAY-089",
+      "routeId": "quality-v2:play-089-industrial-l04-repair-handoff-review-v1",
+      "trigger": "task_completed_or_stopped",
+      "candidateOrResultCommit": "5ade43b991695f9fb05a023ef7dd1de2a775a27d"
+    },
+    {
+      "authorityCommit": "f5562c1bd3b38a1d002a64e5930cd82370a3fe81",
+      "taskId": "PLAY-089",
+      "routeId": "quality-v2:play-089-industrial-l04-repair-handoff-review-v1",
+      "trigger": "candidate_handoff",
+      "candidateOrResultCommit": "d5e09f77217d6d46843aab4e43ee214317ae1d8d"
+    },
+    {
+      "authorityCommit": "f5562c1bd3b38a1d002a64e5930cd82370a3fe81",
+      "taskId": "PLAY-089",
+      "routeId": "quality-v2:play-089-industrial-l04-repair-handoff-review-v1",
+      "trigger": "task_completed_or_stopped",
+      "candidateOrResultCommit": "d5e09f77217d6d46843aab4e43ee214317ae1d8d"
+    },
+    {
+      "authorityCommit": "f5562c1bd3b38a1d002a64e5930cd82370a3fe81",
+      "taskId": "PLAY-089",
+      "routeId": "quality-v2:play-089-industrial-l04-repair-handoff-review-v1",
+      "trigger": "candidate_handoff",
+      "candidateOrResultCommit": "dd2d4f02fc7d3a7751ff6b72613bdc9ffdd3ed6b"
+    },
+    {
+      "authorityCommit": "f5562c1bd3b38a1d002a64e5930cd82370a3fe81",
+      "taskId": "PLAY-089",
+      "routeId": "quality-v2:play-089-industrial-l04-repair-handoff-review-v1",
+      "trigger": "task_completed_or_stopped",
+      "candidateOrResultCommit": "dd2d4f02fc7d3a7751ff6b72613bdc9ffdd3ed6b"
+    },
+    {
+      "authorityCommit": "f5562c1bd3b38a1d002a64e5930cd82370a3fe81",
+      "taskId": "PLAY-089",
+      "routeId": "quality-v2:play-089-industrial-l04-repair-handoff-review-v1",
+      "trigger": "useful_concurrency_below_floor",
+      "candidateOrResultCommit": "f5562c1bd3b38a1d002a64e5930cd82370a3fe81"
+    },
+    {
+      "authorityCommit": "f5562c1bd3b38a1d002a64e5930cd82370a3fe81",
+      "taskId": "PLAY-089",
+      "routeId": "quality-v2:play-089-industrial-l04-repair-handoff-review-v1",
+      "trigger": "worktree_or_dispatch_setup_failed_before_mutation",
+      "candidateOrResultCommit": "fb6fd3c20ed32191ff43fd31acb5651713373c4c"
+    }
+  ],
+  "events": [
+    {
+      "eventKey": {
+        "authorityCommit": "f5562c1bd3b38a1d002a64e5930cd82370a3fe81",
+        "taskId": "PLAY-089",
+        "routeId": "quality-v2:play-089-industrial-l04-repair-handoff-review-v1",
+        "trigger": "candidate_handoff",
+        "candidateOrResultCommit": "5ade43b991695f9fb05a023ef7dd1de2a775a27d"
+      },
+      "workstream": "north",
+      "evidence": {
+        "candidateIdentity": "5ade43b991695f9fb05a023ef7dd1de2a775a27d",
+        "focusedGateReceiptHash": "aacb86ca26453b7ea016e07dba2291b084bd173cf3a3f10a8c77f72ef251292a",
+        "allowedPathAudit": "exact_3_of_3",
+        "candidateCleanliness": "clean",
+        "nextGateOwner": "019f7686-4491-7891-86a6-95a78d67e5c8",
+        "independentReviewer": "019f7686-4491-7891-86a6-95a78d67e5c8"
+      }
+    },
+    {
+      "eventKey": {
+        "authorityCommit": "f5562c1bd3b38a1d002a64e5930cd82370a3fe81",
+        "taskId": "PLAY-089",
+        "routeId": "quality-v2:play-089-industrial-l04-repair-handoff-review-v1",
+        "trigger": "task_completed_or_stopped",
+        "candidateOrResultCommit": "5ade43b991695f9fb05a023ef7dd1de2a775a27d"
+      },
+      "workstream": "north",
+      "evidence": {
+        "terminalState": "candidate_ready",
+        "resultOrStopReason": "validated phase prefix is retained across later malformed markers",
+        "commitOrBlockedReason": "5ade43b991695f9fb05a023ef7dd1de2a775a27d",
+        "evidenceOrBlockedReason": "aacb86ca26453b7ea016e07dba2291b084bd173cf3a3f10a8c77f72ef251292a",
+        "nextDependencyOrRefill": "Integration independent repair acceptance"
+      }
+    },
+    {
+      "eventKey": {
+        "authorityCommit": "f5562c1bd3b38a1d002a64e5930cd82370a3fe81",
+        "taskId": "PLAY-089",
+        "routeId": "quality-v2:play-089-industrial-l04-repair-handoff-review-v1",
+        "trigger": "candidate_handoff",
+        "candidateOrResultCommit": "d5e09f77217d6d46843aab4e43ee214317ae1d8d"
+      },
+      "workstream": "east",
+      "evidence": {
+        "candidateIdentity": "d5e09f77217d6d46843aab4e43ee214317ae1d8d",
+        "focusedGateReceiptHash": "02c5256f67307e9c584f1de79149ee40f3d0fb3f81a44900d2c625eb8f14c57c",
+        "allowedPathAudit": "exact_7_of_7",
+        "candidateCleanliness": "clean",
+        "nextGateOwner": "019f7686-4491-7891-86a6-95a78d67e5c8",
+        "independentReviewer": "019f7686-4491-7891-86a6-95a78d67e5c8"
+      }
+    },
+    {
+      "eventKey": {
+        "authorityCommit": "f5562c1bd3b38a1d002a64e5930cd82370a3fe81",
+        "taskId": "PLAY-089",
+        "routeId": "quality-v2:play-089-industrial-l04-repair-handoff-review-v1",
+        "trigger": "task_completed_or_stopped",
+        "candidateOrResultCommit": "d5e09f77217d6d46843aab4e43ee214317ae1d8d"
+      },
+      "workstream": "east",
+      "evidence": {
+        "terminalState": "candidate_ready",
+        "resultOrStopReason": "dynamic live identity is authorized only by external Integration Git blobs",
+        "commitOrBlockedReason": "d5e09f77217d6d46843aab4e43ee214317ae1d8d",
+        "evidenceOrBlockedReason": "02c5256f67307e9c584f1de79149ee40f3d0fb3f81a44900d2c625eb8f14c57c",
+        "nextDependencyOrRefill": "Integration independent repair acceptance"
+      }
+    },
+    {
+      "eventKey": {
+        "authorityCommit": "f5562c1bd3b38a1d002a64e5930cd82370a3fe81",
+        "taskId": "PLAY-089",
+        "routeId": "quality-v2:play-089-industrial-l04-repair-handoff-review-v1",
+        "trigger": "candidate_handoff",
+        "candidateOrResultCommit": "dd2d4f02fc7d3a7751ff6b72613bdc9ffdd3ed6b"
+      },
+      "workstream": "west",
+      "evidence": {
+        "candidateIdentity": "dd2d4f02fc7d3a7751ff6b72613bdc9ffdd3ed6b",
+        "focusedGateReceiptHash": "75e08df8cc89b6782a8579e5f6cb6964434664d2f5dfaefda99ac557e8c9d57e",
+        "allowedPathAudit": "exact_3_of_3",
+        "candidateCleanliness": "clean",
+        "nextGateOwner": "019f7686-4491-7891-86a6-95a78d67e5c8",
+        "independentReviewer": "019f7686-4491-7891-86a6-95a78d67e5c8"
+      }
+    },
+    {
+      "eventKey": {
+        "authorityCommit": "f5562c1bd3b38a1d002a64e5930cd82370a3fe81",
+        "taskId": "PLAY-089",
+        "routeId": "quality-v2:play-089-industrial-l04-repair-handoff-review-v1",
+        "trigger": "task_completed_or_stopped",
+        "candidateOrResultCommit": "dd2d4f02fc7d3a7751ff6b72613bdc9ffdd3ed6b"
+      },
+      "workstream": "west",
+      "evidence": {
+        "terminalState": "candidate_ready",
+        "resultOrStopReason": "outer launch grants and cross-document published base are semantically bound",
+        "commitOrBlockedReason": "dd2d4f02fc7d3a7751ff6b72613bdc9ffdd3ed6b",
+        "evidenceOrBlockedReason": "75e08df8cc89b6782a8579e5f6cb6964434664d2f5dfaefda99ac557e8c9d57e",
+        "nextDependencyOrRefill": "Integration independent repair acceptance"
+      }
+    },
+    {
+      "eventKey": {
+        "authorityCommit": "f5562c1bd3b38a1d002a64e5930cd82370a3fe81",
+        "taskId": "PLAY-089",
+        "routeId": "quality-v2:play-089-industrial-l04-repair-handoff-review-v1",
+        "trigger": "useful_concurrency_below_floor",
+        "candidateOrResultCommit": "f5562c1bd3b38a1d002a64e5930cd82370a3fe81"
+      },
+      "workstream": "integration",
+      "evidence": {
+        "usefulActiveCount": 1,
+        "minimumUsefulActiveWorkstreams": 3,
+        "protectedOperationsExcluded": [],
+        "readyDisjointWork": [
+          "independent acceptance of three disjoint zero-DCC candidates",
+          "renderer intake preregistration for the eventual four-direction family",
+          "QA fixture and camera preregistration for the eventual aggregate visual candidate"
+        ],
+        "refillOrSerializedDependency": "Accept and integrate the disjoint repairs, then publish one parallel art, renderer, and QA refill wave"
+      }
+    },
+    {
+      "eventKey": {
+        "authorityCommit": "f5562c1bd3b38a1d002a64e5930cd82370a3fe81",
+        "taskId": "PLAY-089",
+        "routeId": "quality-v2:play-089-industrial-l04-repair-handoff-review-v1",
+        "trigger": "worktree_or_dispatch_setup_failed_before_mutation",
+        "candidateOrResultCommit": "fb6fd3c20ed32191ff43fd31acb5651713373c4c"
+      },
+      "workstream": "operating-system",
+      "evidence": {
+        "expectedWorktreeTuple": "codex/citysim-os-optimization at a clean HEAD containing authority f5562c1bd3b38a1d002a64e5930cd82370a3fe81",
+        "observedWorktreeTuple": "codex/citysim-os-optimization at clean fb6fd3c20ed32191ff43fd31acb5651713373c4c",
+        "setupDefect": "authority f5562c1bd3b38a1d002a64e5930cd82370a3fe81 was not an ancestor of the observer expected HEAD",
+        "mutationCount": 0,
+        "preservedWorkState": "all three candidate worktrees and the protected untracked North schedule draft remained untouched"
+      }
+    }
+  ],
+  "candidateSources": [
+    {
+      "workstream": "north",
+      "worktree": "/Users/James/.codex/worktrees/0648/city-sim",
+      "branch": "codex/citysim-world-art",
+      "commit": "5ade43b991695f9fb05a023ef7dd1de2a775a27d",
+      "receiptPath": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v14/process-a-phase-ladder-r1/PHASE-PREFIX-REPAIR-RECEIPT.json",
+      "receiptSHA256": "aacb86ca26453b7ea016e07dba2291b084bd173cf3a3f10a8c77f72ef251292a"
+    },
+    {
+      "workstream": "east",
+      "worktree": "/Users/James/.codex/worktrees/92c2/city-sim",
+      "branch": "codex/citysim-world-art-east",
+      "commit": "d5e09f77217d6d46843aab4e43ee214317ae1d8d",
+      "receiptPath": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/DYNAMIC-LIVE-IDENTITY-RETURN-REPAIR-V1.json",
+      "receiptSHA256": "02c5256f67307e9c584f1de79149ee40f3d0fb3f81a44900d2c625eb8f14c57c"
+    },
+    {
+      "workstream": "west",
+      "worktree": "/Users/James/.codex/worktrees/ef17/city-sim",
+      "branch": "codex/citysim-world-art-west",
+      "commit": "dd2d4f02fc7d3a7751ff6b72613bdc9ffdd3ed6b",
+      "receiptPath": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/FRONTIER-CROSS-DOCUMENT-ADVERSARY-REPAIR-V1.json",
+      "receiptSHA256": "75e08df8cc89b6782a8579e5f6cb6964434664d2f5dfaefda99ac557e8c9d57e"
+    }
+  ],
+  "prohibitedEffects": {
+    "productBuild": true,
+    "fullGate": true,
+    "dcc": true,
+    "realAppQA": true,
+    "sharedMutationByObserver": true,
+    "taskPolling": true,
+    "dispatchOrAcceptanceByObserver": true
+  }
+}

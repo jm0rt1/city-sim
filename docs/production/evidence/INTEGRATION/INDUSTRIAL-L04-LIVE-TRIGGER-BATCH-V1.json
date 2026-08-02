@@ -1,0 +1,61 @@
+{
+  "schema": 1,
+  "eventKeys": [
+    {
+      "authorityCommit": "c524e4ea6d517deeccfb06c670551bffe3e011fc",
+      "taskId": "PLAY-089",
+      "routeId": "quality-v2:play-089-industrial-l04-live-trigger-batch-v1",
+      "trigger": "second_unsuccessful_repair",
+      "candidateOrResultCommit": "e9f3d89080317b0183ad3d644ac4463bfb8c148a"
+    },
+    {
+      "authorityCommit": "c524e4ea6d517deeccfb06c670551bffe3e011fc",
+      "taskId": "PLAY-089",
+      "routeId": "quality-v2:play-089-industrial-l04-live-trigger-batch-v1",
+      "trigger": "second_unsuccessful_repair",
+      "candidateOrResultCommit": "5bb7c4d7b51ebb96fbddb674499f3c90e9e0522f"
+    },
+    {
+      "authorityCommit": "c524e4ea6d517deeccfb06c670551bffe3e011fc",
+      "taskId": "PLAY-089",
+      "routeId": "quality-v2:play-089-industrial-l04-live-trigger-batch-v1",
+      "trigger": "independent_return_after_focused_pass",
+      "candidateOrResultCommit": "421c6d98a6457ead2332a3b16527abdd6f96dcc9"
+    },
+    {
+      "authorityCommit": "c524e4ea6d517deeccfb06c670551bffe3e011fc",
+      "taskId": "PLAY-089",
+      "routeId": "quality-v2:play-089-industrial-l04-live-trigger-batch-v1",
+      "trigger": "independent_return_after_focused_pass",
+      "candidateOrResultCommit": "5bb7c4d7b51ebb96fbddb674499f3c90e9e0522f"
+    },
+    {
+      "authorityCommit": "c524e4ea6d517deeccfb06c670551bffe3e011fc",
+      "taskId": "PLAY-089",
+      "routeId": "quality-v2:play-089-industrial-l04-live-trigger-batch-v1",
+      "trigger": "frontier_route_assigned",
+      "candidateOrResultCommit": "5157b3a1027e5f70e0f8457e0c1ca925ab097d73"
+    },
+    {
+      "authorityCommit": "c524e4ea6d517deeccfb06c670551bffe3e011fc",
+      "taskId": "PLAY-089",
+      "routeId": "quality-v2:play-089-industrial-l04-live-trigger-batch-v1",
+      "trigger": "task_completed_or_stopped",
+      "candidateOrResultCommit": "421c6d98a6457ead2332a3b16527abdd6f96dcc9"
+    },
+    {
+      "authorityCommit": "c524e4ea6d517deeccfb06c670551bffe3e011fc",
+      "taskId": "PLAY-089",
+      "routeId": "quality-v2:play-089-industrial-l04-live-trigger-batch-v1",
+      "trigger": "task_completed_or_stopped",
+      "candidateOrResultCommit": "5bb7c4d7b51ebb96fbddb674499f3c90e9e0522f"
+    },
+    {
+      "authorityCommit": "c524e4ea6d517deeccfb06c670551bffe3e011fc",
+      "taskId": "PLAY-089",
+      "routeId": "quality-v2:play-089-industrial-l04-live-trigger-batch-v1",
+      "trigger": "useful_concurrency_below_floor",
+      "candidateOrResultCommit": "c524e4ea6d517deeccfb06c670551bffe3e011fc"
+    }
+  ]
+}

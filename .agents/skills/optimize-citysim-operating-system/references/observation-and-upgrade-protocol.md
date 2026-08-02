@@ -65,7 +65,10 @@ Review once per unique event key at:
 - duplicate full-gate requests, route/model mismatch, or claim/baseline mismatch.
 
 The observer uses Luna mechanical/medium and one compact receipt of no more than
-the policy byte cap. It does not poll tasks or spawn more reviews. It may return
+the per-event policy byte cap. One canonical observer turn may batch at most
+eight event keys within the aggregate cap, but returns one receipt per key.
+Freeze branch/HEAD first. Immediate events close before worker synchronization
+or mutation; authority reading may overlap the review. It does not poll tasks or spawn more reviews. It may return
 `NO_CHANGE`, `REFILL`, `RETURN`, `ESCALATE`, or one bounded proposal. Only
 Integration executes a refill, return, escalation, shared change, acceptance,
 integration, or push. Stop immediately after one receipt/commit, on any
@@ -83,4 +86,21 @@ Each durable receipt binds the exact policy bytes, event key, compact-context
 hashes/bytes, input receipt hashes, route tuple, trigger-specific evidence,
 decision, prohibited-work flags, exposed metrics, and one bounded next action.
 Validate it with `../scripts/validate_operating_review_receipt_v1.py`; an event
-key already present in the supplied ledger is a duplicate and fails closed.
+key already present in the mandatory supplied ledger is a duplicate and fails
+closed. The validator resolves every input path and SHA-256 against the supplied
+authority root while batch receipt outputs resolve only against the exact
+worker/output root. When these roots differ, both must be explicit exact Git
+roots; this permits immutable post-baseline Integration authority without
+copying it into the worker branch. The validator limits operation kinds to
+cheap read/hash/diff/schema/receipt work and enforces the one-turn budget.
+Integration owns the append-only ledger and
+must disposition actionable results before the related lifecycle advances.
+
+Before delegation, emit `delegation_ready_for_dispatch`. Also emit
+`worktree_or_dispatch_setup_failed_before_mutation` for a detached, wrong,
+dirty, stale-HEAD, or unbound setup stop, and
+`ready_handoff_waiting_for_owner` when a clean accepted handoff has no assigned
+review/intake owner or exact serialized dependency in the same management turn.
+One source event with multiple triggers requires one receipt for every trigger.
+The optimizer never reviews its own observer route: Integration performs the
+policy's non-recursive frontier bootstrap checks before dispatch.

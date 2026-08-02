@@ -220,6 +220,20 @@ duplicate full-gate requests. Each unique event receives at most one compact
 Luna mechanical/medium review; the observer does not poll tasks, spawn reviews,
 or run product/full/DCC/real-app gates.
 
+Before mutation authority is sent, a cheap `delegation_ready_for_dispatch`
+review proves the lowest legal model, frozen judgment boundary, exact claim and
+paths, distinct focused/full-gate ownership, independent review, and useful
+parallelism. Freeze branch/HEAD first; authority reading may overlap the review,
+but synchronization and mutation may not. Ordinary lifecycle events are batched through the canonical optimizer
+task, at most eight keys and 32 KiB compact context per Luna-medium turn, while
+retaining one durable receipt per event key. Setup failures before mutation and
+ready handoffs waiting without an owner are explicit exception triggers.
+Integration owns the append-only event ledger and dispositions actionable
+reviews before advancing the related lifecycle.
+Optimizer routes do not recursively review themselves; Integration bootstraps
+them through full schema-2 validation, exact Git/claim/HEAD/path binding, one
+independent static review, and proof of zero worker mutation.
+
 Default surfaces are its own skill, `docs/production/evidence/PLAY-089/`, and
 task-owned optimizer tests. `AGENTS.md`, this operating system, shared skills,
 claims, backlog, schemas, validators used by other lanes, and thread authority
@@ -426,6 +440,9 @@ candidate, QA, and integration boundaries without periodic polling. It remains
 idle between those events unless Integration assigns a specific improvement.
 Each audit must end in `NO_CHANGE`, one bounded action/proposal, or one frontier
 escalation. It must not create work merely to justify its existence.
+Ordinary events may share one bounded Luna-medium turn, but never one event key
+or receipt. Immediate identity, setup, delegation, false-green, second-repair,
+and final-QA boundaries close before mutation.
 
 ### Integration wave
 

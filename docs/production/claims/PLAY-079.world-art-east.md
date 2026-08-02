@@ -1,6 +1,6 @@
 # PLAY-079 Claim
 
-- **Claim revision:** 11
+- **Claim revision:** 12
 - **Title:** Close the Industrial L4 East execution boundary in parallel
 - **Lane:** World Art East cell
 - **Branch:** `codex/citysim-world-art-east`
@@ -145,3 +145,19 @@ that live checkout exactly. Add stale/mismatched/omitted HEAD, branch, claim,
 profile, and route adversaries. Return one zero-DCC repair commit. No Blender
 child, output root, render, pixel, normalization, admission, activation,
 shipping, push, integration, or self-acceptance is authorized.
+
+## Revision-12 remove self-referential candidate identity
+
+Consume the Integration-owned
+`INDUSTRIAL-L04-EAST-DYNAMIC-LIVE-IDENTITY-RETURN-REPAIR-V1.md`. Preserve
+candidate `e9f3d89080317b0183ad3d644ac4463bfb8c148a`, its accepted portal
+materials, and all historical evidence. This is a frontier repair after two
+unsuccessful Luna attempts. Within the existing East-exclusive roots only,
+separate provenance `observedHead` from executable authorization: resolve the
+actual branch/HEAD dynamically and compare them only to external
+Integration-issued schedule/grant/session/profile documents created after the
+candidate exists. No task-owned immutable file or positive fixture may require
+its own unknowable future commit SHA. Add exact-candidate, stale-parent,
+missing, mismatch and forged-authority adversaries. Return one zero-DCC
+reference candidate. No Blender child, output, pixel, normalization, admission,
+activation, shipping, push, integration, or self-acceptance is authorized.

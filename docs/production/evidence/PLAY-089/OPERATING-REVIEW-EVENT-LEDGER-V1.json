@@ -1,0 +1,61 @@
+{
+  "schema": 1,
+  "receipts": [
+    {
+      "eventKey": {"authorityCommit":"c524e4ea6d517deeccfb06c670551bffe3e011fc","taskId":"PLAY-089","routeId":"quality-v2:play-089-industrial-l04-live-trigger-batch-v1","trigger":"second_unsuccessful_repair","candidateOrResultCommit":"e9f3d89080317b0183ad3d644ac4463bfb8c148a"},
+      "receiptPath": "docs/production/evidence/PLAY-089/industrial-l04-live-trigger-batch-v1/01-east-second-repair.json",
+      "receiptSha256": "cda9041f732a8aee1cd23bca7314bdbd7187506dcb870a475428a4c3c5b03563",
+      "decision": "ESCALATE",
+      "disposition": {"status":"applied","authorityCommit":"2e38c84c92c63f74d8511c80a0838e8def628fc3","reason":"Integration accepted mandatory frontier escalation and prepared an East-only repair authority packet."}
+    },
+    {
+      "eventKey": {"authorityCommit":"c524e4ea6d517deeccfb06c670551bffe3e011fc","taskId":"PLAY-089","routeId":"quality-v2:play-089-industrial-l04-live-trigger-batch-v1","trigger":"second_unsuccessful_repair","candidateOrResultCommit":"5bb7c4d7b51ebb96fbddb674499f3c90e9e0522f"},
+      "receiptPath": "docs/production/evidence/PLAY-089/industrial-l04-live-trigger-batch-v1/02-west-second-repair.json",
+      "receiptSha256": "c843d2cc535b1d5009018d189b4d558aca4a9a8970c9161922336830ad09a330",
+      "decision": "ESCALATE",
+      "disposition": {"status":"applied","authorityCommit":"2e38c84c92c63f74d8511c80a0838e8def628fc3","reason":"Integration accepted mandatory frontier escalation and prepared a West-only repair authority packet."}
+    },
+    {
+      "eventKey": {"authorityCommit":"c524e4ea6d517deeccfb06c670551bffe3e011fc","taskId":"PLAY-089","routeId":"quality-v2:play-089-industrial-l04-live-trigger-batch-v1","trigger":"independent_return_after_focused_pass","candidateOrResultCommit":"421c6d98a6457ead2332a3b16527abdd6f96dcc9"},
+      "receiptPath": "docs/production/evidence/PLAY-089/industrial-l04-live-trigger-batch-v1/03-north-independent-return.json",
+      "receiptSha256": "85b22d517375d4ec6dc1d757b2d507b57629145d1c67148a3bc9742b0a0ec5a3",
+      "decision": "RETURN",
+      "disposition": {"status":"applied","authorityCommit":"2e38c84c92c63f74d8511c80a0838e8def628fc3","reason":"Integration independently narrowed the North return to durable valid-prefix preservation before any DCC launch."}
+    },
+    {
+      "eventKey": {"authorityCommit":"c524e4ea6d517deeccfb06c670551bffe3e011fc","taskId":"PLAY-089","routeId":"quality-v2:play-089-industrial-l04-live-trigger-batch-v1","trigger":"independent_return_after_focused_pass","candidateOrResultCommit":"5bb7c4d7b51ebb96fbddb674499f3c90e9e0522f"},
+      "receiptPath": "docs/production/evidence/PLAY-089/industrial-l04-live-trigger-batch-v1/04-west-independent-return.json",
+      "receiptSha256": "5f069d4d7d8456ce0c7bed46086c8363e7b3feff6c7337129076a0a6c94a00a2",
+      "decision": "RETURN",
+      "disposition": {"status":"applied","authorityCommit":"2e38c84c92c63f74d8511c80a0838e8def628fc3","reason":"Integration independently narrowed West to genuine cross-document adversaries and a missing launch-grant authority check."}
+    },
+    {
+      "eventKey": {"authorityCommit":"c524e4ea6d517deeccfb06c670551bffe3e011fc","taskId":"PLAY-089","routeId":"quality-v2:play-089-industrial-l04-live-trigger-batch-v1","trigger":"frontier_route_assigned","candidateOrResultCommit":"5157b3a1027e5f70e0f8457e0c1ca925ab097d73"},
+      "receiptPath": "docs/production/evidence/PLAY-089/industrial-l04-live-trigger-batch-v1/05-north-frontier-route.json",
+      "receiptSha256": "b03c490036fef98cf43195a9af7f13ed7cfab13840a64e7cbfdad4a285e04c25",
+      "decision": "NO_CHANGE",
+      "disposition": {"status":"auto_closed","authorityCommit":"2e38c84c92c63f74d8511c80a0838e8def628fc3","reason":"Frontier classification remains required for the unresolved executable boundary; deterministic evidence work stays separately bounded."}
+    },
+    {
+      "eventKey": {"authorityCommit":"c524e4ea6d517deeccfb06c670551bffe3e011fc","taskId":"PLAY-089","routeId":"quality-v2:play-089-industrial-l04-live-trigger-batch-v1","trigger":"task_completed_or_stopped","candidateOrResultCommit":"421c6d98a6457ead2332a3b16527abdd6f96dcc9"},
+      "receiptPath": "docs/production/evidence/PLAY-089/industrial-l04-live-trigger-batch-v1/06-north-terminal.json",
+      "receiptSha256": "3ad010ff7b934cf4900567bcd637aedd91c079e2601128f9ff9eee8ee018f8a7",
+      "decision": "RETURN",
+      "disposition": {"status":"applied","authorityCommit":"2e38c84c92c63f74d8511c80a0838e8def628fc3","reason":"North is refilled only with the exact valid-prefix repair dependency and no DCC authority."}
+    },
+    {
+      "eventKey": {"authorityCommit":"c524e4ea6d517deeccfb06c670551bffe3e011fc","taskId":"PLAY-089","routeId":"quality-v2:play-089-industrial-l04-live-trigger-batch-v1","trigger":"task_completed_or_stopped","candidateOrResultCommit":"5bb7c4d7b51ebb96fbddb674499f3c90e9e0522f"},
+      "receiptPath": "docs/production/evidence/PLAY-089/industrial-l04-live-trigger-batch-v1/07-west-terminal.json",
+      "receiptSha256": "8d6dab4dd086d45235b05b2b06fa0f3f626371f879b920e0f8133fcc1c711826",
+      "decision": "RETURN",
+      "disposition": {"status":"applied","authorityCommit":"2e38c84c92c63f74d8511c80a0838e8def628fc3","reason":"West is refilled only with the exact semantic-closure repair dependency and no DCC authority."}
+    },
+    {
+      "eventKey": {"authorityCommit":"c524e4ea6d517deeccfb06c670551bffe3e011fc","taskId":"PLAY-089","routeId":"quality-v2:play-089-industrial-l04-live-trigger-batch-v1","trigger":"useful_concurrency_below_floor","candidateOrResultCommit":"c524e4ea6d517deeccfb06c670551bffe3e011fc"},
+      "receiptPath": "docs/production/evidence/PLAY-089/industrial-l04-live-trigger-batch-v1/08-concurrency-refill.json",
+      "receiptSha256": "43a2d2ded7c559a83aa99b0e3500625b8bf5ce291b6b313bfb53c3b4f045eaad",
+      "decision": "REFILL",
+      "disposition": {"status":"applied","authorityCommit":"2e38c84c92c63f74d8511c80a0838e8def628fc3","reason":"Three disjoint frontier-bounded art repairs are prepared for same-turn predelegation review and dispatch."}
+    }
+  ]
+}

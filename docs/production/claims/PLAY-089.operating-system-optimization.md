@@ -3,7 +3,7 @@
 - **Title:** Operate a low-overhead CitySim intelligence optimization loop
 - **Lane:** Operating-system optimization
 - **Branch:** `codex/citysim-os-optimization`
-- **Worktree:** `/Users/James/.codex/worktrees/c92d/city-sim`
+- **Worktree:** `/Users/James/.codex/worktrees/dc21/city-sim`
 - **Base authority:** The published Integration commit containing this claim
 - **Default owned surfaces:** `.agents/skills/optimize-citysim-operating-system/`,
   `docs/production/evidence/PLAY-089/`, and
@@ -19,17 +19,19 @@
 - **Status:** Worktree bound and ready for the first Integration-published
   observation route; no mutation before exact route acknowledgement
 
-The lane observes execution once per unique event key under the schema-3
+The lane observes execution once per unique event key under the schema-4
 trigger policy. In addition to dispatch/return/candidate/integration boundaries,
-it reviews frontier worker-route assignments, terminal tasks, useful concurrency
-falling below the governed floor, repeated unchanged context loads, failed
-delegation acknowledgements, and duplicate full-gate requests. It measures
+it reviews pre-delegation readiness, frontier worker-route assignments, setup
+failures, terminal tasks, ownerless ready handoffs, useful concurrency falling
+below the governed floor, repeated unchanged context loads, failed delegation
+acknowledgements, and duplicate full-gate requests. It measures
 context bytes, model/effort mix, elapsed and validation time, duplicate full
 gates, worker versus Integration rework, idle gaps, accepted results, escalation
 reasons, and accepted outcomes per frontier turn when exposed.
 
 Default execution is one compact, non-polling
-`LUNA_MECHANICAL / gpt-5.6-luna / medium` turn per event key. Frozen-path
+`LUNA_MECHANICAL / gpt-5.6-luna / medium` turn covering at most eight queued
+event keys, with one receipt per key and the schema-4 context caps. Frozen-path
 implementation uses `LUNA_IMPLEMENTATION / gpt-5.6-luna / high`. Only
 Integration may authorize frontier judgment, shared authority, final QA,
 integration, or push. A clean `NO_CHANGE` receipt is preferred over speculative

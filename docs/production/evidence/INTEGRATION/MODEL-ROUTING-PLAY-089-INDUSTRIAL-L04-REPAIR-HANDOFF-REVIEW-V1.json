@@ -3,7 +3,7 @@
   "authorityCommit": "f5562c1bd3b38a1d002a64e5930cd82370a3fe81",
   "assignments": [
     {
-      "modelRouteSha256": "df62ef8bfbdcc46e502ce4202ca52a7a2e3abd9a6eb35b4d85e9eb16b9221e30",
+      "modelRouteSha256": "a1ec347360b75612113813d4420df3a967e2ec5be74ddbb862c0822e4c708ee5",
       "modelRoute": {
         "schema": 2,
         "routeId": "quality-v2:play-089-industrial-l04-repair-handoff-review-v1",
@@ -23,7 +23,7 @@
           "immutableInputs": [
             {
               "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-REPAIR-HANDOFF-REVIEW-V1.json",
-              "sha256": "6e7c7a9392ecb0be5b02a6192dd92f4e7c168f7d201eb651782ff735609a71b4"
+              "sha256": "c5186bc2a477a2badb4c3889d56aea75ec4b87c574d424af242625f6014fd1bc"
             },
             {
               "path": ".agents/skills/optimize-citysim-operating-system/references/triggered-operating-review-policy.json",
@@ -51,13 +51,13 @@
           ],
           "allowed": [
             "docs/production/evidence/PLAY-089/industrial-l04-repair-handoff-review-v1/BATCH-MANIFEST.json",
-            "docs/production/evidence/PLAY-089/industrial-l04-repair-handoff-review-v1/01-north-handoff.json",
-            "docs/production/evidence/PLAY-089/industrial-l04-repair-handoff-review-v1/02-north-terminal.json",
-            "docs/production/evidence/PLAY-089/industrial-l04-repair-handoff-review-v1/03-east-handoff.json",
-            "docs/production/evidence/PLAY-089/industrial-l04-repair-handoff-review-v1/04-east-terminal.json",
-            "docs/production/evidence/PLAY-089/industrial-l04-repair-handoff-review-v1/05-west-handoff.json",
-            "docs/production/evidence/PLAY-089/industrial-l04-repair-handoff-review-v1/06-west-terminal.json",
-            "docs/production/evidence/PLAY-089/industrial-l04-repair-handoff-review-v1/07-setup-failure.json",
+            "docs/production/evidence/PLAY-089/industrial-l04-repair-handoff-review-v1/01-setup-failure.json",
+            "docs/production/evidence/PLAY-089/industrial-l04-repair-handoff-review-v1/02-north-handoff.json",
+            "docs/production/evidence/PLAY-089/industrial-l04-repair-handoff-review-v1/03-north-terminal.json",
+            "docs/production/evidence/PLAY-089/industrial-l04-repair-handoff-review-v1/04-east-handoff.json",
+            "docs/production/evidence/PLAY-089/industrial-l04-repair-handoff-review-v1/05-east-terminal.json",
+            "docs/production/evidence/PLAY-089/industrial-l04-repair-handoff-review-v1/06-west-handoff.json",
+            "docs/production/evidence/PLAY-089/industrial-l04-repair-handoff-review-v1/07-west-terminal.json",
             "docs/production/evidence/PLAY-089/industrial-l04-repair-handoff-review-v1/08-concurrency-refill.json"
           ],
           "forbidden": [
@@ -118,13 +118,13 @@
         "expectedResult": {
           "evidencePaths": [
             "docs/production/evidence/PLAY-089/industrial-l04-repair-handoff-review-v1/BATCH-MANIFEST.json",
-            "docs/production/evidence/PLAY-089/industrial-l04-repair-handoff-review-v1/01-north-handoff.json",
-            "docs/production/evidence/PLAY-089/industrial-l04-repair-handoff-review-v1/02-north-terminal.json",
-            "docs/production/evidence/PLAY-089/industrial-l04-repair-handoff-review-v1/03-east-handoff.json",
-            "docs/production/evidence/PLAY-089/industrial-l04-repair-handoff-review-v1/04-east-terminal.json",
-            "docs/production/evidence/PLAY-089/industrial-l04-repair-handoff-review-v1/05-west-handoff.json",
-            "docs/production/evidence/PLAY-089/industrial-l04-repair-handoff-review-v1/06-west-terminal.json",
-            "docs/production/evidence/PLAY-089/industrial-l04-repair-handoff-review-v1/07-setup-failure.json",
+            "docs/production/evidence/PLAY-089/industrial-l04-repair-handoff-review-v1/01-setup-failure.json",
+            "docs/production/evidence/PLAY-089/industrial-l04-repair-handoff-review-v1/02-north-handoff.json",
+            "docs/production/evidence/PLAY-089/industrial-l04-repair-handoff-review-v1/03-north-terminal.json",
+            "docs/production/evidence/PLAY-089/industrial-l04-repair-handoff-review-v1/04-east-handoff.json",
+            "docs/production/evidence/PLAY-089/industrial-l04-repair-handoff-review-v1/05-east-terminal.json",
+            "docs/production/evidence/PLAY-089/industrial-l04-repair-handoff-review-v1/06-west-handoff.json",
+            "docs/production/evidence/PLAY-089/industrial-l04-repair-handoff-review-v1/07-west-terminal.json",
             "docs/production/evidence/PLAY-089/industrial-l04-repair-handoff-review-v1/08-concurrency-refill.json"
           ],
           "commitRequired": true,
@@ -162,7 +162,7 @@
             },
             {
               "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-REPAIR-HANDOFF-REVIEW-V1.json",
-              "sha256": "6e7c7a9392ecb0be5b02a6192dd92f4e7c168f7d201eb651782ff735609a71b4"
+              "sha256": "c5186bc2a477a2badb4c3889d56aea75ec4b87c574d424af242625f6014fd1bc"
             }
           ]
         }

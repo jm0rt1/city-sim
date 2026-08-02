@@ -219,6 +219,20 @@ class ModelRouteTests(unittest.TestCase):
         )
         self.assert_invalid(route, "not an exact command of the gate")
 
+    def test_behavioral_command_must_be_shell_parseable(self) -> None:
+        route = self.route()
+        command = "python3 smoke.py --path '/tmp/James's Files/output'"
+        route["proofPolicy"].update(
+            {
+                "deliverableClaims": ["executable_behavior"],
+                "focusedProofLevel": "contained_smoke",
+                "fullProofLevel": "contained_smoke",
+                "behavioralCommands": [command],
+            }
+        )
+        route["validation"]["focusedCommands"].append(command)
+        self.assert_invalid(route, "not shell-parseable")
+
     def test_static_candidate_can_defer_real_smoke_to_full_gate(self) -> None:
         route = self.route("FRONTIER_AUTHORITY", "authority")
         command = "blender --background --python contained_smoke.py"

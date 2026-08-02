@@ -7,6 +7,7 @@ import argparse
 import hashlib
 import json
 import math
+import shlex
 import subprocess
 import sys
 from pathlib import Path, PurePosixPath
@@ -278,6 +279,14 @@ def validate_route(route: Any, repo: Path) -> list[str]:
         errors.append("static-only proof cannot declare behavioral commands")
     if strongest_behavioral_level >= PROOF_LEVEL_RANK["contained_smoke"] and not behavioral_commands:
         errors.append("behavioral proof level requires at least one behavioral command")
+    for command in behavioral_commands:
+        try:
+            parsed_command = shlex.split(command, posix=True)
+        except ValueError as exc:
+            errors.append(f"behavioral command is not shell-parseable: {exc}")
+            continue
+        if not parsed_command:
+            errors.append("behavioral command must parse to a non-empty argv")
     substitutions = proof.get("prohibitedSubstitutions")
     if (
         not isinstance(substitutions, list)

@@ -1,0 +1,84 @@
+{
+  "schema": 1,
+  "leaseId": "play-075-r4-f-fc996a28-exclusive-final-v1",
+  "issuedAt": "2026-08-02T23:31:54Z",
+  "state": "issued",
+  "attemptCount": 1,
+  "maximumStartCount": 1,
+  "candidateReceipt": {
+    "path": "docs/production/evidence/INTEGRATION/PLAY-073-R4-F-FC996A28-CANDIDATE-RECEIPT-V1.json",
+    "sha256": "9a222325146f843884aa0a3a4fb3935050da033c871cfa5c63d5669ce0105522"
+  },
+  "candidate": {
+    "commit": "fc996a287f5d0d16f58c13bc6ee2abadf4d64972",
+    "tree": "f4c1814b848e706716db2f01d7b29cf13ba84a13",
+    "bundleIdentifier": "com.jfmortensen.citysim.codex-play073-r4f-qa-candidate.w57ce2a3c6723",
+    "preferenceDomain": "com.jfmortensen.citysim.codex-play073-r4f-qa-candidate.w57ce2a3c6723",
+    "dataRoot": "/private/tmp/citysim-play073-r4f-qa-fc996a28.RSi4h1/city-sim/dist/test-data/codex-play073-r4f-qa-candidate-w57ce2a3c6723",
+    "bundlePath": "/private/tmp/citysim-play073-r4f-qa-fc996a28.RSi4h1/city-sim/dist/CitySim-codex-play073-r4f-qa-candidate-w57ce2a3c6723.app",
+    "executablePath": "/private/tmp/citysim-play073-r4f-qa-fc996a28.RSi4h1/city-sim/dist/CitySim-codex-play073-r4f-qa-candidate-w57ce2a3c6723.app/Contents/MacOS/CitySimNative-w57ce2a3c6723",
+    "resourceBundlePath": "/private/tmp/citysim-play073-r4f-qa-fc996a28.RSi4h1/city-sim/dist/CitySim-codex-play073-r4f-qa-candidate-w57ce2a3c6723.app/CitySimNative_CitySimNative.bundle",
+    "manifestPath": "/private/tmp/citysim-play073-r4f-qa-fc996a28.RSi4h1/city-sim/dist/manifests/codex-play073-r4f-qa-candidate-w57ce2a3c6723.manifest",
+    "manifestSha256": "c87da02a4e2d6d2af111fa3785e78f6640299aa1cdf68819e4bf7d3dd5dc3d71",
+    "executableSha256": "7a2d81d20537363e4ef39fdb987f23a84c9e35c90d0b58fff80f27c99a6bdaa6",
+    "resourceInventoryFileCount": 79,
+    "resourceInventorySha256": "824db799e1a6a1d4070e0c97a186121b28592603b6dacd6a23f7467e98863764"
+  },
+  "qaAssignment": {
+    "threadId": "019fc0b0-74cb-70e1-8923-8c9d9600484d",
+    "featureAuthorThreadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+    "branch": "codex/citysim-playtest-quality",
+    "worktree": "/Users/James/.codex/worktrees/71b0/city-sim",
+    "expectedHead": "256bf670ff64abda1057f65ba4c432b3ee037359",
+    "expectedTree": "1e6d457038d46bd6d0b1321b0610fecd2a282300",
+    "model": "gpt-5.6-sol",
+    "effort": "high"
+  },
+  "journey": {
+    "mode": "r4_f_aggregate_world_hud_regular_compact_maximized_gate",
+    "rubric": {
+      "path": "docs/production/evidence/INTEGRATION/PLAY-073-R4-A-AUTHORITY.md",
+      "sha256": "cbbc75c1f8672e980f03413a8b2810e7f34c7108365811bfba20313c65ffd3a3"
+    },
+    "comparisonBaseline": "e4f038f942f8c011a0b38b71353e40b4ac5054d4",
+    "requiredDisposition": "APPROVE_or_RETURN",
+    "layouts": [
+      "regular",
+      "900x600_compact",
+      "maximized_regular",
+      "maximized_focus_city"
+    ],
+    "requiredChecks": [
+      "developed envelope occupies at least 60 percent of safe map width in every governed layout",
+      "plain terrain does not exceed 25 percent of visible safe map area",
+      "district road curb sidewalk and parcel fabric reads continuously without seams",
+      "frontages and sprites remain grounded with no overlap floating clipping fallback or mixed fidelity",
+      "adjacent residences do not collapse into an obvious repeated stamp",
+      "HUD command deck Focus City notices and decision priority remain legible and keyboard operable",
+      "pointer placement keyboard map focus command guide Escape and compact Focus City remain functional"
+    ],
+    "familyActivation": null,
+    "requiresAtomicFourDirectionArt": false
+  },
+  "output": {
+    "exclusiveRoot": "docs/production/evidence/PLAY-075/r4-f-fc996a28-final-v1",
+    "mustBeAbsentBeforeStart": true,
+    "requiredDisposition": [
+      "APPROVE",
+      "RETURN"
+    ],
+    "commitRequired": true,
+    "pushForbidden": true
+  },
+  "preconditions": {
+    "candidateProcessCount": 0,
+    "candidateProcessStopped": true,
+    "rebuildForbidden": true,
+    "candidateSubstitutionForbidden": true,
+    "featureAuthorCoachingForbidden": true,
+    "duplicateJourneyForbidden": true,
+    "productMutationForbidden": true,
+    "fullSwiftSuiteRerunForbiddenUnlessCandidateEvidenceIsStaleOrJourneyFindsAReproductionNeed": true
+  },
+  "stopCondition": "Consume this lease once, launch only the already-staged isolated executable, preserve one immutable evidence commit, and stop after APPROVE or RETURN. Stop before launch on any identity drift, pre-existing output, matching process, second start, author coaching, or scope mismatch."
+}

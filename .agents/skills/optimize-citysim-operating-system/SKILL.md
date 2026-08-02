@@ -53,10 +53,32 @@ At each unique event in
    implementation commit. Never open speculative cleanup.
 
 The default review is one `LUNA_MECHANICAL / gpt-5.6-luna / medium` turn using
-hash-bound compact context. Do not run product builds, full suites, DCC, staged
-apps, or real-app QA merely to observe operations. A trigger is deduplicated by
-authority, task, route, event type, and candidate/result commit. Unknown timing,
-token, or pricing values stay `null`.
+hash-bound compact context capped by the policy. Do not poll tasks, fan reviews
+out into more reviews, or run product builds, full suites, DCC, staged apps, or
+real-app QA merely to observe operations. A trigger is deduplicated by authority,
+task, route, event type, and candidate/result commit. Unknown timing, token, or
+pricing values stay `null`.
+
+Review the management system, not just worker output. In addition to the normal
+dispatch/return/acceptance boundaries, emit one compact receipt when:
+
+- a frontier route is assigned, proving why authority or judgment could not be
+  frozen into a Luna packet;
+- a task completes or stops, proving its durable result or exact blocker and
+  naming the next dependency/refill without rerunning its gates;
+- useful concurrency falls below the governed floor, excluding protected active
+  operations before demanding a refill;
+- unchanged authority/claim/skill hashes are loaded in full again instead of a
+  compact continuation packet;
+- a delegation acknowledgement fails to bind the exact receipt, route, claim,
+  and allowed paths; or
+- a full gate is requested again, proving whether the exact candidate changed or
+  prior evidence actually became stale.
+
+Validate every durable review receipt with
+`scripts/validate_operating_review_receipt_v1.py`. The observer reports the
+defect and one bounded next action; only Integration changes routes, refills a
+lane, escalates judgment, or mutates shared authority.
 
 For an idle-lane or no-progress trigger, first distinguish a protected active
 operation (exact-candidate QA, DCC render, frozen proof, coherent commit, or
@@ -81,3 +103,7 @@ limitations, and the next event boundary.
 Validate the shared trigger policy with:
 
 `PYTHONDONTWRITEBYTECODE=1 python3 .agents/skills/optimize-citysim-operating-system/scripts/test_validate_triggered_operating_review_policy_v1.py`
+
+Validate durable review receipts with:
+
+`PYTHONDONTWRITEBYTECODE=1 python3 .agents/skills/optimize-citysim-operating-system/scripts/test_validate_operating_review_receipt_v1.py`

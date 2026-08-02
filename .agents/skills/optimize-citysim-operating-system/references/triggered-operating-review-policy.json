@@ -1,5 +1,5 @@
 {
-  "schema": 2,
+  "schema": 3,
   "defaultRoute": {
     "classification": "LUNA_MECHANICAL",
     "model": "gpt-5.6-luna",
@@ -16,6 +16,10 @@
     "maxReviewsPerEventKey": 1,
     "maxTurns": 1,
     "contextMode": "compact_hash_bound",
+    "maxCompactContextBytes": 32768,
+    "threadPollingAllowed": false,
+    "reviewCanSpawnReviews": false,
+    "receiptMode": "machine_readable_exception_first",
     "missingMetricValue": null,
     "productBuildAllowed": false,
     "fullGateAllowed": false,
@@ -77,6 +81,91 @@
       "long_running_focused_gate"
     ]
   },
+  "eventRequirements": {
+    "frontier_route_assigned": {
+      "requiredEvidence": [
+        "classification",
+        "frontierRationale",
+        "authorityBoundary",
+        "lunaDecompositionChecked"
+      ],
+      "allowedDecisions": [
+        "NO_CHANGE",
+        "PROPOSE",
+        "ESCALATE"
+      ]
+    },
+    "task_completed_or_stopped": {
+      "requiredEvidence": [
+        "terminalState",
+        "resultOrStopReason",
+        "commitOrBlockedReason",
+        "evidenceOrBlockedReason",
+        "nextDependencyOrRefill"
+      ],
+      "allowedDecisions": [
+        "NO_CHANGE",
+        "REFILL",
+        "RETURN",
+        "ESCALATE"
+      ]
+    },
+    "useful_concurrency_below_floor": {
+      "requiredEvidence": [
+        "usefulActiveCount",
+        "minimumUsefulActiveWorkstreams",
+        "protectedOperationsExcluded",
+        "readyDisjointWork",
+        "refillOrSerializedDependency"
+      ],
+      "allowedDecisions": [
+        "NO_CHANGE",
+        "REFILL",
+        "ESCALATE"
+      ]
+    },
+    "repeated_context_load_detected": {
+      "requiredEvidence": [
+        "threadId",
+        "unchangedAuthorityHash",
+        "unchangedClaimHash",
+        "unchangedSkillHashes",
+        "repeatedFullReadBytes",
+        "compactPacketAvailable"
+      ],
+      "allowedDecisions": [
+        "NO_CHANGE",
+        "PROPOSE"
+      ]
+    },
+    "delegation_acknowledgement_failed": {
+      "requiredEvidence": [
+        "dispatchReceiptHash",
+        "modelRouteHash",
+        "claimHash",
+        "allowedPathBinding",
+        "acknowledgementDefect"
+      ],
+      "allowedDecisions": [
+        "RETURN",
+        "ESCALATE"
+      ]
+    },
+    "duplicate_full_gate_requested": {
+      "requiredEvidence": [
+        "candidateIdentity",
+        "priorGateReceiptHash",
+        "priorGateCandidateIdentity",
+        "evidenceStale",
+        "identityChanged"
+      ],
+      "allowedDecisions": [
+        "NO_CHANGE",
+        "RETURN",
+        "ESCALATE"
+      ]
+    }
+  },
   "allowedDecisions": [
     "NO_CHANGE",
     "PROPOSE",
@@ -88,16 +177,21 @@
     "authority_acknowledged",
     "candidate_handoff",
     "claim_or_baseline_mismatch",
+    "delegation_acknowledgement_failed",
     "dispatch_published",
     "duplicate_full_gate_requested",
     "eligible_lane_became_idle",
     "exact_candidate_qa_started",
     "first_focused_gate_failure",
     "first_return",
+    "frontier_route_assigned",
     "independent_return_after_focused_pass",
     "integration_closed",
     "model_route_mismatch",
     "no_progress_two_snapshots",
+    "repeated_context_load_detected",
+    "task_completed_or_stopped",
+    "useful_concurrency_below_floor",
     "second_unsuccessful_repair"
   ]
 }

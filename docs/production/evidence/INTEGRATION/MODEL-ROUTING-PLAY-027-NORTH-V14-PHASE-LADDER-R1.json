@@ -1,0 +1,163 @@
+{
+  "schema": 2,
+  "authorityCommit": "b25d02a4e04d50b7ebce55c94bf13fc3c196c702",
+  "assignments": [
+    {
+      "modelRouteSha256": "7b2e92cfeae788ce653f337262d9f3a2d3d4d0d40e0f6f6c1ef88f528f0dd541",
+      "modelRoute": {
+        "schema": 2,
+        "routeId": "quality-v2:play-027-north-v14-phase-ladder-r1",
+        "taskId": "PLAY-027",
+        "packetKind": "implementation",
+        "classification": "LUNA_IMPLEMENTATION",
+        "model": "gpt-5.6-luna",
+        "effort": "high",
+        "rationale": "Frontier Integration froze a two-stage diagnostic after repeated North v14 native Blender SIGSEGVs. Luna may implement only an inert zero-DCC phase-ladder wrapper and static proof; a separate frontier-reviewed route is mandatory before any Blender child.",
+        "authority": {
+          "authorityCommit": "b25d02a4e04d50b7ebce55c94bf13fc3c196c702",
+          "baseCommit": "b25d02a4e04d50b7ebce55c94bf13fc3c196c702",
+          "claim": {
+            "path": "docs/production/claims/PLAY-027.world-art.md",
+            "sha256": "3e0ea901ed02269a7cd766e64cc60c74853e9119b42f5834c45a7f8d8e83f861"
+          },
+          "immutableInputs": [
+            {
+              "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-NORTH-V14-PHASE-LADDER-DIAGNOSTIC-AUTHORITY-V1.md",
+              "sha256": "73bc3f04f8c1ca40e4112a518daae3decec12b0084f056a41d993f347f1510eb"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/process-a-execution-v01/EXECUTION-CONTRACT.json",
+              "sha256": "99e9b3f7fc8838c09791ff6fd4aee1e2571ff8bb31028aaf1aa0c8d3ac4205f1"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/process-a-execution-v01/launch_north_process_a.py",
+              "sha256": "76e30d924c6e3941d7af85794e194fdbb943786ec0346c1e60fa83d061805222"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/process-a-execution-v01/render_north_process_a_child.py",
+              "sha256": "1239a739d3063b74f9f2597a789f4d5d188df1339ad60577e6b2e6989c209fb8"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/process-a-execution-v01/process-a-output/FAILURE.json",
+              "sha256": "77f116b1180386662329b2c4f09bfa7c1abfb6d3d734f57770e15e22b1f408fb"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v14/native-blender-startup-probe-v1/RECEIPT.json",
+              "sha256": "c77f2ac3b1e9ac8a94ba0320824a1d64f6a6fcd6a5c5391435bbd72c16f59bb5"
+            }
+          ]
+        },
+        "assignment": {
+          "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+          "branch": "codex/citysim-world-art",
+          "worktree": "/Users/James/.codex/worktrees/0648/city-sim",
+          "expectedHead": "aa985d5211669d6f7015399e64b30c1615ec8225",
+          "featureAuthorThreadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027",
+            "docs/production/evidence/PLAY-027"
+          ],
+          "allowed": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/process-a-phase-ladder-v01",
+            "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v14/process-a-phase-ladder-r1/STATIC-RECEIPT.json"
+          ],
+          "forbidden": [
+            ".agents/skills",
+            "docs/production/evidence/INTEGRATION",
+            "docs/production/claims",
+            "docs/production/decisions",
+            "Native/CitySimNative/Sources",
+            "Native/CitySimNative/Resources",
+            "Native/CitySimNative/Package.swift",
+            "script",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/process-a-execution-v01",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-079",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-080",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-081"
+          ]
+        },
+        "boundedDeliverable": "Add one inert North v14 diagnostic contract, launcher, child wrapper, and adversarial zero-DCC test under process-a-phase-ladder-v01 plus one static receipt. Import and call immutable v14 child helpers; do not copy or edit them. Freeze nine ordered flushed phases from python_entered through complete. Statically define a future 8x8 CPU/Cycles micro-render but make execution unreachable without a separate Stage-B authority. Prove exact hashes, actual branch/HEAD, one child-start site, exclusive-root containment, output-leaf allowlisting, marker order, and zero DCC/process/pixel effects. Commit one coherent PLAY-027 checkpoint. No Blender launch, output root, pixel, retry, source render, Process B/C, sibling, renderer, shipping, production selection, push, or self-acceptance.",
+        "proofPolicy": {
+          "architectureState": "frozen_reference",
+          "referenceImplementation": {
+            "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-NORTH-V14-PHASE-LADDER-DIAGNOSTIC-AUTHORITY-V1.md",
+            "sha256": "73bc3f04f8c1ca40e4112a518daae3decec12b0084f056a41d993f347f1510eb"
+          },
+          "deliverableClaims": ["static_structure"],
+          "focusedProofLevel": "static_only",
+          "fullProofLevel": "static_only",
+          "behavioralCommands": [],
+          "prohibitedSubstitutions": [
+            "ast_shape_for_runtime_success",
+            "manifest_or_prose_for_rendered_pixels",
+            "source_token_presence_for_execution",
+            "unit_tests_for_visual_acceptance",
+            "worker_self_report_for_independent_acceptance"
+          ]
+        },
+        "validation": {
+          "focusedGateOwner": {
+            "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+            "role": "north_phase_ladder_zero_dcc_implementation"
+          },
+          "focusedCommands": [
+            "PYTHONDONTWRITEBYTECODE=1 python3 Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/process-a-execution-v01/test_process_a_prelaunch.py",
+            "PYTHONDONTWRITEBYTECODE=1 python3 Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/process-a-phase-ladder-v01/test_phase_ladder_prelaunch.py",
+            "python3 -m json.tool Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/process-a-phase-ladder-v01/DIAGNOSTIC-CONTRACT.json",
+            "python3 -m json.tool docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v14/process-a-phase-ladder-r1/STATIC-RECEIPT.json",
+            "git diff --check aa985d5211669d6f7015399e64b30c1615ec8225..HEAD"
+          ],
+          "fullGateOwner": {
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "role": "integration_independent_phase_ladder_static_review",
+            "model": "gpt-5.6-sol",
+            "effort": "high"
+          },
+          "fullCommands": [
+            "Integration independently reviews the exact diff, reruns the static suite, verifies zero DCC/output and immutable helpers, then APPROVES or RETURNS Stage A. Approval does not authorize launch."
+          ]
+        },
+        "expectedResult": {
+          "evidencePaths": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/process-a-phase-ladder-v01",
+            "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v14/process-a-phase-ladder-r1/STATIC-RECEIPT.json"
+          ],
+          "commitRequired": true,
+          "commitMessagePattern": "PLAY-027:"
+        },
+        "escalationTriggers": [
+          "baseline_or_candidate_identity_mismatch",
+          "cross_lane_semantic_conflict",
+          "failure_outside_focused_scope",
+          "path_outside_claim",
+          "save_or_migration_uncertainty",
+          "shared_contract_or_schema_decision",
+          "subjective_acceptance_required",
+          "two_unsuccessful_repair_attempts",
+          "unresolved_product_visual_or_interaction_judgment"
+        ],
+        "stopCondition": "Stop after one zero-DCC Stage-A implementation, focused gates, static receipt, and clean commit, or immediately on identity/hash/path mismatch, need to edit frozen bytes, any Blender/DCC/output effect, shared/product/visual judgment, or second failed repair. Do not launch, accept, push, integrate, or pin.",
+        "independentReviewer": {
+          "required": true,
+          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+          "model": "gpt-5.6-sol",
+          "effort": "high"
+        },
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {"path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md", "sha256": "241903901a3927fe22de4de2d318155fa5855cfcb66776813160639a0d4ffa0d"},
+            {"path": ".agents/skills/produce-citysim-world-art/SKILL.md", "sha256": "10ae5e31a8a31daa09c269a7be5092de4c044547db8ee0180ed85f3cb531d7ee"},
+            {"path": ".agents/skills/produce-citysim-world-art/references/direction-cell-parallel-execution.md", "sha256": "3cad284bc471c316c3a3ddffd88d580b7230c09e1b4f29a73c746b341995bdc8"}
+          ]
+        }
+      }
+    }
+  ]
+}

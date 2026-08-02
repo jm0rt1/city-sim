@@ -1,6 +1,6 @@
 # PLAY-027 Claim
 
-- **Claim revision:** 10
+- **Claim revision:** 12
 - **Title:** Author the four-direction production building catalog
 - **Lane:** World art generation cell
 - **Branch:** `codex/citysim-world-art`
@@ -184,3 +184,42 @@ review commit. This revision grants no schedule, attempt marker, live lease,
 Blender/DCC child, render, pixel, normalization, Process B/C, appearance lock,
 source admission, production selection, Renderer activation, shipping, push,
 integration, or self-acceptance.
+
+## Revision-11 isolate the North v14 Blender crash by phase
+
+Consume the Integration-owned
+`INDUSTRIAL-L04-NORTH-V14-PHASE-LADDER-DIAGNOSTIC-AUTHORITY-V1.md` and exact
+failed North candidate `c792001a7f387b6ddb65092dc426531e98719553`.
+
+Stage A owns only a new `process-a-phase-ladder-v01/` implementation subtree
+and its matching task-owned static receipt. It must wrap the frozen v14 child
+helpers without changing them, emit the ordered flushed diagnostic phases,
+and prove zero Blender/DCC starts and zero output creation. Stage A grants no
+execution authority.
+
+Only after independent frontier static approval may Integration publish a
+separate Stage-B route plus exact schedule, grant, and session for one isolated
+8x8 CPU/Cycles diagnostic micro-render. That future launch must use a fresh
+exclusive output root, preserve full stdout/stderr and the last durable phase,
+and stop after its sole child on success or failure. No retry, normal source
+render, semantic pass, normalization, Process B/C, sibling mutation,
+appearance lock, source admission, Renderer activation, production selection,
+shipping, push, integration, or self-acceptance is authorized.
+
+## Revision-12 implement the gated diagnostic path, not a placeholder
+
+Consume the Integration-owned
+`INDUSTRIAL-L04-NORTH-V14-EXECUTABLE-PHASE-LADDER-RETURN-REPAIR-V1.md` and
+preserve returned candidate `0c2b3a0fca3e3b5637d2dd8c4b296235ef957202`.
+Within the existing phase-ladder source/evidence roots only, replace inert
+Stage-B placeholders with a fully implemented but externally gated diagnostic:
+live Git identity validation, exact schedule/grant/session/hash/root/cap
+closure, one dormant child start, real flushed JSONL phase emission, complete
+stdout/stderr and failure preservation, actual frozen-helper scene
+construction, and one 8x8 CPU/Cycles diagnostic render. Static tests must prove
+that no child or output is possible without a separately issued Integration
+Stage-B packet and must observe the real emitter/capture paths rather than
+metadata. Return one zero-DCC repair commit. No Blender launch, phase-output,
+retry, normal source render, semantic pass, normalization, Process B/C,
+sibling mutation, admission, shipping, push, integration, or self-acceptance
+is authorized.

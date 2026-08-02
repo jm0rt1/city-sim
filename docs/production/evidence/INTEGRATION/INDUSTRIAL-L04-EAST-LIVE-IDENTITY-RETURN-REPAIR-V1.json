@@ -1,0 +1,40 @@
+{
+  "schema": "citysim.world-art.east-live-identity-return-repair.v1",
+  "taskId": "PLAY-079",
+  "direction": "east",
+  "returnedCandidate": "46aa8c493a23fb32433190348b32a0e3c74a3726",
+  "acceptedFromCandidate": [
+    "portal frame, reveal, mullion, inset and recessed back-plane material assignment",
+    "portal-void assignment on the recessed back plane",
+    "historical evidence preservation",
+    "zero DCC, output-root, pixel and blend state"
+  ],
+  "blockingDefect": {
+    "type": "live_checkout_identity_not_verified",
+    "detail": "run_process_a.py compares document workerHead to stale contract authority.observedHead 4fdc60e8bdc6b5ae8ce1c34a8cd6f67e8cf898cc while the live candidate is 46aa8c493a23fb32433190348b32a0e3c74a3726; it does not resolve the actual Git HEAD or branch.",
+    "requiredRepair": "Resolve git rev-parse HEAD and branch --show-current from the exact worktree; require schedule, grant, session, profile, claim and route identity fields to equal the live checkout; reject stale, mismatched or omitted values."
+  },
+  "allowedRoots": [
+    "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01",
+    "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01"
+  ],
+  "requiredAdversaries": [
+    "stale_head",
+    "mismatched_head",
+    "omitted_head",
+    "wrong_branch",
+    "omitted_branch",
+    "wrong_claim",
+    "wrong_profile",
+    "wrong_route",
+    "cross_document_hash_mismatch"
+  ],
+  "forbidden": [
+    "DCC or Blender child",
+    "output root or pixels",
+    "portal material redesign",
+    "sibling, renderer, shipping or shared mutation",
+    "admission, acceptance, integration, push or pinning"
+  ],
+  "stopCondition": "One bounded zero-DCC repair attempt, focused gates twice, one new receipt, and one clean PLAY-079 commit; stop on any wider defect or second failed repair."
+}

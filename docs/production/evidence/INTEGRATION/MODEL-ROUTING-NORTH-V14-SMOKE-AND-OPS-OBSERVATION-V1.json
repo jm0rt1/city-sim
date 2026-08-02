@@ -1,0 +1,310 @@
+{
+  "schema": 2,
+  "authorityCommit": "1d7c6510fd99299c88d3f4412caa982e020c1941",
+  "assignments": [
+    {
+      "modelRouteSha256": "e9f88b33d650929407e74f775185266ba7ee047b7d58ccfe49bd344b50433277",
+      "modelRoute": {
+        "schema": 2,
+        "routeId": "quality-v2:play-027-industrial-l04-v14-north-contained-smoke-v1",
+        "taskId": "PLAY-027",
+        "packetKind": "implementation",
+        "classification": "LUNA_IMPLEMENTATION",
+        "model": "gpt-5.6-luna",
+        "effort": "high",
+        "rationale": "Frontier Integration independently admitted the exact static North candidate for one bounded real-Blender smoke. Luna can execute the frozen launcher and collect exact artifacts; Integration retains runtime interpretation, visual judgment, acceptance, and all subsequent authority.",
+        "authority": {
+          "authorityCommit": "1d7c6510fd99299c88d3f4412caa982e020c1941",
+          "baseCommit": "ea26fdac05169e0375b65d7c5dc65b4fbe00d977",
+          "claim": {
+            "path": "docs/production/claims/PLAY-027.world-art.md",
+            "sha256": "bf0b167a1d1e6f7007d609aeb657917fe9d3d0866d5a7a6e36b0e5a32faefa6f"
+          },
+          "immutableInputs": [
+            {
+              "path": "docs/production/evidence/INTEGRATION/PLAY-027-INDUSTRIAL-L04-V14-NORTH-STATIC-REFERENCE-V1.json",
+              "sha256": "dbf0f2a75fd5ad1f16c684983ddd946fce04f0d50b8e6f956b9ecf82c515843d"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/PLAY-027-NORTH-V14-CONTAINED-SMOKE-V1/SCHEDULE.json",
+              "sha256": "8fb392f24f1995633464a3c15a9c07d062db72888b0f5f504a2586c11f4173ff"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/PLAY-027-NORTH-V14-CONTAINED-SMOKE-V1/GRANT.json",
+              "sha256": "1208318695d3c931bac476621d146d064d6016e797d1a56a646da620966f081c"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/PLAY-027-NORTH-V14-CONTAINED-SMOKE-V1/SESSION.json",
+              "sha256": "0435cf83363a2408eec9842d09eb2946c2ec5d69a21ece91063ffecaf3d42d1a"
+            }
+          ]
+        },
+        "assignment": {
+          "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+          "branch": "codex/citysim-world-art",
+          "worktree": "/Users/James/.codex/worktrees/0648/city-sim",
+          "expectedHead": "bab9f13b87f934c6ccd653ab99e5add85618575d",
+          "featureAuthorThreadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027",
+            "docs/production/evidence/PLAY-027"
+          ],
+          "allowed": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/process-a-execution-v01/process-a-output"
+          ],
+          "forbidden": [
+            ".agents/skills",
+            "docs/production/evidence/INTEGRATION",
+            "docs/production/claims",
+            "docs/production/decisions",
+            "Native/CitySimNative/Sources",
+            "Native/CitySimNative/Resources",
+            "Native/CitySimNative/Package.swift",
+            "script",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-079",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-080",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-081"
+          ]
+        },
+        "boundedDeliverable": "Load the exact carrier bytes without merging. Verify the schema-2 route, exact candidate HEAD, five source hashes in the reference manifest, and three Integration-issued schedule/grant/session documents. Confirm no Blender/DCC process and no governed output root exists. Run the one exact launcher command once. Preserve either the complete eight-file output inventory or the complete failure output without retry. Validate path containment, output count, PNG decodability and dimensions, nonempty blend, runtime object/void counts, receipt identity, and source/production false flags. Commit the exact output root as one PLAY-027 contained-smoke checkpoint. Do not interpret visual quality or repair source.",
+        "proofPolicy": {
+          "architectureState": "frozen_reference",
+          "referenceImplementation": {
+            "path": "docs/production/evidence/INTEGRATION/PLAY-027-INDUSTRIAL-L04-V14-NORTH-STATIC-REFERENCE-V1.json",
+            "sha256": "dbf0f2a75fd5ad1f16c684983ddd946fce04f0d50b8e6f956b9ecf82c515843d"
+          },
+          "deliverableClaims": [
+            "executable_behavior"
+          ],
+          "focusedProofLevel": "contained_smoke",
+          "fullProofLevel": "contained_smoke",
+          "behavioralCommands": [
+            "PYTHONDONTWRITEBYTECODE=1 python3 Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/process-a-execution-v01/launch_north_process_a.py --repository-root '/Users/James/.codex/worktrees/0648/city-sim' --schedule '/Users/James/Library/Mobile Documents/com~apple~CloudDocs/James's Files/Programming/Python/city-sim/docs/production/evidence/INTEGRATION/PLAY-027-NORTH-V14-CONTAINED-SMOKE-V1/SCHEDULE.json' --grant '/Users/James/Library/Mobile Documents/com~apple~CloudDocs/James's Files/Programming/Python/city-sim/docs/production/evidence/INTEGRATION/PLAY-027-NORTH-V14-CONTAINED-SMOKE-V1/GRANT.json' --integration-session '/Users/James/Library/Mobile Documents/com~apple~CloudDocs/James's Files/Programming/Python/city-sim/docs/production/evidence/INTEGRATION/PLAY-027-NORTH-V14-CONTAINED-SMOKE-V1/SESSION.json'"
+          ],
+          "prohibitedSubstitutions": [
+            "ast_shape_for_runtime_success",
+            "manifest_or_prose_for_rendered_pixels",
+            "source_token_presence_for_execution",
+            "unit_tests_for_visual_acceptance",
+            "worker_self_report_for_independent_acceptance"
+          ]
+        },
+        "validation": {
+          "focusedGateOwner": {
+            "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+            "role": "north_contained_blender_smoke_executor"
+          },
+          "focusedCommands": [
+            "PYTHONDONTWRITEBYTECODE=1 python3 Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/process-a-execution-v01/launch_north_process_a.py --repository-root '/Users/James/.codex/worktrees/0648/city-sim' --schedule '/Users/James/Library/Mobile Documents/com~apple~CloudDocs/James's Files/Programming/Python/city-sim/docs/production/evidence/INTEGRATION/PLAY-027-NORTH-V14-CONTAINED-SMOKE-V1/SCHEDULE.json' --grant '/Users/James/Library/Mobile Documents/com~apple~CloudDocs/James's Files/Programming/Python/city-sim/docs/production/evidence/INTEGRATION/PLAY-027-NORTH-V14-CONTAINED-SMOKE-V1/GRANT.json' --integration-session '/Users/James/Library/Mobile Documents/com~apple~CloudDocs/James's Files/Programming/Python/city-sim/docs/production/evidence/INTEGRATION/PLAY-027-NORTH-V14-CONTAINED-SMOKE-V1/SESSION.json'",
+            "git diff --check bab9f13b87f934c6ccd653ab99e5add85618575d..HEAD"
+          ],
+          "fullGateOwner": {
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "role": "independent_contained_smoke_output_review",
+            "model": "gpt-5.6-sol",
+            "effort": "high"
+          },
+          "fullCommands": [
+            "Independent review of the exact committed output inventory, command/return status, Blender version, PNG dimensions and decodability, blend existence, runtime manifest closure, containment, and visual smoke image; no source or production acceptance."
+          ]
+        },
+        "expectedResult": {
+          "evidencePaths": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/process-a-execution-v01/process-a-output"
+          ],
+          "commitRequired": true,
+          "commitMessagePattern": "PLAY-027:"
+        },
+        "escalationTriggers": [
+          "baseline_or_candidate_identity_mismatch",
+          "cross_lane_semantic_conflict",
+          "failure_outside_focused_scope",
+          "path_outside_claim",
+          "save_or_migration_uncertainty",
+          "shared_contract_or_schema_decision",
+          "subjective_acceptance_required",
+          "two_unsuccessful_repair_attempts",
+          "unresolved_product_visual_or_interaction_judgment"
+        ],
+        "stopCondition": "Stop after exactly one child attempt and one clean checkpoint containing the complete success or failure output. Never retry, repair source, start Process B/C, normalize, mutate siblings/shared/renderer/shipping paths, declare visual/source/production acceptance, push, integrate, or pin.",
+        "independentReviewer": {
+          "required": true,
+          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+          "model": "gpt-5.6-sol",
+          "effort": "high"
+        },
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "ce8d4d98932afa498e1d2173f2eb0a16e16e7526a5c6aada2acae0f53e7aeb6f"
+            },
+            {
+              "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+              "sha256": "10ae5e31a8a31daa09c269a7be5092de4c044547db8ee0180ed85f3cb531d7ee"
+            },
+            {
+              "path": ".agents/skills/produce-citysim-world-art/references/direction-cell-parallel-execution.md",
+              "sha256": "3cad284bc471c316c3a3ddffd88d580b7230c09e1b4f29a73c746b341995bdc8"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "modelRouteSha256": "c4a239eec16c8be089642de8bf1c9fd22d3acb9fc4382357b1a340f1fc97a2dd",
+      "modelRoute": {
+        "schema": 2,
+        "routeId": "quality-v2:play-089-north-v14-static-handoff-trigger-observation-v1",
+        "taskId": "PLAY-089",
+        "packetKind": "mechanical",
+        "classification": "LUNA_MECHANICAL",
+        "model": "gpt-5.6-luna",
+        "effort": "medium",
+        "rationale": "The newly published candidate_handoff trigger requires one deduplicated compact observation. Luna mechanical can measure the exact dispatch-to-handoff facts and propose a refill or no-change result without product work or shared authority.",
+        "authority": {
+          "authorityCommit": "1d7c6510fd99299c88d3f4412caa982e020c1941",
+          "baseCommit": "ea26fdac05169e0375b65d7c5dc65b4fbe00d977",
+          "claim": {
+            "path": "docs/production/claims/PLAY-089.operating-system-optimization.md",
+            "sha256": "6276c96d96965805df6a1a9c779ecde7dc609824053c7e0eb00e35f67134cc47"
+          },
+          "immutableInputs": [
+            {
+              "path": ".agents/skills/optimize-citysim-operating-system/references/triggered-operating-review-policy.json",
+              "sha256": "a4952d44dc072d9352528f70f8f1cf13ff963476c1033774905d7fb9f74b89b8"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/PLAY-027-INDUSTRIAL-L04-V14-NORTH-STATIC-REFERENCE-V1.json",
+              "sha256": "dbf0f2a75fd5ad1f16c684983ddd946fce04f0d50b8e6f956b9ecf82c515843d"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-INDUSTRIAL-L04-V14-NORTH-REFERENCE-ARCHITECTURE-V3.json",
+              "sha256": "df50af1a26ddae9f5d8c1080604c58ebc7fa09ed1b213efde5b5815a4eeae54b"
+            }
+          ]
+        },
+        "assignment": {
+          "threadId": "019fbe2b-cc97-71f3-a762-63680ac85c76",
+          "branch": "codex/citysim-os-optimization",
+          "worktree": "/Users/James/.codex/worktrees/c92d/city-sim",
+          "expectedHead": "76c900007da9cee14a7b505c77e1d6388d9780c9",
+          "featureAuthorThreadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": [
+            "docs/production/evidence/PLAY-089"
+          ],
+          "allowed": [
+            "docs/production/evidence/PLAY-089/industrial-l04-v14-north-static-handoff-observation-v1.json"
+          ],
+          "forbidden": [
+            ".agents/skills",
+            "docs/production/evidence/INTEGRATION",
+            "docs/production/claims",
+            "docs/production/decisions",
+            "Native/CitySimNative",
+            "script"
+          ]
+        },
+        "boundedDeliverable": "Observe the unique candidate_handoff event for North static candidate bab9f13 only. Use the compact thread snapshot and exact Git/receipt bytes. Record exposed model/effort, elapsed time, turns when exposed, validation time when exposed, return/rework count, accepted static result, frontier escalation reason, duplicate full-suite minutes, and idle/refill disposition; use null for every unavailable metric. Separate four rejected Luna V2 false-greens from the accepted frontier static reference and from the still-unproven Blender/visual outcome. Return exactly NO_CHANGE, REFILL, or one bounded proposal in one JSON receipt and one PLAY-089 commit.",
+        "proofPolicy": {
+          "architectureState": "frozen_reference",
+          "referenceImplementation": {
+            "path": ".agents/skills/optimize-citysim-operating-system/references/triggered-operating-review-policy.json",
+            "sha256": "a4952d44dc072d9352528f70f8f1cf13ff963476c1033774905d7fb9f74b89b8"
+          },
+          "deliverableClaims": [
+            "static_structure"
+          ],
+          "focusedProofLevel": "static_only",
+          "fullProofLevel": "static_only",
+          "behavioralCommands": [],
+          "prohibitedSubstitutions": [
+            "ast_shape_for_runtime_success",
+            "manifest_or_prose_for_rendered_pixels",
+            "source_token_presence_for_execution",
+            "unit_tests_for_visual_acceptance",
+            "worker_self_report_for_independent_acceptance"
+          ]
+        },
+        "validation": {
+          "focusedGateOwner": {
+            "threadId": "019fbe2b-cc97-71f3-a762-63680ac85c76",
+            "role": "triggered_candidate_handoff_observer"
+          },
+          "focusedCommands": [
+            "python3 -m json.tool docs/production/evidence/PLAY-089/industrial-l04-v14-north-static-handoff-observation-v1.json",
+            "git diff --check 76c900007da9cee14a7b505c77e1d6388d9780c9..HEAD"
+          ],
+          "fullGateOwner": {
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "role": "integration_operating_review_disposition",
+            "model": "gpt-5.6-sol",
+            "effort": "high"
+          },
+          "fullCommands": [
+            "Integration verifies the exact event key, exposed metrics, no invented values, one-turn budget, path scope, and whether any proposal preserves quality gates."
+          ]
+        },
+        "expectedResult": {
+          "evidencePaths": [
+            "docs/production/evidence/PLAY-089/industrial-l04-v14-north-static-handoff-observation-v1.json"
+          ],
+          "commitRequired": true,
+          "commitMessagePattern": "PLAY-089:"
+        },
+        "escalationTriggers": [
+          "baseline_or_candidate_identity_mismatch",
+          "cross_lane_semantic_conflict",
+          "failure_outside_focused_scope",
+          "path_outside_claim",
+          "save_or_migration_uncertainty",
+          "shared_contract_or_schema_decision",
+          "subjective_acceptance_required",
+          "two_unsuccessful_repair_attempts",
+          "unresolved_product_visual_or_interaction_judgment"
+        ],
+        "stopCondition": "Stop after one compact observation receipt and one clean commit, or on any route/identity mismatch. Do not inspect visual quality, run product/full/DCC/real-app gates, mutate shared authority or product, dispatch another task, integrate, push, self-accept, or pin.",
+        "independentReviewer": {
+          "required": true,
+          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+          "model": "gpt-5.6-sol",
+          "effort": "high"
+        },
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "ce8d4d98932afa498e1d2173f2eb0a16e16e7526a5c6aada2acae0f53e7aeb6f"
+            },
+            {
+              "path": ".agents/skills/optimize-citysim-operating-system/SKILL.md",
+              "sha256": "9ff26ad2f762e93124a0a2c92ff4375eb8932ad7c0bb22184ede9798b2937a44"
+            },
+            {
+              "path": ".agents/skills/optimize-citysim-operating-system/references/observation-and-upgrade-protocol.md",
+              "sha256": "644d9e84e4bdd7843eaf0455982634e31e599a26215a1f759e6c1559b7ede049"
+            },
+            {
+              "path": ".agents/skills/optimize-citysim-operating-system/references/triggered-operating-review-policy.json",
+              "sha256": "a4952d44dc072d9352528f70f8f1cf13ff963476c1033774905d7fb9f74b89b8"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

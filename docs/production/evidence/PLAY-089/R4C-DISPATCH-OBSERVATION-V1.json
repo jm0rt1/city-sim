@@ -1,0 +1,125 @@
+{
+  "schema": 1,
+  "taskId": "PLAY-089",
+  "observationBoundary": "r4c_dispatch_publication",
+  "result": "NO_CHANGE",
+  "binding": {
+    "carrierCommit": "4e2678088417a63e71d29cbd0ee4a60c945026f0",
+    "authorityCommit": "45e1422304443a012a2f121c90be3e7d31b82c59",
+    "baseCommit": "45e1422304443a012a2f121c90be3e7d31b82c59",
+    "dispatchReceipt": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-089-R4C-DISPATCH-OBSERVATION-V1.json",
+    "dispatchReceiptSha256": "d1e55fd33703686c7fd5965dc22fec0777190c3b26321de899a92f29d1fd0115",
+    "routeId": "quality-v1:play-089-r4c-dispatch-observation-v1",
+    "modelRouteSha256": "24f702af8426a6921f29d0cb5720d97f456d9ae93e2e59cd806dc3cc228b2ef9",
+    "claimPath": "docs/production/claims/PLAY-089.operating-system-optimization.md",
+    "claimSha256": "6276c96d96965805df6a1a9c779ecde7dc609824053c7e0eb00e35f67134cc47",
+    "branch": "codex/citysim-os-optimization",
+    "worktree": "/Users/James/.codex/worktrees/c92d/city-sim",
+    "startingCommit": "8f1ac66af6d713b1828b686222c6e8c24aa140b2",
+    "resultCommit": null,
+    "allowedPath": "docs/production/evidence/PLAY-089/R4C-DISPATCH-OBSERVATION-V1.json"
+  },
+  "routeAcknowledgement": {
+    "classification": "LUNA_MECHANICAL",
+    "model": "gpt-5.6-luna",
+    "effort": "medium",
+    "contextMode": "full_authority_read",
+    "implementationRoute": {
+      "routeId": "quality-v1:play-073-r4-c-adjacent-residential-repetition-luna-v1",
+      "modelRouteSha256": "a50b36e356ffd631cacca5f428532fe616bf2255eac3398dee8534352f4c15e4",
+      "classification": "LUNA_IMPLEMENTATION",
+      "model": "gpt-5.6-luna",
+      "effort": "high",
+      "allowedSurfaces": [
+        "Native/CitySimNative/Sources/CitySimNative/Rendering/LotContextRenderer.swift",
+        "Native/CitySimNative/Tests/CitySimNativeTests/WorldRenderingTests.swift",
+        "docs/production/evidence/PLAY-073/r4-c-adjacent-repetition-v1"
+      ],
+      "focusedGate": "swift test --package-path Native/CitySimNative --filter WorldRenderingTests",
+      "focusedGateOwner": "renderer_r4c_focused_owner_gate"
+    },
+    "aggregateGateOwner": {
+      "role": "integration_exact_candidate_gate",
+      "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+      "model": "gpt-5.6-sol",
+      "effort": "high",
+      "fullGateCommands": [
+        "swift test --package-path Native/CitySimNative",
+        "bash -n script/build_and_run.sh",
+        "./script/build_and_run.sh --verify"
+      ]
+    },
+    "independentAcceptance": {
+      "required": true,
+      "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+      "model": "gpt-5.6-sol",
+      "effort": "high"
+    },
+    "allEscalationTriggersAcknowledged": true,
+    "stopConditionAcknowledged": true,
+    "allowedPathsAcknowledged": true,
+    "forbiddenPathsAcknowledged": true
+  },
+  "immutableInputs": [
+    {
+      "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-073-R4-C-ADJACENT-REPETITION-LUNA-V1.json",
+      "sha256": "c56294430cd76dfd1159983c97d00895f73b3075ca7c6792d361f4d482c80116",
+      "bytes": 8939
+    },
+    {
+      "path": "docs/production/evidence/INTEGRATION/PLAY-073-R4-C-ADJACENT-RESIDENTIAL-REPETITION-AUTHORITY.md",
+      "sha256": "b1d67a006c09f3a90917ad2115f349524726b2bd30bd7b34d11a92a40a913078",
+      "bytes": 5199
+    },
+    {
+      "path": "docs/production/evidence/PLAY-089/R4B-INDEPENDENT-QA-RETURN-OBSERVATION-V1.json",
+      "sha256": "61950a4924319387f0a4db40ba65db3e48a867e72ca875e15fc24838f4f33a78",
+      "bytes": 6055
+    }
+  ],
+  "observedDispatch": {
+    "implementation": "Bounded Luna/high implementation is separated from the focused renderer gate and exact allowed surfaces.",
+    "aggregate": "Integration owns the full Swift/build/staged-candidate gate and does not delegate that ownership to the worker.",
+    "acceptance": "Independent Sol/high acceptance remains distinct from implementation and aggregate gate ownership.",
+    "visualAuthority": "Active Integration frontier authority was recorded; no visual disposition was made by this observation.",
+    "priorObservationResult": "NO_CHANGE",
+    "priorQaReturn": "RETURN",
+    "priorCandidate": "e4f038f942f8c011a0b38b71353e40b4ac5054d4"
+  },
+  "measurements": {
+    "dispatchReceiptBytes": 6815,
+    "implementationRouteBytes": 8939,
+    "visualAuthorityBytes": 5199,
+    "priorObservationBytes": 6055,
+    "observationElapsedSeconds": null,
+    "observationTurns": null,
+    "validationSeconds": null,
+    "workerRework": null,
+    "integrationRework": null,
+    "duplicateFullGateMinutes": null,
+    "idleGaps": null,
+    "runtimeModel": null,
+    "visibleAcknowledgements": null,
+    "overrideTelemetry": null,
+    "tokenCounters": null,
+    "pricing": null,
+    "acceptedOutcome": null
+  },
+  "finding": "The committed R4-C route visibly separates bounded Luna/high implementation, focused validation, Integration aggregate gates, and independent Sol/high acceptance. No exposed duplicate aggregate gate, coordination delay, runtime override, acknowledgement, timing, token, or pricing measurement establishes removable waste.",
+  "validation": {
+    "selectedRoute": "PASS: validate_model_route_v1.py --repo-root Integration checkout --dispatch-route-id quality-v1:play-089-r4c-dispatch-observation-v1",
+    "outputJson": "PASS: python3 -m json.tool",
+    "gitDiffCheck": "PASS: git diff --check"
+  },
+  "executionAccounting": {
+    "acceptedResult": "NO_CHANGE",
+    "escalationReason": null,
+    "pricing": null
+  },
+  "recommendation": null,
+  "nextEventBoundary": "Integration efficiency review or the next R4-C return/candidate-handoff receipt; no product repair, aggregate gate, acceptance, integration, push, or pinning by this lane.",
+  "limitations": [
+    "Actual runtime model, acknowledgements, elapsed time, turns, validation duration, idle intervals, token counters, pricing, and override telemetry were not exposed.",
+    "Product implementation and visual output were not inspected; no visual or product judgment was made."
+  ]
+}

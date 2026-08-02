@@ -1,0 +1,120 @@
+{
+  "schema": 1,
+  "taskId": "PLAY-089",
+  "observationBoundary": "r4d_first_frontier_return_and_v2_luna_dispatch",
+  "result": "NO_CHANGE",
+  "binding": {
+    "carrierCommit": "3ddc285bd44fc444bfada7fed015949cbae0fb2e",
+    "authorityCommit": "45e1422304443a012a2f121c90be3e7d31b82c59",
+    "baseCommit": "45e1422304443a012a2f121c90be3e7d31b82c59",
+    "dispatchReceipt": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-089-R4D-FIRST-RETURN-OBSERVATION-V1.json",
+    "dispatchReceiptSha256": "3391b17c4c6d49860499fbdf8b38ce3b0cc2d8a3864e3428e4be6d30e1ee0231",
+    "routeId": "quality-v1:play-089-r4d-first-return-observation-v1",
+    "modelRouteSha256": "e9b7541c0d4f193ac44da6183bc85593fa7bb41f46c65f098b843509e57d56b2",
+    "claimPath": "docs/production/claims/PLAY-089.operating-system-optimization.md",
+    "claimSha256": "6276c96d96965805df6a1a9c779ecde7dc609824053c7e0eb00e35f67134cc47",
+    "branch": "codex/citysim-os-optimization",
+    "worktree": "/Users/James/.codex/worktrees/c92d/city-sim",
+    "startingCommit": "8a58a964a6f027741a43c71fc775a7afa47afd9c",
+    "resultCommit": null,
+    "allowedPath": "docs/production/evidence/PLAY-089/R4D-FIRST-RETURN-OBSERVATION-V1.json"
+  },
+  "routeAcknowledgement": {
+    "classification": "LUNA_MECHANICAL",
+    "model": "gpt-5.6-luna",
+    "effort": "medium",
+    "contextMode": "full_authority_read",
+    "immutableInputs": [
+      {
+        "path": "docs/production/evidence/INTEGRATION/PLAY-073-R4-D-FIRST-FRONTIER-RETURN-V1.md",
+        "sha256": "2c2425c332cdda92585343cff5333681fa00c2efc0b0a720eb54dcbfad23fa5b",
+        "bytes": 4662
+      },
+      {
+        "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-073-R4-D-V2-PROOF-COMPOSITION-REPAIR-LUNA-V1.json",
+        "sha256": "9b10d73a04b94e9b507d9ec32ec17a56b01eb812d7fca9f230b51c05c84998fe",
+        "bytes": 11165
+      }
+    ],
+    "allowedPathsAcknowledged": true,
+    "forbiddenPathsAcknowledged": true,
+    "focusedGateOwner": "renderer_r4d_v2_proof_composition_focused_gate",
+    "fullGateOwner": {
+      "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+      "role": "integration_exact_r4d_v2_candidate_gate",
+      "model": "gpt-5.6-sol",
+      "effort": "high"
+    },
+    "independentAcceptance": "PLAY-075 remains the independent final real-app reviewer.",
+    "allEscalationTriggersAcknowledged": true,
+    "stopConditionAcknowledged": true
+  },
+  "observedReturn": {
+    "disposition": "RETURN",
+    "reviewedRendererProductCommit": "a4796c5194586eaf729e2aab11c0bfec852eef4",
+    "reviewedRendererEvidenceCommit": "9e762d4abc0b7539a6f7351c832b7623a877317f",
+    "focusedTestResult": "72-test result credible for the assertions it runs",
+    "aggregateEligibility": "NOT_ELIGIBLE",
+    "returnEvidence": [
+      "The exported pair used incompatible coordinate frames, so the asserted adjacent pair was not proven.",
+      "The exporter did not exercise regular 1280-by-800 city, neighborhood, and block views plus compact 900-by-600 neighborhood.",
+      "The submitted canopy implementation was recorded as flat single-fill lobes rather than the frozen multi-lobed requirement.",
+      "The submitted court was recorded as an ungrounded facade slab rather than the frozen ground-plane requirement.",
+      "Cross-envelope proof did not cover both compositions against both roads and opposite building contacts with segment-aware intersection."
+    ],
+    "aggregateOrAppGateRun": false
+  },
+  "attribution": {
+    "packetAmbiguity": {
+      "status": "NOT_EXPOSED",
+      "finding": "No material packet ambiguity is evidenced. The V2 route explicitly binds the shared coordinate frame, four exact viewports, multi-lobed canopy, grounded court, both road/opposite-building envelopes, and segment-aware checks."
+    },
+    "workerExecution": {
+      "status": "ATTRIBUTED",
+      "finding": "The committed return identifies execution misses in the first bounded Luna packet: pair placement, viewport coverage, canopy form, court grounding, and cross-envelope proof."
+    },
+    "workerRework": 1,
+    "integrationRework": 0,
+    "generalMechanicalValidatorProposal": null
+  },
+  "observedDispatch": {
+    "route": "LUNA_IMPLEMENTATION / gpt-5.6-luna / high",
+    "attempt": "one bounded V2 repair after first frontier return",
+    "preservedCandidate": "The route requires preserving the prior R4-D commits and repairing the existing product, test, and evidence paths.",
+    "focusedVersusFull": {
+      "focused": "Targeted R4-D export, adjacent-repetition regression, focused WorldRenderingTests, JSON/hash/diff checks, and byte-repeat comparisons.",
+      "full": "Integration owns aggregate Swift/build/staged-app gates; no such gate is run for this observation."
+    }
+  },
+  "measurements": {
+    "dispatchReceiptBytes": 6619,
+    "observationElapsedSeconds": null,
+    "observationTurns": null,
+    "validationSeconds": null,
+    "duplicateFullGateMinutes": null,
+    "idleGaps": null,
+    "tokens": null,
+    "pricing": null,
+    "runtimeModel": null,
+    "visibleAcknowledgements": null,
+    "overrideTelemetry": null,
+    "acceptedOutcome": null
+  },
+  "finding": "The return is attributable to worker execution against an explicit V2 proof contract, not a demonstrated Integration packet ambiguity. The route already names the mechanical assertions a general validator would enforce, so one isolated return does not justify a validator change.",
+  "validation": {
+    "selectedRoute": "PASS: validate_model_route_v1.py --repo-root Integration checkout --dispatch-route-id quality-v1:play-089-r4d-first-return-observation-v1",
+    "outputJson": "PASS: python3 -m json.tool",
+    "gitDiffCheck": "PASS: git diff --check"
+  },
+  "executionAccounting": {
+    "acceptedResult": "NO_CHANGE",
+    "escalationReason": null,
+    "pricing": null
+  },
+  "recommendation": null,
+  "nextEventBoundary": "Integration process-receipt review after the bounded R4-D V2 repair; aggregate and independent acceptance remain outside this observation.",
+  "limitations": [
+    "Elapsed time, turns, validation duration, idle intervals, runtime model, acknowledgements, tokens, pricing, and override telemetry were not exposed.",
+    "No product pixels were inspected and no visual, product, aggregate-gate, or acceptance judgment was made."
+  ]
+}

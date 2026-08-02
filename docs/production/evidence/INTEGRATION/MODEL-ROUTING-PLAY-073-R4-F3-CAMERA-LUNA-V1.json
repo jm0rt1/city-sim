@@ -1,0 +1,184 @@
+{
+  "schema": 2,
+  "authorityCommit": "787356a07c5c000df73600fc2f630cfafc421c45",
+  "assignments": [
+    {
+      "modelRouteSha256": "267c84204a115c65cf5bf2d603a53b9702787fc9133ab12387051c8bf72cd8d3",
+      "modelRoute": {
+        "schema": 2,
+        "routeId": "quality-v2:play-073-r4-f3-developed-core-camera-luna-v1",
+        "taskId": "PLAY-073",
+        "packetKind": "implementation",
+        "classification": "LUNA_IMPLEMENTATION",
+        "model": "gpt-5.6-luna",
+        "effort": "high",
+        "rationale": "Frontier independent real-app review reproduced and localized one viewport-transition camera defect, then froze its state boundary, measurable outcomes, exact two-file implementation surface, permutations, and stop conditions. The remaining work is bounded implementation and deterministic focused proof; Integration and independent PLAY-075 retain all subjective acceptance.",
+        "authority": {
+          "authorityCommit": "787356a07c5c000df73600fc2f630cfafc421c45",
+          "baseCommit": "787356a07c5c000df73600fc2f630cfafc421c45",
+          "claim": {
+            "path": "docs/production/claims/PLAY-073.world-rendering.md",
+            "sha256": "0b33feaaac5e31ff795e22768e39ae93e35537cc51b6418ce83f6340c89b37dd"
+          },
+          "immutableInputs": [
+            {
+              "path": "docs/production/evidence/INTEGRATION/PLAY-073-R4-F3-DEVELOPED-CORE-CAMERA-REPAIR-AUTHORITY.md",
+              "sha256": "b6cdbd91b8551ac478eb2cfd08f86ad57f0ca7e3473fcb621cbc695e55ef4f66"
+            },
+            {
+              "path": ".agents/skills/render-citysim-world/SKILL.md",
+              "sha256": "fbd37c5f4730c61f95a344266b61d3fb37ce39adcefbaaba6e94f8939d8b72e2"
+            },
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "241903901a3927fe22de4de2d318155fa5855cfcb66776813160639a0d4ffa0d"
+            }
+          ]
+        },
+        "assignment": {
+          "threadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+          "branch": "codex/citysim-world-rendering",
+          "worktree": "/Users/James/.codex/worktrees/cac1/city-sim",
+          "expectedHead": "0804c42fc39d467180946ab23af5ce132a0e728a",
+          "featureAuthorThreadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": [
+            "Native/CitySimNative/Sources/CitySimNative/Rendering/",
+            "Native/CitySimNative/Tests/CitySimNativeTests/",
+            "docs/production/evidence/PLAY-073/"
+          ],
+          "allowed": [
+            "Native/CitySimNative/Sources/CitySimNative/Rendering/CityScene.swift",
+            "Native/CitySimNative/Tests/CitySimNativeTests/WorldRenderingTests.swift",
+            "docs/production/evidence/PLAY-073/r4-f3-developed-core-camera-v1"
+          ],
+          "forbidden": [
+            ".agents",
+            "AGENTS.md",
+            "Native/CitySimNative/Package.swift",
+            "Native/CitySimNative/Resources",
+            "Native/CitySimNative/Sources/CitySimNative/App",
+            "Native/CitySimNative/Sources/CitySimNative/Models",
+            "Native/CitySimNative/Sources/CitySimNative/Services",
+            "Native/CitySimNative/Sources/CitySimNative/Stores",
+            "Native/CitySimNative/Sources/CitySimNative/Views",
+            "Native/CitySimNative/Sources/CitySimNative/Rendering/AmbientLifeRenderer.swift",
+            "Native/CitySimNative/Sources/CitySimNative/Rendering/LotContextRenderer.swift",
+            "Native/CitySimNative/Sources/CitySimNative/Rendering/LotRenderer.swift",
+            "Native/CitySimNative/Sources/CitySimNative/Rendering/RoadRenderer.swift",
+            "Native/CitySimNative/Sources/CitySimNative/Rendering/TerrainRenderer.swift",
+            "Native/CitySimNative/WorldArt",
+            "docs/production/PLAYABLE_BACKLOG.md",
+            "docs/production/claims",
+            "docs/production/completed",
+            "docs/production/decisions",
+            "docs/production/evidence/INTEGRATION",
+            "script"
+          ]
+        },
+        "boundedDeliverable": "Implement only the frozen developed-core camera-state repair. Retain the last valid authoritative composition across automatic resize/inset invalidations, coalesce the settled refit, prevent transient invalid bounds from replacing a valid camera with fitCity, preserve explicit frameCity and Focus City recomputation, add the six frozen permutation regressions and compact result/handoff evidence, and return one coherent commit. Do not change world art, topology, HUD, gameplay, simulation, persistence, commands, resources, or shared authority.",
+        "proofPolicy": {
+          "architectureState": "frozen_reference",
+          "referenceImplementation": {
+            "path": "docs/production/evidence/INTEGRATION/PLAY-073-R4-F3-DEVELOPED-CORE-CAMERA-REPAIR-AUTHORITY.md",
+            "sha256": "b6cdbd91b8551ac478eb2cfd08f86ad57f0ca7e3473fcb621cbc695e55ef4f66"
+          },
+          "deliverableClaims": [
+            "static_structure",
+            "executable_behavior",
+            "deterministic_output",
+            "visual_quality"
+          ],
+          "focusedProofLevel": "deterministic_replay",
+          "fullProofLevel": "real_app_journey",
+          "behavioralCommands": [
+            "swift test --package-path Native/CitySimNative --filter WorldRenderingTests/testDevelopedCoreCameraSurvivesViewportInvalidationPermutations",
+            "swift test --package-path Native/CitySimNative --filter WorldRenderingTests/testStartingCameraFramesTheDevelopedCoreAtDefaultAndCompactLODs",
+            "swift test --package-path Native/CitySimNative --filter WorldRenderingTests/testOpeningCameraRefitsOnceAfterTheShippingViewportSettles",
+            "swift test --package-path Native/CitySimNative --filter WorldRenderingTests/testIndustrialStrainCameraPrioritizesTheDominantDistrictWithoutHidingRemoteTruth"
+          ],
+          "prohibitedSubstitutions": [
+            "ast_shape_for_runtime_success",
+            "manifest_or_prose_for_rendered_pixels",
+            "source_token_presence_for_execution",
+            "unit_tests_for_visual_acceptance",
+            "worker_self_report_for_independent_acceptance"
+          ]
+        },
+        "validation": {
+          "focusedGateOwner": {
+            "threadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+            "role": "renderer_r4_f3_camera_focused_gate"
+          },
+          "focusedCommands": [
+            "swift test --package-path Native/CitySimNative --filter WorldRenderingTests/testDevelopedCoreCameraSurvivesViewportInvalidationPermutations",
+            "swift test --package-path Native/CitySimNative --filter WorldRenderingTests/testStartingCameraFramesTheDevelopedCoreAtDefaultAndCompactLODs",
+            "swift test --package-path Native/CitySimNative --filter WorldRenderingTests/testOpeningCameraRefitsOnceAfterTheShippingViewportSettles",
+            "swift test --package-path Native/CitySimNative --filter WorldRenderingTests/testIndustrialStrainCameraPrioritizesTheDominantDistrictWithoutHidingRemoteTruth",
+            "python3 -m json.tool docs/production/evidence/PLAY-073/r4-f3-developed-core-camera-v1/RESULT.json",
+            "git diff --check 0804c42fc39d467180946ab23af5ce132a0e728a..HEAD"
+          ],
+          "fullGateOwner": {
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "role": "integration_r4_f3_aggregate_and_staged_gate",
+            "model": "gpt-5.6-sol",
+            "effort": "high"
+          },
+          "fullCommands": [
+            "swift test --package-path Native/CitySimNative",
+            "./script/build_and_run.sh --verify",
+            "fresh independent exact-candidate regular, compact, maximized, Focus City, keyboard, pointer, AX, and Reduce Motion real-app journey"
+          ]
+        },
+        "expectedResult": {
+          "evidencePaths": [
+            "docs/production/evidence/PLAY-073/r4-f3-developed-core-camera-v1/RESULT.json",
+            "docs/production/evidence/PLAY-073/r4-f3-developed-core-camera-v1/HANDOFF.md"
+          ],
+          "commitRequired": true,
+          "commitMessagePattern": "PLAY-073:"
+        },
+        "escalationTriggers": [
+          "baseline_or_candidate_identity_mismatch",
+          "cross_lane_semantic_conflict",
+          "failure_outside_focused_scope",
+          "path_outside_claim",
+          "save_or_migration_uncertainty",
+          "shared_contract_or_schema_decision",
+          "subjective_acceptance_required",
+          "two_unsuccessful_repair_attempts",
+          "unresolved_product_visual_or_interaction_judgment"
+        ],
+        "stopCondition": "Stop after one clean focused camera repair commit and exact handoff, or immediately on any identity/hash/path mismatch, need to change another file, failure outside the named camera tests, shared-contract decision, unresolved visual judgment, save uncertainty, semantic conflict, or two unsuccessful repair attempts. Do not run the full suite, stage/launch the app, self-score, self-accept, integrate, push, or pin.",
+        "independentReviewer": {
+          "required": true,
+          "threadId": "019fc0b0-74cb-70e1-8923-8c9d9600484d",
+          "model": "gpt-5.6-sol",
+          "effort": "high"
+        },
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {
+              "path": "docs/production/claims/PLAY-073.world-rendering.md",
+              "sha256": "0b33feaaac5e31ff795e22768e39ae93e35537cc51b6418ce83f6340c89b37dd"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/PLAY-073-R4-F3-DEVELOPED-CORE-CAMERA-REPAIR-AUTHORITY.md",
+              "sha256": "b6cdbd91b8551ac478eb2cfd08f86ad57f0ca7e3473fcb621cbc695e55ef4f66"
+            },
+            {
+              "path": ".agents/skills/render-citysim-world/SKILL.md",
+              "sha256": "fbd37c5f4730c61f95a344266b61d3fb37ce39adcefbaaba6e94f8939d8b72e2"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

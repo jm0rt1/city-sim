@@ -1,0 +1,157 @@
+{
+  "schema": 2,
+  "authorityCommit": "991152bfbb20819173e3247d9ff81688a4915ae6",
+  "assignments": [
+    {
+      "modelRouteSha256": "a175e1776e112a3a4a708e1694b66dd1ef3bf4154377d21c3c06b3d35508492c",
+      "modelRoute": {
+        "schema": 2,
+        "routeId": "quality-v2:play-089-blender-runtime-failure-trigger-observation-v1",
+        "taskId": "PLAY-089",
+        "packetKind": "mechanical",
+        "classification": "LUNA_MECHANICAL",
+        "model": "gpt-5.6-luna",
+        "effort": "medium",
+        "rationale": "The first real North DCC smoke exposed an Integration/toolchain failure: an Intel-only Blender binary crashed under Rosetta before CitySim source execution, while the official Apple Silicon build then passed a contained startup probe. A one-turn low-cost review can identify the exact preventable setup check, verify four-direction delegation coverage, and return one bounded process disposition without touching product or shared authority.",
+        "authority": {
+          "authorityCommit": "991152bfbb20819173e3247d9ff81688a4915ae6",
+          "baseCommit": "618e0e891ba8504ba21b255b3d9090db7de1d4e7",
+          "claim": {
+            "path": "docs/production/claims/PLAY-089.operating-system-optimization.md",
+            "sha256": "6276c96d96965805df6a1a9c779ecde7dc609824053c7e0eb00e35f67134cc47"
+          },
+          "immutableInputs": [
+            {
+              "path": "docs/production/evidence/INTEGRATION/PLAY-027-NORTH-V14-BLENDER-RUNTIME-DIAGNOSIS-V1.json",
+              "sha256": "77b7cce4a9904182a03eaad33c09c4eb87e0ff2f31758397bd29b7a145e5b4ad"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v14/native-blender-startup-probe-v1/RECEIPT.json",
+              "sha256": "c77f2ac3b1e9ac8a94ba0320824a1d64f6a6fcd6a5c5391435bbd72c16f59bb5"
+            },
+            {
+              "path": ".agents/skills/optimize-citysim-operating-system/references/triggered-operating-review-policy.json",
+              "sha256": "28cf49c88064327d15b4813bcb891d70359428027bfa97d2c23d1b8693eddc5f"
+            }
+          ]
+        },
+        "assignment": {
+          "threadId": "019fbe2b-cc97-71f3-a762-63680ac85c76",
+          "branch": "codex/citysim-os-optimization",
+          "worktree": "/Users/James/.codex/worktrees/c92d/city-sim",
+          "expectedHead": "8038d550b78004ac5b27b004e7809ad7f33ad825",
+          "featureAuthorThreadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": [
+            ".agents/skills/optimize-citysim-operating-system",
+            "docs/production/evidence/PLAY-089",
+            "docs/production/completed/PLAY-089.operating-system-optimization.md"
+          ],
+          "allowed": [
+            "docs/production/evidence/PLAY-089/industrial-l04-v14-blender-runtime-failure-observation-v1.json"
+          ],
+          "forbidden": [
+            ".agents/skills",
+            "docs/production/evidence/INTEGRATION",
+            "docs/production/claims",
+            "docs/production/decisions",
+            "docs/production/PLAYABLE_BACKLOG.md",
+            "Native/CitySimNative",
+            "script"
+          ]
+        },
+        "boundedDeliverable": "Observe exactly the first_focused_gate_failure event keyed by authority 991152bf, task PLAY-027, route quality-v2:play-027-industrial-l04-v14-north-contained-smoke-recovery-v2, trigger first_focused_gate_failure, and result 68855485. Use only the bound crash diagnosis, accepted native startup receipt, exact Git metadata, and compact current task snapshots. Produce one JSON receipt with exposed/null cost and timing metrics; one exact coverage row for each North, East, South, and West workstream; the distinction between Integration toolchain failure and untested CitySim source; and exactly NO_CHANGE, PROPOSE, REFILL, RETURN, or ESCALATE. If proposing, name one bounded prelaunch guard, exact owner, trigger, rollback, and measurement. Do not execute the proposal.",
+        "proofPolicy": {
+          "architectureState": "frozen_reference",
+          "referenceImplementation": {
+            "path": ".agents/skills/optimize-citysim-operating-system/references/triggered-operating-review-policy.json",
+            "sha256": "28cf49c88064327d15b4813bcb891d70359428027bfa97d2c23d1b8693eddc5f"
+          },
+          "deliverableClaims": [
+            "static_structure"
+          ],
+          "focusedProofLevel": "static_only",
+          "fullProofLevel": "static_only",
+          "behavioralCommands": [],
+          "prohibitedSubstitutions": [
+            "ast_shape_for_runtime_success",
+            "manifest_or_prose_for_rendered_pixels",
+            "source_token_presence_for_execution",
+            "unit_tests_for_visual_acceptance",
+            "worker_self_report_for_independent_acceptance"
+          ]
+        },
+        "validation": {
+          "focusedGateOwner": {
+            "threadId": "019fbe2b-cc97-71f3-a762-63680ac85c76",
+            "role": "triggered_runtime_failure_observer"
+          },
+          "focusedCommands": [
+            "python3 -m json.tool docs/production/evidence/PLAY-089/industrial-l04-v14-blender-runtime-failure-observation-v1.json",
+            "git diff --check 8038d550b78004ac5b27b004e7809ad7f33ad825..HEAD"
+          ],
+          "fullGateOwner": {
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "role": "independent_operating_review_disposition",
+            "model": "gpt-5.6-sol",
+            "effort": "high"
+          },
+          "fullCommands": [
+            "Integration verifies event-key uniqueness, exact four-row coverage, evidence attribution, and that any proposal is bounded, reversible, and not already implemented."
+          ]
+        },
+        "expectedResult": {
+          "evidencePaths": [
+            "docs/production/evidence/PLAY-089/industrial-l04-v14-blender-runtime-failure-observation-v1.json"
+          ],
+          "commitRequired": true,
+          "commitMessagePattern": "PLAY-089:"
+        },
+        "escalationTriggers": [
+          "baseline_or_candidate_identity_mismatch",
+          "cross_lane_semantic_conflict",
+          "failure_outside_focused_scope",
+          "path_outside_claim",
+          "save_or_migration_uncertainty",
+          "shared_contract_or_schema_decision",
+          "subjective_acceptance_required",
+          "two_unsuccessful_repair_attempts",
+          "unresolved_product_visual_or_interaction_judgment"
+        ],
+        "stopCondition": "Stop after one triggered review receipt and one clean checkpoint. Do not run builds, tests outside JSON/diff validation, DCC, Blender, or real-app QA; do not mutate skills/shared/product/task authority; do not dispatch, refill, repair, integrate, push, accept, or pin.",
+        "independentReviewer": {
+          "required": true,
+          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+          "model": "gpt-5.6-sol",
+          "effort": "high"
+        },
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "ce8d4d98932afa498e1d2173f2eb0a16e16e7526a5c6aada2acae0f53e7aeb6f"
+            },
+            {
+              "path": ".agents/skills/optimize-citysim-operating-system/SKILL.md",
+              "sha256": "9ff26ad2f762e93124a0a2c92ff4375eb8932ad7c0bb22184ede9798b2937a44"
+            },
+            {
+              "path": ".agents/skills/optimize-citysim-operating-system/references/observation-and-upgrade-protocol.md",
+              "sha256": "06747c16b985dbd13b8b0e41afc941dcf0d49416369e1f419e81ef627854db31"
+            },
+            {
+              "path": ".agents/skills/optimize-citysim-operating-system/references/triggered-operating-review-policy.json",
+              "sha256": "28cf49c88064327d15b4813bcb891d70359428027bfa97d2c23d1b8693eddc5f"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -69,6 +69,15 @@ worker's self-report can prove structure or intent only. They cannot prove that
 an executable launches, a renderer emits valid pixels, repeated runs are
 deterministic, a visual is good, or an independent player journey passes.
 
+Before the first DCC scene launch for an exact executable hash, Integration
+must bind the executable path, SHA-256, architecture, version/build, and host
+architecture, then require one contained factory-startup version probe. Reuse
+the resulting hash-bound passing receipt across directions and batches while
+the executable and host tuple remain unchanged; do not repeat the probe per
+direction. A failed probe blocks scene launch and is attributed to the
+toolchain boundary, not to unexecuted CitySim source. Runtime or host drift
+invalidates the cached receipt and triggers one new `LUNA_LOCAL_DEBUG` probe.
+
 The visible-thread prompt must identify the committed dispatch-receipt path,
 route ID, canonical route SHA-256, and exact model/effort. The receipt embeds
 the complete route object beside that hash. A worker independently resolves

@@ -7,11 +7,15 @@ import importlib.util
 import json
 import os
 import tempfile
+import hashlib
+import shutil
+import atexit
 from pathlib import Path
 from typing import Any, Callable
 
 PROCESS = Path(__file__).resolve().parent
 ROOT = PROCESS.parents[6]
+SOURCE_ROOT = Path("Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14")
 
 
 def module(path: Path, name: str) -> Any:
@@ -25,6 +29,33 @@ def module(path: Path, name: str) -> Any:
 LAUNCHER = module(PROCESS / "launch_north_process_a.py", "north_v14_reference_launcher_test")
 CHILD = module(PROCESS / "render_north_process_a_child.py", "north_v14_reference_child_test")
 ADVERSARIES = 0
+_ISOLATED_ROOTS: list[Path] = []
+
+
+def isolated_root_if_needed(root: Path, contract: dict[str, Any]) -> Path:
+    """Run the proof against a fresh checkout-shaped root when history retains output."""
+    output = root / contract["outputRoot"]
+    if not output.exists() and not output.is_symlink():
+        return root
+    parent = Path(tempfile.mkdtemp(prefix="north-v14-binding-root-", dir="/private/tmp"))
+    fixture = parent / "city-sim"
+    source = root / SOURCE_ROOT
+
+    def ignore(directory: str, names: list[str]) -> set[str]:
+        return {name for name in names if name in {"process-a-output", "process-a-failure-v1", "__pycache__"}}
+
+    shutil.copytree(source, fixture / SOURCE_ROOT, ignore=ignore)
+    shutil.copy2(root / ".git", fixture / ".git")
+    _ISOLATED_ROOTS.append(parent)
+    return fixture
+
+
+def _cleanup_isolated_roots() -> None:
+    for path in _ISOLATED_ROOTS:
+        shutil.rmtree(path, ignore_errors=True)
+
+
+atexit.register(_cleanup_isolated_roots)
 
 
 def load(name: str) -> dict[str, Any]:
@@ -120,6 +151,23 @@ def assert_static_source_boundaries() -> None:
     assert not any(value in child_source for value in forbidden)
 
 
+def assert_blender_binding(contract: dict[str, Any]) -> None:
+    expected = {
+        "executable": "/Applications/Blender-4.5.12-arm64.app/Contents/MacOS/Blender",
+        "sha256": "0fa2ab6500e41bfd8114485b218a1e4aebf15b3d8cea90dc8398535291061506",
+        "architecture": "arm64",
+        "version": "4.5.12 LTS",
+        "buildHash": "84afd5f785f7",
+        "officialImageSHA256": "f4afdca92c56a9e231e45226445e6750879a70a0d2322cee80d82ce021a99fb0",
+        "factoryStartup": True,
+        "autoexecDisabled": True,
+    }
+    assert contract["blender"] == expected
+    assert LAUNCHER.resolve_blender_binding(contract) == Path(expected["executable"])
+    assert Path(expected["executable"]).is_file()
+    assert hashlib.sha256(Path(expected["executable"]).read_bytes()).hexdigest() == expected["sha256"]
+
+
 def assert_mesh_topology(packet: dict[str, Any]) -> dict[str, Any]:
     mesh_set = CHILD.build_mesh_specs(packet["manifest"])
     assert len(mesh_set["solidSpecs"]) == 96
@@ -155,9 +203,14 @@ def assert_mesh_topology(packet: dict[str, Any]) -> dict[str, Any]:
 
 
 def main() -> None:
+    global ROOT
     assert ROOT.name == "city-sim"
     contract = load("EXECUTION-CONTRACT.json")
+    ROOT = isolated_root_if_needed(ROOT, contract)
     assert contract["direction"] == "north" and contract["process"] == "A"
+    assert_blender_binding(contract)
+    runner = load("RUNNER-CONTRACT.json")
+    LAUNCHER.validate_runner_binding_data(contract, runner)
     assert contract["processEnvelope"]["maximumChildStarts"] == 1
     assert contract["outputRoot"].endswith("/process-a-output")
     proof_a = LAUNCHER.validate_contract(ROOT, contract)
@@ -228,6 +281,38 @@ def main() -> None:
         rejects(lambda: LAUNCHER.validate_direct_documents(ROOT, contract, *direct_documents(temporary_root / "bad-session-state", contract, session_mutation=lambda value: value.__setitem__("state", "consumed"))))
         rejects(lambda: LAUNCHER.validate_direct_documents(ROOT, contract, *direct_documents(temporary_root / "bad-session-grant", contract, session_mutation=lambda value: value.__setitem__("grantSHA256", "0" * 64))))
         rejects(lambda: LAUNCHER.validate_direct_documents(ROOT, contract, *direct_documents(temporary_root / "short-session", contract, session_mutation=lambda value: value.__setitem__("sessionId", "short"))))
+
+        for label, mutation in (
+            ("intel-path", lambda value: value.__setitem__("executable", "/Applications/Blender.app/Contents/MacOS/Blender")),
+            ("wrong-hash", lambda value: value.__setitem__("sha256", "0" * 64)),
+            ("wrong-architecture", lambda value: value.__setitem__("architecture", "x86_64")),
+            ("missing-path", lambda value: value.__setitem__("executable", "/Applications/missing-blender")),
+            ("wrong-version", lambda value: value.__setitem__("version", "4.5.11 LTS")),
+            ("wrong-build", lambda value: value.__setitem__("buildHash", "0" * 12)),
+            ("wrong-image", lambda value: value.__setitem__("officialImageSHA256", "0" * 64)),
+        ):
+            bad = copy.deepcopy(contract)
+            mutation(bad["blender"])
+            rejects(lambda bad=bad: LAUNCHER.validate_contract(ROOT, bad))
+        for label, mutation in (
+            ("runner-path", lambda value: value.__setitem__("path", "/Applications/Blender.app/Contents/MacOS/Blender")),
+            ("runner-hash", lambda value: value.__setitem__("sha256", "0" * 64)),
+            ("runner-architecture", lambda value: value.__setitem__("architecture", "x86_64")),
+            ("runner-version", lambda value: value.__setitem__("version", "4.5.11 LTS")),
+            ("runner-build", lambda value: value.__setitem__("buildHash", "0" * 12)),
+            ("runner-image", lambda value: value.__setitem__("officialImageSHA256", "0" * 64)),
+        ):
+            bad_runner = copy.deepcopy(runner)
+            mutation(bad_runner["blenderBinding"])
+            rejects(lambda bad_runner=bad_runner: LAUNCHER.validate_runner_binding_data(contract, bad_runner))
+        symlink_path = Path(tempfile.mkdtemp(prefix="blender-binding-", dir="/private/tmp")) / "Blender"
+        symlink_path.symlink_to(Path(contract["blender"]["executable"]))
+        bad = copy.deepcopy(contract)
+        bad["blender"]["executable"] = str(symlink_path)
+        rejects(lambda: LAUNCHER.validate_contract(ROOT, bad))
+        bad = copy.deepcopy(contract)
+        bad["blender"]["executable"] = "/Applications/Blender.app/Contents/MacOS/Blender"
+        rejects(lambda: LAUNCHER.validate_contract(ROOT, bad))
 
         symlink = temporary_root / "schedule-symlink.json"
         symlink.symlink_to(schedule_path)

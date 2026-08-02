@@ -13,15 +13,23 @@ import json
 import os
 import signal
 import subprocess
+import struct
 from pathlib import Path
 from typing import Any
 
 SOURCE_ROOT = Path("Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14")
 PROCESS_ROOT = SOURCE_ROOT / "process-a-execution-v01"
 CONTRACT_PATH = PROCESS_ROOT / "EXECUTION-CONTRACT.json"
+RUNNER_CONTRACT_PATH = PROCESS_ROOT / "RUNNER-CONTRACT.json"
 CHILD_PATH = PROCESS_ROOT / "render_north_process_a_child.py"
 LAUNCHER_PATH = PROCESS_ROOT / "launch_north_process_a.py"
 CHILD_START_COUNT = 0
+EXPECTED_BLENDER_PATH = "/Applications/Blender-4.5.12-arm64.app/Contents/MacOS/Blender"
+EXPECTED_BLENDER_SHA256 = "0fa2ab6500e41bfd8114485b218a1e4aebf15b3d8cea90dc8398535291061506"
+EXPECTED_BLENDER_ARCHITECTURE = "arm64"
+EXPECTED_BLENDER_VERSION = "4.5.12 LTS"
+EXPECTED_BLENDER_BUILD = "84afd5f785f7"
+EXPECTED_OFFICIAL_IMAGE_SHA256 = "f4afdca92c56a9e231e45226445e6750879a70a0d2322cee80d82ce021a99fb0"
 
 
 class LaunchError(ValueError):
@@ -39,6 +47,72 @@ def canonical(value: Any) -> bytes:
 
 def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def mach_o_architecture(path: Path) -> str:
+    data = path.read_bytes()[:4096]
+    require(len(data) >= 8, "Blender binary header missing")
+    magic = struct.unpack_from("<I", data, 0)[0]
+    if magic == 0xFEEDFACF:
+        cputype = struct.unpack_from("<I", data, 4)[0]
+        return {0x0100000C: "arm64", 0x01000007: "x86_64"}.get(cputype, "unknown")
+    if magic == 0xCFFAEDFE:
+        cputype = struct.unpack_from(">I", data, 4)[0]
+        return {0x0100000C: "arm64", 0x01000007: "x86_64"}.get(cputype, "unknown")
+    if magic in (0xCAFEBABE, 0xBEBAFECA):
+        return "fat"
+    return "unknown"
+
+
+def resolve_blender_binding(contract: dict[str, Any]) -> Path:
+    binding = contract.get("blender")
+    require(type(binding) is dict, "Blender binding missing")
+    require(binding == {
+        "executable": EXPECTED_BLENDER_PATH,
+        "sha256": EXPECTED_BLENDER_SHA256,
+        "architecture": EXPECTED_BLENDER_ARCHITECTURE,
+        "version": EXPECTED_BLENDER_VERSION,
+        "buildHash": EXPECTED_BLENDER_BUILD,
+        "officialImageSHA256": EXPECTED_OFFICIAL_IMAGE_SHA256,
+        "factoryStartup": True,
+        "autoexecDisabled": True,
+    }, "Blender contract binding drift")
+    path = Path(binding["executable"])
+    require(path.is_absolute() and str(path) == EXPECTED_BLENDER_PATH, "Blender path drift")
+    current = Path(path.anchor)
+    for part in path.parts[1:]:
+        current /= part
+        require(not current.is_symlink(), "Blender path symlink")
+    require(path.exists() and path.is_file() and not path.is_symlink(), "Blender binary absent or not regular")
+    require(os.access(path, os.X_OK), "Blender binary not executable")
+    require(sha256(path) == EXPECTED_BLENDER_SHA256, "Blender binary hash drift")
+    require(mach_o_architecture(path) == EXPECTED_BLENDER_ARCHITECTURE, "Blender architecture drift")
+    return path
+
+
+def validate_runner_binding_data(contract: dict[str, Any], runner: dict[str, Any]) -> None:
+    binding = runner.get("blenderBinding")
+    require(type(binding) is dict, "runner Blender binding missing")
+    expected = {
+        "path": EXPECTED_BLENDER_PATH,
+        "sha256": EXPECTED_BLENDER_SHA256,
+        "architecture": EXPECTED_BLENDER_ARCHITECTURE,
+        "version": EXPECTED_BLENDER_VERSION,
+        "buildHash": EXPECTED_BLENDER_BUILD,
+        "officialImageSHA256": EXPECTED_OFFICIAL_IMAGE_SHA256,
+    }
+    require(binding == expected, "runner Blender binding drift")
+    require(binding["path"] == contract["blender"]["executable"], "runner/contract Blender path disagreement")
+    require(binding["sha256"] == contract["blender"]["sha256"], "runner/contract Blender hash disagreement")
+    require(binding["architecture"] == contract["blender"]["architecture"], "runner/contract Blender architecture disagreement")
+    require(binding["version"] == contract["blender"]["version"], "runner/contract Blender version disagreement")
+    require(binding["buildHash"] == contract["blender"]["buildHash"], "runner/contract Blender build disagreement")
+    require(binding["officialImageSHA256"] == contract["blender"]["officialImageSHA256"], "runner/contract Blender image disagreement")
+
+
+def validate_runner_binding(root: Path, contract: dict[str, Any]) -> None:
+    runner = load(resolve_regular(root, str(RUNNER_CONTRACT_PATH), "runner contract"))
+    validate_runner_binding_data(contract, runner)
 
 
 def load(path: Path) -> dict[str, Any]:
@@ -105,6 +179,8 @@ def output_path(root: Path, contract: dict[str, Any]) -> Path:
 
 def validate_contract(root: Path, contract: dict[str, Any]) -> dict[str, Any]:
     require(contract["task"] == "PLAY-027" and contract["direction"] == "north" and contract["process"] == "A", "contract identity drift")
+    resolve_blender_binding(contract)
+    validate_runner_binding(root, contract)
     require(contract["evidenceRoot"].startswith("docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v14/process-a-execution-v01"), "evidence root leaves exclusive North root")
     require(contract["registration"]["socketCitySim"] == [0, 0, -28], "socket CitySim drift")
     require(contract["registration"]["socketBlender"] == [-28, 0, 0], "socket Blender drift")
@@ -197,6 +273,7 @@ def validate_direct_documents(
 
 
 def build_command(root: Path, contract: dict[str, Any], documents: dict[str, Any]) -> list[str]:
+    resolve_blender_binding(contract)
     return [
         contract["blender"]["executable"],
         "--background",

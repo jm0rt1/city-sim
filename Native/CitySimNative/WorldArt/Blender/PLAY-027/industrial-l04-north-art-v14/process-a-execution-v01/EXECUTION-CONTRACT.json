@@ -17,7 +17,7 @@
     "lowerer": {"path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/lower_v14_scene.py", "sha256": "3c3995e09a2c5a197f3156b3023c22d38aad67b77b13c4f38110879585a40c32"}
   },
   "registration": {"coordinateBridge": "B(x,y,z)=(z,x,y)", "descriptorOrder": [0, 1, 2, 3], "northRoadZ": -28, "footprintWorld": [[-28, 0, -28], [28, 0, -28], [28, 0, 28], [-28, 0, 28]], "pivotSource": [768, 896], "socketCitySim": [0, 0, -28], "socketBlender": [-28, 0, 0], "socketSource": [896, 704]},
-  "blender": {"executable": "/Applications/Blender.app/Contents/MacOS/Blender", "version": "4.5.12 LTS", "buildHash": "84afd5f785f7", "factoryStartup": true, "autoexecDisabled": true},
+  "blender": {"executable": "/Applications/Blender-4.5.12-arm64.app/Contents/MacOS/Blender", "sha256": "0fa2ab6500e41bfd8114485b218a1e4aebf15b3d8cea90dc8398535291061506", "architecture": "arm64", "version": "4.5.12 LTS", "buildHash": "84afd5f785f7", "officialImageSHA256": "f4afdca92c56a9e231e45226445e6750879a70a0d2322cee80d82ce021a99fb0", "factoryStartup": true, "autoexecDisabled": true},
   "cycles": {"device": "CPU", "threads": 1, "seed": 17, "samples": 64, "adaptiveSampling": false, "denoising": false, "motionBlur": false, "transparentFilm": true, "resolution": [1536, 1024], "pixelAspect": [1, 1], "colorManagement": {"displayDevice": "sRGB", "viewTransform": "Standard", "look": "Medium High Contrast", "exposure": 0.0, "gamma": 1.0}},
   "processEnvelope": {"maximumChildStarts": 1, "maximumConcurrentDCCProcesses": 1, "timeoutSeconds": 120, "maximumProcessGroupRSSMiB": 1024, "newProcessGroup": true},
   "childEntrypoint": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/process-a-execution-v01/render_north_process_a_child.py",

@@ -40,6 +40,12 @@ class TriggeredOperatingReviewPolicyTests(unittest.TestCase):
     def test_review_fanout_is_rejected(self) -> None:
         self.assert_invalid(lambda p: p["reviewBudget"].update({"maxReviewsPerEventKey": 2}))
         self.assert_invalid(lambda p: p["reviewBudget"].update({"maxTurns": 2}))
+        self.assert_invalid(lambda p: p["reviewBudget"].update({"reviewCanSpawnReviews": True}))
+
+    def test_review_stays_compact_and_event_driven(self) -> None:
+        self.assert_invalid(lambda p: p["reviewBudget"].update({"maxCompactContextBytes": 131072}))
+        self.assert_invalid(lambda p: p["reviewBudget"].update({"threadPollingAllowed": True}))
+        self.assert_invalid(lambda p: p["reviewBudget"].update({"receiptMode": "narrative"}))
 
     def test_expensive_or_mutating_observation_is_rejected(self) -> None:
         for field in ("productBuildAllowed", "fullGateAllowed", "dccAllowed", "realAppQAAllowed", "sharedMutationAllowed"):
@@ -87,6 +93,43 @@ class TriggeredOperatingReviewPolicyTests(unittest.TestCase):
 
     def test_unknown_metrics_remain_null(self) -> None:
         self.assert_invalid(lambda p: p["reviewBudget"].update({"missingMetricValue": 0}))
+
+    def test_management_event_requirements_are_fail_closed(self) -> None:
+        for trigger in VALIDATOR.EXPECTED_EVENT_REQUIREMENTS:
+            with self.subTest(trigger=trigger):
+                self.assert_invalid(lambda p, key=trigger: p["eventRequirements"].pop(key))
+
+    def test_frontier_route_review_cannot_self_return_or_refill(self) -> None:
+        self.assert_invalid(
+            lambda p: p["eventRequirements"]["frontier_route_assigned"]["allowedDecisions"].append("REFILL")
+        )
+        self.assert_invalid(
+            lambda p: p["eventRequirements"]["frontier_route_assigned"]["requiredEvidence"].remove("frontierRationale")
+        )
+
+    def test_terminal_and_concurrency_reviews_require_next_work(self) -> None:
+        self.assert_invalid(
+            lambda p: p["eventRequirements"]["task_completed_or_stopped"]["requiredEvidence"].remove("nextDependencyOrRefill")
+        )
+        self.assert_invalid(
+            lambda p: p["eventRequirements"]["useful_concurrency_below_floor"]["requiredEvidence"].remove("refillOrSerializedDependency")
+        )
+
+    def test_duplicate_full_gate_review_binds_candidate_identity(self) -> None:
+        self.assert_invalid(
+            lambda p: p["eventRequirements"]["duplicate_full_gate_requested"]["requiredEvidence"].remove("candidateIdentity")
+        )
+        self.assert_invalid(
+            lambda p: p["eventRequirements"]["duplicate_full_gate_requested"]["requiredEvidence"].remove("identityChanged")
+        )
+
+    def test_repeated_context_and_failed_ack_need_exact_proof(self) -> None:
+        self.assert_invalid(
+            lambda p: p["eventRequirements"]["repeated_context_load_detected"]["requiredEvidence"].remove("unchangedSkillHashes")
+        )
+        self.assert_invalid(
+            lambda p: p["eventRequirements"]["delegation_acknowledgement_failed"]["requiredEvidence"].remove("modelRouteHash")
+        )
 
 
 if __name__ == "__main__":

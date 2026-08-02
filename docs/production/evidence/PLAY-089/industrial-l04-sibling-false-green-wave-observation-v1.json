@@ -1,0 +1,120 @@
+{
+  "schema": 1,
+  "taskId": "PLAY-089",
+  "result": "NO_CHANGE",
+  "observationBoundary": "East/South/West sibling focused returns after published schema-2 recovery policy",
+  "binding": {
+    "authorityCommit": "9beafc0819a6dfbbf58bba5bd2f48657b1f526a8",
+    "baseCommit": "cd99a4548bb9c3493e9befcae90921f449893eeb",
+    "branch": "codex/citysim-os-optimization",
+    "worktree": "/Users/James/.codex/worktrees/c92d/city-sim",
+    "expectedHead": "cd99a4548bb9c3493e9befcae90921f449893eeb",
+    "startHead": "cd99a4548bb9c3493e9befcae90921f449893eeb",
+    "routeId": "quality-v2:play-089-industrial-l04-sibling-false-green-wave-observation-v1",
+    "routeCanonicalSha256": null,
+    "classification": "LUNA_MECHANICAL",
+    "model": "gpt-5.6-luna",
+    "effort": "medium",
+    "claimPath": "docs/production/claims/PLAY-089.operating-system-optimization.md",
+    "claimSha256": "6276c96d96965805df6a1a9c779ecde7dc609824053c7e0eb00e35f67134cc47",
+    "allowedPath": "docs/production/evidence/PLAY-089/industrial-l04-sibling-false-green-wave-observation-v1.json"
+  },
+  "acknowledgements": {
+    "startup": "PASS: clean expected lane identity",
+    "route": "ACK: exact inline schema-2 route, authority, base, runtime, scope, reviewer, focused validations, escalation triggers, and stop condition",
+    "routeHash": "The inline route supplied no separate canonical SHA-256; no hash is invented",
+    "immutableCandidates": {
+      "east": "9e22b74d6ce503658bc5fd32892e314be186fbea",
+      "south": "beae14096c7c7a7845ae58084aaa6b3a54e53f87",
+      "west": "f36a5f6ffedc0faed2f110214eef022607f024ad"
+    },
+    "policy": "ACK: published schema-2 policy requires exact directional coverage and same-turn refill when useful work is available",
+    "stop": "ACK: one receipt and clean PLAY-089 commit; no product/build/full-suite/DCC/QA/skill/shared-authority mutation, dispatch, integration, push, pinning, or self-acceptance"
+  },
+  "coverageRows": [
+    {
+      "taskId": "PLAY-027",
+      "routeId": "quality-v2:play-027-industrial-l04-v14-north-native-contained-smoke-v3",
+      "workstream": "north",
+      "state": "prior_visual_return_preserved",
+      "evidenceCommit": "ff83b9dcb5b9826dc37631939ac215a633d31136",
+      "disposition": "Prior North runtime PASS/visual RETURN remains separate from this sibling wave"
+    },
+    {
+      "taskId": "PLAY-079",
+      "routeId": "quality-v1:play-079-industrial-l04-v14-east-prelock-v1",
+      "workstream": "east",
+      "state": "focused_static_pass_no_execution",
+      "evidenceCommit": "9e22b74d6ce503658bc5fd32892e314be186fbea",
+      "disposition": "Worker proof false-green: PASS static/zero-child checks and candidate-ready label while executionReady=false, profileLoaded=false, sourceProductionProfile=null, and launchInvoked=false"
+    },
+    {
+      "taskId": "PLAY-080",
+      "routeId": "quality-v1:play-080-industrial-l04-v14-south-prelock-v1",
+      "workstream": "south",
+      "state": "focused_static_pass_no_execution",
+      "evidenceCommit": "beae14096c7c7a7845ae58084aaa6b3a54e53f87",
+      "disposition": "Worker proof false-green: static semantic/process checks PASS while sourceProductionProfile=null and no executable Process-A result exists"
+    },
+    {
+      "taskId": "PLAY-081",
+      "routeId": "quality-v1:play-081-industrial-l04-v14-west-prelock-v1",
+      "workstream": "west",
+      "state": "focused_static_pass_no_execution",
+      "evidenceCommit": "f36a5f6ffedc0faed2f110214eef022607f024ad",
+      "disposition": "Worker proof false-green: PASS validation and candidate-ready handoff coexist with sourceReady=false and missing appearance lock, source profile, and Process-A grant"
+    }
+  ],
+  "workerFalseGreenDefects": [
+    "East static PASS was allowed to read as prelaunch readiness although executionReady=false, profileLoaded=false, sourceProductionProfile=null, and launchInvoked=false.",
+    "South semantic and Process-A boundary checks were static-only while sourceProductionProfile remained null and no executable Process-A result was produced.",
+    "West PASS/candidate-ready evidence did not mean source-ready execution: sourceReady=false and the appearance lock, source-production profile, and Process-A grant were absent."
+  ],
+  "integrationSetupErrors": [
+    {
+      "owner": "Integration",
+      "error": "South authority/runner carried a malformed 65-character Blender fingerprint where the accepted SHA-256 must be 64 characters",
+      "classification": "route/setup defect",
+      "evidence": "INDUSTRIAL-L04-DIRECTION-PRELOCK-REPAIR-AUTHORITY.md"
+    },
+    {
+      "owner": "Integration",
+      "error": "South was held behind an unavailable North appearance lock, source-production profile, postlock schedule, and exact grants; this was a serialized authority dependency, not a worker failure",
+      "classification": "route/setup dependency defect",
+      "evidence": "WORLD_ART_PARALLEL_DISPATCH-2026-08-02T0714Z.json"
+    }
+  ],
+  "sameTurnRefill": {
+    "policyCommit": "9beafc0819a6dfbbf58bba5bd2f48657b1f526a8",
+    "policyState": "sameTurnRefillRequired=true; minimumUsefulActiveWorkstreams=3; serializedDependencyRequiredWhenNotRefilled=true",
+    "publishedDispatchEvidence": "WORLD_ART_PARALLEL_DISPATCH-2026-08-02T0714Z.json",
+    "observedBehavior": "Exact East/South/West rows publish direction-specific nextRefill/resumption boundaries while pixels remain blocked until North appearance lock and postlock authority",
+    "refillExecutedThisObservation": null,
+    "interpretation": "The recovery policy addresses the measured routing/coverage waste; serialized blocking is explicitly represented rather than treated as avoidable idle work."
+  },
+  "executionAccounting": {
+    "contextBytes": null,
+    "elapsedSeconds": null,
+    "turns": null,
+    "validationSeconds": null,
+    "workerReworkCount": null,
+    "integrationReworkCount": null,
+    "returnCount": null,
+    "idleIntervalSeconds": null,
+    "duplicateFullGateMinutes": null,
+    "tokens": null,
+    "pricing": null,
+    "unavailableMetrics": "Candidate receipts expose static/focused declarations and blockers, but not this observer's timing, turns, rework, actual run counts, idle gaps, or cost telemetry."
+  },
+  "decision": {
+    "value": "NO_CHANGE",
+    "reason": "The false-green proof boundary is already addressed by the published schema-2 proofPolicy and the same-turn/coverage recovery policy. The remaining South lock dependency is explicitly serialized and Integration-owned; no new measurable process change is justified.",
+    "nextEventBoundary": "next exact sibling return or candidate handoff after Integration publishes the required North appearance lock and postlock authorities"
+  },
+  "validation": {
+    "json": "PASS: python3 -m json.tool",
+    "policyTest": "PASS: test_validate_triggered_operating_review_policy_v1.py",
+    "gitDiffCheck": "PASS: git diff --check",
+    "outputPathScope": "PASS: exactly one allowed file"
+  }
+}

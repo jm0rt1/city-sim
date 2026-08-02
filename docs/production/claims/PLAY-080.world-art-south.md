@@ -1,6 +1,6 @@
 # PLAY-080 Claim
 
-- **Claim revision:** 9
+- **Claim revision:** 10
 - **Title:** Close the Industrial L4 South execution boundary in parallel
 - **Lane:** World Art South cell
 - **Branch:** `codex/citysim-world-art-south`
@@ -121,3 +121,16 @@ occlusion, camera, pivot, footprint, material, and non-alias proofs. Stop after
 one zero-pixel candidate-ready-for-independent-review commit. DCC, pixels,
 normalization, admission, activation, shipping, push, integration, and
 self-acceptance remain prohibited.
+
+## Revision-10 v14 independent-return checkout-identity repair
+
+Consume the Integration-published
+`INDUSTRIAL-L04-DIRECTION-CLOSURE-RETURN-REPAIR-V1.json`. Preserve returned
+candidate `092399eaae1a8080efa959529cf62fafcfe7c5a2` and every historical packet.
+Within the existing South-exclusive roots only, resolve the actual Git HEAD and
+branch from the running worktree and bind them to the exact Integration-authored
+claim/profile/schedule/grant/session/output-root/child-limit closure. Add positive
+and stale/forged/omitted/prior-base/wrong-candidate adversaries and return one
+zero-DCC repair commit. No Blender child, render, pixel, normalization,
+admission, activation, shipping, push, integration, or self-acceptance is
+authorized.

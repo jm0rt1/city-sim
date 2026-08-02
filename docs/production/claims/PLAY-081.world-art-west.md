@@ -1,6 +1,6 @@
 # PLAY-081 Claim
 
-- **Claim revision:** 10
+- **Claim revision:** 11
 - **Title:** Close the Industrial L4 West execution boundary in parallel
 - **Lane:** World Art West cell
 - **Branch:** `codex/citysim-world-art-west`
@@ -142,3 +142,17 @@ validator, preserve the design and lowering bytes, reproduce all nine
 adversarial rejections and the byte-identical replay twice, and return one clean
 candidate. No DCC, pixels, normalization, admission, activation, shipping,
 push, integration, or self-acceptance is authorized.
+
+## Revision-11 v14 independent-return closure and topology repair
+
+Consume the Integration-published
+`INDUSTRIAL-L04-DIRECTION-CLOSURE-RETURN-REPAIR-V1.json`. Preserve returned
+candidate `d36c284dcfa4cbe164fbb04ce77ba50bedea49b9` and every historical packet.
+Within the existing West-exclusive roots only, bind the lowering document to the
+current design bytes, author and numerically prove a non-collinear capped quarter
+elbow, replace the inline launch dictionary with parsed Integration-authored
+profile/schedule/grant/session/claim/branch/actual-worker-HEAD/output-root and
+child-limit closure, and reconcile portal runtime objects/materials with the
+semantic manifest. Return one zero-DCC repair commit. No Blender child, render,
+pixel, normalization, admission, activation, shipping, push, integration, or
+self-acceptance is authorized.

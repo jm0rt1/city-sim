@@ -177,6 +177,26 @@ def main() -> None:
         assert result["status"] == "COMPLETE" and result["lastPhase"] == "complete"
         assert {p.name for p in success_root.iterdir()} == {"stdout.bin", "stderr.bin", "PHASE-MARKERS.jsonl", "DIAGNOSTIC-RECEIPT.json"}
 
+        valid_prefix = b"\n".join(stream.splitlines()[:4]) + b"\n"
+        truncated_stdout = valid_prefix + b'{"play027Phase":"scene_configured","sequence":'
+        truncated_root = temp / "four-valid-then-truncated"; truncated_root.mkdir()
+        truncated = launcher.capture_process(FakeProcess(truncated_stdout), ["fake"], truncated_root, contract, started_at="A", ended_at="B", timeout=120)
+        assert truncated["status"] == "FAILURE" and truncated["observedPhases"] == PHASES[:4] and truncated["lastPhase"] == "bpy_imported"
+        assert truncated["markerError"]["type"] == "MarkerParseFailure" and truncated["markerError"]["reasonCode"] == "invalid_json"
+        assert truncated["markerError"]["validatedPrefixCount"] == 4 and truncated["markerError"]["validatedPrefix"] == launcher.parse_markers(valid_prefix, PHASES)
+        assert (truncated_root / "stdout.bin").read_bytes() == truncated_stdout and (truncated_root / "PHASE-MARKERS.jsonl").read_bytes() == valid_prefix
+        assert json.loads((truncated_root / "FAILURE.json").read_text())["observedPhases"] == PHASES[:4]
+
+        invalid_schema_line = b'{"play027Phase":"scene_configured","sequence":4,"extra":true}\n'
+        invalid_schema_stdout = valid_prefix + invalid_schema_line
+        invalid_schema_root = temp / "four-valid-then-invalid-schema"; invalid_schema_root.mkdir()
+        invalid_schema = launcher.capture_process(FakeProcess(invalid_schema_stdout), ["fake"], invalid_schema_root, contract, started_at="A", ended_at="B", timeout=120)
+        assert invalid_schema["status"] == "FAILURE" and invalid_schema["observedPhases"] == PHASES[:4] and invalid_schema["lastPhase"] == "bpy_imported"
+        assert invalid_schema["markerError"]["type"] == "MarkerParseFailure" and invalid_schema["markerError"]["reasonCode"] == "invalid_schema"
+        assert invalid_schema["markerError"]["validatedPrefixCount"] == 4 and invalid_schema["markerError"]["validatedPrefix"] == launcher.parse_markers(valid_prefix, PHASES)
+        assert (invalid_schema_root / "stdout.bin").read_bytes() == invalid_schema_stdout and (invalid_schema_root / "PHASE-MARKERS.jsonl").read_bytes() == valid_prefix
+        assert json.loads((invalid_schema_root / "FAILURE.json").read_text())["observedPhases"] == PHASES[:4]
+
         nonzero_root = temp / "nonzero"; nonzero_root.mkdir()
         failed = launcher.capture_process(FakeProcess(stream[:stream.rfind(b"\n", 0, -1) + 1], b"crash", 9), ["fake"], nonzero_root, contract, started_at="A", ended_at="B", timeout=120)
         assert failed["status"] == "FAILURE" and failed["returnCode"] == 9 and (nonzero_root / "FAILURE.json").is_file()
@@ -210,7 +230,7 @@ def main() -> None:
     assert "bpy.ops.wm.save_as_mainfile" not in child_text and "render_semantic_pass" not in child_text
     assert launcher.CHILD_START_COUNT == 0
     assert not (ROOT / contract["futureStageB"]["outputRoot"]).exists()
-    print(json.dumps({"status": "PASS", "phaseCount": 9, "components": 33, "objects": 97, "solidObjects": 96, "adversaries": 23, "fakeProcessScenarios": 6, "childStartSites": 1, "childStarts": 0, "dccProcessCount": 0, "pixelWrites": 0, "outputRootCreated": 0, "executableBehavior": "UNPROVEN"}, sort_keys=True))
+    print(json.dumps({"status": "PASS", "phaseCount": 9, "components": 33, "objects": 97, "solidObjects": 96, "adversaries": 25, "fakeProcessScenarios": 8, "preservedPrefixAdversaries": 2, "childStartSites": 1, "childStarts": 0, "dccProcessCount": 0, "pixelWrites": 0, "outputRootCreated": 0, "executableBehavior": "UNPROVEN"}, sort_keys=True))
 
 
 if __name__ == "__main__":

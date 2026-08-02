@@ -23,6 +23,28 @@ class AuthorityError(RuntimeError):
     pass
 
 
+class MarkerParseFailure(AuthorityError):
+    """Typed marker failure that retains the fully validated phase prefix."""
+
+    def __init__(self, reason_code: str, message: str, validated_prefix: list[dict[str, Any]], line_number: int, raw_line: bytes):
+        super().__init__(message)
+        self.reason_code = reason_code
+        self.validated_prefix = [dict(marker) for marker in validated_prefix]
+        self.line_number = line_number
+        self.raw_line_sha256 = sha256_bytes(raw_line)
+
+    def evidence(self) -> dict[str, Any]:
+        return {
+            "type": "MarkerParseFailure",
+            "reasonCode": self.reason_code,
+            "message": str(self),
+            "lineNumber": self.line_number,
+            "rawLineSHA256": self.raw_line_sha256,
+            "validatedPrefix": self.validated_prefix,
+            "validatedPrefixCount": len(self.validated_prefix),
+        }
+
+
 def require(condition: bool, message: str) -> None:
     if not condition:
         raise AuthorityError(message)
@@ -179,13 +201,19 @@ def validate_direct_documents(root: Path, contract: dict[str, Any], identity: di
 
 def parse_markers(stdout: bytes, phases: list[str]) -> list[dict[str, Any]]:
     markers: list[dict[str, Any]] = []
-    for line in stdout.splitlines():
+    for line_number, line in enumerate(stdout.splitlines(), start=1):
         if not line.startswith(b'{"play027Phase"'):
             continue
-        value = json.loads(line)
-        require(type(value) is dict and set(value) == {"play027Phase", "sequence"}, "phase marker schema drift")
-        require(type(value["play027Phase"]) is str and type(value["sequence"]) is int, "phase marker types drift")
-        require(value["sequence"] == len(markers) and value["play027Phase"] == phases[len(markers)], "phase marker order drift")
+        try:
+            value = json.loads(line)
+        except (UnicodeDecodeError, json.JSONDecodeError) as error:
+            raise MarkerParseFailure("invalid_json", f"phase marker JSON invalid: {error}", markers, line_number, line) from error
+        if type(value) is not dict or set(value) != {"play027Phase", "sequence"}:
+            raise MarkerParseFailure("invalid_schema", "phase marker schema drift", markers, line_number, line)
+        if type(value["play027Phase"]) is not str or type(value["sequence"]) is not int:
+            raise MarkerParseFailure("invalid_types", "phase marker types drift", markers, line_number, line)
+        if len(markers) >= len(phases) or value["sequence"] != len(markers) or value["play027Phase"] != phases[len(markers)]:
+            raise MarkerParseFailure("invalid_order", "phase marker order drift", markers, line_number, line)
         markers.append(value)
     return markers
 
@@ -265,9 +293,12 @@ def capture_process(process: Any, argv: list[str], output: Path, contract: dict[
     marker_error = None
     try:
         markers = parse_markers(stdout, phases)
+    except MarkerParseFailure as error:
+        markers = error.validated_prefix
+        marker_error = error.evidence()
     except Exception as error:
         markers = []
-        marker_error = f"{type(error).__name__}: {error}"
+        marker_error = {"type": type(error).__name__, "reasonCode": "unexpected_parser_failure", "message": str(error), "validatedPrefix": [], "validatedPrefixCount": 0}
     complete = not timed_out and communication_error is None and return_code == 0 and marker_error is None and len(markers) == len(phases)
     allowed = set(contract["futureStageB"]["allowedOutputLeaves"])
     _write_exclusive(output, "stdout.bin", stdout, allowed)

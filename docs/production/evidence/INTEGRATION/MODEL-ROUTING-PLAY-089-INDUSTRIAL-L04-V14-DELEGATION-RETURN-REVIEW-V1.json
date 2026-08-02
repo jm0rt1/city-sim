@@ -1,0 +1,130 @@
+{
+  "schema": 2,
+  "authorityCommit": "1fe28f135255ca49a8166c70d6a28f71570230cd",
+  "assignments": [
+    {
+      "modelRouteSha256": "31d665378ead7e761a9ef4f1ffaaa4b6248ce97d0cce8df9b1cd63e69a6c30ea",
+      "modelRoute": {
+        "schema": 2,
+        "routeId": "quality-v2:play-089-industrial-l04-v14-delegation-return-review-v1",
+        "taskId": "PLAY-089",
+        "packetKind": "mechanical",
+        "classification": "LUNA_MECHANICAL",
+        "model": "gpt-5.6-luna",
+        "effort": "medium",
+        "rationale": "A deduplicated operating event records one Integration-authored delegation identity error and one completed South return. Luna can measure and classify those exact management boundaries in one compact receipt without polling, rerunning gates, or making policy/product judgments.",
+        "authority": {
+          "authorityCommit": "1fe28f135255ca49a8166c70d6a28f71570230cd",
+          "baseCommit": "1fe28f135255ca49a8166c70d6a28f71570230cd",
+          "claim": {
+            "path": "docs/production/claims/PLAY-089.operating-system-optimization.md",
+            "sha256": "b98dc14fdc2425ede0c165a5e6108ccb83d2603c88cace4d03a035f8785b3994"
+          },
+          "immutableInputs": [
+            {
+              "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-V14-DELEGATION-AND-RETURN-EVENT-V1.json",
+              "sha256": "00e38ca56e8f169cc62b44621d7341d0cd92b74ea5330e4c0fb3b837ab618ff0"
+            },
+            {
+              "path": ".agents/skills/optimize-citysim-operating-system/references/triggered-operating-review-policy.json",
+              "sha256": "6a5240d68f38434e8a66fa48094e22851df5fa752b746d0b2fdf7bbe1f497b69"
+            }
+          ]
+        },
+        "assignment": {
+          "threadId": "019fbe2b-cc97-71f3-a762-63680ac85c76",
+          "branch": "codex/citysim-os-optimization",
+          "worktree": "/Users/James/.codex/worktrees/c92d/city-sim",
+          "expectedHead": "2407be07462d6527be641d881d911d0715e7d5a5",
+          "featureAuthorThreadId": null,
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": ["docs/production/evidence/PLAY-089"],
+          "allowed": ["docs/production/evidence/PLAY-089/industrial-l04-v14-delegation-and-return-review-v1.json"],
+          "forbidden": [
+            ".agents/skills",
+            "AGENTS.md",
+            "Native",
+            "script",
+            "docs/production/claims",
+            "docs/production/decisions",
+            "docs/production/evidence/INTEGRATION",
+            "docs/production/PLAYABLE_BACKLOG.md",
+            "docs/production/completed"
+          ]
+        },
+        "boundedDeliverable": "Read only the exact committed event authority and trigger policy. Produce one schema-3 operating-review receipt that separately attributes the delegation identity failure to Integration and the South bounded completion to the worker, records exposed model/effort/turn/elapsed/validation/rework values without inference, confirms no duplicate full suite or DCC cost, and returns exactly NO_CHANGE or one bounded proposal. The proposal should focus on preventing manual carrier transcription and preserving dependency-complete admission. Do not poll tasks, rerun worker gates, implement policy, dispatch/refill, mutate product/shared authority, or perform another review.",
+        "proofPolicy": {
+          "architectureState": "frozen_reference",
+          "referenceImplementation": {
+            "path": ".agents/skills/optimize-citysim-operating-system/references/triggered-operating-review-policy.json",
+            "sha256": "6a5240d68f38434e8a66fa48094e22851df5fa752b746d0b2fdf7bbe1f497b69"
+          },
+          "deliverableClaims": ["static_structure"],
+          "focusedProofLevel": "static_only",
+          "fullProofLevel": "static_only",
+          "behavioralCommands": [],
+          "prohibitedSubstitutions": [
+            "ast_shape_for_runtime_success",
+            "manifest_or_prose_for_rendered_pixels",
+            "source_token_presence_for_execution",
+            "unit_tests_for_visual_acceptance",
+            "worker_self_report_for_independent_acceptance"
+          ]
+        },
+        "validation": {
+          "focusedGateOwner": {
+            "threadId": "019fbe2b-cc97-71f3-a762-63680ac85c76",
+            "role": "operating_review_receipt_producer"
+          },
+          "focusedCommands": [
+            "python3 -m json.tool docs/production/evidence/PLAY-089/industrial-l04-v14-delegation-and-return-review-v1.json",
+            "python3 .agents/skills/optimize-citysim-operating-system/scripts/validate_operating_review_receipt_v1.py docs/production/evidence/PLAY-089/industrial-l04-v14-delegation-and-return-review-v1.json",
+            "git diff --check 2407be07462d6527be641d881d911d0715e7d5a5..HEAD"
+          ],
+          "fullGateOwner": {
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "role": "integration_operating_review_disposition",
+            "model": "gpt-5.6-sol",
+            "effort": "high"
+          },
+          "fullCommands": ["Integration reviews the exact compact receipt and decides whether any bounded proposal earns a separate implementation route." ]
+        },
+        "expectedResult": {
+          "evidencePaths": ["docs/production/evidence/PLAY-089/industrial-l04-v14-delegation-and-return-review-v1.json"],
+          "commitRequired": true,
+          "commitMessagePattern": "PLAY-089:"
+        },
+        "escalationTriggers": [
+          "baseline_or_candidate_identity_mismatch",
+          "cross_lane_semantic_conflict",
+          "failure_outside_focused_scope",
+          "path_outside_claim",
+          "save_or_migration_uncertainty",
+          "shared_contract_or_schema_decision",
+          "subjective_acceptance_required",
+          "two_unsuccessful_repair_attempts",
+          "unresolved_product_visual_or_interaction_judgment"
+        ],
+        "stopCondition": "Stop after one validated compact receipt and one clean PLAY-089 commit, or immediately on identity/hash/path mismatch, need to infer missing metrics, need to poll or rerun gates, any shared/product mutation, or judgment trigger. Do not dispatch, refill, implement, integrate, push, accept, or pin.",
+        "independentReviewer": {
+          "required": true,
+          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+          "model": "gpt-5.6-sol",
+          "effort": "high"
+        },
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {"path": ".agents/skills/optimize-citysim-operating-system/references/triggered-operating-review-policy.json", "sha256": "6a5240d68f38434e8a66fa48094e22851df5fa752b746d0b2fdf7bbe1f497b69"},
+            {"path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-V14-DELEGATION-AND-RETURN-EVENT-V1.json", "sha256": "00e38ca56e8f169cc62b44621d7341d0cd92b74ea5330e4c0fb3b837ab618ff0"}
+          ]
+        }
+      }
+    }
+  ]
+}

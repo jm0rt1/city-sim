@@ -1,6 +1,6 @@
 # PLAY-079 Claim
 
-- **Claim revision:** 9
+- **Claim revision:** 10
 - **Title:** Close the Industrial L4 East execution boundary in parallel
 - **Lane:** World Art East cell
 - **Branch:** `codex/citysim-world-art-east`
@@ -119,3 +119,16 @@ pivot, footprint, materials, all passing proofs, historical evidence, and
 sibling bytes. Stop after one zero-pixel candidate-ready-for-independent-review
 commit. DCC, pixels, normalization, admission, activation, shipping, push,
 integration, and self-acceptance remain prohibited.
+
+## Revision-10 v14 independent-return closure repair
+
+Consume the Integration-published
+`INDUSTRIAL-L04-DIRECTION-CLOSURE-RETURN-REPAIR-V1.json`. Preserve returned
+candidate `b24ccaabc594e8765e8163e5d8636c347a544fd1` and every historical packet.
+Within the existing East-exclusive roots only, complete every schedule, grant,
+session, profile, claim, branch, actual-worker-HEAD, output-root, child-limit,
+and cross-hash binding; exercise an Integration-authored positive fixture and
+all wrong-field adversaries; and assign the complete portal assembly materials,
+including `portal-void` on the recessed back plane. Return one zero-DCC repair
+commit. No Blender child, render, pixel, normalization, admission, activation,
+shipping, push, integration, or self-acceptance is authorized.

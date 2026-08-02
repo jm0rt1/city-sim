@@ -1,0 +1,158 @@
+{
+  "schema": 2,
+  "authorityCommit": "a75e6c2c118f65a4ea43bc2925e8176061a92875",
+  "assignments": [
+    {
+      "modelRouteSha256": "536b1c83e3aef82d26e8b0819a9e3ab715e8f7b840244d34c8beaf9d2d6f1f9a",
+      "modelRoute": {
+        "schema": 2,
+        "routeId": "quality-v2:play-089-north-v14-native-smoke-visual-return-observation-v1",
+        "taskId": "PLAY-089",
+        "packetKind": "mechanical",
+        "classification": "LUNA_MECHANICAL",
+        "model": "gpt-5.6-luna",
+        "effort": "medium",
+        "rationale": "The first native North v14 DCC attempt executed successfully and produced structurally valid pixels, but independent frontier review immediately returned the near-black, underscaled result. One bounded low-cost review can separate necessary visual judgment from preventable proof-boundary and delegation waste, verify all four directional workstreams, and propose at most one measurable operating improvement without changing product or art.",
+        "authority": {
+          "authorityCommit": "a75e6c2c118f65a4ea43bc2925e8176061a92875",
+          "baseCommit": "a75e6c2c118f65a4ea43bc2925e8176061a92875",
+          "claim": {
+            "path": "docs/production/claims/PLAY-089.operating-system-optimization.md",
+            "sha256": "6276c96d96965805df6a1a9c779ecde7dc609824053c7e0eb00e35f67134cc47"
+          },
+          "immutableInputs": [
+            {
+              "path": "docs/production/evidence/INTEGRATION/PLAY-027-NORTH-V14-NATIVE-SMOKE-V3-VISUAL-DISPOSITION.json",
+              "sha256": "1360cc0256357c03783f5d818780a399742b528b7e6beff7c6080f22a5716953"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-NORTH-V14-NATIVE-CONTAINED-SMOKE-V3.json",
+              "sha256": "b3ee44120c09d190b75f255b48ec7d97d9748fa1cf4bdfadcf6c23be722f74fc"
+            },
+            {
+              "path": ".agents/skills/optimize-citysim-operating-system/references/triggered-operating-review-policy.json",
+              "sha256": "28cf49c88064327d15b4813bcb891d70359428027bfa97d2c23d1b8693eddc5f"
+            }
+          ]
+        },
+        "assignment": {
+          "threadId": "019fbe2b-cc97-71f3-a762-63680ac85c76",
+          "branch": "codex/citysim-os-optimization",
+          "worktree": "/Users/James/.codex/worktrees/c92d/city-sim",
+          "expectedHead": "a4e4b7de71a4e1b05ecdc84a8a16c6fd18366241",
+          "featureAuthorThreadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": [
+            ".agents/skills/optimize-citysim-operating-system",
+            "docs/production/evidence/PLAY-089",
+            "docs/production/completed/PLAY-089.operating-system-optimization.md"
+          ],
+          "allowed": [
+            "docs/production/evidence/PLAY-089/industrial-l04-v14-north-native-smoke-visual-return-observation-v1.json"
+          ],
+          "forbidden": [
+            ".agents/skills",
+            "docs/production/evidence/INTEGRATION",
+            "docs/production/claims",
+            "docs/production/decisions",
+            "docs/production/PLAYABLE_BACKLOG.md",
+            "Native/CitySimNative",
+            "script"
+          ]
+        },
+        "boundedDeliverable": "Observe exactly the first_return event keyed by authority 7386c4038f4df390ad9b9751e30ec6da79a11f77, task PLAY-027, route quality-v2:play-027-industrial-l04-v14-native-contained-smoke-v3, trigger first_return, and result ff83b9dcb5b9826dc37631939ac215a633d31136. Use only the bound runtime route, independent visual disposition, exact Git metadata, and compact current task snapshots. Produce one JSON receipt with exposed or null timing, turn, validation, rework, and model metrics; exact North, East, South, and West coverage rows; the distinction between necessary frontier visual judgment and preventable pre-render proof gaps; and exactly NO_CHANGE, PROPOSE, REFILL, RETURN, or ESCALATE. If proposing, name only one bounded, reversible, measurable improvement and do not implement it.",
+        "proofPolicy": {
+          "architectureState": "frozen_reference",
+          "referenceImplementation": {
+            "path": ".agents/skills/optimize-citysim-operating-system/references/triggered-operating-review-policy.json",
+            "sha256": "28cf49c88064327d15b4813bcb891d70359428027bfa97d2c23d1b8693eddc5f"
+          },
+          "deliverableClaims": [
+            "static_structure"
+          ],
+          "focusedProofLevel": "static_only",
+          "fullProofLevel": "static_only",
+          "behavioralCommands": [],
+          "prohibitedSubstitutions": [
+            "ast_shape_for_runtime_success",
+            "manifest_or_prose_for_rendered_pixels",
+            "source_token_presence_for_execution",
+            "unit_tests_for_visual_acceptance",
+            "worker_self_report_for_independent_acceptance"
+          ]
+        },
+        "validation": {
+          "focusedGateOwner": {
+            "threadId": "019fbe2b-cc97-71f3-a762-63680ac85c76",
+            "role": "triggered_visual_return_observer"
+          },
+          "focusedCommands": [
+            "python3 -m json.tool docs/production/evidence/PLAY-089/industrial-l04-v14-north-native-smoke-visual-return-observation-v1.json",
+            "PYTHONDONTWRITEBYTECODE=1 python3 .agents/skills/optimize-citysim-operating-system/scripts/test_validate_triggered_operating_review_policy_v1.py",
+            "git diff --check a4e4b7de71a4e1b05ecdc84a8a16c6fd18366241..HEAD"
+          ],
+          "fullGateOwner": {
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "role": "independent_operating_review_disposition",
+            "model": "gpt-5.6-sol",
+            "effort": "high"
+          },
+          "fullCommands": [
+            "Integration verifies event-key uniqueness, exact four-row coverage, evidence attribution, and that any proposal is bounded, reversible, measurable, and not already implemented."
+          ]
+        },
+        "expectedResult": {
+          "evidencePaths": [
+            "docs/production/evidence/PLAY-089/industrial-l04-v14-north-native-smoke-visual-return-observation-v1.json"
+          ],
+          "commitRequired": true,
+          "commitMessagePattern": "PLAY-089:"
+        },
+        "escalationTriggers": [
+          "baseline_or_candidate_identity_mismatch",
+          "cross_lane_semantic_conflict",
+          "failure_outside_focused_scope",
+          "path_outside_claim",
+          "save_or_migration_uncertainty",
+          "shared_contract_or_schema_decision",
+          "subjective_acceptance_required",
+          "two_unsuccessful_repair_attempts",
+          "unresolved_product_visual_or_interaction_judgment"
+        ],
+        "stopCondition": "Stop after one triggered review receipt and one clean checkpoint. Do not run builds, product tests, DCC, Blender, or real-app QA; do not mutate skills, shared authority, product, art, task authority, routes, or claims; do not dispatch, refill, repair, integrate, push, accept, or pin.",
+        "independentReviewer": {
+          "required": true,
+          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+          "model": "gpt-5.6-sol",
+          "effort": "high"
+        },
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "241903901a3927fe22de4de2d318155fa5855cfcb66776813160639a0d4ffa0d"
+            },
+            {
+              "path": ".agents/skills/optimize-citysim-operating-system/SKILL.md",
+              "sha256": "9ff26ad2f762e93124a0a2c92ff4375eb8932ad7c0bb22184ede9798b2937a44"
+            },
+            {
+              "path": ".agents/skills/optimize-citysim-operating-system/references/observation-and-upgrade-protocol.md",
+              "sha256": "06747c16b985dbd13b8b0e41afc941dcf0d49416369e1f419e81ef627854db31"
+            },
+            {
+              "path": ".agents/skills/optimize-citysim-operating-system/references/triggered-operating-review-policy.json",
+              "sha256": "28cf49c88064327d15b4813bcb891d70359428027bfa97d2c23d1b8693eddc5f"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

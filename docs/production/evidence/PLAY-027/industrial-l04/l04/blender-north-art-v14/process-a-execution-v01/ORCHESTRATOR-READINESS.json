@@ -1,0 +1,18 @@
+{
+  "schema": 2,
+  "status": "STATIC_REFERENCE_CANDIDATE_AWAITING_CONTAINED_SMOKE",
+  "launchReady": false,
+  "executableBehavior": "UNPROVEN",
+  "reason": "Static structure and data flow pass, but no Blender process or contained runtime smoke was authorized or executed",
+  "launcher": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/process-a-execution-v01/launch_north_process_a.py",
+  "child": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/process-a-execution-v01/render_north_process_a_child.py",
+  "childStartSiteCount": 1,
+  "maximumChildStarts": 1,
+  "frozenGeometry": {"components": 33, "objects": 97, "solidMeshSpecs": 96, "voidSpecs": 1, "coveragePercent": 100.0},
+  "registration": {"coordinateBridge": "B(x,y,z)=(z,x,y)", "socketCitySim": [0, 0, -28], "socketBlender": [-28, 0, 0], "socketSource": [896, 704], "pivotSource": [768, 896]},
+  "nextAuthorityOwner": "Integration",
+  "requiredNextGate": "independent line-by-line source review followed by a separately published contained Blender smoke route",
+  "zeroActivity": {"childStarts": 0, "dccProcessCount": 0, "renderCalls": 0, "pixelWrites": 0, "blendFiles": 0, "governedOutputRootsCreated": 0, "fixtureOutputRootsCreatedPerReplay": 1},
+  "sourceAuthority": false,
+  "productionSelected": false
+}

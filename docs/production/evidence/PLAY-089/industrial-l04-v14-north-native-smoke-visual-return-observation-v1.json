@@ -1,0 +1,140 @@
+{
+  "schema": 1,
+  "taskId": "PLAY-089",
+  "result": "PROPOSE",
+  "event": "first_return",
+  "eventKey": {
+    "authorityCommit": "7386c4038f4df390ad9b9751e30ec6da79a11f77",
+    "taskId": "PLAY-027",
+    "routeId": "quality-v2:play-027-industrial-l04-v14-native-contained-smoke-v3",
+    "trigger": "first_return",
+    "candidateOrResultCommit": "ff83b9dcb5b9826dc37631939ac215a633d31136"
+  },
+  "binding": {
+    "carrierCommit": "588f199dc80a4c2634bd23d31a06e0a5262a8f8d",
+    "carrierTree": "e043b1dc95fd134665d84c5051e68e9083bf46a7",
+    "receiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-089-NORTH-V14-VISUAL-RETURN-OBSERVATION-V1.json",
+    "receiptSha256": "2de11293243e49f5f6dd374408b76b310082889c1b1b06ccac64830aa8238958",
+    "observerRouteId": "quality-v2:play-089-north-v14-native-smoke-visual-return-observation-v1",
+    "observerRouteSha256": "536b1c83e3aef82d26e8b0819a9e3ab715e8f7b840244d34c8beaf9d2d6f1f9a",
+    "authorityCommit": "a75e6c2c118f65a4ea43bc2925e8176061a92875",
+    "baseCommit": "a75e6c2c118f65a4ea43bc2925e8176061a92875",
+    "claimPath": "docs/production/claims/PLAY-089.operating-system-optimization.md",
+    "claimSha256": "6276c96d96965805df6a1a9c779ecde7dc609824053c7e0eb00e35f67134cc47",
+    "classification": "LUNA_MECHANICAL",
+    "model": "gpt-5.6-luna",
+    "effort": "medium",
+    "branch": "codex/citysim-os-optimization",
+    "worktree": "/Users/James/.codex/worktrees/c92d/city-sim",
+    "expectedHead": "a4e4b7de71a4e1b05ecdc84a8a16c6fd18366241",
+    "startHead": "a4e4b7de71a4e1b05ecdc84a8a16c6fd18366241",
+    "allowedPath": "docs/production/evidence/PLAY-089/industrial-l04-v14-north-native-smoke-visual-return-observation-v1.json"
+  },
+  "acknowledgements": {
+    "startup": "PASS: expected branch, worktree, HEAD, and clean status",
+    "schema2Route": "PASS: selected observer modelRoute canonical JSON hashes to 536b1c83e3aef82d26e8b0819a9e3ab715e8f7b840244d34c8beaf9d2d6f1f9a",
+    "routeValidator": "PASS: model routing contract",
+    "carrierReceipt": "PASS: exact carrier Git bytes and whole-file SHA-256",
+    "policy": "PASS: triggered policy hash 28cf49c88064327d15b4813bcb891d70359428027bfa97d2c23d1b8693eddc5f",
+    "immutableInputs": "PASS: visual disposition, contained-smoke route, policy, claim, authority, and base bindings resolve",
+    "coverage": "ACK: exact North/East/South/West rows are present; no aggregate-only substitution",
+    "gateOwners": "ACK: focused observer 019fbe2b-cc97-71f3-a762-63680ac85c76; independent operating disposition 019f7686-4491-7891-86a6-95a78d67e5c8",
+    "escalationTriggers": "ACK: all nine mandatory Luna triggers",
+    "stop": "ACK: one receipt and one clean checkpoint; no product/full/DCC/real-app work, shared or skill mutation, dispatch, refill, repair, push, integration, acceptance, or pin"
+  },
+  "returnEvidence": {
+    "candidateCommit": "ff83b9dcb5b9826dc37631939ac215a633d31136",
+    "runtimeDisposition": "PASS",
+    "visualDisposition": "RETURN",
+    "sourceAuthority": false,
+    "productionSelected": false,
+    "childStarts": 1,
+    "dccProcesses": 1,
+    "returnCode": 0,
+    "expectedOutputCount": 8,
+    "rawSha256": "a07d8b12430362a6083eab1ad835cd4bb572d9d089b951d7356b449d6faef6c0",
+    "semanticSha256": "91676d377e22c3df3d77b7bd51510ed6b3d7ca297df2b43ac36111dfa9978378",
+    "processReceiptSha256": "fdbde70bd3cedec84cbe91519bb0d222ec2f7996737cebe294d242552394dd46",
+    "provenanceSha256": "75578d01761ba0cfbe742b130568169620973f7c164740e56c936ace9dc30bba",
+    "imageDimensions": [1536, 1024],
+    "alphaBounds": {"x": 511, "y": 517, "width": 514, "height": 380},
+    "alphaBoundsFraction": {"width": 0.3346, "height": 0.3711},
+    "occupiedCropSignalStats": {"yLow": 16, "yAverage": 20.7357, "yHigh": 28},
+    "frontierFindings": [
+      "near-black authored material, facade, roof, portal, pipe, and machinery detail",
+      "subject too small and too low for hero-direction appearance lock",
+      "freight portal reads as a black void rather than legible frontage",
+      "semantic geometry proof cannot substitute for readable production render"
+    ]
+  },
+  "attribution": {
+    "necessaryFrontierJudgment": "The independent visual RETURN was necessary: structural/runtime success does not establish readability, scale, lighting, or appearance quality.",
+    "preventableProcessGap": "The committed pre-render/static proof exposed no candidate-bound luminance or occupied-frame sentinel capable of returning this output before frontier visual review.",
+    "notClaimed": "No claim is made that visual judgment can be removed, that CitySim source is defective, or that a sentinel would replace independent acceptance."
+  },
+  "coverageRows": [
+    {
+      "taskId": "PLAY-027",
+      "routeId": "quality-v2:play-027-industrial-l04-v14-north-native-contained-smoke-v3",
+      "workstream": "north",
+      "state": "first_return_visual",
+      "evidenceCommit": "ff83b9dcb5b9826dc37631939ac215a633d31136",
+      "disposition": "Runtime PASS, independent visual RETURN; frontier judgment required"
+    },
+    {
+      "taskId": "PLAY-079",
+      "routeId": "quality-v1:play-079-industrial-l04-v14-east-process-a-prelaunch-repair-v2",
+      "workstream": "east",
+      "state": "not_observed_in_this_unique_event",
+      "evidenceCommit": null,
+      "disposition": "Sibling event not observed; no North visual disposition inferred"
+    },
+    {
+      "taskId": "PLAY-080",
+      "routeId": "quality-v1:play-080-industrial-l04-v14-south-process-a-prelaunch-repair-v2",
+      "workstream": "south",
+      "state": "not_observed_in_this_unique_event",
+      "evidenceCommit": null,
+      "disposition": "Sibling event not observed; no North visual disposition inferred"
+    },
+    {
+      "taskId": "PLAY-081",
+      "routeId": "quality-v1:play-081-industrial-l04-v14-west-process-a-prelaunch-repair-v2",
+      "workstream": "west",
+      "state": "not_observed_in_this_unique_event",
+      "evidenceCommit": null,
+      "disposition": "Sibling event not observed; no North visual disposition inferred"
+    }
+  ],
+  "executionAccounting": {
+    "contextBytes": null,
+    "compactPacketBytes": null,
+    "elapsedSeconds": null,
+    "turns": null,
+    "validationSeconds": null,
+    "workerReworkCount": null,
+    "integrationReworkCount": null,
+    "returnCount": null,
+    "idleIntervalSeconds": null,
+    "duplicateFullGateMinutes": null,
+    "modelTelemetry": null,
+    "unavailableMetrics": "The committed visual disposition and route expose no observer elapsed, turn, validation-duration, rework, idle, duplicate-gate, or model telemetry."
+  },
+  "proposal": {
+    "type": "one_bounded_reversible_measurable_improvement",
+    "status": "PROPOSED_NOT_IMPLEMENTED",
+    "name": "candidate-bound pre-frontier luminance and occupied-frame sentinel",
+    "owner": "Integration",
+    "trigger": "After a contained smoke produces its committed image/manifest and before independent frontier visual review",
+    "guard": "Record deterministic luminance and alpha-occupied-frame metrics against Integration-frozen thresholds; return the candidate to the owning repair boundary when below threshold, while retaining frontier visual review for candidates that pass",
+    "measurement": "Compare future contained-smoke returns, frontier visual returns, and pre-frontier sentinel returns; record exposed sentinel duration and duplicate frontier review avoided",
+    "rollback": "Disable the sentinel gate and preserve its receipts; do not alter candidate source, rendering, or acceptance rules",
+    "boundary": "The sentinel supplements but does not replace frontier visual judgment, real-app proof, source admission, deterministic proof, or production selection"
+  },
+  "validation": {
+    "json": "PASS: python3 -m json.tool",
+    "policyTest": "PASS: test_validate_triggered_operating_review_policy_v1.py",
+    "gitDiffCheck": "PASS: git diff --check",
+    "outputPathScope": "PASS: exactly one allowed file"
+  }
+}

@@ -54,7 +54,7 @@ CELL_BINDINGS = {
         Path("docs/production/claims/PLAY-081.world-art-west.md"),
     ),
     "renderer": (
-        "codex/citysim-world-rendering-r4b-current",
+        "codex/citysim-world-rendering",
         "PLAY-073",
         Path("docs/production/claims/PLAY-073.world-rendering.md"),
     ),

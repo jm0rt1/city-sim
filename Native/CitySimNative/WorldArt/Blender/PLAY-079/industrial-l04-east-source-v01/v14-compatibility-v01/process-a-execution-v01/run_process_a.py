@@ -8,6 +8,7 @@ import json
 import os
 import subprocess
 import sys
+import stat
 from pathlib import Path
 
 
@@ -15,6 +16,10 @@ ROOT = Path(__file__).resolve().parent
 REPO = ROOT.parents[7]
 CONTRACT = ROOT / "PROCESS-A-CONTRACT.json"
 PROCESS_ROOT = "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/process-a-execution-v01"
+CLOSURE_CONTRACT = "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTION-EXECUTION-CLOSURE-V1.json"
+CLOSURE_SHA256 = "4a5fdf98ad77082cdd4265ae6f78406f9e26c8dd92443caa8c7e64e6726f91a4"
+NORTH_REFERENCE_COMMIT = "b961d7a6f9f9ad75f69b9156ce657dd4937e5537"
+INTEGRATION_CHECKOUT_ROOT = "/Users/James/Library/Mobile Documents/com~apple~CloudDocs/James's Files/Programming/Python/city-sim"
 
 REQUIRED_PROFILE_FIELDS = (
     ("schema",),
@@ -64,13 +69,13 @@ def _inside(relative: str, prefix: str) -> bool:
     return relative == prefix or relative.startswith(prefix.rstrip("/") + "/")
 
 
-def _safe_repo_path(relative: str, repo: Path) -> Path:
+def _safe_repo_path(relative: str, repo: Path, allow_north: bool = False) -> Path:
     if not isinstance(relative, str) or not relative or Path(relative).is_absolute():
         raise ValueError("profile_path")
     path = Path(relative)
     if any(part in ("", ".", "..") for part in path.parts):
         raise ValueError("profile_path")
-    if any(marker in relative for marker in ("PLAY-027", "PLAY-080", "PLAY-081")):
+    if any(marker in relative for marker in (("PLAY-080", "PLAY-081") if allow_north else ("PLAY-027", "PLAY-080", "PLAY-081"))):
         raise ValueError("profile_sibling_path")
     resolved = (repo / path).resolve()
     if repo.resolve() not in resolved.parents:
@@ -83,10 +88,10 @@ def _safe_repo_path(relative: str, repo: Path) -> Path:
     return repo / path
 
 
-def _read_binding(binding: dict, label: str, repo: Path) -> dict:
+def _read_binding(binding: dict, label: str, repo: Path, allow_north: bool = False) -> dict:
     if not isinstance(binding, dict) or set(binding) - {"path", "sha256", "commit"} or not isinstance(binding.get("sha256"), str):
         raise ValueError(label + "_binding")
-    path = _safe_repo_path(binding.get("path"), repo)
+    path = _safe_repo_path(binding.get("path"), repo, allow_north=allow_north)
     if not path.is_file() or path.is_symlink() or digest(path) != binding["sha256"]:
         raise ValueError(label + "_hash")
     try:
@@ -120,8 +125,8 @@ def _numeric_vector(value: object, length: int, label: str) -> None:
 
 
 def _validate_profile_shape(profile: dict, appearance_ref: dict, profile_ref: dict) -> None:
-    if profile.get("schema") not in {"citysim.play-079.east-v14-source-production-profile.v1", "citysim.play-079.north-v14-source-production-profile.v1"}: raise ValueError("profile_schema")
-    if profile.get("task") != "PLAY-079" or profile.get("direction") not in {"east", "north"} or profile.get("familyRevision") != "v14": raise ValueError("profile_identity")
+    if profile.get("schema") != "citysim.play-027.north-v14-source-production-profile.v1": raise ValueError("profile_schema")
+    if profile.get("task") != "PLAY-027" or profile.get("direction") != "north" or profile.get("familyRevision") != "v14": raise ValueError("profile_identity")
     if profile.get("appearanceLock", {}).get("path") != appearance_ref.get("path"): raise ValueError("profile_appearance_binding")
     for path in REQUIRED_PROFILE_FIELDS:
         _get(profile, path)
@@ -162,8 +167,8 @@ def load_profile_bundle(contract: dict, repo: Path = REPO) -> dict:
     appearance = _read_binding(appearance_ref, "appearance_lock", repo)
     profile = _read_binding(profile_ref, "source_profile", repo)
     _validate_profile_shape(profile, appearance_ref, profile_ref)
-    if appearance.get("schema") not in {"citysim.play-079.east-v14-appearance-lock.v1", "citysim.play-079.north-v14-appearance-lock.v1"} or appearance.get("status") != "PUBLISHED": raise ValueError("appearance_lock_state")
-    if appearance.get("task") != "PLAY-079" or appearance.get("direction") not in {"east", "north"} or appearance.get("familyRevision") != "v14": raise ValueError("appearance_lock_identity")
+    if appearance.get("schema") != "citysim.play-027.north-v14-appearance-lock.v1" or appearance.get("status") != "PUBLISHED": raise ValueError("appearance_lock_state")
+    if appearance.get("task") != "PLAY-027" or appearance.get("direction") != "north" or appearance.get("familyRevision") != "v14": raise ValueError("appearance_lock_identity")
     bound_profile = appearance.get("sourceProductionProfile")
     if not isinstance(bound_profile, dict) or bound_profile.get("path") != profile_ref.get("path") or bound_profile.get("sha256") != profile_ref.get("sha256"): raise ValueError("appearance_profile_mismatch")
     return {"appearanceLock": appearance, "sourceProductionProfile": profile, "appearanceLockRef": appearance_ref, "sourceProductionProfileRef": profile_ref}
@@ -176,15 +181,39 @@ def load_execution_authority(contract: dict, repo: Path = REPO) -> dict:
     authority = _read_binding(binding, "execution_authority", repo)
     if authority.get("schemaVersion") != 1 or authority.get("mode") != "validation_only":
         raise ValueError("execution_authority_schema")
+    if authority.get("integrationCheckoutRoot") != INTEGRATION_CHECKOUT_ROOT:
+        raise ValueError("integration_checkout_root")
+    closure = authority.get("closureContract")
+    if not isinstance(closure, dict) or closure.get("path") != CLOSURE_CONTRACT or closure.get("sha256") != CLOSURE_SHA256:
+        raise ValueError("closure_contract_binding")
     task = authority.get("task", {})
     if task.get("taskId") != "PLAY-079" or task.get("direction") != "east":
         raise ValueError("execution_authority_identity")
-    if task.get("branch") != "codex/citysim-world-art-east" or task.get("claimSha256") != contract["authority"]["claim"]["sha256"]:
+    if task.get("branch") != "codex/citysim-world-art-east" or task.get("claimSha256") != contract["authority"]["claim"]["sha256"] or task.get("workerHead") != contract["authority"]["observedHead"]:
         raise ValueError("execution_authority_claim")
     if task.get("publishedBaseCommit") != contract["authority"]["baseCommit"]:
         raise ValueError("execution_authority_base")
+    documents = authority.get("documents")
+    if not isinstance(documents, dict) or set(documents) != {"schedule", "grant", "integrationSession", "sourceProductionProfile"}:
+        raise ValueError("execution_documents_missing")
+    loaded_docs = {}
+    for name, binding in documents.items():
+        if name != "sourceProductionProfile" and not str(binding.get("path", "")).startswith("docs/production/evidence/INTEGRATION/"):
+            raise ValueError("execution_document_root")
+        if name == "sourceProductionProfile" and (not str(binding.get("path", "")).startswith("Native/CitySimNative/WorldArt/Blender/PLAY-027/") or binding.get("commit") != NORTH_REFERENCE_COMMIT):
+            raise ValueError("north_profile_authority")
+        loaded_docs[name] = _read_binding(binding, name, repo, allow_north=(name == "sourceProductionProfile"))
+    schedule, grant_doc, session = loaded_docs["schedule"], loaded_docs["grant"], loaded_docs["integrationSession"]
+    if schedule.get("task") != "PLAY-079" or schedule.get("direction") != "east" or schedule.get("process") != "A" or schedule.get("slot") != "east:A":
+        raise ValueError("schedule_binding")
+    if grant_doc.get("grantId") != "east:A" or grant_doc.get("direction") != "east" or grant_doc.get("process") != "A":
+        raise ValueError("grant_document_binding")
+    if session.get("sessionId") != grant_doc.get("sessionId") or session.get("scheduleSHA256") != documents["schedule"].get("sha256") or session.get("grantSHA256") != documents["grant"].get("sha256"):
+        raise ValueError("session_cross_binding")
+    if schedule.get("claimSha256") != contract["authority"]["claim"]["sha256"] or schedule.get("workerHead") != contract["authority"]["observedHead"] or schedule.get("outputRoot") != contract["execution"]["outputRoot"]:
+        raise ValueError("schedule_identity")
     grant = authority.get("grant", {})
-    if grant.get("direction") != "east" or grant.get("processId") != contract["execution"]["processId"] or grant.get("slotId") != "east-process-a-slot-1":
+    if grant.get("grantId") != grant_doc.get("grantId") or grant.get("direction") != "east" or grant.get("processId") != contract["execution"]["processId"] or grant.get("slotId") != "east-process-a-slot-1":
         raise ValueError("execution_authority_grant")
     if grant.get("maximumChildStarts") != 1 or grant.get("exactlyOneInvocation") is not True or grant.get("orchestratorOnly") is not True or grant.get("directLowLevelInvocationAllowed") is not False:
         raise ValueError("execution_authority_direct_child")
@@ -197,6 +226,9 @@ def load_execution_authority(contract: dict, repo: Path = REPO) -> dict:
     capability = auth.get("childCapability", {})
     if capability.get("boundGrantId") != grant.get("grantId") or capability.get("oneTime") is not True or capability.get("replayAllowed") is not False:
         raise ValueError("execution_authority_capability")
+    toolchain = authority.get("toolchain", {})
+    if toolchain.get("path") != contract["execution"]["blenderExecutable"] or not isinstance(toolchain.get("sha256"), str) or len(toolchain["sha256"]) != 64 or toolchain.get("factoryStartup") is not True or toolchain.get("disabledAutoexec") is not True or toolchain.get("pythonExitCode") != 1:
+        raise ValueError("toolchain_binding")
     return authority
 
 
@@ -256,11 +288,19 @@ def launch(contract: dict, grant: dict, repo: Path = REPO) -> int:
     profile_bundle = load_profile_bundle(contract, repo)
     authority = load_execution_authority(contract, repo)
     child = ROOT / contract["execution"]["child"]
-    command = [contract["execution"]["blenderExecutable"], "--background", "--factory-startup", "--disable-autoexec", "--python-exit-code", "1", "--python", str(child)]
+    output_path = repo / contract["execution"]["outputRoot"]
+    if output_path.exists() or output_path.is_symlink():
+        raise ValueError("output_reuse")
+    output_path.mkdir(parents=False, exist_ok=False)
+    output_stat = output_path.stat()
+    if not stat.S_ISDIR(output_stat.st_mode):
+        raise ValueError("output_not_directory")
+    command = [authority["toolchain"]["path"], "--background", "--factory-startup", "--disable-autoexec", "--python-exit-code", "1", "--python", str(child)]
     env = {
         "PATH": os.environ.get("PATH", ""),
         "CITYSIM_PROCESS_ID": contract["execution"]["processId"],
         "CITYSIM_OUTPUT_ROOT": str(repo / contract["execution"]["outputRoot"]),
+        "CITYSIM_OUTPUT_ROOT_INODE": str(output_stat.st_ino),
         "CITYSIM_EXECUTION_AUTHORITY_JSON": json.dumps(authority, sort_keys=True, separators=(",", ":")),
         "CITYSIM_GRANT_JSON": json.dumps(grant, sort_keys=True, separators=(",", ":")),
         "CITYSIM_PROFILE_JSON": json.dumps(profile_bundle, sort_keys=True, separators=(",", ":")),

@@ -11,9 +11,10 @@
   "executionAuthority": null,
   "executionReady": false,
   "authority": {
-    "authorityCommit": "9beafc0819a6dfbbf58bba5bd2f48657b1f526a8",
-    "baseCommit": "ae27ac853631194adcb1463beb499b4f3a6bc61e",
-    "observedHead": "ae27ac853631194adcb1463beb499b4f3a6bc61e",
+    "authorityCommit": "3a028a0e10fa71ec8646dd9d0ee1c5248fbff9dc",
+    "baseCommit": "e7e9dcc00c8acebffcd1061affab0193373b1174",
+    "observedHead": "e7e9dcc00c8acebffcd1061affab0193373b1174",
+    "closureContract": {"path":"docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTION-EXECUTION-CLOSURE-V1.json","sha256":"4a5fdf98ad77082cdd4265ae6f78406f9e26c8dd92443caa8c7e64e6726f91a4"},
     "claim": {"path":"docs/production/claims/PLAY-079.world-art-east.md","sha256":"93bcc57e69bc4cd1ff492ce0dfbf5d6244c3782db524e7e16fc0d9dd78431a77"}
   },
   "immutableInputs": {

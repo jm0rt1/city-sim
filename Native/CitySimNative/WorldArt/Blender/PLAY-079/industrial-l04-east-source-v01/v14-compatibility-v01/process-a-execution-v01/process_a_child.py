@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import json
 import math
+import stat
 from pathlib import Path
 
 
@@ -65,7 +66,7 @@ def build_heat_cap(component: dict, object_id: str) -> dict:
 
 
 def build_railing(component: dict, object_id: str) -> dict:
-    return _descriptor(component, object_id, "rail_post_truss", parts=["posts", "top_rail", "mid_rail", "truss_diagonals"])
+    return _descriptor(component, object_id, "rail_post_truss", parts=["posts", "top_rail", "mid_rail", "truss_diagonals"], trussEndpoints=[{"start":[component["bounds"]["xMin"],component["bounds"]["yMin"],component["bounds"]["zMin"]],"end":[component["bounds"]["xMax"],component["bounds"]["yMin"],component["bounds"]["zMax"]]}, {"start":[component["bounds"]["xMin"],component["bounds"]["yMin"],component["bounds"]["zMax"]],"end":[component["bounds"]["xMax"],component["bounds"]["yMin"],component["bounds"]["zMin"]]}])
 
 
 def build_pipe_run(component: dict, object_id: str) -> dict:
@@ -139,12 +140,20 @@ def build_semantic_geometry() -> dict:
             raise ValueError("lowering_object_id_arity")
         builder = BUILDERS[record["builder"]]
         lowered.append(builder(component, record["objectIDs"][0]))
+    portal_ids = {"east-v14-portal-south-jamb", "east-v14-portal-north-jamb", "east-v14-portal-header", "east-v14-freight-void"}
+    portal_components = [components[item_id] for item_id in portal_ids]
+    portal_bounds = {
+        "xMin": min(item["bounds"]["xMin"] for item in portal_components), "xMax": max(item["bounds"]["xMax"] for item in portal_components),
+        "yMin": min(item["bounds"]["yMin"] for item in portal_components), "yMax": max(item["bounds"]["yMax"] for item in portal_components),
+        "zMin": min(item["bounds"]["zMin"] for item in portal_components), "zMax": max(item["bounds"]["zMax"] for item in portal_components),
+    }
     return {
         "components": lowered,
         "camera": design["camera"],
         "registration": design["eastRegistration"],
         "light": design["light"],
         "materialRoles": sorted(set(item["materialRole"] for item in lowered)),
+        "portalAssembly": portal_assembly_plan(portal_bounds),
     }
 
 
@@ -161,6 +170,15 @@ def portal_frame_plan(bounds: dict) -> dict:
         {"id": "reveal", "bounds": {"xMin": x0 + trim, "xMax": x1 - trim, "yMin": y1 - reveal_depth, "yMax": y1, "zMin": z0 + trim, "zMax": z1 - trim}},
         {"id": "inset", "bounds": {"xMin": x0 + trim * 1.5, "xMax": x1 - trim * 1.5, "yMin": y1 - reveal_depth * 1.2, "yMax": y1 - reveal_depth, "zMin": z0 + trim * 1.5, "zMax": z1 - trim * 1.5}},
     ], "void": {"id": "void", "bounds": bounds}}
+
+
+def portal_assembly_plan(bounds: dict) -> dict:
+    plan = portal_frame_plan(bounds)
+    plan["assemblyId"] = "east_v14_freight_portal_assembly"
+    plan["revealSurfaces"] = ["reveal", "inset"]
+    plan["backPlaneMaterial"] = "portal-void"
+    plan["reachableFromLowering"] = True
+    return plan
 
 
 def quarter_elbow_plan(bounds: dict) -> dict:
@@ -193,6 +211,8 @@ def mullion_louver_plan(bounds: dict) -> dict:
 
 
 def validate_runtime_semantics(semantic: dict) -> None:
+    if not validate_portal_assembly(semantic.get("portalAssembly")):
+        raise ValueError("portal_assembly_unreachable")
     for item in semantic["components"]:
         primitive = item["primitive"]
         if primitive == "portal_frame_compound":
@@ -211,6 +231,9 @@ def validate_runtime_semantics(semantic: dict) -> None:
             plan = mullion_louver_plan(item["bounds"])
             if not validate_mullion_plan(plan):
                 raise ValueError("mullion_louver_missing")
+        elif primitive == "rail_post_truss":
+            if not validate_truss_plan(item):
+                raise ValueError("truss_unreachable")
 
 
 def validate_portal_plan(plan: dict) -> bool:
@@ -227,6 +250,11 @@ def validate_loading_plan(plan: dict) -> bool:
 
 def validate_mullion_plan(plan: dict) -> bool:
     return plan.get("mullions") == 3 and len(plan.get("louverSlats", [])) == 4 and all(s.get("bounds", {}).get("xMax", 0) > s.get("bounds", {}).get("xMin", 0) for s in plan["louverSlats"])
+
+
+def validate_truss_plan(item: dict) -> bool:
+    endpoints = item.get("trussEndpoints", [])
+    return len(endpoints) >= 2 and all(endpoint.get("start") != endpoint.get("end") for endpoint in endpoints) and len({tuple(endpoint["start"]) + tuple(endpoint["end"]) for endpoint in endpoints}) == len(endpoints)
 
 
 def _center(bounds: dict) -> tuple[float, float, float]:
@@ -367,12 +395,20 @@ def _add_portal_frame(bpy, item: dict):
     return primary
 
 
+def _add_portal_assembly(bpy, plan: dict):
+    primary = None
+    for piece in plan["pieces"]:
+        obj = _add_box_bounds(bpy, piece["bounds"], "east_v14_freight_portal_" + piece["id"])
+        primary = primary or obj
+    # The aperture is recessed, with a visible dark back plane; no Empty proxy.
+    inset = next(piece for piece in plan["pieces"] if piece["id"] == "inset")
+    back = _add_box_bounds(bpy, inset["bounds"], "east_v14_freight_portal_back_plane")
+    back["portalBackPlane"] = True
+    return primary
+
+
 def _add_portal_void(bpy, item: dict):
-    obj = bpy.data.objects.new(item["objectId"], None)
-    bpy.context.collection.objects.link(obj)
-    obj["intentionalVoid"] = True
-    obj["apertureBounds"] = [item["bounds"][key] for key in ("xMin", "xMax", "yMin", "yMax", "zMin", "zMax")]
-    return obj
+    raise ValueError("portal_empty_forbidden")
 
 
 def _add_mullion_band(bpy, item: dict):
@@ -575,10 +611,16 @@ def construct_blender_scene(bpy, semantic: dict, profile_bundle: dict, output_ro
         bsdf.inputs["Specular IOR Level"].default_value = material_spec["specularIORLevel"]
         materials[role] = material
 
+    portal_done = False
     for item in semantic["components"]:
         primitive = item["primitive"]
         if primitive not in PRIMITIVE_BUILDERS:
             raise ValueError("unsupported_semantic_primitive:" + primitive)
+        if primitive in {"portal_frame_compound", "intentional_portal_void"}:
+            if not portal_done:
+                _add_portal_assembly(bpy, semantic["portalAssembly"])
+                portal_done = True
+            continue
         before = set(bpy.data.objects)
         obj = PRIMITIVE_BUILDERS[primitive](bpy, item)
         created = [candidate for candidate in bpy.data.objects if candidate not in before]
@@ -697,13 +739,28 @@ def main() -> int:
         raise RuntimeError("profile_hash_mismatch")
     if profile_bundle.get("appearanceLockRef", {}).get("sha256") != contract.get("appearanceLock", {}).get("sha256"):
         raise RuntimeError("appearance_hash_mismatch")
+    profile = profile_bundle.get("sourceProductionProfile", {})
+    appearance = profile_bundle.get("appearanceLock", {})
+    if profile.get("schema") != "citysim.play-027.north-v14-source-production-profile.v1" or profile.get("task") != "PLAY-027" or profile.get("direction") != "north" or appearance.get("schema") != "citysim.play-027.north-v14-appearance-lock.v1" or appearance.get("task") != "PLAY-027" or appearance.get("direction") != "north":
+        raise RuntimeError("north_profile_required")
+    if authority.get("closureContract", {}).get("path") != "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTION-EXECUTION-CLOSURE-V1.json":
+        raise RuntimeError("closure_contract_binding")
+    documents = authority.get("documents", {})
+    if set(documents) != {"schedule", "grant", "integrationSession", "sourceProductionProfile"}:
+        raise RuntimeError("execution_documents_missing")
+    if authority.get("toolchain", {}).get("factoryStartup") is not True or authority.get("toolchain", {}).get("disabledAutoexec") is not True:
+        raise RuntimeError("toolchain_binding")
     import bpy  # imported only in the launched Blender child
 
     output = Path(os.environ["CITYSIM_OUTPUT_ROOT"])
-    output.mkdir(parents=True, exist_ok=False)
+    if not output.is_dir() or output.is_symlink() or str(output.stat().st_ino) != os.environ.get("CITYSIM_OUTPUT_ROOT_INODE"):
+        raise RuntimeError("output_inode_mismatch")
     construct_blender_scene(bpy, build_semantic_geometry(), profile_bundle, output)
     return 0
 
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
+def validate_portal_assembly(plan: dict | None) -> bool:
+    return bool(plan and plan.get("reachableFromLowering") and plan.get("assemblyId") == "east_v14_freight_portal_assembly" and validate_portal_plan(plan) and set(plan.get("revealSurfaces", [])) == {"reveal", "inset"} and plan.get("backPlaneMaterial") == "portal-void")

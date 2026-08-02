@@ -11,16 +11,18 @@
   "executionAuthority": null,
   "executionReady": false,
   "authority": {
-    "authorityCommit": "fb994358c58b81fea5a144f67dc0f7316d53b4a5",
-    "baseCommit": "fb994358c58b81fea5a144f67dc0f7316d53b4a5",
-    "observedHead": "f2672462bbf423ffb6746cd0d9a2eb28e9248f6f",
+    "authorityCommit": "6aa0d9ba2d82e375885b03545a492098b94af74f",
+    "baseCommit": "6aa0d9ba2d82e375885b03545a492098b94af74f",
+    "observedHead": "cc216550368684b72af34e2ff1f8f7fad558d04f",
+    "observedHeadRole": "provenance_only",
     "branch": "codex/citysim-world-art-east",
     "closureContract": {"path":"docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTION-EXECUTION-CLOSURE-V1.json","sha256":"4a5fdf98ad77082cdd4265ae6f78406f9e26c8dd92443caa8c7e64e6726f91a4"},
     "returnRepairAuthority": {"path":"docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTION-CLOSURE-RETURN-REPAIR-V1.json","sha256":"078fafb0028dbea461ba91c3f256fd4b8b8d2c1a96b527c593202fee0b26cd03"},
     "liveIdentityAuthority": {"path":"docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-EAST-LIVE-IDENTITY-RETURN-REPAIR-V1.json","sha256":"aef7773c50f0d29e127bb0859f221d1603f3d37d2fe69ff62bc051e1e33a07e6"},
-    "routeId": "quality-v2:play-079-east-v14-live-identity-repair-v1",
-    "routeSha256": "54b8a92f8d1186b28e7f8405ea1969170e450d30e0d76ec9eff9297dc41a6ecd",
-    "claim": {"path":"docs/production/claims/PLAY-079.world-art-east.md","sha256":"48e6efbff5f200de503ac090454c7cd6bd9a650103946c9be3baf709d308751a"}
+    "dynamicIdentityAuthority": {"path":"docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-EAST-DYNAMIC-LIVE-IDENTITY-RETURN-REPAIR-V1.md","sha256":"a530e9e21357931a5ea926e90f9a27e2398ec09b6471207921c91557bc7e1841"},
+    "authoringRoute": {"routeId":"quality-v2:play-079-east-v14-dynamic-identity-repair-v2","sha256":"c0627cb0e098aa28383d1ff978188e9007bb84e1bc7adddd391ea5c17807542b"},
+    "claim": {"path":"docs/production/claims/PLAY-079.world-art-east.md","sha256":"f7e7fb8079032d70446c346bf49a47e68861aab32027940145664c338e2d723f"},
+    "externalAuthorization": {"integrationCheckoutRoot":"/Users/James/Library/Mobile Documents/com~apple~CloudDocs/James's Files/Programming/Python/city-sim","trustedRef":"refs/remotes/origin/master","bindingEnvironment":"CITYSIM_EXECUTION_AUTHORITY_BINDING_JSON","runtimeIdentityFields":["branch","workerHead","claimSha256","routeId","routeSha256"]}
   },
   "immutableInputs": {
     "design": {"path":"Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/V14-COMPATIBILITY-DESIGN.json","sha256":"a51803683b17d5ed8a04a436623a93b7bf6e2804f7746a4f956629f9030792ed"},

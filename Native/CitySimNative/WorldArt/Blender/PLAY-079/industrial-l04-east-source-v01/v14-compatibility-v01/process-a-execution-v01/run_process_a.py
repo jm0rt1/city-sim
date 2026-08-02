@@ -6,6 +6,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import re
 import subprocess
 import sys
 import stat
@@ -22,10 +23,16 @@ RETURN_REPAIR_AUTHORITY = "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-D
 RETURN_REPAIR_SHA256 = "078fafb0028dbea461ba91c3f256fd4b8b8d2c1a96b527c593202fee0b26cd03"
 LIVE_RETURN_REPAIR_AUTHORITY = "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-EAST-LIVE-IDENTITY-RETURN-REPAIR-V1.json"
 LIVE_RETURN_REPAIR_SHA256 = "aef7773c50f0d29e127bb0859f221d1603f3d37d2fe69ff62bc051e1e33a07e6"
-ROUTE_ID = "quality-v2:play-079-east-v14-live-identity-repair-v1"
-ROUTE_SHA256 = "54b8a92f8d1186b28e7f8405ea1969170e450d30e0d76ec9eff9297dc41a6ecd"
+DYNAMIC_REPAIR_AUTHORITY = "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-EAST-DYNAMIC-LIVE-IDENTITY-RETURN-REPAIR-V1.md"
+DYNAMIC_REPAIR_SHA256 = "a530e9e21357931a5ea926e90f9a27e2398ec09b6471207921c91557bc7e1841"
+AUTHORING_ROUTE_ID = "quality-v2:play-079-east-v14-dynamic-identity-repair-v2"
+AUTHORING_ROUTE_SHA256 = "c0627cb0e098aa28383d1ff978188e9007bb84e1bc7adddd391ea5c17807542b"
+CLAIM_PATH = "docs/production/claims/PLAY-079.world-art-east.md"
+CLAIM_SHA256 = "f7e7fb8079032d70446c346bf49a47e68861aab32027940145664c338e2d723f"
 NORTH_REFERENCE_COMMIT = "b961d7a6f9f9ad75f69b9156ce657dd4937e5537"
 INTEGRATION_CHECKOUT_ROOT = "/Users/James/Library/Mobile Documents/com~apple~CloudDocs/James's Files/Programming/Python/city-sim"
+TRUSTED_AUTHORITY_REF = "refs/remotes/origin/master"
+AUTHORITY_BINDING_ENV = "CITYSIM_EXECUTION_AUTHORITY_BINDING_JSON"
 
 REQUIRED_PROFILE_FIELDS = (
     ("schema",),
@@ -193,64 +200,140 @@ def resolve_live_identity(repo: Path = REPO) -> dict:
 
 def validate_live_identity(contract: dict, repo: Path = REPO) -> dict:
     actual = resolve_live_identity(repo)
-    expected = contract.get("authority", {})
-    if actual["head"] != expected.get("observedHead") or actual["branch"] != expected.get("branch"):
-        raise ValueError("live_head_or_branch_mismatch")
-    claim = expected.get("claim", {})
+    provenance = contract.get("authority", {})
+    if provenance.get("observedHeadRole") != "provenance_only" or not re.fullmatch(r"[0-9a-f]{40}", str(provenance.get("observedHead", ""))):
+        raise ValueError("observed_head_provenance")
+    if actual["branch"] != provenance.get("branch"):
+        raise ValueError("live_branch_mismatch")
+    claim = provenance.get("claim", {})
+    if claim != {"path": CLAIM_PATH, "sha256": CLAIM_SHA256}:
+        raise ValueError("live_claim_binding")
     claim_path = _safe_repo_path(claim.get("path"), repo)
     if not claim_path.is_file() or claim_path.is_symlink() or digest(claim_path) != claim.get("sha256"):
         raise ValueError("live_claim_hash_mismatch")
-    live_authority = expected.get("liveIdentityAuthority")
-    if live_authority != {"path": LIVE_RETURN_REPAIR_AUTHORITY, "sha256": LIVE_RETURN_REPAIR_SHA256}:
-        raise ValueError("live_identity_authority_binding")
-    if expected.get("routeId") != ROUTE_ID or expected.get("routeSha256") != ROUTE_SHA256:
-        raise ValueError("live_route_binding")
+    if provenance.get("dynamicIdentityAuthority") != {"path": DYNAMIC_REPAIR_AUTHORITY, "sha256": DYNAMIC_REPAIR_SHA256}:
+        raise ValueError("dynamic_identity_authority_binding")
+    if provenance.get("authoringRoute") != {"routeId": AUTHORING_ROUTE_ID, "sha256": AUTHORING_ROUTE_SHA256}:
+        raise ValueError("authoring_route_binding")
+    if provenance.get("externalAuthorization") != {"integrationCheckoutRoot": INTEGRATION_CHECKOUT_ROOT, "trustedRef": TRUSTED_AUTHORITY_REF, "bindingEnvironment": AUTHORITY_BINDING_ENV, "runtimeIdentityFields": ["branch", "workerHead", "claimSha256", "routeId", "routeSha256"]}:
+        raise ValueError("external_authorization_binding")
     return actual
 
 
-def load_execution_authority(contract: dict, repo: Path = REPO) -> dict:
-    binding = contract.get("executionAuthority")
-    if binding is None:
+def _git_bytes(repo: Path, args: list[str], label: str) -> bytes:
+    try:
+        return subprocess.check_output(["git", "-C", str(repo), *args], stderr=subprocess.DEVNULL)
+    except (OSError, subprocess.CalledProcessError) as error:
+        raise ValueError(label) from error
+
+
+def _git_text(repo: Path, args: list[str], label: str) -> str:
+    return _git_bytes(repo, args, label).decode("utf-8").strip()
+
+
+def _read_git_binding(binding: dict, label: str, authority_repo: Path, allowed_prefix: str) -> dict:
+    if not isinstance(binding, dict) or set(binding) != {"path", "sha256", "commit"}:
+        raise ValueError(label + "_binding")
+    relative = binding.get("path")
+    commit = binding.get("commit")
+    expected_sha = binding.get("sha256")
+    if not isinstance(relative, str) or not _inside(relative, allowed_prefix) or Path(relative).is_absolute() or any(part in ("", ".", "..") for part in Path(relative).parts):
+        raise ValueError(label + "_path")
+    if not isinstance(commit, str) or not re.fullmatch(r"[0-9a-f]{40}", commit) or not isinstance(expected_sha, str) or not re.fullmatch(r"[0-9a-f]{64}", expected_sha):
+        raise ValueError(label + "_binding")
+    trusted_ref = _git_text(authority_repo, ["rev-parse", TRUSTED_AUTHORITY_REF], label + "_trusted_ref")
+    try:
+        subprocess.run(["git", "-C", str(authority_repo), "merge-base", "--is-ancestor", commit, trusted_ref], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    except (OSError, subprocess.CalledProcessError) as error:
+        raise ValueError(label + "_non_ancestral") from error
+    object_spec = commit + ":" + relative
+    if _git_text(authority_repo, ["cat-file", "-t", object_spec], label + "_git_object") != "blob":
+        raise ValueError(label + "_non_blob")
+    tree_row = _git_text(authority_repo, ["ls-tree", commit, "--", relative], label + "_git_mode")
+    if not tree_row or tree_row.split(None, 1)[0] not in {"100644", "100755"}:
+        raise ValueError(label + "_git_mode")
+    payload = _git_bytes(authority_repo, ["show", object_spec], label + "_git_blob")
+    if hashlib.sha256(payload).hexdigest() != expected_sha:
+        raise ValueError(label + "_hash")
+    try:
+        value = json.loads(payload.decode("utf-8"))
+    except (UnicodeDecodeError, ValueError) as error:
+        raise ValueError(label + "_json") from error
+    if not isinstance(value, dict):
+        raise ValueError(label + "_shape")
+    return value
+
+
+def _binding_from_environment() -> dict:
+    raw = os.environ.get(AUTHORITY_BINDING_ENV)
+    if not raw:
         raise ValueError("execution_authority_missing")
-    authority = _read_binding(binding, "execution_authority", repo)
-    if authority.get("schemaVersion") != 1 or authority.get("mode") != "validation_only":
+    try:
+        binding = json.loads(raw)
+    except ValueError as error:
+        raise ValueError("execution_authority_binding") from error
+    if not isinstance(binding, dict) or set(binding) != {"path", "sha256", "commit"}:
+        raise ValueError("execution_authority_binding")
+    return binding
+
+
+def _profile_bundle_from_authority(profile_authority: dict, authority_repo: Path) -> dict:
+    appearance_ref = profile_authority.get("appearanceLock")
+    profile_ref = profile_authority.get("sourceProductionProfile")
+    appearance = _read_git_binding(appearance_ref, "appearance_lock", authority_repo, "Native/CitySimNative/WorldArt/Blender/PLAY-027/")
+    profile = _read_git_binding(profile_ref, "source_profile", authority_repo, "Native/CitySimNative/WorldArt/Blender/PLAY-027/")
+    _validate_profile_shape(profile, appearance_ref, profile_ref)
+    if appearance.get("schema") != "citysim.play-027.north-v14-appearance-lock.v1" or appearance.get("status") != "PUBLISHED":
+        raise ValueError("appearance_lock_state")
+    if appearance.get("task") != "PLAY-027" or appearance.get("direction") != "north" or appearance.get("familyRevision") != "v14":
+        raise ValueError("appearance_lock_identity")
+    if appearance.get("sourceProductionProfile") != {"path": profile_ref["path"], "sha256": profile_ref["sha256"]}:
+        raise ValueError("appearance_profile_mismatch")
+    return {"appearanceLock": appearance, "sourceProductionProfile": profile, "appearanceLockRef": appearance_ref, "sourceProductionProfileRef": profile_ref}
+
+
+def load_execution_authority(contract: dict, repo: Path = REPO, binding: dict | None = None, authority_repo: Path | None = None) -> dict:
+    live = validate_live_identity(contract, repo)
+    authority_root = Path(INTEGRATION_CHECKOUT_ROOT) if authority_repo is None else authority_repo
+    authority_binding = _binding_from_environment() if binding is None else binding
+    authority = _read_git_binding(authority_binding, "execution_authority", authority_root, "docs/production/evidence/INTEGRATION/")
+    if authority.get("schemaVersion") != 2 or authority.get("mode") != "validation_only":
         raise ValueError("execution_authority_schema")
     if authority.get("integrationCheckoutRoot") != INTEGRATION_CHECKOUT_ROOT:
         raise ValueError("integration_checkout_root")
     closure = authority.get("closureContract")
     if not isinstance(closure, dict) or closure.get("path") != CLOSURE_CONTRACT or closure.get("sha256") != CLOSURE_SHA256:
         raise ValueError("closure_contract_binding")
-    return_repair = contract.get("authority", {}).get("liveIdentityAuthority")
-    if not isinstance(return_repair, dict) or return_repair.get("path") != LIVE_RETURN_REPAIR_AUTHORITY or return_repair.get("sha256") != LIVE_RETURN_REPAIR_SHA256:
-        raise ValueError("return_repair_authority_binding")
+    if authority.get("trustRef") != TRUSTED_AUTHORITY_REF:
+        raise ValueError("authority_trust_ref")
     task = authority.get("task", {})
     if task.get("taskId") != "PLAY-079" or task.get("direction") != "east":
         raise ValueError("execution_authority_identity")
-    if task.get("branch") != "codex/citysim-world-art-east" or task.get("claimSha256") != contract["authority"]["claim"]["sha256"] or task.get("workerHead") != contract["authority"]["observedHead"] or task.get("routeId") != ROUTE_ID or task.get("routeSha256") != ROUTE_SHA256:
+    if task.get("branch") != live["branch"] or task.get("workerHead") != live["head"] or task.get("claimSha256") != CLAIM_SHA256:
         raise ValueError("execution_authority_claim")
     if task.get("publishedBaseCommit") != contract["authority"]["baseCommit"]:
         raise ValueError("execution_authority_base")
+    if not isinstance(task.get("routeId"), str) or not task["routeId"].startswith("quality-v2:") or not re.fullmatch(r"[0-9a-f]{64}", str(task.get("routeSha256", ""))):
+        raise ValueError("execution_authority_route")
     documents = authority.get("documents")
     if not isinstance(documents, dict) or set(documents) != {"schedule", "grant", "integrationSession", "sourceProductionProfile"}:
         raise ValueError("execution_documents_missing")
     loaded_docs = {}
-    for name, binding in documents.items():
-        if name != "sourceProductionProfile" and not str(binding.get("path", "")).startswith("docs/production/evidence/INTEGRATION/"):
-            raise ValueError("execution_document_root")
-        if name == "sourceProductionProfile" and (not str(binding.get("path", "")).startswith("Native/CitySimNative/WorldArt/Blender/PLAY-027/") or binding.get("commit") != NORTH_REFERENCE_COMMIT):
-            raise ValueError("north_profile_authority")
-        loaded_docs[name] = _read_binding(binding, name, repo, allow_north=(name == "sourceProductionProfile"))
-    schedule, grant_doc, session = loaded_docs["schedule"], loaded_docs["grant"], loaded_docs["integrationSession"]
+    for name, document_binding in documents.items():
+        loaded_docs[name] = _read_git_binding(document_binding, name, authority_root, "docs/production/evidence/INTEGRATION/")
+    schedule, grant_doc, session, profile_authority = loaded_docs["schedule"], loaded_docs["grant"], loaded_docs["integrationSession"], loaded_docs["sourceProductionProfile"]
     if schedule.get("task") != "PLAY-079" or schedule.get("direction") != "east" or schedule.get("process") != "A" or schedule.get("slot") != "east:A":
         raise ValueError("schedule_binding")
-    for document in (schedule, grant_doc, session):
+    for document in (schedule, grant_doc, session, profile_authority):
         if any(document.get(field) != schedule.get(field) for field in ("task", "direction", "process", "slot", "branch", "workerHead", "claimSha256", "routeId", "routeSha256", "outputRoot")):
             raise ValueError("document_identity_cross_binding")
+    if any(schedule.get(field) != task.get(task_field) for field, task_field in (("branch", "branch"), ("workerHead", "workerHead"), ("claimSha256", "claimSha256"), ("routeId", "routeId"), ("routeSha256", "routeSha256"))):
+        raise ValueError("document_authority_cross_binding")
     if grant_doc.get("grantId") != "east:A" or grant_doc.get("direction") != "east" or grant_doc.get("process") != "A":
         raise ValueError("grant_document_binding")
     if session.get("sessionId") != grant_doc.get("sessionId") or session.get("scheduleSHA256") != documents["schedule"].get("sha256") or session.get("grantSHA256") != documents["grant"].get("sha256"):
         raise ValueError("session_cross_binding")
-    if schedule.get("claimSha256") != contract["authority"]["claim"]["sha256"] or schedule.get("workerHead") != contract["authority"]["observedHead"] or schedule.get("outputRoot") != contract["execution"]["outputRoot"]:
+    if schedule.get("claimSha256") != CLAIM_SHA256 or schedule.get("workerHead") != live["head"] or schedule.get("branch") != live["branch"] or schedule.get("outputRoot") != contract["execution"]["outputRoot"]:
         raise ValueError("schedule_identity")
     grant = authority.get("grant", {})
     if grant.get("grantId") != grant_doc.get("grantId") or grant.get("direction") != "east" or grant.get("processId") != contract["execution"]["processId"] or grant.get("slotId") != "east-process-a-slot-1":
@@ -269,10 +352,11 @@ def load_execution_authority(contract: dict, repo: Path = REPO) -> dict:
     toolchain = authority.get("toolchain", {})
     if toolchain.get("path") != contract["execution"]["blenderExecutable"] or not isinstance(toolchain.get("sha256"), str) or len(toolchain["sha256"]) != 64 or toolchain.get("factoryStartup") is not True or toolchain.get("disabledAutoexec") is not True or toolchain.get("pythonExitCode") != 1:
         raise ValueError("toolchain_binding")
-    return authority
+    profile_bundle = _profile_bundle_from_authority(profile_authority, authority_root)
+    return {"authority": authority, "profileBundle": profile_bundle, "liveIdentity": live, "binding": authority_binding}
 
 
-def validate_forwarded_authority(contract: dict, authority: dict, grant: dict, env: dict) -> None:
+def validate_forwarded_authority(contract: dict, authority: dict, grant: dict, profile_bundle: dict, env: dict) -> None:
     if env.get("CITYSIM_PROCESS_ID") != contract["execution"]["processId"]:
         raise ValueError("process_id_mismatch")
     if env.get("CITYSIM_OUTPUT_ROOT") != str(REPO / contract["execution"]["outputRoot"]):
@@ -283,31 +367,31 @@ def validate_forwarded_authority(contract: dict, authority: dict, grant: dict, e
         raise ValueError("grant_forward_mismatch")
     if grant.get("processId") != contract["execution"]["processId"] or grant.get("direction") != "east" or grant.get("slotId") != "east-process-a-slot-1":
         raise ValueError("grant_binding")
-    profile_bundle = json.loads(env.get("CITYSIM_PROFILE_JSON", "{}"))
-    if profile_bundle.get("sourceProductionProfileRef", {}).get("sha256") != contract["sourceProductionProfile"]["sha256"]:
+    forwarded_profile = json.loads(env.get("CITYSIM_PROFILE_JSON", "{}"))
+    if forwarded_profile != profile_bundle or not re.fullmatch(r"[0-9a-f]{64}", str(profile_bundle.get("sourceProductionProfileRef", {}).get("sha256", ""))):
         raise ValueError("profile_forward_mismatch")
 
 
-def validate_contract(contract: dict, repo: Path = REPO) -> dict:
+def validate_contract(contract: dict, repo: Path = REPO, binding: dict | None = None, authority_repo: Path | None = None) -> dict:
     if contract.get("schema") != "citysim.play-079.east-v14-process-a-contract.v1": raise ValueError("contract_schema")
     if contract.get("task") != "PLAY-079" or contract.get("direction") != "east" or contract.get("familyRevision") != "v14": raise ValueError("identity")
-    validate_live_identity(contract, repo)
-    for binding in contract["immutableInputs"].values():
-        path = repo / binding["path"]
-        if not path.is_file() or path.is_symlink() or digest(path) != binding["sha256"]: raise ValueError("immutable_input")
+    if contract.get("appearanceLock") is not None or contract.get("sourceProductionProfile") is not None or contract.get("executionAuthority") is not None or contract["execution"].get("launchGrant") is not None:
+        raise ValueError("task_owned_runtime_authority_forbidden")
+    for immutable_binding in contract["immutableInputs"].values():
+        path = repo / immutable_binding["path"]
+        if not path.is_file() or path.is_symlink() or digest(path) != immutable_binding["sha256"]: raise ValueError("immutable_input")
     if contract["execution"]["direction"] != "east" or contract["execution"]["childLimit"] != 1 or contract["execution"]["dccSlot"] != 1: raise ValueError("execution_binding")
     output = contract["execution"]["outputRoot"]
     if not _inside(output, PROCESS_ROOT) or output == PROCESS_ROOT: raise ValueError("output_root")
     output_path = repo / output
     if output_path.exists() or output_path.is_symlink(): raise ValueError("output_reuse")
-    load_profile_bundle(contract, repo)
-    load_execution_authority(contract, repo)
-    if contract["execution"]["launchGrant"] is None: raise ValueError("launch_grant_missing")
-    if contract.get("executionReady") is not True: raise ValueError("execution_not_ready")
-    return contract
+    bundle = load_execution_authority(contract, repo, binding=binding, authority_repo=authority_repo)
+    validate_grant(contract, bundle["authority"]["grant"], bundle["liveIdentity"], bundle["authority"])
+    return bundle
 
 
-def validate_grant(contract: dict, grant: dict) -> None:
+def validate_grant(contract: dict, grant: dict, live_identity: dict, authority: dict) -> None:
+    task = authority.get("task", {})
     expected = {
         "scheduleId": contract["execution"]["scheduleId"],
         "processId": contract["execution"]["processId"],
@@ -315,7 +399,11 @@ def validate_grant(contract: dict, grant: dict) -> None:
         "dccSlot": 1,
         "childLimit": 1,
         "baseCommit": contract["authority"]["baseCommit"],
-        "observedHead": contract["authority"]["observedHead"],
+        "workerHead": live_identity["head"],
+        "branch": live_identity["branch"],
+        "claimSha256": CLAIM_SHA256,
+        "routeId": task.get("routeId"),
+        "routeSha256": task.get("routeSha256"),
         "outputRoot": contract["execution"]["outputRoot"],
     }
     if any(grant.get(key) != value for key, value in expected.items()): raise ValueError("grant_binding")
@@ -323,11 +411,11 @@ def validate_grant(contract: dict, grant: dict) -> None:
     if grant.get("attempt") != 1 or grant.get("authenticated") is not True: raise ValueError("grant_authentication")
 
 
-def launch(contract: dict, grant: dict, repo: Path = REPO) -> int:
-    validate_contract(contract, repo)
-    validate_grant(contract, grant)
-    profile_bundle = load_profile_bundle(contract, repo)
-    authority = load_execution_authority(contract, repo)
+def launch(contract: dict, repo: Path = REPO) -> int:
+    bundle = validate_contract(contract, repo)
+    authority = bundle["authority"]
+    profile_bundle = bundle["profileBundle"]
+    grant = authority["grant"]
     child = ROOT / contract["execution"]["child"]
     output_path = repo / contract["execution"]["outputRoot"]
     if output_path.exists() or output_path.is_symlink():
@@ -346,7 +434,7 @@ def launch(contract: dict, grant: dict, repo: Path = REPO) -> int:
         "CITYSIM_GRANT_JSON": json.dumps(grant, sort_keys=True, separators=(",", ":")),
         "CITYSIM_PROFILE_JSON": json.dumps(profile_bundle, sort_keys=True, separators=(",", ":")),
     }
-    validate_forwarded_authority(contract, authority, grant, env)
+    validate_forwarded_authority(contract, authority, grant, profile_bundle, env)
     proc = subprocess.Popen(command, cwd=str(repo), env=env)
     return proc.wait()
 
@@ -361,11 +449,7 @@ def main(argv: list[str]) -> int:
             return 2
         print("READY: exact Integration authority and grant required; zero child started")
         return 0
-    grant = contract.get("execution", {}).get("launchGrant")
-    if not isinstance(grant, dict):
-        print("BLOCKED:launch_grant_missing")
-        return 2
-    return launch(contract, grant)
+    return launch(contract)
 
 
 if __name__ == "__main__":

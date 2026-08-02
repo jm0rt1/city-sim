@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "taskId": "PLAY-075",
+  "packetKind": "candidate-neutral-industrial-l04-v14-preregistration",
+  "status": "preregistered_candidate_neutral",
+  "route": {
+    "carrier": "9aa5be01d72f0471538d0efd1620f1a50cb0f815",
+    "dispatchPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-INDUSTRIAL-L04-V14-PRELOCK-FANOUT-V1.json",
+    "dispatchSha256": "2b2558835d5382d15f92f58a538c5795f82d3875867e17dd686b23dc8d738e00",
+    "routeId": "quality-v1:play-075-industrial-l04-v14-preregistration-v1",
+    "canonicalRouteSha256": "553fd6d9868702d401490313e3d5a0077dd97b8f2d7d757d091610f708f8e19b",
+    "classification": "LUNA_MECHANICAL",
+    "model": "gpt-5.6-luna",
+    "effort": "medium"
+  },
+  "authority": {
+    "authorityCommit": "1d7c6510fd99299c88d3f4412caa982e020c1941",
+    "baseCommit": "ea26fdac05169e0375b65d7c5dc65b4fbe00d977",
+    "claimPath": "docs/production/claims/PLAY-075.playtest-quality.md",
+    "claimSha256": "5dd3aeef1ffe8abf5e0c93486e27fe2d15495854be096fb105bff55a48dc0362",
+    "familyContractPath": "docs/production/decisions/CONTRACT-021-parallel-directional-art-cells.md",
+    "familyContractSha256": "f80844c928d904498510b8b151381f40315e072d52d81695aafcd6b91081ae4c",
+    "northHeroAuthorityPath": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-NORTH-V14-HERO-REBUILD-AUTHORITY-V1.md",
+    "northHeroAuthoritySha256": "e439d9f8de08474bbaf31c2308491dad486ec953bf45605c043731f68b44edbb"
+  },
+  "frozenInputs": {
+    "familyPreregistrationPath": "docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/PREREGISTRATION.md",
+    "familyPreregistrationSha256": "4d09aa6d78363fa1fec1d980e372193278a96fc63326e4ebf983280723231aff",
+    "fixturePath": "docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/fixtures/industrial-l03-directional-mature-city-v1.json",
+    "fixtureSha256": "b8875422a277b59f6797aef03ca93175a502df5963a5c972684ca47be40e7aa5",
+    "fixtureManifestPath": "docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/fixtures/industrial-l03-directional-mature-city-manifest-v1.json",
+    "fixtureManifestSha256": "48b23638572993f76c087c95113475b2c0e3d59e89525a12fcb7ee38005f2a2d",
+    "cameraPreflightPath": "docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/production-quality-rubric-v2/FIXTURE-CAMERA-PREFLIGHT.json",
+    "cameraPreflightSha256": "d8cf5a73c4f23e13aa6be939eedda303627856f4c202cf1e38ac81f9a24ac985",
+    "rubricPath": "docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/production-quality-rubric-v2/RUBRIC-CONTRACT.json",
+    "rubricSha256": "4fda22ccc76c2cf5548858524bf72226c462f0ebc1103e06b730a9c274274aba",
+    "gateContractPath": "docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/final-staged-app-gate-v1/GATE-CONTRACT.json",
+    "gateContractSha256": "90ab775234c736e538286dd49f84cdc6175d4a2b97600a298fb9d9b2d5738d51"
+  },
+  "fixtureAndCamera": {
+    "runtimeDirection": "North",
+    "logicalIdentity": "industrial_l04_v0_north",
+    "fixtureRole": "accepted-L3 mature-city baseline; future L4 derivative must change only declared North level",
+    "regular": {"decoratedPixels": [1278, 768], "lods": ["city", "neighborhood", "block"], "frameKey": "0", "overlay": "City", "focusCity": false, "details": "closed"},
+    "compact": {"contentPixels": [900, 600], "decoratedPixels": [900, 652], "lods": ["city", "neighborhood", "block"], "frameKey": "0", "overlay": "City", "focusCity": false, "details": "closed"},
+    "camera": {"rotationDegrees": 0, "panAllowed": false, "numericCenter": null},
+    "captureOrder": ["North", "East", "South", "West"],
+    "selectionTruth": "road-facing runtime socket and visible player selection; no DCC labels or hidden transforms"
+  },
+  "rubric": {
+    "sourceScale": ["color", "literal-grayscale", "native-2x", "exact-192"],
+    "checks": ["silhouette", "portal/frontage", "ground contact", "pivot/socket registration", "material/value separation", "LOD survival", "no fallback/alias/mirror/rotation/recolor", "no crop/overlap/mixed fidelity"],
+    "interaction": ["pointer placement and selection", "keyboard map focus parity", "command-guide Escape", "compact Focus City"],
+    "scriptedMeasurements": ["sha256 identities", "decoded bounds/alpha/hidden-RGB", "luma and contrast", "socket distance", "overlap/alias/transform gates", "repeat receipt identity"],
+    "automaticRejects": ["candidate drift or missing 4/4 packet", "any fallback/alias/mirror/rotation/recolor", "crop, detached contact, socket mismatch, overlap, mixed fidelity, or compact collapse", "missing regular/900x600 state or LOD", "non-null unadmitted candidate/build/process/result/score"]
+  },
+  "evidence": {"root": "docs/production/evidence/PLAY-075/industrial-l4-v14-preregistration-v1", "candidateReceipt": null, "rendererReceipt": null, "stagedBuild": null, "stagedBundle": null, "process": null, "result": null, "score": null, "disposition": null},
+  "stopConditions": ["candidate or renderer receipt is non-null before Integration admission", "app launch, scoring, final QA, aggregate gate, or subjective judgment requested", "path/hash/branch/claim mismatch", "product/art/renderer/shared authority mutation required", "mandatory escalation trigger fires", "any path outside this authorized evidence root"]
+}

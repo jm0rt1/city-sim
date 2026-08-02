@@ -1,0 +1,114 @@
+{
+  "schema": 1,
+  "stage": "north-v13-process-a-v02-integration-direct",
+  "task": "PLAY-027",
+  "route": {
+    "routeId": "quality-v1:play-027-north-current-head-preflight-luna-v1",
+    "canonicalSHA256": "d1c3a1c8b2c6afd747b42641d29afc5e4d85320f267ffe19c89efc447cdb1940",
+    "carrierCommit": "5d84d521b3b25f9ddf11d7b88e81c885a5e86946",
+    "receiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-027-073-TECHNICAL-RETURNS-LUNA-V2.json",
+    "receiptSHA256": "e6ff8f69553ece4a322d60e976a124b2bc0a1ecf566f72586b1a0215a67b161a",
+    "authorityCommit": "5ac54021604e25117f4ccb63bc0914209724754c",
+    "baseCommit": "5ac54021604e25117f4ccb63bc0914209724754c",
+    "executionBaseHEAD": "d25d7a2767d92a8628849ca3911d28f4203dd674"
+  },
+  "claim": {
+    "path": "docs/production/claims/PLAY-027.world-art.md",
+    "sha256": "bf0b167a1d1e6f7007d609aeb657917fe9d3d0866d5a7a6e36b0e5a32faefa6f",
+    "revision": 10
+  },
+  "assignment": {
+    "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+    "branch": "codex/citysim-world-art",
+    "worktree": "/Users/James/.codex/worktrees/0648/city-sim"
+  },
+  "identity": {
+    "logicalBuildingID": "industrial_l04",
+    "variantID": "variant-0",
+    "viewDirection": "north",
+    "processID": "A",
+    "slotID": "north:A",
+    "sourceRevision": "blender-art-v13-design-authority",
+    "sceneGeometryID": "industrial-l04-north-v13-portal-crown-foundry",
+    "samplingContract": "blender-cycles-cpu-v13-design-authority",
+    "sourceAuthority": false,
+    "productionSelected": false
+  },
+  "inputs": [
+    {"path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/DESIGN-SCENE.json", "sha256": "0f7a8e40a07f5c2b7320ab42fe5e1bcb2dc23fb508ff6b04e8ea49cf6c974060"},
+    {"path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/DESIGN-MATERIALS.json", "sha256": "c8179b77a184e41b723e26b34e7da2ef256b09e93b54a47e76cc5103f22b8cab"},
+    {"path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/lowering-v01/LOWERING-CONTRACT.json", "sha256": "41125b2ee110085451a787879825cefe9a724cafa8ed3347db5a2688b063e111"},
+    {"path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-direction-bridge-v06/MAPPING-CONTRACT.json", "sha256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7"},
+    {"path": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/design-authority-v01/DESIGN-AUTHORITY.json", "sha256": "1b1006403081c3933c54451b6c506af74493a2ac3b253fdd9f1f79098d7c1bed"},
+    {"path": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/lowering-v01/ACTUAL-CAMERA-ZERO-PIXEL-PROOF.json", "sha256": "e4bbe982e47f4bf96703e75848d8bdad1d9c0cc2aa4d227749005fa039273470"}
+  ],
+  "output": {
+    "sourceRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-v02",
+    "evidenceRoot": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-v02",
+    "futureProcessRoot": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a",
+    "allowedRoots": [
+      "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-v02",
+      "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-v02"
+    ],
+    "forbiddenPrefixes": [
+      "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-prelaunch-v01",
+      "Native/CitySimNative/WorldArt/Blender/PLAY-079",
+      "Native/CitySimNative/WorldArt/Blender/PLAY-080",
+      "Native/CitySimNative/WorldArt/Blender/PLAY-081",
+      "Native/CitySimNative/Rendering",
+      "Native/CitySimNative/Resources",
+      "docs/production/evidence/INTEGRATION",
+      "docs/production/claims"
+    ]
+  },
+  "integrationDirect": {
+    "schedulePathRequired": true,
+    "scheduleCreatedByWorker": false,
+    "processReceiptPathRequired": true,
+    "processReceiptCreatedByWorker": false,
+    "attemptMarkerCreatedByWorker": false,
+    "childConstructionAllowedInZeroChild": false,
+    "executableForIntegration": true,
+    "maximumDCCChildStarts": 1,
+    "maximumProcessAStarts": 1,
+    "executionOwner": "Integration",
+    "workerMode": "validation-only"
+  },
+  "directLaunch": {
+    "scheduleSchema": 1,
+    "receiptSchema": 1,
+    "schedulePublicationCommitRequired": true,
+    "schedulePublicationBlobRequired": true,
+    "receiptMustBindScheduleBytes": true,
+    "receiptMustBindWorkerHead": true,
+    "attemptMarkerPath": "docs/production/evidence/INTEGRATION/PLAY-027-NORTH-V13-PROCESS-A-ATTEMPT.json",
+    "attemptMarkerOutsideOutputRoot": true,
+    "attemptMarkerMustPreexist": true,
+    "attemptMarkerAtomicConsumption": true,
+    "attemptMarkerStates": ["available", "consumed"],
+    "childRequiresConsumedAttempt": true,
+    "outputRootMustBeAbsentBeforeLaunch": true,
+    "fixedBlenderExecutable": "/Applications/Blender.app/Contents/MacOS/Blender",
+    "fixedBlenderArgs": ["--background", "--factory-startup", "--disable-autoexec", "--python-exit-code", "1"],
+    "childFlag": "--integration-direct",
+    "childOutputs": ["raw.png", "provenance.json", "OBJECT-MANIFEST.json", "INPUT-BINDINGS.json"],
+    "childStartMarkerSuffix": ".child-start",
+    "captureMode": "communicate",
+    "maximumSubprocessStarts": 1
+  },
+  "registration": {
+    "footprintWorldXZ": [[-28, -28], [28, -28], [28, 28], [-28, 28]],
+    "footprintSource": [[768, 640], [1024, 768], [768, 896], [512, 768]],
+    "pivotWorld": [28, 0, 28],
+    "pivotSource": [768, 896],
+    "socketWorld": [0, 0, -28],
+    "socketSource": [896, 704],
+    "camera": "fixed v13 design-authority camera; no prelaunch mutation"
+  },
+  "forbiddenActions": [
+    "issue-schedule", "create-lease", "generate-secret", "create-attempt-marker",
+    "start-child", "import-bpy", "run-blender", "run-dcc", "render",
+    "emit-pixels", "normalize", "run-b-or-c", "mutate-siblings",
+    "mutate-shared-or-shipping", "set-source-authority", "self-accept"
+  ]
+}

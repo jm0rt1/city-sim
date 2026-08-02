@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "direction": "north",
+  "process": "A",
+  "routeId": "quality-v2:play-027-industrial-l04-v14-north-contained-smoke-recovery-v2",
+  "carrierCommit": "6340186b28b00d6c219cee6bdea2373687f73159",
+  "expectedWorkerHead": "08c971f38328552ef336dad7bade05f4fe4109ad",
+  "outputRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/process-a-execution-v01/process-a-output",
+  "attempt": {
+    "count": 1,
+    "layer": "launcher-and-blender-child",
+    "launcherEntered": true,
+    "childStarted": true,
+    "blenderInvoked": true,
+    "dccProcessCount": 1,
+    "processAPixels": 0,
+    "childReturnCode": -11,
+    "capturedStdoutBytes": 141,
+    "capturedStderrBytes": 228
+  },
+  "disposition": "CONTAINED_SMOKE_BLENDER_CRASH",
+  "launcherError": "LaunchError: Blender child failed: returncode=-11, stdout=141, stderr=228",
+  "outputInventory": [],
+  "partialOutput": false,
+  "quality": {
+    "visualQuality": "UNPROVEN",
+    "sourceAuthority": false,
+    "productionSelected": false,
+    "determinism": "UNPROVEN"
+  },
+  "failurePacketComplete": true
+}

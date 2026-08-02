@@ -83,6 +83,27 @@ CLOSURE_ZERO_ACTIVITY = {
     "sourcePackets": 0,
     "productionReceipts": 0,
 }
+MODEL_ROUTE_CARRIER_COMMIT = "4f041092dc6bd90da858ea959d6d5c5554ecdfe4"
+MODEL_ROUTE_PATH = (
+    "docs/production/evidence/INTEGRATION/"
+    "MODEL-ROUTING-PLAY-081-WEST-V14-EXACT-CLOSURE-R2.json"
+)
+MODEL_ROUTE_FILE_SHA256 = (
+    "0d62e26ff49e995e519b1f9d04d4ed9f46c812b2f65bea4877dca88be1122027"
+)
+MODEL_ROUTE_ID = "quality-v2:play-081-west-v14-exact-closure-r2"
+MODEL_ROUTE_SHA256 = (
+    "16d011163da66a72637aa0f9ca3bde30d65c7f0dc97ed8c1d434f96bdb253809"
+)
+MODEL_ROUTE_AUTHORITY_COMMIT = "b4dcbd0418176d680ecf2d993c16649fc401a92e"
+MODEL_ROUTE_EXPECTED_HEAD = "aae1e799f1eaabba88f1c1e85c3974e778eab69d"
+SOURCE_STAGE_SCHEMA_PATH = (
+    "docs/production/evidence/INTEGRATION/"
+    "industrial-l04-source-stage-handoff-schema-v2.json"
+)
+SOURCE_STAGE_SCHEMA_SHA256 = (
+    "85f6a2824c273a1e63354df79a97e5a59c2909a68771613b325664d649ac53ec"
+)
 
 
 class OrchestrationError(ValueError):
@@ -672,7 +693,14 @@ def committed_input_errors(
         return errors + [f"{label}:unsafe-path:{error}"], None
     if hashlib.sha256(captured).hexdigest() != expected_sha:
         errors.append(f"{label}:working-tree-sha256")
-    head = git_output(root, "rev-parse", "HEAD")
+    head_result = subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        cwd=root,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    head = head_result.stdout.strip() if head_result.returncode == 0 else None
     if head is None or not is_ancestor(root, commit, head):
         errors.append(f"{label}:commit-not-in-head")
     tree_result = subprocess.run(
@@ -707,6 +735,424 @@ def committed_input_errors(
     elif file_result.stdout != captured:
         errors.append(f"{label}:working-tree-content-drift")
     return sorted(set(errors)), captured
+
+
+def _claim_binding(root: Path) -> tuple[str | None, int | None]:
+    """Read the live West claim instead of accepting a caller-supplied claim."""
+    path = root / "docs/production/claims/PLAY-081.world-art-west.md"
+    if not path.is_file() or path.is_symlink():
+        return None, None
+    payload = path.read_text(encoding="utf-8")
+    match = re.search(r"Claim revision:\s*(?:\*\*)?\s*(\d+)", payload)
+    return sha256(path), int(match.group(1)) if match else None
+
+
+def _git_blob(root: Path, commit: str, relative: str) -> bytes | None:
+    """Read one exact committed carrier blob without trusting the worktree."""
+    if HEX_40.fullmatch(commit) is None or not relative.startswith(INTEGRATION_PREFIX):
+        return None
+    result = subprocess.run(
+        ["git", "show", f"{commit}:{relative}"],
+        cwd=root,
+        check=False,
+        capture_output=True,
+    )
+    return result.stdout if result.returncode == 0 else None
+
+
+def validate_model_route_and_source_schema(
+    root: Path,
+    execution_contract: dict[str, Any],
+) -> tuple[list[str], dict[str, Any]]:
+    """Resolve the exact schema-2 route carrier and source-stage schema bytes."""
+    errors: list[str] = []
+    route_binding = execution_contract.get("modelRouteAuthority")
+    if route_binding != {
+        "carrierCommit": MODEL_ROUTE_CARRIER_COMMIT,
+        "path": MODEL_ROUTE_PATH,
+        "sha256": MODEL_ROUTE_FILE_SHA256,
+        "routeId": MODEL_ROUTE_ID,
+        "routeSha256": MODEL_ROUTE_SHA256,
+    }:
+        errors.append("model-route:binding")
+        route_binding = {}
+    route_bytes = _git_blob(
+        root,
+        route_binding.get("carrierCommit", MODEL_ROUTE_CARRIER_COMMIT),
+        route_binding.get("path", MODEL_ROUTE_PATH),
+    )
+    if route_bytes is None:
+        errors.append("model-route:carrier-blob")
+        route_bytes = b""
+    if hashlib.sha256(route_bytes).hexdigest() != MODEL_ROUTE_FILE_SHA256:
+        errors.append("model-route:carrier-sha256")
+    try:
+        packet = decode_json_object(route_bytes, "model-route-carrier")
+    except (OrchestrationError, json.JSONDecodeError) as error:
+        errors.append(f"model-route:json:{error}")
+        packet = {}
+    assignments = packet.get("assignments")
+    rows = (
+        [row for row in assignments if isinstance(row, dict)
+         and isinstance(row.get("modelRoute"), dict)
+         and row["modelRoute"].get("routeId") == MODEL_ROUTE_ID]
+        if isinstance(assignments, list) else []
+    )
+    if len(rows) != 1:
+        errors.append("model-route:selected-row")
+        row = {}
+        route = {}
+    else:
+        row = rows[0]
+        route = row["modelRoute"]
+        if row.get("modelRouteSha256") != MODEL_ROUTE_SHA256:
+            errors.append("model-route:row-hash")
+        canonical_route = json.dumps(
+            route, sort_keys=True, separators=(",", ":"), ensure_ascii=False
+        ).encode("utf-8")
+        if hashlib.sha256(canonical_route).hexdigest() != MODEL_ROUTE_SHA256:
+            errors.append("model-route:canonical-hash")
+        if route.get("schema") != 2 or route.get("taskId") != "PLAY-081":
+            errors.append("model-route:schema-identity")
+        if route.get("classification") != "LUNA_LOCAL_DEBUG":
+            errors.append("model-route:classification")
+        if (route.get("model"), route.get("effort")) != (
+            "gpt-5.6-luna", "max"
+        ):
+            errors.append("model-route:runtime")
+        authority = route.get("authority", {})
+        if authority.get("authorityCommit") != MODEL_ROUTE_AUTHORITY_COMMIT or authority.get("baseCommit") != MODEL_ROUTE_AUTHORITY_COMMIT:
+            errors.append("model-route:authority")
+        assignment = route.get("assignment", {})
+        expected_head = assignment.get("expectedHead")
+        live_head = git_output(root, "rev-parse", "HEAD")
+        if assignment.get("branch") != execution_contract.get("branch"):
+            errors.append("model-route:branch")
+        if expected_head != MODEL_ROUTE_EXPECTED_HEAD:
+            errors.append("model-route:expected-head")
+        if live_head is None or not is_ancestor(root, expected_head or "", live_head):
+            errors.append("model-route:live-head")
+        claim = authority.get("claim", {})
+        claim_sha, claim_revision = _claim_binding(root)
+        if claim.get("path") != "docs/production/claims/PLAY-081.world-art-west.md":
+            errors.append("model-route:claim-path")
+        if claim.get("sha256") != claim_sha:
+            errors.append("model-route:claim-sha256")
+        if claim_revision != 12:
+            errors.append("model-route:claim-revision")
+
+    schema_binding = execution_contract.get("sourceStageSchemaAuthority")
+    if schema_binding != {
+        "path": SOURCE_STAGE_SCHEMA_PATH,
+        "sha256": SOURCE_STAGE_SCHEMA_SHA256,
+    }:
+        errors.append("source-schema:binding")
+    try:
+        schema_bytes = capture_regular_file_no_follow(root, SOURCE_STAGE_SCHEMA_PATH)
+    except (OSError, OrchestrationError, PathSafetyError) as error:
+        errors.append(f"source-schema:capture:{error}")
+        schema_bytes = b""
+    if hashlib.sha256(schema_bytes).hexdigest() != SOURCE_STAGE_SCHEMA_SHA256:
+        errors.append("source-schema:sha256")
+    try:
+        source_schema = decode_json_object(schema_bytes, "source-stage-schema")
+        Draft202012Validator.check_schema(source_schema)
+    except Exception as error:
+        errors.append(f"source-schema:invalid:{error}")
+        source_schema = {}
+    return sorted(set(errors)), {
+        "routeFileSHA256": hashlib.sha256(route_bytes).hexdigest(),
+        "routeSHA256": MODEL_ROUTE_SHA256,
+        "routeId": MODEL_ROUTE_ID,
+        "carrierCommit": MODEL_ROUTE_CARRIER_COMMIT,
+        "sourceStageSchemaPath": SOURCE_STAGE_SCHEMA_PATH,
+        "sourceStageSchemaSHA256": hashlib.sha256(schema_bytes).hexdigest(),
+        "sourceStageSchemaVersion": source_schema.get("$id"),
+    }
+
+
+def validate_integration_document_closure(
+    root: Path,
+    execution_contract: dict[str, Any],
+    runner_contract: dict[str, Any],
+) -> tuple[list[str], dict[str, Any]]:
+    """Parse and cross-bind the complete Integration document set.
+
+    The production contract remains fail-closed while its inputs are absent.
+    When a test or future Integration instance binds documents, every value is
+    read from the committed blob identified by the contract; no caller-supplied
+    schedule, grant, profile, or session dictionary is trusted.
+    """
+    errors: list[str] = []
+    route_result: dict[str, Any] = {}
+    if execution_contract.get("modelRouteAuthority") is not None or execution_contract.get("sourceStageSchemaAuthority") is not None:
+        route_errors, route_result = validate_model_route_and_source_schema(
+            root, execution_contract
+        )
+        errors.extend(route_errors)
+    authority_errors, captures = validate_contract_authorities(
+        root, execution_contract, runner_contract
+    )
+    errors.extend(authority_errors)
+    if errors:
+        return sorted(set(errors)), {}
+    names = (
+        "scheduleSchema",
+        "scheduleAuthority",
+        "launchGrantA",
+        "launchGrantB",
+        "launchGrantC",
+        "appearanceLock",
+        "lockedMaterialMapping",
+        "sourceProductionProfile",
+        "globalExecutionReceipt",
+    )
+    documents: dict[str, Any] = {}
+    for name in names:
+        payload = captures.get(name)
+        if payload is None:
+            errors.append(f"document:{name}:missing-capture")
+            continue
+        try:
+            documents[name] = decode_json_object(payload, name)
+        except OrchestrationError as error:
+            errors.append(f"document:{name}:json:{error}")
+    if errors:
+        return sorted(set(errors)), documents
+
+    claim_sha, claim_revision = _claim_binding(root)
+    branch = git_output(root, "branch", "--show-current")
+    worker_head = git_output(root, "rev-parse", "HEAD")
+    if claim_sha is None or claim_revision is None:
+        errors.append("document-closure:claim-not-readable")
+    if branch != execution_contract.get("branch"):
+        errors.append("document-closure:branch")
+    if worker_head is None:
+        errors.append("document-closure:worker-head")
+
+    schema = documents["scheduleSchema"]
+    if set(schema) != {
+        "documentType", "schema", "schemaVersion", "taskId", "direction",
+        "claimSHA256", "claimRevision", "branch", "workerHead", "sessionId",
+    } or schema.get("documentType") != "scheduleSchema":
+        errors.append("document:scheduleSchema:shape")
+
+    authority = documents["scheduleAuthority"]
+    if set(authority) != {
+        "documentType", "schedule", "scheduleSchemaSHA256", "sessionId",
+        "taskId", "direction", "claimSHA256", "claimRevision", "branch",
+        "workerHead", "publishedBase",
+    } or authority.get("documentType") != "scheduleAuthority":
+        errors.append("document:scheduleAuthority:shape")
+    schedule = authority.get("schedule")
+    if isinstance(schedule, dict):
+        errors.extend(
+            f"document:scheduleAuthority:{error}"
+            for error in validate_schedule(schedule, execution_contract, repository_root=root)
+        )
+    else:
+        errors.append("document:scheduleAuthority:schedule")
+
+    session = documents["globalExecutionReceipt"]
+    if set(session) != {
+        "documentType", "sessionId", "taskId", "direction", "claimSHA256",
+        "claimRevision", "branch", "workerHead", "publishedBase",
+        "scheduleAuthoritySHA256", "grantSHA256", "appearanceLockSHA256",
+        "lockedMaterialMappingSHA256", "sourceProductionProfileSHA256",
+    } or session.get("documentType") != "integrationSession":
+        errors.append("document:globalExecutionReceipt:shape")
+
+    appearance = documents["appearanceLock"]
+    if set(appearance) != {
+        "documentType", "state", "sessionId", "taskId", "direction",
+        "claimSHA256", "claimRevision", "branch", "workerHead",
+        "publishedBase", "sourceSha256", "decodedRgbaSha256",
+    } or appearance.get("documentType") != "appearanceLock":
+        errors.append("document:appearanceLock:shape")
+    materials = documents["lockedMaterialMapping"]
+    if set(materials) != {
+        "documentType", "state", "sessionId", "taskId", "direction",
+        "claimSHA256", "claimRevision", "branch", "workerHead",
+        "publishedBase", "appearanceLockSHA256", "roles",
+    } or materials.get("documentType") != "lockedMaterialMapping":
+        errors.append("document:lockedMaterialMapping:shape")
+    profile = documents["sourceProductionProfile"]
+    if set(profile) != {
+        "documentType", "schema", "sessionId", "taskId", "direction",
+        "claimSHA256", "claimRevision", "branch", "workerHead",
+        "publishedBase", "scheduleAuthoritySHA256", "appearanceLockSHA256",
+        "lockedMaterialMappingSHA256", "sourceStageSchemaSHA256",
+    } or profile.get("documentType") != "sourceProductionProfile":
+        errors.append("document:sourceProductionProfile:shape")
+
+    grants: dict[str, dict[str, Any]] = {}
+    for process_id in ("A", "B", "C"):
+        name = f"launchGrant{process_id}"
+        document = documents[name]
+        if set(document) != {
+            "documentType", "grant", "sessionId", "taskId", "direction",
+            "claimSHA256", "claimRevision", "branch", "workerHead",
+            "publishedBase", "scheduleAuthoritySHA256", "orchestrator",
+            "runner", "outputRoot", "rawRoot", "semanticRoot", "evidenceRoot",
+            "maximumChildStarts",
+        } or document.get("documentType") != "launchGrant":
+            errors.append(f"document:{name}:shape")
+            continue
+        grant = document.get("grant")
+        if not isinstance(grant, dict):
+            errors.append(f"document:{name}:grant")
+            continue
+        grants[process_id] = grant
+        if isinstance(schedule, dict):
+            errors.extend(
+                f"document:{name}:{error}"
+                for error in validate_allocation(
+                    schedule,
+                    grant,
+                    execution_contract,
+                    runner_contract,
+                    process_id,
+                    repository_root=root,
+                )
+            )
+
+    expected_hashes = {
+        "scheduleSchemaSHA256": hashlib.sha256(
+            captures["scheduleSchema"]
+        ).hexdigest(),
+        "scheduleAuthoritySHA256": hashlib.sha256(
+            captures["scheduleAuthority"]
+        ).hexdigest(),
+        "appearanceLockSHA256": hashlib.sha256(
+            captures["appearanceLock"]
+        ).hexdigest(),
+        "lockedMaterialMappingSHA256": hashlib.sha256(
+            captures["lockedMaterialMapping"]
+        ).hexdigest(),
+        "sourceProductionProfileSHA256": hashlib.sha256(
+            captures["sourceProductionProfile"]
+        ).hexdigest(),
+        "grantSHA256": {
+            process_id: hashlib.sha256(captures[f"launchGrant{process_id}"]).hexdigest()
+            for process_id in ("A", "B", "C")
+        },
+    }
+    if schema.get("schema") != SCHEDULE_SCHEMA:
+        errors.append("document:scheduleSchema:schema")
+    if authority.get("scheduleSchemaSHA256") != expected_hashes["scheduleSchemaSHA256"]:
+        errors.append("document:scheduleAuthority:schema-hash")
+    if session.get("scheduleAuthoritySHA256") != expected_hashes["scheduleAuthoritySHA256"]:
+        errors.append("document:globalExecutionReceipt:schedule-hash")
+    if session.get("grantSHA256") != expected_hashes["grantSHA256"]:
+        errors.append("document:globalExecutionReceipt:grant-hash")
+    if session.get("appearanceLockSHA256") != expected_hashes["appearanceLockSHA256"]:
+        errors.append("document:globalExecutionReceipt:appearance-hash")
+    if session.get("lockedMaterialMappingSHA256") != expected_hashes["lockedMaterialMappingSHA256"]:
+        errors.append("document:globalExecutionReceipt:material-hash")
+    if session.get("sourceProductionProfileSHA256") != expected_hashes["sourceProductionProfileSHA256"]:
+        errors.append("document:globalExecutionReceipt:profile-hash")
+    if profile.get("scheduleAuthoritySHA256") != expected_hashes["scheduleAuthoritySHA256"]:
+        errors.append("document:sourceProductionProfile:schedule-hash")
+    if profile.get("appearanceLockSHA256") != expected_hashes["appearanceLockSHA256"]:
+        errors.append("document:sourceProductionProfile:appearance-hash")
+    if profile.get("lockedMaterialMappingSHA256") != expected_hashes["lockedMaterialMappingSHA256"]:
+        errors.append("document:sourceProductionProfile:material-hash")
+    if profile.get("sourceStageSchemaSHA256") != SOURCE_STAGE_SCHEMA_SHA256:
+        errors.append("document:sourceProductionProfile:source-schema-hash")
+    if materials.get("appearanceLockSHA256") != expected_hashes["appearanceLockSHA256"]:
+        errors.append("document:lockedMaterialMapping:appearance-hash")
+    for process_id in ("A", "B", "C"):
+        if (
+            documents[f"launchGrant{process_id}"].get(
+                "scheduleAuthoritySHA256"
+            )
+            != expected_hashes["scheduleAuthoritySHA256"]
+        ):
+            errors.append(
+                f"document:launchGrant{process_id}:schedule-authority-hash"
+            )
+    if any(grant.get("scheduleSha256") != json_sha256(schedule) for grant in grants.values()) if isinstance(schedule, dict) else True:
+        errors.append("document:grant:schedule-content-hash")
+
+    common_documents = [
+        schema,
+        authority,
+        session,
+        appearance,
+        materials,
+        profile,
+        *[documents[f"launchGrant{process_id}"] for process_id in ("A", "B", "C")],
+    ]
+    document_heads = {
+        document.get("workerHead")
+        for document in common_documents
+        if isinstance(document.get("workerHead"), str)
+    }
+    if len(document_heads) != 1:
+        errors.append("document-closure:worker-head-consistency")
+    document_head = next(iter(document_heads), None)
+    if not isinstance(document_head, str) or HEX_40.fullmatch(document_head) is None:
+        errors.append("document-closure:worker-head-ancestry")
+    if document_head != worker_head:
+        errors.append("document-closure:worker-head-live")
+    for document in common_documents:
+        for field, expected in (
+            ("taskId", execution_contract.get("taskId")),
+            ("direction", execution_contract.get("direction")),
+            ("claimSHA256", claim_sha),
+            ("claimRevision", claim_revision),
+            ("branch", branch),
+            ("workerHead", document_head),
+        ):
+            if document.get(field) != expected:
+                errors.append(f"document-closure:{field}")
+    if isinstance(schedule, dict):
+        for process_id, grant in grants.items():
+            expected_job = execution_contract["westProcesses"][process_id]
+            if grant.get("jobId") != expected_job["jobId"] or grant.get("queueOrdinal") != expected_job["ordinal"]:
+                errors.append(f"document:launchGrant{process_id}:queue-binding")
+            expected = execution_contract["westProcesses"][process_id]
+            document = documents[f"launchGrant{process_id}"]
+            for field, value in (
+                ("orchestrator", DEFAULT_HIGH_LEVEL_ORCHESTRATOR),
+                ("runner", DEFAULT_LOW_LEVEL_RUNNER),
+                ("outputRoot", expected["directory"]),
+                ("rawRoot", expected["rawRoot"]),
+                ("semanticRoot", expected["semanticRoot"]),
+                ("evidenceRoot", expected["evidenceRoot"]),
+                ("maximumChildStarts", 1),
+            ):
+                if document.get(field) != value:
+                    errors.append(f"document:launchGrant{process_id}:{field}")
+    published_base = authority.get("publishedBase")
+    published_base_documents = [
+        authority,
+        session,
+        appearance,
+        materials,
+        profile,
+        *[documents[f"launchGrant{process_id}"] for process_id in ("A", "B", "C")],
+    ]
+    if any(
+        document.get("publishedBase") != published_base
+        for document in published_base_documents
+    ):
+        errors.append("document-closure:publishedBase")
+    if not isinstance(published_base, str) or not is_ancestor(root, published_base, worker_head or ""):
+        errors.append("document-closure:published-base")
+    if any(document.get("sessionId") != session.get("sessionId") for document in common_documents):
+        errors.append("document-closure:session-id")
+    return sorted(set(errors)), {
+        "branch": branch,
+        "workerHead": worker_head,
+        "claimSHA256": claim_sha,
+        "claimRevision": claim_revision,
+        "schedule": schedule,
+        "grants": grants,
+        "sessionId": session.get("sessionId"),
+        "documentHashes": expected_hashes,
+        "externalAuthority": route_result,
+    }
 
 
 def validate_contract_authorities(

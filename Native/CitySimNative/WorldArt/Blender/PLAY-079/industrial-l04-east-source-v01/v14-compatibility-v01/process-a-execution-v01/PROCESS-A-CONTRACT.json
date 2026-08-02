@@ -1,0 +1,69 @@
+{
+  "schema": "citysim.play-079.east-v14-process-a-contract.v1",
+  "task": "PLAY-079",
+  "direction": "east",
+  "family": "industrial_l04",
+  "familyRevision": "v14",
+  "stage": "PROCESS_A_PRELAUNCH",
+  "sourceRevision": "east-v14-compatibility-v1",
+  "appearanceLock": null,
+  "sourceProductionProfile": null,
+  "executionAuthority": null,
+  "executionReady": false,
+  "authority": {
+    "authorityCommit": "6aa0d9ba2d82e375885b03545a492098b94af74f",
+    "baseCommit": "6aa0d9ba2d82e375885b03545a492098b94af74f",
+    "observedHead": "cc216550368684b72af34e2ff1f8f7fad558d04f",
+    "observedHeadRole": "provenance_only",
+    "branch": "codex/citysim-world-art-east",
+    "closureContract": {"path":"docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTION-EXECUTION-CLOSURE-V1.json","sha256":"4a5fdf98ad77082cdd4265ae6f78406f9e26c8dd92443caa8c7e64e6726f91a4"},
+    "returnRepairAuthority": {"path":"docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTION-CLOSURE-RETURN-REPAIR-V1.json","sha256":"078fafb0028dbea461ba91c3f256fd4b8b8d2c1a96b527c593202fee0b26cd03"},
+    "liveIdentityAuthority": {"path":"docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-EAST-LIVE-IDENTITY-RETURN-REPAIR-V1.json","sha256":"aef7773c50f0d29e127bb0859f221d1603f3d37d2fe69ff62bc051e1e33a07e6"},
+    "dynamicIdentityAuthority": {"path":"docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-EAST-DYNAMIC-LIVE-IDENTITY-RETURN-REPAIR-V1.md","sha256":"a530e9e21357931a5ea926e90f9a27e2398ec09b6471207921c91557bc7e1841"},
+    "authoringRoute": {"routeId":"quality-v2:play-079-east-v14-dynamic-identity-repair-v2","sha256":"c0627cb0e098aa28383d1ff978188e9007bb84e1bc7adddd391ea5c17807542b"},
+    "claim": {"path":"docs/production/claims/PLAY-079.world-art-east.md","sha256":"f7e7fb8079032d70446c346bf49a47e68861aab32027940145664c338e2d723f"},
+    "externalAuthorization": {"integrationCheckoutRoot":"/Users/James/Library/Mobile Documents/com~apple~CloudDocs/James's Files/Programming/Python/city-sim","trustedRef":"refs/remotes/origin/master","bindingEnvironment":"CITYSIM_EXECUTION_AUTHORITY_BINDING_JSON","runtimeIdentityFields":["branch","workerHead","claimSha256","routeId","routeSha256"]}
+  },
+  "immutableInputs": {
+    "design": {"path":"Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/V14-COMPATIBILITY-DESIGN.json","sha256":"a51803683b17d5ed8a04a436623a93b7bf6e2804f7746a4f956629f9030792ed"},
+    "lowering": {"path":"Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/LOWERING.json","sha256":"98205ddff98d9412bdac66d4cf67297b0d2809d01f61fcce62fb869eac647a7d"}
+  },
+  "semanticContract": {
+    "citySimSocket": [28.0,0.0,0.0],
+    "sourceSocket": [896.0,832.0],
+    "sourceGroundPivot": [768.0,896.0],
+    "dccFootprint": {"width":56.0,"depth":56.0,"halfExtent":28.0},
+    "camera": {"projection":"orthographic","position":[96.0,96.0,101.24557426726288],"target":[0.0,0.0,22.861902498201186],"orthoScale":237.5878601074218,"resolution":[1536,1024],"literalResolution":[192,128],"shift":[0.0,0.08333333333333333]},
+    "light": {"keyDirection":"northwest","contactShadowDirection":"southeast"},
+    "materialRoles": ["warm-weathered-masonry","formed-concrete","dark-painted-steel","roof-edge-metal","glazing-louver","portal-void","safety-oxide","hot-process","contact-shadow"]
+  },
+  "execution": {
+    "mode": "delegated_authenticated",
+    "scheduleId": "industrial-l04-v14-process-a-prelaunch-v1",
+    "processId": "east-process-a",
+    "direction": "east",
+    "dccSlot": 1,
+    "childLimit": 1,
+    "launcher": "run_process_a.py",
+    "child": "process_a_child.py",
+    "blenderExecutable": "/Applications/Blender.app/Contents/MacOS/Blender",
+    "outputRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/process-a-execution-v01/output-v01",
+    "evidenceRoot": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/process-a-execution-v01",
+    "launchGrant": null,
+    "pixelRenderingAllowed": false,
+    "sourceReady": false,
+    "productionSelected": false
+  },
+  "frozenRender": {
+    "engine":"CYCLES",
+    "device":"CPU",
+    "threads":1,
+    "samples":64,
+    "seed":17,
+    "maxBounces":4,
+    "transparentFilm":true,
+    "colorManagement":{"displayDevice":"sRGB","viewTransform":"AgX","look":"Medium High Contrast","exposure":0.0,"gamma":1.0}
+  },
+  "forbidden": ["siblingGeometry","network","ImageGen","normalization","shippingAtlas","rendererRuntime","directRunner","secondChild"],
+  "zeroChildBoundary": {"childStarts":0,"blenderInvocations":0,"dccInvocations":0,"renderInvocations":0,"pixelFilesCreated":0,"blendFilesCreated":0,"normalizationRuns":0}
+}

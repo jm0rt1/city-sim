@@ -172,6 +172,9 @@ def assert_mesh_topology(packet: dict[str, Any]) -> dict[str, Any]:
     mesh_set = CHILD.build_mesh_specs(packet["manifest"])
     assert len(mesh_set["solidSpecs"]) == 96
     assert mesh_set["voidIDs"] == ["v14-monumental-portal-void::empty-aperture"]
+    assert mesh_set["closedOutwardObjects"] == 95 and mesh_set["openTwoSidedObjects"] == 1
+    assert len(mesh_set["orientationReports"]) == 96
+    assert all(item["passes"] and item["inwardFaces"] == 0 for item in mesh_set["orientationReports"])
     assert set(mesh_set["supportedKinds"]) == {item["geometryKind"] for item in packet["manifest"]["objects"]}
     assert all(spec["builder"] != "generic" for spec in mesh_set["solidSpecs"])
     assert all(len(spec["vertices"]) >= 4 and len(spec["faces"]) >= 1 for spec in mesh_set["solidSpecs"])
@@ -232,17 +235,29 @@ def main() -> None:
         "resolution": [1536, 1024], "resolutionPercentage": 100,
         "pixelAspect": [1, 1],
         "image": {"fileFormat": "PNG", "colorMode": "RGBA", "colorDepth": "8", "compression": 15},
-        "colorManagement": {"displayDevice": "sRGB", "viewTransform": "Standard", "look": "Medium High Contrast", "exposure": 0.0, "gamma": 1.0},
+        "colorManagement": {"displayDevice": "sRGB", "viewTransform": "Standard", "look": "None", "exposure": 0.75, "gamma": 1.0},
     }
     camera_profile = CHILD.camera_profile(scene)
     assert camera_profile["orthoScale"] == 237.5878601074218
     assert camera_profile["positionBlender"] == [96, 96, 101.24557426726288]
     assert camera_profile["targetBlender"] == [0, 0, 22.861902498201186]
     assert camera_profile["shiftX"] == 0 and camera_profile["shiftY"] == 1 / 12
+    ground_projection = CHILD.ground_projection_report(scene)
+    assert ground_projection["footprintSource"] == [[768.0, 640.0], [1024.0, 768.0], [768.0, 896.0], [512.0, 768.0]]
+    assert ground_projection["pivotSource"] == [768.0, 896.0]
+    assert ground_projection["socketSource"] == [896.0, 704.0]
+    assert ground_projection["registrationLocked"] is True
     light_profile = CHILD.light_profile(lighting)
     assert light_profile["key"]["originBlender"] == [-80, -80, 120]
     assert light_profile["key"]["targetBlender"] == [0, 0, 16]
     assert light_profile["fill"]["originBlender"] == [72.0, 72.0, 70.0]
+    assert light_profile["key"]["effectiveEnergyWatts"] == 108000.0
+    assert light_profile["fill"]["effectiveEnergyWatts"] == 36000.0
+    assert light_profile["lowering"] == {"keyEnergyScale": 12.0, "fillEnergyScale": 40.0}
+    assert light_profile["key"]["distanceToTarget"] > 150.0
+    assert light_profile["fill"]["distanceToTarget"] > 100.0
+    assert abs(sum(value * value for value in light_profile["key"]["aimDirection"]) - 1.0) < 1.0e-9
+    assert abs(sum(value * value for value in light_profile["fill"]["aimDirection"]) - 1.0) < 1.0e-9
     assert LAUNCHER.CHILD_START_COUNT == 0
 
     with tempfile.TemporaryDirectory(prefix="north-v14-reference-", dir="/private/tmp") as temporary:
@@ -358,6 +373,8 @@ def main() -> None:
         "parameterizedObjects": 97,
         "solidMeshSpecs": len(mesh_set["solidSpecs"]),
         "voidSpecs": len(mesh_set["voidIDs"]),
+        "closedOutwardObjects": mesh_set["closedOutwardObjects"],
+        "openTwoSidedObjects": mesh_set["openTwoSidedObjects"],
         "childStarts": 0,
         "dccProcessCount": 0,
         "pixelWrites": 0,

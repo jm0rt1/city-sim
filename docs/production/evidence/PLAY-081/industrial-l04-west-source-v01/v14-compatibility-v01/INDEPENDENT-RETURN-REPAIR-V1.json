@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "result": "PASS",
+  "task": "PLAY-081",
+  "direction": "west",
+  "routeId": "quality-v2:play-081-west-v14-independent-return-repair-v1",
+  "routeSHA256": "0dee9aced996e9766a7fb6fd4473ff997c101cc1659b62c21c594c95b08da25d",
+  "authorityCommit": "f8e53dfaf9e91e370e946a0cddcd995fc441fab4",
+  "baseCommit": "f8e53dfaf9e91e370e946a0cddcd995fc441fab4",
+  "claimRevision": 11,
+  "claimSHA256": "529bd3d3017a35d52275f3f126cfd5d66944f27d6711ff184279bf5d7dd696e9",
+  "candidateAncestor": "d36c284dcfa4cbe164fbb04ce77ba50bedea49b9",
+  "designSHA256": "07951aa7101c1c917c050a449f255e13f8de95b30b8ea1828e080bf7fa231a18",
+  "loweringSHA256": "a54374313e335d5af53f2441363db435f9d6e44edc0a3e68daee1704d451f172",
+  "validatorPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/test_v14_compatibility.py",
+  "validatorSHA256": "61398d860787413a50e9ec5b4fd3b8a36caa8465d6b92a52ceb275bf9b6d115f",
+  "semanticProof": {
+    "componentCount": 29,
+    "objectCount": 34,
+    "compoundRecessedPortal": true,
+    "runtimePortalMaterialReconciliation": true,
+    "boundedNonCollinearCappedElbow": true,
+    "reachableTruss": true,
+    "genericAABBFallback": false
+  },
+  "adversaries": {
+    "count": 10,
+    "allRejected": true,
+    "zeroCounters": true
+  },
+  "freshReplay": {
+    "byteIdentical": true,
+    "outputSHA256": "df82362a966e72e5d0e31a8fb5ca6d2e1b4d17b397f692bb5f4dc149972e9557"
+  },
+  "zeroPixelBoundary": {
+    "blenderProcessLaunches": 0,
+    "dccInvocations": 0,
+    "renderInvocations": 0,
+    "pixelFiles": 0
+  },
+  "sourceReady": false,
+  "appearanceLock": null,
+  "sourceProductionProfile": null,
+  "processAGrant": null,
+  "processProof": {
+    "validatorPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/process-a-execution-v01/test_process_a_prelaunch.py",
+    "validatorSHA256": "3e0b3d9621d4e973eab48b2813be20165da259e455341b9cf74de7145cd4f5dd",
+    "contractPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/process-a-execution-v01/PROCESS-A-CONTRACT.json",
+    "contractSHA256": "4a0cf9cfdc5649a78545028c055256348ba34e3a0071c2fdf7b9382bc0f1b0ef",
+    "launcherPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/process-a-execution-v01/launch_process_a.py",
+    "launcherSHA256": "eeaa1b4028f213a94f864171d2ebb482de5dac56b8a497adbf87c2ee204ea80c",
+    "childPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/process-a-execution-v01/blender_process_a.py",
+    "childSHA256": "e02a89bfe5b4f0cd42569bf9ff855df2ab9d086b5aadc02357f74e3c7dfdc8d7",
+    "adversaries": {"count": 31, "allRejected": true, "zeroCounters": true},
+    "freshReplay": {"byteIdentical": true, "processIsolation": true, "manifestSHA256": "482da4deacd04ec386dcfe56c003b43e64af11434b548f41447aa26ec011beca", "manifestBytes": 7472},
+    "zeroPixelBoundary": {"blenderProcessLaunches": 0, "childStarts": 0, "dccInvocations": 0, "renderInvocations": 0, "pixelFiles": 0}
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "routeId": "pilot-v1:north",
+  "routeCanonicalSHA256": "b85906b54096d8a26a5d5edefa999318b91a112adb69ea50b4e514cdd5052152",
+  "dispatchCarrierCommit": "70c49f394a0920e26dffc945bd996cf67af7b1fe",
+  "dispatchReceiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PILOT-DISPATCH-V1.json",
+  "dispatchReceiptSHA256": "79b5132e8144c5f0e81c592b746becffb7fe99aa97d3ac3b2a62bf997a24f42b",
+  "authorityCommit": "2753f42134fa85d8570849b57302cce0bc924566",
+  "claimPath": "docs/production/claims/PLAY-027.world-art.md",
+  "claimSHA256": "d28bf14bb3d2d5441f3df6278eef758a5babb4453d22e06fc8bd4075ad5c80a1",
+  "expectedStartingHEAD": "f8da3997794cf5e38946f0ded225f8b80ed84b48",
+  "branch": "codex/citysim-world-art",
+  "worktree": "/Users/James/.codex/worktrees/0648/city-sim",
+  "modelRoute": {
+    "reasoningClass": "FRONTIER_AUTHORITY",
+    "model": "gpt-5.6-sol",
+    "reasoningEffort": "high"
+  },
+  "routeValidation": {
+    "dispatchReceiptFileHashVerified": true,
+    "routeLocatedExactlyOnce": true,
+    "canonicalRouteHashVerified": true,
+    "authorityAncestryVerified": true,
+    "liveBranchWorktreeHEADClaimAndPathsVerified": true,
+    "siblingWorktreesNotRevalidated": true,
+    "focusedRouteResult": "PASS: model routing contract",
+    "carrierValidatorTests": "12/12 PASS"
+  },
+  "boundedDeliverable": "Independently review exact Industrial L4 North hero evidence, resolve remaining visual authority, and return one exact APPROVE or RETURN packet; do not publish shared appearance lock.",
+  "disposition": "RETURN",
+  "resultCode": "FOCUSED_GATE_COMMAND_INVALID",
+  "focusedGate": {
+    "command": "python3 Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/test_process_a_prelaunch.py",
+    "exitCode": 2,
+    "elapsedSeconds": 0.03,
+    "stderr": "test_process_a_prelaunch.py: error: the following arguments are required: --repository-root, --output",
+    "interpretation": "The exact route-supplied focused command exits before validation because required arguments are absent. Supplying inferred arguments would mutate the governed route contract, so the worker stopped without repair."
+  },
+  "candidateEvidence": {
+    "root": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12",
+    "authorityPath": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-NORTH-V12-ZERO-PIXEL-AUTHORITY.md",
+    "authoritySHA256": "9fe208800078421303165087cbc0cd638bf870a8c0434e3ef374df1220c621fc",
+    "replayInventoriesByteIdentical": true,
+    "processCounts": {
+      "analytic": 2,
+      "blenderOrCycles": 0,
+      "processA": 0,
+      "processB": 0,
+      "processC": 0
+    },
+    "reviewedHashes": {
+      "literal192Color": "aeb53f0c475db0437442eede6dad0c0177d44d69086f280a3930836c1dc16256",
+      "literal192Grayscale": "1044a220f96d483c52cb1d8783015f0bd6be6943aa14a3639d7c7766aecc0999",
+      "semantic": "f8991f99f30e8c18187483a94844ea008fe431dac01bc3ecdf80f3619a2b266e",
+      "v11V12Comparison": "7ce37c668c22f173b671f0f432ef457e6d84ea902474d90ba16a6bc58a714f93",
+      "validation": "ef15a6ce1d39c60e46b0ebedfb2bc4ec8e0f421cd07d20b8b292bfab17b58c6d"
+    },
+    "sourceAuthority": false,
+    "productionSelected": false
+  },
+  "escalation": {
+    "triggered": true,
+    "reasons": [
+      "failure_outside_focused_scope",
+      "shared_contract_or_schema_decision"
+    ],
+    "frontierReason": "The exact route-supplied focused gate omits its required --repository-root and --output bindings; only Integration may revise the committed route command."
+  },
+  "executionMetrics": {
+    "startedAt": "2026-08-01T15:54:55Z",
+    "endedAt": "2026-08-01T16:00:27Z",
+    "elapsedSecondsApproximate": 332,
+    "turnCount": 2,
+    "validationSecondsApproximate": 4,
+    "integrationAuthoredRoutingReworkCount": 1,
+    "workerReworkCount": 0,
+    "availableApproximateTokens": null
+  },
+  "independentReviewer": {
+    "owner": "Integration",
+    "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8"
+  },
+  "prohibitionsPreserved": {
+    "fullGateNotRun": true,
+    "dccNotRun": true,
+    "renderNotRun": true,
+    "pixelsNotGenerated": true,
+    "sharedAuthorityNotMutated": true,
+    "pushNotPerformed": true,
+    "integrationNotPerformed": true,
+    "selfAcceptanceNotPerformed": true
+  },
+  "stopConditionSatisfied": true
+}

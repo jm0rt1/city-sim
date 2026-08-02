@@ -1,0 +1,413 @@
+{
+  "astProof": {
+    "futureChildRenderCallCount": 2,
+    "futureRenderCallsExecuted": 0,
+    "killProcessGroupPathPresent": true,
+    "launcherPopenSiteCount": 1,
+    "newProcessGroup": true
+  },
+  "authorityBaseCommit": "ffb3db1a35aec5067a07a5405ee721ff379ecd51",
+  "batch": "industrial_l04_directional_family",
+  "blenderChildStartCount": 0,
+  "branch": "codex/citysim-world-art",
+  "candidateReadyForIndependentReview": false,
+  "childEntrypoint": {
+    "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/render_north_process_a_child.py",
+    "sha256": "29134b674a8a014e2a5b1c395b42f5e27089694715ce9c0880719d1a6fb4024a"
+  },
+  "claim": {
+    "path": "docs/production/claims/PLAY-027.world-art.md",
+    "sha256": "b7eb42ccacf323a3149a4c25faa587a0e6557afb6784d08e19fbe9d108e9434a"
+  },
+  "dccProcessCount": 0,
+  "direction": "north",
+  "executionContract": {
+    "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/EXECUTION-CONTRACT.json",
+    "sha256": "87733b542fbf306a447e32d44cbe6befaa9fae74ac885361a6513450a97cbbba"
+  },
+  "familyContract": {
+    "path": "docs/production/decisions/CONTRACT-010-directional-building-art.md",
+    "sha256": "0ee2d68a9dba4694d92a864bfeb5a91970c88fe87d893e1898de7b26d38609af"
+  },
+  "frozenNorthV12Inputs": {
+    "acceptedStaticBContract": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/blender-lowering-v01/static-b-confirmation-v03/CONFIRMATION-CONTRACT.json",
+      "sha256": "9a7449cdc76116bdd12879e17f99e8162828ba6c01507310a627816f9202d08f"
+    },
+    "importer": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/blender-lowering-v01/import_v12_scene.py",
+      "sha256": "ec726d584ce4b22253fca486e82bc6a198616debed94358d76f6dac7a1f62988"
+    },
+    "lowerer": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/blender-lowering-v01/lower_v12_scene.py",
+      "sha256": "7dc01ddc56bfff3ee9efca417ad0f70265d92daf99281dd53f7231c691e53a42"
+    },
+    "loweringContract": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/blender-lowering-v01/LOWERING-CONTRACT.json",
+      "sha256": "21480cd8c1dbb66f33b3ccd4987fea169198f2640b793a220d8d22c9c8505aa8"
+    },
+    "materials": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/MATERIALS.json",
+      "sha256": "e683feed89f6878903d1ec0b255d0d5e8a36c74f431a2fb723287bf955c54d09"
+    },
+    "scene": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/SCENE.json",
+      "sha256": "dad20722f4770c82992040861074188c604b46cd226e5f739291ac22683594e2"
+    }
+  },
+  "imageGenProcessCount": 0,
+  "launcher": {
+    "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/launch_north_process_a.py",
+    "sha256": "0b396c1c51fc41e2657c40a084653cdeec4c87ae30c69fc261754f401decec93"
+  },
+  "liveSchedule": {
+    "disposition": "BLOCKED_PENDING_INTEGRATION_SCHEDULE_AND_EXECUTION_AUTHORITY",
+    "grantValidated": false,
+    "present": false
+  },
+  "normalizerProcessCount": 0,
+  "phase": "prelock_north_a",
+  "positiveGrantPlan": {
+    "grant": {
+      "adapterMode": "validate-and-return-grant-plan-only",
+      "batch": "industrial_l04_directional_family",
+      "blenderChildStartCount": 0,
+      "candidateReadyForIndependentReview": false,
+      "claimSHA256": "b7eb42ccacf323a3149a4c25faa587a0e6557afb6784d08e19fbe9d108e9434a",
+      "dccProcessCount": 0,
+      "directLowLevelInvocationAllowed": false,
+      "direction": "north",
+      "exclusiveRoots": [
+        "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12",
+        "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12"
+      ],
+      "frozenNorthV12Inputs": {
+        "acceptedStaticBContract": {
+          "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/blender-lowering-v01/static-b-confirmation-v03/CONFIRMATION-CONTRACT.json",
+          "sha256": "9a7449cdc76116bdd12879e17f99e8162828ba6c01507310a627816f9202d08f"
+        },
+        "importer": {
+          "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/blender-lowering-v01/import_v12_scene.py",
+          "sha256": "ec726d584ce4b22253fca486e82bc6a198616debed94358d76f6dac7a1f62988"
+        },
+        "lowerer": {
+          "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/blender-lowering-v01/lower_v12_scene.py",
+          "sha256": "7dc01ddc56bfff3ee9efca417ad0f70265d92daf99281dd53f7231c691e53a42"
+        },
+        "loweringContract": {
+          "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/blender-lowering-v01/LOWERING-CONTRACT.json",
+          "sha256": "21480cd8c1dbb66f33b3ccd4987fea169198f2640b793a220d8d22c9c8505aa8"
+        },
+        "materials": {
+          "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/MATERIALS.json",
+          "sha256": "e683feed89f6878903d1ec0b255d0d5e8a36c74f431a2fb723287bf955c54d09"
+        },
+        "scene": {
+          "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/SCENE.json",
+          "sha256": "dad20722f4770c82992040861074188c604b46cd226e5f739291ac22683594e2"
+        }
+      },
+      "grantId": "fixture-north-A",
+      "grantValidated": true,
+      "integrationAuthorityCommit": "2eb5ddcb97a84376d66a008f8a7ad6ab3c97209b",
+      "maximumChildStarts": 1,
+      "orchestrator": {
+        "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/launch_north_process_a.py",
+        "sha256": "0b396c1c51fc41e2657c40a084653cdeec4c87ae30c69fc261754f401decec93"
+      },
+      "phase": "prelock_north_a",
+      "process": "A",
+      "processStarted": false,
+      "productionSelected": false,
+      "publishedBaseCommit": "ffb3db1a35aec5067a07a5405ee721ff379ecd51",
+      "renderInvocationCount": 0,
+      "schema": 1,
+      "slotId": "dcc-1",
+      "sourceAuthority": false,
+      "sourcePixelCount": 0,
+      "task": "PLAY-027"
+    },
+    "outputRoot": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/process-a-execution-v01/process-a",
+    "requestedChildStarts": 1,
+    "validated": true
+  },
+  "prelaunchAuthority": {
+    "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-NORTH-V12-PROCESS-A-PRELAUNCH-AUTHORITY.md",
+    "sha256": "889fd6f87a0d7eb112fe392d66901e927658a86a6d3aa311e53178d61cb4725e"
+  },
+  "process": "A",
+  "productionSelected": false,
+  "publicationCommit": "2eb5ddcb97a84376d66a008f8a7ad6ab3c97209b",
+  "renderInvocationCount": 0,
+  "rendererProcessCount": 0,
+  "scheduleAdapter": {
+    "acceptedReadiness": {
+      "path": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/process-a-schedule-adapter-v01/ZERO-CHILD-READINESS.json",
+      "sha256": "df412064bb5499b7c72b1a087580e8a26d19adef54495fa24923c81f39a4dd8d"
+    },
+    "consumer": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-schedule-adapter-v01/consume_north_process_a_schedule.py",
+      "sha256": "c15f7932be2f6db88dc665252111a992612061871c538c345e4e718a39ff3ea1"
+    },
+    "contract": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-schedule-adapter-v01/ADAPTER-CONTRACT.json",
+      "sha256": "cef776ba2574a3de44a3b7f20d546700ff9a226eb1531dfeb579e1a2a86ce2c0"
+    }
+  },
+  "schema": 1,
+  "shippingMutationCount": 0,
+  "siblingProcessCount": 0,
+  "sourceAuthority": false,
+  "sourcePixelCount": 0,
+  "task": "PLAY-027",
+  "tests": {
+    "adversarialCaseCount": 32,
+    "allPassed": true,
+    "cases": [
+      {
+        "actualFailure": "schedule grant is not validated",
+        "expectedFailure": "not validated",
+        "name": "unvalidated-grant",
+        "passed": true
+      },
+      {
+        "actualFailure": "schedule grant was already consumed",
+        "expectedFailure": "already consumed",
+        "name": "reused-grant",
+        "passed": true
+      },
+      {
+        "actualFailure": "grant task drift",
+        "expectedFailure": "grant task drift",
+        "name": "wrong-task",
+        "passed": true
+      },
+      {
+        "actualFailure": "grant batch drift",
+        "expectedFailure": "grant batch drift",
+        "name": "wrong-batch",
+        "passed": true
+      },
+      {
+        "actualFailure": "grant phase drift",
+        "expectedFailure": "grant phase drift",
+        "name": "wrong-phase",
+        "passed": true
+      },
+      {
+        "actualFailure": "grant direction drift",
+        "expectedFailure": "grant direction drift",
+        "name": "sibling-direction",
+        "passed": true
+      },
+      {
+        "actualFailure": "only North Process A is supported",
+        "expectedFailure": "only North Process A",
+        "name": "process-b",
+        "passed": true
+      },
+      {
+        "actualFailure": "only North Process A is supported",
+        "expectedFailure": "only North Process A",
+        "name": "process-c",
+        "passed": true
+      },
+      {
+        "actualFailure": "grant process drift",
+        "expectedFailure": "grant process drift",
+        "name": "wrong-grant-process",
+        "passed": true
+      },
+      {
+        "actualFailure": "grant slot drift",
+        "expectedFailure": "grant slot drift",
+        "name": "wrong-slot",
+        "passed": true
+      },
+      {
+        "actualFailure": "grant child limit drift",
+        "expectedFailure": "grant child limit drift",
+        "name": "wrong-grant-child-limit",
+        "passed": true
+      },
+      {
+        "actualFailure": "exactly one child start required",
+        "expectedFailure": "exactly one child",
+        "name": "zero-child-request",
+        "passed": true
+      },
+      {
+        "actualFailure": "exactly one child start required",
+        "expectedFailure": "exactly one child",
+        "name": "extra-child-request",
+        "passed": true
+      },
+      {
+        "actualFailure": "low-level bypass enabled",
+        "expectedFailure": "low-level bypass enabled",
+        "name": "low-level-bypass-enabled",
+        "passed": true
+      },
+      {
+        "actualFailure": "grant claim drift",
+        "expectedFailure": "grant claim drift",
+        "name": "stale-claim",
+        "passed": true
+      },
+      {
+        "actualFailure": "grant base drift",
+        "expectedFailure": "grant base drift",
+        "name": "stale-base",
+        "passed": true
+      },
+      {
+        "actualFailure": "grant root drift",
+        "expectedFailure": "grant root drift",
+        "name": "wrong-roots",
+        "passed": true
+      },
+      {
+        "actualFailure": "grant orchestrator drift",
+        "expectedFailure": "grant orchestrator drift",
+        "name": "wrong-orchestrator",
+        "passed": true
+      },
+      {
+        "actualFailure": "grant frozen-input drift",
+        "expectedFailure": "grant frozen-input drift",
+        "name": "stale-frozen-input",
+        "passed": true
+      },
+      {
+        "actualFailure": "Process-A output root already exists",
+        "expectedFailure": "already exists",
+        "name": "reused-output-root",
+        "passed": true
+      },
+      {
+        "actualFailure": "MISSING_PUBLISHED_SCHEDULE: docs/production/evidence/INTEGRATION/industrial-l04-prelock-north-a-schedule-v1.json",
+        "expectedFailure": "MISSING_PUBLISHED_SCHEDULE",
+        "name": "missing-published-schedule",
+        "passed": true
+      },
+      {
+        "actualFailure": "queue order drift",
+        "expectedFailure": "queue order drift",
+        "name": "wrong-schedule-queue",
+        "passed": true
+      },
+      {
+        "actualFailure": "published schedule worktree bytes are dirty",
+        "expectedFailure": "worktree bytes are dirty",
+        "name": "dirty-or-untracked-schedule",
+        "passed": true
+      },
+      {
+        "actualFailure": "schedule bytes are not frozen at authority commit",
+        "expectedFailure": "schedule bytes are not frozen at authority commit",
+        "name": "stale-published-schedule-bytes",
+        "passed": true
+      },
+      {
+        "actualFailure": "inherited launcher capability fd missing",
+        "expectedFailure": "inherited launcher capability fd missing",
+        "name": "low-level-child-bypass",
+        "passed": true
+      },
+      {
+        "actualFailure": "launcher capability must be an anonymous pipe",
+        "expectedFailure": "anonymous pipe",
+        "name": "forged-regular-file-capability",
+        "passed": true
+      },
+      {
+        "actualFailure": "unapproved child output: shipping-atlas.png",
+        "expectedFailure": "unapproved child output",
+        "name": "unapproved-child-output",
+        "passed": true
+      },
+      {
+        "closeFds": true,
+        "killProcessGroupPathPresent": true,
+        "name": "single-child-site-and-new-process-group",
+        "passFdsPresent": true,
+        "passed": true,
+        "popenSiteCount": 1,
+        "startNewSession": true
+      },
+      {
+        "name": "instrumented-timeout-kills-process-group",
+        "passed": true,
+        "terminatedProcessGroups": [
+          7001
+        ],
+        "terminationReason": "timeout"
+      },
+      {
+        "name": "instrumented-rss-kills-process-group",
+        "passed": true,
+        "terminatedProcessGroups": [
+          7002
+        ],
+        "terminationReason": "rss-limit"
+      },
+      {
+        "name": "instrumented-terminal-accounting",
+        "passed": true,
+        "popenFailure": {
+          "childPID": null,
+          "enforcedPeakRSSKiB": 0,
+          "launcherException": "OSError: injected Popen failure",
+          "observedExtraProcessGroupMembers": [],
+          "postReapProcessGroupExhausted": true,
+          "postReapProcessGroupMembers": [],
+          "returnCode": null,
+          "sampledAggregateGroupPeakRSSKiB": 0,
+          "terminalChildTreeMaxRSSKiB": 0,
+          "terminalWaitModel": "darwin-os.wait4-exact-pid",
+          "terminationReason": "launcher-exception:OSError"
+        },
+        "samplerFailure": {
+          "childPID": 7003,
+          "enforcedPeakRSSKiB": 64,
+          "launcherException": "LaunchError: injected sampler failure",
+          "observedExtraProcessGroupMembers": [],
+          "postReapProcessGroupExhausted": true,
+          "postReapProcessGroupMembers": [],
+          "returnCode": -15,
+          "sampledAggregateGroupPeakRSSKiB": 32,
+          "terminalChildTreeMaxRSSKiB": 64,
+          "terminalWaitModel": "darwin-os.wait4-exact-pid",
+          "terminationReason": "launcher-exception:LaunchError"
+        }
+      },
+      {
+        "allowedChildOutputs": [
+          "GROUND-PROJECTION.json",
+          "INPUT-BINDINGS.json",
+          "OBJECT-MANIFEST.json",
+          "provenance.json",
+          "raw.png",
+          "semantic.png"
+        ],
+        "forbiddenTokens": [],
+        "futureRenderCallCount": 2,
+        "name": "future-child-render-surface-bounded",
+        "passed": true
+      }
+    ],
+    "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/test_process_a_prelaunch.py",
+    "sha256": "1b2432b258b346080456b96d92f3c400aedddc528b1d2d6758a18f46e9fe0693"
+  },
+  "validationPassed": true,
+  "worktreeScope": {
+    "allowedPrefixes": [
+      "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01",
+      "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-schedule-adapter-v01",
+      "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/process-a-execution-v01",
+      "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/process-a-schedule-adapter-v01"
+    ],
+    "passed": true,
+    "unexpectedEntries": []
+  }
+}

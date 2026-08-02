@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "successor": "west-v13-literal-repair-v02",
+  "task": "PLAY-081",
+  "direction": "west",
+  "stage": "zero-pixel-literal-repair",
+  "logicalBuildingID": "industrial_l04",
+  "variantID": "variant-0",
+  "variantIndex": 0,
+  "sourceRevision": "west-v13-compatibility-02",
+  "disposition": "CANDIDATE_READY_FOR_INDEPENDENT_REVIEW",
+  "sourceAuthority": false,
+  "candidateReadyForIndependentReview": true,
+  "pixelRenderingAuthorized": false,
+  "productionSelected": false,
+  "orientationTransform": "none",
+  "siblingInputsConsumed": [],
+  "coordinateBridge": {
+    "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-direction-bridge-v06/MAPPING-CONTRACT.json",
+    "sha256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7",
+    "sourceRevision": "direction-bridge-v06",
+    "basisFormula": "B(CitySim[x,y,z])=Blender[z,x,y]",
+    "basisMatrixRows": [[0, 0, 1], [1, 0, 0], [0, 1, 0]],
+    "sourceOrder": [0, 1, 2, 3]
+  },
+  "baseProof": {
+    "designPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v13-compatibility-v01/WEST-V13-DESIGN.json",
+    "designSHA256": "265ea5b27e0dd7982cb587b2efb944de462bf67650bb41b2000597deebc0b621",
+    "loweringPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v13-compatibility-v01/WEST-V13-LOWERING.json",
+    "loweringSHA256": "a9a316c8050e39779f806398f5f1ef5982c7ddf7d357c84cbf2eaf0700ea2743",
+    "validatorPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/test_v13_compatibility.py",
+    "validatorSHA256": "d0c330a13c84331c7742db062fafee00380d148f30a99b09aa1dc0c0c546675a",
+    "evidencePath": "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/v13-compatibility-v01/V13-COMPATIBILITY-RESULT.json",
+    "evidenceSHA256": "65848132d2eb042161c90530a134dfe55bfe9380ac397c7cf9ba9d9e3ad6f94b",
+    "preserveAllBytes": true
+  },
+  "authorityBindings": {
+    "publishedBase": "87178f7cbd2723283163dd6ce03437498a21dce5",
+    "claimPath": "docs/production/claims/PLAY-081.world-art-west.md",
+    "claimRevision": 9,
+    "claimSHA256": "289f7e55cdb2721dde5728708dca92e5a785d65417ae1600190c599f54153ad4",
+    "northDesignAuthoritySHA256": "1b1006403081c3933c54451b6c506af74493a2ac3b253fdd9f1f79098d7c1bed",
+    "northMaterialRolesSHA256": "c8179b77a184e41b723e26b34e7da2ef256b09e93b54a47e76cc5103f22b8cab",
+    "bridgeSHA256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7"
+  },
+  "freightAndStaff": {
+    "freightBeatCount": 3,
+    "minimumFreightBeatCount": 3,
+    "freightBeatIDs": ["west-v13-freight-beat-1", "west-v13-freight-beat-2", "west-v13-freight-beat-3"],
+    "freightBeatBoundsSource": [
+      {"min": [623, 530], "max": [663, 740]},
+      {"min": [666, 530], "max": [706, 740]},
+      {"min": [709, 530], "max": [749, 740]}
+    ],
+    "minimumFreightBeatSourcePixels": [4, 8],
+    "separatorBoundsSource": [
+      {"min": [663, 530], "max": [666, 740]},
+      {"min": [706, 530], "max": [709, 740]}
+    ],
+    "separatorWidthsSourcePixels": [3, 3],
+    "minimumSeparatorWidthSourcePixels": 2,
+    "staffGlazingComponentID": "west-v13-staff-glazing",
+    "staffGlazingAABBWorldXYZ": {"min": [0, 5, 22], "max": [4, 13, 26]},
+    "staffBoundsSource": {"min": [649.1428571428571, 745.5008705864235], "max": [685.7142857142857, 808.5772579178551]},
+    "staffBoundsLiteral192": {"min": [81, 93], "max": [86, 102]},
+    "minimumStaffSourcePixels": [5, 8],
+    "stackShare": {
+      "componentID": "west-v13-stack",
+      "role": "oxidized-process-machinery",
+      "mode": "distinct-process-stack-not-freight-beat",
+      "freightBeatIDs": ["west-v13-freight-beat-1", "west-v13-freight-beat-2", "west-v13-freight-beat-3"],
+      "authorityKey": "west-v13-stack|oxidized-process-machinery|distinct-process-stack"
+    }
+  },
+  "zeroPixelBoundary": {
+    "blenderProcessLaunches": 0,
+    "dccInvocations": 0,
+    "renderInvocations": 0,
+    "imageGenInvocations": 0,
+    "normalizerInvocations": 0,
+    "pixelFiles": 0,
+    "sourceReady": false,
+    "appearanceLock": null,
+    "sourceProductionProfile": null
+  }
+}

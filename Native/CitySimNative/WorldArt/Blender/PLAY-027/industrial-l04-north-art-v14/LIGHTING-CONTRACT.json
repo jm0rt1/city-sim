@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "revision": "industrial-l04-north-v14-lighting",
+  "revision": "industrial-l04-north-v14-lighting-visual-r2",
   "engine": "CYCLES",
   "device": "CPU",
   "samples": 64,
@@ -9,9 +9,9 @@
   "adaptiveSampling": false,
   "denoising": false,
   "transparentFilm": true,
-  "colorManagement": {"displayDevice": "sRGB", "viewTransform": "Standard", "look": "Medium High Contrast", "exposure": 0.0, "gamma": 1.0},
-  "world": {"useNodes": true, "backgroundColorRGBA": [0.055, 0.065, 0.085, 1.0], "backgroundStrength": 0.55},
-  "key": {"type": "AREA", "shape": "DISK", "originWorld": [-80, 120, -80], "targetWorld": [0, 16, 0], "energyWatts": 4500.0, "sizeWorld": 46.0, "shadowSoftSizeWorld": 46.0, "colorRGB": [1.0, 0.78, 0.58]},
-  "optionalFill": {"enabled": true, "type": "AREA", "energyWatts": 180.0, "colorRGB": [0.32, 0.42, 0.58], "sizeWorld": 60.0, "role": "cool-sky-fill"},
+  "colorManagement": {"displayDevice": "sRGB", "viewTransform": "Standard", "look": "None", "exposure": 0.75, "gamma": 1.0},
+  "world": {"useNodes": true, "backgroundColorRGBA": [0.055, 0.065, 0.085, 1.0], "backgroundStrength": 1.2},
+  "key": {"type": "AREA", "shape": "DISK", "originWorld": [-80, 120, -80], "targetWorld": [0, 16, 0], "energyWatts": 9000.0, "sizeWorld": 46.0, "shadowSoftSizeWorld": 46.0, "colorRGB": [1.0, 0.78, 0.58]},
+  "optionalFill": {"enabled": true, "type": "AREA", "energyWatts": 900.0, "colorRGB": [0.32, 0.42, 0.58], "sizeWorld": 60.0, "role": "cool-sky-fill"},
   "gates": {"maxRGBPerChannel": 0.60, "medianLumaMin": 0.22, "medianLumaMax": 0.58, "p95LumaMin": 0.55, "p95LumaMax": 0.90, "nonEmissiveAbove": 0.035, "nonEmissiveFraction": 0.95, "portalFrameDelta": 0.18, "maxEmissiveFraction": 0.04}
 }

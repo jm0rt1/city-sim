@@ -1,0 +1,76 @@
+{
+  "schema": 2,
+  "result": "PASS",
+  "task": "PLAY-081",
+  "direction": "west",
+  "routeId": "quality-v2:play-081-west-v14-exact-closure-r2",
+  "routeSHA256": "16d011163da66a72637aa0f9ca3bde30d65c7f0dc97ed8c1d434f96bdb253809",
+  "routeCarrierCommit": "4f041092dc6bd90da858ea959d6d5c5554ecdfe4",
+  "routeCarrierFileSHA256": "0d62e26ff49e995e519b1f9d04d4ed9f46c812b2f65bea4877dca88be1122027",
+  "authorityCommit": "b4dcbd0418176d680ecf2d993c16649fc401a92e",
+  "baseCommit": "b4dcbd0418176d680ecf2d993c16649fc401a92e",
+  "expectedHeadBeforeMutation": "aae1e799f1eaabba88f1c1e85c3974e778eab69d",
+  "implementationAncestor": "6228ed47d45fe8f489fe580be956b9bfb320d5ff",
+  "claimRevision": 12,
+  "claimSHA256": "d08480b230073ef884c8979f3dc80d57c165f3177e6a2fd12b0baab9e286dafb",
+  "sourceStageSchemaPath": "docs/production/evidence/INTEGRATION/industrial-l04-source-stage-handoff-schema-v2.json",
+  "sourceStageSchemaSHA256": "85f6a2824c273a1e63354df79a97e5a59c2909a68771613b325664d649ac53ec",
+  "orchestrationContractSHA256": "1cda90124a61856ee6405592ee896cab4f91ce7b45704e23ea4e05b0e2fd9877",
+  "orchestrationValidatorSHA256": "8744cf8192f6658181b01b231f1c4798c76a93d0fbcb3d23453811e0985ef18b",
+  "orchestrationTestSHA256": "4f126693df742e73243a81d6f186d21e84376fe3a2d752e7bfee14cb34f098bf",
+  "designSHA256": "07951aa7101c1c917c050a449f255e13f8de95b30b8ea1828e080bf7fa231a18",
+  "loweringSHA256": "a54374313e335d5af53f2441363db435f9d6e44edc0a3e68daee1704d451f172",
+  "validatorPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/test_v14_compatibility.py",
+  "validatorSHA256": "8812416246bcc83ec9927d19f728c87abead8feb1e0478f128ce15fb690457c2",
+  "semanticProof": {
+    "componentCount": 29,
+    "objectCount": 34,
+    "compoundRecessedPortal": true,
+    "runtimePortalMaterialReconciliation": true,
+    "boundedNonCollinearCappedElbow": true,
+    "reachableTruss": true,
+    "genericAABBFallback": false
+  },
+  "adversaries": {
+    "count": 10,
+    "allRejected": true,
+    "zeroCounters": true
+  },
+  "freshReplay": {
+    "byteIdentical": true,
+    "outputSHA256": "df82362a966e72e5d0e31a8fb5ca6d2e1b4d17b397f692bb5f4dc149972e9557"
+  },
+  "zeroPixelBoundary": {
+    "blenderProcessLaunches": 0,
+    "dccInvocations": 0,
+    "renderInvocations": 0,
+    "pixelFiles": 0
+  },
+  "sourceReady": false,
+  "appearanceLock": null,
+  "sourceProductionProfile": null,
+  "processAGrant": null,
+  "executionClosure": {
+    "routeParsed": true,
+    "sourceStageSchemaParsed": true,
+    "workerHeadExactLive": true,
+    "perFieldAdversariesRejected": 15,
+    "crossHashAdversariesRejected": 5,
+    "zeroChildren": true
+  },
+  "processProof": {
+    "validatorPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/process-a-execution-v01/test_process_a_prelaunch.py",
+    "validatorSHA256": "2a2f04f88ba5b5e40973e1f2a6c18ad2dde20358e1d7dd7ef7f872563a0b1cd5",
+    "contractPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/process-a-execution-v01/PROCESS-A-CONTRACT.json",
+    "contractSHA256": "4a0cf9cfdc5649a78545028c055256348ba34e3a0071c2fdf7b9382bc0f1b0ef",
+    "launcherPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/process-a-execution-v01/launch_process_a.py",
+    "launcherSHA256": "eeaa1b4028f213a94f864171d2ebb482de5dac56b8a497adbf87c2ee204ea80c",
+    "childPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/process-a-execution-v01/blender_process_a.py",
+    "childSHA256": "527c7ed2a18dae3f72f58ac66879cb64df469cd2aec29ea96403cfacf58cc37c",
+    "adversaries": {"count": 35, "allRejected": true, "zeroCounters": true},
+    "freshReplay": {"byteIdentical": true, "processIsolation": true, "manifestSHA256": "482da4deacd04ec386dcfe56c003b43e64af11434b548f41447aa26ec011beca", "manifestBytes": 7472},
+    "portalLoweringMaterialSpy": "PASS",
+    "swappedPortalMaterialRejected": true,
+    "zeroPixelBoundary": {"blenderProcessLaunches": 0, "childStarts": 0, "dccInvocations": 0, "renderInvocations": 0, "pixelFiles": 0}
+  }
+}

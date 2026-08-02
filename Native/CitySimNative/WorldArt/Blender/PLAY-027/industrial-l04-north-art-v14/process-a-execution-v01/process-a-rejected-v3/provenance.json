@@ -1,0 +1,23 @@
+{
+  "childStarts": 1,
+  "coordinateBridge": "B(x,y,z)=(z,x,y)",
+  "dccProcessCount": 1,
+  "direction": "north",
+  "inputHashes": {
+    "lighting": "40ae121ec066e4c8c1821e23c5ca20eb9edf638dd50aab036cbdb5d091c86225",
+    "materials": "1d7dcefcd19c3f290d43ae0168df5d3917c7cccca46b37d0d52cb102c9a4bc89",
+    "scene": "8d15ebd12e7dd4bb031ea574c68e8f53a70c4d37cf46bb15a7d08c4a07b4a18d"
+  },
+  "outputHashes": {
+    "GROUND-PROJECTION.json": "219f78226183a3c0369f4e64c935b4698db830600ad5ddba107227a9d695a742",
+    "INPUT-BINDINGS.json": "d2e6af4db728e2ae9745f0b25be5390948575b9fde2a3478a04fb01c0f8a0c65",
+    "OBJECT-MANIFEST.json": "69c152a7613c2db8f9ad748bb76ee40c40568ae7fc1ef615193d85580ee0a410",
+    "north-v14-process-a.blend": "250ec2a0599b4f227ed7e14af08c990a2f5b13f83a0637d88de4d7e721e3e6bf",
+    "raw.png": "a07d8b12430362a6083eab1ad835cd4bb572d9d089b951d7356b449d6faef6c0",
+    "semantic.png": "91676d377e22c3df3d77b7bd51510ed6b3d7ca297df2b43ac36111dfa9978378"
+  },
+  "process": "A",
+  "productionSelected": false,
+  "sourceAuthority": false,
+  "task": "PLAY-027"
+}

@@ -1,0 +1,19 @@
+{
+  "schema": 1,
+  "status": "retired",
+  "task": "PLAY-027",
+  "surface": "industrial_l04_north_v13_process_a_prelaunch_v01",
+  "retiredAt": "2026-08-01-retirement-r1",
+  "runner": "retired",
+  "child": "retired",
+  "executable": false,
+  "childStartCapability": false,
+  "writerCapability": false,
+  "surfaceState": "removed",
+  "sourceAuthority": false,
+  "productionSelected": false,
+  "forbidden": [
+    "command", "secret", "token", "authority", "schedule", "receipt", "attempt",
+    "lease", "grant", "child", "bpy", "blender", "dcc", "render", "pixels", "normalize"
+  ]
+}

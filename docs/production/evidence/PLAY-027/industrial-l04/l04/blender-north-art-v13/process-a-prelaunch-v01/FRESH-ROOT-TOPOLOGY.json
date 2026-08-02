@@ -1,0 +1,37 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "stage": "north-v13-process-a-prelaunch-frontier-repair-r4",
+  "writer": "launch_north_v13_prelaunch.py",
+  "replayCount": 2,
+  "rootsWereAbsentBeforeWrite": true,
+  "rootsWereDistinct": true,
+  "byteIdentical": true,
+  "fileAndDirectoryTopologyIdentical": true,
+  "inventorySHA256": "6d2cc235cd328f922b8b5cd775953361458c9906e384b1bf2b0499ad74048666",
+  "replays": [
+    {
+      "replayId": "A",
+      "directories": [],
+      "files": {
+        "PRELAUNCH-VALIDATION.json": "a7c3ff42be5bc1abc215d48451c3578fcb1ae81944dc87dc4d2afe095e081d62",
+        "ZERO-CHILD-CLOSURE.json": "ed8de6b98869aa5d95d6aae200152020a2e68a6bab287fef0441adb2f97b210b"
+      },
+      "symlinks": {}
+    },
+    {
+      "replayId": "B",
+      "directories": [],
+      "files": {
+        "PRELAUNCH-VALIDATION.json": "a7c3ff42be5bc1abc215d48451c3578fcb1ae81944dc87dc4d2afe095e081d62",
+        "ZERO-CHILD-CLOSURE.json": "ed8de6b98869aa5d95d6aae200152020a2e68a6bab287fef0441adb2f97b210b"
+      },
+      "symlinks": {}
+    }
+  ],
+  "repositoryTopologyUnchangedByTests": true,
+  "residualProcessADirectoryCount": 0,
+  "dccChildStarts": 0,
+  "processAStarts": 0,
+  "pixelWrites": 0
+}

@@ -1,0 +1,299 @@
+{
+  "objects": [
+    {
+      "boundsXYZ": [
+        [
+          -28,
+          0,
+          -28
+        ],
+        [
+          28,
+          0.6,
+          28
+        ]
+      ],
+      "id": "v13-foundation",
+      "materialRole": "grounded-foundation",
+      "shape": "box"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -14,
+          0.62,
+          -28
+        ],
+        [
+          14,
+          0.82,
+          -16
+        ]
+      ],
+      "id": "v13-socket-apron",
+      "materialRole": "integrated-operating-apron",
+      "shape": "box"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -28,
+          0.6,
+          -16
+        ],
+        [
+          -14,
+          24,
+          26
+        ]
+      ],
+      "id": "v13-main-foundry-shell:west-shoulder",
+      "materialRole": "warm-foundry-masonry",
+      "shape": "box"
+    },
+    {
+      "boundsXYZ": [
+        [
+          14,
+          0.6,
+          -16
+        ],
+        [
+          28,
+          22,
+          26
+        ]
+      ],
+      "id": "v13-main-foundry-shell:east-shoulder",
+      "materialRole": "warm-foundry-masonry",
+      "shape": "box"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -14,
+          0.6,
+          -6
+        ],
+        [
+          14,
+          24,
+          26
+        ]
+      ],
+      "id": "v13-main-foundry-shell:rear-hall",
+      "materialRole": "warm-foundry-masonry",
+      "shape": "box"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -14,
+          0.6,
+          -16
+        ],
+        [
+          -11,
+          24,
+          -7
+        ]
+      ],
+      "id": "v13-monumental-portal-frame:west-jamb",
+      "materialRole": "portal-crown-steel",
+      "shape": "box"
+    },
+    {
+      "boundsXYZ": [
+        [
+          11,
+          0.6,
+          -16
+        ],
+        [
+          14,
+          24,
+          -7
+        ]
+      ],
+      "id": "v13-monumental-portal-frame:east-jamb",
+      "materialRole": "portal-crown-steel",
+      "shape": "box"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -11,
+          19,
+          -16
+        ],
+        [
+          11,
+          24,
+          -7
+        ]
+      ],
+      "id": "v13-monumental-portal-frame:header",
+      "materialRole": "portal-crown-steel",
+      "shape": "box"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -11,
+          1,
+          -6.4
+        ],
+        [
+          11,
+          18,
+          -6
+        ]
+      ],
+      "id": "v13-portal-inset",
+      "materialRole": "deep-freight-void",
+      "shape": "box"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -10,
+          1,
+          -5.9
+        ],
+        [
+          -4,
+          13,
+          -1
+        ]
+      ],
+      "id": "v13-three-bay-freight-rhythm:west-bay",
+      "materialRole": "deep-freight-void",
+      "shape": "box"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -3,
+          1,
+          -5.9
+        ],
+        [
+          3,
+          13,
+          -1
+        ]
+      ],
+      "id": "v13-three-bay-freight-rhythm:center-bay",
+      "materialRole": "deep-freight-void",
+      "shape": "box"
+    },
+    {
+      "boundsXYZ": [
+        [
+          4,
+          1,
+          -5.9
+        ],
+        [
+          10,
+          13,
+          -1
+        ]
+      ],
+      "id": "v13-three-bay-freight-rhythm:east-bay",
+      "materialRole": "deep-freight-void",
+      "shape": "box"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -18,
+          24,
+          -5
+        ],
+        [
+          18,
+          30,
+          22
+        ]
+      ],
+      "id": "v13-portal-crown-lower",
+      "materialRole": "weathered-bluegreen-roof",
+      "shape": "box"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -14,
+          30,
+          -2
+        ],
+        [
+          14,
+          36,
+          20
+        ]
+      ],
+      "id": "v13-portal-crown-clerestory",
+      "materialRole": "clerestory-and-roof-edge",
+      "shape": "box"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -8,
+          36,
+          2
+        ],
+        [
+          8,
+          40,
+          17
+        ]
+      ],
+      "id": "v13-crane-lantern",
+      "materialRole": "charcoal-structural-steel",
+      "shape": "box"
+    },
+    {
+      "id": "v13-east-hot-process-vessel",
+      "materialRole": "oxidized-process-machinery",
+      "shape": "octagonal-vessel"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -28,
+          0.6,
+          -27
+        ],
+        [
+          -17,
+          10,
+          -17
+        ]
+      ],
+      "id": "v13-west-staff-annex",
+      "materialRole": "warm-control-masonry",
+      "shape": "box"
+    },
+    {
+      "boundsXYZ": [
+        [
+          15,
+          22,
+          8
+        ],
+        [
+          26,
+          30,
+          22
+        ]
+      ],
+      "id": "v13-roof-plant-cluster",
+      "materialRole": "oxidized-process-machinery",
+      "shape": "box"
+    }
+  ],
+  "schema": 1
+}

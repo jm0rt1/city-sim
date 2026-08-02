@@ -119,17 +119,18 @@
     {"id": "west-v14-stack", "kind": "process-stack", "role": "oxidized-process-machinery", "shape": "cylinder", "aabb": {"min": [17, 1, -10], "max": [24, 42, -4]}, "builderObjects": ["west-v14-stack"], "semantic": "industrial-system", "processOccluder": false},
     {"id": "west-v14-roof-plant", "kind": "roof-plant", "role": "oxidized-process-machinery", "shape": "box", "aabb": {"min": [10, 38, 10], "max": [16, 42, 17]}, "builderObjects": ["west-v14-roof-plant"], "semantic": "industrial-system", "processOccluder": false},
     {"id": "west-v14-staff-annex", "kind": "control-annex", "role": "warm-control-masonry", "shape": "box", "aabb": {"min": [2, 1, 12], "max": [24, 19, 26]}, "builderObjects": ["west-v14-staff-annex"], "semantic": "staff-control"},
-    {"id": "west-v14-staff-glazing", "kind": "staff-glazing", "role": "warm-staff-glazing", "shape": "box", "aabb": {"min": [1, 5, 22], "max": [3, 13, 25]}, "builderObjects": ["west-v14-staff-glazing"], "semantic": "staff-glazing"},
+    {"id": "west-v14-staff-glazing", "kind": "staff-glazing", "role": "warm-staff-glazing", "shape": "box", "aabb": {"min": [1, 5, 22], "max": [3, 13, 25]}, "builderObjects": ["west-v14-staff-glazing", "west-v14-staff-glazing-pane"], "semantic": "staff-glazing"},
     {"id": "west-v14-service-door", "kind": "service-door", "role": "charcoal-structural-steel", "shape": "box", "aabb": {"min": [-24, 5, -11], "max": [-22, 14, -7]}, "builderObjects": ["west-v14-service-door"], "semantic": "facade-detail"},
     {"id": "west-v14-loading-rails", "kind": "loading-rails", "role": "integrated-operating-apron", "shape": "railing", "aabb": {"min": [-27, 1, -18], "max": [-24, 5, 18]}, "builderObjects": ["west-v14-loading-rails"], "semantic": "apron-detail"},
     {"id": "west-v14-roof-edge", "kind": "roof-edge", "role": "clerestory-and-roof-edge", "shape": "box", "aabb": {"min": [3, 27, -26], "max": [24, 29, 26]}, "builderObjects": ["west-v14-roof-edge"], "semantic": "roof-detail"},
-    {"id": "west-v14-concrete-joints", "kind": "apron-marking", "role": "integrated-operating-apron", "shape": "surface-detail", "aabb": {"min": [-28, 1, -20], "max": [-22, 2, 20]}, "builderObjects": ["west-v14-concrete-joints"], "semantic": "apron-detail"}
+    {"id": "west-v14-concrete-joints", "kind": "apron-marking", "role": "integrated-operating-apron", "shape": "surface-detail", "aabb": {"min": [-28, 1, -20], "max": [-22, 2, 20]}, "builderObjects": ["west-v14-concrete-joints"], "semantic": "apron-detail"},
+    {"id": "west-v14-roof-truss", "kind": "roof-truss", "role": "charcoal-structural-steel", "shape": "truss", "aabb": {"min": [8, 28, -3], "max": [20, 34, 5]}, "builderObjects": ["west-v14-truss-chord-left", "west-v14-truss-chord-right", "west-v14-truss-diagonal"], "semantic": "reachable-roof-structure"}
   ],
   "semanticCoverage": {
-    "requiredKinds": ["surrounding-shell", "foundation", "frontage-apron", "portal-frame-jamb", "portal-frame-header", "aperture-void", "portal-depth-reveal", "freight-recess-beat", "roof-tier", "clerestory-lantern", "crown-break", "process-vessel", "pipe-cluster", "process-stack", "roof-plant", "control-annex", "staff-glazing", "service-door", "loading-rails", "roof-edge", "apron-marking"],
+    "requiredKinds": ["surrounding-shell", "foundation", "frontage-apron", "portal-frame-jamb", "portal-frame-header", "aperture-void", "portal-depth-reveal", "freight-recess-beat", "roof-tier", "clerestory-lantern", "crown-break", "process-vessel", "pipe-cluster", "process-stack", "roof-plant", "control-annex", "staff-glazing", "service-door", "loading-rails", "roof-edge", "apron-marking", "roof-truss"],
     "allComponentsLowered": true,
     "builderObjectIdentityRequired": true,
-    "componentCount": 28
+    "componentCount": 29
   },
   "occlusionProof": {
     "apertureSolidIntrusionCount": 0,

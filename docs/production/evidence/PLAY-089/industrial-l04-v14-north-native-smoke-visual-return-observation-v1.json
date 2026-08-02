@@ -16,7 +16,7 @@
     "receiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-089-NORTH-V14-VISUAL-RETURN-OBSERVATION-V1.json",
     "receiptSha256": "2de11293243e49f5f6dd374408b76b310082889c1b1b06ccac64830aa8238958",
     "observerRouteId": "quality-v2:play-089-north-v14-native-smoke-visual-return-observation-v1",
-    "observerRouteSha256": "536b1c83e3aef82d26e8b0819a9e3ab715e8f7b840244d34c8beaf9d2d6f1f9a9",
+    "observerRouteSha256": "536b1c83e3aef82d26e8b0819a9e3ab715e8f7b840244d34c8beaf9d2d6f1f9a",
     "authorityCommit": "a75e6c2c118f65a4ea43bc2925e8176061a92875",
     "baseCommit": "a75e6c2c118f65a4ea43bc2925e8176061a92875",
     "claimPath": "docs/production/claims/PLAY-089.operating-system-optimization.md",

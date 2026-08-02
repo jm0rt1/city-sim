@@ -51,6 +51,22 @@ class TriggeredOperatingReviewPolicyTests(unittest.TestCase):
         self.assert_invalid(lambda p: p["parallelism"].update({"sameTurnRefillRequired": False}))
         self.assert_invalid(lambda p: p["parallelism"].update({"manufacturedBusyworkAllowed": True}))
 
+    def test_false_green_requires_same_turn_refill(self) -> None:
+        self.assert_invalid(lambda p: p["falseGreenRecovery"].update({"sameTurnIntegrationDecision": "PROPOSE"}))
+        self.assert_invalid(lambda p: p["falseGreenRecovery"].update({"requireReplacementModelRoute": False}))
+
+    def test_false_green_preserves_independence_and_siblings(self) -> None:
+        self.assert_invalid(lambda p: p["falseGreenRecovery"].update({"requireIndependentReviewer": False}))
+        self.assert_invalid(lambda p: p["falseGreenRecovery"].update({"preserveOtherDirectionRows": False}))
+
+    def test_false_green_observer_cannot_run_expensive_gates_or_mutate(self) -> None:
+        for field in ("fullGateAllowed", "dccAllowed", "realAppQAAllowed", "sharedMutationAllowed"):
+            with self.subTest(field=field):
+                self.assert_invalid(lambda p, key=field: p["falseGreenRecovery"].update({key: True}))
+
+    def test_false_green_escalation_reasons_are_closed(self) -> None:
+        self.assert_invalid(lambda p: p["falseGreenRecovery"]["allowEscalateOnlyFor"].append("worker_prefers_frontier"))
+
     def test_coverage_cannot_hide_a_lane_or_direction(self) -> None:
         self.assert_invalid(lambda p: p["coverage"]["directionWorkstreams"].remove("east"))
         self.assert_invalid(lambda p: p["coverage"].update({"sourceRowsMustProjectExactly": False}))

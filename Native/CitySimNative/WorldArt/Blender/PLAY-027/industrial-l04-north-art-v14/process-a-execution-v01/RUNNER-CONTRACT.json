@@ -1,0 +1,48 @@
+{
+  "schema": 2,
+  "runner": "north-v14-process-a-execution-v01-static-reference-v3",
+  "contract": "EXECUTION-CONTRACT.json",
+  "childStartSiteCount": 1,
+  "highLevelCLI": ["--repository-root", "--schedule", "--grant", "--integration-session"],
+  "childCommand": ["/Applications/Blender-4.5.12-arm64.app/Contents/MacOS/Blender", "--background", "--factory-startup", "--disable-autoexec", "--python-exit-code", "1", "--python", "render_north_process_a_child.py", "--", "--repository-root", "<exact-worktree>", "--contract", "<exact-contract>", "--direction", "north", "--schedule", "<integration-schedule>", "--grant", "<integration-grant>", "--integration-session", "<integration-session>", "--output-root", "<exact-exclusive-output-root>"],
+  "blenderBinding": {"path": "/Applications/Blender-4.5.12-arm64.app/Contents/MacOS/Blender", "sha256": "0fa2ab6500e41bfd8114485b218a1e4aebf15b3d8cea90dc8398535291061506", "architecture": "arm64", "version": "4.5.12 LTS", "buildHash": "84afd5f785f7", "officialImageSHA256": "f4afdca92c56a9e231e45226445e6750879a70a0d2322cee80d82ce021a99fb0"},
+  "childEnvironment": ["CITYSIM_PROCESS_A_LIVE", "CITYSIM_PROCESS_A_SCHEDULE_SHA256", "CITYSIM_PROCESS_A_GRANT_SHA256", "CITYSIM_PROCESS_A_SESSION_SHA256", "CITYSIM_PROCESS_A_OUTPUT_INODE"],
+  "childInput": "frozen v14 scene/material/lighting/lowering bytes plus Integration-issued schedule/grant/session",
+  "semanticConstruction": {
+    "components": 33,
+    "parameterizedObjects": 97,
+    "solidObjects": 96,
+    "voidObjects": 1,
+    "coveragePercent": 100.0,
+    "coordinateBridgeAppliedToEveryVertex": "B(x,y,z)=(z,x,y)",
+    "portalVoid": true,
+    "socketRegistration": true,
+    "explicitMeshBuilders": ["open-portal-frame", "inclined-sawtooth-plane", "vertical-sawtooth-riser", "endpoint-oriented-pipe-cylinder", "pipe-elbow-torus", "endpoint-oriented-truss-members", "octagonal-vessel-frusta", "portal-reveals", "cycles-shadow-catcher-plane"],
+    "genericFallback": false
+  },
+  "cameraLighting": {
+    "cameraDatablock": true,
+    "citysimToBlenderBridge": true,
+    "targetQuaternion": true,
+    "worldNodes": true,
+    "northwestKey": true,
+    "aimedFill": true,
+    "southeastShadowCatcher": true,
+    "cyclesCPU": true,
+    "fixedThreadCount": 1,
+    "motionBlur": false,
+    "transparentRGBA": true,
+    "fixedColorManagement": true
+  },
+  "outputPolicy": {
+    "launcherCreatesRootExactlyOnce": true,
+    "childRequiresSameRootInodeAndEmptyInventory": true,
+    "immutableLeaves": true,
+    "allowedOutputs": ["raw.png", "semantic.png", "north-v14-process-a.blend", "OBJECT-MANIFEST.json", "GROUND-PROJECTION.json", "INPUT-BINDINGS.json", "provenance.json", "PROCESS-RECEIPT.json"]
+  },
+  "processPolicy": {"maximumChildStarts": 1, "maximumConcurrentDCCProcesses": 1, "communicateDrainsPipes": true, "stopAfterA": true, "childStartsInPrelaunch": 0},
+  "proofState": "STATIC_REFERENCE_CANDIDATE",
+  "executableBehavior": "UNPROVEN",
+  "sourceAuthority": false,
+  "productionSelected": false
+}

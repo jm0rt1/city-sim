@@ -1,0 +1,107 @@
+{
+  "schema": 3,
+  "taskId": "PLAY-089",
+  "event": "delegation_acknowledgement_failed",
+  "eventKey": {
+    "authorityCommit": "1fe28f135255ca49a8166c70d6a28f71570230cd",
+    "taskId": "PLAY-089",
+    "routeId": "quality-v2:play-089-industrial-l04-v14-delegation-return-review-v1",
+    "trigger": "delegation_acknowledgement_failed",
+    "candidateOrResultCommit": "898afba516eb88d3173c93e4d58f0fe1260f64e2"
+  },
+  "modelRoute": {
+    "classification": "LUNA_MECHANICAL",
+    "model": "gpt-5.6-luna",
+    "effort": "medium"
+  },
+  "policySha256": "6a5240d68f38434e8a66fa48094e22851df5fa752b746d0b2fdf7bbe1f497b69",
+  "binding": {
+    "carrierCommit": "a9452cb3850d26241057cb944f3391c2efcc8e1d",
+    "carrierReceiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-089-INDUSTRIAL-L04-V14-DELEGATION-RETURN-REVIEW-V1.json",
+    "carrierReceiptSha256": "b7bb11c17eba247b4c7dd5f10ec3e50bdbcbca92ad4e59c989d0b4ab103234a8",
+    "routeId": "quality-v2:play-089-industrial-l04-v14-delegation-return-review-v1",
+    "routeSha256": "31d665378ead7e761a9ef4f1ffaaa4b6248ce97d0cce8df9b1cd63e69a6c30ea",
+    "authorityCommit": "1fe28f135255ca49a8166c70d6a28f71570230cd",
+    "baseCommit": "1fe28f135255ca49a8166c70d6a28f71570230cd",
+    "branch": "codex/citysim-os-optimization",
+    "worktree": "/Users/James/.codex/worktrees/c92d/city-sim",
+    "expectedHead": "2407be07462d6527be641d881d911d0715e7d5a5",
+    "startHead": "2407be07462d6527be641d881d911d0715e7d5a5",
+    "claimPath": "docs/production/claims/PLAY-089.operating-system-optimization.md",
+    "claimSha256": "b98dc14fdc2425ede0c165a5e6108ccb83d2603c88cace4d03a035f8785b3994",
+    "allowedPath": "docs/production/evidence/PLAY-089/industrial-l04-v14-delegation-and-return-review-v1.json",
+    "fullGateOwner": "019f7686-4491-7891-86a6-95a78d67e5c8",
+    "independentReviewer": "019f7686-4491-7891-86a6-95a78d67e5c8"
+  },
+  "compactContext": {
+    "mode": "compact_hash_bound",
+    "bytes": 0,
+    "hashes": {
+      "claim": "b98dc14fdc2425ede0c165a5e6108ccb83d2603c88cace4d03a035f8785b3994",
+      "policy": "6a5240d68f38434e8a66fa48094e22851df5fa752b746d0b2fdf7bbe1f497b69",
+      "validator": "9d73fb96a68b2e7b44251bf0463cc983b51232f0bc22a9554fba444d14d203d9",
+      "eventAuthority": "00e38ca56e8f169cc62b44621d7341d0cd92b74ea5330e4c0fb3b837ab618ff0"
+    }
+  },
+  "inputReceipts": [
+    {
+      "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-089-INDUSTRIAL-L04-V14-DELEGATION-RETURN-REVIEW-V1.json",
+      "sha256": "b7bb11c17eba247b4c7dd5f10ec3e50bdbcbca92ad4e59c989d0b4ab103234a8"
+    },
+    {
+      "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-V14-DELEGATION-AND-RETURN-EVENT-V1.json",
+      "sha256": "00e38ca56e8f169cc62b44621d7341d0cd92b74ea5330e4c0fb3b837ab618ff0"
+    }
+  ],
+  "multiLane": false,
+  "metrics": {
+    "maximumTurns": 1,
+    "southFocusedGateRuns": 2,
+    "southCompatibilityChecksPerRun": 15,
+    "southPrelaunchChecksPerRun": 15,
+    "productBuilds": 0,
+    "fullSuites": 0,
+    "dccStarts": 0,
+    "delegationIdentityErrors": 1,
+    "elapsedSeconds": null,
+    "turns": null,
+    "validationSeconds": null,
+    "workerReworkCount": null,
+    "integrationReworkCount": null,
+    "returnCount": null,
+    "idleIntervalSeconds": null,
+    "duplicateFullGateMinutes": null,
+    "tokens": null,
+    "pricing": null
+  },
+  "evidence": {
+    "dispatchReceiptHash": "b7bb11c17eba247b4c7dd5f10ec3e50bdbcbca92ad4e59c989d0b4ab103234a8",
+    "modelRouteHash": "31d665378ead7e761a9ef4f1ffaaa4b6248ce97d0cce8df9b1cd63e69a6c30ea",
+    "claimHash": "b98dc14fdc2425ede0c165a5e6108ccb83d2603c88cace4d03a035f8785b3994",
+    "allowedPathBinding": "docs/production/evidence/PLAY-089/industrial-l04-v14-delegation-and-return-review-v1.json",
+    "acknowledgementDefect": "Integration supplied a truncated carrier identity a11cbf36ce3 and later corrected it to a11cbf361bd8ac303bcc80b343b62caa294696c3; East stopped before mutation, while South and West preserved bounded work."
+  },
+  "eventFindings": {
+    "workerReturn": "South completed the bounded closure with 15/15 compatibility and 15/15 prelaunch checks passed twice, with no DCC, output root, pixel, or blend-file activity.",
+    "attribution": "The carrier identity failure is Integration-authored; the South bounded completion is worker-authored. No timing, pricing, or observer rework values are inferred.",
+    "nextDependencyOrRefill": "Integration must publish dependency-complete source-production schedule/profile authority after the full sibling closure set is independently accepted."
+  },
+  "nextAction": {
+    "action": "Return one bounded Integration admission correction",
+    "owner": "Integration",
+    "boundedDeliverable": "Prevent manual carrier transcription errors and preserve dependency-complete admission before the next dispatch.",
+    "stopCondition": "Stop after this one validated receipt and clean PLAY-089 commit; do not dispatch, refill, rerun gates, implement policy, integrate, push, accept, or pin."
+  },
+  "prohibitedWork": {
+    "productBuildAllowed": false,
+    "fullGateAllowed": false,
+    "dccAllowed": false,
+    "realAppQAAllowed": false,
+    "sharedMutationAllowed": false
+  },
+  "reviewOperations": {
+    "threadPolling": false,
+    "spawnedReviews": false
+  },
+  "decision": "RETURN"
+}

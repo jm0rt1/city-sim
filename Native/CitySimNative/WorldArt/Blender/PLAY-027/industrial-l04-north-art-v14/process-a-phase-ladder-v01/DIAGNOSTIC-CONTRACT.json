@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "direction": "north",
+  "revision": "industrial-l04-north-v14-phase-ladder-v01",
+  "architectureState": "frozen_reference",
+  "authority": {
+    "authorityCommit": "b25d02a4e04d50b7ebce55c94bf13fc3c196c702",
+    "baseCommit": "b25d02a4e04d50b7ebce55c94bf13fc3c196c702",
+    "claim": {"path": "docs/production/claims/PLAY-027.world-art.md", "sha256": "3e0ea901ed02269a7cd766e64cc60c74853e9119b42f5834c45a7f8d8e83f861"}
+  },
+  "immutableInputs": {
+    "referenceAuthority": {"path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-NORTH-V14-PHASE-LADDER-DIAGNOSTIC-AUTHORITY-V1.md", "sha256": "73bc3f04f8c1ca40e4112a518daae3decec12b0084f056a41d993f347f1510eb"},
+    "executionContract": {"path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/process-a-execution-v01/EXECUTION-CONTRACT.json", "sha256": "99e9b3f7fc8838c09791ff6fd4aee1e2571ff8bb31028aaf1aa0c8d3ac4205f1"},
+    "launcher": {"path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/process-a-execution-v01/launch_north_process_a.py", "sha256": "76e30d924c6e3941d7af85794e194fdbb943786ec0346c1e60fa83d061805222"},
+    "child": {"path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/process-a-execution-v01/render_north_process_a_child.py", "sha256": "1239a739d3063b74f9f2597a789f4d5d188df1339ad60577e6b2e6989c209fb8"},
+    "failure": {"path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/process-a-execution-v01/process-a-output/FAILURE.json", "sha256": "77f116b1180386662329b2c4f09bfa7c1abfb6d3d734f57770e15e22b1f408fb"},
+    "startupReceipt": {"path": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v14/native-blender-startup-probe-v1/RECEIPT.json", "sha256": "c77f2ac3b1e9ac8a94ba0320824a1d64f6a6fcd6a5c5391435bbd72c16f59bb5"}
+  },
+  "referenceImplementation": {
+    "childPath": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/process-a-execution-v01/render_north_process_a_child.py",
+    "helper": "construct_semantic_geometry",
+    "copyForbidden": true
+  },
+  "phaseLadder": {
+    "ordered": [
+      "python_entered",
+      "frozen_inputs_verified",
+      "source_module_loaded",
+      "bpy_imported",
+      "scene_configured",
+      "all_96_meshes_created",
+      "pre_micro_render",
+      "post_micro_render",
+      "complete"
+    ],
+    "markerFormat": {"flushed": true, "observed": false, "durableOutput": false},
+    "stageAObserved": false
+  },
+  "futureStageB": {
+    "requiresSeparateAuthority": true,
+    "requiredDocuments": ["schedule", "grant", "session", "staticApproval"],
+    "maximumChildStarts": 1,
+    "maximumConcurrentDCCProcesses": 1,
+    "outputRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/process-a-phase-ladder-v01/phase-output",
+    "outputRootMustBeAbsent": true,
+    "microRender": {"engine": "CYCLES", "device": "CPU", "threads": 1, "samples": 8, "resolution": [8, 8], "pixels": false, "nonShipping": true}
+  },
+  "stageAExecution": {"childStarts": 0, "dccProcessCount": 0, "pixelWrites": 0, "outputRootCreated": 0, "stageBLaunchReachable": false},
+  "allowedOutputLeaves": ["PHASE-MARKERS.jsonl", "DIAGNOSTIC-RECEIPT.json"],
+  "forbidden": ["Blender", "bpy.ops.render.render", "Process-A", "phase-output", "pixels", "normalization", "Process-B", "Process-C", "sibling", "shipping"],
+  "claimOwnedRoots": ["Native/CitySimNative/WorldArt/Blender/PLAY-027", "docs/production/evidence/PLAY-027"]
+}

@@ -1,0 +1,52 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "direction": "north",
+  "status": "STATIC_REFERENCE_CANDIDATE",
+  "route": {
+    "carrierCommit": "74ada4d0956433756c3d8465b5d16367106e1037",
+    "carrierReceiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-027-NORTH-V14-PHASE-LADDER-R1.json",
+    "carrierReceiptSHA256": "589aa640bbc87362e8bd7753fdeb4630ef5636a4f79556faea6c29100fb1e824",
+    "routeId": "quality-v2:play-027-north-v14-phase-ladder-r1",
+    "modelRouteSHA256": "7b2e92cfeae788ce653f337262d9f3a2d3d4d0d40e0f6f6c1ef88f528f0dd541",
+    "classification": "LUNA_IMPLEMENTATION",
+    "model": "gpt-5.6-luna",
+    "effort": "high",
+    "authorityCommit": "b25d02a4e04d50b7ebce55c94bf13fc3c196c702",
+    "observedHead": "aa985d5211669d6f7015399e64b30c1615ec8225",
+    "claimSHA256": "3e0ea901ed02269a7cd766e64cc60c74853e9119b42f5834c45a7f8d8e83f861"
+  },
+  "sourceHashes": {
+    "DIAGNOSTIC-CONTRACT.json": "e20bcb45435762788b321d13bda8dfbcc347d035aa8759645957debf2e9079b5",
+    "launch_phase_ladder.py": "b365b22d6e6eb82f6c47b0e267cdd9d3aba124c067d6f38e34bfdfeb4d9b1e2b",
+    "phase_ladder_child.py": "1c733bf384b0a8e51f97927143a34b8cad26837531c57951b885f795067d1849",
+    "test_phase_ladder_prelaunch.py": "1841b47103def9e2bd79834ce2474c44e08b2f87b11fdc595aee39e0b9a57e5f"
+  },
+  "phaseLadder": {
+    "ordered": ["python_entered", "frozen_inputs_verified", "source_module_loaded", "bpy_imported", "scene_configured", "all_96_meshes_created", "pre_micro_render", "post_micro_render", "complete"],
+    "markersFlushed": true,
+    "markersDurable": false,
+    "stageAObserved": false,
+    "stageBAuthorityRequired": true
+  },
+  "focusedRuns": [
+    {"pass": 1, "existingPrelaunch": {"status": "STATIC_REFERENCE_CANDIDATE", "adversaries": 42, "components": 33, "objects": 97, "childStarts": 0, "dccProcessCount": 0, "pixelWrites": 0}, "phaseLadder": {"status": "PASS", "adversaries": 8, "phaseCount": 9, "components": 33, "objects": 97, "childStarts": 0, "dccProcessCount": 0, "pixelWrites": 0}},
+    {"pass": 2, "existingPrelaunch": {"status": "STATIC_REFERENCE_CANDIDATE", "adversaries": 42, "components": 33, "objects": 97, "childStarts": 0, "dccProcessCount": 0, "pixelWrites": 0}, "phaseLadder": {"status": "PASS", "adversaries": 8, "phaseCount": 9, "components": 33, "objects": 97, "childStarts": 0, "dccProcessCount": 0, "pixelWrites": 0}}
+  ],
+  "executionAccounting": {
+    "readyNow": ["north:stage-a-static-review"],
+    "running": [],
+    "waitingOnJoin": ["Integration independent Stage-A static review"],
+    "serializedAuthority": {"owner": "Integration", "stage": "Stage-B", "liveGrant": false, "dccAuthority": false},
+    "nextRefill": "Integration publishes a frontier-reviewed Stage-B route with schedule, grant, session, and static-approval receipt",
+    "capacity": {"helperSlots": 1, "dccSlots": 0, "maximumChildStarts": 0},
+    "launchedJobs": [{"jobId": "play027-north-stage-a-static-r1", "resourceClass": "helper", "state": "completed", "exclusiveRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/process-a-phase-ladder-v01", "dccSlot": null, "processId": null, "mutation": "task-owned static contract/test/evidence only"}],
+    "unusedCapacityReasons": [{"reasonCode": "dcc_not_authorized", "owner": "Integration", "dependencyAuthority": {"path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-NORTH-V14-PHASE-LADDER-DIAGNOSTIC-AUTHORITY-V1.md", "sha256": "73bc3f04f8c1ca40e4112a518daae3decec12b0084f056a41d993f347f1510eb"}, "resumptionEvent": "new Integration Stage-B schedule/grant/session/static-approval receipt", "nextRefillJob": "north:stage-b-diagnostic"}],
+    "overlap": {"status": "none", "jobIds": ["play027-north-stage-a-static-r1"], "reason": "single serialized helper job"},
+    "join": "joined"
+  },
+  "mechanicalGates": {"authorityAncestor": true, "claimBinding": true, "immutableInputsExact": true, "semanticHelperCalled": true, "oneChildStartSiteProven": true, "exclusiveRootContainment": true, "outputLeafAllowlisting": true, "zeroDCC": true, "zeroPixels": true, "sourceAuthority": false, "productionSelected": false, "executableBehavior": "UNPROVEN"},
+  "forbiddenEffects": {"blenderLaunches": 0, "dccProcessCount": 0, "outputRootsCreated": 0, "pixelWrites": 0, "frozenInputsMutated": false, "stageBConsumed": false, "processBOrC": false},
+  "independentReviewRequired": true,
+  "stopCondition": "Stop before any Blender/DCC/output/pixel work; Stage B requires a separate Integration route and external schedule/grant/session/static-approval receipt."
+}

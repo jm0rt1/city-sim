@@ -77,6 +77,62 @@
       "receiptSha256": "e31b5bb278ea01b2b9e203d4180dd50bbdb2f2df41f08554d2f1225ec99b6aca",
       "decision": "NO_CHANGE",
       "disposition": {"status":"auto_closed","authorityCommit":"af9c0ba75f7cbbd613c420c73da9221f0236df37","reason":"West mandatory frontier route is exact, disjoint, zero-DCC, independently reviewed, and ready for dispatch."}
+    },
+    {
+      "eventKey": {"authorityCommit":"f5562c1bd3b38a1d002a64e5930cd82370a3fe81","taskId":"PLAY-089","routeId":"quality-v2:play-089-industrial-l04-repair-handoff-review-v1","trigger":"worktree_or_dispatch_setup_failed_before_mutation","candidateOrResultCommit":"fb6fd3c20ed32191ff43fd31acb5651713373c4c"},
+      "receiptPath": "docs/production/evidence/PLAY-089/industrial-l04-repair-handoff-review-v1/01-setup-failure.json",
+      "receiptSha256": "bb90080213456b9463fa8d094f1cc8bd8188dc599ea6312c8bc20ac899cd1830",
+      "decision": "RETURN",
+      "disposition": {"status":"applied","authorityCommit":"76540dc2e58265f6e524fc18c270921a3492ba43","reason":"Integration repaired the stale observer HEAD, minimal event envelope, cross-root validator command, and immediate-event order before accepting any candidate."}
+    },
+    {
+      "eventKey": {"authorityCommit":"f5562c1bd3b38a1d002a64e5930cd82370a3fe81","taskId":"PLAY-089","routeId":"quality-v2:play-089-industrial-l04-repair-handoff-review-v1","trigger":"candidate_handoff","candidateOrResultCommit":"5ade43b991695f9fb05a023ef7dd1de2a775a27d"},
+      "receiptPath": "docs/production/evidence/PLAY-089/industrial-l04-repair-handoff-review-v1/02-north-handoff.json",
+      "receiptSha256": "5064b451ba63d6a39020a4d9d6a35ea09333b4b3a4ea5e29fcbdcf38f3dea0b0",
+      "decision": "NO_CHANGE",
+      "disposition": {"status":"auto_closed","authorityCommit":"76540dc2e58265f6e524fc18c270921a3492ba43","reason":"Integration independently accepted and merged exact North candidate 5ade43b with zero product/full/DCC gate duplication."}
+    },
+    {
+      "eventKey": {"authorityCommit":"f5562c1bd3b38a1d002a64e5930cd82370a3fe81","taskId":"PLAY-089","routeId":"quality-v2:play-089-industrial-l04-repair-handoff-review-v1","trigger":"task_completed_or_stopped","candidateOrResultCommit":"5ade43b991695f9fb05a023ef7dd1de2a775a27d"},
+      "receiptPath": "docs/production/evidence/PLAY-089/industrial-l04-repair-handoff-review-v1/03-north-terminal.json",
+      "receiptSha256": "b891f5e99a20d53660b1503e4ad7e86b8dabbefc7ada67e160885cf16338509d",
+      "decision": "NO_CHANGE",
+      "disposition": {"status":"auto_closed","authorityCommit":"76540dc2e58265f6e524fc18c270921a3492ba43","reason":"North repair terminal state is closed by exact-candidate integration; the next dependency is a separately published diagnostic launch."}
+    },
+    {
+      "eventKey": {"authorityCommit":"f5562c1bd3b38a1d002a64e5930cd82370a3fe81","taskId":"PLAY-089","routeId":"quality-v2:play-089-industrial-l04-repair-handoff-review-v1","trigger":"candidate_handoff","candidateOrResultCommit":"d5e09f77217d6d46843aab4e43ee214317ae1d8d"},
+      "receiptPath": "docs/production/evidence/PLAY-089/industrial-l04-repair-handoff-review-v1/04-east-handoff.json",
+      "receiptSha256": "fb8cabf3fce89d1354c0e7606a362cf1b62ffd11b70746dd9f56eff7ecb9b7dd",
+      "decision": "NO_CHANGE",
+      "disposition": {"status":"auto_closed","authorityCommit":"76540dc2e58265f6e524fc18c270921a3492ba43","reason":"Integration independently accepted and merged exact East candidate d5e09f7 with zero product/full/DCC gate duplication."}
+    },
+    {
+      "eventKey": {"authorityCommit":"f5562c1bd3b38a1d002a64e5930cd82370a3fe81","taskId":"PLAY-089","routeId":"quality-v2:play-089-industrial-l04-repair-handoff-review-v1","trigger":"task_completed_or_stopped","candidateOrResultCommit":"d5e09f77217d6d46843aab4e43ee214317ae1d8d"},
+      "receiptPath": "docs/production/evidence/PLAY-089/industrial-l04-repair-handoff-review-v1/05-east-terminal.json",
+      "receiptSha256": "b45d1b48b6b59394a06f70cdb31d709ac489ccf746cfdc7fba22a6b4e4659503",
+      "decision": "NO_CHANGE",
+      "disposition": {"status":"auto_closed","authorityCommit":"76540dc2e58265f6e524fc18c270921a3492ba43","reason":"East repair terminal state is closed by exact-candidate integration; post-candidate production authority remains separate."}
+    },
+    {
+      "eventKey": {"authorityCommit":"f5562c1bd3b38a1d002a64e5930cd82370a3fe81","taskId":"PLAY-089","routeId":"quality-v2:play-089-industrial-l04-repair-handoff-review-v1","trigger":"candidate_handoff","candidateOrResultCommit":"dd2d4f02fc7d3a7751ff6b72613bdc9ffdd3ed6b"},
+      "receiptPath": "docs/production/evidence/PLAY-089/industrial-l04-repair-handoff-review-v1/06-west-handoff.json",
+      "receiptSha256": "95f3e90b13ff05da1d697e0290f73b4bf803ccc90c43844b5b47f5f4368240c0",
+      "decision": "NO_CHANGE",
+      "disposition": {"status":"auto_closed","authorityCommit":"76540dc2e58265f6e524fc18c270921a3492ba43","reason":"Integration independently accepted and merged exact West candidate dd2d4f0 with zero product/full/DCC gate duplication."}
+    },
+    {
+      "eventKey": {"authorityCommit":"f5562c1bd3b38a1d002a64e5930cd82370a3fe81","taskId":"PLAY-089","routeId":"quality-v2:play-089-industrial-l04-repair-handoff-review-v1","trigger":"task_completed_or_stopped","candidateOrResultCommit":"dd2d4f02fc7d3a7751ff6b72613bdc9ffdd3ed6b"},
+      "receiptPath": "docs/production/evidence/PLAY-089/industrial-l04-repair-handoff-review-v1/07-west-terminal.json",
+      "receiptSha256": "a94f1aa52c19f39d9d29b78bd96120048ac13366fae6e4be36a0d183b9ed6b8f",
+      "decision": "NO_CHANGE",
+      "disposition": {"status":"auto_closed","authorityCommit":"76540dc2e58265f6e524fc18c270921a3492ba43","reason":"West repair terminal state is closed by exact-candidate integration; post-candidate production authority remains separate."}
+    },
+    {
+      "eventKey": {"authorityCommit":"f5562c1bd3b38a1d002a64e5930cd82370a3fe81","taskId":"PLAY-089","routeId":"quality-v2:play-089-industrial-l04-repair-handoff-review-v1","trigger":"useful_concurrency_below_floor","candidateOrResultCommit":"f5562c1bd3b38a1d002a64e5930cd82370a3fe81"},
+      "receiptPath": "docs/production/evidence/PLAY-089/industrial-l04-repair-handoff-review-v1/08-concurrency-refill.json",
+      "receiptSha256": "106a0688f33d48ecc908eed3d52c8e0d7c8f226f7ca6f712e42e36f31fa3ee5c",
+      "decision": "REFILL",
+      "disposition": {"status":"applied","authorityCommit":"76540dc2e58265f6e524fc18c270921a3492ba43","reason":"Integration accepted all three disjoint repairs and opened the immediate next-wave authority and lane-synchronization work in the same goal turn."}
     }
   ]
 }

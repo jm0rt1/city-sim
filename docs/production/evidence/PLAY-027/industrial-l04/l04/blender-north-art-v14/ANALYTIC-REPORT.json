@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "revision": "industrial-l04-north-v14-hero",
+  "lowerer": "lower_v14_scene.py",
+  "lowererSHA256": "21570ac56bf8adb4679110ed42ebee7e73a57028d0d08f76a8c5b51cd9f2349b",
+  "inputHashes": {"scene": "74aa228432a34c77ba5cdcfde414bf8f5e8bb2d5b7e38d33703ffc061b97ddf3", "materials": "1d7dcefcd19c3f290d43ae0168df5d3917c7cccca46b37d0d52cb102c9a4bc89", "lighting": "40ae121ec066e4c8c1821e23c5ca20eb9edf638dd50aab036cbdb5d091c86225"},
+  "coverage": {"components": 33, "objects": 48, "percent": 100.0},
+  "registration": {"bridge": "B(x,y,z)=(z,x,y)", "footprint": [56, 56], "pivot": [768, 896], "socket": [896, 704], "northRoadZ": -28},
+  "envelope": {"nonStackMaxY": 40, "observedNonStackMaxY": 38, "stackMaxY": 44, "observedStackMaxY": 44},
+  "silhouette": {"meaningfulBreaks": 7, "minimum": 5},
+  "portal": {"widthCompactProxy": 72, "heightCompactProxy": 58, "frameCompactProxy": 12, "occludingObjects": [], "socketConnected": true},
+  "materialRoleCount": 9,
+  "semanticProxyOnly": true,
+  "dccProcessCount": 0,
+  "pixelWrites": 0,
+  "sourceAuthority": false,
+  "productionSelected": false
+}

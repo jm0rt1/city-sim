@@ -465,6 +465,47 @@ def main() -> int:
             assert "bpy" not in source
         assert "render(" not in source or path.name == "render_north_v13_process_a_child.py"
 
+    # Frozen lighting is checked as source/configuration data only.  These
+    # assertions never import bpy, launch Blender, or create pixels.
+    child_source_path = HERE / "render_north_v13_process_a_child.py"
+    child_source = child_source_path.read_text(encoding="utf-8")
+    child_tree = ast.parse(child_source)
+    child_scene = runner.load_json(ROOT / child.SOURCE_ROOT / "DESIGN-SCENE.json")
+    assert child.WORLD_BACKGROUND_RGBA == (0.055, 0.065, 0.085, 1.0)
+    assert child.WORLD_BACKGROUND_STRENGTH == 0.55
+    assert child.KEY_LIGHT_TYPE == "AREA"
+    assert child.KEY_LIGHT_SHAPE == "DISK"
+    assert child.KEY_LIGHT_TARGET_WORLD == (0.0, 16.0, 0.0)
+    assert child.KEY_LIGHT_ENERGY_WATTS == 4500.0
+    assert child.KEY_LIGHT_SIZE_WORLD == 46.0
+    assert child.KEY_LIGHT_SHADOW_SOFT_SIZE_WORLD == 46.0
+    assert child.KEY_LIGHT_COLOR_RGB == (1.0, 0.78, 0.58)
+    key_origin = child_scene["light"]["keyOrigin"]
+    assert child.citysim_to_blender(key_origin) == (float(key_origin[2]), float(key_origin[0]), float(key_origin[1]))
+    assert child.citysim_to_blender(list(child.KEY_LIGHT_TARGET_WORLD)) == (0.0, 0.0, 16.0)
+    lighting_functions = [node for node in child_tree.body if isinstance(node, ast.FunctionDef) and node.name == "configure_lighting"]
+    assert len(lighting_functions) == 1
+    lighting_source = ast.get_source_segment(child_source, lighting_functions[0]) or ""
+    assert "bpy.data.worlds.new" in lighting_source
+    assert "bpy.data.lights.new" in lighting_source
+    assert "background.inputs[\"Color\"]" in lighting_source
+    assert "background.inputs[\"Strength\"]" in lighting_source
+    assert "light_data.shape" in lighting_source
+    assert "light_data.shadow_soft_size" in lighting_source
+    render_functions = [node for node in child_tree.body if isinstance(node, ast.FunctionDef) and node.name == "render_process"]
+    assert len(render_functions) == 1
+    render_calls = []
+    for node in ast.walk(render_functions[0]):
+        if not isinstance(node, ast.Call):
+            continue
+        if isinstance(node.func, ast.Attribute):
+            render_calls.append(node.func.attr)
+        elif isinstance(node.func, ast.Name):
+            render_calls.append(node.func.id)
+    assert render_calls.index("configure_lighting") < render_calls.index("render")
+    assert child_source.count("bpy.data.lights.new") == 1
+    assert "ImageGen" not in child_source
+
     # The committed readiness/handoff were generated at the prior accepted
     # candidate boundary.  Rehydrate that immutable preflight projection for
     # the byte-identity check; the live worker-delta gate above is evaluated

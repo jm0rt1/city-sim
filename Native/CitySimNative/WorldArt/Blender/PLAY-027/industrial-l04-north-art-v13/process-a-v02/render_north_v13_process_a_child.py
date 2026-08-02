@@ -18,6 +18,15 @@ import sys
 
 
 BLENDER_DIRECT_FLAG = "--integration-direct"
+WORLD_BACKGROUND_RGBA = (0.055, 0.065, 0.085, 1.0)
+WORLD_BACKGROUND_STRENGTH = 0.55
+KEY_LIGHT_TYPE = "AREA"
+KEY_LIGHT_SHAPE = "DISK"
+KEY_LIGHT_TARGET_WORLD = (0.0, 16.0, 0.0)
+KEY_LIGHT_ENERGY_WATTS = 4500.0
+KEY_LIGHT_SIZE_WORLD = 46.0
+KEY_LIGHT_COLOR_RGB = (1.0, 0.78, 0.58)
+KEY_LIGHT_SHADOW_SOFT_SIZE_WORLD = 46.0
 SOURCE_ROOT = "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13"
 PROCESS_ROOT = "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a"
 EVIDENCE_ROOT = "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-v02"
@@ -272,6 +281,49 @@ def configure_camera(bpy, scene: dict) -> None:
     bpy.context.scene.camera = camera
 
 
+def configure_lighting(bpy, scene: dict) -> dict:
+    """Create the frozen world fill and one deterministic North key light."""
+    world = bpy.data.worlds.new("NorthV13World")
+    world.use_nodes = True
+    background = world.node_tree.nodes.get("Background")
+    if background is None:
+        raise RuntimeError("world Background node missing")
+    background.inputs["Color"].default_value = WORLD_BACKGROUND_RGBA
+    background.inputs["Strength"].default_value = WORLD_BACKGROUND_STRENGTH
+    bpy.context.scene.world = world
+
+    light_data = bpy.data.lights.new("NorthV13Key", type=KEY_LIGHT_TYPE)
+    light_data.shape = KEY_LIGHT_SHAPE
+    light_data.energy = KEY_LIGHT_ENERGY_WATTS
+    light_data.color = KEY_LIGHT_COLOR_RGB
+    light_data.size = KEY_LIGHT_SIZE_WORLD
+    light_data.shadow_soft_size = KEY_LIGHT_SHADOW_SOFT_SIZE_WORLD
+    light_object = bpy.data.objects.new("NorthV13Key", light_data)
+    bpy.context.collection.objects.link(light_object)
+    light_object.location = citysim_to_blender(scene["light"]["keyOrigin"])
+    target = __import__("mathutils").Vector(citysim_to_blender(KEY_LIGHT_TARGET_WORLD))
+    direction = target - light_object.location
+    light_object.rotation_euler = direction.to_track_quat("-Z", "Y").to_euler()
+    return {
+        "world": {
+            "useNodes": True,
+            "backgroundColorRGBA": list(WORLD_BACKGROUND_RGBA),
+            "backgroundStrength": WORLD_BACKGROUND_STRENGTH,
+        },
+        "key": {
+            "type": KEY_LIGHT_TYPE,
+            "shape": KEY_LIGHT_SHAPE,
+            "originSource": "DESIGN-SCENE.light.keyOrigin",
+            "originWorld": list(scene["light"]["keyOrigin"]),
+            "targetWorld": list(KEY_LIGHT_TARGET_WORLD),
+            "energyWatts": KEY_LIGHT_ENERGY_WATTS,
+            "sizeWorld": KEY_LIGHT_SIZE_WORLD,
+            "shadowSoftSizeWorld": KEY_LIGHT_SHADOW_SOFT_SIZE_WORLD,
+            "colorRGB": list(KEY_LIGHT_COLOR_RGB),
+        },
+    }
+
+
 def write_exclusive(path: Path, value: object) -> None:
     with path.open("xb") as stream:
         stream.write(canonical(value))
@@ -306,13 +358,14 @@ def render_process(parsed: argparse.Namespace, binding: dict) -> int:
     material_by_role = configure_materials(bpy, materials)
     manifest = build_geometry(bpy, scene, material_by_role)
     configure_camera(bpy, scene)
+    lighting = configure_lighting(bpy, scene)
     render_scene.render.filepath = str(output / "raw.png")
     bpy.ops.render.render(write_still=True)
     if not (output / "raw.png").is_file():
         raise RuntimeError("Blender did not emit raw.png")
     write_exclusive(output / "OBJECT-MANIFEST.json", {"schema": 1, "objects": manifest})
     write_exclusive(output / "INPUT-BINDINGS.json", {"scene": sha256(scene_path), "materials": sha256(materials_path), "lowering": sha256(lowering_path), "contract": sha256(contract_path)})
-    write_exclusive(output / "provenance.json", {"schema": 1, "task": "PLAY-027", "direction": "north", "process": "A", "sceneGeometryID": contract["identity"]["sceneGeometryID"], "sourceAuthority": False, "productionSelected": False, "cycles": {"device": "CPU", "samples": 64, "denoising": False}, "rawSHA256": sha256(output / "raw.png")})
+    write_exclusive(output / "provenance.json", {"schema": 1, "task": "PLAY-027", "direction": "north", "process": "A", "sceneGeometryID": contract["identity"]["sceneGeometryID"], "sourceAuthority": False, "productionSelected": False, "cycles": {"device": "CPU", "samples": 64, "denoising": False}, "lighting": lighting, "rawSHA256": sha256(output / "raw.png")})
     return 0
 
 

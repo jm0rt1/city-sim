@@ -67,6 +67,17 @@
     "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/RUNNER-CONTRACT.json",
     "sha256": "33296a529298f9c2b1f299a2a0c1e0e41f02cf0f184d34cf16cc3f448a3284f5"
   },
+  "modelRouteAuthority": {
+    "carrierCommit": "4f041092dc6bd90da858ea959d6d5c5554ecdfe4",
+    "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-081-WEST-V14-EXACT-CLOSURE-R2.json",
+    "sha256": "0d62e26ff49e995e519b1f9d04d4ed9f46c812b2f65bea4877dca88be1122027",
+    "routeId": "quality-v2:play-081-west-v14-exact-closure-r2",
+    "routeSha256": "16d011163da66a72637aa0f9ca3bde30d65c7f0dc97ed8c1d434f96bdb253809"
+  },
+  "sourceStageSchemaAuthority": {
+    "path": "docs/production/evidence/INTEGRATION/industrial-l04-source-stage-handoff-schema-v2.json",
+    "sha256": "85f6a2824c273a1e63354df79a97e5a59c2909a68771613b325664d649ac53ec"
+  },
   "productionExecutionEnabled": false,
   "productionReceiptEmissionEnabled": false,
   "futureIntegrationInputs": {

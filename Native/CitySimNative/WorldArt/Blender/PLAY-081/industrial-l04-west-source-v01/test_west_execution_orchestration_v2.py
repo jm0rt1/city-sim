@@ -13,12 +13,17 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from west_execution_orchestration_v2 import (
     DEFAULT_EXECUTION_CONTRACT,
+    DEFAULT_HIGH_LEVEL_ORCHESTRATOR,
+    DEFAULT_LOW_LEVEL_RUNNER,
     DEFAULT_RUNNER_CONTRACT,
+    SCHEDULE_SCHEMA,
+    SOURCE_STAGE_SCHEMA_SHA256,
     OrchestrationError,
     committed_input_errors,
     current_binding_errors,
@@ -32,6 +37,8 @@ from west_execution_orchestration_v2 import (
     validate_allocation,
     validate_bound_launch_grant,
     validate_contract_authorities,
+    validate_integration_document_closure,
+    validate_model_route_and_source_schema,
     validate_execution_receipt,
     validate_failure_isolation,
     validate_receipt_order,
@@ -145,6 +152,31 @@ class WestExecutionOrchestrationV2Tests(unittest.TestCase):
         self.assertIn("integration-input:launchGrantC:not-published", errors)
         self.assertIn("production-execution:disabled", errors)
         self.assertIn("production-receipt-emission:disabled", errors)
+
+    def test_external_route_and_source_schema_are_exactly_bound(self) -> None:
+        errors, result = validate_model_route_and_source_schema(
+            self.repository_root, self.execution_contract
+        )
+        self.assertEqual(errors, [])
+        self.assertEqual(result["routeId"], "quality-v2:play-081-west-v14-exact-closure-r2")
+        self.assertEqual(result["routeSHA256"], "16d011163da66a72637aa0f9ca3bde30d65c7f0dc97ed8c1d434f96bdb253809")
+        self.assertEqual(result["sourceStageSchemaSHA256"], "85f6a2824c273a1e63354df79a97e5a59c2909a68771613b325664d649ac53ec")
+        mutations = (
+            ("carrierCommit", "0" * 40, "model-route:binding"),
+            ("path", "docs/production/evidence/INTEGRATION/other.json", "model-route:binding"),
+            ("sha256", "0" * 64, "model-route:binding"),
+            ("routeId", "quality-v2:wrong", "model-route:binding"),
+            ("routeSha256", "0" * 64, "model-route:binding"),
+        )
+        for field, value, expected in mutations:
+            candidate = copy.deepcopy(self.execution_contract)
+            candidate["modelRouteAuthority"][field] = value
+            bad, _ = validate_model_route_and_source_schema(self.repository_root, candidate)
+            self.assertIn(expected, bad, field)
+        candidate = copy.deepcopy(self.execution_contract)
+        candidate["sourceStageSchemaAuthority"]["sha256"] = "0" * 64
+        bad, _ = validate_model_route_and_source_schema(self.repository_root, candidate)
+        self.assertIn("source-schema:binding", bad)
 
     def test_parallel_two_slot_positive(self) -> None:
         schedule, receipt = self.receipt()
@@ -447,6 +479,8 @@ class WestExecutionOrchestrationV2Tests(unittest.TestCase):
             )
             contract = copy.deepcopy(self.execution_contract)
             runner = copy.deepcopy(self.runner_contract)
+            contract["modelRouteAuthority"] = None
+            contract["sourceStageSchemaAuthority"] = None
             paths: dict[str, tuple[str, bytes]] = {
                 "frozenDesignAuthority": (
                     "docs/production/evidence/INTEGRATION/DESIGN.md",
@@ -534,6 +568,309 @@ class WestExecutionOrchestrationV2Tests(unittest.TestCase):
                 "integration-input:lockedMaterialMapping:working-tree-sha256",
                 errors,
             )
+
+    def test_complete_integration_document_closure_is_cross_bound(self) -> None:
+        """A committed positive fixture and field-level adversaries stay zero-child."""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            subprocess.run(["git", "init", "-q"], cwd=root, check=True)
+            subprocess.run(["git", "config", "user.name", "PLAY-081 Test"], cwd=root, check=True)
+            subprocess.run(["git", "config", "user.email", "play-081@example.invalid"], cwd=root, check=True)
+            branch = self.execution_contract["branch"]
+            subprocess.run(["git", "checkout", "-qb", branch], cwd=root, check=True)
+            claim_path = root / "docs/production/claims/PLAY-081.world-art-west.md"
+            claim_path.parent.mkdir(parents=True)
+            claim_path.write_text("Claim revision: 11\n", encoding="utf-8")
+            base_path = root / "docs/production/evidence/INTEGRATION/BASE.md"
+            base_path.parent.mkdir(parents=True, exist_ok=True)
+            base_path.write_text("frozen design\n", encoding="utf-8")
+            subprocess.run(["git", "add", "."], cwd=root, check=True)
+            subprocess.run(["git", "commit", "-q", "-m", "fixture base"], cwd=root, check=True)
+            base = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
+            contract = copy.deepcopy(self.execution_contract)
+            runner = copy.deepcopy(self.runner_contract)
+            contract["modelRouteAuthority"] = None
+            contract["sourceStageSchemaAuthority"] = None
+            session_id = "west-integration-session-v1"
+            docs: dict[str, dict] = {}
+            schedule = fixture_schedule(contract, "parallel_two_slot")
+            schema = {
+                "documentType": "scheduleSchema", "schema": SCHEDULE_SCHEMA,
+                "schemaVersion": 1, "taskId": "PLAY-081", "direction": "west",
+                "claimSHA256": hashlib.sha256(claim_path.read_bytes()).hexdigest(),
+                "claimRevision": 11, "branch": branch, "workerHead": base,
+                "sessionId": session_id,
+            }
+            docs["scheduleSchema"] = schema
+            docs["scheduleAuthority"] = {
+                "documentType": "scheduleAuthority", "schedule": schedule,
+                "scheduleSchemaSHA256": "", "sessionId": session_id,
+                "taskId": "PLAY-081", "direction": "west",
+                "claimSHA256": schema["claimSHA256"], "claimRevision": 11,
+                "branch": branch, "workerHead": base, "publishedBase": base,
+            }
+            schema_bytes = (json.dumps(schema, indent=2, sort_keys=True) + "\n").encode()
+            docs["scheduleAuthority"]["scheduleSchemaSHA256"] = hashlib.sha256(schema_bytes).hexdigest()
+            appearance = {
+                "documentType": "appearanceLock", "state": "released",
+                "sessionId": session_id, "taskId": "PLAY-081", "direction": "west",
+                "claimSHA256": schema["claimSHA256"], "claimRevision": 11,
+                "branch": branch, "workerHead": base, "publishedBase": base,
+                "sourceSha256": "a" * 64, "decodedRgbaSha256": "b" * 64,
+            }
+            materials = {
+                "documentType": "lockedMaterialMapping", "state": "released",
+                "sessionId": session_id, "taskId": "PLAY-081", "direction": "west",
+                "claimSHA256": schema["claimSHA256"], "claimRevision": 11,
+                "branch": branch, "workerHead": base, "publishedBase": base,
+                "appearanceLockSHA256": "", "roles": {"frame": "steel"},
+            }
+            profile = {
+                "documentType": "sourceProductionProfile", "schema": "source-stage-v2",
+                "sessionId": session_id, "taskId": "PLAY-081", "direction": "west",
+                "claimSHA256": schema["claimSHA256"], "claimRevision": 11,
+                "branch": branch, "workerHead": base, "publishedBase": base,
+                "scheduleAuthoritySHA256": "", "appearanceLockSHA256": "",
+                "lockedMaterialMappingSHA256": "", "sourceStageSchemaSHA256": SOURCE_STAGE_SCHEMA_SHA256,
+            }
+            docs["appearanceLock"], docs["lockedMaterialMapping"], docs["sourceProductionProfile"] = appearance, materials, profile
+            for process_id in ("A", "B", "C"):
+                grant = fixture_grant(schedule, contract, runner, process_id)
+                expected = contract["westProcesses"][process_id]
+                docs[f"launchGrant{process_id}"] = {
+                    "documentType": "launchGrant", "grant": grant,
+                    "sessionId": session_id, "taskId": "PLAY-081", "direction": "west",
+                    "claimSHA256": schema["claimSHA256"], "claimRevision": 11,
+                    "branch": branch, "workerHead": base, "publishedBase": base,
+                    "scheduleAuthoritySHA256": "", "orchestrator": DEFAULT_HIGH_LEVEL_ORCHESTRATOR,
+                    "runner": DEFAULT_LOW_LEVEL_RUNNER, "outputRoot": expected["directory"],
+                    "rawRoot": expected["rawRoot"], "semanticRoot": expected["semanticRoot"],
+                    "evidenceRoot": expected["evidenceRoot"], "maximumChildStarts": 1,
+                }
+            def canonical_bytes(value: dict) -> bytes:
+                return (json.dumps(value, indent=2, sort_keys=True) + "\n").encode()
+            docs["scheduleAuthority"]["scheduleSchemaSHA256"] = hashlib.sha256(canonical_bytes(docs["scheduleSchema"])).hexdigest()
+            schedule_authority_hash = hashlib.sha256(canonical_bytes(docs["scheduleAuthority"])).hexdigest()
+            appearance_hash = hashlib.sha256(canonical_bytes(appearance)).hexdigest()
+            materials["appearanceLockSHA256"] = appearance_hash
+            materials_hash = hashlib.sha256(canonical_bytes(materials)).hexdigest()
+            profile["scheduleAuthoritySHA256"] = schedule_authority_hash
+            profile["appearanceLockSHA256"] = appearance_hash
+            profile["lockedMaterialMappingSHA256"] = materials_hash
+            profile_hash = hashlib.sha256(canonical_bytes(profile)).hexdigest()
+            for process_id in ("A", "B", "C"):
+                docs[f"launchGrant{process_id}"]["scheduleAuthoritySHA256"] = schedule_authority_hash
+            grant_hashes = {p: hashlib.sha256(canonical_bytes(docs[f"launchGrant{p}"])).hexdigest() for p in ("A", "B", "C")}
+            docs["globalExecutionReceipt"] = {
+                "documentType": "integrationSession", "sessionId": session_id,
+                "taskId": "PLAY-081", "direction": "west", "claimSHA256": schema["claimSHA256"],
+                "claimRevision": 11, "branch": branch, "workerHead": base, "publishedBase": base,
+                "scheduleAuthoritySHA256": schedule_authority_hash, "grantSHA256": grant_hashes,
+                "appearanceLockSHA256": appearance_hash, "lockedMaterialMappingSHA256": materials_hash,
+                "sourceProductionProfileSHA256": profile_hash,
+            }
+            path_map: dict[str, tuple[str, bytes]] = {"frozenDesignAuthority": (str(base_path.relative_to(root)), base_path.read_bytes())}
+            for name, value in docs.items():
+                relative = f"docs/production/evidence/INTEGRATION/{name}.json"
+                path_map[name] = (relative, canonical_bytes(value))
+                target = root / relative
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes(path_map[name][1])
+            subprocess.run(["git", "add", "."], cwd=root, check=True)
+            subprocess.run(["git", "commit", "-q", "-m", "fixture authorities"], cwd=root, check=True)
+            worker_head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
+            contract["frozenDesignAuthority"] = {"path": path_map["frozenDesignAuthority"][0], "commit": worker_head, "sha256": hashlib.sha256(path_map["frozenDesignAuthority"][1]).hexdigest()}
+            for name, binding in contract["futureIntegrationInputs"].items():
+                relative, data = path_map[name]
+                binding.update({"state": "bound_integration", "path": relative, "commit": worker_head, "sha256": hashlib.sha256(data).hexdigest()})
+            runner["appearanceLock"].update({"documentPath": contract["futureIntegrationInputs"]["appearanceLock"]["path"], "commit": worker_head, "documentSha256": contract["futureIntegrationInputs"]["appearanceLock"]["sha256"]})
+            profile_binding = contract["futureIntegrationInputs"]["sourceProductionProfile"]
+            runner["sourceStage"]["sourceProductionProfile"] = {"state": "bound_integration_profile", "path": profile_binding["path"], "commit": worker_head, "sha256": profile_binding["sha256"]}
+            with patch(
+                "west_execution_orchestration_v2.git_output",
+                side_effect=lambda _root, *args: (
+                    base if args == ("rev-parse", "HEAD") else branch
+                    if args == ("branch", "--show-current") else None
+                ),
+            ):
+                errors, result = validate_integration_document_closure(root, contract, runner)
+            self.assertEqual(errors, [])
+            self.assertEqual(result["workerHead"], base)
+
+            def rebind_all_documents(commit: str) -> None:
+                contract["frozenDesignAuthority"]["commit"] = commit
+                for name, binding in contract["futureIntegrationInputs"].items():
+                    relative = path_map[name][0]
+                    data = (root / relative).read_bytes()
+                    binding.update(
+                        {
+                            "state": "bound_integration",
+                            "path": relative,
+                            "commit": commit,
+                            "sha256": hashlib.sha256(data).hexdigest(),
+                        }
+                    )
+                appearance_binding = contract["futureIntegrationInputs"][
+                    "appearanceLock"
+                ]
+                runner["appearanceLock"].update(
+                    {
+                        "documentPath": appearance_binding["path"],
+                        "commit": appearance_binding["commit"],
+                        "documentSha256": appearance_binding["sha256"],
+                    }
+                )
+                profile_binding = contract["futureIntegrationInputs"][
+                    "sourceProductionProfile"
+                ]
+                runner["sourceStage"]["sourceProductionProfile"] = {
+                    "state": "bound_integration_profile",
+                    "path": profile_binding["path"],
+                    "commit": profile_binding["commit"],
+                    "sha256": profile_binding["sha256"],
+                }
+
+            def set_nested(value: dict, keys: tuple[str, ...], replacement: object) -> None:
+                target: dict = value
+                for key in keys[:-1]:
+                    target = target[key]
+                target[keys[-1]] = replacement
+
+            adversaries = (
+                (
+                    "appearance-direction",
+                    (("appearanceLock", ("direction",), "east"),),
+                    ("document-closure:direction",),
+                ),
+                (
+                    "appearance-claim",
+                    (("appearanceLock", ("claimSHA256",), "0" * 64),),
+                    ("document-closure:claimSHA256",),
+                ),
+                (
+                    "appearance-branch",
+                    (("appearanceLock", ("branch",), "codex/citysim-world-art-south"),),
+                    ("document-closure:branch",),
+                ),
+                (
+                    "grant-task",
+                    (("launchGrantA", ("taskId",), "PLAY-999"),),
+                    ("document-closure:taskId",),
+                ),
+                (
+                    "grant-claim-revision",
+                    (("launchGrantA", ("claimRevision",), 99),),
+                    ("document-closure:claimRevision",),
+                ),
+                (
+                    "grant-worker-head",
+                    (("launchGrantA", ("workerHead",), "0" * 40),),
+                    ("document-closure:worker-head-consistency",),
+                ),
+                (
+                    "grant-session",
+                    (("launchGrantA", ("sessionId",), "other-session"),),
+                    ("document-closure:session-id",),
+                ),
+                (
+                    "grant-published-base",
+                    (("launchGrantA", ("publishedBase",), "0" * 40),),
+                    ("document-closure:publishedBase",),
+                ),
+                (
+                    "grant-output-root",
+                    (("launchGrantA", ("outputRoot",), "docs/production/evidence/PLAY-079/escape"),),
+                    ("document:launchGrantA:outputRoot",),
+                ),
+                (
+                    "grant-child-limit",
+                    (("launchGrantA", ("maximumChildStarts",), 2),),
+                    ("document:launchGrantA:maximumChildStarts",),
+                ),
+                (
+                    "session-schedule-hash",
+                    (("globalExecutionReceipt", ("scheduleAuthoritySHA256",), "0" * 64),),
+                    ("document:globalExecutionReceipt:schedule-hash",),
+                ),
+                (
+                    "session-appearance-hash",
+                    (("globalExecutionReceipt", ("appearanceLockSHA256",), "0" * 64),),
+                    ("document:globalExecutionReceipt:appearance-hash",),
+                ),
+                (
+                    "session-material-hash",
+                    (("globalExecutionReceipt", ("lockedMaterialMappingSHA256",), "0" * 64),),
+                    ("document:globalExecutionReceipt:material-hash",),
+                ),
+                (
+                    "session-profile-hash",
+                    (("globalExecutionReceipt", ("sourceProductionProfileSHA256",), "0" * 64),),
+                    ("document:globalExecutionReceipt:profile-hash",),
+                ),
+                (
+                    "grant-schedule-authority-hashes",
+                    tuple(
+                        (
+                            f"launchGrant{process_id}",
+                            ("scheduleAuthoritySHA256",),
+                            "0" * 64,
+                        )
+                        for process_id in ("A", "B", "C")
+                    ),
+                    tuple(
+                        f"document:launchGrant{process_id}:schedule-authority-hash"
+                        for process_id in ("A", "B", "C")
+                    ),
+                ),
+            )
+            self.assertEqual(len(adversaries), 15)
+            document_paths = [path_map[name][0] for name in docs]
+            transport_error_fragments = (
+                "argument-sha256-mismatch",
+                "working-tree-sha256",
+                "working-tree-content-drift",
+                "publication-content-drift",
+                "commit-not-in-head",
+                "commit-object-not-regular-blob",
+            )
+            for label, mutations, expected_errors in adversaries:
+                for name, (_relative, original) in path_map.items():
+                    if name in docs:
+                        (root / path_map[name][0]).write_bytes(original)
+                candidates: dict[str, dict] = {}
+                for name, keys, replacement in mutations:
+                    candidate = candidates.setdefault(name, copy.deepcopy(docs[name]))
+                    set_nested(candidate, keys, replacement)
+                for name, candidate in candidates.items():
+                    (root / path_map[name][0]).write_bytes(canonical_bytes(candidate))
+                subprocess.run(["git", "add", *document_paths], cwd=root, check=True)
+                subprocess.run(
+                    ["git", "commit", "-q", "-m", f"fixture adversary {label}"],
+                    cwd=root,
+                    check=True,
+                )
+                adversary_commit = subprocess.check_output(
+                    ["git", "rev-parse", "HEAD"], cwd=root, text=True
+                ).strip()
+                rebind_all_documents(adversary_commit)
+                with patch(
+                    "west_execution_orchestration_v2.git_output",
+                    side_effect=lambda _root, *args: (
+                        base if args == ("rev-parse", "HEAD") else branch
+                        if args == ("branch", "--show-current") else None
+                    ),
+                ):
+                    bad, _ = validate_integration_document_closure(root, contract, runner)
+                for expected_error in expected_errors:
+                    self.assertIn(expected_error, bad, label)
+                self.assertFalse(
+                    any(
+                        fragment in error
+                        for error in bad
+                        for fragment in transport_error_fragments
+                    ),
+                    (label, bad),
+                )
 
     def test_committed_authority_rejects_hash_and_content_drift(self) -> None:
         relative = (

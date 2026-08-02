@@ -1,0 +1,52 @@
+{
+  "schema": 1,
+  "result": "PASS",
+  "task": "PLAY-081",
+  "direction": "west",
+  "routeId": "quality-v2:play-081-west-v14-closure-contract-r2",
+  "authorityCommit": "3a028a0e10fa71ec8646dd9d0ee1c5248fbff9dc",
+  "baseCommit": "d423c36cc02edd2426decd0ac1d941ac0afaff7e",
+  "claimSHA256": "6b9608a7854afc60676ac27e7c7a8a7c4420161805a4ef59c68649acdd6a901d",
+  "closureContractSHA256": "4a5fdf98ad77082cdd4265ae6f78406f9e26c8dd92443caa8c7e64e6726f91a4",
+  "northStructuralReferenceCommit": "b961d7a6f9f9ad75f69b9156ce657dd4937e5537",
+  "contractPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/process-a-execution-v01/PROCESS-A-CONTRACT.json",
+  "contractSHA256": "9b65531021705410a44ab609e618cf3a7f8e3ad94a1e627e76cc6dcece812670",
+  "launcherPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/process-a-execution-v01/launch_process_a.py",
+  "launcherSHA256": "eeaa1b4028f213a94f864171d2ebb482de5dac56b8a497adbf87c2ee204ea80c",
+  "childPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/process-a-execution-v01/blender_process_a.py",
+  "childSHA256": "c24a0befe0d595d1dcf0c6df037597d36845df9b631ea71d9909d6bd772273fb",
+  "validatorPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/process-a-execution-v01/test_process_a_prelaunch.py",
+  "validatorSHA256": "d80ecef5f13032d928aa655d7577b2087c8b535573cb2a3d7a6dd24212fd40ab",
+  "semanticProof": {
+    "runtimeTopology": "PASS",
+    "compoundRecessedPortal": "PASS",
+    "curvedBoundedElbows": "PASS",
+    "explicitMullions": "PASS",
+    "reachableTrussMembers": "PASS",
+    "genericAABBFallback": false,
+    "aimedLights": "PASS",
+    "outputRootBeforeRenderSave": "PASS"
+  },
+  "adversaries": {
+    "count": 29,
+    "allRejected": true,
+    "zeroCounters": true
+  },
+  "freshReplay": {
+    "byteIdentical": true,
+    "processIsolation": true,
+    "manifestSHA256": "60df896ddd555babd7e9881d1c06b140e573893e124da3bc9f23223a64c77e3d",
+    "manifestBytes": 6795
+  },
+  "zeroPixelBoundary": {
+    "blenderProcessLaunches": 0,
+    "childStarts": 0,
+    "dccInvocations": 0,
+    "renderInvocations": 0,
+    "pixelFiles": 0
+  },
+  "sourceReady": false,
+  "appearanceLock": null,
+  "sourceProductionProfile": null,
+  "processAGrant": null
+}

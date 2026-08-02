@@ -63,6 +63,9 @@ independent frontier acceptance packet.
   executable, deterministic-output, visual, or interaction claim from static
   source/AST/token checks. A novel execution architecture stays frontier-owned
   until a contained real runtime smoke establishes one accepted reference.
+- For DCC work, never spend a scene attempt before the exact executable/host
+  tuple has a passing hash-bound startup receipt. Reuse an unchanged receipt
+  across North/East/South/West so safety does not become duplicate validation.
 
 ## Enforce useful parallelism
 

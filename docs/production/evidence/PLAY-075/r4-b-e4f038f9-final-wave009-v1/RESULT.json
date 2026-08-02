@@ -1,0 +1,31 @@
+{
+  "schema": 1,
+  "taskId": "PLAY-075",
+  "candidateCommit": "e4f038f942f8c011a0b38b71353e40b4ac5054d4",
+  "disposition": "RETURN",
+  "automaticReturnChecks": {
+    "broadUndifferentiatedGreenQuadrant": {
+      "result": "RESOLVED",
+      "finding": "Layered terrain-value islands and subtle ground marks visibly break up the formerly flat green quadrant at regular and compact city, neighborhood, and block views."
+    },
+    "adjacentDuplicateOrangeBuildings": {
+      "result": "UNRESOLVED",
+      "finding": "The two immediately adjacent orange, black-roofed buildings in the northwest developed block remain a dominant repeated pair at every tested scale; their shared silhouette, palette, roof treatment, and spacing still read as duplication rather than a deliberate mixed district."
+    }
+  },
+  "regressionChecks": {
+    "newOverlap": "PASS",
+    "clipping": "PASS",
+    "fallbackOrMissingResource": "PASS",
+    "mixedFidelity": "PASS",
+    "materialCompositionRegression": "PASS"
+  },
+  "releaseSanity": {
+    "pointerPlacement": "PASS: Road placed at block 14, 3 by map click; treasury changed from $10,408 to $10,288 and Undo became available.",
+    "keyboardMapFocus": "PASS: Right Arrow moved the selected target from Open Land block 13, 3 to Open Land block 14, 3.",
+    "commandGuideEscape": "PASS: command guide opened and Escape returned to the city map.",
+    "compactFocusCity": "PASS: Focus City entered at exact 900x600 content and frame-developed-city key 0 restored the full city composition."
+  },
+  "industrialL4": "DEFERRED_NOT_SCORED",
+  "smallestRequiredRepair": "Break the northwest pair's immediate same-family repetition with a visibly distinct compatible building silhouette/material role or a materially different lot composition; retain the successful terrain variation and current registration/contact quality."
+}

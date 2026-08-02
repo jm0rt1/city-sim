@@ -1,0 +1,151 @@
+{
+  "schema": 1,
+  "authorityCommit": "1c3d59c7f36750195ade80f382b3a280762e2e5f",
+  "assignments": [
+    {
+      "modelRouteSha256": "a29def1b1d34b14d03e4662482183d8b1f16cca636e2c41ddb7ce9b6c65ed254",
+      "modelRoute": {
+        "schema": 1,
+        "routeId": "quality-v1:play-073-r4-e-v2-failed-checkpoint-luna-v1",
+        "taskId": "PLAY-073",
+        "packetKind": "mechanical",
+        "classification": "LUNA_MECHANICAL",
+        "model": "gpt-5.6-luna",
+        "effort": "medium",
+        "rationale": "The second bounded R4-E repair produced a complete truthful proof packet but failed the frozen survival, facade-overlap, and contrast gates. Integration has returned the strategy and authorizes only exact continuous-durability preservation of the existing bytes plus one failure record. No implementation, rerun, threshold change, visual judgment, or candidate claim is legal.",
+        "authority": {
+          "authorityCommit": "1c3d59c7f36750195ade80f382b3a280762e2e5f",
+          "baseCommit": "1c3d59c7f36750195ade80f382b3a280762e2e5f",
+          "claim": {
+            "path": "docs/production/claims/PLAY-073.world-rendering.md",
+            "sha256": "51b347c22df6b04e33b0cb59046c774b65f770465bea21d1073db55cca75b897"
+          },
+          "immutableInputs": [
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "62e077c88730fda5664e5fa6d23200ade77418bd43f1c721c0bff84eaac1c971"
+            },
+            {
+              "path": ".agents/skills/render-citysim-world/SKILL.md",
+              "sha256": "fbd37c5f4730c61f95a344266b61d3fb37ce39adcefbaaba6e94f8939d8b72e2"
+            }
+          ]
+        },
+        "assignment": {
+          "threadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+          "branch": "codex/citysim-world-rendering-r4b-current",
+          "worktree": "/Users/James/.codex/worktrees/cac1/city-sim",
+          "expectedHead": "1c3d59c7f36750195ade80f382b3a280762e2e5f",
+          "featureAuthorThreadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": [
+            "Native/CitySimNative/Sources/CitySimNative/Rendering/",
+            "Native/CitySimNative/Tests/CitySimNativeTests/WorldRenderingTests.swift",
+            "docs/production/evidence/PLAY-073/"
+          ],
+          "allowed": [
+            "Native/CitySimNative/Sources/CitySimNative/Rendering/LotContextRenderer.swift",
+            "Native/CitySimNative/Tests/CitySimNativeTests/WorldRenderingTests.swift",
+            "docs/production/evidence/PLAY-073/r4-e-depth-layered-residential-frontage-v2"
+          ],
+          "forbidden": [
+            ".agents",
+            "AGENTS.md",
+            "Native/CitySimNative/Package.swift",
+            "Native/CitySimNative/Sources/CitySimNative/App",
+            "Native/CitySimNative/Sources/CitySimNative/Models",
+            "Native/CitySimNative/Sources/CitySimNative/Services",
+            "Native/CitySimNative/Sources/CitySimNative/Stores",
+            "Native/CitySimNative/Sources/CitySimNative/Views",
+            "Native/CitySimNative/Sources/CitySimNative/Resources",
+            "Native/CitySimNative/Sources/CitySimNative/Rendering/CityScene.swift",
+            "Native/CitySimNative/Sources/CitySimNative/Rendering/GoldenDistrictRenderer",
+            "Native/CitySimNative/Sources/CitySimNative/Rendering/LotRenderer.swift",
+            "Native/CitySimNative/Sources/CitySimNative/Rendering/TerrainRenderer.swift",
+            "Native/CitySimNative/WorldArt",
+            "docs/production/PLAYABLE_BACKLOG.md",
+            "docs/production/claims",
+            "docs/production/completed",
+            "docs/production/decisions",
+            "docs/production/evidence/INTEGRATION",
+            "docs/production/evidence/PLAY-073/r4-e-depth-layered-residential-frontage-v1",
+            "script"
+          ]
+        },
+        "boundedDeliverable": "Verify HEAD 1c3d59c7f36750195ade80f382b3a280762e2e5f; verify the exact two-file binary diff SHA-256 is 7095aa365ad33236261156b4c85488e3d5db27883aabd373a8830ba15baf95ae and every frozen file hash matches this route. Add only FAILED-CHECKPOINT.md under the exact v2 evidence root, recording the returned gate metrics, that the focused test did not complete normally, that no aggregate/staged/acceptance gate ran, and that the renderer-only strategy is returned. Stage only the two frozen source/test files plus the six exact evidence files and commit checkpoint(PLAY-073): Preserve failed R4-E proof repair. Make no other edit.",
+        "validation": {
+          "focusedGateOwner": {
+            "threadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+            "role": "renderer_r4e_v2_failed_checkpoint_gate"
+          },
+          "focusedCommands": [
+            "git diff --binary -- Native/CitySimNative/Sources/CitySimNative/Rendering/LotContextRenderer.swift Native/CitySimNative/Tests/CitySimNativeTests/WorldRenderingTests.swift | shasum -a 256",
+            "python3 -m json.tool docs/production/evidence/PLAY-073/r4-e-depth-layered-residential-frontage-v2/RESULT.json",
+            "python3 -m json.tool docs/production/evidence/PLAY-073/r4-e-depth-layered-residential-frontage-v2/PIXEL-ROLE-LEDGER.json",
+            "shasum -a 256 Native/CitySimNative/Sources/CitySimNative/Rendering/LotContextRenderer.swift Native/CitySimNative/Tests/CitySimNativeTests/WorldRenderingTests.swift docs/production/evidence/PLAY-073/r4-e-depth-layered-residential-frontage-v2/HANDOFF.md docs/production/evidence/PLAY-073/r4-e-depth-layered-residential-frontage-v2/PIXEL-ROLE-LEDGER.json docs/production/evidence/PLAY-073/r4-e-depth-layered-residential-frontage-v2/RESULT.json docs/production/evidence/PLAY-073/r4-e-depth-layered-residential-frontage-v2/TECHNICAL-COLOR-CONTACT-SHEET.png docs/production/evidence/PLAY-073/r4-e-depth-layered-residential-frontage-v2/TECHNICAL-GRAYSCALE-CONTACT-SHEET.png",
+            "git diff --cached --check",
+            "git diff --check 1c3d59c7f36750195ade80f382b3a280762e2e5f..HEAD"
+          ],
+          "fullGateOwner": {
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "role": "integration_r4e_second_repair_disposition",
+            "model": "gpt-5.6-sol",
+            "effort": "high"
+          },
+          "fullCommands": [
+            "Integration verifies exact preservation and excludes the known-failing checkpoint from integration",
+            "Integration publishes a fresh frontier architecture packet before any further renderer mutation"
+          ]
+        },
+        "expectedResult": {
+          "evidencePaths": [
+            "docs/production/evidence/PLAY-073/r4-e-depth-layered-residential-frontage-v2/FAILED-CHECKPOINT.md",
+            "docs/production/evidence/PLAY-073/r4-e-depth-layered-residential-frontage-v2/HANDOFF.md",
+            "docs/production/evidence/PLAY-073/r4-e-depth-layered-residential-frontage-v2/PIXEL-ROLE-LEDGER.json",
+            "docs/production/evidence/PLAY-073/r4-e-depth-layered-residential-frontage-v2/RESULT.json",
+            "docs/production/evidence/PLAY-073/r4-e-depth-layered-residential-frontage-v2/TECHNICAL-COLOR-CONTACT-SHEET.png",
+            "docs/production/evidence/PLAY-073/r4-e-depth-layered-residential-frontage-v2/TECHNICAL-GRAYSCALE-CONTACT-SHEET.png"
+          ],
+          "commitRequired": true,
+          "commitMessagePattern": "checkpoint(PLAY-073):"
+        },
+        "escalationTriggers": [
+          "baseline_or_candidate_identity_mismatch",
+          "cross_lane_semantic_conflict",
+          "failure_outside_focused_scope",
+          "path_outside_claim",
+          "save_or_migration_uncertainty",
+          "shared_contract_or_schema_decision",
+          "subjective_acceptance_required",
+          "two_unsuccessful_repair_attempts",
+          "unresolved_product_visual_or_interaction_judgment"
+        ],
+        "stopCondition": "Stop after one exact preservation-only checkpoint commit and clean status, or immediately on any head/path/hash/diff mismatch, missing evidence, need to modify frozen bytes, path expansion, or another mandatory trigger. Do not rerun the exporter or tests, resume implementation, tune thresholds, create additional proof, claim readiness, run aggregate/staged QA, score, accept, merge, push, integrate, self-accept, or pin.",
+        "independentReviewer": {
+          "required": true,
+          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+          "model": "gpt-5.6-sol",
+          "effort": "high"
+        },
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "62e077c88730fda5664e5fa6d23200ade77418bd43f1c721c0bff84eaac1c971"
+            },
+            {
+              "path": ".agents/skills/render-citysim-world/SKILL.md",
+              "sha256": "fbd37c5f4730c61f95a344266b61d3fb37ce39adcefbaaba6e94f8939d8b72e2"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

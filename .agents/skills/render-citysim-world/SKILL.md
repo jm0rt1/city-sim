@@ -1,6 +1,6 @@
 ---
 name: render-citysim-world
-description: "Build and verify CitySim's SpriteKit world on `codex/citysim-world-rendering`: terrain, roads, lots, buildings, props, animation, effects, lighting, overlays, camera, hit testing, placement feedback, deterministic variation, assets, render performance, and intake-ahead preparation for governed directional art families. Use for every prompt in the world-rendering worktree and whenever a PLAY task changes how simulation truth is presented in the city or prepares exact source art for atomic renderer ingestion."
+description: "Build and verify CitySim's SpriteKit world on the Integration-published renderer branch: terrain, roads, lots, buildings, props, animation, effects, lighting, overlays, camera, hit testing, placement feedback, deterministic variation, assets, render performance, and intake-ahead preparation for governed directional art families. Use for every prompt in a governed world-rendering worktree and whenever a PLAY task changes how simulation truth is presented in the city or prepares exact source art for atomic renderer ingestion."
 ---
 
 # Render CitySim World
@@ -10,7 +10,10 @@ Make the city dominant, readable, alive, and truthful. Visual spectacle must imp
 ## Orient before every task
 
 1. Run `pwd`, `git branch --show-current`, and `git status --short --branch`.
-2. Require `codex/citysim-world-rendering` for mutations.
+2. Require `codex/citysim-world-rendering` for mutations, except when both the
+   active claim and a validated Integration route explicitly bind the current
+   branch as a named clean successor. The only current successor is
+   `codex/citysim-world-rendering-r4b-current`; any other branch is a hard stop.
 3. Read and follow [the shared model-routing and cost-control contract](../operate-citysim-integration/references/model-routing-and-cost-control.md). Complete the applicable authority read for a new thread or claim, changed authority/skill/reference hash, routing mismatch, context loss, or stale compact packet. On an unchanged same-thread continuation, verify every recorded hash and Git revision before consuming the compact lane-context packet.
 4. When a complete read is required, read `docs/production/CITYSIM_WORKTREE_OPERATING_SYSTEM.md`, this skill, the claimed `PLAY-*` task, linked art/technical requirements, relevant visual plan, and required conditional references completely.
 5. Confirm a world-rendering claim and preserve all unrelated work.

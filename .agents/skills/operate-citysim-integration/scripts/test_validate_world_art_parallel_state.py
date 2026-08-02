@@ -433,6 +433,16 @@ class ParallelStateFixture:
 
 
 class ParallelStateValidatorTests(unittest.TestCase):
+    def test_renderer_binding_uses_active_current_master_successor(self) -> None:
+        branch, claim, claim_path = validator.CELL_BINDINGS["renderer"]
+
+        self.assertEqual(branch, "codex/citysim-world-rendering-r4b-current")
+        self.assertEqual(claim, "PLAY-073")
+        self.assertEqual(
+            claim_path,
+            Path("docs/production/claims/PLAY-073.world-rendering.md"),
+        )
+
     def setUp(self) -> None:
         self.fixture = ParallelStateFixture()
 

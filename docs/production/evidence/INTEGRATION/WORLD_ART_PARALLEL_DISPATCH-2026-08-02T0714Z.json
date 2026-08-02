@@ -1,0 +1,448 @@
+{
+  "schema": 4,
+  "batch": "industrial_l04_directional_family",
+  "sentAt": "2026-08-02T07:14:44Z",
+  "authorityCommit": "7627e6696e46b9e76fa5dd340b50197c3d22e214",
+  "ledger": "docs/production/evidence/INTEGRATION/WORLD_ART_PARALLEL_BATCH_LEDGER.json",
+  "ledgerSha256": "37bac2ab35976cbb98e758e7a06fffe19ac3b380b70161bb69357bca65033e33",
+  "computeEnvelope": {
+    "maximumSimultaneousDCCProcesses": 0,
+    "assignedSlots": [],
+    "queueOrder": [],
+    "resourceAssumptions": {
+      "machine": "single local macOS host",
+      "dcc": "no DCC process before accepted North appearance lock and postlock schedule",
+      "rendererHarness": "candidate-neutral intake remains prepared",
+      "qa": "shared QA worktree remains reserved by the unconsumed exact-candidate lease"
+    },
+    "prohibited": [
+      "all Industrial L4 DCC source work before accepted North appearance lock and postlock schedule",
+      "renderer activation without four exact admission and quarantine receipts",
+      "reuse of the current unrelated exact-candidate QA lease"
+    ],
+    "exceptionOwner": "integration",
+    "reason": "current snapshot repairs stale authority; every family row is stage-exempt and no process grant is live"
+  },
+  "rows": [
+    {
+      "batch": "industrial_l04_directional_family",
+      "lane": "world_art",
+      "direction": "north",
+      "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+      "branch": "codex/citysim-world-art",
+      "worktree": "/Users/James/.codex/worktrees/0648/city-sim",
+      "claim": "PLAY-027",
+      "claimRevision": "bf0b167a1d1e6f7007d609aeb657917fe9d3d0866d5a7a6e36b0e5a32faefa6f",
+      "head": "5657b8a37a96c70e608585515dc059519ceff435",
+      "state": "predesign",
+      "dispatchState": "completed",
+      "acknowledgedAt": null,
+      "updatedAt": "2026-08-02T07:14:44Z",
+      "cleanState": "clean",
+      "boundedDeliverable": "current North v13 zero-pixel design lowering and process-a-v02 closure are complete on the worker branch",
+      "blocker": "process_a_requires_exact_zero_pixel_replay_on_master_then_a_current_integration_direct_schedule_and_one_process_closure",
+      "nextAction": "integration_review_and_replay_the_exact_north_v13_zero_pixel_boundary_then_publish_the_current_north_a_schedule",
+      "stopCondition": "stop_before_any_live_schedule_attempt_marker_dcc_child_render_pixel_process_b_c_appearance_lock_admission_shipping_push_or_self_acceptance",
+      "executionAccounting": {
+        "readyNow": [],
+        "running": [],
+        "waitingOnJoin": [],
+        "serializedAuthority": {
+          "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+          "branch": "codex/citysim-world-art",
+          "worktree": "/Users/James/.codex/worktrees/0648/city-sim",
+          "gitIndexWriter": "019f96e0-3793-7542-9172-060a9ca09b0a",
+          "governedEvidenceWriter": "019f96e0-3793-7542-9172-060a9ca09b0a"
+        },
+        "nextRefill": "integration_review_and_replay_the_exact_north_v13_zero_pixel_boundary_then_publish_the_current_north_a_schedule",
+        "capacity": {
+          "helperSlots": 0,
+          "dccSlots": 0
+        },
+        "launchedJobs": [],
+        "unusedCapacityReasons": [],
+        "overlap": {
+          "status": "not_applicable",
+          "jobIds": [],
+          "startedAt": null,
+          "endedAt": null,
+          "reason": "no_process_authority_is_live"
+        },
+        "join": {
+          "state": "no_join_required",
+          "requiredJobs": [],
+          "completedJobs": []
+        }
+      },
+      "parallelismExemption": {
+        "reasonCode": "stage_prohibited_by_authority",
+        "stageProhibition": {
+          "batchState": "appearance_lock_pending",
+          "rule": "North Process A is illegal until its exact current zero-pixel boundary is replayed on master and Integration publishes the one-process closure"
+        },
+        "owner": {
+          "role": "integration",
+          "id": "integration"
+        },
+        "dependencyAuthority": {
+          "path": "docs/production/decisions/CONTRACT-010-directional-building-art.md",
+          "sha256": "0ee2d68a9dba4694d92a864bfeb5a91970c88fe87d893e1898de7b26d38609af"
+        },
+        "resumptionEvent": "Integration publishes the exact current North v13 Process-A schedule and closure",
+        "nextRefillJob": "integration_review_and_replay_the_exact_north_v13_zero_pixel_boundary_then_publish_the_current_north_a_schedule"
+      },
+      "base": "5657b8a37a96c70e608585515dc059519ceff435",
+      "changedThisTurn": true
+    },
+    {
+      "batch": "industrial_l04_directional_family",
+      "lane": "world_art",
+      "direction": "east",
+      "threadId": "019fab72-b2c8-76c1-b430-6c6f8431733f",
+      "branch": "codex/citysim-world-art-east",
+      "worktree": "/Users/James/.codex/worktrees/92c2/city-sim",
+      "claim": "PLAY-079",
+      "claimRevision": "93bcc57e69bc4cd1ff492ce0dfbf5d6244c3782db524e7e16fc0d9dd78431a77",
+      "head": "6a8c61a76802b13eb1704671cf63f4323052a67f",
+      "state": "predesign",
+      "dispatchState": "completed",
+      "acknowledgedAt": null,
+      "updatedAt": "2026-08-02T07:14:44Z",
+      "cleanState": "clean",
+      "boundedDeliverable": "East v13 independent zero-pixel compatibility and literal-headroom repair passed technical review",
+      "blocker": "east_source_processes_require_the_accepted_north_appearance_lock_source_profile_postlock_schedule_and_exact_east_grants",
+      "nextAction": "launch_east_a_b_c_when_integration_publishes_the_postlock_schedule_and_dcc_slots",
+      "stopCondition": "stop_before_pixels_dcc_source_authority_admission_renderer_activation_shipping_push_or_self_acceptance",
+      "executionAccounting": {
+        "readyNow": [],
+        "running": [],
+        "waitingOnJoin": [],
+        "serializedAuthority": {
+          "threadId": "019fab72-b2c8-76c1-b430-6c6f8431733f",
+          "branch": "codex/citysim-world-art-east",
+          "worktree": "/Users/James/.codex/worktrees/92c2/city-sim",
+          "gitIndexWriter": "019fab72-b2c8-76c1-b430-6c6f8431733f",
+          "governedEvidenceWriter": "019fab72-b2c8-76c1-b430-6c6f8431733f"
+        },
+        "nextRefill": "launch_east_a_b_c_when_integration_publishes_the_postlock_schedule_and_dcc_slots",
+        "capacity": {
+          "helperSlots": 0,
+          "dccSlots": 0
+        },
+        "launchedJobs": [],
+        "unusedCapacityReasons": [],
+        "overlap": {
+          "status": "not_applicable",
+          "jobIds": [],
+          "startedAt": null,
+          "endedAt": null,
+          "reason": "postlock_process_authority_is_absent"
+        },
+        "join": {
+          "state": "no_join_required",
+          "requiredJobs": [],
+          "completedJobs": []
+        }
+      },
+      "parallelismExemption": {
+        "reasonCode": "stage_prohibited_by_authority",
+        "stageProhibition": {
+          "batchState": "appearance_lock_pending",
+          "rule": "East pixels remain illegal before the accepted North appearance lock and postlock schedule"
+        },
+        "owner": {
+          "role": "integration",
+          "id": "integration"
+        },
+        "dependencyAuthority": {
+          "path": "docs/production/decisions/CONTRACT-010-directional-building-art.md",
+          "sha256": "0ee2d68a9dba4694d92a864bfeb5a91970c88fe87d893e1898de7b26d38609af"
+        },
+        "resumptionEvent": "North Process A is independently accepted and Integration publishes the postlock East grants",
+        "nextRefillJob": "launch_east_a_b_c_when_integration_publishes_the_postlock_schedule_and_dcc_slots"
+      },
+      "base": "6a8c61a76802b13eb1704671cf63f4323052a67f",
+      "changedThisTurn": true
+    },
+    {
+      "batch": "industrial_l04_directional_family",
+      "lane": "world_art",
+      "direction": "south",
+      "threadId": "019fab72-b2c9-7d60-a397-27f4fde85950",
+      "branch": "codex/citysim-world-art-south",
+      "worktree": "/Users/James/.codex/worktrees/4247/city-sim",
+      "claim": "PLAY-080",
+      "claimRevision": "8b66e47ace2bfb072420a650a641ba289588e5767272e3c56067fc3f6ffaff22",
+      "head": "84630b927a94c1e7324fc5e9ebe6acf337d64dd5",
+      "state": "predesign",
+      "dispatchState": "completed",
+      "acknowledgedAt": null,
+      "updatedAt": "2026-08-02T07:14:44Z",
+      "cleanState": "clean",
+      "boundedDeliverable": "South v13 independent zero-pixel compatibility and literal-identity repair passed technical review",
+      "blocker": "south_source_processes_require_the_accepted_north_appearance_lock_source_profile_postlock_schedule_and_exact_south_grants",
+      "nextAction": "launch_south_a_b_c_when_integration_publishes_the_postlock_schedule_and_dcc_slots",
+      "stopCondition": "stop_before_pixels_dcc_source_authority_admission_renderer_activation_shipping_push_or_self_acceptance",
+      "executionAccounting": {
+        "readyNow": [],
+        "running": [],
+        "waitingOnJoin": [],
+        "serializedAuthority": {
+          "threadId": "019fab72-b2c9-7d60-a397-27f4fde85950",
+          "branch": "codex/citysim-world-art-south",
+          "worktree": "/Users/James/.codex/worktrees/4247/city-sim",
+          "gitIndexWriter": "019fab72-b2c9-7d60-a397-27f4fde85950",
+          "governedEvidenceWriter": "019fab72-b2c9-7d60-a397-27f4fde85950"
+        },
+        "nextRefill": "launch_south_a_b_c_when_integration_publishes_the_postlock_schedule_and_dcc_slots",
+        "capacity": {
+          "helperSlots": 0,
+          "dccSlots": 0
+        },
+        "launchedJobs": [],
+        "unusedCapacityReasons": [],
+        "overlap": {
+          "status": "not_applicable",
+          "jobIds": [],
+          "startedAt": null,
+          "endedAt": null,
+          "reason": "postlock_process_authority_is_absent"
+        },
+        "join": {
+          "state": "no_join_required",
+          "requiredJobs": [],
+          "completedJobs": []
+        }
+      },
+      "parallelismExemption": {
+        "reasonCode": "stage_prohibited_by_authority",
+        "stageProhibition": {
+          "batchState": "appearance_lock_pending",
+          "rule": "South pixels remain illegal before the accepted North appearance lock and postlock schedule"
+        },
+        "owner": {
+          "role": "integration",
+          "id": "integration"
+        },
+        "dependencyAuthority": {
+          "path": "docs/production/decisions/CONTRACT-010-directional-building-art.md",
+          "sha256": "0ee2d68a9dba4694d92a864bfeb5a91970c88fe87d893e1898de7b26d38609af"
+        },
+        "resumptionEvent": "North Process A is independently accepted and Integration publishes the postlock South grants",
+        "nextRefillJob": "launch_south_a_b_c_when_integration_publishes_the_postlock_schedule_and_dcc_slots"
+      },
+      "base": "84630b927a94c1e7324fc5e9ebe6acf337d64dd5",
+      "changedThisTurn": true
+    },
+    {
+      "batch": "industrial_l04_directional_family",
+      "lane": "world_art",
+      "direction": "west",
+      "threadId": "019fab72-b2c9-7d60-a397-27d01d06cbbd",
+      "branch": "codex/citysim-world-art-west",
+      "worktree": "/Users/James/.codex/worktrees/ef17/city-sim",
+      "claim": "PLAY-081",
+      "claimRevision": "6b9608a7854afc60676ac27e7c7a8a7c4420161805a4ef59c68649acdd6a901d",
+      "head": "6499fec5181bbf8712e20ce147a35b4a2b736317",
+      "state": "predesign",
+      "dispatchState": "completed",
+      "acknowledgedAt": null,
+      "updatedAt": "2026-08-02T07:14:44Z",
+      "cleanState": "clean",
+      "boundedDeliverable": "West v13 independent zero-pixel literal and validator-path repair passed technical review",
+      "blocker": "west_source_processes_require_the_accepted_north_appearance_lock_source_profile_postlock_schedule_and_exact_west_grants",
+      "nextAction": "launch_west_a_b_c_when_integration_publishes_the_postlock_schedule_and_dcc_slots",
+      "stopCondition": "stop_before_pixels_dcc_source_authority_admission_renderer_activation_shipping_push_or_self_acceptance",
+      "executionAccounting": {
+        "readyNow": [],
+        "running": [],
+        "waitingOnJoin": [],
+        "serializedAuthority": {
+          "threadId": "019fab72-b2c9-7d60-a397-27d01d06cbbd",
+          "branch": "codex/citysim-world-art-west",
+          "worktree": "/Users/James/.codex/worktrees/ef17/city-sim",
+          "gitIndexWriter": "019fab72-b2c9-7d60-a397-27d01d06cbbd",
+          "governedEvidenceWriter": "019fab72-b2c9-7d60-a397-27d01d06cbbd"
+        },
+        "nextRefill": "launch_west_a_b_c_when_integration_publishes_the_postlock_schedule_and_dcc_slots",
+        "capacity": {
+          "helperSlots": 0,
+          "dccSlots": 0
+        },
+        "launchedJobs": [],
+        "unusedCapacityReasons": [],
+        "overlap": {
+          "status": "not_applicable",
+          "jobIds": [],
+          "startedAt": null,
+          "endedAt": null,
+          "reason": "postlock_process_authority_is_absent"
+        },
+        "join": {
+          "state": "no_join_required",
+          "requiredJobs": [],
+          "completedJobs": []
+        }
+      },
+      "parallelismExemption": {
+        "reasonCode": "stage_prohibited_by_authority",
+        "stageProhibition": {
+          "batchState": "appearance_lock_pending",
+          "rule": "West pixels remain illegal before the accepted North appearance lock and postlock schedule"
+        },
+        "owner": {
+          "role": "integration",
+          "id": "integration"
+        },
+        "dependencyAuthority": {
+          "path": "docs/production/decisions/CONTRACT-010-directional-building-art.md",
+          "sha256": "0ee2d68a9dba4694d92a864bfeb5a91970c88fe87d893e1898de7b26d38609af"
+        },
+        "resumptionEvent": "North Process A is independently accepted and Integration publishes the postlock West grants",
+        "nextRefillJob": "launch_west_a_b_c_when_integration_publishes_the_postlock_schedule_and_dcc_slots"
+      },
+      "base": "6499fec5181bbf8712e20ce147a35b4a2b736317",
+      "changedThisTurn": true
+    },
+    {
+      "batch": "industrial_l04_directional_family",
+      "lane": "world_rendering",
+      "direction": "renderer",
+      "threadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+      "branch": "codex/citysim-world-rendering-r4b-current",
+      "worktree": "/Users/James/.codex/worktrees/cac1/city-sim",
+      "claim": "PLAY-073",
+      "claimRevision": "51b347c22df6b04e33b0cb59046c774b65f770465bea21d1073db55cca75b897",
+      "head": "66650f142960920e3d886a1da7e39857bd195768",
+      "state": "intake_ready",
+      "dispatchState": "completed",
+      "acknowledgedAt": null,
+      "updatedAt": "2026-08-02T07:14:44Z",
+      "cleanState": "clean",
+      "boundedDeliverable": "Industrial L4 candidate-neutral intake and quarantine preparation remains ready while unrelated R4-E work is preserved as a returned checkpoint",
+      "blocker": "renderer_quarantine_requires_exact_integration_source_admission_receipts_for_each_direction",
+      "nextAction": "quarantine_each_exact_admitted_direction_then_assemble_immediately_on_the_fourth_receipt",
+      "stopCondition": "stop_before_unadmitted_source_ingestion_runtime_activation_shipping_manifest_mutation_atomic_assembly_without_four_receipts_push_or_self_acceptance",
+      "executionAccounting": {
+        "readyNow": [],
+        "running": [],
+        "waitingOnJoin": [],
+        "serializedAuthority": {
+          "threadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+          "branch": "codex/citysim-world-rendering-r4b-current",
+          "worktree": "/Users/James/.codex/worktrees/cac1/city-sim",
+          "gitIndexWriter": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+          "governedEvidenceWriter": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0"
+        },
+        "nextRefill": "quarantine_each_exact_admitted_direction_then_assemble_immediately_on_the_fourth_receipt",
+        "capacity": {
+          "helperSlots": 0,
+          "dccSlots": 0
+        },
+        "launchedJobs": [],
+        "unusedCapacityReasons": [],
+        "overlap": {
+          "status": "not_applicable",
+          "jobIds": [],
+          "startedAt": null,
+          "endedAt": null,
+          "reason": "no_source_admission_receipt_exists"
+        },
+        "join": {
+          "state": "no_join_required",
+          "requiredJobs": [],
+          "completedJobs": []
+        }
+      },
+      "parallelismExemption": {
+        "reasonCode": "exclusive_gate_owned_elsewhere",
+        "stageProhibition": {
+          "batchState": "appearance_lock_pending",
+          "rule": "Renderer cannot quarantine or assemble source art before Integration publishes direction-local admission receipts"
+        },
+        "owner": {
+          "role": "integration",
+          "id": "integration"
+        },
+        "dependencyAuthority": {
+          "path": "docs/production/decisions/CONTRACT-010-directional-building-art.md",
+          "sha256": "0ee2d68a9dba4694d92a864bfeb5a91970c88fe87d893e1898de7b26d38609af"
+        },
+        "resumptionEvent": "Integration publishes the first exact Industrial L4 source-admission receipt",
+        "nextRefillJob": "quarantine_each_exact_admitted_direction_then_assemble_immediately_on_the_fourth_receipt"
+      },
+      "base": "66650f142960920e3d886a1da7e39857bd195768",
+      "changedThisTurn": true
+    },
+    {
+      "batch": "industrial_l04_directional_family",
+      "lane": "playtest_quality",
+      "direction": "qa",
+      "threadId": "019f9a0a-35fa-75b1-92c4-73c182390a25",
+      "branch": "codex/citysim-playtest-quality",
+      "worktree": "/Users/James/.codex/worktrees/71b0/city-sim",
+      "claim": "PLAY-075",
+      "claimRevision": "5dd3aeef1ffe8abf5e0c93486e27fe2d15495854be096fb105bff55a48dc0362",
+      "head": "43e3e57afb52480d90bcf4b08d610ac5950e34bd",
+      "state": "preregistering",
+      "dispatchState": "blocked",
+      "acknowledgedAt": null,
+      "updatedAt": "2026-08-02T07:14:44Z",
+      "cleanState": "clean",
+      "boundedDeliverable": "Industrial L4 mature-city camera fixture and rubric remain candidate-neutral until a dedicated current-batch preregistration route is published",
+      "blocker": "the_playtest_worktree_is_reserved_for_an_unconsumed_exact_candidate_qa_lease_and_the_industrial_l4_renderer_candidate_does_not_exist",
+      "nextAction": "publish_the_current_batch_preregistration_after_the_existing_exact_candidate_qa_lease_closes",
+      "stopCondition": "stop_before_reusing_the_feature_author_task_consuming_an_unrelated_qa_lease_scoring_without_an_exact_renderer_candidate_push_or_self_acceptance",
+      "executionAccounting": {
+        "readyNow": [],
+        "running": [],
+        "waitingOnJoin": [],
+        "serializedAuthority": {
+          "threadId": "019f9a0a-35fa-75b1-92c4-73c182390a25",
+          "branch": "codex/citysim-playtest-quality",
+          "worktree": "/Users/James/.codex/worktrees/71b0/city-sim",
+          "gitIndexWriter": "019f9a0a-35fa-75b1-92c4-73c182390a25",
+          "governedEvidenceWriter": "019f9a0a-35fa-75b1-92c4-73c182390a25"
+        },
+        "nextRefill": "publish_the_current_batch_preregistration_after_the_existing_exact_candidate_qa_lease_closes",
+        "capacity": {
+          "helperSlots": 0,
+          "dccSlots": 0
+        },
+        "launchedJobs": [],
+        "unusedCapacityReasons": [],
+        "overlap": {
+          "status": "not_applicable",
+          "jobIds": [],
+          "startedAt": null,
+          "endedAt": null,
+          "reason": "qa_worktree_is_reserved_by_an_exact_candidate_lease"
+        },
+        "join": {
+          "state": "no_join_required",
+          "requiredJobs": [],
+          "completedJobs": []
+        }
+      },
+      "parallelismExemption": {
+        "reasonCode": "exclusive_gate_owned_elsewhere",
+        "stageProhibition": {
+          "batchState": "appearance_lock_pending",
+          "rule": "The shared QA worktree is reserved for an unconsumed exact-candidate lease and no Industrial L4 renderer candidate exists"
+        },
+        "owner": {
+          "role": "integration",
+          "id": "integration"
+        },
+        "dependencyAuthority": {
+          "path": "docs/production/decisions/CONTRACT-010-directional-building-art.md",
+          "sha256": "0ee2d68a9dba4694d92a864bfeb5a91970c88fe87d893e1898de7b26d38609af"
+        },
+        "resumptionEvent": "The current exact-candidate QA lease closes and Integration publishes an Industrial L4 preregistration route",
+        "nextRefillJob": "publish_the_current_batch_preregistration_after_the_existing_exact_candidate_qa_lease_closes"
+      },
+      "base": "43e3e57afb52480d90bcf4b08d610ac5950e34bd",
+      "changedThisTurn": true
+    }
+  ]
+}

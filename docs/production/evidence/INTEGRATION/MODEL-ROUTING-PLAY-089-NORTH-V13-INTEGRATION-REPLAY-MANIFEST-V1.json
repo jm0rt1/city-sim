@@ -1,0 +1,132 @@
+{
+  "schema": 1,
+  "authorityCommit": "235682fe871f44e6ce2a24b31bb3d1340ff1f335",
+  "assignments": [
+    {
+      "modelRouteSha256": "0eb400c09fc5a0bb1fc2d81639b67d2b7fa4ef0cc7b2486cfcd4def20ae8a51b",
+      "modelRoute": {
+        "schema": 1,
+        "routeId": "quality-v1:play-089-north-v13-integration-replay-manifest-v1",
+        "taskId": "PLAY-089",
+        "packetKind": "mechanical",
+        "classification": "LUNA_MECHANICAL",
+        "model": "gpt-5.6-luna",
+        "effort": "medium",
+        "rationale": "North v13's lawful Process-A schedule cannot publish until Integration can replay the exact zero-pixel v13 design, lowering, retired prelaunch, current process-a-v02 closure, and current claim evidence without absorbing unrelated historical North work. This is a bounded read-only Git/path/dependency inventory with one task-owned machine-readable output; Integration retains all replay, acceptance, schedule, DCC, and visual judgment.",
+        "authority": {
+          "authorityCommit": "235682fe871f44e6ce2a24b31bb3d1340ff1f335",
+          "baseCommit": "235682fe871f44e6ce2a24b31bb3d1340ff1f335",
+          "claim": {
+            "path": "docs/production/claims/PLAY-089.operating-system-optimization.md",
+            "sha256": "6276c96d96965805df6a1a9c779ecde7dc609824053c7e0eb00e35f67134cc47"
+          },
+          "immutableInputs": [
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "62e077c88730fda5664e5fa6d23200ade77418bd43f1c721c0bff84eaac1c971"
+            },
+            {
+              "path": ".agents/skills/optimize-citysim-operating-system/SKILL.md",
+              "sha256": "6d4a9e121ec307f7378d253ed112b0ffdd25e0c0d4d1a52b5f7d405f74a8b1ef"
+            }
+          ]
+        },
+        "assignment": {
+          "threadId": "019fbe2b-cc97-71f3-a762-63680ac85c76",
+          "branch": "codex/citysim-os-optimization",
+          "worktree": "/Users/James/.codex/worktrees/c92d/city-sim",
+          "expectedHead": "235682fe871f44e6ce2a24b31bb3d1340ff1f335",
+          "featureAuthorThreadId": null,
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": [
+            "docs/production/evidence/PLAY-089/"
+          ],
+          "allowed": [
+            "docs/production/evidence/PLAY-089/INDUSTRIAL-L04-NORTH-V13-INTEGRATION-REPLAY-MANIFEST-V1.json"
+          ],
+          "forbidden": [
+            ".agents",
+            "AGENTS.md",
+            "Native/CitySimNative",
+            "docs/production/PLAYABLE_BACKLOG.md",
+            "docs/production/claims",
+            "docs/production/completed",
+            "docs/production/decisions",
+            "docs/production/evidence/INTEGRATION",
+            "docs/production/evidence/PLAY-027",
+            "docs/production/evidence/PLAY-073",
+            "docs/production/evidence/PLAY-075",
+            "script"
+          ]
+        },
+        "boundedDeliverable": "Create one deterministic JSON replay manifest for exact clean North head 5657b8a37a96c70e608585515dc059519ceff435. Starting from current Integration carrier 82de25d95c4e05c345ac4466aec1094e519df049, inventory the minimal path-closed North v13 zero-pixel replay needed to place DESIGN-SCENE.json, DESIGN-MATERIALS.json, lowering-v01, the inert retired process-a-prelaunch-v01 current tree, process-a-v02 current tree, required task-owned v13 evidence, and the live revision-10 claim on master. Enumerate exact source commits in dependency order, exact paths and blob hashes, whether each path already exists on carrier, parent/authority files referenced by tests/contracts, duplicate or superseded commits to exclude, likely cherry-pick conflicts, and a recommended replay method. Prove no selected path contains pixels, DCC output, __pycache__, accepted/shipping resources, renderer code, or sibling direction work. Do not choose visual quality, accept the North candidate, publish a schedule, grant a process, modify another worktree, or run DCC.",
+        "validation": {
+          "focusedGateOwner": {
+            "threadId": "019fbe2b-cc97-71f3-a762-63680ac85c76",
+            "role": "os_north_v13_replay_manifest_gate"
+          },
+          "focusedCommands": [
+            "python3 -m json.tool docs/production/evidence/PLAY-089/INDUSTRIAL-L04-NORTH-V13-INTEGRATION-REPLAY-MANIFEST-V1.json",
+            "git cat-file -e 5657b8a37a96c70e608585515dc059519ceff435^{commit}",
+            "git cat-file -e 82de25d95c4e05c345ac4466aec1094e519df049^{commit}",
+            "git diff --cached --check",
+            "git diff --check 235682fe871f44e6ce2a24b31bb3d1340ff1f335..HEAD"
+          ],
+          "fullGateOwner": {
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "role": "integration_north_v13_replay_and_schedule_authority",
+            "model": "gpt-5.6-sol",
+            "effort": "high"
+          },
+          "fullCommands": [
+            "Integration independently reviews every selected commit/path/blob and chooses the replay boundary",
+            "Integration validates the replayed current tree before publishing any schedule or launch closure"
+          ]
+        },
+        "expectedResult": {
+          "evidencePaths": [
+            "docs/production/evidence/PLAY-089/INDUSTRIAL-L04-NORTH-V13-INTEGRATION-REPLAY-MANIFEST-V1.json"
+          ],
+          "commitRequired": true,
+          "commitMessagePattern": "PLAY-089:"
+        },
+        "escalationTriggers": [
+          "baseline_or_candidate_identity_mismatch",
+          "cross_lane_semantic_conflict",
+          "failure_outside_focused_scope",
+          "path_outside_claim",
+          "save_or_migration_uncertainty",
+          "shared_contract_or_schema_decision",
+          "subjective_acceptance_required",
+          "two_unsuccessful_repair_attempts",
+          "unresolved_product_visual_or_interaction_judgment"
+        ],
+        "stopCondition": "Stop after one exact task-owned manifest commit and clean status, or immediately on any branch/head/claim/carrier mismatch, inability to prove path closure, discovered product/shipping/pixel/DCC content, need for shared-authority judgment, path expansion, or another mandatory trigger. Do not cherry-pick, merge, apply patches to another worktree, publish authority, schedule or execute DCC, score, accept, push, integrate, or pin.",
+        "independentReviewer": {
+          "required": true,
+          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+          "model": "gpt-5.6-sol",
+          "effort": "high"
+        },
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "62e077c88730fda5664e5fa6d23200ade77418bd43f1c721c0bff84eaac1c971"
+            },
+            {
+              "path": ".agents/skills/optimize-citysim-operating-system/SKILL.md",
+              "sha256": "6d4a9e121ec307f7378d253ed112b0ffdd25e0c0d4d1a52b5f7d405f74a8b1ef"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

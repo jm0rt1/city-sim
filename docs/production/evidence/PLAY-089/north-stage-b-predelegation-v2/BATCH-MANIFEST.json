@@ -1,0 +1,35 @@
+{
+  "schema": 1,
+  "sourceEventEnvelope": {
+    "path": "docs/production/evidence/INTEGRATION/PLAY-027-NORTH-V14-PHASE-LADDER-STAGE-B-V1/OPERATING-REVIEW-EVENTS-V2.json",
+    "sha256": "15751bd1063c1ab8e99395400b9712793c637c75c93359715ca2316a0f3b6cd1"
+  },
+  "eventKeys": [
+    {
+      "authorityCommit": "444599b39e8f707fc55e6cbaa85d965df4268e75",
+      "candidateOrResultCommit": "f6c0d13b57c255fb8f546bb9f61722493f1f0fa0",
+      "routeId": "quality-v2:play-089-north-stage-b-predelegation-v2",
+      "taskId": "PLAY-089",
+      "trigger": "worktree_or_dispatch_setup_failed_before_mutation"
+    },
+    {
+      "authorityCommit": "444599b39e8f707fc55e6cbaa85d965df4268e75",
+      "candidateOrResultCommit": "f6c0d13b57c255fb8f546bb9f61722493f1f0fa0",
+      "routeId": "quality-v2:play-089-north-stage-b-predelegation-v2",
+      "taskId": "PLAY-089",
+      "trigger": "delegation_ready_for_dispatch"
+    },
+    {
+      "authorityCommit": "444599b39e8f707fc55e6cbaa85d965df4268e75",
+      "candidateOrResultCommit": "f6c0d13b57c255fb8f546bb9f61722493f1f0fa0",
+      "routeId": "quality-v2:play-089-north-stage-b-predelegation-v2",
+      "taskId": "PLAY-089",
+      "trigger": "frontier_route_assigned"
+    }
+  ],
+  "receiptPaths": [
+    "docs/production/evidence/PLAY-089/north-stage-b-predelegation-v2/01-setup-failure.json",
+    "docs/production/evidence/PLAY-089/north-stage-b-predelegation-v2/02-delegation-ready.json",
+    "docs/production/evidence/PLAY-089/north-stage-b-predelegation-v2/03-frontier-route.json"
+  ]
+}

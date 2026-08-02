@@ -39,8 +39,8 @@
   },
   "componentLowering": {
     "coveragePolicy": "every design component maps to named deterministic builder objects",
-    "componentCount": 28,
-    "objectCount": 30,
+    "componentCount": 29,
+    "objectCount": 34,
     "semanticCoverage": "100%",
     "lodRegistrations": ["source", "native-2x", "literal-192"],
     "components": [
@@ -67,11 +67,12 @@
       {"id": "west-v14-stack", "builder": "capped_stack", "objects": ["west-v14-stack"]},
       {"id": "west-v14-roof-plant", "builder": "roof_plant", "objects": ["west-v14-roof-plant"]},
       {"id": "west-v14-staff-annex", "builder": "union_safe_box", "objects": ["west-v14-staff-annex"]},
-      {"id": "west-v14-staff-glazing", "builder": "mullioned_glazing_band", "objects": ["west-v14-staff-glazing"]},
+      {"id": "west-v14-staff-glazing", "builder": "mullioned_glazing_band", "objects": ["west-v14-staff-glazing", "west-v14-staff-glazing-pane"]},
       {"id": "west-v14-service-door", "builder": "service_door", "objects": ["west-v14-service-door"]},
       {"id": "west-v14-loading-rails", "builder": "railing_run", "objects": ["west-v14-loading-rails"]},
       {"id": "west-v14-roof-edge", "builder": "gutter_and_edge", "objects": ["west-v14-roof-edge"]},
-      {"id": "west-v14-concrete-joints", "builder": "apron_surface_detail", "objects": ["west-v14-concrete-joints"]}
+      {"id": "west-v14-concrete-joints", "builder": "apron_surface_detail", "objects": ["west-v14-concrete-joints"]},
+      {"id": "west-v14-roof-truss", "builder": "truss_chords_diagonals", "objects": ["west-v14-truss-chord-left", "west-v14-truss-chord-right", "west-v14-truss-diagonal"]}
     ]
   },
   "analyticProjection": {

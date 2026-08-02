@@ -20,18 +20,18 @@ LOWERING_PATH = ROOT / "Native/CitySimNative/WorldArt/Blender/PLAY-081/industria
 LAUNCHER_PATH = PACKAGE / "launch_process_a.py"
 CHILD_PATH = PACKAGE / "blender_process_a.py"
 HANDOFF_PATH = ROOT / "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/process-a-execution-v01/HANDOFF.json"
-VALIDATION_PATH = ROOT / "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/process-a-execution-v01/FALSE-GREEN-REPAIR-VALIDATION.json"
+VALIDATION_PATH = ROOT / "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/process-a-execution-v01/CLOSURE-R2-PROCESS-VALIDATION.json"
 BRIDGE_PATH = ROOT / "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-direction-bridge-v06/MAPPING-CONTRACT.json"
 CLAIM_SHA = "6b9608a7854afc60676ac27e7c7a8a7c4420161805a4ef59c68649acdd6a901d"
 PUBLISHED_BASE = "6b4145d35d358ddebb645cf7ca892406435bbd1b"
 AUTHORITY_COMMIT = "9beafc0819a6dfbbf58bba5bd2f48657b1f526a8"
 NORTH_REFERENCE_COMMIT = "ebe649d550b1a0811b72f75184bf188b86b343dc"
-DESIGN_SHA = "334ab5ed19734d6a4f90e499cf8f15872a3c11677a2cb437a912b6a96d0617ad"
-LOWERING_SHA = "b15466c78dedc19d1009ddc9cb691002ed7d5dd192c1caf8be05023fb42376dd"
+DESIGN_SHA = "07951aa7101c1c917c050a449f255e13f8de95b30b8ea1828e080bf7fa231a18"
+LOWERING_SHA = "22164453a3c5377a65ee044360f5afb51948fbecb1affdfc54f49a1313c4c582"
 BRIDGE_SHA = "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7"
 ROUTE = "quality-v1:play-081-industrial-l04-v14-west-process-a-prelaunch-repair-v2"
 ROUTE_SHA = "05884249492edfdc1c4c295a6b479470b6fe17dacf661285682cd34bc13163ec"
-REPAIR_ROUTE = "quality-v2:play-081-west-v14-false-green-topology-repair-r1"
+REPAIR_ROUTE = "quality-v2:play-081-west-v14-closure-contract-r2"
 PIXEL_SUFFIXES = {".png", ".jpg", ".jpeg", ".tif", ".tiff", ".exr", ".blend"}
 
 
@@ -79,7 +79,7 @@ def static_checks(contract: dict[str, Any]) -> None:
     popen_calls = [n for n in ast.walk(launcher) if isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute) and n.func.attr == "Popen"]
     if len(popen_calls) != 1 or "subprocess.run" in launcher_source or "os.system" in launcher_source: fail("launcher child-start boundary")
     if "--factory-startup" not in launcher_source or "--disable-autoexec" not in launcher_source or "PLAY081_PROCESS_A_AUTHENTICATED" not in launcher_source: fail("launcher flags/auth")
-    required_child = ("load_exact_profile", "_add_wedge_mesh", "_add_portal_frame_mesh", "_add_mullion_mesh", "_add_pipe_segment", "_add_pipe_elbow", "BEZIER", "_oriented_beam_parts", "_add_truss_mesh", "_configure_camera", "_configure_lighting", "bpy.data.cameras.new", "to_track_quat", "light.rotation_euler", "CYCLES", "world", "AREA", "film_transparent", "color_mode", "view_transform", "use_adaptive_sampling", "_assert_output_path_is_lexical", "output_root.mkdir", "write_still=True", "save_as_mainfile", "sourceProductionProfile")
+    required_child = ("load_exact_profile", "_add_wedge_mesh", "_add_portal_frame_mesh", "_add_compound_recessed_portal", "portal-recessed-dark-back-plane", "_add_mullion_mesh", "_add_pipe_segment", "_add_pipe_elbow", "use_fill_caps", "BEZIER", "_oriented_beam_parts", "_add_truss_cluster", "_add_truss_member", "_configure_camera", "_configure_lighting", "bpy.data.cameras.new", "to_track_quat", "light.rotation_euler", "CYCLES", "world", "AREA", "film_transparent", "color_mode", "view_transform", "use_adaptive_sampling", "_assert_output_path_is_lexical", "output_root.mkdir", "write_still=True", "save_as_mainfile", "sourceProductionProfile")
     if any(token not in child_source for token in required_child): fail("real Blender construction contract")
     if "bpy.ops.mesh.primitive_cube_add" in child_source or "bpy.ops.mesh.primitive_cylinder_add" in child_source or "diffuse_color = (0.35" in child_source: fail("semantic primitive/material downgrade")
     if child_source.index("profile = load_exact_profile()") > child_source.index("import bpy"): fail("profile gate after bpy import")
@@ -98,8 +98,8 @@ def static_checks(contract: dict[str, Any]) -> None:
 
 def static_adversaries() -> list[str]:
     source = CHILD_PATH.read_text(encoding="utf-8")
-    required = ("_add_wedge_mesh", "_add_portal_frame_mesh", "_add_mullion_mesh", "_add_pipe_segment", "_add_pipe_elbow", "BEZIER", "_oriented_beam_parts", "_configure_camera", "_configure_lighting", "bpy.data.cameras.new", "to_track_quat", "light.rotation_euler", "_assert_output_path_is_lexical", "output_root.mkdir", "write_still=True", "save_as_mainfile", "PLAY081_PROCESS_A_AUTHENTICATED")
-    cases = [("cube-downgrade", "_add_wedge_mesh"), ("missing-topology", "_oriented_beam_parts"), ("missing-elbow", "_add_pipe_elbow"), ("camera-without-data", "bpy.data.cameras.new"), ("camera-without-aim", "to_track_quat"), ("unaimed-light", "light.rotation_euler"), ("missing-light-world", "_configure_lighting"), ("unsafe-output-root", "_assert_output_path_is_lexical"), ("output-root-order", "output_root.mkdir"), ("missing-render", "write_still=True"), ("missing-blend-write", "save_as_mainfile"), ("low-level-bypass", "PLAY081_PROCESS_A_AUTHENTICATED")]
+    required = ("_add_wedge_mesh", "_add_portal_frame_mesh", "_add_compound_recessed_portal", "portal-recessed-dark-back-plane", "_add_mullion_mesh", "_add_pipe_segment", "_add_pipe_elbow", "use_fill_caps", "BEZIER", "_oriented_beam_parts", "_add_truss_cluster", "_configure_camera", "_configure_lighting", "bpy.data.cameras.new", "to_track_quat", "light.rotation_euler", "_assert_output_path_is_lexical", "output_root.mkdir", "write_still=True", "save_as_mainfile", "PLAY081_PROCESS_A_AUTHENTICATED")
+    cases = [("cube-downgrade", "_add_wedge_mesh"), ("missing-portal-assembly", "_add_compound_recessed_portal"), ("missing-portal-back-plane", "portal-recessed-dark-back-plane"), ("missing-topology", "_oriented_beam_parts"), ("missing-truss-reachability", "_add_truss_cluster"), ("missing-elbow", "_add_pipe_elbow"), ("uncapped-elbow", "use_fill_caps"), ("camera-without-data", "bpy.data.cameras.new"), ("camera-without-aim", "to_track_quat"), ("unaimed-light", "light.rotation_euler"), ("missing-light-world", "_configure_lighting"), ("unsafe-output-root", "_assert_output_path_is_lexical"), ("output-root-order", "output_root.mkdir"), ("missing-render", "write_still=True"), ("missing-blend-write", "save_as_mainfile"), ("low-level-bypass", "PLAY081_PROCESS_A_AUTHENTICATED")]
     passed = []
     for name, token in cases:
         mutant = source.replace(token, "")
@@ -115,6 +115,11 @@ def runtime_semantic_checks() -> list[str]:
     if spec is None or spec.loader is None: fail("child import unavailable")
     module = __import__("importlib.util").util.module_from_spec(spec)
     spec.loader.exec_module(module)
+    manifest = module.semantic_manifest()
+    if manifest["componentCount"] != 29 or manifest["objectCount"] != 34: fail("semantic coverage counts")
+    builders = {item["builder"] for item in manifest["objects"]}
+    if "truss_chords_diagonals" not in builders or "pipe_run_with_elbows" not in builders or "compound_portal_frame" not in builders or "mullioned_glazing_band" not in builders: fail("required semantic reachability")
+    if not {"west-v14-truss-chord-left", "west-v14-truss-chord-right", "west-v14-truss-diagonal"}.issubset({item["id"] for item in manifest["objects"]}): fail("truss objects unreachable")
     vertices, faces = module._oriented_beam_parts((-1.0, 0.0, -1.0), (1.0, 2.0, 1.0), 0.2)
     if len(vertices) < 8 or not faces or any(len(face) < 3 or len(set(face)) != len(face) for face in faces): fail("truss topology")
     if any(index < 0 or index >= len(vertices) for face in faces for index in face): fail("truss indices")

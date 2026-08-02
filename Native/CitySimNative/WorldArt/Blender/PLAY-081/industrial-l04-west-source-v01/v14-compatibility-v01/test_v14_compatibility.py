@@ -24,7 +24,7 @@ V14 = SOURCE / "v14-compatibility-v01"
 DESIGN_PATH = V14 / "WEST-V14-DESIGN.json"
 LOWERING_PATH = V14 / "WEST-V14-LOWERING.json"
 HANDOFF_PATH = ROOT / "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/HANDOFF.json"
-VALIDATION_PATH = ROOT / "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/VALIDATION.json"
+VALIDATION_PATH = ROOT / "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/FALSE-GREEN-V14-REPAIR-VALIDATION.json"
 BRIDGE_PATH = ROOT / "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-direction-bridge-v06/MAPPING-CONTRACT.json"
 BASE_DESIGN = SOURCE / "v13-compatibility-v01/WEST-V13-DESIGN.json"
 BASE_LOWERING = SOURCE / "v13-compatibility-v01/WEST-V13-LOWERING.json"
@@ -44,8 +44,9 @@ NORTH_TARGET_JSON_SHA = "bd9df3b979eb521af9823de19063c39ece702648736eddb79e6a6e4
 NORTH_TARGET_PNG_SHA = "a5ea4e52eeacd1820a9bd576c3df48850ba39f6543ff4e2a284ebd7753c2e7f1"
 EXPECTED_ROUTE = "quality-v1:play-081-industrial-l04-v14-west-prelock-v1"
 EXPECTED_ROUTE_SHA = "38d26484c0cff5e66aeb5e585f1900a311c5c99e0c2e840a51f1c891da38df33"
+REPAIR_ROUTE = "quality-v2:play-081-west-v14-closure-contract-r2"
 EXPECTED_HEAD = "81aff53f4276208c8065e76a29f1f99c30a5ceec"
-EXPECTED_COMPONENT_KINDS = {"surrounding-shell", "foundation", "frontage-apron", "portal-frame-jamb", "portal-frame-header", "aperture-void", "portal-depth-reveal", "freight-recess-beat", "roof-tier", "clerestory-lantern", "crown-break", "process-vessel", "pipe-cluster", "process-stack", "roof-plant", "control-annex", "staff-glazing", "service-door", "loading-rails", "roof-edge", "apron-marking"}
+EXPECTED_COMPONENT_KINDS = {"surrounding-shell", "foundation", "frontage-apron", "portal-frame-jamb", "portal-frame-header", "aperture-void", "portal-depth-reveal", "freight-recess-beat", "roof-tier", "clerestory-lantern", "crown-break", "process-vessel", "pipe-cluster", "process-stack", "roof-plant", "control-annex", "staff-glazing", "service-door", "loading-rails", "roof-edge", "apron-marking", "roof-truss"}
 PIXEL_SUFFIXES = {".png", ".jpg", ".jpeg", ".tif", ".tiff", ".exr", ".blend"}
 
 
@@ -111,7 +112,7 @@ def audit(design: dict[str, Any], lowering: dict[str, Any], *, files: bool = Fal
     if camera.get("projection") != "orthographic-2:1" or camera.get("renderViewportPixels") != [1536, 1024] or camera.get("literalViewportPixels") != [192, 128] or camera.get("actualCameraProcessCount") != 0: bad("camera")
     if design.get("lightAndContact", {}).get("keyDirection") != "northwest" or design.get("lightAndContact", {}).get("contactShadowDirection") != "southeast": bad("light-contact")
     components = design.get("components", [])
-    if len(components) != 28 or design.get("semanticCoverage", {}).get("componentCount") != 28: bad("component-count")
+    if len(components) != 29 or design.get("semanticCoverage", {}).get("componentCount") != 29: bad("component-count")
     ids = [c.get("id") for c in components if isinstance(c, dict)]
     if len(ids) != len(set(ids)): bad("component-alias")
     if {c.get("kind") for c in components} != EXPECTED_COMPONENT_KINDS: bad("component-kinds")
@@ -123,9 +124,9 @@ def audit(design: dict[str, Any], lowering: dict[str, Any], *, files: bool = Fal
         if not isinstance(component.get("builderObjects"), list) or not component["builderObjects"]: bad("builder-coverage")
         object_ids.extend(component.get("builderObjects", []))
         if boxes[component["id"]][1][1] > 44 or boxes[component["id"]][0][0] < -28 or boxes[component["id"]][1][0] > 28 or boxes[component["id"]][0][2] < -28 or boxes[component["id"]][1][2] > 28: bad("footprint-envelope")
-    if len(object_ids) != 30 or len(object_ids) != len(set(object_ids)): bad("object-identity")
+    if len(object_ids) != 34 or len(object_ids) != len(set(object_ids)): bad("object-identity")
     lowering_components = lowering.get("componentLowering", {}).get("components", [])
-    if len(lowering_components) != 28 or {x.get("id") for x in lowering_components} != set(ids): bad("lowering-coverage")
+    if len(lowering_components) != 29 or {x.get("id") for x in lowering_components} != set(ids): bad("lowering-coverage")
     for item in lowering_components:
         source = next((c for c in components if c["id"] == item["id"]), None)
         if source is None:
@@ -193,7 +194,7 @@ def main() -> int:
     expected_validator = str(Path(__file__).resolve().relative_to(ROOT))
     if handoff.get("stage") != "predesign" or handoff.get("sourceReady") is not False or handoff.get("candidateReadyForIndependentReview") is not True: fail("handoff readiness")
     if handoff.get("direction") != "west" or handoff.get("validatorPath") != expected_validator or handoff.get("designPath") != str(DESIGN_PATH.relative_to(ROOT)) or handoff.get("loweringPath") != str(LOWERING_PATH.relative_to(ROOT)): fail("handoff paths")
-    if validation.get("result") != "PASS" or validation.get("routeId") != EXPECTED_ROUTE or validation.get("routeSHA256") != EXPECTED_ROUTE_SHA or validation.get("claimSHA256") != CLAIM_SHA: fail("validation authority")
+    if validation.get("result") != "PASS" or validation.get("routeId") != REPAIR_ROUTE or validation.get("claimSHA256") != CLAIM_SHA: fail("validation authority")
     if validation.get("validatorPath") != expected_validator or validation.get("validatorSHA256") != sha(Path(__file__)): fail("validator binding")
     if validation.get("adversaries", {}).get("count") != len(names): fail("adversary evidence")
     outputs = []

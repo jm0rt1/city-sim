@@ -116,6 +116,23 @@ def _add_portal_frame_mesh(bpy: Any, name: str, lower: list[float], upper: list[
     return _mesh_object(bpy, name, vertices, faces, material)
 
 
+def _add_compound_recessed_portal(bpy: Any, names: list[str], aperture: dict[str, list[float]], frame_material: Any, void_material: Any) -> list[Any]:
+    """Build one connected portal assembly from the aperture bounds."""
+    lo, hi = tuple(float(x) for x in aperture["min"]), tuple(float(x) for x in aperture["max"])
+    outer_lo = [lo[0] - 2.0, lo[1] - 2.0, lo[2] - 2.0]
+    outer_hi = [hi[0] + 1.0, hi[1] + 2.0, hi[2] + 2.0]
+    left = _add_box_mesh(bpy, names[0], outer_lo, [outer_hi[0], outer_hi[1], lo[2] + 1.1], frame_material)
+    right = _add_box_mesh(bpy, names[1], [outer_lo[0], outer_lo[1], hi[2] - 1.1], outer_hi, frame_material)
+    header = _add_box_mesh(bpy, names[2], [outer_lo[0], hi[1] - 1.1, lo[2] - 1.0], [outer_hi[0], outer_hi[1], hi[2] + 1.0], frame_material)
+    reveal_lo = [hi[0] - 0.35, lo[1], lo[2]]
+    reveal_hi = [hi[0] + 0.05, hi[1], hi[2]]
+    reveal = _add_box_mesh(bpy, "west-v14-portal-reveal-surface", reveal_lo, reveal_hi, frame_material)
+    back_lo = [hi[0] + 0.08, lo[1] + 0.2, lo[2] + 0.2]
+    back_hi = [hi[0] + 0.22, hi[1] - 0.2, hi[2] - 0.2]
+    back = _add_box_mesh(bpy, "west-v14-portal-recessed-dark-back-plane", back_lo, back_hi, void_material)
+    return [left, right, header, reveal, back]
+
+
 def _add_cylinder_mesh(bpy: Any, name: str, lower: list[float], upper: list[float], material: Any, sides: int = 20) -> Any:
     lo, hi = tuple(float(x) for x in lower), tuple(float(x) for x in upper)
     radius = min(hi[0] - lo[0], hi[2] - lo[2]) / 2.0
@@ -157,6 +174,7 @@ def _add_pipe_segment(bpy: Any, name: str, start: tuple[float, float, float], en
     curve.dimensions = "3D"
     curve.bevel_depth = 0.22
     curve.bevel_resolution = 3
+    curve.use_fill_caps = True
     spline = curve.splines.new("POLY")
     spline.points.add(1)
     spline.points[0].co = (*start, 1.0)
@@ -174,6 +192,7 @@ def _add_pipe_elbow(bpy: Any, name: str, start: tuple[float, float, float], corn
     curve.bevel_depth = 0.22
     curve.bevel_resolution = 3
     curve.resolution_u = 12
+    curve.use_fill_caps = True
     spline = curve.splines.new("BEZIER")
     spline.bezier_points.add(2)
     for point, co in zip(spline.bezier_points, (start, corner, end)):
@@ -234,6 +253,24 @@ def _add_truss_mesh(bpy: Any, name: str, lower: list[float], upper: list[float],
     return _mesh_object(bpy, name, vertices, faces, material)
 
 
+def _add_truss_member(bpy: Any, name: str, start: tuple[float, float, float], end: tuple[float, float, float], material: Any) -> Any:
+    vertices, faces = _oriented_beam_parts(start, end, 0.24)
+    return _mesh_object(bpy, name, vertices, faces, material)
+
+
+def _add_truss_cluster(bpy: Any, names: list[str], lower: list[float], upper: list[float], material: Any) -> list[Any]:
+    lo, hi = tuple(float(x) for x in lower), tuple(float(x) for x in upper)
+    left = (lo[0], lo[1], lo[2])
+    right = (hi[0], lo[1], lo[2])
+    upper_left = (lo[0], hi[1], hi[2])
+    upper_right = (hi[0], hi[1], hi[2])
+    return [
+        _add_truss_member(bpy, names[0], left, right, material),
+        _add_truss_member(bpy, names[1], upper_left, upper_right, material),
+        _add_truss_member(bpy, names[2], left, upper_right, material),
+    ]
+
+
 def _add_recessed_reveal_mesh(bpy: Any, name: str, lower: list[float], upper: list[float], material: Any) -> Any:
     lo, hi = tuple(float(x) for x in lower), tuple(float(x) for x in upper)
     inset = 0.45
@@ -263,20 +300,25 @@ def _add_apron_detail_mesh(bpy: Any, name: str, lower: list[float], upper: list[
     return _add_box_mesh(bpy, name, lower, upper, material)
 
 
-def _build_component(bpy: Any, component: dict[str, Any], material: Any) -> list[Any]:
+def _build_component(bpy: Any, component: dict[str, Any], material: Any, materials: dict[str, Any], design: dict[str, Any]) -> list[Any]:
     lower, upper = component["aabb"]["min"], component["aabb"]["max"]
     builder = next(item for item in load(LOWERING)["componentLowering"]["components"] if item["id"] == component["id"])["builder"]
     names = component["builderObjects"]
     if builder == "recessed_void":
         return []
-    if builder == "compound_portal_frame": return [_add_portal_frame_mesh(bpy, names[0], lower, upper, material)]
+    if builder == "compound_portal_frame":
+        if component["id"] != "west-v14-portal-left-jamb" or bpy.data.objects.get("west-v14-portal-left-jamb"):
+            return []
+        aperture = next(item["aabb"] for item in design["components"] if item["id"] == "west-v14-deep-freight-aperture")
+        portal_names = ["west-v14-portal-left-jamb", "west-v14-portal-right-jamb", "west-v14-portal-header"]
+        return _add_compound_recessed_portal(bpy, portal_names, aperture, material, materials["deep-freight-void"])
     if builder == "pitched_roof_wedge": return [_add_wedge_mesh(bpy, names[0], lower, upper, material)]
     if builder == "capped_vessel" or builder == "capped_stack": return [_add_cylinder_mesh(bpy, names[0], lower, upper, material)]
     if builder == "pipe_run_with_elbows": return _add_pipe_cluster(bpy, names, lower, upper, material)
-    if builder == "mullioned_glazing_band": return [_add_mullion_mesh(bpy, names[0], lower, upper, material)]
+    if builder == "mullioned_glazing_band": return [_add_mullion_mesh(bpy, names[0], lower, upper, material), _add_box_mesh(bpy, names[1], [lower[0] + 0.12, lower[1] + 0.12, lower[2] + 0.12], [upper[0] - 0.12, upper[1] - 0.12, upper[2] - 0.12], material)]
     if builder == "railing_run": return [_add_rail_mesh(bpy, names[0], lower, upper, material)]
     if builder == "gutter_and_edge": return [_add_gutter_mesh(bpy, names[0], lower, upper, material)]
-    if builder == "truss_chords_diagonals": return [_add_truss_mesh(bpy, names[0], lower, upper, material)]
+    if builder == "truss_chords_diagonals": return _add_truss_cluster(bpy, names, lower, upper, material)
     if builder == "union_safe_box": return [_add_box_mesh(bpy, names[0], lower, upper, material)]
     if builder == "recessed_reveal": return [_add_recessed_reveal_mesh(bpy, names[0], lower, upper, material)]
     if builder == "freight_recess_beat": return [_add_freight_recess_mesh(bpy, names[0], lower, upper, material)]
@@ -396,7 +438,7 @@ def build_scene() -> dict[str, Any]:
     bpy.ops.wm.read_factory_settings(use_empty=True)
     materials = _make_materials(bpy, contract["materialRoles"], profile)
     for component in design["components"]:
-        _build_component(bpy, component, materials[component["role"]])
+        _build_component(bpy, component, materials[component["role"]], materials, design)
     _configure_camera(bpy, contract)
     _configure_lighting(bpy, contract, profile)
     if output_root.parent.is_symlink() or (output_root.parent.exists() and not output_root.parent.is_dir()):

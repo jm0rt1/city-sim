@@ -18,9 +18,9 @@
     "lowererSHA256": "3c3995e09a2c5a197f3156b3023c22d38aad67b77b13c4f38110879585a40c32"
   },
   "designPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/WEST-V14-DESIGN.json",
-  "designSHA256": "334ab5ed19734d6a4f90e499cf8f15872a3c11677a2cb437a912b6a96d0617ad",
+  "designSHA256": "07951aa7101c1c917c050a449f255e13f8de95b30b8ea1828e080bf7fa231a18",
   "loweringPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/WEST-V14-LOWERING.json",
-  "loweringSHA256": "b15466c78dedc19d1009ddc9cb691002ed7d5dd192c1caf8be05023fb42376dd",
+  "loweringSHA256": "22164453a3c5377a65ee044360f5afb51948fbecb1affdfc54f49a1313c4c582",
   "bridgePath": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-direction-bridge-v06/MAPPING-CONTRACT.json",
   "bridgeSHA256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7",
   "launcherPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/process-a-execution-v01/launch_process_a.py",
@@ -73,7 +73,7 @@
     "contactPolygonWorldXZ": [[-28, -28], [28, -28], [28, 28], [-28, 28]]
   },
   "materialRoles": ["warm-foundry-masonry", "charcoal-structural-steel", "weathered-bluegreen-roof", "oxidized-process-machinery", "integrated-operating-apron", "deep-freight-void", "warm-staff-glazing", "restrained-hot-process", "grounded-foundation", "clerestory-and-roof-edge"],
-  "builderKinds": ["union_safe_box", "compound_portal_frame", "recessed_void", "recessed_reveal", "freight_recess_beat", "pitched_roof_wedge", "clerestory_band", "crown_break", "capped_vessel", "pipe_run_with_elbows", "capped_stack", "roof_plant", "mullioned_glazing_band", "service_door", "railing_run", "gutter_and_edge", "apron_surface_detail"],
+  "builderKinds": ["union_safe_box", "compound_portal_frame", "recessed_void", "recessed_reveal", "freight_recess_beat", "pitched_roof_wedge", "clerestory_band", "crown_break", "capped_vessel", "pipe_run_with_elbows", "capped_stack", "roof_plant", "mullioned_glazing_band", "service_door", "railing_run", "gutter_and_edge", "apron_surface_detail", "truss_chords_diagonals"],
   "sourceRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/process-a-execution-v01",
   "futureOutputRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/process-a-execution-v01/output/west-v14-process-a",
   "futureOutputFiles": ["west-v14-process-a.png", "west-v14-process-a.blend", "manifest.json", "provenance.json", "receipt.json"],

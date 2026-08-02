@@ -1,0 +1,152 @@
+{
+  "schema": 2,
+  "authorityCommit": "444599b39e8f707fc55e6cbaa85d965df4268e75",
+  "assignments": [
+    {
+      "modelRouteSha256": "470acdc437ee803eb41a460bc2508819aec3ecfbbd6c208aafa862ae5e14d346",
+      "modelRoute": {
+        "schema": 2,
+        "routeId": "quality-v2:play-089-north-stage-b-predelegation-v1",
+        "taskId": "PLAY-089",
+        "packetKind": "mechanical",
+        "classification": "LUNA_MECHANICAL",
+        "model": "gpt-5.6-luna",
+        "effort": "medium",
+        "rationale": "Review two immutable immediate triggers before the single North Stage-B DCC diagnostic. The policy, route, one-attempt authority, worker identity, path boundary, focused gate, full gate owner, and frontier rationale are already frozen; the observer performs only compact mechanical checks.",
+        "authority": {
+            "authorityCommit": "444599b39e8f707fc55e6cbaa85d965df4268e75",
+            "baseCommit": "444599b39e8f707fc55e6cbaa85d965df4268e75",
+          "claim": {
+            "path": "docs/production/claims/PLAY-089.operating-system-optimization.md",
+            "sha256": "106dc2a5cffccd436ff936800fc247eee2eacabe1aa65c6905f1859f75cef369"
+          },
+          "immutableInputs": [
+            {
+              "path": "docs/production/evidence/INTEGRATION/PLAY-027-NORTH-V14-PHASE-LADDER-STAGE-B-V1/OPERATING-REVIEW-EVENTS.json",
+              "sha256": "9c5252d37b6f788076d27f7b9c1c2a7572f8649cf6b5991e32fd00d740ec3044"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/PLAY-027-NORTH-V14-PHASE-LADDER-STAGE-B-V1/SCHEDULE.json",
+              "sha256": "faa2ab6e1b74d23a417bcd73f90b658467a6b504c95bdf0f12470940bdee0c66"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-027-NORTH-V14-EXECUTABLE-PHASE-LADDER-R2.json",
+              "sha256": "46469afcb2e81e0e69448835a6b5776acc29ea5840f9b97a87700c4724b88f4b"
+            }
+          ]
+        },
+        "assignment": {
+          "threadId": "019fc40d-c697-7aa2-94bf-902b031a8c67",
+          "branch": "codex/citysim-os-optimization",
+          "worktree": "/Users/James/.codex/worktrees/dc21/city-sim",
+          "expectedHead": "f6c0d13b57c255fb8f546bb9f61722493f1f0fa0",
+          "featureAuthorThreadId": null,
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": [
+            "docs/production/evidence/PLAY-089"
+          ],
+          "allowed": [
+            "docs/production/evidence/PLAY-089/north-stage-b-predelegation-v1/01-delegation-ready.json",
+            "docs/production/evidence/PLAY-089/north-stage-b-predelegation-v1/02-frontier-route.json",
+            "docs/production/evidence/PLAY-089/north-stage-b-predelegation-v1/BATCH-MANIFEST.json"
+          ],
+          "forbidden": [
+            ".agents/skills",
+            "docs/production/PLAYABLE_BACKLOG.md",
+            "docs/production/claims",
+            "docs/production/decisions",
+            "docs/production/evidence/INTEGRATION",
+            "Native/CitySimNative",
+            "script"
+          ]
+        },
+        "boundedDeliverable": "Consume the exact two-event envelope from external Integration authority. Emit one schema-4 receipt for delegation_ready_for_dispatch, one for frontier_route_assigned, and one exact batch manifest. Verify the one-attempt 8x8 CPU/Cycles diagnostic is the lowest legal execution route because it invokes DCC under unresolved crash behavior; verify Luna decomposition has already handled all static implementation and repair work. Do not mutate product, authority, claims, routes, skills, ledgers, worktrees, DCC state, or attempt markers.",
+        "proofPolicy": {
+          "architectureState": "frozen_reference",
+          "referenceImplementation": {
+            "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-027-NORTH-V14-EXECUTABLE-PHASE-LADDER-R2.json",
+            "sha256": "46469afcb2e81e0e69448835a6b5776acc29ea5840f9b97a87700c4724b88f4b"
+          },
+          "deliverableClaims": [
+            "static_structure"
+          ],
+          "focusedProofLevel": "static_only",
+          "fullProofLevel": "static_only",
+          "behavioralCommands": [],
+          "prohibitedSubstitutions": [
+            "ast_shape_for_runtime_success",
+            "manifest_or_prose_for_rendered_pixels",
+            "source_token_presence_for_execution",
+            "unit_tests_for_visual_acceptance",
+            "worker_self_report_for_independent_acceptance"
+          ]
+        },
+        "validation": {
+          "focusedGateOwner": {
+            "threadId": "019fc40d-c697-7aa2-94bf-902b031a8c67",
+            "role": "compact_predelegation_observer"
+          },
+          "focusedCommands": [
+            "PYTHONDONTWRITEBYTECODE=1 python3 .agents/skills/optimize-citysim-operating-system/scripts/test_validate_operating_review_receipt_v1.py",
+            "PYTHONDONTWRITEBYTECODE=1 python3 .agents/skills/optimize-citysim-operating-system/scripts/test_validate_operating_review_batch_v1.py",
+            "git diff --check f6c0d13b57c255fb8f546bb9f61722493f1f0fa0..HEAD"
+          ],
+          "fullGateOwner": {
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "role": "integration_receipt_validation_and_disposition",
+            "model": "gpt-5.6-sol",
+            "effort": "high"
+          },
+          "fullCommands": [
+            "Integration validates both exact receipts and the batch manifest against the external authority root, applies their dispositions to the ledger, and alone decides whether the North launch may proceed."
+          ]
+        },
+        "expectedResult": {
+          "evidencePaths": [
+            "docs/production/evidence/PLAY-089/north-stage-b-predelegation-v1/01-delegation-ready.json",
+            "docs/production/evidence/PLAY-089/north-stage-b-predelegation-v1/02-frontier-route.json",
+            "docs/production/evidence/PLAY-089/north-stage-b-predelegation-v1/BATCH-MANIFEST.json"
+          ],
+          "commitRequired": true,
+          "commitMessagePattern": "PLAY-089:"
+        },
+        "escalationTriggers": [
+          "baseline_or_candidate_identity_mismatch",
+          "cross_lane_semantic_conflict",
+          "failure_outside_focused_scope",
+          "path_outside_claim",
+          "save_or_migration_uncertainty",
+          "shared_contract_or_schema_decision",
+          "subjective_acceptance_required",
+          "two_unsuccessful_repair_attempts",
+          "unresolved_product_visual_or_interaction_judgment"
+        ],
+        "stopCondition": "Stop after one clean three-file PLAY-089 observer commit, or immediately on any route/input/claim/head/path mismatch. Do not launch DCC, mutate attempt state, integrate, push, pin, or self-authorize the North execution.",
+        "independentReviewer": {
+          "required": true,
+          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+          "model": "gpt-5.6-sol",
+          "effort": "high"
+        },
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {
+              "path": ".agents/skills/optimize-citysim-operating-system/SKILL.md",
+              "sha256": "50eb1c8a47a1da768b0f8c1e52a9b251656bce0e13941b488f85daa7810c1c46"
+            },
+            {
+              "path": ".agents/skills/optimize-citysim-operating-system/references/triggered-operating-review-policy.json",
+              "sha256": "b9f208fe3ee78cd3143953300cbb2d2692d264f0d9106fd3f799bf74aa2df9da"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

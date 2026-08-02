@@ -1,0 +1,49 @@
+{
+  "kind": "industrial-l04-north-v14-phase-schedule-v1",
+  "publication": {
+    "path": "docs/production/evidence/INTEGRATION/PLAY-027-NORTH-V14-PHASE-LADDER-STAGE-B-V1/SCHEDULE.json"
+  },
+  "task": "PLAY-027",
+  "direction": "north",
+  "workerHead": "444599b39e8f707fc55e6cbaa85d965df4268e75",
+  "routeId": "quality-v2:play-027-north-v14-executable-phase-ladder-r2",
+  "outputRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/process-a-phase-ladder-v01/phase-output",
+  "sourceAuthority": false,
+  "productionSelected": false,
+  "claimSHA256": "3ba55646cea13c31719d687242eec431fc60c697cfd20bb555f729503c0df332",
+  "routeCarrierCommit": "5157b3a1027e5f70e0f8457e0c1ca925ab097d73",
+  "routeReceiptSHA256": "46469afcb2e81e0e69448835a6b5776acc29ea5840f9b97a87700c4724b88f4b",
+  "modelRouteSHA256": "886683839569876871d8dd698afb6d9db14b5d44d626b94c448e20166829ca61",
+  "blender": {
+    "executable": "/Applications/Blender-4.5.12-arm64.app/Contents/MacOS/Blender",
+    "sha256": "0fa2ab6500e41bfd8114485b218a1e4aebf15b3d8cea90dc8398535291061506",
+    "architecture": "arm64",
+    "version": "4.5.12 LTS",
+    "buildHash": "84afd5f785f7",
+    "factoryStartup": true,
+    "autoexecDisabled": true
+  },
+  "allowedOutputLeaves": [
+    "PHASE-MARKERS.jsonl",
+    "micro.png",
+    "stdout.bin",
+    "stderr.bin",
+    "DIAGNOSTIC-RECEIPT.json",
+    "FAILURE.json"
+  ],
+  "microRender": {
+    "engine": "CYCLES",
+    "device": "CPU",
+    "threads": 1,
+    "samples": 8,
+    "resolution": [8, 8],
+    "nonShipping": true
+  },
+  "maximumChildStarts": 1,
+  "maximumConcurrentDCCProcesses": 1,
+  "timeoutSeconds": 120,
+  "contractSHA256": "3cbd3a375e1dc48a9be3da43dc908ab7ecd817cb73087788ffcf6980f981be5e",
+  "launcherSHA256": "082bfa56af66da62791239bdeac9e9f0faebc3a44a8872239488d20412aa7d40",
+  "childSHA256": "07bea3d108d947fcf35d94566e7bfbea92bd94402903920d579411f95c0e282b",
+  "attemptMarkerPath": "/private/tmp/citysim-play027-north-v14-phase-ladder-stage-b-v1-attempt.json"
+}

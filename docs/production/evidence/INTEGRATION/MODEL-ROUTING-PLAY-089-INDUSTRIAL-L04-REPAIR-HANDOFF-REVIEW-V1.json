@@ -3,7 +3,7 @@
   "authorityCommit": "f5562c1bd3b38a1d002a64e5930cd82370a3fe81",
   "assignments": [
     {
-      "modelRouteSha256": "a6f3e90765fefbba5779e57c8a79ee59f6e4c80e3b3eb7354ded23a72d342f7a",
+      "modelRouteSha256": "872665fe2dbbd64aad1ab0884ad5b09f4cca9a5c683be51d4a5e315447fd1227",
       "modelRoute": {
         "schema": 2,
         "routeId": "quality-v2:play-089-industrial-l04-repair-handoff-review-v1",
@@ -23,7 +23,7 @@
           "immutableInputs": [
             {
               "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-REPAIR-HANDOFF-REVIEW-V1.json",
-              "sha256": "f14756699229639480ae09c823da9c54b8af716415c281449eb24d298b700980"
+              "sha256": "992ee7ee68a20b0cc644c5f23f9324470cc55fc70afc6196829ae6233942a021"
             },
             {
               "path": ".agents/skills/optimize-citysim-operating-system/references/triggered-operating-review-policy.json",
@@ -102,7 +102,7 @@
           "focusedCommands": [
             "PYTHONDONTWRITEBYTECODE=1 python3 .agents/skills/optimize-citysim-operating-system/scripts/test_validate_operating_review_receipt_v1.py",
             "PYTHONDONTWRITEBYTECODE=1 python3 .agents/skills/optimize-citysim-operating-system/scripts/test_validate_operating_review_batch_v1.py",
-            "python3 .agents/skills/optimize-citysim-operating-system/scripts/validate_operating_review_batch_v1.py docs/production/evidence/PLAY-089/industrial-l04-repair-handoff-review-v1/BATCH-MANIFEST.json --ledger docs/production/evidence/PLAY-089/OPERATING-REVIEW-EVENT-LEDGER-V1.json --repo-root .",
+            "python3 .agents/skills/optimize-citysim-operating-system/scripts/validate_operating_review_batch_v1.py docs/production/evidence/PLAY-089/industrial-l04-repair-handoff-review-v1/BATCH-MANIFEST.json --ledger docs/production/evidence/PLAY-089/OPERATING-REVIEW-EVENT-LEDGER-V1.json --repo-root . --authority-root \"/Users/James/Library/Mobile Documents/com~apple~CloudDocs/James's Files/Programming/Python/city-sim\"",
             "git diff --check 88ea5f0e10ef669442df4a287268758e5457d82f..HEAD"
           ],
           "fullGateOwner": {
@@ -162,7 +162,7 @@
             },
             {
               "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-REPAIR-HANDOFF-REVIEW-V1.json",
-              "sha256": "f14756699229639480ae09c823da9c54b8af716415c281449eb24d298b700980"
+              "sha256": "992ee7ee68a20b0cc644c5f23f9324470cc55fc70afc6196829ae6233942a021"
             }
           ]
         }

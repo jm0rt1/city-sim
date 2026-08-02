@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "taskId": "PLAY-027",
+  "candidateCommit": "ff83b9dcb5b9826dc37631939ac215a633d31136",
+  "candidateParent": "0797d3460bfce5ced0e64a6cb4e3c33e4d388d98",
+  "routeId": "quality-v2:play-027-industrial-l04-v14-native-contained-smoke-v3",
+  "runtimeDisposition": "PASS",
+  "visualDisposition": "RETURN",
+  "sourceAuthority": false,
+  "productionSelected": false,
+  "runtimeEvidence": {
+    "childStarts": 1,
+    "dccProcesses": 1,
+    "returnCode": 0,
+    "expectedOutputCount": 8,
+    "rawSha256": "a07d8b12430362a6083eab1ad835cd4bb572d9d089b951d7356b449d6faef6c0",
+    "semanticSha256": "91676d377e22c3df3d77b7bd51510ed6b3d7ca297df2b43ac36111dfa9978378",
+    "processReceiptSha256": "fdbde70bd3cedec84cbe91519bb0d222ec2f7996737cebe294d242552394dd46",
+    "provenanceSha256": "75578d01761ba0cfbe742b130568169620973f7c164740e56c936ace9dc30bba"
+  },
+  "measuredImage": {
+    "dimensions": [1536, 1024],
+    "alphaBounds": {
+      "x": 511,
+      "y": 517,
+      "width": 514,
+      "height": 380
+    },
+    "alphaBoundsFraction": {
+      "width": 0.3346,
+      "height": 0.3711
+    },
+    "occupiedCropSignalStats": {
+      "yLow": 16,
+      "yAverage": 20.7357,
+      "yHigh": 28
+    }
+  },
+  "frontierFindings": [
+    "The building is severely underexposed; most authored material, facade, roof, portal, pipe, and machinery detail collapses into near-black values.",
+    "The subject is too small and too low in the 1536x1024 source frame for a hero-direction appearance lock.",
+    "The freight portal reads as a black void rather than a legible road-facing frontage.",
+    "The semantic pass proves geometry exists but cannot substitute for a readable production render.",
+    "Possible causes requiring frontier diagnosis include face winding/normals, light reach/orientation, world/fill contribution, color management, and camera scale/offset."
+  ],
+  "requiredRepairBoundary": {
+    "owner": "FRONTIER_AUTHORITY",
+    "model": "gpt-5.6-sol",
+    "effort": "high",
+    "allowed": "archive the exact successful-but-rejected output; diagnose outward normals, light and camera response; repair only North v14 design/material/lighting/child/static-test and task-owned evidence paths; prove a zero-DCC pre-pixel candidate",
+    "forbidden": "another DCC attempt, sibling pixels, appearance lock, normalization, renderer, shipping, source authority, production selection, push, or self-acceptance"
+  }
+}

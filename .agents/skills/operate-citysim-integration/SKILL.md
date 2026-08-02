@@ -103,7 +103,14 @@ completely. Never pin a task.
    Wake the operating-system optimization lane once per unique event key, route
    the review as `LUNA_MECHANICAL / gpt-5.6-luna / medium`, accept `NO_CHANGE`
    as a valid low-cost outcome, and never let the observer self-authorize shared
-   mutations.
+   mutations. Treat the lifecycle as explicit event boundaries: publish →
+   acknowledge → frontier-route check when applicable → complete/stop →
+   useful-concurrency check → candidate/QA/integration. Emit each review once
+   per unique event key, validate its durable receipt, and never wake or pin a
+   worker merely for status. A frontier worker route requires a recorded
+   authority/judgment reason; a task completion or stop requires a durable
+   result/blocker plus its next dependency; unchanged full context reloads and
+   delegation acknowledgement defects are reviewable cost failures.
 10. When a claimed lane becomes idle while contract-independent work is ready,
     refill it in the same management turn or record the exact serialized
     dependency. Maintain at least three useful active workstreams whenever the

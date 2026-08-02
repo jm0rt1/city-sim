@@ -11,12 +11,16 @@
   "executionAuthority": null,
   "executionReady": false,
   "authority": {
-    "authorityCommit": "f8e53dfaf9e91e370e946a0cddcd995fc441fab4",
-    "baseCommit": "f8e53dfaf9e91e370e946a0cddcd995fc441fab4",
-    "observedHead": "4fdc60e8bdc6b5ae8ce1c34a8cd6f67e8cf898cc",
+    "authorityCommit": "fb994358c58b81fea5a144f67dc0f7316d53b4a5",
+    "baseCommit": "fb994358c58b81fea5a144f67dc0f7316d53b4a5",
+    "observedHead": "f2672462bbf423ffb6746cd0d9a2eb28e9248f6f",
+    "branch": "codex/citysim-world-art-east",
     "closureContract": {"path":"docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTION-EXECUTION-CLOSURE-V1.json","sha256":"4a5fdf98ad77082cdd4265ae6f78406f9e26c8dd92443caa8c7e64e6726f91a4"},
     "returnRepairAuthority": {"path":"docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTION-CLOSURE-RETURN-REPAIR-V1.json","sha256":"078fafb0028dbea461ba91c3f256fd4b8b8d2c1a96b527c593202fee0b26cd03"},
-    "claim": {"path":"docs/production/claims/PLAY-079.world-art-east.md","sha256":"8a61f2ddf411c9e9a04f3d8c604274760409bd036f6f0590702094df002c58d8"}
+    "liveIdentityAuthority": {"path":"docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-EAST-LIVE-IDENTITY-RETURN-REPAIR-V1.json","sha256":"aef7773c50f0d29e127bb0859f221d1603f3d37d2fe69ff62bc051e1e33a07e6"},
+    "routeId": "quality-v2:play-079-east-v14-live-identity-repair-v1",
+    "routeSha256": "54b8a92f8d1186b28e7f8405ea1969170e450d30e0d76ec9eff9297dc41a6ecd",
+    "claim": {"path":"docs/production/claims/PLAY-079.world-art-east.md","sha256":"48e6efbff5f200de503ac090454c7cd6bd9a650103946c9be3baf709d308751a"}
   },
   "immutableInputs": {
     "design": {"path":"Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/V14-COMPATIBILITY-DESIGN.json","sha256":"a51803683b17d5ed8a04a436623a93b7bf6e2804f7746a4f956629f9030792ed"},

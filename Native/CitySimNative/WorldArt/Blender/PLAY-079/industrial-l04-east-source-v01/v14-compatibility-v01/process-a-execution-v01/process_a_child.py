@@ -752,7 +752,7 @@ def main() -> int:
         raise RuntimeError("north_profile_required")
     if authority.get("closureContract", {}).get("path") != "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTION-EXECUTION-CLOSURE-V1.json":
         raise RuntimeError("closure_contract_binding")
-    if contract.get("authority", {}).get("returnRepairAuthority", {}).get("path") != "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTION-CLOSURE-RETURN-REPAIR-V1.json":
+    if contract.get("authority", {}).get("liveIdentityAuthority", {}).get("path") != "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-EAST-LIVE-IDENTITY-RETURN-REPAIR-V1.json":
         raise RuntimeError("return_repair_authority_binding")
     documents = authority.get("documents", {})
     if set(documents) != {"schedule", "grant", "integrationSession", "sourceProductionProfile"}:

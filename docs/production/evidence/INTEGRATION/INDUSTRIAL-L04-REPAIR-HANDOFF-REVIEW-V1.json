@@ -47,15 +47,15 @@
       "authorityCommit": "f5562c1bd3b38a1d002a64e5930cd82370a3fe81",
       "taskId": "PLAY-089",
       "routeId": "quality-v2:play-089-industrial-l04-repair-handoff-review-v1",
-      "trigger": "useful_concurrency_below_floor",
-      "candidateOrResultCommit": "f5562c1bd3b38a1d002a64e5930cd82370a3fe81"
+      "trigger": "worktree_or_dispatch_setup_failed_before_mutation",
+      "candidateOrResultCommit": "fb6fd3c20ed32191ff43fd31acb5651713373c4c"
     },
     {
       "authorityCommit": "f5562c1bd3b38a1d002a64e5930cd82370a3fe81",
       "taskId": "PLAY-089",
       "routeId": "quality-v2:play-089-industrial-l04-repair-handoff-review-v1",
-      "trigger": "worktree_or_dispatch_setup_failed_before_mutation",
-      "candidateOrResultCommit": "fb6fd3c20ed32191ff43fd31acb5651713373c4c"
+      "trigger": "useful_concurrency_below_floor",
+      "candidateOrResultCommit": "f5562c1bd3b38a1d002a64e5930cd82370a3fe81"
     }
   ]
 }

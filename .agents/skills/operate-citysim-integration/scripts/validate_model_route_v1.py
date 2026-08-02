@@ -270,9 +270,13 @@ def validate_route(route: Any, repo: Path) -> list[str]:
     ):
         errors.append("proofPolicy.behavioralCommands must be a string list")
         behavioral_commands = []
-    if focused_level == "static_only" and behavioral_commands:
+    strongest_behavioral_level = max(
+        PROOF_LEVEL_RANK.get(focused_level, 0),
+        PROOF_LEVEL_RANK.get(full_level, 0),
+    )
+    if strongest_behavioral_level == PROOF_LEVEL_RANK["static_only"] and behavioral_commands:
         errors.append("static-only proof cannot declare behavioral commands")
-    if focused_level in PROOF_LEVEL_RANK and PROOF_LEVEL_RANK[focused_level] >= PROOF_LEVEL_RANK["contained_smoke"] and not behavioral_commands:
+    if strongest_behavioral_level >= PROOF_LEVEL_RANK["contained_smoke"] and not behavioral_commands:
         errors.append("behavioral proof level requires at least one behavioral command")
     substitutions = proof.get("prohibitedSubstitutions")
     if (
@@ -418,11 +422,18 @@ def validate_route(route: Any, repo: Path) -> list[str]:
             other_full_gate = any(marker in command for marker in FULL_GATE_MARKERS[1:])
             if unfiltered_swift or other_full_gate:
                 errors.append(f"Luna focused gate contains aggregate/final command: {command}")
-    if isinstance(focused_commands, list):
+    command_owner_list = (
+        focused_commands
+        if focused_level in PROOF_LEVEL_RANK
+        and PROOF_LEVEL_RANK[focused_level] >= PROOF_LEVEL_RANK["contained_smoke"]
+        else full_commands
+    )
+    if isinstance(command_owner_list, list):
         for command in behavioral_commands:
-            if command not in focused_commands:
+            if command not in command_owner_list:
                 errors.append(
-                    f"behavioral command is not an exact focusedCommands entry: {command}"
+                    "behavioral command is not an exact command of the gate "
+                    f"that owns behavioral proof: {command}"
                 )
 
     result = route["expectedResult"]

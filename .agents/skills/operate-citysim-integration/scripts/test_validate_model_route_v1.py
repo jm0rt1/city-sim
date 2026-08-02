@@ -217,7 +217,15 @@ class ModelRouteTests(unittest.TestCase):
                 "behavioralCommands": ["python3 actual_behavior.py"],
             }
         )
-        self.assert_invalid(route, "not an exact focusedCommands entry")
+        self.assert_invalid(route, "not an exact command of the gate")
+
+    def test_static_candidate_can_defer_real_smoke_to_full_gate(self) -> None:
+        route = self.route("FRONTIER_AUTHORITY", "authority")
+        command = "blender --background --python contained_smoke.py"
+        route["proofPolicy"]["fullProofLevel"] = "contained_smoke"
+        route["proofPolicy"]["behavioralCommands"] = [command]
+        route["validation"]["fullCommands"] = [command]
+        self.assert_valid(route)
 
     def test_luna_cannot_invent_novel_architecture(self) -> None:
         route = self.route()
@@ -268,6 +276,7 @@ class ModelRouteTests(unittest.TestCase):
                 "deliverableClaims": ["visual_quality", "real_app_interaction"],
                 "focusedProofLevel": "static_only",
                 "fullProofLevel": "real_app_journey",
+                "behavioralCommands": ["fresh-player real-app final journey"],
             }
         )
         route["assignment"].update({
@@ -276,6 +285,7 @@ class ModelRouteTests(unittest.TestCase):
         })
         route["validation"]["focusedGateOwner"]["threadId"] = "fixture-thread"
         route["validation"]["fullGateOwner"]["threadId"] = "qa-thread"
+        route["validation"]["fullCommands"] = ["fresh-player real-app final journey"]
         route["independentReviewer"] = {
             "required": True, "threadId": "qa-thread", "model": "gpt-5.6-sol", "effort": "high"
         }

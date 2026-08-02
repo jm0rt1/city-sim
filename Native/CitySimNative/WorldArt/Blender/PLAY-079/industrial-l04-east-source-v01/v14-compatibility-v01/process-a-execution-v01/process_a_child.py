@@ -164,11 +164,11 @@ def portal_frame_plan(bounds: dict) -> dict:
     trim = max(min(sx, sz) * 0.12, 0.01)
     reveal_depth = max(sy * 0.18, 0.01)
     return {"openAperture": True, "pieces": [
-        {"id": "jamb_left", "bounds": {"xMin": x0, "xMax": x0 + trim, "yMin": y0, "yMax": y1, "zMin": z0, "zMax": z1}},
-        {"id": "jamb_right", "bounds": {"xMin": x1 - trim, "xMax": x1, "yMin": y0, "yMax": y1, "zMin": z0, "zMax": z1}},
-        {"id": "header", "bounds": {"xMin": x0 + trim, "xMax": x1 - trim, "yMin": y0, "yMax": y1, "zMin": z1 - trim, "zMax": z1}},
-        {"id": "reveal", "bounds": {"xMin": x0 + trim, "xMax": x1 - trim, "yMin": y1 - reveal_depth, "yMax": y1, "zMin": z0 + trim, "zMax": z1 - trim}},
-        {"id": "inset", "bounds": {"xMin": x0 + trim * 1.5, "xMax": x1 - trim * 1.5, "yMin": y1 - reveal_depth * 1.2, "yMax": y1 - reveal_depth, "zMin": z0 + trim * 1.5, "zMax": z1 - trim * 1.5}},
+        {"id": "jamb_left", "materialRole": "dark-painted-steel", "bounds": {"xMin": x0, "xMax": x0 + trim, "yMin": y0, "yMax": y1, "zMin": z0, "zMax": z1}},
+        {"id": "jamb_right", "materialRole": "dark-painted-steel", "bounds": {"xMin": x1 - trim, "xMax": x1, "yMin": y0, "yMax": y1, "zMin": z0, "zMax": z1}},
+        {"id": "header", "materialRole": "formed-concrete", "bounds": {"xMin": x0 + trim, "xMax": x1 - trim, "yMin": y0, "yMax": y1, "zMin": z1 - trim, "zMax": z1}},
+        {"id": "reveal", "materialRole": "dark-painted-steel", "bounds": {"xMin": x0 + trim, "xMax": x1 - trim, "yMin": y1 - reveal_depth, "yMax": y1, "zMin": z0 + trim, "zMax": z1 - trim}},
+        {"id": "inset", "materialRole": "portal-void", "bounds": {"xMin": x0 + trim * 1.5, "xMax": x1 - trim * 1.5, "yMin": y1 - reveal_depth * 1.2, "yMax": y1 - reveal_depth, "zMin": z0 + trim * 1.5, "zMax": z1 - trim * 1.5}},
     ], "void": {"id": "void", "bounds": bounds}}
 
 
@@ -399,11 +399,13 @@ def _add_portal_assembly(bpy, plan: dict):
     primary = None
     for piece in plan["pieces"]:
         obj = _add_box_bounds(bpy, piece["bounds"], "east_v14_freight_portal_" + piece["id"])
+        obj["materialRole"] = piece.get("materialRole", "dark-painted-steel")
         primary = primary or obj
     # The aperture is recessed, with a visible dark back plane; no Empty proxy.
     inset = next(piece for piece in plan["pieces"] if piece["id"] == "inset")
     back = _add_box_bounds(bpy, inset["bounds"], "east_v14_freight_portal_back_plane")
     back["portalBackPlane"] = True
+    back["materialRole"] = "portal-void"
     return primary
 
 
@@ -618,7 +620,12 @@ def construct_blender_scene(bpy, semantic: dict, profile_bundle: dict, output_ro
             raise ValueError("unsupported_semantic_primitive:" + primitive)
         if primitive in {"portal_frame_compound", "intentional_portal_void"}:
             if not portal_done:
+                before_portal = set(bpy.data.objects)
                 _add_portal_assembly(bpy, semantic["portalAssembly"])
+                for candidate in [item for item in bpy.data.objects if item not in before_portal]:
+                    role = candidate.get("materialRole", "portal-void")
+                    if hasattr(candidate.data, "materials") and role in materials:
+                        candidate.data.materials.append(materials[role])
                 portal_done = True
             continue
         before = set(bpy.data.objects)
@@ -745,6 +752,8 @@ def main() -> int:
         raise RuntimeError("north_profile_required")
     if authority.get("closureContract", {}).get("path") != "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTION-EXECUTION-CLOSURE-V1.json":
         raise RuntimeError("closure_contract_binding")
+    if contract.get("authority", {}).get("returnRepairAuthority", {}).get("path") != "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTION-CLOSURE-RETURN-REPAIR-V1.json":
+        raise RuntimeError("return_repair_authority_binding")
     documents = authority.get("documents", {})
     if set(documents) != {"schedule", "grant", "integrationSession", "sourceProductionProfile"}:
         raise RuntimeError("execution_documents_missing")
@@ -763,4 +772,5 @@ if __name__ == "__main__":
     raise SystemExit(main())
 
 def validate_portal_assembly(plan: dict | None) -> bool:
-    return bool(plan and plan.get("reachableFromLowering") and plan.get("assemblyId") == "east_v14_freight_portal_assembly" and validate_portal_plan(plan) and set(plan.get("revealSurfaces", [])) == {"reveal", "inset"} and plan.get("backPlaneMaterial") == "portal-void")
+    roles = {piece.get("materialRole") for piece in (plan or {}).get("pieces", [])}
+    return bool(plan and plan.get("reachableFromLowering") and plan.get("assemblyId") == "east_v14_freight_portal_assembly" and validate_portal_plan(plan) and set(plan.get("revealSurfaces", [])) == {"reveal", "inset"} and plan.get("backPlaneMaterial") == "portal-void" and {"dark-painted-steel", "formed-concrete", "portal-void"}.issubset(roles))

@@ -23,7 +23,8 @@ LOWERING = REPO / "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04
 EVIDENCE = REPO / "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/process-a-execution-v01"
 HANDOFF = EVIDENCE / "HANDOFF.json"
 VALIDATION = EVIDENCE / "VALIDATION.json"
-PARENT = "e7e9dcc00c8acebffcd1061affab0193373b1174"
+RETURN_RECEIPT = REPO / "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/INDEPENDENT-RETURN-REPAIR-V1.json"
+PARENT = "4fdc60e8bdc6b5ae8ce1c34a8cd6f67e8cf898cc"
 EXPECTED_PATHS = {
     "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/process-a-execution-v01/PROCESS-A-CONTRACT.json",
     "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/process-a-execution-v01/run_process_a.py",
@@ -88,15 +89,17 @@ def static_checks() -> list[dict]:
     ]
 
 
-def _profile_fixture(root: Path, contract: dict) -> tuple[dict, dict, dict]:
+def _integration_north_fixture(root: Path, contract: dict) -> tuple[dict, Path, dict]:
     fixture = copy.deepcopy(contract)
-    relative_root = root.relative_to(REPO).as_posix()
-    appearance_rel = relative_root + "/appearance-lock.json"
-    profile_rel = relative_root + "/source-profile.json"
+    relative_root = "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14"
+    profile_path = root / relative_root / "SOURCE-PRODUCTION-PROFILE.json"
+    appearance_path = root / relative_root / "APPEARANCE-LOCK.json"
+    profile_rel = (Path(relative_root) / "SOURCE-PRODUCTION-PROFILE.json").as_posix()
+    appearance_rel = (Path(relative_root) / "APPEARANCE-LOCK.json").as_posix()
     profile = {
-        "schema": "citysim.play-079.east-v14-source-production-profile.v1",
-        "task": "PLAY-079",
-        "direction": "east",
+        "schema": "citysim.play-027.north-v14-source-production-profile.v1",
+        "task": "PLAY-027",
+        "direction": "north",
         "familyRevision": "v14",
         "appearanceLock": {"path": appearance_rel},
         "render": {"engine": "CYCLES", "device": "CPU", "threads": 1, "samples": 64, "seed": 17, "maxBounces": 4, "transparentFilm": True, "resolution": [1536, 1024], "resolutionPercentage": 100, "pixelAspect": [1.0, 1.0]},
@@ -104,24 +107,35 @@ def _profile_fixture(root: Path, contract: dict) -> tuple[dict, dict, dict]:
         "materials": {"roles": {role: {"baseColor": [0.2, 0.3, 0.4, 1.0], "metallic": 0.0, "roughness": 0.6, "specularIORLevel": 0.5} for role in ("warm-weathered-masonry", "formed-concrete", "dark-painted-steel", "roof-edge-metal", "glazing-louver", "portal-void", "safety-oxide", "hot-process", "contact-shadow")}},
         "lighting": {"world": {"color": [0.03, 0.04, 0.05, 1.0], "strength": 0.2}, "key": {"location": [96.0, -96.0, 120.0], "target": [0.0, 0.0, 20.0], "energy": 800.0, "size": 8.0}, "contactShadow": {"receiverBounds": {"xMin": -32.0, "xMax": 32.0, "yMin": -32.0, "yMax": 32.0, "zMin": -0.1, "zMax": 0.0}, "location": [-64.0, 64.0, 40.0], "target": [0.0, 0.0, 0.0], "energy": 40.0, "size": 4.0}},
     }
-    appearance = {"schema": "citysim.play-079.east-v14-appearance-lock.v1", "status": "PUBLISHED", "task": "PLAY-079", "direction": "east", "familyRevision": "v14", "sourceProductionProfile": {"path": profile_rel, "sha256": "PENDING"}}
-    root.mkdir(parents=True, exist_ok=True)
-    (root / "source-profile.json").write_bytes(canon(profile))
-    profile_sha = sha(root / "source-profile.json")
+    appearance = {"schema": "citysim.play-027.north-v14-appearance-lock.v1", "status": "PUBLISHED", "task": "PLAY-027", "direction": "north", "familyRevision": "v14", "sourceProductionProfile": {"path": profile_rel, "sha256": "PENDING"}}
+    profile_path.parent.mkdir(parents=True, exist_ok=True)
+    profile_path.write_bytes(canon(profile))
+    profile_sha = sha(profile_path)
     appearance["sourceProductionProfile"]["sha256"] = profile_sha
-    (root / "appearance-lock.json").write_bytes(canon(appearance))
-    appearance_sha = sha(root / "appearance-lock.json")
-    profile_sha = sha(root / "source-profile.json")
+    appearance_path.write_bytes(canon(appearance))
+    appearance_sha = sha(appearance_path)
+    profile_sha = sha(profile_path)
     if appearance["sourceProductionProfile"]["sha256"] != profile_sha: fail("fixture_hash_cycle")
-    fixture["appearanceLock"] = {"path": appearance_rel, "sha256": appearance_sha, "commit": PARENT}
-    fixture["sourceProductionProfile"] = {"path": profile_rel, "sha256": profile_sha, "commit": PARENT}
-    authority_rel = relative_root + "/execution-authority.json"
-    authority = {"schemaVersion": 1, "testProtocolRevision": 6, "mode": "validation_only", "task": {"taskId": "PLAY-079", "direction": "east", "branch": "codex/citysim-world-art-east", "claimSha256": fixture["authority"]["claim"]["sha256"], "publishedBaseCommit": fixture["authority"]["baseCommit"]}, "grant": {"grantId": "grant-east-a", "processId": "east-process-a", "direction": "east", "slotId": "east-process-a-slot-1", "maximumChildStarts": 1, "exactlyOneInvocation": True, "orchestratorOnly": True, "directLowLevelInvocationAllowed": False}, "exclusiveRoots": {"outputRoot": fixture["execution"]["outputRoot"]}, "authentication": {"secretTransport": "anonymous_pipe", "rawSecretPersisted": False, "childCapability": {"boundGrantId": "grant-east-a", "oneTime": True, "replayAllowed": False}}}
-    (root / "execution-authority.json").write_bytes(canon(authority))
-    fixture["executionAuthority"] = {"path": authority_rel, "sha256": sha(root / "execution-authority.json"), "commit": PARENT}
+    fixture["appearanceLock"] = {"path": appearance_rel, "sha256": appearance_sha, "commit": "b961d7a6f9f9ad75f69b9156ce657dd4937e5537"}
+    fixture["sourceProductionProfile"] = {"path": profile_rel, "sha256": profile_sha, "commit": "b961d7a6f9f9ad75f69b9156ce657dd4937e5537"}
+    integration_root = root / "docs/production/evidence/INTEGRATION"
+    integration_root.mkdir(parents=True, exist_ok=True)
+    closure_target = root / "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTION-EXECUTION-CLOSURE-V1.json"
+    closure_target.write_bytes((REPO / "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTION-EXECUTION-CLOSURE-V1.json").read_bytes())
+    def write_doc(name: str, value: dict) -> tuple[str, str]:
+        path = integration_root / name
+        path.write_bytes(canon(value))
+        return "docs/production/evidence/INTEGRATION/" + name, sha(path)
+    schedule_rel, schedule_sha = write_doc("east-schedule.json", {"schema": 1, "task": "PLAY-079", "direction": "east", "process": "A", "slot": "east:A", "claimSha256": fixture["authority"]["claim"]["sha256"], "branch": "codex/citysim-world-art-east", "workerHead": PARENT, "outputRoot": fixture["execution"]["outputRoot"], "maximumChildStarts": 1, "grantId": "east:A"})
+    grant_rel, grant_sha = write_doc("east-grant.json", {"schema": 1, "grantId": "east:A", "direction": "east", "process": "A", "maximumChildStarts": 1, "scheduleSHA256": schedule_sha, "outputRoot": fixture["execution"]["outputRoot"], "sessionId": "east-session-v1"})
+    session_rel, session_sha = write_doc("east-session.json", {"schema": 1, "sessionId": "east-session-v1", "scheduleSHA256": schedule_sha, "grantSHA256": grant_sha, "task": "PLAY-079", "direction": "east", "process": "A", "slot": "east:A", "claimSha256": fixture["authority"]["claim"]["sha256"], "branch": "codex/citysim-world-art-east", "workerHead": PARENT, "outputRoot": fixture["execution"]["outputRoot"]})
+    authority = {"schemaVersion": 1, "mode": "validation_only", "integrationCheckoutRoot": "/Users/James/Library/Mobile Documents/com~apple~CloudDocs/James's Files/Programming/Python/city-sim", "closureContract": {"path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTION-EXECUTION-CLOSURE-V1.json", "sha256": "4a5fdf98ad77082cdd4265ae6f78406f9e26c8dd92443caa8c7e64e6726f91a4"}, "task": {"taskId": "PLAY-079", "direction": "east", "branch": "codex/citysim-world-art-east", "claimSha256": fixture["authority"]["claim"]["sha256"], "workerHead": PARENT, "publishedBaseCommit": fixture["authority"]["baseCommit"]}, "documents": {"schedule": {"path": schedule_rel, "sha256": schedule_sha, "commit": PARENT}, "grant": {"path": grant_rel, "sha256": grant_sha, "commit": PARENT}, "integrationSession": {"path": session_rel, "sha256": session_sha, "commit": PARENT}, "sourceProductionProfile": {"path": profile_rel, "sha256": profile_sha, "commit": "b961d7a6f9f9ad75f69b9156ce657dd4937e5537"}}, "grant": {"grantId": "east:A", "processId": "east-process-a", "direction": "east", "slotId": "east-process-a-slot-1", "maximumChildStarts": 1, "exactlyOneInvocation": True, "orchestratorOnly": True, "directLowLevelInvocationAllowed": False}, "exclusiveRoots": {"outputRoot": fixture["execution"]["outputRoot"]}, "authentication": {"secretTransport": "anonymous_pipe", "rawSecretPersisted": False, "childCapability": {"boundGrantId": "east:A", "oneTime": True, "replayAllowed": False}}, "toolchain": {"path": fixture["execution"]["blenderExecutable"], "sha256": "0" * 64, "factoryStartup": True, "disabledAutoexec": True, "pythonExitCode": 1}}
+    authority_path = root / "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/execution-authority.json"
+    authority_path.parent.mkdir(parents=True, exist_ok=True); authority_path.write_bytes(canon(authority))
+    fixture["executionAuthority"] = {"path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/execution-authority.json", "sha256": sha(authority_path), "commit": PARENT}
     fixture["executionReady"] = True
     fixture["execution"]["launchGrant"] = {"scheduleId": fixture["execution"]["scheduleId"], "processId": "east-process-a", "direction": "east", "dccSlot": 1, "slotId": "east-process-a-slot-1", "childLimit": 1, "baseCommit": fixture["authority"]["baseCommit"], "observedHead": PARENT, "outputRoot": fixture["execution"]["outputRoot"], "attempt": 1, "authenticated": True}
-    return fixture, appearance, profile
+    return fixture, root, authority
 
 
 def validate_inputs(contract: dict, launcher) -> list[dict]:
@@ -133,6 +147,15 @@ def validate_inputs(contract: dict, launcher) -> list[dict]:
     else:
         fail("missing_profile_accepted")
     cases = [{"case": "missing_appearance_lock", "result": "REJECTED"}]
+    positive_root = Path(tempfile.mkdtemp(prefix=".east-integration-north-fixture-", dir=ROOT))
+    try:
+        positive_contract, positive_repo, positive_authority = _integration_north_fixture(positive_root, contract)
+        launcher.load_profile_bundle(positive_contract, positive_repo)
+        launcher.load_execution_authority(positive_contract, positive_repo)
+        launcher.validate_grant(positive_contract, positive_contract["execution"]["launchGrant"])
+        cases.append({"case": "integration_authored_north_profile_closure", "result": "PASS", "documents": sorted(positive_authority["documents"])})
+    finally:
+        shutil.rmtree(positive_root, ignore_errors=True)
     for name, mutate, expected in (
         ("execution_authority_missing", lambda c: c.update({"executionAuthority": None}), "execution_authority_missing"),
         ("north_profile_required", lambda c: c.update({"sourceProductionProfile": {"path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/fake.json", "sha256": "0" * 64, "commit": PARENT}}), "appearance_lock_missing"),
@@ -220,7 +243,7 @@ def semantic_checks(child, design: dict, lowering: dict) -> list[dict]:
     mullion = child.mullion_louver_plan(next(item["bounds"] for item in semantic["components"] if item["primitive"] == "mullion_band_compound"))
     bad_mullion = copy.deepcopy(mullion); bad_mullion["louverSlats"] = []
     if child.validate_mullion_plan(bad_mullion): fail("mullion_adversary_accepted")
-    return [{"case": "complete_semantic_geometry", "result": "PASS"}, {"case": "complete_object_manifest", "result": "PASS"}, {"case": "material_closure", "result": "PASS"}, {"case": "camera_registration", "result": "PASS"}, {"case": "portal_compound_and_void", "result": "PASS"}, {"case": "no_semantic_proxy_downgrade", "result": "PASS"}, {"case": "quarter_elbow_endcaps", "result": "PASS"}, {"case": "computed_loading_bars", "result": "PASS"}, {"case": "mullion_louver_slats", "result": "PASS"}]
+    return [{"case": "complete_semantic_geometry", "result": "PASS"}, {"case": "complete_object_manifest", "result": "PASS"}, {"case": "material_closure", "result": "PASS"}, {"case": "camera_registration", "result": "PASS"}, {"case": "portal_compound_and_void", "result": "PASS"}, {"case": "portal_assembly_material_roles", "result": "PASS"}, {"case": "no_semantic_proxy_downgrade", "result": "PASS"}, {"case": "quarter_elbow_endcaps", "result": "PASS"}, {"case": "computed_loading_bars", "result": "PASS"}, {"case": "mullion_louver_slats", "result": "PASS"}, {"case": "truss_reachability", "result": "PASS"}]
 
 
 def build_evidence(contract: dict, cases: list[dict], static: list[dict], semantic: list[dict]) -> dict:
@@ -243,9 +266,9 @@ def main() -> int:
     evidence = dict(first)
     evidence["repeatValidation"] = {"runs": 2, "byteIdentical": True, "proofSHA256": hashlib.sha256(canon(first)).hexdigest()}
     handoff = {"schema": "citysim.play-079.east-process-a-prelaunch-repair-handoff.v4", "stage": "prelaunch-repair", "task": "PLAY-079", "direction": "east", "familyRevision": "v14", "branch": "codex/citysim-world-art-east", "baseCommit": PARENT, "contractPath": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/process-a-execution-v01/PROCESS-A-CONTRACT.json", "contractSha256": sha(CONTRACT), "childPath": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/process-a-execution-v01/process_a_child.py", "launcherPath": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/process-a-execution-v01/run_process_a.py", "loweringPath": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/LOWERING.json", "outputRoot": contract["execution"]["outputRoot"], "outputRootCreated": False, "childStarts": 0, "blenderInvocations": 0, "dccInvocations": 0, "renderInvocations": 0, "pixelFilesCreated": 0, "blendFilesCreated": 0, "appearanceLock": None, "sourceProductionProfile": None, "executionAuthority": None, "closureContract": {"path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTION-EXECUTION-CLOSURE-V1.json", "sha256": "4a5fdf98ad77082cdd4265ae6f78406f9e26c8dd92443caa8c7e64e6726f91a4"}, "executionReady": False, "sourceReady": False, "productionSelected": False, "disposition": "prelaunch_repair_ready_for_independent_review", "knownBlocker": "Integration must publish the exact North appearance lock and source-production profile, schedule/grant/session documents, execution authority and authenticated Process-A grant before launch", "siblingInputsConsumed": [], "validationPath": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/process-a-execution-v01/VALIDATION.json"}
-    EVIDENCE.mkdir(parents=True, exist_ok=True)
-    VALIDATION.write_bytes(canon(evidence))
-    HANDOFF.write_bytes(canon(handoff))
+    RETURN_RECEIPT.parent.mkdir(parents=True, exist_ok=True)
+    receipt = {"schema": "citysim.play-079.east-v14-independent-return-repair.v1", "task": "PLAY-079", "direction": "east", "routeId": "quality-v2:play-079-east-v14-independent-return-repair-v1", "carrierCommit": "a11cbf361bd8ac303bcc80b343b62caa294696c3", "authority": {"path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTION-CLOSURE-RETURN-REPAIR-V1.json", "sha256": "078fafb0028dbea461ba91c3f256fd4b8b8d2c1a96b527c593202fee0b26cd03"}, "observedHead": PARENT, "implementationHead": "b24ccaabc594e8765e8163e5d8636c347a544fd1", "result": "PASS", "validation": evidence, "handoff": handoff, "historicalEvidencePreserved": True, "zeroPixelBoundary": {"childStarts": 0, "blenderInvocations": 0, "dccInvocations": 0, "renderInvocations": 0, "outputRootCreated": False, "pixelFilesCreated": 0, "blendFilesCreated": 0}, "knownBlocker": "Integration-owned appearance/profile authority and contained smoke remain required", "siblingInputsConsumed": []}
+    RETURN_RECEIPT.write_bytes(canon(receipt))
     print(f"PASS: East Process-A prelaunch repair; {len(cases)} adversarial rejects; 2 byte-identical zero-child proofs; no Blender/DCC/pixels")
     return 0
 

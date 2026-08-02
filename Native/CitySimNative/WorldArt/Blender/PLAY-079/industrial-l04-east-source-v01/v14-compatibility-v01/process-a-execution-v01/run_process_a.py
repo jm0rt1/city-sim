@@ -18,6 +18,8 @@ CONTRACT = ROOT / "PROCESS-A-CONTRACT.json"
 PROCESS_ROOT = "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/process-a-execution-v01"
 CLOSURE_CONTRACT = "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTION-EXECUTION-CLOSURE-V1.json"
 CLOSURE_SHA256 = "4a5fdf98ad77082cdd4265ae6f78406f9e26c8dd92443caa8c7e64e6726f91a4"
+RETURN_REPAIR_AUTHORITY = "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-DIRECTION-CLOSURE-RETURN-REPAIR-V1.json"
+RETURN_REPAIR_SHA256 = "078fafb0028dbea461ba91c3f256fd4b8b8d2c1a96b527c593202fee0b26cd03"
 NORTH_REFERENCE_COMMIT = "b961d7a6f9f9ad75f69b9156ce657dd4937e5537"
 INTEGRATION_CHECKOUT_ROOT = "/Users/James/Library/Mobile Documents/com~apple~CloudDocs/James's Files/Programming/Python/city-sim"
 
@@ -164,8 +166,8 @@ def load_profile_bundle(contract: dict, repo: Path = REPO) -> dict:
     profile_ref = contract.get("sourceProductionProfile")
     if appearance_ref is None: raise ValueError("appearance_lock_missing")
     if profile_ref is None: raise ValueError("source_profile_missing")
-    appearance = _read_binding(appearance_ref, "appearance_lock", repo)
-    profile = _read_binding(profile_ref, "source_profile", repo)
+    appearance = _read_binding(appearance_ref, "appearance_lock", repo, allow_north=True)
+    profile = _read_binding(profile_ref, "source_profile", repo, allow_north=True)
     _validate_profile_shape(profile, appearance_ref, profile_ref)
     if appearance.get("schema") != "citysim.play-027.north-v14-appearance-lock.v1" or appearance.get("status") != "PUBLISHED": raise ValueError("appearance_lock_state")
     if appearance.get("task") != "PLAY-027" or appearance.get("direction") != "north" or appearance.get("familyRevision") != "v14": raise ValueError("appearance_lock_identity")
@@ -186,6 +188,9 @@ def load_execution_authority(contract: dict, repo: Path = REPO) -> dict:
     closure = authority.get("closureContract")
     if not isinstance(closure, dict) or closure.get("path") != CLOSURE_CONTRACT or closure.get("sha256") != CLOSURE_SHA256:
         raise ValueError("closure_contract_binding")
+    return_repair = contract.get("authority", {}).get("returnRepairAuthority")
+    if not isinstance(return_repair, dict) or return_repair.get("path") != RETURN_REPAIR_AUTHORITY or return_repair.get("sha256") != RETURN_REPAIR_SHA256:
+        raise ValueError("return_repair_authority_binding")
     task = authority.get("task", {})
     if task.get("taskId") != "PLAY-079" or task.get("direction") != "east":
         raise ValueError("execution_authority_identity")

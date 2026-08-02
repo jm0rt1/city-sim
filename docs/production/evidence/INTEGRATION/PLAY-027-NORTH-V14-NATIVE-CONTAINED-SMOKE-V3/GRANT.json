@@ -1,0 +1,10 @@
+{
+  "schema": 1,
+  "grantId": "north:A",
+  "direction": "north",
+  "process": "A",
+  "maximumChildStarts": 1,
+  "scheduleSHA256": "02cdcc1ab681813bb179a09871510b35f6d52cd625ff2e40a72d6e1e7c8da958",
+  "outputRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/process-a-execution-v01/process-a-output",
+  "sessionId": "play027-north-v14-native-smoke-v3-20260802"
+}

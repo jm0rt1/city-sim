@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "replayCount": 2,
+  "freshRoots": ["<exclusive-temp-root>", "<exclusive-temp-root>"],
+  "byteIdenticalNormalizedPackets": true,
+  "byteIdenticalInputBindings": true,
+  "childStarts": 0,
+  "dccProcessCount": 0,
+  "renderCalls": 0,
+  "pixelWrites": 0,
+  "blendFiles": 0,
+  "outputRootsCreated": 0,
+  "sourceAuthority": false,
+  "productionSelected": false
+}

@@ -4,7 +4,8 @@
   "contract": "EXECUTION-CONTRACT.json",
   "childStartSiteCount": 1,
   "highLevelCLI": ["--repository-root", "--schedule", "--grant", "--integration-session"],
-  "childCommand": ["/Applications/Blender.app/Contents/MacOS/Blender", "--background", "--factory-startup", "--disable-autoexec", "--python-exit-code", "1", "--python", "render_north_process_a_child.py", "--", "--repository-root", "<exact-worktree>", "--contract", "<exact-contract>", "--direction", "north", "--schedule", "<integration-schedule>", "--grant", "<integration-grant>", "--integration-session", "<integration-session>", "--output-root", "<exact-exclusive-output-root>"],
+  "childCommand": ["/Applications/Blender-4.5.12-arm64.app/Contents/MacOS/Blender", "--background", "--factory-startup", "--disable-autoexec", "--python-exit-code", "1", "--python", "render_north_process_a_child.py", "--", "--repository-root", "<exact-worktree>", "--contract", "<exact-contract>", "--direction", "north", "--schedule", "<integration-schedule>", "--grant", "<integration-grant>", "--integration-session", "<integration-session>", "--output-root", "<exact-exclusive-output-root>"],
+  "blenderBinding": {"path": "/Applications/Blender-4.5.12-arm64.app/Contents/MacOS/Blender", "sha256": "0fa2ab6500e41bfd8114485b218a1e4aebf15b3d8cea90dc8398535291061506", "architecture": "arm64", "version": "4.5.12 LTS", "buildHash": "84afd5f785f7", "officialImageSHA256": "f4afdca92c56a9e231e45226445e6750879a70a0d2322cee80d82ce021a99fb0"},
   "childEnvironment": ["CITYSIM_PROCESS_A_LIVE", "CITYSIM_PROCESS_A_SCHEDULE_SHA256", "CITYSIM_PROCESS_A_GRANT_SHA256", "CITYSIM_PROCESS_A_SESSION_SHA256", "CITYSIM_PROCESS_A_OUTPUT_INODE"],
   "childInput": "frozen v14 scene/material/lighting/lowering bytes plus Integration-issued schedule/grant/session",
   "semanticConstruction": {

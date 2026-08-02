@@ -2,10 +2,13 @@
 
 - **Title:** Replace the board with an authored district
 - **Lane:** World rendering
-- **Branch:** active clean successor `codex/citysim-world-rendering`; returned
-  lineage remains preserved on
-  `codex/citysim-world-rendering-legacy-d906d2dc`
-- **Worktree:** `/Users/James/.codex/worktrees/cac1/city-sim`
+- **Branches:** frontier/coordinator `codex/citysim-world-rendering`; disjoint
+  R4-F implementation cells `codex/citysim-world-rendering-fabric` and
+  `codex/citysim-world-rendering-cohesion`; returned lineage remains preserved
+  on `codex/citysim-world-rendering-legacy-d906d2dc`
+- **Worktrees:** coordinator `/Users/James/.codex/worktrees/cac1/city-sim`;
+  R4-F1 fabric `/Users/James/.codex/worktrees/6a93/city-sim`; R4-F2 cohesion
+  `/Users/James/.codex/worktrees/5cc1/city-sim`
 - **Base authority:** Published Wave 008 product candidate
   `87e1e682566b68d20deb1a9e2028e2b885e0423a`; iteration-two branch authority
   is the clean rejected-evidence checkpoint
@@ -65,6 +68,12 @@
   current-tree repair frozen by
   `PLAY-073-R4-B-CURRENT-MASTER-RECONSTRUCTION-AUTHORITY.md` and its exact
   `PLAY-073-R4-B-CURRENT-MASTER-IMPLEMENTATION-ADDENDUM.md` geometry rules.
+  The player-visible combined renderer at `7e564c2c` is now explicitly
+  rejected. The current-master R4-F successor is split under
+  `PLAY-073-R4-F-CURRENT-MASTER-SUCCESSOR-AUTHORITY.md`: R4-F1 exclusively
+  owns terrain/road district fabric, while R4-F2 exclusively owns lot/place
+  cohesion. The two cells may execute concurrently; Integration alone joins
+  them and PLAY-075 alone performs the final real-app disposition.
 
 Recompose the visible world as one authored district. The developed city must
 dominate the intended camera while retaining useful buildable context. Roads,

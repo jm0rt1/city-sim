@@ -230,6 +230,9 @@ retaining one durable receipt per event key. Setup failures before mutation and
 ready handoffs waiting without an owner are explicit exception triggers.
 Integration owns the append-only event ledger and dispositions actionable
 reviews before advancing the related lifecycle.
+Optimizer routes do not recursively review themselves; Integration bootstraps
+them through full schema-2 validation, exact Git/claim/HEAD/path binding, one
+independent static review, and proof of zero worker mutation.
 
 Default surfaces are its own skill, `docs/production/evidence/PLAY-089/`, and
 task-owned optimizer tests. `AGENTS.md`, this operating system, shared skills,

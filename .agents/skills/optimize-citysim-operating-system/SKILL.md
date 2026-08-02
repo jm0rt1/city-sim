@@ -101,6 +101,11 @@ for each trigger. Missing coverage is a return, not an implicit `NO_CHANGE`.
 The observer never edits the shared ledger; Integration records accepted
 receipts and dispositions when it integrates the optimizer packet.
 
+Never review this lane's own observer dispatch. Integration bootstraps an
+optimizer route with full schema-2 validation, exact Git/claim/HEAD/path
+binding, one independent static route review, and zero worker mutation. This
+non-recursive bootstrap is the only delegation-ready exception.
+
 For an idle-lane or no-progress trigger, first distinguish a protected active
 operation (exact-candidate QA, DCC render, frozen proof, coherent commit, or
 long-running focused gate) from avoidable inactivity. If useful disjoint work is

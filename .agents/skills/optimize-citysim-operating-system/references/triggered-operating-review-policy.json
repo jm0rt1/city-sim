@@ -54,6 +54,17 @@
       "integration_closed"
     ]
   },
+  "observerRouteBootstrap": {
+    "selfReviewAllowed": false,
+    "owner": "FRONTIER_AUTHORITY",
+    "requiredChecks": [
+      "full_schema2_route_validation",
+      "exact_git_claim_head_and_path_binding",
+      "independent_static_route_review",
+      "zero_worker_mutation_before_dispatch"
+    ],
+    "emitsRecursiveDelegationEvent": false
+  },
   "parallelism": {
     "minimumUsefulActiveWorkstreams": 3,
     "sameTurnRefillRequired": true,

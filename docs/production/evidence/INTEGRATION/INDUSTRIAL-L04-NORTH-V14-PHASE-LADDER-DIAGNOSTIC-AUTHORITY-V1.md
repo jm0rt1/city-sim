@@ -1,7 +1,8 @@
 # Industrial L4 North v14 Phase-Ladder Diagnostic Authority v1
 
-**Owner:** Integration frontier authority  
-**Task:** PLAY-027  
+**Owner:** Integration frontier authority
+
+**Task:** PLAY-027
 **Purpose:** localize the repeated North v14 native Blender SIGSEGV without
 another blind production render or any mutation of frozen scene/output bytes.
 

@@ -7,6 +7,7 @@ import argparse
 import hashlib
 import json
 import math
+import shlex
 import subprocess
 import sys
 from pathlib import Path, PurePosixPath
@@ -17,8 +18,10 @@ ROUTE_FIELDS = {
     "schema", "routeId", "taskId", "packetKind", "classification", "model",
     "effort", "rationale", "authority", "assignment", "pathPolicy",
     "boundedDeliverable", "validation", "expectedResult", "escalationTriggers",
-    "stopCondition", "independentReviewer", "context",
+    "stopCondition", "independentReviewer", "context", "proofPolicy",
 }
+ROUTE_SCHEMA = 2
+DISPATCH_SCHEMA = 2
 ROUTES = {
     "FRONTIER_AUTHORITY": ("gpt-5.6-sol", "high"),
     "LUNA_IMPLEMENTATION": ("gpt-5.6-luna", "high"),
@@ -64,6 +67,31 @@ STATE_RANK = {
     "intake_ready": 1, "assembly_candidate": 2,
     "preregistering": 0, "preregistered": 1, "candidate_ready": 2,
     "approved": 3,
+}
+PROOF_LEVEL_RANK = {
+    "static_only": 0,
+    "contained_smoke": 1,
+    "deterministic_replay": 2,
+    "real_app_journey": 3,
+}
+DELIVERABLE_CLAIMS = {
+    "static_structure",
+    "executable_behavior",
+    "deterministic_output",
+    "visual_quality",
+    "real_app_interaction",
+}
+FOCUSED_CLAIM_MINIMUM = {
+    "static_structure": "static_only",
+    "executable_behavior": "contained_smoke",
+    "deterministic_output": "deterministic_replay",
+}
+PROHIBITED_EVIDENCE_SUBSTITUTIONS = {
+    "source_token_presence_for_execution",
+    "ast_shape_for_runtime_success",
+    "manifest_or_prose_for_rendered_pixels",
+    "unit_tests_for_visual_acceptance",
+    "worker_self_report_for_independent_acceptance",
 }
 
 
@@ -161,8 +189,8 @@ def validate_route(route: Any, repo: Path) -> list[str]:
     if errors:
         return errors
 
-    if route["schema"] != 1:
-        errors.append("schema must equal 1")
+    if route["schema"] != ROUTE_SCHEMA:
+        errors.append(f"schema must equal {ROUTE_SCHEMA}")
     if not isinstance(route["routeId"], str) or not route["routeId"]:
         errors.append("routeId must be non-empty")
     if not isinstance(route["taskId"], str) or not route["taskId"].startswith("PLAY-"):
@@ -186,6 +214,91 @@ def validate_route(route: Any, repo: Path) -> list[str]:
     triggers = route["escalationTriggers"]
     if not isinstance(triggers, list) or len(triggers) != len(set(triggers)) or set(triggers) != TRIGGERS:
         errors.append("escalationTriggers must contain the exact mandatory set")
+
+    proof = route["proofPolicy"]
+    proof_fields = {
+        "architectureState", "referenceImplementation", "deliverableClaims",
+        "focusedProofLevel", "fullProofLevel", "behavioralCommands",
+        "prohibitedSubstitutions",
+    }
+    if not isinstance(proof, dict) or set(proof) != proof_fields:
+        errors.append("proofPolicy has unsupported or missing fields")
+        proof = {}
+    architecture_state = proof.get("architectureState")
+    if architecture_state not in ("frozen_reference", "novel_or_ambiguous"):
+        errors.append("proofPolicy.architectureState is unsupported")
+    reference = proof.get("referenceImplementation")
+    if architecture_state == "frozen_reference":
+        if reference is None:
+            errors.append("frozen_reference requires an exact referenceImplementation binding")
+        else:
+            _check_binding(repo, reference, "proofPolicy.referenceImplementation", errors)
+    elif architecture_state == "novel_or_ambiguous":
+        if reference is not None:
+            errors.append("novel_or_ambiguous must not pretend to have a frozen reference")
+        if isinstance(classification, str) and classification.startswith("LUNA_"):
+            errors.append("Luna cannot own novel or ambiguous architecture")
+    claims = proof.get("deliverableClaims")
+    if (
+        not isinstance(claims, list)
+        or not claims
+        or len(claims) != len(set(claims))
+        or not set(claims).issubset(DELIVERABLE_CLAIMS)
+    ):
+        errors.append("proofPolicy.deliverableClaims contains unsupported or duplicate claims")
+        claims = []
+    focused_level = proof.get("focusedProofLevel")
+    full_level = proof.get("fullProofLevel")
+    if focused_level not in PROOF_LEVEL_RANK:
+        errors.append("proofPolicy.focusedProofLevel is unsupported")
+    if full_level not in PROOF_LEVEL_RANK:
+        errors.append("proofPolicy.fullProofLevel is unsupported")
+    if focused_level in PROOF_LEVEL_RANK and full_level in PROOF_LEVEL_RANK:
+        if PROOF_LEVEL_RANK[full_level] < PROOF_LEVEL_RANK[focused_level]:
+            errors.append("full proof level cannot be weaker than focused proof level")
+        for claim in claims:
+            minimum = FOCUSED_CLAIM_MINIMUM.get(claim)
+            if minimum and PROOF_LEVEL_RANK[focused_level] < PROOF_LEVEL_RANK[minimum]:
+                errors.append(
+                    f"claim {claim} requires focused proof level {minimum} or stronger"
+                )
+        if any(claim in ("visual_quality", "real_app_interaction") for claim in claims):
+            if full_level != "real_app_journey":
+                errors.append("visual or interaction claims require a frontier real_app_journey full proof")
+    behavioral_commands = proof.get("behavioralCommands")
+    if not isinstance(behavioral_commands, list) or not all(
+        isinstance(command, str) and command for command in behavioral_commands
+    ):
+        errors.append("proofPolicy.behavioralCommands must be a string list")
+        behavioral_commands = []
+    strongest_behavioral_level = max(
+        PROOF_LEVEL_RANK.get(focused_level, 0),
+        PROOF_LEVEL_RANK.get(full_level, 0),
+    )
+    if strongest_behavioral_level == PROOF_LEVEL_RANK["static_only"] and behavioral_commands:
+        errors.append("static-only proof cannot declare behavioral commands")
+    if strongest_behavioral_level >= PROOF_LEVEL_RANK["contained_smoke"] and not behavioral_commands:
+        errors.append("behavioral proof level requires at least one behavioral command")
+    for command in behavioral_commands:
+        try:
+            parsed_command = shlex.split(command, posix=True)
+        except ValueError as exc:
+            errors.append(f"behavioral command is not shell-parseable: {exc}")
+            continue
+        if not parsed_command:
+            errors.append("behavioral command must parse to a non-empty argv")
+    substitutions = proof.get("prohibitedSubstitutions")
+    if (
+        not isinstance(substitutions, list)
+        or len(substitutions) != len(set(substitutions))
+        or set(substitutions) != PROHIBITED_EVIDENCE_SUBSTITUTIONS
+    ):
+        errors.append("proofPolicy.prohibitedSubstitutions must contain the exact mandatory set")
+    if classification == "LUNA_MECHANICAL" and any(
+        claim in {"executable_behavior", "visual_quality", "real_app_interaction"}
+        for claim in claims
+    ):
+        errors.append("LUNA_MECHANICAL cannot claim executable, visual, or interaction behavior")
 
     authority = route["authority"]
     if not isinstance(authority, dict) or set(authority) != {"authorityCommit", "baseCommit", "claim", "immutableInputs"}:
@@ -318,6 +431,19 @@ def validate_route(route: Any, repo: Path) -> list[str]:
             other_full_gate = any(marker in command for marker in FULL_GATE_MARKERS[1:])
             if unfiltered_swift or other_full_gate:
                 errors.append(f"Luna focused gate contains aggregate/final command: {command}")
+    command_owner_list = (
+        focused_commands
+        if focused_level in PROOF_LEVEL_RANK
+        and PROOF_LEVEL_RANK[focused_level] >= PROOF_LEVEL_RANK["contained_smoke"]
+        else full_commands
+    )
+    if isinstance(command_owner_list, list):
+        for command in behavioral_commands:
+            if command not in command_owner_list:
+                errors.append(
+                    "behavioral command is not an exact command of the gate "
+                    f"that owns behavioral proof: {command}"
+                )
 
     result = route["expectedResult"]
     if not isinstance(result, dict) or set(result) != {"evidencePaths", "commitRequired", "commitMessagePattern"}:
@@ -353,6 +479,10 @@ def validate_route(route: Any, repo: Path) -> list[str]:
             errors.append("final QA assignment cannot use the feature-author task")
         if reviewer.get("threadId") != thread or reviewer.get("model") != "gpt-5.6-sol" or reviewer.get("effort") != "high":
             errors.append("acceptance reviewer must be the assigned gpt-5.6-sol high task")
+        if not any(claim in ("visual_quality", "real_app_interaction") for claim in claims):
+            errors.append("acceptance packet must claim visual quality or real-app interaction")
+        if full_level != "real_app_journey":
+            errors.append("acceptance packet requires real_app_journey full proof")
 
     context = route["context"]
     if not isinstance(context, dict) or set(context) != {"mode", "packet", "verifiedHashes"}:
@@ -391,8 +521,8 @@ def validate_dispatch(
     expected = {"schema", "authorityCommit", "assignments"}
     if not isinstance(dispatch, dict) or set(dispatch) != expected:
         return ["dispatch receipt must contain exactly schema, authorityCommit, assignments"]
-    if dispatch["schema"] != 1:
-        errors.append("dispatch schema must equal 1")
+    if dispatch["schema"] != DISPATCH_SCHEMA:
+        errors.append(f"dispatch schema must equal {DISPATCH_SCHEMA}")
     if not _is_hex(dispatch["authorityCommit"], 40):
         errors.append("dispatch authorityCommit must be a full lowercase Git SHA")
     if not isinstance(dispatch["assignments"], list) or not dispatch["assignments"]:

@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "record": "MODEL-ROUTING-BEHAVIORAL-PROOF-UPGRADE-V1",
+  "baselineCommit": "5b4dbc151bece77327e20a39ef0e2840c4429d09",
+  "trigger": "Repeated Luna DCC prelaunch candidates reported PASS from static source, AST, token-presence, and zero-child checks but failed independent executable-source review.",
+  "observedPilot": {
+    "firstRoundCompletedDirections": 4,
+    "firstRoundAcceptedDirections": 0,
+    "secondRoundCompletedDirectionsAtUpgrade": 3,
+    "secondRoundAcceptedDirectionsAtUpgrade": 0,
+    "secondRoundPendingDirectionsAtUpgrade": [
+      "east"
+    ],
+    "falseGreenExamples": [
+      "North launcher omitted the child-required session argument and live environment; the child later treated loaded JSON as the Blender scene.",
+      "North evidence claimed a shadow receiver absent from the implementation and retained a generic AABB fallback for many semantic kinds.",
+      "South launched the ordinary Python interpreter rather than Blender, did not enforce its authentication environment in the child, accepted an unconstrained render path, and renamed cuboids as specialized builders.",
+      "West attempted render/save before creating its output directory, emitted two-vertex faces as truss geometry, did not aim lights, and retained generic fallback boxes."
+    ]
+  },
+  "rootCause": {
+    "classification": "PROOF_BOUNDARY_AND_ROUTING_DEFECT",
+    "finding": "The route schema did not distinguish static structure from executable behavior, deterministic output, visual quality, or real-app interaction. Workers could therefore satisfy a behavioral-sounding deliverable with source-shape checks.",
+    "modelConclusion": "Luna remains suitable for frozen-reference implementation and mechanical evidence, but novel DCC execution architecture remains frontier-owned until one reference passes a real contained Blender smoke."
+  },
+  "implementedControls": [
+    "Route and dispatch schema 2 require a proofPolicy.",
+    "Proof levels are static_only, contained_smoke, deterministic_replay, and real_app_journey.",
+    "Executable claims require a focused contained behavioral smoke command.",
+    "Deterministic-output claims require a focused real replay.",
+    "Visual and interaction claims require a frontier real-app journey.",
+    "Luna cannot own novel_or_ambiguous architecture.",
+    "Frozen-reference Luna work requires an exact path/hash reference binding.",
+    "Source token presence, AST shape, prose/manifests, unit tests, and worker self-report are explicitly prohibited substitutes for stronger proof."
+  ],
+  "validation": {
+    "modelRouteAdversarialTests": {
+      "passed": 23,
+      "failed": 0
+    },
+    "existingParallelAndIndustrialControlTests": {
+      "passed": 173,
+      "failed": 0
+    },
+    "totalFocusedTests": {
+      "passed": 196,
+      "failed": 0
+    },
+    "gitDiffCheck": "PASS"
+  },
+  "measurementBoundary": {
+    "expectedEffect": "Reduce false-green returns and frontier re-review by preventing static proof from authorizing behavior claims.",
+    "measuredAfterEffect": null,
+    "pricingClaim": null,
+    "nextMeasurement": "Compare the first schema-2 North executable-reference route and subsequent Luna sibling routes against this return baseline."
+  },
+  "rollback": "Revert only the behavioral-proof upgrade commit; preserve every rejected worker candidate and this evidence record in Git history.",
+  "protectedUserDraftTouched": false
+}

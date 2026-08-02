@@ -1,0 +1,9 @@
+{
+  "schema": 1,
+  "sessionId": "north-v14-smoke-b8ebb801-bab9f13b",
+  "expectedWorkerHead": "bab9f13b87f934c6ccd653ab99e5add85618575d",
+  "scheduleSHA256": "8fb392f24f1995633464a3c15a9c07d062db72888b0f5f504a2586c11f4173ff",
+  "grantSHA256": "1208318695d3c931bac476621d146d064d6016e797d1a56a646da620966f081c",
+  "outputRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/process-a-execution-v01/process-a-output",
+  "state": "integration-issued"
+}

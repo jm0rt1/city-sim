@@ -44,7 +44,7 @@ class ModelRouteTests(unittest.TestCase):
         model, effort = validator.ROUTES[classification]
         assignment_thread = "worker-thread"
         route = {
-            "schema": 1,
+            "schema": 2,
             "routeId": f"PLAY-999:{classification.lower()}:v1",
             "taskId": "PLAY-999",
             "packetKind": packet_kind,
@@ -74,6 +74,17 @@ class ModelRouteTests(unittest.TestCase):
                 "forbidden": ["claims"],
             },
             "boundedDeliverable": "Produce one deterministic evidence packet.",
+            "proofPolicy": {
+                "architectureState": "frozen_reference",
+                "referenceImplementation": copy.deepcopy(self.input),
+                "deliverableClaims": ["static_structure"],
+                "focusedProofLevel": "static_only",
+                "fullProofLevel": "static_only",
+                "behavioralCommands": [],
+                "prohibitedSubstitutions": sorted(
+                    validator.PROHIBITED_EVIDENCE_SUBSTITUTIONS
+                ),
+            },
             "validation": {
                 "focusedGateOwner": {"threadId": assignment_thread, "role": "lane_focused_gate"},
                 "focusedCommands": ["python3 focused_check.py"],
@@ -185,14 +196,110 @@ class ModelRouteTests(unittest.TestCase):
         route["validation"]["focusedCommands"] = ["swift test --package-path Native/CitySimNative --filter FocusedTests"]
         self.assert_valid(route)
 
+    def test_executable_claim_requires_real_focused_behavior(self) -> None:
+        route = self.route()
+        route["proofPolicy"]["deliverableClaims"] = ["executable_behavior"]
+        self.assert_invalid(route, "requires focused proof level contained_smoke")
+        command = "blender --background --python smoke.py"
+        route["proofPolicy"]["focusedProofLevel"] = "contained_smoke"
+        route["proofPolicy"]["fullProofLevel"] = "contained_smoke"
+        route["proofPolicy"]["behavioralCommands"] = [command]
+        route["validation"]["focusedCommands"].append(command)
+        self.assert_valid(route)
+
+    def test_behavioral_command_must_be_an_exact_focused_gate(self) -> None:
+        route = self.route()
+        route["proofPolicy"].update(
+            {
+                "deliverableClaims": ["executable_behavior"],
+                "focusedProofLevel": "contained_smoke",
+                "fullProofLevel": "contained_smoke",
+                "behavioralCommands": ["python3 actual_behavior.py"],
+            }
+        )
+        self.assert_invalid(route, "not an exact command of the gate")
+
+    def test_behavioral_command_must_be_shell_parseable(self) -> None:
+        route = self.route()
+        command = "python3 smoke.py --path '/tmp/James's Files/output'"
+        route["proofPolicy"].update(
+            {
+                "deliverableClaims": ["executable_behavior"],
+                "focusedProofLevel": "contained_smoke",
+                "fullProofLevel": "contained_smoke",
+                "behavioralCommands": [command],
+            }
+        )
+        route["validation"]["focusedCommands"].append(command)
+        self.assert_invalid(route, "not shell-parseable")
+
+    def test_static_candidate_can_defer_real_smoke_to_full_gate(self) -> None:
+        route = self.route("FRONTIER_AUTHORITY", "authority")
+        command = "blender --background --python contained_smoke.py"
+        route["proofPolicy"]["fullProofLevel"] = "contained_smoke"
+        route["proofPolicy"]["behavioralCommands"] = [command]
+        route["validation"]["fullCommands"] = [command]
+        self.assert_valid(route)
+
+    def test_luna_cannot_invent_novel_architecture(self) -> None:
+        route = self.route()
+        route["proofPolicy"]["architectureState"] = "novel_or_ambiguous"
+        route["proofPolicy"]["referenceImplementation"] = None
+        self.assert_invalid(route, "Luna cannot own novel or ambiguous architecture")
+        route = self.route("FRONTIER_AUTHORITY", "authority")
+        route["proofPolicy"]["architectureState"] = "novel_or_ambiguous"
+        route["proofPolicy"]["referenceImplementation"] = None
+        self.assert_valid(route)
+
+    def test_frozen_reference_requires_exact_bound_bytes(self) -> None:
+        route = self.route()
+        route["proofPolicy"]["referenceImplementation"] = None
+        self.assert_invalid(route, "requires an exact referenceImplementation")
+        route = self.route()
+        route["proofPolicy"]["referenceImplementation"]["sha256"] = "0" * 64
+        self.assert_invalid(route, "does not match repository bytes")
+
+    def test_static_or_ast_checks_cannot_substitute_for_behavior(self) -> None:
+        route = self.route()
+        route["proofPolicy"]["prohibitedSubstitutions"].remove(
+            "ast_shape_for_runtime_success"
+        )
+        self.assert_invalid(route, "exact mandatory set")
+        route = self.route()
+        route["proofPolicy"]["behavioralCommands"] = ["python3 token_scan.py"]
+        self.assert_invalid(route, "static-only proof cannot declare behavioral commands")
+
+    def test_mechanical_route_cannot_claim_executable_behavior(self) -> None:
+        route = self.route("LUNA_MECHANICAL", "mechanical")
+        command = "python3 execute_feature.py"
+        route["proofPolicy"].update(
+            {
+                "deliverableClaims": ["executable_behavior"],
+                "focusedProofLevel": "contained_smoke",
+                "fullProofLevel": "contained_smoke",
+                "behavioralCommands": [command],
+            }
+        )
+        route["validation"]["focusedCommands"].append(command)
+        self.assert_invalid(route, "LUNA_MECHANICAL cannot claim executable")
+
     def test_final_qa_cannot_use_feature_author_task(self) -> None:
         route = self.route("FRONTIER_AUTHORITY", "acceptance")
+        route["proofPolicy"].update(
+            {
+                "deliverableClaims": ["visual_quality", "real_app_interaction"],
+                "focusedProofLevel": "static_only",
+                "fullProofLevel": "real_app_journey",
+                "behavioralCommands": ["fresh-player real-app final journey"],
+            }
+        )
         route["assignment"].update({
             "threadId": "qa-thread", "featureAuthorThreadId": "qa-thread",
             "finalQAOwnership": True, "subjectiveJudgmentRequired": True,
         })
         route["validation"]["focusedGateOwner"]["threadId"] = "fixture-thread"
         route["validation"]["fullGateOwner"]["threadId"] = "qa-thread"
+        route["validation"]["fullCommands"] = ["fresh-player real-app final journey"]
         route["independentReviewer"] = {
             "required": True, "threadId": "qa-thread", "model": "gpt-5.6-sol", "effort": "high"
         }
@@ -208,7 +315,7 @@ class ModelRouteTests(unittest.TestCase):
     def test_dispatch_projects_exact_route(self) -> None:
         route = self.route()
         dispatch = {
-            "schema": 1,
+            "schema": 2,
             "authorityCommit": self.head,
             "assignments": [{"modelRouteSha256": validator.canonical_sha(route), "modelRoute": copy.deepcopy(route)}],
         }
@@ -239,7 +346,7 @@ class ModelRouteTests(unittest.TestCase):
         selected["routeId"] = "PLAY-999:selected:v1"
         selected["assignment"]["expectedHead"] = live_head
         dispatch = {
-            "schema": 1,
+            "schema": 2,
             "authorityCommit": self.head,
             "assignments": [
                 {

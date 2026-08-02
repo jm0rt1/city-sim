@@ -1,0 +1,65 @@
+{
+  "schema": 1,
+  "defaultRoute": {
+    "classification": "LUNA_MECHANICAL",
+    "model": "gpt-5.6-luna",
+    "effort": "medium"
+  },
+  "eventKeyFields": [
+    "authorityCommit",
+    "taskId",
+    "routeId",
+    "trigger",
+    "candidateOrResultCommit"
+  ],
+  "reviewBudget": {
+    "maxReviewsPerEventKey": 1,
+    "maxTurns": 1,
+    "contextMode": "compact_hash_bound",
+    "missingMetricValue": null,
+    "productBuildAllowed": false,
+    "fullGateAllowed": false,
+    "dccAllowed": false,
+    "realAppQAAllowed": false,
+    "sharedMutationAllowed": false
+  },
+  "parallelism": {
+    "minimumUsefulActiveWorkstreams": 3,
+    "sameTurnRefillRequired": true,
+    "serializedDependencyRequiredWhenNotRefilled": true,
+    "manufacturedBusyworkAllowed": false
+  },
+  "noProgress": {
+    "snapshotIntervalSeconds": 60,
+    "consecutiveSnapshots": 2,
+    "protectedActiveOperations": [
+      "coherent_commit_in_progress",
+      "dcc_process",
+      "exact_candidate_qa",
+      "frozen_final_proof",
+      "long_running_focused_gate"
+    ]
+  },
+  "allowedDecisions": [
+    "NO_CHANGE",
+    "PROPOSE",
+    "REFILL",
+    "RETURN",
+    "ESCALATE"
+  ],
+  "triggers": [
+    "authority_acknowledged",
+    "candidate_handoff",
+    "claim_or_baseline_mismatch",
+    "dispatch_published",
+    "duplicate_full_gate_requested",
+    "eligible_lane_became_idle",
+    "exact_candidate_qa_started",
+    "first_focused_gate_failure",
+    "first_return",
+    "integration_closed",
+    "model_route_mismatch",
+    "no_progress_two_snapshots",
+    "second_unsuccessful_repair"
+  ]
+}

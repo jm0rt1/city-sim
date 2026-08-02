@@ -48,6 +48,27 @@ identified by `routeId` and the SHA-256 of its canonical JSON, and validated by
 - independent reviewer identity; and
 - context-loading mode plus verified context hashes.
 
+New dispatches use route and dispatch schema `2`. Schema `1` receipts are
+historical evidence only and may not authorize a continuation, repair, or new
+mutation.
+
+Every schema-2 route also carries `proofPolicy` with:
+
+- `architectureState`: `frozen_reference` or `novel_or_ambiguous`;
+- an exact path/hash binding for the accepted reference implementation when
+  the architecture is frozen;
+- the precise deliverable claims: static structure, executable behavior,
+  deterministic output, visual quality, and/or real-app interaction;
+- focused and full proof levels from `static_only`, `contained_smoke`,
+  `deterministic_replay`, and `real_app_journey`;
+- every command that actually exercises claimed behavior; and
+- the mandatory evidence substitutions that are forbidden.
+
+Static source inspection, AST shape, token presence, manifests, prose, and a
+worker's self-report can prove structure or intent only. They cannot prove that
+an executable launches, a renderer emits valid pixels, repeated runs are
+deterministic, a visual is good, or an independent player journey passes.
+
 The visible-thread prompt must identify the committed dispatch-receipt path,
 route ID, canonical route SHA-256, and exact model/effort. The receipt embeds
 the complete route object beside that hash. A worker independently resolves
@@ -94,6 +115,13 @@ For every substantial `PLAY-*` task, Integration publishes three layers:
 Do not assign an ambiguous feature end-to-end when deterministic
 implementation, mechanical evidence, and subjective judgment can be separated.
 One writer owns each worktree, Git index, governed evidence packet, and commit.
+
+`LUNA_IMPLEMENTATION` and `LUNA_LOCAL_DEBUG` may claim executable behavior only
+when an accepted executable reference is bound and the focused gate runs a
+contained behavioral smoke command. Novel launchers, DCC pipelines, rendering
+architectures, persistence mechanisms, and other unproven execution paths are
+`FRONTIER_AUTHORITY` until one reference implementation passes its real runtime
+gate. After that freeze, disjoint Luna packets may reproduce the proven pattern.
 
 ## Lane routing boundaries
 
@@ -149,6 +177,21 @@ operational facts but may not omit, weaken, or reinterpret safety rules.
 
 ## Tiered validation
 
+Proof is a ladder, not a collection of interchangeable green checks:
+
+1. `static_only` proves file shape, schema, ownership, and source invariants;
+2. `contained_smoke` executes the claimed path in an isolated output root and
+   proves exit status plus decodable/nonempty outputs where applicable;
+3. `deterministic_replay` repeats the real path in fresh processes/roots and
+   compares the governed outputs byte-for-byte or by the frozen semantic rule;
+4. `real_app_journey` operates the exact staged candidate and supplies the
+   independent visual, interaction, accessibility, and playability judgment.
+
+Executable claims require at least `contained_smoke` in the worker's focused
+gate. Deterministic-output claims require `deterministic_replay`. Visual or
+interaction claims require a frontier-owned `real_app_journey` full gate.
+Presence checks may supplement these gates but never replace them.
+
 - Luna execution packets run only the focused owner and directly affected
   gates named by their route packet.
 - The lane coordinator joins coherent packets and verifies path, claim,
@@ -194,6 +237,8 @@ For each packet record:
 
 Report accepted outcomes per frontier turn, Luna return rate, duplicate
 full-suite minutes, dispatch-to-accepted-candidate time, and total token/cost
-trend without inventing pricing. The initial target is at least 60% of eligible
-worker execution turns on Luna. Increase the share only after accepted-output
-and return-rate evidence supports it.
+trend without inventing pricing. Separately record false-green returns where a
+worker reported PASS but the required behavior was not executed or failed
+independent review. The initial target is at least 60% of eligible worker
+execution turns on Luna. Increase the share only after accepted-output,
+false-green, and return-rate evidence supports it.

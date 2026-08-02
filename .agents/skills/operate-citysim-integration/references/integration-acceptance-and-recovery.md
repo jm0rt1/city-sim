@@ -8,6 +8,10 @@ Read this reference before candidate review, acceptance, integration, rollback, 
 2. Confirm its completion record contains scope, commits, validation, live evidence, proof, risks, and shared-contract notes.
 3. Review the full commit range and verify only claimed surfaces changed.
 4. Return oversized, mixed, weakly proven, or cross-lane work to its owner.
+   A static/AST/token-presence check may prove source structure only. If the
+   completion claim says launch, execute, render, save, reload, interact,
+   deterministic output, or visual quality, independently run the matching
+   schema-2 behavioral/full proof before acceptance.
 5. Preserve a recoverable pre-integration `master` commit.
 6. Integrate in dependency order: platform contracts, simulation/gameplay, rendering, UI/input, quality fixtures.
 7. Resolve only narrow mechanical conflicts; return semantic conflicts to owners.
@@ -23,7 +27,12 @@ Read this reference before candidate review, acceptance, integration, rollback, 
 
 ## Reject false completion
 
-Do not accept work because it compiles, has isolated tests, looks attractive once, closes checkboxes, or is committed. Require an understandable decision, visible consequence, recovery path, correct ownership, live operation, and retained evidence.
+Do not accept work because it compiles, has isolated tests, contains expected
+source tokens, looks attractive once, closes checkboxes, or is committed.
+Require an understandable decision, visible consequence, recovery path,
+correct ownership, live operation, and retained evidence. A worker PASS whose
+claimed behavior was not executed is a returned false-green, not partial
+acceptance.
 
 ## Recover safely
 

@@ -1,0 +1,614 @@
+{
+  "schema": 1,
+  "authorityCommit": "1d7c6510fd99299c88d3f4412caa982e020c1941",
+  "assignments": [
+    {
+      "modelRouteSha256": "b3922a5ac229063a61f9c3007e6f3a0809fc6ea9443c7ef2bbf81fe4941cc6de",
+      "modelRoute": {
+        "schema": 1,
+        "routeId": "quality-v1:play-027-industrial-l04-v14-north-process-a-prelaunch-v1",
+        "taskId": "PLAY-027",
+        "packetKind": "implementation",
+        "classification": "LUNA_IMPLEMENTATION",
+        "model": "gpt-5.6-luna",
+        "effort": "high",
+        "rationale": "The north v14 zero-pixel design and semantic lowering are independently accepted. This bounded slice implements the deterministic one-child Blender Process-A pipeline and proves it without launching Blender or creating pixels; visual acceptance remains frontier-owned.",
+        "authority": {
+          "authorityCommit": "1d7c6510fd99299c88d3f4412caa982e020c1941",
+          "baseCommit": "ea26fdac05169e0375b65d7c5dc65b4fbe00d977",
+          "claim": {
+            "path": "docs/production/claims/PLAY-027.world-art.md",
+            "sha256": "bf0b167a1d1e6f7007d609aeb657917fe9d3d0866d5a7a6e36b0e5a32faefa6f"
+          },
+          "immutableInputs": [
+            {
+              "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+              "sha256": "583c5d7be25a7ffdb95f354c6279fe7c309358f65445365203431c51f0e53247"
+            },
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "62e077c88730fda5664e5fa6d23200ade77418bd43f1c721c0bff84eaac1c971"
+            },
+            {
+              "path": "docs/production/decisions/CONTRACT-020-deterministic-dcc-world-art.md",
+              "sha256": "1495292c86044c07ba3751907b78d1e688e19a6d828aec255e11a1732c4e7bec"
+            },
+            {
+              "path": "docs/production/decisions/CONTRACT-021-parallel-directional-art-cells.md",
+              "sha256": "f80844c928d904498510b8b151381f40315e072d52d81695aafcd6b91081ae4c"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/DESIGN-SCENE.json",
+              "sha256": "85203e23d212b354cb9615092b098059568fb081c0efc550ee8aad85a21f9fe7"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/DESIGN-MATERIALS.json",
+              "sha256": "3f982ccc441590a51d97a3b9bab70828d6ff2d577e334dab61bfb0d5de0dc7eb"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/LIGHTING-CONTRACT.json",
+              "sha256": "22bc6d296e12bd37e47ee9caed8d9c894ef5621149b849a2a45f0ea431aba7b2"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/LOWERING-CONTRACT.json",
+              "sha256": "3a4dbba579c93833b0be885e294e2dbd6797d932a3055417755575ecc1e76875"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/lower_v14_scene.py",
+              "sha256": "3c3995e09a2c5a197f3156b3023c22d38aad67b77b13c4f38110879585a40c32"
+            }
+          ]
+        },
+        "assignment": {
+          "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+          "branch": "codex/citysim-world-art",
+          "worktree": "/Users/James/.codex/worktrees/0648/city-sim",
+          "expectedHead": "b1a8b34997d4f83a067800044767d7d30a93024c",
+          "featureAuthorThreadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027",
+            "docs/production/evidence/PLAY-027"
+          ],
+          "allowed": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/process-a-execution-v01",
+            "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v14/process-a-execution-v01"
+          ],
+          "forbidden": [
+            "docs/production/evidence/INTEGRATION",
+            "docs/production/claims",
+            "docs/production/decisions",
+            "Native/CitySimNative/Sources",
+            "Native/CitySimNative/Resources",
+            "Native/CitySimNative/Package.swift",
+            "script",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/v14-compatibility-v01",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01"
+          ]
+        },
+        "boundedDeliverable": "Create a new north-only process-a-execution-v01 source/evidence root. Implement an immutable Process-A contract, one high-level launcher with exactly one child-start site, one Blender child entrypoint that deterministically constructs 97 unique parameterized objects from 33 components from the frozen v14 design/lowering, applies the frozen direction camera/socket/pivot, northwest lighting, explicit color management, transparent film, Cycles CPU, one thread, fixed samples/seed/bounces, and writes only a future absent immutable Process-A output root. Add AST/static/adversarial tests for exact input hashes, complete builder coverage, material closure, object uniqueness, camera/registration, output-root reuse, schedule/slot/direction drift, second child, sibling paths, network/ImageGen/normalization/shipping access, and low-level bypass. Generate byte-identical two-root prelaunch evidence with all child/DCC/render/pixel counters zero. Do not execute the launcher or import Blender during tests.",
+        "validation": {
+          "focusedGateOwner": {
+            "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+            "role": "north_v14_process_a_prelaunch_gate"
+          },
+          "focusedCommands": [
+            "PYTHONDONTWRITEBYTECODE=1 python3 Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/process-a-execution-v01/test_process_a_prelaunch.py",
+            "PYTHONDONTWRITEBYTECODE=1 python3 Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/process-a-execution-v01/test_process_a_prelaunch.py",
+            "python3 -m json.tool docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v14/process-a-execution-v01/HANDOFF.json",
+            "python3 -m json.tool docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v14/process-a-execution-v01/VALIDATION.json",
+            "git diff --check b1a8b34997d4f83a067800044767d7d30a93024c..HEAD"
+          ],
+          "fullGateOwner": {
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "role": "independent_frontier_process_a_prelaunch_acceptance",
+            "model": "gpt-5.6-sol",
+            "effort": "high"
+          },
+          "fullCommands": [
+            "independent review of exact frozen-input bindings, real semantic Blender construction coverage, one-child isolation, registration, lighting/color configuration, output-root immutability, adversarial fail-closed behavior, and zero-child proof"
+          ]
+        },
+        "expectedResult": {
+          "evidencePaths": [
+            "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v14/process-a-execution-v01/HANDOFF.json",
+            "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v14/process-a-execution-v01/VALIDATION.json"
+          ],
+          "commitRequired": true,
+          "commitMessagePattern": "PLAY-027:"
+        },
+        "escalationTriggers": [
+          "shared_contract_or_schema_decision",
+          "unresolved_product_visual_or_interaction_judgment",
+          "path_outside_claim",
+          "baseline_or_candidate_identity_mismatch",
+          "failure_outside_focused_scope",
+          "save_or_migration_uncertainty",
+          "cross_lane_semantic_conflict",
+          "two_unsuccessful_repair_attempts",
+          "subjective_acceptance_required"
+        ],
+        "stopCondition": "Stop after one clean prelaunch implementation commit with two byte-identical zero-child proofs. Do not execute Blender/DCC, start a child, create source pixels or .blend files, normalize, select production, mutate siblings/shared/renderer/shipping paths, run aggregate gates, push, integrate, self-accept, or pin.",
+        "independentReviewer": {
+          "required": true,
+          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+          "model": "gpt-5.6-sol",
+          "effort": "high"
+        },
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {
+              "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+              "sha256": "583c5d7be25a7ffdb95f354c6279fe7c309358f65445365203431c51f0e53247"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/DESIGN-SCENE.json",
+              "sha256": "85203e23d212b354cb9615092b098059568fb081c0efc550ee8aad85a21f9fe7"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/DESIGN-MATERIALS.json",
+              "sha256": "3f982ccc441590a51d97a3b9bab70828d6ff2d577e334dab61bfb0d5de0dc7eb"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/LIGHTING-CONTRACT.json",
+              "sha256": "22bc6d296e12bd37e47ee9caed8d9c894ef5621149b849a2a45f0ea431aba7b2"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/LOWERING-CONTRACT.json",
+              "sha256": "3a4dbba579c93833b0be885e294e2dbd6797d932a3055417755575ecc1e76875"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/lower_v14_scene.py",
+              "sha256": "3c3995e09a2c5a197f3156b3023c22d38aad67b77b13c4f38110879585a40c32"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "modelRouteSha256": "517ae45224aa6e2a633471ea4253e732901bb6f90609c0ef54d782b0536d281e",
+      "modelRoute": {
+        "schema": 1,
+        "routeId": "quality-v1:play-079-industrial-l04-v14-east-process-a-prelaunch-v1",
+        "taskId": "PLAY-079",
+        "packetKind": "implementation",
+        "classification": "LUNA_IMPLEMENTATION",
+        "model": "gpt-5.6-luna",
+        "effort": "high",
+        "rationale": "The east v14 zero-pixel design and semantic lowering are independently accepted. This bounded slice implements the deterministic one-child Blender Process-A pipeline and proves it without launching Blender or creating pixels; visual acceptance remains frontier-owned.",
+        "authority": {
+          "authorityCommit": "1d7c6510fd99299c88d3f4412caa982e020c1941",
+          "baseCommit": "ea26fdac05169e0375b65d7c5dc65b4fbe00d977",
+          "claim": {
+            "path": "docs/production/claims/PLAY-079.world-art-east.md",
+            "sha256": "93bcc57e69bc4cd1ff492ce0dfbf5d6244c3782db524e7e16fc0d9dd78431a77"
+          },
+          "immutableInputs": [
+            {
+              "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+              "sha256": "583c5d7be25a7ffdb95f354c6279fe7c309358f65445365203431c51f0e53247"
+            },
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "62e077c88730fda5664e5fa6d23200ade77418bd43f1c721c0bff84eaac1c971"
+            },
+            {
+              "path": "docs/production/decisions/CONTRACT-020-deterministic-dcc-world-art.md",
+              "sha256": "1495292c86044c07ba3751907b78d1e688e19a6d828aec255e11a1732c4e7bec"
+            },
+            {
+              "path": "docs/production/decisions/CONTRACT-021-parallel-directional-art-cells.md",
+              "sha256": "f80844c928d904498510b8b151381f40315e072d52d81695aafcd6b91081ae4c"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/V14-COMPATIBILITY-DESIGN.json",
+              "sha256": "a51803683b17d5ed8a04a436623a93b7bf6e2804f7746a4f956629f9030792ed"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/LOWERING.json",
+              "sha256": "98205ddff98d9412bdac66d4cf67297b0d2809d01f61fcce62fb869eac647a7d"
+            }
+          ]
+        },
+        "assignment": {
+          "threadId": "019fab72-b2c8-76c1-b430-6c6f8431733f",
+          "branch": "codex/citysim-world-art-east",
+          "worktree": "/Users/James/.codex/worktrees/92c2/city-sim",
+          "expectedHead": "3b02b6baec92190a976c9d843c1b96585072725a",
+          "featureAuthorThreadId": "019fab72-b2c8-76c1-b430-6c6f8431733f",
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-079",
+            "docs/production/evidence/PLAY-079"
+          ],
+          "allowed": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/process-a-execution-v01",
+            "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/process-a-execution-v01"
+          ],
+          "forbidden": [
+            "docs/production/evidence/INTEGRATION",
+            "docs/production/claims",
+            "docs/production/decisions",
+            "Native/CitySimNative/Sources",
+            "Native/CitySimNative/Resources",
+            "Native/CitySimNative/Package.swift",
+            "script",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/v14-compatibility-v01",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01"
+          ]
+        },
+        "boundedDeliverable": "Create a new east-only process-a-execution-v01 source/evidence root. Implement an immutable Process-A contract, one high-level launcher with exactly one child-start site, one Blender child entrypoint that deterministically constructs the complete East component/object manifest with no generic downgrade from the frozen v14 design/lowering, applies the frozen direction camera/socket/pivot, northwest lighting, explicit color management, transparent film, Cycles CPU, one thread, fixed samples/seed/bounces, and writes only a future absent immutable Process-A output root. Add AST/static/adversarial tests for exact input hashes, complete builder coverage, material closure, object uniqueness, camera/registration, output-root reuse, schedule/slot/direction drift, second child, sibling paths, network/ImageGen/normalization/shipping access, and low-level bypass. Generate byte-identical two-root prelaunch evidence with all child/DCC/render/pixel counters zero. Do not execute the launcher or import Blender during tests.",
+        "validation": {
+          "focusedGateOwner": {
+            "threadId": "019fab72-b2c8-76c1-b430-6c6f8431733f",
+            "role": "east_v14_process_a_prelaunch_gate"
+          },
+          "focusedCommands": [
+            "PYTHONDONTWRITEBYTECODE=1 python3 Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/process-a-execution-v01/test_process_a_prelaunch.py",
+            "PYTHONDONTWRITEBYTECODE=1 python3 Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/process-a-execution-v01/test_process_a_prelaunch.py",
+            "python3 -m json.tool docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/process-a-execution-v01/HANDOFF.json",
+            "python3 -m json.tool docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/process-a-execution-v01/VALIDATION.json",
+            "git diff --check 3b02b6baec92190a976c9d843c1b96585072725a..HEAD"
+          ],
+          "fullGateOwner": {
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "role": "independent_frontier_process_a_prelaunch_acceptance",
+            "model": "gpt-5.6-sol",
+            "effort": "high"
+          },
+          "fullCommands": [
+            "independent review of exact frozen-input bindings, real semantic Blender construction coverage, one-child isolation, registration, lighting/color configuration, output-root immutability, adversarial fail-closed behavior, and zero-child proof"
+          ]
+        },
+        "expectedResult": {
+          "evidencePaths": [
+            "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/process-a-execution-v01/HANDOFF.json",
+            "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/process-a-execution-v01/VALIDATION.json"
+          ],
+          "commitRequired": true,
+          "commitMessagePattern": "PLAY-079:"
+        },
+        "escalationTriggers": [
+          "shared_contract_or_schema_decision",
+          "unresolved_product_visual_or_interaction_judgment",
+          "path_outside_claim",
+          "baseline_or_candidate_identity_mismatch",
+          "failure_outside_focused_scope",
+          "save_or_migration_uncertainty",
+          "cross_lane_semantic_conflict",
+          "two_unsuccessful_repair_attempts",
+          "subjective_acceptance_required"
+        ],
+        "stopCondition": "Stop after one clean prelaunch implementation commit with two byte-identical zero-child proofs. Do not execute Blender/DCC, start a child, create source pixels or .blend files, normalize, select production, mutate siblings/shared/renderer/shipping paths, run aggregate gates, push, integrate, self-accept, or pin.",
+        "independentReviewer": {
+          "required": true,
+          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+          "model": "gpt-5.6-sol",
+          "effort": "high"
+        },
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {
+              "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+              "sha256": "583c5d7be25a7ffdb95f354c6279fe7c309358f65445365203431c51f0e53247"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/V14-COMPATIBILITY-DESIGN.json",
+              "sha256": "a51803683b17d5ed8a04a436623a93b7bf6e2804f7746a4f956629f9030792ed"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/LOWERING.json",
+              "sha256": "98205ddff98d9412bdac66d4cf67297b0d2809d01f61fcce62fb869eac647a7d"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "modelRouteSha256": "88a261cccba4d953a5df92e88e0a0c635ccc5771c8da9ead7a691313806e45df",
+      "modelRoute": {
+        "schema": 1,
+        "routeId": "quality-v1:play-080-industrial-l04-v14-south-process-a-prelaunch-v1",
+        "taskId": "PLAY-080",
+        "packetKind": "implementation",
+        "classification": "LUNA_IMPLEMENTATION",
+        "model": "gpt-5.6-luna",
+        "effort": "high",
+        "rationale": "The south v14 zero-pixel design and semantic lowering are independently accepted. This bounded slice implements the deterministic one-child Blender Process-A pipeline and proves it without launching Blender or creating pixels; visual acceptance remains frontier-owned.",
+        "authority": {
+          "authorityCommit": "1d7c6510fd99299c88d3f4412caa982e020c1941",
+          "baseCommit": "ea26fdac05169e0375b65d7c5dc65b4fbe00d977",
+          "claim": {
+            "path": "docs/production/claims/PLAY-080.world-art-south.md",
+            "sha256": "8b66e47ace2bfb072420a650a641ba289588e5767272e3c56067fc3f6ffaff22"
+          },
+          "immutableInputs": [
+            {
+              "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+              "sha256": "583c5d7be25a7ffdb95f354c6279fe7c309358f65445365203431c51f0e53247"
+            },
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "62e077c88730fda5664e5fa6d23200ade77418bd43f1c721c0bff84eaac1c971"
+            },
+            {
+              "path": "docs/production/decisions/CONTRACT-020-deterministic-dcc-world-art.md",
+              "sha256": "1495292c86044c07ba3751907b78d1e688e19a6d828aec255e11a1732c4e7bec"
+            },
+            {
+              "path": "docs/production/decisions/CONTRACT-021-parallel-directional-art-cells.md",
+              "sha256": "f80844c928d904498510b8b151381f40315e072d52d81695aafcd6b91081ae4c"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/v14-compatibility-v01/SCENE.json",
+              "sha256": "11e12faf544aefbaad8d15753fd977bdc7022dca4d2fcead7923e7f068b093a4"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/v14-compatibility-v01/LOWERING.json",
+              "sha256": "d3b46cb63541a83d3963556b64a5e5fbee83a41a1480a72aa840c7c0b748e5f9"
+            }
+          ]
+        },
+        "assignment": {
+          "threadId": "019fab72-b2c9-7d60-a397-27f4fde85950",
+          "branch": "codex/citysim-world-art-south",
+          "worktree": "/Users/James/.codex/worktrees/4247/city-sim",
+          "expectedHead": "cd606db31311f98375ef04f93073bee1ac3c654c",
+          "featureAuthorThreadId": "019fab72-b2c9-7d60-a397-27f4fde85950",
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-080",
+            "docs/production/evidence/PLAY-080"
+          ],
+          "allowed": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/v14-compatibility-v01/process-a-execution-v01",
+            "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/v14-compatibility-v01/process-a-execution-v01"
+          ],
+          "forbidden": [
+            "docs/production/evidence/INTEGRATION",
+            "docs/production/claims",
+            "docs/production/decisions",
+            "Native/CitySimNative/Sources",
+            "Native/CitySimNative/Resources",
+            "Native/CitySimNative/Package.swift",
+            "script",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01"
+          ]
+        },
+        "boundedDeliverable": "Create a new south-only process-a-execution-v01 source/evidence root. Implement an immutable Process-A contract, one high-level launcher with exactly one child-start site, one Blender child entrypoint that deterministically constructs 55 named objects from 32 components with no generic downgrade from the frozen v14 design/lowering, applies the frozen direction camera/socket/pivot, northwest lighting, explicit color management, transparent film, Cycles CPU, one thread, fixed samples/seed/bounces, and writes only a future absent immutable Process-A output root. Add AST/static/adversarial tests for exact input hashes, complete builder coverage, material closure, object uniqueness, camera/registration, output-root reuse, schedule/slot/direction drift, second child, sibling paths, network/ImageGen/normalization/shipping access, and low-level bypass. Generate byte-identical two-root prelaunch evidence with all child/DCC/render/pixel counters zero. Do not execute the launcher or import Blender during tests.",
+        "validation": {
+          "focusedGateOwner": {
+            "threadId": "019fab72-b2c9-7d60-a397-27f4fde85950",
+            "role": "south_v14_process_a_prelaunch_gate"
+          },
+          "focusedCommands": [
+            "PYTHONDONTWRITEBYTECODE=1 python3 Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/v14-compatibility-v01/process-a-execution-v01/test_process_a_prelaunch.py",
+            "PYTHONDONTWRITEBYTECODE=1 python3 Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/v14-compatibility-v01/process-a-execution-v01/test_process_a_prelaunch.py",
+            "python3 -m json.tool docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/v14-compatibility-v01/process-a-execution-v01/HANDOFF.json",
+            "python3 -m json.tool docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/v14-compatibility-v01/process-a-execution-v01/VALIDATION.json",
+            "git diff --check cd606db31311f98375ef04f93073bee1ac3c654c..HEAD"
+          ],
+          "fullGateOwner": {
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "role": "independent_frontier_process_a_prelaunch_acceptance",
+            "model": "gpt-5.6-sol",
+            "effort": "high"
+          },
+          "fullCommands": [
+            "independent review of exact frozen-input bindings, real semantic Blender construction coverage, one-child isolation, registration, lighting/color configuration, output-root immutability, adversarial fail-closed behavior, and zero-child proof"
+          ]
+        },
+        "expectedResult": {
+          "evidencePaths": [
+            "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/v14-compatibility-v01/process-a-execution-v01/HANDOFF.json",
+            "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/v14-compatibility-v01/process-a-execution-v01/VALIDATION.json"
+          ],
+          "commitRequired": true,
+          "commitMessagePattern": "PLAY-080:"
+        },
+        "escalationTriggers": [
+          "shared_contract_or_schema_decision",
+          "unresolved_product_visual_or_interaction_judgment",
+          "path_outside_claim",
+          "baseline_or_candidate_identity_mismatch",
+          "failure_outside_focused_scope",
+          "save_or_migration_uncertainty",
+          "cross_lane_semantic_conflict",
+          "two_unsuccessful_repair_attempts",
+          "subjective_acceptance_required"
+        ],
+        "stopCondition": "Stop after one clean prelaunch implementation commit with two byte-identical zero-child proofs. Do not execute Blender/DCC, start a child, create source pixels or .blend files, normalize, select production, mutate siblings/shared/renderer/shipping paths, run aggregate gates, push, integrate, self-accept, or pin.",
+        "independentReviewer": {
+          "required": true,
+          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+          "model": "gpt-5.6-sol",
+          "effort": "high"
+        },
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {
+              "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+              "sha256": "583c5d7be25a7ffdb95f354c6279fe7c309358f65445365203431c51f0e53247"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/v14-compatibility-v01/SCENE.json",
+              "sha256": "11e12faf544aefbaad8d15753fd977bdc7022dca4d2fcead7923e7f068b093a4"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/v14-compatibility-v01/LOWERING.json",
+              "sha256": "d3b46cb63541a83d3963556b64a5e5fbee83a41a1480a72aa840c7c0b748e5f9"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "modelRouteSha256": "5bc7a82740c48fb778b4d081022da629e686af214bdf79598a670492fe880ea3",
+      "modelRoute": {
+        "schema": 1,
+        "routeId": "quality-v1:play-081-industrial-l04-v14-west-process-a-prelaunch-v1",
+        "taskId": "PLAY-081",
+        "packetKind": "implementation",
+        "classification": "LUNA_IMPLEMENTATION",
+        "model": "gpt-5.6-luna",
+        "effort": "high",
+        "rationale": "The west v14 zero-pixel design and semantic lowering are independently accepted. This bounded slice implements the deterministic one-child Blender Process-A pipeline and proves it without launching Blender or creating pixels; visual acceptance remains frontier-owned.",
+        "authority": {
+          "authorityCommit": "1d7c6510fd99299c88d3f4412caa982e020c1941",
+          "baseCommit": "ea26fdac05169e0375b65d7c5dc65b4fbe00d977",
+          "claim": {
+            "path": "docs/production/claims/PLAY-081.world-art-west.md",
+            "sha256": "6b9608a7854afc60676ac27e7c7a8a7c4420161805a4ef59c68649acdd6a901d"
+          },
+          "immutableInputs": [
+            {
+              "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+              "sha256": "583c5d7be25a7ffdb95f354c6279fe7c309358f65445365203431c51f0e53247"
+            },
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "62e077c88730fda5664e5fa6d23200ade77418bd43f1c721c0bff84eaac1c971"
+            },
+            {
+              "path": "docs/production/decisions/CONTRACT-020-deterministic-dcc-world-art.md",
+              "sha256": "1495292c86044c07ba3751907b78d1e688e19a6d828aec255e11a1732c4e7bec"
+            },
+            {
+              "path": "docs/production/decisions/CONTRACT-021-parallel-directional-art-cells.md",
+              "sha256": "f80844c928d904498510b8b151381f40315e072d52d81695aafcd6b91081ae4c"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/WEST-V14-DESIGN.json",
+              "sha256": "334ab5ed19734d6a4f90e499cf8f15872a3c11677a2cb437a912b6a96d0617ad"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/WEST-V14-LOWERING.json",
+              "sha256": "b15466c78dedc19d1009ddc9cb691002ed7d5dd192c1caf8be05023fb42376dd"
+            }
+          ]
+        },
+        "assignment": {
+          "threadId": "019fab72-b2c9-7d60-a397-27d01d06cbbd",
+          "branch": "codex/citysim-world-art-west",
+          "worktree": "/Users/James/.codex/worktrees/ef17/city-sim",
+          "expectedHead": "9a19cc323516f98deab1e3a22e8934172a34679b",
+          "featureAuthorThreadId": "019fab72-b2c9-7d60-a397-27d01d06cbbd",
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-081",
+            "docs/production/evidence/PLAY-081"
+          ],
+          "allowed": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/process-a-execution-v01",
+            "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/process-a-execution-v01"
+          ],
+          "forbidden": [
+            "docs/production/evidence/INTEGRATION",
+            "docs/production/claims",
+            "docs/production/decisions",
+            "Native/CitySimNative/Sources",
+            "Native/CitySimNative/Resources",
+            "Native/CitySimNative/Package.swift",
+            "script",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/v14-compatibility-v01"
+          ]
+        },
+        "boundedDeliverable": "Create a new west-only process-a-execution-v01 source/evidence root. Implement an immutable Process-A contract, one high-level launcher with exactly one child-start site, one Blender child entrypoint that deterministically constructs the complete West component/object manifest with no generic downgrade from the frozen v14 design/lowering, applies the frozen direction camera/socket/pivot, northwest lighting, explicit color management, transparent film, Cycles CPU, one thread, fixed samples/seed/bounces, and writes only a future absent immutable Process-A output root. Add AST/static/adversarial tests for exact input hashes, complete builder coverage, material closure, object uniqueness, camera/registration, output-root reuse, schedule/slot/direction drift, second child, sibling paths, network/ImageGen/normalization/shipping access, and low-level bypass. Generate byte-identical two-root prelaunch evidence with all child/DCC/render/pixel counters zero. Do not execute the launcher or import Blender during tests.",
+        "validation": {
+          "focusedGateOwner": {
+            "threadId": "019fab72-b2c9-7d60-a397-27d01d06cbbd",
+            "role": "west_v14_process_a_prelaunch_gate"
+          },
+          "focusedCommands": [
+            "PYTHONDONTWRITEBYTECODE=1 python3 Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/process-a-execution-v01/test_process_a_prelaunch.py",
+            "PYTHONDONTWRITEBYTECODE=1 python3 Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/process-a-execution-v01/test_process_a_prelaunch.py",
+            "python3 -m json.tool docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/process-a-execution-v01/HANDOFF.json",
+            "python3 -m json.tool docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/process-a-execution-v01/VALIDATION.json",
+            "git diff --check 9a19cc323516f98deab1e3a22e8934172a34679b..HEAD"
+          ],
+          "fullGateOwner": {
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "role": "independent_frontier_process_a_prelaunch_acceptance",
+            "model": "gpt-5.6-sol",
+            "effort": "high"
+          },
+          "fullCommands": [
+            "independent review of exact frozen-input bindings, real semantic Blender construction coverage, one-child isolation, registration, lighting/color configuration, output-root immutability, adversarial fail-closed behavior, and zero-child proof"
+          ]
+        },
+        "expectedResult": {
+          "evidencePaths": [
+            "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/process-a-execution-v01/HANDOFF.json",
+            "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/process-a-execution-v01/VALIDATION.json"
+          ],
+          "commitRequired": true,
+          "commitMessagePattern": "PLAY-081:"
+        },
+        "escalationTriggers": [
+          "shared_contract_or_schema_decision",
+          "unresolved_product_visual_or_interaction_judgment",
+          "path_outside_claim",
+          "baseline_or_candidate_identity_mismatch",
+          "failure_outside_focused_scope",
+          "save_or_migration_uncertainty",
+          "cross_lane_semantic_conflict",
+          "two_unsuccessful_repair_attempts",
+          "subjective_acceptance_required"
+        ],
+        "stopCondition": "Stop after one clean prelaunch implementation commit with two byte-identical zero-child proofs. Do not execute Blender/DCC, start a child, create source pixels or .blend files, normalize, select production, mutate siblings/shared/renderer/shipping paths, run aggregate gates, push, integrate, self-accept, or pin.",
+        "independentReviewer": {
+          "required": true,
+          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+          "model": "gpt-5.6-sol",
+          "effort": "high"
+        },
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {
+              "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+              "sha256": "583c5d7be25a7ffdb95f354c6279fe7c309358f65445365203431c51f0e53247"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/WEST-V14-DESIGN.json",
+              "sha256": "334ab5ed19734d6a4f90e499cf8f15872a3c11677a2cb437a912b6a96d0617ad"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/WEST-V14-LOWERING.json",
+              "sha256": "b15466c78dedc19d1009ddc9cb691002ed7d5dd192c1caf8be05023fb42376dd"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

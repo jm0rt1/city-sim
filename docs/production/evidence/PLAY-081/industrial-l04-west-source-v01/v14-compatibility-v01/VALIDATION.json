@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "result": "PASS",
+  "task": "PLAY-081",
+  "direction": "west",
+  "routeId": "quality-v1:play-081-industrial-l04-v14-west-prelock-v1",
+  "routeSHA256": "38d26484c0cff5e66aeb5e585f1900a311c5c99e0c2e840a51f1c891da38df33",
+  "authorityCommit": "1d7c6510fd99299c88d3f4412caa982e020c1941",
+  "publishedBase": "ea26fdac05169e0375b65d7c5dc65b4fbe00d977",
+  "expectedStartingHead": "81aff53f4276208c8065e76a29f1f99c30a5ceec",
+  "claimSHA256": "6b9608a7854afc60676ac27e7c7a8a7c4420161805a4ef59c68649acdd6a901d",
+  "designPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/WEST-V14-DESIGN.json",
+  "loweringPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/WEST-V14-LOWERING.json",
+  "validatorPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/test_v14_compatibility.py",
+  "validatorSHA256": "3d65dc156dcf525e02dab9d37e11887370b35ad66af5b08be5b80be0341af4aa",
+  "designSHA256": "334ab5ed19734d6a4f90e499cf8f15872a3c11677a2cb437a912b6a96d0617ad",
+  "loweringSHA256": "b15466c78dedc19d1009ddc9cb691002ed7d5dd192c1caf8be05023fb42376dd",
+  "baseProof": {
+    "westV13ResultSHA256": "a610e358a60120f38d20dfadb77423fcb021daafbfe72dfa67973652c2722bbe",
+    "preserveAllBytes": true
+  },
+  "proof": {
+    "portal": "PASS",
+    "freightBeats": 3,
+    "roofTiers": 3,
+    "silhouetteBreakCount": 6,
+    "semanticCoverage": "100%",
+    "apertureSolidIntrusionCount": 0,
+    "processOccluderSourceOverlapPixels": 0,
+    "registrationErrorSourcePixels": 0,
+    "futureProcessAReady": false
+  },
+  "adversaries": {
+    "count": 10,
+    "allRejected": true,
+    "zeroCounters": true,
+    "names": ["wrong-direction", "socket-substitution", "orientation-transform", "builder-omission", "component-alias", "roof-tier-loss", "silhouette-loss", "aperture-occluder", "pixel-authority", "source-ready"]
+  },
+  "freshReplay": {
+    "independentProcessCount": 2,
+    "byteIdentical": true,
+    "outputSHA256": "4d05fb53fe7d6830d8763599ed2b6eaefb8a368bc9cc2af29333db5e6474709c",
+    "outputBytes": 1236,
+    "processIsolation": true
+  },
+  "zeroPixelBoundary": {
+    "blenderProcessLaunches": 0,
+    "dccInvocations": 0,
+    "renderInvocations": 0,
+    "imageGenInvocations": 0,
+    "normalizerInvocations": 0,
+    "pixelFiles": 0,
+    "sourceReady": false
+  },
+  "reviewBoundary": "Integration owns full gate and independent real-app acceptance; West owns focused zero-pixel proof only"
+}

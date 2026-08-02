@@ -1,0 +1,614 @@
+{
+  "schema": 1,
+  "authorityCommit": "1d7c6510fd99299c88d3f4412caa982e020c1941",
+  "assignments": [
+    {
+      "modelRouteSha256": "229666937b0d313f9c92fe013729e716662658a4457fb676d6a1ad87deeedb3e",
+      "modelRoute": {
+        "schema": 1,
+        "routeId": "quality-v1:play-027-industrial-l04-v14-north-process-a-prelaunch-repair-v2",
+        "taskId": "PLAY-027",
+        "packetKind": "implementation",
+        "classification": "LUNA_IMPLEMENTATION",
+        "model": "gpt-5.6-luna",
+        "effort": "high",
+        "rationale": "Independent frontier review returns the first north prelaunch checkpoint. North currently maps most semantic geometryKinds to axis-aligned cubes, does not apply world/key/fill lighting nodes, does not aim the camera, does not set the complete Cycles envelope, and never renders the governed raw output. The repair is deterministic and remains zero-child.",
+        "authority": {
+          "authorityCommit": "1d7c6510fd99299c88d3f4412caa982e020c1941",
+          "baseCommit": "ea26fdac05169e0375b65d7c5dc65b4fbe00d977",
+          "claim": {
+            "path": "docs/production/claims/PLAY-027.world-art.md",
+            "sha256": "bf0b167a1d1e6f7007d609aeb657917fe9d3d0866d5a7a6e36b0e5a32faefa6f"
+          },
+          "immutableInputs": [
+            {
+              "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+              "sha256": "583c5d7be25a7ffdb95f354c6279fe7c309358f65445365203431c51f0e53247"
+            },
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "62e077c88730fda5664e5fa6d23200ade77418bd43f1c721c0bff84eaac1c971"
+            },
+            {
+              "path": "docs/production/decisions/CONTRACT-020-deterministic-dcc-world-art.md",
+              "sha256": "1495292c86044c07ba3751907b78d1e688e19a6d828aec255e11a1732c4e7bec"
+            },
+            {
+              "path": "docs/production/decisions/CONTRACT-021-parallel-directional-art-cells.md",
+              "sha256": "f80844c928d904498510b8b151381f40315e072d52d81695aafcd6b91081ae4c"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/DESIGN-SCENE.json",
+              "sha256": "85203e23d212b354cb9615092b098059568fb081c0efc550ee8aad85a21f9fe7"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/DESIGN-MATERIALS.json",
+              "sha256": "3f982ccc441590a51d97a3b9bab70828d6ff2d577e334dab61bfb0d5de0dc7eb"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/LIGHTING-CONTRACT.json",
+              "sha256": "22bc6d296e12bd37e47ee9caed8d9c894ef5621149b849a2a45f0ea431aba7b2"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/LOWERING-CONTRACT.json",
+              "sha256": "3a4dbba579c93833b0be885e294e2dbd6797d932a3055417755575ecc1e76875"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/lower_v14_scene.py",
+              "sha256": "3c3995e09a2c5a197f3156b3023c22d38aad67b77b13c4f38110879585a40c32"
+            }
+          ]
+        },
+        "assignment": {
+          "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+          "branch": "codex/citysim-world-art",
+          "worktree": "/Users/James/.codex/worktrees/0648/city-sim",
+          "expectedHead": "d10c5c9fdf4a3aa2a0e6d0ba4868e1e368dd7b9c",
+          "featureAuthorThreadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027",
+            "docs/production/evidence/PLAY-027"
+          ],
+          "allowed": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/process-a-execution-v01",
+            "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v14/process-a-execution-v01"
+          ],
+          "forbidden": [
+            "docs/production/evidence/INTEGRATION",
+            "docs/production/claims",
+            "docs/production/decisions",
+            "Native/CitySimNative/Sources",
+            "Native/CitySimNative/Resources",
+            "Native/CitySimNative/Package.swift",
+            "script",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/v14-compatibility-v01",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01"
+          ]
+        },
+        "boundedDeliverable": "Preserve d10c5c9 as an ancestor and repair only the existing north process-a-execution-v01 roots. Replace semantic-name-only proxies with real Blender construction: wedge meshes with explicit vertices/faces; compound portal frames, reveals and an unfilled aperture; framed mullions/louvers/doors; separately modeled rail posts/rails, gutters/downspouts, vents/plant modules, markings and wear bands; capped vessel/stack parts; oriented cylindrical pipe segments, torus or curve elbows and supports; truss chords/diagonals aligned to endpoints; no generic AABB fallback for declared semantic primitives. Every named lowered object must yield unique nonzero geometry or an intentional void record. North must consume the exact frozen DESIGN-MATERIALS and LIGHTING-CONTRACT numeric values through Principled nodes, including roughness, metalness and bounded emission; apply world nodes plus aimed northwest key and optional fill exactly. Create a real orthographic camera datablock with exact position, target quaternion, scale and shifts; configure Cycles CPU, one thread, fixed sample/seed/bounces, transparent RGBA, color management, world, aimed area lights and a southeast shadow-catching receiver; set an output inside the process root and include a future bpy.ops.render.render(write_still=True) plus deterministic .blend/provenance/manifest/receipt writes. Execution remains impossible without the exact future Integration grant/profile. Strengthen AST/adversarial tests to reject cube/cylinder semantic downgrades, missing topology, solid portal voids, placeholder colors, Eevee, camera without data/aim, missing world/light/shadow/render operations, output escape, low-level bypass and a second child. Update exact evidence.",
+        "validation": {
+          "focusedGateOwner": {
+            "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+            "role": "north_v14_process_a_prelaunch_repair_gate"
+          },
+          "focusedCommands": [
+            "PYTHONDONTWRITEBYTECODE=1 python3 Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/process-a-execution-v01/test_process_a_prelaunch.py",
+            "PYTHONDONTWRITEBYTECODE=1 python3 Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/process-a-execution-v01/test_process_a_prelaunch.py",
+            "python3 -m json.tool docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v14/process-a-execution-v01/HANDOFF.json",
+            "python3 -m json.tool docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v14/process-a-execution-v01/VALIDATION.json",
+            "git diff --check d10c5c9fdf4a3aa2a0e6d0ba4868e1e368dd7b9c..HEAD"
+          ],
+          "fullGateOwner": {
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "role": "independent_frontier_blender_construction_prelaunch_review",
+            "model": "gpt-5.6-sol",
+            "effort": "high"
+          },
+          "fullCommands": [
+            "independent source review of every Blender builder, material/profile fail-closed behavior, camera/light/world/shadow/render pipeline, exact output containment, one-child isolation and zero-child evidence"
+          ]
+        },
+        "expectedResult": {
+          "evidencePaths": [
+            "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v14/process-a-execution-v01/HANDOFF.json",
+            "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v14/process-a-execution-v01/VALIDATION.json"
+          ],
+          "commitRequired": true,
+          "commitMessagePattern": "PLAY-027:"
+        },
+        "escalationTriggers": [
+          "shared_contract_or_schema_decision",
+          "unresolved_product_visual_or_interaction_judgment",
+          "path_outside_claim",
+          "baseline_or_candidate_identity_mismatch",
+          "failure_outside_focused_scope",
+          "save_or_migration_uncertainty",
+          "cross_lane_semantic_conflict",
+          "two_unsuccessful_repair_attempts",
+          "subjective_acceptance_required"
+        ],
+        "stopCondition": "Stop after one clean descendant repair with two byte-identical zero-child proofs. This is the first repair attempt; on another failed repair, escalate. Do not execute Blender/DCC or the launcher, create pixels/.blend/output files, normalize, mutate siblings/shared/renderer/shipping paths, run aggregate gates, push, integrate, self-accept, or pin.",
+        "independentReviewer": {
+          "required": true,
+          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+          "model": "gpt-5.6-sol",
+          "effort": "high"
+        },
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {
+              "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+              "sha256": "583c5d7be25a7ffdb95f354c6279fe7c309358f65445365203431c51f0e53247"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/DESIGN-SCENE.json",
+              "sha256": "85203e23d212b354cb9615092b098059568fb081c0efc550ee8aad85a21f9fe7"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/DESIGN-MATERIALS.json",
+              "sha256": "3f982ccc441590a51d97a3b9bab70828d6ff2d577e334dab61bfb0d5de0dc7eb"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/LIGHTING-CONTRACT.json",
+              "sha256": "22bc6d296e12bd37e47ee9caed8d9c894ef5621149b849a2a45f0ea431aba7b2"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/LOWERING-CONTRACT.json",
+              "sha256": "3a4dbba579c93833b0be885e294e2dbd6797d932a3055417755575ecc1e76875"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/lower_v14_scene.py",
+              "sha256": "3c3995e09a2c5a197f3156b3023c22d38aad67b77b13c4f38110879585a40c32"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "modelRouteSha256": "572f36e42d9134c314680a1eadde85db27cbbdf29d22c22557fcadbd54c79bb1",
+      "modelRoute": {
+        "schema": 1,
+        "routeId": "quality-v1:play-079-industrial-l04-v14-east-process-a-prelaunch-repair-v2",
+        "taskId": "PLAY-079",
+        "packetKind": "implementation",
+        "classification": "LUNA_IMPLEMENTATION",
+        "model": "gpt-5.6-luna",
+        "effort": "high",
+        "rationale": "Independent frontier review returns the first east prelaunch checkpoint. East has stronger mesh scaffolding but still represents mullions, rails, plant, vents, doors, gutters, markings and wear as tagged boxes, invents numeric sibling colors before the North appearance lock, omits world/contact-shadow setup and a governed raw render, and places its future output outside the authorized process root. The repair is deterministic and remains zero-child.",
+        "authority": {
+          "authorityCommit": "1d7c6510fd99299c88d3f4412caa982e020c1941",
+          "baseCommit": "ea26fdac05169e0375b65d7c5dc65b4fbe00d977",
+          "claim": {
+            "path": "docs/production/claims/PLAY-079.world-art-east.md",
+            "sha256": "93bcc57e69bc4cd1ff492ce0dfbf5d6244c3782db524e7e16fc0d9dd78431a77"
+          },
+          "immutableInputs": [
+            {
+              "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+              "sha256": "583c5d7be25a7ffdb95f354c6279fe7c309358f65445365203431c51f0e53247"
+            },
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "62e077c88730fda5664e5fa6d23200ade77418bd43f1c721c0bff84eaac1c971"
+            },
+            {
+              "path": "docs/production/decisions/CONTRACT-020-deterministic-dcc-world-art.md",
+              "sha256": "1495292c86044c07ba3751907b78d1e688e19a6d828aec255e11a1732c4e7bec"
+            },
+            {
+              "path": "docs/production/decisions/CONTRACT-021-parallel-directional-art-cells.md",
+              "sha256": "f80844c928d904498510b8b151381f40315e072d52d81695aafcd6b91081ae4c"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/V14-COMPATIBILITY-DESIGN.json",
+              "sha256": "a51803683b17d5ed8a04a436623a93b7bf6e2804f7746a4f956629f9030792ed"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/LOWERING.json",
+              "sha256": "98205ddff98d9412bdac66d4cf67297b0d2809d01f61fcce62fb869eac647a7d"
+            }
+          ]
+        },
+        "assignment": {
+          "threadId": "019fab72-b2c8-76c1-b430-6c6f8431733f",
+          "branch": "codex/citysim-world-art-east",
+          "worktree": "/Users/James/.codex/worktrees/92c2/city-sim",
+          "expectedHead": "5ea804b93557d4280b49a0f66520f6550858a65b",
+          "featureAuthorThreadId": "019fab72-b2c8-76c1-b430-6c6f8431733f",
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-079",
+            "docs/production/evidence/PLAY-079"
+          ],
+          "allowed": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/process-a-execution-v01",
+            "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/process-a-execution-v01"
+          ],
+          "forbidden": [
+            "docs/production/evidence/INTEGRATION",
+            "docs/production/claims",
+            "docs/production/decisions",
+            "Native/CitySimNative/Sources",
+            "Native/CitySimNative/Resources",
+            "Native/CitySimNative/Package.swift",
+            "script",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/v14-compatibility-v01",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01"
+          ]
+        },
+        "boundedDeliverable": "Preserve 5ea804b as an ancestor and repair only the existing east process-a-execution-v01 roots. Replace semantic-name-only proxies with real Blender construction: wedge meshes with explicit vertices/faces; compound portal frames, reveals and an unfilled aperture; framed mullions/louvers/doors; separately modeled rail posts/rails, gutters/downspouts, vents/plant modules, markings and wear bands; capped vessel/stack parts; oriented cylindrical pipe segments, torus or curve elbows and supports; truss chords/diagonals aligned to endpoints; no generic AABB fallback for declared semantic primitives. Every named lowered object must yield unique nonzero geometry or an intentional void record. Do not invent or retain numeric family colors, energy, exposure or fallback gray. Declare appearanceLock and sourceProductionProfile null and executionReady false; implement a fail-closed exact-hash profile loader that must supply every numeric material/light/color/render field after Integration publishes the North lock, and reject before bpy import when the profile is absent, incomplete or mismatched. Create a real orthographic camera datablock with exact position, target quaternion, scale and shifts; configure Cycles CPU, one thread, fixed sample/seed/bounces, transparent RGBA, color management, world, aimed area lights and a southeast shadow-catching receiver; set an output inside the process root and include a future bpy.ops.render.render(write_still=True) plus deterministic .blend/provenance/manifest/receipt writes. Execution remains impossible without the exact future Integration grant/profile. Strengthen AST/adversarial tests to reject cube/cylinder semantic downgrades, missing topology, solid portal voids, placeholder colors, Eevee, camera without data/aim, missing world/light/shadow/render operations, output escape, low-level bypass and a second child. Update exact evidence.",
+        "validation": {
+          "focusedGateOwner": {
+            "threadId": "019fab72-b2c8-76c1-b430-6c6f8431733f",
+            "role": "east_v14_process_a_prelaunch_repair_gate"
+          },
+          "focusedCommands": [
+            "PYTHONDONTWRITEBYTECODE=1 python3 Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/process-a-execution-v01/test_process_a_prelaunch.py",
+            "PYTHONDONTWRITEBYTECODE=1 python3 Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/process-a-execution-v01/test_process_a_prelaunch.py",
+            "python3 -m json.tool docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/process-a-execution-v01/HANDOFF.json",
+            "python3 -m json.tool docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/process-a-execution-v01/VALIDATION.json",
+            "git diff --check 5ea804b93557d4280b49a0f66520f6550858a65b..HEAD"
+          ],
+          "fullGateOwner": {
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "role": "independent_frontier_blender_construction_prelaunch_review",
+            "model": "gpt-5.6-sol",
+            "effort": "high"
+          },
+          "fullCommands": [
+            "independent source review of every Blender builder, material/profile fail-closed behavior, camera/light/world/shadow/render pipeline, exact output containment, one-child isolation and zero-child evidence"
+          ]
+        },
+        "expectedResult": {
+          "evidencePaths": [
+            "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/process-a-execution-v01/HANDOFF.json",
+            "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/process-a-execution-v01/VALIDATION.json"
+          ],
+          "commitRequired": true,
+          "commitMessagePattern": "PLAY-079:"
+        },
+        "escalationTriggers": [
+          "shared_contract_or_schema_decision",
+          "unresolved_product_visual_or_interaction_judgment",
+          "path_outside_claim",
+          "baseline_or_candidate_identity_mismatch",
+          "failure_outside_focused_scope",
+          "save_or_migration_uncertainty",
+          "cross_lane_semantic_conflict",
+          "two_unsuccessful_repair_attempts",
+          "subjective_acceptance_required"
+        ],
+        "stopCondition": "Stop after one clean descendant repair with two byte-identical zero-child proofs. This is the first repair attempt; on another failed repair, escalate. Do not execute Blender/DCC or the launcher, create pixels/.blend/output files, normalize, mutate siblings/shared/renderer/shipping paths, run aggregate gates, push, integrate, self-accept, or pin.",
+        "independentReviewer": {
+          "required": true,
+          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+          "model": "gpt-5.6-sol",
+          "effort": "high"
+        },
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {
+              "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+              "sha256": "583c5d7be25a7ffdb95f354c6279fe7c309358f65445365203431c51f0e53247"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/V14-COMPATIBILITY-DESIGN.json",
+              "sha256": "a51803683b17d5ed8a04a436623a93b7bf6e2804f7746a4f956629f9030792ed"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/LOWERING.json",
+              "sha256": "98205ddff98d9412bdac66d4cf67297b0d2809d01f61fcce62fb869eac647a7d"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "modelRouteSha256": "a9c85bde90bd396ec587680bcb2c9a88e36cd1442ab25dd307da3baf862abb0d",
+      "modelRoute": {
+        "schema": 1,
+        "routeId": "quality-v1:play-080-industrial-l04-v14-south-process-a-prelaunch-repair-v2",
+        "taskId": "PLAY-080",
+        "packetKind": "implementation",
+        "classification": "LUNA_IMPLEMENTATION",
+        "model": "gpt-5.6-luna",
+        "effort": "high",
+        "rationale": "Independent frontier review returns the first south prelaunch checkpoint. South turns many semantic records into scaled cubes, represents a roof wedge as a cone and a pipe elbow as a straight cylinder, fills portal void semantics with solids, invents numeric sibling colors before the North appearance lock, and saves a blend file where the contract requires a future governed raw render. The repair is deterministic and remains zero-child.",
+        "authority": {
+          "authorityCommit": "1d7c6510fd99299c88d3f4412caa982e020c1941",
+          "baseCommit": "ea26fdac05169e0375b65d7c5dc65b4fbe00d977",
+          "claim": {
+            "path": "docs/production/claims/PLAY-080.world-art-south.md",
+            "sha256": "8b66e47ace2bfb072420a650a641ba289588e5767272e3c56067fc3f6ffaff22"
+          },
+          "immutableInputs": [
+            {
+              "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+              "sha256": "583c5d7be25a7ffdb95f354c6279fe7c309358f65445365203431c51f0e53247"
+            },
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "62e077c88730fda5664e5fa6d23200ade77418bd43f1c721c0bff84eaac1c971"
+            },
+            {
+              "path": "docs/production/decisions/CONTRACT-020-deterministic-dcc-world-art.md",
+              "sha256": "1495292c86044c07ba3751907b78d1e688e19a6d828aec255e11a1732c4e7bec"
+            },
+            {
+              "path": "docs/production/decisions/CONTRACT-021-parallel-directional-art-cells.md",
+              "sha256": "f80844c928d904498510b8b151381f40315e072d52d81695aafcd6b91081ae4c"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/v14-compatibility-v01/SCENE.json",
+              "sha256": "11e12faf544aefbaad8d15753fd977bdc7022dca4d2fcead7923e7f068b093a4"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/v14-compatibility-v01/LOWERING.json",
+              "sha256": "d3b46cb63541a83d3963556b64a5e5fbee83a41a1480a72aa840c7c0b748e5f9"
+            }
+          ]
+        },
+        "assignment": {
+          "threadId": "019fab72-b2c9-7d60-a397-27f4fde85950",
+          "branch": "codex/citysim-world-art-south",
+          "worktree": "/Users/James/.codex/worktrees/4247/city-sim",
+          "expectedHead": "531b6cab0a557903b9a034cd06bb0ba6b2850a72",
+          "featureAuthorThreadId": "019fab72-b2c9-7d60-a397-27f4fde85950",
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-080",
+            "docs/production/evidence/PLAY-080"
+          ],
+          "allowed": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/v14-compatibility-v01/process-a-execution-v01",
+            "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/v14-compatibility-v01/process-a-execution-v01"
+          ],
+          "forbidden": [
+            "docs/production/evidence/INTEGRATION",
+            "docs/production/claims",
+            "docs/production/decisions",
+            "Native/CitySimNative/Sources",
+            "Native/CitySimNative/Resources",
+            "Native/CitySimNative/Package.swift",
+            "script",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01"
+          ]
+        },
+        "boundedDeliverable": "Preserve 531b6ca as an ancestor and repair only the existing south process-a-execution-v01 roots. Replace semantic-name-only proxies with real Blender construction: wedge meshes with explicit vertices/faces; compound portal frames, reveals and an unfilled aperture; framed mullions/louvers/doors; separately modeled rail posts/rails, gutters/downspouts, vents/plant modules, markings and wear bands; capped vessel/stack parts; oriented cylindrical pipe segments, torus or curve elbows and supports; truss chords/diagonals aligned to endpoints; no generic AABB fallback for declared semantic primitives. Every named lowered object must yield unique nonzero geometry or an intentional void record. Do not invent or retain numeric family colors, energy, exposure or fallback gray. Declare appearanceLock and sourceProductionProfile null and executionReady false; implement a fail-closed exact-hash profile loader that must supply every numeric material/light/color/render field after Integration publishes the North lock, and reject before bpy import when the profile is absent, incomplete or mismatched. Create a real orthographic camera datablock with exact position, target quaternion, scale and shifts; configure Cycles CPU, one thread, fixed sample/seed/bounces, transparent RGBA, color management, world, aimed area lights and a southeast shadow-catching receiver; set an output inside the process root and include a future bpy.ops.render.render(write_still=True) plus deterministic .blend/provenance/manifest/receipt writes. Execution remains impossible without the exact future Integration grant/profile. Strengthen AST/adversarial tests to reject cube/cylinder semantic downgrades, missing topology, solid portal voids, placeholder colors, Eevee, camera without data/aim, missing world/light/shadow/render operations, output escape, low-level bypass and a second child. Update exact evidence.",
+        "validation": {
+          "focusedGateOwner": {
+            "threadId": "019fab72-b2c9-7d60-a397-27f4fde85950",
+            "role": "south_v14_process_a_prelaunch_repair_gate"
+          },
+          "focusedCommands": [
+            "PYTHONDONTWRITEBYTECODE=1 python3 Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/v14-compatibility-v01/process-a-execution-v01/test_process_a_prelaunch.py",
+            "PYTHONDONTWRITEBYTECODE=1 python3 Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/v14-compatibility-v01/process-a-execution-v01/test_process_a_prelaunch.py",
+            "python3 -m json.tool docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/v14-compatibility-v01/process-a-execution-v01/HANDOFF.json",
+            "python3 -m json.tool docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/v14-compatibility-v01/process-a-execution-v01/VALIDATION.json",
+            "git diff --check 531b6cab0a557903b9a034cd06bb0ba6b2850a72..HEAD"
+          ],
+          "fullGateOwner": {
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "role": "independent_frontier_blender_construction_prelaunch_review",
+            "model": "gpt-5.6-sol",
+            "effort": "high"
+          },
+          "fullCommands": [
+            "independent source review of every Blender builder, material/profile fail-closed behavior, camera/light/world/shadow/render pipeline, exact output containment, one-child isolation and zero-child evidence"
+          ]
+        },
+        "expectedResult": {
+          "evidencePaths": [
+            "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/v14-compatibility-v01/process-a-execution-v01/HANDOFF.json",
+            "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/v14-compatibility-v01/process-a-execution-v01/VALIDATION.json"
+          ],
+          "commitRequired": true,
+          "commitMessagePattern": "PLAY-080:"
+        },
+        "escalationTriggers": [
+          "shared_contract_or_schema_decision",
+          "unresolved_product_visual_or_interaction_judgment",
+          "path_outside_claim",
+          "baseline_or_candidate_identity_mismatch",
+          "failure_outside_focused_scope",
+          "save_or_migration_uncertainty",
+          "cross_lane_semantic_conflict",
+          "two_unsuccessful_repair_attempts",
+          "subjective_acceptance_required"
+        ],
+        "stopCondition": "Stop after one clean descendant repair with two byte-identical zero-child proofs. This is the first repair attempt; on another failed repair, escalate. Do not execute Blender/DCC or the launcher, create pixels/.blend/output files, normalize, mutate siblings/shared/renderer/shipping paths, run aggregate gates, push, integrate, self-accept, or pin.",
+        "independentReviewer": {
+          "required": true,
+          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+          "model": "gpt-5.6-sol",
+          "effort": "high"
+        },
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {
+              "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+              "sha256": "583c5d7be25a7ffdb95f354c6279fe7c309358f65445365203431c51f0e53247"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/v14-compatibility-v01/SCENE.json",
+              "sha256": "11e12faf544aefbaad8d15753fd977bdc7022dca4d2fcead7923e7f068b093a4"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/v14-compatibility-v01/LOWERING.json",
+              "sha256": "d3b46cb63541a83d3963556b64a5e5fbee83a41a1480a72aa840c7c0b748e5f9"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "modelRouteSha256": "05884249492edfdc1c4c295a6b479470b6fe17dacf661285682cd34bc13163ec",
+      "modelRoute": {
+        "schema": 1,
+        "routeId": "quality-v1:play-081-industrial-l04-v14-west-process-a-prelaunch-repair-v2",
+        "taskId": "PLAY-081",
+        "packetKind": "implementation",
+        "classification": "LUNA_IMPLEMENTATION",
+        "model": "gpt-5.6-luna",
+        "effort": "high",
+        "rationale": "Independent frontier review returns the first west prelaunch checkpoint. West collapses all non-cylinder semantic shapes to boxes, uses flat gray materials, configures Eevee despite its Cycles contract, creates a camera object without camera data or aim, omits governed lights/world/contact shadow, and never renders a raw output. The repair is deterministic and remains zero-child.",
+        "authority": {
+          "authorityCommit": "1d7c6510fd99299c88d3f4412caa982e020c1941",
+          "baseCommit": "ea26fdac05169e0375b65d7c5dc65b4fbe00d977",
+          "claim": {
+            "path": "docs/production/claims/PLAY-081.world-art-west.md",
+            "sha256": "6b9608a7854afc60676ac27e7c7a8a7c4420161805a4ef59c68649acdd6a901d"
+          },
+          "immutableInputs": [
+            {
+              "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+              "sha256": "583c5d7be25a7ffdb95f354c6279fe7c309358f65445365203431c51f0e53247"
+            },
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "62e077c88730fda5664e5fa6d23200ade77418bd43f1c721c0bff84eaac1c971"
+            },
+            {
+              "path": "docs/production/decisions/CONTRACT-020-deterministic-dcc-world-art.md",
+              "sha256": "1495292c86044c07ba3751907b78d1e688e19a6d828aec255e11a1732c4e7bec"
+            },
+            {
+              "path": "docs/production/decisions/CONTRACT-021-parallel-directional-art-cells.md",
+              "sha256": "f80844c928d904498510b8b151381f40315e072d52d81695aafcd6b91081ae4c"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/WEST-V14-DESIGN.json",
+              "sha256": "334ab5ed19734d6a4f90e499cf8f15872a3c11677a2cb437a912b6a96d0617ad"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/WEST-V14-LOWERING.json",
+              "sha256": "b15466c78dedc19d1009ddc9cb691002ed7d5dd192c1caf8be05023fb42376dd"
+            }
+          ]
+        },
+        "assignment": {
+          "threadId": "019fab72-b2c9-7d60-a397-27d01d06cbbd",
+          "branch": "codex/citysim-world-art-west",
+          "worktree": "/Users/James/.codex/worktrees/ef17/city-sim",
+          "expectedHead": "84b3e6fcad32f6bf1f71be409de2b79ef15ed5cc",
+          "featureAuthorThreadId": "019fab72-b2c9-7d60-a397-27d01d06cbbd",
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-081",
+            "docs/production/evidence/PLAY-081"
+          ],
+          "allowed": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/process-a-execution-v01",
+            "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/process-a-execution-v01"
+          ],
+          "forbidden": [
+            "docs/production/evidence/INTEGRATION",
+            "docs/production/claims",
+            "docs/production/decisions",
+            "Native/CitySimNative/Sources",
+            "Native/CitySimNative/Resources",
+            "Native/CitySimNative/Package.swift",
+            "script",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/v14-compatibility-v01"
+          ]
+        },
+        "boundedDeliverable": "Preserve 84b3e6f as an ancestor and repair only the existing west process-a-execution-v01 roots. Replace semantic-name-only proxies with real Blender construction: wedge meshes with explicit vertices/faces; compound portal frames, reveals and an unfilled aperture; framed mullions/louvers/doors; separately modeled rail posts/rails, gutters/downspouts, vents/plant modules, markings and wear bands; capped vessel/stack parts; oriented cylindrical pipe segments, torus or curve elbows and supports; truss chords/diagonals aligned to endpoints; no generic AABB fallback for declared semantic primitives. Every named lowered object must yield unique nonzero geometry or an intentional void record. Do not invent or retain numeric family colors, energy, exposure or fallback gray. Declare appearanceLock and sourceProductionProfile null and executionReady false; implement a fail-closed exact-hash profile loader that must supply every numeric material/light/color/render field after Integration publishes the North lock, and reject before bpy import when the profile is absent, incomplete or mismatched. Create a real orthographic camera datablock with exact position, target quaternion, scale and shifts; configure Cycles CPU, one thread, fixed sample/seed/bounces, transparent RGBA, color management, world, aimed area lights and a southeast shadow-catching receiver; set an output inside the process root and include a future bpy.ops.render.render(write_still=True) plus deterministic .blend/provenance/manifest/receipt writes. Execution remains impossible without the exact future Integration grant/profile. Strengthen AST/adversarial tests to reject cube/cylinder semantic downgrades, missing topology, solid portal voids, placeholder colors, Eevee, camera without data/aim, missing world/light/shadow/render operations, output escape, low-level bypass and a second child. Update exact evidence.",
+        "validation": {
+          "focusedGateOwner": {
+            "threadId": "019fab72-b2c9-7d60-a397-27d01d06cbbd",
+            "role": "west_v14_process_a_prelaunch_repair_gate"
+          },
+          "focusedCommands": [
+            "PYTHONDONTWRITEBYTECODE=1 python3 Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/process-a-execution-v01/test_process_a_prelaunch.py",
+            "PYTHONDONTWRITEBYTECODE=1 python3 Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/process-a-execution-v01/test_process_a_prelaunch.py",
+            "python3 -m json.tool docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/process-a-execution-v01/HANDOFF.json",
+            "python3 -m json.tool docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/process-a-execution-v01/VALIDATION.json",
+            "git diff --check 84b3e6fcad32f6bf1f71be409de2b79ef15ed5cc..HEAD"
+          ],
+          "fullGateOwner": {
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "role": "independent_frontier_blender_construction_prelaunch_review",
+            "model": "gpt-5.6-sol",
+            "effort": "high"
+          },
+          "fullCommands": [
+            "independent source review of every Blender builder, material/profile fail-closed behavior, camera/light/world/shadow/render pipeline, exact output containment, one-child isolation and zero-child evidence"
+          ]
+        },
+        "expectedResult": {
+          "evidencePaths": [
+            "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/process-a-execution-v01/HANDOFF.json",
+            "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/process-a-execution-v01/VALIDATION.json"
+          ],
+          "commitRequired": true,
+          "commitMessagePattern": "PLAY-081:"
+        },
+        "escalationTriggers": [
+          "shared_contract_or_schema_decision",
+          "unresolved_product_visual_or_interaction_judgment",
+          "path_outside_claim",
+          "baseline_or_candidate_identity_mismatch",
+          "failure_outside_focused_scope",
+          "save_or_migration_uncertainty",
+          "cross_lane_semantic_conflict",
+          "two_unsuccessful_repair_attempts",
+          "subjective_acceptance_required"
+        ],
+        "stopCondition": "Stop after one clean descendant repair with two byte-identical zero-child proofs. This is the first repair attempt; on another failed repair, escalate. Do not execute Blender/DCC or the launcher, create pixels/.blend/output files, normalize, mutate siblings/shared/renderer/shipping paths, run aggregate gates, push, integrate, self-accept, or pin.",
+        "independentReviewer": {
+          "required": true,
+          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+          "model": "gpt-5.6-sol",
+          "effort": "high"
+        },
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {
+              "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+              "sha256": "583c5d7be25a7ffdb95f354c6279fe7c309358f65445365203431c51f0e53247"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/WEST-V14-DESIGN.json",
+              "sha256": "334ab5ed19734d6a4f90e499cf8f15872a3c11677a2cb437a912b6a96d0617ad"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/WEST-V14-LOWERING.json",
+              "sha256": "b15466c78dedc19d1009ddc9cb691002ed7d5dd192c1caf8be05023fb42376dd"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

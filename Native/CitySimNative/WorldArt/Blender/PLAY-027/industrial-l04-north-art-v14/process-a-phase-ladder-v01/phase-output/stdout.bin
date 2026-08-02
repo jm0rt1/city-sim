@@ -1,0 +1,152 @@
+{"play027Phase":"python_entered","sequence":0}
+{"play027Phase":"frozen_inputs_verified","sequence":1}
+{"play027Phase":"source_module_loaded","sequence":2}
+{"play027Phase":"bpy_imported","sequence":3}
+{"play027Phase":"scene_configured","sequence":4}
+{"play027Phase":"all_96_meshes_created","sequence":5}
+{"play027Phase":"pre_micro_render","sequence":6}
+Blender 4.5.12 LTS (hash 84afd5f785f7 built 2026-07-21 01:41:35)
+Fra:1 Mem:16.31M (Peak 16.31M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-contact-shadow-receiver::primary
+Fra:1 Mem:16.31M (Peak 16.31M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-gutters-and-rails::member-04
+Fra:1 Mem:16.31M (Peak 16.31M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-gutters-and-rails::member-03
+Fra:1 Mem:16.31M (Peak 16.31M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-gutters-and-rails::member-02
+Fra:1 Mem:16.31M (Peak 16.31M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-gutters-and-rails::member-01
+Fra:1 Mem:16.31M (Peak 16.31M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-gutters-and-rails::member-00
+Fra:1 Mem:16.31M (Peak 16.31M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-safety-markings::stripe-01
+Fra:1 Mem:16.31M (Peak 16.31M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-safety-markings::stripe-00
+Fra:1 Mem:16.32M (Peak 16.32M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-service-doors::door-02
+Fra:1 Mem:16.32M (Peak 16.32M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-service-doors::door-01
+Fra:1 Mem:16.32M (Peak 16.32M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-service-doors::door-00
+Fra:1 Mem:16.32M (Peak 16.32M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-window-mullions::member-04
+Fra:1 Mem:16.32M (Peak 16.32M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-window-mullions::member-03
+Fra:1 Mem:16.32M (Peak 16.32M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-window-mullions::member-02
+Fra:1 Mem:16.32M (Peak 16.32M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-window-mullions::member-01
+Fra:1 Mem:16.32M (Peak 16.32M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-window-mullions::member-00
+Fra:1 Mem:16.32M (Peak 16.32M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-staff-entrance::leaf
+Fra:1 Mem:16.33M (Peak 16.33M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-staff-entrance::frame
+Fra:1 Mem:16.33M (Peak 16.33M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-stack-cap::primary
+Fra:1 Mem:16.33M (Peak 16.33M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-stack::bands
+Fra:1 Mem:16.34M (Peak 16.34M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-stack::shaft
+Fra:1 Mem:16.34M (Peak 16.34M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-roof-plant-tanks::unit-02
+Fra:1 Mem:16.34M (Peak 16.34M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-roof-plant-tanks::unit-01
+Fra:1 Mem:16.35M (Peak 16.35M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-roof-plant-tanks::unit-00
+Fra:1 Mem:16.35M (Peak 16.35M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-roof-vents::unit-02
+Fra:1 Mem:16.35M (Peak 16.35M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-roof-vents::unit-01
+Fra:1 Mem:16.35M (Peak 16.35M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-roof-vents::unit-00
+Fra:1 Mem:16.36M (Peak 16.36M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-process-pipe-east::supports
+Fra:1 Mem:16.36M (Peak 16.36M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-process-pipe-east::elbow-01
+Fra:1 Mem:16.37M (Peak 16.37M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-process-pipe-east::elbow-00
+Fra:1 Mem:16.39M (Peak 16.39M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-process-pipe-east::segment-02
+Fra:1 Mem:16.39M (Peak 16.39M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-process-pipe-east::segment-01
+Fra:1 Mem:16.39M (Peak 16.39M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-process-pipe-east::segment-00
+Fra:1 Mem:16.40M (Peak 16.40M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-process-pipe-west::supports
+Fra:1 Mem:16.40M (Peak 16.40M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-process-pipe-west::elbow-01
+Fra:1 Mem:16.41M (Peak 16.41M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-process-pipe-west::elbow-00
+Fra:1 Mem:16.43M (Peak 16.43M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-process-pipe-west::segment-02
+Fra:1 Mem:16.43M (Peak 16.43M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-process-pipe-west::segment-01
+Fra:1 Mem:16.44M (Peak 16.44M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-process-pipe-west::segment-00
+Fra:1 Mem:16.44M (Peak 16.44M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-crucible-heat-cap::primary
+Fra:1 Mem:16.44M (Peak 16.44M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-crucible-vessel::rim
+Fra:1 Mem:16.44M (Peak 16.44M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-crucible-vessel::shoulder
+Fra:1 Mem:16.45M (Peak 16.45M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-crucible-vessel::body
+Fra:1 Mem:16.45M (Peak 16.45M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-crane-girder-south::diagonal-1
+Fra:1 Mem:16.45M (Peak 16.45M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-crane-girder-south::diagonal-0
+Fra:1 Mem:16.45M (Peak 16.45M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-crane-girder-south::upper-chord
+Fra:1 Mem:16.45M (Peak 16.45M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-crane-girder-south::lower-chord
+Fra:1 Mem:16.46M (Peak 16.46M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-crane-girder-north::diagonal-1
+Fra:1 Mem:16.46M (Peak 16.46M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-crane-girder-north::diagonal-0
+Fra:1 Mem:16.46M (Peak 16.46M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-crane-girder-north::upper-chord
+Fra:1 Mem:16.46M (Peak 16.46M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-crane-girder-north::lower-chord
+Fra:1 Mem:16.46M (Peak 16.46M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-crane-lantern::diagonal-1
+Fra:1 Mem:16.47M (Peak 16.47M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-crane-lantern::diagonal-0
+Fra:1 Mem:16.47M (Peak 16.47M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-crane-lantern::upper-chord
+Fra:1 Mem:16.47M (Peak 16.47M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-crane-lantern::lower-chord
+Fra:1 Mem:16.47M (Peak 16.47M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-clerestory-band::glass-02
+Fra:1 Mem:16.47M (Peak 16.47M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-clerestory-band::glass-01
+Fra:1 Mem:16.48M (Peak 16.48M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-clerestory-band::glass-00
+Fra:1 Mem:16.48M (Peak 16.48M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-clerestory-band::frame-02
+Fra:1 Mem:16.48M (Peak 16.48M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-clerestory-band::frame-01
+Fra:1 Mem:16.48M (Peak 16.48M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-clerestory-band::frame-00
+Fra:1 Mem:16.48M (Peak 16.48M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-east-monitor-roof::eave
+Fra:1 Mem:16.48M (Peak 16.48M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-east-monitor-roof::slope-02
+Fra:1 Mem:16.48M (Peak 16.48M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-east-monitor-roof::slope-01
+Fra:1 Mem:16.48M (Peak 16.48M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-east-monitor-roof::slope-00
+Fra:1 Mem:16.48M (Peak 16.48M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-east-monitor-roof::peak-02
+Fra:1 Mem:16.48M (Peak 16.48M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-east-monitor-roof::peak-01
+Fra:1 Mem:16.49M (Peak 16.49M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-east-monitor-roof::peak-00
+Fra:1 Mem:16.49M (Peak 16.49M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-west-sawtooth-roof::eave
+Fra:1 Mem:16.49M (Peak 16.49M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-west-sawtooth-roof::slope-03
+Fra:1 Mem:16.49M (Peak 16.49M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-west-sawtooth-roof::slope-02
+Fra:1 Mem:16.49M (Peak 16.49M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-west-sawtooth-roof::slope-01
+Fra:1 Mem:16.49M (Peak 16.49M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-west-sawtooth-roof::slope-00
+Fra:1 Mem:16.49M (Peak 16.49M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-west-sawtooth-roof::peak-03
+Fra:1 Mem:16.49M (Peak 16.49M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-west-sawtooth-roof::peak-02
+Fra:1 Mem:16.49M (Peak 16.49M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-west-sawtooth-roof::peak-01
+Fra:1 Mem:16.50M (Peak 16.50M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-west-sawtooth-roof::peak-00
+Fra:1 Mem:16.50M (Peak 16.50M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-portal-threshold::edge
+Fra:1 Mem:16.50M (Peak 16.50M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-portal-threshold::slab
+Fra:1 Mem:16.50M (Peak 16.50M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-freight-bay-east::primary
+Fra:1 Mem:16.50M (Peak 16.50M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-freight-bay-center::primary
+Fra:1 Mem:16.50M (Peak 16.50M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-freight-bay-west::primary
+Fra:1 Mem:16.50M (Peak 16.50M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-monumental-portal-void::reveal-header
+Fra:1 Mem:16.50M (Peak 16.50M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-monumental-portal-void::reveal-right
+Fra:1 Mem:16.50M (Peak 16.50M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-monumental-portal-void::reveal-left
+Fra:1 Mem:16.50M (Peak 16.50M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-monumental-portal-void::inset-back
+Fra:1 Mem:16.51M (Peak 16.51M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-monumental-portal-void::frame
+Fra:1 Mem:16.51M (Peak 16.51M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-monumental-portal-header::primary
+Fra:1 Mem:16.51M (Peak 16.51M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-monumental-portal-east-jamb::primary
+Fra:1 Mem:16.51M (Peak 16.51M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-monumental-portal-west-jamb::primary
+Fra:1 Mem:16.51M (Peak 16.51M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-east-control-annex::primary
+Fra:1 Mem:16.51M (Peak 16.51M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-west-structural-return::primary
+Fra:1 Mem:16.51M (Peak 16.51M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-main-foundry-hall::primary
+Fra:1 Mem:16.52M (Peak 16.52M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-north-loading-apron::service-pad
+Fra:1 Mem:16.52M (Peak 16.52M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-north-loading-apron::road-link
+Fra:1 Mem:16.52M (Peak 16.52M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-foundation::primary
+Fra:1 Mem:16.52M (Peak 16.52M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-north-fill
+Fra:1 Mem:16.52M (Peak 16.52M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | v14-north-key
+Fra:1 Mem:16.52M (Peak 16.52M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Light
+Fra:1 Mem:16.52M (Peak 16.52M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Synchronizing object | Cube
+Fra:1 Mem:16.52M (Peak 16.52M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Initializing
+Fra:1 Mem:12.92M (Peak 16.52M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Waiting for render to start
+Fra:1 Mem:12.92M (Peak 16.52M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Updating Scene
+Fra:1 Mem:12.92M (Peak 16.52M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Updating Shaders
+Fra:1 Mem:12.92M (Peak 16.52M) | Time:00:00.03 | Mem:0.00M, Peak:0.00M | Scene, ViewLayer | Loading render kernels (may take a few minutes the first time)
+Fra:1 Mem:13.01M (Peak 16.52M) | Time:00:00.03 | Mem:0.01M, Peak:0.01M | Scene, ViewLayer | Updating Procedurals
+Fra:1 Mem:13.01M (Peak 16.52M) | Time:00:00.03 | Mem:0.01M, Peak:0.01M | Scene, ViewLayer | Updating Background
+Fra:1 Mem:13.01M (Peak 16.52M) | Time:00:00.03 | Mem:0.01M, Peak:0.01M | Scene, ViewLayer | Updating Camera
+Fra:1 Mem:13.01M (Peak 16.52M) | Time:00:00.03 | Mem:0.01M, Peak:0.01M | Scene, ViewLayer | Updating Meshes Flags
+Fra:1 Mem:13.01M (Peak 16.52M) | Time:00:00.03 | Mem:0.01M, Peak:0.01M | Scene, ViewLayer | Updating Objects
+Fra:1 Mem:13.01M (Peak 16.52M) | Time:00:00.03 | Mem:0.01M, Peak:0.01M | Scene, ViewLayer | Updating Objects | Copying Transformations to device
+Fra:1 Mem:13.03M (Peak 16.52M) | Time:00:00.03 | Mem:0.03M, Peak:0.03M | Scene, ViewLayer | Updating Particle Systems
+Fra:1 Mem:13.03M (Peak 16.52M) | Time:00:00.03 | Mem:0.03M, Peak:0.03M | Scene, ViewLayer | Updating Particle Systems | Copying Particles to device
+Fra:1 Mem:13.03M (Peak 16.52M) | Time:00:00.03 | Mem:0.03M, Peak:0.03M | Scene, ViewLayer | Updating Meshes
+Fra:1 Mem:13.03M (Peak 16.52M) | Time:00:00.03 | Mem:0.03M, Peak:0.03M | Scene, ViewLayer | Updating Objects | Applying Static Transformations
+Fra:1 Mem:13.03M (Peak 16.52M) | Time:00:00.03 | Mem:0.03M, Peak:0.03M | Scene, ViewLayer | Updating Mesh | Computing attributes
+Fra:1 Mem:13.07M (Peak 16.52M) | Time:00:00.03 | Mem:0.04M, Peak:0.04M | Scene, ViewLayer | Updating Mesh | Copying Attributes to device
+Fra:1 Mem:13.05M (Peak 16.52M) | Time:00:00.03 | Mem:0.05M, Peak:0.05M | Scene, ViewLayer | Updating Scene BVH | Building
+Fra:1 Mem:13.06M (Peak 16.52M) | Time:00:00.03 | Mem:0.05M, Peak:0.05M | Scene, ViewLayer | Updating Scene BVH | Building BVH
+Fra:1 Mem:13.06M (Peak 16.52M) | Time:00:00.03 | Mem:0.14M, Peak:0.14M | Scene, ViewLayer | Updating Scene BVH | Building BVH 0%
+Fra:1 Mem:13.06M (Peak 16.52M) | Time:00:00.03 | Mem:0.24M, Peak:0.32M | Scene, ViewLayer | Updating Scene BVH | Copying BVH to device
+Fra:1 Mem:13.06M (Peak 16.52M) | Time:00:00.03 | Mem:0.24M, Peak:0.32M | Scene, ViewLayer | Updating Mesh | Computing normals
+Fra:1 Mem:13.13M (Peak 16.52M) | Time:00:00.03 | Mem:0.24M, Peak:0.32M | Scene, ViewLayer | Updating Mesh | Copying Mesh to device
+Fra:1 Mem:13.13M (Peak 16.52M) | Time:00:00.03 | Mem:0.31M, Peak:0.32M | Scene, ViewLayer | Updating Objects Flags
+Fra:1 Mem:13.13M (Peak 16.52M) | Time:00:00.03 | Mem:0.31M, Peak:0.32M | Scene, ViewLayer | Updating Primitive Offsets
+Fra:1 Mem:13.13M (Peak 16.52M) | Time:00:00.03 | Mem:0.31M, Peak:0.32M | Scene, ViewLayer | Updating Images
+Fra:1 Mem:13.13M (Peak 16.52M) | Time:00:00.03 | Mem:0.31M, Peak:0.32M | Scene, ViewLayer | Updating Camera Volume
+Fra:1 Mem:13.13M (Peak 16.52M) | Time:00:00.03 | Mem:0.31M, Peak:0.32M | Scene, ViewLayer | Updating Lookup Tables
+Fra:1 Mem:13.13M (Peak 16.52M) | Time:00:00.03 | Mem:0.39M, Peak:0.39M | Scene, ViewLayer | Updating Lights
+Fra:1 Mem:13.13M (Peak 16.52M) | Time:00:00.03 | Mem:0.39M, Peak:0.39M | Scene, ViewLayer | Updating Lights | Computing tree
+Fra:1 Mem:13.14M (Peak 16.52M) | Time:00:00.03 | Mem:0.41M, Peak:0.41M | Scene, ViewLayer | Updating Integrator
+Fra:1 Mem:13.14M (Peak 16.52M) | Time:00:00.03 | Mem:0.41M, Peak:0.41M | Scene, ViewLayer | Updating Film
+Fra:1 Mem:13.15M (Peak 16.52M) | Time:00:00.03 | Mem:0.33M, Peak:0.41M | Scene, ViewLayer | Updating Lookup Tables
+Fra:1 Mem:13.15M (Peak 16.52M) | Time:00:00.03 | Mem:0.41M, Peak:0.41M | Scene, ViewLayer | Updating Baking
+Fra:1 Mem:13.15M (Peak 16.52M) | Time:00:00.03 | Mem:0.41M, Peak:0.41M | Scene, ViewLayer | Updating Device | Writing constant memory
+Fra:1 Mem:13.15M (Peak 16.52M) | Time:00:00.03 | Mem:0.41M, Peak:0.41M | Scene, ViewLayer | Sample 0/8
+Fra:1 Mem:13.17M (Peak 16.52M) | Time:00:00.03 | Remaining:00:00.00 | Mem:0.41M, Peak:0.41M | Scene, ViewLayer | Sample 1/8
+Fra:1 Mem:13.17M (Peak 16.52M) | Time:00:00.03 | Mem:0.41M, Peak:0.41M | Scene, ViewLayer | Sample 8/8
+Fra:1 Mem:13.17M (Peak 16.52M) | Time:00:00.03 | Mem:0.41M, Peak:0.41M | Scene, ViewLayer | Finished
+Saved: '/Users/James/.codex/worktrees/0648/city-sim/Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/process-a-phase-ladder-v01/phase-output/micro.png'
+Time: 00:00.04 (Saving: 00:00.00)
+
+{"play027Phase":"post_micro_render","sequence":7}
+{"play027Phase":"complete","sequence":8}

@@ -3,7 +3,7 @@
   "authorityCommit": "787356a07c5c000df73600fc2f630cfafc421c45",
   "assignments": [
     {
-      "modelRouteSha256": "267c84204a115c65cf5bf2d603a53b9702787fc9133ab12387051c8bf72cd8d3",
+      "modelRouteSha256": "45a9c82da87131e98cdee32cb7c1284edb099b99e21b81b0b44c22ae6898041f",
       "modelRoute": {
         "schema": 2,
         "routeId": "quality-v2:play-073-r4-f3-developed-core-camera-luna-v1",
@@ -39,7 +39,7 @@
           "threadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
           "branch": "codex/citysim-world-rendering",
           "worktree": "/Users/James/.codex/worktrees/cac1/city-sim",
-          "expectedHead": "0804c42fc39d467180946ab23af5ce132a0e728a",
+          "expectedHead": "c7b0d0523816cc1c0a488c546f960f6fe8c5fb98",
           "featureAuthorThreadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
           "sharedAuthorityOwnership": false,
           "finalQAOwnership": false,
@@ -120,7 +120,7 @@
             "swift test --package-path Native/CitySimNative --filter WorldRenderingTests/testOpeningCameraRefitsOnceAfterTheShippingViewportSettles",
             "swift test --package-path Native/CitySimNative --filter WorldRenderingTests/testIndustrialStrainCameraPrioritizesTheDominantDistrictWithoutHidingRemoteTruth",
             "python3 -m json.tool docs/production/evidence/PLAY-073/r4-f3-developed-core-camera-v1/RESULT.json",
-            "git diff --check 0804c42fc39d467180946ab23af5ce132a0e728a..HEAD"
+            "git diff --check c7b0d0523816cc1c0a488c546f960f6fe8c5fb98..HEAD"
           ],
           "fullGateOwner": {
             "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",

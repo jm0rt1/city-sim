@@ -1,6 +1,6 @@
 # PLAY-079 Claim
 
-- **Claim revision:** 10
+- **Claim revision:** 11
 - **Title:** Close the Industrial L4 East execution boundary in parallel
 - **Lane:** World Art East cell
 - **Branch:** `codex/citysim-world-art-east`
@@ -131,4 +131,17 @@ and cross-hash binding; exercise an Integration-authored positive fixture and
 all wrong-field adversaries; and assign the complete portal assembly materials,
 including `portal-void` on the recessed back plane. Return one zero-DCC repair
 commit. No Blender child, render, pixel, normalization, admission, activation,
+shipping, push, integration, or self-acceptance is authorized.
+
+## Revision-11 bind East closure to the live checkout
+
+Consume the Integration-published
+`INDUSTRIAL-L04-EAST-LIVE-IDENTITY-RETURN-REPAIR-V1.json`. Preserve candidate
+`46aa8c493a23fb32433190348b32a0e3c74a3726`, its accepted portal material
+repair, and all historical evidence. Within the existing East-exclusive roots
+only, resolve the actual Git HEAD and branch from the worktree and require the
+schedule, grant, session, profile, claim, and route identity fields to match
+that live checkout exactly. Add stale/mismatched/omitted HEAD, branch, claim,
+profile, and route adversaries. Return one zero-DCC repair commit. No Blender
+child, output root, render, pixel, normalization, admission, activation,
 shipping, push, integration, or self-acceptance is authorized.

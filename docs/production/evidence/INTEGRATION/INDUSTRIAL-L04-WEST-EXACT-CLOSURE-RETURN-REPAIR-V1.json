@@ -1,0 +1,53 @@
+{
+  "schema": "citysim.world-art.west-exact-closure-return-repair.v1",
+  "taskId": "PLAY-081",
+  "direction": "west",
+  "returnedCandidate": "6228ed47d45fe8f489fe580be956b9bfb320d5ff",
+  "preserve": [
+    "current design and lowering hashes",
+    "genuinely non-collinear capped elbow",
+    "all historical evidence",
+    "zero DCC, output, pixel and blend state"
+  ],
+  "requiredRepairs": [
+    {
+      "id": "exact-live-head",
+      "requirement": "Every schedule, grant, session, profile, appearance, material and route workerHead must equal git rev-parse HEAD, not merely an ancestor."
+    },
+    {
+      "id": "route-and-schema-closure",
+      "requirement": "Parse and hash-bind the committed schema-2 modelRoute receipt and exact source-stage schema; reject absent, stale, wrong-route, wrong-schema and cross-hash drift."
+    },
+    {
+      "id": "complete-adversaries",
+      "requirement": "Exercise one adversary for every identity field and every cross-document hash edge."
+    },
+    {
+      "id": "behavioral-portal-materials",
+      "requirement": "Observe actual _build_component to _add_compound_recessed_portal runtime object/material arguments using a pure extracted lowering plan or mock-bpy seam; swapping reveal and void roles must fail."
+    }
+  ],
+  "allowedRoots": [
+    "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01",
+    "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01"
+  ],
+  "focusedProof": {
+    "level": "static_only",
+    "runs": 2,
+    "mustProve": [
+      "exact live branch and HEAD",
+      "resolvable route and schema bytes",
+      "complete per-field adversary matrix",
+      "actual lowering call-path material roles",
+      "zero child and output effects"
+    ]
+  },
+  "forbidden": [
+    "Blender or DCC child",
+    "output root, render, pixels or normalization",
+    "redesign of accepted geometry",
+    "sibling, renderer, shipping or shared mutation",
+    "admission, acceptance, integration, push or pinning"
+  ],
+  "stopCondition": "One bounded West-only repair attempt, focused suites twice, one successor receipt and one clean PLAY-081 commit; stop on any wider defect or second failed repair."
+}

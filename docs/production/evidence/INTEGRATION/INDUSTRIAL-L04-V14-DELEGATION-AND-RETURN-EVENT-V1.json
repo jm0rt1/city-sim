@@ -1,0 +1,54 @@
+{
+  "schema": "citysim.integration.operating-review-event.v1",
+  "eventId": "industrial-l04-v14-delegation-and-return-20260802-v1",
+  "recordedBy": "integration",
+  "batch": "industrial_l04_directional_family",
+  "authorityCommitBeforeEventRecord": "74ada4d0956433756c3d8465b5d16367106e1037",
+  "triggers": [
+    {
+      "type": "delegation_acknowledgement_failed",
+      "routeReceipt": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-INDUSTRIAL-L04-V14-SIBLING-RETURN-REPAIRS-V1.json",
+      "routeReceiptSha256": "6544e6d99c4d9793c7b955ee66f3caca64c91c5ff8205f167e2374dcab6c97d4",
+      "suppliedCarrier": "a11cbf36ce3",
+      "resolvedCarrier": "a11cbf361bd8ac303bcc80b343b62caa294696c3",
+      "effect": "East stopped before mutation; South and West received a correction while preserving bounded work.",
+      "attribution": "integration_authored_identity_copy_error"
+    },
+    {
+      "type": "task_completed_or_stopped",
+      "taskId": "PLAY-080",
+      "threadId": "019fab72-b2c9-7d60-a397-27f4fde85950",
+      "candidateCommit": "898afba516eb88d3173c93e4d58f0fe1260f64e2",
+      "result": "APPROVE_BOUNDED_ZERO_DCC_CLOSURE",
+      "focusedGate": "15/15 compatibility and 15/15 prelaunch passed twice; no DCC, output root, pixels, or blend files",
+      "integrationDisposition": "Preserve branch-local candidate for complete directional admission; do not cherry-pick the dependency-incomplete repair commit alone.",
+      "nextDependency": "Integration-issued source-production schedule/profile after the full sibling closure set is independently accepted."
+    }
+  ],
+  "reviewBoundary": {
+    "model": "gpt-5.6-luna",
+    "effort": "medium",
+    "maximumTurns": 1,
+    "contextByteCap": 32768,
+    "productBuilds": 0,
+    "fullSuites": 0,
+    "dccStarts": 0,
+    "taskPolling": false,
+    "allowedOutcome": ["NO_CHANGE", "BOUNDED_PROPOSAL"]
+  },
+  "protectedOperations": [
+    "active North Stage-A zero-DCC implementation",
+    "active East and West bounded closure repairs",
+    "frozen Renderer intake candidate",
+    "independent QA preregistration"
+  ],
+  "forbidden": [
+    "product mutation",
+    "shared-policy mutation",
+    "task dispatch or refill",
+    "rerun worker gates",
+    "Blender or DCC",
+    "staged app or final QA",
+    "integration, push, pinning, or acceptance"
+  ]
+}

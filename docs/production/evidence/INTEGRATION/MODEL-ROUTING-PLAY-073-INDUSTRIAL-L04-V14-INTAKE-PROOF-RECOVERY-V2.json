@@ -1,0 +1,158 @@
+{
+  "schema": 1,
+  "authorityCommit": "1d7c6510fd99299c88d3f4412caa982e020c1941",
+  "assignments": [
+    {
+      "modelRouteSha256": "651997b2bcaa6db93a5cdb6e075a746e58f1ac9da154012488d4935069347317",
+      "modelRoute": {
+        "schema": 1,
+        "routeId": "quality-v1:play-073-industrial-l04-v14-intake-proof-recovery-v2",
+        "taskId": "PLAY-073",
+        "packetKind": "local_debug",
+        "classification": "LUNA_LOCAL_DEBUG",
+        "model": "gpt-5.6-luna",
+        "effort": "max",
+        "rationale": "The first v14 intake-prep attempt exposed a reproducible lane-local validation contamination: the broad WorldRenderingTests filter rewrites and fails unrelated returned R4-E evidence, while the existing dedicated Industrial L4 quarantine/schema suites already cover the bounded intake contract. One exact cleanup and proof-only recovery is authorized with frozen inputs and no shared or visual judgment.",
+        "authority": {
+          "authorityCommit": "1d7c6510fd99299c88d3f4412caa982e020c1941",
+          "baseCommit": "ea26fdac05169e0375b65d7c5dc65b4fbe00d977",
+          "claim": {
+            "path": "docs/production/claims/PLAY-073.world-rendering.md",
+            "sha256": "e8d0b9f79615ba9c081f805b78b2a4e83a73fc10cf22769c31ced7952c3bff72"
+          },
+          "immutableInputs": [
+            {
+              "path": ".agents/skills/render-citysim-world/SKILL.md",
+              "sha256": "fbd37c5f4730c61f95a344266b61d3fb37ce39adcefbaaba6e94f8939d8b72e2"
+            },
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "62e077c88730fda5664e5fa6d23200ade77418bd43f1c721c0bff84eaac1c971"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-INDUSTRIAL-L04-V14-PRELOCK-FANOUT-V1.json",
+              "sha256": "2b2558835d5382d15f92f58a538c5795f82d3875867e17dd686b23dc8d738e00"
+            },
+            {
+              "path": "Native/CitySimNative/Tests/CitySimNativeTests/IndustrialL4DirectionQuarantineSupport.swift",
+              "sha256": "205975ad7d76653b52a5e395c3d74273436a84b3d470b2d0febbe9f7917abe6e"
+            },
+            {
+              "path": "Native/CitySimNative/Tests/CitySimNativeTests/IndustrialL4DirectionQuarantineMatrixTests.swift",
+              "sha256": "008eee97972e51a7155ab707e18ab82766ac0d587881983b13a7d5045e829c94"
+            },
+            {
+              "path": "Native/CitySimNative/Tests/CitySimNativeTests/IndustrialL4DirectionPacketSchemaTests.swift",
+              "sha256": "fd3e63ebf178797fed71472d274c7cce5d13f2b8c2eeea069a466cec036a515a"
+            }
+          ]
+        },
+        "assignment": {
+          "threadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+          "branch": "codex/citysim-world-rendering",
+          "worktree": "/Users/James/.codex/worktrees/cac1/city-sim",
+          "expectedHead": "164c18ae92695f05a6568da00d855870ae6f3d52",
+          "featureAuthorThreadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": [
+            "Native/CitySimNative/Tests/CitySimNativeTests/WorldRenderingTests.swift",
+            "docs/production/evidence/PLAY-073"
+          ],
+          "allowed": [
+            "Native/CitySimNative/Tests/CitySimNativeTests/WorldRenderingTests.swift",
+            "docs/production/evidence/PLAY-073/r4-e-depth-layered-residential-frontage-v2/PIXEL-ROLE-LEDGER.json",
+            "docs/production/evidence/PLAY-073/r4-e-depth-layered-residential-frontage-v2/RESULT.json",
+            "docs/production/evidence/PLAY-073/industrial-l04-v14-intake-prep-v1"
+          ],
+          "forbidden": [
+            ".agents",
+            "AGENTS.md",
+            "Native/CitySimNative/Package.swift",
+            "Native/CitySimNative/Resources",
+            "Native/CitySimNative/Sources",
+            "Native/CitySimNative/WorldArt",
+            "docs/production/claims",
+            "docs/production/decisions",
+            "docs/production/evidence/INTEGRATION",
+            "script"
+          ]
+        },
+        "boundedDeliverable": "Restore only the three files dirtied by the failed first attempt exactly to expected HEAD 164c18ae. Do not retain the redundant WorldRenderingTests method or changed R4-E metrics. Read the already frozen IndustrialL4DirectionQuarantineSupport, MatrixTests, and PacketSchemaTests without editing them; run only those two named suites twice; prove existing exact N/E/S/W identity, no alias/transform/fallback, registration, provenance, LOD, deterministic replay, runtime-inactive, and atomic 4-of-4 guards; create compact HANDOFF and VALIDATION evidence under the v14 intake root; commit only those two new evidence files.",
+        "validation": {
+          "focusedGateOwner": {
+            "threadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+            "role": "renderer_v14_intake_proof_recovery_gate"
+          },
+          "focusedCommands": [
+            "swift test --package-path Native/CitySimNative --filter IndustrialL4DirectionQuarantineMatrixTests",
+            "swift test --package-path Native/CitySimNative --filter IndustrialL4DirectionPacketSchemaTests",
+            "swift test --package-path Native/CitySimNative --filter IndustrialL4DirectionQuarantineMatrixTests",
+            "swift test --package-path Native/CitySimNative --filter IndustrialL4DirectionPacketSchemaTests",
+            "python3 -m json.tool docs/production/evidence/PLAY-073/industrial-l04-v14-intake-prep-v1/HANDOFF.json",
+            "python3 -m json.tool docs/production/evidence/PLAY-073/industrial-l04-v14-intake-prep-v1/VALIDATION.json",
+            "git diff --check 164c18ae92695f05a6568da00d855870ae6f3d52..HEAD"
+          ],
+          "fullGateOwner": {
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "role": "aggregate_full_gate_and_independent_real_app_acceptance",
+            "model": "gpt-5.6-sol",
+            "effort": "high"
+          },
+          "fullCommands": [
+            "swift test --package-path Native/CitySimNative",
+            "./script/build_and_run.sh --verify",
+            "fresh-player real-app Industrial L4 visual and playability journey at regular and compact layouts"
+          ]
+        },
+        "expectedResult": {
+          "evidencePaths": [
+            "docs/production/evidence/PLAY-073/industrial-l04-v14-intake-prep-v1/HANDOFF.json",
+            "docs/production/evidence/PLAY-073/industrial-l04-v14-intake-prep-v1/VALIDATION.json"
+          ],
+          "commitRequired": true,
+          "commitMessagePattern": "PLAY-073:"
+        },
+        "escalationTriggers": [
+          "shared_contract_or_schema_decision",
+          "unresolved_product_visual_or_interaction_judgment",
+          "path_outside_claim",
+          "baseline_or_candidate_identity_mismatch",
+          "failure_outside_focused_scope",
+          "save_or_migration_uncertainty",
+          "cross_lane_semantic_conflict",
+          "two_unsuccessful_repair_attempts",
+          "subjective_acceptance_required"
+        ],
+        "stopCondition": "Stop after one clean evidence-only descendant with the three contaminated files byte-identical to expected HEAD and both dedicated suites passing twice. On any second repair failure, non-restorable dirt, stale immutable input, test failure in the two dedicated suites, shared/product change, or subjective judgment, escalate. Do not run broad WorldRenderingTests or aggregate gates, launch the app, ingest art, activate, ship, push, self-accept, or pin.",
+        "independentReviewer": {
+          "required": true,
+          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+          "model": "gpt-5.6-sol",
+          "effort": "high"
+        },
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {
+              "path": ".agents/skills/render-citysim-world/SKILL.md",
+              "sha256": "fbd37c5f4730c61f95a344266b61d3fb37ce39adcefbaaba6e94f8939d8b72e2"
+            },
+            {
+              "path": "Native/CitySimNative/Tests/CitySimNativeTests/IndustrialL4DirectionQuarantineMatrixTests.swift",
+              "sha256": "008eee97972e51a7155ab707e18ab82766ac0d587881983b13a7d5045e829c94"
+            },
+            {
+              "path": "Native/CitySimNative/Tests/CitySimNativeTests/IndustrialL4DirectionPacketSchemaTests.swift",
+              "sha256": "fd3e63ebf178797fed71472d274c7cce5d13f2b8c2eeea069a466cec036a515a"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,214 @@
+{
+  "schema": 1,
+  "taskId": "PLAY-075",
+  "candidateTaskId": "PLAY-073",
+  "gateId": "play-075-r4-f-fc996a28-final-v1",
+  "disposition": "RETURN",
+  "dispositionReason": "The exact candidate fails automatic composition and feedback boundaries: the connected district/public-realm span falls to 54.03% in maximized regular layout, the conservative connected-green terrain share outside the entire district bounding box remains above 25% in every governed layout, several occupied/context structures remain visually detached from continuous frontage, obvious residential repetition and mixed fidelity remain, and a blocked pointer placement emits the contradictory action update Road construction approved.",
+  "identity": {
+    "integrationAuthorityCommit": "684c10e95dbe95c79700e3fe635f6ea6517eea0d",
+    "candidateCommit": "fc996a287f5d0d16f58c13bc6ee2abadf4d64972",
+    "candidateTree": "f4c1814b848e706716db2f01d7b29cf13ba84a13",
+    "qaHead": "256bf670ff64abda1057f65ba4c432b3ee037359",
+    "qaTree": "1e6d457038d46bd6d0b1321b0610fecd2a282300",
+    "routeReceipt": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-075-R4-F-FC996A28-FINAL-QA-V1.json",
+    "routeReceiptSha256": "097e7d2e4ef1eda50942f1696b16e97a06eff80a9d3fa68b6e487718412a6af0",
+    "routeId": "quality-v2:play-075-r4-f-fc996a28-final-qa-v1",
+    "modelRouteSha256": "11c0f3446b46e42681ef9d2ee529d99f33d819983d9a6bc992c47bd2564f7db4",
+    "classification": "FRONTIER_AUTHORITY",
+    "model": "gpt-5.6-sol",
+    "effort": "high",
+    "candidateReceiptSha256": "9a222325146f843884aa0a3a4fb3935050da033c871cfa5c63d5669ce0105522",
+    "exclusiveLeaseSha256": "1d8200e3558c267db3d38f4efcc04358c2678b343aa75a20d369ed190e47f8c3",
+    "bundlePath": "/private/tmp/citysim-play073-r4f-qa-fc996a28.RSi4h1/city-sim/dist/CitySim-codex-play073-r4f-qa-candidate-w57ce2a3c6723.app",
+    "manifestSha256": "c87da02a4e2d6d2af111fa3785e78f6640299aa1cdf68819e4bf7d3dd5dc3d71",
+    "executableSha256": "7a2d81d20537363e4ef39fdb987f23a84c9e35c90d0b58fff80f27c99a6bdaa6",
+    "infoPlistSha256": "1af8f4c7621e4734c2a17cef61651451ada6ffd3debfa4587b40c9815184a0d6",
+    "resourceInventoryFileCount": 79,
+    "resourceInventorySha256": "824db799e1a6a1d4070e0c97a186121b28592603b6dacd6a23f7467e98863764"
+  },
+  "leaseConsumption": {
+    "attemptCount": 1,
+    "launchCount": 1,
+    "processId": 28390,
+    "freshDataRootBeforeLaunch": true,
+    "outputRootAbsentBeforeLaunch": true,
+    "matchingProcessCountBeforeLaunch": 0,
+    "matchingProcessCountAfterQuit": 0,
+    "rebuildCount": 0,
+    "secondJourneyCount": 0,
+    "computerUseTransportInterruption": "The Computer Use transport closed once while the command guide was open. PID 28390 remained alive; QA reattached to that same process and did not launch again."
+  },
+  "measurementMethod": {
+    "source": "Fresh real-app PNG captures from the one isolated candidate process; no author screenshots or fixture-only substitutions were used.",
+    "safeAperture": "For each capture, exclude the fixed top status/HUD rows and bottom command-deck rows. Coordinates are recorded as x, y, width, height in screenshot pixels.",
+    "connectedDistrictSpan": "Largest four-connected road/curb/public-realm component. Pixel inclusion: 35<=R<=150, 30<=G<=145, 28<=B<=140, max(R,G,B)-min(R,G,B)<=28, abs(R-G)<=18, and R>=G-8. Width is the inclusive component bounding width divided by safe-aperture width. Detached sprites outside that component are not credited as connected authored fabric.",
+    "conservativePlainTerrain": "Largest four-connected green component with 25<=R<=135, 45<=G<=155, 20<=B<=130, G-R>=9, and G-B>=10. The reported numerator discards every classified pixel inside the entire connected-district bounding rectangle, so it is a conservative lower bound on broad connected green outside the district rather than a count of parcel ground.",
+    "thresholds": {
+      "minimumConnectedDistrictWidthRatio": 0.6,
+      "maximumConservativePlainTerrainRatio": 0.25
+    }
+  },
+  "layouts": [
+    {
+      "layout": "regular",
+      "screenshot": "02-regular-frozen.png",
+      "screenshotPixels": [1229, 768],
+      "safeAperture": [0, 156, 1229, 552],
+      "connectedDistrictBoundingBox": [224, 52, 780, 400],
+      "connectedDistrictWidthRatio": 0.6347,
+      "connectedDistrictThreshold": "PASS",
+      "conservativePlainTerrainRatio": 0.5324,
+      "plainTerrainThreshold": "FAIL"
+    },
+    {
+      "layout": "900x600_compact",
+      "screenshot": "03-compact-window.png",
+      "screenshotPixels": [901, 653],
+      "contentGeometry": [900, 600],
+      "safeAperture": [0, 164, 901, 417],
+      "connectedDistrictBoundingBox": [102, 1, 696, 362],
+      "connectedDistrictWidthRatio": 0.7725,
+      "connectedDistrictThreshold": "PASS",
+      "conservativePlainTerrainRatio": 0.3264,
+      "plainTerrainThreshold": "FAIL"
+    },
+    {
+      "layout": "900x600_compact_focus_city",
+      "screenshot": "04-compact-focus-city.png",
+      "screenshotPixels": [901, 653],
+      "contentGeometry": [900, 600],
+      "safeAperture": [0, 157, 901, 496],
+      "connectedDistrictBoundingBox": [168, 43, 564, 292],
+      "connectedDistrictWidthRatio": 0.626,
+      "connectedDistrictThreshold": "PASS",
+      "conservativePlainTerrainRatio": 0.6073,
+      "plainTerrainThreshold": "FAIL"
+    },
+    {
+      "layout": "maximized_regular",
+      "screenshot": "05-maximized-regular.png",
+      "screenshotPixels": [1277, 768],
+      "safeAperture": [0, 130, 1277, 584],
+      "connectedDistrictBoundingBox": [292, 96, 690, 358],
+      "connectedDistrictWidthRatio": 0.5403,
+      "connectedDistrictThreshold": "FAIL",
+      "conservativePlainTerrainRatio": 0.6196,
+      "plainTerrainThreshold": "FAIL"
+    },
+    {
+      "layout": "maximized_focus_city",
+      "screenshot": "06-maximized-focus-city.png",
+      "screenshotPixels": [1277, 768],
+      "safeAperture": [0, 94, 1277, 674],
+      "connectedDistrictBoundingBox": [232, 100, 812, 422],
+      "connectedDistrictWidthRatio": 0.6359,
+      "connectedDistrictThreshold": "PASS",
+      "conservativePlainTerrainRatio": 0.5838,
+      "plainTerrainThreshold": "FAIL"
+    }
+  ],
+  "checks": [
+    {
+      "criterion": "Road, curb, sidewalk, and parcel fabric continuity",
+      "status": "PASS",
+      "observation": "The main loop reads continuously with curbs and inset parcel grounds at regular and compact sizes; no seam or fallback was observed in that connected component."
+    },
+    {
+      "criterion": "Grounded frontages and no floating structures",
+      "status": "FAIL",
+      "observation": "The upper-left and far-right residences plus the lower service building and water tower remain outside the connected road/public-realm component without a clearly continuous road-facing frontage; they read as detached context structures."
+    },
+    {
+      "criterion": "No overlap, clipping, or fallback",
+      "status": "PASS",
+      "observation": "No sprite overlap, critical clipping, or fallback texture was observed in the governed captures."
+    },
+    {
+      "criterion": "Adjacent repetition and fidelity coherence",
+      "status": "FAIL",
+      "observation": "Orange masonry, dark-roof residences repeat as an obvious stamp across the loop and detached edges, while City Hall and the park carry materially finer detail than several residences and service structures."
+    },
+    {
+      "criterion": "Pointer placement",
+      "status": "FAIL",
+      "observation": "Pointer selection exposed cost, target, likely consequence, recovery, and Escape cancellation, but the blocked Road placement at block 6,8 simultaneously emitted Action update: Road construction approved while the build decision and map semantics said BLOCKED and Unavailable."
+    },
+    {
+      "criterion": "Keyboard map focus",
+      "status": "PASS",
+      "observation": "After Escape cancelled placement, Right Arrow moved map focus and selected City Hall at block 12,12 with condition, utilities, pollution, vitality, and primary-action semantics."
+    },
+    {
+      "criterion": "Command guide and topmost Escape",
+      "status": "PASS",
+      "observation": "The command guide opened with searchable categorized commands and availability text; Escape closed it and restored map focus."
+    },
+    {
+      "criterion": "Compact commands, Focus City, decisions, and notices",
+      "status": "PASS",
+      "observation": "The 900x600 content layout collapsed categories into Catalog without clipping. Focus City retained identity, treasury, decision priority, notices, selected context, speeds, and Exit. Opening notices exited Focus City and exposed a keyboard-readable journal."
+    },
+    {
+      "criterion": "Accessibility semantics",
+      "status": "PASS",
+      "observation": "HUD metrics, priority, trajectory, command availability, map selection, Focus City rail, notices, and settings exposed explicit roles, descriptions, values, and help."
+    },
+    {
+      "criterion": "Reduce Motion",
+      "status": "PASS",
+      "observation": "Reduce ambient animation toggled on in the isolated preference domain; the maximized layout retained the same world, HUD, map focus, and command semantics without displacement."
+    }
+  ],
+  "defects": [
+    {
+      "id": "PLAY075-R4F-001",
+      "severity": "P1",
+      "ownerLane": "world-rendering",
+      "title": "Maximized regular camera drops connected district span below the frozen minimum",
+      "reproduction": "Start the exact isolated candidate, dismiss Welcome, pause, maximize the regular command layout, and inspect the fresh city without Focus City.",
+      "expected": "Connected authored occupied/public-realm fabric spans at least 60% of the safe map width and plain terrain remains at or below 25%.",
+      "actual": "Connected component width is 690/1277 = 54.03%; conservative connected green outside the entire district bounding rectangle is 61.96% of the safe aperture.",
+      "evidence": "05-maximized-regular.png"
+    },
+    {
+      "id": "PLAY075-R4F-002",
+      "severity": "P1",
+      "ownerLane": "world-rendering",
+      "title": "Broad connected green and detached context structures still dominate the opening",
+      "reproduction": "Compare the paused regular, exact compact, compact Focus City, maximized regular, and maximized Focus City captures.",
+      "expected": "No plain-terrain component exceeds 25%; every occupied place has a continuous grounded road-facing frontage; repetition and mixed fidelity are absent.",
+      "actual": "The conservative outside-district green lower bound ranges from 32.64% to 61.96%; edge residences, the lower service structure, and water tower remain visually detached; residential stamping and mixed structure detail remain obvious.",
+      "evidence": "02-regular-frozen.png, 03-compact-window.png, 04-compact-focus-city.png, 05-maximized-regular.png, 06-maximized-focus-city.png"
+    },
+    {
+      "id": "PLAY075-R4F-003",
+      "severity": "P1",
+      "ownerLane": "ui-input",
+      "title": "Blocked pointer placement announces construction approval",
+      "reproduction": "Enter Build > Roads and pointer-select occupied block 6,8.",
+      "expected": "The action update agrees with the blocked decision and unavailable map primary action.",
+      "actual": "The action update says Road construction approved while the build decision says BLOCKED: Demolish the existing structure and map AX says Unavailable. Escape cancellation works.",
+      "evidence": "Fresh Computer Use accessibility trace recorded in this result."
+    }
+  ],
+  "screenshots": [
+    {"path": "01-regular-opening.png", "sha256": "94810fa1358ee3df3fc43f2d73c0f01b6a3360da6a388ff2ed63414add9ab9a8"},
+    {"path": "02-regular-frozen.png", "sha256": "328eaae5131fe2f7594f816dc4b01482d5dec1b3dae529cc9fa608c6cddb51ad"},
+    {"path": "03-compact-window.png", "sha256": "07b74e0d4e8dbbf371ef62aaf88f27de87cbc04b870f5796010ea031b26605bf"},
+    {"path": "04-compact-focus-city.png", "sha256": "3421a4ebb9134a07bf9a0a25b2dd104fd661640f6c0bc25bce13aa1f158c3cf9"},
+    {"path": "05-maximized-regular.png", "sha256": "03f8f3e9b81573c66d8d8bbbaf35e91aba458b3870ee9f8d1111fe9c29f3dc9a"},
+    {"path": "06-maximized-focus-city.png", "sha256": "9a016b2787593f6fdb053f8c7e70d201e60b779152572dfb8f87f901f3a7fe6b"},
+    {"path": "07-maximized-reduce-motion.png", "sha256": "1dcf9bc59e3c98abc3ab56d65ff8f0dca4fed2efdb031c0617596bc5a57ab0e1"}
+  ],
+  "prohibitedActions": {
+    "productMutation": false,
+    "candidateSubstitution": false,
+    "authorCoaching": false,
+    "rebuild": false,
+    "fullSuiteRerun": false,
+    "push": false,
+    "integration": false,
+    "pin": false
+  }
+}

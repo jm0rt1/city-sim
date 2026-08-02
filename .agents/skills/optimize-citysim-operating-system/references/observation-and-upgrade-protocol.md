@@ -61,3 +61,10 @@ Integration executes a refill, return, escalation, shared change, acceptance,
 integration, or push. Stop immediately after one receipt/commit, on any
 mandatory model-route escalation trigger, or when the expected improvement
 cannot be measured without inventing data.
+
+Every review that summarizes more than one lane, route, or art direction must
+include one machine-readable coverage row per source row. Each row carries the
+exact task, route, workstream, state, evidence commit, and disposition. North,
+East, South, and West are separate rows whenever the four-direction family is
+in scope. An aggregate statement cannot substitute for those rows; any omitted,
+duplicated, or invented row forces `RETURN` rather than `NO_CHANGE`.

@@ -51,6 +51,16 @@ class TriggeredOperatingReviewPolicyTests(unittest.TestCase):
         self.assert_invalid(lambda p: p["parallelism"].update({"sameTurnRefillRequired": False}))
         self.assert_invalid(lambda p: p["parallelism"].update({"manufacturedBusyworkAllowed": True}))
 
+    def test_coverage_cannot_hide_a_lane_or_direction(self) -> None:
+        self.assert_invalid(lambda p: p["coverage"]["directionWorkstreams"].remove("east"))
+        self.assert_invalid(lambda p: p["coverage"].update({"sourceRowsMustProjectExactly": False}))
+        self.assert_invalid(lambda p: p["coverage"].update({"aggregateWithoutRowsAllowed": True}))
+        self.assert_invalid(lambda p: p["coverage"].update({"omissionDecision": "NO_CHANGE"}))
+
+    def test_coverage_row_schema_is_exact(self) -> None:
+        self.assert_invalid(lambda p: p["coverage"]["requiredRowFields"].remove("routeId"))
+        self.assert_invalid(lambda p: p["coverage"]["requiredRowFields"].append("summary"))
+
     def test_no_progress_requires_two_bounded_snapshots_and_exceptions(self) -> None:
         self.assert_invalid(lambda p: p["noProgress"].update({"consecutiveSnapshots": 1}))
         self.assert_invalid(lambda p: p["noProgress"]["protectedActiveOperations"].pop())

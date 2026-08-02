@@ -29,6 +29,25 @@
     "serializedDependencyRequiredWhenNotRefilled": true,
     "manufacturedBusyworkAllowed": false
   },
+  "coverage": {
+    "requiredRowFields": [
+      "taskId",
+      "routeId",
+      "workstream",
+      "state",
+      "evidenceCommit",
+      "disposition"
+    ],
+    "directionWorkstreams": [
+      "north",
+      "east",
+      "south",
+      "west"
+    ],
+    "sourceRowsMustProjectExactly": true,
+    "aggregateWithoutRowsAllowed": false,
+    "omissionDecision": "RETURN"
+  },
   "noProgress": {
     "snapshotIntervalSeconds": 60,
     "consecutiveSnapshots": 2,

@@ -38,6 +38,15 @@ EXPECTED_PROTECTED = {
     "frozen_final_proof",
     "long_running_focused_gate",
 }
+EXPECTED_COVERAGE_FIELDS = [
+    "taskId",
+    "routeId",
+    "workstream",
+    "state",
+    "evidenceCommit",
+    "disposition",
+]
+EXPECTED_DIRECTIONS = ["north", "east", "south", "west"]
 
 
 def validate(policy: object) -> list[str]:
@@ -50,6 +59,7 @@ def validate(policy: object) -> list[str]:
         "eventKeyFields",
         "reviewBudget",
         "parallelism",
+        "coverage",
         "noProgress",
         "allowedDecisions",
         "triggers",
@@ -99,6 +109,29 @@ def validate(policy: object) -> list[str]:
             errors.append("a non-refill requires an exact serialized dependency")
         if parallel.get("manufacturedBusyworkAllowed") is not False:
             errors.append("manufactured busywork must be forbidden")
+
+    coverage = policy.get("coverage")
+    if not isinstance(coverage, dict):
+        errors.append("coverage must be an object")
+    else:
+        if set(coverage) != {
+            "requiredRowFields",
+            "directionWorkstreams",
+            "sourceRowsMustProjectExactly",
+            "aggregateWithoutRowsAllowed",
+            "omissionDecision",
+        }:
+            errors.append("coverage fields must match the exact schema")
+        if coverage.get("requiredRowFields") != EXPECTED_COVERAGE_FIELDS:
+            errors.append("coverage row fields must be exact and ordered")
+        if coverage.get("directionWorkstreams") != EXPECTED_DIRECTIONS:
+            errors.append("direction workstreams must be north/east/south/west in order")
+        if coverage.get("sourceRowsMustProjectExactly") is not True:
+            errors.append("source rows must project exactly")
+        if coverage.get("aggregateWithoutRowsAllowed") is not False:
+            errors.append("aggregate summaries without rows must be forbidden")
+        if coverage.get("omissionDecision") != "RETURN":
+            errors.append("coverage omission must force RETURN")
 
     progress = policy.get("noProgress")
     if not isinstance(progress, dict):

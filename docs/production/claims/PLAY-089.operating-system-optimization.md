@@ -19,13 +19,17 @@
 - **Status:** Worktree bound and ready for the first Integration-published
   observation route; no mutation before exact route acknowledgement
 
-The lane observes execution at four event boundaries: dispatch publication,
-first return, candidate handoff, and integration close. It measures context
-bytes, model/effort mix, elapsed and validation time, duplicate full gates,
-worker versus Integration rework, idle gaps, accepted results, escalation
+The lane observes execution once per unique event key under the schema-3
+trigger policy. In addition to dispatch/return/candidate/integration boundaries,
+it reviews frontier worker-route assignments, terminal tasks, useful concurrency
+falling below the governed floor, repeated unchanged context loads, failed
+delegation acknowledgements, and duplicate full-gate requests. It measures
+context bytes, model/effort mix, elapsed and validation time, duplicate full
+gates, worker versus Integration rework, idle gaps, accepted results, escalation
 reasons, and accepted outcomes per frontier turn when exposed.
 
-Default execution is `LUNA_MECHANICAL / gpt-5.6-luna / medium`. Frozen-path
+Default execution is one compact, non-polling
+`LUNA_MECHANICAL / gpt-5.6-luna / medium` turn per event key. Frozen-path
 implementation uses `LUNA_IMPLEMENTATION / gpt-5.6-luna / high`. Only
 Integration may authorize frontier judgment, shared authority, final QA,
 integration, or push. A clean `NO_CHANGE` receipt is preferred over speculative
@@ -33,6 +37,7 @@ process work.
 
 Do not edit product code, renderer/art inputs, gameplay, UI, simulation, save
 formats, build/package files, other claims, backlog, contracts, shared skills,
-or task/thread authority without an exact Integration route. Do not run the
-staged app or full Swift gate solely for process evidence. Do not push,
+or task/thread authority without an exact Integration route. Do not poll worker
+tasks, spawn reviews from reviews, or run the staged app or full Swift gate
+solely for process evidence. Do not push,
 integrate, pin, self-score, or self-accept.

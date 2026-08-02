@@ -49,11 +49,17 @@ At each unique event in
 4. Preserve non-negotiable claims, exact identity, shared-contract control,
    deterministic/save compatibility, staged-app proof, independent QA,
    intelligent commits, atomic art activation, and clean publication.
-5. Return exactly one of: `NO_CHANGE`, a bounded proposal, or one claimed
-   implementation commit. Never open speculative cleanup.
+5. Return exactly one policy decision: `NO_CHANGE`, `PROPOSE`, `REFILL`,
+   `RETURN`, or `ESCALATE`. A claimed implementation commit is allowed only
+   when the frozen route explicitly owns that bounded mutation. Never open
+   speculative cleanup.
 
 The default review is one `LUNA_MECHANICAL / gpt-5.6-luna / medium` turn using
-hash-bound compact context capped by the policy. Do not poll tasks, fan reviews
+hash-bound compact context capped by the policy. A turn may accept at most eight
+queued event keys and 32 KiB total compact context, but emits one independently
+validated receipt per key. Freeze branch/HEAD first. Immediate triggers close
+before worker synchronization or mutation; authority reading may proceed concurrently. Reuse the
+canonical visible optimizer task instead of creating one task per event. Do not poll tasks, fan reviews
 out into more reviews, or run product builds, full suites, DCC, staged apps, or
 real-app QA merely to observe operations. A trigger is deduplicated by authority,
 task, route, event type, and candidate/result commit. Unknown timing, token, or
@@ -62,6 +68,9 @@ pricing values stay `null`.
 Review the management system, not just worker output. In addition to the normal
 dispatch/return/acceptance boundaries, emit one compact receipt when:
 
+- a delegation is ready to send, proving the lowest legal route, frozen
+  judgment boundary, exact claim/paths, distinct gate owners, independent
+  reviewer, and useful-concurrency delta before mutation;
 - a frontier route is assigned, proving why authority or judgment could not be
   frozen into a Luna packet;
 - a task completes or stops, proving its durable result or exact blocker and
@@ -74,11 +83,23 @@ dispatch/return/acceptance boundaries, emit one compact receipt when:
   and allowed paths; or
 - a full gate is requested again, proving whether the exact candidate changed or
   prior evidence actually became stale.
+- a worktree, branch, HEAD, cleanliness, or dispatch setup fails before
+  mutation; or
+- a ready candidate or asset handoff has no assigned review/intake owner,
+  refill, or exact serialized dependency.
 
 Validate every durable review receipt with
-`scripts/validate_operating_review_receipt_v1.py`. The observer reports the
+`scripts/validate_operating_review_receipt_v1.py` using the repo root and the
+mandatory Integration-owned ledger at
+`docs/production/evidence/PLAY-089/OPERATING-REVIEW-EVENT-LEDGER-V1.json`.
+Input paths and hashes must resolve to repository bytes. The observer reports the
 defect and one bounded next action; only Integration changes routes, refills a
 lane, escalates judgment, or mutates shared authority.
+
+If one Integration event envelope declares multiple triggers, emit one receipt
+for each trigger. Missing coverage is a return, not an implicit `NO_CHANGE`.
+The observer never edits the shared ledger; Integration records accepted
+receipts and dispositions when it integrates the optimizer packet.
 
 For an idle-lane or no-progress trigger, first distinguish a protected active
 operation (exact-candidate QA, DCC render, frozen proof, coherent commit, or
@@ -107,3 +128,7 @@ Validate the shared trigger policy with:
 Validate durable review receipts with:
 
 `PYTHONDONTWRITEBYTECODE=1 python3 .agents/skills/optimize-citysim-operating-system/scripts/test_validate_operating_review_receipt_v1.py`
+
+Validate batched event-key coverage with:
+
+`PYTHONDONTWRITEBYTECODE=1 python3 .agents/skills/optimize-citysim-operating-system/scripts/test_validate_operating_review_batch_v1.py`

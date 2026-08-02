@@ -1,5 +1,5 @@
 {
-  "schema": 3,
+  "schema": 4,
   "defaultRoute": {
     "classification": "LUNA_MECHANICAL",
     "model": "gpt-5.6-luna",
@@ -16,7 +16,8 @@
     "maxReviewsPerEventKey": 1,
     "maxTurns": 1,
     "contextMode": "compact_hash_bound",
-    "maxCompactContextBytes": 32768,
+    "maxCompactContextBytes": 8192,
+    "maxBatchContextBytes": 32768,
     "threadPollingAllowed": false,
     "reviewCanSpawnReviews": false,
     "receiptMode": "machine_readable_exception_first",
@@ -26,6 +27,32 @@
     "dccAllowed": false,
     "realAppQAAllowed": false,
     "sharedMutationAllowed": false
+  },
+  "reviewScheduling": {
+    "maxEventsPerTurn": 8,
+    "oneReceiptPerEventKey": true,
+    "reuseCanonicalObserverTask": true,
+    "workerMayReadWhileReviewRuns": true,
+    "workerMaySynchronizeWhileReviewRuns": false,
+    "workerMayMutateBeforeImmediateReview": false,
+    "sameManagementTurnFlush": true,
+    "immediateTriggers": [
+      "delegation_ready_for_dispatch",
+      "worktree_or_dispatch_setup_failed_before_mutation",
+      "claim_or_baseline_mismatch",
+      "delegation_acknowledgement_failed",
+      "model_route_mismatch",
+      "independent_return_after_focused_pass",
+      "second_unsuccessful_repair",
+      "exact_candidate_qa_started"
+    ],
+    "flushTriggers": [
+      "candidate_handoff",
+      "task_completed_or_stopped",
+      "ready_handoff_waiting_for_owner",
+      "useful_concurrency_below_floor",
+      "integration_closed"
+    ]
   },
   "parallelism": {
     "minimumUsefulActiveWorkstreams": 3,
@@ -82,88 +109,93 @@
     ]
   },
   "eventRequirements": {
-    "frontier_route_assigned": {
-      "requiredEvidence": [
-        "classification",
-        "frontierRationale",
-        "authorityBoundary",
-        "lunaDecompositionChecked"
-      ],
-      "allowedDecisions": [
-        "NO_CHANGE",
-        "PROPOSE",
-        "ESCALATE"
-      ]
+    "authority_acknowledged": {
+      "requiredEvidence": ["dispatchReceiptHash", "modelRouteHash", "claimHash", "acknowledgedAuthority", "acknowledgedAllowedPaths", "acknowledgedModelEffort"],
+      "allowedDecisions": ["NO_CHANGE", "RETURN", "ESCALATE"]
     },
-    "task_completed_or_stopped": {
-      "requiredEvidence": [
-        "terminalState",
-        "resultOrStopReason",
-        "commitOrBlockedReason",
-        "evidenceOrBlockedReason",
-        "nextDependencyOrRefill"
-      ],
-      "allowedDecisions": [
-        "NO_CHANGE",
-        "REFILL",
-        "RETURN",
-        "ESCALATE"
-      ]
+    "candidate_handoff": {
+      "requiredEvidence": ["candidateIdentity", "focusedGateReceiptHash", "allowedPathAudit", "candidateCleanliness", "nextGateOwner", "independentReviewer"],
+      "allowedDecisions": ["NO_CHANGE", "RETURN", "ESCALATE"]
     },
-    "useful_concurrency_below_floor": {
-      "requiredEvidence": [
-        "usefulActiveCount",
-        "minimumUsefulActiveWorkstreams",
-        "protectedOperationsExcluded",
-        "readyDisjointWork",
-        "refillOrSerializedDependency"
-      ],
-      "allowedDecisions": [
-        "NO_CHANGE",
-        "REFILL",
-        "ESCALATE"
-      ]
-    },
-    "repeated_context_load_detected": {
-      "requiredEvidence": [
-        "threadId",
-        "unchangedAuthorityHash",
-        "unchangedClaimHash",
-        "unchangedSkillHashes",
-        "repeatedFullReadBytes",
-        "compactPacketAvailable"
-      ],
-      "allowedDecisions": [
-        "NO_CHANGE",
-        "PROPOSE"
-      ]
+    "claim_or_baseline_mismatch": {
+      "requiredEvidence": ["expectedIdentity", "observedIdentity", "mismatch", "preservedWorkState"],
+      "allowedDecisions": ["RETURN", "ESCALATE"]
     },
     "delegation_acknowledgement_failed": {
-      "requiredEvidence": [
-        "dispatchReceiptHash",
-        "modelRouteHash",
-        "claimHash",
-        "allowedPathBinding",
-        "acknowledgementDefect"
-      ],
-      "allowedDecisions": [
-        "RETURN",
-        "ESCALATE"
-      ]
+      "requiredEvidence": ["dispatchReceiptHash", "modelRouteHash", "claimHash", "allowedPathBinding", "acknowledgementDefect"],
+      "allowedDecisions": ["RETURN", "ESCALATE"]
+    },
+    "delegation_ready_for_dispatch": {
+      "requiredEvidence": ["classification", "lowestLegalRoute", "authorityBoundary", "claimHash", "allowedPathBinding", "focusedGateOwner", "fullGateOwner", "independentReviewer", "usefulWorkstreamDelta"],
+      "allowedDecisions": ["NO_CHANGE", "RETURN", "ESCALATE"]
+    },
+    "dispatch_published": {
+      "requiredEvidence": ["dispatchReceiptHash", "modelRouteHash", "claimHash", "authorityCommit", "expectedHead", "assignedModelEffort"],
+      "allowedDecisions": ["NO_CHANGE", "RETURN", "ESCALATE"]
     },
     "duplicate_full_gate_requested": {
-      "requiredEvidence": [
-        "candidateIdentity",
-        "priorGateReceiptHash",
-        "priorGateCandidateIdentity",
-        "evidenceStale",
-        "identityChanged"
-      ],
-      "allowedDecisions": [
-        "NO_CHANGE",
-        "RETURN",
-        "ESCALATE"
-      ]
+      "requiredEvidence": ["candidateIdentity", "priorGateReceiptHash", "priorGateCandidateIdentity", "evidenceStale", "identityChanged"],
+      "allowedDecisions": ["NO_CHANGE", "RETURN", "ESCALATE"]
+    },
+    "eligible_lane_became_idle": {
+      "requiredEvidence": ["lane", "claimState", "readyDisjointWork", "protectedOperation", "refillOrSerializedDependency"],
+      "allowedDecisions": ["NO_CHANGE", "REFILL", "ESCALATE"]
+    },
+    "exact_candidate_qa_started": {
+      "requiredEvidence": ["candidateIdentity", "featureAuthorThread", "qaThread", "independentReviewer", "exclusiveLease", "fullGateOwner"],
+      "allowedDecisions": ["NO_CHANGE", "RETURN", "ESCALATE"]
+    },
+    "first_focused_gate_failure": {
+      "requiredEvidence": ["candidateIdentity", "focusedGate", "failureBoundary", "outsideScope", "preservedCheckpoint"],
+      "allowedDecisions": ["NO_CHANGE", "RETURN", "ESCALATE"]
+    },
+    "first_return": {
+      "requiredEvidence": ["returningReviewer", "returnedCandidate", "preservedEvidence", "defectBoundary", "replacementOrEscalation"],
+      "allowedDecisions": ["NO_CHANGE", "REFILL", "RETURN", "ESCALATE"]
+    },
+    "frontier_route_assigned": {
+      "requiredEvidence": ["classification", "frontierRationale", "authorityBoundary", "lunaDecompositionChecked"],
+      "allowedDecisions": ["NO_CHANGE", "PROPOSE", "ESCALATE"]
+    },
+    "independent_return_after_focused_pass": {
+      "requiredEvidence": ["independentReviewer", "candidateIdentity", "priorFocusedPass", "independentDefect", "unaffectedRowsPreserved", "replacementRouteOrEscalation"],
+      "allowedDecisions": ["REFILL", "RETURN", "ESCALATE"]
+    },
+    "integration_closed": {
+      "requiredEvidence": ["integratedCandidate", "masterCommit", "originParity", "fullGateReceiptHash", "qaDisposition", "nextWaveRefill"],
+      "allowedDecisions": ["NO_CHANGE", "REFILL", "RETURN", "ESCALATE"]
+    },
+    "model_route_mismatch": {
+      "requiredEvidence": ["expectedRouteTuple", "observedRouteTuple", "mismatch", "preservedWorkState"],
+      "allowedDecisions": ["RETURN", "ESCALATE"]
+    },
+    "no_progress_two_snapshots": {
+      "requiredEvidence": ["snapshotA", "snapshotB", "snapshotIntervalSeconds", "durableProgress", "protectedOperation", "refillOrStop"],
+      "allowedDecisions": ["NO_CHANGE", "REFILL", "RETURN", "ESCALATE"]
+    },
+    "ready_handoff_waiting_for_owner": {
+      "requiredEvidence": ["candidateIdentity", "handoffReceiptHash", "waitingOwner", "readySinceBoundary", "protectedOperation", "refillOrSerializedDependency"],
+      "allowedDecisions": ["NO_CHANGE", "REFILL", "ESCALATE"]
+    },
+    "repeated_context_load_detected": {
+      "requiredEvidence": ["threadId", "unchangedAuthorityHash", "unchangedClaimHash", "unchangedSkillHashes", "repeatedFullReadBytes", "compactPacketAvailable"],
+      "allowedDecisions": ["NO_CHANGE", "PROPOSE"]
+    },
+    "second_unsuccessful_repair": {
+      "requiredEvidence": ["attemptOneCandidate", "attemptTwoCandidate", "repeatedOrNewDefect", "preservedEvidence", "frontierEscalation"],
+      "allowedDecisions": ["ESCALATE"]
+    },
+    "task_completed_or_stopped": {
+      "requiredEvidence": ["terminalState", "resultOrStopReason", "commitOrBlockedReason", "evidenceOrBlockedReason", "nextDependencyOrRefill"],
+      "allowedDecisions": ["NO_CHANGE", "REFILL", "RETURN", "ESCALATE"]
+    },
+    "useful_concurrency_below_floor": {
+      "requiredEvidence": ["usefulActiveCount", "minimumUsefulActiveWorkstreams", "protectedOperationsExcluded", "readyDisjointWork", "refillOrSerializedDependency"],
+      "allowedDecisions": ["NO_CHANGE", "REFILL", "ESCALATE"]
+    },
+    "worktree_or_dispatch_setup_failed_before_mutation": {
+      "requiredEvidence": ["expectedWorktreeTuple", "observedWorktreeTuple", "setupDefect", "mutationCount", "preservedWorkState"],
+      "allowedDecisions": ["RETURN", "ESCALATE"]
     }
   },
   "allowedDecisions": [
@@ -178,6 +210,7 @@
     "candidate_handoff",
     "claim_or_baseline_mismatch",
     "delegation_acknowledgement_failed",
+    "delegation_ready_for_dispatch",
     "dispatch_published",
     "duplicate_full_gate_requested",
     "eligible_lane_became_idle",
@@ -189,9 +222,11 @@
     "integration_closed",
     "model_route_mismatch",
     "no_progress_two_snapshots",
+    "ready_handoff_waiting_for_owner",
     "repeated_context_load_detected",
+    "second_unsuccessful_repair",
     "task_completed_or_stopped",
     "useful_concurrency_below_floor",
-    "second_unsuccessful_repair"
+    "worktree_or_dispatch_setup_failed_before_mutation"
   ]
 }

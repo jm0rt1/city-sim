@@ -44,8 +44,17 @@ class TriggeredOperatingReviewPolicyTests(unittest.TestCase):
 
     def test_review_stays_compact_and_event_driven(self) -> None:
         self.assert_invalid(lambda p: p["reviewBudget"].update({"maxCompactContextBytes": 131072}))
+        self.assert_invalid(lambda p: p["reviewBudget"].update({"maxBatchContextBytes": 131072}))
         self.assert_invalid(lambda p: p["reviewBudget"].update({"threadPollingAllowed": True}))
         self.assert_invalid(lambda p: p["reviewBudget"].update({"receiptMode": "narrative"}))
+
+    def test_review_batching_is_bounded_and_nonblocking_only_for_safe_prelude(self) -> None:
+        self.assert_invalid(lambda p: p["reviewScheduling"].update({"maxEventsPerTurn": 32}))
+        self.assert_invalid(lambda p: p["reviewScheduling"].update({"oneReceiptPerEventKey": False}))
+        self.assert_invalid(lambda p: p["reviewScheduling"].update({"workerMayMutateBeforeImmediateReview": True}))
+        self.assert_invalid(lambda p: p["reviewScheduling"].update({"workerMaySynchronizeWhileReviewRuns": True}))
+        self.assert_invalid(lambda p: p["reviewScheduling"]["immediateTriggers"].remove("delegation_ready_for_dispatch"))
+        self.assert_invalid(lambda p: p["reviewScheduling"]["flushTriggers"].remove("integration_closed"))
 
     def test_expensive_or_mutating_observation_is_rejected(self) -> None:
         for field in ("productBuildAllowed", "fullGateAllowed", "dccAllowed", "realAppQAAllowed", "sharedMutationAllowed"):
@@ -95,6 +104,7 @@ class TriggeredOperatingReviewPolicyTests(unittest.TestCase):
         self.assert_invalid(lambda p: p["reviewBudget"].update({"missingMetricValue": 0}))
 
     def test_management_event_requirements_are_fail_closed(self) -> None:
+        self.assertEqual(set(POLICY["eventRequirements"]), set(POLICY["triggers"]))
         for trigger in VALIDATOR.EXPECTED_EVENT_REQUIREMENTS:
             with self.subTest(trigger=trigger):
                 self.assert_invalid(lambda p, key=trigger: p["eventRequirements"].pop(key))

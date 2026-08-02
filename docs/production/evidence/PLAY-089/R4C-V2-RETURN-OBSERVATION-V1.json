@@ -1,0 +1,145 @@
+{
+  "schema": 1,
+  "taskId": "PLAY-089",
+  "observationBoundary": "r4c_first_technical_return_and_final_luna_repair_dispatch",
+  "result": "NO_CHANGE",
+  "binding": {
+    "carrierCommit": "fd86d85c489e11a98146ff41a74e8cd75e9290ae",
+    "authorityCommit": "45e1422304443a012a2f121c90be3e7d31b82c59",
+    "baseCommit": "45e1422304443a012a2f121c90be3e7d31b82c59",
+    "dispatchReceipt": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-089-R4C-V2-RETURN-OBSERVATION-V1.json",
+    "dispatchReceiptSha256": "1999652a481c1c34ca0c95eeb4139cb76b457b6f585efd648c93cf5256691ae2",
+    "routeId": "quality-v1:play-089-r4c-v2-return-observation-v1",
+    "modelRouteSha256": "507221d81fdc1bfd4ab328e57ea6af7378f1776785ef27b18db06b60dda049f0",
+    "claimPath": "docs/production/claims/PLAY-089.operating-system-optimization.md",
+    "claimSha256": "6276c96d96965805df6a1a9c779ecde7dc609824053c7e0eb00e35f67134cc47",
+    "branch": "codex/citysim-os-optimization",
+    "worktree": "/Users/James/.codex/worktrees/c92d/city-sim",
+    "startingCommit": "75f1dd2ac5fdca1f31d85a8562baff3893ec655f",
+    "resultCommit": null,
+    "allowedPath": "docs/production/evidence/PLAY-089/R4C-V2-RETURN-OBSERVATION-V1.json"
+  },
+  "routeAcknowledgement": {
+    "classification": "LUNA_MECHANICAL",
+    "model": "gpt-5.6-luna",
+    "effort": "medium",
+    "contextMode": "full_authority_read",
+    "implementationRoute": {
+      "routeId": "quality-v1:play-073-r4-c-v2-visible-scale-luna-v1",
+      "modelRouteSha256": "7001a6f68844ac8d8d566b06e735f83b0e4780d95c9c22b2534d65d2df5aa23e",
+      "classification": "LUNA_IMPLEMENTATION",
+      "model": "gpt-5.6-luna",
+      "effort": "high",
+      "expectedHead": "51f6a4f52cc50d46c4884570b86d18ce1fbd0eb5",
+      "allowedSurfaces": [
+        "Native/CitySimNative/Sources/CitySimNative/Rendering/LotContextRenderer.swift",
+        "Native/CitySimNative/Tests/CitySimNativeTests/WorldRenderingTests.swift",
+        "docs/production/evidence/PLAY-073/r4-c-adjacent-repetition-v2"
+      ],
+      "focusedGateOwner": "renderer_r4c_v2_focused_owner_gate",
+      "focusedGateCommands": [
+        "targeted technical export",
+        "swift test --package-path Native/CitySimNative --filter WorldRenderingTests",
+        "JSON/hash validation",
+        "git diff --check 51f6a4f52cc50d46c4884570b86d18ce1fbd0eb5..HEAD"
+      ]
+    },
+    "integrationReview": {
+      "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+      "role": "integration_process_receipt_review",
+      "model": "gpt-5.6-sol",
+      "effort": "high",
+      "isIndependentFinalQA": false
+    },
+    "futureFinalAcceptance": {
+      "taskId": "PLAY-075",
+      "threadId": "019f9a0a-35fa-75b1-92c4-73c182390a25",
+      "model": "gpt-5.6-sol",
+      "effort": "high",
+      "isIndependentFinalQA": true
+    },
+    "allEscalationTriggersAcknowledged": true,
+    "stopConditionAcknowledged": true,
+    "allowedPathsAcknowledged": true,
+    "forbiddenPathsAcknowledged": true
+  },
+  "immutableInputs": [
+    {
+      "path": "docs/production/evidence/INTEGRATION/PLAY-073-R4-C-FIRST-TECHNICAL-RETURN-V1.md",
+      "sha256": "2a132b04e53536c3e26d7de0092585309aeedabfd5a8c02ae197ae4b36aec29c",
+      "bytes": 6476
+    },
+    {
+      "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-073-R4-C-V2-VISIBLE-SCALE-LUNA-V1.json",
+      "sha256": "29f0c6bf10a1e72436c5e9fb2d3561f063f9300e10d008a7c22f4f3753679fd7",
+      "bytes": 11097
+    }
+  ],
+  "observedTechnicalReturn": {
+    "disposition": "RETURN",
+    "candidateCommit": "51f6a4f52cc50d46c4884570b86d18ce1fbd0eb5",
+    "productCommit": "5e8ea7e5168c6cf315d54f5463eb9a7dd9da2fa0",
+    "evidenceCommit": "51f6a4f52cc50d46c4884570b86d18ce1fbd0eb5",
+    "focusedWorldRenderingTests": "71/71 passing",
+    "underscaledImplementation": {
+      "variant0LargeCanopyRenderPoints": "5.184 x 3.456",
+      "variant0CompanionCanopyRenderPoints": "3.456 x 2.016",
+      "variant1CourtRenderPoints": "approximately 10.36 x 4.14"
+    },
+    "overstatedEvidence": [
+      "Adjacent collision was reported from independently rendered starter coordinates rather than one actual world-space pair.",
+      "All-variant/frontage repeat checks did not apply containment and entrance-clearance coverage to every variant/frontage.",
+      "Role presence partly relied on node names rather than required visible-scale geometry.",
+      "Required deterministic color and grayscale exports were absent."
+    ],
+    "aggregateGatesRun": false,
+    "subjectiveAcceptanceRun": false
+  },
+  "observedDispatch": {
+    "repairAttempt": "second and final Luna implementation attempt",
+    "workerRoute": "LUNA_IMPLEMENTATION / gpt-5.6-luna / high",
+    "workerScope": "Exact renderer/test paths and new v2 evidence root only; preserved attempt-1 commits.",
+    "aggregateGateOwner": "Integration",
+    "independentAcceptanceOwner": "PLAY-075 task 019f9a0a-35fa-75b1-92c4-73c182390a25",
+    "independentAcceptanceModel": "gpt-5.6-sol",
+    "independentAcceptanceEffort": "high"
+  },
+  "attribution": {
+    "workerRework": 1,
+    "integrationRework": 0,
+    "workerFault": "First implementation packet underscaled the frozen visible geometry and overstated the breadth of its evidence.",
+    "integrationSetupFault": null,
+    "finalQaOwnership": "Future PLAY-075 independent task; not the Integration implementation-review thread."
+  },
+  "measurements": {
+    "dispatchReceiptBytes": 6736,
+    "observationElapsedSeconds": null,
+    "observationTurns": null,
+    "validationSeconds": null,
+    "duplicateFullGateMinutes": null,
+    "idleGaps": null,
+    "tokens": null,
+    "pricing": null,
+    "runtimeModel": null,
+    "visibleAcknowledgements": null,
+    "overrideTelemetry": null,
+    "acceptedOutcome": null
+  },
+  "finding": "The return is worker implementation-quality rework, not exposed Integration setup rework. The final dispatch freezes a bounded Luna/high second attempt, keeps aggregate gates with Integration, and reserves independent final acceptance for PLAY-075. No removable coordination or duplicate-gate waste is measurable from the exposed receipts.",
+  "validation": {
+    "selectedRoute": "PASS: validate_model_route_v1.py --repo-root Integration checkout --dispatch-route-id quality-v1:play-089-r4c-v2-return-observation-v1",
+    "outputJson": "PASS: python3 -m json.tool",
+    "gitDiffCheck": "PASS: git diff --check"
+  },
+  "executionAccounting": {
+    "acceptedResult": "NO_CHANGE",
+    "escalationReason": null,
+    "pricing": null
+  },
+  "recommendation": null,
+  "nextEventBoundary": "Integration process-receipt review, followed by the separate PLAY-075 independent final-acceptance boundary after the repaired candidate is available.",
+  "limitations": [
+    "Elapsed time, turns, validation duration, idle intervals, runtime model, acknowledgements, tokens, pricing, and override telemetry were not exposed.",
+    "No product implementation or pixels were inspected and no visual or final-acceptance judgment was made."
+  ]
+}

@@ -24,7 +24,7 @@ V14 = SOURCE / "v14-compatibility-v01"
 DESIGN_PATH = V14 / "WEST-V14-DESIGN.json"
 LOWERING_PATH = V14 / "WEST-V14-LOWERING.json"
 HANDOFF_PATH = ROOT / "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/HANDOFF.json"
-VALIDATION_PATH = ROOT / "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/FALSE-GREEN-V14-REPAIR-VALIDATION.json"
+VALIDATION_PATH = ROOT / "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/INDEPENDENT-RETURN-REPAIR-V1.json"
 BRIDGE_PATH = ROOT / "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-direction-bridge-v06/MAPPING-CONTRACT.json"
 BASE_DESIGN = SOURCE / "v13-compatibility-v01/WEST-V13-DESIGN.json"
 BASE_LOWERING = SOURCE / "v13-compatibility-v01/WEST-V13-LOWERING.json"
@@ -36,7 +36,8 @@ BASE_DESIGN_SHA = "265ea5b27e0dd7982cb587b2efb944de462bf67650bb41b2000597deebc0b
 BASE_LOWERING_SHA = "a9a316c8050e39779f806398f5f1ef5982c7ddf7d357c84cbf2eaf0700ea2743"
 BASE_MATERIALS_SHA = "d867f8dd3cc49c8899b4b6a48e65337c76a1c20e2f68ec0024535cdf43d0cf11"
 BASE_RESULT_SHA = "a610e358a60120f38d20dfadb77423fcb021daafbfe72dfa67973652c2722bbe"
-CLAIM_SHA = "6b9608a7854afc60676ac27e7c7a8a7c4420161805a4ef59c68649acdd6a901d"
+CLAIM_SHA = "529bd3d3017a35d52275f3f126cfd5d66944f27d6711ff184279bf5d7dd696e9"
+DESIGN_CLAIM_SHA = "6b9608a7854afc60676ac27e7c7a8a7c4420161805a4ef59c68649acdd6a901d"
 PUBLISHED_BASE = "ea26fdac05169e0375b65d7c5dc65b4fbe00d977"
 AUTHORITY_COMMIT = "1d7c6510fd99299c88d3f4412caa982e020c1941"
 NORTH_AUTHORITY_SHA = "e439d9f8de08474bbaf31c2308491dad486ec953bf45605c043731f68b44edbb"
@@ -44,7 +45,7 @@ NORTH_TARGET_JSON_SHA = "bd9df3b979eb521af9823de19063c39ece702648736eddb79e6a6e4
 NORTH_TARGET_PNG_SHA = "a5ea4e52eeacd1820a9bd576c3df48850ba39f6543ff4e2a284ebd7753c2e7f1"
 EXPECTED_ROUTE = "quality-v1:play-081-industrial-l04-v14-west-prelock-v1"
 EXPECTED_ROUTE_SHA = "38d26484c0cff5e66aeb5e585f1900a311c5c99e0c2e840a51f1c891da38df33"
-REPAIR_ROUTE = "quality-v2:play-081-west-v14-closure-contract-r2"
+REPAIR_ROUTE = "quality-v2:play-081-west-v14-independent-return-repair-v1"
 EXPECTED_HEAD = "81aff53f4276208c8065e76a29f1f99c30a5ceec"
 EXPECTED_COMPONENT_KINDS = {"surrounding-shell", "foundation", "frontage-apron", "portal-frame-jamb", "portal-frame-header", "aperture-void", "portal-depth-reveal", "freight-recess-beat", "roof-tier", "clerestory-lantern", "crown-break", "process-vessel", "pipe-cluster", "process-stack", "roof-plant", "control-annex", "staff-glazing", "service-door", "loading-rails", "roof-edge", "apron-marking", "roof-truss"}
 PIXEL_SUFFIXES = {".png", ".jpg", ".jpeg", ".tif", ".tiff", ".exr", ".blend"}
@@ -98,7 +99,7 @@ def audit(design: dict[str, Any], lowering: dict[str, Any], *, files: bool = Fal
     if design.get("task") != "PLAY-081" or design.get("direction") != "west" or design.get("logicalBuildingID") != "industrial_l04" or design.get("variantID") != "variant-0": bad("identity")
     if design.get("direction") != "west" or design.get("sourceRevision") != "west-v14-compatibility-01" or design.get("orientationTransform") != "none" or design.get("siblingInputsConsumed") != []: bad("direction-isolation")
     bindings = design.get("authorityBindings", {})
-    if bindings.get("publishedBase") != PUBLISHED_BASE or bindings.get("authorityCommit") != AUTHORITY_COMMIT or bindings.get("claimRevision") != 10 or bindings.get("claimSHA256") != CLAIM_SHA or bindings.get("bridgeSHA256") != BRIDGE_SHA: bad("authority")
+    if bindings.get("publishedBase") != PUBLISHED_BASE or bindings.get("authorityCommit") != AUTHORITY_COMMIT or bindings.get("claimRevision") != 10 or bindings.get("claimSHA256") != DESIGN_CLAIM_SHA or bindings.get("bridgeSHA256") != BRIDGE_SHA: bad("authority")
     if bindings.get("northV14AuthoritySHA256") != NORTH_AUTHORITY_SHA or bindings.get("northV14TargetJSONSHA256") != NORTH_TARGET_JSON_SHA or bindings.get("northV14TargetPixelsSHA256") != NORTH_TARGET_PNG_SHA: bad("family-authority")
     if design.get("sourceAuthority") is not False or design.get("pixelRenderingAuthorized") is not False or design.get("productionSelected") is not False: bad("zero-pixel-boundary")
     expected_base = {"designSHA256": BASE_DESIGN_SHA, "loweringSHA256": BASE_LOWERING_SHA, "materialsSHA256": BASE_MATERIALS_SHA, "preserveAllBytes": True}

@@ -47,7 +47,30 @@ def semantic_manifest() -> dict[str, Any]:
             objects.append({"id": object_id, "component": component["id"], "builder": item["builder"], "role": component["role"], "aabb": component["aabb"]})
     if len({item["id"] for item in objects}) != len(objects):
         raise ValueError("duplicate Blender object identity")
-    return {"task": contract["task"], "direction": contract["direction"], "processID": contract["processID"], "camera": contract["camera"], "registration": contract["registration"], "materialRoles": contract["materialRoles"], "objects": objects, "componentCount": len(components), "objectCount": len(objects)}
+    component_roles = {item["id"]: item["role"] for item in components}
+    elbow = _pipe_elbow_control_points(
+        next(item["aabb"]["min"] for item in components if item["id"] == "west-v14-pipe-cluster"),
+        next(item["aabb"]["max"] for item in components if item["id"] == "west-v14-pipe-cluster"),
+    )
+    elbow_first = tuple(elbow[1][index] - elbow[0][index] for index in range(3))
+    elbow_second = tuple(elbow[2][index] - elbow[1][index] for index in range(3))
+    cross = (
+        elbow_first[1] * elbow_second[2] - elbow_first[2] * elbow_second[1],
+        elbow_first[2] * elbow_second[0] - elbow_first[0] * elbow_second[2],
+        elbow_first[0] * elbow_second[1] - elbow_first[1] * elbow_second[0],
+    )
+    runtime_portal = {
+        "compound": True,
+        "derivedFromAperture": "west-v14-deep-freight-aperture",
+        "objects": [
+            {"id": "west-v14-portal-left-jamb", "materialRole": component_roles["west-v14-portal-left-jamb"]},
+            {"id": "west-v14-portal-right-jamb", "materialRole": component_roles["west-v14-portal-right-jamb"]},
+            {"id": "west-v14-portal-header", "materialRole": component_roles["west-v14-portal-header"]},
+            {"id": "west-v14-portal-reveal-surface", "materialRole": "clerestory-and-roof-edge"},
+            {"id": "west-v14-portal-recessed-dark-back-plane", "materialRole": "deep-freight-void"},
+        ],
+    }
+    return {"task": contract["task"], "direction": contract["direction"], "processID": contract["processID"], "camera": contract["camera"], "registration": contract["registration"], "materialRoles": contract["materialRoles"], "objects": objects, "componentCount": len(components), "objectCount": len(objects), "runtimePortal": runtime_portal, "pipeElbow": {"controlPoints": [list(point) for point in elbow], "nonCollinearCrossProduct": list(cross), "nonCollinear": any(abs(value) > 1.0e-6 for value in cross), "explicitEndpoints": True, "capped": True}}
 
 
 def load_exact_profile() -> dict[str, Any]:
@@ -116,7 +139,7 @@ def _add_portal_frame_mesh(bpy: Any, name: str, lower: list[float], upper: list[
     return _mesh_object(bpy, name, vertices, faces, material)
 
 
-def _add_compound_recessed_portal(bpy: Any, names: list[str], aperture: dict[str, list[float]], frame_material: Any, void_material: Any) -> list[Any]:
+def _add_compound_recessed_portal(bpy: Any, names: list[str], aperture: dict[str, list[float]], frame_material: Any, reveal_material: Any, void_material: Any) -> list[Any]:
     """Build one connected portal assembly from the aperture bounds."""
     lo, hi = tuple(float(x) for x in aperture["min"]), tuple(float(x) for x in aperture["max"])
     outer_lo = [lo[0] - 2.0, lo[1] - 2.0, lo[2] - 2.0]
@@ -126,7 +149,7 @@ def _add_compound_recessed_portal(bpy: Any, names: list[str], aperture: dict[str
     header = _add_box_mesh(bpy, names[2], [outer_lo[0], hi[1] - 1.1, lo[2] - 1.0], [outer_hi[0], outer_hi[1], hi[2] + 1.0], frame_material)
     reveal_lo = [hi[0] - 0.35, lo[1], lo[2]]
     reveal_hi = [hi[0] + 0.05, hi[1], hi[2]]
-    reveal = _add_box_mesh(bpy, "west-v14-portal-reveal-surface", reveal_lo, reveal_hi, frame_material)
+    reveal = _add_box_mesh(bpy, "west-v14-portal-reveal-surface", reveal_lo, reveal_hi, reveal_material)
     back_lo = [hi[0] + 0.08, lo[1] + 0.2, lo[2] + 0.2]
     back_hi = [hi[0] + 0.22, hi[1] - 0.2, hi[2] - 0.2]
     back = _add_box_mesh(bpy, "west-v14-portal-recessed-dark-back-plane", back_lo, back_hi, void_material)
@@ -185,6 +208,16 @@ def _add_pipe_segment(bpy: Any, name: str, start: tuple[float, float, float], en
     return obj
 
 
+def _pipe_elbow_control_points(lower: Iterable[float], upper: Iterable[float]) -> tuple[tuple[float, float, float], tuple[float, float, float], tuple[float, float, float]]:
+    """Return a bounded quarter-turn control triplet in the pipe's Y/Z plane."""
+    lo, hi = tuple(float(x) for x in lower), tuple(float(x) for x in upper)
+    return (
+        (hi[0], lo[1], lo[2]),
+        (hi[0], lo[1], hi[2]),
+        (hi[0], hi[1], hi[2]),
+    )
+
+
 def _add_pipe_elbow(bpy: Any, name: str, start: tuple[float, float, float], corner: tuple[float, float, float], end: tuple[float, float, float], material: Any) -> Any:
     """Create a bounded, visibly curved three-point process elbow."""
     curve = bpy.data.curves.new(name + "Curve", type="CURVE")
@@ -208,13 +241,12 @@ def _add_pipe_elbow(bpy: Any, name: str, start: tuple[float, float, float], corn
 def _add_pipe_cluster(bpy: Any, names: list[str], lower: list[float], upper: list[float], material: Any) -> list[Any]:
     lo, hi = tuple(float(x) for x in lower), tuple(float(x) for x in upper)
     start = (lo[0], lo[1], lo[2])
-    corner = (hi[0], lo[1], lo[2])
-    end = (hi[0], hi[1], lo[2])
+    elbow_start, elbow_corner, elbow_end = _pipe_elbow_control_points(lower, upper)
     support_start = (lo[0], lo[1], hi[2])
     support_end = (hi[0], lo[1], hi[2])
     return [
-        _add_pipe_segment(bpy, names[0], start, corner, material),
-        _add_pipe_elbow(bpy, names[1], corner, (hi[0], (lo[1] + hi[1]) / 2.0, lo[2]), end, material),
+        _add_pipe_segment(bpy, names[0], start, elbow_start, material),
+        _add_pipe_elbow(bpy, names[1], elbow_start, elbow_corner, elbow_end, material),
         _add_pipe_segment(bpy, names[2], support_start, support_end, material),
     ]
 
@@ -311,7 +343,7 @@ def _build_component(bpy: Any, component: dict[str, Any], material: Any, materia
             return []
         aperture = next(item["aabb"] for item in design["components"] if item["id"] == "west-v14-deep-freight-aperture")
         portal_names = ["west-v14-portal-left-jamb", "west-v14-portal-right-jamb", "west-v14-portal-header"]
-        return _add_compound_recessed_portal(bpy, portal_names, aperture, material, materials["deep-freight-void"])
+        return _add_compound_recessed_portal(bpy, portal_names, aperture, material, materials["clerestory-and-roof-edge"], materials["deep-freight-void"])
     if builder == "pitched_roof_wedge": return [_add_wedge_mesh(bpy, names[0], lower, upper, material)]
     if builder == "capped_vessel" or builder == "capped_stack": return [_add_cylinder_mesh(bpy, names[0], lower, upper, material)]
     if builder == "pipe_run_with_elbows": return _add_pipe_cluster(bpy, names, lower, upper, material)

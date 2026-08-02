@@ -18,7 +18,10 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from west_execution_orchestration_v2 import (
     DEFAULT_EXECUTION_CONTRACT,
+    DEFAULT_HIGH_LEVEL_ORCHESTRATOR,
+    DEFAULT_LOW_LEVEL_RUNNER,
     DEFAULT_RUNNER_CONTRACT,
+    SCHEDULE_SCHEMA,
     OrchestrationError,
     committed_input_errors,
     current_binding_errors,
@@ -32,6 +35,7 @@ from west_execution_orchestration_v2 import (
     validate_allocation,
     validate_bound_launch_grant,
     validate_contract_authorities,
+    validate_integration_document_closure,
     validate_execution_receipt,
     validate_failure_isolation,
     validate_receipt_order,
@@ -534,6 +538,133 @@ class WestExecutionOrchestrationV2Tests(unittest.TestCase):
                 "integration-input:lockedMaterialMapping:working-tree-sha256",
                 errors,
             )
+
+    def test_complete_integration_document_closure_is_cross_bound(self) -> None:
+        """A committed positive fixture and field-level adversaries stay zero-child."""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            subprocess.run(["git", "init", "-q"], cwd=root, check=True)
+            subprocess.run(["git", "config", "user.name", "PLAY-081 Test"], cwd=root, check=True)
+            subprocess.run(["git", "config", "user.email", "play-081@example.invalid"], cwd=root, check=True)
+            branch = self.execution_contract["branch"]
+            subprocess.run(["git", "checkout", "-qb", branch], cwd=root, check=True)
+            claim_path = root / "docs/production/claims/PLAY-081.world-art-west.md"
+            claim_path.parent.mkdir(parents=True)
+            claim_path.write_text("Claim revision: 11\n", encoding="utf-8")
+            base_path = root / "docs/production/evidence/INTEGRATION/BASE.md"
+            base_path.parent.mkdir(parents=True, exist_ok=True)
+            base_path.write_text("frozen design\n", encoding="utf-8")
+            subprocess.run(["git", "add", "."], cwd=root, check=True)
+            subprocess.run(["git", "commit", "-q", "-m", "fixture base"], cwd=root, check=True)
+            base = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
+            contract = copy.deepcopy(self.execution_contract)
+            runner = copy.deepcopy(self.runner_contract)
+            session_id = "west-integration-session-v1"
+            docs: dict[str, dict] = {}
+            schedule = fixture_schedule(contract, "parallel_two_slot")
+            schema = {
+                "documentType": "scheduleSchema", "schema": SCHEDULE_SCHEMA,
+                "schemaVersion": 1, "taskId": "PLAY-081", "direction": "west",
+                "claimSHA256": hashlib.sha256(claim_path.read_bytes()).hexdigest(),
+                "claimRevision": 11, "branch": branch, "workerHead": base,
+                "sessionId": session_id,
+            }
+            docs["scheduleSchema"] = schema
+            docs["scheduleAuthority"] = {
+                "documentType": "scheduleAuthority", "schedule": schedule,
+                "scheduleSchemaSHA256": "", "sessionId": session_id,
+                "taskId": "PLAY-081", "direction": "west",
+                "claimSHA256": schema["claimSHA256"], "claimRevision": 11,
+                "branch": branch, "workerHead": base, "publishedBase": base,
+            }
+            schema_bytes = (json.dumps(schema, indent=2, sort_keys=True) + "\n").encode()
+            docs["scheduleAuthority"]["scheduleSchemaSHA256"] = hashlib.sha256(schema_bytes).hexdigest()
+            appearance = {
+                "documentType": "appearanceLock", "state": "released",
+                "sessionId": session_id, "taskId": "PLAY-081", "direction": "west",
+                "claimSHA256": schema["claimSHA256"], "claimRevision": 11,
+                "branch": branch, "workerHead": base, "publishedBase": base,
+                "sourceSha256": "a" * 64, "decodedRgbaSha256": "b" * 64,
+            }
+            materials = {
+                "documentType": "lockedMaterialMapping", "state": "released",
+                "sessionId": session_id, "taskId": "PLAY-081", "direction": "west",
+                "claimSHA256": schema["claimSHA256"], "claimRevision": 11,
+                "branch": branch, "workerHead": base, "publishedBase": base,
+                "appearanceLockSHA256": "", "roles": {"frame": "steel"},
+            }
+            profile = {
+                "documentType": "sourceProductionProfile", "schema": "source-stage-v2",
+                "sessionId": session_id, "taskId": "PLAY-081", "direction": "west",
+                "claimSHA256": schema["claimSHA256"], "claimRevision": 11,
+                "branch": branch, "workerHead": base, "publishedBase": base,
+                "scheduleAuthoritySHA256": "", "appearanceLockSHA256": "",
+                "lockedMaterialMappingSHA256": "", "sourceStageSchemaSHA256": "c" * 64,
+            }
+            docs["appearanceLock"], docs["lockedMaterialMapping"], docs["sourceProductionProfile"] = appearance, materials, profile
+            for process_id in ("A", "B", "C"):
+                grant = fixture_grant(schedule, contract, runner, process_id)
+                expected = contract["westProcesses"][process_id]
+                docs[f"launchGrant{process_id}"] = {
+                    "documentType": "launchGrant", "grant": grant,
+                    "sessionId": session_id, "taskId": "PLAY-081", "direction": "west",
+                    "claimSHA256": schema["claimSHA256"], "claimRevision": 11,
+                    "branch": branch, "workerHead": base, "publishedBase": base,
+                    "scheduleAuthoritySHA256": "", "orchestrator": DEFAULT_HIGH_LEVEL_ORCHESTRATOR,
+                    "runner": DEFAULT_LOW_LEVEL_RUNNER, "outputRoot": expected["directory"],
+                    "rawRoot": expected["rawRoot"], "semanticRoot": expected["semanticRoot"],
+                    "evidenceRoot": expected["evidenceRoot"], "maximumChildStarts": 1,
+                }
+            def canonical_bytes(value: dict) -> bytes:
+                return (json.dumps(value, indent=2, sort_keys=True) + "\n").encode()
+            docs["scheduleAuthority"]["scheduleSchemaSHA256"] = hashlib.sha256(canonical_bytes(docs["scheduleSchema"])).hexdigest()
+            schedule_authority_hash = hashlib.sha256(canonical_bytes(docs["scheduleAuthority"])).hexdigest()
+            appearance_hash = hashlib.sha256(canonical_bytes(appearance)).hexdigest()
+            materials["appearanceLockSHA256"] = appearance_hash
+            materials_hash = hashlib.sha256(canonical_bytes(materials)).hexdigest()
+            profile["scheduleAuthoritySHA256"] = schedule_authority_hash
+            profile["appearanceLockSHA256"] = appearance_hash
+            profile["lockedMaterialMappingSHA256"] = materials_hash
+            profile_hash = hashlib.sha256(canonical_bytes(profile)).hexdigest()
+            for process_id in ("A", "B", "C"):
+                docs[f"launchGrant{process_id}"]["scheduleAuthoritySHA256"] = schedule_authority_hash
+            grant_hashes = {p: hashlib.sha256(canonical_bytes(docs[f"launchGrant{p}"])).hexdigest() for p in ("A", "B", "C")}
+            docs["globalExecutionReceipt"] = {
+                "documentType": "integrationSession", "sessionId": session_id,
+                "taskId": "PLAY-081", "direction": "west", "claimSHA256": schema["claimSHA256"],
+                "claimRevision": 11, "branch": branch, "workerHead": base, "publishedBase": base,
+                "scheduleAuthoritySHA256": schedule_authority_hash, "grantSHA256": grant_hashes,
+                "appearanceLockSHA256": appearance_hash, "lockedMaterialMappingSHA256": materials_hash,
+                "sourceProductionProfileSHA256": profile_hash,
+            }
+            path_map: dict[str, tuple[str, bytes]] = {"frozenDesignAuthority": (str(base_path.relative_to(root)), base_path.read_bytes())}
+            for name, value in docs.items():
+                relative = f"docs/production/evidence/INTEGRATION/{name}.json"
+                path_map[name] = (relative, canonical_bytes(value))
+                target = root / relative
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes(path_map[name][1])
+            subprocess.run(["git", "add", "."], cwd=root, check=True)
+            subprocess.run(["git", "commit", "-q", "-m", "fixture authorities"], cwd=root, check=True)
+            worker_head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
+            contract["frozenDesignAuthority"] = {"path": path_map["frozenDesignAuthority"][0], "commit": worker_head, "sha256": hashlib.sha256(path_map["frozenDesignAuthority"][1]).hexdigest()}
+            for name, binding in contract["futureIntegrationInputs"].items():
+                relative, data = path_map[name]
+                binding.update({"state": "bound_integration", "path": relative, "commit": worker_head, "sha256": hashlib.sha256(data).hexdigest()})
+            runner["appearanceLock"].update({"documentPath": contract["futureIntegrationInputs"]["appearanceLock"]["path"], "commit": worker_head, "documentSha256": contract["futureIntegrationInputs"]["appearanceLock"]["sha256"]})
+            profile_binding = contract["futureIntegrationInputs"]["sourceProductionProfile"]
+            runner["sourceStage"]["sourceProductionProfile"] = {"state": "bound_integration_profile", "path": profile_binding["path"], "commit": worker_head, "sha256": profile_binding["sha256"]}
+            errors, result = validate_integration_document_closure(root, contract, runner)
+            self.assertEqual(errors, [])
+            self.assertEqual(result["workerHead"], worker_head)
+            for field, expected in (("direction", "east"), ("claimSHA256", "0" * 64), ("branch", "codex/citysim-world-art-south")):
+                candidate = copy.deepcopy(docs["appearanceLock"])
+                candidate[field] = expected
+                target = root / path_map["appearanceLock"][0]
+                target.write_bytes(canonical_bytes(candidate))
+                bad, _ = validate_integration_document_closure(root, contract, runner)
+                self.assertTrue(bad)
+                target.write_bytes(path_map["appearanceLock"][1])
 
     def test_committed_authority_rejects_hash_and_content_drift(self) -> None:
         relative = (

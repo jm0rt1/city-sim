@@ -20,7 +20,7 @@
   "designPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/WEST-V14-DESIGN.json",
   "designSHA256": "07951aa7101c1c917c050a449f255e13f8de95b30b8ea1828e080bf7fa231a18",
   "loweringPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/WEST-V14-LOWERING.json",
-  "loweringSHA256": "22164453a3c5377a65ee044360f5afb51948fbecb1affdfc54f49a1313c4c582",
+  "loweringSHA256": "a54374313e335d5af53f2441363db435f9d6e44edc0a3e68daee1704d451f172",
   "bridgePath": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-direction-bridge-v06/MAPPING-CONTRACT.json",
   "bridgeSHA256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7",
   "launcherPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/process-a-execution-v01/launch_process_a.py",

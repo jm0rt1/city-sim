@@ -5,7 +5,7 @@
   "direction": "west",
   "stage": "zero-pixel-v14-analytic-lowering",
   "designPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/WEST-V14-DESIGN.json",
-  "designSHA256": "334ab5ed19734d6a4f90e499cf8f15872a3c11677a2cb437a912b6a96d0617ad",
+  "designSHA256": "07951aa7101c1c917c050a449f255e13f8de95b30b8ea1828e080bf7fa231a18",
   "baseLoweringPath": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/v13-compatibility-v01/WEST-V13-LOWERING.json",
   "baseLoweringSHA256": "a9a316c8050e39779f806398f5f1ef5982c7ddf7d357c84cbf2eaf0700ea2743",
   "orientationTransform": "none",

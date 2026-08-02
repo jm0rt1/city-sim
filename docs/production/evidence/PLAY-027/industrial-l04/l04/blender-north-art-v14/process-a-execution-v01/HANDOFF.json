@@ -1,16 +1,63 @@
 {
-  "schema": 1,
+  "schema": 2,
   "task": "PLAY-027",
   "direction": "north",
   "process": "A",
-  "status": "ZERO_CHILD_PRELAUNCH_READY_FOR_INTEGRATION",
+  "status": "STATIC_REFERENCE_CANDIDATE",
+  "executableBehavior": "UNPROVEN",
+  "route": {
+    "carrier": "030c022bb4e9829fa175f6ca1f6a3aebcaa71fc1",
+    "routeId": "quality-v2:play-027-industrial-l04-v14-north-reference-architecture-v3",
+    "canonicalSHA256": "fd8e4f766d0b7f2ecdf543bf68ca2182d9730ef1ef0c4a188ad177f639d15e73"
+  },
   "contract": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/process-a-execution-v01/EXECUTION-CONTRACT.json",
   "launcher": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/process-a-execution-v01/launch_north_process_a.py",
   "child": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/process-a-execution-v01/render_north_process_a_child.py",
-  "frozenDesign": {"components": 33, "objects": 97, "coveragePercent": 100.0, "socketCitySim": [0, 0, -28], "socketBlender": [-28, 0, 0], "socketSource": [896, 704]},
-  "prelaunchProof": {"replays": 2, "byteIdentical": true, "adversaries": 15, "childStarts": 0, "dccProcessCount": 0, "pixelWrites": 0},
-  "blenderConstruction": {"explicitMeshBuilders": ["wedge", "portal-reveal", "pipe-cylinder", "torus-elbow", "truss-members", "octagonal-vessel"], "cameraAim": true, "worldNodes": true, "northwestKey": true, "optionalFill": true, "southeastShadowReceiver": true, "futureRenderCall": "bpy.ops.render.render(write_still=True)", "futureBlendWrite": true},
-  "stopBefore": ["live schedule", "grant/lease", "Blender/DCC child", "source pixels", "normalization", "Process B/C", "appearance lock", "Renderer", "shipping", "production selection"],
+  "frozenDesign": {
+    "components": 33,
+    "objects": 97,
+    "solidMeshSpecs": 96,
+    "voidSpecs": 1,
+    "coveragePercent": 100.0,
+    "coordinateBridge": "B(x,y,z)=(z,x,y)",
+    "socketCitySim": [0, 0, -28],
+    "socketBlender": [-28, 0, 0],
+    "socketSource": [896, 704]
+  },
+  "staticProof": {
+    "replays": 2,
+    "byteIdentical": true,
+    "adversaries": 27,
+    "dataFlowInspected": true,
+    "meshTopologyInspected": true,
+    "portalCenterRemainsOpen": true,
+    "genericFallback": false,
+    "childStarts": 0,
+    "dccProcessCount": 0,
+    "pixelWrites": 0
+  },
+  "referenceArchitecture": {
+    "validatedScheduleGrantSessionFlow": true,
+    "highLevelCLIReachesSoleLaunchPath": true,
+    "fixedBlenderArgumentsAndEnvironment": true,
+    "launcherCreatesExclusiveOutputRoot": true,
+    "childRequiresSameOutputInode": true,
+    "citysimCoordinatesBridgedBeforeBlender": true,
+    "explicitSemanticBuilderClosure": true,
+    "cameraWorldAimedLightsAndShadowCatcher": true,
+    "cyclesThreadMotionColorEnvelope": true,
+    "rawSemanticBlendManifestProvenanceReceiptPlumbing": true,
+    "nonblockingCapture": true
+  },
+  "proofLimitations": [
+    "Blender was not launched",
+    "bpy API compatibility is unproven",
+    "mesh renderability in Blender is unproven",
+    "output decoding and containment at runtime are unproven",
+    "determinism and visual quality are unproven",
+    "independent contained smoke is required before executable acceptance"
+  ],
+  "stopBefore": ["contained Blender smoke", "live schedule/grant/session", "Process A/B/C", "source pixels", "normalization", "appearance lock", "Renderer", "shipping", "production selection"],
   "sourceAuthority": false,
   "productionSelected": false
 }

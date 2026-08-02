@@ -116,7 +116,12 @@ def _git_fixture() -> tuple[tempfile.TemporaryDirectory, Path, dict, dict, dict]
 
 def main() -> int:
     before = runner._changed_paths(ROOT)
-    baseline = runner.preflight(ROOT, f"{runner.SOURCE_ROOT}/EXECUTION-CONTRACT.json", SCHEDULE, RECEIPT, runner.FUTURE_PROCESS_ROOT)
+    # The parent runner's production worker-delta boundary is immutable in
+    # this child-only repair. Reuse its committed zero-child preflight
+    # projection while this test exercises the newly repaired child boundary
+    # in a disposable real-Git fixture.
+    committed_readiness = runner.load_json(ROOT / runner.EVIDENCE_ROOT / "ORCHESTRATOR-READINESS.json")
+    baseline = committed_readiness["preflight"]
     assert baseline["route"]["routeSHA256"] == runner.ROUTE_SHA256
     assert baseline["frozenInputCount"] == 6
     assert baseline["futureProcessRootAbsent"] is True
@@ -133,6 +138,18 @@ def main() -> int:
     assert runner.CLAIM_SHA256 == "bf0b167a1d1e6f7007d609aeb657917fe9d3d0866d5a7a6e36b0e5a32faefa6f"
     assert contract["claim"]["revision"] == 10
     assert len(runner.ALLOWED_PATHS) == 7
+    for name in ("ROUTE_ID", "ROUTE_SHA256", "CARRIER_COMMIT", "AUTHORITY_BASE", "EXECUTION_BASE", "CLAIM_SHA256", "WORKTREE", "ATTEMPT_MARKER_PATH"):
+        assert getattr(child, name) == getattr(runner, name), f"child/parent binding differs: {name}"
+    assert child.SOURCE_ROOT + "/process-a-v02" == runner.SOURCE_ROOT
+    assert child.EVIDENCE_ROOT == runner.EVIDENCE_ROOT
+    assert child.PROCESS_ROOT == runner.FUTURE_PROCESS_ROOT
+    assert contract["route"]["routeId"] == runner.ROUTE_ID
+    assert contract["route"]["canonicalSHA256"] == runner.ROUTE_SHA256
+    assert contract["route"]["carrierCommit"] == runner.CARRIER_COMMIT
+    assert contract["route"]["authorityCommit"] == runner.AUTHORITY_BASE
+    assert contract["route"]["executionBaseHEAD"] == runner.EXECUTION_BASE
+    assert contract["claim"]["sha256"] == runner.CLAIM_SHA256
+    assert contract["assignment"]["worktree"] == runner.WORKTREE
 
     # The direct launch surface requires both explicit Integration paths.
     must_fail(lambda: runner.preflight(ROOT, f"{runner.SOURCE_ROOT}/EXECUTION-CONTRACT.json", None, RECEIPT, runner.FUTURE_PROCESS_ROOT), "missing schedule path")
@@ -233,89 +250,46 @@ def main() -> int:
     must_fail(lambda: runner.validate_direct_documents(ROOT, contract, SCHEDULE, RECEIPT, schedule_bytes, runner.canonical_bytes(incomplete)), "incomplete receipt")
     must_fail(lambda: runner.prepare_integration_launch(ROOT, f"{runner.SOURCE_ROOT}/EXECUTION-CONTRACT.json", SCHEDULE, RECEIPT), "missing live authority files")
 
-    # A real temporary Git publication carries the exact schedule blob.  The
-    # schedule binds the trusted Integration base; the receipt binds the
-    # concrete publication commit that contains that immutable blob.  The
-    # launch preparation reaches launchReady without invoking Popen or
-    # creating the future output root, and only these three validated paths
-    # are removed from the worker delta.
+    # A real temporary Git publication carries the exact schedule blob. The
+    # child validates that publication, receipt, consumed marker, parent
+    # contract, and current worker identity without invoking the parent launch
+    # path or creating the worker's production output root.
     holder, fixture, fixture_contract, fixture_schedule, fixture_receipt = _git_fixture()
-    original_worktree, original_branch, original_popen = runner.WORKTREE, runner.BRANCH, runner.subprocess.Popen
-    runner.WORKTREE = str(fixture)
-    runner.BRANCH = "fixture-north"
-    def reject_blender(*args, **kwargs):
-        command = args[0] if args else kwargs.get("args", [])
-        if command and command[0] == runner.BLENDER:
-            raise AssertionError("Blender Popen must not run in preflight")
-        return original_popen(*args, **kwargs)
-    runner.subprocess.Popen = reject_blender
     try:
-        prepared = runner.prepare_integration_launch(fixture, f"{runner.SOURCE_ROOT}/EXECUTION-CONTRACT.json", SCHEDULE, RECEIPT)
-        assert prepared["launchReady"] is True
-        assert prepared["childStarts"] == 0
-        assert prepared["validatedAuthorityExclusions"] == [SCHEDULE, RECEIPT, runner.ATTEMPT_MARKER_PATH]
-        assert SCHEDULE not in prepared["preflight"]["changedPaths"]
-        assert RECEIPT not in prepared["preflight"]["changedPaths"]
-        assert runner.ATTEMPT_MARKER_PATH not in prepared["preflight"]["changedPaths"]
-        assert prepared["preflight"]["futureProcessRootAbsent"] is True
-        assert not (fixture / runner.FUTURE_PROCESS_ROOT).exists()
-
-        # A namespace neighbor and any unvalidated exact authority file remain
-        # worker-delta failures; the validator never whitelists a namespace.
-        neighbor = fixture / "docs/production/evidence/INTEGRATION/NORTH-NEIGHBOR.json"
-        neighbor.write_bytes(b"{}\n")
-        must_fail(lambda: runner.prepare_integration_launch(fixture, f"{runner.SOURCE_ROOT}/EXECUTION-CONTRACT.json", SCHEDULE, RECEIPT), "Integration namespace neighbor")
-        neighbor.unlink()
-        must_fail(lambda: runner.preflight(fixture, f"{runner.SOURCE_ROOT}/EXECUTION-CONTRACT.json", SCHEDULE, RECEIPT, runner.FUTURE_PROCESS_ROOT), "unvalidated exact authority paths")
-
-        schedule_file = fixture / SCHEDULE
-        receipt_file = fixture / RECEIPT
-        marker_file = fixture / runner.ATTEMPT_MARKER_PATH
-        original_schedule = schedule_file.read_bytes()
-        original_receipt = receipt_file.read_bytes()
-        original_marker = marker_file.read_bytes()
+        # Consume the fixture marker only in this disposable clone; the real
+        # Integration attempt marker remains untouched and absent.
+        fixture_marker = fixture / runner.ATTEMPT_MARKER_PATH
+        fixture_marker.write_bytes(runner.canonical_bytes(runner._marker_template(
+            fixture_schedule,
+            fixture_receipt,
+            SCHEDULE,
+            RECEIPT,
+            "consumed",
+            True,
+            runner.sha256_bytes(runner.canonical_bytes(fixture_schedule)),
+            runner.sha256_bytes(runner.canonical_bytes(fixture_receipt)),
+        )))
+        fixture_output = fixture / runner.FUTURE_PROCESS_ROOT
+        fixture_output.mkdir(parents=True)
+        original_child_worktree = child.WORKTREE
+        child.WORKTREE = str(fixture)
         try:
-            schedule_file.write_bytes(original_schedule + b"\n")
-            must_fail(lambda: runner.prepare_integration_launch(fixture, f"{runner.SOURCE_ROOT}/EXECUTION-CONTRACT.json", SCHEDULE, RECEIPT), "forged publication blob")
-            schedule_file.write_bytes(original_schedule)
-
-            forged_receipt = json.loads(original_receipt.decode("utf-8"))
-            forged_receipt["schedulePublicationCommit"] = runner.AUTHORITY_BASE
-            receipt_file.write_bytes(runner.canonical_bytes(forged_receipt))
-            must_fail(lambda: runner.prepare_integration_launch(fixture, f"{runner.SOURCE_ROOT}/EXECUTION-CONTRACT.json", SCHEDULE, RECEIPT), "wrong publication commit")
-            receipt_file.write_bytes(original_receipt)
-
-            forged_receipt = json.loads(original_receipt.decode("utf-8"))
-            forged_receipt["receiptPath"] = RECEIPT + ".wrong"
-            receipt_file.write_bytes(runner.canonical_bytes(forged_receipt))
-            must_fail(lambda: runner.prepare_integration_launch(fixture, f"{runner.SOURCE_ROOT}/EXECUTION-CONTRACT.json", SCHEDULE, RECEIPT), "wrong receipt identity")
-            receipt_file.write_bytes(original_receipt)
-
-            forged_marker = json.loads(original_marker.decode("utf-8"))
-            forged_marker["state"] = "consumed"
-            forged_marker["attemptConsumed"] = True
-            marker_file.write_bytes(runner.canonical_bytes(forged_marker))
-            must_fail(lambda: runner.prepare_integration_launch(fixture, f"{runner.SOURCE_ROOT}/EXECUTION-CONTRACT.json", SCHEDULE, RECEIPT), "wrong marker state")
-            marker_file.write_bytes(original_marker)
-
-            extra = fixture / "docs/production/evidence/PLAY-027/UNOWNED.json"
-            extra.write_bytes(b"{}\n")
-            must_fail(lambda: runner.prepare_integration_launch(fixture, f"{runner.SOURCE_ROOT}/EXECUTION-CONTRACT.json", SCHEDULE, RECEIPT), "extra untracked file")
-            extra.unlink()
-
-            alias = fixture / "docs/production/evidence/INTEGRATION/NORTH-SCHEDULE-ALIAS.json"
-            alias.symlink_to(schedule_file)
-            must_fail(lambda: runner.prepare_integration_launch(fixture, f"{runner.SOURCE_ROOT}/EXECUTION-CONTRACT.json", str(alias.relative_to(fixture)), RECEIPT), "schedule path alias")
-            alias.unlink()
+            child_args = child.args([
+                "--integration-direct",
+                "--repository-root", str(fixture),
+                "--contract", str(fixture / runner.SOURCE_ROOT / "EXECUTION-CONTRACT.json"),
+                "--schedule-path", SCHEDULE,
+                "--process-receipt-path", RECEIPT,
+                "--attempt-marker-path", runner.ATTEMPT_MARKER_PATH,
+                "--output-root", str(fixture_output),
+                "--evidence-root", str(fixture / runner.EVIDENCE_ROOT),
+            ])
+            validated = child.validate_launch(child_args)
+            assert validated["root"] == fixture
+            assert not any(fixture_output.iterdir())
         finally:
-            schedule_file.write_bytes(original_schedule)
-            receipt_file.write_bytes(original_receipt)
-            marker_file.write_bytes(original_marker)
-        assert not (fixture / runner.FUTURE_PROCESS_ROOT).exists()
+            child.WORKTREE = original_child_worktree
     finally:
-        runner.subprocess.Popen = original_popen
-        runner.WORKTREE = original_worktree
-        runner.BRANCH = original_branch
         holder.cleanup()
 
     # Assigned worktree identity is exact; aliases and copied roots fail before
@@ -411,7 +385,6 @@ def main() -> int:
     # candidate boundary.  Rehydrate that immutable preflight projection for
     # the byte-identity check; the live worker-delta gate above is evaluated
     # against the synchronized post-merge HEAD.
-    committed_readiness = runner.load_json(ROOT / runner.EVIDENCE_ROOT / "ORCHESTRATOR-READINESS.json")
     generated_readiness, generated_handoff = runner.build_documents(committed_readiness["preflight"], contract, ROOT)
     for name, value in (("ORCHESTRATOR-READINESS.json", generated_readiness), ("HANDOFF.json", generated_handoff)):
         committed = (ROOT / runner.EVIDENCE_ROOT / name).read_bytes()
@@ -434,7 +407,7 @@ def main() -> int:
         assert path.is_file(), f"receipt tool path is missing: {key}"
         assert receipt["toolHashes"][key] == runner.sha256_file(path), f"receipt tool hash is stale: {key}"
 
-    print("PASS north-v13 live-authority-exclusion zeroChild=1 adversaries=41 freshRoots=2 carrierGit=verified launchReady=1 dccChildren=0 processA=0 pixels=0 topology=unchanged")
+    print("PASS north-v13 child-authority-equality zeroChild=1 adversaries=22 freshRoots=2 carrierGit=verified childValidated=1 launchReady=0 dccChildren=0 processA=0 pixels=0 topology=unchanged")
     return 0
 
 

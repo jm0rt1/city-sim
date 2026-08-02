@@ -23,12 +23,12 @@ PROCESS_ROOT = "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-nor
 EVIDENCE_ROOT = "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-v02"
 WORKTREE = "/Users/James/.codex/worktrees/0648/city-sim"
 ATTEMPT_MARKER_PATH = "docs/production/evidence/INTEGRATION/PLAY-027-NORTH-V13-PROCESS-A-ATTEMPT.json"
-AUTHORITY_BASE = "68ef9bdf213b9b7f659f4a049f2f2708bcae166c"
+AUTHORITY_BASE = "5ac54021604e25117f4ccb63bc0914209724754c"
 CLAIM_SHA256 = "bf0b167a1d1e6f7007d609aeb657917fe9d3d0866d5a7a6e36b0e5a32faefa6f"
-ROUTE_ID = "quality-v1:north-v13-process-a-v02-live-authority-local-debug-v1"
-ROUTE_SHA256 = "167301b26d50810952c841a160194cb4bac051f5078dacb43232796c9adf9dc8"
-CARRIER_COMMIT = "45e1422304443a012a2f121c90be3e7d31b82c59"
-EXECUTION_BASE = "57a89b916f3c97801f7f26e83ad3b6422bae3065"
+ROUTE_ID = "quality-v1:play-027-north-current-head-preflight-luna-v1"
+ROUTE_SHA256 = "d1c3a1c8b2c6afd747b42641d29afc5e4d85320f267ffe19c89efc447cdb1940"
+CARRIER_COMMIT = "5d84d521b3b25f9ddf11d7b88e81c885a5e86946"
+EXECUTION_BASE = "d25d7a2767d92a8628849ca3911d28f4203dd674"
 
 
 def canonical(value: object) -> bytes:

@@ -7,6 +7,7 @@ import copy
 import hashlib
 import importlib.util
 import json
+import subprocess
 import tempfile
 import unittest
 from pathlib import Path
@@ -213,9 +214,57 @@ class OperatingReceiptTests(unittest.TestCase):
     def test_required_repo_root_fails_closed(self):
         with tempfile.TemporaryDirectory() as tmp:
             self.assertIn(
-                "repo root must be the exact root of a Git repository",
+                "authority root must be the exact root of a Git repository",
                 MOD.validate(receipt(), POLICY, H, {"schema": 1, "receipts": []}, Path(tmp), require_git_repo=True),
             )
+
+    def test_route_projection_binds_exact_output_worktree(self):
+        with tempfile.TemporaryDirectory() as authority_tmp, tempfile.TemporaryDirectory() as assigned_tmp, tempfile.TemporaryDirectory() as wrong_tmp:
+            authority = Path(authority_tmp)
+            route = {
+                "authority": {"claim": {"path": "claim.md", "sha256": H}},
+                "assignment": {"expectedHead": C, "featureAuthorThreadId": "worker", "worktree": assigned_tmp},
+                "pathPolicy": {"allowed": ["owned/path"]},
+                "validation": {"focusedGateOwner": {"threadId": "worker"}, "fullGateOwner": {"threadId": "integration"}},
+                "independentReviewer": {"required": True, "threadId": "integration"},
+            }
+            route_hash = MOD._canonical_sha256(route)
+            dispatch = {"schema": 2, "assignments": [{"modelRouteSha256": route_hash, "modelRoute": route}]}
+            (authority / "dispatch.json").write_text(json.dumps(dispatch), encoding="utf-8")
+            binding = {
+                "dispatchReceiptPath": "dispatch.json", "dispatchReceiptHash": hashlib.sha256((authority / "dispatch.json").read_bytes()).hexdigest(),
+                "modelRouteHash": route_hash, "claimPath": "claim.md", "claimHash": H,
+                "expectedHead": C, "allowedPaths": ["owned/path"],
+            }
+            errors = MOD._route_projection_errors(binding, authority, output_root=Path(wrong_tmp))
+            self.assertIn("worker/output root must exactly match the model route worktree", errors)
+
+    def test_receipt_path_cannot_escape_output_root(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self.assertTrue(MOD._confined_path(root, "../receipt.json", "receipt")[1])
+
+    def test_output_identity_rejects_wrong_branch_and_unrelated_head(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            subprocess.run(["git", "init", str(root)], check=True, capture_output=True)
+            subprocess.run(["git", "-C", str(root), "checkout", "-b", "codex/correct"], check=True, capture_output=True)
+            subprocess.run(["git", "-C", str(root), "config", "user.email", "test@example.com"], check=True)
+            subprocess.run(["git", "-C", str(root), "config", "user.name", "Test"], check=True)
+            (root / "file").write_text("one\n", encoding="utf-8")
+            subprocess.run(["git", "-C", str(root), "add", "file"], check=True)
+            subprocess.run(["git", "-C", str(root), "commit", "-m", "base"], check=True, capture_output=True)
+            head = subprocess.run(
+                ["git", "-C", str(root), "rev-parse", "HEAD"], check=True, capture_output=True, text=True
+            ).stdout.strip()
+            wrong_branch = MOD._output_identity_errors(
+                root, {"branch": "codex/wrong", "expectedHead": head}
+            )
+            self.assertIn("live worker/output branch must exactly match the model route branch", wrong_branch)
+            unrelated = MOD._output_identity_errors(
+                root, {"branch": "codex/correct", "expectedHead": "f" * 40}
+            )
+            self.assertIn("model route expected HEAD must be an ancestor of live worker/output HEAD", unrelated)
 
     def test_phantom_ledger_receipt_fails(self):
         with tempfile.TemporaryDirectory() as tmp:

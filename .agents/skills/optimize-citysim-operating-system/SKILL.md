@@ -137,3 +137,8 @@ Validate durable review receipts with:
 Validate batched event-key coverage with:
 
 `PYTHONDONTWRITEBYTECODE=1 python3 .agents/skills/optimize-citysim-operating-system/scripts/test_validate_operating_review_batch_v1.py`
+
+When Integration-published immutable inputs are newer than the worker base,
+keep outputs on the worker branch and pass the clean Integration checkout as
+`--authority-root`. `--repo-root` remains the exact worker/output Git root.
+Never copy authority files into a worker branch or weaken their hash binding.

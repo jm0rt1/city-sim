@@ -88,8 +88,12 @@ decision, prohibited-work flags, exposed metrics, and one bounded next action.
 Validate it with `../scripts/validate_operating_review_receipt_v1.py`; an event
 key already present in the mandatory supplied ledger is a duplicate and fails
 closed. The validator resolves every input path and SHA-256 against the supplied
-repo root, limits operation kinds to cheap read/hash/diff/schema/receipt work,
-and enforces the one-turn budget. Integration owns the append-only ledger and
+authority root while batch receipt outputs resolve only against the exact
+worker/output root. When these roots differ, both must be explicit exact Git
+roots; this permits immutable post-baseline Integration authority without
+copying it into the worker branch. The validator limits operation kinds to
+cheap read/hash/diff/schema/receipt work and enforces the one-turn budget.
+Integration owns the append-only ledger and
 must disposition actionable results before the related lifecycle advances.
 
 Before delegation, emit `delegation_ready_for_dispatch`. Also emit

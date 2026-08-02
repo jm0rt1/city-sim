@@ -1,0 +1,94 @@
+{
+  "schema": 4,
+  "policySha256": "b9f208fe3ee78cd3143953300cbb2d2692d264f0d9106fd3f799bf74aa2df9da",
+  "modelRoute": {
+    "classification": "LUNA_MECHANICAL",
+    "model": "gpt-5.6-luna",
+    "effort": "medium"
+  },
+  "binding": {
+    "dispatchReceiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-089-INDUSTRIAL-L04-REPAIR-HANDOFF-REVIEW-V1.json",
+    "dispatchReceiptHash": "bd10b49cc353968321a56e2d487ed07ff1c60682d1bd0d062a2dd5fb9e73f8d0",
+    "modelRouteHash": "a1ec347360b75612113813d4420df3a967e2ec5be74ddbb862c0822e4c708ee5",
+    "claimPath": "docs/production/claims/PLAY-089.operating-system-optimization.md",
+    "claimHash": "106dc2a5cffccd436ff936800fc247eee2eacabe1aa65c6905f1859f75cef369",
+    "expectedHead": "88ea5f0e10ef669442df4a287268758e5457d82f",
+    "allowedPaths": [
+      "docs/production/evidence/PLAY-089/industrial-l04-repair-handoff-review-v1/BATCH-MANIFEST.json",
+      "docs/production/evidence/PLAY-089/industrial-l04-repair-handoff-review-v1/01-setup-failure.json",
+      "docs/production/evidence/PLAY-089/industrial-l04-repair-handoff-review-v1/02-north-handoff.json",
+      "docs/production/evidence/PLAY-089/industrial-l04-repair-handoff-review-v1/03-north-terminal.json",
+      "docs/production/evidence/PLAY-089/industrial-l04-repair-handoff-review-v1/04-east-handoff.json",
+      "docs/production/evidence/PLAY-089/industrial-l04-repair-handoff-review-v1/05-east-terminal.json",
+      "docs/production/evidence/PLAY-089/industrial-l04-repair-handoff-review-v1/06-west-handoff.json",
+      "docs/production/evidence/PLAY-089/industrial-l04-repair-handoff-review-v1/07-west-terminal.json",
+      "docs/production/evidence/PLAY-089/industrial-l04-repair-handoff-review-v1/08-concurrency-refill.json"
+    ]
+  },
+  "compactContext": {
+    "mode": "compact_hash_bound",
+    "hashes": {
+      "source": "c5186bc2a477a2badb4c3889d56aea75ec4b87c574d424af242625f6014fd1bc"
+    },
+    "bytes": 0
+  },
+  "inputReceipts": [
+    {
+      "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-089-INDUSTRIAL-L04-REPAIR-HANDOFF-REVIEW-V1.json",
+      "sha256": "bd10b49cc353968321a56e2d487ed07ff1c60682d1bd0d062a2dd5fb9e73f8d0"
+    },
+    {
+      "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-REPAIR-HANDOFF-REVIEW-V1.json",
+      "sha256": "c5186bc2a477a2badb4c3889d56aea75ec4b87c574d424af242625f6014fd1bc"
+    },
+    {
+      "path": "docs/production/claims/PLAY-089.operating-system-optimization.md",
+      "sha256": "106dc2a5cffccd436ff936800fc247eee2eacabe1aa65c6905f1859f75cef369"
+    }
+  ],
+  "prohibitedWork": {
+    "productBuildAllowed": false,
+    "fullGateAllowed": false,
+    "dccAllowed": false,
+    "realAppQAAllowed": false,
+    "sharedMutationAllowed": false
+  },
+  "reviewOperations": {
+    "threadPolling": false,
+    "spawnedReviews": false
+  },
+  "operationKinds": [
+    "read_receipt",
+    "hash_file",
+    "validate_schema",
+    "assemble_receipt"
+  ],
+  "metrics": {
+    "contextBytes": null,
+    "elapsedSeconds": null,
+    "turns": 1
+  },
+  "multiLane": false,
+  "sourceCoverage": [],
+  "eventKey": {
+    "authorityCommit": "f5562c1bd3b38a1d002a64e5930cd82370a3fe81",
+    "taskId": "PLAY-089",
+    "routeId": "quality-v2:play-089-industrial-l04-repair-handoff-review-v1",
+    "trigger": "task_completed_or_stopped",
+    "candidateOrResultCommit": "dd2d4f02fc7d3a7751ff6b72613bdc9ffdd3ed6b"
+  },
+  "decision": "NO_CHANGE",
+  "nextAction": {
+    "action": "HOLD",
+    "owner": "Integration independent repair acceptance",
+    "boundedDeliverable": "Record West candidate-ready terminal state.",
+    "stopCondition": "No worker gate rerun or lifecycle advancement."
+  },
+  "evidence": {
+    "terminalState": "candidate_ready",
+    "resultOrStopReason": "outer launch grants and cross-document published base semantically bound",
+    "commitOrBlockedReason": "dd2d4f02fc7d3a7751ff6b72613bdc9ffdd3ed6b",
+    "evidenceOrBlockedReason": "75e08df8cc89b6782a8579e5f6cb6964434664d2f5dfaefda99ac557e8c9d57e",
+    "nextDependencyOrRefill": "Integration independent acceptance"
+  }
+}

@@ -22,6 +22,11 @@ abbreviated SHA. Before dispatch, compare the exact full SHA across the
 authority artifact, claim, ledger, receipt, and delegation message; any
 mismatch is a hard stop.
 
+Before copying any commit/tree identity into a route or visible-task message,
+run `scripts/resolve_dispatch_identity_v1.py` for the exact ref and copy its
+machine-emitted value. When verifying a previously supplied identity, pass it
+back with `--expect ref=<full_sha>`; abbreviations and mismatches fail closed.
+
 ## Own all management responsibilities
 
 Maintain active awareness of:

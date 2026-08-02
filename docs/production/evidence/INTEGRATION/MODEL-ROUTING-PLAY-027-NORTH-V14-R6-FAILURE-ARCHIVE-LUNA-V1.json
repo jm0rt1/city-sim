@@ -1,0 +1,156 @@
+{
+  "schema": 2,
+  "authorityCommit": "3ad0af9525689350bb2363b8474fbecfaea77a68",
+  "assignments": [
+    {
+      "modelRouteSha256": "938359bdf0a456ad64d8f4baeffb664f8dcbf15156abb4b7736a71be2cbe6443",
+      "modelRoute": {
+        "schema": 2,
+        "routeId": "quality-v2:play-027-north-v14-r6-failure-archive-luna-v1",
+        "taskId": "PLAY-027",
+        "packetKind": "mechanical",
+        "classification": "LUNA_MECHANICAL",
+        "model": "gpt-5.6-luna",
+        "effort": "medium",
+        "rationale": "Frontier review found one exact tracked R5 failure file occupying the future exclusive Process-A output root. Revision 13 freezes a byte-identical move into the absent failure-v3 archive as the only prelaunch worker mutation; no visual, DCC, schema, or shared-authority judgment remains.",
+        "authority": {
+          "authorityCommit": "3ad0af9525689350bb2363b8474fbecfaea77a68",
+          "baseCommit": "3ad0af9525689350bb2363b8474fbecfaea77a68",
+          "claim": {
+            "path": "docs/production/claims/PLAY-027.world-art.md",
+            "sha256": "c3539627d4ed61015c2e1421af2a9b981ae3bdea6314a1302ca5f1f92b153910"
+          },
+          "immutableInputs": [
+            {
+              "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-NORTH-V14-HERO-REBUILD-AUTHORITY-V1.md",
+              "sha256": "e439d9f8de08474bbaf31c2308491dad486ec953bf45605c043731f68b44edbb"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/process-a-phase-ladder-v01/phase-output/DIAGNOSTIC-RECEIPT.json",
+              "sha256": "9f1cb9b02c2b0bcff4b2fe4c73623c7bda74b6798f49b84d4a05b30cacc43928"
+            },
+            {
+              "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+              "sha256": "10ae5e31a8a31daa09c269a7be5092de4c044547db8ee0180ed85f3cb531d7ee"
+            }
+          ]
+        },
+        "assignment": {
+          "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+          "branch": "codex/citysim-world-art",
+          "worktree": "/Users/James/.codex/worktrees/0648/city-sim",
+          "expectedHead": "3de9448ef8ce8a7c03f6218d31a74f810958211b",
+          "featureAuthorThreadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027/"
+          ],
+          "allowed": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/process-a-execution-v01/process-a-output/FAILURE.json",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/process-a-execution-v01/process-a-failure-v3/FAILURE.json"
+          ],
+          "forbidden": [
+            ".agents",
+            "AGENTS.md",
+            "Native/CitySimNative/Package.swift",
+            "Native/CitySimNative/Resources",
+            "Native/CitySimNative/Sources",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-079",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-080",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-081",
+            "docs/production/PLAYABLE_BACKLOG.md",
+            "docs/production/claims",
+            "docs/production/decisions",
+            "docs/production/evidence/INTEGRATION",
+            "script"
+          ]
+        },
+        "boundedDeliverable": "Verify the exact R5 FAILURE.json SHA-256 77f116b1180386662329b2c4f09bfa7c1abfb6d3d734f57770e15e22b1f408fb, verify process-a-failure-v3 is absent, move that single file byte-identically to process-a-failure-v3/FAILURE.json, prove the old process-a-output root is absent, stage only the delete/add pair, inspect the cached diff, and commit one clean PLAY-027 archive result. Do not edit the JSON, create any other file, launch a process, or create the future attempt marker.",
+        "proofPolicy": {
+          "architectureState": "frozen_reference",
+          "referenceImplementation": {
+            "path": "docs/production/claims/PLAY-027.world-art.md",
+            "sha256": "c3539627d4ed61015c2e1421af2a9b981ae3bdea6314a1302ca5f1f92b153910"
+          },
+          "deliverableClaims": [
+            "static_structure"
+          ],
+          "focusedProofLevel": "static_only",
+          "fullProofLevel": "static_only",
+          "behavioralCommands": [],
+          "prohibitedSubstitutions": [
+            "ast_shape_for_runtime_success",
+            "manifest_or_prose_for_rendered_pixels",
+            "source_token_presence_for_execution",
+            "unit_tests_for_visual_acceptance",
+            "worker_self_report_for_independent_acceptance"
+          ]
+        },
+        "validation": {
+          "focusedGateOwner": {
+            "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+            "role": "north_r6_failure_archive_focused_gate"
+          },
+          "focusedCommands": [
+            "shasum -a 256 Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/process-a-execution-v01/process-a-failure-v3/FAILURE.json",
+            "python3 -m json.tool Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/process-a-execution-v01/process-a-failure-v3/FAILURE.json",
+            "test ! -e Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/process-a-execution-v01/process-a-output",
+            "git diff --check 3de9448ef8ce8a7c03f6218d31a74f810958211b..HEAD"
+          ],
+          "fullGateOwner": {
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "role": "integration_north_r6_archive_acceptance",
+            "model": "gpt-5.6-sol",
+            "effort": "high"
+          },
+          "fullCommands": [
+            "Integration verifies the exact rename, clean worker head, absent output root, zero process or marker activity, and publishes the separate one-shot R6 schedule only after acceptance."
+          ]
+        },
+        "expectedResult": {
+          "evidencePaths": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/process-a-execution-v01/process-a-failure-v3/FAILURE.json"
+          ],
+          "commitRequired": true,
+          "commitMessagePattern": "PLAY-027:"
+        },
+        "escalationTriggers": [
+          "baseline_or_candidate_identity_mismatch",
+          "cross_lane_semantic_conflict",
+          "failure_outside_focused_scope",
+          "path_outside_claim",
+          "save_or_migration_uncertainty",
+          "shared_contract_or_schema_decision",
+          "subjective_acceptance_required",
+          "two_unsuccessful_repair_attempts",
+          "unresolved_product_visual_or_interaction_judgment"
+        ],
+        "stopCondition": "Stop after one clean exact rename commit, or immediately on any identity/hash/path mismatch, non-absent destination, extra changed path, need to edit bytes, process/DCC/pixel/marker activity, or other mandatory trigger. Do not push, integrate, launch, self-authorize, self-accept, or pin.",
+        "independentReviewer": {
+          "required": true,
+          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+          "model": "gpt-5.6-sol",
+          "effort": "high"
+        },
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {
+              "path": "docs/production/claims/PLAY-027.world-art.md",
+              "sha256": "c3539627d4ed61015c2e1421af2a9b981ae3bdea6314a1302ca5f1f92b153910"
+            },
+            {
+              "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+              "sha256": "10ae5e31a8a31daa09c269a7be5092de4c044547db8ee0180ed85f3cb531d7ee"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{"play027Phase":"python_entered","sequence":0}
+{"play027Phase":"frozen_inputs_verified","sequence":1}
+{"play027Phase":"source_module_loaded","sequence":2}
+{"play027Phase":"bpy_imported","sequence":3}
+{"play027Phase":"scene_configured","sequence":4}
+{"play027Phase":"all_96_meshes_created","sequence":5}
+{"play027Phase":"pre_micro_render","sequence":6}
+{"play027Phase":"post_micro_render","sequence":7}
+{"play027Phase":"complete","sequence":8}

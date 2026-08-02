@@ -222,6 +222,62 @@ final class TerrainRenderer {
         root.addChild(neighborhoodLayer)
         root.addChild(blockLayer)
 
+        // The authored fabric is a renderer-only ground envelope. It joins
+        // existing occupied parcels and authoritative roads without changing
+        // tile kinds, buildability, or hit geometry. The separate expansion
+        // band keeps the next truthful buildable context visible instead of
+        // letting the district become a crop-only composition.
+        let fabricCoordinates = completed.map(\.coordinate) + developedRoads.map(\.coordinate)
+        let fabricEnvelope = SKShapeNode(path: combinedDiamondPath(
+            coordinates: fabricCoordinates,
+            width: style.tileWidth + 2.4,
+            height: style.tileHeight + 1.2,
+            offset: CGPoint(x: 0.4, y: -0.25)
+        ))
+        fabricEnvelope.name = "district.fabric.authored-envelope"
+        fabricEnvelope.fillColor = style.palette.lotGrass.blended(
+            withFraction: 0.40,
+            of: style.palette.sidewalk
+        )?.withAlphaComponent(0.34) ?? style.palette.lotGrass.withAlphaComponent(0.34)
+        fabricEnvelope.strokeColor = style.palette.concreteLight.withAlphaComponent(0.18)
+        fabricEnvelope.lineWidth = 0.9
+        fabricEnvelope.zPosition = 0.2
+        cityLayer.addChild(fabricEnvelope)
+
+        let expansionCoordinates = expansionBandCoordinates(
+            in: state,
+            around: fabricCoordinates
+        )
+        if !expansionCoordinates.isEmpty {
+            let expansion = SKShapeNode(path: combinedDiamondPath(
+                coordinates: expansionCoordinates,
+                width: style.tileWidth - 2.4,
+                height: style.tileHeight - 1.2,
+                offset: CGPoint(x: 0.2, y: -0.15)
+            ))
+            expansion.name = "district.fabric.expansion-band"
+            expansion.fillColor = style.palette.lotGrass.withAlphaComponent(0.16)
+            expansion.strokeColor = style.palette.concreteLight.withAlphaComponent(0.22)
+            expansion.lineWidth = 0.7
+            expansion.zPosition = 0.15
+            cityLayer.addChild(expansion)
+        }
+
+        let publicEnvelope = SKShapeNode(path: combinedDiamondPath(
+            coordinates: developedRoads.map(\.coordinate),
+            width: style.tileWidth + 4.5,
+            height: style.tileHeight + 2.25
+        ))
+        publicEnvelope.name = "district.fabric.public-realm-envelope"
+        publicEnvelope.fillColor = style.palette.sidewalk.blended(
+            withFraction: 0.24,
+            of: style.palette.lotGrass
+        )?.withAlphaComponent(0.48) ?? style.palette.sidewalk.withAlphaComponent(0.48)
+        publicEnvelope.strokeColor = style.palette.curb.withAlphaComponent(0.36)
+        publicEnvelope.lineWidth = 1.1
+        publicEnvelope.zPosition = 0.35
+        neighborhoodLayer.addChild(publicEnvelope)
+
         let sharedCoordinates = completed.map(\.coordinate) + developedRoads.map(\.coordinate)
         let shadowPath = combinedDiamondPath(
             coordinates: sharedCoordinates,
@@ -618,6 +674,23 @@ final class TerrainRenderer {
             GridCoordinate(x: coordinate.x, y: coordinate.y + 1),
             GridCoordinate(x: coordinate.x, y: coordinate.y - 1),
         ]
+    }
+
+    private func expansionBandCoordinates(
+        in state: CityGameState,
+        around fabricCoordinates: [GridCoordinate]
+    ) -> [GridCoordinate] {
+        let fabric = Set(fabricCoordinates)
+        let candidates = fabric.flatMap { coordinate in
+            cardinalNeighbors(of: coordinate)
+        }
+        return Set(candidates)
+            .filter { coordinate in
+                guard !fabric.contains(coordinate),
+                      let tile = state.tile(at: coordinate) else { return false }
+                return tile.kind == .empty
+            }
+            .sorted(by: coordinateComesBefore)
     }
 
     private func coordinateComesBefore(_ lhs: GridCoordinate, _ rhs: GridCoordinate) -> Bool {

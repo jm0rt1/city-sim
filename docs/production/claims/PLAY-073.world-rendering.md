@@ -2,10 +2,13 @@
 
 - **Title:** Replace the board with an authored district
 - **Lane:** World rendering
-- **Branch:** active clean successor `codex/citysim-world-rendering`; returned
-  lineage remains preserved on
-  `codex/citysim-world-rendering-legacy-d906d2dc`
-- **Worktree:** `/Users/James/.codex/worktrees/cac1/city-sim`
+- **Branches:** frontier/coordinator `codex/citysim-world-rendering`; disjoint
+  R4-F implementation cells `codex/citysim-world-rendering-fabric` and
+  `codex/citysim-world-rendering-cohesion`; returned lineage remains preserved
+  on `codex/citysim-world-rendering-legacy-d906d2dc`
+- **Worktrees:** coordinator `/Users/James/.codex/worktrees/cac1/city-sim`;
+  R4-F1 fabric `/Users/James/.codex/worktrees/6a93/city-sim`; R4-F2 cohesion
+  `/Users/James/.codex/worktrees/5cc1/city-sim`
 - **Base authority:** Published Wave 008 product candidate
   `87e1e682566b68d20deb1a9e2028e2b885e0423a`; iteration-two branch authority
   is the clean rejected-evidence checkpoint
@@ -18,6 +21,12 @@
   `Native/CitySimNative/Tests/CitySimNativeTests/WorldRenderingTests.swift`,
   and `docs/production/evidence/PLAY-073/`; the active R4-B authority narrows
   these roots to its four named source/test files and one new evidence root
+- **R4-F exact owned roots:**
+  `Native/CitySimNative/Sources/CitySimNative/Rendering/`,
+  `Native/CitySimNative/Tests/CitySimNativeTests/`, and
+  `docs/production/evidence/PLAY-073/`; the R4-F model routes narrow these
+  broad claim roots to two disjoint source pairs, one new test file per cell,
+  and one new evidence root per cell
 - **Dependencies:** accepted PLAY-024/062/065/066 product; PLAY-072 fixtures when available; separately accepted PLAY-027 art only
 - **Validation/proof:** same-state regular/compact early/pressure/recovery/upgraded/terminal comparisons at all LODs; developed-district occupancy; light/shadow/material/value/outline coherence; repetition ledger; zero seams/overlaps/fallback; pointer/keyboard/AX/Reduce Motion; pack parity; residency/RSS/frame budgets; PLAY-075
 - **Status:** returned after integration's real-app visual rejection; focused
@@ -65,6 +74,19 @@
   current-tree repair frozen by
   `PLAY-073-R4-B-CURRENT-MASTER-RECONSTRUCTION-AUTHORITY.md` and its exact
   `PLAY-073-R4-B-CURRENT-MASTER-IMPLEMENTATION-ADDENDUM.md` geometry rules.
+  The player-visible combined renderer at `7e564c2c` is now explicitly
+  rejected. The current-master R4-F successor is split under
+  `PLAY-073-R4-F-CURRENT-MASTER-SUCCESSOR-AUTHORITY.md`: R4-F1 exclusively
+  owns terrain/road district fabric, while R4-F2 exclusively owns lot/place
+  cohesion. The two cells may execute concurrently; Integration alone joins
+  them and PLAY-075 alone performs the final real-app disposition. R4-F1 and
+  R4-F2 are integrated at exact product candidate `fc996a28`. The independent
+  R4-F exact-candidate journey reproduced one remaining automatic return: a
+  regular-to-maximized viewport transition can temporarily discard the valid
+  developed-core composition and fall back to whole-board framing. The
+  bounded camera-state repair is authorized only by
+  `PLAY-073-R4-F3-DEVELOPED-CORE-CAMERA-REPAIR-AUTHORITY.md`; no renderer art,
+  topology, gameplay, UI, or persistence reopening is implied.
 
 Recompose the visible world as one authored district. The developed city must
 dominate the intended camera while retaining useful buildable context. Roads,
@@ -151,3 +173,24 @@ is governed by `docs/production/WAVE-010-R4-COHESION-CLOSEOUT.md`. Its
 rendered-pixel composition, terrain-mass, ground-contact, cross-fidelity,
 repetition, LOD, interaction, and resource criteria replace vague polish
 language and require the full independent PLAY-075 20/20 disposition.
+
+## R4-F3 developed-core camera repair
+
+The accepted R4-F world bytes remain frozen. Repair only camera composition
+state in `CityScene.swift` and its exact tests in `WorldRenderingTests.swift`.
+Retain the last valid developed composition while SwiftUI/AppKit delivers a
+resize and viewport-inset sequence, coalesce the resulting automatic refit,
+and never replace that valid composition with `fitCity` merely because one
+transient invalidation observes incomplete bounds. `frameCity()` and Focus
+City must still deterministically recompute from the authoritative state.
+
+The final regular, compact, and maximized apertures must each retain non-null
+developed and camera-priority bounds, unchanged priority coordinates, at least
+`0.60` developed occupied width, at least `0.60` camera-priority width, and a
+deterministic final camera position and scale. Test resize-before-insets,
+insets-before-resize, compact-to-maximized, regular-to-maximized, Focus City
+entry, and Focus City exit. Preserve topology, hit testing, selection,
+placement, gameplay, accepted art, all R4-F renderer bytes outside the two
+named files, and every unrelated path. Integration owns the aggregate suite
+and staged build; a fresh independent PLAY-075 task owns the replacement
+real-app disposition.

@@ -1,0 +1,173 @@
+{
+  "schema": 2,
+  "authorityCommit": "fc996a287f5d0d16f58c13bc6ee2abadf4d64972",
+  "assignments": [
+    {
+      "modelRouteSha256": "11c0f3446b46e42681ef9d2ee529d99f33d819983d9a6bc992c47bd2564f7db4",
+      "modelRoute": {
+        "schema": 2,
+        "routeId": "quality-v2:play-075-r4-f-fc996a28-final-qa-v1",
+        "taskId": "PLAY-075",
+        "packetKind": "acceptance",
+        "classification": "FRONTIER_AUTHORITY",
+        "model": "gpt-5.6-sol",
+        "effort": "high",
+        "rationale": "The disjoint R4-F district-fabric and place-cohesion cells are integrated and published at one exact master candidate. Integration has completed the aggregate native suite, exact production staged build, isolated candidate build, and a coached smoke inspection. Only a distinct uncontaminated frontier QA task may now judge the exact isolated app across regular, compact, maximized, and Focus City layouts and return APPROVE or RETURN.",
+        "authority": {
+          "authorityCommit": "fc996a287f5d0d16f58c13bc6ee2abadf4d64972",
+          "baseCommit": "fc996a287f5d0d16f58c13bc6ee2abadf4d64972",
+          "claim": {
+            "path": "docs/production/claims/PLAY-075.playtest-quality.md",
+            "sha256": "5dd3aeef1ffe8abf5e0c93486e27fe2d15495854be096fb105bff55a48dc0362"
+          },
+          "immutableInputs": [
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "241903901a3927fe22de4de2d318155fa5855cfcb66776813160639a0d4ffa0d"
+            },
+            {
+              "path": ".agents/skills/verify-citysim-playability/SKILL.md",
+              "sha256": "a632f4afff412dc9d61d7018fa2376859c5f05d0e9eea7d06fc8990cff2f2960"
+            },
+            {
+              "path": ".agents/skills/verify-citysim-playability/references/exact-candidate-real-app-gate.md",
+              "sha256": "332136244f126857356dd1e08cb762d51859360b74014ec85e87ad85834dbdd3"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/PLAY-073-R4-F-CURRENT-MASTER-SUCCESSOR-AUTHORITY.md",
+              "sha256": "00c1e32c849df66d4f26c5dc9bba76030cec905f572d01fbcb13a46eb5390892"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/PLAY-073-R4-F-FC996A28-CANDIDATE-RECEIPT-V1.json",
+              "sha256": "9a222325146f843884aa0a3a4fb3935050da033c871cfa5c63d5669ce0105522"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/PLAY-075-R4-F-FC996A28-EXCLUSIVE-QA-LEASE-V1.json",
+              "sha256": "1d8200e3558c267db3d38f4efcc04358c2678b343aa75a20d369ed190e47f8c3"
+            }
+          ]
+        },
+        "assignment": {
+          "threadId": "019fc0b0-74cb-70e1-8923-8c9d9600484d",
+          "branch": "codex/citysim-playtest-quality",
+          "worktree": "/Users/James/.codex/worktrees/71b0/city-sim",
+          "expectedHead": "256bf670ff64abda1057f65ba4c432b3ee037359",
+          "featureAuthorThreadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": true,
+          "subjectiveJudgmentRequired": true
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": [
+            "docs/production/evidence/PLAY-075/"
+          ],
+          "allowed": [
+            "docs/production/evidence/PLAY-075/r4-f-fc996a28-final-v1"
+          ],
+          "forbidden": [
+            ".agents",
+            "AGENTS.md",
+            "Native/CitySimNative",
+            "docs/production/PLAYABLE_BACKLOG.md",
+            "docs/production/claims",
+            "docs/production/completed",
+            "docs/production/decisions",
+            "docs/production/evidence/INTEGRATION",
+            "script"
+          ]
+        },
+        "boundedDeliverable": "Consume the exclusive one-attempt lease, independently verify the exact source, tree, isolated bundle, executable, resource, manifest, process, and empty output-root identities, then launch only the already-staged isolated candidate once. Complete one fresh-player regular, exact 900x600 compact, maximized regular, and maximized Focus City journey. Measure the frozen composition thresholds; test pointer placement, keyboard map focus, command-guide Escape, Focus City, HUD decisions/notices, and accessibility semantics; retain one exact evidence packet and return immutable APPROVE or RETURN without rebuilding or coaching.",
+        "proofPolicy": {
+          "architectureState": "frozen_reference",
+          "referenceImplementation": {
+            "path": "docs/production/evidence/INTEGRATION/PLAY-073-R4-F-FC996A28-CANDIDATE-RECEIPT-V1.json",
+            "sha256": "9a222325146f843884aa0a3a4fb3935050da033c871cfa5c63d5669ce0105522"
+          },
+          "deliverableClaims": [
+            "visual_quality",
+            "real_app_interaction"
+          ],
+          "focusedProofLevel": "static_only",
+          "fullProofLevel": "real_app_journey",
+          "behavioralCommands": [
+            "fresh-player real-app regular compact and maximized R4-F aggregate journey"
+          ],
+          "prohibitedSubstitutions": [
+            "ast_shape_for_runtime_success",
+            "manifest_or_prose_for_rendered_pixels",
+            "source_token_presence_for_execution",
+            "unit_tests_for_visual_acceptance",
+            "worker_self_report_for_independent_acceptance"
+          ]
+        },
+        "validation": {
+          "focusedGateOwner": {
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "role": "integration_exact_candidate_admission"
+          },
+          "focusedCommands": [
+            "verify exact fc996a28 source tree isolated bundle executable resource manifest process and absent output identities",
+            "python3 -m json.tool docs/production/evidence/INTEGRATION/PLAY-073-R4-F-FC996A28-CANDIDATE-RECEIPT-V1.json",
+            "python3 -m json.tool docs/production/evidence/INTEGRATION/PLAY-075-R4-F-FC996A28-EXCLUSIVE-QA-LEASE-V1.json"
+          ],
+          "fullGateOwner": {
+            "threadId": "019fc0b0-74cb-70e1-8923-8c9d9600484d",
+            "role": "independent_frontier_qa",
+            "model": "gpt-5.6-sol",
+            "effort": "high"
+          },
+          "fullCommands": [
+            "fresh-player real-app regular compact and maximized R4-F aggregate journey"
+          ]
+        },
+        "expectedResult": {
+          "evidencePaths": [
+            "docs/production/evidence/PLAY-075/r4-f-fc996a28-final-v1"
+          ],
+          "commitRequired": true,
+          "commitMessagePattern": "PLAY-075:"
+        },
+        "escalationTriggers": [
+          "baseline_or_candidate_identity_mismatch",
+          "cross_lane_semantic_conflict",
+          "failure_outside_focused_scope",
+          "path_outside_claim",
+          "save_or_migration_uncertainty",
+          "shared_contract_or_schema_decision",
+          "subjective_acceptance_required",
+          "two_unsuccessful_repair_attempts",
+          "unresolved_product_visual_or_interaction_judgment"
+        ],
+        "stopCondition": "Stop before launch on any route, claim, HEAD, candidate, tree, build, resource, manifest, process, output-root, attempt-count, coaching, or scope mismatch. Otherwise consume exactly one launch and stop after one clean evidence commit with APPROVE or RETURN; do not rebuild, rerun the full Swift suite, repair product code, push, integrate, or execute a second journey.",
+        "independentReviewer": {
+          "required": true,
+          "threadId": "019fc0b0-74cb-70e1-8923-8c9d9600484d",
+          "model": "gpt-5.6-sol",
+          "effort": "high"
+        },
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {
+              "path": ".agents/skills/verify-citysim-playability/SKILL.md",
+              "sha256": "a632f4afff412dc9d61d7018fa2376859c5f05d0e9eea7d06fc8990cff2f2960"
+            },
+            {
+              "path": ".agents/skills/verify-citysim-playability/references/exact-candidate-real-app-gate.md",
+              "sha256": "332136244f126857356dd1e08cb762d51859360b74014ec85e87ad85834dbdd3"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/PLAY-073-R4-F-FC996A28-CANDIDATE-RECEIPT-V1.json",
+              "sha256": "9a222325146f843884aa0a3a4fb3935050da033c871cfa5c63d5669ce0105522"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/PLAY-075-R4-F-FC996A28-EXCLUSIVE-QA-LEASE-V1.json",
+              "sha256": "1d8200e3558c267db3d38f4efcc04358c2678b343aa75a20d369ed190e47f8c3"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

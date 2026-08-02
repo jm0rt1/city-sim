@@ -23,7 +23,7 @@ LOWERING = REPO / "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04
 EVIDENCE = REPO / "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/process-a-execution-v01"
 HANDOFF = EVIDENCE / "HANDOFF.json"
 VALIDATION = EVIDENCE / "VALIDATION.json"
-PARENT = "5ea804b93557d4280b49a0f66520f6550858a65b"
+PARENT = "ae27ac853631194adcb1463beb499b4f3a6bc61e"
 EXPECTED_PATHS = {
     "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/process-a-execution-v01/PROCESS-A-CONTRACT.json",
     "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/process-a-execution-v01/run_process_a.py",
@@ -72,7 +72,7 @@ def static_checks() -> list[dict]:
     combined = launcher_text + child_text
     for forbidden in ("ImageGen", "requests", "urllib", "normalizer", "normalization", "Rendering/", "Package.swift", "BLENDER_EEVEE", "role_colors", "fallback_gray"):
         if forbidden in combined: fail("forbidden_dependency", forbidden)
-    required = ("PRIMITIVE_BUILDERS", "portal_frame_compound", "intentional_portal_void", "mullion_band_compound", "rail_post_truss", "gutter_downspouts", "roof_plant_modules", "vent_louver_array", "framed_service_door", "torus_pipe_elbow", "truss_diagonal", "bpy.ops.render.render(write_still=True)", "bpy.ops.wm.save_as_mainfile", "scene.world", "camera_data.shift_x", "camera_data.shift_y", "from mathutils import Vector", "CITYSIM_PROFILE_JSON", "CITYSIM_PROCESS_A_AUTH", "direct_child_bypass")
+    required = ("PRIMITIVE_BUILDERS", "portal_frame_compound", "intentional_portal_void", "mullion_band_compound", "rail_post_truss", "gutter_downspouts", "roof_plant_modules", "vent_louver_array", "framed_service_door", "torus_pipe_elbow", "quarter_elbow_plan", "loading_marking_plan", "mullion_louver_plan", "bpy.ops.render.render(write_still=True)", "bpy.ops.wm.save_as_mainfile", "scene.world", "camera_data.shift_x", "camera_data.shift_y", "from mathutils import Vector", "CITYSIM_PROFILE_JSON", "CITYSIM_EXECUTION_AUTHORITY_JSON", "CITYSIM_GRANT_JSON", "forwarded_binding_missing")
     for required_text in required:
         if required_text not in combined: fail("construction_requirement_missing", required_text)
     if "PRIMITIVE_BUILDERS[primitive]" not in child_text or '"generic"' in child_text: fail("primitive_fallback")
@@ -115,8 +115,12 @@ def _profile_fixture(root: Path, contract: dict) -> tuple[dict, dict, dict]:
     if appearance["sourceProductionProfile"]["sha256"] != profile_sha: fail("fixture_hash_cycle")
     fixture["appearanceLock"] = {"path": appearance_rel, "sha256": appearance_sha, "commit": PARENT}
     fixture["sourceProductionProfile"] = {"path": profile_rel, "sha256": profile_sha, "commit": PARENT}
+    authority_rel = relative_root + "/execution-authority.json"
+    authority = {"schemaVersion": 1, "testProtocolRevision": 6, "mode": "validation_only", "task": {"taskId": "PLAY-079", "direction": "east", "branch": "codex/citysim-world-art-east", "claimSha256": fixture["authority"]["claim"]["sha256"], "publishedBaseCommit": fixture["authority"]["baseCommit"]}, "grant": {"grantId": "grant-east-a", "processId": "east-process-a", "direction": "east", "slotId": "east-process-a-slot-1", "maximumChildStarts": 1, "exactlyOneInvocation": True, "orchestratorOnly": True, "directLowLevelInvocationAllowed": False}, "exclusiveRoots": {"outputRoot": fixture["execution"]["outputRoot"]}, "authentication": {"secretTransport": "anonymous_pipe", "rawSecretPersisted": False, "childCapability": {"boundGrantId": "grant-east-a", "oneTime": True, "replayAllowed": False}}}
+    (root / "execution-authority.json").write_bytes(canon(authority))
+    fixture["executionAuthority"] = {"path": authority_rel, "sha256": sha(root / "execution-authority.json"), "commit": PARENT}
     fixture["executionReady"] = True
-    fixture["execution"]["launchGrant"] = {"scheduleId": fixture["execution"]["scheduleId"], "processId": "east-process-a", "direction": "east", "dccSlot": 1, "childLimit": 1, "baseCommit": fixture["authority"]["baseCommit"], "observedHead": PARENT, "outputRoot": fixture["execution"]["outputRoot"], "attempt": 1, "authenticated": True}
+    fixture["execution"]["launchGrant"] = {"scheduleId": fixture["execution"]["scheduleId"], "processId": "east-process-a", "direction": "east", "dccSlot": 1, "slotId": "east-process-a-slot-1", "childLimit": 1, "baseCommit": fixture["authority"]["baseCommit"], "observedHead": PARENT, "outputRoot": fixture["execution"]["outputRoot"], "attempt": 1, "authenticated": True}
     return fixture, appearance, profile
 
 
@@ -135,6 +139,15 @@ def validate_inputs(contract: dict, launcher) -> list[dict]:
         launcher.validate_contract(fixture)
         launcher.load_profile_bundle(fixture)
         cases.append({"case": "valid_exact_hash_profile", "result": "PASS"})
+        missing_authority = copy.deepcopy(fixture)
+        missing_authority["executionAuthority"] = None
+        try:
+            launcher.validate_contract(missing_authority)
+        except ValueError as error:
+            if str(error) != "execution_authority_missing": fail("missing_authority_wrong_rejection", str(error))
+            cases.append({"case": "missing_execution_authority", "result": "REJECTED"})
+        else:
+            fail("missing_authority_accepted")
         adversaries = {
             "stale_appearance_hash": lambda c: c["appearanceLock"].update({"sha256": "0" * 64}),
             "stale_source_profile_hash": lambda c: c["sourceProductionProfile"].update({"sha256": "1" * 64}),
@@ -144,6 +157,8 @@ def validate_inputs(contract: dict, launcher) -> list[dict]:
             "sibling_profile_path": lambda c: c["appearanceLock"].update({"path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/foreign-profile.json"}),
             "output_escape": lambda c: c["execution"].update({"outputRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-080/foreign-output"}),
             "output_preexisting": lambda c: None,
+            "stale_execution_authority_hash": lambda c: c["executionAuthority"].update({"sha256": "f" * 64}),
+            "wrong_execution_authority_grant": lambda c: c["executionAuthority"].update({"path": c["executionAuthority"]["path"] + ".missing"}),
         }
         for name, mutate in adversaries.items():
             candidate = copy.deepcopy(fixture)
@@ -155,7 +170,7 @@ def validate_inputs(contract: dict, launcher) -> list[dict]:
             elif name == "wrong_profile_direction":
                 source = REPO / candidate["sourceProductionProfile"]["path"]
                 profile = load(source)
-                profile["direction"] = "north"
+                profile["direction"] = "south"
                 source.write_bytes(canon(profile))
             elif name == "appearance_profile_mismatch":
                 candidate["sourceProductionProfile"]["path"] = candidate["sourceProductionProfile"]["path"] + ".mismatch"
@@ -198,6 +213,7 @@ def validate_inputs(contract: dict, launcher) -> list[dict]:
 
 def semantic_checks(child, design: dict, lowering: dict) -> list[dict]:
     semantic = child.build_semantic_geometry()
+    child.validate_runtime_semantics(semantic)
     if len(semantic["components"]) != len(design["components"]): fail("semantic_component_count")
     object_ids = [item["objectId"] for item in semantic["components"]]
     if len(object_ids) != len(set(object_ids)) or len(object_ids) != len(lowering["objectManifest"]): fail("semantic_object_uniqueness")
@@ -210,12 +226,24 @@ def semantic_checks(child, design: dict, lowering: dict) -> list[dict]:
     if len(portal_frames) != 3 or any(len(item["parts"]) < 3 for item in portal_frames): fail("portal_frame_compound")
     if any(item["primitive"] == "deterministic_box" and item["semanticRole"] in {"glazing-louver", "dark-painted-steel"} for item in semantic["components"]): fail("semantic_box_downgrade")
     if any(not item.get("parts") and not item.get("intentionalVoid") for item in semantic["components"]): fail("missing_lowering_parts")
-    return [{"case": "complete_semantic_geometry", "result": "PASS"}, {"case": "complete_object_manifest", "result": "PASS"}, {"case": "material_closure", "result": "PASS"}, {"case": "camera_registration", "result": "PASS"}, {"case": "portal_compound_and_void", "result": "PASS"}, {"case": "no_semantic_proxy_downgrade", "result": "PASS"}]
+    portal = child.portal_frame_plan(next(item["bounds"] for item in semantic["components"] if item["primitive"] == "portal_frame_compound"))
+    bad_portal = copy.deepcopy(portal); bad_portal["openAperture"] = False
+    if child.validate_portal_plan(bad_portal): fail("portal_adversary_accepted")
+    elbow = child.quarter_elbow_plan(next(item["bounds"] for item in semantic["components"] if item["primitive"] == "torus_pipe_elbow"))
+    bad_elbow = copy.deepcopy(elbow); bad_elbow["arcDegrees"] = 360.0
+    if child.validate_elbow_plan(bad_elbow): fail("elbow_adversary_accepted")
+    loading = child.loading_marking_plan(next(item["bounds"] for item in semantic["components"] if item["primitive"] == "loading_chevron_marking"))
+    bad_loading = copy.deepcopy(loading); bad_loading["bars"][0]["end"] = bad_loading["bars"][0]["start"]
+    if child.validate_loading_plan(bad_loading): fail("loading_adversary_accepted")
+    mullion = child.mullion_louver_plan(next(item["bounds"] for item in semantic["components"] if item["primitive"] == "mullion_band_compound"))
+    bad_mullion = copy.deepcopy(mullion); bad_mullion["louverSlats"] = []
+    if child.validate_mullion_plan(bad_mullion): fail("mullion_adversary_accepted")
+    return [{"case": "complete_semantic_geometry", "result": "PASS"}, {"case": "complete_object_manifest", "result": "PASS"}, {"case": "material_closure", "result": "PASS"}, {"case": "camera_registration", "result": "PASS"}, {"case": "portal_compound_and_void", "result": "PASS"}, {"case": "no_semantic_proxy_downgrade", "result": "PASS"}, {"case": "quarter_elbow_endcaps", "result": "PASS"}, {"case": "computed_loading_bars", "result": "PASS"}, {"case": "mullion_louver_slats", "result": "PASS"}]
 
 
 def build_evidence(contract: dict, cases: list[dict], static: list[dict], semantic: list[dict]) -> dict:
     changed = sorted(EXPECTED_PATHS)
-    return {"schema": "citysim.play-079.east-process-a-prelaunch-repair-validation.v2", "task": "PLAY-079", "direction": "east", "familyRevision": "v14", "result": "PASS", "observedHead": PARENT, "contractSha256": sha(CONTRACT), "designSha256": sha(DESIGN), "loweringSha256": sha(LOWERING), "appearanceLock": None, "sourceProductionProfile": None, "executionReady": False, "staticChecks": static, "semanticChecks": semantic, "adversarialCases": cases, "freshRoots": [{"label": "fresh-root-a", "childStarts": 0, "blenderInvocations": 0, "dccInvocations": 0, "renderInvocations": 0, "pixelFilesCreated": 0, "blendFilesCreated": 0}, {"label": "fresh-root-b", "childStarts": 0, "blenderInvocations": 0, "dccInvocations": 0, "renderInvocations": 0, "pixelFilesCreated": 0, "blendFilesCreated": 0}], "outputRootCreated": False, "launchInvoked": False, "profileLoaded": False, "siblingInputsConsumed": [], "sourceReady": False, "productionSelected": False, "changedPaths": changed}
+    return {"schema": "citysim.play-079.east-process-a-prelaunch-repair-validation.v3", "task": "PLAY-079", "direction": "east", "familyRevision": "v14", "result": "PASS", "observedHead": PARENT, "contractSha256": sha(CONTRACT), "designSha256": sha(DESIGN), "loweringSha256": sha(LOWERING), "appearanceLock": None, "sourceProductionProfile": None, "executionAuthority": None, "executionReady": False, "staticChecks": static, "semanticChecks": semantic, "adversarialCases": cases, "freshRoots": [{"label": "fresh-root-a", "childStarts": 0, "blenderInvocations": 0, "dccInvocations": 0, "renderInvocations": 0, "pixelFilesCreated": 0, "blendFilesCreated": 0}, {"label": "fresh-root-b", "childStarts": 0, "blenderInvocations": 0, "dccInvocations": 0, "renderInvocations": 0, "pixelFilesCreated": 0, "blendFilesCreated": 0}], "outputRootCreated": False, "launchInvoked": False, "profileLoaded": False, "siblingInputsConsumed": [], "sourceReady": False, "productionSelected": False, "changedPaths": changed}
 
 
 def main() -> int:
@@ -232,7 +260,7 @@ def main() -> int:
     if canon(first) != canon(second): fail("non_deterministic_evidence")
     evidence = dict(first)
     evidence["repeatValidation"] = {"runs": 2, "byteIdentical": True, "proofSHA256": hashlib.sha256(canon(first)).hexdigest()}
-    handoff = {"schema": "citysim.play-079.east-process-a-prelaunch-repair-handoff.v2", "stage": "prelaunch-repair", "task": "PLAY-079", "direction": "east", "familyRevision": "v14", "branch": "codex/citysim-world-art-east", "baseCommit": PARENT, "contractPath": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/process-a-execution-v01/PROCESS-A-CONTRACT.json", "contractSha256": sha(CONTRACT), "childPath": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/process-a-execution-v01/process_a_child.py", "launcherPath": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/process-a-execution-v01/run_process_a.py", "loweringPath": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/LOWERING.json", "outputRoot": contract["execution"]["outputRoot"], "outputRootCreated": False, "childStarts": 0, "blenderInvocations": 0, "dccInvocations": 0, "renderInvocations": 0, "pixelFilesCreated": 0, "blendFilesCreated": 0, "appearanceLock": None, "sourceProductionProfile": None, "executionReady": False, "sourceReady": False, "productionSelected": False, "disposition": "prelaunch_repair_ready_for_independent_review", "knownBlocker": "Integration must publish the exact North appearance lock and source-production profile plus authenticated Process-A grant before launch", "siblingInputsConsumed": [], "validationPath": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/process-a-execution-v01/VALIDATION.json"}
+    handoff = {"schema": "citysim.play-079.east-process-a-prelaunch-repair-handoff.v3", "stage": "prelaunch-repair", "task": "PLAY-079", "direction": "east", "familyRevision": "v14", "branch": "codex/citysim-world-art-east", "baseCommit": PARENT, "contractPath": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/process-a-execution-v01/PROCESS-A-CONTRACT.json", "contractSha256": sha(CONTRACT), "childPath": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/process-a-execution-v01/process_a_child.py", "launcherPath": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/process-a-execution-v01/run_process_a.py", "loweringPath": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/LOWERING.json", "outputRoot": contract["execution"]["outputRoot"], "outputRootCreated": False, "childStarts": 0, "blenderInvocations": 0, "dccInvocations": 0, "renderInvocations": 0, "pixelFilesCreated": 0, "blendFilesCreated": 0, "appearanceLock": None, "sourceProductionProfile": None, "executionAuthority": None, "executionReady": False, "sourceReady": False, "productionSelected": False, "disposition": "prelaunch_repair_ready_for_independent_review", "knownBlocker": "Integration must publish the exact North appearance lock, source-production profile, execution authority and authenticated Process-A grant before launch", "siblingInputsConsumed": [], "validationPath": "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/process-a-execution-v01/VALIDATION.json"}
     EVIDENCE.mkdir(parents=True, exist_ok=True)
     VALIDATION.write_bytes(canon(evidence))
     HANDOFF.write_bytes(canon(handoff))

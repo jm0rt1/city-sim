@@ -8,16 +8,12 @@
   "sourceRevision": "east-v14-compatibility-v1",
   "appearanceLock": null,
   "sourceProductionProfile": null,
+  "executionAuthority": null,
   "executionReady": false,
   "authority": {
-    "carrierCommit": "9f67d16d4a7b190af4b10cb5c1aad627cb6d6f40",
-    "receiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-INDUSTRIAL-L04-V14-DCC-PRELAUNCH-REPAIR-FANOUT-V2.json",
-    "receiptSha256": "6de1997d78a95cb3b7dc511440972e9d2804c6760070fd8ad83959be025388e4",
-    "routeId": "quality-v1:play-079-industrial-l04-v14-east-process-a-prelaunch-repair-v2",
-    "routeSha256": "572f36e42d9134c314680a1eadde85db27cbbdf29d22c22557fcadbd54c79bb1",
-    "authorityCommit": "1d7c6510fd99299c88d3f4412caa982e020c1941",
-    "baseCommit": "ea26fdac05169e0375b65d7c5dc65b4fbe00d977",
-    "observedHead": "5ea804b93557d4280b49a0f66520f6550858a65b",
+    "authorityCommit": "9beafc0819a6dfbbf58bba5bd2f48657b1f526a8",
+    "baseCommit": "ae27ac853631194adcb1463beb499b4f3a6bc61e",
+    "observedHead": "ae27ac853631194adcb1463beb499b4f3a6bc61e",
     "claim": {"path":"docs/production/claims/PLAY-079.world-art-east.md","sha256":"93bcc57e69bc4cd1ff492ce0dfbf5d6244c3782db524e7e16fc0d9dd78431a77"}
   },
   "immutableInputs": {

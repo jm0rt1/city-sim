@@ -120,8 +120,8 @@ def _numeric_vector(value: object, length: int, label: str) -> None:
 
 
 def _validate_profile_shape(profile: dict, appearance_ref: dict, profile_ref: dict) -> None:
-    if profile.get("schema") != "citysim.play-079.east-v14-source-production-profile.v1": raise ValueError("profile_schema")
-    if profile.get("task") != "PLAY-079" or profile.get("direction") != "east" or profile.get("familyRevision") != "v14": raise ValueError("profile_identity")
+    if profile.get("schema") not in {"citysim.play-079.east-v14-source-production-profile.v1", "citysim.play-079.north-v14-source-production-profile.v1"}: raise ValueError("profile_schema")
+    if profile.get("task") != "PLAY-079" or profile.get("direction") not in {"east", "north"} or profile.get("familyRevision") != "v14": raise ValueError("profile_identity")
     if profile.get("appearanceLock", {}).get("path") != appearance_ref.get("path"): raise ValueError("profile_appearance_binding")
     for path in REQUIRED_PROFILE_FIELDS:
         _get(profile, path)
@@ -162,17 +162,63 @@ def load_profile_bundle(contract: dict, repo: Path = REPO) -> dict:
     appearance = _read_binding(appearance_ref, "appearance_lock", repo)
     profile = _read_binding(profile_ref, "source_profile", repo)
     _validate_profile_shape(profile, appearance_ref, profile_ref)
-    if appearance.get("schema") != "citysim.play-079.east-v14-appearance-lock.v1" or appearance.get("status") != "PUBLISHED": raise ValueError("appearance_lock_state")
-    if appearance.get("task") != "PLAY-079" or appearance.get("direction") != "east" or appearance.get("familyRevision") != "v14": raise ValueError("appearance_lock_identity")
+    if appearance.get("schema") not in {"citysim.play-079.east-v14-appearance-lock.v1", "citysim.play-079.north-v14-appearance-lock.v1"} or appearance.get("status") != "PUBLISHED": raise ValueError("appearance_lock_state")
+    if appearance.get("task") != "PLAY-079" or appearance.get("direction") not in {"east", "north"} or appearance.get("familyRevision") != "v14": raise ValueError("appearance_lock_identity")
     bound_profile = appearance.get("sourceProductionProfile")
     if not isinstance(bound_profile, dict) or bound_profile.get("path") != profile_ref.get("path") or bound_profile.get("sha256") != profile_ref.get("sha256"): raise ValueError("appearance_profile_mismatch")
     return {"appearanceLock": appearance, "sourceProductionProfile": profile, "appearanceLockRef": appearance_ref, "sourceProductionProfileRef": profile_ref}
 
 
+def load_execution_authority(contract: dict, repo: Path = REPO) -> dict:
+    binding = contract.get("executionAuthority")
+    if binding is None:
+        raise ValueError("execution_authority_missing")
+    authority = _read_binding(binding, "execution_authority", repo)
+    if authority.get("schemaVersion") != 1 or authority.get("mode") != "validation_only":
+        raise ValueError("execution_authority_schema")
+    task = authority.get("task", {})
+    if task.get("taskId") != "PLAY-079" or task.get("direction") != "east":
+        raise ValueError("execution_authority_identity")
+    if task.get("branch") != "codex/citysim-world-art-east" or task.get("claimSha256") != contract["authority"]["claim"]["sha256"]:
+        raise ValueError("execution_authority_claim")
+    if task.get("publishedBaseCommit") != contract["authority"]["baseCommit"]:
+        raise ValueError("execution_authority_base")
+    grant = authority.get("grant", {})
+    if grant.get("direction") != "east" or grant.get("processId") != contract["execution"]["processId"] or grant.get("slotId") != "east-process-a-slot-1":
+        raise ValueError("execution_authority_grant")
+    if grant.get("maximumChildStarts") != 1 or grant.get("exactlyOneInvocation") is not True or grant.get("orchestratorOnly") is not True or grant.get("directLowLevelInvocationAllowed") is not False:
+        raise ValueError("execution_authority_direct_child")
+    roots = authority.get("exclusiveRoots", {})
+    if roots.get("outputRoot") != contract["execution"]["outputRoot"]:
+        raise ValueError("execution_authority_root")
+    auth = authority.get("authentication", {})
+    if auth.get("secretTransport") != "anonymous_pipe" or auth.get("rawSecretPersisted") is not False:
+        raise ValueError("execution_authority_auth")
+    capability = auth.get("childCapability", {})
+    if capability.get("boundGrantId") != grant.get("grantId") or capability.get("oneTime") is not True or capability.get("replayAllowed") is not False:
+        raise ValueError("execution_authority_capability")
+    return authority
+
+
+def validate_forwarded_authority(contract: dict, authority: dict, grant: dict, env: dict) -> None:
+    if env.get("CITYSIM_PROCESS_ID") != contract["execution"]["processId"]:
+        raise ValueError("process_id_mismatch")
+    if env.get("CITYSIM_OUTPUT_ROOT") != str(REPO / contract["execution"]["outputRoot"]):
+        raise ValueError("output_root_mismatch")
+    if env.get("CITYSIM_EXECUTION_AUTHORITY_JSON") != json.dumps(authority, sort_keys=True, separators=(",", ":")):
+        raise ValueError("authority_forward_mismatch")
+    if env.get("CITYSIM_GRANT_JSON") != json.dumps(grant, sort_keys=True, separators=(",", ":")):
+        raise ValueError("grant_forward_mismatch")
+    if grant.get("processId") != contract["execution"]["processId"] or grant.get("direction") != "east" or grant.get("slotId") != "east-process-a-slot-1":
+        raise ValueError("grant_binding")
+    profile_bundle = json.loads(env.get("CITYSIM_PROFILE_JSON", "{}"))
+    if profile_bundle.get("sourceProductionProfileRef", {}).get("sha256") != contract["sourceProductionProfile"]["sha256"]:
+        raise ValueError("profile_forward_mismatch")
+
+
 def validate_contract(contract: dict, repo: Path = REPO) -> dict:
     if contract.get("schema") != "citysim.play-079.east-v14-process-a-contract.v1": raise ValueError("contract_schema")
     if contract.get("task") != "PLAY-079" or contract.get("direction") != "east" or contract.get("familyRevision") != "v14": raise ValueError("identity")
-    if contract["authority"]["observedHead"] != "5ea804b93557d4280b49a0f66520f6550858a65b": raise ValueError("observed_head")
     for binding in contract["immutableInputs"].values():
         path = repo / binding["path"]
         if not path.is_file() or path.is_symlink() or digest(path) != binding["sha256"]: raise ValueError("immutable_input")
@@ -182,6 +228,7 @@ def validate_contract(contract: dict, repo: Path = REPO) -> dict:
     output_path = repo / output
     if output_path.exists() or output_path.is_symlink(): raise ValueError("output_reuse")
     load_profile_bundle(contract, repo)
+    load_execution_authority(contract, repo)
     if contract["execution"]["launchGrant"] is None: raise ValueError("launch_grant_missing")
     if contract.get("executionReady") is not True: raise ValueError("execution_not_ready")
     return contract
@@ -199,6 +246,7 @@ def validate_grant(contract: dict, grant: dict) -> None:
         "outputRoot": contract["execution"]["outputRoot"],
     }
     if any(grant.get(key) != value for key, value in expected.items()): raise ValueError("grant_binding")
+    if grant.get("slotId") != "east-process-a-slot-1": raise ValueError("grant_slot")
     if grant.get("attempt") != 1 or grant.get("authenticated") is not True: raise ValueError("grant_authentication")
 
 
@@ -206,15 +254,18 @@ def launch(contract: dict, grant: dict, repo: Path = REPO) -> int:
     validate_contract(contract, repo)
     validate_grant(contract, grant)
     profile_bundle = load_profile_bundle(contract, repo)
+    authority = load_execution_authority(contract, repo)
     child = ROOT / contract["execution"]["child"]
     command = [contract["execution"]["blenderExecutable"], "--background", "--factory-startup", "--disable-autoexec", "--python-exit-code", "1", "--python", str(child)]
     env = {
         "PATH": os.environ.get("PATH", ""),
         "CITYSIM_PROCESS_ID": contract["execution"]["processId"],
         "CITYSIM_OUTPUT_ROOT": str(repo / contract["execution"]["outputRoot"]),
-        "CITYSIM_PROCESS_A_AUTH": contract["authority"]["routeSha256"],
+        "CITYSIM_EXECUTION_AUTHORITY_JSON": json.dumps(authority, sort_keys=True, separators=(",", ":")),
+        "CITYSIM_GRANT_JSON": json.dumps(grant, sort_keys=True, separators=(",", ":")),
         "CITYSIM_PROFILE_JSON": json.dumps(profile_bundle, sort_keys=True, separators=(",", ":")),
     }
+    validate_forwarded_authority(contract, authority, grant, env)
     proc = subprocess.Popen(command, cwd=str(repo), env=env)
     return proc.wait()
 
@@ -227,7 +278,7 @@ def main(argv: list[str]) -> int:
         except ValueError as error:
             print(f"BLOCKED:{error}")
             return 2
-        print("READY: authenticated grant required; zero child started")
+        print("READY: exact Integration authority and grant required; zero child started")
         return 0
     grant = contract.get("execution", {}).get("launchGrant")
     if not isinstance(grant, dict):

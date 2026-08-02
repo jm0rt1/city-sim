@@ -90,7 +90,17 @@ completely. Never pin a task.
 6. Split tasks that cannot integrate into a playable state within one iteration.
 7. Reassign work only after preserving the original branch, diff, commits, and claim history.
 8. Keep legacy Python read-only unless a task explicitly authorizes migration/reference work.
-9. Wake the operating-system optimization lane at dispatch publication, first return, candidate handoff, and integration close; accept `NO_CHANGE` as a valid low-cost outcome and never let it self-authorize shared mutations.
+9. Apply the event matrix in
+   [the triggered operating-review policy](../optimize-citysim-operating-system/references/triggered-operating-review-policy.json).
+   Wake the operating-system optimization lane once per unique event key, route
+   the review as `LUNA_MECHANICAL / gpt-5.6-luna / medium`, accept `NO_CHANGE`
+   as a valid low-cost outcome, and never let the observer self-authorize shared
+   mutations.
+10. When a claimed lane becomes idle while contract-independent work is ready,
+    refill it in the same management turn or record the exact serialized
+    dependency. Maintain at least three useful active workstreams whenever the
+    backlog and ownership boundaries permit; do not manufacture busywork to hit
+    the number.
 
 ## Guard shared contracts
 

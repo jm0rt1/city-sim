@@ -42,9 +42,22 @@ change has exact owners and rollback, focused adversarial proof is possible,
 and Integration has frozen every shared path. Otherwise return a proposal or
 `NO_CHANGE`.
 
-## Cadence and stop
+## Event-triggered cadence and stop
 
-Wake at dispatch publication, first return, candidate handoff, and integration
-close. One audit per boundary is enough. Stop immediately after one coherent
-receipt/commit, on any mandatory model-route escalation trigger, or when the
-expected improvement cannot be measured without inventing data.
+Use `triggered-operating-review-policy.json` as the machine-readable authority.
+Review once per unique event key at:
+
+- dispatch publication and authority acknowledgement;
+- two consecutive bounded snapshots without durable/tool progress, excluding a
+  declared protected active operation;
+- first focused-gate failure, first return, and second unsuccessful repair;
+- candidate handoff, exact-candidate QA start, and integration close;
+- a useful lane becoming idle while disjoint claimed work is ready;
+- duplicate full-gate requests, route/model mismatch, or claim/baseline mismatch.
+
+The observer uses Luna mechanical/medium and compact receipts. It may return
+`NO_CHANGE`, `REFILL`, `RETURN`, `ESCALATE`, or one bounded proposal. Only
+Integration executes a refill, return, escalation, shared change, acceptance,
+integration, or push. Stop immediately after one receipt/commit, on any
+mandatory model-route escalation trigger, or when the expected improvement
+cannot be measured without inventing data.

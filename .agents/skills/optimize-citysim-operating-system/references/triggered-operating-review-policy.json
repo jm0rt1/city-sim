@@ -1,5 +1,5 @@
 {
-  "schema": 1,
+  "schema": 2,
   "defaultRoute": {
     "classification": "LUNA_MECHANICAL",
     "model": "gpt-5.6-luna",
@@ -28,6 +28,24 @@
     "sameTurnRefillRequired": true,
     "serializedDependencyRequiredWhenNotRefilled": true,
     "manufacturedBusyworkAllowed": false
+  },
+  "falseGreenRecovery": {
+    "sameTurnIntegrationDecision": "REFILL",
+    "allowEscalateOnlyFor": [
+      "shared_contract_or_schema_decision",
+      "baseline_or_candidate_identity_mismatch",
+      "failure_outside_focused_scope",
+      "cross_lane_semantic_conflict",
+      "subjective_acceptance_required"
+    ],
+    "requireIndependentReviewer": true,
+    "requirePriorFocusedPass": true,
+    "requireReplacementModelRoute": true,
+    "preserveOtherDirectionRows": true,
+    "fullGateAllowed": false,
+    "dccAllowed": false,
+    "realAppQAAllowed": false,
+    "sharedMutationAllowed": false
   },
   "coverage": {
     "requiredRowFields": [
@@ -76,6 +94,7 @@
     "exact_candidate_qa_started",
     "first_focused_gate_failure",
     "first_return",
+    "independent_return_after_focused_pass",
     "integration_closed",
     "model_route_mismatch",
     "no_progress_two_snapshots",

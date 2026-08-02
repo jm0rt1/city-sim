@@ -22,6 +22,11 @@ abbreviated SHA. Before dispatch, compare the exact full SHA across the
 authority artifact, claim, ledger, receipt, and delegation message; any
 mismatch is a hard stop.
 
+Before copying any commit/tree identity into a route or visible-task message,
+run `scripts/resolve_dispatch_identity_v1.py` for the exact ref and copy its
+machine-emitted value. When verifying a previously supplied identity, pass it
+back with `--expect ref=<full_sha>`; abbreviations and mismatches fail closed.
+
 ## Own all management responsibilities
 
 Maintain active awareness of:
@@ -104,6 +109,13 @@ completely. Never pin a task.
     dependency. Maintain at least three useful active workstreams whenever the
     backlog and ownership boundaries permit; do not manufacture busywork to hit
     the number.
+11. Treat an independent return after a worker's focused PASS as a false-green
+    operating event. In the same management turn, preserve the candidate and
+    passing evidence, record the independent defect packet, keep unaffected
+    sibling rows unchanged, and publish a bounded replacement Luna route for
+    every contract-independent repair. Escalate instead only for a reason
+    enumerated by the shared trigger policy. The observer never runs a full
+    gate, DCC, real-app QA, or shared mutation to diagnose this event.
 
 ## Guard shared contracts
 

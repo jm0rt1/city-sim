@@ -1,0 +1,141 @@
+{
+  "schema": 2,
+  "authorityCommit": "6aa0d9ba2d82e375885b03545a492098b94af74f",
+  "assignments": [
+    {
+      "modelRouteSha256": "ccbf5c38830843261fd436ae1708b90b46849631108924f336fe3207158f0630",
+      "modelRoute": {
+        "schema": 2,
+        "routeId": "quality-v2:play-027-north-v14-phase-prefix-repair-r3",
+        "taskId": "PLAY-027",
+        "packetKind": "authority",
+        "classification": "FRONTIER_AUTHORITY",
+        "model": "gpt-5.6-sol",
+        "effort": "high",
+        "rationale": "Independent review returned North because malformed final marker input discards an already validated diagnostic prefix. This narrow executable-boundary repair requires frontier ownership; no DCC or visual judgment is authorized.",
+        "authority": {
+          "authorityCommit": "6aa0d9ba2d82e375885b03545a492098b94af74f",
+          "baseCommit": "6aa0d9ba2d82e375885b03545a492098b94af74f",
+          "claim": {
+            "path": "docs/production/claims/PLAY-027.world-art.md",
+            "sha256": "3ba55646cea13c31719d687242eec431fc60c697cfd20bb555f729503c0df332"
+          },
+          "immutableInputs": [
+            {
+              "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-NORTH-V14-EXECUTABLE-PHASE-LADDER-RETURN-REPAIR-V1.md",
+              "sha256": "417ac755ec8c829a65bff06384e9816182af1df4407eed7503fd51250fd12fd9"
+            }
+          ]
+        },
+        "assignment": {
+          "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+          "branch": "codex/citysim-world-art",
+          "worktree": "/Users/James/.codex/worktrees/0648/city-sim",
+          "expectedHead": "174d80f67031d5b611d243200448c52cc9bdf932",
+          "featureAuthorThreadId": null,
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027",
+            "docs/production/evidence/PLAY-027"
+          ],
+          "allowed": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/process-a-phase-ladder-v01/launch_phase_ladder.py",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/process-a-phase-ladder-v01/test_phase_ladder_prelaunch.py",
+            "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v14/process-a-phase-ladder-r1/PHASE-PREFIX-REPAIR-RECEIPT.json"
+          ],
+          "forbidden": [
+            ".agents/skills",
+            "docs/production/claims",
+            "docs/production/decisions",
+            "docs/production/evidence/INTEGRATION",
+            "docs/production/PLAYABLE_BACKLOG.md",
+            "Native/CitySimNative/Rendering",
+            "Native/CitySimNative/Package.swift",
+            "script/build_and_run.sh"
+          ]
+        },
+        "boundedDeliverable": "Preserve the validated ordered phase prefix when a later marker is truncated or schema-invalid, retain full raw stdout, keep failure classification, add two exact adversaries, and record one zero-DCC receipt. Do not launch Blender or create phase-output.",
+        "proofPolicy": {
+          "architectureState": "novel_or_ambiguous",
+          "referenceImplementation": null,
+          "deliverableClaims": [
+            "static_structure"
+          ],
+          "focusedProofLevel": "static_only",
+          "fullProofLevel": "static_only",
+          "behavioralCommands": [],
+          "prohibitedSubstitutions": [
+            "ast_shape_for_runtime_success",
+            "manifest_or_prose_for_rendered_pixels",
+            "source_token_presence_for_execution",
+            "unit_tests_for_visual_acceptance",
+            "worker_self_report_for_independent_acceptance"
+          ]
+        },
+        "validation": {
+          "focusedGateOwner": {
+            "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+            "role": "direction_local_frontier_repair"
+          },
+          "focusedCommands": [
+            "PYTHONDONTWRITEBYTECODE=1 python3 Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/process-a-phase-ladder-v01/test_phase_ladder_prelaunch.py",
+            "test ! -e Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/process-a-phase-ladder-v01/phase-output",
+            "git diff --check 174d80f67031d5b611d243200448c52cc9bdf932..HEAD"
+          ],
+          "fullGateOwner": {
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "role": "integration_independent_repair_review",
+            "model": "gpt-5.6-sol",
+            "effort": "high"
+          },
+          "fullCommands": [
+            "Integration independently reviews exact changed paths, candidate ancestry, adversary semantics, zero-DCC counters, and the clean committed result without rerunning product or full gates."
+          ]
+        },
+        "expectedResult": {
+          "evidencePaths": [
+            "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v14/process-a-phase-ladder-r1/PHASE-PREFIX-REPAIR-RECEIPT.json"
+          ],
+          "commitRequired": true,
+          "commitMessagePattern": "PLAY-027:"
+        },
+        "escalationTriggers": [
+          "baseline_or_candidate_identity_mismatch",
+          "cross_lane_semantic_conflict",
+          "failure_outside_focused_scope",
+          "path_outside_claim",
+          "save_or_migration_uncertainty",
+          "shared_contract_or_schema_decision",
+          "subjective_acceptance_required",
+          "two_unsuccessful_repair_attempts",
+          "unresolved_product_visual_or_interaction_judgment"
+        ],
+        "stopCondition": "Stop after one clean PLAY-027 commit with exact prefix-preservation adversaries and zero child/DCC/output effects; stop immediately on any contract/child/shared path need or identity mismatch.",
+        "independentReviewer": {
+          "required": true,
+          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+          "model": "gpt-5.6-sol",
+          "effort": "high"
+        },
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {
+              "path": "docs/production/claims/PLAY-027.world-art.md",
+              "sha256": "3ba55646cea13c31719d687242eec431fc60c697cfd20bb555f729503c0df332"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-NORTH-V14-EXECUTABLE-PHASE-LADDER-RETURN-REPAIR-V1.md",
+              "sha256": "417ac755ec8c829a65bff06384e9816182af1df4407eed7503fd51250fd12fd9"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -17,6 +17,7 @@ PACKET = ROOT / "V14-COMPATIBILITY-DESIGN.json"
 EVIDENCE = REPO / "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01"
 HANDOFF = EVIDENCE / "HANDOFF.json"
 VALIDATION = EVIDENCE / "VALIDATION.json"
+LOWERING = ROOT / "LOWERING.json"
 PARENT = "fef6e902aca9d3a17bdd9af41f64588c2e8115c3"
 CLAIM = REPO / "docs/production/claims/PLAY-079.world-art-east.md"
 SCENE = REPO / "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-predesign-v01/scene.json"
@@ -24,8 +25,15 @@ MATERIALS = REPO / "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l0
 EXPECTED_PATHS = {
     "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/V14-COMPATIBILITY-DESIGN.json",
     "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/test_v14_compatibility.py",
+    "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/LOWERING.json",
     "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/HANDOFF.json",
     "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/VALIDATION.json",
+}
+DETAIL_COMPONENT_IDS = {
+    "east-v14-process-vessel", "east-v14-pipe-main", "east-v14-pipe-elbow", "east-v14-pipe-support",
+    "east-v14-roof-plant", "east-v14-roof-vents", "east-v14-service-doors", "east-v14-mullioned-glazing",
+    "east-v14-gutter", "east-v14-roof-edge-trim", "east-v14-loading-markings", "east-v14-masonry-seams",
+    "east-v14-louver-band", "east-v14-heat-pipe",
 }
 
 
@@ -104,7 +112,7 @@ def camera_occludes(bounds: dict, aperture: dict, camera: dict) -> bool:
     return near < min(item[1] for item in intervals)
 
 
-def validate(packet: dict, check_files: bool = True) -> dict:
+def validate(packet: dict, check_files: bool = True, lowering_override: dict | None = None) -> dict:
     if packet.get("schema") != "citysim.play-079.east-v14-compatibility-design.v1": fail("schema")
     if (packet.get("task"), packet.get("direction"), packet.get("family"), packet.get("familyRevision")) != ("PLAY-079", "east", "industrial_l04", "v14"): fail("identity")
     if packet.get("phase") != "V14_ZERO_PIXEL_COMPATIBILITY" or packet.get("sourceRevision") != "east-v14-compatibility-v1": fail("phase_revision")
@@ -129,13 +137,29 @@ def validate(packet: dict, check_files: bool = True) -> dict:
     if len(mapping) != 9 or len(set(mapping.values())) != 9: fail("material_roles")
     components = packet["components"]
     by_id = {item["id"]: item for item in components}
-    if len(components) != 16 or len(by_id) != len(components) or any(not item["id"].startswith("east-v14-") for item in components): fail("component_coverage")
+    if len(components) != 30 or len(by_id) != len(components) or any(not item["id"].startswith("east-v14-") for item in components): fail("component_coverage")
+    if not DETAIL_COMPONENT_IDS.issubset(by_id): fail("family_component_coverage")
     for item in components:
         b = item["bounds"]
         if item["semanticRole"] not in mapping or item["materialRole"] != mapping[item["semanticRole"]]: fail("material_binding", item["id"])
         if not (-28 <= b["xMin"] <= b["xMax"] <= 28 and -28 <= b["yMin"] <= b["yMax"] <= 28 and 0 <= b["zMin"] <= b["zMax"]): fail("footprint_bounds", item["id"])
         if item["kind"] == "stack" and b["zMax"] > 44: fail("stack_height")
         if item["kind"] != "stack" and b["zMax"] > 40: fail("non_stack_height", item["id"])
+    lowering = lowering_override if lowering_override is not None else load(LOWERING)
+    if lowering.get("schema") != "citysim.play-079.east-v14-lowering.v1" or lowering.get("task") != "PLAY-079" or lowering.get("direction") != "east" or lowering.get("familyRevision") != "v14": fail("lowering_schema")
+    supported = lowering.get("supportedBuilders", {})
+    records = lowering.get("components", [])
+    record_by_id = {record.get("componentId"): record for record in records}
+    if set(record_by_id) != set(by_id) or len(records) != len(by_id): fail("lowering_coverage")
+    manifest = lowering.get("objectManifest", [])
+    object_ids = [entry.get("objectId") for entry in manifest]
+    if len(manifest) != len(by_id) or len(object_ids) != len(set(object_ids)) or set(entry.get("componentId") for entry in manifest) != set(by_id): fail("lowering_object_coverage")
+    for component_id, record in record_by_id.items():
+        builder = record.get("builder")
+        if builder not in supported or builder == "generic": fail("lowering_builder", component_id)
+        kinds = supported[builder].get("semanticKinds", [])
+        if by_id[component_id]["kind"] not in kinds: fail("lowering_downgrade", component_id)
+        if len(record.get("objectIDs", [])) != 1 or record["objectIDs"][0] not in object_ids: fail("lowering_object_coverage", component_id)
     portal = packet["portal"]
     if portal["roadFacing"] != "east" or by_id[portal["socketComponent"]]["bounds"]["yMax"] != 28 or by_id[portal["apertureComponent"]]["bounds"]["yMax"] != 28: fail("portal_frontage")
     aperture = by_id[portal["apertureComponent"]]["bounds"]
@@ -157,10 +181,11 @@ def validate(packet: dict, check_files: bool = True) -> dict:
     if any(".." in p or not (p.startswith("Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/") or p.startswith("docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/")) for p in changed["changedPaths"]): fail("path_escape")
     boundary = packet["zeroPixelBoundary"]
     if any(boundary[key] != 0 for key in ("blenderInvocations","dccInvocations","renderInvocations","pixelFilesCreated","normalizationRuns","sourcePacketsCreated")) or boundary["appearanceLockConsumed"] is not False or boundary["sourceReady"] is not False or boundary["productionSelected"] is not False: fail("zero_pixel_boundary")
-    return {"schema":"citysim.play-079.east-v14-compatibility-validation.v1","task":"PLAY-079","direction":"east","family":"industrial_l04","familyRevision":"v14","result":"PASS","authority":authority,"registration":registration,"camera":camera,"literal192":{"occupiedEnvelope":envelope,"quantizedEnvelope":quantized,"portalOuter":outer,"portalClear":clear},"componentCount":len(components),"meaningfulSilhouetteBreaks":len(breaks),"futureProcessA":"blocked-until-appearance-lock-and-post-lock-grant","changedPaths":sorted(changed["changedPaths"]),"siblingInputsConsumed":[],"zeroPixel":{"blenderInvocations":0,"dccInvocations":0,"renderInvocations":0,"pixelFilesCreated":0,"normalizationRuns":0,"sourcePacketsCreated":0}}
+    return {"schema":"citysim.play-079.east-v14-compatibility-validation.v1","task":"PLAY-079","direction":"east","family":"industrial_l04","familyRevision":"v14","result":"PASS","authority":authority,"registration":registration,"camera":camera,"literal192":{"occupiedEnvelope":envelope,"quantizedEnvelope":quantized,"portalOuter":outer,"portalClear":clear},"componentCount":len(components),"detailComponentCount":len(DETAIL_COMPONENT_IDS),"loweringComponentCount":len(records),"loweringObjectCount":len(manifest),"meaningfulSilhouetteBreaks":len(breaks),"futureProcessA":"blocked-until-appearance-lock-and-post-lock-grant","changedPaths":sorted(changed["changedPaths"]),"siblingInputsConsumed":[],"zeroPixel":{"blenderInvocations":0,"dccInvocations":0,"renderInvocations":0,"pixelFilesCreated":0,"normalizationRuns":0,"sourcePacketsCreated":0}}
 
 
 def adversaries(base: dict) -> list[dict]:
+    lowering_base = load(LOWERING)
     cases = {
         "missing_appearance_lock": lambda p: p["futureProcessA"].update({"appearanceLock": {}}),
         "wrong_socket": lambda p: p["eastRegistration"].update({"sourceSocket": [896.0,704.0]}),
@@ -171,6 +196,12 @@ def adversaries(base: dict) -> list[dict]:
         "portal_occluder": lambda p: p["components"][2]["bounds"].update({"yMax": 27}),
         "process_a_forged": lambda p: p["futureProcessA"].update({"sourceReady": True, "launchAuthorized": True}),
     }
+    lowering_cases = {
+        "lowering_omission": lambda l: l["components"].pop(),
+        "lowering_object_duplicate": lambda l: l["objectManifest"][1].update({"objectId": l["objectManifest"][0]["objectId"]}),
+        "lowering_downgrade": lambda l: next(r.update({"builder":"box"}) for r in l["components"] if r["componentId"] == "east-v14-process-vessel"),
+        "lowering_unsupported_builder": lambda l: next(r.update({"builder":"not-a-builder"}) for r in l["components"] if r["componentId"] == "east-v14-pipe-elbow"),
+    }
     expected = {"missing_appearance_lock":"future_authority_boundary","wrong_socket":"socket_pivot","stale_camera":"camera","sibling_path":"path_isolation","orientation_transform":"sibling_or_transform","undersized_envelope":"literal_scale","portal_occluder":"portal_occlusion","process_a_forged":"future_authority_boundary"}
     out = []
     for name, mutate in cases.items():
@@ -180,6 +211,17 @@ def adversaries(base: dict) -> list[dict]:
             validate(candidate, check_files=False)
         except AssertionError as error:
             if not str(error).startswith(expected[name]): fail("adversary_wrong_rejection", name + ":" + str(error))
+            out.append({"case":name,"result":"REJECTED","code":str(error).split(":",1)[0]})
+        else:
+            fail("adversary_accepted", name)
+    for name, mutate in lowering_cases.items():
+        lowered = copy.deepcopy(lowering_base)
+        mutate(lowered)
+        try:
+            validate(copy.deepcopy(base), check_files=False, lowering_override=lowered)
+        except AssertionError as error:
+            expected_code = "lowering_coverage" if name == "lowering_omission" else "lowering_object_coverage" if name == "lowering_object_duplicate" else "lowering_downgrade" if name == "lowering_downgrade" else "lowering_builder"
+            if not str(error).startswith(expected_code): fail("adversary_wrong_rejection", name + ":" + str(error))
             out.append({"case":name,"result":"REJECTED","code":str(error).split(":",1)[0]})
         else:
             fail("adversary_accepted", name)
@@ -201,7 +243,7 @@ def main() -> int:
         "schema":"citysim.play-079.east-v14-compatibility-handoff.v1", "stage":"predesign", "task":"PLAY-079", "direction":"east", "family":"industrial_l04", "familyRevision":"v14", "branch":"codex/citysim-world-art-east", "baseCommit":PARENT,
         "claim":packet["authority"]["claim"], "sourceRevision":packet["sourceRevision"],
         "familyContract":{"path":packet["authority"]["familyAuthority"]["path"],"sha256":packet["authority"]["familyAuthority"]["sha256"],"version":"industrial-l04-v14"},
-        "sceneMaterialBindings":packet["sourceBindings"], "toolchain":{"blender":"not_run","dcc":"not_run","render":"not_run"},
+        "sceneMaterialBindings":packet["sourceBindings"], "loweringContract":{"path":"Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/LOWERING.json","componentCount":first["loweringComponentCount"],"objectCount":first["loweringObjectCount"],"coverage":"100%"}, "toolchain":{"blender":"not_run","dcc":"not_run","render":"not_run"},
         "registration":packet["eastRegistration"], "camera":packet["camera"], "light":packet["light"], "portal":packet["portal"], "silhouette":packet["silhouette"],
         "directionRootMap":{"sceneRoot":"Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01","evidenceRoot":"docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01","handoff":"docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/HANDOFF.json","parallelReceipt":None},
         "validationReportPaths":["docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/VALIDATION.json"], "disposition":"predesign_ready", "candidateReadyForIndependentReview":True,

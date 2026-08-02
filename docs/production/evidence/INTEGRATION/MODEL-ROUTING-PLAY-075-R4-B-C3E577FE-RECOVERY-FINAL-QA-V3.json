@@ -1,0 +1,159 @@
+{
+  "schema": 1,
+  "authorityCommit": "5d84d521b3b25f9ddf11d7b88e81c885a5e86946",
+  "assignments": [
+    {
+      "modelRouteSha256": "db236c9473d11894a458362350e4a512fff619f193bb520014803acdd0720206",
+      "modelRoute": {
+        "schema": 1,
+        "routeId": "quality-v1:play-075-r4-b-c3e577fe-recovery-final-qa-v3",
+        "taskId": "PLAY-075",
+        "packetKind": "acceptance",
+        "classification": "FRONTIER_AUTHORITY",
+        "model": "gpt-5.6-sol",
+        "effort": "high",
+        "rationale": "This is one fresh compact independent subjective real-app gate for the exact recovery baseline. The historical frontier QA task and its V2 lease are retired after an interrupted opaque Computer Use call consumed the launch without producing evidence or disposition; the candidate bytes remain unchanged and the V3 task has only a 58,010-token bootstrap context.",
+        "authority": {
+          "authorityCommit": "5d84d521b3b25f9ddf11d7b88e81c885a5e86946",
+          "baseCommit": "5d84d521b3b25f9ddf11d7b88e81c885a5e86946",
+          "claim": {
+            "path": "docs/production/claims/PLAY-075.playtest-quality.md",
+            "sha256": "5dd3aeef1ffe8abf5e0c93486e27fe2d15495854be096fb105bff55a48dc0362"
+          },
+          "immutableInputs": [
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "62e077c88730fda5664e5fa6d23200ade77418bd43f1c721c0bff84eaac1c971"
+            },
+            {
+              "path": ".agents/skills/verify-citysim-playability/SKILL.md",
+              "sha256": "a632f4afff412dc9d61d7018fa2376859c5f05d0e9eea7d06fc8990cff2f2960"
+            },
+            {
+              "path": ".agents/skills/verify-citysim-playability/references/exact-candidate-real-app-gate.md",
+              "sha256": "332136244f126857356dd1e08cb762d51859360b74014ec85e87ad85834dbdd3"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/PLAY-073-R4-B-C3E577FE-INVENTORY-CORRECTION-V1.json",
+              "sha256": "1daeb1ee9120018c5d648c56143fbec1977d225a5ab74a23875112af4be714dd"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/PLAY-073-R4-B-C3E577FE-RECOVERY-CANDIDATE-RECEIPT-V2.json",
+              "sha256": "a62700ce6aca00b3db5dea6c7eb4ceb5a33eb6440d82cdad087ff9361be75cde"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/PLAY-075-R4-B-C3E577FE-RECOVERY-QA-V2-INCIDENT.json",
+              "sha256": "ef463a2ccf3894ae21595609218173070cad5298c4a746cca131d7f58c30c3b3"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/PLAY-075-R4-B-C3E577FE-RECOVERY-EXCLUSIVE-QA-LEASE-V3.json",
+              "sha256": "374839ad9dec237ef8afa7db76355a351f7ac643505c33f914bcefbbc8f6e897"
+            }
+          ]
+        },
+        "assignment": {
+          "threadId": "019fc0b0-74cb-70e1-8923-8c9d9600484d",
+          "branch": "codex/citysim-playtest-quality",
+          "worktree": "/Users/James/.codex/worktrees/71b0/city-sim",
+          "expectedHead": "43e3e57afb52480d90bcf4b08d610ac5950e34bd",
+          "featureAuthorThreadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": true,
+          "subjectiveJudgmentRequired": true
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": [
+            "docs/production/evidence/PLAY-075"
+          ],
+          "allowed": [
+            "docs/production/evidence/PLAY-075/r4-b-c3e577fe-recovery-baseline-v3"
+          ],
+          "forbidden": [
+            "docs/production/evidence/INTEGRATION",
+            "Native/CitySimNative/Sources",
+            "Native/CitySimNative/Tests",
+            "Native/CitySimNative/Resources"
+          ]
+        },
+        "boundedDeliverable": "Consume the exact V3 exclusive one-attempt lease, independently verify route, candidate, stable 82-file bundle, process, absent candidate data root, and empty V3 output identities, launch only the already-staged executable once, and inspect regular plus exact 900x600 compact City, Neighborhood, and Block views. Confirm the regional terrain breakup remains materially visible and coherent; confirm returned lot-context and court overlays are absent; keep the adjacent residential duplicate disclosed as an open release blocker; exercise one pointer placement, keyboard map focus, command-guide Escape, and Focus City path; retain one evidence packet and return APPROVE_BASELINE or RETURN.",
+        "validation": {
+          "focusedGateOwner": {
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "role": "candidate_admission_gate"
+          },
+          "focusedCommands": [
+            "verify the V3 route, receipt, lease, V2 incident, c3e577fe source/build/resource identities, absent candidate data root and V3 output root, manifest not-running state, and zero matching candidate process"
+          ],
+          "fullGateOwner": {
+            "threadId": "019fc0b0-74cb-70e1-8923-8c9d9600484d",
+            "role": "independent_frontier_qa",
+            "model": "gpt-5.6-sol",
+            "effort": "high"
+          },
+          "fullCommands": [
+            "one exact-candidate focused recovery-baseline real-app journey"
+          ]
+        },
+        "expectedResult": {
+          "evidencePaths": [
+            "docs/production/evidence/PLAY-075/r4-b-c3e577fe-recovery-baseline-v3"
+          ],
+          "commitRequired": true,
+          "commitMessagePattern": "PLAY-075:"
+        },
+        "escalationTriggers": [
+          "baseline_or_candidate_identity_mismatch",
+          "cross_lane_semantic_conflict",
+          "failure_outside_focused_scope",
+          "path_outside_claim",
+          "save_or_migration_uncertainty",
+          "shared_contract_or_schema_decision",
+          "subjective_acceptance_required",
+          "two_unsuccessful_repair_attempts",
+          "unresolved_product_visual_or_interaction_judgment"
+        ],
+        "stopCondition": "Stop before launch on any V3 route, claim, HEAD, candidate, build, resource, process, candidate-data-root, output-root, attempt-count, task-identity, coaching, or scope mismatch. Otherwise consume exactly one launch and stop after one clean evidence commit with APPROVE_BASELINE or RETURN; do not rebuild, rerun the full Swift suite, repair product code, resume the historical QA task, push, integrate, or execute a second journey.",
+        "independentReviewer": {
+          "required": true,
+          "threadId": "019fc0b0-74cb-70e1-8923-8c9d9600484d",
+          "model": "gpt-5.6-sol",
+          "effort": "high"
+        },
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "62e077c88730fda5664e5fa6d23200ade77418bd43f1c721c0bff84eaac1c971"
+            },
+            {
+              "path": ".agents/skills/verify-citysim-playability/SKILL.md",
+              "sha256": "a632f4afff412dc9d61d7018fa2376859c5f05d0e9eea7d06fc8990cff2f2960"
+            },
+            {
+              "path": ".agents/skills/verify-citysim-playability/references/exact-candidate-real-app-gate.md",
+              "sha256": "332136244f126857356dd1e08cb762d51859360b74014ec85e87ad85834dbdd3"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/PLAY-073-R4-B-C3E577FE-INVENTORY-CORRECTION-V1.json",
+              "sha256": "1daeb1ee9120018c5d648c56143fbec1977d225a5ab74a23875112af4be714dd"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/PLAY-073-R4-B-C3E577FE-RECOVERY-CANDIDATE-RECEIPT-V2.json",
+              "sha256": "a62700ce6aca00b3db5dea6c7eb4ceb5a33eb6440d82cdad087ff9361be75cde"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/PLAY-075-R4-B-C3E577FE-RECOVERY-QA-V2-INCIDENT.json",
+              "sha256": "ef463a2ccf3894ae21595609218173070cad5298c4a746cca131d7f58c30c3b3"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/PLAY-075-R4-B-C3E577FE-RECOVERY-EXCLUSIVE-QA-LEASE-V3.json",
+              "sha256": "374839ad9dec237ef8afa7db76355a351f7ac643505c33f914bcefbbc8f6e897"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

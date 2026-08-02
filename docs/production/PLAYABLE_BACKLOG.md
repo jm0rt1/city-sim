@@ -1227,3 +1227,108 @@ This is the authoritative first-wave task source. The shared target is one coher
   the proposal requires product judgment; two repairs fail; or savings would
   weaken a protected quality gate.
 - **Claim:** `docs/production/claims/PLAY-089.operating-system-optimization.md`.
+
+### [ ] PLAY-090: Author the Residential L1 variant-one North hero
+
+- **Player outcome:** The repeated opening homes gain a second, genuinely
+  authored Residential L1 identity whose massing, roofline, entrance, facade
+  rhythm, and material balance remain legible at real game scale.
+- **Owning lane:** World Art — North/core.
+- **Requirement IDs:** ART-001, ART-002, UX-003, REL-001.
+- **Dependencies:** CONTRACT-023; published recovery baseline; family-bound
+  parallel validator and prelock ledger.
+- **In scope:** North-exclusive text DCC scene, family vocabulary, one granted
+  Process A, provenance, deterministic source proof, literal-192 review packet,
+  and PLAY-090 evidence.
+- **Out of scope:** East/South/West geometry, renderer/shipping selection,
+  gameplay/UI/simulation/save/package changes, whole-building ImageGen, push,
+  integration, or self-acceptance.
+- **Acceptance:** North is structurally distinct from variant zero, correctly
+  North-road-facing, stable at all registered scales, byte/pixel deterministic,
+  and independently acceptable as the family appearance lock.
+- **Validation/proof:** Zero-pixel camera/socket/footprint proof; three fresh
+  processes; source/native-2x/literal-192 color and grayscale; non-alias and
+  registration reports; exact contact sheets under `docs/production/evidence/PLAY-090/`.
+- **Stop conditions:** Identity or contract drift, sibling geometry access,
+  nondeterminism, literal-scale ambiguity, shared-path need, or second failed
+  repair without frontier return.
+- **Claim:** `docs/production/claims/PLAY-090.world-art-north.md`.
+
+### [ ] PLAY-091: Author the Residential L1 variant-one East source
+
+- **Player outcome:** East-frontage homes receive an independently authored
+  variant-one view that reads as the same family without mirroring North.
+- **Owning lane:** World Art — East.
+- **Requirement IDs:** ART-001, ART-002, REL-001.
+- **Dependencies:** CONTRACT-023 and prelock authority; pixels wait for the
+  accepted North appearance lock.
+- **In scope:** East-exclusive blockout, scene, A/B/C sources after lock,
+  provenance, normalization, deterministic checks, and PLAY-091 evidence.
+- **Out of scope:** Sibling geometry/pixels, shared contracts, renderer,
+  shipping, product code, push, integration, or self-acceptance.
+- **Acceptance:** Independently authored East frontage passes the complete
+  source, non-alias, scale, registration, and deterministic packet gates.
+- **Validation/proof:** Zero-pixel proof before lock; A/B/C and contact sheets
+  after lock under `docs/production/evidence/PLAY-091/`.
+- **Stop conditions:** Missing lock for pixels, sibling derivation, alias,
+  wrong socket/frontage, nondeterminism, or path escape.
+- **Claim:** `docs/production/claims/PLAY-091.world-art-east.md`.
+
+### [ ] PLAY-092: Author the Residential L1 variant-one South source
+
+- **Player outcome:** South-frontage homes receive an independently authored
+  variant-one view with clear road-facing entrance and coherent family identity.
+- **Owning lane:** World Art — South.
+- **Requirement IDs:** ART-001, ART-002, REL-001.
+- **Dependencies:** CONTRACT-023 and prelock authority; pixels wait for the
+  accepted North appearance lock.
+- **In scope/out of scope:** South-exclusive equivalents of PLAY-091; no
+  sibling, shared, renderer, shipping, or product mutation.
+- **Acceptance:** Independent South source passes source, non-alias, scale,
+  registration, frontage, deterministic, and literal-game-scale gates.
+- **Validation/proof:** Zero-pixel proof then A/B/C packet under
+  `docs/production/evidence/PLAY-092/`.
+- **Stop conditions:** Same as PLAY-091.
+- **Claim:** `docs/production/claims/PLAY-092.world-art-south.md`.
+
+### [ ] PLAY-093: Author the Residential L1 variant-one West source
+
+- **Player outcome:** West-frontage homes receive an independently authored
+  variant-one view with clear road-facing entrance and coherent family identity.
+- **Owning lane:** World Art — West.
+- **Requirement IDs:** ART-001, ART-002, REL-001.
+- **Dependencies:** CONTRACT-023 and prelock authority; pixels wait for the
+  accepted North appearance lock.
+- **In scope/out of scope:** West-exclusive equivalents of PLAY-091; no
+  sibling, shared, renderer, shipping, or product mutation.
+- **Acceptance:** Independent West source passes source, non-alias, scale,
+  registration, frontage, deterministic, and literal-game-scale gates.
+- **Validation/proof:** Zero-pixel proof then A/B/C packet under
+  `docs/production/evidence/PLAY-093/`.
+- **Stop conditions:** Same as PLAY-091.
+- **Claim:** `docs/production/claims/PLAY-093.world-art-west.md`.
+
+### [ ] PLAY-094: Atomically activate Residential L1 variant one
+
+- **Player outcome:** The opening northwest residential pair reads as an
+  intentional mixed block instead of duplicated content at every shipping LOD.
+- **Owning lane:** World rendering.
+- **Requirement IDs:** ART-001, ART-002, UX-003, REL-001.
+- **Dependencies:** Exact Integration-admitted PLAY-090/091/092/093 source
+  packets and four-direction quarantine.
+- **In scope:** Non-shipping intake preparation, variant-one atlas/runtime
+  mapping, deterministic selection, atomic 4/4 activation, focused renderer
+  tests, resource proof, and PLAY-094 evidence.
+- **Out of scope:** Source-art repair, partial activation, fallback/transform,
+  gameplay/UI/simulation/save contracts, broad composition redesign, final QA,
+  push, integration, or self-acceptance.
+- **Acceptance:** Exact 4/4 sources activate atomically; the opening pair uses
+  different stable variants; all directions and LODs resolve without alias,
+  fallback, overlap, clipping, registration drift, or interaction regression.
+- **Validation/proof:** Intake/quarantine negatives, atlas/resource identity,
+  deterministic save/replay/Undo/LOD selection, staged regular/compact fixture,
+  performance, and exact handoff under `docs/production/evidence/PLAY-094/`.
+- **Stop conditions:** Any missing/rejected direction, shared contract drift,
+  unstable selection, partial fallback, source defect, resource regression, or
+  need to hide the remaining defect in renderer decoration.
+- **Claim:** `docs/production/claims/PLAY-094.world-rendering.md`.

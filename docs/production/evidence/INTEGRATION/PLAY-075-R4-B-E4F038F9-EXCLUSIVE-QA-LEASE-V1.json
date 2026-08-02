@@ -1,0 +1,81 @@
+{
+  "schema": 1,
+  "leaseId": "play-075-r4-b-e4f038f9-exclusive-final-v1",
+  "issuedAt": "2026-08-01T23:55:03Z",
+  "state": "issued",
+  "attemptCount": 1,
+  "maximumStartCount": 1,
+  "candidateReceipt": {
+    "path": "docs/production/evidence/INTEGRATION/PLAY-073-R4-B-E4F038F9-CANDIDATE-RECEIPT-V1.json",
+    "sha256": "a198cb63bd4466d8a0ebafc71fc03fe66b0f5611ddc51ebc5784c715cfb59258"
+  },
+  "candidate": {
+    "commit": "e4f038f942f8c011a0b38b71353e40b4ac5054d4",
+    "tree": "26a213302c763898a0c2f359cf4cd39157420056",
+    "bundleIdentifier": "com.jfmortensen.citysim.codex-r4b-qa-candidate.wf225bc6c6a7c",
+    "preferenceDomain": "com.jfmortensen.citysim.codex-r4b-qa-candidate.wf225bc6c6a7c",
+    "dataRoot": "/private/tmp/citysim-r4b-qa-e4f038f9/dist/test-data/codex-r4b-qa-candidate-wf225bc6c6a7c",
+    "bundlePath": "/private/tmp/citysim-r4b-qa-e4f038f9/dist/CitySim-codex-r4b-qa-candidate-wf225bc6c6a7c.app",
+    "executablePath": "/private/tmp/citysim-r4b-qa-e4f038f9/dist/CitySim-codex-r4b-qa-candidate-wf225bc6c6a7c.app/Contents/MacOS/CitySimNative-wf225bc6c6a7c",
+    "resourceBundlePath": "/private/tmp/citysim-r4b-qa-e4f038f9/dist/CitySim-codex-r4b-qa-candidate-wf225bc6c6a7c.app/CitySimNative_CitySimNative.bundle",
+    "manifestPath": "/private/tmp/citysim-r4b-qa-e4f038f9/dist/manifests/codex-r4b-qa-candidate-wf225bc6c6a7c.manifest",
+    "manifestSha256": "0e31cea72a23bdc5af842ee1481efb7e80cb5131e2e116a241f6adfa9d214118",
+    "executableSha256": "228b233f13a6ce5a8bd72cf9b5613ca50d626f7b9bc4fddbd78f382e36a087db",
+    "resourceInventoryFileCount": 82,
+    "resourceInventorySha256": "5ac8090bba9a49d16222222cd5e616f86c47e294fa393253a6f82de0a289e063"
+  },
+  "qaAssignment": {
+    "threadId": "019f9a0a-35fa-75b1-92c4-73c182390a25",
+    "featureAuthorThreadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+    "branch": "codex/citysim-playtest-quality",
+    "worktree": "/Users/James/.codex/worktrees/71b0/city-sim",
+    "expectedHead": "e72be9cbc7b941ba8b4e87e5859d4c79495e7ce7",
+    "expectedTree": "361197dbd45f9e19ccb34e851f3ef9bbbb420e8f",
+    "model": "gpt-5.6-sol",
+    "effort": "high"
+  },
+  "journey": {
+    "mode": "focused_r4_b_return_closure_plus_release_sanity",
+    "rubric": {
+      "path": "docs/production/WAVE-009-CITY-NOT-BOARD.md",
+      "sha256": "df995ecdcee2c40b537e582ca1b9bf8d84bda40d6b1794ef1a704684b42b4442"
+    },
+    "comparisonBaseline": "0e89914566ba4593b25e2cd52b4b788d204b7331",
+    "requiredDisposition": "APPROVE_or_RETURN",
+    "layouts": [
+      "regular",
+      "900x600_compact"
+    ],
+    "requiredChecks": [
+      "prior broad-green automatic return is materially resolved",
+      "prior adjacent duplicate-building automatic return is materially resolved",
+      "world remains coherent and clearly preferable to R4-A",
+      "pointer placement and keyboard map focus remain functional",
+      "command guide and compact Focus City remain readable",
+      "no new overlap, clipping, fallback, or mixed-fidelity automatic return"
+    ],
+    "familyActivation": null,
+    "requiresAtomicFourDirectionArt": false
+  },
+  "output": {
+    "exclusiveRoot": "docs/production/evidence/PLAY-075/r4-b-e4f038f9-final-wave009-v1",
+    "mustBeAbsentBeforeStart": true,
+    "requiredDisposition": [
+      "APPROVE",
+      "RETURN"
+    ],
+    "commitRequired": true,
+    "pushForbidden": true
+  },
+  "preconditions": {
+    "candidateProcessCount": 0,
+    "candidateProcessStopped": true,
+    "rebuildForbidden": true,
+    "candidateSubstitutionForbidden": true,
+    "featureAuthorCoachingForbidden": true,
+    "duplicateJourneyForbidden": true,
+    "productMutationForbidden": true,
+    "fullSwiftSuiteRerunForbiddenUnlessCandidateEvidenceIsStaleOrJourneyFindsAReproductionNeed": true
+  },
+  "stopCondition": "Consume this lease once, launch only the already-staged exact executable, preserve one immutable evidence commit, and stop after APPROVE or RETURN. Stop before launch on any identity drift, pre-existing output, matching process, second start, author coaching, or scope mismatch."
+}

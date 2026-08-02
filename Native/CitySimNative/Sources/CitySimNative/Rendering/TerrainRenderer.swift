@@ -842,9 +842,9 @@ final class TerrainRenderer {
         guard !coordinates.isEmpty else { return }
         let contact = SKShapeNode(path: combinedDiamondPath(
             coordinates: coordinates,
-            width: style.tileWidth - 1,
-            height: style.tileHeight - 0.5,
-            offset: CGPoint(x: 1.4, y: -1.25)
+            width: style.tileWidth - 3,
+            height: style.tileHeight - 2,
+            offset: CGPoint(x: 0.45, y: -0.25)
         ))
         contact.name = "district.ground.service-campus.contact"
         contact.fillColor = NSColor.black.withAlphaComponent(0.15)
@@ -990,6 +990,32 @@ final class TerrainRenderer {
                 }
                 materialIndex += 1
             }
+        }
+
+        // Three bounded, broad material regions keep the outer board from
+        // reading as one plain field. They are ground-only, deterministic,
+        // and derived from the physical grid dimensions; they never create a
+        // parcel, road, occupancy, or hit target.
+        let regionalAnchors = [
+            GridCoordinate(x: max(1, gridWidth / 4), y: max(1, gridHeight / 3)),
+            GridCoordinate(x: max(1, gridWidth * 3 / 4), y: max(1, gridHeight / 3)),
+            GridCoordinate(x: max(1, gridWidth / 3), y: max(1, gridHeight * 2 / 3)),
+        ]
+        for (index, anchor) in regionalAnchors.enumerated() {
+            let center = style.isoPosition(anchor)
+            let region = SKShapeNode(path: organicSwatchPath(
+                center: center,
+                anchor: anchor,
+                radiusX: style.tileWidth * (2.25 + CGFloat(index) * 0.16),
+                radiusY: style.tileHeight * (1.02 + CGFloat(index % 2) * 0.12),
+                saltOffset: 0x920 + UInt64(index) * 0x17
+            ))
+            region.name = "terrain.macro.regional.material.\(index)"
+            region.fillColor = macroFieldColor(variant: index + 1)
+                .withAlphaComponent(0.22)
+            region.strokeColor = .clear
+            region.zPosition = 0.16
+            city.addChild(region)
         }
     }
 

@@ -2,7 +2,9 @@
 
 - **Title:** Replace the board with an authored district
 - **Lane:** World rendering
-- **Branch:** `codex/citysim-world-rendering`
+- **Branch:** active clean successor `codex/citysim-world-rendering`; returned
+  lineage remains preserved on
+  `codex/citysim-world-rendering-legacy-d906d2dc`
 - **Worktree:** `/Users/James/.codex/worktrees/cac1/city-sim`
 - **Base authority:** Published Wave 008 product candidate
   `87e1e682566b68d20deb1a9e2028e2b885e0423a`; iteration-two branch authority
@@ -54,7 +56,15 @@
   broad-green-terrain and adjacent-building-repetition automatic returns. Its
   product was explicitly rolled back on Integration master while the QA packet
   remains durable. Renderer is now released for the bounded R4-B return repair
-  under `PLAY-073-R4-B-RETURN-REPAIR-AUTHORITY.md`.
+  under `PLAY-073-R4-B-RETURN-REPAIR-AUTHORITY.md`. R4-B candidate
+  `d906d2dcb1048572831575f7847d27fba6e4cad7` was returned at Integration
+  because its branch merge retained R4-A product bytes that published
+  `master` had explicitly reverted. The candidate remains preserved and must
+  not be cherry-picked, merged, or used as a product base. The clean successor
+  branch starts from published current `master` and may implement only the net
+  current-tree repair frozen by
+  `PLAY-073-R4-B-CURRENT-MASTER-RECONSTRUCTION-AUTHORITY.md` and its exact
+  `PLAY-073-R4-B-CURRENT-MASTER-IMPLEMENTATION-ADDENDUM.md` geometry rules.
 
 Recompose the visible world as one authored district. The developed city must
 dominate the intended camera while retaining useful buildable context. Roads,

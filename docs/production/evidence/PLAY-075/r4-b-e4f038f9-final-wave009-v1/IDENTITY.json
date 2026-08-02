@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "taskId": "PLAY-075",
+  "disposition": "RETURN",
+  "completedAt": "2026-08-02T00:26:08Z",
+  "route": {
+    "carrier": "09f3eda1b4b13495e07f976d3d368a2ae932de2f",
+    "receiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-075-R4-B-E4F038F9-FINAL-QA-V1.json",
+    "receiptSha256": "23a0ff489138153da5a60ac0c8635083cdb1596580ccad8cf9427791df91eecb",
+    "routeId": "quality-v1:play-075-r4-b-e4f038f9-final-qa",
+    "canonicalRouteSha256": "2cb8b83a9283a68bdb05543df698acf9cce20bbbec998929e947846ce063a233",
+    "model": "gpt-5.6-sol",
+    "effort": "high",
+    "selectedRowValidation": "PASS"
+  },
+  "qualityCarrier": {
+    "branch": "codex/citysim-playtest-quality",
+    "headBeforeEvidence": "e72be9cbc7b941ba8b4e87e5859d4c79495e7ce7",
+    "treeBeforeEvidence": "361197dbd45f9e19ccb34e851f3ef9bbbb420e8f",
+    "worktree": "/Users/James/.codex/worktrees/71b0/city-sim",
+    "featureAuthorSeparated": true,
+    "featureAuthorThreadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+    "qaThreadId": "019f9a0a-35fa-75b1-92c4-73c182390a25"
+  },
+  "candidate": {
+    "commit": "e4f038f942f8c011a0b38b71353e40b4ac5054d4",
+    "tree": "26a213302c763898a0c2f359cf4cd39157420056",
+    "sourceWorktree": "/private/tmp/citysim-r4b-qa-e4f038f9",
+    "sourceBranch": "codex/r4b-qa-candidate",
+    "sourceCleanBeforeAndAfter": true,
+    "candidateIsAncestorOfQualityCarrier": true,
+    "productDiffToQualityCarrierEmpty": true,
+    "candidateReceiptPath": "docs/production/evidence/INTEGRATION/PLAY-073-R4-B-E4F038F9-CANDIDATE-RECEIPT-V1.json",
+    "candidateReceiptSha256": "a198cb63bd4466d8a0ebafc71fc03fe66b0f5611ddc51ebc5784c715cfb59258"
+  },
+  "lease": {
+    "path": "docs/production/evidence/INTEGRATION/PLAY-075-R4-B-E4F038F9-EXCLUSIVE-QA-LEASE-V1.json",
+    "sha256": "95387e76b08d26f2ae2229557417f2ff5361d9db4bc6e861ac677b2ce719b533",
+    "leaseId": "play-075-r4-b-e4f038f9-exclusive-final-v1",
+    "maximumStartCount": 1,
+    "observedStartCount": 1
+  },
+  "stagedBuild": {
+    "candidateId": "codex-r4b-qa-candidate-wf225bc6c6a7c",
+    "bundleIdentifier": "com.jfmortensen.citysim.codex-r4b-qa-candidate.wf225bc6c6a7c",
+    "preferenceDomain": "com.jfmortensen.citysim.codex-r4b-qa-candidate.wf225bc6c6a7c",
+    "dataRoot": "/private/tmp/citysim-r4b-qa-e4f038f9/dist/test-data/codex-r4b-qa-candidate-wf225bc6c6a7c",
+    "bundlePath": "/private/tmp/citysim-r4b-qa-e4f038f9/dist/CitySim-codex-r4b-qa-candidate-wf225bc6c6a7c.app",
+    "executablePath": "/private/tmp/citysim-r4b-qa-e4f038f9/dist/CitySim-codex-r4b-qa-candidate-wf225bc6c6a7c.app/Contents/MacOS/CitySimNative-wf225bc6c6a7c",
+    "executableSha256BeforeAndAfter": "228b233f13a6ce5a8bd72cf9b5613ca50d626f7b9bc4fddbd78f382e36a087db",
+    "manifestPath": "/private/tmp/citysim-r4b-qa-e4f038f9/dist/manifests/codex-r4b-qa-candidate-wf225bc6c6a7c.manifest",
+    "manifestSha256BeforeAndAfter": "0e31cea72a23bdc5af842ee1481efb7e80cb5131e2e116a241f6adfa9d214118",
+    "resourceInventoryFileCount": 82,
+    "resourceInventorySha256BeforeAndAfter": "5ac8090bba9a49d16222222cd5e616f86c47e294fa393253a6f82de0a289e063"
+  },
+  "process": {
+    "matchingProcessesBeforeLaunch": 0,
+    "qaPid": 2976,
+    "sample": {
+      "rssKiB": 250784,
+      "virtualKiB": 436217264,
+      "elapsed": "16:56",
+      "cpuPercent": 0.9
+    },
+    "termination": "SIGTERM exact PID 2976",
+    "matchingProcessesAfterTermination": 0
+  },
+  "layouts": {
+    "regular": {
+      "captureEnvelopePixels": [1229, 768],
+      "lods": ["city", "neighborhood", "block"]
+    },
+    "compact": {
+      "governedContentPixels": [900, 600],
+      "computerUseCaptureEnvelopePixels": [904, 652],
+      "lods": ["city", "neighborhood", "block"]
+    }
+  },
+  "baseline": {
+    "r4aCommit": "0e89914566ba4593b25e2cd52b4b788d204b7331",
+    "r4aEvidenceRoot": "docs/production/evidence/PLAY-075/r4-a-0e899145-final-wave009-v1",
+    "wave008Commit": "87e1e682566b68d20deb1a9e2028e2b885e0423a"
+  },
+  "productMutation": "NONE",
+  "evidenceMutation": "QA_OWNED_ONLY"
+}

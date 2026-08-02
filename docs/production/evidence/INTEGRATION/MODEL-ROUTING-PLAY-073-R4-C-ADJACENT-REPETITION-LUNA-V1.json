@@ -1,0 +1,165 @@
+{
+  "schema": 1,
+  "authorityCommit": "45e1422304443a012a2f121c90be3e7d31b82c59",
+  "assignments": [
+    {
+      "modelRouteSha256": "a50b36e356ffd631cacca5f428532fe616bf2255eac3398dee8534352f4c15e4",
+      "modelRoute": {
+        "schema": 1,
+        "routeId": "quality-v1:play-073-r4-c-adjacent-residential-repetition-luna-v1",
+        "taskId": "PLAY-073",
+        "packetKind": "implementation",
+        "classification": "LUNA_IMPLEMENTATION",
+        "model": "gpt-5.6-luna",
+        "effort": "high",
+        "rationale": "Independent QA has frozen one exact remaining visual defect and Integration has frozen a truthful renderer-only solution: materially distinct frontage-bound residential lot compositions while preserving all accepted sprite identity, terrain, registration, and interaction behavior. Implementation and focused deterministic proof are bounded to two current-byte-identical renderer/test files plus one evidence root; subjective visual acceptance remains independent frontier work.",
+        "authority": {
+          "authorityCommit": "45e1422304443a012a2f121c90be3e7d31b82c59",
+          "baseCommit": "45e1422304443a012a2f121c90be3e7d31b82c59",
+          "claim": {
+            "path": "docs/production/claims/PLAY-073.world-rendering.md",
+            "sha256": "51b347c22df6b04e33b0cb59046c774b65f770465bea21d1073db55cca75b897"
+          },
+          "immutableInputs": [
+            {
+              "path": ".agents/skills/render-citysim-world/SKILL.md",
+              "sha256": "fbd37c5f4730c61f95a344266b61d3fb37ce39adcefbaaba6e94f8939d8b72e2"
+            },
+            {
+              "path": ".agents/skills/render-citysim-world/references/renderer-feature-evidence.md",
+              "sha256": "d9d607c6945f27cf8c67e53cd40c97c122b2d0cba62b6a59dada2ac2e98ad3bd"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/PLAY-073-R4-C-ADJACENT-RESIDENTIAL-REPETITION-AUTHORITY.md",
+              "sha256": "b1d67a006c09f3a90917ad2115f349524726b2bd30bd7b34d11a92a40a913078"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-075/r4-b-e4f038f9-final-wave009-v1/RESULT.json",
+              "sha256": "82e0c61540af0cd40c2908fec6e9592540fe5bf70a5d12c0c878ed78cacf13c8"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-075/r4-b-e4f038f9-final-wave009-v1/live/regular/lod-block.png",
+              "sha256": "464843a9a67113478498ca7bf54a11aa1a2d9e1e1fe8bccaaf21e0e14e234a21"
+            },
+            {
+              "path": "Native/CitySimNative/Sources/CitySimNative/Rendering/LotContextRenderer.swift",
+              "sha256": "5ca79464427baad5110af62650dad8e26d309c7fe895f3fbf0f920ceff2fdd57"
+            },
+            {
+              "path": "Native/CitySimNative/Tests/CitySimNativeTests/WorldRenderingTests.swift",
+              "sha256": "629fb118355bcbc9fbabbad457a5595225f4bbccdb261385976c88e53604ce5e"
+            }
+          ]
+        },
+        "assignment": {
+          "threadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+          "branch": "codex/citysim-world-rendering-r4b-current",
+          "worktree": "/Users/James/.codex/worktrees/cac1/city-sim",
+          "expectedHead": "5f0b97e14452202759cdb0d937068919849ab675",
+          "featureAuthorThreadId": null,
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": [
+            "Native/CitySimNative/Sources/CitySimNative/Rendering/",
+            "Native/CitySimNative/Tests/CitySimNativeTests/WorldRenderingTests.swift",
+            "docs/production/evidence/PLAY-073/"
+          ],
+          "allowed": [
+            "Native/CitySimNative/Sources/CitySimNative/Rendering/LotContextRenderer.swift",
+            "Native/CitySimNative/Tests/CitySimNativeTests/WorldRenderingTests.swift",
+            "docs/production/evidence/PLAY-073/r4-c-adjacent-repetition-v1"
+          ],
+          "forbidden": [
+            ".agents",
+            "AGENTS.md",
+            "Native/CitySimNative/Package.swift",
+            "Native/CitySimNative/Sources/CitySimNative/App",
+            "Native/CitySimNative/Sources/CitySimNative/Models",
+            "Native/CitySimNative/Sources/CitySimNative/Services",
+            "Native/CitySimNative/Sources/CitySimNative/Stores",
+            "Native/CitySimNative/Sources/CitySimNative/Views",
+            "Native/CitySimNative/Sources/CitySimNative/Resources",
+            "Native/CitySimNative/Sources/CitySimNative/Rendering/CityScene.swift",
+            "Native/CitySimNative/Sources/CitySimNative/Rendering/GoldenDistrictRenderer.swift",
+            "Native/CitySimNative/Sources/CitySimNative/Rendering/LotRenderer.swift",
+            "Native/CitySimNative/Sources/CitySimNative/Rendering/TerrainRenderer.swift",
+            "Native/CitySimNative/WorldArt",
+            "docs/production/PLAYABLE_BACKLOG.md",
+            "docs/production/claims",
+            "docs/production/completed",
+            "docs/production/decisions",
+            "docs/production/evidence/INTEGRATION",
+            "script"
+          ]
+        },
+        "boundedDeliverable": "Implement the exact R4-C authority in LotContextRenderer.swift: make residential context variants 0 and 1 visibly and structurally distinct at city and neighborhood LOD through the frozen garden-grove versus terraced-court compositions, preserve accepted source sprites and all prior R4-B terrain/registration behavior, add exact starter-pair and four-variant/frontage deterministic geometry tests, and produce one compact technical evidence packet under r4-c-adjacent-repetition-v1. Commit one coherent product change followed by one evidence/handoff change. Do not score the result or broaden the repair.",
+        "validation": {
+          "focusedGateOwner": {
+            "threadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+            "role": "renderer_r4c_focused_owner_gate"
+          },
+          "focusedCommands": [
+            "swift test --package-path Native/CitySimNative --filter WorldRenderingTests",
+            "python3 -m json.tool docs/production/evidence/PLAY-073/r4-c-adjacent-repetition-v1/RESULT.json",
+            "git diff --check 5f0b97e14452202759cdb0d937068919849ab675..HEAD"
+          ],
+          "fullGateOwner": {
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "role": "integration_exact_candidate_gate",
+            "model": "gpt-5.6-sol",
+            "effort": "high"
+          },
+          "fullCommands": [
+            "swift test --package-path Native/CitySimNative",
+            "bash -n script/build_and_run.sh",
+            "./script/build_and_run.sh --verify",
+            "one exact staged-app default and compact renderer journey followed by independent PLAY-075 acceptance"
+          ]
+        },
+        "expectedResult": {
+          "evidencePaths": [
+            "docs/production/evidence/PLAY-073/r4-c-adjacent-repetition-v1/RESULT.json",
+            "docs/production/evidence/PLAY-073/r4-c-adjacent-repetition-v1/HANDOFF.md"
+          ],
+          "commitRequired": true,
+          "commitMessagePattern": "PLAY-073:"
+        },
+        "escalationTriggers": [
+          "baseline_or_candidate_identity_mismatch",
+          "cross_lane_semantic_conflict",
+          "failure_outside_focused_scope",
+          "path_outside_claim",
+          "save_or_migration_uncertainty",
+          "shared_contract_or_schema_decision",
+          "subjective_acceptance_required",
+          "two_unsuccessful_repair_attempts",
+          "unresolved_product_visual_or_interaction_judgment"
+        ],
+        "stopCondition": "Stop with a clean checkpoint or zero mutation on any route/input/hash mismatch, path outside the three allowed surfaces, need to alter source sprites or their presentation, lot/road/frontage collision, prior terrain/context regression, failed focused test outside scope, unresolved visual decision, or two unsuccessful implementation attempts. Do not run aggregate gates, staged player acceptance, push, merge, integrate, self-score, self-accept, or pin.",
+        "independentReviewer": {
+          "required": true,
+          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+          "model": "gpt-5.6-sol",
+          "effort": "high"
+        },
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {
+              "path": ".agents/skills/render-citysim-world/SKILL.md",
+              "sha256": "fbd37c5f4730c61f95a344266b61d3fb37ce39adcefbaaba6e94f8939d8b72e2"
+            },
+            {
+              "path": ".agents/skills/render-citysim-world/references/renderer-feature-evidence.md",
+              "sha256": "d9d607c6945f27cf8c67e53cd40c97c122b2d0cba62b6a59dada2ac2e98ad3bd"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

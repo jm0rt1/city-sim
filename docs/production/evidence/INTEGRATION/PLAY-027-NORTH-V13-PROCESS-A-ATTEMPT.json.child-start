@@ -1,0 +1,22 @@
+{
+  "attemptConsumed": true,
+  "childPath": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-v02/render_north_v13_process_a_child.py",
+  "childSHA256": "fdd64bee2179be9596dbb7f0b72f9bfb8442b50c4eaa82557fbf4d4e3b5cf0ab",
+  "childStartMarker": "docs/production/evidence/INTEGRATION/PLAY-027-NORTH-V13-PROCESS-A-ATTEMPT.json.child-start",
+  "evidenceRoot": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-v02",
+  "kind": "integration-process-attempt",
+  "maximumChildStarts": 1,
+  "orchestratorPath": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-v02/launch_north_v13_process_a_v02.py",
+  "orchestratorSHA256": "73c9b0051ae5589865413cea2ab6fd6a8f9658618aeeb62d20ac5baad1c41f3d",
+  "outputRoot": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a",
+  "receiptPath": "docs/production/evidence/INTEGRATION/PLAY-027-NORTH-V13-PROCESS-A-RECEIPT-V4.json",
+  "receiptSHA256": "6cfa1fe650e8d1f1dc2dab1e3bcbea1e004dd863aa4fc64240b1b89761476774",
+  "schedulePath": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-NORTH-PROCESS-A-SCHEDULE-V4.json",
+  "schedulePublicationCommit": "8080a4db4e96ade8293bdaeee701defc5507fb84",
+  "scheduleSHA256": "16fa9b1a6c1e9a93998dedcf73cc45f238e88f706317d0259be254664c769c91",
+  "schema": 1,
+  "slot": "north:A",
+  "state": "consumed",
+  "task": "PLAY-027",
+  "workerHead": "4035b6f72ae6778adf07ff8f5a3ecccb05489029"
+}

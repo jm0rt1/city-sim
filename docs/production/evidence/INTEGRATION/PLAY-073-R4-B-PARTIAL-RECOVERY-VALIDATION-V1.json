@@ -1,0 +1,39 @@
+{
+  "schema": 1,
+  "taskId": "PLAY-073",
+  "candidateCommit": "418dff296f5ccdbcf4b679805ea78c2c377d433b",
+  "disposition": "FOCUSED_PASS_PENDING_AGGREGATE_GATE",
+  "productBlobs": {
+    "terrainRenderer": "ca3daa93371d71e5c61b248bb5cff542dcdbf599",
+    "lotContextRenderer": "e8f26fa0fd9ac73151e2fa70692224d54fc989f5",
+    "worldRenderingTests": "95dffa0d2fb79c68f9ba029e360363f8689168e4"
+  },
+  "focusedValidation": {
+    "command": "swift test --package-path Native/CitySimNative --filter WorldRenderingTests",
+    "result": "PASS",
+    "executed": 66,
+    "failures": 0,
+    "seconds": 48.237,
+    "rendererDiagnosticsMilliseconds": {
+      "worldUpdate": 4.557,
+      "assetDecode": 0.0,
+      "totalRender": 7.304
+    }
+  },
+  "sandboxObservation": {
+    "firstAttempt": "SwiftPM manifest compilation blocked by sandbox-exec",
+    "rerun": "PASS with the same command outside the filesystem sandbox",
+    "codeFailure": false
+  },
+  "independentEvidence": {
+    "candidate": "e4f038f942f8c011a0b38b71353e40b4ac5054d4",
+    "terrainFinding": "RESOLVED",
+    "adjacentResidentialFinding": "UNRESOLVED_AND_REVERTED",
+    "resultPath": "docs/production/evidence/PLAY-075/r4-b-e4f038f9-final-wave009-v1/RESULT.json"
+  },
+  "remainingGates": [
+    "full_native_suite",
+    "staged_build_verify",
+    "exact_recovery_candidate_real_app_review"
+  ]
+}

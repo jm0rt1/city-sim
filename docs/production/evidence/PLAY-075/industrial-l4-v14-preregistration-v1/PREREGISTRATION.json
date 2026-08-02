@@ -38,9 +38,14 @@
     "gateContractSha256": "90ab775234c736e538286dd49f84cdc6175d4a2b97600a298fb9d9b2d5738d51"
   },
   "fixtureAndCamera": {
-    "runtimeDirection": "North",
-    "logicalIdentity": "industrial_l04_v0_north",
-    "fixtureRole": "accepted-L3 mature-city baseline; future L4 derivative must change only declared North level",
+    "fixtureRole": "accepted-L3 mature-city baseline; the atomic future L4 candidate replaces all four declared direction slots while every non-declared fixture/state field remains unchanged",
+    "directionMatrix": [
+      {"direction": "North", "logicalIdentity": "industrial_l04_v0_north", "playerBlock": [11, 11], "stateCoordinate": [10, 10], "anchorRoad": [10, 9], "sourcePixelSocket": [896, 704]},
+      {"direction": "East", "logicalIdentity": "industrial_l04_v0_east", "playerBlock": [4, 10], "stateCoordinate": [3, 9], "anchorRoad": [4, 9], "sourcePixelSocket": [896, 832]},
+      {"direction": "South", "logicalIdentity": "industrial_l04_v0_south", "playerBlock": [5, 9], "stateCoordinate": [4, 8], "anchorRoad": [4, 9], "sourcePixelSocket": [640, 832]},
+      {"direction": "West", "logicalIdentity": "industrial_l04_v0_west", "playerBlock": [18, 12], "stateCoordinate": [17, 11], "anchorRoad": [16, 11], "sourcePixelSocket": [640, 704]}
+    ],
+    "sourceFixtureCells": "The four rows above are the exact frozen gate-contract cells; no DCC labels, hidden transforms, or camera-coordinate substitutions are inputs.",
     "regular": {"decoratedPixels": [1278, 768], "lods": ["city", "neighborhood", "block"], "frameKey": "0", "overlay": "City", "focusCity": false, "details": "closed"},
     "compact": {"contentPixels": [900, 600], "decoratedPixels": [900, 652], "lods": ["city", "neighborhood", "block"], "frameKey": "0", "overlay": "City", "focusCity": false, "details": "closed"},
     "camera": {"rotationDegrees": 0, "panAllowed": false, "numericCenter": null},

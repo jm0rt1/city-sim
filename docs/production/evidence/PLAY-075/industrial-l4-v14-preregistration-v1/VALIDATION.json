@@ -4,7 +4,7 @@
   "routeId": "quality-v1:play-075-industrial-l04-v14-preregistration-v1",
   "status": "PASS_CANDIDATE_NEUTRAL_PREREGISTRATION",
   "validatedAt": "2026-08-02",
-  "git": {"branch": "codex/citysim-playtest-quality", "head": "c276bf247bf7e0230a7523c7f6d784cb02537bc8", "worktreeClean": true},
+  "git": {"branch": "codex/citysim-playtest-quality", "inputHead": "c276bf247bf7e0230a7523c7f6d784cb02537bc8", "worktreeClean": true},
   "checks": {
     "routeCarrierSha256": "PASS",
     "selectedRowValidator": "PASS",

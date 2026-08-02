@@ -1,0 +1,123 @@
+{
+  "schema": 1,
+  "batchId": "residential-l01-variant1-v1",
+  "state": "contract_ready_controls_pending",
+  "integrationCarrier": "b4a2d751cfb26f7fa50017d65bc40b67fcc2f3cf",
+  "familyContract": {
+    "path": "docs/production/decisions/CONTRACT-023-residential-l01-variant-one-family.md",
+    "sha256": "18ed6b18ed7e1ecbcaba1eb1c7fab9dffae98d670334d4ce30c33e3d1ddb7eb0"
+  },
+  "publication": {
+    "required": true,
+    "publishedMaster": null,
+    "originParity": false,
+    "blockingReason": "exact recovery-baseline QA and publication are still pending"
+  },
+  "cells": [
+    {
+      "cell": "north",
+      "taskId": "PLAY-090",
+      "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+      "branch": "codex/citysim-world-art",
+      "worktree": "/Users/James/.codex/worktrees/0648/city-sim",
+      "observedHead": "5657b8a37a96c70e608585515dc059519ceff435",
+      "claimPath": "docs/production/claims/PLAY-090.world-art-north.md",
+      "claimSha256": "800be1ed928f0ef3b607293e21674e3bbeb068d2baf95b5fb6ff023acfd84193",
+      "prelockRoute": "FRONTIER_AUTHORITY/gpt-5.6-sol/high",
+      "postLockMechanicalRoute": "LUNA_IMPLEMENTATION/gpt-5.6-luna/high",
+      "state": "not_dispatched"
+    },
+    {
+      "cell": "east",
+      "taskId": "PLAY-091",
+      "threadId": "019fab72-b2c8-76c1-b430-6c6f8431733f",
+      "branch": "codex/citysim-world-art-east",
+      "worktree": "/Users/James/.codex/worktrees/92c2/city-sim",
+      "observedHead": "6a8c61a76802b13eb1704671cf63f4323052a67f",
+      "claimPath": "docs/production/claims/PLAY-091.world-art-east.md",
+      "claimSha256": "036c8d1fe9e1740eb1e0d573a76c16223ff53eb6ea703b5423ffb083187afede",
+      "prelockRoute": "LUNA_IMPLEMENTATION/gpt-5.6-luna/high",
+      "state": "not_dispatched"
+    },
+    {
+      "cell": "south",
+      "taskId": "PLAY-092",
+      "threadId": "019fab72-b2c9-7d60-a397-27f4fde85950",
+      "branch": "codex/citysim-world-art-south",
+      "worktree": "/Users/James/.codex/worktrees/4247/city-sim",
+      "observedHead": "84630b927a94c1e7324fc5e9ebe6acf337d64dd5",
+      "claimPath": "docs/production/claims/PLAY-092.world-art-south.md",
+      "claimSha256": "9f817e477c91a1d24084b1f2fb9b2e38c7758236705cac528d47320fa836ddf9",
+      "prelockRoute": "LUNA_IMPLEMENTATION/gpt-5.6-luna/high",
+      "state": "not_dispatched"
+    },
+    {
+      "cell": "west",
+      "taskId": "PLAY-093",
+      "threadId": "019fab72-b2c9-7d60-a397-27d01d06cbbd",
+      "branch": "codex/citysim-world-art-west",
+      "worktree": "/Users/James/.codex/worktrees/ef17/city-sim",
+      "observedHead": "6499fec5181bbf8712e20ce147a35b4a2b736317",
+      "claimPath": "docs/production/claims/PLAY-093.world-art-west.md",
+      "claimSha256": "818a2eb788e397f0e53c9921a8cfd1927798b3275bb66301abde14a3a0c0370b",
+      "prelockRoute": "LUNA_IMPLEMENTATION/gpt-5.6-luna/high",
+      "state": "not_dispatched"
+    },
+    {
+      "cell": "renderer",
+      "taskId": "PLAY-094",
+      "threadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+      "branch": "codex/citysim-world-rendering-r4b-current",
+      "worktree": "/Users/James/.codex/worktrees/cac1/city-sim",
+      "observedHead": "1c3d59c7f36750195ade80f382b3a280762e2e5f",
+      "claimPath": "docs/production/claims/PLAY-094.world-rendering.md",
+      "claimSha256": "e992f44b56e84a4dec32d9334338c19ae371cfa7bdd90f09873f2d7ac2d45835",
+      "prelockRoute": "LUNA_IMPLEMENTATION/gpt-5.6-luna/high",
+      "state": "not_dispatched"
+    },
+    {
+      "cell": "qa",
+      "taskId": "PLAY-075",
+      "threadId": "019f9a0a-35fa-75b1-92c4-73c182390a25",
+      "branch": "codex/citysim-playtest-quality",
+      "worktree": "/Users/James/.codex/worktrees/71b0/city-sim",
+      "observedHead": "2cdf76433029d9cac9a4d7b01e93d70a3ae08fa5",
+      "claimPath": "docs/production/claims/PLAY-075.playtest-quality.md",
+      "claimSha256": "5dd3aeef1ffe8abf5e0c93486e27fe2d15495854be096fb105bff55a48dc0362",
+      "prelockRoute": "LUNA_MECHANICAL/gpt-5.6-luna/medium",
+      "finalRoute": "FRONTIER_AUTHORITY/gpt-5.6-sol/high",
+      "state": "not_dispatched"
+    }
+  ],
+  "requiredControlImplementation": {
+    "owner": "Integration-routed PLAY-089 Luna mechanical packet",
+    "files": [
+      "docs/production/evidence/INTEGRATION/residential-l01-variant1-parallel-state-schema-v1.json",
+      ".agents/skills/operate-citysim-integration/scripts/validate_residential_l01_variant1_parallel_state_v1.py",
+      ".agents/skills/operate-citysim-integration/scripts/test_validate_residential_l01_variant1_parallel_state_v1.py",
+      "docs/production/evidence/INTEGRATION/RESIDENTIAL-L01-VARIANT1-PARALLEL-SCHEDULE-V1.json"
+    ],
+    "requiredNegatives": [
+      "wrong_task_claim_thread_branch_worktree_or_head",
+      "stale_contract_or_claim_hash",
+      "sibling_root_overlap_or_transform_authority",
+      "prelock_pixel_or_shipping_grant",
+      "missing_model_route_or_escalation_trigger",
+      "partial_family_activation",
+      "failed_direction_demotes_passing_sibling",
+      "qa_feature_author_collision",
+      "unexplained_idle_capacity_or_fabricated_overlap"
+    ]
+  },
+  "dispatchGate": {
+    "ready": false,
+    "requirements": [
+      "recovery_baseline_qa_approved",
+      "clean_master_pushed_and_origin_parity",
+      "all_clean_cells_synchronized_to_published_master",
+      "family_controls_implemented_and_validated",
+      "six_exact_model_routes_committed",
+      "all_visible_cells_acknowledge_exact_authority"
+    ]
+  }
+}

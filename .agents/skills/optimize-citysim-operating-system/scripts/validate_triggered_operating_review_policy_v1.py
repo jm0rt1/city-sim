@@ -183,6 +183,7 @@ def validate(policy: object) -> list[str]:
         "eventKeyFields",
         "reviewBudget",
         "reviewScheduling",
+        "observerRouteBootstrap",
         "parallelism",
         "falseGreenRecovery",
         "coverage",
@@ -266,6 +267,20 @@ def validate(policy: object) -> list[str]:
             errors.append("immediate triggers must be exact and ordered")
         if scheduling.get("flushTriggers") != EXPECTED_FLUSH:
             errors.append("flush triggers must be exact and ordered")
+
+    bootstrap = policy.get("observerRouteBootstrap")
+    if bootstrap != {
+        "selfReviewAllowed": False,
+        "owner": "FRONTIER_AUTHORITY",
+        "requiredChecks": [
+            "full_schema2_route_validation",
+            "exact_git_claim_head_and_path_binding",
+            "independent_static_route_review",
+            "zero_worker_mutation_before_dispatch",
+        ],
+        "emitsRecursiveDelegationEvent": False,
+    }:
+        errors.append("observer route bootstrap must be frontier-owned, non-recursive, and exact")
 
     parallel = policy.get("parallelism")
     if not isinstance(parallel, dict):

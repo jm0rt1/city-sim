@@ -98,3 +98,5 @@ dirty, stale-HEAD, or unbound setup stop, and
 `ready_handoff_waiting_for_owner` when a clean accepted handoff has no assigned
 review/intake owner or exact serialized dependency in the same management turn.
 One source event with multiple triggers requires one receipt for every trigger.
+The optimizer never reviews its own observer route: Integration performs the
+policy's non-recursive frontier bootstrap checks before dispatch.

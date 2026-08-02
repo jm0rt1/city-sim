@@ -56,6 +56,12 @@ class TriggeredOperatingReviewPolicyTests(unittest.TestCase):
         self.assert_invalid(lambda p: p["reviewScheduling"]["immediateTriggers"].remove("delegation_ready_for_dispatch"))
         self.assert_invalid(lambda p: p["reviewScheduling"]["flushTriggers"].remove("integration_closed"))
 
+    def test_observer_route_bootstrap_cannot_review_itself(self) -> None:
+        self.assert_invalid(lambda p: p["observerRouteBootstrap"].update({"selfReviewAllowed": True}))
+        self.assert_invalid(lambda p: p["observerRouteBootstrap"].update({"owner": "LUNA_MECHANICAL"}))
+        self.assert_invalid(lambda p: p["observerRouteBootstrap"].update({"emitsRecursiveDelegationEvent": True}))
+        self.assert_invalid(lambda p: p["observerRouteBootstrap"]["requiredChecks"].remove("independent_static_route_review"))
+
     def test_expensive_or_mutating_observation_is_rejected(self) -> None:
         for field in ("productBuildAllowed", "fullGateAllowed", "dccAllowed", "realAppQAAllowed", "sharedMutationAllowed"):
             with self.subTest(field=field):

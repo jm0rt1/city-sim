@@ -129,6 +129,10 @@ completely. Never pin a task.
    closes automatically; record every actionable decision as applied, deferred
    with an exact dependency, or rejected with a frontier reason before the
    related lifecycle advances.
+   Do not recursively ask the optimizer to review its own observer route. That
+   bootstrap is the sole exception: Integration runs the full schema-2 route
+   validator, verifies exact Git/claim/HEAD/paths, obtains one independent
+   static route review, and proves zero worker mutation before dispatch.
 10. When a claimed lane becomes idle while contract-independent work is ready,
     refill it in the same management turn or record the exact serialized
     dependency. Maintain at least three useful active workstreams whenever the

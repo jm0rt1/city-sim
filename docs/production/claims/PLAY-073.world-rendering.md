@@ -2,8 +2,9 @@
 
 - **Title:** Replace the board with an authored district
 - **Lane:** World rendering
-- **Branch:** active clean successor `codex/citysim-world-rendering-r4b-current`;
-  returned lineage remains preserved on `codex/citysim-world-rendering`
+- **Branch:** active clean successor `codex/citysim-world-rendering`; returned
+  lineage remains preserved on
+  `codex/citysim-world-rendering-legacy-d906d2dc`
 - **Worktree:** `/Users/James/.codex/worktrees/cac1/city-sim`
 - **Base authority:** Published Wave 008 product candidate
   `87e1e682566b68d20deb1a9e2028e2b885e0423a`; iteration-two branch authority

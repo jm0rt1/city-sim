@@ -1,0 +1,53 @@
+{
+  "metrics" : [
+    {
+      "colorLumaDelta" : 4,
+      "detail" : 0,
+      "foregroundFacadeOverlap" : 86970,
+      "grayLumaDelta" : 4,
+      "height" : 800,
+      "isolatedCourtPixels" : 88691,
+      "survival" : 1,
+      "visibleCourtPixels" : 88691,
+      "width" : 1280
+    },
+    {
+      "colorLumaDelta" : 4,
+      "detail" : 1,
+      "foregroundFacadeOverlap" : 87101,
+      "grayLumaDelta" : 4,
+      "height" : 800,
+      "isolatedCourtPixels" : 88691,
+      "survival" : 1,
+      "visibleCourtPixels" : 88691,
+      "width" : 1280
+    },
+    {
+      "colorLumaDelta" : 4,
+      "detail" : 2,
+      "foregroundFacadeOverlap" : 87223,
+      "grayLumaDelta" : 4,
+      "height" : 800,
+      "isolatedCourtPixels" : 88691,
+      "survival" : 1,
+      "visibleCourtPixels" : 88691,
+      "width" : 1280
+    },
+    {
+      "colorLumaDelta" : 4,
+      "detail" : 1,
+      "foregroundFacadeOverlap" : 49052,
+      "grayLumaDelta" : 4,
+      "height" : 600,
+      "isolatedCourtPixels" : 49943,
+      "survival" : 1,
+      "visibleCourtPixels" : 49943,
+      "width" : 900
+    }
+  ],
+  "phaseContract" : {
+    "foregroundAccent" : true,
+    "groundUnderlay" : true
+  },
+  "schema" : 1
+}

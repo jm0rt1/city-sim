@@ -1,0 +1,124 @@
+{
+  "schema": 1,
+  "taskId": "PLAY-075",
+  "packetKind": "candidate-neutral-r4e-preregistration",
+  "status": "preregistered",
+  "route": {
+    "carrier": "0f0206ccb7f0ec39001160904a1d72a01cd3a35c",
+    "receiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-075-R4E-PREREGISTRATION-LUNA-V1.json",
+    "receiptSha256": "f4daa234585cad49525734b04107ee74d610139b206a590097eeaa4266353f2f",
+    "routeId": "quality-v1:play-075-r4e-preregistration-luna-v1",
+    "canonicalRouteSha256": "e69fa7326a24306af297ab642b7511df43a4162cde179a0fad47935be47296ea",
+    "classification": "LUNA_MECHANICAL",
+    "model": "gpt-5.6-luna",
+    "effort": "medium"
+  },
+  "authority": {
+    "authorityCommit": "ecdd08ddfd3fceb5bacf657fff3f35755acba419",
+    "baseCommit": "ecdd08ddfd3fceb5bacf657fff3f35755acba419",
+    "path": "docs/production/evidence/INTEGRATION/PLAY-073-R4-E-DEPTH-LAYERED-RESIDENTIAL-FRONTAGE-AUTHORITY.md",
+    "sha256": "452d176ff1c4e652716c2042e3ec69b9cc4f2378bea9171507380030e8b28c64"
+  },
+  "claim": {
+    "path": "docs/production/claims/PLAY-075.playtest-quality.md",
+    "sha256": "5dd3aeef1ffe8abf5e0c93486e27fe2d15495854be096fb105bff55a48dc0362"
+  },
+  "startingFixture": {
+    "mode": "fresh_new_city",
+    "knowledge": "First-player visible onboarding, map, HUD, command guide, and player-facing shortcuts only; no implementation facts, hidden coordinates, author hints, or candidate coaching.",
+    "starterPair": [
+      { "coordinate": { "x": 6, "y": 10 }, "direction": "North", "role": "garden-grove lot" },
+      { "coordinate": { "x": 6, "y": 11 }, "direction": "South", "role": "terraced-frontage court" }
+    ],
+    "sourceIdentity": "Accepted building source pixels, logical IDs, authored directions, frontage, pivot, scale, tint, and registration remain unchanged.",
+    "candidateNeutral": true
+  },
+  "cameraAndFrames": {
+    "rotation": "none",
+    "pan": "none",
+    "regular": {
+      "windowPixels": [1280, 800],
+      "frames": [
+        { "id": "regular-city", "camera": "Frame Developed City with player-visible 0", "capture": "live/regular/city.png" },
+        { "id": "regular-neighborhood", "camera": "canonical player-visible neighborhood zoom", "capture": "live/regular/neighborhood.png" },
+        { "id": "regular-block", "camera": "canonical player-visible block zoom", "capture": "live/regular/block.png" }
+      ]
+    },
+    "compact": {
+      "contentPixels": [900, 600],
+      "frame": { "id": "compact-neighborhood", "camera": "Enter Focus City, frame Developed City, then canonical neighborhood zoom", "capture": "live/compact/neighborhood.png" }
+    },
+    "cameraStateHash": null,
+    "measurements": "unmeasured until an exact Integration-authorized candidate is operated"
+  },
+  "visualContract": {
+    "courtRole": "road-facing terraced frontage court derived from the normalized authoritative frontage socket; visibly separate from and connected to the entrance",
+    "groveRole": "multi-lobed northwest-lit garden-grove crown with grounded trunks, companion canopy, hedge/planting bed, and contact shadow",
+    "courtVisibleComposedPixels": { "regularMinimumPerFrame": 200, "compactMinimum": 90 },
+    "isolatedToComposedSurvivalMinimumPercent": 55,
+    "foregroundCourtOpaqueOverlapWithAcceptedSprite": 0,
+    "colorDerivedRec709LumaSeparationMinimum": 18,
+    "grayscaleRec709LumaSeparationMinimum": 12,
+    "byteRepeat": "two fresh color and integer Rec.709 grayscale exports must be byte-identical",
+    "recognition": "grove and court must read without labels or zoom crops; the pair must remain non-aliased at every governed LOD",
+    "grounding": "underlay is naturally occluded by the accepted sprite; foreground accent contains only depth-near vertical details and no broad filled polygon",
+    "envelope": "all context stays inside the 72x36 lot diamond, outside the 16x8 road envelope, with unobstructed entrance-to-road path"
+  },
+  "automaticRejects": {
+    "courtVisiblePixelFloor": "reject if any regular frame has fewer than 200 composed court pixels or compact has fewer than 90",
+    "courtSurvival": "reject if isolated-to-composed court survival is below 55%",
+    "foregroundSpriteOverlap": "reject any opaque foreground-court overlap with an accepted building sprite",
+    "contrast": "reject below 18 color-derived or below 12 grayscale Rec.709 luma separation",
+    "repeatIdentity": "reject any non-byte-identical two-run color/grayscale sheet",
+    "pairRecognition": "reject if the starter grove/court pair is not decision-usefully distinct without labels, or if either still reads as an alias/twin",
+    "overlapAndContact": "reject any lot/road/neighbor overlap, detached shadow/contact, crop, clipping, or blocked entrance",
+    "fallbackAndFidelity": "reject any fallback, missing resource, mirror, rotation, recolor, mixed-fidelity, or material/contact regression",
+    "resourceCeiling": "preserve the accepted R4-B resource ceilings; any unexplained increase is a return"
+  },
+  "comparison": {
+    "baselineCommit": "e4f038f942f8c011a0b38b71353e40b4ac5054d4",
+    "baselineEvidenceRoot": "docs/production/evidence/PLAY-075/r4-b-e4f038f9-final-wave009-v1",
+    "baselineResultSha256": "82e0c61540af0cd40c2908fec6e9592540fe5bf70a5d12c0c878ed78cacf13c8",
+    "requiredPreservation": "R4-B terrain variation, overlap/clipping/fallback/mixed-fidelity/material/contact behavior, pointer placement, keyboard map focus, command-guide Escape, and compact Focus City remain equivalent or better"
+  },
+  "interactionSanity": {
+    "pointerPlacement": "one visible pointer road placement with action/Undo signal; capture live/interaction/pointer-placement.png",
+    "keyboardMapFocus": "Arrow navigation on the focused map with AX-selected target transition; capture live/interaction/keyboard-map-focus.png",
+    "commandGuideEscape": "open command guide and press Escape back to map; capture live/interaction/command-guide-escape.png",
+    "compactFocusCity": "enter Focus City at exact 900x600, frame Developed City, and verify map/HUD legibility; capture live/interaction/compact-focus-city.png"
+  },
+  "evidence": {
+    "root": "docs/production/evidence/PLAY-075/r4-e-depth-layered-frontage-preregistration-v1",
+    "regularCaptures": ["live/regular/city.png", "live/regular/neighborhood.png", "live/regular/block.png"],
+    "compactCaptures": ["live/compact/neighborhood.png"],
+    "interactionCaptures": ["live/interaction/pointer-placement.png", "live/interaction/keyboard-map-focus.png", "live/interaction/command-guide-escape.png", "live/interaction/compact-focus-city.png"],
+    "courtGroveMasks": null,
+    "contrastLedger": null,
+    "repeatSheet": null
+  },
+  "validation": {
+    "focusedCommands": [
+      "python3 -m json.tool docs/production/evidence/PLAY-075/r4-e-depth-layered-frontage-preregistration-v1/PREREGISTRATION.json",
+      "git diff --check ecdd08ddfd3fceb5bacf657fff3f35755acba419..HEAD"
+    ],
+    "candidateEvidence": "blocked until Integration supplies one exact candidate and exclusive frontier QA lease",
+    "fullGateOwner": "Integration exact R4-E candidate binding/build; independent FRONTIER_AUTHORITY owns later final QA"
+  },
+  "candidateCommit": null,
+  "candidateReceipt": null,
+  "rendererCandidateReceipt": null,
+  "stagedBuild": null,
+  "stagedBundle": null,
+  "process": null,
+  "result": null,
+  "score": null,
+  "disposition": null,
+  "stopConditions": [
+    "identity, authority, claim, or prior-baseline mismatch",
+    "missing authority bytes or any path outside the one allowed evidence root",
+    "need to inspect renderer implementation or alter product/source/fixture/harness/shared authority",
+    "candidate-specific coaching, build, staging, launch, scoring, or acceptance",
+    "failure outside focused preregistration scope, subjective judgment, or contract decision",
+    "push, integration, self-acceptance, or pinning"
+  ]
+}

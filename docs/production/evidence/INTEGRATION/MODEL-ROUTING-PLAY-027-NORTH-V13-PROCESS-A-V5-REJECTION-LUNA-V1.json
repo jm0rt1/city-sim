@@ -1,0 +1,138 @@
+{
+  "schema": 1,
+  "authorityCommit": "b84891390706a5748c4ddbd3655a3f532f6e1014",
+  "assignments": [
+    {
+      "modelRouteSha256": "16601ea9ea2b00526c1d38db573455a58e065c3d86a39bb81421756b6a29a4ab",
+      "modelRoute": {
+        "schema": 1,
+        "routeId": "quality-v1:play-027-north-v13-process-a-v5-rejection-luna-v1",
+        "taskId": "PLAY-027",
+        "packetKind": "mechanical",
+        "classification": "LUNA_MECHANICAL",
+        "model": "gpt-5.6-luna",
+        "effort": "medium",
+        "rationale": "Integration has already made the frontier visual RETURN disposition on the exact V5 Process-A render. Luna may preserve the immutable outputs and record the supplied measured gates without making or revising any visual judgment.",
+        "authority": {
+          "authorityCommit": "b84891390706a5748c4ddbd3655a3f532f6e1014",
+          "baseCommit": "b84891390706a5748c4ddbd3655a3f532f6e1014",
+          "claim": {
+            "path": "docs/production/claims/PLAY-027.world-art.md",
+            "sha256": "bf0b167a1d1e6f7007d609aeb657917fe9d3d0866d5a7a6e36b0e5a32faefa6f"
+          },
+          "immutableInputs": [
+            {
+              "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+              "sha256": "583c5d7be25a7ffdb95f354c6279fe7c309358f65445365203431c51f0e53247"
+            },
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "62e077c88730fda5664e5fa6d23200ade77418bd43f1c721c0bff84eaac1c971"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-NORTH-PROCESS-A-SCHEDULE-V5.json",
+              "sha256": "ce70174a79f4eb67e9c6a2a01db52fb4285f006b624eef2ca7a93e3d0502d582"
+            }
+          ]
+        },
+        "assignment": {
+          "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+          "branch": "codex/citysim-world-art",
+          "worktree": "/Users/James/.codex/worktrees/0648/city-sim",
+          "expectedHead": "d206cd41637af64e30531844d433802e98a923fc",
+          "featureAuthorThreadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": [
+            "docs/production/evidence/PLAY-027/"
+          ],
+          "allowed": [
+            "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a/INPUT-BINDINGS.json",
+            "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a/OBJECT-MANIFEST.json",
+            "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a/PROCESS-A-REJECTION.json",
+            "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a/provenance.json",
+            "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a/raw.png"
+          ],
+          "forbidden": [
+            ".agents",
+            "AGENTS.md",
+            "Native",
+            "docs/production/PLAYABLE_BACKLOG.md",
+            "docs/production/claims",
+            "docs/production/completed",
+            "docs/production/evidence/INTEGRATION",
+            "docs/production/evidence/PLAY-079",
+            "docs/production/evidence/PLAY-080",
+            "docs/production/evidence/PLAY-081",
+            "script"
+          ]
+        },
+        "boundedDeliverable": "At exact tracked HEAD d206cd41637af64e30531844d433802e98a923fc with only the four generated Process-A files untracked, verify and preserve exact SHA-256 values raw fc842d263b39057036f1c5c3630e4a74dfda2c3d285626a0dba0b7af0876d94c, provenance f54952a15e55a0dc8aab3472c2a5c28b08399c4e74ddf268c2a1d921b1cb92e9, object manifest 6c8ebf979883a8d143cdecfd5e9ffd385ea0a568c934870f8dc9681f24b013d9, and input bindings 1fee10e6ab6d8ab451f849b7695910d6291d5458956776460d1c5d522660bb24. Add only PROCESS-A-REJECTION.json recording 1536x1024 RGBA, visible fraction 0.07318814595540364, RGB maxima [0.18823529411764706,0.19607843137254902,0.19215686274509805], median visible luma 0.08538901960784313, p95 visible luma 0.12414196078431372, the frozen gates (RGB maxima each at least 0.25, median greater than 0.08, p95 greater than 0.25), failures on RGB maxima and p95, and Integration's already-made RETURN because the image is severely underexposed with excessive empty canvas and a crude stacked-box silhouette unsuitable for the North hero appearance lock. Record sourceAuthority false and productionSelected false. Stage exactly five files, commit once, and stop.",
+        "validation": {
+          "focusedGateOwner": {
+            "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+            "role": "north_v13_v5_rejection_preservation"
+          },
+          "focusedCommands": [
+            "shasum -a 256 docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a/raw.png docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a/provenance.json docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a/OBJECT-MANIFEST.json docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a/INPUT-BINDINGS.json",
+            "python3 -m json.tool docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a/PROCESS-A-REJECTION.json",
+            "git diff --cached --check",
+            "git status --short --branch"
+          ],
+          "fullGateOwner": {
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "role": "integration_frontier_architecture_revision_and_future_visual_acceptance",
+            "model": "gpt-5.6-sol",
+            "effort": "high"
+          },
+          "fullCommands": [
+            "Integration verifies the exact five-file commit and raw metrics",
+            "Integration freezes the next visual and lighting architecture before any new DCC attempt"
+          ]
+        },
+        "expectedResult": {
+          "evidencePaths": [
+            "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a/PROCESS-A-REJECTION.json"
+          ],
+          "commitRequired": true,
+          "commitMessagePattern": "PLAY-027:"
+        },
+        "escalationTriggers": [
+          "baseline_or_candidate_identity_mismatch",
+          "cross_lane_semantic_conflict",
+          "failure_outside_focused_scope",
+          "path_outside_claim",
+          "save_or_migration_uncertainty",
+          "shared_contract_or_schema_decision",
+          "subjective_acceptance_required",
+          "two_unsuccessful_repair_attempts",
+          "unresolved_product_visual_or_interaction_judgment"
+        ],
+        "stopCondition": "Stop after one clean five-file rejection-preservation commit or immediately on any hash, path, identity, metric, or escalation mismatch. Do not rerun DCC, alter pixels/provenance/manifests, repair lighting/design/geometry/camera/materials, create B/C or sibling sources, change Integration/renderer/shipping/shared paths, make a new visual judgment, integrate, push, pin, self-score, or self-accept.",
+        "independentReviewer": {
+          "required": true,
+          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+          "model": "gpt-5.6-sol",
+          "effort": "high"
+        },
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {
+              "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+              "sha256": "583c5d7be25a7ffdb95f354c6279fe7c309358f65445365203431c51f0e53247"
+            },
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "62e077c88730fda5664e5fa6d23200ade77418bd43f1c721c0bff84eaac1c971"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

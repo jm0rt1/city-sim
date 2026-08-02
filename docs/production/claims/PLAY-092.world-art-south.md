@@ -1,0 +1,20 @@
+# PLAY-092 Claim
+
+- **Title:** Author the Residential L1 variant-one South source
+- **Lane:** World Art — South
+- **Branch:** `codex/citysim-world-art-south`
+- **Worktree:** `/Users/James/.codex/worktrees/4247/city-sim`
+- **Base authority:** `a75e6c2c118f65a4ea43bc2925e8176061a92875`
+- **Exclusive roots:**
+  `Native/CitySimNative/WorldArt/Blender/PLAY-092/residential-l01-variant1-south/`
+  and `docs/production/evidence/PLAY-092/`
+- **Dependencies:** CONTRACT-023 and published prelock controls; pixel A/B/C
+  waits for the accepted North appearance lock.
+- **Prior-work preservation:** PLAY-080 Industrial L4 South remains preserved
+  at its clean checkpoint and is paused; this claim may not edit PLAY-080 paths.
+- **Validation/proof:** South-exclusive equivalents of PLAY-091.
+- **Status:** Planned; zero mutation before published authority and exact Luna
+  route.
+
+No sibling, shared, renderer/shipping, product, push, integration,
+self-acceptance, or pin.

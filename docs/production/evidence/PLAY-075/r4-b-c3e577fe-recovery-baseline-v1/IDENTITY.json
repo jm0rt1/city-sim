@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "taskId": "PLAY-075",
+  "disposition": "RETURN",
+  "route": {
+    "carrier": "2dfbc954b5f6740e9c08e61a0c8ddded152c3ff3",
+    "receiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-075-R4-B-C3E577FE-RECOVERY-FINAL-QA-V1.json",
+    "receiptSha256": "9ca9004502e30426c3e8beb91c988d182ceed2d4294c36adda307c11969a59c0",
+    "routeId": "quality-v1:play-075-r4-b-c3e577fe-recovery-final-qa-v1",
+    "canonicalRouteSha256": "efd9c6f5dcdf5f1976e1a638577ab40dc4f666b44240b362b4de83de6e2083fd",
+    "selectedRowValidation": "PASS"
+  },
+  "qualityCarrier": {
+    "branch": "codex/citysim-playtest-quality",
+    "headBeforeEvidence": "2cdf76433029d9cac9a4d7b01e93d70a3ae08fa5",
+    "treeBeforeEvidence": "dd4d1677b5ccb84ba3a67503d1f7c432f092e76b",
+    "worktree": "/Users/James/.codex/worktrees/71b0/city-sim",
+    "cleanBeforeEvidence": true
+  },
+  "candidate": {
+    "commit": "c3e577fe3174cfd50a6858200ed45ac747e89d81",
+    "tree": "1871b5756815194cb281c9d3d30154346b77bee9",
+    "sourceWorktree": "/private/tmp/citysim-r4b-recovery-qa-c3e577fe",
+    "sourceBranch": "codex/r4b-recovery-qa-c3e577fe",
+    "sourceClean": true,
+    "candidateReceiptSha256": "813c27e8e584a2a3a9c7c71c4aecbda801acfca642f1285b0751183c4b64d7ab",
+    "exclusiveLeaseSha256": "4f9a69c2cb91f1232ca85174aa6f32995c7b420fe8caf7fbccf6e848cd2bb4b9"
+  },
+  "stagedBuild": {
+    "bundlePath": "/private/tmp/citysim-r4b-recovery-qa-c3e577fe/dist/CitySim-codex-r4b-recovery-qa-c3e577fe-w2c9a65cbb9be.app",
+    "executableSha256ExpectedAndObserved": "1486ca40071d6c84173842d4ffc36a4e451c978129b89f8477ee172af4aff277",
+    "manifestSha256ExpectedAndObserved": "a103e31b35e49bf4852b357b43daebb8f73c81538831ff1c8f13084268bb5458",
+    "infoPlistSha256ExpectedAndObserved": "6ea1b67ff902760d452d1fce1d13207802272deb750dc728df9ece5cc83ea8d7",
+    "appInventoryFileCountExpectedAndObserved": 82,
+    "appInventorySha256Expected": "eaa891eb52071d866924dead0b0b36f797c18221d38baf4f08b397bf171abcd4",
+    "appInventorySha256Observed": "dcd2137387feec55c30d2df416db0c974ff63b5eefe8ce0fa522a8160ab7c059",
+    "identityResult": "FAIL"
+  },
+  "process": {
+    "matchingApplicationsBeforeLaunch": 0,
+    "launchCount": 0,
+    "leaseConsumed": false
+  },
+  "productMutation": "NONE",
+  "evidenceMutation": "QA_OWNED_ONLY"
+}

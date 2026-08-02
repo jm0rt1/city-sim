@@ -1,0 +1,133 @@
+{
+  "schema": 1,
+  "authorityCommit": "45e1422304443a012a2f121c90be3e7d31b82c59",
+  "assignments": [
+    {
+      "modelRouteSha256": "e9b7541c0d4f193ac44da6183bc85593fa7bb41f46c65f098b843509e57d56b2",
+      "modelRoute": {
+        "schema": 1,
+        "routeId": "quality-v1:play-089-r4d-first-return-observation-v1",
+        "taskId": "PLAY-089",
+        "packetKind": "mechanical",
+        "classification": "LUNA_MECHANICAL",
+        "model": "gpt-5.6-luna",
+        "effort": "medium",
+        "rationale": "R4-D reached its first frontier return after a bounded Luna implementation. This mandatory low-overhead observation determines whether the return arose from worker execution, Integration packet ambiguity, or a missing mechanical validator, and records only exposed facts without judging product pixels or opening speculative process work.",
+        "authority": {
+          "authorityCommit": "45e1422304443a012a2f121c90be3e7d31b82c59",
+          "baseCommit": "45e1422304443a012a2f121c90be3e7d31b82c59",
+          "claim": {
+            "path": "docs/production/claims/PLAY-089.operating-system-optimization.md",
+            "sha256": "6276c96d96965805df6a1a9c779ecde7dc609824053c7e0eb00e35f67134cc47"
+          },
+          "immutableInputs": [
+            {
+              "path": ".agents/skills/optimize-citysim-operating-system/SKILL.md",
+              "sha256": "6d4a9e121ec307f7378d253ed112b0ffdd25e0c0d4d1a52b5f7d405f74a8b1ef"
+            },
+            {
+              "path": ".agents/skills/optimize-citysim-operating-system/references/observation-and-upgrade-protocol.md",
+              "sha256": "a9404e046f8c8c68fa3c22d6830b3bbac883a2238e0ad709598038bce87c78a2"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/PLAY-073-R4-D-FIRST-FRONTIER-RETURN-V1.md",
+              "sha256": "2c2425c332cdda92585343cff5333681fa00c2efc0b0a720eb54dcbfad23fa5b"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-073-R4-D-V2-PROOF-COMPOSITION-REPAIR-LUNA-V1.json",
+              "sha256": "9b10d73a04b94e9b507d9ec32ec17a56b01eb812d7fca9f230b51c05c84998fe"
+            }
+          ]
+        },
+        "assignment": {
+          "threadId": "019fbe2b-cc97-71f3-a762-63680ac85c76",
+          "branch": "codex/citysim-os-optimization",
+          "worktree": "/Users/James/.codex/worktrees/c92d/city-sim",
+          "expectedHead": "8a58a964a6f027741a43c71fc775a7afa47afd9c",
+          "featureAuthorThreadId": null,
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": [
+            "docs/production/evidence/PLAY-089"
+          ],
+          "allowed": [
+            "docs/production/evidence/PLAY-089/R4D-FIRST-RETURN-OBSERVATION-V1.json"
+          ],
+          "forbidden": [
+            ".agents",
+            "AGENTS.md",
+            "Native",
+            "docs/production/PLAYABLE_BACKLOG.md",
+            "docs/production/claims",
+            "docs/production/completed",
+            "docs/production/decisions",
+            "docs/production/evidence/INTEGRATION",
+            "script"
+          ]
+        },
+        "boundedDeliverable": "Observe only the exact R4-D first frontier return and V2 Luna/high repair dispatch. Record exposed model/effort, elapsed/turn/validation/token facts when available, worker versus Integration rework attribution, exact proof-contract misses, focused-versus-full-gate separation, avoided aggregate-gate cost, and whether one general mechanical validator could prevent recurrence. Return exactly NO_CHANGE or one bounded proposal in one JSON receipt and one coherent PLAY-089 commit.",
+        "validation": {
+          "focusedGateOwner": {
+            "threadId": "019fbe2b-cc97-71f3-a762-63680ac85c76",
+            "role": "os_r4d_first_return_observation_gate"
+          },
+          "focusedCommands": [
+            "python3 -m json.tool docs/production/evidence/PLAY-089/R4D-FIRST-RETURN-OBSERVATION-V1.json",
+            "git diff --check 8a58a964a6f027741a43c71fc775a7afa47afd9c..HEAD"
+          ],
+          "fullGateOwner": {
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "role": "integration_process_receipt_review",
+            "model": "gpt-5.6-sol",
+            "effort": "high"
+          },
+          "fullCommands": [
+            "Integration verifies exact one-file scope, route identity, truthful null measurements, attribution, and any bounded validator proposal; no Swift, build, or app gate is run for observation-only evidence"
+          ]
+        },
+        "expectedResult": {
+          "evidencePaths": [
+            "docs/production/evidence/PLAY-089/R4D-FIRST-RETURN-OBSERVATION-V1.json"
+          ],
+          "commitRequired": true,
+          "commitMessagePattern": "PLAY-089:"
+        },
+        "escalationTriggers": [
+          "baseline_or_candidate_identity_mismatch",
+          "cross_lane_semantic_conflict",
+          "failure_outside_focused_scope",
+          "path_outside_claim",
+          "save_or_migration_uncertainty",
+          "shared_contract_or_schema_decision",
+          "subjective_acceptance_required",
+          "two_unsuccessful_repair_attempts",
+          "unresolved_product_visual_or_interaction_judgment"
+        ],
+        "stopCondition": "Stop after one clean one-file observation commit returning NO_CHANGE or one bounded proposal, or immediately on identity/input/hash mismatch, any need to inspect or judge product pixels, path expansion, invented measurement, shared-authority change, or another mandatory trigger. Do not run Swift/build/app gates, alter prior receipts, mutate product/shared skills, integrate, push, self-accept, or pin.",
+        "independentReviewer": {
+          "required": true,
+          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+          "model": "gpt-5.6-sol",
+          "effort": "high"
+        },
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {
+              "path": ".agents/skills/optimize-citysim-operating-system/SKILL.md",
+              "sha256": "6d4a9e121ec307f7378d253ed112b0ffdd25e0c0d4d1a52b5f7d405f74a8b1ef"
+            },
+            {
+              "path": ".agents/skills/optimize-citysim-operating-system/references/observation-and-upgrade-protocol.md",
+              "sha256": "a9404e046f8c8c68fa3c22d6830b3bbac883a2238e0ad709598038bce87c78a2"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "eventKeys": [
+    {
+      "authorityCommit": "6aa0d9ba2d82e375885b03545a492098b94af74f",
+      "taskId": "PLAY-089",
+      "routeId": "quality-v2:play-089-industrial-l04-predelegation-review-v1",
+      "trigger": "delegation_ready_for_dispatch",
+      "candidateOrResultCommit": "174d80f67031d5b611d243200448c52cc9bdf932"
+    },
+    {
+      "authorityCommit": "6aa0d9ba2d82e375885b03545a492098b94af74f",
+      "taskId": "PLAY-089",
+      "routeId": "quality-v2:play-089-industrial-l04-predelegation-review-v1",
+      "trigger": "delegation_ready_for_dispatch",
+      "candidateOrResultCommit": "cc216550368684b72af34e2ff1f8f7fad558d04f"
+    },
+    {
+      "authorityCommit": "6aa0d9ba2d82e375885b03545a492098b94af74f",
+      "taskId": "PLAY-089",
+      "routeId": "quality-v2:play-089-industrial-l04-predelegation-review-v1",
+      "trigger": "delegation_ready_for_dispatch",
+      "candidateOrResultCommit": "2686280138b7d30291418c9ed38c0d4b7bc835e1"
+    }
+  ]
+}

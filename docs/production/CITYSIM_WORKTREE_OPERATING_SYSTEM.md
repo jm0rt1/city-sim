@@ -213,6 +213,13 @@ Primary ownership:
 - recurring recommendations that increase accepted outcomes per frontier turn
   and reduce duplicate work without weakening claims, identity, proof, or QA.
 
+The event policy also reviews frontier worker-route assignments, task
+completion/stoppage, useful concurrency below the governed floor, repeated full
+context loads under unchanged hashes, failed delegation acknowledgements, and
+duplicate full-gate requests. Each unique event receives at most one compact
+Luna mechanical/medium review; the observer does not poll tasks, spawn reviews,
+or run product/full/DCC/real-app gates.
+
 Default surfaces are its own skill, `docs/production/evidence/PLAY-089/`, and
 task-owned optimizer tests. `AGENTS.md`, this operating system, shared skills,
 claims, backlog, schemas, validators used by other lanes, and thread authority
@@ -412,12 +419,13 @@ The system uses short vertical integration waves rather than long-lived independ
 7. Commit focused work and write the completion record.
 8. Stop at `ready-for-integration`; do not self-merge.
 
-The operating-system optimization lane instead runs a low-overhead audit at
-dispatch publication, first return, candidate handoff, and integration close.
-It remains idle between those event boundaries unless Integration assigns a
-specific improvement. Each audit must end in one of: `NO_CHANGE`, one bounded
-Luna implementation packet, or one frontier escalation. It must not create
-work merely to justify its existence.
+The operating-system optimization lane instead runs a low-overhead audit once
+per unique event key in its published trigger policy. Reviews cover the route,
+delegation, terminal-task, parallelism, context-reuse, validation-duplication,
+candidate, QA, and integration boundaries without periodic polling. It remains
+idle between those events unless Integration assigns a specific improvement.
+Each audit must end in `NO_CHANGE`, one bounded action/proposal, or one frontier
+escalation. It must not create work merely to justify its existence.
 
 ### Integration wave
 

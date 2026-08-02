@@ -1,0 +1,177 @@
+{
+  "schema": "citysim.play-079.east-v14-compatibility-design.v1",
+  "schemaVersion": 1,
+  "task": "PLAY-079",
+  "direction": "east",
+  "family": "industrial_l04",
+  "familyRevision": "v14",
+  "phase": "V14_ZERO_PIXEL_COMPATIBILITY",
+  "sourceRevision": "east-v14-compatibility-v1",
+  "sourceAuthority": false,
+  "sourceReady": false,
+  "productionSelected": false,
+  "pixelRenderingAllowed": false,
+  "provenance": {
+    "geometryOrigin": "independently-authored-east-from-published-v14-family-requirements",
+    "siblingInputsConsumed": [],
+    "copiedGeometry": false,
+    "mirroredGeometry": false,
+    "rotatedGeometry": false,
+    "tracedGeometry": false,
+    "transformedSiblingGeometry": false,
+    "orientationTransform": "none"
+  },
+  "authority": {
+    "authorityCommit": "1d7c6510fd99299c88d3f4412caa982e020c1941",
+    "baseCommit": "ea26fdac05169e0375b65d7c5dc65b4fbe00d977",
+    "dispatch": {
+      "carrierCommit": "9aa5be01d72f0471538d0efd1620f1a50cb0f815",
+      "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-INDUSTRIAL-L04-V14-PRELOCK-FANOUT-V1.json",
+      "sha256": "2b2558835d5382d15f92f58a538c5795f82d3875867e17dd686b23dc8d738e00"
+    },
+    "routeId": "quality-v1:play-079-industrial-l04-v14-east-prelock-v1",
+    "routeSha256": "7b927087a66ff6312931743d404a0de776a3418173d52f8d65be09841b43e4da",
+    "claim": {
+      "path": "docs/production/claims/PLAY-079.world-art-east.md",
+      "sha256": "93bcc57e69bc4cd1ff492ce0dfbf5d6244c3782db524e7e16fc0d9dd78431a77"
+    },
+    "familyAuthority": {
+      "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-NORTH-V14-HERO-REBUILD-AUTHORITY-V1.md",
+      "sha256": "e439d9f8de08474bbaf31c2308491dad486ec953bf45605c043731f68b44edbb"
+    }
+  },
+  "eastRegistration": {
+    "citySimFootprint": {"width": 72.0, "depth": 72.0},
+    "dccFootprint": {"width": 56.0, "depth": 56.0, "halfExtent": 28.0},
+    "citySimSocket": [28.0, 0.0, 0.0],
+    "sourceSocket": [896.0, 832.0],
+    "groundPivot": [28.0, 28.0, 0.0],
+    "sourceGroundPivot": [768.0, 896.0],
+    "orientationTransform": "none",
+    "sourcePixelTolerance": 0.5
+  },
+  "camera": {
+    "projection": "orthographic",
+    "view": "southeast-looking-northwest",
+    "position": [96.0, 96.0, 101.24557426726288],
+    "target": [0.0, 0.0, 22.861902498201186],
+    "distance": 156.76734353812338,
+    "resolution": [1536, 1024],
+    "literalResolution": [192, 128],
+    "orthoScale": 237.5878601074218,
+    "shift": [0.0, 0.08333333333333333],
+    "registrationSource": "accepted-v06-east-camera-contract"
+  },
+  "coordinateBridge": {
+    "formula": "B(CitySim[x,y,z])=Blender[z,x,y]",
+    "matrixRows": [[0, 0, 1], [1, 0, 0], [0, 1, 0]],
+    "determinant": 1,
+    "direction": "east",
+    "eastSocketBlender": [0.0, 28.0, 0.0],
+    "eastOutwardBlender": [0.0, 1.0, 0.0],
+    "perDirectionTransforms": false
+  },
+  "light": {
+    "keyDirection": "northwest",
+    "contactShadowDirection": "southeast",
+    "pixelAuthority": false,
+    "worldFill": "daylight-neutral-v14",
+    "rendering": "not_run"
+  },
+  "materialRoleMapping": {
+    "v14-warm-foundry-masonry": "warm-weathered-masonry",
+    "v14-formed-concrete": "formed-concrete",
+    "v14-charcoal-structural-steel": "dark-painted-steel",
+    "v14-weathered-bluegreen-roof": "roof-edge-metal",
+    "v14-warm-glazing": "glazing-louver",
+    "v14-deep-freight-void": "portal-void",
+    "v14-oxidized-process-machinery": "safety-oxide",
+    "v14-restrained-hot-process": "hot-process",
+    "v14-contact-shadow": "contact-shadow"
+  },
+  "components": [
+    {"id":"east-v14-foundation","kind":"foundation","semanticRole":"v14-formed-concrete","materialRole":"formed-concrete","bounds":{"xMin":-28,"xMax":28,"yMin":-28,"yMax":28,"zMin":0,"zMax":1}},
+    {"id":"east-v14-loading-apron","kind":"apron","semanticRole":"v14-contact-shadow","materialRole":"contact-shadow","bounds":{"xMin":-14,"xMax":14,"yMin":22,"yMax":28,"zMin":0,"zMax":0.4}},
+    {"id":"east-v14-foundry-hall","kind":"mass","semanticRole":"v14-warm-foundry-masonry","materialRole":"warm-weathered-masonry","bounds":{"xMin":-22,"xMax":22,"yMin":-22,"yMax":22,"zMin":0,"zMax":26}},
+    {"id":"east-v14-portal-south-jamb","kind":"portal-frame","semanticRole":"v14-charcoal-structural-steel","materialRole":"dark-painted-steel","bounds":{"xMin":14,"xMax":20,"yMin":23,"yMax":28,"zMin":0,"zMax":28}},
+    {"id":"east-v14-portal-north-jamb","kind":"portal-frame","semanticRole":"v14-charcoal-structural-steel","materialRole":"dark-painted-steel","bounds":{"xMin":-20,"xMax":-14,"yMin":23,"yMax":28,"zMin":0,"zMax":28}},
+    {"id":"east-v14-portal-header","kind":"portal-frame","semanticRole":"v14-formed-concrete","materialRole":"formed-concrete","bounds":{"xMin":-20,"xMax":20,"yMin":23,"yMax":28,"zMin":28,"zMax":34}},
+    {"id":"east-v14-freight-void","kind":"portal-inset","semanticRole":"v14-deep-freight-void","materialRole":"portal-void","bounds":{"xMin":-14,"xMax":14,"yMin":23,"yMax":28,"zMin":2,"zMax":26}},
+    {"id":"east-v14-roof-lower","kind":"roof-wedge","semanticRole":"v14-weathered-bluegreen-roof","materialRole":"roof-edge-metal","bounds":{"xMin":-20,"xMax":20,"yMin":-18,"yMax":18,"zMin":26,"zMax":30}},
+    {"id":"east-v14-roof-middle","kind":"roof-wedge","semanticRole":"v14-weathered-bluegreen-roof","materialRole":"roof-edge-metal","bounds":{"xMin":-17,"xMax":17,"yMin":-18,"yMax":18,"zMin":30,"zMax":34}},
+    {"id":"east-v14-roof-high","kind":"roof-wedge","semanticRole":"v14-weathered-bluegreen-roof","materialRole":"roof-edge-metal","bounds":{"xMin":-14,"xMax":14,"yMin":-18,"yMax":18,"zMin":34,"zMax":37}},
+    {"id":"east-v14-clerestory-lantern","kind":"clerestory","semanticRole":"v14-warm-glazing","materialRole":"glazing-louver","bounds":{"xMin":-10,"xMax":10,"yMin":-18,"yMax":18,"zMin":37,"zMax":40}},
+    {"id":"east-v14-process-tower","kind":"process-tower","semanticRole":"v14-oxidized-process-machinery","materialRole":"safety-oxide","bounds":{"xMin":-18,"xMax":-10,"yMin":8,"yMax":18,"zMin":0,"zMax":34}},
+    {"id":"east-v14-hot-cap","kind":"hot-process","semanticRole":"v14-restrained-hot-process","materialRole":"hot-process","bounds":{"xMin":-15,"xMax":-8,"yMin":9,"yMax":17,"zMin":28,"zMax":34}},
+    {"id":"east-v14-boiler-stack","kind":"stack","semanticRole":"v14-oxidized-process-machinery","materialRole":"safety-oxide","bounds":{"xMin":-27,"xMax":-21,"yMin":-20,"yMax":-14,"zMin":0,"zMax":44}},
+    {"id":"east-v14-staff-annex","kind":"staff-annex","semanticRole":"v14-warm-glazing","materialRole":"glazing-louver","bounds":{"xMin":-24,"xMax":-12,"yMin":-24,"yMax":-14,"zMin":0,"zMax":14}},
+    {"id":"east-v14-service-rails","kind":"railings","semanticRole":"v14-charcoal-structural-steel","materialRole":"dark-painted-steel","bounds":{"xMin":8,"xMax":12,"yMin":8,"yMax":18,"zMin":26,"zMax":30}}
+  ],
+  "portal": {
+    "roadFacing": "east",
+    "socketComponent": "east-v14-loading-apron",
+    "apertureComponent": "east-v14-freight-void",
+    "jambComponents": ["east-v14-portal-south-jamb","east-v14-portal-north-jamb"],
+    "headerComponent": "east-v14-portal-header",
+    "outerWidthWorld": 40,
+    "outerHeightWorld": 34,
+    "clearInsetWidthWorld": 28,
+    "clearInsetHeightWorld": 24,
+    "freightBeatCount": 3
+  },
+  "silhouette": {
+    "meaningfulBreaks": 5,
+    "breakComponentIDs": ["east-v14-roof-lower","east-v14-roof-middle","east-v14-roof-high","east-v14-boiler-stack","east-v14-clerestory-lantern"],
+    "minimumProjectedBreakSeparationPixels": 0.5,
+    "maximumStackHeightWorld": 44,
+    "maximumNonStackHeightWorld": 40
+  },
+  "literal192Targets": {
+    "frame": [192,128],
+    "minimumOccupiedWidthPixels": 60,
+    "minimumOccupiedHeightPixels": 40,
+    "minimumPortalOuterWidthPixels": 24,
+    "minimumPortalClearWidthPixels": 18,
+    "minimumPortalClearHeightPixels": 16,
+    "minimumFreightBeatCount": 3,
+    "minimumSilhouetteBreaks": 5,
+    "maximumProcessOccluders": 0
+  },
+  "futureProcessA": {
+    "appearanceLock": null,
+    "sourceProductionProfile": null,
+    "sourceReady": false,
+    "productionSelected": false,
+    "launchAuthorized": false,
+    "reason": "Integration appearance lock and post-lock grant are not published"
+  },
+  "sourceBindings": {
+    "eastScene": {"path":"Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-predesign-v01/scene.json","sha256":"e19c70693ea57a7f23669d5e93354eee0a8fa42be16e68b38d00f5608a500db7"},
+    "eastMaterials": {"path":"Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-predesign-v01/materials.json","sha256":"1d0eda7be1e50d9fd98247cb63035443e904a2724583df1fbb328140b63ef9b9"},
+    "consumedAs": "historical-East-byte-preservation-only"
+  },
+  "changedPathAudit": {
+    "parentCandidate": "fef6e902aca9d3a17bdd9af41f64588c2e8115c3",
+    "changedPaths": [
+      "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/V14-COMPATIBILITY-DESIGN.json",
+      "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/test_v14_compatibility.py",
+      "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/HANDOFF.json",
+      "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/VALIDATION.json"
+    ],
+    "allWithinAllowedRoots": true,
+    "siblingInputsConsumed": []
+  },
+  "zeroPixelBoundary": {
+    "blenderInvocations": 0,
+    "dccInvocations": 0,
+    "renderInvocations": 0,
+    "pixelFilesCreated": 0,
+    "normalizationRuns": 0,
+    "sourcePacketsCreated": 0,
+    "appearanceLockConsumed": false,
+    "sourceReady": false,
+    "productionSelected": false,
+    "candidateReadyForIndependentReview": true,
+    "independentReviewRequired": true
+  }
+}

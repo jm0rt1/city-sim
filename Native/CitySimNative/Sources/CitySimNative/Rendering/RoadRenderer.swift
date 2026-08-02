@@ -270,6 +270,12 @@ final class RoadRenderer {
         root.addChild(neighborhoodLayer)
         root.addChild(blockLayer)
 
+        addDistrictFabricHierarchy(
+            for: topology,
+            emphasis: emphasis,
+            to: cityLayer
+        )
+
         let corridor = SKNode()
         corridor.name = "road.production-corridor.\(emphasis.rawValue).\(connections.rawValue)"
         if let authoredRoad = assets.generatedRoadSprite(
@@ -304,6 +310,102 @@ final class RoadRenderer {
             )
         }
         return root
+    }
+
+    private func addDistrictFabricHierarchy(
+        for topology: RoadTopology,
+        emphasis: ContextEmphasis,
+        to layer: SKNode
+    ) {
+        let fabric = SKNode()
+        fabric.name = "road.fabric.hierarchy.\(topology.mask.rawValue)"
+        fabric.zPosition = -2
+
+        if topology.classification == .isolated {
+            let shadow = SKShapeNode(path: style.diamondPath(width: 54, height: 27))
+            shadow.name = "road.fabric.shadow"
+            shadow.fillColor = NSColor.black.withAlphaComponent(0.13)
+            shadow.strokeColor = .clear
+            shadow.position = CGPoint(x: 1.2, y: -1.4)
+            fabric.addChild(shadow)
+
+            let sidewalk = SKShapeNode(path: style.diamondPath(width: 51, height: 25.5))
+            sidewalk.name = "road.fabric.sidewalk"
+            sidewalk.fillColor = developedRoadbed.sidewalk.withAlphaComponent(0.38)
+            sidewalk.strokeColor = developedRoadbed.curb.withAlphaComponent(0.42)
+            sidewalk.lineWidth = 1.0
+            fabric.addChild(sidewalk)
+
+            let surface = SKShapeNode(path: style.diamondPath(width: 39.5, height: 19.75))
+            surface.name = "road.fabric.surface"
+            surface.fillColor = developedRoadbed.asphalt.withAlphaComponent(0.22)
+            surface.strokeColor = .clear
+            fabric.addChild(surface)
+            layer.addChild(fabric)
+            return
+        }
+
+        let segments = topology.mask.edges.map { edge -> CGPath in
+            let endpoint = style.roadSocket(for: edge, overreach: 1.25)
+            let start = topology.classification == .end
+                ? CGPoint(x: -endpoint.x * 0.30, y: -endpoint.y * 0.30)
+                : .zero
+            return WorldGeometryCache.line(from: start, to: endpoint)
+        }
+        let combined = CGMutablePath()
+        segments.forEach { combined.addPath($0) }
+
+        var shadowTransform = CGAffineTransform(translationX: 1.1, y: -1.35)
+        let shadowPath = combined.copy(using: &shadowTransform) ?? combined
+        fabric.addChild(fabricStroke(
+            shadowPath,
+            name: "road.fabric.shadow",
+            color: NSColor.black.withAlphaComponent(0.14),
+            width: 30,
+            z: -1
+        ))
+        fabric.addChild(fabricStroke(
+            combined,
+            name: "road.fabric.sidewalk",
+            color: developedRoadbed.sidewalk.withAlphaComponent(
+                emphasis == .developed ? 0.48 : 0.34
+            ),
+            width: 28,
+            z: 0
+        ))
+        fabric.addChild(fabricStroke(
+            combined,
+            name: "road.fabric.curb",
+            color: developedRoadbed.curb.withAlphaComponent(0.52),
+            width: 23,
+            z: 1
+        ))
+        fabric.addChild(fabricStroke(
+            combined,
+            name: "road.fabric.surface",
+            color: developedRoadbed.asphalt.withAlphaComponent(0.22),
+            width: 19,
+            z: 2
+        ))
+        layer.addChild(fabric)
+    }
+
+    private func fabricStroke(
+        _ path: CGPath,
+        name: String,
+        color: NSColor,
+        width: CGFloat,
+        z: CGFloat
+    ) -> SKShapeNode {
+        let node = SKShapeNode(path: path)
+        node.name = name
+        node.fillColor = .clear
+        node.strokeColor = color
+        node.lineWidth = width
+        node.lineCap = .butt
+        node.lineJoin = .round
+        node.zPosition = z
+        return node
     }
 
     private func addSocketSeamBlends(

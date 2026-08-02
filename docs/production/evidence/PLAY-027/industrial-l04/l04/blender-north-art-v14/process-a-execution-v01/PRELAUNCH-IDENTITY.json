@@ -10,6 +10,7 @@
   "pixelWrites": 0,
   "blendFiles": 0,
   "outputRootsCreated": 0,
+  "adversaries": 15,
   "sourceAuthority": false,
   "productionSelected": false
 }

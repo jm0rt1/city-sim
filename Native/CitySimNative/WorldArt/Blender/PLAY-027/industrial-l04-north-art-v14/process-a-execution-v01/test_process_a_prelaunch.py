@@ -43,6 +43,10 @@ def ast_checks() -> None:
     assert len(popen) == 1
     assert child_source.count("import bpy") == 1
     assert "subprocess" not in child_source
+    assert "primitive_cube_add" not in child_source
+    for required in ("wedge_mesh", "mesh.from_pydata", "primitive_cylinder_add", "primitive_torus_add", "world.use_nodes", "ShaderNodeBackground", "v14-north-key", "v14-north-fill", "to_track_quat", "bpy.ops.render.render(write_still=True)", "bpy.ops.wm.save_as_mainfile"):
+        assert required in child_source, f"missing Blender construction operation: {required}"
+    assert "BLENDER_EEVEE" not in child_source
     forbidden = ("ImageGen", "imagegen", "normalizer", "Normalization", "PLAY-079", "PLAY-080", "PLAY-081", "Package.swift", "Rendering/")
     assert not any(value in child_source for value in forbidden)
     assert "semantic" in child_source and "parameterized" in child_source
@@ -85,7 +89,7 @@ def main() -> None:
         rejects(lambda: LAUNCHER.require(not existing.exists(), "future output root must be absent"))
 
     ast_checks()
-    identity = {"status": "PASS", "freshRoots": 2, "normalizedRoot": "<exclusive-temp-root>", "childStarts": 0, "dccProcessCount": 0, "pixelWrites": 0, "adversaries": 9}
+    identity = {"status": "PASS", "freshRoots": 2, "normalizedRoot": "<exclusive-temp-root>", "childStarts": 0, "dccProcessCount": 0, "pixelWrites": 0, "adversaries": 15}
     assert LAUNCHER.canonical(identity) == LAUNCHER.canonical(dict(identity))
     print(json.dumps(identity, sort_keys=True))
 

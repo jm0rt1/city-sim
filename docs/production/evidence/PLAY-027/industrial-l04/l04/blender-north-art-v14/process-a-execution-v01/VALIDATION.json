@@ -13,7 +13,8 @@
   "materials": {"roleCount": 9, "closed": true},
   "lighting": {"engine": "CYCLES", "device": "CPU", "samples": 64, "threads": 1, "adaptiveSampling": false, "denoising": false, "transparentFilm": true},
   "outputPolicy": {"futureOutputRootAbsent": true, "allowedLeaves": ["raw.png", "semantic.png", "OBJECT-MANIFEST.json", "GROUND-PROJECTION.json", "INPUT-BINDINGS.json", "provenance.json", "PROCESS-RECEIPT.json"]},
-  "adversaries": {"count": 9, "scheduleSlotDrift": true, "directionDrift": true, "secondChild": true, "outputEscape": true, "directChild": true, "inputHashDrift": true, "siblingSurface": true, "networkImageGenNormalizationShipping": true, "lowLevelBypass": true},
+  "adversaries": {"count": 15, "scheduleSlotDrift": true, "directionDrift": true, "secondChild": true, "outputEscape": true, "directChild": true, "inputHashDrift": true, "siblingSurface": true, "networkImageGenNormalizationShipping": true, "lowLevelBypass": true, "cubeDowngrade": true, "solidPortalVoid": true, "missingTopology": true, "missingWorldLightShadowRender": true, "eeveeProfile": true},
+  "realBlenderConstruction": {"wedgeMeshes": true, "explicitFaces": true, "orientedPipeCylinders": true, "torusElbows": true, "trussMembers": true, "cameraDatablockAndAim": true, "worldAndLights": true, "renderAndBlendWritesFutureOnly": true},
   "zeroActivity": {"childStarts": 0, "dccProcessCount": 0, "renderCalls": 0, "pixelWrites": 0, "blendFiles": 0},
   "sourceAuthority": false,
   "productionSelected": false

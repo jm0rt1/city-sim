@@ -24,7 +24,7 @@
   "launcher": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/process-a-execution-v01/launch_north_process_a.py",
   "outputRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/process-a-execution-v01/outputs/process-a",
   "evidenceRoot": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v14/process-a-execution-v01",
-  "allowedOutputs": ["raw.png", "semantic.png", "OBJECT-MANIFEST.json", "GROUND-PROJECTION.json", "INPUT-BINDINGS.json", "provenance.json", "PROCESS-RECEIPT.json"],
+  "allowedOutputs": ["raw.png", "semantic.png", "north-v14-process-a.blend", "OBJECT-MANIFEST.json", "GROUND-PROJECTION.json", "INPUT-BINDINGS.json", "provenance.json", "PROCESS-RECEIPT.json"],
   "zeroChildProof": {"sourceAuthority": false, "productionSelected": false, "childStarts": 0, "dccProcessCount": 0, "pixelWrites": 0},
   "forbidden": ["Process B", "Process C", "siblings", "ImageGen", "normalization", "renderer", "shipping", "Package.swift", "shared schedules"]
 }

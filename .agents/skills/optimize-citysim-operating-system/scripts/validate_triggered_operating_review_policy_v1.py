@@ -18,6 +18,7 @@ EXPECTED_TRIGGERS = {
     "exact_candidate_qa_started",
     "first_focused_gate_failure",
     "first_return",
+    "independent_return_after_focused_pass",
     "integration_closed",
     "model_route_mismatch",
     "no_progress_two_snapshots",
@@ -47,6 +48,13 @@ EXPECTED_COVERAGE_FIELDS = [
     "disposition",
 ]
 EXPECTED_DIRECTIONS = ["north", "east", "south", "west"]
+EXPECTED_FALSE_GREEN_ESCALATIONS = [
+    "shared_contract_or_schema_decision",
+    "baseline_or_candidate_identity_mismatch",
+    "failure_outside_focused_scope",
+    "cross_lane_semantic_conflict",
+    "subjective_acceptance_required",
+]
 
 
 def validate(policy: object) -> list[str]:
@@ -59,6 +67,7 @@ def validate(policy: object) -> list[str]:
         "eventKeyFields",
         "reviewBudget",
         "parallelism",
+        "falseGreenRecovery",
         "coverage",
         "noProgress",
         "allowedDecisions",
@@ -66,8 +75,8 @@ def validate(policy: object) -> list[str]:
     }
     if set(policy) != expected_top:
         errors.append("policy top-level fields must match the exact schema")
-    if policy.get("schema") != 1:
-        errors.append("schema must be 1")
+    if policy.get("schema") != 2:
+        errors.append("schema must be 2")
     if policy.get("defaultRoute") != {
         "classification": "LUNA_MECHANICAL",
         "model": "gpt-5.6-luna",
@@ -109,6 +118,45 @@ def validate(policy: object) -> list[str]:
             errors.append("a non-refill requires an exact serialized dependency")
         if parallel.get("manufacturedBusyworkAllowed") is not False:
             errors.append("manufactured busywork must be forbidden")
+
+    recovery = policy.get("falseGreenRecovery")
+    if not isinstance(recovery, dict):
+        errors.append("falseGreenRecovery must be an object")
+    else:
+        expected_recovery_fields = {
+            "sameTurnIntegrationDecision",
+            "allowEscalateOnlyFor",
+            "requireIndependentReviewer",
+            "requirePriorFocusedPass",
+            "requireReplacementModelRoute",
+            "preserveOtherDirectionRows",
+            "fullGateAllowed",
+            "dccAllowed",
+            "realAppQAAllowed",
+            "sharedMutationAllowed",
+        }
+        if set(recovery) != expected_recovery_fields:
+            errors.append("false-green recovery fields must match the exact schema")
+        if recovery.get("sameTurnIntegrationDecision") != "REFILL":
+            errors.append("false-green recovery must refill in the same turn")
+        if recovery.get("allowEscalateOnlyFor") != EXPECTED_FALSE_GREEN_ESCALATIONS:
+            errors.append("false-green escalation reasons must be exact and ordered")
+        for key in (
+            "requireIndependentReviewer",
+            "requirePriorFocusedPass",
+            "requireReplacementModelRoute",
+            "preserveOtherDirectionRows",
+        ):
+            if recovery.get(key) is not True:
+                errors.append(f"{key} must be true")
+        for key in (
+            "fullGateAllowed",
+            "dccAllowed",
+            "realAppQAAllowed",
+            "sharedMutationAllowed",
+        ):
+            if recovery.get(key) is not False:
+                errors.append(f"false-green {key} must be false")
 
     coverage = policy.get("coverage")
     if not isinstance(coverage, dict):

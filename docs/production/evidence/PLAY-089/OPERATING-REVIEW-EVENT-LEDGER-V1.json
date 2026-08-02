@@ -56,6 +56,27 @@
       "receiptSha256": "43a2d2ded7c559a83aa99b0e3500625b8bf5ce291b6b313bfb53c3b4f045eaad",
       "decision": "REFILL",
       "disposition": {"status":"applied","authorityCommit":"2e38c84c92c63f74d8511c80a0838e8def628fc3","reason":"Three disjoint frontier-bounded art repairs are prepared for same-turn predelegation review and dispatch."}
+    },
+    {
+      "eventKey": {"authorityCommit":"6aa0d9ba2d82e375885b03545a492098b94af74f","taskId":"PLAY-089","routeId":"quality-v2:play-089-industrial-l04-predelegation-review-v1","trigger":"delegation_ready_for_dispatch","candidateOrResultCommit":"174d80f67031d5b611d243200448c52cc9bdf932"},
+      "receiptPath": "docs/production/evidence/PLAY-089/industrial-l04-predelegation-review-v1/01-north.json",
+      "receiptSha256": "c154e99ac6b2ccb5301bfb5f1594c8490e5d703c95b7a22d9a02ae5b9660eaa3",
+      "decision": "NO_CHANGE",
+      "disposition": {"status":"auto_closed","authorityCommit":"af9c0ba75f7cbbd613c420c73da9221f0236df37","reason":"North frontier route is exact, disjoint, zero-DCC, independently reviewed, and ready for dispatch."}
+    },
+    {
+      "eventKey": {"authorityCommit":"6aa0d9ba2d82e375885b03545a492098b94af74f","taskId":"PLAY-089","routeId":"quality-v2:play-089-industrial-l04-predelegation-review-v1","trigger":"delegation_ready_for_dispatch","candidateOrResultCommit":"cc216550368684b72af34e2ff1f8f7fad558d04f"},
+      "receiptPath": "docs/production/evidence/PLAY-089/industrial-l04-predelegation-review-v1/02-east.json",
+      "receiptSha256": "9f72dd816d8052e3b3485c88b4eddea15b7908ce4a8de3d5ed4dcae38af25f40",
+      "decision": "NO_CHANGE",
+      "disposition": {"status":"auto_closed","authorityCommit":"af9c0ba75f7cbbd613c420c73da9221f0236df37","reason":"East mandatory frontier route is exact, disjoint, zero-DCC, independently reviewed, and ready for dispatch."}
+    },
+    {
+      "eventKey": {"authorityCommit":"6aa0d9ba2d82e375885b03545a492098b94af74f","taskId":"PLAY-089","routeId":"quality-v2:play-089-industrial-l04-predelegation-review-v1","trigger":"delegation_ready_for_dispatch","candidateOrResultCommit":"2686280138b7d30291418c9ed38c0d4b7bc835e1"},
+      "receiptPath": "docs/production/evidence/PLAY-089/industrial-l04-predelegation-review-v1/03-west.json",
+      "receiptSha256": "e31b5bb278ea01b2b9e203d4180dd50bbdb2f2df41f08554d2f1225ec99b6aca",
+      "decision": "NO_CHANGE",
+      "disposition": {"status":"auto_closed","authorityCommit":"af9c0ba75f7cbbd613c420c73da9221f0236df37","reason":"West mandatory frontier route is exact, disjoint, zero-DCC, independently reviewed, and ready for dispatch."}
     }
   ]
 }

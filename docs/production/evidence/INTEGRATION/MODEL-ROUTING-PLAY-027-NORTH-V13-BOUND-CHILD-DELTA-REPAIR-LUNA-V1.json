@@ -1,0 +1,150 @@
+{
+  "schema": 1,
+  "authorityCommit": "b84891390706a5748c4ddbd3655a3f532f6e1014",
+  "assignments": [
+    {
+      "modelRouteSha256": "930a9b20c635ab1d36bb05e78b3562d53789a46638ce640fb348cfb03cf1c595",
+      "modelRoute": {
+        "schema": 1,
+        "routeId": "quality-v1:play-027-north-v13-bound-child-delta-repair-luna-v1",
+        "taskId": "PLAY-027",
+        "packetKind": "local_debug",
+        "classification": "LUNA_LOCAL_DEBUG",
+        "model": "gpt-5.6-luna",
+        "effort": "max",
+        "rationale": "The first real Integration prepare_integration_launch replay at exact clean schedule carrier 2830845037bf3584618f531d25225de9d0ced75d rejected before attempt consumption because the accepted authority-rebound child differs from execution base d25d7a2767d92a8628849ca3911d28f4203dd674 while the historical delta filter permits only the original seven route-owned files. The schedule, receipt, child hash, one-shot marker and publication proof passed before that filter. This bounded repair must exclude only the exact schedule-bound child hash after direct-document validation, retain the complete 41-adversary parent and child proof, and leave every other changed path fail-closed.",
+        "authority": {
+          "authorityCommit": "b84891390706a5748c4ddbd3655a3f532f6e1014",
+          "baseCommit": "b84891390706a5748c4ddbd3655a3f532f6e1014",
+          "claim": {
+            "path": "docs/production/claims/PLAY-027.world-art.md",
+            "sha256": "bf0b167a1d1e6f7007d609aeb657917fe9d3d0866d5a7a6e36b0e5a32faefa6f"
+          },
+          "immutableInputs": [
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "62e077c88730fda5664e5fa6d23200ade77418bd43f1c721c0bff84eaac1c971"
+            },
+            {
+              "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+              "sha256": "583c5d7be25a7ffdb95f354c6279fe7c309358f65445365203431c51f0e53247"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-NORTH-PROCESS-A-SCHEDULE-V3.json",
+              "sha256": "d3993d766e97c302484630d688b35317b24d0fa6c2839757a3bc13b2f6c1a2ed"
+            }
+          ]
+        },
+        "assignment": {
+          "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+          "branch": "codex/citysim-world-art",
+          "worktree": "/Users/James/.codex/worktrees/0648/city-sim",
+          "expectedHead": "2830845037bf3584618f531d25225de9d0ced75d",
+          "featureAuthorThreadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027",
+            "docs/production/evidence/PLAY-027"
+          ],
+          "allowed": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-v02/launch_north_v13_process_a_v02.py",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-v02/test_process_a_v02.py",
+            "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-v02/CURRENT-AUTHORITY-REBIND.json",
+            "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-v02/HANDOFF.json",
+            "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-v02/ORCHESTRATOR-READINESS.json"
+          ],
+          "forbidden": [
+            ".agents",
+            "AGENTS.md",
+            "Native/CitySimNative/Package.swift",
+            "Native/CitySimNative/Rendering",
+            "Native/CitySimNative/Resources",
+            "Native/CitySimNative/Sources",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-v02/EXECUTION-CONTRACT.json",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-v02/RUNNER-CONTRACT.json",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-v02/render_north_v13_process_a_child.py",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-079",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-080",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-081",
+            "docs/production/PLAYABLE_BACKLOG.md",
+            "docs/production/claims",
+            "docs/production/completed",
+            "docs/production/evidence/INTEGRATION",
+            "script"
+          ]
+        },
+        "boundedDeliverable": "At exact clean HEAD 2830845037bf3584618f531d25225de9d0ced75d, change only the five named paths. Preserve the child, execution contract, runner contract, V3 schedule, design, lowering, sibling directions and every shipping surface byte-identically. In launch_north_v13_process_a_v02.py, after validate_direct_documents has proven the exact schedule and receipt tool hashes, allow _preflight to exclude only the exact childPath whose live SHA-256 equals the schedule-bound childSHA256; public preflight without validated direct documents must continue rejecting that changed child. Update test_process_a_v02.py so the positive real-Git parent fixture retains the current repaired child rather than restoring the execution-base child, proves launchReady true with the complete 41-adversary coverage, and adds an explicit wrong-child-hash or changed-child rejection. Regenerate only the three named evidence JSON files with truthful hashes and gates. Return one clean coherent repair commit with zero Blender/DCC/Process-A/pixels.",
+        "validation": {
+          "focusedGateOwner": {
+            "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+            "role": "north_v13_schedule_bound_child_delta_local_debug"
+          },
+          "focusedCommands": [
+            "PYTHONDONTWRITEBYTECODE=1 python3 Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-v02/test_process_a_v02.py",
+            "PYTHONDONTWRITEBYTECODE=1 python3 Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-v02/test_process_a_v02.py",
+            "python3 -m json.tool docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-v02/CURRENT-AUTHORITY-REBIND.json",
+            "python3 -m json.tool docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-v02/HANDOFF.json",
+            "python3 -m json.tool docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-v02/ORCHESTRATOR-READINESS.json",
+            "git diff --check"
+          ],
+          "fullGateOwner": {
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "role": "integration_exact_schedule_receipt_marker_prepare_and_launch_disposition",
+            "model": "gpt-5.6-sol",
+            "effort": "high"
+          },
+          "fullCommands": [
+            "Integration independently replays the focused test twice on the exact returned commit",
+            "Integration publishes a superseding exact schedule and worker-bound receipt, materializes one available marker, and requires prepare_integration_launch launchReady=1 before any DCC child",
+            "Integration verifies the failed V3 attempt remained unconsumed with zero child-start marker, output root or pixels"
+          ]
+        },
+        "expectedResult": {
+          "evidencePaths": [
+            "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-v02/CURRENT-AUTHORITY-REBIND.json",
+            "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-v02/HANDOFF.json",
+            "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-v02/ORCHESTRATOR-READINESS.json"
+          ],
+          "commitRequired": true,
+          "commitMessagePattern": "PLAY-027:"
+        },
+        "escalationTriggers": [
+          "baseline_or_candidate_identity_mismatch",
+          "cross_lane_semantic_conflict",
+          "failure_outside_focused_scope",
+          "path_outside_claim",
+          "save_or_migration_uncertainty",
+          "shared_contract_or_schema_decision",
+          "subjective_acceptance_required",
+          "two_unsuccessful_repair_attempts",
+          "unresolved_product_visual_or_interaction_judgment"
+        ],
+        "stopCondition": "Stop after one clean deterministic schedule-bound-child delta repair commit or immediately on any mandatory escalation trigger. Do not change the child or contracts, publish or consume another schedule, create a receipt or marker, run Blender/DCC/Process A, create the production output root or pixels, alter design/lowering/siblings/shared/renderer/shipping bytes, run aggregate or staged gates, self-score, self-accept, integrate, push, or pin.",
+        "independentReviewer": {
+          "required": true,
+          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+          "model": "gpt-5.6-sol",
+          "effort": "high"
+        },
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "62e077c88730fda5664e5fa6d23200ade77418bd43f1c721c0bff84eaac1c971"
+            },
+            {
+              "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+              "sha256": "583c5d7be25a7ffdb95f354c6279fe7c309358f65445365203431c51f0e53247"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

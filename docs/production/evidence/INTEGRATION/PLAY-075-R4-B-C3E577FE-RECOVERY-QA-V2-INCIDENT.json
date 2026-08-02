@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "incidentId": "play-075-r4-b-c3e577fe-recovery-qa-v2-interrupted",
+  "recordedAt": "2026-08-02T04:17:45Z",
+  "recordedBy": {
+    "lane": "integration",
+    "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8"
+  },
+  "supersededLease": {
+    "path": "docs/production/evidence/INTEGRATION/PLAY-075-R4-B-C3E577FE-RECOVERY-EXCLUSIVE-QA-LEASE-V2.json",
+    "sha256": "6fa967bd298a0d712cc71200c6f94a3e1bf6341b1b98f88782ce94673ac47dd4",
+    "finalState": "consumed_invalidated"
+  },
+  "candidate": {
+    "commit": "c3e577fe3174cfd50a6858200ed45ac747e89d81",
+    "tree": "1871b5756815194cb281c9d3d30154346b77bee9",
+    "executableSha256": "1486ca40071d6c84173842d4ffc36a4e451c978129b89f8477ee172af4aff277"
+  },
+  "observation": {
+    "qaThreadId": "019f9a0a-35fa-75b1-92c4-73c182390a25",
+    "candidateProcessObserved": true,
+    "observedProcessId": 80001,
+    "observedProcessStartLocal": "2026-08-02T00:08:39-04:00",
+    "computerUseCallWasOpaqueAtInterruption": true,
+    "coordinatorInterruptedTask": true,
+    "candidateProcessTerminatedByIntegration": true,
+    "candidateProcessPresentAfterTermination": false,
+    "qaWorktreeCleanAfterTermination": true,
+    "qaHeadAfterTermination": "43e3e57afb52480d90bcf4b08d610ac5950e34bd",
+    "qaTreeAfterTermination": "34c84f80e593819e2354003296d1c45cb30e63e9",
+    "v2EvidenceRootPresentAfterTermination": false,
+    "candidateDataRootPresentAfterTermination": false,
+    "productMutationObserved": false
+  },
+  "disposition": {
+    "qaDisposition": null,
+    "baselineAccepted": false,
+    "v2LeaseReusable": false,
+    "reason": "The exact app start consumed the one-attempt lease, but the frontier QA task was interrupted before an immutable journey result or evidence packet existed.",
+    "requiredRecovery": "Issue a new route and exclusive V3 lease to a fresh independent compact frontier QA task. Do not resume the historical QA task or reuse the V2 lease."
+  }
+}

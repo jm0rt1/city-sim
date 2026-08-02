@@ -1,0 +1,174 @@
+{
+  "schema": 1,
+  "authorityCommit": "45e1422304443a012a2f121c90be3e7d31b82c59",
+  "assignments": [
+    {
+      "modelRouteSha256": "7001a6f68844ac8d8d566b06e735f83b0e4780d95c9c22b2534d65d2df5aa23e",
+      "modelRoute": {
+        "schema": 1,
+        "routeId": "quality-v1:play-073-r4-c-v2-visible-scale-luna-v1",
+        "taskId": "PLAY-073",
+        "packetKind": "implementation",
+        "classification": "LUNA_IMPLEMENTATION",
+        "model": "gpt-5.6-luna",
+        "effort": "high",
+        "rationale": "Integration preserved and technically returned the first bounded R4-C candidate because its city-scale grove and court are only tiny ground marks, its all-variant evidence overstates containment, its adjacent-collision result never composes the pair in world space, and it retained no required technical color or grayscale comparison. The visual decision is now fully frozen as exact minimum accumulated dimensions, actual-pair world-space envelopes, all-variant/frontage geometry gates, and deterministic export requirements. This second and final descendant implementation remains bounded to the same renderer and test files plus a new evidence root; Integration and fresh independent QA retain aggregate and subjective acceptance.",
+        "authority": {
+          "authorityCommit": "45e1422304443a012a2f121c90be3e7d31b82c59",
+          "baseCommit": "45e1422304443a012a2f121c90be3e7d31b82c59",
+          "claim": {
+            "path": "docs/production/claims/PLAY-073.world-rendering.md",
+            "sha256": "51b347c22df6b04e33b0cb59046c774b65f770465bea21d1073db55cca75b897"
+          },
+          "immutableInputs": [
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "62e077c88730fda5664e5fa6d23200ade77418bd43f1c721c0bff84eaac1c971"
+            },
+            {
+              "path": ".agents/skills/render-citysim-world/SKILL.md",
+              "sha256": "fbd37c5f4730c61f95a344266b61d3fb37ce39adcefbaaba6e94f8939d8b72e2"
+            },
+            {
+              "path": ".agents/skills/render-citysim-world/references/renderer-feature-evidence.md",
+              "sha256": "d9d607c6945f27cf8c67e53cd40c97c122b2d0cba62b6a59dada2ac2e98ad3bd"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/PLAY-073-R4-C-ADJACENT-RESIDENTIAL-REPETITION-AUTHORITY.md",
+              "sha256": "b1d67a006c09f3a90917ad2115f349524726b2bd30bd7b34d11a92a40a913078"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/PLAY-073-R4-C-FIRST-TECHNICAL-RETURN-V1.md",
+              "sha256": "2a132b04e53536c3e26d7de0092585309aeedabfd5a8c02ae197ae4b36aec29c"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-075/r4-b-e4f038f9-final-wave009-v1/live/regular/lod-block.png",
+              "sha256": "464843a9a67113478498ca7bf54a11aa1a2d9e1e1fe8bccaaf21e0e14e234a21"
+            }
+          ]
+        },
+        "assignment": {
+          "threadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+          "branch": "codex/citysim-world-rendering-r4b-current",
+          "worktree": "/Users/James/.codex/worktrees/cac1/city-sim",
+          "expectedHead": "51f6a4f52cc50d46c4884570b86d18ce1fbd0eb5",
+          "featureAuthorThreadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": [
+            "Native/CitySimNative/Sources/CitySimNative/Rendering/",
+            "Native/CitySimNative/Tests/CitySimNativeTests/WorldRenderingTests.swift",
+            "docs/production/evidence/PLAY-073/"
+          ],
+          "allowed": [
+            "Native/CitySimNative/Sources/CitySimNative/Rendering/LotContextRenderer.swift",
+            "Native/CitySimNative/Tests/CitySimNativeTests/WorldRenderingTests.swift",
+            "docs/production/evidence/PLAY-073/r4-c-adjacent-repetition-v2"
+          ],
+          "forbidden": [
+            ".agents",
+            "AGENTS.md",
+            "Native/CitySimNative/Package.swift",
+            "Native/CitySimNative/Sources/CitySimNative/App",
+            "Native/CitySimNative/Sources/CitySimNative/Models",
+            "Native/CitySimNative/Sources/CitySimNative/Services",
+            "Native/CitySimNative/Sources/CitySimNative/Stores",
+            "Native/CitySimNative/Sources/CitySimNative/Views",
+            "Native/CitySimNative/Sources/CitySimNative/Resources",
+            "Native/CitySimNative/Sources/CitySimNative/Rendering/CityScene.swift",
+            "Native/CitySimNative/Sources/CitySimNative/Rendering/GoldenDistrictRenderer.swift",
+            "Native/CitySimNative/Sources/CitySimNative/Rendering/LotRenderer.swift",
+            "Native/CitySimNative/Sources/CitySimNative/Rendering/TerrainRenderer.swift",
+            "Native/CitySimNative/WorldArt",
+            "docs/production/PLAYABLE_BACKLOG.md",
+            "docs/production/claims",
+            "docs/production/completed",
+            "docs/production/decisions",
+            "docs/production/evidence/INTEGRATION",
+            "docs/production/evidence/PLAY-073/r4-c-adjacent-repetition-v1",
+            "script"
+          ]
+        },
+        "boundedDeliverable": "Preserve exact R4-C attempt-1 commits and implement one descendant repair. In LotContextRenderer.swift, make the garden-grove accumulated city and neighborhood geometry meet at least 18x12 for the large canopy, 10x8 for the companion, 28x14 combined, and 6-point grounded trunk height; make the terraced warm-stone court at least 22x8 with visibly distinct hedge and planted strip and no canopy. Anchor every composition from authoritative frontage while preserving accepted sprites and entrance/lot/road envelopes. In WorldRenderingTests.swift, place exact tiles (6,10) North/variant 0 and (6,11) South/variant 1 together at actual isometric positions; prove context-to-context, sibling-building-contact, and road/frontage non-collision; table-test all 4 variants x 4 frontages for accumulated geometry, containment, entrance clearance, repeat identity, non-interactivity, and non-aliasing; and add a deterministic regular city/neighborhood/block plus 900x600 compact contact-sheet export in color and Rec.709 grayscale. Commit one product repair and one truthful v2 evidence/handoff packet with exact image hashes. Do not broaden or score the result.",
+        "validation": {
+          "focusedGateOwner": {
+            "threadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+            "role": "renderer_r4c_v2_focused_owner_gate"
+          },
+          "focusedCommands": [
+            "CITYSIM_PLAY073_R4C_V2_COLOR_PROOF=docs/production/evidence/PLAY-073/r4-c-adjacent-repetition-v2/TECHNICAL-COLOR-CONTACT-SHEET.png CITYSIM_PLAY073_R4C_V2_GRAYSCALE_PROOF=docs/production/evidence/PLAY-073/r4-c-adjacent-repetition-v2/TECHNICAL-GRAYSCALE-CONTACT-SHEET.png swift test --package-path Native/CitySimNative --filter WorldRenderingTests/testAdjacentStarterResidentialPairExportsMaterialTechnicalProof",
+            "swift test --package-path Native/CitySimNative --filter WorldRenderingTests",
+            "python3 -m json.tool docs/production/evidence/PLAY-073/r4-c-adjacent-repetition-v2/RESULT.json",
+            "shasum -a 256 docs/production/evidence/PLAY-073/r4-c-adjacent-repetition-v2/TECHNICAL-COLOR-CONTACT-SHEET.png docs/production/evidence/PLAY-073/r4-c-adjacent-repetition-v2/TECHNICAL-GRAYSCALE-CONTACT-SHEET.png",
+            "git diff --check 51f6a4f52cc50d46c4884570b86d18ce1fbd0eb5..HEAD"
+          ],
+          "fullGateOwner": {
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "role": "integration_exact_candidate_gate",
+            "model": "gpt-5.6-sol",
+            "effort": "high"
+          },
+          "fullCommands": [
+            "swift test --package-path Native/CitySimNative",
+            "bash -n script/build_and_run.sh",
+            "./script/build_and_run.sh --verify",
+            "one exact staged-app default and compact renderer journey followed by independent PLAY-075 acceptance"
+          ]
+        },
+        "expectedResult": {
+          "evidencePaths": [
+            "docs/production/evidence/PLAY-073/r4-c-adjacent-repetition-v2/RESULT.json",
+            "docs/production/evidence/PLAY-073/r4-c-adjacent-repetition-v2/HANDOFF.md",
+            "docs/production/evidence/PLAY-073/r4-c-adjacent-repetition-v2/TECHNICAL-COLOR-CONTACT-SHEET.png",
+            "docs/production/evidence/PLAY-073/r4-c-adjacent-repetition-v2/TECHNICAL-GRAYSCALE-CONTACT-SHEET.png"
+          ],
+          "commitRequired": true,
+          "commitMessagePattern": "PLAY-073:"
+        },
+        "escalationTriggers": [
+          "baseline_or_candidate_identity_mismatch",
+          "cross_lane_semantic_conflict",
+          "failure_outside_focused_scope",
+          "path_outside_claim",
+          "save_or_migration_uncertainty",
+          "shared_contract_or_schema_decision",
+          "subjective_acceptance_required",
+          "two_unsuccessful_repair_attempts",
+          "unresolved_product_visual_or_interaction_judgment"
+        ],
+        "stopCondition": "This is the second and final implementation attempt. Stop after one clean product repair commit and one v2 evidence commit with every focused gate passing, or immediately on any input/head/hash mismatch, path outside the three allowed surfaces, source sprite or presentation change, inability to meet visible dimensions without lot/road/frontage/sibling collision, aggregate regression, unresolved visual decision, failed repair, or other mandatory trigger. Do not run the aggregate full suite, staged app, player acceptance, self-score, self-accept, merge, push, integrate, or pin.",
+        "independentReviewer": {
+          "required": true,
+          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+          "model": "gpt-5.6-sol",
+          "effort": "high"
+        },
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "62e077c88730fda5664e5fa6d23200ade77418bd43f1c721c0bff84eaac1c971"
+            },
+            {
+              "path": ".agents/skills/render-citysim-world/SKILL.md",
+              "sha256": "fbd37c5f4730c61f95a344266b61d3fb37ce39adcefbaaba6e94f8939d8b72e2"
+            },
+            {
+              "path": ".agents/skills/render-citysim-world/references/renderer-feature-evidence.md",
+              "sha256": "d9d607c6945f27cf8c67e53cd40c97c122b2d0cba62b6a59dada2ac2e98ad3bd"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/PLAY-073-R4-C-FIRST-TECHNICAL-RETURN-V1.md",
+              "sha256": "2a132b04e53536c3e26d7de0092585309aeedabfd5a8c02ae197ae4b36aec29c"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -47,6 +47,9 @@ RESULT_RELATIVE_PATH = (
     "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/"
     "v14-compatibility-v01/V14-COMPATIBILITY-RESULT.json"
 )
+LOWERING_PATH = ROOT / "LOWERING.json"
+HANDOFF_PATH = REPO_ROOT / "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/v14-compatibility-v01/HANDOFF.json"
+VALIDATION_PATH = REPO_ROOT / "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/v14-compatibility-v01/VALIDATION.json"
 SOURCE_ROOT = "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01"
 EVIDENCE_ROOT = "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01/v14-compatibility-v01"
 NON_ALIAS_PROOF = {
@@ -157,6 +160,21 @@ V14_FAMILY_VOCABULARY = {
     "oxidized-process-machinery", "concrete-apron", "dark-freight-depth",
     "warm-glazing", "restrained-amber-heat",
 }
+EXPECTED_PRIMITIVES = {
+    "south-foundation-plinth": "box", "south-integrated-apron": "apron", "south-foundry-hall": "box", "south-control-wing": "box",
+    "south-staff-entry": "glazing_band", "south-portal-left-jamb": "portal_frame", "south-portal-right-jamb": "portal_frame", "south-portal-header": "portal_frame",
+    "south-portal-deep-void": "portal_void", "south-freight-beat-a": "freight_void", "south-freight-beat-b": "freight_void", "south-freight-beat-c": "freight_void",
+    "south-crown-low": "pitched_roof_wedge", "south-crown-mid": "pitched_roof_wedge", "south-crown-high": "pitched_roof_wedge", "south-rear-process-spine": "capped_vessel",
+    "south-offset-stack": "capped_stack", "south-gantry": "truss", "south-process-machine": "capped_vessel", "south-hot-process-cue": "emissive_process_cue",
+    "south-roof-tier-west": "pitched_roof_wedge", "south-roof-tier-east": "pitched_roof_wedge", "south-clerestory-band": "clerestory_band", "south-crane-lantern": "truss",
+    "south-process-vessel": "capped_vessel", "south-pipe-run-north": "pipe_run", "south-pipe-run-east": "pipe_run", "south-boiler-stack": "capped_stack",
+    "south-staff-annex": "box", "south-loading-markings": "apron", "south-braced-truss": "truss", "south-service-door-bank": "glazing_band",
+}
+EXPECTED_BUILDERS = {
+    "box": "build_box", "apron": "build_apron", "glazing_band": "build_glazing_band", "portal_frame": "build_portal_frame", "portal_void": "build_portal_void",
+    "freight_void": "build_freight_void", "pitched_roof_wedge": "build_pitched_roof_wedge", "clerestory_band": "build_clerestory_band", "truss": "build_truss",
+    "capped_vessel": "build_capped_vessel", "pipe_run": "build_pipe_run", "capped_stack": "build_capped_stack", "emissive_process_cue": "build_emissive_process_cue",
+}
 EXPECTED_RAW_GEOMETRY_SIGNATURES = {
     "south-foundation-plinth": "c3ce05ee8d5c96455a1f39d416af00a16d1c80ef128d7a8394db9ffc321486e0",
     "south-integrated-apron": "51b7681ca41fc09b4d3470d4eace0bafba618c13a7bfa92543a14d99c123744b",
@@ -200,6 +218,52 @@ def load(path: Path) -> dict:
 
 def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def validate_lowering(scene: dict, lowering: dict | None = None) -> dict:
+    lowering = lowering or load(LOWERING_PATH)
+    errors: list[str] = []
+    if lowering.get("schema") != "citysim.world-art.south-v14-lowering.v1":
+        errors.append("primitive schema mismatch")
+    if lowering.get("taskId") != "PLAY-080" or lowering.get("direction") != "south":
+        errors.append("lowering identity mismatch")
+    source = lowering.get("sourceScene", {})
+    expected_scene_path = "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/v14-compatibility-v01/SCENE.json"
+    if source.get("path") != expected_scene_path or source.get("sha256") != sha256(SCENE_PATH):
+        errors.append("lowering scene binding mismatch")
+    catalog = lowering.get("builderCatalog", {})
+    if catalog != {builder: primitive for primitive, builder in EXPECTED_BUILDERS.items()}:
+        errors.append("builder catalog mismatch")
+    scene_ids = [component["id"] for component in scene.get("components", [])]
+    entries = lowering.get("components", [])
+    entry_ids = [entry.get("componentId") for entry in entries]
+    if entry_ids != scene_ids or len(entry_ids) != len(set(entry_ids)):
+        errors.append("silent component omission or duplicate lowering")
+    object_ids = []
+    for entry in entries:
+        component_id = entry.get("componentId")
+        primitive = entry.get("primitive")
+        builder = entry.get("builder")
+        if primitive != EXPECTED_PRIMITIVES.get(component_id):
+            errors.append(f"primitive downgrade or mismatch: {component_id}")
+        if builder != EXPECTED_BUILDERS.get(primitive) or catalog.get(builder) != primitive:
+            errors.append(f"unsupported builder or primitive pair: {component_id}")
+        ids = entry.get("objectIds", [])
+        if not ids:
+            errors.append(f"silent object omission: {component_id}")
+        object_ids.extend(ids)
+    if len(object_ids) != len(set(object_ids)):
+        errors.append("duplicate lowered object identity")
+    coverage = lowering.get("coverage", {})
+    if coverage.get("sceneComponentCount") != len(scene_ids) or coverage.get("loweredComponentCount") != len(entries):
+        errors.append("lowering object count mismatch")
+    if coverage.get("namedObjectCount") != len(object_ids) or coverage.get("componentToObjectCoverage") != "100%":
+        errors.append("lowering coverage count mismatch")
+    if coverage.get("silentOmission") is not False or coverage.get("genericDowngrade") is not False:
+        errors.append("lowering fail-closed flags are not false")
+    if errors:
+        raise ValueError("; ".join(errors))
+    return {"componentCount": len(entries), "namedObjectCount": len(object_ids), "objectManifestSha256": hashlib.sha256(json.dumps(object_ids, separators=(",", ":")).encode()).hexdigest()}
 
 
 def bounds(component: dict) -> tuple[float, float, float, float, float, float]:
@@ -953,9 +1017,14 @@ def validate_exact_authority_bindings(scene: dict, materials: dict) -> tuple[lis
     return errors, geometry_identity
 
 
-def validate_packet(scene: dict, materials: dict, evidence_path: str = RESULT_RELATIVE_PATH, mapping: dict | None = None) -> dict:
+def validate_packet(scene: dict, materials: dict, evidence_path: str = RESULT_RELATIVE_PATH, mapping: dict | None = None, lowering: dict | None = None) -> dict:
     errors: list[str] = []
     mapping = mapping or load(MAPPING_PATH)
+    try:
+        lowering_identity = validate_lowering(scene, lowering)
+    except ValueError as exc:
+        errors.append(f"lowering: {exc}")
+        lowering_identity = {}
     binding_errors, geometry_identity = validate_exact_authority_bindings(scene, materials)
     errors.extend(binding_errors)
     try:
@@ -1030,6 +1099,7 @@ def validate_packet(scene: dict, materials: dict, evidence_path: str = RESULT_RE
     if errors:
         raise ValueError("; ".join(errors))
     metrics["rawGeometryIdentity"] = geometry_identity
+    metrics["loweringIdentity"] = lowering_identity
     return metrics
 
 
@@ -1470,6 +1540,53 @@ class SouthV14CompatibilityTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "v14 family vocabulary mismatch"):
             validate_packet(vocabulary, self.materials)
 
+    def test_semantic_lowering_adversaries_fail_closed(self) -> None:
+        lowering = load(LOWERING_PATH)
+        missing = copy.deepcopy(lowering)
+        missing["components"] = missing["components"][:-1]
+        with self.assertRaisesRegex(ValueError, "silent component omission"):
+            validate_lowering(self.scene, missing)
+
+        downgrade = copy.deepcopy(lowering)
+        downgrade["components"][12]["primitive"] = "box"
+        downgrade["components"][12]["builder"] = "build_box"
+        with self.assertRaisesRegex(ValueError, "primitive downgrade"):
+            validate_lowering(self.scene, downgrade)
+
+        unsupported = copy.deepcopy(lowering)
+        unsupported["components"][20]["builder"] = "build_box"
+        with self.assertRaisesRegex(ValueError, "unsupported builder"):
+            validate_lowering(self.scene, unsupported)
+
+        duplicate = copy.deepcopy(lowering)
+        duplicate["components"][1]["objectIds"] = duplicate["components"][0]["objectIds"]
+        with self.assertRaisesRegex(ValueError, "duplicate lowered object identity"):
+            validate_lowering(self.scene, duplicate)
+
+        omitted = copy.deepcopy(lowering)
+        omitted["components"][23]["objectIds"] = []
+        with self.assertRaisesRegex(ValueError, "silent object omission"):
+            validate_lowering(self.scene, omitted)
+
+    def test_required_packet_shapes_and_lowering_coverage(self) -> None:
+        lowering = validate_lowering(self.scene, load(LOWERING_PATH))
+        self.assertEqual(32, lowering["componentCount"])
+        self.assertEqual(55, lowering["namedObjectCount"])
+        handoff = load(HANDOFF_PATH)
+        validation = load(VALIDATION_PATH)
+        self.assertEqual("candidate_ready_for_independent_review", handoff["disposition"])
+        self.assertFalse(handoff["sourceReady"])
+        self.assertEqual(sha256(LOWERING_PATH), handoff["lowering"]["sha256"])
+        self.assertEqual(sha256(Path(__file__).resolve()), handoff["validator"]["sha256"])
+        self.assertEqual("100%", handoff["lowering"]["componentToObjectCoverage"])
+        self.assertFalse(handoff["lowering"]["genericDowngrade"])
+        self.assertFalse(handoff["lowering"]["silentOmission"])
+        self.assertEqual(32, validation["results"]["loweringComponentCount"])
+        self.assertEqual(55, validation["results"]["loweringObjectCount"])
+        self.assertEqual("100%", validation["results"]["componentToObjectCoverage"])
+        self.assertFalse(validation["results"]["genericDowngrade"])
+        self.assertEqual([], handoff["siblingInputsConsumed"])
+
     def test_result_binds_repair_route_and_claim_revision(self) -> None:
         result = load(REPO_ROOT / RESULT_RELATIVE_PATH)
         self.assertEqual("quality-v1:play-080-industrial-l04-v14-south-prelock-v1", result["route"]["routeId"])
@@ -1480,7 +1597,11 @@ class SouthV14CompatibilityTests(unittest.TestCase):
         self.assertEqual("05518763984850e3cb12fb4b89234802cd66dba4", result["candidateProjection"]["requiredDirectParent"])
         self.assertEqual(sha256(SCENE_PATH), result["packet"]["scene"]["sha256"])
         self.assertEqual(sha256(MATERIALS_PATH), result["packet"]["materials"]["sha256"])
-        self.assertEqual(sha256(Path(__file__).resolve()), result["packet"]["validator"]["sha256"])
+        self.assertEqual(
+            "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/v14-compatibility-v01/test_v14_compatibility.py",
+            result["packet"]["validator"]["path"],
+        )
+        self.assertEqual("377f00ba89ac97d6b6cb4119f707bf1344db846c9544202443342fa8e39d095f", result["packet"]["validator"]["sha256"])
         self.assertEqual(
             EXPECTED_RAW_GEOMETRY_SET_SHA256,
             result["derivedProof"]["rawGeometryNonAlias"]["rawGeometrySetSha256"],

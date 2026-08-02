@@ -43,9 +43,12 @@ final class LotContextRenderer {
     }
 
     private struct ContextTemplate {
-        let cityChildren: [SKNode]
-        let neighborhoodChildren: [SKNode]
-        let blockChildren: [SKNode]
+        let groundCityChildren: [SKNode]
+        let groundNeighborhoodChildren: [SKNode]
+        let groundBlockChildren: [SKNode]
+        let foregroundCityChildren: [SKNode]
+        let foregroundNeighborhoodChildren: [SKNode]
+        let foregroundBlockChildren: [SKNode]
     }
 
     /// Context geometry is immutable for one bounded
@@ -70,17 +73,76 @@ final class LotContextRenderer {
         neighborhood: SKNode,
         block: SKNode
     ) {
-        guard let family = family(for: tile.kind) else { return }
+        addGroundContext(
+            for: tile,
+            adjacentRoads: adjacentRoads,
+            selectedFrontage: selectedFrontage,
+            city: city,
+            neighborhood: neighborhood,
+            block: block
+        )
+        addForegroundContext(
+            for: tile,
+            adjacentRoads: adjacentRoads,
+            selectedFrontage: selectedFrontage,
+            city: city,
+            neighborhood: neighborhood,
+            block: block
+        )
+    }
+
+    /// Adds only lot substrate and broad ground-plane treatment. LotRenderer
+    /// calls this before the accepted authored sprite.
+    func addGroundContext(
+        for tile: CityTile,
+        adjacentRoads: RoadConnectionMask,
+        selectedFrontage: RoadConnectionMask?,
+        city: SKNode,
+        neighborhood: SKNode,
+        block: SKNode
+    ) {
+        guard let template = template(
+            for: tile,
+            adjacentRoads: adjacentRoads,
+            selectedFrontage: selectedFrontage
+        ) else { return }
+        addCopies(of: template.groundCityChildren, to: city)
+        addCopies(of: template.groundNeighborhoodChildren, to: neighborhood)
+        addCopies(of: template.groundBlockChildren, to: block)
+    }
+
+    /// Adds only genuinely vertical/depth-near accents. LotRenderer calls
+    /// this after the accepted authored sprite so a foreground cue cannot
+    /// force a broad ground polygon onto a facade.
+    func addForegroundContext(
+        for tile: CityTile,
+        adjacentRoads: RoadConnectionMask,
+        selectedFrontage: RoadConnectionMask?,
+        city: SKNode,
+        neighborhood: SKNode,
+        block: SKNode
+    ) {
+        guard let template = template(
+            for: tile,
+            adjacentRoads: adjacentRoads,
+            selectedFrontage: selectedFrontage
+        ) else { return }
+        addCopies(of: template.foregroundCityChildren, to: city)
+        addCopies(of: template.foregroundNeighborhoodChildren, to: neighborhood)
+        addCopies(of: template.foregroundBlockChildren, to: block)
+    }
+
+    private func template(
+        for tile: CityTile,
+        adjacentRoads: RoadConnectionMask,
+        selectedFrontage: RoadConnectionMask?
+    ) -> ContextTemplate? {
+        guard let family = family(for: tile.kind) else { return nil }
         let frontage = selectedFrontage
             ?? ResidentialGeneratedAssetIdentity.authoritativeFrontagePriority.first(
                 where: adjacentRoads.contains
             )
-        let variant = WorldVisualSeed.variant(
-            count: 4,
-            for: tile.coordinate,
-            kind: tile.kind,
-            salt: 0x6600
-        )
+        let variant = Self.districtMaterialVariant(for: tile)
         let key = TemplateKey(
             family: family.rawValue,
             variant: variant,
@@ -88,11 +150,10 @@ final class LotContextRenderer {
             tileWidthHundredths: Int((style.tileWidth * 100).rounded()),
             tileHeightHundredths: Int((style.tileHeight * 100).rounded())
         )
-        let template: ContextTemplate
         if let cached = Self.templates[key] {
-            template = cached
+            return cached
         } else {
-            template = makeTemplate(
+            let template = makeTemplate(
                 family: family,
                 variant: variant,
                 frontage: frontage
@@ -100,10 +161,8 @@ final class LotContextRenderer {
             if Self.templates.count < Self.maximumTemplateCount {
                 Self.templates[key] = template
             }
+            return template
         }
-        addCopies(of: template.cityChildren, to: city)
-        addCopies(of: template.neighborhoodChildren, to: neighborhood)
-        addCopies(of: template.blockChildren, to: block)
     }
 
     func placementLedger(
@@ -239,16 +298,35 @@ final class LotContextRenderer {
         variant: Int,
         frontage: RoadConnectionMask?
     ) -> ContextTemplate {
-        let city = SKNode()
-        let neighborhood = SKNode()
-        let block = SKNode()
-        addCityLotRhythm(family: family, variant: variant, to: city)
+        let groundCity = SKNode()
+        let groundNeighborhood = SKNode()
+        let groundBlock = SKNode()
+        let foregroundCity = SKNode()
+        let foregroundNeighborhood = SKNode()
+        let foregroundBlock = SKNode()
+        addCityLotRhythm(
+            family: family,
+            variant: variant,
+            frontage: frontage,
+            to: groundCity
+        )
+        if Self.isOrdinaryFamily(family) {
+            addContactShadow(family: family, variant: variant, to: groundCity)
+        }
         addBoundary(
             family: family,
             frontage: frontage,
             variant: variant,
-            to: neighborhood
+            to: groundNeighborhood
         )
+        if Self.isOrdinaryFamily(family), let frontage {
+            addVariantGroundTreatment(
+                family: family,
+                variant: variant,
+                frontage: frontage,
+                to: groundNeighborhood
+            )
+        }
         if let frontage {
             let placements = placementLedger(
                 family: family,
@@ -256,7 +334,9 @@ final class LotContextRenderer {
                 variant: variant
             )
             for (index, placement) in placements.enumerated() {
-                let destination = placement.groundOnly ? neighborhood : block
+                let destination = placement.groundOnly
+                    ? groundNeighborhood
+                    : foregroundBlock
                 add(
                     placement: placement,
                     index: index,
@@ -268,9 +348,12 @@ final class LotContextRenderer {
             }
         }
         return ContextTemplate(
-            cityChildren: detachedChildren(of: city),
-            neighborhoodChildren: detachedChildren(of: neighborhood),
-            blockChildren: detachedChildren(of: block)
+            groundCityChildren: detachedChildren(of: groundCity),
+            groundNeighborhoodChildren: detachedChildren(of: groundNeighborhood),
+            groundBlockChildren: detachedChildren(of: groundBlock),
+            foregroundCityChildren: detachedChildren(of: foregroundCity),
+            foregroundNeighborhoodChildren: detachedChildren(of: foregroundNeighborhood),
+            foregroundBlockChildren: detachedChildren(of: foregroundBlock)
         )
     }
 
@@ -293,20 +376,31 @@ final class LotContextRenderer {
         templates.count
     }
 
+    static func visibleVariantCount(for kind: BuildingKind) -> Int {
+        switch kind {
+        case .residential:
+            4
+        case .commercial:
+            2
+        case .industrial, .powerPlant, .waterTower:
+            3
+        case .cityHall, .fireStation, .policeStation, .school, .park,
+             .empty, .road:
+            1
+        }
+    }
+
     /// Four-neighbor parcels never receive the same immediate site treatment.
     /// This renderer-owned material choice does not alter building identity,
     /// occupancy, frontage, or gameplay state.
     static func districtMaterialVariant(for tile: CityTile) -> Int {
-        let familyOffset: Int = switch tile.kind {
-        case .residential: 0
-        case .commercial: 1
-        case .industrial, .powerPlant, .waterTower: 2
-        case .cityHall, .fireStation, .policeStation, .school: 3
-        case .park: 1
-        case .empty, .road: 0
-        }
-        let value = tile.coordinate.x + tile.coordinate.y * 2 + familyOffset
-        return ((value % 4) + 4) % 4
+        let count = visibleVariantCount(for: tile.kind)
+        let value = tile.coordinate.x + tile.coordinate.y
+        return ((value % count) + count) % count
+    }
+
+    private static func isOrdinaryFamily(_ family: Family) -> Bool {
+        family == .residential || family == .commercial || family == .industrial
     }
 
     private func family(for kind: BuildingKind) -> Family? {
@@ -329,6 +423,7 @@ final class LotContextRenderer {
     private func addCityLotRhythm(
         family: Family,
         variant: Int,
+        frontage: RoadConnectionMask?,
         to node: SKNode
     ) {
         let rhythm = SKShapeNode(path: style.diamondPath(width: 64, height: 32))
@@ -338,6 +433,100 @@ final class LotContextRenderer {
         rhythm.lineWidth = family == .industrial ? 1.25 : 0.9
         rhythm.zPosition = -3.1
         node.addChild(rhythm)
+
+        guard family == .residential, let frontage else { return }
+        let front = normalized(style.roadSocket(for: frontage))
+        let across = CGPoint(x: -front.y, y: front.x)
+        let side: CGFloat = variant.isMultiple(of: 2) ? -1 : 1
+        let accent = SKShapeNode(path: style.diamondPath(
+            width: variant.isMultiple(of: 2) ? 16 : 13,
+            height: variant.isMultiple(of: 2) ? 8 : 6
+        ))
+        accent.name = "lot.context.city.residential.variant-ground.\(variant)"
+        accent.position = CGPoint(
+            x: front.x * (variant.isMultiple(of: 2) ? -2 : 2)
+                + across.x * side * 3.5,
+            y: front.y * (variant.isMultiple(of: 2) ? -2 : 2)
+                + across.y * side * 3.5
+        )
+        accent.fillColor = style.palette.foliage[(variant + 1) % style.palette.foliage.count]
+            .withAlphaComponent(0.24)
+        accent.strokeColor = style.palette.mapEarthDark.withAlphaComponent(0.30)
+        accent.lineWidth = 0.55
+        accent.zPosition = -2.8
+        node.addChild(accent)
+    }
+
+    private func addContactShadow(
+        family: Family,
+        variant: Int,
+        to node: SKNode
+    ) {
+        let width: CGFloat = switch family {
+        case .residential: 58
+        case .commercial: 62
+        case .industrial: 66
+        case .civic, .park: 0
+        }
+        let shadow = SKShapeNode(path: style.diamondPath(
+            width: width + CGFloat(variant % 2),
+            height: width / 2 + CGFloat(variant % 2) * 0.5
+        ))
+        shadow.name = "lot.context.city.\(family.rawValue).contact-shadow.\(variant)"
+        shadow.fillColor = NSColor.black.withAlphaComponent(0.13)
+        shadow.strokeColor = .clear
+        shadow.position = CGPoint(x: 0.55, y: -0.35)
+        shadow.zPosition = -3.2
+        node.addChild(shadow)
+    }
+
+    private func addVariantGroundTreatment(
+        family: Family,
+        variant: Int,
+        frontage: RoadConnectionMask,
+        to node: SKNode
+    ) {
+        let front = normalized(style.roadSocket(for: frontage))
+        let across = CGPoint(x: -front.y, y: front.x)
+        let side: CGFloat = variant.isMultiple(of: 2) ? -1 : 1
+        let center = CGPoint(
+            x: front.x * -8.5 + across.x * side * 4.5,
+            y: front.y * -8.5 + across.y * side * 4.5
+        )
+        let width: CGFloat = switch family {
+        case .residential: 13
+        case .commercial: 18
+        case .industrial: 20
+        case .civic, .park: 0
+        }
+        let height: CGFloat = family == .industrial ? 6 : 5
+        let treatment = SKShapeNode(path: style.diamondPath(width: width, height: height))
+        treatment.name = "lot.lod.neighborhood.variant-ground.\(family.rawValue).\(variant)"
+        treatment.fillColor = switch family {
+        case .residential:
+            style.palette.parkGrass.blended(withFraction: 0.18, of: style.palette.lotGrass)
+                ?? style.palette.parkGrass
+        case .commercial:
+            variant == 0
+                ? style.palette.concreteLight.blended(withFraction: 0.30, of: style.palette.parkGrass)
+                    ?? style.palette.concreteLight
+                : style.palette.asphaltLight.blended(withFraction: 0.42, of: style.palette.concrete)
+                    ?? style.palette.asphaltLight
+        case .industrial:
+            variant == 0
+                ? style.palette.soil.blended(withFraction: 0.20, of: style.palette.concrete)
+                    ?? style.palette.soil
+                : style.palette.asphaltLight.blended(withFraction: 0.35, of: style.palette.soil)
+                    ?? style.palette.asphaltLight
+        case .civic, .park:
+            style.palette.concrete
+        }
+        treatment.fillColor = treatment.fillColor.withAlphaComponent(0.56)
+        treatment.strokeColor = style.palette.mapEarthDark.withAlphaComponent(0.30)
+        treatment.lineWidth = 0.55
+        treatment.position = center
+        treatment.zPosition = 4.35
+        node.addChild(treatment)
     }
 
     private func addBoundary(

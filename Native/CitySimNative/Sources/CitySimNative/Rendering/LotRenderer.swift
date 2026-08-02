@@ -137,17 +137,8 @@ final class LotRenderer {
         root.addChild(blockLayer)
 
         addCityDensityFoundation(for: tile.kind, to: cityLayer)
-        addAuthoredFrontage(
-            for: tile.kind,
-            adjacentRoads: adjacentRoads,
-            selectedEdge: residentialIdentity?.frontage
-                ?? commercialIdentity?.frontage
-                ?? industrialIdentity?.frontage,
-            detail: detail,
-            to: neighborhoodLayer
-        )
         if presentation.construction == .complete || presentation.construction == .finishing {
-            contextRenderer.addContext(
+            contextRenderer.addGroundContext(
                 for: tile,
                 adjacentRoads: adjacentRoads,
                 selectedFrontage: residentialIdentity?.frontage
@@ -158,6 +149,15 @@ final class LotRenderer {
                 block: blockLayer
             )
         }
+        addAuthoredFrontage(
+            for: tile.kind,
+            adjacentRoads: adjacentRoads,
+            selectedEdge: residentialIdentity?.frontage
+                ?? commercialIdentity?.frontage
+                ?? industrialIdentity?.frontage,
+            detail: detail,
+            to: neighborhoodLayer
+        )
         if presentation.construction == .complete {
             addBlockInspectionDetail(
                 for: tile,
@@ -174,6 +174,18 @@ final class LotRenderer {
                 industrialIdentity: industrialIdentity,
                 adjacentRoads: adjacentRoads,
                 detail: detail,
+                city: cityLayer,
+                neighborhood: neighborhoodLayer,
+                block: blockLayer
+            )
+        }
+        if presentation.construction == .complete {
+            contextRenderer.addForegroundContext(
+                for: tile,
+                adjacentRoads: adjacentRoads,
+                selectedFrontage: residentialIdentity?.frontage
+                    ?? commercialIdentity?.frontage
+                    ?? industrialIdentity?.frontage,
                 city: cityLayer,
                 neighborhood: neighborhoodLayer,
                 block: blockLayer

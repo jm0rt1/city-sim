@@ -1,0 +1,103 @@
+{
+  "schema": 2,
+  "task": "PLAY-027",
+  "direction": "north",
+  "status": "STATIC_REFERENCE_CANDIDATE",
+  "architectureState": "complete_but_externally_gated",
+  "executableBehavior": "UNPROVEN",
+  "route": {
+    "carrierCommit": "5157b3a1027e5f70e0f8457e0c1ca925ab097d73",
+    "carrierReceiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-027-NORTH-V14-EXECUTABLE-PHASE-LADDER-R2.json",
+    "carrierReceiptSHA256": "46469afcb2e81e0e69448835a6b5776acc29ea5840f9b97a87700c4724b88f4b",
+    "routeId": "quality-v2:play-027-north-v14-executable-phase-ladder-r2",
+    "modelRouteSHA256": "886683839569876871d8dd698afb6d9db14b5d44d626b94c448e20166829ca61",
+    "classification": "FRONTIER_AUTHORITY",
+    "model": "gpt-5.6-sol",
+    "effort": "high",
+    "authorityCommit": "b4dcbd0418176d680ecf2d993c16649fc401a92e",
+    "observedHead": "60ff83524c81a87cdeb6ccb6944f64a78bed3085",
+    "claimSHA256": "3ba55646cea13c31719d687242eec431fc60c697cfd20bb555f729503c0df332"
+  },
+  "sourceHashes": {
+    "DIAGNOSTIC-CONTRACT.json": "3cbd3a375e1dc48a9be3da43dc908ab7ecd817cb73087788ffcf6980f981be5e",
+    "launch_phase_ladder.py": "8a16ce2fb537d34e4abe3a4ee7cdfca7efce8af663f9c191f02e1fe0ddf8422d",
+    "phase_ladder_child.py": "07bea3d108d947fcf35d94566e7bfbea92bd94402903920d579411f95c0e282b",
+    "test_phase_ladder_prelaunch.py": "1619a7d130362a440715a5af1b636239289576bf09d80facd0e4e079d0583e0c"
+  },
+  "implementedReference": {
+    "liveGitBranchAndHead": true,
+    "carrierReceiptAndCanonicalRoute": true,
+    "publishedScheduleGrantSessionStaticApprovalBytes": true,
+    "attemptMarkerAtomicConsumption": true,
+    "oneDormantChildStartSite": true,
+    "childIndependentRepositoryAuthorityValidation": true,
+    "orderedFlushedPhaseEmitter": true,
+    "launcherFsyncedJSONL": true,
+    "communicateCapture": true,
+    "timeoutAndProcessGroupKill": true,
+    "completeOrFailureReceipt": true,
+    "crashReportInventory": true,
+    "governedSemanticHelper": "construct_semantic_geometry",
+    "componentCount": 33,
+    "objectCount": 97,
+    "solidObjectCount": 96,
+    "microRender": {"engine": "CYCLES", "device": "CPU", "threads": 1, "samples": 8, "resolution": [8, 8], "nonShipping": true}
+  },
+  "focusedRuns": [
+    {
+      "pass": 1,
+      "existingPrelaunch": {"status": "STATIC_REFERENCE_CANDIDATE", "adversaries": 42, "components": 33, "objects": 97, "childStarts": 0, "dccProcessCount": 0, "pixelWrites": 0},
+      "phaseLadder": {"status": "PASS", "adversaries": 23, "fakeProcessScenarios": 6, "phaseCount": 9, "childStartSites": 1, "childStarts": 0, "dccProcessCount": 0, "pixelWrites": 0, "executableBehavior": "UNPROVEN"}
+    },
+    {
+      "pass": 2,
+      "existingPrelaunch": {"status": "STATIC_REFERENCE_CANDIDATE", "adversaries": 42, "components": 33, "objects": 97, "childStarts": 0, "dccProcessCount": 0, "pixelWrites": 0},
+      "phaseLadder": {"status": "PASS", "adversaries": 23, "fakeProcessScenarios": 6, "phaseCount": 9, "childStartSites": 1, "childStarts": 0, "dccProcessCount": 0, "pixelWrites": 0, "executableBehavior": "UNPROVEN"}
+    }
+  ],
+  "executionAccounting": {
+    "readyNow": ["north:independent-executable-reference-review"],
+    "running": [],
+    "waitingOnJoin": ["Integration independent line-by-line review"],
+    "serializedAuthority": {"owner": "Integration", "stage": "future-stage-b", "schedule": false, "grant": false, "session": false, "staticApproval": false, "dccAuthority": false},
+    "nextRefill": "Integration may publish one separately reviewed Stage-B schedule/grant/session/static-approval packet",
+    "capacity": {"helperSlots": 1, "dccSlots": 0, "maximumChildStarts": 0},
+    "launchedJobs": [
+      {
+        "jobId": "play027-north-executable-phase-reference-r2",
+        "resourceClass": "helper",
+        "state": "completed",
+        "startedAt": "2026-08-02T19:29:29Z",
+        "endedAt": "2026-08-02T19:41:26Z",
+        "exclusiveRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/process-a-phase-ladder-v01",
+        "evidenceItem": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v14/process-a-phase-ladder-r1/STATIC-RECEIPT.json",
+        "mutation": "task-owned executable reference, fake-process tests, and static receipt",
+        "dccSlot": null,
+        "processId": null
+      }
+    ],
+    "unusedCapacityReasons": [
+      {
+        "reasonCode": "dcc_not_authorized",
+        "owner": "Integration",
+        "dependencyAuthority": {"path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-NORTH-V14-EXECUTABLE-PHASE-LADDER-RETURN-REPAIR-V1.md", "sha256": "417ac755ec8c829a65bff06384e9816182af1df4407eed7503fd51250fd12fd9"},
+        "resumptionEvent": "Integration publishes and independently reviews exact Stage-B schedule, grant, session and static approval",
+        "nextRefillJob": "north:stage-b-diagnostic"
+      }
+    ],
+    "overlap": {"status": "none", "jobIds": ["play027-north-executable-phase-reference-r2"], "startedAt": "2026-08-02T19:29:29Z", "endedAt": "2026-08-02T19:41:26Z", "reason": "one visible worktree writer and zero authorized DCC slots"},
+    "join": "joined"
+  },
+  "proofLimits": {
+    "BlenderLaunched": false,
+    "DCCProcessCount": 0,
+    "governedOutputRootCreated": false,
+    "pixelWrites": 0,
+    "microRenderObserved": false,
+    "executableBehavior": "UNPROVEN",
+    "appearanceReviewed": false,
+    "sourceAuthority": false,
+    "productionSelected": false
+  },
+  "stopCondition": "Stopped clean before Blender, phase-output, pixels, Process B/C, normalization, acceptance, push, integration or pinning."
+}

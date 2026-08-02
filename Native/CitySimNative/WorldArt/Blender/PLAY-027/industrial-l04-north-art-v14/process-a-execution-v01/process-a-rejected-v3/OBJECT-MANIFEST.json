@@ -1,0 +1,3251 @@
+{
+  "coverage": {
+    "v14-clerestory-band": [
+      "v14-clerestory-band::frame-00",
+      "v14-clerestory-band::frame-01",
+      "v14-clerestory-band::frame-02",
+      "v14-clerestory-band::glass-00",
+      "v14-clerestory-band::glass-01",
+      "v14-clerestory-band::glass-02"
+    ],
+    "v14-contact-shadow-receiver": [
+      "v14-contact-shadow-receiver::primary"
+    ],
+    "v14-crane-girder-north": [
+      "v14-crane-girder-north::lower-chord",
+      "v14-crane-girder-north::upper-chord",
+      "v14-crane-girder-north::diagonal-0",
+      "v14-crane-girder-north::diagonal-1"
+    ],
+    "v14-crane-girder-south": [
+      "v14-crane-girder-south::lower-chord",
+      "v14-crane-girder-south::upper-chord",
+      "v14-crane-girder-south::diagonal-0",
+      "v14-crane-girder-south::diagonal-1"
+    ],
+    "v14-crane-lantern": [
+      "v14-crane-lantern::lower-chord",
+      "v14-crane-lantern::upper-chord",
+      "v14-crane-lantern::diagonal-0",
+      "v14-crane-lantern::diagonal-1"
+    ],
+    "v14-crucible-heat-cap": [
+      "v14-crucible-heat-cap::primary"
+    ],
+    "v14-crucible-vessel": [
+      "v14-crucible-vessel::body",
+      "v14-crucible-vessel::shoulder",
+      "v14-crucible-vessel::rim"
+    ],
+    "v14-east-control-annex": [
+      "v14-east-control-annex::primary"
+    ],
+    "v14-east-monitor-roof": [
+      "v14-east-monitor-roof::peak-00",
+      "v14-east-monitor-roof::peak-01",
+      "v14-east-monitor-roof::peak-02",
+      "v14-east-monitor-roof::slope-00",
+      "v14-east-monitor-roof::slope-01",
+      "v14-east-monitor-roof::slope-02",
+      "v14-east-monitor-roof::eave"
+    ],
+    "v14-foundation": [
+      "v14-foundation::primary"
+    ],
+    "v14-freight-bay-center": [
+      "v14-freight-bay-center::primary"
+    ],
+    "v14-freight-bay-east": [
+      "v14-freight-bay-east::primary"
+    ],
+    "v14-freight-bay-west": [
+      "v14-freight-bay-west::primary"
+    ],
+    "v14-gutters-and-rails": [
+      "v14-gutters-and-rails::member-00",
+      "v14-gutters-and-rails::member-01",
+      "v14-gutters-and-rails::member-02",
+      "v14-gutters-and-rails::member-03",
+      "v14-gutters-and-rails::member-04"
+    ],
+    "v14-main-foundry-hall": [
+      "v14-main-foundry-hall::primary"
+    ],
+    "v14-monumental-portal-east-jamb": [
+      "v14-monumental-portal-east-jamb::primary"
+    ],
+    "v14-monumental-portal-header": [
+      "v14-monumental-portal-header::primary"
+    ],
+    "v14-monumental-portal-void": [
+      "v14-monumental-portal-void::frame",
+      "v14-monumental-portal-void::empty-aperture",
+      "v14-monumental-portal-void::inset-back",
+      "v14-monumental-portal-void::reveal-left",
+      "v14-monumental-portal-void::reveal-right",
+      "v14-monumental-portal-void::reveal-header"
+    ],
+    "v14-monumental-portal-west-jamb": [
+      "v14-monumental-portal-west-jamb::primary"
+    ],
+    "v14-north-loading-apron": [
+      "v14-north-loading-apron::road-link",
+      "v14-north-loading-apron::service-pad"
+    ],
+    "v14-portal-threshold": [
+      "v14-portal-threshold::slab",
+      "v14-portal-threshold::edge"
+    ],
+    "v14-process-pipe-east": [
+      "v14-process-pipe-east::segment-00",
+      "v14-process-pipe-east::segment-01",
+      "v14-process-pipe-east::segment-02",
+      "v14-process-pipe-east::elbow-00",
+      "v14-process-pipe-east::elbow-01",
+      "v14-process-pipe-east::supports"
+    ],
+    "v14-process-pipe-west": [
+      "v14-process-pipe-west::segment-00",
+      "v14-process-pipe-west::segment-01",
+      "v14-process-pipe-west::segment-02",
+      "v14-process-pipe-west::elbow-00",
+      "v14-process-pipe-west::elbow-01",
+      "v14-process-pipe-west::supports"
+    ],
+    "v14-roof-plant-tanks": [
+      "v14-roof-plant-tanks::unit-00",
+      "v14-roof-plant-tanks::unit-01",
+      "v14-roof-plant-tanks::unit-02"
+    ],
+    "v14-roof-vents": [
+      "v14-roof-vents::unit-00",
+      "v14-roof-vents::unit-01",
+      "v14-roof-vents::unit-02"
+    ],
+    "v14-safety-markings": [
+      "v14-safety-markings::stripe-00",
+      "v14-safety-markings::stripe-01"
+    ],
+    "v14-service-doors": [
+      "v14-service-doors::door-00",
+      "v14-service-doors::door-01",
+      "v14-service-doors::door-02"
+    ],
+    "v14-stack": [
+      "v14-stack::shaft",
+      "v14-stack::bands"
+    ],
+    "v14-stack-cap": [
+      "v14-stack-cap::primary"
+    ],
+    "v14-staff-entrance": [
+      "v14-staff-entrance::frame",
+      "v14-staff-entrance::leaf"
+    ],
+    "v14-west-sawtooth-roof": [
+      "v14-west-sawtooth-roof::peak-00",
+      "v14-west-sawtooth-roof::peak-01",
+      "v14-west-sawtooth-roof::peak-02",
+      "v14-west-sawtooth-roof::peak-03",
+      "v14-west-sawtooth-roof::slope-00",
+      "v14-west-sawtooth-roof::slope-01",
+      "v14-west-sawtooth-roof::slope-02",
+      "v14-west-sawtooth-roof::slope-03",
+      "v14-west-sawtooth-roof::eave"
+    ],
+    "v14-west-structural-return": [
+      "v14-west-structural-return::primary"
+    ],
+    "v14-window-mullions": [
+      "v14-window-mullions::member-00",
+      "v14-window-mullions::member-01",
+      "v14-window-mullions::member-02",
+      "v14-window-mullions::member-03",
+      "v14-window-mullions::member-04"
+    ]
+  },
+  "geometryID": "industrial-l04-north-v14-crucible-portal-foundry",
+  "objects": [
+    {
+      "boundsXYZ": [
+        [
+          -28,
+          0,
+          -28
+        ],
+        [
+          28,
+          0.7,
+          28
+        ]
+      ],
+      "componentID": "v14-foundation",
+      "geometryKind": "box",
+      "geometrySignature": "7e64948a1d8389576fa170c96bf474bb45a0ba03d3cb7835a0a43256e7d61682",
+      "id": "v14-foundation::primary",
+      "materialRole": "concrete-apron",
+      "parameters": {},
+      "primitive": "box"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -14,
+          0.72,
+          -28
+        ],
+        [
+          14,
+          1.0,
+          -15
+        ]
+      ],
+      "componentID": "v14-north-loading-apron",
+      "geometryKind": "apron-road-link",
+      "geometrySignature": "032d662ee40d19cf1a66c6b5c447017d255acbb8e04076f711c1649bce124af5",
+      "id": "v14-north-loading-apron::road-link",
+      "materialRole": "concrete-apron",
+      "parameters": {},
+      "primitive": "apron-path"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -13,
+          0.72,
+          -26
+        ],
+        [
+          13,
+          1.0,
+          -15
+        ]
+      ],
+      "componentID": "v14-north-loading-apron",
+      "geometryKind": "apron-service-pad",
+      "geometrySignature": "b34db45d54a56de621ffa31e69155b81dcd58ac19fd820e719e9990a4ef04990",
+      "id": "v14-north-loading-apron::service-pad",
+      "materialRole": "concrete-apron",
+      "parameters": {},
+      "primitive": "apron-path"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -25,
+          0.7,
+          -15
+        ],
+        [
+          25,
+          24,
+          22
+        ]
+      ],
+      "componentID": "v14-main-foundry-hall",
+      "geometryKind": "box",
+      "geometrySignature": "3fb36c8176bc095e96b2faf3b8faac4fea6790c870ab66d99ee0a3273465d327",
+      "id": "v14-main-foundry-hall::primary",
+      "materialRole": "warm-masonry",
+      "parameters": {},
+      "primitive": "box"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -27,
+          0.7,
+          -10
+        ],
+        [
+          -24,
+          28,
+          20
+        ]
+      ],
+      "componentID": "v14-west-structural-return",
+      "geometryKind": "box",
+      "geometrySignature": "3d803d8e41aea905dd8186f72ded3e1a247e1694ba3d1ea424f1fa2b42c3f7ea",
+      "id": "v14-west-structural-return::primary",
+      "materialRole": "warm-masonry",
+      "parameters": {},
+      "primitive": "box"
+    },
+    {
+      "boundsXYZ": [
+        [
+          15,
+          0.7,
+          -12
+        ],
+        [
+          25,
+          15,
+          4
+        ]
+      ],
+      "componentID": "v14-east-control-annex",
+      "geometryKind": "annex",
+      "geometrySignature": "e4922ef1257204540ae3ad07b714c1ac1b50b99ca0b5e568332521e091c3c8e3",
+      "id": "v14-east-control-annex::primary",
+      "materialRole": "warm-masonry",
+      "parameters": {},
+      "primitive": "annex"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -14,
+          1,
+          -27.5
+        ],
+        [
+          -10.5,
+          21,
+          -24
+        ]
+      ],
+      "componentID": "v14-monumental-portal-west-jamb",
+      "geometryKind": "portal-jamb",
+      "geometrySignature": "9613110a6aef5af4e1aa9aa7c1609349689251700cbc4901f3641c94fab1c732",
+      "id": "v14-monumental-portal-west-jamb::primary",
+      "materialRole": "charcoal-steel",
+      "parameters": {},
+      "primitive": "portal-jamb"
+    },
+    {
+      "boundsXYZ": [
+        [
+          10.5,
+          1,
+          -27.5
+        ],
+        [
+          14,
+          21,
+          -24
+        ]
+      ],
+      "componentID": "v14-monumental-portal-east-jamb",
+      "geometryKind": "portal-jamb",
+      "geometrySignature": "f076623f55ebb3a11e80cde31bdc722539fc96a6c283519baa30f6a42e82f6ab",
+      "id": "v14-monumental-portal-east-jamb::primary",
+      "materialRole": "charcoal-steel",
+      "parameters": {},
+      "primitive": "portal-jamb"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -10.5,
+          18,
+          -27.5
+        ],
+        [
+          10.5,
+          24,
+          -24
+        ]
+      ],
+      "componentID": "v14-monumental-portal-header",
+      "geometryKind": "portal-header",
+      "geometrySignature": "14dcc313350f1d31982a9d1f42a40e1558fa3b81bec8f263131198378d937f2d",
+      "id": "v14-monumental-portal-header::primary",
+      "materialRole": "charcoal-steel",
+      "parameters": {},
+      "primitive": "portal-header"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -10.5,
+          1,
+          -27.6
+        ],
+        [
+          10.5,
+          18,
+          -23
+        ]
+      ],
+      "componentID": "v14-monumental-portal-void",
+      "geometryKind": "portal-frame",
+      "geometrySignature": "0ef5fe99d51edb0e5db49bab62292f01188f2d1f94a12c61e9c88b5bcc8a6682",
+      "id": "v14-monumental-portal-void::frame",
+      "materialRole": "freight-depth",
+      "parameters": {
+        "frameRole": "monumental"
+      },
+      "primitive": "recessed-portal"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -10.5,
+          1,
+          -27.6
+        ],
+        [
+          10.5,
+          18,
+          -23
+        ]
+      ],
+      "componentID": "v14-monumental-portal-void",
+      "geometryKind": "void",
+      "geometrySignature": "4743c02ab90a7bd09487f965bb766ac72ab9e8e9b02b2bf4a2f951eeb9b1055e",
+      "id": "v14-monumental-portal-void::empty-aperture",
+      "materialRole": "freight-depth",
+      "parameters": {
+        "solid": false
+      },
+      "primitive": "recessed-portal"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -9.5,
+          1.2,
+          -22.5
+        ],
+        [
+          9.5,
+          17.5,
+          -22.2
+        ]
+      ],
+      "componentID": "v14-monumental-portal-void",
+      "geometryKind": "inset-plane",
+      "geometrySignature": "e693ba4c239d712de8de53756e0375fa44e7d1fdac8be4f3ecd22741a58bd5ee",
+      "id": "v14-monumental-portal-void::inset-back",
+      "materialRole": "freight-depth",
+      "parameters": {
+        "depth": 5.100000000000001,
+        "solid": true
+      },
+      "primitive": "recessed-portal"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -10.51,
+          1,
+          -27.6
+        ],
+        [
+          -10.05,
+          18,
+          -23
+        ]
+      ],
+      "componentID": "v14-monumental-portal-void",
+      "geometryKind": "reveal-jamb",
+      "geometrySignature": "af64056955123f1760e8d160f61adc72aa3cd37dfc828c1cff65a1eea27e2a26",
+      "id": "v14-monumental-portal-void::reveal-left",
+      "materialRole": "freight-depth",
+      "parameters": {
+        "depth": 5.100000000000001
+      },
+      "primitive": "recessed-portal"
+    },
+    {
+      "boundsXYZ": [
+        [
+          10.05,
+          1,
+          -27.6
+        ],
+        [
+          10.51,
+          18,
+          -23
+        ]
+      ],
+      "componentID": "v14-monumental-portal-void",
+      "geometryKind": "reveal-jamb",
+      "geometrySignature": "49d4182aa0ce2dc8032fdffeea75fd108027dac35f90a067e9cf89d95bfe5061",
+      "id": "v14-monumental-portal-void::reveal-right",
+      "materialRole": "freight-depth",
+      "parameters": {
+        "depth": 5.100000000000001
+      },
+      "primitive": "recessed-portal"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -10.5,
+          17.55,
+          -27.6
+        ],
+        [
+          10.5,
+          18.01,
+          -23
+        ]
+      ],
+      "componentID": "v14-monumental-portal-void",
+      "geometryKind": "reveal-header",
+      "geometrySignature": "d02d04ad721855ebbdc93a3c7b9b747d28a6c0766bda35c3f4e2cdf3c26fea16",
+      "id": "v14-monumental-portal-void::reveal-header",
+      "materialRole": "freight-depth",
+      "parameters": {
+        "depth": 5.100000000000001
+      },
+      "primitive": "recessed-portal"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -9.5,
+          1.2,
+          -22.4
+        ],
+        [
+          -3.2,
+          13,
+          -21.8
+        ]
+      ],
+      "componentID": "v14-freight-bay-west",
+      "geometryKind": "freight-recess",
+      "geometrySignature": "e61adb3faf2ad9ab3f14168f1b7b4c9faa5f5f1a68acaf85bc643a7b55baddb9",
+      "id": "v14-freight-bay-west::primary",
+      "materialRole": "freight-depth",
+      "parameters": {},
+      "primitive": "freight-recess"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -2.2,
+          1.2,
+          -22.4
+        ],
+        [
+          2.2,
+          13,
+          -21.8
+        ]
+      ],
+      "componentID": "v14-freight-bay-center",
+      "geometryKind": "freight-recess",
+      "geometrySignature": "5973b969e60d1af4ede4f2480cf148b9fe286bc78e015e1b84c3280a89d933be",
+      "id": "v14-freight-bay-center::primary",
+      "materialRole": "freight-depth",
+      "parameters": {},
+      "primitive": "freight-recess"
+    },
+    {
+      "boundsXYZ": [
+        [
+          3.2,
+          1.2,
+          -22.4
+        ],
+        [
+          9.5,
+          13,
+          -21.8
+        ]
+      ],
+      "componentID": "v14-freight-bay-east",
+      "geometryKind": "freight-recess",
+      "geometrySignature": "ebc65193d30b250f408f36a8aa1524d588d8747423640913bcbbc7b8697fcc4e",
+      "id": "v14-freight-bay-east::primary",
+      "materialRole": "freight-depth",
+      "parameters": {},
+      "primitive": "freight-recess"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -10.5,
+          0.9,
+          -27.7
+        ],
+        [
+          10.5,
+          1.4,
+          -22.8
+        ]
+      ],
+      "componentID": "v14-portal-threshold",
+      "geometryKind": "threshold-slab",
+      "geometrySignature": "456894f22a84b8b169d2b5a89bec0bc2b4b803f008b739f0ddb88c3219b44733",
+      "id": "v14-portal-threshold::slab",
+      "materialRole": "oxidized-machinery",
+      "parameters": {},
+      "primitive": "threshold"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -10.5,
+          0.9,
+          -27.7
+        ],
+        [
+          10.5,
+          1.0,
+          -27.5
+        ]
+      ],
+      "componentID": "v14-portal-threshold",
+      "geometryKind": "threshold-edge",
+      "geometrySignature": "9f6ef4b619a102ae2b7a3d74c2f87d8a3d4fbcd7de12af1abf4d7750679518a2",
+      "id": "v14-portal-threshold::edge",
+      "materialRole": "oxidized-machinery",
+      "parameters": {},
+      "primitive": "threshold"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -25.0,
+          24,
+          -15
+        ],
+        [
+          -18.25,
+          31,
+          22
+        ]
+      ],
+      "componentID": "v14-west-sawtooth-roof",
+      "geometryKind": "sawtooth-peak",
+      "geometrySignature": "519b1868a1f4fd1dc911aa5b53f5fe17977a690b9c0d15cc0dc0ba9d9d1f5655",
+      "id": "v14-west-sawtooth-roof::peak-00",
+      "materialRole": "weathered-roof-steel",
+      "parameters": {
+        "count": 4,
+        "index": 0
+      },
+      "primitive": "sawtooth-roof"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -18.25,
+          24,
+          -15
+        ],
+        [
+          -11.5,
+          31,
+          22
+        ]
+      ],
+      "componentID": "v14-west-sawtooth-roof",
+      "geometryKind": "sawtooth-peak",
+      "geometrySignature": "4795468e063c6b5e6313c14c1b17d625e3bde4be0cf06b3b877939709a24dc8c",
+      "id": "v14-west-sawtooth-roof::peak-01",
+      "materialRole": "weathered-roof-steel",
+      "parameters": {
+        "count": 4,
+        "index": 1
+      },
+      "primitive": "sawtooth-roof"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -11.5,
+          24,
+          -15
+        ],
+        [
+          -4.75,
+          31,
+          22
+        ]
+      ],
+      "componentID": "v14-west-sawtooth-roof",
+      "geometryKind": "sawtooth-peak",
+      "geometrySignature": "b4563bca77e2b10cd3fe6ac8e620fcbdaa3a7c264240f50741d9bf924e77752c",
+      "id": "v14-west-sawtooth-roof::peak-02",
+      "materialRole": "weathered-roof-steel",
+      "parameters": {
+        "count": 4,
+        "index": 2
+      },
+      "primitive": "sawtooth-roof"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -4.75,
+          24,
+          -15
+        ],
+        [
+          2.0,
+          31,
+          22
+        ]
+      ],
+      "componentID": "v14-west-sawtooth-roof",
+      "geometryKind": "sawtooth-peak",
+      "geometrySignature": "3b60dd72a50455e63e57a15c8cd41301d86a12f3e22e1872552ccfa93c94a545",
+      "id": "v14-west-sawtooth-roof::peak-03",
+      "materialRole": "weathered-roof-steel",
+      "parameters": {
+        "count": 4,
+        "index": 3
+      },
+      "primitive": "sawtooth-roof"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -25.0,
+          24,
+          -15
+        ],
+        [
+          -18.25,
+          31,
+          22
+        ]
+      ],
+      "componentID": "v14-west-sawtooth-roof",
+      "geometryKind": "sawtooth-slope-face",
+      "geometrySignature": "d01f248a0fd76608ff2f36155be66fb043c9808317cd66e6cc07d37e7d697933",
+      "id": "v14-west-sawtooth-roof::slope-00",
+      "materialRole": "weathered-roof-steel",
+      "parameters": {
+        "count": 4,
+        "index": 0
+      },
+      "primitive": "sawtooth-roof"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -18.25,
+          24,
+          -15
+        ],
+        [
+          -11.5,
+          31,
+          22
+        ]
+      ],
+      "componentID": "v14-west-sawtooth-roof",
+      "geometryKind": "sawtooth-slope-face",
+      "geometrySignature": "00a2f73dbbcdf7e86dc8da8357ead230eca58d670baec217e932399959acb4a8",
+      "id": "v14-west-sawtooth-roof::slope-01",
+      "materialRole": "weathered-roof-steel",
+      "parameters": {
+        "count": 4,
+        "index": 1
+      },
+      "primitive": "sawtooth-roof"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -11.5,
+          24,
+          -15
+        ],
+        [
+          -4.75,
+          31,
+          22
+        ]
+      ],
+      "componentID": "v14-west-sawtooth-roof",
+      "geometryKind": "sawtooth-slope-face",
+      "geometrySignature": "18d6fde89269187f388c5e3fac022c41cda920da6c126356b5feea234427cb4a",
+      "id": "v14-west-sawtooth-roof::slope-02",
+      "materialRole": "weathered-roof-steel",
+      "parameters": {
+        "count": 4,
+        "index": 2
+      },
+      "primitive": "sawtooth-roof"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -4.75,
+          24,
+          -15
+        ],
+        [
+          2.0,
+          31,
+          22
+        ]
+      ],
+      "componentID": "v14-west-sawtooth-roof",
+      "geometryKind": "sawtooth-slope-face",
+      "geometrySignature": "114d5c9170af9d78726b9eb47ac987e91944709ff39d014388b3ca6871124f4d",
+      "id": "v14-west-sawtooth-roof::slope-03",
+      "materialRole": "weathered-roof-steel",
+      "parameters": {
+        "count": 4,
+        "index": 3
+      },
+      "primitive": "sawtooth-roof"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -25,
+          24,
+          -15
+        ],
+        [
+          2,
+          24.35,
+          22
+        ]
+      ],
+      "componentID": "v14-west-sawtooth-roof",
+      "geometryKind": "shared-eave",
+      "geometrySignature": "9924e466ed17e32a96aeb5dfd4c2b901464818622b71acf8110df24b543fa1f1",
+      "id": "v14-west-sawtooth-roof::eave",
+      "materialRole": "weathered-roof-steel",
+      "parameters": {
+        "peaks": 4
+      },
+      "primitive": "sawtooth-roof"
+    },
+    {
+      "boundsXYZ": [
+        [
+          2.0,
+          24,
+          -12
+        ],
+        [
+          9.666666666666668,
+          28,
+          22
+        ]
+      ],
+      "componentID": "v14-east-monitor-roof",
+      "geometryKind": "sawtooth-peak",
+      "geometrySignature": "a296ae9bc31cd32d6781d7aba7bc35e805ea14680931946ecacbadfd9c2768fa",
+      "id": "v14-east-monitor-roof::peak-00",
+      "materialRole": "weathered-roof-steel",
+      "parameters": {
+        "count": 3,
+        "index": 0
+      },
+      "primitive": "sawtooth-roof"
+    },
+    {
+      "boundsXYZ": [
+        [
+          9.666666666666668,
+          24,
+          -12
+        ],
+        [
+          17.333333333333336,
+          28,
+          22
+        ]
+      ],
+      "componentID": "v14-east-monitor-roof",
+      "geometryKind": "sawtooth-peak",
+      "geometrySignature": "e9ef802f4b787e2fc8ac0e7eea5a6dee250c1f1dd714e04a9b2e7b5bc1143c7c",
+      "id": "v14-east-monitor-roof::peak-01",
+      "materialRole": "weathered-roof-steel",
+      "parameters": {
+        "count": 3,
+        "index": 1
+      },
+      "primitive": "sawtooth-roof"
+    },
+    {
+      "boundsXYZ": [
+        [
+          17.333333333333336,
+          24,
+          -12
+        ],
+        [
+          25.0,
+          28,
+          22
+        ]
+      ],
+      "componentID": "v14-east-monitor-roof",
+      "geometryKind": "sawtooth-peak",
+      "geometrySignature": "c8ecff324be17d13e2ee94a1fd0c3fafa1ef3477a0f8b5ce937026c41010c204",
+      "id": "v14-east-monitor-roof::peak-02",
+      "materialRole": "weathered-roof-steel",
+      "parameters": {
+        "count": 3,
+        "index": 2
+      },
+      "primitive": "sawtooth-roof"
+    },
+    {
+      "boundsXYZ": [
+        [
+          2.0,
+          24,
+          -12
+        ],
+        [
+          9.666666666666668,
+          28,
+          22
+        ]
+      ],
+      "componentID": "v14-east-monitor-roof",
+      "geometryKind": "sawtooth-slope-face",
+      "geometrySignature": "224291cd769841a3d2b10c9e22f7bcb10b726b1420a706a6d78a654d13487304",
+      "id": "v14-east-monitor-roof::slope-00",
+      "materialRole": "weathered-roof-steel",
+      "parameters": {
+        "count": 3,
+        "index": 0
+      },
+      "primitive": "sawtooth-roof"
+    },
+    {
+      "boundsXYZ": [
+        [
+          9.666666666666668,
+          24,
+          -12
+        ],
+        [
+          17.333333333333336,
+          28,
+          22
+        ]
+      ],
+      "componentID": "v14-east-monitor-roof",
+      "geometryKind": "sawtooth-slope-face",
+      "geometrySignature": "5b23e25bea320acdabf056981327534ffc51952aec1c9362b99250e86c31566f",
+      "id": "v14-east-monitor-roof::slope-01",
+      "materialRole": "weathered-roof-steel",
+      "parameters": {
+        "count": 3,
+        "index": 1
+      },
+      "primitive": "sawtooth-roof"
+    },
+    {
+      "boundsXYZ": [
+        [
+          17.333333333333336,
+          24,
+          -12
+        ],
+        [
+          25.0,
+          28,
+          22
+        ]
+      ],
+      "componentID": "v14-east-monitor-roof",
+      "geometryKind": "sawtooth-slope-face",
+      "geometrySignature": "5498e4e0b337f17fe922d90e3a6275e71b34cbe3d37603af918dd0785dc4f2c3",
+      "id": "v14-east-monitor-roof::slope-02",
+      "materialRole": "weathered-roof-steel",
+      "parameters": {
+        "count": 3,
+        "index": 2
+      },
+      "primitive": "sawtooth-roof"
+    },
+    {
+      "boundsXYZ": [
+        [
+          2,
+          24,
+          -12
+        ],
+        [
+          25,
+          24.35,
+          22
+        ]
+      ],
+      "componentID": "v14-east-monitor-roof",
+      "geometryKind": "shared-eave",
+      "geometrySignature": "6c6719ff1be65ec266b6a517fa67b30443308811795eae5d289ea364f8c4c035",
+      "id": "v14-east-monitor-roof::eave",
+      "materialRole": "weathered-roof-steel",
+      "parameters": {
+        "peaks": 3
+      },
+      "primitive": "sawtooth-roof"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -18.0,
+          28,
+          -4
+        ],
+        [
+          -6.0,
+          34,
+          8
+        ]
+      ],
+      "componentID": "v14-clerestory-band",
+      "geometryKind": "clerestory-frame",
+      "geometrySignature": "fcc6f6e7683e9eac528ae89e6b460f5f253166ccca715692ebfe9d1a47f5050b",
+      "id": "v14-clerestory-band::frame-00",
+      "materialRole": "warm-glazing",
+      "parameters": {
+        "count": 3,
+        "index": 0
+      },
+      "primitive": "clerestory"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -6.0,
+          28,
+          -4
+        ],
+        [
+          6.0,
+          34,
+          8
+        ]
+      ],
+      "componentID": "v14-clerestory-band",
+      "geometryKind": "clerestory-frame",
+      "geometrySignature": "cec9662fe27c16e54c87c0541a4d2256402069e9b64b985c4f3921f7241be2e8",
+      "id": "v14-clerestory-band::frame-01",
+      "materialRole": "warm-glazing",
+      "parameters": {
+        "count": 3,
+        "index": 1
+      },
+      "primitive": "clerestory"
+    },
+    {
+      "boundsXYZ": [
+        [
+          6.0,
+          28,
+          -4
+        ],
+        [
+          18.0,
+          34,
+          8
+        ]
+      ],
+      "componentID": "v14-clerestory-band",
+      "geometryKind": "clerestory-frame",
+      "geometrySignature": "06e5a59f034116fb4e95e9999da07d476a718eae32a69bd8f0a416bc5c7c5f3d",
+      "id": "v14-clerestory-band::frame-02",
+      "materialRole": "warm-glazing",
+      "parameters": {
+        "count": 3,
+        "index": 2
+      },
+      "primitive": "clerestory"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -18.0,
+          28,
+          -4
+        ],
+        [
+          -6.0,
+          34,
+          8
+        ]
+      ],
+      "componentID": "v14-clerestory-band",
+      "geometryKind": "clerestory-glass",
+      "geometrySignature": "81b14ff9cfdf02dc5488c9e20e6d737602b1e934bf213ba76b9bb6e364d713a1",
+      "id": "v14-clerestory-band::glass-00",
+      "materialRole": "warm-glazing",
+      "parameters": {
+        "count": 3,
+        "index": 0
+      },
+      "primitive": "clerestory"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -6.0,
+          28,
+          -4
+        ],
+        [
+          6.0,
+          34,
+          8
+        ]
+      ],
+      "componentID": "v14-clerestory-band",
+      "geometryKind": "clerestory-glass",
+      "geometrySignature": "9cccc9a4fad7ee1057762792b4e1b486669e24831020d451e7999fcd54e89f59",
+      "id": "v14-clerestory-band::glass-01",
+      "materialRole": "warm-glazing",
+      "parameters": {
+        "count": 3,
+        "index": 1
+      },
+      "primitive": "clerestory"
+    },
+    {
+      "boundsXYZ": [
+        [
+          6.0,
+          28,
+          -4
+        ],
+        [
+          18.0,
+          34,
+          8
+        ]
+      ],
+      "componentID": "v14-clerestory-band",
+      "geometryKind": "clerestory-glass",
+      "geometrySignature": "71adf6c7bb67626a87f375cabaaffaa3f77b7aae2333f5fa3edacfb131750a7d",
+      "id": "v14-clerestory-band::glass-02",
+      "materialRole": "warm-glazing",
+      "parameters": {
+        "count": 3,
+        "index": 2
+      },
+      "primitive": "clerestory"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -11,
+          30,
+          -2
+        ],
+        [
+          11,
+          30.35,
+          6
+        ]
+      ],
+      "componentID": "v14-crane-lantern",
+      "geometryKind": "truss-chord",
+      "geometrySignature": "9d4fe6504facce7a4425757c058f2cc846469b70c50ef8e42de208390e919d19",
+      "id": "v14-crane-lantern::lower-chord",
+      "materialRole": "charcoal-steel",
+      "parameters": {},
+      "primitive": "truss"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -11,
+          37.65,
+          -2
+        ],
+        [
+          11,
+          38,
+          6
+        ]
+      ],
+      "componentID": "v14-crane-lantern",
+      "geometryKind": "truss-chord",
+      "geometrySignature": "9856f2a99cbcaa7a70d5ac28894b37a457b9b14c9137e2ff29f520b968066106",
+      "id": "v14-crane-lantern::upper-chord",
+      "materialRole": "charcoal-steel",
+      "parameters": {},
+      "primitive": "truss"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -11,
+          30,
+          -2
+        ],
+        [
+          0.0,
+          38,
+          6
+        ]
+      ],
+      "componentID": "v14-crane-lantern",
+      "geometryKind": "truss-diagonal",
+      "geometrySignature": "610818d0fe9cadbf497a249aa2c20bdaca48194e8d88367ce9bfa41ba162ddcc",
+      "id": "v14-crane-lantern::diagonal-0",
+      "materialRole": "charcoal-steel",
+      "parameters": {},
+      "primitive": "truss"
+    },
+    {
+      "boundsXYZ": [
+        [
+          0.0,
+          30,
+          -2
+        ],
+        [
+          11,
+          38,
+          6
+        ]
+      ],
+      "componentID": "v14-crane-lantern",
+      "geometryKind": "truss-diagonal",
+      "geometrySignature": "9e757d9658084713ae7aaf4c94e5d92d0c9c42c4880ab4db40e7d0faaf3acfbd",
+      "id": "v14-crane-lantern::diagonal-1",
+      "materialRole": "charcoal-steel",
+      "parameters": {},
+      "primitive": "truss"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -13,
+          19,
+          -20
+        ],
+        [
+          13,
+          19.35,
+          -16
+        ]
+      ],
+      "componentID": "v14-crane-girder-north",
+      "geometryKind": "truss-chord",
+      "geometrySignature": "e8d1fc50f3d5b1a3a8f6b2cf59157ea83bc1be388ff12aa4f9369b96252822fe",
+      "id": "v14-crane-girder-north::lower-chord",
+      "materialRole": "charcoal-steel",
+      "parameters": {},
+      "primitive": "truss"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -13,
+          21.65,
+          -20
+        ],
+        [
+          13,
+          22,
+          -16
+        ]
+      ],
+      "componentID": "v14-crane-girder-north",
+      "geometryKind": "truss-chord",
+      "geometrySignature": "a906add9e078ab5fe0ec22179abb7ed89b66b68d05e3cae77a24e0227999edc7",
+      "id": "v14-crane-girder-north::upper-chord",
+      "materialRole": "charcoal-steel",
+      "parameters": {},
+      "primitive": "truss"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -13,
+          19,
+          -20
+        ],
+        [
+          0.0,
+          22,
+          -16
+        ]
+      ],
+      "componentID": "v14-crane-girder-north",
+      "geometryKind": "truss-diagonal",
+      "geometrySignature": "e641d5fb0eb0e061029a95baea03dbcf5236307403a08c6ebf3cac2f584118e6",
+      "id": "v14-crane-girder-north::diagonal-0",
+      "materialRole": "charcoal-steel",
+      "parameters": {},
+      "primitive": "truss"
+    },
+    {
+      "boundsXYZ": [
+        [
+          0.0,
+          19,
+          -20
+        ],
+        [
+          13,
+          22,
+          -16
+        ]
+      ],
+      "componentID": "v14-crane-girder-north",
+      "geometryKind": "truss-diagonal",
+      "geometrySignature": "de24ba715ef6a0ca62b4afb1fe0cda2004eb92415229e98a287629fccaa150a9",
+      "id": "v14-crane-girder-north::diagonal-1",
+      "materialRole": "charcoal-steel",
+      "parameters": {},
+      "primitive": "truss"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -13,
+          19,
+          7
+        ],
+        [
+          13,
+          19.35,
+          11
+        ]
+      ],
+      "componentID": "v14-crane-girder-south",
+      "geometryKind": "truss-chord",
+      "geometrySignature": "ed14ab5e2c63f9843df9a18078de8faf94449439edf82b5ff90f6b0b46ec5bdf",
+      "id": "v14-crane-girder-south::lower-chord",
+      "materialRole": "charcoal-steel",
+      "parameters": {},
+      "primitive": "truss"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -13,
+          21.65,
+          7
+        ],
+        [
+          13,
+          22,
+          11
+        ]
+      ],
+      "componentID": "v14-crane-girder-south",
+      "geometryKind": "truss-chord",
+      "geometrySignature": "fd50255c20b73543306b6b58ede018ac0c2246e4b32f03836b65fe35263a94f9",
+      "id": "v14-crane-girder-south::upper-chord",
+      "materialRole": "charcoal-steel",
+      "parameters": {},
+      "primitive": "truss"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -13,
+          19,
+          7
+        ],
+        [
+          0.0,
+          22,
+          11
+        ]
+      ],
+      "componentID": "v14-crane-girder-south",
+      "geometryKind": "truss-diagonal",
+      "geometrySignature": "b0b24de13baad2cca83c918ca41e01709f72346aa179f73b378f9db7e755c51a",
+      "id": "v14-crane-girder-south::diagonal-0",
+      "materialRole": "charcoal-steel",
+      "parameters": {},
+      "primitive": "truss"
+    },
+    {
+      "boundsXYZ": [
+        [
+          0.0,
+          19,
+          7
+        ],
+        [
+          13,
+          22,
+          11
+        ]
+      ],
+      "componentID": "v14-crane-girder-south",
+      "geometryKind": "truss-diagonal",
+      "geometrySignature": "a13c643ff0c8f453930d9c1bb3164a69fecb8daf2269f44d1cf27b6531b910ae",
+      "id": "v14-crane-girder-south::diagonal-1",
+      "materialRole": "charcoal-steel",
+      "parameters": {},
+      "primitive": "truss"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -5.5,
+          15,
+          -2.5
+        ],
+        [
+          5.5,
+          27.240000000000002,
+          8.5
+        ]
+      ],
+      "componentID": "v14-crucible-vessel",
+      "geometryKind": "octagonal-body",
+      "geometrySignature": "4215e0af6fb8b63a17b91d91ffa830f0da0ea3a174491230b51bbd7f44c88ad3",
+      "id": "v14-crucible-vessel::body",
+      "materialRole": "oxidized-machinery",
+      "parameters": {
+        "sides": 8
+      },
+      "primitive": "octagonal-vessel"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -4.51,
+          27.240000000000002,
+          -1.5099999999999998
+        ],
+        [
+          4.51,
+          30.3,
+          7.51
+        ]
+      ],
+      "componentID": "v14-crucible-vessel",
+      "geometryKind": "octagonal-shoulder",
+      "geometrySignature": "016c5ece0f5902ceab70812ce01b447d339b01d33a501332b2356efeb2645f5c",
+      "id": "v14-crucible-vessel::shoulder",
+      "materialRole": "oxidized-machinery",
+      "parameters": {
+        "sides": 8
+      },
+      "primitive": "octagonal-vessel"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -3.8499999999999996,
+          30.3,
+          -0.8499999999999996
+        ],
+        [
+          3.8499999999999996,
+          32,
+          6.85
+        ]
+      ],
+      "componentID": "v14-crucible-vessel",
+      "geometryKind": "octagonal-rim",
+      "geometrySignature": "3ec7163d8227e46e8df21bc589b7219ec255ae14f437b76163a8671a245bcd4f",
+      "id": "v14-crucible-vessel::rim",
+      "materialRole": "oxidized-machinery",
+      "parameters": {
+        "sides": 8
+      },
+      "primitive": "octagonal-vessel"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -3.2,
+          30,
+          0
+        ],
+        [
+          3.2,
+          32,
+          6
+        ]
+      ],
+      "componentID": "v14-crucible-heat-cap",
+      "geometryKind": "heat-cap",
+      "geometrySignature": "9603e46ab899abb0d1056977ba621490d7837ab9ca0a057368cae114599dea32",
+      "id": "v14-crucible-heat-cap::primary",
+      "materialRole": "restrained-heat",
+      "parameters": {},
+      "primitive": "heat-cap"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -10.12,
+          1.88,
+          3.88
+        ],
+        [
+          -9.88,
+          18.12,
+          4.12
+        ]
+      ],
+      "componentID": "v14-process-pipe-west",
+      "geometryKind": "pipe-segment",
+      "geometrySignature": "dff065fbe6c511d2b71374f35a17513977249956be5a663ff5fccfbff8354287",
+      "id": "v14-process-pipe-west::segment-00",
+      "materialRole": "oxidized-machinery",
+      "parameters": {
+        "end": [
+          -10,
+          18,
+          4
+        ],
+        "start": [
+          -10,
+          2,
+          4
+        ]
+      },
+      "primitive": "pipe-run"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -10.12,
+          17.88,
+          3.88
+        ],
+        [
+          -5.88,
+          22.12,
+          4.12
+        ]
+      ],
+      "componentID": "v14-process-pipe-west",
+      "geometryKind": "pipe-segment",
+      "geometrySignature": "7d9e8f728f5c7959e2431e5d394c2218e2abb21523899e18f1629ffa99313d8f",
+      "id": "v14-process-pipe-west::segment-01",
+      "materialRole": "oxidized-machinery",
+      "parameters": {
+        "end": [
+          -6,
+          22,
+          4
+        ],
+        "start": [
+          -10,
+          18,
+          4
+        ]
+      },
+      "primitive": "pipe-run"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -6.12,
+          21.88,
+          3.88
+        ],
+        [
+          -5.88,
+          28.12,
+          4.12
+        ]
+      ],
+      "componentID": "v14-process-pipe-west",
+      "geometryKind": "pipe-segment",
+      "geometrySignature": "2b63b2d6799c67d7ade75439d23ae731c0385d14b19e0de574e419587dc74dd9",
+      "id": "v14-process-pipe-west::segment-02",
+      "materialRole": "oxidized-machinery",
+      "parameters": {
+        "end": [
+          -6,
+          28,
+          4
+        ],
+        "start": [
+          -6,
+          22,
+          4
+        ]
+      },
+      "primitive": "pipe-run"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -10.35,
+          17.65,
+          3.65
+        ],
+        [
+          -9.65,
+          18.35,
+          4.35
+        ]
+      ],
+      "componentID": "v14-process-pipe-west",
+      "geometryKind": "pipe-elbow",
+      "geometrySignature": "a7e379cc9ecd5364b3b1eee54c1f12e147c842d6d7181aa5d4dd4670071dbfce",
+      "id": "v14-process-pipe-west::elbow-00",
+      "materialRole": "oxidized-machinery",
+      "parameters": {
+        "joint": [
+          -10,
+          18,
+          4
+        ]
+      },
+      "primitive": "pipe-run"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -6.35,
+          21.65,
+          3.65
+        ],
+        [
+          -5.65,
+          22.35,
+          4.35
+        ]
+      ],
+      "componentID": "v14-process-pipe-west",
+      "geometryKind": "pipe-elbow",
+      "geometrySignature": "49498f807ff38bbbd6929634d339ed7298348a30e00c0f504f907b2cf6ce8149",
+      "id": "v14-process-pipe-west::elbow-01",
+      "materialRole": "oxidized-machinery",
+      "parameters": {
+        "joint": [
+          -6,
+          22,
+          4
+        ]
+      },
+      "primitive": "pipe-run"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -10.25,
+          1.75,
+          3.75
+        ],
+        [
+          -9.75,
+          28.25,
+          4.25
+        ]
+      ],
+      "componentID": "v14-process-pipe-west",
+      "geometryKind": "pipe-support",
+      "geometrySignature": "f1967a54e3d2a394ac9e3cf42cb398e8d92260983aec13fd3da4a04b23b72d96",
+      "id": "v14-process-pipe-west::supports",
+      "materialRole": "oxidized-machinery",
+      "parameters": {
+        "count": 3
+      },
+      "primitive": "pipe-run"
+    },
+    {
+      "boundsXYZ": [
+        [
+          9.88,
+          1.88,
+          4.88
+        ],
+        [
+          10.12,
+          16.12,
+          5.12
+        ]
+      ],
+      "componentID": "v14-process-pipe-east",
+      "geometryKind": "pipe-segment",
+      "geometrySignature": "e061c3a4752a2cdd1c571a8b9df45ebe64d85a849066ba80b9ff2066447915ab",
+      "id": "v14-process-pipe-east::segment-00",
+      "materialRole": "oxidized-machinery",
+      "parameters": {
+        "end": [
+          10,
+          16,
+          5
+        ],
+        "start": [
+          10,
+          2,
+          5
+        ]
+      },
+      "primitive": "pipe-run"
+    },
+    {
+      "boundsXYZ": [
+        [
+          6.88,
+          15.88,
+          4.88
+        ],
+        [
+          10.12,
+          20.12,
+          5.12
+        ]
+      ],
+      "componentID": "v14-process-pipe-east",
+      "geometryKind": "pipe-segment",
+      "geometrySignature": "52057e5750a63433c995d49107ca390d70248fdc97a94721bb9d4ea5a23fdb05",
+      "id": "v14-process-pipe-east::segment-01",
+      "materialRole": "oxidized-machinery",
+      "parameters": {
+        "end": [
+          7,
+          20,
+          5
+        ],
+        "start": [
+          10,
+          16,
+          5
+        ]
+      },
+      "primitive": "pipe-run"
+    },
+    {
+      "boundsXYZ": [
+        [
+          6.88,
+          19.88,
+          4.88
+        ],
+        [
+          7.12,
+          27.12,
+          5.12
+        ]
+      ],
+      "componentID": "v14-process-pipe-east",
+      "geometryKind": "pipe-segment",
+      "geometrySignature": "d3caa373d22bc07adf6a6e8c31ed48380064c77b63e18fe9d28d731f2d64cf6f",
+      "id": "v14-process-pipe-east::segment-02",
+      "materialRole": "oxidized-machinery",
+      "parameters": {
+        "end": [
+          7,
+          27,
+          5
+        ],
+        "start": [
+          7,
+          20,
+          5
+        ]
+      },
+      "primitive": "pipe-run"
+    },
+    {
+      "boundsXYZ": [
+        [
+          9.65,
+          15.65,
+          4.65
+        ],
+        [
+          10.35,
+          16.35,
+          5.35
+        ]
+      ],
+      "componentID": "v14-process-pipe-east",
+      "geometryKind": "pipe-elbow",
+      "geometrySignature": "54b501de8f6175c376dae3befa392c5928fd840f5f9c510722215b94e767f437",
+      "id": "v14-process-pipe-east::elbow-00",
+      "materialRole": "oxidized-machinery",
+      "parameters": {
+        "joint": [
+          10,
+          16,
+          5
+        ]
+      },
+      "primitive": "pipe-run"
+    },
+    {
+      "boundsXYZ": [
+        [
+          6.65,
+          19.65,
+          4.65
+        ],
+        [
+          7.35,
+          20.35,
+          5.35
+        ]
+      ],
+      "componentID": "v14-process-pipe-east",
+      "geometryKind": "pipe-elbow",
+      "geometrySignature": "64f2fbd5a1237d5d4940f90640ed9e5d14d6beb1e78a8745e336519b0c2e9cfe",
+      "id": "v14-process-pipe-east::elbow-01",
+      "materialRole": "oxidized-machinery",
+      "parameters": {
+        "joint": [
+          7,
+          20,
+          5
+        ]
+      },
+      "primitive": "pipe-run"
+    },
+    {
+      "boundsXYZ": [
+        [
+          6.75,
+          1.75,
+          4.75
+        ],
+        [
+          7.25,
+          27.25,
+          5.25
+        ]
+      ],
+      "componentID": "v14-process-pipe-east",
+      "geometryKind": "pipe-support",
+      "geometrySignature": "6e92a171e999ddf747884fd0d3d0f93bdffa3555d107e894e3e7934cd5c0bb92",
+      "id": "v14-process-pipe-east::supports",
+      "materialRole": "oxidized-machinery",
+      "parameters": {
+        "count": 3
+      },
+      "primitive": "pipe-run"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -22.0,
+          29,
+          12
+        ],
+        [
+          -18.666666666666668,
+          32,
+          18
+        ]
+      ],
+      "componentID": "v14-roof-vents",
+      "geometryKind": "plant-unit",
+      "geometrySignature": "75eb737b10f25c3442b6b33056df395e0efd3caa98fd76c164246b8eb9eaa17f",
+      "id": "v14-roof-vents::unit-00",
+      "materialRole": "charcoal-steel",
+      "parameters": {
+        "count": 3,
+        "index": 0
+      },
+      "primitive": "vent-bank"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -18.666666666666668,
+          29,
+          12
+        ],
+        [
+          -15.333333333333332,
+          32,
+          18
+        ]
+      ],
+      "componentID": "v14-roof-vents",
+      "geometryKind": "plant-unit",
+      "geometrySignature": "aad226e64c202f19c774ae0ce27905ce1dc3940f4d126cbdcc1410e903edd43a",
+      "id": "v14-roof-vents::unit-01",
+      "materialRole": "charcoal-steel",
+      "parameters": {
+        "count": 3,
+        "index": 1
+      },
+      "primitive": "vent-bank"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -15.333333333333332,
+          29,
+          12
+        ],
+        [
+          -12.0,
+          32,
+          18
+        ]
+      ],
+      "componentID": "v14-roof-vents",
+      "geometryKind": "plant-unit",
+      "geometrySignature": "326dfa7ea867f66e60fbe340264f87880b3d077e145f1339e79063a3cca1ce1f",
+      "id": "v14-roof-vents::unit-02",
+      "materialRole": "charcoal-steel",
+      "parameters": {
+        "count": 3,
+        "index": 2
+      },
+      "primitive": "vent-bank"
+    },
+    {
+      "boundsXYZ": [
+        [
+          12.0,
+          27,
+          12
+        ],
+        [
+          15.333333333333334,
+          32,
+          19
+        ]
+      ],
+      "componentID": "v14-roof-plant-tanks",
+      "geometryKind": "plant-unit",
+      "geometrySignature": "096d587ae2e9429242acbd4da093dd63e8406ff968ad1930dc3186813fd0c835",
+      "id": "v14-roof-plant-tanks::unit-00",
+      "materialRole": "oxidized-machinery",
+      "parameters": {
+        "count": 3,
+        "index": 0
+      },
+      "primitive": "tank-bank"
+    },
+    {
+      "boundsXYZ": [
+        [
+          15.333333333333334,
+          27,
+          12
+        ],
+        [
+          18.666666666666668,
+          32,
+          19
+        ]
+      ],
+      "componentID": "v14-roof-plant-tanks",
+      "geometryKind": "plant-unit",
+      "geometrySignature": "a51528321ea27071e732bd2ebabf78c394bdc2532d0443758ff0af555323d399",
+      "id": "v14-roof-plant-tanks::unit-01",
+      "materialRole": "oxidized-machinery",
+      "parameters": {
+        "count": 3,
+        "index": 1
+      },
+      "primitive": "tank-bank"
+    },
+    {
+      "boundsXYZ": [
+        [
+          18.666666666666668,
+          27,
+          12
+        ],
+        [
+          22.0,
+          32,
+          19
+        ]
+      ],
+      "componentID": "v14-roof-plant-tanks",
+      "geometryKind": "plant-unit",
+      "geometrySignature": "256c7c19f56a58a85c4d26207ce0f5eea2792f84a7ca0ba5b9d407dd8256e28f",
+      "id": "v14-roof-plant-tanks::unit-02",
+      "materialRole": "oxidized-machinery",
+      "parameters": {
+        "count": 3,
+        "index": 2
+      },
+      "primitive": "tank-bank"
+    },
+    {
+      "boundsXYZ": [
+        [
+          17,
+          22,
+          15
+        ],
+        [
+          23,
+          42,
+          21
+        ]
+      ],
+      "componentID": "v14-stack",
+      "geometryKind": "cylindrical-shaft",
+      "geometrySignature": "eefdc21d5e22617990e48a726f41cbaa155878ac6bd333bda771b657adb00465",
+      "id": "v14-stack::shaft",
+      "materialRole": "weathered-roof-steel",
+      "parameters": {
+        "sides": 12
+      },
+      "primitive": "stack"
+    },
+    {
+      "boundsXYZ": [
+        [
+          16.7,
+          30.24,
+          14.7
+        ],
+        [
+          23.3,
+          32.76,
+          21.3
+        ]
+      ],
+      "componentID": "v14-stack",
+      "geometryKind": "stack-bands",
+      "geometrySignature": "a0f818cf2a453ff05353239221b69ac102adcdc495208d1a30f7fe8293b9837c",
+      "id": "v14-stack::bands",
+      "materialRole": "weathered-roof-steel",
+      "parameters": {
+        "count": 3
+      },
+      "primitive": "stack"
+    },
+    {
+      "boundsXYZ": [
+        [
+          17,
+          42,
+          15
+        ],
+        [
+          23,
+          44,
+          21
+        ]
+      ],
+      "componentID": "v14-stack-cap",
+      "geometryKind": "stack-cap",
+      "geometrySignature": "5fce5de8eca32d3f9dd441d228b9ac96799b6ee10c61f0552f29fcc1a8533377",
+      "id": "v14-stack-cap::primary",
+      "materialRole": "oxidized-machinery",
+      "parameters": {},
+      "primitive": "stack-cap"
+    },
+    {
+      "boundsXYZ": [
+        [
+          18,
+          2,
+          -13
+        ],
+        [
+          22,
+          9,
+          -12
+        ]
+      ],
+      "componentID": "v14-staff-entrance",
+      "geometryKind": "staff-frame",
+      "geometrySignature": "4fdceb34231d92ab8cf2865ced3dee77f6f494b6c5066ad1a7fa957dc19aa71c",
+      "id": "v14-staff-entrance::frame",
+      "materialRole": "warm-glazing",
+      "parameters": {},
+      "primitive": "staff-door"
+    },
+    {
+      "boundsXYZ": [
+        [
+          18.2,
+          2.2,
+          -13
+        ],
+        [
+          21.8,
+          8.8,
+          -12
+        ]
+      ],
+      "componentID": "v14-staff-entrance",
+      "geometryKind": "staff-leaf",
+      "geometrySignature": "13490f926da96a8e8008cf4e460cf3eb51032c8929d06bd9e484896ac3f4f310",
+      "id": "v14-staff-entrance::leaf",
+      "materialRole": "warm-glazing",
+      "parameters": {},
+      "primitive": "staff-door"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -22.0,
+          8,
+          -14
+        ],
+        [
+          -13.2,
+          18,
+          -13
+        ]
+      ],
+      "componentID": "v14-window-mullions",
+      "geometryKind": "articulated-member",
+      "geometrySignature": "33b60b6d1d28d76555153a026e5ca339cc13c4e13e5dad452058532d5fb82e13",
+      "id": "v14-window-mullions::member-00",
+      "materialRole": "warm-glazing",
+      "parameters": {
+        "count": 5,
+        "index": 0
+      },
+      "primitive": "mullioned-windows"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -13.2,
+          8,
+          -14
+        ],
+        [
+          -4.399999999999999,
+          18,
+          -13
+        ]
+      ],
+      "componentID": "v14-window-mullions",
+      "geometryKind": "articulated-member",
+      "geometrySignature": "3e0764c996c6d4d8e93b9f3b6b3e07688e4a1fdcf6f323dbed6b761034034fbd",
+      "id": "v14-window-mullions::member-01",
+      "materialRole": "warm-glazing",
+      "parameters": {
+        "count": 5,
+        "index": 1
+      },
+      "primitive": "mullioned-windows"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -4.399999999999999,
+          8,
+          -14
+        ],
+        [
+          4.400000000000002,
+          18,
+          -13
+        ]
+      ],
+      "componentID": "v14-window-mullions",
+      "geometryKind": "articulated-member",
+      "geometrySignature": "cbf2b2016181cc9b274bdd609c659333f1ec260ba9f16e752ae2e9af3adabab5",
+      "id": "v14-window-mullions::member-02",
+      "materialRole": "warm-glazing",
+      "parameters": {
+        "count": 5,
+        "index": 2
+      },
+      "primitive": "mullioned-windows"
+    },
+    {
+      "boundsXYZ": [
+        [
+          4.400000000000002,
+          8,
+          -14
+        ],
+        [
+          13.200000000000003,
+          18,
+          -13
+        ]
+      ],
+      "componentID": "v14-window-mullions",
+      "geometryKind": "articulated-member",
+      "geometrySignature": "84190b412243d10ddfa03736c0c9fb39daabb405dcc7c7f658377a45a299c92a",
+      "id": "v14-window-mullions::member-03",
+      "materialRole": "warm-glazing",
+      "parameters": {
+        "count": 5,
+        "index": 3
+      },
+      "primitive": "mullioned-windows"
+    },
+    {
+      "boundsXYZ": [
+        [
+          13.200000000000003,
+          8,
+          -14
+        ],
+        [
+          22.0,
+          18,
+          -13
+        ]
+      ],
+      "componentID": "v14-window-mullions",
+      "geometryKind": "articulated-member",
+      "geometrySignature": "5901887f48cef8cd4f95e0074082e4bf46dafebf1b42626bde225fb6eaef43e7",
+      "id": "v14-window-mullions::member-04",
+      "materialRole": "warm-glazing",
+      "parameters": {
+        "count": 5,
+        "index": 4
+      },
+      "primitive": "mullioned-windows"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -22.0,
+          2,
+          20
+        ],
+        [
+          -19.333333333333332,
+          9,
+          21
+        ]
+      ],
+      "componentID": "v14-service-doors",
+      "geometryKind": "service-door",
+      "geometrySignature": "a89107d28de49757ee02cc413fab68d2b7a40fd6753dcdce25d56f3996c59350",
+      "id": "v14-service-doors::door-00",
+      "materialRole": "charcoal-steel",
+      "parameters": {
+        "count": 3,
+        "index": 0
+      },
+      "primitive": "service-doors"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -19.333333333333332,
+          2,
+          20
+        ],
+        [
+          -16.666666666666668,
+          9,
+          21
+        ]
+      ],
+      "componentID": "v14-service-doors",
+      "geometryKind": "service-door",
+      "geometrySignature": "45af717569a7ea2df6e5556bc17dfeb6663aa396a935a432af7e2afed2632edc",
+      "id": "v14-service-doors::door-01",
+      "materialRole": "charcoal-steel",
+      "parameters": {
+        "count": 3,
+        "index": 1
+      },
+      "primitive": "service-doors"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -16.666666666666668,
+          2,
+          20
+        ],
+        [
+          -14.0,
+          9,
+          21
+        ]
+      ],
+      "componentID": "v14-service-doors",
+      "geometryKind": "service-door",
+      "geometrySignature": "c44b663930333bb0f636dc1ca78c998310f697ee216b5ae9ceb05c3a7e8c5f78",
+      "id": "v14-service-doors::door-02",
+      "materialRole": "charcoal-steel",
+      "parameters": {
+        "count": 3,
+        "index": 2
+      },
+      "primitive": "service-doors"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -12.0,
+          1.05,
+          -27
+        ],
+        [
+          0.0,
+          1.1,
+          -24
+        ]
+      ],
+      "componentID": "v14-safety-markings",
+      "geometryKind": "loading-stripe",
+      "geometrySignature": "5266ba99a377cc86cee26e5db0e2a497abf4a4e6b03e3d31548908ffa0d3f4bc",
+      "id": "v14-safety-markings::stripe-00",
+      "materialRole": "restrained-heat",
+      "parameters": {
+        "count": 2,
+        "index": 0
+      },
+      "primitive": "loading-markings"
+    },
+    {
+      "boundsXYZ": [
+        [
+          0.0,
+          1.05,
+          -27
+        ],
+        [
+          12.0,
+          1.1,
+          -24
+        ]
+      ],
+      "componentID": "v14-safety-markings",
+      "geometryKind": "loading-stripe",
+      "geometrySignature": "69a56de0d5f9a99c44508aab21856942712761f0cf3100e60e786deccc71a111",
+      "id": "v14-safety-markings::stripe-01",
+      "materialRole": "restrained-heat",
+      "parameters": {
+        "count": 2,
+        "index": 1
+      },
+      "primitive": "loading-markings"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -25.0,
+          23,
+          -15
+        ],
+        [
+          -15.0,
+          24,
+          22
+        ]
+      ],
+      "componentID": "v14-gutters-and-rails",
+      "geometryKind": "articulated-member",
+      "geometrySignature": "1418d7dded1ace3bd3953caf0721932ab3560d45d34d20bdf97c136b41050b11",
+      "id": "v14-gutters-and-rails::member-00",
+      "materialRole": "charcoal-steel",
+      "parameters": {
+        "count": 5,
+        "index": 0
+      },
+      "primitive": "railings"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -15.0,
+          23,
+          -15
+        ],
+        [
+          -5.0,
+          24,
+          22
+        ]
+      ],
+      "componentID": "v14-gutters-and-rails",
+      "geometryKind": "articulated-member",
+      "geometrySignature": "0a57a0773c5273c8da8063f16eb9292a4028d83743895b42b576d4a05b43bf3b",
+      "id": "v14-gutters-and-rails::member-01",
+      "materialRole": "charcoal-steel",
+      "parameters": {
+        "count": 5,
+        "index": 1
+      },
+      "primitive": "railings"
+    },
+    {
+      "boundsXYZ": [
+        [
+          -5.0,
+          23,
+          -15
+        ],
+        [
+          5.0,
+          24,
+          22
+        ]
+      ],
+      "componentID": "v14-gutters-and-rails",
+      "geometryKind": "articulated-member",
+      "geometrySignature": "733a532ced31715e05fb2147ca7935f8d330e9ed2ef47ed9b2b6609ed6a63de3",
+      "id": "v14-gutters-and-rails::member-02",
+      "materialRole": "charcoal-steel",
+      "parameters": {
+        "count": 5,
+        "index": 2
+      },
+      "primitive": "railings"
+    },
+    {
+      "boundsXYZ": [
+        [
+          5.0,
+          23,
+          -15
+        ],
+        [
+          15.0,
+          24,
+          22
+        ]
+      ],
+      "componentID": "v14-gutters-and-rails",
+      "geometryKind": "articulated-member",
+      "geometrySignature": "ac54142f8a0b95f358500ca856e798dcff16ec43c3abaee162f49ad4e79a70e9",
+      "id": "v14-gutters-and-rails::member-03",
+      "materialRole": "charcoal-steel",
+      "parameters": {
+        "count": 5,
+        "index": 3
+      },
+      "primitive": "railings"
+    },
+    {
+      "boundsXYZ": [
+        [
+          15.0,
+          23,
+          -15
+        ],
+        [
+          25.0,
+          24,
+          22
+        ]
+      ],
+      "componentID": "v14-gutters-and-rails",
+      "geometryKind": "articulated-member",
+      "geometrySignature": "0772f30afdb14f11ae70d24dbe02a2c7ef05f4ebc45556ebfc94ab2cb52ac6f9",
+      "id": "v14-gutters-and-rails::member-04",
+      "materialRole": "charcoal-steel",
+      "parameters": {
+        "count": 5,
+        "index": 4
+      },
+      "primitive": "railings"
+    },
+    {
+      "boundsXYZ": [
+        [
+          18,
+          0.71,
+          4
+        ],
+        [
+          28,
+          0.75,
+          28
+        ]
+      ],
+      "componentID": "v14-contact-shadow-receiver",
+      "geometryKind": "contact-shadow",
+      "geometrySignature": "487a9ba9d3b129f8c9737516d8125ba9a67ba6f1b4e80d4fbeb142b6b44cced5",
+      "id": "v14-contact-shadow-receiver::primary",
+      "materialRole": "southeast-shadow",
+      "parameters": {},
+      "primitive": "contact-shadow"
+    }
+  ],
+  "runtimeObjects": [
+    {
+      "builder": "authored-box-volume",
+      "faceCount": 6,
+      "geometryKind": "box",
+      "id": "v14-foundation::primary",
+      "materialRole": "concrete-apron",
+      "vertexCount": 8
+    },
+    {
+      "builder": "road-linked-apron-slab",
+      "faceCount": 6,
+      "geometryKind": "apron-road-link",
+      "id": "v14-north-loading-apron::road-link",
+      "materialRole": "concrete-apron",
+      "vertexCount": 8
+    },
+    {
+      "builder": "service-pad-slab",
+      "faceCount": 6,
+      "geometryKind": "apron-service-pad",
+      "id": "v14-north-loading-apron::service-pad",
+      "materialRole": "concrete-apron",
+      "vertexCount": 8
+    },
+    {
+      "builder": "authored-box-volume",
+      "faceCount": 6,
+      "geometryKind": "box",
+      "id": "v14-main-foundry-hall::primary",
+      "materialRole": "warm-masonry",
+      "vertexCount": 8
+    },
+    {
+      "builder": "authored-box-volume",
+      "faceCount": 6,
+      "geometryKind": "box",
+      "id": "v14-west-structural-return::primary",
+      "materialRole": "warm-masonry",
+      "vertexCount": 8
+    },
+    {
+      "builder": "annex-volume",
+      "faceCount": 6,
+      "geometryKind": "annex",
+      "id": "v14-east-control-annex::primary",
+      "materialRole": "warm-masonry",
+      "vertexCount": 8
+    },
+    {
+      "builder": "portal-jamb-volume",
+      "faceCount": 6,
+      "geometryKind": "portal-jamb",
+      "id": "v14-monumental-portal-west-jamb::primary",
+      "materialRole": "charcoal-steel",
+      "vertexCount": 8
+    },
+    {
+      "builder": "portal-jamb-volume",
+      "faceCount": 6,
+      "geometryKind": "portal-jamb",
+      "id": "v14-monumental-portal-east-jamb::primary",
+      "materialRole": "charcoal-steel",
+      "vertexCount": 8
+    },
+    {
+      "builder": "portal-header-volume",
+      "faceCount": 6,
+      "geometryKind": "portal-header",
+      "id": "v14-monumental-portal-header::primary",
+      "materialRole": "charcoal-steel",
+      "vertexCount": 8
+    },
+    {
+      "builder": "three-part-open-portal-frame",
+      "faceCount": 18,
+      "geometryKind": "portal-frame",
+      "id": "v14-monumental-portal-void::frame",
+      "materialRole": "freight-depth",
+      "vertexCount": 24
+    },
+    {
+      "builder": "portal-inset-back-plane",
+      "faceCount": 6,
+      "geometryKind": "inset-plane",
+      "id": "v14-monumental-portal-void::inset-back",
+      "materialRole": "freight-depth",
+      "vertexCount": 8
+    },
+    {
+      "builder": "portal-reveal-jamb",
+      "faceCount": 6,
+      "geometryKind": "reveal-jamb",
+      "id": "v14-monumental-portal-void::reveal-left",
+      "materialRole": "freight-depth",
+      "vertexCount": 8
+    },
+    {
+      "builder": "portal-reveal-jamb",
+      "faceCount": 6,
+      "geometryKind": "reveal-jamb",
+      "id": "v14-monumental-portal-void::reveal-right",
+      "materialRole": "freight-depth",
+      "vertexCount": 8
+    },
+    {
+      "builder": "portal-reveal-header",
+      "faceCount": 6,
+      "geometryKind": "reveal-header",
+      "id": "v14-monumental-portal-void::reveal-header",
+      "materialRole": "freight-depth",
+      "vertexCount": 8
+    },
+    {
+      "builder": "freight-inset-back-plane",
+      "faceCount": 6,
+      "geometryKind": "freight-recess",
+      "id": "v14-freight-bay-west::primary",
+      "materialRole": "freight-depth",
+      "vertexCount": 8
+    },
+    {
+      "builder": "freight-inset-back-plane",
+      "faceCount": 6,
+      "geometryKind": "freight-recess",
+      "id": "v14-freight-bay-center::primary",
+      "materialRole": "freight-depth",
+      "vertexCount": 8
+    },
+    {
+      "builder": "freight-inset-back-plane",
+      "faceCount": 6,
+      "geometryKind": "freight-recess",
+      "id": "v14-freight-bay-east::primary",
+      "materialRole": "freight-depth",
+      "vertexCount": 8
+    },
+    {
+      "builder": "threshold-slab",
+      "faceCount": 6,
+      "geometryKind": "threshold-slab",
+      "id": "v14-portal-threshold::slab",
+      "materialRole": "oxidized-machinery",
+      "vertexCount": 8
+    },
+    {
+      "builder": "threshold-edge-beam",
+      "faceCount": 6,
+      "geometryKind": "threshold-edge",
+      "id": "v14-portal-threshold::edge",
+      "materialRole": "oxidized-machinery",
+      "vertexCount": 8
+    },
+    {
+      "builder": "vertical-sawtooth-peak-riser",
+      "faceCount": 6,
+      "geometryKind": "sawtooth-peak",
+      "id": "v14-west-sawtooth-roof::peak-00",
+      "materialRole": "weathered-roof-steel",
+      "vertexCount": 8
+    },
+    {
+      "builder": "vertical-sawtooth-peak-riser",
+      "faceCount": 6,
+      "geometryKind": "sawtooth-peak",
+      "id": "v14-west-sawtooth-roof::peak-01",
+      "materialRole": "weathered-roof-steel",
+      "vertexCount": 8
+    },
+    {
+      "builder": "vertical-sawtooth-peak-riser",
+      "faceCount": 6,
+      "geometryKind": "sawtooth-peak",
+      "id": "v14-west-sawtooth-roof::peak-02",
+      "materialRole": "weathered-roof-steel",
+      "vertexCount": 8
+    },
+    {
+      "builder": "vertical-sawtooth-peak-riser",
+      "faceCount": 6,
+      "geometryKind": "sawtooth-peak",
+      "id": "v14-west-sawtooth-roof::peak-03",
+      "materialRole": "weathered-roof-steel",
+      "vertexCount": 8
+    },
+    {
+      "builder": "inclined-sawtooth-roof-plane",
+      "faceCount": 6,
+      "geometryKind": "sawtooth-slope-face",
+      "id": "v14-west-sawtooth-roof::slope-00",
+      "materialRole": "weathered-roof-steel",
+      "vertexCount": 8
+    },
+    {
+      "builder": "inclined-sawtooth-roof-plane",
+      "faceCount": 6,
+      "geometryKind": "sawtooth-slope-face",
+      "id": "v14-west-sawtooth-roof::slope-01",
+      "materialRole": "weathered-roof-steel",
+      "vertexCount": 8
+    },
+    {
+      "builder": "inclined-sawtooth-roof-plane",
+      "faceCount": 6,
+      "geometryKind": "sawtooth-slope-face",
+      "id": "v14-west-sawtooth-roof::slope-02",
+      "materialRole": "weathered-roof-steel",
+      "vertexCount": 8
+    },
+    {
+      "builder": "inclined-sawtooth-roof-plane",
+      "faceCount": 6,
+      "geometryKind": "sawtooth-slope-face",
+      "id": "v14-west-sawtooth-roof::slope-03",
+      "materialRole": "weathered-roof-steel",
+      "vertexCount": 8
+    },
+    {
+      "builder": "shared-eave-beam",
+      "faceCount": 6,
+      "geometryKind": "shared-eave",
+      "id": "v14-west-sawtooth-roof::eave",
+      "materialRole": "weathered-roof-steel",
+      "vertexCount": 8
+    },
+    {
+      "builder": "vertical-sawtooth-peak-riser",
+      "faceCount": 6,
+      "geometryKind": "sawtooth-peak",
+      "id": "v14-east-monitor-roof::peak-00",
+      "materialRole": "weathered-roof-steel",
+      "vertexCount": 8
+    },
+    {
+      "builder": "vertical-sawtooth-peak-riser",
+      "faceCount": 6,
+      "geometryKind": "sawtooth-peak",
+      "id": "v14-east-monitor-roof::peak-01",
+      "materialRole": "weathered-roof-steel",
+      "vertexCount": 8
+    },
+    {
+      "builder": "vertical-sawtooth-peak-riser",
+      "faceCount": 6,
+      "geometryKind": "sawtooth-peak",
+      "id": "v14-east-monitor-roof::peak-02",
+      "materialRole": "weathered-roof-steel",
+      "vertexCount": 8
+    },
+    {
+      "builder": "inclined-sawtooth-roof-plane",
+      "faceCount": 6,
+      "geometryKind": "sawtooth-slope-face",
+      "id": "v14-east-monitor-roof::slope-00",
+      "materialRole": "weathered-roof-steel",
+      "vertexCount": 8
+    },
+    {
+      "builder": "inclined-sawtooth-roof-plane",
+      "faceCount": 6,
+      "geometryKind": "sawtooth-slope-face",
+      "id": "v14-east-monitor-roof::slope-01",
+      "materialRole": "weathered-roof-steel",
+      "vertexCount": 8
+    },
+    {
+      "builder": "inclined-sawtooth-roof-plane",
+      "faceCount": 6,
+      "geometryKind": "sawtooth-slope-face",
+      "id": "v14-east-monitor-roof::slope-02",
+      "materialRole": "weathered-roof-steel",
+      "vertexCount": 8
+    },
+    {
+      "builder": "shared-eave-beam",
+      "faceCount": 6,
+      "geometryKind": "shared-eave",
+      "id": "v14-east-monitor-roof::eave",
+      "materialRole": "weathered-roof-steel",
+      "vertexCount": 8
+    },
+    {
+      "builder": "clerestory-frame-volume",
+      "faceCount": 6,
+      "geometryKind": "clerestory-frame",
+      "id": "v14-clerestory-band::frame-00",
+      "materialRole": "warm-glazing",
+      "vertexCount": 8
+    },
+    {
+      "builder": "clerestory-frame-volume",
+      "faceCount": 6,
+      "geometryKind": "clerestory-frame",
+      "id": "v14-clerestory-band::frame-01",
+      "materialRole": "warm-glazing",
+      "vertexCount": 8
+    },
+    {
+      "builder": "clerestory-frame-volume",
+      "faceCount": 6,
+      "geometryKind": "clerestory-frame",
+      "id": "v14-clerestory-band::frame-02",
+      "materialRole": "warm-glazing",
+      "vertexCount": 8
+    },
+    {
+      "builder": "clerestory-glazing-volume",
+      "faceCount": 6,
+      "geometryKind": "clerestory-glass",
+      "id": "v14-clerestory-band::glass-00",
+      "materialRole": "warm-glazing",
+      "vertexCount": 8
+    },
+    {
+      "builder": "clerestory-glazing-volume",
+      "faceCount": 6,
+      "geometryKind": "clerestory-glass",
+      "id": "v14-clerestory-band::glass-01",
+      "materialRole": "warm-glazing",
+      "vertexCount": 8
+    },
+    {
+      "builder": "clerestory-glazing-volume",
+      "faceCount": 6,
+      "geometryKind": "clerestory-glass",
+      "id": "v14-clerestory-band::glass-02",
+      "materialRole": "warm-glazing",
+      "vertexCount": 8
+    },
+    {
+      "builder": "endpoint-oriented-truss-chord",
+      "faceCount": 10,
+      "geometryKind": "truss-chord",
+      "id": "v14-crane-lantern::lower-chord",
+      "materialRole": "charcoal-steel",
+      "vertexCount": 16
+    },
+    {
+      "builder": "endpoint-oriented-truss-chord",
+      "faceCount": 10,
+      "geometryKind": "truss-chord",
+      "id": "v14-crane-lantern::upper-chord",
+      "materialRole": "charcoal-steel",
+      "vertexCount": 16
+    },
+    {
+      "builder": "endpoint-oriented-truss-diagonal",
+      "faceCount": 10,
+      "geometryKind": "truss-diagonal",
+      "id": "v14-crane-lantern::diagonal-0",
+      "materialRole": "charcoal-steel",
+      "vertexCount": 16
+    },
+    {
+      "builder": "endpoint-oriented-truss-diagonal",
+      "faceCount": 10,
+      "geometryKind": "truss-diagonal",
+      "id": "v14-crane-lantern::diagonal-1",
+      "materialRole": "charcoal-steel",
+      "vertexCount": 16
+    },
+    {
+      "builder": "endpoint-oriented-truss-chord",
+      "faceCount": 10,
+      "geometryKind": "truss-chord",
+      "id": "v14-crane-girder-north::lower-chord",
+      "materialRole": "charcoal-steel",
+      "vertexCount": 16
+    },
+    {
+      "builder": "endpoint-oriented-truss-chord",
+      "faceCount": 10,
+      "geometryKind": "truss-chord",
+      "id": "v14-crane-girder-north::upper-chord",
+      "materialRole": "charcoal-steel",
+      "vertexCount": 16
+    },
+    {
+      "builder": "endpoint-oriented-truss-diagonal",
+      "faceCount": 10,
+      "geometryKind": "truss-diagonal",
+      "id": "v14-crane-girder-north::diagonal-0",
+      "materialRole": "charcoal-steel",
+      "vertexCount": 16
+    },
+    {
+      "builder": "endpoint-oriented-truss-diagonal",
+      "faceCount": 10,
+      "geometryKind": "truss-diagonal",
+      "id": "v14-crane-girder-north::diagonal-1",
+      "materialRole": "charcoal-steel",
+      "vertexCount": 16
+    },
+    {
+      "builder": "endpoint-oriented-truss-chord",
+      "faceCount": 10,
+      "geometryKind": "truss-chord",
+      "id": "v14-crane-girder-south::lower-chord",
+      "materialRole": "charcoal-steel",
+      "vertexCount": 16
+    },
+    {
+      "builder": "endpoint-oriented-truss-chord",
+      "faceCount": 10,
+      "geometryKind": "truss-chord",
+      "id": "v14-crane-girder-south::upper-chord",
+      "materialRole": "charcoal-steel",
+      "vertexCount": 16
+    },
+    {
+      "builder": "endpoint-oriented-truss-diagonal",
+      "faceCount": 10,
+      "geometryKind": "truss-diagonal",
+      "id": "v14-crane-girder-south::diagonal-0",
+      "materialRole": "charcoal-steel",
+      "vertexCount": 16
+    },
+    {
+      "builder": "endpoint-oriented-truss-diagonal",
+      "faceCount": 10,
+      "geometryKind": "truss-diagonal",
+      "id": "v14-crane-girder-south::diagonal-1",
+      "materialRole": "charcoal-steel",
+      "vertexCount": 16
+    },
+    {
+      "builder": "octagonal-vessel-body",
+      "faceCount": 10,
+      "geometryKind": "octagonal-body",
+      "id": "v14-crucible-vessel::body",
+      "materialRole": "oxidized-machinery",
+      "vertexCount": 16
+    },
+    {
+      "builder": "tapered-octagonal-vessel-shoulder",
+      "faceCount": 10,
+      "geometryKind": "octagonal-shoulder",
+      "id": "v14-crucible-vessel::shoulder",
+      "materialRole": "oxidized-machinery",
+      "vertexCount": 16
+    },
+    {
+      "builder": "octagonal-vessel-rim",
+      "faceCount": 10,
+      "geometryKind": "octagonal-rim",
+      "id": "v14-crucible-vessel::rim",
+      "materialRole": "oxidized-machinery",
+      "vertexCount": 16
+    },
+    {
+      "builder": "furnace-heat-cap",
+      "faceCount": 10,
+      "geometryKind": "heat-cap",
+      "id": "v14-crucible-heat-cap::primary",
+      "materialRole": "restrained-heat",
+      "vertexCount": 16
+    },
+    {
+      "builder": "endpoint-oriented-pipe-cylinder",
+      "faceCount": 14,
+      "geometryKind": "pipe-segment",
+      "id": "v14-process-pipe-west::segment-00",
+      "materialRole": "oxidized-machinery",
+      "vertexCount": 24
+    },
+    {
+      "builder": "endpoint-oriented-pipe-cylinder",
+      "faceCount": 14,
+      "geometryKind": "pipe-segment",
+      "id": "v14-process-pipe-west::segment-01",
+      "materialRole": "oxidized-machinery",
+      "vertexCount": 24
+    },
+    {
+      "builder": "endpoint-oriented-pipe-cylinder",
+      "faceCount": 14,
+      "geometryKind": "pipe-segment",
+      "id": "v14-process-pipe-west::segment-02",
+      "materialRole": "oxidized-machinery",
+      "vertexCount": 24
+    },
+    {
+      "builder": "pipe-elbow-torus",
+      "faceCount": 96,
+      "geometryKind": "pipe-elbow",
+      "id": "v14-process-pipe-west::elbow-00",
+      "materialRole": "oxidized-machinery",
+      "vertexCount": 96
+    },
+    {
+      "builder": "pipe-elbow-torus",
+      "faceCount": 96,
+      "geometryKind": "pipe-elbow",
+      "id": "v14-process-pipe-west::elbow-01",
+      "materialRole": "oxidized-machinery",
+      "vertexCount": 96
+    },
+    {
+      "builder": "vertical-pipe-support",
+      "faceCount": 10,
+      "geometryKind": "pipe-support",
+      "id": "v14-process-pipe-west::supports",
+      "materialRole": "oxidized-machinery",
+      "vertexCount": 16
+    },
+    {
+      "builder": "endpoint-oriented-pipe-cylinder",
+      "faceCount": 14,
+      "geometryKind": "pipe-segment",
+      "id": "v14-process-pipe-east::segment-00",
+      "materialRole": "oxidized-machinery",
+      "vertexCount": 24
+    },
+    {
+      "builder": "endpoint-oriented-pipe-cylinder",
+      "faceCount": 14,
+      "geometryKind": "pipe-segment",
+      "id": "v14-process-pipe-east::segment-01",
+      "materialRole": "oxidized-machinery",
+      "vertexCount": 24
+    },
+    {
+      "builder": "endpoint-oriented-pipe-cylinder",
+      "faceCount": 14,
+      "geometryKind": "pipe-segment",
+      "id": "v14-process-pipe-east::segment-02",
+      "materialRole": "oxidized-machinery",
+      "vertexCount": 24
+    },
+    {
+      "builder": "pipe-elbow-torus",
+      "faceCount": 96,
+      "geometryKind": "pipe-elbow",
+      "id": "v14-process-pipe-east::elbow-00",
+      "materialRole": "oxidized-machinery",
+      "vertexCount": 96
+    },
+    {
+      "builder": "pipe-elbow-torus",
+      "faceCount": 96,
+      "geometryKind": "pipe-elbow",
+      "id": "v14-process-pipe-east::elbow-01",
+      "materialRole": "oxidized-machinery",
+      "vertexCount": 96
+    },
+    {
+      "builder": "vertical-pipe-support",
+      "faceCount": 10,
+      "geometryKind": "pipe-support",
+      "id": "v14-process-pipe-east::supports",
+      "materialRole": "oxidized-machinery",
+      "vertexCount": 16
+    },
+    {
+      "builder": "roof-vent-cylinder",
+      "faceCount": 10,
+      "geometryKind": "plant-unit",
+      "id": "v14-roof-vents::unit-00",
+      "materialRole": "charcoal-steel",
+      "vertexCount": 16
+    },
+    {
+      "builder": "roof-vent-cylinder",
+      "faceCount": 10,
+      "geometryKind": "plant-unit",
+      "id": "v14-roof-vents::unit-01",
+      "materialRole": "charcoal-steel",
+      "vertexCount": 16
+    },
+    {
+      "builder": "roof-vent-cylinder",
+      "faceCount": 10,
+      "geometryKind": "plant-unit",
+      "id": "v14-roof-vents::unit-02",
+      "materialRole": "charcoal-steel",
+      "vertexCount": 16
+    },
+    {
+      "builder": "roof-process-tank",
+      "faceCount": 14,
+      "geometryKind": "plant-unit",
+      "id": "v14-roof-plant-tanks::unit-00",
+      "materialRole": "oxidized-machinery",
+      "vertexCount": 24
+    },
+    {
+      "builder": "roof-process-tank",
+      "faceCount": 14,
+      "geometryKind": "plant-unit",
+      "id": "v14-roof-plant-tanks::unit-01",
+      "materialRole": "oxidized-machinery",
+      "vertexCount": 24
+    },
+    {
+      "builder": "roof-process-tank",
+      "faceCount": 14,
+      "geometryKind": "plant-unit",
+      "id": "v14-roof-plant-tanks::unit-02",
+      "materialRole": "oxidized-machinery",
+      "vertexCount": 24
+    },
+    {
+      "builder": "stack-shaft",
+      "faceCount": 14,
+      "geometryKind": "cylindrical-shaft",
+      "id": "v14-stack::shaft",
+      "materialRole": "weathered-roof-steel",
+      "vertexCount": 24
+    },
+    {
+      "builder": "separated-stack-band-rings",
+      "faceCount": 42,
+      "geometryKind": "stack-bands",
+      "id": "v14-stack::bands",
+      "materialRole": "weathered-roof-steel",
+      "vertexCount": 72
+    },
+    {
+      "builder": "stack-cap-volume",
+      "faceCount": 6,
+      "geometryKind": "stack-cap",
+      "id": "v14-stack-cap::primary",
+      "materialRole": "oxidized-machinery",
+      "vertexCount": 8
+    },
+    {
+      "builder": "staff-entry-frame",
+      "faceCount": 6,
+      "geometryKind": "staff-frame",
+      "id": "v14-staff-entrance::frame",
+      "materialRole": "warm-glazing",
+      "vertexCount": 8
+    },
+    {
+      "builder": "staff-entry-leaf",
+      "faceCount": 6,
+      "geometryKind": "staff-leaf",
+      "id": "v14-staff-entrance::leaf",
+      "materialRole": "warm-glazing",
+      "vertexCount": 8
+    },
+    {
+      "builder": "articulated-rectangular-member",
+      "faceCount": 6,
+      "geometryKind": "articulated-member",
+      "id": "v14-window-mullions::member-00",
+      "materialRole": "warm-glazing",
+      "vertexCount": 8
+    },
+    {
+      "builder": "articulated-rectangular-member",
+      "faceCount": 6,
+      "geometryKind": "articulated-member",
+      "id": "v14-window-mullions::member-01",
+      "materialRole": "warm-glazing",
+      "vertexCount": 8
+    },
+    {
+      "builder": "articulated-rectangular-member",
+      "faceCount": 6,
+      "geometryKind": "articulated-member",
+      "id": "v14-window-mullions::member-02",
+      "materialRole": "warm-glazing",
+      "vertexCount": 8
+    },
+    {
+      "builder": "articulated-rectangular-member",
+      "faceCount": 6,
+      "geometryKind": "articulated-member",
+      "id": "v14-window-mullions::member-03",
+      "materialRole": "warm-glazing",
+      "vertexCount": 8
+    },
+    {
+      "builder": "articulated-rectangular-member",
+      "faceCount": 6,
+      "geometryKind": "articulated-member",
+      "id": "v14-window-mullions::member-04",
+      "materialRole": "warm-glazing",
+      "vertexCount": 8
+    },
+    {
+      "builder": "service-door-leaf",
+      "faceCount": 6,
+      "geometryKind": "service-door",
+      "id": "v14-service-doors::door-00",
+      "materialRole": "charcoal-steel",
+      "vertexCount": 8
+    },
+    {
+      "builder": "service-door-leaf",
+      "faceCount": 6,
+      "geometryKind": "service-door",
+      "id": "v14-service-doors::door-01",
+      "materialRole": "charcoal-steel",
+      "vertexCount": 8
+    },
+    {
+      "builder": "service-door-leaf",
+      "faceCount": 6,
+      "geometryKind": "service-door",
+      "id": "v14-service-doors::door-02",
+      "materialRole": "charcoal-steel",
+      "vertexCount": 8
+    },
+    {
+      "builder": "loading-stripe-slab",
+      "faceCount": 6,
+      "geometryKind": "loading-stripe",
+      "id": "v14-safety-markings::stripe-00",
+      "materialRole": "restrained-heat",
+      "vertexCount": 8
+    },
+    {
+      "builder": "loading-stripe-slab",
+      "faceCount": 6,
+      "geometryKind": "loading-stripe",
+      "id": "v14-safety-markings::stripe-01",
+      "materialRole": "restrained-heat",
+      "vertexCount": 8
+    },
+    {
+      "builder": "articulated-rectangular-member",
+      "faceCount": 6,
+      "geometryKind": "articulated-member",
+      "id": "v14-gutters-and-rails::member-00",
+      "materialRole": "charcoal-steel",
+      "vertexCount": 8
+    },
+    {
+      "builder": "articulated-rectangular-member",
+      "faceCount": 6,
+      "geometryKind": "articulated-member",
+      "id": "v14-gutters-and-rails::member-01",
+      "materialRole": "charcoal-steel",
+      "vertexCount": 8
+    },
+    {
+      "builder": "articulated-rectangular-member",
+      "faceCount": 6,
+      "geometryKind": "articulated-member",
+      "id": "v14-gutters-and-rails::member-02",
+      "materialRole": "charcoal-steel",
+      "vertexCount": 8
+    },
+    {
+      "builder": "articulated-rectangular-member",
+      "faceCount": 6,
+      "geometryKind": "articulated-member",
+      "id": "v14-gutters-and-rails::member-03",
+      "materialRole": "charcoal-steel",
+      "vertexCount": 8
+    },
+    {
+      "builder": "articulated-rectangular-member",
+      "faceCount": 6,
+      "geometryKind": "articulated-member",
+      "id": "v14-gutters-and-rails::member-04",
+      "materialRole": "charcoal-steel",
+      "vertexCount": 8
+    },
+    {
+      "builder": "cycles-shadow-catcher-plane",
+      "faceCount": 1,
+      "geometryKind": "contact-shadow",
+      "id": "v14-contact-shadow-receiver::primary",
+      "materialRole": "southeast-shadow",
+      "vertexCount": 4
+    }
+  ],
+  "schema": 2,
+  "topology": {
+    "parameterizedPayloads": true,
+    "pipeRuns": {
+      "elbows": 4,
+      "segments": 6
+    },
+    "recessedPortal": {
+      "layers": [
+        "frame",
+        "empty-aperture",
+        "inset-back",
+        "reveal-left",
+        "reveal-right",
+        "reveal-header"
+      ],
+      "solidVoidSeparated": true
+    },
+    "sawtoothRoofs": {
+      "peakObjects": 7,
+      "slopeObjects": 7
+    },
+    "trusses": {
+      "chords": 6,
+      "diagonals": 6
+    }
+  },
+  "voidIDs": [
+    "v14-monumental-portal-void::empty-aperture"
+  ]
+}

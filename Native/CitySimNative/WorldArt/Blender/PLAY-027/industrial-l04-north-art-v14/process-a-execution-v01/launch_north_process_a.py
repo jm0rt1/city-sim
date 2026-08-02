@@ -191,7 +191,7 @@ def validate_contract(root: Path, contract: dict[str, Any]) -> dict[str, Any]:
         "transparentFilm": True, "resolution": [1536, 1024], "pixelAspect": [1, 1],
         "colorManagement": {
             "displayDevice": "sRGB", "viewTransform": "Standard",
-            "look": "Medium High Contrast", "exposure": 0.0, "gamma": 1.0,
+            "look": "None", "exposure": 0.75, "gamma": 1.0,
         },
     }
     require(contract["cycles"] == expected_cycles, "Cycles contract drift")

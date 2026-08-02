@@ -1,0 +1,66 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "batch": "industrial_l04_directional_family",
+  "direction": "north",
+  "process": "A",
+  "phase": "prelock_north_a",
+  "sourceCheckpoint": "8dc53eb99d53b0240ec3fb5b8bb465b499b534dc",
+  "generator": {
+    "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/test_process_a_prelaunch.py",
+    "sha256": "1b2432b258b346080456b96d92f3c400aedddc528b1d2d6758a18f46e9fe0693"
+  },
+  "executionContract": {
+    "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/EXECUTION-CONTRACT.json",
+    "sha256": "87733b542fbf306a447e32d44cbe6befaa9fae74ac885361a6513450a97cbbba"
+  },
+  "replayCommand": [
+    "python3",
+    "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/test_process_a_prelaunch.py",
+    "--repository-root",
+    ".",
+    "--output",
+    "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/process-a-execution-v01/ZERO-CHILD-PRELAUNCH.json"
+  ],
+  "freshRoots": [
+    {
+      "label": "fresh-root-a",
+      "sourceCheckpoint": "8dc53eb99d53b0240ec3fb5b8bb465b499b534dc",
+      "output": {
+        "path": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/process-a-execution-v01/ZERO-CHILD-PRELAUNCH.json",
+        "sha256": "bd8396dd2a79388ee7171f6e37b552d62e3a886b0cb18adddf19ba030de4a696"
+      },
+      "validationPassed": true
+    },
+    {
+      "label": "fresh-root-b",
+      "sourceCheckpoint": "8dc53eb99d53b0240ec3fb5b8bb465b499b534dc",
+      "output": {
+        "path": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/process-a-execution-v01/ZERO-CHILD-PRELAUNCH.json",
+        "sha256": "bd8396dd2a79388ee7171f6e37b552d62e3a886b0cb18adddf19ba030de4a696"
+      },
+      "validationPassed": true
+    }
+  ],
+  "freshRootCount": 2,
+  "freshRootsDistinct": true,
+  "completeOutputInventoriesByteIdentical": true,
+  "adversarialCaseCountPerReplay": 32,
+  "allAdversarialCasesPassed": true,
+  "launcherPopenSiteCount": 1,
+  "futureChildRenderCallCount": 2,
+  "futureRenderCallsExecuted": 0,
+  "blenderChildStartCount": 0,
+  "dccProcessCount": 0,
+  "renderInvocationCount": 0,
+  "sourcePixelCount": 0,
+  "normalizerProcessCount": 0,
+  "imageGenProcessCount": 0,
+  "siblingProcessCount": 0,
+  "rendererProcessCount": 0,
+  "shippingMutationCount": 0,
+  "sourceAuthority": false,
+  "candidateReadyForIndependentReview": false,
+  "productionSelected": false,
+  "validationPassed": true
+}

@@ -1,0 +1,16 @@
+{
+  "schema": 1,
+  "status": "retired",
+  "task": "PLAY-027",
+  "surface": "industrial_l04_north_v13_process_a_prelaunch_v01",
+  "retiredAt": "2026-08-01-retirement-r1",
+  "reason": "obsolete current-tree authority surface retired; process-a-v02 is the only successor surface",
+  "executable": false,
+  "surfaceState": "removed",
+  "sourceAuthority": false,
+  "productionSelected": false,
+  "forbidden": [
+    "command", "secret", "token", "authority", "schedule", "receipt", "attempt",
+    "lease", "grant", "child", "bpy", "blender", "dcc", "render", "pixels", "normalize"
+  ]
+}

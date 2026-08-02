@@ -1,0 +1,50 @@
+{
+  "cycles": {
+    "denoising": false,
+    "device": "CPU",
+    "samples": 64
+  },
+  "direction": "north",
+  "lighting": {
+    "key": {
+      "colorRGB": [
+        1.0,
+        0.78,
+        0.58
+      ],
+      "energyWatts": 4500.0,
+      "originSource": "DESIGN-SCENE.light.keyOrigin",
+      "originWorld": [
+        -80,
+        120,
+        -80
+      ],
+      "shadowSoftSizeWorld": 46.0,
+      "shape": "DISK",
+      "sizeWorld": 46.0,
+      "targetWorld": [
+        0.0,
+        16.0,
+        0.0
+      ],
+      "type": "AREA"
+    },
+    "world": {
+      "backgroundColorRGBA": [
+        0.055,
+        0.065,
+        0.085,
+        1.0
+      ],
+      "backgroundStrength": 0.55,
+      "useNodes": true
+    }
+  },
+  "process": "A",
+  "productionSelected": false,
+  "rawSHA256": "fc842d263b39057036f1c5c3630e4a74dfda2c3d285626a0dba0b7af0876d94c",
+  "sceneGeometryID": "industrial-l04-north-v13-portal-crown-foundry",
+  "schema": 1,
+  "sourceAuthority": false,
+  "task": "PLAY-027"
+}

@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "runner": "launch_north_v13_process_a_v02.py",
+  "mode": "integration_direct",
+  "routeId": "quality-v1:play-027-north-current-head-preflight-luna-v1",
+  "routeSHA256": "d1c3a1c8b2c6afd747b42641d29afc5e4d85320f267ffe19c89efc447cdb1940",
+  "carrierCommit": "5d84d521b3b25f9ddf11d7b88e81c885a5e86946",
+  "authorityBase": "5ac54021604e25117f4ccb63bc0914209724754c",
+  "claimSHA256": "bf0b167a1d1e6f7007d609aeb657917fe9d3d0866d5a7a6e36b0e5a32faefa6f",
+  "claimRevision": 10,
+  "executionBaseHEAD": "d25d7a2767d92a8628849ca3911d28f4203dd674",
+  "workerHEAD": "d25d7a2767d92a8628849ca3911d28f4203dd674",
+  "child": "render_north_v13_process_a_child.py",
+  "childBoundary": "child validates committed schedule/receipt, consumed Integration attempt, worker/input/output identities before bpy and accepts no caller-selected env/flags alone",
+  "zeroChildMode": "preflight-only; no child command construction; writes only readiness evidence",
+  "integrationDirectMode": "validates actual schedule/receipt bytes and committed schedule blob, atomically consumes the sibling Integration attempt marker, then constructs exactly one fixed Blender command",
+  "authority": "Integration-owned schedule, process receipt, attempt marker, and compute slot",
+  "workerCapabilities": ["read-frozen-inputs", "validate-identity", "write-task-owned-readiness", "construct-integration-command"],
+  "workerForbidden": ["sign", "build-authority", "create-secret", "consume-attempt", "create-receipt", "start-child", "render", "write-pixels"],
+  "outputPolicy": {"exclusive": true, "overwrite": false, "symlinks": false, "futureProcessRootCreated": false, "attemptMarkerOutsideFutureRoot": true, "attemptMarkerAtomicallyConsumedByIntegration": true},
+  "sourceAuthority": false,
+  "productionSelected": false
+}

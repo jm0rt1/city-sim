@@ -1,0 +1,27 @@
+{
+  "frozenInputs": {
+    "lighting": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/LIGHTING-CONTRACT.json",
+      "sha256": "22bc6d296e12bd37e47ee9caed8d9c894ef5621149b849a2a45f0ea431aba7b2"
+    },
+    "lowerer": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/lower_v14_scene.py",
+      "sha256": "3c3995e09a2c5a197f3156b3023c22d38aad67b77b13c4f38110879585a40c32"
+    },
+    "loweringContract": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/LOWERING-CONTRACT.json",
+      "sha256": "3a4dbba579c93833b0be885e294e2dbd6797d932a3055417755575ecc1e76875"
+    },
+    "materials": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/DESIGN-MATERIALS.json",
+      "sha256": "3f982ccc441590a51d97a3b9bab70828d6ff2d577e334dab61bfb0d5de0dc7eb"
+    },
+    "scene": {
+      "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/DESIGN-SCENE.json",
+      "sha256": "85203e23d212b354cb9615092b098059568fb081c0efc550ee8aad85a21f9fe7"
+    }
+  },
+  "grantSHA256": "e9fb9a6d6773852b9c929a88a3a6a570d22cd39b8c6ae827f869dcd0c207fed8",
+  "scheduleSHA256": "02cdcc1ab681813bb179a09871510b35f6d52cd625ff2e40a72d6e1e7c8da958",
+  "sessionSHA256": "e6c8bf483977c56b3cb046ec47c7e0f5e2122f9874acde0c929b65ae4d98488e"
+}

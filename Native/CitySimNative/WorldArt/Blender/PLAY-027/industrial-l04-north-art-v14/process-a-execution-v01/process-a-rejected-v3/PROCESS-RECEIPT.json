@@ -1,0 +1,10 @@
+{
+  "blendPath": "north-v14-process-a.blend",
+  "childStarts": 1,
+  "direction": "north",
+  "productionSelected": false,
+  "renderPath": "raw.png",
+  "semanticPath": "semantic.png",
+  "sourceAuthority": false,
+  "status": "PROCESS_A_COMPLETE"
+}

@@ -1,0 +1,62 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "direction": "north",
+  "status": "ZERO_DCC_VISUAL_REPAIR_CANDIDATE",
+  "workerBase": "ff83b9dcb5b9826dc37631939ac215a633d31136",
+  "routeId": "quality-v2:play-027-industrial-l04-v14-frontier-visual-repair-v1",
+  "routeSHA256": "e814eea695c7f5085a7bcf376bbaf7ac0000dc06dca085ead744238c37bc6635",
+  "sourceHashes": {
+    "render_north_process_a_child.py": "1239a739d3063b74f9f2597a789f4d5d188df1339ad60577e6b2e6989c209fb8",
+    "test_process_a_prelaunch.py": "b367599278697efc84cb98278f11f7537f800e841f047b7eccfc8d38ee72189e",
+    "test_v14_zero_pixel.py": "8b172dc461bd7809f7b16fa3d5d8cda7f5054e2d25bf3730ca0e3136fb8c089c"
+  },
+  "archivedOutput": {
+    "fileCount": 8,
+    "rawSHA256": "a07d8b12430362a6083eab1ad835cd4bb572d9d089b951d7356b449d6faef6c0",
+    "semanticSHA256": "91676d377e22c3df3d77b7bd51510ed6b3d7ca297df2b43ac36111dfa9978378",
+    "blendSHA256": "250ec2a0599b4f227ed7e14af08c990a2f5b13f83a0637d88de4d7e721e3e6bf",
+    "preservedByteIdentically": true
+  },
+  "focusedPasses": [
+    {
+      "pass": 1,
+      "zeroPixel": {"status": "PASS", "components": 33, "objects": 97, "closedOutwardObjects": 95, "openTwoSidedObjects": 1, "adversaries": 9, "retainedRenderRejected": true, "syntheticVisibilityPass": true, "dccProcessCount": 0, "pixelWrites": 0},
+      "prelaunch": {"status": "STATIC_REFERENCE_CANDIDATE", "components": 33, "parameterizedObjects": 97, "solidMeshSpecs": 96, "voidSpecs": 1, "adversaries": 42, "freshRoots": 2, "childStarts": 0, "dccProcessCount": 0, "pixelWrites": 0}
+    },
+    {
+      "pass": 2,
+      "zeroPixel": {"status": "PASS", "components": 33, "objects": 97, "closedOutwardObjects": 95, "openTwoSidedObjects": 1, "adversaries": 9, "retainedRenderRejected": true, "syntheticVisibilityPass": true, "dccProcessCount": 0, "pixelWrites": 0},
+      "prelaunch": {"status": "STATIC_REFERENCE_CANDIDATE", "components": 33, "parameterizedObjects": 97, "solidMeshSpecs": 96, "voidSpecs": 1, "adversaries": 42, "freshRoots": 2, "childStarts": 0, "dccProcessCount": 0, "pixelWrites": 0}
+    }
+  ],
+  "mechanicalGates": {
+    "bridgeDeterminant": 1,
+    "bridgeDeterminantProven": true,
+    "componentCountPreserved": true,
+    "objectCountPreserved": true,
+    "allClosedMeshesOutward": true,
+    "openGeometryExplicitlyClassified": true,
+    "registrationLocked": true,
+    "socketSource": [896, 704],
+    "retainedRawRejectedByNewGate": true,
+    "syntheticReadableFixtureAccepted": true,
+    "governedOutputRootsCreated": 0,
+    "childStarts": 0,
+    "dccProcessCount": 0,
+    "pixelWrites": 0
+  },
+  "changedPathClasses": [
+    "process-a-output renamed byte-identically to process-a-rejected-v3",
+    "North v14 Process-A child",
+    "North v14 zero-pixel test",
+    "North v14 prelaunch test",
+    "task-owned diagnosis and validation evidence"
+  ],
+  "forbiddenPathChanges": 0,
+  "sourceAuthority": false,
+  "productionSelected": false,
+  "executableBehavior": "UNPROVEN",
+  "visualQuality": "UNPROVEN",
+  "independentReviewRequired": true
+}

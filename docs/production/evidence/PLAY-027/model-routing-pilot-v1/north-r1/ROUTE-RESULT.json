@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "routeId": "pilot-v1:north-r1",
+  "routeCanonicalSHA256": "920f8f14d5c364f0e857fd389e60592c3e48aa02c32ec9d45f6e46e308731ab4",
+  "dispatchCarrierCommit": "145c8dbc7801690d1919d4fd3bacabd4d7203d70",
+  "dispatchReceiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PILOT-NORTH-R1.json",
+  "dispatchReceiptSHA256": "56f66e7ed001154e9debba76a2fe235acddd38d8ae1976742d5e70c65448a03b",
+  "authorityCommit": "2753f42134fa85d8570849b57302cce0bc924566",
+  "claimPath": "docs/production/claims/PLAY-027.world-art.md",
+  "claimSHA256": "d28bf14bb3d2d5441f3df6278eef758a5babb4453d22e06fc8bd4075ad5c80a1",
+  "expectedStartingHEAD": "e176400f5c7b95bd53e72a2f98c9960d9e5dbfcb",
+  "branch": "codex/citysim-world-art",
+  "worktree": "/Users/James/.codex/worktrees/0648/city-sim",
+  "modelRoute": {
+    "classification": "FRONTIER_AUTHORITY",
+    "model": "gpt-5.6-sol",
+    "effort": "high"
+  },
+  "routeValidation": {
+    "dispatchReceiptFileHashVerified": true,
+    "routeLocatedExactlyOnce": true,
+    "canonicalRouteHashVerified": true,
+    "authorityAncestryVerified": true,
+    "liveBranchWorktreeHEADClaimAndPathsVerified": true,
+    "siblingWorktreesNotRevalidated": true,
+    "result": "PASS: model routing contract"
+  },
+  "boundedDeliverable": "Independently review the exact Industrial L4 North hero evidence, resolve the remaining visual authority, and return one exact APPROVE or RETURN packet; do not publish the shared appearance lock.",
+  "disposition": "RETURN",
+  "resultCode": "EXACT_FOCUSED_OUTPUT_CONTRACT_MISMATCH",
+  "focusedGate": {
+    "command": "python3 Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-execution-v01/test_process_a_prelaunch.py --repository-root . --output /private/tmp/play027-model-routing-pilot-north-r1-prelaunch.json",
+    "exitCode": 1,
+    "failure": "RuntimeError: exact current zero-child prelaunch output required",
+    "providedOutput": "/private/tmp/play027-model-routing-pilot-north-r1-prelaunch.json",
+    "requiredOutput": "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12/process-a-execution-v01/REVISION-7-FINAL-AUTHORITY-ZERO-CHILD-PRELAUNCH-R3.json",
+    "outputCreated": false,
+    "rerunCount": 0,
+    "interpretation": "The committed R1 command contradicts the focused test's exact-output contract. Substituting the repository evidence path would alter the governed route command and overwrite-or-collide with retained evidence, so the worker stopped fail-closed."
+  },
+  "visualDisposition": {
+    "executed": false,
+    "reason": "The mandatory focused gate failed before subjective North hero review could legally continue.",
+    "sourceAuthority": false,
+    "productionSelected": false
+  },
+  "escalation": {
+    "triggered": true,
+    "reasons": [
+      "failure_outside_focused_scope",
+      "shared_contract_or_schema_decision"
+    ],
+    "frontierReason": "Integration must publish a focused command whose output binding is accepted by the immutable prelaunch test, or publish a separately authorized non-colliding review gate."
+  },
+  "executionMetrics": {
+    "startedAt": "2026-08-01T16:10:43Z",
+    "endedAt": "2026-08-01T16:11:05Z",
+    "elapsedSecondsApproximate": 22,
+    "turnCount": 2,
+    "validationSecondsApproximate": 1,
+    "integrationAuthoredRoutingReworkCount": 2,
+    "integrationAuthoredRoutingReworkEvents": [
+      "focused-command-r1",
+      "carrier-sha-correction"
+    ],
+    "workerReworkCount": 0,
+    "availableApproximateTokens": null
+  },
+  "gateOwnership": {
+    "focusedGateOwnerThreadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+    "fullGateOwnerThreadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+    "independentReviewerThreadId": "019f7686-4491-7891-86a6-95a78d67e5c8"
+  },
+  "prohibitionsPreserved": {
+    "fullGateNotRun": true,
+    "dccNotRun": true,
+    "renderNotRun": true,
+    "pixelsNotGenerated": true,
+    "sharedAppearanceLockNotPublished": true,
+    "sharedAuthorityNotMutated": true,
+    "pushNotPerformed": true,
+    "integrationNotPerformed": true,
+    "selfAcceptanceNotPerformed": true
+  },
+  "stopConditionSatisfied": true
+}

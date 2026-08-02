@@ -387,14 +387,14 @@ def prepare_integration_launch(repository_root: str | Path, contract_path: str, 
     binding = validate_direct_documents(root, contract, schedule_path, process_receipt_path, schedule_file.read_bytes(), receipt_file.read_bytes())
     _validate_attempt_marker(root, binding["schedule"]["attemptMarkerPath"], binding["schedule"], binding["receipt"], schedule_path, process_receipt_path, "available", binding["scheduleSHA256"], binding["receiptSHA256"])
     authority_paths = _authority_exclusion_paths(schedule_path, process_receipt_path)
-    preflight_result = _preflight(root, contract_path, schedule_path, process_receipt_path, FUTURE_PROCESS_ROOT, authority_paths)
+    preflight_result = _preflight(root, contract_path, schedule_path, process_receipt_path, FUTURE_PROCESS_ROOT, authority_paths, binding["schedule"]["childPath"], binding["schedule"]["childSHA256"])
     output_root = _assert_no_symlink(root, FUTURE_PROCESS_ROOT)
     if output_root.exists():
         raise ValueError("exclusive output root must be absent before launch")
     command = build_launch_command(root, contract, schedule_path, process_receipt_path)
     if command.count(BLENDER) != 1 or command.count("--python") != 1:
         raise ValueError("fixed one-child command shape invalid")
-    return {"preflight": preflight_result, "binding": binding, "attemptMarkerPath": ATTEMPT_MARKER_PATH, "validatedAuthorityExclusions": list(authority_paths), "command": command, "commandSHA256": sha256_bytes(canonical_bytes(command)), "launchReady": True, "childStarts": 0}
+    return {"preflight": preflight_result, "binding": binding, "attemptMarkerPath": ATTEMPT_MARKER_PATH, "validatedAuthorityExclusions": list(preflight_result["validatedAuthorityExclusions"]), "command": command, "commandSHA256": sha256_bytes(canonical_bytes(command)), "launchReady": True, "childStarts": 0}
 
 
 def _atomic_consume_attempt(prepared: dict, root: Path) -> dict:
@@ -440,7 +440,7 @@ def execute_integration_direct(prepared: dict, root: Path) -> int:
     return process.returncode
 
 
-def _preflight(repository_root: str | Path, contract_path: str, schedule_path: str | None, process_receipt_path: str | None, output_root: str | None, validated_authority_paths: tuple[str, str, str] = ()) -> dict:
+def _preflight(repository_root: str | Path, contract_path: str, schedule_path: str | None, process_receipt_path: str | None, output_root: str | None, validated_authority_paths: tuple[str, str, str] = (), validated_child_path: str | None = None, validated_child_sha256: str | None = None) -> dict:
     root = exact_repository_root(repository_root)
     contract = _load_contract(root, contract_path)
     _verify_contract_bindings(root, contract)
@@ -454,7 +454,18 @@ def _preflight(repository_root: str | Path, contract_path: str, schedule_path: s
         expected_authority_paths = _authority_exclusion_paths(schedule, receipt)
         if validated_authority_paths != expected_authority_paths:
             raise ValueError("authority exclusions do not match the validated schedule, receipt, and marker")
-    changed = [path for path in _changed_paths(root) if path not in validated_authority_paths]
+    exclusion_paths = list(validated_authority_paths)
+    if validated_child_path is not None or validated_child_sha256 is not None:
+        expected_child_path = f"{SOURCE_ROOT}/{CHILD_NAME}"
+        if validated_child_path != expected_child_path:
+            raise ValueError("validated child path is not the exact task-owned child")
+        if type(validated_child_sha256) is not str or len(validated_child_sha256) != 64 or any(ch not in "0123456789abcdef" for ch in validated_child_sha256):
+            raise ValueError("validated child hash is not a full lowercase SHA-256")
+        child_file = _assert_no_symlink(root, validated_child_path)
+        if not child_file.is_file() or sha256_file(child_file) != validated_child_sha256:
+            raise ValueError("schedule-bound child bytes differ from the live child")
+        exclusion_paths.append(validated_child_path)
+    changed = [path for path in _changed_paths(root) if path not in exclusion_paths]
     if any(not _allowed_changed_path(path) for path in changed):
         raise ValueError("current delta escapes the two task-owned roots")
     validate_frozen_inputs(root, contract)
@@ -473,7 +484,7 @@ def _preflight(repository_root: str | Path, contract_path: str, schedule_path: s
         "executionBaseHEAD": EXECUTION_BASE,
         "observedHeadMustDescendFromBase": True,
         "changedPaths": changed,
-        "validatedAuthorityExclusions": list(validated_authority_paths),
+        "validatedAuthorityExclusions": exclusion_paths,
         "frozenInputCount": len(contract["inputs"]),
         "schedulePath": schedule,
         "schedulePresent": (root / schedule).is_file(),

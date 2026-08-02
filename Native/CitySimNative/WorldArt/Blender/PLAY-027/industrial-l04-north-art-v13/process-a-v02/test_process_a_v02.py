@@ -251,16 +251,8 @@ def main() -> int:
     must_fail(lambda: runner.prepare_integration_launch(ROOT, f"{runner.SOURCE_ROOT}/EXECUTION-CONTRACT.json", SCHEDULE, RECEIPT), "missing live authority files")
 
     # Preserve the original positive parent launchReady proof and its complete
-    # real-Git adversarial coverage. The parent worker-delta contract predates
-    # the repaired child bytes, so this fixture restores the execution-base
-    # child only to keep the parent proof's delta exact; child validation below
-    # runs separately against the repaired byte source.
+    # real-Git adversarial coverage while retaining the repaired child bytes.
     holder, fixture, fixture_contract, fixture_schedule, fixture_receipt = _git_fixture()
-    base_child = subprocess.check_output(
-        ["git", "show", f"{runner.EXECUTION_BASE}:{runner.SOURCE_ROOT}/{runner.CHILD_NAME}"],
-        cwd=fixture,
-    )
-    (fixture / runner.SOURCE_ROOT / runner.CHILD_NAME).write_bytes(base_child)
     original_worktree, original_branch, original_popen = runner.WORKTREE, runner.BRANCH, runner.subprocess.Popen
     runner.WORKTREE = str(fixture)
     runner.BRANCH = "fixture-north"
@@ -274,12 +266,19 @@ def main() -> int:
         prepared = runner.prepare_integration_launch(fixture, f"{runner.SOURCE_ROOT}/EXECUTION-CONTRACT.json", SCHEDULE, RECEIPT)
         assert prepared["launchReady"] is True
         assert prepared["childStarts"] == 0
-        assert prepared["validatedAuthorityExclusions"] == [SCHEDULE, RECEIPT, runner.ATTEMPT_MARKER_PATH]
+        assert prepared["validatedAuthorityExclusions"] == [SCHEDULE, RECEIPT, runner.ATTEMPT_MARKER_PATH, runner.SOURCE_ROOT + "/" + runner.CHILD_NAME]
         assert SCHEDULE not in prepared["preflight"]["changedPaths"]
         assert RECEIPT not in prepared["preflight"]["changedPaths"]
         assert runner.ATTEMPT_MARKER_PATH not in prepared["preflight"]["changedPaths"]
+        assert runner.SOURCE_ROOT + "/" + runner.CHILD_NAME not in prepared["preflight"]["changedPaths"]
         assert prepared["preflight"]["futureProcessRootAbsent"] is True
         assert not (fixture / runner.FUTURE_PROCESS_ROOT).exists()
+
+        fixture_child = fixture / runner.SOURCE_ROOT / runner.CHILD_NAME
+        original_child = fixture_child.read_bytes()
+        fixture_child.write_bytes(original_child + b"\n")
+        must_fail(lambda: runner.prepare_integration_launch(fixture, f"{runner.SOURCE_ROOT}/EXECUTION-CONTRACT.json", SCHEDULE, RECEIPT), "wrong live child hash")
+        fixture_child.write_bytes(original_child)
 
         # A namespace neighbor and any unvalidated exact authority file remain
         # worker-delta failures; the validator never whitelists a namespace.

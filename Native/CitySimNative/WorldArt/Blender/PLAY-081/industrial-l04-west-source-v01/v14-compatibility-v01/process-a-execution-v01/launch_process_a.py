@@ -17,6 +17,8 @@ ROOT = Path(__file__).resolve().parents[8]
 PACKAGE = Path(__file__).resolve().parent
 CONTRACT = PACKAGE / "PROCESS-A-CONTRACT.json"
 CHILD = PACKAGE / "blender_process_a.py"
+PUBLISHED_BASE = "6b4145d35d358ddebb645cf7ca892406435bbd1b"
+AUTHORITY_COMMIT = "9beafc0819a6dfbbf58bba5bd2f48657b1f526a8"
 
 
 def load() -> dict[str, Any]:
@@ -34,15 +36,25 @@ def validate_grant(grant: dict[str, Any]) -> dict[str, Any]:
         raise PermissionError("schedule/slot/direction grant mismatch")
     if contract["schedule"] != grant or contract["direction"] != "west" or contract["processID"] != "west-v14-process-a":
         raise PermissionError("contract authority mismatch")
+    if contract.get("publishedBase") != PUBLISHED_BASE or contract.get("authorityCommit") != AUTHORITY_COMMIT:
+        raise PermissionError("current published authority mismatch")
     if contract.get("appearanceLock") is None or contract.get("sourceProductionProfile") is None or contract.get("executionReady") is not True:
         raise PermissionError("future North appearance profile is not published")
     if sha(ROOT / contract["designPath"]) != contract["designSHA256"] or sha(ROOT / contract["loweringPath"]) != contract["loweringSHA256"]:
         raise PermissionError("frozen input hash mismatch")
     output = ROOT / contract["futureOutputRoot"]
+    relative = output.relative_to(ROOT)
+    cursor = ROOT
+    for part in relative.parts:
+        cursor = cursor / part
+        if cursor.is_symlink():
+            raise PermissionError("output root symlink component is forbidden")
     if output.exists() or output.is_symlink():
         raise FileExistsError("immutable output root already exists")
     if not str(output).startswith(str(ROOT / contract["sourceRoot"])):
         raise PermissionError("output root escape")
+    if output.parent.is_symlink() or (output.parent.exists() and not output.parent.is_dir()):
+        raise PermissionError("exclusive output parent invalid or symlinked")
     return contract
 
 

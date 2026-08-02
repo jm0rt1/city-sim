@@ -133,6 +133,27 @@
       "receiptSha256": "106a0688f33d48ecc908eed3d52c8e0d7c8f226f7ca6f712e42e36f31fa3ee5c",
       "decision": "REFILL",
       "disposition": {"status":"applied","authorityCommit":"76540dc2e58265f6e524fc18c270921a3492ba43","reason":"Integration accepted all three disjoint repairs and opened the immediate next-wave authority and lane-synchronization work in the same goal turn."}
+    },
+    {
+      "eventKey": {"authorityCommit":"444599b39e8f707fc55e6cbaa85d965df4268e75","taskId":"PLAY-089","routeId":"quality-v2:play-089-north-stage-b-predelegation-v2","trigger":"worktree_or_dispatch_setup_failed_before_mutation","candidateOrResultCommit":"f6c0d13b57c255fb8f546bb9f61722493f1f0fa0"},
+      "receiptPath": "docs/production/evidence/PLAY-089/north-stage-b-predelegation-v2/01-setup-failure.json",
+      "receiptSha256": "a93f167b9afca1a1398a2707034f3d2325fca209907e050bc05eca111ca7adea",
+      "decision": "RETURN",
+      "disposition": {"status":"applied","authorityCommit":"9e2edd8364584bd3dd8bd21a1a44636625bf64ca","reason":"Integration repaired the mismatched V1 event projection by publishing a route-consistent V2 envelope before dispatch."}
+    },
+    {
+      "eventKey": {"authorityCommit":"444599b39e8f707fc55e6cbaa85d965df4268e75","taskId":"PLAY-089","routeId":"quality-v2:play-089-north-stage-b-predelegation-v2","trigger":"delegation_ready_for_dispatch","candidateOrResultCommit":"f6c0d13b57c255fb8f546bb9f61722493f1f0fa0"},
+      "receiptPath": "docs/production/evidence/PLAY-089/north-stage-b-predelegation-v2/02-delegation-ready.json",
+      "receiptSha256": "6f5bff2dabbb65f127e0bb59909a236468c98500d523f946337bb522d260c699",
+      "decision": "NO_CHANGE",
+      "disposition": {"status":"auto_closed","authorityCommit":"ff34902b83474715cafb23bcf1b8a2d9d40992ef","reason":"The exact North Stage-B delegation is clean, dormant, single-attempt, and independently reviewed against its published worker and carrier bindings."}
+    },
+    {
+      "eventKey": {"authorityCommit":"444599b39e8f707fc55e6cbaa85d965df4268e75","taskId":"PLAY-089","routeId":"quality-v2:play-089-north-stage-b-predelegation-v2","trigger":"frontier_route_assigned","candidateOrResultCommit":"f6c0d13b57c255fb8f546bb9f61722493f1f0fa0"},
+      "receiptPath": "docs/production/evidence/PLAY-089/north-stage-b-predelegation-v2/03-frontier-route.json",
+      "receiptSha256": "a3fbdf93a624e7b544938dfe9ab48425ba2f7ba25d97903cb61a34d1d77f8d51",
+      "decision": "NO_CHANGE",
+      "disposition": {"status":"auto_closed","authorityCommit":"ff34902b83474715cafb23bcf1b8a2d9d40992ef","reason":"Frontier ownership remains mandatory for the one-shot DCC execution and visual disposition; no authority is delegated to the observer."}
     }
   ]
 }

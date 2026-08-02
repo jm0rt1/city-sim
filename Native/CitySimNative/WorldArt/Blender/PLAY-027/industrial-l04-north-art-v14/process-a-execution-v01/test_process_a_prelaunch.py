@@ -235,7 +235,7 @@ def main() -> None:
         "resolution": [1536, 1024], "resolutionPercentage": 100,
         "pixelAspect": [1, 1],
         "image": {"fileFormat": "PNG", "colorMode": "RGBA", "colorDepth": "8", "compression": 15},
-        "colorManagement": {"displayDevice": "sRGB", "viewTransform": "Standard", "look": "Medium High Contrast", "exposure": 0.0, "gamma": 1.0},
+        "colorManagement": {"displayDevice": "sRGB", "viewTransform": "Standard", "look": "None", "exposure": 0.75, "gamma": 1.0},
     }
     camera_profile = CHILD.camera_profile(scene)
     assert camera_profile["orthoScale"] == 237.5878601074218
@@ -251,8 +251,8 @@ def main() -> None:
     assert light_profile["key"]["originBlender"] == [-80, -80, 120]
     assert light_profile["key"]["targetBlender"] == [0, 0, 16]
     assert light_profile["fill"]["originBlender"] == [72.0, 72.0, 70.0]
-    assert light_profile["key"]["effectiveEnergyWatts"] == 54000.0
-    assert light_profile["fill"]["effectiveEnergyWatts"] == 7200.0
+    assert light_profile["key"]["effectiveEnergyWatts"] == 108000.0
+    assert light_profile["fill"]["effectiveEnergyWatts"] == 36000.0
     assert light_profile["lowering"] == {"keyEnergyScale": 12.0, "fillEnergyScale": 40.0}
     assert light_profile["key"]["distanceToTarget"] > 150.0
     assert light_profile["fill"]["distanceToTarget"] > 100.0

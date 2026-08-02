@@ -111,6 +111,28 @@ completely. Never pin a task.
    authority/judgment reason; a task completion or stop requires a durable
    result/blocker plus its next dependency; unchanged full context reloads and
    delegation acknowledgement defects are reviewable cost failures.
+   Before sending mutation authority, emit `delegation_ready_for_dispatch` and
+   run its immediate Luna mechanical/medium review through the canonical
+   optimizer task. Freeze branch/HEAD before the review. The worker may read
+   exact authority while it runs, but may not synchronize or mutate until
+   `NO_CHANGE`.
+   `RETURN` or `ESCALATE` stops the dispatch. Prove the lowest legal model,
+   frozen judgment boundary, exact claim/paths, distinct focused/full-gate
+   owners, independent reviewer, and useful-concurrency effect.
+   Batch ordinary lifecycle events into one optimizer turn of at most eight
+   event keys and 32 KiB total compact context, with one receipt per key. Flush
+   in the same management turn at each policy flush trigger. Reuse the canonical
+   visible optimizer task; never create or pin one task per event.
+   Validate every schema-4 receipt against the Integration-owned durable ledger
+   at `docs/production/evidence/PLAY-089/OPERATING-REVIEW-EVENT-LEDGER-V1.json`.
+   One source event produces one receipt per declared trigger. `NO_CHANGE`
+   closes automatically; record every actionable decision as applied, deferred
+   with an exact dependency, or rejected with a frontier reason before the
+   related lifecycle advances.
+   Do not recursively ask the optimizer to review its own observer route. That
+   bootstrap is the sole exception: Integration runs the full schema-2 route
+   validator, verifies exact Git/claim/HEAD/paths, obtains one independent
+   static route review, and proves zero worker mutation before dispatch.
 10. When a claimed lane becomes idle while contract-independent work is ready,
     refill it in the same management turn or record the exact serialized
     dependency. Maintain at least three useful active workstreams whenever the

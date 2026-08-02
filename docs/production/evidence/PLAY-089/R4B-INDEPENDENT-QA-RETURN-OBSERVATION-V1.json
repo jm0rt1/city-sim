@@ -1,0 +1,145 @@
+{
+  "schema": 1,
+  "taskId": "PLAY-089",
+  "observationBoundary": "r4b_independent_qa_return_and_prior_dispatch_observation",
+  "result": "NO_CHANGE",
+  "binding": {
+    "carrierCommit": "f15ca76eddd09bdd986f8acf0d5a4dd65c11151a",
+    "authorityCommit": "45e1422304443a012a2f121c90be3e7d31b82c59",
+    "baseCommit": "45e1422304443a012a2f121c90be3e7d31b82c59",
+    "dispatchReceipt": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-089-R4B-QA-RETURN-OBSERVATION-V1.json",
+    "dispatchReceiptSha256": "c937b61e923d58072c2a81965982381c875f24a78d4bbaf9c28c45a566c4712e",
+    "routeId": "quality-v1:play-089-r4b-independent-qa-return-observation-v1",
+    "modelRouteSha256": "f249be1375d8a6a12e2bfa6d0e121676a43904f9a5f9514fbb8e239a0de6a969",
+    "claimPath": "docs/production/claims/PLAY-089.operating-system-optimization.md",
+    "claimSha256": "6276c96d96965805df6a1a9c779ecde7dc609824053c7e0eb00e35f67134cc47",
+    "branch": "codex/citysim-os-optimization",
+    "worktree": "/Users/James/.codex/worktrees/c92d/city-sim",
+    "startingCommit": "00a5bc6b3a79777ab27d21da11384d44991c2a65",
+    "resultCommit": null,
+    "allowedPath": "docs/production/evidence/PLAY-089/R4B-INDEPENDENT-QA-RETURN-OBSERVATION-V1.json"
+  },
+  "routeAcknowledgement": {
+    "classification": "LUNA_MECHANICAL",
+    "model": "gpt-5.6-luna",
+    "effort": "medium",
+    "contextMode": "full_authority_read",
+    "immutableInputs": [
+      {
+        "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-075-R4-B-E4F038F9-FINAL-QA-V1.json",
+        "sha256": "23a0ff489138153da5a60ac0c8635083cdb1596580ccad8cf9427791df91eecb",
+        "bytes": 7716
+      },
+      {
+        "path": "docs/production/evidence/PLAY-075/r4-b-e4f038f9-final-wave009-v1/RESULT.json",
+        "sha256": "82e0c61540af0cd40c2908fec6e9592540fe5bf70a5d12c0c878ed78cacf13c8",
+        "bytes": 1851
+      },
+      {
+        "path": "docs/production/evidence/PLAY-075/r4-b-e4f038f9-final-wave009-v1/VALIDATION.md",
+        "sha256": "f2ded3018b92ed1ba66446b1cf6b792ad37afac7e39643116a551883ff4be98dd",
+        "bytes": 2498
+      },
+      {
+        "path": "docs/production/evidence/PLAY-089/dispatch-45e14223-observation.json",
+        "sha256": "e169ea8a9c941683036a1e11454e1566e2fc4df5072fefdcf435994126489714",
+        "bytes": 4430
+      }
+    ],
+    "allowedPaths": [
+      "docs/production/evidence/PLAY-089/R4B-INDEPENDENT-QA-RETURN-OBSERVATION-V1.json"
+    ],
+    "forbiddenPaths": [
+      ".agents",
+      "AGENTS.md",
+      "Native",
+      "docs/production/PLAYABLE_BACKLOG.md",
+      "docs/production/claims",
+      "docs/production/completed",
+      "docs/production/decisions",
+      "docs/production/evidence/INTEGRATION",
+      "script"
+    ],
+    "focusedGateOwner": "optimizer_qa_return_observation_gate",
+    "fullGateOwner": "integration_efficiency_review",
+    "allEscalationTriggersAcknowledged": true,
+    "independentReviewer": {
+      "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+      "model": "gpt-5.6-sol",
+      "effort": "high"
+    },
+    "stopConditionAcknowledged": true
+  },
+  "observedQaReturn": {
+    "qaAuthority": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-075-R4-B-E4F038F9-FINAL-QA-V1.json",
+    "candidateCommit": "e4f038f942f8c011a0b38b71353e40b4ac5054d4",
+    "disposition": "RETURN",
+    "automaticReturnChecks": {
+      "broadUndifferentiatedGreenQuadrant": "RESOLVED",
+      "adjacentDuplicateOrangeBuildings": "UNRESOLVED"
+    },
+    "regressionChecks": {
+      "newOverlap": "PASS",
+      "clipping": "PASS",
+      "fallbackOrMissingResource": "PASS",
+      "mixedFidelity": "PASS",
+      "materialCompositionRegression": "PASS"
+    },
+    "releaseSanity": {
+      "pointerPlacement": "PASS",
+      "keyboardMapFocus": "PASS",
+      "commandGuideEscape": "PASS",
+      "compactFocusCity": "PASS"
+    },
+    "candidateStarts": "1 of 1",
+    "fullSwiftSuiteOrBuildRerun": "NONE",
+    "productSourceOrSharedAuthorityMutation": "NONE",
+    "interpretation": null
+  },
+  "priorDispatchObservation": {
+    "path": "docs/production/evidence/PLAY-089/dispatch-45e14223-observation.json",
+    "sha256": "e169ea8a9c941683036a1e11454e1566e2fc4df5072fefdcf435994126489714",
+    "result": "NO_CHANGE",
+    "observedRows": 2,
+    "lunaRows": 2,
+    "frontierRows": 0,
+    "actualOverrideEvents": null,
+    "visibleAcknowledgements": null,
+    "elapsedSeconds": null,
+    "turns": null,
+    "validationSeconds": null,
+    "duplicateFullGateMinutes": null,
+    "idleGaps": null,
+    "acceptedOutcomes": null,
+    "tokenCounters": null
+  },
+  "measurements": {
+    "observationElapsedSeconds": null,
+    "observationTurns": null,
+    "observationValidationSeconds": null,
+    "workerRework": null,
+    "integrationRework": null,
+    "duplicateFullGateMinutes": null,
+    "idleGaps": null,
+    "tokens": null,
+    "pricing": null,
+    "removableCoordinationOrValidationWaste": null
+  },
+  "finding": "The frozen evidence exposes a QA RETURN and prior Luna route declarations, but no measurable removable coordination, validation, runtime-override, timing, or duplicate-gate waste. The QA disposition is recorded without making a visual or product judgment.",
+  "validation": {
+    "selectedRoute": "PASS: validate_model_route_v1.py --repo-root Integration checkout --dispatch-route-id quality-v1:play-089-r4b-independent-qa-return-observation-v1",
+    "outputJson": "PASS: python3 -m json.tool",
+    "gitDiffCheck": "PASS: git diff --check"
+  },
+  "executionAccounting": {
+    "acceptedResult": "NO_CHANGE",
+    "escalationReason": null,
+    "pricing": null
+  },
+  "recommendation": null,
+  "nextEventBoundary": "Integration efficiency review of this compact receipt; no product repair, acceptance, integration, or push by this lane.",
+  "limitations": [
+    "Actual runtime model, visible acknowledgements, elapsed time, turns, validation duration, idle intervals, token counters, pricing, and override telemetry were not exposed.",
+    "No renderer or product implementation was inspected and no visual or product judgment was made."
+  ]
+}

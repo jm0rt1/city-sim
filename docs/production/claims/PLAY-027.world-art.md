@@ -1,6 +1,6 @@
 # PLAY-027 Claim
 
-- **Claim revision:** 12
+- **Claim revision:** 13
 - **Title:** Author the four-direction production building catalog
 - **Lane:** World art generation cell
 - **Branch:** `codex/citysim-world-art`
@@ -32,9 +32,12 @@
   rejected history because its public test-fixture API allowed a caller to
   choose the signing key and create consumed attempt state. Revision 9
   authorizes only the bounded retirement repair below. Process A remains
-  blocked until Integration accepts the complete current-tree closure and
+  blocked until Integration accepts the complete current-tree closure,
+  preserves the tracked R5 failure outside the exclusive output root, and
   publishes its exact schedule, one-process lease, process receipt, and
-  compute slot.
+  compute slot. Revision 13 authorizes that one North v14 Process-A attempt
+  only through the separately published R6 authority; it grants no standing
+  worker-side launch authority.
 - **Latest L4 disposition:** Integration accepted the v06 zero-pixel global
   coordinate bridge from `3e01ca67`. Canonical North is `z = -28`, the global
   basis is `B(x,y,z)=(z,x,y)`, descriptor order is `[0,1,2,3]`, and the North
@@ -223,3 +226,34 @@ metadata. Return one zero-DCC repair commit. No Blender launch, phase-output,
 retry, normal source render, semantic pass, normalization, Process B/C,
 sibling mutation, admission, shipping, push, integration, or self-acceptance
 is authorized.
+
+## Revision-13 release one North v14 Process-A attempt after cleanup
+
+The successful Integration-authorized Stage-B diagnostic proves that the exact
+native Blender 4.5.12 arm64 path can import `bpy`, construct the complete v14
+scene, execute Cycles CPU, and exit cleanly. It does not prove source quality,
+determinism, normalization, source authority, or production selection.
+
+Before a normal source render, move the exact tracked R5 `FAILURE.json` from
+the exclusive `process-a-output/` root into a new immutable
+`process-a-failure-v3/` archive without changing its bytes. Commit that single
+task-owned cleanup on the clean North branch and bind its exact descendant as
+the future worker head. No DCC or pixel activity is authorized by the cleanup.
+
+After independent cleanup acceptance, Integration may publish exactly one
+R6 North Process-A schedule, grant, session, external attempt marker, process
+ceiling, timeout, resource monitor, and execution receipt bound to that clean
+worker head and the frozen v14 execution, runner, launcher, child, scene,
+material, lighting, lowering, Blender, camera, pivot, socket, and output-root
+identities. The attempt is `north:A`, maximum one launcher child and one DCC
+process, no retry, and `sourceAuthority:false` / `productionSelected:false`.
+
+The only governed source-output leaves are `raw.png`, `semantic.png`,
+`north-v14-process-a.blend`, `OBJECT-MANIFEST.json`,
+`GROUND-PROJECTION.json`, `INPUT-BINDINGS.json`, `provenance.json`, and
+`PROCESS-RECEIPT.json`. Integration owns technical and visual disposition.
+Any identity, claim, path, process, timeout, resource, inventory, pixel,
+registration, or appearance failure preserves the attempt as rejected and
+stops without retry. Process B/C, sibling source pixels, appearance-lock
+publication, source admission, Renderer activation, production selection,
+shipping, worker push, integration, and self-acceptance remain blocked.

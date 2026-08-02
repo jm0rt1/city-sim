@@ -83,6 +83,27 @@ CLOSURE_ZERO_ACTIVITY = {
     "sourcePackets": 0,
     "productionReceipts": 0,
 }
+MODEL_ROUTE_CARRIER_COMMIT = "4f041092dc6bd90da858ea959d6d5c5554ecdfe4"
+MODEL_ROUTE_PATH = (
+    "docs/production/evidence/INTEGRATION/"
+    "MODEL-ROUTING-PLAY-081-WEST-V14-EXACT-CLOSURE-R2.json"
+)
+MODEL_ROUTE_FILE_SHA256 = (
+    "0d62e26ff49e995e519b1f9d04d4ed9f46c812b2f65bea4877dca88be1122027"
+)
+MODEL_ROUTE_ID = "quality-v2:play-081-west-v14-exact-closure-r2"
+MODEL_ROUTE_SHA256 = (
+    "16d011163da66a72637aa0f9ca3bde30d65c7f0dc97ed8c1d434f96bdb253809"
+)
+MODEL_ROUTE_AUTHORITY_COMMIT = "b4dcbd0418176d680ecf2d993c16649fc401a92e"
+MODEL_ROUTE_EXPECTED_HEAD = "aae1e799f1eaabba88f1c1e85c3974e778eab69d"
+SOURCE_STAGE_SCHEMA_PATH = (
+    "docs/production/evidence/INTEGRATION/"
+    "industrial-l04-source-stage-handoff-schema-v2.json"
+)
+SOURCE_STAGE_SCHEMA_SHA256 = (
+    "85f6a2824c273a1e63354df79a97e5a59c2909a68771613b325664d649ac53ec"
+)
 
 
 class OrchestrationError(ValueError):
@@ -672,7 +693,14 @@ def committed_input_errors(
         return errors + [f"{label}:unsafe-path:{error}"], None
     if hashlib.sha256(captured).hexdigest() != expected_sha:
         errors.append(f"{label}:working-tree-sha256")
-    head = git_output(root, "rev-parse", "HEAD")
+    head_result = subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        cwd=root,
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    head = head_result.stdout.strip() if head_result.returncode == 0 else None
     if head is None or not is_ancestor(root, commit, head):
         errors.append(f"{label}:commit-not-in-head")
     tree_result = subprocess.run(
@@ -715,8 +743,132 @@ def _claim_binding(root: Path) -> tuple[str | None, int | None]:
     if not path.is_file() or path.is_symlink():
         return None, None
     payload = path.read_text(encoding="utf-8")
-    match = re.search(r"Claim revision:\s*(\d+)", payload)
+    match = re.search(r"Claim revision:\s*(?:\*\*)?\s*(\d+)", payload)
     return sha256(path), int(match.group(1)) if match else None
+
+
+def _git_blob(root: Path, commit: str, relative: str) -> bytes | None:
+    """Read one exact committed carrier blob without trusting the worktree."""
+    if HEX_40.fullmatch(commit) is None or not relative.startswith(INTEGRATION_PREFIX):
+        return None
+    result = subprocess.run(
+        ["git", "show", f"{commit}:{relative}"],
+        cwd=root,
+        check=False,
+        capture_output=True,
+    )
+    return result.stdout if result.returncode == 0 else None
+
+
+def validate_model_route_and_source_schema(
+    root: Path,
+    execution_contract: dict[str, Any],
+) -> tuple[list[str], dict[str, Any]]:
+    """Resolve the exact schema-2 route carrier and source-stage schema bytes."""
+    errors: list[str] = []
+    route_binding = execution_contract.get("modelRouteAuthority")
+    if route_binding != {
+        "carrierCommit": MODEL_ROUTE_CARRIER_COMMIT,
+        "path": MODEL_ROUTE_PATH,
+        "sha256": MODEL_ROUTE_FILE_SHA256,
+        "routeId": MODEL_ROUTE_ID,
+        "routeSha256": MODEL_ROUTE_SHA256,
+    }:
+        errors.append("model-route:binding")
+        route_binding = {}
+    route_bytes = _git_blob(
+        root,
+        route_binding.get("carrierCommit", MODEL_ROUTE_CARRIER_COMMIT),
+        route_binding.get("path", MODEL_ROUTE_PATH),
+    )
+    if route_bytes is None:
+        errors.append("model-route:carrier-blob")
+        route_bytes = b""
+    if hashlib.sha256(route_bytes).hexdigest() != MODEL_ROUTE_FILE_SHA256:
+        errors.append("model-route:carrier-sha256")
+    try:
+        packet = decode_json_object(route_bytes, "model-route-carrier")
+    except (OrchestrationError, json.JSONDecodeError) as error:
+        errors.append(f"model-route:json:{error}")
+        packet = {}
+    assignments = packet.get("assignments")
+    rows = (
+        [row for row in assignments if isinstance(row, dict)
+         and isinstance(row.get("modelRoute"), dict)
+         and row["modelRoute"].get("routeId") == MODEL_ROUTE_ID]
+        if isinstance(assignments, list) else []
+    )
+    if len(rows) != 1:
+        errors.append("model-route:selected-row")
+        row = {}
+        route = {}
+    else:
+        row = rows[0]
+        route = row["modelRoute"]
+        if row.get("modelRouteSha256") != MODEL_ROUTE_SHA256:
+            errors.append("model-route:row-hash")
+        canonical_route = json.dumps(
+            route, sort_keys=True, separators=(",", ":"), ensure_ascii=False
+        ).encode("utf-8")
+        if hashlib.sha256(canonical_route).hexdigest() != MODEL_ROUTE_SHA256:
+            errors.append("model-route:canonical-hash")
+        if route.get("schema") != 2 or route.get("taskId") != "PLAY-081":
+            errors.append("model-route:schema-identity")
+        if route.get("classification") != "LUNA_LOCAL_DEBUG":
+            errors.append("model-route:classification")
+        if (route.get("model"), route.get("effort")) != (
+            "gpt-5.6-luna", "max"
+        ):
+            errors.append("model-route:runtime")
+        authority = route.get("authority", {})
+        if authority.get("authorityCommit") != MODEL_ROUTE_AUTHORITY_COMMIT or authority.get("baseCommit") != MODEL_ROUTE_AUTHORITY_COMMIT:
+            errors.append("model-route:authority")
+        assignment = route.get("assignment", {})
+        expected_head = assignment.get("expectedHead")
+        live_head = git_output(root, "rev-parse", "HEAD")
+        if assignment.get("branch") != execution_contract.get("branch"):
+            errors.append("model-route:branch")
+        if expected_head != MODEL_ROUTE_EXPECTED_HEAD:
+            errors.append("model-route:expected-head")
+        if live_head is None or not is_ancestor(root, expected_head or "", live_head):
+            errors.append("model-route:live-head")
+        claim = authority.get("claim", {})
+        claim_sha, claim_revision = _claim_binding(root)
+        if claim.get("path") != "docs/production/claims/PLAY-081.world-art-west.md":
+            errors.append("model-route:claim-path")
+        if claim.get("sha256") != claim_sha:
+            errors.append("model-route:claim-sha256")
+        if claim_revision != 12:
+            errors.append("model-route:claim-revision")
+
+    schema_binding = execution_contract.get("sourceStageSchemaAuthority")
+    if schema_binding != {
+        "path": SOURCE_STAGE_SCHEMA_PATH,
+        "sha256": SOURCE_STAGE_SCHEMA_SHA256,
+    }:
+        errors.append("source-schema:binding")
+    try:
+        schema_bytes = capture_regular_file_no_follow(root, SOURCE_STAGE_SCHEMA_PATH)
+    except (OSError, OrchestrationError, PathSafetyError) as error:
+        errors.append(f"source-schema:capture:{error}")
+        schema_bytes = b""
+    if hashlib.sha256(schema_bytes).hexdigest() != SOURCE_STAGE_SCHEMA_SHA256:
+        errors.append("source-schema:sha256")
+    try:
+        source_schema = decode_json_object(schema_bytes, "source-stage-schema")
+        Draft202012Validator.check_schema(source_schema)
+    except Exception as error:
+        errors.append(f"source-schema:invalid:{error}")
+        source_schema = {}
+    return sorted(set(errors)), {
+        "routeFileSHA256": hashlib.sha256(route_bytes).hexdigest(),
+        "routeSHA256": MODEL_ROUTE_SHA256,
+        "routeId": MODEL_ROUTE_ID,
+        "carrierCommit": MODEL_ROUTE_CARRIER_COMMIT,
+        "sourceStageSchemaPath": SOURCE_STAGE_SCHEMA_PATH,
+        "sourceStageSchemaSHA256": hashlib.sha256(schema_bytes).hexdigest(),
+        "sourceStageSchemaVersion": source_schema.get("$id"),
+    }
 
 
 def validate_integration_document_closure(
@@ -731,9 +883,17 @@ def validate_integration_document_closure(
     read from the committed blob identified by the contract; no caller-supplied
     schedule, grant, profile, or session dictionary is trusted.
     """
-    errors, captures = validate_contract_authorities(
+    errors: list[str] = []
+    route_result: dict[str, Any] = {}
+    if execution_contract.get("modelRouteAuthority") is not None or execution_contract.get("sourceStageSchemaAuthority") is not None:
+        route_errors, route_result = validate_model_route_and_source_schema(
+            root, execution_contract
+        )
+        errors.extend(route_errors)
+    authority_errors, captures = validate_contract_authorities(
         root, execution_contract, runner_contract
     )
+    errors.extend(authority_errors)
     if errors:
         return sorted(set(errors)), {}
     names = (
@@ -897,6 +1057,8 @@ def validate_integration_document_closure(
         errors.append("document:sourceProductionProfile:appearance-hash")
     if profile.get("lockedMaterialMappingSHA256") != expected_hashes["lockedMaterialMappingSHA256"]:
         errors.append("document:sourceProductionProfile:material-hash")
+    if profile.get("sourceStageSchemaSHA256") != SOURCE_STAGE_SCHEMA_SHA256:
+        errors.append("document:sourceProductionProfile:source-schema-hash")
     if materials.get("appearanceLockSHA256") != expected_hashes["appearanceLockSHA256"]:
         errors.append("document:lockedMaterialMapping:appearance-hash")
     if any(grant.get("scheduleSha256") != json_sha256(schedule) for grant in grants.values()) if isinstance(schedule, dict) else True:
@@ -919,12 +1081,10 @@ def validate_integration_document_closure(
     if len(document_heads) != 1:
         errors.append("document-closure:worker-head-consistency")
     document_head = next(iter(document_heads), None)
-    if (
-        not isinstance(document_head, str)
-        or HEX_40.fullmatch(document_head) is None
-        or not is_ancestor(root, document_head, worker_head or "")
-    ):
+    if not isinstance(document_head, str) or HEX_40.fullmatch(document_head) is None:
         errors.append("document-closure:worker-head-ancestry")
+    if document_head != worker_head:
+        errors.append("document-closure:worker-head-live")
     for document in common_documents:
         for field, expected in (
             ("taskId", execution_contract.get("taskId")),
@@ -968,6 +1128,7 @@ def validate_integration_document_closure(
         "grants": grants,
         "sessionId": session.get("sessionId"),
         "documentHashes": expected_hashes,
+        "externalAuthority": route_result,
     }
 
 

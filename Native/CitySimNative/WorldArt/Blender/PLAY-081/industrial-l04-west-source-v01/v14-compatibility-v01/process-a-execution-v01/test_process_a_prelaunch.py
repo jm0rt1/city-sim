@@ -20,7 +20,7 @@ LOWERING_PATH = ROOT / "Native/CitySimNative/WorldArt/Blender/PLAY-081/industria
 LAUNCHER_PATH = PACKAGE / "launch_process_a.py"
 CHILD_PATH = PACKAGE / "blender_process_a.py"
 HANDOFF_PATH = ROOT / "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/process-a-execution-v01/HANDOFF.json"
-VALIDATION_PATH = ROOT / "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/INDEPENDENT-RETURN-REPAIR-V1.json"
+VALIDATION_PATH = ROOT / "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01/v14-compatibility-v01/INDEPENDENT-RETURN-REPAIR-V2.json"
 BRIDGE_PATH = ROOT / "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-direction-bridge-v06/MAPPING-CONTRACT.json"
 CLAIM_SHA = "6b9608a7854afc60676ac27e7c7a8a7c4420161805a4ef59c68649acdd6a901d"
 PUBLISHED_BASE = "6b4145d35d358ddebb645cf7ca892406435bbd1b"
@@ -31,7 +31,7 @@ LOWERING_SHA = "a54374313e335d5af53f2441363db435f9d6e44edc0a3e68daee1704d451f172
 BRIDGE_SHA = "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7"
 ROUTE = "quality-v1:play-081-industrial-l04-v14-west-process-a-prelaunch-repair-v2"
 ROUTE_SHA = "05884249492edfdc1c4c295a6b479470b6fe17dacf661285682cd34bc13163ec"
-REPAIR_ROUTE = "quality-v2:play-081-west-v14-independent-return-repair-v1"
+REPAIR_ROUTE = "quality-v2:play-081-west-v14-exact-closure-r2"
 PIXEL_SUFFIXES = {".png", ".jpg", ".jpeg", ".tif", ".tiff", ".exr", ".blend"}
 
 
@@ -79,7 +79,7 @@ def static_checks(contract: dict[str, Any]) -> None:
     popen_calls = [n for n in ast.walk(launcher) if isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute) and n.func.attr == "Popen"]
     if len(popen_calls) != 1 or "subprocess.run" in launcher_source or "os.system" in launcher_source: fail("launcher child-start boundary")
     if "--factory-startup" not in launcher_source or "--disable-autoexec" not in launcher_source or "PLAY081_PROCESS_A_AUTHENTICATED" not in launcher_source: fail("launcher flags/auth")
-    required_child = ("load_exact_profile", "_add_wedge_mesh", "_add_portal_frame_mesh", "_add_compound_recessed_portal", "portal-recessed-dark-back-plane", "clerestory-and-roof-edge", "deep-freight-void", "runtime_portal", "_add_mullion_mesh", "_add_pipe_segment", "_pipe_elbow_control_points", "_add_pipe_elbow", "use_fill_caps", "BEZIER", "_oriented_beam_parts", "_add_truss_cluster", "_add_truss_member", "_configure_camera", "_configure_lighting", "bpy.data.cameras.new", "to_track_quat", "light.rotation_euler", "CYCLES", "world", "AREA", "film_transparent", "color_mode", "view_transform", "use_adaptive_sampling", "_assert_output_path_is_lexical", "output_root.mkdir", "write_still=True", "save_as_mainfile", "sourceProductionProfile")
+    required_child = ("load_exact_profile", "_add_wedge_mesh", "_add_portal_frame_mesh", "_add_compound_recessed_portal", "_lower_compound_portal", "_assert_portal_material_bindings", "portal-recessed-dark-back-plane", "clerestory-and-roof-edge", "deep-freight-void", "runtime_portal", "_add_mullion_mesh", "_add_pipe_segment", "_pipe_elbow_control_points", "_add_pipe_elbow", "use_fill_caps", "BEZIER", "_oriented_beam_parts", "_add_truss_cluster", "_add_truss_member", "_configure_camera", "_configure_lighting", "bpy.data.cameras.new", "to_track_quat", "light.rotation_euler", "CYCLES", "world", "AREA", "film_transparent", "color_mode", "view_transform", "use_adaptive_sampling", "_assert_output_path_is_lexical", "output_root.mkdir", "write_still=True", "save_as_mainfile", "sourceProductionProfile")
     if any(token not in child_source for token in required_child): fail("real Blender construction contract")
     if "bpy.ops.mesh.primitive_cube_add" in child_source or "bpy.ops.mesh.primitive_cylinder_add" in child_source or "diffuse_color = (0.35" in child_source: fail("semantic primitive/material downgrade")
     if child_source.index("profile = load_exact_profile()") > child_source.index("import bpy"): fail("profile gate after bpy import")
@@ -98,8 +98,8 @@ def static_checks(contract: dict[str, Any]) -> None:
 
 def static_adversaries() -> list[str]:
     source = CHILD_PATH.read_text(encoding="utf-8")
-    required = ("_add_wedge_mesh", "_add_portal_frame_mesh", "_add_compound_recessed_portal", "portal-recessed-dark-back-plane", "runtime_portal", "_add_mullion_mesh", "_add_pipe_segment", "_pipe_elbow_control_points", "_add_pipe_elbow", "use_fill_caps", "BEZIER", "_oriented_beam_parts", "_add_truss_cluster", "_configure_camera", "_configure_lighting", "bpy.data.cameras.new", "to_track_quat", "light.rotation_euler", "_assert_output_path_is_lexical", "output_root.mkdir", "write_still=True", "save_as_mainfile", "PLAY081_PROCESS_A_AUTHENTICATED")
-    cases = [("cube-downgrade", "_add_wedge_mesh"), ("missing-portal-assembly", "_add_compound_recessed_portal"), ("missing-portal-back-plane", "portal-recessed-dark-back-plane"), ("missing-portal-material-reconciliation", "runtime_portal"), ("missing-topology", "_oriented_beam_parts"), ("missing-truss-reachability", "_add_truss_cluster"), ("missing-elbow-controls", "_pipe_elbow_control_points"), ("missing-elbow", "_add_pipe_elbow"), ("uncapped-elbow", "use_fill_caps"), ("camera-without-data", "bpy.data.cameras.new"), ("camera-without-aim", "to_track_quat"), ("unaimed-light", "light.rotation_euler"), ("missing-light-world", "_configure_lighting"), ("unsafe-output-root", "_assert_output_path_is_lexical"), ("output-root-order", "output_root.mkdir"), ("missing-render", "write_still=True"), ("missing-blend-write", "save_as_mainfile"), ("low-level-bypass", "PLAY081_PROCESS_A_AUTHENTICATED")]
+    required = ("_add_wedge_mesh", "_add_portal_frame_mesh", "_add_compound_recessed_portal", "_lower_compound_portal", "_assert_portal_material_bindings", "portal-recessed-dark-back-plane", "runtime_portal", "_add_mullion_mesh", "_add_pipe_segment", "_pipe_elbow_control_points", "_add_pipe_elbow", "use_fill_caps", "BEZIER", "_oriented_beam_parts", "_add_truss_cluster", "_configure_camera", "_configure_lighting", "bpy.data.cameras.new", "to_track_quat", "light.rotation_euler", "_assert_output_path_is_lexical", "output_root.mkdir", "write_still=True", "save_as_mainfile", "PLAY081_PROCESS_A_AUTHENTICATED")
+    cases = [("cube-downgrade", "_add_wedge_mesh"), ("missing-portal-assembly", "_add_compound_recessed_portal"), ("missing-portal-lowering-guard", "_lower_compound_portal"), ("missing-portal-material-guard", "_assert_portal_material_bindings"), ("missing-portal-back-plane", "portal-recessed-dark-back-plane"), ("missing-portal-material-reconciliation", "runtime_portal"), ("missing-topology", "_oriented_beam_parts"), ("missing-truss-reachability", "_add_truss_cluster"), ("missing-elbow-controls", "_pipe_elbow_control_points"), ("missing-elbow", "_add_pipe_elbow"), ("uncapped-elbow", "use_fill_caps"), ("camera-without-data", "bpy.data.cameras.new"), ("camera-without-aim", "to_track_quat"), ("unaimed-light", "light.rotation_euler"), ("missing-light-world", "_configure_lighting"), ("unsafe-output-root", "_assert_output_path_is_lexical"), ("output-root-order", "output_root.mkdir"), ("missing-render", "write_still=True"), ("missing-blend-write", "save_as_mainfile"), ("low-level-bypass", "PLAY081_PROCESS_A_AUTHENTICATED")]
     passed = []
     for name, token in cases:
         mutant = source.replace(token, "")
@@ -129,7 +129,48 @@ def runtime_semantic_checks() -> list[str]:
     vertices, faces = module._oriented_beam_parts((-1.0, 0.0, -1.0), (1.0, 2.0, 1.0), 0.2)
     if len(vertices) < 8 or not faces or any(len(face) < 3 or len(set(face)) != len(face) for face in faces): fail("truss topology")
     if any(index < 0 or index >= len(vertices) for face in faces for index in face): fail("truss indices")
-    return ["closed-truss-beam", "nondegenerate-faces", "no-blender-import"]
+    class FakeMesh:
+        def __init__(self) -> None:
+            self.materials: list[Any] = []
+        def from_pydata(self, vertices: Any, edges: Any, faces: Any) -> None:
+            self.vertices, self.faces = vertices, faces
+        def update(self) -> None:
+            return None
+    class FakeMeshes:
+        def new(self, _name: str) -> FakeMesh:
+            return FakeMesh()
+    class FakeObject:
+        def __init__(self, data: Any) -> None:
+            self.data = data
+    class FakeObjects:
+        def get(self, _name: str) -> None:
+            return None
+        def new(self, _name: str, data: Any) -> FakeObject:
+            return FakeObject(data)
+    class FakeCollectionObjects:
+        def link(self, _obj: Any) -> None:
+            return None
+    fake_collection = type("Collection", (), {"objects": FakeCollectionObjects()})()
+    fake_data = type("Data", (), {"meshes": FakeMeshes(), "objects": FakeObjects()})()
+    FakeBpy = type("FakeBpy", (), {"data": fake_data, "context": type("Context", (), {"collection": fake_collection})()})
+    design = module.load(module.DESIGN)
+    portal_component = next(item for item in design["components"] if item["id"] == "west-v14-portal-left-jamb")
+    materials = {role: object() for role in module.load(module.CONTRACT)["materialRoles"]}
+    calls: list[tuple[Any, Any, Any]] = []
+    def spy(*args: Any) -> list[Any]:
+        calls.append((args[3], args[4], args[5]))
+        return module._add_compound_recessed_portal(*args)
+    module._build_component(FakeBpy(), portal_component, materials["charcoal-structural-steel"], materials, design, portal_builder=spy)
+    if len(calls) != 1 or calls[0][1] is not materials["clerestory-and-roof-edge"] or calls[0][2] is not materials["deep-freight-void"]: fail("portal lowering material spy")
+    def swapped_spy(*args: Any) -> list[Any]:
+        return module._lower_compound_portal(module._add_compound_recessed_portal, args[0], args[1], args[2], args[3], args[5], args[4], materials)
+    try:
+        module._build_component(FakeBpy(), portal_component, materials["charcoal-structural-steel"], materials, design, portal_builder=swapped_spy)
+    except ValueError:
+        pass
+    else:
+        fail("swapped portal materials accepted")
+    return ["closed-truss-beam", "nondegenerate-faces", "portal-lowering-material-spy", "swapped-portal-material-rejected", "no-blender-import"]
 
 
 def child_manifest_replay() -> tuple[bytes, str]:

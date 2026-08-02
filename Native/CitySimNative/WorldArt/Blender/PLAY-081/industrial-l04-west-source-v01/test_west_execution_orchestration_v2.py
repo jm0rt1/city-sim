@@ -13,6 +13,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
@@ -22,6 +23,7 @@ from west_execution_orchestration_v2 import (
     DEFAULT_LOW_LEVEL_RUNNER,
     DEFAULT_RUNNER_CONTRACT,
     SCHEDULE_SCHEMA,
+    SOURCE_STAGE_SCHEMA_SHA256,
     OrchestrationError,
     committed_input_errors,
     current_binding_errors,
@@ -36,6 +38,7 @@ from west_execution_orchestration_v2 import (
     validate_bound_launch_grant,
     validate_contract_authorities,
     validate_integration_document_closure,
+    validate_model_route_and_source_schema,
     validate_execution_receipt,
     validate_failure_isolation,
     validate_receipt_order,
@@ -149,6 +152,31 @@ class WestExecutionOrchestrationV2Tests(unittest.TestCase):
         self.assertIn("integration-input:launchGrantC:not-published", errors)
         self.assertIn("production-execution:disabled", errors)
         self.assertIn("production-receipt-emission:disabled", errors)
+
+    def test_external_route_and_source_schema_are_exactly_bound(self) -> None:
+        errors, result = validate_model_route_and_source_schema(
+            self.repository_root, self.execution_contract
+        )
+        self.assertEqual(errors, [])
+        self.assertEqual(result["routeId"], "quality-v2:play-081-west-v14-exact-closure-r2")
+        self.assertEqual(result["routeSHA256"], "16d011163da66a72637aa0f9ca3bde30d65c7f0dc97ed8c1d434f96bdb253809")
+        self.assertEqual(result["sourceStageSchemaSHA256"], "85f6a2824c273a1e63354df79a97e5a59c2909a68771613b325664d649ac53ec")
+        mutations = (
+            ("carrierCommit", "0" * 40, "model-route:binding"),
+            ("path", "docs/production/evidence/INTEGRATION/other.json", "model-route:binding"),
+            ("sha256", "0" * 64, "model-route:binding"),
+            ("routeId", "quality-v2:wrong", "model-route:binding"),
+            ("routeSha256", "0" * 64, "model-route:binding"),
+        )
+        for field, value, expected in mutations:
+            candidate = copy.deepcopy(self.execution_contract)
+            candidate["modelRouteAuthority"][field] = value
+            bad, _ = validate_model_route_and_source_schema(self.repository_root, candidate)
+            self.assertIn(expected, bad, field)
+        candidate = copy.deepcopy(self.execution_contract)
+        candidate["sourceStageSchemaAuthority"]["sha256"] = "0" * 64
+        bad, _ = validate_model_route_and_source_schema(self.repository_root, candidate)
+        self.assertIn("source-schema:binding", bad)
 
     def test_parallel_two_slot_positive(self) -> None:
         schedule, receipt = self.receipt()
@@ -451,6 +479,8 @@ class WestExecutionOrchestrationV2Tests(unittest.TestCase):
             )
             contract = copy.deepcopy(self.execution_contract)
             runner = copy.deepcopy(self.runner_contract)
+            contract["modelRouteAuthority"] = None
+            contract["sourceStageSchemaAuthority"] = None
             paths: dict[str, tuple[str, bytes]] = {
                 "frozenDesignAuthority": (
                     "docs/production/evidence/INTEGRATION/DESIGN.md",
@@ -559,6 +589,8 @@ class WestExecutionOrchestrationV2Tests(unittest.TestCase):
             base = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip()
             contract = copy.deepcopy(self.execution_contract)
             runner = copy.deepcopy(self.runner_contract)
+            contract["modelRouteAuthority"] = None
+            contract["sourceStageSchemaAuthority"] = None
             session_id = "west-integration-session-v1"
             docs: dict[str, dict] = {}
             schedule = fixture_schedule(contract, "parallel_two_slot")
@@ -599,7 +631,7 @@ class WestExecutionOrchestrationV2Tests(unittest.TestCase):
                 "claimSHA256": schema["claimSHA256"], "claimRevision": 11,
                 "branch": branch, "workerHead": base, "publishedBase": base,
                 "scheduleAuthoritySHA256": "", "appearanceLockSHA256": "",
-                "lockedMaterialMappingSHA256": "", "sourceStageSchemaSHA256": "c" * 64,
+                "lockedMaterialMappingSHA256": "", "sourceStageSchemaSHA256": SOURCE_STAGE_SCHEMA_SHA256,
             }
             docs["appearanceLock"], docs["lockedMaterialMapping"], docs["sourceProductionProfile"] = appearance, materials, profile
             for process_id in ("A", "B", "C"):
@@ -654,17 +686,75 @@ class WestExecutionOrchestrationV2Tests(unittest.TestCase):
             runner["appearanceLock"].update({"documentPath": contract["futureIntegrationInputs"]["appearanceLock"]["path"], "commit": worker_head, "documentSha256": contract["futureIntegrationInputs"]["appearanceLock"]["sha256"]})
             profile_binding = contract["futureIntegrationInputs"]["sourceProductionProfile"]
             runner["sourceStage"]["sourceProductionProfile"] = {"state": "bound_integration_profile", "path": profile_binding["path"], "commit": worker_head, "sha256": profile_binding["sha256"]}
-            errors, result = validate_integration_document_closure(root, contract, runner)
+            with patch(
+                "west_execution_orchestration_v2.git_output",
+                side_effect=lambda _root, *args: (
+                    base if args == ("rev-parse", "HEAD") else branch
+                    if args == ("branch", "--show-current") else None
+                ),
+            ):
+                errors, result = validate_integration_document_closure(root, contract, runner)
             self.assertEqual(errors, [])
-            self.assertEqual(result["workerHead"], worker_head)
+            self.assertEqual(result["workerHead"], base)
             for field, expected in (("direction", "east"), ("claimSHA256", "0" * 64), ("branch", "codex/citysim-world-art-south")):
                 candidate = copy.deepcopy(docs["appearanceLock"])
                 candidate[field] = expected
                 target = root / path_map["appearanceLock"][0]
                 target.write_bytes(canonical_bytes(candidate))
-                bad, _ = validate_integration_document_closure(root, contract, runner)
+                with patch(
+                    "west_execution_orchestration_v2.git_output",
+                    side_effect=lambda _root, *args: (
+                        base if args == ("rev-parse", "HEAD") else branch
+                        if args == ("branch", "--show-current") else None
+                    ),
+                ):
+                    bad, _ = validate_integration_document_closure(root, contract, runner)
                 self.assertTrue(bad)
                 target.write_bytes(path_map["appearanceLock"][1])
+            adversarial_fields = (
+                ("taskId", "PLAY-999"),
+                ("claimRevision", 99),
+                ("workerHead", "0" * 40),
+                ("sessionId", "other-session"),
+                ("publishedBase", "0" * 40),
+                ("outputRoot", "docs/production/evidence/PLAY-079/escape"),
+                ("maximumChildStarts", 2),
+            )
+            for field, expected in adversarial_fields:
+                candidate = copy.deepcopy(docs["launchGrantA"])
+                candidate[field] = expected
+                target = root / path_map["launchGrantA"][0]
+                target.write_bytes(canonical_bytes(candidate))
+                with patch(
+                    "west_execution_orchestration_v2.git_output",
+                    side_effect=lambda _root, *args: (
+                        base if args == ("rev-parse", "HEAD") else branch
+                        if args == ("branch", "--show-current") else None
+                    ),
+                ):
+                    bad, _ = validate_integration_document_closure(root, contract, runner)
+                self.assertTrue(bad, field)
+                target.write_bytes(path_map["launchGrantA"][1])
+            for field, expected in (
+                ("scheduleAuthoritySHA256", "0" * 64),
+                ("appearanceLockSHA256", "0" * 64),
+                ("lockedMaterialMappingSHA256", "0" * 64),
+                ("sourceProductionProfileSHA256", "0" * 64),
+            ):
+                candidate = copy.deepcopy(docs["globalExecutionReceipt"])
+                candidate[field] = expected
+                target = root / path_map["globalExecutionReceipt"][0]
+                target.write_bytes(canonical_bytes(candidate))
+                with patch(
+                    "west_execution_orchestration_v2.git_output",
+                    side_effect=lambda _root, *args: (
+                        base if args == ("rev-parse", "HEAD") else branch
+                        if args == ("branch", "--show-current") else None
+                    ),
+                ):
+                    bad, _ = validate_integration_document_closure(root, contract, runner)
+                self.assertTrue(bad, field)
+                target.write_bytes(path_map["globalExecutionReceipt"][1])
 
     def test_committed_authority_rejects_hash_and_content_drift(self) -> None:
         relative = (

@@ -332,7 +332,48 @@ def _add_apron_detail_mesh(bpy: Any, name: str, lower: list[float], upper: list[
     return _add_box_mesh(bpy, name, lower, upper, material)
 
 
-def _build_component(bpy: Any, component: dict[str, Any], material: Any, materials: dict[str, Any], design: dict[str, Any]) -> list[Any]:
+def _assert_portal_material_bindings(
+    frame_material: Any,
+    reveal_material: Any,
+    void_material: Any,
+    materials: dict[str, Any],
+) -> None:
+    if frame_material is not materials["charcoal-structural-steel"]:
+        raise ValueError("portal frame material role is not charcoal-structural-steel")
+    if reveal_material is not materials["clerestory-and-roof-edge"]:
+        raise ValueError("portal reveal material role is not clerestory-and-roof-edge")
+    if void_material is not materials["deep-freight-void"]:
+        raise ValueError("portal back material role is not deep-freight-void")
+
+
+def _lower_compound_portal(
+    builder_fn: Any,
+    bpy: Any,
+    names: list[str],
+    aperture: dict[str, list[float]],
+    frame_material: Any,
+    reveal_material: Any,
+    void_material: Any,
+    materials: dict[str, Any],
+) -> list[Any]:
+    """Validate the actual lowering arguments immediately before construction."""
+    _assert_portal_material_bindings(
+        frame_material, reveal_material, void_material, materials
+    )
+    return builder_fn(
+        bpy, names, aperture, frame_material, reveal_material, void_material
+    )
+
+
+def _build_component(
+    bpy: Any,
+    component: dict[str, Any],
+    material: Any,
+    materials: dict[str, Any],
+    design: dict[str, Any],
+    *,
+    portal_builder: Any = None,
+) -> list[Any]:
     lower, upper = component["aabb"]["min"], component["aabb"]["max"]
     builder = next(item for item in load(LOWERING)["componentLowering"]["components"] if item["id"] == component["id"])["builder"]
     names = component["builderObjects"]
@@ -343,7 +384,17 @@ def _build_component(bpy: Any, component: dict[str, Any], material: Any, materia
             return []
         aperture = next(item["aabb"] for item in design["components"] if item["id"] == "west-v14-deep-freight-aperture")
         portal_names = ["west-v14-portal-left-jamb", "west-v14-portal-right-jamb", "west-v14-portal-header"]
-        return _add_compound_recessed_portal(bpy, portal_names, aperture, material, materials["clerestory-and-roof-edge"], materials["deep-freight-void"])
+        builder_fn = portal_builder or _add_compound_recessed_portal
+        return _lower_compound_portal(
+            builder_fn,
+            bpy,
+            portal_names,
+            aperture,
+            material,
+            materials["clerestory-and-roof-edge"],
+            materials["deep-freight-void"],
+            materials,
+        )
     if builder == "pitched_roof_wedge": return [_add_wedge_mesh(bpy, names[0], lower, upper, material)]
     if builder == "capped_vessel" or builder == "capped_stack": return [_add_cylinder_mesh(bpy, names[0], lower, upper, material)]
     if builder == "pipe_run_with_elbows": return _add_pipe_cluster(bpy, names, lower, upper, material)

@@ -123,6 +123,15 @@ completely. Never pin a task.
    event keys and 32 KiB total compact context, with one receipt per key. Flush
    in the same management turn at each policy flush trigger. Reuse the canonical
    visible optimizer task; never create or pin one task per event.
+   Before authoring the optimizer route or sending its prompt, run
+   `scripts/prepare_operating_review_envelope_v1.py` against a scratch source
+   event file and the published trigger policy. Use only its immutable output
+   as the route-bound source envelope. The helper validates exact five-field
+   keys, rejects duplicates and unsupported triggers, enforces the eight-event
+   cap, moves every immediate trigger ahead of batchable events while preserving
+   order within both groups, writes atomically, and refuses to overwrite
+   different bytes. This preflight is Integration-owned and prevents review
+   setup reissues from consuming observer turns.
    Validate every schema-4 receipt against the Integration-owned durable ledger
    at `docs/production/evidence/PLAY-089/OPERATING-REVIEW-EVENT-LEDGER-V1.json`.
    One source event produces one receipt per declared trigger. `NO_CHANGE`

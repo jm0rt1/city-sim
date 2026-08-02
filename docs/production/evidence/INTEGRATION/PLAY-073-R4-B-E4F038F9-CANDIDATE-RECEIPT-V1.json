@@ -1,0 +1,112 @@
+{
+  "schema": 1,
+  "receiptId": "play-073-r4-b-e4f038f9-candidate-v1",
+  "issuedAt": "2026-08-01T23:55:03Z",
+  "issuedBy": {
+    "lane": "integration",
+    "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8"
+  },
+  "candidate": {
+    "taskId": "PLAY-073",
+    "scope": "R4-B current-master regional terrain and lot-context cohesion repair without Industrial L4 source activation",
+    "commit": "e4f038f942f8c011a0b38b71353e40b4ac5054d4",
+    "tree": "26a213302c763898a0c2f359cf4cd39157420056",
+    "integratedBranch": "master",
+    "isolatedBuildBranch": "codex/r4b-qa-candidate",
+    "isolatedBuildWorktree": "/private/tmp/citysim-r4b-qa-e4f038f9",
+    "sourceWorktreeClean": true,
+    "featureAuthorThreadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0"
+  },
+  "rendererEvidence": {
+    "result": {
+      "path": "docs/production/evidence/PLAY-073/r4-b-current-master-v1/RESULT.json",
+      "sha256": "ebf64f76d910e6667142546f3705066164130a88c3763e0bb366be78aa59664b"
+    },
+    "handoff": {
+      "path": "docs/production/evidence/PLAY-073/r4-b-current-master-v1/HANDOFF.md",
+      "sha256": "abc08af28101f37ec4e67a73f5aa0b86ecba8ec2585922f89d0f41b1b3a85cbe"
+    },
+    "independentTechnicalDisposition": "approved",
+    "orderedWorkerCommits": [
+      "1bcaad26cd4685038c327381b897084e569e8e93",
+      "9b63056cfaeb591dd03da9af6e0ff0c80655649a",
+      "1ce6600bf109828962ca85740151965d4219a8c0",
+      "9cd49210476e589ad848110e6d6061db41c87bac",
+      "5f0b97e14452202759cdb0d937068919849ab675"
+    ],
+    "integratedCommits": [
+      "d79973bd",
+      "2fa624d3",
+      "32864b0a",
+      "77c48741",
+      "0af7f069",
+      "e4f038f9"
+    ]
+  },
+  "aggregateValidation": {
+    "swiftSuite": {
+      "command": "swift test --package-path Native/CitySimNative",
+      "candidateCommit": "e4f038f942f8c011a0b38b71353e40b4ac5054d4",
+      "status": "pass",
+      "executed": 317,
+      "skipped": 2,
+      "unexpectedFailures": 0,
+      "durationSeconds": 227.873
+    },
+    "rendererSuite": {
+      "command": "swift test --package-path Native/CitySimNative --filter WorldRenderingTests",
+      "status": "pass",
+      "executed": 70,
+      "skipped": 0,
+      "unexpectedFailures": 0,
+      "durationSeconds": 48.354
+    },
+    "diffCheck": {
+      "command": "git diff --check 5d84d521b3b25f9ddf11d7b88e81c885a5e86946..e4f038f942f8c011a0b38b71353e40b4ac5054d4",
+      "status": "pass"
+    },
+    "buildScriptSyntax": {
+      "command": "bash -n script/build_and_run.sh",
+      "status": "pass"
+    },
+    "stagedBuild": {
+      "command": "env CLANG_MODULE_CACHE_PATH=/private/tmp/citysim-r4b-clang-cache SWIFTPM_MODULECACHE_OVERRIDE=/private/tmp/citysim-r4b-swift-cache ./script/build_and_run.sh --stage-only",
+      "status": "pass",
+      "candidateId": "codex-r4b-qa-candidate-wf225bc6c6a7c",
+      "bundleIdentifier": "com.jfmortensen.citysim.codex-r4b-qa-candidate.wf225bc6c6a7c",
+      "preferenceDomain": "com.jfmortensen.citysim.codex-r4b-qa-candidate.wf225bc6c6a7c",
+      "displayName": "CitySim [codex-r4b-qa-candidate wf225bc6c6a7c]",
+      "dataRoot": "/private/tmp/citysim-r4b-qa-e4f038f9/dist/test-data/codex-r4b-qa-candidate-wf225bc6c6a7c",
+      "bundlePath": "/private/tmp/citysim-r4b-qa-e4f038f9/dist/CitySim-codex-r4b-qa-candidate-wf225bc6c6a7c.app",
+      "executablePath": "/private/tmp/citysim-r4b-qa-e4f038f9/dist/CitySim-codex-r4b-qa-candidate-wf225bc6c6a7c.app/Contents/MacOS/CitySimNative-wf225bc6c6a7c",
+      "resourceBundlePath": "/private/tmp/citysim-r4b-qa-e4f038f9/dist/CitySim-codex-r4b-qa-candidate-wf225bc6c6a7c.app/CitySimNative_CitySimNative.bundle",
+      "manifestPath": "/private/tmp/citysim-r4b-qa-e4f038f9/dist/manifests/codex-r4b-qa-candidate-wf225bc6c6a7c.manifest",
+      "manifestSha256": "0e31cea72a23bdc5af842ee1481efb7e80cb5131e2e116a241f6adfa9d214118",
+      "executableSha256": "228b233f13a6ce5a8bd72cf9b5613ca50d626f7b9bc4fddbd78f382e36a087db",
+      "infoPlistSha256": "f5d5e85780458d62c82e014a52b7de12726eaddf08947d502faf3c308bd80797",
+      "resourceInventoryFileCount": 82,
+      "resourceInventorySha256": "5ac8090bba9a49d16222222cd5e616f86c47e294fa393253a6f82de0a289e063"
+    }
+  },
+  "integrationJourney": {
+    "status": "pass_with_deferred_ui_defect",
+    "layouts": [
+      "default",
+      "compact"
+    ],
+    "paths": [
+      "pointer build recovery",
+      "keyboard placement",
+      "command guide Escape",
+      "Shift-Command-F Focus City"
+    ],
+    "visualFinding": "R4-B materially reduces the prior broad undifferentiated green quadrant and preserves a coherent city-first hierarchy at both widths.",
+    "deferredDefect": "After the suggested access road is built, the command remains in Road placement instead of restoring the original Commercial intent. This is assigned to the next UI/input wave and is not a renderer automatic return."
+  },
+  "launchBoundary": {
+    "integrationSmokeStoppedBeforeLease": true,
+    "matchingCandidateProcessesAtLeasePreflight": 0,
+    "qaMustLaunchExistingStagedExecutableWithoutRebuilding": true
+  },
+  "disposition": "candidate_ready_for_one_independent_frontier_real_app_gate"
+}

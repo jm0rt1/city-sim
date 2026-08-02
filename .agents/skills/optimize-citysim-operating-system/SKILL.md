@@ -38,17 +38,37 @@ found.
 
 ## Work exception-first
 
-At dispatch publication, first return, candidate handoff, or integration close:
+At each unique event in
+[the triggered operating-review policy](references/triggered-operating-review-policy.json):
 
 1. Read only the exact receipts and compact context needed for that boundary.
 2. Separate worker defects from Integration-authored routing/setup defects.
 3. Quantify repeated context, duplicate validation, idle waits, route returns,
-   unbounded handoffs, and frontier work that could be frozen Luna execution.
+   unbounded handoffs, false-green worker PASS results, and frontier work that
+   could be frozen Luna execution.
 4. Preserve non-negotiable claims, exact identity, shared-contract control,
    deterministic/save compatibility, staged-app proof, independent QA,
    intelligent commits, atomic art activation, and clean publication.
 5. Return exactly one of: `NO_CHANGE`, a bounded proposal, or one claimed
    implementation commit. Never open speculative cleanup.
+
+The default review is one `LUNA_MECHANICAL / gpt-5.6-luna / medium` turn using
+hash-bound compact context. Do not run product builds, full suites, DCC, staged
+apps, or real-app QA merely to observe operations. A trigger is deduplicated by
+authority, task, route, event type, and candidate/result commit. Unknown timing,
+token, or pricing values stay `null`.
+
+For an idle-lane or no-progress trigger, first distinguish a protected active
+operation (exact-candidate QA, DCC render, frozen proof, coherent commit, or
+long-running focused gate) from avoidable inactivity. If useful disjoint work is
+ready, propose or request a same-turn refill. If it is genuinely serialized,
+record the exact dependency and return `NO_CHANGE`. Never wake a task merely to
+ask for status when the compact thread snapshot already answers the question.
+
+Treat a false-green as a first-class cost defect: a task reports PASS while the
+claimed behavior was never executed, its artifact is absent/undecodable, or
+independent review finds an immediate runtime failure. Prefer strengthening the
+proof boundary before changing models or adding more retries.
 
 ## Commit and hand off
 
@@ -57,3 +77,7 @@ and commit each coherent result as `PLAY-089: Imperative outcome`. Never push,
 integrate, pin, edit product surfaces, or claim cost savings without a measured
 before/after basis. Report exact files, commit, validation, measured effect,
 limitations, and the next event boundary.
+
+Validate the shared trigger policy with:
+
+`PYTHONDONTWRITEBYTECODE=1 python3 .agents/skills/optimize-citysim-operating-system/scripts/test_validate_triggered_operating_review_policy_v1.py`

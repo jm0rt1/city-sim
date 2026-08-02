@@ -1,0 +1,37 @@
+{
+  "schema": 1,
+  "task": "PLAY-027",
+  "direction": "north",
+  "revision": "industrial-l04-north-v14-hero",
+  "geometryID": "industrial-l04-north-v14-crucible-portal-foundry",
+  "lowering": "pure-data-deterministic",
+  "primitiveBuilders": [
+    "box", "apron-path", "annex", "portal-jamb", "portal-header", "recessed-portal",
+    "freight-recess", "threshold", "sawtooth-roof", "clerestory", "truss",
+    "octagonal-vessel", "heat-cap", "pipe-run", "vent-bank", "tank-bank", "stack",
+    "stack-cap", "staff-door", "mullioned-windows", "service-doors", "loading-markings",
+    "railings", "contact-shadow"
+  ],
+  "coveragePolicy": {
+    "componentToObject": "every authored component has one or more deterministic manifest objects",
+    "compoundPortalLayers": ["frame", "empty-aperture", "inset-back", "reveal-left", "reveal-right", "reveal-header"],
+    "silentGenericBoxReplacement": false
+  },
+  "registration": {
+    "coordinateBridge": "B(x,y,z)=(z,x,y)",
+    "descriptorOrder": [0, 1, 2, 3],
+    "northRoadZ": -28,
+    "footprintWorld": [[-28, 0, -28], [28, 0, -28], [28, 0, 28], [-28, 0, 28]],
+    "pivotSource": [768, 896],
+    "socketCitySim": [0, 0, -28],
+    "socketBlender": [-28, 0, 0],
+    "socketSource": [896, 704]
+  },
+  "compoundTopology": {"portal": ["frame", "empty-aperture", "inset-back", "reveal-left", "reveal-right", "reveal-header"], "sawtooth": ["peak", "slope", "eave"], "pipe": ["segment", "elbow", "supports"], "truss": ["lower-chord", "upper-chord", "diagonal"], "vessel": ["body", "shoulder", "rim"]},
+  "zeroPixelOnly": true,
+  "semanticProxyOnly": true,
+  "sourceAuthority": false,
+  "productionSelected": false,
+  "dccProcessCount": 0,
+  "pixelWrites": 0
+}

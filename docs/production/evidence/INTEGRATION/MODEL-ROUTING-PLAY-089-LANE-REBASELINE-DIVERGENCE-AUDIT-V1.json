@@ -1,0 +1,127 @@
+{
+  "schema": 1,
+  "authorityCommit": "1d7c6510fd99299c88d3f4412caa982e020c1941",
+  "assignments": [
+    {
+      "modelRouteSha256": "a05a3b3181201eae00419634ca26f62290cb147c6461d61c110ac90d81e2b15c",
+      "modelRoute": {
+        "schema": 1,
+        "routeId": "quality-v1:play-089-lane-rebaseline-divergence-audit-v1",
+        "taskId": "PLAY-089",
+        "packetKind": "mechanical",
+        "classification": "LUNA_MECHANICAL",
+        "model": "gpt-5.6-luna",
+        "effort": "medium",
+        "rationale": "The published-baseline synchronization wave proved every lane contains origin/master but several clean lane trees remain intentionally or accidentally different because original worker history was cherry-picked rather than merged. A compact evidence-only audit can separate harmless superseded evidence from stranded accepted product changes and propose a fail-closed rebaseline rule without mutating any product or lane branch.",
+        "authority": {
+          "authorityCommit": "1d7c6510fd99299c88d3f4412caa982e020c1941",
+          "baseCommit": "ea26fdac05169e0375b65d7c5dc65b4fbe00d977",
+          "claim": {
+            "path": "docs/production/claims/PLAY-089.operating-system-optimization.md",
+            "sha256": "6276c96d96965805df6a1a9c779ecde7dc609824053c7e0eb00e35f67134cc47"
+          },
+          "immutableInputs": [
+            {
+              "path": ".agents/skills/optimize-citysim-operating-system/SKILL.md",
+              "sha256": "6d4a9e121ec307f7378d253ed112b0ffdd25e0c0d4d1a52b5f7d405f74a8b1ef"
+            },
+            {
+              "path": ".agents/skills/optimize-citysim-operating-system/references/observation-and-upgrade-protocol.md",
+              "sha256": "a9404e046f8c8c68fa3c22d6830b3bbac883a2238e0ad709598038bce87c78a2"
+            },
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "62e077c88730fda5664e5fa6d23200ade77418bd43f1c721c0bff84eaac1c971"
+            }
+          ]
+        },
+        "assignment": {
+          "threadId": "019fbe2b-cc97-71f3-a762-63680ac85c76",
+          "branch": "codex/citysim-os-optimization",
+          "worktree": "/Users/James/.codex/worktrees/c92d/city-sim",
+          "expectedHead": "634a336ad4693a458e4521e6e08865e785c95876",
+          "featureAuthorThreadId": "019fbe2b-cc97-71f3-a762-63680ac85c76",
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": [
+            "docs/production/evidence/PLAY-089"
+          ],
+          "allowed": [
+            "docs/production/evidence/PLAY-089/lane-rebaseline-divergence-audit-v1"
+          ],
+          "forbidden": [
+            "docs/production/evidence/INTEGRATION",
+            "docs/production/claims",
+            "docs/production/decisions",
+            "Native/CitySimNative",
+            "script",
+            ".agents"
+          ]
+        },
+        "boundedDeliverable": "Inspect master and the six canonical lane branches read-only after the 79b3f82 synchronization merge. Produce one compact machine-readable inventory and short summary that classify every branch-only commit/path as accepted-current, superseded-history, rejected-checkpoint, evidence-only, or unresolved; flag any product-code delta absent from master; distinguish ancestry synchronization from tree equality; quantify duplicate cherry-picked history and false send/error coordination observations only when directly evidenced; and propose the smallest fail-closed rebaseline procedure that preserves commits while preventing rejected product bytes from becoming the next lane baseline. Do not modify any lane, claim, contract, skill, route, product, or shared file.",
+        "validation": {
+          "focusedGateOwner": {
+            "threadId": "019fbe2b-cc97-71f3-a762-63680ac85c76",
+            "role": "lane_rebaseline_divergence_inventory_gate"
+          },
+          "focusedCommands": [
+            "python3 -m json.tool docs/production/evidence/PLAY-089/lane-rebaseline-divergence-audit-v1/INVENTORY.json",
+            "git diff --check 634a336ad4693a458e4521e6e08865e785c95876..HEAD"
+          ],
+          "fullGateOwner": {
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "role": "independent_frontier_rebaseline_policy_review",
+            "model": "gpt-5.6-sol",
+            "effort": "high"
+          },
+          "fullCommands": [
+            "independent review of product-delta classification, accepted/rejected evidence, and any proposed branch rebaseline policy before adoption"
+          ]
+        },
+        "expectedResult": {
+          "evidencePaths": [
+            "docs/production/evidence/PLAY-089/lane-rebaseline-divergence-audit-v1/INVENTORY.json",
+            "docs/production/evidence/PLAY-089/lane-rebaseline-divergence-audit-v1/SUMMARY.md"
+          ],
+          "commitRequired": true,
+          "commitMessagePattern": "PLAY-089:"
+        },
+        "escalationTriggers": [
+          "shared_contract_or_schema_decision",
+          "unresolved_product_visual_or_interaction_judgment",
+          "path_outside_claim",
+          "baseline_or_candidate_identity_mismatch",
+          "failure_outside_focused_scope",
+          "save_or_migration_uncertainty",
+          "cross_lane_semantic_conflict",
+          "two_unsuccessful_repair_attempts",
+          "subjective_acceptance_required"
+        ],
+        "stopCondition": "Stop after one clean evidence-only audit commit. Return unresolved classifications rather than guessing. Do not mutate or merge any other branch, implement policy, edit skills/shared authority, run product/full gates, push, integrate, self-accept, or pin.",
+        "independentReviewer": {
+          "required": true,
+          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+          "model": "gpt-5.6-sol",
+          "effort": "high"
+        },
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {
+              "path": ".agents/skills/optimize-citysim-operating-system/SKILL.md",
+              "sha256": "6d4a9e121ec307f7378d253ed112b0ffdd25e0c0d4d1a52b5f7d405f74a8b1ef"
+            },
+            {
+              "path": ".agents/skills/optimize-citysim-operating-system/references/observation-and-upgrade-protocol.md",
+              "sha256": "a9404e046f8c8c68fa3c22d6830b3bbac883a2238e0ad709598038bce87c78a2"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

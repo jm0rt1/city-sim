@@ -1,0 +1,15 @@
+{
+  "schema": 2,
+  "revision": "industrial-l04-north-v14-hero",
+  "geometryID": "industrial-l04-north-v14-crucible-portal-foundry",
+  "manifestKind": "deterministic-lowering-summary",
+  "componentCount": 33,
+  "objectCount": 97,
+  "componentToObjectCoveragePercent": 100.0,
+  "compoundPortalObjectNames": ["frame", "empty-aperture", "inset-back", "reveal-left", "reveal-right", "reveal-header"],
+  "compoundTopology": {"sawtooth": ["peak", "slope", "eave"], "pipe": ["segment", "elbow", "supports"], "truss": ["lower-chord", "upper-chord", "diagonal"], "vessel": ["body", "shoulder", "rim"]},
+  "socket": {"citySim": [0, 0, -28], "blender": [-28, 0, 0], "source": [896, 704], "computedContinuity": true},
+  "componentIDs": ["v14-foundation", "v14-north-loading-apron", "v14-main-foundry-hall", "v14-west-structural-return", "v14-east-control-annex", "v14-monumental-portal-west-jamb", "v14-monumental-portal-east-jamb", "v14-monumental-portal-header", "v14-monumental-portal-void", "v14-freight-bay-west", "v14-freight-bay-center", "v14-freight-bay-east", "v14-portal-threshold", "v14-west-sawtooth-roof", "v14-east-monitor-roof", "v14-clerestory-band", "v14-crane-lantern", "v14-crane-girder-north", "v14-crane-girder-south", "v14-crucible-vessel", "v14-crucible-heat-cap", "v14-process-pipe-west", "v14-process-pipe-east", "v14-roof-vents", "v14-roof-plant-tanks", "v14-stack", "v14-stack-cap", "v14-staff-entrance", "v14-window-mullions", "v14-service-doors", "v14-safety-markings", "v14-gutters-and-rails", "v14-contact-shadow-receiver"],
+  "sourceAuthority": false,
+  "productionSelected": false
+}

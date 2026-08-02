@@ -1,0 +1,16 @@
+{
+  "schema": 1,
+  "revision": "industrial-l04-north-v14-materials",
+  "roles": ["warm-masonry", "charcoal-steel", "weathered-roof-steel", "oxidized-machinery", "concrete-apron", "freight-depth", "warm-glazing", "restrained-heat", "southeast-shadow"],
+  "materials": [
+    {"id": "v14-warm-masonry", "role": "warm-masonry", "baseColorRGBA": [0.38, 0.12, 0.07, 1.0], "roughness": 0.78, "metalness": 0.0, "description": "weathered warm brick with soot seams"},
+    {"id": "v14-charcoal-steel", "role": "charcoal-steel", "baseColorRGBA": [0.055, 0.085, 0.09, 1.0], "roughness": 0.48, "metalness": 0.72, "description": "dark structural steel and braces"},
+    {"id": "v14-weathered-roof-steel", "role": "weathered-roof-steel", "baseColorRGBA": [0.08, 0.20, 0.19, 1.0], "roughness": 0.62, "metalness": 0.62, "description": "blue-green corrugated roof metal"},
+    {"id": "v14-oxidized-machinery", "role": "oxidized-machinery", "baseColorRGBA": [0.33, 0.19, 0.10, 1.0], "roughness": 0.66, "metalness": 0.58, "description": "oxidized copper process machinery"},
+    {"id": "v14-concrete-apron", "role": "concrete-apron", "baseColorRGBA": [0.29, 0.28, 0.25, 1.0], "roughness": 0.91, "metalness": 0.0, "description": "jointed service apron"},
+    {"id": "v14-freight-depth", "role": "freight-depth", "baseColorRGBA": [0.028, 0.045, 0.05, 1.0], "roughness": 0.88, "metalness": 0.12, "description": "deep portal interior with visible reveal"},
+    {"id": "v14-warm-glazing", "role": "warm-glazing", "baseColorRGBA": [0.72, 0.43, 0.16, 1.0], "roughness": 0.24, "metalness": 0.08, "description": "mullioned amber glazing"},
+    {"id": "v14-restrained-heat", "role": "restrained-heat", "baseColorRGBA": [0.86, 0.27, 0.06, 1.0], "roughness": 0.42, "metalness": 0.12, "emissionStrength": 0.28, "description": "small safety and furnace heat accents"},
+    {"id": "v14-southeast-shadow", "role": "southeast-shadow", "baseColorRGBA": [0.06, 0.07, 0.08, 0.42], "roughness": 1.0, "metalness": 0.0, "description": "restrained transparent contact receiver"}
+  ]
+}

@@ -1,0 +1,152 @@
+{
+  "schema": 1,
+  "authorityCommit": "1d7c6510fd99299c88d3f4412caa982e020c1941",
+  "assignments": [
+    {
+      "modelRouteSha256": "a4966b2f924c6ba36ed05e4bf68debf2b9771baf8067d1e528d021f0c9aa9bb0",
+      "modelRoute": {
+        "schema": 1,
+        "routeId": "quality-v1:play-027-industrial-l04-v14-north-registration-lowering-repair-v2",
+        "taskId": "PLAY-027",
+        "packetKind": "implementation",
+        "classification": "LUNA_IMPLEMENTATION",
+        "model": "gpt-5.6-luna",
+        "effort": "high",
+        "rationale": "Independent Integration review accepts the North v14 family concept, material vocabulary, lighting targets, portal target, silhouette plan, and zero-pixel boundary but returns the implementation because its socketWorld contradicts the frozen v06 North mapping, socketConnected is asserted rather than computed, and compound semantic builders collapse into repeated component bounding boxes. The repair is deterministic under frozen contracts and does not require new art direction.",
+        "authority": {
+          "authorityCommit": "1d7c6510fd99299c88d3f4412caa982e020c1941",
+          "baseCommit": "ea26fdac05169e0375b65d7c5dc65b4fbe00d977",
+          "claim": {
+            "path": "docs/production/claims/PLAY-027.world-art.md",
+            "sha256": "bf0b167a1d1e6f7007d609aeb657917fe9d3d0866d5a7a6e36b0e5a32faefa6f"
+          },
+          "immutableInputs": [
+            {
+              "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+              "sha256": "583c5d7be25a7ffdb95f354c6279fe7c309358f65445365203431c51f0e53247"
+            },
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "62e077c88730fda5664e5fa6d23200ade77418bd43f1c721c0bff84eaac1c971"
+            },
+            {
+              "path": "docs/production/decisions/CONTRACT-020-deterministic-dcc-world-art.md",
+              "sha256": "1495292c86044c07ba3751907b78d1e688e19a6d828aec255e11a1732c4e7bec"
+            },
+            {
+              "path": "docs/production/decisions/CONTRACT-021-parallel-directional-art-cells.md",
+              "sha256": "f80844c928d904498510b8b151381f40315e072d52d81695aafcd6b91081ae4c"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-NORTH-V14-HERO-REBUILD-AUTHORITY-V1.md",
+              "sha256": "e439d9f8de08474bbaf31c2308491dad486ec953bf45605c043731f68b44edbb"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-direction-bridge-v06/MAPPING-CONTRACT.json",
+              "sha256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7"
+            }
+          ]
+        },
+        "assignment": {
+          "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+          "branch": "codex/citysim-world-art",
+          "worktree": "/Users/James/.codex/worktrees/0648/city-sim",
+          "expectedHead": "b9ba26eca69e2679c67dad3c92eb1d30bd74670d",
+          "featureAuthorThreadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027",
+            "docs/production/evidence/PLAY-027"
+          ],
+          "allowed": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14",
+            "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v14"
+          ],
+          "forbidden": [
+            "docs/production/evidence/INTEGRATION",
+            "docs/production/claims",
+            "docs/production/decisions",
+            "Native/CitySimNative/Sources",
+            "Native/CitySimNative/Resources",
+            "Native/CitySimNative/Package.swift",
+            "script",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-079",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-080",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-081"
+          ]
+        },
+        "boundedDeliverable": "Preserve b9ba26e as an ancestor. Correct North registration to the frozen v06 tuple: socketCitySim [0,0,-28], socketBlender [-28,0,0], socketSource [896,704], with pivot and footprint projection unchanged. Replace the constant socketConnected assertion with a computed continuity and projection proof from the exact socket through the apron to the portal threshold. Replace repeated component-AABB proxy lowering for semantic compound forms with deterministic, parameterized geometry instructions and unique object payloads for sawtooth roof peaks/faces, portal frame/reveals/void, clerestory frames/glass, capped vessel and stacks, pipe segments/elbows/supports, truss chords/diagonals, mullions, vents/tanks, rails and gutters. Preserve the accepted v14 family/material/lighting design. Extend adversaries to reject socket drift, false connectivity, projection drift, primitive downgrade, duplicate generic bounds, builder omission, invalid or zero-length segments, and insufficient topology or parameter counts. Update the exact handoff, manifest, analytic report and validation in place with 100 percent component-to-object coverage.",
+        "validation": {
+          "focusedGateOwner": {
+            "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+            "role": "north_v14_registration_and_semantic_lowering_repair_gate"
+          },
+          "focusedCommands": [
+            "PYTHONDONTWRITEBYTECODE=1 python3 Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/test_v14_zero_pixel.py",
+            "PYTHONDONTWRITEBYTECODE=1 python3 Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v14/test_v14_zero_pixel.py",
+            "python3 -m json.tool docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v14/HANDOFF.json",
+            "python3 -m json.tool docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v14/VALIDATION.json",
+            "git diff --check b9ba26eca69e2679c67dad3c92eb1d30bd74670d..HEAD"
+          ],
+          "fullGateOwner": {
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "role": "independent_frontier_zero_pixel_and_visual_authority_review",
+            "model": "gpt-5.6-sol",
+            "effort": "high"
+          },
+          "fullCommands": [
+            "independent review of exact v06 registration, computed road-to-portal connectivity, semantic primitive fidelity, unique deterministic lowering, complete coverage, family coherence, and zero-pixel boundary"
+          ]
+        },
+        "expectedResult": {
+          "evidencePaths": [
+            "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v14/HANDOFF.json",
+            "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v14/VALIDATION.json"
+          ],
+          "commitRequired": true,
+          "commitMessagePattern": "PLAY-027:"
+        },
+        "escalationTriggers": [
+          "shared_contract_or_schema_decision",
+          "unresolved_product_visual_or_interaction_judgment",
+          "path_outside_claim",
+          "baseline_or_candidate_identity_mismatch",
+          "failure_outside_focused_scope",
+          "save_or_migration_uncertainty",
+          "cross_lane_semantic_conflict",
+          "two_unsuccessful_repair_attempts",
+          "subjective_acceptance_required"
+        ],
+        "stopCondition": "Stop after one clean descendant repair with both focused replays and exact packet files passing. On a second unsuccessful repair, need for a shared toolchain change, new visual judgment, or DCC/pixel proof, escalate. Do not run Blender/DCC, create pixels, normalize, activate, ship, integrate, push, self-accept, or pin.",
+        "independentReviewer": {
+          "required": true,
+          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+          "model": "gpt-5.6-sol",
+          "effort": "high"
+        },
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {
+              "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+              "sha256": "583c5d7be25a7ffdb95f354c6279fe7c309358f65445365203431c51f0e53247"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/INDUSTRIAL-L04-NORTH-V14-HERO-REBUILD-AUTHORITY-V1.md",
+              "sha256": "e439d9f8de08474bbaf31c2308491dad486ec953bf45605c043731f68b44edbb"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-direction-bridge-v06/MAPPING-CONTRACT.json",
+              "sha256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

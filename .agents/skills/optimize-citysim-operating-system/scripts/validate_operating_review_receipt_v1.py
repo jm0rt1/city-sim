@@ -1,24 +1,64 @@
 #!/usr/bin/env python3
-"""Fail-closed validator for schema-3 triggered operating-review receipts."""
+"""Fail-closed validator for schema-4 triggered operating-review receipts."""
 
 from __future__ import annotations
 
 import argparse
+import copy
 import hashlib
+import importlib.util
 import json
+import subprocess
 from pathlib import Path
 
 
 DEFAULT_ROUTE = {"classification": "LUNA_MECHANICAL", "model": "gpt-5.6-luna", "effort": "medium"}
 HEX64 = set("0123456789abcdef")
+HEX40 = set("0123456789abcdef")
+ALLOWED_OPERATION_KINDS = {
+    "assemble_receipt",
+    "hash_file",
+    "inspect_diff_paths",
+    "inspect_git_identity",
+    "read_receipt",
+    "validate_schema",
+}
+REQUIRED_RECEIPT_FIELDS = {
+    "schema",
+    "policySha256",
+    "modelRoute",
+    "eventKey",
+    "binding",
+    "decision",
+    "compactContext",
+    "inputReceipts",
+    "nextAction",
+    "prohibitedWork",
+    "reviewOperations",
+    "operationKinds",
+    "metrics",
+    "evidence",
+    "multiLane",
+    "sourceCoverage",
+}
+OPTIONAL_RECEIPT_FIELDS = {"eventFindings"}
 
 
 def _sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def _canonical_sha256(value: object) -> str:
+    payload = json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+    return hashlib.sha256(payload).hexdigest()
+
+
 def _hash(value: object) -> bool:
     return isinstance(value, str) and len(value) == 64 and set(value) <= HEX64
+
+
+def _commit(value: object) -> bool:
+    return isinstance(value, str) and len(value) == 40 and set(value) <= HEX40
 
 
 def _strings(value: object) -> bool:
@@ -51,17 +91,119 @@ def _present(value: object) -> bool:
 def _ledger_rows(ledger: object) -> list[object] | None:
     if isinstance(ledger, list):
         return ledger
-    if isinstance(ledger, dict):
-        for key in ("receipts", "events"):
-            if isinstance(ledger.get(key), list):
-                return ledger[key]
+    if isinstance(ledger, dict) and set(ledger) == {"schema", "receipts"} and ledger.get("schema") == 1 and isinstance(ledger.get("receipts"), list):
+        return ledger["receipts"]
     return None
 
 
-def validate(receipt: object, policy: object, policy_sha256: str, ledger: object | None = None) -> list[str]:
+def _git_commit_exists(repo_root: Path, value: object) -> bool:
+    if not _commit(value):
+        return False
+    result = subprocess.run(
+        ["git", "-C", str(repo_root), "cat-file", "-e", f"{value}^{{commit}}"],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        check=False,
+    )
+    return result.returncode == 0
+
+
+def _is_git_repo(repo_root: Path) -> bool:
+    result = subprocess.run(
+        ["git", "-C", str(repo_root), "rev-parse", "--show-toplevel"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if result.returncode != 0:
+        return False
+    try:
+        return Path(result.stdout.strip()).resolve() == repo_root.resolve()
+    except OSError:
+        return False
+
+
+def _load_model_route_validator(repo_root: Path) -> object:
+    script = repo_root / ".agents/skills/operate-citysim-integration/scripts/validate_model_route_v1.py"
+    spec = importlib.util.spec_from_file_location("citysim_model_route_validator", script)
+    if not script.is_file() or spec is None or spec.loader is None:
+        raise RuntimeError("schema-2 model-route validator is unavailable")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def _route_projection_errors(binding: dict, repo_root: Path, event_key: dict | None = None) -> list[str]:
     errors: list[str] = []
-    if not isinstance(policy, dict) or policy.get("schema") != 3:
-        return ["policy must be schema 3"]
+    dispatch_path = (repo_root / binding["dispatchReceiptPath"]).resolve()
+    try:
+        dispatch = json.loads(dispatch_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return ["binding dispatch receipt must be readable schema-2 JSON"]
+    assignments = dispatch.get("assignments") if isinstance(dispatch, dict) else None
+    if not isinstance(dispatch, dict) or dispatch.get("schema") != 2 or not isinstance(assignments, list):
+        return ["binding dispatch receipt must be schema 2"]
+    matches = [
+        item for item in assignments
+        if isinstance(item, dict) and item.get("modelRouteSha256") == binding["modelRouteHash"]
+    ]
+    if len(matches) != 1 or not isinstance(matches[0].get("modelRoute"), dict):
+        return ["binding model route must resolve exactly once from dispatch receipt"]
+    assignment = matches[0]
+    route = assignment["modelRoute"]
+    if _canonical_sha256(route) != binding["modelRouteHash"]:
+        errors.append("binding model route hash must match canonical route JSON")
+    authority = route.get("authority") if isinstance(route.get("authority"), dict) else {}
+    claim = authority.get("claim") if isinstance(authority.get("claim"), dict) else {}
+    route_assignment = route.get("assignment") if isinstance(route.get("assignment"), dict) else {}
+    path_policy = route.get("pathPolicy") if isinstance(route.get("pathPolicy"), dict) else {}
+    focused = route.get("validation", {}).get("focusedGateOwner", {}) if isinstance(route.get("validation"), dict) else {}
+    full = route.get("validation", {}).get("fullGateOwner", {}) if isinstance(route.get("validation"), dict) else {}
+    reviewer = route.get("independentReviewer") if isinstance(route.get("independentReviewer"), dict) else {}
+    try:
+        route_validator = _load_model_route_validator(repo_root)
+        schema_route = copy.deepcopy(route)
+        if isinstance(schema_route.get("assignment"), dict):
+            schema_route["assignment"]["worktree"] = "/__citysim_schema_validation__/nonexistent"
+        errors.extend(f"schema-2 route: {error}" for error in route_validator.validate_route(schema_route, repo_root))
+    except (OSError, RuntimeError) as exc:
+        errors.append(str(exc))
+    if claim.get("path") != binding["claimPath"] or claim.get("sha256") != binding["claimHash"]:
+        errors.append("binding claim must exactly project from model route")
+    if isinstance(event_key, dict):
+        if route.get("taskId") != event_key.get("taskId"):
+            errors.append("event task must exactly project from model route")
+        if authority.get("authorityCommit") != event_key.get("authorityCommit"):
+            errors.append("event authority must exactly project from model route")
+    if route_assignment.get("expectedHead") != binding["expectedHead"]:
+        errors.append("binding expected HEAD must exactly project from model route")
+    if path_policy.get("allowed") != binding["allowedPaths"]:
+        errors.append("binding allowed paths must exactly project from model route")
+    if focused.get("threadId") == full.get("threadId"):
+        errors.append("focused and full gate owners must be distinct")
+    if reviewer.get("required") is not True or reviewer.get("threadId") != full.get("threadId"):
+        errors.append("independent reviewer must be required and own the full gate")
+    if route_assignment.get("featureAuthorThreadId") == reviewer.get("threadId"):
+        errors.append("feature author cannot be the independent reviewer")
+    for path in binding["allowedPaths"]:
+        candidate = Path(path)
+        if candidate.is_absolute() or ".." in candidate.parts:
+            errors.append("binding allowed paths must be safe repo-relative paths")
+            break
+    return errors
+
+
+def validate(
+    receipt: object,
+    policy: object,
+    policy_sha256: str,
+    ledger: object | None,
+    input_root: Path | None = None,
+    require_git_repo: bool = False,
+) -> list[str]:
+    errors: list[str] = []
+    if not isinstance(policy, dict) or policy.get("schema") != 4:
+        return ["policy must be schema 4"]
     if policy.get("defaultRoute") != DEFAULT_ROUTE:
         errors.append("policy default route must be Luna mechanical/medium")
     keys = policy.get("eventKeyFields")
@@ -70,6 +212,10 @@ def validate(receipt: object, policy: object, policy_sha256: str, ledger: object
         keys = []
     if not isinstance(receipt, dict):
         return errors + ["receipt must be an object"]
+    if receipt.get("schema") != 4:
+        errors.append("receipt must be schema 4")
+    if not REQUIRED_RECEIPT_FIELDS <= set(receipt) or set(receipt) - REQUIRED_RECEIPT_FIELDS - OPTIONAL_RECEIPT_FIELDS:
+        errors.append("receipt fields must match the schema-4 contract")
     budget = policy.get("reviewBudget") if isinstance(policy.get("reviewBudget"), dict) else {}
     if not _hash(receipt.get("policySha256")) or receipt.get("policySha256") != policy_sha256:
         errors.append("receipt policySha256 must bind the exact policy bytes")
@@ -81,6 +227,10 @@ def validate(receipt: object, policy: object, policy_sha256: str, ledger: object
         trigger = None
     else:
         trigger = event_key.get("trigger")
+        if not _commit(event_key.get("authorityCommit")) or not _commit(event_key.get("candidateOrResultCommit")):
+            errors.append("event authority and candidate/result identities must be exact commits")
+        if not event_key.get("taskId", "").startswith("PLAY-"):
+            errors.append("event taskId must be a PLAY identifier")
     if trigger not in policy.get("triggers", []):
         errors.append("receipt trigger must be legal")
     decision = receipt.get("decision")
@@ -91,16 +241,61 @@ def validate(receipt: object, policy: object, policy_sha256: str, ledger: object
     context_cap = budget.get("maxCompactContextBytes") if isinstance(budget, dict) else None
     if not isinstance(context, dict) or set(context) != {"mode", "hashes", "bytes"} or context.get("mode") != "compact_hash_bound" or not isinstance(context.get("bytes"), int) or context["bytes"] < 0 or not isinstance(context_cap, int) or context["bytes"] > context_cap or not isinstance(context.get("hashes"), dict) or not context["hashes"] or not all(isinstance(k, str) and k and _hash(v) for k, v in context["hashes"].items()):
         errors.append("receipt compactContext must contain hash-bound hashes and byte count")
+    binding = receipt.get("binding")
+    binding_fields = {
+        "dispatchReceiptPath",
+        "dispatchReceiptHash",
+        "modelRouteHash",
+        "claimPath",
+        "claimHash",
+        "expectedHead",
+        "allowedPaths",
+    }
+    if (
+        not isinstance(binding, dict)
+        or set(binding) != binding_fields
+        or not _hash(binding.get("dispatchReceiptHash"))
+        or not _hash(binding.get("modelRouteHash"))
+        or not _hash(binding.get("claimHash"))
+        or not _commit(binding.get("expectedHead"))
+        or not _strings(binding.get("allowedPaths"))
+        or not isinstance(binding.get("dispatchReceiptPath"), str)
+        or not binding.get("dispatchReceiptPath")
+        or not isinstance(binding.get("claimPath"), str)
+        or not binding.get("claimPath")
+    ):
+        errors.append("receipt binding must contain exact route, claim, HEAD, and allowed paths")
+
     inputs = receipt.get("inputReceipts")
     if not isinstance(inputs, list) or not inputs:
         errors.append("receipt must identify input receipt hashes")
     else:
         seen: set[str] = set()
+        hashes_by_path: dict[str, str] = {}
         for item in inputs:
             if not isinstance(item, dict) or set(item) != {"path", "sha256"} or not isinstance(item.get("path"), str) or not item["path"] or not _hash(item.get("sha256")) or item["path"] in seen:
                 errors.append("input receipt hashes must be exact and unique")
                 break
             seen.add(item["path"])
+            hashes_by_path[item["path"]] = item["sha256"]
+            if input_root is not None:
+                candidate = (input_root / item["path"]).resolve()
+                try:
+                    candidate.relative_to(input_root.resolve())
+                except ValueError:
+                    errors.append("input receipt path must remain inside repo root")
+                    break
+                if not candidate.is_file():
+                    errors.append("input receipt path must exist")
+                    break
+                if _sha256(candidate) != item["sha256"]:
+                    errors.append("input receipt hash must match repository bytes")
+                    break
+        if isinstance(binding, dict):
+            for path_key, hash_key in (("dispatchReceiptPath", "dispatchReceiptHash"), ("claimPath", "claimHash")):
+                if hashes_by_path.get(binding.get(path_key)) != binding.get(hash_key):
+                    errors.append("binding dispatch and claim hashes must project from inputReceipts")
+                    break
     action = receipt.get("nextAction")
     if not isinstance(action, dict) or set(action) != {"action", "owner", "boundedDeliverable", "stopCondition"} or not all(isinstance(value, str) and value for value in action.values()):
         errors.append("receipt must contain one bounded nextAction")
@@ -111,9 +306,17 @@ def validate(receipt: object, policy: object, policy_sha256: str, ledger: object
     operations = receipt.get("reviewOperations")
     if operations != {"threadPolling": False, "spawnedReviews": False} or budget.get("threadPollingAllowed") is not False or budget.get("reviewCanSpawnReviews") is not False:
         errors.append("receipt may not poll tasks or spawn more reviews")
+    operation_kinds = receipt.get("operationKinds")
+    if not _strings(operation_kinds) or len(operation_kinds) != len(set(operation_kinds)) or not set(operation_kinds) <= ALLOWED_OPERATION_KINDS:
+        errors.append("receipt operationKinds must be unique low-cost review operations")
     metrics = receipt.get("metrics")
-    if not isinstance(metrics, dict) or any(value is not None and not isinstance(value, (int, float)) for value in metrics.values()):
-        errors.append("unknown metrics must be null or measured numbers")
+    if not isinstance(metrics, dict) or any(
+        value is not None and (isinstance(value, bool) or not isinstance(value, (int, float)) or value < 0)
+        for value in metrics.values()
+    ):
+        errors.append("unknown metrics must be null or nonnegative measured numbers")
+    elif metrics.get("turns") is not None and metrics["turns"] > budget.get("maxTurns", 0):
+        errors.append("review turns exceed the policy budget")
     requirement = _requirement(policy, trigger) if isinstance(trigger, str) else None
     evidence = receipt.get("evidence")
     if requirement is None:
@@ -126,6 +329,46 @@ def validate(receipt: object, policy: object, policy_sha256: str, ledger: object
         for key, value in evidence.items():
             if key.lower().endswith("hash") and not _hash(value):
                 errors.append(f"{key} must be a SHA-256 hash")
+
+    if isinstance(evidence, dict):
+        if trigger == "frontier_route_assigned" and (
+            evidence.get("classification") != "FRONTIER_AUTHORITY"
+            or evidence.get("lunaDecompositionChecked") is not True
+        ):
+            errors.append("frontier route review must prove frontier classification and Luna decomposition")
+        if trigger == "delegation_ready_for_dispatch" and evidence.get("lowestLegalRoute") not in {
+            "LUNA_MECHANICAL",
+            "LUNA_IMPLEMENTATION",
+            "LUNA_LOCAL_DEBUG",
+            "FRONTIER_AUTHORITY",
+        }:
+            errors.append("delegation readiness must name a legal lowest-cost route")
+        if trigger == "useful_concurrency_below_floor":
+            count = evidence.get("usefulActiveCount")
+            floor = evidence.get("minimumUsefulActiveWorkstreams")
+            if isinstance(count, bool) or isinstance(floor, bool) or not isinstance(count, int) or not isinstance(floor, int) or count >= floor:
+                errors.append("concurrency trigger must prove useful active work below the floor")
+            if evidence.get("protectedOperationsExcluded") is not True:
+                errors.append("concurrency trigger must exclude protected operations")
+            if evidence.get("readyDisjointWork") is True and decision != "REFILL":
+                errors.append("ready disjoint work below the floor requires REFILL")
+        if trigger == "duplicate_full_gate_requested":
+            rerun_justified = evidence.get("identityChanged") is True or evidence.get("evidenceStale") is True
+            if rerun_justified and decision == "RETURN":
+                errors.append("a changed identity or stale proof must not be returned as duplicate")
+            if not rerun_justified and decision != "RETURN":
+                errors.append("an unchanged fresh full-gate request must be RETURN")
+        if trigger == "second_unsuccessful_repair" and decision != "ESCALATE":
+            errors.append("a second unsuccessful repair must escalate")
+        if trigger == "worktree_or_dispatch_setup_failed_before_mutation" and evidence.get("mutationCount") != 0:
+            errors.append("setup-failure review requires zero mutation")
+        if trigger == "candidate_handoff" and evidence.get("candidateCleanliness") != "clean":
+            errors.append("candidate handoff must bind a clean candidate")
+        if trigger == "exact_candidate_qa_started" and (
+            evidence.get("featureAuthorThread") == evidence.get("qaThread")
+            or evidence.get("independentReviewer") != evidence.get("qaThread")
+        ):
+            errors.append("final QA must be independent of the feature author")
 
     coverage = receipt.get("sourceCoverage")
     if receipt.get("multiLane") is True:
@@ -144,12 +387,75 @@ def validate(receipt: object, policy: object, policy_sha256: str, ledger: object
                 errors.append("source coverage workstreams must exactly match policy")
     elif coverage not in (None, []):
         errors.append("single-lane receipt must not include source coverage")
-    if ledger is not None and isinstance(event_key, dict) and list(event_key) == keys:
+    if ledger is None:
+        errors.append("a durable operating-review ledger is required")
+    elif isinstance(event_key, dict) and list(event_key) == keys:
         rows = _ledger_rows(ledger)
         if rows is None:
             errors.append("ledger must be a receipt/event list")
-        elif any(isinstance(row, dict) and row.get("eventKey") == event_key for row in rows):
-            errors.append("duplicate operating-review eventKey in ledger")
+        else:
+            valid_ledger_rows = True
+            for row in rows:
+                if not isinstance(row, dict) or set(row) != {
+                    "eventKey",
+                    "receiptPath",
+                    "receiptSha256",
+                    "decision",
+                    "disposition",
+                }:
+                    valid_ledger_rows = False
+                    break
+                if input_root is not None:
+                    receipt_path = (input_root / row["receiptPath"]).resolve()
+                    try:
+                        receipt_path.relative_to(input_root.resolve())
+                        prior_receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+                    except (ValueError, OSError, json.JSONDecodeError):
+                        valid_ledger_rows = False
+                        break
+                    if (
+                        _sha256(receipt_path) != row["receiptSha256"]
+                        or prior_receipt.get("eventKey") != row["eventKey"]
+                        or prior_receipt.get("decision") != row["decision"]
+                    ):
+                        valid_ledger_rows = False
+                        break
+                disposition = row.get("disposition")
+                if (
+                    not isinstance(row.get("eventKey"), dict)
+                    or not isinstance(row.get("receiptPath"), str)
+                    or not row["receiptPath"]
+                    or not _hash(row.get("receiptSha256"))
+                    or row.get("decision") not in policy.get("allowedDecisions", [])
+                    or not isinstance(disposition, dict)
+                    or set(disposition) != {"status", "authorityCommit", "reason"}
+                    or disposition.get("status") not in {"auto_closed", "applied", "deferred", "rejected"}
+                    or not isinstance(disposition.get("reason"), str)
+                    or not disposition["reason"]
+                    or (disposition.get("authorityCommit") is not None and not _commit(disposition["authorityCommit"]))
+                    or (row.get("decision") == "NO_CHANGE" and disposition.get("status") != "auto_closed")
+                    or (row.get("decision") != "NO_CHANGE" and disposition.get("status") == "auto_closed")
+                ):
+                    valid_ledger_rows = False
+                    break
+            if not valid_ledger_rows:
+                errors.append("ledger rows and dispositions must match the schema-1 contract")
+            ledger_keys = [row.get("eventKey") for row in rows if isinstance(row, dict)]
+            if len(ledger_keys) != len({json.dumps(key, sort_keys=True) for key in ledger_keys if isinstance(key, dict)}):
+                errors.append("ledger contains duplicate operating-review eventKeys")
+            if any(key == event_key for key in ledger_keys):
+                errors.append("duplicate operating-review eventKey in ledger")
+    if require_git_repo and (input_root is None or not _is_git_repo(input_root)):
+        errors.append("repo root must be the exact root of a Git repository")
+    if input_root is not None and _is_git_repo(input_root):
+        if not _git_commit_exists(input_root, event_key.get("authorityCommit") if isinstance(event_key, dict) else None):
+            errors.append("event authority commit must resolve in Git")
+        if not _git_commit_exists(input_root, event_key.get("candidateOrResultCommit") if isinstance(event_key, dict) else None):
+            errors.append("event candidate/result commit must resolve in Git")
+        if isinstance(binding, dict):
+            if not _git_commit_exists(input_root, binding.get("expectedHead")):
+                errors.append("binding expected HEAD must resolve in Git")
+            errors.extend(_route_projection_errors(binding, input_root, event_key if isinstance(event_key, dict) else None))
     return errors
 
 
@@ -158,13 +464,14 @@ def main() -> int:
     root = Path(__file__).resolve().parents[1]
     parser.add_argument("receipt")
     parser.add_argument("--policy", default=str(root / "references" / "triggered-operating-review-policy.json"))
-    parser.add_argument("--ledger")
+    parser.add_argument("--ledger", required=True)
+    parser.add_argument("--repo-root", required=True)
     args = parser.parse_args()
     policy_path = Path(args.policy)
     receipt = json.loads(Path(args.receipt).read_text(encoding="utf-8"))
     policy = json.loads(policy_path.read_text(encoding="utf-8"))
-    ledger = json.loads(Path(args.ledger).read_text(encoding="utf-8")) if args.ledger else None
-    errors = validate(receipt, policy, _sha256(policy_path), ledger)
+    ledger = json.loads(Path(args.ledger).read_text(encoding="utf-8"))
+    errors = validate(receipt, policy, _sha256(policy_path), ledger, Path(args.repo_root), require_git_repo=True)
     if errors:
         for error in errors:
             print("ERROR:", error)

@@ -1,0 +1,84 @@
+{
+  "schema": 1,
+  "task": "PLAY-073",
+  "status": "intake_preparing",
+  "evidenceClass": "renderer_intake_proof_recovery",
+  "route": {
+    "carrier": "2849554eccd15a2952b1eef57d90d23ad8f7cd9e",
+    "routeId": "quality-v1:play-073-industrial-l04-v14-intake-proof-recovery-v2",
+    "routeSha256": "651997b2bcaa6db93a5cdb6e075a746e58f1ac9da154012488d4935069347317",
+    "model": "gpt-5.6-luna",
+    "effort": "max"
+  },
+  "identity": {
+    "branch": "codex/citysim-world-rendering",
+    "worktree": "/Users/James/.codex/worktrees/cac1/city-sim",
+    "head": "164c18ae92695f05a6568da00d855870ae6f3d52",
+    "authorityCommit": "1d7c6510fd99299c88d3f4412caa982e020c1941",
+    "baseCommit": "ea26fdac05169e0375b65d7c5dc65b4fbe00d977",
+    "claimPath": "docs/production/claims/PLAY-073.world-rendering.md",
+    "claimSha256": "e8d0b9f79615ba9c081f805b78b2a4e83a73fc10cf22769c31ced7952c3bff72"
+  },
+  "restoredFiles": [
+    {
+      "path": "Native/CitySimNative/Tests/CitySimNativeTests/WorldRenderingTests.swift",
+      "sha256": "4dd22fc7bb9de85dae6b82fd54233184338d5bdb"
+    },
+    {
+      "path": "docs/production/evidence/PLAY-073/r4-e-depth-layered-residential-frontage-v2/PIXEL-ROLE-LEDGER.json",
+      "sha256": "c75bd431373cf5f107b23689f7e721e5398ba4cd"
+    },
+    {
+      "path": "docs/production/evidence/PLAY-073/r4-e-depth-layered-residential-frontage-v2/RESULT.json",
+      "sha256": "996d4b0fe2b245dffb8eee6697fd003b6eb724ef"
+    }
+  ],
+  "frozenIntakeInputs": [
+    {
+      "path": "Native/CitySimNative/Tests/CitySimNativeTests/IndustrialL4DirectionQuarantineSupport.swift",
+      "sha256": "205975ad7d76653b52a5e395c3d74273436a84b3d470b2d0febbe9f7917abe6e"
+    },
+    {
+      "path": "Native/CitySimNative/Tests/CitySimNativeTests/IndustrialL4DirectionQuarantineMatrixTests.swift",
+      "sha256": "008eee97972e51a7155ab707e18ab82766ac0d587881983b13a7d5045e829c94"
+    },
+    {
+      "path": "Native/CitySimNative/Tests/CitySimNativeTests/IndustrialL4DirectionPacketSchemaTests.swift",
+      "sha256": "fd3e63ebf178797fed71472d274c7cce5d13f2b8c2eeea069a466cec036a515a"
+    }
+  ],
+  "focusedProof": {
+    "quarantineMatrix": {
+      "runs": 2,
+      "testsPerRun": 4,
+      "failuresPerRun": 0,
+      "guards": [
+        "zero_through_four_direction_state_matrix",
+        "sibling_preservation",
+        "runtime_inactive",
+        "atomic_four_of_four_ready"
+      ]
+    },
+    "packetSchema": {
+      "runs": 2,
+      "testsPerRun": 3,
+      "failuresPerRun": 0,
+      "guards": [
+        "direction_bound_citysim_source_sockets",
+        "bridge_authority_required",
+        "synthetic_packet_nonshipping_boundary"
+      ]
+    }
+  },
+  "futureTrigger": {
+    "requires": "exact Integration source-admission receipt for each direction",
+    "then": "run direction-local Renderer quarantine and assemble only after exact 4/4",
+    "runtimeActivated": false,
+    "shippingResourcesMutated": false,
+    "productionSelected": false
+  },
+  "sourcePixelsInspected": false,
+  "aggregateSuiteRun": false,
+  "stagedAppRun": false,
+  "independentAcceptance": false
+}

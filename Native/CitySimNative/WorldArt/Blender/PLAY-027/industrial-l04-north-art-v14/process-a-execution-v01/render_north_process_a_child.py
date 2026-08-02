@@ -104,6 +104,16 @@ def bridge(point: list[float]) -> list[float]:
     return [point[2], point[0], point[1]]
 
 
+def bridge_determinant() -> int:
+    """The frozen cyclic permutation B(x,y,z)=(z,x,y) has determinant +1."""
+    matrix = ((0, 0, 1), (1, 0, 0), (0, 1, 0))
+    return (
+        matrix[0][0] * (matrix[1][1] * matrix[2][2] - matrix[1][2] * matrix[2][1])
+        - matrix[0][1] * (matrix[1][0] * matrix[2][2] - matrix[1][2] * matrix[2][0])
+        + matrix[0][2] * (matrix[1][0] * matrix[2][1] - matrix[1][1] * matrix[2][0])
+    )
+
+
 def add(a: list[float], b: list[float]) -> list[float]:
     return [a[i] + b[i] for i in range(3)]
 
@@ -249,8 +259,8 @@ def citysim_box_geometry(bounds: list[list[float]]) -> tuple[list[list[float]], 
         [x0, y0, z1], [x1, y0, z1], [x1, y1, z1], [x0, y1, z1],
     ]
     faces = [[0, 1, 2, 3], [4, 7, 6, 5], [0, 4, 5, 1], [1, 5, 6, 2], [2, 6, 7, 3], [4, 0, 3, 7]]
-    # B(x,y,z)=(z,x,y) is a handedness-reversing basis. Reverse authored
-    # CitySim face winding once after the bridge so Blender normals point out.
+    # B(x,y,z)=(z,x,y) is an orientation-preserving cyclic permutation. The
+    # authored CitySim box faces are inward, so reverse their winding once.
     return [bridge(v) for v in city_vertices], [list(reversed(face)) for face in faces]
 
 
@@ -432,6 +442,7 @@ def mesh_spec_for(item: dict[str, Any]) -> dict[str, Any] | None:
 
 
 def build_mesh_specs(manifest: dict[str, Any]) -> dict[str, Any]:
+    require(bridge_determinant() == 1, "coordinate bridge determinant drift")
     kinds = {item["geometryKind"] for item in manifest["objects"]}
     require(kinds == SUPPORTED_KINDS, f"semantic-kind closure drift: {sorted(kinds ^ SUPPORTED_KINDS)}")
     solid_specs: list[dict[str, Any]] = []

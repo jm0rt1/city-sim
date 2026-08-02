@@ -63,6 +63,7 @@ def main() -> None:
     assert report["sourceAuthority"] is False and report["productionSelected"] is False
 
     mesh_set = CHILD.build_mesh_specs(manifest)
+    assert CHILD.bridge_determinant() == 1
     assert mesh_set["closedOutwardObjects"] == 95
     assert mesh_set["openTwoSidedObjects"] == 1
     assert len(mesh_set["orientationReports"]) == 96
@@ -113,7 +114,7 @@ def main() -> None:
     rejects(scene, materials, lighting, lambda s: next(c for c in s["components"] if c["id"] == "v14-process-pipe-west").update(points=[[-10, 2, 4], [-10, 2, 4], [-6, 22, 4]]))
     rejects(scene, materials, lighting, lambda s: next(c for c in s["components"] if c["id"] == "v14-monumental-portal-void").update(insetBack=[[-9.5, 1.2, -22.5], [-9.5, 1.2, -22.5]]))
 
-    print(json.dumps({"status": "PASS", "revision": scene["revision"], "componentCount": report["componentCount"], "objectCount": report["objectCount"], "coveragePercent": report["componentToObjectCoverage"]["percent"], "socket": report["socketContinuity"], "topology": report["topology"], "closedOutwardObjects": mesh_set["closedOutwardObjects"], "openTwoSidedObjects": mesh_set["openTwoSidedObjects"], "retainedRenderRejected": True, "syntheticVisibilityPass": True, "adversaries": 9, "dccProcessCount": 0, "pixelWrites": 0}, sort_keys=True))
+    print(json.dumps({"status": "PASS", "revision": scene["revision"], "componentCount": report["componentCount"], "objectCount": report["objectCount"], "coveragePercent": report["componentToObjectCoverage"]["percent"], "socket": report["socketContinuity"], "topology": report["topology"], "bridgeDeterminant": CHILD.bridge_determinant(), "closedOutwardObjects": mesh_set["closedOutwardObjects"], "openTwoSidedObjects": mesh_set["openTwoSidedObjects"], "retainedRenderRejected": True, "syntheticVisibilityPass": True, "adversaries": 9, "dccProcessCount": 0, "pixelWrites": 0}, sort_keys=True))
 
 
 if __name__ == "__main__":

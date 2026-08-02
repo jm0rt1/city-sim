@@ -65,8 +65,8 @@
   "rootCause": {
     "meshOrientation": {
       "basis": "B(x,y,z)=(z,x,y)",
-      "basisDeterminant": -1,
-      "finding": "The handedness-reversing basis was applied to vertices without reversing authored box face winding. Backface orientation was therefore wrong across most architectural mass, suppressing governed lighting response.",
+      "basisDeterminant": 1,
+      "finding": "The frozen cyclic basis is orientation-preserving. The source box primitives themselves carried inward authored winding; after the coordinate bridge those faces remained inward and suppressed governed lighting response until explicitly reversed.",
       "beforeRepair": {"solidObjectsWithFailedOrientation": 53, "inwardFaces": 325},
       "afterRepair": {"closedOutwardObjects": 95, "openTwoSidedObjects": 1, "inwardFaces": 0},
       "openClassification": {
@@ -123,7 +123,7 @@
     "frozenInputMutation": false,
     "sceneMaterialCameraRegistrationMutation": false,
     "implemented": [
-      "reverse box face winding exactly once after the handedness-changing bridge",
+      "reverse source box face winding exactly once after the orientation-preserving bridge",
       "audit every solid mesh as a closed outward shell or explicit open two-sided receiver",
       "apply provenance-bound deterministic source-scale energy gains while preserving authored light inputs and aim",
       "emit non-saturating pure-emission semantic IDs under isolated color management",

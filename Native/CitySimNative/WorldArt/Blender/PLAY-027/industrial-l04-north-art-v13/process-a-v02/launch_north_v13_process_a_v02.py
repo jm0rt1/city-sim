@@ -32,6 +32,11 @@ BRANCH = "codex/citysim-world-art"
 SOURCE_ROOT = "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-v02"
 EVIDENCE_ROOT = "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-v02"
 FUTURE_PROCESS_ROOT = "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a"
+REJECTED_ARCHIVE_ROOT = "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v13/process-a-rejected-v1"
+REJECTED_ARCHIVE_FILES = tuple(
+    f"{REJECTED_ARCHIVE_ROOT}/{name}"
+    for name in ("INPUT-BINDINGS.json", "OBJECT-MANIFEST.json", "PROCESS-A-REJECTION.json", "provenance.json", "raw.png")
+)
 ATTEMPT_MARKER_PATH = "docs/production/evidence/INTEGRATION/PLAY-027-NORTH-V13-PROCESS-A-ATTEMPT.json"
 CHILD_NAME = "render_north_v13_process_a_child.py"
 BLENDER = "/Applications/Blender.app/Contents/MacOS/Blender"
@@ -130,7 +135,7 @@ def _changed_paths(root: Path) -> list[str]:
 
 
 def _allowed_changed_path(path: str) -> bool:
-    return path in ALLOWED_PATHS
+    return path in ALLOWED_PATHS or path in REJECTED_ARCHIVE_FILES
 
 
 def _load_contract(root: Path, contract_path: str) -> dict:

@@ -65,6 +65,12 @@ def _git_fixture() -> tuple[tempfile.TemporaryDirectory, Path, dict, dict, dict]
     source = ROOT / runner.SOURCE_ROOT
     destination = fixture / runner.SOURCE_ROOT
     shutil.copytree(source, destination, dirs_exist_ok=True)
+    # The local clone starts from its default branch; copy the already
+    # committed rejected archive into this disposable fixture so the
+    # historical-path closure is exercised as an actual worker delta.
+    archive_source = ROOT / runner.REJECTED_ARCHIVE_ROOT
+    archive_destination = fixture / runner.REJECTED_ARCHIVE_ROOT
+    shutil.copytree(archive_source, archive_destination, dirs_exist_ok=True)
     contract_path = destination / "EXECUTION-CONTRACT.json"
     fixture_contract = runner.load_json(contract_path)
     fixture_contract["assignment"]["branch"] = "fixture-north"
@@ -273,6 +279,31 @@ def main() -> int:
         assert runner.SOURCE_ROOT + "/" + runner.CHILD_NAME not in prepared["preflight"]["changedPaths"]
         assert prepared["preflight"]["futureProcessRootAbsent"] is True
         assert not (fixture / runner.FUTURE_PROCESS_ROOT).exists()
+        archive_root = fixture / runner.REJECTED_ARCHIVE_ROOT
+        archive_hashes = {
+            name: hashlib.sha256((archive_root / name).read_bytes()).hexdigest()
+            for name in ("INPUT-BINDINGS.json", "OBJECT-MANIFEST.json", "PROCESS-A-REJECTION.json", "provenance.json", "raw.png")
+        }
+        assert tuple(runner.REJECTED_ARCHIVE_ROOT + "/" + name for name in archive_hashes) == runner.REJECTED_ARCHIVE_FILES
+        assert all(path in prepared["preflight"]["changedPaths"] for path in runner.REJECTED_ARCHIVE_FILES)
+        assert all(runner._allowed_changed_path(path) for path in runner.REJECTED_ARCHIVE_FILES)
+        for name, expected_hash in archive_hashes.items():
+            assert hashlib.sha256((archive_root / name).read_bytes()).hexdigest() == expected_hash
+
+        # Exact archive closure only: a prefix, sibling archive, or extra file
+        # must remain a worker-delta failure.
+        near_misses = [
+            archive_root / "INPUT-BINDINGS.json.bak",
+            fixture / (runner.REJECTED_ARCHIVE_ROOT.replace("-v1", "-v2")) / "INPUT-BINDINGS.json",
+            archive_root / "extra.json",
+        ]
+        for near in near_misses:
+            near.parent.mkdir(parents=True, exist_ok=True)
+            near.write_bytes(b"archive near miss\n")
+            must_fail(lambda: runner.prepare_integration_launch(fixture, f"{runner.SOURCE_ROOT}/EXECUTION-CONTRACT.json", SCHEDULE, RECEIPT), f"archive near miss {near}")
+            near.unlink()
+            if near.parent != archive_root:
+                near.parent.rmdir()
 
         fixture_child = fixture / runner.SOURCE_ROOT / runner.CHILD_NAME
         original_child = fixture_child.read_bytes()

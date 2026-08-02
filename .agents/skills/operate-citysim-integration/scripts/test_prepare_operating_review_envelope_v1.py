@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import importlib.util
+import hashlib
 import json
 import tempfile
 import unittest
@@ -74,6 +75,65 @@ class PrepareOperatingReviewEnvelopeTests(unittest.TestCase):
             self.assertEqual(target.read_bytes(), payload)
             with self.assertRaises(ValueError):
                 MOD.write_once(target, b"different")
+
+    def route(self) -> dict:
+        return {
+            "schema": 2,
+            "routeId": "route-bound",
+            "taskId": "PLAY-089",
+            "authority": {"authorityCommit": C},
+        }
+
+    def carrier(self, route: dict) -> str:
+        payload = json.dumps(route, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+        return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+
+    def test_valid_selected_route_and_carrier_binding(self) -> None:
+        route = self.route()
+        source = {"schema": 1, "eventKeys": [event("delegation_ready_for_dispatch", "bound")]}
+        source["eventKeys"][0]["routeId"] = route["routeId"]
+        prepared, errors = MOD.prepare(source, POLICY, route, self.carrier(route))
+        self.assertEqual(errors, [])
+        self.assertEqual(prepared["eventKeys"][0]["taskId"], route["taskId"])
+
+    def test_selected_route_task_mismatch_fails_before_prepare(self) -> None:
+        route = self.route()
+        source = {"schema": 1, "eventKeys": [event("delegation_ready_for_dispatch", "bound")]}
+        source["eventKeys"][0]["routeId"] = route["routeId"]
+        source["eventKeys"][0]["taskId"] = "PLAY-027"
+        prepared, errors = MOD.prepare(source, POLICY, route, self.carrier(route))
+        self.assertIsNone(prepared)
+        self.assertTrue(any("taskId" in error for error in errors))
+
+    def test_selected_route_route_mismatch_fails_before_prepare(self) -> None:
+        route = self.route()
+        source = {"schema": 1, "eventKeys": [event("delegation_ready_for_dispatch", "wrong")]}
+        prepared, errors = MOD.prepare(source, POLICY, route, self.carrier(route))
+        self.assertIsNone(prepared)
+        self.assertTrue(any("routeId" in error for error in errors))
+
+    def test_selected_route_authority_and_carrier_mismatch_fail(self) -> None:
+        route = self.route()
+        source = {"schema": 1, "eventKeys": [event("delegation_ready_for_dispatch", "bound")]}
+        source["eventKeys"][0]["routeId"] = route["routeId"]
+        source["eventKeys"][0]["authorityCommit"] = "b" * 40
+        prepared, errors = MOD.prepare(source, POLICY, route, self.carrier(route))
+        self.assertIsNone(prepared)
+        self.assertTrue(any("authorityCommit" in error for error in errors))
+        prepared, errors = MOD.prepare(
+            {"schema": 1, "eventKeys": [event("delegation_ready_for_dispatch", "bound")]},
+            POLICY,
+            route,
+            "0" * 64,
+        )
+        self.assertIsNone(prepared)
+        self.assertTrue(any("carrier" in error for error in errors))
+
+    def test_legacy_mode_preserves_route_less_behavior(self) -> None:
+        source = {"schema": 1, "eventKeys": [event("delegation_ready_for_dispatch", "legacy")]}
+        prepared, errors = MOD.prepare(source, POLICY)
+        self.assertEqual(errors, [])
+        self.assertEqual(prepared["eventKeys"][0]["routeId"], "route-legacy")
 
 
 if __name__ == "__main__":

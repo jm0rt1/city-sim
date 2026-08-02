@@ -37,7 +37,49 @@ def is_commit(value: Any) -> bool:
     )
 
 
-def prepare(source: Any, policy: Any) -> tuple[dict[str, Any] | None, list[str]]:
+def model_route_hash(route: dict[str, Any]) -> str:
+    payload = json.dumps(route, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+    return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+
+
+def select_model_route(selected: Any, carrier: str | None) -> tuple[dict[str, Any] | None, list[str]]:
+    """Resolve a direct model route or one assignment from a dispatch carrier."""
+    errors: list[str] = []
+    route = selected
+    embedded_carrier: str | None = None
+    if isinstance(selected, dict) and "assignments" in selected:
+        assignments = selected.get("assignments")
+        if not isinstance(assignments, list) or not assignments:
+            return None, ["selected route must contain at least one assignment"]
+        matches = [
+            assignment
+            for assignment in assignments
+            if isinstance(assignment, dict)
+            and (carrier is None or assignment.get("modelRouteSha256") == carrier)
+        ]
+        if len(matches) != 1:
+            return None, ["selected route carrier must identify exactly one assignment"]
+        assignment = matches[0]
+        route = assignment.get("modelRoute")
+        embedded_carrier = assignment.get("modelRouteSha256")
+    if not isinstance(route, dict):
+        return None, ["selected route must be a model-route object or dispatch envelope"]
+    computed = model_route_hash(route)
+    if embedded_carrier is not None and embedded_carrier != computed:
+        errors.append("selected route carrier does not match canonical model-route bytes")
+    if carrier is not None and carrier != computed:
+        errors.append("selected route carrier does not match canonical model-route bytes")
+    if errors:
+        return None, errors
+    return route, []
+
+
+def prepare(
+    source: Any,
+    policy: Any,
+    selected_route: Any | None = None,
+    carrier: str | None = None,
+) -> tuple[dict[str, Any] | None, list[str]]:
     errors: list[str] = []
     if not isinstance(source, dict) or set(source) != {"schema", "eventKeys"}:
         return None, ["source must contain exactly schema and eventKeys"]
@@ -46,6 +88,19 @@ def prepare(source: Any, policy: Any) -> tuple[dict[str, Any] | None, list[str]]
     keys = source.get("eventKeys")
     if not isinstance(keys, list) or not 1 <= len(keys) <= 8:
         return None, errors + ["eventKeys must contain between one and eight rows"]
+
+    route: dict[str, Any] | None = None
+    if selected_route is not None:
+        route, route_errors = select_model_route(selected_route, carrier)
+        errors.extend(route_errors)
+        if route is not None:
+            authority = route.get("authority")
+            if not isinstance(authority, dict) or not is_commit(authority.get("authorityCommit")):
+                errors.append("selected route must bind a full authorityCommit")
+            if not isinstance(route.get("taskId"), str) or not route["taskId"].strip():
+                errors.append("selected route must bind a non-empty taskId")
+            if not isinstance(route.get("routeId"), str) or not route["routeId"].strip():
+                errors.append("selected route must bind a non-empty routeId")
 
     triggers = set(policy.get("triggers", [])) if isinstance(policy, dict) else set()
     immediate = set(
@@ -74,6 +129,15 @@ def prepare(source: Any, policy: Any) -> tuple[dict[str, Any] | None, list[str]]
             errors.append(f"{label} duplicates an earlier event key")
         seen.add(fingerprint)
         normalized.append(dict(row))
+
+        if route is not None:
+            authority = route.get("authority", {})
+            if row.get("authorityCommit") != authority.get("authorityCommit"):
+                errors.append(f"{label}.authorityCommit does not match selected route")
+            if row.get("taskId") != route.get("taskId"):
+                errors.append(f"{label}.taskId does not match selected route")
+            if row.get("routeId") != route.get("routeId"):
+                errors.append(f"{label}.routeId does not match selected route")
 
     if errors:
         return None, errors
@@ -105,10 +169,18 @@ def main() -> int:
     parser.add_argument("--source", required=True)
     parser.add_argument("--policy", required=True)
     parser.add_argument("--output", required=True)
+    parser.add_argument("--route", help="optional selected model-route or dispatch envelope")
+    parser.add_argument("--carrier", help="optional canonical model-route SHA-256 carrier")
     args = parser.parse_args()
 
     try:
-        prepared, errors = prepare(load_json(Path(args.source)), load_json(Path(args.policy)))
+        selected_route = load_json(Path(args.route)) if args.route else None
+        prepared, errors = prepare(
+            load_json(Path(args.source)),
+            load_json(Path(args.policy)),
+            selected_route,
+            args.carrier,
+        )
         if errors or prepared is None:
             for error in errors:
                 print(f"ERROR: {error}")

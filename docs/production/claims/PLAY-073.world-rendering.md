@@ -21,6 +21,12 @@
   `Native/CitySimNative/Tests/CitySimNativeTests/WorldRenderingTests.swift`,
   and `docs/production/evidence/PLAY-073/`; the active R4-B authority narrows
   these roots to its four named source/test files and one new evidence root
+- **R4-F exact owned roots:**
+  `Native/CitySimNative/Sources/CitySimNative/Rendering/`,
+  `Native/CitySimNative/Tests/CitySimNativeTests/`, and
+  `docs/production/evidence/PLAY-073/`; the R4-F model routes narrow these
+  broad claim roots to two disjoint source pairs, one new test file per cell,
+  and one new evidence root per cell
 - **Dependencies:** accepted PLAY-024/062/065/066 product; PLAY-072 fixtures when available; separately accepted PLAY-027 art only
 - **Validation/proof:** same-state regular/compact early/pressure/recovery/upgraded/terminal comparisons at all LODs; developed-district occupancy; light/shadow/material/value/outline coherence; repetition ledger; zero seams/overlaps/fallback; pointer/keyboard/AX/Reduce Motion; pack parity; residency/RSS/frame budgets; PLAY-075
 - **Status:** returned after integration's real-app visual rejection; focused

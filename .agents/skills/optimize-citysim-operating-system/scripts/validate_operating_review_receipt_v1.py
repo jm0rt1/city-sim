@@ -123,6 +123,38 @@ def _is_git_repo(repo_root: Path) -> bool:
         return False
 
 
+def _output_identity_errors(output_root: Path, assignment: dict) -> list[str]:
+    errors: list[str] = []
+    branch = subprocess.run(
+        ["git", "-C", str(output_root), "branch", "--show-current"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if branch.returncode != 0 or branch.stdout.strip() != assignment.get("branch"):
+        errors.append("live worker/output branch must exactly match the model route branch")
+    expected_head = assignment.get("expectedHead")
+    ancestry = subprocess.run(
+        ["git", "-C", str(output_root), "merge-base", "--is-ancestor", str(expected_head), "HEAD"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if ancestry.returncode != 0:
+        errors.append("model route expected HEAD must be an ancestor of live worker/output HEAD")
+    return errors
+
+
+def _confined_path(root: Path, supplied: str, label: str) -> tuple[Path | None, list[str]]:
+    candidate = Path(supplied)
+    candidate = candidate.resolve() if candidate.is_absolute() else (root / candidate).resolve()
+    try:
+        candidate.relative_to(root.resolve())
+        return candidate, []
+    except ValueError:
+        return None, [f"{label} must remain inside its declared root"]
+
+
 def _load_model_route_validator(repo_root: Path) -> object:
     script = repo_root / ".agents/skills/operate-citysim-integration/scripts/validate_model_route_v1.py"
     spec = importlib.util.spec_from_file_location("citysim_model_route_validator", script)
@@ -133,7 +165,12 @@ def _load_model_route_validator(repo_root: Path) -> object:
     return module
 
 
-def _route_projection_errors(binding: dict, repo_root: Path, event_key: dict | None = None) -> list[str]:
+def _route_projection_errors(
+    binding: dict,
+    repo_root: Path,
+    event_key: dict | None = None,
+    output_root: Path | None = None,
+) -> list[str]:
     errors: list[str] = []
     dispatch_path = (repo_root / binding["dispatchReceiptPath"]).resolve()
     try:
@@ -177,6 +214,12 @@ def _route_projection_errors(binding: dict, repo_root: Path, event_key: dict | N
             errors.append("event authority must exactly project from model route")
     if route_assignment.get("expectedHead") != binding["expectedHead"]:
         errors.append("binding expected HEAD must exactly project from model route")
+    if output_root is not None:
+        assigned_worktree = route_assignment.get("worktree")
+        if not isinstance(assigned_worktree, str) or Path(assigned_worktree).resolve() != output_root.resolve():
+            errors.append("worker/output root must exactly match the model route worktree")
+        elif _is_git_repo(output_root):
+            errors.extend(_output_identity_errors(output_root, route_assignment))
     if path_policy.get("allowed") != binding["allowedPaths"]:
         errors.append("binding allowed paths must exactly project from model route")
     if focused.get("threadId") == full.get("threadId"):
@@ -200,6 +243,7 @@ def validate(
     ledger: object | None,
     input_root: Path | None = None,
     require_git_repo: bool = False,
+    output_root: Path | None = None,
 ) -> list[str]:
     errors: list[str] = []
     if not isinstance(policy, dict) or policy.get("schema") != 4:
@@ -446,7 +490,9 @@ def validate(
             if any(key == event_key for key in ledger_keys):
                 errors.append("duplicate operating-review eventKey in ledger")
     if require_git_repo and (input_root is None or not _is_git_repo(input_root)):
-        errors.append("repo root must be the exact root of a Git repository")
+        errors.append("authority root must be the exact root of a Git repository")
+    if require_git_repo and (output_root is None or not _is_git_repo(output_root)):
+        errors.append("worker/output root must be the exact root of a Git repository")
     if input_root is not None and _is_git_repo(input_root):
         if not _git_commit_exists(input_root, event_key.get("authorityCommit") if isinstance(event_key, dict) else None):
             errors.append("event authority commit must resolve in Git")
@@ -455,7 +501,14 @@ def validate(
         if isinstance(binding, dict):
             if not _git_commit_exists(input_root, binding.get("expectedHead")):
                 errors.append("binding expected HEAD must resolve in Git")
-            errors.extend(_route_projection_errors(binding, input_root, event_key if isinstance(event_key, dict) else None))
+            errors.extend(
+                _route_projection_errors(
+                    binding,
+                    input_root,
+                    event_key if isinstance(event_key, dict) else None,
+                    output_root,
+                )
+            )
     return errors
 
 
@@ -463,15 +516,46 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     root = Path(__file__).resolve().parents[1]
     parser.add_argument("receipt")
-    parser.add_argument("--policy", default=str(root / "references" / "triggered-operating-review-policy.json"))
+    parser.add_argument("--policy")
     parser.add_argument("--ledger", required=True)
-    parser.add_argument("--repo-root", required=True)
+    parser.add_argument("--repo-root", required=True, help="worker/output root; also the default authority root")
+    parser.add_argument(
+        "--authority-root",
+        help="exact Integration authority Git root when immutable inputs live outside the worker checkout",
+    )
     args = parser.parse_args()
-    policy_path = Path(args.policy)
-    receipt = json.loads(Path(args.receipt).read_text(encoding="utf-8"))
-    policy = json.loads(policy_path.read_text(encoding="utf-8"))
-    ledger = json.loads(Path(args.ledger).read_text(encoding="utf-8"))
-    errors = validate(receipt, policy, _sha256(policy_path), ledger, Path(args.repo_root), require_git_repo=True)
+    output_root = Path(args.repo_root).resolve()
+    authority_root = Path(args.authority_root or args.repo_root).resolve()
+
+    receipt_path, errors = _confined_path(output_root, args.receipt, "receipt path")
+    policy_supplied = args.policy or ".agents/skills/optimize-citysim-operating-system/references/triggered-operating-review-policy.json"
+    policy_path, path_errors = _confined_path(authority_root, policy_supplied, "policy path")
+    errors.extend(path_errors)
+    ledger_path, path_errors = _confined_path(authority_root, args.ledger, "ledger path")
+    errors.extend(path_errors)
+    try:
+        receipt = json.loads(receipt_path.read_bytes()) if receipt_path else None
+        policy = json.loads(policy_path.read_bytes()) if policy_path else None
+        ledger = json.loads(ledger_path.read_bytes()) if ledger_path else None
+    except (OSError, json.JSONDecodeError, UnicodeError):
+        receipt = policy = ledger = None
+        errors.append("receipt, policy, and ledger must be readable JSON")
+    errors.extend(
+        validate(
+            receipt,
+            policy,
+            _sha256(policy_path) if policy_path and policy_path.is_file() else "",
+            ledger,
+            authority_root,
+            require_git_repo=True,
+            output_root=output_root,
+        )
+    )
+    if receipt_path is not None and isinstance(receipt, dict):
+        relative_receipt = receipt_path.relative_to(output_root).as_posix()
+        allowed = receipt.get("binding", {}).get("allowedPaths")
+        if not isinstance(allowed, list) or relative_receipt not in allowed:
+            errors.append("receipt path must be one exact model-route allowed output")
     if errors:
         for error in errors:
             print("ERROR:", error)

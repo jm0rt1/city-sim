@@ -4,8 +4,10 @@
 from __future__ import annotations
 
 import copy
+import hashlib
 import importlib.util
 import json
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -84,6 +86,70 @@ class OperatingReviewBatchTests(unittest.TestCase):
         two = keys[:2]
         batch = manifest(two)
         self.assertTrue(MOD.validate_batch(batch, [receipt(item, 20000) for item in two], POLICY, envelope(two)))
+
+    def test_external_authority_and_worker_outputs_are_separate_roots(self) -> None:
+        keys = [key("dispatch_published", "a")]
+        with tempfile.TemporaryDirectory() as authority_tmp, tempfile.TemporaryDirectory() as output_tmp:
+            authority_root = Path(authority_tmp)
+            output_root = Path(output_tmp)
+            source = envelope(keys)
+            source_bytes = json.dumps(source).encode("utf-8")
+            (authority_root / "event.json").write_bytes(source_bytes)
+            batch = manifest(keys)
+            batch["sourceEventEnvelope"]["sha256"] = hashlib.sha256(source_bytes).hexdigest()
+            (output_root / "0.json").write_text(json.dumps(receipt(keys[0])), encoding="utf-8")
+            loaded_source, loaded_bytes, receipts, errors = MOD.load_bound_inputs(batch, output_root, authority_root)
+            self.assertEqual(errors, [])
+            self.assertEqual(loaded_source, source)
+            self.assertEqual(loaded_bytes, source_bytes)
+            self.assertEqual(receipts, [receipt(keys[0])])
+
+    def test_bound_inputs_fail_closed_on_missing_or_traversal(self) -> None:
+        keys = [key("dispatch_published", "a")]
+        with tempfile.TemporaryDirectory() as authority_tmp, tempfile.TemporaryDirectory() as output_tmp:
+            authority_root = Path(authority_tmp)
+            output_root = Path(output_tmp)
+            batch = manifest(keys)
+            batch["sourceEventEnvelope"]["path"] = "../outside.json"
+            _, _, receipts, errors = MOD.load_bound_inputs(batch, output_root, authority_root)
+            self.assertEqual(receipts, [])
+            self.assertTrue(any("inside its declared root" in error for error in errors))
+            self.assertTrue(any("batch receipt must be readable JSON" in error for error in errors))
+
+    def test_same_root_and_exact_allowed_outputs_pass(self) -> None:
+        keys = [key("dispatch_published", "a")]
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            source = envelope(keys)
+            (root / "event.json").write_text(json.dumps(source), encoding="utf-8")
+            batch = manifest(keys)
+            candidate_receipt = receipt(keys[0])
+            candidate_receipt["binding"] = {"allowedPaths": ["BATCH.json", "0.json"]}
+            (root / "0.json").write_text(json.dumps(candidate_receipt), encoding="utf-8")
+            loaded_source, _, receipts, errors = MOD.load_bound_inputs(batch, root, root)
+            self.assertEqual(errors, [])
+            self.assertEqual(loaded_source, source)
+            self.assertEqual(MOD.validate_output_paths(root / "BATCH.json", batch, receipts, root), [])
+            receipts[0]["binding"]["allowedPaths"].remove("0.json")
+            self.assertTrue(MOD.validate_output_paths(root / "BATCH.json", batch, receipts, root))
+
+    def test_symlink_escape_and_malformed_utf_fail_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as root_tmp, tempfile.TemporaryDirectory() as outside_tmp:
+            root = Path(root_tmp)
+            outside = Path(outside_tmp) / "outside.json"
+            outside.write_text("{}", encoding="utf-8")
+            (root / "link.json").symlink_to(outside)
+            _, _, errors = MOD._read_bound_json(root, "link.json", "source")
+            self.assertTrue(any("inside its declared root" in error for error in errors))
+            (root / "bad.json").write_bytes(b"\xff\xfe")
+            _, _, errors = MOD._read_bound_json(root, "bad.json", "source")
+            self.assertTrue(any("readable JSON" in error for error in errors))
+
+    def test_policy_or_ledger_path_cannot_escape_authority_root(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self.assertTrue(MOD._confined_path(root, "../policy.json", "policy")[1])
+            self.assertTrue(MOD._confined_path(root, "../ledger.json", "ledger")[1])
 
 
 if __name__ == "__main__":

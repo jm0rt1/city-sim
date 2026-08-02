@@ -23,6 +23,67 @@ def _canonical(value: object) -> str:
     return json.dumps(value, sort_keys=True, separators=(",", ":"))
 
 
+def _confined_path(root: Path, supplied: str, label: str) -> tuple[Path | None, list[str]]:
+    candidate = Path(supplied)
+    candidate = candidate.resolve() if candidate.is_absolute() else (root / candidate).resolve()
+    try:
+        candidate.relative_to(root.resolve())
+        return candidate, []
+    except ValueError:
+        return None, [f"{label} must remain inside its declared root"]
+
+
+def _read_bound_json(root: Path, relative_path: object, label: str) -> tuple[object | None, bytes | None, list[str]]:
+    if not isinstance(relative_path, str) or not relative_path:
+        return None, None, [f"{label} path must be a nonempty repo-relative string"]
+    candidate = (root / relative_path).resolve()
+    try:
+        candidate.relative_to(root.resolve())
+    except ValueError:
+        return None, None, [f"{label} path must remain inside its declared root"]
+    try:
+        payload = candidate.read_bytes()
+        return json.loads(payload), payload, []
+    except (OSError, json.JSONDecodeError, UnicodeError):
+        return None, None, [f"{label} must be readable JSON"]
+
+
+def load_bound_inputs(manifest: object, output_root: Path, authority_root: Path) -> tuple[object | None, bytes | None, list[object], list[str]]:
+    errors: list[str] = []
+    source_binding = manifest.get("sourceEventEnvelope", {}) if isinstance(manifest, dict) else {}
+    source_envelope, source_bytes, source_errors = _read_bound_json(
+        authority_root, source_binding.get("path"), "source event envelope"
+    )
+    errors.extend(source_errors)
+    receipts: list[object] = []
+    receipt_paths = manifest.get("receiptPaths", []) if isinstance(manifest, dict) else []
+    if not isinstance(receipt_paths, list):
+        return source_envelope, source_bytes, receipts, errors + ["receipt paths must be a list"]
+    for path in receipt_paths:
+        receipt, _, receipt_errors = _read_bound_json(output_root, path, "batch receipt")
+        errors.extend(receipt_errors)
+        if receipt is not None:
+            receipts.append(receipt)
+    return source_envelope, source_bytes, receipts, errors
+
+
+def validate_output_paths(manifest_path: Path | None, manifest: object, receipts: list[object], output_root: Path) -> list[str]:
+    errors: list[str] = []
+    if manifest_path is None or not isinstance(manifest, dict):
+        return ["batch manifest path must be one exact model-route allowed output"]
+    relative_manifest = manifest_path.resolve().relative_to(output_root.resolve()).as_posix()
+    receipt_paths = manifest.get("receiptPaths", [])
+    if not isinstance(receipt_paths, list) or len(receipt_paths) != len(receipts):
+        return ["batch receipt paths must exactly match loaded receipts"]
+    for receipt_path, receipt in zip(receipt_paths, receipts):
+        allowed = receipt.get("binding", {}).get("allowedPaths") if isinstance(receipt, dict) else None
+        if not isinstance(allowed, list) or relative_manifest not in allowed:
+            errors.append("batch manifest path must be one exact model-route allowed output")
+        if not isinstance(allowed, list) or receipt_path not in allowed:
+            errors.append("batch receipt path must be one exact model-route allowed output")
+    return errors
+
+
 def validate_batch(manifest: object, receipts: list[object], policy: object, source_envelope: object) -> list[str]:
     errors: list[str] = []
     if not isinstance(policy, dict) or policy.get("schema") != 4:
@@ -82,31 +143,52 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     root = Path(__file__).resolve().parents[1]
     parser.add_argument("manifest")
-    parser.add_argument("--policy", default=str(root / "references" / "triggered-operating-review-policy.json"))
+    parser.add_argument("--policy")
     parser.add_argument("--ledger", required=True)
-    parser.add_argument("--repo-root", required=True)
+    parser.add_argument("--repo-root", required=True, help="exact worker/output Git root")
+    parser.add_argument(
+        "--authority-root",
+        help="exact Integration authority Git root; defaults to --repo-root for integrated validation",
+    )
     args = parser.parse_args()
-    repo_root = Path(args.repo_root).resolve()
-    policy_path = Path(args.policy)
-    policy = json.loads(policy_path.read_text(encoding="utf-8"))
-    manifest = json.loads(Path(args.manifest).read_text(encoding="utf-8"))
-    source_binding = manifest.get("sourceEventEnvelope", {}) if isinstance(manifest, dict) else {}
-    source_path = (repo_root / source_binding.get("path", "")).resolve()
+    output_root = Path(args.repo_root).resolve()
+    authority_root = Path(args.authority_root or args.repo_root).resolve()
+    manifest_path, errors = _confined_path(output_root, args.manifest, "batch manifest path")
+    policy_supplied = args.policy or ".agents/skills/optimize-citysim-operating-system/references/triggered-operating-review-policy.json"
+    policy_path, path_errors = _confined_path(authority_root, policy_supplied, "policy path")
+    errors.extend(path_errors)
+    ledger_path, path_errors = _confined_path(authority_root, args.ledger, "ledger path")
+    errors.extend(path_errors)
     try:
-        source_path.relative_to(repo_root)
-        source_bytes = source_path.read_bytes()
-        source_envelope = json.loads(source_bytes)
-    except (ValueError, OSError, json.JSONDecodeError):
-        source_envelope = None
-    receipts = [json.loads((repo_root / path).read_text(encoding="utf-8")) for path in manifest.get("receiptPaths", [])]
-    errors = validate_batch(manifest, receipts, policy, source_envelope)
-    if source_envelope is None or hashlib.sha256(source_bytes).hexdigest() != source_binding.get("sha256"):
+        policy = json.loads(policy_path.read_bytes()) if policy_path else None
+        manifest = json.loads(manifest_path.read_bytes()) if manifest_path else None
+        ledger = json.loads(ledger_path.read_bytes()) if ledger_path else None
+    except (OSError, json.JSONDecodeError, UnicodeError):
+        policy = manifest = ledger = None
+        errors.append("manifest, policy, and ledger must be readable JSON")
+    source_binding = manifest.get("sourceEventEnvelope", {}) if isinstance(manifest, dict) else {}
+    source_envelope, source_bytes, receipts, load_errors = load_bound_inputs(manifest, output_root, authority_root)
+    errors.extend(load_errors)
+    errors.extend(validate_batch(manifest, receipts, policy, source_envelope))
+    if source_bytes is None or hashlib.sha256(source_bytes).hexdigest() != source_binding.get("sha256"):
         errors.append("source event envelope path and SHA-256 must match repository bytes")
     receipt_validator = _load_receipt_validator()
-    ledger = json.loads(Path(args.ledger).read_text(encoding="utf-8"))
-    policy_hash = hashlib.sha256(policy_path.read_bytes()).hexdigest()
+    policy_hash = hashlib.sha256(policy_path.read_bytes()).hexdigest() if policy_path and policy_path.is_file() else ""
+    if not receipt_validator._is_git_repo(output_root):
+        errors.append("worker/output root must be the exact root of a Git repository")
     for receipt in receipts:
-        errors.extend(receipt_validator.validate(receipt, policy, policy_hash, ledger, repo_root))
+        errors.extend(
+            receipt_validator.validate(
+                receipt,
+                policy,
+                policy_hash,
+                ledger,
+                authority_root,
+                require_git_repo=True,
+                output_root=output_root,
+            )
+        )
+    errors.extend(validate_output_paths(manifest_path, manifest, receipts, output_root))
     if errors:
         for error in errors:
             print("ERROR:", error)

@@ -2,6 +2,64 @@
   "schema": 1,
   "authorityCommit": "f5562c1bd3b38a1d002a64e5930cd82370a3fe81",
   "routeId": "quality-v2:play-089-industrial-l04-repair-handoff-review-v1",
+  "eventKeys": [
+    {
+      "authorityCommit": "f5562c1bd3b38a1d002a64e5930cd82370a3fe81",
+      "taskId": "PLAY-089",
+      "routeId": "quality-v2:play-089-industrial-l04-repair-handoff-review-v1",
+      "trigger": "candidate_handoff",
+      "candidateOrResultCommit": "5ade43b991695f9fb05a023ef7dd1de2a775a27d"
+    },
+    {
+      "authorityCommit": "f5562c1bd3b38a1d002a64e5930cd82370a3fe81",
+      "taskId": "PLAY-089",
+      "routeId": "quality-v2:play-089-industrial-l04-repair-handoff-review-v1",
+      "trigger": "task_completed_or_stopped",
+      "candidateOrResultCommit": "5ade43b991695f9fb05a023ef7dd1de2a775a27d"
+    },
+    {
+      "authorityCommit": "f5562c1bd3b38a1d002a64e5930cd82370a3fe81",
+      "taskId": "PLAY-089",
+      "routeId": "quality-v2:play-089-industrial-l04-repair-handoff-review-v1",
+      "trigger": "candidate_handoff",
+      "candidateOrResultCommit": "d5e09f77217d6d46843aab4e43ee214317ae1d8d"
+    },
+    {
+      "authorityCommit": "f5562c1bd3b38a1d002a64e5930cd82370a3fe81",
+      "taskId": "PLAY-089",
+      "routeId": "quality-v2:play-089-industrial-l04-repair-handoff-review-v1",
+      "trigger": "task_completed_or_stopped",
+      "candidateOrResultCommit": "d5e09f77217d6d46843aab4e43ee214317ae1d8d"
+    },
+    {
+      "authorityCommit": "f5562c1bd3b38a1d002a64e5930cd82370a3fe81",
+      "taskId": "PLAY-089",
+      "routeId": "quality-v2:play-089-industrial-l04-repair-handoff-review-v1",
+      "trigger": "candidate_handoff",
+      "candidateOrResultCommit": "dd2d4f02fc7d3a7751ff6b72613bdc9ffdd3ed6b"
+    },
+    {
+      "authorityCommit": "f5562c1bd3b38a1d002a64e5930cd82370a3fe81",
+      "taskId": "PLAY-089",
+      "routeId": "quality-v2:play-089-industrial-l04-repair-handoff-review-v1",
+      "trigger": "task_completed_or_stopped",
+      "candidateOrResultCommit": "dd2d4f02fc7d3a7751ff6b72613bdc9ffdd3ed6b"
+    },
+    {
+      "authorityCommit": "f5562c1bd3b38a1d002a64e5930cd82370a3fe81",
+      "taskId": "PLAY-089",
+      "routeId": "quality-v2:play-089-industrial-l04-repair-handoff-review-v1",
+      "trigger": "useful_concurrency_below_floor",
+      "candidateOrResultCommit": "f5562c1bd3b38a1d002a64e5930cd82370a3fe81"
+    },
+    {
+      "authorityCommit": "f5562c1bd3b38a1d002a64e5930cd82370a3fe81",
+      "taskId": "PLAY-089",
+      "routeId": "quality-v2:play-089-industrial-l04-repair-handoff-review-v1",
+      "trigger": "worktree_or_dispatch_setup_failed_before_mutation",
+      "candidateOrResultCommit": "fb6fd3c20ed32191ff43fd31acb5651713373c4c"
+    }
+  ],
   "events": [
     {
       "eventKey": {

@@ -11,6 +11,10 @@ SPEC = importlib.util.spec_from_file_location("v14_lower", ROOT / "lower_v14_sce
 MODULE = importlib.util.module_from_spec(SPEC)
 assert SPEC.loader is not None
 SPEC.loader.exec_module(MODULE)
+CHILD_SPEC = importlib.util.spec_from_file_location("v14_child_static", ROOT / "process-a-execution-v01/render_north_process_a_child.py")
+CHILD = importlib.util.module_from_spec(CHILD_SPEC)
+assert CHILD_SPEC.loader is not None
+CHILD_SPEC.loader.exec_module(CHILD)
 
 
 def load(name: str) -> dict:
@@ -58,6 +62,48 @@ def main() -> None:
     assert report["dccProcessCount"] == 0 and report["pixelWrites"] == 0
     assert report["sourceAuthority"] is False and report["productionSelected"] is False
 
+    mesh_set = CHILD.build_mesh_specs(manifest)
+    assert mesh_set["closedOutwardObjects"] == 95
+    assert mesh_set["openTwoSidedObjects"] == 1
+    assert len(mesh_set["orientationReports"]) == 96
+    assert all(item["passes"] and item["inwardFaces"] == 0 for item in mesh_set["orientationReports"])
+    shadow_orientation = next(item for item in mesh_set["orientationReports"] if item["id"] == "v14-contact-shadow-receiver::primary")
+    assert shadow_orientation["classification"] == "open-two-sided-shadow-receiver"
+    light_profile = CHILD.light_profile(lighting)
+    assert light_profile["key"]["effectiveEnergyWatts"] == 54000.0
+    assert light_profile["fill"]["effectiveEnergyWatts"] == 7200.0
+    assert light_profile["key"]["targetBlender"] == [0, 0, 16]
+    assert light_profile["fill"]["targetBlender"] == [0, 0, 16]
+    projection = CHILD.ground_projection_report(scene)
+    assert projection["footprintSource"] == [[768.0, 640.0], [1024.0, 768.0], [768.0, 896.0], [512.0, 768.0]]
+    assert projection["pivotSource"] == [768.0, 896.0] and projection["socketSource"] == [896.0, 704.0]
+
+    rejected_root = ROOT / "process-a-execution-v01/process-a-rejected-v3"
+    retained_visibility = CHILD.evaluate_post_render_visibility(rejected_root / "raw.png", rejected_root / "semantic.png", lighting)
+    assert retained_visibility["passes"] is False
+    assert retained_visibility["alphaBounds"] == {"x": 511, "y": 517, "width": 514, "height": 380}
+    assert retained_visibility["luma"]["median"] < lighting["gates"]["medianLumaMin"]
+    assert retained_visibility["luma"]["p95"] < lighting["gates"]["p95LumaMin"]
+    assert {"medianLuma", "p95Luma", "westJambCore", "eastJambCore", "headerCore", "freightDepthCore", "portalFrameDelta"} <= set(retained_visibility["failed"])
+
+    width = height = 16
+    raw_pixels = [(90, 90, 90, 255)] * (width * height)
+    semantic_pixels = [(1, 1, 1, 255)] * (width * height)
+    frame_ids = ["v14-monumental-portal-west-jamb", "v14-monumental-portal-east-jamb", "v14-monumental-portal-header"]
+    depth_ids = ["v14-freight-bay-west", "v14-freight-bay-center", "v14-freight-bay-east"]
+    for group_index, component_id in enumerate(frame_ids + depth_ids):
+        for pixel_index in range(group_index * 10, group_index * 10 + 10):
+            semantic_pixels[pixel_index] = (*CHILD.semantic_srgb8(component_id), 255)
+            raw_pixels[pixel_index] = (205, 185, 165, 255) if component_id in frame_ids else (75, 70, 65, 255)
+    synthetic_visibility = CHILD.evaluate_visibility_pixels(width, height, raw_pixels, semantic_pixels, lighting["gates"])
+    assert synthetic_visibility["passes"] is True and synthetic_visibility["failed"] == []
+
+    reversed_box = copy.deepcopy(mesh_set["solidSpecs"][0])
+    reversed_box["faces"][0] = list(reversed(reversed_box["faces"][0]))
+    assert CHILD.orientation_report(reversed_box)["passes"] is False
+    dark_fixture = [(8, 8, 8, 255)] * (width * height)
+    assert CHILD.evaluate_visibility_pixels(width, height, dark_fixture, semantic_pixels, lighting["gates"])["passes"] is False
+
     # Registration, connectivity, topology and parameter fail-closed adversaries.
     rejects(scene, materials, lighting, lambda s: s["registration"].update(socketCitySim=[0, 0, -27]))
     rejects(scene, materials, lighting, lambda s: s["registration"].update(sourceProjection={"originCitySim": [0, 0, -28], "originSource": [895, 704], "pixelsPerWorldXZ": [4, 4]}))
@@ -67,7 +113,7 @@ def main() -> None:
     rejects(scene, materials, lighting, lambda s: next(c for c in s["components"] if c["id"] == "v14-process-pipe-west").update(points=[[-10, 2, 4], [-10, 2, 4], [-6, 22, 4]]))
     rejects(scene, materials, lighting, lambda s: next(c for c in s["components"] if c["id"] == "v14-monumental-portal-void").update(insetBack=[[-9.5, 1.2, -22.5], [-9.5, 1.2, -22.5]]))
 
-    print(json.dumps({"status": "PASS", "revision": scene["revision"], "componentCount": report["componentCount"], "objectCount": report["objectCount"], "coveragePercent": report["componentToObjectCoverage"]["percent"], "socket": report["socketContinuity"], "topology": report["topology"], "adversaries": 7, "dccProcessCount": 0, "pixelWrites": 0}, sort_keys=True))
+    print(json.dumps({"status": "PASS", "revision": scene["revision"], "componentCount": report["componentCount"], "objectCount": report["objectCount"], "coveragePercent": report["componentToObjectCoverage"]["percent"], "socket": report["socketContinuity"], "topology": report["topology"], "closedOutwardObjects": mesh_set["closedOutwardObjects"], "openTwoSidedObjects": mesh_set["openTwoSidedObjects"], "retainedRenderRejected": True, "syntheticVisibilityPass": True, "adversaries": 9, "dccProcessCount": 0, "pixelWrites": 0}, sort_keys=True))
 
 
 if __name__ == "__main__":

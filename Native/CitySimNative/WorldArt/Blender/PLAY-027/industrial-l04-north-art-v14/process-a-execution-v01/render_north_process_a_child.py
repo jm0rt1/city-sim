@@ -8,7 +8,9 @@ import importlib.util
 import json
 import math
 import os
+import struct
 import sys
+import zlib
 from pathlib import Path
 from typing import Any
 
@@ -48,6 +50,11 @@ SUPPORTED_KINDS = set(RECTANGULAR_BUILDERS) | {
     "pipe-support", "plant-unit", "portal-frame", "sawtooth-peak",
     "sawtooth-slope-face", "stack-bands", "truss-chord", "truss-diagonal", "void",
 }
+# The authored area-light values are retained as immutable inputs. These fixed
+# Blender-lowering gains compensate for their 115-154 world-unit throw at the
+# governed source scale; they are provenance-bound below and tested exactly.
+KEY_ENERGY_SCALE = 12.0
+FILL_ENERGY_SCALE = 40.0
 
 
 def require(condition: bool, message: str) -> None:
@@ -152,6 +159,88 @@ def validate_mesh_spec(spec: dict[str, Any]) -> None:
     require(used == set(range(len(vertices))), f"unused mesh vertex: {spec['id']}")
 
 
+def face_normal(vertices: list[list[float]], face: list[int]) -> list[float]:
+    return cross(subtract(vertices[face[1]], vertices[face[0]]), subtract(vertices[face[2]], vertices[face[0]]))
+
+
+def face_center(vertices: list[list[float]], face: list[int]) -> list[float]:
+    return [sum(vertices[index][axis] for index in face) / len(face) for axis in range(3)]
+
+
+def connected_face_shells(spec: dict[str, Any]) -> list[list[int]]:
+    faces = spec["faces"]
+    vertex_faces: dict[int, list[int]] = {}
+    for face_index, face in enumerate(faces):
+        for vertex_index in face:
+            vertex_faces.setdefault(vertex_index, []).append(face_index)
+    remaining = set(range(len(faces)))
+    shells: list[list[int]] = []
+    while remaining:
+        pending = [remaining.pop()]
+        shell: list[int] = []
+        while pending:
+            face_index = pending.pop()
+            shell.append(face_index)
+            neighbors = {
+                candidate
+                for vertex_index in faces[face_index]
+                for candidate in vertex_faces[vertex_index]
+                if candidate in remaining
+            }
+            remaining.difference_update(neighbors)
+            pending.extend(neighbors)
+        shells.append(sorted(shell))
+    return shells
+
+
+def orientation_report(spec: dict[str, Any]) -> dict[str, Any]:
+    vertices, faces = spec["vertices"], spec["faces"]
+    if spec["metadata"].get("shadowCatcher"):
+        normals = [face_normal(vertices, face) for face in faces]
+        upward = sum(normal[2] > 1.0e-9 for normal in normals)
+        return {
+            "id": spec["id"], "classification": "open-two-sided-shadow-receiver",
+            "faceCount": len(faces), "outwardFaces": upward, "inwardFaces": len(faces) - upward,
+            "shells": 1, "passes": upward == len(faces),
+        }
+    if spec["builder"] == "pipe-elbow-torus":
+        center = spec["metadata"]["joint"]
+        major_radius = 0.34
+        scores = []
+        for face in faces:
+            center_face = face_center(vertices, face)
+            angle = math.atan2(center_face[1] - center[1], center_face[0] - center[0])
+            tube_center = [
+                center[0] + major_radius * math.cos(angle),
+                center[1] + major_radius * math.sin(angle),
+                center[2],
+            ]
+            scores.append(dot(face_normal(vertices, face), subtract(center_face, tube_center)))
+        inward = sum(score <= 1.0e-9 for score in scores)
+        return {
+            "id": spec["id"], "classification": "closed-analytic-torus",
+            "faceCount": len(faces), "outwardFaces": len(faces) - inward, "inwardFaces": inward,
+            "shells": 1, "passes": inward == 0,
+        }
+    inward = 0
+    shell_reports = []
+    for shell in connected_face_shells(spec):
+        shell_vertices = sorted({index for face_index in shell for index in faces[face_index]})
+        center = [sum(vertices[index][axis] for index in shell_vertices) / len(shell_vertices) for axis in range(3)]
+        scores = [
+            dot(face_normal(vertices, faces[face_index]), subtract(face_center(vertices, faces[face_index]), center))
+            for face_index in shell
+        ]
+        shell_inward = sum(score <= 1.0e-9 for score in scores)
+        inward += shell_inward
+        shell_reports.append({"faceCount": len(shell), "inwardFaces": shell_inward})
+    return {
+        "id": spec["id"], "classification": "closed-outward-shells",
+        "faceCount": len(faces), "outwardFaces": len(faces) - inward, "inwardFaces": inward,
+        "shells": len(shell_reports), "shellReports": shell_reports, "passes": inward == 0,
+    }
+
+
 def citysim_box_geometry(bounds: list[list[float]]) -> tuple[list[list[float]], list[list[int]]]:
     x0, y0, z0 = bounds[0]
     x1, y1, z1 = bounds[1]
@@ -160,7 +249,9 @@ def citysim_box_geometry(bounds: list[list[float]]) -> tuple[list[list[float]], 
         [x0, y0, z1], [x1, y0, z1], [x1, y1, z1], [x0, y1, z1],
     ]
     faces = [[0, 1, 2, 3], [4, 7, 6, 5], [0, 4, 5, 1], [1, 5, 6, 2], [2, 6, 7, 3], [4, 0, 3, 7]]
-    return [bridge(v) for v in city_vertices], faces
+    # B(x,y,z)=(z,x,y) is a handedness-reversing basis. Reverse authored
+    # CitySim face winding once after the bridge so Blender normals point out.
+    return [bridge(v) for v in city_vertices], [list(reversed(face)) for face in faces]
 
 
 def box_spec(item: dict[str, Any], builder: str | None = None) -> dict[str, Any]:
@@ -288,7 +379,7 @@ def shadow_receiver_spec(item: dict[str, Any]) -> dict[str, Any]:
     x1, y1, z1 = item["boundsXYZ"][1]
     y = (y0 + y1) / 2.0
     vertices = [bridge([x0, y, z0]), bridge([x1, y, z0]), bridge([x1, y, z1]), bridge([x0, y, z1])]
-    return mesh_spec(item["id"], item["geometryKind"], "cycles-shadow-catcher-plane", vertices, [[0, 1, 2, 3]], shadowCatcher=True)
+    return mesh_spec(item["id"], item["geometryKind"], "cycles-shadow-catcher-plane", vertices, [[3, 2, 1, 0]], shadowCatcher=True)
 
 
 def mesh_spec_for(item: dict[str, Any]) -> dict[str, Any] | None:
@@ -354,7 +445,17 @@ def build_mesh_specs(manifest: dict[str, Any]) -> dict[str, Any]:
     require(len(solid_specs) == 96 and len(void_ids) == 1, "solid/void object count drift")
     require(len({item["id"] for item in solid_specs}) == len(solid_specs), "duplicate mesh spec id")
     require(all(item["builder"] != "generic" for item in solid_specs), "generic builder forbidden")
-    return {"solidSpecs": solid_specs, "voidIDs": void_ids, "supportedKinds": sorted(SUPPORTED_KINDS)}
+    orientation_reports = [orientation_report(spec) for spec in solid_specs]
+    failed_orientation = [report["id"] for report in orientation_reports if not report["passes"]]
+    require(not failed_orientation, f"mesh orientation drift: {failed_orientation}")
+    return {
+        "solidSpecs": solid_specs,
+        "voidIDs": void_ids,
+        "supportedKinds": sorted(SUPPORTED_KINDS),
+        "orientationReports": orientation_reports,
+        "closedOutwardObjects": sum(report["classification"].startswith("closed-") for report in orientation_reports),
+        "openTwoSidedObjects": sum(report["classification"].startswith("open-two-sided") for report in orientation_reports),
+    }
 
 
 def mesh_object(bpy: Any, spec: dict[str, Any], material: Any) -> Any:
@@ -438,12 +539,58 @@ def camera_profile(scene_data: dict[str, Any]) -> dict[str, Any]:
     return profile
 
 
+def source_ground_point(point_citysim: list[float]) -> list[float]:
+    x, y, z = point_citysim
+    require(abs(y) < 1.0e-9, "ground projection requires CitySim y=0")
+    return [768.0 + (32.0 / 7.0) * (x - z), 768.0 + (16.0 / 7.0) * (x + z)]
+
+
+def ground_projection_report(scene_data: dict[str, Any]) -> dict[str, Any]:
+    footprint = scene_data["registration"]["footprintWorld"]
+    projected = [source_ground_point(point) for point in footprint]
+    pivot = source_ground_point(scene_data["registration"]["pivotWorld"])
+    socket = source_ground_point(scene_data["registration"]["socketCitySim"])
+    expected_footprint = [[768.0, 640.0], [1024.0, 768.0], [768.0, 896.0], [512.0, 768.0]]
+    require(projected == expected_footprint, "camera ground footprint drift")
+    require(pivot == [768.0, 896.0] and socket == [896.0, 704.0], "camera pivot/socket drift")
+    return {
+        "footprintSource": projected,
+        "pivotSource": pivot,
+        "socketSource": socket,
+        "orthoScale": camera_profile(scene_data)["orthoScale"],
+        "shift": [camera_profile(scene_data)["shiftX"], camera_profile(scene_data)["shiftY"]],
+        "registrationLocked": True,
+    }
+
+
 def light_profile(lighting: dict[str, Any]) -> dict[str, Any]:
     key = lighting["key"]
     fill_origin_citysim = [72.0, 70.0, 72.0]
+    key_origin = bridge(key["originWorld"])
+    key_target = bridge(key["targetWorld"])
+    fill_origin = bridge(fill_origin_citysim)
     return {
-        "key": {**key, "originBlender": bridge(key["originWorld"]), "targetBlender": bridge(key["targetWorld"])},
-        "fill": {**lighting["optionalFill"], "originCitySim": fill_origin_citysim, "originBlender": bridge(fill_origin_citysim), "targetBlender": bridge(key["targetWorld"])},
+        "key": {
+            **key,
+            "authoredEnergyWatts": key["energyWatts"],
+            "effectiveEnergyWatts": key["energyWatts"] * KEY_ENERGY_SCALE,
+            "originBlender": key_origin,
+            "targetBlender": key_target,
+            "distanceToTarget": magnitude(subtract(key_target, key_origin)),
+            "aimDirection": normalized(subtract(key_target, key_origin)),
+        },
+        "fill": {
+            **lighting["optionalFill"],
+            "authoredEnergyWatts": lighting["optionalFill"]["energyWatts"],
+            "effectiveEnergyWatts": lighting["optionalFill"]["energyWatts"] * FILL_ENERGY_SCALE,
+            "originCitySim": fill_origin_citysim,
+            "originBlender": fill_origin,
+            "targetBlender": key_target,
+            "distanceToTarget": magnitude(subtract(key_target, fill_origin)),
+            "aimDirection": normalized(subtract(key_target, fill_origin)),
+        },
+        "world": lighting["world"],
+        "lowering": {"keyEnergyScale": KEY_ENERGY_SCALE, "fillEnergyScale": FILL_ENERGY_SCALE},
     }
 
 
@@ -503,7 +650,7 @@ def configure_scene(bpy: Any, contract: dict[str, Any], scene_data: dict[str, An
     lights = light_profile(lighting)
     key = lights["key"]
     key_data = bpy.data.lights.new("v14-north-key", type=key["type"])
-    key_data.energy = key["energyWatts"]
+    key_data.energy = key["effectiveEnergyWatts"]
     key_data.shape = key["shape"]
     key_data.size = key["sizeWorld"]
     key_data.color = key["colorRGB"]
@@ -516,7 +663,7 @@ def configure_scene(bpy: Any, contract: dict[str, Any], scene_data: dict[str, An
     fill_object = None
     if fill["enabled"]:
         fill_data = bpy.data.lights.new("v14-north-fill", type=fill["type"])
-        fill_data.energy = fill["energyWatts"]
+        fill_data.energy = fill["effectiveEnergyWatts"]
         fill_data.shape = "DISK"
         fill_data.size = fill["sizeWorld"]
         fill_data.color = fill["colorRGB"]
@@ -550,6 +697,149 @@ def write_json_exclusive(output: Path, name: str, value: Any) -> Path:
     return path
 
 
+def decode_png_rgba8(path: Path) -> dict[str, Any]:
+    data = path.read_bytes()
+    require(data[:8] == b"\x89PNG\r\n\x1a\n", f"PNG signature invalid: {path.name}")
+    position = 8
+    width = height = 0
+    compressed: list[bytes] = []
+    seen_end = False
+    while position < len(data):
+        require(position + 12 <= len(data), f"PNG chunk truncated: {path.name}")
+        length = struct.unpack(">I", data[position : position + 4])[0]
+        chunk_type = data[position + 4 : position + 8]
+        chunk_data = data[position + 8 : position + 8 + length]
+        chunk_crc = data[position + 8 + length : position + 12 + length]
+        require(len(chunk_data) == length and len(chunk_crc) == 4, f"PNG chunk length invalid: {path.name}")
+        require((zlib.crc32(chunk_type + chunk_data) & 0xFFFFFFFF) == struct.unpack(">I", chunk_crc)[0], f"PNG CRC invalid: {path.name}")
+        if chunk_type == b"IHDR":
+            width, height, depth, color_type, compression, filtering, interlace = struct.unpack(">IIBBBBB", chunk_data)
+            require(depth == 8 and color_type == 6 and compression == 0 and filtering == 0 and interlace == 0, "RGBA8 noninterlaced PNG required")
+        elif chunk_type == b"IDAT":
+            compressed.append(chunk_data)
+        elif chunk_type == b"IEND":
+            seen_end = True
+        position += 12 + length
+    require(width > 0 and height > 0 and compressed and seen_end, f"PNG structure incomplete: {path.name}")
+    inflated = zlib.decompress(b"".join(compressed))
+    stride = width * 4
+    require(len(inflated) == height * (stride + 1), f"PNG scanline size drift: {path.name}")
+
+    def paeth(left: int, above: int, upper_left: int) -> int:
+        prediction = left + above - upper_left
+        distances = (abs(prediction - left), abs(prediction - above), abs(prediction - upper_left))
+        return (left, above, upper_left)[distances.index(min(distances))]
+
+    pixels: list[tuple[int, int, int, int]] = []
+    previous = bytearray(stride)
+    for row_index in range(height):
+        start = row_index * (stride + 1)
+        filter_type = inflated[start]
+        require(filter_type in (0, 1, 2, 3, 4), f"PNG filter unsupported: {filter_type}")
+        source = inflated[start + 1 : start + 1 + stride]
+        row = bytearray(stride)
+        for index, value in enumerate(source):
+            left = row[index - 4] if index >= 4 else 0
+            above = previous[index]
+            upper_left = previous[index - 4] if index >= 4 else 0
+            predictor = 0 if filter_type == 0 else left if filter_type == 1 else above if filter_type == 2 else (left + above) // 2 if filter_type == 3 else paeth(left, above, upper_left)
+            row[index] = (value + predictor) & 0xFF
+        pixels.extend(tuple(row[index : index + 4]) for index in range(0, stride, 4))
+        previous = row
+    return {"width": width, "height": height, "pixels": pixels}
+
+
+def semantic_linear_color(component_id: str) -> list[float]:
+    digest = hashlib.sha256(component_id.encode()).digest()
+    return [0.18 + digest[index] / 255.0 * 0.72 for index in range(3)]
+
+
+def linear_to_srgb8(value: float) -> int:
+    encoded = 12.92 * value if value <= 0.0031308 else 1.055 * value ** (1.0 / 2.4) - 0.055
+    return max(0, min(255, round(encoded * 255.0)))
+
+
+def semantic_srgb8(component_id: str) -> tuple[int, int, int]:
+    return tuple(linear_to_srgb8(value) for value in semantic_linear_color(component_id))
+
+
+def percentile(values: list[float], fraction: float) -> float:
+    require(values and 0.0 <= fraction <= 1.0, "percentile input invalid")
+    ordered = sorted(values)
+    return ordered[round((len(ordered) - 1) * fraction)]
+
+
+def pixel_luma(pixel: tuple[int, int, int, int]) -> float:
+    return (0.2126 * pixel[0] + 0.7152 * pixel[1] + 0.0722 * pixel[2]) / 255.0
+
+
+def evaluate_visibility_pixels(
+    width: int,
+    height: int,
+    raw_pixels: list[tuple[int, int, int, int]],
+    semantic_pixels: list[tuple[int, int, int, int]],
+    gates: dict[str, Any],
+) -> dict[str, Any]:
+    require(width > 0 and height > 0 and len(raw_pixels) == len(semantic_pixels) == width * height, "visibility image dimensions drift")
+    occupied = [index for index, pixel in enumerate(raw_pixels) if pixel[3] > 0]
+    require(occupied, "render has no occupied pixels")
+    xs = [index % width for index in occupied]
+    ys = [index // width for index in occupied]
+    bounds = {"x": min(xs), "y": min(ys), "width": max(xs) - min(xs) + 1, "height": max(ys) - min(ys) + 1}
+    lumas = [pixel_luma(raw_pixels[index]) for index in occupied]
+    median_luma, p95_luma = percentile(lumas, 0.5), percentile(lumas, 0.95)
+
+    frame_ids = [
+        "v14-monumental-portal-west-jamb",
+        "v14-monumental-portal-east-jamb",
+        "v14-monumental-portal-header",
+    ]
+    depth_ids = ["v14-freight-bay-west", "v14-freight-bay-center", "v14-freight-bay-east"]
+    semantic_targets = {component_id: semantic_srgb8(component_id) for component_id in frame_ids + depth_ids}
+    tolerance = 6
+    component_pixels: dict[str, list[int]] = {component_id: [] for component_id in semantic_targets}
+    for index, pixel in enumerate(semantic_pixels):
+        if pixel[3] < 250:
+            continue
+        matches = [component_id for component_id, target in semantic_targets.items() if max(abs(pixel[channel] - target[channel]) for channel in range(3)) <= tolerance]
+        if len(matches) == 1:
+            component_pixels[matches[0]].append(index)
+    counts = {component_id: len(indices) for component_id, indices in component_pixels.items()}
+    frame_indices = [index for component_id in frame_ids for index in component_pixels[component_id]]
+    depth_indices = [index for component_id in depth_ids for index in component_pixels[component_id]]
+    frame_median = percentile([pixel_luma(raw_pixels[index]) for index in frame_indices], 0.5) if frame_indices else 0.0
+    depth_median = percentile([pixel_luma(raw_pixels[index]) for index in depth_indices], 0.5) if depth_indices else 0.0
+    frame_delta = frame_median - depth_median
+    checks = {
+        "occupiedWidth": bounds["width"] / width >= 0.30,
+        "occupiedHeight": bounds["height"] / height >= 0.30,
+        "medianLuma": gates["medianLumaMin"] <= median_luma <= gates["medianLumaMax"],
+        "p95Luma": gates["p95LumaMin"] <= p95_luma <= gates["p95LumaMax"],
+        "westJambCore": counts[frame_ids[0]] >= 8,
+        "eastJambCore": counts[frame_ids[1]] >= 8,
+        "headerCore": counts[frame_ids[2]] >= 8,
+        "freightDepthCore": sum(counts[component_id] for component_id in depth_ids) >= 24,
+        "portalFrameDelta": frame_delta >= gates["portalFrameDelta"],
+    }
+    return {
+        "passes": all(checks.values()),
+        "checks": checks,
+        "failed": [name for name, passed in checks.items() if not passed],
+        "dimensions": [width, height],
+        "alphaBounds": bounds,
+        "occupiedFractions": {"width": bounds["width"] / width, "height": bounds["height"] / height},
+        "luma": {"median": median_luma, "p95": p95_luma},
+        "frontage": {"componentCorePixels": counts, "frameMedianLuma": frame_median, "depthMedianLuma": depth_median, "frameDepthDelta": frame_delta},
+    }
+
+
+def evaluate_post_render_visibility(raw_path: Path, semantic_path: Path, lighting: dict[str, Any]) -> dict[str, Any]:
+    raw = decode_png_rgba8(raw_path)
+    semantic = decode_png_rgba8(semantic_path)
+    require((raw["width"], raw["height"]) == (semantic["width"], semantic["height"]), "raw/semantic dimension mismatch")
+    return evaluate_visibility_pixels(raw["width"], raw["height"], raw["pixels"], semantic["pixels"], lighting["gates"])
+
+
 def validate_child_authority(root: Path, contract: dict[str, Any], args: argparse.Namespace) -> dict[str, Any]:
     require(args.direction == "north", "North-only child")
     require(os.environ.get("CITYSIM_PROCESS_A_LIVE") == "1", "direct child invocation rejected")
@@ -569,12 +859,11 @@ def validate_child_authority(root: Path, contract: dict[str, Any], args: argpars
 
 
 def semantic_material(bpy: Any, component_id: str) -> Any:
-    digest = hashlib.sha256(component_id.encode()).digest()
-    color = [0.18 + digest[index] / 255.0 * 0.72 for index in range(3)] + [1.0]
+    color = semantic_linear_color(component_id) + [1.0]
     material = bpy.data.materials.new(f"semantic::{component_id}")
     material.use_nodes = True
     node = material.node_tree.nodes.get("Principled BSDF")
-    node.inputs["Base Color"].default_value = color
+    node.inputs["Base Color"].default_value = [0.0, 0.0, 0.0, 1.0]
     node.inputs["Roughness"].default_value = 1.0
     node.inputs["Metallic"].default_value = 0.0
     node.inputs["Emission Color"].default_value = color
@@ -590,10 +879,22 @@ def render_semantic_pass(bpy: Any, scene: Any, output: Path, objects_by_id: dict
         catcher_state[object_id] = bool(obj.is_shadow_catcher)
         obj.is_shadow_catcher = False
         obj.data.materials[0] = semantic_material(bpy, item_by_id[object_id]["componentID"])
+    original_view_transform = scene.view_settings.view_transform
+    original_look = scene.view_settings.look
+    original_exposure = scene.view_settings.exposure
+    original_gamma = scene.view_settings.gamma
+    scene.view_settings.view_transform = "Standard"
+    scene.view_settings.look = "None"
+    scene.view_settings.exposure = 0.0
+    scene.view_settings.gamma = 1.0
     semantic_path = safe_output_leaf(output, "semantic.png")
     scene.render.filepath = str(semantic_path)
     bpy.ops.render.render(write_still=True)
     require(semantic_path.is_file(), "semantic render missing")
+    scene.view_settings.view_transform = original_view_transform
+    scene.view_settings.look = original_look
+    scene.view_settings.exposure = original_exposure
+    scene.view_settings.gamma = original_gamma
     for object_id, obj in objects_by_id.items():
         obj.data.materials[0] = originals[object_id]
         obj.is_shadow_catcher = catcher_state[object_id]
@@ -644,6 +945,8 @@ def main(values: list[str] | None = None) -> int:
     bpy.ops.render.render(write_still=True)
     require(raw_path.is_file(), "raw render missing")
     render_semantic_pass(bpy, configured["scene"], output, objects_by_id, item_by_id)
+    visibility = evaluate_post_render_visibility(raw_path, output / "semantic.png", lighting)
+    require(visibility["passes"], f"post-render visibility gate failed: {visibility['failed']}")
     blend_path = safe_output_leaf(output, "north-v14-process-a.blend")
     bpy.ops.wm.save_as_mainfile(filepath=str(blend_path))
     require(blend_path.is_file(), "blend evidence missing")
@@ -659,6 +962,11 @@ def main(values: list[str] | None = None) -> int:
             for spec in specs["solidSpecs"]
         ],
         "voidIDs": specs["voidIDs"],
+        "orientation": {
+            "closedOutwardObjects": specs["closedOutwardObjects"],
+            "openTwoSidedObjects": specs["openTwoSidedObjects"],
+            "reports": specs["orientationReports"],
+        },
     }
     write_json_exclusive(output, "OBJECT-MANIFEST.json", runtime_manifest)
     write_json_exclusive(output, "GROUND-PROJECTION.json", packet["report"]["registration"])
@@ -675,6 +983,9 @@ def main(values: list[str] | None = None) -> int:
         "task": "PLAY-027", "direction": "north", "process": "A",
         "inputHashes": packet["inputHashes"], "childStarts": 1, "dccProcessCount": 1,
         "coordinateBridge": "B(x,y,z)=(z,x,y)",
+        "postRenderVisibility": visibility,
+        "cameraGroundProjection": ground_projection_report(scene_data),
+        "lightLowering": light_profile(lighting),
         "outputHashes": {
             "raw.png": sha256(raw_path), "semantic.png": sha256(output / "semantic.png"),
             "north-v14-process-a.blend": sha256(blend_path),
@@ -688,6 +999,7 @@ def main(values: list[str] | None = None) -> int:
     write_json_exclusive(output, "PROCESS-RECEIPT.json", {
         "status": "PROCESS_A_COMPLETE", "direction": "north", "childStarts": 1,
         "renderPath": "raw.png", "semanticPath": "semantic.png", "blendPath": "north-v14-process-a.blend",
+        "postRenderVisibility": visibility,
         "sourceAuthority": False, "productionSelected": False,
     })
     require({path.name for path in output.iterdir()} == ALLOWED_OUTPUTS, "output inventory drift")

@@ -105,7 +105,21 @@
     {"id":"east-v14-hot-cap","kind":"hot-process","semanticRole":"v14-restrained-hot-process","materialRole":"hot-process","bounds":{"xMin":-15,"xMax":-8,"yMin":9,"yMax":17,"zMin":28,"zMax":34}},
     {"id":"east-v14-boiler-stack","kind":"stack","semanticRole":"v14-oxidized-process-machinery","materialRole":"safety-oxide","bounds":{"xMin":-27,"xMax":-21,"yMin":-20,"yMax":-14,"zMin":0,"zMax":44}},
     {"id":"east-v14-staff-annex","kind":"staff-annex","semanticRole":"v14-warm-glazing","materialRole":"glazing-louver","bounds":{"xMin":-24,"xMax":-12,"yMin":-24,"yMax":-14,"zMin":0,"zMax":14}},
-    {"id":"east-v14-service-rails","kind":"railings","semanticRole":"v14-charcoal-structural-steel","materialRole":"dark-painted-steel","bounds":{"xMin":8,"xMax":12,"yMin":8,"yMax":18,"zMin":26,"zMax":30}}
+    {"id":"east-v14-service-rails","kind":"railings","semanticRole":"v14-charcoal-structural-steel","materialRole":"dark-painted-steel","bounds":{"xMin":8,"xMax":12,"yMin":8,"yMax":18,"zMin":26,"zMax":30}},
+    {"id":"east-v14-process-vessel","kind":"capped-vessel","semanticRole":"v14-oxidized-process-machinery","materialRole":"safety-oxide","bounds":{"xMin":-16,"xMax":-10,"yMin":8,"yMax":14,"zMin":20,"zMax":32}},
+    {"id":"east-v14-pipe-main","kind":"pipe-run","semanticRole":"v14-oxidized-process-machinery","materialRole":"safety-oxide","bounds":{"xMin":-20,"xMax":-16,"yMin":5,"yMax":9,"zMin":22,"zMax":26}},
+    {"id":"east-v14-pipe-elbow","kind":"pipe-elbow","semanticRole":"v14-oxidized-process-machinery","materialRole":"safety-oxide","bounds":{"xMin":-20,"xMax":-16,"yMin":9,"yMax":14,"zMin":26,"zMax":30}},
+    {"id":"east-v14-pipe-support","kind":"pipe-support","semanticRole":"v14-charcoal-structural-steel","materialRole":"dark-painted-steel","bounds":{"xMin":-19,"xMax":-17,"yMin":8,"yMax":10,"zMin":18,"zMax":22}},
+    {"id":"east-v14-roof-plant","kind":"roof-plant","semanticRole":"v14-oxidized-process-machinery","materialRole":"safety-oxide","bounds":{"xMin":4,"xMax":10,"yMin":-14,"yMax":-6,"zMin":34,"zMax":37}},
+    {"id":"east-v14-roof-vents","kind":"vent-array","semanticRole":"v14-charcoal-structural-steel","materialRole":"dark-painted-steel","bounds":{"xMin":12,"xMax":18,"yMin":-12,"yMax":-6,"zMin":32,"zMax":36}},
+    {"id":"east-v14-service-doors","kind":"service-door","semanticRole":"v14-formed-concrete","materialRole":"formed-concrete","bounds":{"xMin":-8,"xMax":-4,"yMin":21,"yMax":23,"zMin":4,"zMax":12}},
+    {"id":"east-v14-mullioned-glazing","kind":"mullioned-glazing","semanticRole":"v14-warm-glazing","materialRole":"glazing-louver","bounds":{"xMin":-6,"xMax":6,"yMin":21,"yMax":23,"zMin":16,"zMax":24}},
+    {"id":"east-v14-gutter","kind":"gutter","semanticRole":"v14-weathered-bluegreen-roof","materialRole":"roof-edge-metal","bounds":{"xMin":-22,"xMax":22,"yMin":-20,"yMax":-18,"zMin":29,"zMax":30}},
+    {"id":"east-v14-roof-edge-trim","kind":"roof-edge","semanticRole":"v14-charcoal-structural-steel","materialRole":"dark-painted-steel","bounds":{"xMin":-20,"xMax":20,"yMin":18,"yMax":20,"zMin":30,"zMax":31}},
+    {"id":"east-v14-loading-markings","kind":"loading-marking","semanticRole":"v14-formed-concrete","materialRole":"formed-concrete","bounds":{"xMin":-12,"xMax":12,"yMin":20,"yMax":22,"zMin":0.2,"zMax":0.3}},
+    {"id":"east-v14-masonry-seams","kind":"seam-band","semanticRole":"v14-warm-foundry-masonry","materialRole":"warm-weathered-masonry","bounds":{"xMin":-20,"xMax":20,"yMin":21,"yMax":22,"zMin":12,"zMax":13}},
+    {"id":"east-v14-louver-band","kind":"louver-band","semanticRole":"v14-warm-glazing","materialRole":"glazing-louver","bounds":{"xMin":-18,"xMax":-12,"yMin":21,"yMax":22,"zMin":18,"zMax":24}},
+    {"id":"east-v14-heat-pipe","kind":"pipe-run","semanticRole":"v14-restrained-hot-process","materialRole":"hot-process","bounds":{"xMin":-12,"xMax":-8,"yMin":17,"yMax":20,"zMin":30,"zMax":34}}
   ],
   "portal": {
     "roadFacing": "east",
@@ -155,6 +169,7 @@
     "changedPaths": [
       "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/V14-COMPATIBILITY-DESIGN.json",
       "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/test_v14_compatibility.py",
+      "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/LOWERING.json",
       "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/HANDOFF.json",
       "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01/v14-compatibility-v01/VALIDATION.json"
     ],

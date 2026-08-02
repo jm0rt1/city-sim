@@ -696,35 +696,163 @@ class WestExecutionOrchestrationV2Tests(unittest.TestCase):
                 errors, result = validate_integration_document_closure(root, contract, runner)
             self.assertEqual(errors, [])
             self.assertEqual(result["workerHead"], base)
-            for field, expected in (("direction", "east"), ("claimSHA256", "0" * 64), ("branch", "codex/citysim-world-art-south")):
-                candidate = copy.deepcopy(docs["appearanceLock"])
-                candidate[field] = expected
-                target = root / path_map["appearanceLock"][0]
-                target.write_bytes(canonical_bytes(candidate))
-                with patch(
-                    "west_execution_orchestration_v2.git_output",
-                    side_effect=lambda _root, *args: (
-                        base if args == ("rev-parse", "HEAD") else branch
-                        if args == ("branch", "--show-current") else None
+
+            def rebind_all_documents(commit: str) -> None:
+                contract["frozenDesignAuthority"]["commit"] = commit
+                for name, binding in contract["futureIntegrationInputs"].items():
+                    relative = path_map[name][0]
+                    data = (root / relative).read_bytes()
+                    binding.update(
+                        {
+                            "state": "bound_integration",
+                            "path": relative,
+                            "commit": commit,
+                            "sha256": hashlib.sha256(data).hexdigest(),
+                        }
+                    )
+                appearance_binding = contract["futureIntegrationInputs"][
+                    "appearanceLock"
+                ]
+                runner["appearanceLock"].update(
+                    {
+                        "documentPath": appearance_binding["path"],
+                        "commit": appearance_binding["commit"],
+                        "documentSha256": appearance_binding["sha256"],
+                    }
+                )
+                profile_binding = contract["futureIntegrationInputs"][
+                    "sourceProductionProfile"
+                ]
+                runner["sourceStage"]["sourceProductionProfile"] = {
+                    "state": "bound_integration_profile",
+                    "path": profile_binding["path"],
+                    "commit": profile_binding["commit"],
+                    "sha256": profile_binding["sha256"],
+                }
+
+            def set_nested(value: dict, keys: tuple[str, ...], replacement: object) -> None:
+                target: dict = value
+                for key in keys[:-1]:
+                    target = target[key]
+                target[keys[-1]] = replacement
+
+            adversaries = (
+                (
+                    "appearance-direction",
+                    (("appearanceLock", ("direction",), "east"),),
+                    ("document-closure:direction",),
+                ),
+                (
+                    "appearance-claim",
+                    (("appearanceLock", ("claimSHA256",), "0" * 64),),
+                    ("document-closure:claimSHA256",),
+                ),
+                (
+                    "appearance-branch",
+                    (("appearanceLock", ("branch",), "codex/citysim-world-art-south"),),
+                    ("document-closure:branch",),
+                ),
+                (
+                    "grant-task",
+                    (("launchGrantA", ("taskId",), "PLAY-999"),),
+                    ("document-closure:taskId",),
+                ),
+                (
+                    "grant-claim-revision",
+                    (("launchGrantA", ("claimRevision",), 99),),
+                    ("document-closure:claimRevision",),
+                ),
+                (
+                    "grant-worker-head",
+                    (("launchGrantA", ("workerHead",), "0" * 40),),
+                    ("document-closure:worker-head-consistency",),
+                ),
+                (
+                    "grant-session",
+                    (("launchGrantA", ("sessionId",), "other-session"),),
+                    ("document-closure:session-id",),
+                ),
+                (
+                    "grant-published-base",
+                    (("launchGrantA", ("publishedBase",), "0" * 40),),
+                    ("document-closure:publishedBase",),
+                ),
+                (
+                    "grant-output-root",
+                    (("launchGrantA", ("outputRoot",), "docs/production/evidence/PLAY-079/escape"),),
+                    ("document:launchGrantA:outputRoot",),
+                ),
+                (
+                    "grant-child-limit",
+                    (("launchGrantA", ("maximumChildStarts",), 2),),
+                    ("document:launchGrantA:maximumChildStarts",),
+                ),
+                (
+                    "session-schedule-hash",
+                    (("globalExecutionReceipt", ("scheduleAuthoritySHA256",), "0" * 64),),
+                    ("document:globalExecutionReceipt:schedule-hash",),
+                ),
+                (
+                    "session-appearance-hash",
+                    (("globalExecutionReceipt", ("appearanceLockSHA256",), "0" * 64),),
+                    ("document:globalExecutionReceipt:appearance-hash",),
+                ),
+                (
+                    "session-material-hash",
+                    (("globalExecutionReceipt", ("lockedMaterialMappingSHA256",), "0" * 64),),
+                    ("document:globalExecutionReceipt:material-hash",),
+                ),
+                (
+                    "session-profile-hash",
+                    (("globalExecutionReceipt", ("sourceProductionProfileSHA256",), "0" * 64),),
+                    ("document:globalExecutionReceipt:profile-hash",),
+                ),
+                (
+                    "grant-schedule-authority-hashes",
+                    tuple(
+                        (
+                            f"launchGrant{process_id}",
+                            ("scheduleAuthoritySHA256",),
+                            "0" * 64,
+                        )
+                        for process_id in ("A", "B", "C")
                     ),
-                ):
-                    bad, _ = validate_integration_document_closure(root, contract, runner)
-                self.assertTrue(bad)
-                target.write_bytes(path_map["appearanceLock"][1])
-            adversarial_fields = (
-                ("taskId", "PLAY-999"),
-                ("claimRevision", 99),
-                ("workerHead", "0" * 40),
-                ("sessionId", "other-session"),
-                ("publishedBase", "0" * 40),
-                ("outputRoot", "docs/production/evidence/PLAY-079/escape"),
-                ("maximumChildStarts", 2),
+                    tuple(
+                        f"document:launchGrant{process_id}:schedule-authority-hash"
+                        for process_id in ("A", "B", "C")
+                    ),
+                ),
             )
-            for field, expected in adversarial_fields:
-                candidate = copy.deepcopy(docs["launchGrantA"])
-                candidate[field] = expected
-                target = root / path_map["launchGrantA"][0]
-                target.write_bytes(canonical_bytes(candidate))
+            self.assertEqual(len(adversaries), 15)
+            document_paths = [path_map[name][0] for name in docs]
+            transport_error_fragments = (
+                "argument-sha256-mismatch",
+                "working-tree-sha256",
+                "working-tree-content-drift",
+                "publication-content-drift",
+                "commit-not-in-head",
+                "commit-object-not-regular-blob",
+            )
+            for label, mutations, expected_errors in adversaries:
+                for name, (_relative, original) in path_map.items():
+                    if name in docs:
+                        (root / path_map[name][0]).write_bytes(original)
+                candidates: dict[str, dict] = {}
+                for name, keys, replacement in mutations:
+                    candidate = candidates.setdefault(name, copy.deepcopy(docs[name]))
+                    set_nested(candidate, keys, replacement)
+                for name, candidate in candidates.items():
+                    (root / path_map[name][0]).write_bytes(canonical_bytes(candidate))
+                subprocess.run(["git", "add", *document_paths], cwd=root, check=True)
+                subprocess.run(
+                    ["git", "commit", "-q", "-m", f"fixture adversary {label}"],
+                    cwd=root,
+                    check=True,
+                )
+                adversary_commit = subprocess.check_output(
+                    ["git", "rev-parse", "HEAD"], cwd=root, text=True
+                ).strip()
+                rebind_all_documents(adversary_commit)
                 with patch(
                     "west_execution_orchestration_v2.git_output",
                     side_effect=lambda _root, *args: (
@@ -733,28 +861,16 @@ class WestExecutionOrchestrationV2Tests(unittest.TestCase):
                     ),
                 ):
                     bad, _ = validate_integration_document_closure(root, contract, runner)
-                self.assertTrue(bad, field)
-                target.write_bytes(path_map["launchGrantA"][1])
-            for field, expected in (
-                ("scheduleAuthoritySHA256", "0" * 64),
-                ("appearanceLockSHA256", "0" * 64),
-                ("lockedMaterialMappingSHA256", "0" * 64),
-                ("sourceProductionProfileSHA256", "0" * 64),
-            ):
-                candidate = copy.deepcopy(docs["globalExecutionReceipt"])
-                candidate[field] = expected
-                target = root / path_map["globalExecutionReceipt"][0]
-                target.write_bytes(canonical_bytes(candidate))
-                with patch(
-                    "west_execution_orchestration_v2.git_output",
-                    side_effect=lambda _root, *args: (
-                        base if args == ("rev-parse", "HEAD") else branch
-                        if args == ("branch", "--show-current") else None
+                for expected_error in expected_errors:
+                    self.assertIn(expected_error, bad, label)
+                self.assertFalse(
+                    any(
+                        fragment in error
+                        for error in bad
+                        for fragment in transport_error_fragments
                     ),
-                ):
-                    bad, _ = validate_integration_document_closure(root, contract, runner)
-                self.assertTrue(bad, field)
-                target.write_bytes(path_map["globalExecutionReceipt"][1])
+                    (label, bad),
+                )
 
     def test_committed_authority_rejects_hash_and_content_drift(self) -> None:
         relative = (

@@ -1061,6 +1061,16 @@ def validate_integration_document_closure(
         errors.append("document:sourceProductionProfile:source-schema-hash")
     if materials.get("appearanceLockSHA256") != expected_hashes["appearanceLockSHA256"]:
         errors.append("document:lockedMaterialMapping:appearance-hash")
+    for process_id in ("A", "B", "C"):
+        if (
+            documents[f"launchGrant{process_id}"].get(
+                "scheduleAuthoritySHA256"
+            )
+            != expected_hashes["scheduleAuthoritySHA256"]
+        ):
+            errors.append(
+                f"document:launchGrant{process_id}:schedule-authority-hash"
+            )
     if any(grant.get("scheduleSha256") != json_sha256(schedule) for grant in grants.values()) if isinstance(schedule, dict) else True:
         errors.append("document:grant:schedule-content-hash")
 
@@ -1115,6 +1125,19 @@ def validate_integration_document_closure(
                 if document.get(field) != value:
                     errors.append(f"document:launchGrant{process_id}:{field}")
     published_base = authority.get("publishedBase")
+    published_base_documents = [
+        authority,
+        session,
+        appearance,
+        materials,
+        profile,
+        *[documents[f"launchGrant{process_id}"] for process_id in ("A", "B", "C")],
+    ]
+    if any(
+        document.get("publishedBase") != published_base
+        for document in published_base_documents
+    ):
+        errors.append("document-closure:publishedBase")
     if not isinstance(published_base, str) or not is_ancestor(root, published_base, worker_head or ""):
         errors.append("document-closure:published-base")
     if any(document.get("sessionId") != session.get("sessionId") for document in common_documents):

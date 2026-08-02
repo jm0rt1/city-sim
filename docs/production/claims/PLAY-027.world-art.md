@@ -1,6 +1,6 @@
 # PLAY-027 Claim
 
-- **Claim revision:** 11
+- **Claim revision:** 12
 - **Title:** Author the four-direction production building catalog
 - **Lane:** World art generation cell
 - **Branch:** `codex/citysim-world-art`
@@ -205,3 +205,21 @@ and stop after its sole child on success or failure. No retry, normal source
 render, semantic pass, normalization, Process B/C, sibling mutation,
 appearance lock, source admission, Renderer activation, production selection,
 shipping, push, integration, or self-acceptance is authorized.
+
+## Revision-12 implement the gated diagnostic path, not a placeholder
+
+Consume the Integration-owned
+`INDUSTRIAL-L04-NORTH-V14-EXECUTABLE-PHASE-LADDER-RETURN-REPAIR-V1.md` and
+preserve returned candidate `0c2b3a0fca3e3b5637d2dd8c4b296235ef957202`.
+Within the existing phase-ladder source/evidence roots only, replace inert
+Stage-B placeholders with a fully implemented but externally gated diagnostic:
+live Git identity validation, exact schedule/grant/session/hash/root/cap
+closure, one dormant child start, real flushed JSONL phase emission, complete
+stdout/stderr and failure preservation, actual frozen-helper scene
+construction, and one 8x8 CPU/Cycles diagnostic render. Static tests must prove
+that no child or output is possible without a separately issued Integration
+Stage-B packet and must observe the real emitter/capture paths rather than
+metadata. Return one zero-DCC repair commit. No Blender launch, phase-output,
+retry, normal source render, semantic pass, normalization, Process B/C,
+sibling mutation, admission, shipping, push, integration, or self-acceptance
+is authorized.

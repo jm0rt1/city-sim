@@ -1,6 +1,6 @@
 # PLAY-081 Claim
 
-- **Claim revision:** 11
+- **Claim revision:** 12
 - **Title:** Close the Industrial L4 West execution boundary in parallel
 - **Lane:** World Art West cell
 - **Branch:** `codex/citysim-world-art-west`
@@ -156,3 +156,17 @@ child-limit closure, and reconcile portal runtime objects/materials with the
 semantic manifest. Return one zero-DCC repair commit. No Blender child, render,
 pixel, normalization, admission, activation, shipping, push, integration, or
 self-acceptance is authorized.
+
+## Revision-12 close exact identity and behavioral material proof
+
+Consume the Integration-published
+`INDUSTRIAL-L04-WEST-EXACT-CLOSURE-RETURN-REPAIR-V1.json`. Preserve candidate
+`6228ed47d45fe8f489fe580be956b9bfb320d5ff`, its current design/lowering
+binding, non-collinear capped elbow, and every historical packet. Within the
+existing West-exclusive roots only, require every authority document's worker
+HEAD to equal the live checkout exactly; parse and cross-bind the committed
+schema-2 model route and source-stage schema; add per-field and cross-hash
+adversaries; and prove portal reveal/back materials through the actual lowering
+call path with a swapped-role adversary. Return one zero-DCC repair commit. No
+Blender child, output, pixel, normalization, admission, activation, shipping,
+push, integration, or self-acceptance is authorized.

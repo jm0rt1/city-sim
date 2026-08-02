@@ -13,6 +13,7 @@ EXPECTED_TRIGGERS = {
     "candidate_handoff",
     "claim_or_baseline_mismatch",
     "delegation_acknowledgement_failed",
+    "delegation_ready_for_dispatch",
     "dispatch_published",
     "duplicate_full_gate_requested",
     "eligible_lane_became_idle",
@@ -24,10 +25,12 @@ EXPECTED_TRIGGERS = {
     "integration_closed",
     "model_route_mismatch",
     "no_progress_two_snapshots",
+    "ready_handoff_waiting_for_owner",
     "repeated_context_load_detected",
     "task_completed_or_stopped",
     "useful_concurrency_below_floor",
     "second_unsuccessful_repair",
+    "worktree_or_dispatch_setup_failed_before_mutation",
 }
 EXPECTED_DECISIONS = {"NO_CHANGE", "PROPOSE", "REFILL", "RETURN", "ESCALATE"}
 EXPECTED_KEY_FIELDS = [
@@ -61,9 +64,81 @@ EXPECTED_FALSE_GREEN_ESCALATIONS = [
     "subjective_acceptance_required",
 ]
 EXPECTED_EVENT_REQUIREMENTS = {
+    "authority_acknowledged": (
+        ["dispatchReceiptHash", "modelRouteHash", "claimHash", "acknowledgedAuthority", "acknowledgedAllowedPaths", "acknowledgedModelEffort"],
+        ["NO_CHANGE", "RETURN", "ESCALATE"],
+    ),
+    "candidate_handoff": (
+        ["candidateIdentity", "focusedGateReceiptHash", "allowedPathAudit", "candidateCleanliness", "nextGateOwner", "independentReviewer"],
+        ["NO_CHANGE", "RETURN", "ESCALATE"],
+    ),
+    "claim_or_baseline_mismatch": (
+        ["expectedIdentity", "observedIdentity", "mismatch", "preservedWorkState"],
+        ["RETURN", "ESCALATE"],
+    ),
+    "delegation_acknowledgement_failed": (
+        ["dispatchReceiptHash", "modelRouteHash", "claimHash", "allowedPathBinding", "acknowledgementDefect"],
+        ["RETURN", "ESCALATE"],
+    ),
+    "delegation_ready_for_dispatch": (
+        ["classification", "lowestLegalRoute", "authorityBoundary", "claimHash", "allowedPathBinding", "focusedGateOwner", "fullGateOwner", "independentReviewer", "usefulWorkstreamDelta"],
+        ["NO_CHANGE", "RETURN", "ESCALATE"],
+    ),
+    "dispatch_published": (
+        ["dispatchReceiptHash", "modelRouteHash", "claimHash", "authorityCommit", "expectedHead", "assignedModelEffort"],
+        ["NO_CHANGE", "RETURN", "ESCALATE"],
+    ),
+    "duplicate_full_gate_requested": (
+        ["candidateIdentity", "priorGateReceiptHash", "priorGateCandidateIdentity", "evidenceStale", "identityChanged"],
+        ["NO_CHANGE", "RETURN", "ESCALATE"],
+    ),
+    "eligible_lane_became_idle": (
+        ["lane", "claimState", "readyDisjointWork", "protectedOperation", "refillOrSerializedDependency"],
+        ["NO_CHANGE", "REFILL", "ESCALATE"],
+    ),
+    "exact_candidate_qa_started": (
+        ["candidateIdentity", "featureAuthorThread", "qaThread", "independentReviewer", "exclusiveLease", "fullGateOwner"],
+        ["NO_CHANGE", "RETURN", "ESCALATE"],
+    ),
+    "first_focused_gate_failure": (
+        ["candidateIdentity", "focusedGate", "failureBoundary", "outsideScope", "preservedCheckpoint"],
+        ["NO_CHANGE", "RETURN", "ESCALATE"],
+    ),
+    "first_return": (
+        ["returningReviewer", "returnedCandidate", "preservedEvidence", "defectBoundary", "replacementOrEscalation"],
+        ["NO_CHANGE", "REFILL", "RETURN", "ESCALATE"],
+    ),
     "frontier_route_assigned": (
         ["classification", "frontierRationale", "authorityBoundary", "lunaDecompositionChecked"],
         ["NO_CHANGE", "PROPOSE", "ESCALATE"],
+    ),
+    "independent_return_after_focused_pass": (
+        ["independentReviewer", "candidateIdentity", "priorFocusedPass", "independentDefect", "unaffectedRowsPreserved", "replacementRouteOrEscalation"],
+        ["REFILL", "RETURN", "ESCALATE"],
+    ),
+    "integration_closed": (
+        ["integratedCandidate", "masterCommit", "originParity", "fullGateReceiptHash", "qaDisposition", "nextWaveRefill"],
+        ["NO_CHANGE", "REFILL", "RETURN", "ESCALATE"],
+    ),
+    "model_route_mismatch": (
+        ["expectedRouteTuple", "observedRouteTuple", "mismatch", "preservedWorkState"],
+        ["RETURN", "ESCALATE"],
+    ),
+    "no_progress_two_snapshots": (
+        ["snapshotA", "snapshotB", "snapshotIntervalSeconds", "durableProgress", "protectedOperation", "refillOrStop"],
+        ["NO_CHANGE", "REFILL", "RETURN", "ESCALATE"],
+    ),
+    "ready_handoff_waiting_for_owner": (
+        ["candidateIdentity", "handoffReceiptHash", "waitingOwner", "readySinceBoundary", "protectedOperation", "refillOrSerializedDependency"],
+        ["NO_CHANGE", "REFILL", "ESCALATE"],
+    ),
+    "repeated_context_load_detected": (
+        ["threadId", "unchangedAuthorityHash", "unchangedClaimHash", "unchangedSkillHashes", "repeatedFullReadBytes", "compactPacketAvailable"],
+        ["NO_CHANGE", "PROPOSE"],
+    ),
+    "second_unsuccessful_repair": (
+        ["attemptOneCandidate", "attemptTwoCandidate", "repeatedOrNewDefect", "preservedEvidence", "frontierEscalation"],
+        ["ESCALATE"],
     ),
     "task_completed_or_stopped": (
         ["terminalState", "resultOrStopReason", "commitOrBlockedReason", "evidenceOrBlockedReason", "nextDependencyOrRefill"],
@@ -73,19 +148,29 @@ EXPECTED_EVENT_REQUIREMENTS = {
         ["usefulActiveCount", "minimumUsefulActiveWorkstreams", "protectedOperationsExcluded", "readyDisjointWork", "refillOrSerializedDependency"],
         ["NO_CHANGE", "REFILL", "ESCALATE"],
     ),
-    "repeated_context_load_detected": (
-        ["threadId", "unchangedAuthorityHash", "unchangedClaimHash", "unchangedSkillHashes", "repeatedFullReadBytes", "compactPacketAvailable"],
-        ["NO_CHANGE", "PROPOSE"],
-    ),
-    "delegation_acknowledgement_failed": (
-        ["dispatchReceiptHash", "modelRouteHash", "claimHash", "allowedPathBinding", "acknowledgementDefect"],
+    "worktree_or_dispatch_setup_failed_before_mutation": (
+        ["expectedWorktreeTuple", "observedWorktreeTuple", "setupDefect", "mutationCount", "preservedWorkState"],
         ["RETURN", "ESCALATE"],
     ),
-    "duplicate_full_gate_requested": (
-        ["candidateIdentity", "priorGateReceiptHash", "priorGateCandidateIdentity", "evidenceStale", "identityChanged"],
-        ["NO_CHANGE", "RETURN", "ESCALATE"],
-    ),
 }
+
+EXPECTED_IMMEDIATE = [
+    "delegation_ready_for_dispatch",
+    "worktree_or_dispatch_setup_failed_before_mutation",
+    "claim_or_baseline_mismatch",
+    "delegation_acknowledgement_failed",
+    "model_route_mismatch",
+    "independent_return_after_focused_pass",
+    "second_unsuccessful_repair",
+    "exact_candidate_qa_started",
+]
+EXPECTED_FLUSH = [
+    "candidate_handoff",
+    "task_completed_or_stopped",
+    "ready_handoff_waiting_for_owner",
+    "useful_concurrency_below_floor",
+    "integration_closed",
+]
 
 
 def validate(policy: object) -> list[str]:
@@ -97,6 +182,8 @@ def validate(policy: object) -> list[str]:
         "defaultRoute",
         "eventKeyFields",
         "reviewBudget",
+        "reviewScheduling",
+        "observerRouteBootstrap",
         "parallelism",
         "falseGreenRecovery",
         "coverage",
@@ -107,8 +194,8 @@ def validate(policy: object) -> list[str]:
     }
     if set(policy) != expected_top:
         errors.append("policy top-level fields must match the exact schema")
-    if policy.get("schema") != 3:
-        errors.append("schema must be 3")
+    if policy.get("schema") != 4:
+        errors.append("schema must be 4")
     if policy.get("defaultRoute") != {
         "classification": "LUNA_MECHANICAL",
         "model": "gpt-5.6-luna",
@@ -126,8 +213,10 @@ def validate(policy: object) -> list[str]:
             errors.append("each event is limited to one review and one turn")
         if budget.get("contextMode") != "compact_hash_bound":
             errors.append("review context must be compact and hash-bound")
-        if budget.get("maxCompactContextBytes") != 32768:
-            errors.append("compact review context must be capped at 32768 bytes")
+        if budget.get("maxCompactContextBytes") != 8192:
+            errors.append("per-event compact context must be capped at 8192 bytes")
+        if budget.get("maxBatchContextBytes") != 32768:
+            errors.append("batched compact context must be capped at 32768 bytes")
         if budget.get("threadPollingAllowed") is not False:
             errors.append("thread polling must be forbidden")
         if budget.get("reviewCanSpawnReviews") is not False:
@@ -145,6 +234,53 @@ def validate(policy: object) -> list[str]:
         ):
             if budget.get(key) is not False:
                 errors.append(f"{key} must be false")
+
+    scheduling = policy.get("reviewScheduling")
+    if not isinstance(scheduling, dict) or set(scheduling) != {
+        "maxEventsPerTurn",
+        "oneReceiptPerEventKey",
+        "reuseCanonicalObserverTask",
+        "workerMayReadWhileReviewRuns",
+        "workerMaySynchronizeWhileReviewRuns",
+        "workerMayMutateBeforeImmediateReview",
+        "sameManagementTurnFlush",
+        "immediateTriggers",
+        "flushTriggers",
+    }:
+        errors.append("reviewScheduling fields must match the exact schema")
+    else:
+        if scheduling.get("maxEventsPerTurn") != 8:
+            errors.append("a review turn may cover at most eight events")
+        for key in (
+            "oneReceiptPerEventKey",
+            "reuseCanonicalObserverTask",
+            "workerMayReadWhileReviewRuns",
+            "sameManagementTurnFlush",
+        ):
+            if scheduling.get(key) is not True:
+                errors.append(f"{key} must be true")
+        if scheduling.get("workerMayMutateBeforeImmediateReview") is not False:
+            errors.append("immediate review must complete before worker mutation")
+        if scheduling.get("workerMaySynchronizeWhileReviewRuns") is not False:
+            errors.append("route-bound worktree identity may not change during immediate review")
+        if scheduling.get("immediateTriggers") != EXPECTED_IMMEDIATE:
+            errors.append("immediate triggers must be exact and ordered")
+        if scheduling.get("flushTriggers") != EXPECTED_FLUSH:
+            errors.append("flush triggers must be exact and ordered")
+
+    bootstrap = policy.get("observerRouteBootstrap")
+    if bootstrap != {
+        "selfReviewAllowed": False,
+        "owner": "FRONTIER_AUTHORITY",
+        "requiredChecks": [
+            "full_schema2_route_validation",
+            "exact_git_claim_head_and_path_binding",
+            "independent_static_route_review",
+            "zero_worker_mutation_before_dispatch",
+        ],
+        "emitsRecursiveDelegationEvent": False,
+    }:
+        errors.append("observer route bootstrap must be frontier-owned, non-recursive, and exact")
 
     parallel = policy.get("parallelism")
     if not isinstance(parallel, dict):
@@ -234,8 +370,8 @@ def validate(policy: object) -> list[str]:
             errors.append("protected active operations must be exact and unique")
 
     requirements = policy.get("eventRequirements")
-    if not isinstance(requirements, dict) or set(requirements) != set(EXPECTED_EVENT_REQUIREMENTS):
-        errors.append("event requirements must cover the exact managed trigger set")
+    if not isinstance(requirements, dict) or set(requirements) != EXPECTED_TRIGGERS or set(requirements) != set(EXPECTED_EVENT_REQUIREMENTS):
+        errors.append("event requirements must cover every declared trigger exactly")
     else:
         for trigger, (required_evidence, allowed_decisions) in EXPECTED_EVENT_REQUIREMENTS.items():
             rule = requirements.get(trigger)

@@ -352,6 +352,7 @@ def configure_camera(bpy, scene_doc: dict, lowering: dict) -> tuple[object, dict
     target = Vector(citysim_to_blender(camera_binding["citySimTarget"]))
     camera.rotation_euler = (target - camera.location).to_track_quat("-Z", "Y").to_euler()
     bpy.context.scene.camera = camera
+    bpy.context.view_layer.update()
 
     def project(source: list[float]) -> list[float]:
         ndc = world_to_camera_view(bpy.context.scene, camera, Vector(citysim_to_blender(source)))

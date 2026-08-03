@@ -3,9 +3,11 @@
 from __future__ import annotations
 
 import argparse
+import ast
 import binascii
 import hashlib
 import importlib.util
+import inspect
 import json
 from pathlib import Path
 import shutil
@@ -209,9 +211,31 @@ def camera_bridge_zero_dcc() -> dict:
         mutated = json.loads(json.dumps(lowering))
         mutated["camera"]["shift"][1] = 0.25
         fail(lambda: child.validate_bridge_binding(mutated, bridge), "variant-specific camera shift")
+
+        def dotted_name(node) -> str:
+            if isinstance(node, ast.Name):
+                return node.id
+            if isinstance(node, ast.Attribute):
+                prefix = dotted_name(node.value)
+                return f"{prefix}.{node.attr}" if prefix else node.attr
+            return ""
+
+        tree = ast.parse(inspect.getsource(child.configure_camera))
+        function = tree.body[0]
+        if not isinstance(function, ast.FunctionDef):
+            raise AssertionError("camera configuration AST unavailable")
+        camera_assignments = [node.lineno for node in function.body if isinstance(node, ast.Assign) and
+                              any(dotted_name(target) == "bpy.context.scene.camera" for target in node.targets)]
+        view_updates = [node.lineno for node in function.body if isinstance(node, ast.Expr) and
+                        isinstance(node.value, ast.Call) and dotted_name(node.value.func) == "bpy.context.view_layer.update"]
+        project_definitions = [node.lineno for node in function.body if isinstance(node, ast.FunctionDef) and node.name == "project"]
+        if (len(camera_assignments) != 1 or len(view_updates) != 1 or len(project_definitions) != 1 or
+                not camera_assignments[0] < view_updates[0] < project_definitions[0]):
+            raise AssertionError("view-layer update must follow camera assignment and precede projection")
         return {"bridgePath": lowering["coordinateBridge"]["authorityPath"],
                 "bridgeSHA256": lowering["coordinateBridge"]["authoritySHA256"],
-                "projectionCount": len(proofs), "maximumDeltaPixels": max(deltas.values()), "dccStarts": 0}
+                "projectionCount": len(proofs), "maximumDeltaPixels": max(deltas.values()),
+                "viewLayerUpdateBeforeProjection": True, "dccStarts": 0}
     finally:
         runner.subprocess.Popen = original_popen
 

@@ -112,9 +112,9 @@ def main(argv: list[str] | None = None) -> int:
     runner.subprocess.Popen = guarded_popen
     try:
         with tempfile.TemporaryDirectory(prefix="play090-a-", dir="/private/tmp") as a, tempfile.TemporaryDirectory(prefix="play090-b-", dir="/private/tmp") as b:
-            schedule_a, grant_a, receipt_a = fixture_documents(current, Path(a))
+            schedule_a, grant_a, receipt_a = fixture_documents(runner.EXECUTION_BASE, Path(a))
             # A second fresh root receives independent authority bytes with the same content.
-            schedule_b, grant_b, receipt_b = fixture_documents(current, Path(b))
+            schedule_b, grant_b, receipt_b = fixture_documents(runner.EXECUTION_BASE, Path(b))
             adversaries = adversarial_documents(Path(schedule_a), Path(grant_a), Path(receipt_a), current)
             first_output = Path(a) / "out"
             second_output = Path(b) / "out"

@@ -217,9 +217,10 @@ def validate_direct_documents(root: Path, contract: dict, schedule_path: str, gr
     expected_schedule_path = "<fixture>/schedule.json" if fixture_mode else schedule_path
     expected_grant_path = "<fixture>/grant.json" if fixture_mode else grant_path
     expected_receipt_path = "<fixture>/receipt.json" if fixture_mode else receipt_path
+    bound_head = EXECUTION_BASE if fixture_mode else current
     expected_schedule = {
         "schema": 1, "task": "PLAY-090", "routeId": ROUTE_ID, "slot": "north:A", "direction": "north", "process": "A",
-        "claimSHA256": CLAIM_SHA256, "workerHead": current, "schedulePath": expected_schedule_path, "grantPath": expected_grant_path,
+        "claimSHA256": CLAIM_SHA256, "workerHead": bound_head, "schedulePath": expected_schedule_path, "grantPath": expected_grant_path,
         "processReceiptPath": expected_receipt_path, "orchestratorPath": SOURCE_ROOT + "/launch_residential_l01_process_a.py",
         "orchestratorSHA256": sha256_file(orchestrator), "childPath": SOURCE_ROOT + "/" + CHILD_NAME,
         "childSHA256": sha256_file(child), "outputRoot": FUTURE_PROCESS_ROOT, "evidenceRoot": EVIDENCE_ROOT,
@@ -229,19 +230,20 @@ def validate_direct_documents(root: Path, contract: dict, schedule_path: str, gr
     if schedule != expected_schedule:
         raise ValueError("schedule identity mismatch")
     schedule_sha = sha256_bytes(schedule_bytes)
-    expected_grant = {"schema": 1, "grantId": "north:A", "scheduleSHA256": schedule_sha, "workerHead": current,
+    expected_grant = {"schema": 1, "grantId": "north:A", "scheduleSHA256": schedule_sha, "workerHead": bound_head,
                       "maximumChildStarts": 1, "consumed": False, "sourceAuthority": False, "productionSelected": False}
     exact_types(grant, expected_grant, "grant")
     if grant != expected_grant:
         raise ValueError("grant identity or consumption mismatch")
     expected_receipt = {"schema": 1, "kind": "integration-process-receipt", "task": "PLAY-090", "routeId": ROUTE_ID,
                         "schedulePath": expected_schedule_path, "scheduleSHA256": schedule_sha, "grantId": "north:A",
-                        "workerHead": current, "maximumChildStarts": 1, "sourceAuthority": False, "productionSelected": False}
+                        "workerHead": bound_head, "maximumChildStarts": 1, "sourceAuthority": False, "productionSelected": False}
     exact_types(receipt, expected_receipt, "receipt")
     if receipt != expected_receipt:
         raise ValueError("process receipt identity mismatch")
     return {"schedule": schedule, "grant": grant, "receipt": receipt, "scheduleSHA256": schedule_sha,
-            "grantSHA256": sha256_bytes(grant_bytes), "receiptSHA256": sha256_bytes(receipt_bytes), "currentHead": current,
+            "grantSHA256": sha256_bytes(grant_bytes), "receiptSHA256": sha256_bytes(receipt_bytes), "currentHead": bound_head,
+            "observedHead": current,
             "schedulePath": schedule_path, "grantPath": grant_path, "receiptPath": receipt_path,
             "fixtureMode": fixture_mode}
 

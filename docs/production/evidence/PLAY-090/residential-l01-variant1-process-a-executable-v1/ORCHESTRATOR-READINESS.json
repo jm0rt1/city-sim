@@ -16,13 +16,13 @@
   "frozenTools": {
     "executionContract": "35e4b10156980ef354f6aa8a90b087f316445d99c0b1ce73bd61e39c7039e409",
     "runnerContract": "2697ad4803ad5a7b767f27c7624efadbf0646bdd19b8b8b2f6b915de3fe60de6",
-    "orchestrator": "3c7503ccd51b674c1888f1eb2d778e5d0dbec458458a933a1793c8b0ed734708",
+    "orchestrator": "86ff77b3bd605bc5e0dd33fbed9b1ccce0cf2aa8b6e873229ff11e40467e0afd",
     "child": "adf8ef1852782d57dddf27083e05c5a4a08003d27a4b4d8ac61ea4b3bcc26f88",
-    "test": "da7ea41b4bbc7d342f2862e10ef4af98bd93ef579a0742ae2f397472471e3b54"
+    "test": "e7c446160e830bd0f47cd0977260ba26e9424f623c20279234a786787094ced1"
   },
   "evidence": {
-    "payload": "ce34d3a69bfe5365139c7e896ee915039d5c44442a3af949e2c1392799c0caeb",
-    "containedSmoke": "8c700c3dfead999e2f791ed146ab5290f670bc84b827ed4fd01e9877c2fd0dd4"
+    "payload": "d246982a3a2bd0b9f6eb56488aaba4f9bb9a2ccf1cf49c6279c1991fb857c8c7",
+    "containedSmoke": "40d24fda30888ae990a24f098f62eb49cf63a79a9cb4c32c791ebb10b85165b4"
   },
   "forbidden": ["schedule", "grant", "receipt", "attempt-marker", "Blender", "DCC", "pixels", "Process B/C", "siblings", "shared authority"],
   "stopCondition": "Stop before any production Process A or pixel; Integration owns a later one-grant launch."

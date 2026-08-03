@@ -343,6 +343,40 @@ final class CityCommandCatalogTests: XCTestCase {
     }
 
     @MainActor
+    func testBlockedPlacementFeedbackReplacesPriorSuccess() throws {
+        let occupiedCoordinate = GridCoordinate(x: 5, y: 7) // authored block 6,8
+        var initial = CityGameState.newCity(seed: 42)
+        initial.updateTile(at: occupiedCoordinate) { tile in
+            tile.kind = .commercial
+        }
+        XCTAssertNotEqual(initial.tile(at: occupiedCoordinate)?.kind, .empty)
+        let validRoadCoordinate = try XCTUnwrap(initial.tiles.first { tile in
+            guard tile.kind == .empty else { return false }
+            if case .success = CitySimulation.validateBuild(.road, at: tile.coordinate, in: initial) {
+                return true
+            }
+            return false
+        }).coordinate
+
+        let store = CityGameStore(state: initial)
+        store.selectTool(.road)
+        store.primaryAction(at: validRoadCoordinate)
+
+        let stateAfterSuccess = store.state
+        XCTAssertEqual(store.lastFeedback, "Road construction approved")
+        XCTAssertEqual(store.lastFeedbackTone, .positive)
+        XCTAssertTrue(store.canUndo)
+
+        store.primaryAction(at: occupiedCoordinate)
+
+        XCTAssertEqual(store.state, stateAfterSuccess)
+        XCTAssertEqual(store.lastFeedback, "Demolish the existing structure before building here. Road remains selected — choose another block.")
+        XCTAssertEqual(store.lastFeedbackTone, .caution)
+        XCTAssertFalse(store.lastFeedback?.contains("construction approved") == true)
+        XCTAssertTrue(store.canUndo, "A rejected placement must not erase the prior undo entry")
+    }
+
+    @MainActor
     func testRejectedReturnRoutesOccupiedRoadlessAndUnaffordableTargetsWithoutAdvertisingAvailability() throws {
         let authored = CityGameState.newCity(seed: 42)
         let occupied = try XCTUnwrap(authored.tiles.first { $0.kind != .empty })

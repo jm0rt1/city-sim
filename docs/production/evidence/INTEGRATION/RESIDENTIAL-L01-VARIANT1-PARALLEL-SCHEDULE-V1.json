@@ -4,14 +4,14 @@
   "previousPhase": "contract_pending",
   "phase": "contract_pending",
   "observedAt": "2026-08-02T21:27:54-04:00",
-  "authorityCommit": "07b2ad82eac047573537503ffdb091499310f644",
+  "authorityCommit": "0415b67b84860e724d2db140db6bcdb169e82194",
   "familyContract": {
     "path": "docs/production/decisions/CONTRACT-023-residential-l01-variant-one-family.md",
     "sha256": "18ed6b18ed7e1ecbcaba1eb1c7fab9dffae98d670334d4ce30c33e3d1ddb7eb0"
   },
   "controlSchema": {
     "path": "docs/production/evidence/INTEGRATION/residential-l01-variant1-parallel-state-schema-v1.json",
-    "sha256": "0f7cb4385552ab563e1fa3bbe89ba5497bf50420480113906ac4d291a11038ff"
+    "sha256": "d905957718407cfdd9b1deff974c984c608127b6a60cf13c09fc09d313f66757"
   },
   "dispatchReady": false,
   "compute": {
@@ -88,7 +88,7 @@
         "dispatchState": "blocked",
         "cleanState": "clean",
         "observedAt": "2026-08-02T21:27:54-04:00",
-        "claimRevision": "1f1e60710b0957a596ecb3e580bdef78d370e6fa235764eb4ba29611c67fcb6a"
+        "claimRevision": "cf4654aec51b1f021cbff6f5adda5b646c02eaa142404eeecd33653d4c1bab1a"
       },
       {
         "cell": "qa",
@@ -99,11 +99,11 @@
         "dispatchState": "blocked",
         "cleanState": "clean",
         "observedAt": "2026-08-02T21:27:54-04:00",
-        "claimRevision": "5dd3aeef1ffe8abf5e0c93486e27fe2d15495854be096fb105bff55a48dc0362"
+        "claimRevision": "1a0b0de19d2f88fd8150c997f2cfefb195e4a0be09c8f337ff8fb27ea79e73e1"
       }
     ]
   },
-  "ledgerSha256": "8e841fe5842b505192d2800c23172634eaa3c0b43591ce8547a5576fab25b51e",
+  "ledgerSha256": "e0addd802cb52aa770267a6e6a097032d1f191e4a8b5cf870fdc81f4b3123bfb",
   "dispatchProjection": {
     "batchId": "residential-l01-variant1-v1",
     "phase": "contract_pending",
@@ -161,7 +161,7 @@
         "dispatchState": "blocked",
         "cleanState": "clean",
         "observedAt": "2026-08-02T21:27:54-04:00",
-        "claimRevision": "1f1e60710b0957a596ecb3e580bdef78d370e6fa235764eb4ba29611c67fcb6a"
+        "claimRevision": "cf4654aec51b1f021cbff6f5adda5b646c02eaa142404eeecd33653d4c1bab1a"
       },
       {
         "cell": "qa",
@@ -172,7 +172,7 @@
         "dispatchState": "blocked",
         "cleanState": "clean",
         "observedAt": "2026-08-02T21:27:54-04:00",
-        "claimRevision": "5dd3aeef1ffe8abf5e0c93486e27fe2d15495854be096fb105bff55a48dc0362"
+        "claimRevision": "1a0b0de19d2f88fd8150c997f2cfefb195e4a0be09c8f337ff8fb27ea79e73e1"
       }
     ]
   },
@@ -590,7 +590,7 @@
       "headStatus": "stale_pre_authority",
       "claim": {
         "path": "docs/production/claims/PLAY-094.world-rendering.md",
-        "sha256": "1f1e60710b0957a596ecb3e580bdef78d370e6fa235764eb4ba29611c67fcb6a"
+        "sha256": "cf4654aec51b1f021cbff6f5adda5b646c02eaa142404eeecd33653d4c1bab1a"
       },
       "previousState": "intake_preparing",
       "state": "intake_preparing",
@@ -686,7 +686,7 @@
       "headStatus": "stale_pre_authority",
       "claim": {
         "path": "docs/production/claims/PLAY-075.playtest-quality.md",
-        "sha256": "5dd3aeef1ffe8abf5e0c93486e27fe2d15495854be096fb105bff55a48dc0362"
+        "sha256": "1a0b0de19d2f88fd8150c997f2cfefb195e4a0be09c8f337ff8fb27ea79e73e1"
       },
       "previousState": "preregistering",
       "state": "preregistering",

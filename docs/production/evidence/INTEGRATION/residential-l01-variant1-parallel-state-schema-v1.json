@@ -74,10 +74,11 @@
         {
           "type": "object",
           "additionalProperties": false,
-          "required": ["path", "sha256", "routeId", "modelRouteSha256"],
+          "required": ["path", "sha256", "receiptCommit", "routeId", "modelRouteSha256"],
           "properties": {
             "path": {"type": "string", "minLength": 1},
             "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+            "receiptCommit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
             "routeId": {"type": "string", "minLength": 1},
             "modelRouteSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
           }

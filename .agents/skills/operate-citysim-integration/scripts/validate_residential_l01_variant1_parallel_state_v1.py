@@ -13,7 +13,6 @@ from pathlib import Path, PurePosixPath
 from typing import Any, Callable
 
 
-AUTHORITY = "07b2ad82eac047573537503ffdb091499310f644"
 BATCH = "residential-l01-variant1-v1"
 CELLS = ("north", "east", "south", "west", "renderer", "qa")
 DIRECTIONS = ("north", "east", "south", "west")
@@ -225,17 +224,25 @@ def validate_route_receipt(
     check_repository: bool,
     runner: RouteRunner,
 ) -> None:
-    fields = {"path", "sha256", "routeId", "modelRouteSha256"}
+    fields = {"path", "sha256", "receiptCommit", "routeId", "modelRouteSha256"}
     require(isinstance(binding, dict) and set(binding) == fields, f"{row['cell']}.routeReceipt fields invalid")
     path = repo_path(binding["path"], f"{row['cell']}.routeReceipt.path")
-    require(is_hex(binding["sha256"], 64) and is_hex(binding["modelRouteSha256"], 64), f"{row['cell']}.routeReceipt hashes invalid")
+    require(
+        is_hex(binding["sha256"], 64)
+        and is_hex(binding["modelRouteSha256"], 64)
+        and is_hex(binding["receiptCommit"], 40),
+        f"{row['cell']}.routeReceipt hashes invalid",
+    )
     receipt_path = route_root / path
     require(receipt_path.is_file(), f"{row['cell']}.routeReceipt path missing")
     working_payload = receipt_path.read_bytes()
     require(hashlib.sha256(working_payload).hexdigest() == binding["sha256"], f"{row['cell']}.routeReceipt file hash mismatch")
     if check_repository:
-        committed = git_blob(route_root, authority, path)
-        require(committed == working_payload, f"{row['cell']}.routeReceipt is not the declared authority blob")
+        receipt_commit = binding["receiptCommit"]
+        git(route_root, "cat-file", "-e", f"{receipt_commit}^{{commit}}")
+        require(is_ancestor(route_root, authority, receipt_commit), f"{row['cell']}.routeReceipt commit predates its route authority")
+        committed = git_blob(route_root, receipt_commit, path)
+        require(committed == working_payload, f"{row['cell']}.routeReceipt is not the declared receiptCommit blob")
     receipt = load_json_bytes(working_payload, path)
     require(isinstance(receipt, dict) and receipt.get("schema") == 2 and receipt.get("authorityCommit") == authority, f"{row['cell']}.routeReceipt is not schema-2 authority")
     assignments = receipt.get("assignments")
@@ -357,7 +364,7 @@ def validate_schedule(
     require(previous_phase in PHASE_NEXT and phase in PHASE_NEXT[previous_phase], "illegal batch phase transition")
     observed = parse_time(data["observedAt"], "observedAt")
     authority = data["authorityCommit"]
-    require(authority == AUTHORITY and is_hex(authority, 40), "authorityCommit mismatch")
+    require(is_hex(authority, 40), "authorityCommit must be a full lowercase Git SHA")
     if check_repository:
         git(root, "cat-file", "-e", f"{authority}^{{commit}}")
         contract = validate_authority_binding(root, authority, data["familyContract"], "familyContract").decode()

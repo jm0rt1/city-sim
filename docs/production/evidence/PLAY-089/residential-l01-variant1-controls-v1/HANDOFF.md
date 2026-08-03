@@ -1,6 +1,15 @@
 # PLAY-089 Residential L1 controls repair handoff
 
-Status: `REPAIR_CANDIDATE_READY_FOR_INTEGRATION_REVIEW`.
+Status: `INTEGRATION_REPAIR_VALIDATED`.
+
+Integration's independent review returned the first repair because its future
+route receipt lookup was circular and its positive shared-route proof mocked
+the real validator. The accepted follow-up separates `receiptCommit` from the
+prior route authority, binds the current published claim authority, and runs a
+committed six-row schema-2 receipt through the real shared validator without
+mocks. Stale and post-commit-mutated receipts fail. The focused suite passes
+21/21; the live schedule remains truthfully blocked pending lane synchronization
+and separately committed route receipts.
 
 This descendant preserves candidate `8b97870d` and repairs its returned
 semantics across the same six files. The validator now executes legal batch and

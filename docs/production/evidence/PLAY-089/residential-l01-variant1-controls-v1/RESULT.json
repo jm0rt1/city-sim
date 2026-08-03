@@ -1,7 +1,7 @@
 {
   "schema": 2,
   "taskId": "PLAY-089",
-  "result": "REPAIR_CANDIDATE_READY_FOR_INTEGRATION_REVIEW",
+  "result": "INTEGRATION_REPAIR_VALIDATED",
   "binding": {
     "authorityCommit": "07b2ad82eac047573537503ffdb091499310f644",
     "authorityAncestorOfStartingHead": true,
@@ -46,7 +46,7 @@
     "phase": "contract_pending",
     "dispatchReady": false,
     "eligibleCells": [],
-    "ledgerSha256": "8e841fe5842b505192d2800c23172634eaa3c0b43591ce8547a5576fab25b51e",
+    "ledgerSha256": "e0addd802cb52aa770267a6e6a097032d1f191e4a8b5cf870fdc81f4b3123bfb",
     "allSixWorktreesCleanAtRecordedHeads": true,
     "allSixHeadsContainPublishedAuthority": false,
     "allSixHeadsMarkedStalePreAuthority": true,
@@ -59,24 +59,24 @@
   "files": [
     {
       "path": ".agents/skills/operate-citysim-integration/scripts/validate_residential_l01_variant1_parallel_state_v1.py",
-      "sha256": "8b23a8bd260b48b773e1d389a0039597022569293c43799c4e1dd681513ab66a"
+      "sha256": "9531ff187ffa441173f2cb817679e4b461c909e5fa5eab872f700d80424be230"
     },
     {
       "path": ".agents/skills/operate-citysim-integration/scripts/test_validate_residential_l01_variant1_parallel_state_v1.py",
-      "sha256": "625104ef8186fdadb0b84be1348253b98b4fbdbd2bc2e4182cc0161638851dda"
+      "sha256": "7c60888ca90c0c880cac9d54969a3e2065c279bc0305ed1e7b7d62f1eb481ac0"
     },
     {
       "path": "docs/production/evidence/INTEGRATION/residential-l01-variant1-parallel-state-schema-v1.json",
-      "sha256": "0f7cb4385552ab563e1fa3bbe89ba5497bf50420480113906ac4d291a11038ff"
+      "sha256": "d905957718407cfdd9b1deff974c984c608127b6a60cf13c09fc09d313f66757"
     },
     {
       "path": "docs/production/evidence/INTEGRATION/RESIDENTIAL-L01-VARIANT1-PARALLEL-SCHEDULE-V1.json",
-      "sha256": "c1a14f4fd5956fff69c285414d2eed99bed9bb5c4c9cbfbbc5ecc812c124a81f"
+      "sha256": "d1c574e5c4d3ec26d8dc8d8d1f8ee60387bddcd575056b3b4842c36c55fcfb1a"
     }
   ],
   "validation": {
     "selectedExternalRepairRouteBeforeMutation": "PASS",
-    "adversarialUnitTests": "PASS: 20 tests",
+    "adversarialUnitTests": "PASS: 21 tests, including committed six-row real-validator proof",
     "liveSixWorktreeBlockedReplay": "PASS",
     "schemaJson": "PASS",
     "scheduleJson": "PASS",
@@ -90,9 +90,9 @@
     "validationSeconds": null,
     "duplicateFullGateSeconds": null,
     "workerRework": 1,
-    "integrationRework": 0,
-    "acceptedResult": null,
-    "escalationReason": null,
+    "integrationRework": 1,
+    "acceptedResult": "INTEGRATION_REPAIR_VALIDATED",
+    "escalationReason": "Independent review found circular receipt authority and a mocked positive route proof.",
     "tokens": null,
     "pricing": null
   },
@@ -102,9 +102,9 @@
     "independentReviewer": "019f7686-4491-7891-86a6-95a78d67e5c8",
     "selfAccepted": false,
     "fullGateRun": false,
-    "productOrTaskAuthorityMutation": false,
+    "productOrTaskAuthorityMutation": true,
     "lanesSynchronized": false,
     "pushedOrIntegrated": false
   },
-  "nextEventBoundary": "Integration independently reviews this exact descendant, then synchronizes lanes and publishes committed schema-2 row routes before any dispatch."
+  "nextEventBoundary": "Commit and publish the accepted controls, synchronize clean lanes, then publish committed schema-2 row routes before dispatch."
 }

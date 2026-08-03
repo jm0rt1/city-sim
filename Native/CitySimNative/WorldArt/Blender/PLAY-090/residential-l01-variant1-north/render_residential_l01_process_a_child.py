@@ -170,6 +170,41 @@ def source_mesh_for(component: dict, lowering: dict) -> tuple[list[tuple[float, 
     raise ValueError("mesh lowering requested for non-mesh component")
 
 
+def validate_authored_topology(vertices: list[tuple[float, float, float]],
+                               faces: list[tuple[int, ...]], identifier: str) -> dict:
+    if len(vertices) < 4 or len(faces) < 4:
+        raise ValueError(f"insufficient authored topology: {identifier}")
+    if any(len(vertex) != 3 or any(not math.isfinite(float(value)) for value in vertex) for vertex in vertices):
+        raise ValueError(f"non-finite authored vertex: {identifier}")
+    edge_counts: dict[tuple[int, int], int] = {}
+    canonical_faces: set[frozenset[int]] = set()
+    for face in faces:
+        if len(face) < 3 or any(type(index) is not int or index < 0 or index >= len(vertices) for index in face):
+            raise ValueError(f"invalid authored face index: {identifier}")
+        if len(set(face)) != len(face):
+            raise ValueError(f"repeated authored face vertex: {identifier}")
+        canonical = frozenset(face)
+        if canonical in canonical_faces:
+            raise ValueError(f"duplicate authored face: {identifier}")
+        canonical_faces.add(canonical)
+        for offset, first in enumerate(face):
+            second = face[(offset + 1) % len(face)]
+            edge = (min(first, second), max(first, second))
+            edge_counts[edge] = edge_counts.get(edge, 0) + 1
+    if not edge_counts or any(count != 2 for count in edge_counts.values()):
+        raise ValueError(f"authored mesh is not closed two-manifold topology: {identifier}")
+    if len(vertices) - len(edge_counts) + len(faces) != 2:
+        raise ValueError(f"authored mesh Euler invariant failed: {identifier}")
+    return {"vertices": len(vertices), "edges": len(edge_counts), "faces": len(faces), "closed": True}
+
+
+def validate_blender_mesh(mesh, identifier: str) -> None:
+    corrected = mesh.validate(verbose=False, clean_customdata=True)
+    if corrected:
+        raise RuntimeError(f"Blender corrected invalid authored mesh: {identifier}")
+    mesh.update(calc_edges=True)
+
+
 def create_geometry(bpy, scene: dict, lowering: dict, materials: dict[str, object]) -> list[dict]:
     manifest: list[dict] = []
     for component in scene["components"]:
@@ -183,12 +218,10 @@ def create_geometry(bpy, scene: dict, lowering: dict, materials: dict[str, objec
             vertex_count, face_count = 8, 6
         else:
             source_vertices, faces = source_mesh_for(component, lowering)
+            validate_authored_topology(source_vertices, faces, identifier)
             mesh = bpy.data.meshes.new(f"PLAY090::{identifier}::mesh")
             mesh.from_pydata([citysim_to_blender(point) for point in source_vertices], [], faces)
-            mesh.validate(verbose=False)
-            mesh.update(calc_edges=True)
-            if not mesh.is_valid:
-                raise RuntimeError(f"invalid closed mesh: {identifier}")
+            validate_blender_mesh(mesh, identifier)
             obj = bpy.data.objects.new(identifier, mesh)
             bpy.context.collection.objects.link(obj)
             vertex_count, face_count = len(source_vertices), len(faces)

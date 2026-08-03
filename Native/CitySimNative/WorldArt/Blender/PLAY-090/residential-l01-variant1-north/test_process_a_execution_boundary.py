@@ -117,6 +117,53 @@ def host_binding_zero_dcc() -> dict:
         runner.subprocess.Popen = original_popen
 
 
+def api_compatibility_zero_dcc() -> dict:
+    original_popen = runner.subprocess.Popen
+
+    def reject_dcc(*_args, **_kwargs):
+        raise AssertionError("API-compatibility regression attempted to start a child process")
+
+    class FakeMesh:
+        def __init__(self, corrected: bool):
+            self.corrected = corrected
+            self.validate_calls: list[dict] = []
+            self.update_calls: list[dict] = []
+
+        def validate(self, **kwargs):
+            self.validate_calls.append(kwargs)
+            return self.corrected
+
+        def update(self, **kwargs):
+            self.update_calls.append(kwargs)
+
+    try:
+        runner.subprocess.Popen = reject_dcc
+        spec = child.build_scene_spec(ROOT)
+        mesh_components = [item for item in spec["scene"]["components"] if item["kind"] != "box"]
+        results = []
+        for component in mesh_components:
+            vertices, faces = child.source_mesh_for(component, spec["lowering"])
+            results.append(child.validate_authored_topology(vertices, faces, component["id"]))
+        if not mesh_components or any(not item["closed"] for item in results):
+            raise AssertionError("authored mesh topology coverage missing")
+        vertices, faces = child.source_mesh_for(mesh_components[0], spec["lowering"])
+        fail(lambda: child.validate_authored_topology(vertices, faces[:-1], "open-mesh"), "open topology")
+        repeated = list(faces)
+        repeated[0] = (repeated[0][0], repeated[0][0], *repeated[0][2:])
+        fail(lambda: child.validate_authored_topology(vertices, repeated, "repeated-index"), "repeated face index")
+        valid_mesh = FakeMesh(False)
+        child.validate_blender_mesh(valid_mesh, "valid")
+        if valid_mesh.validate_calls != [{"verbose": False, "clean_customdata": True}] or valid_mesh.update_calls != [{"calc_edges": True}]:
+            raise AssertionError("Mesh.validate/update API contract drift")
+        fail(lambda: child.validate_blender_mesh(FakeMesh(True), "corrected"), "Mesh.validate correction")
+        if ".is_valid" in (SOURCE / runner.CHILD_NAME).read_text(encoding="utf-8"):
+            raise AssertionError("unsupported Blender Mesh.is_valid access remains")
+        return {"meshComponents": len(mesh_components), "topologyChecks": len(results),
+                "meshValidateSemantics": "true-means-corrected-and-rejected", "dccStarts": 0}
+    finally:
+        runner.subprocess.Popen = original_popen
+
+
 def fixture_documents(directory: Path, output: Path, current_head: str) -> tuple[Path, Path, Path]:
     schedule_path, grant_path, receipt_path = directory / "schedule.json", directory / "grant.json", directory / "receipt.json"
     launcher = ROOT / runner.SOURCE_ROOT / "launch_residential_l01_process_a.py"
@@ -321,23 +368,31 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--bootstrap-only", action="store_true")
     parser.add_argument("--host-binding-only", action="store_true")
+    parser.add_argument("--api-compatibility-only", action="store_true")
     parser.add_argument("--assert-zero-dcc", action="store_true")
     parser.add_argument("--contained-runtime-replay", action="store_true")
     parser.add_argument("--assert-nonblank", action="store_true")
     parser.add_argument("--output-root")
     args = parser.parse_args(argv)
     if args.bootstrap_only:
-        if (not args.assert_zero_dcc or args.host_binding_only or args.contained_runtime_replay or
+        if (not args.assert_zero_dcc or args.host_binding_only or args.api_compatibility_only or args.contained_runtime_replay or
                 args.assert_nonblank or args.output_root is not None):
             raise SystemExit("bootstrap-only requires zero-DCC assertion and no replay arguments")
         result = bootstrap_without_ambient_source()
         print(f"PASS PLAY-090 child-bootstrap adjacentLauncher={result['launcher']} dccStarts=0")
         return 0
     if args.host_binding_only:
-        if not args.assert_zero_dcc or args.contained_runtime_replay or args.assert_nonblank or args.output_root is not None:
+        if (not args.assert_zero_dcc or args.api_compatibility_only or args.contained_runtime_replay or
+                args.assert_nonblank or args.output_root is not None):
             raise SystemExit("host-binding-only requires zero-DCC assertion and no replay arguments")
         result = host_binding_zero_dcc()
         print(f"PASS PLAY-090 host-binding native={result['native']} translated={result['translated']} dccStarts=0")
+        return 0
+    if args.api_compatibility_only:
+        if not args.assert_zero_dcc or args.contained_runtime_replay or args.assert_nonblank or args.output_root is not None:
+            raise SystemExit("API-compatibility-only requires zero-DCC assertion and no replay arguments")
+        result = api_compatibility_zero_dcc()
+        print(f"PASS PLAY-090 Blender-4.5 API compatibility meshComponents={result['meshComponents']} topologyChecks={result['topologyChecks']} dccStarts=0")
         return 0
     if args.assert_zero_dcc:
         raise SystemExit("zero-DCC assertion is valid only in a focused validation mode")

@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import binascii
 import hashlib
+import importlib.util
 import json
 from pathlib import Path
 import shutil
@@ -44,6 +45,48 @@ def fail(fn, label: str) -> None:
     except (ValueError, RuntimeError, SystemExit, AssertionError):
         return
     raise AssertionError(f"adversary unexpectedly passed: {label}")
+
+
+def bootstrap_without_ambient_source() -> dict:
+    child_path = (SOURCE / runner.CHILD_NAME).resolve(strict=True)
+    launcher_path = (SOURCE / "launch_residential_l01_process_a.py").resolve(strict=True)
+    original_path = list(sys.path)
+    original_runner = sys.modules.pop("launch_residential_l01_process_a", None)
+    original_popen = runner.subprocess.Popen
+
+    def is_source_entry(entry: object) -> bool:
+        if type(entry) is not str:
+            return False
+        try:
+            return Path(entry or ".").resolve() == SOURCE
+        except OSError:
+            return False
+
+    def reject_dcc(*_args, **_kwargs):
+        raise AssertionError("bootstrap-only regression attempted to start a child process")
+
+    try:
+        sys.path[:] = [entry for entry in sys.path if not is_source_entry(entry)]
+        if any(is_source_entry(entry) for entry in sys.path):
+            raise AssertionError("source directory remained in initial bootstrap sys.path")
+        runner.subprocess.Popen = reject_dcc
+        spec = importlib.util.spec_from_file_location("play090_child_bootstrap_probe", child_path)
+        if spec is None or spec.loader is None:
+            raise AssertionError("child bootstrap import specification unavailable")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        loaded_launcher = Path(module.runner.__file__).resolve(strict=True)
+        if loaded_launcher != launcher_path:
+            raise AssertionError("child bootstrap imported a non-adjacent launcher")
+        if not sys.path or Path(sys.path[0]).resolve() != SOURCE:
+            raise AssertionError("child bootstrap did not prioritize its canonical script directory")
+        return {"child": str(child_path), "launcher": str(loaded_launcher), "dccStarts": 0}
+    finally:
+        runner.subprocess.Popen = original_popen
+        sys.path[:] = original_path
+        sys.modules.pop("launch_residential_l01_process_a", None)
+        if original_runner is not None:
+            sys.modules["launch_residential_l01_process_a"] = original_runner
 
 
 def fixture_documents(directory: Path, output: Path, current_head: str) -> tuple[Path, Path, Path]:
@@ -248,12 +291,24 @@ def write_panels(base: Path, first: dict, second: dict) -> dict:
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
+    parser.add_argument("--bootstrap-only", action="store_true")
+    parser.add_argument("--assert-zero-dcc", action="store_true")
     parser.add_argument("--contained-runtime-replay", action="store_true")
     parser.add_argument("--assert-nonblank", action="store_true")
-    parser.add_argument("--output-root", required=True)
+    parser.add_argument("--output-root")
     args = parser.parse_args(argv)
+    if args.bootstrap_only:
+        if not args.assert_zero_dcc or args.contained_runtime_replay or args.assert_nonblank or args.output_root is not None:
+            raise SystemExit("bootstrap-only requires zero-DCC assertion and no replay arguments")
+        result = bootstrap_without_ambient_source()
+        print(f"PASS PLAY-090 child-bootstrap adjacentLauncher={result['launcher']} dccStarts=0")
+        return 0
+    if args.assert_zero_dcc:
+        raise SystemExit("zero-DCC assertion is valid only in bootstrap-only mode")
     if not args.contained_runtime_replay or not args.assert_nonblank:
         raise SystemExit("contained runtime replay and nonblank assertion are required")
+    if args.output_root is None:
+        raise SystemExit("contained runtime replay requires an output root")
     replay_root = runner.safe_private_path(args.output_root, allow_root=True)
     if replay_root != runner.RUNTIME_REPLAY_ROOT:
         raise ValueError("focused replay root mismatch")

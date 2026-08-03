@@ -13,6 +13,19 @@ import os
 from pathlib import Path
 import sys
 
+
+_CHILD_SCRIPT_PATH = Path(__file__)
+if not _CHILD_SCRIPT_PATH.is_absolute():
+    raise RuntimeError("PLAY-090 child script path must be absolute")
+_CHILD_SCRIPT_REAL_PATH = _CHILD_SCRIPT_PATH.resolve(strict=True)
+if _CHILD_SCRIPT_PATH != _CHILD_SCRIPT_REAL_PATH:
+    raise RuntimeError("PLAY-090 child script path must be canonical and non-aliased")
+_CHILD_SCRIPT_DIRECTORY = _CHILD_SCRIPT_REAL_PATH.parent
+if _CHILD_SCRIPT_DIRECTORY.is_symlink():
+    raise RuntimeError("PLAY-090 child script directory symlink rejected")
+sys.path[:] = [entry for entry in sys.path if entry != str(_CHILD_SCRIPT_DIRECTORY)]
+sys.path.insert(0, str(_CHILD_SCRIPT_DIRECTORY))
+
 import launch_residential_l01_process_a as runner
 
 

@@ -206,6 +206,72 @@ final class PLAY073PlaceCohesionTests: XCTestCase {
     }
 
     @MainActor
+    func testReturnedPlaceCohesionUsesDirectionalFrontageAndRoadFacingServiceContext() {
+        let style = WorldVisualStyle()
+        let context = LotContextRenderer(style: style)
+        let firstResidential = CityTile(
+            coordinate: GridCoordinate(x: 8, y: 8),
+            kind: .residential,
+            level: 1,
+            constructionProgress: 1
+        )
+        let secondResidential = CityTile(
+            coordinate: GridCoordinate(x: 9, y: 8),
+            kind: .residential,
+            level: 1,
+            constructionProgress: 1
+        )
+        XCTAssertNotEqual(
+            LotContextRenderer.districtMaterialVariant(for: firstResidential),
+            LotContextRenderer.districtMaterialVariant(for: secondResidential)
+        )
+
+        let firstNeighborhood = SKNode()
+        context.addGroundContext(
+            for: firstResidential,
+            adjacentRoads: .south,
+            selectedFrontage: .south,
+            city: SKNode(),
+            neighborhood: firstNeighborhood,
+            block: SKNode()
+        )
+        let firstNames = descendantNames(in: firstNeighborhood)
+        XCTAssertTrue(firstNames.contains { $0.contains("frontage-strip") })
+        XCTAssertTrue(firstNames.contains { $0.contains("frontage-accent") })
+
+        let industrial = CityTile(
+            coordinate: GridCoordinate(x: 12, y: 12),
+            kind: .industrial,
+            level: 1,
+            constructionProgress: 1
+        )
+        let serviceYard = context.placementLedger(
+            for: industrial,
+            adjacentRoads: .south,
+            selectedFrontage: .south
+        ).first { $0.role == .serviceYard }
+        XCTAssertNotNil(serviceYard)
+        let socket = style.roadSocket(for: .south)
+        let yard = serviceYard?.center ?? .zero
+        XCTAssertGreaterThan(yard.x * socket.x + yard.y * socket.y, 0)
+
+        let renderer = LotRenderer(style: style, assets: WorldAssetCatalog())
+        for edge in [RoadConnectionMask.north, .east, .south, .west] {
+            let lot = renderer.makeLot(
+                for: firstResidential,
+                adjacentRoads: edge,
+                detail: .block,
+                reducedMotion: true
+            )
+            XCTAssertTrue(
+                descendantNames(in: lot).contains {
+                    $0.hasPrefix("lot.frontage.residential.\(edge.rawValue)")
+                }
+            )
+        }
+    }
+
+    @MainActor
     private func descendantNames(in node: SKNode) -> [String] {
         var names = node.name.map { [$0] } ?? []
         for child in node.children {

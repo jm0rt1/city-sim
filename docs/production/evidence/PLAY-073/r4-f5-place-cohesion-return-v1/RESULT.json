@@ -1,0 +1,72 @@
+{
+  "schema": 1,
+  "taskId": "PLAY-073",
+  "cell": "R4-F5",
+  "classification": "LUNA_IMPLEMENTATION",
+  "model": "gpt-5.6-luna",
+  "effort": "high",
+  "routeFile": "/Users/James/Library/Mobile Documents/com~apple~CloudDocs/James's Files/Programming/Python/city-sim/docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-073-R4-F4-F5-LUNA-V1.json",
+  "routeFileSha256": "3b14dde835a1ba46c0f6b450ae0810557829903189e438211b4568453bb4580d",
+  "routeId": "quality-v2:play-073-r4-f5-place-cohesion-return-luna-v1",
+  "modelRouteSha256": "203fe7ee1279422d48bf5de2288c9558b1cf12b9422c88bef2c1d158b50fd416",
+  "authorityCommit": "92df50f2cde3e30d459e7511ae0faa170e747079",
+  "baseCommit": "92df50f2cde3e30d459e7511ae0faa170e747079",
+  "workerBase": "b67873501ce1e3df173e04c8d064831730a4f416",
+  "productCommit": null,
+  "allowedPaths": [
+    "Native/CitySimNative/Sources/CitySimNative/Rendering/LotContextRenderer.swift",
+    "Native/CitySimNative/Sources/CitySimNative/Rendering/LotRenderer.swift",
+    "Native/CitySimNative/Tests/CitySimNativeTests/PLAY073PlaceCohesionTests.swift",
+    "docs/production/evidence/PLAY-073/r4-f5-place-cohesion-return-v1/"
+  ],
+  "focusedValidation": {
+    "status": "PASS",
+    "tests": {
+      "PLAY073PlaceCohesionTests": {"freshProcessRuns": 2, "executedPerRun": 4, "failuresPerRun": 0}
+    },
+    "observedDurationsSeconds": [0.333, 0.313],
+    "diffCheck": "PASS",
+    "moduleCache": "/private/tmp/citysim-play073-r4f-clang and /private/tmp/citysim-play073-r4f-swift",
+    "sandboxBoundary": "Initial SwiftPM manifest attempt failed before compilation with sandbox_apply Operation not permitted; identical gate passed under approved escalated execution."
+  },
+  "implementedOutcome": [
+    "directional frontage paths for north/east/south/west returned structures, with a water-tower-specific entrance",
+    "road-facing industrial service yard and service prop placement",
+    "family-salted deterministic residential context variation",
+    "four residential frontage treatments using accepted civic/park ground language",
+    "renderer-owned frontage strips and accents meeting the authoritative road socket",
+    "focused regression coverage for directional frontage, residential variation, and road-facing service context"
+  ],
+  "deterministicProof": {
+    "repeatRule": "Two fresh focused test processes passed with identical 4-test results and zero failures.",
+    "colorLODPanel": {
+      "path": "docs/production/evidence/PLAY-073/r4-f5-place-cohesion-return-v1/TECHNICAL-COLOR-LOD-PANELS.png",
+      "sha256": "907165fdf57eda1bf11224c9f62b9f67a60020b8796aadfc25156df51cdd7755",
+      "kind": "deterministic_geometry_schematic",
+      "realAppAcceptance": false
+    },
+    "grayscaleLODPanel": {
+      "path": "docs/production/evidence/PLAY-073/r4-f5-place-cohesion-return-v1/TECHNICAL-GRAYSCALE-LOD-PANELS.png",
+      "sha256": "db40b218a8cd42f48faca0fade631cfba94bb890ce6576a09f0746f280744ae0",
+      "kind": "deterministic_geometry_schematic",
+      "realAppAcceptance": false
+    }
+  },
+  "boundSourceHashes": {
+    "Native/CitySimNative/Sources/CitySimNative/Rendering/LotContextRenderer.swift": "2d3ea1a8e6ea2857ac09849c79578594593db9f7e6be80dc54571120118fa953",
+    "Native/CitySimNative/Sources/CitySimNative/Rendering/LotRenderer.swift": "4b0f1dfdb3ce7d446ff054cbf200f9dc11cdb5f5d71ed666bf5d19af431e9e07",
+    "Native/CitySimNative/Tests/CitySimNativeTests/PLAY073PlaceCohesionTests.swift": "1cf45c9b6dc9ae02ef58dfdfb889907eecd138047cfd45d8447f81f8767e5fc7"
+  },
+  "forbiddenGates": {
+    "fullSwiftSuite": "NOT_RUN",
+    "stagedBuild": "NOT_RUN",
+    "appLaunch": "NOT_RUN",
+    "realAppJourney": "NOT_RUN",
+    "independentAcceptance": "NOT_RUN",
+    "selfScore": "NOT_RUN",
+    "integration": "NOT_RUN",
+    "push": "NOT_RUN",
+    "pin": "NOT_RUN"
+  },
+  "status": "focused_pass_ready_for_integration"
+}

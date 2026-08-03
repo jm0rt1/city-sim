@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "projectionType": "operating_review_ledger_projection",
+  "decision": "NO_CHANGE",
+  "operationalDisposition": "PROCEED",
+  "eventKeys": [
+    {
+      "authorityCommit": "787356a07c5c000df73600fc2f630cfafc421c45",
+      "taskId": "PLAY-073",
+      "routeId": "quality-v2:play-073-r4-f3-developed-core-camera-luna-v1",
+      "trigger": "delegation_ready_for_dispatch",
+      "candidateOrResultCommit": "d823c963b76a44c4f52b66a1729c2e8890b6660b"
+    },
+    {
+      "authorityCommit": "92df50f2cde3e30d459e7511ae0faa170e747079",
+      "taskId": "PLAY-073",
+      "routeId": "quality-v2:play-073-r4-f4-district-fabric-return-luna-v1",
+      "trigger": "delegation_ready_for_dispatch",
+      "candidateOrResultCommit": "368d64990173dbec981413925b14b6e2356c5eb1"
+    },
+    {
+      "authorityCommit": "92df50f2cde3e30d459e7511ae0faa170e747079",
+      "taskId": "PLAY-073",
+      "routeId": "quality-v2:play-073-r4-f5-place-cohesion-return-luna-v1",
+      "trigger": "delegation_ready_for_dispatch",
+      "candidateOrResultCommit": "b67873501ce1e3df173e04c8d064831730a4f416"
+    },
+    {
+      "authorityCommit": "b3f0d2621bee59e4b9e6dfad869fea945f99ee73",
+      "taskId": "PLAY-095",
+      "routeId": "quality-v2:play-095-blocked-placement-feedback-luna-v1",
+      "trigger": "delegation_ready_for_dispatch",
+      "candidateOrResultCommit": "4017942c5fb6b011773e0c2da500a83500e7d985"
+    }
+  ],
+  "receiptPaths": [
+    "docs/production/evidence/PLAY-089/play-073-r4-f3-f4-f5-play-095-delegation-review-v1/01-f3-camera.json",
+    "docs/production/evidence/PLAY-089/play-073-r4-f3-f4-f5-play-095-delegation-review-v1/02-f4-district-fabric.json",
+    "docs/production/evidence/PLAY-089/play-073-r4-f3-f4-f5-play-095-delegation-review-v1/03-f5-place-cohesion.json",
+    "docs/production/evidence/PLAY-089/play-073-r4-f3-f4-f5-play-095-delegation-review-v1/04-play-095-ui.json"
+  ],
+  "fullGateOwner": "019f7686-4491-7891-86a6-95a78d67e5c8",
+  "independentReviewer": "019f7686-4491-7891-86a6-95a78d67e5c8",
+  "ledgerMutation": "not performed; Integration owns ledger disposition",
+  "notes": "Four disjoint useful workstreams; no duplicate full-gate work; PLAY-075 remains separate final real-app acceptance."
+}

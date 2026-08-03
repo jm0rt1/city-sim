@@ -4,7 +4,8 @@
 - **Lane:** World Art — East
 - **Branch:** `codex/citysim-world-art-east`
 - **Worktree:** `/Users/James/.codex/worktrees/92c2/city-sim`
-- **Base authority:** `a75e6c2c118f65a4ea43bc2925e8176061a92875`
+- **Base authority:** published master containing CONTRACT-023, the PLAY-091
+  claim, and the Integration-published family controls
 - **Exclusive roots:**
   `Native/CitySimNative/WorldArt/Blender/PLAY-091/residential-l01-variant1-east/`
   and `docs/production/evidence/PLAY-091/`

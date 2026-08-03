@@ -86,7 +86,12 @@
   developed-core composition and fall back to whole-board framing. The
   bounded camera-state repair is authorized only by
   `PLAY-073-R4-F3-DEVELOPED-CORE-CAMERA-REPAIR-AUTHORITY.md`; no renderer art,
-  topology, gameplay, UI, or persistence reopening is implied.
+  topology, gameplay, UI, or persistence reopening is implied. The same exact
+  QA packet also returned broad connected green, detached context structures,
+  obvious residential stamping, and mixed civic-versus-context fidelity.
+  Those disjoint renderer repairs are authorized only by
+  `PLAY-073-R4-F4-F5-VISUAL-RETURN-REPAIR-AUTHORITY.md` and may execute in
+  parallel with R4-F3 on their separate source/test/evidence paths.
 
 Recompose the visible world as one authored district. The developed city must
 dominate the intended camera while retaining useful buildable context. Roads,

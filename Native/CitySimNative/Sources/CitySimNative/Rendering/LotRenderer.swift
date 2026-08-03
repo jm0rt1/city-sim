@@ -445,7 +445,7 @@ final class LotRenderer {
             return
         }
         let endpoint = style.roadSocket(for: edge, overreach: 0.75)
-        let entrance = CGPoint(x: 0, y: -13.5)
+        let entrance = frontageEntrance(for: kind, edge: edge)
         let path = CGMutablePath()
         path.move(to: entrance)
         path.addQuadCurve(
@@ -500,6 +500,26 @@ final class LotRenderer {
         curbBreak.lineWidth = 1.4
         curbBreak.zPosition = 3.2
         node.addChild(curbBreak)
+    }
+
+    /// The accepted generated descriptors keep one directional projection per
+    /// frontage. Keep the path in that same local direction; using the old
+    /// south-only entrance made otherwise valid north/east/west structures
+    /// appear detached while leaving their source bytes untouched.
+    private func frontageEntrance(
+        for kind: BuildingKind,
+        edge: RoadConnectionMask
+    ) -> CGPoint {
+        if kind == .waterTower {
+            return CGPoint(x: 0, y: -14)
+        }
+        return switch edge {
+        case .north: CGPoint(x: 0, y: 13.5)
+        case .east: CGPoint(x: 13.5, y: 0)
+        case .south: CGPoint(x: 0, y: -13.5)
+        case .west: CGPoint(x: -13.5, y: 0)
+        default: CGPoint.zero
+        }
     }
 
     /// Neighborhood LOD adds use-specific frontage furniture instead of only

@@ -1,0 +1,57 @@
+[
+  {
+    "conservativeGreenRatio" : 0.0061541137486586239,
+    "layout" : "regular",
+    "safeAperture" : [
+      0,
+      156,
+      1229,
+      552
+    ],
+    "threshold" : 0.25
+  },
+  {
+    "conservativeGreenRatio" : 0.011271781686748271,
+    "layout" : "compact",
+    "safeAperture" : [
+      0,
+      164,
+      901,
+      417
+    ],
+    "threshold" : 0.25
+  },
+  {
+    "conservativeGreenRatio" : 0.0099240091654434134,
+    "layout" : "compact-focus-city",
+    "safeAperture" : [
+      0,
+      157,
+      901,
+      496
+    ],
+    "threshold" : 0.25
+  },
+  {
+    "conservativeGreenRatio" : 0.0054641657995516029,
+    "layout" : "maximized-regular",
+    "safeAperture" : [
+      0,
+      130,
+      1277,
+      584
+    ],
+    "threshold" : 0.25
+  },
+  {
+    "conservativeGreenRatio" : 0.0059196140806647632,
+    "layout" : "maximized-focus-city",
+    "safeAperture" : [
+      0,
+      94,
+      1277,
+      674
+    ],
+    "threshold" : 0.25
+  }
+]

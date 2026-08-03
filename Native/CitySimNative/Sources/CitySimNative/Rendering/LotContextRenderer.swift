@@ -231,13 +231,13 @@ final class LotContextRenderer {
             return [
                 Placement(
                     role: .serviceYard,
-                    center: point(along: -9.5, across: 0),
+                    center: point(along: 9.5, across: 0),
                     size: CGSize(width: 29, height: 9),
                     groundOnly: true
                 ),
                 Placement(
                     role: .serviceProp,
-                    center: point(along: -9, across: -8),
+                    center: point(along: 8.5, across: -8),
                     size: CGSize(width: 5, height: 3),
                     groundOnly: false
                 ),
@@ -395,7 +395,15 @@ final class LotContextRenderer {
     /// occupancy, frontage, or gameplay state.
     static func districtMaterialVariant(for tile: CityTile) -> Int {
         let count = visibleVariantCount(for: tile.kind)
-        let value = tile.coordinate.x + tile.coordinate.y
+        let familySalt: Int = switch tile.kind {
+        case .residential: 0
+        case .commercial: 11
+        case .industrial, .powerPlant, .waterTower: 23
+        case .cityHall, .fireStation, .policeStation, .school: 37
+        case .park: 47
+        case .empty, .road: 0
+        }
+        let value = tile.coordinate.x * 31 + tile.coordinate.y * 17 + familySalt
         return ((value % count) + count) % count
     }
 
@@ -486,6 +494,14 @@ final class LotContextRenderer {
         frontage: RoadConnectionMask,
         to node: SKNode
     ) {
+        if family == .residential {
+            addResidentialContextVariation(
+                variant: variant,
+                frontage: frontage,
+                to: node
+            )
+            return
+        }
         let front = normalized(style.roadSocket(for: frontage))
         let across = CGPoint(x: -front.y, y: front.x)
         let side: CGFloat = variant.isMultiple(of: 2) ? -1 : 1
@@ -527,6 +543,93 @@ final class LotContextRenderer {
         treatment.position = center
         treatment.zPosition = 4.35
         node.addChild(treatment)
+    }
+
+    /// Residential context stays a renderer-owned frontage treatment. Its
+    /// four deterministic site patterns borrow the accepted park/civic
+    /// ground language without changing the generated building or logical
+    /// occupancy. Each pattern includes a short road-facing strip so the
+    /// parcel ground visibly meets the authoritative socket.
+    private func addResidentialContextVariation(
+        variant: Int,
+        frontage: RoadConnectionMask,
+        to node: SKNode
+    ) {
+        let front = normalized(style.roadSocket(for: frontage))
+        let across = CGPoint(x: -front.y, y: front.x)
+        let side: CGFloat = variant.isMultiple(of: 2) ? -1 : 1
+        let center = CGPoint(
+            x: front.x * 4.8 + across.x * side * 3.2,
+            y: front.y * 4.8 + across.y * side * 3.2
+        )
+        let widths: [CGFloat] = [17, 14, 19, 15]
+        let heights: [CGFloat] = [6, 5, 6.5, 5.5]
+        let treatment = SKShapeNode(path: style.diamondPath(
+            width: widths[variant % widths.count],
+            height: heights[variant % heights.count]
+        ))
+        treatment.name = "lot.lod.neighborhood.variant-ground.residential.\(variant)"
+        treatment.fillColor = switch variant % 4 {
+        case 0:
+            style.palette.parkGrass.blended(
+                withFraction: 0.22,
+                of: style.palette.lotGrass
+            ) ?? style.palette.parkGrass
+        case 1:
+            style.palette.civicStone.blended(
+                withFraction: 0.30,
+                of: style.palette.soil
+            ) ?? style.palette.civicStone
+        case 2:
+            style.palette.concreteLight.blended(
+                withFraction: 0.26,
+                of: style.palette.parkGrass
+            ) ?? style.palette.concreteLight
+        default:
+            style.palette.soil.blended(
+                withFraction: 0.28,
+                of: style.palette.parkGrass
+            ) ?? style.palette.soil
+        }
+        treatment.fillColor = treatment.fillColor.withAlphaComponent(0.72)
+        treatment.strokeColor = variant.isMultiple(of: 2)
+            ? style.palette.foliage[variant % style.palette.foliage.count]
+                .withAlphaComponent(0.72)
+            : style.palette.mapEarthDark.withAlphaComponent(0.74)
+        treatment.lineWidth = variant >= 2 ? 0.8 : 0.65
+        treatment.position = center
+        treatment.zPosition = 4.35
+        node.addChild(treatment)
+
+        let frontagePath = CGMutablePath()
+        frontagePath.move(to: center)
+        frontagePath.addLine(to: style.roadSocket(for: frontage, overreach: -1.0))
+        let path = SKShapeNode(path: frontagePath)
+        path.name = "lot.context.residential.frontage-strip.\(variant)"
+        path.strokeColor = variant == 1 || variant == 2
+            ? style.palette.civicStone.withAlphaComponent(0.74)
+            : style.palette.parkPath.withAlphaComponent(0.76)
+        path.lineWidth = variant == 3 ? 2.4 : 3.0
+        path.lineCap = .round
+        path.zPosition = 4.15
+        node.addChild(path)
+
+        let marker = SKShapeNode(ellipseOf: CGSize(
+            width: variant.isMultiple(of: 2) ? 4.6 : 3.6,
+            height: variant.isMultiple(of: 2) ? 2.8 : 2.2
+        ))
+        marker.name = "lot.context.residential.frontage-accent.\(variant)"
+        marker.fillColor = variant.isMultiple(of: 2)
+            ? style.palette.foliage[(variant + 1) % style.palette.foliage.count]
+                .withAlphaComponent(0.82)
+            : style.palette.civicStone.withAlphaComponent(0.82)
+        marker.strokeColor = .clear
+        marker.position = CGPoint(
+            x: center.x + across.x * side * 3.1,
+            y: center.y + across.y * side * 3.1
+        )
+        marker.zPosition = 4.45
+        node.addChild(marker)
     }
 
     private func addBoundary(

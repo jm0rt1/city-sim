@@ -3,7 +3,7 @@
   "authorityCommit": "787356a07c5c000df73600fc2f630cfafc421c45",
   "assignments": [
     {
-      "modelRouteSha256": "45a9c82da87131e98cdee32cb7c1284edb099b99e21b81b0b44c22ae6898041f",
+      "modelRouteSha256": "a95db28714ba51ec4d69c58d136fb7772597722187266d07d47bb97f48e9d58f",
       "modelRoute": {
         "schema": 2,
         "routeId": "quality-v2:play-073-r4-f3-developed-core-camera-luna-v1",
@@ -18,7 +18,7 @@
           "baseCommit": "787356a07c5c000df73600fc2f630cfafc421c45",
           "claim": {
             "path": "docs/production/claims/PLAY-073.world-rendering.md",
-            "sha256": "0b33feaaac5e31ff795e22768e39ae93e35537cc51b6418ce83f6340c89b37dd"
+            "sha256": "a2cd80f1b896f1265e4b79e4367f7b8e8aa74fa486a9615049f8f372dcfe9d6c"
           },
           "immutableInputs": [
             {
@@ -39,7 +39,7 @@
           "threadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
           "branch": "codex/citysim-world-rendering",
           "worktree": "/Users/James/.codex/worktrees/cac1/city-sim",
-          "expectedHead": "c7b0d0523816cc1c0a488c546f960f6fe8c5fb98",
+          "expectedHead": "d823c963b76a44c4f52b66a1729c2e8890b6660b",
           "featureAuthorThreadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
           "sharedAuthorityOwnership": false,
           "finalQAOwnership": false,
@@ -120,7 +120,7 @@
             "swift test --package-path Native/CitySimNative --filter WorldRenderingTests/testOpeningCameraRefitsOnceAfterTheShippingViewportSettles",
             "swift test --package-path Native/CitySimNative --filter WorldRenderingTests/testIndustrialStrainCameraPrioritizesTheDominantDistrictWithoutHidingRemoteTruth",
             "python3 -m json.tool docs/production/evidence/PLAY-073/r4-f3-developed-core-camera-v1/RESULT.json",
-            "git diff --check c7b0d0523816cc1c0a488c546f960f6fe8c5fb98..HEAD"
+            "git diff --check d823c963b76a44c4f52b66a1729c2e8890b6660b..HEAD"
           ],
           "fullGateOwner": {
             "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
@@ -156,7 +156,7 @@
         "stopCondition": "Stop after one clean focused camera repair commit and exact handoff, or immediately on any identity/hash/path mismatch, need to change another file, failure outside the named camera tests, shared-contract decision, unresolved visual judgment, save uncertainty, semantic conflict, or two unsuccessful repair attempts. Do not run the full suite, stage/launch the app, self-score, self-accept, integrate, push, or pin.",
         "independentReviewer": {
           "required": true,
-          "threadId": "019fc0b0-74cb-70e1-8923-8c9d9600484d",
+          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
           "model": "gpt-5.6-sol",
           "effort": "high"
         },
@@ -166,7 +166,7 @@
           "verifiedHashes": [
             {
               "path": "docs/production/claims/PLAY-073.world-rendering.md",
-              "sha256": "0b33feaaac5e31ff795e22768e39ae93e35537cc51b6418ce83f6340c89b37dd"
+              "sha256": "a2cd80f1b896f1265e4b79e4367f7b8e8aa74fa486a9615049f8f372dcfe9d6c"
             },
             {
               "path": "docs/production/evidence/INTEGRATION/PLAY-073-R4-F3-DEVELOPED-CORE-CAMERA-REPAIR-AUTHORITY.md",

@@ -199,6 +199,8 @@ final class CityScene: SKScene {
     private var viewportInsets: CityMapViewportInsets = .zero
     private var hasUserAdjustedCamera = false
     private var needsSettledInitialCameraFit = true
+    private var needsAutomaticCameraRefit = false
+    private var lastValidDevelopedComposition: CityVisualCompositionBounds?
     private(set) var occupiedDevelopedVisualBoundsForTesting: CGRect = .null
     private(set) var cameraPriorityVisualBoundsForTesting: CGRect = .null
     private(set) var networkOpportunityVisualBoundsForTesting: CGRect = .null
@@ -373,7 +375,7 @@ final class CityScene: SKScene {
         let state = snapshot.state
         if isFirstRender {
             applyDevelopedCoreCamera(state)
-        } else if needsSettledInitialCameraFit {
+        } else if needsSettledInitialCameraFit || needsAutomaticCameraRefit {
             // The first SwiftUI representable update can precede AppKit's
             // settled map aperture. Refit once on the first authoritative
             // pulse after launch, while the camera is still untouched, so the
@@ -382,6 +384,7 @@ final class CityScene: SKScene {
                 applyDevelopedCoreCamera(state)
             }
             needsSettledInitialCameraFit = false
+            needsAutomaticCameraRefit = false
         }
         let resolvedDetail = resolvedCameraDetailLevel(for: cameraNode.xScale)
         if resolvedDetail != currentCameraDetailLevel {
@@ -497,9 +500,9 @@ final class CityScene: SKScene {
     func resize(to newSize: CGSize) {
         let materiallyChanged = abs(size.width - newSize.width) > 1 || abs(size.height - newSize.height) > 1
         size = newSize
-        if materiallyChanged, let state = renderedState {
+        if materiallyChanged, renderedState != nil {
             if !hasUserAdjustedCamera {
-                focusDevelopedCore(state)
+                needsAutomaticCameraRefit = true
             }
             if let renderedSnapshot {
                 _ = updateAmbientCorridor(snapshot: renderedSnapshot)
@@ -510,8 +513,8 @@ final class CityScene: SKScene {
     func updateViewportInsets(_ insets: CityMapViewportInsets) {
         guard viewportInsets != insets else { return }
         viewportInsets = insets
-        if !hasUserAdjustedCamera, let state = renderedState {
-            focusDevelopedCore(state)
+        if !hasUserAdjustedCamera, renderedState != nil {
+            needsAutomaticCameraRefit = true
         }
         if let selection = renderedSelection {
             revealSelection(selection, viewportInsets: insets)
@@ -2243,6 +2246,14 @@ final class CityScene: SKScene {
         let cameraPriorityBounds = composition.cameraPriority
         guard !occupiedBounds.isNull, !occupiedBounds.isEmpty,
               !cameraPriorityBounds.isNull, !cameraPriorityBounds.isEmpty else {
+            if lastValidDevelopedComposition != nil,
+               state.tiles.contains(where: { ![.empty, .road].contains($0.kind) }) {
+                // AppKit may deliver a transient incomplete state while a
+                // resize/inset pair settles. Keep the last authoritative
+                // developed composition and camera instead of falling back to
+                // a whole-board fit that makes the district unreadable.
+                return
+            }
             occupiedDevelopedVisualBoundsForTesting = .null
             cameraPriorityVisualBoundsForTesting = .null
             networkOpportunityVisualBoundsForTesting = .null
@@ -2250,6 +2261,7 @@ final class CityScene: SKScene {
             fitCity(state)
             return
         }
+        lastValidDevelopedComposition = composition
         occupiedDevelopedVisualBoundsForTesting = occupiedBounds
         cameraPriorityVisualBoundsForTesting = cameraPriorityBounds
         networkOpportunityVisualBoundsForTesting = composition.networkOpportunity

@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "task": "PLAY-090",
+  "libraryID": "residential-l01-v1-north-material-roles-v1",
+  "colorSpace": "extended-sRGB",
+  "sourceAuthority": false,
+  "productionSelected": false,
+  "materials": [
+    {"id": "brick-honey", "role": "primary-masonry", "baseColorRGBA": [0.72, 0.42, 0.22, 1.0], "grayscaleLuma": 0.46934, "roughness": 0.82, "metalness": 0.0, "pattern": "running-bond-relief"},
+    {"id": "plaster-cream", "role": "secondary-facade", "baseColorRGBA": [0.86, 0.78, 0.60, 1.0], "grayscaleLuma": 0.784012, "roughness": 0.78, "metalness": 0.0, "pattern": "fine-mineral-plaster"},
+    {"id": "stone-buff", "role": "entry-and-lantern-trim", "baseColorRGBA": [0.78, 0.67, 0.50, 1.0], "grayscaleLuma": 0.681112, "roughness": 0.76, "metalness": 0.0, "pattern": "cut-stone"},
+    {"id": "tile-umber", "role": "roof", "baseColorRGBA": [0.20, 0.13, 0.10, 1.0], "grayscaleLuma": 0.142716, "roughness": 0.72, "metalness": 0.0, "pattern": "small-format-clay-tile"},
+    {"id": "door-bluegreen", "role": "recessed-entry", "baseColorRGBA": [0.10, 0.22, 0.28, 1.0], "grayscaleLuma": 0.19882, "roughness": 0.52, "metalness": 0.0, "pattern": "vertical-board"},
+    {"id": "window-amber", "role": "occupied-glazing", "baseColorRGBA": [0.94, 0.62, 0.24, 1.0], "grayscaleLuma": 0.660596, "roughness": 0.24, "metalness": 0.0, "pattern": "paired-casement"},
+    {"id": "foundation-sand", "role": "court-and-foundation", "baseColorRGBA": [0.58, 0.51, 0.40, 1.0], "grayscaleLuma": 0.51694, "roughness": 0.90, "metalness": 0.0, "pattern": "large-format-stone"}
+  ],
+  "valueTargets": {
+    "primaryFacadeMinusRoofMinimum": 0.28,
+    "entryFrameMinusDoorMinimum": 0.40,
+    "secondaryFacadeMinusPrimaryMinimum": 0.25,
+    "windowMinusPrimaryMinimum": 0.15
+  }
+}

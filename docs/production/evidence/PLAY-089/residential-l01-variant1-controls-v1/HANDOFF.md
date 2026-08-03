@@ -1,22 +1,32 @@
-# PLAY-089 Residential L1 variant-one controls handoff
+# PLAY-089 Residential L1 controls repair handoff
 
-Status: `CANDIDATE_READY_FOR_INTEGRATION_REVIEW`.
+Status: `REPAIR_CANDIDATE_READY_FOR_INTEGRATION_REVIEW`.
 
-The candidate adds the four route-authorized shared-control files: a compact
-six-cell schema, fail-closed validator, ten-test adversarial suite, and current
-prelock schedule. The schedule binds the live clean North, East, South, West,
-Renderer, and QA worktrees to exact tasks, threads, branches, heads, claims,
-owned roots, reserved route identities, tiers, and escalation triggers.
+This descendant preserves candidate `8b97870d` and repairs its returned
+semantics across the same six files. The validator now executes legal batch and
+row transitions from `contract_pending` through exact-candidate QA and
+integration. It resolves claim and contract bytes from the declared Git
+authority, rejects valid-but-stale dispatch heads, requires committed schema-2
+route receipts and the real model-route validator for every dispatchable row,
+and binds canonical QA preregistration thread
+`019fc0b0-74cb-70e1-8923-8c9d9600484d` separately from frontier final reviewer
+`019f7686-4491-7891-86a6-95a78d67e5c8`.
 
-The focused suite and live six-worktree replay pass. Dispatch remains false,
-all pixel and shipping permissions remain false, partial 4-of-4 activation and
-sibling derivation remain forbidden, and no active concurrency is claimed.
-The six recorded lane heads are clean but do not yet contain published
-authority `07b2ad82eac047573537503ffdb091499310f644`; Integration must review this
-candidate, synchronize the lanes, and publish exact routes before dispatch.
+The schema and semantic gate now require timezone-bearing live observations,
+structured dependencies/refills, authority acknowledgements, execution
+accounting, a compute envelope, measured cross-row overlap, exact ledger and
+dispatch projections, and `ledgerSha256`. Twenty adversarial tests include
+positive acknowledged prelock, direction-local return without sibling
+demotion, exact 4/4 readiness, and atomic candidate-to-final-QA transitions;
+partial activation, fabricated overlap, route stubs, stale heads, projection
+drift, missing accounting, and unbound DCC capacity fail closed.
 
-No worker was dispatched. No product, claim, ledger, decision, DCC, full suite,
-staged app, acceptance, integration, push, or pin action was performed. The
-exact candidate SHA is the Git commit containing this handoff and is reported
-by the worker after commit creation; independent acceptance remains with
-Integration task `019f7686-4491-7891-86a6-95a78d67e5c8`.
+The current schedule remains truthful at `contract_pending`: every worktree is
+clean at its recorded head, every head is marked `stale_pre_authority`, route
+receipts and acknowledgements are null, useful concurrency is zero, and
+`dispatchReady` is false. Integration must independently accept this repair,
+synchronize lanes, and publish exact committed routes before dispatch.
+
+No lane was dispatched or synchronized. No product, claim, contract, DCC,
+full/staged gate, acceptance, integration, push, or pin action occurred. The
+exact repair SHA is the enclosing descendant commit reported after creation.

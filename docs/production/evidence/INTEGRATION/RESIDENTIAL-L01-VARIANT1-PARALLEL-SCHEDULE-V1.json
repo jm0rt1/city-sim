@@ -1,7 +1,9 @@
 {
-  "schema": 1,
+  "schema": 2,
   "batchId": "residential-l01-variant1-v1",
-  "phase": "prelock",
+  "previousPhase": "contract_pending",
+  "phase": "contract_pending",
+  "observedAt": "2026-08-02T21:27:54-04:00",
   "authorityCommit": "07b2ad82eac047573537503ffdb091499310f644",
   "familyContract": {
     "path": "docs/production/decisions/CONTRACT-023-residential-l01-variant-one-family.md",
@@ -9,9 +11,185 @@
   },
   "controlSchema": {
     "path": "docs/production/evidence/INTEGRATION/residential-l01-variant1-parallel-state-schema-v1.json",
-    "sha256": "3f3252cddc942eeb84fd448ca3997f114d02da943864fd8e2bf4fbaad966d401"
+    "sha256": "0f7cb4385552ab563e1fa3bbe89ba5497bf50420480113906ac4d291a11038ff"
   },
   "dispatchReady": false,
+  "compute": {
+    "maxSimultaneousDccProcesses": 0,
+    "assignedSlots": [],
+    "queue": [],
+    "machineAssumptions": [
+      "No DCC or helper capacity is authorized by this blocked control schedule."
+    ],
+    "prohibitedWork": [
+      "worker dispatch",
+      "DCC launch",
+      "pixel production",
+      "atomic assembly",
+      "shipping activation",
+      "final QA execution"
+    ],
+    "exceptionOwnerThreadId": "019f7686-4491-7891-86a6-95a78d67e5c8"
+  },
+  "ledgerProjection": {
+    "batchId": "residential-l01-variant1-v1",
+    "phase": "contract_pending",
+    "rows": [
+      {
+        "cell": "north",
+        "taskId": "PLAY-090",
+        "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+        "head": "d64f60234666d16f93958ad82377c0e0f982b6ba",
+        "state": "predesign",
+        "dispatchState": "blocked",
+        "cleanState": "clean",
+        "observedAt": "2026-08-02T21:27:54-04:00",
+        "claimRevision": "cf560c5f3d357b8979fb09e55e0ab22a77b73484e6f62fe874d84131fcf4ad49"
+      },
+      {
+        "cell": "east",
+        "taskId": "PLAY-091",
+        "threadId": "019fab72-b2c8-76c1-b430-6c6f8431733f",
+        "head": "6434793cb8506bdc0c1a389b4d9f961e713ab274",
+        "state": "predesign",
+        "dispatchState": "blocked",
+        "cleanState": "clean",
+        "observedAt": "2026-08-02T21:27:54-04:00",
+        "claimRevision": "23acc49a3d7311d8dda60c96486e70fb3f401367ba9291328a027954335f8d06"
+      },
+      {
+        "cell": "south",
+        "taskId": "PLAY-092",
+        "threadId": "019fab72-b2c9-7d60-a397-27f4fde85950",
+        "head": "eb965449d765855f461e789de6a37f239e7295a8",
+        "state": "predesign",
+        "dispatchState": "blocked",
+        "cleanState": "clean",
+        "observedAt": "2026-08-02T21:27:54-04:00",
+        "claimRevision": "77cf93b83d7c57b6d6a062a0ddc5ec8b1a1c02b6178c799bdd01a019a2229f33"
+      },
+      {
+        "cell": "west",
+        "taskId": "PLAY-093",
+        "threadId": "019fab72-b2c9-7d60-a397-27d01d06cbbd",
+        "head": "6434793cb8506bdc0c1a389b4d9f961e713ab274",
+        "state": "predesign",
+        "dispatchState": "blocked",
+        "cleanState": "clean",
+        "observedAt": "2026-08-02T21:27:54-04:00",
+        "claimRevision": "79bbfa66e16c77f3d2a86fbbd462b6651f6f0eb5c5e8557bd86e404a616d6aa8"
+      },
+      {
+        "cell": "renderer",
+        "taskId": "PLAY-094",
+        "threadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+        "head": "6b5f21bbaf5fe6404b3ee8d49fb0b7dd22603a98",
+        "state": "intake_preparing",
+        "dispatchState": "blocked",
+        "cleanState": "clean",
+        "observedAt": "2026-08-02T21:27:54-04:00",
+        "claimRevision": "1f1e60710b0957a596ecb3e580bdef78d370e6fa235764eb4ba29611c67fcb6a"
+      },
+      {
+        "cell": "qa",
+        "taskId": "PLAY-075",
+        "threadId": "019fc0b0-74cb-70e1-8923-8c9d9600484d",
+        "head": "36ed789bf6b1b947df1350c1cb4f9a067ad36d31",
+        "state": "preregistering",
+        "dispatchState": "blocked",
+        "cleanState": "clean",
+        "observedAt": "2026-08-02T21:27:54-04:00",
+        "claimRevision": "5dd3aeef1ffe8abf5e0c93486e27fe2d15495854be096fb105bff55a48dc0362"
+      }
+    ]
+  },
+  "ledgerSha256": "8e841fe5842b505192d2800c23172634eaa3c0b43591ce8547a5576fab25b51e",
+  "dispatchProjection": {
+    "batchId": "residential-l01-variant1-v1",
+    "phase": "contract_pending",
+    "rows": [
+      {
+        "cell": "north",
+        "taskId": "PLAY-090",
+        "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+        "head": "d64f60234666d16f93958ad82377c0e0f982b6ba",
+        "state": "predesign",
+        "dispatchState": "blocked",
+        "cleanState": "clean",
+        "observedAt": "2026-08-02T21:27:54-04:00",
+        "claimRevision": "cf560c5f3d357b8979fb09e55e0ab22a77b73484e6f62fe874d84131fcf4ad49"
+      },
+      {
+        "cell": "east",
+        "taskId": "PLAY-091",
+        "threadId": "019fab72-b2c8-76c1-b430-6c6f8431733f",
+        "head": "6434793cb8506bdc0c1a389b4d9f961e713ab274",
+        "state": "predesign",
+        "dispatchState": "blocked",
+        "cleanState": "clean",
+        "observedAt": "2026-08-02T21:27:54-04:00",
+        "claimRevision": "23acc49a3d7311d8dda60c96486e70fb3f401367ba9291328a027954335f8d06"
+      },
+      {
+        "cell": "south",
+        "taskId": "PLAY-092",
+        "threadId": "019fab72-b2c9-7d60-a397-27f4fde85950",
+        "head": "eb965449d765855f461e789de6a37f239e7295a8",
+        "state": "predesign",
+        "dispatchState": "blocked",
+        "cleanState": "clean",
+        "observedAt": "2026-08-02T21:27:54-04:00",
+        "claimRevision": "77cf93b83d7c57b6d6a062a0ddc5ec8b1a1c02b6178c799bdd01a019a2229f33"
+      },
+      {
+        "cell": "west",
+        "taskId": "PLAY-093",
+        "threadId": "019fab72-b2c9-7d60-a397-27d01d06cbbd",
+        "head": "6434793cb8506bdc0c1a389b4d9f961e713ab274",
+        "state": "predesign",
+        "dispatchState": "blocked",
+        "cleanState": "clean",
+        "observedAt": "2026-08-02T21:27:54-04:00",
+        "claimRevision": "79bbfa66e16c77f3d2a86fbbd462b6651f6f0eb5c5e8557bd86e404a616d6aa8"
+      },
+      {
+        "cell": "renderer",
+        "taskId": "PLAY-094",
+        "threadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+        "head": "6b5f21bbaf5fe6404b3ee8d49fb0b7dd22603a98",
+        "state": "intake_preparing",
+        "dispatchState": "blocked",
+        "cleanState": "clean",
+        "observedAt": "2026-08-02T21:27:54-04:00",
+        "claimRevision": "1f1e60710b0957a596ecb3e580bdef78d370e6fa235764eb4ba29611c67fcb6a"
+      },
+      {
+        "cell": "qa",
+        "taskId": "PLAY-075",
+        "threadId": "019fc0b0-74cb-70e1-8923-8c9d9600484d",
+        "head": "36ed789bf6b1b947df1350c1cb4f9a067ad36d31",
+        "state": "preregistering",
+        "dispatchState": "blocked",
+        "cleanState": "clean",
+        "observedAt": "2026-08-02T21:27:54-04:00",
+        "claimRevision": "5dd3aeef1ffe8abf5e0c93486e27fe2d15495854be096fb105bff55a48dc0362"
+      }
+    ]
+  },
+  "parallelismProof": {
+    "requiredConcurrentCells": 0,
+    "eligibleCells": [],
+    "jobRefs": [],
+    "startedAt": null,
+    "endedAt": null
+  },
+  "finalQAReviewer": {
+    "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+    "classification": "FRONTIER_AUTHORITY",
+    "model": "gpt-5.6-sol",
+    "effort": "high",
+    "distinctFromQaPreregistration": true
+  },
   "cells": [
     {
       "cell": "north",
@@ -20,18 +198,31 @@
       "branch": "codex/citysim-world-art",
       "worktree": "/Users/James/.codex/worktrees/0648/city-sim",
       "head": "d64f60234666d16f93958ad82377c0e0f982b6ba",
+      "observedHead": null,
+      "headStatus": "stale_pre_authority",
       "claim": {
         "path": "docs/production/claims/PLAY-090.world-art-north.md",
         "sha256": "cf560c5f3d357b8979fb09e55e0ab22a77b73484e6f62fe874d84131fcf4ad49"
       },
-      "state": "not_dispatched",
+      "previousState": "predesign",
+      "state": "predesign",
+      "dispatchState": "blocked",
+      "eligibleUsefulWork": false,
+      "boundedDeliverable": "Prepare the North hero design boundary after exact route publication.",
+      "stopCondition": "Stop on identity, authority, claim, route, path, shared-contract, or acceptance ambiguity.",
+      "dependency": {
+        "status": "blocked",
+        "ownerThreadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+        "resumptionEvent": "integration_accepts_controls_synchronizes_lane_and_publishes_exact_schema2_route",
+        "unavailablePreparation": "This live head predates the declared authority and no committed schema-2 row route is bound.",
+        "nextRefill": "Integration reviews the control repair, synchronizes this lane, and publishes its exact route."
+      },
       "ownedRoots": [
         "Native/CitySimNative/WorldArt/Blender/PLAY-090/residential-l01-variant1-north/",
         "docs/production/evidence/PLAY-090/"
       ],
       "siblingTransformAllowed": false,
-      "modelRoute": {
-        "routeId": "quality-v2:play-090-residential-l01-variant1-north-prelock-v1",
+      "routeRequirement": {
         "classification": "FRONTIER_AUTHORITY",
         "model": "gpt-5.6-sol",
         "effort": "high",
@@ -47,13 +238,55 @@
           "unresolved_product_visual_or_interaction_judgment"
         ]
       },
+      "routeReceipt": null,
+      "authorityAcknowledgement": null,
+      "executionAccounting": {
+        "readyNow": [],
+        "running": [],
+        "waitingOnJoin": [],
+        "serializedAuthority": {
+          "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+          "branch": "codex/citysim-world-art",
+          "worktree": "/Users/James/.codex/worktrees/0648/city-sim",
+          "gitIndexWriter": "019f96e0-3793-7542-9172-060a9ca09b0a",
+          "governedEvidenceWriter": "019f96e0-3793-7542-9172-060a9ca09b0a"
+        },
+        "nextRefill": [
+          "Await Integration acceptance, synchronization, and exact route publication."
+        ],
+        "capacity": {
+          "helperSlots": 0,
+          "dccSlots": 0
+        },
+        "launchedJobs": [],
+        "unusedCapacityReasons": [],
+        "overlap": {
+          "status": "not_observed",
+          "jobIds": [],
+          "startedAt": null,
+          "endedAt": null,
+          "reason": "No route-bound work has been dispatched."
+        },
+        "join": {
+          "state": "not_required",
+          "requiredJobs": [],
+          "completedJobs": []
+        }
+      },
       "permissions": {
-        "prelockPixels": false,
-        "productionPixels": false,
+        "zeroPixelPreparation": false,
+        "prelockProcessA": false,
+        "productionProcesses": false,
+        "rendererIntake": false,
+        "atomicAssembly": false,
+        "qaPreregistration": false,
+        "finalQA": false,
         "shippingActivation": false
       },
       "failureIsolation": true,
-      "featureAuthorThreadId": "019f96e0-3793-7542-9172-060a9ca09b0a"
+      "featureAuthorThreadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+      "observedAt": "2026-08-02T21:27:54-04:00",
+      "cleanState": "clean"
     },
     {
       "cell": "east",
@@ -62,18 +295,31 @@
       "branch": "codex/citysim-world-art-east",
       "worktree": "/Users/James/.codex/worktrees/92c2/city-sim",
       "head": "6434793cb8506bdc0c1a389b4d9f961e713ab274",
+      "observedHead": null,
+      "headStatus": "stale_pre_authority",
       "claim": {
         "path": "docs/production/claims/PLAY-091.world-art-east.md",
         "sha256": "23acc49a3d7311d8dda60c96486e70fb3f401367ba9291328a027954335f8d06"
       },
-      "state": "not_dispatched",
+      "previousState": "predesign",
+      "state": "predesign",
+      "dispatchState": "blocked",
+      "eligibleUsefulWork": false,
+      "boundedDeliverable": "Prepare the East zero-pixel blockout after exact route publication.",
+      "stopCondition": "Stop on identity, authority, claim, route, path, shared-contract, or acceptance ambiguity.",
+      "dependency": {
+        "status": "blocked",
+        "ownerThreadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+        "resumptionEvent": "integration_accepts_controls_synchronizes_lane_and_publishes_exact_schema2_route",
+        "unavailablePreparation": "This live head predates the declared authority and no committed schema-2 row route is bound.",
+        "nextRefill": "Integration reviews the control repair, synchronizes this lane, and publishes its exact route."
+      },
       "ownedRoots": [
         "Native/CitySimNative/WorldArt/Blender/PLAY-091/residential-l01-variant1-east/",
         "docs/production/evidence/PLAY-091/"
       ],
       "siblingTransformAllowed": false,
-      "modelRoute": {
-        "routeId": "quality-v2:play-091-residential-l01-variant1-east-prelock-v1",
+      "routeRequirement": {
         "classification": "LUNA_IMPLEMENTATION",
         "model": "gpt-5.6-luna",
         "effort": "high",
@@ -89,13 +335,55 @@
           "unresolved_product_visual_or_interaction_judgment"
         ]
       },
+      "routeReceipt": null,
+      "authorityAcknowledgement": null,
+      "executionAccounting": {
+        "readyNow": [],
+        "running": [],
+        "waitingOnJoin": [],
+        "serializedAuthority": {
+          "threadId": "019fab72-b2c8-76c1-b430-6c6f8431733f",
+          "branch": "codex/citysim-world-art-east",
+          "worktree": "/Users/James/.codex/worktrees/92c2/city-sim",
+          "gitIndexWriter": "019fab72-b2c8-76c1-b430-6c6f8431733f",
+          "governedEvidenceWriter": "019fab72-b2c8-76c1-b430-6c6f8431733f"
+        },
+        "nextRefill": [
+          "Await Integration acceptance, synchronization, and exact route publication."
+        ],
+        "capacity": {
+          "helperSlots": 0,
+          "dccSlots": 0
+        },
+        "launchedJobs": [],
+        "unusedCapacityReasons": [],
+        "overlap": {
+          "status": "not_observed",
+          "jobIds": [],
+          "startedAt": null,
+          "endedAt": null,
+          "reason": "No route-bound work has been dispatched."
+        },
+        "join": {
+          "state": "not_required",
+          "requiredJobs": [],
+          "completedJobs": []
+        }
+      },
       "permissions": {
-        "prelockPixels": false,
-        "productionPixels": false,
+        "zeroPixelPreparation": false,
+        "prelockProcessA": false,
+        "productionProcesses": false,
+        "rendererIntake": false,
+        "atomicAssembly": false,
+        "qaPreregistration": false,
+        "finalQA": false,
         "shippingActivation": false
       },
       "failureIsolation": true,
-      "featureAuthorThreadId": "019fab72-b2c8-76c1-b430-6c6f8431733f"
+      "featureAuthorThreadId": "019fab72-b2c8-76c1-b430-6c6f8431733f",
+      "observedAt": "2026-08-02T21:27:54-04:00",
+      "cleanState": "clean"
     },
     {
       "cell": "south",
@@ -104,18 +392,31 @@
       "branch": "codex/citysim-world-art-south",
       "worktree": "/Users/James/.codex/worktrees/4247/city-sim",
       "head": "eb965449d765855f461e789de6a37f239e7295a8",
+      "observedHead": null,
+      "headStatus": "stale_pre_authority",
       "claim": {
         "path": "docs/production/claims/PLAY-092.world-art-south.md",
         "sha256": "77cf93b83d7c57b6d6a062a0ddc5ec8b1a1c02b6178c799bdd01a019a2229f33"
       },
-      "state": "not_dispatched",
+      "previousState": "predesign",
+      "state": "predesign",
+      "dispatchState": "blocked",
+      "eligibleUsefulWork": false,
+      "boundedDeliverable": "Prepare the South zero-pixel blockout after exact route publication.",
+      "stopCondition": "Stop on identity, authority, claim, route, path, shared-contract, or acceptance ambiguity.",
+      "dependency": {
+        "status": "blocked",
+        "ownerThreadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+        "resumptionEvent": "integration_accepts_controls_synchronizes_lane_and_publishes_exact_schema2_route",
+        "unavailablePreparation": "This live head predates the declared authority and no committed schema-2 row route is bound.",
+        "nextRefill": "Integration reviews the control repair, synchronizes this lane, and publishes its exact route."
+      },
       "ownedRoots": [
         "Native/CitySimNative/WorldArt/Blender/PLAY-092/residential-l01-variant1-south/",
         "docs/production/evidence/PLAY-092/"
       ],
       "siblingTransformAllowed": false,
-      "modelRoute": {
-        "routeId": "quality-v2:play-092-residential-l01-variant1-south-prelock-v1",
+      "routeRequirement": {
         "classification": "LUNA_IMPLEMENTATION",
         "model": "gpt-5.6-luna",
         "effort": "high",
@@ -131,13 +432,55 @@
           "unresolved_product_visual_or_interaction_judgment"
         ]
       },
+      "routeReceipt": null,
+      "authorityAcknowledgement": null,
+      "executionAccounting": {
+        "readyNow": [],
+        "running": [],
+        "waitingOnJoin": [],
+        "serializedAuthority": {
+          "threadId": "019fab72-b2c9-7d60-a397-27f4fde85950",
+          "branch": "codex/citysim-world-art-south",
+          "worktree": "/Users/James/.codex/worktrees/4247/city-sim",
+          "gitIndexWriter": "019fab72-b2c9-7d60-a397-27f4fde85950",
+          "governedEvidenceWriter": "019fab72-b2c9-7d60-a397-27f4fde85950"
+        },
+        "nextRefill": [
+          "Await Integration acceptance, synchronization, and exact route publication."
+        ],
+        "capacity": {
+          "helperSlots": 0,
+          "dccSlots": 0
+        },
+        "launchedJobs": [],
+        "unusedCapacityReasons": [],
+        "overlap": {
+          "status": "not_observed",
+          "jobIds": [],
+          "startedAt": null,
+          "endedAt": null,
+          "reason": "No route-bound work has been dispatched."
+        },
+        "join": {
+          "state": "not_required",
+          "requiredJobs": [],
+          "completedJobs": []
+        }
+      },
       "permissions": {
-        "prelockPixels": false,
-        "productionPixels": false,
+        "zeroPixelPreparation": false,
+        "prelockProcessA": false,
+        "productionProcesses": false,
+        "rendererIntake": false,
+        "atomicAssembly": false,
+        "qaPreregistration": false,
+        "finalQA": false,
         "shippingActivation": false
       },
       "failureIsolation": true,
-      "featureAuthorThreadId": "019fab72-b2c9-7d60-a397-27f4fde85950"
+      "featureAuthorThreadId": "019fab72-b2c9-7d60-a397-27f4fde85950",
+      "observedAt": "2026-08-02T21:27:54-04:00",
+      "cleanState": "clean"
     },
     {
       "cell": "west",
@@ -146,18 +489,31 @@
       "branch": "codex/citysim-world-art-west",
       "worktree": "/Users/James/.codex/worktrees/ef17/city-sim",
       "head": "6434793cb8506bdc0c1a389b4d9f961e713ab274",
+      "observedHead": null,
+      "headStatus": "stale_pre_authority",
       "claim": {
         "path": "docs/production/claims/PLAY-093.world-art-west.md",
         "sha256": "79bbfa66e16c77f3d2a86fbbd462b6651f6f0eb5c5e8557bd86e404a616d6aa8"
       },
-      "state": "not_dispatched",
+      "previousState": "predesign",
+      "state": "predesign",
+      "dispatchState": "blocked",
+      "eligibleUsefulWork": false,
+      "boundedDeliverable": "Prepare the West zero-pixel blockout after exact route publication.",
+      "stopCondition": "Stop on identity, authority, claim, route, path, shared-contract, or acceptance ambiguity.",
+      "dependency": {
+        "status": "blocked",
+        "ownerThreadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+        "resumptionEvent": "integration_accepts_controls_synchronizes_lane_and_publishes_exact_schema2_route",
+        "unavailablePreparation": "This live head predates the declared authority and no committed schema-2 row route is bound.",
+        "nextRefill": "Integration reviews the control repair, synchronizes this lane, and publishes its exact route."
+      },
       "ownedRoots": [
         "Native/CitySimNative/WorldArt/Blender/PLAY-093/residential-l01-variant1-west/",
         "docs/production/evidence/PLAY-093/"
       ],
       "siblingTransformAllowed": false,
-      "modelRoute": {
-        "routeId": "quality-v2:play-093-residential-l01-variant1-west-prelock-v1",
+      "routeRequirement": {
         "classification": "LUNA_IMPLEMENTATION",
         "model": "gpt-5.6-luna",
         "effort": "high",
@@ -173,13 +529,55 @@
           "unresolved_product_visual_or_interaction_judgment"
         ]
       },
+      "routeReceipt": null,
+      "authorityAcknowledgement": null,
+      "executionAccounting": {
+        "readyNow": [],
+        "running": [],
+        "waitingOnJoin": [],
+        "serializedAuthority": {
+          "threadId": "019fab72-b2c9-7d60-a397-27d01d06cbbd",
+          "branch": "codex/citysim-world-art-west",
+          "worktree": "/Users/James/.codex/worktrees/ef17/city-sim",
+          "gitIndexWriter": "019fab72-b2c9-7d60-a397-27d01d06cbbd",
+          "governedEvidenceWriter": "019fab72-b2c9-7d60-a397-27d01d06cbbd"
+        },
+        "nextRefill": [
+          "Await Integration acceptance, synchronization, and exact route publication."
+        ],
+        "capacity": {
+          "helperSlots": 0,
+          "dccSlots": 0
+        },
+        "launchedJobs": [],
+        "unusedCapacityReasons": [],
+        "overlap": {
+          "status": "not_observed",
+          "jobIds": [],
+          "startedAt": null,
+          "endedAt": null,
+          "reason": "No route-bound work has been dispatched."
+        },
+        "join": {
+          "state": "not_required",
+          "requiredJobs": [],
+          "completedJobs": []
+        }
+      },
       "permissions": {
-        "prelockPixels": false,
-        "productionPixels": false,
+        "zeroPixelPreparation": false,
+        "prelockProcessA": false,
+        "productionProcesses": false,
+        "rendererIntake": false,
+        "atomicAssembly": false,
+        "qaPreregistration": false,
+        "finalQA": false,
         "shippingActivation": false
       },
       "failureIsolation": true,
-      "featureAuthorThreadId": "019fab72-b2c9-7d60-a397-27d01d06cbbd"
+      "featureAuthorThreadId": "019fab72-b2c9-7d60-a397-27d01d06cbbd",
+      "observedAt": "2026-08-02T21:27:54-04:00",
+      "cleanState": "clean"
     },
     {
       "cell": "renderer",
@@ -188,17 +586,30 @@
       "branch": "codex/citysim-world-rendering",
       "worktree": "/Users/James/.codex/worktrees/cac1/city-sim",
       "head": "6b5f21bbaf5fe6404b3ee8d49fb0b7dd22603a98",
+      "observedHead": null,
+      "headStatus": "stale_pre_authority",
       "claim": {
         "path": "docs/production/claims/PLAY-094.world-rendering.md",
         "sha256": "1f1e60710b0957a596ecb3e580bdef78d370e6fa235764eb4ba29611c67fcb6a"
       },
-      "state": "not_dispatched",
+      "previousState": "intake_preparing",
+      "state": "intake_preparing",
+      "dispatchState": "blocked",
+      "eligibleUsefulWork": false,
+      "boundedDeliverable": "Prepare non-shipping Renderer intake after exact route publication.",
+      "stopCondition": "Stop on identity, authority, claim, route, path, shared-contract, or acceptance ambiguity.",
+      "dependency": {
+        "status": "blocked",
+        "ownerThreadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+        "resumptionEvent": "integration_accepts_controls_synchronizes_lane_and_publishes_exact_schema2_route",
+        "unavailablePreparation": "This live head predates the declared authority and no committed schema-2 row route is bound.",
+        "nextRefill": "Integration reviews the control repair, synchronizes this lane, and publishes its exact route."
+      },
       "ownedRoots": [
         "docs/production/evidence/PLAY-094/"
       ],
       "siblingTransformAllowed": false,
-      "modelRoute": {
-        "routeId": "quality-v2:play-094-residential-l01-variant1-renderer-prelock-v1",
+      "routeRequirement": {
         "classification": "LUNA_IMPLEMENTATION",
         "model": "gpt-5.6-luna",
         "effort": "high",
@@ -214,32 +625,87 @@
           "unresolved_product_visual_or_interaction_judgment"
         ]
       },
+      "routeReceipt": null,
+      "authorityAcknowledgement": null,
+      "executionAccounting": {
+        "readyNow": [],
+        "running": [],
+        "waitingOnJoin": [],
+        "serializedAuthority": {
+          "threadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+          "branch": "codex/citysim-world-rendering",
+          "worktree": "/Users/James/.codex/worktrees/cac1/city-sim",
+          "gitIndexWriter": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+          "governedEvidenceWriter": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0"
+        },
+        "nextRefill": [
+          "Await Integration acceptance, synchronization, and exact route publication."
+        ],
+        "capacity": {
+          "helperSlots": 0,
+          "dccSlots": 0
+        },
+        "launchedJobs": [],
+        "unusedCapacityReasons": [],
+        "overlap": {
+          "status": "not_observed",
+          "jobIds": [],
+          "startedAt": null,
+          "endedAt": null,
+          "reason": "No route-bound work has been dispatched."
+        },
+        "join": {
+          "state": "not_required",
+          "requiredJobs": [],
+          "completedJobs": []
+        }
+      },
       "permissions": {
-        "prelockPixels": false,
-        "productionPixels": false,
+        "zeroPixelPreparation": false,
+        "prelockProcessA": false,
+        "productionProcesses": false,
+        "rendererIntake": false,
+        "atomicAssembly": false,
+        "qaPreregistration": false,
+        "finalQA": false,
         "shippingActivation": false
       },
       "failureIsolation": true,
-      "featureAuthorThreadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0"
+      "featureAuthorThreadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+      "observedAt": "2026-08-02T21:27:54-04:00",
+      "cleanState": "clean"
     },
     {
       "cell": "qa",
       "taskId": "PLAY-075",
-      "threadId": "019f9a0a-35fa-75b1-92c4-73c182390a25",
+      "threadId": "019fc0b0-74cb-70e1-8923-8c9d9600484d",
       "branch": "codex/citysim-playtest-quality",
       "worktree": "/Users/James/.codex/worktrees/71b0/city-sim",
       "head": "36ed789bf6b1b947df1350c1cb4f9a067ad36d31",
+      "observedHead": null,
+      "headStatus": "stale_pre_authority",
       "claim": {
         "path": "docs/production/claims/PLAY-075.playtest-quality.md",
         "sha256": "5dd3aeef1ffe8abf5e0c93486e27fe2d15495854be096fb105bff55a48dc0362"
       },
-      "state": "not_dispatched",
+      "previousState": "preregistering",
+      "state": "preregistering",
+      "dispatchState": "blocked",
+      "eligibleUsefulWork": false,
+      "boundedDeliverable": "Prepare candidate-neutral QA preregistration after exact route publication.",
+      "stopCondition": "Stop on identity, authority, claim, route, path, shared-contract, or acceptance ambiguity.",
+      "dependency": {
+        "status": "blocked",
+        "ownerThreadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+        "resumptionEvent": "integration_accepts_controls_synchronizes_lane_and_publishes_exact_schema2_route",
+        "unavailablePreparation": "This live head predates the declared authority and no committed schema-2 row route is bound.",
+        "nextRefill": "Integration reviews the control repair, synchronizes this lane, and publishes its exact route."
+      },
       "ownedRoots": [
         "docs/production/evidence/PLAY-075/"
       ],
       "siblingTransformAllowed": false,
-      "modelRoute": {
-        "routeId": "quality-v2:play-075-residential-l01-variant1-preregistration-v1",
+      "routeRequirement": {
         "classification": "LUNA_MECHANICAL",
         "model": "gpt-5.6-luna",
         "effort": "medium",
@@ -255,13 +721,55 @@
           "unresolved_product_visual_or_interaction_judgment"
         ]
       },
+      "routeReceipt": null,
+      "authorityAcknowledgement": null,
+      "executionAccounting": {
+        "readyNow": [],
+        "running": [],
+        "waitingOnJoin": [],
+        "serializedAuthority": {
+          "threadId": "019fc0b0-74cb-70e1-8923-8c9d9600484d",
+          "branch": "codex/citysim-playtest-quality",
+          "worktree": "/Users/James/.codex/worktrees/71b0/city-sim",
+          "gitIndexWriter": "019fc0b0-74cb-70e1-8923-8c9d9600484d",
+          "governedEvidenceWriter": "019fc0b0-74cb-70e1-8923-8c9d9600484d"
+        },
+        "nextRefill": [
+          "Await Integration acceptance, synchronization, and exact route publication."
+        ],
+        "capacity": {
+          "helperSlots": 0,
+          "dccSlots": 0
+        },
+        "launchedJobs": [],
+        "unusedCapacityReasons": [],
+        "overlap": {
+          "status": "not_observed",
+          "jobIds": [],
+          "startedAt": null,
+          "endedAt": null,
+          "reason": "No route-bound work has been dispatched."
+        },
+        "join": {
+          "state": "not_required",
+          "requiredJobs": [],
+          "completedJobs": []
+        }
+      },
       "permissions": {
-        "prelockPixels": false,
-        "productionPixels": false,
+        "zeroPixelPreparation": false,
+        "prelockProcessA": false,
+        "productionProcesses": false,
+        "rendererIntake": false,
+        "atomicAssembly": false,
+        "qaPreregistration": false,
+        "finalQA": false,
         "shippingActivation": false
       },
       "failureIsolation": true,
-      "featureAuthorThreadId": null
+      "featureAuthorThreadId": null,
+      "observedAt": "2026-08-02T21:27:54-04:00",
+      "cleanState": "clean"
     }
   ],
   "familyActivation": {
@@ -273,13 +781,11 @@
       "west"
     ],
     "admittedDirections": [],
+    "quarantinedDirections": [],
+    "atomicAssemblyManifest": null,
+    "rendererCandidateReceipt": null,
+    "qaResult": null,
     "partialActivationAllowed": false,
     "variantZeroFallbackAllowed": false
-  },
-  "capacity": {
-    "minimumUsefulActiveWorkstreams": 3,
-    "activeWorkstreams": [],
-    "idleCapacityReason": "Integration acceptance, lane synchronization to published authority, and exact route publication are pending; no worker dispatch is authorized.",
-    "overlapProof": []
   }
 }

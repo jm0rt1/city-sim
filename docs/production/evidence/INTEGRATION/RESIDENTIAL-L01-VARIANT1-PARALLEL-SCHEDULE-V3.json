@@ -1,9 +1,9 @@
 {
   "schema": 2,
   "batchId": "residential-l01-variant1-v1",
-  "previousPhase": "contract_pending",
-  "phase": "contract_pending",
-  "observedAt": "2026-08-02T23:10:00-04:00",
+  "previousPhase": "prelock_active",
+  "phase": "prelock_active",
+  "observedAt": "2026-08-03T00:41:27-04:00",
   "authorityCommit": "80ee8de7f94998ef7bc12a4536a1924e82de69c4",
   "familyContract": {
     "path": "docs/production/decisions/CONTRACT-023-residential-l01-variant-one-family.md",
@@ -13,27 +13,28 @@
     "path": "docs/production/evidence/INTEGRATION/residential-l01-variant1-parallel-state-schema-v1.json",
     "sha256": "d905957718407cfdd9b1deff974c984c608127b6a60cf13c09fc09d313f66757"
   },
-  "dispatchReady": false,
+  "dispatchReady": true,
   "compute": {
     "maxSimultaneousDccProcesses": 0,
     "assignedSlots": [],
     "queue": [],
     "machineAssumptions": [
-      "No DCC or helper capacity is authorized by this blocked control schedule."
+      "Five prelock packets are closed at clean returned commits; South remains the sole acknowledged zero-pixel route. No DCC process is authorized."
     ],
     "prohibitedWork": [
-      "worker dispatch",
       "DCC launch",
       "pixel production",
+      "appearance acceptance",
       "atomic assembly",
       "shipping activation",
-      "final QA execution"
+      "final QA execution",
+      "additional mutation in the five closed rows"
     ],
     "exceptionOwnerThreadId": "019f7686-4491-7891-86a6-95a78d67e5c8"
   },
   "ledgerProjection": {
     "batchId": "residential-l01-variant1-v1",
-    "phase": "contract_pending",
+    "phase": "prelock_active",
     "rows": [
       {
         "cell": "north",
@@ -43,7 +44,7 @@
         "state": "predesign",
         "dispatchState": "blocked",
         "cleanState": "clean",
-        "observedAt": "2026-08-02T23:10:00-04:00",
+        "observedAt": "2026-08-03T00:41:27-04:00",
         "claimRevision": "64e5e09c3b9870ebaed8e311209fcd537ddace066d22ce922d7fbd9040bc8603"
       },
       {
@@ -54,7 +55,7 @@
         "state": "predesign",
         "dispatchState": "blocked",
         "cleanState": "clean",
-        "observedAt": "2026-08-02T23:10:00-04:00",
+        "observedAt": "2026-08-03T00:41:27-04:00",
         "claimRevision": "393a36fd2b328727d544ec329f2f950089c80d8a75c6fc58702eb34aa0afd235"
       },
       {
@@ -63,9 +64,9 @@
         "threadId": "019fab72-b2c9-7d60-a397-27f4fde85950",
         "head": "71956b5b72a9d3013e3a2b52bba83ec1ebf684e1",
         "state": "predesign",
-        "dispatchState": "blocked",
+        "dispatchState": "acknowledged",
         "cleanState": "clean",
-        "observedAt": "2026-08-02T23:10:00-04:00",
+        "observedAt": "2026-08-03T00:41:27-04:00",
         "claimRevision": "c01b52323e1d70a4214f9a94785986a028fc93714411a1fefd107e38ec239ccd"
       },
       {
@@ -76,7 +77,7 @@
         "state": "predesign",
         "dispatchState": "blocked",
         "cleanState": "clean",
-        "observedAt": "2026-08-02T23:10:00-04:00",
+        "observedAt": "2026-08-03T00:41:27-04:00",
         "claimRevision": "52782ba07c23665084fcf4ac045fd734cecbb28449c3fe702cc3534868a98090"
       },
       {
@@ -84,10 +85,10 @@
         "taskId": "PLAY-094",
         "threadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
         "head": "ad8d965a4c6b1b012b4df6e30f9e9e4f19b70c21",
-        "state": "intake_preparing",
+        "state": "intake_ready",
         "dispatchState": "blocked",
         "cleanState": "clean",
-        "observedAt": "2026-08-02T23:10:00-04:00",
+        "observedAt": "2026-08-03T00:41:27-04:00",
         "claimRevision": "45a28e723b2cf86e5c9725e0e3786ea3976e7881680c775c1c8a2930d1804d6a"
       },
       {
@@ -98,15 +99,15 @@
         "state": "preregistering",
         "dispatchState": "blocked",
         "cleanState": "clean",
-        "observedAt": "2026-08-02T23:10:00-04:00",
+        "observedAt": "2026-08-03T00:41:27-04:00",
         "claimRevision": "364250ea7ced7cb3c663501ba7b2d08b9a84192bb4d44936b2dc1a0c008a7c35"
       }
     ]
   },
-  "ledgerSha256": "c8ae78f6e4107a9a7e16ed7b563521dc0c659ae774a6c66469fd63cdd2026c99",
+  "ledgerSha256": "7778f93f4a64c99dfcd597d506d1b9b195e977c95c33393674cb571c5c6bf031",
   "dispatchProjection": {
     "batchId": "residential-l01-variant1-v1",
-    "phase": "contract_pending",
+    "phase": "prelock_active",
     "rows": [
       {
         "cell": "north",
@@ -116,7 +117,7 @@
         "state": "predesign",
         "dispatchState": "blocked",
         "cleanState": "clean",
-        "observedAt": "2026-08-02T23:10:00-04:00",
+        "observedAt": "2026-08-03T00:41:27-04:00",
         "claimRevision": "64e5e09c3b9870ebaed8e311209fcd537ddace066d22ce922d7fbd9040bc8603"
       },
       {
@@ -127,7 +128,7 @@
         "state": "predesign",
         "dispatchState": "blocked",
         "cleanState": "clean",
-        "observedAt": "2026-08-02T23:10:00-04:00",
+        "observedAt": "2026-08-03T00:41:27-04:00",
         "claimRevision": "393a36fd2b328727d544ec329f2f950089c80d8a75c6fc58702eb34aa0afd235"
       },
       {
@@ -136,9 +137,9 @@
         "threadId": "019fab72-b2c9-7d60-a397-27f4fde85950",
         "head": "71956b5b72a9d3013e3a2b52bba83ec1ebf684e1",
         "state": "predesign",
-        "dispatchState": "blocked",
+        "dispatchState": "acknowledged",
         "cleanState": "clean",
-        "observedAt": "2026-08-02T23:10:00-04:00",
+        "observedAt": "2026-08-03T00:41:27-04:00",
         "claimRevision": "c01b52323e1d70a4214f9a94785986a028fc93714411a1fefd107e38ec239ccd"
       },
       {
@@ -149,7 +150,7 @@
         "state": "predesign",
         "dispatchState": "blocked",
         "cleanState": "clean",
-        "observedAt": "2026-08-02T23:10:00-04:00",
+        "observedAt": "2026-08-03T00:41:27-04:00",
         "claimRevision": "52782ba07c23665084fcf4ac045fd734cecbb28449c3fe702cc3534868a98090"
       },
       {
@@ -157,10 +158,10 @@
         "taskId": "PLAY-094",
         "threadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
         "head": "ad8d965a4c6b1b012b4df6e30f9e9e4f19b70c21",
-        "state": "intake_preparing",
+        "state": "intake_ready",
         "dispatchState": "blocked",
         "cleanState": "clean",
-        "observedAt": "2026-08-02T23:10:00-04:00",
+        "observedAt": "2026-08-03T00:41:27-04:00",
         "claimRevision": "45a28e723b2cf86e5c9725e0e3786ea3976e7881680c775c1c8a2930d1804d6a"
       },
       {
@@ -171,17 +172,24 @@
         "state": "preregistering",
         "dispatchState": "blocked",
         "cleanState": "clean",
-        "observedAt": "2026-08-02T23:10:00-04:00",
+        "observedAt": "2026-08-03T00:41:27-04:00",
         "claimRevision": "364250ea7ced7cb3c663501ba7b2d08b9a84192bb4d44936b2dc1a0c008a7c35"
       }
     ]
   },
   "parallelismProof": {
-    "requiredConcurrentCells": 0,
-    "eligibleCells": [],
-    "jobRefs": [],
-    "startedAt": null,
-    "endedAt": null
+    "requiredConcurrentCells": 1,
+    "eligibleCells": [
+      "south"
+    ],
+    "jobRefs": [
+      {
+        "cell": "south",
+        "jobId": "south-route-preflight"
+      }
+    ],
+    "startedAt": "2026-08-02T23:43:01-04:00",
+    "endedAt": "2026-08-02T23:44:27-04:00"
   },
   "finalQAReviewer": {
     "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
@@ -208,14 +216,14 @@
       "state": "predesign",
       "dispatchState": "blocked",
       "eligibleUsefulWork": false,
-      "boundedDeliverable": "Prepare the North hero design boundary after exact route publication.",
-      "stopCondition": "Stop on identity, authority, claim, route, path, shared-contract, or acceptance ambiguity.",
+      "boundedDeliverable": "Preserve exact clean returned commit 9940b2570bd762249611fca665922b29cc9fc553 pending independent Integration disposition.",
+      "stopCondition": "Stop with zero further mutation until Integration accepts the returned packet or publishes a new exact repair route.",
       "dependency": {
-        "status": "blocked",
+        "status": "waiting",
         "ownerThreadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
-        "resumptionEvent": "integration_accepts_controls_synchronizes_lane_and_publishes_exact_schema2_route",
-        "unavailablePreparation": "This live head predates the declared authority and no committed schema-2 row route is bound.",
-        "nextRefill": "Integration reviews the control repair, synchronizes this lane, and publishes its exact route."
+        "resumptionEvent": "integration_disposes_the_exact_returned_candidate",
+        "unavailablePreparation": "The original route is exhausted at its clean returned commit; no additional mutation is authorized.",
+        "nextRefill": "Integration independently reviews the exact returned packet and either accepts it or publishes one bounded successor route."
       },
       "ownedRoots": [
         "Native/CitySimNative/WorldArt/Blender/PLAY-090/residential-l01-variant1-north/",
@@ -252,7 +260,7 @@
           "governedEvidenceWriter": "019f96e0-3793-7542-9172-060a9ca09b0a"
         },
         "nextRefill": [
-          "Await Integration acceptance, synchronization, and exact route publication."
+          "Await independent Integration disposition of the exact returned commit."
         ],
         "capacity": {
           "helperSlots": 0,
@@ -265,7 +273,7 @@
           "jobIds": [],
           "startedAt": null,
           "endedAt": null,
-          "reason": "No route-bound work has been dispatched."
+          "reason": "The row is closed at its returned commit and has no authorized active job."
         },
         "join": {
           "state": "not_required",
@@ -274,7 +282,7 @@
         }
       },
       "permissions": {
-        "zeroPixelPreparation": false,
+        "zeroPixelPreparation": true,
         "prelockProcessA": false,
         "productionProcesses": false,
         "rendererIntake": false,
@@ -285,7 +293,7 @@
       },
       "failureIsolation": true,
       "featureAuthorThreadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
-      "observedAt": "2026-08-02T23:10:00-04:00",
+      "observedAt": "2026-08-03T00:41:27-04:00",
       "cleanState": "clean"
     },
     {
@@ -305,14 +313,14 @@
       "state": "predesign",
       "dispatchState": "blocked",
       "eligibleUsefulWork": false,
-      "boundedDeliverable": "Prepare the East zero-pixel blockout after exact route publication.",
-      "stopCondition": "Stop on identity, authority, claim, route, path, shared-contract, or acceptance ambiguity.",
+      "boundedDeliverable": "Preserve exact clean returned commit b5a301bdf0e18e0301af74827f99b2caaad00e8a pending independent Integration disposition.",
+      "stopCondition": "Stop with zero further mutation until Integration accepts the returned packet or publishes a new exact repair route.",
       "dependency": {
-        "status": "blocked",
+        "status": "waiting",
         "ownerThreadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
-        "resumptionEvent": "integration_accepts_controls_synchronizes_lane_and_publishes_exact_schema2_route",
-        "unavailablePreparation": "This live head predates the declared authority and no committed schema-2 row route is bound.",
-        "nextRefill": "Integration reviews the control repair, synchronizes this lane, and publishes its exact route."
+        "resumptionEvent": "integration_disposes_the_exact_returned_candidate",
+        "unavailablePreparation": "The original route is exhausted at its clean returned commit; no additional mutation is authorized.",
+        "nextRefill": "Integration independently reviews the exact returned packet and either accepts it or publishes one bounded successor route."
       },
       "ownedRoots": [
         "Native/CitySimNative/WorldArt/Blender/PLAY-091/residential-l01-variant1-east/",
@@ -349,7 +357,7 @@
           "governedEvidenceWriter": "019fab72-b2c8-76c1-b430-6c6f8431733f"
         },
         "nextRefill": [
-          "Await Integration acceptance, synchronization, and exact route publication."
+          "Await independent Integration disposition of the exact returned commit."
         ],
         "capacity": {
           "helperSlots": 0,
@@ -362,7 +370,7 @@
           "jobIds": [],
           "startedAt": null,
           "endedAt": null,
-          "reason": "No route-bound work has been dispatched."
+          "reason": "The row is closed at its returned commit and has no authorized active job."
         },
         "join": {
           "state": "not_required",
@@ -371,7 +379,7 @@
         }
       },
       "permissions": {
-        "zeroPixelPreparation": false,
+        "zeroPixelPreparation": true,
         "prelockProcessA": false,
         "productionProcesses": false,
         "rendererIntake": false,
@@ -382,7 +390,7 @@
       },
       "failureIsolation": true,
       "featureAuthorThreadId": "019fab72-b2c8-76c1-b430-6c6f8431733f",
-      "observedAt": "2026-08-02T23:10:00-04:00",
+      "observedAt": "2026-08-03T00:41:27-04:00",
       "cleanState": "clean"
     },
     {
@@ -400,16 +408,16 @@
       },
       "previousState": "predesign",
       "state": "predesign",
-      "dispatchState": "blocked",
-      "eligibleUsefulWork": false,
-      "boundedDeliverable": "Prepare the South zero-pixel blockout after exact route publication.",
-      "stopCondition": "Stop on identity, authority, claim, route, path, shared-contract, or acceptance ambiguity.",
+      "dispatchState": "acknowledged",
+      "eligibleUsefulWork": true,
+      "boundedDeliverable": "Author a South-only zero-pixel blockout and actual camera/socket/scale proof under CONTRACT-023. Add deterministic task-owned validation and evidence, commit once at predesign_ready, and stop before DCC, pixels, normalization, or sibling access.",
+      "stopCondition": "Stop after one clean predesign_ready commit, or immediately on identity/hash/path drift, sibling derivation, need for DCC/pixels, contract ambiguity, two failed repairs, or subjective acceptance.",
       "dependency": {
-        "status": "blocked",
-        "ownerThreadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
-        "resumptionEvent": "integration_accepts_controls_synchronizes_lane_and_publishes_exact_schema2_route",
-        "unavailablePreparation": "This live head predates the declared authority and no committed schema-2 row route is bound.",
-        "nextRefill": "Integration reviews the control repair, synchronizes this lane, and publishes its exact route."
+        "status": "ready",
+        "ownerThreadId": "019fab72-b2c9-7d60-a397-27f4fde85950",
+        "resumptionEvent": "published_prelock_route_acknowledged",
+        "unavailablePreparation": "none_within_the_route_bound_zero_pixel_or_intake_scope",
+        "nextRefill": "Complete the bounded prelock deliverable and return one focused candidate commit."
       },
       "ownedRoots": [
         "Native/CitySimNative/WorldArt/Blender/PLAY-092/residential-l01-variant1-south/",
@@ -432,10 +440,26 @@
           "unresolved_product_visual_or_interaction_judgment"
         ]
       },
-      "routeReceipt": null,
-      "authorityAcknowledgement": null,
+      "routeReceipt": {
+        "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-RESIDENTIAL-L01-VARIANT1-PRELOCK-WAVE-V1.json",
+        "sha256": "1e65c026c1a26ac43a6720692e4648d2a1afc680342d0e133acb08360c81e9c2",
+        "receiptCommit": "3a6c257b5702a7d93cd27c703ca0946f011deacd",
+        "routeId": "quality-v2:play-092-residential-l01-variant1-south-prelock-v1",
+        "modelRouteSha256": "bb4fef0cfb904b95b6426f6b18ac067eba19f5e90346735f9f44ef51674bf7eb"
+      },
+      "authorityAcknowledgement": {
+        "threadId": "019fab72-b2c9-7d60-a397-27f4fde85950",
+        "authorityCommit": "80ee8de7f94998ef7bc12a4536a1924e82de69c4",
+        "claimRevision": "c01b52323e1d70a4214f9a94785986a028fc93714411a1fefd107e38ec239ccd",
+        "acknowledgedAt": "2026-08-02T23:44:27-04:00",
+        "boundedDeliverable": "Author a South-only zero-pixel blockout and actual camera/socket/scale proof under CONTRACT-023. Add deterministic task-owned validation and evidence, commit once at predesign_ready, and stop before DCC, pixels, normalization, or sibling access.",
+        "stopCondition": "Stop after one clean predesign_ready commit, or immediately on identity/hash/path drift, sibling derivation, need for DCC/pixels, contract ambiguity, two failed repairs, or subjective acceptance.",
+        "evidenceId": "thread:019fab72-b2c9-7d60-a397-27f4fde85950/turn:019fc5b7-bdf8-7b43-9142-3c9deb9ce806/item:item-1069"
+      },
       "executionAccounting": {
-        "readyNow": [],
+        "readyNow": [
+          "Author a South-only zero-pixel blockout and actual camera/socket/scale proof under CONTRACT-023. Add deterministic task-owned validation and evidence, commit once at predesign_ready, and stop before DCC, pixels, normalization, or sibling access."
+        ],
         "running": [],
         "waitingOnJoin": [],
         "serializedAuthority": {
@@ -446,20 +470,39 @@
           "governedEvidenceWriter": "019fab72-b2c9-7d60-a397-27f4fde85950"
         },
         "nextRefill": [
-          "Await Integration acceptance, synchronization, and exact route publication."
+          "Complete the bounded prelock deliverable and return one focused candidate commit."
         ],
         "capacity": {
           "helperSlots": 0,
           "dccSlots": 0
         },
-        "launchedJobs": [],
+        "launchedJobs": [
+          {
+            "id": "south-route-preflight",
+            "batchId": "residential-l01-variant1-v1",
+            "claimSha256": "c01b52323e1d70a4214f9a94785986a028fc93714411a1fefd107e38ec239ccd",
+            "publishedBase": "80ee8de7f94998ef7bc12a4536a1924e82de69c4",
+            "head": "71956b5b72a9d3013e3a2b52bba83ec1ebf684e1",
+            "threadId": "019fab72-b2c9-7d60-a397-27f4fde85950",
+            "branch": "codex/citysim-world-art-south",
+            "worktree": "/Users/James/.codex/worktrees/4247/city-sim",
+            "resourceClass": "helper",
+            "mutationClass": "read_only",
+            "exclusiveRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-092/residential-l01-variant1-south/",
+            "processSlot": null,
+            "state": "completed",
+            "startedAt": "2026-08-02T23:43:01-04:00",
+            "endedAt": "2026-08-02T23:44:27-04:00",
+            "evidenceId": "thread:019fab72-b2c9-7d60-a397-27f4fde85950/turn:019fc5b7-bdf8-7b43-9142-3c9deb9ce806/item:item-1069"
+          }
+        ],
         "unusedCapacityReasons": [],
         "overlap": {
           "status": "not_observed",
           "jobIds": [],
           "startedAt": null,
           "endedAt": null,
-          "reason": "No route-bound work has been dispatched."
+          "reason": "This canonical cell recorded one read-only preflight job; cross-cell overlap is recorded at batch level."
         },
         "join": {
           "state": "not_required",
@@ -468,7 +511,7 @@
         }
       },
       "permissions": {
-        "zeroPixelPreparation": false,
+        "zeroPixelPreparation": true,
         "prelockProcessA": false,
         "productionProcesses": false,
         "rendererIntake": false,
@@ -479,7 +522,7 @@
       },
       "failureIsolation": true,
       "featureAuthorThreadId": "019fab72-b2c9-7d60-a397-27f4fde85950",
-      "observedAt": "2026-08-02T23:10:00-04:00",
+      "observedAt": "2026-08-03T00:41:27-04:00",
       "cleanState": "clean"
     },
     {
@@ -499,14 +542,14 @@
       "state": "predesign",
       "dispatchState": "blocked",
       "eligibleUsefulWork": false,
-      "boundedDeliverable": "Prepare the West zero-pixel blockout after exact route publication.",
-      "stopCondition": "Stop on identity, authority, claim, route, path, shared-contract, or acceptance ambiguity.",
+      "boundedDeliverable": "Preserve exact clean returned commit 7bf05ca811f60b40ee429f34d57da4afca94d436 pending independent Integration disposition.",
+      "stopCondition": "Stop with zero further mutation until Integration accepts the returned packet or publishes a new exact repair route.",
       "dependency": {
-        "status": "blocked",
+        "status": "waiting",
         "ownerThreadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
-        "resumptionEvent": "integration_accepts_controls_synchronizes_lane_and_publishes_exact_schema2_route",
-        "unavailablePreparation": "This live head predates the declared authority and no committed schema-2 row route is bound.",
-        "nextRefill": "Integration reviews the control repair, synchronizes this lane, and publishes its exact route."
+        "resumptionEvent": "integration_disposes_the_exact_returned_candidate",
+        "unavailablePreparation": "The original route is exhausted at its clean returned commit; no additional mutation is authorized.",
+        "nextRefill": "Integration independently reviews the exact returned packet and either accepts it or publishes one bounded successor route."
       },
       "ownedRoots": [
         "Native/CitySimNative/WorldArt/Blender/PLAY-093/residential-l01-variant1-west/",
@@ -543,7 +586,7 @@
           "governedEvidenceWriter": "019fab72-b2c9-7d60-a397-27d01d06cbbd"
         },
         "nextRefill": [
-          "Await Integration acceptance, synchronization, and exact route publication."
+          "Await independent Integration disposition of the exact returned commit."
         ],
         "capacity": {
           "helperSlots": 0,
@@ -556,7 +599,7 @@
           "jobIds": [],
           "startedAt": null,
           "endedAt": null,
-          "reason": "No route-bound work has been dispatched."
+          "reason": "The row is closed at its returned commit and has no authorized active job."
         },
         "join": {
           "state": "not_required",
@@ -565,7 +608,7 @@
         }
       },
       "permissions": {
-        "zeroPixelPreparation": false,
+        "zeroPixelPreparation": true,
         "prelockProcessA": false,
         "productionProcesses": false,
         "rendererIntake": false,
@@ -576,7 +619,7 @@
       },
       "failureIsolation": true,
       "featureAuthorThreadId": "019fab72-b2c9-7d60-a397-27d01d06cbbd",
-      "observedAt": "2026-08-02T23:10:00-04:00",
+      "observedAt": "2026-08-03T00:41:27-04:00",
       "cleanState": "clean"
     },
     {
@@ -593,17 +636,17 @@
         "sha256": "45a28e723b2cf86e5c9725e0e3786ea3976e7881680c775c1c8a2930d1804d6a"
       },
       "previousState": "intake_preparing",
-      "state": "intake_preparing",
+      "state": "intake_ready",
       "dispatchState": "blocked",
       "eligibleUsefulWork": false,
-      "boundedDeliverable": "Prepare non-shipping Renderer intake after exact route publication.",
-      "stopCondition": "Stop on identity, authority, claim, route, path, shared-contract, or acceptance ambiguity.",
+      "boundedDeliverable": "Preserve exact clean returned commit ad8d965a4c6b1b012b4df6e30f9e9e4f19b70c21 pending independent Integration disposition.",
+      "stopCondition": "Stop with zero further mutation until Integration accepts the returned packet or publishes a new exact repair route.",
       "dependency": {
-        "status": "blocked",
+        "status": "waiting",
         "ownerThreadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
-        "resumptionEvent": "integration_accepts_controls_synchronizes_lane_and_publishes_exact_schema2_route",
-        "unavailablePreparation": "This live head predates the declared authority and no committed schema-2 row route is bound.",
-        "nextRefill": "Integration reviews the control repair, synchronizes this lane, and publishes its exact route."
+        "resumptionEvent": "integration_disposes_the_exact_returned_candidate",
+        "unavailablePreparation": "The original route is exhausted at its clean returned commit; no additional mutation is authorized.",
+        "nextRefill": "Integration independently reviews the exact returned packet and either accepts it or publishes one bounded successor route."
       },
       "ownedRoots": [
         "Native/CitySimNative/Tests/CitySimNativeTests/WorldRenderingTests.swift",
@@ -640,7 +683,7 @@
           "governedEvidenceWriter": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0"
         },
         "nextRefill": [
-          "Await Integration acceptance, synchronization, and exact route publication."
+          "Await independent Integration disposition of the exact returned commit."
         ],
         "capacity": {
           "helperSlots": 0,
@@ -653,7 +696,7 @@
           "jobIds": [],
           "startedAt": null,
           "endedAt": null,
-          "reason": "No route-bound work has been dispatched."
+          "reason": "The row is closed at its returned commit and has no authorized active job."
         },
         "join": {
           "state": "not_required",
@@ -665,7 +708,7 @@
         "zeroPixelPreparation": false,
         "prelockProcessA": false,
         "productionProcesses": false,
-        "rendererIntake": false,
+        "rendererIntake": true,
         "atomicAssembly": false,
         "qaPreregistration": false,
         "finalQA": false,
@@ -673,7 +716,7 @@
       },
       "failureIsolation": true,
       "featureAuthorThreadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
-      "observedAt": "2026-08-02T23:10:00-04:00",
+      "observedAt": "2026-08-03T00:41:27-04:00",
       "cleanState": "clean"
     },
     {
@@ -693,14 +736,14 @@
       "state": "preregistering",
       "dispatchState": "blocked",
       "eligibleUsefulWork": false,
-      "boundedDeliverable": "Prepare candidate-neutral QA preregistration after exact route publication.",
-      "stopCondition": "Stop on identity, authority, claim, route, path, shared-contract, or acceptance ambiguity.",
+      "boundedDeliverable": "Preserve exact clean returned commit ea584ce178a10bcd94e3e73b0dace476ccd5fde3 pending independent Integration disposition.",
+      "stopCondition": "Stop with zero further mutation until Integration accepts the returned packet or publishes a new exact repair route.",
       "dependency": {
-        "status": "blocked",
+        "status": "waiting",
         "ownerThreadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
-        "resumptionEvent": "integration_accepts_controls_synchronizes_lane_and_publishes_exact_schema2_route",
-        "unavailablePreparation": "This live head predates the declared authority and no committed schema-2 row route is bound.",
-        "nextRefill": "Integration reviews the control repair, synchronizes this lane, and publishes its exact route."
+        "resumptionEvent": "integration_disposes_the_exact_returned_candidate",
+        "unavailablePreparation": "The original route is exhausted at its clean returned commit; no additional mutation is authorized.",
+        "nextRefill": "Integration independently reviews the exact returned packet and either accepts it or publishes one bounded successor route."
       },
       "ownedRoots": [
         "docs/production/evidence/PLAY-075/residential-l01-variant1-preregistration-v1/"
@@ -736,7 +779,7 @@
           "governedEvidenceWriter": "019fc0b0-74cb-70e1-8923-8c9d9600484d"
         },
         "nextRefill": [
-          "Await Integration acceptance, synchronization, and exact route publication."
+          "Await independent Integration disposition of the exact returned commit."
         ],
         "capacity": {
           "helperSlots": 0,
@@ -749,7 +792,7 @@
           "jobIds": [],
           "startedAt": null,
           "endedAt": null,
-          "reason": "No route-bound work has been dispatched."
+          "reason": "The row is closed at its returned commit and has no authorized active job."
         },
         "join": {
           "state": "not_required",
@@ -763,13 +806,13 @@
         "productionProcesses": false,
         "rendererIntake": false,
         "atomicAssembly": false,
-        "qaPreregistration": false,
+        "qaPreregistration": true,
         "finalQA": false,
         "shippingActivation": false
       },
       "failureIsolation": true,
       "featureAuthorThreadId": null,
-      "observedAt": "2026-08-02T23:10:00-04:00",
+      "observedAt": "2026-08-03T00:41:27-04:00",
       "cleanState": "clean"
     }
   ],

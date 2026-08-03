@@ -272,7 +272,7 @@ def render_process(validated: dict) -> int:
     import bpy  # type: ignore
 
     if bpy.app.binary_path != runner.BLENDER or runner.sha256_file(Path(bpy.app.binary_path)) != runner.BLENDER_SHA256:
-        raise RuntimeError("running Blender binary is not the admitted arm64 executable")
+        raise RuntimeError("running Blender binary is not the admitted x86_64 executable")
     root, output, spec = validated["root"], validated["output"], validated["spec"]
     scene_doc, materials_doc, lowering = spec["scene"], spec["materials"], spec["lowering"]
     bpy.ops.wm.read_factory_settings(use_empty=True)
@@ -321,7 +321,7 @@ def render_process(validated: dict) -> int:
                       "contractSHA256": runner.sha256_file(root / runner.SOURCE_ROOT / runner.CONTRACT_NAME)}
     provenance = {"schema": 1, "task": "PLAY-090", "direction": "north", "process": "A",
                   "sceneGeometryID": scene_doc["sceneGeometryID"], "routeId": runner.ROUTE_ID,
-                  "blender": {"path": runner.BLENDER, "sha256": runner.BLENDER_SHA256, "version": "4.5.12 LTS", "buildHash": "84afd5f785f7", "architecture": "arm64"},
+                  "blender": {"path": runner.BLENDER, "sha256": runner.BLENDER_SHA256, "version": "4.5.12 LTS", "buildHash": "84afd5f785f7", "architecture": "x86_64", "translation": "Rosetta"},
                   "cycles": {"device": "CPU", "samples": render["samples"], "seed": render["seed"], "threads": render["threads"], "adaptiveSampling": False, "denoising": False},
                   "lighting": lighting, "rawPNGContainerSHA256": runner.sha256_file(raw_path),
                   "sourceAuthority": False, "productionSelected": False}

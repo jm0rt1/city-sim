@@ -1,7 +1,7 @@
 """Atomic, grant-gated PLAY-090 North Blender launcher.
 
 The only worker-executable runtime path is the route-authorized disposable
-replay below ``/private/tmp/play090-residential-north-runtime-repair-v1``.
+replay below ``/private/tmp/play090-residential-north-runtime-repair-v2``.
 The same boundary can later consume Integration-owned production documents,
 but this repair never creates or invokes those authorities.
 """
@@ -18,27 +18,27 @@ import sys
 import time
 
 
-ROUTE_ID = "quality-v2:play-090-residential-l01-variant1-north-runtime-repair-v1"
-ROUTE_SHA256 = "c8cf8a789860088444a969bd5cad4cdbbedaecd50a8b275791ce3e5e37f17472"
-CARRIER_COMMIT = "4fc75509a95f49fc4ae15d8a12df992c338679dd"
-RECEIPT_PATH = "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-090-RESIDENTIAL-L01-VARIANT1-NORTH-RUNTIME-REPAIR-V1.json"
-RECEIPT_SHA256 = "2d2964e1b2f018949b66b5e6c098d0115a1d7b4fa8d19e50a6b7477788137cbb"
-AUTHORITY_COMMIT = "46d105c97324b554e2ce76b8ad95b0591bf66340"
-EXECUTION_BASE = "029d5759eb6887f6ee16a65f099f6bfe9cfd697a"
+ROUTE_ID = "quality-v2:play-090-residential-l01-variant1-north-runtime-repair-v2"
+ROUTE_SHA256 = "fd82e8b5048ce442ee97d94c2f327c412f76aef0757dec9e75ed99956e190c6b"
+CARRIER_COMMIT = "ad385002897a0da95371f007ac542c90cfb34a94"
+RECEIPT_PATH = "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-090-RESIDENTIAL-L01-VARIANT1-NORTH-RUNTIME-REPAIR-V2.json"
+RECEIPT_SHA256 = "1317931590c213284453089585820ccc759d85f7f030dc82278f09a698ac0950"
+AUTHORITY_COMMIT = "46aa24da390154bd3aadd63ff2245b86716d2dd4"
+EXECUTION_BASE = "adce6edb48a2d32eae7bb0a32a8b1d969d5f6ac5"
 CLAIM_SHA256 = "3d28843b7cbd53c9f25e71163a6bd3e9821c340010f7303a0909e35b9251d6b2"
 WORKTREE = "/Users/James/.codex/worktrees/0648/city-sim"
 BRANCH = "codex/citysim-world-art"
 SOURCE_ROOT = "Native/CitySimNative/WorldArt/Blender/PLAY-090/residential-l01-variant1-north"
 EVIDENCE_ROOT = "docs/production/evidence/PLAY-090"
 FUTURE_PROCESS_ROOT = "docs/production/evidence/PLAY-090/residential-l01-variant1-process-a"
-RUNTIME_REPLAY_ROOT = Path("/private/tmp/play090-residential-north-runtime-repair-v1")
+RUNTIME_REPLAY_ROOT = Path("/private/tmp/play090-residential-north-runtime-repair-v2")
 CONTRACT_NAME = "EXECUTION-CONTRACT.json"
 LOWERING_NAME = "LOWERING-CONTRACT.json"
 CHILD_NAME = "render_residential_l01_process_a_child.py"
-BLENDER_RECEIPT_PATH = "docs/production/evidence/INTEGRATION/BLENDER-4.5.12-ARM64-STARTUP-RECEIPT-V1.json"
-BLENDER_RECEIPT_SHA256 = "4202de8d3ffbb9f3094b1c2e78b30a4c7e26664bce8af74916147d6995eb36aa"
-BLENDER = "/Applications/Blender-4.5.12-arm64.app/Contents/MacOS/Blender"
-BLENDER_SHA256 = "0fa2ab6500e41bfd8114485b218a1e4aebf15b3d8cea90dc8398535291061506"
+BLENDER_RECEIPT_PATH = "docs/production/evidence/INTEGRATION/BLENDER-4.5.12-X86_64-RUNTIME-RECEIPT-V1.json"
+BLENDER_RECEIPT_SHA256 = "4ef99161131551706a9897005a3af0827a2fb0caf928917f5015e2e12d446a5f"
+BLENDER = "/Applications/Blender.app/Contents/MacOS/Blender"
+BLENDER_SHA256 = "8485107307b16bd0899f3c259261494b0c80e383db239c04e2c9fcd14d305fb4"
 BLENDER_ARGS = ("--factory-startup", "--disable-autoexec", "--background", "--python-exit-code", "1")
 IMMUTABLE_EXECUTION_CONTRACT_SHA256 = "35e4b10156980ef354f6aa8a90b087f316445d99c0b1ce73bd61e39c7039e409"
 
@@ -204,12 +204,15 @@ def verify_blender(root: Path) -> dict:
     if sha256_bytes(receipt_bytes) != BLENDER_RECEIPT_SHA256:
         raise ValueError("Blender startup receipt mismatch")
     receipt = json.loads(receipt_bytes)
-    executable = receipt.get("executable", {})
-    if receipt.get("status") != "PASS" or executable.get("path") != BLENDER or executable.get("sha256") != BLENDER_SHA256:
+    executable = receipt.get("binary", {})
+    probe = receipt.get("probe", {})
+    host = receipt.get("host", {})
+    if probe.get("result") != "PASS" or not probe.get("bpyImported") or executable.get("path") != BLENDER or executable.get("sha256") != BLENDER_SHA256:
         raise ValueError("Blender receipt identity mismatch")
-    if executable.get("architecture") != "arm64" or executable.get("version") != "4.5.12 LTS" or executable.get("buildHash") != "84afd5f785f7":
+    if executable.get("architecture") != "x86_64" or executable.get("version") != "4.5.12 LTS" or executable.get("buildHash") != "84afd5f785f7":
         raise ValueError("Blender receipt tuple mismatch")
-    if platform.machine() != "arm64":
+    if (platform.machine() != "arm64" or host.get("nativeArchitecture") != "arm64" or
+            host.get("executionArchitecture") != "x86_64" or host.get("translation") != "Rosetta"):
         raise ValueError("host architecture drift")
     binary = Path(BLENDER)
     if not binary.is_file() or binary.is_symlink() or sha256_file(binary) != BLENDER_SHA256:

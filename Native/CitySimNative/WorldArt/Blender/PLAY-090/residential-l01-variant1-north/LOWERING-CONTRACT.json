@@ -1,8 +1,8 @@
 {
   "schema": 1,
   "task": "PLAY-090",
-  "routeId": "quality-v2:play-090-residential-l01-variant1-north-runtime-repair-v1",
-  "routeSHA256": "c8cf8a789860088444a969bd5cad4cdbbedaecd50a8b275791ce3e5e37f17472",
+  "routeId": "quality-v2:play-090-residential-l01-variant1-north-runtime-repair-v2",
+  "routeSHA256": "fd82e8b5048ce442ee97d94c2f327c412f76aef0757dec9e75ed99956e190c6b",
   "sceneSHA256": "b8693b77b9e3927b44ed1e67bdacaf76afe69f474a338bf51619b3e61fe8be4b",
   "materialsSHA256": "943436fdebc0c7bf672798bffa6f7619608341316cead3467efc6f14a3ac4fc3",
   "componentCount": 19,
@@ -50,11 +50,12 @@
     "colorManagement": {"displayDevice": "sRGB", "viewTransform": "Standard", "look": "Medium High Contrast", "exposure": 0.0, "gamma": 1.0}
   },
   "blender": {
-    "receiptPath": "docs/production/evidence/INTEGRATION/BLENDER-4.5.12-ARM64-STARTUP-RECEIPT-V1.json",
-    "receiptSHA256": "4202de8d3ffbb9f3094b1c2e78b30a4c7e26664bce8af74916147d6995eb36aa",
-    "path": "/Applications/Blender-4.5.12-arm64.app/Contents/MacOS/Blender",
-    "sha256": "0fa2ab6500e41bfd8114485b218a1e4aebf15b3d8cea90dc8398535291061506",
-    "architecture": "arm64",
+    "receiptPath": "docs/production/evidence/INTEGRATION/BLENDER-4.5.12-X86_64-RUNTIME-RECEIPT-V1.json",
+    "receiptSHA256": "4ef99161131551706a9897005a3af0827a2fb0caf928917f5015e2e12d446a5f",
+    "path": "/Applications/Blender.app/Contents/MacOS/Blender",
+    "sha256": "8485107307b16bd0899f3c259261494b0c80e383db239c04e2c9fcd14d305fb4",
+    "architecture": "x86_64",
+    "translation": "Rosetta",
     "version": "4.5.12 LTS",
     "buildHash": "84afd5f785f7",
     "arguments": ["--factory-startup", "--disable-autoexec", "--background", "--python-exit-code", "1"]

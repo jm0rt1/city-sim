@@ -19,7 +19,7 @@ import launch_residential_l01_process_a as runner  # noqa: E402
 import render_residential_l01_process_a_child as child  # noqa: E402
 
 CONTRACT = f"{runner.SOURCE_ROOT}/{runner.CONTRACT_NAME}"
-EVIDENCE = ROOT / "docs/production/evidence/PLAY-090/residential-l01-variant1-north-runtime-repair-v1"
+EVIDENCE = ROOT / "docs/production/evidence/PLAY-090/residential-l01-variant1-north-runtime-repair-v2"
 DETERMINISTIC_RECEIPTS = ("OBJECT-MANIFEST.json", "GROUND-REGISTRATION.json", "INPUT-BINDINGS.json", "PROVENANCE.json", "PROCESS-RECEIPT.json")
 
 
@@ -93,7 +93,7 @@ def adversaries(base: Path, current_head: str) -> int:
     check("wrong route", schedule, lambda value: value.__setitem__("routeId", "wrong"))
     check("wrong head", schedule, lambda value: value.__setitem__("workerHead", "0" * 40))
     check("wrong output", schedule, lambda value: value.__setitem__("outputRoot", "/tmp/escape"))
-    check("wrong Blender", schedule, lambda value: value.__setitem__("blenderPath", "/Applications/Blender.app/Contents/MacOS/Blender"))
+    check("wrong Blender", schedule, lambda value: value.__setitem__("blenderPath", "/Applications/Blender-4.5.12-arm64.app/Contents/MacOS/Blender"))
     check("wrong child hash", schedule, lambda value: value.__setitem__("childSHA256", "0" * 64))
     check("multi child", schedule, lambda value: value.__setitem__("maximumChildStarts", 2))
     check("consumed grant", grant, lambda value: value.__setitem__("consumed", True))
@@ -258,7 +258,7 @@ def main(argv: list[str] | None = None) -> int:
     if replay_root != runner.RUNTIME_REPLAY_ROOT:
         raise ValueError("focused replay root mismatch")
     if replay_root.exists():
-        if replay_root.is_symlink() or replay_root != Path("/private/tmp/play090-residential-north-runtime-repair-v1"):
+        if replay_root.is_symlink() or replay_root != Path("/private/tmp/play090-residential-north-runtime-repair-v2"):
             raise ValueError("unsafe disposable replay root")
         shutil.rmtree(replay_root)
     replay_root.mkdir(mode=0o700)
@@ -287,7 +287,7 @@ def main(argv: list[str] | None = None) -> int:
         "schema": 1, "task": "PLAY-090", "stage": "north-runtime-repair", "result": "PASS",
         "proofLevel": "deterministic_replay", "routeId": runner.ROUTE_ID, "routeSHA256": runner.ROUTE_SHA256,
         "carrierCommit": runner.CARRIER_COMMIT, "workerInputHead": current_head,
-        "blender": {"path": runner.BLENDER, "sha256": runner.BLENDER_SHA256, "architecture": "arm64", "version": "4.5.12 LTS", "buildHash": "84afd5f785f7"},
+        "blender": {"path": runner.BLENDER, "sha256": runner.BLENDER_SHA256, "architecture": "x86_64", "translation": "Rosetta", "version": "4.5.12 LTS", "buildHash": "84afd5f785f7"},
         "execution": {"replayRoot": str(replay_root), "freshProcesses": 2, "maximumConcurrentDCC": 1,
                       "queueOrder": ["replay-a", "replay-b"], "childStarts": 2, "perAttemptMaximumChildStarts": 1,
                       "adversaries": adversary_count,

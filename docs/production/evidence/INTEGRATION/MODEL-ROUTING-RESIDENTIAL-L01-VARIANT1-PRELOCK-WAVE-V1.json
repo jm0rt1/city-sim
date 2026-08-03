@@ -1,0 +1,469 @@
+{
+  "schema": 2,
+  "authorityCommit": "80ee8de7f94998ef7bc12a4536a1924e82de69c4",
+  "assignments": [
+    {
+      "modelRouteSha256": "547b61f9b8e12037e148dc6ebf4a9c556aea2ea2b702899d260bd0a957d245e9",
+      "modelRoute": {
+        "schema": 2,
+        "routeId": "quality-v2:play-090-residential-l01-variant1-north-prelock-design-v1",
+        "taskId": "PLAY-090",
+        "packetKind": "authority",
+        "classification": "FRONTIER_AUTHORITY",
+        "model": "gpt-5.6-sol",
+        "effort": "high",
+        "rationale": "North owns the subjective hero vocabulary and family-calibration judgment. This prelock packet stops before DCC or pixels; mechanical sibling work remains Luna-routed.",
+        "authority": {
+          "authorityCommit": "80ee8de7f94998ef7bc12a4536a1924e82de69c4",
+          "baseCommit": "80ee8de7f94998ef7bc12a4536a1924e82de69c4",
+          "claim": {"path": "docs/production/claims/PLAY-090.world-art-north.md", "sha256": "64e5e09c3b9870ebaed8e311209fcd537ddace066d22ce922d7fbd9040bc8603"},
+          "immutableInputs": [
+            {"path": "docs/production/decisions/CONTRACT-023-residential-l01-variant-one-family.md", "sha256": "18ed6b18ed7e1ecbcaba1eb1c7fab9dffae98d670334d4ce30c33e3d1ddb7eb0"},
+            {"path": "docs/production/CITYSIM_WORKTREE_OPERATING_SYSTEM.md", "sha256": "c6b63e985bb15a9dab32741a2f3e6a4e1fbd278eb90f5d4b4f032f87008cdcef"},
+            {"path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md", "sha256": "241903901a3927fe22de4de2d318155fa5855cfcb66776813160639a0d4ffa0d"},
+            {"path": ".agents/skills/produce-citysim-world-art/SKILL.md", "sha256": "10ae5e31a8a31daa09c269a7be5092de4c044547db8ee0180ed85f3cb531d7ee"},
+            {"path": ".agents/skills/produce-citysim-world-art/references/direction-cell-parallel-execution.md", "sha256": "3cad284bc471c316c3a3ddffd88d580b7230c09e1b4f29a73c746b341995bdc8"},
+            {"path": ".agents/skills/operate-citysim-integration/scripts/validate_residential_l01_variant1_parallel_state_v1.py", "sha256": "c4355402a5ce67dbc8992691c5e053aff3969351c183e65972484b7083d42a2d"},
+            {"path": "docs/production/evidence/INTEGRATION/residential-l01-variant1-parallel-state-schema-v1.json", "sha256": "d905957718407cfdd9b1deff974c984c608127b6a60cf13c09fc09d313f66757"}
+          ]
+        },
+        "assignment": {
+          "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+          "branch": "codex/citysim-world-art",
+          "worktree": "/Users/James/.codex/worktrees/0648/city-sim",
+          "expectedHead": "2d1624af35aa268f4c5099b58a9bef2af53c8c83",
+          "featureAuthorThreadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": true
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-090/residential-l01-variant1-north",
+            "docs/production/evidence/PLAY-090"
+          ],
+          "allowed": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-090/residential-l01-variant1-north",
+            "docs/production/evidence/PLAY-090"
+          ],
+          "forbidden": [
+            "Native/CitySimNative/Sources",
+            "Native/CitySimNative/Resources",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-091",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-092",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-093",
+            "docs/production/evidence/INTEGRATION"
+          ]
+        },
+        "boundedDeliverable": "Author one North-only zero-pixel predesign packet that freezes proposed Residential L1 variant-one massing, roofline, entrance, facade rhythm, material roles, footprint, camera, pivot, socket, light and shadow vocabulary. Add task-owned deterministic zero-pixel validation and evidence, then stop at predesign_ready. Do not launch DCC, render pixels, publish an appearance lock, or touch siblings.",
+        "proofPolicy": {
+          "architectureState": "novel_or_ambiguous",
+          "referenceImplementation": null,
+          "deliverableClaims": ["static_structure"],
+          "focusedProofLevel": "static_only",
+          "fullProofLevel": "static_only",
+          "behavioralCommands": [],
+          "prohibitedSubstitutions": ["ast_shape_for_runtime_success", "manifest_or_prose_for_rendered_pixels", "source_token_presence_for_execution", "unit_tests_for_visual_acceptance", "worker_self_report_for_independent_acceptance"]
+        },
+        "validation": {
+          "focusedGateOwner": {"threadId": "019f96e0-3793-7542-9172-060a9ca09b0a", "role": "north_predesign_focused_gate"},
+          "focusedCommands": [
+            "python3 Native/CitySimNative/WorldArt/Blender/PLAY-090/residential-l01-variant1-north/test_prelock_zero_pixel.py",
+            "git diff --check 2d1624af35aa268f4c5099b58a9bef2af53c8c83..HEAD"
+          ],
+          "fullGateOwner": {"threadId": "019f7686-4491-7891-86a6-95a78d67e5c8", "role": "integration_north_predesign_acceptance", "model": "gpt-5.6-sol", "effort": "high"},
+          "fullCommands": ["Independent technical and literal-scale authority review before any North Process A closure"]
+        },
+        "expectedResult": {
+          "evidencePaths": ["docs/production/evidence/PLAY-090"],
+          "commitRequired": true,
+          "commitMessagePattern": "PLAY-090:"
+        },
+        "escalationTriggers": ["baseline_or_candidate_identity_mismatch", "cross_lane_semantic_conflict", "failure_outside_focused_scope", "path_outside_claim", "save_or_migration_uncertainty", "shared_contract_or_schema_decision", "subjective_acceptance_required", "two_unsuccessful_repair_attempts", "unresolved_product_visual_or_interaction_judgment"],
+        "stopCondition": "Stop after one clean predesign_ready commit, or immediately on identity/hash/path drift, sibling access, need for DCC/pixels, shared-contract change, unresolved visual choice outside the frozen North brief, two failed repairs, or any request to accept, integrate, push, or pin.",
+        "independentReviewer": {"required": true, "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8", "model": "gpt-5.6-sol", "effort": "high"},
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {"path": "docs/production/decisions/CONTRACT-023-residential-l01-variant-one-family.md", "sha256": "18ed6b18ed7e1ecbcaba1eb1c7fab9dffae98d670334d4ce30c33e3d1ddb7eb0"},
+            {"path": "docs/production/claims/PLAY-090.world-art-north.md", "sha256": "64e5e09c3b9870ebaed8e311209fcd537ddace066d22ce922d7fbd9040bc8603"},
+            {"path": "docs/production/CITYSIM_WORKTREE_OPERATING_SYSTEM.md", "sha256": "c6b63e985bb15a9dab32741a2f3e6a4e1fbd278eb90f5d4b4f032f87008cdcef"},
+            {"path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md", "sha256": "241903901a3927fe22de4de2d318155fa5855cfcb66776813160639a0d4ffa0d"},
+            {"path": ".agents/skills/produce-citysim-world-art/SKILL.md", "sha256": "10ae5e31a8a31daa09c269a7be5092de4c044547db8ee0180ed85f3cb531d7ee"},
+            {"path": ".agents/skills/produce-citysim-world-art/references/direction-cell-parallel-execution.md", "sha256": "3cad284bc471c316c3a3ddffd88d580b7230c09e1b4f29a73c746b341995bdc8"},
+            {"path": ".agents/skills/operate-citysim-integration/scripts/validate_residential_l01_variant1_parallel_state_v1.py", "sha256": "c4355402a5ce67dbc8992691c5e053aff3969351c183e65972484b7083d42a2d"},
+            {"path": "docs/production/evidence/INTEGRATION/residential-l01-variant1-parallel-state-schema-v1.json", "sha256": "d905957718407cfdd9b1deff974c984c608127b6a60cf13c09fc09d313f66757"}
+          ]
+        }
+      }
+    },
+    {
+      "modelRouteSha256": "038b2187f21e12214653a2f6c38e7581411a4b69d83ffd8289ab9fd2c0db8af5",
+      "modelRoute": {
+        "schema": 2,
+        "routeId": "quality-v2:play-091-residential-l01-variant1-east-prelock-v1",
+        "taskId": "PLAY-091",
+        "packetKind": "implementation",
+        "classification": "LUNA_IMPLEMENTATION",
+        "model": "gpt-5.6-luna",
+        "effort": "high",
+        "rationale": "East is a bounded contract-complete zero-pixel implementation under CONTRACT-023 with direction-exclusive roots and no subjective family acceptance.",
+        "authority": {
+          "authorityCommit": "80ee8de7f94998ef7bc12a4536a1924e82de69c4",
+          "baseCommit": "80ee8de7f94998ef7bc12a4536a1924e82de69c4",
+          "claim": {"path": "docs/production/claims/PLAY-091.world-art-east.md", "sha256": "393a36fd2b328727d544ec329f2f950089c80d8a75c6fc58702eb34aa0afd235"},
+          "immutableInputs": [
+            {"path": "docs/production/decisions/CONTRACT-023-residential-l01-variant-one-family.md", "sha256": "18ed6b18ed7e1ecbcaba1eb1c7fab9dffae98d670334d4ce30c33e3d1ddb7eb0"},
+            {"path": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/residential_l01/variant-0/east/scene.json", "sha256": "5a6ccb85adb129f4da73e086be2b14d417785a35c0391052b44180db872ef1fe"},
+            {"path": "docs/production/CITYSIM_WORKTREE_OPERATING_SYSTEM.md", "sha256": "c6b63e985bb15a9dab32741a2f3e6a4e1fbd278eb90f5d4b4f032f87008cdcef"},
+            {"path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md", "sha256": "241903901a3927fe22de4de2d318155fa5855cfcb66776813160639a0d4ffa0d"},
+            {"path": ".agents/skills/produce-citysim-world-art/SKILL.md", "sha256": "10ae5e31a8a31daa09c269a7be5092de4c044547db8ee0180ed85f3cb531d7ee"},
+            {"path": ".agents/skills/produce-citysim-world-art/references/direction-cell-parallel-execution.md", "sha256": "3cad284bc471c316c3a3ddffd88d580b7230c09e1b4f29a73c746b341995bdc8"},
+            {"path": ".agents/skills/operate-citysim-integration/scripts/validate_residential_l01_variant1_parallel_state_v1.py", "sha256": "c4355402a5ce67dbc8992691c5e053aff3969351c183e65972484b7083d42a2d"},
+            {"path": "docs/production/evidence/INTEGRATION/residential-l01-variant1-parallel-state-schema-v1.json", "sha256": "d905957718407cfdd9b1deff974c984c608127b6a60cf13c09fc09d313f66757"}
+          ]
+        },
+        "assignment": {
+          "threadId": "019fab72-b2c8-76c1-b430-6c6f8431733f",
+          "branch": "codex/citysim-world-art-east",
+          "worktree": "/Users/James/.codex/worktrees/92c2/city-sim",
+          "expectedHead": "80ee8de7f94998ef7bc12a4536a1924e82de69c4",
+          "featureAuthorThreadId": "019fab72-b2c8-76c1-b430-6c6f8431733f",
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": ["Native/CitySimNative/WorldArt/Blender/PLAY-091/residential-l01-variant1-east", "docs/production/evidence/PLAY-091"],
+          "allowed": ["Native/CitySimNative/WorldArt/Blender/PLAY-091/residential-l01-variant1-east", "docs/production/evidence/PLAY-091"],
+          "forbidden": ["Native/CitySimNative/Sources", "Native/CitySimNative/Resources", "Native/CitySimNative/WorldArt/Blender/PLAY-079", "Native/CitySimNative/WorldArt/Blender/PLAY-090", "Native/CitySimNative/WorldArt/Blender/PLAY-092", "Native/CitySimNative/WorldArt/Blender/PLAY-093", "docs/production/evidence/INTEGRATION"]
+        },
+        "boundedDeliverable": "Author an East-only zero-pixel blockout and actual camera/socket/scale proof under CONTRACT-023. Add deterministic task-owned validation and evidence, commit once at predesign_ready, and stop before DCC, pixels, normalization, or sibling access.",
+        "proofPolicy": {
+          "architectureState": "frozen_reference",
+          "referenceImplementation": {"path": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/residential_l01/variant-0/east/scene.json", "sha256": "5a6ccb85adb129f4da73e086be2b14d417785a35c0391052b44180db872ef1fe"},
+          "deliverableClaims": ["static_structure", "deterministic_output"],
+          "focusedProofLevel": "deterministic_replay",
+          "fullProofLevel": "deterministic_replay",
+          "behavioralCommands": ["python3 Native/CitySimNative/WorldArt/Blender/PLAY-091/residential-l01-variant1-east/test_prelock_zero_pixel.py --repeat 2 --compare-governed-bytes"],
+          "prohibitedSubstitutions": ["ast_shape_for_runtime_success", "manifest_or_prose_for_rendered_pixels", "source_token_presence_for_execution", "unit_tests_for_visual_acceptance", "worker_self_report_for_independent_acceptance"]
+        },
+        "validation": {
+          "focusedGateOwner": {"threadId": "019fab72-b2c8-76c1-b430-6c6f8431733f", "role": "east_predesign_focused_gate"},
+          "focusedCommands": ["python3 Native/CitySimNative/WorldArt/Blender/PLAY-091/residential-l01-variant1-east/test_prelock_zero_pixel.py --repeat 2 --compare-governed-bytes", "git diff --check 80ee8de7f94998ef7bc12a4536a1924e82de69c4..HEAD"],
+          "fullGateOwner": {"threadId": "019f7686-4491-7891-86a6-95a78d67e5c8", "role": "integration_east_predesign_acceptance", "model": "gpt-5.6-sol", "effort": "high"},
+          "fullCommands": ["Integration reviews exact East predesign packet and preserves the pixel lock"]
+        },
+        "expectedResult": {"evidencePaths": ["docs/production/evidence/PLAY-091"], "commitRequired": true, "commitMessagePattern": "PLAY-091:"},
+        "escalationTriggers": ["baseline_or_candidate_identity_mismatch", "cross_lane_semantic_conflict", "failure_outside_focused_scope", "path_outside_claim", "save_or_migration_uncertainty", "shared_contract_or_schema_decision", "subjective_acceptance_required", "two_unsuccessful_repair_attempts", "unresolved_product_visual_or_interaction_judgment"],
+        "stopCondition": "Stop after one clean predesign_ready commit, or immediately on identity/hash/path drift, sibling derivation, need for DCC/pixels, contract ambiguity, two failed repairs, or subjective acceptance.",
+        "independentReviewer": {"required": true, "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8", "model": "gpt-5.6-sol", "effort": "high"},
+        "context": {"mode": "full_authority_read", "packet": null, "verifiedHashes": [
+          {"path": "docs/production/decisions/CONTRACT-023-residential-l01-variant-one-family.md", "sha256": "18ed6b18ed7e1ecbcaba1eb1c7fab9dffae98d670334d4ce30c33e3d1ddb7eb0"},
+          {"path": "docs/production/claims/PLAY-091.world-art-east.md", "sha256": "393a36fd2b328727d544ec329f2f950089c80d8a75c6fc58702eb34aa0afd235"},
+          {"path": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/residential_l01/variant-0/east/scene.json", "sha256": "5a6ccb85adb129f4da73e086be2b14d417785a35c0391052b44180db872ef1fe"},
+          {"path": "docs/production/CITYSIM_WORKTREE_OPERATING_SYSTEM.md", "sha256": "c6b63e985bb15a9dab32741a2f3e6a4e1fbd278eb90f5d4b4f032f87008cdcef"},
+          {"path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md", "sha256": "241903901a3927fe22de4de2d318155fa5855cfcb66776813160639a0d4ffa0d"},
+          {"path": ".agents/skills/produce-citysim-world-art/SKILL.md", "sha256": "10ae5e31a8a31daa09c269a7be5092de4c044547db8ee0180ed85f3cb531d7ee"},
+          {"path": ".agents/skills/produce-citysim-world-art/references/direction-cell-parallel-execution.md", "sha256": "3cad284bc471c316c3a3ddffd88d580b7230c09e1b4f29a73c746b341995bdc8"},
+          {"path": ".agents/skills/operate-citysim-integration/scripts/validate_residential_l01_variant1_parallel_state_v1.py", "sha256": "c4355402a5ce67dbc8992691c5e053aff3969351c183e65972484b7083d42a2d"},
+          {"path": "docs/production/evidence/INTEGRATION/residential-l01-variant1-parallel-state-schema-v1.json", "sha256": "d905957718407cfdd9b1deff974c984c608127b6a60cf13c09fc09d313f66757"}
+        ]}
+      }
+    },
+    {
+      "modelRouteSha256": "bb4fef0cfb904b95b6426f6b18ac067eba19f5e90346735f9f44ef51674bf7eb",
+      "modelRoute": {
+        "schema": 2,
+        "routeId": "quality-v2:play-092-residential-l01-variant1-south-prelock-v1",
+        "taskId": "PLAY-092",
+        "packetKind": "implementation",
+        "classification": "LUNA_IMPLEMENTATION",
+        "model": "gpt-5.6-luna",
+        "effort": "high",
+        "rationale": "South is a bounded contract-complete zero-pixel implementation under CONTRACT-023 with direction-exclusive roots and no subjective family acceptance.",
+        "authority": {
+          "authorityCommit": "80ee8de7f94998ef7bc12a4536a1924e82de69c4",
+          "baseCommit": "80ee8de7f94998ef7bc12a4536a1924e82de69c4",
+          "claim": {"path": "docs/production/claims/PLAY-092.world-art-south.md", "sha256": "c01b52323e1d70a4214f9a94785986a028fc93714411a1fefd107e38ec239ccd"},
+          "immutableInputs": [
+            {"path": "docs/production/decisions/CONTRACT-023-residential-l01-variant-one-family.md", "sha256": "18ed6b18ed7e1ecbcaba1eb1c7fab9dffae98d670334d4ce30c33e3d1ddb7eb0"},
+            {"path": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/residential_l01/variant-0/south/scene.json", "sha256": "b03d2b578420c300c92d94a53d2573fb00c8a2df340ceee1a8c3c8162bad0b30"},
+            {"path": "docs/production/CITYSIM_WORKTREE_OPERATING_SYSTEM.md", "sha256": "c6b63e985bb15a9dab32741a2f3e6a4e1fbd278eb90f5d4b4f032f87008cdcef"},
+            {"path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md", "sha256": "241903901a3927fe22de4de2d318155fa5855cfcb66776813160639a0d4ffa0d"},
+            {"path": ".agents/skills/produce-citysim-world-art/SKILL.md", "sha256": "10ae5e31a8a31daa09c269a7be5092de4c044547db8ee0180ed85f3cb531d7ee"},
+            {"path": ".agents/skills/produce-citysim-world-art/references/direction-cell-parallel-execution.md", "sha256": "3cad284bc471c316c3a3ddffd88d580b7230c09e1b4f29a73c746b341995bdc8"},
+            {"path": ".agents/skills/operate-citysim-integration/scripts/validate_residential_l01_variant1_parallel_state_v1.py", "sha256": "c4355402a5ce67dbc8992691c5e053aff3969351c183e65972484b7083d42a2d"},
+            {"path": "docs/production/evidence/INTEGRATION/residential-l01-variant1-parallel-state-schema-v1.json", "sha256": "d905957718407cfdd9b1deff974c984c608127b6a60cf13c09fc09d313f66757"}
+          ]
+        },
+        "assignment": {
+          "threadId": "019fab72-b2c9-7d60-a397-27f4fde85950",
+          "branch": "codex/citysim-world-art-south",
+          "worktree": "/Users/James/.codex/worktrees/4247/city-sim",
+          "expectedHead": "71956b5b72a9d3013e3a2b52bba83ec1ebf684e1",
+          "featureAuthorThreadId": "019fab72-b2c9-7d60-a397-27f4fde85950",
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": ["Native/CitySimNative/WorldArt/Blender/PLAY-092/residential-l01-variant1-south", "docs/production/evidence/PLAY-092"],
+          "allowed": ["Native/CitySimNative/WorldArt/Blender/PLAY-092/residential-l01-variant1-south", "docs/production/evidence/PLAY-092"],
+          "forbidden": ["Native/CitySimNative/Sources", "Native/CitySimNative/Resources", "Native/CitySimNative/WorldArt/Blender/PLAY-080", "Native/CitySimNative/WorldArt/Blender/PLAY-090", "Native/CitySimNative/WorldArt/Blender/PLAY-091", "Native/CitySimNative/WorldArt/Blender/PLAY-093", "docs/production/evidence/INTEGRATION"]
+        },
+        "boundedDeliverable": "Author a South-only zero-pixel blockout and actual camera/socket/scale proof under CONTRACT-023. Add deterministic task-owned validation and evidence, commit once at predesign_ready, and stop before DCC, pixels, normalization, or sibling access.",
+        "proofPolicy": {
+          "architectureState": "frozen_reference",
+          "referenceImplementation": {"path": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/residential_l01/variant-0/south/scene.json", "sha256": "b03d2b578420c300c92d94a53d2573fb00c8a2df340ceee1a8c3c8162bad0b30"},
+          "deliverableClaims": ["static_structure", "deterministic_output"],
+          "focusedProofLevel": "deterministic_replay",
+          "fullProofLevel": "deterministic_replay",
+          "behavioralCommands": ["python3 Native/CitySimNative/WorldArt/Blender/PLAY-092/residential-l01-variant1-south/test_prelock_zero_pixel.py --repeat 2 --compare-governed-bytes"],
+          "prohibitedSubstitutions": ["ast_shape_for_runtime_success", "manifest_or_prose_for_rendered_pixels", "source_token_presence_for_execution", "unit_tests_for_visual_acceptance", "worker_self_report_for_independent_acceptance"]
+        },
+        "validation": {
+          "focusedGateOwner": {"threadId": "019fab72-b2c9-7d60-a397-27f4fde85950", "role": "south_predesign_focused_gate"},
+          "focusedCommands": ["python3 Native/CitySimNative/WorldArt/Blender/PLAY-092/residential-l01-variant1-south/test_prelock_zero_pixel.py --repeat 2 --compare-governed-bytes", "git diff --check 71956b5b72a9d3013e3a2b52bba83ec1ebf684e1..HEAD"],
+          "fullGateOwner": {"threadId": "019f7686-4491-7891-86a6-95a78d67e5c8", "role": "integration_south_predesign_acceptance", "model": "gpt-5.6-sol", "effort": "high"},
+          "fullCommands": ["Integration reviews exact South predesign packet and preserves the pixel lock"]
+        },
+        "expectedResult": {"evidencePaths": ["docs/production/evidence/PLAY-092"], "commitRequired": true, "commitMessagePattern": "PLAY-092:"},
+        "escalationTriggers": ["baseline_or_candidate_identity_mismatch", "cross_lane_semantic_conflict", "failure_outside_focused_scope", "path_outside_claim", "save_or_migration_uncertainty", "shared_contract_or_schema_decision", "subjective_acceptance_required", "two_unsuccessful_repair_attempts", "unresolved_product_visual_or_interaction_judgment"],
+        "stopCondition": "Stop after one clean predesign_ready commit, or immediately on identity/hash/path drift, sibling derivation, need for DCC/pixels, contract ambiguity, two failed repairs, or subjective acceptance.",
+        "independentReviewer": {"required": true, "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8", "model": "gpt-5.6-sol", "effort": "high"},
+        "context": {"mode": "full_authority_read", "packet": null, "verifiedHashes": [
+          {"path": "docs/production/decisions/CONTRACT-023-residential-l01-variant-one-family.md", "sha256": "18ed6b18ed7e1ecbcaba1eb1c7fab9dffae98d670334d4ce30c33e3d1ddb7eb0"},
+          {"path": "docs/production/claims/PLAY-092.world-art-south.md", "sha256": "c01b52323e1d70a4214f9a94785986a028fc93714411a1fefd107e38ec239ccd"},
+          {"path": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/residential_l01/variant-0/south/scene.json", "sha256": "b03d2b578420c300c92d94a53d2573fb00c8a2df340ceee1a8c3c8162bad0b30"},
+          {"path": "docs/production/CITYSIM_WORKTREE_OPERATING_SYSTEM.md", "sha256": "c6b63e985bb15a9dab32741a2f3e6a4e1fbd278eb90f5d4b4f032f87008cdcef"},
+          {"path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md", "sha256": "241903901a3927fe22de4de2d318155fa5855cfcb66776813160639a0d4ffa0d"},
+          {"path": ".agents/skills/produce-citysim-world-art/SKILL.md", "sha256": "10ae5e31a8a31daa09c269a7be5092de4c044547db8ee0180ed85f3cb531d7ee"},
+          {"path": ".agents/skills/produce-citysim-world-art/references/direction-cell-parallel-execution.md", "sha256": "3cad284bc471c316c3a3ddffd88d580b7230c09e1b4f29a73c746b341995bdc8"},
+          {"path": ".agents/skills/operate-citysim-integration/scripts/validate_residential_l01_variant1_parallel_state_v1.py", "sha256": "c4355402a5ce67dbc8992691c5e053aff3969351c183e65972484b7083d42a2d"},
+          {"path": "docs/production/evidence/INTEGRATION/residential-l01-variant1-parallel-state-schema-v1.json", "sha256": "d905957718407cfdd9b1deff974c984c608127b6a60cf13c09fc09d313f66757"}
+        ]}
+      }
+    },
+    {
+      "modelRouteSha256": "633a5c3fae8bae1fb59bd25ccfc14970bdc2775c40ced5f518bae78eb1538cab",
+      "modelRoute": {
+        "schema": 2,
+        "routeId": "quality-v2:play-093-residential-l01-variant1-west-prelock-v1",
+        "taskId": "PLAY-093",
+        "packetKind": "implementation",
+        "classification": "LUNA_IMPLEMENTATION",
+        "model": "gpt-5.6-luna",
+        "effort": "high",
+        "rationale": "West is a bounded contract-complete zero-pixel implementation under CONTRACT-023 with direction-exclusive roots and no subjective family acceptance.",
+        "authority": {
+          "authorityCommit": "80ee8de7f94998ef7bc12a4536a1924e82de69c4",
+          "baseCommit": "80ee8de7f94998ef7bc12a4536a1924e82de69c4",
+          "claim": {"path": "docs/production/claims/PLAY-093.world-art-west.md", "sha256": "52782ba07c23665084fcf4ac045fd734cecbb28449c3fe702cc3534868a98090"},
+          "immutableInputs": [
+            {"path": "docs/production/decisions/CONTRACT-023-residential-l01-variant-one-family.md", "sha256": "18ed6b18ed7e1ecbcaba1eb1c7fab9dffae98d670334d4ce30c33e3d1ddb7eb0"},
+            {"path": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/residential_l01/variant-0/west/scene.json", "sha256": "be6c207ef15b99dd15b5707eeb21aa674d52fe1df73175f2feab93714a70f288"},
+            {"path": "docs/production/CITYSIM_WORKTREE_OPERATING_SYSTEM.md", "sha256": "c6b63e985bb15a9dab32741a2f3e6a4e1fbd278eb90f5d4b4f032f87008cdcef"},
+            {"path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md", "sha256": "241903901a3927fe22de4de2d318155fa5855cfcb66776813160639a0d4ffa0d"},
+            {"path": ".agents/skills/produce-citysim-world-art/SKILL.md", "sha256": "10ae5e31a8a31daa09c269a7be5092de4c044547db8ee0180ed85f3cb531d7ee"},
+            {"path": ".agents/skills/produce-citysim-world-art/references/direction-cell-parallel-execution.md", "sha256": "3cad284bc471c316c3a3ddffd88d580b7230c09e1b4f29a73c746b341995bdc8"},
+            {"path": ".agents/skills/operate-citysim-integration/scripts/validate_residential_l01_variant1_parallel_state_v1.py", "sha256": "c4355402a5ce67dbc8992691c5e053aff3969351c183e65972484b7083d42a2d"},
+            {"path": "docs/production/evidence/INTEGRATION/residential-l01-variant1-parallel-state-schema-v1.json", "sha256": "d905957718407cfdd9b1deff974c984c608127b6a60cf13c09fc09d313f66757"}
+          ]
+        },
+        "assignment": {
+          "threadId": "019fab72-b2c9-7d60-a397-27d01d06cbbd",
+          "branch": "codex/citysim-world-art-west",
+          "worktree": "/Users/James/.codex/worktrees/ef17/city-sim",
+          "expectedHead": "80ee8de7f94998ef7bc12a4536a1924e82de69c4",
+          "featureAuthorThreadId": "019fab72-b2c9-7d60-a397-27d01d06cbbd",
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": ["Native/CitySimNative/WorldArt/Blender/PLAY-093/residential-l01-variant1-west", "docs/production/evidence/PLAY-093"],
+          "allowed": ["Native/CitySimNative/WorldArt/Blender/PLAY-093/residential-l01-variant1-west", "docs/production/evidence/PLAY-093"],
+          "forbidden": ["Native/CitySimNative/Sources", "Native/CitySimNative/Resources", "Native/CitySimNative/WorldArt/Blender/PLAY-081", "Native/CitySimNative/WorldArt/Blender/PLAY-090", "Native/CitySimNative/WorldArt/Blender/PLAY-091", "Native/CitySimNative/WorldArt/Blender/PLAY-092", "docs/production/evidence/INTEGRATION"]
+        },
+        "boundedDeliverable": "Author a West-only zero-pixel blockout and actual camera/socket/scale proof under CONTRACT-023. Add deterministic task-owned validation and evidence, commit once at predesign_ready, and stop before DCC, pixels, normalization, or sibling access.",
+        "proofPolicy": {
+          "architectureState": "frozen_reference",
+          "referenceImplementation": {"path": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/residential_l01/variant-0/west/scene.json", "sha256": "be6c207ef15b99dd15b5707eeb21aa674d52fe1df73175f2feab93714a70f288"},
+          "deliverableClaims": ["static_structure", "deterministic_output"],
+          "focusedProofLevel": "deterministic_replay",
+          "fullProofLevel": "deterministic_replay",
+          "behavioralCommands": ["python3 Native/CitySimNative/WorldArt/Blender/PLAY-093/residential-l01-variant1-west/test_prelock_zero_pixel.py --repeat 2 --compare-governed-bytes"],
+          "prohibitedSubstitutions": ["ast_shape_for_runtime_success", "manifest_or_prose_for_rendered_pixels", "source_token_presence_for_execution", "unit_tests_for_visual_acceptance", "worker_self_report_for_independent_acceptance"]
+        },
+        "validation": {
+          "focusedGateOwner": {"threadId": "019fab72-b2c9-7d60-a397-27d01d06cbbd", "role": "west_predesign_focused_gate"},
+          "focusedCommands": ["python3 Native/CitySimNative/WorldArt/Blender/PLAY-093/residential-l01-variant1-west/test_prelock_zero_pixel.py --repeat 2 --compare-governed-bytes", "git diff --check 80ee8de7f94998ef7bc12a4536a1924e82de69c4..HEAD"],
+          "fullGateOwner": {"threadId": "019f7686-4491-7891-86a6-95a78d67e5c8", "role": "integration_west_predesign_acceptance", "model": "gpt-5.6-sol", "effort": "high"},
+          "fullCommands": ["Integration reviews exact West predesign packet and preserves the pixel lock"]
+        },
+        "expectedResult": {"evidencePaths": ["docs/production/evidence/PLAY-093"], "commitRequired": true, "commitMessagePattern": "PLAY-093:"},
+        "escalationTriggers": ["baseline_or_candidate_identity_mismatch", "cross_lane_semantic_conflict", "failure_outside_focused_scope", "path_outside_claim", "save_or_migration_uncertainty", "shared_contract_or_schema_decision", "subjective_acceptance_required", "two_unsuccessful_repair_attempts", "unresolved_product_visual_or_interaction_judgment"],
+        "stopCondition": "Stop after one clean predesign_ready commit, or immediately on identity/hash/path drift, sibling derivation, need for DCC/pixels, contract ambiguity, two failed repairs, or subjective acceptance.",
+        "independentReviewer": {"required": true, "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8", "model": "gpt-5.6-sol", "effort": "high"},
+        "context": {"mode": "full_authority_read", "packet": null, "verifiedHashes": [
+          {"path": "docs/production/decisions/CONTRACT-023-residential-l01-variant-one-family.md", "sha256": "18ed6b18ed7e1ecbcaba1eb1c7fab9dffae98d670334d4ce30c33e3d1ddb7eb0"},
+          {"path": "docs/production/claims/PLAY-093.world-art-west.md", "sha256": "52782ba07c23665084fcf4ac045fd734cecbb28449c3fe702cc3534868a98090"},
+          {"path": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/residential_l01/variant-0/west/scene.json", "sha256": "be6c207ef15b99dd15b5707eeb21aa674d52fe1df73175f2feab93714a70f288"},
+          {"path": "docs/production/CITYSIM_WORKTREE_OPERATING_SYSTEM.md", "sha256": "c6b63e985bb15a9dab32741a2f3e6a4e1fbd278eb90f5d4b4f032f87008cdcef"},
+          {"path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md", "sha256": "241903901a3927fe22de4de2d318155fa5855cfcb66776813160639a0d4ffa0d"},
+          {"path": ".agents/skills/produce-citysim-world-art/SKILL.md", "sha256": "10ae5e31a8a31daa09c269a7be5092de4c044547db8ee0180ed85f3cb531d7ee"},
+          {"path": ".agents/skills/produce-citysim-world-art/references/direction-cell-parallel-execution.md", "sha256": "3cad284bc471c316c3a3ddffd88d580b7230c09e1b4f29a73c746b341995bdc8"},
+          {"path": ".agents/skills/operate-citysim-integration/scripts/validate_residential_l01_variant1_parallel_state_v1.py", "sha256": "c4355402a5ce67dbc8992691c5e053aff3969351c183e65972484b7083d42a2d"},
+          {"path": "docs/production/evidence/INTEGRATION/residential-l01-variant1-parallel-state-schema-v1.json", "sha256": "d905957718407cfdd9b1deff974c984c608127b6a60cf13c09fc09d313f66757"}
+        ]}
+      }
+    },
+    {
+      "modelRouteSha256": "45e4d410c81d426f3c9d5714d10c8e6737f23a6b5febb6b8fd62bcbce8218f59",
+      "modelRoute": {
+        "schema": 2,
+        "routeId": "quality-v2:play-094-residential-l01-variant1-intake-prelock-v1",
+        "taskId": "PLAY-094",
+        "packetKind": "implementation",
+        "classification": "LUNA_IMPLEMENTATION",
+        "model": "gpt-5.6-luna",
+        "effort": "high",
+        "rationale": "Renderer intake preparation is bounded to one approved test file and evidence root; shipping mapping, Resources, Sources and visual assembly remain blocked.",
+        "authority": {
+          "authorityCommit": "80ee8de7f94998ef7bc12a4536a1924e82de69c4",
+          "baseCommit": "80ee8de7f94998ef7bc12a4536a1924e82de69c4",
+          "claim": {"path": "docs/production/claims/PLAY-094.world-rendering.md", "sha256": "45a28e723b2cf86e5c9725e0e3786ea3976e7881680c775c1c8a2930d1804d6a"},
+          "immutableInputs": [
+            {"path": "docs/production/decisions/CONTRACT-023-residential-l01-variant-one-family.md", "sha256": "18ed6b18ed7e1ecbcaba1eb1c7fab9dffae98d670334d4ce30c33e3d1ddb7eb0"},
+            {"path": "docs/production/CITYSIM_WORKTREE_OPERATING_SYSTEM.md", "sha256": "c6b63e985bb15a9dab32741a2f3e6a4e1fbd278eb90f5d4b4f032f87008cdcef"},
+            {"path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md", "sha256": "241903901a3927fe22de4de2d318155fa5855cfcb66776813160639a0d4ffa0d"},
+            {"path": ".agents/skills/render-citysim-world/SKILL.md", "sha256": "fbd37c5f4730c61f95a344266b61d3fb37ce39adcefbaaba6e94f8939d8b72e2"},
+            {"path": ".agents/skills/render-citysim-world/references/directional-art-intake.md", "sha256": "aaf7fac8f69d718ba1289781e1c746b9d18134717c1b98ff5a040901b7037fd9"},
+            {"path": ".agents/skills/operate-citysim-integration/scripts/validate_residential_l01_variant1_parallel_state_v1.py", "sha256": "c4355402a5ce67dbc8992691c5e053aff3969351c183e65972484b7083d42a2d"},
+            {"path": "docs/production/evidence/INTEGRATION/residential-l01-variant1-parallel-state-schema-v1.json", "sha256": "d905957718407cfdd9b1deff974c984c608127b6a60cf13c09fc09d313f66757"}
+          ]
+        },
+        "assignment": {
+          "threadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+          "branch": "codex/citysim-world-rendering",
+          "worktree": "/Users/James/.codex/worktrees/cac1/city-sim",
+          "expectedHead": "96d4dbf44a79bd46086d415d9c48d73a08d6a579",
+          "featureAuthorThreadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": ["Native/CitySimNative/Tests/CitySimNativeTests/WorldRenderingTests.swift", "docs/production/evidence/PLAY-094"],
+          "allowed": ["Native/CitySimNative/Tests/CitySimNativeTests/WorldRenderingTests.swift", "docs/production/evidence/PLAY-094"],
+          "forbidden": ["Native/CitySimNative/Sources", "Native/CitySimNative/Resources", "Native/CitySimNative/WorldArt", "docs/production/evidence/INTEGRATION"]
+        },
+        "boundedDeliverable": "Prepare the non-shipping Residential L1 variant-one intake harness: logical IDs, four-direction quarantine graph, alias/fallback/mirror/rotation/registration negatives, deterministic opening-fixture selection plan and task-owned evidence. Change only WorldRenderingTests.swift and PLAY-094 evidence. Stop at intake_ready without Sources, Resources, atlas, runtime mapping, staged app, or activation.",
+        "proofPolicy": {
+          "architectureState": "frozen_reference",
+          "referenceImplementation": {"path": "docs/production/decisions/CONTRACT-023-residential-l01-variant-one-family.md", "sha256": "18ed6b18ed7e1ecbcaba1eb1c7fab9dffae98d670334d4ce30c33e3d1ddb7eb0"},
+          "deliverableClaims": ["static_structure", "executable_behavior"],
+          "focusedProofLevel": "contained_smoke",
+          "fullProofLevel": "contained_smoke",
+          "behavioralCommands": ["swift test --package-path Native/CitySimNative --filter WorldRenderingTests"],
+          "prohibitedSubstitutions": ["ast_shape_for_runtime_success", "manifest_or_prose_for_rendered_pixels", "source_token_presence_for_execution", "unit_tests_for_visual_acceptance", "worker_self_report_for_independent_acceptance"]
+        },
+        "validation": {
+          "focusedGateOwner": {"threadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0", "role": "renderer_prelock_intake_focused_gate"},
+          "focusedCommands": ["swift test --package-path Native/CitySimNative --filter WorldRenderingTests", "git diff --check 96d4dbf44a79bd46086d415d9c48d73a08d6a579..HEAD"],
+          "fullGateOwner": {"threadId": "019f7686-4491-7891-86a6-95a78d67e5c8", "role": "integration_atomic_renderer_gate", "model": "gpt-5.6-sol", "effort": "high"},
+          "fullCommands": ["One aggregate full Swift suite, staged resource build and independent real-app gate after exact 4-of-4 assembly"]
+        },
+        "expectedResult": {"evidencePaths": ["docs/production/evidence/PLAY-094"], "commitRequired": true, "commitMessagePattern": "PLAY-094:"},
+        "escalationTriggers": ["baseline_or_candidate_identity_mismatch", "cross_lane_semantic_conflict", "failure_outside_focused_scope", "path_outside_claim", "save_or_migration_uncertainty", "shared_contract_or_schema_decision", "subjective_acceptance_required", "two_unsuccessful_repair_attempts", "unresolved_product_visual_or_interaction_judgment"],
+        "stopCondition": "Stop after one clean intake_ready commit, or immediately on identity/hash/path drift, need for Sources/Resources/shipping mapping, source-art repair, contract ambiguity, two failed repairs, or subjective visual acceptance.",
+        "independentReviewer": {"required": true, "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8", "model": "gpt-5.6-sol", "effort": "high"},
+        "context": {"mode": "full_authority_read", "packet": null, "verifiedHashes": [
+          {"path": "docs/production/decisions/CONTRACT-023-residential-l01-variant-one-family.md", "sha256": "18ed6b18ed7e1ecbcaba1eb1c7fab9dffae98d670334d4ce30c33e3d1ddb7eb0"},
+          {"path": "docs/production/claims/PLAY-094.world-rendering.md", "sha256": "45a28e723b2cf86e5c9725e0e3786ea3976e7881680c775c1c8a2930d1804d6a"},
+          {"path": "docs/production/CITYSIM_WORKTREE_OPERATING_SYSTEM.md", "sha256": "c6b63e985bb15a9dab32741a2f3e6a4e1fbd278eb90f5d4b4f032f87008cdcef"},
+          {"path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md", "sha256": "241903901a3927fe22de4de2d318155fa5855cfcb66776813160639a0d4ffa0d"},
+          {"path": ".agents/skills/render-citysim-world/SKILL.md", "sha256": "fbd37c5f4730c61f95a344266b61d3fb37ce39adcefbaaba6e94f8939d8b72e2"},
+          {"path": ".agents/skills/render-citysim-world/references/directional-art-intake.md", "sha256": "aaf7fac8f69d718ba1289781e1c746b9d18134717c1b98ff5a040901b7037fd9"},
+          {"path": ".agents/skills/operate-citysim-integration/scripts/validate_residential_l01_variant1_parallel_state_v1.py", "sha256": "c4355402a5ce67dbc8992691c5e053aff3969351c183e65972484b7083d42a2d"},
+          {"path": "docs/production/evidence/INTEGRATION/residential-l01-variant1-parallel-state-schema-v1.json", "sha256": "d905957718407cfdd9b1deff974c984c608127b6a60cf13c09fc09d313f66757"}
+        ]}
+      }
+    },
+    {
+      "modelRouteSha256": "444f605f8fb66dfbdc3f91a8914284051a2c22e5d93047de71bf096b8c1cb082",
+      "modelRoute": {
+        "schema": 2,
+        "routeId": "quality-v2:play-075-residential-l01-variant1-preregistration-v1",
+        "taskId": "PLAY-075",
+        "packetKind": "mechanical",
+        "classification": "LUNA_MECHANICAL",
+        "model": "gpt-5.6-luna",
+        "effort": "medium",
+        "rationale": "QA preregistration is candidate-neutral machine-readable fixture, camera and rubric preparation; no product inspection, scoring, launch or acceptance judgment is allowed.",
+        "authority": {
+          "authorityCommit": "80ee8de7f94998ef7bc12a4536a1924e82de69c4",
+          "baseCommit": "80ee8de7f94998ef7bc12a4536a1924e82de69c4",
+          "claim": {"path": "docs/production/claims/PLAY-075.playtest-quality.md", "sha256": "364250ea7ced7cb3c663501ba7b2d08b9a84192bb4d44936b2dc1a0c008a7c35"},
+          "immutableInputs": [
+            {"path": "docs/production/decisions/CONTRACT-023-residential-l01-variant-one-family.md", "sha256": "18ed6b18ed7e1ecbcaba1eb1c7fab9dffae98d670334d4ce30c33e3d1ddb7eb0"},
+            {"path": "docs/production/CITYSIM_WORKTREE_OPERATING_SYSTEM.md", "sha256": "c6b63e985bb15a9dab32741a2f3e6a4e1fbd278eb90f5d4b4f032f87008cdcef"},
+            {"path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md", "sha256": "241903901a3927fe22de4de2d318155fa5855cfcb66776813160639a0d4ffa0d"},
+            {"path": ".agents/skills/verify-citysim-playability/SKILL.md", "sha256": "a632f4afff412dc9d61d7018fa2376859c5f05d0e9eea7d06fc8990cff2f2960"},
+            {"path": ".agents/skills/verify-citysim-playability/references/preregistration-and-source-review.md", "sha256": "940ff6a601de3c7510b93d1ce527e4621d776d5743c6a44cf23c423e484d8ab1"},
+            {"path": ".agents/skills/operate-citysim-integration/scripts/validate_residential_l01_variant1_parallel_state_v1.py", "sha256": "c4355402a5ce67dbc8992691c5e053aff3969351c183e65972484b7083d42a2d"},
+            {"path": "docs/production/evidence/INTEGRATION/residential-l01-variant1-parallel-state-schema-v1.json", "sha256": "d905957718407cfdd9b1deff974c984c608127b6a60cf13c09fc09d313f66757"}
+          ]
+        },
+        "assignment": {
+          "threadId": "019fc0b0-74cb-70e1-8923-8c9d9600484d",
+          "branch": "codex/citysim-playtest-quality",
+          "worktree": "/Users/James/.codex/worktrees/71b0/city-sim",
+          "expectedHead": "1ffc01a63ed035dfe720da14cc7f2e0708f0e47f",
+          "featureAuthorThreadId": null,
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": ["docs/production/evidence/PLAY-075/residential-l01-variant1-preregistration-v1"],
+          "allowed": ["docs/production/evidence/PLAY-075/residential-l01-variant1-preregistration-v1"],
+          "forbidden": ["Native", "docs/production/evidence/INTEGRATION", "docs/production/claims", "docs/production/decisions"]
+        },
+        "boundedDeliverable": "Create the candidate-neutral Residential L1 variant-one preregistration foundation binding CONTRACT-023, exact N/E/S/W logical keys, regular and 900x600 camera states, mature opening fixture, three LOD rubric, pointer/keyboard/AX/Reduce Motion checks, exclusive future evidence root, and rendererCandidateReceipt null. Preserve state as preregistering and record the exact dependency on the future PLAY-094 intake-plan hash; do not claim preregistered yet.",
+        "proofPolicy": {
+          "architectureState": "frozen_reference",
+          "referenceImplementation": {"path": "docs/production/decisions/CONTRACT-023-residential-l01-variant-one-family.md", "sha256": "18ed6b18ed7e1ecbcaba1eb1c7fab9dffae98d670334d4ce30c33e3d1ddb7eb0"},
+          "deliverableClaims": ["static_structure"],
+          "focusedProofLevel": "static_only",
+          "fullProofLevel": "static_only",
+          "behavioralCommands": [],
+          "prohibitedSubstitutions": ["ast_shape_for_runtime_success", "manifest_or_prose_for_rendered_pixels", "source_token_presence_for_execution", "unit_tests_for_visual_acceptance", "worker_self_report_for_independent_acceptance"]
+        },
+        "validation": {
+          "focusedGateOwner": {"threadId": "019fc0b0-74cb-70e1-8923-8c9d9600484d", "role": "qa_preregistration_focused_gate"},
+          "focusedCommands": ["python3 -m json.tool docs/production/evidence/PLAY-075/residential-l01-variant1-preregistration-v1/PREREGISTRATION.json", "git diff --check 1ffc01a63ed035dfe720da14cc7f2e0708f0e47f..HEAD"],
+          "fullGateOwner": {"threadId": "019f7686-4491-7891-86a6-95a78d67e5c8", "role": "integration_exact_candidate_full_gate", "model": "gpt-5.6-sol", "effort": "high"},
+          "fullCommands": ["Separate fresh frontier task operates one exact 4-of-4 staged candidate under an exclusive one-attempt lease"]
+        },
+        "expectedResult": {"evidencePaths": ["docs/production/evidence/PLAY-075/residential-l01-variant1-preregistration-v1"], "commitRequired": true, "commitMessagePattern": "PLAY-075:"},
+        "escalationTriggers": ["baseline_or_candidate_identity_mismatch", "cross_lane_semantic_conflict", "failure_outside_focused_scope", "path_outside_claim", "save_or_migration_uncertainty", "shared_contract_or_schema_decision", "subjective_acceptance_required", "two_unsuccessful_repair_attempts", "unresolved_product_visual_or_interaction_judgment"],
+        "stopCondition": "Stop after one clean preregistering evidence commit with the Renderer intake-plan dependency explicit, or immediately on identity/hash/path drift, missing frozen fixture/rubric inputs, need to launch or inspect a candidate, product mutation, scoring, two failed repairs, or subjective acceptance.",
+        "independentReviewer": {"required": true, "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8", "model": "gpt-5.6-sol", "effort": "high"},
+        "context": {"mode": "full_authority_read", "packet": null, "verifiedHashes": [
+          {"path": "docs/production/decisions/CONTRACT-023-residential-l01-variant-one-family.md", "sha256": "18ed6b18ed7e1ecbcaba1eb1c7fab9dffae98d670334d4ce30c33e3d1ddb7eb0"},
+          {"path": "docs/production/claims/PLAY-075.playtest-quality.md", "sha256": "364250ea7ced7cb3c663501ba7b2d08b9a84192bb4d44936b2dc1a0c008a7c35"},
+          {"path": "docs/production/CITYSIM_WORKTREE_OPERATING_SYSTEM.md", "sha256": "c6b63e985bb15a9dab32741a2f3e6a4e1fbd278eb90f5d4b4f032f87008cdcef"},
+          {"path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md", "sha256": "241903901a3927fe22de4de2d318155fa5855cfcb66776813160639a0d4ffa0d"},
+          {"path": ".agents/skills/verify-citysim-playability/SKILL.md", "sha256": "a632f4afff412dc9d61d7018fa2376859c5f05d0e9eea7d06fc8990cff2f2960"},
+          {"path": ".agents/skills/verify-citysim-playability/references/preregistration-and-source-review.md", "sha256": "940ff6a601de3c7510b93d1ce527e4621d776d5743c6a44cf23c423e484d8ab1"},
+          {"path": ".agents/skills/operate-citysim-integration/scripts/validate_residential_l01_variant1_parallel_state_v1.py", "sha256": "c4355402a5ce67dbc8992691c5e053aff3969351c183e65972484b7083d42a2d"},
+          {"path": "docs/production/evidence/INTEGRATION/residential-l01-variant1-parallel-state-schema-v1.json", "sha256": "d905957718407cfdd9b1deff974c984c608127b6a60cf13c09fc09d313f66757"}
+        ]}
+      }
+    }
+  ]
+}

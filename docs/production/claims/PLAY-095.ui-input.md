@@ -6,8 +6,10 @@
 - **Worktree:** `/Users/James/.codex/worktrees/citysim/ui-input`
 - **Base authority:** Published master containing the exact PLAY-075 R4-F
   return packet and this claim
-- **Planned surfaces:** `CityGameStore.swift`, exact UI/input store tests, and
-  `docs/production/evidence/PLAY-095/`
+- **Planned surfaces:**
+  `Native/CitySimNative/Sources/CitySimNative/Stores/CityGameStore.swift`,
+  `Native/CitySimNative/Tests/CitySimNativeTests/CityCommandCatalogTests.swift`,
+  and `docs/production/evidence/PLAY-095/`
 - **Dependency:** Exact independent defect `PLAY075-R4F-003`
 - **Validation/proof:** blocked occupied-road pointer action, stale-feedback
   replacement, success/failure tone and AX label agreement, keyboard parity,

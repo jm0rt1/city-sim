@@ -1,0 +1,125 @@
+{
+  "schema": 2,
+  "authorityCommit": "46aa24da390154bd3aadd63ff2245b86716d2dd4",
+  "assignments": [
+    {
+      "modelRouteSha256": "fd82e8b5048ce442ee97d94c2f327c412f76aef0757dec9e75ed99956e190c6b",
+      "modelRoute": {
+        "schema": 2,
+        "routeId": "quality-v2:play-090-residential-l01-variant1-north-runtime-repair-v2",
+        "taskId": "PLAY-090",
+        "packetKind": "authority",
+        "classification": "FRONTIER_AUTHORITY",
+        "model": "gpt-5.6-sol",
+        "effort": "high",
+        "rationale": "The first runtime-repair route correctly stopped after the admitted arm64 Blender failed both its one disposable replay and a minimal bpy import probe before Python. Integration preserved that failure, independently proved the exact x86_64 Blender 4.5.12 binary can import bpy under Rosetta on the same host, published a runtime-capability receipt, and synchronized the clean blocked checkpoint. Frontier authority is required to switch the frozen executable tuple and resume the already-bounded scene/runtime repair without weakening the two-failure escalation rule.",
+        "authority": {
+          "authorityCommit": "46aa24da390154bd3aadd63ff2245b86716d2dd4",
+          "baseCommit": "46aa24da390154bd3aadd63ff2245b86716d2dd4",
+          "claim": {
+            "path": "docs/production/claims/PLAY-090.world-art-north.md",
+            "sha256": "3d28843b7cbd53c9f25e71163a6bd3e9821c340010f7303a0909e35b9251d6b2"
+          },
+          "immutableInputs": [
+            {
+              "path": "docs/production/evidence/INTEGRATION/BLENDER-4.5.12-X86_64-RUNTIME-RECEIPT-V1.json",
+              "sha256": "4ef99161131551706a9897005a3af0827a2fb0caf928917f5015e2e12d446a5f"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-090-RESIDENTIAL-L01-VARIANT1-NORTH-RUNTIME-REPAIR-V1.json",
+              "sha256": "2d2964e1b2f018949b66b5e6c098d0115a1d7b4fa8d19e50a6b7477788137cbb"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-090/residential-l01-variant1-north/DESIGN-SCENE.json",
+              "sha256": "b8693b77b9e3927b44ed1e67bdacaf76afe69f474a338bf51619b3e61fe8be4b"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-090/residential-l01-variant1-north/MATERIALS.json",
+              "sha256": "943436fdebc0c7bf672798bffa6f7619608341316cead3467efc6f14a3ac4fc3"
+            }
+          ]
+        },
+        "assignment": {
+          "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+          "branch": "codex/citysim-world-art",
+          "worktree": "/Users/James/.codex/worktrees/0648/city-sim",
+          "expectedHead": "adce6edb48a2d32eae7bb0a32a8b1d969d5f6ac5",
+          "featureAuthorThreadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": true
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-090/residential-l01-variant1-north",
+            "docs/production/evidence/PLAY-090"
+          ],
+          "allowed": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-090/residential-l01-variant1-north",
+            "docs/production/evidence/PLAY-090"
+          ],
+          "forbidden": [
+            ".agents/skills",
+            "Native/CitySimNative/Sources",
+            "Native/CitySimNative/Resources",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-091",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-092",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-093",
+            "docs/production/claims",
+            "docs/production/decisions",
+            "docs/production/evidence/INTEGRATION"
+          ]
+        },
+        "boundedDeliverable": "Resume the clean ce35a4cd blocked checkpoint by rebinding only the executable/runtime receipt from the rejected arm64 tuple to the Integration-admitted x86_64 Blender 4.5.12 tuple. Preserve all arm64 failure evidence. Complete the already-authored lowering/runtime repair, update task-owned contracts/tests/evidence to this V2 route, and run exactly one fresh disposable A/B replay under a new /private/tmp root. Require two successful Blender child exits, nonblank RGBA8 1536x1024 images, all 19 components and materials, exact registration, byte-identical decoded pixels and deterministic manifests/receipts, visual contact sheets, and zero governed production writes. Commit one coherent resumption candidate and stop.",
+        "proofPolicy": {
+          "architectureState": "novel_or_ambiguous",
+          "referenceImplementation": null,
+          "deliverableClaims": ["static_structure", "executable_behavior", "deterministic_output"],
+          "focusedProofLevel": "deterministic_replay",
+          "fullProofLevel": "deterministic_replay",
+          "behavioralCommands": [
+            "python3 Native/CitySimNative/WorldArt/Blender/PLAY-090/residential-l01-variant1-north/test_process_a_execution_boundary.py --contained-runtime-replay --assert-nonblank --output-root /private/tmp/play090-residential-north-runtime-repair-v2"
+          ],
+          "prohibitedSubstitutions": [
+            "ast_shape_for_runtime_success",
+            "manifest_or_prose_for_rendered_pixels",
+            "source_token_presence_for_execution",
+            "unit_tests_for_visual_acceptance",
+            "worker_self_report_for_independent_acceptance"
+          ]
+        },
+        "validation": {
+          "focusedGateOwner": {"threadId": "019f96e0-3793-7542-9172-060a9ca09b0a", "role": "north_runtime_repair_v2_focused_gate"},
+          "focusedCommands": [
+            "python3 Native/CitySimNative/WorldArt/Blender/PLAY-090/residential-l01-variant1-north/test_process_a_execution_boundary.py --contained-runtime-replay --assert-nonblank --output-root /private/tmp/play090-residential-north-runtime-repair-v2",
+            "python3 Native/CitySimNative/WorldArt/Blender/PLAY-090/residential-l01-variant1-north/test_prelock_zero_pixel.py",
+            "git diff --check adce6edb48a2d32eae7bb0a32a8b1d969d5f6ac5..HEAD"
+          ],
+          "fullGateOwner": {"threadId": "019f7686-4491-7891-86a6-95a78d67e5c8", "role": "integration_north_runtime_repair_v2_acceptance", "model": "gpt-5.6-sol", "effort": "high"},
+          "fullCommands": ["Integration independently reruns the exact disposable V2 replay, visually inspects both outputs, verifies hashes/occupancy/registration and claimed paths, and alone decides whether to publish the governed North Process-A schedule"]
+        },
+        "expectedResult": {
+          "evidencePaths": ["docs/production/evidence/PLAY-090/residential-l01-variant1-north-runtime-repair-v2"],
+          "commitRequired": true,
+          "commitMessagePattern": "PLAY-090:"
+        },
+        "escalationTriggers": [
+          "baseline_or_candidate_identity_mismatch", "cross_lane_semantic_conflict", "failure_outside_focused_scope", "path_outside_claim", "save_or_migration_uncertainty", "shared_contract_or_schema_decision", "subjective_acceptance_required", "two_unsuccessful_repair_attempts", "unresolved_product_visual_or_interaction_judgment"
+        ],
+        "stopCondition": "Stop after one clean V2 repair/evidence commit and successful deterministic disposable A/B replay. Stop immediately on any V2 identity/hash/path drift, governed production write, x86_64 bpy/runtime failure, nonblank/determinism/registration failure after one bounded repair, sibling/shared-path access, or request to integrate/push/pin/self-accept.",
+        "independentReviewer": {"required": true, "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8", "model": "gpt-5.6-sol", "effort": "high"},
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {"path": "docs/production/claims/PLAY-090.world-art-north.md", "sha256": "3d28843b7cbd53c9f25e71163a6bd3e9821c340010f7303a0909e35b9251d6b2"},
+            {"path": "docs/production/evidence/INTEGRATION/BLENDER-4.5.12-X86_64-RUNTIME-RECEIPT-V1.json", "sha256": "4ef99161131551706a9897005a3af0827a2fb0caf928917f5015e2e12d446a5f"},
+            {"path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-090-RESIDENTIAL-L01-VARIANT1-NORTH-RUNTIME-REPAIR-V1.json", "sha256": "2d2964e1b2f018949b66b5e6c098d0115a1d7b4fa8d19e50a6b7477788137cbb"},
+            {"path": "Native/CitySimNative/WorldArt/Blender/PLAY-090/residential-l01-variant1-north/DESIGN-SCENE.json", "sha256": "b8693b77b9e3927b44ed1e67bdacaf76afe69f474a338bf51619b3e61fe8be4b"}
+          ]
+        }
+      }
+    }
+  ]
+}

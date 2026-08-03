@@ -1,0 +1,98 @@
+{
+  "schema": "citysim.world-art.residential-l01-variant1-west-prelock.v1",
+  "taskId": "PLAY-093",
+  "direction": "west",
+  "state": "predesign_ready",
+  "route": {
+    "routeId": "quality-v2:play-093-residential-l01-variant1-west-prelock-v1",
+    "routeSHA256": "633a5c3fae8bae1fb59bd25ccfc14970bdc2775c40ced5f518bae78eb1538cab",
+    "receiptCommit": "3a6c257b5702a7d93cd27c703ca0946f011deacd",
+    "receiptSHA256": "1e65c026c1a26ac43a6720692e4648d2a1afc680342d0e133acb08360c81e9c2"
+  },
+  "authority": {
+    "authorityCommit": "80ee8de7f94998ef7bc12a4536a1924e82de69c4",
+    "baseCommit": "80ee8de7f94998ef7bc12a4536a1924e82de69c4",
+    "claimPath": "docs/production/claims/PLAY-093.world-art-west.md",
+    "claimSHA256": "52782ba07c23665084fcf4ac045fd734cecbb28449c3fe702cc3534868a98090",
+    "familyContractPath": "docs/production/decisions/CONTRACT-023-residential-l01-variant-one-family.md",
+    "familyContractSHA256": "18ed6b18ed7e1ecbcaba1eb1c7fab9dffae98d670334d4ce30c33e3d1ddb7eb0"
+  },
+  "worker": {
+    "branch": "codex/citysim-world-art-west",
+    "worktree": "/Users/James/.codex/worktrees/ef17/city-sim",
+    "implementationHeadBeforeCommit": "80ee8de7f94998ef7bc12a4536a1924e82de69c4",
+    "sourceRoot": "Native/CitySimNative/WorldArt/Blender/PLAY-093/residential-l01-variant1-west/",
+    "evidenceRoot": "docs/production/evidence/PLAY-093/",
+    "siblingInputsConsumed": []
+  },
+  "schedule": {
+    "path": "docs/production/evidence/INTEGRATION/RESIDENTIAL-L01-VARIANT1-PARALLEL-SCHEDULE-V2.json",
+    "carrierCommit": "5be3bcf26ed48e19e2af3db5c796e54a4c9acbeb",
+    "sha256": "ec8b66905f487b6197a4533a8060af6d4809591b2ffc564d41b02ff107915ae5",
+    "phase": "prelock_active",
+    "dispatchReady": true,
+    "westPermission": "zeroPixelPreparation"
+  },
+  "scene": {
+    "path": "Native/CitySimNative/WorldArt/Blender/PLAY-093/residential-l01-variant1-west/scene.json",
+    "sha256": "a936abf9a1682a49841100f2ac253bcb4765c8f523ceadafb4ef5cedabee5f3a",
+    "logicalBuildingID": "residential_l01",
+    "variantID": "variant-1",
+    "viewDirection": "west",
+    "sourceRevision": "prelock-v01",
+    "authoredIndependently": true,
+    "productionSelected": false,
+    "sourceReady": false,
+    "orientationTransform": "none"
+  },
+  "reference": {
+    "path": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/residential_l01/variant-0/west/scene.json",
+    "sha256": "be6c207ef15b99dd15b5707eeb21aa674d52fe1df73175f2feab93714a70f288",
+    "consumption": "read_only_contract_reference",
+    "siblingGeometryConsumed": false
+  },
+  "proof": {
+    "validatorPath": "Native/CitySimNative/WorldArt/Blender/PLAY-093/residential-l01-variant1-west/test_prelock_zero_pixel.py",
+    "validatorSHA256": "3e9c162a16fd94bae45716238b1d53252181caf9e7272a7fa41ae28d0ba185a7",
+    "command": "PYTHONDONTWRITEBYTECODE=1 python3 Native/CitySimNative/WorldArt/Blender/PLAY-093/residential-l01-variant1-west/test_prelock_zero_pixel.py --repeat 2 --compare-governed-bytes",
+    "runs": 2,
+    "repeatPerRun": 2,
+    "governedBytesIdentical": true,
+    "cameraSocket": {
+      "world": [-28, 0, 0],
+      "source": [640, 704],
+      "projectedRightBasis": [0.707106781, 0.0, -0.707106781],
+      "projectedUpBasis": [-0.353553391, 0.866025404, -0.353553391],
+      "pixelsPerProjectedWorld": 6.464976285
+    },
+    "registration": {
+      "tileBasisPoints": [72, 36],
+      "footprintPolygonSource": [[768, 640], [1024, 768], [768, 896], [512, 768]],
+      "groundPivotSource": [768, 896],
+      "contactPolygonWorld": [[-28, -28], [28, -28], [28, 28], [-28, 28]]
+    },
+    "variantOneSemantics": {
+      "massing": "offset-cross-gable",
+      "silhouetteBreaks": 3,
+      "westWindowBays": 5,
+      "structuralSecondaryVolume": "west-stair-tower",
+      "nonAliasAgainstVariantZero": true,
+      "entranceOnWestFrontage": true
+    }
+  },
+  "zeroPixelBoundary": {
+    "blenderProcessStarts": 0,
+    "dccInvocations": 0,
+    "renderInvocations": 0,
+    "pixelFiles": 0,
+    "normalizationInvocations": 0,
+    "blendFiles": 0
+  },
+  "blockedUntil": {
+    "appearanceLock": "Integration North appearance lock",
+    "sourceProductionProfile": "Integration post-lock source authority",
+    "productionSelection": true
+  },
+  "independentReviewRequired": true,
+  "acceptanceOwner": "Integration"
+}

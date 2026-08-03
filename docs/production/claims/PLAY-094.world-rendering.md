@@ -6,11 +6,12 @@
 - **Worktree:** `/Users/James/.codex/worktrees/cac1/city-sim`
 - **Base authority:** published master containing CONTRACT-023, the PLAY-094
   claim, and the Integration-published family controls
-- **Exclusive roots after source admission:** exact Integration-approved
-  renderer mapping/atlas/resource paths, focused
-  `WorldRenderingTests.swift` additions, and
-  `docs/production/evidence/PLAY-094/`; prelock work is test/evidence-only and
-  may not activate art.
+- **Exclusive prelock roots:**
+  `Native/CitySimNative/Tests/CitySimNativeTests/WorldRenderingTests.swift`
+  and `docs/production/evidence/PLAY-094/`. Exact
+  Integration-approved renderer mapping/atlas/resource paths become eligible
+  only after 4/4 source admission; prelock work is test/evidence-only and may
+  not mutate `Sources/`, `Resources/`, or activate art.
 - **Dependencies:** CONTRACT-023; family-bound intake contract; exact admitted
   PLAY-090/091/092/093 sources for shipping mutation.
 - **Prior-work preservation:** PLAY-073 R4-E remains preserved at clean failed

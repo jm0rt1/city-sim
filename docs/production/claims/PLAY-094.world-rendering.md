@@ -21,8 +21,9 @@
   negatives, atomic 4/4 assembly, deterministic variant selection, source to
   atlas/runtime identity, three LODs, regular/compact staged fixture,
   interaction/resource/performance proof.
-- **Status:** Planned. Intake preparation may start only after the published
-  family validator and exact Luna route; production activation waits for 4/4.
+- **Status:** Active prelock intake preparation. Mutation still requires the
+  final published authority and exact Luna route; production activation waits
+  for 4/4.
 
 No source-art repair, partial activation, gameplay/UI/simulation/save/package
 change, final scoring, push, integration, self-acceptance, or pin.

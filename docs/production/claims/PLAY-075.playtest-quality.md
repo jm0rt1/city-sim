@@ -25,7 +25,7 @@
   `fcccf2bce4a31ee096bfd40580af30e6f90c51cc`; the focused R2 slot is closed.
   The exact Industrial L4 N/E/S/W family remains preserved and resumes only
   under its existing candidate-specific authority. The active candidate-neutral
-  preparation slot is now CONTRACT-023 Residential L1 variant one.
+  preparation slot is now active for CONTRACT-023 Residential L1 variant one.
   Candidate-neutral preparation is preserved in the fail-closed packet under
   `docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/`,
   but it remains `preregistering` until Integration publishes and acknowledges

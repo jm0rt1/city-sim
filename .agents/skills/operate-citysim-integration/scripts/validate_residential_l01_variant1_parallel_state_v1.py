@@ -50,8 +50,11 @@ OWNED_ROOTS = {
     "east": ["Native/CitySimNative/WorldArt/Blender/PLAY-091/residential-l01-variant1-east/", "docs/production/evidence/PLAY-091/"],
     "south": ["Native/CitySimNative/WorldArt/Blender/PLAY-092/residential-l01-variant1-south/", "docs/production/evidence/PLAY-092/"],
     "west": ["Native/CitySimNative/WorldArt/Blender/PLAY-093/residential-l01-variant1-west/", "docs/production/evidence/PLAY-093/"],
-    "renderer": ["docs/production/evidence/PLAY-094/"],
-    "qa": ["docs/production/evidence/PLAY-075/"],
+    "renderer": [
+        "Native/CitySimNative/Tests/CitySimNativeTests/WorldRenderingTests.swift",
+        "docs/production/evidence/PLAY-094/",
+    ],
+    "qa": ["docs/production/evidence/PLAY-075/residential-l01-variant1-preregistration-v1/"],
 }
 DIRECTION_TRANSITIONS = {
     "predesign": {"predesign", "source_candidate", "returned"},
@@ -267,7 +270,7 @@ def permission_projection(cell: str, phase: str) -> dict[str, bool]:
     result = {field: False for field in PERMISSION_FIELDS}
     if phase in {"prelock_active", "appearance_lock_pending"}:
         if cell == "north":
-            result["prelockProcessA"] = True
+            result["zeroPixelPreparation"] = True
         elif cell in {"east", "south", "west"}:
             result["zeroPixelPreparation"] = True
         elif cell == "renderer":

@@ -336,8 +336,23 @@ class ResidentialControlTests(unittest.TestCase):
     def test_positive_prelock_transition_with_real_schema2_receipt_projection(self) -> None:
         data = copy.deepcopy(self.valid)
         self.activate(data, "prelock_active", "contract_pending")
+        north = next(row for row in data["cells"] if row["cell"] == "north")
+        renderer = next(row for row in data["cells"] if row["cell"] == "renderer")
+        qa = next(row for row in data["cells"] if row["cell"] == "qa")
+        self.assertTrue(north["permissions"]["zeroPixelPreparation"])
+        self.assertFalse(north["permissions"]["prelockProcessA"])
+        self.assertEqual(renderer["ownedRoots"], MODULE.OWNED_ROOTS["renderer"])
+        self.assertEqual(qa["ownedRoots"], MODULE.OWNED_ROOTS["qa"])
         result = self.validate_fixture(data)
         self.assertTrue(result["dispatchReady"])
+
+    def test_rejects_prelock_north_process_a_without_future_closure(self) -> None:
+        data = copy.deepcopy(self.valid)
+        self.activate(data, "prelock_active", "contract_pending")
+        north = next(row for row in data["cells"] if row["cell"] == "north")
+        north["permissions"]["zeroPixelPreparation"] = False
+        north["permissions"]["prelockProcessA"] = True
+        self.assert_fails(data)
 
     def test_positive_direction_local_return_preserves_siblings(self) -> None:
         data = copy.deepcopy(self.valid)

@@ -16,8 +16,8 @@
 - **Validation/proof:** Independent East zero-pixel camera/socket/scale proof,
   then three-process source, non-alias, registration, provenance,
   normalization, literal-192, and contact-sheet gates after lock.
-- **Status:** Planned; zero mutation before published authority and exact Luna
-  route.
+- **Status:** Active prelock preparation; zero mutation before the final
+  published authority and exact Luna route. Pixels remain locked.
 
 No sibling geometry or pixels, shared surfaces, renderer/shipping, product
 code, push, integration, self-acceptance, or pin.

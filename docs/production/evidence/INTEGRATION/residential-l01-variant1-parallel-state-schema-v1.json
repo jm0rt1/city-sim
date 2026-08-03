@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "citysim://residential-l01-variant1-parallel-state-schema-v1",
+  "title": "Residential L1 variant-one parallel control schedule",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "batchId",
+    "phase",
+    "authorityCommit",
+    "familyContract",
+    "controlSchema",
+    "dispatchReady",
+    "cells",
+    "familyActivation",
+    "capacity"
+  ],
+  "properties": {
+    "schema": {"const": 1},
+    "batchId": {"const": "residential-l01-variant1-v1"},
+    "phase": {"enum": ["prelock", "production", "activation"]},
+    "authorityCommit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "familyContract": {"$ref": "#/$defs/binding"},
+    "controlSchema": {"$ref": "#/$defs/binding"},
+    "dispatchReady": {"type": "boolean"},
+    "cells": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "items": {"$ref": "#/$defs/cell"}
+    },
+    "familyActivation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state", "requiredDirections", "admittedDirections", "partialActivationAllowed", "variantZeroFallbackAllowed"],
+      "properties": {
+        "state": {"enum": ["blocked_until_4_of_4", "ready_for_atomic_activation", "activated"]},
+        "requiredDirections": {"const": ["north", "east", "south", "west"]},
+        "admittedDirections": {"type": "array", "uniqueItems": true, "items": {"enum": ["north", "east", "south", "west"]}},
+        "partialActivationAllowed": {"const": false},
+        "variantZeroFallbackAllowed": {"const": false}
+      }
+    },
+    "capacity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["minimumUsefulActiveWorkstreams", "activeWorkstreams", "idleCapacityReason", "overlapProof"],
+      "properties": {
+        "minimumUsefulActiveWorkstreams": {"type": "integer", "minimum": 1},
+        "activeWorkstreams": {"type": "array", "uniqueItems": true, "items": {"enum": ["north", "east", "south", "west", "renderer", "qa"]}},
+        "idleCapacityReason": {"type": ["string", "null"]},
+        "overlapProof": {"type": "array"}
+      }
+    }
+  },
+  "$defs": {
+    "binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "cell": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["cell", "taskId", "threadId", "branch", "worktree", "head", "claim", "state", "ownedRoots", "siblingTransformAllowed", "modelRoute", "permissions", "failureIsolation", "featureAuthorThreadId"],
+      "properties": {
+        "cell": {"enum": ["north", "east", "south", "west", "renderer", "qa"]},
+        "taskId": {"type": "string"},
+        "threadId": {"type": "string"},
+        "branch": {"type": "string"},
+        "worktree": {"type": "string"},
+        "head": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "claim": {"$ref": "#/$defs/binding"},
+        "state": {"enum": ["not_dispatched", "prelock_ready", "active", "passed", "failed", "blocked", "demoted"]},
+        "ownedRoots": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "siblingTransformAllowed": {"const": false},
+        "modelRoute": {"type": "object"},
+        "permissions": {"type": "object"},
+        "failureIsolation": {"const": true},
+        "featureAuthorThreadId": {"type": ["string", "null"]}
+      }
+    }
+  }
+}

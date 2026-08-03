@@ -1,0 +1,95 @@
+{
+  "schema": 1,
+  "taskId": "PLAY-089",
+  "result": "CANDIDATE_READY_FOR_INTEGRATION_REVIEW",
+  "binding": {
+    "authorityCommit": "07b2ad82eac047573537503ffdb091499310f644",
+    "authorityAncestorOfStartingHead": true,
+    "routePath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-089-RESIDENTIAL-L01-VARIANT1-CONTROLS-V1.json",
+    "routeFileSha256": "dd2a05781841a168bcec50924896f40f67d00de781fe33743f28f69e5cebcb8a",
+    "routeId": "quality-v2:play-089-residential-l01-variant1-controls-v1",
+    "modelRouteSha256": "7879bbc934ebf7a0c099fa2c8d0fa8c571f16caac6463b53918f722666c86315",
+    "classification": "FRONTIER_AUTHORITY",
+    "model": "gpt-5.6-sol",
+    "effort": "high",
+    "threadId": "019fc40d-c697-7aa2-94bf-902b031a8c67",
+    "branch": "codex/citysim-os-optimization",
+    "worktree": "/Users/James/.codex/worktrees/dc21/city-sim",
+    "startingCommit": "bb9481a8151a3b2cd5e6a0c8ececcc2361bfc7de",
+    "resultCommit": null,
+    "resultCommitBinding": "The exact result is the enclosing Git commit and is supplied in the worker handoff after commit creation.",
+    "claim": {
+      "path": "docs/production/claims/PLAY-089.operating-system-optimization.md",
+      "sha256": "5261dd14148414bbef37f12da2a9d2c3d8a4544525fd5c22e7a30f48cb709662"
+    }
+  },
+  "deliverable": {
+    "phase": "prelock",
+    "dispatchReady": false,
+    "orderedCells": [
+      "north",
+      "east",
+      "south",
+      "west",
+      "renderer",
+      "qa"
+    ],
+    "familyActivation": "blocked_until_4_of_4",
+    "minimumUsefulActiveWorkstreams": 3,
+    "activeWorkstreams": 0,
+    "allSixWorktreesCleanAtRecordedHeads": true,
+    "allSixHeadsContainPublishedAuthority": false,
+    "laneSynchronizationRequiredBeforeDispatch": true,
+    "pixelOrShippingAuthorityGranted": false,
+    "workerDispatchPerformed": false
+  },
+  "files": [
+    {
+      "path": ".agents/skills/operate-citysim-integration/scripts/validate_residential_l01_variant1_parallel_state_v1.py",
+      "sha256": "11754fd5fe30572ae633ae621491fb8071be2906d086c3439706a4c9db90f9ce"
+    },
+    {
+      "path": ".agents/skills/operate-citysim-integration/scripts/test_validate_residential_l01_variant1_parallel_state_v1.py",
+      "sha256": "4dd4cf3faedd6a707bc0848e942cd23d85b75ee3dd2eeacb89930daaa0c9c53a"
+    },
+    {
+      "path": "docs/production/evidence/INTEGRATION/residential-l01-variant1-parallel-state-schema-v1.json",
+      "sha256": "3f3252cddc942eeb84fd448ca3997f114d02da943864fd8e2bf4fbaad966d401"
+    },
+    {
+      "path": "docs/production/evidence/INTEGRATION/RESIDENTIAL-L01-VARIANT1-PARALLEL-SCHEDULE-V1.json",
+      "sha256": "bf6d85c3b21a2990cd0ab9d273fc3615060332afd7e477a77cdc479acb99cb4d"
+    }
+  ],
+  "validation": {
+    "selectedExternalRoute": "PASS",
+    "adversarialUnitTests": "PASS: 10 tests",
+    "liveSixWorktreeReplay": "PASS",
+    "schemaJson": "PASS",
+    "scheduleJson": "PASS",
+    "gitDiffCheck": "PASS"
+  },
+  "measurements": {
+    "contextBytesLoaded": 78435,
+    "elapsedSeconds": null,
+    "turns": null,
+    "validationSeconds": null,
+    "duplicateFullGateSeconds": null,
+    "workerRework": 0,
+    "integrationRework": 0,
+    "acceptedResult": null,
+    "escalationReason": null,
+    "tokens": null,
+    "pricing": null
+  },
+  "boundaries": {
+    "focusedGateOwner": "019fc40d-c697-7aa2-94bf-902b031a8c67",
+    "fullGateOwner": "019f7686-4491-7891-86a6-95a78d67e5c8",
+    "independentReviewer": "019f7686-4491-7891-86a6-95a78d67e5c8",
+    "selfAccepted": false,
+    "fullGateRun": false,
+    "productOrSharedTaskAuthorityMutation": false,
+    "pushedOrIntegrated": false
+  },
+  "nextEventBoundary": "Integration independently reviews the exact candidate, then synchronizes lanes and publishes exact worker routes before any dispatch."
+}

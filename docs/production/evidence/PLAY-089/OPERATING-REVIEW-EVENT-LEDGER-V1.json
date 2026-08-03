@@ -154,6 +154,55 @@
       "receiptSha256": "a3fbdf93a624e7b544938dfe9ab48425ba2f7ba25d97903cb61a34d1d77f8d51",
       "decision": "NO_CHANGE",
       "disposition": {"status":"auto_closed","authorityCommit":"ff34902b83474715cafb23bcf1b8a2d9d40992ef","reason":"Frontier ownership remains mandatory for the one-shot DCC execution and visual disposition; no authority is delegated to the observer."}
+    },
+    {
+      "eventKey": {"authorityCommit":"80ee8de7f94998ef7bc12a4536a1924e82de69c4","taskId":"PLAY-090","routeId":"quality-v2:play-090-residential-l01-variant1-north-prelock-design-v1","trigger":"delegation_ready_for_dispatch","candidateOrResultCommit":"2d1624af35aa268f4c5099b58a9bef2af53c8c83"},
+      "receiptPath": "docs/production/evidence/PLAY-089/residential-l01-variant1-predelegation-review-v1/01-north-delegation-ready.json",
+      "receiptSha256": "312cf1274145e53dd88e6304d55651d650b5f560dba9cd1d4806eafa1b286960",
+      "decision": "NO_CHANGE",
+      "disposition": {"status":"auto_closed","authorityCommit":"d3c88486af6f46124bfc36b5e4605a266360f615","reason":"North zero-pixel hero predesign remains correctly frontier-owned, path-disjoint, and blocked from DCC or pixels."}
+    },
+    {
+      "eventKey": {"authorityCommit":"80ee8de7f94998ef7bc12a4536a1924e82de69c4","taskId":"PLAY-091","routeId":"quality-v2:play-091-residential-l01-variant1-east-prelock-v1","trigger":"delegation_ready_for_dispatch","candidateOrResultCommit":"80ee8de7f94998ef7bc12a4536a1924e82de69c4"},
+      "receiptPath": "docs/production/evidence/PLAY-089/residential-l01-variant1-predelegation-review-v1/02-east-delegation-ready.json",
+      "receiptSha256": "da90af22fe3d33bb817f37a20c18128a1aedcbe4a316678ebe0fe94d2702eba4",
+      "decision": "NO_CHANGE",
+      "disposition": {"status":"auto_closed","authorityCommit":"d3c88486af6f46124bfc36b5e4605a266360f615","reason":"East has an exact Luna route for independent zero-pixel work with sibling, DCC, pixel, and shared-surface boundaries preserved."}
+    },
+    {
+      "eventKey": {"authorityCommit":"80ee8de7f94998ef7bc12a4536a1924e82de69c4","taskId":"PLAY-092","routeId":"quality-v2:play-092-residential-l01-variant1-south-prelock-v1","trigger":"delegation_ready_for_dispatch","candidateOrResultCommit":"71956b5b72a9d3013e3a2b52bba83ec1ebf684e1"},
+      "receiptPath": "docs/production/evidence/PLAY-089/residential-l01-variant1-predelegation-review-v1/03-south-delegation-ready.json",
+      "receiptSha256": "297bfba237af21e0ded59d4c463c05f9abb2b84fd32468e15ffa7a0fe48a9144",
+      "decision": "NO_CHANGE",
+      "disposition": {"status":"auto_closed","authorityCommit":"d3c88486af6f46124bfc36b5e4605a266360f615","reason":"South has an exact Luna route for independent zero-pixel work with sibling, DCC, pixel, and shared-surface boundaries preserved."}
+    },
+    {
+      "eventKey": {"authorityCommit":"80ee8de7f94998ef7bc12a4536a1924e82de69c4","taskId":"PLAY-093","routeId":"quality-v2:play-093-residential-l01-variant1-west-prelock-v1","trigger":"delegation_ready_for_dispatch","candidateOrResultCommit":"80ee8de7f94998ef7bc12a4536a1924e82de69c4"},
+      "receiptPath": "docs/production/evidence/PLAY-089/residential-l01-variant1-predelegation-review-v1/04-west-delegation-ready.json",
+      "receiptSha256": "ecce90257ec56a1459dadd7d6626e24468953a94fd0c2c664c28dda3a71155d0",
+      "decision": "NO_CHANGE",
+      "disposition": {"status":"auto_closed","authorityCommit":"d3c88486af6f46124bfc36b5e4605a266360f615","reason":"West has an exact Luna route for independent zero-pixel work with sibling, DCC, pixel, and shared-surface boundaries preserved."}
+    },
+    {
+      "eventKey": {"authorityCommit":"80ee8de7f94998ef7bc12a4536a1924e82de69c4","taskId":"PLAY-094","routeId":"quality-v2:play-094-residential-l01-variant1-intake-prelock-v1","trigger":"delegation_ready_for_dispatch","candidateOrResultCommit":"96d4dbf44a79bd46086d415d9c48d73a08d6a579"},
+      "receiptPath": "docs/production/evidence/PLAY-089/residential-l01-variant1-predelegation-review-v1/05-renderer-delegation-ready.json",
+      "receiptSha256": "eb6d53e6306c002e8da5a65eec0b68c29efed7760567265fb5a72b29a272a775",
+      "decision": "NO_CHANGE",
+      "disposition": {"status":"auto_closed","authorityCommit":"d3c88486af6f46124bfc36b5e4605a266360f615","reason":"Renderer intake preparation is exact, non-shipping, test/evidence-only, and independently disjoint from source authorship."}
+    },
+    {
+      "eventKey": {"authorityCommit":"80ee8de7f94998ef7bc12a4536a1924e82de69c4","taskId":"PLAY-075","routeId":"quality-v2:play-075-residential-l01-variant1-preregistration-v1","trigger":"delegation_ready_for_dispatch","candidateOrResultCommit":"1ffc01a63ed035dfe720da14cc7f2e0708f0e47f"},
+      "receiptPath": "docs/production/evidence/PLAY-089/residential-l01-variant1-predelegation-review-v1/06-qa-delegation-ready.json",
+      "receiptSha256": "f02c422502309ea670e8421d91bee619aac753549382c2f74d8befd74f8e354e",
+      "decision": "NO_CHANGE",
+      "disposition": {"status":"auto_closed","authorityCommit":"d3c88486af6f46124bfc36b5e4605a266360f615","reason":"QA preregistration remains candidate-neutral, Luna-mechanical, and distinct from the frontier final real-app reviewer."}
+    },
+    {
+      "eventKey": {"authorityCommit":"80ee8de7f94998ef7bc12a4536a1924e82de69c4","taskId":"PLAY-090","routeId":"quality-v2:play-090-residential-l01-variant1-north-prelock-design-v1","trigger":"frontier_route_assigned","candidateOrResultCommit":"2d1624af35aa268f4c5099b58a9bef2af53c8c83"},
+      "receiptPath": "docs/production/evidence/PLAY-089/residential-l01-variant1-predelegation-review-v1/07-north-frontier-route.json",
+      "receiptSha256": "bcbb31fcefe94bcf03a1037cf97248cf0c64cdb86b4bcf4d8efde59e98d8d879",
+      "decision": "NO_CHANGE",
+      "disposition": {"status":"auto_closed","authorityCommit":"d3c88486af6f46124bfc36b5e4605a266360f615","reason":"Frontier routing is retained only for North hero vocabulary and subjective design judgment; deterministic sibling and evidence work remains Luna-routed."}
     }
   ]
 }

@@ -11,6 +11,7 @@ import subprocess
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 
 SCRIPT = Path(__file__).with_name("validate_operating_review_receipt_v1.py")
@@ -265,6 +266,44 @@ class OperatingReceiptTests(unittest.TestCase):
                 root, {"branch": "codex/correct", "expectedHead": "f" * 40}
             )
             self.assertIn("model route expected HEAD must be an ancestor of live worker/output HEAD", unrelated)
+
+    def test_observer_route_owns_output_without_replacing_observed_binding(self):
+        with tempfile.TemporaryDirectory() as authority_tmp, tempfile.TemporaryDirectory() as output_tmp:
+            authority = Path(authority_tmp)
+            output = Path(output_tmp)
+            subprocess.run(["git", "init", str(output)], check=True, capture_output=True)
+            subprocess.run(["git", "-C", str(output), "checkout", "-b", "codex/citysim-os-optimization"], check=True, capture_output=True)
+            subprocess.run(["git", "-C", str(output), "config", "user.email", "test@example.com"], check=True)
+            subprocess.run(["git", "-C", str(output), "config", "user.name", "Test"], check=True)
+            (output / "file").write_text("one\n", encoding="utf-8")
+            subprocess.run(["git", "-C", str(output), "add", "file"], check=True)
+            subprocess.run(["git", "-C", str(output), "commit", "-m", "base"], check=True, capture_output=True)
+            head = subprocess.run(["git", "-C", str(output), "rev-parse", "HEAD"], check=True, capture_output=True, text=True).stdout.strip()
+            route = {
+                "routeId": "observer-route",
+                "taskId": "PLAY-089",
+                "classification": "LUNA_MECHANICAL",
+                "model": "gpt-5.6-luna",
+                "effort": "medium",
+                "assignment": {"worktree": str(output), "branch": "codex/citysim-os-optimization", "expectedHead": head},
+                "pathPolicy": {"allowed": ["docs/production/evidence/PLAY-089/review"]},
+            }
+            (authority / "dispatch.json").write_text(json.dumps({"assignments": [{"modelRoute": route}]}), encoding="utf-8")
+            validator = mock.Mock()
+            validator.validate_dispatch.return_value = []
+            with mock.patch.object(MOD, "_load_model_route_validator", return_value=validator):
+                allowed, errors = MOD.validate_observer_output_route(
+                    "dispatch.json", "observer-route", authority, output,
+                    ["docs/production/evidence/PLAY-089/review/01.json"],
+                )
+            self.assertEqual(errors, [])
+            self.assertEqual(allowed, ["docs/production/evidence/PLAY-089/review"])
+            with mock.patch.object(MOD, "_load_model_route_validator", return_value=validator):
+                _, errors = MOD.validate_observer_output_route(
+                    "dispatch.json", "observer-route", authority, output,
+                    ["docs/production/evidence/PLAY-090/escape.json"],
+                )
+            self.assertTrue(any("outside its exact route" in error for error in errors))
 
     def test_phantom_ledger_receipt_fails(self):
         with tempfile.TemporaryDirectory() as tmp:

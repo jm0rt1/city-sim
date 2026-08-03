@@ -67,7 +67,17 @@ def load_bound_inputs(manifest: object, output_root: Path, authority_root: Path)
     return source_envelope, source_bytes, receipts, errors
 
 
-def validate_output_paths(manifest_path: Path | None, manifest: object, receipts: list[object], output_root: Path) -> list[str]:
+def _within(path: str, root: str) -> bool:
+    return path == root or path.startswith(root.rstrip("/") + "/")
+
+
+def validate_output_paths(
+    manifest_path: Path | None,
+    manifest: object,
+    receipts: list[object],
+    output_root: Path,
+    observer_allowed: list[str] | None = None,
+) -> list[str]:
     errors: list[str] = []
     if manifest_path is None or not isinstance(manifest, dict):
         return ["batch manifest path must be one exact model-route allowed output"]
@@ -75,6 +85,11 @@ def validate_output_paths(manifest_path: Path | None, manifest: object, receipts
     receipt_paths = manifest.get("receiptPaths", [])
     if not isinstance(receipt_paths, list) or len(receipt_paths) != len(receipts):
         return ["batch receipt paths must exactly match loaded receipts"]
+    if observer_allowed is not None:
+        for path in [relative_manifest, *receipt_paths]:
+            if not any(_within(path, root) for root in observer_allowed):
+                errors.append("batch output must remain inside the exact observer route")
+        return errors
     for receipt_path, receipt in zip(receipt_paths, receipts):
         allowed = receipt.get("binding", {}).get("allowedPaths") if isinstance(receipt, dict) else None
         if not isinstance(allowed, list) or relative_manifest not in allowed:
@@ -150,6 +165,8 @@ def main() -> int:
         "--authority-root",
         help="exact Integration authority Git root; defaults to --repo-root for integrated validation",
     )
+    parser.add_argument("--observer-dispatch", help="schema-2 PLAY-089 observer dispatch receipt in the authority root")
+    parser.add_argument("--observer-route-id", help="exact PLAY-089 observer route ID")
     args = parser.parse_args()
     output_root = Path(args.repo_root).resolve()
     authority_root = Path(args.authority_root or args.repo_root).resolve()
@@ -176,6 +193,20 @@ def main() -> int:
     policy_hash = hashlib.sha256(policy_path.read_bytes()).hexdigest() if policy_path and policy_path.is_file() else ""
     if not receipt_validator._is_git_repo(output_root):
         errors.append("worker/output root must be the exact root of a Git repository")
+    observer_allowed = None
+    if bool(args.observer_dispatch) != bool(args.observer_route_id):
+        errors.append("observer dispatch and route ID must be supplied together")
+    elif args.observer_dispatch:
+        relative_manifest = manifest_path.relative_to(output_root).as_posix() if manifest_path else ""
+        receipt_paths = manifest.get("receiptPaths", []) if isinstance(manifest, dict) else []
+        observer_allowed, observer_errors = receipt_validator.validate_observer_output_route(
+            args.observer_dispatch,
+            args.observer_route_id,
+            authority_root,
+            output_root,
+            [relative_manifest, *receipt_paths],
+        )
+        errors.extend(observer_errors)
     for receipt in receipts:
         errors.extend(
             receipt_validator.validate(
@@ -186,9 +217,10 @@ def main() -> int:
                 authority_root,
                 require_git_repo=True,
                 output_root=output_root,
+                observed_output_root=not bool(args.observer_dispatch),
             )
         )
-    errors.extend(validate_output_paths(manifest_path, manifest, receipts, output_root))
+    errors.extend(validate_output_paths(manifest_path, manifest, receipts, output_root, observer_allowed))
     if errors:
         for error in errors:
             print("ERROR:", error)

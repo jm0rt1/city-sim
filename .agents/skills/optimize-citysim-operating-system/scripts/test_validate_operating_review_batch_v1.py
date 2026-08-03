@@ -133,6 +133,30 @@ class OperatingReviewBatchTests(unittest.TestCase):
             receipts[0]["binding"]["allowedPaths"].remove("0.json")
             self.assertTrue(MOD.validate_output_paths(root / "BATCH.json", batch, receipts, root))
 
+    def test_central_observer_route_owns_batch_outputs(self) -> None:
+        keys = [key("dispatch_published", "a")]
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            batch = manifest(keys)
+            batch["receiptPaths"] = ["docs/production/evidence/PLAY-089/review/01.json"]
+            candidate = receipt(keys[0])
+            errors = MOD.validate_output_paths(
+                root / "docs/production/evidence/PLAY-089/review/BATCH-MANIFEST.json",
+                batch,
+                [candidate],
+                root,
+                ["docs/production/evidence/PLAY-089/review"],
+            )
+            self.assertEqual(errors, [])
+            batch["receiptPaths"] = ["docs/production/evidence/PLAY-090/escape.json"]
+            self.assertTrue(MOD.validate_output_paths(
+                root / "docs/production/evidence/PLAY-089/review/BATCH-MANIFEST.json",
+                batch,
+                [candidate],
+                root,
+                ["docs/production/evidence/PLAY-089/review"],
+            ))
+
     def test_symlink_escape_and_malformed_utf_fail_closed(self) -> None:
         with tempfile.TemporaryDirectory() as root_tmp, tempfile.TemporaryDirectory() as outside_tmp:
             root = Path(root_tmp)

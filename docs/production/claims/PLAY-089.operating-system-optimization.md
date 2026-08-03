@@ -11,6 +11,12 @@
 - **Conditionally owned surfaces:** Exact routing, task-management, validator,
   or skill files named in a later Integration-published `modelRoute`; no glob
   or inferred sibling authority
+- **Current conditional control surfaces:**
+  `.agents/skills/operate-citysim-integration/scripts/validate_residential_l01_variant1_parallel_state_v1.py`,
+  `.agents/skills/operate-citysim-integration/scripts/test_validate_residential_l01_variant1_parallel_state_v1.py`,
+  `docs/production/evidence/INTEGRATION/residential-l01-variant1-parallel-state-schema-v1.json`,
+  `docs/production/evidence/INTEGRATION/RESIDENTIAL-L01-VARIANT1-PARALLEL-SCHEDULE-V1.json`,
+  and `docs/production/evidence/PLAY-089/residential-l01-variant1-controls-v1/`
 - **Dependencies:** Published model-routing contract; canonical lane receipts;
   exact clean worktree identity; Integration acceptance for shared changes
 - **Validation/proof:** Receipt inventory, before/after byte and gate counts,

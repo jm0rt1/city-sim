@@ -1,0 +1,107 @@
+{
+  "schema": 1,
+  "taskId": "PLAY-075",
+  "packetKind": "candidate-neutral-residential-l01-variant1-preregistration",
+  "status": "preregistering",
+  "route": {
+    "routeId": "quality-v2:play-075-residential-l01-variant1-preregistration-v1",
+    "canonicalRouteSha256": "444f605f8fb66dfbdc3f91a8914284051a2c22e5d93047de71bf096b8c1cb082",
+    "classification": "LUNA_MECHANICAL",
+    "model": "gpt-5.6-luna",
+    "effort": "medium",
+    "dispatchPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-RESIDENTIAL-L01-VARIANT1-PRELOCK-WAVE-V1.json",
+    "dispatchSha256": "1e65c026c1a26ac43a6720692e4648d2a1afc680342d0e133acb08360c81e9c2",
+    "dispatchCommit": "3a6c257b5702a7d93cd27c703ca0946f011deacd"
+  },
+  "authority": {
+    "authorityCommit": "80ee8de7f94998ef7bc12a4536a1924e82de69c4",
+    "baseCommit": "80ee8de7f94998ef7bc12a4536a1924e82de69c4",
+    "inputHead": "1ffc01a63ed035dfe720da14cc7f2e0708f0e47f",
+    "claimPath": "docs/production/claims/PLAY-075.playtest-quality.md",
+    "claimSha256": "364250ea7ced7cb3c663501ba7b2d08b9a84192bb4d44936b2dc1a0c008a7c35",
+    "integrationCarrier": "5be3bcf26ed48e19e2af3db5c796e54a4c9acbeb",
+    "schedulePath": "docs/production/evidence/INTEGRATION/RESIDENTIAL-L01-VARIANT1-PARALLEL-SCHEDULE-V2.json",
+    "scheduleSha256": "ec8b66905f487b6197a4533a8060af6d4809591b2ffc564d41b02ff107915ae5",
+    "scheduleLedgerSha256": "a8a4738bea1978c4082300b596bb2da6ef585d7833ebb7c64d018cd60b6b0166"
+  },
+  "familyContract": {
+    "path": "docs/production/decisions/CONTRACT-023-residential-l01-variant-one-family.md",
+    "sha256": "18ed6b18ed7e1ecbcaba1eb1c7fab9dffae98d670334d4ce30c33e3d1ddb7eb0",
+    "logicalKeys": [
+      "residential_l01/variant-1/north/<source-revision>",
+      "residential_l01/variant-1/east/<source-revision>",
+      "residential_l01/variant-1/south/<source-revision>",
+      "residential_l01/variant-1/west/<source-revision>"
+    ],
+    "basis": {"tilePixels": [72, 36], "camera": "2:1 orthographic", "keyLight": "northwest", "contactShadow": "southeast"}
+  },
+  "rendererIntakePlanDependency": {
+    "taskId": "PLAY-094",
+    "required": true,
+    "status": "pending_future_publication",
+    "path": null,
+    "sha256": null,
+    "mustBeBoundBefore": "preregistered"
+  },
+  "fixtureAndCamera": {
+    "fixture": {
+      "id": "opening-city-mature-residential-l01-variant1-v1",
+      "version": "v1",
+      "stateHash": null,
+      "placement": "mature opening city; northwest adjacent residential pair",
+      "status": "awaiting frozen fixture/state hash"
+    },
+    "regular": {
+      "windowPixels": [1280, 800],
+      "contentPixels": [1278, 768],
+      "views": ["city", "neighborhood", "block"],
+      "lods": ["city", "neighborhood", "block"],
+      "frameKey": "0",
+      "overlay": "City",
+      "focusCity": false,
+      "camera": {"rotationDegrees": 0, "panAllowed": false, "numericCenter": null}
+    },
+    "compact": {
+      "windowPixels": [900, 652],
+      "contentPixels": [900, 600],
+      "views": ["city", "neighborhood", "block"],
+      "lods": ["city", "neighborhood", "block"],
+      "frameKey": "0",
+      "overlay": "City",
+      "focusCity": false,
+      "camera": {"rotationDegrees": 0, "panAllowed": false, "numericCenter": null}
+    },
+    "captureOrder": ["North", "East", "South", "West"],
+    "stateHash": null,
+    "cameraStateHash": null
+  },
+  "rubric": {
+    "lods": ["city", "neighborhood", "block"],
+    "visual": ["family identity", "four-direction distinction", "silhouette", "road-facing entrance/frontage", "ground contact", "pivot/socket registration", "material/value separation", "no alias/fallback/mirror/rotation", "no crop/overlap/mixed fidelity"],
+    "interaction": ["pointer placement and selection", "keyboard map focus parity", "command-guide Escape", "compact Focus City"],
+    "accessibility": ["AX semantics", "Reduce Motion"],
+    "performance": ["resource integrity", "frame-time budget"],
+    "hash": null,
+    "status": "candidate-neutral rubric frozen; exact intake-plan dependency pending"
+  },
+  "evidence": {
+    "root": "docs/production/evidence/PLAY-075/residential-l01-variant1-preregistration-v1",
+    "candidateReceipt": null,
+    "rendererCandidateReceipt": null,
+    "stagedBuild": null,
+    "stagedBundle": null,
+    "process": null,
+    "result": null,
+    "score": null,
+    "disposition": null
+  },
+  "stopConditions": [
+    "candidate or renderer receipt becomes non-null before Integration admission",
+    "renderer intake-plan hash is missing before preregistered transition",
+    "app launch, scoring, final QA, aggregate gate, or subjective judgment requested",
+    "identity, authority, claim, route, path, or shared-contract mismatch",
+    "product/art/renderer/shared-authority mutation required",
+    "any path outside this authorized evidence root"
+  ],
+  "rendererCandidateReceipt": null
+}

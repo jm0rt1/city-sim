@@ -1,0 +1,176 @@
+{
+  "schema": 2,
+  "authorityCommit": "6434793cb8506bdc0c1a389b4d9f961e713ab274",
+  "assignments": [
+    {
+      "modelRouteSha256": "34a757f4ad78c25b0a30d9f9c8af397820900fa9c12b59cd85d6f4c1484ecebb",
+      "modelRoute": {
+        "schema": 2,
+        "routeId": "quality-v2:play-095-pointer-feedback-coherence-luna-v2",
+        "taskId": "PLAY-095",
+        "packetKind": "local_debug",
+        "classification": "LUNA_LOCAL_DEBUG",
+        "model": "gpt-5.6-luna",
+        "effort": "max",
+        "rationale": "The integrated store-boundary diagnostic proved the store and simulation path correct and localized the reproducible contradiction to the scene/coordinator pointer publication boundary. Integration froze the exact files, scenario, success/failure invariants, two-repair limit, aggregate gate, and independent real-app acceptance.",
+        "authority": {
+          "authorityCommit": "6434793cb8506bdc0c1a389b4d9f961e713ab274",
+          "baseCommit": "6434793cb8506bdc0c1a389b4d9f961e713ab274",
+          "claim": {
+            "path": "docs/production/claims/PLAY-095.ui-input.md",
+            "sha256": "0823955c4052b8ca31949cb15dc3bd390bc66c7f6b815a4b5138104273ae295d"
+          },
+          "immutableInputs": [
+            {
+              "path": "docs/production/evidence/INTEGRATION/PLAY-095-BLOCKED-PLACEMENT-FEEDBACK-AUTHORITY.md",
+              "sha256": "2f559eaea723220b4b85e3d5285b5c3415dd48df3f3c5f620dee20293b02cc90"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-095/blocked-placement-feedback-v1/RESULT.json",
+              "sha256": "7602cf95f2809ae1d66cbef9669cda3847a8edcb6b990e6a99a7a3dabb9409c8"
+            },
+            {
+              "path": ".agents/skills/build-citysim-ui-input/SKILL.md",
+              "sha256": "54b5f1e8817f7368424783b795f522f9dd0b3fd236aedc53647eca2eb1bac0b6"
+            }
+          ]
+        },
+        "assignment": {
+          "threadId": "019f7c8a-69a2-78c2-ae70-fa5abc5d4077",
+          "branch": "codex/citysim-ui-input",
+          "worktree": "/Users/James/.codex/worktrees/citysim/ui-input",
+          "expectedHead": "f55b034a1db57b65b3b525c1313a2222acff94a2",
+          "featureAuthorThreadId": "019f7c8a-69a2-78c2-ae70-fa5abc5d4077",
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": [
+            "Native/CitySimNative/Sources/CitySimNative/Rendering/CitySceneView.swift",
+            "Native/CitySimNative/Sources/CitySimNative/Rendering/CityScene.swift",
+            "Native/CitySimNative/Tests/CitySimNativeTests/CityCommandCatalogTests.swift",
+            "docs/production/evidence/PLAY-095/"
+          ],
+          "allowed": [
+            "Native/CitySimNative/Sources/CitySimNative/Rendering/CitySceneView.swift",
+            "Native/CitySimNative/Sources/CitySimNative/Rendering/CityScene.swift",
+            "Native/CitySimNative/Tests/CitySimNativeTests/CityCommandCatalogTests.swift",
+            "docs/production/evidence/PLAY-095/pointer-feedback-coherence-v2/"
+          ],
+          "forbidden": [
+            ".agents",
+            "AGENTS.md",
+            "Native/CitySimNative/Package.swift",
+            "Native/CitySimNative/Resources",
+            "Native/CitySimNative/Sources/CitySimNative/App",
+            "Native/CitySimNative/Sources/CitySimNative/Models",
+            "Native/CitySimNative/Sources/CitySimNative/Services",
+            "Native/CitySimNative/Sources/CitySimNative/Stores",
+            "Native/CitySimNative/Sources/CitySimNative/Views",
+            "Native/CitySimNative/WorldArt",
+            "docs/production/PLAYABLE_BACKLOG.md",
+            "docs/production/claims",
+            "docs/production/completed",
+            "docs/production/decisions",
+            "docs/production/evidence/INTEGRATION",
+            "script"
+          ]
+        },
+        "boundedDeliverable": "Reproduce the actual CityScene candidate-application plus CitySceneView.Coordinator primary-action path for successful Road then occupied Road. Make the blocked target, unavailable action, feedback text/tone, and accessibility value coherent throughout the pointer event without changing store/simulation rules; preserve successful mutation, undo, selection, sound, camera, drag, focus-gate, and keyboard parity. Return one coherent commit and compact result/handoff, or a second diagnostic if the exact boundary does not reproduce.",
+        "proofPolicy": {
+          "architectureState": "frozen_reference",
+          "referenceImplementation": {
+            "path": "docs/production/evidence/INTEGRATION/PLAY-095-BLOCKED-PLACEMENT-FEEDBACK-AUTHORITY.md",
+            "sha256": "2f559eaea723220b4b85e3d5285b5c3415dd48df3f3c5f620dee20293b02cc90"
+          },
+          "deliverableClaims": [
+            "static_structure",
+            "executable_behavior",
+            "deterministic_output",
+            "real_app_interaction"
+          ],
+          "focusedProofLevel": "deterministic_replay",
+          "fullProofLevel": "real_app_journey",
+          "behavioralCommands": [
+            "swift test --package-path Native/CitySimNative --filter CityCommandCatalogTests/testPointerBlockedPlacementPublishesOneCoherentLatestResult"
+          ],
+          "prohibitedSubstitutions": [
+            "source_token_presence_for_execution",
+            "ast_shape_for_runtime_success",
+            "manifest_or_prose_for_rendered_pixels",
+            "unit_tests_for_visual_acceptance",
+            "worker_self_report_for_independent_acceptance"
+          ]
+        },
+        "validation": {
+          "focusedGateOwner": {
+            "threadId": "019f7c8a-69a2-78c2-ae70-fa5abc5d4077",
+            "role": "ui_play095_pointer_focused_gate"
+          },
+          "focusedCommands": [
+            "swift test --package-path Native/CitySimNative --filter CityCommandCatalogTests/testPointerBlockedPlacementPublishesOneCoherentLatestResult",
+            "swift test --package-path Native/CitySimNative --filter CityCommandCatalogTests",
+            "python3 -m json.tool docs/production/evidence/PLAY-095/pointer-feedback-coherence-v2/RESULT.json",
+            "git diff --check f55b034a1db57b65b3b525c1313a2222acff94a2..HEAD"
+          ],
+          "fullGateOwner": {
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "role": "integration_play095_aggregate_gate",
+            "model": "gpt-5.6-sol",
+            "effort": "high"
+          },
+          "fullCommands": [
+            "swift test --package-path Native/CitySimNative",
+            "./script/build_and_run.sh --verify",
+            "fresh-player real-app occupied-road pointer placement and accessibility feedback journey"
+          ]
+        },
+        "expectedResult": {
+          "evidencePaths": [
+            "docs/production/evidence/PLAY-095/pointer-feedback-coherence-v2/RESULT.json",
+            "docs/production/evidence/PLAY-095/pointer-feedback-coherence-v2/HANDOFF.md"
+          ],
+          "commitRequired": true,
+          "commitMessagePattern": "PLAY-095:"
+        },
+        "escalationTriggers": [
+          "baseline_or_candidate_identity_mismatch",
+          "cross_lane_semantic_conflict",
+          "failure_outside_focused_scope",
+          "path_outside_claim",
+          "save_or_migration_uncertainty",
+          "shared_contract_or_schema_decision",
+          "subjective_acceptance_required",
+          "two_unsuccessful_repair_attempts",
+          "unresolved_product_visual_or_interaction_judgment"
+        ],
+        "stopCondition": "Stop after one clean focused PLAY-095 commit, after a non-reproducing second diagnostic, or immediately on identity/hash/path mismatch, need to change another file, failure outside focused scope, shared decision, save uncertainty, semantic conflict, unresolved interaction judgment, or two failed repairs. Do not run the full suite, stage/launch the app, self-score, self-accept, integrate, push, or pin.",
+        "independentReviewer": {
+          "required": true,
+          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+          "model": "gpt-5.6-sol",
+          "effort": "high"
+        },
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {
+              "path": "docs/production/claims/PLAY-095.ui-input.md",
+              "sha256": "0823955c4052b8ca31949cb15dc3bd390bc66c7f6b815a4b5138104273ae295d"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/PLAY-095-BLOCKED-PLACEMENT-FEEDBACK-AUTHORITY.md",
+              "sha256": "2f559eaea723220b4b85e3d5285b5c3415dd48df3f3c5f620dee20293b02cc90"
+            },
+            {
+              "path": ".agents/skills/build-citysim-ui-input/SKILL.md",
+              "sha256": "54b5f1e8817f7368424783b795f522f9dd0b3fd236aedc53647eca2eb1bac0b6"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

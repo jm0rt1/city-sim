@@ -158,8 +158,19 @@ def api_compatibility_zero_dcc() -> dict:
         fail(lambda: child.validate_blender_mesh(FakeMesh(True), "corrected"), "Mesh.validate correction")
         if ".is_valid" in (SOURCE / runner.CHILD_NAME).read_text(encoding="utf-8"):
             raise AssertionError("unsupported Blender Mesh.is_valid access remains")
+        targets = child.registration_targets(spec["scene"], spec["lowering"])
+        if (targets["groundPivotSource"] != [768.0, 896.0] or
+                targets["preOffsetCameraCenter"] != [768.0, 768.0] or
+                targets["frontageSocketSource"] != [896.0, 704.0] or
+                targets["tolerancePixels"] != 0.5):
+            raise AssertionError("authoritative registration target binding drift")
+        aliased_scene = json.loads(json.dumps(spec["scene"]))
+        aliased_scene["registration"]["groundPivotSource"] = [768, 768]
+        fail(lambda: child.registration_targets(aliased_scene, spec["lowering"]), "pre-offset center as final pivot")
         return {"meshComponents": len(mesh_components), "topologyChecks": len(results),
-                "meshValidateSemantics": "true-means-corrected-and-rejected", "dccStarts": 0}
+                "meshValidateSemantics": "true-means-corrected-and-rejected",
+                "groundPivotSource": targets["groundPivotSource"],
+                "preOffsetCameraCenter": targets["preOffsetCameraCenter"], "dccStarts": 0}
     finally:
         runner.subprocess.Popen = original_popen
 
@@ -392,7 +403,7 @@ def main(argv: list[str] | None = None) -> int:
         if not args.assert_zero_dcc or args.contained_runtime_replay or args.assert_nonblank or args.output_root is not None:
             raise SystemExit("API-compatibility-only requires zero-DCC assertion and no replay arguments")
         result = api_compatibility_zero_dcc()
-        print(f"PASS PLAY-090 Blender-4.5 API compatibility meshComponents={result['meshComponents']} topologyChecks={result['topologyChecks']} dccStarts=0")
+        print(f"PASS PLAY-090 Blender-4.5 API compatibility meshComponents={result['meshComponents']} topologyChecks={result['topologyChecks']} groundPivot={result['groundPivotSource']} preOffsetCenter={result['preOffsetCameraCenter']} dccStarts=0")
         return 0
     if args.assert_zero_dcc:
         raise SystemExit("zero-DCC assertion is valid only in a focused validation mode")

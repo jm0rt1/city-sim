@@ -205,6 +205,26 @@ def validate_blender_mesh(mesh, identifier: str) -> None:
     mesh.update(calc_edges=True)
 
 
+def registration_targets(scene_doc: dict, lowering: dict) -> dict:
+    registration = scene_doc["registration"]
+    target_ground = [float(value) for value in registration["groundPivotSource"]]
+    pre_offset_center = [float(value) for value in scene_doc["camera"]["sourceGroundCenter"]]
+    lowering_center = [float(value) for value in lowering["camera"]["sourceGroundCenter"]]
+    target_socket = [float(value) for value in lowering["camera"]["sourceSocket"]]
+    scene_socket = [float(value) for value in registration["frontageSocketSource"]]
+    tolerance = float(lowering["camera"]["registrationTolerancePixels"])
+    if pre_offset_center != lowering_center:
+        raise ValueError("pre-offset camera center authority mismatch")
+    if target_ground == pre_offset_center:
+        raise ValueError("final placement pivot aliases the pre-offset camera center")
+    if target_socket != scene_socket:
+        raise ValueError("frontage socket authority mismatch")
+    if tolerance != 0.5:
+        raise ValueError("registration tolerance drift")
+    return {"groundPivotSource": target_ground, "preOffsetCameraCenter": pre_offset_center,
+            "frontageSocketSource": target_socket, "tolerancePixels": tolerance}
+
+
 def create_geometry(bpy, scene: dict, lowering: dict, materials: dict[str, object]) -> list[dict]:
     manifest: list[dict] = []
     for component in scene["components"]:
@@ -257,15 +277,17 @@ def configure_camera(bpy, scene_doc: dict, lowering: dict) -> tuple[object, dict
         return [float(ndc.x) * width, (1.0 - float(ndc.y)) * height]
     ground = project([0, 0, 0])
     socket = project(scene_doc["registration"]["frontageSocketWorld"])
-    target_ground = [float(v) for v in lowering["camera"]["sourceGroundCenter"]]
-    target_socket = [float(v) for v in lowering["camera"]["sourceSocket"]]
-    tolerance = float(lowering["camera"]["registrationTolerancePixels"])
+    targets = registration_targets(scene_doc, lowering)
+    target_ground = targets["groundPivotSource"]
+    target_socket = targets["frontageSocketSource"]
+    tolerance = targets["tolerancePixels"]
     if max(abs(ground[i] - target_ground[i]) for i in range(2)) > tolerance:
         raise RuntimeError(f"ground registration drift: {ground}")
     if max(abs(socket[i] - target_socket[i]) for i in range(2)) > tolerance:
         raise RuntimeError(f"socket registration drift: {socket}")
     return camera, {"schema": 1, "viewport": [width, height], "groundPivotSource": ground,
-                    "expectedGroundPivotSource": target_ground, "frontageSocketSource": socket,
+                    "expectedGroundPivotSource": target_ground,
+                    "preOffsetCameraCenter": targets["preOffsetCameraCenter"], "frontageSocketSource": socket,
                     "expectedFrontageSocketSource": target_socket, "tolerancePixels": tolerance,
                     "orthoScale": data.ortho_scale, "shift": [data.shift_x, data.shift_y]}
 

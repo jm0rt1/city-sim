@@ -3548,6 +3548,99 @@ final class WorldRenderingTests: XCTestCase {
     }
 
     @MainActor
+    func testDevelopedCoreCameraSurvivesViewportInvalidationPermutations() {
+        let state = CityGameState.newCity(seed: 42)
+        let regularSize = CGSize(width: 1_280, height: 800)
+        let regularInsets = CityMapViewportInsets(top: 104, leading: 24, bottom: 160, trailing: 24)
+        let compactSize = CGSize(width: 900, height: 600)
+        let compactInsets = CityMapViewportInsets(top: 138, leading: 19, bottom: 236, trailing: 19)
+        let maximizedSize = CGSize(width: 1_280, height: 766)
+        let maximizedInsets = CityMapViewportInsets(top: 104, leading: 24, bottom: 126, trailing: 24)
+
+        func makeScene(size: CGSize, insets: CityMapViewportInsets) -> CityScene {
+            let scene = CityScene(size: size)
+            scene.reducedMotion = true
+            scene.updateViewportInsets(insets)
+            scene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
+            return scene
+        }
+
+        let baseline = makeScene(size: regularSize, insets: regularInsets)
+        let baselineCoordinates = baseline.cameraPriorityCoordinatesForTesting
+        XCTAssertFalse(baseline.occupiedDevelopedVisualBoundsForTesting.isNull)
+        XCTAssertFalse(baseline.cameraPriorityVisualBoundsForTesting.isNull)
+
+        func assertSettled(_ scene: CityScene) {
+            XCTAssertFalse(scene.occupiedDevelopedVisualBoundsForTesting.isNull)
+            XCTAssertFalse(scene.cameraPriorityVisualBoundsForTesting.isNull)
+            XCTAssertEqual(scene.cameraPriorityCoordinatesForTesting, baselineCoordinates)
+            XCTAssertGreaterThanOrEqual(
+                scene.occupiedDevelopedViewportOccupancyForTesting().width,
+                0.60
+            )
+            XCTAssertGreaterThanOrEqual(
+                scene.cameraPriorityViewportOccupancyForTesting().width,
+                0.60
+            )
+        }
+
+        let regularToMax = makeScene(size: regularSize, insets: regularInsets)
+        regularToMax.resize(to: maximizedSize)
+        regularToMax.updateViewportInsets(maximizedInsets)
+        regularToMax.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
+        assertSettled(regularToMax)
+
+        let maxToRegular = makeScene(size: maximizedSize, insets: maximizedInsets)
+        maxToRegular.resize(to: regularSize)
+        maxToRegular.updateViewportInsets(regularInsets)
+        maxToRegular.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
+        assertSettled(maxToRegular)
+
+        let compactToMax = makeScene(size: compactSize, insets: compactInsets)
+        compactToMax.resize(to: maximizedSize)
+        compactToMax.updateViewportInsets(maximizedInsets)
+        compactToMax.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
+        assertSettled(compactToMax)
+
+        let insetsBeforeResize = makeScene(size: regularSize, insets: regularInsets)
+        insetsBeforeResize.updateViewportInsets(maximizedInsets)
+        insetsBeforeResize.resize(to: maximizedSize)
+        insetsBeforeResize.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
+        assertSettled(insetsBeforeResize)
+
+        let resizeBeforeInsets = makeScene(size: regularSize, insets: regularInsets)
+        resizeBeforeInsets.resize(to: maximizedSize)
+        resizeBeforeInsets.updateViewportInsets(maximizedInsets)
+        resizeBeforeInsets.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
+        assertSettled(resizeBeforeInsets)
+        XCTAssertEqual(
+            insetsBeforeResize.cameraScaleForTesting,
+            resizeBeforeInsets.cameraScaleForTesting,
+            accuracy: 0.000_001
+        )
+        XCTAssertEqual(
+            insetsBeforeResize.cameraPositionForTesting.x,
+            resizeBeforeInsets.cameraPositionForTesting.x,
+            accuracy: 0.000_001
+        )
+        XCTAssertEqual(
+            insetsBeforeResize.cameraPositionForTesting.y,
+            resizeBeforeInsets.cameraPositionForTesting.y,
+            accuracy: 0.000_001
+        )
+
+        let focusTransitions = makeScene(size: regularSize, insets: regularInsets)
+        focusTransitions.resize(to: maximizedSize)
+        focusTransitions.updateViewportInsets(maximizedInsets)
+        focusTransitions.frameCity()
+        focusTransitions.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
+        assertSettled(focusTransitions)
+        focusTransitions.frameCity()
+        focusTransitions.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
+        assertSettled(focusTransitions)
+    }
+
+    @MainActor
     func testIndustrialStrainCameraPrioritizesTheDominantDistrictWithoutHidingRemoteTruth() throws {
         let fixture = try XCTUnwrap(
             try ProductionStoryStateBuilder().buildAll().first {

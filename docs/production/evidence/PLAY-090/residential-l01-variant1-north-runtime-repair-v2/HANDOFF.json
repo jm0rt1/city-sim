@@ -1,0 +1,15 @@
+{
+  "disposition": "runtime_repair_candidate",
+  "evidence": "RUNTIME-REPAIR.json",
+  "focusedGate": "PASS",
+  "independentAcceptanceRequired": true,
+  "productionSelected": false,
+  "routeId": "quality-v2:play-090-residential-l01-variant1-north-runtime-repair-v2",
+  "routeSHA256": "fd82e8b5048ce442ee97d94c2f327c412f76aef0757dec9e75ed99956e190c6b",
+  "runtimeReplayRoot": "/private/tmp/play090-residential-north-runtime-repair-v2",
+  "schema": 1,
+  "sourceAuthority": false,
+  "stopCondition": "Integration independently reruns and decides whether a later one-shot production schedule may be published.",
+  "task": "PLAY-090",
+  "workerInputHead": "86cb8fbc496a0d8953a04f274873dd25b9bcef91"
+}

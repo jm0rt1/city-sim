@@ -13,6 +13,7 @@ from pathlib import Path
 import shutil
 import struct
 import sys
+import tempfile
 import zlib
 
 ROOT = Path(__file__).resolve().parents[6]
@@ -240,6 +241,74 @@ def camera_bridge_zero_dcc() -> dict:
         runner.subprocess.Popen = original_popen
 
 
+def png_canonicalization_zero_dcc() -> dict:
+    original_popen = runner.subprocess.Popen
+
+    def reject_dcc(*_args, **_kwargs):
+        raise AssertionError("PNG canonicalization regression attempted to start a child process")
+
+    def fixture(suffix: str, date: str, render_time: str) -> bytes:
+        ihdr = struct.pack(">IIBBBBB", 1, 1, 8, 6, 0, 0, 0)
+        chunks = [
+            png_chunk(b"IHDR", ihdr), png_chunk(b"eXIf", b"stable-exif"),
+            png_chunk(b"oFFs", struct.pack(">iiB", 0, 0, 0)),
+            png_chunk(b"pHYs", struct.pack(">IIB", 2834, 2834, 1)),
+            png_chunk(b"tEXt", f"File\0/private/tmp/{suffix}/scene.blend".encode("latin1")),
+            png_chunk(b"tEXt", f"Date\0{date}".encode("latin1")),
+            png_chunk(b"tEXt", b"Time" + b"\0" + b"00:00:00:01"),
+            png_chunk(b"tEXt", b"Frame" + b"\0" + b"001"),
+            png_chunk(b"tEXt", b"Camera" + b"\0" + b"PLAY090::NorthCamera"),
+            png_chunk(b"tEXt", b"Scene" + b"\0" + b"Scene"),
+            png_chunk(b"tEXt", f"RenderTime\0{render_time}".encode("latin1")),
+            png_chunk(b"tEXt", b"cycles.ViewLayer.samples" + b"\0" + b"32"),
+            png_chunk(b"tEXt", f"cycles.ViewLayer.total_time\0{render_time}".encode("latin1")),
+            png_chunk(b"tEXt", f"cycles.ViewLayer.render_time\0{render_time}".encode("latin1")),
+            png_chunk(b"tEXt", f"cycles.ViewLayer.synchronization_time\0{render_time}".encode("latin1")),
+            png_chunk(b"IDAT", zlib.compress(b"\x00\x10\x20\x30\xff", 9)), png_chunk(b"IEND", b""),
+        ]
+        return child.PNG_SIGNATURE + b"".join(chunks)
+
+    try:
+        runner.subprocess.Popen = reject_dcc
+        first = fixture("replay-a", "2026/08/03 05:57:14", "02:39.35")
+        second = fixture("replay-b", "2026/08/03 06:00:35", "03:17.96")
+        first_canonical, first_report = child.canonical_png_bytes(first)
+        second_canonical, second_report = child.canonical_png_bytes(second)
+        if first_canonical != second_canonical or first_report != second_report:
+            raise AssertionError("metadata-only PNG fixtures did not canonicalize identically")
+        if child.canonical_png_bytes(first_canonical)[0] != first_canonical:
+            raise AssertionError("PNG canonicalization is not idempotent")
+        before = child.validated_png_chunks(first)
+        after = child.validated_png_chunks(first_canonical)
+        preserved_types = {b"IHDR", b"eXIf", b"oFFs", b"pHYs", b"IDAT", b"IEND"}
+        for kind in preserved_types:
+            if [chunk["raw"] for chunk in before if chunk["kind"] == kind] != [chunk["raw"] for chunk in after if chunk["kind"] == kind]:
+                raise AssertionError(f"preserved PNG chunk drift: {kind!r}")
+        remaining_text = {chunk["keyword"] for chunk in after if chunk["kind"] == b"tEXt"}
+        if remaining_text & child.NONDETERMINISTIC_BLENDER_TEXT_KEYS:
+            raise AssertionError("nondeterministic PNG text was not stripped")
+        expected_stable = {b"Time", b"Frame", b"Camera", b"Scene", b"cycles.ViewLayer.samples"}
+        if remaining_text != expected_stable:
+            raise AssertionError("deterministic PNG text was not preserved exactly")
+        corrupt = bytearray(first)
+        corrupt[-1] ^= 1
+        fail(lambda: child.canonical_png_bytes(bytes(corrupt)), "PNG CRC corruption")
+        fail(lambda: child.canonical_png_bytes(first[:-1]), "truncated PNG framing")
+        with tempfile.TemporaryDirectory(prefix="play090-png-canonical-") as directory:
+            paths = [Path(directory) / "a.png", Path(directory) / "b.png"]
+            paths[0].write_bytes(first)
+            paths[1].write_bytes(second)
+            path_reports = [child.canonicalize_blender_png(path) for path in paths]
+            if paths[0].read_bytes() != paths[1].read_bytes() or path_reports[0] != path_reports[1]:
+                raise AssertionError("path canonicalization output is not exactly reproducible")
+        return {"canonicalSHA256": first_report["canonicalSHA256"],
+                "removedTextKeywords": first_report["removedTextKeywords"],
+                "preservedChunkTypes": sorted(kind.decode("latin1") for kind in preserved_types),
+                "dccStarts": 0}
+    finally:
+        runner.subprocess.Popen = original_popen
+
+
 def fixture_documents(directory: Path, output: Path, current_head: str) -> tuple[Path, Path, Path]:
     schedule_path, grant_path, receipt_path = directory / "schedule.json", directory / "grant.json", directory / "receipt.json"
     launcher = ROOT / runner.SOURCE_ROOT / "launch_residential_l01_process_a.py"
@@ -446,6 +515,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--host-binding-only", action="store_true")
     parser.add_argument("--api-compatibility-only", action="store_true")
     parser.add_argument("--camera-bridge-only", action="store_true")
+    parser.add_argument("--png-canonicalization-only", action="store_true")
     parser.add_argument("--assert-zero-dcc", action="store_true")
     parser.add_argument("--contained-runtime-replay", action="store_true")
     parser.add_argument("--assert-nonblank", action="store_true")
@@ -453,6 +523,7 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
     if args.bootstrap_only:
         if (not args.assert_zero_dcc or args.host_binding_only or args.api_compatibility_only or args.camera_bridge_only or
+                args.png_canonicalization_only or
                 args.contained_runtime_replay or
                 args.assert_nonblank or args.output_root is not None):
             raise SystemExit("bootstrap-only requires zero-DCC assertion and no replay arguments")
@@ -460,24 +531,32 @@ def main(argv: list[str] | None = None) -> int:
         print(f"PASS PLAY-090 child-bootstrap adjacentLauncher={result['launcher']} dccStarts=0")
         return 0
     if args.host_binding_only:
-        if (not args.assert_zero_dcc or args.api_compatibility_only or args.camera_bridge_only or args.contained_runtime_replay or
+        if (not args.assert_zero_dcc or args.api_compatibility_only or args.camera_bridge_only or
+                args.png_canonicalization_only or args.contained_runtime_replay or
                 args.assert_nonblank or args.output_root is not None):
             raise SystemExit("host-binding-only requires zero-DCC assertion and no replay arguments")
         result = host_binding_zero_dcc()
         print(f"PASS PLAY-090 host-binding native={result['native']} translated={result['translated']} dccStarts=0")
         return 0
     if args.api_compatibility_only:
-        if (not args.assert_zero_dcc or args.camera_bridge_only or args.contained_runtime_replay or
+        if (not args.assert_zero_dcc or args.camera_bridge_only or args.png_canonicalization_only or args.contained_runtime_replay or
                 args.assert_nonblank or args.output_root is not None):
             raise SystemExit("API-compatibility-only requires zero-DCC assertion and no replay arguments")
         result = api_compatibility_zero_dcc()
         print(f"PASS PLAY-090 Blender-4.5 API compatibility meshComponents={result['meshComponents']} topologyChecks={result['topologyChecks']} groundPivot={result['groundPivotSource']} preOffsetCenter={result['preOffsetCameraCenter']} dccStarts=0")
         return 0
     if args.camera_bridge_only:
-        if not args.assert_zero_dcc or args.contained_runtime_replay or args.assert_nonblank or args.output_root is not None:
+        if (not args.assert_zero_dcc or args.png_canonicalization_only or args.contained_runtime_replay or
+                args.assert_nonblank or args.output_root is not None):
             raise SystemExit("camera-bridge-only requires zero-DCC assertion and no replay arguments")
         result = camera_bridge_zero_dcc()
         print(f"PASS PLAY-090 camera-bridge projections={result['projectionCount']} maximumDeltaPixels={result['maximumDeltaPixels']:.9f} bridgeSHA256={result['bridgeSHA256']} dccStarts=0")
+        return 0
+    if args.png_canonicalization_only:
+        if not args.assert_zero_dcc or args.contained_runtime_replay or args.assert_nonblank or args.output_root is not None:
+            raise SystemExit("PNG-canonicalization-only requires zero-DCC assertion and no replay arguments")
+        result = png_canonicalization_zero_dcc()
+        print(f"PASS PLAY-090 PNG canonicalization canonicalSHA256={result['canonicalSHA256']} removedTextKeys={len(result['removedTextKeywords'])} preservedChunkTypes={result['preservedChunkTypes']} dccStarts=0")
         return 0
     if args.assert_zero_dcc:
         raise SystemExit("zero-DCC assertion is valid only in a focused validation mode")

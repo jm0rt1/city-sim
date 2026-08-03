@@ -7,10 +7,12 @@ not create Integration authority or declare source acceptance.
 from __future__ import annotations
 
 import argparse
+import binascii
 import json
 import math
 import os
 from pathlib import Path
+import struct
 import sys
 
 
@@ -27,6 +29,98 @@ sys.path[:] = [entry for entry in sys.path if entry != str(_CHILD_SCRIPT_DIRECTO
 sys.path.insert(0, str(_CHILD_SCRIPT_DIRECTORY))
 
 import launch_residential_l01_process_a as runner
+
+
+PNG_SIGNATURE = b"\x89PNG\r\n\x1a\n"
+NONDETERMINISTIC_BLENDER_TEXT_KEYS = frozenset({
+    b"File", b"Date", b"RenderTime", b"cycles.ViewLayer.total_time",
+    b"cycles.ViewLayer.render_time", b"cycles.ViewLayer.synchronization_time",
+})
+
+
+def validated_png_chunks(data: bytes) -> list[dict]:
+    if not data.startswith(PNG_SIGNATURE):
+        raise ValueError("PNG signature mismatch")
+    chunks: list[dict] = []
+    offset = len(PNG_SIGNATURE)
+    saw_ihdr = False
+    saw_idat = False
+    saw_iend = False
+    while offset < len(data):
+        if len(data) - offset < 12:
+            raise ValueError("truncated PNG chunk framing")
+        length = struct.unpack(">I", data[offset:offset + 4])[0]
+        end = offset + 12 + length
+        if end > len(data):
+            raise ValueError("truncated PNG chunk payload")
+        kind = data[offset + 4:offset + 8]
+        payload = data[offset + 8:offset + 8 + length]
+        stored_crc = struct.unpack(">I", data[offset + 8 + length:end])[0]
+        computed_crc = binascii.crc32(kind + payload) & 0xFFFFFFFF
+        if stored_crc != computed_crc:
+            raise ValueError(f"PNG chunk CRC mismatch: {kind!r}")
+        if not chunks and kind != b"IHDR":
+            raise ValueError("PNG IHDR must be first")
+        if kind == b"IHDR":
+            if saw_ihdr or length != 13:
+                raise ValueError("PNG IHDR shape invalid")
+            saw_ihdr = True
+        elif kind == b"IDAT":
+            saw_idat = True
+        elif kind == b"IEND":
+            if saw_iend or length != 0 or end != len(data):
+                raise ValueError("PNG IEND framing invalid")
+            saw_iend = True
+        if kind == b"tEXt":
+            if b"\0" not in payload:
+                raise ValueError("PNG tEXt keyword separator missing")
+            keyword, text = payload.split(b"\0", 1)
+            if not 1 <= len(keyword) <= 79 or b"\0" in text:
+                raise ValueError("PNG tEXt payload invalid")
+        else:
+            keyword = None
+        chunks.append({"kind": kind, "payload": payload, "keyword": keyword,
+                       "raw": data[offset:end], "offset": offset})
+        offset = end
+        if kind == b"IEND":
+            break
+    if not saw_ihdr or not saw_idat or not saw_iend or offset != len(data):
+        raise ValueError("PNG required chunk sequence incomplete")
+    return chunks
+
+
+def canonical_png_bytes(data: bytes) -> tuple[bytes, dict]:
+    chunks = validated_png_chunks(data)
+    removed = [chunk["keyword"] for chunk in chunks
+               if chunk["kind"] == b"tEXt" and chunk["keyword"] in NONDETERMINISTIC_BLENDER_TEXT_KEYS]
+    canonical = PNG_SIGNATURE + b"".join(
+        chunk["raw"] for chunk in chunks
+        if not (chunk["kind"] == b"tEXt" and chunk["keyword"] in NONDETERMINISTIC_BLENDER_TEXT_KEYS)
+    )
+    canonical_chunks = validated_png_chunks(canonical)
+    remaining = {chunk["keyword"] for chunk in canonical_chunks if chunk["kind"] == b"tEXt"}
+    if remaining & NONDETERMINISTIC_BLENDER_TEXT_KEYS:
+        raise ValueError("nondeterministic Blender PNG text remained")
+    report = {"schema": 1, "method": "preserve-chunks-strip-nondeterministic-blender-text-v1",
+              "removedTextKeywords": sorted(keyword.decode("latin1") for keyword in removed),
+              "canonicalSHA256": runner.sha256_bytes(canonical)}
+    return canonical, report
+
+
+def canonicalize_blender_png(path: Path) -> dict:
+    canonical, report = canonical_png_bytes(path.read_bytes())
+    temporary = path.with_name(f".{path.name}.canonical.tmp")
+    runner.write_exclusive(temporary, canonical)
+    try:
+        os.replace(temporary, path)
+    finally:
+        try:
+            temporary.unlink()
+        except FileNotFoundError:
+            pass
+    if runner.sha256_file(path) != report["canonicalSHA256"]:
+        raise RuntimeError("canonical PNG replacement drift")
+    return report
 
 
 def parse_args(values: list[str] | None = None) -> argparse.Namespace:
@@ -474,6 +568,7 @@ def render_process(validated: dict) -> int:
     bpy.ops.render.render(write_still=True)
     if not raw_path.is_file() or raw_path.stat().st_size == 0 or not blend_path.is_file() or blend_path.stat().st_size == 0:
         raise RuntimeError("Blender omitted nonempty render artifacts")
+    png_canonicalization = canonicalize_blender_png(raw_path)
     input_bindings = {"schema": 1, "sceneSHA256": runner.sha256_file(spec["scenePath"]),
                       "materialsSHA256": runner.sha256_file(spec["materialsPath"]),
                       "loweringSHA256": runner.sha256_file(spec["loweringPath"]),
@@ -484,7 +579,8 @@ def render_process(validated: dict) -> int:
                   "sceneGeometryID": scene_doc["sceneGeometryID"], "routeId": runner.ROUTE_ID,
                   "blender": {"path": runner.BLENDER, "sha256": runner.BLENDER_SHA256, "version": "4.5.12 LTS", "buildHash": "84afd5f785f7", "architecture": "x86_64", "translation": "Rosetta"},
                   "cycles": {"device": "CPU", "samples": render["samples"], "seed": render["seed"], "threads": render["threads"], "adaptiveSampling": False, "denoising": False},
-                  "lighting": lighting, "rawPNGContainerSHA256": runner.sha256_file(raw_path),
+                  "lighting": lighting, "pngCanonicalization": png_canonicalization,
+                  "rawPNGContainerSHA256": runner.sha256_file(raw_path),
                   "sourceAuthority": False, "productionSelected": False}
     process_receipt = {"schema": 1, "kind": "play090-child-process-receipt", "result": "PASS",
                        "routeId": runner.ROUTE_ID, "workerHead": validated["binding"]["currentHead"],

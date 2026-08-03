@@ -66,6 +66,11 @@ def build_scene_spec(root: Path) -> dict:
     scene = runner.load_json(scene_path)
     materials = runner.load_json(materials_path)
     lowering = runner.load_json(lowering_path)
+    bridge_path = runner.safe_repo_path(root, lowering["coordinateBridge"]["authorityPath"])
+    if not bridge_path.is_file() or runner.sha256_file(bridge_path) != lowering["coordinateBridge"]["authoritySHA256"]:
+        raise ValueError("CONTRACT-020 bridge authority drift")
+    bridge = runner.load_json(bridge_path)
+    validate_bridge_binding(lowering, bridge)
     components = scene.get("components", [])
     ids = [item.get("id") for item in components]
     if len(components) != 19 or len(set(ids)) != 19 or None in ids:
@@ -80,7 +85,7 @@ def build_scene_spec(root: Path) -> dict:
         raise ValueError("lowering frozen inputs drifted")
     return {"scene": scene, "materials": materials, "lowering": lowering, "componentIDs": ids,
             "materialIDs": sorted(material_ids), "scenePath": scene_path, "materialsPath": materials_path,
-            "loweringPath": lowering_path}
+            "loweringPath": lowering_path, "bridgePath": bridge_path, "bridge": bridge}
 
 
 def validate_launch(args: argparse.Namespace) -> dict:
@@ -115,6 +120,73 @@ def validate_launch(args: argparse.Namespace) -> dict:
 
 def citysim_to_blender(point: list[float] | tuple[float, float, float]) -> tuple[float, float, float]:
     return float(point[2]), float(point[0]), float(point[1])
+
+
+def validate_bridge_binding(lowering: dict, bridge: dict) -> None:
+    coordinate = lowering["coordinateBridge"]
+    camera = lowering["camera"]
+    registration = lowering["registration"]
+    if (coordinate["contract"] != bridge["contract"] or coordinate["formula"] != bridge["basis"]["formula"] or
+            coordinate["matrixRows"] != bridge["basis"]["matrixRows"]):
+        raise ValueError("coordinate bridge basis mismatch")
+    expected_camera = {
+        "type": "ORTHO", "projection": "orthographic-2:1",
+        "citySimPosition": bridge["camera"]["citySimPosition"],
+        "citySimTarget": bridge["camera"]["citySimTarget"],
+        "blenderOrthographicScale": bridge["camera"]["blenderOrthographicScale"],
+        "renderViewportPixels": bridge["camera"]["renderViewportPixels"],
+        "shift": [bridge["camera"]["shiftX"], bridge["camera"]["shiftY"]],
+        "sourceGroundCenter": bridge["camera"]["sourceGroundCenter"],
+        "sourceSocket": bridge["directions"]["north"]["socketSource"],
+        "registrationTolerancePixels": bridge["toleranceSourcePixels"],
+    }
+    expected_registration = {
+        "originCitySim": bridge["registration"]["originCitySim"],
+        "originSource": bridge["registration"]["originSource"],
+        "footprintCitySimXYZ": bridge["registration"]["contactPolygonCitySimXYZ"],
+        "footprintSource": bridge["registration"]["footprintSource"],
+        "pivotCitySim": bridge["registration"]["pivotCitySim"],
+        "pivotSource": bridge["registration"]["pivotSource"],
+        "northSocketCitySim": bridge["directions"]["north"]["socketCitySim"],
+        "northSocketSource": bridge["directions"]["north"]["socketSource"],
+    }
+    if camera != expected_camera or registration != expected_registration:
+        raise ValueError("camera bridge projection binding mismatch")
+
+
+def project_bridge_citysim(point: list[float], lowering: dict) -> list[float]:
+    camera = lowering["camera"]
+    registration = lowering["registration"]
+
+    def subtract(first, second):
+        return tuple(float(first[index]) - float(second[index]) for index in range(3))
+
+    def normalize(vector):
+        magnitude = math.sqrt(sum(value * value for value in vector))
+        if magnitude == 0:
+            raise ValueError("zero-length camera bridge vector")
+        return tuple(value / magnitude for value in vector)
+
+    def cross(first, second):
+        return (first[1] * second[2] - first[2] * second[1],
+                first[2] * second[0] - first[0] * second[2],
+                first[0] * second[1] - first[1] * second[0])
+
+    def dot(first, second):
+        return sum(first[index] * second[index] for index in range(3))
+
+    position = citysim_to_blender(camera["citySimPosition"])
+    target = citysim_to_blender(camera["citySimTarget"])
+    forward = normalize(subtract(target, position))
+    right = normalize(cross(forward, (0.0, 0.0, 1.0)))
+    up = normalize(cross(right, forward))
+    origin = citysim_to_blender(registration["originCitySim"])
+    delta = subtract(citysim_to_blender(point), origin)
+    width = float(camera["renderViewportPixels"][0])
+    pixels_per_unit = width / float(camera["blenderOrthographicScale"])
+    source_origin = registration["originSource"]
+    return [float(source_origin[0]) + dot(delta, right) * pixels_per_unit,
+            float(source_origin[1]) - dot(delta, up) * pixels_per_unit]
 
 
 def create_materials(bpy, materials: dict) -> dict[str, object]:
@@ -207,21 +279,29 @@ def validate_blender_mesh(mesh, identifier: str) -> None:
 
 def registration_targets(scene_doc: dict, lowering: dict) -> dict:
     registration = scene_doc["registration"]
-    target_ground = [float(value) for value in registration["groundPivotSource"]]
+    bridge_registration = lowering["registration"]
+    target_ground = [float(value) for value in bridge_registration["pivotSource"]]
     pre_offset_center = [float(value) for value in scene_doc["camera"]["sourceGroundCenter"]]
     lowering_center = [float(value) for value in lowering["camera"]["sourceGroundCenter"]]
-    target_socket = [float(value) for value in lowering["camera"]["sourceSocket"]]
+    target_socket = [float(value) for value in bridge_registration["northSocketSource"]]
     scene_socket = [float(value) for value in registration["frontageSocketSource"]]
     tolerance = float(lowering["camera"]["registrationTolerancePixels"])
-    if pre_offset_center != lowering_center:
+    scene_footprint = [[float(value) for value in point] for point in registration["footprintPolygonSource"]]
+    bridge_footprint = [[float(value) for value in point] for point in bridge_registration["footprintSource"]]
+    if pre_offset_center != lowering_center or lowering_center != [float(value) for value in bridge_registration["originSource"]]:
         raise ValueError("pre-offset camera center authority mismatch")
-    if target_ground == pre_offset_center:
-        raise ValueError("final placement pivot aliases the pre-offset camera center")
-    if target_socket != scene_socket:
-        raise ValueError("frontage socket authority mismatch")
-    if tolerance != 0.5:
-        raise ValueError("registration tolerance drift")
-    return {"groundPivotSource": target_ground, "preOffsetCameraCenter": pre_offset_center,
+    if target_ground != [float(value) for value in registration["groundPivotSource"]] or scene_footprint != bridge_footprint:
+        raise ValueError("footprint or placement pivot authority mismatch")
+    if target_socket != scene_socket or target_socket != [float(value) for value in lowering["camera"]["sourceSocket"]]:
+        raise ValueError("North frontage socket authority mismatch")
+    if tolerance != 0.001:
+        raise ValueError("bridge registration tolerance drift")
+    return {"originCitySim": bridge_registration["originCitySim"],
+            "originSource": [float(value) for value in bridge_registration["originSource"]],
+            "footprintCitySimXYZ": bridge_registration["footprintCitySimXYZ"],
+            "footprintSource": bridge_footprint, "pivotCitySim": bridge_registration["pivotCitySim"],
+            "groundPivotSource": target_ground, "preOffsetCameraCenter": pre_offset_center,
+            "northSocketCitySim": bridge_registration["northSocketCitySim"],
             "frontageSocketSource": target_socket, "tolerancePixels": tolerance}
 
 
@@ -262,30 +342,40 @@ def configure_camera(bpy, scene_doc: dict, lowering: dict) -> tuple[object, dict
     camera = bpy.data.objects.new("PLAY090::NorthCamera", data)
     bpy.context.collection.objects.link(camera)
     data.type = "ORTHO"
-    width, height = [int(value) for value in scene_doc["camera"]["renderViewportPixels"]]
-    analytic_scale = 256.0 / 56.0
-    data.ortho_scale = float(height) * math.sqrt(0.5) / analytic_scale
-    data.shift_x = 0.0
-    data.shift_y = 0.25
-    camera.location = citysim_to_blender(scene_doc["camera"]["positionWorld"])
-    target = Vector(citysim_to_blender(scene_doc["camera"]["targetWorld"]))
+    camera_binding = lowering["camera"]
+    width, height = [int(value) for value in camera_binding["renderViewportPixels"]]
+    if [width, height] != [int(value) for value in scene_doc["camera"]["renderViewportPixels"]]:
+        raise ValueError("scene viewport differs from bridge authority")
+    data.ortho_scale = float(camera_binding["blenderOrthographicScale"])
+    data.shift_x, data.shift_y = [float(value) for value in camera_binding["shift"]]
+    camera.location = citysim_to_blender(camera_binding["citySimPosition"])
+    target = Vector(citysim_to_blender(camera_binding["citySimTarget"]))
     camera.rotation_euler = (target - camera.location).to_track_quat("-Z", "Y").to_euler()
     bpy.context.scene.camera = camera
 
     def project(source: list[float]) -> list[float]:
         ndc = world_to_camera_view(bpy.context.scene, camera, Vector(citysim_to_blender(source)))
         return [float(ndc.x) * width, (1.0 - float(ndc.y)) * height]
-    ground = project([0, 0, 0])
-    socket = project(scene_doc["registration"]["frontageSocketWorld"])
     targets = registration_targets(scene_doc, lowering)
+    origin = project(targets["originCitySim"])
+    footprint = [project(point) for point in targets["footprintCitySimXYZ"]]
+    ground = project(targets["pivotCitySim"])
+    socket = project(targets["northSocketCitySim"])
     target_ground = targets["groundPivotSource"]
     target_socket = targets["frontageSocketSource"]
     tolerance = targets["tolerancePixels"]
+    if max(abs(origin[i] - targets["originSource"][i]) for i in range(2)) > tolerance:
+        raise RuntimeError(f"origin registration drift: {origin}")
+    for index, projected in enumerate(footprint):
+        if max(abs(projected[i] - targets["footprintSource"][index][i]) for i in range(2)) > tolerance:
+            raise RuntimeError(f"footprint registration drift at {index}: {projected}")
     if max(abs(ground[i] - target_ground[i]) for i in range(2)) > tolerance:
         raise RuntimeError(f"ground registration drift: {ground}")
     if max(abs(socket[i] - target_socket[i]) for i in range(2)) > tolerance:
         raise RuntimeError(f"socket registration drift: {socket}")
-    return camera, {"schema": 1, "viewport": [width, height], "groundPivotSource": ground,
+    return camera, {"schema": 1, "viewport": [width, height], "originSource": origin,
+                    "expectedOriginSource": targets["originSource"], "footprintSource": footprint,
+                    "expectedFootprintSource": targets["footprintSource"], "groundPivotSource": ground,
                     "expectedGroundPivotSource": target_ground,
                     "preOffsetCameraCenter": targets["preOffsetCameraCenter"], "frontageSocketSource": socket,
                     "expectedFrontageSocketSource": target_socket, "tolerancePixels": tolerance,
@@ -386,6 +476,8 @@ def render_process(validated: dict) -> int:
     input_bindings = {"schema": 1, "sceneSHA256": runner.sha256_file(spec["scenePath"]),
                       "materialsSHA256": runner.sha256_file(spec["materialsPath"]),
                       "loweringSHA256": runner.sha256_file(spec["loweringPath"]),
+                      "coordinateBridgePath": lowering["coordinateBridge"]["authorityPath"],
+                      "coordinateBridgeSHA256": runner.sha256_file(spec["bridgePath"]),
                       "contractSHA256": runner.sha256_file(root / runner.SOURCE_ROOT / runner.CONTRACT_NAME)}
     provenance = {"schema": 1, "task": "PLAY-090", "direction": "north", "process": "A",
                   "sceneGeometryID": scene_doc["sceneGeometryID"], "routeId": runner.ROUTE_ID,

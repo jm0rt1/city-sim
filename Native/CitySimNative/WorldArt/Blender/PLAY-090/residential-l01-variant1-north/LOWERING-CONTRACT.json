@@ -7,6 +7,11 @@
   "materialsSHA256": "943436fdebc0c7bf672798bffa6f7619608341316cead3467efc6f14a3ac4fc3",
   "componentCount": 19,
   "coordinateBridge": {
+    "authorityPath": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-direction-bridge-v06/MAPPING-CONTRACT.json",
+    "authoritySHA256": "5695927b78ceaba52eda6f78f23b0e719623b492f5c5ee36845235fea3c06ff7",
+    "contract": "CONTRACT-020-directional-spatial-bridge-v06",
+    "formula": "B(CitySim[x,y,z])=Blender[z,x,y]",
+    "matrixRows": [[0, 0, 1], [1, 0, 0], [0, 1, 0]],
     "sourceAxes": ["x", "y-up", "z"],
     "blenderAxes": ["source-z", "source-x", "source-y"],
     "orientationTransform": "none"
@@ -20,10 +25,24 @@
   "camera": {
     "type": "ORTHO",
     "projection": "orthographic-2:1",
-    "deriveScaleFromAnalyticProjection": true,
+    "citySimPosition": [96, 101.24557426726288, 96],
+    "citySimTarget": [0, 22.861902498201186, 0],
+    "blenderOrthographicScale": 237.5878601074218,
+    "renderViewportPixels": [1536, 1024],
+    "shift": [0, 0.08333333333333333],
     "sourceGroundCenter": [768, 768],
     "sourceSocket": [896, 704],
-    "registrationTolerancePixels": 0.5
+    "registrationTolerancePixels": 0.001
+  },
+  "registration": {
+    "originCitySim": [0, 0, 0],
+    "originSource": [768, 768],
+    "footprintCitySimXYZ": [[-28, 0, -28], [28, 0, -28], [28, 0, 28], [-28, 0, 28]],
+    "footprintSource": [[768, 640], [1024, 768], [768, 896], [512, 768]],
+    "pivotCitySim": [28, 0, 28],
+    "pivotSource": [768, 896],
+    "northSocketCitySim": [0, 0, -28],
+    "northSocketSource": [896, 704]
   },
   "lighting": {
     "worldStrength": 0.5,

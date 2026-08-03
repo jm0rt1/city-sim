@@ -162,7 +162,7 @@ def api_compatibility_zero_dcc() -> dict:
         if (targets["groundPivotSource"] != [768.0, 896.0] or
                 targets["preOffsetCameraCenter"] != [768.0, 768.0] or
                 targets["frontageSocketSource"] != [896.0, 704.0] or
-                targets["tolerancePixels"] != 0.5):
+                targets["tolerancePixels"] != 0.001):
             raise AssertionError("authoritative registration target binding drift")
         aliased_scene = json.loads(json.dumps(spec["scene"]))
         aliased_scene["registration"]["groundPivotSource"] = [768, 768]
@@ -171,6 +171,47 @@ def api_compatibility_zero_dcc() -> dict:
                 "meshValidateSemantics": "true-means-corrected-and-rejected",
                 "groundPivotSource": targets["groundPivotSource"],
                 "preOffsetCameraCenter": targets["preOffsetCameraCenter"], "dccStarts": 0}
+    finally:
+        runner.subprocess.Popen = original_popen
+
+
+def camera_bridge_zero_dcc() -> dict:
+    original_popen = runner.subprocess.Popen
+
+    def reject_dcc(*_args, **_kwargs):
+        raise AssertionError("camera-bridge regression attempted to start a child process")
+
+    try:
+        runner.subprocess.Popen = reject_dcc
+        spec = child.build_scene_spec(ROOT)
+        lowering, bridge = spec["lowering"], spec["bridge"]
+        child.validate_bridge_binding(lowering, bridge)
+        registration = lowering["registration"]
+        tolerance = float(lowering["camera"]["registrationTolerancePixels"])
+
+        def delta(actual, expected):
+            return max(abs(float(actual[index]) - float(expected[index])) for index in range(2))
+
+        proofs = {
+            "origin": (registration["originCitySim"], registration["originSource"]),
+            "pivot": (registration["pivotCitySim"], registration["pivotSource"]),
+            "northSocket": (registration["northSocketCitySim"], registration["northSocketSource"]),
+        }
+        for index, point in enumerate(registration["footprintCitySimXYZ"]):
+            proofs[f"footprint-{index}"] = (point, registration["footprintSource"][index])
+        deltas = {name: delta(child.project_bridge_citysim(point, lowering), expected)
+                  for name, (point, expected) in proofs.items()}
+        if any(value > tolerance for value in deltas.values()):
+            raise AssertionError(f"camera bridge projection drift: {deltas}")
+        if (registration["originSource"] != [768, 768] or registration["pivotSource"] != [768, 896] or
+                registration["northSocketSource"] != [896, 704] or tolerance != 0.001):
+            raise AssertionError("camera bridge frozen targets drift")
+        mutated = json.loads(json.dumps(lowering))
+        mutated["camera"]["shift"][1] = 0.25
+        fail(lambda: child.validate_bridge_binding(mutated, bridge), "variant-specific camera shift")
+        return {"bridgePath": lowering["coordinateBridge"]["authorityPath"],
+                "bridgeSHA256": lowering["coordinateBridge"]["authoritySHA256"],
+                "projectionCount": len(proofs), "maximumDeltaPixels": max(deltas.values()), "dccStarts": 0}
     finally:
         runner.subprocess.Popen = original_popen
 
@@ -380,30 +421,39 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--bootstrap-only", action="store_true")
     parser.add_argument("--host-binding-only", action="store_true")
     parser.add_argument("--api-compatibility-only", action="store_true")
+    parser.add_argument("--camera-bridge-only", action="store_true")
     parser.add_argument("--assert-zero-dcc", action="store_true")
     parser.add_argument("--contained-runtime-replay", action="store_true")
     parser.add_argument("--assert-nonblank", action="store_true")
     parser.add_argument("--output-root")
     args = parser.parse_args(argv)
     if args.bootstrap_only:
-        if (not args.assert_zero_dcc or args.host_binding_only or args.api_compatibility_only or args.contained_runtime_replay or
+        if (not args.assert_zero_dcc or args.host_binding_only or args.api_compatibility_only or args.camera_bridge_only or
+                args.contained_runtime_replay or
                 args.assert_nonblank or args.output_root is not None):
             raise SystemExit("bootstrap-only requires zero-DCC assertion and no replay arguments")
         result = bootstrap_without_ambient_source()
         print(f"PASS PLAY-090 child-bootstrap adjacentLauncher={result['launcher']} dccStarts=0")
         return 0
     if args.host_binding_only:
-        if (not args.assert_zero_dcc or args.api_compatibility_only or args.contained_runtime_replay or
+        if (not args.assert_zero_dcc or args.api_compatibility_only or args.camera_bridge_only or args.contained_runtime_replay or
                 args.assert_nonblank or args.output_root is not None):
             raise SystemExit("host-binding-only requires zero-DCC assertion and no replay arguments")
         result = host_binding_zero_dcc()
         print(f"PASS PLAY-090 host-binding native={result['native']} translated={result['translated']} dccStarts=0")
         return 0
     if args.api_compatibility_only:
-        if not args.assert_zero_dcc or args.contained_runtime_replay or args.assert_nonblank or args.output_root is not None:
+        if (not args.assert_zero_dcc or args.camera_bridge_only or args.contained_runtime_replay or
+                args.assert_nonblank or args.output_root is not None):
             raise SystemExit("API-compatibility-only requires zero-DCC assertion and no replay arguments")
         result = api_compatibility_zero_dcc()
         print(f"PASS PLAY-090 Blender-4.5 API compatibility meshComponents={result['meshComponents']} topologyChecks={result['topologyChecks']} groundPivot={result['groundPivotSource']} preOffsetCenter={result['preOffsetCameraCenter']} dccStarts=0")
+        return 0
+    if args.camera_bridge_only:
+        if not args.assert_zero_dcc or args.contained_runtime_replay or args.assert_nonblank or args.output_root is not None:
+            raise SystemExit("camera-bridge-only requires zero-DCC assertion and no replay arguments")
+        result = camera_bridge_zero_dcc()
+        print(f"PASS PLAY-090 camera-bridge projections={result['projectionCount']} maximumDeltaPixels={result['maximumDeltaPixels']:.9f} bridgeSHA256={result['bridgeSHA256']} dccStarts=0")
         return 0
     if args.assert_zero_dcc:
         raise SystemExit("zero-DCC assertion is valid only in a focused validation mode")

@@ -18,9 +18,12 @@
   fresh-process decoded identity for the granted A, non-alias, registration,
   source/native-2x/literal-192 color and grayscale, provenance, and contact
   sheets.
-- **Status:** Active prelock authority preparation. Zero-pixel hero predesign
-  still requires the exact frontier route; Process A remains separately
-  blocked on an Integration-owned closure and startup receipt.
+- **Status:** The zero-pixel hero predesign is independently accepted for
+  Process-A implementation only. The worker may implement and contained-smoke
+  one task-owned Integration-direct orchestrator/child under an exact schema-2
+  route. The production Process A remains blocked on separate Integration
+  acceptance, a family-specific one-slot schedule/closure, a reusable passing
+  Blender startup receipt, and one exact Integration-owned launch grant.
 
 Do not edit sibling, renderer, shipping, package, gameplay, UI, simulation,
 save, shared-contract, or manifest paths. Do not push, integrate, self-accept,

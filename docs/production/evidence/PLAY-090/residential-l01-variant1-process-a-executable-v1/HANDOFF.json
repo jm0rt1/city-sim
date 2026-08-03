@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "task": "PLAY-090",
+  "stage": "north-process-a-executable-boundary",
+  "disposition": "implementation_ready_for_independent_review",
+  "routeId": "quality-v2:play-090-residential-l01-variant1-north-process-a-executable-v1",
+  "routeSHA256": "f951fc6065b3a4c22f57a16843a0282d071d89b80bd84ec13cbb6a624030ec16",
+  "authorityCommit": "e8e884d53bb568ccc14128ca581c65302af35177",
+  "workerInputHead": "caea709ae185a1c4ad734f1a343ffecfbbd0234d",
+  "claimSHA256": "3d28843b7cbd53c9f25e71163a6bd3e9821c340010f7303a0909e35b9251d6b2",
+  "assignment": {"threadId": "019f96e0-3793-7542-9172-060a9ca09b0a", "branch": "codex/citysim-world-art", "worktree": "/Users/James/.codex/worktrees/0648/city-sim"},
+  "frozenDesign": {"sceneGeometryID": "residential-l01-v1-north-u-court-v1", "sceneSHA256": "b8693b77b9e3927b44ed1e67bdacaf76afe69f474a338bf51619b3e61fe8be4b", "materialsSHA256": "943436fdebc0c7bf672798bffa6f7619608341316cead3467efc6f14a3ac4fc3"},
+  "result": {"launchReady": false, "executableForIntegration": true, "sourceAuthority": false, "productionSelected": false, "dccChildStarts": 0, "processAStarts": 0, "pixelWrites": 0},
+  "focusedCommands": ["test_process_a_execution_boundary.py --contained-smoke --assert-zero-dcc", "test_prelock_zero_pixel.py", "git diff --check"],
+  "knownBlocker": "Integration must later publish and consume the exact schedule, one grant, attempt state, and output root before any Process A.",
+  "stopCondition": "No Blender/DCC child, Process A, pixels, normalization, sibling, shared, shipping, push, integration, or self-acceptance."
+}

@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "runner": "launch_residential_l01_process_a.py",
+  "mode": "integration_direct",
+  "routeId": "quality-v2:play-090-residential-l01-variant1-north-process-a-executable-v1",
+  "routeSHA256": "f951fc6065b3a4c22f57a16843a0282d071d89b80bd84ec13cbb6a624030ec16",
+  "workerHEAD": "caea709ae185a1c4ad734f1a343ffecfbbd0234d",
+  "child": "render_residential_l01_process_a_child.py",
+  "childBoundary": "child validates exact schedule, grant, receipt, worker and frozen input identities before bpy",
+  "zeroChildMode": "assemble and validate one fixed command; never invoke it; write deterministic contained-smoke evidence",
+  "integrationDirectMode": "requires Integration-owned schedule, grant and process receipt; atomically consumed attempt is Integration-owned",
+  "authority": "Integration-owned schedule, grant, process receipt and compute slot",
+  "workerCapabilities": ["read-frozen-inputs", "validate-identity", "assemble-payload", "write-task-owned-contained-smoke-evidence"],
+  "workerForbidden": ["sign", "create-schedule", "create-grant", "create-receipt", "create-attempt-marker", "start-child", "run-blender", "render", "write-pixels"],
+  "outputPolicy": {"exclusive": true, "overwrite": false, "symlinks": false, "futureProcessRootCreated": false, "containedSmokeRootTaskOwned": true},
+  "sourceAuthority": false,
+  "productionSelected": false
+}

@@ -1,0 +1,29 @@
+{
+  "schema": 1,
+  "task": "PLAY-090",
+  "routeId": "quality-v2:play-090-residential-l01-variant1-north-process-a-executable-v1",
+  "routeSHA256": "f951fc6065b3a4c22f57a16843a0282d071d89b80bd84ec13cbb6a624030ec16",
+  "authorityCommit": "e8e884d53bb568ccc14128ca581c65302af35177",
+  "claimSHA256": "3d28843b7cbd53c9f25e71163a6bd3e9821c340010f7303a0909e35b9251d6b2",
+  "workerInputHead": "caea709ae185a1c4ad734f1a343ffecfbbd0234d",
+  "assignment": {"threadId": "019f96e0-3793-7542-9172-060a9ca09b0a", "branch": "codex/citysim-world-art", "worktree": "/Users/James/.codex/worktrees/0648/city-sim"},
+  "identity": {"logicalBuildingID": "residential_l01", "variantID": "variant-1", "direction": "north", "process": "A", "slot": "north:A"},
+  "launchReady": false,
+  "executableForIntegration": true,
+  "productionSelected": false,
+  "sourceAuthority": false,
+  "zeroChild": {"focusedProof": "contained_smoke", "dccChildStarts": 0, "processAStarts": 0, "pixelWrites": 0, "freshRoots": 2, "adversaries": 8, "productionDeniedWithoutGrant": true},
+  "frozenTools": {
+    "executionContract": "35e4b10156980ef354f6aa8a90b087f316445d99c0b1ce73bd61e39c7039e409",
+    "runnerContract": "2697ad4803ad5a7b767f27c7624efadbf0646bdd19b8b8b2f6b915de3fe60de6",
+    "orchestrator": "3c7503ccd51b674c1888f1eb2d778e5d0dbec458458a933a1793c8b0ed734708",
+    "child": "adf8ef1852782d57dddf27083e05c5a4a08003d27a4b4d8ac61ea4b3bcc26f88",
+    "test": "da7ea41b4bbc7d342f2862e10ef4af98bd93ef579a0742ae2f397472471e3b54"
+  },
+  "evidence": {
+    "payload": "ce34d3a69bfe5365139c7e896ee915039d5c44442a3af949e2c1392799c0caeb",
+    "containedSmoke": "8c700c3dfead999e2f791ed146ab5290f670bc84b827ed4fd01e9877c2fd0dd4"
+  },
+  "forbidden": ["schedule", "grant", "receipt", "attempt-marker", "Blender", "DCC", "pixels", "Process B/C", "siblings", "shared authority"],
+  "stopCondition": "Stop before any production Process A or pixel; Integration owns a later one-grant launch."
+}

@@ -2313,6 +2313,89 @@ final class CityCommandCatalogTests: XCTestCase {
     }
 
     @MainActor
+    func testPointerBlockedPlacementPublishesOneCoherentLatestResult() throws {
+        let occupiedCoordinate = GridCoordinate(x: 5, y: 7) // authored block 6,8
+        var initial = CityGameState.newCity(seed: 42)
+        initial.updateTile(at: occupiedCoordinate) { tile in
+            tile.kind = .commercial
+        }
+        let validRoadCoordinate = try XCTUnwrap(initial.tiles.first { tile in
+            guard tile.kind == .empty else { return false }
+            if case .success = CitySimulation.validateBuild(.road, at: tile.coordinate, in: initial) {
+                return true
+            }
+            return false
+        }).coordinate
+
+        let store = CityGameStore(state: initial)
+        store.selectTool(.road)
+        store.clearFeedback()
+        let coordinator = CitySceneView.Coordinator(store: store)
+        let mapView = CityMapSKView(frame: CGRect(x: 0, y: 0, width: 900, height: 600))
+        let scene = CityScene(size: CGSize(width: 900, height: 600))
+        mapView.presentScene(scene)
+        coordinator.scene = scene
+        scene.onActiveActionTargetCandidate = { coordinate in
+            coordinator.acceptPointerMapActionCandidate(coordinate, in: mapView)
+        }
+        scene.onPrimaryAction = { coordinate in
+            _ = coordinator.performPointerPrimaryAction(at: coordinate, in: mapView)
+        }
+        scene.render(
+            state: store.state,
+            overlay: store.overlay,
+            selection: store.selectedCoordinate,
+            interactionMode: store.interactionMode,
+            activeActionTarget: store.activeMapActionTargetPresentation
+        )
+
+        let initialTreasury = store.state.treasury
+        scene.activatePrimaryActionForTesting(at: validRoadCoordinate)
+        XCTAssertEqual(store.state.tile(at: validRoadCoordinate)?.kind, .road)
+        XCTAssertEqual(store.state.treasury, initialTreasury - BuildingKind.road.buildCost)
+        XCTAssertTrue(store.canUndo)
+        XCTAssertEqual(store.lastFeedback, "Road construction approved")
+        XCTAssertEqual(store.lastFeedbackTone, .positive)
+
+        // A real SwiftUI update would render the post-success authoritative state
+        // before the next pointer event. Keep that publication boundary explicit.
+        scene.render(
+            state: store.state,
+            overlay: store.overlay,
+            selection: store.selectedCoordinate,
+            interactionMode: store.interactionMode,
+            activeActionTarget: store.activeMapActionTargetPresentation
+        )
+        scene.activatePrimaryActionForTesting(at: occupiedCoordinate)
+
+        let blockedPresentation = try XCTUnwrap(store.activeMapActionTargetPresentation)
+        XCTAssertEqual(blockedPresentation.coordinate, occupiedCoordinate)
+        XCTAssertFalse(blockedPresentation.primaryAction.isAvailable)
+        XCTAssertTrue(
+            blockedPresentation.primaryAction.disclosure.contains(BuildRejection.occupied.message)
+        )
+        XCTAssertEqual(store.state.tile(at: validRoadCoordinate)?.kind, .road)
+        XCTAssertEqual(store.state.treasury, initialTreasury - BuildingKind.road.buildCost)
+        XCTAssertTrue(store.canUndo, "A rejected pointer attempt must preserve the prior undo entry")
+        XCTAssertEqual(store.lastFeedbackTone, .caution)
+        XCTAssertEqual(
+            store.lastFeedback,
+            BuildRejection.occupied.message + " Road remains selected — choose another block."
+        )
+
+        coordinator.configureMapAccessibility(in: mapView)
+        let accessibilityValue = try XCTUnwrap(mapView.accessibilityValue() as? String)
+        XCTAssertTrue(accessibilityValue.contains("block 6, 8"))
+        XCTAssertTrue(accessibilityValue.contains(blockedPresentation.primaryAction.disclosure))
+        XCTAssertFalse(accessibilityValue.contains("Road construction approved"))
+        XCTAssertFalse(
+            mapView.accessibilityCustomActions()?.contains { $0.name.hasPrefix("Build Road") } ?? true,
+            "A blocked target must not expose an available build action"
+        )
+        XCTAssertEqual(scene.activeActionTargetForTesting, blockedPresentation)
+    }
+
+    @MainActor
     func testBlockedTargetBecomesAvailableAfterOneAuthoritativeRoadChange() throws {
         var state = CityGameState.newCity(seed: 42)
         let pair = try XCTUnwrap(state.tiles.lazy.compactMap { target -> (CityTile, CityTile)? in

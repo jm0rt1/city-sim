@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "task": "PLAY-090",
+  "routeId": "quality-v2:play-090-residential-l01-variant1-north-runtime-repair-v1",
+  "routeSHA256": "c8cf8a789860088444a969bd5cad4cdbbedaecd50a8b275791ce3e5e37f17472",
+  "sceneSHA256": "b8693b77b9e3927b44ed1e67bdacaf76afe69f474a338bf51619b3e61fe8be4b",
+  "materialsSHA256": "943436fdebc0c7bf672798bffa6f7619608341316cead3467efc6f14a3ac4fc3",
+  "componentCount": 19,
+  "coordinateBridge": {
+    "sourceAxes": ["x", "y-up", "z"],
+    "blenderAxes": ["source-z", "source-x", "source-y"],
+    "orientationTransform": "none"
+  },
+  "geometry": {
+    "supportedKinds": ["box", "gablePrism", "shedPrism"],
+    "closedMeshesRequired": true,
+    "gableBottom": "eaveHeight",
+    "shedVerticalThickness": 1.0
+  },
+  "camera": {
+    "type": "ORTHO",
+    "projection": "orthographic-2:1",
+    "deriveScaleFromAnalyticProjection": true,
+    "sourceGroundCenter": [768, 768],
+    "sourceSocket": [896, 704],
+    "registrationTolerancePixels": 0.5
+  },
+  "lighting": {
+    "worldStrength": 0.5,
+    "key": {"type": "AREA", "shape": "DISK", "energyWatts": 1000.0, "sizeWorld": 42.0},
+    "fill": {"type": "AREA", "shape": "DISK", "originWorld": [120, 95, 120], "targetWorld": [0, 12, 0], "energyWatts": 320.0, "sizeWorld": 56.0, "colorRGB": [0.62, 0.72, 1.0]},
+    "shadowReceiver": {"kind": "transparent-cycles-shadow-catcher", "sizeWorld": 160.0, "heightWorld": 0.0}
+  },
+  "render": {
+    "engine": "CYCLES",
+    "device": "CPU",
+    "threads": 1,
+    "samples": 32,
+    "seed": 900901,
+    "adaptiveSampling": false,
+    "denoising": false,
+    "motionBlur": false,
+    "filmTransparent": true,
+    "resolution": [1536, 1024],
+    "resolutionPercentage": 100,
+    "pixelAspect": [1.0, 1.0],
+    "format": "PNG",
+    "colorMode": "RGBA",
+    "colorDepth": "8",
+    "colorManagement": {"displayDevice": "sRGB", "viewTransform": "Standard", "look": "Medium High Contrast", "exposure": 0.0, "gamma": 1.0}
+  },
+  "blender": {
+    "receiptPath": "docs/production/evidence/INTEGRATION/BLENDER-4.5.12-ARM64-STARTUP-RECEIPT-V1.json",
+    "receiptSHA256": "4202de8d3ffbb9f3094b1c2e78b30a4c7e26664bce8af74916147d6995eb36aa",
+    "path": "/Applications/Blender-4.5.12-arm64.app/Contents/MacOS/Blender",
+    "sha256": "0fa2ab6500e41bfd8114485b218a1e4aebf15b3d8cea90dc8398535291061506",
+    "architecture": "arm64",
+    "version": "4.5.12 LTS",
+    "buildHash": "84afd5f785f7",
+    "arguments": ["--factory-startup", "--disable-autoexec", "--background", "--python-exit-code", "1"]
+  },
+  "artifacts": ["raw.png", "scene.blend", "OBJECT-MANIFEST.json", "GROUND-REGISTRATION.json", "INPUT-BINDINGS.json", "PROVENANCE.json", "PROCESS-RECEIPT.json"]
+}

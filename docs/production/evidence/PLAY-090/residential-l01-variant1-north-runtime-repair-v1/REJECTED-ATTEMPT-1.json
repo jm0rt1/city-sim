@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "task": "PLAY-090",
+  "routeId": "quality-v2:play-090-residential-l01-variant1-north-runtime-repair-v1",
+  "attempt": 1,
+  "disposition": "rejected_pre_python_host_startup_crash",
+  "workerInputHead": "029d5759eb6887f6ee16a65f099f6bfe9cfd697a",
+  "blender": {
+    "path": "/Applications/Blender-4.5.12-arm64.app/Contents/MacOS/Blender",
+    "sha256": "0fa2ab6500e41bfd8114485b218a1e4aebf15b3d8cea90dc8398535291061506",
+    "architecture": "arm64",
+    "version": "4.5.12 LTS",
+    "buildHash": "84afd5f785f7"
+  },
+  "result": {
+    "pid": 69156,
+    "exitCode": -11,
+    "durationSeconds": 0.443008,
+    "attemptConsumed": true,
+    "childStarts": 1,
+    "pixelWrites": 0,
+    "commandSHA256": "a2841e432f21bacab008090d552e83521cd37d2b0d11c055225ee58f967c8360",
+    "stdoutSHA256": "06b5e8a8f5bf820720cac2aa6a62c5030d32a50175e7ce1f979b69974843be6d",
+    "stderrSHA256": "073f7e74afa3b28b30a4b76e9fb3bc5fad269524595b6dc9b378a7809dcefe43"
+  },
+  "attribution": {
+    "phase": "pre_python_gpu_backend_initialization",
+    "topFrame": "blender::gpu::supports_barycentric_whitelist(id<MTLDevice>)",
+    "repair": "remove launcher-introduced locale/TZ/OMP overrides, inherit the admitted host environment, start a fresh session, and use the previously passing factory-startup-first command ordering"
+  },
+  "sourceAuthority": false,
+  "productionSelected": false
+}

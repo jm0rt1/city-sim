@@ -199,6 +199,40 @@ def validate_contract(root: Path, contract_value: str) -> dict:
     return contract
 
 
+def resolve_host_context(execution_architecture: str, proc_translated: int) -> dict:
+    if execution_architecture not in {"arm64", "x86_64"}:
+        raise ValueError("unsupported execution architecture")
+    if proc_translated not in {0, 1}:
+        raise ValueError("invalid Rosetta translation signal")
+    if proc_translated == 1:
+        if execution_architecture != "x86_64":
+            raise ValueError("Rosetta signal requires x86_64 execution")
+        return {"nativeArchitecture": "arm64", "executionArchitecture": "x86_64", "translation": "Rosetta"}
+    return {"nativeArchitecture": execution_architecture, "executionArchitecture": execution_architecture,
+            "translation": "native"}
+
+
+def current_host_context() -> dict:
+    signal = subprocess.run(["/usr/sbin/sysctl", "-in", "sysctl.proc_translated"],
+                            cwd="/", stdin=subprocess.DEVNULL, stdout=subprocess.PIPE,
+                            stderr=subprocess.PIPE, check=False)
+    if signal.returncode != 0 or signal.stdout.strip() not in {b"0", b"1"}:
+        raise ValueError("stable Rosetta translation signal unavailable")
+    return resolve_host_context(platform.machine(), int(signal.stdout.strip()))
+
+
+def validate_host_binding(receipt_host: dict, current: dict) -> dict:
+    admitted = {"nativeArchitecture": "arm64", "macOSVersion": "26.6", "macOSBuild": "25G72",
+                "executionArchitecture": "x86_64", "translation": "Rosetta"}
+    if receipt_host != admitted:
+        raise ValueError("Blender receipt host tuple mismatch")
+    translated = {"nativeArchitecture": "arm64", "executionArchitecture": "x86_64", "translation": "Rosetta"}
+    native = {"nativeArchitecture": "arm64", "executionArchitecture": "arm64", "translation": "native"}
+    if current != translated and current != native:
+        raise ValueError("native or translated host context drift")
+    return current
+
+
 def verify_blender(root: Path) -> dict:
     receipt_bytes = _git(root, "show", f"{CARRIER_COMMIT}:{BLENDER_RECEIPT_PATH}")
     if sha256_bytes(receipt_bytes) != BLENDER_RECEIPT_SHA256:
@@ -211,9 +245,7 @@ def verify_blender(root: Path) -> dict:
         raise ValueError("Blender receipt identity mismatch")
     if executable.get("architecture") != "x86_64" or executable.get("version") != "4.5.12 LTS" or executable.get("buildHash") != "84afd5f785f7":
         raise ValueError("Blender receipt tuple mismatch")
-    if (platform.machine() != "arm64" or host.get("nativeArchitecture") != "arm64" or
-            host.get("executionArchitecture") != "x86_64" or host.get("translation") != "Rosetta"):
-        raise ValueError("host architecture drift")
+    validate_host_binding(host, current_host_context())
     binary = Path(BLENDER)
     if not binary.is_file() or binary.is_symlink() or sha256_file(binary) != BLENDER_SHA256:
         raise ValueError("admitted Blender binary drift")

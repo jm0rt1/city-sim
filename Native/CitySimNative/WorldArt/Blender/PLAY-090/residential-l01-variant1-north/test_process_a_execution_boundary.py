@@ -89,6 +89,34 @@ def bootstrap_without_ambient_source() -> dict:
             sys.modules["launch_residential_l01_process_a"] = original_runner
 
 
+def host_binding_zero_dcc() -> dict:
+    receipt_host = {
+        "nativeArchitecture": "arm64", "macOSVersion": "26.6", "macOSBuild": "25G72",
+        "executionArchitecture": "x86_64", "translation": "Rosetta",
+    }
+    original_popen = runner.subprocess.Popen
+
+    def reject_dcc(*_args, **_kwargs):
+        raise AssertionError("host-binding-only regression attempted to start a child process")
+
+    try:
+        runner.subprocess.Popen = reject_dcc
+        native = runner.resolve_host_context("arm64", 0)
+        translated = runner.resolve_host_context("x86_64", 1)
+        runner.validate_host_binding(receipt_host, native)
+        runner.validate_host_binding(receipt_host, translated)
+        fail(lambda: runner.resolve_host_context("arm64", 1), "arm64 Rosetta execution")
+        fail(lambda: runner.validate_host_binding(receipt_host, {
+            "nativeArchitecture": "x86_64", "executionArchitecture": "x86_64", "translation": "native"
+        }), "wrong native host")
+        fail(lambda: runner.validate_host_binding(receipt_host, {
+            "nativeArchitecture": "arm64", "executionArchitecture": "arm64", "translation": "Rosetta"
+        }), "wrong translated execution")
+        return {"native": native, "translated": translated, "dccStarts": 0}
+    finally:
+        runner.subprocess.Popen = original_popen
+
+
 def fixture_documents(directory: Path, output: Path, current_head: str) -> tuple[Path, Path, Path]:
     schedule_path, grant_path, receipt_path = directory / "schedule.json", directory / "grant.json", directory / "receipt.json"
     launcher = ROOT / runner.SOURCE_ROOT / "launch_residential_l01_process_a.py"
@@ -292,19 +320,27 @@ def write_panels(base: Path, first: dict, second: dict) -> dict:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--bootstrap-only", action="store_true")
+    parser.add_argument("--host-binding-only", action="store_true")
     parser.add_argument("--assert-zero-dcc", action="store_true")
     parser.add_argument("--contained-runtime-replay", action="store_true")
     parser.add_argument("--assert-nonblank", action="store_true")
     parser.add_argument("--output-root")
     args = parser.parse_args(argv)
     if args.bootstrap_only:
-        if not args.assert_zero_dcc or args.contained_runtime_replay or args.assert_nonblank or args.output_root is not None:
+        if (not args.assert_zero_dcc or args.host_binding_only or args.contained_runtime_replay or
+                args.assert_nonblank or args.output_root is not None):
             raise SystemExit("bootstrap-only requires zero-DCC assertion and no replay arguments")
         result = bootstrap_without_ambient_source()
         print(f"PASS PLAY-090 child-bootstrap adjacentLauncher={result['launcher']} dccStarts=0")
         return 0
+    if args.host_binding_only:
+        if not args.assert_zero_dcc or args.contained_runtime_replay or args.assert_nonblank or args.output_root is not None:
+            raise SystemExit("host-binding-only requires zero-DCC assertion and no replay arguments")
+        result = host_binding_zero_dcc()
+        print(f"PASS PLAY-090 host-binding native={result['native']} translated={result['translated']} dccStarts=0")
+        return 0
     if args.assert_zero_dcc:
-        raise SystemExit("zero-DCC assertion is valid only in bootstrap-only mode")
+        raise SystemExit("zero-DCC assertion is valid only in a focused validation mode")
     if not args.contained_runtime_replay or not args.assert_nonblank:
         raise SystemExit("contained runtime replay and nonblank assertion are required")
     if args.output_root is None:

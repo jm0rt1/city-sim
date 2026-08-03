@@ -117,7 +117,16 @@ final class TerrainRenderer {
 
         let turf = SKShapeNode(path: path)
         turf.name = "terrain.macro.turf"
-        turf.fillColor = NSColor(calibratedRed: 0.205, green: 0.355, blue: 0.225, alpha: 1)
+        // The macro bed is vacant ground, not a single connected green
+        // screen. Keep it in the established soil/grass material language so
+        // the deterministic grass, meadow, furrow, parcel, and public-realm
+        // regions read as authored terrain transitions and remain legible as
+        // buildable opportunity. A warm soil base also prevents transparent
+        // swatches from being mistaken for one uninterrupted green mass.
+        turf.fillColor = style.palette.soil.blended(
+            withFraction: 0.20,
+            of: style.palette.lotGrass
+        ) ?? style.palette.soil
         turf.strokeColor = .clear
         field.addChild(turf)
 

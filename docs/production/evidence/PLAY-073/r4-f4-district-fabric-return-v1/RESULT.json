@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "taskId": "PLAY-073",
+  "packet": "quality-v2:play-073-r4-f4-district-fabric-return-luna-v1",
+  "classification": "LUNA_IMPLEMENTATION",
+  "model": "gpt-5.6-luna",
+  "effort": "high",
+  "carrierCommit": "577a788f23b8f103b12eae75267ef10e8eaaada2",
+  "routeFile": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-073-R4-F4-F5-LUNA-V1.json",
+  "routeFileSha256": "3b14dde835a1ba46c0f6b450ae0810557829903189e438211b4568453bb4580d",
+  "routeId": "quality-v2:play-073-r4-f4-district-fabric-return-luna-v1",
+  "modelRouteSha256": "46b264d00d7d97398a32ef6201df5b90072a2fedadb9c10323510852ecbd512b",
+  "authorityCommit": "92df50f2cde3e30d459e7511ae0faa170e747079",
+  "baseCommit": "92df50f2cde3e30d459e7511ae0faa170e747079",
+  "workerBaseCommit": "368d64990173dbec981413925b14b6e2356c5eb1",
+  "productCommit": null,
+  "productCommitNote": "The single coherent worker commit is reported by the post-commit handoff; evidence does not self-reference its containing commit.",
+  "allowedPaths": [
+    "Native/CitySimNative/Sources/CitySimNative/Rendering/TerrainRenderer.swift",
+    "Native/CitySimNative/Sources/CitySimNative/Rendering/RoadRenderer.swift",
+    "Native/CitySimNative/Tests/CitySimNativeTests/PLAY073DistrictFabricTests.swift",
+    "docs/production/evidence/PLAY-073/r4-f4-district-fabric-return-v1"
+  ],
+  "focusedValidation": {
+    "status": "PASS",
+    "command": "swift test --package-path Native/CitySimNative --filter PLAY073DistrictFabricTests",
+    "tests": {
+      "PLAY073DistrictFabricTests": {"executed": 5, "failures": 0}
+    },
+    "observedTestDurationSeconds": 5.026,
+    "diffCheck": "PASS",
+    "resultJsonValidation": "PASS"
+  },
+  "greenMassProof": {
+    "classifier": "frozen PLAY-075 conservative green classifier; 4-connected largest component outside complete district bounding rectangle",
+    "threshold": 0.25,
+    "measurements": [
+      {"layout": "regular", "ratio": 0.006154113748658624, "safeAperture": [0, 156, 1229, 552]},
+      {"layout": "compact", "ratio": 0.011271781686748271, "safeAperture": [0, 164, 901, 417]},
+      {"layout": "compact-focus-city", "ratio": 0.009924009165443413, "safeAperture": [0, 157, 901, 496]},
+      {"layout": "maximized-regular", "ratio": 0.005464165799551603, "safeAperture": [0, 130, 1277, 584]},
+      {"layout": "maximized-focus-city", "ratio": 0.005919614080664763, "safeAperture": [0, 94, 1277, 674]}
+    ],
+    "allAperturesAtOrBelowThreshold": true
+  },
+  "deterministicProof": {
+    "repeatRule": "each of the five fresh aperture renders repeated byte-for-byte",
+    "exports": [
+      {"layout": "regular", "path": "docs/production/evidence/PLAY-073/r4-f4-district-fabric-return-v1/regular.png", "sha256": "a80017ff5141696748b599edd493b0e795b793c1f191d5a5a8836b36db2fa2a1"},
+      {"layout": "compact", "path": "docs/production/evidence/PLAY-073/r4-f4-district-fabric-return-v1/compact.png", "sha256": "fa167b58a54db201c20a06a1aaff275ca31279ded07ec8769b17ed1a943baddc"},
+      {"layout": "compact-focus-city", "path": "docs/production/evidence/PLAY-073/r4-f4-district-fabric-return-v1/compact-focus-city.png", "sha256": "8c1e3146ebddb007a10d2f4008fe64e0863dee5a79b9c13e1d5bf5aa747e3334"},
+      {"layout": "maximized-regular", "path": "docs/production/evidence/PLAY-073/r4-f4-district-fabric-return-v1/maximized-regular.png", "sha256": "8238f5e7b91d43cb0a20803598625af3a0b22cd064863b496d5a1050c4e2716b"},
+      {"layout": "maximized-focus-city", "path": "docs/production/evidence/PLAY-073/r4-f4-district-fabric-return-v1/maximized-focus-city.png", "sha256": "f12b29448e901c2da2e87312d0df24cdb0f8ab03ecdeb8608c5b239af97585c1"}
+    ],
+    "metricsPath": "docs/production/evidence/PLAY-073/r4-f4-district-fabric-return-v1/METRICS.json",
+    "metricsSha256": "7f09338079e49741b95dd454da2582aa2db3e3263a74fcfa9c79522269bb59f9"
+  },
+  "forbiddenGates": {
+    "fullSwiftSuite": "NOT_RUN",
+    "stagedBuild": "NOT_RUN",
+    "realAppJourney": "NOT_RUN",
+    "independentAcceptance": "NOT_RUN",
+    "selfScore": "NOT_RUN",
+    "push": "NOT_RUN",
+    "integration": "NOT_RUN"
+  },
+  "status": "focused_pass_ready_for_integration"
+}

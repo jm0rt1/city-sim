@@ -1,0 +1,124 @@
+{
+  "schema": 2,
+  "authorityCommit": "92df50f2cde3e30d459e7511ae0faa170e747079",
+  "assignments": [
+    {
+      "modelRouteSha256": "67b6eeb599979a507d7b70dc3f9dba98f1ad90567e118b534ba8c8250b947ada",
+      "modelRoute": {
+        "schema": 2,
+        "routeId": "quality-v2:play-073-r4-f4-district-fabric-return-luna-v1",
+        "taskId": "PLAY-073",
+        "packetKind": "implementation",
+        "classification": "LUNA_IMPLEMENTATION",
+        "model": "gpt-5.6-luna",
+        "effort": "high",
+        "rationale": "Independent frontier QA supplied exact five-layout measurements and Integration froze the truthful terrain/public-realm outcome, classifier, thresholds, two-file surface, regression boundary, and independent acceptance. The worker owns bounded deterministic implementation, not composition acceptance.",
+        "authority": {
+          "authorityCommit": "92df50f2cde3e30d459e7511ae0faa170e747079",
+          "baseCommit": "92df50f2cde3e30d459e7511ae0faa170e747079",
+          "claim": {"path": "docs/production/claims/PLAY-073.world-rendering.md", "sha256": "a2cd80f1b896f1265e4b79e4367f7b8e8aa74fa486a9615049f8f372dcfe9d6c"},
+          "immutableInputs": [
+            {"path": "docs/production/evidence/INTEGRATION/PLAY-073-R4-F4-F5-VISUAL-RETURN-REPAIR-AUTHORITY.md", "sha256": "ecf28b10d47897df71dff807bfd557cdeea0764d2bfb1569268ef09e609dc9ec"},
+            {"path": "docs/production/evidence/PLAY-075/r4-f-fc996a28-final-v1/RESULT.json", "sha256": "12e613f00018205d1d93500d133d927f11161d2fa5ffdf566881f85c5b83d043"},
+            {"path": ".agents/skills/render-citysim-world/SKILL.md", "sha256": "fbd37c5f4730c61f95a344266b61d3fb37ce39adcefbaaba6e94f8939d8b72e2"}
+          ]
+        },
+        "assignment": {
+          "threadId": "019fc4a5-1739-71e0-b2dc-78d29bf17684",
+          "branch": "codex/citysim-world-rendering-fabric",
+          "worktree": "/Users/James/.codex/worktrees/6a93/city-sim",
+          "expectedHead": "368d64990173dbec981413925b14b6e2356c5eb1",
+          "featureAuthorThreadId": "019fc4a5-1739-71e0-b2dc-78d29bf17684",
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": ["Native/CitySimNative/Sources/CitySimNative/Rendering/", "Native/CitySimNative/Tests/CitySimNativeTests/", "docs/production/evidence/PLAY-073/"],
+          "allowed": ["Native/CitySimNative/Sources/CitySimNative/Rendering/TerrainRenderer.swift", "Native/CitySimNative/Sources/CitySimNative/Rendering/RoadRenderer.swift", "Native/CitySimNative/Tests/CitySimNativeTests/PLAY073DistrictFabricTests.swift", "docs/production/evidence/PLAY-073/r4-f4-district-fabric-return-v1"],
+          "forbidden": [".agents", "AGENTS.md", "Native/CitySimNative/Package.swift", "Native/CitySimNative/Resources", "Native/CitySimNative/Sources/CitySimNative/App", "Native/CitySimNative/Sources/CitySimNative/Models", "Native/CitySimNative/Sources/CitySimNative/Services", "Native/CitySimNative/Sources/CitySimNative/Stores", "Native/CitySimNative/Sources/CitySimNative/Views", "Native/CitySimNative/Sources/CitySimNative/Rendering/CityScene.swift", "Native/CitySimNative/Sources/CitySimNative/Rendering/LotContextRenderer.swift", "Native/CitySimNative/Sources/CitySimNative/Rendering/LotRenderer.swift", "Native/CitySimNative/WorldArt", "docs/production/PLAYABLE_BACKLOG.md", "docs/production/claims", "docs/production/completed", "docs/production/decisions", "docs/production/evidence/INTEGRATION", "script"]
+        },
+        "boundedDeliverable": "Implement only R4-F4: reduce the frozen conservative connected-green ratio to at most 0.25 in all five governed layouts using truthful authored terrain/public-realm structure, preserve vacant buildability, the passing connected road/curb/parcel component, hit geometry, LODs, topology, zero seams/fallback, and deterministic identity, then return one coherent commit with exact masks, measurement result, and handoff.",
+        "proofPolicy": {
+          "architectureState": "frozen_reference",
+          "referenceImplementation": {"path": "docs/production/evidence/INTEGRATION/PLAY-073-R4-F4-F5-VISUAL-RETURN-REPAIR-AUTHORITY.md", "sha256": "ecf28b10d47897df71dff807bfd557cdeea0764d2bfb1569268ef09e609dc9ec"},
+          "deliverableClaims": ["static_structure", "executable_behavior", "deterministic_output", "visual_quality"],
+          "focusedProofLevel": "deterministic_replay",
+          "fullProofLevel": "real_app_journey",
+          "behavioralCommands": ["swift test --package-path Native/CitySimNative --filter PLAY073DistrictFabricTests"],
+          "prohibitedSubstitutions": ["ast_shape_for_runtime_success", "manifest_or_prose_for_rendered_pixels", "source_token_presence_for_execution", "unit_tests_for_visual_acceptance", "worker_self_report_for_independent_acceptance"]
+        },
+        "validation": {
+          "focusedGateOwner": {"threadId": "019fc4a5-1739-71e0-b2dc-78d29bf17684", "role": "renderer_r4_f4_focused_gate"},
+          "focusedCommands": ["swift test --package-path Native/CitySimNative --filter PLAY073DistrictFabricTests", "python3 -m json.tool docs/production/evidence/PLAY-073/r4-f4-district-fabric-return-v1/RESULT.json", "git diff --check 368d64990173dbec981413925b14b6e2356c5eb1..HEAD"],
+          "fullGateOwner": {"threadId": "019f7686-4491-7891-86a6-95a78d67e5c8", "role": "integration_r4_f3_f4_f5_aggregate_gate", "model": "gpt-5.6-sol", "effort": "high"},
+          "fullCommands": ["swift test --package-path Native/CitySimNative", "./script/build_and_run.sh --verify", "fresh-player real-app five-layout visual and interaction journey"]
+        },
+        "expectedResult": {"evidencePaths": ["docs/production/evidence/PLAY-073/r4-f4-district-fabric-return-v1/RESULT.json", "docs/production/evidence/PLAY-073/r4-f4-district-fabric-return-v1/HANDOFF.md"], "commitRequired": true, "commitMessagePattern": "PLAY-073:"},
+        "escalationTriggers": ["baseline_or_candidate_identity_mismatch", "cross_lane_semantic_conflict", "failure_outside_focused_scope", "path_outside_claim", "save_or_migration_uncertainty", "shared_contract_or_schema_decision", "subjective_acceptance_required", "two_unsuccessful_repair_attempts", "unresolved_product_visual_or_interaction_judgment"],
+        "stopCondition": "Stop after one clean focused R4-F4 commit, or immediately on identity/hash/path mismatch, any need to edit another file, regression of connected fabric/buildability/topology/hit geometry, failure outside focused scope, shared decision, unresolved judgment, or two failed repairs. Do not run the full suite, stage/launch the app, self-score, self-accept, integrate, push, or pin.",
+        "independentReviewer": {"required": true, "threadId": "019fc0b0-74cb-70e1-8923-8c9d9600484d", "model": "gpt-5.6-sol", "effort": "high"},
+        "context": {"mode": "full_authority_read", "packet": null, "verifiedHashes": [{"path": "docs/production/claims/PLAY-073.world-rendering.md", "sha256": "a2cd80f1b896f1265e4b79e4367f7b8e8aa74fa486a9615049f8f372dcfe9d6c"}, {"path": "docs/production/evidence/INTEGRATION/PLAY-073-R4-F4-F5-VISUAL-RETURN-REPAIR-AUTHORITY.md", "sha256": "ecf28b10d47897df71dff807bfd557cdeea0764d2bfb1569268ef09e609dc9ec"}, {"path": ".agents/skills/render-citysim-world/SKILL.md", "sha256": "fbd37c5f4730c61f95a344266b61d3fb37ce39adcefbaaba6e94f8939d8b72e2"}]}
+      }
+    },
+    {
+      "modelRouteSha256": "e187756192485ef1e02293a48d5c236ead95fd842d2a3a6b982a0cd894dae7be",
+      "modelRoute": {
+        "schema": 2,
+        "routeId": "quality-v2:play-073-r4-f5-place-cohesion-return-luna-v1",
+        "taskId": "PLAY-073",
+        "packetKind": "implementation",
+        "classification": "LUNA_IMPLEMENTATION",
+        "model": "gpt-5.6-luna",
+        "effort": "high",
+        "rationale": "Independent frontier QA named exact detached structures, repeated residential language, and mixed-fidelity symptoms; Integration froze road-facing grounding, deterministic variation, exact two-file ownership, regressions, and independent acceptance. The worker owns bounded implementation, not visual disposition.",
+        "authority": {
+          "authorityCommit": "92df50f2cde3e30d459e7511ae0faa170e747079",
+          "baseCommit": "92df50f2cde3e30d459e7511ae0faa170e747079",
+          "claim": {"path": "docs/production/claims/PLAY-073.world-rendering.md", "sha256": "a2cd80f1b896f1265e4b79e4367f7b8e8aa74fa486a9615049f8f372dcfe9d6c"},
+          "immutableInputs": [
+            {"path": "docs/production/evidence/INTEGRATION/PLAY-073-R4-F4-F5-VISUAL-RETURN-REPAIR-AUTHORITY.md", "sha256": "ecf28b10d47897df71dff807bfd557cdeea0764d2bfb1569268ef09e609dc9ec"},
+            {"path": "docs/production/evidence/PLAY-075/r4-f-fc996a28-final-v1/RESULT.json", "sha256": "12e613f00018205d1d93500d133d927f11161d2fa5ffdf566881f85c5b83d043"},
+            {"path": ".agents/skills/render-citysim-world/SKILL.md", "sha256": "fbd37c5f4730c61f95a344266b61d3fb37ce39adcefbaaba6e94f8939d8b72e2"}
+          ]
+        },
+        "assignment": {
+          "threadId": "019fc4a5-173a-7751-aaab-1a649bb1e9b7",
+          "branch": "codex/citysim-world-rendering-cohesion",
+          "worktree": "/Users/James/.codex/worktrees/5cc1/city-sim",
+          "expectedHead": "b67873501ce1e3df173e04c8d064831730a4f416",
+          "featureAuthorThreadId": "019fc4a5-173a-7751-aaab-1a649bb1e9b7",
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": ["Native/CitySimNative/Sources/CitySimNative/Rendering/", "Native/CitySimNative/Tests/CitySimNativeTests/", "docs/production/evidence/PLAY-073/"],
+          "allowed": ["Native/CitySimNative/Sources/CitySimNative/Rendering/LotContextRenderer.swift", "Native/CitySimNative/Sources/CitySimNative/Rendering/LotRenderer.swift", "Native/CitySimNative/Tests/CitySimNativeTests/PLAY073PlaceCohesionTests.swift", "docs/production/evidence/PLAY-073/r4-f5-place-cohesion-return-v1"],
+          "forbidden": [".agents", "AGENTS.md", "Native/CitySimNative/Package.swift", "Native/CitySimNative/Resources", "Native/CitySimNative/Sources/CitySimNative/App", "Native/CitySimNative/Sources/CitySimNative/Models", "Native/CitySimNative/Sources/CitySimNative/Services", "Native/CitySimNative/Sources/CitySimNative/Stores", "Native/CitySimNative/Sources/CitySimNative/Views", "Native/CitySimNative/Sources/CitySimNative/Rendering/CityScene.swift", "Native/CitySimNative/Sources/CitySimNative/Rendering/RoadRenderer.swift", "Native/CitySimNative/Sources/CitySimNative/Rendering/TerrainRenderer.swift", "Native/CitySimNative/WorldArt", "docs/production/PLAYABLE_BACKLOG.md", "docs/production/claims", "docs/production/completed", "docs/production/decisions", "docs/production/evidence/INTEGRATION", "script"]
+        },
+        "boundedDeliverable": "Implement only R4-F5: ground the exact detached context structures through truthful road-facing frontage/parcel/contact relationships, break adjacent residential stamping through deterministic truth-bounded context variation, align context fidelity with accepted civic/park language without replacing accepted art, preserve sockets/pivots/hit/selection/LOD/zero-overlap/fallback, and return one coherent commit with exact color/grayscale LOD panels, result, and handoff.",
+        "proofPolicy": {
+          "architectureState": "frozen_reference",
+          "referenceImplementation": {"path": "docs/production/evidence/INTEGRATION/PLAY-073-R4-F4-F5-VISUAL-RETURN-REPAIR-AUTHORITY.md", "sha256": "ecf28b10d47897df71dff807bfd557cdeea0764d2bfb1569268ef09e609dc9ec"},
+          "deliverableClaims": ["static_structure", "executable_behavior", "deterministic_output", "visual_quality"],
+          "focusedProofLevel": "deterministic_replay",
+          "fullProofLevel": "real_app_journey",
+          "behavioralCommands": ["swift test --package-path Native/CitySimNative --filter PLAY073PlaceCohesionTests"],
+          "prohibitedSubstitutions": ["ast_shape_for_runtime_success", "manifest_or_prose_for_rendered_pixels", "source_token_presence_for_execution", "unit_tests_for_visual_acceptance", "worker_self_report_for_independent_acceptance"]
+        },
+        "validation": {
+          "focusedGateOwner": {"threadId": "019fc4a5-173a-7751-aaab-1a649bb1e9b7", "role": "renderer_r4_f5_focused_gate"},
+          "focusedCommands": ["swift test --package-path Native/CitySimNative --filter PLAY073PlaceCohesionTests", "python3 -m json.tool docs/production/evidence/PLAY-073/r4-f5-place-cohesion-return-v1/RESULT.json", "git diff --check b67873501ce1e3df173e04c8d064831730a4f416..HEAD"],
+          "fullGateOwner": {"threadId": "019f7686-4491-7891-86a6-95a78d67e5c8", "role": "integration_r4_f3_f4_f5_aggregate_gate", "model": "gpt-5.6-sol", "effort": "high"},
+          "fullCommands": ["swift test --package-path Native/CitySimNative", "./script/build_and_run.sh --verify", "fresh-player real-app five-layout visual and interaction journey"]
+        },
+        "expectedResult": {"evidencePaths": ["docs/production/evidence/PLAY-073/r4-f5-place-cohesion-return-v1/RESULT.json", "docs/production/evidence/PLAY-073/r4-f5-place-cohesion-return-v1/HANDOFF.md"], "commitRequired": true, "commitMessagePattern": "PLAY-073:"},
+        "escalationTriggers": ["baseline_or_candidate_identity_mismatch", "cross_lane_semantic_conflict", "failure_outside_focused_scope", "path_outside_claim", "save_or_migration_uncertainty", "shared_contract_or_schema_decision", "subjective_acceptance_required", "two_unsuccessful_repair_attempts", "unresolved_product_visual_or_interaction_judgment"],
+        "stopCondition": "Stop after one clean focused R4-F5 commit, or immediately on identity/hash/path mismatch, any need to edit another file, regression of socket/pivot/hit/selection/LOD/overlap/fallback, failure outside focused scope, shared decision, unresolved judgment, or two failed repairs. Do not run the full suite, stage/launch the app, self-score, self-accept, integrate, push, or pin.",
+        "independentReviewer": {"required": true, "threadId": "019fc0b0-74cb-70e1-8923-8c9d9600484d", "model": "gpt-5.6-sol", "effort": "high"},
+        "context": {"mode": "full_authority_read", "packet": null, "verifiedHashes": [{"path": "docs/production/claims/PLAY-073.world-rendering.md", "sha256": "a2cd80f1b896f1265e4b79e4367f7b8e8aa74fa486a9615049f8f372dcfe9d6c"}, {"path": "docs/production/evidence/INTEGRATION/PLAY-073-R4-F4-F5-VISUAL-RETURN-REPAIR-AUTHORITY.md", "sha256": "ecf28b10d47897df71dff807bfd557cdeea0764d2bfb1569268ef09e609dc9ec"}, {"path": ".agents/skills/render-citysim-world/SKILL.md", "sha256": "fbd37c5f4730c61f95a344266b61d3fb37ce39adcefbaaba6e94f8939d8b72e2"}]}
+      }
+    }
+  ]
+}

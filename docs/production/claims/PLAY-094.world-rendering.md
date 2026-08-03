@@ -2,9 +2,10 @@
 
 - **Title:** Atomically activate Residential L1 variant one
 - **Lane:** World rendering
-- **Branch:** `codex/citysim-world-rendering-r4b-current`
+- **Branch:** `codex/citysim-world-rendering`
 - **Worktree:** `/Users/James/.codex/worktrees/cac1/city-sim`
-- **Base authority:** `a75e6c2c118f65a4ea43bc2925e8176061a92875`
+- **Base authority:** published master containing CONTRACT-023, the PLAY-094
+  claim, and the Integration-published family controls
 - **Exclusive roots after source admission:** exact Integration-approved
   renderer mapping/atlas/resource paths, focused
   `WorldRenderingTests.swift` additions, and

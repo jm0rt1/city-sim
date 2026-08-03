@@ -9,20 +9,30 @@ records `PLAY075-R4F-003`: in Road build mode, pointer-select occupied block
 `Unavailable`, and Escape cancellation works, but the action update announces
 `Road construction approved`.
 
-## Frozen repair
+## Integrated diagnostic boundary
+
+The integrated PLAY-095 store diagnostic proves the exact successful Road then
+occupied Road sequence through `CityGameStore.primaryAction(at:)` publishes the
+correct caution text/tone, leaves simulation and undo unchanged, and preserves
+the selected tool. The contradiction therefore does not belong to the store or
+simulation contract.
+
+## Frozen pointer/view repair
 
 Own only:
 
-- `Native/CitySimNative/Sources/CitySimNative/Stores/CityGameStore.swift`
+- `Native/CitySimNative/Sources/CitySimNative/Rendering/CitySceneView.swift`
+- `Native/CitySimNative/Sources/CitySimNative/Rendering/CityScene.swift`
 - `Native/CitySimNative/Tests/CitySimNativeTests/CityCommandCatalogTests.swift`
-- `docs/production/evidence/PLAY-095/blocked-placement-feedback-v1/`
+- `docs/production/evidence/PLAY-095/pointer-feedback-coherence-v2/`
 
-Reproduce the occupied-road pointer path through the public store command
-surface. A failed build must atomically publish the rejection message with
-caution tone and must not retain or re-expose an earlier positive approval.
-A successful build must still mutate once, record undo once, select the new
-coordinate, publish positive approval, and play its existing success sound.
-Pointer and keyboard dispatch of the same command must resolve identically.
+Reproduce the actual scene/coordinator path where a pointer candidate is
+accepted, its blocked presentation is applied, and the primary attempt is
+dispatched. The visible/AX map target and action feedback must never expose a
+new blocked target beside an earlier approval, including intermediate
+publication inside the same main-actor event. Preserve the already-correct
+store result, successful mutation/undo/selection/sound, and pointer/keyboard
+command parity.
 
 Add focused regressions for:
 
@@ -33,9 +43,10 @@ Add focused regressions for:
 5. feedback tone/text matching the latest simulation result and the map
    primary-action availability.
 
-Do not modify `CitySimulation`, validation rules, commands, renderer, views,
-HUD hierarchy, resources, persistence, or shared authority. If the defect
-cannot be reproduced through `CityGameStore.primaryAction(at:)` within the two
-named source/test files, stop with a diagnostic packet; do not widen paths.
+Do not modify `CityGameStore`, `CitySimulation`, validation rules, commands,
+world composition, camera, HUD hierarchy, resources, persistence, or shared
+authority. If the defect cannot be reproduced through the exact
+`CityScene`/`CitySceneView.Coordinator` pointer boundary within the named files,
+stop with a second diagnostic packet; do not widen paths.
 Integration owns the full Swift suite and staged build. A new independent
 real-app journey must verify the exact pointer action and AX announcement.

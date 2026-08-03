@@ -4,7 +4,8 @@
 - **Lane:** World Art — South
 - **Branch:** `codex/citysim-world-art-south`
 - **Worktree:** `/Users/James/.codex/worktrees/4247/city-sim`
-- **Base authority:** `a75e6c2c118f65a4ea43bc2925e8176061a92875`
+- **Base authority:** published master containing CONTRACT-023, the PLAY-092
+  claim, and the Integration-published family controls
 - **Exclusive roots:**
   `Native/CitySimNative/WorldArt/Blender/PLAY-092/residential-l01-variant1-south/`
   and `docs/production/evidence/PLAY-092/`

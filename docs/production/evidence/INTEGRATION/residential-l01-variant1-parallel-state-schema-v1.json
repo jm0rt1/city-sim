@@ -1,0 +1,130 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "citysim://residential-l01-variant1-parallel-state-schema-v1",
+  "title": "Residential L1 variant-one executable parallel control",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "batchId",
+    "previousPhase",
+    "phase",
+    "observedAt",
+    "authorityCommit",
+    "familyContract",
+    "controlSchema",
+    "dispatchReady",
+    "compute",
+    "ledgerProjection",
+    "ledgerSha256",
+    "dispatchProjection",
+    "parallelismProof",
+    "finalQAReviewer",
+    "cells",
+    "familyActivation"
+  ],
+  "properties": {
+    "schema": {"const": 2},
+    "batchId": {"const": "residential-l01-variant1-v1"},
+    "previousPhase": {"$ref": "#/$defs/phase"},
+    "phase": {"$ref": "#/$defs/phase"},
+    "observedAt": {"type": "string", "format": "date-time"},
+    "authorityCommit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "familyContract": {"$ref": "#/$defs/binding"},
+    "controlSchema": {"$ref": "#/$defs/binding"},
+    "dispatchReady": {"type": "boolean"},
+    "compute": {"type": "object"},
+    "ledgerProjection": {"type": "object"},
+    "ledgerSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "dispatchProjection": {"type": "object"},
+    "parallelismProof": {"type": "object"},
+    "finalQAReviewer": {"type": "object"},
+    "cells": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "items": {"$ref": "#/$defs/cell"}
+    },
+    "familyActivation": {"type": "object"}
+  },
+  "$defs": {
+    "phase": {
+      "enum": [
+        "contract_pending",
+        "prelock_active",
+        "appearance_lock_pending",
+        "abc_active",
+        "4of4_ready",
+        "exact_candidate_qa",
+        "integrated"
+      ]
+    },
+    "binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "routeReceipt": {
+      "oneOf": [
+        {"type": "null"},
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["path", "sha256", "routeId", "modelRouteSha256"],
+          "properties": {
+            "path": {"type": "string", "minLength": 1},
+            "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+            "routeId": {"type": "string", "minLength": 1},
+            "modelRouteSha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+          }
+        }
+      ]
+    },
+    "cell": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "cell", "taskId", "threadId", "branch", "worktree", "head", "observedHead",
+        "headStatus", "claim", "previousState", "state", "dispatchState",
+        "eligibleUsefulWork", "boundedDeliverable", "stopCondition",
+        "dependency", "ownedRoots", "siblingTransformAllowed",
+        "routeRequirement", "routeReceipt", "authorityAcknowledgement",
+        "executionAccounting", "permissions", "failureIsolation",
+        "featureAuthorThreadId", "observedAt", "cleanState"
+      ],
+      "properties": {
+        "cell": {"enum": ["north", "east", "south", "west", "renderer", "qa"]},
+        "taskId": {"type": "string", "pattern": "^PLAY-[0-9]{3}$"},
+        "threadId": {"type": "string", "minLength": 1},
+        "branch": {"type": "string", "minLength": 1},
+        "worktree": {"type": "string", "minLength": 1},
+        "head": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "observedHead": {"type": ["string", "null"], "pattern": "^[0-9a-f]{40}$"},
+        "headStatus": {"enum": ["current", "stale_pre_authority"]},
+        "claim": {"$ref": "#/$defs/binding"},
+        "previousState": {"type": "string", "minLength": 1},
+        "state": {"type": "string", "minLength": 1},
+        "dispatchState": {"enum": ["blocked", "planned", "acknowledged", "working", "returned", "completed"]},
+        "eligibleUsefulWork": {"type": "boolean"},
+        "boundedDeliverable": {"type": "string", "minLength": 1},
+        "stopCondition": {"type": "string", "minLength": 1},
+        "dependency": {"type": "object"},
+        "ownedRoots": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "siblingTransformAllowed": {"const": false},
+        "routeRequirement": {"type": "object"},
+        "routeReceipt": {"$ref": "#/$defs/routeReceipt"},
+        "authorityAcknowledgement": {"type": ["object", "null"]},
+        "executionAccounting": {"type": "object"},
+        "permissions": {"type": "object"},
+        "failureIsolation": {"const": true},
+        "featureAuthorThreadId": {"type": ["string", "null"]},
+        "observedAt": {"type": "string", "format": "date-time"},
+        "cleanState": {"enum": ["clean", "dirty"]}
+      }
+    }
+  }
+}

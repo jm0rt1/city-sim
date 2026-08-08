@@ -1,9 +1,11 @@
 [
   {
     "authorityCommit": "b4ff93aaa48f70dae8a3df2c50876d2c36537886",
+    "baseCommit": "b4ff93aaa48f70dae8a3df2c50876d2c36537886",
     "candidateReadyForIndependentReview": true,
+    "claimSha256": "d5a42e16f9e7d5a4dc0a9667e797022651737535b190fb7917650504a28f108b",
     "direction": "south",
-    "inputHead": "f38646855354e9825473e5fd9f558c36d6b4a280",
+    "inputHead": "6be72b5f2740273ad114ce96f0d74128dce6314e",
     "integrationAdmitted": false,
     "lods": [
       {
@@ -299,9 +301,11 @@
   },
   {
     "authorityCommit": "b4ff93aaa48f70dae8a3df2c50876d2c36537886",
+    "baseCommit": "b4ff93aaa48f70dae8a3df2c50876d2c36537886",
     "candidateReadyForIndependentReview": true,
+    "claimSha256": "d5a42e16f9e7d5a4dc0a9667e797022651737535b190fb7917650504a28f108b",
     "direction": "south",
-    "inputHead": "f38646855354e9825473e5fd9f558c36d6b4a280",
+    "inputHead": "6be72b5f2740273ad114ce96f0d74128dce6314e",
     "integrationAdmitted": false,
     "lods": [
       {
@@ -597,9 +601,11 @@
   },
   {
     "authorityCommit": "b4ff93aaa48f70dae8a3df2c50876d2c36537886",
+    "baseCommit": "b4ff93aaa48f70dae8a3df2c50876d2c36537886",
     "candidateReadyForIndependentReview": true,
+    "claimSha256": "d5a42e16f9e7d5a4dc0a9667e797022651737535b190fb7917650504a28f108b",
     "direction": "south",
-    "inputHead": "f38646855354e9825473e5fd9f558c36d6b4a280",
+    "inputHead": "6be72b5f2740273ad114ce96f0d74128dce6314e",
     "integrationAdmitted": false,
     "lods": [
       {
@@ -895,9 +901,11 @@
   },
   {
     "authorityCommit": "b4ff93aaa48f70dae8a3df2c50876d2c36537886",
+    "baseCommit": "b4ff93aaa48f70dae8a3df2c50876d2c36537886",
     "candidateReadyForIndependentReview": true,
+    "claimSha256": "d5a42e16f9e7d5a4dc0a9667e797022651737535b190fb7917650504a28f108b",
     "direction": "south",
-    "inputHead": "f38646855354e9825473e5fd9f558c36d6b4a280",
+    "inputHead": "6be72b5f2740273ad114ce96f0d74128dce6314e",
     "integrationAdmitted": false,
     "lods": [
       {
@@ -1193,9 +1201,11 @@
   },
   {
     "authorityCommit": "b4ff93aaa48f70dae8a3df2c50876d2c36537886",
+    "baseCommit": "b4ff93aaa48f70dae8a3df2c50876d2c36537886",
     "candidateReadyForIndependentReview": true,
+    "claimSha256": "d5a42e16f9e7d5a4dc0a9667e797022651737535b190fb7917650504a28f108b",
     "direction": "south",
-    "inputHead": "f38646855354e9825473e5fd9f558c36d6b4a280",
+    "inputHead": "6be72b5f2740273ad114ce96f0d74128dce6314e",
     "integrationAdmitted": false,
     "lods": [
       {
@@ -1491,9 +1501,11 @@
   },
   {
     "authorityCommit": "b4ff93aaa48f70dae8a3df2c50876d2c36537886",
+    "baseCommit": "b4ff93aaa48f70dae8a3df2c50876d2c36537886",
     "candidateReadyForIndependentReview": true,
+    "claimSha256": "d5a42e16f9e7d5a4dc0a9667e797022651737535b190fb7917650504a28f108b",
     "direction": "south",
-    "inputHead": "f38646855354e9825473e5fd9f558c36d6b4a280",
+    "inputHead": "6be72b5f2740273ad114ce96f0d74128dce6314e",
     "integrationAdmitted": false,
     "lods": [
       {
@@ -1789,9 +1801,11 @@
   },
   {
     "authorityCommit": "b4ff93aaa48f70dae8a3df2c50876d2c36537886",
+    "baseCommit": "b4ff93aaa48f70dae8a3df2c50876d2c36537886",
     "candidateReadyForIndependentReview": true,
+    "claimSha256": "d5a42e16f9e7d5a4dc0a9667e797022651737535b190fb7917650504a28f108b",
     "direction": "south",
-    "inputHead": "f38646855354e9825473e5fd9f558c36d6b4a280",
+    "inputHead": "6be72b5f2740273ad114ce96f0d74128dce6314e",
     "integrationAdmitted": false,
     "lods": [
       {
@@ -2087,9 +2101,11 @@
   },
   {
     "authorityCommit": "b4ff93aaa48f70dae8a3df2c50876d2c36537886",
+    "baseCommit": "b4ff93aaa48f70dae8a3df2c50876d2c36537886",
     "candidateReadyForIndependentReview": true,
+    "claimSha256": "d5a42e16f9e7d5a4dc0a9667e797022651737535b190fb7917650504a28f108b",
     "direction": "south",
-    "inputHead": "f38646855354e9825473e5fd9f558c36d6b4a280",
+    "inputHead": "6be72b5f2740273ad114ce96f0d74128dce6314e",
     "integrationAdmitted": false,
     "lods": [
       {
@@ -2385,9 +2401,11 @@
   },
   {
     "authorityCommit": "b4ff93aaa48f70dae8a3df2c50876d2c36537886",
+    "baseCommit": "b4ff93aaa48f70dae8a3df2c50876d2c36537886",
     "candidateReadyForIndependentReview": true,
+    "claimSha256": "d5a42e16f9e7d5a4dc0a9667e797022651737535b190fb7917650504a28f108b",
     "direction": "south",
-    "inputHead": "f38646855354e9825473e5fd9f558c36d6b4a280",
+    "inputHead": "6be72b5f2740273ad114ce96f0d74128dce6314e",
     "integrationAdmitted": false,
     "lods": [
       {
@@ -2683,9 +2701,11 @@
   },
   {
     "authorityCommit": "b4ff93aaa48f70dae8a3df2c50876d2c36537886",
+    "baseCommit": "b4ff93aaa48f70dae8a3df2c50876d2c36537886",
     "candidateReadyForIndependentReview": true,
+    "claimSha256": "d5a42e16f9e7d5a4dc0a9667e797022651737535b190fb7917650504a28f108b",
     "direction": "south",
-    "inputHead": "f38646855354e9825473e5fd9f558c36d6b4a280",
+    "inputHead": "6be72b5f2740273ad114ce96f0d74128dce6314e",
     "integrationAdmitted": false,
     "lods": [
       {
@@ -2981,9 +3001,11 @@
   },
   {
     "authorityCommit": "b4ff93aaa48f70dae8a3df2c50876d2c36537886",
+    "baseCommit": "b4ff93aaa48f70dae8a3df2c50876d2c36537886",
     "candidateReadyForIndependentReview": true,
+    "claimSha256": "d5a42e16f9e7d5a4dc0a9667e797022651737535b190fb7917650504a28f108b",
     "direction": "south",
-    "inputHead": "f38646855354e9825473e5fd9f558c36d6b4a280",
+    "inputHead": "6be72b5f2740273ad114ce96f0d74128dce6314e",
     "integrationAdmitted": false,
     "lods": [
       {
@@ -3279,9 +3301,11 @@
   },
   {
     "authorityCommit": "b4ff93aaa48f70dae8a3df2c50876d2c36537886",
+    "baseCommit": "b4ff93aaa48f70dae8a3df2c50876d2c36537886",
     "candidateReadyForIndependentReview": true,
+    "claimSha256": "d5a42e16f9e7d5a4dc0a9667e797022651737535b190fb7917650504a28f108b",
     "direction": "south",
-    "inputHead": "f38646855354e9825473e5fd9f558c36d6b4a280",
+    "inputHead": "6be72b5f2740273ad114ce96f0d74128dce6314e",
     "integrationAdmitted": false,
     "lods": [
       {

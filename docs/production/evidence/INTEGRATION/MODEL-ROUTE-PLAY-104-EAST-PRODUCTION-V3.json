@@ -1,6 +1,6 @@
 {
   "schema": 2,
-  "routeId": "four-view-v6:play-104-east-production-v3",
+  "routeId": "four-view-v7:play-104-east-production-v4",
   "taskId": "PLAY-104",
   "packetKind": "implementation",
   "classification": "LUNA_IMPLEMENTATION",
@@ -8,8 +8,8 @@
   "effort": "high",
   "rationale": "East is a disjoint bounded production cell under the frozen 2.5D contract. Luna owns the exact ImageGen/provenance/normalization implementation and focused deterministic gates; frontier owns visual and aggregate acceptance.",
   "authority": {
-    "authorityCommit": "b9cf74ed9fa9207eda6475c17d91393b254f29ec",
-    "baseCommit": "b9cf74ed9fa9207eda6475c17d91393b254f29ec",
+    "authorityCommit": "fe4d1da8a5540f3bb3047d2e3a52bdf01400db01",
+    "baseCommit": "fe4d1da8a5540f3bb3047d2e3a52bdf01400db01",
     "claim": {"path": "docs/production/claims/PLAY-104.world-art-east-imagegen.md", "sha256": "4e4311bdd3eed96a209a7b69958b468fc091c228db708783c6b8d813903a8583"},
     "immutableInputs": [
       {"path": "docs/production/decisions/CONTRACT-025-authored-four-view-2-5d-building-art.md", "sha256": "4e8ab63173d67581332e7d27730b97315906fda4e29b999969456441809479ed"},
@@ -27,7 +27,7 @@
     "threadId": "019fe1e1-3b56-72d2-8cbe-306964615976",
     "branch": "codex/citysim-world-art-east-imagegen",
     "worktree": "/Users/James/.codex/worktrees/3218/city-sim",
-    "expectedHead": "22ca5160bdc75fe3e73d794486f426bf7dcfcc5c",
+    "expectedHead": "2d4a981368dbd56dc23c1aa9533f507ddb888081",
     "featureAuthorThreadId": "019fe1e1-3b56-72d2-8cbe-306964615976",
     "sharedAuthorityOwnership": false,
     "finalQAOwnership": false,
@@ -50,7 +50,7 @@
   },
   "validation": {
     "focusedGateOwner": {"threadId": "019fe1e1-3b56-72d2-8cbe-306964615976", "role": "play-104-east-production-focused"},
-    "focusedCommands": ["python3 Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104/east/validate_direction_production.py --repeat 2", "git diff --check 22ca5160bdc75fe3e73d794486f426bf7dcfcc5c..HEAD"],
+    "focusedCommands": ["python3 Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104/east/validate_direction_production.py --repeat 2", "git diff --check 2d4a981368dbd56dc23c1aa9533f507ddb888081..HEAD"],
     "fullGateOwner": {"threadId": "019f7686-4491-7891-86a6-95a78ef0c775a", "role": "integration-aggregate-full-gate", "model": "gpt-5.6-sol", "effort": "high"},
     "fullCommands": ["swift test --package-path Native/CitySimNative", "./script/build_and_run.sh --verify", "fresh-player real-app aggregate journey"]
   },

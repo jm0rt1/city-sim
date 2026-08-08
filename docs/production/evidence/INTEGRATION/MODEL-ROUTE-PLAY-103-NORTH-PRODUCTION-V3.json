@@ -1,6 +1,6 @@
 {
   "schema": 2,
-  "routeId": "four-view-v6:play-103-north-production-v3",
+  "routeId": "four-view-v7:play-103-north-production-v4",
   "taskId": "PLAY-103",
   "packetKind": "authority",
   "classification": "FRONTIER_AUTHORITY",
@@ -8,8 +8,8 @@
   "effort": "high",
   "rationale": "North is the appearance-setting hero cell. Frontier owns the frozen visual vocabulary and the bounded North production decision; it must return a deterministic candidate without self-accepting the aggregate.",
   "authority": {
-    "authorityCommit": "b9cf74ed9fa9207eda6475c17d91393b254f29ec",
-    "baseCommit": "b9cf74ed9fa9207eda6475c17d91393b254f29ec",
+    "authorityCommit": "fe4d1da8a5540f3bb3047d2e3a52bdf01400db01",
+    "baseCommit": "fe4d1da8a5540f3bb3047d2e3a52bdf01400db01",
     "claim": {"path": "docs/production/claims/PLAY-103.world-art-north-imagegen.md", "sha256": "859d58cec066f6d23329d8b8ce7d2207a54dbe48ee579a22ad9b78d4e500e559"},
     "immutableInputs": [
       {"path": "docs/production/decisions/CONTRACT-025-authored-four-view-2-5d-building-art.md", "sha256": "4e8ab63173d67581332e7d27730b97315906fda4e29b999969456441809479ed"},
@@ -27,7 +27,7 @@
     "threadId": "019fe1e1-3b58-7191-a4f7-763a3d774f73",
     "branch": "codex/citysim-world-art-north-imagegen",
     "worktree": "/Users/James/.codex/worktrees/f55b/city-sim",
-    "expectedHead": "fda6d91e7449a8d542fd97e4bd5fca8c78a6e0c7",
+    "expectedHead": "f77234f17ed45cd0a1f7a175ca53f713f5ad7768",
     "featureAuthorThreadId": "019fe1e1-3b58-7191-a4f7-763a3d774f73",
     "sharedAuthorityOwnership": false,
     "finalQAOwnership": false,
@@ -50,7 +50,7 @@
   },
   "validation": {
     "focusedGateOwner": {"threadId": "019fe1e1-3b58-7191-a4f7-763a3d774f73", "role": "play-103-north-production-focused"},
-    "focusedCommands": ["python3 Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-103/north/validate_direction_production.py --repeat 2", "git diff --check fda6d91e7449a8d542fd97e4bd5fca8c78a6e0c7..HEAD"],
+    "focusedCommands": ["python3 Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-103/north/validate_direction_production.py --repeat 2", "git diff --check f77234f17ed45cd0a1f7a175ca53f713f5ad7768..HEAD"],
     "fullGateOwner": {"threadId": "019f7686-4491-7891-86a6-95a78d67e5c8", "role": "integration-aggregate-full-gate", "model": "gpt-5.6-sol", "effort": "high"},
     "fullCommands": ["swift test --package-path Native/CitySimNative", "./script/build_and_run.sh --verify", "fresh-player real-app aggregate journey"]
   },

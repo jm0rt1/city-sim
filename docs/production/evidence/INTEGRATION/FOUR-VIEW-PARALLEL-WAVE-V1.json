@@ -53,7 +53,7 @@
       "worktree": "/Users/James/.codex/worktrees/e6f2/city-sim",
       "branch": "codex/citysim-world-art-west-imagegen",
       "head": "80d84865b48ffe6ee24318ed8c768514b3bc935e",
-      "route": "four-view-v12:play-105-west-production-repair-v4",
+      "route": "four-view-v12:play-105-west-production-repair-v5",
       "state": "published_queued_for_delivery",
       "allowed": "West claimed roots only",
       "blockedBy": "Codex task-control delivery confirmation"
@@ -106,8 +106,8 @@
     "No worker pushes or self-acceptance"
   ],
   "dispatch": {
-    "receipt": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-FOUR-VIEW-PARALLEL-WAVE-V5.json",
-    "receiptSha256": "e040bc7b0a3395d18e041609f888ea781c986f03773ffdaefed4679e07d35144",
+    "receipt": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-FOUR-VIEW-PARALLEL-WAVE-V6.json",
+    "receiptSha256": "48086d5e2f1c64cb706b6454d60524e35d5ca9958787d4ca70f1974baf84eef4",
     "t2IndependentDisposition": "NO_CHANGE",
     "canonicalOptimizerDisposition": "PENDING_CONTROL_PLANE",
     "deliveryStatus": "messages_attempted_but_not_confirmed"

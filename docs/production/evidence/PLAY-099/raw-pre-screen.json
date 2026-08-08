@@ -1,0 +1,34 @@
+{
+  "schema": "PLAY-099-raw-pre-screen-v1",
+  "task": "PLAY-099",
+  "family": "industrial",
+  "branch": "codex/citysim-world-art-industrial",
+  "candidateHead": "004bd2dbcb88e57330425a833505d81ce00e9f90",
+  "baseCommit": "690c46bc9019b641c023f264c46bf8aadb506619",
+  "routeId": "single-angle-v1:play-099",
+  "routeSha256": "95f94cafc9dda34e6a2979cc135bec8e884ba657e3e24a52a8aee14985a74f81",
+  "claimPath": "docs/production/claims/PLAY-099.world-art-industrial.md",
+  "claimSha256": "9cec514e02add889fb488b2fcc850bfce32682008020c5882028914bbfbbdd8e",
+  "rawPreserved": 12,
+  "objectivePreScreenPass": 12,
+  "returned": 0,
+  "accepted": 0,
+  "waitingOnPLAY096": 12,
+  "normalizationPerformed": false,
+  "visualAcceptancePerformed": false,
+  "integrationAdmission": false,
+  "productionSelected": false,
+  "focusedCommands": [
+    "python3 Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/validate_raw_candidates.py --family industrial",
+    "git diff --check 004bd2dbcb88e57330425a833505d81ce00e9f90..HEAD"
+  ],
+  "focusedResults": {
+    "rawValidator": "PASS",
+    "diffCheck": "PENDING_COMMIT_CHECKPOINT"
+  },
+  "notes": [
+    "Raw masters are retained as RGB PNG with flat magenta source field.",
+    "PLAY-096 exact Integration-published harness is required before normalization or handoff.",
+    "Frontier owns subjective visual disposition; this packet is not acceptance."
+  ]
+}

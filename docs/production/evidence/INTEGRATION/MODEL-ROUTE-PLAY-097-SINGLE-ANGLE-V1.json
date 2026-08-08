@@ -1,0 +1,169 @@
+{
+  "schema": 2,
+  "routeId": "single-angle-v1:play-097",
+  "taskId": "PLAY-097",
+  "packetKind": "implementation",
+  "classification": "LUNA_IMPLEMENTATION",
+  "model": "gpt-5.6-luna",
+  "effort": "high",
+  "rationale": "CONTRACT-024 freezes one canonical 2.5D ImageGen camera, references, registration and residential inventory. Luna can make one built-in ImageGen call per identity and assemble objective source evidence while frontier Integration retains every subjective disposition.",
+  "authority": {
+    "authorityCommit": "63617a9561c62f95bfe27521b1ba4dd07a697991",
+    "baseCommit": "690c46bc9019b641c023f264c46bf8aadb506619",
+    "claim": {
+      "path": "docs/production/claims/PLAY-097.world-art-residential.md",
+      "sha256": "5ab7c0d3fd028c22b85df97c819c47a0f3002122ec49d8bb11c0b01115de7ed0"
+    },
+    "immutableInputs": [
+      {
+        "path": "docs/production/decisions/CONTRACT-024-single-angle-imagegen-building-art.md",
+        "sha256": "aee937eade534d2cefaa41a4f1f28665f702f592d3140b4108ca51432edd0f3f"
+      },
+      {
+        "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+        "sha256": "1eb7170b81e11753e7c9173298c6d45c02d5a2ade6df0ef8b73bdcaf690a2acd"
+      },
+      {
+        "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+        "sha256": "23515aae69430e3925bc9fd56fa38c83a440336f29945cbe84af1e2b6203c05a"
+      },
+      {
+        "path": ".agents/skills/produce-citysim-world-art/references/single-angle-imagegen-production.md",
+        "sha256": "f17d86e7cee5fb6e7344a1497e04c977376ec8ce52bf825c4e3b685ebd88306c"
+      },
+      {
+        "path": "Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/raw/calibration/residential_l01/source-v01.png",
+        "sha256": "e15a388c2a1a0a55488457211c23939f70eca255cbae733ee0f7b39b141c962e"
+      }
+    ]
+  },
+  "assignment": {
+    "threadId": "019fe1b1-3bc4-7b40-a107-2335917c1e49",
+    "branch": "codex/citysim-world-art-residential",
+    "worktree": "/Users/James/.codex/worktrees/df86/city-sim",
+    "expectedHead": "63617a9561c62f95bfe27521b1ba4dd07a697991",
+    "featureAuthorThreadId": "019fe1b1-3bc4-7b40-a107-2335917c1e49",
+    "sharedAuthorityOwnership": false,
+    "finalQAOwnership": false,
+    "subjectiveJudgmentRequired": false
+  },
+  "pathPolicy": {
+    "claimOwnedRoots": [
+      "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-097/residential",
+      "docs/production/evidence/PLAY-097"
+    ],
+    "allowed": [
+      "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-097/residential",
+      "docs/production/evidence/PLAY-097"
+    ],
+    "forbidden": [
+      ".agents/skills",
+      "docs/production/PLAYABLE_BACKLOG.md",
+      "docs/production/claims",
+      "docs/production/decisions",
+      "docs/production/evidence/INTEGRATION",
+      "Native/CitySimNative/Sources",
+      "Native/CitySimNative/Resources"
+    ]
+  },
+  "boundedDeliverable": "Generate and retain twelve residential L1-L4 variant identities, one distinct built-in ImageGen call per logical identity, with exact prompts, reference hashes, provenance, raw candidates, rejection trail, unique decoded hashes, objective chroma/padding checks, and a candidate-only handoff. Do not wait on PLAY-096 to begin raw generation; normalize only after its exact harness is published.",
+  "proofPolicy": {
+    "architectureState": "frozen_reference",
+    "referenceImplementation": {
+      "path": "Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/raw/calibration/residential_l01/source-v01.png",
+      "sha256": "e15a388c2a1a0a55488457211c23939f70eca255cbae733ee0f7b39b141c962e"
+    },
+    "deliverableClaims": [
+      "static_structure",
+      "executable_behavior"
+    ],
+    "focusedProofLevel": "contained_smoke",
+    "fullProofLevel": "real_app_journey",
+    "behavioralCommands": [
+      "python3 Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-097/residential/validate_raw_candidates.py --family residential"
+    ],
+    "prohibitedSubstitutions": [
+      "source_token_presence_for_execution",
+      "ast_shape_for_runtime_success",
+      "manifest_or_prose_for_rendered_pixels",
+      "unit_tests_for_visual_acceptance",
+      "worker_self_report_for_independent_acceptance"
+    ]
+  },
+  "validation": {
+    "focusedGateOwner": {
+      "threadId": "019fe1b1-3bc4-7b40-a107-2335917c1e49",
+      "role": "play-097_focused_gate"
+    },
+    "focusedCommands": [
+      "python3 Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-097/residential/validate_raw_candidates.py --family residential",
+      "git diff --check 63617a9561c62f95bfe27521b1ba4dd07a697991..HEAD"
+    ],
+    "fullGateOwner": {
+      "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+      "role": "integration_aggregate_full_gate",
+      "model": "gpt-5.6-sol",
+      "effort": "high"
+    },
+    "fullCommands": [
+      "swift test --package-path Native/CitySimNative",
+      "./script/build_and_run.sh --verify",
+      "fresh-player real-app aggregate journey"
+    ]
+  },
+  "expectedResult": {
+    "evidencePaths": [
+      "docs/production/evidence/PLAY-097"
+    ],
+    "commitRequired": true,
+    "commitMessagePattern": "PLAY-097:"
+  },
+  "escalationTriggers": [
+    "shared_contract_or_schema_decision",
+    "unresolved_product_visual_or_interaction_judgment",
+    "path_outside_claim",
+    "baseline_or_candidate_identity_mismatch",
+    "failure_outside_focused_scope",
+    "save_or_migration_uncertainty",
+    "cross_lane_semantic_conflict",
+    "two_unsuccessful_repair_attempts",
+    "subjective_acceptance_required"
+  ],
+  "stopCondition": "Stop after one coherent claimed candidate commit and focused evidence, or immediately on any mandatory escalation trigger. Never push, integrate, self-accept, run the aggregate/full gate, make subjective acceptance, mutate shared authority, or pin a task.",
+  "independentReviewer": {
+    "required": true,
+    "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+    "model": "gpt-5.6-sol",
+    "effort": "high"
+  },
+  "context": {
+    "mode": "full_authority_read",
+    "packet": null,
+    "verifiedHashes": [
+      {
+        "path": "docs/production/claims/PLAY-097.world-art-residential.md",
+        "sha256": "5ab7c0d3fd028c22b85df97c819c47a0f3002122ec49d8bb11c0b01115de7ed0"
+      },
+      {
+        "path": "docs/production/decisions/CONTRACT-024-single-angle-imagegen-building-art.md",
+        "sha256": "aee937eade534d2cefaa41a4f1f28665f702f592d3140b4108ca51432edd0f3f"
+      },
+      {
+        "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+        "sha256": "1eb7170b81e11753e7c9173298c6d45c02d5a2ade6df0ef8b73bdcaf690a2acd"
+      },
+      {
+        "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+        "sha256": "23515aae69430e3925bc9fd56fa38c83a440336f29945cbe84af1e2b6203c05a"
+      },
+      {
+        "path": ".agents/skills/produce-citysim-world-art/references/single-angle-imagegen-production.md",
+        "sha256": "f17d86e7cee5fb6e7344a1497e04c977376ec8ce52bf825c4e3b685ebd88306c"
+      },
+      {
+        "path": "Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/raw/calibration/residential_l01/source-v01.png",
+        "sha256": "e15a388c2a1a0a55488457211c23939f70eca255cbae733ee0f7b39b141c962e"
+      }
+    ]
+  }
+}

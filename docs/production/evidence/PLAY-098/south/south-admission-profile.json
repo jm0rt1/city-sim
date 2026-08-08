@@ -1,0 +1,225 @@
+{
+  "candidateReadyForIndependentReview": true,
+  "direction": "south",
+  "integrationAdmitted": false,
+  "productionSelected": false,
+  "registration": {
+    "coordinateRule": "exact rational source coordinate multiplied by destination dimension divided by source dimension, independently rounded half to even",
+    "footprintPolygonSource": [
+      [
+        768,
+        640
+      ],
+      [
+        1024,
+        768
+      ],
+      [
+        768,
+        896
+      ],
+      [
+        512,
+        768
+      ]
+    ],
+    "forbidden": [
+      "occupied-bbox-crop",
+      "occupied-bbox-resize",
+      "pixel-derived-pivot",
+      "pixel-derived-scale",
+      "pixel-derived-frontage",
+      "clamping",
+      "runtime-mirroring",
+      "runtime-rotation",
+      "fallback",
+      "alias"
+    ],
+    "frontageSocketSource": {
+      "east": [
+        896,
+        832
+      ],
+      "north": [
+        896,
+        704
+      ],
+      "south": [
+        640,
+        832
+      ],
+      "west": [
+        640,
+        704
+      ]
+    },
+    "groundPivotSource": [
+      768,
+      896
+    ],
+    "lods": {
+      "block": {
+        "canvas": [
+          1024,
+          683
+        ],
+        "filter": "lanczos",
+        "footprintPolygon": [
+          [
+            512,
+            427
+          ],
+          [
+            683,
+            512
+          ],
+          [
+            512,
+            598
+          ],
+          [
+            341,
+            512
+          ]
+        ],
+        "frontageSockets": {
+          "east": [
+            597,
+            555
+          ],
+          "north": [
+            597,
+            470
+          ],
+          "south": [
+            427,
+            555
+          ],
+          "west": [
+            427,
+            470
+          ]
+        },
+        "groundPivot": [
+          512,
+          598
+        ],
+        "rounding": "round-half-even"
+      },
+      "city": {
+        "canvas": [
+          256,
+          171
+        ],
+        "filter": "lanczos",
+        "footprintPolygon": [
+          [
+            128,
+            107
+          ],
+          [
+            171,
+            128
+          ],
+          [
+            128,
+            150
+          ],
+          [
+            85,
+            128
+          ]
+        ],
+        "frontageSockets": {
+          "east": [
+            149,
+            139
+          ],
+          "north": [
+            149,
+            118
+          ],
+          "south": [
+            107,
+            139
+          ],
+          "west": [
+            107,
+            118
+          ]
+        },
+        "groundPivot": [
+          128,
+          150
+        ],
+        "rounding": "round-half-even"
+      },
+      "neighborhood": {
+        "canvas": [
+          512,
+          342
+        ],
+        "filter": "lanczos",
+        "footprintPolygon": [
+          [
+            256,
+            214
+          ],
+          [
+            341,
+            256
+          ],
+          [
+            256,
+            299
+          ],
+          [
+            171,
+            256
+          ]
+        ],
+        "frontageSockets": {
+          "east": [
+            299,
+            278
+          ],
+          "north": [
+            299,
+            235
+          ],
+          "south": [
+            213,
+            278
+          ],
+          "west": [
+            213,
+            235
+          ]
+        },
+        "groundPivot": [
+          256,
+          299
+        ],
+        "rounding": "round-half-even"
+      }
+    },
+    "sourceCanvas": [
+      1536,
+      1024
+    ]
+  },
+  "rendererQuarantined": false,
+  "rotation": 0,
+  "routeBinding": {
+    "authorityCommit": "65825389d586a128ddf6feb5356c33661ba9a8e8",
+    "baseCommit": "a61ab80101f596f56ffc1dd7e37b32bd1b220357",
+    "claim": {
+      "path": "docs/production/claims/PLAY-098.world-art-commercial.md",
+      "sha256": "4e10676b16b40d4492ca27ce525d67c74462f16bf5755be91bdbe05984ed2517"
+    },
+    "routeId": "four-view-v5:play-098-admission-repair",
+    "routeSha256": "3f16ebf3e310afd0351e7db5524e49b96b8967b512d2b0b3532fcd5de4f55319"
+  },
+  "sourceReady": false,
+  "task": "PLAY-098"
+}

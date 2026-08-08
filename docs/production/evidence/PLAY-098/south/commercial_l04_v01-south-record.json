@@ -1,0 +1,340 @@
+{
+  "alias": false,
+  "candidateDisposition": "mechanical_only_pending_frontier_review",
+  "candidateReadyForIndependentReview": true,
+  "direction": "south",
+  "fallback": false,
+  "integrationAdmitted": false,
+  "lods": {
+    "block": {
+      "canvas": [
+        1024,
+        683
+      ],
+      "checks": {
+        "canvas": [
+          1024,
+          683
+        ],
+        "frameEdgeOpaquePixels": 0,
+        "hiddenRgbPixels": 0,
+        "residualMattePixels": 0
+      },
+      "decodedSha256": "9cbf415a90ce51f470d76b38cd4197a2e9285e17ab956438d60cd4e2c794917b",
+      "filter": "lanczos",
+      "format": "RGBA",
+      "fullCanvas": true,
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-098/commercial/normalized/commercial_l04_v01/commercial_l04_v01-south-block.png",
+      "rounding": "round-half-even",
+      "sha256": "18bdd54ee1edb3746b191a762ad8d7474edba45e6a59b5172b408fac041737a0"
+    },
+    "city": {
+      "canvas": [
+        256,
+        171
+      ],
+      "checks": {
+        "canvas": [
+          256,
+          171
+        ],
+        "frameEdgeOpaquePixels": 0,
+        "hiddenRgbPixels": 0,
+        "residualMattePixels": 0
+      },
+      "decodedSha256": "25d32da43d8c4f9858cb6a43089863a48a39d4ea6a6046fa81646be1e03afc7e",
+      "filter": "lanczos",
+      "format": "RGBA",
+      "fullCanvas": true,
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-098/commercial/normalized/commercial_l04_v01/commercial_l04_v01-south-city.png",
+      "rounding": "round-half-even",
+      "sha256": "0da90a50ace51d52c527f0239cacec6b1e1f08749e857617c47fd880d6b4cc7d"
+    },
+    "neighborhood": {
+      "canvas": [
+        512,
+        342
+      ],
+      "checks": {
+        "canvas": [
+          512,
+          342
+        ],
+        "frameEdgeOpaquePixels": 0,
+        "hiddenRgbPixels": 0,
+        "residualMattePixels": 0
+      },
+      "decodedSha256": "009c29408d90957477f90d35487ebb43ab8da039f5281ace6f07286e808ee2c9",
+      "filter": "lanczos",
+      "format": "RGBA",
+      "fullCanvas": true,
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-098/commercial/normalized/commercial_l04_v01/commercial_l04_v01-south-neighborhood.png",
+      "rounding": "round-half-even",
+      "sha256": "1a3f2ce1f368c56546549c5fa888c61283461e9ecd9736171908b5b096f6e156"
+    }
+  },
+  "logicalId": "commercial_l04_v01",
+  "productionSelected": false,
+  "promptProvenance": {
+    "identityBrief": "major urban commercial anchor, five-story pale concrete and copper building, stepped modern crown, offset corner tower, tall atrium-like entry and strong horizontal bands",
+    "model": "built-in/model-not-exposed",
+    "promptTemplate": "Use case: stylized-concept\nAsset type: CitySim fixed-camera 2.5D commercial building source sprite\nPrimary request: Create one unique authored commercial building sprite for logical identity __IDENTITY__.\nInput images: Image 1 is the immutable CitySim style anchor; Image 2 is the immutable registration/calibration appearance reference; Image 3 is the immutable ground-pivot registration template. Use them only as style, projection, scale, and registration references.\nScene/backdrop: perfectly flat uniform solid #ff00ff chroma-key field, no floor plane and no environmental scene.\nSubject: one centered commercial building only, fully contained with generous empty padding, matching the identity brief exactly.\nStyle/medium: richly detailed realistic hand-painted city-builder illustration with a fixed orthographic 2:1 isometric 2.5D presentation; not voxel, toy-like, flat-vector, or raw 3D-render appearance.\nComposition/framing: authoring canvas 1536 x 1024; single canonical angle; orthographic 2:1 isometric view; centered building; ground pivot reference at [768, 896]; generous transparent-ready padding; contained southeast contact/cast shadow; northwest key light.\nLighting/mood: clear daylight, northwest light, soft but readable southeast shadow contained under the building.\nColor palette: cohesive CitySim commercial palette with material contrast and readable facade hierarchy; no neon chroma except the background.\nMaterials/textures: believable masonry, glass, metal, wood, roof, trim, and subtle surface variation appropriate to the identity brief.\nText (verbatim): \"\"\nConstraints: one building, one logical identity, unique massing and silhouette; preserve the fixed camera and registration; keep all subject pixels away from the frame edges; no road, parcel, sidewalk, district, trees, cars, pedestrians, props, extra buildings, labels, signs, logos, UI, selection marks, warnings, coordinates, gameplay state, watermark, frame, reflection, perspective convergence, rotation, mirroring, or alternate directions.\nAvoid: cropped subject or shadow, visible magenta spill inside the building, baked geometry guides, text, branding, duplicate structures, aliasing another identity.",
+    "referenceHashes": [
+      "b227286bfe5ffe8cfc920d3faf8abe081f5cca8a498c215bfb8a840a448e7425",
+      "e15a388c2a1a0a55488457211c23939f70eca255cbae733ee0f7b39b141c962e",
+      "6ad1db2e7b8f670718ff4a4eb8c183737b0dec859559a2eab6a25746b53cff67"
+    ],
+    "tool": "OpenAI built-in ImageGen",
+    "toolArtifactProvenanceRef": "docs/production/evidence/PLAY-098/commercial/RAW-PROVENANCE.json#records[commercial_l04_v01].toolArtifactPath"
+  },
+  "rawPreservedByteForByte": true,
+  "registered": {
+    "canvas": [
+      1536,
+      1024
+    ],
+    "checks": {
+      "canvas": [
+        1536,
+        1024
+      ],
+      "frameEdgeOpaquePixels": 0,
+      "hiddenRgbPixels": 0,
+      "residualMattePixels": 0
+    },
+    "decodedSha256": "ceca164e74e297b6a71e608e2ee8cc090c80fcbd5040e62e25b217ccf9c91731",
+    "format": "RGBA",
+    "fullCanvas": true,
+    "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-098/commercial/normalized/commercial_l04_v01/commercial_l04_v01-south-registered.png",
+    "sha256": "33131697a9a47fb09690f07b470abf0eabb848994598c322f31e916102e31fe1"
+  },
+  "registration": {
+    "coordinateRule": "exact rational source coordinate multiplied by destination dimension divided by source dimension, independently rounded half to even",
+    "footprintPolygonSource": [
+      [
+        768,
+        640
+      ],
+      [
+        1024,
+        768
+      ],
+      [
+        768,
+        896
+      ],
+      [
+        512,
+        768
+      ]
+    ],
+    "forbidden": [
+      "occupied-bbox-crop",
+      "occupied-bbox-resize",
+      "pixel-derived-pivot",
+      "pixel-derived-scale",
+      "pixel-derived-frontage",
+      "clamping",
+      "runtime-mirroring",
+      "runtime-rotation",
+      "fallback",
+      "alias"
+    ],
+    "frontageSocketSource": {
+      "east": [
+        896,
+        832
+      ],
+      "north": [
+        896,
+        704
+      ],
+      "south": [
+        640,
+        832
+      ],
+      "west": [
+        640,
+        704
+      ]
+    },
+    "groundPivotSource": [
+      768,
+      896
+    ],
+    "lods": {
+      "block": {
+        "canvas": [
+          1024,
+          683
+        ],
+        "filter": "lanczos",
+        "footprintPolygon": [
+          [
+            512,
+            427
+          ],
+          [
+            683,
+            512
+          ],
+          [
+            512,
+            598
+          ],
+          [
+            341,
+            512
+          ]
+        ],
+        "frontageSockets": {
+          "east": [
+            597,
+            555
+          ],
+          "north": [
+            597,
+            470
+          ],
+          "south": [
+            427,
+            555
+          ],
+          "west": [
+            427,
+            470
+          ]
+        },
+        "groundPivot": [
+          512,
+          598
+        ],
+        "rounding": "round-half-even"
+      },
+      "city": {
+        "canvas": [
+          256,
+          171
+        ],
+        "filter": "lanczos",
+        "footprintPolygon": [
+          [
+            128,
+            107
+          ],
+          [
+            171,
+            128
+          ],
+          [
+            128,
+            150
+          ],
+          [
+            85,
+            128
+          ]
+        ],
+        "frontageSockets": {
+          "east": [
+            149,
+            139
+          ],
+          "north": [
+            149,
+            118
+          ],
+          "south": [
+            107,
+            139
+          ],
+          "west": [
+            107,
+            118
+          ]
+        },
+        "groundPivot": [
+          128,
+          150
+        ],
+        "rounding": "round-half-even"
+      },
+      "neighborhood": {
+        "canvas": [
+          512,
+          342
+        ],
+        "filter": "lanczos",
+        "footprintPolygon": [
+          [
+            256,
+            214
+          ],
+          [
+            341,
+            256
+          ],
+          [
+            256,
+            299
+          ],
+          [
+            171,
+            256
+          ]
+        ],
+        "frontageSockets": {
+          "east": [
+            299,
+            278
+          ],
+          "north": [
+            299,
+            235
+          ],
+          "south": [
+            213,
+            278
+          ],
+          "west": [
+            213,
+            235
+          ]
+        },
+        "groundPivot": [
+          256,
+          299
+        ],
+        "rounding": "round-half-even"
+      }
+    },
+    "sourceCanvas": [
+      1536,
+      1024
+    ]
+  },
+  "rendererQuarantined": false,
+  "rotation": 0,
+  "routeBinding": {
+    "authorityCommit": "65825389d586a128ddf6feb5356c33661ba9a8e8",
+    "baseCommit": "a61ab80101f596f56ffc1dd7e37b32bd1b220357",
+    "claim": {
+      "path": "docs/production/claims/PLAY-098.world-art-commercial.md",
+      "sha256": "4e10676b16b40d4492ca27ce525d67c74462f16bf5755be91bdbe05984ed2517"
+    },
+    "routeId": "four-view-v5:play-098-admission-repair",
+    "routeSha256": "3f16ebf3e310afd0351e7db5524e49b96b8967b512d2b0b3532fcd5de4f55319"
+  },
+  "source": {
+    "bytes": 1974944,
+    "canvas": [
+      1536,
+      1024
+    ],
+    "decodedSha256": "9a0f75ae48db4ed0ce620d32cb9a8534bc99e9711506a34eef0846e337908dab",
+    "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-098/commercial/raw/commercial_l04_v01-source-v01.png",
+    "sha256": "aac09d5dff2eb0598ec2394238c5ffb4beba0141f8bc0224baca2b00450e4483"
+  },
+  "sourceReady": false,
+  "visualAcceptance": "not_performed"
+}

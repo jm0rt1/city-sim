@@ -1,0 +1,220 @@
+{
+  "candidateReadyForIndependentReview": true,
+  "direction": "south",
+  "disposition": "mechanically_registered_candidate",
+  "family": "civic/service",
+  "identity": "school",
+  "integrationAdmitted": false,
+  "lods": {
+    "block": {
+      "alphaCheck": "PASS",
+      "chromaCheck": "PASS",
+      "deterministicReplay": true,
+      "dimensions": [
+        1024,
+        683
+      ],
+      "edgeCheck": "PASS",
+      "filter": "lanczos",
+      "hiddenChromaPixels": 0,
+      "hiddenRGBInTransparentPixels": 0,
+      "keyedMagentaPixelsRemoved": 1145178,
+      "mode": "RGBA",
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/school/school-block.png",
+      "registration": {
+        "footprint": [
+          [
+            512,
+            427
+          ],
+          [
+            683,
+            512
+          ],
+          [
+            512,
+            598
+          ],
+          [
+            341,
+            512
+          ]
+        ],
+        "groundPivot": [
+          512,
+          598
+        ],
+        "southSocket": [
+          427,
+          555
+        ]
+      },
+      "repeatSha256": "19f3dbc4e67a649db9dacf3e8ce3e27de023336bdbca2f7b7e0e03414dcd30dc",
+      "sha256": "19f3dbc4e67a649db9dacf3e8ce3e27de023336bdbca2f7b7e0e03414dcd30dc",
+      "transparentPixels": 506090,
+      "visibleEdgePixels": 0,
+      "visiblePixels": 193302
+    },
+    "city": {
+      "alphaCheck": "PASS",
+      "chromaCheck": "PASS",
+      "deterministicReplay": true,
+      "dimensions": [
+        256,
+        171
+      ],
+      "edgeCheck": "PASS",
+      "filter": "lanczos",
+      "hiddenChromaPixels": 0,
+      "hiddenRGBInTransparentPixels": 0,
+      "keyedMagentaPixelsRemoved": 1144675,
+      "mode": "RGBA",
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/school/school-city.png",
+      "registration": {
+        "footprint": [
+          [
+            128,
+            107
+          ],
+          [
+            171,
+            128
+          ],
+          [
+            128,
+            150
+          ],
+          [
+            85,
+            128
+          ]
+        ],
+        "groundPivot": [
+          128,
+          150
+        ],
+        "southSocket": [
+          107,
+          139
+        ]
+      },
+      "repeatSha256": "c932c10001f249e4166bc086b738b91c2671dc6f222a081fd9ccd05220f48c0b",
+      "sha256": "c932c10001f249e4166bc086b738b91c2671dc6f222a081fd9ccd05220f48c0b",
+      "transparentPixels": 31056,
+      "visibleEdgePixels": 0,
+      "visiblePixels": 12720
+    },
+    "neighborhood": {
+      "alphaCheck": "PASS",
+      "chromaCheck": "PASS",
+      "deterministicReplay": true,
+      "dimensions": [
+        512,
+        342
+      ],
+      "edgeCheck": "PASS",
+      "filter": "lanczos",
+      "hiddenChromaPixels": 0,
+      "hiddenRGBInTransparentPixels": 0,
+      "keyedMagentaPixelsRemoved": 1144804,
+      "mode": "RGBA",
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/school/school-neighborhood.png",
+      "registration": {
+        "footprint": [
+          [
+            256,
+            214
+          ],
+          [
+            341,
+            256
+          ],
+          [
+            256,
+            299
+          ],
+          [
+            171,
+            256
+          ]
+        ],
+        "groundPivot": [
+          256,
+          299
+        ],
+        "southSocket": [
+          213,
+          278
+        ]
+      },
+      "repeatSha256": "fff23b461eee7bdd19e22b2f37694ee9f2c303e459c738980dbdd77d7f08e1c5",
+      "sha256": "fff23b461eee7bdd19e22b2f37694ee9f2c303e459c738980dbdd77d7f08e1c5",
+      "transparentPixels": 125890,
+      "visibleEdgePixels": 0,
+      "visiblePixels": 49214
+    }
+  },
+  "productionSelected": false,
+  "profile": {
+    "path": "docs/production/decisions/CONTRACT-026-registration-profiles-v1.json",
+    "sha256": "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8"
+  },
+  "prompt": "Create exactly one centered, unique school as a welcoming red-brick neighborhood school with a central entrance, modest bell-tower/cupola, symmetrical classroom wings, tall windows, and distinct educational civic character with no lettering.",
+  "provenance": {
+    "complete": true,
+    "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/provenance/RAW-PROVENANCE.json",
+    "promptPresent": true
+  },
+  "raw": {
+    "dimensions": [
+      1536,
+      1024
+    ],
+    "mode": "RGB",
+    "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/raw/school-v01.png",
+    "sha256": "62d7cd7fbbc16fd5fe770120476ae970a6ffec56972a2a1f332c6495cb3a46ed"
+  },
+  "registration": {
+    "footprintPolygonSource": [
+      [
+        768,
+        640
+      ],
+      [
+        1024,
+        768
+      ],
+      [
+        768,
+        896
+      ],
+      [
+        512,
+        768
+      ]
+    ],
+    "geometrySource": "code-owned-contract-metadata",
+    "groundPivotSource": [
+      768,
+      896
+    ],
+    "orientationTransform": "none",
+    "pixelDerivedGeometry": false,
+    "sourceCanvas": [
+      1536,
+      1024
+    ],
+    "southSocketSource": [
+      640,
+      832
+    ]
+  },
+  "rendererQuarantined": false,
+  "sourceReady": false,
+  "southReference": {
+    "kind": "preserved_raw_south_anchor",
+    "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/raw/school-v01.png",
+    "sha256": "62d7cd7fbbc16fd5fe770120476ae970a6ffec56972a2a1f332c6495cb3a46ed"
+  },
+  "task": "PLAY-100"
+}

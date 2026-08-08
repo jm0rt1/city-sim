@@ -1,0 +1,24 @@
+{
+  "task": "PLAY-100",
+  "family": "civic/service",
+  "stage": "raw_candidate_preserved",
+  "count": 7,
+  "identities": [
+    "park",
+    "power-plant",
+    "water-tower",
+    "fire-station",
+    "police-station",
+    "school",
+    "city-hall"
+  ],
+  "rawRoot": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/raw",
+  "provenancePath": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/provenance/RAW-PROVENANCE.json",
+  "normalization": "waiting_on_PLAY-096_exact_harness",
+  "handoff": "not_created",
+  "returned": [],
+  "accepted": [],
+  "rawPreserved": 7,
+  "visualPreScreen": "all seven visually distinct, centered, single-angle candidates with flat magenta source field; no worker subjective acceptance claimed",
+  "mechanicalPreScreen": "dimensions/file type/hash checks complete; pixel-level chroma/padding validator unavailable until the exact PLAY-096 harness; Pillow is not installed and no competing normalizer was introduced"
+}

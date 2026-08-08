@@ -1,0 +1,220 @@
+{
+  "candidateReadyForIndependentReview": true,
+  "direction": "south",
+  "disposition": "mechanically_registered_candidate",
+  "family": "civic/service",
+  "identity": "park",
+  "integrationAdmitted": false,
+  "lods": {
+    "block": {
+      "alphaCheck": "PASS",
+      "chromaCheck": "PASS",
+      "deterministicReplay": true,
+      "dimensions": [
+        1024,
+        683
+      ],
+      "edgeCheck": "PASS",
+      "filter": "lanczos",
+      "hiddenChromaPixels": 0,
+      "hiddenRGBInTransparentPixels": 0,
+      "keyedMagentaPixelsRemoved": 1083097,
+      "mode": "RGBA",
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/park/park-block.png",
+      "registration": {
+        "footprint": [
+          [
+            512,
+            427
+          ],
+          [
+            683,
+            512
+          ],
+          [
+            512,
+            598
+          ],
+          [
+            341,
+            512
+          ]
+        ],
+        "groundPivot": [
+          512,
+          598
+        ],
+        "southSocket": [
+          427,
+          555
+        ]
+      },
+      "repeatSha256": "0d490bc2976be1f0765c52081e5ae91552b555b771a3776347fa803d48b5c153",
+      "sha256": "0d490bc2976be1f0765c52081e5ae91552b555b771a3776347fa803d48b5c153",
+      "transparentPixels": 475778,
+      "visibleEdgePixels": 0,
+      "visiblePixels": 223614
+    },
+    "city": {
+      "alphaCheck": "PASS",
+      "chromaCheck": "PASS",
+      "deterministicReplay": true,
+      "dimensions": [
+        256,
+        171
+      ],
+      "edgeCheck": "PASS",
+      "filter": "lanczos",
+      "hiddenChromaPixels": 0,
+      "hiddenRGBInTransparentPixels": 0,
+      "keyedMagentaPixelsRemoved": 1081417,
+      "mode": "RGBA",
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/park/park-city.png",
+      "registration": {
+        "footprint": [
+          [
+            128,
+            107
+          ],
+          [
+            171,
+            128
+          ],
+          [
+            128,
+            150
+          ],
+          [
+            85,
+            128
+          ]
+        ],
+        "groundPivot": [
+          128,
+          150
+        ],
+        "southSocket": [
+          107,
+          139
+        ]
+      },
+      "repeatSha256": "c60b7aeea5cde1b1e2f8260476fdd3267d99107e6a7f456eb941c75f93b3838a",
+      "sha256": "c60b7aeea5cde1b1e2f8260476fdd3267d99107e6a7f456eb941c75f93b3838a",
+      "transparentPixels": 28976,
+      "visibleEdgePixels": 0,
+      "visiblePixels": 14800
+    },
+    "neighborhood": {
+      "alphaCheck": "PASS",
+      "chromaCheck": "PASS",
+      "deterministicReplay": true,
+      "dimensions": [
+        512,
+        342
+      ],
+      "edgeCheck": "PASS",
+      "filter": "lanczos",
+      "hiddenChromaPixels": 0,
+      "hiddenRGBInTransparentPixels": 0,
+      "keyedMagentaPixelsRemoved": 1081877,
+      "mode": "RGBA",
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/park/park-neighborhood.png",
+      "registration": {
+        "footprint": [
+          [
+            256,
+            214
+          ],
+          [
+            341,
+            256
+          ],
+          [
+            256,
+            299
+          ],
+          [
+            171,
+            256
+          ]
+        ],
+        "groundPivot": [
+          256,
+          299
+        ],
+        "southSocket": [
+          213,
+          278
+        ]
+      },
+      "repeatSha256": "02cc96674e87b8f3172c19a097717aca53db2e8a49fd948bf498564b75d9ab19",
+      "sha256": "02cc96674e87b8f3172c19a097717aca53db2e8a49fd948bf498564b75d9ab19",
+      "transparentPixels": 118064,
+      "visibleEdgePixels": 0,
+      "visiblePixels": 57040
+    }
+  },
+  "productionSelected": false,
+  "profile": {
+    "path": "docs/production/decisions/CONTRACT-026-registration-profiles-v1.json",
+    "sha256": "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8"
+  },
+  "prompt": "Create exactly one centered, unique park as a compact civic park identity centered on a distinctive small octagonal bandstand/gazebo, a modest ornamental fountain, and a carefully limited cluster of mature trees and shrubs arranged as one coherent park facility; no paths or paving that imply a surrounding district.",
+  "provenance": {
+    "complete": true,
+    "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/provenance/RAW-PROVENANCE.json",
+    "promptPresent": true
+  },
+  "raw": {
+    "dimensions": [
+      1536,
+      1024
+    ],
+    "mode": "RGB",
+    "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/raw/park-v01.png",
+    "sha256": "e5797cf8900a6390965ae01bf57be172e2e98e26d17fefafc7b759f372d8caf7"
+  },
+  "registration": {
+    "footprintPolygonSource": [
+      [
+        768,
+        640
+      ],
+      [
+        1024,
+        768
+      ],
+      [
+        768,
+        896
+      ],
+      [
+        512,
+        768
+      ]
+    ],
+    "geometrySource": "code-owned-contract-metadata",
+    "groundPivotSource": [
+      768,
+      896
+    ],
+    "orientationTransform": "none",
+    "pixelDerivedGeometry": false,
+    "sourceCanvas": [
+      1536,
+      1024
+    ],
+    "southSocketSource": [
+      640,
+      832
+    ]
+  },
+  "rendererQuarantined": false,
+  "sourceReady": false,
+  "southReference": {
+    "kind": "preserved_raw_south_anchor",
+    "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/raw/park-v01.png",
+    "sha256": "e5797cf8900a6390965ae01bf57be172e2e98e26d17fefafc7b759f372d8caf7"
+  },
+  "task": "PLAY-100"
+}

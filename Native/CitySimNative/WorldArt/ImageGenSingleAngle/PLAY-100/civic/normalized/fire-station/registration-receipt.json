@@ -1,0 +1,220 @@
+{
+  "candidateReadyForIndependentReview": true,
+  "direction": "south",
+  "disposition": "mechanically_registered_candidate",
+  "family": "civic/service",
+  "identity": "fire-station",
+  "integrationAdmitted": false,
+  "lods": {
+    "block": {
+      "alphaCheck": "PASS",
+      "chromaCheck": "PASS",
+      "deterministicReplay": true,
+      "dimensions": [
+        1024,
+        683
+      ],
+      "edgeCheck": "PASS",
+      "filter": "lanczos",
+      "hiddenChromaPixels": 0,
+      "hiddenRGBInTransparentPixels": 0,
+      "keyedMagentaPixelsRemoved": 1184328,
+      "mode": "RGBA",
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/fire-station/fire-station-block.png",
+      "registration": {
+        "footprint": [
+          [
+            512,
+            427
+          ],
+          [
+            683,
+            512
+          ],
+          [
+            512,
+            598
+          ],
+          [
+            341,
+            512
+          ]
+        ],
+        "groundPivot": [
+          512,
+          598
+        ],
+        "southSocket": [
+          427,
+          555
+        ]
+      },
+      "repeatSha256": "cc21fbbfacefe8187dd894fb1df6188670980d1e1cc13fb18b780d53c5621a15",
+      "sha256": "cc21fbbfacefe8187dd894fb1df6188670980d1e1cc13fb18b780d53c5621a15",
+      "transparentPixels": 523739,
+      "visibleEdgePixels": 0,
+      "visiblePixels": 175653
+    },
+    "city": {
+      "alphaCheck": "PASS",
+      "chromaCheck": "PASS",
+      "deterministicReplay": true,
+      "dimensions": [
+        256,
+        171
+      ],
+      "edgeCheck": "PASS",
+      "filter": "lanczos",
+      "hiddenChromaPixels": 0,
+      "hiddenRGBInTransparentPixels": 0,
+      "keyedMagentaPixelsRemoved": 1183744,
+      "mode": "RGBA",
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/fire-station/fire-station-city.png",
+      "registration": {
+        "footprint": [
+          [
+            128,
+            107
+          ],
+          [
+            171,
+            128
+          ],
+          [
+            128,
+            150
+          ],
+          [
+            85,
+            128
+          ]
+        ],
+        "groundPivot": [
+          128,
+          150
+        ],
+        "southSocket": [
+          107,
+          139
+        ]
+      },
+      "repeatSha256": "6ec1b1114542f53ebfd845106b4f6d581bcd85916d604bfa2b40990ed29192ce",
+      "sha256": "6ec1b1114542f53ebfd845106b4f6d581bcd85916d604bfa2b40990ed29192ce",
+      "transparentPixels": 32158,
+      "visibleEdgePixels": 0,
+      "visiblePixels": 11618
+    },
+    "neighborhood": {
+      "alphaCheck": "PASS",
+      "chromaCheck": "PASS",
+      "deterministicReplay": true,
+      "dimensions": [
+        512,
+        342
+      ],
+      "edgeCheck": "PASS",
+      "filter": "lanczos",
+      "hiddenChromaPixels": 0,
+      "hiddenRGBInTransparentPixels": 0,
+      "keyedMagentaPixelsRemoved": 1183871,
+      "mode": "RGBA",
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/fire-station/fire-station-neighborhood.png",
+      "registration": {
+        "footprint": [
+          [
+            256,
+            214
+          ],
+          [
+            341,
+            256
+          ],
+          [
+            256,
+            299
+          ],
+          [
+            171,
+            256
+          ]
+        ],
+        "groundPivot": [
+          256,
+          299
+        ],
+        "southSocket": [
+          213,
+          278
+        ]
+      },
+      "repeatSha256": "84b1fbbe9e28f7721961fa4e1b0c10e93b04f08d3ce626106b76be250c75e146",
+      "sha256": "84b1fbbe9e28f7721961fa4e1b0c10e93b04f08d3ce626106b76be250c75e146",
+      "transparentPixels": 130253,
+      "visibleEdgePixels": 0,
+      "visiblePixels": 44851
+    }
+  },
+  "productionSelected": false,
+  "profile": {
+    "path": "docs/production/decisions/CONTRACT-026-registration-profiles-v1.json",
+    "sha256": "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8"
+  },
+  "prompt": "Create exactly one centered, unique fire station as a compact two-story brick fire station with a strong civic entrance, three dark apparatus-bay doors with no vehicles, a restrained tower element, and highly readable masonry and trim.",
+  "provenance": {
+    "complete": true,
+    "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/provenance/RAW-PROVENANCE.json",
+    "promptPresent": true
+  },
+  "raw": {
+    "dimensions": [
+      1536,
+      1024
+    ],
+    "mode": "RGB",
+    "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/raw/fire-station-v01.png",
+    "sha256": "33e2d69e44120f0ba6b81e54ccd22eeb3ef9021265b264831d4d2ccfc67403bf"
+  },
+  "registration": {
+    "footprintPolygonSource": [
+      [
+        768,
+        640
+      ],
+      [
+        1024,
+        768
+      ],
+      [
+        768,
+        896
+      ],
+      [
+        512,
+        768
+      ]
+    ],
+    "geometrySource": "code-owned-contract-metadata",
+    "groundPivotSource": [
+      768,
+      896
+    ],
+    "orientationTransform": "none",
+    "pixelDerivedGeometry": false,
+    "sourceCanvas": [
+      1536,
+      1024
+    ],
+    "southSocketSource": [
+      640,
+      832
+    ]
+  },
+  "rendererQuarantined": false,
+  "sourceReady": false,
+  "southReference": {
+    "kind": "preserved_raw_south_anchor",
+    "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/raw/fire-station-v01.png",
+    "sha256": "33e2d69e44120f0ba6b81e54ccd22eeb3ef9021265b264831d4d2ccfc67403bf"
+  },
+  "task": "PLAY-100"
+}

@@ -1,0 +1,58 @@
+{
+  "authorityCommit": "65825389d586a128ddf6feb5356c33661ba9a8e8",
+  "checks": {
+    "alpha": "PASS",
+    "deterministicReplay": "PASS",
+    "edge": "PASS",
+    "hiddenChroma": "PASS",
+    "semanticArtifacts": "PASS"
+  },
+  "claim": {
+    "path": "docs/production/claims/PLAY-100.world-art-civic.md",
+    "sha256": "0c4bce350a2538a768e5e3b51baa76c3e6b0a81a27f31ca4d640e8e844d05a2d"
+  },
+  "contract": {
+    "path": "docs/production/decisions/CONTRACT-026-authored-four-view-registration.md",
+    "sha256": "4781de72429a1f691b9226f7f7668b170b278a4ccd171ac4ea02f5e1df9176eb"
+  },
+  "direction": "south",
+  "family": "civic/service",
+  "identities": [
+    "park",
+    "power-plant",
+    "water-tower",
+    "fire-station",
+    "police-station",
+    "school",
+    "city-hall"
+  ],
+  "integrationAdmitted": false,
+  "normalization": {
+    "cropOrTrim": false,
+    "decoder": "Pillow",
+    "filter": "lanczos",
+    "keyedMagentaRemoval": true,
+    "outputMode": "RGBA",
+    "pixelDerivedGeometry": false,
+    "rotationOrMirror": false,
+    "sourceMode": "RGB"
+  },
+  "productionSelected": false,
+  "profile": {
+    "path": "docs/production/decisions/CONTRACT-026-registration-profiles-v1.json",
+    "sha256": "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8"
+  },
+  "publishedBase": "a61ab80101f596f56ffc1dd7e37b32bd1b220357",
+  "rawCount": 7,
+  "rawPreserved": true,
+  "receiptsRoot": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized",
+  "rendererQuarantined": false,
+  "routeId": "four-view-v4:play-100-south-admission-repair",
+  "routeSha256": "fe585feeb286a7e0efd030877ab946af479276bd4406053b6e1c944c8016db34",
+  "schema": "citysim.play-100.south-admission-repair.v4",
+  "sourceReady": false,
+  "task": "PLAY-100",
+  "uniqueNormalizedHashes": 21,
+  "uniqueRawHashes": 7,
+  "workerHead": "f956b54685707b7ecbb34d30c96aef2242e9f375"
+}

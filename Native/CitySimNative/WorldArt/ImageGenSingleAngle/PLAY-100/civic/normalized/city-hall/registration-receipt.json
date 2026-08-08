@@ -1,0 +1,220 @@
+{
+  "candidateReadyForIndependentReview": true,
+  "direction": "south",
+  "disposition": "mechanically_registered_candidate",
+  "family": "civic/service",
+  "identity": "city-hall",
+  "integrationAdmitted": false,
+  "lods": {
+    "block": {
+      "alphaCheck": "PASS",
+      "chromaCheck": "PASS",
+      "deterministicReplay": true,
+      "dimensions": [
+        1024,
+        683
+      ],
+      "edgeCheck": "PASS",
+      "filter": "lanczos",
+      "hiddenChromaPixels": 0,
+      "hiddenRGBInTransparentPixels": 0,
+      "keyedMagentaPixelsRemoved": 1146401,
+      "mode": "RGBA",
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/city-hall/city-hall-block.png",
+      "registration": {
+        "footprint": [
+          [
+            512,
+            427
+          ],
+          [
+            683,
+            512
+          ],
+          [
+            512,
+            598
+          ],
+          [
+            341,
+            512
+          ]
+        ],
+        "groundPivot": [
+          512,
+          598
+        ],
+        "southSocket": [
+          427,
+          555
+        ]
+      },
+      "repeatSha256": "83bd1cb30c928c9bbd6d80dc8fd3684d0d2a8c2e67244f4d5eba8c92152eace9",
+      "sha256": "83bd1cb30c928c9bbd6d80dc8fd3684d0d2a8c2e67244f4d5eba8c92152eace9",
+      "transparentPixels": 506271,
+      "visibleEdgePixels": 0,
+      "visiblePixels": 193121
+    },
+    "city": {
+      "alphaCheck": "PASS",
+      "chromaCheck": "PASS",
+      "deterministicReplay": true,
+      "dimensions": [
+        256,
+        171
+      ],
+      "edgeCheck": "PASS",
+      "filter": "lanczos",
+      "hiddenChromaPixels": 0,
+      "hiddenRGBInTransparentPixels": 0,
+      "keyedMagentaPixelsRemoved": 1145590,
+      "mode": "RGBA",
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/city-hall/city-hall-city.png",
+      "registration": {
+        "footprint": [
+          [
+            128,
+            107
+          ],
+          [
+            171,
+            128
+          ],
+          [
+            128,
+            150
+          ],
+          [
+            85,
+            128
+          ]
+        ],
+        "groundPivot": [
+          128,
+          150
+        ],
+        "southSocket": [
+          107,
+          139
+        ]
+      },
+      "repeatSha256": "1ce89d4847bf8b0974c73e339540f7d829736bb7ea168e4dffc600c027f01cde",
+      "sha256": "1ce89d4847bf8b0974c73e339540f7d829736bb7ea168e4dffc600c027f01cde",
+      "transparentPixels": 31022,
+      "visibleEdgePixels": 0,
+      "visiblePixels": 12754
+    },
+    "neighborhood": {
+      "alphaCheck": "PASS",
+      "chromaCheck": "PASS",
+      "deterministicReplay": true,
+      "dimensions": [
+        512,
+        342
+      ],
+      "edgeCheck": "PASS",
+      "filter": "lanczos",
+      "hiddenChromaPixels": 0,
+      "hiddenRGBInTransparentPixels": 0,
+      "keyedMagentaPixelsRemoved": 1145797,
+      "mode": "RGBA",
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/city-hall/city-hall-neighborhood.png",
+      "registration": {
+        "footprint": [
+          [
+            256,
+            214
+          ],
+          [
+            341,
+            256
+          ],
+          [
+            256,
+            299
+          ],
+          [
+            171,
+            256
+          ]
+        ],
+        "groundPivot": [
+          256,
+          299
+        ],
+        "southSocket": [
+          213,
+          278
+        ]
+      },
+      "repeatSha256": "a5426293ca835c4f572a6d34adc846606e1c29468c2f241b082020042b1cbccf",
+      "sha256": "a5426293ca835c4f572a6d34adc846606e1c29468c2f241b082020042b1cbccf",
+      "transparentPixels": 125836,
+      "visibleEdgePixels": 0,
+      "visiblePixels": 49268
+    }
+  },
+  "productionSelected": false,
+  "profile": {
+    "path": "docs/production/decisions/CONTRACT-026-registration-profiles-v1.json",
+    "sha256": "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8"
+  },
+  "prompt": "Create exactly one centered, unique city hall as a landmark civic city hall with a dignified stone facade, broad front steps, columned entrance, symmetrical wings, and a distinctive central cupola, clearly unique from the other civic identities.",
+  "provenance": {
+    "complete": true,
+    "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/provenance/RAW-PROVENANCE.json",
+    "promptPresent": true
+  },
+  "raw": {
+    "dimensions": [
+      1536,
+      1024
+    ],
+    "mode": "RGB",
+    "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/raw/city-hall-v01.png",
+    "sha256": "89701d7c1e95644267bd72627fb1f97d21aea09ca930ad3b73ebb05ddaedb819"
+  },
+  "registration": {
+    "footprintPolygonSource": [
+      [
+        768,
+        640
+      ],
+      [
+        1024,
+        768
+      ],
+      [
+        768,
+        896
+      ],
+      [
+        512,
+        768
+      ]
+    ],
+    "geometrySource": "code-owned-contract-metadata",
+    "groundPivotSource": [
+      768,
+      896
+    ],
+    "orientationTransform": "none",
+    "pixelDerivedGeometry": false,
+    "sourceCanvas": [
+      1536,
+      1024
+    ],
+    "southSocketSource": [
+      640,
+      832
+    ]
+  },
+  "rendererQuarantined": false,
+  "sourceReady": false,
+  "southReference": {
+    "kind": "preserved_raw_south_anchor",
+    "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/raw/city-hall-v01.png",
+    "sha256": "89701d7c1e95644267bd72627fb1f97d21aea09ca930ad3b73ebb05ddaedb819"
+  },
+  "task": "PLAY-100"
+}

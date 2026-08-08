@@ -1,0 +1,1542 @@
+[
+  {
+    "candidateReadyForIndependentReview": true,
+    "direction": "south",
+    "disposition": "mechanically_registered_candidate",
+    "family": "civic/service",
+    "identity": "park",
+    "integrationAdmitted": false,
+    "lods": {
+      "block": {
+        "alphaCheck": "PASS",
+        "chromaCheck": "PASS",
+        "deterministicReplay": true,
+        "dimensions": [
+          1024,
+          683
+        ],
+        "edgeCheck": "PASS",
+        "filter": "lanczos",
+        "hiddenChromaPixels": 0,
+        "hiddenRGBInTransparentPixels": 0,
+        "keyedMagentaPixelsRemoved": 1083097,
+        "mode": "RGBA",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/park/park-block.png",
+        "registration": {
+          "footprint": [
+            [
+              512,
+              427
+            ],
+            [
+              683,
+              512
+            ],
+            [
+              512,
+              598
+            ],
+            [
+              341,
+              512
+            ]
+          ],
+          "groundPivot": [
+            512,
+            598
+          ],
+          "southSocket": [
+            427,
+            555
+          ]
+        },
+        "repeatSha256": "0d490bc2976be1f0765c52081e5ae91552b555b771a3776347fa803d48b5c153",
+        "sha256": "0d490bc2976be1f0765c52081e5ae91552b555b771a3776347fa803d48b5c153",
+        "transparentPixels": 475778,
+        "visibleEdgePixels": 0,
+        "visiblePixels": 223614
+      },
+      "city": {
+        "alphaCheck": "PASS",
+        "chromaCheck": "PASS",
+        "deterministicReplay": true,
+        "dimensions": [
+          256,
+          171
+        ],
+        "edgeCheck": "PASS",
+        "filter": "lanczos",
+        "hiddenChromaPixels": 0,
+        "hiddenRGBInTransparentPixels": 0,
+        "keyedMagentaPixelsRemoved": 1081417,
+        "mode": "RGBA",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/park/park-city.png",
+        "registration": {
+          "footprint": [
+            [
+              128,
+              107
+            ],
+            [
+              171,
+              128
+            ],
+            [
+              128,
+              150
+            ],
+            [
+              85,
+              128
+            ]
+          ],
+          "groundPivot": [
+            128,
+            150
+          ],
+          "southSocket": [
+            107,
+            139
+          ]
+        },
+        "repeatSha256": "c60b7aeea5cde1b1e2f8260476fdd3267d99107e6a7f456eb941c75f93b3838a",
+        "sha256": "c60b7aeea5cde1b1e2f8260476fdd3267d99107e6a7f456eb941c75f93b3838a",
+        "transparentPixels": 28976,
+        "visibleEdgePixels": 0,
+        "visiblePixels": 14800
+      },
+      "neighborhood": {
+        "alphaCheck": "PASS",
+        "chromaCheck": "PASS",
+        "deterministicReplay": true,
+        "dimensions": [
+          512,
+          342
+        ],
+        "edgeCheck": "PASS",
+        "filter": "lanczos",
+        "hiddenChromaPixels": 0,
+        "hiddenRGBInTransparentPixels": 0,
+        "keyedMagentaPixelsRemoved": 1081877,
+        "mode": "RGBA",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/park/park-neighborhood.png",
+        "registration": {
+          "footprint": [
+            [
+              256,
+              214
+            ],
+            [
+              341,
+              256
+            ],
+            [
+              256,
+              299
+            ],
+            [
+              171,
+              256
+            ]
+          ],
+          "groundPivot": [
+            256,
+            299
+          ],
+          "southSocket": [
+            213,
+            278
+          ]
+        },
+        "repeatSha256": "02cc96674e87b8f3172c19a097717aca53db2e8a49fd948bf498564b75d9ab19",
+        "sha256": "02cc96674e87b8f3172c19a097717aca53db2e8a49fd948bf498564b75d9ab19",
+        "transparentPixels": 118064,
+        "visibleEdgePixels": 0,
+        "visiblePixels": 57040
+      }
+    },
+    "productionSelected": false,
+    "profile": {
+      "path": "docs/production/decisions/CONTRACT-026-registration-profiles-v1.json",
+      "sha256": "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8"
+    },
+    "prompt": "Create exactly one centered, unique park as a compact civic park identity centered on a distinctive small octagonal bandstand/gazebo, a modest ornamental fountain, and a carefully limited cluster of mature trees and shrubs arranged as one coherent park facility; no paths or paving that imply a surrounding district.",
+    "provenance": {
+      "complete": true,
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/provenance/RAW-PROVENANCE.json",
+      "promptPresent": true
+    },
+    "raw": {
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/raw/park-v01.png",
+      "sha256": "e5797cf8900a6390965ae01bf57be172e2e98e26d17fefafc7b759f372d8caf7"
+    },
+    "registration": {
+      "footprintPolygonSource": [
+        [
+          768,
+          640
+        ],
+        [
+          1024,
+          768
+        ],
+        [
+          768,
+          896
+        ],
+        [
+          512,
+          768
+        ]
+      ],
+      "geometrySource": "code-owned-contract-metadata",
+      "groundPivotSource": [
+        768,
+        896
+      ],
+      "orientationTransform": "none",
+      "pixelDerivedGeometry": false,
+      "sourceCanvas": [
+        1536,
+        1024
+      ],
+      "southSocketSource": [
+        640,
+        832
+      ]
+    },
+    "rendererQuarantined": false,
+    "sourceReady": false,
+    "southReference": {
+      "kind": "preserved_raw_south_anchor",
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/raw/park-v01.png",
+      "sha256": "e5797cf8900a6390965ae01bf57be172e2e98e26d17fefafc7b759f372d8caf7"
+    },
+    "task": "PLAY-100"
+  },
+  {
+    "candidateReadyForIndependentReview": true,
+    "direction": "south",
+    "disposition": "mechanically_registered_candidate",
+    "family": "civic/service",
+    "identity": "power-plant",
+    "integrationAdmitted": false,
+    "lods": {
+      "block": {
+        "alphaCheck": "PASS",
+        "chromaCheck": "PASS",
+        "deterministicReplay": true,
+        "dimensions": [
+          1024,
+          683
+        ],
+        "edgeCheck": "PASS",
+        "filter": "lanczos",
+        "hiddenChromaPixels": 0,
+        "hiddenRGBInTransparentPixels": 0,
+        "keyedMagentaPixelsRemoved": 1253614,
+        "mode": "RGBA",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/power-plant/power-plant-block.png",
+        "registration": {
+          "footprint": [
+            [
+              512,
+              427
+            ],
+            [
+              683,
+              512
+            ],
+            [
+              512,
+              598
+            ],
+            [
+              341,
+              512
+            ]
+          ],
+          "groundPivot": [
+            512,
+            598
+          ],
+          "southSocket": [
+            427,
+            555
+          ]
+        },
+        "repeatSha256": "2da7fb12f92fba462b8ec283aeb9591a9da878c4d39360d6207cc34520b34691",
+        "sha256": "2da7fb12f92fba462b8ec283aeb9591a9da878c4d39360d6207cc34520b34691",
+        "transparentPixels": 554507,
+        "visibleEdgePixels": 0,
+        "visiblePixels": 144885
+      },
+      "city": {
+        "alphaCheck": "PASS",
+        "chromaCheck": "PASS",
+        "deterministicReplay": true,
+        "dimensions": [
+          256,
+          171
+        ],
+        "edgeCheck": "PASS",
+        "filter": "lanczos",
+        "hiddenChromaPixels": 0,
+        "hiddenRGBInTransparentPixels": 0,
+        "keyedMagentaPixelsRemoved": 1253026,
+        "mode": "RGBA",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/power-plant/power-plant-city.png",
+        "registration": {
+          "footprint": [
+            [
+              128,
+              107
+            ],
+            [
+              171,
+              128
+            ],
+            [
+              128,
+              150
+            ],
+            [
+              85,
+              128
+            ]
+          ],
+          "groundPivot": [
+            128,
+            150
+          ],
+          "southSocket": [
+            107,
+            139
+          ]
+        },
+        "repeatSha256": "074e99acbc837d2f9383043a4b6ce382386bb3188cd9809bee133716bb6334fc",
+        "sha256": "074e99acbc837d2f9383043a4b6ce382386bb3188cd9809bee133716bb6334fc",
+        "transparentPixels": 34116,
+        "visibleEdgePixels": 0,
+        "visiblePixels": 9660
+      },
+      "neighborhood": {
+        "alphaCheck": "PASS",
+        "chromaCheck": "PASS",
+        "deterministicReplay": true,
+        "dimensions": [
+          512,
+          342
+        ],
+        "edgeCheck": "PASS",
+        "filter": "lanczos",
+        "hiddenChromaPixels": 0,
+        "hiddenRGBInTransparentPixels": 0,
+        "keyedMagentaPixelsRemoved": 1253191,
+        "mode": "RGBA",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/power-plant/power-plant-neighborhood.png",
+        "registration": {
+          "footprint": [
+            [
+              256,
+              214
+            ],
+            [
+              341,
+              256
+            ],
+            [
+              256,
+              299
+            ],
+            [
+              171,
+              256
+            ]
+          ],
+          "groundPivot": [
+            256,
+            299
+          ],
+          "southSocket": [
+            213,
+            278
+          ]
+        },
+        "repeatSha256": "88f47d72646b36daa9632d52e863ff77fe564a5b86d48bbda10780cb4e485baa",
+        "sha256": "88f47d72646b36daa9632d52e863ff77fe564a5b86d48bbda10780cb4e485baa",
+        "transparentPixels": 138070,
+        "visibleEdgePixels": 0,
+        "visiblePixels": 37034
+      }
+    },
+    "productionSelected": false,
+    "profile": {
+      "path": "docs/production/decisions/CONTRACT-026-registration-profiles-v1.json",
+      "sha256": "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8"
+    },
+    "prompt": "Create exactly one centered, unique power plant as a compact civic power plant with a distinctive brick turbine hall, one clean industrial smokestack without smoke, restrained metal service details, and a readable utility silhouette.",
+    "provenance": {
+      "complete": true,
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/provenance/RAW-PROVENANCE.json",
+      "promptPresent": true
+    },
+    "raw": {
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/raw/power-plant-v01.png",
+      "sha256": "752c75b1fd0c2d5b869d371738df7f4abd6a3675ab420edb6c2f32e463a9bffb"
+    },
+    "registration": {
+      "footprintPolygonSource": [
+        [
+          768,
+          640
+        ],
+        [
+          1024,
+          768
+        ],
+        [
+          768,
+          896
+        ],
+        [
+          512,
+          768
+        ]
+      ],
+      "geometrySource": "code-owned-contract-metadata",
+      "groundPivotSource": [
+        768,
+        896
+      ],
+      "orientationTransform": "none",
+      "pixelDerivedGeometry": false,
+      "sourceCanvas": [
+        1536,
+        1024
+      ],
+      "southSocketSource": [
+        640,
+        832
+      ]
+    },
+    "rendererQuarantined": false,
+    "sourceReady": false,
+    "southReference": {
+      "kind": "preserved_raw_south_anchor",
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/raw/power-plant-v01.png",
+      "sha256": "752c75b1fd0c2d5b869d371738df7f4abd6a3675ab420edb6c2f32e463a9bffb"
+    },
+    "task": "PLAY-100"
+  },
+  {
+    "candidateReadyForIndependentReview": true,
+    "direction": "south",
+    "disposition": "mechanically_registered_candidate",
+    "family": "civic/service",
+    "identity": "water-tower",
+    "integrationAdmitted": false,
+    "lods": {
+      "block": {
+        "alphaCheck": "PASS",
+        "chromaCheck": "PASS",
+        "deterministicReplay": true,
+        "dimensions": [
+          1024,
+          683
+        ],
+        "edgeCheck": "PASS",
+        "filter": "lanczos",
+        "hiddenChromaPixels": 0,
+        "hiddenRGBInTransparentPixels": 0,
+        "keyedMagentaPixelsRemoved": 1402982,
+        "mode": "RGBA",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/water-tower/water-tower-block.png",
+        "registration": {
+          "footprint": [
+            [
+              512,
+              427
+            ],
+            [
+              683,
+              512
+            ],
+            [
+              512,
+              598
+            ],
+            [
+              341,
+              512
+            ]
+          ],
+          "groundPivot": [
+            512,
+            598
+          ],
+          "southSocket": [
+            427,
+            555
+          ]
+        },
+        "repeatSha256": "f997592a02969fb75aa13e4fd06ad79917ccdcb74943a7cc6431deb4c86a5749",
+        "sha256": "f997592a02969fb75aa13e4fd06ad79917ccdcb74943a7cc6431deb4c86a5749",
+        "transparentPixels": 613328,
+        "visibleEdgePixels": 0,
+        "visiblePixels": 86064
+      },
+      "city": {
+        "alphaCheck": "PASS",
+        "chromaCheck": "PASS",
+        "deterministicReplay": true,
+        "dimensions": [
+          256,
+          171
+        ],
+        "edgeCheck": "PASS",
+        "filter": "lanczos",
+        "hiddenChromaPixels": 0,
+        "hiddenRGBInTransparentPixels": 0,
+        "keyedMagentaPixelsRemoved": 1401241,
+        "mode": "RGBA",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/water-tower/water-tower-city.png",
+        "registration": {
+          "footprint": [
+            [
+              128,
+              107
+            ],
+            [
+              171,
+              128
+            ],
+            [
+              128,
+              150
+            ],
+            [
+              85,
+              128
+            ]
+          ],
+          "groundPivot": [
+            128,
+            150
+          ],
+          "southSocket": [
+            107,
+            139
+          ]
+        },
+        "repeatSha256": "fd204a592719e8da5e7c055673a75e399b311031602fd9bcafb62c454aab398a",
+        "sha256": "fd204a592719e8da5e7c055673a75e399b311031602fd9bcafb62c454aab398a",
+        "transparentPixels": 37203,
+        "visibleEdgePixels": 0,
+        "visiblePixels": 6573
+      },
+      "neighborhood": {
+        "alphaCheck": "PASS",
+        "chromaCheck": "PASS",
+        "deterministicReplay": true,
+        "dimensions": [
+          512,
+          342
+        ],
+        "edgeCheck": "PASS",
+        "filter": "lanczos",
+        "hiddenChromaPixels": 0,
+        "hiddenRGBInTransparentPixels": 0,
+        "keyedMagentaPixelsRemoved": 1401709,
+        "mode": "RGBA",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/water-tower/water-tower-neighborhood.png",
+        "registration": {
+          "footprint": [
+            [
+              256,
+              214
+            ],
+            [
+              341,
+              256
+            ],
+            [
+              256,
+              299
+            ],
+            [
+              171,
+              256
+            ]
+          ],
+          "groundPivot": [
+            256,
+            299
+          ],
+          "southSocket": [
+            213,
+            278
+          ]
+        },
+        "repeatSha256": "cd58951346d9c8bc97a4c40a0e83dac35d9ee31b142fa96e6af9a1e4f5a5f2e3",
+        "sha256": "cd58951346d9c8bc97a4c40a0e83dac35d9ee31b142fa96e6af9a1e4f5a5f2e3",
+        "transparentPixels": 151527,
+        "visibleEdgePixels": 0,
+        "visiblePixels": 23577
+      }
+    },
+    "productionSelected": false,
+    "profile": {
+      "path": "docs/production/decisions/CONTRACT-026-registration-profiles-v1.json",
+      "sha256": "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8"
+    },
+    "prompt": "Create exactly one centered, unique water tower as a distinctive municipal water tower with a weathered cylindrical tank, elegant steel support legs, a compact maintenance ladder and platform, and believable painted metal construction.",
+    "provenance": {
+      "complete": true,
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/provenance/RAW-PROVENANCE.json",
+      "promptPresent": true
+    },
+    "raw": {
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/raw/water-tower-v01.png",
+      "sha256": "731a166771d75b97c32c3ebc9e0708fed175f349c20467a72645d45a30c55ff0"
+    },
+    "registration": {
+      "footprintPolygonSource": [
+        [
+          768,
+          640
+        ],
+        [
+          1024,
+          768
+        ],
+        [
+          768,
+          896
+        ],
+        [
+          512,
+          768
+        ]
+      ],
+      "geometrySource": "code-owned-contract-metadata",
+      "groundPivotSource": [
+        768,
+        896
+      ],
+      "orientationTransform": "none",
+      "pixelDerivedGeometry": false,
+      "sourceCanvas": [
+        1536,
+        1024
+      ],
+      "southSocketSource": [
+        640,
+        832
+      ]
+    },
+    "rendererQuarantined": false,
+    "sourceReady": false,
+    "southReference": {
+      "kind": "preserved_raw_south_anchor",
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/raw/water-tower-v01.png",
+      "sha256": "731a166771d75b97c32c3ebc9e0708fed175f349c20467a72645d45a30c55ff0"
+    },
+    "task": "PLAY-100"
+  },
+  {
+    "candidateReadyForIndependentReview": true,
+    "direction": "south",
+    "disposition": "mechanically_registered_candidate",
+    "family": "civic/service",
+    "identity": "fire-station",
+    "integrationAdmitted": false,
+    "lods": {
+      "block": {
+        "alphaCheck": "PASS",
+        "chromaCheck": "PASS",
+        "deterministicReplay": true,
+        "dimensions": [
+          1024,
+          683
+        ],
+        "edgeCheck": "PASS",
+        "filter": "lanczos",
+        "hiddenChromaPixels": 0,
+        "hiddenRGBInTransparentPixels": 0,
+        "keyedMagentaPixelsRemoved": 1184328,
+        "mode": "RGBA",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/fire-station/fire-station-block.png",
+        "registration": {
+          "footprint": [
+            [
+              512,
+              427
+            ],
+            [
+              683,
+              512
+            ],
+            [
+              512,
+              598
+            ],
+            [
+              341,
+              512
+            ]
+          ],
+          "groundPivot": [
+            512,
+            598
+          ],
+          "southSocket": [
+            427,
+            555
+          ]
+        },
+        "repeatSha256": "cc21fbbfacefe8187dd894fb1df6188670980d1e1cc13fb18b780d53c5621a15",
+        "sha256": "cc21fbbfacefe8187dd894fb1df6188670980d1e1cc13fb18b780d53c5621a15",
+        "transparentPixels": 523739,
+        "visibleEdgePixels": 0,
+        "visiblePixels": 175653
+      },
+      "city": {
+        "alphaCheck": "PASS",
+        "chromaCheck": "PASS",
+        "deterministicReplay": true,
+        "dimensions": [
+          256,
+          171
+        ],
+        "edgeCheck": "PASS",
+        "filter": "lanczos",
+        "hiddenChromaPixels": 0,
+        "hiddenRGBInTransparentPixels": 0,
+        "keyedMagentaPixelsRemoved": 1183744,
+        "mode": "RGBA",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/fire-station/fire-station-city.png",
+        "registration": {
+          "footprint": [
+            [
+              128,
+              107
+            ],
+            [
+              171,
+              128
+            ],
+            [
+              128,
+              150
+            ],
+            [
+              85,
+              128
+            ]
+          ],
+          "groundPivot": [
+            128,
+            150
+          ],
+          "southSocket": [
+            107,
+            139
+          ]
+        },
+        "repeatSha256": "6ec1b1114542f53ebfd845106b4f6d581bcd85916d604bfa2b40990ed29192ce",
+        "sha256": "6ec1b1114542f53ebfd845106b4f6d581bcd85916d604bfa2b40990ed29192ce",
+        "transparentPixels": 32158,
+        "visibleEdgePixels": 0,
+        "visiblePixels": 11618
+      },
+      "neighborhood": {
+        "alphaCheck": "PASS",
+        "chromaCheck": "PASS",
+        "deterministicReplay": true,
+        "dimensions": [
+          512,
+          342
+        ],
+        "edgeCheck": "PASS",
+        "filter": "lanczos",
+        "hiddenChromaPixels": 0,
+        "hiddenRGBInTransparentPixels": 0,
+        "keyedMagentaPixelsRemoved": 1183871,
+        "mode": "RGBA",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/fire-station/fire-station-neighborhood.png",
+        "registration": {
+          "footprint": [
+            [
+              256,
+              214
+            ],
+            [
+              341,
+              256
+            ],
+            [
+              256,
+              299
+            ],
+            [
+              171,
+              256
+            ]
+          ],
+          "groundPivot": [
+            256,
+            299
+          ],
+          "southSocket": [
+            213,
+            278
+          ]
+        },
+        "repeatSha256": "84b1fbbe9e28f7721961fa4e1b0c10e93b04f08d3ce626106b76be250c75e146",
+        "sha256": "84b1fbbe9e28f7721961fa4e1b0c10e93b04f08d3ce626106b76be250c75e146",
+        "transparentPixels": 130253,
+        "visibleEdgePixels": 0,
+        "visiblePixels": 44851
+      }
+    },
+    "productionSelected": false,
+    "profile": {
+      "path": "docs/production/decisions/CONTRACT-026-registration-profiles-v1.json",
+      "sha256": "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8"
+    },
+    "prompt": "Create exactly one centered, unique fire station as a compact two-story brick fire station with a strong civic entrance, three dark apparatus-bay doors with no vehicles, a restrained tower element, and highly readable masonry and trim.",
+    "provenance": {
+      "complete": true,
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/provenance/RAW-PROVENANCE.json",
+      "promptPresent": true
+    },
+    "raw": {
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/raw/fire-station-v01.png",
+      "sha256": "33e2d69e44120f0ba6b81e54ccd22eeb3ef9021265b264831d4d2ccfc67403bf"
+    },
+    "registration": {
+      "footprintPolygonSource": [
+        [
+          768,
+          640
+        ],
+        [
+          1024,
+          768
+        ],
+        [
+          768,
+          896
+        ],
+        [
+          512,
+          768
+        ]
+      ],
+      "geometrySource": "code-owned-contract-metadata",
+      "groundPivotSource": [
+        768,
+        896
+      ],
+      "orientationTransform": "none",
+      "pixelDerivedGeometry": false,
+      "sourceCanvas": [
+        1536,
+        1024
+      ],
+      "southSocketSource": [
+        640,
+        832
+      ]
+    },
+    "rendererQuarantined": false,
+    "sourceReady": false,
+    "southReference": {
+      "kind": "preserved_raw_south_anchor",
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/raw/fire-station-v01.png",
+      "sha256": "33e2d69e44120f0ba6b81e54ccd22eeb3ef9021265b264831d4d2ccfc67403bf"
+    },
+    "task": "PLAY-100"
+  },
+  {
+    "candidateReadyForIndependentReview": true,
+    "direction": "south",
+    "disposition": "mechanically_registered_candidate",
+    "family": "civic/service",
+    "identity": "police-station",
+    "integrationAdmitted": false,
+    "lods": {
+      "block": {
+        "alphaCheck": "PASS",
+        "chromaCheck": "PASS",
+        "deterministicReplay": true,
+        "dimensions": [
+          1024,
+          683
+        ],
+        "edgeCheck": "PASS",
+        "filter": "lanczos",
+        "hiddenChromaPixels": 0,
+        "hiddenRGBInTransparentPixels": 0,
+        "keyedMagentaPixelsRemoved": 1037465,
+        "mode": "RGBA",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/police-station/police-station-block.png",
+        "registration": {
+          "footprint": [
+            [
+              512,
+              427
+            ],
+            [
+              683,
+              512
+            ],
+            [
+              512,
+              598
+            ],
+            [
+              341,
+              512
+            ]
+          ],
+          "groundPivot": [
+            512,
+            598
+          ],
+          "southSocket": [
+            427,
+            555
+          ]
+        },
+        "repeatSha256": "b385bd895a835c48e30da795db399e1262d80cba50b72067e37915dc54e7d200",
+        "sha256": "b385bd895a835c48e30da795db399e1262d80cba50b72067e37915dc54e7d200",
+        "transparentPixels": 458447,
+        "visibleEdgePixels": 0,
+        "visiblePixels": 240945
+      },
+      "city": {
+        "alphaCheck": "PASS",
+        "chromaCheck": "PASS",
+        "deterministicReplay": true,
+        "dimensions": [
+          256,
+          171
+        ],
+        "edgeCheck": "PASS",
+        "filter": "lanczos",
+        "hiddenChromaPixels": 0,
+        "hiddenRGBInTransparentPixels": 0,
+        "keyedMagentaPixelsRemoved": 1036873,
+        "mode": "RGBA",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/police-station/police-station-city.png",
+        "registration": {
+          "footprint": [
+            [
+              128,
+              107
+            ],
+            [
+              171,
+              128
+            ],
+            [
+              128,
+              150
+            ],
+            [
+              85,
+              128
+            ]
+          ],
+          "groundPivot": [
+            128,
+            150
+          ],
+          "southSocket": [
+            107,
+            139
+          ]
+        },
+        "repeatSha256": "7682db607036cd89d878592d44dcfae6470bff23c8455f9766e91e1c2d52038b",
+        "sha256": "7682db607036cd89d878592d44dcfae6470bff23c8455f9766e91e1c2d52038b",
+        "transparentPixels": 28050,
+        "visibleEdgePixels": 0,
+        "visiblePixels": 15726
+      },
+      "neighborhood": {
+        "alphaCheck": "PASS",
+        "chromaCheck": "PASS",
+        "deterministicReplay": true,
+        "dimensions": [
+          512,
+          342
+        ],
+        "edgeCheck": "PASS",
+        "filter": "lanczos",
+        "hiddenChromaPixels": 0,
+        "hiddenRGBInTransparentPixels": 0,
+        "keyedMagentaPixelsRemoved": 1037023,
+        "mode": "RGBA",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/police-station/police-station-neighborhood.png",
+        "registration": {
+          "footprint": [
+            [
+              256,
+              214
+            ],
+            [
+              341,
+              256
+            ],
+            [
+              256,
+              299
+            ],
+            [
+              171,
+              256
+            ]
+          ],
+          "groundPivot": [
+            256,
+            299
+          ],
+          "southSocket": [
+            213,
+            278
+          ]
+        },
+        "repeatSha256": "bd7e3e8be2cdcc82b29565e3047ba4990fecf00023a996009daa1e6e4f33ade1",
+        "sha256": "bd7e3e8be2cdcc82b29565e3047ba4990fecf00023a996009daa1e6e4f33ade1",
+        "transparentPixels": 113882,
+        "visibleEdgePixels": 0,
+        "visiblePixels": 61222
+      }
+    },
+    "productionSelected": false,
+    "profile": {
+      "path": "docs/production/decisions/CONTRACT-026-registration-profiles-v1.json",
+      "sha256": "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8"
+    },
+    "prompt": "Create exactly one centered, unique police station as a compact blue-gray stone and brick police station with a formal civic portico, secure but welcoming entrance, symmetrical wings, and restrained institutional architectural detail with no text or badge.",
+    "provenance": {
+      "complete": true,
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/provenance/RAW-PROVENANCE.json",
+      "promptPresent": true
+    },
+    "raw": {
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/raw/police-station-v01.png",
+      "sha256": "af934e9cd1b3e5f76ece34f0ea1a5b51600e074db297e1039972be3586ed935d"
+    },
+    "registration": {
+      "footprintPolygonSource": [
+        [
+          768,
+          640
+        ],
+        [
+          1024,
+          768
+        ],
+        [
+          768,
+          896
+        ],
+        [
+          512,
+          768
+        ]
+      ],
+      "geometrySource": "code-owned-contract-metadata",
+      "groundPivotSource": [
+        768,
+        896
+      ],
+      "orientationTransform": "none",
+      "pixelDerivedGeometry": false,
+      "sourceCanvas": [
+        1536,
+        1024
+      ],
+      "southSocketSource": [
+        640,
+        832
+      ]
+    },
+    "rendererQuarantined": false,
+    "sourceReady": false,
+    "southReference": {
+      "kind": "preserved_raw_south_anchor",
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/raw/police-station-v01.png",
+      "sha256": "af934e9cd1b3e5f76ece34f0ea1a5b51600e074db297e1039972be3586ed935d"
+    },
+    "task": "PLAY-100"
+  },
+  {
+    "candidateReadyForIndependentReview": true,
+    "direction": "south",
+    "disposition": "mechanically_registered_candidate",
+    "family": "civic/service",
+    "identity": "school",
+    "integrationAdmitted": false,
+    "lods": {
+      "block": {
+        "alphaCheck": "PASS",
+        "chromaCheck": "PASS",
+        "deterministicReplay": true,
+        "dimensions": [
+          1024,
+          683
+        ],
+        "edgeCheck": "PASS",
+        "filter": "lanczos",
+        "hiddenChromaPixels": 0,
+        "hiddenRGBInTransparentPixels": 0,
+        "keyedMagentaPixelsRemoved": 1145178,
+        "mode": "RGBA",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/school/school-block.png",
+        "registration": {
+          "footprint": [
+            [
+              512,
+              427
+            ],
+            [
+              683,
+              512
+            ],
+            [
+              512,
+              598
+            ],
+            [
+              341,
+              512
+            ]
+          ],
+          "groundPivot": [
+            512,
+            598
+          ],
+          "southSocket": [
+            427,
+            555
+          ]
+        },
+        "repeatSha256": "19f3dbc4e67a649db9dacf3e8ce3e27de023336bdbca2f7b7e0e03414dcd30dc",
+        "sha256": "19f3dbc4e67a649db9dacf3e8ce3e27de023336bdbca2f7b7e0e03414dcd30dc",
+        "transparentPixels": 506090,
+        "visibleEdgePixels": 0,
+        "visiblePixels": 193302
+      },
+      "city": {
+        "alphaCheck": "PASS",
+        "chromaCheck": "PASS",
+        "deterministicReplay": true,
+        "dimensions": [
+          256,
+          171
+        ],
+        "edgeCheck": "PASS",
+        "filter": "lanczos",
+        "hiddenChromaPixels": 0,
+        "hiddenRGBInTransparentPixels": 0,
+        "keyedMagentaPixelsRemoved": 1144675,
+        "mode": "RGBA",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/school/school-city.png",
+        "registration": {
+          "footprint": [
+            [
+              128,
+              107
+            ],
+            [
+              171,
+              128
+            ],
+            [
+              128,
+              150
+            ],
+            [
+              85,
+              128
+            ]
+          ],
+          "groundPivot": [
+            128,
+            150
+          ],
+          "southSocket": [
+            107,
+            139
+          ]
+        },
+        "repeatSha256": "c932c10001f249e4166bc086b738b91c2671dc6f222a081fd9ccd05220f48c0b",
+        "sha256": "c932c10001f249e4166bc086b738b91c2671dc6f222a081fd9ccd05220f48c0b",
+        "transparentPixels": 31056,
+        "visibleEdgePixels": 0,
+        "visiblePixels": 12720
+      },
+      "neighborhood": {
+        "alphaCheck": "PASS",
+        "chromaCheck": "PASS",
+        "deterministicReplay": true,
+        "dimensions": [
+          512,
+          342
+        ],
+        "edgeCheck": "PASS",
+        "filter": "lanczos",
+        "hiddenChromaPixels": 0,
+        "hiddenRGBInTransparentPixels": 0,
+        "keyedMagentaPixelsRemoved": 1144804,
+        "mode": "RGBA",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/school/school-neighborhood.png",
+        "registration": {
+          "footprint": [
+            [
+              256,
+              214
+            ],
+            [
+              341,
+              256
+            ],
+            [
+              256,
+              299
+            ],
+            [
+              171,
+              256
+            ]
+          ],
+          "groundPivot": [
+            256,
+            299
+          ],
+          "southSocket": [
+            213,
+            278
+          ]
+        },
+        "repeatSha256": "fff23b461eee7bdd19e22b2f37694ee9f2c303e459c738980dbdd77d7f08e1c5",
+        "sha256": "fff23b461eee7bdd19e22b2f37694ee9f2c303e459c738980dbdd77d7f08e1c5",
+        "transparentPixels": 125890,
+        "visibleEdgePixels": 0,
+        "visiblePixels": 49214
+      }
+    },
+    "productionSelected": false,
+    "profile": {
+      "path": "docs/production/decisions/CONTRACT-026-registration-profiles-v1.json",
+      "sha256": "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8"
+    },
+    "prompt": "Create exactly one centered, unique school as a welcoming red-brick neighborhood school with a central entrance, modest bell-tower/cupola, symmetrical classroom wings, tall windows, and distinct educational civic character with no lettering.",
+    "provenance": {
+      "complete": true,
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/provenance/RAW-PROVENANCE.json",
+      "promptPresent": true
+    },
+    "raw": {
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/raw/school-v01.png",
+      "sha256": "62d7cd7fbbc16fd5fe770120476ae970a6ffec56972a2a1f332c6495cb3a46ed"
+    },
+    "registration": {
+      "footprintPolygonSource": [
+        [
+          768,
+          640
+        ],
+        [
+          1024,
+          768
+        ],
+        [
+          768,
+          896
+        ],
+        [
+          512,
+          768
+        ]
+      ],
+      "geometrySource": "code-owned-contract-metadata",
+      "groundPivotSource": [
+        768,
+        896
+      ],
+      "orientationTransform": "none",
+      "pixelDerivedGeometry": false,
+      "sourceCanvas": [
+        1536,
+        1024
+      ],
+      "southSocketSource": [
+        640,
+        832
+      ]
+    },
+    "rendererQuarantined": false,
+    "sourceReady": false,
+    "southReference": {
+      "kind": "preserved_raw_south_anchor",
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/raw/school-v01.png",
+      "sha256": "62d7cd7fbbc16fd5fe770120476ae970a6ffec56972a2a1f332c6495cb3a46ed"
+    },
+    "task": "PLAY-100"
+  },
+  {
+    "candidateReadyForIndependentReview": true,
+    "direction": "south",
+    "disposition": "mechanically_registered_candidate",
+    "family": "civic/service",
+    "identity": "city-hall",
+    "integrationAdmitted": false,
+    "lods": {
+      "block": {
+        "alphaCheck": "PASS",
+        "chromaCheck": "PASS",
+        "deterministicReplay": true,
+        "dimensions": [
+          1024,
+          683
+        ],
+        "edgeCheck": "PASS",
+        "filter": "lanczos",
+        "hiddenChromaPixels": 0,
+        "hiddenRGBInTransparentPixels": 0,
+        "keyedMagentaPixelsRemoved": 1146401,
+        "mode": "RGBA",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/city-hall/city-hall-block.png",
+        "registration": {
+          "footprint": [
+            [
+              512,
+              427
+            ],
+            [
+              683,
+              512
+            ],
+            [
+              512,
+              598
+            ],
+            [
+              341,
+              512
+            ]
+          ],
+          "groundPivot": [
+            512,
+            598
+          ],
+          "southSocket": [
+            427,
+            555
+          ]
+        },
+        "repeatSha256": "83bd1cb30c928c9bbd6d80dc8fd3684d0d2a8c2e67244f4d5eba8c92152eace9",
+        "sha256": "83bd1cb30c928c9bbd6d80dc8fd3684d0d2a8c2e67244f4d5eba8c92152eace9",
+        "transparentPixels": 506271,
+        "visibleEdgePixels": 0,
+        "visiblePixels": 193121
+      },
+      "city": {
+        "alphaCheck": "PASS",
+        "chromaCheck": "PASS",
+        "deterministicReplay": true,
+        "dimensions": [
+          256,
+          171
+        ],
+        "edgeCheck": "PASS",
+        "filter": "lanczos",
+        "hiddenChromaPixels": 0,
+        "hiddenRGBInTransparentPixels": 0,
+        "keyedMagentaPixelsRemoved": 1145590,
+        "mode": "RGBA",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/city-hall/city-hall-city.png",
+        "registration": {
+          "footprint": [
+            [
+              128,
+              107
+            ],
+            [
+              171,
+              128
+            ],
+            [
+              128,
+              150
+            ],
+            [
+              85,
+              128
+            ]
+          ],
+          "groundPivot": [
+            128,
+            150
+          ],
+          "southSocket": [
+            107,
+            139
+          ]
+        },
+        "repeatSha256": "1ce89d4847bf8b0974c73e339540f7d829736bb7ea168e4dffc600c027f01cde",
+        "sha256": "1ce89d4847bf8b0974c73e339540f7d829736bb7ea168e4dffc600c027f01cde",
+        "transparentPixels": 31022,
+        "visibleEdgePixels": 0,
+        "visiblePixels": 12754
+      },
+      "neighborhood": {
+        "alphaCheck": "PASS",
+        "chromaCheck": "PASS",
+        "deterministicReplay": true,
+        "dimensions": [
+          512,
+          342
+        ],
+        "edgeCheck": "PASS",
+        "filter": "lanczos",
+        "hiddenChromaPixels": 0,
+        "hiddenRGBInTransparentPixels": 0,
+        "keyedMagentaPixelsRemoved": 1145797,
+        "mode": "RGBA",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/city-hall/city-hall-neighborhood.png",
+        "registration": {
+          "footprint": [
+            [
+              256,
+              214
+            ],
+            [
+              341,
+              256
+            ],
+            [
+              256,
+              299
+            ],
+            [
+              171,
+              256
+            ]
+          ],
+          "groundPivot": [
+            256,
+            299
+          ],
+          "southSocket": [
+            213,
+            278
+          ]
+        },
+        "repeatSha256": "a5426293ca835c4f572a6d34adc846606e1c29468c2f241b082020042b1cbccf",
+        "sha256": "a5426293ca835c4f572a6d34adc846606e1c29468c2f241b082020042b1cbccf",
+        "transparentPixels": 125836,
+        "visibleEdgePixels": 0,
+        "visiblePixels": 49268
+      }
+    },
+    "productionSelected": false,
+    "profile": {
+      "path": "docs/production/decisions/CONTRACT-026-registration-profiles-v1.json",
+      "sha256": "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8"
+    },
+    "prompt": "Create exactly one centered, unique city hall as a landmark civic city hall with a dignified stone facade, broad front steps, columned entrance, symmetrical wings, and a distinctive central cupola, clearly unique from the other civic identities.",
+    "provenance": {
+      "complete": true,
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/provenance/RAW-PROVENANCE.json",
+      "promptPresent": true
+    },
+    "raw": {
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/raw/city-hall-v01.png",
+      "sha256": "89701d7c1e95644267bd72627fb1f97d21aea09ca930ad3b73ebb05ddaedb819"
+    },
+    "registration": {
+      "footprintPolygonSource": [
+        [
+          768,
+          640
+        ],
+        [
+          1024,
+          768
+        ],
+        [
+          768,
+          896
+        ],
+        [
+          512,
+          768
+        ]
+      ],
+      "geometrySource": "code-owned-contract-metadata",
+      "groundPivotSource": [
+        768,
+        896
+      ],
+      "orientationTransform": "none",
+      "pixelDerivedGeometry": false,
+      "sourceCanvas": [
+        1536,
+        1024
+      ],
+      "southSocketSource": [
+        640,
+        832
+      ]
+    },
+    "rendererQuarantined": false,
+    "sourceReady": false,
+    "southReference": {
+      "kind": "preserved_raw_south_anchor",
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/raw/city-hall-v01.png",
+      "sha256": "89701d7c1e95644267bd72627fb1f97d21aea09ca930ad3b73ebb05ddaedb819"
+    },
+    "task": "PLAY-100"
+  }
+]

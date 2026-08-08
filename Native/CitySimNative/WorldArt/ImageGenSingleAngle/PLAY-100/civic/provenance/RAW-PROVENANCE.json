@@ -1,0 +1,115 @@
+{
+  "task": "PLAY-100",
+  "family": "civic/service",
+  "stage": "raw_candidate_preserved",
+  "branch": "codex/citysim-world-art-civic",
+  "authorityCommit": "004bd2dbcb88e57330425a833505d81ce00e9f90",
+  "baseCommit": "690c46bc9019b641c023f264c46bf8aadb506619",
+  "claimPath": "docs/production/claims/PLAY-100.world-art-civic.md",
+  "claimSha256": "e595114d525b09c3ef5faf6f1d9b501ee13f7760f71b4eed62c229530fb20ac8",
+  "routeId": "single-angle-v1:play-100",
+  "routeSha256": "d1e3a5be995914d74a07eb8412cf19f3a6e41240ff3d0882a3f9ff800b0fca1a",
+  "generatedAt": "2026-08-08",
+  "tool": "built-in image_gen",
+  "model": "built-in/model-not-exposed",
+  "references": [
+    {
+      "role": "immutable style anchor",
+      "path": "Native/CitySimNative/WorldArt/GateA/golden_district_imagegen_source-v2.png",
+      "sha256": "b227286bfe5ffe8cfc920d3faf8abe081f5cca8a498c215bfb8a840a448e7425"
+    },
+    {
+      "role": "immutable calibration sprite",
+      "path": "Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/raw/calibration/residential_l01/source-v01.png",
+      "sha256": "e15a388c2a1a0a55488457211c23939f70eca255cbae733ee0f7b39b141c962e"
+    },
+    {
+      "role": "immutable registration template",
+      "path": "Native/CitySimNative/WorldArt/GeneratedV4/templates/registration-1x1.png",
+      "sha256": "6ad1db2e7b8f670718ff4a4eb8c183737b0dec859559a2eab6a25746b53cff67"
+    }
+  ],
+  "promptAssembly": {
+    "preamble": "Use case: stylized-concept. Asset type: CitySim CONTRACT-024 single-angle 2.5D civic/service building sprite source master. Input images: Image 1 is the immutable CitySim style anchor; Image 2 is the immutable single-building calibration sprite; Image 3 is the registration template. Use them only for the frozen hand-painted city-builder style, orthographic camera, lighting, chroma field, scale, and registration conventions. Do not copy their multiple-building composition. Scene/backdrop: one isolated subject on a perfectly flat, uniform solid #ff00ff chroma-key field with no floor plane, gradient, texture, reflections, or background detail. Style/medium: richly detailed realistic hand-painted city-builder raster illustration, tactile masonry/metal/wood/glass materials, crisp readable silhouette, polished 2.5D game asset; never voxel, toy-like, flat-vector, photorealistic, or raw 3D-render output. Composition/framing: 1536 x 1024 authoring canvas; single fixed canonical view with orthographic 2:1 isometric projection; subject centered with generous transparent-safe padding; visually register the ground pivot at [768, 896]; keep all geometry and shadow well inside the frame. Lighting/mood: northwest key light with warm readable highlights and a contained southeast contact/cast shadow; no atmospheric haze or smoke. Color palette: civic-service palette with restrained warm masonry, aged metal, natural greens where appropriate, and legible contrast against magenta. Materials/textures: carefully painted construction detail, believable windows, trim, roof/facade variation, small architectural accents, and clean edges. Text (verbatim): \"\".",
+    "constraints": "one logical identity only; one canonical angle only; appearance only; no road, street, sidewalk, parcel, district, neighborhood, extra building, vehicles, people, agents, labels, signage text, letters, numbers, logo, watermark, UI, selection mark, construction state, warning, coordinate, frame-edge crop, mirrored view, rotated view, or directional variant. Do not use #ff00ff anywhere in the subject. Avoid perspective convergence, multiple structures, baked gameplay context, clipped geometry, clipped shadow, subject touching the canvas edge, chroma spill, magenta reflections, and any transform-based duplicate."
+  },
+  "identities": [
+    {
+      "id": "park",
+      "identityPrompt": "Create exactly one centered, unique park as a compact civic park identity centered on a distinctive small octagonal bandstand/gazebo, a modest ornamental fountain, and a carefully limited cluster of mature trees and shrubs arranged as one coherent park facility; no paths or paving that imply a surrounding district.",
+      "rawPath": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/raw/park-v01.png",
+      "sourceArtifact": "/Users/James/.codex/generated_images/019fe1b1-3bc4-7b40-a107-22d8d1d6eabb/exec-fc643980-8942-4358-bed3-690d64d35037.png",
+      "rawSha256": "e5797cf8900a6390965ae01bf57be172e2e98e26d17fefafc7b759f372d8caf7",
+      "intendedGameplayMeaning": "A compact public green-space service identity.",
+      "preScreen": "visual PASS; 1536x1024 RGB PNG; centered single park identity; flat magenta field; no text or watermark; pixel-level chroma check deferred to PLAY-096 harness",
+      "disposition": "raw_preserved; not accepted"
+    },
+    {
+      "id": "power-plant",
+      "identityPrompt": "Create exactly one centered, unique power plant as a compact civic power plant with a distinctive brick turbine hall, one clean industrial smokestack without smoke, restrained metal service details, and a readable utility silhouette.",
+      "rawPath": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/raw/power-plant-v01.png",
+      "sourceArtifact": "/Users/James/.codex/generated_images/019fe1b1-3bc4-7b40-a107-22d8d1d6eabb/exec-e82849be-5990-4cee-9b98-efa78c7dc554.png",
+      "rawSha256": "752c75b1fd0c2d5b869d371738df7f4abd6a3675ab420edb6c2f32e463a9bffb",
+      "intendedGameplayMeaning": "A municipal electricity generation service identity.",
+      "preScreen": "visual PASS; 1536x1024 RGB PNG; centered single power-plant identity; flat magenta field; no smoke, text, or watermark; pixel-level chroma check deferred to PLAY-096 harness",
+      "disposition": "raw_preserved; not accepted"
+    },
+    {
+      "id": "water-tower",
+      "identityPrompt": "Create exactly one centered, unique water tower as a distinctive municipal water tower with a weathered cylindrical tank, elegant steel support legs, a compact maintenance ladder and platform, and believable painted metal construction.",
+      "rawPath": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/raw/water-tower-v01.png",
+      "sourceArtifact": "/Users/James/.codex/generated_images/019fe1b1-3bc4-7b40-a107-22d8d1d6eabb/exec-db1ea176-7670-495e-a43d-e434929b7d6b.png",
+      "rawSha256": "731a166771d75b97c32c3ebc9e0708fed175f349c20467a72645d45a30c55ff0",
+      "intendedGameplayMeaning": "A municipal water storage and distribution service identity.",
+      "preScreen": "visual PASS; 1536x1024 RGB PNG; centered single water-tower identity; flat magenta field; no text or watermark; pixel-level chroma check deferred to PLAY-096 harness",
+      "disposition": "raw_preserved; not accepted"
+    },
+    {
+      "id": "fire-station",
+      "identityPrompt": "Create exactly one centered, unique fire station as a compact two-story brick fire station with a strong civic entrance, three dark apparatus-bay doors with no vehicles, a restrained tower element, and highly readable masonry and trim.",
+      "rawPath": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/raw/fire-station-v01.png",
+      "sourceArtifact": "/Users/James/.codex/generated_images/019fe1b1-3bc4-7b40-a107-22d8d1d6eabb/exec-7c52c774-cc15-43f0-958a-1b40d1a7c10b.png",
+      "rawSha256": "33e2d69e44120f0ba6b81e54ccd22eeb3ef9021265b264831d4d2ccfc67403bf",
+      "intendedGameplayMeaning": "A fire response and emergency service identity.",
+      "preScreen": "visual PASS; 1536x1024 RGB PNG; centered single fire-station identity; flat magenta field; no vehicles, text, or watermark; pixel-level chroma check deferred to PLAY-096 harness",
+      "disposition": "raw_preserved; not accepted"
+    },
+    {
+      "id": "police-station",
+      "identityPrompt": "Create exactly one centered, unique police station as a compact blue-gray stone and brick police station with a formal civic portico, secure but welcoming entrance, symmetrical wings, and restrained institutional architectural detail with no text or badge.",
+      "rawPath": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/raw/police-station-v01.png",
+      "sourceArtifact": "/Users/James/.codex/generated_images/019fe1b1-3bc4-7b40-a107-22d8d1d6eabb/exec-0ecb3c19-99a9-4cb9-bd55-dfd455e63b2b.png",
+      "rawSha256": "af934e9cd1b3e5f76ece34f0ea1a5b51600e074db297e1039972be3586ed935d",
+      "intendedGameplayMeaning": "A civic policing and public safety service identity.",
+      "preScreen": "visual PASS; 1536x1024 RGB PNG; centered single police-station identity; flat magenta field; no badge, text, or watermark; pixel-level chroma check deferred to PLAY-096 harness",
+      "disposition": "raw_preserved; not accepted"
+    },
+    {
+      "id": "school",
+      "identityPrompt": "Create exactly one centered, unique school as a welcoming red-brick neighborhood school with a central entrance, modest bell-tower/cupola, symmetrical classroom wings, tall windows, and distinct educational civic character with no lettering.",
+      "rawPath": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/raw/school-v01.png",
+      "sourceArtifact": "/Users/James/.codex/generated_images/019fe1b1-3bc4-7b40-a107-22d8d1d6eabb/exec-0e43e166-647e-4918-9085-b5b8c0254373.png",
+      "rawSha256": "62d7cd7fbbc16fd5fe770120476ae970a6ffec56972a2a1f332c6495cb3a46ed",
+      "intendedGameplayMeaning": "A neighborhood education and community service identity.",
+      "preScreen": "visual PASS; 1536x1024 RGB PNG; centered single school identity; flat magenta field; no lettering, text, or watermark; pixel-level chroma check deferred to PLAY-096 harness",
+      "disposition": "raw_preserved; not accepted"
+    },
+    {
+      "id": "city-hall",
+      "identityPrompt": "Create exactly one centered, unique city hall as a landmark civic city hall with a dignified stone facade, broad front steps, columned entrance, symmetrical wings, and a distinctive central cupola, clearly unique from the other civic identities.",
+      "rawPath": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/raw/city-hall-v01.png",
+      "sourceArtifact": "/Users/James/.codex/generated_images/019fe1b1-3bc4-7b40-a107-22d8d1d6eabb/exec-a2bd2db5-2fbd-4847-8c26-f2e1e95b2439.png",
+      "rawSha256": "89701d7c1e95644267bd72627fb1f97d21aea09ca930ad3b73ebb05ddaedb819",
+      "intendedGameplayMeaning": "A landmark municipal administration and governance identity.",
+      "preScreen": "visual PASS; 1536x1024 RGB PNG; centered single city-hall identity; flat magenta field; no text or watermark; pixel-level chroma check deferred to PLAY-096 harness",
+      "disposition": "raw_preserved; not accepted"
+    }
+  ],
+  "normalization": "not run; blocked until exact PLAY-096 harness",
+  "handoff": "not created; no source admission claimed",
+  "independentReview": "required and not run",
+  "focusedValidator": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/validate_raw_candidates.py is absent on authority 004bd2db; raw static checks and visual pre-screen are recorded, route-owned validator is waiting on PLAY-096 publication",
+  "workerAcceptance": false,
+  "integrationAdmitted": false,
+  "productionSelected": false
+}

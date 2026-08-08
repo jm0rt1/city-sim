@@ -1,0 +1,102 @@
+{
+  "artifacts": {
+    "receipts": [
+      {
+        "candidateReadyForIndependentReview": true,
+        "identity": "park",
+        "rawSha256": "e5797cf8900a6390965ae01bf57be172e2e98e26d17fefafc7b759f372d8caf7",
+        "receiptPath": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/park/registration-receipt.json",
+        "receiptSha256": "5cdf1f13afc43aa49ee854ba1940be47fc154f742e351744089a59ec2e939aee"
+      },
+      {
+        "candidateReadyForIndependentReview": true,
+        "identity": "power-plant",
+        "rawSha256": "752c75b1fd0c2d5b869d371738df7f4abd6a3675ab420edb6c2f32e463a9bffb",
+        "receiptPath": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/power-plant/registration-receipt.json",
+        "receiptSha256": "3d15562617303bfb73f8227b27eac4c19beed13200fa37f2b26701f2b2b125e4"
+      },
+      {
+        "candidateReadyForIndependentReview": true,
+        "identity": "water-tower",
+        "rawSha256": "731a166771d75b97c32c3ebc9e0708fed175f349c20467a72645d45a30c55ff0",
+        "receiptPath": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/water-tower/registration-receipt.json",
+        "receiptSha256": "c9390e55d53a2de0fb4f57c0d75319eb9d58461ed2ffa0e71fc5302b2a1656eb"
+      },
+      {
+        "candidateReadyForIndependentReview": true,
+        "identity": "fire-station",
+        "rawSha256": "33e2d69e44120f0ba6b81e54ccd22eeb3ef9021265b264831d4d2ccfc67403bf",
+        "receiptPath": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/fire-station/registration-receipt.json",
+        "receiptSha256": "cd4ad367d7ec38a0c2fe1e69c239a9b9d268df1917b74c9f94fa229602a3e750"
+      },
+      {
+        "candidateReadyForIndependentReview": true,
+        "identity": "police-station",
+        "rawSha256": "af934e9cd1b3e5f76ece34f0ea1a5b51600e074db297e1039972be3586ed935d",
+        "receiptPath": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/police-station/registration-receipt.json",
+        "receiptSha256": "4dc2f7d4a29b314b6609ad3593f2e8ba1316ec1599c4bbfa484bc473f58fa27f"
+      },
+      {
+        "candidateReadyForIndependentReview": true,
+        "identity": "school",
+        "rawSha256": "62d7cd7fbbc16fd5fe770120476ae970a6ffec56972a2a1f332c6495cb3a46ed",
+        "receiptPath": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/school/registration-receipt.json",
+        "receiptSha256": "016c850620678c4f477613eca6bf94a13e70cd2858654abcb8eb0878d2a5882f"
+      },
+      {
+        "candidateReadyForIndependentReview": true,
+        "identity": "city-hall",
+        "rawSha256": "89701d7c1e95644267bd72627fb1f97d21aea09ca930ad3b73ebb05ddaedb819",
+        "receiptPath": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/city-hall/registration-receipt.json",
+        "receiptSha256": "25d056ac2ef8232739c47601d26c15f5525b70c4498bfddb5bc98e17a7dba17b"
+      }
+    ],
+    "records": "docs/production/evidence/PLAY-100/south-admission-records.json",
+    "summary": "docs/production/evidence/PLAY-100/south-admission.json"
+  },
+  "authorityCommit": "65825389d586a128ddf6feb5356c33661ba9a8e8",
+  "branch": "codex/citysim-world-art-civic",
+  "candidateReadyForIndependentReview": true,
+  "claim": {
+    "path": "docs/production/claims/PLAY-100.world-art-civic.md",
+    "sha256": "0c4bce350a2538a768e5e3b51baa76c3e6b0a81a27f31ca4d640e8e844d05a2d"
+  },
+  "deterministicReplay": true,
+  "direction": "south",
+  "directionRootMap": {
+    "evidence": "docs/production/evidence/PLAY-100",
+    "handoff": "docs/production/evidence/PLAY-100/south-handoff.json",
+    "normalized": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized",
+    "raw": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/raw"
+  },
+  "family": "civic/service",
+  "familyContract": {
+    "path": "docs/production/decisions/CONTRACT-026-authored-four-view-registration.md",
+    "sha256": "4781de72429a1f691b9226f7f7668b170b278a4ccd171ac4ea02f5e1df9176eb"
+  },
+  "integrationAdmitted": false,
+  "knownBlockers": [
+    "independent frontier visual and technical review",
+    "Integration admission"
+  ],
+  "pixelGeneration": "not_run",
+  "productionSelected": false,
+  "publishedBase": "a61ab80101f596f56ffc1dd7e37b32bd1b220357",
+  "registrationProfile": {
+    "path": "docs/production/decisions/CONTRACT-026-registration-profiles-v1.json",
+    "sha256": "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8"
+  },
+  "rendererQuarantined": false,
+  "route": {
+    "id": "four-view-v4:play-100-south-admission-repair",
+    "sha256": "fe585feeb286a7e0efd030877ab946af479276bd4406053b6e1c944c8016db34"
+  },
+  "schema": "citysim.play-100.direction-handoff.v4",
+  "siblingInputsConsumed": [],
+  "sourceReady": false,
+  "stage": "south_admission_candidate",
+  "task": "PLAY-100",
+  "visualAcceptance": "not_claimed",
+  "workerHead": "f956b54685707b7ecbb34d30c96aef2242e9f375",
+  "worktree": "."
+}

@@ -87,10 +87,10 @@ final class SingleAngleWorldArtTests: XCTestCase {
     private let expectedBaseCommit =
         "a61ab80101f596f56ffc1dd7e37b32bd1b220357"
     private let expectedWorkerHead =
-        "56bd4618d7381c13c2f8af7785f22df4bbb6ab17"
+        "8ddb1e974950eeb7753490458f298ece4305eba5"
     private let expectedRouteID = "four-view-v2:play-101-rotation-intake"
     private let expectedRouteSHA256 =
-        "fbb0229fc9491621b1d3d605cc08f863ffd58da4039117e662063b4791955a57"
+        "3807d7ac45f996c75fc092c1d120dc78f1f954888f290f30e4448aa50b1e9d69"
 
     func testExact43Identities172AuthoredViewsAnd516NormalizedLODs() throws {
         let graph = makeGraph()

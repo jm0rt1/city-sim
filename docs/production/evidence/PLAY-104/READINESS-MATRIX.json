@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "task": "PLAY-104",
+  "stage": "predesign",
+  "direction": "east",
+  "overall": "BLOCKED",
+  "checks": [
+    {"name": "route_file_sha256", "result": "PASS", "expected": "565ce82d6408d3c3e356d3dac1f12d55a94eaa46a42090e9223aa8474d703757"},
+    {"name": "canonical_modelRoute_sha256", "result": "PASS", "expected": "690eac52ecde332a8068ae1a2b45ca4cef3ccbbff7a161d386655e1eebd5d851"},
+    {"name": "route_id_and_model", "result": "PASS", "expected": "four-view-v1:play-104-east-predesign / LUNA_MECHANICAL / gpt-5.6-luna / medium"},
+    {"name": "branch_worktree_head_clean", "result": "PASS", "expected": "codex/citysim-world-art-east-imagegen / /Users/James/.codex/worktrees/3218/city-sim / a61ab80101f596f56ffc1dd7e37b32bd1b220357 / clean"},
+    {"name": "authority_and_base", "result": "PASS", "expected": "a61ab80101f596f56ffc1dd7e37b32bd1b220357 / ae5ed01a9ef66ce233851557c810767b990cb037"},
+    {"name": "contract_025", "result": "PASS", "expected": "4e8ab63173d67581332e7d27730b97315906fda4e29b999969456441809479ed"},
+    {"name": "south_anchor_inventory", "result": "PASS_WITH_ZERO_ADMISSIONS", "expected": "43"},
+    {"name": "south_admission_receipts", "result": "BLOCKED", "expected": "43 exact Integration-admitted receipts"},
+    {"name": "south_raw_hash_bindings", "result": "BLOCKED", "expected": "43 exact admitted raw SHA-256 values"},
+    {"name": "play_096_repaired_handoff_dependency", "result": "BLOCKED", "expected": "route-bound schema and semantic validator hashes"},
+    {"name": "imagegen_and_pixels", "result": "NOT_RUN", "expected": "prohibited at predesign"},
+    {"name": "visual_quality_and_full_gates", "result": "NOT_RUN", "expected": "owned by later frontier/integration gates"}
+  ],
+  "stopReason": "Missing exact South admission/hash bindings; no pixel or visual authority is inferred.",
+  "predesignReady": false,
+  "pixelProduction": "not_produced",
+  "aProcess": "not_produced",
+  "bProcess": "not_produced",
+  "cProcess": "not_produced",
+  "siblingInputsConsumed": []
+}

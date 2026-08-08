@@ -1,0 +1,62 @@
+{
+  "schema": 2,
+  "routeId": "four-view-v3:play-096-contract-repair",
+  "taskId": "PLAY-096",
+  "packetKind": "implementation",
+  "classification": "LUNA_IMPLEMENTATION",
+  "model": "gpt-5.6-luna",
+  "effort": "high",
+  "rationale": "Repair the remaining validator false-greens under the published CONTRACT-026 registration authority: exact inventory cross-bindings, schema self-consistency, and true fresh-checkout portability evidence.",
+  "authority": {
+    "authorityCommit": "65825389d586a128ddf6feb5356c33661ba9a8e8",
+    "baseCommit": "a61ab80101f596f56ffc1dd7e37b32bd1b220357",
+    "claim": {"path": "docs/production/claims/PLAY-096.world-art-pipeline.md", "sha256": "d88dc773cb2cd86a608d45e9bd8bc0a1bbf8339598e7029457b1fed6a823c007"},
+    "immutableInputs": [
+      {"path": "docs/production/decisions/CONTRACT-025-authored-four-view-2-5d-building-art.md", "sha256": "4e8ab63173d67581332e7d27730b97315906fda4e29b999969456441809479ed"},
+      {"path": "docs/production/decisions/CONTRACT-026-authored-four-view-registration.md", "sha256": "4781de72429a1f691b9226f7f7668b170b278a4ccd171ac4ea02f5e1df9176eb"},
+      {"path": "docs/production/decisions/CONTRACT-026-registration-profiles-v1.json", "sha256": "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8"},
+      {"path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md", "sha256": "1eb7170b81e11753e7c9173298c6d45c02d5a2ade6df0ef8b73bdcaf690a2acd"},
+      {"path": ".agents/skills/produce-citysim-world-art/SKILL.md", "sha256": "9c62d401d8812d5345b6bd25d864a07010348883ca4941f4429854ebe4abc511"}
+    ]
+  },
+  "assignment": {
+    "threadId": "019fe1b1-3bc4-7b40-a107-230a22f3935d",
+    "branch": "codex/citysim-world-art-pipeline",
+    "worktree": "/Users/James/.codex/worktrees/0f2d/city-sim",
+    "expectedHead": "72b9df1615fde86975e96a3b160cdeb981715dc4",
+    "featureAuthorThreadId": "019fe1b1-3bc4-7b40-a107-230a22f3935d",
+    "sharedAuthorityOwnership": false,
+    "finalQAOwnership": false,
+    "subjectiveJudgmentRequired": false
+  },
+  "pathPolicy": {
+    "claimOwnedRoots": ["Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-096", "docs/production/evidence/PLAY-096"],
+    "allowed": ["Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-096", "docs/production/evidence/PLAY-096"],
+    "forbidden": [".agents/skills", "docs/production/claims", "docs/production/decisions", "docs/production/evidence/INTEGRATION", "Native/CitySimNative/Sources", "Native/CitySimNative/Resources"]
+  },
+  "boundedDeliverable": "Enforce exact governed inventory bindings, including identity family/level/kind, each direction row logicalId/key/direction, source registration and provenance cross-bindings; repair the direction-handoff JSON Schema so every committed 172-row x 3-LOD handoff validates; and replace output-directory repetition with two independently materialized repository roots whose repo-relative receipts are byte-identical. Add adversarial tests for every defect. No art, runtime, shipping, or shared-contract edits.",
+  "proofPolicy": {
+    "architectureState": "frozen_reference",
+    "referenceImplementation": {"path": "docs/production/decisions/CONTRACT-026-registration-profiles-v1.json", "sha256": "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8"},
+    "deliverableClaims": ["static_structure", "executable_behavior", "deterministic_output"],
+    "focusedProofLevel": "deterministic_replay",
+    "fullProofLevel": "deterministic_replay",
+    "behavioralCommands": ["python3 Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-096/test_single_angle_pipeline.py", "python3 Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-096/validate_single_angle_harness.py --repeat 2"],
+    "prohibitedSubstitutions": ["source_token_presence_for_execution", "ast_shape_for_runtime_success", "manifest_or_prose_for_rendered_pixels", "unit_tests_for_visual_acceptance", "worker_self_report_for_independent_acceptance"]
+  },
+  "validation": {
+    "focusedGateOwner": {"threadId": "019fe1b1-3bc4-7b40-a107-230a22f3935d", "role": "play-096-four-view-v3-focused"},
+    "focusedCommands": ["python3 Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-096/test_single_angle_pipeline.py", "python3 Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-096/validate_single_angle_harness.py --repeat 2", "git diff --check 72b9df1615fde86975e96a3b160cdeb981715dc4..HEAD"],
+    "fullGateOwner": {"threadId": "019f7686-4491-7891-86a6-95a78d67e5c8", "role": "integration-aggregate-full-gate", "model": "gpt-5.6-sol", "effort": "high"},
+    "fullCommands": ["swift test --package-path Native/CitySimNative", "./script/build_and_run.sh --verify", "fresh-player real-app aggregate journey"]
+  },
+  "expectedResult": {"evidencePaths": ["docs/production/evidence/PLAY-096"], "commitRequired": true, "commitMessagePattern": "PLAY-096:"},
+  "escalationTriggers": ["shared_contract_or_schema_decision", "unresolved_product_visual_or_interaction_judgment", "path_outside_claim", "baseline_or_candidate_identity_mismatch", "failure_outside_focused_scope", "save_or_migration_uncertainty", "cross_lane_semantic_conflict", "two_unsuccessful_repair_attempts", "subjective_acceptance_required"],
+  "stopCondition": "Stop after one coherent V3 repair commit and deterministic evidence, or immediately on any scope/identity/contract ambiguity. Never generate art, edit shared authority, push, integrate, self-accept, run aggregate gates, or pin.",
+  "independentReviewer": {"required": true, "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8", "model": "gpt-5.6-sol", "effort": "high"},
+  "context": {"mode": "full_authority_read", "packet": null, "verifiedHashes": [
+    {"path": "docs/production/claims/PLAY-096.world-art-pipeline.md", "sha256": "d88dc773cb2cd86a608d45e9bd8bc0a1bbf8339598e7029457b1fed6a823c007"},
+    {"path": "docs/production/decisions/CONTRACT-026-registration-profiles-v1.json", "sha256": "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8"},
+    {"path": ".agents/skills/produce-citysim-world-art/SKILL.md", "sha256": "9c62d401d8812d5345b6bd25d864a07010348883ca4941f4429854ebe4abc511"}
+  ]}
+}

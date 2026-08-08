@@ -6,7 +6,7 @@
   "classification": "LUNA_IMPLEMENTATION",
   "model": "gpt-5.6-luna",
   "effort": "high",
-  "rationale": "Prepare the renderer quarantine graph ahead of art arrival. Luna may replace the historical single-angle scaffold with exact 43 identities x 4 authored directions x 3 LOD checks, fail-closed direction selection and atomic 4/4 admission, without touching shipping resources or production code.",
+  "rationale": "Rebind the completed non-shipping PLAY-101 renderer intake graph to its exact candidate after current Integration publication. Preserve the 43x4x3 synthetic quarantine assertions and change only route-bound identity/evidence fields; real art, shipping activation, and renderer code remain blocked.",
   "authority": {
     "authorityCommit": "a61ab80101f596f56ffc1dd7e37b32bd1b220357",
     "baseCommit": "a61ab80101f596f56ffc1dd7e37b32bd1b220357",
@@ -21,7 +21,7 @@
     "threadId": "019fe1b1-71b8-7aa2-b13d-04d10cffb3d9",
     "branch": "codex/citysim-world-rendering-single-angle",
     "worktree": "/Users/James/.codex/worktrees/ccf8/city-sim",
-    "expectedHead": "56bd4618d7381c13c2f8af7785f22df4bbb6ab17",
+    "expectedHead": "8ddb1e974950eeb7753490458f298ece4305eba5",
     "featureAuthorThreadId": "019fe1b1-71b8-7aa2-b13d-04d10cffb3d9",
     "sharedAuthorityOwnership": false,
     "finalQAOwnership": false,
@@ -32,7 +32,7 @@
     "allowed": ["Native/CitySimNative/Tests/CitySimNativeTests/SingleAngleWorldArtTests.swift", "docs/production/evidence/PLAY-101"],
     "forbidden": [".agents/skills", "docs/production/claims", "docs/production/decisions", "docs/production/evidence/INTEGRATION", "Native/CitySimNative/Sources", "Native/CitySimNative/Resources", "Native/CitySimNative/Package.swift", "script/build_and_run.sh"]
   },
-  "boundedDeliverable": "Replace the historical synthetic 43/129 graph with a direction-aware quarantine graph for 43 identities, 172 authored source views and 516 deterministic LOD payloads. Prove direction selection, identity/variant preservation, no mirror/rotate/fallback/alias, registration checks, and atomic 4/4 readiness. Do not ingest or activate real pixels, edit shipping resources or renderer code.",
+  "boundedDeliverable": "Rebind only the completed synthetic intake candidate to this route: preserve the exact 43 identities, 172 authored views, 516 LOD assertions, direction selection, identity/variant, no-transform/fallback/alias, registration, and atomic 4/4 checks; update only stale route/authority/base receipt constants required by the current packet. Do not ingest art, activate partial families, edit shipping resources or renderer code.",
   "proofPolicy": {
     "architectureState": "frozen_reference",
     "referenceImplementation": {"path": "docs/production/decisions/CONTRACT-025-authored-four-view-2-5d-building-art.md", "sha256": "4e8ab63173d67581332e7d27730b97315906fda4e29b999969456441809479ed"},
@@ -44,7 +44,7 @@
   },
   "validation": {
     "focusedGateOwner": {"threadId": "019fe1b1-71b8-7aa2-b13d-04d10cffb3d9", "role": "play-101-rotation-intake-focused"},
-    "focusedCommands": ["swift test --package-path Native/CitySimNative --filter SingleAngleWorldArtTests", "git diff --check 56bd4618d7381c13c2f8af7785f22df4bbb6ab17..HEAD"],
+    "focusedCommands": ["swift test --package-path Native/CitySimNative --filter SingleAngleWorldArtTests", "git diff --check 8ddb1e974950eeb7753490458f298ece4305eba5..HEAD"],
     "fullGateOwner": {"threadId": "019f7686-4491-7891-86a6-95a78d67e5c8", "role": "integration-aggregate-full-gate", "model": "gpt-5.6-sol", "effort": "high"},
     "fullCommands": ["swift test --package-path Native/CitySimNative", "./script/build_and_run.sh --verify", "fresh-player real-app aggregate journey"]
   },

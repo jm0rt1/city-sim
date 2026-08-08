@@ -1,6 +1,6 @@
 {
   "schema": 2,
-  "routeId": "four-view-v9:play-099-industrial-south-batch-metadata-repair",
+  "routeId": "four-view-v10:play-099-industrial-south-batch-metadata-repair",
   "taskId": "PLAY-099",
   "packetKind": "mechanical",
   "classification": "LUNA_MECHANICAL",
@@ -28,12 +28,12 @@
         "sha256": "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8"
       },
       {
-        "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTE-PLAY-099-INDUSTRIAL-PILLOW-CALIBRATION-V2.json",
-        "sha256": "5e253a6e1fc22ae945c4afdc74be342a3144ad2bc2d8375e1ad2456a4a113901"
+        "path": "docs/production/evidence/PLAY-099/pillow-reference-calibration-v1.json",
+        "sha256": "119d7153f8547252f99a8f2be1684b9b2984a103e5ab0c4691c004aad4766a24"
       },
       {
-        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibrate_pillow_reference.py",
-        "sha256": "c1db7fed8d68ed88dd88f54e4979ee9205e79a04bb7027021f2025058dd5bd3e"
+        "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTE-PLAY-099-INDUSTRIAL-PILLOW-CALIBRATION-V2.json",
+        "sha256": "5e253a6e1fc22ae945c4afdc74be342a3144ad2bc2d8375e1ad2456a4a113901"
       },
       {
         "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/inventory/PLAY-099-industrial-raw-inventory.json",
@@ -82,8 +82,8 @@
   "proofPolicy": {
     "architectureState": "frozen_reference",
     "referenceImplementation": {
-      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibrate_pillow_reference.py",
-      "sha256": "c1db7fed8d68ed88dd88f54e4979ee9205e79a04bb7027021f2025058dd5bd3e"
+      "path": "docs/production/evidence/PLAY-099/pillow-reference-calibration-v1.json",
+      "sha256": "119d7153f8547252f99a8f2be1684b9b2984a103e5ab0c4691c004aad4766a24"
     },
     "deliverableClaims": [
       "static_structure",
@@ -157,8 +157,8 @@
         "sha256": "d5a42e16f9e7d5a4dc0a9667e797022651737535b190fb7917650504a28f108b"
       },
       {
-        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibrate_pillow_reference.py",
-        "sha256": "c1db7fed8d68ed88dd88f54e4979ee9205e79a04bb7027021f2025058dd5bd3e"
+        "path": "docs/production/evidence/PLAY-099/pillow-reference-calibration-v1.json",
+        "sha256": "119d7153f8547252f99a8f2be1684b9b2984a103e5ab0c4691c004aad4766a24"
       },
       {
         "path": "docs/production/decisions/CONTRACT-026-registration-profiles-v1.json",

@@ -1,0 +1,120 @@
+{
+  "calibrationIdentity": "industrial_l01",
+  "direction": "south",
+  "disposition": {
+    "calibrationPassed": true,
+    "integrationAdmitted": false,
+    "productionSelected": false,
+    "remainingIdentitiesProcessed": 0,
+    "sourceReady": false,
+    "visualAcceptancePerformed": false
+  },
+  "encoder": {
+    "chromaDistanceThreshold": 160,
+    "compressLevel": 9,
+    "format": "PNG RGBA",
+    "optimize": false,
+    "script": "calibrate_pillow_reference.py",
+    "scriptSha256": "156eee7946a517292eda0f92648f742dd79ceec7718837fc870839bcb1eaf12a"
+  },
+  "raw": {
+    "bytesPreserved": true,
+    "path": "raw/industrial_l01_v00-source-v01.png",
+    "sha256": "7ca3e26234e7e15df9a46775a83f7132f89e1ea1f22d97c42ca6d3502099bbd2"
+  },
+  "registration": {
+    "footprintPolygonSource": [
+      [
+        768,
+        640
+      ],
+      [
+        1024,
+        768
+      ],
+      [
+        768,
+        896
+      ],
+      [
+        512,
+        768
+      ]
+    ],
+    "frontageSocketSource": [
+      640,
+      832
+    ],
+    "groundPivotSource": [
+      768,
+      896
+    ],
+    "pixelDerivedGeometry": false,
+    "sourceCanvas": [
+      1536,
+      1024
+    ]
+  },
+  "replay": {
+    "byteIdentical": true,
+    "decodedIdentical": true,
+    "decodedSha256": "e7513c32699127353f851b1d249c624c9c8e17d859c914d5c8d38ffdf8339f15",
+    "fileSha256": "aa7df1b8a8d12fcd47cbf8299c93b57f00daec9b1a74f927dafe6fe7081527bb",
+    "isolatedRoots": true,
+    "repeat": 2
+  },
+  "routeCanonicalSha256": "b7b89fc1dd953a5ec992aa5580499cf99b212b4e3c24148661a60e1b17c8a423",
+  "routeId": "four-view-v4:play-099-industrial-pillow-calibration",
+  "runs": [
+    {
+      "canvas": [
+        1536,
+        1024
+      ],
+      "decodedSha256": "e7513c32699127353f851b1d249c624c9c8e17d859c914d5c8d38ffdf8339f15",
+      "edgeAlphaPixels": 0,
+      "fileSha256": "aa7df1b8a8d12fcd47cbf8299c93b57f00daec9b1a74f927dafe6fe7081527bb",
+      "hiddenRgbPixels": 0,
+      "isolatedRoot": true,
+      "mode": "RGBA",
+      "pngMetadata": {},
+      "removedKeyedPixels": 1239493,
+      "run": 1,
+      "visibleAlphaOccupancy": 0.21195157368977866,
+      "visibleAlphaOccupancyAboveFloor": true,
+      "visibleAlphaOccupancyFloor": 0.1,
+      "visibleAlphaPixels": 333371,
+      "visibleKeyedMagentaPixels": 0
+    },
+    {
+      "canvas": [
+        1536,
+        1024
+      ],
+      "decodedSha256": "e7513c32699127353f851b1d249c624c9c8e17d859c914d5c8d38ffdf8339f15",
+      "edgeAlphaPixels": 0,
+      "fileSha256": "aa7df1b8a8d12fcd47cbf8299c93b57f00daec9b1a74f927dafe6fe7081527bb",
+      "hiddenRgbPixels": 0,
+      "isolatedRoot": true,
+      "mode": "RGBA",
+      "pngMetadata": {},
+      "removedKeyedPixels": 1239493,
+      "run": 2,
+      "visibleAlphaOccupancy": 0.21195157368977866,
+      "visibleAlphaOccupancyAboveFloor": true,
+      "visibleAlphaOccupancyFloor": 0.1,
+      "visibleAlphaPixels": 333371,
+      "visibleKeyedMagentaPixels": 0
+    }
+  ],
+  "runtime": {
+    "executableSha256": "eb9d74b9c7cfdfb2c9b91614edb2c3607360ba46c5aa7fc4557b3a4a23e97cff",
+    "invokedExecutable": "/Users/James/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "pillowVersion": "12.2.0",
+    "pythonVersion": "3.12.13",
+    "resolvedExecutable": "/Users/James/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3.12"
+  },
+  "schema": "PLAY-099-industrial-pillow-calibration-v1",
+  "sourceLogicalId": "industrial_l01_v00",
+  "task": "PLAY-099"
+}

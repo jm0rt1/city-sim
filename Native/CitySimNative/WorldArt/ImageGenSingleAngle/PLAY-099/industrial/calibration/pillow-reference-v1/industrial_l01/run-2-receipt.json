@@ -1,0 +1,20 @@
+{
+  "canvas": [
+    1536,
+    1024
+  ],
+  "decodedSha256": "e7513c32699127353f851b1d249c624c9c8e17d859c914d5c8d38ffdf8339f15",
+  "edgeAlphaPixels": 0,
+  "fileSha256": "aa7df1b8a8d12fcd47cbf8299c93b57f00daec9b1a74f927dafe6fe7081527bb",
+  "hiddenRgbPixels": 0,
+  "isolatedRoot": true,
+  "mode": "RGBA",
+  "pngMetadata": {},
+  "removedKeyedPixels": 1239493,
+  "run": 2,
+  "visibleAlphaOccupancy": 0.21195157368977866,
+  "visibleAlphaOccupancyAboveFloor": true,
+  "visibleAlphaOccupancyFloor": 0.1,
+  "visibleAlphaPixels": 333371,
+  "visibleKeyedMagentaPixels": 0
+}

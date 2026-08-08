@@ -16,7 +16,7 @@ LAYOUTS = ["regular", "compact-900x600"]
 ROUTE_ID = "four-view-v8:play-102-qa-prereg-validator-repair-v2"
 ROUTE_SHA = "78615505730e1706bdfd690ac5898e752cd6fb1e33e2d87728dfaa46ec8fa628"
 AUTHORITY = "b36e69a0a15b34c9aea03588f97bbc8621bb7d47"
-WORKER_HEAD = "c5285c899119dd417d466d9f82f1e6456f0a028b"
+WORKER_HEAD = "d77f32739d6606b762e54766a310a60e8758681d"
 CLAIM_PATH = "docs/production/claims/PLAY-102.playtest-single-angle.md"
 CLAIM_SHA = "bab508b648ce1b585ad66ec10b2b54574fe0f0d1741b7b4b33fa12253f34e704"
 

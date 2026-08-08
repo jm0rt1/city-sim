@@ -18,6 +18,7 @@
     "carrier": "b36e69a0a15b34c9aea03588f97bbc8621bb7d47",
     "authorityCommit": "b36e69a0a15b34c9aea03588f97bbc8621bb7d47",
     "baseCommit": "b36e69a0a15b34c9aea03588f97bbc8621bb7d47",
+    "expectedWorkerHead": "d77f32739d6606b762e54766a310a60e8758681d",
     "claimPath": "docs/production/claims/PLAY-102.playtest-single-angle.md",
     "claimSha256": "bab508b648ce1b585ad66ec10b2b54574fe0f0d1741b7b4b33fa12253f34e704"
   },

@@ -13,8 +13,8 @@ ROOT = Path(__file__).resolve().parent
 DIRECTIONS = ["north", "east", "south", "west"]
 LODS = ["city", "neighborhood", "block"]
 LAYOUTS = ["regular", "compact-900x600"]
-ROUTE_ID = "four-view-v8:play-102-qa-prereg-validator-repair-v2"
-ROUTE_SHA = "78615505730e1706bdfd690ac5898e752cd6fb1e33e2d87728dfaa46ec8fa628"
+ROUTE_ID = "four-view-v8:play-102-qa-prereg-validator-repair-v4"
+ROUTE_SHA = "dbe62b380f82e69bbfe5a1470b47d289a6f9a74e3ea858ee322ca80149526bb9"
 AUTHORITY = "b36e69a0a15b34c9aea03588f97bbc8621bb7d47"
 WORKER_HEAD = "d77f32739d6606b762e54766a310a60e8758681d"
 CLAIM_PATH = "docs/production/claims/PLAY-102.playtest-single-angle.md"
@@ -51,7 +51,7 @@ def main() -> int:
     route = prereg["route"]
     if (route["routeId"], route["canonicalModelRouteSha256"]) != (ROUTE_ID, ROUTE_SHA):
         fail("route identity mismatch")
-    if route["dispatchPath"] != "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-102-QA-PREREG-VALIDATOR-REPAIR-V2.json":
+    if route["dispatchPath"] != "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-102-QA-PREREG-VALIDATOR-REPAIR-V4.json":
         fail("dispatch receipt path mismatch")
 
     expected_tuples = [(f"{direction}-{lod}-{'compact' if layout == 'compact-900x600' else layout}", direction, lod, layout) for layout in LAYOUTS for lod in LODS for direction in DIRECTIONS]

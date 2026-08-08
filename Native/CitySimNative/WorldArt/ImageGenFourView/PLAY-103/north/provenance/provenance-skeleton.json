@@ -1,0 +1,18 @@
+{
+  "schema": "citysim.play-103.north-predesign.provenance-skeleton.v1",
+  "task": "PLAY-103",
+  "direction": "north",
+  "stage": "predesign",
+  "entries": [],
+  "entryRequirements": {
+    "southReferencePath": "required_exact_repo_relative_path",
+    "southReferenceSha256": "required_exact_sha256",
+    "southAdmissionReceiptPath": "required_integration_receipt",
+    "southAdmissionReceiptSha256": "required_exact_sha256",
+    "northPromptPath": "required_direction_exclusive_path",
+    "toolProvenance": "required_after_authorized_ImageGen_call",
+    "rawNorthPathAndSha256": "not_produced",
+    "siblingInputsConsumed": []
+  },
+  "status": "skeleton_only_blocked_pending_south_admission"
+}

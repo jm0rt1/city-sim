@@ -1,0 +1,35 @@
+{
+  "schema": "citysim.play-103.north-predesign.south-anchor-inventory.v1",
+  "task": "PLAY-103",
+  "direction": "north",
+  "stage": "predesign",
+  "expectedCount": 43,
+  "inventoryStatus": "blocked_fail_closed",
+  "southAnchorSourceFamilies": ["PLAY-097", "PLAY-098", "PLAY-099", "PLAY-100"],
+  "expectedSouthAnchors": {
+    "residential": ["residential_l01_v0", "residential_l01_v1", "residential_l01_v2", "residential_l02_v0", "residential_l02_v1", "residential_l02_v2", "residential_l03_v0", "residential_l03_v1", "residential_l03_v2", "residential_l04_v0", "residential_l04_v1", "residential_l04_v2"],
+    "commercial": ["commercial_l01_v0", "commercial_l01_v1", "commercial_l01_v2", "commercial_l02_v0", "commercial_l02_v1", "commercial_l02_v2", "commercial_l03_v0", "commercial_l03_v1", "commercial_l03_v2", "commercial_l04_v0", "commercial_l04_v1", "commercial_l04_v2"],
+    "industrial": ["industrial_l01_v0", "industrial_l01_v1", "industrial_l01_v2", "industrial_l02_v0", "industrial_l02_v1", "industrial_l02_v2", "industrial_l03_v0", "industrial_l03_v1", "industrial_l03_v2", "industrial_l04_v0", "industrial_l04_v1", "industrial_l04_v2"],
+    "civic": ["civic_park_v0", "civic_power_plant_v0", "civic_water_tower_v0", "civic_fire_station_v0", "civic_police_station_v0", "civic_school_v0", "civic_city_hall_v0"]
+  },
+  "observedExactSouthInputs": {
+    "admittedRawCount": 0,
+    "admissionReceiptCount": 0,
+    "exactRawPaths": [],
+    "exactRawSha256": [],
+    "status": "missing_from_live_checkout"
+  },
+  "missingAdmissionHashDependencies": [
+    "Integration-admitted South raw path for every identity",
+    "Exact South raw SHA-256 for every identity",
+    "Canonical South source-admission receipt path and SHA-256",
+    "Claim-bound common accepted-master non-alias authority/count/set digest",
+    "Per-identity South prompt/provenance binding",
+    "Frozen family/source-production profile and hash",
+    "Versioned handoff schema and semantic-validator bindings"
+  ],
+  "pixelFilesCreated": 0,
+  "imageGenCalls": 0,
+  "normalizationRuns": 0,
+  "siblingInputsConsumed": []
+}

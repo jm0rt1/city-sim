@@ -2,10 +2,12 @@
   "schema": 1,
   "task": "FOUR-VIEW-PARALLEL-WAVE",
   "authority": {
-    "master": "5cf6bc0a81350f2a65417c33b5591e3defa5fd85",
-    "originMaster": "5cf6bc0a81350f2a65417c33b5591e3defa5fd85",
+    "master": "5427d7513e06ed5d449861602f926d46cab7cc4a",
+    "originMaster": "5427d7513e06ed5d449861602f926d46cab7cc4a",
     "workerBaseline": "652fdb8cd3a4da82a79a49ad1dc18cb0c7bc6a85",
     "contract": "CONTRACT-025",
+    "rotationContract": "CONTRACT-027",
+    "rotationContractSha256": "693831b3d8fac49330ac21adce626b632351c7eeba901ebff6719687e5f330e7",
     "atomicActivation": "43 identities / 172 authored sources / 516 LOD payloads"
   },
   "policy": {

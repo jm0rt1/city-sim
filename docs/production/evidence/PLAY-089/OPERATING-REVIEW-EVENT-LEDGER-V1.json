@@ -203,6 +203,13 @@
       "receiptSha256": "bcbb31fcefe94bcf03a1037cf97248cf0c64cdb86b4bcf4d8efde59e98d8d879",
       "decision": "NO_CHANGE",
       "disposition": {"status":"auto_closed","authorityCommit":"d3c88486af6f46124bfc36b5e4605a266360f615","reason":"Frontier routing is retained only for North hero vocabulary and subjective design judgment; deterministic sibling and evidence work remains Luna-routed."}
+    },
+    {
+      "eventKey": {"authorityCommit":"ada095c3319dee054da2b4cf1197e7c696f72223","taskId":"PLAY-096","routeId":"four-view-v1:play-096-contract-repair","trigger":"delegation_ready_for_dispatch","candidateOrResultCommit":"106a6baa104c5d306d7a47736f43d26c0ea408d0"},
+      "receiptPath": "docs/production/evidence/PLAY-089/play-096-contract-repair-v1/01-play-096.json",
+      "receiptSha256": "1041642b24795419f870a23476b6a2c409ddd3692ab922100bcb91cae845bb8b",
+      "decision": "NO_CHANGE",
+      "disposition": {"status":"pending_integration","authorityCommit":"ada095c3319dee054da2b4cf1197e7c696f72223","reason":"PLAY-096 five-defect task-local repair route is exact, bounded, LUNA implementation/high, independently reviewed, and ready for Integration disposition."}
     }
   ]
 }

@@ -4,7 +4,7 @@
 - **Lane:** World rendering
 - **Branch:** `codex/citysim-world-rendering-single-angle`
 - **Worktree:** `/Users/James/.codex/worktrees/ccf8/city-sim`
-- **Base authority:** `ae5ed01a9ef66ce233851557c810767b990cb037`
+- **Base authority:** `1248ef6c6c875f462644cbf5e8a13fdb39a3ae0d`
 - **Exclusive pre-admission roots:**
   `Native/CitySimNative/Tests/CitySimNativeTests/SingleAngleWorldArtTests.swift`
   and `docs/production/evidence/PLAY-101/`.

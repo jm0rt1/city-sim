@@ -4,7 +4,7 @@
 - **Lane:** Playtest quality
 - **Branch:** `codex/citysim-playtest-single-angle`
 - **Worktree:** `/Users/James/.codex/worktrees/fee0/city-sim`
-- **Base authority:** `ae5ed01a9ef66ce233851557c810767b990cb037`
+- **Base authority:** `1248ef6c6c875f462644cbf5e8a13fdb39a3ae0d`
 - **Exclusive preparation roots:** `docs/production/evidence/PLAY-102/`.
 - **Dependencies:** CONTRACT-025; exact candidate remains null.
 - **Deliverable:** Candidate-neutral fixture, camera, regular/900x600 rubric,

@@ -3,8 +3,8 @@
   "documentType": "CITYSIM_CURRENT_PARALLEL_WORK_PROJECTION",
   "supersedes": "FOUR-VIEW-PARALLEL-WAVE-CURRENT-V1.json",
   "authority": {
-    "capturedAtIntegrationHead": "0bbdab679078ae378e6288e5be6636d04712f9fd",
-    "publishedBaseline": "0bbdab679078ae378e6288e5be6636d04712f9fd",
+    "capturedAtIntegrationHead": "a2b5909e8bf4295077625b98f56d8889f36d9f3f",
+    "publishedBaseline": "a2b5909e8bf4295077625b98f56d8889f36d9f3f",
     "publicationStatusAtCapture": "published_origin_parity",
     "protectedDirt": [
       ".vscode/launch.json",
@@ -23,11 +23,11 @@
     "fullSuiteFrequency": "once_per_exact_aggregate"
   },
   "cadence": {
-    "waveId": "FOUR-VIEW-PLAY-103-105-V8",
+    "waveId": "FOUR-VIEW-PLAY-103-105-V9",
     "snapshotReceipt": "current-turn-read-only-census",
     "cellCaptain": "world-art-direction-captain",
     "acknowledgementSLA": "one coordination round",
-    "nextJoin": "West independent review plus North Luna focused repair; East owner checkpoint",
+    "nextJoin": "West V9 focused replay plus independent review; North Luna focused repair; East owner checkpoint",
     "changedRows": [
       "PLAY-103-NORTH",
       "PLAY-105-WEST"
@@ -59,10 +59,10 @@
       "worktree": "/Users/James/.codex/worktrees/e6f2/city-sim",
       "head": "3cdc99ab9482551dc242db20780b6e12174925be",
       "clean": true,
-      "state": "candidate_ready_for_independent_review",
-      "routeId": "four-view-v13:play-105-west-production-repair-v8",
+      "state": "evidence_rebind_in_progress",
+      "routeId": "four-view-v13:play-105-west-production-repair-v9",
       "modelTier": "LUNA_IMPLEMENTATION",
-      "nextSafeAction": "Independent frontier packet review; do not admit or activate."
+      "nextSafeAction": "Complete V9 focused replay twice, then independent frontier packet review; do not admit or activate."
     },
     {
       "id": "PLAY-104-EAST",
@@ -130,6 +130,6 @@
     "fullSuite": "not_run",
     "stagedApp": "not_run",
     "independentRealAppQA": "not_run",
-    "push": "origin_parity_at_0bbdab67"
+    "push": "origin_parity_at_a2b5909e"
   }
 }

@@ -3,10 +3,10 @@
   "authorityCommit": "65825389d586a128ddf6feb5356c33661ba9a8e8",
   "assignments": [
     {
-      "modelRouteSha256": "132050c0300fe49c7a100569310e17109b516d4f3465bbfe1c19b64cb238c9b4",
+      "modelRouteSha256": "2ea6b1b5f11d77d00550d3ce77beb77d1706bdff3e9aea63da95296989eba0b6",
       "modelRoute": {
         "schema": 2,
-        "routeId": "four-view-v5:play-098-admission-repair-v2",
+        "routeId": "four-view-v5:play-098-admission-repair-v3",
         "taskId": "PLAY-098",
         "packetKind": "implementation",
         "classification": "LUNA_IMPLEMENTATION",
@@ -54,9 +54,10 @@
             "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-098/commercial",
             "docs/production/evidence/PLAY-098"
           ],
-          "allowed": [
-            "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-098/commercial/normalize_south_admission.py",
-            "docs/production/evidence/PLAY-098/south"
+            "allowed": [
+              "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-098/commercial/normalize_south_admission.py",
+              "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-098/commercial/normalized",
+              "docs/production/evidence/PLAY-098/south"
           ],
           "forbidden": [
             ".agents/skills",

@@ -1,6 +1,6 @@
 {
   "schema": 2,
-  "routeId": "four-view-v5:play-098-admission-repair-v2",
+  "routeId": "four-view-v5:play-098-admission-repair-v3",
   "taskId": "PLAY-098",
   "packetKind": "implementation",
   "classification": "LUNA_IMPLEMENTATION",
@@ -50,6 +50,7 @@
     ],
     "allowed": [
       "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-098/commercial/normalize_south_admission.py",
+      "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-098/commercial/normalized",
       "docs/production/evidence/PLAY-098/south"
     ],
     "forbidden": [

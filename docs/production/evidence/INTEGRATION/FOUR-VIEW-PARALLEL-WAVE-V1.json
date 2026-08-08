@@ -1,0 +1,100 @@
+{
+  "schema": 1,
+  "task": "FOUR-VIEW-PARALLEL-WAVE",
+  "authority": {
+    "master": "600c5181bbe6712881e672667c76e5cb3c59db4a",
+    "originMaster": "600c5181bbe6712881e672667c76e5cb3c59db4a",
+    "contract": "CONTRACT-025",
+    "atomicActivation": "43 identities / 172 authored sources / 516 LOD payloads"
+  },
+  "policy": {
+    "minimumUsefulConcurrentStreams": 3,
+    "noPin": true,
+    "fullGateOwner": "Integration",
+    "independentFinalQA": "PLAY-102"
+  },
+  "streams": [
+    {
+      "task": "PLAY-103",
+      "lane": "North art",
+      "model": "gpt-5.6-luna",
+      "effort": "max",
+      "worktree": "/Users/James/.codex/worktrees/f55b/city-sim",
+      "branch": "codex/citysim-world-art-north-imagegen",
+      "head": "adfd7d60d0fa22cfec2ead4d171591bf49d70b77",
+      "route": "four-view-v10:play-103-north-production-repair-v1",
+      "state": "awaiting_optimizer_no_change",
+      "allowed": "North claimed roots only",
+      "blockedBy": "optimizer review"
+    },
+    {
+      "task": "PLAY-104",
+      "lane": "East art",
+      "model": "gpt-5.6-luna",
+      "effort": "max",
+      "worktree": "/Users/James/.codex/worktrees/3218/city-sim",
+      "branch": "codex/citysim-world-art-east-imagegen",
+      "head": "be990d5a5b529c7fe5e0528b4b8549058ba45b9e",
+      "route": "four-view-v10:play-104-east-production-repair-v1",
+      "state": "owner_checkpoint_required",
+      "allowed": "East claimed roots only",
+      "blockedBy": "untracked portable_replay.py and route-snapshot/"
+    },
+    {
+      "task": "PLAY-105",
+      "lane": "West art",
+      "model": "gpt-5.6-luna",
+      "effort": "high",
+      "worktree": "/Users/James/.codex/worktrees/e6f2/city-sim",
+      "branch": "codex/citysim-world-art-west-imagegen",
+      "head": "fe1e0e662954fd4d7083e692b74cb01a3ef2d5bb",
+      "route": "four-view-v10:play-105-west-production-repair-v1",
+      "state": "route_approved_waiting_control",
+      "allowed": "West claimed roots only",
+      "blockedBy": "Codex task-control retry"
+    },
+    {
+      "task": "PLAY-101",
+      "lane": "Renderer intake",
+      "model": "gpt-5.6-luna",
+      "effort": "high",
+      "worktree": "/Users/James/.codex/worktrees/ccf8/city-sim",
+      "branch": "codex/citysim-world-rendering-single-angle",
+      "head": "87349fd3d570bf76fe15113657cd11946aafb2d2",
+      "route": "four-view-v3:play-101-current-master-intake-rebind-v2",
+      "state": "awaiting_optimizer_no_change",
+      "allowed": "SingleAngleWorldArtTests.swift + PLAY-101 evidence",
+      "blockedBy": "optimizer review; source admission not yet available"
+    },
+    {
+      "task": "PLAY-102",
+      "lane": "QA preregistration",
+      "model": "gpt-5.6-luna",
+      "effort": "medium",
+      "worktree": "/Users/James/.codex/worktrees/fee0/city-sim",
+      "branch": "codex/citysim-playtest-single-angle",
+      "head": "1ef59214bdf2beddc731f911cb8a6998c26c7f72",
+      "route": "four-view-v4:play-102-current-master-qa-prep-rebind-v2",
+      "state": "awaiting_optimizer_no_change",
+      "allowed": "PLAY-102 evidence only",
+      "blockedBy": "candidate remains null; full-pack ledger and renderer intake plan pending"
+    },
+    {
+      "task": "OS-OPT",
+      "lane": "Operating-system review",
+      "model": "gpt-5.6-luna",
+      "effort": "medium",
+      "thread": "019fc40d-c697-7aa2-94bf-902b031a8c67",
+      "state": "reviewing_route_envelopes",
+      "allowed": "read-only optimizer lane",
+      "blockedBy": "none"
+    }
+  ],
+  "guardrails": [
+    "South anchors remain authoring-only and not admitted/shipping",
+    "No partial family activation",
+    "No mirroring/bitmap rotation/fallback/alias",
+    "Protected user dirt untouched",
+    "No worker pushes or self-acceptance"
+  ]
+}

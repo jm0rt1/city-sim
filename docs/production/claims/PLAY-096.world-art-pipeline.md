@@ -4,7 +4,7 @@
 - **Lane:** World Art shared toolchain
 - **Branch:** `codex/citysim-world-art-pipeline`
 - **Worktree:** `/Users/James/.codex/worktrees/0f2d/city-sim`
-- **Base authority:** `690c46bc9019b641c023f264c46bf8aadb506619`
+- **Base authority:** `ae5ed01a9ef66ce233851557c810767b990cb037`
 - **Exclusive roots:**
   `Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-096/` and
   `docs/production/evidence/PLAY-096/`.

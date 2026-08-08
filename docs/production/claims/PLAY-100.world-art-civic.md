@@ -4,7 +4,7 @@
 - **Lane:** World Art — Civic/service
 - **Branch:** `codex/citysim-world-art-civic`
 - **Worktree:** `/Users/James/.codex/worktrees/c96d/city-sim`
-- **Base authority:** `690c46bc9019b641c023f264c46bf8aadb506619`
+- **Base authority:** `ae5ed01a9ef66ce233851557c810767b990cb037`
 - **Exclusive roots:**
   `Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/` and
   `docs/production/evidence/PLAY-100/`.

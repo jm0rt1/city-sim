@@ -4,7 +4,7 @@
 - **Lane:** World Art — Residential
 - **Branch:** `codex/citysim-world-art-residential`
 - **Worktree:** `/Users/James/.codex/worktrees/df86/city-sim`
-- **Base authority:** `690c46bc9019b641c023f264c46bf8aadb506619`
+- **Base authority:** `ae5ed01a9ef66ce233851557c810767b990cb037`
 - **Exclusive roots:**
   `Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-097/residential/` and
   `docs/production/evidence/PLAY-097/`.

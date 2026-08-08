@@ -2,8 +2,9 @@
   "schema": 1,
   "task": "FOUR-VIEW-PARALLEL-WAVE",
   "authority": {
-    "master": "2e4bebf48b7550a00a630cb9eecb1541bab21b95",
-    "originMaster": "2e4bebf48b7550a00a630cb9eecb1541bab21b95",
+    "master": "5cf6bc0a81350f2a65417c33b5591e3defa5fd85",
+    "originMaster": "5cf6bc0a81350f2a65417c33b5591e3defa5fd85",
+    "workerBaseline": "652fdb8cd3a4da82a79a49ad1dc18cb0c7bc6a85",
     "contract": "CONTRACT-025",
     "atomicActivation": "43 identities / 172 authored sources / 516 LOD payloads"
   },
@@ -23,9 +24,9 @@
       "branch": "codex/citysim-world-art-north-imagegen",
       "head": "463a11511c7bb7c763614f00fd00bf7537802da0",
       "route": "four-view-v10:play-103-north-production-repair-v2",
-      "state": "synchronized_current_master_route_refresh_required",
+      "state": "published_queued_for_delivery",
       "allowed": "North claimed roots only",
-      "blockedBy": "fresh route identity and optimizer review"
+      "blockedBy": "Codex task-control delivery confirmation"
     },
     {
       "task": "PLAY-104",
@@ -49,9 +50,9 @@
       "branch": "codex/citysim-world-art-west-imagegen",
       "head": "4a05fd3eb88dcc0cc990ff507f294a9403b7adf7",
       "route": "four-view-v10:play-105-west-production-repair-v2",
-      "state": "synchronized_current_master_route_refresh_required",
+      "state": "published_queued_for_delivery",
       "allowed": "West claimed roots only",
-      "blockedBy": "fresh route identity and optimizer review"
+      "blockedBy": "Codex task-control delivery confirmation"
     },
     {
       "task": "PLAY-101",
@@ -62,9 +63,9 @@
       "branch": "codex/citysim-world-rendering-single-angle",
       "head": "7f088ee4a2726eb316cfcdca0c2efd8cade9ac97",
       "route": "four-view-v3:play-101-current-master-intake-rebind-v3",
-      "state": "synchronized_current_master_route_refresh_required",
+      "state": "published_queued_for_delivery",
       "allowed": "SingleAngleWorldArtTests.swift + PLAY-101 evidence",
-      "blockedBy": "fresh route identity and optimizer review; source admission not yet available"
+      "blockedBy": "Codex task-control delivery confirmation; source admission not yet available"
     },
     {
       "task": "PLAY-102",
@@ -75,9 +76,9 @@
       "branch": "codex/citysim-playtest-single-angle",
       "head": "cfaabff53867582959dfa55ecef2de7d7ab87670",
       "route": "four-view-v4:play-102-current-master-qa-prep-rebind-v3",
-      "state": "synchronized_current_master_route_refresh_required",
+      "state": "published_queued_for_delivery",
       "allowed": "PLAY-102 evidence only",
-      "blockedBy": "fresh route identity and optimizer review; candidate remains null"
+      "blockedBy": "Codex task-control delivery confirmation; candidate remains null"
     },
     {
       "task": "OS-OPT",
@@ -88,9 +89,9 @@
       "worktree": "/Users/James/.codex/worktrees/dc21/city-sim",
       "branch": "codex/citysim-os-optimization",
       "head": "9ecb67b8799a40ba70366ef14460cf53e02b4565",
-      "state": "reviewing_route_envelopes",
+      "state": "canonical_ack_pending_control_timeout",
       "allowed": "read-only optimizer lane",
-      "blockedBy": "none"
+      "blockedBy": "control-plane timeout; T2 independent NO_CHANGE recorded"
     }
   ],
   "guardrails": [
@@ -99,5 +100,12 @@
     "No mirroring/bitmap rotation/fallback/alias",
     "Protected user dirt untouched",
     "No worker pushes or self-acceptance"
-  ]
+  ],
+  "dispatch": {
+    "receipt": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-FOUR-VIEW-PARALLEL-WAVE-V3.json",
+    "receiptSha256": "b52f7a8442e63c4b498844d241f181fd9bde056f2694116fb9940191fe1d87fa",
+    "t2IndependentDisposition": "NO_CHANGE",
+    "canonicalOptimizerDisposition": "PENDING_CONTROL_PLANE",
+    "deliveryStatus": "messages_attempted_but_not_confirmed"
+  }
 }

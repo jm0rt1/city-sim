@@ -1,0 +1,63 @@
+{
+  "schema": 2,
+  "routeId": "four-view-v4:play-099-industrial-pillow-calibration",
+  "taskId": "PLAY-099",
+  "packetKind": "authority",
+  "classification": "FRONTIER_AUTHORITY",
+  "model": "gpt-5.6-sol",
+  "effort": "high",
+  "rationale": "After two bounded CoreImage/Lanczos repairs produced transparent, aliased LOD payloads, freeze a task-local bundled-Python/Pillow calibration reference. Preserve the dirty rejected attempt exactly, then prove one Industrial South identity through a real encoder and two isolated-root replays before any batch expansion or admission.",
+  "authority": {
+    "authorityCommit": "b38fbfcf5e9e8fd9d092e9eb4abdc8a9d15b900b",
+    "baseCommit": "a61ab80101f596f56ffc1dd7e37b32bd1b220357",
+    "claim": {"path": "docs/production/claims/PLAY-099.world-art-industrial.md", "sha256": "d5a42e16f9e7d5a4dc0a9667e797022651737535b190fb7917650504a28f108b"},
+    "immutableInputs": [
+      {"path": "docs/production/decisions/CONTRACT-025-authored-four-view-2-5d-building-art.md", "sha256": "4e8ab63173d67581332e7d27730b97315906fda4e29b999969456441809479ed"},
+      {"path": "docs/production/decisions/CONTRACT-026-authored-four-view-registration.md", "sha256": "4781de72429a1f691b9226f7f7668b170b278a4ccd171ac4ea02f5e1df9176eb"},
+      {"path": "docs/production/decisions/CONTRACT-026-registration-profiles-v1.json", "sha256": "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8"},
+      {"path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md", "sha256": "1eb7170b81e11753e7c9173298c6d45c02d5a2ade6df0ef8b73bdcaf690a2acd"},
+      {"path": ".agents/skills/produce-citysim-world-art/SKILL.md", "sha256": "9c62d401d8812d5345b6bd25d864a07010348883ca4941f4429854ebe4abc511"}
+    ]
+  },
+  "assignment": {
+    "threadId": "019fe1b1-3bc4-7b40-a107-22b119cb0a61",
+    "branch": "codex/citysim-world-art-industrial",
+    "worktree": "/Users/James/.codex/worktrees/6799/city-sim",
+    "expectedHead": "a544c5d95f6ef1084dc6ee410f64445261d7af43",
+    "featureAuthorThreadId": "019fe1b1-3bc4-7b40-a107-22b119cb0a61",
+    "sharedAuthorityOwnership": false,
+    "finalQAOwnership": false,
+    "subjectiveJudgmentRequired": true
+  },
+  "pathPolicy": {
+    "claimOwnedRoots": ["Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial", "docs/production/evidence/PLAY-099"],
+    "allowed": ["Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial", "docs/production/evidence/PLAY-099"],
+    "forbidden": [".agents/skills", "docs/production/claims", "docs/production/decisions", "docs/production/evidence/INTEGRATION", "Native/CitySimNative/Sources", "Native/CitySimNative/Resources", "Native/CitySimNative/WorldArt/ImageGenFourView"]
+  },
+  "boundedDeliverable": "First preserve the current dirty CoreImage/Lanczos attempt as explicitly rejected task-local evidence without deleting or overwriting any file. Then add a task-local bundled-Python/Pillow reference encoder and validator, bind its exact executable/version and Pillow version, run one Industrial South identity twice in two isolated temporary roots, and prove visible occupancy, non-magenta RGBA output, zero hidden RGB, zero edge alpha, exact full-canvas registration, and byte/decoded identity. Do not batch the remaining identities or claim source admission.",
+  "proofPolicy": {
+    "architectureState": "novel_or_ambiguous",
+    "referenceImplementation": null,
+    "deliverableClaims": ["static_structure", "executable_behavior", "deterministic_output"],
+    "focusedProofLevel": "deterministic_replay",
+    "fullProofLevel": "deterministic_replay",
+    "behavioralCommands": ["python3 Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibrate_pillow_reference.py --identity industrial_l01 --repeat 2 --isolated-roots"],
+    "prohibitedSubstitutions": ["source_token_presence_for_execution", "ast_shape_for_runtime_success", "manifest_or_prose_for_rendered_pixels", "unit_tests_for_visual_acceptance", "worker_self_report_for_independent_acceptance"]
+  },
+  "validation": {
+    "focusedGateOwner": {"threadId": "019fe1b1-3bc4-7b40-a107-22b119cb0a61", "role": "play-099-industrial-pillow-calibration-focused"},
+    "focusedCommands": ["python3 Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibrate_pillow_reference.py --identity industrial_l01 --repeat 2 --isolated-roots", "git diff --check a544c5d95f6ef1084dc6ee410f64445261d7af43..HEAD"],
+    "fullGateOwner": {"threadId": "019f7686-4491-7891-86a6-95a78d67e5c8", "role": "integration-aggregate-full-gate", "model": "gpt-5.6-sol", "effort": "high"},
+    "fullCommands": ["swift test --package-path Native/CitySimNative", "./script/build_and_run.sh --verify", "fresh-player real-app aggregate journey"]
+  },
+  "expectedResult": {"evidencePaths": ["docs/production/evidence/PLAY-099"], "commitRequired": true, "commitMessagePattern": "PLAY-099:"},
+  "escalationTriggers": ["shared_contract_or_schema_decision", "unresolved_product_visual_or_interaction_judgment", "path_outside_claim", "baseline_or_candidate_identity_mismatch", "failure_outside_focused_scope", "save_or_migration_uncertainty", "cross_lane_semantic_conflict", "two_unsuccessful_repair_attempts", "subjective_acceptance_required"],
+  "stopCondition": "Stop after the rejected-attempt preservation checkpoint plus one calibration implementation and two isolated-root proofs, or immediately on dirty-file provenance ambiguity, unavailable bundled Pillow runtime, identity/registration drift, any path mismatch, or another failed repair. Never generate ImageGen pixels, batch-expand, mutate shared tools/contracts/runtime/renderer/shipping, push, integrate, self-accept, or pin.",
+  "independentReviewer": {"required": false, "threadId": null, "model": null, "effort": null},
+  "context": {"mode": "full_authority_read", "packet": null, "verifiedHashes": [
+    {"path": "docs/production/claims/PLAY-099.world-art-industrial.md", "sha256": "d5a42e16f9e7d5a4dc0a9667e797022651737535b190fb7917650504a28f108b"},
+    {"path": "docs/production/decisions/CONTRACT-026-registration-profiles-v1.json", "sha256": "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8"},
+    {"path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md", "sha256": "1eb7170b81e11753e7c9173298c6d45c02d5a2ade6df0ef8b73bdcaf690a2acd"},
+    {"path": ".agents/skills/produce-citysim-world-art/SKILL.md", "sha256": "9c62d401d8812d5345b6bd25d864a07010348883ca4941f4429854ebe4abc511"}
+  ]}
+}

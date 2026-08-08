@@ -7,12 +7,12 @@
   "preparationStatus": "ready_for_integration_rehearsal",
   "candidateNeutral": true,
   "route": {
-    "routeId": "four-view-v8:play-102-qa-prereg-validator-repair-v1",
-    "canonicalModelRouteSha256": "96562cae15824514adfeba94bd3201a7a39b655c689753472e76f30d2e22bbde",
+    "routeId": "four-view-v8:play-102-qa-prereg-validator-repair-v2",
+    "canonicalModelRouteSha256": "78615505730e1706bdfd690ac5898e752cd6fb1e33e2d87728dfaa46ec8fa628",
     "classification": "LUNA_MECHANICAL",
     "model": "gpt-5.6-luna",
     "effort": "medium",
-    "dispatchPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-102-QA-PREREG-VALIDATOR-REPAIR-V1.json"
+    "dispatchPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-102-QA-PREREG-VALIDATOR-REPAIR-V2.json"
   },
   "authority": {
     "carrier": "b36e69a0a15b34c9aea03588f97bbc8621bb7d47",

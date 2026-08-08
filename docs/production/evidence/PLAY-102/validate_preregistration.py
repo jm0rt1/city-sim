@@ -13,8 +13,8 @@ ROOT = Path(__file__).resolve().parent
 DIRECTIONS = ["north", "east", "south", "west"]
 LODS = ["city", "neighborhood", "block"]
 LAYOUTS = ["regular", "compact-900x600"]
-ROUTE_ID = "four-view-v8:play-102-qa-prereg-validator-repair-v1"
-ROUTE_SHA = "96562cae15824514adfeba94bd3201a7a39b655c689753472e76f30d2e22bbde"
+ROUTE_ID = "four-view-v8:play-102-qa-prereg-validator-repair-v2"
+ROUTE_SHA = "78615505730e1706bdfd690ac5898e752cd6fb1e33e2d87728dfaa46ec8fa628"
 AUTHORITY = "b36e69a0a15b34c9aea03588f97bbc8621bb7d47"
 WORKER_HEAD = "c5285c899119dd417d466d9f82f1e6456f0a028b"
 CLAIM_PATH = "docs/production/claims/PLAY-102.playtest-single-angle.md"
@@ -51,7 +51,7 @@ def main() -> int:
     route = prereg["route"]
     if (route["routeId"], route["canonicalModelRouteSha256"]) != (ROUTE_ID, ROUTE_SHA):
         fail("route identity mismatch")
-    if route["dispatchPath"] != "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-102-QA-PREREG-VALIDATOR-REPAIR-V1.json":
+    if route["dispatchPath"] != "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-102-QA-PREREG-VALIDATOR-REPAIR-V2.json":
         fail("dispatch receipt path mismatch")
 
     expected_tuples = [(f"{direction}-{lod}-{'compact' if layout == 'compact-900x600' else layout}", direction, lod, layout) for layout in LAYOUTS for lod in LODS for direction in DIRECTIONS]
@@ -72,6 +72,9 @@ def main() -> int:
         fail("preregistration capture names mismatch")
     if fixture["captureCount"] != 24 or fixture["directions"] != DIRECTIONS or fixture["lods"] != LODS or fixture["layouts"] != LAYOUTS:
         fail("fixture matrix mismatch")
+    expected_matrix = {"count": 24, "directions": DIRECTIONS, "lods": LODS, "layouts": LAYOUTS}
+    if plan.get("captureMatrix") != expected_matrix:
+        fail("measurement plan captureMatrix mismatch")
     if rubric["matrix"] != {"directions": DIRECTIONS, "lods": LODS, "layouts": LAYOUTS, "captureCount": 24}:
         fail("rubric matrix mismatch")
     if rehearsal["matrix"] != rubric["matrix"] or rehearsal["status"] != "BLOCKED_BY_ROUTE_NO_APP_LAUNCH":

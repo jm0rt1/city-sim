@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 1,
+  "documentType": "CITYSIM_CURRENT_PARALLEL_WORK_PROJECTION",
+  "authority": {
+    "capturedAtIntegrationHead": "07c6d7fa49f1e3a748b3593646428f148e974f6b",
+    "publishedBaseline": "0d4a916143e68dc5962fa7306aef438877ceb5a1",
+    "publicationStatusAtCapture": "ahead_pending_push",
+    "protectedDirt": [
+      ".vscode/launch.json",
+      "docs/production/evidence/INTEGRATION/industrial-l04-prelock-north-a-schedule-v1.json"
+    ]
+  },
+  "operatingMode": {
+    "modelPolicy": "Luna for bounded implementation/mechanical work; Sol for authority, art direction, ambiguity, integration, and final real-app QA.",
+    "minimumUsefulConcurrentStreams": 3,
+    "sameTurnRefill": true,
+    "visibleTaskAckConfirmed": false,
+    "historicalRoutesReusable": false,
+    "sharedAuthorityWritesSerialized": true
+  },
+  "rows": [
+    {
+      "id": "PLAY-103-NORTH",
+      "lane": "world-art-north",
+      "branch": "codex/citysim-world-art-north-imagegen",
+      "worktree": "/Users/James/.codex/worktrees/f55b/city-sim",
+      "head": "86d29196c7c9b4476a19fa0b87a856b1e5c77ae5",
+      "clean": true,
+      "state": "return_threshold_escalation",
+      "nextSafeAction": "Frontier disposition of the 511-pixel residual-chroma predicate; preserve raw sources.",
+      "modelTier": "FRONTIER_AUTHORITY",
+      "routeReady": false
+    },
+    {
+      "id": "PLAY-104-EAST",
+      "lane": "world-art-east",
+      "branch": "codex/citysim-world-art-east-imagegen",
+      "worktree": "/Users/James/.codex/worktrees/3218/city-sim",
+      "head": "be990d5a5b529c7fe5e0528b4b8549058ba45b9e",
+      "clean": false,
+      "dirt": [
+        "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104/east/portable_replay.py",
+        "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104/east/route-snapshot/"
+      ],
+      "state": "owner_checkpoint_required",
+      "nextSafeAction": "Owner checkpoints the two task-owned untracked paths; no route or merge until clean.",
+      "modelTier": "LUNA_LOCAL_DEBUG",
+      "routeReady": false
+    },
+    {
+      "id": "PLAY-105-WEST",
+      "lane": "world-art-west",
+      "branch": "codex/citysim-world-art-west-imagegen",
+      "worktree": "/Users/James/.codex/worktrees/e6f2/city-sim",
+      "head": "4744d83651e7f01e4036a82f9f0d433d426431c9",
+      "clean": false,
+      "state": "active_bounded_repair",
+      "nextSafeAction": "Finish one replacement, two-root deterministic packet, and readiness tuple; stop on any gate failure.",
+      "modelTier": "LUNA_IMPLEMENTATION",
+      "routeReady": true,
+      "routeId": "four-view-v8:play-105-west-production-repair-v7"
+    },
+    {
+      "id": "PLAY-101-RENDERER",
+      "lane": "renderer-intake",
+      "branch": "codex/citysim-world-rendering-single-angle",
+      "worktree": "/Users/James/.codex/worktrees/ccf8/city-sim",
+      "head": "2c6909bc384ab48c6a0d9b0055b1aed203450d86",
+      "clean": true,
+      "state": "nonshipping_fixture_complete",
+      "nextSafeAction": "Wait for exact 43×4 source admission, then publish a fresh route for runtime intake; no partial activation.",
+      "modelTier": "LUNA_IMPLEMENTATION",
+      "routeReady": false
+    },
+    {
+      "id": "PLAY-102-QA",
+      "lane": "playtest-preregistration",
+      "branch": "codex/citysim-playtest-single-angle",
+      "worktree": "/Users/James/.codex/worktrees/fee0/city-sim",
+      "head": "83e7e436f6d96c71d74ef1b59e2b80754d3bc2c1",
+      "clean": true,
+      "state": "evidence_reconciled_pending_review",
+      "nextSafeAction": "Independent post-reconciliation review; candidate-neutral and no app launch.",
+      "modelTier": "FRONTIER_AUTHORITY",
+      "routeReady": false,
+      "candidateNeutral": true
+    },
+    {
+      "id": "SOUTH-ADMISSION",
+      "lane": "source-admission",
+      "branch": "integration-owned",
+      "worktree": null,
+      "head": "cf1be598cea32330de4c4a6d5385cdfccad3c423",
+      "clean": null,
+      "state": "visual_return",
+      "nextSafeAction": "Spill-aware family review before sourceReady; keep integrationAdmitted, rendererQuarantined, and productionSelected false.",
+      "modelTier": "FRONTIER_AUTHORITY",
+      "routeReady": false
+    },
+    {
+      "id": "OS-OPT",
+      "lane": "operating-system",
+      "branch": "codex/citysim-os-optimization",
+      "worktree": "/Users/James/.codex/worktrees/dc21/city-sim",
+      "head": "9ecb67b8",
+      "clean": "unverified",
+      "state": "control_plane_audit",
+      "nextSafeAction": "Refresh dispatch receipts and ACK state without changing product authority.",
+      "modelTier": "LUNA_MECHANICAL",
+      "routeReady": false
+    }
+  ],
+  "gates": {
+    "sourceAdmission": "blocked",
+    "rendererActivation": "blocked",
+    "fullSuite": "not_run",
+    "stagedApp": "not_run",
+    "independentRealAppQA": "not_run",
+    "push": "origin_parity_before_projection"
+  }
+}

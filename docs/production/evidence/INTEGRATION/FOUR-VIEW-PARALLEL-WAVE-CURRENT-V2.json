@@ -1,0 +1,135 @@
+{
+  "schemaVersion": 2,
+  "documentType": "CITYSIM_CURRENT_PARALLEL_WORK_PROJECTION",
+  "supersedes": "FOUR-VIEW-PARALLEL-WAVE-CURRENT-V1.json",
+  "authority": {
+    "capturedAtIntegrationHead": "0bbdab679078ae378e6288e5be6636d04712f9fd",
+    "publishedBaseline": "0bbdab679078ae378e6288e5be6636d04712f9fd",
+    "publicationStatusAtCapture": "published_origin_parity",
+    "protectedDirt": [
+      ".vscode/launch.json",
+      "docs/production/evidence/INTEGRATION/industrial-l04-prelock-north-a-schedule-v1.json"
+    ]
+  },
+  "operatingMode": {
+    "tierModel": "docs/production/evidence/INTEGRATION/MANAGEMENT-TIER-OPERATING-MODEL-V3.json",
+    "modelPolicy": "Luna owns bounded execution, cell fan-out, mechanical joins, and focused review; Sol owns contracts, ambiguity, admission, integration, and final real-app QA.",
+    "minimumUsefulConcurrentStreams": 3,
+    "familyTargetRows": 6,
+    "sameTurnRefill": true,
+    "visibleTaskAckConfirmed": false,
+    "historicalRoutesReusable": false,
+    "sharedAuthorityWritesSerialized": true,
+    "fullSuiteFrequency": "once_per_exact_aggregate"
+  },
+  "cadence": {
+    "waveId": "FOUR-VIEW-PLAY-103-105-V8",
+    "snapshotReceipt": "current-turn-read-only-census",
+    "cellCaptain": "world-art-direction-captain",
+    "acknowledgementSLA": "one coordination round",
+    "nextJoin": "West independent review plus North Luna focused repair; East owner checkpoint",
+    "changedRows": [
+      "PLAY-103-NORTH",
+      "PLAY-105-WEST"
+    ],
+    "refereeQueue": [
+      "PLAY-105-WEST"
+    ],
+    "reservedRendererSlot": "after 4/4 source admission",
+    "reservedQASlot": "after exact renderer aggregate",
+    "unresolvedSolDecision": "North alpha-aware visual disposition and South family source admission"
+  },
+  "rows": [
+    {
+      "id": "PLAY-103-NORTH",
+      "lane": "world-art-north",
+      "branch": "codex/citysim-world-art-north-imagegen",
+      "worktree": "/Users/James/.codex/worktrees/f55b/city-sim",
+      "head": "12c081381c97a41a05c87c926de0ef7becf5db12",
+      "clean": true,
+      "state": "route_published_ack_pending",
+      "routeId": "four-view-v13:play-103-north-alpha-aware-lod-chroma-v1",
+      "modelTier": "LUNA_IMPLEMENTATION",
+      "nextSafeAction": "Obtain visible Luna acknowledgement, then run the frozen alpha-aware LOD repair; no raw regeneration."
+    },
+    {
+      "id": "PLAY-105-WEST",
+      "lane": "world-art-west",
+      "branch": "codex/citysim-world-art-west-imagegen",
+      "worktree": "/Users/James/.codex/worktrees/e6f2/city-sim",
+      "head": "3cdc99ab9482551dc242db20780b6e12174925be",
+      "clean": true,
+      "state": "candidate_ready_for_independent_review",
+      "routeId": "four-view-v13:play-105-west-production-repair-v8",
+      "modelTier": "LUNA_IMPLEMENTATION",
+      "nextSafeAction": "Independent frontier packet review; do not admit or activate."
+    },
+    {
+      "id": "PLAY-104-EAST",
+      "lane": "world-art-east",
+      "branch": "codex/citysim-world-art-east-imagegen",
+      "worktree": "/Users/James/.codex/worktrees/3218/city-sim",
+      "head": "be990d5a5b529c7fe5e0528b4b8549058ba45b9e",
+      "clean": false,
+      "dirt": [
+        "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104/east/portable_replay.py",
+        "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104/east/route-snapshot/"
+      ],
+      "state": "owner_checkpoint_required",
+      "modelTier": "LUNA_LOCAL_DEBUG",
+      "nextSafeAction": "Owner checkpoints the two task-owned paths; preserve them and do not re-route until clean."
+    },
+    {
+      "id": "PLAY-101-RENDERER",
+      "lane": "renderer-intake",
+      "branch": "codex/citysim-world-rendering-single-angle",
+      "worktree": "/Users/James/.codex/worktrees/ccf8/city-sim",
+      "head": "2c6909bc384ab48c6a0d9b0055b1aed203450d86",
+      "clean": true,
+      "state": "nonshipping_fixture_complete",
+      "modelTier": "LUNA_IMPLEMENTATION",
+      "nextSafeAction": "Keep intake/quarantine harness warm; wait for exact 43×4 source admission."
+    },
+    {
+      "id": "PLAY-102-QA",
+      "lane": "playtest-preregistration",
+      "branch": "codex/citysim-playtest-single-angle",
+      "worktree": "/Users/James/.codex/worktrees/fee0/city-sim",
+      "head": "83e7e436f6d96c71d74ef1b59e2b80754d3bc2c1",
+      "clean": true,
+      "state": "candidate_neutral_preregistration_ready",
+      "modelTier": "LUNA_MECHANICAL",
+      "nextSafeAction": "Keep 24-camera regular/compact fixture ready; launch only after exact renderer candidate."
+    },
+    {
+      "id": "SOUTH-ADMISSION",
+      "lane": "source-admission",
+      "branch": "integration-owned",
+      "worktree": null,
+      "head": "cf1be598cea32330de4c4a6d5385cdfccad3c423",
+      "clean": null,
+      "state": "visual_return",
+      "modelTier": "FRONTIER_AUTHORITY",
+      "nextSafeAction": "Repair/return residential and industrial spill; preserve Commercial/Civic as unchanged screen-pass rows."
+    },
+    {
+      "id": "OS-OPT",
+      "lane": "operating-system",
+      "branch": "codex/citysim-os-optimization",
+      "worktree": "/Users/James/.codex/worktrees/dc21/city-sim",
+      "head": "9ecb67b8",
+      "clean": "unverified",
+      "state": "cadence_v3_proposed",
+      "modelTier": "LUNA_MECHANICAL",
+      "nextSafeAction": "Measure ACK latency, same-turn refill, and changed-row joins; no product/full-gate work."
+    }
+  ],
+  "gates": {
+    "sourceAdmission": "blocked",
+    "rendererActivation": "blocked",
+    "fullSuite": "not_run",
+    "stagedApp": "not_run",
+    "independentRealAppQA": "not_run",
+    "push": "origin_parity_at_0bbdab67"
+  }
+}

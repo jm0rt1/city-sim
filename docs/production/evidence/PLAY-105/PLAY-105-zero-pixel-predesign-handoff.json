@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "taskId": "PLAY-105",
+  "stage": "predesign",
+  "direction": "west",
+  "routeId": "four-view-v1:play-105-west-predesign",
+  "routeSha256": "91464f419cb0a7a45909ea373fc5d0ccfb41332c2372943c35f927aa949eb878",
+  "expectedAnchorCount": 43,
+  "inventoryPath": "docs/production/evidence/PLAY-105/south-anchor-readiness-matrix.json",
+  "directionRoot": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105/west",
+  "pixelsProduced": false,
+  "imagegenCalled": false,
+  "siblingInputsConsumed": [],
+  "sourceReady": false,
+  "candidateReadyForIndependentReview": false,
+  "integrationAdmitted": false,
+  "rendererQuarantined": false,
+  "productionSelected": false,
+  "disposition": "predesign_ready_but_source_blocked",
+  "missingDependencies": [
+    "exact admitted South raw path/hash for every identity",
+    "exact South source-admission receipt path/hash for every identity"
+  ]
+}

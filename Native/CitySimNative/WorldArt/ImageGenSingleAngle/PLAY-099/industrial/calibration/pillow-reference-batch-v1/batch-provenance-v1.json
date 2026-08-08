@@ -1,0 +1,30 @@
+{
+  "acceptedOneIdentityPngPreserved": true,
+  "authorityCommit": "b4ff93aaa48f70dae8a3df2c50876d2c36537886",
+  "candidateOnly": true,
+  "direction": "south",
+  "identityCount": 12,
+  "imageGenCalled": false,
+  "inputHead": "f38646855354e9825473e5fd9f558c36d6b4a280",
+  "productionSelected": false,
+  "rawInventorySha256": "c962ca72b3122adfa36696b58d77ab3e6c30ba91d010256531fe4c4bcad2525f",
+  "rawProvenanceSha256": "1a4fb793edf4b5efa612c73d2e394fc6c8d1e779b36da085b5eb4bd4d19b7b26",
+  "rejectedCoreImageEvidencePreserved": true,
+  "routeCanonicalSha256": "37b940d0d8107028d50b06870fc34336be0aff2a48c6698d3e7183a54f90da5",
+  "routeId": "four-view-v8:play-099-industrial-south-batch-v1",
+  "runtime": {
+    "command": [
+      "/Users/James/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibrate_pillow_reference.py",
+      "--all-identities",
+      "--repeat",
+      "2",
+      "--isolated-roots"
+    ],
+    "pillowVersion": "12.2.0",
+    "pythonExecutableSha256": "eb9d74b9c7cfdfb2c9b91614edb2c3607360ba46c5aa7fc4557b3a4a23e97cff",
+    "pythonVersion": "3.12.13"
+  },
+  "schema": "PLAY-099-industrial-south-batch-provenance-v1",
+  "task": "PLAY-099"
+}

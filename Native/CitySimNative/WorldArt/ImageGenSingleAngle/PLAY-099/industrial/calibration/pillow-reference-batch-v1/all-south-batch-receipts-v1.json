@@ -1,0 +1,3578 @@
+[
+  {
+    "authorityCommit": "b4ff93aaa48f70dae8a3df2c50876d2c36537886",
+    "candidateReadyForIndependentReview": true,
+    "direction": "south",
+    "inputHead": "f38646855354e9825473e5fd9f558c36d6b4a280",
+    "integrationAdmitted": false,
+    "lods": [
+      {
+        "canvas": [
+          1024,
+          683
+        ],
+        "decodedSha256": "0e3b6a70b9558d59990723d6ffa2e7312132bb72c59c369790b09f2d872f1a21",
+        "filter": "Pillow.Image.Resampling.LANCZOS",
+        "name": "block",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibration/pillow-reference-batch-v1/industrial_l01_v00/block.png",
+        "pivot": [
+          512,
+          598
+        ],
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "64a756d3b3e9f5b452af29e52ff3b7d790b4bf03ec790839662ae84130b72988",
+        "socket": [
+          427,
+          555
+        ]
+      },
+      {
+        "canvas": [
+          512,
+          342
+        ],
+        "decodedSha256": "ad45bbec06af79a29a459ddf741243ab32aa50930b22bcc4bcbb1fb9deb60277",
+        "filter": "Pillow.Image.Resampling.LANCZOS",
+        "name": "neighborhood",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibration/pillow-reference-batch-v1/industrial_l01_v00/neighborhood.png",
+        "pivot": [
+          256,
+          299
+        ],
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "f69204fa6db808dc8a2673a5f679ba36a3cf7c5436f4ed547de6a87f815e5398",
+        "socket": [
+          213,
+          278
+        ]
+      },
+      {
+        "canvas": [
+          256,
+          171
+        ],
+        "decodedSha256": "ea3caf4136ef7d967055ade4c7fb3038e90cdefa0886659521d48ed57805c55c",
+        "filter": "Pillow.Image.Resampling.LANCZOS",
+        "name": "city",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibration/pillow-reference-batch-v1/industrial_l01_v00/city.png",
+        "pivot": [
+          128,
+          150
+        ],
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "e69853fc831a59e2bd1e86c3da2ae5f3a05a116e3adf96f10c460e131122f2f9",
+        "socket": [
+          107,
+          139
+        ]
+      }
+    ],
+    "logicalId": "industrial_l01_v00",
+    "productionSelected": false,
+    "rawBytesPreserved": true,
+    "rawPath": "raw/industrial_l01_v00-source-v01.png",
+    "rawSha256": "7ca3e26234e7e15df9a46775a83f7132f89e1ea1f22d97c42ca6d3502099bbd2",
+    "registration": {
+      "footprintPolygonSource": [
+        [
+          768,
+          640
+        ],
+        [
+          1024,
+          768
+        ],
+        [
+          768,
+          896
+        ],
+        [
+          512,
+          768
+        ]
+      ],
+      "frontageSocketSource": [
+        640,
+        832
+      ],
+      "groundPivotSource": [
+        768,
+        896
+      ],
+      "pixelDerivedGeometry": false,
+      "sourceCanvas": [
+        1536,
+        1024
+      ]
+    },
+    "rendererQuarantined": false,
+    "routeCanonicalSha256": "37b940d0d8107028d50b06870fc34336be0aff2a48c6698d3e7183a54f90da5",
+    "routeId": "four-view-v8:play-099-industrial-south-batch-v1",
+    "runs": [
+      {
+        "isolatedRoot": true,
+        "lods": {
+          "block": {
+            "canvas": [
+              1024,
+              683
+            ],
+            "decodedSha256": "0e3b6a70b9558d59990723d6ffa2e7312132bb72c59c369790b09f2d872f1a21",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "64a756d3b3e9f5b452af29e52ff3b7d790b4bf03ec790839662ae84130b72988",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.21495670525256222,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 150339,
+            "visibleKeyedMagentaPixels": 0
+          },
+          "city": {
+            "canvas": [
+              256,
+              171
+            ],
+            "decodedSha256": "ea3caf4136ef7d967055ade4c7fb3038e90cdefa0886659521d48ed57805c55c",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "e69853fc831a59e2bd1e86c3da2ae5f3a05a116e3adf96f10c460e131122f2f9",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.22713358918128654,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 9943,
+            "visibleKeyedMagentaPixels": 0
+          },
+          "neighborhood": {
+            "canvas": [
+              512,
+              342
+            ],
+            "decodedSha256": "ad45bbec06af79a29a459ddf741243ab32aa50930b22bcc4bcbb1fb9deb60277",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "f69204fa6db808dc8a2673a5f679ba36a3cf7c5436f4ed547de6a87f815e5398",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.2184016355994152,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 38243,
+            "visibleKeyedMagentaPixels": 0
+          }
+        },
+        "run": 1,
+        "source": {
+          "canvas": [
+            1536,
+            1024
+          ],
+          "decodedSha256": "e7513c32699127353f851b1d249c624c9c8e17d859c914d5c8d38ffdf8339f15",
+          "edgeAlphaPixels": 0,
+          "fileSha256": "aa7df1b8a8d12fcd47cbf8299c93b57f00daec9b1a74f927dafe6fe7081527bb",
+          "hiddenRgbPixels": 0,
+          "mode": "RGBA",
+          "pngMetadata": {},
+          "removedKeyedPixels": 1239493,
+          "visibleAlphaOccupancy": 0.21195157368977866,
+          "visibleAlphaOccupancyAboveFloor": true,
+          "visibleAlphaOccupancyFloor": 0.1,
+          "visibleAlphaPixels": 333371,
+          "visibleKeyedMagentaPixels": 0
+        }
+      },
+      {
+        "isolatedRoot": true,
+        "lods": {
+          "block": {
+            "canvas": [
+              1024,
+              683
+            ],
+            "decodedSha256": "0e3b6a70b9558d59990723d6ffa2e7312132bb72c59c369790b09f2d872f1a21",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "64a756d3b3e9f5b452af29e52ff3b7d790b4bf03ec790839662ae84130b72988",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.21495670525256222,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 150339,
+            "visibleKeyedMagentaPixels": 0
+          },
+          "city": {
+            "canvas": [
+              256,
+              171
+            ],
+            "decodedSha256": "ea3caf4136ef7d967055ade4c7fb3038e90cdefa0886659521d48ed57805c55c",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "e69853fc831a59e2bd1e86c3da2ae5f3a05a116e3adf96f10c460e131122f2f9",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.22713358918128654,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 9943,
+            "visibleKeyedMagentaPixels": 0
+          },
+          "neighborhood": {
+            "canvas": [
+              512,
+              342
+            ],
+            "decodedSha256": "ad45bbec06af79a29a459ddf741243ab32aa50930b22bcc4bcbb1fb9deb60277",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "f69204fa6db808dc8a2673a5f679ba36a3cf7c5436f4ed547de6a87f815e5398",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.2184016355994152,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 38243,
+            "visibleKeyedMagentaPixels": 0
+          }
+        },
+        "run": 2,
+        "source": {
+          "canvas": [
+            1536,
+            1024
+          ],
+          "decodedSha256": "e7513c32699127353f851b1d249c624c9c8e17d859c914d5c8d38ffdf8339f15",
+          "edgeAlphaPixels": 0,
+          "fileSha256": "aa7df1b8a8d12fcd47cbf8299c93b57f00daec9b1a74f927dafe6fe7081527bb",
+          "hiddenRgbPixels": 0,
+          "mode": "RGBA",
+          "pngMetadata": {},
+          "removedKeyedPixels": 1239493,
+          "visibleAlphaOccupancy": 0.21195157368977866,
+          "visibleAlphaOccupancyAboveFloor": true,
+          "visibleAlphaOccupancyFloor": 0.1,
+          "visibleAlphaPixels": 333371,
+          "visibleKeyedMagentaPixels": 0
+        }
+      }
+    ],
+    "runtime": {
+      "command": [
+        "/Users/James/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibrate_pillow_reference.py",
+        "--all-identities",
+        "--repeat",
+        "2",
+        "--isolated-roots"
+      ],
+      "pillowVersion": "12.2.0",
+      "pythonExecutableSha256": "eb9d74b9c7cfdfb2c9b91614edb2c3607360ba46c5aa7fc4557b3a4a23e97cff",
+      "pythonVersion": "3.12.13"
+    },
+    "schema": "PLAY-099-industrial-south-batch-receipt-v1",
+    "source": {
+      "canvas": [
+        1536,
+        1024
+      ],
+      "decodedSha256": "e7513c32699127353f851b1d249c624c9c8e17d859c914d5c8d38ffdf8339f15",
+      "edgeAlphaPixels": 0,
+      "fileSha256": "aa7df1b8a8d12fcd47cbf8299c93b57f00daec9b1a74f927dafe6fe7081527bb",
+      "hiddenRgbPixels": 0,
+      "mode": "RGBA",
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibration/pillow-reference-batch-v1/industrial_l01_v00/source-rgba.png",
+      "pngMetadata": {},
+      "removedKeyedPixels": 1239493,
+      "visibleAlphaOccupancy": 0.21195157368977866,
+      "visibleAlphaOccupancyAboveFloor": true,
+      "visibleAlphaOccupancyFloor": 0.1,
+      "visibleAlphaPixels": 333371,
+      "visibleKeyedMagentaPixels": 0
+    },
+    "sourceReady": false,
+    "task": "PLAY-099",
+    "visualAcceptance": "not performed; frontier-owned"
+  },
+  {
+    "authorityCommit": "b4ff93aaa48f70dae8a3df2c50876d2c36537886",
+    "candidateReadyForIndependentReview": true,
+    "direction": "south",
+    "inputHead": "f38646855354e9825473e5fd9f558c36d6b4a280",
+    "integrationAdmitted": false,
+    "lods": [
+      {
+        "canvas": [
+          1024,
+          683
+        ],
+        "decodedSha256": "9b81a2e1b00ef99e8832e6711631611c6be79de2dd23a72766930e568c7e84b3",
+        "filter": "Pillow.Image.Resampling.LANCZOS",
+        "name": "block",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibration/pillow-reference-batch-v1/industrial_l01_v01/block.png",
+        "pivot": [
+          512,
+          598
+        ],
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "09c7d25cc3b6bcb14c16d5c26518e2dfb9ac19562fcc76d5026c018d5a42f5d4",
+        "socket": [
+          427,
+          555
+        ]
+      },
+      {
+        "canvas": [
+          512,
+          342
+        ],
+        "decodedSha256": "ae24465fde0dcb11ac67d136e15f815397527fe4ab2d6211e1d8c4743fb3819f",
+        "filter": "Pillow.Image.Resampling.LANCZOS",
+        "name": "neighborhood",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibration/pillow-reference-batch-v1/industrial_l01_v01/neighborhood.png",
+        "pivot": [
+          256,
+          299
+        ],
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "f46eae3235d2cdd5363b579fef41f38569203bd54938ff8597a2aef2781c3646",
+        "socket": [
+          213,
+          278
+        ]
+      },
+      {
+        "canvas": [
+          256,
+          171
+        ],
+        "decodedSha256": "0db53b1f100aa5acc8cffaf74a4a1989474fdc8b453a32de0145466564de15fb",
+        "filter": "Pillow.Image.Resampling.LANCZOS",
+        "name": "city",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibration/pillow-reference-batch-v1/industrial_l01_v01/city.png",
+        "pivot": [
+          128,
+          150
+        ],
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "c1de18c7f9b343fabb86d50c5886159fdeea19c0f22f5fb9ba54854d31fd9b64",
+        "socket": [
+          107,
+          139
+        ]
+      }
+    ],
+    "logicalId": "industrial_l01_v01",
+    "productionSelected": false,
+    "rawBytesPreserved": true,
+    "rawPath": "raw/industrial_l01_v01-source-v01.png",
+    "rawSha256": "1c5132289691f74a6cbff9b9ad38fad2d0d92ebfe6560e73e886246be5a3ae9b",
+    "registration": {
+      "footprintPolygonSource": [
+        [
+          768,
+          640
+        ],
+        [
+          1024,
+          768
+        ],
+        [
+          768,
+          896
+        ],
+        [
+          512,
+          768
+        ]
+      ],
+      "frontageSocketSource": [
+        640,
+        832
+      ],
+      "groundPivotSource": [
+        768,
+        896
+      ],
+      "pixelDerivedGeometry": false,
+      "sourceCanvas": [
+        1536,
+        1024
+      ]
+    },
+    "rendererQuarantined": false,
+    "routeCanonicalSha256": "37b940d0d8107028d50b06870fc34336be0aff2a48c6698d3e7183a54f90da5",
+    "routeId": "four-view-v8:play-099-industrial-south-batch-v1",
+    "runs": [
+      {
+        "isolatedRoot": true,
+        "lods": {
+          "block": {
+            "canvas": [
+              1024,
+              683
+            ],
+            "decodedSha256": "9b81a2e1b00ef99e8832e6711631611c6be79de2dd23a72766930e568c7e84b3",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "09c7d25cc3b6bcb14c16d5c26518e2dfb9ac19562fcc76d5026c018d5a42f5d4",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.22379438140556368,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 156520,
+            "visibleKeyedMagentaPixels": 0
+          },
+          "city": {
+            "canvas": [
+              256,
+              171
+            ],
+            "decodedSha256": "0db53b1f100aa5acc8cffaf74a4a1989474fdc8b453a32de0145466564de15fb",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "c1de18c7f9b343fabb86d50c5886159fdeea19c0f22f5fb9ba54854d31fd9b64",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.23375822368421054,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 10233,
+            "visibleKeyedMagentaPixels": 0
+          },
+          "neighborhood": {
+            "canvas": [
+              512,
+              342
+            ],
+            "decodedSha256": "ae24465fde0dcb11ac67d136e15f815397527fe4ab2d6211e1d8c4743fb3819f",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "f46eae3235d2cdd5363b579fef41f38569203bd54938ff8597a2aef2781c3646",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.22677380299707603,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 39709,
+            "visibleKeyedMagentaPixels": 0
+          }
+        },
+        "run": 1,
+        "source": {
+          "canvas": [
+            1536,
+            1024
+          ],
+          "decodedSha256": "50417cc430284261f6cc7c109bdc8bc56a8de496379de8571f4b1c6411f6329c",
+          "edgeAlphaPixels": 0,
+          "fileSha256": "f21ee160ca19409e9bd36fca5069983cef633450c454abbdf348ed2ad1cb1cc3",
+          "hiddenRgbPixels": 0,
+          "mode": "RGBA",
+          "pngMetadata": {},
+          "removedKeyedPixels": 1224547,
+          "visibleAlphaOccupancy": 0.22145398457845053,
+          "visibleAlphaOccupancyAboveFloor": true,
+          "visibleAlphaOccupancyFloor": 0.1,
+          "visibleAlphaPixels": 348317,
+          "visibleKeyedMagentaPixels": 0
+        }
+      },
+      {
+        "isolatedRoot": true,
+        "lods": {
+          "block": {
+            "canvas": [
+              1024,
+              683
+            ],
+            "decodedSha256": "9b81a2e1b00ef99e8832e6711631611c6be79de2dd23a72766930e568c7e84b3",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "09c7d25cc3b6bcb14c16d5c26518e2dfb9ac19562fcc76d5026c018d5a42f5d4",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.22379438140556368,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 156520,
+            "visibleKeyedMagentaPixels": 0
+          },
+          "city": {
+            "canvas": [
+              256,
+              171
+            ],
+            "decodedSha256": "0db53b1f100aa5acc8cffaf74a4a1989474fdc8b453a32de0145466564de15fb",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "c1de18c7f9b343fabb86d50c5886159fdeea19c0f22f5fb9ba54854d31fd9b64",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.23375822368421054,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 10233,
+            "visibleKeyedMagentaPixels": 0
+          },
+          "neighborhood": {
+            "canvas": [
+              512,
+              342
+            ],
+            "decodedSha256": "ae24465fde0dcb11ac67d136e15f815397527fe4ab2d6211e1d8c4743fb3819f",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "f46eae3235d2cdd5363b579fef41f38569203bd54938ff8597a2aef2781c3646",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.22677380299707603,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 39709,
+            "visibleKeyedMagentaPixels": 0
+          }
+        },
+        "run": 2,
+        "source": {
+          "canvas": [
+            1536,
+            1024
+          ],
+          "decodedSha256": "50417cc430284261f6cc7c109bdc8bc56a8de496379de8571f4b1c6411f6329c",
+          "edgeAlphaPixels": 0,
+          "fileSha256": "f21ee160ca19409e9bd36fca5069983cef633450c454abbdf348ed2ad1cb1cc3",
+          "hiddenRgbPixels": 0,
+          "mode": "RGBA",
+          "pngMetadata": {},
+          "removedKeyedPixels": 1224547,
+          "visibleAlphaOccupancy": 0.22145398457845053,
+          "visibleAlphaOccupancyAboveFloor": true,
+          "visibleAlphaOccupancyFloor": 0.1,
+          "visibleAlphaPixels": 348317,
+          "visibleKeyedMagentaPixels": 0
+        }
+      }
+    ],
+    "runtime": {
+      "command": [
+        "/Users/James/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibrate_pillow_reference.py",
+        "--all-identities",
+        "--repeat",
+        "2",
+        "--isolated-roots"
+      ],
+      "pillowVersion": "12.2.0",
+      "pythonExecutableSha256": "eb9d74b9c7cfdfb2c9b91614edb2c3607360ba46c5aa7fc4557b3a4a23e97cff",
+      "pythonVersion": "3.12.13"
+    },
+    "schema": "PLAY-099-industrial-south-batch-receipt-v1",
+    "source": {
+      "canvas": [
+        1536,
+        1024
+      ],
+      "decodedSha256": "50417cc430284261f6cc7c109bdc8bc56a8de496379de8571f4b1c6411f6329c",
+      "edgeAlphaPixels": 0,
+      "fileSha256": "f21ee160ca19409e9bd36fca5069983cef633450c454abbdf348ed2ad1cb1cc3",
+      "hiddenRgbPixels": 0,
+      "mode": "RGBA",
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibration/pillow-reference-batch-v1/industrial_l01_v01/source-rgba.png",
+      "pngMetadata": {},
+      "removedKeyedPixels": 1224547,
+      "visibleAlphaOccupancy": 0.22145398457845053,
+      "visibleAlphaOccupancyAboveFloor": true,
+      "visibleAlphaOccupancyFloor": 0.1,
+      "visibleAlphaPixels": 348317,
+      "visibleKeyedMagentaPixels": 0
+    },
+    "sourceReady": false,
+    "task": "PLAY-099",
+    "visualAcceptance": "not performed; frontier-owned"
+  },
+  {
+    "authorityCommit": "b4ff93aaa48f70dae8a3df2c50876d2c36537886",
+    "candidateReadyForIndependentReview": true,
+    "direction": "south",
+    "inputHead": "f38646855354e9825473e5fd9f558c36d6b4a280",
+    "integrationAdmitted": false,
+    "lods": [
+      {
+        "canvas": [
+          1024,
+          683
+        ],
+        "decodedSha256": "43db9612c426d5fc804875e9dca711ef3041f291e54baaedaa0daec723c4d4fb",
+        "filter": "Pillow.Image.Resampling.LANCZOS",
+        "name": "block",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibration/pillow-reference-batch-v1/industrial_l01_v02/block.png",
+        "pivot": [
+          512,
+          598
+        ],
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "9df47b25ab29093bf010e6e8e19082fd8541b14dee1467ef04902775df756c0f",
+        "socket": [
+          427,
+          555
+        ]
+      },
+      {
+        "canvas": [
+          512,
+          342
+        ],
+        "decodedSha256": "c1ae37d013723a707e984958cd5d14a72af579ca7e1ab4cce83f3d7e4ccece71",
+        "filter": "Pillow.Image.Resampling.LANCZOS",
+        "name": "neighborhood",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibration/pillow-reference-batch-v1/industrial_l01_v02/neighborhood.png",
+        "pivot": [
+          256,
+          299
+        ],
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "fead52eb977dae683bc3c6d7d8dca85d74a821d896d9d055274231e5369a2d96",
+        "socket": [
+          213,
+          278
+        ]
+      },
+      {
+        "canvas": [
+          256,
+          171
+        ],
+        "decodedSha256": "681b59a53844cc738e55aac12ff9879d40e4a9b382e8ebf39b27e790e8d729bf",
+        "filter": "Pillow.Image.Resampling.LANCZOS",
+        "name": "city",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibration/pillow-reference-batch-v1/industrial_l01_v02/city.png",
+        "pivot": [
+          128,
+          150
+        ],
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "5515bcbca60bef8308844af52c32313e75ea5e6e2323fa7f5f11f85d680fcbcb",
+        "socket": [
+          107,
+          139
+        ]
+      }
+    ],
+    "logicalId": "industrial_l01_v02",
+    "productionSelected": false,
+    "rawBytesPreserved": true,
+    "rawPath": "raw/industrial_l01_v02-source-v01.png",
+    "rawSha256": "3da2842a0a36ae3aa27d00703572d16e094b49be2e15f36c63e7e1afece0caa5",
+    "registration": {
+      "footprintPolygonSource": [
+        [
+          768,
+          640
+        ],
+        [
+          1024,
+          768
+        ],
+        [
+          768,
+          896
+        ],
+        [
+          512,
+          768
+        ]
+      ],
+      "frontageSocketSource": [
+        640,
+        832
+      ],
+      "groundPivotSource": [
+        768,
+        896
+      ],
+      "pixelDerivedGeometry": false,
+      "sourceCanvas": [
+        1536,
+        1024
+      ]
+    },
+    "rendererQuarantined": false,
+    "routeCanonicalSha256": "37b940d0d8107028d50b06870fc34336be0aff2a48c6698d3e7183a54f90da5",
+    "routeId": "four-view-v8:play-099-industrial-south-batch-v1",
+    "runs": [
+      {
+        "isolatedRoot": true,
+        "lods": {
+          "block": {
+            "canvas": [
+              1024,
+              683
+            ],
+            "decodedSha256": "43db9612c426d5fc804875e9dca711ef3041f291e54baaedaa0daec723c4d4fb",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "9df47b25ab29093bf010e6e8e19082fd8541b14dee1467ef04902775df756c0f",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.23389887216325037,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 163587,
+            "visibleKeyedMagentaPixels": 0
+          },
+          "city": {
+            "canvas": [
+              256,
+              171
+            ],
+            "decodedSha256": "681b59a53844cc738e55aac12ff9879d40e4a9b382e8ebf39b27e790e8d729bf",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "5515bcbca60bef8308844af52c32313e75ea5e6e2323fa7f5f11f85d680fcbcb",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.2447688230994152,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 10715,
+            "visibleKeyedMagentaPixels": 0
+          },
+          "neighborhood": {
+            "canvas": [
+              512,
+              342
+            ],
+            "decodedSha256": "c1ae37d013723a707e984958cd5d14a72af579ca7e1ab4cce83f3d7e4ccece71",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "fead52eb977dae683bc3c6d7d8dca85d74a821d896d9d055274231e5369a2d96",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.23682497258771928,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 41469,
+            "visibleKeyedMagentaPixels": 0
+          }
+        },
+        "run": 1,
+        "source": {
+          "canvas": [
+            1536,
+            1024
+          ],
+          "decodedSha256": "94a4b30c16592cabb9179056fa0a3feabfb367dd7f13e2fd9624cb876001821b",
+          "edgeAlphaPixels": 0,
+          "fileSha256": "3f3c4f5d9e09e6ae7d8c79a66d3e1e6525048dda59de6b72bffeaa4207216c0a",
+          "hiddenRgbPixels": 0,
+          "mode": "RGBA",
+          "pngMetadata": {},
+          "removedKeyedPixels": 1208573,
+          "visibleAlphaOccupancy": 0.23160998026529947,
+          "visibleAlphaOccupancyAboveFloor": true,
+          "visibleAlphaOccupancyFloor": 0.1,
+          "visibleAlphaPixels": 364291,
+          "visibleKeyedMagentaPixels": 0
+        }
+      },
+      {
+        "isolatedRoot": true,
+        "lods": {
+          "block": {
+            "canvas": [
+              1024,
+              683
+            ],
+            "decodedSha256": "43db9612c426d5fc804875e9dca711ef3041f291e54baaedaa0daec723c4d4fb",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "9df47b25ab29093bf010e6e8e19082fd8541b14dee1467ef04902775df756c0f",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.23389887216325037,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 163587,
+            "visibleKeyedMagentaPixels": 0
+          },
+          "city": {
+            "canvas": [
+              256,
+              171
+            ],
+            "decodedSha256": "681b59a53844cc738e55aac12ff9879d40e4a9b382e8ebf39b27e790e8d729bf",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "5515bcbca60bef8308844af52c32313e75ea5e6e2323fa7f5f11f85d680fcbcb",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.2447688230994152,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 10715,
+            "visibleKeyedMagentaPixels": 0
+          },
+          "neighborhood": {
+            "canvas": [
+              512,
+              342
+            ],
+            "decodedSha256": "c1ae37d013723a707e984958cd5d14a72af579ca7e1ab4cce83f3d7e4ccece71",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "fead52eb977dae683bc3c6d7d8dca85d74a821d896d9d055274231e5369a2d96",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.23682497258771928,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 41469,
+            "visibleKeyedMagentaPixels": 0
+          }
+        },
+        "run": 2,
+        "source": {
+          "canvas": [
+            1536,
+            1024
+          ],
+          "decodedSha256": "94a4b30c16592cabb9179056fa0a3feabfb367dd7f13e2fd9624cb876001821b",
+          "edgeAlphaPixels": 0,
+          "fileSha256": "3f3c4f5d9e09e6ae7d8c79a66d3e1e6525048dda59de6b72bffeaa4207216c0a",
+          "hiddenRgbPixels": 0,
+          "mode": "RGBA",
+          "pngMetadata": {},
+          "removedKeyedPixels": 1208573,
+          "visibleAlphaOccupancy": 0.23160998026529947,
+          "visibleAlphaOccupancyAboveFloor": true,
+          "visibleAlphaOccupancyFloor": 0.1,
+          "visibleAlphaPixels": 364291,
+          "visibleKeyedMagentaPixels": 0
+        }
+      }
+    ],
+    "runtime": {
+      "command": [
+        "/Users/James/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibrate_pillow_reference.py",
+        "--all-identities",
+        "--repeat",
+        "2",
+        "--isolated-roots"
+      ],
+      "pillowVersion": "12.2.0",
+      "pythonExecutableSha256": "eb9d74b9c7cfdfb2c9b91614edb2c3607360ba46c5aa7fc4557b3a4a23e97cff",
+      "pythonVersion": "3.12.13"
+    },
+    "schema": "PLAY-099-industrial-south-batch-receipt-v1",
+    "source": {
+      "canvas": [
+        1536,
+        1024
+      ],
+      "decodedSha256": "94a4b30c16592cabb9179056fa0a3feabfb367dd7f13e2fd9624cb876001821b",
+      "edgeAlphaPixels": 0,
+      "fileSha256": "3f3c4f5d9e09e6ae7d8c79a66d3e1e6525048dda59de6b72bffeaa4207216c0a",
+      "hiddenRgbPixels": 0,
+      "mode": "RGBA",
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibration/pillow-reference-batch-v1/industrial_l01_v02/source-rgba.png",
+      "pngMetadata": {},
+      "removedKeyedPixels": 1208573,
+      "visibleAlphaOccupancy": 0.23160998026529947,
+      "visibleAlphaOccupancyAboveFloor": true,
+      "visibleAlphaOccupancyFloor": 0.1,
+      "visibleAlphaPixels": 364291,
+      "visibleKeyedMagentaPixels": 0
+    },
+    "sourceReady": false,
+    "task": "PLAY-099",
+    "visualAcceptance": "not performed; frontier-owned"
+  },
+  {
+    "authorityCommit": "b4ff93aaa48f70dae8a3df2c50876d2c36537886",
+    "candidateReadyForIndependentReview": true,
+    "direction": "south",
+    "inputHead": "f38646855354e9825473e5fd9f558c36d6b4a280",
+    "integrationAdmitted": false,
+    "lods": [
+      {
+        "canvas": [
+          1024,
+          683
+        ],
+        "decodedSha256": "731af9121156bccf32040ea3e213e781b989dfce6b5be6b9de8408fa130437ee",
+        "filter": "Pillow.Image.Resampling.LANCZOS",
+        "name": "block",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibration/pillow-reference-batch-v1/industrial_l02_v00/block.png",
+        "pivot": [
+          512,
+          598
+        ],
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "559fa5d1f84c7c5affce106ba0c8b626ad74ec5d61343fe20b35511d9ec29810",
+        "socket": [
+          427,
+          555
+        ]
+      },
+      {
+        "canvas": [
+          512,
+          342
+        ],
+        "decodedSha256": "b62725e6ed2a16e4988bdee3bb56aed7aab7905de6ed29c635fd086574c667c9",
+        "filter": "Pillow.Image.Resampling.LANCZOS",
+        "name": "neighborhood",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibration/pillow-reference-batch-v1/industrial_l02_v00/neighborhood.png",
+        "pivot": [
+          256,
+          299
+        ],
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "8b97ec94cdd3b203fec87b9f640e6ba2ab54afb9bab284582f96317fc98f0f28",
+        "socket": [
+          213,
+          278
+        ]
+      },
+      {
+        "canvas": [
+          256,
+          171
+        ],
+        "decodedSha256": "2f57567163684b7b7112c4645dd1e425c9e7125d4a1be1b17da9685b813f1796",
+        "filter": "Pillow.Image.Resampling.LANCZOS",
+        "name": "city",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibration/pillow-reference-batch-v1/industrial_l02_v00/city.png",
+        "pivot": [
+          128,
+          150
+        ],
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "27da8a0c462311ff83eb7a58c20ff1ed3ddcf6aedcf61f7e5a5a392ebf3fb4ef",
+        "socket": [
+          107,
+          139
+        ]
+      }
+    ],
+    "logicalId": "industrial_l02_v00",
+    "productionSelected": false,
+    "rawBytesPreserved": true,
+    "rawPath": "raw/industrial_l02_v00-source-v01.png",
+    "rawSha256": "294817873333d7ebb9d763f5932624a8f83cd7784cdddb9ab7b5c90d8a64574a",
+    "registration": {
+      "footprintPolygonSource": [
+        [
+          768,
+          640
+        ],
+        [
+          1024,
+          768
+        ],
+        [
+          768,
+          896
+        ],
+        [
+          512,
+          768
+        ]
+      ],
+      "frontageSocketSource": [
+        640,
+        832
+      ],
+      "groundPivotSource": [
+        768,
+        896
+      ],
+      "pixelDerivedGeometry": false,
+      "sourceCanvas": [
+        1536,
+        1024
+      ]
+    },
+    "rendererQuarantined": false,
+    "routeCanonicalSha256": "37b940d0d8107028d50b06870fc34336be0aff2a48c6698d3e7183a54f90da5",
+    "routeId": "four-view-v8:play-099-industrial-south-batch-v1",
+    "runs": [
+      {
+        "isolatedRoot": true,
+        "lods": {
+          "block": {
+            "canvas": [
+              1024,
+              683
+            ],
+            "decodedSha256": "731af9121156bccf32040ea3e213e781b989dfce6b5be6b9de8408fa130437ee",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "559fa5d1f84c7c5affce106ba0c8b626ad74ec5d61343fe20b35511d9ec29810",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.2650416361639824,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 185368,
+            "visibleKeyedMagentaPixels": 0
+          },
+          "city": {
+            "canvas": [
+              256,
+              171
+            ],
+            "decodedSha256": "2f57567163684b7b7112c4645dd1e425c9e7125d4a1be1b17da9685b813f1796",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "27da8a0c462311ff83eb7a58c20ff1ed3ddcf6aedcf61f7e5a5a392ebf3fb4ef",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.27809758771929827,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 12174,
+            "visibleKeyedMagentaPixels": 0
+          },
+          "neighborhood": {
+            "canvas": [
+              512,
+              342
+            ],
+            "decodedSha256": "b62725e6ed2a16e4988bdee3bb56aed7aab7905de6ed29c635fd086574c667c9",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "8b97ec94cdd3b203fec87b9f640e6ba2ab54afb9bab284582f96317fc98f0f28",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.26871459247076024,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 47053,
+            "visibleKeyedMagentaPixels": 0
+          }
+        },
+        "run": 1,
+        "source": {
+          "canvas": [
+            1536,
+            1024
+          ],
+          "decodedSha256": "fa451acb324e7c9a55930f1196b01e005b45518c452e191a9e79ddc06de38b83",
+          "edgeAlphaPixels": 0,
+          "fileSha256": "11eaac6a8181102b548e91c31b023a11d387f7f7786c7ec963a434fbc3d87ee1",
+          "hiddenRgbPixels": 0,
+          "mode": "RGBA",
+          "pngMetadata": {},
+          "removedKeyedPixels": 1160861,
+          "visibleAlphaOccupancy": 0.2619444529215495,
+          "visibleAlphaOccupancyAboveFloor": true,
+          "visibleAlphaOccupancyFloor": 0.1,
+          "visibleAlphaPixels": 412003,
+          "visibleKeyedMagentaPixels": 0
+        }
+      },
+      {
+        "isolatedRoot": true,
+        "lods": {
+          "block": {
+            "canvas": [
+              1024,
+              683
+            ],
+            "decodedSha256": "731af9121156bccf32040ea3e213e781b989dfce6b5be6b9de8408fa130437ee",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "559fa5d1f84c7c5affce106ba0c8b626ad74ec5d61343fe20b35511d9ec29810",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.2650416361639824,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 185368,
+            "visibleKeyedMagentaPixels": 0
+          },
+          "city": {
+            "canvas": [
+              256,
+              171
+            ],
+            "decodedSha256": "2f57567163684b7b7112c4645dd1e425c9e7125d4a1be1b17da9685b813f1796",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "27da8a0c462311ff83eb7a58c20ff1ed3ddcf6aedcf61f7e5a5a392ebf3fb4ef",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.27809758771929827,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 12174,
+            "visibleKeyedMagentaPixels": 0
+          },
+          "neighborhood": {
+            "canvas": [
+              512,
+              342
+            ],
+            "decodedSha256": "b62725e6ed2a16e4988bdee3bb56aed7aab7905de6ed29c635fd086574c667c9",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "8b97ec94cdd3b203fec87b9f640e6ba2ab54afb9bab284582f96317fc98f0f28",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.26871459247076024,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 47053,
+            "visibleKeyedMagentaPixels": 0
+          }
+        },
+        "run": 2,
+        "source": {
+          "canvas": [
+            1536,
+            1024
+          ],
+          "decodedSha256": "fa451acb324e7c9a55930f1196b01e005b45518c452e191a9e79ddc06de38b83",
+          "edgeAlphaPixels": 0,
+          "fileSha256": "11eaac6a8181102b548e91c31b023a11d387f7f7786c7ec963a434fbc3d87ee1",
+          "hiddenRgbPixels": 0,
+          "mode": "RGBA",
+          "pngMetadata": {},
+          "removedKeyedPixels": 1160861,
+          "visibleAlphaOccupancy": 0.2619444529215495,
+          "visibleAlphaOccupancyAboveFloor": true,
+          "visibleAlphaOccupancyFloor": 0.1,
+          "visibleAlphaPixels": 412003,
+          "visibleKeyedMagentaPixels": 0
+        }
+      }
+    ],
+    "runtime": {
+      "command": [
+        "/Users/James/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibrate_pillow_reference.py",
+        "--all-identities",
+        "--repeat",
+        "2",
+        "--isolated-roots"
+      ],
+      "pillowVersion": "12.2.0",
+      "pythonExecutableSha256": "eb9d74b9c7cfdfb2c9b91614edb2c3607360ba46c5aa7fc4557b3a4a23e97cff",
+      "pythonVersion": "3.12.13"
+    },
+    "schema": "PLAY-099-industrial-south-batch-receipt-v1",
+    "source": {
+      "canvas": [
+        1536,
+        1024
+      ],
+      "decodedSha256": "fa451acb324e7c9a55930f1196b01e005b45518c452e191a9e79ddc06de38b83",
+      "edgeAlphaPixels": 0,
+      "fileSha256": "11eaac6a8181102b548e91c31b023a11d387f7f7786c7ec963a434fbc3d87ee1",
+      "hiddenRgbPixels": 0,
+      "mode": "RGBA",
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibration/pillow-reference-batch-v1/industrial_l02_v00/source-rgba.png",
+      "pngMetadata": {},
+      "removedKeyedPixels": 1160861,
+      "visibleAlphaOccupancy": 0.2619444529215495,
+      "visibleAlphaOccupancyAboveFloor": true,
+      "visibleAlphaOccupancyFloor": 0.1,
+      "visibleAlphaPixels": 412003,
+      "visibleKeyedMagentaPixels": 0
+    },
+    "sourceReady": false,
+    "task": "PLAY-099",
+    "visualAcceptance": "not performed; frontier-owned"
+  },
+  {
+    "authorityCommit": "b4ff93aaa48f70dae8a3df2c50876d2c36537886",
+    "candidateReadyForIndependentReview": true,
+    "direction": "south",
+    "inputHead": "f38646855354e9825473e5fd9f558c36d6b4a280",
+    "integrationAdmitted": false,
+    "lods": [
+      {
+        "canvas": [
+          1024,
+          683
+        ],
+        "decodedSha256": "c41c7838d313af15c636649da4786cabf1ba1c39c6a48594476b2fb80d3173b6",
+        "filter": "Pillow.Image.Resampling.LANCZOS",
+        "name": "block",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibration/pillow-reference-batch-v1/industrial_l02_v01/block.png",
+        "pivot": [
+          512,
+          598
+        ],
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "ae2119becf899fc9bef2c73efd6ac125ed419d33d85d03434494889e06ecc551",
+        "socket": [
+          427,
+          555
+        ]
+      },
+      {
+        "canvas": [
+          512,
+          342
+        ],
+        "decodedSha256": "e6e14ddd62c798108c408610b980ce01cbc38460682368d68d31e2b18303f4a0",
+        "filter": "Pillow.Image.Resampling.LANCZOS",
+        "name": "neighborhood",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibration/pillow-reference-batch-v1/industrial_l02_v01/neighborhood.png",
+        "pivot": [
+          256,
+          299
+        ],
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "87c991da4607a789e4613deb1aadb5637af18dc8fda885ee6647d0931241ffce",
+        "socket": [
+          213,
+          278
+        ]
+      },
+      {
+        "canvas": [
+          256,
+          171
+        ],
+        "decodedSha256": "4b047fa7227e14d4c82cad76603c4d607b1062e47573d18515f7115b71650fdb",
+        "filter": "Pillow.Image.Resampling.LANCZOS",
+        "name": "city",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibration/pillow-reference-batch-v1/industrial_l02_v01/city.png",
+        "pivot": [
+          128,
+          150
+        ],
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "5b6679c81f76633c27154a375dd1b2474efa9e3c5c04ef08e802350f0063b1a5",
+        "socket": [
+          107,
+          139
+        ]
+      }
+    ],
+    "logicalId": "industrial_l02_v01",
+    "productionSelected": false,
+    "rawBytesPreserved": true,
+    "rawPath": "raw/industrial_l02_v01-source-v01.png",
+    "rawSha256": "008c6ccf5785ef9be39db539a9a5b230292542c8ff269d8eeeaa9b18685e2912",
+    "registration": {
+      "footprintPolygonSource": [
+        [
+          768,
+          640
+        ],
+        [
+          1024,
+          768
+        ],
+        [
+          768,
+          896
+        ],
+        [
+          512,
+          768
+        ]
+      ],
+      "frontageSocketSource": [
+        640,
+        832
+      ],
+      "groundPivotSource": [
+        768,
+        896
+      ],
+      "pixelDerivedGeometry": false,
+      "sourceCanvas": [
+        1536,
+        1024
+      ]
+    },
+    "rendererQuarantined": false,
+    "routeCanonicalSha256": "37b940d0d8107028d50b06870fc34336be0aff2a48c6698d3e7183a54f90da5",
+    "routeId": "four-view-v8:play-099-industrial-south-batch-v1",
+    "runs": [
+      {
+        "isolatedRoot": true,
+        "lods": {
+          "block": {
+            "canvas": [
+              1024,
+              683
+            ],
+            "decodedSha256": "c41c7838d313af15c636649da4786cabf1ba1c39c6a48594476b2fb80d3173b6",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "ae2119becf899fc9bef2c73efd6ac125ed419d33d85d03434494889e06ecc551",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.28564095671669104,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 199775,
+            "visibleKeyedMagentaPixels": 0
+          },
+          "city": {
+            "canvas": [
+              256,
+              171
+            ],
+            "decodedSha256": "4b047fa7227e14d4c82cad76603c4d607b1062e47573d18515f7115b71650fdb",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "5b6679c81f76633c27154a375dd1b2474efa9e3c5c04ef08e802350f0063b1a5",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.29714912280701755,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 13008,
+            "visibleKeyedMagentaPixels": 0
+          },
+          "neighborhood": {
+            "canvas": [
+              512,
+              342
+            ],
+            "decodedSha256": "e6e14ddd62c798108c408610b980ce01cbc38460682368d68d31e2b18303f4a0",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "87c991da4607a789e4613deb1aadb5637af18dc8fda885ee6647d0931241ffce",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.288765533625731,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 50564,
+            "visibleKeyedMagentaPixels": 0
+          }
+        },
+        "run": 1,
+        "source": {
+          "canvas": [
+            1536,
+            1024
+          ],
+          "decodedSha256": "72fc686a2958d30585a63fc62c2b672ac971ed267e4fc274c1e8b8e072014d1f",
+          "edgeAlphaPixels": 0,
+          "fileSha256": "2187e24d3e6be18bb9348d7fbde8d3990735c59cba82c11b9daa4cbbeddf9ba8",
+          "hiddenRgbPixels": 0,
+          "mode": "RGBA",
+          "pngMetadata": {},
+          "removedKeyedPixels": 1128159,
+          "visibleAlphaOccupancy": 0.28273582458496094,
+          "visibleAlphaOccupancyAboveFloor": true,
+          "visibleAlphaOccupancyFloor": 0.1,
+          "visibleAlphaPixels": 444705,
+          "visibleKeyedMagentaPixels": 0
+        }
+      },
+      {
+        "isolatedRoot": true,
+        "lods": {
+          "block": {
+            "canvas": [
+              1024,
+              683
+            ],
+            "decodedSha256": "c41c7838d313af15c636649da4786cabf1ba1c39c6a48594476b2fb80d3173b6",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "ae2119becf899fc9bef2c73efd6ac125ed419d33d85d03434494889e06ecc551",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.28564095671669104,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 199775,
+            "visibleKeyedMagentaPixels": 0
+          },
+          "city": {
+            "canvas": [
+              256,
+              171
+            ],
+            "decodedSha256": "4b047fa7227e14d4c82cad76603c4d607b1062e47573d18515f7115b71650fdb",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "5b6679c81f76633c27154a375dd1b2474efa9e3c5c04ef08e802350f0063b1a5",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.29714912280701755,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 13008,
+            "visibleKeyedMagentaPixels": 0
+          },
+          "neighborhood": {
+            "canvas": [
+              512,
+              342
+            ],
+            "decodedSha256": "e6e14ddd62c798108c408610b980ce01cbc38460682368d68d31e2b18303f4a0",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "87c991da4607a789e4613deb1aadb5637af18dc8fda885ee6647d0931241ffce",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.288765533625731,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 50564,
+            "visibleKeyedMagentaPixels": 0
+          }
+        },
+        "run": 2,
+        "source": {
+          "canvas": [
+            1536,
+            1024
+          ],
+          "decodedSha256": "72fc686a2958d30585a63fc62c2b672ac971ed267e4fc274c1e8b8e072014d1f",
+          "edgeAlphaPixels": 0,
+          "fileSha256": "2187e24d3e6be18bb9348d7fbde8d3990735c59cba82c11b9daa4cbbeddf9ba8",
+          "hiddenRgbPixels": 0,
+          "mode": "RGBA",
+          "pngMetadata": {},
+          "removedKeyedPixels": 1128159,
+          "visibleAlphaOccupancy": 0.28273582458496094,
+          "visibleAlphaOccupancyAboveFloor": true,
+          "visibleAlphaOccupancyFloor": 0.1,
+          "visibleAlphaPixels": 444705,
+          "visibleKeyedMagentaPixels": 0
+        }
+      }
+    ],
+    "runtime": {
+      "command": [
+        "/Users/James/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibrate_pillow_reference.py",
+        "--all-identities",
+        "--repeat",
+        "2",
+        "--isolated-roots"
+      ],
+      "pillowVersion": "12.2.0",
+      "pythonExecutableSha256": "eb9d74b9c7cfdfb2c9b91614edb2c3607360ba46c5aa7fc4557b3a4a23e97cff",
+      "pythonVersion": "3.12.13"
+    },
+    "schema": "PLAY-099-industrial-south-batch-receipt-v1",
+    "source": {
+      "canvas": [
+        1536,
+        1024
+      ],
+      "decodedSha256": "72fc686a2958d30585a63fc62c2b672ac971ed267e4fc274c1e8b8e072014d1f",
+      "edgeAlphaPixels": 0,
+      "fileSha256": "2187e24d3e6be18bb9348d7fbde8d3990735c59cba82c11b9daa4cbbeddf9ba8",
+      "hiddenRgbPixels": 0,
+      "mode": "RGBA",
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibration/pillow-reference-batch-v1/industrial_l02_v01/source-rgba.png",
+      "pngMetadata": {},
+      "removedKeyedPixels": 1128159,
+      "visibleAlphaOccupancy": 0.28273582458496094,
+      "visibleAlphaOccupancyAboveFloor": true,
+      "visibleAlphaOccupancyFloor": 0.1,
+      "visibleAlphaPixels": 444705,
+      "visibleKeyedMagentaPixels": 0
+    },
+    "sourceReady": false,
+    "task": "PLAY-099",
+    "visualAcceptance": "not performed; frontier-owned"
+  },
+  {
+    "authorityCommit": "b4ff93aaa48f70dae8a3df2c50876d2c36537886",
+    "candidateReadyForIndependentReview": true,
+    "direction": "south",
+    "inputHead": "f38646855354e9825473e5fd9f558c36d6b4a280",
+    "integrationAdmitted": false,
+    "lods": [
+      {
+        "canvas": [
+          1024,
+          683
+        ],
+        "decodedSha256": "d5f2725ddb089c44fe341030b831b12ac6fadc5527e292cdc83690c5bca3be04",
+        "filter": "Pillow.Image.Resampling.LANCZOS",
+        "name": "block",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibration/pillow-reference-batch-v1/industrial_l02_v02/block.png",
+        "pivot": [
+          512,
+          598
+        ],
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "1601277ae4830a6cf8752e58fa583fac46d8cf992ce7bcdbe3b484716192834b",
+        "socket": [
+          427,
+          555
+        ]
+      },
+      {
+        "canvas": [
+          512,
+          342
+        ],
+        "decodedSha256": "62e3f3f62e2a63900ff17135196e21fd1758f8d64b3a818219d2f521f7022d9a",
+        "filter": "Pillow.Image.Resampling.LANCZOS",
+        "name": "neighborhood",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibration/pillow-reference-batch-v1/industrial_l02_v02/neighborhood.png",
+        "pivot": [
+          256,
+          299
+        ],
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "5326b8cbface6eca373426d21a40c1ee99deff15abfd4273a4632617da8874e2",
+        "socket": [
+          213,
+          278
+        ]
+      },
+      {
+        "canvas": [
+          256,
+          171
+        ],
+        "decodedSha256": "73ec98aee35ad22783e11b136c2b2cd3f18fdfc5da6f3c0c6479f81e6254f826",
+        "filter": "Pillow.Image.Resampling.LANCZOS",
+        "name": "city",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibration/pillow-reference-batch-v1/industrial_l02_v02/city.png",
+        "pivot": [
+          128,
+          150
+        ],
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "b59e0884a2d2470a6dcd7fc1b72539b6b7161b29cbcd999e52edc264629741f3",
+        "socket": [
+          107,
+          139
+        ]
+      }
+    ],
+    "logicalId": "industrial_l02_v02",
+    "productionSelected": false,
+    "rawBytesPreserved": true,
+    "rawPath": "raw/industrial_l02_v02-source-v01.png",
+    "rawSha256": "94e8031146b34e8025b6045410480fd9a51e99770a4c651e48bcd0f7d68ec55b",
+    "registration": {
+      "footprintPolygonSource": [
+        [
+          768,
+          640
+        ],
+        [
+          1024,
+          768
+        ],
+        [
+          768,
+          896
+        ],
+        [
+          512,
+          768
+        ]
+      ],
+      "frontageSocketSource": [
+        640,
+        832
+      ],
+      "groundPivotSource": [
+        768,
+        896
+      ],
+      "pixelDerivedGeometry": false,
+      "sourceCanvas": [
+        1536,
+        1024
+      ]
+    },
+    "rendererQuarantined": false,
+    "routeCanonicalSha256": "37b940d0d8107028d50b06870fc34336be0aff2a48c6698d3e7183a54f90da5",
+    "routeId": "four-view-v8:play-099-industrial-south-batch-v1",
+    "runs": [
+      {
+        "isolatedRoot": true,
+        "lods": {
+          "block": {
+            "canvas": [
+              1024,
+              683
+            ],
+            "decodedSha256": "d5f2725ddb089c44fe341030b831b12ac6fadc5527e292cdc83690c5bca3be04",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "1601277ae4830a6cf8752e58fa583fac46d8cf992ce7bcdbe3b484716192834b",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.25253362920937045,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 176620,
+            "visibleKeyedMagentaPixels": 0
+          },
+          "city": {
+            "canvas": [
+              256,
+              171
+            ],
+            "decodedSha256": "73ec98aee35ad22783e11b136c2b2cd3f18fdfc5da6f3c0c6479f81e6254f826",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "b59e0884a2d2470a6dcd7fc1b72539b6b7161b29cbcd999e52edc264629741f3",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.26658442982456143,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 11670,
+            "visibleKeyedMagentaPixels": 0
+          },
+          "neighborhood": {
+            "canvas": [
+              512,
+              342
+            ],
+            "decodedSha256": "62e3f3f62e2a63900ff17135196e21fd1758f8d64b3a818219d2f521f7022d9a",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "5326b8cbface6eca373426d21a40c1ee99deff15abfd4273a4632617da8874e2",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.25656181469298245,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 44925,
+            "visibleKeyedMagentaPixels": 0
+          }
+        },
+        "run": 1,
+        "source": {
+          "canvas": [
+            1536,
+            1024
+          ],
+          "decodedSha256": "7a08c722d6a69a11f09d6281c4fa3a5ed19fc90e89701d25a04d346350147877",
+          "edgeAlphaPixels": 0,
+          "fileSha256": "abc1f128585413e4be26b63d8145a45ad1f980495d4cd370d7435edffd024cb0",
+          "hiddenRgbPixels": 0,
+          "mode": "RGBA",
+          "pngMetadata": {},
+          "removedKeyedPixels": 1180649,
+          "visibleAlphaOccupancy": 0.24936358133951822,
+          "visibleAlphaOccupancyAboveFloor": true,
+          "visibleAlphaOccupancyFloor": 0.1,
+          "visibleAlphaPixels": 392215,
+          "visibleKeyedMagentaPixels": 0
+        }
+      },
+      {
+        "isolatedRoot": true,
+        "lods": {
+          "block": {
+            "canvas": [
+              1024,
+              683
+            ],
+            "decodedSha256": "d5f2725ddb089c44fe341030b831b12ac6fadc5527e292cdc83690c5bca3be04",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "1601277ae4830a6cf8752e58fa583fac46d8cf992ce7bcdbe3b484716192834b",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.25253362920937045,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 176620,
+            "visibleKeyedMagentaPixels": 0
+          },
+          "city": {
+            "canvas": [
+              256,
+              171
+            ],
+            "decodedSha256": "73ec98aee35ad22783e11b136c2b2cd3f18fdfc5da6f3c0c6479f81e6254f826",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "b59e0884a2d2470a6dcd7fc1b72539b6b7161b29cbcd999e52edc264629741f3",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.26658442982456143,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 11670,
+            "visibleKeyedMagentaPixels": 0
+          },
+          "neighborhood": {
+            "canvas": [
+              512,
+              342
+            ],
+            "decodedSha256": "62e3f3f62e2a63900ff17135196e21fd1758f8d64b3a818219d2f521f7022d9a",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "5326b8cbface6eca373426d21a40c1ee99deff15abfd4273a4632617da8874e2",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.25656181469298245,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 44925,
+            "visibleKeyedMagentaPixels": 0
+          }
+        },
+        "run": 2,
+        "source": {
+          "canvas": [
+            1536,
+            1024
+          ],
+          "decodedSha256": "7a08c722d6a69a11f09d6281c4fa3a5ed19fc90e89701d25a04d346350147877",
+          "edgeAlphaPixels": 0,
+          "fileSha256": "abc1f128585413e4be26b63d8145a45ad1f980495d4cd370d7435edffd024cb0",
+          "hiddenRgbPixels": 0,
+          "mode": "RGBA",
+          "pngMetadata": {},
+          "removedKeyedPixels": 1180649,
+          "visibleAlphaOccupancy": 0.24936358133951822,
+          "visibleAlphaOccupancyAboveFloor": true,
+          "visibleAlphaOccupancyFloor": 0.1,
+          "visibleAlphaPixels": 392215,
+          "visibleKeyedMagentaPixels": 0
+        }
+      }
+    ],
+    "runtime": {
+      "command": [
+        "/Users/James/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibrate_pillow_reference.py",
+        "--all-identities",
+        "--repeat",
+        "2",
+        "--isolated-roots"
+      ],
+      "pillowVersion": "12.2.0",
+      "pythonExecutableSha256": "eb9d74b9c7cfdfb2c9b91614edb2c3607360ba46c5aa7fc4557b3a4a23e97cff",
+      "pythonVersion": "3.12.13"
+    },
+    "schema": "PLAY-099-industrial-south-batch-receipt-v1",
+    "source": {
+      "canvas": [
+        1536,
+        1024
+      ],
+      "decodedSha256": "7a08c722d6a69a11f09d6281c4fa3a5ed19fc90e89701d25a04d346350147877",
+      "edgeAlphaPixels": 0,
+      "fileSha256": "abc1f128585413e4be26b63d8145a45ad1f980495d4cd370d7435edffd024cb0",
+      "hiddenRgbPixels": 0,
+      "mode": "RGBA",
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibration/pillow-reference-batch-v1/industrial_l02_v02/source-rgba.png",
+      "pngMetadata": {},
+      "removedKeyedPixels": 1180649,
+      "visibleAlphaOccupancy": 0.24936358133951822,
+      "visibleAlphaOccupancyAboveFloor": true,
+      "visibleAlphaOccupancyFloor": 0.1,
+      "visibleAlphaPixels": 392215,
+      "visibleKeyedMagentaPixels": 0
+    },
+    "sourceReady": false,
+    "task": "PLAY-099",
+    "visualAcceptance": "not performed; frontier-owned"
+  },
+  {
+    "authorityCommit": "b4ff93aaa48f70dae8a3df2c50876d2c36537886",
+    "candidateReadyForIndependentReview": true,
+    "direction": "south",
+    "inputHead": "f38646855354e9825473e5fd9f558c36d6b4a280",
+    "integrationAdmitted": false,
+    "lods": [
+      {
+        "canvas": [
+          1024,
+          683
+        ],
+        "decodedSha256": "cd555228cef11f0411ac8a7983f31339479bd198b36ced7b2e109f5c6bf440d3",
+        "filter": "Pillow.Image.Resampling.LANCZOS",
+        "name": "block",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibration/pillow-reference-batch-v1/industrial_l03_v00/block.png",
+        "pivot": [
+          512,
+          598
+        ],
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "f280c356f6b204b2d2cf9cf1b3a4636ffa8223f6128a7221fd61b3503eeaa13b",
+        "socket": [
+          427,
+          555
+        ]
+      },
+      {
+        "canvas": [
+          512,
+          342
+        ],
+        "decodedSha256": "891d90ff30cff0dc3f622122d6a74247a7a472a0c6823e2f65f58b756a78c6d3",
+        "filter": "Pillow.Image.Resampling.LANCZOS",
+        "name": "neighborhood",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibration/pillow-reference-batch-v1/industrial_l03_v00/neighborhood.png",
+        "pivot": [
+          256,
+          299
+        ],
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "69ac3a5144f2be52b74be7f7f7ffc561ff66e8123304a69a4b258a4457633790",
+        "socket": [
+          213,
+          278
+        ]
+      },
+      {
+        "canvas": [
+          256,
+          171
+        ],
+        "decodedSha256": "cc331a2e7ac51f24a732fd3850585df828630e617b2bf1e649ce78dc6fca46f0",
+        "filter": "Pillow.Image.Resampling.LANCZOS",
+        "name": "city",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibration/pillow-reference-batch-v1/industrial_l03_v00/city.png",
+        "pivot": [
+          128,
+          150
+        ],
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "6e33460a50a6d862ef2b0b3003639e87a7bc149a2a9c3b4e739079744152c62b",
+        "socket": [
+          107,
+          139
+        ]
+      }
+    ],
+    "logicalId": "industrial_l03_v00",
+    "productionSelected": false,
+    "rawBytesPreserved": true,
+    "rawPath": "raw/industrial_l03_v00-source-v01.png",
+    "rawSha256": "22260fb870a981bf18b0f39f10d84f8c1bce594577756ce715bf0f130c31cea1",
+    "registration": {
+      "footprintPolygonSource": [
+        [
+          768,
+          640
+        ],
+        [
+          1024,
+          768
+        ],
+        [
+          768,
+          896
+        ],
+        [
+          512,
+          768
+        ]
+      ],
+      "frontageSocketSource": [
+        640,
+        832
+      ],
+      "groundPivotSource": [
+        768,
+        896
+      ],
+      "pixelDerivedGeometry": false,
+      "sourceCanvas": [
+        1536,
+        1024
+      ]
+    },
+    "rendererQuarantined": false,
+    "routeCanonicalSha256": "37b940d0d8107028d50b06870fc34336be0aff2a48c6698d3e7183a54f90da5",
+    "routeId": "four-view-v8:play-099-industrial-south-batch-v1",
+    "runs": [
+      {
+        "isolatedRoot": true,
+        "lods": {
+          "block": {
+            "canvas": [
+              1024,
+              683
+            ],
+            "decodedSha256": "cd555228cef11f0411ac8a7983f31339479bd198b36ced7b2e109f5c6bf440d3",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "f280c356f6b204b2d2cf9cf1b3a4636ffa8223f6128a7221fd61b3503eeaa13b",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.3120910733894583,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 218274,
+            "visibleKeyedMagentaPixels": 0
+          },
+          "city": {
+            "canvas": [
+              256,
+              171
+            ],
+            "decodedSha256": "cc331a2e7ac51f24a732fd3850585df828630e617b2bf1e649ce78dc6fca46f0",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "6e33460a50a6d862ef2b0b3003639e87a7bc149a2a9c3b4e739079744152c62b",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.3272112573099415,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 14324,
+            "visibleKeyedMagentaPixels": 0
+          },
+          "neighborhood": {
+            "canvas": [
+              512,
+              342
+            ],
+            "decodedSha256": "891d90ff30cff0dc3f622122d6a74247a7a472a0c6823e2f65f58b756a78c6d3",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "69ac3a5144f2be52b74be7f7f7ffc561ff66e8123304a69a4b258a4457633790",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.31662897478070173,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 55443,
+            "visibleKeyedMagentaPixels": 0
+          }
+        },
+        "run": 1,
+        "source": {
+          "canvas": [
+            1536,
+            1024
+          ],
+          "decodedSha256": "fa1932d5470f62bc41bdd46bc35094cbfca821139bbceeebff137884f3f69b34",
+          "edgeAlphaPixels": 0,
+          "fileSha256": "17a24d46b1faa52dfe0755b0a47ebeadd5769aa09659a29a4760da667ed8682b",
+          "hiddenRgbPixels": 0,
+          "mode": "RGBA",
+          "pngMetadata": {},
+          "removedKeyedPixels": 1088180,
+          "visibleAlphaOccupancy": 0.30815378824869794,
+          "visibleAlphaOccupancyAboveFloor": true,
+          "visibleAlphaOccupancyFloor": 0.1,
+          "visibleAlphaPixels": 484684,
+          "visibleKeyedMagentaPixels": 0
+        }
+      },
+      {
+        "isolatedRoot": true,
+        "lods": {
+          "block": {
+            "canvas": [
+              1024,
+              683
+            ],
+            "decodedSha256": "cd555228cef11f0411ac8a7983f31339479bd198b36ced7b2e109f5c6bf440d3",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "f280c356f6b204b2d2cf9cf1b3a4636ffa8223f6128a7221fd61b3503eeaa13b",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.3120910733894583,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 218274,
+            "visibleKeyedMagentaPixels": 0
+          },
+          "city": {
+            "canvas": [
+              256,
+              171
+            ],
+            "decodedSha256": "cc331a2e7ac51f24a732fd3850585df828630e617b2bf1e649ce78dc6fca46f0",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "6e33460a50a6d862ef2b0b3003639e87a7bc149a2a9c3b4e739079744152c62b",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.3272112573099415,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 14324,
+            "visibleKeyedMagentaPixels": 0
+          },
+          "neighborhood": {
+            "canvas": [
+              512,
+              342
+            ],
+            "decodedSha256": "891d90ff30cff0dc3f622122d6a74247a7a472a0c6823e2f65f58b756a78c6d3",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "69ac3a5144f2be52b74be7f7f7ffc561ff66e8123304a69a4b258a4457633790",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.31662897478070173,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 55443,
+            "visibleKeyedMagentaPixels": 0
+          }
+        },
+        "run": 2,
+        "source": {
+          "canvas": [
+            1536,
+            1024
+          ],
+          "decodedSha256": "fa1932d5470f62bc41bdd46bc35094cbfca821139bbceeebff137884f3f69b34",
+          "edgeAlphaPixels": 0,
+          "fileSha256": "17a24d46b1faa52dfe0755b0a47ebeadd5769aa09659a29a4760da667ed8682b",
+          "hiddenRgbPixels": 0,
+          "mode": "RGBA",
+          "pngMetadata": {},
+          "removedKeyedPixels": 1088180,
+          "visibleAlphaOccupancy": 0.30815378824869794,
+          "visibleAlphaOccupancyAboveFloor": true,
+          "visibleAlphaOccupancyFloor": 0.1,
+          "visibleAlphaPixels": 484684,
+          "visibleKeyedMagentaPixels": 0
+        }
+      }
+    ],
+    "runtime": {
+      "command": [
+        "/Users/James/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibrate_pillow_reference.py",
+        "--all-identities",
+        "--repeat",
+        "2",
+        "--isolated-roots"
+      ],
+      "pillowVersion": "12.2.0",
+      "pythonExecutableSha256": "eb9d74b9c7cfdfb2c9b91614edb2c3607360ba46c5aa7fc4557b3a4a23e97cff",
+      "pythonVersion": "3.12.13"
+    },
+    "schema": "PLAY-099-industrial-south-batch-receipt-v1",
+    "source": {
+      "canvas": [
+        1536,
+        1024
+      ],
+      "decodedSha256": "fa1932d5470f62bc41bdd46bc35094cbfca821139bbceeebff137884f3f69b34",
+      "edgeAlphaPixels": 0,
+      "fileSha256": "17a24d46b1faa52dfe0755b0a47ebeadd5769aa09659a29a4760da667ed8682b",
+      "hiddenRgbPixels": 0,
+      "mode": "RGBA",
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibration/pillow-reference-batch-v1/industrial_l03_v00/source-rgba.png",
+      "pngMetadata": {},
+      "removedKeyedPixels": 1088180,
+      "visibleAlphaOccupancy": 0.30815378824869794,
+      "visibleAlphaOccupancyAboveFloor": true,
+      "visibleAlphaOccupancyFloor": 0.1,
+      "visibleAlphaPixels": 484684,
+      "visibleKeyedMagentaPixels": 0
+    },
+    "sourceReady": false,
+    "task": "PLAY-099",
+    "visualAcceptance": "not performed; frontier-owned"
+  },
+  {
+    "authorityCommit": "b4ff93aaa48f70dae8a3df2c50876d2c36537886",
+    "candidateReadyForIndependentReview": true,
+    "direction": "south",
+    "inputHead": "f38646855354e9825473e5fd9f558c36d6b4a280",
+    "integrationAdmitted": false,
+    "lods": [
+      {
+        "canvas": [
+          1024,
+          683
+        ],
+        "decodedSha256": "f81b96624ed9d0955bfdd0771370fdb08680a8bf33e99e2d2e41c466ff90d12f",
+        "filter": "Pillow.Image.Resampling.LANCZOS",
+        "name": "block",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibration/pillow-reference-batch-v1/industrial_l03_v01/block.png",
+        "pivot": [
+          512,
+          598
+        ],
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "4d10b4cec1161c78e4fb892294abb5f5e2dfd5a1486017767a4409fee6d1c718",
+        "socket": [
+          427,
+          555
+        ]
+      },
+      {
+        "canvas": [
+          512,
+          342
+        ],
+        "decodedSha256": "da1420977dc6b74cc95b2df5486911a1771e1703cf5ebf51e101afe3bf60d7f5",
+        "filter": "Pillow.Image.Resampling.LANCZOS",
+        "name": "neighborhood",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibration/pillow-reference-batch-v1/industrial_l03_v01/neighborhood.png",
+        "pivot": [
+          256,
+          299
+        ],
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "fab3253dfbb62dfe70afc7489eeeeb8b2c744d344546251e795ace205805db5a",
+        "socket": [
+          213,
+          278
+        ]
+      },
+      {
+        "canvas": [
+          256,
+          171
+        ],
+        "decodedSha256": "688a8dc4ef93d9aa086d285c67fc45e5f5fcc0bb16911fdc602644bd3d88db18",
+        "filter": "Pillow.Image.Resampling.LANCZOS",
+        "name": "city",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibration/pillow-reference-batch-v1/industrial_l03_v01/city.png",
+        "pivot": [
+          128,
+          150
+        ],
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "40c5a313099c66da62cfd1b0a3f76f4c28100481affbdfa937fd8bd472060271",
+        "socket": [
+          107,
+          139
+        ]
+      }
+    ],
+    "logicalId": "industrial_l03_v01",
+    "productionSelected": false,
+    "rawBytesPreserved": true,
+    "rawPath": "raw/industrial_l03_v01-source-v01.png",
+    "rawSha256": "1f11174b58be21d640fdb122626d5c0f06452dda4f36706f34d51363f220fa72",
+    "registration": {
+      "footprintPolygonSource": [
+        [
+          768,
+          640
+        ],
+        [
+          1024,
+          768
+        ],
+        [
+          768,
+          896
+        ],
+        [
+          512,
+          768
+        ]
+      ],
+      "frontageSocketSource": [
+        640,
+        832
+      ],
+      "groundPivotSource": [
+        768,
+        896
+      ],
+      "pixelDerivedGeometry": false,
+      "sourceCanvas": [
+        1536,
+        1024
+      ]
+    },
+    "rendererQuarantined": false,
+    "routeCanonicalSha256": "37b940d0d8107028d50b06870fc34336be0aff2a48c6698d3e7183a54f90da5",
+    "routeId": "four-view-v8:play-099-industrial-south-batch-v1",
+    "runs": [
+      {
+        "isolatedRoot": true,
+        "lods": {
+          "block": {
+            "canvas": [
+              1024,
+              683
+            ],
+            "decodedSha256": "f81b96624ed9d0955bfdd0771370fdb08680a8bf33e99e2d2e41c466ff90d12f",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "4d10b4cec1161c78e4fb892294abb5f5e2dfd5a1486017767a4409fee6d1c718",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.26355606012079064,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 184329,
+            "visibleKeyedMagentaPixels": 0
+          },
+          "city": {
+            "canvas": [
+              256,
+              171
+            ],
+            "decodedSha256": "688a8dc4ef93d9aa086d285c67fc45e5f5fcc0bb16911fdc602644bd3d88db18",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "40c5a313099c66da62cfd1b0a3f76f4c28100481affbdfa937fd8bd472060271",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.2808159722222222,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 12293,
+            "visibleKeyedMagentaPixels": 0
+          },
+          "neighborhood": {
+            "canvas": [
+              512,
+              342
+            ],
+            "decodedSha256": "da1420977dc6b74cc95b2df5486911a1771e1703cf5ebf51e101afe3bf60d7f5",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "fab3253dfbb62dfe70afc7489eeeeb8b2c744d344546251e795ace205805db5a",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.2684062043128655,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 46999,
+            "visibleKeyedMagentaPixels": 0
+          }
+        },
+        "run": 1,
+        "source": {
+          "canvas": [
+            1536,
+            1024
+          ],
+          "decodedSha256": "13f238eda11957344fb0e0e3522e20f8d0ffc4fb3c36409a90d1826cde011aa0",
+          "edgeAlphaPixels": 0,
+          "fileSha256": "4906737f35d0ebf1ac38f91d3e5532cd03d8de13dda10167ffc5bf712c52c631",
+          "hiddenRgbPixels": 0,
+          "mode": "RGBA",
+          "pngMetadata": {},
+          "removedKeyedPixels": 1166972,
+          "visibleAlphaOccupancy": 0.25805918375651044,
+          "visibleAlphaOccupancyAboveFloor": true,
+          "visibleAlphaOccupancyFloor": 0.1,
+          "visibleAlphaPixels": 405892,
+          "visibleKeyedMagentaPixels": 0
+        }
+      },
+      {
+        "isolatedRoot": true,
+        "lods": {
+          "block": {
+            "canvas": [
+              1024,
+              683
+            ],
+            "decodedSha256": "f81b96624ed9d0955bfdd0771370fdb08680a8bf33e99e2d2e41c466ff90d12f",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "4d10b4cec1161c78e4fb892294abb5f5e2dfd5a1486017767a4409fee6d1c718",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.26355606012079064,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 184329,
+            "visibleKeyedMagentaPixels": 0
+          },
+          "city": {
+            "canvas": [
+              256,
+              171
+            ],
+            "decodedSha256": "688a8dc4ef93d9aa086d285c67fc45e5f5fcc0bb16911fdc602644bd3d88db18",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "40c5a313099c66da62cfd1b0a3f76f4c28100481affbdfa937fd8bd472060271",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.2808159722222222,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 12293,
+            "visibleKeyedMagentaPixels": 0
+          },
+          "neighborhood": {
+            "canvas": [
+              512,
+              342
+            ],
+            "decodedSha256": "da1420977dc6b74cc95b2df5486911a1771e1703cf5ebf51e101afe3bf60d7f5",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "fab3253dfbb62dfe70afc7489eeeeb8b2c744d344546251e795ace205805db5a",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.2684062043128655,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 46999,
+            "visibleKeyedMagentaPixels": 0
+          }
+        },
+        "run": 2,
+        "source": {
+          "canvas": [
+            1536,
+            1024
+          ],
+          "decodedSha256": "13f238eda11957344fb0e0e3522e20f8d0ffc4fb3c36409a90d1826cde011aa0",
+          "edgeAlphaPixels": 0,
+          "fileSha256": "4906737f35d0ebf1ac38f91d3e5532cd03d8de13dda10167ffc5bf712c52c631",
+          "hiddenRgbPixels": 0,
+          "mode": "RGBA",
+          "pngMetadata": {},
+          "removedKeyedPixels": 1166972,
+          "visibleAlphaOccupancy": 0.25805918375651044,
+          "visibleAlphaOccupancyAboveFloor": true,
+          "visibleAlphaOccupancyFloor": 0.1,
+          "visibleAlphaPixels": 405892,
+          "visibleKeyedMagentaPixels": 0
+        }
+      }
+    ],
+    "runtime": {
+      "command": [
+        "/Users/James/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibrate_pillow_reference.py",
+        "--all-identities",
+        "--repeat",
+        "2",
+        "--isolated-roots"
+      ],
+      "pillowVersion": "12.2.0",
+      "pythonExecutableSha256": "eb9d74b9c7cfdfb2c9b91614edb2c3607360ba46c5aa7fc4557b3a4a23e97cff",
+      "pythonVersion": "3.12.13"
+    },
+    "schema": "PLAY-099-industrial-south-batch-receipt-v1",
+    "source": {
+      "canvas": [
+        1536,
+        1024
+      ],
+      "decodedSha256": "13f238eda11957344fb0e0e3522e20f8d0ffc4fb3c36409a90d1826cde011aa0",
+      "edgeAlphaPixels": 0,
+      "fileSha256": "4906737f35d0ebf1ac38f91d3e5532cd03d8de13dda10167ffc5bf712c52c631",
+      "hiddenRgbPixels": 0,
+      "mode": "RGBA",
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibration/pillow-reference-batch-v1/industrial_l03_v01/source-rgba.png",
+      "pngMetadata": {},
+      "removedKeyedPixels": 1166972,
+      "visibleAlphaOccupancy": 0.25805918375651044,
+      "visibleAlphaOccupancyAboveFloor": true,
+      "visibleAlphaOccupancyFloor": 0.1,
+      "visibleAlphaPixels": 405892,
+      "visibleKeyedMagentaPixels": 0
+    },
+    "sourceReady": false,
+    "task": "PLAY-099",
+    "visualAcceptance": "not performed; frontier-owned"
+  },
+  {
+    "authorityCommit": "b4ff93aaa48f70dae8a3df2c50876d2c36537886",
+    "candidateReadyForIndependentReview": true,
+    "direction": "south",
+    "inputHead": "f38646855354e9825473e5fd9f558c36d6b4a280",
+    "integrationAdmitted": false,
+    "lods": [
+      {
+        "canvas": [
+          1024,
+          683
+        ],
+        "decodedSha256": "43c40b42e82b9a3afa07fa45ea1dbc0a99e1133fcacafbf45189ac053c55aefc",
+        "filter": "Pillow.Image.Resampling.LANCZOS",
+        "name": "block",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibration/pillow-reference-batch-v1/industrial_l03_v02/block.png",
+        "pivot": [
+          512,
+          598
+        ],
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "4fba6128cdd3c3d74eabe0baea26ddb97bacea5bd8ef765beddc46f414e046e3",
+        "socket": [
+          427,
+          555
+        ]
+      },
+      {
+        "canvas": [
+          512,
+          342
+        ],
+        "decodedSha256": "7a42f9d44cfe87af04ea8584c2c39ed231df8ba0d0521f3fa4acb1ba1c5f8358",
+        "filter": "Pillow.Image.Resampling.LANCZOS",
+        "name": "neighborhood",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibration/pillow-reference-batch-v1/industrial_l03_v02/neighborhood.png",
+        "pivot": [
+          256,
+          299
+        ],
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "14f49218cdf40223cc2c5b5a9d1a927b51d0a5350188fd6f65d5b02b91f87e62",
+        "socket": [
+          213,
+          278
+        ]
+      },
+      {
+        "canvas": [
+          256,
+          171
+        ],
+        "decodedSha256": "82a4bdd8983639afc93c7afcd2db6081aed6100167ca1cae797770748a880e9a",
+        "filter": "Pillow.Image.Resampling.LANCZOS",
+        "name": "city",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibration/pillow-reference-batch-v1/industrial_l03_v02/city.png",
+        "pivot": [
+          128,
+          150
+        ],
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "64c63084679ce724e188a98d2546d963895230368c5697c7f8a9cee6344b5484",
+        "socket": [
+          107,
+          139
+        ]
+      }
+    ],
+    "logicalId": "industrial_l03_v02",
+    "productionSelected": false,
+    "rawBytesPreserved": true,
+    "rawPath": "raw/industrial_l03_v02-source-v01.png",
+    "rawSha256": "4cde35c09d4d3ef86880133420d3f14872f4820fd8207c4c286b17092029c830",
+    "registration": {
+      "footprintPolygonSource": [
+        [
+          768,
+          640
+        ],
+        [
+          1024,
+          768
+        ],
+        [
+          768,
+          896
+        ],
+        [
+          512,
+          768
+        ]
+      ],
+      "frontageSocketSource": [
+        640,
+        832
+      ],
+      "groundPivotSource": [
+        768,
+        896
+      ],
+      "pixelDerivedGeometry": false,
+      "sourceCanvas": [
+        1536,
+        1024
+      ]
+    },
+    "rendererQuarantined": false,
+    "routeCanonicalSha256": "37b940d0d8107028d50b06870fc34336be0aff2a48c6698d3e7183a54f90da5",
+    "routeId": "four-view-v8:play-099-industrial-south-batch-v1",
+    "runs": [
+      {
+        "isolatedRoot": true,
+        "lods": {
+          "block": {
+            "canvas": [
+              1024,
+              683
+            ],
+            "decodedSha256": "43c40b42e82b9a3afa07fa45ea1dbc0a99e1133fcacafbf45189ac053c55aefc",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "4fba6128cdd3c3d74eabe0baea26ddb97bacea5bd8ef765beddc46f414e046e3",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.3220940474011713,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 225270,
+            "visibleKeyedMagentaPixels": 0
+          },
+          "city": {
+            "canvas": [
+              256,
+              171
+            ],
+            "decodedSha256": "82a4bdd8983639afc93c7afcd2db6081aed6100167ca1cae797770748a880e9a",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "64c63084679ce724e188a98d2546d963895230368c5697c7f8a9cee6344b5484",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.3368512426900585,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 14746,
+            "visibleKeyedMagentaPixels": 0
+          },
+          "neighborhood": {
+            "canvas": [
+              512,
+              342
+            ],
+            "decodedSha256": "7a42f9d44cfe87af04ea8584c2c39ed231df8ba0d0521f3fa4acb1ba1c5f8358",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "14f49218cdf40223cc2c5b5a9d1a927b51d0a5350188fd6f65d5b02b91f87e62",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.32639459978070173,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 57153,
+            "visibleKeyedMagentaPixels": 0
+          }
+        },
+        "run": 1,
+        "source": {
+          "canvas": [
+            1536,
+            1024
+          ],
+          "decodedSha256": "4da9742f2599f6ed835233d1f39198f03b52b00c38293f7275ca878770ff17bd",
+          "edgeAlphaPixels": 0,
+          "fileSha256": "02e719979ee89fce83393347b0f4b9965baf945905319cb0f7dcfff006ddee6c",
+          "hiddenRgbPixels": 0,
+          "mode": "RGBA",
+          "pngMetadata": {},
+          "removedKeyedPixels": 1072171,
+          "visibleAlphaOccupancy": 0.318332036336263,
+          "visibleAlphaOccupancyAboveFloor": true,
+          "visibleAlphaOccupancyFloor": 0.1,
+          "visibleAlphaPixels": 500693,
+          "visibleKeyedMagentaPixels": 0
+        }
+      },
+      {
+        "isolatedRoot": true,
+        "lods": {
+          "block": {
+            "canvas": [
+              1024,
+              683
+            ],
+            "decodedSha256": "43c40b42e82b9a3afa07fa45ea1dbc0a99e1133fcacafbf45189ac053c55aefc",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "4fba6128cdd3c3d74eabe0baea26ddb97bacea5bd8ef765beddc46f414e046e3",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.3220940474011713,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 225270,
+            "visibleKeyedMagentaPixels": 0
+          },
+          "city": {
+            "canvas": [
+              256,
+              171
+            ],
+            "decodedSha256": "82a4bdd8983639afc93c7afcd2db6081aed6100167ca1cae797770748a880e9a",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "64c63084679ce724e188a98d2546d963895230368c5697c7f8a9cee6344b5484",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.3368512426900585,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 14746,
+            "visibleKeyedMagentaPixels": 0
+          },
+          "neighborhood": {
+            "canvas": [
+              512,
+              342
+            ],
+            "decodedSha256": "7a42f9d44cfe87af04ea8584c2c39ed231df8ba0d0521f3fa4acb1ba1c5f8358",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "14f49218cdf40223cc2c5b5a9d1a927b51d0a5350188fd6f65d5b02b91f87e62",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.32639459978070173,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 57153,
+            "visibleKeyedMagentaPixels": 0
+          }
+        },
+        "run": 2,
+        "source": {
+          "canvas": [
+            1536,
+            1024
+          ],
+          "decodedSha256": "4da9742f2599f6ed835233d1f39198f03b52b00c38293f7275ca878770ff17bd",
+          "edgeAlphaPixels": 0,
+          "fileSha256": "02e719979ee89fce83393347b0f4b9965baf945905319cb0f7dcfff006ddee6c",
+          "hiddenRgbPixels": 0,
+          "mode": "RGBA",
+          "pngMetadata": {},
+          "removedKeyedPixels": 1072171,
+          "visibleAlphaOccupancy": 0.318332036336263,
+          "visibleAlphaOccupancyAboveFloor": true,
+          "visibleAlphaOccupancyFloor": 0.1,
+          "visibleAlphaPixels": 500693,
+          "visibleKeyedMagentaPixels": 0
+        }
+      }
+    ],
+    "runtime": {
+      "command": [
+        "/Users/James/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibrate_pillow_reference.py",
+        "--all-identities",
+        "--repeat",
+        "2",
+        "--isolated-roots"
+      ],
+      "pillowVersion": "12.2.0",
+      "pythonExecutableSha256": "eb9d74b9c7cfdfb2c9b91614edb2c3607360ba46c5aa7fc4557b3a4a23e97cff",
+      "pythonVersion": "3.12.13"
+    },
+    "schema": "PLAY-099-industrial-south-batch-receipt-v1",
+    "source": {
+      "canvas": [
+        1536,
+        1024
+      ],
+      "decodedSha256": "4da9742f2599f6ed835233d1f39198f03b52b00c38293f7275ca878770ff17bd",
+      "edgeAlphaPixels": 0,
+      "fileSha256": "02e719979ee89fce83393347b0f4b9965baf945905319cb0f7dcfff006ddee6c",
+      "hiddenRgbPixels": 0,
+      "mode": "RGBA",
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibration/pillow-reference-batch-v1/industrial_l03_v02/source-rgba.png",
+      "pngMetadata": {},
+      "removedKeyedPixels": 1072171,
+      "visibleAlphaOccupancy": 0.318332036336263,
+      "visibleAlphaOccupancyAboveFloor": true,
+      "visibleAlphaOccupancyFloor": 0.1,
+      "visibleAlphaPixels": 500693,
+      "visibleKeyedMagentaPixels": 0
+    },
+    "sourceReady": false,
+    "task": "PLAY-099",
+    "visualAcceptance": "not performed; frontier-owned"
+  },
+  {
+    "authorityCommit": "b4ff93aaa48f70dae8a3df2c50876d2c36537886",
+    "candidateReadyForIndependentReview": true,
+    "direction": "south",
+    "inputHead": "f38646855354e9825473e5fd9f558c36d6b4a280",
+    "integrationAdmitted": false,
+    "lods": [
+      {
+        "canvas": [
+          1024,
+          683
+        ],
+        "decodedSha256": "473b00cfc6425ea84f604d203957114739e4327540abff30324160de03b16b35",
+        "filter": "Pillow.Image.Resampling.LANCZOS",
+        "name": "block",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibration/pillow-reference-batch-v1/industrial_l04_v00/block.png",
+        "pivot": [
+          512,
+          598
+        ],
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "a9cea698ca626d64b96f53a9bec67cda85831f9168187f658a4f3ab6ff680174",
+        "socket": [
+          427,
+          555
+        ]
+      },
+      {
+        "canvas": [
+          512,
+          342
+        ],
+        "decodedSha256": "a7d36b658054412dd23f3a5c0606b4937a809032ec37f4be07a593ab20be77c0",
+        "filter": "Pillow.Image.Resampling.LANCZOS",
+        "name": "neighborhood",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibration/pillow-reference-batch-v1/industrial_l04_v00/neighborhood.png",
+        "pivot": [
+          256,
+          299
+        ],
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "e6d41adaf41afc91f949b7899b09c5a55d944c645dfce7fadcf085f783efe46e",
+        "socket": [
+          213,
+          278
+        ]
+      },
+      {
+        "canvas": [
+          256,
+          171
+        ],
+        "decodedSha256": "9958a01f97e8b1ad551198609e47328f6dfe2ece23390e3ffaf8aab2c4301be8",
+        "filter": "Pillow.Image.Resampling.LANCZOS",
+        "name": "city",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibration/pillow-reference-batch-v1/industrial_l04_v00/city.png",
+        "pivot": [
+          128,
+          150
+        ],
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "638793de7529b0c0a8dfc780dab7339be6b6d3515c4dcee4a622d18cca49b689",
+        "socket": [
+          107,
+          139
+        ]
+      }
+    ],
+    "logicalId": "industrial_l04_v00",
+    "productionSelected": false,
+    "rawBytesPreserved": true,
+    "rawPath": "raw/industrial_l04_v00-source-v01.png",
+    "rawSha256": "6c631be5f372c351fbeb6a9ac9f0343569a7c2a43cbf172bdb83512aef38cef1",
+    "registration": {
+      "footprintPolygonSource": [
+        [
+          768,
+          640
+        ],
+        [
+          1024,
+          768
+        ],
+        [
+          768,
+          896
+        ],
+        [
+          512,
+          768
+        ]
+      ],
+      "frontageSocketSource": [
+        640,
+        832
+      ],
+      "groundPivotSource": [
+        768,
+        896
+      ],
+      "pixelDerivedGeometry": false,
+      "sourceCanvas": [
+        1536,
+        1024
+      ]
+    },
+    "rendererQuarantined": false,
+    "routeCanonicalSha256": "37b940d0d8107028d50b06870fc34336be0aff2a48c6698d3e7183a54f90da5",
+    "routeId": "four-view-v8:play-099-industrial-south-batch-v1",
+    "runs": [
+      {
+        "isolatedRoot": true,
+        "lods": {
+          "block": {
+            "canvas": [
+              1024,
+              683
+            ],
+            "decodedSha256": "473b00cfc6425ea84f604d203957114739e4327540abff30324160de03b16b35",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "a9cea698ca626d64b96f53a9bec67cda85831f9168187f658a4f3ab6ff680174",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.2531513085651537,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 177052,
+            "visibleKeyedMagentaPixels": 0
+          },
+          "city": {
+            "canvas": [
+              256,
+              171
+            ],
+            "decodedSha256": "9958a01f97e8b1ad551198609e47328f6dfe2ece23390e3ffaf8aab2c4301be8",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "638793de7529b0c0a8dfc780dab7339be6b6d3515c4dcee4a622d18cca49b689",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.2696454678362573,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 11804,
+            "visibleKeyedMagentaPixels": 0
+          },
+          "neighborhood": {
+            "canvas": [
+              512,
+              342
+            ],
+            "decodedSha256": "a7d36b658054412dd23f3a5c0606b4937a809032ec37f4be07a593ab20be77c0",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "e6d41adaf41afc91f949b7899b09c5a55d944c645dfce7fadcf085f783efe46e",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.25820084064327486,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 45212,
+            "visibleKeyedMagentaPixels": 0
+          }
+        },
+        "run": 1,
+        "source": {
+          "canvas": [
+            1536,
+            1024
+          ],
+          "decodedSha256": "bf8c46b645a6628c8064131a570ba78865f5f3da6cbda438569c57431f1ff7c4",
+          "edgeAlphaPixels": 0,
+          "fileSha256": "12bc2383f49f7ae87ae9fe0eff3312cec69350cec3030da8e1af620d88b83bb2",
+          "hiddenRgbPixels": 0,
+          "mode": "RGBA",
+          "pngMetadata": {},
+          "removedKeyedPixels": 1181216,
+          "visibleAlphaOccupancy": 0.24900309244791666,
+          "visibleAlphaOccupancyAboveFloor": true,
+          "visibleAlphaOccupancyFloor": 0.1,
+          "visibleAlphaPixels": 391648,
+          "visibleKeyedMagentaPixels": 0
+        }
+      },
+      {
+        "isolatedRoot": true,
+        "lods": {
+          "block": {
+            "canvas": [
+              1024,
+              683
+            ],
+            "decodedSha256": "473b00cfc6425ea84f604d203957114739e4327540abff30324160de03b16b35",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "a9cea698ca626d64b96f53a9bec67cda85831f9168187f658a4f3ab6ff680174",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.2531513085651537,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 177052,
+            "visibleKeyedMagentaPixels": 0
+          },
+          "city": {
+            "canvas": [
+              256,
+              171
+            ],
+            "decodedSha256": "9958a01f97e8b1ad551198609e47328f6dfe2ece23390e3ffaf8aab2c4301be8",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "638793de7529b0c0a8dfc780dab7339be6b6d3515c4dcee4a622d18cca49b689",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.2696454678362573,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 11804,
+            "visibleKeyedMagentaPixels": 0
+          },
+          "neighborhood": {
+            "canvas": [
+              512,
+              342
+            ],
+            "decodedSha256": "a7d36b658054412dd23f3a5c0606b4937a809032ec37f4be07a593ab20be77c0",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "e6d41adaf41afc91f949b7899b09c5a55d944c645dfce7fadcf085f783efe46e",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.25820084064327486,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 45212,
+            "visibleKeyedMagentaPixels": 0
+          }
+        },
+        "run": 2,
+        "source": {
+          "canvas": [
+            1536,
+            1024
+          ],
+          "decodedSha256": "bf8c46b645a6628c8064131a570ba78865f5f3da6cbda438569c57431f1ff7c4",
+          "edgeAlphaPixels": 0,
+          "fileSha256": "12bc2383f49f7ae87ae9fe0eff3312cec69350cec3030da8e1af620d88b83bb2",
+          "hiddenRgbPixels": 0,
+          "mode": "RGBA",
+          "pngMetadata": {},
+          "removedKeyedPixels": 1181216,
+          "visibleAlphaOccupancy": 0.24900309244791666,
+          "visibleAlphaOccupancyAboveFloor": true,
+          "visibleAlphaOccupancyFloor": 0.1,
+          "visibleAlphaPixels": 391648,
+          "visibleKeyedMagentaPixels": 0
+        }
+      }
+    ],
+    "runtime": {
+      "command": [
+        "/Users/James/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibrate_pillow_reference.py",
+        "--all-identities",
+        "--repeat",
+        "2",
+        "--isolated-roots"
+      ],
+      "pillowVersion": "12.2.0",
+      "pythonExecutableSha256": "eb9d74b9c7cfdfb2c9b91614edb2c3607360ba46c5aa7fc4557b3a4a23e97cff",
+      "pythonVersion": "3.12.13"
+    },
+    "schema": "PLAY-099-industrial-south-batch-receipt-v1",
+    "source": {
+      "canvas": [
+        1536,
+        1024
+      ],
+      "decodedSha256": "bf8c46b645a6628c8064131a570ba78865f5f3da6cbda438569c57431f1ff7c4",
+      "edgeAlphaPixels": 0,
+      "fileSha256": "12bc2383f49f7ae87ae9fe0eff3312cec69350cec3030da8e1af620d88b83bb2",
+      "hiddenRgbPixels": 0,
+      "mode": "RGBA",
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibration/pillow-reference-batch-v1/industrial_l04_v00/source-rgba.png",
+      "pngMetadata": {},
+      "removedKeyedPixels": 1181216,
+      "visibleAlphaOccupancy": 0.24900309244791666,
+      "visibleAlphaOccupancyAboveFloor": true,
+      "visibleAlphaOccupancyFloor": 0.1,
+      "visibleAlphaPixels": 391648,
+      "visibleKeyedMagentaPixels": 0
+    },
+    "sourceReady": false,
+    "task": "PLAY-099",
+    "visualAcceptance": "not performed; frontier-owned"
+  },
+  {
+    "authorityCommit": "b4ff93aaa48f70dae8a3df2c50876d2c36537886",
+    "candidateReadyForIndependentReview": true,
+    "direction": "south",
+    "inputHead": "f38646855354e9825473e5fd9f558c36d6b4a280",
+    "integrationAdmitted": false,
+    "lods": [
+      {
+        "canvas": [
+          1024,
+          683
+        ],
+        "decodedSha256": "d3773b0e04cb0c2c48e27304c34f2131af12249fd50914bc320a116d595fb347",
+        "filter": "Pillow.Image.Resampling.LANCZOS",
+        "name": "block",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibration/pillow-reference-batch-v1/industrial_l04_v01/block.png",
+        "pivot": [
+          512,
+          598
+        ],
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "34520f780ebd03f9be5db8f0dbdb9d9fc4f1c0dcb5bcd39cc740ef7e249d2179",
+        "socket": [
+          427,
+          555
+        ]
+      },
+      {
+        "canvas": [
+          512,
+          342
+        ],
+        "decodedSha256": "1e08c41b832b40a481abfcaffd5cc83b4324ed8cacba1b25cfac841ceaa501cf",
+        "filter": "Pillow.Image.Resampling.LANCZOS",
+        "name": "neighborhood",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibration/pillow-reference-batch-v1/industrial_l04_v01/neighborhood.png",
+        "pivot": [
+          256,
+          299
+        ],
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "549ce07344608a55b20c7e22289092ce873ce7d2150129938a18bcd74f197c06",
+        "socket": [
+          213,
+          278
+        ]
+      },
+      {
+        "canvas": [
+          256,
+          171
+        ],
+        "decodedSha256": "f57a5c41ed3e34b331a7d558708ab98fcf5a1b67c5a54112d89f127d6fe51aba",
+        "filter": "Pillow.Image.Resampling.LANCZOS",
+        "name": "city",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibration/pillow-reference-batch-v1/industrial_l04_v01/city.png",
+        "pivot": [
+          128,
+          150
+        ],
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "ec9ff642f3cfec9f37c366a14fd8f4a8f1941a7a6a84cbe282f6c62cfae79aee",
+        "socket": [
+          107,
+          139
+        ]
+      }
+    ],
+    "logicalId": "industrial_l04_v01",
+    "productionSelected": false,
+    "rawBytesPreserved": true,
+    "rawPath": "raw/industrial_l04_v01-source-v01.png",
+    "rawSha256": "81dd05f26b3b5dc0234bcf9cde55a0f961a6fa0b4f0f87e7cfc1065e3bcc240b",
+    "registration": {
+      "footprintPolygonSource": [
+        [
+          768,
+          640
+        ],
+        [
+          1024,
+          768
+        ],
+        [
+          768,
+          896
+        ],
+        [
+          512,
+          768
+        ]
+      ],
+      "frontageSocketSource": [
+        640,
+        832
+      ],
+      "groundPivotSource": [
+        768,
+        896
+      ],
+      "pixelDerivedGeometry": false,
+      "sourceCanvas": [
+        1536,
+        1024
+      ]
+    },
+    "rendererQuarantined": false,
+    "routeCanonicalSha256": "37b940d0d8107028d50b06870fc34336be0aff2a48c6698d3e7183a54f90da5",
+    "routeId": "four-view-v8:play-099-industrial-south-batch-v1",
+    "runs": [
+      {
+        "isolatedRoot": true,
+        "lods": {
+          "block": {
+            "canvas": [
+              1024,
+              683
+            ],
+            "decodedSha256": "d3773b0e04cb0c2c48e27304c34f2131af12249fd50914bc320a116d595fb347",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "34520f780ebd03f9be5db8f0dbdb9d9fc4f1c0dcb5bcd39cc740ef7e249d2179",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.3706948320827233,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 259261,
+            "visibleKeyedMagentaPixels": 0
+          },
+          "city": {
+            "canvas": [
+              256,
+              171
+            ],
+            "decodedSha256": "f57a5c41ed3e34b331a7d558708ab98fcf5a1b67c5a54112d89f127d6fe51aba",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "ec9ff642f3cfec9f37c366a14fd8f4a8f1941a7a6a84cbe282f6c62cfae79aee",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.38379477339181284,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 16801,
+            "visibleKeyedMagentaPixels": 0
+          },
+          "neighborhood": {
+            "canvas": [
+              512,
+              342
+            ],
+            "decodedSha256": "1e08c41b832b40a481abfcaffd5cc83b4324ed8cacba1b25cfac841ceaa501cf",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "549ce07344608a55b20c7e22289092ce873ce7d2150129938a18bcd74f197c06",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.37482867324561403,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 65634,
+            "visibleKeyedMagentaPixels": 0
+          }
+        },
+        "run": 1,
+        "source": {
+          "canvas": [
+            1536,
+            1024
+          ],
+          "decodedSha256": "e977912b35e2aef2a35166eb778b238d290d23b187e698537fb1973494aed620",
+          "edgeAlphaPixels": 0,
+          "fileSha256": "b99d5ebbee50aa58781b1494e37f687da77c36774016405d7c347602d95ec75b",
+          "hiddenRgbPixels": 0,
+          "mode": "RGBA",
+          "pngMetadata": {},
+          "removedKeyedPixels": 994998,
+          "visibleAlphaOccupancy": 0.3673973083496094,
+          "visibleAlphaOccupancyAboveFloor": true,
+          "visibleAlphaOccupancyFloor": 0.1,
+          "visibleAlphaPixels": 577866,
+          "visibleKeyedMagentaPixels": 0
+        }
+      },
+      {
+        "isolatedRoot": true,
+        "lods": {
+          "block": {
+            "canvas": [
+              1024,
+              683
+            ],
+            "decodedSha256": "d3773b0e04cb0c2c48e27304c34f2131af12249fd50914bc320a116d595fb347",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "34520f780ebd03f9be5db8f0dbdb9d9fc4f1c0dcb5bcd39cc740ef7e249d2179",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.3706948320827233,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 259261,
+            "visibleKeyedMagentaPixels": 0
+          },
+          "city": {
+            "canvas": [
+              256,
+              171
+            ],
+            "decodedSha256": "f57a5c41ed3e34b331a7d558708ab98fcf5a1b67c5a54112d89f127d6fe51aba",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "ec9ff642f3cfec9f37c366a14fd8f4a8f1941a7a6a84cbe282f6c62cfae79aee",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.38379477339181284,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 16801,
+            "visibleKeyedMagentaPixels": 0
+          },
+          "neighborhood": {
+            "canvas": [
+              512,
+              342
+            ],
+            "decodedSha256": "1e08c41b832b40a481abfcaffd5cc83b4324ed8cacba1b25cfac841ceaa501cf",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "549ce07344608a55b20c7e22289092ce873ce7d2150129938a18bcd74f197c06",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.37482867324561403,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 65634,
+            "visibleKeyedMagentaPixels": 0
+          }
+        },
+        "run": 2,
+        "source": {
+          "canvas": [
+            1536,
+            1024
+          ],
+          "decodedSha256": "e977912b35e2aef2a35166eb778b238d290d23b187e698537fb1973494aed620",
+          "edgeAlphaPixels": 0,
+          "fileSha256": "b99d5ebbee50aa58781b1494e37f687da77c36774016405d7c347602d95ec75b",
+          "hiddenRgbPixels": 0,
+          "mode": "RGBA",
+          "pngMetadata": {},
+          "removedKeyedPixels": 994998,
+          "visibleAlphaOccupancy": 0.3673973083496094,
+          "visibleAlphaOccupancyAboveFloor": true,
+          "visibleAlphaOccupancyFloor": 0.1,
+          "visibleAlphaPixels": 577866,
+          "visibleKeyedMagentaPixels": 0
+        }
+      }
+    ],
+    "runtime": {
+      "command": [
+        "/Users/James/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibrate_pillow_reference.py",
+        "--all-identities",
+        "--repeat",
+        "2",
+        "--isolated-roots"
+      ],
+      "pillowVersion": "12.2.0",
+      "pythonExecutableSha256": "eb9d74b9c7cfdfb2c9b91614edb2c3607360ba46c5aa7fc4557b3a4a23e97cff",
+      "pythonVersion": "3.12.13"
+    },
+    "schema": "PLAY-099-industrial-south-batch-receipt-v1",
+    "source": {
+      "canvas": [
+        1536,
+        1024
+      ],
+      "decodedSha256": "e977912b35e2aef2a35166eb778b238d290d23b187e698537fb1973494aed620",
+      "edgeAlphaPixels": 0,
+      "fileSha256": "b99d5ebbee50aa58781b1494e37f687da77c36774016405d7c347602d95ec75b",
+      "hiddenRgbPixels": 0,
+      "mode": "RGBA",
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibration/pillow-reference-batch-v1/industrial_l04_v01/source-rgba.png",
+      "pngMetadata": {},
+      "removedKeyedPixels": 994998,
+      "visibleAlphaOccupancy": 0.3673973083496094,
+      "visibleAlphaOccupancyAboveFloor": true,
+      "visibleAlphaOccupancyFloor": 0.1,
+      "visibleAlphaPixels": 577866,
+      "visibleKeyedMagentaPixels": 0
+    },
+    "sourceReady": false,
+    "task": "PLAY-099",
+    "visualAcceptance": "not performed; frontier-owned"
+  },
+  {
+    "authorityCommit": "b4ff93aaa48f70dae8a3df2c50876d2c36537886",
+    "candidateReadyForIndependentReview": true,
+    "direction": "south",
+    "inputHead": "f38646855354e9825473e5fd9f558c36d6b4a280",
+    "integrationAdmitted": false,
+    "lods": [
+      {
+        "canvas": [
+          1024,
+          683
+        ],
+        "decodedSha256": "b3df2a6d97a64345a4ca1e9bbaf5cc2f9a95eb247b1a12c375ae0dd4d3449e99",
+        "filter": "Pillow.Image.Resampling.LANCZOS",
+        "name": "block",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibration/pillow-reference-batch-v1/industrial_l04_v02/block.png",
+        "pivot": [
+          512,
+          598
+        ],
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "cc1cb46f5c9166f34c634af4cfcfabe7d15a25e7317a20418ba388a4d1d96ce3",
+        "socket": [
+          427,
+          555
+        ]
+      },
+      {
+        "canvas": [
+          512,
+          342
+        ],
+        "decodedSha256": "60358474a6ef382117c5cb3a1d3a81dee52c85eac424771de66406d2f59cc5f0",
+        "filter": "Pillow.Image.Resampling.LANCZOS",
+        "name": "neighborhood",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibration/pillow-reference-batch-v1/industrial_l04_v02/neighborhood.png",
+        "pivot": [
+          256,
+          299
+        ],
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "a834af3a546598bbccd05279a82cb1b233e71dfefb49430eeca54089e4808a3f",
+        "socket": [
+          213,
+          278
+        ]
+      },
+      {
+        "canvas": [
+          256,
+          171
+        ],
+        "decodedSha256": "75b68eaaf49e203870b7f057d5e76e045a20781280d5620a407ae09f2aee4252",
+        "filter": "Pillow.Image.Resampling.LANCZOS",
+        "name": "city",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibration/pillow-reference-batch-v1/industrial_l04_v02/city.png",
+        "pivot": [
+          128,
+          150
+        ],
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "576f0c6595d39665c7f508b12c01c96bdbf8f49cd3f011ff2ad828c9b9746374",
+        "socket": [
+          107,
+          139
+        ]
+      }
+    ],
+    "logicalId": "industrial_l04_v02",
+    "productionSelected": false,
+    "rawBytesPreserved": true,
+    "rawPath": "raw/industrial_l04_v02-source-v01.png",
+    "rawSha256": "dcfda7c8f86192cd330fcdc9075e5b2583a1db8497da64d7b5ea99bfae8c55cb",
+    "registration": {
+      "footprintPolygonSource": [
+        [
+          768,
+          640
+        ],
+        [
+          1024,
+          768
+        ],
+        [
+          768,
+          896
+        ],
+        [
+          512,
+          768
+        ]
+      ],
+      "frontageSocketSource": [
+        640,
+        832
+      ],
+      "groundPivotSource": [
+        768,
+        896
+      ],
+      "pixelDerivedGeometry": false,
+      "sourceCanvas": [
+        1536,
+        1024
+      ]
+    },
+    "rendererQuarantined": false,
+    "routeCanonicalSha256": "37b940d0d8107028d50b06870fc34336be0aff2a48c6698d3e7183a54f90da5",
+    "routeId": "four-view-v8:play-099-industrial-south-batch-v1",
+    "runs": [
+      {
+        "isolatedRoot": true,
+        "lods": {
+          "block": {
+            "canvas": [
+              1024,
+              683
+            ],
+            "decodedSha256": "b3df2a6d97a64345a4ca1e9bbaf5cc2f9a95eb247b1a12c375ae0dd4d3449e99",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "cc1cb46f5c9166f34c634af4cfcfabe7d15a25e7317a20418ba388a4d1d96ce3",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.32824081487920936,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 229569,
+            "visibleKeyedMagentaPixels": 0
+          },
+          "city": {
+            "canvas": [
+              256,
+              171
+            ],
+            "decodedSha256": "75b68eaaf49e203870b7f057d5e76e045a20781280d5620a407ae09f2aee4252",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "576f0c6595d39665c7f508b12c01c96bdbf8f49cd3f011ff2ad828c9b9746374",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.35165387426900585,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 15394,
+            "visibleKeyedMagentaPixels": 0
+          },
+          "neighborhood": {
+            "canvas": [
+              512,
+              342
+            ],
+            "decodedSha256": "60358474a6ef382117c5cb3a1d3a81dee52c85eac424771de66406d2f59cc5f0",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "a834af3a546598bbccd05279a82cb1b233e71dfefb49430eeca54089e4808a3f",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.3353606999269006,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 58723,
+            "visibleKeyedMagentaPixels": 0
+          }
+        },
+        "run": 1,
+        "source": {
+          "canvas": [
+            1536,
+            1024
+          ],
+          "decodedSha256": "11ff3cb864bfe80b1ac90cd50c6b04c4df37d7ea5879a43de178b9c5e7897240",
+          "edgeAlphaPixels": 0,
+          "fileSha256": "dce51fcc29c361fdc2639aa7c1af5a87e0724dbc65af00a814be74b52716c7f3",
+          "hiddenRgbPixels": 0,
+          "mode": "RGBA",
+          "pngMetadata": {},
+          "removedKeyedPixels": 1068594,
+          "visibleAlphaOccupancy": 0.3206062316894531,
+          "visibleAlphaOccupancyAboveFloor": true,
+          "visibleAlphaOccupancyFloor": 0.1,
+          "visibleAlphaPixels": 504270,
+          "visibleKeyedMagentaPixels": 0
+        }
+      },
+      {
+        "isolatedRoot": true,
+        "lods": {
+          "block": {
+            "canvas": [
+              1024,
+              683
+            ],
+            "decodedSha256": "b3df2a6d97a64345a4ca1e9bbaf5cc2f9a95eb247b1a12c375ae0dd4d3449e99",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "cc1cb46f5c9166f34c634af4cfcfabe7d15a25e7317a20418ba388a4d1d96ce3",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.32824081487920936,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 229569,
+            "visibleKeyedMagentaPixels": 0
+          },
+          "city": {
+            "canvas": [
+              256,
+              171
+            ],
+            "decodedSha256": "75b68eaaf49e203870b7f057d5e76e045a20781280d5620a407ae09f2aee4252",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "576f0c6595d39665c7f508b12c01c96bdbf8f49cd3f011ff2ad828c9b9746374",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.35165387426900585,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 15394,
+            "visibleKeyedMagentaPixels": 0
+          },
+          "neighborhood": {
+            "canvas": [
+              512,
+              342
+            ],
+            "decodedSha256": "60358474a6ef382117c5cb3a1d3a81dee52c85eac424771de66406d2f59cc5f0",
+            "edgeAlphaPixels": 0,
+            "fileSha256": "a834af3a546598bbccd05279a82cb1b233e71dfefb49430eeca54089e4808a3f",
+            "hiddenRgbPixels": 0,
+            "mode": "RGBA",
+            "pngMetadata": {},
+            "visibleAlphaOccupancy": 0.3353606999269006,
+            "visibleAlphaOccupancyAboveFloor": true,
+            "visibleAlphaOccupancyFloor": 0.1,
+            "visibleAlphaPixels": 58723,
+            "visibleKeyedMagentaPixels": 0
+          }
+        },
+        "run": 2,
+        "source": {
+          "canvas": [
+            1536,
+            1024
+          ],
+          "decodedSha256": "11ff3cb864bfe80b1ac90cd50c6b04c4df37d7ea5879a43de178b9c5e7897240",
+          "edgeAlphaPixels": 0,
+          "fileSha256": "dce51fcc29c361fdc2639aa7c1af5a87e0724dbc65af00a814be74b52716c7f3",
+          "hiddenRgbPixels": 0,
+          "mode": "RGBA",
+          "pngMetadata": {},
+          "removedKeyedPixels": 1068594,
+          "visibleAlphaOccupancy": 0.3206062316894531,
+          "visibleAlphaOccupancyAboveFloor": true,
+          "visibleAlphaOccupancyFloor": 0.1,
+          "visibleAlphaPixels": 504270,
+          "visibleKeyedMagentaPixels": 0
+        }
+      }
+    ],
+    "runtime": {
+      "command": [
+        "/Users/James/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibrate_pillow_reference.py",
+        "--all-identities",
+        "--repeat",
+        "2",
+        "--isolated-roots"
+      ],
+      "pillowVersion": "12.2.0",
+      "pythonExecutableSha256": "eb9d74b9c7cfdfb2c9b91614edb2c3607360ba46c5aa7fc4557b3a4a23e97cff",
+      "pythonVersion": "3.12.13"
+    },
+    "schema": "PLAY-099-industrial-south-batch-receipt-v1",
+    "source": {
+      "canvas": [
+        1536,
+        1024
+      ],
+      "decodedSha256": "11ff3cb864bfe80b1ac90cd50c6b04c4df37d7ea5879a43de178b9c5e7897240",
+      "edgeAlphaPixels": 0,
+      "fileSha256": "dce51fcc29c361fdc2639aa7c1af5a87e0724dbc65af00a814be74b52716c7f3",
+      "hiddenRgbPixels": 0,
+      "mode": "RGBA",
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibration/pillow-reference-batch-v1/industrial_l04_v02/source-rgba.png",
+      "pngMetadata": {},
+      "removedKeyedPixels": 1068594,
+      "visibleAlphaOccupancy": 0.3206062316894531,
+      "visibleAlphaOccupancyAboveFloor": true,
+      "visibleAlphaOccupancyFloor": 0.1,
+      "visibleAlphaPixels": 504270,
+      "visibleKeyedMagentaPixels": 0
+    },
+    "sourceReady": false,
+    "task": "PLAY-099",
+    "visualAcceptance": "not performed; frontier-owned"
+  }
+]

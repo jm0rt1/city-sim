@@ -1,0 +1,46 @@
+{
+  "schema": "PLAY-099-rejected-normalization-attempt-v1",
+  "task": "PLAY-099",
+  "family": "industrial",
+  "direction": "south",
+  "routeId": "four-view-v4:play-099-industrial-pillow-calibration",
+  "routeCanonicalSha256": "b7b89fc1dd953a5ec992aa5580499cf99b212b4e3c24148661a60e1b17c8a423",
+  "inputHead": "a544c5d95f6ef1084dc6ee410f64445261d7af43",
+  "disposition": "rejected_preserved_not_source_admitted",
+  "implementation": "task-local Swift CoreImage CILanczosScaleTransform attempt",
+  "preservedDirtyInventory": {
+    "fileCountBeforeThisRecord": 68,
+    "byteCountBeforeThisRecord": 14850956,
+    "sortedPathAndSha256Digest": "6b56991d893b93679fd2c36380cd86e0f1d8e2621da028387d83d84f1cd44b6b",
+    "roots": [
+      "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial",
+      "docs/production/evidence/PLAY-099"
+    ]
+  },
+  "objectiveFailure": {
+    "gate": "validate_south_admission.py",
+    "result": "FAIL: normalized/LOD aliases",
+    "normalizedSourceCount": 12,
+    "normalizedSourceUniqueFileHashCount": 12,
+    "lodCount": 36,
+    "lodUniqueFileHashCount": 3,
+    "blockAliasSha256": "010953cfe5d0b767da39d15747c1a33e630d62c1b6d0fc9927ca93de763407d1",
+    "neighborhoodAliasSha256": "e2cf7346a0acedcd7e6098c8791b4c33ad3214b42f5659ed7324c46cb2dfc180",
+    "cityAliasSha256": "0b65e34cd4d3b13d6405e70566f15d5af8569bf98652c3f62bf218b5a3b8407a",
+    "lodPayloadsWereTransparent": true
+  },
+  "preservation": {
+    "rawPngBytesChanged": false,
+    "filesDeleted": false,
+    "filesOverwrittenByThisCheckpointRecord": false,
+    "imageGenCalled": false
+  },
+  "acceptance": {
+    "candidateReadyForIndependentReview": false,
+    "sourceReady": false,
+    "integrationAdmitted": false,
+    "productionSelected": false,
+    "visualAcceptancePerformed": false
+  },
+  "nextAuthorizedStep": "one-identity bundled-Python/Pillow calibration under the bound frontier route"
+}

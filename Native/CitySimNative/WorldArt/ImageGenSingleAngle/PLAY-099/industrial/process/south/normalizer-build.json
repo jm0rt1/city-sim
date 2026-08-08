@@ -1,0 +1,15 @@
+{
+  "compiler": "swiftc -framework CoreImage -framework CoreGraphics -framework ImageIO -framework UniformTypeIdentifiers -framework Foundation -framework CryptoKit",
+  "created": "2026-08-08",
+  "filter": "CILanczosScaleTransform",
+  "geometryAuthority": "docs/production/decisions/CONTRACT-026-authored-four-view-registration.md",
+  "inputHead": "a544c5d95f6ef1084dc6ee410f64445261d7af43",
+  "normalizer": "normalize_south.swift",
+  "normalizerSha256": "73ee58502255230483cf2cff24637a171b3ca7934fe80de40c11f53d4f209e97",
+  "profile": "docs/production/decisions/CONTRACT-026-registration-profiles-v1.json",
+  "routeId": "four-view-v3:play-099-south-admission",
+  "routeSha256": "5669c3e28d23b46d4e213886809214fa1843988ecb313413ecab9ae39a44116e",
+  "schema": "PLAY-099-south-process-v3",
+  "sourceTransform": "whole-canvas only; no crop, trim, recenter, resize-to-bounds, or pixel-derived geometry",
+  "task": "PLAY-099"
+}

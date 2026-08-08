@@ -1,0 +1,18 @@
+{
+  "candidateReadyForIndependentReview": true,
+  "integrationAdmitted": false,
+  "lodCount": 36,
+  "normalizedSourceCount": 12,
+  "productionSelected": false,
+  "rawBytesPreserved": true,
+  "rawCount": 12,
+  "routeId": "four-view-v3:play-099-south-admission",
+  "routeSha256": "5669c3e28d23b46d4e213886809214fa1843988ecb313413ecab9ae39a44116e",
+  "schema": "PLAY-099-south-admission-report-v3",
+  "unrun": [
+    "frontier visual acceptance",
+    "Integration semantic admission",
+    "aggregate/full gates",
+    "runtime mapping"
+  ]
+}

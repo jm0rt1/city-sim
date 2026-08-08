@@ -1,0 +1,31 @@
+{
+  "schema": 1,
+  "task": "PLAY-101",
+  "routeId": "single-angle-v1:play-101",
+  "routeSha256": "00669192181f4695deca0f86950fed0be27cf6aee14c6d9cc611a2efd77bdd70",
+  "authorityCommit": "004bd2dbcb88e57330425a833505d81ce00e9f90",
+  "baseCommit": "690c46bc9019b641c023f264c46bf8aadb506619",
+  "workerHead": "004bd2dbcb88e57330425a833505d81ce00e9f90",
+  "inventory": {
+    "logicalBuildingImages": 43,
+    "normalizedLODPayloads": 129,
+    "directionalIdentity": false
+  },
+  "registration": {
+    "authoringCanvasPixels": [1536, 1024],
+    "groundPivotSource": [768, 896],
+    "orientationTransform": "none"
+  },
+  "quarantine": {
+    "root": "docs/production/evidence/PLAY-101/quarantine",
+    "productionSelected": false,
+    "fallbackSourceKey": null,
+    "orientationTransform": "none",
+    "activation": "integration-only-after-exact-43-129"
+  },
+  "focusedGate": "swift test --package-path Native/CitySimNative --filter SingleAngleWorldArtTests",
+  "forbiddenPaths": [
+    "Native/CitySimNative/Sources",
+    "Native/CitySimNative/Resources"
+  ]
+}

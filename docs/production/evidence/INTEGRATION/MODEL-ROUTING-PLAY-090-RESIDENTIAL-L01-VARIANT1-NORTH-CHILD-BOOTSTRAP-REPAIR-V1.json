@@ -1,0 +1,68 @@
+{
+  "schema": 2,
+  "authorityCommit": "46aa24da390154bd3aadd63ff2245b86716d2dd4",
+  "assignments": [
+    {
+      "modelRouteSha256": "34cf548546a1b0c28a865d8dedbf3ec76e571824221a5c65a3c1da6010e27557",
+      "modelRoute": {
+        "schema": 2,
+        "routeId": "quality-v2:play-090-residential-l01-variant1-north-child-bootstrap-repair-v1",
+        "taskId": "PLAY-090",
+        "packetKind": "local_debug",
+        "classification": "LUNA_LOCAL_DEBUG",
+        "model": "gpt-5.6-luna",
+        "effort": "max",
+        "rationale": "Frontier Integration reran the exact V2 gate outside the sandbox, proving Blender and bpy startup succeed and isolating one deterministic lane-local failure: Blender --python does not add the child script directory to sys.path, so the child cannot import its adjacent launcher. Architecture, executable, inputs, command and ownership are frozen; Luna may repair only this bootstrap and static regression coverage while Integration retains the unsandboxed deterministic replay.",
+        "authority": {
+          "authorityCommit": "46aa24da390154bd3aadd63ff2245b86716d2dd4",
+          "baseCommit": "46aa24da390154bd3aadd63ff2245b86716d2dd4",
+          "claim": {"path": "docs/production/claims/PLAY-090.world-art-north.md", "sha256": "3d28843b7cbd53c9f25e71163a6bd3e9821c340010f7303a0909e35b9251d6b2"},
+          "immutableInputs": [
+            {"path": "docs/production/evidence/INTEGRATION/BLENDER-4.5.12-X86_64-RUNTIME-RECEIPT-V1.json", "sha256": "4ef99161131551706a9897005a3af0827a2fb0caf928917f5015e2e12d446a5f"},
+            {"path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-090-RESIDENTIAL-L01-VARIANT1-NORTH-RUNTIME-REPAIR-V2.json", "sha256": "1317931590c213284453089585820ccc759d85f7f030dc82278f09a698ac0950"}
+          ]
+        },
+        "assignment": {
+          "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+          "branch": "codex/citysim-world-art",
+          "worktree": "/Users/James/.codex/worktrees/0648/city-sim",
+          "expectedHead": "de594409dcf1764bd6c2d0d82a6bce6e1063a65e",
+          "featureAuthorThreadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": ["Native/CitySimNative/WorldArt/Blender/PLAY-090/residential-l01-variant1-north", "docs/production/evidence/PLAY-090"],
+          "allowed": ["Native/CitySimNative/WorldArt/Blender/PLAY-090/residential-l01-variant1-north", "docs/production/evidence/PLAY-090"],
+          "forbidden": [".agents/skills", "Native/CitySimNative/Sources", "Native/CitySimNative/Resources", "Native/CitySimNative/WorldArt/Blender/PLAY-027", "Native/CitySimNative/WorldArt/Blender/PLAY-091", "Native/CitySimNative/WorldArt/Blender/PLAY-092", "Native/CitySimNative/WorldArt/Blender/PLAY-093", "docs/production/claims", "docs/production/decisions", "docs/production/evidence/INTEGRATION"]
+        },
+        "boundedDeliverable": "Repair only the child module bootstrap so Blender --python can import the adjacent launch_residential_l01_process_a module without ambient PYTHONPATH. Use the canonical real script directory derived from __file__, reject alias/symlink ambiguity if needed, add a static/import regression that proves the child can be loaded with its directory absent from initial sys.path, preserve all V1/V2 failure evidence, commit one coherent checkpoint, and stop. Do not run Blender or the A/B replay; Integration owns that unsandboxed full gate.",
+        "proofPolicy": {
+          "architectureState": "frozen_reference",
+          "referenceImplementation": {"path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-090-RESIDENTIAL-L01-VARIANT1-NORTH-RUNTIME-REPAIR-V2.json", "sha256": "1317931590c213284453089585820ccc759d85f7f030dc82278f09a698ac0950"},
+          "deliverableClaims": ["static_structure"],
+          "focusedProofLevel": "static_only",
+          "fullProofLevel": "deterministic_replay",
+          "behavioralCommands": ["Integration runs the exact V2 contained A/B Blender replay outside the sandbox"],
+          "prohibitedSubstitutions": ["ast_shape_for_runtime_success", "manifest_or_prose_for_rendered_pixels", "source_token_presence_for_execution", "unit_tests_for_visual_acceptance", "worker_self_report_for_independent_acceptance"]
+        },
+        "validation": {
+          "focusedGateOwner": {"threadId": "019f96e0-3793-7542-9172-060a9ca09b0a", "role": "north_child_bootstrap_focused_gate"},
+          "focusedCommands": ["python3 Native/CitySimNative/WorldArt/Blender/PLAY-090/residential-l01-variant1-north/test_process_a_execution_boundary.py --bootstrap-only --assert-zero-dcc", "python3 Native/CitySimNative/WorldArt/Blender/PLAY-090/residential-l01-variant1-north/test_prelock_zero_pixel.py", "git diff --check de594409dcf1764bd6c2d0d82a6bce6e1063a65e..HEAD"],
+          "fullGateOwner": {"threadId": "019f7686-4491-7891-86a6-95a78d67e5c8", "role": "integration_north_child_bootstrap_acceptance", "model": "gpt-5.6-sol", "effort": "high"},
+          "fullCommands": ["Integration runs the exact V2 contained A/B Blender replay outside the sandbox"]
+        },
+        "expectedResult": {"evidencePaths": ["docs/production/evidence/PLAY-090/residential-l01-variant1-north-runtime-repair-v2"], "commitRequired": true, "commitMessagePattern": "PLAY-090:"},
+        "escalationTriggers": ["baseline_or_candidate_identity_mismatch", "cross_lane_semantic_conflict", "failure_outside_focused_scope", "path_outside_claim", "save_or_migration_uncertainty", "shared_contract_or_schema_decision", "subjective_acceptance_required", "two_unsuccessful_repair_attempts", "unresolved_product_visual_or_interaction_judgment"],
+        "stopCondition": "Stop after one clean bootstrap-only commit and zero-DCC focused PASS. Stop on any Blender/DCC start, second repair need, path/identity drift, non-bootstrap change, governed write, sibling/shared access, push/pin/self-accept request.",
+        "independentReviewer": {"required": true, "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8", "model": "gpt-5.6-sol", "effort": "high"},
+        "context": {"mode": "full_authority_read", "packet": null, "verifiedHashes": [
+          {"path": "docs/production/claims/PLAY-090.world-art-north.md", "sha256": "3d28843b7cbd53c9f25e71163a6bd3e9821c340010f7303a0909e35b9251d6b2"},
+          {"path": "docs/production/evidence/INTEGRATION/BLENDER-4.5.12-X86_64-RUNTIME-RECEIPT-V1.json", "sha256": "4ef99161131551706a9897005a3af0827a2fb0caf928917f5015e2e12d446a5f"},
+          {"path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-090-RESIDENTIAL-L01-VARIANT1-NORTH-RUNTIME-REPAIR-V2.json", "sha256": "1317931590c213284453089585820ccc759d85f7f030dc82278f09a698ac0950"}
+        ]}
+      }
+    }
+  ]
+}

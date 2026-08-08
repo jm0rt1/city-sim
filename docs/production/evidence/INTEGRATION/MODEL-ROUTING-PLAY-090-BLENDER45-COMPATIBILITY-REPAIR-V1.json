@@ -1,0 +1,49 @@
+{
+  "schema": 2,
+  "authorityCommit": "46aa24da390154bd3aadd63ff2245b86716d2dd4",
+  "assignments": [{
+    "modelRouteSha256": "1c1f4c7ee9c724f841bf70a10f9a6034043bf3bb9a79c86738b08a9aecc1a884",
+    "modelRoute": {
+      "schema": 2,
+      "routeId": "quality-v2:play-090-blender45-compatibility-repair-v1",
+      "taskId": "PLAY-090",
+      "packetKind": "local_debug",
+      "classification": "LUNA_LOCAL_DEBUG",
+      "model": "gpt-5.6-luna",
+      "effort": "max",
+      "rationale": "The unsandboxed Integration gate now passes route, binary, bootstrap and Rosetta-host validation and reaches geometry construction. It returned a reproducible Blender-4.5 lane-local API mismatch: Mesh has no is_valid attribute. Architecture and inputs are frozen. This packet allows one compact compatibility sweep with at most two Integration-returned API repairs, avoiding one route per deterministic API line while preserving escalation after two failures.",
+      "authority": {
+        "authorityCommit": "46aa24da390154bd3aadd63ff2245b86716d2dd4",
+        "baseCommit": "46aa24da390154bd3aadd63ff2245b86716d2dd4",
+        "claim": {"path": "docs/production/claims/PLAY-090.world-art-north.md", "sha256": "3d28843b7cbd53c9f25e71163a6bd3e9821c340010f7303a0909e35b9251d6b2"},
+        "immutableInputs": [
+          {"path": "docs/production/evidence/INTEGRATION/BLENDER-4.5.12-X86_64-RUNTIME-RECEIPT-V1.json", "sha256": "4ef99161131551706a9897005a3af0827a2fb0caf928917f5015e2e12d446a5f"},
+          {"path": "Native/CitySimNative/WorldArt/Blender/PLAY-090/residential-l01-variant1-north/DESIGN-SCENE.json", "sha256": "b8693b77b9e3927b44ed1e67bdacaf76afe69f474a338bf51619b3e61fe8be4b"},
+          {"path": "Native/CitySimNative/WorldArt/Blender/PLAY-090/residential-l01-variant1-north/MATERIALS.json", "sha256": "943436fdebc0c7bf672798bffa6f7619608341316cead3467efc6f14a3ac4fc3"}
+        ]
+      },
+      "assignment": {"threadId": "019f96e0-3793-7542-9172-060a9ca09b0a", "branch": "codex/citysim-world-art", "worktree": "/Users/James/.codex/worktrees/0648/city-sim", "expectedHead": "2924f3157fd347cd189f1559aa653e10e3fd06b3", "featureAuthorThreadId": "019f96e0-3793-7542-9172-060a9ca09b0a", "sharedAuthorityOwnership": false, "finalQAOwnership": false, "subjectiveJudgmentRequired": false},
+      "pathPolicy": {
+        "claimOwnedRoots": ["Native/CitySimNative/WorldArt/Blender/PLAY-090/residential-l01-variant1-north", "docs/production/evidence/PLAY-090"],
+        "allowed": ["Native/CitySimNative/WorldArt/Blender/PLAY-090/residential-l01-variant1-north", "docs/production/evidence/PLAY-090"],
+        "forbidden": [".agents/skills", "Native/CitySimNative/Sources", "Native/CitySimNative/Resources", "Native/CitySimNative/WorldArt/Blender/PLAY-027", "Native/CitySimNative/WorldArt/Blender/PLAY-091", "Native/CitySimNative/WorldArt/Blender/PLAY-092", "Native/CitySimNative/WorldArt/Blender/PLAY-093", "docs/production/claims", "docs/production/decisions", "docs/production/evidence/INTEGRATION"]
+      },
+      "boundedDeliverable": "Repair deterministic Blender 4.5 API compatibility defects returned by the exact Integration A/B gate, beginning with removal of the nonexistent Mesh.is_valid access in favor of Mesh.validate return semantics and explicit authored topology invariants. Touch only child/test/evidence in the North claim. Integration may return at most one additional API-specific failure under this same route. Commit each coherent repair, run zero-DCC/static and zero-pixel gates, and stop when Integration reports full replay PASS or after two compatibility repairs. Never run Blender in the worker.",
+      "proofPolicy": {"architectureState": "frozen_reference", "referenceImplementation": {"path": "docs/production/evidence/INTEGRATION/BLENDER-4.5.12-X86_64-RUNTIME-RECEIPT-V1.json", "sha256": "4ef99161131551706a9897005a3af0827a2fb0caf928917f5015e2e12d446a5f"}, "deliverableClaims": ["static_structure"], "focusedProofLevel": "static_only", "fullProofLevel": "deterministic_replay", "behavioralCommands": ["Integration runs the exact V2 contained A/B Blender replay outside the sandbox"], "prohibitedSubstitutions": ["ast_shape_for_runtime_success", "manifest_or_prose_for_rendered_pixels", "source_token_presence_for_execution", "unit_tests_for_visual_acceptance", "worker_self_report_for_independent_acceptance"]},
+      "validation": {
+        "focusedGateOwner": {"threadId": "019f96e0-3793-7542-9172-060a9ca09b0a", "role": "blender45_compatibility_focused_gate"},
+        "focusedCommands": ["python3 Native/CitySimNative/WorldArt/Blender/PLAY-090/residential-l01-variant1-north/test_process_a_execution_boundary.py --api-compatibility-only --assert-zero-dcc", "python3 Native/CitySimNative/WorldArt/Blender/PLAY-090/residential-l01-variant1-north/test_prelock_zero_pixel.py", "git diff --check 2924f3157fd347cd189f1559aa653e10e3fd06b3..HEAD"],
+        "fullGateOwner": {"threadId": "019f7686-4491-7891-86a6-95a78d67e5c8", "role": "integration_blender45_compatibility_acceptance", "model": "gpt-5.6-sol", "effort": "high"},
+        "fullCommands": ["Integration runs the exact V2 contained A/B Blender replay outside the sandbox"]
+      },
+      "expectedResult": {"evidencePaths": ["docs/production/evidence/PLAY-090/residential-l01-variant1-north-runtime-repair-v2"], "commitRequired": true, "commitMessagePattern": "PLAY-090:"},
+      "escalationTriggers": ["baseline_or_candidate_identity_mismatch", "cross_lane_semantic_conflict", "failure_outside_focused_scope", "path_outside_claim", "save_or_migration_uncertainty", "shared_contract_or_schema_decision", "subjective_acceptance_required", "two_unsuccessful_repair_attempts", "unresolved_product_visual_or_interaction_judgment"],
+      "stopCondition": "Stop on Integration replay PASS, after two compatibility repairs, or immediately on architecture/visual/contract/path drift, Blender start, governed write, sibling/shared access, push/pin/self-accept request.",
+      "independentReviewer": {"required": true, "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8", "model": "gpt-5.6-sol", "effort": "high"},
+      "context": {"mode": "full_authority_read", "packet": null, "verifiedHashes": [
+        {"path": "docs/production/claims/PLAY-090.world-art-north.md", "sha256": "3d28843b7cbd53c9f25e71163a6bd3e9821c340010f7303a0909e35b9251d6b2"},
+        {"path": "docs/production/evidence/INTEGRATION/BLENDER-4.5.12-X86_64-RUNTIME-RECEIPT-V1.json", "sha256": "4ef99161131551706a9897005a3af0827a2fb0caf928917f5015e2e12d446a5f"}
+      ]}
+    }
+  }]
+}

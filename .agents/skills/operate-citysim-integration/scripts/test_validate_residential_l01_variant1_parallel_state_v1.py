@@ -7,15 +7,16 @@ import copy
 import hashlib
 import importlib.util
 import json
+import shutil
 import subprocess
 import tempfile
 import unittest
 from pathlib import Path
-from unittest import mock
 
 
 ROOT = Path(__file__).resolve().parents[4]
 VALIDATOR = Path(__file__).with_name("validate_residential_l01_variant1_parallel_state_v1.py")
+MODEL_ROUTE_VALIDATOR = Path(__file__).with_name("validate_model_route_v1.py")
 SCHEDULE = ROOT / "docs/production/evidence/INTEGRATION/RESIDENTIAL-L01-VARIANT1-PARALLEL-SCHEDULE-V1.json"
 SPEC = importlib.util.spec_from_file_location("residential_controls", VALIDATOR)
 assert SPEC and SPEC.loader
@@ -29,6 +30,9 @@ class ResidentialControlTests(unittest.TestCase):
         self.temp = tempfile.TemporaryDirectory()
         self.route_root = Path(self.temp.name)
         (self.route_root / "routes").mkdir()
+        subprocess.run(["git", "init", "-q", str(self.route_root)], check=True)
+        subprocess.run(["git", "-C", str(self.route_root), "config", "user.email", "controls@test.invalid"], check=True)
+        subprocess.run(["git", "-C", str(self.route_root), "config", "user.name", "Controls Test"], check=True)
 
     def tearDown(self) -> None:
         self.temp.cleanup()
@@ -71,6 +75,7 @@ class ResidentialControlTests(unittest.TestCase):
             "sha256": hashlib.sha256(payload).hexdigest(),
             "routeId": route_id,
             "modelRouteSha256": route_sha,
+            "receiptCommit": None,
         }
 
     def activate(self, data: dict, phase: str, previous_phase: str) -> None:
@@ -133,6 +138,16 @@ class ResidentialControlTests(unittest.TestCase):
             self.bind_route(data, row)
             if index < 3:
                 job_refs.append({"cell": row["cell"], "jobId": job_id})
+        subprocess.run(["git", "-C", str(self.route_root), "add", "routes"], check=True)
+        subprocess.run(
+            ["git", "-C", str(self.route_root), "commit", "--allow-empty", "-qm", "commit fixture receipts"],
+            check=True,
+        )
+        receipt_commit = subprocess.check_output(
+            ["git", "-C", str(self.route_root), "rev-parse", "HEAD"], text=True
+        ).strip()
+        for row in data["cells"]:
+            row["routeReceipt"]["receiptCommit"] = receipt_commit
         data["parallelismProof"] = {
             "requiredConcurrentCells": 3,
             "eligibleCells": [row["cell"] for row in data["cells"]],
@@ -156,6 +171,163 @@ class ResidentialControlTests(unittest.TestCase):
         with self.assertRaises(MODULE.ControlError):
             self.validate_fixture(data)
 
+    def committed_six_route_dispatch(self) -> tuple[str, str, Path, list[tuple[dict, dict]]]:
+        copied_validator = self.route_root / ".agents/skills/operate-citysim-integration/scripts/validate_model_route_v1.py"
+        copied_validator.parent.mkdir(parents=True)
+        shutil.copy2(MODEL_ROUTE_VALIDATOR, copied_validator)
+        (self.route_root / "claims").mkdir()
+        (self.route_root / "inputs").mkdir()
+        reference_path = self.route_root / "inputs/reference.txt"
+        reference_path.write_text("frozen\n", encoding="utf-8")
+        for row in self.valid["cells"]:
+            owned = f"owned/{row['cell']}"
+            (self.route_root / owned / "evidence").mkdir(parents=True)
+            (self.route_root / "claims" / f"{row['taskId']}.md").write_text(
+                f"# {row['taskId']} Claim\nOwn `{owned}` and `{owned}/evidence`.\n",
+                encoding="utf-8",
+            )
+        subprocess.run(["git", "-C", str(self.route_root), "add", ".agents", "claims", "inputs"], check=True)
+        subprocess.run(["git", "-C", str(self.route_root), "commit", "-qm", "freeze authority"], check=True)
+        authority = subprocess.check_output(
+            ["git", "-C", str(self.route_root), "rev-parse", "HEAD"], text=True
+        ).strip()
+        reference = {
+            "path": "inputs/reference.txt",
+            "sha256": hashlib.sha256(reference_path.read_bytes()).hexdigest(),
+        }
+        assignments = []
+        rows_and_bindings = []
+        for row in self.valid["cells"]:
+            classification, model, effort = MODULE.required_route(row["cell"], "prelock_active")
+            packet_kind = {
+                "FRONTIER_AUTHORITY": "authority",
+                "LUNA_IMPLEMENTATION": "implementation",
+                "LUNA_MECHANICAL": "mechanical",
+            }[classification]
+            thread = f"{row['cell']}-fixture-thread"
+            reviewer = f"{row['cell']}-review-thread"
+            owned = f"owned/{row['cell']}"
+            claim_path = self.route_root / "claims" / f"{row['taskId']}.md"
+            claim = {
+                "path": f"claims/{row['taskId']}.md",
+                "sha256": hashlib.sha256(claim_path.read_bytes()).hexdigest(),
+            }
+            route = {
+                "schema": 2,
+                "routeId": f"quality-v2:{row['taskId'].lower()}-{row['cell']}-fixture-v1",
+                "taskId": row["taskId"],
+                "packetKind": packet_kind,
+                "classification": classification,
+                "model": model,
+                "effort": effort,
+                "rationale": "Exercise one exact committed six-row dispatch receipt.",
+                "authority": {
+                    "authorityCommit": authority,
+                    "baseCommit": authority,
+                    "claim": claim,
+                    "immutableInputs": [copy.deepcopy(reference)],
+                },
+                "assignment": {
+                    "threadId": thread,
+                    "branch": f"codex/fixture-{row['cell']}",
+                    "worktree": str(self.route_root / "absent" / row["cell"]),
+                    "expectedHead": authority,
+                    "featureAuthorThreadId": None,
+                    "sharedAuthorityOwnership": classification == "FRONTIER_AUTHORITY",
+                    "finalQAOwnership": False,
+                    "subjectiveJudgmentRequired": classification == "FRONTIER_AUTHORITY",
+                },
+                "pathPolicy": {
+                    "claimOwnedRoots": [owned],
+                    "allowed": [f"{owned}/evidence"],
+                    "forbidden": ["claims"],
+                },
+                "boundedDeliverable": f"Produce one bounded {row['cell']} fixture packet.",
+                "proofPolicy": {
+                    "architectureState": "frozen_reference",
+                    "referenceImplementation": copy.deepcopy(reference),
+                    "deliverableClaims": ["static_structure"],
+                    "focusedProofLevel": "static_only",
+                    "fullProofLevel": "static_only",
+                    "behavioralCommands": [],
+                    "prohibitedSubstitutions": sorted({
+                        "source_token_presence_for_execution",
+                        "ast_shape_for_runtime_success",
+                        "manifest_or_prose_for_rendered_pixels",
+                        "unit_tests_for_visual_acceptance",
+                        "worker_self_report_for_independent_acceptance",
+                    }),
+                },
+                "validation": {
+                    "focusedGateOwner": {"threadId": thread, "role": f"{row['cell']}_focused_gate"},
+                    "focusedCommands": ["python3 focused_check.py"],
+                    "fullGateOwner": {
+                        "threadId": reviewer,
+                        "role": "integration_aggregate_gate",
+                        "model": "gpt-5.6-sol",
+                        "effort": "high",
+                    },
+                    "fullCommands": ["aggregate exact-tree gate"],
+                },
+                "expectedResult": {
+                    "evidencePaths": [f"{owned}/evidence"],
+                    "commitRequired": True,
+                    "commitMessagePattern": f"{row['taskId']}:",
+                },
+                "escalationTriggers": sorted(MODULE.ESCALATIONS),
+                "stopCondition": "Stop after one coherent fixture packet or any escalation trigger.",
+                "independentReviewer": (
+                    {"required": False, "threadId": None, "model": None, "effort": None}
+                    if classification == "FRONTIER_AUTHORITY"
+                    else {"required": True, "threadId": reviewer, "model": "gpt-5.6-sol", "effort": "high"}
+                ),
+                "context": {
+                    "mode": "full_authority_read",
+                    "packet": None,
+                    "verifiedHashes": [copy.deepcopy(reference)],
+                },
+            }
+            route_sha = MODULE.canonical_sha(route)
+            assignments.append({"modelRouteSha256": route_sha, "modelRoute": route})
+            rows_and_bindings.append((
+                {
+                    "cell": row["cell"],
+                    "taskId": row["taskId"],
+                    "threadId": thread,
+                    "branch": route["assignment"]["branch"],
+                    "worktree": route["assignment"]["worktree"],
+                    "head": authority,
+                    "routeRequirement": {
+                        "classification": classification,
+                        "model": model,
+                        "effort": effort,
+                        "escalationTriggers": sorted(MODULE.ESCALATIONS),
+                    },
+                },
+                {
+                    "path": "routes/six-row-dispatch.json",
+                    "sha256": None,
+                    "routeId": route["routeId"],
+                    "modelRouteSha256": route_sha,
+                    "receiptCommit": None,
+                },
+            ))
+        dispatch_path = self.route_root / "routes/six-row-dispatch.json"
+        dispatch_path.write_text(
+            json.dumps({"schema": 2, "authorityCommit": authority, "assignments": assignments}, indent=2) + "\n",
+            encoding="utf-8",
+        )
+        subprocess.run(["git", "-C", str(self.route_root), "add", "routes/six-row-dispatch.json"], check=True)
+        subprocess.run(["git", "-C", str(self.route_root), "commit", "-qm", "commit dispatch receipt"], check=True)
+        receipt_commit = subprocess.check_output(
+            ["git", "-C", str(self.route_root), "rev-parse", "HEAD"], text=True
+        ).strip()
+        receipt_sha = hashlib.sha256(dispatch_path.read_bytes()).hexdigest()
+        for _, binding in rows_and_bindings:
+            binding["sha256"] = receipt_sha
+            binding["receiptCommit"] = receipt_commit
+        return authority, receipt_commit, dispatch_path, rows_and_bindings
+
     def test_current_blocked_schedule_binds_authority_blobs_and_live_heads(self) -> None:
         result = MODULE.validate_schedule(self.valid, ROOT)
         self.assertFalse(result["dispatchReady"])
@@ -164,8 +336,23 @@ class ResidentialControlTests(unittest.TestCase):
     def test_positive_prelock_transition_with_real_schema2_receipt_projection(self) -> None:
         data = copy.deepcopy(self.valid)
         self.activate(data, "prelock_active", "contract_pending")
+        north = next(row for row in data["cells"] if row["cell"] == "north")
+        renderer = next(row for row in data["cells"] if row["cell"] == "renderer")
+        qa = next(row for row in data["cells"] if row["cell"] == "qa")
+        self.assertTrue(north["permissions"]["zeroPixelPreparation"])
+        self.assertFalse(north["permissions"]["prelockProcessA"])
+        self.assertEqual(renderer["ownedRoots"], MODULE.OWNED_ROOTS["renderer"])
+        self.assertEqual(qa["ownedRoots"], MODULE.OWNED_ROOTS["qa"])
         result = self.validate_fixture(data)
         self.assertTrue(result["dispatchReady"])
+
+    def test_rejects_prelock_north_process_a_without_future_closure(self) -> None:
+        data = copy.deepcopy(self.valid)
+        self.activate(data, "prelock_active", "contract_pending")
+        north = next(row for row in data["cells"] if row["cell"] == "north")
+        north["permissions"]["zeroPixelPreparation"] = False
+        north["permissions"]["prelockProcessA"] = True
+        self.assert_fails(data)
 
     def test_positive_direction_local_return_preserves_siblings(self) -> None:
         data = copy.deepcopy(self.valid)
@@ -260,15 +447,46 @@ class ResidentialControlTests(unittest.TestCase):
         data["cells"][1]["routeRequirement"]["escalationTriggers"].pop()
         self.assert_fails(data)
 
-    def test_real_runner_calls_shared_model_route_validator(self) -> None:
-        receipt = self.route_root / "route.json"
-        receipt.write_text("{}")
-        completed = subprocess.CompletedProcess([], 0, "PASS", "")
-        with mock.patch.object(MODULE.subprocess, "run", return_value=completed) as run:
-            MODULE.run_real_route_validator(ROOT, receipt, "quality-v2:test")
-        argv = run.call_args.args[0]
-        self.assertTrue(str(argv[1]).endswith("validate_model_route_v1.py"))
-        self.assertIn("--dispatch-route-id", argv)
+    def test_committed_six_row_receipt_runs_real_route_validator(self) -> None:
+        authority, receipt_commit, _, rows_and_bindings = self.committed_six_route_dispatch()
+        self.assertNotEqual(authority, receipt_commit)
+        for row, binding in rows_and_bindings:
+            with self.subTest(cell=row["cell"]):
+                MODULE.validate_route_receipt(
+                    binding,
+                    row,
+                    authority,
+                    self.route_root,
+                    check_repository=True,
+                    runner=MODULE.run_real_route_validator,
+                )
+
+    def test_rejects_stale_or_uncommitted_receipt_commit(self) -> None:
+        authority, _, dispatch_path, rows_and_bindings = self.committed_six_route_dispatch()
+        row, binding = rows_and_bindings[0]
+        stale = copy.deepcopy(binding)
+        stale["receiptCommit"] = authority
+        with self.assertRaises(MODULE.ControlError):
+            MODULE.validate_route_receipt(
+                stale,
+                row,
+                authority,
+                self.route_root,
+                check_repository=True,
+                runner=MODULE.run_real_route_validator,
+            )
+        dispatch_path.write_text(dispatch_path.read_text(encoding="utf-8") + "\n", encoding="utf-8")
+        uncommitted = copy.deepcopy(binding)
+        uncommitted["sha256"] = hashlib.sha256(dispatch_path.read_bytes()).hexdigest()
+        with self.assertRaises(MODULE.ControlError):
+            MODULE.validate_route_receipt(
+                uncommitted,
+                row,
+                authority,
+                self.route_root,
+                check_repository=True,
+                runner=MODULE.run_real_route_validator,
+            )
 
     def test_rejects_old_qa_task_or_non_distinct_final_reviewer(self) -> None:
         data = copy.deepcopy(self.valid)

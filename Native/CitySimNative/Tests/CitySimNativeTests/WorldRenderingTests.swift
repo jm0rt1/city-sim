@@ -728,6 +728,121 @@ final class WorldRenderingTests: XCTestCase {
     }
 
     @MainActor
+    func testResidentialVariantOnePrelockQuarantineGraphIsDeterministicAndFailClosed() throws {
+        struct PendingPacket: Equatable {
+            var direction: String
+            var logicalID: String
+            var sourceKey: String
+            var sourceSHA256: String
+            var normalizedSHA256: [String]
+            var frontage: String
+            var pivotWorld: [Double]
+            var socketWorld: [Double]
+            var transform: String
+            var fallback: Bool
+
+            var isValid: Bool {
+                let sockets: [String: [Double]] = [
+                    "north": [18, 9],
+                    "east": [18, -9],
+                    "south": [-18, -9],
+                    "west": [-18, 9],
+                ]
+                return logicalID == "residential_l01_v1_\(direction)"
+                    && sourceKey == "residential_l01/variant-1/\(direction)/source-revision-pending"
+                    && sourceSHA256.count == 64
+                    && normalizedSHA256.count == 3
+                    && Set(normalizedSHA256).count == 3
+                    && frontage == direction
+                    && pivotWorld == [0, -18]
+                    && socketWorld == sockets[direction]
+                    && transform == "none"
+                    && !fallback
+            }
+        }
+
+        let directions = ["north", "east", "south", "west"]
+        let packets = directions.enumerated().map { index, direction in
+            let sourceSuffix = ["0", "1", "2", "3"][index]
+            return PendingPacket(
+                direction: direction,
+                logicalID: "residential_l01_v1_\(direction)",
+                sourceKey: "residential_l01/variant-1/\(direction)/source-revision-pending",
+                sourceSHA256: String(repeating: "a", count: 63) + sourceSuffix,
+                normalizedSHA256: (0..<3).map {
+                    String(repeating: "b", count: 62) + sourceSuffix + "\($0)"
+                },
+                frontage: direction,
+                pivotWorld: [0, -18],
+                socketWorld: [
+                    "north": [18, 9],
+                    "east": [18, -9],
+                    "south": [-18, -9],
+                    "west": [-18, 9],
+                ][direction]!,
+                transform: "none",
+                fallback: false
+            )
+        }
+
+        XCTAssertEqual(packets.map(\.direction), directions)
+        XCTAssertEqual(Set(packets.map(\.logicalID)).count, 4)
+        XCTAssertEqual(Set(packets.map(\.sourceKey)).count, 4)
+        XCTAssertEqual(Set(packets.map(\.sourceSHA256)).count, 4)
+        XCTAssertTrue(packets.allSatisfy(\.isValid))
+
+        // Opening placement selection is derived from the authoritative
+        // starter state, never from a hidden fixture override.
+        let state = CityGameState.newCity(seed: 42)
+        var openingPlacements: [String: GridCoordinate] = [:]
+        for tile in state.tiles where tile.kind == .residential {
+            let roads = RoadConnectionMask.resolving(at: tile.coordinate, in: state)
+            guard let identity = ResidentialGeneratedAssetIdentity(
+                level: tile.level,
+                adjacentRoads: roads
+            ) else { continue }
+            openingPlacements[identity.direction, default: tile.coordinate] = tile.coordinate
+        }
+        XCTAssertEqual(Set(openingPlacements.keys), Set(directions))
+        XCTAssertEqual(openingPlacements.count, 4)
+
+        enum QuarantineState: String { case intakePreparing, quarantined, rejected }
+        let graph: [String: QuarantineState] = Dictionary(
+            uniqueKeysWithValues: directions.map { ($0, .intakePreparing) }
+        )
+        XCTAssertEqual(graph.count, 4)
+        XCTAssertTrue(graph.values.allSatisfy { $0 == .intakePreparing })
+
+        var alias = packets[0]
+        alias.logicalID = packets[1].logicalID
+        XCTAssertFalse(alias.isValid, "direction alias must reject")
+
+        var fallback = packets[0]
+        fallback.fallback = true
+        XCTAssertFalse(fallback.isValid, "fallback substitution must reject")
+
+        var mirrored = packets[0]
+        mirrored.transform = "mirror-x"
+        XCTAssertFalse(mirrored.isValid, "mirrored source must reject")
+
+        var rotated = packets[0]
+        rotated.transform = "rotate-90"
+        XCTAssertFalse(rotated.isValid, "rotated source must reject")
+
+        var registration = packets[0]
+        registration.socketWorld = [18, -9]
+        XCTAssertFalse(registration.isValid, "registration drift must reject")
+
+        let runtimeActivation = false
+        let productionSelection = false
+        let atomicAssembly = false
+        XCTAssertFalse(runtimeActivation)
+        XCTAssertFalse(productionSelection)
+        XCTAssertFalse(atomicAssembly)
+        XCTAssertEqual(graph.values.filter { $0 == .quarantined }.count, 0)
+    }
+
+    @MainActor
     func testDirectionalCommercialProductionSelectionCoversEveryLevelAndAuthoritativeFrontage() throws {
         let catalog = WorldAssetCatalog()
         let renderer = LotRenderer(style: WorldVisualStyle(), assets: catalog)

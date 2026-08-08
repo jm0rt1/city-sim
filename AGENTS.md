@@ -17,6 +17,16 @@ These instructions apply to every task in this repository and every linked workt
 | `codex/citysim-world-art-east` | `.agents/skills/produce-citysim-world-art/SKILL.md` |
 | `codex/citysim-world-art-south` | `.agents/skills/produce-citysim-world-art/SKILL.md` |
 | `codex/citysim-world-art-west` | `.agents/skills/produce-citysim-world-art/SKILL.md` |
+| `codex/citysim-world-art-pipeline` | `.agents/skills/produce-citysim-world-art/SKILL.md` |
+| `codex/citysim-world-art-residential` | `.agents/skills/produce-citysim-world-art/SKILL.md` |
+| `codex/citysim-world-art-commercial` | `.agents/skills/produce-citysim-world-art/SKILL.md` |
+| `codex/citysim-world-art-industrial` | `.agents/skills/produce-citysim-world-art/SKILL.md` |
+| `codex/citysim-world-art-civic` | `.agents/skills/produce-citysim-world-art/SKILL.md` |
+| `codex/citysim-world-art-north-imagegen` | `.agents/skills/produce-citysim-world-art/SKILL.md` |
+| `codex/citysim-world-art-east-imagegen` | `.agents/skills/produce-citysim-world-art/SKILL.md` |
+| `codex/citysim-world-art-west-imagegen` | `.agents/skills/produce-citysim-world-art/SKILL.md` |
+| `codex/citysim-world-rendering-single-angle` | `.agents/skills/render-citysim-world/SKILL.md` |
+| `codex/citysim-playtest-single-angle` | `.agents/skills/verify-citysim-playability/SKILL.md` |
 | `codex/citysim-ui-input` | `.agents/skills/build-citysim-ui-input/SKILL.md` |
 | `codex/citysim-simulation-platform` | `.agents/skills/evolve-citysim-simulation/SKILL.md` |
 | `codex/citysim-playtest-quality` | `.agents/skills/verify-citysim-playability/SKILL.md` |

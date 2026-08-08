@@ -148,11 +148,12 @@ gate. After that freeze, disjoint Luna packets may reproduce the proven pattern.
   fixtures, resource integrity, and bounded approved components. Frontier owns
   visual architecture, composition, difficult performance tradeoffs, atomic
   assembly acceptance, and mixed-fidelity judgment.
-- **World Art:** Frontier owns the North hero design, family vocabulary, and
-  appearance lock. Luna owns Integration-authorized East/South/West DCC jobs,
+- **World Art:** Frontier owns style direction, family vocabulary, appearance
+  locks, and subjective source acceptance. Luna owns Integration-authorized
+  disjoint ImageGen asset/family production or frozen-reference DCC jobs,
   provenance, normalization, deterministic checks, contact sheets, and handoff
-  packets. North mechanical validation may use Luna, but its visual disposition
-  remains frontier-owned.
+  packets. Mechanical validation may use Luna; visual disposition remains
+  frontier-owned.
 - **QA:** Luna owns preregistration, fixture/camera preparation, scripted
   checks, measurements, and defect packets. A fresh independent frontier task
   owns the one exact-candidate real-app journey and `APPROVE`/`RETURN` judgment.
@@ -211,9 +212,9 @@ Presence checks may supplement these gates but never replace them.
   reproduction.
 - UI and gameplay changes still require real-app proof at the aggregate
   candidate boundary.
-- Direction-local art uses focused source gates. Renderer runs the full suite
-  and resource smoke once at exact 4/4 assembly. Independent frontier QA then
-  runs one fresh-player candidate-bound gate.
+- Art cells use focused source gates. Renderer runs the full suite and resource
+  smoke once at the exact aggregate assembly required by the active contract.
+  Independent frontier QA then runs one fresh-player candidate-bound gate.
 
 Evidence remains machine-readable and candidate-bound. Compact receipts and
 exception-driven review replace duplicate prose, not proof.

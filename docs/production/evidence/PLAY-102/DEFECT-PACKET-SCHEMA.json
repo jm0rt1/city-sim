@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "documentType": "PLAY-102_REPRODUCIBLE_DEFECT_PACKET_SCHEMA",
+  "taskId": "PLAY-102",
+  "status": "FROZEN",
+  "packetFields": {
+    "defectId": "PLAY-102-DEFECT-###",
+    "severity": "blocker | critical | major | minor | observation",
+    "category": "identity | fidelity | scale | overlap | clipping | mixed_fidelity | interaction | accessibility | performance | persistence | camera | fixture | harness",
+    "ownerLane": "exact owning lane or Integration",
+    "candidate": {
+      "commit": "full SHA or null when candidate is not admitted",
+      "rendererReceipt": "exact receipt identity or null",
+      "resourceManifest": "exact manifest identity or null"
+    },
+    "fixture": {
+      "id": "exact fixture ID",
+      "version": "exact fixture version",
+      "stateHash": "exact state hash",
+      "sourceSha256": "exact source fixture bytes hash"
+    },
+    "camera": {
+      "layout": "regular | compact-900x600",
+      "view": "city | neighborhood | block",
+      "centerCoordinate": "exact x/y",
+      "rotationDegrees": 0,
+      "cameraStateHash": "exact camera-state packet hash"
+    },
+    "startState": "fresh-state and process/output identity",
+    "allowedKnowledge": "what a fresh player may know",
+    "steps": ["numbered reproducible actions with timestamps"],
+    "expected": "contract-bound expected outcome",
+    "actual": "observed outcome without interpretation",
+    "evidence": ["exact screenshot/log/measurement paths and hashes"],
+    "reproductionCount": "number of fresh reproductions",
+    "disposition": "OPEN | RETURN_TO_OWNER | BLOCKED_ON_AUTHORITY | NOT_REPRODUCED"
+  },
+  "rules": [
+    "Do not include a subjective acceptance conclusion in a Luna packet.",
+    "Do not turn a source or static finding into a runtime defect without execution evidence.",
+    "Preserve passing sibling identities and unchanged candidate evidence.",
+    "Escalate identity, path, contract, schema, save/migration, cross-lane, and subjective boundaries.",
+    "Use null for candidate-bound fields until Integration admits an exact renderer candidate."
+  ]
+}

@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "documentType": "PLAY-102_SCRIPTED_MEASUREMENT_PLAN",
+  "taskId": "PLAY-102",
+  "batchId": "single-angle-43-building-v1",
+  "status": "READY_FOR_INTEGRATION_REHEARSAL",
+  "candidateNeutral": true,
+  "runner": "Integration/frontier-owned exact-candidate gate",
+  "preflight": [
+    {
+      "id": "identity-bind",
+      "action": "Resolve candidate commit, renderer receipt, resource manifest, fixture source, and preregistration hashes before any capture.",
+      "output": "measurements/identity-bind.json"
+    },
+    {
+      "id": "fresh-state",
+      "action": "Start from a fresh isolated app/output/process state; reject existing output, duplicate process, or prior coaching.",
+      "output": "measurements/fresh-state.json"
+    }
+  ],
+  "captureSequence": [
+    {
+      "id": "regular-city",
+      "cameraState": "regular-city",
+      "capture": "screenshots/regular-city.png",
+      "measurements": ["decoded_dimensions", "nonempty_pixels", "camera_contract"]
+    },
+    {
+      "id": "regular-neighborhood",
+      "cameraState": "regular-neighborhood",
+      "capture": "screenshots/regular-neighborhood.png",
+      "measurements": ["decoded_dimensions", "nonempty_pixels", "identity_readability", "overlap_clipping"]
+    },
+    {
+      "id": "regular-block",
+      "cameraState": "regular-block",
+      "capture": "screenshots/regular-block.png",
+      "measurements": ["decoded_dimensions", "nonempty_pixels", "pivot_ground_contact", "frontage"]
+    },
+    {
+      "id": "compact-city",
+      "cameraState": "compact-city",
+      "capture": "screenshots/compact-city.png",
+      "measurements": ["decoded_dimensions", "nonempty_pixels", "compact_bounds", "camera_contract"]
+    },
+    {
+      "id": "compact-neighborhood",
+      "cameraState": "compact-neighborhood",
+      "capture": "screenshots/compact-neighborhood.png",
+      "measurements": ["decoded_dimensions", "nonempty_pixels", "compact_bounds", "overlap_clipping", "mixed_fidelity"]
+    },
+    {
+      "id": "compact-block",
+      "cameraState": "compact-block",
+      "capture": "screenshots/compact-block.png",
+      "measurements": ["decoded_dimensions", "nonempty_pixels", "compact_bounds", "pivot_ground_contact", "frontage"]
+    }
+  ],
+  "scriptedChecks": [
+    {
+      "id": "mechanical-pack-audit",
+      "input": "exact candidate/resource manifest",
+      "procedure": "Count 43 logical identities and 129 LOD payloads; compare raw, normalized, and decoded hashes; reject alias, fallback, missing, orphan, transform, and digest drift.",
+      "result": "UNMEASURED"
+    },
+    {
+      "id": "pixel-integrity-audit",
+      "input": "six exact candidate captures",
+      "procedure": "Decode each PNG; record dimensions, nonempty pixel count, visible bounds, transparent-edge artifacts, overlap, and clipping; do not score aesthetics.",
+      "result": "UNMEASURED"
+    },
+    {
+      "id": "frontier-interaction-segment",
+      "input": "same exact candidate and fixture",
+      "procedure": "Fresh player performs pointer, keyboard, compact, accessibility, and Reduce Motion variants without coaching.",
+      "result": "NOT_RUN_FRONTIER_ONLY"
+    },
+    {
+      "id": "frontier-performance-segment",
+      "input": "same exact candidate and fixture",
+      "procedure": "Record declared frame-time, node/draw, memory/RSS, and load behavior at all six camera states; compare only against Integration-owned thresholds.",
+      "result": "NOT_RUN_FRONTIER_ONLY"
+    }
+  ],
+  "evidenceRules": {
+    "baselineRehearsal": "Not candidate evidence.",
+    "candidateEvidence": "Must carry the exact candidate/resource/fixture identities and one exclusive gate lease.",
+    "observedValues": "Never fabricate; use null or UNMEASURED until the bound gate runs.",
+    "disposition": "This packet cannot emit APPROVE or RETURN."
+  }
+}

@@ -10,10 +10,18 @@ Prove what a fresh player can actually understand and accomplish. Quality eviden
 ## Orient before every task
 
 1. Run `pwd`, `git branch --show-current`, and `git status --short --branch`.
-2. Require `codex/citysim-playtest-quality` for mutations.
+2. Require `codex/citysim-playtest-quality` for mutations, or the named clean
+   successor `codex/citysim-playtest-single-angle` when an exact active claim
+   and validated Integration route bind it.
 3. Read and follow [the shared model-routing and cost-control contract](../operate-citysim-integration/references/model-routing-and-cost-control.md). Complete the applicable authority read for a new thread or claim, changed authority/skill/reference hash, routing mismatch, context loss, or stale compact packet. On an unchanged same-thread continuation, verify every recorded hash and Git revision before consuming the compact lane-context packet.
 4. When a complete read is required, read `docs/production/CITYSIM_WORKTREE_OPERATING_SYSTEM.md`, this skill, the claimed `PLAY-*` task, its acceptance criteria, linked requirements, candidate completion record, and required conditional references completely.
 5. Confirm the exact candidate commit/build. Preserve unrelated work.
+
+For CONTRACT-025, the evidence contract must exercise all four world rotations
+at city, neighborhood, and block scales in regular and 900x600 layouts. Verify
+that the same building identity/variant persists while its authored view and
+frontage rotate, with zero mirrored/rotated fallback, overlap, clipping, or
+mixed-fidelity seams.
 
 ## Own verification, not the feature
 

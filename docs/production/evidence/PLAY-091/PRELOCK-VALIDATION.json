@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "task": "PLAY-091",
+  "stage": "predesign_ready",
+  "direction": "east",
+  "branch": "codex/citysim-world-art-east",
+  "worktree": "/Users/James/.codex/worktrees/92c2/city-sim",
+  "observedHead": "80ee8de7f94998ef7bc12a4536a1924e82de69c4",
+  "claim": {
+    "path": "docs/production/claims/PLAY-091.world-art-east.md",
+    "sha256": "393a36fd2b328727d544ec329f2f950089c80d8a75c6fc58702eb34aa0afd235"
+  },
+  "familyContract": {
+    "path": "docs/production/decisions/CONTRACT-023-residential-l01-variant-one-family.md",
+    "sha256": "18ed6b18ed7e1ecbcaba1eb1c7fab9dffae98d670334d4ce30c33e3d1ddb7eb0"
+  },
+  "schedule": {
+    "path": "docs/production/evidence/INTEGRATION/RESIDENTIAL-L01-VARIANT1-PARALLEL-SCHEDULE-V2.json",
+    "sha256": "ec8b66905f487b6197a4533a8060af6d4809591b2ffc564d41b02ff107915ae5",
+    "phase": "prelock_active",
+    "authorityCommit": "80ee8de7f94998ef7bc12a4536a1924e82de69c4",
+    "maxSimultaneousDccProcesses": 0,
+    "pixelsAuthorized": false
+  },
+  "route": {
+    "receiptCommit": "3a6c257b5702a7d93cd27c703ca0946f011deacd",
+    "receiptSha256": "1e65c026c1a26ac43a6720692e4648d2a1afc680342d0e133acb08360c81e9c2",
+    "routeId": "quality-v2:play-091-residential-l01-variant1-east-prelock-v1",
+    "modelRouteSha256": "038b2187f21e12214653a2f6c38e7581411a4b69d83ffd8289ab9fd2c0db8af5"
+  },
+  "scene": {
+    "path": "Native/CitySimNative/WorldArt/Blender/PLAY-091/residential-l01-variant1-east/scene.json",
+    "sha256": "624489209799b24f11a1ffa804b56110b0d87087addeb5bf7e768063978328dd",
+    "cameraProof": "PASS",
+    "socketProof": "PASS",
+    "scaleProof": "PASS",
+    "occupiedEnvelopePixels": [501.3333, 515.1519, 1034.6667, 856.8889],
+    "eastSocketProjectedPixel": [917.3333, 804.7138],
+    "componentCount": 19,
+    "silhouetteBreakCount": 8
+  },
+  "validator": {
+    "path": "Native/CitySimNative/WorldArt/Blender/PLAY-091/residential-l01-variant1-east/test_prelock_zero_pixel.py",
+    "sha256": "45e44ac86053f7d716e77009f4340399fd93240a05a16f15203488787d4ab0bc",
+    "command": "python3 Native/CitySimNative/WorldArt/Blender/PLAY-091/residential-l01-variant1-east/test_prelock_zero_pixel.py --repeat 2 --compare-governed-bytes",
+    "runs": 2,
+    "result": "PASS",
+    "governedSha256": "4529198132b2078d377dd7231dccf0a0518ba12fcb95b7aac698a36633991189"
+  },
+  "pixelProduction": "not_produced",
+  "dccProcesses": 0,
+  "siblingInputsConsumed": [],
+  "sourceReady": false,
+  "integrationAdmitted": false,
+  "rendererQuarantined": false,
+  "productionSelected": false,
+  "blocker": "North appearance lock and post-lock source-production profile remain required before any pixels or A/B/C production."
+}

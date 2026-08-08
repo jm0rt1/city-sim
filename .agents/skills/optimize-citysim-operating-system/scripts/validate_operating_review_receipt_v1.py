@@ -155,6 +155,63 @@ def _confined_path(root: Path, supplied: str, label: str) -> tuple[Path | None, 
         return None, [f"{label} must remain inside its declared root"]
 
 
+def _within(path: str, root: str) -> bool:
+    return path == root or path.startswith(root.rstrip("/") + "/")
+
+
+def validate_observer_output_route(
+    dispatch_supplied: str,
+    route_id: str,
+    authority_root: Path,
+    output_root: Path,
+    output_paths: list[str],
+) -> tuple[list[str], list[str]]:
+    """Validate the observer's route separately from each observed event route."""
+    dispatch_path, errors = _confined_path(authority_root, dispatch_supplied, "observer dispatch receipt")
+    if dispatch_path is None:
+        return [], errors
+    try:
+        dispatch = json.loads(dispatch_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError, UnicodeError):
+        return [], errors + ["observer dispatch receipt must be readable schema-2 JSON"]
+    assignments = dispatch.get("assignments") if isinstance(dispatch, dict) else None
+    matches = [
+        item for item in assignments or []
+        if isinstance(item, dict)
+        and isinstance(item.get("modelRoute"), dict)
+        and item["modelRoute"].get("routeId") == route_id
+    ]
+    if len(matches) != 1:
+        return [], errors + ["observer model route must resolve exactly once"]
+    route = matches[0]["modelRoute"]
+    try:
+        route_validator = _load_model_route_validator(authority_root)
+        errors.extend(route_validator.validate_dispatch(dispatch, authority_root, route_id))
+    except (OSError, RuntimeError) as exc:
+        errors.append(str(exc))
+    if (
+        route.get("taskId") != "PLAY-089"
+        or route.get("classification") != "LUNA_MECHANICAL"
+        or route.get("model") != "gpt-5.6-luna"
+        or route.get("effort") != "medium"
+    ):
+        errors.append("observer route must be PLAY-089 Luna mechanical/medium")
+    assignment = route.get("assignment") if isinstance(route.get("assignment"), dict) else {}
+    if Path(str(assignment.get("worktree", ""))).resolve() != output_root.resolve():
+        errors.append("observer route worktree must exactly match the worker/output root")
+    elif _is_git_repo(output_root):
+        errors.extend(_output_identity_errors(output_root, assignment))
+    policy = route.get("pathPolicy") if isinstance(route.get("pathPolicy"), dict) else {}
+    allowed = policy.get("allowed") if isinstance(policy.get("allowed"), list) else []
+    if not allowed:
+        errors.append("observer route must declare allowed output paths")
+    for path in output_paths:
+        candidate = Path(path)
+        if candidate.is_absolute() or ".." in candidate.parts or not any(_within(path, root) for root in allowed):
+            errors.append(f"observer output lies outside its exact route: {path}")
+    return allowed, errors
+
+
 def _load_model_route_validator(repo_root: Path) -> object:
     script = repo_root / ".agents/skills/operate-citysim-integration/scripts/validate_model_route_v1.py"
     spec = importlib.util.spec_from_file_location("citysim_model_route_validator", script)
@@ -244,6 +301,7 @@ def validate(
     input_root: Path | None = None,
     require_git_repo: bool = False,
     output_root: Path | None = None,
+    observed_output_root: bool = True,
 ) -> list[str]:
     errors: list[str] = []
     if not isinstance(policy, dict) or policy.get("schema") != 4:
@@ -506,7 +564,7 @@ def validate(
                     binding,
                     input_root,
                     event_key if isinstance(event_key, dict) else None,
-                    output_root,
+                    output_root if observed_output_root else None,
                 )
             )
     return errors
@@ -523,6 +581,8 @@ def main() -> int:
         "--authority-root",
         help="exact Integration authority Git root when immutable inputs live outside the worker checkout",
     )
+    parser.add_argument("--observer-dispatch", help="schema-2 PLAY-089 observer dispatch receipt in the authority root")
+    parser.add_argument("--observer-route-id", help="exact PLAY-089 observer route ID")
     args = parser.parse_args()
     output_root = Path(args.repo_root).resolve()
     authority_root = Path(args.authority_root or args.repo_root).resolve()
@@ -549,13 +609,26 @@ def main() -> int:
             authority_root,
             require_git_repo=True,
             output_root=output_root,
+            observed_output_root=not bool(args.observer_dispatch),
         )
     )
     if receipt_path is not None and isinstance(receipt, dict):
         relative_receipt = receipt_path.relative_to(output_root).as_posix()
-        allowed = receipt.get("binding", {}).get("allowedPaths")
-        if not isinstance(allowed, list) or relative_receipt not in allowed:
-            errors.append("receipt path must be one exact model-route allowed output")
+        if bool(args.observer_dispatch) != bool(args.observer_route_id):
+            errors.append("observer dispatch and route ID must be supplied together")
+        elif args.observer_dispatch:
+            _, observer_errors = validate_observer_output_route(
+                args.observer_dispatch,
+                args.observer_route_id,
+                authority_root,
+                output_root,
+                [relative_receipt],
+            )
+            errors.extend(observer_errors)
+        else:
+            allowed = receipt.get("binding", {}).get("allowedPaths")
+            if not isinstance(allowed, list) or relative_receipt not in allowed:
+                errors.append("receipt path must be one exact model-route allowed output")
     if errors:
         for error in errors:
             print("ERROR:", error)

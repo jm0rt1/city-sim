@@ -1,0 +1,36 @@
+{
+  "schema": 1,
+  "kind": "play090-runtime-repair-blocked-checkpoint",
+  "task": "PLAY-090",
+  "routeId": "quality-v2:play-090-residential-l01-variant1-north-runtime-repair-v2",
+  "routeSHA256": "fd82e8b5048ce442ee97d94c2f327c412f76aef0757dec9e75ed99956e190c6b",
+  "carrierCommit": "ad385002897a0da95371f007ac542c90cfb34a94",
+  "workerInputHead": "adce6edb48a2d32eae7bb0a32a8b1d969d5f6ac5",
+  "disposition": "BLOCKED",
+  "completed": [
+    "exact V2 route validation",
+    "x86_64 runtime receipt and binary hash binding",
+    "V2 task-owned lowering, launcher, child, runner contract, and adversarial gate rebind",
+    "PLAY-090 North zero-pixel predesign gate",
+    "one admitted replay-A child start"
+  ],
+  "failed": {
+    "gate": "fresh disposable deterministic A/B replay",
+    "point": "replay-a before Python",
+    "evidence": "RUNTIME-FAILURE.json",
+    "exitCode": -11,
+    "failure": "ARCH_CACHE_LINE_SIZE != Arch_ObtainCacheLineSize() in Arch_ValidateAssumptions"
+  },
+  "notRun": [
+    "replay-b",
+    "decoded RGBA8 nonblank validation",
+    "A/B decoded-pixel and deterministic-receipt comparison",
+    "literal-192 color and grayscale contact sheets"
+  ],
+  "preservedV1Evidence": "docs/production/evidence/PLAY-090/residential-l01-variant1-north-runtime-repair-v1",
+  "governedProductionRootWrites": 0,
+  "sourceAuthority": false,
+  "productionSelected": false,
+  "candidateReadyForIndependentReview": false,
+  "requiredResumptionEvent": "Integration must resolve why the exact x86_64/Rosetta binary passes the reusable bpy probe but fails the route-bound Blender child before Python, then publish renewed exact authority before any further attempt."
+}

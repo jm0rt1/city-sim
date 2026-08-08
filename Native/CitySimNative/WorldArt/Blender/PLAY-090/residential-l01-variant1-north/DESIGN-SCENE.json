@@ -1,0 +1,138 @@
+{
+  "schema": 1,
+  "task": "PLAY-090",
+  "state": "predesign_ready",
+  "sceneGeometryID": "residential-l01-v1-north-u-court-v1",
+  "logicalBuildingID": "residential_l01",
+  "family": "residential",
+  "level": 1,
+  "variantID": "variant-1",
+  "viewDirection": "north",
+  "sourceRevision": "source-v01-prelock",
+  "authoredIndependently": true,
+  "productionSelected": false,
+  "sourceAuthority": false,
+  "derivation": {
+    "sourceKind": "independent-north-zero-pixel-design",
+    "siblingSource": null,
+    "mirror": false,
+    "rotationDegrees": 0,
+    "orientationTransform": "none"
+  },
+  "authority": {
+    "familyContract": {
+      "path": "docs/production/decisions/CONTRACT-023-residential-l01-variant-one-family.md",
+      "sha256": "18ed6b18ed7e1ecbcaba1eb1c7fab9dffae98d670334d4ce30c33e3d1ddb7eb0"
+    },
+    "claim": {
+      "path": "docs/production/claims/PLAY-090.world-art-north.md",
+      "sha256": "64e5e09c3b9870ebaed8e311209fcd537ddace066d22ce922d7fbd9040bc8603"
+    },
+    "scheduleSHA256": "ec8b66905f487b6197a4533a8060af6d4809591b2ffc564d41b02ff107915ae5",
+    "routeId": "quality-v2:play-090-residential-l01-variant1-north-prelock-design-v1",
+    "routeSHA256": "547b61f9b8e12037e148dc6ebf4a9c556aea2ea2b702899d260bd0a957d245e9",
+    "workerHead": "2d1624af35aa268f4c5099b58a9bef2af53c8c83"
+  },
+  "registration": {
+    "tileBasisPoints": [72, 36],
+    "sceneFootprintUnits": [72, 72],
+    "footprintPolygonSource": [[768, 640], [1024, 768], [768, 896], [512, 768]],
+    "groundPivotSource": [768, 896],
+    "contactPolygonWorld": [[-28, -28], [28, -28], [28, 28], [-28, 28]],
+    "frontageEdgeWorld": [[-28, -28], [28, -28]],
+    "frontageSocketWorld": [0, 0, -28],
+    "frontageSocketSource": [896, 704],
+    "entranceExclusionWorld": [[-6, -28], [6, -28], [6, -6], [-6, -6]],
+    "presentationEnvelopeSource": [256, 96, 1280, 896],
+    "shadowEnvelopeSource": [768, 512, 1456, 976],
+    "orientationTransform": "none"
+  },
+  "camera": {
+    "projection": "orthographic-2:1",
+    "yawDegrees": 45,
+    "elevationDegrees": 30,
+    "orthographicScale": 203.64675298172568,
+    "renderViewportPixels": [1536, 1024],
+    "oversamplingFactor": 2,
+    "positionWorld": [180, 146.9693845669907, 180],
+    "targetWorld": [0, 0, 0],
+    "sourceGroundCenter": [768, 768],
+    "postProjectionOffsetPixels": [0, 256],
+    "analyticProjection": {
+      "sourceX": "768 + (256/56)*x - (256/56)*z",
+      "sourceY": "768 + (128/56)*x + (128/56)*z - (256/56)*sqrt(1.5)*y",
+      "literalScaleDivisor": 8
+    }
+  },
+  "light": {
+    "keyOrigin": [-120, 180, -120],
+    "keyIntensity": 1000,
+    "keyColorRGBA": [1.0, 0.86, 0.68, 1.0],
+    "ambientIntensity": 0.5,
+    "ambientColorRGBA": [0.5, 0.46, 0.38, 1.0],
+    "shadowVectorSource": [2, 1],
+    "shadowOpacity": 0.30,
+    "shadowBlurSourcePixels": 18,
+    "shadowReceiver": "task-owned-transparent-ground-plane"
+  },
+  "designVocabulary": {
+    "name": "asymmetrical-u-court-garden-residence",
+    "primaryMassing": "tall west cross-gabled masonry bar",
+    "secondaryVolume": "lower east plaster garden wing",
+    "entranceComposition": "deep central open court with stair-lantern threshold",
+    "facadeRhythm": "paired tall west windows, compact east ribbon, central shadow reveal",
+    "roofline": "three readable tiers: west gable, lantern gable, east shed",
+    "variantZeroDifference": {
+      "variantZeroPlan": "full rectangular block",
+      "variantOnePlan": "open-front U court",
+      "variantZeroEntrance": "shallow centered pavilion and porch",
+      "variantOneEntrance": "twenty-unit-deep socket-aligned court",
+      "variantZeroRoof": "single dominant roof envelope",
+      "variantOneRoof": "three unequal roof tiers",
+      "variantZeroMaterialBalance": "warm red brick dominant",
+      "variantOneMaterialBalance": "honey brick west bar with light plaster east wing"
+    }
+  },
+  "materialLibrary": "MATERIALS.json",
+  "components": [
+    {"id": "west-main", "kind": "box", "semanticRole": "primary-mass", "centerWorld": [-15, 13, 1], "dimensions": [22, 26, 42], "materialID": "brick-honey"},
+    {"id": "east-wing", "kind": "box", "semanticRole": "secondary-structural-volume", "centerWorld": [15, 10, 4], "dimensions": [20, 20, 36], "materialID": "plaster-cream"},
+    {"id": "rear-link-lantern", "kind": "box", "semanticRole": "stair-lantern", "centerWorld": [0.5, 12, 8], "dimensions": [9, 24, 30], "materialID": "stone-buff"},
+    {"id": "west-gable-roof", "kind": "gablePrism", "semanticRole": "primary-roof", "footprintWorld": [[-26, -21], [-4, -21], [-4, 23], [-26, 23]], "eaveHeight": 26, "ridgeHeight": 38, "ridgeAxis": "z", "materialID": "tile-umber"},
+    {"id": "east-shed-roof", "kind": "shedPrism", "semanticRole": "secondary-roof", "footprintWorld": [[5, -15], [26, -15], [26, 23], [5, 23]], "lowEdgeHeight": 20, "highEdgeHeight": 29, "highEdge": "west", "materialID": "tile-umber"},
+    {"id": "lantern-gable-roof", "kind": "gablePrism", "semanticRole": "lantern-roof", "footprintWorld": [[-4.5, -7.5], [5.5, -7.5], [5.5, 23], [-4.5, 23]], "eaveHeight": 24, "ridgeHeight": 34, "ridgeAxis": "z", "materialID": "tile-umber"},
+    {"id": "entry-backplane", "kind": "box", "semanticRole": "entrance-void-backplane", "centerWorld": [0.5, 10, -7.35], "dimensions": [7.5, 14, 0.7], "materialID": "door-bluegreen"},
+    {"id": "entry-jamb-west", "kind": "box", "semanticRole": "entrance-frame", "centerWorld": [-4.35, 10.5, -7.9], "dimensions": [1.7, 19, 1.8], "materialID": "stone-buff"},
+    {"id": "entry-jamb-east", "kind": "box", "semanticRole": "entrance-frame", "centerWorld": [5.35, 10.5, -7.9], "dimensions": [1.7, 19, 1.8], "materialID": "stone-buff"},
+    {"id": "entry-header", "kind": "box", "semanticRole": "entrance-frame", "centerWorld": [0.5, 20, -7.9], "dimensions": [11.4, 2.4, 1.8], "materialID": "stone-buff"},
+    {"id": "court-step-outer", "kind": "box", "semanticRole": "socket-path", "centerWorld": [0.5, 0.35, -25.5], "dimensions": [7, 0.7, 5], "materialID": "foundation-sand"},
+    {"id": "court-step-middle", "kind": "box", "semanticRole": "socket-path", "centerWorld": [0.5, 0.75, -20.5], "dimensions": [7, 1.5, 5], "materialID": "foundation-sand"},
+    {"id": "court-step-inner", "kind": "box", "semanticRole": "socket-path", "centerWorld": [0.5, 1.15, -14], "dimensions": [7, 2.3, 8], "materialID": "foundation-sand"},
+    {"id": "west-window-lower-a", "kind": "box", "semanticRole": "window", "centerWorld": [-20, 8, -20.3], "dimensions": [5.5, 9, 0.6], "materialID": "window-amber"},
+    {"id": "west-window-lower-b", "kind": "box", "semanticRole": "window", "centerWorld": [-10, 8, -20.3], "dimensions": [5.5, 9, 0.6], "materialID": "window-amber"},
+    {"id": "west-window-upper-a", "kind": "box", "semanticRole": "window", "centerWorld": [-20, 20, -20.3], "dimensions": [5.5, 8, 0.6], "materialID": "window-amber"},
+    {"id": "west-window-upper-b", "kind": "box", "semanticRole": "window", "centerWorld": [-10, 20, -20.3], "dimensions": [5.5, 8, 0.6], "materialID": "window-amber"},
+    {"id": "east-window-a", "kind": "box", "semanticRole": "window", "centerWorld": [11, 8, -14.3], "dimensions": [5, 8, 0.6], "materialID": "window-amber"},
+    {"id": "east-window-b", "kind": "box", "semanticRole": "window", "centerWorld": [20, 8, -14.3], "dimensions": [5, 8, 0.6], "materialID": "window-amber"}
+  ],
+  "intentionalInterfaces": [
+    ["west-main", "west-gable-roof"],
+    ["east-wing", "east-shed-roof"],
+    ["rear-link-lantern", "lantern-gable-roof"],
+    ["west-main", "rear-link-lantern"],
+    ["east-wing", "rear-link-lantern"]
+  ],
+  "occlusionExclusions": [
+    {
+      "id": "north-socket-court-clearance",
+      "purpose": "protect socket-to-threshold visibility and circulation",
+      "polygonWorld": [[-3.5, -28], [3.5, -28], [3.5, -8.9], [-3.5, -8.9]],
+      "allowedSemanticRoles": ["socket-path"]
+    }
+  ],
+  "pixelAuthority": {
+    "dccProcesses": 0,
+    "renderedPixels": 0,
+    "analyticProxyOnly": true
+  }
+}

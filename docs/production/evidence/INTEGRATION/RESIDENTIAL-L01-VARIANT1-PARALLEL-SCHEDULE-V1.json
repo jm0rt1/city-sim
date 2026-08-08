@@ -3,15 +3,15 @@
   "batchId": "residential-l01-variant1-v1",
   "previousPhase": "contract_pending",
   "phase": "contract_pending",
-  "observedAt": "2026-08-02T21:27:54-04:00",
-  "authorityCommit": "07b2ad82eac047573537503ffdb091499310f644",
+  "observedAt": "2026-08-02T23:10:00-04:00",
+  "authorityCommit": "80ee8de7f94998ef7bc12a4536a1924e82de69c4",
   "familyContract": {
     "path": "docs/production/decisions/CONTRACT-023-residential-l01-variant-one-family.md",
     "sha256": "18ed6b18ed7e1ecbcaba1eb1c7fab9dffae98d670334d4ce30c33e3d1ddb7eb0"
   },
   "controlSchema": {
     "path": "docs/production/evidence/INTEGRATION/residential-l01-variant1-parallel-state-schema-v1.json",
-    "sha256": "0f7cb4385552ab563e1fa3bbe89ba5497bf50420480113906ac4d291a11038ff"
+    "sha256": "d905957718407cfdd9b1deff974c984c608127b6a60cf13c09fc09d313f66757"
   },
   "dispatchReady": false,
   "compute": {
@@ -39,71 +39,71 @@
         "cell": "north",
         "taskId": "PLAY-090",
         "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
-        "head": "d64f60234666d16f93958ad82377c0e0f982b6ba",
+        "head": "9940b2570bd762249611fca665922b29cc9fc553",
         "state": "predesign",
         "dispatchState": "blocked",
         "cleanState": "clean",
-        "observedAt": "2026-08-02T21:27:54-04:00",
-        "claimRevision": "cf560c5f3d357b8979fb09e55e0ab22a77b73484e6f62fe874d84131fcf4ad49"
+        "observedAt": "2026-08-02T23:10:00-04:00",
+        "claimRevision": "64e5e09c3b9870ebaed8e311209fcd537ddace066d22ce922d7fbd9040bc8603"
       },
       {
         "cell": "east",
         "taskId": "PLAY-091",
         "threadId": "019fab72-b2c8-76c1-b430-6c6f8431733f",
-        "head": "6434793cb8506bdc0c1a389b4d9f961e713ab274",
+        "head": "b5a301bdf0e18e0301af74827f99b2caaad00e8a",
         "state": "predesign",
         "dispatchState": "blocked",
         "cleanState": "clean",
-        "observedAt": "2026-08-02T21:27:54-04:00",
-        "claimRevision": "23acc49a3d7311d8dda60c96486e70fb3f401367ba9291328a027954335f8d06"
+        "observedAt": "2026-08-02T23:10:00-04:00",
+        "claimRevision": "393a36fd2b328727d544ec329f2f950089c80d8a75c6fc58702eb34aa0afd235"
       },
       {
         "cell": "south",
         "taskId": "PLAY-092",
         "threadId": "019fab72-b2c9-7d60-a397-27f4fde85950",
-        "head": "eb965449d765855f461e789de6a37f239e7295a8",
+        "head": "71956b5b72a9d3013e3a2b52bba83ec1ebf684e1",
         "state": "predesign",
         "dispatchState": "blocked",
         "cleanState": "clean",
-        "observedAt": "2026-08-02T21:27:54-04:00",
-        "claimRevision": "77cf93b83d7c57b6d6a062a0ddc5ec8b1a1c02b6178c799bdd01a019a2229f33"
+        "observedAt": "2026-08-02T23:10:00-04:00",
+        "claimRevision": "c01b52323e1d70a4214f9a94785986a028fc93714411a1fefd107e38ec239ccd"
       },
       {
         "cell": "west",
         "taskId": "PLAY-093",
         "threadId": "019fab72-b2c9-7d60-a397-27d01d06cbbd",
-        "head": "6434793cb8506bdc0c1a389b4d9f961e713ab274",
+        "head": "7bf05ca811f60b40ee429f34d57da4afca94d436",
         "state": "predesign",
         "dispatchState": "blocked",
         "cleanState": "clean",
-        "observedAt": "2026-08-02T21:27:54-04:00",
-        "claimRevision": "79bbfa66e16c77f3d2a86fbbd462b6651f6f0eb5c5e8557bd86e404a616d6aa8"
+        "observedAt": "2026-08-02T23:10:00-04:00",
+        "claimRevision": "52782ba07c23665084fcf4ac045fd734cecbb28449c3fe702cc3534868a98090"
       },
       {
         "cell": "renderer",
         "taskId": "PLAY-094",
         "threadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
-        "head": "6b5f21bbaf5fe6404b3ee8d49fb0b7dd22603a98",
+        "head": "ad8d965a4c6b1b012b4df6e30f9e9e4f19b70c21",
         "state": "intake_preparing",
         "dispatchState": "blocked",
         "cleanState": "clean",
-        "observedAt": "2026-08-02T21:27:54-04:00",
-        "claimRevision": "1f1e60710b0957a596ecb3e580bdef78d370e6fa235764eb4ba29611c67fcb6a"
+        "observedAt": "2026-08-02T23:10:00-04:00",
+        "claimRevision": "45a28e723b2cf86e5c9725e0e3786ea3976e7881680c775c1c8a2930d1804d6a"
       },
       {
         "cell": "qa",
         "taskId": "PLAY-075",
         "threadId": "019fc0b0-74cb-70e1-8923-8c9d9600484d",
-        "head": "36ed789bf6b1b947df1350c1cb4f9a067ad36d31",
+        "head": "ea584ce178a10bcd94e3e73b0dace476ccd5fde3",
         "state": "preregistering",
         "dispatchState": "blocked",
         "cleanState": "clean",
-        "observedAt": "2026-08-02T21:27:54-04:00",
-        "claimRevision": "5dd3aeef1ffe8abf5e0c93486e27fe2d15495854be096fb105bff55a48dc0362"
+        "observedAt": "2026-08-02T23:10:00-04:00",
+        "claimRevision": "364250ea7ced7cb3c663501ba7b2d08b9a84192bb4d44936b2dc1a0c008a7c35"
       }
     ]
   },
-  "ledgerSha256": "8e841fe5842b505192d2800c23172634eaa3c0b43591ce8547a5576fab25b51e",
+  "ledgerSha256": "c8ae78f6e4107a9a7e16ed7b563521dc0c659ae774a6c66469fd63cdd2026c99",
   "dispatchProjection": {
     "batchId": "residential-l01-variant1-v1",
     "phase": "contract_pending",
@@ -112,67 +112,67 @@
         "cell": "north",
         "taskId": "PLAY-090",
         "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
-        "head": "d64f60234666d16f93958ad82377c0e0f982b6ba",
+        "head": "9940b2570bd762249611fca665922b29cc9fc553",
         "state": "predesign",
         "dispatchState": "blocked",
         "cleanState": "clean",
-        "observedAt": "2026-08-02T21:27:54-04:00",
-        "claimRevision": "cf560c5f3d357b8979fb09e55e0ab22a77b73484e6f62fe874d84131fcf4ad49"
+        "observedAt": "2026-08-02T23:10:00-04:00",
+        "claimRevision": "64e5e09c3b9870ebaed8e311209fcd537ddace066d22ce922d7fbd9040bc8603"
       },
       {
         "cell": "east",
         "taskId": "PLAY-091",
         "threadId": "019fab72-b2c8-76c1-b430-6c6f8431733f",
-        "head": "6434793cb8506bdc0c1a389b4d9f961e713ab274",
+        "head": "b5a301bdf0e18e0301af74827f99b2caaad00e8a",
         "state": "predesign",
         "dispatchState": "blocked",
         "cleanState": "clean",
-        "observedAt": "2026-08-02T21:27:54-04:00",
-        "claimRevision": "23acc49a3d7311d8dda60c96486e70fb3f401367ba9291328a027954335f8d06"
+        "observedAt": "2026-08-02T23:10:00-04:00",
+        "claimRevision": "393a36fd2b328727d544ec329f2f950089c80d8a75c6fc58702eb34aa0afd235"
       },
       {
         "cell": "south",
         "taskId": "PLAY-092",
         "threadId": "019fab72-b2c9-7d60-a397-27f4fde85950",
-        "head": "eb965449d765855f461e789de6a37f239e7295a8",
+        "head": "71956b5b72a9d3013e3a2b52bba83ec1ebf684e1",
         "state": "predesign",
         "dispatchState": "blocked",
         "cleanState": "clean",
-        "observedAt": "2026-08-02T21:27:54-04:00",
-        "claimRevision": "77cf93b83d7c57b6d6a062a0ddc5ec8b1a1c02b6178c799bdd01a019a2229f33"
+        "observedAt": "2026-08-02T23:10:00-04:00",
+        "claimRevision": "c01b52323e1d70a4214f9a94785986a028fc93714411a1fefd107e38ec239ccd"
       },
       {
         "cell": "west",
         "taskId": "PLAY-093",
         "threadId": "019fab72-b2c9-7d60-a397-27d01d06cbbd",
-        "head": "6434793cb8506bdc0c1a389b4d9f961e713ab274",
+        "head": "7bf05ca811f60b40ee429f34d57da4afca94d436",
         "state": "predesign",
         "dispatchState": "blocked",
         "cleanState": "clean",
-        "observedAt": "2026-08-02T21:27:54-04:00",
-        "claimRevision": "79bbfa66e16c77f3d2a86fbbd462b6651f6f0eb5c5e8557bd86e404a616d6aa8"
+        "observedAt": "2026-08-02T23:10:00-04:00",
+        "claimRevision": "52782ba07c23665084fcf4ac045fd734cecbb28449c3fe702cc3534868a98090"
       },
       {
         "cell": "renderer",
         "taskId": "PLAY-094",
         "threadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
-        "head": "6b5f21bbaf5fe6404b3ee8d49fb0b7dd22603a98",
+        "head": "ad8d965a4c6b1b012b4df6e30f9e9e4f19b70c21",
         "state": "intake_preparing",
         "dispatchState": "blocked",
         "cleanState": "clean",
-        "observedAt": "2026-08-02T21:27:54-04:00",
-        "claimRevision": "1f1e60710b0957a596ecb3e580bdef78d370e6fa235764eb4ba29611c67fcb6a"
+        "observedAt": "2026-08-02T23:10:00-04:00",
+        "claimRevision": "45a28e723b2cf86e5c9725e0e3786ea3976e7881680c775c1c8a2930d1804d6a"
       },
       {
         "cell": "qa",
         "taskId": "PLAY-075",
         "threadId": "019fc0b0-74cb-70e1-8923-8c9d9600484d",
-        "head": "36ed789bf6b1b947df1350c1cb4f9a067ad36d31",
+        "head": "ea584ce178a10bcd94e3e73b0dace476ccd5fde3",
         "state": "preregistering",
         "dispatchState": "blocked",
         "cleanState": "clean",
-        "observedAt": "2026-08-02T21:27:54-04:00",
-        "claimRevision": "5dd3aeef1ffe8abf5e0c93486e27fe2d15495854be096fb105bff55a48dc0362"
+        "observedAt": "2026-08-02T23:10:00-04:00",
+        "claimRevision": "364250ea7ced7cb3c663501ba7b2d08b9a84192bb4d44936b2dc1a0c008a7c35"
       }
     ]
   },
@@ -197,12 +197,12 @@
       "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
       "branch": "codex/citysim-world-art",
       "worktree": "/Users/James/.codex/worktrees/0648/city-sim",
-      "head": "d64f60234666d16f93958ad82377c0e0f982b6ba",
+      "head": "9940b2570bd762249611fca665922b29cc9fc553",
       "observedHead": null,
-      "headStatus": "stale_pre_authority",
+      "headStatus": "current",
       "claim": {
         "path": "docs/production/claims/PLAY-090.world-art-north.md",
-        "sha256": "cf560c5f3d357b8979fb09e55e0ab22a77b73484e6f62fe874d84131fcf4ad49"
+        "sha256": "64e5e09c3b9870ebaed8e311209fcd537ddace066d22ce922d7fbd9040bc8603"
       },
       "previousState": "predesign",
       "state": "predesign",
@@ -285,7 +285,7 @@
       },
       "failureIsolation": true,
       "featureAuthorThreadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
-      "observedAt": "2026-08-02T21:27:54-04:00",
+      "observedAt": "2026-08-02T23:10:00-04:00",
       "cleanState": "clean"
     },
     {
@@ -294,12 +294,12 @@
       "threadId": "019fab72-b2c8-76c1-b430-6c6f8431733f",
       "branch": "codex/citysim-world-art-east",
       "worktree": "/Users/James/.codex/worktrees/92c2/city-sim",
-      "head": "6434793cb8506bdc0c1a389b4d9f961e713ab274",
+      "head": "b5a301bdf0e18e0301af74827f99b2caaad00e8a",
       "observedHead": null,
-      "headStatus": "stale_pre_authority",
+      "headStatus": "current",
       "claim": {
         "path": "docs/production/claims/PLAY-091.world-art-east.md",
-        "sha256": "23acc49a3d7311d8dda60c96486e70fb3f401367ba9291328a027954335f8d06"
+        "sha256": "393a36fd2b328727d544ec329f2f950089c80d8a75c6fc58702eb34aa0afd235"
       },
       "previousState": "predesign",
       "state": "predesign",
@@ -382,7 +382,7 @@
       },
       "failureIsolation": true,
       "featureAuthorThreadId": "019fab72-b2c8-76c1-b430-6c6f8431733f",
-      "observedAt": "2026-08-02T21:27:54-04:00",
+      "observedAt": "2026-08-02T23:10:00-04:00",
       "cleanState": "clean"
     },
     {
@@ -391,12 +391,12 @@
       "threadId": "019fab72-b2c9-7d60-a397-27f4fde85950",
       "branch": "codex/citysim-world-art-south",
       "worktree": "/Users/James/.codex/worktrees/4247/city-sim",
-      "head": "eb965449d765855f461e789de6a37f239e7295a8",
+      "head": "71956b5b72a9d3013e3a2b52bba83ec1ebf684e1",
       "observedHead": null,
-      "headStatus": "stale_pre_authority",
+      "headStatus": "current",
       "claim": {
         "path": "docs/production/claims/PLAY-092.world-art-south.md",
-        "sha256": "77cf93b83d7c57b6d6a062a0ddc5ec8b1a1c02b6178c799bdd01a019a2229f33"
+        "sha256": "c01b52323e1d70a4214f9a94785986a028fc93714411a1fefd107e38ec239ccd"
       },
       "previousState": "predesign",
       "state": "predesign",
@@ -479,7 +479,7 @@
       },
       "failureIsolation": true,
       "featureAuthorThreadId": "019fab72-b2c9-7d60-a397-27f4fde85950",
-      "observedAt": "2026-08-02T21:27:54-04:00",
+      "observedAt": "2026-08-02T23:10:00-04:00",
       "cleanState": "clean"
     },
     {
@@ -488,12 +488,12 @@
       "threadId": "019fab72-b2c9-7d60-a397-27d01d06cbbd",
       "branch": "codex/citysim-world-art-west",
       "worktree": "/Users/James/.codex/worktrees/ef17/city-sim",
-      "head": "6434793cb8506bdc0c1a389b4d9f961e713ab274",
+      "head": "7bf05ca811f60b40ee429f34d57da4afca94d436",
       "observedHead": null,
-      "headStatus": "stale_pre_authority",
+      "headStatus": "current",
       "claim": {
         "path": "docs/production/claims/PLAY-093.world-art-west.md",
-        "sha256": "79bbfa66e16c77f3d2a86fbbd462b6651f6f0eb5c5e8557bd86e404a616d6aa8"
+        "sha256": "52782ba07c23665084fcf4ac045fd734cecbb28449c3fe702cc3534868a98090"
       },
       "previousState": "predesign",
       "state": "predesign",
@@ -576,7 +576,7 @@
       },
       "failureIsolation": true,
       "featureAuthorThreadId": "019fab72-b2c9-7d60-a397-27d01d06cbbd",
-      "observedAt": "2026-08-02T21:27:54-04:00",
+      "observedAt": "2026-08-02T23:10:00-04:00",
       "cleanState": "clean"
     },
     {
@@ -585,12 +585,12 @@
       "threadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
       "branch": "codex/citysim-world-rendering",
       "worktree": "/Users/James/.codex/worktrees/cac1/city-sim",
-      "head": "6b5f21bbaf5fe6404b3ee8d49fb0b7dd22603a98",
+      "head": "ad8d965a4c6b1b012b4df6e30f9e9e4f19b70c21",
       "observedHead": null,
-      "headStatus": "stale_pre_authority",
+      "headStatus": "current",
       "claim": {
         "path": "docs/production/claims/PLAY-094.world-rendering.md",
-        "sha256": "1f1e60710b0957a596ecb3e580bdef78d370e6fa235764eb4ba29611c67fcb6a"
+        "sha256": "45a28e723b2cf86e5c9725e0e3786ea3976e7881680c775c1c8a2930d1804d6a"
       },
       "previousState": "intake_preparing",
       "state": "intake_preparing",
@@ -606,6 +606,7 @@
         "nextRefill": "Integration reviews the control repair, synchronizes this lane, and publishes its exact route."
       },
       "ownedRoots": [
+        "Native/CitySimNative/Tests/CitySimNativeTests/WorldRenderingTests.swift",
         "docs/production/evidence/PLAY-094/"
       ],
       "siblingTransformAllowed": false,
@@ -672,7 +673,7 @@
       },
       "failureIsolation": true,
       "featureAuthorThreadId": "019f7c8a-69a2-78c2-ae70-fa23ee7bfcd0",
-      "observedAt": "2026-08-02T21:27:54-04:00",
+      "observedAt": "2026-08-02T23:10:00-04:00",
       "cleanState": "clean"
     },
     {
@@ -681,12 +682,12 @@
       "threadId": "019fc0b0-74cb-70e1-8923-8c9d9600484d",
       "branch": "codex/citysim-playtest-quality",
       "worktree": "/Users/James/.codex/worktrees/71b0/city-sim",
-      "head": "36ed789bf6b1b947df1350c1cb4f9a067ad36d31",
+      "head": "ea584ce178a10bcd94e3e73b0dace476ccd5fde3",
       "observedHead": null,
-      "headStatus": "stale_pre_authority",
+      "headStatus": "current",
       "claim": {
         "path": "docs/production/claims/PLAY-075.playtest-quality.md",
-        "sha256": "5dd3aeef1ffe8abf5e0c93486e27fe2d15495854be096fb105bff55a48dc0362"
+        "sha256": "364250ea7ced7cb3c663501ba7b2d08b9a84192bb4d44936b2dc1a0c008a7c35"
       },
       "previousState": "preregistering",
       "state": "preregistering",
@@ -702,7 +703,7 @@
         "nextRefill": "Integration reviews the control repair, synchronizes this lane, and publishes its exact route."
       },
       "ownedRoots": [
-        "docs/production/evidence/PLAY-075/"
+        "docs/production/evidence/PLAY-075/residential-l01-variant1-preregistration-v1/"
       ],
       "siblingTransformAllowed": false,
       "routeRequirement": {
@@ -768,7 +769,7 @@
       },
       "failureIsolation": true,
       "featureAuthorThreadId": null,
-      "observedAt": "2026-08-02T21:27:54-04:00",
+      "observedAt": "2026-08-02T23:10:00-04:00",
       "cleanState": "clean"
     }
   ],

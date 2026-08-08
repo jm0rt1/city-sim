@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "task": "PLAY-090",
+  "routeId": "quality-v2:play-090-residential-l01-variant1-north-runtime-repair-v1",
+  "routeSHA256": "c8cf8a789860088444a969bd5cad4cdbbedaecd50a8b275791ce3e5e37f17472",
+  "workerInputHead": "029d5759eb6887f6ee16a65f099f6bfe9cfd697a",
+  "probe": {
+    "kind": "non-render-factory-runtime-import",
+    "command": [
+      "/Applications/Blender-4.5.12-arm64.app/Contents/MacOS/Blender",
+      "--factory-startup",
+      "--disable-autoexec",
+      "--background",
+      "--python-exit-code",
+      "1",
+      "--python-expr",
+      "import bpy; print('PLAY090_BPY_IMPORT_PASS', bpy.app.version_string, bpy.app.binary_path)"
+    ],
+    "exitCode": 139,
+    "wallSeconds": 0.0770655,
+    "pythonEntered": false,
+    "bpyImported": false,
+    "sceneCreated": false,
+    "renderInvoked": false,
+    "pixelWrites": 0
+  },
+  "blender": {
+    "path": "/Applications/Blender-4.5.12-arm64.app/Contents/MacOS/Blender",
+    "sha256": "0fa2ab6500e41bfd8114485b218a1e4aebf15b3d8cea90dc8398535291061506",
+    "architecture": "arm64",
+    "version": "4.5.12 LTS",
+    "buildHash": "84afd5f785f7"
+  },
+  "failure": {
+    "phase": "pre_python_gpu_backend_initialization",
+    "signalExit": 139,
+    "topFrame": "blender::gpu::supports_barycentric_whitelist(id<MTLDevice>)",
+    "crashReportSHA256": "55513c565e5f4160a876dc47d5b4cf4246d01d222f0c044d6b429a8e2fc8d21e",
+    "stderr": "ArchWarn: ARCH_CACHE_LINE_SIZE != Arch_ObtainCacheLineSize()"
+  },
+  "capabilityDisposition": "BLOCKED_CURRENT_BPY_RUNTIME",
+  "cachedStartupReceiptLimitation": "The admitted --version probe remains hash-valid but does not prove current window-manager/GPU initialization or bpy runtime entry.",
+  "requiredResumptionEvent": "Integration publishes a fresh contained runtime admission for the exact executable and current host tuple that reaches bpy without rendering, then reissues or confirms route authority.",
+  "governedProductionAttemptConsumed": false,
+  "sourceAuthority": false,
+  "productionSelected": false
+}

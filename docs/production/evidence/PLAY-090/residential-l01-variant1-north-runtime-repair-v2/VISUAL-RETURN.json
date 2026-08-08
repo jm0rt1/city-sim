@@ -1,0 +1,77 @@
+{
+  "schema": 1,
+  "task": "PLAY-090",
+  "stage": "north-process-a-independent-visual-review",
+  "reviewedHead": "86cb8fbc496a0d8953a04f274873dd25b9bcef91",
+  "routeId": "quality-v2:play-090-residential-l01-variant1-north-runtime-repair-v2",
+  "routeSHA256": "fd82e8b5048ce442ee97d94c2f327c412f76aef0757dec9e75ed99956e190c6b",
+  "runtimeEvidence": {
+    "handoffPath": "docs/production/evidence/PLAY-090/residential-l01-variant1-north-runtime-repair-v2/HANDOFF.json",
+    "handoffSHA256": "b5afe084be54b74534402aee5822694186c9526618433588b3902d54cd27bb33",
+    "runtimeRepairPath": "docs/production/evidence/PLAY-090/residential-l01-variant1-north-runtime-repair-v2/RUNTIME-REPAIR.json",
+    "runtimeRepairSHA256": "4235cf061092d97062be3a1213e085037351e0f701d03fc2d110cc75611a0ec7",
+    "result": "PASS",
+    "freshProcesses": 2,
+    "adversaries": 9,
+    "authoredComponentCount": 19,
+    "occupiedPixels": 428691,
+    "decodedRGBASHA256": "d200eae3f59a5033119f7ea256c05d3be53fe7826e7b427cfad5569f3f01ee5e",
+    "rawPNGContainerSHA256": "d63a014bc3e948044104f06db6526b64b036bae4df886ee8cf4bae00d98188b6",
+    "durationsSeconds": {
+      "replay-a": 34.668307,
+      "replay-b": 37.480413
+    }
+  },
+  "disposition": "VISUAL_RETURN",
+  "appearanceLockPublished": false,
+  "sourceAuthority": false,
+  "productionSelected": false,
+  "independentDefects": [
+    {
+      "id": "hidden-frontage-details",
+      "finding": "Frontage details are hidden in the rendered composition."
+    },
+    {
+      "id": "illegible-court-entry-windows",
+      "finding": "The court, entry, and windows are illegible at review scale."
+    },
+    {
+      "id": "primitive-roof-collisions",
+      "finding": "Primitive roof forms visibly collide."
+    },
+    {
+      "id": "ignored-material-patterns",
+      "finding": "Authored material patterns do not survive into the rendered appearance."
+    },
+    {
+      "id": "excessive-body-height",
+      "finding": "The building body height exceeds the intended visual target by 33 percent."
+    },
+    {
+      "id": "noisy-oversized-frame-edge-shadow",
+      "finding": "The frame-edge shadow is noisy and oversized."
+    }
+  ],
+  "requiredNextRepair": {
+    "scope": "PLAY-090 North hero appearance only",
+    "preserve": [
+      "camera",
+      "footprint",
+      "groundPivot",
+      "frontageSocket"
+    ]
+  },
+  "blocked": [
+    "appearance-lock-publication",
+    "north-process-b",
+    "north-process-c",
+    "sibling-production",
+    "source-admission",
+    "renderer-ingestion",
+    "production-selection"
+  ],
+  "checkpointActions": {
+    "sourceFilesEdited": false,
+    "blenderExecuted": false
+  }
+}

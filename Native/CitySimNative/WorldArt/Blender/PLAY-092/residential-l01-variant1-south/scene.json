@@ -1,0 +1,164 @@
+{
+  "schema": 1,
+  "task": "PLAY-092",
+  "sceneGeometryID": "residential-l01-v1-south-blockout-v01",
+  "logicalBuildingID": "residential_l01",
+  "family": "residential",
+  "level": 1,
+  "variantID": "variant-1",
+  "viewDirection": "south",
+  "sourceRevision": "predesign-v01",
+  "authoredIndependently": true,
+  "productionSelected": false,
+  "derivation": {
+    "sourceKind": "independent-contract-blockout",
+    "siblingSource": null,
+    "mirror": false,
+    "rotationDegrees": 0,
+    "transform": "none"
+  },
+  "registration": {
+    "tileBasisPoints": [72, 36],
+    "sceneFootprintUnits": [72, 72],
+    "footprintPolygonSource": [[768, 640], [1024, 768], [768, 896], [512, 768]],
+    "groundPivotSource": [768, 896],
+    "contactPolygonWorld": [[-28, -28], [28, -28], [28, 28], [-28, 28]],
+    "frontageEdgeSource": [[768, 896], [512, 768]],
+    "frontageSocketWorld": [0, 0, 28],
+    "frontageSocketSource": [640, 832],
+    "entranceExclusionWorld": [[-15, 22], [15, 22], [15, 44], [-15, 44]],
+    "sourceViewportPixels": [1536, 1024],
+    "native2xViewportPixels": [768, 512],
+    "literal192ViewportPixels": [192, 128],
+    "presentationEnvelopeSource": [280, 112, 1248, 896],
+    "shadowEnvelopeSource": [704, 520, 1440, 968],
+    "orientationTransform": "none"
+  },
+  "camera": {
+    "projection": "orthographic-2:1",
+    "yawDegrees": 45,
+    "elevationDegrees": 30,
+    "orthographicScale": 203.64675298172568,
+    "renderViewportPixels": [1536, 1024],
+    "oversamplingFactor": 2,
+    "positionWorld": [180, 146.9693845669907, 180],
+    "targetWorld": [0, 0, 0],
+    "sourceGroundCenter": [768, 768],
+    "postProjectionOffsetPixels": [0, 256]
+  },
+  "light": {
+    "keyOrigin": [-120, 180, -120],
+    "keyIntensity": 1000,
+    "keyColorRGBA": [1.0, 0.86, 0.68, 1.0],
+    "ambientIntensity": 0.5,
+    "ambientColorRGBA": [0.50, 0.46, 0.38, 1.0],
+    "shadowVectorSource": [2, 1],
+    "shadowOpacity": 0.34,
+    "shadowBlurSourcePixels": 18,
+    "shadowReceiver": "task-owned-transparent-ground-plane"
+  },
+  "massing": {
+    "primary": {
+      "kind": "stepped-courtyard-mass",
+      "positionWorld": [0, 14, -3],
+      "dimensions": [50, 28, 44],
+      "southSetback": 6,
+      "northParapetHeight": 4
+    },
+    "secondaryVolume": {
+      "kind": "south-east-bay-wing",
+      "positionWorld": [19, 12, 15],
+      "dimensions": [14, 22, 22],
+      "roofLine": "low-hip",
+      "structural": true
+    },
+    "westVolume": {
+      "kind": "west-stair-tower",
+      "positionWorld": [-20, 18, 7],
+      "dimensions": [8, 34, 14],
+      "roofLine": "flat-cap",
+      "structural": true
+    }
+  },
+  "roofline": {
+    "kind": "cross-gable-with-clerestory",
+    "ridgeWorld": [[-22, 42, -6], [22, 42, -6]],
+    "crossRidgeWorld": [[10, 35, -18], [10, 35, 18]],
+    "gablePeaks": [[-22, 42, -6], [22, 42, -6], [10, 35, 18]],
+    "overhang": 1.25,
+    "materialRole": "roof-slate-blue"
+  },
+  "entrance": {
+    "facadeID": "south-facade",
+    "baseWorld": [0, 3, 28],
+    "width": 12,
+    "height": 15,
+    "depth": 3.0,
+    "recessed": true,
+    "doorMaterialRole": "door-painted-umber",
+    "surroundMaterialRole": "trim-limestone",
+    "stepCount": 4,
+    "stepRun": 1.8,
+    "canopy": {
+      "kind": "cantilevered-porch",
+      "width": 20,
+      "depth": 8,
+      "height": 22,
+      "supportColumns": [[-9, 11, 24], [9, 11, 24]]
+    },
+    "hingeSide": "right",
+    "roadFacingNormalWorld": [0, 0, 1]
+  },
+  "facadeRhythm": {
+    "south": [
+      {"id": "s-v1-lower-left", "kind": "paired-window", "centerWorld": [-18, 11, 27.5], "dimensions": [8, 10, 1], "materialRole": "window-warm"},
+      {"id": "s-v1-lower-right", "kind": "paired-window", "centerWorld": [18, 11, 27.5], "dimensions": [8, 10, 1], "materialRole": "window-warm"},
+      {"id": "s-v1-upper-left", "kind": "clerestory-window", "centerWorld": [-16, 27, 24.5], "dimensions": [7, 6, 1], "materialRole": "window-cool"},
+      {"id": "s-v1-upper-right", "kind": "clerestory-window", "centerWorld": [16, 27, 24.5], "dimensions": [7, 6, 1], "materialRole": "window-cool"}
+    ],
+    "west": [
+      {"id": "w-v1-stair-slit", "kind": "vertical-slit", "centerWorld": [-24.5, 20, 8], "dimensions": [1, 12, 5], "materialRole": "window-cool"}
+    ],
+    "north": [
+      {"id": "n-v1-clerestory", "kind": "ribbon-window", "centerWorld": [0, 30, -24.5], "dimensions": [26, 6, 1], "materialRole": "window-cool"}
+    ]
+  },
+  "materials": {
+    "masonry": {"role": "wall-masonry", "id": "brick-sandstone", "valueBand": "mid"},
+    "trim": {"role": "trim-limestone", "id": "limestone-pale", "valueBand": "light"},
+    "roof": {"role": "roof-slate-blue", "id": "slate-blue", "valueBand": "dark"},
+    "window": {"role": "window-warm", "id": "glass-amber", "valueBand": "dark-mid"},
+    "metal": {"role": "rail-metal", "id": "metal-iron", "valueBand": "dark"},
+    "door": {"role": "door-painted-umber", "id": "wood-umber", "valueBand": "dark-mid"}
+  },
+  "components": [
+    {"id": "foundation-plinth", "kind": "beveled-plinth", "positionWorld": [0, 1.5, 0], "dimensions": [56, 3, 56], "materialRole": "trim-limestone"},
+    {"id": "primary-stepped-mass", "kind": "stepped-courtyard-mass", "positionWorld": [0, 14, -3], "dimensions": [50, 28, 44], "materialRole": "wall-masonry"},
+    {"id": "south-entrance-recess", "kind": "recessed-entrance", "positionWorld": [0, 10, 26], "dimensions": [16, 18, 4], "materialRole": "door-painted-umber"},
+    {"id": "porch-canopy", "kind": "cantilevered-porch", "positionWorld": [0, 22, 25], "dimensions": [20, 3, 8], "materialRole": "trim-limestone"},
+    {"id": "east-bay-wing", "kind": "south-east-bay-wing", "positionWorld": [19, 12, 15], "dimensions": [14, 22, 22], "materialRole": "wall-masonry"},
+    {"id": "west-stair-tower", "kind": "west-stair-tower", "positionWorld": [-20, 18, 7], "dimensions": [8, 34, 14], "materialRole": "wall-masonry"},
+    {"id": "cross-gable-roof", "kind": "cross-gable-roof", "positionWorld": [0, 36, -3], "dimensions": [52, 12, 46], "materialRole": "roof-slate-blue"},
+    {"id": "clerestory-ribbon", "kind": "clerestory-ribbon", "positionWorld": [0, 30, 24], "dimensions": [30, 6, 1], "materialRole": "window-cool"},
+    {"id": "south-entry-rail", "kind": "entry-rail-run", "positionWorld": [-10, 6, 27], "dimensions": [2, 3, 12], "materialRole": "rail-metal"},
+    {"id": "south-entry-rail-east", "kind": "entry-rail-run", "positionWorld": [10, 6, 27], "dimensions": [2, 3, 12], "materialRole": "rail-metal"}
+  ],
+  "occlusionExclusions": [
+    {
+      "id": "south-entrance-clearance",
+      "purpose": "protect declared entrance, steps, and road-facing socket",
+      "polygonWorld": [[-15, 22], [15, 22], [15, 44], [-15, 44]]
+    }
+  ],
+  "prelock": {
+    "stage": "predesign_ready",
+    "zeroPixel": true,
+    "dccInvocations": 0,
+    "renderInvocations": 0,
+    "pixelFiles": [],
+    "sourceProductionReady": false,
+    "appearanceLockRequired": true,
+    "appearanceLock": null,
+    "orientationTransform": "none"
+  }
+}

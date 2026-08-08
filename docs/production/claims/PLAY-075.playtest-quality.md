@@ -23,7 +23,9 @@
   gate at evidence commit `85df0e8aee1e1e45c6da01dc02def3ade7bf1e5a`
   and was integrated and published at
   `fcccf2bce4a31ee096bfd40580af30e6f90c51cc`; the focused R2 slot is closed.
-  The active focused slot is now the exact Industrial L4 N/E/S/W family.
+  The exact Industrial L4 N/E/S/W family remains preserved and resumes only
+  under its existing candidate-specific authority. The active candidate-neutral
+  preparation slot is now active for CONTRACT-023 Residential L1 variant one.
   Candidate-neutral preparation is preserved in the fail-closed packet under
   `docs/production/evidence/PLAY-075/industrial-l4-family-preregistration-v1/`,
   but it remains `preregistering` until Integration publishes and acknowledges
@@ -40,6 +42,21 @@ preference over `87e1e68` at both widths, every LOD, and every governed state.
 Never repair product code, inspect hidden thresholds during a journey, coach,
 substitute candidates, weaken the rubric, accept fixture-only evidence, push,
 integrate, self-score, self-accept, or pin.
+
+## Residential L1 variant-one preregistration
+
+Before an exact PLAY-094 renderer candidate exists, own only
+`docs/production/evidence/PLAY-075/residential-l01-variant1-preregistration-v1/`.
+Prepare a candidate-neutral packet bound to CONTRACT-023, the exact N/E/S/W
+logical keys, current family ledger revision, renderer intake-plan hash,
+regular and 900 x 600 camera/fixture/rubric hashes, all three LODs, and an
+exclusive evidence root. Keep `rendererCandidateReceipt` explicitly null.
+
+This preregistration may not launch or inspect a hypothetical app, pre-score
+visual quality, repair product/art/renderer code, claim final-QA ownership, or
+reuse the feature-author task for the later disposition. Final acceptance
+requires a separate fresh `FRONTIER_AUTHORITY` exact-candidate route and
+exclusive one-attempt lease.
 
 ## Wave 010 focused art-batch gate
 

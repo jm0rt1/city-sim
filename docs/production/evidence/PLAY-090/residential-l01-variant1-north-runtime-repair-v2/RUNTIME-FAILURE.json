@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "kind": "play090-runtime-repair-failure",
+  "task": "PLAY-090",
+  "routeId": "quality-v2:play-090-residential-l01-variant1-north-runtime-repair-v2",
+  "routeSHA256": "fd82e8b5048ce442ee97d94c2f327c412f76aef0757dec9e75ed99956e190c6b",
+  "carrierCommit": "ad385002897a0da95371f007ac542c90cfb34a94",
+  "workerInputHead": "adce6edb48a2d32eae7bb0a32a8b1d969d5f6ac5",
+  "result": "BLOCKED_PRE_PYTHON",
+  "runtimeReplayRoot": "/private/tmp/play090-residential-north-runtime-repair-v2",
+  "attempt": {
+    "process": "replay-a",
+    "attemptConsumed": true,
+    "childStarts": 1,
+    "exitCode": -11,
+    "pid": 87852,
+    "durationSeconds": 2.330705,
+    "commandSHA256": "8dcb3441d1f9c00e0e5f9b035b14471a6fe98feafe21f289a5c8b6f3fd292fab",
+    "stdoutSHA256": "f8eb56c4de1af4c3b8b32a767aad1afc5abdac7389c2938b8ccbad40ee69a925",
+    "stderrSHA256": "95d0088fc181c8d186e9ce67a80e48c1e928e829a99bf6a363ad6eafae7b04dd",
+    "failure": "ARCH_CACHE_LINE_SIZE != Arch_ObtainCacheLineSize()",
+    "failureFunction": "Arch_ValidateAssumptions",
+    "failureSource": "/Users/jonas/blender-dev/build_darwin/deps_x64/build/usd/src/external_usd/pxr/base/arch/assumptions.cpp:138",
+    "bpyImported": false,
+    "sceneConstructed": false,
+    "renderStarted": false,
+    "pixelsWritten": false
+  },
+  "binary": {
+    "path": "/Applications/Blender.app/Contents/MacOS/Blender",
+    "sha256": "8485107307b16bd0899f3c259261494b0c80e383db239c04e2c9fcd14d305fb4",
+    "architecture": "x86_64",
+    "version": "4.5.12 LTS",
+    "buildHash": "84afd5f785f7",
+    "translation": "Rosetta",
+    "runtimeReceiptPath": "docs/production/evidence/INTEGRATION/BLENDER-4.5.12-X86_64-RUNTIME-RECEIPT-V1.json",
+    "runtimeReceiptSHA256": "4ef99161131551706a9897005a3af0827a2fb0caf928917f5015e2e12d446a5f"
+  },
+  "retainedDisposableArtifacts": {
+    "attempt.json": "08289758e73b62edffbc1c2fa44278dc2962d74fa8e97b8b4d12f4ce2fdca01d",
+    "attempt.json.child-start": "3460717b0232cf99432a5a5c00e2c80d4cc63746967fe6606d42f22cd07a953d",
+    "authority/schedule.json": "d018068db725cb628b305cabe021ab18be577c5b45b354f6bc4f334bb07bfc22",
+    "authority/grant.json": "661b85f6c2249507847ee30b5918e8aaa91c74a7cf7a28115ad4eeed355d4ab4",
+    "authority/receipt.json": "f00638d6a13df81eb634d74e6bb41b0e850442902605b2e251691d3641493d5d",
+    "output/LAUNCH-RESULT.json": "b3029ec129270c26c9b546b0f42fea874a6bdc129f97c330c31363a2518f7425"
+  },
+  "replayB": {
+    "started": false,
+    "reason": "V2 stop condition requires immediate stop on x86_64 bpy/runtime failure"
+  },
+  "governedProductionRootWrites": 0,
+  "sourceAuthority": false,
+  "productionSelected": false,
+  "independentAcceptanceRequired": true
+}

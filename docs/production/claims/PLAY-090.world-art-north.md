@@ -18,8 +18,9 @@
   fresh-process decoded identity for the granted A, non-alias, registration,
   source/native-2x/literal-192 color and grayscale, provenance, and contact
   sheets.
-- **Status:** Planned. No mutation or DCC launch until Integration publishes
-  the family-bound controls and an exact Luna/frontier route.
+- **Status:** Blocked and superseded by CONTRACT-024. Preserve the exact branch,
+  commits, dirty evidence, and historical Blender proof; perform no further
+  generation, repair, normalization, or renderer handoff under this claim.
 
 Do not edit sibling, renderer, shipping, package, gameplay, UI, simulation,
 save, shared-contract, or manifest paths. Do not push, integrate, self-accept,

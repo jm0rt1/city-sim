@@ -1,0 +1,131 @@
+{
+  "schema": 1,
+  "task": "PLAY-091",
+  "sceneGeometryID": "residential-l01-v1-east-geometry-v01",
+  "logicalBuildingID": "residential_l01",
+  "family": "residential",
+  "level": 1,
+  "variantID": "variant-1",
+  "viewDirection": "east",
+  "sourceRevision": "source-v01",
+  "authoredIndependently": true,
+  "productionSelected": false,
+  "derivation": {
+    "sourceKind": "independent-east-variant-one-blockout",
+    "siblingSource": null,
+    "mirror": false,
+    "rotationDegrees": 0,
+    "transform": "none"
+  },
+  "familyContract": {
+    "path": "docs/production/decisions/CONTRACT-023-residential-l01-variant-one-family.md",
+    "sha256": "18ed6b18ed7e1ecbcaba1eb1c7fab9dffae98d670334d4ce30c33e3d1ddb7eb0"
+  },
+  "referenceInput": {
+    "path": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/scenes/residential_l01/variant-0/east/scene.json",
+    "sha256": "5a6ccb85adb129f4da73e086be2b14d417785a35c0391052b44180db872ef1fe",
+    "use": "registration-and-camera-contract-only"
+  },
+  "materialRoles": {
+    "wall": "brick-warm-red",
+    "trim": "limestone-warm",
+    "roof": "slate-charcoal",
+    "foundation": "foundation-stone",
+    "door": "door-deep-green",
+    "window": "window-warm",
+    "metal": "copper-patina",
+    "planting": "planting-evergreen"
+  },
+  "registration": {
+    "tileBasisPoints": [72, 36],
+    "sceneFootprintUnits": [72, 72],
+    "footprintPolygonSource": [[768, 640], [1024, 768], [768, 896], [512, 768]],
+    "groundPivotSource": [768, 896],
+    "contactPolygonWorld": [[-28, -28], [28, -28], [28, 28], [-28, 28]],
+    "frontageEdgeSource": [[1024, 768], [768, 896]],
+    "frontageSocketSource": [896, 832],
+    "doorBaseSource": [[934, 813], [858, 851]],
+    "presentationEnvelopeSource": [256, 96, 1280, 920],
+    "shadowEnvelopeSource": [768, 512, 1472, 1000],
+    "orientationTransform": "none"
+  },
+  "camera": {
+    "projection": "orthographic-2:1",
+    "yawDegrees": 45,
+    "elevationDegrees": 30,
+    "orthographicScale": 203.64675298172568,
+    "renderViewportPixels": [1536, 1024],
+    "oversamplingFactor": 2,
+    "positionWorld": [180, 146.9693845669907, 180],
+    "targetWorld": [0, 0, 0],
+    "sourceGroundCenter": [768, 768],
+    "postProjectionOffsetPixels": [0, 256]
+  },
+  "light": {
+    "keyOrigin": [-120, 180, -120],
+    "keyIntensity": 1000,
+    "keyColorRGBA": [1.0, 0.86, 0.68, 1.0],
+    "ambientIntensity": 0.5,
+    "ambientColorRGBA": [0.5, 0.46, 0.38, 1.0],
+    "shadowVectorSource": [2, 1],
+    "shadowOpacity": 0.34,
+    "shadowBlurSourcePixels": 18,
+    "shadowReceiver": "task-owned-transparent-ground-plane"
+  },
+  "building": {
+    "massingSignature": "stepped-east-entry-and-copper-dormer-v1",
+    "variantDifference": ["primary-massing-and-roofline", "entrance-composition", "facade-rhythm", "material-role-balance", "secondary-volume"],
+    "width": 52,
+    "depth": 48,
+    "foundationHeight": 3,
+    "floorHeight": 12,
+    "floors": 2,
+    "wallHeight": 27,
+    "roofHeight": 9,
+    "roofOverhang": 2,
+    "wallMaterialID": "brick-warm-red",
+    "trimMaterialID": "limestone-warm",
+    "roofMaterialID": "slate-charcoal",
+    "foundationMaterialID": "foundation-stone"
+  },
+  "entrance": {
+    "facadeID": "east-facade",
+    "roadFacingDirection": "east",
+    "baseWorld": [28, 3, 0],
+    "width": 10,
+    "height": 15,
+    "depth": 2,
+    "doorMaterialID": "door-deep-green",
+    "surroundMaterialID": "limestone-warm",
+    "stepCount": 4,
+    "stepRun": 1.5,
+    "canopyDepth": 9,
+    "hingeSide": "left",
+    "secondaryVolume": "east-entry-bay"
+  },
+  "components": [
+    {"id": "foundation", "role": "foundation", "kind": "rectangular_prism", "boundsWorld": [[-26, 0, -24], [26, 3, 24]], "materialID": "foundation-stone"},
+    {"id": "main_shell", "role": "primary_massing", "kind": "rectangular_prism", "boundsWorld": [[-24, 3, -22], [24, 27, 22]], "materialID": "brick-warm-red"},
+    {"id": "east_entry_bay", "role": "structural_secondary_volume", "kind": "rectangular_prism", "boundsWorld": [[20, 3, -8], [28, 34, 8]], "materialID": "brick-warm-red"},
+    {"id": "east_entry_reveal", "role": "entrance_reveal", "kind": "recessed_panel", "boundsWorld": [[26.2, 3, -5], [28.2, 18, 5]], "materialID": "door-deep-green"},
+    {"id": "east_entry_canopy", "role": "entrance_canopy", "kind": "slab", "boundsWorld": [[21, 22, -10], [32, 25, 10]], "materialID": "limestone-warm"},
+    {"id": "east_entry_header", "role": "entrance_header", "kind": "slab", "boundsWorld": [[21, 30, -10], [29, 34, 10]], "materialID": "limestone-warm"},
+    {"id": "south_bay", "role": "structural_secondary_volume", "kind": "shallow_bay", "boundsWorld": [[-10, 4, 20], [10, 22, 27]], "materialID": "brick-warm-red"},
+    {"id": "stepped_roof", "role": "roofline", "kind": "gable_prism", "boundsWorld": [[-26, 27, -24], [26, 36, 24]], "materialID": "slate-charcoal"},
+    {"id": "copper_dormer", "role": "roof_secondary_volume", "kind": "dormer", "boundsWorld": [[8, 35, -9], [20, 43, 1]], "materialID": "copper-patina"},
+    {"id": "chimney", "role": "roof_equipment", "kind": "rectangular_prism", "boundsWorld": [[-17, 31, -15], [-11, 45, -9]], "materialID": "brick-warm-red"},
+    {"id": "east_window_lower_north", "role": "east_window", "kind": "glazing_panel", "boundsWorld": [[24, 7, -18], [26, 15, -10]], "materialID": "window-warm"},
+    {"id": "east_window_lower_south", "role": "east_window", "kind": "glazing_panel", "boundsWorld": [[24, 7, 10], [26, 15, 18]], "materialID": "window-warm"},
+    {"id": "east_window_upper_north", "role": "east_window", "kind": "glazing_panel", "boundsWorld": [[24, 19, -18], [26, 26, -10]], "materialID": "window-warm"},
+    {"id": "east_window_upper_south", "role": "east_window", "kind": "glazing_panel", "boundsWorld": [[24, 19, 10], [26, 26, 18]], "materialID": "window-warm"},
+    {"id": "east_mullion_north", "role": "window_trim", "kind": "vertical_trim", "boundsWorld": [[25.8, 6, -18.5], [27, 27, -17.2]], "materialID": "limestone-warm"},
+    {"id": "east_mullion_south", "role": "window_trim", "kind": "vertical_trim", "boundsWorld": [[25.8, 6, 17.2], [27, 27, 18.5]], "materialID": "limestone-warm"},
+    {"id": "entry_steps", "role": "entrance_steps", "kind": "steps", "boundsWorld": [[27, 0, -6], [32, 3, 6]], "materialID": "limestone-warm"},
+    {"id": "entry_planter_north", "role": "landscape_detail", "kind": "planter", "boundsWorld": [[29, 2, -12], [33, 7, -8]], "materialID": "planting-evergreen"},
+    {"id": "entry_planter_south", "role": "landscape_detail", "kind": "planter", "boundsWorld": [[29, 2, 8], [33, 7, 12]], "materialID": "planting-evergreen"}
+  ],
+  "silhouetteBreaks": ["foundation_to_shell", "entry_bay_step", "canopy_overhang", "header_cap", "south_bay", "stepped_roof", "copper_dormer", "chimney"],
+  "occlusionExclusions": [
+    {"id": "east-entrance-clearance", "purpose": "protect declared entrance, steps, and road-facing socket", "polygonWorld": [[22, -14], [43, -14], [43, 14], [22, 14]]}
+  ]
+}

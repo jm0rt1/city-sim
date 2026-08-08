@@ -14,8 +14,8 @@
 - **Prior-work preservation:** PLAY-081 Industrial L4 West remains preserved at
   its clean checkpoint and is paused; this claim may not edit PLAY-081 paths.
 - **Validation/proof:** West-exclusive equivalents of PLAY-091.
-- **Status:** Planned; zero mutation before published authority and exact Luna
-  route.
+- **Status:** Blocked and superseded by CONTRACT-024. Preserve the clean branch
+  and all historical evidence; perform no further work under this claim.
 
 No sibling, shared, renderer/shipping, product, push, integration,
 self-acceptance, or pin.

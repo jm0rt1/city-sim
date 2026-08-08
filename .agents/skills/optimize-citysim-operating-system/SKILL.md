@@ -142,3 +142,8 @@ When Integration-published immutable inputs are newer than the worker base,
 keep outputs on the worker branch and pass the clean Integration checkout as
 `--authority-root`. `--repo-root` remains the exact worker/output Git root.
 Never copy authority files into a worker branch or weaken their hash binding.
+For cross-lane reviews, also pass the exact Integration-published PLAY-089
+observer receipt and route through `--observer-dispatch` and
+`--observer-route-id`. The event receipt continues to project the observed
+product route exactly; the separately validated observer route alone owns the
+PLAY-089 output worktree and receipt paths.

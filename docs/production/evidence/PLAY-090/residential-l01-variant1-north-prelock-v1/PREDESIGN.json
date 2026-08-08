@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "task": "PLAY-090",
+  "status": "predesign_ready",
+  "direction": "north",
+  "sourceRevision": "source-v01-prelock",
+  "designName": "asymmetrical-u-court-garden-residence",
+  "decision": "Use a tall honey-brick west gable, lower cream garden wing, central stair lantern, and a deep open entrance court aligned to the frozen North socket. The U-court plan, three unequal roof tiers, asymmetrical facade rhythm, and two-material mass balance are structural changes rather than recolor or props.",
+  "frozenIdentity": {
+    "logicalBuildingID": "residential_l01",
+    "variantID": "variant-1",
+    "viewDirection": "north",
+    "orientationTransform": "none",
+    "authoredIndependently": true
+  },
+  "frozenPresentation": {
+    "tileBasisPoints": [72, 36],
+    "footprintWorld": [[-28, -28], [28, -28], [28, 28], [-28, 28]],
+    "groundPivotSource": [768, 896],
+    "frontageSocketWorld": [0, 0, -28],
+    "frontageSocketSource": [896, 704],
+    "camera": "orthographic-2:1/45deg-yaw/30deg-elevation",
+    "keyLight": "northwest",
+    "contactShadow": "southeast"
+  },
+  "readabilityTargets": {
+    "compactEnvelopeMaximum": [64, 60],
+    "entranceBackplaneMinimum": [4, 8],
+    "entryHeaderMinimum": [6, 2],
+    "entryJambMinimum": [1, 10],
+    "secondaryVolumeMinimum": [10, 14],
+    "roofTierCount": 3,
+    "socketPathBlockers": 0
+  },
+  "pixelAuthority": {"dccProcesses": 0, "renderedPixels": 0, "analyticProxyOnly": true},
+  "siblingInputsConsumed": [],
+  "limitations": [
+    "Analytic compact projections prove geometric support and value intent only.",
+    "No executable Blender behavior, rendered luma, pixel determinism, visual acceptance, source authority, or production selection is claimed."
+  ]
+}

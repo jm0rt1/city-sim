@@ -1,0 +1,224 @@
+{
+  "schema": 2,
+  "authorityCommit": "e8e884d53bb568ccc14128ca581c65302af35177",
+  "assignments": [
+    {
+      "modelRouteSha256": "f951fc6065b3a4c22f57a16843a0282d071d89b80bd84ec13cbb6a624030ec16",
+      "modelRoute": {
+        "schema": 2,
+        "routeId": "quality-v2:play-090-residential-l01-variant1-north-process-a-executable-v1",
+        "taskId": "PLAY-090",
+        "packetKind": "implementation",
+        "classification": "LUNA_IMPLEMENTATION",
+        "model": "gpt-5.6-luna",
+        "effort": "high",
+        "rationale": "Frontier Integration has frozen the Residential Process-A requirements and explicitly designated the accepted Industrial L4 process-a-v02 Integration-direct architecture as the executable reference. Luna may now implement the bounded Residential adaptation under exact task-owned paths and contained zero-child proof; Integration retains full-gate acceptance and every production launch authority.",
+        "authority": {
+          "authorityCommit": "e8e884d53bb568ccc14128ca581c65302af35177",
+          "baseCommit": "e8e884d53bb568ccc14128ca581c65302af35177",
+          "claim": {
+            "path": "docs/production/claims/PLAY-090.world-art-north.md",
+            "sha256": "3d28843b7cbd53c9f25e71163a6bd3e9821c340010f7303a0909e35b9251d6b2"
+          },
+          "immutableInputs": [
+            {
+              "path": "docs/production/evidence/INTEGRATION/RESIDENTIAL-L01-VARIANT1-NORTH-PROCESS-A-IMPLEMENTATION-AUTHORITY-V1.md",
+              "sha256": "392b6ec28ae86a994e9c3d0585e7b9173d05ed1f10107cf825bacfb03bbadcb0"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/BLENDER-4.5.12-ARM64-STARTUP-RECEIPT-V1.json",
+              "sha256": "4202de8d3ffbb9f3094b1c2e78b30a4c7e26664bce8af74916147d6995eb36aa"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-v02/EXECUTION-CONTRACT.json",
+              "sha256": "4dd0d524621fad585f2de28c0e535bd188e0ced468b74268c47ddb22fd0642ca"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-v02/launch_north_v13_process_a_v02.py",
+              "sha256": "cbbf3a287216fa9f2fac4e9815331b89d6f74991816508ce143650eeac41c01b"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-v02/render_north_v13_process_a_child.py",
+              "sha256": "f448e5763d57075c4ccf54686a114dde21eb78f809507122731da995425b2e7a"
+            },
+            {
+              "path": "docs/production/decisions/CONTRACT-023-residential-l01-variant-one-family.md",
+              "sha256": "18ed6b18ed7e1ecbcaba1eb1c7fab9dffae98d670334d4ce30c33e3d1ddb7eb0"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-090/residential-l01-variant1-north-prelock-v1/HANDOFF.json",
+              "sha256": "258250a104af6511588f5a878302ace8ff20b826cf5af695bcb8d20cc30812e6"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-090/residential-l01-variant1-north-prelock-v1/PREDESIGN.json",
+              "sha256": "b2e68b6db340c9f4730cb1e94fca8e633d741af745b836fae4685827dd682f62"
+            },
+            {
+              "path": "docs/production/CITYSIM_WORKTREE_OPERATING_SYSTEM.md",
+              "sha256": "c6b63e985bb15a9dab32741a2f3e6a4e1fbd278eb90f5d4b4f032f87008cdcef"
+            },
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "241903901a3927fe22de4de2d318155fa5855cfcb66776813160639a0d4ffa0d"
+            },
+            {
+              "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+              "sha256": "10ae5e31a8a31daa09c269a7be5092de4c044547db8ee0180ed85f3cb531d7ee"
+            },
+            {
+              "path": ".agents/skills/produce-citysim-world-art/references/direction-cell-parallel-execution.md",
+              "sha256": "3cad284bc471c316c3a3ddffd88d580b7230c09e1b4f29a73c746b341995bdc8"
+            }
+          ]
+        },
+        "assignment": {
+          "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+          "branch": "codex/citysim-world-art",
+          "worktree": "/Users/James/.codex/worktrees/0648/city-sim",
+          "expectedHead": "caea709ae185a1c4ad734f1a343ffecfbbd0234d",
+          "featureAuthorThreadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-090/residential-l01-variant1-north",
+            "docs/production/evidence/PLAY-090"
+          ],
+          "allowed": [
+            "Native/CitySimNative/WorldArt/Blender/PLAY-090/residential-l01-variant1-north",
+            "docs/production/evidence/PLAY-090"
+          ],
+          "forbidden": [
+            ".agents/skills",
+            "Native/CitySimNative/Sources",
+            "Native/CitySimNative/Resources",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-027",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-091",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-092",
+            "Native/CitySimNative/WorldArt/Blender/PLAY-093",
+            "docs/production/claims",
+            "docs/production/decisions",
+            "docs/production/evidence/INTEGRATION"
+          ]
+        },
+        "boundedDeliverable": "Implement one North-only, grant-gated Process-A executable boundary plus deterministic task-owned tests. Run exactly one contained nonproduction smoke against an inert fixture that proves payload assembly, bounded output, zero Blender/DCC starts, and fail-closed rejection of production mode without an Integration-issued grant. Commit the implementation and evidence, then stop. Do not run or produce actual production Process A.",
+        "proofPolicy": {
+          "architectureState": "frozen_reference",
+          "referenceImplementation": {
+            "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-v02/EXECUTION-CONTRACT.json",
+            "sha256": "4dd0d524621fad585f2de28c0e535bd188e0ced468b74268c47ddb22fd0642ca"
+          },
+          "deliverableClaims": [
+            "static_structure",
+            "executable_behavior"
+          ],
+          "focusedProofLevel": "contained_smoke",
+          "fullProofLevel": "contained_smoke",
+          "behavioralCommands": [
+            "python3 Native/CitySimNative/WorldArt/Blender/PLAY-090/residential-l01-variant1-north/test_process_a_execution_boundary.py --contained-smoke --assert-zero-dcc --output-root docs/production/evidence/PLAY-090/residential-l01-variant1-process-a-executable-v1/contained-smoke"
+          ],
+          "prohibitedSubstitutions": [
+            "ast_shape_for_runtime_success",
+            "manifest_or_prose_for_rendered_pixels",
+            "source_token_presence_for_execution",
+            "unit_tests_for_visual_acceptance",
+            "worker_self_report_for_independent_acceptance"
+          ]
+        },
+        "validation": {
+          "focusedGateOwner": {
+            "threadId": "019f96e0-3793-7542-9172-060a9ca09b0a",
+            "role": "north_process_a_executable_focused_gate"
+          },
+          "focusedCommands": [
+            "python3 Native/CitySimNative/WorldArt/Blender/PLAY-090/residential-l01-variant1-north/test_process_a_execution_boundary.py --contained-smoke --assert-zero-dcc --output-root docs/production/evidence/PLAY-090/residential-l01-variant1-process-a-executable-v1/contained-smoke",
+            "python3 Native/CitySimNative/WorldArt/Blender/PLAY-090/residential-l01-variant1-north/test_prelock_zero_pixel.py",
+            "git diff --check caea709ae185a1c4ad734f1a343ffecfbbd0234d..HEAD"
+          ],
+          "fullGateOwner": {
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "role": "integration_process_a_executable_acceptance",
+            "model": "gpt-5.6-sol",
+            "effort": "high"
+          },
+          "fullCommands": [
+            "Integration independently validates the exact contained-smoke receipt, zero DCC/process count, production-denial proof, and claimed-path diff before separately deciding whether to publish a Process-A grant"
+          ]
+        },
+        "expectedResult": {
+          "evidencePaths": [
+            "docs/production/evidence/PLAY-090/residential-l01-variant1-process-a-executable-v1"
+          ],
+          "commitRequired": true,
+          "commitMessagePattern": "PLAY-090:"
+        },
+        "escalationTriggers": [
+          "baseline_or_candidate_identity_mismatch",
+          "cross_lane_semantic_conflict",
+          "failure_outside_focused_scope",
+          "path_outside_claim",
+          "save_or_migration_uncertainty",
+          "shared_contract_or_schema_decision",
+          "subjective_acceptance_required",
+          "two_unsuccessful_repair_attempts",
+          "unresolved_product_visual_or_interaction_judgment"
+        ],
+        "stopCondition": "Stop after one clean implementation/evidence commit and contained-smoke PASS with zero Blender/DCC starts. Stop immediately on identity/hash/path drift, any production Process-A request without a separate Integration grant, any DCC start, sibling/shared-path access, visual acceptance judgment, two failed repairs, or any request to accept, integrate, push, or pin.",
+        "independentReviewer": {
+          "required": true,
+          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+          "model": "gpt-5.6-sol",
+          "effort": "high"
+        },
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {
+              "path": "docs/production/claims/PLAY-090.world-art-north.md",
+              "sha256": "3d28843b7cbd53c9f25e71163a6bd3e9821c340010f7303a0909e35b9251d6b2"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/RESIDENTIAL-L01-VARIANT1-NORTH-PROCESS-A-IMPLEMENTATION-AUTHORITY-V1.md",
+              "sha256": "392b6ec28ae86a994e9c3d0585e7b9173d05ed1f10107cf825bacfb03bbadcb0"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/BLENDER-4.5.12-ARM64-STARTUP-RECEIPT-V1.json",
+              "sha256": "4202de8d3ffbb9f3094b1c2e78b30a4c7e26664bce8af74916147d6995eb36aa"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v13/process-a-v02/EXECUTION-CONTRACT.json",
+              "sha256": "4dd0d524621fad585f2de28c0e535bd188e0ced468b74268c47ddb22fd0642ca"
+            },
+            {
+              "path": "docs/production/decisions/CONTRACT-023-residential-l01-variant-one-family.md",
+              "sha256": "18ed6b18ed7e1ecbcaba1eb1c7fab9dffae98d670334d4ce30c33e3d1ddb7eb0"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-090/residential-l01-variant1-north-prelock-v1/HANDOFF.json",
+              "sha256": "258250a104af6511588f5a878302ace8ff20b826cf5af695bcb8d20cc30812e6"
+            },
+            {
+              "path": "docs/production/CITYSIM_WORKTREE_OPERATING_SYSTEM.md",
+              "sha256": "c6b63e985bb15a9dab32741a2f3e6a4e1fbd278eb90f5d4b4f032f87008cdcef"
+            },
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "241903901a3927fe22de4de2d318155fa5855cfcb66776813160639a0d4ffa0d"
+            },
+            {
+              "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+              "sha256": "10ae5e31a8a31daa09c269a7be5092de4c044547db8ee0180ed85f3cb531d7ee"
+            },
+            {
+              "path": ".agents/skills/produce-citysim-world-art/references/direction-cell-parallel-execution.md",
+              "sha256": "3cad284bc471c316c3a3ddffd88d580b7230c09e1b4f29a73c746b341995bdc8"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

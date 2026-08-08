@@ -1,6 +1,6 @@
 {
   "schema": 2,
-  "routeId": "four-view-v7:play-105-west-production-v4",
+  "routeId": "four-view-v9:play-105-west-raw-anchor-authorized",
   "taskId": "PLAY-105",
   "packetKind": "implementation",
   "classification": "LUNA_IMPLEMENTATION",
@@ -8,11 +8,12 @@
   "effort": "high",
   "rationale": "West is a disjoint bounded production cell under the frozen 2.5D contract. Luna owns the exact ImageGen/provenance/normalization implementation and focused deterministic gates; frontier owns visual and aggregate acceptance.",
   "authority": {
-    "authorityCommit": "fe4d1da8a5540f3bb3047d2e3a52bdf01400db01",
-    "baseCommit": "fe4d1da8a5540f3bb3047d2e3a52bdf01400db01",
+    "authorityCommit": "95a950a4f0c182fd133972f4b599d67363a6f637",
+    "baseCommit": "95a950a4f0c182fd133972f4b599d67363a6f637",
     "claim": {"path": "docs/production/claims/PLAY-105.world-art-west-imagegen.md", "sha256": "1dd5c0ef337ba7736e2e0c4abb520ed7d73630f3bff5e0d8bd53d44399388137"},
     "immutableInputs": [
       {"path": "docs/production/decisions/CONTRACT-025-authored-four-view-2-5d-building-art.md", "sha256": "4e8ab63173d67581332e7d27730b97315906fda4e29b999969456441809479ed"},
+      {"path": "docs/production/decisions/PLAY-106-RAW-SOUTH-ANCHOR-AUTHORITY.md", "sha256": "1ed3486f526dc1ab3da352c85fce3920468375f8169529d933bbfc275b1c739d"},
       {"path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md", "sha256": "1eb7170b81e11753e7c9173298c6d45c02d5a2ade6df0ef8b73bdcaf690a2acd"},
       {"path": ".agents/skills/produce-citysim-world-art/SKILL.md", "sha256": "9c62d401d8812d5345b6bd25d864a07010348883ca4941f4429854ebe4abc511"},
       {"path": ".agents/skills/produce-citysim-world-art/references/direction-cell-parallel-execution.md", "sha256": "3cad284bc471c316c3a3ddffd88d580b7230c09e1b4f29a73c746b341995bdc8"},
@@ -27,7 +28,7 @@
     "threadId": "019fe1e1-3b56-72d2-8cbe-308004fe4772",
     "branch": "codex/citysim-world-art-west-imagegen",
     "worktree": "/Users/James/.codex/worktrees/e6f2/city-sim",
-    "expectedHead": "8abbd3ff87c98278ce7fc6306047a562a005ec78",
+    "expectedHead": "3b1620f72611b3d73e77326eddc14c19b6c70927",
     "featureAuthorThreadId": "019fe1e1-3b56-72d2-8cbe-308004fe4772",
     "sharedAuthorityOwnership": false,
     "finalQAOwnership": false,

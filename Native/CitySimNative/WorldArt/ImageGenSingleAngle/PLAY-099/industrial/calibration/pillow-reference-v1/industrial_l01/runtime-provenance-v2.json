@@ -1,25 +1,13 @@
 {
+  "acceptedDecodedSha256": "e7513c32699127353f851b1d249c624c9c8e17d859c914d5c8d38ffdf8339f15",
+  "acceptedFileSha256": "aa7df1b8a8d12fcd47cbf8299c93b57f00daec9b1a74f927dafe6fe7081527bb",
+  "batchExpanded": false,
   "calibrationIdentity": "industrial_l01",
-  "result": {
-    "canvas": [
-      1536,
-      1024
-    ],
-    "decodedSha256": "e7513c32699127353f851b1d249c624c9c8e17d859c914d5c8d38ffdf8339f15",
-    "edgeAlphaPixels": 0,
-    "fileSha256": "aa7df1b8a8d12fcd47cbf8299c93b57f00daec9b1a74f927dafe6fe7081527bb",
-    "hiddenRgbPixels": 0,
-    "isolatedRoot": true,
-    "mode": "RGBA",
-    "pngMetadata": {},
-    "removedKeyedPixels": 1239493,
-    "run": 2,
-    "visibleAlphaOccupancy": 0.21195157368977866,
-    "visibleAlphaOccupancyAboveFloor": true,
-    "visibleAlphaOccupancyFloor": 0.1,
-    "visibleAlphaPixels": 333371,
-    "visibleKeyedMagentaPixels": 0
-  },
+  "imageGenCalled": false,
+  "inputHead": "f38646855354e9825473e5fd9f558c36d6b4a280",
+  "isolatedRoots": true,
+  "rawSha256": "7ca3e26234e7e15df9a46775a83f7132f89e1ea1f22d97c42ca6d3502099bbd2",
+  "repeat": 2,
   "routeCanonicalSha256": "bbf50b385d0851db8655465310c21225eaa52573520af70163f95978a3f19886",
   "routeId": "four-view-v4:play-099-industrial-pillow-calibration-v2",
   "runtime": {
@@ -38,6 +26,7 @@
     "pythonVersion": "3.12.13",
     "resolvedExecutable": "/Users/James/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3.12"
   },
-  "schema": "PLAY-099-industrial-pillow-calibration-run-v2",
-  "sourceLogicalId": "industrial_l01_v00"
+  "schema": "PLAY-099-industrial-pillow-runtime-provenance-v2",
+  "sourceLogicalId": "industrial_l01_v00",
+  "task": "PLAY-099"
 }

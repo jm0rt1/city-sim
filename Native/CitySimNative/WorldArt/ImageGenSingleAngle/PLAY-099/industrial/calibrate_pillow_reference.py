@@ -7,7 +7,6 @@ import argparse
 import hashlib
 import json
 import platform
-import shutil
 import struct
 import sys
 import tempfile
@@ -17,12 +16,16 @@ import PIL
 from PIL import Image
 
 
-ROUTE_ID = "four-view-v4:play-099-industrial-pillow-calibration"
-ROUTE_SHA256 = "b7b89fc1dd953a5ec992aa5580499cf99b212b4e3c24148661a60e1b17c8a423"
+ROUTE_ID = "four-view-v4:play-099-industrial-pillow-calibration-v2"
+ROUTE_SHA256 = "bbf50b385d0851db8655465310c21225eaa52573520af70163f95978a3f19886"
+INPUT_HEAD = "f38646855354e9825473e5fd9f558c36d6b4a280"
 BUNDLED_PYTHON = Path("/Users/James/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3")
 BUNDLED_PYTHON_SHA256 = "eb9d74b9c7cfdfb2c9b91614edb2c3607360ba46c5aa7fc4557b3a4a23e97cff"
 PYTHON_VERSION = "3.12.13"
 PILLOW_VERSION = "12.2.0"
+ACCEPTED_FILE_SHA256 = "aa7df1b8a8d12fcd47cbf8299c93b57f00daec9b1a74f927dafe6fe7081527bb"
+ACCEPTED_DECODED_SHA256 = "e7513c32699127353f851b1d249c624c9c8e17d859c914d5c8d38ffdf8339f15"
+REJECTED_EVIDENCE_SHA256 = "0d55f259085bb4524f0a67d73a5996643224a8ecff6ea0c271b12fdf57a3e5eb"
 SOURCE_CANVAS = (1536, 1024)
 GROUND_PIVOT = [768, 896]
 SOUTH_SOCKET = [640, 832]
@@ -36,6 +39,15 @@ IDENTITIES = {
         "rawSha256": "7ca3e26234e7e15df9a46775a83f7132f89e1ea1f22d97c42ca6d3502099bbd2",
     }
 }
+BEHAVIORAL_COMMAND = [
+    str(BUNDLED_PYTHON),
+    "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibrate_pillow_reference.py",
+    "--identity",
+    "industrial_l01",
+    "--repeat",
+    "2",
+    "--isolated-roots",
+]
 
 
 def sha256(path: Path) -> str:
@@ -143,27 +155,33 @@ def main() -> int:
     raw_path = root / str(binding["raw"])
     if sha256(raw_path) != binding["rawSha256"]:
         raise SystemExit("FAIL: raw source hash mismatch")
+    canonical = root / "calibration/pillow-reference-v1" / args.identity / "source-rgba.png"
+    if not canonical.exists() or sha256(canonical) != ACCEPTED_FILE_SHA256:
+        raise SystemExit("FAIL: accepted calibration payload missing or changed")
+    with Image.open(canonical) as accepted:
+        accepted.load()
+        if accepted.mode != "RGBA" or accepted.size != SOURCE_CANVAS or decoded_sha256(accepted) != ACCEPTED_DECODED_SHA256:
+            raise SystemExit("FAIL: accepted calibration decoded payload changed")
+    rejected_evidence = repo_root / "docs/production/evidence/PLAY-099/coreimage-lanczos-rejected-attempt-v1.json"
+    if sha256(rejected_evidence) != REJECTED_EVIDENCE_SHA256:
+        raise SystemExit("FAIL: rejected CoreImage evidence changed")
 
     runs: list[dict[str, object]] = []
     for run_number in range(1, args.repeat + 1):
         with tempfile.TemporaryDirectory(prefix=f"play099-{args.identity}-run-{run_number}-") as temporary:
             output = Path(temporary) / args.identity / "source-rgba.png"
             result = normalize(raw_path, output)
+            if result["fileSha256"] != ACCEPTED_FILE_SHA256 or result["decodedSha256"] != ACCEPTED_DECODED_SHA256:
+                raise SystemExit("FAIL: exact-runtime replay changed the accepted output")
             result["run"] = run_number
             result["isolatedRoot"] = True
             runs.append(result)
-            if run_number == 1:
-                canonical = root / "calibration/pillow-reference-v1" / args.identity / "source-rgba.png"
-                canonical.parent.mkdir(parents=True, exist_ok=True)
-                if canonical.exists() and canonical.read_bytes() != output.read_bytes():
-                    raise SystemExit("FAIL: existing calibration payload differs")
-                if not canonical.exists():
-                    shutil.copyfile(output, canonical)
 
     if len({run["fileSha256"] for run in runs}) != 1 or len({run["decodedSha256"] for run in runs}) != 1:
         raise SystemExit("FAIL: isolated-root byte or decoded replay mismatch")
 
     runtime = {
+        "behavioralCommand": BEHAVIORAL_COMMAND,
         "invokedExecutable": str(invoked),
         "resolvedExecutable": str(invoked.resolve()),
         "executableSha256": sha256(invoked),
@@ -171,8 +189,9 @@ def main() -> int:
         "pillowVersion": PIL.__version__,
     }
     receipt = {
-        "schema": "PLAY-099-industrial-pillow-calibration-v1",
+        "schema": "PLAY-099-industrial-pillow-calibration-v2",
         "task": "PLAY-099",
+        "inputHead": INPUT_HEAD,
         "routeId": ROUTE_ID,
         "routeCanonicalSha256": ROUTE_SHA256,
         "calibrationIdentity": args.identity,
@@ -204,6 +223,13 @@ def main() -> int:
             "fileSha256": runs[0]["fileSha256"],
             "decodedSha256": runs[0]["decodedSha256"],
         },
+        "preservation": {
+            "acceptedPngSha256": ACCEPTED_FILE_SHA256,
+            "acceptedDecodedSha256": ACCEPTED_DECODED_SHA256,
+            "acceptedPayloadOverwritten": False,
+            "rejectedEvidencePath": "docs/production/evidence/PLAY-099/coreimage-lanczos-rejected-attempt-v1.json",
+            "rejectedEvidenceSha256": REJECTED_EVIDENCE_SHA256,
+        },
         "disposition": {
             "calibrationPassed": True,
             "sourceReady": False,
@@ -215,7 +241,34 @@ def main() -> int:
     }
     calibration_root = root / "calibration/pillow-reference-v1" / args.identity
     for run in runs:
-        write_stable_json(calibration_root / f"run-{run['run']}-receipt.json", run)
+        run_receipt = {
+            "schema": "PLAY-099-industrial-pillow-calibration-run-v2",
+            "routeId": ROUTE_ID,
+            "routeCanonicalSha256": ROUTE_SHA256,
+            "calibrationIdentity": args.identity,
+            "sourceLogicalId": binding["logicalId"],
+            "runtime": runtime,
+            "result": run,
+        }
+        write_stable_json(calibration_root / f"run-{run['run']}-receipt.json", run_receipt)
+    provenance = {
+        "schema": "PLAY-099-industrial-pillow-runtime-provenance-v2",
+        "task": "PLAY-099",
+        "routeId": ROUTE_ID,
+        "routeCanonicalSha256": ROUTE_SHA256,
+        "inputHead": INPUT_HEAD,
+        "calibrationIdentity": args.identity,
+        "sourceLogicalId": binding["logicalId"],
+        "runtime": runtime,
+        "rawSha256": binding["rawSha256"],
+        "acceptedFileSha256": ACCEPTED_FILE_SHA256,
+        "acceptedDecodedSha256": ACCEPTED_DECODED_SHA256,
+        "repeat": 2,
+        "isolatedRoots": True,
+        "imageGenCalled": False,
+        "batchExpanded": False,
+    }
+    write_stable_json(calibration_root / "runtime-provenance-v2.json", provenance)
     write_stable_json(repo_root / "docs/production/evidence/PLAY-099/pillow-reference-calibration-v1.json", receipt)
     print(json.dumps({
         "status": "PASS",

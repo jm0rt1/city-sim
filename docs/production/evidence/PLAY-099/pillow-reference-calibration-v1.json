@@ -15,7 +15,15 @@
     "format": "PNG RGBA",
     "optimize": false,
     "script": "calibrate_pillow_reference.py",
-    "scriptSha256": "156eee7946a517292eda0f92648f742dd79ceec7718837fc870839bcb1eaf12a"
+    "scriptSha256": "c1db7fed8d68ed88dd88f54e4979ee9205e79a04bb7027021f2025058dd5bd3e"
+  },
+  "inputHead": "f38646855354e9825473e5fd9f558c36d6b4a280",
+  "preservation": {
+    "acceptedDecodedSha256": "e7513c32699127353f851b1d249c624c9c8e17d859c914d5c8d38ffdf8339f15",
+    "acceptedPayloadOverwritten": false,
+    "acceptedPngSha256": "aa7df1b8a8d12fcd47cbf8299c93b57f00daec9b1a74f927dafe6fe7081527bb",
+    "rejectedEvidencePath": "docs/production/evidence/PLAY-099/coreimage-lanczos-rejected-attempt-v1.json",
+    "rejectedEvidenceSha256": "0d55f259085bb4524f0a67d73a5996643224a8ecff6ea0c271b12fdf57a3e5eb"
   },
   "raw": {
     "bytesPreserved": true,
@@ -63,8 +71,8 @@
     "isolatedRoots": true,
     "repeat": 2
   },
-  "routeCanonicalSha256": "b7b89fc1dd953a5ec992aa5580499cf99b212b4e3c24148661a60e1b17c8a423",
-  "routeId": "four-view-v4:play-099-industrial-pillow-calibration",
+  "routeCanonicalSha256": "bbf50b385d0851db8655465310c21225eaa52573520af70163f95978a3f19886",
+  "routeId": "four-view-v4:play-099-industrial-pillow-calibration-v2",
   "runs": [
     {
       "canvas": [
@@ -108,13 +116,22 @@
     }
   ],
   "runtime": {
+    "behavioralCommand": [
+      "/Users/James/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibrate_pillow_reference.py",
+      "--identity",
+      "industrial_l01",
+      "--repeat",
+      "2",
+      "--isolated-roots"
+    ],
     "executableSha256": "eb9d74b9c7cfdfb2c9b91614edb2c3607360ba46c5aa7fc4557b3a4a23e97cff",
     "invokedExecutable": "/Users/James/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
     "pillowVersion": "12.2.0",
     "pythonVersion": "3.12.13",
     "resolvedExecutable": "/Users/James/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3.12"
   },
-  "schema": "PLAY-099-industrial-pillow-calibration-v1",
+  "schema": "PLAY-099-industrial-pillow-calibration-v2",
   "sourceLogicalId": "industrial_l01_v00",
   "task": "PLAY-099"
 }

@@ -17,6 +17,12 @@ Prove what a fresh player can actually understand and accomplish. Quality eviden
 4. When a complete read is required, read `docs/production/CITYSIM_WORKTREE_OPERATING_SYSTEM.md`, this skill, the claimed `PLAY-*` task, its acceptance criteria, linked requirements, candidate completion record, and required conditional references completely.
 5. Confirm the exact candidate commit/build. Preserve unrelated work.
 
+For CONTRACT-025, the evidence contract must exercise all four world rotations
+at city, neighborhood, and block scales in regular and 900x600 layouts. Verify
+that the same building identity/variant persists while its authored view and
+frontage rotate, with zero mirrored/rotated fallback, overlap, clipping, or
+mixed-fidelity seams.
+
 ## Own verification, not the feature
 
 - Own critical journeys, golden cities, fixtures, harnesses, evidence, audits, and reproducible defect reports.

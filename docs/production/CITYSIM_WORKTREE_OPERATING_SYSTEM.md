@@ -52,11 +52,11 @@ Integration-issued claims.
 | Integration | `master` | Main repository checkout | Own accepted builds, allocation, integration, conflict resolution, release proof, and rollback |
 | Gameplay loop | `codex/citysim-gameplay-loop` | `/Users/James/.codex/worktrees/citysim/gameplay-loop` | Make decisions consequential and the session paced, legible, recoverable, and worth replaying |
 | World rendering | `codex/citysim-world-rendering` | `/Users/James/.codex/worktrees/citysim/world-rendering` | Make the city readable, alive, performant, and visually compelling |
-| World art — shared toolchain | Integration-provisioned `codex/citysim-world-art-*` | Integration-provisioned | Maintain the frozen single-angle ImageGen normalization and handoff harness without owning pixels or shipping activation |
-| World art — Residential | Integration-provisioned `codex/citysim-world-art-*` | Integration-provisioned | Produce the 12 Residential single-angle ImageGen identities |
-| World art — Commercial | Integration-provisioned `codex/citysim-world-art-*` | Integration-provisioned | Produce the 12 Commercial single-angle ImageGen identities |
-| World art — Industrial | Integration-provisioned `codex/citysim-world-art-*` | Integration-provisioned | Produce the 12 Industrial single-angle ImageGen identities |
-| World art — Civic/service | Integration-provisioned `codex/citysim-world-art-*` | Integration-provisioned | Produce the 7 Civic/service single-angle ImageGen identities |
+| World art — shared toolchain | Integration-provisioned `codex/citysim-world-art-*` | Integration-provisioned | Maintain the frozen authored-four-view ImageGen normalization and handoff harness without owning pixels or shipping activation |
+| World art — South anchors | Integration-provisioned `codex/citysim-world-art-*` | Integration-provisioned | Preserve and validate the 43 accepted CONTRACT-024 images as rotation-zero appearance anchors |
+| World art — North | Integration-provisioned `codex/citysim-world-art-north-*` | Integration-provisioned | Produce 43 authored North siblings from exact South references |
+| World art — East | Integration-provisioned `codex/citysim-world-art-east-*` | Integration-provisioned | Produce 43 authored East siblings from exact South references |
+| World art — West | Integration-provisioned `codex/citysim-world-art-west-*` | Integration-provisioned | Produce 43 authored West siblings from exact South references |
 | UI and input | `codex/citysim-ui-input` | `/Users/James/.codex/worktrees/citysim/ui-input` | Make every command discoverable, responsive, accessible, and keyboard-operable |
 | Simulation platform | `codex/citysim-simulation-platform` | `/Users/James/.codex/worktrees/citysim/simulation-platform` | Own deterministic state, persistence, performance, diagnostics, and system contracts |
 | Playtest quality | `codex/citysim-playtest-quality` | `/Users/James/.codex/worktrees/citysim/playtest-quality` | Prove or disprove playability with golden cities, journeys, visual evidence, balance findings, and regressions |
@@ -178,7 +178,7 @@ This lane is read-mostly against feature code. It should return product defects 
 
 Primary ownership:
 
-- single-angle ImageGen prompts, raw masters, provenance, rejection records,
+- authored four-view 2.5D ImageGen prompts, raw masters, provenance, rejection records,
   and source-art contact sheets for an Integration-approved asset family;
 - deterministic normalization inputs and source-level geometry reports;
 - family recognition, material quality, progression, literal-scale readability,
@@ -196,8 +196,8 @@ selection, package topology, gameplay/simulation/UI code, or shared manifests.
 Only Integration may approve a manifest contract; the renderer lead later
 reviews and ingests accepted source batches. A family-exclusive cell owns only
 its named source/evidence paths and may never alias another building identity.
-CONTRACT-024 building art has one canonical view and is never mirrored or
-rotated. Shared art contracts and normalization tools are read-only inputs
+CONTRACT-025 building art has four independently authored views and is never
+mirrored or raster-rotated at runtime. Shared art contracts and normalization tools are read-only inputs
 unless Integration assigns one explicit toolchain writer. No art cell may run
 concurrently as a second writer on the world-rendering worktree. Historical
 direction-exclusive DCC branches are preserved but inactive unless Integration

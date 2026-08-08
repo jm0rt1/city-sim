@@ -56,9 +56,10 @@ Before intake planning, quarantine, four-direction assembly, or a directional re
 [references/directional-art-intake.md](references/directional-art-intake.md)
 completely.
 
-CONTRACT-024 single-angle ImageGen intake is a non-directional renderer feature;
-use [ordinary renderer feature evidence](references/renderer-feature-evidence.md)
-and the exact Integration-published aggregate inventory instead.
+CONTRACT-025 is a directional renderer feature. Require exact North/East/South/
+West source-admission receipts per logical identity, resolve direction from
+world/camera rotation without runtime raster transforms, quarantine each 4/4
+identity, and activate only the exact 43/172/516 aggregate.
 
 ## Ordinary renderer feature evidence
 

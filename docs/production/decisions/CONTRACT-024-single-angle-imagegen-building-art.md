@@ -1,10 +1,15 @@
 # CONTRACT-024: Single-angle ImageGen building art
 
-**Status:** Approved replacement architecture
+**Status:** Superseded by CONTRACT-025
 
 **Owner:** Integration
 
 ## Decision
+
+> Historical decision only. On August 8, 2026 the user restored building
+> rotation while explicitly retaining the high-fidelity 2.5D ImageGen art
+> direction. CONTRACT-025 preserves the 43 generated canonical images as the
+> first authored orientation set and adds independent North/East/West views.
 
 CitySim building art will ship as fixed-camera 2.5D raster sprites produced by
 OpenAI built-in ImageGen. A building has one canonical view. Runtime code must

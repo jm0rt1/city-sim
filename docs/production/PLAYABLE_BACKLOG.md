@@ -1333,19 +1333,22 @@ This is the authoritative first-wave task source. The shared target is one coher
   need to hide the remaining defect in renderer decoration.
 - **Claim:** `docs/production/claims/PLAY-094.world-rendering.md`.
 
-> **Superseded:** CONTRACT-024 replaces PLAY-090 through PLAY-094 as the active
-> production path. Their unintegrated art evidence remains preserved; new work
-> uses the single-angle PLAY-096 through PLAY-102 wave below.
+> **Updated authority:** CONTRACT-025 preserves the high-quality 2.5D images
+> produced by the CONTRACT-024 wave as South/rotation-zero anchors and restores
+> four authored building views. No accepted raw is discarded; new work expands
+> the matrix through parallel North/East/West cells.
 
-### [ ] PLAY-096: Freeze the single-angle ImageGen production harness
+### [ ] PLAY-096: Freeze the authored four-view 2.5D production harness
 
-- **Player outcome:** Art workers can produce clean, registered 2.5D building
-  sprites quickly without Blender or directional duplication.
+- **Player outcome:** Art workers can produce clean, registered, visually
+  matched North/East/South/West 2.5D sprites quickly without Blender or runtime
+  transforms.
 - **Owning lane:** World Art shared toolchain.
-- **Dependencies:** CONTRACT-024 and CONTRACT-006.
-- **In scope:** Exact 43-ID inventory, prompt/provenance schema, deterministic
-  chroma normalization, registration, uniqueness checks, literal-scale sheets,
-  and family handoff validator under PLAY-096 roots.
+- **Dependencies:** CONTRACT-025 and CONTRACT-006.
+- **In scope:** Exact 43/172/516 inventory, direction-aware prompt/provenance
+  and family-handoff schemas, full-canvas chroma normalization, code-owned
+  pivot/scale, uniqueness checks, rotation contact sheets, and fresh-root
+  deterministic receipts under PLAY-096 roots.
 - **Out of scope:** Subjective art acceptance, building pixels, renderer
   activation, product code, push, integration, or final QA.
 - **Acceptance:** A retained accepted calibration source passes the real
@@ -1353,12 +1356,12 @@ This is the authoritative first-wave task source. The shared target is one coher
   reject alias, missing identity, chroma, alpha, padding, pivot, and orphan
   failures.
 
-### [ ] PLAY-097: Author twelve unique Residential building images
+### [ ] PLAY-097: Preserve twelve Residential South appearance anchors
 
 - **Player outcome:** Residential growth visibly evolves through four levels
   and three distinct architectural identities per level.
 - **Owning lane:** World Art — Residential.
-- **Dependencies:** CONTRACT-024; PLAY-096 schema/normalizer for final handoff.
+- **Dependencies:** CONTRACT-025; PLAY-096 schema/normalizer for final handoff.
 - **In scope:** Twelve distinct built-in ImageGen calls, raw masters, prompts,
   provenance, candidate dispositions, normalized LODs, contact sheets, and
   PLAY-097 evidence.
@@ -1367,50 +1370,50 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Acceptance:** Exact 12/12 unique identity matrix passes family validation
   and frontier visual review at literal game scale.
 
-### [ ] PLAY-098: Author twelve unique Commercial building images
+### [ ] PLAY-098: Preserve twelve Commercial South appearance anchors
 
 - **Player outcome:** Shops and offices become visually legible, varied, and
   progressively more impressive from level one through four.
 - **Owning lane:** World Art — Commercial.
-- **Dependencies/scope/acceptance:** Commercial-exclusive equivalent of
-  PLAY-097 under CONTRACT-024 and PLAY-098 roots.
+- **Dependencies/scope/acceptance:** Commercial South-anchor equivalent of
+  PLAY-097 under CONTRACT-025 and PLAY-098 roots.
 
-### [ ] PLAY-099: Author twelve unique Industrial building images
+### [ ] PLAY-099: Preserve twelve Industrial South appearance anchors
 
 - **Player outcome:** Industry gains readable functional silhouettes, material
   richness, and believable progression without the failed Blender look.
 - **Owning lane:** World Art — Industrial.
-- **Dependencies/scope/acceptance:** Industrial-exclusive equivalent of
-  PLAY-097 under CONTRACT-024 and PLAY-099 roots.
+- **Dependencies/scope/acceptance:** Industrial South-anchor equivalent of
+  PLAY-097 under CONTRACT-025 and PLAY-099 roots.
 
-### [ ] PLAY-100: Author seven unique Civic and service building images
+### [ ] PLAY-100: Preserve seven Civic and service South appearance anchors
 
 - **Player outcome:** Every park, utility, emergency, education, and government
   building has unmistakable purpose and authored visual identity.
 - **Owning lane:** World Art — Civic/service.
-- **Dependencies:** CONTRACT-024; PLAY-096 schema/normalizer for final handoff.
+- **Dependencies:** CONTRACT-025; PLAY-096 schema/normalizer for final handoff.
 - **In scope:** Park, power plant, water tower, fire station, police station,
   school, and city hall built-in ImageGen masters and complete source evidence.
 - **Acceptance:** Exact 7/7 unique assets pass family validation and frontier
   visual review at literal game scale.
 
-### [ ] PLAY-101: Ship the single-angle 43-building art pack
+### [ ] PLAY-101: Ship the authored four-view 43-building art pack
 
 - **Player outcome:** The real city renders the new coherent art everywhere,
   with stable adjacent-lot variety and no overlap, clipping, fallback, or
   directional seams.
 - **Owning lane:** World rendering.
-- **Dependencies:** CONTRACT-024 and Integration-admitted PLAY-097 through
-  PLAY-100 packets.
-- **In scope:** Non-shipping intake preparation, exact 43/129 validation,
-  direction-free logical identities, deterministic variant selection, atlas
-  packing, runtime presentation, focused tests, staged evidence, and rollback.
+- **Dependencies:** CONTRACT-025, Integration-admitted PLAY-097 through
+  PLAY-100 South packets, and accepted PLAY-103 through PLAY-105 siblings.
+- **In scope:** Non-shipping intake preparation, exact 43/172/516 validation,
+  deterministic direction and variant selection, atlas packing, four-rotation
+  runtime presentation, focused tests, staged evidence, and rollback.
 - **Out of scope:** Source-art repair, partial family activation, gameplay/UI/
   simulation/save changes, final QA, push, integration, or self-acceptance.
 - **Acceptance:** One exact aggregate passes resource, determinism, interaction,
   three-LOD, memory/performance, full-suite, and staged-build gates.
 
-### [ ] PLAY-102: Gate the single-angle art release in the real app
+### [ ] PLAY-102: Gate the rotating 2.5D art release in the real app
 
 - **Player outcome:** A fresh player sees a materially more beautiful,
   coherent, readable, and user-friendly city—not merely a greener test suite.
@@ -1418,5 +1421,28 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Dependencies:** Exact PLAY-101 staged candidate.
 - **In scope:** Candidate-neutral fixture/camera/rubric preparation, then one
   independent frontier real-app journey at regular and compact layouts.
-- **Acceptance:** APPROVE only when unique identity, fidelity, scale, overlap,
-  clipping, mixed-fidelity seams, interaction, and city readability pass.
+- **Acceptance:** APPROVE only when all four rotations preserve unique identity,
+  fidelity, frontage, scale, overlap/clipping, interaction, and city readability.
+
+### [ ] PLAY-103: Author the North 2.5D sibling set
+
+- **Player outcome:** Every building rotates north while remaining recognizably
+  the same richly detailed building.
+- **Owning lane:** World Art — North ImageGen cell.
+- **Dependencies:** CONTRACT-025 and Integration-admitted South anchors.
+- **In scope:** 43 independent North ImageGen edits/calls, raw masters,
+  provenance, focused mechanical gates, and North handoff packets.
+- **Out of scope:** South repair, East/West pixels, shared harness, renderer,
+  production selection, final QA, push, or integration.
+- **Acceptance:** Exact 43/43 North views match South identity and pass frontier
+  direction/appearance review plus deterministic source gates.
+
+### [ ] PLAY-104: Author the East 2.5D sibling set
+
+- **Player outcome/dependencies/scope/acceptance:** East-exclusive equivalent of
+  PLAY-103 under a disjoint claim and worktree.
+
+### [ ] PLAY-105: Author the West 2.5D sibling set
+
+- **Player outcome/dependencies/scope/acceptance:** West-exclusive equivalent of
+  PLAY-103 under a disjoint claim and worktree.

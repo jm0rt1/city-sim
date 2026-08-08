@@ -77,8 +77,9 @@ independent frontier acceptance packet.
 For every directional family, dispatch, state transition, candidate return, or
 directional parallelism checkpoint, read
 [references/directional-art-parallelism.md](references/directional-art-parallelism.md)
-completely. Do not apply its four-direction state machine to a single-angle
-CONTRACT-024 batch. That reference preserves the six-row state machine, executable
+completely. Apply its four-direction ownership, failure-isolation, 4/4 join,
+renderer, and QA rules to CONTRACT-025, while treating Blender/DCC launch
+controls as historical and inapplicable to built-in ImageGen. The reference preserves the six-row state machine, executable
 schedule and closure gates, ledger/receipt projection, direction-local failure
 isolation, compute-envelope rules, and same-turn refill requirements.
 

@@ -1,0 +1,169 @@
+{
+  "schema": 2,
+  "routeId": "four-view-v9:play-099-industrial-south-batch-metadata-repair",
+  "taskId": "PLAY-099",
+  "packetKind": "mechanical",
+  "classification": "LUNA_MECHANICAL",
+  "model": "gpt-5.6-luna",
+  "effort": "medium",
+  "rationale": "Repair only the three independent-review metadata bindings on the clean Industrial South candidate: input head, readiness tuple, and explicit route/base/claim fields. Preserve all source/LOD PNG bytes and rerun the frozen bundled-Python/Pillow deterministic proof.",
+  "authority": {
+    "authorityCommit": "b4ff93aaa48f70dae8a3df2c50876d2c36537886",
+    "baseCommit": "b4ff93aaa48f70dae8a3df2c50876d2c36537886",
+    "claim": {
+      "path": "docs/production/claims/PLAY-099.world-art-industrial.md",
+      "sha256": "d5a42e16f9e7d5a4dc0a9667e797022651737535b190fb7917650504a28f108b"
+    },
+    "immutableInputs": [
+      {
+        "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+        "sha256": "1eb7170b81e11753e7c9173298c6d45c02d5a2ade6df0ef8b73bdcaf690a2acd"
+      },
+      {
+        "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+        "sha256": "9c62d401d8812d5345b6bd25d864a07010348883ca4941f4429854ebe4abc511"
+      },
+      {
+        "path": "docs/production/decisions/CONTRACT-026-registration-profiles-v1.json",
+        "sha256": "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8"
+      },
+      {
+        "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTE-PLAY-099-INDUSTRIAL-PILLOW-CALIBRATION-V2.json",
+        "sha256": "5e253a6e1fc22ae945c4afdc74be342a3144ad2bc2d8375e1ad2456a4a113901"
+      },
+      {
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibrate_pillow_reference.py",
+        "sha256": "c1db7fed8d68ed88dd88f54e4979ee9205e79a04bb7027021f2025058dd5bd3e"
+      },
+      {
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/inventory/PLAY-099-industrial-raw-inventory.json",
+        "sha256": "c962ca72b3122adfa36696b58d77ab3e6c30ba91d010256531fe4c4bcad2525f"
+      },
+      {
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/provenance/PLAY-099-industrial-raw-provenance.json",
+        "sha256": "1a4fb793edf4b5efa612c73d2e394fc6c8d1e779b36da085b5eb4bd4d19b7b26"
+      }
+    ]
+  },
+  "assignment": {
+    "threadId": "019fe1b1-3bc4-7b40-a107-22b119cb0a61",
+    "branch": "codex/citysim-world-art-industrial",
+    "worktree": "/Users/James/.codex/worktrees/6799/city-sim",
+    "expectedHead": "f4ec912bd8bcbbdd7d3651aba27c6712919a6017",
+    "featureAuthorThreadId": "019fe1b1-3bc4-7b40-a107-22b119cb0a61",
+    "sharedAuthorityOwnership": false,
+    "finalQAOwnership": false,
+    "subjectiveJudgmentRequired": false
+  },
+  "pathPolicy": {
+    "claimOwnedRoots": [
+      "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial",
+      "docs/production/evidence/PLAY-099"
+    ],
+    "allowed": [
+      "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial",
+      "docs/production/evidence/PLAY-099"
+    ],
+    "forbidden": [
+      ".agents/skills",
+      "docs/production/claims",
+      "docs/production/decisions",
+      "docs/production/evidence/INTEGRATION",
+      "Native/CitySimNative/Sources",
+      "Native/CitySimNative/Resources",
+      "Native/CitySimNative/Package.swift",
+      "script/build_and_run.sh",
+      "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-103",
+      "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104",
+      "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105"
+    ]
+  },
+  "boundedDeliverable": "Repair only task-local batch metadata and receipts: bind inputHead to 6be72b5f2740273ad114ce96f0d74128dce6314e, add aggregate rendererQuarantined:false, and add explicit baseCommit b4ff93aaa48f70dae8a3df2c50876d2c36537886 plus claimSha256 d5a42e16f9e7d5a4dc0a9667e797022651737535b190fb7917650504a28f108b to every applicable receipt/provenance row. Preserve all 48 PNGs and rejected evidence; rerun the exact two-root deterministic proof. No ImageGen, directions, shared tools/contracts, renderer, production selection, integration, push, or self-acceptance.",
+  "proofPolicy": {
+    "architectureState": "frozen_reference",
+    "referenceImplementation": {
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibrate_pillow_reference.py",
+      "sha256": "c1db7fed8d68ed88dd88f54e4979ee9205e79a04bb7027021f2025058dd5bd3e"
+    },
+    "deliverableClaims": [
+      "static_structure",
+      "deterministic_output"
+    ],
+    "focusedProofLevel": "deterministic_replay",
+    "fullProofLevel": "deterministic_replay",
+    "behavioralCommands": [
+      "/Users/James/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibrate_pillow_reference.py --all-identities --repeat 2 --isolated-roots"
+    ],
+    "prohibitedSubstitutions": [
+      "source_token_presence_for_execution",
+      "ast_shape_for_runtime_success",
+      "manifest_or_prose_for_rendered_pixels",
+      "unit_tests_for_visual_acceptance",
+      "worker_self_report_for_independent_acceptance"
+    ]
+  },
+  "validation": {
+    "focusedGateOwner": {
+      "threadId": "019fe1b1-3bc4-7b40-a107-22b119cb0a61",
+      "role": "play-099-industrial-south-batch-focused"
+    },
+    "focusedCommands": [
+      "/Users/James/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibrate_pillow_reference.py --all-identities --repeat 2 --isolated-roots",
+      "git diff --check f4ec912bd8bcbbdd7d3651aba27c6712919a6017..HEAD"
+    ],
+    "fullGateOwner": {
+      "threadId": "019f7686-4491-7891-86a6-95a78ef0c775a",
+      "role": "integration-aggregate-full-gate",
+      "model": "gpt-5.6-sol",
+      "effort": "high"
+    },
+    "fullCommands": [
+      "swift test --package-path Native/CitySimNative",
+      "./script/build_and_run.sh --verify",
+      "fresh-player real-app aggregate journey"
+    ]
+  },
+  "expectedResult": {
+    "evidencePaths": [
+      "docs/production/evidence/PLAY-099"
+    ],
+    "commitRequired": true,
+    "commitMessagePattern": "PLAY-099:"
+  },
+  "escalationTriggers": [
+    "shared_contract_or_schema_decision",
+    "unresolved_product_visual_or_interaction_judgment",
+    "path_outside_claim",
+    "baseline_or_candidate_identity_mismatch",
+    "failure_outside_focused_scope",
+    "save_or_migration_uncertainty",
+    "cross_lane_semantic_conflict",
+    "two_unsuccessful_repair_attempts",
+    "subjective_acceptance_required"
+  ],
+  "stopCondition": "Stop after one metadata-only repair checkpoint and exact deterministic replay, or immediately on any PNG/hash drift, route/claim/base mismatch, two failed repairs, or a need to change the frozen encoder. Never regenerate pixels, author directions, integrate, push, select production, run final QA, or pin.",
+  "independentReviewer": {
+    "required": true,
+    "threadId": "019f7686-4491-7891-86a6-95a78ef0c775a",
+    "model": "gpt-5.6-sol",
+    "effort": "high"
+  },
+  "context": {
+    "mode": "full_authority_read",
+    "packet": null,
+    "verifiedHashes": [
+      {
+        "path": "docs/production/claims/PLAY-099.world-art-industrial.md",
+        "sha256": "d5a42e16f9e7d5a4dc0a9667e797022651737535b190fb7917650504a28f108b"
+      },
+      {
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibrate_pillow_reference.py",
+        "sha256": "c1db7fed8d68ed88dd88f54e4979ee9205e79a04bb7027021f2025058dd5bd3e"
+      },
+      {
+        "path": "docs/production/decisions/CONTRACT-026-registration-profiles-v1.json",
+        "sha256": "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8"
+      }
+    ]
+  }
+}

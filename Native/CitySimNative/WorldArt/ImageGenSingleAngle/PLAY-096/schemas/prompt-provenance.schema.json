@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PLAY-096 source prompt and provenance",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "task", "logical_id", "direction", "status", "prompt_text", "south_reference", "references", "reference_hashes", "tool", "cleanup_command", "gameplay_meaning", "raw_path", "raw_sha256", "record_path", "record_sha256", "prompt_complete", "references_complete", "reference_hashes_complete", "cleanup_complete", "gameplay_meaning_complete"],
+  "properties": {
+    "schema": {"const": 2}, "task": {"const": "PLAY-096"}, "logical_id": {"type": "string", "minLength": 1}, "direction": {"enum": ["north", "east", "south", "west"]}, "status": {"enum": ["not_generated", "source_candidate"]},
+    "prompt_text": {"type": "string"}, "south_reference": {"$ref": "#/$defs/binding"},
+    "references": {"type": "array", "items": {"$ref": "#/$defs/reference"}},
+    "reference_hashes": {"type": "array", "items": {"type": "string", "pattern": "^[0-9a-f]{64}$"}},
+    "tool": {"type": "object", "additionalProperties": false, "required": ["name", "model"], "properties": {"name": {"const": "OpenAI built-in ImageGen"}, "model": {"type": "string", "minLength": 1}}},
+    "cleanup_command": {"type": "string"}, "gameplay_meaning": {"type": "string"},
+    "raw_path": {"type": ["string", "null"]}, "raw_sha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"}, "record_path": {"type": ["string", "null"]}, "record_sha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"},
+    "prompt_complete": {"type": "boolean"}, "references_complete": {"type": "boolean"}, "reference_hashes_complete": {"type": "boolean"}, "cleanup_complete": {"type": "boolean"}, "gameplay_meaning_complete": {"type": "boolean"}
+  },
+  "$defs": {
+    "binding": {"type": "object", "additionalProperties": false, "required": ["path", "sha256"], "properties": {"path": {"type": ["string", "null"]}, "sha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"}}},
+    "reference": {"type": "object", "additionalProperties": false, "required": ["path", "role", "sha256"], "properties": {"path": {"type": "string", "minLength": 1}, "role": {"type": "string", "minLength": 1}, "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}}
+  }
+}

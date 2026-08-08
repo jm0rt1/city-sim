@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PLAY-096 CONTRACT-025 four-view inventory",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "task", "contract", "view_policy", "identity_count", "direction_count", "directions", "registration_profile", "identities", "direction_rows", "matrix_policy"],
+  "properties": {
+    "schema": {"const": 2},
+    "task": {"const": "PLAY-096"},
+    "contract": {"const": "CONTRACT-025"},
+    "view_policy": {"const": "four-authored-views"},
+    "identity_count": {"const": 43},
+    "direction_count": {"const": 172},
+    "directions": {"const": ["north", "east", "south", "west"]},
+    "registration_profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["contract", "path", "sha256"],
+      "properties": {
+        "contract": {"const": "CONTRACT-026"},
+        "path": {"const": "docs/production/decisions/CONTRACT-026-registration-profiles-v1.json"},
+        "sha256": {"const": "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8"}
+      }
+    },
+    "identities": {"type": "array", "minItems": 43, "maxItems": 43, "items": {"$ref": "#/$defs/identity"}},
+    "direction_rows": {"type": "array", "minItems": 172, "maxItems": 172, "items": {"$ref": "#/$defs/directionRow"}},
+    "matrix_policy": {"const": "43 logical identities x north/east/south/west = 172 direction rows"}
+  },
+  "$defs": {
+    "identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["logical_id", "family", "level", "variant", "kind"],
+      "properties": {
+        "logical_id": {"enum": ["residential_l01_v0", "residential_l01_v1", "residential_l01_v2", "residential_l02_v0", "residential_l02_v1", "residential_l02_v2", "residential_l03_v0", "residential_l03_v1", "residential_l03_v2", "residential_l04_v0", "residential_l04_v1", "residential_l04_v2", "commercial_l01_v0", "commercial_l01_v1", "commercial_l01_v2", "commercial_l02_v0", "commercial_l02_v1", "commercial_l02_v2", "commercial_l03_v0", "commercial_l03_v1", "commercial_l03_v2", "commercial_l04_v0", "commercial_l04_v1", "commercial_l04_v2", "industrial_l01_v0", "industrial_l01_v1", "industrial_l01_v2", "industrial_l02_v0", "industrial_l02_v1", "industrial_l02_v2", "industrial_l03_v0", "industrial_l03_v1", "industrial_l03_v2", "industrial_l04_v0", "industrial_l04_v1", "industrial_l04_v2", "civic_park_v0", "civic_power_plant_v0", "civic_water_tower_v0", "civic_fire_station_v0", "civic_police_station_v0", "civic_school_v0", "civic_city_hall_v0"]},
+        "family": {"enum": ["residential", "commercial", "industrial", "civic"]},
+        "level": {"type": "integer", "minimum": 1, "maximum": 4},
+        "variant": {"type": "integer", "minimum": 0, "maximum": 2},
+        "kind": {"type": "string", "minLength": 1}
+      }
+    },
+    "registration": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["registration_contract", "registration_profile_path", "registration_profile_sha256", "canvas_pixels", "ground_pivot", "footprint_world_points", "footprint_polygon_source", "frontage_sockets_source", "lod_profile", "coordinate_owner", "scale_source"],
+      "properties": {
+        "registration_contract": {"const": "CONTRACT-026"},
+        "registration_profile_path": {"const": "docs/production/decisions/CONTRACT-026-registration-profiles-v1.json"},
+        "registration_profile_sha256": {"const": "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8"},
+        "canvas_pixels": {"const": [1536, 1024]},
+        "ground_pivot": {"const": [768, 896]},
+        "footprint_world_points": {"const": [1, 1]},
+        "footprint_polygon_source": {"const": [[768, 640], [1024, 768], [768, 896], [512, 768]]},
+        "frontage_sockets_source": {"const": {"north": [896, 704], "east": [896, 832], "south": [640, 832], "west": [640, 704]}},
+        "lod_profile": {"const": {"block": {"canvas": [1024, 683], "filter": "lanczos", "rounding": "round-half-even"}, "neighborhood": {"canvas": [512, 342], "filter": "lanczos", "rounding": "round-half-even"}, "city": {"canvas": [256, 171], "filter": "lanczos", "rounding": "round-half-even"}}},
+        "coordinate_owner": {"const": "PLAY-096 code-owned registration table"},
+        "scale_source": {"const": "CONTRACT-026-full-canvas-registration"}
+      }
+    },
+    "directionRow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["logical_id", "direction", "identity_direction_key", "registration"],
+      "properties": {
+        "logical_id": {"type": "string"},
+        "direction": {"enum": ["north", "east", "south", "west"]},
+        "identity_direction_key": {"type": "string"},
+        "registration": {"$ref": "#/$defs/registration"}
+      }
+    }
+  }
+}

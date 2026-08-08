@@ -8,7 +8,7 @@
   "effort": "high",
   "rationale": "The accepted manifest packer and SpriteKit loader are frozen references. Luna can prepare a non-shipping direction-free 43/129 intake graph and focused deterministic tests without touching shipping Sources or Resources or deciding composition.",
   "authority": {
-    "authorityCommit": "63617a9561c62f95bfe27521b1ba4dd07a697991",
+    "authorityCommit": "004bd2dbcb88e57330425a833505d81ce00e9f90",
     "baseCommit": "690c46bc9019b641c023f264c46bf8aadb506619",
     "claim": {
       "path": "docs/production/claims/PLAY-101.world-rendering-single-angle.md",
@@ -37,7 +37,7 @@
     "threadId": "019fe1b1-71b8-7aa2-b13d-04d10cffb3d9",
     "branch": "codex/citysim-world-rendering-single-angle",
     "worktree": "/Users/James/.codex/worktrees/ccf8/city-sim",
-    "expectedHead": "63617a9561c62f95bfe27521b1ba4dd07a697991",
+    "expectedHead": "004bd2dbcb88e57330425a833505d81ce00e9f90",
     "featureAuthorThreadId": "019fe1b1-71b8-7aa2-b13d-04d10cffb3d9",
     "sharedAuthorityOwnership": false,
     "finalQAOwnership": false,
@@ -95,7 +95,7 @@
     "focusedCommands": [
       "swift test --package-path Native/CitySimNative --filter SingleAngleWorldArtTests",
       "swift test --package-path Native/CitySimNative --filter SingleAngleWorldArtTests",
-      "git diff --check 63617a9561c62f95bfe27521b1ba4dd07a697991..HEAD"
+      "git diff --check 004bd2dbcb88e57330425a833505d81ce00e9f90..HEAD"
     ],
     "fullGateOwner": {
       "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",

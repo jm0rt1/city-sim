@@ -8,7 +8,7 @@
   "effort": "high",
   "rationale": "CONTRACT-024 freezes one canonical 2.5D ImageGen camera, references, registration and civic inventory. Luna can make one built-in ImageGen call per identity and assemble objective source evidence while frontier Integration retains every subjective disposition.",
   "authority": {
-    "authorityCommit": "63617a9561c62f95bfe27521b1ba4dd07a697991",
+    "authorityCommit": "004bd2dbcb88e57330425a833505d81ce00e9f90",
     "baseCommit": "690c46bc9019b641c023f264c46bf8aadb506619",
     "claim": {
       "path": "docs/production/claims/PLAY-100.world-art-civic.md",
@@ -41,7 +41,7 @@
     "threadId": "019fe1b1-3bc4-7b40-a107-22d8d1d6eabb",
     "branch": "codex/citysim-world-art-civic",
     "worktree": "/Users/James/.codex/worktrees/c96d/city-sim",
-    "expectedHead": "63617a9561c62f95bfe27521b1ba4dd07a697991",
+    "expectedHead": "004bd2dbcb88e57330425a833505d81ce00e9f90",
     "featureAuthorThreadId": "019fe1b1-3bc4-7b40-a107-22d8d1d6eabb",
     "sharedAuthorityOwnership": false,
     "finalQAOwnership": false,
@@ -97,7 +97,7 @@
     },
     "focusedCommands": [
       "python3 Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/validate_raw_candidates.py --family civic",
-      "git diff --check 63617a9561c62f95bfe27521b1ba4dd07a697991..HEAD"
+      "git diff --check 004bd2dbcb88e57330425a833505d81ce00e9f90..HEAD"
     ],
     "fullGateOwner": {
       "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",

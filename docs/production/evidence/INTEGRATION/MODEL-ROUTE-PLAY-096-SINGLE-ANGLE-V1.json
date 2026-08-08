@@ -8,7 +8,7 @@
   "effort": "high",
   "rationale": "The accepted CONTRACT-006 calibration normalizer is a real executable reference. Luna can implement the bounded 43-ID inventory, normalizer, schemas, validators and deterministic replay without deciding style, acceptance, shipping, or shared authority.",
   "authority": {
-    "authorityCommit": "63617a9561c62f95bfe27521b1ba4dd07a697991",
+    "authorityCommit": "004bd2dbcb88e57330425a833505d81ce00e9f90",
     "baseCommit": "690c46bc9019b641c023f264c46bf8aadb506619",
     "claim": {
       "path": "docs/production/claims/PLAY-096.world-art-pipeline.md",
@@ -41,7 +41,7 @@
     "threadId": "019fe1b1-3bc4-7b40-a107-230a22f3935d",
     "branch": "codex/citysim-world-art-pipeline",
     "worktree": "/Users/James/.codex/worktrees/0f2d/city-sim",
-    "expectedHead": "63617a9561c62f95bfe27521b1ba4dd07a697991",
+    "expectedHead": "004bd2dbcb88e57330425a833505d81ce00e9f90",
     "featureAuthorThreadId": "019fe1b1-3bc4-7b40-a107-230a22f3935d",
     "sharedAuthorityOwnership": false,
     "finalQAOwnership": false,
@@ -99,7 +99,7 @@
     "focusedCommands": [
       "python3 Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-096/test_single_angle_pipeline.py",
       "python3 Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-096/validate_single_angle_harness.py --repeat 2",
-      "git diff --check 63617a9561c62f95bfe27521b1ba4dd07a697991..HEAD"
+      "git diff --check 004bd2dbcb88e57330425a833505d81ce00e9f90..HEAD"
     ],
     "fullGateOwner": {
       "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",

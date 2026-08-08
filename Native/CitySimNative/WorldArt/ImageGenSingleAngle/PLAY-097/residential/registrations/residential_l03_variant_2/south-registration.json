@@ -1,0 +1,125 @@
+{
+  "schema": 1,
+  "taskId": "PLAY-097",
+  "routeId": "four-view-v5:play-097-south-admission-ready-repair",
+  "routeSha256": "ccc9339b8a099b3dbde55febe345e77cf2be2e03ef2ef5c2954ee75968cd8d52",
+  "authorityCommit": "65825389d586a128ddf6feb5356c33661ba9a8e8",
+  "baseCommit": "a61ab80101f596f56ffc1dd7e37b32bd1b220357",
+  "claimSha256": "816acffd9e8cb7cc76ad068b7c6b6ff9fed4015b1646c37ac68c148714901126",
+  "contract": "CONTRACT-026",
+  "contractSha256": "4781de72429a1f691b9226f7f7668b170b278a4ccd171ac4ea02f5e1df9176eb",
+  "profileSha256": "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8",
+  "identity": "residential_l03_variant_2",
+  "family": "residential",
+  "direction": "south",
+  "sourceRevision": "source-v01",
+  "raw": {
+    "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-097/residential/raw/residential_l03_variant_2/source-v01.png",
+    "sha256": "c663f1ab3b916fda055459db764c7d573f06de53e2ab328ea9fce7947b97c16b",
+    "bytes": 2071974,
+    "dimensions": [
+      1536,
+      1024
+    ],
+    "mode": "RGB",
+    "cornerRGB": [
+      [
+        238,
+        11,
+        235
+      ],
+      [
+        243,
+        16,
+        236
+      ],
+      [
+        233,
+        33,
+        230
+      ],
+      [
+        239,
+        27,
+        233
+      ]
+    ]
+  },
+  "promptPath": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-097/residential/prompts/residential_l03_variant_2/source-v01.md",
+  "provenancePath": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-097/residential/provenance/residential_l03_variant_2/source-v01.json",
+  "southReference": {
+    "kind": "preserved_south_anchor",
+    "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-097/residential/raw/residential_l03_variant_2/source-v01.png",
+    "sha256": "c663f1ab3b916fda055459db764c7d573f06de53e2ab328ea9fce7947b97c16b"
+  },
+  "registration": {
+    "sourceCanvas": [
+      1536,
+      1024
+    ],
+    "groundPivotSource": [
+      768,
+      896
+    ],
+    "footprintPolygonSource": [
+      [
+        768,
+        640
+      ],
+      [
+        1024,
+        768
+      ],
+      [
+        768,
+        896
+      ],
+      [
+        512,
+        768
+      ]
+    ],
+    "frontageSocketSource": [
+      640,
+      832
+    ]
+  },
+  "lods": {
+    "block": {
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-097/residential/normalized/residential_l03_variant_2/block/source-v03.png",
+      "sha256": "9133246c9620696fc7f2c33efdc168c97112aaa7d0f37aa92020fd8f36e64905",
+      "bytes": 647989,
+      "dimensions": [
+        1024,
+        683
+      ],
+      "mode": "RGBA"
+    },
+    "neighborhood": {
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-097/residential/normalized/residential_l03_variant_2/neighborhood/source-v03.png",
+      "sha256": "8cdac90e08e85d7910a2609b46278bb6063c8e936825b5551ab4aaf41177aed4",
+      "bytes": 169801,
+      "dimensions": [
+        512,
+        342
+      ],
+      "mode": "RGBA"
+    },
+    "city": {
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-097/residential/normalized/residential_l03_variant_2/city/source-v03.png",
+      "sha256": "4428f79764ea82f3c71ea1ac0d281f5de3a3c83ca6dcfbf8b3e9e6d5b76ea4e5",
+      "bytes": 44926,
+      "dimensions": [
+        256,
+        171
+      ],
+      "mode": "RGBA"
+    }
+  },
+  "candidateReadyForIndependentReview": true,
+  "sourceReady": false,
+  "integrationAdmitted": false,
+  "rendererQuarantined": false,
+  "productionSelected": false,
+  "recordSha256": "8812eddd761c4f731da59d6b49af123b5f3245bb696fbcab6518b408084d4016"
+}

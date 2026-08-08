@@ -1,0 +1,84 @@
+{
+  "schema": 1,
+  "taskId": "PLAY-097",
+  "routeId": "four-view-v3:play-097-south-admission",
+  "routeSha256": "f0d5a4764dafedd189d017a144605bfe264fc7167777eff7be4e71aee7efbe56",
+  "identity": "residential_l02_variant_1",
+  "family": "residential",
+  "direction": "south",
+  "lod": "block",
+  "rawPath": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-097/residential/raw/residential_l02_variant_1/source-v01.png",
+  "rawSha256": "e7b97d6ac595ebec80da2ecb7d748e71a2149c40a66c5029d03f60d11528f31b",
+  "normalized": {
+    "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-097/residential/normalized/residential_l02_variant_1/block/source-v03.png",
+    "sha256": "ddd656d55f600855ff847aa70ecf3ee46448148cc1c36bd85657b91c0153a444",
+    "bytes": 633653,
+    "dimensions": [
+      1024,
+      683
+    ],
+    "mode": "RGBA"
+  },
+  "registration": {
+    "canvas": [
+      1024,
+      683
+    ],
+    "groundPivotSource": [
+      768,
+      896
+    ],
+    "groundPivotLod": [
+      512,
+      598
+    ],
+    "footprintPolygonSource": [
+      [
+        768,
+        640
+      ],
+      [
+        1024,
+        768
+      ],
+      [
+        768,
+        896
+      ],
+      [
+        512,
+        768
+      ]
+    ],
+    "footprintPolygonLod": [
+      [
+        512,
+        427
+      ],
+      [
+        683,
+        512
+      ],
+      [
+        512,
+        598
+      ],
+      [
+        341,
+        512
+      ]
+    ],
+    "frontageSocketSource": [
+      640,
+      832
+    ],
+    "frontageSocketLod": [
+      427,
+      555
+    ],
+    "coordinateRule": "exact rational source coordinate multiplied by destination dimension divided by source dimension, independently rounded half to even"
+  },
+  "filter": "lanczos",
+  "productionSelected": false,
+  "recordSha256": "9167c08fb1386de347d6efa96185e0f3a1fbda2e4d02e45696d110a6a29f7c69"
+}

@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "taskId": "PLAY-097",
+  "routeId": "single-angle-v1:play-097",
+  "routeSha256": "d692e5af5ecb558944e32c1739cee0946b5cdd369fec8ca7e903c8bc58789e12",
+  "authorityCommit": "004bd2dbcb88e57330425a833505d81ce00e9f90",
+  "baseCommit": "690c46bc9019b641c023f264c46bf8aadb506619",
+  "branch": "codex/citysim-world-art-residential",
+  "worktree": "/Users/James/.codex/worktrees/df86/city-sim",
+  "logicalId": "residential_l01_variant_1",
+  "family": "residential",
+  "level": 1,
+  "variant": 1,
+  "generatedAt": "2026-08-08",
+  "model": "gpt-5.6-luna",
+  "effort": "high",
+  "tool": "built-in image_gen",
+  "artifactPath": "/Users/James/.codex/generated_images/019fe1b1-3bc4-7b40-a107-2335917c1e49/exec-24414ab5-f6f2-4dbb-812c-92b66832d1ba.png",
+  "rawPath": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-097/residential/raw/residential_l01_variant_1/source-v01.png",
+  "rawSha256": "ef1dab1277f0c2dd6cd3a37a1e459e94c417b013fadda5f4f46b6b21187e3577",
+  "promptPath": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-097/residential/prompts/residential_l01_variant_1/source-v01.md",
+  "references": [
+    {
+      "path": "Native/CitySimNative/WorldArt/GateA/golden_district_imagegen_source-v2.png",
+      "sha256": "b227286bfe5ffe8cfc920d3faf8abe081f5cca8a498c215bfb8a840a448e7425"
+    },
+    {
+      "path": "Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/raw/calibration/residential_l01/source-v01.png",
+      "sha256": "e15a388c2a1a0a55488457211c23939f70eca255cbae733ee0f7b39b141c962e"
+    },
+    {
+      "path": "Native/CitySimNative/WorldArt/GeneratedV4/templates/registration-1x1.png",
+      "sha256": "6ad1db2e7b8f670718ff4a4eb8c183737b0dec859559a2eab6a25746b53cff67"
+    }
+  ],
+  "intendedGameplayMeaning": "Residential level 1, variant 1: a distinct authored building identity selected by family, level, and variant.",
+  "candidateDisposition": "returned_mechanical_pre_screen_nonflat_chroma_and_opaque",
+  "candidateAccepted": false,
+  "staleRouteArtifactExcluded": true,
+  "normalization": "blocked_pending_exact_PLAY-096_harness"
+}

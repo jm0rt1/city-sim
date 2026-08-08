@@ -1,0 +1,27 @@
+{
+  "schema": 1,
+  "taskId": "PLAY-105",
+  "stage": "predesign",
+  "direction": "west",
+  "identity": "commercial_l03_v1",
+  "family": "commercial",
+  "sourceMethod": "built-in-imagegen",
+  "southReference": {
+    "path": null,
+    "sha256": null,
+    "admissionReceiptPath": null,
+    "admissionReceiptSha256": null
+  },
+  "promptPath": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105/west/prompts/commercial_l03_v1/west-prompt.md",
+  "rawPath": null,
+  "rawSha256": null,
+  "pixelsProduced": false,
+  "normalization": "not_authorized",
+  "disposition": "blocked_missing_admitted_south_anchor",
+  "blockers": [
+    "south_raw_path_missing",
+    "south_raw_sha256_missing",
+    "south_admission_receipt_path_missing",
+    "south_admission_receipt_sha256_missing"
+  ]
+}

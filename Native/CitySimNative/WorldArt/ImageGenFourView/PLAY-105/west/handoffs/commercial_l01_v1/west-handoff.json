@@ -1,0 +1,29 @@
+{
+  "schema": 1,
+  "taskId": "PLAY-105",
+  "stage": "predesign",
+  "branch": "codex/citysim-world-art-west-imagegen",
+  "worktree": "/Users/James/.codex/worktrees/e6f2/city-sim",
+  "baseAuthority": "ae5ed01a9ef66ce233851557c810767b990cb037",
+  "identity": "commercial_l01_v1",
+  "family": "commercial",
+  "direction": "west",
+  "promptPath": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105/west/prompts/commercial_l01_v1/west-prompt.md",
+  "provenancePath": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105/west/provenance/commercial_l01_v1/west-provenance.json",
+  "southReference": {
+    "path": null,
+    "sha256": null,
+    "admissionReceiptPath": null,
+    "admissionReceiptSha256": null
+  },
+  "pixelsProduced": false,
+  "sourceReady": false,
+  "candidateReadyForIndependentReview": false,
+  "integrationAdmitted": false,
+  "rendererQuarantined": false,
+  "productionSelected": false,
+  "disposition": "predesign_blocked_pending_south_admission",
+  "blockers": [
+    "missing_exact_south_anchor_and_admission_hash_dependencies"
+  ]
+}

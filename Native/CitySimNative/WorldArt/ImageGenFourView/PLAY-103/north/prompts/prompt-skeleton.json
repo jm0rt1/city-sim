@@ -1,0 +1,24 @@
+{
+  "schema": "citysim.play-103.north-predesign.prompt-skeleton.v1",
+  "task": "PLAY-103",
+  "direction": "north",
+  "stage": "predesign",
+  "pixelProduction": "not_produced",
+  "sourceMethod": "built_in_ImageGen_only_after_anchor_admission",
+  "southReference": {
+    "required": true,
+    "path": null,
+    "sha256": null,
+    "admissionReceipt": null,
+    "status": "blocked_missing_exact_admitted_south_raw"
+  },
+  "promptTemplate": {
+    "identity": "<logical-building-id>",
+    "preserve": ["massing", "roofline", "materials", "windows", "props", "condition", "silhouette", "scale", "identity"],
+    "targetDirection": "north",
+    "frontage": "<governed_north_road_edge>",
+    "forbidden": ["mirror", "raster_rotate", "pixel_transform", "sibling_pixel_reuse", "south_repair"]
+  },
+  "attempts": [],
+  "knownBlocker": "Integration must publish exact South raw path/hash and admission receipt before any ImageGen call."
+}

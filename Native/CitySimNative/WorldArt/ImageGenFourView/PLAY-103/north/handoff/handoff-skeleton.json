@@ -1,0 +1,28 @@
+{
+  "schema": "citysim.play-103.north-predesign.handoff-skeleton.v1",
+  "task": "PLAY-103",
+  "branch": "codex/citysim-world-art-north-imagegen",
+  "baseAuthority": "ae5ed01a9ef66ce233851557c810767b990cb037",
+  "claimPath": "docs/production/claims/PLAY-103.world-art-north-imagegen.md",
+  "direction": "north",
+  "stage": "predesign",
+  "sourceRevision": null,
+  "pixelProduction": "not_produced",
+  "abc": {"A": "not_produced", "B": "not_produced", "C": "not_produced"},
+  "directionRootMap": {
+    "prompt": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-103/north/prompts",
+    "provenance": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-103/north/provenance",
+    "handoff": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-103/north/handoff",
+    "raw": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-103/north/raw",
+    "normalized": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-103/north/normalized",
+    "process": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-103/north/process",
+    "output": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-103/north/output",
+    "evidence": "docs/production/evidence/PLAY-103"
+  },
+  "southAnchorAdmission": "blocked_missing_exact_admitted_south_raw_and_receipt",
+  "disposition": "skeleton_only_not_ready",
+  "integrationAdmitted": false,
+  "rendererQuarantined": false,
+  "productionSelected": false,
+  "siblingInputsConsumed": []
+}

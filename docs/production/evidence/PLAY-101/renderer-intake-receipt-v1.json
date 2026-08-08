@@ -1,11 +1,16 @@
 {
   "schema": 2,
   "task": "PLAY-101",
-  "routeId": "four-view-v2:play-101-rotation-intake",
-  "routeSha256": "3807d7ac45f996c75fc092c1d120dc78f1f954888f290f30e4448aa50b1e9d69",
-  "authorityCommit": "a61ab80101f596f56ffc1dd7e37b32bd1b220357",
-  "baseCommit": "a61ab80101f596f56ffc1dd7e37b32bd1b220357",
-  "workerHead": "8ddb1e974950eeb7753490458f298ece4305eba5",
+  "routeId": "four-view-v6:play-101-current-master-intake-rebind-v5",
+  "routeSha256": "062fc37c10f7f7eceac534ad7c74c369d47dac8f2fe36a17134000c348ac3a40",
+  "authorityCommit": "1b7a26a3071d744060b1aeabf7b8bbd2f72f7f95",
+  "baseCommit": "1b7a26a3071d744060b1aeabf7b8bbd2f72f7f95",
+  "workerHead": "a655827b0663001bfaa1006c5d0bcf7fbfe214e9",
+  "contract027": {
+    "sha256": "693831b3d8fac49330ac21adce626b632351c7eeba901ebff6719687e5f330e7",
+    "authoredViewRule": "frontage.rotatedClockwise(rotationIndex)",
+    "runtimeSelectorImplemented": false
+  },
   "inventory": {
     "logicalBuildingIdentities": 43,
     "authoredSourceViews": 172,

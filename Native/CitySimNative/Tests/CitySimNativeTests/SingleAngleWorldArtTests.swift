@@ -83,14 +83,16 @@ final class SingleAngleWorldArtTests: XCTestCase {
     }
 
     private let expectedAuthorityCommit =
-        "a61ab80101f596f56ffc1dd7e37b32bd1b220357"
+        "1b7a26a3071d744060b1aeabf7b8bbd2f72f7f95"
     private let expectedBaseCommit =
-        "a61ab80101f596f56ffc1dd7e37b32bd1b220357"
+        "1b7a26a3071d744060b1aeabf7b8bbd2f72f7f95"
     private let expectedWorkerHead =
-        "8ddb1e974950eeb7753490458f298ece4305eba5"
-    private let expectedRouteID = "four-view-v2:play-101-rotation-intake"
+        "a655827b0663001bfaa1006c5d0bcf7fbfe214e9"
+    private let expectedRouteID = "four-view-v6:play-101-current-master-intake-rebind-v5"
     private let expectedRouteSHA256 =
-        "3807d7ac45f996c75fc092c1d120dc78f1f954888f290f30e4448aa50b1e9d69"
+        "062fc37c10f7f7eceac534ad7c74c369d47dac8f2fe36a17134000c348ac3a40"
+    private let expectedContract027SHA256 =
+        "693831b3d8fac49330ac21adce626b632351c7eeba901ebff6719687e5f330e7"
 
     func testExact43Identities172AuthoredViewsAnd516NormalizedLODs() throws {
         let graph = makeGraph()
@@ -145,6 +147,71 @@ final class SingleAngleWorldArtTests: XCTestCase {
             Set(selected.flatMap { $0.lods.map(\.normalizedSHA256) }).count,
             12
         )
+    }
+
+    func testContract027RotationPermutationSelectsExactAuthoredView() throws {
+        let graph = makeGraph()
+        let identity = LogicalIdentity(family: "residential", level: 2, variant: 1)
+        let expected: [Direction: [Direction]] = [
+            .north: [.north, .east, .south, .west],
+            .east: [.east, .south, .west, .north],
+            .south: [.south, .west, .north, .east],
+            .west: [.west, .north, .east, .south],
+        ]
+
+        for frontage in Direction.allCases {
+            for rotationIndex in 0...3 {
+                let view = try selectAuthoredView(
+                    graph,
+                    identity: identity,
+                    frontage: frontage,
+                    rotationIndex: rotationIndex
+                )
+                XCTAssertEqual(view.direction, expected[frontage]![rotationIndex])
+                XCTAssertEqual(view.identity, identity)
+                XCTAssertEqual(view.registration.canvasPixels, [1536, 1024])
+                XCTAssertEqual(view.registration.groundPivotSource, [768, 896])
+                XCTAssertEqual(view.lods.map(\.detail), Detail.allCases)
+                XCTAssertEqual(view.orientationTransform, "none")
+                XCTAssertNil(view.fallbackSourceKey)
+            }
+        }
+
+        XCTAssertEqual(
+            try selectAuthoredView(
+                graph,
+                identity: identity,
+                frontage: .south,
+                rotationIndex: -1
+            ).direction,
+            .east
+        )
+        XCTAssertEqual(
+            try selectAuthoredView(
+                graph,
+                identity: identity,
+                frontage: .west,
+                rotationIndex: 4
+            ).direction,
+            .west
+        )
+
+        let missingSouth = graph.filter {
+            !($0.identity == identity && $0.direction == .south)
+        }
+        XCTAssertThrowsError(
+            try selectAuthoredView(
+                missingSouth,
+                identity: identity,
+                frontage: .south,
+                rotationIndex: 0
+            )
+        ) {
+            XCTAssertEqual(
+                $0 as? ValidationError,
+                .selectionFailure("residential_l02_v1:south")
+            )
+        }
     }
 
     func testDeterministicAdjacentVariantSelectionUsesAllVariantsBeforeRepeat() {
@@ -290,6 +357,17 @@ final class SingleAngleWorldArtTests: XCTestCase {
         XCTAssertEqual(receipt["authorityCommit"] as? String, expectedAuthorityCommit)
         XCTAssertEqual(receipt["baseCommit"] as? String, expectedBaseCommit)
         XCTAssertEqual(receipt["workerHead"] as? String, expectedWorkerHead)
+
+        let contract027 = try XCTUnwrap(receipt["contract027"] as? [String: Any])
+        XCTAssertEqual(
+            contract027["sha256"] as? String,
+            expectedContract027SHA256
+        )
+        XCTAssertEqual(
+            contract027["authoredViewRule"] as? String,
+            "frontage.rotatedClockwise(rotationIndex)"
+        )
+        XCTAssertEqual(contract027["runtimeSelectorImplemented"] as? Bool, false)
 
         let inventory = try XCTUnwrap(receipt["inventory"] as? [String: Any])
         XCTAssertEqual(inventory["logicalBuildingIdentities"] as? Int, 43)
@@ -468,6 +546,21 @@ final class SingleAngleWorldArtTests: XCTestCase {
             )
         }
         return view
+    }
+
+    private func selectAuthoredView(
+        _ graph: [AuthoredView],
+        identity: LogicalIdentity,
+        frontage: Direction,
+        rotationIndex: Int
+    ) throws -> AuthoredView {
+        let normalizedRotation = ((rotationIndex % 4) + 4) % 4
+        let directions = Direction.allCases
+        guard let frontageIndex = directions.firstIndex(of: frontage) else {
+            throw ValidationError.selectionFailure("unknown-frontage")
+        }
+        let authoredView = directions[(frontageIndex + normalizedRotation) % 4]
+        return try selectView(graph, identity: identity, direction: authoredView)
     }
 
     private func selectVariants(_ lots: [Lot], seed: Int) -> [Int] {

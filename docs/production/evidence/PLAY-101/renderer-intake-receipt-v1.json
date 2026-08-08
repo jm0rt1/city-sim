@@ -1,15 +1,17 @@
 {
-  "schema": 1,
+  "schema": 2,
   "task": "PLAY-101",
-  "routeId": "single-angle-v1:play-101",
-  "routeSha256": "00669192181f4695deca0f86950fed0be27cf6aee14c6d9cc611a2efd77bdd70",
-  "authorityCommit": "004bd2dbcb88e57330425a833505d81ce00e9f90",
-  "baseCommit": "690c46bc9019b641c023f264c46bf8aadb506619",
-  "workerHead": "004bd2dbcb88e57330425a833505d81ce00e9f90",
+  "routeId": "four-view-v2:play-101-rotation-intake",
+  "routeSha256": "fbb0229fc9491621b1d3d605cc08f863ffd58da4039117e662063b4791955a57",
+  "authorityCommit": "a61ab80101f596f56ffc1dd7e37b32bd1b220357",
+  "baseCommit": "a61ab80101f596f56ffc1dd7e37b32bd1b220357",
+  "workerHead": "56bd4618d7381c13c2f8af7785f22df4bbb6ab17",
   "inventory": {
-    "logicalBuildingImages": 43,
-    "normalizedLODPayloads": 129,
-    "directionalIdentity": false
+    "logicalBuildingIdentities": 43,
+    "authoredSourceViews": 172,
+    "normalizedLODPayloads": 516,
+    "directions": ["north", "east", "south", "west"],
+    "directionPartOfLogicalIdentity": false
   },
   "registration": {
     "authoringCanvasPixels": [1536, 1024],
@@ -18,10 +20,12 @@
   },
   "quarantine": {
     "root": "docs/production/evidence/PLAY-101/quarantine",
+    "requiredDirectionsPerIdentity": 4,
+    "completeIdentities": 43,
     "productionSelected": false,
     "fallbackSourceKey": null,
     "orientationTransform": "none",
-    "activation": "integration-only-after-exact-43-129"
+    "activation": "integration-only-after-exact-43-172-516"
   },
   "focusedGate": "swift test --package-path Native/CitySimNative --filter SingleAngleWorldArtTests",
   "forbiddenPaths": [

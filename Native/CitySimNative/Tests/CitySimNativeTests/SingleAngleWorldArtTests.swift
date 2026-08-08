@@ -3,6 +3,13 @@ import Foundation
 import XCTest
 
 final class SingleAngleWorldArtTests: XCTestCase {
+    private enum Direction: String, CaseIterable, Hashable {
+        case north
+        case east
+        case south
+        case west
+    }
+
     private enum Detail: String, CaseIterable {
         case city
         case neighborhood
@@ -35,14 +42,19 @@ final class SingleAngleWorldArtTests: XCTestCase {
         let resourceBytes: Data
     }
 
-    private struct QuarantinedAsset: Equatable {
+    private struct AuthoredView: Equatable {
         let identity: LogicalIdentity
-        let rawSHA256: String
+        var direction: Direction
+        var rawSHA256: String
         var lods: [LOD]
         let registration: Registration
         var fallbackSourceKey: String?
         var orientationTransform: String
         var productionSelected: Bool
+
+        var viewKey: String {
+            "\(identity.value):\(direction.rawValue)"
+        }
     }
 
     private struct Lot: Equatable {
@@ -53,36 +65,43 @@ final class SingleAngleWorldArtTests: XCTestCase {
     }
 
     private enum ValidationError: Error, Equatable {
-        case wrongInventoryCount(Int)
+        case wrongSourceViewCount(Int)
         case duplicateLogicalIdentity(String)
-        case missingLogicalIdentity(String)
+        case wrongAuthoredViewCount(String, Int)
+        case missingDirections(String, [String])
+        case duplicateDirection(String, String)
+        case duplicateRawSource(String)
         case wrongLODCount(String, Int)
         case duplicateNormalizedPayload(String)
-        case rawAlias(String)
         case resourceDigestMismatch(String)
         case invalidRegistration(String)
         case transformed(String)
         case fallback(String)
         case productionSelected(String)
         case forbiddenPath(String)
+        case selectionFailure(String)
     }
 
     private let expectedAuthorityCommit =
-        "004bd2dbcb88e57330425a833505d81ce00e9f90"
+        "a61ab80101f596f56ffc1dd7e37b32bd1b220357"
     private let expectedBaseCommit =
-        "690c46bc9019b641c023f264c46bf8aadb506619"
-    private let expectedRouteID = "single-angle-v1:play-101"
+        "a61ab80101f596f56ffc1dd7e37b32bd1b220357"
+    private let expectedWorkerHead =
+        "56bd4618d7381c13c2f8af7785f22df4bbb6ab17"
+    private let expectedRouteID = "four-view-v2:play-101-rotation-intake"
     private let expectedRouteSHA256 =
-        "00669192181f4695deca0f86950fed0be27cf6aee14c6d9cc611a2efd77bdd70"
+        "fbb0229fc9491621b1d3d605cc08f863ffd58da4039117e662063b4791955a57"
 
-    func testExact43LogicalIdentitiesAnd129NormalizedLODs() throws {
+    func testExact43Identities172AuthoredViewsAnd516NormalizedLODs() throws {
         let graph = makeGraph()
+        let identities = Set(graph.map(\.identity))
 
-        XCTAssertEqual(graph.count, 43)
-        XCTAssertEqual(graph.flatMap(\.lods).count, 129)
+        XCTAssertEqual(identities.count, 43)
+        XCTAssertEqual(graph.count, 172)
+        XCTAssertEqual(graph.flatMap(\.lods).count, 516)
         XCTAssertNoThrow(try validate(graph))
 
-        let familyCounts = Dictionary(grouping: graph, by: { $0.identity.family })
+        let familyCounts = Dictionary(grouping: identities, by: { $0.family })
             .mapValues { $0.count }
         XCTAssertEqual(familyCounts["residential"], 12)
         XCTAssertEqual(familyCounts["commercial"], 12)
@@ -95,37 +114,37 @@ final class SingleAngleWorldArtTests: XCTestCase {
         XCTAssertEqual(familyCounts["school"], 1)
         XCTAssertEqual(familyCounts["city_hall"], 1)
 
-        let logicalIDs = Set(graph.map(\.identity.value))
-        XCTAssertEqual(logicalIDs.count, 43)
+        XCTAssertEqual(Set(graph.map(\.viewKey)).count, 172)
         XCTAssertEqual(
             Set(graph.flatMap { $0.lods.map(\.normalizedSHA256) }).count,
-            129
+            516
         )
     }
 
-    func testDirectionFreeIdentityRegistrationAndQuarantineInvariants() throws {
+    func testAuthoredDirectionSelectionPreservesIdentityAndVariant() throws {
         let graph = makeGraph()
-        let directionTokens = ["north", "east", "south", "west"]
+        let identity = LogicalIdentity(family: "residential", level: 2, variant: 1)
+        var selected: [AuthoredView] = []
 
-        for asset in graph {
-            XCTAssertFalse(
-                directionTokens.contains { asset.identity.value.contains($0) },
-                asset.identity.value
+        for direction in Direction.allCases {
+            let view = try selectView(
+                graph,
+                identity: identity,
+                direction: direction
             )
-            XCTAssertEqual(asset.registration.canvasPixels, [1536, 1024])
-            XCTAssertEqual(asset.registration.groundPivotSource, [768, 896])
-            XCTAssertEqual(asset.registration.orientationTransform, "none")
-            XCTAssertEqual(asset.orientationTransform, "none")
-            XCTAssertNil(asset.fallbackSourceKey)
-            XCTAssertFalse(asset.productionSelected)
-            XCTAssertTrue(
-                asset.lods.allSatisfy {
-                    $0.resourcePath.hasPrefix("docs/production/evidence/PLAY-101/")
-                }
-            )
+            selected.append(view)
+            XCTAssertEqual(view.identity, identity)
+            XCTAssertEqual(view.identity.value, "residential_l02_v1")
+            XCTAssertEqual(view.direction, direction)
+            XCTAssertFalse(view.identity.value.contains(direction.rawValue))
         }
 
-        XCTAssertNoThrow(try validate(graph))
+        XCTAssertEqual(Set(selected.map(\.direction)), Set(Direction.allCases))
+        XCTAssertEqual(Set(selected.map(\.rawSHA256)).count, 4)
+        XCTAssertEqual(
+            Set(selected.flatMap { $0.lods.map(\.normalizedSHA256) }).count,
+            12
+        )
     }
 
     func testDeterministicAdjacentVariantSelectionUsesAllVariantsBeforeRepeat() {
@@ -148,28 +167,55 @@ final class SingleAngleWorldArtTests: XCTestCase {
         XCTAssertEqual(Set(first[6..<9]), [0, 1, 2])
     }
 
-    func testAtomicActivationRejectsPartialAliasFallbackAndTransform() throws {
+    func testEveryIdentityRequiresAtomicFourOfFourAuthoredDirections() throws {
+        let graph = makeGraph()
+        let identity = graph[0].identity
+        let identityViews = graph.filter { $0.identity == identity }
+
+        XCTAssertEqual(identityViews.count, 4)
+        XCTAssertNoThrow(try admitIdentity(identityViews))
+
+        XCTAssertThrowsError(try admitIdentity(Array(identityViews.dropLast()))) {
+            XCTAssertEqual(
+                $0 as? ValidationError,
+                .wrongAuthoredViewCount(identity.value, 3)
+            )
+        }
+
+        var duplicateDirection = identityViews
+        duplicateDirection[3].direction = duplicateDirection[0].direction
+        XCTAssertThrowsError(try admitIdentity(duplicateDirection)) {
+            XCTAssertEqual(
+                $0 as? ValidationError,
+                .duplicateDirection(identity.value, "north")
+            )
+        }
+
+        XCTAssertEqual(try activate(graph).count, 172)
+    }
+
+    func testAtomicActivationRejectsAliasFallbackTransformAndSelection() throws {
         let graph = makeGraph()
 
         XCTAssertThrowsError(try activate(Array(graph.dropLast()))) {
-            XCTAssertEqual($0 as? ValidationError, .wrongInventoryCount(42))
+            XCTAssertEqual($0 as? ValidationError, .wrongSourceViewCount(171))
         }
 
-        var duplicate = graph
-        duplicate[1] = replacing(duplicate[1], identity: duplicate[0].identity)
-        XCTAssertThrowsError(try activate(duplicate)) {
+        var aliased = graph
+        aliased[1].rawSHA256 = aliased[0].rawSHA256
+        XCTAssertThrowsError(try activate(aliased)) {
             XCTAssertEqual(
                 $0 as? ValidationError,
-                .duplicateLogicalIdentity(duplicate[0].identity.value)
+                .duplicateRawSource(aliased[1].viewKey)
             )
         }
 
         var fallback = graph
-        fallback[0].fallbackSourceKey = "residential_l01_v1"
+        fallback[0].fallbackSourceKey = "\(fallback[0].identity.value):south"
         XCTAssertThrowsError(try activate(fallback)) {
             XCTAssertEqual(
                 $0 as? ValidationError,
-                .fallback(fallback[0].identity.value)
+                .fallback(fallback[0].viewKey)
             )
         }
 
@@ -178,7 +224,7 @@ final class SingleAngleWorldArtTests: XCTestCase {
         XCTAssertThrowsError(try activate(transformed)) {
             XCTAssertEqual(
                 $0 as? ValidationError,
-                .transformed(transformed[0].identity.value)
+                .transformed(transformed[0].viewKey)
             )
         }
 
@@ -187,14 +233,28 @@ final class SingleAngleWorldArtTests: XCTestCase {
         XCTAssertThrowsError(try activate(selected)) {
             XCTAssertEqual(
                 $0 as? ValidationError,
-                .productionSelected(selected[0].identity.value)
+                .productionSelected(selected[0].viewKey)
             )
         }
     }
 
-    func testQuarantineResourceIntegrityRejectsDecodedPayloadDrift() throws {
+    func testRegistrationAndResourceIntegrityRejectDecodedPayloadDrift() throws {
         let graph = makeGraph()
         XCTAssertNoThrow(try activate(graph))
+
+        for view in graph {
+            XCTAssertEqual(view.registration.canvasPixels, [1536, 1024])
+            XCTAssertEqual(view.registration.groundPivotSource, [768, 896])
+            XCTAssertEqual(view.registration.orientationTransform, "none")
+            XCTAssertEqual(view.orientationTransform, "none")
+            XCTAssertNil(view.fallbackSourceKey)
+            XCTAssertFalse(view.productionSelected)
+            XCTAssertTrue(
+                view.lods.allSatisfy {
+                    $0.resourcePath.hasPrefix("docs/production/evidence/PLAY-101/")
+                }
+            )
+        }
 
         var drifted = graph
         var driftedLODs = drifted[0].lods
@@ -209,13 +269,13 @@ final class SingleAngleWorldArtTests: XCTestCase {
             XCTAssertEqual(
                 $0 as? ValidationError,
                 .resourceDigestMismatch(
-                    "\(drifted[0].identity.value).\(drifted[0].lods[0].detail.rawValue)"
+                    "\(drifted[0].viewKey).\(drifted[0].lods[0].detail.rawValue)"
                 )
             )
         }
     }
 
-    func testCompactReceiptBindsRouteCandidateAndQuarantineOnlyDisposition() throws {
+    func testCompactReceiptBindsContract025AndFourViewQuarantine() throws {
         let receiptURL = repositoryRoot
             .appending(path: "docs/production/evidence/PLAY-101")
             .appending(path: "renderer-intake-receipt-v1.json")
@@ -223,29 +283,33 @@ final class SingleAngleWorldArtTests: XCTestCase {
         XCTAssertLessThan(data.count, 4096)
         let object = try XCTUnwrap(JSONSerialization.jsonObject(with: data))
         let receipt = try XCTUnwrap(object as? [String: Any])
-        XCTAssertEqual(receipt["schema"] as? Int, 1)
+        XCTAssertEqual(receipt["schema"] as? Int, 2)
         XCTAssertEqual(receipt["task"] as? String, "PLAY-101")
         XCTAssertEqual(receipt["routeId"] as? String, expectedRouteID)
         XCTAssertEqual(receipt["routeSha256"] as? String, expectedRouteSHA256)
         XCTAssertEqual(receipt["authorityCommit"] as? String, expectedAuthorityCommit)
         XCTAssertEqual(receipt["baseCommit"] as? String, expectedBaseCommit)
-        XCTAssertEqual(receipt["workerHead"] as? String, expectedAuthorityCommit)
+        XCTAssertEqual(receipt["workerHead"] as? String, expectedWorkerHead)
 
         let inventory = try XCTUnwrap(receipt["inventory"] as? [String: Any])
-        XCTAssertEqual(inventory["logicalBuildingImages"] as? Int, 43)
-        XCTAssertEqual(inventory["normalizedLODPayloads"] as? Int, 129)
+        XCTAssertEqual(inventory["logicalBuildingIdentities"] as? Int, 43)
+        XCTAssertEqual(inventory["authoredSourceViews"] as? Int, 172)
+        XCTAssertEqual(inventory["normalizedLODPayloads"] as? Int, 516)
+        XCTAssertEqual(
+            inventory["directions"] as? [String],
+            Direction.allCases.map(\.rawValue)
+        )
+        XCTAssertEqual(inventory["directionPartOfLogicalIdentity"] as? Bool, false)
 
         let quarantine = try XCTUnwrap(receipt["quarantine"] as? [String: Any])
+        XCTAssertEqual(quarantine["requiredDirectionsPerIdentity"] as? Int, 4)
+        XCTAssertEqual(quarantine["completeIdentities"] as? Int, 43)
         XCTAssertEqual(quarantine["productionSelected"] as? Bool, false)
         XCTAssertNil(quarantine["fallbackSourceKey"] as? String)
-        XCTAssertEqual(quarantine["orientationTransform"] as? String, "none")
-        XCTAssertEqual(
-            quarantine["activation"] as? String,
-            "integration-only-after-exact-43-129"
-        )
+        XCTAssertEqual(quarantine["activation"] as? String, "integration-only-after-exact-43-172-516")
     }
 
-    private func makeGraph() -> [QuarantinedAsset] {
+    private func makeGraph() -> [AuthoredView] {
         var identities: [LogicalIdentity] = []
         for family in ["residential", "commercial", "industrial"] {
             for level in 1...4 {
@@ -268,112 +332,142 @@ final class SingleAngleWorldArtTests: XCTestCase {
             identities.append(LogicalIdentity(family: family, level: nil, variant: 0))
         }
 
-        return identities.map { identity in
-            let rawSHA256 = sha256("raw:\(identity.value)")
-            let lods = Detail.allCases.map { detail in
-                let payload = Data("normalized:\(identity.value):\(detail.rawValue)".utf8)
-                return LOD(
-                    detail: detail,
-                    normalizedSHA256: sha256(payload),
-                    resourcePath: "docs/production/evidence/PLAY-101/quarantine/\(identity.value)/\(detail.rawValue).rgba8",
-                    resourceBytes: payload
+        return identities.flatMap { identity in
+            Direction.allCases.map { direction in
+                let viewKey = "\(identity.value):\(direction.rawValue)"
+                let rawSHA256 = sha256("raw:\(viewKey)")
+                let lods = Detail.allCases.map { detail in
+                    let payload = Data("normalized:\(viewKey):\(detail.rawValue)".utf8)
+                    return LOD(
+                        detail: detail,
+                        normalizedSHA256: sha256(payload),
+                        resourcePath: "docs/production/evidence/PLAY-101/quarantine/\(identity.value)/\(direction.rawValue)/\(detail.rawValue).rgba8",
+                        resourceBytes: payload
+                    )
+                }
+                return AuthoredView(
+                    identity: identity,
+                    direction: direction,
+                    rawSHA256: rawSHA256,
+                    lods: lods,
+                    registration: Registration(
+                        canvasPixels: [1536, 1024],
+                        groundPivotSource: [768, 896],
+                        orientationTransform: "none"
+                    ),
+                    fallbackSourceKey: nil,
+                    orientationTransform: "none",
+                    productionSelected: false
                 )
             }
-            return QuarantinedAsset(
-                identity: identity,
-                rawSHA256: rawSHA256,
-                lods: lods,
-                registration: Registration(
-                    canvasPixels: [1536, 1024],
-                    groundPivotSource: [768, 896],
-                    orientationTransform: "none"
-                ),
-                fallbackSourceKey: nil,
-                orientationTransform: "none",
-                productionSelected: false
-            )
         }
     }
 
-    private func validate(_ graph: [QuarantinedAsset]) throws {
-        guard graph.count == 43 else {
-            throw ValidationError.wrongInventoryCount(graph.count)
+    private func validate(_ graph: [AuthoredView]) throws {
+        guard graph.count == 172 else {
+            throw ValidationError.wrongSourceViewCount(graph.count)
         }
 
-        var identities = Set<LogicalIdentity>()
         var rawDigests = Set<String>()
         var normalizedDigests = Set<String>()
-        for asset in graph {
-            guard identities.insert(asset.identity).inserted else {
-                throw ValidationError.duplicateLogicalIdentity(asset.identity.value)
-            }
-            guard rawDigests.insert(asset.rawSHA256).inserted else {
-                throw ValidationError.rawAlias(asset.identity.value)
-            }
-            guard asset.lods.count == Detail.allCases.count else {
-                throw ValidationError.wrongLODCount(asset.identity.value, asset.lods.count)
-            }
-            guard asset.registration == Registration(
-                canvasPixels: [1536, 1024],
-                groundPivotSource: [768, 896],
-                orientationTransform: "none"
-            ) else {
-                throw ValidationError.invalidRegistration(asset.identity.value)
-            }
-            if asset.orientationTransform != "none" {
-                throw ValidationError.transformed(asset.identity.value)
-            }
-            if asset.fallbackSourceKey != nil {
-                throw ValidationError.fallback(asset.identity.value)
-            }
-            if asset.productionSelected {
-                throw ValidationError.productionSelected(asset.identity.value)
-            }
-            for lod in asset.lods {
-                guard normalizedDigests.insert(lod.normalizedSHA256).inserted else {
-                    throw ValidationError.duplicateNormalizedPayload(
-                        "\(asset.identity.value).\(lod.detail.rawValue)"
-                    )
-                }
-                guard sha256(lod.resourceBytes) == lod.normalizedSHA256 else {
-                    throw ValidationError.resourceDigestMismatch(
-                        "\(asset.identity.value).\(lod.detail.rawValue)"
-                    )
-                }
-                guard lod.resourcePath.hasPrefix(
-                    "docs/production/evidence/PLAY-101/"
-                ) else {
-                    throw ValidationError.forbiddenPath(lod.resourcePath)
-                }
-            }
+        let grouped = Dictionary(grouping: graph, by: \.identity)
+        guard grouped.count == 43 else {
+            throw ValidationError.duplicateLogicalIdentity("inventory")
         }
 
-        guard identities.count == 43 else {
-            throw ValidationError.wrongInventoryCount(identities.count)
+        for (identity, views) in grouped {
+            _ = try admitIdentity(views)
+            for view in views {
+                guard rawDigests.insert(view.rawSHA256).inserted else {
+                    throw ValidationError.duplicateRawSource(view.viewKey)
+                }
+                for lod in view.lods {
+                    guard normalizedDigests.insert(lod.normalizedSHA256).inserted else {
+                        throw ValidationError.duplicateNormalizedPayload(
+                            "\(view.viewKey).\(lod.detail.rawValue)"
+                        )
+                    }
+                    guard sha256(lod.resourceBytes) == lod.normalizedSHA256 else {
+                        throw ValidationError.resourceDigestMismatch(
+                            "\(view.viewKey).\(lod.detail.rawValue)"
+                        )
+                    }
+                    guard lod.resourcePath.hasPrefix(
+                        "docs/production/evidence/PLAY-101/"
+                    ) else {
+                        throw ValidationError.forbiddenPath(lod.resourcePath)
+                    }
+                }
+            }
+            XCTAssertEqual(views.map(\.identity), Array(repeating: identity, count: 4))
         }
-        guard normalizedDigests.count == 129 else {
+
+        guard normalizedDigests.count == 516 else {
             throw ValidationError.duplicateNormalizedPayload("inventory")
         }
     }
 
-    private func activate(_ graph: [QuarantinedAsset]) throws -> [QuarantinedAsset] {
-        try validate(graph)
-        return graph.sorted { $0.identity.value < $1.identity.value }
+    private func admitIdentity(_ views: [AuthoredView]) throws -> [AuthoredView] {
+        guard let identity = views.first?.identity else {
+            throw ValidationError.wrongAuthoredViewCount("unknown", 0)
+        }
+        guard views.count == 4 else {
+            throw ValidationError.wrongAuthoredViewCount(identity.value, views.count)
+        }
+
+        var directions = Set<Direction>()
+        for view in views {
+            guard directions.insert(view.direction).inserted else {
+                throw ValidationError.duplicateDirection(identity.value, view.direction.rawValue)
+            }
+            guard view.lods.count == 3 else {
+                throw ValidationError.wrongLODCount(view.viewKey, view.lods.count)
+            }
+            guard view.registration == Registration(
+                canvasPixels: [1536, 1024],
+                groundPivotSource: [768, 896],
+                orientationTransform: "none"
+            ) else {
+                throw ValidationError.invalidRegistration(view.viewKey)
+            }
+            if view.orientationTransform != "none" {
+                throw ValidationError.transformed(view.viewKey)
+            }
+            if view.fallbackSourceKey != nil {
+                throw ValidationError.fallback(view.viewKey)
+            }
+            if view.productionSelected {
+                throw ValidationError.productionSelected(view.viewKey)
+            }
+        }
+        let missing = Direction.allCases
+            .filter { !directions.contains($0) }
+            .map(\.rawValue)
+        guard missing.isEmpty else {
+            throw ValidationError.missingDirections(identity.value, missing)
+        }
+        return views.sorted { $0.direction.rawValue < $1.direction.rawValue }
     }
 
-    private func replacing(
-        _ asset: QuarantinedAsset,
-        identity: LogicalIdentity
-    ) -> QuarantinedAsset {
-        QuarantinedAsset(
-            identity: identity,
-            rawSHA256: asset.rawSHA256,
-            lods: asset.lods,
-            registration: asset.registration,
-            fallbackSourceKey: asset.fallbackSourceKey,
-            orientationTransform: asset.orientationTransform,
-            productionSelected: asset.productionSelected
-        )
+    private func activate(_ graph: [AuthoredView]) throws -> [AuthoredView] {
+        try validate(graph)
+        return graph.sorted { $0.viewKey < $1.viewKey }
+    }
+
+    private func selectView(
+        _ graph: [AuthoredView],
+        identity: LogicalIdentity,
+        direction: Direction
+    ) throws -> AuthoredView {
+        let matches = graph.filter {
+            $0.identity == identity && $0.direction == direction
+        }
+        guard matches.count == 1, let view = matches.first else {
+            throw ValidationError.selectionFailure(
+                "\(identity.value):\(direction.rawValue)"
+            )
+        }
+        return view
     }
 
     private func selectVariants(_ lots: [Lot], seed: Int) -> [Int] {

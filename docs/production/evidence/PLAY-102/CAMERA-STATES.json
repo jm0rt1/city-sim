@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "documentType": "PLAY-102_EXACT_CAMERA_STATE_SET",
+  "taskId": "PLAY-102",
+  "batchId": "single-angle-43-building-v1",
+  "fixtureId": "commercial-active-district-v3",
+  "status": "FROZEN_INPUTS_UNREHEARSED",
+  "sharedState": {
+    "rotationDegrees": 0,
+    "panAllowed": false,
+    "focusCity": false,
+    "overlay": "City",
+    "details": "closed",
+    "transientSurfaces": "closed",
+    "loadToast": "absent",
+    "selection": null,
+    "centerCoordinate": {
+      "x": 5,
+      "y": 8
+    },
+    "cameraCommand": {
+      "name": "configureProofCamera",
+      "detailInput": "one of city, neighborhood, block",
+      "centerInput": "GridCoordinate(x: 5, y: 8)"
+    }
+  },
+  "layouts": [
+    {
+      "id": "regular",
+      "windowPixels": [1280, 800],
+      "mapContentPixels": [1278, 768],
+      "capturePixels": [1278, 768],
+      "views": [
+        {
+          "id": "regular-city",
+          "detail": "city",
+          "lod": "city"
+        },
+        {
+          "id": "regular-neighborhood",
+          "detail": "neighborhood",
+          "lod": "neighborhood"
+        },
+        {
+          "id": "regular-block",
+          "detail": "block",
+          "lod": "block"
+        }
+      ]
+    },
+    {
+      "id": "compact-900x600",
+      "windowPixels": [900, 600],
+      "mapContentPixels": [900, 600],
+      "capturePixels": [900, 600],
+      "views": [
+        {
+          "id": "compact-city",
+          "detail": "city",
+          "lod": "city"
+        },
+        {
+          "id": "compact-neighborhood",
+          "detail": "neighborhood",
+          "lod": "neighborhood"
+        },
+        {
+          "id": "compact-block",
+          "detail": "block",
+          "lod": "block"
+        }
+      ]
+    }
+  ],
+  "captureOrder": [
+    "regular-city",
+    "regular-neighborhood",
+    "regular-block",
+    "compact-city",
+    "compact-neighborhood",
+    "compact-block"
+  ],
+  "cameraOutput": {
+    "positionAndScale": "derived by the proof-camera implementation during the permitted baseline or candidate rehearsal",
+    "recordingRequired": true,
+    "recordingPath": "docs/production/evidence/PLAY-102/measurements/camera-output.json",
+    "notFabricated": true
+  }
+}

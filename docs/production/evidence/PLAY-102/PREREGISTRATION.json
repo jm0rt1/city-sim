@@ -1,0 +1,141 @@
+{
+  "schemaVersion": 2,
+  "documentType": "PLAY-102_SINGLE_ANGLE_QA_PREREGISTRATION",
+  "taskId": "PLAY-102",
+  "packetKind": "candidate-neutral-preparation",
+  "status": "blocked",
+  "preparationStatus": "ready_for_integration_rehearsal",
+  "candidateNeutral": true,
+  "route": {
+    "routeId": "single-angle-v1:play-102",
+    "canonicalModelRouteSha256": "afe57d76706e57540108541b210c20b00191dc8c748e9b4da2d96bec99481320",
+    "classification": "LUNA_IMPLEMENTATION",
+    "model": "gpt-5.6-luna",
+    "effort": "high",
+    "dispatchPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTE-PLAY-102-SINGLE-ANGLE-V1.json"
+  },
+  "authority": {
+    "carrier": "95e8ccb4d4f5c067f1ab5721ebc60b077984107f",
+    "authorityCommit": "004bd2dbcb88e57330425a833505d81ce00e9f90",
+    "baseCommit": "690c46bc9019b641c023f264c46bf8aadb506619",
+    "expectedWorkerHead": "004bd2dbcb88e57330425a833505d81ce00e9f90",
+    "claimPath": "docs/production/claims/PLAY-102.playtest-single-angle.md",
+    "claimSha256": "3760e8efc519d919d5c73da9d6dc08da42d8d825f5303546baee5169a05ed92f"
+  },
+  "familyContract": {
+    "path": "docs/production/decisions/CONTRACT-024-single-angle-imagegen-building-art.md",
+    "sha256": "aee937eade534d2cefaa41a4f1f28665f702f592d3140b4108ca51432edd0f3f",
+    "logicalIdentityCount": 43,
+    "normalizedPayloadCount": 129,
+    "viewModel": "single canonical view; no directional identity"
+  },
+  "fixture": {
+    "id": "commercial-active-district-v3",
+    "version": "v3",
+    "definitionPath": "docs/production/evidence/PLAY-102/FIXTURE.json",
+    "definitionSha256": "96269e38ac5c44c54e90796f449d337a7bf4fd27478ff7afd1729d265cdeae0a",
+    "sourcePath": "Native/CitySimNative/Tests/CitySimNativeTests/Fixtures/VisibleCityStates/visible-city-commercial-active-district-v3.json",
+    "sourceSha256": "caa6e4deedca22c2c62f1d7664f862964258df7159f09a13d939688c5492a26b",
+    "stateHash": "6126cf6e941eb6ed98ff308992447a01a5869dd87120ebe40b92153e68b2cb8d",
+    "seed": 42,
+    "tick": 68,
+    "focusCoordinate": {
+      "x": 5,
+      "y": 8
+    },
+    "matureCityPlacement": "whole source city; neighborhood and block views use the immutable focus coordinate",
+    "candidateSpecificEdits": false
+  },
+  "camera": {
+    "statePath": "docs/production/evidence/PLAY-102/CAMERA-STATES.json",
+    "stateSha256": "780b3aeca22b12c3b65e5cbc79f201ad8e40919e3efdc5f3151db9cf3ebec969",
+    "layouts": [
+      "regular 1280x800 window / 1278x768 map capture",
+      "compact 900x600 window / 900x600 map capture"
+    ],
+    "views": ["city", "neighborhood", "block"],
+    "rotationDegrees": 0,
+    "panAllowed": false,
+    "centerCoordinate": [5, 8],
+    "overlay": "City",
+    "focusCity": false,
+    "details": "closed",
+    "selection": null,
+    "cameraOutput": "derived during the permitted Integration/frontier rehearsal; no runtime position or scale is fabricated"
+  },
+  "rubric": {
+    "path": "docs/production/evidence/PLAY-102/RUBRIC.json",
+    "sha256": "090c8c927af26d897edcdef27d46aa2668487e50a6a8adf95bb1ac343051e2ee",
+    "status": "frozen_unmeasured",
+    "mechanicalCriteria": [
+      "43 unique logical identities",
+      "129 explicit city/neighborhood/block payloads",
+      "zero forbidden transforms or aliases",
+      "zero camera-contract mismatches"
+    ],
+    "frontierCriteria": [
+      "fidelity and material quality",
+      "silhouette and literal scale",
+      "overlap, clipping, and mixed-fidelity seams",
+      "interaction and city readability",
+      "accessibility, input, and motion behavior"
+    ]
+  },
+  "scriptedMeasurementPlan": {
+    "path": "docs/production/evidence/PLAY-102/MEASUREMENT-PLAN.json",
+    "sha256": "b626e288fb93216f3da3ddf7202ae4206bbb4f0ead03b958bf2b49247e7cecf3",
+    "captureCount": 6,
+    "captureNames": [
+      "regular-city",
+      "regular-neighborhood",
+      "regular-block",
+      "compact-city",
+      "compact-neighborhood",
+      "compact-block"
+    ],
+    "observedValues": "UNMEASURED"
+  },
+  "defectPacket": {
+    "schemaPath": "docs/production/evidence/PLAY-102/DEFECT-PACKET-SCHEMA.json",
+    "schemaSha256": "f57c63a7b233f75a2f21b77aff632fd4902a85ccd568c4a53602526341daaa00",
+    "candidateBoundFieldsRemainNullUntilAdmission": true
+  },
+  "evidence": {
+    "root": "docs/production/evidence/PLAY-102",
+    "screenshotsRoot": "docs/production/evidence/PLAY-102/screenshots",
+    "measurementsRoot": "docs/production/evidence/PLAY-102/measurements",
+    "defectsRoot": "docs/production/evidence/PLAY-102/defects",
+    "rendererCandidateReceiptPath": "docs/production/evidence/PLAY-102/RENDERER-CANDIDATE-RECEIPT.json",
+    "rendererCandidateReceipt": null,
+    "candidateEvidenceCreated": false
+  },
+  "baselineRehearsal": {
+    "status": "BLOCKED",
+    "blocker": "This Luna route explicitly forbids app launch and the final real-app journey. Integration/frontier must exercise the frozen packet against the accepted baseline or exact admitted candidate.",
+    "doesNotInvalidatePreparation": true,
+    "doesNotAuthorizeCandidateAcceptance": true
+  },
+  "acceptanceBoundary": {
+    "workerDisposition": "preparation only; no APPROVE or RETURN",
+    "independentFinalGateOwner": "Integration/frontier",
+    "requiredFinalLayouts": ["regular", "900x600"],
+    "requiredFinalViews": ["city", "neighborhood", "block"]
+  },
+  "escalationTriggers": [
+    "shared_contract_or_schema_decision",
+    "unresolved_product_visual_or_interaction_judgment",
+    "path_outside_claim",
+    "baseline_or_candidate_identity_mismatch",
+    "failure_outside_focused_scope",
+    "save_or_migration_uncertainty",
+    "cross_lane_semantic_conflict",
+    "two_unsuccessful_repair_attempts",
+    "subjective_acceptance_required"
+  ],
+  "stopConditions": [
+    "candidate or renderer receipt becomes non-null before Integration admission",
+    "fixture, camera, authority, claim, route, or path identity drifts",
+    "app launch, aggregate gate, final scoring, or subjective judgment is requested",
+    "any write outside docs/production/evidence/PLAY-102 is required"
+  ]
+}

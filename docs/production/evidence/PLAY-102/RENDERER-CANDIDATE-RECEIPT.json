@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "documentType": "PLAY-102_RENDERER_CANDIDATE_RECEIPT",
+  "taskId": "PLAY-102",
+  "status": "NOT_ADMITTED",
+  "rendererCandidateReceipt": null,
+  "candidateCommit": null,
+  "resourceManifest": null,
+  "fixtureAdmission": null,
+  "reason": "PLAY-101 has not supplied an Integration-admitted exact renderer candidate. This null receipt is intentional and does not authorize app operation, scoring, or acceptance.",
+  "owner": "Integration",
+  "requiredBeforeFinalGate": true
+}

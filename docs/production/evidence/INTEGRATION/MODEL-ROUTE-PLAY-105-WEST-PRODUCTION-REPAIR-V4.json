@@ -1,0 +1,176 @@
+{
+  "schema": 2,
+  "routeId": "four-view-v12:play-105-west-production-repair-v4",
+  "taskId": "PLAY-105",
+  "packetKind": "implementation",
+  "classification": "LUNA_IMPLEMENTATION",
+  "model": "gpt-5.6-luna",
+  "effort": "high",
+  "rationale": "Repair the West candidate boundary under the frozen 2.5D contract: replace the one rejected residential source, produce the exact 43/129 candidate set, and bind portable schema-valid provenance and chroma/alpha/registration gates. Frontier retains visual and aggregate acceptance.",
+  "authority": {
+    "authorityCommit": "1b7a26a3071d744060b1aeabf7b8bbd2f72f7f95",
+    "baseCommit": "1b7a26a3071d744060b1aeabf7b8bbd2f72f7f95",
+    "claim": {
+      "path": "docs/production/claims/PLAY-105.world-art-west-imagegen.md",
+      "sha256": "1dd5c0ef337ba7736e2e0c4abb520ed7d73630f3bff5e0d8bd53d44399388137"
+    },
+    "immutableInputs": [
+      {
+        "path": "docs/production/decisions/CONTRACT-025-authored-four-view-2-5d-building-art.md",
+        "sha256": "4e8ab63173d67581332e7d27730b97315906fda4e29b999969456441809479ed"
+      },
+      {
+        "path": "docs/production/decisions/PLAY-106-RAW-SOUTH-ANCHOR-AUTHORITY.md",
+        "sha256": "1ed3486f526dc1ab3da352c85fce3920468375f8169529d933bbfc275b1c739d"
+      },
+      {
+        "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+        "sha256": "1eb7170b81e11753e7c9173298c6d45c02d5a2ade6df0ef8b73bdcaf690a2acd"
+      },
+      {
+        "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+        "sha256": "9c62d401d8812d5345b6bd25d864a07010348883ca4941f4429854ebe4abc511"
+      },
+      {
+        "path": ".agents/skills/produce-citysim-world-art/references/direction-cell-parallel-execution.md",
+        "sha256": "3cad284bc471c316c3a3ddffd88d580b7230c09e1b4f29a73c746b341995bdc8"
+      },
+      {
+        "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTE-PLAY-105-WEST-PRODUCTION-V3.json",
+        "sha256": "9ac6db44b580e7e524ceaf3644dc0de073a4f21573706c0e92942ea73712efa3"
+      },
+      {
+        "path": "docs/production/evidence/INTEGRATION/MANAGEMENT-TIER-OPERATING-MODEL-V2.json",
+        "sha256": "c6d14fa60941b1e6e7ea043916a8e88e1ba92214f81cf70188652488d2621d00"
+      },
+      {
+        "path": "docs/production/decisions/CONTRACT-027-world-rotation-authored-view-mapping.md",
+        "sha256": "693831b3d8fac49330ac21adce626b632351c7eeba901ebff6719687e5f330e7"
+      }
+    ]
+  },
+  "assignment": {
+    "threadId": "019fe1e1-3b58-72d2-8cbe-308004fe4772",
+    "branch": "codex/citysim-world-art-west-imagegen",
+    "worktree": "/Users/James/.codex/worktrees/e6f2/city-sim",
+    "expectedHead": "80d84865b48ffe6ee24318ed8c768514b3bc935e",
+    "featureAuthorThreadId": "019fe1e1-3b58-72d2-8cbe-308004fe4772",
+    "sharedAuthorityOwnership": false,
+    "finalQAOwnership": false,
+    "subjectiveJudgmentRequired": false
+  },
+  "pathPolicy": {
+    "claimOwnedRoots": [
+      "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105/west",
+      "docs/production/evidence/PLAY-105"
+    ],
+    "allowed": [
+      "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105/west",
+      "docs/production/evidence/PLAY-105"
+    ],
+    "forbidden": [
+      ".agents/skills",
+      "docs/production/claims",
+      "docs/production/decisions",
+      "docs/production/evidence/INTEGRATION",
+      "Native/CitySimNative/Sources",
+      "Native/CitySimNative/Resources",
+      "Native/CitySimNative/Package.swift",
+      "script/build_and_run.sh",
+      "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-103",
+      "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104"
+    ]
+  },
+  "boundedDeliverable": "Preserve the rejected West residential_l01_v0 v01 attempt as explicit rejected evidence, author one distinct replacement under the frozen prompt/style contract, and finish exactly 43 legal raw sources, 43 normalized full canvases, and 129 deterministic LOD payloads. Repair only task-owned scripts, provenance, handoffs, and contact sheets so every row binds route/claim/base/head, complete tool-artifact/prompt/cleanup/registration metadata, schema/semantic-validator evidence, zero hidden RGB/keyed magenta/frame-edge alpha, unique raw/decoded/LOD hashes, and two isolated-root replays. Keep candidateReadyForIndependentReview=false until all gates pass, then true with sourceReady/integrationAdmitted/rendererQuarantined/productionSelected=false. Do not touch siblings, renderer, shipping, contracts, push, integrate, or self-accept.",
+  "proofPolicy": {
+    "architectureState": "frozen_reference",
+    "referenceImplementation": {
+      "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTE-PLAY-105-WEST-PRODUCTION-V3.json",
+      "sha256": "9ac6db44b580e7e524ceaf3644dc0de073a4f21573706c0e92942ea73712efa3"
+    },
+    "deliverableClaims": [
+      "deterministic_output",
+      "static_structure"
+    ],
+    "focusedProofLevel": "deterministic_replay",
+    "fullProofLevel": "deterministic_replay",
+    "behavioralCommands": [
+      "python3 Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105/west/validate_direction_production.py --repeat 2"
+    ],
+    "prohibitedSubstitutions": [
+      "source_token_presence_for_execution",
+      "ast_shape_for_runtime_success",
+      "manifest_or_prose_for_rendered_pixels",
+      "unit_tests_for_visual_acceptance",
+      "worker_self_report_for_independent_acceptance"
+    ]
+  },
+  "validation": {
+    "focusedGateOwner": {
+      "threadId": "019fe1e1-3b58-72d2-8cbe-308004fe4772",
+      "role": "play-105-west-production-repair-focused"
+    },
+    "focusedCommands": [
+      "python3 Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105/west/validate_direction_production.py --repeat 2",
+      "git diff --check 1b7a26a3071d744060b1aeabf7b8bbd2f72f7f95..HEAD"
+    ],
+    "fullGateOwner": {
+      "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+      "role": "integration-aggregate-full-gate",
+      "model": "gpt-5.6-sol",
+      "effort": "high"
+    },
+    "fullCommands": [
+      "swift test --package-path Native/CitySimNative",
+      "./script/build_and_run.sh --verify",
+      "fresh-player real-app aggregate journey"
+    ]
+  },
+  "expectedResult": {
+    "evidencePaths": [
+      "docs/production/evidence/PLAY-105"
+    ],
+    "commitRequired": true,
+    "commitMessagePattern": "PLAY-105:"
+  },
+  "escalationTriggers": [
+    "shared_contract_or_schema_decision",
+    "unresolved_product_visual_or_interaction_judgment",
+    "path_outside_claim",
+    "baseline_or_candidate_identity_mismatch",
+    "failure_outside_focused_scope",
+    "save_or_migration_uncertainty",
+    "cross_lane_semantic_conflict",
+    "two_unsuccessful_repair_attempts",
+    "subjective_acceptance_required"
+  ],
+  "stopCondition": "Stop after one coherent West replacement-and-validation candidate, or immediately on source-quality ambiguity, identity/path/authority drift, two failed repairs, or any need for shared/schema/renderer judgment. Never integrate, push, activate, self-accept, or pin.",
+  "independentReviewer": {
+    "required": true,
+    "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+    "model": "gpt-5.6-sol",
+    "effort": "high"
+  },
+  "context": {
+    "mode": "full_authority_read",
+    "packet": null,
+    "verifiedHashes": [
+      {
+        "path": "docs/production/claims/PLAY-105.world-art-west-imagegen.md",
+        "sha256": "1dd5c0ef337ba7736e2e0c4abb520ed7d73630f3bff5e0d8bd53d44399388137"
+      },
+      {
+        "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTE-PLAY-105-WEST-PRODUCTION-V3.json",
+        "sha256": "9ac6db44b580e7e524ceaf3644dc0de073a4f21573706c0e92942ea73712efa3"
+      },
+      {
+        "path": "docs/production/decisions/CONTRACT-025-authored-four-view-2-5d-building-art.md",
+        "sha256": "4e8ab63173d67581332e7d27730b97315906fda4e29b999969456441809479ed"
+      },
+      {
+        "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+        "sha256": "9c62d401d8812d5345b6bd25d864a07010348883ca4941f4429854ebe4abc511"
+      }
+    ]
+  }
+}

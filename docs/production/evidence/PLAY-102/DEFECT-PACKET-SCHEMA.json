@@ -23,8 +23,10 @@
       "layout": "regular | compact-900x600",
       "view": "city | neighborhood | block",
       "centerCoordinate": "exact x/y",
-      "rotationDegrees": 0,
-      "cameraStateHash": "exact camera-state packet hash"
+      "direction": "north | east | south | west",
+      "rotationInput": "authored direction enum; numeric runtime value only when observed",
+      "cameraStateHash": "exact camera-state packet hash",
+      "captureId": "one of the 24 frozen matrix IDs"
     },
     "startState": "fresh-state and process/output identity",
     "allowedKnowledge": "what a fresh player may know",

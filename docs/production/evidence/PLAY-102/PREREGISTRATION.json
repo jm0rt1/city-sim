@@ -1,39 +1,41 @@
 {
   "schemaVersion": 2,
-  "documentType": "PLAY-102_SINGLE_ANGLE_QA_PREREGISTRATION",
+  "documentType": "PLAY-102_ROTATION_QA_PREREGISTRATION",
   "taskId": "PLAY-102",
   "packetKind": "candidate-neutral-preparation",
   "status": "blocked",
   "preparationStatus": "ready_for_integration_rehearsal",
   "candidateNeutral": true,
   "route": {
-    "routeId": "single-angle-v1:play-102",
-    "canonicalModelRouteSha256": "afe57d76706e57540108541b210c20b00191dc8c748e9b4da2d96bec99481320",
-    "classification": "LUNA_IMPLEMENTATION",
+    "routeId": "four-view-v2:play-102-rotation-qa-prep",
+    "canonicalModelRouteSha256": "f058a27da8a9c6e73eab9aa955620bf1d4c8105edf0744342ad63b4a480d09e6",
+    "classification": "LUNA_MECHANICAL",
     "model": "gpt-5.6-luna",
-    "effort": "high",
-    "dispatchPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTE-PLAY-102-SINGLE-ANGLE-V1.json"
+    "effort": "medium",
+    "dispatchPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTE-PLAY-102-ROTATION-QA-PREP-V2.json"
   },
   "authority": {
-    "carrier": "95e8ccb4d4f5c067f1ab5721ebc60b077984107f",
-    "authorityCommit": "004bd2dbcb88e57330425a833505d81ce00e9f90",
-    "baseCommit": "690c46bc9019b641c023f264c46bf8aadb506619",
-    "expectedWorkerHead": "004bd2dbcb88e57330425a833505d81ce00e9f90",
+    "carrier": "785b798fe63ce4f5b2c280082c1c079ebba2f035",
+    "authorityCommit": "a61ab80101f596f56ffc1dd7e37b32bd1b220357",
+    "baseCommit": "a61ab80101f596f56ffc1dd7e37b32bd1b220357",
+    "expectedWorkerHead": "b90765722ab57fb5bcb87900f41735e069291504",
     "claimPath": "docs/production/claims/PLAY-102.playtest-single-angle.md",
-    "claimSha256": "3760e8efc519d919d5c73da9d6dc08da42d8d825f5303546baee5169a05ed92f"
+    "claimSha256": "4b39f2aefbd6253ec829efb4252f91dfeecd891920636defc507da9c688477cb"
   },
   "familyContract": {
-    "path": "docs/production/decisions/CONTRACT-024-single-angle-imagegen-building-art.md",
-    "sha256": "aee937eade534d2cefaa41a4f1f28665f702f592d3140b4108ca51432edd0f3f",
+    "path": "docs/production/decisions/CONTRACT-025-authored-four-view-2-5d-building-art.md",
+    "sha256": "4e8ab63173d67581332e7d27730b97315906fda4e29b999969456441809479ed",
     "logicalIdentityCount": 43,
-    "normalizedPayloadCount": 129,
-    "viewModel": "single canonical view; no directional identity"
+    "normalizedPayloadCount": 516,
+    "authoredSourceSpriteCount": 172,
+    "directions": ["north", "east", "south", "west"],
+    "viewModel": "four independently authored views; no runtime rotation, mirror, skew, synthesis, or alias"
   },
   "fixture": {
     "id": "commercial-active-district-v3",
     "version": "v3",
-    "definitionPath": "docs/production/evidence/PLAY-102/FIXTURE.json",
-    "definitionSha256": "96269e38ac5c44c54e90796f449d337a7bf4fd27478ff7afd1729d265cdeae0a",
+    "definitionPath": "docs/production/evidence/PLAY-102/fixture-manifest.json",
+    "definitionSha256": "41cb77eaae1fbc54a6dfc2fc6ba65154cfdca3864cf578735db503474cdd0155",
     "sourcePath": "Native/CitySimNative/Tests/CitySimNativeTests/Fixtures/VisibleCityStates/visible-city-commercial-active-district-v3.json",
     "sourceSha256": "caa6e4deedca22c2c62f1d7664f862964258df7159f09a13d939688c5492a26b",
     "stateHash": "6126cf6e941eb6ed98ff308992447a01a5869dd87120ebe40b92153e68b2cb8d",
@@ -48,13 +50,14 @@
   },
   "camera": {
     "statePath": "docs/production/evidence/PLAY-102/CAMERA-STATES.json",
-    "stateSha256": "780b3aeca22b12c3b65e5cbc79f201ad8e40919e3efdc5f3151db9cf3ebec969",
+    "stateSha256": "f8e013796fb938631e1cea4c5d96098bae9954a5571ac23474577f2d35f1b6ad",
     "layouts": [
       "regular 1280x800 window / 1278x768 map capture",
       "compact 900x600 window / 900x600 map capture"
     ],
     "views": ["city", "neighborhood", "block"],
-    "rotationDegrees": 0,
+    "directions": ["north", "east", "south", "west"],
+    "captureCount": 24,
     "panAllowed": false,
     "centerCoordinate": [5, 8],
     "overlay": "City",
@@ -65,11 +68,11 @@
   },
   "rubric": {
     "path": "docs/production/evidence/PLAY-102/RUBRIC.json",
-    "sha256": "090c8c927af26d897edcdef27d46aa2668487e50a6a8adf95bb1ac343051e2ee",
+    "sha256": "a8f47b61b8aa5d4053c9b5b561e765d7d053a931e387061adac44470f3127eb0",
     "status": "frozen_unmeasured",
     "mechanicalCriteria": [
       "43 unique logical identities",
-      "129 explicit city/neighborhood/block payloads",
+      "516 explicit city/neighborhood/block payloads across four authored directions",
       "zero forbidden transforms or aliases",
       "zero camera-contract mismatches"
     ],
@@ -83,21 +86,21 @@
   },
   "scriptedMeasurementPlan": {
     "path": "docs/production/evidence/PLAY-102/MEASUREMENT-PLAN.json",
-    "sha256": "b626e288fb93216f3da3ddf7202ae4206bbb4f0ead03b958bf2b49247e7cecf3",
-    "captureCount": 6,
+    "sha256": "04c126f86b582b74ae36778e4378945c01d28b815a9e46d561d4cacfa39282eb",
+    "captureCount": 24,
     "captureNames": [
-      "regular-city",
-      "regular-neighborhood",
-      "regular-block",
-      "compact-city",
-      "compact-neighborhood",
-      "compact-block"
+      "north-city-regular", "east-city-regular", "south-city-regular", "west-city-regular",
+      "north-neighborhood-regular", "east-neighborhood-regular", "south-neighborhood-regular", "west-neighborhood-regular",
+      "north-block-regular", "east-block-regular", "south-block-regular", "west-block-regular",
+      "north-city-compact", "east-city-compact", "south-city-compact", "west-city-compact",
+      "north-neighborhood-compact", "east-neighborhood-compact", "south-neighborhood-compact", "west-neighborhood-compact",
+      "north-block-compact", "east-block-compact", "south-block-compact", "west-block-compact"
     ],
     "observedValues": "UNMEASURED"
   },
   "defectPacket": {
     "schemaPath": "docs/production/evidence/PLAY-102/DEFECT-PACKET-SCHEMA.json",
-    "schemaSha256": "f57c63a7b233f75a2f21b77aff632fd4902a85ccd568c4a53602526341daaa00",
+    "schemaSha256": "32cdfec45a022a2b0768c025205ddfa322133310f85015c10ed60b94957f8578",
     "candidateBoundFieldsRemainNullUntilAdmission": true
   },
   "evidence": {

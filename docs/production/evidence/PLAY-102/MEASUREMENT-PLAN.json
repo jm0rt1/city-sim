@@ -2,10 +2,12 @@
   "schemaVersion": 1,
   "documentType": "PLAY-102_SCRIPTED_MEASUREMENT_PLAN",
   "taskId": "PLAY-102",
-  "batchId": "single-angle-43-building-v1",
+  "batchId": "four-view-rotation-43-building-v2",
   "status": "READY_FOR_INTEGRATION_REHEARSAL",
   "candidateNeutral": true,
   "runner": "Integration/frontier-owned exact-candidate gate",
+  "captureMatrix": {"count": 24, "directions": ["north", "east", "south", "west"], "lods": ["city", "neighborhood", "block"], "layouts": ["regular", "compact-900x600"]},
+  "measurementFields": ["decoded_dimensions", "nonempty_pixels", "visible_bounds", "camera_contract", "direction_identity", "overlap_clipping", "mixed_fidelity", "interaction", "accessibility", "performance"],
   "preflight": [
     {
       "id": "identity-bind",
@@ -19,54 +21,42 @@
     }
   ],
   "captureSequence": [
-    {
-      "id": "regular-city",
-      "cameraState": "regular-city",
-      "capture": "screenshots/regular-city.png",
-      "measurements": ["decoded_dimensions", "nonempty_pixels", "camera_contract"]
-    },
-    {
-      "id": "regular-neighborhood",
-      "cameraState": "regular-neighborhood",
-      "capture": "screenshots/regular-neighborhood.png",
-      "measurements": ["decoded_dimensions", "nonempty_pixels", "identity_readability", "overlap_clipping"]
-    },
-    {
-      "id": "regular-block",
-      "cameraState": "regular-block",
-      "capture": "screenshots/regular-block.png",
-      "measurements": ["decoded_dimensions", "nonempty_pixels", "pivot_ground_contact", "frontage"]
-    },
-    {
-      "id": "compact-city",
-      "cameraState": "compact-city",
-      "capture": "screenshots/compact-city.png",
-      "measurements": ["decoded_dimensions", "nonempty_pixels", "compact_bounds", "camera_contract"]
-    },
-    {
-      "id": "compact-neighborhood",
-      "cameraState": "compact-neighborhood",
-      "capture": "screenshots/compact-neighborhood.png",
-      "measurements": ["decoded_dimensions", "nonempty_pixels", "compact_bounds", "overlap_clipping", "mixed_fidelity"]
-    },
-    {
-      "id": "compact-block",
-      "cameraState": "compact-block",
-      "capture": "screenshots/compact-block.png",
-      "measurements": ["decoded_dimensions", "nonempty_pixels", "compact_bounds", "pivot_ground_contact", "frontage"]
-    }
+    {"id":"north-city-regular","cameraState":"north-city-regular","capture":"screenshots/north-city-regular.png","measurements":["decoded_dimensions","nonempty_pixels","camera_contract","direction_identity"]},
+    {"id":"east-city-regular","cameraState":"east-city-regular","capture":"screenshots/east-city-regular.png","measurements":["decoded_dimensions","nonempty_pixels","camera_contract","direction_identity"]},
+    {"id":"south-city-regular","cameraState":"south-city-regular","capture":"screenshots/south-city-regular.png","measurements":["decoded_dimensions","nonempty_pixels","camera_contract","direction_identity"]},
+    {"id":"west-city-regular","cameraState":"west-city-regular","capture":"screenshots/west-city-regular.png","measurements":["decoded_dimensions","nonempty_pixels","camera_contract","direction_identity"]},
+    {"id":"north-neighborhood-regular","cameraState":"north-neighborhood-regular","capture":"screenshots/north-neighborhood-regular.png","measurements":["decoded_dimensions","nonempty_pixels","identity_readability","overlap_clipping","direction_identity"]},
+    {"id":"east-neighborhood-regular","cameraState":"east-neighborhood-regular","capture":"screenshots/east-neighborhood-regular.png","measurements":["decoded_dimensions","nonempty_pixels","identity_readability","overlap_clipping","direction_identity"]},
+    {"id":"south-neighborhood-regular","cameraState":"south-neighborhood-regular","capture":"screenshots/south-neighborhood-regular.png","measurements":["decoded_dimensions","nonempty_pixels","identity_readability","overlap_clipping","direction_identity"]},
+    {"id":"west-neighborhood-regular","cameraState":"west-neighborhood-regular","capture":"screenshots/west-neighborhood-regular.png","measurements":["decoded_dimensions","nonempty_pixels","identity_readability","overlap_clipping","direction_identity"]},
+    {"id":"north-block-regular","cameraState":"north-block-regular","capture":"screenshots/north-block-regular.png","measurements":["decoded_dimensions","nonempty_pixels","pivot_ground_contact","frontage","direction_identity"]},
+    {"id":"east-block-regular","cameraState":"east-block-regular","capture":"screenshots/east-block-regular.png","measurements":["decoded_dimensions","nonempty_pixels","pivot_ground_contact","frontage","direction_identity"]},
+    {"id":"south-block-regular","cameraState":"south-block-regular","capture":"screenshots/south-block-regular.png","measurements":["decoded_dimensions","nonempty_pixels","pivot_ground_contact","frontage","direction_identity"]},
+    {"id":"west-block-regular","cameraState":"west-block-regular","capture":"screenshots/west-block-regular.png","measurements":["decoded_dimensions","nonempty_pixels","pivot_ground_contact","frontage","direction_identity"]},
+    {"id":"north-city-compact","cameraState":"north-city-compact","capture":"screenshots/north-city-compact.png","measurements":["decoded_dimensions","nonempty_pixels","compact_bounds","camera_contract","direction_identity"]},
+    {"id":"east-city-compact","cameraState":"east-city-compact","capture":"screenshots/east-city-compact.png","measurements":["decoded_dimensions","nonempty_pixels","compact_bounds","camera_contract","direction_identity"]},
+    {"id":"south-city-compact","cameraState":"south-city-compact","capture":"screenshots/south-city-compact.png","measurements":["decoded_dimensions","nonempty_pixels","compact_bounds","camera_contract","direction_identity"]},
+    {"id":"west-city-compact","cameraState":"west-city-compact","capture":"screenshots/west-city-compact.png","measurements":["decoded_dimensions","nonempty_pixels","compact_bounds","camera_contract","direction_identity"]},
+    {"id":"north-neighborhood-compact","cameraState":"north-neighborhood-compact","capture":"screenshots/north-neighborhood-compact.png","measurements":["decoded_dimensions","nonempty_pixels","compact_bounds","overlap_clipping","mixed_fidelity","direction_identity"]},
+    {"id":"east-neighborhood-compact","cameraState":"east-neighborhood-compact","capture":"screenshots/east-neighborhood-compact.png","measurements":["decoded_dimensions","nonempty_pixels","compact_bounds","overlap_clipping","mixed_fidelity","direction_identity"]},
+    {"id":"south-neighborhood-compact","cameraState":"south-neighborhood-compact","capture":"screenshots/south-neighborhood-compact.png","measurements":["decoded_dimensions","nonempty_pixels","compact_bounds","overlap_clipping","mixed_fidelity","direction_identity"]},
+    {"id":"west-neighborhood-compact","cameraState":"west-neighborhood-compact","capture":"screenshots/west-neighborhood-compact.png","measurements":["decoded_dimensions","nonempty_pixels","compact_bounds","overlap_clipping","mixed_fidelity","direction_identity"]},
+    {"id":"north-block-compact","cameraState":"north-block-compact","capture":"screenshots/north-block-compact.png","measurements":["decoded_dimensions","nonempty_pixels","compact_bounds","pivot_ground_contact","frontage","direction_identity"]},
+    {"id":"east-block-compact","cameraState":"east-block-compact","capture":"screenshots/east-block-compact.png","measurements":["decoded_dimensions","nonempty_pixels","compact_bounds","pivot_ground_contact","frontage","direction_identity"]},
+    {"id":"south-block-compact","cameraState":"south-block-compact","capture":"screenshots/south-block-compact.png","measurements":["decoded_dimensions","nonempty_pixels","compact_bounds","pivot_ground_contact","frontage","direction_identity"]},
+    {"id":"west-block-compact","cameraState":"west-block-compact","capture":"screenshots/west-block-compact.png","measurements":["decoded_dimensions","nonempty_pixels","compact_bounds","pivot_ground_contact","frontage","direction_identity"]}
   ],
   "scriptedChecks": [
     {
       "id": "mechanical-pack-audit",
       "input": "exact candidate/resource manifest",
-      "procedure": "Count 43 logical identities and 129 LOD payloads; compare raw, normalized, and decoded hashes; reject alias, fallback, missing, orphan, transform, and digest drift.",
+      "procedure": "Count 43 logical identities, 172 authored direction sprites, and 516 explicit LOD payloads; compare raw, normalized, and decoded hashes; reject alias, fallback, missing, orphan, transform, and digest drift.",
       "result": "UNMEASURED"
     },
     {
       "id": "pixel-integrity-audit",
-      "input": "six exact candidate captures",
-      "procedure": "Decode each PNG; record dimensions, nonempty pixel count, visible bounds, transparent-edge artifacts, overlap, and clipping; do not score aesthetics.",
+      "input": "all 24 exact candidate captures",
+      "procedure": "Decode every governed PNG; record dimensions, nonempty pixel count, visible bounds, transparent-edge artifacts, overlap, clipping, and authored direction identity; do not score aesthetics.",
       "result": "UNMEASURED"
     },
     {
@@ -78,7 +68,7 @@
     {
       "id": "frontier-performance-segment",
       "input": "same exact candidate and fixture",
-      "procedure": "Record declared frame-time, node/draw, memory/RSS, and load behavior at all six camera states; compare only against Integration-owned thresholds.",
+      "procedure": "Record declared frame-time, node/draw, memory/RSS, and load behavior at all 24 governed camera states; compare only against Integration-owned thresholds.",
       "result": "NOT_RUN_FRONTIER_ONLY"
     }
   ],

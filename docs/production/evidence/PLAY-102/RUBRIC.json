@@ -2,9 +2,10 @@
   "schemaVersion": 1,
   "documentType": "PLAY-102_CANDIDATE_NEUTRAL_ACCEPTANCE_RUBRIC",
   "taskId": "PLAY-102",
-  "batchId": "single-angle-43-building-v1",
+  "batchId": "four-view-rotation-43-building-v2",
   "status": "FROZEN_UNMEASURED",
   "candidateNeutral": true,
+  "matrix": {"directions": ["north", "east", "south", "west"], "lods": ["city", "neighborhood", "block"], "layouts": ["regular", "compact-900x600"], "captureCount": 24},
   "dispositionPolicy": {
     "workerMay": [
       "freeze mechanical checks",
@@ -45,15 +46,15 @@
       "requirement": "Each of the 43 identities has explicit city, neighborhood, and block payloads.",
       "threshold": {
         "operator": "equal",
-        "value": 129,
+        "value": 516,
         "unit": "normalized_lod_payloads"
       },
       "status": "UNMEASURED"
     },
     {
-      "id": "single-angle-integrity",
+      "id": "four-view-integrity",
       "category": "mechanical",
-      "requirement": "No runtime or pack transform rotates, mirrors, synthesizes, or aliases a sprite.",
+      "requirement": "Each direction is independently authored; no runtime or pack transform rotates, mirrors, synthesizes, falls back, or aliases a sprite.",
       "threshold": {
         "operator": "equal",
         "value": 0,
@@ -64,7 +65,7 @@
     {
       "id": "camera-and-scale",
       "category": "mechanical",
-      "requirement": "All six captures use the frozen layout, detail, rotation, center, overlay, and selection inputs.",
+      "requirement": "All 24 captures use the frozen layout, LOD, authored direction, center, overlay, and selection inputs.",
       "threshold": {
         "operator": "equal",
         "value": 0,
@@ -75,7 +76,7 @@
     {
       "id": "fidelity-and-material-quality",
       "category": "frontier_observation",
-      "requirement": "Buildings read as distinct, coherent, materially rich single-angle city-builder assets at literal game scale.",
+      "requirement": "Buildings read as distinct, coherent, materially rich four-view city-builder assets at literal game scale.",
       "status": "NOT_RUN_FRONTIER_ONLY"
     },
     {

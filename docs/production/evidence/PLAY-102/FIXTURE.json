@@ -2,9 +2,16 @@
   "schemaVersion": 1,
   "documentType": "PLAY-102_CANDIDATE_NEUTRAL_FIXTURE",
   "taskId": "PLAY-102",
-  "batchId": "single-angle-43-building-v1",
+  "batchId": "four-view-rotation-43-building-v2",
   "status": "FROZEN_SOURCE_READY_FOR_BASELINE_REHEARSAL",
   "candidateNeutral": true,
+  "directions": ["north", "east", "south", "west"],
+  "lods": ["city", "neighborhood", "block"],
+  "layouts": ["regular", "compact-900x600"],
+  "captureCount": 24,
+  "logicalIdentityCount": 43,
+  "authoredSourceSpriteCount": 172,
+  "explicitLodPayloadCount": 516,
   "sourceFixture": {
     "id": "commercial-active-district-v3",
     "version": "v3",
@@ -45,7 +52,7 @@
     "productionSelection": "not admitted",
     "sourceStateIsIndependentOf": [
       "PLAY-101 renderer candidate",
-      "single-angle sprite payloads",
+      "superseded single-angle sprite payloads",
       "atlas or resource manifest selection",
       "candidate-specific coaching"
     ]

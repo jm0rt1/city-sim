@@ -1,0 +1,35 @@
+{
+  "schema": 1,
+  "task": "PLAY-104",
+  "stage": "predesign",
+  "direction": "east",
+  "rawSha256": null,
+  "normalizedSha256": null,
+  "tool": "built-in ImageGen",
+  "model": null,
+  "attempt": null,
+  "pixelsProduced": false,
+  "perIdentityPathTemplate": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104/east/provenance/<identity>.json",
+  "requiredFields": [
+    "identity", "family", "direction", "southReferencePath", "southReferenceSha256",
+    "promptPath", "tool", "toolDate", "rawPath", "rawSha256", "disposition"
+  ],
+  "disposition": "not_produced",
+  "identities": [
+    "residential_l01_v0", "residential_l01_v1", "residential_l01_v2",
+    "residential_l02_v0", "residential_l02_v1", "residential_l02_v2",
+    "residential_l03_v0", "residential_l03_v1", "residential_l03_v2",
+    "residential_l04_v0", "residential_l04_v1", "residential_l04_v2",
+    "commercial_l01_v0", "commercial_l01_v1", "commercial_l01_v2",
+    "commercial_l02_v0", "commercial_l02_v1", "commercial_l02_v2",
+    "commercial_l03_v0", "commercial_l03_v1", "commercial_l03_v2",
+    "commercial_l04_v0", "commercial_l04_v1", "commercial_l04_v2",
+    "industrial_l01_v0", "industrial_l01_v1", "industrial_l01_v2",
+    "industrial_l02_v0", "industrial_l02_v1", "industrial_l02_v2",
+    "industrial_l03_v0", "industrial_l03_v1", "industrial_l03_v2",
+    "industrial_l04_v0", "industrial_l04_v1", "industrial_l04_v2",
+    "civic_park_v0", "civic_power-plant_v0", "civic_water-tower_v0",
+    "civic_fire-station_v0", "civic_police-station_v0", "civic_school_v0",
+    "civic_city-hall_v0"
+  ]
+}

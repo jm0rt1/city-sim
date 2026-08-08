@@ -3,10 +3,10 @@
   "authorityCommit": "cf1be598cea32330de4c4a6d5385cdfccad3c423",
   "assignments": [
     {
-      "modelRouteSha256": "0def109afb7a3c3121f16b9255e18fb296dd1a2b4a4776e0aeb430395a365a30",
+      "modelRouteSha256": "23cbbd5b9df33845e197e7bece03ed9d02b70fd86a9927d4985a3afefcd869d0",
       "modelRoute": {
         "schema": 2,
-        "routeId": "four-view-v13:play-105-west-production-repair-v9",
+        "routeId": "four-view-v13:play-105-west-production-repair-v10",
         "taskId": "PLAY-105",
         "packetKind": "implementation",
         "classification": "LUNA_IMPLEMENTATION",
@@ -59,7 +59,7 @@
           "threadId": "019fe1e1-3b56-72d2-8cbe-308004fe4772",
           "branch": "codex/citysim-world-art-west-imagegen",
           "worktree": "/Users/James/.codex/worktrees/e6f2/city-sim",
-          "expectedHead": "3cdc99ab9482551dc242db20780b6e12174925be",
+          "expectedHead": "c40d2ae7331414d9a7f344033360189acfa5348e",
           "featureAuthorThreadId": "019fe1e1-3b56-72d2-8cbe-308004fe4772",
           "sharedAuthorityOwnership": false,
           "finalQAOwnership": false,

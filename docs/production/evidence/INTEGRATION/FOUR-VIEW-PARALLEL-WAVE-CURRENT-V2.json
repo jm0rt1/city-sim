@@ -3,8 +3,8 @@
   "documentType": "CITYSIM_CURRENT_PARALLEL_WORK_PROJECTION",
   "supersedes": "FOUR-VIEW-PARALLEL-WAVE-CURRENT-V1.json",
   "authority": {
-    "capturedAtIntegrationHead": "d70d43ef0f0effc53dd4939734a9e9256d566069",
-    "publishedBaseline": "d70d43ef0f0effc53dd4939734a9e9256d566069",
+    "capturedAtIntegrationHead": "d19e44ef9c42fa6d5cb9886f3d797d6d1ff3e19d",
+    "publishedBaseline": "d19e44ef9c42fa6d5cb9886f3d797d6d1ff3e19d",
     "publicationStatusAtCapture": "published_origin_parity",
     "protectedDirt": [
       ".vscode/launch.json",
@@ -61,17 +61,12 @@
       "lane": "world-art-west",
       "branch": "codex/citysim-world-art-west-imagegen",
       "worktree": "/Users/James/.codex/worktrees/e6f2/city-sim",
-      "head": "3cdc99ab9482551dc242db20780b6e12174925be",
-      "clean": false,
-      "dirt": [
-        "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105/west/finalize_west_candidates.py",
-        "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105/west/normalize_direction.py",
-        "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105/west/validate_direction_production.py"
-      ],
-      "state": "evidence_rebind_in_progress",
-      "routeId": "four-view-v13:play-105-west-production-repair-v9",
+      "head": "beb293bb20bba1c002f5874fa355c702f6d3fe65",
+      "clean": true,
+      "state": "candidate_ready_for_frontier_review",
+      "routeId": "four-view-v13:play-105-west-production-repair-v10",
       "modelTier": "LUNA_IMPLEMENTATION",
-      "nextSafeAction": "Complete V9 focused replay twice, then independent frontier packet review; do not admit or activate."
+      "nextSafeAction": "Independent frontier packet review against the V10 pre-mutation boundary; do not admit or activate."
     },
     {
       "id": "PLAY-104-EAST",

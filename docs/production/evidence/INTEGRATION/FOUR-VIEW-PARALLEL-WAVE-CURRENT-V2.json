@@ -3,8 +3,8 @@
   "documentType": "CITYSIM_CURRENT_PARALLEL_WORK_PROJECTION",
   "supersedes": "FOUR-VIEW-PARALLEL-WAVE-CURRENT-V1.json",
   "authority": {
-    "capturedAtIntegrationHead": "a2b5909e8bf4295077625b98f56d8889f36d9f3f",
-    "publishedBaseline": "a2b5909e8bf4295077625b98f56d8889f36d9f3f",
+    "capturedAtIntegrationHead": "d70d43ef0f0effc53dd4939734a9e9256d566069",
+    "publishedBaseline": "d70d43ef0f0effc53dd4939734a9e9256d566069",
     "publicationStatusAtCapture": "published_origin_parity",
     "protectedDirt": [
       ".vscode/launch.json",
@@ -27,13 +27,17 @@
     "snapshotReceipt": "current-turn-read-only-census",
     "cellCaptain": "world-art-direction-captain",
     "acknowledgementSLA": "one coordination round",
-    "nextJoin": "West V9 focused replay plus independent review; North Luna focused repair; East owner checkpoint",
+    "nextJoin": "West V9 focused replay plus independent review; North Luna focused repair; Commercial and Civic V3/V2 evidence rebinds; East owner checkpoint",
     "changedRows": [
       "PLAY-103-NORTH",
-      "PLAY-105-WEST"
+      "PLAY-105-WEST",
+      "PLAY-098-COMMERCIAL",
+      "PLAY-100-CIVIC"
     ],
     "refereeQueue": [
-      "PLAY-105-WEST"
+      "PLAY-105-WEST",
+      "PLAY-098-COMMERCIAL",
+      "PLAY-100-CIVIC"
     ],
     "reservedRendererSlot": "after 4/4 source admission",
     "reservedQASlot": "after exact renderer aggregate",
@@ -47,7 +51,7 @@
       "worktree": "/Users/James/.codex/worktrees/f55b/city-sim",
       "head": "12c081381c97a41a05c87c926de0ef7becf5db12",
       "clean": true,
-      "state": "route_published_ack_pending",
+      "state": "route_published_ack_unconfirmed_control_timeout",
       "routeId": "four-view-v13:play-103-north-alpha-aware-lod-chroma-v1",
       "modelTier": "LUNA_IMPLEMENTATION",
       "nextSafeAction": "Obtain visible Luna acknowledgement, then run the frozen alpha-aware LOD repair; no raw regeneration."
@@ -58,7 +62,12 @@
       "branch": "codex/citysim-world-art-west-imagegen",
       "worktree": "/Users/James/.codex/worktrees/e6f2/city-sim",
       "head": "3cdc99ab9482551dc242db20780b6e12174925be",
-      "clean": true,
+      "clean": false,
+      "dirt": [
+        "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105/west/finalize_west_candidates.py",
+        "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105/west/normalize_direction.py",
+        "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105/west/validate_direction_production.py"
+      ],
       "state": "evidence_rebind_in_progress",
       "routeId": "four-view-v13:play-105-west-production-repair-v9",
       "modelTier": "LUNA_IMPLEMENTATION",
@@ -130,6 +139,6 @@
     "fullSuite": "not_run",
     "stagedApp": "not_run",
     "independentRealAppQA": "not_run",
-    "push": "origin_parity_at_a2b5909e"
+    "push": "origin_parity_at_d70d43ef"
   }
 }

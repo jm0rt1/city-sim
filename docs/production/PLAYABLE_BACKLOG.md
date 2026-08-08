@@ -1332,3 +1332,91 @@ This is the authoritative first-wave task source. The shared target is one coher
   unstable selection, partial fallback, source defect, resource regression, or
   need to hide the remaining defect in renderer decoration.
 - **Claim:** `docs/production/claims/PLAY-094.world-rendering.md`.
+
+> **Superseded:** CONTRACT-024 replaces PLAY-090 through PLAY-094 as the active
+> production path. Their unintegrated art evidence remains preserved; new work
+> uses the single-angle PLAY-096 through PLAY-102 wave below.
+
+### [ ] PLAY-096: Freeze the single-angle ImageGen production harness
+
+- **Player outcome:** Art workers can produce clean, registered 2.5D building
+  sprites quickly without Blender or directional duplication.
+- **Owning lane:** World Art shared toolchain.
+- **Dependencies:** CONTRACT-024 and CONTRACT-006.
+- **In scope:** Exact 43-ID inventory, prompt/provenance schema, deterministic
+  chroma normalization, registration, uniqueness checks, literal-scale sheets,
+  and family handoff validator under PLAY-096 roots.
+- **Out of scope:** Subjective art acceptance, building pixels, renderer
+  activation, product code, push, integration, or final QA.
+- **Acceptance:** A retained accepted calibration source passes the real
+  contained normalization path twice with identical outputs; adversarial tests
+  reject alias, missing identity, chroma, alpha, padding, pivot, and orphan
+  failures.
+
+### [ ] PLAY-097: Author twelve unique Residential building images
+
+- **Player outcome:** Residential growth visibly evolves through four levels
+  and three distinct architectural identities per level.
+- **Owning lane:** World Art — Residential.
+- **Dependencies:** CONTRACT-024; PLAY-096 schema/normalizer for final handoff.
+- **In scope:** Twelve distinct built-in ImageGen calls, raw masters, prompts,
+  provenance, candidate dispositions, normalized LODs, contact sheets, and
+  PLAY-097 evidence.
+- **Out of scope:** Other families, shared toolchain, renderer, shipping, push,
+  integration, self-acceptance, or style-contract changes.
+- **Acceptance:** Exact 12/12 unique identity matrix passes family validation
+  and frontier visual review at literal game scale.
+
+### [ ] PLAY-098: Author twelve unique Commercial building images
+
+- **Player outcome:** Shops and offices become visually legible, varied, and
+  progressively more impressive from level one through four.
+- **Owning lane:** World Art — Commercial.
+- **Dependencies/scope/acceptance:** Commercial-exclusive equivalent of
+  PLAY-097 under CONTRACT-024 and PLAY-098 roots.
+
+### [ ] PLAY-099: Author twelve unique Industrial building images
+
+- **Player outcome:** Industry gains readable functional silhouettes, material
+  richness, and believable progression without the failed Blender look.
+- **Owning lane:** World Art — Industrial.
+- **Dependencies/scope/acceptance:** Industrial-exclusive equivalent of
+  PLAY-097 under CONTRACT-024 and PLAY-099 roots.
+
+### [ ] PLAY-100: Author seven unique Civic and service building images
+
+- **Player outcome:** Every park, utility, emergency, education, and government
+  building has unmistakable purpose and authored visual identity.
+- **Owning lane:** World Art — Civic/service.
+- **Dependencies:** CONTRACT-024; PLAY-096 schema/normalizer for final handoff.
+- **In scope:** Park, power plant, water tower, fire station, police station,
+  school, and city hall built-in ImageGen masters and complete source evidence.
+- **Acceptance:** Exact 7/7 unique assets pass family validation and frontier
+  visual review at literal game scale.
+
+### [ ] PLAY-101: Ship the single-angle 43-building art pack
+
+- **Player outcome:** The real city renders the new coherent art everywhere,
+  with stable adjacent-lot variety and no overlap, clipping, fallback, or
+  directional seams.
+- **Owning lane:** World rendering.
+- **Dependencies:** CONTRACT-024 and Integration-admitted PLAY-097 through
+  PLAY-100 packets.
+- **In scope:** Non-shipping intake preparation, exact 43/129 validation,
+  direction-free logical identities, deterministic variant selection, atlas
+  packing, runtime presentation, focused tests, staged evidence, and rollback.
+- **Out of scope:** Source-art repair, partial family activation, gameplay/UI/
+  simulation/save changes, final QA, push, integration, or self-acceptance.
+- **Acceptance:** One exact aggregate passes resource, determinism, interaction,
+  three-LOD, memory/performance, full-suite, and staged-build gates.
+
+### [ ] PLAY-102: Gate the single-angle art release in the real app
+
+- **Player outcome:** A fresh player sees a materially more beautiful,
+  coherent, readable, and user-friendly city—not merely a greener test suite.
+- **Owning lane:** Playtest quality.
+- **Dependencies:** Exact PLAY-101 staged candidate.
+- **In scope:** Candidate-neutral fixture/camera/rubric preparation, then one
+  independent frontier real-app journey at regular and compact layouts.
+- **Acceptance:** APPROVE only when unique identity, fidelity, scale, overlap,
+  clipping, mixed-fidelity seams, interaction, and city readability pass.

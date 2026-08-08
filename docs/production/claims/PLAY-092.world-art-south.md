@@ -14,8 +14,8 @@
 - **Prior-work preservation:** PLAY-080 Industrial L4 South remains preserved
   at its clean checkpoint and is paused; this claim may not edit PLAY-080 paths.
 - **Validation/proof:** South-exclusive equivalents of PLAY-091.
-- **Status:** Active prelock preparation; zero mutation before the final
-  published authority and exact Luna route. Pixels remain locked.
+- **Status:** Blocked and superseded by CONTRACT-024. Preserve the branch and
+  all historical evidence; perform no further work under this claim.
 
 No sibling, shared, renderer/shipping, product, push, integration,
 self-acceptance, or pin.

@@ -44,13 +44,20 @@ For each task record:
 - `LUNA_IMPLEMENTATION` owns frozen intake mapping, quarantine, LOD/socket/pivot tests, fixtures, resource integrity, and bounded approved components; `LUNA_MECHANICAL` owns inventories, hashes, manifests, focused validation, and packet assembly; `LUNA_LOCAL_DEBUG` may repair only reproducible lane-local defects with frozen inputs and stops after two unsuccessful attempts.
 - `FRONTIER_AUTHORITY` owns visual architecture, composition, difficult performance tradeoffs, mixed-fidelity judgment, atomic assembly acceptance, shared-contract decisions, and final subjective acceptance.
 - A substantial `PLAY-*` task must arrive as a frontier authority packet, one or more disjoint Luna execution packets, and an independent frontier acceptance packet. Stop on every escalation trigger in the shared contract.
-- Luna runs only focused owner/affected gates. Direction packets are quarantined independently; the full Swift suite, staged build, and resource smoke run once at exact 4/4 assembly, followed by one independent frontier real-app gate.
+- Luna runs only focused owner/affected gates. Art packets are quarantined
+  independently; the full Swift suite, staged build, and resource smoke run
+  once at the exact aggregate assembly required by the active contract,
+  followed by one independent frontier real-app gate.
 
 ## Directional intake procedure
 
 Before intake planning, quarantine, four-direction assembly, or a directional return, read
 [references/directional-art-intake.md](references/directional-art-intake.md)
 completely.
+
+CONTRACT-024 single-angle ImageGen intake is a non-directional renderer feature;
+use [ordinary renderer feature evidence](references/renderer-feature-evidence.md)
+and the exact Integration-published aggregate inventory instead.
 
 ## Ordinary renderer feature evidence
 

@@ -52,10 +52,11 @@ Integration-issued claims.
 | Integration | `master` | Main repository checkout | Own accepted builds, allocation, integration, conflict resolution, release proof, and rollback |
 | Gameplay loop | `codex/citysim-gameplay-loop` | `/Users/James/.codex/worktrees/citysim/gameplay-loop` | Make decisions consequential and the session paced, legible, recoverable, and worth replaying |
 | World rendering | `codex/citysim-world-rendering` | `/Users/James/.codex/worktrees/citysim/world-rendering` | Make the city readable, alive, performant, and visually compelling |
-| World art — North/core | `codex/citysim-world-art` | `/Users/James/.codex/worktrees/citysim/world-art` | Author the governed North calibration/hero source and shared family handoff without changing renderer or gameplay authority |
-| World art — East | `codex/citysim-world-art-east` | Integration-provisioned | Independently author East-facing source predesign under a direction-exclusive claim |
-| World art — South | `codex/citysim-world-art-south` | Integration-provisioned | Independently author South-facing source predesign under a direction-exclusive claim |
-| World art — West | `codex/citysim-world-art-west` | Integration-provisioned | Independently author West-facing source predesign under a direction-exclusive claim |
+| World art — shared toolchain | Integration-provisioned `codex/citysim-world-art-*` | Integration-provisioned | Maintain the frozen single-angle ImageGen normalization and handoff harness without owning pixels or shipping activation |
+| World art — Residential | Integration-provisioned `codex/citysim-world-art-*` | Integration-provisioned | Produce the 12 Residential single-angle ImageGen identities |
+| World art — Commercial | Integration-provisioned `codex/citysim-world-art-*` | Integration-provisioned | Produce the 12 Commercial single-angle ImageGen identities |
+| World art — Industrial | Integration-provisioned `codex/citysim-world-art-*` | Integration-provisioned | Produce the 12 Industrial single-angle ImageGen identities |
+| World art — Civic/service | Integration-provisioned `codex/citysim-world-art-*` | Integration-provisioned | Produce the 7 Civic/service single-angle ImageGen identities |
 | UI and input | `codex/citysim-ui-input` | `/Users/James/.codex/worktrees/citysim/ui-input` | Make every command discoverable, responsive, accessible, and keyboard-operable |
 | Simulation platform | `codex/citysim-simulation-platform` | `/Users/James/.codex/worktrees/citysim/simulation-platform` | Own deterministic state, persistence, performance, diagnostics, and system contracts |
 | Playtest quality | `codex/citysim-playtest-quality` | `/Users/James/.codex/worktrees/citysim/playtest-quality` | Prove or disprove playability with golden cities, journeys, visual evidence, balance findings, and regressions |
@@ -177,10 +178,10 @@ This lane is read-mostly against feature code. It should return product defects 
 
 Primary ownership:
 
-- ImageGen prompts, raw masters, provenance, rejection records, and source-art
-  contact sheets for an integration-approved asset batch;
+- single-angle ImageGen prompts, raw masters, provenance, rejection records,
+  and source-art contact sheets for an Integration-approved asset family;
 - deterministic normalization inputs and source-level geometry reports;
-- authored directional-view consistency, family recognition, material quality,
+- family recognition, material quality, progression, literal-scale readability,
   and visual-style adherence.
 
 Default surfaces:
@@ -192,13 +193,15 @@ Default surfaces:
 
 The cells do not edit `Rendering/`, the shipping atlas pages or production
 selection, package topology, gameplay/simulation/UI code, or shared manifests.
-Only integration may approve a manifest contract; the renderer lead later
-reviews and ingests accepted source batches. A direction-exclusive cell owns
-only its named source/evidence paths and may never copy, mirror, rotate, or
-derive geometry from a sibling direction. Shared art contracts and family
-materials are read-only inputs unless Integration assigns one explicit writer.
-No art cell may run concurrently as a second writer on the world-rendering
-worktree.
+Only Integration may approve a manifest contract; the renderer lead later
+reviews and ingests accepted source batches. A family-exclusive cell owns only
+its named source/evidence paths and may never alias another building identity.
+CONTRACT-024 building art has one canonical view and is never mirrored or
+rotated. Shared art contracts and normalization tools are read-only inputs
+unless Integration assigns one explicit toolchain writer. No art cell may run
+concurrently as a second writer on the world-rendering worktree. Historical
+direction-exclusive DCC branches are preserved but inactive unless Integration
+explicitly publishes a new claim that resumes them.
 
 ### 4.8 Operating-system optimization lane
 

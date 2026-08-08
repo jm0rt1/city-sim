@@ -75,9 +75,10 @@ independent frontier acceptance packet.
 ## Enforce useful parallelism
 
 For every directional family, dispatch, state transition, candidate return, or
-parallelism checkpoint, read
+directional parallelism checkpoint, read
 [references/directional-art-parallelism.md](references/directional-art-parallelism.md)
-completely. That reference preserves the six-row state machine, executable
+completely. Do not apply its four-direction state machine to a single-angle
+CONTRACT-024 batch. That reference preserves the six-row state machine, executable
 schedule and closure gates, ledger/receipt projection, direction-local failure
 isolation, compute-envelope rules, and same-turn refill requirements.
 

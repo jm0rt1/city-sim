@@ -1,10 +1,14 @@
 # CONTRACT-023: Residential L1 variant-one directional family
 
-**Status:** Approved for governed source production after publication
+**Status:** Superseded by CONTRACT-024; historical evidence only
 
 **Owner:** Integration
 
 ## Decision
+
+> CONTRACT-024 replaces this directional Blender/DCC production architecture.
+> No new source, repair, renderer activation, or QA authority may be issued from
+> this contract. Existing commits and evidence remain preserved.
 
 CitySim will resolve the opening city's dominant adjacent residential
 duplication with one genuinely distinct Residential L1 variant-one family,

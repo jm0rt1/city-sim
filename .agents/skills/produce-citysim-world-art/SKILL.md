@@ -1,6 +1,6 @@
 ---
 name: produce-citysim-world-art
-description: "Author and validate CitySim directional building source art through parallel, direction-exclusive cells on the governed `codex/citysim-world-art*` branches. Use for PLAY-027/079/080/081 family-contract predesign, zero-pixel proofs, source scenes, A/B/C masters, provenance, non-shipping source records, N/E/S/W consistency, alias audits, contact sheets, and machine-readable source-art handoffs. This skill forbids live renderer, shipping atlas, gameplay, UI, save, and shared-manifest changes."
+description: "Author and validate CitySim source art through governed `codex/citysim-world-art*` cells. Use for CONTRACT-024 single-angle 2.5D ImageGen building batches, prompts, raw masters, provenance, deterministic normalization, alias audits, contact sheets, and machine-readable handoffs, or for explicitly resumed historical directional claims. This skill forbids renderer, shipping atlas, gameplay, UI, save, and shared-manifest changes."
 ---
 
 # Produce CitySim World Art
@@ -11,52 +11,40 @@ The output is a reviewed source batch, not a shipping renderer change.
 ## Start every turn
 
 1. Run `pwd`, `git branch --show-current`, and `git status --short --branch`.
-2. Require one exact governed branch and one Integration-issued active claim
-   whose task, batch, branch, direction, path roots, and published base match
-   the current shared ledger. The current Industrial L4 profile uses:
-   - `codex/citysim-world-art` → `PLAY-027.world-art.md`;
-   - `codex/citysim-world-art-east` → `PLAY-079.world-art-east.md`;
-   - `codex/citysim-world-art-south` → `PLAY-080.world-art-south.md`;
-   - `codex/citysim-world-art-west` → `PLAY-081.world-art-west.md`.
-   A later family may use different `PLAY-*` claims only when Integration
-   publishes those exact mappings in its family ledger. Never reuse an
-   Industrial L4 claim for another family. Stop on any branch, direction,
-   batch, or claim mismatch.
+2. Require one exact governed `codex/citysim-world-art*` branch and one
+   Integration-issued active claim whose task, family/toolchain role, path
+   roots, and published base match. Never reuse a historical directional claim
+   for CONTRACT-024 work. Stop on any branch, family, task, or claim mismatch.
 3. Read and follow [the shared model-routing and cost-control contract](../operate-citysim-integration/references/model-routing-and-cost-control.md). Complete the applicable authority read for a new thread or claim, changed claim/authority/skill/reference hash, routing mismatch, context loss, or stale compact packet. On an unchanged same-thread continuation, verify every recorded hash and Git revision before consuming the compact lane-context packet.
 4. When a complete read is required, read this skill, the branch-mapped claim,
-   all required conditional references,
-   `docs/production/CITYSIM_WORKTREE_OPERATING_SYSTEM.md`,
-   `docs/production/decisions/CONTRACT-006-generated-world-asset-pack.md`,
-   `docs/production/decisions/CONTRACT-010-directional-building-art.md`,
-   `docs/production/decisions/CONTRACT-020-deterministic-dcc-world-art.md`, and
-   `docs/production/decisions/CONTRACT-021-parallel-directional-art-cells.md`
-   completely.
+   `docs/production/CITYSIM_WORKTREE_OPERATING_SYSTEM.md`, CONTRACT-006, and the
+   active family contract completely. For CONTRACT-024 also read
+   [single-angle ImageGen production](references/single-angle-imagegen-production.md).
+   Read historical directional contracts and references only when an exact
+   published claim explicitly resumes that historical path.
 5. Confirm the branch contains the claim’s published base and is clean.
 6. Resolve and compare the exact full hashes for the current family contract,
-   stage authority, appearance lock, source-production profile, handoff schema,
-   semantic validator, compute envelope, claim revision, and published base.
+   style/registration references, production profile, handoff schema, semantic
+   validator, claim revision, and published base.
    Record an explicit missing/blocked state for authorities that are not yet
    legal at the current stage; never infer them from nearby artifacts.
-7. Confirm the named direction and its exclusive source, process, output, and
-   evidence roots, then state the world-art mission and current batch before
-   generating anything.
+7. Confirm the named family/toolchain role and its exclusive source, output,
+   and evidence roots, then state the mission and batch before generating.
 
 ## Preserve the ownership boundary
 
 Own only:
 
-- ImageGen prompts, raw attempts, accepted masters, provenance, and rejection
-  records under the exact direction-exclusive ImageGen subroots named by the
+- ImageGen prompts, raw attempts, candidate masters, provenance, and rejection
+  records under the exact family-exclusive ImageGen subroots named by the
   claim;
 - task-owned non-shipping source records and source validators;
 - task-owned contact sheets, geometry reports, and evidence under the exact
   active claim's `PLAY-*` roots.
 
-Direction cells additionally own only the exact direction named by their
-claim. They may consume the published family/material/camera contract but may
-not edit a sibling direction's scene, tools, raw pixels, or evidence. Do not
-copy a sibling scene as the starting geometry; author each orientation
-explicitly from the shared family requirements.
+Family cells own only the exact family named by their claim. They may consume
+the published style, camera, registration, and toolchain contracts but may not
+edit sibling family pixels, tools, or evidence.
 
 Do not edit `Rendering/`, shipping atlas pages, production selection, shared
 manifest types, shared family/material/toolchain contracts, package/build
@@ -68,21 +56,24 @@ West as that writer. Never push, integrate, or self-accept.
 
 ## Route design authority and directional production separately
 
-- `FRONTIER_AUTHORITY` owns North hero design, family vocabulary, appearance lock, unresolved art direction, shared toolchain decisions, and subjective source or production acceptance.
-- `LUNA_IMPLEMENTATION` owns Integration-authorized East/South/West DCC production under frozen contracts; `LUNA_MECHANICAL` owns provenance, normalization, deterministic checks, contact sheets, hashes, and handoff packets. North mechanical validation may use Luna, but North visual disposition remains frontier-owned.
+- `FRONTIER_AUTHORITY` owns style vocabulary, appearance locks, unresolved art direction, shared toolchain decisions, and subjective source or production acceptance.
+- `LUNA_IMPLEMENTATION` owns Integration-authorized single-angle ImageGen production under frozen contracts; `LUNA_MECHANICAL` owns inventories, provenance, normalization, deterministic checks, contact sheets, hashes, and handoff packets.
 - `LUNA_LOCAL_DEBUG` may repair only a reproducible direction-local defect with frozen inputs and no shared-contract ambiguity; stop after two unsuccessful repair attempts.
-- Luna may reproduce a DCC pipeline only after Integration binds an accepted
+- Luna may reproduce an executable art pipeline only after Integration binds an accepted
   executable reference whose real Blender smoke completed successfully. A
   zero-child/static prelaunch packet proves structure only; it never proves
   Blender launch, scene construction, rendering, output containment, or pixel
   validity. Novel or repeatedly false-green DCC architecture returns to
   frontier authority.
-- A substantial `PLAY-*` family is split into the frontier North/design authority, disjoint direction execution packets, and independent frontier acceptance. Stop on every escalation trigger in the shared contract.
-- Each Luna direction runs only its focused source gates. Passing siblings remain immutable when one direction returns. Renderer runs the full suite/resource smoke once at exact 4/4 assembly; independent frontier QA runs the single final app journey.
+- A substantial `PLAY-*` family is split into frontier design authority,
+  disjoint family/asset execution packets, and independent frontier acceptance.
+- Each Luna cell runs only focused source gates. Passing siblings remain
+  immutable when one asset returns. Renderer runs the full suite/resource smoke
+  once at exact aggregate assembly; independent frontier QA runs one final app journey.
 
-## Direction-cell execution
+## Historical directional execution
 
-Before prelock work, DCC authorization, per-process execution, parallel helper work, or a direction-local return, read
+Only for an explicitly resumed directional claim, before prelock work, DCC authorization, per-process execution, parallel helper work, or a direction-local return, read
 [references/direction-cell-parallel-execution.md](references/direction-cell-parallel-execution.md)
 completely.
 

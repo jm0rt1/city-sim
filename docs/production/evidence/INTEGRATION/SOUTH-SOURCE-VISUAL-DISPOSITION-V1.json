@@ -1,0 +1,69 @@
+{
+  "schema": "citysim.south-source-visual-disposition.v1",
+  "task": "FOUR-VIEW-PARALLEL-WAVE",
+  "reviewedTree": "bfed987ec1d6995b0e8033af529fef7d02c06cf5",
+  "dispatchReceipt": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-FOUR-VIEW-PARALLEL-WAVE-V6.json",
+  "dispatchReceiptSha256": "48086d5e2f1c64cb706b6454d60524e35d5ca9958787d4ca70f1974baf84eef4",
+  "reviewer": {
+    "lane": "Integration",
+    "model": "gpt-5.6-sol",
+    "effort": "high",
+    "mode": "candidate-bound literal-scale visual screening"
+  },
+  "inventory": {
+    "southRawSources": 43,
+    "southNormalizedLodPayloads": 129,
+    "families": {
+      "residential": {"identities": 12, "lods": 36},
+      "commercial": {"identities": 12, "lods": 36},
+      "industrial": {"identities": 12, "lods": 36},
+      "civic": {"identities": 7, "lods": 21}
+    },
+    "direction": "south",
+    "rendererAdmission": false
+  },
+  "disposition": "RETURN",
+  "sourceReady": false,
+  "integrationAdmitted": false,
+  "rendererQuarantined": false,
+  "productionSelected": false,
+  "findings": [
+    {
+      "family": "residential",
+      "result": "RETURN",
+      "scope": "12 block LODs",
+      "representativePath": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-097/residential/normalized/residential_l01_variant_0/block/source-v03.png",
+      "observation": "Visible magenta/purple keyed-spill plates and fringe remain around the building footprint at literal block scale. The current mechanical packet does not fail closed on this residual chroma.",
+      "requiredRepair": "Despill/remove residual keyed chroma, regenerate only task-owned derivatives, and rerun an explicit visible-chroma plus alpha-edge gate."
+    },
+    {
+      "family": "industrial",
+      "result": "RETURN",
+      "scope": "12 block LODs in the accepted Pillow batch",
+      "representativePath": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/calibration/pillow-reference-batch-v1/industrial_l01_v00/block.png",
+      "observation": "Visible magenta/purple spill remains around base plates, pipes, and prop edges in the otherwise strong industrial 2.5D renders. This is a visual admission failure even though the retained receipt reports zero exact keyed-magenta pixels.",
+      "requiredRepair": "Add a spill-aware chroma/despill gate and regenerate task-owned LOD derivatives without changing raw source bytes."
+    },
+    {
+      "family": "commercial",
+      "result": "SCREEN_PASS",
+      "scope": "12 block LODs",
+      "representativePath": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-098/commercial/normalized/commercial_l01_v00/commercial_l01_v00-south-block.png",
+      "observation": "Readable storefront rhythm, varied silhouettes, material separation, and no obvious large keyed plate in the visual screen. Mechanical source admission remains pending the family-wide gate."
+    },
+    {
+      "family": "civic",
+      "result": "SCREEN_PASS",
+      "scope": "7 block LODs",
+      "representativePath": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/park/park-block.png",
+      "observation": "Distinct civic identities, readable silhouettes, and coherent 2.5D materials in the visual screen. Mechanical source admission remains pending the family-wide gate."
+    }
+  ],
+  "nextAction": "Keep all 43 South anchors authoring-only. Route residential and industrial chroma repairs in parallel with North/West four-view work; do not set sourceReady or activate renderer resources until a refreshed candidate-bound review passes the spill-aware gate.",
+  "boundaries": [
+    "No renderer/runtime/manifest/build mutation",
+    "No partial family activation",
+    "No sourceReady transition",
+    "No replacement of accepted raw bytes"
+  ]
+}

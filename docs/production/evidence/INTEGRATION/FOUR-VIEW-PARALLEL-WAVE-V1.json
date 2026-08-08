@@ -2,9 +2,9 @@
   "schema": 1,
   "task": "FOUR-VIEW-PARALLEL-WAVE",
   "authority": {
-    "master": "8053984e23e2b1e4d2d044c1c82bbded0ec87b7c",
-    "originMaster": "8053984e23e2b1e4d2d044c1c82bbded0ec87b7c",
-    "workerBaseline": "652fdb8cd3a4da82a79a49ad1dc18cb0c7bc6a85",
+    "master": "810dc28ead658f5307c8a46de8ed834eeb381b29",
+    "originMaster": "810dc28ead658f5307c8a46de8ed834eeb381b29",
+    "workerBaseline": "406ab671ebe316c44a01d2cda584d25de6816c06",
     "contract": "CONTRACT-025",
     "rotationContract": "CONTRACT-027",
     "rotationContractSha256": "693831b3d8fac49330ac21adce626b632351c7eeba901ebff6719687e5f330e7",
@@ -26,8 +26,8 @@
       "effort": "max",
       "worktree": "/Users/James/.codex/worktrees/f55b/city-sim",
       "branch": "codex/citysim-world-art-north-imagegen",
-      "head": "dc7c7ace57fd1e357a42e5f4c2bbda689c35e8d6",
-      "route": "four-view-v10:play-103-north-production-repair-v2",
+      "head": "ced596b06a163f10af4716980bd19cd6aaf025ee",
+      "route": "four-view-v11:play-103-north-production-repair-v3",
       "state": "published_queued_for_delivery",
       "allowed": "North claimed roots only",
       "blockedBy": "Codex task-control delivery confirmation"
@@ -52,8 +52,8 @@
       "effort": "high",
       "worktree": "/Users/James/.codex/worktrees/e6f2/city-sim",
       "branch": "codex/citysim-world-art-west-imagegen",
-      "head": "7fe6c4a2aa807faedaf05a0aac38d9fad20dcef9",
-      "route": "four-view-v10:play-105-west-production-repair-v2",
+      "head": "3677c785997365f1d9cb7a27e8b3185236865600",
+      "route": "four-view-v11:play-105-west-production-repair-v3",
       "state": "published_queued_for_delivery",
       "allowed": "West claimed roots only",
       "blockedBy": "Codex task-control delivery confirmation"
@@ -65,8 +65,8 @@
       "effort": "high",
       "worktree": "/Users/James/.codex/worktrees/ccf8/city-sim",
       "branch": "codex/citysim-world-rendering-single-angle",
-      "head": "68075dd59d8a450ee0147ba1820caf17bffd84ea",
-      "route": "four-view-v3:play-101-current-master-intake-rebind-v3",
+      "head": "0103844d75bff483e2aafb6e6f54496d35cbcb85",
+      "route": "four-view-v4:play-101-current-master-intake-rebind-v4",
       "state": "published_queued_for_delivery",
       "allowed": "SingleAngleWorldArtTests.swift + PLAY-101 evidence",
       "blockedBy": "Codex task-control delivery confirmation; source admission not yet available"
@@ -78,8 +78,8 @@
       "effort": "medium",
       "worktree": "/Users/James/.codex/worktrees/fee0/city-sim",
       "branch": "codex/citysim-playtest-single-angle",
-      "head": "5ffe8d5dba51342ebb82ca347cd0387ea668e7c8",
-      "route": "four-view-v4:play-102-current-master-qa-prep-rebind-v3",
+      "head": "994415478466358a4e5766d729d6c4e9cb9114b4",
+      "route": "four-view-v5:play-102-current-master-qa-prep-rebind-v4",
       "state": "published_queued_for_delivery",
       "allowed": "PLAY-102 evidence only",
       "blockedBy": "Codex task-control delivery confirmation; candidate remains null"
@@ -106,8 +106,8 @@
     "No worker pushes or self-acceptance"
   ],
   "dispatch": {
-    "receipt": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-FOUR-VIEW-PARALLEL-WAVE-V3.json",
-    "receiptSha256": "b52f7a8442e63c4b498844d241f181fd9bde056f2694116fb9940191fe1d87fa",
+    "receipt": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-FOUR-VIEW-PARALLEL-WAVE-V4.json",
+    "receiptSha256": "e0b36ee9c135bb63c19c9f872c4156a7748d284c58cdaffdea7b1f0316802ff2",
     "t2IndependentDisposition": "NO_CHANGE",
     "canonicalOptimizerDisposition": "PENDING_CONTROL_PLANE",
     "deliveryStatus": "messages_attempted_but_not_confirmed"

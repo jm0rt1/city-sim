@@ -1,0 +1,12 @@
+{
+  "eventKeys": [
+    {
+      "authorityCommit": "65825389d586a128ddf6feb5356c33661ba9a8e8",
+      "candidateOrResultCommit": "e55e5ad04a8dc3eee7262e02df8f3e3bcd65b7b6",
+      "routeId": "four-view-v31:play-098-commercial-source-v02-implementation-v1",
+      "taskId": "PLAY-098",
+      "trigger": "delegation_ready_for_dispatch"
+    }
+  ],
+  "schema": 1
+}

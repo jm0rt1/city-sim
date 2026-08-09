@@ -1,0 +1,271 @@
+{
+  "schema": 2,
+  "authorityCommit": "65825389d586a128ddf6feb5356c33661ba9a8e8",
+  "assignments": [
+    {
+      "modelRouteSha256": "add65e538ed9879a6207575aa9a442142b7ea461ecd5420a3507b1fb6eaf0d0d",
+      "modelRoute": {
+        "schema": 2,
+        "routeId": "four-view-v30:play-098-commercial-raw-source-regeneration-authority-v3",
+        "taskId": "PLAY-098",
+        "packetKind": "authority",
+        "classification": "FRONTIER_AUTHORITY",
+        "model": "gpt-5.6-sol",
+        "effort": "high",
+        "rationale": "Fresh Frontier source-stage authority proposal for Commercial PLAY-098 at clean worker HEAD e55e5ad04a8dc3eee7262e02df8f3e3bcd65b7b6 (parent 49c9222bf4df2d2b084d4c05279a8df3173b089a), with common authority/base 65825389d586a128ddf6feb5356c33661ba9a8e8 (merge-base of worker and current master 845b72409eb0fbc2913e6fcff0a30704dd71fa5a). Preserve the published V29 derived-only APPROVE context (route four-view-v29:play-098-commercial-contract028-frontier-review-current-head-v1, canonical 35ae1adf02e696b34cb2fdf1ddece072731f01cc086c803182db67b87ea83c36, route file c77b8d7311d9551af0eece90e419038864fb69ce1f75443e8d338dde9cab4375, dispatch file d663fb72627cc6db5aabc09e48ec7c69923387073a987b84b21fcb74ccbd7fbe; current V26 validation sha 532624894254c89fbd5e30fdbf41ad9ef5a570b269e8f1604719548ed1354b58, replaySha256 61270c3dacdb42955b49c00a7d1373705f6f728c027ce25520dfd2056e48e86f, raw/old/derived aggregates 74c50d3a.../32ebaa76.../b8c2c028...) and preserve the V23 raw RETURN_HARD_BLOCKER: all twelve raw masters fail the exact flat #ff00ff corner predicate while their bytes and provenance remain immutable. This Frontier packet is read-only and invokes no ImageGen; it proposes the smallest lawful downstream source-v02 implementation packet only.",
+        "authority": {
+          "authorityCommit": "65825389d586a128ddf6feb5356c33661ba9a8e8",
+          "baseCommit": "65825389d586a128ddf6feb5356c33661ba9a8e8",
+          "claim": {
+            "path": "docs/production/claims/PLAY-098.world-art-commercial.md",
+            "sha256": "4e10676b16b40d4492ca27ce525d67c74462f16bf5755be91bdbe05984ed2517"
+          },
+          "immutableInputs": [
+            {
+              "path": "docs/production/decisions/CONTRACT-006-generated-world-asset-pack.md",
+              "sha256": "e29325fb82701ebf7f93d815fa70c0dd00bb1868826bb10df3d375c8d9deeea5"
+            },
+            {
+              "path": "docs/production/decisions/CONTRACT-025-authored-four-view-2-5d-building-art.md",
+              "sha256": "4e8ab63173d67581332e7d27730b97315906fda4e29b999969456441809479ed"
+            },
+            {
+              "path": "docs/production/decisions/CONTRACT-026-authored-four-view-registration.md",
+              "sha256": "4781de72429a1f691b9226f7f7668b170b278a4ccd171ac4ea02f5e1df9176eb"
+            },
+            {
+              "path": "docs/production/decisions/CONTRACT-026-registration-profiles-v1.json",
+              "sha256": "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8"
+            },
+            {
+              "path": "docs/production/decisions/CONTRACT-028-alpha-aware-lod-chroma.md",
+              "sha256": "f8b80a98b07029a51b8e61701c85017bd82c8bb0b6c967da6d1fa7fae631da7d"
+            },
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "1eb7170b81e11753e7c9173298c6d45c02d5a2ade6df0ef8b73bdcaf690a2acd"
+            },
+            {
+              "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+              "sha256": "9c62d401d8812d5345b6bd25d864a07010348883ca4941f4429854ebe4abc511"
+            },
+            {
+              "path": ".agents/skills/produce-citysim-world-art/references/source-production-and-quality.md",
+              "sha256": "e2984cd058b0ceb9ae908709403322003f1af2cc2c011329e881fd362c6fee64"
+            },
+            {
+              "path": ".agents/skills/produce-citysim-world-art/references/single-angle-imagegen-production.md",
+              "sha256": "f17d86e7cee5fb6e7344a1497e04c977376ec8ce52bf825c4e3b685ebd88306c"
+            },
+            {
+              "path": ".agents/skills/produce-citysim-world-art/references/source-handoff-and-checkpoints.md",
+              "sha256": "b85539dd7153fecc943083f637ad6f3e5b389d07631cdf28f3e3aafa3c99f4b5"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-098/commercial/RAW-PROVENANCE.json",
+              "sha256": "2f334bd45dfcae6ba3a03cb6935689dc81236fd0eefbb28fbe4ec3b75f3a0eed"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-098/commercial/RAW-PRESCREEN-RETURN.md",
+              "sha256": "28b4d3e296599a9f3af3054cbaf9c713ad742c20fa9ff3f95358d06456a1a295"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/GateA/golden_district_imagegen_source-v2.png",
+              "sha256": "b227286bfe5ffe8cfc920d3faf8abe081f5cca8a498c215bfb8a840a448e7425"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/raw/calibration/residential_l01/source-v01.png",
+              "sha256": "e15a388c2a1a0a55488457211c23939f70eca255cbae733ee0f7b39b141c962e"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/GeneratedV4/templates/registration-1x1.png",
+              "sha256": "6ad1db2e7b8f670718ff4a4eb8c183737b0dec859559a2eab6a25746b53cff67"
+            }
+          ]
+        },
+        "assignment": {
+          "threadId": "019fe44b-8c05-72d1-b1a6-a80e4a483bbb",
+          "branch": "codex/citysim-world-art-commercial",
+          "worktree": "/Users/James/.codex/worktrees/34c2/city-sim",
+          "expectedHead": "e55e5ad04a8dc3eee7262e02df8f3e3bcd65b7b6",
+          "featureAuthorThreadId": "019fe1b1-3bc4-7b40-a107-22f3fb08484d",
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": true
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": [
+            "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-098/commercial",
+            "docs/production/evidence/PLAY-098"
+          ],
+          "allowed": [
+            "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-098/commercial/source-v02",
+            "docs/production/evidence/PLAY-098/commercial/source-v02"
+          ],
+          "forbidden": [
+            ".agents/skills",
+            "docs/production/PLAYABLE_BACKLOG.md",
+            "docs/production/claims",
+            "docs/production/decisions",
+            "docs/production/evidence/INTEGRATION",
+            "Native/CitySimNative/Sources",
+            "Native/CitySimNative/Resources",
+            "Native/CitySimNative/Tests",
+            "Native/CitySimNative/Package.swift",
+            "script/build_and_run.sh",
+            "Native/CitySimNative/WorldArt/ImageGenFourView",
+            "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-098/commercial/raw",
+            "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-098/commercial/normalized",
+            "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-098/commercial/normalized-contract-028",
+            "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-098/commercial/normalized-contract-028-v26",
+            "docs/production/evidence/PLAY-098/commercial/RAW-PROVENANCE.json",
+            "docs/production/evidence/PLAY-098/commercial/RAW-PRESCREEN-RETURN.md",
+            "docs/production/evidence/PLAY-098/commercial/contract-028",
+            "docs/production/evidence/PLAY-098/commercial/contract-028-v26"
+          ]
+        },
+        "boundedDeliverable": "Frontier read-only authority decision only; do not call ImageGen, write files, or execute a source batch. If this authority is separately published, a downstream LUNA_IMPLEMENTATION packet may create exactly one fresh built-in ImageGen source-v02 attempt for each of these twelve identities: commercial_l01_v00, commercial_l01_v01, commercial_l01_v02, commercial_l02_v00, commercial_l02_v01, commercial_l02_v02, commercial_l03_v00, commercial_l03_v01, commercial_l03_v02, commercial_l04_v00, commercial_l04_v01, commercial_l04_v02. Store only versioned prompts/provenance/raw-v02 PNGs/handoff evidence beneath Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-098/commercial/source-v02 and docs/production/evidence/PLAY-098/commercial/source-v02; no retry, fallback, CLI/API substitution, derived reuse, sibling reuse, rotation, mirroring, or overwrite. Preserve every existing source-v01 PNG, all existing normalized/identity-v02 bytes, all Contract-028 V26 derived PNGs/evidence, RAW-PROVENANCE/RAW-PRESCREEN return bytes, and the published V29 derived-only approval context. This source-stage proposal performs no Contract-028 normalization and grants no source admission. Any source-v02 receipt must keep sourceAuthority=false, candidateReadyForIndependentReview=false until a separate mechanical/replay handoff proves it, sourceReady=false, integrationAdmitted=false, rendererQuarantined=false, and productionSelected=false; it must not rewrite the existing V23 rawSourceAdmission=RETURN_HARD_BLOCKER. Existing V29 remains derivedOnly=true, candidateReadyForIndependentReview=true, rawSourceAdmission=RETURN_HARD_BLOCKER, with sourceAuthority=false.",
+        "proofPolicy": {
+          "architectureState": "frozen_reference",
+          "referenceImplementation": {
+            "path": "docs/production/decisions/CONTRACT-025-authored-four-view-2-5d-building-art.md",
+            "sha256": "4e8ab63173d67581332e7d27730b97315906fda4e29b999969456441809479ed"
+          },
+          "deliverableClaims": [
+            "static_structure"
+          ],
+          "focusedProofLevel": "static_only",
+          "fullProofLevel": "static_only",
+          "behavioralCommands": [],
+          "prohibitedSubstitutions": [
+            "source_token_presence_for_execution",
+            "ast_shape_for_runtime_success",
+            "manifest_or_prose_for_rendered_pixels",
+            "unit_tests_for_visual_acceptance",
+            "worker_self_report_for_independent_acceptance"
+          ]
+        },
+        "validation": {
+          "focusedGateOwner": {
+            "threadId": "019fe44b-8c05-72d1-b1a6-a80e4a483bbb",
+            "role": "independent-frontier-commercial-raw-source-authority"
+          },
+          "focusedCommands": [
+            "git cat-file -e e55e5ad04a8dc3eee7262e02df8f3e3bcd65b7b6^{commit}",
+            "git merge-base --is-ancestor 65825389d586a128ddf6feb5356c33661ba9a8e8 e55e5ad04a8dc3eee7262e02df8f3e3bcd65b7b6",
+            "git status --short --branch -- Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-098/commercial docs/production/evidence/PLAY-098",
+            "git show --format=fuller --no-ext-diff --summary e55e5ad04a8dc3eee7262e02df8f3e3bcd65b7b6^{commit}",
+            "git diff --check 49c9222bf4df2d2b084d4c05279a8df3173b089a..e55e5ad04a8dc3eee7262e02df8f3e3bcd65b7b6 -- Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-098/commercial docs/production/evidence/PLAY-098",
+            "PYTHONDONTWRITEBYTECODE=1 python3 Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-098/commercial/validate_raw_candidates.py --family commercial (expected RETURN: all 12 exact corners are not #ff00ff)",
+            "Read-only verify V29 route/dispatch context four-view-v29:... canonical 35ae1adf02e696b34cb2fdf1ddece072731f01cc086c803182db67b87ea83c36; current validation replaySha256 61270c3dacdb42955b49c00a7d1373705f6f728c027ce25520dfd2056e48e86f; no source-v02 attempt exists before downstream authority execution",
+            "Read-only verify proposed source-v02 packet has exactly 12 identities, one built-in ImageGen call each, no retries/fallback/derived reuse, and no writes outside the two new versioned roots"
+          ],
+          "fullGateOwner": {
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "role": "integration-source-stage-authority-review",
+            "model": "gpt-5.6-sol",
+            "effort": "high"
+          },
+          "fullCommands": [
+            "Integration source-stage authority review only; no ImageGen, source admission, renderer, runtime, production, or full-suite/app gate in this packet"
+          ]
+        },
+        "expectedResult": {
+          "evidencePaths": [
+            "docs/production/evidence/PLAY-098/commercial/source-v02"
+          ],
+          "commitRequired": false,
+          "commitMessagePattern": "review-only"
+        },
+        "escalationTriggers": [
+          "shared_contract_or_schema_decision",
+          "unresolved_product_visual_or_interaction_judgment",
+          "path_outside_claim",
+          "baseline_or_candidate_identity_mismatch",
+          "failure_outside_focused_scope",
+          "save_or_migration_uncertainty",
+          "cross_lane_semantic_conflict",
+          "two_unsuccessful_repair_attempts",
+          "subjective_acceptance_required"
+        ],
+        "stopCondition": "Stop before any mutation or ImageGen on any route/claim/base/head/hash/cleanliness mismatch, current-master/worker ancestry ambiguity, raw V23 preservation mismatch, identity/path ambiguity, source revision collision, second/retry/fallback call, derived reuse, overwrite of any v01/v02/derived byte, output outside Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-098/commercial/source-v02 or docs/production/evidence/PLAY-098/commercial/source-v02, readiness/source/admission/renderer/production flag advancement, or request to normalize, integrate, launch, push, or self-accept. This Frontier packet is a read-only authority proposal; downstream source execution requires a separately published LUNA_IMPLEMENTATION route and independent mechanical/replay review.",
+        "independentReviewer": {
+          "required": true,
+          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+          "model": "gpt-5.6-sol",
+          "effort": "high"
+        },
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {
+              "path": "docs/production/claims/PLAY-098.world-art-commercial.md",
+              "sha256": "4e10676b16b40d4492ca27ce525d67c74462f16bf5755be91bdbe05984ed2517"
+            },
+            {
+              "path": "docs/production/decisions/CONTRACT-006-generated-world-asset-pack.md",
+              "sha256": "e29325fb82701ebf7f93d815fa70c0dd00bb1868826bb10df3d375c8d9deeea5"
+            },
+            {
+              "path": "docs/production/decisions/CONTRACT-025-authored-four-view-2-5d-building-art.md",
+              "sha256": "4e8ab63173d67581332e7d27730b97315906fda4e29b999969456441809479ed"
+            },
+            {
+              "path": "docs/production/decisions/CONTRACT-026-authored-four-view-registration.md",
+              "sha256": "4781de72429a1f691b9226f7f7668b170b278a4ccd171ac4ea02f5e1df9176eb"
+            },
+            {
+              "path": "docs/production/decisions/CONTRACT-026-registration-profiles-v1.json",
+              "sha256": "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8"
+            },
+            {
+              "path": "docs/production/decisions/CONTRACT-028-alpha-aware-lod-chroma.md",
+              "sha256": "f8b80a98b07029a51b8e61701c85017bd82c8bb0b6c967da6d1fa7fae631da7d"
+            },
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "1eb7170b81e11753e7c9173298c6d45c02d5a2ade6df0ef8b73bdcaf690a2acd"
+            },
+            {
+              "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+              "sha256": "9c62d401d8812d5345b6bd25d864a07010348883ca4941f4429854ebe4abc511"
+            },
+            {
+              "path": ".agents/skills/produce-citysim-world-art/references/source-production-and-quality.md",
+              "sha256": "e2984cd058b0ceb9ae908709403322003f1af2cc2c011329e881fd362c6fee64"
+            },
+            {
+              "path": ".agents/skills/produce-citysim-world-art/references/single-angle-imagegen-production.md",
+              "sha256": "f17d86e7cee5fb6e7344a1497e04c977376ec8ce52bf825c4e3b685ebd88306c"
+            },
+            {
+              "path": ".agents/skills/produce-citysim-world-art/references/source-handoff-and-checkpoints.md",
+              "sha256": "b85539dd7153fecc943083f637ad6f3e5b389d07631cdf28f3e3aafa3c99f4b5"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-098/commercial/RAW-PROVENANCE.json",
+              "sha256": "2f334bd45dfcae6ba3a03cb6935689dc81236fd0eefbb28fbe4ec3b75f3a0eed"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-098/commercial/RAW-PRESCREEN-RETURN.md",
+              "sha256": "28b4d3e296599a9f3af3054cbaf9c713ad742c20fa9ff3f95358d06456a1a295"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/GateA/golden_district_imagegen_source-v2.png",
+              "sha256": "b227286bfe5ffe8cfc920d3faf8abe081f5cca8a498c215bfb8a840a448e7425"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/GeneratedV4/ImageGen/raw/calibration/residential_l01/source-v01.png",
+              "sha256": "e15a388c2a1a0a55488457211c23939f70eca255cbae733ee0f7b39b141c962e"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/GeneratedV4/templates/registration-1x1.png",
+              "sha256": "6ad1db2e7b8f670718ff4a4eb8c183737b0dec859559a2eab6a25746b53cff67"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "schema": 1,
+  "eventKeys": [
+    {
+      "authorityCommit": "65825389d586a128ddf6feb5356c33661ba9a8e8",
+      "candidateOrResultCommit": "9e2da6ce68d998dc9bf8fbb6d6c2f9ffeae33382",
+      "routeId": "four-view-v37:play-097-south-residential-source-helper-binding-rebind-v1",
+      "taskId": "PLAY-097",
+      "trigger": "delegation_ready_for_dispatch"
+    }
+  ]
+}

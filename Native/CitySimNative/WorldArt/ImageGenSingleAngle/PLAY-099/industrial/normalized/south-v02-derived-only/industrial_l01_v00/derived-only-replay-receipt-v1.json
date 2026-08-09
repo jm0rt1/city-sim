@@ -1,0 +1,143 @@
+{
+  "authorityCommit": "65825389d586a128ddf6feb5356c33661ba9a8e8",
+  "baseCommit": "65825389d586a128ddf6feb5356c33661ba9a8e8",
+  "candidateHead": "69720ac475a5ba9bed7499952dbf3aef99fd6273",
+  "candidateReadyForIndependentReview": false,
+  "claimPath": "docs/production/claims/PLAY-099.world-art-industrial.md",
+  "claimSha256": "d5a42e16f9e7d5a4dc0a9667e797022651737535b190fb7917650504a28f108b",
+  "deterministicRuns": 2,
+  "direction": "south",
+  "executionAccounting": {
+    "capacity": {
+      "helperSlots": 1,
+      "launchedJobs": 2,
+      "unusedCapacityReasons": [
+        "isolated deterministic replays are intentionally serialized"
+      ]
+    },
+    "join": {
+      "byteAndDecodedHashesEqual": true,
+      "required": [
+        "play099-v30-replay-1",
+        "play099-v30-replay-2"
+      ],
+      "status": "PASS"
+    },
+    "launchedJobs": [
+      {
+        "identity": "industrial_l01_v00",
+        "jobId": "play099-v30-replay-1",
+        "resourceClass": "CPU/helper",
+        "state": "joined"
+      },
+      {
+        "identity": "industrial_l01_v00",
+        "jobId": "play099-v30-replay-2",
+        "resourceClass": "CPU/helper",
+        "state": "joined"
+      }
+    ],
+    "nextRefill": "none; bounded packet complete",
+    "overlap": {
+      "claimed": false,
+      "reason": "fresh isolated roots; replay 2 starts after replay 1 closes"
+    },
+    "readyNow": 2,
+    "running": 0,
+    "serializedAuthority": "visible worker is sole adopter, evidence writer, Git/index writer",
+    "waitingOnJoin": 0
+  },
+  "identity": "industrial_l01_v00",
+  "imageGenCalls": 0,
+  "integrationAdmitted": false,
+  "isolatedRoots": true,
+  "lods": {
+    "block": {
+      "canvas": [
+        1024,
+        683
+      ],
+      "decodedSha256": "5699755d9ef9699a5c729e080efc362b5c0ac94e6ab22508bb567715462c5b01",
+      "edgeAlphaPixels": 0,
+      "fileSha256": "be328bcb0a38bb8091536b88434ea2023b8c60aedc08743c47549e10cf0679d8",
+      "hiddenRgbPixels": 0,
+      "partialAlphaPixels": 148497,
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/normalized/south-v02-derived-only/industrial_l01_v00/block.png",
+      "visibleAlphaPixels": 225399,
+      "visibleNearMagentaPixels": 0
+    },
+    "city": {
+      "canvas": [
+        256,
+        171
+      ],
+      "decodedSha256": "afab43ace9274eebc18d0e8157e8fa484f2a8dde857d8bc761b892dba2b8217b",
+      "edgeAlphaPixels": 0,
+      "fileSha256": "1ab48acd9be6544d440726db136de4e6857686e67608f489083f1d8efe58d928",
+      "hiddenRgbPixels": 0,
+      "partialAlphaPixels": 12014,
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/normalized/south-v02-derived-only/industrial_l01_v00/city.png",
+      "visibleAlphaPixels": 15076,
+      "visibleNearMagentaPixels": 0
+    },
+    "neighborhood": {
+      "canvas": [
+        512,
+        342
+      ],
+      "decodedSha256": "88bc4bf3161dc4c3215e78d7695d8218d5340203bc4a1faa15c0252ce210a4e8",
+      "edgeAlphaPixels": 0,
+      "fileSha256": "19f07c20c3fb2c06ea4a657fdf1c213770af3bbbfb25ba244a61274eb7ce3bef",
+      "hiddenRgbPixels": 0,
+      "partialAlphaPixels": 41682,
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/normalized/south-v02-derived-only/industrial_l01_v00/neighborhood.png",
+      "visibleAlphaPixels": 58031,
+      "visibleNearMagentaPixels": 0
+    }
+  },
+  "oldBytesPreserved": true,
+  "oldBytesSnapshotCount": 150,
+  "outputRoot": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/normalized/south-v02-derived-only/industrial_l01_v00",
+  "preservedFailureEvidence": {
+    "path": "docs/production/evidence/PLAY-099/source-v02/industrial-source-v02-chroma-gate-failure-v1.json",
+    "sha256": "a33bed5a37b35a7fcb5bcc7302f0d314432e1d97cb062f263e0cda6389cec590"
+  },
+  "preservedFailureReceipt": {
+    "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/receipts/source-v02/industrial-source-v02-chroma-gate-failure-receipt-v1.json",
+    "sha256": "06611a29f1b3133179d38561aa21fb1743c42b2f7882007f3e1687374c9df11b"
+  },
+  "productionSelected": false,
+  "quarantinedUnparsedArtifacts": [
+    "industrial_l01_v01",
+    "industrial_l01_v02",
+    "industrial_l02_v00"
+  ],
+  "rawSourceBytesPreserved": true,
+  "rawSourcePath": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/raw/industrial_l01_v00-source-v02.png",
+  "rawSourceSha256": "8e33dafb3a40f7dac6f5ca8c9c5cb81df2b63011d3fd0d4a0302ec04a99d264a",
+  "rendererQuarantined": false,
+  "replayMatch": true,
+  "retryCount": 0,
+  "routeCanonicalSha256": "d195e3c2b1a502e3830fe22de9aba22c402dec79e7cfe76db2fff8125263b2ba",
+  "routeId": "four-view-v30:play-099-south-industrial-l01-v00-derived-only-non-admission-v1",
+  "schema": "PLAY-099-industrial-v30-derived-only-replay-v1",
+  "source": {
+    "canvas": [
+      1536,
+      1024
+    ],
+    "decodedSha256": "82dd2556ccef99ad061a805259f690865a257ab685a8a6654d97aa71cd3618a9",
+    "edgeAlphaPixels": 0,
+    "fileSha256": "e985bb1b6aa2fa409098d62ec2cba25d651b95f2f7bf5b06996c5416190c1234",
+    "hiddenRgbPixels": 0,
+    "partialAlphaPixels": 277306,
+    "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/normalized/south-v02-derived-only/industrial_l01_v00/source-rgba.png",
+    "visibleAlphaPixels": 487050,
+    "visibleNearMagentaPixels": 0
+  },
+  "sourceAuthority": false,
+  "sourceReady": false,
+  "task": "PLAY-099",
+  "unlaunchedIdentities": 8,
+  "visualAcceptance": "not performed; frontier-owned"
+}

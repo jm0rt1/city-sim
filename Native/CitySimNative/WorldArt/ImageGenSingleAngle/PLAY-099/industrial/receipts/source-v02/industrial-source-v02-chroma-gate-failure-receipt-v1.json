@@ -1,0 +1,159 @@
+{
+  "schema": "PLAY-099-source-v02-chroma-gate-failure-receipt-v1",
+  "task": "PLAY-099",
+  "family": "industrial",
+  "direction": "south",
+  "stage": "source-regeneration",
+  "disposition": "RETURN_source_v02_chroma_gate_failed",
+  "routeId": "four-view-v29:play-099-south-industrial-source-regeneration-v1",
+  "routeCanonicalSha256": "6125f9c934a548bbd8e065e45bf17924d679100e01f1bc7d7d4fd33e19b84e8b",
+  "authorityCommit": "65825389d586a128ddf6feb5356c33661ba9a8e8",
+  "candidateHead": "81c82a518954f44a465e88b263a02688f40ad8c3",
+  "claim": {
+    "path": "docs/production/claims/PLAY-099.world-art-industrial.md",
+    "sha256": "d5a42e16f9e7d5a4dc0a9667e797022651737535b190fb7917650504a28f108b"
+  },
+  "failure": {
+    "gate": "single-angle raw source chroma gate",
+    "rule": "built-in ImageGen output must have a perfectly flat solid #ff00ff backdrop; a failed built-in call or chroma path stops the Industrial direction",
+    "stopConditionApplied": "raw_chroma_key_gate_failed_first_call",
+    "retryPermitted": false,
+    "normalizationPermitted": false,
+    "furtherImageGenPermitted": false
+  },
+  "firstCompletedCall": {
+    "ordinal": 1,
+    "logicalId": "industrial_l01_v00",
+    "attempt": 1,
+    "retryCount": 0,
+    "generator": "built-in ImageGen",
+    "status": "completed_output_rejected_at_chroma_gate",
+    "rawV02Path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/raw/industrial_l01_v00-source-v02.png",
+    "externalOutputHint": "/Users/James/.codex/generated_images/019fe4d6-5e17-7303-9adb-86eed43704af/exec-73350453-6951-4106-a5d3-40d820c249f0.png",
+    "sha256": "8e33dafb3a40f7dac6f5ca8c9c5cb81df2b63011d3fd0d4a0302ec04a99d264a",
+    "byteLength": 1982762,
+    "format": "PNG",
+    "mode": "RGB",
+    "size": [1536, 1024],
+    "expectedChromaKey": "#ff00ff",
+    "cornerPixelsRgb": {
+      "topLeft": [218, 13, 198],
+      "topRight": [226, 24, 204],
+      "bottomLeft": [216, 37, 193],
+      "bottomRight": [224, 29, 200]
+    },
+    "exactFlatMagentaPixelCount": 0,
+    "nearMagentaPixelCount": 1057148,
+    "nearMagentaPredicate": "max(r,b)>=64 and r+b-2*g>=160"
+  },
+  "unparsedCallAccounting": [
+    {
+      "ordinal": 2,
+      "logicalId": "industrial_l01_v01",
+      "attempt": 1,
+      "retryCount": 0,
+      "generator": "built-in ImageGen",
+      "status": "output_hint_unparsed",
+      "repoOutputPath": null,
+      "externalArtifactPath": "/Users/James/.codex/generated_images/019fe4d6-5e17-7303-9adb-86eed43704af/exec-de2f5b8f-3d3a-4afc-bc35-77acf6846064.png",
+      "externalArtifactSha256": "b457112a0db31a9b77ba8fe0115a4553e3b1adf2d3db4bee308282dbc648e013",
+      "externalArtifactSize": [1536, 1024]
+    },
+    {
+      "ordinal": 3,
+      "logicalId": "industrial_l01_v02",
+      "attempt": 1,
+      "retryCount": 0,
+      "generator": "built-in ImageGen",
+      "status": "output_hint_unparsed",
+      "repoOutputPath": null,
+      "externalArtifactPath": "/Users/James/.codex/generated_images/019fe4d6-5e17-7303-9adb-86eed43704af/exec-d51a023f-65a2-40cd-b000-6dd94beadf45.png",
+      "externalArtifactSha256": "e2aa6cf9fcead0610863a6335558df8e5bf5d395ca78640c03afdf73ba92b0d9",
+      "externalArtifactSize": [1536, 1024]
+    },
+    {
+      "ordinal": 4,
+      "logicalId": "industrial_l02_v00",
+      "attempt": 1,
+      "retryCount": 0,
+      "generator": "built-in ImageGen",
+      "status": "output_hint_unparsed",
+      "repoOutputPath": null,
+      "externalArtifactPath": "/Users/James/.codex/generated_images/019fe4d6-5e17-7303-9adb-86eed43704af/exec-0e1d1d44-9c2a-4f96-95c3-9d46a3274d6c.png",
+      "externalArtifactSha256": "22644e95c33d41ce91c4cdc67ad5b0061819ca64b0a5843bdfd3336ba321e119",
+      "externalArtifactSize": [1536, 1024]
+    }
+  ],
+  "attemptAccounting": {
+    "identityCount": 12,
+    "imageGenCallsLaunched": 4,
+    "imageGenCallsConsumed": 4,
+    "completedCalls": 1,
+    "unparsedCalls": 3,
+    "retryCount": 0,
+    "unlaunchedIdentityCount": 8,
+    "unlaunchedIdentities": [
+      "industrial_l02_v01",
+      "industrial_l02_v02",
+      "industrial_l03_v00",
+      "industrial_l03_v01",
+      "industrial_l03_v02",
+      "industrial_l04_v00",
+      "industrial_l04_v01",
+      "industrial_l04_v02"
+    ]
+  },
+  "preservation": {
+    "rawV01BytesChanged": false,
+    "rawV01IndustrialL01V00Sha256": {
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/raw/industrial_l01_v00-source-v01.png",
+      "expected": "7ca3e26234e7e15df9a46775a83f7132f89e1ea1f22d97c42ca6d3502099bbd2",
+      "actual": "7ca3e26234e7e15df9a46775a83f7132f89e1ea1f22d97c42ca6d3502099bbd2"
+    },
+    "oldNormalizedBytesChanged": false,
+    "oldEvidenceBytesChanged": false,
+    "oldByteMutation": false,
+    "filesDeleted": false,
+    "filesOverwrittenByThisCheckpoint": false,
+    "sourceV02CopiedToClaimRootCount": 1,
+    "unparsedArtifactsCopiedToClaimRootCount": 0,
+    "preservedRoots": [
+      "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial",
+      "docs/production/evidence/PLAY-099"
+    ]
+  },
+  "acceptance": {
+    "candidateReadyForIndependentReview": false,
+    "sourceReady": false,
+    "sourceAuthority": false,
+    "integrationAdmitted": false,
+    "rendererQuarantined": false,
+    "productionSelected": false,
+    "visualAcceptancePerformed": false
+  },
+  "executionAccounting": {
+    "readyNow": 0,
+    "running": 0,
+    "waitingOnJoin": 1,
+    "serializedAuthority": "Frontier/Integration chroma disposition is required before any further ImageGen, normalization, replay, or admission",
+    "nextRefill": "none until an explicit route amendment",
+    "capacity": {
+      "totalIdentitySlots": 12,
+      "launchedJobs": 4,
+      "remainingUnlaunchedSlots": 8
+    },
+    "launchedJobs": [
+      "industrial_l01_v00#1: completed output rejected at raw chroma gate",
+      "industrial_l01_v01#1: output hint unparsed; not copied",
+      "industrial_l01_v02#1: output hint unparsed; not copied",
+      "industrial_l02_v00#1: output hint unparsed; not copied"
+    ],
+    "unusedCapacityReasons": [
+      "first completed output has zero exact #ff00ff pixels and varied magenta corners",
+      "single-angle fail-closed stop prohibits retry or additional calls after the first chroma failure",
+      "three unparsed tool results are not accepted as source outputs or normalization inputs"
+    ],
+    "overlap": false,
+    "join": "blocked_at_source_v02_raw_chroma_gate"
+  }
+}

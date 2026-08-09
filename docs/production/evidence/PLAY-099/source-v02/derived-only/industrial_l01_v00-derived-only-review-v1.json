@@ -1,0 +1,32 @@
+{
+  "authorityCommit": "65825389d586a128ddf6feb5356c33661ba9a8e8",
+  "candidateHead": "69720ac475a5ba9bed7499952dbf3aef99fd6273",
+  "candidateReadyForIndependentReview": false,
+  "claimPath": "docs/production/claims/PLAY-099.world-art-industrial.md",
+  "claimSha256": "d5a42e16f9e7d5a4dc0a9667e797022651737535b190fb7917650504a28f108b",
+  "derivedOutputRoot": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/normalized/south-v02-derived-only/industrial_l01_v00",
+  "deterministicRuns": 2,
+  "identity": "industrial_l01_v00",
+  "integrationAdmitted": false,
+  "oldBytesPreserved": true,
+  "productionSelected": false,
+  "rawSourceBytesPreserved": true,
+  "rawSourcePath": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/raw/industrial_l01_v00-source-v02.png",
+  "rawSourceSha256": "8e33dafb3a40f7dac6f5ca8c9c5cb81df2b63011d3fd0d4a0302ec04a99d264a",
+  "rendererQuarantined": false,
+  "replayMatch": true,
+  "replayReceiptPath": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/normalized/south-v02-derived-only/industrial_l01_v00/derived-only-replay-receipt-v1.json",
+  "routeCanonicalSha256": "d195e3c2b1a502e3830fe22de9aba22c402dec79e7cfe76db2fff8125263b2ba",
+  "routeId": "four-view-v30:play-099-south-industrial-l01-v00-derived-only-non-admission-v1",
+  "schema": "PLAY-099-industrial-v30-derived-only-evidence-v1",
+  "sourceAuthority": false,
+  "sourceReady": false,
+  "task": "PLAY-099",
+  "unlaunchedIdentities": 8,
+  "unparsedArtifactsQuarantined": [
+    "industrial_l01_v01",
+    "industrial_l01_v02",
+    "industrial_l02_v00"
+  ],
+  "visualAcceptance": "not performed; frontier-owned"
+}

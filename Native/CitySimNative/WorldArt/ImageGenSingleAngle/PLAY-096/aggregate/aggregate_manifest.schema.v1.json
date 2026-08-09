@@ -1,0 +1,239 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "citysim://play-106/aggregate-manifest-v1",
+  "title": "PLAY-106 aggregate candidate manifest v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "task",
+    "contract",
+    "authority",
+    "scope",
+    "identities",
+    "rows",
+    "rawFiles",
+    "flags",
+    "duplicatePolicy"
+  ],
+  "properties": {
+    "schema": { "const": 1 },
+    "task": { "const": "PLAY-106" },
+    "contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["authoredFourView", "registration", "rotation", "lodChroma"],
+      "properties": {
+        "authoredFourView": { "const": "CONTRACT-025" },
+        "registration": { "const": "CONTRACT-026" },
+        "rotation": { "const": "CONTRACT-027" },
+        "lodChroma": { "const": "CONTRACT-028" }
+      }
+    },
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["master", "southAnchorDecision"],
+      "properties": {
+        "master": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+        "southAnchorDecision": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["path", "sha256"],
+          "properties": {
+            "path": { "type": "string", "minLength": 1 },
+            "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+          }
+        }
+      }
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "identityCount",
+        "directionCount",
+        "lodPayloadCount",
+        "physicalRawCount",
+        "directions",
+        "lods"
+      ],
+      "properties": {
+        "identityCount": { "const": 43 },
+        "directionCount": { "const": 172 },
+        "lodPayloadCount": { "const": 516 },
+        "physicalRawCount": { "const": 44 },
+        "directions": {
+          "type": "array",
+          "const": ["north", "east", "south", "west"]
+        },
+        "lods": {
+          "type": "array",
+          "const": ["city", "neighborhood", "block"]
+        }
+      }
+    },
+    "identities": {
+      "type": "array",
+      "minItems": 43,
+      "maxItems": 43,
+      "items": { "$ref": "#/$defs/identity" }
+    },
+    "rows": {
+      "type": "array",
+      "minItems": 172,
+      "maxItems": 172,
+      "items": { "$ref": "#/$defs/row" }
+    },
+    "rawFiles": {
+      "type": "array",
+      "minItems": 44,
+      "maxItems": 44,
+      "items": { "$ref": "#/$defs/rawFile" }
+    },
+    "flags": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sourceReady",
+        "integrationAdmitted",
+        "rendererQuarantined",
+        "productionSelected",
+        "readinessMutation",
+        "runtimeMutation",
+        "productionSelection",
+        "runtimeSelectorImplemented"
+      ],
+      "properties": {
+        "sourceReady": { "const": false },
+        "integrationAdmitted": { "const": false },
+        "rendererQuarantined": { "const": false },
+        "productionSelected": { "const": false },
+        "readinessMutation": { "const": false },
+        "runtimeMutation": { "const": false },
+        "productionSelection": { "const": false },
+        "runtimeSelectorImplemented": { "const": false }
+      }
+    },
+    "duplicatePolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["canonicalId", "decision", "unresolved"],
+      "properties": {
+        "canonicalId": { "const": "industrial_l01_v0" },
+        "decision": { "const": "CANONICAL_V01_PRESERVE" },
+        "unresolved": { "const": true }
+      }
+    }
+  },
+  "$defs": {
+    "identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["family", "kind", "level", "logicalId", "variant"],
+      "properties": {
+        "family": { "type": "string", "enum": ["residential", "commercial", "industrial", "civic"] },
+        "kind": { "type": "string", "minLength": 1 },
+        "level": { "type": "integer", "minimum": 1, "maximum": 4 },
+        "logicalId": { "type": "string", "minLength": 1 },
+        "variant": { "type": "integer", "minimum": 0, "maximum": 2 }
+      }
+    },
+    "sha": {
+      "type": ["string", "null"],
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "path": {
+      "type": ["string", "null"],
+      "minLength": 1
+    },
+    "rawFile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256", "logicalId", "status"],
+      "properties": {
+        "path": { "type": "string", "minLength": 1 },
+        "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "logicalId": { "type": "string", "minLength": 1 },
+        "status": { "const": "available" }
+      }
+    },
+    "raw": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256", "status"],
+      "properties": {
+        "path": { "$ref": "#/$defs/path" },
+        "sha256": { "$ref": "#/$defs/sha" },
+        "status": { "type": "string", "enum": ["available", "not_generated", "unresolved_duplicate"] }
+      }
+    },
+    "record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "sha256", "status"],
+      "properties": {
+        "path": { "const": null },
+        "sha256": { "const": null },
+        "status": { "const": "not_generated" }
+      }
+    },
+    "lod": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["lod", "path", "sha256", "status"],
+      "properties": {
+        "lod": { "type": "string", "enum": ["city", "neighborhood", "block"] },
+        "path": { "const": null },
+        "sha256": { "const": null },
+        "status": { "const": "not_generated" }
+      }
+    },
+    "readiness": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "candidateReadyForIndependentReview",
+        "sourceReady",
+        "integrationAdmitted",
+        "rendererQuarantined",
+        "productionSelected"
+      ],
+      "properties": {
+        "candidateReadyForIndependentReview": { "const": false },
+        "sourceReady": { "const": false },
+        "integrationAdmitted": { "const": false },
+        "rendererQuarantined": { "const": false },
+        "productionSelected": { "const": false }
+      }
+    },
+    "row": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["logicalId", "direction", "identityDirectionKey", "alias", "raw", "record", "lods", "readiness"],
+      "properties": {
+        "logicalId": { "type": "string", "minLength": 1 },
+        "direction": { "type": "string", "enum": ["north", "east", "south", "west"] },
+        "identityDirectionKey": { "type": "string", "minLength": 1 },
+        "alias": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["aliasOf", "transform"],
+          "properties": {
+            "aliasOf": { "const": null },
+            "transform": { "const": "none" }
+          }
+        },
+        "raw": { "$ref": "#/$defs/raw" },
+        "record": { "$ref": "#/$defs/record" },
+        "lods": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": { "$ref": "#/$defs/lod" }
+        },
+        "readiness": { "$ref": "#/$defs/readiness" }
+      }
+    }
+  }
+}

@@ -1,0 +1,181 @@
+{
+  "candidateReadyForIndependentReview": true,
+  "contract028": {
+    "path": "docs/production/decisions/CONTRACT-028-alpha-aware-lod-chroma.md",
+    "sha256": "f8b80a98b07029a51b8e61701c85017bd82c8bb0b6c967da6d1fa7fae631da7d"
+  },
+  "derivedOnly": true,
+  "direction": "south",
+  "imageGenCalls": 0,
+  "integrationAdmitted": false,
+  "lods": {
+    "block": {
+      "canvas": [
+        1024,
+        683
+      ],
+      "checks": {
+        "boundaryResidualChromaPixels": 0,
+        "canvas": [
+          1024,
+          683
+        ],
+        "frameEdgeOpaquePixels": 0,
+        "hiddenRgbPixels": 0,
+        "strictKeyedMattePixels": 0
+      },
+      "decodedSha256": "491e6d6f8e6f773ccf462fd39f0ab4db65f7472a5c21927832ee0a7509898193",
+      "filter": "lanczos",
+      "format": "RGBA",
+      "fullCanvas": true,
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-097/residential/normalized-contract-028/residential_l01_variant_0/residential_l01_variant_0-block.png",
+      "rounding": "round-half-even",
+      "sha256": "d1768eefd2a2eb4e121f9dab1bbc5187d47f1a526c3aa83c02e5f2658687c1a1"
+    },
+    "city": {
+      "canvas": [
+        256,
+        171
+      ],
+      "checks": {
+        "boundaryResidualChromaPixels": 0,
+        "canvas": [
+          256,
+          171
+        ],
+        "frameEdgeOpaquePixels": 0,
+        "hiddenRgbPixels": 0,
+        "strictKeyedMattePixels": 0
+      },
+      "decodedSha256": "97ecb3722edc8abd2d5c253c62c66ef99f7794df6e6a6a87a64197e8160e55fc",
+      "filter": "lanczos",
+      "format": "RGBA",
+      "fullCanvas": true,
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-097/residential/normalized-contract-028/residential_l01_variant_0/residential_l01_variant_0-city.png",
+      "rounding": "round-half-even",
+      "sha256": "6f6374b20bf0e9cd558ee864e7996cd21a41209b4615bb4049c17427dc3a52b2"
+    },
+    "neighborhood": {
+      "canvas": [
+        512,
+        342
+      ],
+      "checks": {
+        "boundaryResidualChromaPixels": 0,
+        "canvas": [
+          512,
+          342
+        ],
+        "frameEdgeOpaquePixels": 0,
+        "hiddenRgbPixels": 0,
+        "strictKeyedMattePixels": 0
+      },
+      "decodedSha256": "5dc6d1513e7b3779b199fb56e16fe99ba5e9488f2a65b5dad8af98272288c9ad",
+      "filter": "lanczos",
+      "format": "RGBA",
+      "fullCanvas": true,
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-097/residential/normalized-contract-028/residential_l01_variant_0/residential_l01_variant_0-neighborhood.png",
+      "rounding": "round-half-even",
+      "sha256": "dc59e9a7457c1028b64f63549110d7f699f6fcca725fc2e07a8d53682ff9dd3b"
+    }
+  },
+  "logicalId": "residential_l01_variant_0",
+  "productionSelected": false,
+  "rawSourceAdmission": "RETURN_HARD_BLOCKER",
+  "recordSha256": "7bdffb097ce447aa647103530dccefc437296f76feb46fae285a60ec6ddb63bd",
+  "registered": {
+    "canvas": [
+      1536,
+      1024
+    ],
+    "checks": {
+      "boundaryResidualChromaPixels": 0,
+      "canvas": [
+        1536,
+        1024
+      ],
+      "frameEdgeOpaquePixels": 0,
+      "hiddenRgbPixels": 0,
+      "strictKeyedMattePixels": 0
+    },
+    "decodedSha256": "23280b4ad25d99df637d7ad28557e689af4d73517e581a2f1934411ecafbc4aa",
+    "format": "RGBA",
+    "fullCanvas": true,
+    "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-097/residential/normalized-contract-028/residential_l01_variant_0/residential_l01_variant_0-registered.png",
+    "sha256": "04c1e6fea4ab5ad03afb3a6f582343947223eb2394f46d46334967725193578f"
+  },
+  "registration": {
+    "coordinateRule": "CONTRACT-026 source coordinates retained; no pixel-derived crop/pivot/scale/frontage",
+    "footprintPolygonSource": [
+      [
+        768,
+        640
+      ],
+      [
+        1024,
+        768
+      ],
+      [
+        768,
+        896
+      ],
+      [
+        512,
+        768
+      ]
+    ],
+    "forbidden": [
+      "occupied-bbox-crop",
+      "pixel-derived-pivot",
+      "pixel-derived-scale",
+      "pixel-derived-frontage",
+      "runtime-mirroring",
+      "runtime-rotation",
+      "fallback",
+      "alias"
+    ],
+    "frontageSocketSource": [
+      640,
+      832
+    ],
+    "groundPivotSource": [
+      768,
+      896
+    ],
+    "sourceCanvas": [
+      1536,
+      1024
+    ]
+  },
+  "rendererQuarantined": false,
+  "repairedFailureReceipts": {
+    "docsMirrorPath": "docs/production/evidence/PLAY-097/residential-source-v02-chroma-failure.json",
+    "docsMirrorSha256": "7a5f4732cfe2ff95753a3e0c718395710f135bb52295646f80d729a367e79de9",
+    "handoffPath": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-097/residential/handoff/source-v02-chroma-failure.json",
+    "handoffSha256": "7f8686f0bdb9026d176ed4a7a793da615c6f4082ef2dc663453da82184903878"
+  },
+  "routeBinding": {
+    "authorityCommit": "65825389d586a128ddf6feb5356c33661ba9a8e8",
+    "baseCommit": "a61ab80101f596f56ffc1dd7e37b32bd1b220357",
+    "claimSha256": "816acffd9e8cb7cc76ad068b7c6b6ff9fed4015b1646c37ac68c148714901126",
+    "expectedHead": "f85de10c120ffba6dd2e7fd129b0b66674174b73",
+    "routeId": "four-view-v33:play-097-south-residential-contract028-derived-only-v4",
+    "routeSha256": "cc2634d2195c0940aa413aff106b493bc63db758fec14b74605e8c17c83d7672"
+  },
+  "schema": "citysim.play-097.residential-contract028-record.v1",
+  "source": {
+    "canvas": [
+      1536,
+      1024
+    ],
+    "mode": "RGB",
+    "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-097/residential/raw/residential_l01_variant_0/source-v01.png",
+    "rawPreservedByteForByte": true,
+    "sha256": "a808c5da11450418afa26505261cac196480d7d98578e2e8ac796288c7ee0e57"
+  },
+  "sourceAuthority": false,
+  "sourceCopy": false,
+  "sourceReady": false,
+  "task": "PLAY-097",
+  "visualAcceptance": "not_performed_worker_cannot_self_accept"
+}

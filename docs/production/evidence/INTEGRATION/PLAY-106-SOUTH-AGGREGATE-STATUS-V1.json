@@ -4,7 +4,7 @@
   "taskId": "PLAY-106",
   "direction": "south",
   "status": "BLOCKED",
-  "updatedAt": "2026-08-09T14:37:47Z",
+  "updatedAt": "2026-08-09T14:46:54Z",
   "authority": {
     "path": "docs/production/decisions/PLAY-106-RAW-SOUTH-ANCHOR-AUTHORITY.md",
     "sha256": "1ed3486f526dc1ab3da352c85fce3920468375f8169529d933bbfc275b1c739d",
@@ -38,15 +38,17 @@
       "worker": "/Users/James/.codex/worktrees/df86/city-sim",
       "branch": "codex/citysim-world-art-residential",
       "head": "9e2da6ce68d998dc9bf8fbb6d6c2f9ffeae33382",
-      "routeId": "four-view-v34:play-097-south-residential-contract028-frontier-review-v1",
-      "routeSha256": "3bb79c29b93b6e3c7270f900d388145d3acc1ca0f4fd4ce30950aea4dde4bb72",
-      "candidateStatus": "APPROVE_candidate_only",
+      "routeId": "four-view-v36:play-097-south-residential-source-regeneration-v2",
+      "routeSha256": "6311e802773e7ac54c40f85c29dbde57eda5bb03bf036cf441e6772f6c8ae6c6",
+      "candidateStatus": "SOURCE_REGENERATION_AUTHORIZED_execution_pending",
       "rawAdmission": "RETURN_HARD_BLOCKER",
       "sourceReady": false,
       "integrationAdmitted": false,
       "frontierDisposition": "SOURCE_REGENERATION_AUTHORIZED_authority_only",
       "sourceAuthorityRouteId": "four-view-v35:play-097-south-residential-source-authority-v2",
       "sourceAuthorityRouteSha256": "02faa9c71fbeef243cc70a1ad9fd4ec29fb4779adc5fa38c5e94423a936173a4",
+      "sourceExecutionRouteId": "four-view-v36:play-097-south-residential-source-regeneration-v2",
+      "sourceExecutionRouteSha256": "6311e802773e7ac54c40f85c29dbde57eda5bb03bf036cf441e6772f6c8ae6c6",
       "sourceExecutionStarted": false
     },
     {
@@ -111,7 +113,8 @@
     "No common accepted-master non-alias 43-row digest is published.",
     "PLAY-096 repaired direction-handoff schema and semantic-validator bindings are not aggregate-bound.",
     "Renderer/runtime/manifest/production mutation is forbidden before exact 43x4x3 admission.",
-    "Civic V42 returned: seven south-handoff receipt SHA fields drift from current registration bytes, and Contract-028 boundary residuals remain in all 21 normalized LODs; no Civic admission receipt is lawful."
+    "Civic Frontier returned: seven south-handoff receipt SHA fields drift from current registration bytes, and Contract-028 boundary residuals remain in all 21 normalized LODs; no Civic admission receipt is lawful.",
+    "Residential V36 is execution-pending only: its worker helpers still carry stale V29 route constants, so execution must stop at zero mutation until those constants are rebound to V36."
   ],
   "nextLegalEvent": "Integration publishes exact 43-row South admission ledger and revised continuation authority; status-only projection does not authorize source admission, renderer activation, runtime mutation, or production selection."
 }

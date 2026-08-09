@@ -1,0 +1,111 @@
+{
+  "schema": 1,
+  "artifactKind": "projection/status_only",
+  "taskId": "PLAY-106",
+  "direction": "south",
+  "status": "BLOCKED",
+  "updatedAt": "2026-08-09T12:34:10Z",
+  "authority": {
+    "path": "docs/production/decisions/PLAY-106-RAW-SOUTH-ANCHOR-AUTHORITY.md",
+    "sha256": "1ed3486f526dc1ab3da352c85fce3920468375f8169529d933bbfc275b1c739d",
+    "contract025Sha256": "4e8ab63173d67581332e7d27730b97315906fda4e29b999969456441809479ed",
+    "contract026Sha256": "4781de72429a1f691b9226f7f7668b170b278a4ccd171ac4ea02f5e1df9176eb",
+    "registrationProfileSha256": "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8"
+  },
+  "scope": {
+    "localRawCoverageOnly": true,
+    "sourceAdmissionLedger": null,
+    "acceptedMasterDigest": null,
+    "rendererManifest": null,
+    "readinessMutation": false,
+    "runtimeMutation": false,
+    "productionSelection": false
+  },
+  "counts": {
+    "expectedCanonicalIdentities": 43,
+    "localSouthRawPathShaCoverage": 43,
+    "integrationAdmitted": 0,
+    "canonicalAdmissionReceiptBindings": 0,
+    "expectedAuthoredViews": 172,
+    "expectedLodPayloads": 516
+  },
+  "familyCoverage": [
+    {
+      "family": "residential",
+      "identityCount": 12,
+      "canonicalIdentityPattern": "residential_l01_v0..residential_l04_v2",
+      "rawRoot": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-097/residential/raw",
+      "worker": "/Users/James/.codex/worktrees/df86/city-sim",
+      "branch": "codex/citysim-world-art-residential",
+      "head": "9e2da6ce68d998dc9bf8fbb6d6c2f9ffeae33382",
+      "routeId": "four-view-v34:play-097-south-residential-contract028-frontier-review-v1",
+      "routeSha256": "3bb79c29b93b6e3c7270f900d388145d3acc1ca0f4fd4ce30950aea4dde4bb72",
+      "candidateStatus": "APPROVE_candidate_only",
+      "rawAdmission": "RETURN_HARD_BLOCKER",
+      "sourceReady": false,
+      "integrationAdmitted": false
+    },
+    {
+      "family": "commercial",
+      "identityCount": 12,
+      "canonicalIdentityPattern": "commercial_l01_v0..commercial_l04_v2",
+      "rawRoot": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-098/commercial/raw",
+      "worker": "/Users/James/.codex/worktrees/34c2/city-sim",
+      "branch": "codex/citysim-world-art-commercial",
+      "head": "f38c235eb57e9d115e606d24e85c27bc23522a00",
+      "routeId": "four-view-v23:play-098-commercial-contract028-frontier-review-v1",
+      "routeSha256": "21f6cd9462d17a3a36cebf3196cc3729cddf3b622e0f3436eb7485f3f4cd37fb",
+      "candidateStatus": "APPROVE_candidate_only",
+      "rawAdmission": "RETURN_HARD_BLOCKER",
+      "sourceReady": false,
+      "integrationAdmitted": false
+    },
+    {
+      "family": "industrial",
+      "identityCount": 12,
+      "canonicalIdentityPattern": "industrial_l01_v0..industrial_l04_v2",
+      "rawRoot": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/raw",
+      "worker": "/Users/James/.codex/worktrees/6799/city-sim",
+      "branch": "codex/citysim-world-art-industrial",
+      "head": "e811521e749c9886a03233bea24b71c7a915974d",
+      "routeId": "four-view-v38:play-099-south-industrial-source-regeneration-v2",
+      "routeSha256": "1210f45a30c6f0fddd739b009f0d5f2bb809e549ec54faaf82f9a7dee2198966",
+      "candidateStatus": "SOURCE_REGENERATION_REQUIRED_pending_dependencies",
+      "rawAdmission": "RETURN_HARD_BLOCKER",
+      "sourceReady": false,
+      "integrationAdmitted": false
+    },
+    {
+      "family": "civic",
+      "identityCount": 7,
+      "canonicalIdentityPattern": "civic_{city_hall,fire_station,park,police_station,power_plant,school,water_tower}_v0",
+      "rawRoot": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/raw",
+      "worker": "/Users/James/.codex/worktrees/c96d/city-sim",
+      "branch": "codex/citysim-world-art-civic",
+      "head": "fd9e2b38bcc1215064c7cc81a4a6e9fc57b56786",
+      "routeId": "four-view-v40:play-100-civic-metadata-rebind-v2",
+      "routeSha256": "ced76e6624390bbe0a57494a44bc8b24dfa0dae2f1e04df93c8240a447f24cb5",
+      "candidateStatus": "METADATA_REBIND_PENDING",
+      "rawAdmission": "CANDIDATE_ONLY",
+      "sourceReady": false,
+      "integrationAdmitted": false
+    }
+  ],
+  "admissionFields": {
+    "southRawPath": null,
+    "southRawSha256": null,
+    "southAdmissionReceiptPath": null,
+    "southAdmissionReceiptSha256": null,
+    "commonAcceptedMasterDigest": null,
+    "play096SchemaBinding": null,
+    "play096SemanticValidatorBinding": null
+  },
+  "blockers": [
+    "No Integration-admitted South raw path and SHA binding exists for any of the 43 identities.",
+    "No canonical South source-admission receipt path and SHA binding exists for any of the 43 identities.",
+    "No common accepted-master non-alias 43-row digest is published.",
+    "PLAY-096 repaired direction-handoff schema and semantic-validator bindings are not aggregate-bound.",
+    "Renderer/runtime/manifest/production mutation is forbidden before exact 43x4x3 admission."
+  ],
+  "nextLegalEvent": "Integration publishes exact 43-row South admission ledger and revised continuation authority; status-only projection does not authorize source admission, renderer activation, runtime mutation, or production selection."
+}

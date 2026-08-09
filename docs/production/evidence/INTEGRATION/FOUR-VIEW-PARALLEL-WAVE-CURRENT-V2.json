@@ -3,9 +3,9 @@
   "documentType": "CITYSIM_CURRENT_PARALLEL_WORK_PROJECTION",
   "supersedes": "FOUR-VIEW-PARALLEL-WAVE-CURRENT-V1.json",
   "authority": {
-    "capturedAtIntegrationHead": "80b3e1e5c8d253ef1bdfca30f270be5b89c24d1d",
-    "publishedBaseline": "80b3e1e5c8d253ef1bdfca30f270be5b89c24d1d",
-    "publicationStatusAtCapture": "published_origin_parity",
+    "capturedAtIntegrationHead": "e7d846f71b24e703eaefb21be090da465e170df7",
+    "publishedBaseline": "e7d846f71b24e703eaefb21be090da465e170df7",
+    "publicationStatusAtCapture": "published_origin_parity_after_route_rebind",
     "protectedDirt": [
       ".vscode/launch.json",
       "docs/production/evidence/INTEGRATION/industrial-l04-prelock-north-a-schedule-v1.json"
@@ -23,26 +23,29 @@
     "fullSuiteFrequency": "once_per_exact_aggregate"
   },
   "cadence": {
-    "waveId": "FOUR-VIEW-PLAY-103-105-V9",
-    "snapshotReceipt": "current-turn-read-only-census",
+    "waveId": "FOUR-VIEW-PLAY-098-103-V2",
+    "snapshotReceipt": "route-rebind-and-visible-dispatch-batch-e7d846f7",
     "cellCaptain": "world-art-direction-captain",
     "acknowledgementSLA": "one coordination round",
-    "nextJoin": "North/Commercial/Civic Contract-028 cleanup and visual review; West frontier visual review; East owner checkpoint after route repair; renderer and QA remain warm",
+    "nextJoin": "Five visible Luna packets acknowledge and return focused proofs; East checkpoints protected dirt; West receives a fresh route rebind before visual review; renderer/QA prep remains warm.",
     "changedRows": [
-      "PLAY-103-NORTH",
-      "PLAY-105-WEST",
       "PLAY-098-COMMERCIAL",
       "PLAY-100-CIVIC",
-      "PLAY-104-EAST"
+      "PLAY-101-RENDERER",
+      "PLAY-102-QA",
+      "PLAY-103-NORTH",
+      "PLAY-104-EAST",
+      "PLAY-105-WEST"
     ],
     "refereeQueue": [
-      "PLAY-105-WEST",
+      "PLAY-103-NORTH",
       "PLAY-098-COMMERCIAL",
-      "PLAY-100-CIVIC"
+      "PLAY-100-CIVIC",
+      "PLAY-105-WEST"
     ],
     "reservedRendererSlot": "after 4/4 source admission",
     "reservedQASlot": "after exact renderer aggregate",
-    "unresolvedSolDecision": "North alpha-aware visual disposition and South family source admission"
+    "unresolvedSolDecision": "Contract-028 literal-scale visual disposition and aggregate South source admission; no readiness flags advanced."
   },
   "rows": [
     {
@@ -52,10 +55,10 @@
       "worktree": "/Users/James/.codex/worktrees/f55b/city-sim",
       "head": "12c081381c97a41a05c87c926de0ef7becf5db12",
       "clean": true,
-      "state": "visual_return_lod_residual_chroma",
+      "state": "dispatch_ack_pending_contract028_return",
       "routeId": "four-view-v13:play-103-north-alpha-aware-lod-chroma-v1",
       "modelTier": "LUNA_IMPLEMENTATION",
-      "nextSafeAction": "Run Contract-028 post-resize alpha-aware cleanup; preserve raw bytes and candidate-only readiness."
+      "nextSafeAction": "Obtain visible route ACK, then run Contract-028 cleanup; preserve raw bytes and candidate-only readiness."
     },
     {
       "id": "PLAY-105-WEST",
@@ -64,10 +67,10 @@
       "worktree": "/Users/James/.codex/worktrees/e6f2/city-sim",
       "head": "beb293bb20bba1c002f5874fa355c702f6d3fe65",
       "clean": true,
-      "state": "technical_candidate_approved_visual_pending",
+      "state": "technical_candidate_visual_pending_route_rebind",
       "routeId": "four-view-v13:play-105-west-production-repair-v10",
       "modelTier": "LUNA_IMPLEMENTATION",
-      "nextSafeAction": "Frontier visual/source disposition only; retain sourceReady=false until literal-scale review passes."
+      "nextSafeAction": "Rebind V10 to live beb293bb before independent literal-scale visual review; keep sourceReady=false."
     },
     {
       "id": "PLAY-098-COMMERCIAL",
@@ -76,10 +79,10 @@
       "worktree": "/Users/James/.codex/worktrees/34c2/city-sim",
       "head": "dc73ea7075e6cd441d062ef7f99f594a57fbd088",
       "clean": true,
-      "state": "visual_return_lod_residual_chroma",
+      "state": "dispatch_ack_pending_contract028_return",
       "routeId": "four-view-v5:play-098-admission-repair-v3",
       "modelTier": "LUNA_IMPLEMENTATION",
-      "nextSafeAction": "Rebind evidence, then run Contract-028 cleanup for residual LOD fringe; preserve pixels."
+      "nextSafeAction": "Obtain visible ACK, rebind evidence, then run Contract-028 cleanup; preserve pixels."
     },
     {
       "id": "PLAY-100-CIVIC",
@@ -88,10 +91,10 @@
       "worktree": "/Users/James/.codex/worktrees/c96d/city-sim",
       "head": "da68895b967ab21d26317134cd26e03043ee8b38",
       "clean": true,
-      "state": "visual_return_lod_residual_chroma",
+      "state": "dispatch_ack_pending_contract028_return",
       "routeId": "four-view-v5:play-100-south-admission-repair-v2",
       "modelTier": "LUNA_IMPLEMENTATION",
-      "nextSafeAction": "Rebind evidence, then run Contract-028 cleanup for residual LOD fringe; preserve pixels."
+      "nextSafeAction": "Obtain visible ACK, rebind evidence, then run Contract-028 cleanup; preserve pixels."
     },
     {
       "id": "PLAY-104-EAST",
@@ -107,29 +110,31 @@
       "state": "route_repaired_owner_checkpoint_required",
       "routeId": "four-view-v10:play-104-east-production-repair-v2",
       "modelTier": "LUNA_LOCAL_DEBUG",
-      "nextSafeAction": "Owner checkpoints portable_replay.py and route-snapshot/; preserve both paths, then acknowledge the repaired route before any mutation."
+      "nextSafeAction": "Owner checkpoints portable_replay.py and route-snapshot/; no route mutation or sync while dirty."
     },
     {
       "id": "PLAY-101-RENDERER",
       "lane": "renderer-intake",
       "branch": "codex/citysim-world-rendering-single-angle",
       "worktree": "/Users/James/.codex/worktrees/ccf8/city-sim",
-      "head": "f581e7a56ce1f5a091868e1cd0322b102274cf4f",
+      "head": "ef93544a3d84b5ebce95be1dfa3cbeecc3331355",
       "clean": true,
-      "state": "intake_sync_complete_route_pending",
+      "state": "route_published_ack_pending",
       "modelTier": "LUNA_IMPLEMENTATION",
-      "nextSafeAction": "Publish a fresh route bound to f581e7a5, then dispatch the non-shipping executable intake-plan packet; keep source admissions, runtime selector, and shipping resources locked."
+      "nextSafeAction": "Obtain visible ACK, then run focused non-shipping intake proof; source admissions and runtime selector remain locked.",
+      "routeId": "four-view-v14:play-101-intake-prep-v8"
     },
     {
       "id": "PLAY-102-QA",
       "lane": "playtest-preregistration",
       "branch": "codex/citysim-playtest-single-angle",
       "worktree": "/Users/James/.codex/worktrees/fee0/city-sim",
-      "head": "83e7e436f6d96c71d74ef1b59e2b80754d3bc2c1",
+      "head": "c2152839b8bd602838beeb64efb5d0d817ccb61a",
       "clean": true,
-      "state": "candidate_neutral_preregistration_ready",
+      "state": "route_published_ack_pending",
       "modelTier": "LUNA_MECHANICAL",
-      "nextSafeAction": "Keep 24-camera regular/compact fixture ready; launch only after exact renderer candidate."
+      "nextSafeAction": "Obtain visible ACK, then run candidate-neutral fixture/source preflight; keep candidate fields null/UNMEASURED.",
+      "routeId": "four-view-v14:play-102-fixture-source-preflight-v2"
     },
     {
       "id": "SOUTH-ADMISSION",
@@ -160,6 +165,6 @@
     "fullSuite": "not_run",
     "stagedApp": "not_run",
     "independentRealAppQA": "not_run",
-    "push": "origin_parity_at_80b3e1e5"
+    "push": "origin_parity_at_e7d846f7_route_publication"
   }
 }

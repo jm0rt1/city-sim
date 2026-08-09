@@ -1,0 +1,12 @@
+{
+  "eventKeys": [
+    {
+      "authorityCommit": "65825389d586a128ddf6feb5356c33661ba9a8e8",
+      "candidateOrResultCommit": "fd9e2b38bcc1215064c7cc81a4a6e9fc57b56786",
+      "routeId": "four-view-v40:play-100-civic-metadata-rebind-v2",
+      "taskId": "PLAY-100",
+      "trigger": "delegation_ready_for_dispatch"
+    }
+  ],
+  "schema": 1
+}

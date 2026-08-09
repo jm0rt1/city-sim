@@ -1,0 +1,217 @@
+{
+  "schema": 1,
+  "artifactKind": "play-106_status_only_delta_manifest",
+  "taskId": "PLAY-106",
+  "routeId": "integration-v5:play-106-south-aggregate-status-only-rebind-v4",
+  "routeCanonicalSha256": "902e9cfcb7d25512559d4ae934c9b9d4b0d86cd43498608dfaaaba1f18ba7400",
+  "authority": {
+    "integrationMasterHead": "41c43a653b5347dc405ddf5fc3544a0154fd70d6",
+    "baseCommit": "41c43a653b5347dc405ddf5fc3544a0154fd70d6",
+    "ownerThreadId": "019fe430-de7a-7a31-81fc-5b077b04b09f",
+    "featureAuthorThreadId": null,
+    "allowedPath": "docs/production/evidence/PLAY-089/play-106-south-status-only-rebind-v4/STATUS-ONLY-DELTA-MANIFEST.json",
+    "integrationMutationAuthorized": false
+  },
+  "currentInputBindings": {
+    "status": {
+      "path": "docs/production/evidence/INTEGRATION/PLAY-106-SOUTH-AGGREGATE-STATUS-V1.json",
+      "sha256": "84dd2eecba83546d39bcb02fca26559d4ef51f992392930df4d9e9e5066171a0"
+    },
+    "preflight": {
+      "path": "docs/production/evidence/INTEGRATION/PLAY-106-SOUTH-AGGREGATE-PREFLIGHT-V3.json",
+      "sha256": "c9373402f0237f8156048ed234652717495b520341eedc73b11d730952d136f3"
+    },
+    "batchLedger": {
+      "path": "docs/production/evidence/INTEGRATION/WORLD_ART_PARALLEL_BATCH_LEDGER.json",
+      "sha256": "7cc0b81b3235264a981e9103d10b172ea49d81b75bc70a888b94ffc16250fc9b"
+    },
+    "dispatch": {
+      "path": "docs/production/evidence/INTEGRATION/WORLD_ART_PARALLEL_DISPATCH-2026-08-09T1500Z.json",
+      "sha256": "ad4ed36f186dde7bd2d391671312a875e7cba506185845792f4a8d8f616bb497"
+    }
+  },
+  "familySnapshots": [
+    {
+      "family": "residential",
+      "routeId": "four-view-v39:play-097-residential-l01-v0-source-authority-after-v38-return-v1",
+      "routeRawSha256": "8dbb83b231d64d0a86c89cfa79e28421a4a44e7c8683ae5fa2c1299cd3c02265",
+      "routeCanonicalSha256": "fa41ad4baed8e2592a299823ef3030bec5ba821ee70ce991e1a32fab1236e8cc",
+      "dispatchRawSha256": "185385724ef23790e4f52322712ac9379e0dd8ba40c86c5e85527b3ab1a0c0f8",
+      "dispatchCanonicalSha256": "d42535412dd31d74a86ee41ed89f949cc6a8218729bfe7b5a2fe9d8e5288f8d1",
+      "workerHead": "f6dca0749594cf44dd3aebf6396fef5eae9479fa"
+    },
+    {
+      "family": "commercial",
+      "routeId": "four-view-v23:play-098-commercial-contract028-frontier-review-v1",
+      "routeRawSha256": "53d228a3925f4463926b04cffd59bf90a59151fa4e2fdc0ada73fcbecc90417d",
+      "routeCanonicalSha256": "21f6cd9462d17a3a36cebf3196cc3729cddf3b622e0f3436eb7485f3f4cd37fb",
+      "dispatchRawSha256": "315682af7017efde8b34aa52eb3ac55605507aeeed02a92be31d8f5d12c01ee4",
+      "dispatchCanonicalSha256": "2ae41a3f4c80dc026ee27f51668316c7f176a16b6ff26df80775d97b32c3e631",
+      "workerHead": "f38c235eb57e9d115e606d24e85c27bc23522a00"
+    },
+    {
+      "family": "industrial",
+      "routeId": "four-view-v38:play-099-south-industrial-source-regeneration-v2",
+      "routeRawSha256": "fca861ffa23ce2c0f8d6a9f8a53a0b27394744e378ae9fbb6cf54746dd9bb02e",
+      "routeCanonicalSha256": "1210f45a30c6f0fddd739b009f0d5f2bb809e549ec54faaf82f9a7dee2198966",
+      "dispatchRawSha256": "0ef8a024374fca610ad7e56c9661f1f3680d6ab81b0ad633b194954f6ecac640",
+      "dispatchCanonicalSha256": "797c74bb80f0e1bbc7c59b3d40fe2356c3d79d0527ff6bc81db94e695038977f",
+      "workerHead": "e811521e749c9886a03233bea24b71c7a915974d"
+    },
+    {
+      "family": "civic",
+      "routeId": "four-view-v42:play-100-civic-frontier-art-source-review-v5",
+      "routeRawSha256": "c604b9c0c6438827fb56f93b37981059904d31e9d6a695c590f4d1a213741d26",
+      "routeCanonicalSha256": "de71ac7ef2ac41dbab3056e2355bc466fe739f40822461ff13e9a7b3d4b82fdc",
+      "dispatchRawSha256": "b0e16af7d5882860a9f84ab8c47cc1337483420f234100ed927cb87860d7dde4",
+      "dispatchCanonicalSha256": "5f465bba4740bed1dfe607945ca3ac600cfb744b2a3c1ac44a5157edf3815d96",
+      "workerHead": "75d202c4dbce1789f9c98891c66ed8f6e9180f4e"
+    }
+  ],
+  "coverage": {
+    "expectedCanonicalIdentities": 43,
+    "actualCanonicalRows": 43,
+    "expectedAuthoredViews": 172,
+    "expectedLodPayloads": 516,
+    "physicalRawFilesObserved": 44,
+    "industrialDuplicatePhysicalFiles": 2,
+    "industrialDuplicateRawCandidates": [
+      {
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/raw/industrial_l01_v00-source-v01.png",
+        "sha256": "7ca3e26234e7e15df9a46775a83f7132f89e1ea1f22d97c42ca6d3502099bbd2"
+      },
+      {
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/raw/industrial_l01_v00-source-v02.png",
+        "sha256": "8e33dafb3a40f7dac6f5ca8c9c5cb81df2b63011d3fd0d4a0302ec04a99d264a"
+      }
+    ],
+    "duplicateResolution": null,
+    "canonicalIds": [
+      "residential_l01_v0",
+      "residential_l01_v1",
+      "residential_l01_v2",
+      "residential_l02_v0",
+      "residential_l02_v1",
+      "residential_l02_v2",
+      "residential_l03_v0",
+      "residential_l03_v1",
+      "residential_l03_v2",
+      "residential_l04_v0",
+      "residential_l04_v1",
+      "residential_l04_v2",
+      "commercial_l01_v0",
+      "commercial_l01_v1",
+      "commercial_l01_v2",
+      "commercial_l02_v0",
+      "commercial_l02_v1",
+      "commercial_l02_v2",
+      "commercial_l03_v0",
+      "commercial_l03_v1",
+      "commercial_l03_v2",
+      "commercial_l04_v0",
+      "commercial_l04_v1",
+      "commercial_l04_v2",
+      "industrial_l01_v0",
+      "industrial_l01_v1",
+      "industrial_l01_v2",
+      "industrial_l02_v0",
+      "industrial_l02_v1",
+      "industrial_l02_v2",
+      "industrial_l03_v0",
+      "industrial_l03_v1",
+      "industrial_l03_v2",
+      "industrial_l04_v0",
+      "industrial_l04_v1",
+      "industrial_l04_v2",
+      "civic_park_v0",
+      "civic_power_plant_v0",
+      "civic_water_tower_v0",
+      "civic_fire_station_v0",
+      "civic_police_station_v0",
+      "civic_school_v0",
+      "civic_city_hall_v0"
+    ],
+    "canonicalRowsSha256": "dfd823aa63fa7aa141124b04f3b07a444b68a9481244aa76ef6c495b5a0ab3c1",
+    "rowSource": "PLAY-106-SOUTH-AGGREGATE-PREFLIGHT-V3.rows",
+    "rowSourceSha256": "c9373402f0237f8156048ed234652717495b520341eedc73b11d730952d136f3"
+  },
+  "admissionAndReadiness": {
+    "integrationAdmitted": 0,
+    "sourceReady": false,
+    "rendererQuarantined": false,
+    "productionSelected": false,
+    "candidateReadyForIndependentReview": true,
+    "readinessMutation": false,
+    "runtimeMutation": false,
+    "rendererManifest": null,
+    "sourceAdmissionLedger": null,
+    "commonAcceptedMasterDigest": null,
+    "play096SchemaBinding": null,
+    "play096SemanticValidatorBinding": null
+  },
+  "fieldLevelDelta": {
+    "status": [
+      "/authority/integrationMasterHead: prior 1d6d7019ee72e06ba5eb1ac0b9356327a6f22026 -> 41c43a653b5347dc405ddf5fc3544a0154fd70d6",
+      "/familyCoverage/0: prior Residential V38 execution-pending snapshot -> current V39 identity-scoped Frontier authority after V38 return",
+      "/familyCoverage/0/head: prior a1bade741ab31154e11906fc09c4ecdac9d67fe0 -> f6dca0749594cf44dd3aebf6396fef5eae9479fa",
+      "/familyCoverage/0/routeId and routeSha256: prior V38 execution route -> V39 identity-scoped route/dispatch snapshot",
+      "/status/counts and admissionFields: preserve 43 rows, 0/43 admission, and null admission bindings"
+    ],
+    "preflight": [
+      "/authority/authorityCommit, /authority/baseCommit, /authority/expectedHead: prior 7e7598a79f21d65299982e55810a5017253d1c91 -> 41c43a653b5347dc405ddf5fc3544a0154fd70d6",
+      "/authority/sourceStatusProjection: current status input remains 84dd2eecba83546d39bcb02fca26559d4ef51f992392930df4d9e9e5066171a0 until a separately authorized Integration checkpoint",
+      "/families/0: prior Residential V35/V38 snapshot -> current V39 identity-scoped authority snapshot",
+      "/play096/currentHarnessConstants: V7 Frontier approval is metadata-only; schema/semantic aggregate fields remain null",
+      "/scope: preserve 43 canonical rows, 44 physical raws, 0/43 integration admission, all closed flags"
+    ],
+    "batchLedger": [
+      "/integrationWriter/publishedBase and /integrationWriter/technicalHeadBeforeLedger: prior 7e7598a79f21d65299982e55810a5017253d1c91 -> 41c43a653b5347dc405ddf5fc3544a0154fd70d6",
+      "/familyAuthority/statusProjection and aggregatePreflight: current input hashes remain 84dd2eecba83546d39bcb02fca26559d4ef51f992392930df4d9e9e5066171a0 and c9373402f0237f8156048ed234652717495b520341eedc73b11d730952d136f3; no Integration write authorized",
+      "/familyAuthority/semanticValidator and sourceAdmissionReceipt: remain null/zero-live-receipts",
+      "/aggregateScope and parallelismProof: preserve 43/172/516, 0/43, no eligible mutation jobs",
+      "/cells/*: status-only successor would rebind current head/claim revisions; no ledger mutation in this packet"
+    ],
+    "dispatch": [
+      "/authorityCommit and /masterHead: prior 7e7598a79f21d65299982e55810a5017253d1c91 -> 41c43a653b5347dc405ddf5fc3544a0154fd70d6",
+      "/rows/*: preserve South blocked status and all family routes; no source or renderer assignment is granted",
+      "/policy: V7 PLAY-096 approval is metadata-only; sourceAdmissionGranted/rendererRuntimeMutationGranted/productionSelectionGranted remain false"
+    ]
+  },
+  "futureIntegrationHashes": {
+    "statusCheckpoint": null,
+    "preflightCheckpoint": null,
+    "batchLedgerCheckpoint": null,
+    "dispatchCheckpoint": null,
+    "statusProjectionSha256": null,
+    "preflightSha256": null
+  },
+  "validation": {
+    "routeValidator": "PASS",
+    "dispatchValidator": "PASS",
+    "staticInputHashCheck": "PASS",
+    "rowCount43": true,
+    "physicalRawCount44": true,
+    "industrialDuplicatePreserved": true,
+    "allAdmissionAndReadinessFlagsClosed": true,
+    "v7MetadataOnly": true,
+    "commitRequired": true,
+    "masterMutated": false,
+    "integrationFilesMutated": false,
+    "protectedDirtPreserved": true
+  },
+  "play096V7MetadataOnly": {
+    "status": "APPROVE_metadata_harness_preparation_only",
+    "routeId": "four-view-v7:play-096-v6-frontier-acceptance-v1",
+    "route": {
+      "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTE-PLAY-096-V7-FRONTIER-ACCEPTANCE.json",
+      "sha256": "63366b3a340274970b948f775d39713faf48a90c967c0339ca160ea070597883"
+    },
+    "dispatch": {
+      "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-096-V7-FRONTIER-ACCEPTANCE.json",
+      "sha256": "1954bc3502bbe00480ff88ad994b20f82f8d0a353af10d39d906e7c2094c5741"
+    },
+    "routeCanonicalSha256": "4c4c082846c677cbef7d48398b98a1c0938e1f8b7406710b9685b2d848732a04",
+    "dispatchCanonicalSha256": "f2bc3ea38249b7caaeb04d130ec51dc07da60d7ead49c2afbd0e556287017878",
+    "effect": "metadata_only_no_south_admission_no_schema_or_semantic_binding_no_renderer_runtime_or_production_mutation"
+  }
+}

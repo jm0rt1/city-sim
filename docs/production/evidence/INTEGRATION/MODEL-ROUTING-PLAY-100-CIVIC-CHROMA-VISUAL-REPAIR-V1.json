@@ -1,0 +1,162 @@
+{
+  "schema": 2,
+  "authorityCommit": "65825389d586a128ddf6feb5356c33661ba9a8e8",
+  "assignments": [
+    {
+      "modelRouteSha256": "1401c2311dfae4afa2481f060bc22ee33695b86ecbadf39c9958d4879666211b",
+      "modelRoute": {
+        "schema": 2,
+        "routeId": "four-view-v23:play-100-civic-chroma-visual-repair-v1",
+        "taskId": "PLAY-100",
+        "packetKind": "local_debug",
+        "classification": "LUNA_LOCAL_DEBUG",
+        "model": "gpt-5.6-luna",
+        "effort": "max",
+        "rationale": "Repair only Civic derived normalization and evidence after independent Frontier RETURN: preserve all seven raw masters, remove visible magenta/pink halos with the frozen alpha-aware cleanup rule, reconcile stale provenance/handoff tuple fields to the exact candidate head, add literal game-scale color/grayscale/contact proof, and re-run deterministic replay. Keep the packet candidate-only.",
+        "authority": {
+          "authorityCommit": "65825389d586a128ddf6feb5356c33661ba9a8e8",
+          "baseCommit": "65825389d586a128ddf6feb5356c33661ba9a8e8",
+          "claim": {
+            "path": "docs/production/claims/PLAY-100.world-art-civic.md",
+            "sha256": "0c4bce350a2538a768e5e3b51baa76c3e6b0a81a27f31ca4d640e8e844d05a2d"
+          },
+          "immutableInputs": [
+            {
+              "path": "docs/production/decisions/CONTRACT-025-authored-four-view-2-5d-building-art.md",
+              "sha256": "4e8ab63173d67581332e7d27730b97315906fda4e29b999969456441809479ed"
+            },
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "1eb7170b81e11753e7c9173298c6d45c02d5a2ade6df0ef8b73bdcaf690a2acd"
+            },
+            {
+              "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+              "sha256": "9c62d401d8812d5345b6bd25d864a07010348883ca4941f4429854ebe4abc511"
+            },
+            {
+              "path": ".agents/skills/produce-citysim-world-art/references/direction-cell-parallel-execution.md",
+              "sha256": "3cad284bc471c316c3a3ddffd88d580b7230c09e1b4f29a73c746b341995bdc8"
+            }
+          ]
+        },
+        "assignment": {
+          "threadId": "019fe1b1-3bc4-7b40-a107-22d8d1d6eabb",
+          "branch": "codex/citysim-world-art-civic",
+          "worktree": "/Users/James/.codex/worktrees/c96d/city-sim",
+          "expectedHead": "70dcb549fd18797653090eff740621bfbf3bf1a5",
+          "featureAuthorThreadId": "019fe1b1-3bc4-7b40-a107-22d8d1d6eabb",
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": [
+            "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic",
+            "docs/production/evidence/PLAY-100"
+          ],
+          "allowed": [
+            "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic",
+            "docs/production/evidence/PLAY-100"
+          ],
+          "forbidden": [
+            ".agents/skills",
+            "docs/production/evidence/INTEGRATION",
+            "docs/production/claims",
+            "docs/production/decisions",
+            "Native/CitySimNative/Sources",
+            "Native/CitySimNative/Resources",
+            "Native/CitySimNative/Tests",
+            "Native/CitySimNative/Package.swift",
+            "script/build_and_run.sh",
+            "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-103",
+            "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104",
+            "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105"
+          ]
+        },
+        "boundedDeliverable": "Preserve all seven Civic raw PNG bytes and identity/registration provenance. Repair only task-owned normalized masters, 21 LOD payloads, scripts, provenance, handoffs, and evidence: remove visible magenta/pink halos and boundary spill at all LODs, reconcile stale RAW-PROVENANCE/RAW-INVENTORY/route/workerHead fields to exact candidate 70dcb549, add literal game-scale color/grayscale/contact proof, and run two fresh deterministic replays with byte+decoded equality. Keep candidateReadyForIndependentReview=true and sourceReady=false, integrationAdmitted=false, rendererQuarantined=false, productionSelected=false. Do not touch South admission, siblings, shared contracts, renderer, resources, shipping, or production.",
+        "proofPolicy": {
+          "architectureState": "frozen_reference",
+          "referenceImplementation": {
+            "path": "docs/production/decisions/CONTRACT-025-authored-four-view-2-5d-building-art.md",
+            "sha256": "4e8ab63173d67581332e7d27730b97315906fda4e29b999969456441809479ed"
+          },
+          "deliverableClaims": [
+            "deterministic_output",
+            "static_structure"
+          ],
+          "focusedProofLevel": "deterministic_replay",
+          "fullProofLevel": "deterministic_replay",
+          "behavioralCommands": [
+            "/Users/James/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalize_south_admission.py --output-root Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized"
+          ],
+          "prohibitedSubstitutions": [
+            "source_token_presence_for_execution",
+            "ast_shape_for_runtime_success",
+            "manifest_or_prose_for_rendered_pixels",
+            "unit_tests_for_visual_acceptance",
+            "worker_self_report_for_independent_acceptance"
+          ]
+        },
+        "validation": {
+          "focusedGateOwner": {
+            "threadId": "019fe1b1-3bc4-7b40-a107-22d8d1d6eabb",
+            "role": "play-100-civic-chroma-repair-focused"
+          },
+          "focusedCommands": [
+            "/Users/James/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalize_south_admission.py --output-root Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized",
+            "/Users/James/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 -m json.tool docs/production/evidence/PLAY-100/south-handoff.json",
+            "git diff --check 65825389d586a128ddf6feb5356c33661ba9a8e8..HEAD"
+          ],
+          "fullGateOwner": {
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "role": "integration-aggregate-full-gate",
+            "model": "gpt-5.6-sol",
+            "effort": "high"
+          },
+          "fullCommands": [
+            "Integration source-admission disposition only; no product/full-suite/app gate in this packet"
+          ]
+        },
+        "expectedResult": {
+          "evidencePaths": [
+            "docs/production/evidence/PLAY-100"
+          ],
+          "commitRequired": true,
+          "commitMessagePattern": "PLAY-100:"
+        },
+        "escalationTriggers": [
+          "shared_contract_or_schema_decision",
+          "unresolved_product_visual_or_interaction_judgment",
+          "path_outside_claim",
+          "baseline_or_candidate_identity_mismatch",
+          "failure_outside_focused_scope",
+          "save_or_migration_uncertainty",
+          "cross_lane_semantic_conflict",
+          "two_unsuccessful_repair_attempts",
+          "subjective_acceptance_required"
+        ],
+        "stopCondition": "Stop after one clean Civic derived-only repair commit and two fresh deterministic replays, or immediately on any raw drift, identity/path/route mismatch, visual ambiguity, source-admission, shared-contract, renderer, or production question. Return subjective acceptance to Integration.",
+        "independentReviewer": {
+          "required": true,
+          "threadId": "019fe44b-8c05-72d1-b1a6-a80e4a483bbb",
+          "model": "gpt-5.6-sol",
+          "effort": "high"
+        },
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {
+              "path": "docs/production/claims/PLAY-100.world-art-civic.md",
+              "sha256": "0c4bce350a2538a768e5e3b51baa76c3e6b0a81a27f31ca4d640e8e844d05a2d"
+            },
+            {
+              "path": "docs/production/decisions/CONTRACT-025-authored-four-view-2-5d-building-art.md",
+              "sha256": "4e8ab63173d67581332e7d27730b97315906fda4e29b999969456441809479ed"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

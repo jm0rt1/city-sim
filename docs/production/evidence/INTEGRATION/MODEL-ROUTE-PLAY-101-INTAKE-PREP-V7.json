@@ -1,0 +1,92 @@
+{
+  "schema": 2,
+  "routeId": "four-view-v14:play-101-intake-prep-v7",
+  "taskId": "PLAY-101",
+  "packetKind": "implementation",
+  "classification": "LUNA_IMPLEMENTATION",
+  "model": "gpt-5.6-luna",
+  "effort": "high",
+  "rationale": "Complete the non-shipping executable renderer intake work graph under frozen Contracts 025, 026, and 027 while source admission remains empty. Keep authored-view rotation selection and atomic assembly fail-closed until Integration admits all four directions.",
+  "authority": {
+    "authorityCommit": "e019c2f3bf86150d8d770e69538ae2095cd0d696",
+    "baseCommit": "e019c2f3bf86150d8d770e69538ae2095cd0d696",
+    "claim": {
+      "path": "docs/production/claims/PLAY-101.world-rendering-single-angle.md",
+      "sha256": "4fb20ef3102869dd1b33ceebcf3c4f5bda6ea48838b05e72bfdad9340d96bebb"
+    },
+    "immutableInputs": [
+      {"path": "docs/production/decisions/CONTRACT-025-authored-four-view-2-5d-building-art.md", "sha256": "4e8ab63173d67581332e7d27730b97315906fda4e29b999969456441809479ed"},
+      {"path": "docs/production/decisions/CONTRACT-027-world-rotation-authored-view-mapping.md", "sha256": "693831b3d8fac49330ac21adce626b632351c7eeba901ebff6719687e5f330e7"},
+      {"path": "docs/production/decisions/CONTRACT-028-alpha-aware-lod-chroma.md", "sha256": "f8b80a98b07029a51b8e61701c85017bd82c8bb0b6c967da6d1fa7fae631da7d"},
+      {"path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md", "sha256": "1eb7170b81e11753e7c9173298c6d45c02d5a2ade6df0ef8b73bdcaf690a2acd"},
+      {"path": ".agents/skills/render-citysim-world/SKILL.md", "sha256": "1e3c6e261113f0b33b13a2515bd58429d11c684a2ed9a6ef692b2a78cbc68632"},
+      {"path": "docs/production/evidence/INTEGRATION/MANAGEMENT-TIER-OPERATING-MODEL-V3.json", "sha256": "832e45d2ded2a82628e4840e99d7b638fda670a5ec0f2e4a5d04a1c4837b3b42"}
+    ]
+  },
+  "assignment": {
+    "threadId": "019fe1b1-71b8-7aa2-b13d-04d10cffb3d9",
+    "branch": "codex/citysim-world-rendering-single-angle",
+    "worktree": "/Users/James/.codex/worktrees/ccf8/city-sim",
+    "expectedHead": "f581e7a56ce1f5a091868e1cd0322b102274cf4f",
+    "featureAuthorThreadId": "019fe1b1-71b8-7aa2-b13d-04d10cffb3d9",
+    "sharedAuthorityOwnership": false,
+    "finalQAOwnership": false,
+    "subjectiveJudgmentRequired": false
+  },
+  "pathPolicy": {
+    "claimOwnedRoots": [
+      "Native/CitySimNative/Tests/CitySimNativeTests/SingleAngleWorldArtTests.swift",
+      "docs/production/evidence/PLAY-101"
+    ],
+    "allowed": [
+      "Native/CitySimNative/Tests/CitySimNativeTests/SingleAngleWorldArtTests.swift",
+      "docs/production/evidence/PLAY-101",
+      "docs/production/evidence/PLAY-101/renderer-intake-plan-v2.json",
+      "docs/production/evidence/PLAY-101/renderer-intake-receipt-v2.json"
+    ],
+    "forbidden": [
+      ".agents/skills",
+      "docs/production/claims",
+      "docs/production/decisions",
+      "docs/production/evidence/INTEGRATION",
+      "Native/CitySimNative/Sources",
+      "Native/CitySimNative/Resources",
+      "Native/CitySimNative/Package.swift",
+      "script/build_and_run.sh",
+      "Native/CitySimNative/WorldArt/ImageGenFourView"
+    ]
+  },
+  "boundedDeliverable": "Add an executable, non-shipping PLAY-101 intake plan and receipt plus focused test fixtures. Bind Contracts 025/026/027/028, exact 43 identities, 172 source views, and 516 LOD payloads; define four direction-exclusive empty quarantine jobs, registration/socket/frontage/LOD/alpha/chroma/padding/provenance gates, alias/fallback/wrong-family/D4-transform rejection, mature-city regular/compact camera bindings, and an atomic assembler that remains locked until four exact Integration source-admission receipts exist. Report sourceAdmissions=0, rendererQuarantines=0, productionSelected=false, and runtimeSelectorImplemented=false.",
+  "proofPolicy": {
+    "architectureState": "frozen_reference",
+    "referenceImplementation": {"path": "docs/production/decisions/CONTRACT-025-authored-four-view-2-5d-building-art.md", "sha256": "4e8ab63173d67581332e7d27730b97315906fda4e29b999969456441809479ed"},
+    "deliverableClaims": ["static_structure", "executable_behavior", "deterministic_output"],
+    "focusedProofLevel": "deterministic_replay",
+    "fullProofLevel": "deterministic_replay",
+    "behavioralCommands": ["swift test --package-path Native/CitySimNative --filter SingleAngleWorldArtTests"],
+    "prohibitedSubstitutions": ["source_token_presence_for_execution", "ast_shape_for_runtime_success", "manifest_or_prose_for_rendered_pixels", "unit_tests_for_visual_acceptance", "worker_self_report_for_independent_acceptance"]
+  },
+  "validation": {
+    "focusedGateOwner": {"threadId": "019fe1b1-71b8-7aa2-b13d-04d10cffb3d9", "role": "play-101-intake-preparation-focused"},
+    "focusedCommands": [
+      "python3 -m json.tool docs/production/evidence/PLAY-101/renderer-intake-plan-v2.json",
+      "swift test --package-path Native/CitySimNative --filter SingleAngleWorldArtTests",
+      "git diff --check e019c2f3bf86150d8d770e69538ae2095cd0d696..HEAD"
+    ],
+    "fullGateOwner": {"threadId": "019f7686-4491-7891-86a6-95a78d67e5c8", "role": "integration-aggregate-full-gate", "model": "gpt-5.6-sol", "effort": "high"},
+    "fullCommands": ["swift test --package-path Native/CitySimNative", "./script/build_and_run.sh --verify", "fresh-player real-app aggregate journey"]
+  },
+  "expectedResult": {"evidencePaths": ["docs/production/evidence/PLAY-101"], "commitRequired": true, "commitMessagePattern": "PLAY-101:"},
+  "escalationTriggers": ["shared_contract_or_schema_decision", "unresolved_product_visual_or_interaction_judgment", "path_outside_claim", "baseline_or_candidate_identity_mismatch", "failure_outside_focused_scope", "save_or_migration_uncertainty", "cross_lane_semantic_conflict", "two_unsuccessful_repair_attempts", "subjective_acceptance_required"],
+  "stopCondition": "Stop after one coherent non-shipping intake-plan commit and two fresh focused test runs, or immediately on any source admission, runtime selector, shipping resource, shared-contract, path, identity, or subjective visual requirement. Do not activate partial families, push, integrate, or self-accept.",
+  "independentReviewer": {"required": true, "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8", "model": "gpt-5.6-sol", "effort": "high"},
+  "context": {
+    "mode": "full_authority_read",
+    "packet": null,
+    "verifiedHashes": [
+      {"path": "docs/production/claims/PLAY-101.world-rendering-single-angle.md", "sha256": "4fb20ef3102869dd1b33ceebcf3c4f5bda6ea48838b05e72bfdad9340d96bebb"},
+      {"path": "docs/production/decisions/CONTRACT-027-world-rotation-authored-view-mapping.md", "sha256": "693831b3d8fac49330ac21adce626b632351c7eeba901ebff6719687e5f330e7"},
+      {"path": ".agents/skills/render-citysim-world/SKILL.md", "sha256": "1e3c6e261113f0b33b13a2515bd58429d11c684a2ed9a6ef692b2a78cbc68632"}
+    ]
+  }
+}

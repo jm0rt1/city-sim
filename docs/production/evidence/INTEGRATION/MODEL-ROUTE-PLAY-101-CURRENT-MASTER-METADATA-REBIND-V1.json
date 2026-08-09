@@ -1,0 +1,209 @@
+{
+  "assignment": {
+    "branch": "codex/citysim-world-rendering-single-angle",
+    "expectedHead": "925397b106791fcc41db596496ebcdb615b4c4da",
+    "featureAuthorThreadId": "019fe1b1-71b8-7aa2-b13d-04d10cffb3d9",
+    "finalQAOwnership": false,
+    "sharedAuthorityOwnership": false,
+    "subjectiveJudgmentRequired": false,
+    "threadId": "019fe1b1-71b8-7aa2-b13d-04d10cffb3d9",
+    "worktree": "/Users/James/.codex/worktrees/ccf8/city-sim"
+  },
+  "authority": {
+    "authorityCommit": "5b4c040a182d0a07f4f0f0e32e598797d4314c0e",
+    "baseCommit": "5b4c040a182d0a07f4f0f0e32e598797d4314c0e",
+    "claim": {
+      "path": "docs/production/claims/PLAY-101.world-rendering-single-angle.md",
+      "sha256": "4fb20ef3102869dd1b33ceebcf3c4f5bda6ea48838b05e72bfdad9340d96bebb"
+    },
+    "immutableInputs": [
+      {
+        "path": "docs/production/decisions/CONTRACT-025-authored-four-view-2-5d-building-art.md",
+        "sha256": "4e8ab63173d67581332e7d27730b97315906fda4e29b999969456441809479ed"
+      },
+      {
+        "path": "docs/production/decisions/CONTRACT-026-authored-four-view-registration.md",
+        "sha256": "4781de72429a1f691b9226f7f7668b170b278a4ccd171ac4ea02f5e1df9176eb"
+      },
+      {
+        "path": "docs/production/decisions/CONTRACT-027-world-rotation-authored-view-mapping.md",
+        "sha256": "693831b3d8fac49330ac21adce626b632351c7eeba901ebff6719687e5f330e7"
+      },
+      {
+        "path": "docs/production/decisions/CONTRACT-028-alpha-aware-lod-chroma.md",
+        "sha256": "f8b80a98b07029a51b8e61701c85017bd82c8bb0b6c967da6d1fa7fae631da7d"
+      },
+      {
+        "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+        "sha256": "1eb7170b81e11753e7c9173298c6d45c02d5a2ade6df0ef8b73bdcaf690a2acd"
+      },
+      {
+        "path": "docs/production/evidence/INTEGRATION/MANAGEMENT-TIER-OPERATING-MODEL-V4.json",
+        "sha256": "6441eac773b31ceda3a58a16fca0a1f49ae9383b6acd176bd23d75c84c234068"
+      },
+      {
+        "path": "docs/production/decisions/PLAY-106-RAW-SOUTH-ANCHOR-AUTHORITY.md",
+        "sha256": "1ed3486f526dc1ab3da352c85fce3920468375f8169529d933bbfc275b1c739d"
+      },
+      {
+        "path": "docs/production/evidence/PLAY-105/south-anchor-readiness-matrix.json",
+        "sha256": "c5c1068a342ea0ae7e4f8c16de724fea09f1975c41353781f8acafdad58918fb"
+      },
+      {
+        "path": "docs/production/evidence/PLAY-103/south-anchor-inventory.json",
+        "sha256": "82d56816f24aa023c0b4d3d96c5ae63ca8bc280138e7ac67a6fafbfbc7e4d87d"
+      },
+      {
+        "path": ".agents/skills/render-citysim-world/SKILL.md",
+        "sha256": "1e3c6e261113f0b33b13a2515bd58429d11c684a2ed9a6ef692b2a78cbc68632"
+      }
+    ]
+  },
+  "boundedDeliverable": "Update only route-bound identity fields in PLAY-101 synthetic intake plan/receipt (route ID/SHA, authority/base, worker HEAD, claim binding) at the live clean head; preserve 43 logical identities, 172 authored views, 516 LOD payloads, four empty direction jobs, sourceAdmissions=0, rendererQuarantines=0, runtimeSelectorImplemented=false, productionSelected=false. No test behavior, source pixels, runtime selector, manifest, Resources, app launch, or production selection.",
+  "classification": "LUNA_MECHANICAL",
+  "context": {
+    "mode": "full_authority_read",
+    "packet": null,
+    "verifiedHashes": [
+      {
+        "path": "docs/production/claims/PLAY-101.world-rendering-single-angle.md",
+        "sha256": "4fb20ef3102869dd1b33ceebcf3c4f5bda6ea48838b05e72bfdad9340d96bebb"
+      },
+      {
+        "path": "docs/production/decisions/CONTRACT-025-authored-four-view-2-5d-building-art.md",
+        "sha256": "4e8ab63173d67581332e7d27730b97315906fda4e29b999969456441809479ed"
+      },
+      {
+        "path": "docs/production/decisions/CONTRACT-026-authored-four-view-registration.md",
+        "sha256": "4781de72429a1f691b9226f7f7668b170b278a4ccd171ac4ea02f5e1df9176eb"
+      },
+      {
+        "path": "docs/production/decisions/CONTRACT-027-world-rotation-authored-view-mapping.md",
+        "sha256": "693831b3d8fac49330ac21adce626b632351c7eeba901ebff6719687e5f330e7"
+      },
+      {
+        "path": "docs/production/decisions/CONTRACT-028-alpha-aware-lod-chroma.md",
+        "sha256": "f8b80a98b07029a51b8e61701c85017bd82c8bb0b6c967da6d1fa7fae631da7d"
+      },
+      {
+        "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+        "sha256": "1eb7170b81e11753e7c9173298c6d45c02d5a2ade6df0ef8b73bdcaf690a2acd"
+      },
+      {
+        "path": "docs/production/evidence/INTEGRATION/MANAGEMENT-TIER-OPERATING-MODEL-V4.json",
+        "sha256": "6441eac773b31ceda3a58a16fca0a1f49ae9383b6acd176bd23d75c84c234068"
+      },
+      {
+        "path": "docs/production/decisions/PLAY-106-RAW-SOUTH-ANCHOR-AUTHORITY.md",
+        "sha256": "1ed3486f526dc1ab3da352c85fce3920468375f8169529d933bbfc275b1c739d"
+      },
+      {
+        "path": "docs/production/evidence/PLAY-105/south-anchor-readiness-matrix.json",
+        "sha256": "c5c1068a342ea0ae7e4f8c16de724fea09f1975c41353781f8acafdad58918fb"
+      },
+      {
+        "path": "docs/production/evidence/PLAY-103/south-anchor-inventory.json",
+        "sha256": "82d56816f24aa023c0b4d3d96c5ae63ca8bc280138e7ac67a6fafbfbc7e4d87d"
+      },
+      {
+        "path": ".agents/skills/render-citysim-world/SKILL.md",
+        "sha256": "1e3c6e261113f0b33b13a2515bd58429d11c684a2ed9a6ef692b2a78cbc68632"
+      }
+    ]
+  },
+  "effort": "medium",
+  "escalationTriggers": [
+    "shared_contract_or_schema_decision",
+    "unresolved_product_visual_or_interaction_judgment",
+    "path_outside_claim",
+    "baseline_or_candidate_identity_mismatch",
+    "failure_outside_focused_scope",
+    "save_or_migration_uncertainty",
+    "cross_lane_semantic_conflict",
+    "two_unsuccessful_repair_attempts",
+    "subjective_acceptance_required"
+  ],
+  "expectedResult": {
+    "commitMessagePattern": "PLAY-101:",
+    "commitRequired": true,
+    "evidencePaths": [
+      "docs/production/evidence/PLAY-101"
+    ]
+  },
+  "independentReviewer": {
+    "effort": "high",
+    "model": "gpt-5.6-sol",
+    "required": true,
+    "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8"
+  },
+  "model": "gpt-5.6-luna",
+  "packetKind": "mechanical",
+  "pathPolicy": {
+    "allowed": [
+      "Native/CitySimNative/Tests/CitySimNativeTests/SingleAngleWorldArtTests.swift",
+      "docs/production/evidence/PLAY-101"
+    ],
+    "claimOwnedRoots": [
+      "Native/CitySimNative/Tests/CitySimNativeTests/SingleAngleWorldArtTests.swift",
+      "docs/production/evidence/PLAY-101"
+    ],
+    "forbidden": [
+      ".agents/skills",
+      "docs/production/claims",
+      "docs/production/decisions",
+      "docs/production/evidence/INTEGRATION",
+      "Native/CitySimNative/Sources",
+      "Native/CitySimNative/Resources",
+      "Native/CitySimNative/Package.swift",
+      "script/build_and_run.sh",
+      "Native/CitySimNative/WorldArt/ImageGenFourView"
+    ]
+  },
+  "proofPolicy": {
+    "architectureState": "frozen_reference",
+    "behavioralCommands": [],
+    "deliverableClaims": [
+      "static_structure"
+    ],
+    "focusedProofLevel": "static_only",
+    "fullProofLevel": "static_only",
+    "prohibitedSubstitutions": [
+      "source_token_presence_for_execution",
+      "ast_shape_for_runtime_success",
+      "manifest_or_prose_for_rendered_pixels",
+      "unit_tests_for_visual_acceptance",
+      "worker_self_report_for_independent_acceptance"
+    ],
+    "referenceImplementation": {
+      "path": "docs/production/decisions/CONTRACT-025-authored-four-view-2-5d-building-art.md",
+      "sha256": "4e8ab63173d67581332e7d27730b97315906fda4e29b999969456441809479ed"
+    }
+  },
+  "rationale": "Read-only/mechanical rebind of the frozen synthetic PLAY-101 renderer intake to current master identity and the live clean lane head. Preserve all 43x4x3/null gates; no source, runtime, manifest, production, launch, acceptance, integration, push, or pin.",
+  "routeId": "four-view-v15:play-101-current-master-metadata-rebind-v1",
+  "schema": 2,
+  "stopCondition": "Stop after one coherent metadata-only evidence checkpoint or any identity/ancestry mismatch. Never launch the app, modify runtime Sources/Resources, generated-v4 manifest, source pixels, shared authority, production selection, integrate, push, self-accept, or pin.",
+  "taskId": "PLAY-101",
+  "validation": {
+    "focusedCommands": [
+      "python3 -m json.tool docs/production/evidence/PLAY-101/renderer-intake-plan-v2.json",
+      "python3 -m json.tool docs/production/evidence/PLAY-101/renderer-intake-receipt-v2.json",
+      "swift test --package-path Native/CitySimNative --filter SingleAngleWorldArtTests",
+      "git diff --check 5b4c040a182d0a07f4f0f0e32e598797d4314c0e..HEAD"
+    ],
+    "focusedGateOwner": {
+      "role": "play-101-current-master-metadata-rebind-focused",
+      "threadId": "019fe1b1-71b8-7aa2-b13d-04d10cffb3d9"
+    },
+    "fullCommands": [
+      "git diff --check 5b4c040a182d0a07f4f0f0e32e598797d4314c0e..HEAD",
+      "swift test --package-path Native/CitySimNative"
+    ],
+    "fullGateOwner": {
+      "effort": "high",
+      "model": "gpt-5.6-sol",
+      "role": "integration-aggregate-full-gate",
+      "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8"
+    }
+  }
+}

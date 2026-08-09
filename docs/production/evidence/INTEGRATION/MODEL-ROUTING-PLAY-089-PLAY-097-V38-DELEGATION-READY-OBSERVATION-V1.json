@@ -1,0 +1,179 @@
+{
+  "schema": 2,
+  "authorityCommit": "9ecb67b8799a40ba70366ef14460cf53e02b4565",
+  "assignments": [
+    {
+      "modelRouteSha256": "d0a450e4bcf252f83aff2aa0474f89ba8329da40c1f2b03b436128ea5968432e",
+      "modelRoute": {
+        "assignment": {
+          "branch": "codex/citysim-os-optimization",
+          "expectedHead": "4186a103b25ef4d4d12ae69da807d99cdff3030b",
+          "featureAuthorThreadId": null,
+          "finalQAOwnership": false,
+          "sharedAuthorityOwnership": false,
+          "subjectiveJudgmentRequired": false,
+          "threadId": "019fc40d-c697-7aa2-94bf-902b031a8c67",
+          "worktree": "/Users/James/.codex/worktrees/dc21/city-sim"
+        },
+        "authority": {
+          "authorityCommit": "9ecb67b8799a40ba70366ef14460cf53e02b4565",
+          "baseCommit": "9ecb67b8799a40ba70366ef14460cf53e02b4565",
+          "claim": {
+            "path": "docs/production/claims/PLAY-089.operating-system-optimization.md",
+            "sha256": "5261dd14148414bbef37f12da2a9d2c3d8a4544525fd5c22e7a30f48cb709662"
+          },
+          "immutableInputs": [
+            {
+              "path": "docs/production/evidence/INTEGRATION/PLAY-097-V38-DELEGATION-READY-EVENT-V1.json",
+              "sha256": "64040ba7b313da4cbc5d7aa48dcdf6ba51f2e654e6a6f537158c86754b9f8a3e"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTE-PLAY-097-SOUTH-RESIDENTIAL-SOURCE-REGENERATION-V3-V38.json",
+              "sha256": "239ccbb2b4f6987cf66230edc9b8037bb6c79ccb8b78e160adebe509a33eec4a"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-097-SOUTH-RESIDENTIAL-SOURCE-REGENERATION-V3-V38.json",
+              "sha256": "ee52f744d67b1eabff3f7b98bb6eefa8c3760b499276410e5267de24cf9eb884"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-089/OPERATING-REVIEW-EVENT-LEDGER-V1.json",
+              "sha256": "d8d0a40c1e888ae265d30a3aa11eb251a249321516a019d9c38e9287e81f7dd8"
+            },
+            {
+              "path": ".agents/skills/optimize-citysim-operating-system/references/triggered-operating-review-policy.json",
+              "sha256": "b9f208fe3ee78cd3143953300cbb2d2692d264f0d9106fd3f799bf74aa2df9da"
+            },
+            {
+              "path": ".agents/skills/optimize-citysim-operating-system/SKILL.md",
+              "sha256": "e8f5167f2ff913869b98dc25f018201159520f3d7c010dcbe891366b3fa0820e"
+            },
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "1eb7170b81e11753e7c9173298c6d45c02d5a2ade6df0ef8b73bdcaf690a2acd"
+            }
+          ]
+        },
+        "boundedDeliverable": "Consume only the exact published PLAY-097 V38 Residential source-regeneration delegation-ready event envelope, live PLAY-089 claim, frozen schema-4 trigger policy, durable ledger, exact Residential V38 source-regeneration product route/dispatch bytes, and hash-bound observer context. Emit one schema-4 observation receipt under the exact PLAY-089 output root. Return NO_CHANGE, RETURN, or ESCALATE only; preserve null for unavailable timing/cost metrics. Do not inspect or rerun product gates, poll tasks, spawn reviews, dispatch, synchronize, mutate product/shared authority, edit the ledger, push, or self-accept.",
+        "classification": "LUNA_MECHANICAL",
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {
+              "path": "docs/production/evidence/INTEGRATION/PLAY-097-V38-DELEGATION-READY-EVENT-V1.json",
+              "sha256": "64040ba7b313da4cbc5d7aa48dcdf6ba51f2e654e6a6f537158c86754b9f8a3e"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTE-PLAY-097-SOUTH-RESIDENTIAL-SOURCE-REGENERATION-V3-V38.json",
+              "sha256": "239ccbb2b4f6987cf66230edc9b8037bb6c79ccb8b78e160adebe509a33eec4a"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-097-SOUTH-RESIDENTIAL-SOURCE-REGENERATION-V3-V38.json",
+              "sha256": "ee52f744d67b1eabff3f7b98bb6eefa8c3760b499276410e5267de24cf9eb884"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-089/OPERATING-REVIEW-EVENT-LEDGER-V1.json",
+              "sha256": "d8d0a40c1e888ae265d30a3aa11eb251a249321516a019d9c38e9287e81f7dd8"
+            },
+            {
+              "path": ".agents/skills/optimize-citysim-operating-system/references/triggered-operating-review-policy.json",
+              "sha256": "b9f208fe3ee78cd3143953300cbb2d2692d264f0d9106fd3f799bf74aa2df9da"
+            }
+          ]
+        },
+        "effort": "medium",
+        "escalationTriggers": [
+          "baseline_or_candidate_identity_mismatch",
+          "cross_lane_semantic_conflict",
+          "failure_outside_focused_scope",
+          "path_outside_claim",
+          "save_or_migration_uncertainty",
+          "shared_contract_or_schema_decision",
+          "subjective_acceptance_required",
+          "two_unsuccessful_repair_attempts",
+          "unresolved_product_visual_or_interaction_judgment"
+        ],
+        "expectedResult": {
+          "commitMessagePattern": "PLAY-089:",
+          "commitRequired": true,
+          "evidencePaths": [
+            "docs/production/evidence/PLAY-089/play-097-v38-delegation-ready-observation-v1"
+          ]
+        },
+        "independentReviewer": {
+          "effort": "high",
+          "model": "gpt-5.6-sol",
+          "required": true,
+          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8"
+        },
+        "model": "gpt-5.6-luna",
+        "packetKind": "mechanical",
+        "pathPolicy": {
+          "allowed": [
+            "docs/production/evidence/PLAY-089/play-097-v38-delegation-ready-observation-v1"
+          ],
+          "claimOwnedRoots": [
+            "docs/production/evidence/PLAY-089"
+          ],
+          "forbidden": [
+            ".agents/skills",
+            "AGENTS.md",
+            "Native",
+            "script",
+            "docs/production/claims",
+            "docs/production/decisions",
+            "docs/production/evidence/INTEGRATION",
+            "docs/production/evidence/PLAY-089/OPERATING-REVIEW-EVENT-LEDGER-V1.json",
+            "docs/production/PLAYABLE_BACKLOG.md",
+            "docs/production/completed"
+          ]
+        },
+        "proofPolicy": {
+          "architectureState": "frozen_reference",
+          "behavioralCommands": [],
+          "deliverableClaims": [
+            "static_structure"
+          ],
+          "focusedProofLevel": "static_only",
+          "fullProofLevel": "static_only",
+          "prohibitedSubstitutions": [
+            "ast_shape_for_runtime_success",
+            "manifest_or_prose_for_rendered_pixels",
+            "source_token_presence_for_execution",
+            "unit_tests_for_visual_acceptance",
+            "worker_self_report_for_independent_acceptance"
+          ],
+          "referenceImplementation": {
+            "path": ".agents/skills/optimize-citysim-operating-system/references/triggered-operating-review-policy.json",
+            "sha256": "b9f208fe3ee78cd3143953300cbb2d2692d264f0d9106fd3f799bf74aa2df9da"
+          }
+        },
+        "rationale": "Read-only delegation-ready observation for the exact published PLAY-097 V38 Residential source-regeneration continuation route. Verify the lowest legal route, frozen Frontier source authority, exact product route/dispatch, PLAY-089 claim and output root, distinct focused/full ownership, independent reviewer, and useful workstream before any source-generation worker mutation. The observer does not authorize ImageGen or dispatch.",
+        "routeId": "quality-v2:play-089-play-097-v38-delegation-ready-observation-v1",
+        "schema": 2,
+        "stopCondition": "Stop after one schema-4 observation receipt and one clean PLAY-089 commit, or immediately on source-envelope, claim, ledger, route, path, branch, HEAD, or hash mismatch. Never edit the ledger, dispatch, product/shared authority, or worker routes; Integration alone records disposition and authorizes any later mutation.",
+        "taskId": "PLAY-089",
+        "validation": {
+          "focusedCommands": [
+            "PYTHONDONTWRITEBYTECODE=1 python3 .agents/skills/optimize-citysim-operating-system/scripts/test_validate_operating_review_receipt_v1.py",
+            "PYTHONDONTWRITEBYTECODE=1 python3 .agents/skills/optimize-citysim-operating-system/scripts/test_validate_operating_review_batch_v1.py",
+            "git diff --check e69c808a5e7e7d6e55eafb1a331247b9cf7cb754^..HEAD"
+          ],
+          "focusedGateOwner": {
+            "role": "play-089-delegation-ready-observation-focused",
+            "threadId": "019fc40d-c697-7aa2-94bf-902b031a8c67"
+          },
+          "fullCommands": [
+            "Integration validates the exact PLAY-097 V37 Residential event-key projection, observer receipt, product route/dispatch binding, ledger disposition, and no-mutation boundary without rerunning product or worker gates."
+          ],
+          "fullGateOwner": {
+            "effort": "high",
+            "model": "gpt-5.6-sol",
+            "role": "integration-play-089-observer-acceptance",
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8"
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 {
   "schema": 2,
-  "routeId": "four-view-v10:play-104-east-production-repair-v1",
+  "routeId": "four-view-v10:play-104-east-production-repair-v2",
   "taskId": "PLAY-104",
   "packetKind": "local_debug",
   "classification": "LUNA_LOCAL_DEBUG",
@@ -34,10 +34,6 @@
       {
         "path": ".agents/skills/produce-citysim-world-art/references/direction-cell-parallel-execution.md",
         "sha256": "3cad284bc471c316c3a3ddffd88d580b7230c09e1b4f29a73c746b341995bdc8"
-      },
-      {
-        "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTE-PLAY-104-EAST-PRODUCTION-V3.json",
-        "sha256": "b49636b2c755911468514e51014378982495e59831c4f2a3622afad5f46678b0"
       }
     ]
   },
@@ -73,12 +69,12 @@
       "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105"
     ]
   },
-  "boundedDeliverable": "Preserve the exact 43 East raw sources, 129 LOD payloads, handoffs, and prior rejection-free evidence. Repair only the source-candidate readiness tuple so rendererQuarantined remains false, and make the validator/replay consume an immutable repository-portable snapshot of the published V9 route rather than an external checkout or user-specific interpreter/helper path. Prove two isolated-root replays, route/hash binding, exact counts, unique raw/LOD identity, alpha/chroma/path integrity, and diff scope. Do not regenerate pixels, change contracts, activate renderer resources, push, integrate, or self-accept.",
+  "boundedDeliverable": "Preserve the exact 43 East raw sources, 129 LOD payloads, handoffs, and prior rejection-free evidence. Repair only the source-candidate readiness tuple so rendererQuarantined remains false, and make the validator/replay consume an immutable repository-portable snapshot of this route rather than an external checkout or user-specific interpreter/helper path. Prove two isolated-root replays, route/hash binding, exact counts, unique raw/LOD identity, alpha/chroma/path integrity, and diff scope. Do not regenerate pixels, change contracts, activate renderer resources, push, integrate, or self-accept.",
   "proofPolicy": {
     "architectureState": "frozen_reference",
     "referenceImplementation": {
-      "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTE-PLAY-104-EAST-PRODUCTION-V3.json",
-      "sha256": "b49636b2c755911468514e51014378982495e59831c4f2a3622afad5f46678b0"
+      "path": "docs/production/decisions/CONTRACT-025-authored-four-view-2-5d-building-art.md",
+      "sha256": "4e8ab63173d67581332e7d27730b97315906fda4e29b999969456441809479ed"
     },
     "deliverableClaims": ["deterministic_output", "static_structure"],
     "focusedProofLevel": "deterministic_replay",
@@ -133,10 +129,6 @@
       {
         "path": "docs/production/claims/PLAY-104.world-art-east-imagegen.md",
         "sha256": "4e4311bdd3eed96a209a7b69958b468fc091c228db708783c6b8d813903a8583"
-      },
-      {
-        "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTE-PLAY-104-EAST-PRODUCTION-V3.json",
-        "sha256": "b49636b2c755911468514e51014378982495e59831c4f2a3622afad5f46678b0"
       },
       {
         "path": "docs/production/decisions/CONTRACT-025-authored-four-view-2-5d-building-art.md",

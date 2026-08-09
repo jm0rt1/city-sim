@@ -4,7 +4,7 @@
   "taskId": "PLAY-106",
   "direction": "south",
   "status": "BLOCKED",
-  "updatedAt": "2026-08-09T14:35:15Z",
+  "updatedAt": "2026-08-09T14:37:47Z",
   "authority": {
     "path": "docs/production/decisions/PLAY-106-RAW-SOUTH-ANCHOR-AUTHORITY.md",
     "sha256": "1ed3486f526dc1ab3da352c85fce3920468375f8169529d933bbfc275b1c739d",
@@ -43,7 +43,11 @@
       "candidateStatus": "APPROVE_candidate_only",
       "rawAdmission": "RETURN_HARD_BLOCKER",
       "sourceReady": false,
-      "integrationAdmitted": false
+      "integrationAdmitted": false,
+      "frontierDisposition": "SOURCE_REGENERATION_AUTHORIZED_authority_only",
+      "sourceAuthorityRouteId": "four-view-v35:play-097-south-residential-source-authority-v2",
+      "sourceAuthorityRouteSha256": "02faa9c71fbeef243cc70a1ad9fd4ec29fb4779adc5fa38c5e94423a936173a4",
+      "sourceExecutionStarted": false
     },
     {
       "family": "commercial",

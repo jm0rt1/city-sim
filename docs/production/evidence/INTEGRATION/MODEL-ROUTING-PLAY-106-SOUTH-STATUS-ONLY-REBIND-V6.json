@@ -1,0 +1,280 @@
+{
+  "schema": 2,
+  "authorityCommit": "62c3f283170b963a00d36d64b0ece4cb4f8c8c56",
+  "assignments": [
+    {
+      "modelRouteSha256": "ef45a9c7e774576e619d13d1fcda453b128da2f34a7ec0bf49618460f61ca41e",
+      "modelRoute": {
+        "schema": 2,
+        "routeId": "integration-v7:play-106-south-aggregate-status-only-current-master-v2",
+        "taskId": "PLAY-106",
+        "packetKind": "mechanical",
+        "classification": "LUNA_MECHANICAL",
+        "model": "gpt-5.6-luna",
+        "effort": "medium",
+        "rationale": "Read-only current-master PLAY-106 South aggregate status audit at exact Integration HEAD 62c3f283170b963a00d36d64b0ece4cb4f8c8c56. Existing status/preflight/parallel ledger/dispatch projections remain stale at 7e7598a79f21d65299982e55810a5017253d1c91; the committed V5 projection was bound to 9d8ef4f3d9990e119ebb01062a2dfe417b956eb9. Rebind only the status projection to this current master and all four clean bound worker heads, preserving 43 canonical IDs, 44 physical raw PNGs including the Industrial v00 v01/v02 duplicate uncertainty, raw path/SHA equality, latest family route/head/disposition snapshots, and closed readiness/admission/renderer/runtime/production flags. Commercial now binds the published V30-v3 Frontier source-stage authority route (canonical add65e538ed9879a6207575aa9a442142b7ea461ecd5420a3507b1fb6eaf0d0d; worker HEAD e55e5ad04a8dc3eee7262e02df8f3e3bcd65b7b6). PLAY-096 remains metadata-only with no aggregate schema/semantic-validator binding. Draft only a task-local status-only manifest; no source, readiness, admission, renderer, runtime, production, integration, or publication mutation.",
+        "authority": {
+          "authorityCommit": "62c3f283170b963a00d36d64b0ece4cb4f8c8c56",
+          "baseCommit": "62c3f283170b963a00d36d64b0ece4cb4f8c8c56",
+          "claim": {
+            "path": "docs/production/claims/PLAY-089.operating-system-optimization.md",
+            "sha256": "5261dd14148414bbef37f12da2a9d2c3d8a4544525fd5c22e7a30f48cb709662"
+          },
+          "immutableInputs": [
+            {
+              "path": ".agents/skills/operate-citysim-integration/SKILL.md",
+              "sha256": "8c832f2be50b16fe51a297c4a1053bd1581f6363600843a693adceb137027e5d"
+            },
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "1eb7170b81e11753e7c9173298c6d45c02d5a2ade6df0ef8b73bdcaf690a2acd"
+            },
+            {
+              "path": "docs/production/CITYSIM_WORKTREE_OPERATING_SYSTEM.md",
+              "sha256": "1d1bcd0e3ca915bd8fc5b5b3676613e7213ea5855f01c77412c93ef15e6c4117"
+            },
+            {
+              "path": "docs/production/decisions/PLAY-106-RAW-SOUTH-ANCHOR-AUTHORITY.md",
+              "sha256": "1ed3486f526dc1ab3da352c85fce3920468375f8169529d933bbfc275b1c739d"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/PLAY-106-SOUTH-AGGREGATE-STATUS-V1.json",
+              "sha256": "84dd2eecba83546d39bcb02fca26559d4ef51f992392930df4d9e9e5066171a0"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/PLAY-106-SOUTH-AGGREGATE-PREFLIGHT-V3.json",
+              "sha256": "c9373402f0237f8156048ed234652717495b520341eedc73b11d730952d136f3"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/WORLD_ART_PARALLEL_BATCH_LEDGER.json",
+              "sha256": "7cc0b81b3235264a981e9103d10b172ea49d81b75bc70a888b94ffc16250fc9b"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/WORLD_ART_PARALLEL_DISPATCH-2026-08-09T1500Z.json",
+              "sha256": "ad4ed36f186dde7bd2d391671312a875e7cba506185845792f4a8d8f616bb497"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTE-PLAY-097-RESIDENTIAL-L01-V0-SOURCE-AUTHORITY-AFTER-V38-RETURN-V39.json",
+              "sha256": "8dbb83b231d64d0a86c89cfa79e28421a4a44e7c8683ae5fa2c1299cd3c02265"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-097-RESIDENTIAL-L01-V0-SOURCE-AUTHORITY-AFTER-V38-RETURN-V39.json",
+              "sha256": "185385724ef23790e4f52322712ac9379e0dd8ba40c86c5e85527b3ab1a0c0f8"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTE-PLAY-098-COMMERCIAL-RAW-SOURCE-REGENERATION-AUTHORITY-V30-V3.json",
+              "sha256": "34642fb182257ca868dbbc5db95ff790bbb22e05417b7d4ae9c20f01c84a5cf9"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-098-COMMERCIAL-RAW-SOURCE-REGENERATION-AUTHORITY-V30-V3.json",
+              "sha256": "e9f446b87ed0526414933cd0e3926acd66257f9725e00647ca8c28285bd5f177"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTE-PLAY-099-SOUTH-INDUSTRIAL-SOURCE-REGENERATION-V2.json",
+              "sha256": "fca861ffa23ce2c0f8d6a9f8a53a0b27394744e378ae9fbb6cf54746dd9bb02e"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-099-SOUTH-INDUSTRIAL-SOURCE-REGENERATION-V2.json",
+              "sha256": "0ef8a024374fca610ad7e56c9661f1f3680d6ab81b0ad633b194954f6ecac640"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTE-PLAY-100-CIVIC-CONTRACT028-BOUNDARY-HANDOFF-FRONTIER-V44.json",
+              "sha256": "aaf17de4ee6b6f529db7c5c939dfffdc8a8efe649cc4ffa8d6b69fd72cfb6370"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-100-CIVIC-CONTRACT028-BOUNDARY-HANDOFF-FRONTIER-V44.json",
+              "sha256": "008c7e9b43e62be626548b6f34fcecd574a9834180f46cd9cbaa3f8f92593684"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTE-PLAY-096-V7-FRONTIER-ACCEPTANCE.json",
+              "sha256": "63366b3a340274970b948f775d39713faf48a90c967c0339ca160ea070597883"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-096-V7-FRONTIER-ACCEPTANCE.json",
+              "sha256": "1954bc3502bbe00480ff88ad994b20f82f8d0a353af10d39d906e7c2094c5741"
+            }
+          ]
+        },
+        "assignment": {
+          "threadId": "019fe430-de7a-7a31-81fc-5b077b04b09f",
+          "branch": "master",
+          "worktree": "/Users/James/Library/Mobile Documents/com~apple~CloudDocs/James's Files/Programming/Python/city-sim",
+          "expectedHead": "62c3f283170b963a00d36d64b0ece4cb4f8c8c56",
+          "featureAuthorThreadId": null,
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": [
+            "docs/production/evidence/PLAY-089"
+          ],
+          "allowed": [
+            "docs/production/evidence/PLAY-089/play-106-south-status-only-rebind-v6/STATUS-ONLY-DELTA-MANIFEST.json"
+          ],
+          "forbidden": [
+            ".agents/skills",
+            "docs/production/PLAYABLE_BACKLOG.md",
+            "docs/production/claims",
+            "docs/production/decisions",
+            "docs/production/evidence/INTEGRATION",
+            "Native/CitySimNative/Sources",
+            "Native/CitySimNative/Resources",
+            "Native/CitySimNative/Tests",
+            "Native/CitySimNative/Package.swift",
+            "script/build_and_run.sh",
+            "Native/CitySimNative/WorldArt"
+          ]
+        },
+        "boundedDeliverable": "Draft one task-local STATUS-ONLY-DELTA-MANIFEST.json under the exact allowed path. The manifest records current input hashes, the stale-projection delta, all four clean worker tuples, 43-row/44-physical raw coverage with path/SHA equality, latest family route/dispatch snapshots (including Commercial V30-v3) and dispositions, PLAY-096 aggregate-validator absence, and closed admission/readiness/runtime/production flags. Write no repository or worker file; this output is a temp-only draft for Integration review.",
+        "validation": {
+          "focusedGateOwner": {
+            "threadId": "019fe430-de7a-7a31-81fc-5b077b04b09f",
+            "role": "integration-current-master-status-audit"
+          },
+          "focusedCommands": [
+            "git -C /Users/James/Library/Mobile Documents/com~apple~CloudDocs/James's Files/Programming/Python/city-sim rev-parse --verify 62c3f283170b963a00d36d64b0ece4cb4f8c8c56",
+            "git -C /Users/James/Library/Mobile Documents/com~apple~CloudDocs/James's Files/Programming/Python/city-sim status --short --branch",
+            "python3 -B -c \"verify 43 canonical rows, 44 physical raw PNGs, all master/worker raw SHA bindings, and all closed flags without writes\"",
+            "git -C /Users/James/.codex/worktrees/df86/city-sim rev-parse --verify f6dca0749594cf44dd3aebf6396fef5eae9479fa",
+            "git -C /Users/James/.codex/worktrees/34c2/city-sim rev-parse --verify e55e5ad04a8dc3eee7262e02df8f3e3bcd65b7b6",
+            "git -C /Users/James/.codex/worktrees/6799/city-sim rev-parse --verify e811521e749c9886a03233bea24b71c7a915974d",
+            "git -C /Users/James/.codex/worktrees/c96d/city-sim rev-parse --verify 75d202c4dbce1789f9c98891c66ed8f6e9180f4e"
+          ],
+          "fullGateOwner": {
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "role": "integration-current-master-status-frontier-review",
+            "model": "gpt-5.6-sol",
+            "effort": "high"
+          },
+          "fullCommands": [
+            "Integration independently compares every input binding and latest route/dispatch canonical hash, validates 43/44 raw coverage against all four bound workers, verifies no aggregate PLAY-096 schema/semantic-validator binding, preserves all false readiness/runtime/production flags, and confirms no repository or worker mutation."
+          ]
+        },
+        "expectedResult": {
+          "evidencePaths": [
+            "docs/production/evidence/PLAY-089/play-106-south-status-only-rebind-v6/STATUS-ONLY-DELTA-MANIFEST.json"
+          ],
+          "commitRequired": false,
+          "commitMessagePattern": "read-only-draft"
+        },
+        "escalationTriggers": [
+          "shared_contract_or_schema_decision",
+          "unresolved_product_visual_or_interaction_judgment",
+          "path_outside_claim",
+          "baseline_or_candidate_identity_mismatch",
+          "failure_outside_focused_scope",
+          "save_or_migration_uncertainty",
+          "cross_lane_semantic_conflict",
+          "two_unsuccessful_repair_attempts",
+          "subjective_acceptance_required"
+        ],
+        "stopCondition": "Stop immediately on any master/worker identity, route/claim/hash/path, raw-byte, row-count, duplicate, flag, or cleanliness mismatch. Preserve the exact mismatch; do not synchronize, regenerate, normalize, repair, admit, mutate readiness, activate renderer/runtime/manifest, select production, integrate, publish, push, or self-accept. This packet is status-only and does not authorize Commercial V30-v3 source execution, PLAY-096 aggregate validation, or any source/readiness/renderer/runtime/production mutation.",
+        "independentReviewer": {
+          "required": true,
+          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+          "model": "gpt-5.6-sol",
+          "effort": "high"
+        },
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {
+              "path": ".agents/skills/operate-citysim-integration/SKILL.md",
+              "sha256": "8c832f2be50b16fe51a297c4a1053bd1581f6363600843a693adceb137027e5d"
+            },
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "1eb7170b81e11753e7c9173298c6d45c02d5a2ade6df0ef8b73bdcaf690a2acd"
+            },
+            {
+              "path": "docs/production/CITYSIM_WORKTREE_OPERATING_SYSTEM.md",
+              "sha256": "1d1bcd0e3ca915bd8fc5b5b3676613e7213ea5855f01c77412c93ef15e6c4117"
+            },
+            {
+              "path": "docs/production/decisions/PLAY-106-RAW-SOUTH-ANCHOR-AUTHORITY.md",
+              "sha256": "1ed3486f526dc1ab3da352c85fce3920468375f8169529d933bbfc275b1c739d"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/PLAY-106-SOUTH-AGGREGATE-STATUS-V1.json",
+              "sha256": "84dd2eecba83546d39bcb02fca26559d4ef51f992392930df4d9e9e5066171a0"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/PLAY-106-SOUTH-AGGREGATE-PREFLIGHT-V3.json",
+              "sha256": "c9373402f0237f8156048ed234652717495b520341eedc73b11d730952d136f3"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/WORLD_ART_PARALLEL_BATCH_LEDGER.json",
+              "sha256": "7cc0b81b3235264a981e9103d10b172ea49d81b75bc70a888b94ffc16250fc9b"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/WORLD_ART_PARALLEL_DISPATCH-2026-08-09T1500Z.json",
+              "sha256": "ad4ed36f186dde7bd2d391671312a875e7cba506185845792f4a8d8f616bb497"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTE-PLAY-097-RESIDENTIAL-L01-V0-SOURCE-AUTHORITY-AFTER-V38-RETURN-V39.json",
+              "sha256": "8dbb83b231d64d0a86c89cfa79e28421a4a44e7c8683ae5fa2c1299cd3c02265"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-097-RESIDENTIAL-L01-V0-SOURCE-AUTHORITY-AFTER-V38-RETURN-V39.json",
+              "sha256": "185385724ef23790e4f52322712ac9379e0dd8ba40c86c5e85527b3ab1a0c0f8"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTE-PLAY-098-COMMERCIAL-RAW-SOURCE-REGENERATION-AUTHORITY-V30-V3.json",
+              "sha256": "34642fb182257ca868dbbc5db95ff790bbb22e05417b7d4ae9c20f01c84a5cf9"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-098-COMMERCIAL-RAW-SOURCE-REGENERATION-AUTHORITY-V30-V3.json",
+              "sha256": "e9f446b87ed0526414933cd0e3926acd66257f9725e00647ca8c28285bd5f177"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTE-PLAY-099-SOUTH-INDUSTRIAL-SOURCE-REGENERATION-V2.json",
+              "sha256": "fca861ffa23ce2c0f8d6a9f8a53a0b27394744e378ae9fbb6cf54746dd9bb02e"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-099-SOUTH-INDUSTRIAL-SOURCE-REGENERATION-V2.json",
+              "sha256": "0ef8a024374fca610ad7e56c9661f1f3680d6ab81b0ad633b194954f6ecac640"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTE-PLAY-100-CIVIC-CONTRACT028-BOUNDARY-HANDOFF-FRONTIER-V44.json",
+              "sha256": "aaf17de4ee6b6f529db7c5c939dfffdc8a8efe649cc4ffa8d6b69fd72cfb6370"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-100-CIVIC-CONTRACT028-BOUNDARY-HANDOFF-FRONTIER-V44.json",
+              "sha256": "008c7e9b43e62be626548b6f34fcecd574a9834180f46cd9cbaa3f8f92593684"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTE-PLAY-096-V7-FRONTIER-ACCEPTANCE.json",
+              "sha256": "63366b3a340274970b948f775d39713faf48a90c967c0339ca160ea070597883"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-096-V7-FRONTIER-ACCEPTANCE.json",
+              "sha256": "1954bc3502bbe00480ff88ad994b20f82f8d0a353af10d39d906e7c2094c5741"
+            }
+          ]
+        },
+        "proofPolicy": {
+          "architectureState": "frozen_reference",
+          "referenceImplementation": {
+            "path": "docs/production/decisions/PLAY-106-RAW-SOUTH-ANCHOR-AUTHORITY.md",
+            "sha256": "1ed3486f526dc1ab3da352c85fce3920468375f8169529d933bbfc275b1c739d"
+          },
+          "deliverableClaims": [
+            "static_structure"
+          ],
+          "focusedProofLevel": "static_only",
+          "fullProofLevel": "static_only",
+          "behavioralCommands": [],
+          "prohibitedSubstitutions": [
+            "source_token_presence_for_execution",
+            "ast_shape_for_runtime_success",
+            "manifest_or_prose_for_rendered_pixels",
+            "unit_tests_for_visual_acceptance",
+            "worker_self_report_for_independent_acceptance"
+          ]
+        }
+      }
+    }
+  ]
+}

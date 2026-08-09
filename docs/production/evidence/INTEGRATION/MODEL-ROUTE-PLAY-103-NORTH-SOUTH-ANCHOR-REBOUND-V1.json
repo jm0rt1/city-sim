@@ -1,0 +1,164 @@
+{
+  "schema": 2,
+  "routeId": "four-view-v24:play-103-north-south-anchor-rebound-v1",
+  "taskId": "PLAY-103",
+  "packetKind": "mechanical",
+  "classification": "LUNA_MECHANICAL",
+  "model": "gpt-5.6-luna",
+  "effort": "medium",
+  "rationale": "Rebind the stale North south-anchor-inventory.json to the exact current aggregate evidence and candidate HEAD without changing any source/LOD bytes or readiness. This is a metadata-only join prerequisite.",
+  "authority": {
+    "authorityCommit": "65825389d586a128ddf6feb5356c33661ba9a8e8",
+    "baseCommit": "65825389d586a128ddf6feb5356c33661ba9a8e8",
+    "claim": {
+      "path": "docs/production/claims/PLAY-103.world-art-north-imagegen.md",
+      "sha256": "859d58cec066f6d23329d8b8ce7d2207a54dbe48ee579a22ad9b78d4e500e559"
+    },
+    "immutableInputs": [
+      {
+        "path": "docs/production/decisions/CONTRACT-025-authored-four-view-2-5d-building-art.md",
+        "sha256": "4e8ab63173d67581332e7d27730b97315906fda4e29b999969456441809479ed"
+      },
+      {
+        "path": "docs/production/decisions/CONTRACT-026-authored-four-view-registration.md",
+        "sha256": "4781de72429a1f691b9226f7f7668b170b278a4ccd171ac4ea02f5e1df9176eb"
+      },
+      {
+        "path": "docs/production/decisions/CONTRACT-027-world-rotation-authored-view-mapping.md",
+        "sha256": "693831b3d8fac49330ac21adce626b632351c7eeba901ebff6719687e5f330e7"
+      },
+      {
+        "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+        "sha256": "1eb7170b81e11753e7c9173298c6d45c02d5a2ade6df0ef8b73bdcaf690a2acd"
+      },
+      {
+        "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+        "sha256": "9c62d401d8812d5345b6bd25d864a07010348883ca4941f4429854ebe4abc511"
+      }
+    ]
+  },
+  "assignment": {
+    "threadId": "019fe1e1-3b58-7191-a4f7-763a3d774f73",
+    "branch": "codex/citysim-world-art-north-imagegen",
+    "worktree": "/Users/James/.codex/worktrees/f55b/city-sim",
+    "expectedHead": "6113368ff059143c12afbd800281b734185dc8ef",
+    "featureAuthorThreadId": "019fe1e1-3b58-7191-a4f7-763a3d774f73",
+    "sharedAuthorityOwnership": false,
+    "finalQAOwnership": false,
+    "subjectiveJudgmentRequired": false
+  },
+  "pathPolicy": {
+    "claimOwnedRoots": [
+      "docs/production/evidence/PLAY-103"
+    ],
+    "allowed": [
+      "docs/production/evidence/PLAY-103"
+    ],
+    "forbidden": [
+      ".agents/skills",
+      "docs/production/evidence/INTEGRATION",
+      "docs/production/claims",
+      "docs/production/decisions",
+      "Native/CitySimNative/Sources",
+      "Native/CitySimNative/Resources",
+      "Native/CitySimNative/Package.swift",
+      "script/build_and_run.sh",
+      "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104",
+      "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105"
+    ]
+  },
+  "boundedDeliverable": "Update only docs/production/evidence/PLAY-103/south-anchor-inventory.json to bind the active North v22 aggregate route, current manifest/artifact hashes, result HEAD 6113368ff059143c12afbd800281b734185dc8ef, claim SHA 859d58\u2026, and exact 43-row South authoring identity set. Preserve candidateReadyForIndependentReview=true and all later readiness flags false. Run the task-local reconciliation validator and diff-check. Do not modify PNGs, route files, contracts, renderer, or South admission flags.",
+  "proofPolicy": {
+    "architectureState": "frozen_reference",
+    "referenceImplementation": {
+      "path": "docs/production/decisions/CONTRACT-025-authored-four-view-2-5d-building-art.md",
+      "sha256": "4e8ab63173d67581332e7d27730b97315906fda4e29b999969456441809479ed"
+    },
+    "deliverableClaims": [
+      "static_structure",
+      "deterministic_output"
+    ],
+    "focusedProofLevel": "deterministic_replay",
+    "fullProofLevel": "deterministic_replay",
+    "behavioralCommands": [
+      "python3 docs/production/evidence/PLAY-103/validate-v13-reconciliation.py"
+    ],
+    "prohibitedSubstitutions": [
+      "source_token_presence_for_execution",
+      "ast_shape_for_runtime_success",
+      "manifest_or_prose_for_rendered_pixels",
+      "unit_tests_for_visual_acceptance",
+      "worker_self_report_for_independent_acceptance"
+    ]
+  },
+  "validation": {
+    "focusedGateOwner": {
+      "threadId": "019fe1e1-3b58-7191-a4f7-763a3d774f73",
+      "role": "play-103-north-stale-evidence-reconcile-focused"
+    },
+    "focusedCommands": [
+      "python3 docs/production/evidence/PLAY-103/validate-v13-reconciliation.py",
+      "git diff --check 65825389d586a128ddf6feb5356c33661ba9a8e8..HEAD"
+    ],
+    "fullGateOwner": {
+      "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+      "role": "integration-candidate-join",
+      "model": "gpt-5.6-sol",
+      "effort": "high"
+    },
+    "fullCommands": [
+      "Integration source-admission join only; no app/full suite in this packet"
+    ]
+  },
+  "expectedResult": {
+    "evidencePaths": [
+      "docs/production/evidence/PLAY-103"
+    ],
+    "commitRequired": true,
+    "commitMessagePattern": "PLAY-103:"
+  },
+  "escalationTriggers": [
+    "shared_contract_or_schema_decision",
+    "unresolved_product_visual_or_interaction_judgment",
+    "path_outside_claim",
+    "baseline_or_candidate_identity_mismatch",
+    "failure_outside_focused_scope",
+    "save_or_migration_uncertainty",
+    "cross_lane_semantic_conflict",
+    "two_unsuccessful_repair_attempts",
+    "subjective_acceptance_required"
+  ],
+  "stopCondition": "Stop after one clean scoped repair commit and focused reconciliation proof, or immediately on identity/path/authority/readiness mismatch. No pixels, ImageGen, renderer, integration, push, or self-acceptance.",
+  "independentReviewer": {
+    "required": true,
+    "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+    "model": "gpt-5.6-sol",
+    "effort": "high"
+  },
+  "context": {
+    "mode": "full_authority_read",
+    "packet": null,
+    "verifiedHashes": [
+      {
+        "path": "docs/production/decisions/CONTRACT-025-authored-four-view-2-5d-building-art.md",
+        "sha256": "4e8ab63173d67581332e7d27730b97315906fda4e29b999969456441809479ed"
+      },
+      {
+        "path": "docs/production/decisions/CONTRACT-026-authored-four-view-registration.md",
+        "sha256": "4781de72429a1f691b9226f7f7668b170b278a4ccd171ac4ea02f5e1df9176eb"
+      },
+      {
+        "path": "docs/production/decisions/CONTRACT-027-world-rotation-authored-view-mapping.md",
+        "sha256": "693831b3d8fac49330ac21adce626b632351c7eeba901ebff6719687e5f330e7"
+      },
+      {
+        "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+        "sha256": "1eb7170b81e11753e7c9173298c6d45c02d5a2ade6df0ef8b73bdcaf690a2acd"
+      },
+      {
+        "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+        "sha256": "9c62d401d8812d5345b6bd25d864a07010348883ca4941f4429854ebe4abc511"
+      }
+    ]
+  }
+}

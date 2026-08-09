@@ -1,0 +1,143 @@
+{
+  "schema": 1,
+  "artifactKind": "play-106_status_only_delta_manifest",
+  "taskId": "PLAY-106",
+  "routeId": "integration-v4:play-106-south-aggregate-status-only-rebind-v1",
+  "routeCanonicalSha256": "dcf1482777c17073432cf9a4a24954c5889c959e9b175e0a1111ca2c12ced8b4",
+  "authority": {
+    "integrationMasterHead": "1d6d7019ee72e06ba5eb1ac0b9356327a6f22026",
+    "baseCommit": "1d6d7019ee72e06ba5eb1ac0b9356327a6f22026",
+    "ownerThreadId": "019fe430-de7a-7a31-81fc-5b077b04b09f",
+    "featureAuthorThreadId": null,
+    "allowedPath": "docs/production/evidence/PLAY-089/play-106-south-status-only-rebind-v1/STATUS-ONLY-DELTA-MANIFEST.json",
+    "integrationMutationAuthorized": false
+  },
+  "currentInputBindings": {
+    "status": {
+      "path": "docs/production/evidence/INTEGRATION/PLAY-106-SOUTH-AGGREGATE-STATUS-V1.json",
+      "sha256": "84dd2eecba83546d39bcb02fca26559d4ef51f992392930df4d9e9e5066171a0"
+    },
+    "preflight": {
+      "path": "docs/production/evidence/INTEGRATION/PLAY-106-SOUTH-AGGREGATE-PREFLIGHT-V3.json",
+      "sha256": "c9373402f0237f8156048ed234652717495b520341eedc73b11d730952d136f3"
+    },
+    "batchLedger": {
+      "path": "docs/production/evidence/INTEGRATION/WORLD_ART_PARALLEL_BATCH_LEDGER.json",
+      "sha256": "7cc0b81b3235264a981e9103d10b172ea49d81b75bc70a888b94ffc16250fc9b"
+    },
+    "dispatch": {
+      "path": "docs/production/evidence/INTEGRATION/WORLD_ART_PARALLEL_DISPATCH-2026-08-09T1500Z.json",
+      "sha256": "ad4ed36f186dde7bd2d391671312a875e7cba506185845792f4a8d8f616bb497"
+    }
+  },
+  "familySnapshots": [
+    {
+      "family": "residential",
+      "routeId": "four-view-v38:play-097-south-residential-source-regeneration-v3",
+      "routeRawSha256": "239ccbb2b4f6987cf66230edc9b8037bb6c79ccb8b78e160adebe509a33eec4a",
+      "routeCanonicalSha256": "27b30742616483e4d2ae8f0803335422a32dc4a99b6fb8f4f830c0ed94b57ae8",
+      "dispatchRawSha256": "ee52f744d67b1eabff3f7b98bb6eefa8c3760b499276410e5267de24cf9eb884",
+      "dispatchCanonicalSha256": "0844254f6cf465c199ad1d383d798314ca8a8005345bde86f128ae8cdb572512",
+      "workerHead": "a1bade741ab31154e11906fc09c4ecdac9d67fe0"
+    },
+    {
+      "family": "commercial",
+      "routeId": "four-view-v23:play-098-commercial-contract028-frontier-review-v1",
+      "routeRawSha256": "53d228a3925f4463926b04cffd59bf90a59151fa4e2fdc0ada73fcbecc90417d",
+      "routeCanonicalSha256": "21f6cd9462d17a3a36cebf3196cc3729cddf3b622e0f3436eb7485f3f4cd37fb",
+      "dispatchRawSha256": "315682af7017efde8b34aa52eb3ac55605507aeeed02a92be31d8f5d12c01ee4",
+      "dispatchCanonicalSha256": "2ae41a3f4c80dc026ee27f51668316c7f176a16b6ff26df80775d97b32c3e631",
+      "workerHead": "f38c235eb57e9d115e606d24e85c27bc23522a00"
+    },
+    {
+      "family": "industrial",
+      "routeId": "four-view-v38:play-099-south-industrial-source-regeneration-v2",
+      "routeRawSha256": "fca861ffa23ce2c0f8d6a9f8a53a0b27394744e378ae9fbb6cf54746dd9bb02e",
+      "routeCanonicalSha256": "1210f45a30c6f0fddd739b009f0d5f2bb809e549ec54faaf82f9a7dee2198966",
+      "dispatchRawSha256": "0ef8a024374fca610ad7e56c9661f1f3680d6ab81b0ad633b194954f6ecac640",
+      "dispatchCanonicalSha256": "797c74bb80f0e1bbc7c59b3d40fe2356c3d79d0527ff6bc81db94e695038977f",
+      "workerHead": "e811521e749c9886a03233bea24b71c7a915974d"
+    },
+    {
+      "family": "civic",
+      "routeId": "four-view-v42:play-100-civic-frontier-art-source-review-v5",
+      "routeRawSha256": "c604b9c0c6438827fb56f93b37981059904d31e9d6a695c590f4d1a213741d26",
+      "routeCanonicalSha256": "de71ac7ef2ac41dbab3056e2355bc466fe739f40822461ff13e9a7b3d4b82fdc",
+      "dispatchRawSha256": "b0e16af7d5882860a9f84ab8c47cc1337483420f234100ed927cb87860d7dde4",
+      "dispatchCanonicalSha256": "5f465bba4740bed1dfe607945ca3ac600cfb744b2a3c1ac44a5157edf3815d96",
+      "workerHead": "75d202c4dbce1789f9c98891c66ed8f6e9180f4e"
+    }
+  ],
+  "coverage": {
+    "expectedCanonicalIdentities": 43,
+    "actualCanonicalRows": 43,
+    "expectedAuthoredViews": 172,
+    "expectedLodPayloads": 516,
+    "physicalRawFilesObserved": 44,
+    "industrialDuplicatePhysicalFiles": 2,
+    "industrialDuplicateRawCandidates": [
+      {"path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/raw/industrial_l01_v00-source-v01.png", "sha256": "7ca3e26234e7e15df9a46775a83f7132f89e1ea1f22d97c42ca6d3502099bbd2"},
+      {"path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/raw/industrial_l01_v00-source-v02.png", "sha256": "8e33dafb3a40f7dac6f5ca8c9c5cb81df2b63011d3fd0d4a0302ec04a99d264a"}
+    ],
+    "duplicateResolution": null
+  },
+  "admissionAndReadiness": {
+    "integrationAdmitted": 0,
+    "sourceReady": false,
+    "rendererQuarantined": false,
+    "productionSelected": false,
+    "candidateReadyForIndependentReview": true,
+    "readinessMutation": false,
+    "runtimeMutation": false,
+    "rendererManifest": null,
+    "sourceAdmissionLedger": null,
+    "commonAcceptedMasterDigest": null,
+    "play096SchemaBinding": null,
+    "play096SemanticValidatorBinding": null
+  },
+  "fieldLevelDelta": {
+    "status": [
+      "/familyCoverage/0/head: 9e2da6ce68d998dc9bf8fbb6d6c2f9ffeae33382 -> a1bade741ab31154e11906fc09c4ecdac9d67fe0",
+      "/familyCoverage/0/routeId: four-view-v36:play-097-south-residential-source-regeneration-v2 -> four-view-v38:play-097-south-residential-source-regeneration-v3",
+      "/familyCoverage/0/routeSha256: 6311e802773e7ac54c40f85c29dbde57eda5bb03bf036cf441e6772f6c8ae6c6 -> 27b30742616483e4d2ae8f0803335422a32dc4a99b6fb8f4f830c0ed94b57ae8",
+      "/familyCoverage/0/sourceExecutionRouteId: four-view-v36:play-097-south-residential-source-regeneration-v2 -> four-view-v38:play-097-south-residential-source-regeneration-v3",
+      "/familyCoverage/0/sourceExecutionRouteSha256: 6311e802773e7ac54c40f85c29dbde57eda5bb03bf036cf441e6772f6c8ae6c6 -> 27b30742616483e4d2ae8f0803335422a32dc4a99b6fb8f4f830c0ed94b57ae8"
+    ],
+    "preflight": [
+      "/authority/authorityCommit: 7e7598a79f21d65299982e55810a5017253d1c91 -> 1d6d7019ee72e06ba5eb1ac0b9356327a6f22026",
+      "/authority/baseCommit: 7e7598a79f21d65299982e55810a5017253d1c91 -> 1d6d7019ee72e06ba5eb1ac0b9356327a6f22026",
+      "/authority/expectedHead: 7e7598a79f21d65299982e55810a5017253d1c91 -> 1d6d7019ee72e06ba5eb1ac0b9356327a6f22026",
+      "/authority/sourceStatusProjection/sha256: current status input -> future status checkpoint SHA (null until Integration writes)",
+      "/families/0/head: 9e2da6ce68d998dc9bf8fbb6d6c2f9ffeae33382 -> a1bade741ab31154e11906fc09c4ecdac9d67fe0",
+      "/families/0/routeId: four-view-v35:play-097-south-residential-source-authority-v2 -> four-view-v38:play-097-south-residential-source-regeneration-v3",
+      "/families/0/routeSha256: 02faa9c71fbeef243cc70a1ad9fd4ec29fb4779adc5fa38c5e94423a936173a4 -> 27b30742616483e4d2ae8f0803335422a32dc4a99b6fb8f4f830c0ed94b57ae8"
+    ],
+    "batchLedger": [
+      "/integrationWriter/publishedBase and /integrationWriter/technicalHeadBeforeLedger: 7e7598a79f21d65299982e55810a5017253d1c91 -> 1d6d7019ee72e06ba5eb1ac0b9356327a6f22026",
+      "/familyAuthority/statusProjection/sha256: current status input -> future status checkpoint SHA (null until Integration writes)",
+      "/familyAuthority/aggregatePreflight/sha256: current preflight input -> future preflight checkpoint SHA (null until Integration writes)",
+      "/cells/2 claimRevision, publishedBase, head, authorityAcknowledgement.authorityCommit, authorityAcknowledgement.claimRevision: current South values -> future checkpoint values",
+      "/cells/*/parallelismExemption/dependencyAuthority/sha256: current status input -> future status checkpoint SHA (null until Integration writes)"
+    ],
+    "dispatch": [
+      "/authorityCommit and /masterHead: 7e7598a79f21d65299982e55810a5017253d1c91 -> 1d6d7019ee72e06ba5eb1ac0b9356327a6f22026",
+      "/rows/2 claimRevision, head, authorityAcknowledgement.authorityCommit, authorityAcknowledgement.claimRevision: current South values -> future checkpoint values",
+      "/rows/*/parallelismExemption/dependencyAuthority/sha256: current status input -> future status checkpoint SHA (null until Integration writes)"
+    ]
+  },
+  "futureIntegrationHashes": {
+    "statusCheckpoint": null,
+    "preflightCheckpoint": null,
+    "batchLedgerCheckpoint": null,
+    "dispatchCheckpoint": null,
+    "statusProjectionSha256": null,
+    "preflightSha256": null
+  },
+  "validation": {
+    "routeValidator": "PASS",
+    "dispatchValidator": "PASS",
+    "gitDiffCheck": "PASS",
+    "masterMutated": false,
+    "protectedDirtPreserved": true
+  }
+}

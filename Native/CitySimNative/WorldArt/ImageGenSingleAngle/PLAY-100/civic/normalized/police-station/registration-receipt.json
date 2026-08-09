@@ -1,7 +1,17 @@
 {
+  "authorityCommit": "65825389d586a128ddf6feb5356c33661ba9a8e8",
+  "candidateHead": "0a7c4e1f8b661588c5325f1b1895cb5b41e279ae",
   "candidateReadyForIndependentReview": true,
+  "claim": {
+    "path": "docs/production/claims/PLAY-100.world-art-civic.md",
+    "sha256": "0c4bce350a2538a768e5e3b51baa76c3e6b0a81a27f31ca4d640e8e844d05a2d"
+  },
+  "contract": {
+    "path": "docs/production/decisions/CONTRACT-026-authored-four-view-registration.md",
+    "sha256": "4781de72429a1f691b9226f7f7668b170b278a4ccd171ac4ea02f5e1df9176eb"
+  },
   "direction": "south",
-  "disposition": "mechanically_registered_candidate",
+  "disposition": "mechanical_derived_repair_candidate",
   "family": "civic/service",
   "identity": "police-station",
   "integrationAdmitted": false,
@@ -9,6 +19,16 @@
     "block": {
       "alphaCheck": "PASS",
       "chromaCheck": "PASS",
+      "cleanup": {
+        "borderMattePixelsRemoved": 0,
+        "boundarySpillPixelsRemoved": 489,
+        "despilledBoundaryPixels": 0,
+        "hiddenRGBPixelsCleared": 364,
+        "lowAlphaSpillPixelsRemoved": 0,
+        "residualPinkPixelsBeforeFinalClear": 231,
+        "strictMattePixelsRemoved": 36
+      },
+      "decodedSha256": "6cd3dedb50a9965506d460491cfd94abd435d59a47cd6ce50707be57bc063701",
       "deterministicReplay": true,
       "dimensions": [
         1024,
@@ -16,13 +36,17 @@
       ],
       "edgeCheck": "PASS",
       "filter": "lanczos",
-      "hiddenChromaPixels": 0,
       "hiddenRGBInTransparentPixels": 0,
-      "keyedMagentaPixelsRemoved": 1037465,
+      "keyedMagentaPixelsRemoved": 1039372,
       "mode": "RGBA",
       "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/police-station/police-station-block.png",
       "registration": {
-        "footprint": [
+        "canvas": [
+          1024,
+          683
+        ],
+        "coordinateRule": "exact rational source coordinate multiplied by destination dimension divided by source dimension, independently rounded half to even",
+        "footprintPolygonLod": [
           [
             512,
             427
@@ -40,24 +64,66 @@
             512
           ]
         ],
-        "groundPivot": [
+        "footprintPolygonSource": [
+          [
+            768,
+            640
+          ],
+          [
+            1024,
+            768
+          ],
+          [
+            768,
+            896
+          ],
+          [
+            512,
+            768
+          ]
+        ],
+        "groundPivotLod": [
           512,
           598
         ],
-        "southSocket": [
+        "groundPivotSource": [
+          768,
+          896
+        ],
+        "sourceCanvas": [
+          1536,
+          1024
+        ],
+        "southSocketLod": [
           427,
           555
+        ],
+        "southSocketSource": [
+          640,
+          832
         ]
       },
-      "repeatSha256": "b385bd895a835c48e30da795db399e1262d80cba50b72067e37915dc54e7d200",
-      "sha256": "b385bd895a835c48e30da795db399e1262d80cba50b72067e37915dc54e7d200",
-      "transparentPixels": 458447,
+      "repeatDecodedSha256": "6cd3dedb50a9965506d460491cfd94abd435d59a47cd6ce50707be57bc063701",
+      "repeatSha256": "c581a17d9d570565306acb8e520049308dd79c2998e92106df429c5c44108198",
+      "sha256": "c581a17d9d570565306acb8e520049308dd79c2998e92106df429c5c44108198",
+      "visibleBoundarySpillPixels": 0,
       "visibleEdgePixels": 0,
-      "visiblePixels": 240945
+      "visibleMagentaPixels": 0,
+      "visiblePinkPixels": 231
     },
     "city": {
       "alphaCheck": "PASS",
       "chromaCheck": "PASS",
+      "cleanup": {
+        "borderMattePixelsRemoved": 0,
+        "boundarySpillPixelsRemoved": 31,
+        "despilledBoundaryPixels": 0,
+        "hiddenRGBPixelsCleared": 36,
+        "lowAlphaSpillPixelsRemoved": 0,
+        "residualPinkPixelsBeforeFinalClear": 0,
+        "strictMattePixelsRemoved": 0
+      },
+      "decodedSha256": "5248deebd095da4d45fad9e187635aa5754daaeaf53896b24c49ca23ff4b6a6d",
       "deterministicReplay": true,
       "dimensions": [
         256,
@@ -65,13 +131,17 @@
       ],
       "edgeCheck": "PASS",
       "filter": "lanczos",
-      "hiddenChromaPixels": 0,
       "hiddenRGBInTransparentPixels": 0,
-      "keyedMagentaPixelsRemoved": 1036873,
+      "keyedMagentaPixelsRemoved": 1039372,
       "mode": "RGBA",
       "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/police-station/police-station-city.png",
       "registration": {
-        "footprint": [
+        "canvas": [
+          256,
+          171
+        ],
+        "coordinateRule": "exact rational source coordinate multiplied by destination dimension divided by source dimension, independently rounded half to even",
+        "footprintPolygonLod": [
           [
             128,
             107
@@ -89,24 +159,66 @@
             128
           ]
         ],
-        "groundPivot": [
+        "footprintPolygonSource": [
+          [
+            768,
+            640
+          ],
+          [
+            1024,
+            768
+          ],
+          [
+            768,
+            896
+          ],
+          [
+            512,
+            768
+          ]
+        ],
+        "groundPivotLod": [
           128,
           150
         ],
-        "southSocket": [
+        "groundPivotSource": [
+          768,
+          896
+        ],
+        "sourceCanvas": [
+          1536,
+          1024
+        ],
+        "southSocketLod": [
           107,
           139
+        ],
+        "southSocketSource": [
+          640,
+          832
         ]
       },
-      "repeatSha256": "7682db607036cd89d878592d44dcfae6470bff23c8455f9766e91e1c2d52038b",
-      "sha256": "7682db607036cd89d878592d44dcfae6470bff23c8455f9766e91e1c2d52038b",
-      "transparentPixels": 28050,
+      "repeatDecodedSha256": "5248deebd095da4d45fad9e187635aa5754daaeaf53896b24c49ca23ff4b6a6d",
+      "repeatSha256": "b322d1bcaee34771529710967c5c448221d2316366f5d0f543c041faf839fd12",
+      "sha256": "b322d1bcaee34771529710967c5c448221d2316366f5d0f543c041faf839fd12",
+      "visibleBoundarySpillPixels": 0,
       "visibleEdgePixels": 0,
-      "visiblePixels": 15726
+      "visibleMagentaPixels": 0,
+      "visiblePinkPixels": 0
     },
     "neighborhood": {
       "alphaCheck": "PASS",
       "chromaCheck": "PASS",
+      "cleanup": {
+        "borderMattePixelsRemoved": 0,
+        "boundarySpillPixelsRemoved": 125,
+        "despilledBoundaryPixels": 0,
+        "hiddenRGBPixelsCleared": 98,
+        "lowAlphaSpillPixelsRemoved": 0,
+        "residualPinkPixelsBeforeFinalClear": 4,
+        "strictMattePixelsRemoved": 3
+      },
+      "decodedSha256": "ca9cf28653d311aef1ce1f6b854b0944123e5fec53d29b5b9cbcc0b5dea4d12f",
       "deterministicReplay": true,
       "dimensions": [
         512,
@@ -114,13 +226,17 @@
       ],
       "edgeCheck": "PASS",
       "filter": "lanczos",
-      "hiddenChromaPixels": 0,
       "hiddenRGBInTransparentPixels": 0,
-      "keyedMagentaPixelsRemoved": 1037023,
+      "keyedMagentaPixelsRemoved": 1039372,
       "mode": "RGBA",
       "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/police-station/police-station-neighborhood.png",
       "registration": {
-        "footprint": [
+        "canvas": [
+          512,
+          342
+        ],
+        "coordinateRule": "exact rational source coordinate multiplied by destination dimension divided by source dimension, independently rounded half to even",
+        "footprintPolygonLod": [
           [
             256,
             214
@@ -138,21 +254,59 @@
             256
           ]
         ],
-        "groundPivot": [
+        "footprintPolygonSource": [
+          [
+            768,
+            640
+          ],
+          [
+            1024,
+            768
+          ],
+          [
+            768,
+            896
+          ],
+          [
+            512,
+            768
+          ]
+        ],
+        "groundPivotLod": [
           256,
           299
         ],
-        "southSocket": [
+        "groundPivotSource": [
+          768,
+          896
+        ],
+        "sourceCanvas": [
+          1536,
+          1024
+        ],
+        "southSocketLod": [
           213,
           278
+        ],
+        "southSocketSource": [
+          640,
+          832
         ]
       },
-      "repeatSha256": "bd7e3e8be2cdcc82b29565e3047ba4990fecf00023a996009daa1e6e4f33ade1",
-      "sha256": "bd7e3e8be2cdcc82b29565e3047ba4990fecf00023a996009daa1e6e4f33ade1",
-      "transparentPixels": 113882,
+      "repeatDecodedSha256": "ca9cf28653d311aef1ce1f6b854b0944123e5fec53d29b5b9cbcc0b5dea4d12f",
+      "repeatSha256": "80dd1028fa7b442bc64882980a8f6f3d039c782ef3f6f3d0e373ed4fadaf7fc5",
+      "sha256": "80dd1028fa7b442bc64882980a8f6f3d039c782ef3f6f3d0e373ed4fadaf7fc5",
+      "visibleBoundarySpillPixels": 0,
       "visibleEdgePixels": 0,
-      "visiblePixels": 61222
+      "visibleMagentaPixels": 0,
+      "visiblePinkPixels": 4
     }
+  },
+  "normalization": {
+    "cropOrTrim": false,
+    "method": "alpha-aware-border-matte-v1",
+    "rawBytePreserved": true,
+    "rotationOrMirror": false
   },
   "productionSelected": false,
   "profile": {
@@ -163,8 +317,10 @@
   "provenance": {
     "complete": true,
     "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/provenance/RAW-PROVENANCE.json",
-    "promptPresent": true
+    "promptPresent": true,
+    "sha256": "f7d33d86351a56101ba6a286ffd000798de086db696922f030341323ee36cf32"
   },
+  "publishedBase": "65825389d586a128ddf6feb5356c33661ba9a8e8",
   "raw": {
     "dimensions": [
       1536,
@@ -210,6 +366,11 @@
     ]
   },
   "rendererQuarantined": false,
+  "route": {
+    "id": "four-view-v25:play-100-civic-frontier-rebind-v1",
+    "sha256": "4acda4456363c696e018d35995e2f0b58bab536f9a4c4c160e7b678ab8e816ad"
+  },
+  "schema": "citysim.play-100.civic-derived-repair.v1",
   "sourceReady": false,
   "southReference": {
     "kind": "preserved_raw_south_anchor",

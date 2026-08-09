@@ -1,7 +1,17 @@
 {
+  "authorityCommit": "65825389d586a128ddf6feb5356c33661ba9a8e8",
+  "candidateHead": "0a7c4e1f8b661588c5325f1b1895cb5b41e279ae",
   "candidateReadyForIndependentReview": true,
+  "claim": {
+    "path": "docs/production/claims/PLAY-100.world-art-civic.md",
+    "sha256": "0c4bce350a2538a768e5e3b51baa76c3e6b0a81a27f31ca4d640e8e844d05a2d"
+  },
+  "contract": {
+    "path": "docs/production/decisions/CONTRACT-026-authored-four-view-registration.md",
+    "sha256": "4781de72429a1f691b9226f7f7668b170b278a4ccd171ac4ea02f5e1df9176eb"
+  },
   "direction": "south",
-  "disposition": "mechanically_registered_candidate",
+  "disposition": "mechanical_derived_repair_candidate",
   "family": "civic/service",
   "identity": "school",
   "integrationAdmitted": false,
@@ -9,6 +19,16 @@
     "block": {
       "alphaCheck": "PASS",
       "chromaCheck": "PASS",
+      "cleanup": {
+        "borderMattePixelsRemoved": 0,
+        "boundarySpillPixelsRemoved": 713,
+        "despilledBoundaryPixels": 0,
+        "hiddenRGBPixelsCleared": 203,
+        "lowAlphaSpillPixelsRemoved": 1,
+        "residualPinkPixelsBeforeFinalClear": 1709,
+        "strictMattePixelsRemoved": 41
+      },
+      "decodedSha256": "343168794097e9be1123a8ed088b0859c01fcb3326cbe1e43cecd18c27cd40a0",
       "deterministicReplay": true,
       "dimensions": [
         1024,
@@ -16,13 +36,17 @@
       ],
       "edgeCheck": "PASS",
       "filter": "lanczos",
-      "hiddenChromaPixels": 0,
       "hiddenRGBInTransparentPixels": 0,
-      "keyedMagentaPixelsRemoved": 1145178,
+      "keyedMagentaPixelsRemoved": 1146586,
       "mode": "RGBA",
       "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/school/school-block.png",
       "registration": {
-        "footprint": [
+        "canvas": [
+          1024,
+          683
+        ],
+        "coordinateRule": "exact rational source coordinate multiplied by destination dimension divided by source dimension, independently rounded half to even",
+        "footprintPolygonLod": [
           [
             512,
             427
@@ -40,24 +64,66 @@
             512
           ]
         ],
-        "groundPivot": [
+        "footprintPolygonSource": [
+          [
+            768,
+            640
+          ],
+          [
+            1024,
+            768
+          ],
+          [
+            768,
+            896
+          ],
+          [
+            512,
+            768
+          ]
+        ],
+        "groundPivotLod": [
           512,
           598
         ],
-        "southSocket": [
+        "groundPivotSource": [
+          768,
+          896
+        ],
+        "sourceCanvas": [
+          1536,
+          1024
+        ],
+        "southSocketLod": [
           427,
           555
+        ],
+        "southSocketSource": [
+          640,
+          832
         ]
       },
-      "repeatSha256": "19f3dbc4e67a649db9dacf3e8ce3e27de023336bdbca2f7b7e0e03414dcd30dc",
-      "sha256": "19f3dbc4e67a649db9dacf3e8ce3e27de023336bdbca2f7b7e0e03414dcd30dc",
-      "transparentPixels": 506090,
+      "repeatDecodedSha256": "343168794097e9be1123a8ed088b0859c01fcb3326cbe1e43cecd18c27cd40a0",
+      "repeatSha256": "d08e5a88a15a745d111dd8d31ba09e32e1bba308dce010a215f04f76a0333235",
+      "sha256": "d08e5a88a15a745d111dd8d31ba09e32e1bba308dce010a215f04f76a0333235",
+      "visibleBoundarySpillPixels": 0,
       "visibleEdgePixels": 0,
-      "visiblePixels": 193302
+      "visibleMagentaPixels": 0,
+      "visiblePinkPixels": 854
     },
     "city": {
       "alphaCheck": "PASS",
       "chromaCheck": "PASS",
+      "cleanup": {
+        "borderMattePixelsRemoved": 0,
+        "boundarySpillPixelsRemoved": 72,
+        "despilledBoundaryPixels": 0,
+        "hiddenRGBPixelsCleared": 48,
+        "lowAlphaSpillPixelsRemoved": 0,
+        "residualPinkPixelsBeforeFinalClear": 3,
+        "strictMattePixelsRemoved": 0
+      },
+      "decodedSha256": "034c8ac1a5cb08bfe99e8a66831f9bb5ac3231792b8a4c2210c45fc097487470",
       "deterministicReplay": true,
       "dimensions": [
         256,
@@ -65,13 +131,17 @@
       ],
       "edgeCheck": "PASS",
       "filter": "lanczos",
-      "hiddenChromaPixels": 0,
       "hiddenRGBInTransparentPixels": 0,
-      "keyedMagentaPixelsRemoved": 1144675,
+      "keyedMagentaPixelsRemoved": 1146586,
       "mode": "RGBA",
       "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/school/school-city.png",
       "registration": {
-        "footprint": [
+        "canvas": [
+          256,
+          171
+        ],
+        "coordinateRule": "exact rational source coordinate multiplied by destination dimension divided by source dimension, independently rounded half to even",
+        "footprintPolygonLod": [
           [
             128,
             107
@@ -89,24 +159,66 @@
             128
           ]
         ],
-        "groundPivot": [
+        "footprintPolygonSource": [
+          [
+            768,
+            640
+          ],
+          [
+            1024,
+            768
+          ],
+          [
+            768,
+            896
+          ],
+          [
+            512,
+            768
+          ]
+        ],
+        "groundPivotLod": [
           128,
           150
         ],
-        "southSocket": [
+        "groundPivotSource": [
+          768,
+          896
+        ],
+        "sourceCanvas": [
+          1536,
+          1024
+        ],
+        "southSocketLod": [
           107,
           139
+        ],
+        "southSocketSource": [
+          640,
+          832
         ]
       },
-      "repeatSha256": "c932c10001f249e4166bc086b738b91c2671dc6f222a081fd9ccd05220f48c0b",
-      "sha256": "c932c10001f249e4166bc086b738b91c2671dc6f222a081fd9ccd05220f48c0b",
-      "transparentPixels": 31056,
+      "repeatDecodedSha256": "034c8ac1a5cb08bfe99e8a66831f9bb5ac3231792b8a4c2210c45fc097487470",
+      "repeatSha256": "9de9f8ebb466f45e75193bb4c1711a3e372ba3f3d9cb885d00191ff4e92d7b11",
+      "sha256": "9de9f8ebb466f45e75193bb4c1711a3e372ba3f3d9cb885d00191ff4e92d7b11",
+      "visibleBoundarySpillPixels": 0,
       "visibleEdgePixels": 0,
-      "visiblePixels": 12720
+      "visibleMagentaPixels": 0,
+      "visiblePinkPixels": 3
     },
     "neighborhood": {
       "alphaCheck": "PASS",
       "chromaCheck": "PASS",
+      "cleanup": {
+        "borderMattePixelsRemoved": 0,
+        "boundarySpillPixelsRemoved": 205,
+        "despilledBoundaryPixels": 0,
+        "hiddenRGBPixelsCleared": 66,
+        "lowAlphaSpillPixelsRemoved": 0,
+        "residualPinkPixelsBeforeFinalClear": 22,
+        "strictMattePixelsRemoved": 9
+      },
+      "decodedSha256": "eae9edbd66204a6e56a08dc770e3f15be6cfdfdfebd7f23c1326fd69a9ffd37f",
       "deterministicReplay": true,
       "dimensions": [
         512,
@@ -114,13 +226,17 @@
       ],
       "edgeCheck": "PASS",
       "filter": "lanczos",
-      "hiddenChromaPixels": 0,
       "hiddenRGBInTransparentPixels": 0,
-      "keyedMagentaPixelsRemoved": 1144804,
+      "keyedMagentaPixelsRemoved": 1146586,
       "mode": "RGBA",
       "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/school/school-neighborhood.png",
       "registration": {
-        "footprint": [
+        "canvas": [
+          512,
+          342
+        ],
+        "coordinateRule": "exact rational source coordinate multiplied by destination dimension divided by source dimension, independently rounded half to even",
+        "footprintPolygonLod": [
           [
             256,
             214
@@ -138,21 +254,59 @@
             256
           ]
         ],
-        "groundPivot": [
+        "footprintPolygonSource": [
+          [
+            768,
+            640
+          ],
+          [
+            1024,
+            768
+          ],
+          [
+            768,
+            896
+          ],
+          [
+            512,
+            768
+          ]
+        ],
+        "groundPivotLod": [
           256,
           299
         ],
-        "southSocket": [
+        "groundPivotSource": [
+          768,
+          896
+        ],
+        "sourceCanvas": [
+          1536,
+          1024
+        ],
+        "southSocketLod": [
           213,
           278
+        ],
+        "southSocketSource": [
+          640,
+          832
         ]
       },
-      "repeatSha256": "fff23b461eee7bdd19e22b2f37694ee9f2c303e459c738980dbdd77d7f08e1c5",
-      "sha256": "fff23b461eee7bdd19e22b2f37694ee9f2c303e459c738980dbdd77d7f08e1c5",
-      "transparentPixels": 125890,
+      "repeatDecodedSha256": "eae9edbd66204a6e56a08dc770e3f15be6cfdfdfebd7f23c1326fd69a9ffd37f",
+      "repeatSha256": "ea176dcb38c4800cc533fada591b6a39c609f2db8cf1a8be84eb0d3942f81e3a",
+      "sha256": "ea176dcb38c4800cc533fada591b6a39c609f2db8cf1a8be84eb0d3942f81e3a",
+      "visibleBoundarySpillPixels": 0,
       "visibleEdgePixels": 0,
-      "visiblePixels": 49214
+      "visibleMagentaPixels": 0,
+      "visiblePinkPixels": 22
     }
+  },
+  "normalization": {
+    "cropOrTrim": false,
+    "method": "alpha-aware-border-matte-v1",
+    "rawBytePreserved": true,
+    "rotationOrMirror": false
   },
   "productionSelected": false,
   "profile": {
@@ -163,8 +317,10 @@
   "provenance": {
     "complete": true,
     "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/provenance/RAW-PROVENANCE.json",
-    "promptPresent": true
+    "promptPresent": true,
+    "sha256": "f7d33d86351a56101ba6a286ffd000798de086db696922f030341323ee36cf32"
   },
+  "publishedBase": "65825389d586a128ddf6feb5356c33661ba9a8e8",
   "raw": {
     "dimensions": [
       1536,
@@ -210,6 +366,11 @@
     ]
   },
   "rendererQuarantined": false,
+  "route": {
+    "id": "four-view-v25:play-100-civic-frontier-rebind-v1",
+    "sha256": "4acda4456363c696e018d35995e2f0b58bab536f9a4c4c160e7b678ab8e816ad"
+  },
+  "schema": "citysim.play-100.civic-derived-repair.v1",
   "sourceReady": false,
   "southReference": {
     "kind": "preserved_raw_south_anchor",

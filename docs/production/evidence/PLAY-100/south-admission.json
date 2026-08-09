@@ -1,11 +1,16 @@
 {
   "authorityCommit": "65825389d586a128ddf6feb5356c33661ba9a8e8",
+  "candidateHead": "0a7c4e1f8b661588c5325f1b1895cb5b41e279ae",
+  "candidateReadyForIndependentReview": true,
   "checks": {
     "alpha": "PASS",
+    "boundarySpill": "PASS",
+    "contactProof": "PASS",
     "deterministicReplay": "PASS",
     "edge": "PASS",
     "hiddenChroma": "PASS",
-    "semanticArtifacts": "PASS"
+    "literalGameScaleColor": "PASS",
+    "literalGameScaleGrayscale": "PASS"
   },
   "claim": {
     "path": "docs/production/claims/PLAY-100.world-art-civic.md",
@@ -17,21 +22,12 @@
   },
   "direction": "south",
   "family": "civic/service",
-  "identities": [
-    "park",
-    "power-plant",
-    "water-tower",
-    "fire-station",
-    "police-station",
-    "school",
-    "city-hall"
-  ],
   "integrationAdmitted": false,
   "normalization": {
+    "alphaAwareCleanup": true,
     "cropOrTrim": false,
     "decoder": "Pillow",
     "filter": "lanczos",
-    "keyedMagentaRemoval": true,
     "outputMode": "RGBA",
     "pixelDerivedGeometry": false,
     "rotationOrMirror": false,
@@ -42,17 +38,18 @@
     "path": "docs/production/decisions/CONTRACT-026-registration-profiles-v1.json",
     "sha256": "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8"
   },
-  "publishedBase": "a61ab80101f596f56ffc1dd7e37b32bd1b220357",
+  "publishedBase": "65825389d586a128ddf6feb5356c33661ba9a8e8",
   "rawCount": 7,
   "rawPreserved": true,
   "receiptsRoot": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized",
   "rendererQuarantined": false,
-  "routeId": "four-view-v4:play-100-south-admission-repair",
-  "routeSha256": "fe585feeb286a7e0efd030877ab946af479276bd4406053b6e1c944c8016db34",
-  "schema": "citysim.play-100.south-admission-repair.v4",
+  "routeId": "four-view-v25:play-100-civic-frontier-rebind-v1",
+  "routeSha256": "4acda4456363c696e018d35995e2f0b58bab536f9a4c4c160e7b678ab8e816ad",
+  "schema": "citysim.play-100.civic-derived-repair.v1",
   "sourceReady": false,
   "task": "PLAY-100",
   "uniqueNormalizedHashes": 21,
   "uniqueRawHashes": 7,
-  "workerHead": "f956b54685707b7ecbb34d30c96aef2242e9f375"
+  "visualProof": "docs/production/evidence/PLAY-100/visual-proof/civic-city-scale-proof.json",
+  "workerHead": "0a7c4e1f8b661588c5325f1b1895cb5b41e279ae"
 }

@@ -1,0 +1,81 @@
+{
+  "schema": 2,
+  "authorityCommit": "65825389d586a128ddf6feb5356c33661ba9a8e8",
+  "assignments": [
+    {
+      "modelRouteSha256": "a9da80c37195380dc2feacabab0d7b8701fd5b64e42dfc07fd2fdfe4c7a55679",
+      "modelRoute": {
+        "schema": 2,
+        "routeId": "four-view-v29:play-097-south-residential-source-regeneration-v1",
+        "taskId": "PLAY-097",
+        "packetKind": "implementation",
+        "classification": "LUNA_IMPLEMENTATION",
+        "model": "gpt-5.6-luna",
+        "effort": "high",
+        "rationale": "Integration-authorized Residential South source regeneration after Frontier V28 source-authority decision. Rebuild exactly twelve failed source anchors with one built-in ImageGen call per identity, preserve all prior bytes, and return a candidate-only checkpoint for independent Frontier review.",
+        "authority": {
+          "authorityCommit": "65825389d586a128ddf6feb5356c33661ba9a8e8",
+          "baseCommit": "a61ab80101f596f56ffc1dd7e37b32bd1b220357",
+          "claim": {"path": "docs/production/claims/PLAY-097.world-art-residential.md", "sha256": "816acffd9e8cb7cc76ad068b7c6b6ff9fed4015b1646c37ac68c148714901126"},
+          "immutableInputs": [
+            {"path": "docs/production/decisions/CONTRACT-006-generated-world-asset-pack.md", "sha256": "e29325fb82701ebf7f93d815fa70c0dd00bb1868826bb10df3d375c8d9deeea5"},
+            {"path": "docs/production/decisions/CONTRACT-025-authored-four-view-2-5d-building-art.md", "sha256": "4e8ab63173d67581332e7d27730b97315906fda4e29b999969456441809479ed"},
+            {"path": "docs/production/decisions/CONTRACT-026-authored-four-view-registration.md", "sha256": "4781de72429a1f691b9226f7f7668b170b278a4ccd171ac4ea02f5e1df9176eb"},
+            {"path": "docs/production/decisions/CONTRACT-026-registration-profiles-v1.json", "sha256": "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8"},
+            {"path": ".agents/skills/produce-citysim-world-art/SKILL.md", "sha256": "9c62d401d8812d5345b6bd25d864a07010348883ca4941f4429854ebe4abc511"},
+            {"path": "docs/production/evidence/PLAY-097/raw-prescreen.json", "sha256": "a20030d26f804c03313c5c6a264c0349549ab71487f1bce43957985b454dec66"},
+            {"path": "docs/production/evidence/PLAY-097/south-admission-v3-validation.json", "sha256": "a84c6e543fdd8913260bc24a5b26f6dcc30f4fbcebd97b0187fe5893ad1958ff"}
+          ]
+        },
+        "assignment": {
+          "threadId": "019fe1b1-3bc4-7b40-a107-2335917c1e49",
+          "branch": "codex/citysim-world-art-residential",
+          "worktree": "/Users/James/.codex/worktrees/df86/city-sim",
+          "expectedHead": "a8bcd4fd30fcb33643f9cc2f5cd0a693a8fbee46",
+          "featureAuthorThreadId": "019fe1b1-3bc4-7b40-a107-2335917c1e49",
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": ["Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-097/residential", "docs/production/evidence/PLAY-097"],
+          "allowed": ["Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-097/residential", "docs/production/evidence/PLAY-097"],
+          "forbidden": [".agents/skills", "docs/production/PLAYABLE_BACKLOG.md", "docs/production/claims", "docs/production/decisions", "docs/production/evidence/INTEGRATION", "Native/CitySimNative/Sources", "Native/CitySimNative/Resources", "Native/CitySimNative/Tests", "Native/CitySimNative/Package.swift", "script/build_and_run.sh", "Native/CitySimNative/WorldArt/ImageGenFourView"]
+        },
+        "boundedDeliverable": "Produce versioned Residential South source-v02 outputs for all twelve logical identities with exactly one built-in ImageGen call per identity and no retries, preserving source-v01/raw/normalized/evidence bytes. Emit only source-v02 prompts, provenance, registration/LOD receipts, normalized outputs, and candidate handoff under the two claim roots. Keep candidateReadyForIndependentReview=true and sourceReady=false, integrationAdmitted=false, rendererQuarantined=false, productionSelected=false; do not self-accept or integrate.",
+        "proofPolicy": {
+          "architectureState": "frozen_reference",
+          "referenceImplementation": {"path": "docs/production/decisions/CONTRACT-025-authored-four-view-2-5d-building-art.md", "sha256": "4e8ab63173d67581332e7d27730b97315906fda4e29b999969456441809479ed"},
+          "deliverableClaims": ["static_structure", "deterministic_output"],
+          "focusedProofLevel": "deterministic_replay",
+          "fullProofLevel": "deterministic_replay",
+          "behavioralCommands": ["python3 Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-097/residential/validate_source_v02.py --repeat 2 --isolated-roots --exactly-one-imagegen-call-per-identity --no-retries"],
+          "prohibitedSubstitutions": ["source_token_presence_for_execution", "ast_shape_for_runtime_success", "manifest_or_prose_for_rendered_pixels", "unit_tests_for_visual_acceptance", "worker_self_report_for_independent_acceptance"]
+        },
+        "validation": {
+          "focusedGateOwner": {"threadId": "019fe1b1-3bc4-7b40-a107-2335917c1e49", "role": "play-097-residential-source-regeneration-focused"},
+          "focusedCommands": ["python3 Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-097/residential/regenerate_source_v02.py --identities all --exactly-one-imagegen-call-per-identity --no-retries", "python3 Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-097/residential/validate_source_v02.py --repeat 2 --isolated-roots --exactly-one-imagegen-call-per-identity --no-retries", "git diff --check a8bcd4fd30fcb33643f9cc2f5cd0a693a8fbee46^..HEAD"],
+          "fullGateOwner": {"threadId": "019f7686-4491-7891-86a6-95a78d67e5c8", "role": "integration-source-regeneration-full-gate", "model": "gpt-5.6-sol", "effort": "high"},
+          "fullCommands": ["Integration source-stage candidate review only; no product/full-suite/app gate in this packet"]
+        },
+        "expectedResult": {"evidencePaths": ["docs/production/evidence/PLAY-097"], "commitRequired": true, "commitMessagePattern": "PLAY-097:"},
+        "escalationTriggers": ["shared_contract_or_schema_decision", "unresolved_product_visual_or_interaction_judgment", "path_outside_claim", "baseline_or_candidate_identity_mismatch", "failure_outside_focused_scope", "save_or_migration_uncertainty", "cross_lane_semantic_conflict", "two_unsuccessful_repair_attempts", "subjective_acceptance_required"],
+        "stopCondition": "Stop after one coherent source-v02 candidate commit and deterministic replay, or immediately on identity/path/authority mismatch, any old-byte mutation, retry or second ImageGen call, fallback/toolchain substitution, visual judgment, or readiness ambiguity. Never push, integrate, run aggregate gates, or self-accept.",
+        "independentReviewer": {"required": true, "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8", "model": "gpt-5.6-sol", "effort": "high"},
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {"path": "docs/production/claims/PLAY-097.world-art-residential.md", "sha256": "816acffd9e8cb7cc76ad068b7c6b6ff9fed4015b1646c37ac68c148714901126"},
+            {"path": "docs/production/decisions/CONTRACT-006-generated-world-asset-pack.md", "sha256": "e29325fb82701ebf7f93d815fa70c0dd00bb1868826bb10df3d375c8d9deeea5"},
+            {"path": "docs/production/decisions/CONTRACT-025-authored-four-view-2-5d-building-art.md", "sha256": "4e8ab63173d67581332e7d27730b97315906fda4e29b999969456441809479ed"},
+            {"path": "docs/production/decisions/CONTRACT-026-authored-four-view-registration.md", "sha256": "4781de72429a1f691b9226f7f7668b170b278a4ccd171ac4ea02f5e1df9176eb"},
+            {"path": "docs/production/decisions/CONTRACT-026-registration-profiles-v1.json", "sha256": "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8"},
+            {"path": ".agents/skills/produce-citysim-world-art/SKILL.md", "sha256": "9c62d401d8812d5345b6bd25d864a07010348883ca4941f4429854ebe4abc511"},
+            {"path": "docs/production/evidence/PLAY-097/raw-prescreen.json", "sha256": "a20030d26f804c03313c5c6a264c0349549ab71487f1bce43957985b454dec66"}
+          ]
+        }
+      }
+    }
+  ]
+}

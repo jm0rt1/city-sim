@@ -63,10 +63,10 @@
       "worktree": "/Users/James/.codex/worktrees/e6f2/city-sim",
       "head": "beb293bb20bba1c002f5874fa355c702f6d3fe65",
       "clean": true,
-      "state": "candidate_ready_for_frontier_review",
+      "state": "technical_candidate_approved_visual_pending",
       "routeId": "four-view-v13:play-105-west-production-repair-v10",
       "modelTier": "LUNA_IMPLEMENTATION",
-      "nextSafeAction": "Independent frontier packet review against the V10 pre-mutation boundary; do not admit or activate."
+      "nextSafeAction": "Frontier visual/source disposition only; retain sourceReady=false until literal-scale review passes."
     },
     {
       "id": "PLAY-104-EAST",

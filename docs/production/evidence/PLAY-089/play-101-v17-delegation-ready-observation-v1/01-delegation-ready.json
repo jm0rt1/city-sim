@@ -1,0 +1,119 @@
+{
+  "schema": 4,
+  "policySha256": "b9f208fe3ee78cd3143953300cbb2d2692d264f0d9106fd3f799bf74aa2df9da",
+  "modelRoute": {
+    "classification": "LUNA_MECHANICAL",
+    "model": "gpt-5.6-luna",
+    "effort": "medium"
+  },
+  "eventKey": {
+    "authorityCommit": "5b4c040a182d0a07f4f0f0e32e598797d4314c0e",
+    "taskId": "PLAY-101",
+    "routeId": "four-view-v17:play-101-current-master-metadata-repair-v1",
+    "trigger": "delegation_ready_for_dispatch",
+    "candidateOrResultCommit": "1dbad1fdbbcb08125b3438070dcad0f7f6d3e850"
+  },
+  "binding": {
+    "dispatchReceiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-101-CURRENT-MASTER-METADATA-REPAIR-V1.json",
+    "dispatchReceiptHash": "29bc9599faed42ec70667c95c382e03e4251d4994b7ae4f4cd0dbeff16de028e",
+    "modelRouteHash": "33409bf899b1698f37da120af7c18985cad2761b75c81469a828d7ae4e286977",
+    "claimPath": "docs/production/claims/PLAY-101.world-rendering-single-angle.md",
+    "claimHash": "4fb20ef3102869dd1b33ceebcf3c4f5bda6ea48838b05e72bfdad9340d96bebb",
+    "expectedHead": "1dbad1fdbbcb08125b3438070dcad0f7f6d3e850",
+    "allowedPaths": [
+      "Native/CitySimNative/Tests/CitySimNativeTests/SingleAngleWorldArtTests.swift",
+      "docs/production/evidence/PLAY-101"
+    ]
+  },
+  "compactContext": {
+    "mode": "compact_hash_bound",
+    "hashes": {
+      "source": "0a18833c0a567677b859ef22b8338b34424814d5369fde81ea1dcd6751866bb0"
+    },
+    "bytes": 0
+  },
+  "inputReceipts": [
+    {
+      "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-101-CURRENT-MASTER-METADATA-REPAIR-V1.json",
+      "sha256": "29bc9599faed42ec70667c95c382e03e4251d4994b7ae4f4cd0dbeff16de028e"
+    },
+    {
+      "path": "docs/production/evidence/INTEGRATION/PLAY-101-V17-DELEGATION-READY-EVENT-V1.json",
+      "sha256": "0a18833c0a567677b859ef22b8338b34424814d5369fde81ea1dcd6751866bb0"
+    },
+    {
+      "path": "docs/production/claims/PLAY-101.world-rendering-single-angle.md",
+      "sha256": "4fb20ef3102869dd1b33ceebcf3c4f5bda6ea48838b05e72bfdad9340d96bebb"
+    },
+    {
+      "path": "docs/production/evidence/PLAY-089/OPERATING-REVIEW-EVENT-LEDGER-V1.json",
+      "sha256": "a7d1e90eca989973bbd5afb0e455b7dd17eb7bc3d63c4e3de5f418db191ac4f4"
+    },
+    {
+      "path": ".agents/skills/optimize-citysim-operating-system/references/triggered-operating-review-policy.json",
+      "sha256": "b9f208fe3ee78cd3143953300cbb2d2692d264f0d9106fd3f799bf74aa2df9da"
+    },
+    {
+      "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-089-PLAY-101-V17-DELEGATION-READY-OBSERVATION-V2.json",
+      "sha256": "6fae893ea57146088d733db51b91c17824e7a8245968701e7dc95aedf536c029"
+    },
+    {
+      "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTE-PLAY-089-PLAY-101-V17-DELEGATION-READY-OBSERVATION-V2.json",
+      "sha256": "ed0c6233f8e733da9d26aa12834420033ccf7c9c56aac818e9978d9d0c4dfe8a"
+    },
+    {
+      "path": "docs/production/claims/PLAY-089.operating-system-optimization.md",
+      "sha256": "5261dd14148414bbef37f12da2a9d2c3d8a4544525fd5c22e7a30f48cb709662"
+    }
+  ],
+  "prohibitedWork": {
+    "productBuildAllowed": false,
+    "fullGateAllowed": false,
+    "dccAllowed": false,
+    "realAppQAAllowed": false,
+    "sharedMutationAllowed": false
+  },
+  "reviewOperations": {
+    "threadPolling": false,
+    "spawnedReviews": false
+  },
+  "operationKinds": [
+    "read_receipt",
+    "hash_file",
+    "validate_schema",
+    "inspect_git_identity",
+    "assemble_receipt"
+  ],
+  "metrics": {
+    "contextBytes": null,
+    "elapsedSeconds": null,
+    "turns": 1
+  },
+  "multiLane": false,
+  "sourceCoverage": [],
+  "decision": "NO_CHANGE",
+  "nextAction": {
+    "action": "HANDOFF",
+    "owner": "Integration full-gate/reviewer 019f7686-4491-7891-86a6-95a78d67e5c8",
+    "boundedDeliverable": "Retain the exact PLAY-101 V17 metadata-repair route for Integration disposition; no dispatch or product action.",
+    "stopCondition": "No product build, worker synchronization, polling, shared mutation, acceptance, integration, push, pin, or self-authorization."
+  },
+  "evidence": {
+    "classification": "LUNA_MECHANICAL",
+    "lowestLegalRoute": "LUNA_MECHANICAL",
+    "authorityBoundary": "Integration owns route publication, aggregate/full gate, independent review, and disposition; PLAY-101 owns only its exact metadata-repair paths, while PLAY-089 observes read-only.",
+    "claimHash": "4fb20ef3102869dd1b33ceebcf3c4f5bda6ea48838b05e72bfdad9340d96bebb",
+    "allowedPathBinding": "exact_2_of_2",
+    "focusedGateOwner": "019fe1b1-71b8-7aa2-b13d-04d10cffb3d9",
+    "fullGateOwner": "019f7686-4491-7891-86a6-95a78d67e5c8",
+    "independentReviewer": "019f7686-4491-7891-86a6-95a78d67e5c8",
+    "usefulWorkstreamDelta": 1
+  },
+  "eventFindings": {
+    "operationalDisposition": "PROCEED",
+    "duplicateFullGateWork": false,
+    "requestedRouteTuple": "LUNA_MECHANICAL/gpt-5.6-luna/medium",
+    "routePublication": "5b4c040a182d0a07f4f0f0e32e598797d4314c0e",
+    "usefulWorkstreamDelta": 1
+  }
+}

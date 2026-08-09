@@ -51,10 +51,10 @@
       "worktree": "/Users/James/.codex/worktrees/f55b/city-sim",
       "head": "12c081381c97a41a05c87c926de0ef7becf5db12",
       "clean": true,
-      "state": "route_published_ack_unconfirmed_control_timeout",
+      "state": "visual_return_lod_residual_chroma",
       "routeId": "four-view-v13:play-103-north-alpha-aware-lod-chroma-v1",
       "modelTier": "LUNA_IMPLEMENTATION",
-      "nextSafeAction": "Obtain visible Luna acknowledgement, then run the frozen alpha-aware LOD repair; no raw regeneration."
+      "nextSafeAction": "Run Contract-028 post-resize alpha-aware cleanup; preserve raw bytes and candidate-only readiness."
     },
     {
       "id": "PLAY-105-WEST",
@@ -75,10 +75,10 @@
       "worktree": "/Users/James/.codex/worktrees/34c2/city-sim",
       "head": "dc73ea7075e6cd441d062ef7f99f594a57fbd088",
       "clean": true,
-      "state": "route_ready_ack_unconfirmed",
+      "state": "visual_return_lod_residual_chroma",
       "routeId": "four-view-v5:play-098-admission-repair-v3",
       "modelTier": "LUNA_IMPLEMENTATION",
-      "nextSafeAction": "Evidence-only canonical rebind; preserve pixels and candidate-only readiness."
+      "nextSafeAction": "Rebind evidence, then run Contract-028 cleanup for residual LOD fringe; preserve pixels."
     },
     {
       "id": "PLAY-100-CIVIC",
@@ -87,10 +87,10 @@
       "worktree": "/Users/James/.codex/worktrees/c96d/city-sim",
       "head": "da68895b967ab21d26317134cd26e03043ee8b38",
       "clean": true,
-      "state": "route_ready_ack_unconfirmed",
+      "state": "visual_return_lod_residual_chroma",
       "routeId": "four-view-v5:play-100-south-admission-repair-v2",
       "modelTier": "LUNA_IMPLEMENTATION",
-      "nextSafeAction": "Evidence-only canonical rebind; preserve pixels and candidate-only readiness."
+      "nextSafeAction": "Rebind evidence, then run Contract-028 cleanup for residual LOD fringe; preserve pixels."
     },
     {
       "id": "PLAY-104-EAST",
@@ -138,7 +138,7 @@
       "clean": null,
       "state": "visual_return",
       "modelTier": "FRONTIER_AUTHORITY",
-      "nextSafeAction": "Repair/return residential and industrial spill; preserve Commercial/Civic as unchanged screen-pass rows."
+      "nextSafeAction": "Repair North/Commercial/Civic residual-chroma LODs under Contract-028; source admission remains false."
     },
     {
       "id": "OS-OPT",

@@ -1,0 +1,12 @@
+{
+  "schema": 1,
+  "eventKeys": [
+    {
+      "authorityCommit": "5b4c040a182d0a07f4f0f0e32e598797d4314c0e",
+      "taskId": "PLAY-101",
+      "routeId": "four-view-v17:play-101-current-master-metadata-repair-v1",
+      "trigger": "delegation_ready_for_dispatch",
+      "candidateOrResultCommit": "1dbad1fdbbcb08125b3438070dcad0f7f6d3e850"
+    }
+  ]
+}

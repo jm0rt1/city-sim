@@ -1,0 +1,180 @@
+{
+  "schema": 4,
+  "policySha256": "b9f208fe3ee78cd3143953300cbb2d2692d264f0d9106fd3f799bf74aa2df9da",
+  "modelRoute": {
+    "classification": "LUNA_MECHANICAL",
+    "model": "gpt-5.6-luna",
+    "effort": "medium"
+  },
+  "eventKey": {
+    "authorityCommit": "65825389d586a128ddf6feb5356c33661ba9a8e8",
+    "taskId": "PLAY-104",
+    "routeId": "four-view-v38:play-104-east-live-head-metadata-rebind-v2",
+    "trigger": "delegation_ready_for_dispatch",
+    "candidateOrResultCommit": "069da37c512afd4d186c8e3576cb6cf17018bfeb"
+  },
+  "binding": {
+    "dispatchReceiptPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-104-EAST-LIVE-HEAD-METADATA-REBIND-V2.json",
+    "dispatchReceiptHash": "52f487bd494a8b3770c876d1bd84d267c62c1e5e823b9d8b82f41797c7ec4f36",
+    "modelRouteHash": "e0fbbb3837fae5008f90905a498bb30ad22f8c6754b3857eac017c07dd51d4a5",
+    "claimPath": "docs/production/claims/PLAY-104.world-art-east-imagegen.md",
+    "claimHash": "4e4311bdd3eed96a209a7b69958b468fc091c228db708783c6b8d813903a8583",
+    "expectedHead": "069da37c512afd4d186c8e3576cb6cf17018bfeb",
+    "allowedPaths": [
+      "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104/east/portable_replay.py",
+      "docs/production/evidence/PLAY-104/PLAY-104-EAST-CONTACT-SHEET-REPAIR-V2.json",
+      "docs/production/evidence/PLAY-104/PLAY-104-EAST-CONTRACT028-VISUAL-REPAIR-V1.json",
+      "docs/production/evidence/PLAY-104/PLAY-104-EAST-LITERAL-SCALE-PROOF-V2.json",
+      "docs/production/evidence/PLAY-104/PLAY-104-EAST-PRODUCTION-HANDOFF-V3.json",
+      "docs/production/evidence/PLAY-104/PLAY-104-EAST-PRODUCTION-READINESS-V3.json",
+      "docs/production/evidence/PLAY-104/handoffs/civic_city-hall_v0/east-handoff.json",
+      "docs/production/evidence/PLAY-104/handoffs/civic_fire-station_v0/east-handoff.json",
+      "docs/production/evidence/PLAY-104/handoffs/civic_park_v0/east-handoff.json",
+      "docs/production/evidence/PLAY-104/handoffs/civic_police-station_v0/east-handoff.json",
+      "docs/production/evidence/PLAY-104/handoffs/civic_power-plant_v0/east-handoff.json",
+      "docs/production/evidence/PLAY-104/handoffs/civic_school_v0/east-handoff.json",
+      "docs/production/evidence/PLAY-104/handoffs/civic_water-tower_v0/east-handoff.json",
+      "docs/production/evidence/PLAY-104/handoffs/commercial_l01_v0/east-handoff.json",
+      "docs/production/evidence/PLAY-104/handoffs/commercial_l01_v1/east-handoff.json",
+      "docs/production/evidence/PLAY-104/handoffs/commercial_l01_v2/east-handoff.json",
+      "docs/production/evidence/PLAY-104/handoffs/commercial_l02_v0/east-handoff.json",
+      "docs/production/evidence/PLAY-104/handoffs/commercial_l02_v1/east-handoff.json",
+      "docs/production/evidence/PLAY-104/handoffs/commercial_l02_v2/east-handoff.json",
+      "docs/production/evidence/PLAY-104/handoffs/commercial_l03_v0/east-handoff.json",
+      "docs/production/evidence/PLAY-104/handoffs/commercial_l03_v1/east-handoff.json",
+      "docs/production/evidence/PLAY-104/handoffs/commercial_l03_v2/east-handoff.json",
+      "docs/production/evidence/PLAY-104/handoffs/commercial_l04_v0/east-handoff.json",
+      "docs/production/evidence/PLAY-104/handoffs/commercial_l04_v1/east-handoff.json",
+      "docs/production/evidence/PLAY-104/handoffs/commercial_l04_v2/east-handoff.json",
+      "docs/production/evidence/PLAY-104/handoffs/industrial_l01_v0/east-handoff.json",
+      "docs/production/evidence/PLAY-104/handoffs/industrial_l01_v1/east-handoff.json",
+      "docs/production/evidence/PLAY-104/handoffs/industrial_l01_v2/east-handoff.json",
+      "docs/production/evidence/PLAY-104/handoffs/industrial_l02_v0/east-handoff.json",
+      "docs/production/evidence/PLAY-104/handoffs/industrial_l02_v1/east-handoff.json",
+      "docs/production/evidence/PLAY-104/handoffs/industrial_l02_v2/east-handoff.json",
+      "docs/production/evidence/PLAY-104/handoffs/industrial_l03_v0/east-handoff.json",
+      "docs/production/evidence/PLAY-104/handoffs/industrial_l03_v1/east-handoff.json",
+      "docs/production/evidence/PLAY-104/handoffs/industrial_l03_v2/east-handoff.json",
+      "docs/production/evidence/PLAY-104/handoffs/industrial_l04_v0/east-handoff.json",
+      "docs/production/evidence/PLAY-104/handoffs/industrial_l04_v1/east-handoff.json",
+      "docs/production/evidence/PLAY-104/handoffs/industrial_l04_v2/east-handoff.json",
+      "docs/production/evidence/PLAY-104/handoffs/residential_l01_v0/east-handoff.json",
+      "docs/production/evidence/PLAY-104/handoffs/residential_l01_v1/east-handoff.json",
+      "docs/production/evidence/PLAY-104/handoffs/residential_l01_v2/east-handoff.json",
+      "docs/production/evidence/PLAY-104/handoffs/residential_l02_v0/east-handoff.json",
+      "docs/production/evidence/PLAY-104/handoffs/residential_l02_v1/east-handoff.json",
+      "docs/production/evidence/PLAY-104/handoffs/residential_l02_v2/east-handoff.json",
+      "docs/production/evidence/PLAY-104/handoffs/residential_l03_v0/east-handoff.json",
+      "docs/production/evidence/PLAY-104/handoffs/residential_l03_v1/east-handoff.json",
+      "docs/production/evidence/PLAY-104/handoffs/residential_l03_v2/east-handoff.json",
+      "docs/production/evidence/PLAY-104/handoffs/residential_l04_v0/east-handoff.json",
+      "docs/production/evidence/PLAY-104/handoffs/residential_l04_v1/east-handoff.json",
+      "docs/production/evidence/PLAY-104/handoffs/residential_l04_v2/east-handoff.json"
+    ]
+  },
+  "compactContext": {
+    "mode": "compact_hash_bound",
+    "hashes": {
+      "sourceEvent": "cde90b9015aff31513528ddca33054c0e9a6c0099214fa3ba7af2c86ece9f2e8",
+      "productDispatch": "52f487bd494a8b3770c876d1bd84d267c62c1e5e823b9d8b82f41797c7ec4f36",
+      "productRoute": "8ce85fcdc4a02d54d808e61dc54ac40c059ab79bc3c0b3120b5474b4daab0dfe",
+      "productClaim": "4e4311bdd3eed96a209a7b69958b468fc091c228db708783c6b8d813903a8583",
+      "observerDispatch": "4c824420d496db599698c77a260bdaad776c77a17ae7f7cc512d6e750b9ff2a4",
+      "observerRoute": "399794520db375384ae227b3c704246510f94794af282c47146639d4fce80876",
+      "observerClaim": "5261dd14148414bbef37f12da2a9d2c3d8a4544525fd5c22e7a30f48cb709662",
+      "ledger": "0221e35b6be3d4786902e41ecc09e4c5524d4bc2eba6ad8adc5b6b5fb289d6a5",
+      "policy": "b9f208fe3ee78cd3143953300cbb2d2692d264f0d9106fd3f799bf74aa2df9da"
+    },
+    "bytes": 0
+  },
+  "inputReceipts": [
+    {
+      "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-104-EAST-LIVE-HEAD-METADATA-REBIND-V2.json",
+      "sha256": "52f487bd494a8b3770c876d1bd84d267c62c1e5e823b9d8b82f41797c7ec4f36"
+    },
+    {
+      "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTE-PLAY-104-EAST-LIVE-HEAD-METADATA-REBIND-V2.json",
+      "sha256": "8ce85fcdc4a02d54d808e61dc54ac40c059ab79bc3c0b3120b5474b4daab0dfe"
+    },
+    {
+      "path": "docs/production/evidence/INTEGRATION/PLAY-104-V38-DELEGATION-READY-EVENT-V2.json",
+      "sha256": "cde90b9015aff31513528ddca33054c0e9a6c0099214fa3ba7af2c86ece9f2e8"
+    },
+    {
+      "path": "docs/production/claims/PLAY-104.world-art-east-imagegen.md",
+      "sha256": "4e4311bdd3eed96a209a7b69958b468fc091c228db708783c6b8d813903a8583"
+    },
+    {
+      "path": "docs/production/evidence/PLAY-089/OPERATING-REVIEW-EVENT-LEDGER-V1.json",
+      "sha256": "0221e35b6be3d4786902e41ecc09e4c5524d4bc2eba6ad8adc5b6b5fb289d6a5"
+    },
+    {
+      "path": ".agents/skills/optimize-citysim-operating-system/references/triggered-operating-review-policy.json",
+      "sha256": "b9f208fe3ee78cd3143953300cbb2d2692d264f0d9106fd3f799bf74aa2df9da"
+    },
+    {
+      "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-089-PLAY-104-V38-DELEGATION-READY-OBSERVATION-V3.json",
+      "sha256": "4c824420d496db599698c77a260bdaad776c77a17ae7f7cc512d6e750b9ff2a4"
+    },
+    {
+      "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTE-PLAY-089-PLAY-104-V38-DELEGATION-READY-OBSERVATION-V3.json",
+      "sha256": "399794520db375384ae227b3c704246510f94794af282c47146639d4fce80876"
+    },
+    {
+      "path": "docs/production/claims/PLAY-089.operating-system-optimization.md",
+      "sha256": "5261dd14148414bbef37f12da2a9d2c3d8a4544525fd5c22e7a30f48cb709662"
+    }
+  ],
+  "prohibitedWork": {
+    "productBuildAllowed": false,
+    "fullGateAllowed": false,
+    "dccAllowed": false,
+    "realAppQAAllowed": false,
+    "sharedMutationAllowed": false
+  },
+  "reviewOperations": {
+    "threadPolling": false,
+    "spawnedReviews": false
+  },
+  "operationKinds": [
+    "read_receipt",
+    "hash_file",
+    "validate_schema",
+    "inspect_git_identity",
+    "assemble_receipt"
+  ],
+  "metrics": {
+    "contextBytes": null,
+    "elapsedSeconds": null,
+    "turns": 1,
+    "validationSeconds": null
+  },
+  "multiLane": false,
+  "sourceCoverage": [],
+  "decision": "NO_CHANGE",
+  "nextAction": {
+    "action": "HANDOFF",
+    "owner": "Integration full-gate/reviewer 019f7686-4491-7891-86a6-95a78d67e5c8",
+    "boundedDeliverable": "Retain the exact East V38 metadata-rebind route for Integration disposition; no dispatch or product action is authorized by this observer.",
+    "stopCondition": "No product build, worker synchronization, polling, shared mutation, acceptance, integration, push, pin, or self-authorization."
+  },
+  "evidence": {
+    "classification": "LUNA_MECHANICAL",
+    "lowestLegalRoute": "LUNA_MECHANICAL",
+    "authorityBoundary": "Integration owns route publication, aggregate/full gate, independent review, source admission, and disposition; PLAY-104 East owns only its exact metadata/evidence paths; PLAY-089 remains read-only.",
+    "claimHash": "4e4311bdd3eed96a209a7b69958b468fc091c228db708783c6b8d813903a8583",
+    "allowedPathBinding": "exact_49_of_49",
+    "focusedGateOwner": "019fe1e1-3b56-72d2-8cbe-306964615976",
+    "fullGateOwner": "019f7686-4491-7891-86a6-95a78d67e5c8",
+    "independentReviewer": "019f7686-4491-7891-86a6-95a78d67e5c8",
+    "usefulWorkstreamDelta": 1
+  },
+  "eventFindings": {
+    "operationalDisposition": "PROCEED",
+    "duplicateFullGateWork": false,
+    "requestedRouteTuple": "LUNA_MECHANICAL/gpt-5.6-luna/medium",
+    "routePublication": "65825389d586a128ddf6feb5356c33661ba9a8e8",
+    "usefulWorkstreamDelta": 1,
+    "validatorBoundary": "All exact East product and observer route inputs resolve against the declared Integration master and worker roots; the clean worker HEAD, claim, event, ledger, policy, focused/full owners, and independent reviewer are bound without a process defect."
+  }
+}

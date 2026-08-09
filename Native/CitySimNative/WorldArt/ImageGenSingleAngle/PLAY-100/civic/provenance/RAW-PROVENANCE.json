@@ -2,7 +2,7 @@
   "authorityCommit": "65825389d586a128ddf6feb5356c33661ba9a8e8",
   "baseCommit": "65825389d586a128ddf6feb5356c33661ba9a8e8",
   "branch": "codex/citysim-world-art-civic",
-  "candidateHead": "0a7c4e1f8b661588c5325f1b1895cb5b41e279ae",
+  "candidateHead": "fd9e2b38bcc1215064c7cc81a4a6e9fc57b56786",
   "claimPath": "docs/production/claims/PLAY-100.world-art-civic.md",
   "claimSha256": "0c4bce350a2538a768e5e3b51baa76c3e6b0a81a27f31ca4d640e8e844d05a2d",
   "family": "civic/service",
@@ -11,7 +11,7 @@
   "handoff": "candidate_bound_repair_evidence",
   "identities": [
     {
-      "candidateHead": "0a7c4e1f8b661588c5325f1b1895cb5b41e279ae",
+      "candidateHead": "fd9e2b38bcc1215064c7cc81a4a6e9fc57b56786",
       "disposition": "raw_preserved; derived_repair_candidate",
       "id": "park",
       "identityPrompt": "Create exactly one centered, unique park as a compact civic park identity centered on a distinctive small octagonal bandstand/gazebo, a modest ornamental fountain, and a carefully limited cluster of mature trees and shrubs arranged as one coherent park facility; no paths or paving that imply a surrounding district.",
@@ -19,13 +19,13 @@
       "preScreen": "visual PASS; 1536x1024 RGB PNG; centered single park identity; flat magenta field; no text or watermark; pixel-level chroma check deferred to PLAY-096 harness",
       "rawPath": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/raw/park-v01.png",
       "rawSha256": "e5797cf8900a6390965ae01bf57be172e2e98e26d17fefafc7b759f372d8caf7",
-      "routeId": "four-view-v25:play-100-civic-frontier-rebind-v1",
-      "routeSha256": "4acda4456363c696e018d35995e2f0b58bab536f9a4c4c160e7b678ab8e816ad",
+      "routeId": "four-view-v26:play-100-civic-frontier-art-source-review-v3",
+      "routeSha256": "04bf464b54956f3276a62ccf30c67adfdc73b8cd2d640cbd0e28071a6ef9d257",
       "sourceArtifact": "/Users/James/.codex/generated_images/019fe1b1-3bc4-7b40-a107-22d8d1d6eabb/exec-fc643980-8942-4358-bed3-690d64d35037.png",
-      "workerHead": "0a7c4e1f8b661588c5325f1b1895cb5b41e279ae"
+      "workerHead": "fd9e2b38bcc1215064c7cc81a4a6e9fc57b56786"
     },
     {
-      "candidateHead": "0a7c4e1f8b661588c5325f1b1895cb5b41e279ae",
+      "candidateHead": "fd9e2b38bcc1215064c7cc81a4a6e9fc57b56786",
       "disposition": "raw_preserved; derived_repair_candidate",
       "id": "power-plant",
       "identityPrompt": "Create exactly one centered, unique power plant as a compact civic power plant with a distinctive brick turbine hall, one clean industrial smokestack without smoke, restrained metal service details, and a readable utility silhouette.",
@@ -33,13 +33,13 @@
       "preScreen": "visual PASS; 1536x1024 RGB PNG; centered single power-plant identity; flat magenta field; no smoke, text, or watermark; pixel-level chroma check deferred to PLAY-096 harness",
       "rawPath": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/raw/power-plant-v01.png",
       "rawSha256": "752c75b1fd0c2d5b869d371738df7f4abd6a3675ab420edb6c2f32e463a9bffb",
-      "routeId": "four-view-v25:play-100-civic-frontier-rebind-v1",
-      "routeSha256": "4acda4456363c696e018d35995e2f0b58bab536f9a4c4c160e7b678ab8e816ad",
+      "routeId": "four-view-v26:play-100-civic-frontier-art-source-review-v3",
+      "routeSha256": "04bf464b54956f3276a62ccf30c67adfdc73b8cd2d640cbd0e28071a6ef9d257",
       "sourceArtifact": "/Users/James/.codex/generated_images/019fe1b1-3bc4-7b40-a107-22d8d1d6eabb/exec-e82849be-5990-4cee-9b98-efa78c7dc554.png",
-      "workerHead": "0a7c4e1f8b661588c5325f1b1895cb5b41e279ae"
+      "workerHead": "fd9e2b38bcc1215064c7cc81a4a6e9fc57b56786"
     },
     {
-      "candidateHead": "0a7c4e1f8b661588c5325f1b1895cb5b41e279ae",
+      "candidateHead": "fd9e2b38bcc1215064c7cc81a4a6e9fc57b56786",
       "disposition": "raw_preserved; derived_repair_candidate",
       "id": "water-tower",
       "identityPrompt": "Create exactly one centered, unique water tower as a distinctive municipal water tower with a weathered cylindrical tank, elegant steel support legs, a compact maintenance ladder and platform, and believable painted metal construction.",
@@ -47,13 +47,13 @@
       "preScreen": "visual PASS; 1536x1024 RGB PNG; centered single water-tower identity; flat magenta field; no text or watermark; pixel-level chroma check deferred to PLAY-096 harness",
       "rawPath": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/raw/water-tower-v01.png",
       "rawSha256": "731a166771d75b97c32c3ebc9e0708fed175f349c20467a72645d45a30c55ff0",
-      "routeId": "four-view-v25:play-100-civic-frontier-rebind-v1",
-      "routeSha256": "4acda4456363c696e018d35995e2f0b58bab536f9a4c4c160e7b678ab8e816ad",
+      "routeId": "four-view-v26:play-100-civic-frontier-art-source-review-v3",
+      "routeSha256": "04bf464b54956f3276a62ccf30c67adfdc73b8cd2d640cbd0e28071a6ef9d257",
       "sourceArtifact": "/Users/James/.codex/generated_images/019fe1b1-3bc4-7b40-a107-22d8d1d6eabb/exec-db1ea176-7670-495e-a43d-e434929b7d6b.png",
-      "workerHead": "0a7c4e1f8b661588c5325f1b1895cb5b41e279ae"
+      "workerHead": "fd9e2b38bcc1215064c7cc81a4a6e9fc57b56786"
     },
     {
-      "candidateHead": "0a7c4e1f8b661588c5325f1b1895cb5b41e279ae",
+      "candidateHead": "fd9e2b38bcc1215064c7cc81a4a6e9fc57b56786",
       "disposition": "raw_preserved; derived_repair_candidate",
       "id": "fire-station",
       "identityPrompt": "Create exactly one centered, unique fire station as a compact two-story brick fire station with a strong civic entrance, three dark apparatus-bay doors with no vehicles, a restrained tower element, and highly readable masonry and trim.",
@@ -61,13 +61,13 @@
       "preScreen": "visual PASS; 1536x1024 RGB PNG; centered single fire-station identity; flat magenta field; no vehicles, text, or watermark; pixel-level chroma check deferred to PLAY-096 harness",
       "rawPath": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/raw/fire-station-v01.png",
       "rawSha256": "33e2d69e44120f0ba6b81e54ccd22eeb3ef9021265b264831d4d2ccfc67403bf",
-      "routeId": "four-view-v25:play-100-civic-frontier-rebind-v1",
-      "routeSha256": "4acda4456363c696e018d35995e2f0b58bab536f9a4c4c160e7b678ab8e816ad",
+      "routeId": "four-view-v26:play-100-civic-frontier-art-source-review-v3",
+      "routeSha256": "04bf464b54956f3276a62ccf30c67adfdc73b8cd2d640cbd0e28071a6ef9d257",
       "sourceArtifact": "/Users/James/.codex/generated_images/019fe1b1-3bc4-7b40-a107-22d8d1d6eabb/exec-7c52c774-cc15-43f0-958a-1b40d1a7c10b.png",
-      "workerHead": "0a7c4e1f8b661588c5325f1b1895cb5b41e279ae"
+      "workerHead": "fd9e2b38bcc1215064c7cc81a4a6e9fc57b56786"
     },
     {
-      "candidateHead": "0a7c4e1f8b661588c5325f1b1895cb5b41e279ae",
+      "candidateHead": "fd9e2b38bcc1215064c7cc81a4a6e9fc57b56786",
       "disposition": "raw_preserved; derived_repair_candidate",
       "id": "police-station",
       "identityPrompt": "Create exactly one centered, unique police station as a compact blue-gray stone and brick police station with a formal civic portico, secure but welcoming entrance, symmetrical wings, and restrained institutional architectural detail with no text or badge.",
@@ -75,13 +75,13 @@
       "preScreen": "visual PASS; 1536x1024 RGB PNG; centered single police-station identity; flat magenta field; no badge, text, or watermark; pixel-level chroma check deferred to PLAY-096 harness",
       "rawPath": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/raw/police-station-v01.png",
       "rawSha256": "af934e9cd1b3e5f76ece34f0ea1a5b51600e074db297e1039972be3586ed935d",
-      "routeId": "four-view-v25:play-100-civic-frontier-rebind-v1",
-      "routeSha256": "4acda4456363c696e018d35995e2f0b58bab536f9a4c4c160e7b678ab8e816ad",
+      "routeId": "four-view-v26:play-100-civic-frontier-art-source-review-v3",
+      "routeSha256": "04bf464b54956f3276a62ccf30c67adfdc73b8cd2d640cbd0e28071a6ef9d257",
       "sourceArtifact": "/Users/James/.codex/generated_images/019fe1b1-3bc4-7b40-a107-22d8d1d6eabb/exec-0ecb3c19-99a9-4cb9-bd55-dfd455e63b2b.png",
-      "workerHead": "0a7c4e1f8b661588c5325f1b1895cb5b41e279ae"
+      "workerHead": "fd9e2b38bcc1215064c7cc81a4a6e9fc57b56786"
     },
     {
-      "candidateHead": "0a7c4e1f8b661588c5325f1b1895cb5b41e279ae",
+      "candidateHead": "fd9e2b38bcc1215064c7cc81a4a6e9fc57b56786",
       "disposition": "raw_preserved; derived_repair_candidate",
       "id": "school",
       "identityPrompt": "Create exactly one centered, unique school as a welcoming red-brick neighborhood school with a central entrance, modest bell-tower/cupola, symmetrical classroom wings, tall windows, and distinct educational civic character with no lettering.",
@@ -89,13 +89,13 @@
       "preScreen": "visual PASS; 1536x1024 RGB PNG; centered single school identity; flat magenta field; no lettering, text, or watermark; pixel-level chroma check deferred to PLAY-096 harness",
       "rawPath": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/raw/school-v01.png",
       "rawSha256": "62d7cd7fbbc16fd5fe770120476ae970a6ffec56972a2a1f332c6495cb3a46ed",
-      "routeId": "four-view-v25:play-100-civic-frontier-rebind-v1",
-      "routeSha256": "4acda4456363c696e018d35995e2f0b58bab536f9a4c4c160e7b678ab8e816ad",
+      "routeId": "four-view-v26:play-100-civic-frontier-art-source-review-v3",
+      "routeSha256": "04bf464b54956f3276a62ccf30c67adfdc73b8cd2d640cbd0e28071a6ef9d257",
       "sourceArtifact": "/Users/James/.codex/generated_images/019fe1b1-3bc4-7b40-a107-22d8d1d6eabb/exec-0e43e166-647e-4918-9085-b5b8c0254373.png",
-      "workerHead": "0a7c4e1f8b661588c5325f1b1895cb5b41e279ae"
+      "workerHead": "fd9e2b38bcc1215064c7cc81a4a6e9fc57b56786"
     },
     {
-      "candidateHead": "0a7c4e1f8b661588c5325f1b1895cb5b41e279ae",
+      "candidateHead": "fd9e2b38bcc1215064c7cc81a4a6e9fc57b56786",
       "disposition": "raw_preserved; derived_repair_candidate",
       "id": "city-hall",
       "identityPrompt": "Create exactly one centered, unique city hall as a landmark civic city hall with a dignified stone facade, broad front steps, columned entrance, symmetrical wings, and a distinctive central cupola, clearly unique from the other civic identities.",
@@ -103,10 +103,10 @@
       "preScreen": "visual PASS; 1536x1024 RGB PNG; centered single city-hall identity; flat magenta field; no text or watermark; pixel-level chroma check deferred to PLAY-096 harness",
       "rawPath": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/raw/city-hall-v01.png",
       "rawSha256": "89701d7c1e95644267bd72627fb1f97d21aea09ca930ad3b73ebb05ddaedb819",
-      "routeId": "four-view-v25:play-100-civic-frontier-rebind-v1",
-      "routeSha256": "4acda4456363c696e018d35995e2f0b58bab536f9a4c4c160e7b678ab8e816ad",
+      "routeId": "four-view-v26:play-100-civic-frontier-art-source-review-v3",
+      "routeSha256": "04bf464b54956f3276a62ccf30c67adfdc73b8cd2d640cbd0e28071a6ef9d257",
       "sourceArtifact": "/Users/James/.codex/generated_images/019fe1b1-3bc4-7b40-a107-22d8d1d6eabb/exec-a2bd2db5-2fbd-4847-8c26-f2e1e95b2439.png",
-      "workerHead": "0a7c4e1f8b661588c5325f1b1895cb5b41e279ae"
+      "workerHead": "fd9e2b38bcc1215064c7cc81a4a6e9fc57b56786"
     }
   ],
   "independentReview": "required and not run",
@@ -143,12 +143,12 @@
     }
   ],
   "rendererQuarantined": false,
-  "routeId": "four-view-v25:play-100-civic-frontier-rebind-v1",
-  "routeSha256": "4acda4456363c696e018d35995e2f0b58bab536f9a4c4c160e7b678ab8e816ad",
+  "routeId": "four-view-v26:play-100-civic-frontier-art-source-review-v3",
+  "routeSha256": "04bf464b54956f3276a62ccf30c67adfdc73b8cd2d640cbd0e28071a6ef9d257",
   "sourceReady": false,
   "stage": "derived_repair_candidate",
   "task": "PLAY-100",
   "tool": "built-in image_gen",
   "workerAcceptance": false,
-  "workerHead": "0a7c4e1f8b661588c5325f1b1895cb5b41e279ae"
+  "workerHead": "fd9e2b38bcc1215064c7cc81a4a6e9fc57b56786"
 }

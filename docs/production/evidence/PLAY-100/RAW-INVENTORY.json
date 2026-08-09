@@ -1,7 +1,7 @@
 {
   "accepted": [],
   "authorityCommit": "65825389d586a128ddf6feb5356c33661ba9a8e8",
-  "candidateHead": "0a7c4e1f8b661588c5325f1b1895cb5b41e279ae",
+  "candidateHead": "fd9e2b38bcc1215064c7cc81a4a6e9fc57b56786",
   "candidateReadyForIndependentReview": true,
   "claim": {
     "path": "docs/production/claims/PLAY-100.world-art-civic.md",
@@ -111,8 +111,8 @@
   "rendererQuarantined": false,
   "returned": [],
   "route": {
-    "id": "four-view-v25:play-100-civic-frontier-rebind-v1",
-    "sha256": "4acda4456363c696e018d35995e2f0b58bab536f9a4c4c160e7b678ab8e816ad"
+    "id": "four-view-v26:play-100-civic-frontier-art-source-review-v3",
+    "sha256": "04bf464b54956f3276a62ccf30c67adfdc73b8cd2d640cbd0e28071a6ef9d257"
   },
   "schema": "citysim.play-100.civic-raw-inventory.v2",
   "sourceReady": false,

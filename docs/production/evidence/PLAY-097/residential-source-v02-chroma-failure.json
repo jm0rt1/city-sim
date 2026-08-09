@@ -10,7 +10,7 @@
   "failureClass": "raw_chroma_corner_nonflat",
   "failureIdentity": "residential_l01_variant_0",
   "receiptPath": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-097/residential/handoff/source-v02-chroma-failure.json",
-  "receiptSha256": "15c3e28ef292494ffb13ec9798424eb4d00ea649ef63151df292cca9b015cec1",
+  "receiptSha256": "7f8686f0bdb9026d176ed4a7a793da615c6f4082ef2dc663453da82184903878",
   "artifact": {
     "path": "/Users/James/.codex/generated_images/019fe49c-e2d3-7812-a0e5-9ce968bd8884/exec-eb810e5d-8d04-4d15-869c-444ba548f642.png",
     "sha256": "0984ee22c9f539a60dc67e959aa82a45e6d96e66fdfa845df1adc1ff500fc08b",

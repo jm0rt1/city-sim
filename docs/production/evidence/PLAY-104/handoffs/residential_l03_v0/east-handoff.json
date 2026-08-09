@@ -1,0 +1,178 @@
+{
+  "authorityCommit": "65825389d586a128ddf6feb5356c33661ba9a8e8",
+  "candidateReadyForIndependentReview": true,
+  "canonicalModelRouteSha256": "48bf6b8907a664374d14296aa0d15fb361ff43eda132eac5fc4e83a1eb8f2a83",
+  "claim": {
+    "path": "docs/production/claims/PLAY-104.world-art-east-imagegen.md",
+    "sha256": "4e4311bdd3eed96a209a7b69958b468fc091c228db708783c6b8d813903a8583"
+  },
+  "direction": "east",
+  "family": "residential",
+  "identity": "residential_l03_v0",
+  "integrationAdmitted": false,
+  "lods": {
+    "block": {
+      "boundaryResidualChromaPixels": 0,
+      "cropOrTrim": false,
+      "despillCandidates": 5125,
+      "deterministicReplay": true,
+      "dimensions": [
+        1024,
+        683
+      ],
+      "filter": "lanczos",
+      "frameEdgeAlphaPixels": 0,
+      "hiddenRgbPixels": 0,
+      "mode": "RGBA",
+      "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104/east/lod/residential_l03_v0/block.png",
+      "pixelDerivedGeometry": false,
+      "registration": {
+        "canvas": [
+          1024,
+          683
+        ],
+        "eastSocket": [
+          597,
+          555
+        ],
+        "geometrySource": "CONTRACT-026 code-owned metadata",
+        "groundPivot": [
+          512,
+          598
+        ],
+        "orientationTransform": "none",
+        "pixelDerivedGeometry": false
+      },
+      "repeatSha256": "ecfea1a81e793394a782a0581795f225d1c9e202aef103a24e4cc31030899b80",
+      "sha256": "ecfea1a81e793394a782a0581795f225d1c9e202aef103a24e4cc31030899b80",
+      "strictKeyedMattePixels": 0,
+      "strictMatteRemovedPixels": 1755
+    },
+    "city": {
+      "boundaryResidualChromaPixels": 0,
+      "cropOrTrim": false,
+      "despillCandidates": 673,
+      "deterministicReplay": true,
+      "dimensions": [
+        256,
+        171
+      ],
+      "filter": "lanczos",
+      "frameEdgeAlphaPixels": 0,
+      "hiddenRgbPixels": 0,
+      "mode": "RGBA",
+      "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104/east/lod/residential_l03_v0/city.png",
+      "pixelDerivedGeometry": false,
+      "registration": {
+        "canvas": [
+          256,
+          171
+        ],
+        "eastSocket": [
+          149,
+          139
+        ],
+        "geometrySource": "CONTRACT-026 code-owned metadata",
+        "groundPivot": [
+          128,
+          150
+        ],
+        "orientationTransform": "none",
+        "pixelDerivedGeometry": false
+      },
+      "repeatSha256": "e50a67053c3d0b4606a92511b45c7ba39129720f3ae5cd5870da63172a501976",
+      "sha256": "e50a67053c3d0b4606a92511b45c7ba39129720f3ae5cd5870da63172a501976",
+      "strictKeyedMattePixels": 0,
+      "strictMatteRemovedPixels": 87
+    },
+    "neighborhood": {
+      "boundaryResidualChromaPixels": 0,
+      "cropOrTrim": false,
+      "despillCandidates": 1949,
+      "deterministicReplay": true,
+      "dimensions": [
+        512,
+        342
+      ],
+      "filter": "lanczos",
+      "frameEdgeAlphaPixels": 0,
+      "hiddenRgbPixels": 0,
+      "mode": "RGBA",
+      "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104/east/lod/residential_l03_v0/neighborhood.png",
+      "pixelDerivedGeometry": false,
+      "registration": {
+        "canvas": [
+          512,
+          342
+        ],
+        "eastSocket": [
+          299,
+          278
+        ],
+        "geometrySource": "CONTRACT-026 code-owned metadata",
+        "groundPivot": [
+          256,
+          299
+        ],
+        "orientationTransform": "none",
+        "pixelDerivedGeometry": false
+      },
+      "repeatSha256": "7aa1cd2ea1eb8411e3d720799c9b94b3e0c5226c917be49c6091a4f3cdb15fc5",
+      "sha256": "7aa1cd2ea1eb8411e3d720799c9b94b3e0c5226c917be49c6091a4f3cdb15fc5",
+      "strictKeyedMattePixels": 0,
+      "strictMatteRemovedPixels": 372
+    }
+  },
+  "producerStartingHead": "a30469de60e12b66f9a2c7b65ac40f16c62a7fa7",
+  "productionSelected": false,
+  "prompt": {
+    "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104/east/prompts/residential_l03_v0/east-prompt.md",
+    "sha256": "a51df8755c36a6e3ab87fe7cacf61b37613b65b08de9e2eb9e3b3a5bbea460f6"
+  },
+  "provenance": {
+    "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104/east/provenance/residential_l03_v0/east-provenance.json",
+    "sha256": "4c29063322bbd7b7e53e28b5d0fbcd2f4484655f9b8899b8fb2c9cb1e8d35f8f"
+  },
+  "raw": {
+    "dimensions": [
+      1536,
+      1024
+    ],
+    "mode": "RGB",
+    "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104/east/raw/residential_l03_v0/east-source-v01.png",
+    "sha256": "c84cbf9ab24c637040dc0c23a5af875c91543163d2482b2509935ad6e00db238"
+  },
+  "registration": {
+    "canvas": [
+      1536,
+      1024
+    ],
+    "eastSocket": [
+      896,
+      832
+    ],
+    "groundPivot": [
+      768,
+      896
+    ],
+    "orientationTransform": "none",
+    "pixelDerivedGeometry": false
+  },
+  "rendererQuarantined": false,
+  "resultHead": "0887dfadb34a30755376b7f859f2c71d9dd125be",
+  "routeFileSha256": "4a60ea6ec4d96d99f94bff2b19f445c08f6b3505f19688d2258bcf4edb17ab45",
+  "routeId": "four-view-v24:play-104-east-contact-sheet-repair-v2",
+  "schema": "citysim.play-104.direction-handoff.v1",
+  "siblingInputsConsumed": [],
+  "sourceReady": false,
+  "southReference": {
+    "admitted": false,
+    "authoringOnly": true,
+    "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-097/residential/raw/residential_l03_variant_0/source-v01.png",
+    "sha256": "e5aa4e2f198cf424ac6dff4903ec5838e920f510056b320e6ed60fc539f5aea0",
+    "shipping": false
+  },
+  "task": "PLAY-104",
+  "visualAcceptance": "not_claimed",
+  "workerHead": "0887dfadb34a30755376b7f859f2c71d9dd125be"
+}

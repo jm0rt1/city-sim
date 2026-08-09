@@ -1,0 +1,60 @@
+{
+  "authorityCommit": "65825389d586a128ddf6feb5356c33661ba9a8e8",
+  "branch": "codex/citysim-world-art-east-imagegen",
+  "candidateReadyForIndependentReview": true,
+  "canonicalModelRouteSha256": "e27286f9cf90b0c0a90a4827f36075498b5ec8b33ea3eb6dd079cd690049fabe",
+  "coherenceRebind": {
+    "canonicalModelRouteSha256": "4cbf877de594fcebf9841a8ca19a4fa89866e672b1eee34740ad83d003e21403",
+    "carrier": "c71d714aa64b8e8a50db985cdf2f6e626d4946a3",
+    "resultHead": "0887dfadb34a30755376b7f859f2c71d9dd125be",
+    "routeId": "four-view-v26:play-104-east-handoff-coherence-rebind-v1"
+  },
+  "contract028": {
+    "boundaryResidual": "alpha 1...254, 4-neighbor alpha==0, max(red,blue)>=64, red+blue-2*green>=64",
+    "despill": "RGB-only channel cap green+31; alpha and registration preserved",
+    "strictKeyedMatte": "alpha>0, red>=180, blue>=150, green<=110, red+blue>=4*green"
+  },
+  "counts": {
+    "handoffs": 43,
+    "identities": 43,
+    "lodPayloads": 129,
+    "rawMasters": 43
+  },
+  "derivedOnly": true,
+  "direction": "east",
+  "dispatchRouteFileSha256": "54a0d18277145a27ffca6589a9aa54434d15cde03a36243de889022bf49793d8",
+  "dispatchRouteSnapshot": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104/east/route-snapshot/MODEL-ROUTE-PLAY-104-EAST-CONTRACT028-VISUAL-REPAIR-V1.json",
+  "focusedReplay": {
+    "command": "python3 Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104/east/validate_direction_production.py --repeat 2",
+    "isolatedRoots": 2,
+    "repeat": 2,
+    "semanticReplaySha256": "47de4941ae06c1b8025fe700a24724e2afaab08de7030378a5188907f13b9172",
+    "status": "PASS"
+  },
+  "integrationAdmitted": false,
+  "pixelsPreserved": true,
+  "preservedArtifactCounts": {
+    "contactSheets": 5,
+    "lod": 129,
+    "prompts": 43,
+    "provenance": 43,
+    "raw": 43
+  },
+  "preservedArtifactManifestAfterSha256": "6474e4a35d3f92a304ca013c20d70a1cf07e60fcafbb4e47a55ff308574664dc",
+  "preservedArtifactManifestSha256": "6474e4a35d3f92a304ca013c20d70a1cf07e60fcafbb4e47a55ff308574664dc",
+  "producerStartingHead": "a30469de60e12b66f9a2c7b65ac40f16c62a7fa7",
+  "productionSelected": false,
+  "qualityProof": "docs/production/evidence/PLAY-104/PLAY-104-EAST-LITERAL-SCALE-PROOF-V1.json",
+  "rawBytesPreserved": true,
+  "rendererQuarantined": false,
+  "repairedHandoffCount": 43,
+  "repairedHandoffManifestAfterSha256": "036e6de7dcae86ecaeca83dd1403950020a9aa9eef3b58ac23b10c8464402d7f",
+  "resultHead": "0887dfadb34a30755376b7f859f2c71d9dd125be",
+  "routeId": "four-view-v23:play-104-east-contract028-visual-repair-v1",
+  "schema": "citysim.play-104.east-contract028-visual-repair.v1",
+  "siblingInputsConsumed": [],
+  "sourceReady": false,
+  "task": "PLAY-104",
+  "visualAcceptance": "not_claimed",
+  "workerHead": "2b404eb424d5b3ea8a80b5bfe29424a85bb5dd98"
+}

@@ -63,7 +63,7 @@
       "Native/CitySimNative/WorldArt/ImageGenFourView"
     ]
   },
-  "boundedDeliverable": "Rebind only the task-owned Civic source evidence, records, handoff, summary, and validator assertions to the canonical route hash 1a511a8bf836a9b4517726c27311b201eb9481c083dd038bfc84bf1a99a80990 and exact live candidate HEAD. Preserve every raw/normalized PNG byte and neutral readiness tuple; rerun the deterministic proof; do not regenerate pixels or touch renderer/shared/shipping paths.",
+  "boundedDeliverable": "Rebind only the task-owned Civic source evidence, records, handoff, summary, and validator assertions to this committed route and exact live candidate HEAD. Preserve every raw/normalized PNG byte and neutral readiness tuple; rerun the deterministic proof; do not regenerate pixels or touch renderer/shared/shipping paths.",
   "proofPolicy": {
     "architectureState": "frozen_reference",
     "referenceImplementation": {

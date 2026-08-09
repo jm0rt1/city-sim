@@ -3,7 +3,7 @@
   "authorityCommit": "65825389d586a128ddf6feb5356c33661ba9a8e8",
   "assignments": [
     {
-      "modelRouteSha256": "3d6b7a2dc8e5b72f6eec9efa2cf51098ffa0580322ac50102d465f74126376a6",
+      "modelRouteSha256": "12071929ef989b407142a6f30f6cc5d3a2497d99aed299ed9cbd7cbfbf4377ce",
       "modelRoute": {
         "schema": 2,
         "routeId": "four-view-v5:play-100-south-admission-repair-v2",
@@ -69,7 +69,7 @@
             "Native/CitySimNative/WorldArt/ImageGenFourView"
           ]
         },
-        "boundedDeliverable": "Rebind only the task-owned Civic source evidence, records, handoff, summary, and validator assertions to the canonical route hash 1a511a8bf836a9b4517726c27311b201eb9481c083dd038bfc84bf1a99a80990 and exact live candidate HEAD. Preserve every raw/normalized PNG byte and neutral readiness tuple; rerun the deterministic proof; do not regenerate pixels or touch renderer/shared/shipping paths.",
+        "boundedDeliverable": "Rebind only the task-owned Civic source evidence, records, handoff, summary, and validator assertions to this committed route and exact live candidate HEAD. Preserve every raw/normalized PNG byte and neutral readiness tuple; rerun the deterministic proof; do not regenerate pixels or touch renderer/shared/shipping paths.",
         "proofPolicy": {
           "architectureState": "frozen_reference",
           "referenceImplementation": {

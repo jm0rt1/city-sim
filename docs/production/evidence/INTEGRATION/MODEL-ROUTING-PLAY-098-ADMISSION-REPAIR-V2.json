@@ -3,7 +3,7 @@
   "authorityCommit": "65825389d586a128ddf6feb5356c33661ba9a8e8",
   "assignments": [
     {
-      "modelRouteSha256": "2ea6b1b5f11d77d00550d3ce77beb77d1706bdff3e9aea63da95296989eba0b6",
+      "modelRouteSha256": "aa9f2dd4ea769d087428bf682ea7ac78230c038a5f62458e300ffaf5e9657a0d",
       "modelRoute": {
         "schema": 2,
         "routeId": "four-view-v5:play-098-admission-repair-v3",
@@ -54,10 +54,10 @@
             "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-098/commercial",
             "docs/production/evidence/PLAY-098"
           ],
-            "allowed": [
-              "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-098/commercial/normalize_south_admission.py",
-              "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-098/commercial/normalized",
-              "docs/production/evidence/PLAY-098/south"
+          "allowed": [
+            "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-098/commercial/normalize_south_admission.py",
+            "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-098/commercial/normalized",
+            "docs/production/evidence/PLAY-098/south"
           ],
           "forbidden": [
             ".agents/skills",
@@ -69,7 +69,7 @@
             "Native/CitySimNative/WorldArt/ImageGenFourView"
           ]
         },
-        "boundedDeliverable": "Rebind only the task-owned Commercial source evidence, records, profile, receipt, and validator assertions to the canonical route hash 0e7748871990fafdd13bb8e694c7848b154d2e1dde96a8940c35aa28ecde1121 and exact live candidate HEAD. Preserve every raw/normalized PNG byte and readiness tuple; rerun the existing two-root deterministic proof; do not regenerate pixels or touch renderer/shared/shipping paths.",
+        "boundedDeliverable": "Rebind only the task-owned Commercial source evidence, records, profile, receipt, and validator assertions to this committed route and exact live candidate HEAD. Preserve every raw/normalized PNG byte and readiness tuple; rerun the existing two-root deterministic proof; do not regenerate pixels or touch renderer/shared/shipping paths.",
         "proofPolicy": {
           "architectureState": "frozen_reference",
           "referenceImplementation": {

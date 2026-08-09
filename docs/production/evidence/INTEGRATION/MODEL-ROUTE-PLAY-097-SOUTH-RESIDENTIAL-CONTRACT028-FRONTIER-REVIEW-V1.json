@@ -1,0 +1,217 @@
+{
+  "assignment": {
+    "branch": "codex/citysim-world-art-residential",
+    "expectedHead": "9e2da6ce68d998dc9bf8fbb6d6c2f9ffeae33382",
+    "featureAuthorThreadId": "019fe1b1-3bc4-7b40-a107-2335917c1e49",
+    "finalQAOwnership": false,
+    "sharedAuthorityOwnership": false,
+    "subjectiveJudgmentRequired": true,
+    "threadId": "019fe1b1-3bc4-7b40-a107-2335917c1e49",
+    "worktree": "/Users/James/.codex/worktrees/df86/city-sim"
+  },
+  "authority": {
+    "authorityCommit": "65825389d586a128ddf6feb5356c33661ba9a8e8",
+    "baseCommit": "a61ab80101f596f56ffc1dd7e37b32bd1b220357",
+    "claim": {
+      "path": "docs/production/claims/PLAY-097.world-art-residential.md",
+      "sha256": "816acffd9e8cb7cc76ad068b7c6b6ff9fed4015b1646c37ac68c148714901126"
+    },
+    "immutableInputs": [
+      {
+        "path": "docs/production/decisions/CONTRACT-006-generated-world-asset-pack.md",
+        "sha256": "e29325fb82701ebf7f93d815fa70c0dd00bb1868826bb10df3d375c8d9deeea5"
+      },
+      {
+        "path": "docs/production/decisions/CONTRACT-025-authored-four-view-2-5d-building-art.md",
+        "sha256": "4e8ab63173d67581332e7d27730b97315906fda4e29b999969456441809479ed"
+      },
+      {
+        "path": "docs/production/decisions/CONTRACT-026-authored-four-view-registration.md",
+        "sha256": "4781de72429a1f691b9226f7f7668b170b278a4ccd171ac4ea02f5e1df9176eb"
+      },
+      {
+        "path": "docs/production/decisions/CONTRACT-026-registration-profiles-v1.json",
+        "sha256": "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8"
+      },
+      {
+        "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+        "sha256": "9c62d401d8812d5345b6bd25d864a07010348883ca4941f4429854ebe4abc511"
+      },
+      {
+        "path": "docs/production/evidence/PLAY-097/raw-prescreen.json",
+        "sha256": "a20030d26f804c03313c5c6a264c0349549ab71487f1bce43957985b454dec66"
+      },
+      {
+        "path": "docs/production/evidence/PLAY-097/south-admission-v3-validation.json",
+        "sha256": "a84c6e543fdd8913260bc24a5b26f6dcc30f4fbcebd97b0187fe5893ad1958ff"
+      },
+      {
+        "path": "docs/production/decisions/CONTRACT-028-alpha-aware-lod-chroma.md",
+        "sha256": "f8b80a98b07029a51b8e61701c85017bd82c8bb0b6c967da6d1fa7fae631da7d"
+      },
+      {
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-097/residential/handoff/source-v02-chroma-failure.json",
+        "sha256": "7f8686f0bdb9026d176ed4a7a793da615c6f4082ef2dc663453da82184903878"
+      },
+      {
+        "path": "docs/production/evidence/PLAY-097/residential-source-v02-chroma-failure.json",
+        "sha256": "7a5f4732cfe2ff95753a3e0c718395710f135bb52295646f80d729a367e79de9"
+      },
+      {
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-097/residential/raw/residential_l01_variant_0/source-v01.png",
+        "sha256": "a808c5da11450418afa26505261cac196480d7d98578e2e8ac796288c7ee0e57"
+      }
+    ]
+  },
+  "boundedDeliverable": "Review exact residential_l01_variant_0 at 9e2da6ce68d998dc9bf8fbb6d6c2f9ffeae33382: verify source-v01 raw SHA a808c5da11450418afa26505261cac196480d7d98578e2e8ac796288c7ee0e57 remains byte-identical and hard RETURN, inspect the registered master plus block/neighborhood/city RGBA LODs, strict/boundary/hidden/frame metrics, two replay receipts, literal color/grayscale contact proof, and visual fidelity. Return exactly APPROVE or RETURN with named defects. Preserve derivedOnly=true, sourceAuthority=false, rawSourceAdmission=RETURN_HARD_BLOCKER, candidateReadyForIndependentReview=true, sourceReady=false, integrationAdmitted=false, rendererQuarantined=false, productionSelected=false. Do not edit, stage, commit, change flags, integrate, launch, push, or self-accept.",
+  "classification": "FRONTIER_AUTHORITY",
+  "context": {
+    "mode": "full_authority_read",
+    "packet": null,
+    "verifiedHashes": [
+      {
+        "path": "docs/production/claims/PLAY-097.world-art-residential.md",
+        "sha256": "816acffd9e8cb7cc76ad068b7c6b6ff9fed4015b1646c37ac68c148714901126"
+      },
+      {
+        "path": "docs/production/decisions/CONTRACT-006-generated-world-asset-pack.md",
+        "sha256": "e29325fb82701ebf7f93d815fa70c0dd00bb1868826bb10df3d375c8d9deeea5"
+      },
+      {
+        "path": "docs/production/decisions/CONTRACT-025-authored-four-view-2-5d-building-art.md",
+        "sha256": "4e8ab63173d67581332e7d27730b97315906fda4e29b999969456441809479ed"
+      },
+      {
+        "path": "docs/production/decisions/CONTRACT-026-authored-four-view-registration.md",
+        "sha256": "4781de72429a1f691b9226f7f7668b170b278a4ccd171ac4ea02f5e1df9176eb"
+      },
+      {
+        "path": "docs/production/decisions/CONTRACT-026-registration-profiles-v1.json",
+        "sha256": "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8"
+      },
+      {
+        "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+        "sha256": "9c62d401d8812d5345b6bd25d864a07010348883ca4941f4429854ebe4abc511"
+      },
+      {
+        "path": "docs/production/evidence/PLAY-097/raw-prescreen.json",
+        "sha256": "a20030d26f804c03313c5c6a264c0349549ab71487f1bce43957985b454dec66"
+      },
+      {
+        "path": "docs/production/evidence/PLAY-097/south-admission-v3-validation.json",
+        "sha256": "a84c6e543fdd8913260bc24a5b26f6dcc30f4fbcebd97b0187fe5893ad1958ff"
+      },
+      {
+        "path": "docs/production/decisions/CONTRACT-028-alpha-aware-lod-chroma.md",
+        "sha256": "f8b80a98b07029a51b8e61701c85017bd82c8bb0b6c967da6d1fa7fae631da7d"
+      },
+      {
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-097/residential/handoff/source-v02-chroma-failure.json",
+        "sha256": "7f8686f0bdb9026d176ed4a7a793da615c6f4082ef2dc663453da82184903878"
+      },
+      {
+        "path": "docs/production/evidence/PLAY-097/residential-source-v02-chroma-failure.json",
+        "sha256": "7a5f4732cfe2ff95753a3e0c718395710f135bb52295646f80d729a367e79de9"
+      },
+      {
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-097/residential/raw/residential_l01_variant_0/source-v01.png",
+        "sha256": "a808c5da11450418afa26505261cac196480d7d98578e2e8ac796288c7ee0e57"
+      }
+    ]
+  },
+  "effort": "high",
+  "escalationTriggers": [
+    "shared_contract_or_schema_decision",
+    "unresolved_product_visual_or_interaction_judgment",
+    "path_outside_claim",
+    "baseline_or_candidate_identity_mismatch",
+    "failure_outside_focused_scope",
+    "save_or_migration_uncertainty",
+    "cross_lane_semantic_conflict",
+    "two_unsuccessful_repair_attempts",
+    "subjective_acceptance_required"
+  ],
+  "expectedResult": {
+    "commitMessagePattern": "review-only",
+    "commitRequired": false,
+    "evidencePaths": [
+      "docs/production/evidence/PLAY-097"
+    ]
+  },
+  "independentReviewer": {
+    "effort": "high",
+    "model": "gpt-5.6-sol",
+    "required": true,
+    "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8"
+  },
+  "model": "gpt-5.6-sol",
+  "packetKind": "authority",
+  "pathPolicy": {
+    "allowed": [
+      "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-097/residential",
+      "docs/production/evidence/PLAY-097"
+    ],
+    "claimOwnedRoots": [
+      "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-097/residential",
+      "docs/production/evidence/PLAY-097"
+    ],
+    "forbidden": [
+      ".agents/skills",
+      "docs/production/PLAYABLE_BACKLOG.md",
+      "docs/production/claims",
+      "docs/production/decisions",
+      "docs/production/evidence/INTEGRATION",
+      "Native/CitySimNative/Sources",
+      "Native/CitySimNative/Resources",
+      "Native/CitySimNative/Tests",
+      "Native/CitySimNative/Package.swift",
+      "script/build_and_run.sh",
+      "Native/CitySimNative/WorldArt/ImageGenFourView"
+    ]
+  },
+  "proofPolicy": {
+    "architectureState": "frozen_reference",
+    "behavioralCommands": [],
+    "deliverableClaims": [
+      "static_structure"
+    ],
+    "focusedProofLevel": "static_only",
+    "fullProofLevel": "static_only",
+    "prohibitedSubstitutions": [
+      "source_token_presence_for_execution",
+      "ast_shape_for_runtime_success",
+      "manifest_or_prose_for_rendered_pixels",
+      "unit_tests_for_visual_acceptance",
+      "worker_self_report_for_independent_acceptance"
+    ],
+    "referenceImplementation": {
+      "path": "docs/production/decisions/CONTRACT-026-registration-profiles-v1.json",
+      "sha256": "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8"
+    }
+  },
+  "rationale": "Independent Frontier technical and literal-scale visual disposition for the exact Residential Contract-028 derived-only candidate 9e2da6ce68d998dc9bf8fbb6d6c2f9ffeae33382. Review the preserved raw RETURN evidence plus the four derived RGBA outputs and literal color/grayscale contact proof; return APPROVE or RETURN with exact defects without changing readiness or shipping. The authority checkout is the current Integration master at fd080ee936cbdba95bcf48d8997aa0b2c396d8a4; the immutable Contract-028 authority/base bindings remain unchanged.",
+  "routeId": "four-view-v34:play-097-south-residential-contract028-frontier-review-v1",
+  "schema": 2,
+  "stopCondition": "Stop after one independent read-only technical and literal-scale disposition or immediately on identity, route, path, readiness, visual, or shared-authority ambiguity. Do not edit, stage, commit, launch, integrate, push, or pin.",
+  "taskId": "PLAY-097",
+  "validation": {
+    "focusedCommands": [
+      "git cat-file -e 9e2da6ce68d998dc9bf8fbb6d6c2f9ffeae33382^{commit}",
+      "git status --short --branch -- Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-097/residential docs/production/evidence/PLAY-097",
+      "git show --format=fuller --no-ext-diff --summary 9e2da6ce68d998dc9bf8fbb6d6c2f9ffeae33382^{commit}"
+    ],
+    "focusedGateOwner": {
+      "role": "independent-frontier-residential-contract028-review",
+      "threadId": "019fe1b1-3bc4-7b40-a107-2335917c1e49"
+    },
+    "fullCommands": [
+      "Integration source-admission disposition only; no product/full-suite/app gate in this packet"
+    ],
+    "fullGateOwner": {
+      "effort": "high",
+      "model": "gpt-5.6-sol",
+      "role": "integration-candidate-join",
+      "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8"
+    }
+  }
+}

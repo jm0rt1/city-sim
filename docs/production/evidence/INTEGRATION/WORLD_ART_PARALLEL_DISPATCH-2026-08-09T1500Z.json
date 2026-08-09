@@ -2,12 +2,13 @@
   "schema": 3,
   "artifactKind": "world_art_parallel_status_dispatch",
   "batch": "contract025_four_view_directional_family",
-  "sentAt": "2026-08-09T15:00:00Z",
-  "authorityCommit": "351837d0fd54b22e4bb7e855c0e8259ae022bb6e",
-  "masterHead": "351837d0fd54b22e4bb7e855c0e8259ae022bb6e",
+  "sentAt": "2026-08-09T15:07:14Z",
+  "authorityCommit": "7e7598a79f21d65299982e55810a5017253d1c91",
+  "masterHead": "7e7598a79f21d65299982e55810a5017253d1c91",
   "ledger": "docs/production/evidence/INTEGRATION/WORLD_ART_PARALLEL_BATCH_LEDGER.json",
-  "ledgerSha256": "b253629856a19118bcba2dc5775f2e10fa37f9d6d8f18eb50c3f054aef3b38f1",
+  "ledgerSha256": "7cc0b81b3235264a981e9103d10b172ea49d81b75bc70a888b94ffc16250fc9b",
   "board": "docs/production/evidence/INTEGRATION/WORLD_ART_PARALLEL_BOARD.md",
+  "boardSha256": "531640e5af864655864942214fdab9c64602243e1fc200403cd6d797ae5152b3",
   "dispatchState": "blocked",
   "changedThisTurn": true,
   "computeEnvelope": {
@@ -51,7 +52,6 @@
       "dispatchState": "blocked",
       "cleanState": "clean",
       "acknowledgedAt": null,
-      "changedThisTurn": true,
       "boundedDeliverable": "Independent North technical and literal-scale review of 43 raw masters plus 129 LODs; candidate-only and read-only.",
       "blocker": "North candidate is not an Integration admission; the exact 43-row South ledger, accepted non-alias digest, and family-bound semantic validator are absent.",
       "nextAction": "After South admission artifacts exist, bind the North source-admission receipt and then reserve renderer quarantine.",
@@ -114,7 +114,8 @@
         },
         "resumptionEvent": "After South admission artifacts exist, bind the North source-admission receipt and then reserve renderer quarantine.",
         "nextRefillJob": "After South admission artifacts exist, bind the North source-admission receipt and then reserve renderer quarantine."
-      }
+      },
+      "changedThisTurn": true
     },
     {
       "direction": "east",
@@ -131,7 +132,6 @@
       "dispatchState": "returned",
       "cleanState": "clean",
       "acknowledgedAt": null,
-      "changedThisTurn": true,
       "boundedDeliverable": "Independent East visual and technical review; preserve all 43 raw/129 LOD bytes and candidate evidence.",
       "blocker": "Visible magenta/purple wedges remain across all 129 normalized LODs and literal contact sheets; strict keyed gate is insufficient for Contract-028 acceptance.",
       "nextAction": "Publish a fresh bounded Frontier repair or source-stage decision; preserve the returned candidate and raw bytes.",
@@ -194,7 +194,8 @@
         },
         "resumptionEvent": "Publish a fresh bounded Frontier repair or source-stage decision; preserve the returned candidate and raw bytes.",
         "nextRefillJob": "Publish a fresh bounded Frontier repair or source-stage decision; preserve the returned candidate and raw bytes."
-      }
+      },
+      "changedThisTurn": true
     },
     {
       "direction": "south",
@@ -203,15 +204,14 @@
       "branch": "master",
       "worktree": "/Users/James/Library/Mobile Documents/com~apple~CloudDocs/James's Files/Programming/Python/city-sim",
       "claim": "PLAY-106",
-      "claimRevision": "2041fdfdcf6eb8e4f5d5905dc5d03320ccca03d0451f874674f6070bb3b2ec25",
-      "head": "351837d0fd54b22e4bb7e855c0e8259ae022bb6e",
-      "routeId": "integration-v2:play-106-south-aggregate-preflight",
+      "claimRevision": "c9373402f0237f8156048ed234652717495b520341eedc73b11d730952d136f3",
+      "head": "7e7598a79f21d65299982e55810a5017253d1c91",
+      "routeId": "integration-v3:play-106-south-aggregate-preflight",
       "routeSha256": null,
       "state": "predesign",
       "dispatchState": "blocked",
       "cleanState": "protected_user_dirt_only",
       "acknowledgedAt": null,
-      "changedThisTurn": true,
       "boundedDeliverable": "Integration-owned status-only South raw coverage and admission preflight for 43 canonical identities.",
       "blocker": "No Integration-owned South receipt/path/SHA ledger, accepted-master digest, or PLAY-096 aggregate semantic validator exists; raw coverage is 43/43 but admission is 0/43.",
       "nextAction": "Publish the exact 43-row South admission ledger, non-alias digest, PLAY-096 schema/semantic-validator binding, and independent dispositions.",
@@ -219,8 +219,8 @@
       "authorityAcknowledgement": {
         "status": "integration_status_only",
         "threadId": null,
-        "authorityCommit": null,
-        "claimRevision": "2041fdfdcf6eb8e4f5d5905dc5d03320ccca03d0451f874674f6070bb3b2ec25",
+        "authorityCommit": "7e7598a79f21d65299982e55810a5017253d1c91",
+        "claimRevision": "c9373402f0237f8156048ed234652717495b520341eedc73b11d730952d136f3",
         "acknowledgedAt": null,
         "boundedDeliverable": "Integration-owned status-only South raw coverage and admission preflight for 43 canonical identities.",
         "stopCondition": "Stop before source admission, readiness mutation, renderer/runtime/manifest changes, or production selection."
@@ -274,7 +274,8 @@
         },
         "resumptionEvent": "Publish the exact 43-row South admission ledger, non-alias digest, PLAY-096 schema/semantic-validator binding, and independent dispositions.",
         "nextRefillJob": "Publish the exact 43-row South admission ledger, non-alias digest, PLAY-096 schema/semantic-validator binding, and independent dispositions."
-      }
+      },
+      "changedThisTurn": true
     },
     {
       "direction": "west",
@@ -291,7 +292,6 @@
       "dispatchState": "returned",
       "cleanState": "clean",
       "acknowledgedAt": null,
-      "changedThisTurn": true,
       "boundedDeliverable": "Independent West review after two failed chroma repairs; preserve raw and rejected descendants.",
       "blocker": "Two unsuccessful derived repairs leave keyed residual/spill/boundary defects; two-failure stop applies and no third repair is authorized.",
       "nextAction": "Require a new Frontier source-stage decision; keep sourceReady and integrationAdmitted false.",
@@ -354,7 +354,8 @@
         },
         "resumptionEvent": "Require a new Frontier source-stage decision; keep sourceReady and integrationAdmitted false.",
         "nextRefillJob": "Require a new Frontier source-stage decision; keep sourceReady and integrationAdmitted false."
-      }
+      },
+      "changedThisTurn": true
     },
     {
       "direction": "renderer",
@@ -371,7 +372,6 @@
       "dispatchState": "blocked",
       "cleanState": "clean",
       "acknowledgedAt": null,
-      "changedThisTurn": true,
       "boundedDeliverable": "Non-shipping renderer intake metadata and synthetic mapping tests only; no runtime selector or production resources.",
       "blocker": "Exact 43x4x3 South admission and aggregate manifest are absent; runtimeSelectorImplemented=false and productionSelected=false.",
       "nextAction": "After 4/4 admitted direction receipts, issue a successor renderer claim owning Sources/Rendering and exact aggregate manifest inputs.",
@@ -434,7 +434,8 @@
         },
         "resumptionEvent": "After 4/4 admitted direction receipts, issue a successor renderer claim owning Sources/Rendering and exact aggregate manifest inputs.",
         "nextRefillJob": "After 4/4 admitted direction receipts, issue a successor renderer claim owning Sources/Rendering and exact aggregate manifest inputs."
-      }
+      },
+      "changedThisTurn": true
     },
     {
       "direction": "qa",
@@ -451,7 +452,6 @@
       "dispatchState": "blocked",
       "cleanState": "clean",
       "acknowledgedAt": null,
-      "changedThisTurn": true,
       "boundedDeliverable": "Candidate-neutral QA preregistration and static adversarial checks only; no app launch or renderer candidate.",
       "blocker": "Renderer candidate receipt, exact aggregate manifest, South admission ledger, and observed values are null; QA remains BLOCKED.",
       "nextAction": "After exact renderer candidate and admitted aggregate exist, create a fresh candidate-bound real-app QA route.",
@@ -514,7 +514,8 @@
         },
         "resumptionEvent": "After exact renderer candidate and admitted aggregate exist, create a fresh candidate-bound real-app QA route.",
         "nextRefillJob": "After exact renderer candidate and admitted aggregate exist, create a fresh candidate-bound real-app QA route."
-      }
+      },
+      "changedThisTurn": true
     }
   ],
   "policy": {

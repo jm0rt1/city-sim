@@ -2,12 +2,12 @@
   "schema": 3,
   "batch": "contract025_four_view_directional_family",
   "batchState": "contract_pending",
-  "updatedAt": "2026-08-09T15:00:00Z",
+  "updatedAt": "2026-08-09T15:07:14Z",
   "integrationWriter": {
     "branch": "master",
     "worktree": "/Users/James/Library/Mobile Documents/com~apple~CloudDocs/James's Files/Programming/Python/city-sim",
-    "publishedBase": "351837d0fd54b22e4bb7e855c0e8259ae022bb6e",
-    "technicalHeadBeforeLedger": "351837d0fd54b22e4bb7e855c0e8259ae022bb6e"
+    "publishedBase": "7e7598a79f21d65299982e55810a5017253d1c91",
+    "technicalHeadBeforeLedger": "7e7598a79f21d65299982e55810a5017253d1c91"
   },
   "stateMachine": [
     "contract_pending",
@@ -81,9 +81,9 @@
       "status": "blocked_0_of_43"
     },
     "aggregatePreflight": {
-      "path": "docs/production/evidence/INTEGRATION/PLAY-106-SOUTH-AGGREGATE-PREFLIGHT-V2.json",
-      "sha256": "2041fdfdcf6eb8e4f5d5905dc5d03320ccca03d0451f874674f6070bb3b2ec25",
-      "status": "status_only_43_rows_44_physical"
+      "path": "docs/production/evidence/INTEGRATION/PLAY-106-SOUTH-AGGREGATE-PREFLIGHT-V3.json",
+      "sha256": "c9373402f0237f8156048ed234652717495b520341eedc73b11d730952d136f3",
+      "status": "status_only_current_master_43_rows_44_physical"
     },
     "parallelExecutionSchedule": {
       "path": null,
@@ -322,15 +322,15 @@
       "branch": "master",
       "worktree": "/Users/James/Library/Mobile Documents/com~apple~CloudDocs/James's Files/Programming/Python/city-sim",
       "claim": "PLAY-106",
-      "claimRevision": "2041fdfdcf6eb8e4f5d5905dc5d03320ccca03d0451f874674f6070bb3b2ec25",
-      "publishedBase": "351837d0fd54b22e4bb7e855c0e8259ae022bb6e",
-      "head": "351837d0fd54b22e4bb7e855c0e8259ae022bb6e",
-      "routeId": "integration-v2:play-106-south-aggregate-preflight",
+      "claimRevision": "c9373402f0237f8156048ed234652717495b520341eedc73b11d730952d136f3",
+      "publishedBase": "7e7598a79f21d65299982e55810a5017253d1c91",
+      "head": "7e7598a79f21d65299982e55810a5017253d1c91",
+      "routeId": "integration-v3:play-106-south-aggregate-preflight",
       "routeSha256": null,
       "state": "predesign",
       "dispatchState": "blocked",
       "acknowledgedAt": null,
-      "updatedAt": "2026-08-09T15:00:00Z",
+      "updatedAt": "2026-08-09T15:07:14Z",
       "cleanState": "protected_user_dirt_only",
       "boundedDeliverable": "Integration-owned status-only South raw coverage and admission preflight for 43 canonical identities.",
       "blocker": "No Integration-owned South receipt/path/SHA ledger, accepted-master digest, or PLAY-096 aggregate semantic validator exists; raw coverage is 43/43 but admission is 0/43.",
@@ -339,8 +339,8 @@
       "authorityAcknowledgement": {
         "status": "integration_status_only",
         "threadId": null,
-        "authorityCommit": null,
-        "claimRevision": "2041fdfdcf6eb8e4f5d5905dc5d03320ccca03d0451f874674f6070bb3b2ec25",
+        "authorityCommit": "7e7598a79f21d65299982e55810a5017253d1c91",
+        "claimRevision": "c9373402f0237f8156048ed234652717495b520341eedc73b11d730952d136f3",
         "acknowledgedAt": null,
         "boundedDeliverable": "Integration-owned status-only South raw coverage and admission preflight for 43 canonical identities.",
         "stopCondition": "Stop before source admission, readiness mutation, renderer/runtime/manifest changes, or production selection."

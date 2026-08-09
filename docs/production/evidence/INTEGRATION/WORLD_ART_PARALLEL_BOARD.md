@@ -1,15 +1,29 @@
-# World Art Parallel Board — appearance lock pending
+# World Art Parallel Board — Contract-025 admission blocked
 
-| Cell | Current state | Dispatch | Branch / claim | Head | Blocker |
-|---|---|---|---|---|---|
-| North | predesign | completed | codex/citysim-world-art / PLAY-027 | 5657b8a37a96c70e608585515dc059519ceff435 | exact current v13 zero-pixel replay and Integration-direct North-A schedule are not yet published |
-| East | predesign | completed | codex/citysim-world-art-east / PLAY-079 | 6a8c61a76802b13eb1704671cf63f4323052a67f | technically approved; pixels wait for North appearance lock and postlock grants |
-| South | predesign | completed | codex/citysim-world-art-south / PLAY-080 | 84630b927a94c1e7324fc5e9ebe6acf337d64dd5 | technically approved; pixels wait for North appearance lock and postlock grants |
-| West | predesign | completed | codex/citysim-world-art-west / PLAY-081 | 6499fec5181bbf8712e20ce147a35b4a2b736317 | technically approved; pixels wait for North appearance lock and postlock grants |
-| Renderer | intake_ready | completed | codex/citysim-world-rendering-r4b-current / PLAY-073 | 66650f142960920e3d886a1da7e39857bd195768 | quarantine waits for exact Integration source-admission receipts |
-| QA | preregistering | blocked | codex/citysim-playtest-quality / PLAY-075 | 43e3e57afb52480d90bcf4b08d610ac5950e34bd | worktree is reserved by an unconsumed exact-candidate QA lease; no Industrial L4 renderer candidate exists |
+Snapshot: `2026-08-09T15:00:00Z` on Integration `master` at
+`351837d0fd54b22e4bb7e855c0e8259ae022bb6e`. This board is a truthful
+status projection of the six governed cells; it grants no mutation authority.
 
-No row is represented as active. North replay inventory is running in the
-separate low-cost PLAY-089 observer lane; it does not count as a family cell.
-East, South, and West technical dispositions are preserved independently and
-will not be demoted while North advances.
+| Cell | State / dispatch | Branch / claim | Head | Current boundary |
+|---|---|---|---|---|
+| North | `source_candidate` / blocked | `codex/citysim-world-art-north-imagegen` / PLAY-103 | `13a8cb9ffcd523ccac8fcdec136883e77f2df1b5` | candidate-only Frontier approve; South admission ledger and accepted 43-row digest are absent |
+| East | `returned` / returned | `codex/citysim-world-art-east-imagegen` / PLAY-104 | `4d99575c2059d86218565481191a20795829665b` | V39 visual return: purple/magenta wedges remain in all 129 LODs; no repair route is granted |
+| South | `predesign` / blocked | `master` / PLAY-106 status-only | `351837d0fd54b22e4bb7e855c0e8259ae022bb6e` | local raw coverage is 43/43, but Integration admission is 0/43 and 172/516 authored/LOD outputs are absent |
+| West | `returned` / returned | `codex/citysim-world-art-west-imagegen` / PLAY-105 | `732101725b5c1eb3e48f046e734e683306a588ea` | two-failure chroma stop; preserve rejected descendants and do not attempt a third repair |
+| Renderer | `intake_preparing` / blocked | `codex/citysim-world-rendering-single-angle` / PLAY-101 | `1dbad1fdbbcb08125b3438070dcad0f7f6d3e850` | synthetic intake only; runtime selector false, no admitted renderer candidate or manifest |
+| QA | `preregistering` / blocked | `codex/citysim-playtest-single-angle` / PLAY-102 | `f2721cb59137cbd61ba55cc1427fa58ff7efaa98` | candidate-neutral, observed values UNMEASURED, no app launch or candidate receipt |
+
+Parallelism is intentionally zero: `requiredConcurrentCells=0` and no
+mutation job is eligible. Every row carries an explicit resumption event;
+there is no active overlap to report. The aggregate gate remains
+`43 identities × 4 authored views × 3 LODs = 172/516`, with
+`integrationAdmitted=0`, no common accepted-master/non-alias digest, no
+PLAY-096 aggregate semantic validator binding, and no renderer/runtime or
+production mutation permitted.
+
+The next lawful Integration event is a fresh exact 43-row South admission
+ledger/receipt with per-identity raw path+SHA, a non-alias accepted digest,
+PLAY-096 schema and semantic-validator bindings, and current family route/head
+acknowledgements. Only after that can a new renderer implementation claim and
+candidate-bound QA route be issued. PLAY-089 observer activity is separate
+from these six cells and does not create source or runtime authority.

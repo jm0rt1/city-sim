@@ -1,18 +1,17 @@
 {
-  "schema": 2,
-  "authorityCommit": "e019c2f3bf86150d8d770e69538ae2095cd0d696",
   "assignments": [
     {
-      "modelRouteSha256": "c8cbdcdcaebc4c4b7a430012e0d3c21fe9ba7356bda150ab4befe4951c171f25",
       "modelRoute": {
-        "schema": 2,
-        "routeId": "four-view-v14:play-102-fixture-source-preflight-v2",
-        "taskId": "PLAY-102",
-        "packetKind": "mechanical",
-        "classification": "LUNA_MECHANICAL",
-        "model": "gpt-5.6-luna",
-        "effort": "medium",
-        "rationale": "Harden candidate-neutral QA preparation while the renderer candidate remains null: bind the fixture source identity, exact four-view matrix, and 43/172/516 admission expectations without launching or judging the app.",
+        "assignment": {
+          "branch": "codex/citysim-playtest-single-angle",
+          "expectedHead": "c2152839b8bd602838beeb64efb5d0d817ccb61a",
+          "featureAuthorThreadId": "019fe1b1-71b2-7540-aa2f-ac3906f650fe",
+          "finalQAOwnership": false,
+          "sharedAuthorityOwnership": false,
+          "subjectiveJudgmentRequired": false,
+          "threadId": "019fe1b1-71b2-7540-aa2f-ac3906f650fe",
+          "worktree": "/Users/James/.codex/worktrees/fee0/city-sim"
+        },
         "authority": {
           "authorityCommit": "e019c2f3bf86150d8d770e69538ae2095cd0d696",
           "baseCommit": "e019c2f3bf86150d8d770e69538ae2095cd0d696",
@@ -47,106 +46,8 @@
             }
           ]
         },
-        "assignment": {
-          "threadId": "019fe1b1-71b2-7540-aa2f-ac3906f650fe",
-          "branch": "codex/citysim-playtest-single-angle",
-          "worktree": "/Users/James/.codex/worktrees/fee0/city-sim",
-          "expectedHead": "c2152839b8bd602838beeb64efb5d0d817ccb61a",
-          "featureAuthorThreadId": "019fe1b1-71b2-7540-aa2f-ac3906f650fe",
-          "sharedAuthorityOwnership": false,
-          "finalQAOwnership": false,
-          "subjectiveJudgmentRequired": false
-        },
-        "pathPolicy": {
-          "claimOwnedRoots": [
-            "docs/production/evidence/PLAY-102"
-          ],
-          "allowed": [
-            "docs/production/evidence/PLAY-102"
-          ],
-          "forbidden": [
-            ".agents/skills",
-            "docs/production/claims",
-            "docs/production/decisions",
-            "docs/production/evidence/INTEGRATION",
-            "Native/CitySimNative/Sources",
-            "Native/CitySimNative/Resources",
-            "Native/CitySimNative/Package.swift",
-            "script/build_and_run.sh"
-          ]
-        },
         "boundedDeliverable": "Add only candidate-neutral PLAY-102 fixture-source identity and capture-admission preflight checks under docs/production/evidence/PLAY-102. Recompute the immutable fixture source/state binding, require the exact 24 direction×LOD×layout matrix and 43 logical identities/172 source views/516 LOD expectations, and fail closed on any non-null candidate, renderer, resource, fixture-admission, measurement, or production field. Do not launch the app, bind a candidate, edit renderer/product/shared paths, or judge visual quality.",
-        "proofPolicy": {
-          "architectureState": "frozen_reference",
-          "referenceImplementation": {
-            "path": ".agents/skills/verify-citysim-playability/SKILL.md",
-            "sha256": "e985b9bc108c5d47371f2a23b9de2f25e4f5fb940e495a7819ffae69f6fb2c05"
-          },
-          "deliverableClaims": [
-            "static_structure",
-            "deterministic_output"
-          ],
-          "focusedProofLevel": "deterministic_replay",
-          "fullProofLevel": "deterministic_replay",
-          "behavioralCommands": [
-            "python3 docs/production/evidence/PLAY-102/validate_preregistration.py",
-            "python3 docs/production/evidence/PLAY-102/test_validate_preregistration.py"
-          ],
-          "prohibitedSubstitutions": [
-            "source_token_presence_for_execution",
-            "ast_shape_for_runtime_success",
-            "manifest_or_prose_for_rendered_pixels",
-            "unit_tests_for_visual_acceptance",
-            "worker_self_report_for_independent_acceptance"
-          ]
-        },
-        "validation": {
-          "focusedGateOwner": {
-            "threadId": "019fe1b1-71b2-7540-aa2f-ac3906f650fe",
-            "role": "play-102-fixture-source-preflight-focused"
-          },
-          "focusedCommands": [
-            "python3 docs/production/evidence/PLAY-102/validate_preregistration.py",
-            "python3 docs/production/evidence/PLAY-102/test_validate_preregistration.py",
-            "git diff --check e019c2f3bf86150d8d770e69538ae2095cd0d696..HEAD"
-          ],
-          "fullGateOwner": {
-            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
-            "role": "integration-aggregate-full-gate",
-            "model": "gpt-5.6-sol",
-            "effort": "high"
-          },
-          "fullCommands": [
-            "swift test --package-path Native/CitySimNative",
-            "./script/build_and_run.sh --verify",
-            "fresh-player real-app aggregate journey"
-          ]
-        },
-        "expectedResult": {
-          "evidencePaths": [
-            "docs/production/evidence/PLAY-102"
-          ],
-          "commitRequired": true,
-          "commitMessagePattern": "PLAY-102:"
-        },
-        "escalationTriggers": [
-          "shared_contract_or_schema_decision",
-          "unresolved_product_visual_or_interaction_judgment",
-          "path_outside_claim",
-          "baseline_or_candidate_identity_mismatch",
-          "failure_outside_focused_scope",
-          "save_or_migration_uncertainty",
-          "cross_lane_semantic_conflict",
-          "two_unsuccessful_repair_attempts",
-          "subjective_acceptance_required"
-        ],
-        "stopCondition": "Stop after one focused candidate-neutral preflight commit and two passing mechanical runs, or immediately on any candidate binding, app launch, visual judgment, path, route, or shared-contract requirement. Keep all candidate and production fields null/UNMEASURED.",
-        "independentReviewer": {
-          "required": true,
-          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
-          "model": "gpt-5.6-sol",
-          "effort": "high"
-        },
+        "classification": "LUNA_MECHANICAL",
         "context": {
           "mode": "full_authority_read",
           "packet": null,
@@ -164,8 +65,107 @@
               "sha256": "693831b3d8fac49330ac21adce626b632351c7eeba901ebff6719687e5f330e7"
             }
           ]
+        },
+        "effort": "medium",
+        "escalationTriggers": [
+          "shared_contract_or_schema_decision",
+          "unresolved_product_visual_or_interaction_judgment",
+          "path_outside_claim",
+          "baseline_or_candidate_identity_mismatch",
+          "failure_outside_focused_scope",
+          "save_or_migration_uncertainty",
+          "cross_lane_semantic_conflict",
+          "two_unsuccessful_repair_attempts",
+          "subjective_acceptance_required"
+        ],
+        "expectedResult": {
+          "commitMessagePattern": "PLAY-102:",
+          "commitRequired": true,
+          "evidencePaths": [
+            "docs/production/evidence/PLAY-102"
+          ]
+        },
+        "independentReviewer": {
+          "effort": "high",
+          "model": "gpt-5.6-sol",
+          "required": true,
+          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8"
+        },
+        "model": "gpt-5.6-luna",
+        "packetKind": "mechanical",
+        "pathPolicy": {
+          "allowed": [
+            "docs/production/evidence/PLAY-102"
+          ],
+          "claimOwnedRoots": [
+            "docs/production/evidence/PLAY-102"
+          ],
+          "forbidden": [
+            ".agents/skills",
+            "docs/production/claims",
+            "docs/production/decisions",
+            "docs/production/evidence/INTEGRATION",
+            "Native/CitySimNative/Sources",
+            "Native/CitySimNative/Resources",
+            "Native/CitySimNative/Package.swift",
+            "script/build_and_run.sh"
+          ]
+        },
+        "proofPolicy": {
+          "architectureState": "frozen_reference",
+          "behavioralCommands": [
+            "python3 docs/production/evidence/PLAY-102/validate_preregistration.py",
+            "python3 docs/production/evidence/PLAY-102/test_validate_preregistration.py"
+          ],
+          "deliverableClaims": [
+            "static_structure",
+            "deterministic_output"
+          ],
+          "focusedProofLevel": "deterministic_replay",
+          "fullProofLevel": "deterministic_replay",
+          "prohibitedSubstitutions": [
+            "source_token_presence_for_execution",
+            "ast_shape_for_runtime_success",
+            "manifest_or_prose_for_rendered_pixels",
+            "unit_tests_for_visual_acceptance",
+            "worker_self_report_for_independent_acceptance"
+          ],
+          "referenceImplementation": {
+            "path": ".agents/skills/verify-citysim-playability/SKILL.md",
+            "sha256": "e985b9bc108c5d47371f2a23b9de2f25e4f5fb940e495a7819ffae69f6fb2c05"
+          }
+        },
+        "rationale": "Harden candidate-neutral QA preparation while the renderer candidate remains null: bind the fixture source identity, exact four-view matrix, and 43/172/516 admission expectations without launching or judging the app.",
+        "routeId": "four-view-v14:play-102-fixture-source-preflight-v2",
+        "schema": 2,
+        "stopCondition": "Stop after one focused candidate-neutral preflight commit and two passing mechanical runs, or immediately on any candidate binding, app launch, visual judgment, path, route, or shared-contract requirement. Keep all candidate and production fields null/UNMEASURED.",
+        "taskId": "PLAY-102",
+        "validation": {
+          "focusedCommands": [
+            "python3 docs/production/evidence/PLAY-102/validate_preregistration.py",
+            "python3 docs/production/evidence/PLAY-102/test_validate_preregistration.py",
+            "git diff --check e019c2f3bf86150d8d770e69538ae2095cd0d696..HEAD"
+          ],
+          "focusedGateOwner": {
+            "role": "play-102-fixture-source-preflight-focused",
+            "threadId": "019fe1b1-71b2-7540-aa2f-ac3906f650fe"
+          },
+          "fullCommands": [
+            "swift test --package-path Native/CitySimNative",
+            "./script/build_and_run.sh --verify",
+            "fresh-player real-app aggregate journey"
+          ],
+          "fullGateOwner": {
+            "effort": "high",
+            "model": "gpt-5.6-sol",
+            "role": "integration-aggregate-full-gate",
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8"
+          }
         }
-      }
+      },
+      "modelRouteSha256": "c8cbdcdcaebc4c4b7a430012e0d3c21fe9ba7356bda150ab4befe4951c171f25"
     }
-  ]
+  ],
+  "authorityCommit": "e019c2f3bf86150d8d770e69538ae2095cd0d696",
+  "schema": 2
 }

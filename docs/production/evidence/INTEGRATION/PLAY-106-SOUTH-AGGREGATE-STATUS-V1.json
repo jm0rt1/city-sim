@@ -4,7 +4,7 @@
   "taskId": "PLAY-106",
   "direction": "south",
   "status": "BLOCKED",
-  "updatedAt": "2026-08-09T14:12:00Z",
+  "updatedAt": "2026-08-09T14:35:15Z",
   "authority": {
     "path": "docs/production/decisions/PLAY-106-RAW-SOUTH-ANCHOR-AUTHORITY.md",
     "sha256": "1ed3486f526dc1ab3da352c85fce3920468375f8169529d933bbfc275b1c739d",
@@ -85,10 +85,11 @@
       "head": "75d202c4dbce1789f9c98891c66ed8f6e9180f4e",
       "routeId": "four-view-v42:play-100-civic-frontier-art-source-review-v5",
       "routeSha256": "de71ac7ef2ac41dbab3056e2355bc466fe739f40822461ff13e9a7b3d4b82fdc",
-      "candidateStatus": "APPROVE_candidate_only",
+      "candidateStatus": "RETURN_contract028_boundary_residual_and_handoff_sha_drift",
       "rawAdmission": "CANDIDATE_ONLY",
       "sourceReady": false,
-      "integrationAdmitted": false
+      "integrationAdmitted": false,
+      "frontierDisposition": "RETURN_contract028_boundary_residual_and_handoff_sha_drift"
     }
   ],
   "admissionFields": {
@@ -105,7 +106,8 @@
     "No canonical South source-admission receipt path and SHA binding exists for any of the 43 identities.",
     "No common accepted-master non-alias 43-row digest is published.",
     "PLAY-096 repaired direction-handoff schema and semantic-validator bindings are not aggregate-bound.",
-    "Renderer/runtime/manifest/production mutation is forbidden before exact 43x4x3 admission."
+    "Renderer/runtime/manifest/production mutation is forbidden before exact 43x4x3 admission.",
+    "Civic V42 returned: seven south-handoff receipt SHA fields drift from current registration bytes, and Contract-028 boundary residuals remain in all 21 normalized LODs; no Civic admission receipt is lawful."
   ],
   "nextLegalEvent": "Integration publishes exact 43-row South admission ledger and revised continuation authority; status-only projection does not authorize source admission, renderer activation, runtime mutation, or production selection."
 }

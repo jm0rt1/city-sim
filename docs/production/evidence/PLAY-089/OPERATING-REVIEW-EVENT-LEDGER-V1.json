@@ -217,6 +217,13 @@
       "receiptSha256": "de209cacb040dde27d5f3c855719e29eae3710fff9bc1e37b2277e68bb4393cb",
       "decision": "NO_CHANGE",
       "disposition": {"status":"auto_closed","authorityCommit":"313136805c1f53d23505b441584528111a898186","reason":"PLAY-101 V17 delegation-ready observer validated the exact frozen metadata route and found no process change required before Integration disposition."}
+    },
+    {
+      "eventKey": {"authorityCommit":"65825389d586a128ddf6feb5356c33661ba9a8e8","taskId":"PLAY-099","routeId":"four-view-v38:play-099-south-industrial-source-regeneration-v2","trigger":"delegation_ready_for_dispatch","candidateOrResultCommit":"e811521e749c9886a03233bea24b71c7a915974d"},
+      "receiptPath": "docs/production/evidence/PLAY-089/play-099-v38-delegation-ready-observation-v2/01-delegation-ready.json",
+      "receiptSha256": "5089a6b162235d7e823f473cbe0f3087d2266be93ddbf0f4ad7d617747225c9f",
+      "decision": "NO_CHANGE",
+      "disposition": {"status":"auto_closed","authorityCommit":"f94009f5","reason":"Industrial V38 delegation-ready observer validated the exact route, authority-root evidence bootstrap, clean worker identity, and frozen source-regeneration boundary; no process change is required before Integration disposition."}
     }
   ]
 }

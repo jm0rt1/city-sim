@@ -224,6 +224,13 @@
       "receiptSha256": "5089a6b162235d7e823f473cbe0f3087d2266be93ddbf0f4ad7d617747225c9f",
       "decision": "NO_CHANGE",
       "disposition": {"status":"auto_closed","authorityCommit":"f94009f52d68643d5560cc1544f7426fbf5930f1","reason":"Industrial V38 delegation-ready observer validated the exact route, authority-root evidence bootstrap, clean worker identity, and frozen source-regeneration boundary; no process change is required before Integration disposition."}
+    },
+    {
+      "eventKey": {"authorityCommit":"65825389d586a128ddf6feb5356c33661ba9a8e8","taskId":"PLAY-104","routeId":"four-view-v38:play-104-east-live-head-metadata-rebind-v2","trigger":"delegation_ready_for_dispatch","candidateOrResultCommit":"069da37c512afd4d186c8e3576cb6cf17018bfeb"},
+      "receiptPath": "docs/production/evidence/PLAY-089/play-104-v38-delegation-ready-observation-v3/01-delegation-ready.json",
+      "receiptSha256": "cb66fa4dcee247d8f8ecda2667843c6c8684d2ce9836ac95384404888019ecb7",
+      "decision": "NO_CHANGE",
+      "disposition": {"status":"auto_closed","authorityCommit":"de39bcbcedd2c61aa67a024d654ad6d29179c70f","reason":"East V38 delegation-ready observer validated the corrected reviewer binding, exact authority-root evidence, clean worker identity, and frozen metadata-only boundary; no process change is required before Integration disposition."}
     }
   ]
 }

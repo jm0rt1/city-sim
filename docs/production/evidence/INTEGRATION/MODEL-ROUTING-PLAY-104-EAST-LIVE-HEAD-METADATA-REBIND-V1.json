@@ -1,0 +1,730 @@
+{
+  "schema": 2,
+  "authorityCommit": "65825389d586a128ddf6feb5356c33661ba9a8e8",
+  "assignments": [
+    {
+      "modelRouteSha256": "4657eb54cf4520c11786ab58444e58cfc325d13d8b87488a69d1119ae6307af6",
+      "modelRoute": {
+        "schema": 2,
+        "routeId": "four-view-v38:play-104-east-live-head-metadata-rebind-v1",
+        "taskId": "PLAY-104",
+        "packetKind": "mechanical",
+        "classification": "LUNA_MECHANICAL",
+        "model": "gpt-5.6-luna",
+        "effort": "medium",
+        "rationale": "Bounded LUNA_MECHANICAL repair following the V35 Frontier RETURN: reconcile only the East active metadata/evidence result/worker-head and coherence bindings to live candidate 069da37c512afd4d186c8e3576cb6cf17018bfeb while retaining V24 producer provenance, preserving all 43 raw masters/129 LODs/contact PNGs and candidate-only readiness flags. Historical V21/V23/V24 receipts and route snapshots remain immutable; no visual/source/admission decision is made by this packet.",
+        "authority": {
+          "authorityCommit": "65825389d586a128ddf6feb5356c33661ba9a8e8",
+          "baseCommit": "65825389d586a128ddf6feb5356c33661ba9a8e8",
+          "claim": {
+            "path": "docs/production/claims/PLAY-104.world-art-east-imagegen.md",
+            "sha256": "4e4311bdd3eed96a209a7b69958b468fc091c228db708783c6b8d813903a8583"
+          },
+          "immutableInputs": [
+            {
+              "path": "docs/production/decisions/CONTRACT-025-authored-four-view-2-5d-building-art.md",
+              "sha256": "4e8ab63173d67581332e7d27730b97315906fda4e29b999969456441809479ed"
+            },
+            {
+              "path": "docs/production/decisions/PLAY-106-RAW-SOUTH-ANCHOR-AUTHORITY.md",
+              "sha256": "1ed3486f526dc1ab3da352c85fce3920468375f8169529d933bbfc275b1c739d"
+            },
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "1eb7170b81e11753e7c9173298c6d45c02d5a2ade6df0ef8b73bdcaf690a2acd"
+            },
+            {
+              "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+              "sha256": "9c62d401d8812d5345b6bd25d864a07010348883ca4941f4429854ebe4abc511"
+            },
+            {
+              "path": ".agents/skills/produce-citysim-world-art/references/direction-cell-parallel-execution.md",
+              "sha256": "3cad284bc471c316c3a3ddffd88d580b7230c09e1b4f29a73c746b341995bdc8"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104/east/route-snapshot/MODEL-ROUTE-PLAY-104-EAST-CONTACT-SHEET-REPAIR-V2.json",
+              "sha256": "4a60ea6ec4d96d99f94bff2b19f445c08f6b3505f19688d2258bcf4edb17ab45"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104/east/portable_replay.py",
+              "sha256": "2e2381e3e677345b56e1b8df69d76179097fea93cdd32944bfc9b48b8daf6b59"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/PLAY-104-EAST-CONTACT-SHEET-REPAIR-V2.json",
+              "sha256": "a39dfa40e692f08cdc326f27ec61bca5a59e71706d4d779c68693a03ebac139a"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/PLAY-104-EAST-CONTRACT028-VISUAL-REPAIR-V1.json",
+              "sha256": "c363295b732eb851c9e2b4c42964e663dd6e35683988f6de3ebbf25da28271e0"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/PLAY-104-EAST-LITERAL-SCALE-PROOF-V2.json",
+              "sha256": "08a4db74556120619cb1970928ffad38a962a1a98d9a370bb17c3171e2b71174"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/PLAY-104-EAST-PRODUCTION-HANDOFF-V3.json",
+              "sha256": "bb8ddde7b8ef235faa9aed078e5217dc0319a73b2c713037b52cf2eaca3e0cb6"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/PLAY-104-EAST-PRODUCTION-READINESS-V3.json",
+              "sha256": "5da37385310fa516c480215b5711d6b00b13d5b6cbd8ecb559215d1559722550"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/civic_city-hall_v0/east-handoff.json",
+              "sha256": "f0e5832103a98f684b95b387972e35d7fd38957738c15ffacd54bc151fc2410c"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/civic_fire-station_v0/east-handoff.json",
+              "sha256": "97e7dc7e582e3a895316e48ddcd6c1d07d9eb79ad12d987259609bc1e5e6b42d"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/civic_park_v0/east-handoff.json",
+              "sha256": "e50eba776e3aeedca335f3eb557255f078b7e30bede62b2db6bf18cca56bd050"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/civic_police-station_v0/east-handoff.json",
+              "sha256": "d789c794755c210e3e51172fbb4d06af84522ab3908e5cea7e00b67c29e1e503"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/civic_power-plant_v0/east-handoff.json",
+              "sha256": "c9461ecae47d191584e6e93265f162009b8abafd071b3d91f36ed1c13bc5b979"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/civic_school_v0/east-handoff.json",
+              "sha256": "845804e31df54f9e9ef2b668f486595c2c8265faf840442485ccaa18ebafb484"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/civic_water-tower_v0/east-handoff.json",
+              "sha256": "fecd71347b72a70acafed881eeaee879329d6c46bbe1ea39fc0fbd9515d2a2ee"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/commercial_l01_v0/east-handoff.json",
+              "sha256": "651e43cc7cad170f203c2fa774b9b02ad43f9d66f8f5c813b23f67b5c699d3fc"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/commercial_l01_v1/east-handoff.json",
+              "sha256": "53483ed8ea496f952b15d139a4ebfd39bbf11a2c23eaa0b2211a063f6ead5f24"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/commercial_l01_v2/east-handoff.json",
+              "sha256": "5d2fce98f258c38c9dd252b62548e42f6b8683da414858707ec7d2ed7c6a27f1"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/commercial_l02_v0/east-handoff.json",
+              "sha256": "00662f66ad61266582aba6582f7cddc6af1896b2eae104e2167e65fae46475b1"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/commercial_l02_v1/east-handoff.json",
+              "sha256": "9dd83a2a5ccc77ed7e6342d4206da9525732583a32bec288a7624cc52f351794"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/commercial_l02_v2/east-handoff.json",
+              "sha256": "82fe0f5cc75618ddb16e2e3c3005d7e4189e670da245eed222b1f7ea4c7198d3"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/commercial_l03_v0/east-handoff.json",
+              "sha256": "4d557247fcfa11554905b04d1328db3b9679f55a3918d46b2c09c1e68bbd6536"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/commercial_l03_v1/east-handoff.json",
+              "sha256": "075a0a6c8a2424f2e359a531d38931e41f3e00551678b0825aea9f2579877219"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/commercial_l03_v2/east-handoff.json",
+              "sha256": "ef92952698ed92a129d039d8ad87c05f89b0191f8a2e075765cbc89a6f1b6640"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/commercial_l04_v0/east-handoff.json",
+              "sha256": "8ac3cd981517ff1a17edf0ebce71504e3112cb644b83c18b57d65af103a8b09d"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/commercial_l04_v1/east-handoff.json",
+              "sha256": "dfde5d0e802a7e489eb418495cc15e04643e0a8e762b8aeb1d792eb17fe3b512"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/commercial_l04_v2/east-handoff.json",
+              "sha256": "d2258a3a57ed9a7057f66805be1b8b752ae72d532071c6370d5d965ed698a095"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/industrial_l01_v0/east-handoff.json",
+              "sha256": "b9f385c062367b137ed7c7a9c81acad5b698baa0269bee79aa461131b6ac4db5"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/industrial_l01_v1/east-handoff.json",
+              "sha256": "94a1228b0e2dd03ecbefefb02139e6c86acc964cc48133fdf30b1b30dba20f55"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/industrial_l01_v2/east-handoff.json",
+              "sha256": "378ec7686797423a93ae2c5b1533287749b570f1f5312c0d65306ebd502e18f9"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/industrial_l02_v0/east-handoff.json",
+              "sha256": "e6b9fd7074d6ce113204cdca0d5cfe49f9b3d799dc9f0dd385d8cabe73b2bf4b"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/industrial_l02_v1/east-handoff.json",
+              "sha256": "2b77200bc6f4d8dfdc640e731fe7280dfd5752d4ca23e6c15566053b02c91ac7"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/industrial_l02_v2/east-handoff.json",
+              "sha256": "a471db88df941a7c3e9f7e39100940e6fd339d3c1e33f6709c520404f3450ce9"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/industrial_l03_v0/east-handoff.json",
+              "sha256": "60b0832bea7bc07328154022960bdd3139344f6816a7e16aa02078a9da18ab71"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/industrial_l03_v1/east-handoff.json",
+              "sha256": "ac32f2aad9d07398e8b3e70ecaa873c3d02f76345a83189ce367621d4cbef4f7"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/industrial_l03_v2/east-handoff.json",
+              "sha256": "de950ca17de8cdbb0f8bd52478565bbd66980b331ce65fdef5d38860bbd951e9"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/industrial_l04_v0/east-handoff.json",
+              "sha256": "cc4f8b614e846c37594b607af24d19cb9966ad88f00ac9ec9e5daa727ae1804a"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/industrial_l04_v1/east-handoff.json",
+              "sha256": "d02b44f5f4b11bb541d3bd3176bfcc522e09d09b7b38b8d062f72c9a6d92fe45"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/industrial_l04_v2/east-handoff.json",
+              "sha256": "bd758304b610f68200339d49750f74d1565d2663acd0f2722275902e57899a3e"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/residential_l01_v0/east-handoff.json",
+              "sha256": "6c2eb04274f7445ae59203b16f6f337cc2b6f980e1b513d9f7aed75e0e508616"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/residential_l01_v1/east-handoff.json",
+              "sha256": "6d2113f3267f4f4039716ddccfcaa7cc8a5c271dbc36929060169245797b6c0c"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/residential_l01_v2/east-handoff.json",
+              "sha256": "fe74abee3d4129618e627389db736677aa9c89ddc4011466057f5ffc7dc10447"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/residential_l02_v0/east-handoff.json",
+              "sha256": "f24bddb78d4411c401887479badbf5965b61067140221fc0ea71ccae5d45d871"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/residential_l02_v1/east-handoff.json",
+              "sha256": "f9e18ec3b79b17d1351a74bbcf67036d126112ab36856e6ac1ec48adc3e900ed"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/residential_l02_v2/east-handoff.json",
+              "sha256": "d2a66bd0eb01a6d0c02a1da2880f5a085a0289d02ae8babf6c0a57dfe730554c"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/residential_l03_v0/east-handoff.json",
+              "sha256": "970e531faf22eafa4f5d6f4f2469d9ef17a30033a5bb9803020dbaa3b7eb8081"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/residential_l03_v1/east-handoff.json",
+              "sha256": "9e5a2e4ca501df2884ad23ab4946b4b8385cd716fdf5601e565e83f03fd7cb00"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/residential_l03_v2/east-handoff.json",
+              "sha256": "0b712f910d361ffc93e665cbf282cc2affae86969f17399a6eb9d0f96099e92d"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/residential_l04_v0/east-handoff.json",
+              "sha256": "3878fb6603caf39a7084ebb9657c1012e7a2015b7ea5ac6da786320520b7d6ce"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/residential_l04_v1/east-handoff.json",
+              "sha256": "9f46da7f0cb61f3c96f84045032a402eccbf5b9c820d487484ee8263ab793219"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/residential_l04_v2/east-handoff.json",
+              "sha256": "77e380187c7480ddbbe57cbc8fb486b3a40ef9398f19d412c71ee39a0eb6d415"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104/east/contact-sheets/east-literal-footprint-contact-sheet.png",
+              "sha256": "495d8b23a7b4dd2b51547be0fbb8c904cd77958766c4d1601ea17dbeff2bf4cf"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104/east/contact-sheets/east-literal-game-scale-color-contact-sheet.png",
+              "sha256": "6859aa22d2133415091ee7e5b4183bcac7069250e6d3057c537020f49918ff94"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104/east/contact-sheets/east-literal-game-scale-grayscale-contact-sheet.png",
+              "sha256": "f161f1c7b08531c2f201cbe1b7c48e3d00b1e961dcbd2d219a7aa0f4cd5d91b8"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104/east/raw/residential_l01_v0/east-source-v01.png",
+              "sha256": "f9224dd933d0c12cd1f0e6a339887967d1dd34348de601862d2fc672fc11c1d3"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104/east/lod/residential_l01_v0/city.png",
+              "sha256": "87943f6c0a64e9a8a27ee5cc58ab6404eb0c10b1c217780375222f15ea75170d"
+            }
+          ]
+        },
+        "assignment": {
+          "threadId": "019fe1e1-3b56-72d2-8cbe-306964615976",
+          "branch": "codex/citysim-world-art-east-imagegen",
+          "worktree": "/Users/James/.codex/worktrees/3218/city-sim",
+          "expectedHead": "069da37c512afd4d186c8e3576cb6cf17018bfeb",
+          "featureAuthorThreadId": "019fe1e1-3b56-72d2-8cbe-306964615976",
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": [
+            "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104/east",
+            "docs/production/evidence/PLAY-104"
+          ],
+          "allowed": [
+            "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104/east/portable_replay.py",
+            "docs/production/evidence/PLAY-104/PLAY-104-EAST-CONTACT-SHEET-REPAIR-V2.json",
+            "docs/production/evidence/PLAY-104/PLAY-104-EAST-CONTRACT028-VISUAL-REPAIR-V1.json",
+            "docs/production/evidence/PLAY-104/PLAY-104-EAST-LITERAL-SCALE-PROOF-V2.json",
+            "docs/production/evidence/PLAY-104/PLAY-104-EAST-PRODUCTION-HANDOFF-V3.json",
+            "docs/production/evidence/PLAY-104/PLAY-104-EAST-PRODUCTION-READINESS-V3.json",
+            "docs/production/evidence/PLAY-104/handoffs/civic_city-hall_v0/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/civic_fire-station_v0/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/civic_park_v0/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/civic_police-station_v0/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/civic_power-plant_v0/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/civic_school_v0/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/civic_water-tower_v0/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/commercial_l01_v0/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/commercial_l01_v1/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/commercial_l01_v2/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/commercial_l02_v0/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/commercial_l02_v1/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/commercial_l02_v2/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/commercial_l03_v0/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/commercial_l03_v1/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/commercial_l03_v2/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/commercial_l04_v0/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/commercial_l04_v1/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/commercial_l04_v2/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/industrial_l01_v0/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/industrial_l01_v1/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/industrial_l01_v2/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/industrial_l02_v0/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/industrial_l02_v1/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/industrial_l02_v2/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/industrial_l03_v0/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/industrial_l03_v1/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/industrial_l03_v2/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/industrial_l04_v0/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/industrial_l04_v1/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/industrial_l04_v2/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/residential_l01_v0/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/residential_l01_v1/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/residential_l01_v2/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/residential_l02_v0/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/residential_l02_v1/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/residential_l02_v2/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/residential_l03_v0/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/residential_l03_v1/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/residential_l03_v2/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/residential_l04_v0/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/residential_l04_v1/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/residential_l04_v2/east-handoff.json"
+          ],
+          "forbidden": [
+            ".agents/skills",
+            "docs/production/PLAYABLE_BACKLOG.md",
+            "docs/production/claims",
+            "docs/production/decisions",
+            "docs/production/evidence/INTEGRATION",
+            "Native/CitySimNative/Sources",
+            "Native/CitySimNative/Resources",
+            "Native/CitySimNative/Tests",
+            "Native/CitySimNative/Package.swift",
+            "script/build_and_run.sh",
+            "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104/east/raw",
+            "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104/east/lod",
+            "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104/east/contact-sheets",
+            "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104/east/prompts",
+            "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104/east/provenance",
+            "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104/east/route-snapshot",
+            "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-103",
+            "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105",
+            "docs/production/evidence/PLAY-104/EAST-CONTACT-SHEET-RECORD-V1.json",
+            "docs/production/evidence/PLAY-104/EAST-EXECUTION-PLAN-V3.json",
+            "docs/production/evidence/PLAY-104/PLAY-104-EAST-CANDIDATE-PACKET-REPAIR-V1.json",
+            "docs/production/evidence/PLAY-104/PLAY-104-EAST-LITERAL-SCALE-PROOF-V1.json",
+            "docs/production/evidence/PLAY-104/PLAY-104-EAST-PREDESIGN-HANDOFF.json",
+            "docs/production/evidence/PLAY-104/PLAY-104-EAST-PRODUCTION-HANDOFF-V2.json",
+            "docs/production/evidence/PLAY-104/PLAY-104-EAST-PRODUCTION-READINESS-V2.json",
+            "docs/production/evidence/PLAY-104/READINESS-MATRIX.json",
+            "docs/production/evidence/PLAY-104/SOUTH-ANCHOR-INVENTORY.json"
+          ]
+        },
+        "boundedDeliverable": "Metadata-only East coherence rebind at exact clean HEAD 069da37c512afd4d186c8e3576cb6cf17018bfeb: update only Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104/east/portable_replay.py, docs/production/evidence/PLAY-104/PLAY-104-EAST-CONTACT-SHEET-REPAIR-V2.json, docs/production/evidence/PLAY-104/PLAY-104-EAST-CONTRACT028-VISUAL-REPAIR-V1.json, docs/production/evidence/PLAY-104/PLAY-104-EAST-LITERAL-SCALE-PROOF-V2.json, docs/production/evidence/PLAY-104/PLAY-104-EAST-PRODUCTION-HANDOFF-V3.json, docs/production/evidence/PLAY-104/PLAY-104-EAST-PRODUCTION-READINESS-V3.json, docs/production/evidence/PLAY-104/handoffs/civic_city-hall_v0/east-handoff.json, docs/production/evidence/PLAY-104/handoffs/civic_fire-station_v0/east-handoff.json, docs/production/evidence/PLAY-104/handoffs/civic_park_v0/east-handoff.json, docs/production/evidence/PLAY-104/handoffs/civic_police-station_v0/east-handoff.json, docs/production/evidence/PLAY-104/handoffs/civic_power-plant_v0/east-handoff.json, docs/production/evidence/PLAY-104/handoffs/civic_school_v0/east-handoff.json, docs/production/evidence/PLAY-104/handoffs/civic_water-tower_v0/east-handoff.json, docs/production/evidence/PLAY-104/handoffs/commercial_l01_v0/east-handoff.json, docs/production/evidence/PLAY-104/handoffs/commercial_l01_v1/east-handoff.json, docs/production/evidence/PLAY-104/handoffs/commercial_l01_v2/east-handoff.json, docs/production/evidence/PLAY-104/handoffs/commercial_l02_v0/east-handoff.json, docs/production/evidence/PLAY-104/handoffs/commercial_l02_v1/east-handoff.json, docs/production/evidence/PLAY-104/handoffs/commercial_l02_v2/east-handoff.json, docs/production/evidence/PLAY-104/handoffs/commercial_l03_v0/east-handoff.json, docs/production/evidence/PLAY-104/handoffs/commercial_l03_v1/east-handoff.json, docs/production/evidence/PLAY-104/handoffs/commercial_l03_v2/east-handoff.json, docs/production/evidence/PLAY-104/handoffs/commercial_l04_v0/east-handoff.json, docs/production/evidence/PLAY-104/handoffs/commercial_l04_v1/east-handoff.json, docs/production/evidence/PLAY-104/handoffs/commercial_l04_v2/east-handoff.json, docs/production/evidence/PLAY-104/handoffs/industrial_l01_v0/east-handoff.json, docs/production/evidence/PLAY-104/handoffs/industrial_l01_v1/east-handoff.json, docs/production/evidence/PLAY-104/handoffs/industrial_l01_v2/east-handoff.json, docs/production/evidence/PLAY-104/handoffs/industrial_l02_v0/east-handoff.json, docs/production/evidence/PLAY-104/handoffs/industrial_l02_v1/east-handoff.json, docs/production/evidence/PLAY-104/handoffs/industrial_l02_v2/east-handoff.json, docs/production/evidence/PLAY-104/handoffs/industrial_l03_v0/east-handoff.json, docs/production/evidence/PLAY-104/handoffs/industrial_l03_v1/east-handoff.json, docs/production/evidence/PLAY-104/handoffs/industrial_l03_v2/east-handoff.json, docs/production/evidence/PLAY-104/handoffs/industrial_l04_v0/east-handoff.json, docs/production/evidence/PLAY-104/handoffs/industrial_l04_v1/east-handoff.json, docs/production/evidence/PLAY-104/handoffs/industrial_l04_v2/east-handoff.json, docs/production/evidence/PLAY-104/handoffs/residential_l01_v0/east-handoff.json, docs/production/evidence/PLAY-104/handoffs/residential_l01_v1/east-handoff.json, docs/production/evidence/PLAY-104/handoffs/residential_l01_v2/east-handoff.json, docs/production/evidence/PLAY-104/handoffs/residential_l02_v0/east-handoff.json, docs/production/evidence/PLAY-104/handoffs/residential_l02_v1/east-handoff.json, docs/production/evidence/PLAY-104/handoffs/residential_l02_v2/east-handoff.json, docs/production/evidence/PLAY-104/handoffs/residential_l03_v0/east-handoff.json, docs/production/evidence/PLAY-104/handoffs/residential_l03_v1/east-handoff.json, docs/production/evidence/PLAY-104/handoffs/residential_l03_v2/east-handoff.json, docs/production/evidence/PLAY-104/handoffs/residential_l04_v0/east-handoff.json, docs/production/evidence/PLAY-104/handoffs/residential_l04_v1/east-handoff.json, docs/production/evidence/PLAY-104/handoffs/residential_l04_v2/east-handoff.json. Preserve the V24 producer route identity/starting head and every raw, LOD, contact-sheet, prompt, provenance, South-anchor, and pixel byte; update only stale post-rebind worker/result-head and coherence route bindings to this V38 packet and update portable_replay constants/checks. Preserve candidateReadyForIndependentReview=true, sourceReady=false, integrationAdmitted=false, rendererQuarantined=false, productionSelected=false. No ImageGen, source copy, pixel repair, readiness promotion, integration, renderer, launch, push, or self-acceptance.",
+        "proofPolicy": {
+          "architectureState": "frozen_reference",
+          "behavioralCommands": [
+            "python3 Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104/east/validate_direction_production.py --repeat 2"
+          ],
+          "deliverableClaims": [
+            "deterministic_output",
+            "static_structure"
+          ],
+          "focusedProofLevel": "deterministic_replay",
+          "fullProofLevel": "deterministic_replay",
+          "prohibitedSubstitutions": [
+            "source_token_presence_for_execution",
+            "ast_shape_for_runtime_success",
+            "manifest_or_prose_for_rendered_pixels",
+            "unit_tests_for_visual_acceptance",
+            "worker_self_report_for_independent_acceptance"
+          ],
+          "referenceImplementation": {
+            "path": "docs/production/decisions/CONTRACT-025-authored-four-view-2-5d-building-art.md",
+            "sha256": "4e8ab63173d67581332e7d27730b97315906fda4e29b999969456441809479ed"
+          }
+        },
+        "validation": {
+          "focusedCommands": [
+            "python3 Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104/east/validate_direction_production.py --repeat 2",
+            "git diff --check 069da37c512afd4d186c8e3576cb6cf17018bfeb^..HEAD"
+          ],
+          "focusedGateOwner": {
+            "role": "play-104-east-live-head-metadata-rebind-focused",
+            "threadId": "019fe1e1-3b56-72d2-8cbe-306964615976"
+          },
+          "fullCommands": [
+            "Integration metadata-stage review only; no source/derived/product/full-suite/app gate in this packet"
+          ],
+          "fullGateOwner": {
+            "effort": "high",
+            "model": "gpt-5.6-sol",
+            "role": "integration-aggregate-full-gate",
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8"
+          }
+        },
+        "expectedResult": {
+          "evidencePaths": [
+            "docs/production/evidence/PLAY-104/PLAY-104-EAST-CONTACT-SHEET-REPAIR-V2.json",
+            "docs/production/evidence/PLAY-104/PLAY-104-EAST-CONTRACT028-VISUAL-REPAIR-V1.json",
+            "docs/production/evidence/PLAY-104/PLAY-104-EAST-LITERAL-SCALE-PROOF-V2.json",
+            "docs/production/evidence/PLAY-104/PLAY-104-EAST-PRODUCTION-HANDOFF-V3.json",
+            "docs/production/evidence/PLAY-104/PLAY-104-EAST-PRODUCTION-READINESS-V3.json",
+            "docs/production/evidence/PLAY-104/handoffs/civic_city-hall_v0/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/civic_fire-station_v0/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/civic_park_v0/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/civic_police-station_v0/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/civic_power-plant_v0/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/civic_school_v0/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/civic_water-tower_v0/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/commercial_l01_v0/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/commercial_l01_v1/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/commercial_l01_v2/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/commercial_l02_v0/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/commercial_l02_v1/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/commercial_l02_v2/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/commercial_l03_v0/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/commercial_l03_v1/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/commercial_l03_v2/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/commercial_l04_v0/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/commercial_l04_v1/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/commercial_l04_v2/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/industrial_l01_v0/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/industrial_l01_v1/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/industrial_l01_v2/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/industrial_l02_v0/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/industrial_l02_v1/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/industrial_l02_v2/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/industrial_l03_v0/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/industrial_l03_v1/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/industrial_l03_v2/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/industrial_l04_v0/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/industrial_l04_v1/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/industrial_l04_v2/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/residential_l01_v0/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/residential_l01_v1/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/residential_l01_v2/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/residential_l02_v0/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/residential_l02_v1/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/residential_l02_v2/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/residential_l03_v0/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/residential_l03_v1/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/residential_l03_v2/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/residential_l04_v0/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/residential_l04_v1/east-handoff.json",
+            "docs/production/evidence/PLAY-104/handoffs/residential_l04_v2/east-handoff.json"
+          ],
+          "commitRequired": true,
+          "commitMessagePattern": "PLAY-104:"
+        },
+        "escalationTriggers": [
+          "shared_contract_or_schema_decision",
+          "unresolved_product_visual_or_interaction_judgment",
+          "path_outside_claim",
+          "baseline_or_candidate_identity_mismatch",
+          "failure_outside_focused_scope",
+          "save_or_migration_uncertainty",
+          "cross_lane_semantic_conflict",
+          "two_unsuccessful_repair_attempts",
+          "subjective_acceptance_required"
+        ],
+        "stopCondition": "Stop before mutation on any branch/HEAD/claim/authority/hash/path mismatch, any raw/LOD/contact/prompt/provenance byte drift, any identity/count/replay mismatch, any candidate-flag change, or any visual/source/admission ambiguity. After one metadata-only checkpoint and two isolated deterministic replays, stop; never call ImageGen, regenerate/copy/repair pixels, change source or readiness, integrate, render, launch, push, or self-accept. Integration must issue a fresh Frontier route before any derived cleanup.",
+        "independentReviewer": {
+          "required": true,
+          "threadId": "019fe44b-8c05-72d1-b1a6-a80e4a483bbb",
+          "model": "gpt-5.6-sol",
+          "effort": "high"
+        },
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {
+              "path": "docs/production/claims/PLAY-104.world-art-east-imagegen.md",
+              "sha256": "4e4311bdd3eed96a209a7b69958b468fc091c228db708783c6b8d813903a8583"
+            },
+            {
+              "path": "docs/production/decisions/CONTRACT-025-authored-four-view-2-5d-building-art.md",
+              "sha256": "4e8ab63173d67581332e7d27730b97315906fda4e29b999969456441809479ed"
+            },
+            {
+              "path": "docs/production/decisions/PLAY-106-RAW-SOUTH-ANCHOR-AUTHORITY.md",
+              "sha256": "1ed3486f526dc1ab3da352c85fce3920468375f8169529d933bbfc275b1c739d"
+            },
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "1eb7170b81e11753e7c9173298c6d45c02d5a2ade6df0ef8b73bdcaf690a2acd"
+            },
+            {
+              "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+              "sha256": "9c62d401d8812d5345b6bd25d864a07010348883ca4941f4429854ebe4abc511"
+            },
+            {
+              "path": ".agents/skills/produce-citysim-world-art/references/direction-cell-parallel-execution.md",
+              "sha256": "3cad284bc471c316c3a3ddffd88d580b7230c09e1b4f29a73c746b341995bdc8"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104/east/route-snapshot/MODEL-ROUTE-PLAY-104-EAST-CONTACT-SHEET-REPAIR-V2.json",
+              "sha256": "4a60ea6ec4d96d99f94bff2b19f445c08f6b3505f19688d2258bcf4edb17ab45"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104/east/portable_replay.py",
+              "sha256": "2e2381e3e677345b56e1b8df69d76179097fea93cdd32944bfc9b48b8daf6b59"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/PLAY-104-EAST-CONTACT-SHEET-REPAIR-V2.json",
+              "sha256": "a39dfa40e692f08cdc326f27ec61bca5a59e71706d4d779c68693a03ebac139a"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/PLAY-104-EAST-CONTRACT028-VISUAL-REPAIR-V1.json",
+              "sha256": "c363295b732eb851c9e2b4c42964e663dd6e35683988f6de3ebbf25da28271e0"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/PLAY-104-EAST-LITERAL-SCALE-PROOF-V2.json",
+              "sha256": "08a4db74556120619cb1970928ffad38a962a1a98d9a370bb17c3171e2b71174"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/PLAY-104-EAST-PRODUCTION-HANDOFF-V3.json",
+              "sha256": "bb8ddde7b8ef235faa9aed078e5217dc0319a73b2c713037b52cf2eaca3e0cb6"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/PLAY-104-EAST-PRODUCTION-READINESS-V3.json",
+              "sha256": "5da37385310fa516c480215b5711d6b00b13d5b6cbd8ecb559215d1559722550"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/civic_city-hall_v0/east-handoff.json",
+              "sha256": "f0e5832103a98f684b95b387972e35d7fd38957738c15ffacd54bc151fc2410c"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/civic_fire-station_v0/east-handoff.json",
+              "sha256": "97e7dc7e582e3a895316e48ddcd6c1d07d9eb79ad12d987259609bc1e5e6b42d"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/civic_park_v0/east-handoff.json",
+              "sha256": "e50eba776e3aeedca335f3eb557255f078b7e30bede62b2db6bf18cca56bd050"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/civic_police-station_v0/east-handoff.json",
+              "sha256": "d789c794755c210e3e51172fbb4d06af84522ab3908e5cea7e00b67c29e1e503"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/civic_power-plant_v0/east-handoff.json",
+              "sha256": "c9461ecae47d191584e6e93265f162009b8abafd071b3d91f36ed1c13bc5b979"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/civic_school_v0/east-handoff.json",
+              "sha256": "845804e31df54f9e9ef2b668f486595c2c8265faf840442485ccaa18ebafb484"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/civic_water-tower_v0/east-handoff.json",
+              "sha256": "fecd71347b72a70acafed881eeaee879329d6c46bbe1ea39fc0fbd9515d2a2ee"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/commercial_l01_v0/east-handoff.json",
+              "sha256": "651e43cc7cad170f203c2fa774b9b02ad43f9d66f8f5c813b23f67b5c699d3fc"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/commercial_l01_v1/east-handoff.json",
+              "sha256": "53483ed8ea496f952b15d139a4ebfd39bbf11a2c23eaa0b2211a063f6ead5f24"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/commercial_l01_v2/east-handoff.json",
+              "sha256": "5d2fce98f258c38c9dd252b62548e42f6b8683da414858707ec7d2ed7c6a27f1"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/commercial_l02_v0/east-handoff.json",
+              "sha256": "00662f66ad61266582aba6582f7cddc6af1896b2eae104e2167e65fae46475b1"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/commercial_l02_v1/east-handoff.json",
+              "sha256": "9dd83a2a5ccc77ed7e6342d4206da9525732583a32bec288a7624cc52f351794"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/commercial_l02_v2/east-handoff.json",
+              "sha256": "82fe0f5cc75618ddb16e2e3c3005d7e4189e670da245eed222b1f7ea4c7198d3"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/commercial_l03_v0/east-handoff.json",
+              "sha256": "4d557247fcfa11554905b04d1328db3b9679f55a3918d46b2c09c1e68bbd6536"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/commercial_l03_v1/east-handoff.json",
+              "sha256": "075a0a6c8a2424f2e359a531d38931e41f3e00551678b0825aea9f2579877219"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/commercial_l03_v2/east-handoff.json",
+              "sha256": "ef92952698ed92a129d039d8ad87c05f89b0191f8a2e075765cbc89a6f1b6640"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/commercial_l04_v0/east-handoff.json",
+              "sha256": "8ac3cd981517ff1a17edf0ebce71504e3112cb644b83c18b57d65af103a8b09d"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/commercial_l04_v1/east-handoff.json",
+              "sha256": "dfde5d0e802a7e489eb418495cc15e04643e0a8e762b8aeb1d792eb17fe3b512"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/commercial_l04_v2/east-handoff.json",
+              "sha256": "d2258a3a57ed9a7057f66805be1b8b752ae72d532071c6370d5d965ed698a095"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/industrial_l01_v0/east-handoff.json",
+              "sha256": "b9f385c062367b137ed7c7a9c81acad5b698baa0269bee79aa461131b6ac4db5"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/industrial_l01_v1/east-handoff.json",
+              "sha256": "94a1228b0e2dd03ecbefefb02139e6c86acc964cc48133fdf30b1b30dba20f55"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/industrial_l01_v2/east-handoff.json",
+              "sha256": "378ec7686797423a93ae2c5b1533287749b570f1f5312c0d65306ebd502e18f9"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/industrial_l02_v0/east-handoff.json",
+              "sha256": "e6b9fd7074d6ce113204cdca0d5cfe49f9b3d799dc9f0dd385d8cabe73b2bf4b"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/industrial_l02_v1/east-handoff.json",
+              "sha256": "2b77200bc6f4d8dfdc640e731fe7280dfd5752d4ca23e6c15566053b02c91ac7"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/industrial_l02_v2/east-handoff.json",
+              "sha256": "a471db88df941a7c3e9f7e39100940e6fd339d3c1e33f6709c520404f3450ce9"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/industrial_l03_v0/east-handoff.json",
+              "sha256": "60b0832bea7bc07328154022960bdd3139344f6816a7e16aa02078a9da18ab71"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/industrial_l03_v1/east-handoff.json",
+              "sha256": "ac32f2aad9d07398e8b3e70ecaa873c3d02f76345a83189ce367621d4cbef4f7"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/industrial_l03_v2/east-handoff.json",
+              "sha256": "de950ca17de8cdbb0f8bd52478565bbd66980b331ce65fdef5d38860bbd951e9"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/industrial_l04_v0/east-handoff.json",
+              "sha256": "cc4f8b614e846c37594b607af24d19cb9966ad88f00ac9ec9e5daa727ae1804a"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/industrial_l04_v1/east-handoff.json",
+              "sha256": "d02b44f5f4b11bb541d3bd3176bfcc522e09d09b7b38b8d062f72c9a6d92fe45"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/industrial_l04_v2/east-handoff.json",
+              "sha256": "bd758304b610f68200339d49750f74d1565d2663acd0f2722275902e57899a3e"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/residential_l01_v0/east-handoff.json",
+              "sha256": "6c2eb04274f7445ae59203b16f6f337cc2b6f980e1b513d9f7aed75e0e508616"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/residential_l01_v1/east-handoff.json",
+              "sha256": "6d2113f3267f4f4039716ddccfcaa7cc8a5c271dbc36929060169245797b6c0c"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/residential_l01_v2/east-handoff.json",
+              "sha256": "fe74abee3d4129618e627389db736677aa9c89ddc4011466057f5ffc7dc10447"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/residential_l02_v0/east-handoff.json",
+              "sha256": "f24bddb78d4411c401887479badbf5965b61067140221fc0ea71ccae5d45d871"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/residential_l02_v1/east-handoff.json",
+              "sha256": "f9e18ec3b79b17d1351a74bbcf67036d126112ab36856e6ac1ec48adc3e900ed"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/residential_l02_v2/east-handoff.json",
+              "sha256": "d2a66bd0eb01a6d0c02a1da2880f5a085a0289d02ae8babf6c0a57dfe730554c"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/residential_l03_v0/east-handoff.json",
+              "sha256": "970e531faf22eafa4f5d6f4f2469d9ef17a30033a5bb9803020dbaa3b7eb8081"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/residential_l03_v1/east-handoff.json",
+              "sha256": "9e5a2e4ca501df2884ad23ab4946b4b8385cd716fdf5601e565e83f03fd7cb00"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/residential_l03_v2/east-handoff.json",
+              "sha256": "0b712f910d361ffc93e665cbf282cc2affae86969f17399a6eb9d0f96099e92d"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/residential_l04_v0/east-handoff.json",
+              "sha256": "3878fb6603caf39a7084ebb9657c1012e7a2015b7ea5ac6da786320520b7d6ce"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/residential_l04_v1/east-handoff.json",
+              "sha256": "9f46da7f0cb61f3c96f84045032a402eccbf5b9c820d487484ee8263ab793219"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-104/handoffs/residential_l04_v2/east-handoff.json",
+              "sha256": "77e380187c7480ddbbe57cbc8fb486b3a40ef9398f19d412c71ee39a0eb6d415"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104/east/contact-sheets/east-literal-footprint-contact-sheet.png",
+              "sha256": "495d8b23a7b4dd2b51547be0fbb8c904cd77958766c4d1601ea17dbeff2bf4cf"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104/east/contact-sheets/east-literal-game-scale-color-contact-sheet.png",
+              "sha256": "6859aa22d2133415091ee7e5b4183bcac7069250e6d3057c537020f49918ff94"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104/east/contact-sheets/east-literal-game-scale-grayscale-contact-sheet.png",
+              "sha256": "f161f1c7b08531c2f201cbe1b7c48e3d00b1e961dcbd2d219a7aa0f4cd5d91b8"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104/east/raw/residential_l01_v0/east-source-v01.png",
+              "sha256": "f9224dd933d0c12cd1f0e6a339887967d1dd34348de601862d2fc672fc11c1d3"
+            },
+            {
+              "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104/east/lod/residential_l01_v0/city.png",
+              "sha256": "87943f6c0a64e9a8a27ee5cc58ab6404eb0c10b1c217780375222f15ea75170d"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

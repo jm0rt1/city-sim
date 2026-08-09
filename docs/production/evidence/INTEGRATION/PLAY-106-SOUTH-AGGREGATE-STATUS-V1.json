@@ -4,7 +4,7 @@
   "taskId": "PLAY-106",
   "direction": "south",
   "status": "BLOCKED",
-  "updatedAt": "2026-08-09T12:34:10Z",
+  "updatedAt": "2026-08-09T13:59:45Z",
   "authority": {
     "path": "docs/production/decisions/PLAY-106-RAW-SOUTH-ANCHOR-AUTHORITY.md",
     "sha256": "1ed3486f526dc1ab3da352c85fce3920468375f8169529d933bbfc275b1c739d",
@@ -82,10 +82,10 @@
       "rawRoot": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/raw",
       "worker": "/Users/James/.codex/worktrees/c96d/city-sim",
       "branch": "codex/citysim-world-art-civic",
-      "head": "fd9e2b38bcc1215064c7cc81a4a6e9fc57b56786",
-      "routeId": "four-view-v40:play-100-civic-metadata-rebind-v2",
-      "routeSha256": "ced76e6624390bbe0a57494a44bc8b24dfa0dae2f1e04df93c8240a447f24cb5",
-      "candidateStatus": "METADATA_REBIND_PENDING",
+      "head": "75d202c4dbce1789f9c98891c66ed8f6e9180f4e",
+      "routeId": "four-view-v41:play-100-civic-frontier-art-source-review-v4",
+      "routeSha256": "a862fe516fff63b26e6c2e577135010a8f9eea605632e77ff1a539e824fe2512",
+      "candidateStatus": "APPROVE_candidate_only",
       "rawAdmission": "CANDIDATE_ONLY",
       "sourceReady": false,
       "integrationAdmitted": false

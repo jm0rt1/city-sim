@@ -1,0 +1,167 @@
+{
+  "schema": 2,
+  "authorityCommit": "9ecb67b8799a40ba70366ef14460cf53e02b4565",
+  "assignments": [
+    {
+      "modelRouteSha256": "d2861fecb6dd1a4f465f6782fcc9e07e1e00880d72d25bd3f9fdb1d4a6166944",
+      "modelRoute": {
+        "assignment": {
+          "branch": "codex/citysim-os-optimization",
+          "expectedHead": "9ecb67b8799a40ba70366ef14460cf53e02b4565",
+          "featureAuthorThreadId": null,
+          "finalQAOwnership": false,
+          "sharedAuthorityOwnership": false,
+          "subjectiveJudgmentRequired": false,
+          "threadId": "019fc40d-c697-7aa2-94bf-902b031a8c67",
+          "worktree": "/Users/James/.codex/worktrees/dc21/city-sim"
+        },
+        "authority": {
+          "authorityCommit": "9ecb67b8799a40ba70366ef14460cf53e02b4565",
+          "baseCommit": "9ecb67b8799a40ba70366ef14460cf53e02b4565",
+          "claim": {
+            "path": "docs/production/claims/PLAY-089.operating-system-optimization.md",
+            "sha256": "5261dd14148414bbef37f12da2a9d2c3d8a4544525fd5c22e7a30f48cb709662"
+          },
+          "immutableInputs": [
+            {
+              "path": "docs/production/evidence/INTEGRATION/PLAY-101-V17-DELEGATION-READY-EVENT-V1.json",
+              "sha256": "0a18833c0a567677b859ef22b8338b34424814d5369fde81ea1dcd6751866bb0"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-089/OPERATING-REVIEW-EVENT-LEDGER-V1.json",
+              "sha256": "a7d1e90eca989973bbd5afb0e455b7dd17eb7bc3d63c4e3de5f418db191ac4f4"
+            },
+            {
+              "path": ".agents/skills/optimize-citysim-operating-system/references/triggered-operating-review-policy.json",
+              "sha256": "b9f208fe3ee78cd3143953300cbb2d2692d264f0d9106fd3f799bf74aa2df9da"
+            },
+            {
+              "path": ".agents/skills/optimize-citysim-operating-system/SKILL.md",
+              "sha256": "e8f5167f2ff913869b98dc25f018201159520f3d7c010dcbe891366b3fa0820e"
+            },
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "1eb7170b81e11753e7c9173298c6d45c02d5a2ade6df0ef8b73bdcaf690a2acd"
+            }
+          ]
+        },
+        "boundedDeliverable": "Consume only the exact published PLAY-101 V17 delegation-ready event envelope, live PLAY-089 claim, frozen schema-4 trigger policy, durable ledger, and hash-bound observer context. Emit one schema-4 observation receipt under the exact PLAY-089 output root. Record classification, lowest legal route, authority boundary, claim/path binding, focused/full gate owners, independent reviewer, and usefulWorkstreamDelta=1. Return NO_CHANGE, RETURN, or ESCALATE only; preserve null for unavailable timing/cost metrics. Do not inspect or rerun product gates, poll tasks, spawn reviews, dispatch, synchronize, mutate product/shared authority, edit the ledger, push, or self-accept.",
+        "classification": "LUNA_MECHANICAL",
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {
+              "path": "docs/production/claims/PLAY-089.operating-system-optimization.md",
+              "sha256": "5261dd14148414bbef37f12da2a9d2c3d8a4544525fd5c22e7a30f48cb709662"
+            },
+            {
+              "path": "docs/production/evidence/INTEGRATION/PLAY-101-V17-DELEGATION-READY-EVENT-V1.json",
+              "sha256": "0a18833c0a567677b859ef22b8338b34424814d5369fde81ea1dcd6751866bb0"
+            },
+            {
+              "path": "docs/production/evidence/PLAY-089/OPERATING-REVIEW-EVENT-LEDGER-V1.json",
+              "sha256": "a7d1e90eca989973bbd5afb0e455b7dd17eb7bc3d63c4e3de5f418db191ac4f4"
+            },
+            {
+              "path": ".agents/skills/optimize-citysim-operating-system/references/triggered-operating-review-policy.json",
+              "sha256": "b9f208fe3ee78cd3143953300cbb2d2692d264f0d9106fd3f799bf74aa2df9da"
+            }
+          ]
+        },
+        "effort": "medium",
+        "escalationTriggers": [
+          "baseline_or_candidate_identity_mismatch",
+          "cross_lane_semantic_conflict",
+          "failure_outside_focused_scope",
+          "path_outside_claim",
+          "save_or_migration_uncertainty",
+          "shared_contract_or_schema_decision",
+          "subjective_acceptance_required",
+          "two_unsuccessful_repair_attempts",
+          "unresolved_product_visual_or_interaction_judgment"
+        ],
+        "expectedResult": {
+          "commitMessagePattern": "PLAY-089:",
+          "commitRequired": true,
+          "evidencePaths": [
+            "docs/production/evidence/PLAY-089/play-101-v17-delegation-ready-observation-v1"
+          ]
+        },
+        "independentReviewer": {
+          "effort": "high",
+          "model": "gpt-5.6-sol",
+          "required": true,
+          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8"
+        },
+        "model": "gpt-5.6-luna",
+        "packetKind": "mechanical",
+        "pathPolicy": {
+          "allowed": [
+            "docs/production/evidence/PLAY-089/play-101-v17-delegation-ready-observation-v1"
+          ],
+          "claimOwnedRoots": [
+            "docs/production/evidence/PLAY-089"
+          ],
+          "forbidden": [
+            ".agents/skills",
+            "AGENTS.md",
+            "Native",
+            "script",
+            "docs/production/claims",
+            "docs/production/decisions",
+            "docs/production/evidence/INTEGRATION",
+            "docs/production/evidence/PLAY-089/OPERATING-REVIEW-EVENT-LEDGER-V1.json",
+            "docs/production/PLAYABLE_BACKLOG.md",
+            "docs/production/completed"
+          ]
+        },
+        "proofPolicy": {
+          "architectureState": "frozen_reference",
+          "behavioralCommands": [],
+          "deliverableClaims": [
+            "static_structure"
+          ],
+          "focusedProofLevel": "static_only",
+          "fullProofLevel": "static_only",
+          "prohibitedSubstitutions": [
+            "ast_shape_for_runtime_success",
+            "manifest_or_prose_for_rendered_pixels",
+            "source_token_presence_for_execution",
+            "unit_tests_for_visual_acceptance",
+            "worker_self_report_for_independent_acceptance"
+          ],
+          "referenceImplementation": {
+            "path": ".agents/skills/optimize-citysim-operating-system/references/triggered-operating-review-policy.json",
+            "sha256": "b9f208fe3ee78cd3143953300cbb2d2692d264f0d9106fd3f799bf74aa2df9da"
+          }
+        },
+        "rationale": "Read-only immediate delegation-ready observation for the exact published PLAY-101 V17 event envelope after Integration ledger-schema correction. Verify the lowest legal route, frozen authority boundary, exact claim and output roots, distinct focused/full ownership, independent reviewer, and one useful workstream before any worker mutation. Do not poll, spawn, build, synchronize, mutate, dispatch product work, edit the ledger, or self-authorize shared changes.",
+        "routeId": "quality-v2:play-089-play-101-v17-delegation-ready-observation-v2",
+        "schema": 2,
+        "stopCondition": "Stop after one schema-4 observation receipt and one clean PLAY-089 commit, or immediately on source-envelope, claim, ledger, route, path, branch, HEAD, or hash mismatch. Never edit the ledger, dispatch, product/shared authority, or worker routes; Integration alone records disposition and authorizes any later mutation.",
+        "taskId": "PLAY-089",
+        "validation": {
+          "focusedCommands": [
+            "PYTHONDONTWRITEBYTECODE=1 python3 .agents/skills/optimize-citysim-operating-system/scripts/test_validate_operating_review_receipt_v1.py",
+            "PYTHONDONTWRITEBYTECODE=1 python3 .agents/skills/optimize-citysim-operating-system/scripts/test_validate_operating_review_batch_v1.py",
+            "git diff --check 9ecb67b8799a40ba70366ef14460cf53e02b4565..HEAD"
+          ],
+          "focusedGateOwner": {
+            "role": "play-089-delegation-ready-observation-focused",
+            "threadId": "019fc40d-c697-7aa2-94bf-902b031a8c67"
+          },
+          "fullCommands": [
+            "Integration validates the exact event-key projection, observer receipt, ledger disposition, and no-mutation boundary without rerunning product or worker gates."
+          ],
+          "fullGateOwner": {
+            "effort": "high",
+            "model": "gpt-5.6-sol",
+            "role": "integration-play-089-observer-acceptance",
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8"
+          }
+        }
+      }
+    }
+  ]
+}

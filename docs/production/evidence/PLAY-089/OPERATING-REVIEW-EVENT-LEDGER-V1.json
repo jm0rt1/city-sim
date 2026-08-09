@@ -209,7 +209,7 @@
       "receiptPath": "docs/production/evidence/PLAY-089/play-096-contract-repair-v1/01-play-096.json",
       "receiptSha256": "1041642b24795419f870a23476b6a2c409ddd3692ab922100bcb91cae845bb8b",
       "decision": "NO_CHANGE",
-      "disposition": {"status":"pending_integration","authorityCommit":"ada095c3319dee054da2b4cf1197e7c696f72223","reason":"PLAY-096 five-defect task-local repair route is exact, bounded, LUNA implementation/high, independently reviewed, and ready for Integration disposition."}
+      "disposition": {"status":"auto_closed","authorityCommit":"ada095c3319dee054da2b4cf1197e7c696f72223","reason":"PLAY-096 five-defect task-local repair route is exact, bounded, LUNA implementation/high, independently reviewed, and ready for Integration disposition."}
     }
   ]
 }

@@ -1,0 +1,69 @@
+{
+  "schema": 1,
+  "taskId": "PLAY-097",
+  "routeId": "four-view-v29:play-097-south-residential-source-regeneration-v1",
+  "routeSha256": "37f88d726501f1cabd253ebc7edb44b3043ceab230aec1d21f5881316b3f6849",
+  "authorityCommit": "65825389d586a128ddf6feb5356c33661ba9a8e8",
+  "baseCommit": "a61ab80101f596f56ffc1dd7e37b32bd1b220357",
+  "claimSha256": "816acffd9e8cb7cc76ad068b7c6b6ff9fed4015b1646c37ac68c148714901126",
+  "branch": "codex/citysim-world-art-residential",
+  "worktree": "/Users/James/.codex/worktrees/df86/city-sim",
+  "workerHead": "a8bcd4fd30fcb33643f9cc2f5cd0a693a8fbee46",
+  "direction": "south",
+  "family": "residential",
+  "sourceRevision": "source-v02",
+  "disposition": "RETURN",
+  "failureClass": "raw_chroma_corner_nonflat",
+  "failureIdentity": "residential_l01_variant_0",
+  "failureReason": "The sole built-in ImageGen artifact has 1536x1024 RGB shape but its four corners are not exact flat #ff00ff, so the frozen raw-source gate fails. No retry, chroma repair, or source-v02 copy is authorized.",
+  "requiredCornerRGB": [255, 0, 255],
+  "artifact": {
+    "path": "/Users/James/.codex/generated_images/019fe49c-e2d3-7812-a0e5-9ce968bd8884/exec-eb810e5d-8d04-4d15-869c-444ba548f642.png",
+    "sha256": "0984ee22c9f539a60dc67e959aa82a45e6d96e66fdfa845df1adc1ff500fc08b",
+    "bytes": 1964366,
+    "dimensions": [1536, 1024],
+    "mode": "RGB",
+    "cornerRGB": [[233, 12, 230], [240, 19, 233], [229, 35, 226], [234, 29, 228]],
+    "tool": "built-in image_gen",
+    "callOrdinal": 1,
+    "attemptCount": 1,
+    "retryCount": 0,
+    "repoCopy": false
+  },
+  "preservation": {
+    "sourceV01Path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-097/residential/raw/residential_l01_variant_0/source-v01.png",
+    "sourceV01Sha256": "a808c5da11450418afa26505261cac196480d7d98578e2e8ac796288c7ee0e57",
+    "oldNormalizedAndEvidenceUntouched": true,
+    "oldByteMutation": false,
+    "candidateOutputCount": 0
+  },
+  "readiness": {
+    "candidateReadyForIndependentReview": false,
+    "sourceReady": false,
+    "integrationAdmitted": false,
+    "rendererQuarantined": false,
+    "productionSelected": false
+  },
+  "launchedArtifacts": [
+    {"identity": "residential_l01_variant_0", "callOrdinal": 1, "attemptCount": 1, "artifactPath": "/Users/James/.codex/generated_images/019fe49c-e2d3-7812-a0e5-9ce968bd8884/exec-eb810e5d-8d04-4d15-869c-444ba548f642.png", "artifactSha256": "0984ee22c9f539a60dc67e959aa82a45e6d96e66fdfa845df1adc1ff500fc08b", "cornerRGB": [[233, 12, 230], [240, 19, 233], [229, 35, 226], [234, 29, 228]], "status": "failed_chroma"},
+    {"identity": "residential_l01_variant_1", "callOrdinal": 1, "attemptCount": 1, "artifactPath": "/Users/James/.codex/generated_images/019fe49c-e2d3-7812-a0e5-9ce968bd8884/exec-054c593a-8075-465d-a394-c04040581c99.png", "artifactSha256": "d9c8e94af723f03da2ff9c95b84af15002603f52f01af15c20142bca914343bc", "cornerRGB": [[239, 12, 235], [245, 19, 237], [233, 36, 231], [239, 30, 233]], "status": "not_admitted_after_prior_failure"},
+    {"identity": "residential_l01_variant_2", "callOrdinal": 1, "attemptCount": 1, "artifactPath": "/Users/James/.codex/generated_images/019fe49c-e2d3-7812-a0e5-9ce968bd8884/exec-3bc2f42d-58f2-4a0e-b1a9-3296537058e8.png", "artifactSha256": "0b7d007ed517a11a00888af51b46757015f47b8192da5a7049f95a61ab553c31", "cornerRGB": [[237, 11, 227], [241, 16, 230], [232, 32, 222], [237, 27, 225]], "status": "not_admitted_after_prior_failure"},
+    {"identity": "residential_l02_variant_0", "callOrdinal": 1, "attemptCount": 1, "artifactPath": "/Users/James/.codex/generated_images/019fe49c-e2d3-7812-a0e5-9ce968bd8884/exec-8f425e05-fdf3-4a15-a4f5-f6488a8c0448.png", "artifactSha256": "0fa827b804ce0c592f63e03335e16897fe017ef2370ae8fae3a8f2fa3ce7ccf2", "cornerRGB": [[242, 13, 241], [246, 19, 241], [236, 37, 237], [241, 31, 237]], "status": "not_admitted_after_prior_failure"},
+    {"identity": "residential_l02_variant_1", "callOrdinal": 1, "attemptCount": 1, "artifactPath": "/Users/James/.codex/generated_images/019fe49c-e2d3-7812-a0e5-9ce968bd8884/exec-24ff1b84-0ae8-41d3-a075-924590a8793d.png", "artifactSha256": "166c36f211e56f1c5c2908c389dac98590f90a644da9191a1a55f3613150400c", "cornerRGB": [[236, 11, 226], [242, 19, 229], [232, 33, 220], [238, 29, 223]], "status": "not_admitted_after_prior_failure"},
+    {"identity": "residential_l02_variant_2", "callOrdinal": 1, "attemptCount": 1, "artifactPath": "/Users/James/.codex/generated_images/019fe49c-e2d3-7812-a0e5-9ce968bd8884/exec-91411193-460e-46dd-b0d2-d01c9ffd8ada.png", "artifactSha256": "21588bf6d4a83b6bb01d0d5508d833ffdb22f1a6951555481034d9ea4fc608f7", "cornerRGB": [[242, 12, 240], [246, 18, 241], [236, 37, 236], [241, 30, 238]], "status": "not_admitted_after_prior_failure"},
+    {"identity": "residential_l03_variant_0", "callOrdinal": 1, "attemptCount": 1, "artifactPath": "/Users/James/.codex/generated_images/019fe49c-e2d3-7812-a0e5-9ce968bd8884/exec-88389a41-2480-41de-b0e1-ad759d83f2b8.png", "artifactSha256": "2895c75480d639045364b6feac74ee13b0fb057ab38ede8f48d1fcce95a5b0ae", "cornerRGB": [[237, 9, 237], [242, 16, 239], [232, 33, 231], [238, 27, 234]], "status": "not_admitted_after_prior_failure"}
+  ],
+  "executionAccounting": {
+    "readyNow": 0,
+    "running": 0,
+    "waitingOnJoin": 1,
+    "serializedAuthority": true,
+    "nextRefill": null,
+    "capacity": 12,
+    "launchedJobs": ["residential_l01_variant_0", "residential_l01_variant_1", "residential_l01_variant_2", "residential_l02_variant_0", "residential_l02_variant_1", "residential_l02_variant_2", "residential_l03_variant_0"],
+    "unusedCapacityReasons": ["first built-in ImageGen chroma gate failed; stop without retry or further output adoption"],
+    "overlap": [],
+    "join": {"state": "blocked", "reason": "raw source-v02 flat #ff00ff chroma gate failed before any candidate copy; independent Frontier and Integration admission remain required"}
+  },
+  "recordedAt": "2026-08-09"
+}

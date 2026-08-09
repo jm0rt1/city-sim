@@ -3,9 +3,9 @@
   "documentType": "CITYSIM_CURRENT_PARALLEL_WORK_PROJECTION",
   "supersedes": "FOUR-VIEW-PARALLEL-WAVE-CURRENT-V1.json",
   "authority": {
-    "capturedAtIntegrationHead": "e7d846f71b24e703eaefb21be090da465e170df7",
-    "publishedBaseline": "e7d846f71b24e703eaefb21be090da465e170df7",
-    "publicationStatusAtCapture": "published_origin_parity_after_route_rebind",
+    "capturedAtIntegrationHead": "939c88c4afdd89ce15e8ff0bcc38d9ccff4bd1c1",
+    "publishedBaseline": "939c88c4afdd89ce15e8ff0bcc38d9ccff4bd1c1",
+    "publicationStatusAtCapture": "published_origin_parity_candidate_review_queue",
     "protectedDirt": [
       ".vscode/launch.json",
       "docs/production/evidence/INTEGRATION/industrial-l04-prelock-north-a-schedule-v1.json"
@@ -23,29 +23,29 @@
     "fullSuiteFrequency": "once_per_exact_aggregate"
   },
   "cadence": {
-    "waveId": "FOUR-VIEW-PLAY-098-103-V2",
-    "snapshotReceipt": "route-rebind-and-visible-dispatch-batch-e7d846f7",
+    "waveId": "FOUR-VIEW-PLAY-098-103-CANDIDATE-REVIEW-V1",
+    "snapshotReceipt": "candidate-handoff-envelope-ae773e1e9d5869ae095361b29483aea8fde5d812f5857a44f693cbb72bfd7ef9",
     "cellCaptain": "world-art-direction-captain",
     "acknowledgementSLA": "one coordination round",
-    "nextJoin": "Five visible Luna packets acknowledge and return focused proofs; East checkpoints protected dirt; West receives a fresh route rebind before visual review; renderer/QA prep remains warm.",
+    "nextJoin": "Independent frontier candidate review for five returned packets; then Contract-028 cleanup/sync for Commercial and Civic, renderer/QA prep remains non-shipping; East owner checkpoint and West exact-head review route remain separate.",
     "changedRows": [
       "PLAY-098-COMMERCIAL",
       "PLAY-100-CIVIC",
       "PLAY-101-RENDERER",
       "PLAY-102-QA",
-      "PLAY-103-NORTH",
-      "PLAY-104-EAST",
-      "PLAY-105-WEST"
+      "PLAY-103-NORTH"
     ],
     "refereeQueue": [
-      "PLAY-103-NORTH",
       "PLAY-098-COMMERCIAL",
       "PLAY-100-CIVIC",
+      "PLAY-101-RENDERER",
+      "PLAY-102-QA",
+      "PLAY-103-NORTH",
       "PLAY-105-WEST"
     ],
     "reservedRendererSlot": "after 4/4 source admission",
     "reservedQASlot": "after exact renderer aggregate",
-    "unresolvedSolDecision": "Contract-028 literal-scale visual disposition and aggregate South source admission; no readiness flags advanced."
+    "unresolvedSolDecision": "Independent candidate dispositions and Contract-028 literal-scale visual/source review; no source admission or production selection."
   },
   "rows": [
     {
@@ -53,12 +53,12 @@
       "lane": "world-art-north",
       "branch": "codex/citysim-world-art-north-imagegen",
       "worktree": "/Users/James/.codex/worktrees/f55b/city-sim",
-      "head": "12c081381c97a41a05c87c926de0ef7becf5db12",
+      "head": "85fb902647c77dd6232c3b352e3d1729ef615970",
       "clean": true,
-      "state": "dispatch_ack_pending_contract028_return",
+      "state": "candidate_handoff_review_pending",
       "routeId": "four-view-v13:play-103-north-alpha-aware-lod-chroma-v1",
       "modelTier": "LUNA_IMPLEMENTATION",
-      "nextSafeAction": "Obtain visible route ACK, then run Contract-028 cleanup; preserve raw bytes and candidate-only readiness."
+      "nextSafeAction": "Independent candidate review of Contract-028 result; keep candidate-only readiness and raw bytes unchanged."
     },
     {
       "id": "PLAY-105-WEST",
@@ -77,24 +77,24 @@
       "lane": "world-art-commercial",
       "branch": "codex/citysim-world-art-commercial",
       "worktree": "/Users/James/.codex/worktrees/34c2/city-sim",
-      "head": "dc73ea7075e6cd441d062ef7f99f594a57fbd088",
+      "head": "58caebe3c10d701fce5e7c0a058a42509801c82c",
       "clean": true,
-      "state": "dispatch_ack_pending_contract028_return",
+      "state": "candidate_handoff_review_pending",
       "routeId": "four-view-v5:play-098-admission-repair-v3",
       "modelTier": "LUNA_IMPLEMENTATION",
-      "nextSafeAction": "Obtain visible ACK, rebind evidence, then run Contract-028 cleanup; preserve pixels."
+      "nextSafeAction": "Independent candidate review; after approval, sync clean branch to current authority and issue Contract-028 cleanup route preserving all PNG bytes."
     },
     {
       "id": "PLAY-100-CIVIC",
       "lane": "world-art-civic",
       "branch": "codex/citysim-world-art-civic",
       "worktree": "/Users/James/.codex/worktrees/c96d/city-sim",
-      "head": "da68895b967ab21d26317134cd26e03043ee8b38",
+      "head": "70dcb549fd18797653090eff740621bfbf3bf1a5",
       "clean": true,
-      "state": "dispatch_ack_pending_contract028_return",
+      "state": "candidate_handoff_review_pending",
       "routeId": "four-view-v5:play-100-south-admission-repair-v2",
       "modelTier": "LUNA_IMPLEMENTATION",
-      "nextSafeAction": "Obtain visible ACK, rebind evidence, then run Contract-028 cleanup; preserve pixels."
+      "nextSafeAction": "Independent candidate review; after approval, sync clean branch to current authority and issue Contract-028 cleanup route preserving all PNG bytes."
     },
     {
       "id": "PLAY-104-EAST",
@@ -117,11 +117,11 @@
       "lane": "renderer-intake",
       "branch": "codex/citysim-world-rendering-single-angle",
       "worktree": "/Users/James/.codex/worktrees/ccf8/city-sim",
-      "head": "ef93544a3d84b5ebce95be1dfa3cbeecc3331355",
+      "head": "60318531381263defd3915bbe4274a5bbed6c301",
       "clean": true,
-      "state": "route_published_ack_pending",
+      "state": "candidate_handoff_review_pending",
       "modelTier": "LUNA_IMPLEMENTATION",
-      "nextSafeAction": "Obtain visible ACK, then run focused non-shipping intake proof; source admissions and runtime selector remain locked.",
+      "nextSafeAction": "Independent packet review; keep synthetic intake/quarantine only and activation locked until 4/4 source admission.",
       "routeId": "four-view-v14:play-101-intake-prep-v8"
     },
     {
@@ -129,11 +129,11 @@
       "lane": "playtest-preregistration",
       "branch": "codex/citysim-playtest-single-angle",
       "worktree": "/Users/James/.codex/worktrees/fee0/city-sim",
-      "head": "c2152839b8bd602838beeb64efb5d0d817ccb61a",
+      "head": "80c209ac84140f01804d70ee49c80e17c29c14a8",
       "clean": true,
-      "state": "route_published_ack_pending",
+      "state": "candidate_handoff_review_pending",
       "modelTier": "LUNA_MECHANICAL",
-      "nextSafeAction": "Obtain visible ACK, then run candidate-neutral fixture/source preflight; keep candidate fields null/UNMEASURED.",
+      "nextSafeAction": "Independent packet review; keep candidate/resource fields null and run no app until exact renderer aggregate.",
       "routeId": "four-view-v14:play-102-fixture-source-preflight-v2"
     },
     {
@@ -165,6 +165,6 @@
     "fullSuite": "not_run",
     "stagedApp": "not_run",
     "independentRealAppQA": "not_run",
-    "push": "origin_parity_at_e7d846f7_route_publication"
+    "push": "origin_parity_at_939c88c4_candidate_review_snapshot"
   }
 }

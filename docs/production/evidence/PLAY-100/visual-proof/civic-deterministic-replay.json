@@ -1,0 +1,421 @@
+{
+  "byteAndDecodedEqual": true,
+  "candidateHead": "0a7c4e1f8b661588c5325f1b1895cb5b41e279ae",
+  "command": "/Users/James/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalize_south_admission.py --output-root Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized",
+  "rawHashesEqual": true,
+  "replayA": {
+    "count": 21,
+    "root": "temporary claim-owned .replay-a",
+    "rows": [
+      {
+        "decodedSha256": "3ce5e41438862b1d0298731c7d9e9861ced9f60cb66f7179dad7d52c0677a7cc",
+        "dimensions": [
+          1024,
+          683
+        ],
+        "name": "city-hall-block.png",
+        "path": "city-hall/city-hall-block.png",
+        "sha256": "b810bed85e2f84e962744e76ecefd7cdde9a6d711ad0ac06c1ad337c8aef9e75"
+      },
+      {
+        "decodedSha256": "a4176a8430f67de0a46a7d9db8af76a5303eed631212de3a41b576c5ca83622a",
+        "dimensions": [
+          256,
+          171
+        ],
+        "name": "city-hall-city.png",
+        "path": "city-hall/city-hall-city.png",
+        "sha256": "2e2dbae2d7896b717512f4d3903430993775e8b09e59f0fb2fd824ee4781dc01"
+      },
+      {
+        "decodedSha256": "63c74e058b25b360c648e032f8c4056f9abe7247f0d23728a12e1e28ad0cf81a",
+        "dimensions": [
+          512,
+          342
+        ],
+        "name": "city-hall-neighborhood.png",
+        "path": "city-hall/city-hall-neighborhood.png",
+        "sha256": "5a4e66777e19c6d7e77b2c9fca9ea372d97466ea43e0509f236192bc23bc5579"
+      },
+      {
+        "decodedSha256": "952a975ef0dadb745f6d0db86df569910b4db5a8cc5ce9c5a4fdbc5c33a03dab",
+        "dimensions": [
+          1024,
+          683
+        ],
+        "name": "fire-station-block.png",
+        "path": "fire-station/fire-station-block.png",
+        "sha256": "5c3d93237be1e6b72c9471fade60e9e8d0a44c683208ea2a81ea541be6b5f99f"
+      },
+      {
+        "decodedSha256": "683a66c614aa49bb30711af8c3d57204b2be8d3033dd34e10c0d25d99a909b31",
+        "dimensions": [
+          256,
+          171
+        ],
+        "name": "fire-station-city.png",
+        "path": "fire-station/fire-station-city.png",
+        "sha256": "3f0ec6c26438b63100fb758b8bacaf789514527fe135da887826e1428499e882"
+      },
+      {
+        "decodedSha256": "0915d24357d0cf51defd042e05fc8ca4724afe6cf15dc6e53e5f4d8c7d824cf5",
+        "dimensions": [
+          512,
+          342
+        ],
+        "name": "fire-station-neighborhood.png",
+        "path": "fire-station/fire-station-neighborhood.png",
+        "sha256": "841b0337bac72eeb4797134eeb651622f3c4f549403a13b4bb378bddfeedb883"
+      },
+      {
+        "decodedSha256": "741c1cbf9a964634940a1390e21d1f87a011d8d40dc1d396036aa6615316e664",
+        "dimensions": [
+          1024,
+          683
+        ],
+        "name": "park-block.png",
+        "path": "park/park-block.png",
+        "sha256": "bb50ae1272fb459a5610d8a2c1cbfb29bee7224cdcd132d7e10efacd3f3cc8c4"
+      },
+      {
+        "decodedSha256": "6c0c04cbcaedf566f7351dfc1410b3f11f81ea647f63270bbdf2aa3173ec6e59",
+        "dimensions": [
+          256,
+          171
+        ],
+        "name": "park-city.png",
+        "path": "park/park-city.png",
+        "sha256": "f22256f3a7f86821f6640c773f8af44e617ee5ceaf17c7cf2c7eea29280972dc"
+      },
+      {
+        "decodedSha256": "ca76669bc67894c6a12b400f1285e5e302470a4b5030db88caa6c90b2d131834",
+        "dimensions": [
+          512,
+          342
+        ],
+        "name": "park-neighborhood.png",
+        "path": "park/park-neighborhood.png",
+        "sha256": "262d7f09328410762765ce7738346c2ebd876384b31f2ee9a67d40a506ae8c2b"
+      },
+      {
+        "decodedSha256": "6cd3dedb50a9965506d460491cfd94abd435d59a47cd6ce50707be57bc063701",
+        "dimensions": [
+          1024,
+          683
+        ],
+        "name": "police-station-block.png",
+        "path": "police-station/police-station-block.png",
+        "sha256": "c581a17d9d570565306acb8e520049308dd79c2998e92106df429c5c44108198"
+      },
+      {
+        "decodedSha256": "5248deebd095da4d45fad9e187635aa5754daaeaf53896b24c49ca23ff4b6a6d",
+        "dimensions": [
+          256,
+          171
+        ],
+        "name": "police-station-city.png",
+        "path": "police-station/police-station-city.png",
+        "sha256": "b322d1bcaee34771529710967c5c448221d2316366f5d0f543c041faf839fd12"
+      },
+      {
+        "decodedSha256": "ca9cf28653d311aef1ce1f6b854b0944123e5fec53d29b5b9cbcc0b5dea4d12f",
+        "dimensions": [
+          512,
+          342
+        ],
+        "name": "police-station-neighborhood.png",
+        "path": "police-station/police-station-neighborhood.png",
+        "sha256": "80dd1028fa7b442bc64882980a8f6f3d039c782ef3f6f3d0e373ed4fadaf7fc5"
+      },
+      {
+        "decodedSha256": "7abf818e6318752524628e71cfc50e676ebfffb4f2f0aeedbbb8d34a4b636fa4",
+        "dimensions": [
+          1024,
+          683
+        ],
+        "name": "power-plant-block.png",
+        "path": "power-plant/power-plant-block.png",
+        "sha256": "e3507c2b9afbd0861e8cf3e85cc234b3aaf7b804053b88dbd1d8878571b176d8"
+      },
+      {
+        "decodedSha256": "b472322a13f337bd137acf0df3fbb128949215e3b309f3ec9c6d86668fb91eec",
+        "dimensions": [
+          256,
+          171
+        ],
+        "name": "power-plant-city.png",
+        "path": "power-plant/power-plant-city.png",
+        "sha256": "d49d9453b6496639077ef870ae3541f2af8c7691050c94d19e2ed0f825d6fe39"
+      },
+      {
+        "decodedSha256": "42c805403832fad7dc7b64096bb5596d09d1eedfeb96408484c5f2e009b53a41",
+        "dimensions": [
+          512,
+          342
+        ],
+        "name": "power-plant-neighborhood.png",
+        "path": "power-plant/power-plant-neighborhood.png",
+        "sha256": "105beaa08fe6f682492435cf2bfae64def530c0fb8ee321bb7603e3117dbd6f4"
+      },
+      {
+        "decodedSha256": "343168794097e9be1123a8ed088b0859c01fcb3326cbe1e43cecd18c27cd40a0",
+        "dimensions": [
+          1024,
+          683
+        ],
+        "name": "school-block.png",
+        "path": "school/school-block.png",
+        "sha256": "d08e5a88a15a745d111dd8d31ba09e32e1bba308dce010a215f04f76a0333235"
+      },
+      {
+        "decodedSha256": "034c8ac1a5cb08bfe99e8a66831f9bb5ac3231792b8a4c2210c45fc097487470",
+        "dimensions": [
+          256,
+          171
+        ],
+        "name": "school-city.png",
+        "path": "school/school-city.png",
+        "sha256": "9de9f8ebb466f45e75193bb4c1711a3e372ba3f3d9cb885d00191ff4e92d7b11"
+      },
+      {
+        "decodedSha256": "eae9edbd66204a6e56a08dc770e3f15be6cfdfdfebd7f23c1326fd69a9ffd37f",
+        "dimensions": [
+          512,
+          342
+        ],
+        "name": "school-neighborhood.png",
+        "path": "school/school-neighborhood.png",
+        "sha256": "ea176dcb38c4800cc533fada591b6a39c609f2db8cf1a8be84eb0d3942f81e3a"
+      },
+      {
+        "decodedSha256": "1ecb4a9fef204f74a278ea16a52bd2c38902b893f268631941f1c45b99d813a5",
+        "dimensions": [
+          1024,
+          683
+        ],
+        "name": "water-tower-block.png",
+        "path": "water-tower/water-tower-block.png",
+        "sha256": "0cad13effc20b6c6194c818f824979759973b45cef2c76f86ecdf38ff781cde4"
+      },
+      {
+        "decodedSha256": "3efe5ac550e81f407e9c8a29bd70442a3a9def914cc8de9dbd1504624e8e7f09",
+        "dimensions": [
+          256,
+          171
+        ],
+        "name": "water-tower-city.png",
+        "path": "water-tower/water-tower-city.png",
+        "sha256": "9c228f8ebde879ed48f89918fff278389252338c234c4b34c4088cab4f68c3f9"
+      },
+      {
+        "decodedSha256": "b69ce15e0910f78d5d1981d45f8460763dda9b82333df119424aebf4c40d6b7b",
+        "dimensions": [
+          512,
+          342
+        ],
+        "name": "water-tower-neighborhood.png",
+        "path": "water-tower/water-tower-neighborhood.png",
+        "sha256": "dce606d63f7f63c34438814705f9a3336231b739a4c3b2baea68af93d6901fb9"
+      }
+    ]
+  },
+  "replayB": {
+    "count": 21,
+    "root": "normalized",
+    "rows": [
+      {
+        "decodedSha256": "3ce5e41438862b1d0298731c7d9e9861ced9f60cb66f7179dad7d52c0677a7cc",
+        "dimensions": [
+          1024,
+          683
+        ],
+        "name": "city-hall-block.png",
+        "sha256": "b810bed85e2f84e962744e76ecefd7cdde9a6d711ad0ac06c1ad337c8aef9e75"
+      },
+      {
+        "decodedSha256": "a4176a8430f67de0a46a7d9db8af76a5303eed631212de3a41b576c5ca83622a",
+        "dimensions": [
+          256,
+          171
+        ],
+        "name": "city-hall-city.png",
+        "sha256": "2e2dbae2d7896b717512f4d3903430993775e8b09e59f0fb2fd824ee4781dc01"
+      },
+      {
+        "decodedSha256": "63c74e058b25b360c648e032f8c4056f9abe7247f0d23728a12e1e28ad0cf81a",
+        "dimensions": [
+          512,
+          342
+        ],
+        "name": "city-hall-neighborhood.png",
+        "sha256": "5a4e66777e19c6d7e77b2c9fca9ea372d97466ea43e0509f236192bc23bc5579"
+      },
+      {
+        "decodedSha256": "952a975ef0dadb745f6d0db86df569910b4db5a8cc5ce9c5a4fdbc5c33a03dab",
+        "dimensions": [
+          1024,
+          683
+        ],
+        "name": "fire-station-block.png",
+        "sha256": "5c3d93237be1e6b72c9471fade60e9e8d0a44c683208ea2a81ea541be6b5f99f"
+      },
+      {
+        "decodedSha256": "683a66c614aa49bb30711af8c3d57204b2be8d3033dd34e10c0d25d99a909b31",
+        "dimensions": [
+          256,
+          171
+        ],
+        "name": "fire-station-city.png",
+        "sha256": "3f0ec6c26438b63100fb758b8bacaf789514527fe135da887826e1428499e882"
+      },
+      {
+        "decodedSha256": "0915d24357d0cf51defd042e05fc8ca4724afe6cf15dc6e53e5f4d8c7d824cf5",
+        "dimensions": [
+          512,
+          342
+        ],
+        "name": "fire-station-neighborhood.png",
+        "sha256": "841b0337bac72eeb4797134eeb651622f3c4f549403a13b4bb378bddfeedb883"
+      },
+      {
+        "decodedSha256": "741c1cbf9a964634940a1390e21d1f87a011d8d40dc1d396036aa6615316e664",
+        "dimensions": [
+          1024,
+          683
+        ],
+        "name": "park-block.png",
+        "sha256": "bb50ae1272fb459a5610d8a2c1cbfb29bee7224cdcd132d7e10efacd3f3cc8c4"
+      },
+      {
+        "decodedSha256": "6c0c04cbcaedf566f7351dfc1410b3f11f81ea647f63270bbdf2aa3173ec6e59",
+        "dimensions": [
+          256,
+          171
+        ],
+        "name": "park-city.png",
+        "sha256": "f22256f3a7f86821f6640c773f8af44e617ee5ceaf17c7cf2c7eea29280972dc"
+      },
+      {
+        "decodedSha256": "ca76669bc67894c6a12b400f1285e5e302470a4b5030db88caa6c90b2d131834",
+        "dimensions": [
+          512,
+          342
+        ],
+        "name": "park-neighborhood.png",
+        "sha256": "262d7f09328410762765ce7738346c2ebd876384b31f2ee9a67d40a506ae8c2b"
+      },
+      {
+        "decodedSha256": "6cd3dedb50a9965506d460491cfd94abd435d59a47cd6ce50707be57bc063701",
+        "dimensions": [
+          1024,
+          683
+        ],
+        "name": "police-station-block.png",
+        "sha256": "c581a17d9d570565306acb8e520049308dd79c2998e92106df429c5c44108198"
+      },
+      {
+        "decodedSha256": "5248deebd095da4d45fad9e187635aa5754daaeaf53896b24c49ca23ff4b6a6d",
+        "dimensions": [
+          256,
+          171
+        ],
+        "name": "police-station-city.png",
+        "sha256": "b322d1bcaee34771529710967c5c448221d2316366f5d0f543c041faf839fd12"
+      },
+      {
+        "decodedSha256": "ca9cf28653d311aef1ce1f6b854b0944123e5fec53d29b5b9cbcc0b5dea4d12f",
+        "dimensions": [
+          512,
+          342
+        ],
+        "name": "police-station-neighborhood.png",
+        "sha256": "80dd1028fa7b442bc64882980a8f6f3d039c782ef3f6f3d0e373ed4fadaf7fc5"
+      },
+      {
+        "decodedSha256": "7abf818e6318752524628e71cfc50e676ebfffb4f2f0aeedbbb8d34a4b636fa4",
+        "dimensions": [
+          1024,
+          683
+        ],
+        "name": "power-plant-block.png",
+        "sha256": "e3507c2b9afbd0861e8cf3e85cc234b3aaf7b804053b88dbd1d8878571b176d8"
+      },
+      {
+        "decodedSha256": "b472322a13f337bd137acf0df3fbb128949215e3b309f3ec9c6d86668fb91eec",
+        "dimensions": [
+          256,
+          171
+        ],
+        "name": "power-plant-city.png",
+        "sha256": "d49d9453b6496639077ef870ae3541f2af8c7691050c94d19e2ed0f825d6fe39"
+      },
+      {
+        "decodedSha256": "42c805403832fad7dc7b64096bb5596d09d1eedfeb96408484c5f2e009b53a41",
+        "dimensions": [
+          512,
+          342
+        ],
+        "name": "power-plant-neighborhood.png",
+        "sha256": "105beaa08fe6f682492435cf2bfae64def530c0fb8ee321bb7603e3117dbd6f4"
+      },
+      {
+        "decodedSha256": "343168794097e9be1123a8ed088b0859c01fcb3326cbe1e43cecd18c27cd40a0",
+        "dimensions": [
+          1024,
+          683
+        ],
+        "name": "school-block.png",
+        "sha256": "d08e5a88a15a745d111dd8d31ba09e32e1bba308dce010a215f04f76a0333235"
+      },
+      {
+        "decodedSha256": "034c8ac1a5cb08bfe99e8a66831f9bb5ac3231792b8a4c2210c45fc097487470",
+        "dimensions": [
+          256,
+          171
+        ],
+        "name": "school-city.png",
+        "sha256": "9de9f8ebb466f45e75193bb4c1711a3e372ba3f3d9cb885d00191ff4e92d7b11"
+      },
+      {
+        "decodedSha256": "eae9edbd66204a6e56a08dc770e3f15be6cfdfdfebd7f23c1326fd69a9ffd37f",
+        "dimensions": [
+          512,
+          342
+        ],
+        "name": "school-neighborhood.png",
+        "sha256": "ea176dcb38c4800cc533fada591b6a39c609f2db8cf1a8be84eb0d3942f81e3a"
+      },
+      {
+        "decodedSha256": "1ecb4a9fef204f74a278ea16a52bd2c38902b893f268631941f1c45b99d813a5",
+        "dimensions": [
+          1024,
+          683
+        ],
+        "name": "water-tower-block.png",
+        "sha256": "0cad13effc20b6c6194c818f824979759973b45cef2c76f86ecdf38ff781cde4"
+      },
+      {
+        "decodedSha256": "3efe5ac550e81f407e9c8a29bd70442a3a9def914cc8de9dbd1504624e8e7f09",
+        "dimensions": [
+          256,
+          171
+        ],
+        "name": "water-tower-city.png",
+        "sha256": "9c228f8ebde879ed48f89918fff278389252338c234c4b34c4088cab4f68c3f9"
+      },
+      {
+        "decodedSha256": "b69ce15e0910f78d5d1981d45f8460763dda9b82333df119424aebf4c40d6b7b",
+        "dimensions": [
+          512,
+          342
+        ],
+        "name": "water-tower-neighborhood.png",
+        "sha256": "dce606d63f7f63c34438814705f9a3336231b739a4c3b2baea68af93d6901fb9"
+      }
+    ]
+  },
+  "routeId": "four-view-v25:play-100-civic-frontier-rebind-v1",
+  "routeSha256": "4acda4456363c696e018d35995e2f0b58bab536f9a4c4c160e7b678ab8e816ad",
+  "schema": "citysim.play-100.civic-deterministic-replay.v1",
+  "task": "PLAY-100"
+}

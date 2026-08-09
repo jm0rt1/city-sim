@@ -1,0 +1,71 @@
+{
+  "authorityCommit": "65825389d586a128ddf6feb5356c33661ba9a8e8",
+  "candidateHead": "0a7c4e1f8b661588c5325f1b1895cb5b41e279ae",
+  "candidateReadyForIndependentReview": true,
+  "claim": {
+    "path": "docs/production/claims/PLAY-100.world-art-civic.md",
+    "sha256": "0c4bce350a2538a768e5e3b51baa76c3e6b0a81a27f31ca4d640e8e844d05a2d"
+  },
+  "color": {
+    "dimensions": [
+      1024,
+      398
+    ],
+    "grayscale": false,
+    "mode": "RGBA",
+    "path": "docs/production/evidence/PLAY-100/visual-proof/civic-city-color-contact.png",
+    "sha256": "85f25e552a5c0ba3965e16f1bcc120cb013a922cc3895a070a74728eb5a05c3a"
+  },
+  "contact": {
+    "colorPath": "docs/production/evidence/PLAY-100/visual-proof/civic-city-color-contact.png",
+    "grayscalePath": "docs/production/evidence/PLAY-100/visual-proof/civic-city-grayscale-contact.png",
+    "identities": [
+      "park",
+      "power-plant",
+      "water-tower",
+      "fire-station",
+      "police-station",
+      "school",
+      "city-hall"
+    ],
+    "unlabeledFamilyReview": "not_claimed"
+  },
+  "direction": "south",
+  "family": "civic/service",
+  "grayscale": {
+    "dimensions": [
+      1024,
+      398
+    ],
+    "grayscale": true,
+    "mode": "RGBA",
+    "path": "docs/production/evidence/PLAY-100/visual-proof/civic-city-grayscale-contact.png",
+    "sha256": "dc2ef07675494684d205e17b7d63a06a2295774da38ee3d8a9b5f9a3bcdc6324"
+  },
+  "integrationAdmitted": false,
+  "mechanicalChecks": {
+    "deterministicReplay": true,
+    "normalizedCount": 21,
+    "rawBytePreserved": true,
+    "uniqueNormalizedHashes": 21,
+    "visibleBoundarySpillPixels": 0,
+    "visibleMagentaPixels": 0
+  },
+  "productionSelected": false,
+  "rendererQuarantined": false,
+  "route": {
+    "id": "four-view-v25:play-100-civic-frontier-rebind-v1",
+    "sha256": "4acda4456363c696e018d35995e2f0b58bab536f9a4c4c160e7b678ab8e816ad"
+  },
+  "scale": {
+    "canvas": [
+      256,
+      171
+    ],
+    "name": "literal_game_scale_city_lod",
+    "source": "normalized city LOD payloads"
+  },
+  "schema": "citysim.play-100.civic-visual-proof.v1",
+  "sourceReady": false,
+  "task": "PLAY-100"
+}

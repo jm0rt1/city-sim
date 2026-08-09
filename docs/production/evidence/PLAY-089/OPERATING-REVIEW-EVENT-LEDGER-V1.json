@@ -146,14 +146,14 @@
       "receiptPath": "docs/production/evidence/PLAY-089/north-stage-b-predelegation-v2/02-delegation-ready.json",
       "receiptSha256": "6f5bff2dabbb65f127e0bb59909a236468c98500d523f946337bb522d260c699",
       "decision": "NO_CHANGE",
-      "disposition": {"status":"auto_closed","authorityCommit":"ff34902b83474715cafb23bcf1b8a2d9d40992ef","reason":"The exact North Stage-B delegation is clean, dormant, single-attempt, and independently reviewed against its published worker and carrier bindings."}
+      "disposition": {"status":"auto_closed","authorityCommit":"ff34902bfe356c02bbe13f720b8a208dab5beeba","reason":"The exact North Stage-B delegation is clean, dormant, single-attempt, and independently reviewed against its published worker and carrier bindings."}
     },
     {
       "eventKey": {"authorityCommit":"444599b39e8f707fc55e6cbaa85d965df4268e75","taskId":"PLAY-089","routeId":"quality-v2:play-089-north-stage-b-predelegation-v2","trigger":"frontier_route_assigned","candidateOrResultCommit":"f6c0d13b57c255fb8f546bb9f61722493f1f0fa0"},
       "receiptPath": "docs/production/evidence/PLAY-089/north-stage-b-predelegation-v2/03-frontier-route.json",
       "receiptSha256": "a3fbdf93a624e7b544938dfe9ab48425ba2f7ba25d97903cb61a34d1d77f8d51",
       "decision": "NO_CHANGE",
-      "disposition": {"status":"auto_closed","authorityCommit":"ff34902b83474715cafb23bcf1b8a2d9d40992ef","reason":"Frontier ownership remains mandatory for the one-shot DCC execution and visual disposition; no authority is delegated to the observer."}
+      "disposition": {"status":"auto_closed","authorityCommit":"ff34902bfe356c02bbe13f720b8a208dab5beeba","reason":"Frontier ownership remains mandatory for the one-shot DCC execution and visual disposition; no authority is delegated to the observer."}
     },
     {
       "eventKey": {"authorityCommit":"80ee8de7f94998ef7bc12a4536a1924e82de69c4","taskId":"PLAY-090","routeId":"quality-v2:play-090-residential-l01-variant1-north-prelock-design-v1","trigger":"delegation_ready_for_dispatch","candidateOrResultCommit":"2d1624af35aa268f4c5099b58a9bef2af53c8c83"},

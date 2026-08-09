@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 2,
+  "documentType": "CITYSIM_SOURCE_ADMISSION_DISPOSITION",
+  "authorityCommit": "4828f2208bbc491fa0f24a9f31f0859c835a5a0",
+  "objective": "CONTRACT-025 four-view source admission remains atomic and candidate-only until every family passes Contract-028 LOD chroma and independent visual review.",
+  "readinessPolicy": {
+    "candidateReadyForIndependentReview": true,
+    "sourceReady": false,
+    "integrationAdmitted": false,
+    "rendererQuarantined": false,
+    "productionSelected": false
+  },
+  "candidates": [
+    {
+      "taskId": "PLAY-103",
+      "family": "North",
+      "head": "12c081381c97a41a05c87c926de0ef7becf5db12",
+      "rawSources": 43,
+      "normalizedLODs": 129,
+      "strictKeyedPixels": 0,
+      "boundaryResidualPixels": 56835,
+      "maxBoundaryResidualPerLOD": 3849,
+      "visualEvidence": "missing_literal_scale_color_grayscale_contact_review",
+      "disposition": "RETURN"
+    },
+    {
+      "taskId": "PLAY-098",
+      "family": "Commercial",
+      "head": "dc73ea7075e6cd441d062ef7f99f594a57fbd088",
+      "rawSources": 12,
+      "normalizedPayloads": 48,
+      "lodPayloads": 36,
+      "strictKeyedPixels": "not_bound_to_current_route_packet",
+      "boundaryResidualPixels": 12143,
+      "maxBoundaryResidualPerLOD": 1002,
+      "routeDisposition": "rebind_required",
+      "disposition": "RETURN"
+    },
+    {
+      "taskId": "PLAY-100",
+      "family": "Civic",
+      "head": "da68895b967ab21d26317134cd26e03043ee8b38",
+      "rawSources": 7,
+      "lodPayloads": 21,
+      "strictKeyedPixels": 1244,
+      "boundaryResidualPixels": 39479,
+      "maxBoundaryResidualPerLOD": 8219,
+      "routeDisposition": "rebind_required",
+      "disposition": "RETURN"
+    },
+    {
+      "taskId": "PLAY-105",
+      "family": "West",
+      "head": "beb293bb20bba1c002f5874fa355c702f6d3fe65",
+      "rawSources": 43,
+      "normalizedLODs": 129,
+      "technicalDisposition": "APPROVE",
+      "visualEvidence": "not_performed",
+      "disposition": "PENDING_FRONTIER_VISUAL"
+    }
+  ],
+  "aggregateDisposition": "RETURN",
+  "admissionDecision": "Do not set sourceReady, integrationAdmitted, rendererQuarantined, or productionSelected for any family.",
+  "nextActions": [
+    "Run deterministic Contract-028 post-resize cleanup for North, Commercial, and Civic from immutable raw sources.",
+    "Rebind Commercial and Civic evidence to their current canonical route identities before independent review.",
+    "Perform literal-scale color/grayscale visual review for every repaired family and West before aggregate admission.",
+    "Keep renderer activation and the full Swift/staged-app gate behind the exact 43x4x3 admitted aggregate."
+  ],
+  "reviewBoundary": "Integration evidence only; no pixel regeneration, renderer activation, production selection, full suite, staged app, or final QA was performed."
+}

@@ -114,11 +114,11 @@
       "lane": "renderer-intake",
       "branch": "codex/citysim-world-rendering-single-angle",
       "worktree": "/Users/James/.codex/worktrees/ccf8/city-sim",
-      "head": "2c6909bc384ab48c6a0d9b0055b1aed203450d86",
+      "head": "f581e7a56ce1f5a091868e1cd0322b102274cf4f",
       "clean": true,
-      "state": "nonshipping_fixture_complete",
+      "state": "intake_sync_complete_route_pending",
       "modelTier": "LUNA_IMPLEMENTATION",
-      "nextSafeAction": "Keep intake/quarantine harness warm; wait for exact 43×4 source admission."
+      "nextSafeAction": "Publish a fresh route bound to f581e7a5, then dispatch the non-shipping executable intake-plan packet; keep source admissions, runtime selector, and shipping resources locked."
     },
     {
       "id": "PLAY-102-QA",

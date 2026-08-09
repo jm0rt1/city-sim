@@ -3,9 +3,9 @@
   "documentType": "CITYSIM_CURRENT_PARALLEL_WORK_PROJECTION",
   "supersedes": "FOUR-VIEW-PARALLEL-WAVE-CURRENT-V1.json",
   "authority": {
-    "capturedAtIntegrationHead": "939c88c4afdd89ce15e8ff0bcc38d9ccff4bd1c1",
-    "publishedBaseline": "939c88c4afdd89ce15e8ff0bcc38d9ccff4bd1c1",
-    "publicationStatusAtCapture": "published_origin_parity_candidate_review_queue",
+    "capturedAtIntegrationHead": "e5963d488c6fc9dff3f5acf4a2a69571d2d6367f",
+    "publishedBaseline": "e5963d488c6fc9dff3f5acf4a2a69571d2d6367f",
+    "publicationStatusAtCapture": "published_origin_parity_candidate_review_with_clean_syncs",
     "protectedDirt": [
       ".vscode/launch.json",
       "docs/production/evidence/INTEGRATION/industrial-l04-prelock-north-a-schedule-v1.json"
@@ -24,10 +24,10 @@
   },
   "cadence": {
     "waveId": "FOUR-VIEW-PLAY-098-103-CANDIDATE-REVIEW-V1",
-    "snapshotReceipt": "candidate-handoff-envelope-ae773e1e9d5869ae095361b29483aea8fde5d812f5857a44f693cbb72bfd7ef9",
+    "snapshotReceipt": "candidate-handoff-review-plus-clean-sync-e5963d48",
     "cellCaptain": "world-art-direction-captain",
     "acknowledgementSLA": "one coordination round",
-    "nextJoin": "Independent frontier candidate review for five returned packets; then Contract-028 cleanup/sync for Commercial and Civic, renderer/QA prep remains non-shipping; East owner checkpoint and West exact-head review route remain separate.",
+    "nextJoin": "Independent candidate dispositions; rebind routes to synchronized renderer/QA/North heads d1e45023/17e9987d/ec79f84b; Commercial/Civic remain at clean candidate heads because master sync conflicts their owned evidence; East dirty; West review route pending.",
     "changedRows": [
       "PLAY-098-COMMERCIAL",
       "PLAY-100-CIVIC",
@@ -53,12 +53,12 @@
       "lane": "world-art-north",
       "branch": "codex/citysim-world-art-north-imagegen",
       "worktree": "/Users/James/.codex/worktrees/f55b/city-sim",
-      "head": "85fb902647c77dd6232c3b352e3d1729ef615970",
+      "head": "ec79f84bf6a1252e40716059d92be5c5e00d0e4d",
       "clean": true,
-      "state": "candidate_handoff_review_pending",
+      "state": "candidate_handoff_review_pending_clean_sync_route_rebind",
       "routeId": "four-view-v13:play-103-north-alpha-aware-lod-chroma-v1",
       "modelTier": "LUNA_IMPLEMENTATION",
-      "nextSafeAction": "Independent candidate review of Contract-028 result; keep candidate-only readiness and raw bytes unchanged."
+      "nextSafeAction": "After independent review, publish a new route bound to synchronized HEAD ec79f84; preserve raw bytes and candidate-only readiness."
     },
     {
       "id": "PLAY-105-WEST",
@@ -117,11 +117,11 @@
       "lane": "renderer-intake",
       "branch": "codex/citysim-world-rendering-single-angle",
       "worktree": "/Users/James/.codex/worktrees/ccf8/city-sim",
-      "head": "60318531381263defd3915bbe4274a5bbed6c301",
+      "head": "d1e45023d2c4b2dfef87e5478318357f5c4f49d7",
       "clean": true,
-      "state": "candidate_handoff_review_pending",
+      "state": "candidate_handoff_review_pending_clean_sync_route_rebind",
       "modelTier": "LUNA_IMPLEMENTATION",
-      "nextSafeAction": "Independent packet review; keep synthetic intake/quarantine only and activation locked until 4/4 source admission.",
+      "nextSafeAction": "After independent review, publish a new route bound to synchronized HEAD d1e45023; keep synthetic intake only.",
       "routeId": "four-view-v14:play-101-intake-prep-v8"
     },
     {
@@ -129,11 +129,11 @@
       "lane": "playtest-preregistration",
       "branch": "codex/citysim-playtest-single-angle",
       "worktree": "/Users/James/.codex/worktrees/fee0/city-sim",
-      "head": "80c209ac84140f01804d70ee49c80e17c29c14a8",
+      "head": "17e9987d2fdf200768215d0a86978703b010230c",
       "clean": true,
-      "state": "candidate_handoff_review_pending",
+      "state": "candidate_handoff_review_pending_clean_sync_route_rebind",
       "modelTier": "LUNA_MECHANICAL",
-      "nextSafeAction": "Independent packet review; keep candidate/resource fields null and run no app until exact renderer aggregate.",
+      "nextSafeAction": "After independent review, publish a new route bound to synchronized HEAD 17e9987d; keep null/UNMEASURED candidate state.",
       "routeId": "four-view-v14:play-102-fixture-source-preflight-v2"
     },
     {
@@ -165,6 +165,6 @@
     "fullSuite": "not_run",
     "stagedApp": "not_run",
     "independentRealAppQA": "not_run",
-    "push": "origin_parity_at_939c88c4_candidate_review_snapshot"
+    "push": "origin_parity_at_e5963d48_sync_snapshot"
   }
 }

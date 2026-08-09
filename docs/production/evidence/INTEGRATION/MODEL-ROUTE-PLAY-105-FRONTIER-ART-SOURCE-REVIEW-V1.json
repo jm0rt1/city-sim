@@ -1,0 +1,163 @@
+{
+  "schema": 2,
+  "routeId": "four-view-v19:play-105-frontier-art-source-review",
+  "taskId": "PLAY-105",
+  "packetKind": "authority",
+  "classification": "FRONTIER_AUTHORITY",
+  "model": "gpt-5.6-sol",
+  "effort": "high",
+  "rationale": "Read-only independent frontier visual/source disposition for immutable PLAY-105 candidate beb293bb20bba1c002f5874fa355c702f6d3fe65. Separate technical handoff from literal-scale 2.5D visual acceptance; do not change readiness or activate shipping.",
+  "authority": {
+    "authorityCommit": "65825389d586a128ddf6feb5356c33661ba9a8e8",
+    "baseCommit": "65825389d586a128ddf6feb5356c33661ba9a8e8",
+    "claim": {
+      "path": "docs/production/claims/PLAY-105.world-art-west-imagegen.md",
+      "sha256": "1dd5c0ef337ba7736e2e0c4abb520ed7d73630f3bff5e0d8bd53d44399388137"
+    },
+    "immutableInputs": [
+      {
+        "path": "docs/production/decisions/CONTRACT-025-authored-four-view-2-5d-building-art.md",
+        "sha256": "4e8ab63173d67581332e7d27730b97315906fda4e29b999969456441809479ed"
+      },
+      {
+        "path": "docs/production/decisions/CONTRACT-026-authored-four-view-registration.md",
+        "sha256": "4781de72429a1f691b9226f7f7668b170b278a4ccd171ac4ea02f5e1df9176eb"
+      },
+      {
+        "path": "docs/production/decisions/CONTRACT-026-registration-profiles-v1.json",
+        "sha256": "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8"
+      },
+      {
+        "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+        "sha256": "1eb7170b81e11753e7c9173298c6d45c02d5a2ade6df0ef8b73bdcaf690a2acd"
+      },
+      {
+        "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+        "sha256": "9c62d401d8812d5345b6bd25d864a07010348883ca4941f4429854ebe4abc511"
+      }
+    ]
+  },
+  "assignment": {
+    "threadId": "019fe44b-8c05-72d1-b1a6-a80e4a483bbb",
+    "branch": "codex/citysim-world-art-west-imagegen",
+    "worktree": "/Users/James/.codex/worktrees/e6f2/city-sim",
+    "expectedHead": "beb293bb20bba1c002f5874fa355c702f6d3fe65",
+    "featureAuthorThreadId": "019fe1e1-3b56-72d2-8cbe-308004fe4772",
+    "sharedAuthorityOwnership": false,
+    "finalQAOwnership": false,
+    "subjectiveJudgmentRequired": true
+  },
+  "pathPolicy": {
+    "claimOwnedRoots": [
+      "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105/west",
+      "docs/production/evidence/PLAY-105"
+    ],
+    "allowed": [
+      "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105/west",
+      "docs/production/evidence/PLAY-105"
+    ],
+    "forbidden": [
+      ".agents/skills",
+      "docs/production/evidence/INTEGRATION",
+      "docs/production/claims",
+      "docs/production/decisions",
+      "Native/CitySimNative/Sources",
+      "Native/CitySimNative/Resources",
+      "Native/CitySimNative/Tests",
+      "Native/CitySimNative/Package.swift",
+      "script/build_and_run.sh"
+    ]
+  },
+  "boundedDeliverable": "Review immutable candidate beb293bb20bba1c002f5874fa355c702f6d3fe65 at literal game scale from retained source, normalized, grayscale, footprint, zoom, and contact evidence where present. Return APPROVE or RETURN with exact visual/source defects and keep candidate-only readiness. No edits or evidence writes.",
+  "proofPolicy": {
+    "architectureState": "frozen_reference",
+    "referenceImplementation": {
+      "path": "docs/production/decisions/CONTRACT-025-authored-four-view-2-5d-building-art.md",
+      "sha256": "4e8ab63173d67581332e7d27730b97315906fda4e29b999969456441809479ed"
+    },
+    "deliverableClaims": [
+      "static_structure"
+    ],
+    "focusedProofLevel": "static_only",
+    "fullProofLevel": "static_only",
+    "behavioralCommands": [],
+    "prohibitedSubstitutions": [
+      "source_token_presence_for_execution",
+      "ast_shape_for_runtime_success",
+      "manifest_or_prose_for_rendered_pixels",
+      "unit_tests_for_visual_acceptance",
+      "worker_self_report_for_independent_acceptance"
+    ]
+  },
+  "validation": {
+    "focusedGateOwner": {
+      "threadId": "019fe44b-8c05-72d1-b1a6-a80e4a483bbb",
+      "role": "independent-frontier-art-source-review"
+    },
+    "focusedCommands": [
+      "git cat-file -e beb293bb20bba1c002f5874fa355c702f6d3fe65^{commit}",
+      "git status --short --branch -- Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105/west docs/production/evidence/PLAY-105",
+      "git show --format=fuller --no-ext-diff --summary beb293bb20bba1c002f5874fa355c702f6d3fe65"
+    ],
+    "fullGateOwner": {
+      "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+      "role": "integration-candidate-join",
+      "model": "gpt-5.6-sol",
+      "effort": "high"
+    },
+    "fullCommands": [
+      "Integration source-admission disposition only; no product/full-suite/app gate in this packet"
+    ]
+  },
+  "expectedResult": {
+    "evidencePaths": [
+      "docs/production/evidence/PLAY-105"
+    ],
+    "commitRequired": false,
+    "commitMessagePattern": "review-only"
+  },
+  "escalationTriggers": [
+    "shared_contract_or_schema_decision",
+    "unresolved_product_visual_or_interaction_judgment",
+    "path_outside_claim",
+    "baseline_or_candidate_identity_mismatch",
+    "failure_outside_focused_scope",
+    "save_or_migration_uncertainty",
+    "cross_lane_semantic_conflict",
+    "two_unsuccessful_repair_attempts",
+    "subjective_acceptance_required"
+  ],
+  "stopCondition": "Stop after one independent read-only disposition or immediately on identity, route, path, readiness, visual, or shared-authority ambiguity. Do not edit, stage, commit, launch, integrate, push, or pin.",
+  "independentReviewer": {
+    "required": true,
+    "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+    "model": "gpt-5.6-sol",
+    "effort": "high"
+  },
+  "context": {
+    "mode": "full_authority_read",
+    "packet": null,
+    "verifiedHashes": [
+      {
+        "path": "docs/production/decisions/CONTRACT-025-authored-four-view-2-5d-building-art.md",
+        "sha256": "4e8ab63173d67581332e7d27730b97315906fda4e29b999969456441809479ed"
+      },
+      {
+        "path": "docs/production/decisions/CONTRACT-026-authored-four-view-registration.md",
+        "sha256": "4781de72429a1f691b9226f7f7668b170b278a4ccd171ac4ea02f5e1df9176eb"
+      },
+      {
+        "path": "docs/production/decisions/CONTRACT-026-registration-profiles-v1.json",
+        "sha256": "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8"
+      },
+      {
+        "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+        "sha256": "1eb7170b81e11753e7c9173298c6d45c02d5a2ade6df0ef8b73bdcaf690a2acd"
+      },
+      {
+        "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+        "sha256": "9c62d401d8812d5345b6bd25d864a07010348883ca4941f4429854ebe4abc511"
+      }
+    ]
+  }
+}

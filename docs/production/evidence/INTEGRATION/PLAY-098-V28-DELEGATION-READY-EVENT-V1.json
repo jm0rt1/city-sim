@@ -1,0 +1,12 @@
+{
+  "eventKeys": [
+    {
+      "authorityCommit": "65825389d586a128ddf6feb5356c33661ba9a8e8",
+      "candidateOrResultCommit": "49c9222bf4df2d2b084d4c05279a8df3173b089a",
+      "routeId": "four-view-v28:play-098-commercial-contract028-v26-replay-receipt-repair-v2",
+      "taskId": "PLAY-098",
+      "trigger": "delegation_ready_for_dispatch"
+    }
+  ],
+  "schema": 1
+}

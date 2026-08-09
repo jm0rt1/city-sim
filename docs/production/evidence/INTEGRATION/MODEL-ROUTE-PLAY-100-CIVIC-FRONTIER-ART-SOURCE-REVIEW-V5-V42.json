@@ -1,0 +1,367 @@
+{
+  "schema": 2,
+  "routeId": "four-view-v42:play-100-civic-frontier-art-source-review-v5",
+  "taskId": "PLAY-100",
+  "packetKind": "authority",
+  "classification": "FRONTIER_AUTHORITY",
+  "model": "gpt-5.6-sol",
+  "effort": "high",
+  "rationale": "Independent Frontier technical and literal-scale visual/material rebind review for the clean Civic V40 metadata-rebind checkpoint 75d202c4dbce1789f9c98891c66ed8f6e9180f4e on the exact codex/citysim-world-art-civic worker. Rebind all 50 immutable inputs to current Integration master c8e7d00ccffa0aa5f15a23c52680d347a90a63ae (25 bootstrap files, 14 metadata/proof/receipt JSONs, and preserved raw/LOD/contact/provenance bytes), preserving the V41 independent APPROVE evidence and candidate-only state. Verify the active V26 Frontier route four-view-v26:play-100-civic-frontier-art-source-review-v3 / canonical 04bf464b54956f3276a62ccf30c67adfdc73b8cd2d640cbd0e28071a6ef9d257. Review only; do not change readiness or activate shipping.",
+  "authority": {
+    "authorityCommit": "65825389d586a128ddf6feb5356c33661ba9a8e8",
+    "baseCommit": "65825389d586a128ddf6feb5356c33661ba9a8e8",
+    "claim": {
+      "path": "docs/production/claims/PLAY-100.world-art-civic.md",
+      "sha256": "0c4bce350a2538a768e5e3b51baa76c3e6b0a81a27f31ca4d640e8e844d05a2d"
+    },
+    "immutableInputs": [
+      {
+        "path": "docs/production/decisions/CONTRACT-025-authored-four-view-2-5d-building-art.md",
+        "sha256": "4e8ab63173d67581332e7d27730b97315906fda4e29b999969456441809479ed"
+      },
+      {
+        "path": "docs/production/decisions/CONTRACT-026-authored-four-view-registration.md",
+        "sha256": "4781de72429a1f691b9226f7f7668b170b278a4ccd171ac4ea02f5e1df9176eb"
+      },
+      {
+        "path": "docs/production/decisions/CONTRACT-026-registration-profiles-v1.json",
+        "sha256": "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8"
+      },
+      {
+        "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+        "sha256": "1eb7170b81e11753e7c9173298c6d45c02d5a2ade6df0ef8b73bdcaf690a2acd"
+      },
+      {
+        "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+        "sha256": "9c62d401d8812d5345b6bd25d864a07010348883ca4941f4429854ebe4abc511"
+      },
+      {
+        "path": ".agents/skills/produce-citysim-world-art/references/single-angle-imagegen-production.md",
+        "sha256": "f17d86e7cee5fb6e7344a1497e04c977376ec8ce52bf825c4e3b685ebd88306c"
+      },
+      {
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/provenance/RAW-PROVENANCE.json",
+        "sha256": "65f3a0696a1a0401b1356d0d3a0eacb6ed97d7daa01a8e4c38b85bd5d5583144"
+      },
+      {
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/city-hall/registration-receipt.json",
+        "sha256": "64c8f5c8dc46525994205d2bdc8d193a7025fd7587052d128892f24b0b0674b3"
+      },
+      {
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/fire-station/registration-receipt.json",
+        "sha256": "55bcd316b2f88798fa1776834b21b71e20d0de4606ba8c34a3b795ead5fb82e9"
+      },
+      {
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/park/registration-receipt.json",
+        "sha256": "b20ecb595eea26d04229df8fadfc137f1f9df4be2afa9d0872b6e7c4ddfde6fc"
+      },
+      {
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/police-station/registration-receipt.json",
+        "sha256": "64dc593bf902045b9724d8213fd3c8c16e06318a9069d680031dc609efaccc1a"
+      },
+      {
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/power-plant/registration-receipt.json",
+        "sha256": "5e502704c9c223853d6e108d8696bf490bdb38b4d6997f21044f392a248d05cc"
+      },
+      {
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/school/registration-receipt.json",
+        "sha256": "a488b10a2a9c96c9c5dc79f789226daaacdaf15bd42a328283b256421f07b75e"
+      },
+      {
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/water-tower/registration-receipt.json",
+        "sha256": "5897e72de081f3735c169018ff005f3d57d1cbacc1607147c4169e26921fc307"
+      },
+      {
+        "path": "docs/production/evidence/PLAY-100/RAW-INVENTORY.json",
+        "sha256": "08e8843f7c9689195ce9a8b9ba2b8a22fafef1a3d9f705486652e3ac8f153560"
+      },
+      {
+        "path": "docs/production/evidence/PLAY-100/south-admission-records.json",
+        "sha256": "757489d2b2796bf7d4f37b24ac8176ce5efaa96faf94ccc8588703c8c854a1c9"
+      },
+      {
+        "path": "docs/production/evidence/PLAY-100/south-admission.json",
+        "sha256": "84986f85b00b64ad6f41727a2815cb44bb9f274709172d3cb5364c31ec562edd"
+      },
+      {
+        "path": "docs/production/evidence/PLAY-100/south-handoff.json",
+        "sha256": "346e66634fa7c01562a5404dcb86107b45d7b0891e6e8f1fe8591566378bb1a9"
+      },
+      {
+        "path": "docs/production/evidence/PLAY-100/visual-proof/civic-city-scale-proof.json",
+        "sha256": "108865cbdf2d6c87e8187ec4f26f076a0205815d12428b98557a39bf30a4cf15"
+      },
+      {
+        "path": "docs/production/evidence/PLAY-100/visual-proof/civic-deterministic-replay.json",
+        "sha256": "29fee9027b26fdc0dcd1c5a90c47a79ebc30fe9b39795b8da2ad15b935b50d62"
+      },
+      {
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/raw/city-hall-v01.png",
+        "sha256": "89701d7c1e95644267bd72627fb1f97d21aea09ca930ad3b73ebb05ddaedb819"
+      },
+      {
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/raw/fire-station-v01.png",
+        "sha256": "33e2d69e44120f0ba6b81e54ccd22eeb3ef9021265b264831d4d2ccfc67403bf"
+      },
+      {
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/raw/park-v01.png",
+        "sha256": "e5797cf8900a6390965ae01bf57be172e2e98e26d17fefafc7b759f372d8caf7"
+      },
+      {
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/raw/police-station-v01.png",
+        "sha256": "af934e9cd1b3e5f76ece34f0ea1a5b51600e074db297e1039972be3586ed935d"
+      },
+      {
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/raw/power-plant-v01.png",
+        "sha256": "752c75b1fd0c2d5b869d371738df7f4abd6a3675ab420edb6c2f32e463a9bffb"
+      },
+      {
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/raw/school-v01.png",
+        "sha256": "62d7cd7fbbc16fd5fe770120476ae970a6ffec56972a2a1f332c6495cb3a46ed"
+      },
+      {
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/raw/water-tower-v01.png",
+        "sha256": "731a166771d75b97c32c3ebc9e0708fed175f349c20467a72645d45a30c55ff0"
+      },
+      {
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/city-hall/city-hall-block.png",
+        "sha256": "b810bed85e2f84e962744e76ecefd7cdde9a6d711ad0ac06c1ad337c8aef9e75"
+      },
+      {
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/city-hall/city-hall-city.png",
+        "sha256": "2e2dbae2d7896b717512f4d3903430993775e8b09e59f0fb2fd824ee4781dc01"
+      },
+      {
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/city-hall/city-hall-neighborhood.png",
+        "sha256": "5a4e66777e19c6d7e77b2c9fca9ea372d97466ea43e0509f236192bc23bc5579"
+      },
+      {
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/fire-station/fire-station-block.png",
+        "sha256": "5c3d93237be1e6b72c9471fade60e9e8d0a44c683208ea2a81ea541be6b5f99f"
+      },
+      {
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/fire-station/fire-station-city.png",
+        "sha256": "3f0ec6c26438b63100fb758b8bacaf789514527fe135da887826e1428499e882"
+      },
+      {
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/fire-station/fire-station-neighborhood.png",
+        "sha256": "841b0337bac72eeb4797134eeb651622f3c4f549403a13b4bb378bddfeedb883"
+      },
+      {
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/park/park-block.png",
+        "sha256": "bb50ae1272fb459a5610d8a2c1cbfb29bee7224cdcd132d7e10efacd3f3cc8c4"
+      },
+      {
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/park/park-city.png",
+        "sha256": "f22256f3a7f86821f6640c773f8af44e617ee5ceaf17c7cf2c7eea29280972dc"
+      },
+      {
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/park/park-neighborhood.png",
+        "sha256": "262d7f09328410762765ce7738346c2ebd876384b31f2ee9a67d40a506ae8c2b"
+      },
+      {
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/police-station/police-station-block.png",
+        "sha256": "c581a17d9d570565306acb8e520049308dd79c2998e92106df429c5c44108198"
+      },
+      {
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/police-station/police-station-city.png",
+        "sha256": "b322d1bcaee34771529710967c5c448221d2316366f5d0f543c041faf839fd12"
+      },
+      {
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/police-station/police-station-neighborhood.png",
+        "sha256": "80dd1028fa7b442bc64882980a8f6f3d039c782ef3f6f3d0e373ed4fadaf7fc5"
+      },
+      {
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/power-plant/power-plant-block.png",
+        "sha256": "e3507c2b9afbd0861e8cf3e85cc234b3aaf7b804053b88dbd1d8878571b176d8"
+      },
+      {
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/power-plant/power-plant-city.png",
+        "sha256": "d49d9453b6496639077ef870ae3541f2af8c7691050c94d19e2ed0f825d6fe39"
+      },
+      {
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/power-plant/power-plant-neighborhood.png",
+        "sha256": "105beaa08fe6f682492435cf2bfae64def530c0fb8ee321bb7603e3117dbd6f4"
+      },
+      {
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/school/school-block.png",
+        "sha256": "d08e5a88a15a745d111dd8d31ba09e32e1bba308dce010a215f04f76a0333235"
+      },
+      {
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/school/school-city.png",
+        "sha256": "9de9f8ebb466f45e75193bb4c1711a3e372ba3f3d9cb885d00191ff4e92d7b11"
+      },
+      {
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/school/school-neighborhood.png",
+        "sha256": "ea176dcb38c4800cc533fada591b6a39c609f2db8cf1a8be84eb0d3942f81e3a"
+      },
+      {
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/water-tower/water-tower-block.png",
+        "sha256": "0cad13effc20b6c6194c818f824979759973b45cef2c76f86ecdf38ff781cde4"
+      },
+      {
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/water-tower/water-tower-city.png",
+        "sha256": "9c228f8ebde879ed48f89918fff278389252338c234c4b34c4088cab4f68c3f9"
+      },
+      {
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic/normalized/water-tower/water-tower-neighborhood.png",
+        "sha256": "dce606d63f7f63c34438814705f9a3336231b739a4c3b2baea68af93d6901fb9"
+      },
+      {
+        "path": "docs/production/evidence/PLAY-100/visual-proof/civic-city-color-contact.png",
+        "sha256": "85f25e552a5c0ba3965e16f1bcc120cb013a922cc3895a070a74728eb5a05c3a"
+      },
+      {
+        "path": "docs/production/evidence/PLAY-100/visual-proof/civic-city-grayscale-contact.png",
+        "sha256": "dc2ef07675494684d205e17b7d63a06a2295774da38ee3d8a9b5f9a3bcdc6324"
+      }
+    ]
+  },
+  "assignment": {
+    "threadId": "019fe1b1-3bc4-7b40-a107-22d8d1d6eabb",
+    "branch": "codex/citysim-world-art-civic",
+    "worktree": "/Users/James/.codex/worktrees/c96d/city-sim",
+    "expectedHead": "75d202c4dbce1789f9c98891c66ed8f6e9180f4e",
+    "featureAuthorThreadId": "019fe1b1-3bc4-7b40-a107-22d8d1d6eabb",
+    "sharedAuthorityOwnership": false,
+    "finalQAOwnership": false,
+    "subjectiveJudgmentRequired": true
+  },
+  "pathPolicy": {
+    "claimOwnedRoots": [
+      "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic",
+      "docs/production/evidence/PLAY-100"
+    ],
+    "allowed": [
+      "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic",
+      "docs/production/evidence/PLAY-100"
+    ],
+    "forbidden": [
+      ".agents/skills",
+      "docs/production/evidence/INTEGRATION",
+      "docs/production/claims",
+      "docs/production/decisions",
+      "Native/CitySimNative/Sources",
+      "Native/CitySimNative/Resources",
+      "Native/CitySimNative/Tests",
+      "Native/CitySimNative/Package.swift",
+      "script/build_and_run.sh",
+      "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-103",
+      "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104",
+      "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105"
+    ]
+  },
+  "boundedDeliverable": "Review the exact Civic checkpoint 75d202c4dbce1789f9c98891c66ed8f6e9180f4e against current Integration master c8e7d00ccffa0aa5f15a23c52680d347a90a63ae and the exact worker at literal game scale using seven raw PNGs, 21 normalized LOD PNGs, two contact PNGs, 14 V26-bound metadata/proof/receipt JSONs, provenance, and deterministic replay evidence. Verify all 50 immutable-input hashes against current master and worker bytes, verify routeId/routeSha256/route.id/route.sha256 binding to active V26 canonical 04bf464b54956f3276a62ccf30c67adfdc73b8cd2d640cbd0e28071a6ef9d257, and preserve the prior V41 independent technical/literal-scale APPROVE evidence and candidate-only flags. Return one fresh independent APPROVE or RETURN with exact defects and candidate-only flags. Preserve candidateReadyForIndependentReview=true and sourceReady=false, integrationAdmitted=false, rendererQuarantined=false, productionSelected=false. Do not edit evidence, repair pixels, rebind metadata, change contracts, integrate, launch, run app/runtime, or self-accept.",
+  "proofPolicy": {
+    "architectureState": "frozen_reference",
+    "referenceImplementation": {
+      "path": "docs/production/decisions/CONTRACT-025-authored-four-view-2-5d-building-art.md",
+      "sha256": "4e8ab63173d67581332e7d27730b97315906fda4e29b999969456441809479ed"
+    },
+    "deliverableClaims": [
+      "static_structure"
+    ],
+    "focusedProofLevel": "static_only",
+    "fullProofLevel": "static_only",
+    "behavioralCommands": [],
+    "prohibitedSubstitutions": [
+      "source_token_presence_for_execution",
+      "ast_shape_for_runtime_success",
+      "manifest_or_prose_for_rendered_pixels",
+      "unit_tests_for_visual_acceptance",
+      "worker_self_report_for_independent_acceptance"
+    ]
+  },
+  "validation": {
+    "focusedGateOwner": {
+      "threadId": "019fe1b1-3bc4-7b40-a107-22d8d1d6eabb",
+      "role": "play-100-civic-metadata-rebind-focused"
+    },
+    "focusedCommands": [
+      "git cat-file -e 75d202c4dbce1789f9c98891c66ed8f6e9180f4e^{commit}",
+      "git status --short --branch -- Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-100/civic docs/production/evidence/PLAY-100",
+      "git show --format=fuller --no-ext-diff --summary 75d202c4dbce1789f9c98891c66ed8f6e9180f4e^{commit}",
+      "python3 -B -c \"assert current Integration master c8e7d00ccffa0aa5f15a23c52680d347a90a63ae and active V26 route canonical 04bf464b54956f3276a62ccf30c67adfdc73b8cd2d640cbd0e28071a6ef9d257; verify all 50 current master/worker immutable-input hashes, exact 14 metadata rebind fields, preserved raw/LOD/contact PNG bytes, prior V41 APPROVE evidence, and candidate-only flags\""
+    ],
+    "fullGateOwner": {
+      "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+      "role": "integration-aggregate-full-gate",
+      "model": "gpt-5.6-sol",
+      "effort": "high"
+    },
+    "fullCommands": [
+      "Integration source-admission/visual disposition only; no readiness, admission, renderer, production, product/full-suite/app/runtime gate in this packet"
+    ]
+  },
+  "expectedResult": {
+    "evidencePaths": [
+      "docs/production/evidence/PLAY-100"
+    ],
+    "commitRequired": false,
+    "commitMessagePattern": "review-only"
+  },
+  "escalationTriggers": [
+    "shared_contract_or_schema_decision",
+    "unresolved_product_visual_or_interaction_judgment",
+    "path_outside_claim",
+    "baseline_or_candidate_identity_mismatch",
+    "failure_outside_focused_scope",
+    "save_or_migration_uncertainty",
+    "cross_lane_semantic_conflict",
+    "two_unsuccessful_repair_attempts",
+    "subjective_acceptance_required"
+  ],
+  "stopCondition": "Stop after one independent read-only technical/literal-scale rebind disposition or immediately on identity, path, immutable-input, metadata, readiness, visual, or shared-authority ambiguity. Do not edit, stage, commit, launch, integrate, push, pin, change flags, or run runtime/app/full-suite gates.",
+  "independentReviewer": {
+    "required": true,
+    "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+    "model": "gpt-5.6-sol",
+    "effort": "high"
+  },
+  "context": {
+    "mode": "full_authority_read",
+    "packet": null,
+    "verifiedHashes": [
+      {
+        "path": "docs/production/claims/PLAY-100.world-art-civic.md",
+        "sha256": "0c4bce350a2538a768e5e3b51baa76c3e6b0a81a27f31ca4d640e8e844d05a2d"
+      },
+      {
+        "path": "docs/production/decisions/CONTRACT-025-authored-four-view-2-5d-building-art.md",
+        "sha256": "4e8ab63173d67581332e7d27730b97315906fda4e29b999969456441809479ed"
+      },
+      {
+        "path": "docs/production/decisions/CONTRACT-026-authored-four-view-registration.md",
+        "sha256": "4781de72429a1f691b9226f7f7668b170b278a4ccd171ac4ea02f5e1df9176eb"
+      },
+      {
+        "path": "docs/production/decisions/CONTRACT-026-registration-profiles-v1.json",
+        "sha256": "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8"
+      },
+      {
+        "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+        "sha256": "1eb7170b81e11753e7c9173298c6d45c02d5a2ade6df0ef8b73bdcaf690a2acd"
+      },
+      {
+        "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+        "sha256": "9c62d401d8812d5345b6bd25d864a07010348883ca4941f4429854ebe4abc511"
+      },
+      {
+        "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTE-PLAY-100-CIVIC-FRONTIER-ART-SOURCE-REVIEW-V3.json",
+        "sha256": "e99aa0cc3f076c6e3bd4791410596dea73801c74c69e07938c93a37f55571efd"
+      },
+      {
+        "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-100-CIVIC-FRONTIER-ART-SOURCE-REVIEW-V3.json",
+        "sha256": "9324095fc0125f60a6fbd9c0076c315c12f41b2c341ceb7024eda54b0cf9ab47"
+      },
+      {
+        "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTE-PLAY-100-CIVIC-FRONTIER-ART-SOURCE-REVIEW-V4.json",
+        "sha256": "0813707d5968d198e951a17c2e0f9ed881d495e1f7798fc6fb270f86a3f411bb"
+      },
+      {
+        "path": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-100-CIVIC-FRONTIER-ART-SOURCE-REVIEW-V4.json",
+        "sha256": "f2e0d1430d1b59e79a12c498b75513fbee6bea766a0f50165e789a198c95b838"
+      }
+    ]
+  }
+}

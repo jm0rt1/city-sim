@@ -7,18 +7,18 @@
   "preparationStatus": "ready_for_integration_rehearsal",
   "candidateNeutral": true,
   "route": {
-    "routeId": "four-view-v8:play-102-qa-prereg-validator-repair-v4",
-    "canonicalModelRouteSha256": "dbe62b380f82e69bbfe5a1470b47d289a6f9a74e3ea858ee322ca80149526bb9",
+    "routeId": "four-view-v16:play-102-current-master-metadata-rebind-v2",
+    "canonicalModelRouteSha256": "ad8396db363a778e098d8079b0634699a0c75e43f53bc8fb473c0a1d8ff70ec0",
     "classification": "LUNA_MECHANICAL",
     "model": "gpt-5.6-luna",
     "effort": "medium",
-    "dispatchPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-102-QA-PREREG-VALIDATOR-REPAIR-V4.json"
+    "dispatchPath": "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-101-102-CURRENT-MASTER-METADATA-REBIND-V2.json"
   },
   "authority": {
-    "carrier": "b36e69a0a15b34c9aea03588f97bbc8621bb7d47",
-    "authorityCommit": "b36e69a0a15b34c9aea03588f97bbc8621bb7d47",
-    "baseCommit": "b36e69a0a15b34c9aea03588f97bbc8621bb7d47",
-    "expectedWorkerHead": "d77f32739d6606b762e54766a310a60e8758681d",
+    "carrier": "5b4c040a182d0a07f4f0f0e32e598797d4314c0e",
+    "authorityCommit": "5b4c040a182d0a07f4f0f0e32e598797d4314c0e",
+    "baseCommit": "5b4c040a182d0a07f4f0f0e32e598797d4314c0e",
+    "expectedWorkerHead": "f2721cb59137cbd61ba55cc1427fa58ff7efaa98",
     "claimPath": "docs/production/claims/PLAY-102.playtest-single-angle.md",
     "claimSha256": "bab508b648ce1b585ad66ec10b2b54574fe0f0d1741b7b4b33fa12253f34e704"
   },
@@ -31,11 +31,15 @@
     "directions": ["north", "east", "south", "west"],
     "viewModel": "four independently authored views; no runtime rotation, mirror, skew, synthesis, or alias"
   },
+  "rotationContract": {
+    "path": "docs/production/decisions/CONTRACT-027-world-rotation-authored-view-mapping.md",
+    "sha256": "693831b3d8fac49330ac21adce626b632351c7eeba901ebff6719687e5f330e7"
+  },
   "fixture": {
     "id": "commercial-active-district-v3",
     "version": "v3",
     "definitionPath": "docs/production/evidence/PLAY-102/fixture-manifest.json",
-    "definitionSha256": "41cb77eaae1fbc54a6dfc2fc6ba65154cfdca3864cf578735db503474cdd0155",
+    "definitionSha256": "f353d8c8634032380bb969ada982e7e234090d469866c47a9c3f9ddcc75bb8a8",
     "sourcePath": "Native/CitySimNative/Tests/CitySimNativeTests/Fixtures/VisibleCityStates/visible-city-commercial-active-district-v3.json",
     "sourceSha256": "caa6e4deedca22c2c62f1d7664f862964258df7159f09a13d939688c5492a26b",
     "stateHash": "6126cf6e941eb6ed98ff308992447a01a5869dd87120ebe40b92153e68b2cb8d",
@@ -117,6 +121,17 @@
     "blocker": "This Luna route explicitly forbids app launch and the final real-app journey. Integration/frontier must exercise the frozen packet against the accepted baseline or exact admitted candidate.",
     "doesNotInvalidatePreparation": true,
     "doesNotAuthorizeCandidateAcceptance": true
+  },
+  "rehearsalPlan": {
+    "path": "docs/production/evidence/PLAY-102/REHEARSAL-PLAN.json",
+    "sha256": "e317e286f1164b10c85fd197d479f54561de9f080fe0ef044d35937ee3116a81",
+    "mode": "candidate_neutral_no_launch",
+    "result": "UNMEASURED"
+  },
+  "crossFileValidator": {
+    "path": "docs/production/evidence/PLAY-102/validate_preregistration.py",
+    "mode": "static_only",
+    "result": "PASS_REQUIRED_TWICE"
   },
   "acceptanceBoundary": {
     "workerDisposition": "preparation only; no APPROVE or RETURN",

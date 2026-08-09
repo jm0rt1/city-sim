@@ -49,7 +49,7 @@
   "artIsolation": {
     "candidateReceipt": null,
     "rendererCandidateReceipt": null,
-    "productionSelection": "not admitted",
+    "productionSelection": false,
     "sourceStateIsIndependentOf": [
       "PLAY-101 renderer candidate",
       "superseded single-angle sprite payloads",

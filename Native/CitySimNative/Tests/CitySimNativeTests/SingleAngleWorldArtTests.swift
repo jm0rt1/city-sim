@@ -14,6 +14,17 @@ final class SingleAngleWorldArtTests: XCTestCase {
         case city
         case neighborhood
         case block
+
+        var canvasPixels: [Int] {
+            switch self {
+            case .block:
+                return [1024, 683]
+            case .neighborhood:
+                return [512, 342]
+            case .city:
+                return [256, 171]
+            }
+        }
     }
 
     private struct LogicalIdentity: Hashable {
@@ -32,14 +43,31 @@ final class SingleAngleWorldArtTests: XCTestCase {
     private struct Registration: Equatable {
         let canvasPixels: [Int]
         let groundPivotSource: [Int]
+        let footprintPolygonSource: [[Int]]
+        let frontageSocketSource: [Int]
         let orientationTransform: String
+    }
+
+    private struct Provenance: Equatable {
+        let rawPath: String
+        let rawSHA256: String
+        let sourceCommit: String
+        let promptReference: String
+        let semanticDirection: Direction
     }
 
     private struct LOD: Equatable {
         let detail: Detail
+        let canvasPixels: [Int]
+        let filter: String
+        let rounding: String
         let normalizedSHA256: String
         let resourcePath: String
         let resourceBytes: Data
+        let strictKeyedMatteCount: Int
+        let boundaryResidualChromaCount: Int
+        let hiddenRGBCount: Int
+        let frameEdgeAlphaOccupancy: Int
     }
 
     private struct AuthoredView: Equatable {
@@ -48,6 +76,7 @@ final class SingleAngleWorldArtTests: XCTestCase {
         var rawSHA256: String
         var lods: [LOD]
         let registration: Registration
+        let provenance: Provenance
         var fallbackSourceKey: String?
         var orientationTransform: String
         var productionSelected: Bool
@@ -64,6 +93,22 @@ final class SingleAngleWorldArtTests: XCTestCase {
         let level: Int
     }
 
+    private struct QuarantineJob: Equatable {
+        let direction: Direction
+        let reservedIdentityCount: Int
+        let state: String
+        let sourceAdmissions: Int
+        let rendererQuarantines: Int
+        let evidenceRoot: String
+    }
+
+    private struct ActivationState: Equatable {
+        let sourceAdmissions: Int
+        let rendererQuarantines: Int
+        let productionSelected: Bool
+        let runtimeSelectorImplemented: Bool
+    }
+
     private enum ValidationError: Error, Equatable {
         case wrongSourceViewCount(Int)
         case duplicateLogicalIdentity(String)
@@ -75,24 +120,36 @@ final class SingleAngleWorldArtTests: XCTestCase {
         case duplicateNormalizedPayload(String)
         case resourceDigestMismatch(String)
         case invalidRegistration(String)
+        case invalidProvenance(String)
+        case invalidLOD(String)
+        case invalidAlphaChromaPadding(String)
         case transformed(String)
         case fallback(String)
         case productionSelected(String)
         case forbiddenPath(String)
         case selectionFailure(String)
+        case activationLocked
     }
 
     private let expectedAuthorityCommit =
-        "1b7a26a3071d744060b1aeabf7b8bbd2f72f7f95"
+        "5b4c040a182d0a07f4f0f0e32e598797d4314c0e"
     private let expectedBaseCommit =
-        "1b7a26a3071d744060b1aeabf7b8bbd2f72f7f95"
+        "5b4c040a182d0a07f4f0f0e32e598797d4314c0e"
     private let expectedWorkerHead =
-        "a655827b0663001bfaa1006c5d0bcf7fbfe214e9"
-    private let expectedRouteID = "four-view-v6:play-101-current-master-intake-rebind-v5"
+        "1dbad1fdbbcb08125b3438070dcad0f7f6d3e850"
+    private let expectedRouteID = "four-view-v16:play-101-current-master-metadata-rebind-v2"
     private let expectedRouteSHA256 =
-        "062fc37c10f7f7eceac534ad7c74c369d47dac8f2fe36a17134000c348ac3a40"
+        "8aab2dbdfe76a0e43e91691810779bccac3f1b55467a575dca4982dace7a8a79"
+    private let expectedClaimSHA256 =
+        "4fb20ef3102869dd1b33ceebcf3c4f5bda6ea48838b05e72bfdad9340d96bebb"
+    private let expectedContract025SHA256 =
+        "4e8ab63173d67581332e7d27730b97315906fda4e29b999969456441809479ed"
+    private let expectedContract026SHA256 =
+        "4781de72429a1f691b9226f7f7668b170b278a4ccd171ac4ea02f5e1df9176eb"
     private let expectedContract027SHA256 =
         "693831b3d8fac49330ac21adce626b632351c7eeba901ebff6719687e5f330e7"
+    private let expectedContract028SHA256 =
+        "f8b80a98b07029a51b8e61701c85017bd82c8bb0b6c967da6d1fa7fae631da7d"
 
     func testExact43Identities172AuthoredViewsAnd516NormalizedLODs() throws {
         let graph = makeGraph()
@@ -261,6 +318,29 @@ final class SingleAngleWorldArtTests: XCTestCase {
         XCTAssertEqual(try activate(graph).count, 172)
     }
 
+    func testDirectionExclusiveQuarantineStartsEmptyAndActivationIsLocked() throws {
+        let jobs = makeQuarantineJobs()
+        XCTAssertEqual(jobs.count, 4)
+        XCTAssertEqual(Set(jobs.map(\.direction)), Set(Direction.allCases))
+        XCTAssertEqual(Set(jobs.map(\.evidenceRoot)).count, 4)
+        for job in jobs {
+            XCTAssertEqual(job.reservedIdentityCount, 43)
+            XCTAssertEqual(job.state, "empty")
+            XCTAssertEqual(job.sourceAdmissions, 0)
+            XCTAssertEqual(job.rendererQuarantines, 0)
+        }
+
+        let emptyState = ActivationState(
+            sourceAdmissions: 0,
+            rendererQuarantines: 0,
+            productionSelected: false,
+            runtimeSelectorImplemented: false
+        )
+        XCTAssertThrowsError(try assembleCandidate(makeGraph(), state: emptyState)) {
+            XCTAssertEqual($0 as? ValidationError, .activationLocked)
+        }
+    }
+
     func testAtomicActivationRejectsAliasFallbackTransformAndSelection() throws {
         let graph = makeGraph()
 
@@ -286,13 +366,15 @@ final class SingleAngleWorldArtTests: XCTestCase {
             )
         }
 
-        var transformed = graph
-        transformed[0].orientationTransform = "mirrorX"
-        XCTAssertThrowsError(try activate(transformed)) {
-            XCTAssertEqual(
-                $0 as? ValidationError,
-                .transformed(transformed[0].viewKey)
-            )
+        for transform in ["mirrorX", "mirrorY", "rotate90", "rotate180", "rotate270"] {
+            var transformed = graph
+            transformed[0].orientationTransform = transform
+            XCTAssertThrowsError(try activate(transformed)) {
+                XCTAssertEqual(
+                    $0 as? ValidationError,
+                    .transformed(transformed[0].viewKey)
+                )
+            }
         }
 
         var selected = graph
@@ -327,9 +409,16 @@ final class SingleAngleWorldArtTests: XCTestCase {
         var driftedLODs = drifted[0].lods
         driftedLODs[0] = LOD(
             detail: driftedLODs[0].detail,
+            canvasPixels: driftedLODs[0].canvasPixels,
+            filter: driftedLODs[0].filter,
+            rounding: driftedLODs[0].rounding,
             normalizedSHA256: driftedLODs[0].normalizedSHA256,
             resourcePath: driftedLODs[0].resourcePath,
-            resourceBytes: Data("drifted-payload".utf8)
+            resourceBytes: Data("drifted-payload".utf8),
+            strictKeyedMatteCount: driftedLODs[0].strictKeyedMatteCount,
+            boundaryResidualChromaCount: driftedLODs[0].boundaryResidualChromaCount,
+            hiddenRGBCount: driftedLODs[0].hiddenRGBCount,
+            frameEdgeAlphaOccupancy: driftedLODs[0].frameEdgeAlphaOccupancy
         )
         drifted[0].lods = driftedLODs
         XCTAssertThrowsError(try activate(drifted)) {
@@ -340,34 +429,69 @@ final class SingleAngleWorldArtTests: XCTestCase {
                 )
             )
         }
+
+        var invalidAlpha = graph
+        let sourceLOD = invalidAlpha[0].lods[0]
+        invalidAlpha[0].lods[0] = LOD(
+            detail: sourceLOD.detail,
+            canvasPixels: sourceLOD.canvasPixels,
+            filter: sourceLOD.filter,
+            rounding: sourceLOD.rounding,
+            normalizedSHA256: sourceLOD.normalizedSHA256,
+            resourcePath: sourceLOD.resourcePath,
+            resourceBytes: sourceLOD.resourceBytes,
+            strictKeyedMatteCount: 0,
+            boundaryResidualChromaCount: 1,
+            hiddenRGBCount: 0,
+            frameEdgeAlphaOccupancy: 0
+        )
+        XCTAssertThrowsError(try activate(invalidAlpha)) {
+            XCTAssertEqual(
+                $0 as? ValidationError,
+                .invalidAlphaChromaPadding(
+                    "\(invalidAlpha[0].viewKey).\(sourceLOD.detail.rawValue)"
+                )
+            )
+        }
     }
 
-    func testCompactReceiptBindsContract025AndFourViewQuarantine() throws {
-        let receiptURL = repositoryRoot
-            .appending(path: "docs/production/evidence/PLAY-101")
-            .appending(path: "renderer-intake-receipt-v1.json")
-        let data = try Data(contentsOf: receiptURL)
-        XCTAssertLessThan(data.count, 4096)
-        let object = try XCTUnwrap(JSONSerialization.jsonObject(with: data))
-        let receipt = try XCTUnwrap(object as? [String: Any])
+    func testIntakePlanAndReceiptBindFrozenContractsAndEmptyQuarantine() throws {
+        let plan = try readEvidenceJSON("renderer-intake-plan-v2.json")
+        XCTAssertEqual(plan["schema"] as? Int, 2)
+        XCTAssertEqual(plan["task"] as? String, "PLAY-101")
+        XCTAssertEqual(plan["routeId"] as? String, expectedRouteID)
+        XCTAssertEqual(plan["routeSha256"] as? String, expectedRouteSHA256)
+        XCTAssertEqual(plan["claimSha256"] as? String, expectedClaimSHA256)
+        XCTAssertEqual(plan["model"] as? String, "gpt-5.6-luna")
+        XCTAssertEqual(plan["effort"] as? String, "high")
+
+        let receipt = try readEvidenceJSON("renderer-intake-receipt-v2.json")
         XCTAssertEqual(receipt["schema"] as? Int, 2)
         XCTAssertEqual(receipt["task"] as? String, "PLAY-101")
         XCTAssertEqual(receipt["routeId"] as? String, expectedRouteID)
         XCTAssertEqual(receipt["routeSha256"] as? String, expectedRouteSHA256)
+        XCTAssertEqual(receipt["claimSha256"] as? String, expectedClaimSHA256)
         XCTAssertEqual(receipt["authorityCommit"] as? String, expectedAuthorityCommit)
         XCTAssertEqual(receipt["baseCommit"] as? String, expectedBaseCommit)
         XCTAssertEqual(receipt["workerHead"] as? String, expectedWorkerHead)
 
-        let contract027 = try XCTUnwrap(receipt["contract027"] as? [String: Any])
+        let contracts = try XCTUnwrap(receipt["contracts"] as? [String: Any])
         XCTAssertEqual(
-            contract027["sha256"] as? String,
+            (contracts["CONTRACT-025"] as? [String: Any])?["sha256"] as? String,
+            expectedContract025SHA256
+        )
+        XCTAssertEqual(
+            (contracts["CONTRACT-026"] as? [String: Any])?["sha256"] as? String,
+            expectedContract026SHA256
+        )
+        XCTAssertEqual(
+            (contracts["CONTRACT-027"] as? [String: Any])?["sha256"] as? String,
             expectedContract027SHA256
         )
         XCTAssertEqual(
-            contract027["authoredViewRule"] as? String,
-            "frontage.rotatedClockwise(rotationIndex)"
+            (contracts["CONTRACT-028"] as? [String: Any])?["sha256"] as? String,
+            expectedContract028SHA256
         )
-        XCTAssertEqual(contract027["runtimeSelectorImplemented"] as? Bool, false)
 
         let inventory = try XCTUnwrap(receipt["inventory"] as? [String: Any])
         XCTAssertEqual(inventory["logicalBuildingIdentities"] as? Int, 43)
@@ -380,11 +504,29 @@ final class SingleAngleWorldArtTests: XCTestCase {
         XCTAssertEqual(inventory["directionPartOfLogicalIdentity"] as? Bool, false)
 
         let quarantine = try XCTUnwrap(receipt["quarantine"] as? [String: Any])
-        XCTAssertEqual(quarantine["requiredDirectionsPerIdentity"] as? Int, 4)
-        XCTAssertEqual(quarantine["completeIdentities"] as? Int, 43)
+        XCTAssertEqual(quarantine["sourceAdmissions"] as? Int, 0)
+        XCTAssertEqual(quarantine["rendererQuarantines"] as? Int, 0)
         XCTAssertEqual(quarantine["productionSelected"] as? Bool, false)
-        XCTAssertNil(quarantine["fallbackSourceKey"] as? String)
-        XCTAssertEqual(quarantine["activation"] as? String, "integration-only-after-exact-43-172-516")
+        XCTAssertEqual(quarantine["runtimeSelectorImplemented"] as? Bool, false)
+        XCTAssertEqual(quarantine["activation"] as? String, "locked-until-exact-4-of-4")
+        let jobs = try XCTUnwrap(quarantine["directionExclusiveJobs"] as? [[String: Any]])
+        XCTAssertEqual(jobs.count, 4)
+        XCTAssertEqual(
+            Set(jobs.compactMap { $0["direction"] as? String }),
+            Set(Direction.allCases.map(\.rawValue))
+        )
+        XCTAssertTrue(jobs.allSatisfy { ($0["state"] as? String) == "empty" })
+        XCTAssertTrue(jobs.allSatisfy { ($0["reservedIdentityCount"] as? Int) == 43 })
+    }
+
+    private func readEvidenceJSON(_ filename: String) throws -> [String: Any] {
+        let receiptURL = repositoryRoot
+            .appending(path: "docs/production/evidence/PLAY-101")
+            .appending(path: filename)
+        let data = try Data(contentsOf: receiptURL)
+        XCTAssertLessThan(data.count, 16_384)
+        let object = try XCTUnwrap(JSONSerialization.jsonObject(with: data))
+        return try XCTUnwrap(object as? [String: Any])
     }
 
     private func makeGraph() -> [AuthoredView] {
@@ -418,20 +560,42 @@ final class SingleAngleWorldArtTests: XCTestCase {
                     let payload = Data("normalized:\(viewKey):\(detail.rawValue)".utf8)
                     return LOD(
                         detail: detail,
+                        canvasPixels: detail.canvasPixels,
+                        filter: "lanczos",
+                        rounding: "round-half-even",
                         normalizedSHA256: sha256(payload),
                         resourcePath: "docs/production/evidence/PLAY-101/quarantine/\(identity.value)/\(direction.rawValue)/\(detail.rawValue).rgba8",
-                        resourceBytes: payload
+                        resourceBytes: payload,
+                        strictKeyedMatteCount: 0,
+                        boundaryResidualChromaCount: 0,
+                        hiddenRGBCount: 0,
+                        frameEdgeAlphaOccupancy: 0
                     )
                 }
+                let registration = Registration(
+                    canvasPixels: [1536, 1024],
+                    groundPivotSource: [768, 896],
+                    footprintPolygonSource: [
+                        [768, 640],
+                        [1024, 768],
+                        [768, 896],
+                        [512, 768],
+                    ],
+                    frontageSocketSource: socket(for: direction),
+                    orientationTransform: "none"
+                )
                 return AuthoredView(
                     identity: identity,
                     direction: direction,
                     rawSHA256: rawSHA256,
                     lods: lods,
-                    registration: Registration(
-                        canvasPixels: [1536, 1024],
-                        groundPivotSource: [768, 896],
-                        orientationTransform: "none"
+                    registration: registration,
+                    provenance: Provenance(
+                        rawPath: "docs/production/evidence/PLAY-101/quarantine/\(identity.value)/\(direction.rawValue)/source.png",
+                        rawSHA256: rawSHA256,
+                        sourceCommit: expectedAuthorityCommit,
+                        promptReference: "synthetic://PLAY-101/\(viewKey)",
+                        semanticDirection: direction
                     ),
                     fallbackSourceKey: nil,
                     orientationTransform: "none",
@@ -459,7 +623,39 @@ final class SingleAngleWorldArtTests: XCTestCase {
                 guard rawDigests.insert(view.rawSHA256).inserted else {
                     throw ValidationError.duplicateRawSource(view.viewKey)
                 }
+                guard view.provenance.rawSHA256 == view.rawSHA256,
+                      view.provenance.semanticDirection == view.direction,
+                      !view.provenance.sourceCommit.isEmpty,
+                      !view.provenance.promptReference.isEmpty,
+                      view.provenance.rawPath.hasPrefix(
+                          "docs/production/evidence/PLAY-101/quarantine/\(view.identity.value)/\(view.direction.rawValue)/"
+                      ) else {
+                    throw ValidationError.invalidProvenance(view.viewKey)
+                }
+                guard view.registration.footprintPolygonSource == [
+                    [768, 640],
+                    [1024, 768],
+                    [768, 896],
+                    [512, 768],
+                ], view.registration.frontageSocketSource == socket(for: view.direction) else {
+                    throw ValidationError.invalidRegistration(view.viewKey)
+                }
                 for lod in view.lods {
+                    guard lod.canvasPixels == lod.detail.canvasPixels,
+                          lod.filter == "lanczos",
+                          lod.rounding == "round-half-even" else {
+                        throw ValidationError.invalidLOD(
+                            "\(view.viewKey).\(lod.detail.rawValue)"
+                        )
+                    }
+                    guard lod.strictKeyedMatteCount == 0,
+                          lod.boundaryResidualChromaCount == 0,
+                          lod.hiddenRGBCount == 0,
+                          lod.frameEdgeAlphaOccupancy == 0 else {
+                        throw ValidationError.invalidAlphaChromaPadding(
+                            "\(view.viewKey).\(lod.detail.rawValue)"
+                        )
+                    }
                     guard normalizedDigests.insert(lod.normalizedSHA256).inserted else {
                         throw ValidationError.duplicateNormalizedPayload(
                             "\(view.viewKey).\(lod.detail.rawValue)"
@@ -504,6 +700,13 @@ final class SingleAngleWorldArtTests: XCTestCase {
             guard view.registration == Registration(
                 canvasPixels: [1536, 1024],
                 groundPivotSource: [768, 896],
+                footprintPolygonSource: [
+                    [768, 640],
+                    [1024, 768],
+                    [768, 896],
+                    [512, 768],
+                ],
+                frontageSocketSource: socket(for: view.direction),
                 orientationTransform: "none"
             ) else {
                 throw ValidationError.invalidRegistration(view.viewKey)
@@ -530,6 +733,46 @@ final class SingleAngleWorldArtTests: XCTestCase {
     private func activate(_ graph: [AuthoredView]) throws -> [AuthoredView] {
         try validate(graph)
         return graph.sorted { $0.viewKey < $1.viewKey }
+    }
+
+    private func assembleCandidate(
+        _ graph: [AuthoredView],
+        state: ActivationState
+    ) throws -> [AuthoredView] {
+        _ = try activate(graph)
+        guard state.sourceAdmissions == 4,
+              state.rendererQuarantines == 4,
+              !state.productionSelected,
+              !state.runtimeSelectorImplemented else {
+            throw ValidationError.activationLocked
+        }
+        return graph
+    }
+
+    private func makeQuarantineJobs() -> [QuarantineJob] {
+        Direction.allCases.map { direction in
+            QuarantineJob(
+                direction: direction,
+                reservedIdentityCount: 43,
+                state: "empty",
+                sourceAdmissions: 0,
+                rendererQuarantines: 0,
+                evidenceRoot: "docs/production/evidence/PLAY-101/quarantine/\(direction.rawValue)"
+            )
+        }
+    }
+
+    private func socket(for direction: Direction) -> [Int] {
+        switch direction {
+        case .north:
+            return [896, 704]
+        case .east:
+            return [896, 832]
+        case .south:
+            return [640, 832]
+        case .west:
+            return [640, 704]
+        }
     }
 
     private func selectView(

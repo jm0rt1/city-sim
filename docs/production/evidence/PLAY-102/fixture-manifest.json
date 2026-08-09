@@ -5,6 +5,16 @@
   "fixtureId": "commercial-active-district-v3",
   "fixtureVersion": "v3",
   "stateHash": "6126cf6e941eb6ed98ff308992447a01a5869dd87120ebe40b92153e68b2cb8d",
+  "sourceFixture": {
+    "id": "commercial-active-district-v3",
+    "version": "v3",
+    "path": "Native/CitySimNative/Tests/CitySimNativeTests/Fixtures/VisibleCityStates/visible-city-commercial-active-district-v3.json",
+    "fileSha256": "caa6e4deedca22c2c62f1d7664f862964258df7159f09a13d939688c5492a26b",
+    "stateHash": "6126cf6e941eb6ed98ff308992447a01a5869dd87120ebe40b92153e68b2cb8d",
+    "seed": 42,
+    "tick": 68,
+    "focusCoordinate": [5, 8]
+  },
   "maturePlacement": true,
   "directions": ["north", "east", "south", "west"],
   "lods": ["city", "neighborhood", "block"],
@@ -13,6 +23,8 @@
   "logicalIdentityCount": 43,
   "authoredSourceSpriteCount": 172,
   "explicitLodPayloadCount": 516,
+  "admissionExpectations": {"logicalIdentityCount": 43, "authoredSourceSpriteCount": 172, "explicitLodPayloadCount": 516},
+  "candidateBindings": {"candidateCommit": null, "rendererCandidateReceipt": null, "resourceManifest": null, "fixtureAdmission": null, "measurementReceipt": null, "productionSelection": false},
   "rendererCandidateReceipt": null,
   "observedValues": "UNMEASURED",
   "finalDisposition": "BLOCKED_FRONTIER_ROUTE_REQUIRED"

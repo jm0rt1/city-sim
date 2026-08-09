@@ -13,12 +13,15 @@ ROOT = Path(__file__).resolve().parent
 DIRECTIONS = ["north", "east", "south", "west"]
 LODS = ["city", "neighborhood", "block"]
 LAYOUTS = ["regular", "compact-900x600"]
-ROUTE_ID = "four-view-v8:play-102-qa-prereg-validator-repair-v4"
-ROUTE_SHA = "dbe62b380f82e69bbfe5a1470b47d289a6f9a74e3ea858ee322ca80149526bb9"
-AUTHORITY = "b36e69a0a15b34c9aea03588f97bbc8621bb7d47"
-WORKER_HEAD = "d77f32739d6606b762e54766a310a60e8758681d"
+ROUTE_ID = "four-view-v16:play-102-current-master-metadata-rebind-v2"
+ROUTE_SHA = "ad8396db363a778e098d8079b0634699a0c75e43f53bc8fb473c0a1d8ff70ec0"
+AUTHORITY = "5b4c040a182d0a07f4f0f0e32e598797d4314c0e"
+WORKER_HEAD = "f2721cb59137cbd61ba55cc1427fa58ff7efaa98"
 CLAIM_PATH = "docs/production/claims/PLAY-102.playtest-single-angle.md"
 CLAIM_SHA = "bab508b648ce1b585ad66ec10b2b54574fe0f0d1741b7b4b33fa12253f34e704"
+DISPATCH_PATH = "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-101-102-CURRENT-MASTER-METADATA-REBIND-V2.json"
+ROTATION_CONTRACT_PATH = "docs/production/decisions/CONTRACT-027-world-rotation-authored-view-mapping.md"
+ROTATION_CONTRACT_SHA = "693831b3d8fac49330ac21adce626b632351c7eeba901ebff6719687e5f330e7"
 
 
 def load(name: str) -> dict:
@@ -51,8 +54,10 @@ def main() -> int:
     route = prereg["route"]
     if (route["routeId"], route["canonicalModelRouteSha256"]) != (ROUTE_ID, ROUTE_SHA):
         fail("route identity mismatch")
-    if route["dispatchPath"] != "docs/production/evidence/INTEGRATION/MODEL-ROUTING-PLAY-102-QA-PREREG-VALIDATOR-REPAIR-V4.json":
+    if route["dispatchPath"] != DISPATCH_PATH:
         fail("dispatch receipt path mismatch")
+    if prereg["rotationContract"] != {"path": ROTATION_CONTRACT_PATH, "sha256": ROTATION_CONTRACT_SHA}:
+        fail("rotation contract identity mismatch")
 
     expected_tuples = [(f"{direction}-{lod}-{'compact' if layout == 'compact-900x600' else layout}", direction, lod, layout) for layout in LAYOUTS for lod in LODS for direction in DIRECTIONS]
     expected = [row[0] for row in expected_tuples]
@@ -72,6 +77,20 @@ def main() -> int:
         fail("preregistration capture names mismatch")
     if fixture["captureCount"] != 24 or fixture["directions"] != DIRECTIONS or fixture["lods"] != LODS or fixture["layouts"] != LAYOUTS:
         fail("fixture matrix mismatch")
+    if fixture["logicalIdentityCount"] != 43 or fixture["authoredSourceSpriteCount"] != 172 or fixture["explicitLodPayloadCount"] != 516:
+        fail("fixture admission expectations mismatch")
+    source = fixture["sourceFixture"]
+    if source["id"] != prereg["fixture"]["id"] or source["version"] != prereg["fixture"]["version"]:
+        fail("fixture source identity mismatch")
+    if source["path"] != prereg["fixture"]["sourcePath"] or source["fileSha256"] != prereg["fixture"]["sourceSha256"] or source["stateHash"] != prereg["fixture"]["stateHash"]:
+        fail("fixture source binding mismatch")
+    source_path = ROOT.parents[3] / source["path"]
+    if not source_path.is_file() or hashlib.sha256(source_path.read_bytes()).hexdigest() != source["fileSha256"]:
+        fail("fixture source bytes mismatch")
+    if fixture["admissionExpectations"] != {"logicalIdentityCount": 43, "authoredSourceSpriteCount": 172, "explicitLodPayloadCount": 516}:
+        fail("admission expectation record mismatch")
+    if prereg["familyContract"]["logicalIdentityCount"] != 43 or prereg["familyContract"]["authoredSourceSpriteCount"] != 172 or prereg["familyContract"]["normalizedPayloadCount"] != 516:
+        fail("preregistration family expectations mismatch")
     expected_matrix = {"count": 24, "directions": DIRECTIONS, "lods": LODS, "layouts": LAYOUTS}
     if plan.get("captureMatrix") != expected_matrix:
         fail("measurement plan captureMatrix mismatch")
@@ -80,7 +99,7 @@ def main() -> int:
     if rehearsal["matrix"] != rubric["matrix"] or rehearsal["status"] != "BLOCKED_BY_ROUTE_NO_APP_LAUNCH":
         fail("rehearsal plan is not candidate-neutral")
 
-    forbidden_bound_fields = {"candidateCommit", "candidateReceipt", "rendererCandidateReceipt", "resourceManifest", "fixtureAdmission", "fixtureAdmissionReceipt"}
+    forbidden_bound_fields = {"candidateCommit", "candidateReceipt", "rendererCandidateReceipt", "resourceManifest", "fixtureAdmission", "fixtureAdmissionReceipt", "measurementReceipt"}
     packets = {"PREREGISTRATION.json": prereg, "FIXTURE.json": load("FIXTURE.json"), "fixture-manifest.json": fixture, "MEASUREMENT-PLAN.json": plan, "RENDERER-CANDIDATE-RECEIPT.json": receipt, "REHEARSAL-PLAN.json": rehearsal}
     def walk(value: object, path: str, packet: str) -> None:
         if isinstance(value, dict):
@@ -89,6 +108,8 @@ def main() -> int:
                 if key in forbidden_bound_fields and child is not None:
                     fail(f"{packet}:{child_path} must remain null")
                 if key == "candidateEvidenceCreated" and child is not False:
+                    fail(f"{packet}:{child_path} must remain false")
+                if key == "productionSelection" and child is not False:
                     fail(f"{packet}:{child_path} must remain false")
                 walk(child, child_path, packet)
         elif isinstance(value, list):
@@ -105,6 +126,8 @@ def main() -> int:
     for section, key, name in (("camera", "stateSha256", "CAMERA-STATES.json"), ("rubric", "sha256", "RUBRIC.json"), ("scriptedMeasurementPlan", "sha256", "MEASUREMENT-PLAN.json"), ("defectPacket", "schemaSha256", "DEFECT-PACKET-SCHEMA.json")):
         if prereg[section][key] != digest(name):
             fail(f"{section} digest mismatch")
+    if prereg["rehearsalPlan"]["sha256"] != digest("REHEARSAL-PLAN.json"):
+        fail("rehearsal plan digest mismatch")
 
     print("PASS: PLAY-102 candidate-neutral 24-capture preregistration")
     return 0

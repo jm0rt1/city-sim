@@ -3,8 +3,8 @@
   "documentType": "CITYSIM_CURRENT_PARALLEL_WORK_PROJECTION",
   "supersedes": "FOUR-VIEW-PARALLEL-WAVE-CURRENT-V1.json",
   "authority": {
-    "capturedAtIntegrationHead": "ab165a65b2413fbd41c8598c61960eb2f246d349",
-    "publishedBaseline": "ab165a65b2413fbd41c8598c61960eb2f246d349",
+    "capturedAtIntegrationHead": "80b3e1e5c8d253ef1bdfca30f270be5b89c24d1d",
+    "publishedBaseline": "80b3e1e5c8d253ef1bdfca30f270be5b89c24d1d",
     "publicationStatusAtCapture": "published_origin_parity",
     "protectedDirt": [
       ".vscode/launch.json",
@@ -27,12 +27,13 @@
     "snapshotReceipt": "current-turn-read-only-census",
     "cellCaptain": "world-art-direction-captain",
     "acknowledgementSLA": "one coordination round",
-    "nextJoin": "West V9 focused replay plus independent review; North Luna focused repair; Commercial and Civic V3/V2 evidence rebinds; East owner checkpoint",
+    "nextJoin": "North/Commercial/Civic Contract-028 cleanup and visual review; West frontier visual review; East owner checkpoint after route repair; renderer and QA remain warm",
     "changedRows": [
       "PLAY-103-NORTH",
       "PLAY-105-WEST",
       "PLAY-098-COMMERCIAL",
-      "PLAY-100-CIVIC"
+      "PLAY-100-CIVIC",
+      "PLAY-104-EAST"
     ],
     "refereeQueue": [
       "PLAY-105-WEST",
@@ -103,9 +104,10 @@
         "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104/east/portable_replay.py",
         "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104/east/route-snapshot/"
       ],
-      "state": "owner_checkpoint_required",
+      "state": "route_repaired_owner_checkpoint_required",
+      "routeId": "four-view-v10:play-104-east-production-repair-v2",
       "modelTier": "LUNA_LOCAL_DEBUG",
-      "nextSafeAction": "Owner checkpoints the two task-owned paths; preserve them and do not re-route until clean."
+      "nextSafeAction": "Owner checkpoints portable_replay.py and route-snapshot/; preserve both paths, then acknowledge the repaired route before any mutation."
     },
     {
       "id": "PLAY-101-RENDERER",
@@ -158,6 +160,6 @@
     "fullSuite": "not_run",
     "stagedApp": "not_run",
     "independentRealAppQA": "not_run",
-    "push": "origin_parity_at_d70d43ef"
+    "push": "origin_parity_at_80b3e1e5"
   }
 }

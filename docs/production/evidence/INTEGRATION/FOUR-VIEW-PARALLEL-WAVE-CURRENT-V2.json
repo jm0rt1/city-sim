@@ -3,8 +3,8 @@
   "documentType": "CITYSIM_CURRENT_PARALLEL_WORK_PROJECTION",
   "supersedes": "FOUR-VIEW-PARALLEL-WAVE-CURRENT-V1.json",
   "authority": {
-    "capturedAtIntegrationHead": "d19e44ef9c42fa6d5cb9886f3d797d6d1ff3e19d",
-    "publishedBaseline": "d19e44ef9c42fa6d5cb9886f3d797d6d1ff3e19d",
+    "capturedAtIntegrationHead": "ab165a65b2413fbd41c8598c61960eb2f246d349",
+    "publishedBaseline": "ab165a65b2413fbd41c8598c61960eb2f246d349",
     "publicationStatusAtCapture": "published_origin_parity",
     "protectedDirt": [
       ".vscode/launch.json",
@@ -67,6 +67,30 @@
       "routeId": "four-view-v13:play-105-west-production-repair-v10",
       "modelTier": "LUNA_IMPLEMENTATION",
       "nextSafeAction": "Frontier visual/source disposition only; retain sourceReady=false until literal-scale review passes."
+    },
+    {
+      "id": "PLAY-098-COMMERCIAL",
+      "lane": "world-art-commercial",
+      "branch": "codex/citysim-world-art-commercial",
+      "worktree": "/Users/James/.codex/worktrees/34c2/city-sim",
+      "head": "dc73ea7075e6cd441d062ef7f99f594a57fbd088",
+      "clean": true,
+      "state": "route_ready_ack_unconfirmed",
+      "routeId": "four-view-v5:play-098-admission-repair-v3",
+      "modelTier": "LUNA_IMPLEMENTATION",
+      "nextSafeAction": "Evidence-only canonical rebind; preserve pixels and candidate-only readiness."
+    },
+    {
+      "id": "PLAY-100-CIVIC",
+      "lane": "world-art-civic",
+      "branch": "codex/citysim-world-art-civic",
+      "worktree": "/Users/James/.codex/worktrees/c96d/city-sim",
+      "head": "da68895b967ab21d26317134cd26e03043ee8b38",
+      "clean": true,
+      "state": "route_ready_ack_unconfirmed",
+      "routeId": "four-view-v5:play-100-south-admission-repair-v2",
+      "modelTier": "LUNA_IMPLEMENTATION",
+      "nextSafeAction": "Evidence-only canonical rebind; preserve pixels and candidate-only readiness."
     },
     {
       "id": "PLAY-104-EAST",

@@ -1,0 +1,187 @@
+{
+  "schema": 2,
+  "authorityCommit": "65825389d586a128ddf6feb5356c33661ba9a8e8",
+  "assignments": [
+    {
+      "modelRouteSha256": "35ae1adf02e696b34cb2fdf1ddece072731f01cc086c803182db67b87ea83c36",
+      "modelRoute": {
+        "schema": 2,
+        "routeId": "four-view-v29:play-098-commercial-contract028-frontier-review-current-head-v1",
+        "taskId": "PLAY-098",
+        "packetKind": "authority",
+        "classification": "FRONTIER_AUTHORITY",
+        "model": "gpt-5.6-sol",
+        "effort": "high",
+        "rationale": "Independent Frontier technical and literal-scale visual disposition for the exact Commercial Contract-028 V26 metadata checkpoint at final worker HEAD e55e5ad04a8dc3eee7262e02df8f3e3bcd65b7b6 (parent 49c9222bf4df2d2b084d4c05279a8df3173b089a). Verify only validation.json changed from 49c9222bf4df2d2b084d4c05279a8df3173b089a to e55e5ad04a8dc3eee7262e02df8f3e3bcd65b7b6; repaired replaySha256 pair is 61270c3dacdb42955b49c00a7d1373705f6f728c027ce25520dfd2056e48e86f (current validation.json sha256 532624894254c89fbd5e30fdbf41ad9ef5a570b269e8f1604719548ed1354b58). Verify current 12 raw and 48 old/derived PNG byte hashes, V26 metadata flags/coherence, Contract-028 technical predicates, two fresh deterministic replays, and literal-scale contact sheets/samples. Preserve raw RETURN_HARD_BLOCKER and candidate-only state; no source admission, renderer, runtime, or production selection.",
+        "authority": {
+          "authorityCommit": "65825389d586a128ddf6feb5356c33661ba9a8e8",
+          "baseCommit": "65825389d586a128ddf6feb5356c33661ba9a8e8",
+          "claim": {
+            "path": "docs/production/claims/PLAY-098.world-art-commercial.md",
+            "sha256": "4e10676b16b40d4492ca27ce525d67c74462f16bf5755be91bdbe05984ed2517"
+          },
+          "immutableInputs": [
+            {
+              "path": "docs/production/decisions/CONTRACT-025-authored-four-view-2-5d-building-art.md",
+              "sha256": "4e8ab63173d67581332e7d27730b97315906fda4e29b999969456441809479ed"
+            },
+            {
+              "path": "docs/production/decisions/CONTRACT-026-authored-four-view-registration.md",
+              "sha256": "4781de72429a1f691b9226f7f7668b170b278a4ccd171ac4ea02f5e1df9176eb"
+            },
+            {
+              "path": "docs/production/decisions/CONTRACT-026-registration-profiles-v1.json",
+              "sha256": "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8"
+            },
+            {
+              "path": "docs/production/decisions/CONTRACT-028-alpha-aware-lod-chroma.md",
+              "sha256": "f8b80a98b07029a51b8e61701c85017bd82c8bb0b6c967da6d1fa7fae631da7d"
+            },
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "1eb7170b81e11753e7c9173298c6d45c02d5a2ade6df0ef8b73bdcaf690a2acd"
+            },
+            {
+              "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+              "sha256": "9c62d401d8812d5345b6bd25d864a07010348883ca4941f4429854ebe4abc511"
+            }
+          ]
+        },
+        "assignment": {
+          "threadId": "019fe44b-8c05-72d1-b1a6-a80e4a483bbb",
+          "branch": "codex/citysim-world-art-commercial",
+          "worktree": "/Users/James/.codex/worktrees/34c2/city-sim",
+          "expectedHead": "e55e5ad04a8dc3eee7262e02df8f3e3bcd65b7b6",
+          "featureAuthorThreadId": "019fe1b1-3bc4-7b40-a107-22f3fb08484d",
+          "sharedAuthorityOwnership": false,
+          "finalQAOwnership": false,
+          "subjectiveJudgmentRequired": true
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": [
+            "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-098/commercial",
+            "docs/production/evidence/PLAY-098"
+          ],
+          "allowed": [
+            "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-098/commercial",
+            "docs/production/evidence/PLAY-098"
+          ],
+          "forbidden": [
+            ".agents/skills",
+            "docs/production/evidence/INTEGRATION",
+            "docs/production/claims",
+            "docs/production/decisions",
+            "Native/CitySimNative/Sources",
+            "Native/CitySimNative/Resources",
+            "Native/CitySimNative/Tests",
+            "Native/CitySimNative/Package.swift",
+            "script/build_and_run.sh"
+          ]
+        },
+        "boundedDeliverable": "Read-only independent Frontier review of the repaired Commercial V26 metadata checkpoint e55e5ad04a8dc3eee7262e02df8f3e3bcd65b7b6 at literal game scale. Verify the one-file 49c9222bf4df2d2b084d4c05279a8df3173b089a..e55e5ad04a8dc3eee7262e02df8f3e3bcd65b7b6 metadata-only amendment (validation.json replaySha256 only), 12 raw masters remain byte-identical and hard RETURN, all 48 pre-repair/Contract-028 derived PNG hashes and Contract-028 predicates, V26 metadata/flags/coherence, two fresh deterministic replay outputs, and color/grayscale contact proof. Return one APPROVE or RETURN with exact defects and next legal dependency; preserve derivedOnly=true, sourceAuthority=false, rawSourceAdmission=RETURN_HARD_BLOCKER, candidateReadyForIndependentReview=true, sourceReady=false, integrationAdmitted=false, rendererQuarantined=false, productionSelected=false. Do not edit, regenerate, normalize, rebind, change readiness, integrate, launch, or self-accept.",
+        "proofPolicy": {
+          "architectureState": "frozen_reference",
+          "referenceImplementation": {
+            "path": "docs/production/decisions/CONTRACT-025-authored-four-view-2-5d-building-art.md",
+            "sha256": "4e8ab63173d67581332e7d27730b97315906fda4e29b999969456441809479ed"
+          },
+          "deliverableClaims": [
+            "static_structure"
+          ],
+          "focusedProofLevel": "static_only",
+          "fullProofLevel": "static_only",
+          "behavioralCommands": [],
+          "prohibitedSubstitutions": [
+            "source_token_presence_for_execution",
+            "ast_shape_for_runtime_success",
+            "manifest_or_prose_for_rendered_pixels",
+            "unit_tests_for_visual_acceptance",
+            "worker_self_report_for_independent_acceptance"
+          ]
+        },
+        "validation": {
+          "focusedGateOwner": {
+            "threadId": "019fe44b-8c05-72d1-b1a6-a80e4a483bbb",
+            "role": "independent-frontier-commercial-v26-repaired-current-head-review"
+          },
+          "focusedCommands": [
+            "git cat-file -e e55e5ad04a8dc3eee7262e02df8f3e3bcd65b7b6^{commit}",
+            "git status --short --branch -- Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-098/commercial docs/production/evidence/PLAY-098",
+            "git show --format=fuller --no-ext-diff --summary e55e5ad04a8dc3eee7262e02df8f3e3bcd65b7b6^{commit}",
+            "git diff --check 49c9222bf4df2d2b084d4c05279a8df3173b089a..e55e5ad04a8dc3eee7262e02df8f3e3bcd65b7b6 -- Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-098/commercial docs/production/evidence/PLAY-098",
+            "Independent read-only verification that only docs/production/evidence/PLAY-098/commercial/contract-028-v26/validation.json changed, with current validation.json sha256 532624894254c89fbd5e30fdbf41ad9ef5a570b269e8f1604719548ed1354b58, replaySha256 pair 61270c3dacdb42955b49c00a7d1373705f6f728c027ce25520dfd2056e48e86f",
+            "Independent read-only 12/48/48 PNG hash and Contract-028 predicate audit plus two isolated helper replays against final worker HEAD and literal-scale color/grayscale contact proof"
+          ],
+          "fullGateOwner": {
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+            "role": "integration-candidate-join",
+            "model": "gpt-5.6-sol",
+            "effort": "high"
+          },
+          "fullCommands": [
+            "Integration source-admission disposition only; no product/full-suite/app gate in this packet"
+          ]
+        },
+        "expectedResult": {
+          "evidencePaths": [
+            "docs/production/evidence/PLAY-098"
+          ],
+          "commitRequired": false,
+          "commitMessagePattern": "review-only"
+        },
+        "escalationTriggers": [
+          "shared_contract_or_schema_decision",
+          "unresolved_product_visual_or_interaction_judgment",
+          "path_outside_claim",
+          "baseline_or_candidate_identity_mismatch",
+          "failure_outside_focused_scope",
+          "save_or_migration_uncertainty",
+          "cross_lane_semantic_conflict",
+          "two_unsuccessful_repair_attempts",
+          "subjective_acceptance_required"
+        ],
+        "stopCondition": "Stop after one independent read-only disposition or immediately on identity, route, path, readiness, stale-replay, visual, or shared-authority ambiguity. Do not edit, stage, commit, launch, integrate, push, or pin.",
+        "independentReviewer": {
+          "required": true,
+          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8",
+          "model": "gpt-5.6-sol",
+          "effort": "high"
+        },
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {
+              "path": "docs/production/claims/PLAY-098.world-art-commercial.md",
+              "sha256": "4e10676b16b40d4492ca27ce525d67c74462f16bf5755be91bdbe05984ed2517"
+            },
+            {
+              "path": "docs/production/decisions/CONTRACT-025-authored-four-view-2-5d-building-art.md",
+              "sha256": "4e8ab63173d67581332e7d27730b97315906fda4e29b999969456441809479ed"
+            },
+            {
+              "path": "docs/production/decisions/CONTRACT-026-authored-four-view-registration.md",
+              "sha256": "4781de72429a1f691b9226f7f7668b170b278a4ccd171ac4ea02f5e1df9176eb"
+            },
+            {
+              "path": "docs/production/decisions/CONTRACT-026-registration-profiles-v1.json",
+              "sha256": "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8"
+            },
+            {
+              "path": "docs/production/decisions/CONTRACT-028-alpha-aware-lod-chroma.md",
+              "sha256": "f8b80a98b07029a51b8e61701c85017bd82c8bb0b6c967da6d1fa7fae631da7d"
+            },
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "1eb7170b81e11753e7c9173298c6d45c02d5a2ade6df0ef8b73bdcaf690a2acd"
+            },
+            {
+              "path": ".agents/skills/produce-citysim-world-art/SKILL.md",
+              "sha256": "9c62d401d8812d5345b6bd25d864a07010348883ca4941f4429854ebe4abc511"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

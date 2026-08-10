@@ -1,0 +1,19 @@
+{
+  "eventKeys": [
+    {
+      "authorityCommit": "d3f2c47601bb40fcb09d5d20377bcbe1fe06b532",
+      "candidateOrResultCommit": "d3f2c47601bb40fcb09d5d20377bcbe1fe06b532",
+      "routeId": "renderer-v23:play-073-currentd3f2-r6d-a6-actual-focus-bounds-v1",
+      "taskId": "PLAY-073",
+      "trigger": "delegation_ready_for_dispatch"
+    },
+    {
+      "authorityCommit": "d3f2c47601bb40fcb09d5d20377bcbe1fe06b532",
+      "candidateOrResultCommit": "d3f2c47601bb40fcb09d5d20377bcbe1fe06b532",
+      "routeId": "integration-v4:play-085-currentd3f2-final-state-overlay-adoption-execution-owner-correction-v1",
+      "taskId": "PLAY-085",
+      "trigger": "delegation_acknowledgement_failed"
+    }
+  ],
+  "schema": 1
+}

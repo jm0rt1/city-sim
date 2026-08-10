@@ -1083,7 +1083,8 @@ This is the authoritative first-wave task source. The shared target is one coher
   healing, strategy-scar regression, nondeterministic target, hidden permanent
   damage, dominant mitigation, event cadence change, or fixture rewrite
   becomes necessary.
-- **Claim:** `docs/production/claims/PLAY-085.gameplay-loop.md`.
+- **Claim:** `docs/production/claims/PLAY-085.gameplay-loop-v3.md` (supersedes
+  the historical revision-2 `/80f0/` pointer).
 
 ### [ ] PLAY-086: Gate visible cause and recovery
 

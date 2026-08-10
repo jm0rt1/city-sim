@@ -231,6 +231,20 @@
       "receiptSha256": "cb66fa4dcee247d8f8ecda2667843c6c8684d2ce9836ac95384404888019ecb7",
       "decision": "NO_CHANGE",
       "disposition": {"status":"auto_closed","authorityCommit":"de39bcbcedd2c61aa67a024d654ad6d29179c70f","reason":"East V38 delegation-ready observer validated the corrected reviewer binding, exact authority-root evidence, clean worker identity, and frozen metadata-only boundary; no process change is required before Integration disposition."}
+    },
+    {
+      "eventKey": {"authorityCommit":"d3f2c47601bb40fcb09d5d20377bcbe1fe06b532","taskId":"PLAY-073","routeId":"renderer-v23:play-073-currentd3f2-r6d-a6-actual-focus-bounds-v1","trigger":"delegation_ready_for_dispatch","candidateOrResultCommit":"d3f2c47601bb40fcb09d5d20377bcbe1fe06b532"},
+      "receiptPath": "docs/production/evidence/PLAY-089/game009-r6d-a6-gameplay-r4-operating-review-v1/GAME-009-R6D-A6-OBSERVATION-RECEIPT.json",
+      "receiptSha256": "cae75c14817ebb10c9f419f802dc1a43075fea142b1071e83912e881cd479c0d",
+      "decision": "NO_CHANGE",
+      "disposition": {"status":"auto_closed","authorityCommit":"c0519d2f15fa3195ab74f19d26959dfebd3df6d4","reason":"Integration records the independently accepted NO_CHANGE observation only; Renderer R6D-A6 remains held for a separate CEO one-assertion edit release, with no product or gate action implied."}
+    },
+    {
+      "eventKey": {"authorityCommit":"d3f2c47601bb40fcb09d5d20377bcbe1fe06b532","taskId":"PLAY-085","routeId":"integration-v4:play-085-currentd3f2-final-state-overlay-adoption-execution-owner-correction-v1","trigger":"delegation_acknowledgement_failed","candidateOrResultCommit":"d3f2c47601bb40fcb09d5d20377bcbe1fe06b532"},
+      "receiptPath": "docs/production/evidence/PLAY-089/game009-r6d-a6-gameplay-r4-operating-review-v1/GAMEPLAY-ADOPTION-R4-OBSERVATION-RECEIPT.json",
+      "receiptSha256": "5d320bb30051c51f4ea107ac397359fbdad10c511ba4d10cd65cf1da1eb1f1d7",
+      "decision": "RETURN",
+      "disposition": {"status":"applied","authorityCommit":"c0519d2f15fa3195ab74f19d26959dfebd3df6d4","reason":"Integration records the independently accepted RETURN and limits recovery to one corrected ACK amendment bound to the exact execution-owner-correction-v1 routeId, preserving the nine-invocation zero-mutation failure and no-retry boundary."}
     }
   ]
 }

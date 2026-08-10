@@ -32,6 +32,7 @@ These instructions apply to every task in this repository and every linked workt
 | `codex/citysim-playtest-single-angle` | `.agents/skills/verify-citysim-playability/SKILL.md` |
 | `codex/citysim-ui-input` | `.agents/skills/build-citysim-ui-input/SKILL.md` |
 | `codex/citysim-ui-g003-current6d` | `.agents/skills/build-citysim-ui-input/SKILL.md` |
+| `codex/citysim-ui-input-game014-currentcc21` | `.agents/skills/build-citysim-ui-input/SKILL.md` |
 | `codex/citysim-simulation-platform` | `.agents/skills/evolve-citysim-simulation/SKILL.md` |
 | `codex/citysim-simulation-g003-current6d` | `.agents/skills/evolve-citysim-simulation/SKILL.md` |
 | `codex/citysim-playtest-quality` | `.agents/skills/verify-citysim-playability/SKILL.md` |

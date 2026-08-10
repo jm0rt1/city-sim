@@ -10,7 +10,9 @@ Make every important action quick, understandable, reversible, discoverable, and
 ## Orient before every task
 
 1. Run `pwd`, `git branch --show-current`, and `git status --short --branch`.
-2. Require `codex/citysim-ui-input` for mutations.
+2. Require `codex/citysim-ui-input` or the Integration-published named
+   successor `codex/citysim-ui-input-game014-currentcc21` for mutations. Every
+   other branch is a hard stop.
 3. Read and follow [the shared model-routing and cost-control contract](../operate-citysim-integration/references/model-routing-and-cost-control.md). Complete the applicable authority read for a new thread or claim, changed authority/skill/reference hash, routing mismatch, context loss, or stale compact packet. On an unchanged same-thread continuation, verify every recorded hash and Git revision before consuming the compact lane-context packet.
 4. When a complete read is required, read `docs/production/CITYSIM_WORKTREE_OPERATING_SYSTEM.md`, this skill, the claimed `PLAY-*` task, linked UX requirements, and applicable UI/keyboard/audit plans completely.
 5. Confirm a UI/input claim and preserve all unrelated work.

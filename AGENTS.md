@@ -15,6 +15,7 @@ These instructions apply to every task in this repository and every linked workt
 | `codex/citysim-gameplay-g003-current6d` | `.agents/skills/build-citysim-gameplay-loop/SKILL.md` |
 | `codex/citysim-world-rendering` | `.agents/skills/render-citysim-world/SKILL.md` |
 | `codex/citysim-world-rendering-r4b-current` | `.agents/skills/render-citysim-world/SKILL.md` |
+| `codex/citysim-world-rendering-r6-current302` | `.agents/skills/render-citysim-world/SKILL.md` |
 | `codex/citysim-world-art` | `.agents/skills/produce-citysim-world-art/SKILL.md` |
 | `codex/citysim-world-art-east` | `.agents/skills/produce-citysim-world-art/SKILL.md` |
 | `codex/citysim-world-art-south` | `.agents/skills/produce-citysim-world-art/SKILL.md` |

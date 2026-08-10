@@ -14,6 +14,7 @@ Make the city dominant, readable, alive, and truthful. Visual spectacle must imp
    active claim and a validated Integration route explicitly bind the current
    branch as a named clean successor. Current named successors are
    `codex/citysim-world-rendering-r4b-current` and
+   `codex/citysim-world-rendering-r6-current302` and
    `codex/citysim-world-rendering-single-angle`; any other branch is a hard stop.
 3. Read and follow [the shared model-routing and cost-control contract](../operate-citysim-integration/references/model-routing-and-cost-control.md). Complete the applicable authority read for a new thread or claim, changed authority/skill/reference hash, routing mismatch, context loss, or stale compact packet. On an unchanged same-thread continuation, verify every recorded hash and Git revision before consuming the compact lane-context packet.
 4. When a complete read is required, read `docs/production/CITYSIM_WORKTREE_OPERATING_SYSTEM.md`, this skill, the claimed `PLAY-*` task, linked art/technical requirements, relevant visual plan, and required conditional references completely.

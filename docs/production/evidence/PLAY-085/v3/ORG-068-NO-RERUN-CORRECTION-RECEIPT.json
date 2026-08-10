@@ -1,0 +1,103 @@
+{
+  "schema": 1,
+  "receiptId": "ORG-068",
+  "taskId": "PLAY-085",
+  "disposition": "CORRECTED_READY_FOR_INDEPENDENT_FOCUSED_RESULT_REVIEW",
+  "scope": "no_rerun_focused_evidence_identity_correction_only",
+  "authority": {
+    "integrationMaster": "18d4630d850b294ba4f9b92039e5d11344278212",
+    "candidateCommit": "db4eec76dc0c1fe45e7296301c18250c387fb474",
+    "candidateBranch": "codex/citysim-gameplay-loop",
+    "candidateWorktree": "/Users/James/.codex/worktrees/73f1/city-sim"
+  },
+  "routeBinding": {
+    "routeId": "gameplay-v12:play-085-db4-focused-verification-current-master18d-v1",
+    "route": {
+      "path": "/private/tmp/ORG-064-PLAY-085-DB4-FOCUSED-VERIFICATION-ROUTE.json",
+      "rawSha256": "b84469db91087bfc61b65c67f5e025bd91cf5182b06f83763719b7bd32a9df86",
+      "canonicalSha256": "62bbc3a8bea2e2a4dca9011c72b1d9c7e22ccfe557718010cd1f552983807dcd"
+    },
+    "dispatch": {
+      "path": "/private/tmp/ORG-064-PLAY-085-DB4-FOCUSED-VERIFICATION-DISPATCH.json",
+      "rawSha256": "52dbbeb4cfa2ada3777add733dcc5787ae3c3f816285db4feb8a632954a8dd3c",
+      "canonicalSha256": "d3f8e2a99c67831195d27f08fd03db4da1651b35d652a4a10b16f99db3b86ab0"
+    }
+  },
+  "authoritativeSource": {
+    "kind": "retained_codex_function_call_output",
+    "sessionPath": "/Users/James/.codex/sessions/2026/07/18/rollout-2026-07-18T14-38-58-019f7686-4491-7891-86a6-95a78d67e5c8.jsonl",
+    "lineNumber": 159072,
+    "recordSha256": "f80bc78e35a79a1121efecfc4da469e6a3abb21fd02066e99655fdc73926b917",
+    "timestamp": "2026-08-10T09:21:40.939Z",
+    "payloadId": "fco_019feafa-504b-78f2-9218-38a54e6695e7",
+    "callId": "call_yw8pT4NRsnGHX29PXM838CVM",
+    "chunkId": "55f43c",
+    "transport": "combined_output_stream",
+    "stderrSeparatelyAvailable": false
+  },
+  "correction": {
+    "supersededErroneousSha256": "0f631a3177f3d00c48c4815df1117fc7d61b1660d3f37c1b76f9a093340ed84c",
+    "authoritativeCapturedOutputSha256": "0f631a3177f3d00c48c4815df1117fc7d61b1660d3f37c1b76f9a093340ed84e",
+    "capturedOutputByteCount": 15446,
+    "reason": "The retained function-call output re-hashes to the authoritative value ending ed84e. The alternate value ending ed84c appeared only in a later management relay and is superseded.",
+    "productCommandRerun": false,
+    "additionalAttemptConsumed": false
+  },
+  "focusedResult": {
+    "command": "CLANG_MODULE_CACHE_PATH=/private/tmp/PLAY-047-PLAY-085-clang-cache SWIFT_MODULECACHE_PATH=/private/tmp/PLAY-047-PLAY-085-swift-cache SWIFTPM_MODULECACHE_OVERRIDE=/private/tmp/PLAY-047-PLAY-085-swift-cache swift test --package-path Native/CitySimNative --scratch-path /private/tmp/PLAY-047-PLAY-085-scratch --filter GameplayLoopTests",
+    "attemptCount": 1,
+    "exitCode": 0,
+    "testsExecuted": 55,
+    "testsPassed": 55,
+    "failures": 0,
+    "unexpectedFailures": 0,
+    "combinedOutputByteCount": 15446,
+    "combinedOutputSha256": "0f631a3177f3d00c48c4815df1117fc7d61b1660d3f37c1b76f9a093340ed84e",
+    "finalSuiteLine": "Executed 55 tests, with 0 failures (0 unexpected) in 20.838 (20.843) seconds",
+    "noErrorTextObserved": true,
+    "proofLevel": "contained_smoke"
+  },
+  "candidate": {
+    "head": "db4eec76dc0c1fe45e7296301c18250c387fb474",
+    "indexClean": true,
+    "worktreeClean": true,
+    "files": [
+      {
+        "path": "Native/CitySimNative/Sources/CitySimNative/Models/CityGameState.swift",
+        "sha256": "7c5075bcb87f6b9cc3c94addf9b8d96faa9ce5c50ee56138279c5dfc0719f979"
+      },
+      {
+        "path": "Native/CitySimNative/Sources/CitySimNative/Services/CitySimulation.swift",
+        "sha256": "797b6bbc7d9a4747da8730e791726dcc2851c98713f56626795d8dbff49b0cd7"
+      },
+      {
+        "path": "Native/CitySimNative/Tests/CitySimNativeTests/GameplayLoopTests.swift",
+        "sha256": "94beb0478723f9db162ec873917f81a6bc2b32f379598b99cb63b9a110364532"
+      },
+      {
+        "path": "docs/production/evidence/PLAY-085/v3/EXECUTION-ACCOUNTING.json",
+        "sha256": "ccb934b4aafdf8cb8ffe3d54658776aa4eed284c90e020eb3165dc02b0141f5c"
+      }
+    ]
+  },
+  "limitations": [
+    "focused_command_evidence_only",
+    "combined_transport_has_no_separate_stderr_hash",
+    "not_full_suite",
+    "not_staged_build",
+    "not_real_app_qa",
+    "not_integration_acceptance",
+    "not_product_acceptance",
+    "not_release_acceptance"
+  ],
+  "executionAccounting": {
+    "productCommandsRunForCorrection": 0,
+    "swiftPMRunsForCorrection": 0,
+    "testsRunForCorrection": 0,
+    "buildsRunForCorrection": 0,
+    "appLaunchesForCorrection": 0,
+    "candidateFilesChanged": 0,
+    "controlPlaneReceiptFilesChanged": 1,
+    "nextOwner": "independent_cto_focused_result_reviewer"
+  }
+}

@@ -1,0 +1,173 @@
+{
+  "assignments": [
+    {
+      "modelRoute": {
+        "assignment": {
+          "branch": "codex/citysim-gameplay-loop",
+          "expectedHead": "31e9c15fcc47b4e0646db781386af0e1d463d417",
+          "featureAuthorThreadId": "019fe8f2-43ac-7700-9eaf-e1918d933a35",
+          "finalQAOwnership": false,
+          "sharedAuthorityOwnership": false,
+          "subjectiveJudgmentRequired": false,
+          "threadId": "019fe8f2-43ac-7700-9eaf-e1918d933a35",
+          "worktree": "/Users/James/.codex/worktrees/73f1/city-sim"
+        },
+        "authority": {
+          "authorityCommit": "31e9c15fcc47b4e0646db781386af0e1d463d417",
+          "baseCommit": "939258b37fb678ba182edd6a24eb2725c706adab",
+          "claim": {
+            "path": "docs/production/claims/PLAY-085.gameplay-loop-v3.md",
+            "sha256": "069ffb70abfbd9044d0283fd96dde0c9d67e2b78b9f69a62f84a74615f37bb72"
+          },
+          "immutableInputs": [
+            {
+              "path": "docs/production/decisions/CONTRACT-022-durable-storm-recovery-ownership.md",
+              "sha256": "f7e921560ec6254ce6ecb3b0031394f7324e58a7e34abb65aa4c69d5502d3a64"
+            },
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "1eb7170b81e11753e7c9173298c6d45c02d5a2ade6df0ef8b73bdcaf690a2acd"
+            },
+            {
+              "path": "docs/production/CITYSIM_WORKTREE_OPERATING_SYSTEM.md",
+              "sha256": "1d1bcd0e3ca915bd8fc5b5b3676613e7213ea5855f01c77412c93ef15e6c4117"
+            }
+          ]
+        },
+        "boundedDeliverable": "Implement or repair one gameplay-owned consequence and recovery slice using existing simulation and persistence APIs, with deterministic scenario/replay/fingerprint/save-resume/undo evidence. No new public contract, UI, renderer, art, migration, admission, runtime, or production change. Consolidate only the existing uncommitted claim-owned changes into one coherent local checkpoint; do not widen paths or integrate.",
+        "classification": "LUNA_IMPLEMENTATION",
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {
+              "path": "docs/production/claims/PLAY-085.gameplay-loop-v3.md",
+              "sha256": "069ffb70abfbd9044d0283fd96dde0c9d67e2b78b9f69a62f84a74615f37bb72"
+            },
+            {
+              "path": "docs/production/decisions/CONTRACT-022-durable-storm-recovery-ownership.md",
+              "sha256": "f7e921560ec6254ce6ecb3b0031394f7324e58a7e34abb65aa4c69d5502d3a64"
+            },
+            {
+              "path": "docs/production/decisions/CONTRACT-022-durable-storm-recovery-ownership.md",
+              "sha256": "f7e921560ec6254ce6ecb3b0031394f7324e58a7e34abb65aa4c69d5502d3a64"
+            },
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "1eb7170b81e11753e7c9173298c6d45c02d5a2ade6df0ef8b73bdcaf690a2acd"
+            },
+            {
+              "path": "docs/production/CITYSIM_WORKTREE_OPERATING_SYSTEM.md",
+              "sha256": "1d1bcd0e3ca915bd8fc5b5b3676613e7213ea5855f01c77412c93ef15e6c4117"
+            }
+          ]
+        },
+        "effort": "high",
+        "escalationTriggers": [
+          "shared_contract_or_schema_decision",
+          "unresolved_product_visual_or_interaction_judgment",
+          "path_outside_claim",
+          "baseline_or_candidate_identity_mismatch",
+          "failure_outside_focused_scope",
+          "save_or_migration_uncertainty",
+          "cross_lane_semantic_conflict",
+          "two_unsuccessful_repair_attempts",
+          "subjective_acceptance_required"
+        ],
+        "expectedResult": {
+          "commitMessagePattern": "PLAY-085:",
+          "commitRequired": true,
+          "evidencePaths": [
+            "docs/production/evidence/PLAY-085/v3"
+          ]
+        },
+        "independentReviewer": {
+          "effort": "high",
+          "model": "gpt-5.6-sol",
+          "required": true,
+          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8"
+        },
+        "model": "gpt-5.6-luna",
+        "packetKind": "implementation",
+        "pathPolicy": {
+          "allowed": [
+            "Native/CitySimNative/Sources/CitySimNative/Models/CityGameState.swift",
+            "Native/CitySimNative/Sources/CitySimNative/Services/CitySimulation.swift",
+            "Native/CitySimNative/Tests/CitySimNativeTests/CitySimulationTests.swift",
+            "Native/CitySimNative/Tests/CitySimNativeTests/GameplayLoopTests.swift",
+            "docs/production/evidence/PLAY-085/v3"
+          ],
+          "claimOwnedRoots": [
+            "Native/CitySimNative/Sources/CitySimNative/Models/CityGameState.swift",
+            "Native/CitySimNative/Sources/CitySimNative/Services/CitySimulation.swift",
+            "Native/CitySimNative/Tests/CitySimNativeTests",
+            "docs/production/evidence/PLAY-085/v3"
+          ],
+          "forbidden": [
+            ".agents/skills",
+            "docs/production/claims",
+            "docs/production/decisions",
+            "docs/production/evidence/INTEGRATION",
+            "Native/CitySimNative/Package.swift",
+            "Native/CitySimNative/Resources",
+            "Native/CitySimNative/WorldArt",
+            "script/build_and_run.sh"
+          ]
+        },
+        "proofPolicy": {
+          "architectureState": "frozen_reference",
+          "behavioralCommands": [
+            "swift test --package-path Native/CitySimNative --filter CitySimulationTests"
+          ],
+          "deliverableClaims": [
+            "static_structure",
+            "executable_behavior",
+            "deterministic_output"
+          ],
+          "focusedProofLevel": "deterministic_replay",
+          "fullProofLevel": "deterministic_replay",
+          "prohibitedSubstitutions": [
+            "source_token_presence_for_execution",
+            "ast_shape_for_runtime_success",
+            "manifest_or_prose_for_rendered_pixels",
+            "unit_tests_for_visual_acceptance",
+            "worker_self_report_for_independent_acceptance"
+          ],
+          "referenceImplementation": {
+            "path": "docs/production/decisions/CONTRACT-022-durable-storm-recovery-ownership.md",
+            "sha256": "f7e921560ec6254ce6ecb3b0031394f7324e58a7e34abb65aa4c69d5502d3a64"
+          }
+        },
+        "rationale": "Bounded Gameplay implementation of the frozen VS-001 consequence/recovery slice at the synchronized current-master head. Preserve the existing public contracts, seed progression, identities, event timing, and save schema while making one severe-storm recovery path deterministic and legible. This is a continuation from retained pre-master head 939258b37fb678ba182edd6a24eb2725c706adab to current claim-bearing master 31e9c15fcc47b4e0646db781386af0e1d463d417; preserve and commit only the already-present claim-owned diff.",
+        "routeId": "gameplay-v5:play-085-vs001-consequence-recovery-master31e9-continuation-v1",
+        "schema": 2,
+        "stopCondition": "Stop at the first identity, claim, path, contract, admission, runtime, visual, save, or cross-lane ambiguity; preserve the clean checkpoint and escalate. Never edit shared authority, source art, resources, admission, runtime selectors, production state, launch the app, integrate, push, or self-accept. Stop if the pre-existing dirty diff is not exactly claim-owned, if any new product scope is proposed, or if the worker cannot produce one coherent focused checkpoint.",
+        "taskId": "PLAY-085",
+        "validation": {
+          "focusedCommands": [
+            "swift test --package-path Native/CitySimNative --filter CitySimulationTests",
+            "git diff --check 31e9c15fcc47b4e0646db781386af0e1d463d417..HEAD"
+          ],
+          "focusedGateOwner": {
+            "role": "play-085-gameplay-focused",
+            "threadId": "019fe8f2-43ac-7700-9eaf-e1918d933a35"
+          },
+          "fullCommands": [
+            "swift test --package-path Native/CitySimNative",
+            "./script/build_and_run.sh --verify",
+            "fresh-player real-app VS-001 diagnose-adjust-recover journey"
+          ],
+          "fullGateOwner": {
+            "effort": "high",
+            "model": "gpt-5.6-sol",
+            "role": "integration-aggregate-full-gate",
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8"
+          }
+        }
+      },
+      "modelRouteSha256": "b0ae6eb9ef01f1ae65b64a53a42cfc77348d702fac1cff003a30ad566f723ded"
+    }
+  ],
+  "authorityCommit": "31e9c15fcc47b4e0646db781386af0e1d463d417",
+  "schema": 2
+}

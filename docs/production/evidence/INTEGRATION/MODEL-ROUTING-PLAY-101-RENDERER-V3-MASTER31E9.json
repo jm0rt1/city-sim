@@ -1,0 +1,199 @@
+{
+  "assignments": [
+    {
+      "modelRoute": {
+        "assignment": {
+          "branch": "codex/citysim-world-rendering",
+          "expectedHead": "31e9c15fcc47b4e0646db781386af0e1d463d417",
+          "featureAuthorThreadId": "019fe8f2-43ac-7700-9eaf-e173f43a569c",
+          "finalQAOwnership": false,
+          "sharedAuthorityOwnership": false,
+          "subjectiveJudgmentRequired": false,
+          "threadId": "019fe8f2-43ac-7700-9eaf-e173f43a569c",
+          "worktree": "/Users/James/.codex/worktrees/3db4/city-sim"
+        },
+        "authority": {
+          "authorityCommit": "31e9c15fcc47b4e0646db781386af0e1d463d417",
+          "baseCommit": "939258b37fb678ba182edd6a24eb2725c706adab",
+          "claim": {
+            "path": "docs/production/claims/PLAY-101.world-rendering-candidate-neutral-v2.md",
+            "sha256": "9d48531b0f85fba0af7b5f3f1e8572310fcf9ac424d55541d701068c9bfe790e"
+          },
+          "immutableInputs": [
+            {
+              "path": "docs/production/decisions/CONTRACT-025-authored-four-view-2-5d-building-art.md",
+              "sha256": "4e8ab63173d67581332e7d27730b97315906fda4e29b999969456441809479ed"
+            },
+            {
+              "path": "docs/production/decisions/CONTRACT-026-authored-four-view-registration.md",
+              "sha256": "4781de72429a1f691b9226f7f7668b170b278a4ccd171ac4ea02f5e1df9176eb"
+            },
+            {
+              "path": "docs/production/decisions/CONTRACT-027-world-rotation-authored-view-mapping.md",
+              "sha256": "693831b3d8fac49330ac21adce626b632351c7eeba901ebff6719687e5f330e7"
+            },
+            {
+              "path": "docs/production/decisions/CONTRACT-028-alpha-aware-lod-chroma.md",
+              "sha256": "f8b80a98b07029a51b8e61701c85017bd82c8bb0b6c967da6d1fa7fae631da7d"
+            },
+            {
+              "path": ".agents/skills/render-citysim-world/SKILL.md",
+              "sha256": "1e3c6e261113f0b33b13a2515bd58429d11c684a2ed9a6ef692b2a78cbc68632"
+            },
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "1eb7170b81e11753e7c9173298c6d45c02d5a2ade6df0ef8b73bdcaf690a2acd"
+            },
+            {
+              "path": "docs/production/CITYSIM_WORKTREE_OPERATING_SYSTEM.md",
+              "sha256": "1d1bcd0e3ca915bd8fc5b5b3676613e7213ea5855f01c77412c93ef15e6c4117"
+            }
+          ]
+        },
+        "boundedDeliverable": "Extend only the test-local authored-view intake/quarantine fixture and evidence for 43 identities, 172 directions, 516 LODs, stable identity/variant keys, frontage mapping, and fail-closed duplicate/alias/transform invariants. South remains 0/43 admitted; no Sources, Resources, runtime selector, manifest, or art mutation. Consolidate only the existing uncommitted claim-owned changes into one coherent local checkpoint; do not widen paths or integrate.",
+        "classification": "LUNA_MECHANICAL",
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {
+              "path": "docs/production/claims/PLAY-101.world-rendering-candidate-neutral-v2.md",
+              "sha256": "9d48531b0f85fba0af7b5f3f1e8572310fcf9ac424d55541d701068c9bfe790e"
+            },
+            {
+              "path": "docs/production/decisions/CONTRACT-027-world-rotation-authored-view-mapping.md",
+              "sha256": "693831b3d8fac49330ac21adce626b632351c7eeba901ebff6719687e5f330e7"
+            },
+            {
+              "path": "docs/production/decisions/CONTRACT-025-authored-four-view-2-5d-building-art.md",
+              "sha256": "4e8ab63173d67581332e7d27730b97315906fda4e29b999969456441809479ed"
+            },
+            {
+              "path": "docs/production/decisions/CONTRACT-026-authored-four-view-registration.md",
+              "sha256": "4781de72429a1f691b9226f7f7668b170b278a4ccd171ac4ea02f5e1df9176eb"
+            },
+            {
+              "path": "docs/production/decisions/CONTRACT-027-world-rotation-authored-view-mapping.md",
+              "sha256": "693831b3d8fac49330ac21adce626b632351c7eeba901ebff6719687e5f330e7"
+            },
+            {
+              "path": "docs/production/decisions/CONTRACT-028-alpha-aware-lod-chroma.md",
+              "sha256": "f8b80a98b07029a51b8e61701c85017bd82c8bb0b6c967da6d1fa7fae631da7d"
+            },
+            {
+              "path": ".agents/skills/render-citysim-world/SKILL.md",
+              "sha256": "1e3c6e261113f0b33b13a2515bd58429d11c684a2ed9a6ef692b2a78cbc68632"
+            },
+            {
+              "path": ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+              "sha256": "1eb7170b81e11753e7c9173298c6d45c02d5a2ade6df0ef8b73bdcaf690a2acd"
+            },
+            {
+              "path": "docs/production/CITYSIM_WORKTREE_OPERATING_SYSTEM.md",
+              "sha256": "1d1bcd0e3ca915bd8fc5b5b3676613e7213ea5855f01c77412c93ef15e6c4117"
+            }
+          ]
+        },
+        "effort": "medium",
+        "escalationTriggers": [
+          "shared_contract_or_schema_decision",
+          "unresolved_product_visual_or_interaction_judgment",
+          "path_outside_claim",
+          "baseline_or_candidate_identity_mismatch",
+          "failure_outside_focused_scope",
+          "save_or_migration_uncertainty",
+          "cross_lane_semantic_conflict",
+          "two_unsuccessful_repair_attempts",
+          "subjective_acceptance_required"
+        ],
+        "expectedResult": {
+          "commitMessagePattern": "PLAY-101:",
+          "commitRequired": true,
+          "evidencePaths": [
+            "docs/production/evidence/PLAY-101/v2"
+          ]
+        },
+        "independentReviewer": {
+          "effort": "high",
+          "model": "gpt-5.6-sol",
+          "required": true,
+          "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8"
+        },
+        "model": "gpt-5.6-luna",
+        "packetKind": "mechanical",
+        "pathPolicy": {
+          "allowed": [
+            "Native/CitySimNative/Tests/CitySimNativeTests/SingleAngleWorldArtTests.swift",
+            "docs/production/evidence/PLAY-101/v2"
+          ],
+          "claimOwnedRoots": [
+            "Native/CitySimNative/Tests/CitySimNativeTests/SingleAngleWorldArtTests.swift",
+            "docs/production/evidence/PLAY-101/v2"
+          ],
+          "forbidden": [
+            ".agents/skills",
+            "docs/production/claims",
+            "docs/production/decisions",
+            "docs/production/evidence/INTEGRATION",
+            "Native/CitySimNative/Package.swift",
+            "Native/CitySimNative/Resources",
+            "Native/CitySimNative/WorldArt",
+            "script/build_and_run.sh"
+          ]
+        },
+        "proofPolicy": {
+          "architectureState": "frozen_reference",
+          "behavioralCommands": [
+            "swift test --package-path Native/CitySimNative --filter SingleAngleWorldArtTests"
+          ],
+          "deliverableClaims": [
+            "static_structure",
+            "deterministic_output"
+          ],
+          "focusedProofLevel": "deterministic_replay",
+          "fullProofLevel": "deterministic_replay",
+          "prohibitedSubstitutions": [
+            "source_token_presence_for_execution",
+            "ast_shape_for_runtime_success",
+            "manifest_or_prose_for_rendered_pixels",
+            "unit_tests_for_visual_acceptance",
+            "worker_self_report_for_independent_acceptance"
+          ],
+          "referenceImplementation": {
+            "path": "docs/production/decisions/CONTRACT-027-world-rotation-authored-view-mapping.md",
+            "sha256": "693831b3d8fac49330ac21adce626b632351c7eeba901ebff6719687e5f330e7"
+          }
+        },
+        "rationale": "Candidate-neutral renderer intake preparation for the exact 43 identity x 4 authored-view x 3 LOD matrix at the synchronized current-master head. Validate identity/variant/frontage mapping, alias/transform rejection, quarantine shape, and deterministic handoff without ingesting pixels or activating runtime resources. This is a continuation from retained pre-master head 939258b37fb678ba182edd6a24eb2725c706adab to current claim-bearing master 31e9c15fcc47b4e0646db781386af0e1d463d417; preserve and commit only the already-present claim-owned diff.",
+        "routeId": "renderer-v3:play-101-authored-view-intake-master31e9-continuation-v1",
+        "schema": 2,
+        "stopCondition": "Stop at the first identity, claim, path, contract, admission, runtime, visual, save, or cross-lane ambiguity; preserve the clean checkpoint and escalate. Never edit shared authority, source art, resources, admission, runtime selectors, production state, launch the app, integrate, push, or self-accept. Stop if the pre-existing dirty diff is not exactly claim-owned, if any new product scope is proposed, or if the worker cannot produce one coherent focused checkpoint.",
+        "taskId": "PLAY-101",
+        "validation": {
+          "focusedCommands": [
+            "swift test --package-path Native/CitySimNative --filter SingleAngleWorldArtTests",
+            "git diff --check 31e9c15fcc47b4e0646db781386af0e1d463d417..HEAD"
+          ],
+          "focusedGateOwner": {
+            "role": "play-101-renderer-candidate-neutral-focused",
+            "threadId": "019fe8f2-43ac-7700-9eaf-e173f43a569c"
+          },
+          "fullCommands": [
+            "swift test --package-path Native/CitySimNative",
+            "./script/build_and_run.sh --verify",
+            "fresh aggregate resource and authored-view intake gate after lawful admission"
+          ],
+          "fullGateOwner": {
+            "effort": "high",
+            "model": "gpt-5.6-sol",
+            "role": "integration-aggregate-full-gate",
+            "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8"
+          }
+        }
+      },
+      "modelRouteSha256": "38958a2440105bf6817e355cf551e435aef3179daf2ffb59e8a501942ec1428f"
+    }
+  ],
+  "authorityCommit": "31e9c15fcc47b4e0646db781386af0e1d463d417",
+  "schema": 2
+}

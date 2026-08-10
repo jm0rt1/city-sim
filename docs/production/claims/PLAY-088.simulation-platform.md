@@ -3,12 +3,13 @@
 - **Title:** Prove storm-recovery persistence without rewriting history
 - **Lane:** Simulation platform
 - **Branch:** `codex/citysim-simulation-platform`
-- **Worktree:** `/Users/James/.codex/worktrees/e909/city-sim`
-- **Base authority:** Next published clean Integration commit containing this
-  claim and CONTRACT-022
+- **Worktree:** `/Users/James/.codex/worktrees/3706/city-sim`
+- **Expected worker HEAD:** `939258b37fb678ba182edd6a24eb2725c706adab`
+- **Base authority:** `939258b37fb678ba182edd6a24eb2725c706adab`
 - **Planned phase-A surfaces:** `docs/production/evidence/PLAY-088/` only
 - **Reserved phase-B surfaces:** One new simulation-owned
-  `StormRecoveryPlatformTests.swift`, task-local validators,
+  `Native/CitySimNative/Tests/CitySimNativeTests/StormRecoveryPlatformTests.swift`,
+  task-local validators,
   `docs/production/evidence/PLAY-088/`, and
   `docs/production/completed/PLAY-088.simulation-platform.md`
 - **Dependencies:** CONTRACT-022 now; exact integrated PLAY-085 revision-2

@@ -142,7 +142,7 @@ push, or gate movement follows from this claim.
 
 R6B consumed its sole authorized command and exited `1` during SwiftPM manifest compilation, before package or test execution, with `0` tests because `sandbox-exec` returned `sandbox_apply: Operation not permitted`. This is environmental evidence only and provides no Renderer or product judgment.
 
-R6C may begin only from HEAD `f95706c0246bf878934f3901e712d5ecaf3572bf`, empty index, no evidence/untracked bytes, and exactly:
+R6C execution may begin only from the exact governance commit containing this paragraph, as bound by `modelRoute.authority.authorityCommit`. That governance commit must have `eabbbede5b216736798b730f5100f00962e4ff74` as its first parent and `f95706c0246bf878934f3901e712d5ecaf3572bf` as its first-parent grandparent. The retained product/test diff was authored against `f95706c0246bf878934f3901e712d5ecaf3572bf` and must remain byte-identical at the execution-authority commit, with empty index, no evidence/untracked bytes, and exactly:
 - binary diff `17f349cbfcba2ee66702b89eb116e04cf9c3f2fc0f6838fa2a2990457ce9a0d3`
 - `CityScene.swift` `3b953c311eb39b7a2dd9c52267d853de3b4eb917846195fcbb6141bc59eabeb3`
 - `WorldRenderingTests.swift` `fa741d38566d67b6e79b245930197a6449c0059a07f313b21147e9ce0c9a74cf`

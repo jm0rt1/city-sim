@@ -20,6 +20,7 @@ assert SPEC and SPEC.loader
 MOD = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(MOD)
 ROOT = Path(__file__).resolve().parents[1]
+REPO_ROOT = Path(__file__).resolve().parents[4]
 REAL_POLICY = json.loads((ROOT / "references" / "triggered-operating-review-policy.json").read_text(encoding="utf-8"))
 H = "a" * 64
 C = "b" * 40
@@ -42,6 +43,92 @@ POLICY = {
         "candidate_handoff": {"requiredEvidence": ["handoffReceiptHash"], "allowedDecisions": ["NO_CHANGE"]},
     },
 }
+
+
+def _binding_for_dispatch(repo_root: Path, dispatch_path: str) -> dict:
+    dispatch_file = repo_root / dispatch_path
+    dispatch = json.loads(dispatch_file.read_text(encoding="utf-8"))
+    row = dispatch["assignments"][0]
+    route = row["modelRoute"]
+    claim = route["authority"]["claim"]
+    return {
+        "dispatchReceiptPath": dispatch_path,
+        "dispatchReceiptHash": hashlib.sha256(dispatch_file.read_bytes()).hexdigest(),
+        "modelRouteHash": row["modelRouteSha256"],
+        "claimPath": claim["path"],
+        "claimHash": claim["sha256"],
+        "expectedHead": route["assignment"]["expectedHead"],
+        "allowedPaths": route["pathPolicy"]["allowed"],
+    }
+
+
+def _init_git_repo(root: Path, branch: str = "codex/observed") -> tuple[str, str]:
+    subprocess.run(["git", "init", str(root)], check=True, capture_output=True)
+    subprocess.run(["git", "-C", str(root), "checkout", "-b", branch], check=True, capture_output=True)
+    subprocess.run(["git", "-C", str(root), "config", "user.email", "test@example.com"], check=True)
+    subprocess.run(["git", "-C", str(root), "config", "user.name", "Test"], check=True)
+    source = root / "file"
+    source.write_text("base\n", encoding="utf-8")
+    subprocess.run(["git", "-C", str(root), "add", "file"], check=True)
+    subprocess.run(["git", "-C", str(root), "commit", "-m", "base"], check=True, capture_output=True)
+    base = subprocess.run(
+        ["git", "-C", str(root), "rev-parse", "HEAD"],
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+    source.write_text("descendant\n", encoding="utf-8")
+    subprocess.run(["git", "-C", str(root), "add", "file"], check=True)
+    subprocess.run(["git", "-C", str(root), "commit", "-m", "descendant"], check=True, capture_output=True)
+    head = subprocess.run(
+        ["git", "-C", str(root), "rev-parse", "HEAD"],
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+    return base, head
+
+
+def _write_projection_dispatch(
+    authority_root: Path,
+    worktree: str | None,
+    branch: str,
+    expected_head: str,
+) -> tuple[dict, dict]:
+    assignment = {
+        "expectedHead": expected_head,
+        "featureAuthorThreadId": "worker",
+        "branch": branch,
+    }
+    if worktree is not None:
+        assignment["worktree"] = worktree
+    route = {
+        "authority": {"claim": {"path": "claim.md", "sha256": H}},
+        "assignment": assignment,
+        "pathPolicy": {"allowed": ["owned/path"]},
+        "validation": {
+            "focusedGateOwner": {"threadId": "worker"},
+            "fullGateOwner": {"threadId": "integration"},
+        },
+        "independentReviewer": {"required": True, "threadId": "integration"},
+    }
+    route_hash = MOD._canonical_sha256(route)
+    dispatch = {
+        "schema": 2,
+        "assignments": [{"modelRouteSha256": route_hash, "modelRoute": route}],
+    }
+    dispatch_path = authority_root / "dispatch.json"
+    dispatch_path.write_text(json.dumps(dispatch), encoding="utf-8")
+    binding = {
+        "dispatchReceiptPath": "dispatch.json",
+        "dispatchReceiptHash": hashlib.sha256(dispatch_path.read_bytes()).hexdigest(),
+        "modelRouteHash": route_hash,
+        "claimPath": "claim.md",
+        "claimHash": H,
+        "expectedHead": expected_head,
+        "allowedPaths": ["owned/path"],
+    }
+    return route, binding
 
 
 def _evidence(policy: dict, trigger: str) -> dict:
@@ -187,9 +274,15 @@ class OperatingReceiptTests(unittest.TestCase):
     def test_route_projection_rejects_skeletal_route(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
+            base, _ = _init_git_repo(root)
             route = {
                 "authority": {"claim": {"path": "claim.md", "sha256": H}},
-                "assignment": {"expectedHead": C, "featureAuthorThreadId": "worker"},
+                "assignment": {
+                    "expectedHead": base,
+                    "featureAuthorThreadId": "worker",
+                    "worktree": str(root),
+                    "branch": "codex/observed",
+                },
                 "pathPolicy": {"allowed": ["owned/path"]},
                 "validation": {
                     "focusedGateOwner": {"threadId": "worker"},
@@ -206,11 +299,139 @@ class OperatingReceiptTests(unittest.TestCase):
                 "modelRouteHash": route_hash,
                 "claimPath": "claim.md",
                 "claimHash": H,
-                "expectedHead": C,
+                "expectedHead": base,
                 "allowedPaths": ["owned/path"],
             }
             errors = MOD._route_projection_errors(binding, root)
             self.assertTrue(any("schema-2 route" in error or "validator is unavailable" in error for error in errors))
+
+    def test_current_durable_cross_root_and_same_root_product_routes_project(self):
+        dispatches = [
+            "docs/production/evidence/INTEGRATION/GAME-009-R6D-A6-PLAY-073-RENDERER-DISPATCH.json",
+            "docs/production/evidence/INTEGRATION/GAMEPLAY-ADOPTION-R4-PLAY-085-OVERLAY-DISPATCH.json",
+        ]
+        for dispatch_path in dispatches:
+            with self.subTest(dispatch=dispatch_path):
+                binding = _binding_for_dispatch(REPO_ROOT, dispatch_path)
+                self.assertEqual(MOD._route_projection_errors(binding, REPO_ROOT), [])
+
+    def test_route_projection_uses_assigned_git_root_and_expected_head_ancestry(self):
+        with tempfile.TemporaryDirectory() as authority_tmp, tempfile.TemporaryDirectory() as observed_tmp:
+            authority = Path(authority_tmp)
+            observed = Path(observed_tmp)
+            base, _ = _init_git_repo(observed)
+            route, binding = _write_projection_dispatch(
+                authority, str(observed), "codex/observed", base
+            )
+            validator = mock.Mock()
+            validator.validate_route.return_value = []
+            with mock.patch.object(MOD, "_load_model_route_validator", return_value=validator):
+                self.assertEqual(MOD._route_projection_errors(binding, authority), [])
+            projected_route, projected_root = validator.validate_route.call_args.args
+            self.assertEqual(projected_root, observed.resolve())
+            self.assertEqual(
+                projected_route["assignment"]["worktree"],
+                "/__citysim_schema_validation__/nonexistent",
+            )
+            self.assertEqual(route["assignment"]["worktree"], str(observed))
+            persisted = json.loads((authority / "dispatch.json").read_text(encoding="utf-8"))
+            self.assertEqual(
+                persisted["assignments"][0]["modelRoute"]["assignment"]["worktree"],
+                str(observed),
+            )
+
+    def test_route_projection_rejects_missing_worktree_before_schema_validation(self):
+        with tempfile.TemporaryDirectory() as authority_tmp:
+            authority = Path(authority_tmp)
+            _, binding = _write_projection_dispatch(
+                authority, str(authority / "missing"), "codex/observed", C
+            )
+            validator = mock.Mock()
+            with mock.patch.object(MOD, "_load_model_route_validator", return_value=validator):
+                errors = MOD._route_projection_errors(binding, authority)
+            self.assertIn("observed route assignment.worktree must be an existing directory", errors)
+            validator.validate_route.assert_not_called()
+
+    def test_route_projection_rejects_non_git_worktree_before_schema_validation(self):
+        with tempfile.TemporaryDirectory() as authority_tmp, tempfile.TemporaryDirectory() as observed_tmp:
+            authority = Path(authority_tmp)
+            observed = Path(observed_tmp)
+            _, binding = _write_projection_dispatch(
+                authority, str(observed), "codex/observed", C
+            )
+            validator = mock.Mock()
+            with mock.patch.object(MOD, "_load_model_route_validator", return_value=validator):
+                errors = MOD._route_projection_errors(binding, authority)
+            self.assertIn("observed route assignment.worktree must be a Git repository", errors)
+            validator.validate_route.assert_not_called()
+
+    def test_route_projection_rejects_nested_non_root_git_path_before_schema_validation(self):
+        with tempfile.TemporaryDirectory() as authority_tmp, tempfile.TemporaryDirectory() as observed_tmp:
+            authority = Path(authority_tmp)
+            observed = Path(observed_tmp)
+            base, _ = _init_git_repo(observed)
+            nested = observed / "nested"
+            nested.mkdir()
+            _, binding = _write_projection_dispatch(
+                authority, str(nested), "codex/observed", base
+            )
+            validator = mock.Mock()
+            with mock.patch.object(MOD, "_load_model_route_validator", return_value=validator):
+                errors = MOD._route_projection_errors(binding, authority)
+            self.assertIn("observed route assignment.worktree must equal its Git top level", errors)
+            validator.validate_route.assert_not_called()
+
+    def test_route_projection_rejects_observed_branch_mismatch(self):
+        with tempfile.TemporaryDirectory() as authority_tmp, tempfile.TemporaryDirectory() as observed_tmp:
+            authority = Path(authority_tmp)
+            observed = Path(observed_tmp)
+            base, _ = _init_git_repo(observed)
+            _, binding = _write_projection_dispatch(
+                authority, str(observed), "codex/wrong", base
+            )
+            validator = mock.Mock()
+            validator.validate_route.return_value = []
+            with mock.patch.object(MOD, "_load_model_route_validator", return_value=validator):
+                errors = MOD._route_projection_errors(binding, authority)
+            self.assertIn("live worker/output branch must exactly match the model route branch", errors)
+
+    def test_route_projection_rejects_non_ancestor_expected_head(self):
+        with tempfile.TemporaryDirectory() as authority_tmp, tempfile.TemporaryDirectory() as observed_tmp:
+            authority = Path(authority_tmp)
+            observed = Path(observed_tmp)
+            _init_git_repo(observed)
+            _, binding = _write_projection_dispatch(
+                authority, str(observed), "codex/observed", "f" * 40
+            )
+            validator = mock.Mock()
+            validator.validate_route.return_value = []
+            with mock.patch.object(MOD, "_load_model_route_validator", return_value=validator):
+                errors = MOD._route_projection_errors(binding, authority)
+            self.assertIn(
+                "model route expected HEAD must be an ancestor of live worker/output HEAD",
+                errors,
+            )
+
+    def test_route_projection_reports_observed_byte_hash_mismatch(self):
+        with tempfile.TemporaryDirectory() as authority_tmp, tempfile.TemporaryDirectory() as observed_tmp:
+            authority = Path(authority_tmp)
+            observed = Path(observed_tmp)
+            base, _ = _init_git_repo(observed)
+            _, binding = _write_projection_dispatch(
+                authority, str(observed), "codex/observed", base
+            )
+            validator = mock.Mock()
+            validator.validate_route.return_value = [
+                "authority.immutableInputs[0] sha256 mismatch for observed bytes"
+            ]
+            with mock.patch.object(MOD, "_load_model_route_validator", return_value=validator):
+                errors = MOD._route_projection_errors(binding, authority)
+            self.assertIn(
+                "schema-2 route: authority.immutableInputs[0] sha256 mismatch for observed bytes",
+                errors,
+            )
+            _, projected_root = validator.validate_route.call_args.args
+            self.assertEqual(projected_root, observed.resolve())
 
     def test_required_repo_root_fails_closed(self):
         with tempfile.TemporaryDirectory() as tmp:

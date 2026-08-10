@@ -119,7 +119,7 @@ def _is_git_repo(repo_root: Path) -> bool:
         return False
     try:
         return Path(result.stdout.strip()).resolve() == repo_root.resolve()
-    except OSError:
+    except (OSError, RuntimeError):
         return False
 
 
@@ -222,6 +222,33 @@ def _load_model_route_validator(repo_root: Path) -> object:
     return module
 
 
+def _observed_route_root(assignment: dict) -> tuple[Path | None, list[str]]:
+    supplied = assignment.get("worktree")
+    if not isinstance(supplied, str) or not supplied or not Path(supplied).is_absolute():
+        return None, ["observed route assignment.worktree must be an absolute path"]
+    try:
+        observed_root = Path(supplied).resolve()
+    except (OSError, RuntimeError):
+        return None, ["observed route assignment.worktree must resolve"]
+    if not observed_root.is_dir():
+        return None, ["observed route assignment.worktree must be an existing directory"]
+    top_level = subprocess.run(
+        ["git", "-C", str(observed_root), "rev-parse", "--show-toplevel"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if top_level.returncode != 0:
+        return None, ["observed route assignment.worktree must be a Git repository"]
+    try:
+        git_root = Path(top_level.stdout.strip()).resolve()
+    except OSError:
+        return None, ["observed route Git top level must resolve"]
+    if git_root != observed_root:
+        return None, ["observed route assignment.worktree must equal its Git top level"]
+    return observed_root, []
+
+
 def _route_projection_errors(
     binding: dict,
     repo_root: Path,
@@ -254,14 +281,21 @@ def _route_projection_errors(
     focused = route.get("validation", {}).get("focusedGateOwner", {}) if isinstance(route.get("validation"), dict) else {}
     full = route.get("validation", {}).get("fullGateOwner", {}) if isinstance(route.get("validation"), dict) else {}
     reviewer = route.get("independentReviewer") if isinstance(route.get("independentReviewer"), dict) else {}
-    try:
-        route_validator = _load_model_route_validator(repo_root)
-        schema_route = copy.deepcopy(route)
-        if isinstance(schema_route.get("assignment"), dict):
-            schema_route["assignment"]["worktree"] = "/__citysim_schema_validation__/nonexistent"
-        errors.extend(f"schema-2 route: {error}" for error in route_validator.validate_route(schema_route, repo_root))
-    except (OSError, RuntimeError) as exc:
-        errors.append(str(exc))
+    observed_root, observed_root_errors = _observed_route_root(route_assignment)
+    errors.extend(observed_root_errors)
+    if observed_root is not None:
+        try:
+            route_validator = _load_model_route_validator(repo_root)
+            schema_route = copy.deepcopy(route)
+            if isinstance(schema_route.get("assignment"), dict):
+                schema_route["assignment"]["worktree"] = "/__citysim_schema_validation__/nonexistent"
+            errors.extend(
+                f"schema-2 route: {error}"
+                for error in route_validator.validate_route(schema_route, observed_root)
+            )
+            errors.extend(_output_identity_errors(observed_root, route_assignment))
+        except (OSError, RuntimeError) as exc:
+            errors.append(str(exc))
     if claim.get("path") != binding["claimPath"] or claim.get("sha256") != binding["claimHash"]:
         errors.append("binding claim must exactly project from model route")
     if isinstance(event_key, dict):

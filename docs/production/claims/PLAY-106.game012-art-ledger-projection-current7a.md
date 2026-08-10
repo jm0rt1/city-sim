@@ -7,12 +7,15 @@
 - **Worktree:** `/Users/James/.codex/worktrees/5d3b/city-sim`
 - **Base authority:** `7a6310e7ffcea8a2932a5f3cc5421744b67d8960`
 - **Exclusive roots:** `docs/production/evidence/PLAY-106/game-012-a1/` only.
-- **Deliverable:** A temp-only, machine-readable projection of exactly 43 logical
+- **Deliverable:** Durable branch-local candidate evidence containing a machine-readable
+  projection of exactly 43 logical
   identities × north/east/south/west = 172 source-attempt rows, with 516 downstream
   LOD obligations represented separately and blocked. The route binds all source
   evidence by path/ref/SHA and emits only known, missing, contradictory, or
-  fail-closed classifications. It does not create a canonical ledger, source
-  admission, family semantic judgment, art bytes, normalized/LOD bytes, or a gate.
+  fail-closed classifications. Eligibility, source-admission, readiness, and
+  family-semantic fields remain `UNKNOWN` or `HOLD`. This candidate evidence does
+  not create the canonical ledger, shared authority, source admission, readiness,
+  production selection, art bytes, normalized/LOD bytes, or a gate.
 - **Required row fields:** identity, family, level, variant, direction, owner/claim/ref,
   attempt count, ordered attempt/receipt/provenance hashes, terminal/return/unknown
   classification, source integrity, mechanical normalization, frontier visual judgment,
@@ -24,10 +27,13 @@
   fail-closed inputs. A generic family-semantic validator is MISSING unless an exact
   authoritative contract is bound. No mirroring, rotation, alias, inferred attempt,
   visual judgment, admission, renderer/runtime/production change, ImageGen,
-  normalization, app, commit, push, or self-acceptance is authorized.
+  normalization, app, push, or self-acceptance is authorized. Exactly one coherent
+  `PLAY-106:` candidate-projection commit limited to the exclusive evidence root is
+  required after a separately approved route and exact zero-mutation acknowledgement.
 
-Focused proof is schema/semantic validation of the temp-only projection and must prove
-43/172/516 counts, uniqueness, direction exclusivity, no false eligible row, no gate
-demotion, and deterministic next-owner classification. Independent Sol/high review is
-required before any projection; a Luna worker may only execute after a separately
-validated route and exact zero-mutation acknowledgement.
+Focused proof is static JSON/schema/semantic validation of the branch-local candidate
+projection and must prove 43/172/516 counts, uniqueness, direction exclusivity, no
+false eligible row, no gate demotion, deterministic next-owner classification, exact
+one-root staging, and a clean staged diff check. Independent Sol/high review is required
+before any projection; a Luna worker may only execute after a separately validated
+route and exact zero-mutation acknowledgement.

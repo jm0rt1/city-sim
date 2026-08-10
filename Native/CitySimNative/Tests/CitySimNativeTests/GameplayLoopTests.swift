@@ -3,6 +3,16 @@ import XCTest
 @testable import CitySimNative
 
 final class GameplayLoopTests: XCTestCase {
+    private let stormSeed: UInt64 = 3
+    private let calmSeed: UInt64 = 0
+    private let expectedStormSeed: UInt64 = 2_088_359_638_719_790_806
+    private let expectedCalmSeed: UInt64 = 1_442_695_040_888_963_407
+    private let expectedTargets = [
+        GridCoordinate(x: 3, y: 10),
+        GridCoordinate(x: 6, y: 10),
+        GridCoordinate(x: 9, y: 10),
+    ]
+
     func testThreeActCadenceCreatesThreeCommercialAndIndustrialDecisions() throws {
         var commerce = CityGameState.newCity(seed: 42)
         try buildFirstValid(.commercial, in: &commerce)
@@ -1407,6 +1417,829 @@ final class GameplayLoopTests: XCTestCase {
         )
         XCTAssertEqual(store.overlay, .happiness)
         XCTAssertEqual(store.inspectorSection, .demand)
+    }
+
+    func testCurrentSevereStormScheduleSeedTitleAndEconomicEffectsAreFrozen() throws {
+        var offSchedule = stormReadyState(seed: stormSeed)
+        offSchedule.tick = 638
+        let offScheduleSeed = offSchedule.seed
+        CitySimulation.step(&offSchedule)
+        XCTAssertEqual(offSchedule.tick, 639)
+        XCTAssertEqual(offSchedule.seed, offScheduleSeed)
+        XCTAssertFalse(offSchedule.messages.contains { $0.title == "Severe Storm" })
+
+        var belowPopulationGate = stormReadyState(seed: stormSeed)
+        belowPopulationGate.population = 499
+        CitySimulation.step(&belowPopulationGate)
+        XCTAssertEqual(belowPopulationGate.tick, 640)
+        XCTAssertEqual(belowPopulationGate.seed, stormSeed)
+        XCTAssertFalse(belowPopulationGate.messages.contains { $0.title == "Severe Storm" })
+
+        var storm = stormReadyState(seed: stormSeed)
+        var calm = stormReadyState(seed: calmSeed)
+        CitySimulation.step(&storm)
+        CitySimulation.step(&calm)
+
+        XCTAssertEqual(storm.tick, 640)
+        XCTAssertEqual(calm.tick, 640)
+        XCTAssertEqual(storm.seed, expectedStormSeed)
+        XCTAssertEqual(calm.seed, expectedCalmSeed)
+        XCTAssertEqual(storm.treasury, calm.treasury - 2_000, accuracy: 0.000_001)
+        XCTAssertEqual(storm.happiness, calm.happiness - 3, accuracy: 0.000_001)
+        XCTAssertEqual(storm.messages.first?.title, "Severe Storm")
+        XCTAssertFalse(calm.messages.contains { $0.title == "Severe Storm" })
+        XCTAssertFalse(storm.messages.contains { $0.title == "State Growth Grant" })
+    }
+
+    func testSevereStormDamagesStableCompletedResidentialTargetsAndExplainsRemedy() throws {
+        var state = stormReadyState(seed: stormSeed)
+        var calm = stormReadyState(seed: calmSeed)
+
+        CitySimulation.step(&state)
+        CitySimulation.step(&calm)
+
+        let damaged = damagedResidentialCoordinates(in: state)
+        XCTAssertEqual(damaged, expectedTargets)
+        for coordinate in expectedTargets {
+            XCTAssertEqual(
+                try XCTUnwrap(state.tile(at: coordinate)?.condition),
+                0.718_703_703_703_703_7,
+                accuracy: 0.000_001
+            )
+            let prior = try XCTUnwrap(calm.tile(at: coordinate))
+            let after = try XCTUnwrap(state.tile(at: coordinate))
+            XCTAssertEqual(after.kind, prior.kind)
+            XCTAssertEqual(after.level, prior.level)
+            XCTAssertEqual(after.occupancy, prior.occupancy)
+            XCTAssertEqual(after.constructionProgress, prior.constructionProgress)
+        }
+        XCTAssertEqual(
+            state.tiles.filter {
+                $0.kind == .residential
+                    && $0.constructionProgress >= 1
+                    && $0.condition >= 0.75
+            }.count,
+            3
+        )
+
+        let message = try XCTUnwrap(state.messages.first { $0.title == "Severe Storm" })
+        XCTAssertEqual(message.severity, .warning)
+        XCTAssertTrue(message.detail.contains("weathered 3 completed homes"))
+        XCTAssertTrue(message.detail.contains("31% utility reserve"))
+        XCTAssertTrue(message.detail.contains("1 park"))
+        XCTAssertTrue(message.detail.contains("0 emergency services"))
+        XCTAssertTrue(message.detail.contains("15% reserve"))
+        XCTAssertTrue(message.detail.contains("parks and emergency services accelerate"))
+
+        let recovery = try XCTUnwrap(state.stormRecovery)
+        XCTAssertEqual(recovery.latestEventTick, 640)
+        XCTAssertEqual(recovery.latestEventSeed, expectedStormSeed)
+        XCTAssertEqual(recovery.disposition, .active)
+        XCTAssertEqual(recovery.targets.map(\.coordinate), expectedTargets)
+        assertConditions(
+            recovery.targets.map(\.remainingConditionDamage),
+            equalTo: Array(repeating: 0.281_296_296_296_296_3, count: 3)
+        )
+    }
+
+    func testExistingResilienceMitigatesButDoesNotEraseDeterministicDamage() throws {
+        var unmitigated = stormReadyState(seed: stormSeed)
+        var resilient = stormReadyState(seed: stormSeed, resilient: true)
+
+        CitySimulation.step(&unmitigated)
+        CitySimulation.step(&resilient)
+
+        XCTAssertEqual(damagedResidentialCoordinates(in: unmitigated), expectedTargets)
+        XCTAssertEqual(damagedResidentialCoordinates(in: resilient), expectedTargets)
+        for coordinate in expectedTargets {
+            let unmitigatedCondition = try XCTUnwrap(unmitigated.tile(at: coordinate)?.condition)
+            let resilientCondition = try XCTUnwrap(resilient.tile(at: coordinate)?.condition)
+            XCTAssertEqual(unmitigatedCondition, 0.718_703_703_703_703_7, accuracy: 0.000_001)
+            XCTAssertEqual(resilientCondition, 0.878_703_703_703_703_7, accuracy: 0.000_001)
+            XCTAssertGreaterThan(resilientCondition, unmitigatedCondition)
+            XCTAssertLessThan(resilientCondition, 1)
+        }
+
+        let message = try XCTUnwrap(resilient.messages.first { $0.title == "Severe Storm" })
+        XCTAssertTrue(message.detail.contains("3 parks"))
+        XCTAssertTrue(message.detail.contains("3 emergency services"))
+        XCTAssertTrue(message.detail.contains("12%"))
+    }
+
+    func testHealthyDailyOperationRepairsResidentialDamageWithinTwelveDaysWithoutHealingScars() throws {
+        var healthy = stormReadyState(seed: stormSeed)
+        CitySimulation.step(&healthy)
+        let damagedConditions = expectedTargets.map {
+            healthy.tile(at: $0)?.condition
+        }
+        XCTAssertTrue(damagedConditions.allSatisfy { ($0 ?? 1) < 0.75 })
+
+        let commercialScar = try XCTUnwrap(
+            healthy.tiles.first(where: { $0.kind == .commercial })?.coordinate
+        )
+        let industrialScar = try XCTUnwrap(
+            healthy.tiles.first(where: { $0.kind == .industrial })?.coordinate
+        )
+        healthy.updateTile(at: commercialScar) { $0.condition = 0.64 }
+        healthy.updateTile(at: industrialScar) { $0.condition = 0.25 }
+
+        for _ in 0..<3 { CitySimulation.step(&healthy) }
+        XCTAssertEqual(
+            expectedTargets.map { healthy.tile(at: $0)?.condition },
+            damagedConditions,
+            "Repair must wait for the next governed daily boundary"
+        )
+
+        var recoveryTrace: [[Double]] = []
+        for _ in 1...12 {
+            advanceDays(&healthy, days: 1)
+            recoveryTrace.append(expectedTargets.map {
+                healthy.tile(at: $0)?.condition ?? -1
+            })
+            if expectedTargets.allSatisfy({ healthy.tile(at: $0)?.condition == 1 }) {
+                break
+            }
+        }
+
+        XCTAssertEqual(recoveryTrace.count, 6)
+        assertConditions(
+            recoveryTrace.first ?? [],
+            equalTo: Array(repeating: 0.768_703_703_703_703_7, count: 3)
+        )
+        XCTAssertEqual(recoveryTrace.last ?? [], Array(repeating: 1, count: 3))
+        XCTAssertEqual(
+            try XCTUnwrap(healthy.tile(at: commercialScar)?.condition),
+            0.64,
+            accuracy: 0.000_001
+        )
+        XCTAssertEqual(
+            try XCTUnwrap(healthy.tile(at: industrialScar)?.condition),
+            0.25,
+            accuracy: 0.000_001
+        )
+
+        let completion = try XCTUnwrap(
+            healthy.messages.first { $0.title == "Storm Recovery Complete" }
+        )
+        XCTAssertTrue(completion.detail.contains("3 Residential lots"))
+        XCTAssertTrue(completion.detail.contains("cleared their recorded storm damage"))
+        XCTAssertTrue(completion.detail.contains("Keep utilities healthy"))
+        XCTAssertEqual(
+            healthy.messages.filter { $0.title == "Storm Recovery Complete" }.count,
+            1
+        )
+
+        var ignored = stormReadyState(seed: stormSeed)
+        CitySimulation.step(&ignored)
+        let ignoredDamage = expectedTargets.map {
+            ignored.tile(at: $0)?.condition
+        }
+        removeReserveUtilities(from: &ignored)
+        advanceDays(&ignored, days: 12)
+        XCTAssertEqual(expectedTargets.map { ignored.tile(at: $0)?.condition }, ignoredDamage)
+        XCTAssertFalse(ignored.messages.contains { $0.title == "Storm Recovery Complete" })
+    }
+
+    func testRecoveryRestoresOnlyRecordedStormDamageAndPreservesEveryPreexistingScar() throws {
+        let targetedScar = GridCoordinate(x: 3, y: 10)
+        let unrecordedResidentialScar = GridCoordinate(x: 17, y: 10)
+        var state = stormReadyState(seed: stormSeed)
+        state.updateTile(at: targetedScar) { $0.condition = 0.60 }
+        state.updateTile(at: unrecordedResidentialScar) { $0.condition = 0.55 }
+        let commercialScar = try XCTUnwrap(
+            state.tiles.first(where: { $0.kind == .commercial })?.coordinate
+        )
+        let industrialScar = try XCTUnwrap(
+            state.tiles.first(where: { $0.kind == .industrial })?.coordinate
+        )
+        state.updateTile(at: commercialScar) { $0.condition = 0.64 }
+        state.updateTile(at: industrialScar) { $0.condition = 0.25 }
+
+        CitySimulation.step(&state)
+        XCTAssertEqual(
+            try XCTUnwrap(state.tile(at: targetedScar)?.condition),
+            0.318_703_703_703_703_7,
+            accuracy: 0.000_001
+        )
+        XCTAssertEqual(
+            try XCTUnwrap(
+                state.stormRecovery?.targets.first {
+                    $0.coordinate == targetedScar
+                }?.remainingConditionDamage
+            ),
+            0.281_296_296_296_296_3,
+            accuracy: 0.000_001
+        )
+
+        advanceDays(&state, days: 6)
+
+        XCTAssertEqual(
+            try XCTUnwrap(state.tile(at: targetedScar)?.condition),
+            0.60,
+            accuracy: 0.000_001
+        )
+        XCTAssertEqual(
+            try XCTUnwrap(state.tile(at: unrecordedResidentialScar)?.condition),
+            0.55,
+            accuracy: 0.000_001
+        )
+        XCTAssertEqual(
+            try XCTUnwrap(state.tile(at: commercialScar)?.condition),
+            0.64,
+            accuracy: 0.000_001
+        )
+        XCTAssertEqual(
+            try XCTUnwrap(state.tile(at: industrialScar)?.condition),
+            0.25,
+            accuracy: 0.000_001
+        )
+        XCTAssertEqual(state.stormRecovery?.disposition, .recovered)
+    }
+
+    @MainActor
+    func testStormRecoverySurvivesMessageDismissalAndTwelveMessageEvictionExactlyOnce() throws {
+        var dismissedState = stormReadyState(seed: stormSeed)
+        CitySimulation.step(&dismissedState)
+        let store = CityGameStore(state: dismissedState)
+        let stormMessage = try XCTUnwrap(
+            store.state.messages.first { $0.title == "Severe Storm" }
+        )
+        store.dismissMessage(stormMessage.id)
+        XCTAssertFalse(store.state.messages.contains { $0.title == "Severe Storm" })
+        advanceDays(&store.state, days: 6)
+        XCTAssertEqual(store.state.stormRecovery?.disposition, .recovered)
+        XCTAssertEqual(
+            store.state.messages.filter { $0.title == "Storm Recovery Complete" }.count,
+            1
+        )
+
+        var evictedState = stormReadyState(seed: stormSeed)
+        CitySimulation.step(&evictedState)
+        evictedState.messages = (0..<12).map { index in
+            CityMessage(
+                tick: 641 + index,
+                severity: .information,
+                title: "Newer Notice \(index)",
+                detail: "Message-cap eviction proof"
+            )
+        }
+        XCTAssertFalse(evictedState.messages.contains { $0.title == "Severe Storm" })
+        advanceDays(&evictedState, days: 6)
+        XCTAssertEqual(evictedState.stormRecovery?.disposition, .recovered)
+        XCTAssertEqual(
+            evictedState.messages.filter { $0.title == "Storm Recovery Complete" }.count,
+            1
+        )
+
+        evictedState.messages.removeAll { $0.title == "Storm Recovery Complete" }
+        advanceDays(&evictedState, days: 12)
+        XCTAssertFalse(
+            evictedState.messages.contains { $0.title == "Storm Recovery Complete" },
+            "A dismissed completion message must not reactivate or duplicate recovery"
+        )
+    }
+
+    func testDemolishedAndRezonedTargetsRetireWithoutHealingAReplacement() throws {
+        let demolished = GridCoordinate(x: 3, y: 10)
+        let rezoned = GridCoordinate(x: 6, y: 10)
+        var state = stormReadyState(seed: stormSeed)
+        CitySimulation.step(&state)
+
+        state.updateTile(at: demolished) {
+            $0 = CityTile(coordinate: demolished, kind: .empty)
+        }
+        state.updateTile(at: rezoned) {
+            $0.kind = .commercial
+            $0.condition = 0.40
+        }
+        advanceDays(&state, days: 1)
+        XCTAssertEqual(
+            state.stormRecovery?.targets.map(\.coordinate),
+            [GridCoordinate(x: 9, y: 10)]
+        )
+        XCTAssertEqual(
+            try XCTUnwrap(state.tile(at: rezoned)?.condition),
+            0.40,
+            accuracy: 0.000_001
+        )
+
+        install(.residential, at: demolished, in: &state)
+        state.updateTile(at: demolished) { $0.condition = 0.41 }
+        advanceDays(&state, days: 5)
+
+        XCTAssertEqual(
+            try XCTUnwrap(state.tile(at: demolished)?.condition),
+            0.41,
+            accuracy: 0.000_001
+        )
+        XCTAssertEqual(
+            try XCTUnwrap(state.tile(at: rezoned)?.condition),
+            0.40,
+            accuracy: 0.000_001
+        )
+        XCTAssertEqual(state.stormRecovery?.disposition, .recovered)
+        let completion = try XCTUnwrap(
+            state.messages.first { $0.title == "Storm Recovery Complete" }
+        )
+        XCTAssertTrue(completion.detail.contains("1 Residential lot"))
+    }
+
+    func testDemolishThenCompletedReplacementBeforeBoundaryRetiresOwnershipSynchronously() throws {
+        let coordinate = GridCoordinate(x: 3, y: 10)
+        var state = singleTargetStormState()
+
+        XCTAssertEqual(state.stormRecovery?.targets.map(\.coordinate), [coordinate])
+        XCTAssertEqual(
+            CitySimulationCommandExecutor.apply(.demolish(coordinate: coordinate), to: &state),
+            .applied
+        )
+        XCTAssertEqual(state.tile(at: coordinate)?.kind, .empty)
+        XCTAssertFalse(
+            state.stormRecovery?.targets.contains {
+                $0.coordinate == coordinate
+            } ?? false
+        )
+        XCTAssertEqual(state.stormRecovery?.disposition, .recovered)
+        XCTAssertFalse(
+            state.messages.contains { $0.title == "Storm Recovery Complete" }
+        )
+
+        XCTAssertEqual(
+            CitySimulationCommandExecutor.apply(
+                .build(kind: .residential, coordinate: coordinate),
+                to: &state
+            ),
+            .applied
+        )
+        state.updateTile(at: coordinate) { $0.condition = 0.41 }
+        XCTAssertEqual(state.tile(at: coordinate)?.constructionProgress, 0)
+        XCTAssertFalse(
+            state.stormRecovery?.targets.contains {
+                $0.coordinate == coordinate
+            } ?? false
+        )
+
+        for _ in 0..<4 { CitySimulation.step(&state) }
+
+        XCTAssertEqual(state.tick, 644)
+        XCTAssertEqual(state.tile(at: coordinate)?.constructionProgress, 1)
+        XCTAssertEqual(
+            try XCTUnwrap(state.tile(at: coordinate)?.condition),
+            0.41,
+            accuracy: 0.000_001
+        )
+        XCTAssertEqual(state.stormRecovery?.disposition, .recovered)
+        XCTAssertFalse(
+            state.stormRecovery?.targets.contains {
+                $0.coordinate == coordinate
+            } ?? false
+        )
+        XCTAssertFalse(
+            state.messages.contains { $0.title == "Storm Recovery Complete" }
+        )
+    }
+
+    @MainActor
+    func testDemolishRebuildOwnershipSaveReplayFingerprintAndUndoRemainExact() throws {
+        let coordinate = GridCoordinate(x: 3, y: 10)
+        let damaged = singleTargetStormState()
+        let damagedFingerprint = try CityStateFingerprinter.fingerprint(damaged)
+        let commands: [CitySimulationCommand] = [
+            .demolish(coordinate: coordinate),
+            .build(kind: .residential, coordinate: coordinate),
+        ]
+
+        var uninterrupted = damaged
+        var replay = damaged
+        for command in commands {
+            XCTAssertEqual(
+                CitySimulationCommandExecutor.apply(command, to: &uninterrupted),
+                .applied
+            )
+            XCTAssertEqual(
+                CitySimulationCommandExecutor.apply(command, to: &replay),
+                .applied
+            )
+        }
+        uninterrupted.updateTile(at: coordinate) { $0.condition = 0.41 }
+        replay.updateTile(at: coordinate) { $0.condition = 0.41 }
+        XCTAssertEqual(uninterrupted, replay)
+        XCTAssertEqual(
+            try CityStateFingerprinter.fingerprint(uninterrupted),
+            try CityStateFingerprinter.fingerprint(replay)
+        )
+
+        let root = FileManager.default.temporaryDirectory
+            .appending(path: "citysim-play085-race-\(UUID().uuidString)", directoryHint: .isDirectory)
+        defer { try? FileManager.default.removeItem(at: root) }
+        let saves = SaveGameService(rootURL: root)
+        let write = try saves.save(uninterrupted)
+        let load = try saves.load()
+        XCTAssertEqual(write.schemaVersion, 1)
+        XCTAssertEqual(load.schemaVersion, 1)
+        XCTAssertEqual(load.state, uninterrupted)
+        XCTAssertEqual(
+            load.fingerprint,
+            try CityStateFingerprinter.fingerprint(uninterrupted)
+        )
+
+        var loadedReplay = load.state
+        XCTAssertEqual(
+            CitySimulationCommandExecutor.apply(.advanceOneDailyBoundary, to: &uninterrupted),
+            .applied
+        )
+        XCTAssertEqual(
+            CitySimulationCommandExecutor.apply(.advanceOneDailyBoundary, to: &replay),
+            .applied
+        )
+        XCTAssertEqual(
+            CitySimulationCommandExecutor.apply(.advanceOneDailyBoundary, to: &loadedReplay),
+            .applied
+        )
+        XCTAssertEqual(uninterrupted, replay)
+        XCTAssertEqual(loadedReplay, uninterrupted)
+        XCTAssertEqual(
+            try CityStateFingerprinter.fingerprint(replay),
+            try CityStateFingerprinter.fingerprint(uninterrupted)
+        )
+        XCTAssertEqual(
+            try XCTUnwrap(uninterrupted.tile(at: coordinate)?.condition),
+            0.41,
+            accuracy: 0.000_001
+        )
+        XCTAssertFalse(
+            uninterrupted.messages.contains {
+                $0.title == "Storm Recovery Complete"
+            }
+        )
+
+        let store = CityGameStore(state: damaged)
+        store.demolish(at: coordinate)
+        let retired = store.state
+        XCTAssertNotEqual(retired, damaged)
+        XCTAssertTrue(store.canUndo)
+        store.selectTool(.residential)
+        store.primaryAction(at: coordinate)
+        XCTAssertNotEqual(store.state, retired)
+        store.undoLastAction()
+        XCTAssertEqual(store.state, retired)
+        store.undoLastAction()
+        XCTAssertEqual(store.state, damaged)
+        XCTAssertEqual(
+            try CityStateFingerprinter.fingerprint(store.state),
+            damagedFingerprint
+        )
+    }
+
+    func testOverlappingStormMergesActualDamageRowMajorAndZeroDeltaCannotReplaceAuthority() throws {
+        var state = stormReadyState(seed: stormSeed)
+        CitySimulation.step(&state)
+        state.tick = 799
+        state.seed = stormSeed
+
+        CitySimulation.step(&state)
+
+        let merged = try XCTUnwrap(state.stormRecovery)
+        XCTAssertEqual(merged.latestEventTick, 800)
+        XCTAssertEqual(merged.latestEventSeed, expectedStormSeed)
+        XCTAssertEqual(merged.disposition, .active)
+        XCTAssertEqual(merged.targets.map(\.coordinate), expectedTargets)
+        for target in merged.targets {
+            XCTAssertEqual(
+                target.remainingConditionDamage,
+                1 - (state.tile(at: target.coordinate)?.condition ?? 1),
+                accuracy: 0.000_001
+            )
+            XCTAssertGreaterThan(
+                target.remainingConditionDamage,
+                0.281_296_296_296_296_3
+            )
+        }
+
+        var zeroDelta = state
+        zeroDelta.stormRecovery?.disposition = .recovered
+        let identityBeforeZeroDelta = try XCTUnwrap(zeroDelta.stormRecovery)
+        for coordinate in expectedTargets {
+            zeroDelta.updateTile(at: coordinate) { $0.condition = 0 }
+        }
+        zeroDelta.tick = 959
+        zeroDelta.seed = stormSeed
+        CitySimulation.step(&zeroDelta)
+
+        XCTAssertEqual(zeroDelta.stormRecovery, identityBeforeZeroDelta)
+    }
+
+    func testZeroTargetAndZeroDeltaStormsDoNotCreateRecoveryOrCompletion() {
+        var zeroTarget = stormReadyState(seed: stormSeed)
+        for tile in zeroTarget.tiles where tile.kind == .residential {
+            zeroTarget.updateTile(at: tile.coordinate) {
+                $0.constructionProgress = 0.50
+            }
+        }
+        CitySimulation.step(&zeroTarget)
+        XCTAssertNil(zeroTarget.stormRecovery)
+        XCTAssertFalse(
+            zeroTarget.messages.contains { $0.title == "Storm Recovery Complete" }
+        )
+
+        var zeroDelta = stormReadyState(seed: stormSeed)
+        for coordinate in expectedTargets {
+            zeroDelta.updateTile(at: coordinate) { $0.condition = 0 }
+        }
+        CitySimulation.step(&zeroDelta)
+        XCTAssertNil(zeroDelta.stormRecovery)
+        XCTAssertFalse(
+            zeroDelta.messages.contains { $0.title == "Storm Recovery Complete" }
+        )
+    }
+
+    func testUnrelatedHealingClampsRemainingDamageAndConditionHeadroom() throws {
+        var state = stormReadyState(seed: stormSeed)
+        CitySimulation.step(&state)
+        let coordinate = expectedTargets[0]
+        state.updateTile(at: coordinate) { $0.condition = 0.98 }
+
+        advanceDays(&state, days: 1)
+
+        XCTAssertEqual(
+            try XCTUnwrap(state.tile(at: coordinate)?.condition),
+            1,
+            accuracy: 0.000_001
+        )
+        XCTAssertLessThanOrEqual(
+            try XCTUnwrap(state.tile(at: coordinate)?.condition),
+            1
+        )
+        XCTAssertEqual(
+            try XCTUnwrap(
+                state.stormRecovery?.targets.first {
+                    $0.coordinate == coordinate
+                }?.remainingConditionDamage
+            ),
+            0,
+            accuracy: 0.000_001
+        )
+
+        advanceDays(&state, days: 5)
+        XCTAssertEqual(state.stormRecovery?.disposition, .recovered)
+        XCTAssertTrue(state.tiles.allSatisfy { $0.condition <= 1 })
+    }
+
+    func testLegacyAndNewCityNilRecoveryKeepCanonicalBytesAndVersionOneFingerprint() throws {
+        let newCity = CityGameState.newCity(seed: 42)
+        XCTAssertNil(newCity.stormRecovery)
+        let canonical = try CityStateFingerprinter.canonicalData(for: newCity)
+        let object = try XCTUnwrap(
+            JSONSerialization.jsonObject(with: canonical) as? [String: Any]
+        )
+        XCTAssertNil(object["stormRecovery"])
+
+        let legacy = try JSONDecoder().decode(CityGameState.self, from: canonical)
+        XCTAssertNil(legacy.stormRecovery)
+        XCTAssertEqual(
+            try CityStateFingerprinter.canonicalData(for: legacy),
+            canonical
+        )
+        XCTAssertEqual(
+            try CityStateFingerprinter.fingerprint(legacy).version,
+            1
+        )
+
+        var messageOnlyLegacy = legacy
+        messageOnlyLegacy.tick = 640
+        let scar = GridCoordinate(x: 3, y: 10)
+        messageOnlyLegacy.updateTile(at: scar) { $0.condition = 0.60 }
+        messageOnlyLegacy.messages.insert(
+            CityMessage(
+                tick: 640,
+                severity: .warning,
+                title: "Severe Storm",
+                detail: "Legacy presentation without durable ownership"
+            ),
+            at: 0
+        )
+        advanceDays(&messageOnlyLegacy, days: 12)
+        XCTAssertNil(messageOnlyLegacy.stormRecovery)
+        XCTAssertEqual(
+            try XCTUnwrap(messageOnlyLegacy.tile(at: scar)?.condition),
+            0.60,
+            accuracy: 0.000_001
+        )
+    }
+
+    func testStormTargetsOnlyCompletedHomesAndDoesNotHealWithoutAStorm() throws {
+        let incompleteCoordinate = GridCoordinate(x: 3, y: 10)
+        var state = stormReadyState(seed: stormSeed)
+        state.updateTile(at: incompleteCoordinate) {
+            $0.constructionProgress = 0.50
+        }
+
+        CitySimulation.step(&state)
+
+        XCTAssertEqual(
+            damagedResidentialCoordinates(in: state),
+            [
+                GridCoordinate(x: 6, y: 10),
+                GridCoordinate(x: 9, y: 10),
+                GridCoordinate(x: 17, y: 10),
+            ]
+        )
+        XCTAssertEqual(
+            try XCTUnwrap(state.tile(at: incompleteCoordinate)?.condition),
+            1,
+            accuracy: 0.000_001
+        )
+
+        var noStorm = stormReadyState(seed: calmSeed)
+        noStorm.tick = 640
+        let existingCondition = GridCoordinate(x: 3, y: 10)
+        noStorm.updateTile(at: existingCondition) { $0.condition = 0.60 }
+        advanceDays(&noStorm, days: 12)
+        XCTAssertEqual(
+            try XCTUnwrap(noStorm.tile(at: existingCondition)?.condition),
+            0.60,
+            accuracy: 0.000_001
+        )
+        XCTAssertFalse(noStorm.messages.contains { $0.title == "Storm Recovery Complete" })
+    }
+
+    @MainActor
+    func testStormDamageSaveReplayBackupFingerprintAndUndoRemainExact() throws {
+        var uninterrupted = stormReadyState(seed: stormSeed)
+        var replay = stormReadyState(seed: stormSeed)
+        CitySimulation.step(&uninterrupted)
+        CitySimulation.step(&replay)
+        let damaged = uninterrupted
+
+        XCTAssertEqual(uninterrupted, replay)
+        let damagedFingerprint = try CityStateFingerprinter.fingerprint(damaged)
+        XCTAssertEqual(
+            damagedFingerprint,
+            try CityStateFingerprinter.fingerprint(replay)
+        )
+
+        let root = FileManager.default.temporaryDirectory
+            .appending(path: "citysim-play085-\(UUID().uuidString)", directoryHint: .isDirectory)
+        defer { try? FileManager.default.removeItem(at: root) }
+        let saves = SaveGameService(rootURL: root)
+        let damagedWrite = try saves.save(damaged)
+        let damagedLoad = try saves.load()
+        XCTAssertEqual(damagedWrite.schemaVersion, 1)
+        XCTAssertEqual(damagedLoad.schemaVersion, 1)
+        XCTAssertEqual(damagedLoad.state, damaged)
+        XCTAssertEqual(damagedLoad.fingerprint, damagedFingerprint)
+        XCTAssertEqual(
+            try CityPresentationSnapshot(state: damaged).fingerprint,
+            damagedFingerprint
+        )
+
+        var sameTilesWithoutOwnership = damaged
+        sameTilesWithoutOwnership.stormRecovery = nil
+        XCTAssertNotEqual(
+            try CityStateFingerprinter.fingerprint(sameTilesWithoutOwnership),
+            damagedFingerprint
+        )
+        var recoveredLedger = damaged
+        recoveredLedger.stormRecovery?.disposition = .recovered
+        XCTAssertNotEqual(
+            try CityStateFingerprinter.fingerprint(recoveredLedger),
+            damagedFingerprint
+        )
+
+        advanceDays(&uninterrupted, days: 6)
+        advanceDays(&replay, days: 6)
+        XCTAssertEqual(replay, uninterrupted)
+        XCTAssertEqual(
+            try CityStateFingerprinter.fingerprint(replay),
+            try CityStateFingerprinter.fingerprint(uninterrupted)
+        )
+        XCTAssertNotEqual(
+            try CityStateFingerprinter.fingerprint(uninterrupted),
+            damagedFingerprint
+        )
+
+        let recoveredWrite = try saves.save(uninterrupted)
+        let recoveredLoad = try saves.load()
+        XCTAssertEqual(recoveredLoad.state, uninterrupted)
+        XCTAssertEqual(recoveredLoad.fingerprint, recoveredWrite.fingerprint)
+        XCTAssertEqual(recoveredLoad.state.stormRecovery?.disposition, .recovered)
+        try Data("corrupt".utf8).write(to: saves.saveURL, options: .atomic)
+        let backup = try saves.load()
+        XCTAssertEqual(backup.source, .backup)
+        XCTAssertEqual(backup.state, damaged)
+        XCTAssertEqual(backup.fingerprint, damagedFingerprint)
+
+        var undoState = damaged
+        undoState.treasury = 50_000
+        let store = CityGameStore(state: undoState)
+        store.selectTool(.park)
+        let coordinate = try XCTUnwrap(
+            store.state.tiles.first {
+                guard $0.kind == .empty else { return false }
+                if case .success = CitySimulation.validateBuild(
+                    .park,
+                    at: $0.coordinate,
+                    in: store.state
+                ) {
+                    return true
+                }
+                return false
+            }?.coordinate
+        )
+        store.primaryAction(at: coordinate)
+        XCTAssertNotEqual(store.state, undoState)
+        XCTAssertTrue(store.canUndo)
+        store.undoLastAction()
+        XCTAssertEqual(store.state, undoState)
+    }
+
+    private func stormReadyState(
+        seed: UInt64,
+        resilient: Bool = false
+    ) -> CityGameState {
+        var state = CityGameState.newCity(seed: seed)
+        state.tick = 639
+        state.treasury = 4_000
+        state.population = 500
+        state.happiness = 70
+        state.approval = 70
+        install(.powerPlant, at: GridCoordinate(x: 5, y: 8), in: &state)
+        install(.waterTower, at: GridCoordinate(x: 6, y: 8), in: &state)
+
+        if resilient {
+            install(.park, at: GridCoordinate(x: 7, y: 8), in: &state)
+            install(.park, at: GridCoordinate(x: 8, y: 8), in: &state)
+            install(.fireStation, at: GridCoordinate(x: 9, y: 8), in: &state)
+            install(.policeStation, at: GridCoordinate(x: 10, y: 8), in: &state)
+            install(.school, at: GridCoordinate(x: 11, y: 8), in: &state)
+        }
+        return state
+    }
+
+    private func singleTargetStormState() -> CityGameState {
+        var state = stormReadyState(seed: stormSeed)
+        for coordinate in expectedTargets.dropFirst() {
+            state.updateTile(at: coordinate) { $0.condition = 0 }
+        }
+        CitySimulation.step(&state)
+        state.treasury = 50_000
+        return state
+    }
+
+    private func install(
+        _ kind: BuildingKind,
+        at coordinate: GridCoordinate,
+        in state: inout CityGameState
+    ) {
+        state.updateTile(at: coordinate) {
+            $0.kind = kind
+            $0.level = 1
+            $0.occupancy = 0
+            $0.condition = 1
+            $0.constructionProgress = 1
+        }
+    }
+
+    private func damagedResidentialCoordinates(
+        in state: CityGameState
+    ) -> [GridCoordinate] {
+        state.tiles
+            .filter {
+                $0.kind == .residential
+                    && $0.constructionProgress >= 1
+                    && $0.condition < 1
+            }
+            .map(\.coordinate)
+            .sorted {
+                if $0.y != $1.y { return $0.y < $1.y }
+                return $0.x < $1.x
+            }
+    }
+
+    private func assertConditions(
+        _ actual: [Double],
+        equalTo expected: [Double],
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) {
+        XCTAssertEqual(actual.count, expected.count, file: file, line: line)
+        for (actualValue, expectedValue) in zip(actual, expected) {
+            XCTAssertEqual(
+                actualValue,
+                expectedValue,
+                accuracy: 0.000_001,
+                file: file,
+                line: line
+            )
+        }
+    }
+
+    private func removeReserveUtilities(from state: inout CityGameState) {
+        for coordinate in [GridCoordinate(x: 5, y: 8), GridCoordinate(x: 6, y: 8)] {
+            state.updateTile(at: coordinate) {
+                $0 = CityTile(coordinate: coordinate, kind: .empty)
+            }
+        }
     }
 
     @discardableResult

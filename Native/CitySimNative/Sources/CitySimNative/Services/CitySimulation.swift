@@ -58,6 +58,7 @@ enum CitySimulation {
             $0.condition = 1
             $0.constructionProgress = kind == .road ? 1 : 0
         }
+        retireActiveStormRecoveryTarget(at: coordinate, in: &state)
         return .success(())
     }
 
@@ -65,7 +66,25 @@ enum CitySimulation {
         guard let tile = state.tile(at: coordinate), tile.kind != .empty, tile.kind != .cityHall else { return false }
         state.treasury -= tile.kind.demolitionCost
         state.updateTile(at: coordinate) { $0 = CityTile(coordinate: coordinate, kind: .empty) }
+        retireActiveStormRecoveryTarget(at: coordinate, in: &state)
         return true
+    }
+
+    private static func retireActiveStormRecoveryTarget(
+        at coordinate: GridCoordinate,
+        in state: inout CityGameState
+    ) {
+        guard var recovery = state.stormRecovery,
+              recovery.disposition == .active,
+              recovery.targets.contains(where: {
+                  $0.coordinate == coordinate
+              }) else { return }
+
+        recovery.targets.removeAll { $0.coordinate == coordinate }
+        if recovery.targets.isEmpty {
+            recovery.disposition = .recovered
+        }
+        state.stormRecovery = recovery
     }
 
     static func activeTiles(in state: CityGameState) -> [CityTile] {
@@ -284,6 +303,7 @@ enum CitySimulation {
         rebalanceOccupancy(&state, capacity: residentialCapacity)
         maybeUpgrade(&state)
         if state.tick.isMultiple(of: 4) {
+            repairResidentialStormDamage(&state)
             issuePressureWarnings(&state)
             advanceStrategyStory(&state)
             maybeCreateEvent(&state)
@@ -532,11 +552,255 @@ enum CitySimulation {
         if roll < 0.22 {
             state.treasury -= 2_000
             state.happiness = max(0, state.happiness - 3)
-            state.messages.insert(CityMessage(tick: state.tick, severity: .warning, title: "Severe Storm", detail: "Emergency repairs cost $2,000. Resilient services soften future shocks."), at: 0)
+            let outcome = weatherCompletedResidentialLots(in: &state)
+            recordStormRecovery(
+                eventTick: state.tick,
+                eventSeed: state.seed,
+                targets: outcome.targets,
+                in: &state
+            )
+            let reservePercent = Int((outcome.utilityReserve * 100).rounded())
+            let damagePercent = Int((outcome.damage * 100).rounded())
+            let coordinates = outcome.coordinates
+                .map { "\($0.x + 1), \($0.y + 1)" }
+                .joined(separator: "; ")
+            let damageDetail = if outcome.affectedCount > 0 {
+                "weathered \(outcome.affectedCount) completed homes at blocks \(coordinates)"
+            } else {
+                "did not weather any completed homes"
+            }
+            post(
+                CityMessage(
+                    tick: state.tick,
+                    severity: .warning,
+                    title: "Severe Storm",
+                    detail: "Emergency repairs cost $2,000 and \(damageDetail). \(reservePercent)% utility reserve, \(outcome.parkCount) \(outcome.parkCount == 1 ? "park" : "parks"), and \(outcome.serviceCount) emergency services limited average damage to \(damagePercent)%. Keep utilities fully covered with at least 15% reserve; parks and emergency services accelerate Residential repairs."
+                ),
+                to: &state
+            )
         } else if roll > 0.82 {
             state.treasury += 3_000
             state.messages.insert(CityMessage(tick: state.tick, severity: .good, title: "State Growth Grant", detail: "New Arcadia received $3,000 for responsible growth."), at: 0)
         }
+    }
+
+    private static func weatherCompletedResidentialLots(
+        in state: inout CityGameState
+    ) -> (
+        affectedCount: Int,
+        coordinates: [GridCoordinate],
+        targets: [CityStormRecoveryTarget],
+        damage: Double,
+        utilityReserve: Double,
+        parkCount: Int,
+        serviceCount: Int
+    ) {
+        let active = activeTiles(in: state)
+        let reserve = utilityReserve(in: state)
+        let parkCount = active.filter { $0.kind == .park }.count
+        let serviceCount = active.filter {
+            [.fireStation, .policeStation, .school].contains($0.kind)
+        }.count
+        let utilityProtection = min(0.10, max(0, reserve) * 0.25)
+        let parkProtection = min(0.06, Double(parkCount) * 0.02)
+        let serviceProtection = min(0.12, Double(serviceCount) * 0.04)
+        let damage = max(
+            0.08,
+            0.38 - utilityProtection - parkProtection - serviceProtection
+        )
+
+        let targets = state.tiles.indices
+            .filter {
+                state.tiles[$0].kind == .residential
+                    && state.tiles[$0].constructionProgress >= 1
+            }
+            .sorted {
+                let left = state.tiles[$0].coordinate
+                let right = state.tiles[$1].coordinate
+                if left.y != right.y { return left.y < right.y }
+                return left.x < right.x
+            }
+            .prefix(3)
+        var damagedTargets: [CityStormRecoveryTarget] = []
+        for index in targets {
+            let conditionBeforeStorm = state.tiles[index].condition
+            let conditionAfterStorm = max(
+                0,
+                conditionBeforeStorm - damage
+            )
+            let actualDamage = conditionBeforeStorm - conditionAfterStorm
+            state.tiles[index].condition = conditionAfterStorm
+            if actualDamage > 0 {
+                damagedTargets.append(
+                    CityStormRecoveryTarget(
+                        coordinate: state.tiles[index].coordinate,
+                        remainingConditionDamage: actualDamage
+                    )
+                )
+            }
+        }
+        let averageActualDamage = damagedTargets.isEmpty
+            ? 0
+            : damagedTargets.reduce(0) { $0 + $1.remainingConditionDamage }
+                / Double(damagedTargets.count)
+
+        return (
+            affectedCount: damagedTargets.count,
+            coordinates: damagedTargets.map(\.coordinate),
+            targets: damagedTargets,
+            damage: averageActualDamage,
+            utilityReserve: reserve,
+            parkCount: parkCount,
+            serviceCount: serviceCount
+        )
+    }
+
+    private static func recordStormRecovery(
+        eventTick: Int,
+        eventSeed: UInt64,
+        targets newTargets: [CityStormRecoveryTarget],
+        in state: inout CityGameState
+    ) {
+        guard !newTargets.isEmpty else { return }
+
+        if var recovery = state.stormRecovery,
+           recovery.disposition == .active {
+            var damageByCoordinate = Dictionary(
+                uniqueKeysWithValues: recovery.targets.map {
+                    ($0.coordinate, max(0, $0.remainingConditionDamage))
+                }
+            )
+            for target in newTargets {
+                damageByCoordinate[target.coordinate, default: 0]
+                    += max(0, target.remainingConditionDamage)
+            }
+            recovery.latestEventTick = eventTick
+            recovery.latestEventSeed = eventSeed
+            recovery.targets = damageByCoordinate.map {
+                CityStormRecoveryTarget(
+                    coordinate: $0.key,
+                    remainingConditionDamage: $0.value
+                )
+            }
+            .sorted { rowMajor($0.coordinate, before: $1.coordinate) }
+            state.stormRecovery = recovery
+        } else {
+            state.stormRecovery = CityStormRecoveryState(
+                latestEventTick: eventTick,
+                latestEventSeed: eventSeed,
+                targets: newTargets.sorted {
+                    rowMajor($0.coordinate, before: $1.coordinate)
+                },
+                disposition: .active
+            )
+        }
+    }
+
+    private static func repairResidentialStormDamage(
+        _ state: inout CityGameState
+    ) {
+        guard var recovery = state.stormRecovery,
+              recovery.disposition == .active else { return }
+
+        recovery.targets.removeAll { target in
+            guard let tile = state.tile(at: target.coordinate) else { return true }
+            return tile.kind != .residential || tile.constructionProgress < 1
+        }
+        for index in recovery.targets.indices {
+            let coordinate = recovery.targets[index].coordinate
+            let condition = state.tile(at: coordinate)?.condition ?? 1
+            let recoverableDeficit = max(0, 1 - condition)
+            recovery.targets[index].remainingConditionDamage = min(
+                max(0, recovery.targets[index].remainingConditionDamage),
+                recoverableDeficit
+            )
+        }
+        if recovery.targets.allSatisfy({ $0.remainingConditionDamage == 0 }) {
+            finishStormRecovery(&recovery, in: &state)
+            return
+        }
+
+        let reserve = utilityReserve(in: state)
+        guard utilityCoverage(in: state) >= 1,
+              reserve >= 0.15 else {
+            state.stormRecovery = recovery
+            return
+        }
+
+        let active = activeTiles(in: state)
+        let parkCount = active.filter { $0.kind == .park }.count
+        let serviceCount = active.filter {
+            [.fireStation, .policeStation, .school].contains($0.kind)
+        }.count
+        let dailyRepair = 0.04
+            + min(0.03, Double(parkCount) * 0.01)
+            + min(0.03, Double(serviceCount) * 0.01)
+
+        for index in recovery.targets.indices {
+            let coordinate = recovery.targets[index].coordinate
+            let condition = state.tile(at: coordinate)?.condition ?? 1
+            let headroom = max(0, 1 - condition)
+            let appliedRepair = min(
+                dailyRepair,
+                recovery.targets[index].remainingConditionDamage,
+                headroom
+            )
+            state.updateTile(at: coordinate) {
+                $0.condition = min(1, $0.condition + appliedRepair)
+            }
+            recovery.targets[index].remainingConditionDamage = max(
+                0,
+                recovery.targets[index].remainingConditionDamage - appliedRepair
+            )
+        }
+
+        guard recovery.targets.allSatisfy({
+            $0.remainingConditionDamage <= 0.000_000_001
+        }) else {
+            state.stormRecovery = recovery
+            return
+        }
+        finishStormRecovery(&recovery, in: &state)
+    }
+
+    private static func finishStormRecovery(
+        _ recovery: inout CityStormRecoveryState,
+        in state: inout CityGameState
+    ) {
+        for index in recovery.targets.indices {
+            recovery.targets[index].remainingConditionDamage = 0
+        }
+        recovery.disposition = .recovered
+        state.stormRecovery = recovery
+        guard !recovery.targets.isEmpty else { return }
+
+        let reserve = utilityReserve(in: state)
+        let active = activeTiles(in: state)
+        let parkCount = active.filter { $0.kind == .park }.count
+        let serviceCount = active.filter {
+            [.fireStation, .policeStation, .school].contains($0.kind)
+        }.count
+        let reservePercent = Int((reserve * 100).rounded())
+        let lotLabel = recovery.targets.count == 1
+            ? "Residential lot"
+            : "Residential lots"
+        post(
+            CityMessage(
+                tick: state.tick,
+                severity: .good,
+                title: "Storm Recovery Complete",
+                detail: "\(recovery.targets.count) \(lotLabel) cleared their recorded storm damage. Current protection: \(reservePercent)% utility reserve, \(parkCount) \(parkCount == 1 ? "park" : "parks"), and \(serviceCount) emergency services. Keep utilities healthy to protect the recovery; Commercial and Industrial conditions were unchanged."
+            ),
+            to: &state
+        )
+    }
+
+    private static func rowMajor(
+        _ left: GridCoordinate,
+        before right: GridCoordinate
+    ) -> Bool {
+        if left.y != right.y { return left.y < right.y }
+        return left.x < right.x
     }
 
     private static func advanceStrategyStory(_ state: inout CityGameState) {

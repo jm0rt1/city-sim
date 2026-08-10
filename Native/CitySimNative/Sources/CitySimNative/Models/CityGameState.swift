@@ -49,6 +49,23 @@ struct CityProgressionState: Codable, Equatable, Sendable {
     var secondAct: CitySecondActProgression? = nil
 }
 
+enum CityStormRecoveryDisposition: String, Codable, Equatable, Sendable {
+    case active
+    case recovered
+}
+
+struct CityStormRecoveryTarget: Codable, Equatable, Sendable {
+    let coordinate: GridCoordinate
+    var remainingConditionDamage: Double
+}
+
+struct CityStormRecoveryState: Codable, Equatable, Sendable {
+    var latestEventTick: Int
+    var latestEventSeed: UInt64
+    var targets: [CityStormRecoveryTarget]
+    var disposition: CityStormRecoveryDisposition
+}
+
 struct CityGameState: Codable, Equatable, Sendable {
     var cityName: String
     var gridWidth: Int
@@ -68,6 +85,7 @@ struct CityGameState: Codable, Equatable, Sendable {
     var demand: DemandLevels
     var messages: [CityMessage]
     var progression: CityProgressionState?
+    var stormRecovery: CityStormRecoveryState? = nil
     var status: GameStatus
     var seed: UInt64
 
@@ -120,7 +138,8 @@ struct CityGameState: Codable, Equatable, Sendable {
             messages: [CityMessage(tick: 0, severity: .information,
                                    title: "A Town at the Crossroads",
                                    detail: "New Arcadia's three-block starter town runs a $126 operating deficit with only 54 power and 48 water spare. Choose Commercial for a cleaner recovery or Industrial for faster cash, or secure utility headroom before growth exposes the shortfall.")],
-            progression: CityProgressionState(), status: .playing, seed: seed
+            progression: CityProgressionState(), stormRecovery: nil,
+            status: .playing, seed: seed
         )
     }
 

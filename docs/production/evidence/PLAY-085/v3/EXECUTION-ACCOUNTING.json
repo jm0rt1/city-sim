@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "taskId": "PLAY-085",
+  "routeId": "gameplay-v4:play-085-vs001-consequence-recovery-current-master-disjoint-v1",
+  "modelRouteSha256": "d97e1bee9a7e927364d479c75955e3079fd1231aa888ad55978bc1d8d489f444",
+  "modelRouteRawSha256": "ba843c912c25c12e28b71b0e6e6b533a468e7bc811b7a53ba59762fafb0038d6",
+  "dispatchRawSha256": "563e9b09e30cdfdf251dff81361ececfdbc37c5b7b0a1569cd6c8612d40cc631",
+  "dispatchCanonicalSha256": "f22c0627d1ad00382dc8d5ab44035fda7614baa4b90f2d7b20057a727f28f37e",
+  "classification": "LUNA_IMPLEMENTATION",
+  "model": "gpt-5.6-luna",
+  "effort": "high",
+  "assignment": {
+    "branch": "codex/citysim-gameplay-loop",
+    "worktree": "/Users/James/.codex/worktrees/73f1/city-sim",
+    "expectedHead": "939258b37fb678ba182edd6a24eb2725c706adab",
+    "currentHead": "939258b37fb678ba182edd6a24eb2725c706adab"
+  },
+  "focusedGate": {
+    "command": "swift test --package-path Native/CitySimNative --filter GameplayLoopTests",
+    "environment": {
+      "CLANG_MODULE_CACHE_PATH": "/private/tmp/PLAY-085-v4-clang-cache",
+      "SWIFT_MODULECACHE_PATH": "/private/tmp/PLAY-085-v4-swift-cache",
+      "SWIFTPM_MODULECACHE_OVERRIDE": "/private/tmp/PLAY-085-v4-swift-cache",
+      "scratchPath": "/private/tmp/PLAY-085-v4-build"
+    },
+    "result": "PASS",
+    "executed": 55,
+    "failures": 0,
+    "unexpectedFailures": 0,
+    "elapsedSeconds": 22.120
+  },
+  "diffCheck": {
+    "command": "git diff --check",
+    "result": "PASS"
+  },
+  "executionAccounting": {
+    "turns": 1,
+    "approximateTokens": null,
+    "validationSeconds": 22.120,
+    "reworkCount": 1,
+    "reworkNote": "Corrected the imported GameplayLoopTests fixture placement and reran the focused gate; no failed product repair attempt."
+  },
+  "changedPaths": [
+    "Native/CitySimNative/Sources/CitySimNative/Models/CityGameState.swift",
+    "Native/CitySimNative/Sources/CitySimNative/Services/CitySimulation.swift",
+    "Native/CitySimNative/Tests/CitySimNativeTests/GameplayLoopTests.swift",
+    "docs/production/evidence/PLAY-085/v3/EXECUTION-ACCOUNTING.json"
+  ],
+  "stopCondition": "User-ordered no-stage/no-commit/no-push/no-integration/no-launch/no-self-acceptance stop; leave the exact bounded diff uncommitted for Integration review."
+}

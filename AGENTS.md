@@ -10,6 +10,7 @@ These instructions apply to every task in this repository and every linked workt
 | Branch | Required skill |
 |---|---|
 | `master` | `.agents/skills/operate-citysim-integration/SKILL.md` |
+| `codex/citysim-world-art-ledger-game012a-current7a` | `.agents/skills/operate-citysim-integration/SKILL.md` |
 | `codex/citysim-gameplay-loop` | `.agents/skills/build-citysim-gameplay-loop/SKILL.md` |
 | `codex/citysim-gameplay-g003-current6d` | `.agents/skills/build-citysim-gameplay-loop/SKILL.md` |
 | `codex/citysim-world-rendering` | `.agents/skills/render-citysim-world/SKILL.md` |

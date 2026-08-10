@@ -155,6 +155,90 @@ PASS alone permits creation of `docs/production/evidence/PLAY-073/game-009-r6-fo
 
 Every R6 oracle remains unchanged. CTO owns independent focused disposition; Integration owns adoption and aggregate/full/staged proof; distinct Playability/QA owns real-app review. No Renderer/runtime, source-admission, production, release, merge, push, or other gate opens.
 
+## R6D two-stage test-proof exception
+
+R6C returned during independent Sol/high static carrier review before worker
+contact, worker acknowledgement, host-permission request, or command execution.
+Its addenda, route, dispatch, and validator receipts remain immutable
+non-authorizing evidence. The static return found that containment and
+post-render stability could false-green an arbitrary or non-minimal camera
+translation because the held test did not reconstruct and assert the frozen
+`p0` to `p1` displacement.
+
+R6D execution may begin only from the exact governance commit containing this
+paragraph, as bound by `modelRoute.authority.authorityCommit`. That governance
+commit must have `6eeb255b48a61c042a0eeb8090b86b83cae09a1e` as its first
+parent and `eabbbede5b216736798b730f5100f00962e4ff74` as its
+first-parent grandparent. The retained product/test diff was authored against
+`f95706c0246bf878934f3901e712d5ecaf3572bf` and must arrive
+byte-identical at the R6D execution-authority commit, with empty index, no
+evidence or untracked bytes, and exactly:
+
+- binary diff `17f349cbfcba2ee66702b89eb116e04cf9c3f2fc0f6838fa2a2990457ce9a0d3`
+- `CityScene.swift` `3b953c311eb39b7a2dd9c52267d853de3b4eb917846195fcbb6141bc59eabeb3`
+- `WorldRenderingTests.swift` `fa741d38566d67b6e79b245930197a6449c0059a07f313b21147e9ce0c9a74cf`
+
+For this exact retained state only, the base-authority clean-start requirement,
+generic dirty-successor stop, and R6C no-source-or-test-edit clause are
+superseded solely for R6D-A. R6D-A is
+`LUNA_IMPLEMENTATION / gpt-5.6-luna / high`. It may edit only
+`Native/CitySimNative/Tests/CitySimNativeTests/WorldRenderingTests.swift`.
+`CityScene.swift` remains immutable at the hash above; no other source,
+product, fixture, resource, selector, evidence, claim, or shared-contract byte
+may change.
+
+Within
+`testGame009R6FocusTranslationPreservesDevelopedComposition`, for both exact
+fixtures and both frozen viewports, R6D-A must retain every existing assertion
+and add exactly this independent reconstruction after render:
+
+1. capture final scale `s`, final camera position `pf`, final safe viewport
+   rectangle, and camera-priority bounds;
+2. derive `cameraBounds = priorityBounds.insetBy(dx: -14, dy: -10)`;
+3. derive `safeCenterOffset = ((leading-trailing)*s/2,
+   (bottom-top)*s/2)`;
+4. derive `p0 = (cameraBounds.midX-safeCenterOffset.x,
+   cameraBounds.midY-safeCenterOffset.y)`;
+5. derive `safeAtP0 = finalSafeRect.offsetBy(dx: p0.x-pf.x,
+   dy: p0.y-pf.y)`, `m = 12*s`, and
+   `A = safeAtP0.insetBy(dx: m, dy: m)`;
+6. assert the actual focus `(4,8)` ground bounds equal exactly
+   `F=(-180,-234,72,36)`, and assert `A.width >= F.width` and
+   `A.height >= F.height`;
+7. compute
+   `dx = F.minX < A.minX ? F.minX-A.minX : F.maxX > A.maxX ? F.maxX-A.maxX : 0`
+   and the matching strict ternary for `dy`, then derive
+   `p1 = p0 + (dx,dy)`; and
+8. assert the translation is nonzero and `pf == p1` within `1e-6`, while
+   retaining the unchanged scale/no-zoom assertion.
+
+The strengthened test must retain every current containment, typed metric,
+LOD, fallback, diagnostic, generated-resource, hit-test, interaction, state,
+node/drawable, and deterministic-repeat assertion. It must not require full
+camera-priority containment: focus `(4,8)` alone determines the translation.
+
+R6D-A may run only route-bound static hash and diff checks. It may not run
+SwiftPM or any product test, request host permission, write evidence, stage,
+commit, clean, restore, or move a gate. It must stop with the exact strengthened
+test SHA-256, held `CityScene.swift` SHA-256, full binary-diff SHA-256, empty
+index, zero command-execution count, and preserved R6B/R6C receipts for
+independent CTO Sol/high byte review.
+
+R6D-B may be prepared only after CTO approves the exact strengthened test
+bytes. Its wholly fresh authority must bind those reviewed test and diff
+hashes, the immutable held `CityScene.swift`, this claim and governance
+authority, and the byte-identical R6B focused command. R6D-B permits no further
+source or test edit. Only after fresh route and dispatch validation, independent
+static review, complete worker acknowledgement, and separate CEO release may
+that command run exactly once under the narrow SwiftPM sandbox/module-cache
+host permission. Any mismatch or nonzero result stops with no retry,
+substitution, evidence, staging, commit, cleanup, or further permission
+attempt. PASS alone permits the existing task evidence root, staging exactly
+that root plus the two held files, and one `PLAY-073:` checkpoint commit.
+
+Every other R6 oracle, owner separation, preservation boundary, and closed gate
+remains unchanged.
+
 ## Stop and refill
 
 Stop on any task/branch/worktree/HEAD/claim/hash mismatch; detached or dirty

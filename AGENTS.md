@@ -11,6 +11,7 @@ These instructions apply to every task in this repository and every linked workt
 |---|---|
 | `master` | `.agents/skills/operate-citysim-integration/SKILL.md` |
 | `codex/citysim-gameplay-loop` | `.agents/skills/build-citysim-gameplay-loop/SKILL.md` |
+| `codex/citysim-gameplay-g003-current6d` | `.agents/skills/build-citysim-gameplay-loop/SKILL.md` |
 | `codex/citysim-world-rendering` | `.agents/skills/render-citysim-world/SKILL.md` |
 | `codex/citysim-world-rendering-r4b-current` | `.agents/skills/render-citysim-world/SKILL.md` |
 | `codex/citysim-world-art` | `.agents/skills/produce-citysim-world-art/SKILL.md` |
@@ -28,7 +29,9 @@ These instructions apply to every task in this repository and every linked workt
 | `codex/citysim-world-rendering-single-angle` | `.agents/skills/render-citysim-world/SKILL.md` |
 | `codex/citysim-playtest-single-angle` | `.agents/skills/verify-citysim-playability/SKILL.md` |
 | `codex/citysim-ui-input` | `.agents/skills/build-citysim-ui-input/SKILL.md` |
+| `codex/citysim-ui-g003-current6d` | `.agents/skills/build-citysim-ui-input/SKILL.md` |
 | `codex/citysim-simulation-platform` | `.agents/skills/evolve-citysim-simulation/SKILL.md` |
+| `codex/citysim-simulation-g003-current6d` | `.agents/skills/evolve-citysim-simulation/SKILL.md` |
 | `codex/citysim-playtest-quality` | `.agents/skills/verify-citysim-playability/SKILL.md` |
 | `codex/citysim-os-optimization` | `.agents/skills/optimize-citysim-operating-system/SKILL.md` |
 

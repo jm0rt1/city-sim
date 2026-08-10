@@ -1083,8 +1083,9 @@ This is the authoritative first-wave task source. The shared target is one coher
   healing, strategy-scar regression, nondeterministic target, hidden permanent
   damage, dominant mitigation, event cadence change, or fixture rewrite
   becomes necessary.
-- **Claim:** `docs/production/claims/PLAY-085.gameplay-loop-v3.md` (supersedes
-  the historical revision-2 `/80f0/` pointer).
+- **Claim:** Historical evidence remains
+  `docs/production/claims/PLAY-085.gameplay-loop-v3.md`; the current-master
+  successor is `docs/production/claims/PLAY-085.gameplay-loop-v4-current6d.md`.
 
 ### [ ] PLAY-086: Gate visible cause and recovery
 
@@ -1196,7 +1197,10 @@ This is the authoritative first-wave task source. The shared target is one coher
   schema/fingerprint versioning changes; gameplay and platform candidates are
   mixed; a generic healing path appears; or the exact integrated PLAY-085
   identity is unavailable.
-- **Claim:** `docs/production/claims/PLAY-088.simulation-platform.md`.
+- **Claim:** Historical Phase-A authority remains
+  `docs/production/claims/PLAY-088.simulation-platform.md`; the current-master
+  Phase-B successor is
+  `docs/production/claims/PLAY-088.simulation-platform-v2-current6d.md`.
 
 ### [ ] PLAY-089: Operate a low-overhead intelligence optimization loop
 

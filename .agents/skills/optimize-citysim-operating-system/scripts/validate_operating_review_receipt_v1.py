@@ -159,6 +159,44 @@ def _within(path: str, root: str) -> bool:
     return path == root or path.startswith(root.rstrip("/") + "/")
 
 
+def _project_observer_dispatch(
+    dispatch: object,
+    route_id: str,
+) -> tuple[dict | None, dict | None, list[str]]:
+    """Preserve the original binding while projecting only schema-validation worktree state."""
+    errors: list[str] = []
+    assignments = dispatch.get("assignments") if isinstance(dispatch, dict) else None
+    matches = [
+        (index, item)
+        for index, item in enumerate(assignments or [])
+        if isinstance(item, dict)
+        and isinstance(item.get("modelRoute"), dict)
+        and item["modelRoute"].get("routeId") == route_id
+    ]
+    if len(matches) != 1:
+        return None, None, ["observer model route must resolve exactly once"]
+    selected_index, selected = matches[0]
+    route = selected["modelRoute"]
+    original_hash = selected.get("modelRouteSha256")
+    if original_hash != _canonical_sha256(route):
+        errors.append("observer selected model route hash must match canonical original route JSON")
+    authority = route.get("authority") if isinstance(route.get("authority"), dict) else {}
+    if not isinstance(dispatch, dict) or dispatch.get("authorityCommit") != authority.get("authorityCommit"):
+        errors.append("observer dispatch and selected route authority must exactly match")
+    projected_dispatch = copy.deepcopy(dispatch)
+    try:
+        projected_row = projected_dispatch["assignments"][selected_index]
+        projected_route = projected_row["modelRoute"]
+        projected_assignment = projected_route["assignment"]
+    except (KeyError, IndexError, TypeError):
+        return route, None, errors + ["observer selected route must contain an assignment"]
+    if not isinstance(projected_assignment, dict):
+        return route, None, errors + ["observer selected route must contain an assignment"]
+    projected_assignment["worktree"] = "/__citysim_schema_validation__/nonexistent"
+    projected_row["modelRouteSha256"] = _canonical_sha256(projected_route)
+    return route, projected_dispatch, errors
+
+
 def validate_observer_output_route(
     dispatch_supplied: str,
     route_id: str,
@@ -174,21 +212,16 @@ def validate_observer_output_route(
         dispatch = json.loads(dispatch_path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError, UnicodeError):
         return [], errors + ["observer dispatch receipt must be readable schema-2 JSON"]
-    assignments = dispatch.get("assignments") if isinstance(dispatch, dict) else None
-    matches = [
-        item for item in assignments or []
-        if isinstance(item, dict)
-        and isinstance(item.get("modelRoute"), dict)
-        and item["modelRoute"].get("routeId") == route_id
-    ]
-    if len(matches) != 1:
-        return [], errors + ["observer model route must resolve exactly once"]
-    route = matches[0]["modelRoute"]
-    try:
-        route_validator = _load_model_route_validator(authority_root)
-        errors.extend(route_validator.validate_dispatch(dispatch, authority_root, route_id))
-    except (OSError, RuntimeError) as exc:
-        errors.append(str(exc))
+    route, projected_dispatch, projection_errors = _project_observer_dispatch(dispatch, route_id)
+    errors.extend(projection_errors)
+    if route is None:
+        return [], errors
+    if projected_dispatch is not None:
+        try:
+            route_validator = _load_model_route_validator(authority_root)
+            errors.extend(route_validator.validate_dispatch(projected_dispatch, authority_root, route_id))
+        except (OSError, RuntimeError) as exc:
+            errors.append(str(exc))
     if (
         route.get("taskId") != "PLAY-089"
         or route.get("classification") != "LUNA_MECHANICAL"
@@ -197,10 +230,12 @@ def validate_observer_output_route(
     ):
         errors.append("observer route must be PLAY-089 Luna mechanical/medium")
     assignment = route.get("assignment") if isinstance(route.get("assignment"), dict) else {}
-    if Path(str(assignment.get("worktree", ""))).resolve() != output_root.resolve():
+    observed_root, observed_root_errors = _observed_route_root(assignment)
+    errors.extend(observed_root_errors)
+    if observed_root is not None and observed_root != output_root.resolve():
         errors.append("observer route worktree must exactly match the worker/output root")
-    elif _is_git_repo(output_root):
-        errors.extend(_output_identity_errors(output_root, assignment))
+    elif observed_root is not None:
+        errors.extend(_output_identity_errors(observed_root, assignment))
     policy = route.get("pathPolicy") if isinstance(route.get("pathPolicy"), dict) else {}
     allowed = policy.get("allowed") if isinstance(policy.get("allowed"), list) else []
     if not allowed:

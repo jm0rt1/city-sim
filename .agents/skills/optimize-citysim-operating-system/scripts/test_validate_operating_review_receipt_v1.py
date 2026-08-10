@@ -131,6 +131,39 @@ def _write_projection_dispatch(
     return route, binding
 
 
+def _write_observer_dispatch(
+    authority_root: Path,
+    worktree: str,
+    branch: str,
+    expected_head: str,
+    *,
+    route_id: str = "observer-route",
+    authority_commit: str = C,
+) -> tuple[dict, dict]:
+    route = {
+        "routeId": route_id,
+        "taskId": "PLAY-089",
+        "classification": "LUNA_MECHANICAL",
+        "model": "gpt-5.6-luna",
+        "effort": "medium",
+        "authority": {"authorityCommit": authority_commit},
+        "assignment": {
+            "worktree": worktree,
+            "branch": branch,
+            "expectedHead": expected_head,
+        },
+        "pathPolicy": {"allowed": ["docs/production/evidence/PLAY-089/review"]},
+    }
+    route_hash = MOD._canonical_sha256(route)
+    dispatch = {
+        "schema": 2,
+        "authorityCommit": authority_commit,
+        "assignments": [{"modelRouteSha256": route_hash, "modelRoute": route}],
+    }
+    (authority_root / "dispatch.json").write_text(json.dumps(dispatch), encoding="utf-8")
+    return dispatch, route
+
+
 def _evidence(policy: dict, trigger: str) -> dict:
     fields = policy["eventRequirements"][trigger]["requiredEvidence"]
     result = {field: (H if field.lower().endswith("hash") else "bound") for field in fields}
@@ -500,16 +533,12 @@ class OperatingReceiptTests(unittest.TestCase):
             subprocess.run(["git", "-C", str(output), "add", "file"], check=True)
             subprocess.run(["git", "-C", str(output), "commit", "-m", "base"], check=True, capture_output=True)
             head = subprocess.run(["git", "-C", str(output), "rev-parse", "HEAD"], check=True, capture_output=True, text=True).stdout.strip()
-            route = {
-                "routeId": "observer-route",
-                "taskId": "PLAY-089",
-                "classification": "LUNA_MECHANICAL",
-                "model": "gpt-5.6-luna",
-                "effort": "medium",
-                "assignment": {"worktree": str(output), "branch": "codex/citysim-os-optimization", "expectedHead": head},
-                "pathPolicy": {"allowed": ["docs/production/evidence/PLAY-089/review"]},
-            }
-            (authority / "dispatch.json").write_text(json.dumps({"assignments": [{"modelRoute": route}]}), encoding="utf-8")
+            dispatch, route = _write_observer_dispatch(
+                authority,
+                str(output),
+                "codex/citysim-os-optimization",
+                head,
+            )
             validator = mock.Mock()
             validator.validate_dispatch.return_value = []
             with mock.patch.object(MOD, "_load_model_route_validator", return_value=validator):
@@ -519,12 +548,171 @@ class OperatingReceiptTests(unittest.TestCase):
                 )
             self.assertEqual(errors, [])
             self.assertEqual(allowed, ["docs/production/evidence/PLAY-089/review"])
+            projected_dispatch, projected_root, projected_route_id = validator.validate_dispatch.call_args.args
+            projected_row = projected_dispatch["assignments"][0]
+            self.assertEqual(projected_root, authority)
+            self.assertEqual(projected_route_id, "observer-route")
+            self.assertEqual(
+                projected_row["modelRoute"]["assignment"]["worktree"],
+                "/__citysim_schema_validation__/nonexistent",
+            )
+            self.assertEqual(
+                projected_row["modelRouteSha256"],
+                MOD._canonical_sha256(projected_row["modelRoute"]),
+            )
+            self.assertEqual(route["assignment"]["worktree"], str(output))
+            persisted = json.loads((authority / "dispatch.json").read_text(encoding="utf-8"))
+            self.assertEqual(persisted, dispatch)
             with mock.patch.object(MOD, "_load_model_route_validator", return_value=validator):
                 _, errors = MOD.validate_observer_output_route(
                     "dispatch.json", "observer-route", authority, output,
                     ["docs/production/evidence/PLAY-090/escape.json"],
                 )
             self.assertTrue(any("outside its exact route" in error for error in errors))
+
+    def test_observer_route_accepts_descendant_result_head(self):
+        with tempfile.TemporaryDirectory() as authority_tmp, tempfile.TemporaryDirectory() as output_tmp:
+            authority = Path(authority_tmp)
+            output = Path(output_tmp)
+            base, descendant = _init_git_repo(output)
+            dispatch, route = _write_observer_dispatch(
+                authority,
+                str(output),
+                "codex/observed",
+                base,
+            )
+            validator = mock.Mock()
+            validator.validate_dispatch.return_value = []
+            with mock.patch.object(MOD, "_load_model_route_validator", return_value=validator):
+                allowed, errors = MOD.validate_observer_output_route(
+                    "dispatch.json", "observer-route", authority, output,
+                    ["docs/production/evidence/PLAY-089/review/01.json"],
+                )
+            self.assertEqual(errors, [])
+            self.assertEqual(allowed, ["docs/production/evidence/PLAY-089/review"])
+            self.assertNotEqual(base, descendant)
+            self.assertEqual(route["assignment"]["expectedHead"], base)
+            self.assertEqual(json.loads((authority / "dispatch.json").read_text(encoding="utf-8")), dispatch)
+
+    def test_observer_route_rejects_original_hash_tamper_duplicate_and_authority_mismatch(self):
+        with tempfile.TemporaryDirectory() as authority_tmp, tempfile.TemporaryDirectory() as output_tmp:
+            authority = Path(authority_tmp)
+            output = Path(output_tmp)
+            base, _ = _init_git_repo(output)
+            validator = mock.Mock()
+            validator.validate_dispatch.return_value = []
+
+            dispatch, _ = _write_observer_dispatch(authority, str(output), "codex/observed", base)
+            tampered = copy.deepcopy(dispatch)
+            tampered["assignments"][0]["modelRouteSha256"] = H
+            (authority / "dispatch.json").write_text(json.dumps(tampered), encoding="utf-8")
+            with mock.patch.object(MOD, "_load_model_route_validator", return_value=validator):
+                _, errors = MOD.validate_observer_output_route(
+                    "dispatch.json", "observer-route", authority, output,
+                    ["docs/production/evidence/PLAY-089/review/01.json"],
+                )
+            self.assertIn("observer selected model route hash must match canonical original route JSON", errors)
+
+            duplicate = copy.deepcopy(dispatch)
+            duplicate["assignments"].append(copy.deepcopy(duplicate["assignments"][0]))
+            (authority / "dispatch.json").write_text(json.dumps(duplicate), encoding="utf-8")
+            with mock.patch.object(MOD, "_load_model_route_validator", return_value=validator):
+                _, errors = MOD.validate_observer_output_route(
+                    "dispatch.json", "observer-route", authority, output,
+                    ["docs/production/evidence/PLAY-089/review/01.json"],
+                )
+            self.assertEqual(errors, ["observer model route must resolve exactly once"])
+
+            authority_mismatch = copy.deepcopy(dispatch)
+            authority_mismatch["authorityCommit"] = "c" * 40
+            (authority / "dispatch.json").write_text(json.dumps(authority_mismatch), encoding="utf-8")
+            with mock.patch.object(MOD, "_load_model_route_validator", return_value=validator):
+                _, errors = MOD.validate_observer_output_route(
+                    "dispatch.json", "observer-route", authority, output,
+                    ["docs/production/evidence/PLAY-089/review/01.json"],
+                )
+            self.assertIn("observer dispatch and selected route authority must exactly match", errors)
+
+    def test_observer_route_rejects_missing_non_git_and_nested_roots(self):
+        validator = mock.Mock()
+        validator.validate_dispatch.return_value = []
+        with tempfile.TemporaryDirectory() as authority_tmp:
+            authority = Path(authority_tmp)
+            missing = authority / "missing"
+            _write_observer_dispatch(authority, str(missing), "codex/observed", C)
+            with mock.patch.object(MOD, "_load_model_route_validator", return_value=validator):
+                _, errors = MOD.validate_observer_output_route(
+                    "dispatch.json", "observer-route", authority, missing,
+                    ["docs/production/evidence/PLAY-089/review/01.json"],
+                )
+            self.assertIn("observed route assignment.worktree must be an existing directory", errors)
+
+        with tempfile.TemporaryDirectory() as authority_tmp, tempfile.TemporaryDirectory() as output_tmp:
+            authority = Path(authority_tmp)
+            output = Path(output_tmp)
+            _write_observer_dispatch(authority, str(output), "codex/observed", C)
+            with mock.patch.object(MOD, "_load_model_route_validator", return_value=validator):
+                _, errors = MOD.validate_observer_output_route(
+                    "dispatch.json", "observer-route", authority, output,
+                    ["docs/production/evidence/PLAY-089/review/01.json"],
+                )
+            self.assertIn("observed route assignment.worktree must be a Git repository", errors)
+
+        with tempfile.TemporaryDirectory() as authority_tmp, tempfile.TemporaryDirectory() as output_tmp:
+            authority = Path(authority_tmp)
+            output = Path(output_tmp)
+            base, _ = _init_git_repo(output)
+            nested = output / "nested"
+            nested.mkdir()
+            _write_observer_dispatch(authority, str(nested), "codex/observed", base)
+            with mock.patch.object(MOD, "_load_model_route_validator", return_value=validator):
+                _, errors = MOD.validate_observer_output_route(
+                    "dispatch.json", "observer-route", authority, nested,
+                    ["docs/production/evidence/PLAY-089/review/01.json"],
+                )
+            self.assertIn("observed route assignment.worktree must equal its Git top level", errors)
+
+    def test_observer_route_rejects_branch_and_non_ancestor_head(self):
+        with tempfile.TemporaryDirectory() as authority_tmp, tempfile.TemporaryDirectory() as output_tmp:
+            authority = Path(authority_tmp)
+            output = Path(output_tmp)
+            base, _ = _init_git_repo(output)
+            validator = mock.Mock()
+            validator.validate_dispatch.return_value = []
+            _write_observer_dispatch(authority, str(output), "codex/wrong", base)
+            with mock.patch.object(MOD, "_load_model_route_validator", return_value=validator):
+                _, errors = MOD.validate_observer_output_route(
+                    "dispatch.json", "observer-route", authority, output,
+                    ["docs/production/evidence/PLAY-089/review/01.json"],
+                )
+            self.assertIn("live worker/output branch must exactly match the model route branch", errors)
+
+            _write_observer_dispatch(authority, str(output), "codex/observed", "f" * 40)
+            with mock.patch.object(MOD, "_load_model_route_validator", return_value=validator):
+                _, errors = MOD.validate_observer_output_route(
+                    "dispatch.json", "observer-route", authority, output,
+                    ["docs/production/evidence/PLAY-089/review/01.json"],
+                )
+            self.assertIn("model route expected HEAD must be an ancestor of live worker/output HEAD", errors)
+
+    def test_observer_route_propagates_immutable_input_and_claim_failures(self):
+        with tempfile.TemporaryDirectory() as authority_tmp, tempfile.TemporaryDirectory() as output_tmp:
+            authority = Path(authority_tmp)
+            output = Path(output_tmp)
+            base, _ = _init_git_repo(output)
+            _write_observer_dispatch(authority, str(output), "codex/observed", base)
+            validator = mock.Mock()
+            validator.validate_dispatch.return_value = [
+                "assignments[0]: authority.immutableInputs[0] sha256 mismatch",
+                "assignments[0]: claim sha256 mismatch",
+            ]
+            with mock.patch.object(MOD, "_load_model_route_validator", return_value=validator):
+                _, errors = MOD.validate_observer_output_route(
+                    "dispatch.json", "observer-route", authority, output,
+                    ["docs/production/evidence/PLAY-089/review/01.json"],
+                )
+            self.assertIn("assignments[0]: authority.immutableInputs[0] sha256 mismatch", errors)
+            self.assertIn("assignments[0]: claim sha256 mismatch", errors)
 
     def test_phantom_ledger_receipt_fails(self):
         with tempfile.TemporaryDirectory() as tmp:

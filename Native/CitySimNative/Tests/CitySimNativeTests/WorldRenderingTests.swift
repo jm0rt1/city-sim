@@ -1755,8 +1755,8 @@ final class WorldRenderingTests: XCTestCase {
         let manifest = try XCTUnwrap(catalog.generatedManifest)
 
         XCTAssertEqual(catalog.manifestValidationIssues(), [])
-        XCTAssertEqual(manifest.pages.count, 4)
-        XCTAssertEqual(manifest.inventory.count, 4)
+        XCTAssertEqual(manifest.pages.count, 5)
+        XCTAssertEqual(manifest.inventory.count, 5)
         XCTAssertEqual(manifest.compiledNetwork.connectionMasks, 16)
         XCTAssertEqual(Set(manifest.pages.map(\.file)), Set(manifest.inventory.map(\.file)))
 
@@ -2010,7 +2010,7 @@ final class WorldRenderingTests: XCTestCase {
     func testGeneratedWorldProductionBundleLoadsPagesInsteadOfUnpackedPayloads() throws {
         let catalog = WorldAssetCatalog()
         let manifest = try XCTUnwrap(catalog.generatedManifest)
-        XCTAssertEqual(manifest.pages.count, 4)
+        XCTAssertEqual(manifest.pages.count, 5)
         XCTAssertNil(catalog.texture(named: "generated_v4_residential_l01_block"))
         XCTAssertNotNil(catalog.generatedPresentation(logicalID: "residential_l01", detail: .block))
         let snapshot = catalog.residencySnapshot()
@@ -3774,13 +3774,13 @@ final class WorldRenderingTests: XCTestCase {
                 CGSize(width: 1_280, height: 800),
                 CityMapViewportInsets(top: 104, leading: 24, bottom: 160, trailing: 24),
                 CGFloat(0.704783022403717),
-                CGSize(width: 0.7877528083767829, height: 0.926523209964918)
+                CGSize(width: 0.7877528083767829, height: 1.0588604024979469)
             ),
             (
                 CGSize(width: 900, height: 600),
                 CityMapViewportInsets(top: 138, leading: 19, bottom: 236, trailing: 19),
                 CGFloat(0.6549999713897705),
-                CGSize(width: 1.2114557479976324, height: 2.3644318802148763)
+                CGSize(width: 1.2114557479976324, height: 2.7021484895754506)
             ),
         ] {
             let scene = CityScene(size: size)

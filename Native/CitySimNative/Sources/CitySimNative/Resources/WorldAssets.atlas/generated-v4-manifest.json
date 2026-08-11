@@ -6035,8 +6035,8 @@
       "allowed_overhang_world": [
         27.0703125,
         31.078125,
-        1.97753906,
-        71.92089844
+        0.0,
+        74.03130341
       ],
       "authoring_template": "1x1",
       "decoded_byte_estimate": 1688600,
@@ -6076,14 +6076,14 @@
       ],
       "ground_pivot_source": [
         768,
-        896
+        911
       ],
       "level": 1,
       "lods": {
         "block": {
           "anchor": [
             0.48460292,
-            0.01799424
+            -0.00120899
           ],
           "decoded_byte_estimate": 1285828,
           "extrusion_pixels": 2,
@@ -6135,7 +6135,7 @@
         "city": {
           "anchor": [
             0.48460292,
-            0.01799424
+            -0.00120899
           ],
           "decoded_byte_estimate": 81220,
           "extrusion_pixels": 2,
@@ -6187,7 +6187,7 @@
         "neighborhood": {
           "anchor": [
             0.48460292,
-            0.01799424
+            -0.00120899
           ],
           "decoded_byte_estimate": 321552,
           "extrusion_pixels": 2,
@@ -6245,9 +6245,9 @@
       "normalization_record_sha256": "3b834f959f9714f947ec15d01c7f185bb43b257f4defe0e66c3cad7a75b330a5",
       "opaque_bounds_world": [
         -63.0703125,
-        -19.97753906,
+        -17.86713409,
         67.078125,
-        89.92089844
+        92.03130341
       ],
       "padding": 24,
       "placement_offset_world": [
@@ -6275,9 +6275,9 @@
       "scene_descriptor_sha256": "58a195c4407b141387d186487cb570a1540e06e2f50db2995608ad33588d2174",
       "shadow_bounds_world": [
         -63.0703125,
-        -19.97753906,
+        -17.86713409,
         67.078125,
-        89.92089844
+        92.03130341
       ],
       "source_canvas_pixels": [
         1536,
@@ -6827,8 +6827,8 @@
       "allowed_overhang_world": [
         38.25,
         22.640625,
-        5.98535156,
-        67.49121094
+        0.0,
+        73.54103851
       ],
       "authoring_template": "1x1",
       "decoded_byte_estimate": 1716380,
@@ -6868,14 +6868,14 @@
       ],
       "ground_pivot_source": [
         768,
-        896
+        939
       ],
       "level": 1,
       "lods": {
         "block": {
           "anchor": [
             0.55873016,
-            0.05467245
+            -0.00058895
           ],
           "decoded_byte_estimate": 1307880,
           "extrusion_pixels": 2,
@@ -6927,7 +6927,7 @@
         "city": {
           "anchor": [
             0.55873016,
-            0.05467245
+            -0.00058895
           ],
           "decoded_byte_estimate": 82160,
           "extrusion_pixels": 2,
@@ -6979,7 +6979,7 @@
         "neighborhood": {
           "anchor": [
             0.55873016,
-            0.05467245
+            -0.00058895
           ],
           "decoded_byte_estimate": 326340,
           "extrusion_pixels": 2,
@@ -7037,9 +7037,9 @@
       "normalization_record_sha256": "529ebd7da01d334e3c36ca76aa1bab86001637c11455a431314affc5c29b4107",
       "opaque_bounds_world": [
         -74.25,
-        -23.98535156,
+        -17.93552399,
         58.640625,
-        85.49121094
+        91.54103851
       ],
       "padding": 24,
       "placement_offset_world": [
@@ -7067,9 +7067,9 @@
       "scene_descriptor_sha256": "709eab958b106c948d8a54268b5e2c433527156116203eec7927c498585c3f05",
       "shadow_bounds_world": [
         -74.25,
-        -23.98535156,
+        -17.93552399,
         58.640625,
-        85.49121094
+        91.54103851
       ],
       "source_canvas_pixels": [
         1536,

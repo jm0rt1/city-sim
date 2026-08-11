@@ -43,6 +43,12 @@ DIRECTION_SOCKET_WORLD = {
     "south": (-18.0, -9.0),
     "west": (-18.0, 9.0),
 }
+PLAY101_RUNTIME_REGISTRATION_OFFSETS = {
+    "north": 0,
+    "east": 15,
+    "south": 0,
+    "west": 43,
+}
 WORLD_HALF_TILE = (36.0, 18.0)
 
 
@@ -83,12 +89,15 @@ def rounded(value: float) -> float:
     return round(value, 8)
 
 
-def source_point_to_world(point: list[float]) -> tuple[float, float]:
+def source_point_to_world(
+    point: list[float],
+    ground_pivot: list[float] | tuple[float, float] = GROUND_PIVOT,
+) -> tuple[float, float]:
     return (
-        rounded((float(point[0]) - GROUND_PIVOT[0]) * WORLD_POINTS_PER_RAW_PIXEL),
+        rounded((float(point[0]) - float(ground_pivot[0])) * WORLD_POINTS_PER_RAW_PIXEL),
         rounded(
             PLACEMENT_OFFSET[1]
-            + (GROUND_PIVOT[1] - float(point[1])) * WORLD_POINTS_PER_RAW_PIXEL
+            + (float(ground_pivot[1]) - float(point[1])) * WORLD_POINTS_PER_RAW_PIXEL
         ),
     )
 
@@ -96,10 +105,11 @@ def source_point_to_world(point: list[float]) -> tuple[float, float]:
 def entrance_exclusion_rect(
     socket_source: list[float],
     door_base_source: list[list[float]],
+    ground_pivot: list[float] | tuple[float, float] = GROUND_PIVOT,
 ) -> list[float]:
     points = [
-        source_point_to_world(socket_source),
-        *(source_point_to_world(point) for point in door_base_source),
+        source_point_to_world(socket_source, ground_pivot),
+        *(source_point_to_world(point, ground_pivot) for point in door_base_source),
     ]
     padding = 2.0
     minimum_x = max(-WORLD_HALF_TILE[0], min(point[0] for point in points) - padding)
@@ -298,6 +308,15 @@ def directional_building_assets(
         registration = scene_data.get("registration", {})
         frontage_socket_source = registration.get("frontageSocketSource")
         door_base_source = registration.get("doorBaseSource")
+        registration_offset_y = (
+            PLAY101_RUNTIME_REGISTRATION_OFFSETS[direction]
+            if task == "PLAY-101" and family == "industrial" and level == 1
+            else 0
+        )
+        ground_pivot_source = [
+            GROUND_PIVOT[0],
+            GROUND_PIVOT[1] + registration_offset_y,
+        ]
         if (
             registration.get("tileBasisPoints") != [72, 36]
             or registration.get("groundPivotSource") != list(GROUND_PIVOT)
@@ -309,7 +328,15 @@ def directional_building_assets(
             or any(not isinstance(point, list) or len(point) != 2 for point in door_base_source)
         ):
             raise SystemExit(f"build rejected: directional registration mismatch for {logical_id}")
-        entrance_socket = source_point_to_world(frontage_socket_source)
+        frontage_socket_source = [
+            frontage_socket_source[0],
+            frontage_socket_source[1] + registration_offset_y,
+        ]
+        door_base_source = [
+            [point[0], point[1] + registration_offset_y]
+            for point in door_base_source
+        ]
+        entrance_socket = source_point_to_world(frontage_socket_source, ground_pivot_source)
         expected_socket = DIRECTION_SOCKET_WORLD[direction]
         if any(
             abs(actual - expected) > 0.000_001
@@ -319,6 +346,7 @@ def directional_building_assets(
         exclusion_rect = entrance_exclusion_rect(
             frontage_socket_source,
             door_base_source,
+            ground_pivot_source,
         )
 
         lods: dict[str, dict[str, object]] = {}
@@ -350,8 +378,8 @@ def directional_building_assets(
                 width = right - left
                 height = bottom - top
                 source_pixels = list(image.size)
-                pivot_x = GROUND_PIVOT[0] * image.width / RAW_CANVAS[0]
-                pivot_y = GROUND_PIVOT[1] * image.height / RAW_CANVAS[1]
+                pivot_x = ground_pivot_source[0] * image.width / RAW_CANVAS[0]
+                pivot_y = ground_pivot_source[1] * image.height / RAW_CANVAS[1]
                 anchor = [
                     rounded((pivot_x - left) / width),
                     rounded((bottom - pivot_y) / height),
@@ -427,7 +455,7 @@ def directional_building_assets(
                 "footprint_tiles": [1, 1],
                 "supported_orientation": f"{direction}-facing-authored",
                 "placement_offset_world": list(PLACEMENT_OFFSET),
-                "ground_pivot_source": list(GROUND_PIVOT),
+                "ground_pivot_source": ground_pivot_source,
                 "ground_contact_polygon_world": [
                     [0.0, 13.5],
                     [27.0, 0.0],

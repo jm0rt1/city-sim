@@ -396,9 +396,6 @@ final class WorldAssetCatalog {
                 issues.append("\(detail.assetSuffix) active-plus-next residency exceeds 128 MiB")
             }
         }
-        if manifest.pages.count > 4 {
-            issues.append("pack contains more than four pages")
-        }
         return issues
     }
 

@@ -239,7 +239,6 @@ struct BuildToolbarView: View {
             cityFocusButton
             commandGuideButton
             detailsButton
-            OverlayPickerView(store: store, compact: compact)
         }
     }
 

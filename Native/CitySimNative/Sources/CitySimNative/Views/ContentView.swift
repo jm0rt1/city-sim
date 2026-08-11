@@ -428,20 +428,15 @@ struct ContentView: View {
                         .accessibilityValue(feedback)
                     }
 
-                    if store.overlay != .none {
-                        HStack {
-                            Spacer()
-                            OverlayLegendView(overlay: store.overlay)
-                        }
-                        .transition(.opacity)
-                    }
-
                     if !store.isCityFocusModeEnabled {
-                        BuildToolbarView(
-                            store: store,
-                            compact: compact,
-                            pointerTransitionGate: pointerTransitionGate
-                        )
+                        VStack(spacing: compact ? 4 : 6) {
+                            OverlayDiagnosticsPaletteView(store: store, compact: compact)
+                            BuildToolbarView(
+                                store: store,
+                                compact: compact,
+                                pointerTransitionGate: pointerTransitionGate
+                            )
+                        }
                             .frame(maxWidth: compact ? .infinity : 1_120)
                             .onGeometryChange(for: CGRect.self) { proxy in
                                 proxy.frame(in: .named("city.game.surface"))

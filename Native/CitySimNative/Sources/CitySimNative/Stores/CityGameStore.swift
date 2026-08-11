@@ -103,7 +103,11 @@ final class CityGameStore: ObservableObject {
                 ),
             ]
         }
-        return [
+        var objectives = [CityObjective]()
+        if let strategyObjective = metrics.strategyObjective {
+            objectives.append(strategyObjective)
+        }
+        objectives.append(contentsOf: [
             CityObjective(
                 id: "stabilize",
                 title: "Balance the Books",
@@ -129,7 +133,8 @@ final class CityGameStore: ObservableObject {
                 progress: charterProgress,
                 remaining: metrics.townCharterStatusText
             )
-        ]
+        ])
+        return objectives
     }
 
     var primaryObjective: CityObjective {

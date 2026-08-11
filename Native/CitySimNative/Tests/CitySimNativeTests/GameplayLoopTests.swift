@@ -119,6 +119,31 @@ final class GameplayLoopTests: XCTestCase {
         XCTAssertLessThan(4.0 * 0.42, 15)
     }
 
+    @MainActor
+    func testGrowthEngineMakesTheFirstArcPrimaryAndActionable() throws {
+        var commerce = CityGameState.newCity(seed: 42)
+        try buildFirstValid(.commercial, in: &commerce)
+        advanceToTick(&commerce, tick: 4)
+
+        let commerceStore = CityGameStore(state: commerce)
+        XCTAssertEqual(commerceStore.primaryObjective.id, "strategy")
+        XCTAssertEqual(commerceStore.primaryObjective.title, "Protect Main Street")
+        XCTAssertEqual(commerceStore.primaryObjective.progress, 0.25, accuracy: 0.001)
+        XCTAssertTrue(commerceStore.primaryObjective.remaining.contains("Chain-store pressure arrives in 16 days"))
+        XCTAssertTrue(commerceStore.primaryObjective.remaining.contains("Lower tax to 9% or build a second park"))
+
+        advanceToTick(&commerceStore.state, tick: 68)
+        XCTAssertEqual(commerceStore.primaryObjective.progress, 0.50, accuracy: 0.001)
+        XCTAssertTrue(commerceStore.primaryObjective.remaining.contains("Chain-store pressure arrives in 16 days"))
+
+        var industry = CityGameState.newCity(seed: 42)
+        try buildFirstValid(.industrial, in: &industry)
+        advanceToTick(&industry, tick: 4)
+        let industryStore = CityGameStore(state: industry)
+        XCTAssertEqual(industryStore.primaryObjective.title, "Secure the Freight Network")
+        XCTAssertTrue(industryStore.primaryObjective.remaining.contains("Add a second Power Plant and Water Tower"))
+    }
+
     func testDemandDrivenDevelopmentCreatesVariedLevelsForBothStrategies() throws {
         var commerce = try commercialStrategy()
         var industry = try industrialStrategy()

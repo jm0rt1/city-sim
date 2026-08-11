@@ -117,6 +117,50 @@ struct CityAnalytics {
         return (remainingTicks + 3) / 4
     }
 
+    var strategyObjective: CityObjective? {
+        guard let strategy = committedStrategy,
+              let phase = strategyPhase,
+              phase != .completed else { return nil }
+
+        let days = strategyDaysUntilConsequence ?? 0
+        let progress: Double = switch phase {
+        case .opportunity: 0.25
+        case .complication: 0.50
+        case .setback: 0.65
+        case .recovery: 0.80
+        case .completed: 1
+        }
+
+        switch strategy {
+        case .commercialStewardship:
+            let response = strategyRecoveryResolution == nil
+                ? "Lower tax to 9% or build a second park"
+                : "Keep the city stable while the response resolves"
+            return CityObjective(
+                id: "strategy",
+                title: "Protect Main Street",
+                detail: "Guide Commercial growth through a market opportunity, chain-store pressure, and a recovery payoff.",
+                progress: progress,
+                remaining: phase == .recovery
+                    ? "Response secured; keep the city stable for \(days) days to earn the recovery payoff."
+                    : "Chain-store pressure arrives in \(days) days. \(response) to protect local foot traffic."
+            )
+        case .industrialExpansion:
+            let response = strategyRecoveryResolution == nil
+                ? "Add a second Power Plant and Water Tower, or build a second park"
+                : "Keep the city stable while the response resolves"
+            return CityObjective(
+                id: "strategy",
+                title: "Secure the Freight Network",
+                detail: "Guide Industrial growth through a freight contract, load pressure, and a recovery payoff.",
+                progress: progress,
+                remaining: phase == .recovery
+                    ? "Response secured; keep the city stable for \(days) days to earn the recovery payoff."
+                    : "Freight pressure arrives in \(days) days. \(response) to protect the contract."
+            )
+        }
+    }
+
     var meetsTownCharterStandards: Bool {
         CitySimulation.meetsTownCharterStandards(in: state)
     }

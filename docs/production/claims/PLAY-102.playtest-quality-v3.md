@@ -315,3 +315,30 @@ SIGKILL; stage; commit; push; release; self-acceptance; or broader gate movement
 Any identity, permission, process, root, interaction, state-integrity, journey,
 save, persistence, lease, or attempt mismatch returns immediately. Integration
 and independent Agent 002 retain disposition authority.
+
+### CITYSIM-BF6 blocked-placement Beta acceptance
+
+Independent Agent 004 returned `APPROVE_BETA` for immutable product commit
+`bf6fa73aa31ab66c4b0d2be3b7ab288a40200190`, tree
+`59888dc58359675a69aaf778f32b4a4ca7c49469`, under governance authority
+`ce2306c042e6632c3effa8f1e4b9e1aebf5646e6`, tree
+`4ab3701e6c536db1ebbe2f3a48f7ce6cc1e15336`. The exact receipt is
+`/private/tmp/CITYSIM-BF6-BETA-QA-V1-OUTPUT/QA-PASS.json`, SHA-256
+`96e3a4d04ac8eab4f0469266cd766cb79ecc1c1265eef3255193a490a48ca38d`.
+
+The accepted journey proved that pointer placement, Return-keyboard placement,
+visible feedback, and the accessibility value exposed the identical truthful
+blocked-placement reason while day, population, and treasury remained
+unchanged. The fresh ordinary city then reached population 500 with 100 percent
+utilities; the Day-201 severe storm imposed `$2,000` in repairs, `-3` happiness,
+and damage to three completed homes; all three recovered by Day 207. Launch one
+saved at Day 215, and launch two restored the storm and recovery journal with
+population 514, treasury `$49,840`, and 100 percent utilities.
+
+Exact launch-two PID `80832` remains paused and running
+`dist/CitySim.app/Contents/MacOS/CitySimNative`, whose SHA-256 remains
+`6e3cc9a251797c9241ffd70587a84e0af9e061cd7d2ef23fad405bf27ed98a6e`.
+This acceptance record changes no product or build bytes and authorizes no
+signal to PID `80832`. It accepts this exact Beta candidate only; it does not
+claim v1, production release, push, origin parity, Renderer recovery, PLAY-101
+family admission, or any broader gate.

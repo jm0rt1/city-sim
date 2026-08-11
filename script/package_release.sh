@@ -100,6 +100,7 @@ fi
 SIGN_IDENTITY="${CITYSIM_SIGN_IDENTITY:--}"
 NOTARIZE_REQUESTED="${CITYSIM_NOTARIZE:-0}"
 NOTARY_PROFILE="${CITYSIM_NOTARY_PROFILE:-}"
+NOTARY_PREFLIGHT_AUTHENTICATED="false"
 
 case "$NOTARIZE_REQUESTED" in
   0|1) ;;
@@ -117,6 +118,22 @@ if [[ "$NOTARIZE_REQUESTED" == "1" ]]; then
     || fail "xcrun notarytool is unavailable"
   xcrun --find stapler >/dev/null \
     || fail "xcrun stapler is unavailable"
+
+  IDENTITY_SUMMARY="$(security find-identity -v -p codesigning)"
+  IDENTITY_LINE="$(awk -v identity="$SIGN_IDENTITY" '
+    index($0, identity) { print; exit }
+  ' <<<"$IDENTITY_SUMMARY")"
+  [[ -n "$IDENTITY_LINE" ]] \
+    || fail "CITYSIM_SIGN_IDENTITY is not a valid keychain signing identity"
+  [[ "$IDENTITY_LINE" == *'"Developer ID Application:'* ]] \
+    || fail "CITYSIM_SIGN_IDENTITY must resolve to a Developer ID Application identity"
+
+  if ! xcrun notarytool history \
+    --keychain-profile "$NOTARY_PROFILE" \
+    --output-format json >/dev/null; then
+    fail "CITYSIM_NOTARY_PROFILE could not authenticate with the Apple notary service"
+  fi
+  NOTARY_PREFLIGHT_AUTHENTICATED="true"
 elif [[ -n "$NOTARY_PROFILE" ]]; then
   fail "CITYSIM_NOTARY_PROFILE requires CITYSIM_NOTARIZE=1"
 fi
@@ -358,7 +375,6 @@ PY
   xcrun stapler validate -v "$APP_BUNDLE"
   spctl --assess --type execute --verbose=4 "$APP_BUNDLE"
   codesign --verify --deep --strict --verbose=4 "$APP_BUNDLE"
-  NOTARY_VALIDATED="true"
   NOTARIZATION_PERFORMED="true"
 fi
 
@@ -403,6 +419,13 @@ EXTRACTED_APP="$VERIFY_ROOT/CitySim.app"
 [[ -d "$EXTRACTED_APP" ]] || fail "archive did not extract CitySim.app"
 codesign --verify --deep --strict --verbose=4 "$EXTRACTED_APP"
 
+if [[ "$NOTARIZATION_PERFORMED" == "true" ]]; then
+  xcrun stapler validate -v "$EXTRACTED_APP"
+  spctl --assess --type execute --verbose=4 "$EXTRACTED_APP"
+  codesign --verify --deep --strict --verbose=4 "$EXTRACTED_APP"
+  NOTARY_VALIDATED="true"
+fi
+
 EXTRACTED_RESOURCE_BUNDLE="$EXTRACTED_APP/Contents/Resources/$RESOURCE_BUNDLE_NAME"
 [[ -d "$EXTRACTED_RESOURCE_BUNDLE" ]] \
   || fail "extracted app is missing its nested resource bundle"
@@ -424,7 +447,8 @@ fi
 TEMP_RELEASE_MANIFEST="$WORK_ROOT/release-manifest.json"
 python3 - "$TEMP_RELEASE_MANIFEST" "$HEAD_SHA" "$VERSION" "$BUILD_VERSION" \
   "$ARCHITECTURE" "$SIGNING_MODE" "$SIGNING_IDENTITY_LABEL" \
-  "$NOTARIZE_REQUESTED" "$NOTARIZATION_PERFORMED" "$NOTARY_SUBMISSION_ID" \
+  "$NOTARIZE_REQUESTED" "$NOTARY_PREFLIGHT_AUTHENTICATED" \
+  "$NOTARIZATION_PERFORMED" "$NOTARY_SUBMISSION_ID" \
   "$NOTARY_STATUS" "$NOTARY_SUBMISSION_ARCHIVE_SHA" "$NOTARY_RESULT_SHA" \
   "$NOTARY_STAPLED" "$NOTARY_VALIDATED" \
   "$STAGE_MANIFEST" "$STAGE_MANIFEST_SHA" "$APP_BUNDLE" "$EXECUTABLE_SHA" \
@@ -445,6 +469,7 @@ import sys
     signing_mode,
     signing_identity,
     notarize_requested,
+    notary_preflight_authenticated,
     notarization_performed,
     notary_submission_id,
     notary_status,
@@ -492,6 +517,7 @@ payload = {
         "notarization": {
             "supported": True,
             "requested": notarize_requested == "1",
+            "preflightAuthenticated": notary_preflight_authenticated == "true",
             "performed": notarization_performed == "true",
             "status": notary_status,
             "submissionId": notary_submission_id or None,
@@ -588,6 +614,7 @@ printf 'version=%s\n' "$VERSION"
 printf 'build=%s\n' "$BUILD_VERSION"
 printf 'signing_mode=%s\n' "$SIGNING_MODE"
 printf 'notarization_requested=%s\n' "$NOTARIZE_REQUESTED"
+printf 'notarization_preflight_authenticated=%s\n' "$NOTARY_PREFLIGHT_AUTHENTICATED"
 printf 'notarization_performed=%s\n' "$NOTARIZATION_PERFORMED"
 printf 'notary_status=%s\n' "$NOTARY_STATUS"
 if [[ -n "$NOTARY_SUBMISSION_ID" ]]; then

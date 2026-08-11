@@ -68,15 +68,20 @@ require_equal "branch" "master" "$BRANCH_NAME"
 
 HEAD_SHA="$(git -C "$ROOT_DIR" rev-parse --verify 'HEAD^{commit}')"
 
-if ! git -C "$ROOT_DIR" diff --quiet -- Native/CitySimNative script/build_and_run.sh; then
-  fail "Native/CitySimNative and script/build_and_run.sh must match the index"
+RELEASE_INPUTS=(
+  "Native/CitySimNative"
+  "script/build_and_run.sh"
+  "script/package_release.sh"
+)
+
+if ! git -C "$ROOT_DIR" diff --quiet -- "${RELEASE_INPUTS[@]}"; then
+  fail "release inputs, including package_release.sh, must match the index"
 fi
-if ! git -C "$ROOT_DIR" diff --cached --quiet -- Native/CitySimNative script/build_and_run.sh; then
-  fail "Native/CitySimNative and script/build_and_run.sh must match HEAD in the index"
+if ! git -C "$ROOT_DIR" diff --cached --quiet -- "${RELEASE_INPUTS[@]}"; then
+  fail "release inputs, including package_release.sh, must match HEAD in the index"
 fi
 UNTRACKED_INPUTS="$(
-  git -C "$ROOT_DIR" ls-files --others --exclude-standard -- \
-    Native/CitySimNative script/build_and_run.sh
+  git -C "$ROOT_DIR" ls-files --others --exclude-standard -- "${RELEASE_INPUTS[@]}"
 )"
 if [[ -n "$UNTRACKED_INPUTS" ]]; then
   fail "untracked release inputs are not allowed: $UNTRACKED_INPUTS"
@@ -98,9 +103,22 @@ OUTPUT_BASE_REQUESTED="${CITYSIM_RELEASE_OUTPUT_DIR:-$DEFAULT_DIST_DIR/releases}
 if [[ "$OUTPUT_BASE_REQUESTED" != /* ]]; then
   fail "CITYSIM_RELEASE_OUTPUT_DIR must be an absolute path"
 fi
-
-mkdir -p "$OUTPUT_BASE_REQUESTED"
-OUTPUT_BASE="$(cd "$OUTPUT_BASE_REQUESTED" && pwd -P)"
+OUTPUT_BASE_PARENT_REQUESTED="$(dirname "$OUTPUT_BASE_REQUESTED")"
+OUTPUT_BASE_BASENAME="$(basename "$OUTPUT_BASE_REQUESTED")"
+if [[ "$OUTPUT_BASE_BASENAME" == "." || "$OUTPUT_BASE_BASENAME" == ".." ]]; then
+  fail "CITYSIM_RELEASE_OUTPUT_DIR must name a directory"
+fi
+if [[ ! -d "$OUTPUT_BASE_PARENT_REQUESTED" ]]; then
+  fail "CITYSIM_RELEASE_OUTPUT_DIR parent does not exist: $OUTPUT_BASE_PARENT_REQUESTED"
+fi
+if [[ -e "$OUTPUT_BASE_REQUESTED" ]]; then
+  [[ -d "$OUTPUT_BASE_REQUESTED" ]] \
+    || fail "CITYSIM_RELEASE_OUTPUT_DIR is not a directory: $OUTPUT_BASE_REQUESTED"
+  OUTPUT_BASE="$(cd "$OUTPUT_BASE_REQUESTED" && pwd -P)"
+else
+  OUTPUT_BASE_PARENT="$(cd "$OUTPUT_BASE_PARENT_REQUESTED" && pwd -P)"
+  OUTPUT_BASE="$OUTPUT_BASE_PARENT/$OUTPUT_BASE_BASENAME"
+fi
 case "$OUTPUT_BASE" in
   /|"$ROOT_DIR"|"$PACKAGE_DIR"|"$ROOT_DIR/.git"|"$ROOT_DIR/.git/"*|"$DEFAULT_DIST_DIR")
     fail "unsafe release output directory: $OUTPUT_BASE"
@@ -114,19 +132,52 @@ case "$OUTPUT_BASE" in
 esac
 
 RELEASE_NAME="CitySim-$VERSION-$BUILD_VERSION-$ARCHITECTURE-$SHORT_HEAD"
-RELEASE_DIR="$OUTPUT_BASE/$RELEASE_NAME"
-STAGE_ROOT="$RELEASE_DIR/stage"
-VERIFY_ROOT="$RELEASE_DIR/verification"
+FINAL_RELEASE_DIR="$OUTPUT_BASE/$RELEASE_NAME"
+
+if [[ -n "${CITYSIM_RELEASE_WORK_ROOT:-}" ]]; then
+  WORK_ROOT_REQUESTED="$CITYSIM_RELEASE_WORK_ROOT"
+  if [[ "$WORK_ROOT_REQUESTED" != /* ]]; then
+    fail "CITYSIM_RELEASE_WORK_ROOT must be an absolute path"
+  fi
+  WORK_ROOT_PARENT_REQUESTED="$(dirname "$WORK_ROOT_REQUESTED")"
+  WORK_ROOT_BASENAME="$(basename "$WORK_ROOT_REQUESTED")"
+  if [[ "$WORK_ROOT_BASENAME" == "." || "$WORK_ROOT_BASENAME" == ".." ]]; then
+    fail "CITYSIM_RELEASE_WORK_ROOT must name a fresh directory"
+  fi
+  [[ -d "$WORK_ROOT_PARENT_REQUESTED" ]] \
+    || fail "CITYSIM_RELEASE_WORK_ROOT parent does not exist: $WORK_ROOT_PARENT_REQUESTED"
+  [[ ! -e "$WORK_ROOT_REQUESTED" ]] \
+    || fail "CITYSIM_RELEASE_WORK_ROOT must be fresh: $WORK_ROOT_REQUESTED"
+  WORK_ROOT_PARENT="$(cd "$WORK_ROOT_PARENT_REQUESTED" && pwd -P)"
+  WORK_ROOT="$WORK_ROOT_PARENT/$WORK_ROOT_BASENAME"
+  case "$WORK_ROOT" in
+    "$ROOT_DIR"|"$ROOT_DIR/"*)
+      fail "CITYSIM_RELEASE_WORK_ROOT must resolve outside the repository"
+      ;;
+  esac
+  mkdir "$WORK_ROOT"
+else
+  WORK_ROOT="$(mktemp -d "/private/tmp/CITYSIM-release-$SHORT_HEAD.XXXXXX")"
+fi
+
+case "$WORK_ROOT" in
+  /private/tmp/*) ;;
+  "$ROOT_DIR"|"$ROOT_DIR/"*)
+    fail "release work root must resolve outside the repository"
+    ;;
+esac
+
+STAGE_ROOT="$WORK_ROOT/stage"
+VERIFY_ROOT="$WORK_ROOT/verification"
 APP_BUNDLE="$STAGE_ROOT/CitySim.app"
 EXECUTABLE="$APP_BUNDLE/Contents/MacOS/CitySimNative"
 INFO_PLIST="$APP_BUNDLE/Contents/Info.plist"
 RESOURCE_BUNDLE="$APP_BUNDLE/Contents/Resources/$RESOURCE_BUNDLE_NAME"
 STAGE_MANIFEST="$STAGE_ROOT/manifests/master.manifest"
 
-if [[ -e "$RELEASE_DIR" ]]; then
-  fail "release output already exists; refusing overwrite: $RELEASE_DIR"
+if [[ -e "$FINAL_RELEASE_DIR" ]]; then
+  fail "final release output already exists; refusing overwrite: $FINAL_RELEASE_DIR"
 fi
-mkdir "$RELEASE_DIR"
 if [[ -e "$STAGE_ROOT" || -e "$VERIFY_ROOT" ]]; then
   fail "stage and verification roots must be fresh"
 fi
@@ -216,12 +267,14 @@ SIGN_IDENTITY="${CITYSIM_SIGN_IDENTITY:--}"
 if [[ "$SIGN_IDENTITY" == "-" ]]; then
   SIGNING_MODE="ad_hoc"
   SIGNING_IDENTITY_LABEL="ad-hoc"
+  codesign --force --deep --sign "$SIGN_IDENTITY" "$APP_BUNDLE"
 else
   SIGNING_MODE="identity"
   SIGNING_IDENTITY_LABEL="$SIGN_IDENTITY"
+  codesign --force --deep --options runtime --timestamp \
+    --sign "$SIGN_IDENTITY" "$APP_BUNDLE"
 fi
 
-codesign --force --deep --sign "$SIGN_IDENTITY" "$APP_BUNDLE"
 codesign --verify --deep --strict --verbose=4 "$APP_BUNDLE"
 SIGNATURE_CDHASH="$(
   codesign -dv --verbose=4 "$APP_BUNDLE" 2>&1 \
@@ -241,21 +294,25 @@ if [[ "$SIGNING_MODE" == "ad_hoc" ]]; then
 else
   ARCHIVE_BASENAME="CitySim-$VERSION-$ARCHITECTURE-signed.zip"
 fi
-ARCHIVE_PATH="$RELEASE_DIR/$ARCHIVE_BASENAME"
-CHECKSUM_PATH="$ARCHIVE_PATH.sha256"
+TEMP_ARCHIVE_PATH="$WORK_ROOT/$ARCHIVE_BASENAME"
+TEMP_CHECKSUM_PATH="$TEMP_ARCHIVE_PATH.sha256"
+FINAL_ARCHIVE_PATH="$FINAL_RELEASE_DIR/$ARCHIVE_BASENAME"
+FINAL_CHECKSUM_PATH="$FINAL_ARCHIVE_PATH.sha256"
+FINAL_RELEASE_MANIFEST="$FINAL_RELEASE_DIR/release-manifest.json"
 
-[[ ! -e "$ARCHIVE_PATH" ]] || fail "archive path must be fresh: $ARCHIVE_PATH"
-ditto -c -k --sequesterRsrc --keepParent "$APP_BUNDLE" "$ARCHIVE_PATH"
+[[ ! -e "$TEMP_ARCHIVE_PATH" ]] \
+  || fail "temporary archive path must be fresh: $TEMP_ARCHIVE_PATH"
+ditto -c -k --sequesterRsrc --keepParent "$APP_BUNDLE" "$TEMP_ARCHIVE_PATH"
 
 (
-  cd "$RELEASE_DIR"
+  cd "$WORK_ROOT"
   shasum -a 256 "$ARCHIVE_BASENAME" >"$ARCHIVE_BASENAME.sha256"
   shasum -a 256 -c "$ARCHIVE_BASENAME.sha256"
 )
-ARCHIVE_SHA="$(sha256_file "$ARCHIVE_PATH")"
+ARCHIVE_SHA="$(sha256_file "$TEMP_ARCHIVE_PATH")"
 
 mkdir "$VERIFY_ROOT"
-ditto -x -k "$ARCHIVE_PATH" "$VERIFY_ROOT"
+ditto -x -k "$TEMP_ARCHIVE_PATH" "$VERIFY_ROOT"
 EXTRACTED_APP="$VERIFY_ROOT/CitySim.app"
 [[ -d "$EXTRACTED_APP" ]] || fail "archive did not extract CitySim.app"
 codesign --verify --deep --strict --verbose=4 "$EXTRACTED_APP"
@@ -278,12 +335,13 @@ if [[ -f "$DEFAULT_MANIFEST" ]]; then
     "$(sha256_file "$DEFAULT_MANIFEST")"
 fi
 
-RELEASE_MANIFEST="$RELEASE_DIR/release-manifest.json"
-python3 - "$RELEASE_MANIFEST" "$HEAD_SHA" "$VERSION" "$BUILD_VERSION" \
+TEMP_RELEASE_MANIFEST="$WORK_ROOT/release-manifest.json"
+python3 - "$TEMP_RELEASE_MANIFEST" "$HEAD_SHA" "$VERSION" "$BUILD_VERSION" \
   "$ARCHITECTURE" "$SIGNING_MODE" "$SIGNING_IDENTITY_LABEL" \
   "$STAGE_MANIFEST" "$STAGE_MANIFEST_SHA" "$APP_BUNDLE" "$EXECUTABLE_SHA" \
   "$INFO_PLIST_SHA" "$GENERATED_MANIFEST_SHA" "$RESOURCE_DIGEST" "$APP_DIGEST" \
-  "$ARCHIVE_PATH" "$ARCHIVE_SHA" "$CHECKSUM_PATH" "$EXTRACTED_APP" \
+  "$FINAL_ARCHIVE_PATH" "$ARCHIVE_SHA" "$FINAL_CHECKSUM_PATH" \
+  "$FINAL_RELEASE_MANIFEST" "$EXTRACTED_APP" "$WORK_ROOT" "$TEMP_ARCHIVE_PATH" \
   "$SIGNATURE_CDHASH" "$DEFAULT_APP_DIGEST_BEFORE" "$DEFAULT_MANIFEST_SHA_BEFORE" \
   "${PAGE_HASH_PAIRS[@]}" <<'PY'
 import json
@@ -308,7 +366,10 @@ import sys
     archive_path,
     archive_sha256,
     checksum_path,
+    release_manifest_path,
     extracted_app_path,
+    work_root,
+    temporary_archive_path,
     signature_cdhash,
     default_app_tree_sha256,
     default_manifest_sha256,
@@ -330,13 +391,22 @@ payload = {
         "identity": signing_identity,
         "cdhash": signature_cdhash,
         "strictDeepVerified": True,
-        "notarization": "not_requested",
+        "hardenedRuntimeAndTimestamp": signing_mode == "identity",
+        "notarization": {
+            "supported": False,
+            "performed": False,
+        },
     },
     "paths": {
-        "app": app_path,
-        "stageManifest": stage_manifest_path,
         "archive": archive_path,
         "archiveChecksum": checksum_path,
+        "releaseManifest": release_manifest_path,
+    },
+    "verifiedTemporaryPaths": {
+        "workRoot": work_root,
+        "app": app_path,
+        "stageManifest": stage_manifest_path,
+        "archive": temporary_archive_path,
         "extractedApp": extracted_app_path,
     },
     "hashes": {
@@ -368,19 +438,57 @@ with open(output_path, "x", encoding="utf-8") as output:
     output.write("\n")
 PY
 
-RELEASE_MANIFEST_SHA="$(sha256_file "$RELEASE_MANIFEST")"
+TEMP_RELEASE_MANIFEST_SHA="$(sha256_file "$TEMP_RELEASE_MANIFEST")"
 
-printf 'release_dir=%s\n' "$RELEASE_DIR"
+[[ ! -e "$FINAL_RELEASE_DIR" ]] \
+  || fail "final release output appeared before publication: $FINAL_RELEASE_DIR"
+mkdir -p "$OUTPUT_BASE"
+mkdir "$FINAL_RELEASE_DIR"
+cp "$TEMP_ARCHIVE_PATH" "$FINAL_ARCHIVE_PATH"
+cp "$TEMP_CHECKSUM_PATH" "$FINAL_CHECKSUM_PATH"
+cp "$TEMP_RELEASE_MANIFEST" "$FINAL_RELEASE_MANIFEST"
+
+cmp -s "$TEMP_ARCHIVE_PATH" "$FINAL_ARCHIVE_PATH" \
+  || fail "published archive differs from verified temporary archive"
+cmp -s "$TEMP_CHECKSUM_PATH" "$FINAL_CHECKSUM_PATH" \
+  || fail "published checksum differs from verified temporary checksum"
+cmp -s "$TEMP_RELEASE_MANIFEST" "$FINAL_RELEASE_MANIFEST" \
+  || fail "published release manifest differs from verified temporary manifest"
+
+FINAL_ENTRY_COUNT="$(
+  find "$FINAL_RELEASE_DIR" -mindepth 1 -maxdepth 1 -print \
+    | wc -l \
+    | tr -d '[:space:]'
+)"
+FINAL_FILE_COUNT="$(
+  find "$FINAL_RELEASE_DIR" -mindepth 1 -maxdepth 1 -type f -print \
+    | wc -l \
+    | tr -d '[:space:]'
+)"
+require_equal "final release entry count" "3" "$FINAL_ENTRY_COUNT"
+require_equal "final release file count" "3" "$FINAL_FILE_COUNT"
+
+(
+  cd "$FINAL_RELEASE_DIR"
+  shasum -a 256 -c "$(basename "$FINAL_CHECKSUM_PATH")"
+)
+
+FINAL_RELEASE_MANIFEST_SHA="$(sha256_file "$FINAL_RELEASE_MANIFEST")"
+require_equal "published release manifest hash" "$TEMP_RELEASE_MANIFEST_SHA" \
+  "$FINAL_RELEASE_MANIFEST_SHA"
+
+printf 'release_dir=%s\n' "$FINAL_RELEASE_DIR"
+printf 'work_root=%s\n' "$WORK_ROOT"
 printf 'head=%s\n' "$HEAD_SHA"
 printf 'version=%s\n' "$VERSION"
 printf 'build=%s\n' "$BUILD_VERSION"
 printf 'signing_mode=%s\n' "$SIGNING_MODE"
-printf 'app_path=%s\n' "$APP_BUNDLE"
+printf 'verified_temp_app_path=%s\n' "$APP_BUNDLE"
 printf 'app_tree_sha256=%s\n' "$APP_DIGEST"
 printf 'resource_tree_sha256=%s\n' "$RESOURCE_DIGEST"
-printf 'archive_path=%s\n' "$ARCHIVE_PATH"
+printf 'archive_path=%s\n' "$FINAL_ARCHIVE_PATH"
 printf 'archive_sha256=%s\n' "$ARCHIVE_SHA"
-printf 'checksum_path=%s\n' "$CHECKSUM_PATH"
-printf 'release_manifest=%s\n' "$RELEASE_MANIFEST"
-printf 'release_manifest_sha256=%s\n' "$RELEASE_MANIFEST_SHA"
+printf 'checksum_path=%s\n' "$FINAL_CHECKSUM_PATH"
+printf 'release_manifest=%s\n' "$FINAL_RELEASE_MANIFEST"
+printf 'release_manifest_sha256=%s\n' "$FINAL_RELEASE_MANIFEST_SHA"
 printf 'extracted_app=%s\n' "$EXTRACTED_APP"

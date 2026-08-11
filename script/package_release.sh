@@ -67,6 +67,8 @@ fi
 require_equal "branch" "master" "$BRANCH_NAME"
 
 HEAD_SHA="$(git -C "$ROOT_DIR" rev-parse --verify 'HEAD^{commit}')"
+COMMIT_TIMESTAMP="$(git -C "$ROOT_DIR" show -s --format=%cI "$HEAD_SHA")"
+[[ -n "$COMMIT_TIMESTAMP" ]] || fail "release commit timestamp is unavailable"
 
 RELEASE_INPUTS=(
   "Native/CitySimNative"
@@ -263,6 +265,10 @@ require_equal "Info.plist version" "$VERSION" \
   "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' "$INFO_PLIST")"
 require_equal "Info.plist build" "$BUILD_VERSION" \
   "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleVersion' "$INFO_PLIST")"
+BUNDLE_IDENTIFIER="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$INFO_PLIST")"
+MINIMUM_SYSTEM_VERSION="$(/usr/libexec/PlistBuddy -c 'Print :LSMinimumSystemVersion' "$INFO_PLIST")"
+[[ -n "$BUNDLE_IDENTIFIER" ]] || fail "Info.plist bundle identifier is missing"
+[[ -n "$MINIMUM_SYSTEM_VERSION" ]] || fail "Info.plist minimum system version is missing"
 
 BUILD_DIR="$(swift build --package-path "$PACKAGE_DIR" --show-bin-path)"
 SOURCE_RESOURCE_BUNDLE="$BUILD_DIR/$RESOURCE_BUNDLE_NAME"
@@ -401,6 +407,10 @@ TEMP_CHECKSUM_PATH="$TEMP_ARCHIVE_PATH.sha256"
 FINAL_ARCHIVE_PATH="$FINAL_RELEASE_DIR/$ARCHIVE_BASENAME"
 FINAL_CHECKSUM_PATH="$FINAL_ARCHIVE_PATH.sha256"
 FINAL_RELEASE_MANIFEST="$FINAL_RELEASE_DIR/release-manifest.json"
+TEMP_SBOM_PATH="$WORK_ROOT/release-sbom.spdx.json"
+TEMP_SUPPORT_METADATA_PATH="$WORK_ROOT/support-metadata.json"
+FINAL_SBOM_PATH="$FINAL_RELEASE_DIR/release-sbom.spdx.json"
+FINAL_SUPPORT_METADATA_PATH="$FINAL_RELEASE_DIR/support-metadata.json"
 
 [[ ! -e "$TEMP_ARCHIVE_PATH" ]] \
   || fail "temporary archive path must be fresh: $TEMP_ARCHIVE_PATH"
@@ -412,6 +422,132 @@ ditto -c -k --sequesterRsrc --keepParent "$APP_BUNDLE" "$TEMP_ARCHIVE_PATH"
   shasum -a 256 -c "$ARCHIVE_BASENAME.sha256"
 )
 ARCHIVE_SHA="$(sha256_file "$TEMP_ARCHIVE_PATH")"
+
+python3 - "$TEMP_SBOM_PATH" "$TEMP_SUPPORT_METADATA_PATH" \
+  "$HEAD_SHA" "$COMMIT_TIMESTAMP" "$VERSION" "$BUILD_VERSION" \
+  "$ARCHITECTURE" "$BUNDLE_IDENTIFIER" "$MINIMUM_SYSTEM_VERSION" \
+  "$ARCHIVE_BASENAME" "$ARCHIVE_SHA" "$APP_DIGEST" "$RESOURCE_DIGEST" \
+  "$EXECUTABLE_SHA" "$INFO_PLIST_SHA" "$SIGNING_MODE" \
+  "$NOTARIZATION_PERFORMED" "$NOTARY_STATUS" <<'PY'
+import json
+import sys
+from datetime import datetime, timezone
+
+(
+    sbom_path,
+    support_path,
+    head,
+    commit_timestamp,
+    version,
+    build,
+    architecture,
+    bundle_identifier,
+    minimum_system_version,
+    archive_name,
+    archive_sha256,
+    app_tree_sha256,
+    resource_tree_sha256,
+    executable_sha256,
+    info_plist_sha256,
+    signing_mode,
+    notarization_performed,
+    notary_status,
+) = sys.argv[1:]
+
+release_id = f"{version}-{build}-{architecture}-{head[:12]}"
+created = (
+    datetime.fromisoformat(commit_timestamp)
+    .astimezone(timezone.utc)
+    .strftime("%Y-%m-%dT%H:%M:%SZ")
+)
+sbom = {
+    "SPDXID": "SPDXRef-DOCUMENT",
+    "creationInfo": {
+        "created": created,
+        "creators": [
+            "Organization: CitySim Agent Company",
+            "Tool: script/package_release.sh",
+        ],
+    },
+    "dataLicense": "CC0-1.0",
+    "documentNamespace": f"urn:citysim:spdx:{release_id}",
+    "name": f"CitySim-{release_id}",
+    "packages": [
+        {
+            "SPDXID": "SPDXRef-Package-CitySim",
+            "checksums": [
+                {"algorithm": "SHA256", "checksumValue": archive_sha256}
+            ],
+            "copyrightText": "NOASSERTION",
+            "downloadLocation": "NOASSERTION",
+            "filesAnalyzed": False,
+            "licenseConcluded": "NOASSERTION",
+            "licenseDeclared": "NOASSERTION",
+            "name": "CitySim",
+            "packageFileName": archive_name,
+            "primaryPackagePurpose": "APPLICATION",
+            "supplier": "Organization: CitySim Agent Company",
+            "versionInfo": f"{version}+{build}",
+        }
+    ],
+    "relationships": [
+        {
+            "relatedSpdxElement": "SPDXRef-Package-CitySim",
+            "relationshipType": "DESCRIBES",
+            "spdxElementId": "SPDXRef-DOCUMENT",
+        }
+    ],
+    "spdxVersion": "SPDX-2.3",
+}
+
+apple_trust_ready = (
+    signing_mode == "identity"
+    and notarization_performed == "true"
+    and notary_status == "Accepted"
+)
+support = {
+    "schemaVersion": 1,
+    "product": "CitySim",
+    "release": {
+        "head": head,
+        "version": version,
+        "build": build,
+        "architecture": architecture,
+        "bundleIdentifier": bundle_identifier,
+        "minimumMacOSVersion": minimum_system_version,
+    },
+    "artifact": {
+        "archiveName": archive_name,
+        "archiveSha256": archive_sha256,
+        "appTreeSha256": app_tree_sha256,
+        "resourceTreeSha256": resource_tree_sha256,
+        "executableSha256": executable_sha256,
+        "infoPlistSha256": info_plist_sha256,
+    },
+    "distribution": {
+        "signingMode": signing_mode,
+        "notarizationPerformed": notarization_performed == "true",
+        "notaryStatus": notary_status,
+        "appleTrustReady": apple_trust_ready,
+        "publicDistributionReady": False,
+        "releaseApprovalRequired": True,
+    },
+    "verification": {
+        "checksumAlgorithm": "SHA-256",
+        "expectedAppBundle": "CitySim.app",
+        "packageFormat": "zip",
+        "sourceCommitTimestamp": commit_timestamp,
+    },
+}
+
+for path, payload in ((sbom_path, sbom), (support_path, support)):
+    with open(path, "x", encoding="utf-8") as output:
+        json.dump(payload, output, sort_keys=True, separators=(",", ":"))
+        output.write("\n")
+PY
+
+SBOM_SHA="$(sha256_file "$TEMP_SBOM_PATH")"
+SUPPORT_METADATA_SHA="$(sha256_file "$TEMP_SUPPORT_METADATA_PATH")"
 
 mkdir "$VERIFY_ROOT"
 ditto -x -k "$TEMP_ARCHIVE_PATH" "$VERIFY_ROOT"
@@ -454,7 +590,9 @@ python3 - "$TEMP_RELEASE_MANIFEST" "$HEAD_SHA" "$VERSION" "$BUILD_VERSION" \
   "$STAGE_MANIFEST" "$STAGE_MANIFEST_SHA" "$APP_BUNDLE" "$EXECUTABLE_SHA" \
   "$INFO_PLIST_SHA" "$GENERATED_MANIFEST_SHA" "$RESOURCE_DIGEST" "$APP_DIGEST" \
   "$FINAL_ARCHIVE_PATH" "$ARCHIVE_SHA" "$FINAL_CHECKSUM_PATH" \
-  "$FINAL_RELEASE_MANIFEST" "$EXTRACTED_APP" "$WORK_ROOT" "$TEMP_ARCHIVE_PATH" \
+  "$FINAL_RELEASE_MANIFEST" "$FINAL_SBOM_PATH" "$SBOM_SHA" \
+  "$FINAL_SUPPORT_METADATA_PATH" "$SUPPORT_METADATA_SHA" \
+  "$EXTRACTED_APP" "$WORK_ROOT" "$TEMP_ARCHIVE_PATH" \
   "$SIGNATURE_CDHASH" "$DEFAULT_APP_DIGEST_BEFORE" "$DEFAULT_MANIFEST_SHA_BEFORE" \
   "${PAGE_HASH_PAIRS[@]}" <<'PY'
 import json
@@ -489,6 +627,10 @@ import sys
     archive_sha256,
     checksum_path,
     release_manifest_path,
+    sbom_path,
+    sbom_sha256,
+    support_metadata_path,
+    support_metadata_sha256,
     extracted_app_path,
     work_root,
     temporary_archive_path,
@@ -502,7 +644,7 @@ atlas_pages = dict(pair.split("=", 1) for pair in page_pairs[1:])
 generated_manifest_pair = page_pairs[0].split("=", 1)
 
 payload = {
-    "schemaVersion": 1,
+    "schemaVersion": 2,
     "product": "CitySim",
     "head": head,
     "version": version,
@@ -531,6 +673,8 @@ payload = {
         "archive": archive_path,
         "archiveChecksum": checksum_path,
         "releaseManifest": release_manifest_path,
+        "sbom": sbom_path,
+        "supportMetadata": support_metadata_path,
     },
     "verifiedTemporaryPaths": {
         "workRoot": work_root,
@@ -547,6 +691,8 @@ payload = {
         "resourceTreeSha256": resource_tree_sha256,
         "appTreeSha256": app_tree_sha256,
         "archiveSha256": archive_sha256,
+        "sbomSha256": sbom_sha256,
+        "supportMetadataSha256": support_metadata_sha256,
         "atlasPages": atlas_pages,
         "defaultAppTreeBeforeAndAfterSha256": default_app_tree_sha256,
         "defaultManifestBeforeAndAfterSha256": default_manifest_sha256,
@@ -560,6 +706,7 @@ payload = {
         "rootResourceBundleAbsent": True,
         "extractedResourceDigestMatches": True,
         "extractedAppDigestMatches": True,
+        "releaseSidecarsPresent": True,
     },
 }
 
@@ -577,6 +724,8 @@ mkdir "$FINAL_RELEASE_DIR"
 cp "$TEMP_ARCHIVE_PATH" "$FINAL_ARCHIVE_PATH"
 cp "$TEMP_CHECKSUM_PATH" "$FINAL_CHECKSUM_PATH"
 cp "$TEMP_RELEASE_MANIFEST" "$FINAL_RELEASE_MANIFEST"
+cp "$TEMP_SBOM_PATH" "$FINAL_SBOM_PATH"
+cp "$TEMP_SUPPORT_METADATA_PATH" "$FINAL_SUPPORT_METADATA_PATH"
 
 cmp -s "$TEMP_ARCHIVE_PATH" "$FINAL_ARCHIVE_PATH" \
   || fail "published archive differs from verified temporary archive"
@@ -584,6 +733,10 @@ cmp -s "$TEMP_CHECKSUM_PATH" "$FINAL_CHECKSUM_PATH" \
   || fail "published checksum differs from verified temporary checksum"
 cmp -s "$TEMP_RELEASE_MANIFEST" "$FINAL_RELEASE_MANIFEST" \
   || fail "published release manifest differs from verified temporary manifest"
+cmp -s "$TEMP_SBOM_PATH" "$FINAL_SBOM_PATH" \
+  || fail "published SBOM differs from verified temporary SBOM"
+cmp -s "$TEMP_SUPPORT_METADATA_PATH" "$FINAL_SUPPORT_METADATA_PATH" \
+  || fail "published support metadata differs from verified temporary metadata"
 
 FINAL_ENTRY_COUNT="$(
   find "$FINAL_RELEASE_DIR" -mindepth 1 -maxdepth 1 -print \
@@ -595,8 +748,8 @@ FINAL_FILE_COUNT="$(
     | wc -l \
     | tr -d '[:space:]'
 )"
-require_equal "final release entry count" "3" "$FINAL_ENTRY_COUNT"
-require_equal "final release file count" "3" "$FINAL_FILE_COUNT"
+require_equal "final release entry count" "5" "$FINAL_ENTRY_COUNT"
+require_equal "final release file count" "5" "$FINAL_FILE_COUNT"
 
 (
   cd "$FINAL_RELEASE_DIR"
@@ -628,4 +781,8 @@ printf 'archive_sha256=%s\n' "$ARCHIVE_SHA"
 printf 'checksum_path=%s\n' "$FINAL_CHECKSUM_PATH"
 printf 'release_manifest=%s\n' "$FINAL_RELEASE_MANIFEST"
 printf 'release_manifest_sha256=%s\n' "$FINAL_RELEASE_MANIFEST_SHA"
+printf 'sbom=%s\n' "$FINAL_SBOM_PATH"
+printf 'sbom_sha256=%s\n' "$SBOM_SHA"
+printf 'support_metadata=%s\n' "$FINAL_SUPPORT_METADATA_PATH"
+printf 'support_metadata_sha256=%s\n' "$SUPPORT_METADATA_SHA"
 printf 'extracted_app=%s\n' "$EXTRACTED_APP"

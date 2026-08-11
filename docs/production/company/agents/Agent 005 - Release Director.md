@@ -23,7 +23,8 @@ Convert the accepted candidate into a reproducible, attributable, distributable 
 
 ## Accountable for
 
-- Packaging, signing readiness, version identity, release notes, and origin parity.
+- Packaging, signing readiness, version identity, release notes, software
+  inventory, support metadata, and origin parity.
 - Verifying that the artifact under release is exactly the artifact accepted by QA.
 - Stopping publication on identity drift or an open release blocker.
 

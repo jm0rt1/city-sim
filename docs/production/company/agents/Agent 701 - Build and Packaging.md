@@ -18,11 +18,15 @@ Produce a deterministic macOS application bundle from the exact accepted candida
 
 ## Owns
 
-Stage-only builds, resource copying, executable and bundle hashing, manifests, signing inputs, and package reproducibility.
+Stage-only builds, resource copying, executable and bundle hashing, release
+manifests, SPDX software inventory, support metadata, signing inputs, and
+package reproducibility.
 
 ## Delivers
 
-An immutable app path, executable identity, resource-tree identity, app-tree identity, and stage manifest.
+An immutable app path, executable identity, resource-tree identity, app-tree
+identity, stage manifest, release manifest, checksum, SPDX SBOM, and support
+metadata.
 
 ## Operating commands
 

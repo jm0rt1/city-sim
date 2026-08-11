@@ -1,0 +1,38 @@
+{
+  "task": "PLAY-088",
+  "phase": "B",
+  "routeId": "simulation-v6:play-088-currenta44f-phase-b-storm-persistence-v1",
+  "authorityCommit": "a44f5c39c36d11bf2b3e1b1d3eb5fad85fd557eb",
+  "baseCommit": "8f538aeb0ddc8873252d4d6ba6191125143c509a",
+  "acceptedProductCandidate": "4b57e43c4e2329a7d83b97494ea9e9942ba69814",
+  "acceptedStormProductCommit": "703a8968e62654b7037c9b0437686930f46368f8",
+  "branch": "codex/citysim-simulation-g003-current6d",
+  "focusedOwner": "019febf6-2651-70c2-903a-1f8f20b668d9",
+  "proof": {
+    "command": "CLANG_MODULE_CACHE_PATH=/private/tmp/PLAY-088-v3-clang SWIFT_MODULECACHE_PATH=/private/tmp/PLAY-088-v3-swift SWIFTPM_MODULECACHE_OVERRIDE=/private/tmp/PLAY-088-v3-swift swift test --disable-sandbox --package-path Native/CitySimNative --scratch-path /private/tmp/PLAY-088-v3-scratch --filter StormRecoveryPlatformTests",
+    "firstInvocationExit": 1,
+    "firstInvocationDefect": "Backup load correctly returned the prior active save after the recovered save replaced primary; the proof initially expected the recovered state.",
+    "boundedRepair": "Updated only the two deterministic backup-state expectations in StormRecoveryPlatformTests.swift.",
+    "finalInvocationExit": 0,
+    "testsExecuted": 1,
+    "failures": 0,
+    "receipt": "PLAY088_PHASE_B_RESULT active=faf9073fee0a882f77f541e72ef2ef4e28da691ce5937f0ec73b1d14d322cf0e recovered=8a92cc3cdaee75602cb5e1a91c6d556c4933f7a2390c3b34ffbd692306ce922d targets=3-10,6-10,9-10 backup=backup"
+  },
+  "coverage": [
+    "deterministic storm replay",
+    "schema-1 save/load",
+    "primary-to-backup recovery",
+    "presentation snapshot and fingerprint equality",
+    "storm message open and dismissal without recovery-ledger loss",
+    "invalid-target retirement without healing a replacement",
+    "exact construction Undo"
+  ],
+  "preservation": [
+    "product sources unchanged",
+    "save schema version 1 unchanged",
+    "fingerprint version 1 unchanged",
+    "historical fixtures and manifests untouched",
+    "PLAY083LifecycleBindingTests untouched"
+  ],
+  "status": "focused-proof-passed-pending-explicit-stage-and-commit"
+}

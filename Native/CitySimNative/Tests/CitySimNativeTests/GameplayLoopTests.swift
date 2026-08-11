@@ -1451,6 +1451,28 @@ final class GameplayLoopTests: XCTestCase {
         XCTAssertFalse(storm.messages.contains { $0.title == "State Growth Grant" })
     }
 
+    func testCurrentMasterPostStormDecisionProjection() throws {
+        var state = stormReadyState(seed: stormSeed)
+        guard case .applied = CitySimulationCommandExecutor.apply(
+            .advanceOneDailyBoundary,
+            to: &state
+        ) else {
+            XCTFail("The frozen daily-boundary player action must apply")
+            return
+        }
+
+        let stormMessage = try XCTUnwrap(
+            state.messages.first { $0.title == "Severe Storm" }
+        )
+        XCTAssertEqual(stormMessage.tick, 640)
+        XCTAssertEqual(stormMessage.severity, .warning)
+        XCTAssertEqual(stormMessage.title, "Severe Storm")
+        XCTAssertEqual(
+            stormMessage.detail,
+            "Next decision: protect recovery by keeping utility reserve at or above 15%, or invest in a park or emergency service. Consequence: Emergency repairs cost $2,000, happiness fell 3 points, and weathered 3 completed homes at blocks 4, 11; 7, 11; 10, 11. Diagnosis: 31% utility reserve, 1 park, and 0 emergency services limited average damage to 28%. Objective: keep utilities fully covered with at least 15% reserve while parks and emergency services accelerate Residential repairs until all recorded storm damage clears."
+        )
+    }
+
     func testSevereStormDamagesStableCompletedResidentialTargetsAndExplainsRemedy() throws {
         var state = stormReadyState(seed: stormSeed)
         var calm = stormReadyState(seed: calmSeed)

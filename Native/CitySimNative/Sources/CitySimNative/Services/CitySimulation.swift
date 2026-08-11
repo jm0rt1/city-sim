@@ -574,7 +574,7 @@ enum CitySimulation {
                     tick: state.tick,
                     severity: .warning,
                     title: "Severe Storm",
-                    detail: "Emergency repairs cost $2,000 and \(damageDetail). \(reservePercent)% utility reserve, \(outcome.parkCount) \(outcome.parkCount == 1 ? "park" : "parks"), and \(outcome.serviceCount) emergency services limited average damage to \(damagePercent)%. Keep utilities fully covered with at least 15% reserve; parks and emergency services accelerate Residential repairs."
+                    detail: "Next decision: protect recovery by keeping utility reserve at or above 15%, or invest in a park or emergency service. Consequence: Emergency repairs cost $2,000, happiness fell 3 points, and \(damageDetail). Diagnosis: \(reservePercent)% utility reserve, \(outcome.parkCount) \(outcome.parkCount == 1 ? "park" : "parks"), and \(outcome.serviceCount) emergency services limited average damage to \(damagePercent)%. Objective: keep utilities fully covered with at least 15% reserve while parks and emergency services accelerate Residential repairs until all recorded storm damage clears."
                 ),
                 to: &state
             )

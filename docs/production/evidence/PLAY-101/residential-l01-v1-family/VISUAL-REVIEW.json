@@ -1,0 +1,40 @@
+{
+  "decision": "PASS",
+  "directionOrder": [
+    "south",
+    "north",
+    "east",
+    "west"
+  ],
+  "family": "residential_l01_v1",
+  "findings": {
+    "authoredDirectionRead": "PASS: four distinct source hashes and four credible isometric frontage views; no bitmap transform or sibling input was used",
+    "familyIdentity": "PASS: one-story bungalow massing, low hipped roof, chimney, vent, blue-gray clapboard, white trim, concrete foundation, recessed blue door, covered stoop, and restrained planting remain coherent",
+    "literalScale": "PASS: entrance, windows, roof silhouette, and palette remain readable at block, neighborhood, and city scales",
+    "registration": "PASS: full canvases, clear margins, grounded shadows, and stable footprint scale remain visually compatible",
+    "residualChroma": "PASS: current CONTRACT-028 despill removes matte color and boundary fringe while preserving neutral contained shadows",
+    "value": "PASS: the family adds a materially different low-rise residential identity to the currently variant-zero renderer palette"
+  },
+  "repair": {
+    "count": 1,
+    "direction": "north",
+    "reason": "initial North draft was front-elevation dominant",
+    "result": "PASS: repaired North shows two substantial perpendicular facades"
+  },
+  "reviewerRole": "Agent 006 World Art Director / Frontier visual authority",
+  "schema": "citysim.play-101.family-visual-review.v1",
+  "sheets": {
+    "grayscale": {
+      "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-101/residential_l01_v1/contact-sheets/family-literal-lod-grayscale.png",
+      "sha256": "5d7e47b59c8ea6c649c3317316836997dd1d7c24896483a05daec8eadddf19cc"
+    },
+    "literalColor": {
+      "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-101/residential_l01_v1/contact-sheets/family-literal-lod-color.png",
+      "sha256": "161893b3df219f9629a6a8f2c3cafd6a7017d5710e0d104ee1b1b3bac7d141a3"
+    },
+    "sourceFourView": {
+      "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-101/residential_l01_v1/contact-sheets/family-source-four-view.png",
+      "sha256": "484bb21ba0395d3cd83c751be89bab5eac64a201e4bc8136586d158bfe25e1cc"
+    }
+  }
+}

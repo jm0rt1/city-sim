@@ -7,17 +7,23 @@ struct ResidentialGeneratedAssetIdentity: Equatable, Sendable {
     ]
 
     let level: Int
+    let variant: Int
     let frontage: RoadConnectionMask
     let direction: String
     let logicalID: String
 
-    init?(level: Int, adjacentRoads: RoadConnectionMask) {
+    init?(
+        level: Int,
+        adjacentRoads: RoadConnectionMask,
+        visualVariant: Int = 0
+    ) {
         guard let frontage = Self.authoritativeFrontagePriority.first(
             where: adjacentRoads.contains
         ) else {
             return nil
         }
         self.level = min(4, max(1, level))
+        variant = self.level == 1 && visualVariant == 1 ? 1 : 0
         self.frontage = frontage
         direction = switch frontage {
         case .north: "north"
@@ -26,7 +32,7 @@ struct ResidentialGeneratedAssetIdentity: Equatable, Sendable {
         case .west: "west"
         default: preconditionFailure("frontage priority contains only cardinal edges")
         }
-        logicalID = "residential_l\(String(format: "%02d", self.level))_v0_\(direction)"
+        logicalID = "residential_l\(String(format: "%02d", self.level))_v\(variant)_\(direction)"
     }
 }
 
@@ -111,7 +117,11 @@ final class LotRenderer {
         let presentation = LotConsequencePresentation(tile: tile)
         let strategyIdentity = StrategyDistrictVisualIdentity(tile: tile)
         let residentialIdentity = tile.kind == .residential
-            ? ResidentialGeneratedAssetIdentity(level: tile.level, adjacentRoads: adjacentRoads)
+            ? ResidentialGeneratedAssetIdentity(
+                level: tile.level,
+                adjacentRoads: adjacentRoads,
+                visualVariant: variant
+            )
             : nil
         let commercialIdentity = tile.kind == .commercial
             ? CommercialGeneratedAssetIdentity(level: tile.level, adjacentRoads: adjacentRoads)
@@ -233,6 +243,7 @@ final class LotRenderer {
             guard let result = assets.generatedResidentialPresentation(
                 level: tile.level,
                 adjacentRoads: adjacentRoads,
+                visualVariant: variant,
                 detail: detail
             ) else {
                 return false

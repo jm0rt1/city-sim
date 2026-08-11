@@ -263,29 +263,50 @@ final class WorldAssetCatalog {
         let residential = manifest.assets.filter {
             $0.family == "residential" && $0.viewDirection != nil
         }
-        let expectedResidentialIdentities = Set(
+        let directions = ["north", "east", "south", "west"]
+        let residentialVariantZero = residential.filter { $0.variant == 0 }
+        let residentialVariantOne = residential.filter { $0.variant == 1 }
+        let expectedResidentialVariantZero = Set(
             (1...4).flatMap { level in
-                ["north", "east", "south", "west"].map {
+                directions.map {
                     "residential_l\(String(format: "%02d", level))_v0_\($0)"
                 }
             }
         )
-        if Set(residential.map(\.logicalID)) != expectedResidentialIdentities {
-            issues.append("residential production selection is not the exact L1-L4 N/E/S/W matrix")
+        let expectedResidentialVariantOne = Set(directions.map { "residential_l01_v1_\($0)" })
+        if Set(residentialVariantZero.map(\.logicalID)) != expectedResidentialVariantZero {
+            issues.append("residential v0 production selection is not the exact L1-L4 N/E/S/W matrix")
         }
-        if Set(residential.compactMap(\.sourceKey)).count != 16
-            || Set(residential.compactMap(\.sourceSHA256)).count != 16 {
-            issues.append("residential production sources are missing or aliased")
+        if Set(residentialVariantOne.map(\.logicalID)) != expectedResidentialVariantOne {
+            issues.append("residential L1 variant-one production selection is not the exact N/E/S/W quartet")
         }
-        let normalizedResidentialHashes = residential.flatMap { asset in
+        if Set(residentialVariantZero.compactMap(\.sourceKey)).count != 16
+            || Set(residentialVariantZero.compactMap(\.sourceSHA256)).count != 16 {
+            issues.append("residential v0 production sources are missing or aliased")
+        }
+        if Set(residentialVariantOne.compactMap(\.sourceKey)).count != 4
+            || Set(residentialVariantOne.compactMap(\.sourceSHA256)).count != 4 {
+            issues.append("residential L1 variant-one production sources are missing or aliased")
+        }
+        let normalizedResidentialVariantZeroHashes = residentialVariantZero.flatMap { asset in
             CameraDetailLevel.allCases.compactMap {
                 asset.lods[$0.assetSuffix]?.normalizedSHA256
             }
         }
-        if Set(normalizedResidentialHashes).count != 48 {
-            issues.append("residential normalized LODs are missing or aliased")
+        let normalizedResidentialVariantOneHashes = residentialVariantOne.flatMap { asset in
+            CameraDetailLevel.allCases.compactMap {
+                asset.lods[$0.assetSuffix]?.normalizedSHA256
+            }
         }
-        for asset in residential {
+        let variantZeroLODHashes = Set(normalizedResidentialVariantZeroHashes)
+        let variantOneLODHashes = Set(normalizedResidentialVariantOneHashes)
+        if variantZeroLODHashes.count != 48 {
+            issues.append("residential v0 normalized LODs are missing or aliased")
+        }
+        if variantOneLODHashes.count != 12 || !variantZeroLODHashes.isDisjoint(with: variantOneLODHashes) {
+            issues.append("residential L1 variant-one normalized LODs are missing or aliased")
+        }
+        for asset in residentialVariantZero {
             guard let direction = asset.viewDirection else {
                 issues.append("\(asset.logicalID) is missing view direction")
                 continue
@@ -300,6 +321,33 @@ final class WorldAssetCatalog {
                 || asset.sceneDescriptorFile == nil
                 || asset.sceneDescriptorSHA256 == nil {
                 issues.append("\(asset.logicalID) has incomplete directional provenance")
+            }
+        }
+        let variantOneRawSHA256 = [
+            "east": "ec8da7e13befac3abd5e3f242168649fb91b3cc59061a0e9122596329f97b1f3",
+            "north": "1661eeebe01dbfeb0bf5b443ebe61f1ed850e5650258917b09b24d2de03bdab2",
+            "south": "ef1dab1277f0c2dd6cd3a37a1e459e94c417b013fadda5f4f46b6b21187e3577",
+            "west": "49657d70488a1478b384c035c73b7551653ffb1f2549fcf20134bed55f622386",
+        ]
+        let variantOneReceipt = "CitySimNative/WorldArt/ImageGenFourView/PLAY-101/residential_l01_v1/BUILD-RECEIPT.json"
+        let variantOneReceiptSHA256 = "9d8360f997bee2125e8223de36c709f2bc7f79ab68a63b5f2cac138134a7e95b"
+        for asset in residentialVariantOne {
+            let direction = asset.viewDirection
+            let expectedSourceKey = direction.map { "residential_l01/variant-1/\($0)/source-v01" }
+            let expectedSourceSHA256 = direction.flatMap({ variantOneRawSHA256[$0] })
+            if asset.level != 1
+                || asset.frontageEdge != direction
+                || asset.supportedOrientation != direction.map({ "\($0)-facing-authored" })
+                || asset.sourceRevision != "source-v01"
+                || asset.sourceKey != expectedSourceKey
+                || asset.sourceSHA256 != expectedSourceSHA256
+                || asset.provenanceFile != variantOneReceipt
+                || asset.provenanceSHA256 != variantOneReceiptSHA256
+                || asset.normalizationRecordFile != variantOneReceipt
+                || asset.normalizationRecordSHA256 != variantOneReceiptSHA256
+                || asset.sceneDescriptorFile != nil
+                || asset.sceneDescriptorSHA256 != nil {
+                issues.append("\(asset.logicalID) does not bind the admitted variant-one build receipt")
             }
         }
         let industrial = manifest.assets.filter {
@@ -512,11 +560,13 @@ final class WorldAssetCatalog {
     func generatedResidentialPresentation(
         level: Int,
         adjacentRoads: RoadConnectionMask,
+        visualVariant: Int = 0,
         detail: CameraDetailLevel
     ) -> GeneratedResidentialPresentation? {
         guard let identity = ResidentialGeneratedAssetIdentity(
             level: level,
-            adjacentRoads: adjacentRoads
+            adjacentRoads: adjacentRoads,
+            visualVariant: visualVariant
         ) else {
             recordFallback(
                 "residential level \(min(4, max(1, level))) has no authoritative adjacent road"
@@ -526,7 +576,7 @@ final class WorldAssetCatalog {
         guard let asset = generatedAssetsByID[identity.logicalID],
               asset.family == "residential",
               asset.level == identity.level,
-              asset.variant == 0,
+              asset.variant == identity.variant,
               asset.frontageEdge == identity.direction,
               asset.viewDirection == identity.direction else {
             recordFallback("directional descriptor mismatch \(identity.logicalID)")

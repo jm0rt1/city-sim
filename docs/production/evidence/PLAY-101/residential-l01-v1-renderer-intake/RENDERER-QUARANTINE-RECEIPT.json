@@ -1,0 +1,141 @@
+{
+  "schema": "citysim.play-101.renderer-quarantine.v1",
+  "result": "PASS",
+  "disposition": "RENDERER_QUARANTINE_READY",
+  "family": "residential_l01_v1",
+  "authorityBaseline": "614a768805644aa98b749e050887d1adb0fb476a",
+  "sourceCommit": "3f129be25d4557dd6002cc7e11df065e962ff50c",
+  "sourceEvidence": {
+    "admission": {
+      "path": "docs/production/evidence/PLAY-101/residential-l01-v1-family/FAMILY-ADMISSION.json",
+      "sha256": "1bb0dc7e624c7daf926d057df091677f1b06463a812886b6b86d901743ff309b",
+      "decision": "ADMIT_SOURCE_FAMILY"
+    },
+    "validation": {
+      "path": "docs/production/evidence/PLAY-101/residential-l01-v1-family/VALIDATION-RESULT.json",
+      "sha256": "3967f7f6d23ff56f6a530a3ec92cfce34f0d34f1aed9a04b4b25d811b1aad0ef",
+      "result": "PASS"
+    },
+    "visualReview": {
+      "path": "docs/production/evidence/PLAY-101/residential-l01-v1-family/VISUAL-REVIEW.json",
+      "sha256": "a8f45d4ccc9b064cffc1649e82a1fc26424ab1fd627820700afb464e1d47d03b",
+      "decision": "PASS"
+    },
+    "buildReceipt": {
+      "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-101/residential_l01_v1/BUILD-RECEIPT.json",
+      "sha256": "9d8360f997bee2125e8223de36c709f2bc7f79ab68a63b5f2cac138134a7e95b"
+    }
+  },
+  "directions": [
+    {
+      "direction": "north",
+      "logicalID": "residential_l01_v1_north",
+      "source": {
+        "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-101/residential_l01_v1/raw/north-source-v01.png",
+        "sha256": "1661eeebe01dbfeb0bf5b443ebe61f1ed850e5650258917b09b24d2de03bdab2"
+      },
+      "lods": {
+        "block": "579d0681d0756b3fca7d751d58b950287c8ca4a8d045a4eb64d50cbf2d1d824e",
+        "neighborhood": "920fa9454b8d766ee47193beab5f8c98c6f3a7e4475437a6b8af50c157d1388a",
+        "city": "cc2ddf41bde1c17ffcefffe09c12a18a307c357a1bf598ef4e97a93627db175e"
+      }
+    },
+    {
+      "direction": "east",
+      "logicalID": "residential_l01_v1_east",
+      "source": {
+        "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-101/residential_l01_v1/raw/east-source-v01.png",
+        "sha256": "ec8da7e13befac3abd5e3f242168649fb91b3cc59061a0e9122596329f97b1f3"
+      },
+      "lods": {
+        "block": "d5ef29f4d548e414bb5fec1849d0cb9ac61e858ac9bdbbe664081790d7695883",
+        "neighborhood": "5d95efddd34e16988fd8f0dc6b076b391712491a30dfbd531c19bcd7b528dee9",
+        "city": "289341d9ecb1c3f4a9a20c454b44f24a6b7a2c848319d62acb567cce7a18bc1d"
+      }
+    },
+    {
+      "direction": "south",
+      "logicalID": "residential_l01_v1_south",
+      "source": {
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-097/residential/raw/residential_l01_variant_1/source-v01.png",
+        "sha256": "ef1dab1277f0c2dd6cd3a37a1e459e94c417b013fadda5f4f46b6b21187e3577"
+      },
+      "lods": {
+        "block": "aa3426daaef40ab90f75b35861efe69293b608712a3bbe948e4ac62c7281c72a",
+        "neighborhood": "6424da1e0591ed5c5359994ff47bb00f9af2f6599a03e7769ebcc5f3ca4b6e8d",
+        "city": "be6568db91726a32afb3c25e03e4b5fc824ad5270814f6b81bbfb22fb18b673c"
+      }
+    },
+    {
+      "direction": "west",
+      "logicalID": "residential_l01_v1_west",
+      "source": {
+        "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-101/residential_l01_v1/raw/west-source-v01.png",
+        "sha256": "49657d70488a1478b384c035c73b7551653ffb1f2549fcf20134bed55f622386"
+      },
+      "lods": {
+        "block": "36986109dbfd0da54ecd8922225551d1abc2149bb97d8936d3fcffd5b6514608",
+        "neighborhood": "cf0799fd28421eea1e6a7d6cb5c837d79d0090ab24e949d61586501fb353224b",
+        "city": "09735ee57472adddd119384ad479bc7527d72ed53cda335a0cb30dd4a7e7df8b"
+      }
+    }
+  ],
+  "pixelChecks": {
+    "result": "PASS",
+    "rawDirections": 4,
+    "lodPayloads": 12,
+    "uniqueLodHashes": 12,
+    "dimensions": {
+      "block": [1024, 683],
+      "neighborhood": [512, 342],
+      "city": [256, 171]
+    },
+    "allLods": {
+      "hiddenRgbPixels": 0,
+      "keyedMagentaPixels": 0,
+      "boundaryResidualChromaPixels": 0,
+      "frameEdgeOpaquePixels": 0
+    },
+    "method": "Fresh read-only SHA-256, PNG decode, and alpha/chroma metric comparison against the committed BUILD-RECEIPT"
+  },
+  "rendererChecks": {
+    "command": "CLANG_MODULE_CACHE_PATH=/private/tmp/PLAY-101-resl01v1-clang-cache SWIFT_MODULECACHE_PATH=/private/tmp/PLAY-101-resl01v1-swift-cache SWIFTPM_MODULECACHE_OVERRIDE=/private/tmp/PLAY-101-resl01v1-swift-cache swift test --disable-sandbox --package-path Native/CitySimNative --scratch-path /private/tmp/PLAY-101-resl01v1-scratch --filter 'WorldRenderingTests/(testResidentialVariantOneAdmittedFamilyQuarantineIsExactDeterministicAndFailClosed|testDirectionalResidentialProductionSelectionCoversEveryLevelAndAuthoritativeFrontage)'",
+    "exitCode": 0,
+    "executedTests": 2,
+    "failures": 0,
+    "quarantineTest": "WorldRenderingTests/testResidentialVariantOneAdmittedFamilyQuarantineIsExactDeterministicAndFailClosed",
+    "productionSelectorTest": "WorldRenderingTests/testDirectionalResidentialProductionSelectionCoversEveryLevelAndAuthoritativeFrontage"
+  },
+  "productionBoundary": {
+    "sourceArtCopiedIntoProduct": false,
+    "runtimeManifestChanged": false,
+    "productionSelected": false,
+    "runtimeActivation": false,
+    "fallbackAllowed": false,
+    "transformAllowed": false,
+    "productionManifest": {
+      "path": "Native/CitySimNative/Sources/CitySimNative/Resources/WorldAssets.atlas/generated-v4-manifest.json",
+      "sha256": "517975b875dd2b9baefb5d098926a0c8b8231c2ffb65d65b4fb3603ba643324e"
+    },
+    "worldAssetCatalogSha256": "ece490eb4a84b7a9e30300bb81a9bf65e908b5e96314b415bd0108273ef6be74",
+    "lotRendererSha256": "4b0f1dfdb3ce7d446ff054cbf200f9dc11cdb5f5d71ed666bf5d19af431e9e07"
+  },
+  "visibleEvidence": {
+    "sourceFourView": {
+      "path": "docs/production/evidence/PLAY-101/residential-l01-v1-renderer-intake/source-four-view.png",
+      "sha256": "484bb21ba0395d3cd83c751be89bab5eac64a201e4bc8136586d158bfe25e1cc"
+    },
+    "literalLodColor": {
+      "path": "docs/production/evidence/PLAY-101/residential-l01-v1-renderer-intake/literal-lod-color.png",
+      "sha256": "161893b3df219f9629a6a8f2c3cafd6a7017d5710e0d104ee1b1b3bac7d141a3"
+    },
+    "literalLodGrayscale": {
+      "path": "docs/production/evidence/PLAY-101/residential-l01-v1-renderer-intake/literal-lod-grayscale.png",
+      "sha256": "5d7e47b59c8ea6c649c3317316836997dd1d7c24896483a05daec8eadddf19cc"
+    }
+  },
+  "notes": [
+    "The source validator is a pre-commit branch/baseline harness that writes VALIDATION-RESULT.json, so it was not misrepresented as replayable against the immutable source commit.",
+    "This receipt advances renderer quarantine only. It does not package the source family, alter the shipping manifest, select variant one, activate runtime lookup, perform app QA, or make a release claim."
+  ]
+}

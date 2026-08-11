@@ -632,7 +632,7 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertEqual(manifest?.schema, 4)
         XCTAssertEqual(manifest?.packID, "generated-v4-calibration")
         XCTAssertEqual(manifest?.productionSelection, true)
-        XCTAssertEqual(manifest?.assets.count, 56)
+        XCTAssertEqual(manifest?.assets.count, 60)
         for asset in manifest?.assets ?? [] {
             for detail in CameraDetailLevel.allCases {
                 XCTAssertNotNil(catalog.generatedSprite(logicalID: asset.logicalID, detail: detail))
@@ -698,6 +698,13 @@ final class WorldRenderingTests: XCTestCase {
                         condition: 1,
                         constructionProgress: 1
                     )
+                    let renderedIdentity = try XCTUnwrap(
+                        ResidentialGeneratedAssetIdentity(
+                            level: tile.level,
+                            adjacentRoads: edge,
+                            visualVariant: WorldVisualSeed.variant(count: 3, for: tile.coordinate, kind: tile.kind)
+                        )
+                    )
                     let lot = renderer.makeLot(
                         for: tile,
                         adjacentRoads: edge,
@@ -707,7 +714,7 @@ final class WorldRenderingTests: XCTestCase {
                     let names = descendantNames(in: lot)
                     XCTAssertEqual(
                         names.filter {
-                            $0 == "lot.generated-v4.\(identity.logicalID).\(detail.assetSuffix)"
+                            $0 == "lot.generated-v4.\(renderedIdentity.logicalID).\(detail.assetSuffix)"
                         }.count,
                         1
                     )
@@ -728,20 +735,24 @@ final class WorldRenderingTests: XCTestCase {
     }
 
     @MainActor
-    func testResidentialVariantOnePrelockQuarantineGraphIsDeterministicAndFailClosed() throws {
-        struct PendingPacket: Equatable {
+    func testResidentialVariantOneAdmittedFamilyQuarantineIsExactDeterministicAndFailClosed() throws {
+        struct QuarantinePacket: Equatable {
             var direction: String
             var logicalID: String
-            var sourceKey: String
+            var sourcePath: String
             var sourceSHA256: String
-            var normalizedSHA256: [String]
+            var lodSHA256: [String: String]
             var frontage: String
             var pivotWorld: [Double]
             var socketWorld: [Double]
             var transform: String
             var fallback: Bool
 
-            var isValid: Bool {
+            func isValid(
+                sourcePaths: [String: String],
+                sourceHashes: [String: String],
+                lodHashes: [String: [String: String]]
+            ) -> Bool {
                 let sockets: [String: [Double]] = [
                     "north": [18, 9],
                     "east": [18, -9],
@@ -749,10 +760,11 @@ final class WorldRenderingTests: XCTestCase {
                     "west": [-18, 9],
                 ]
                 return logicalID == "residential_l01_v1_\(direction)"
-                    && sourceKey == "residential_l01/variant-1/\(direction)/source-revision-pending"
-                    && sourceSHA256.count == 64
-                    && normalizedSHA256.count == 3
-                    && Set(normalizedSHA256).count == 3
+                    && sourcePath == sourcePaths[direction]
+                    && sourceSHA256 == sourceHashes[direction]
+                    && lodSHA256 == lodHashes[direction]
+                    && lodSHA256.count == 3
+                    && Set(lodSHA256.values).count == 3
                     && frontage == direction
                     && pivotWorld == [0, -18]
                     && socketWorld == sockets[direction]
@@ -762,16 +774,47 @@ final class WorldRenderingTests: XCTestCase {
         }
 
         let directions = ["north", "east", "south", "west"]
-        let packets = directions.enumerated().map { index, direction in
-            let sourceSuffix = ["0", "1", "2", "3"][index]
-            return PendingPacket(
+        let sourcePaths = [
+            "north": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-101/residential_l01_v1/raw/north-source-v01.png",
+            "east": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-101/residential_l01_v1/raw/east-source-v01.png",
+            "south": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-097/residential/raw/residential_l01_variant_1/source-v01.png",
+            "west": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-101/residential_l01_v1/raw/west-source-v01.png",
+        ]
+        let sourceHashes = [
+            "north": "1661eeebe01dbfeb0bf5b443ebe61f1ed850e5650258917b09b24d2de03bdab2",
+            "east": "ec8da7e13befac3abd5e3f242168649fb91b3cc59061a0e9122596329f97b1f3",
+            "south": "ef1dab1277f0c2dd6cd3a37a1e459e94c417b013fadda5f4f46b6b21187e3577",
+            "west": "49657d70488a1478b384c035c73b7551653ffb1f2549fcf20134bed55f622386",
+        ]
+        let lodHashes = [
+            "north": [
+                "block": "579d0681d0756b3fca7d751d58b950287c8ca4a8d045a4eb64d50cbf2d1d824e",
+                "neighborhood": "920fa9454b8d766ee47193beab5f8c98c6f3a7e4475437a6b8af50c157d1388a",
+                "city": "cc2ddf41bde1c17ffcefffe09c12a18a307c357a1bf598ef4e97a93627db175e",
+            ],
+            "east": [
+                "block": "d5ef29f4d548e414bb5fec1849d0cb9ac61e858ac9bdbbe664081790d7695883",
+                "neighborhood": "5d95efddd34e16988fd8f0dc6b076b391712491a30dfbd531c19bcd7b528dee9",
+                "city": "289341d9ecb1c3f4a9a20c454b44f24a6b7a2c848319d62acb567cce7a18bc1d",
+            ],
+            "south": [
+                "block": "aa3426daaef40ab90f75b35861efe69293b608712a3bbe948e4ac62c7281c72a",
+                "neighborhood": "6424da1e0591ed5c5359994ff47bb00f9af2f6599a03e7769ebcc5f3ca4b6e8d",
+                "city": "be6568db91726a32afb3c25e03e4b5fc824ad5270814f6b81bbfb22fb18b673c",
+            ],
+            "west": [
+                "block": "36986109dbfd0da54ecd8922225551d1abc2149bb97d8936d3fcffd5b6514608",
+                "neighborhood": "cf0799fd28421eea1e6a7d6cb5c837d79d0090ab24e949d61586501fb353224b",
+                "city": "09735ee57472adddd119384ad479bc7527d72ed53cda335a0cb30dd4a7e7df8b",
+            ],
+        ]
+        let packets = directions.map { direction in
+            QuarantinePacket(
                 direction: direction,
                 logicalID: "residential_l01_v1_\(direction)",
-                sourceKey: "residential_l01/variant-1/\(direction)/source-revision-pending",
-                sourceSHA256: String(repeating: "a", count: 63) + sourceSuffix,
-                normalizedSHA256: (0..<3).map {
-                    String(repeating: "b", count: 62) + sourceSuffix + "\($0)"
-                },
+                sourcePath: sourcePaths[direction]!,
+                sourceSHA256: sourceHashes[direction]!,
+                lodSHA256: lodHashes[direction]!,
                 frontage: direction,
                 pivotWorld: [0, -18],
                 socketWorld: [
@@ -787,9 +830,16 @@ final class WorldRenderingTests: XCTestCase {
 
         XCTAssertEqual(packets.map(\.direction), directions)
         XCTAssertEqual(Set(packets.map(\.logicalID)).count, 4)
-        XCTAssertEqual(Set(packets.map(\.sourceKey)).count, 4)
+        XCTAssertEqual(Set(packets.map(\.sourcePath)).count, 4)
         XCTAssertEqual(Set(packets.map(\.sourceSHA256)).count, 4)
-        XCTAssertTrue(packets.allSatisfy(\.isValid))
+        XCTAssertEqual(Set(packets.flatMap { $0.lodSHA256.values }).count, 12)
+        XCTAssertTrue(packets.allSatisfy {
+            $0.isValid(
+                sourcePaths: sourcePaths,
+                sourceHashes: sourceHashes,
+                lodHashes: lodHashes
+            )
+        })
 
         // Opening placement selection is derived from the authoritative
         // starter state, never from a hidden fixture override.
@@ -808,38 +858,250 @@ final class WorldRenderingTests: XCTestCase {
 
         enum QuarantineState: String { case intakePreparing, quarantined, rejected }
         let graph: [String: QuarantineState] = Dictionary(
-            uniqueKeysWithValues: directions.map { ($0, .intakePreparing) }
+            uniqueKeysWithValues: directions.map { ($0, .quarantined) }
         )
         XCTAssertEqual(graph.count, 4)
-        XCTAssertTrue(graph.values.allSatisfy { $0 == .intakePreparing })
+        XCTAssertTrue(graph.values.allSatisfy { $0 == .quarantined })
 
         var alias = packets[0]
         alias.logicalID = packets[1].logicalID
-        XCTAssertFalse(alias.isValid, "direction alias must reject")
+        XCTAssertFalse(
+            alias.isValid(sourcePaths: sourcePaths, sourceHashes: sourceHashes, lodHashes: lodHashes),
+            "direction alias must reject"
+        )
 
         var fallback = packets[0]
         fallback.fallback = true
-        XCTAssertFalse(fallback.isValid, "fallback substitution must reject")
+        XCTAssertFalse(
+            fallback.isValid(sourcePaths: sourcePaths, sourceHashes: sourceHashes, lodHashes: lodHashes),
+            "fallback substitution must reject"
+        )
 
         var mirrored = packets[0]
         mirrored.transform = "mirror-x"
-        XCTAssertFalse(mirrored.isValid, "mirrored source must reject")
+        XCTAssertFalse(
+            mirrored.isValid(sourcePaths: sourcePaths, sourceHashes: sourceHashes, lodHashes: lodHashes),
+            "mirrored source must reject"
+        )
 
         var rotated = packets[0]
         rotated.transform = "rotate-90"
-        XCTAssertFalse(rotated.isValid, "rotated source must reject")
+        XCTAssertFalse(
+            rotated.isValid(sourcePaths: sourcePaths, sourceHashes: sourceHashes, lodHashes: lodHashes),
+            "rotated source must reject"
+        )
 
         var registration = packets[0]
         registration.socketWorld = [18, -9]
-        XCTAssertFalse(registration.isValid, "registration drift must reject")
+        XCTAssertFalse(
+            registration.isValid(sourcePaths: sourcePaths, sourceHashes: sourceHashes, lodHashes: lodHashes),
+            "registration drift must reject"
+        )
 
-        let runtimeActivation = false
-        let productionSelection = false
-        let atomicAssembly = false
-        XCTAssertFalse(runtimeActivation)
-        XCTAssertFalse(productionSelection)
-        XCTAssertFalse(atomicAssembly)
-        XCTAssertEqual(graph.values.filter { $0 == .quarantined }.count, 0)
+        var sourceSubstitution = packets[0]
+        sourceSubstitution.sourceSHA256 = packets[1].sourceSHA256
+        XCTAssertFalse(
+            sourceSubstitution.isValid(
+                sourcePaths: sourcePaths,
+                sourceHashes: sourceHashes,
+                lodHashes: lodHashes
+            ),
+            "cross-direction source substitution must reject"
+        )
+
+        let runtimeActivation = true
+        let productionSelection = true
+        let atomicAssembly = true
+        XCTAssertTrue(runtimeActivation)
+        XCTAssertTrue(productionSelection)
+        XCTAssertTrue(atomicAssembly)
+        XCTAssertEqual(graph.values.filter { $0 == .quarantined }.count, 4)
+    }
+
+    @MainActor
+    func testResidentialVariantOneAtomicProductionSelectionCoversEveryDirectionLODWithoutFallback() throws {
+        let catalog = WorldAssetCatalog()
+        let renderer = LotRenderer(style: WorldVisualStyle(), assets: catalog)
+        let directions: [(String, RoadConnectionMask)] = [
+            ("north", .north),
+            ("east", .east),
+            ("south", .south),
+            ("west", .west),
+        ]
+        let expectedSources = [
+            "north": "1661eeebe01dbfeb0bf5b443ebe61f1ed850e5650258917b09b24d2de03bdab2",
+            "east": "ec8da7e13befac3abd5e3f242168649fb91b3cc59061a0e9122596329f97b1f3",
+            "south": "ef1dab1277f0c2dd6cd3a37a1e459e94c417b013fadda5f4f46b6b21187e3577",
+            "west": "49657d70488a1478b384c035c73b7551653ffb1f2549fcf20134bed55f622386",
+        ]
+        let expectedLODs = [
+            "north": [
+                "block": "579d0681d0756b3fca7d751d58b950287c8ca4a8d045a4eb64d50cbf2d1d824e",
+                "neighborhood": "920fa9454b8d766ee47193beab5f8c98c6f3a7e4475437a6b8af50c157d1388a",
+                "city": "cc2ddf41bde1c17ffcefffe09c12a18a307c357a1bf598ef4e97a93627db175e",
+            ],
+            "east": [
+                "block": "d5ef29f4d548e414bb5fec1849d0cb9ac61e858ac9bdbbe664081790d7695883",
+                "neighborhood": "5d95efddd34e16988fd8f0dc6b076b391712491a30dfbd531c19bcd7b528dee9",
+                "city": "289341d9ecb1c3f4a9a20c454b44f24a6b7a2c848319d62acb567cce7a18bc1d",
+            ],
+            "south": [
+                "block": "aa3426daaef40ab90f75b35861efe69293b608712a3bbe948e4ac62c7281c72a",
+                "neighborhood": "6424da1e0591ed5c5359994ff47bb00f9af2f6599a03e7769ebcc5f3ca4b6e8d",
+                "city": "be6568db91726a32afb3c25e03e4b5fc824ad5270814f6b81bbfb22fb18b673c",
+            ],
+            "west": [
+                "block": "36986109dbfd0da54ecd8922225551d1abc2149bb97d8936d3fcffd5b6514608",
+                "neighborhood": "cf0799fd28421eea1e6a7d6cb5c837d79d0090ab24e949d61586501fb353224b",
+                "city": "09735ee57472adddd119384ad479bc7527d72ed53cda335a0cb30dd4a7e7df8b",
+            ],
+        ]
+        let manifest = try XCTUnwrap(catalog.generatedManifest)
+        let variantOneAssets = manifest.assets.filter {
+            $0.family == "residential" && $0.level == 1 && $0.variant == 1
+        }
+        XCTAssertEqual(variantOneAssets.count, 4)
+        XCTAssertEqual(
+            Set(variantOneAssets.compactMap(\.viewDirection)),
+            Set(directions.map { $0.0 })
+        )
+        XCTAssertEqual(catalog.manifestValidationIssues(), [])
+
+        let variantZeroCoordinate = try XCTUnwrap(
+            (0..<16).flatMap { y in (0..<16).map { GridCoordinate(x: $0, y: y) } }
+                .first {
+                    WorldVisualSeed.variant(count: 3, for: $0, kind: .residential) == 0
+                }
+        )
+        let variantOneCoordinate = try XCTUnwrap(
+            (0..<16).flatMap { y in (0..<16).map { GridCoordinate(x: $0, y: y) } }
+                .first {
+                    WorldVisualSeed.variant(count: 3, for: $0, kind: .residential) == 1
+                }
+        )
+        var sourceHashes: Set<String> = []
+        var normalizedHashes: Set<String> = []
+
+        for (direction, edge) in directions {
+            let identity = try XCTUnwrap(
+                ResidentialGeneratedAssetIdentity(
+                    level: 1,
+                    adjacentRoads: edge,
+                    visualVariant: 1
+                )
+            )
+            XCTAssertEqual(identity.variant, 1)
+            XCTAssertEqual(identity.logicalID, "residential_l01_v1_\(direction)")
+            let asset = try XCTUnwrap(catalog.generatedAsset(logicalID: identity.logicalID))
+            XCTAssertEqual(asset.family, "residential")
+            XCTAssertEqual(asset.level, 1)
+            XCTAssertEqual(asset.variant, 1)
+            XCTAssertEqual(asset.frontageEdge, direction)
+            XCTAssertEqual(asset.viewDirection, direction)
+            XCTAssertEqual(asset.supportedOrientation, "\(direction)-facing-authored")
+            XCTAssertEqual(asset.sourceSHA256, expectedSources[direction])
+            sourceHashes.insert(try XCTUnwrap(asset.sourceSHA256))
+
+            for detail in CameraDetailLevel.allCases {
+                let expectedHash = expectedLODs[direction]?[detail.assetSuffix]
+                let lod = try XCTUnwrap(asset.lods[detail.assetSuffix])
+                XCTAssertEqual(lod.normalizedSHA256, expectedHash)
+                normalizedHashes.insert(try XCTUnwrap(lod.normalizedSHA256))
+                let presentation = try XCTUnwrap(
+                    catalog.generatedResidentialPresentation(
+                        level: 1,
+                        adjacentRoads: edge,
+                        visualVariant: 1,
+                        detail: detail
+                    )
+                )
+                XCTAssertEqual(presentation.identity, identity)
+                XCTAssertEqual(presentation.presentation.asset.logicalID, identity.logicalID)
+                XCTAssertEqual(presentation.presentation.lod.normalizedSHA256, expectedHash)
+
+                let lot = renderer.makeLot(
+                    for: CityTile(
+                        coordinate: variantOneCoordinate,
+                        kind: .residential,
+                        level: 1,
+                        condition: 1,
+                        constructionProgress: 1
+                    ),
+                    adjacentRoads: edge,
+                    detail: detail,
+                    reducedMotion: true
+                )
+                let names = descendantNames(in: lot)
+                XCTAssertEqual(
+                    names.filter {
+                        $0 == "lot.generated-v4.\(identity.logicalID).\(detail.assetSuffix)"
+                    }.count,
+                    1
+                )
+                XCTAssertFalse(names.contains {
+                    $0 == "lot.generated-v4.residential_l01_v0_\(direction).\(detail.assetSuffix)"
+                })
+            }
+        }
+        XCTAssertEqual(sourceHashes.count, 4)
+        XCTAssertEqual(normalizedHashes.count, 12)
+        XCTAssertEqual(catalog.residencySnapshot().fallbackCount, 0)
+        XCTAssertEqual(catalog.residencySnapshot().fallbackDiagnostics, [])
+
+        func frame(coordinate: GridCoordinate, title: String) throws -> Data {
+            let size = CGSize(width: 1_400, height: 430)
+            let view = SKView(frame: CGRect(origin: .zero, size: size))
+            let scene = SKScene(size: size)
+            scene.backgroundColor = NSColor(
+                calibratedRed: 0.24,
+                green: 0.34,
+                blue: 0.25,
+                alpha: 1
+            )
+            view.presentScene(scene)
+
+            let heading = SKLabelNode(fontNamed: "AvenirNext-DemiBold")
+            heading.text = title
+            heading.fontSize = 24
+            heading.fontColor = .white
+            heading.position = CGPoint(x: 700, y: 390)
+            scene.addChild(heading)
+            for (column, entry) in directions.enumerated() {
+                let label = SKLabelNode(fontNamed: "AvenirNext-DemiBold")
+                label.text = entry.0.uppercased()
+                label.fontSize = 18
+                label.fontColor = .white
+                label.position = CGPoint(x: 210 + column * 330, y: 330)
+                scene.addChild(label)
+                let lot = renderer.makeLot(
+                    for: CityTile(
+                        coordinate: coordinate,
+                        kind: .residential,
+                        level: 1,
+                        condition: 1,
+                        constructionProgress: 1
+                    ),
+                    adjacentRoads: entry.1,
+                    detail: .block,
+                    reducedMotion: true
+                )
+                lot.position = CGPoint(x: 210 + column * 330, y: 190)
+                lot.setScale(2.5)
+                scene.addChild(lot)
+            }
+            RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.08))
+            let texture = try XCTUnwrap(view.texture(from: scene))
+            let representation = NSBitmapImageRep(cgImage: texture.cgImage())
+            return try XCTUnwrap(representation.representation(using: .png, properties: [:]))
+        }
+
+        let before = try frame(coordinate: variantZeroCoordinate, title: "Residential L1 — variant zero")
+        let after = try frame(coordinate: variantOneCoordinate, title: "Residential L1 — variant one")
+        XCTAssertNotEqual(before, after)
+        XCTAssertGreaterThan(before.count, 100_000)
+        XCTAssertGreaterThan(after.count, 100_000)
+        try export(before, environmentKey: "CITYSIM_PLAY101_RESIDENTIAL_V1_BEFORE")
+        try export(after, environmentKey: "CITYSIM_PLAY101_RESIDENTIAL_V1_AFTER")
     }
 
     @MainActor

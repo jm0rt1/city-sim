@@ -1,0 +1,25 @@
+{
+  "candidateReadyForIndependentReview": true,
+  "direction": "east",
+  "family": "residential_l01_v1",
+  "generatedOrigin": "/Users/James/.codex/generated_images/019fec54-216e-7af0-99b8-3d451f36fe26/exec-e02192d7-94fe-4faa-ac54-03f14232830f.png",
+  "integrationAdmitted": false,
+  "model": "OpenAI built-in ImageGen/model-not-exposed",
+  "productionSelected": false,
+  "prompt": "prompts/east-prompt-v01.md",
+  "raw": {
+    "path": "raw/east-source-v01.png",
+    "sha256": "ec8da7e13befac3abd5e3f242168649fb91b3cc59061a0e9122596329f97b1f3"
+  },
+  "reference": {
+    "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-097/residential/raw/residential_l01_variant_1/source-v01.png",
+    "role": "immutable_canonical_south_identity_anchor",
+    "sha256": "ef1dab1277f0c2dd6cd3a37a1e459e94c417b013fadda5f4f46b6b21187e3577"
+  },
+  "rendererQuarantined": false,
+  "schema": "citysim.play-101.direction-provenance.v1",
+  "siblingInputsConsumed": [],
+  "sourceReady": false,
+  "toolCalls": 1,
+  "transformations": []
+}

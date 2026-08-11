@@ -1,0 +1,31 @@
+{
+  "candidateReadyForIndependentReview": true,
+  "direction": "north",
+  "family": "residential_l01_v1",
+  "generatedOrigin": "/Users/James/.codex/generated_images/019fec54-216e-7af0-99b8-3d451f36fe26/exec-aa3fa163-3a8f-4740-b8cc-f01d21652ffe.png",
+  "integrationAdmitted": false,
+  "model": "OpenAI built-in ImageGen/model-not-exposed",
+  "productionSelected": false,
+  "prompt": "prompts/north-prompt-v02.md",
+  "raw": {
+    "path": "raw/north-source-v01.png",
+    "sha256": "1661eeebe01dbfeb0bf5b443ebe61f1ed850e5650258917b09b24d2de03bdab2"
+  },
+  "reference": {
+    "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-097/residential/raw/residential_l01_variant_1/source-v01.png",
+    "role": "immutable_canonical_south_identity_anchor",
+    "sha256": "ef1dab1277f0c2dd6cd3a37a1e459e94c417b013fadda5f4f46b6b21187e3577"
+  },
+  "rejectedAttempt": {
+    "generatedOrigin": "/Users/James/.codex/generated_images/019fec54-216e-7af0-99b8-3d451f36fe26/exec-66fc2e17-aace-4d95-87f8-9a7361f76c5c.png",
+    "prompt": "prompts/north-prompt-v01-rejected.md",
+    "reason": "front-elevation dominant; insufficient second-facade isometric read",
+    "sha256": "bd7ba7b5ef2b2ca1c8995d76cd89caf9c2192746291c0bb67c213ec8d060493d"
+  },
+  "rendererQuarantined": false,
+  "schema": "citysim.play-101.direction-provenance.v1",
+  "siblingInputsConsumed": [],
+  "sourceReady": false,
+  "toolCalls": 2,
+  "transformations": []
+}

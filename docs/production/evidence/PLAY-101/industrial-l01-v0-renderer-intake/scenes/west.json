@@ -1,0 +1,17 @@
+{
+  "schema": "PLAY-101.renderer-intake.scene.v1",
+  "logicalBuildingID": "industrial_l01",
+  "viewDirection": "west",
+  "level": 1,
+  "productionSelected": false,
+  "derivation": {"mirror": false, "rotationDegrees": 0, "transform": "none"},
+  "registration": {
+    "tileBasisPoints": [72, 36],
+    "groundPivotSource": [768, 896],
+    "frontageSocketSource": [640, 704],
+    "doorBaseSource": [[602, 723], [678, 685]],
+    "orientationTransform": "none"
+  },
+  "styleAnchor": {"sha256": "b227286bfe5ffe8cfc920d3faf8abe081f5cca8a498c215bfb8a840a448e7425"},
+  "sourceRevision": "west-source-v01"
+}

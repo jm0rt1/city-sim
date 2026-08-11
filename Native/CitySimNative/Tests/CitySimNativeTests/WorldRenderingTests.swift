@@ -5143,6 +5143,49 @@ final class WorldRenderingTests: XCTestCase {
         node is SKCropNode || node.children.contains(where: containsCropNode(in:))
     }
 
+
+    @MainActor
+    func testPLAY101IndustrialL1FourViewResourcesResolveWithoutFallback() throws {
+        let catalog = WorldAssetCatalog()
+        let renderer = LotRenderer(style: WorldVisualStyle(), assets: catalog)
+        let expectedRaw = [
+            "north": "81b1770d6e85f5f92a6a619ac55ddff29bab36358c074a6bbd57a6e434a151a7",
+            "east": "994101a17bcdede965ae14093dad796faf8b174384b9fe73acf01dabc0a23264",
+            "south": "7ca3e26234e7e15df9a46775a83f7132f89e1ea1f22d97c42ca6d3502099bbd2",
+            "west": "376874c84307060b2f9b58337c8d7be40038fe5b8c8b7454334158687530d71b",
+        ]
+        let expectedLOD = [
+            "north": ["block": "329e387c7d03b9250e505aab94d5bdd97d0bfef0980bd1ddf3598598f3d8bb4d", "neighborhood": "7769ed460078c0d8067b9fb7cf8db0bfae914aa75d73f7d7fb0481a4222193d6", "city": "e146af11fba57eb1e1d386938b3c816f4e3ae6fbf17fbd7e2a16b71ffe3d9a75"],
+            "east": ["block": "1bfc585c45182768d847dd05efbcc1708c69af9480dc31c68ee500ef9f3193aa", "neighborhood": "18e8972cc5a33aa40696d35849994f7b2e518a9bfe3fc33bd74ec0352731fec6", "city": "a3b17b46cd796df63a345123dd24231e91a6796e86c754faecab0c83615e7278"],
+            "south": ["block": "05b55f373cc921f35d6e6cdd05e74bcb53deaa52ce9ea076ccf6750210eac0ce", "neighborhood": "7a3d147f3802e110dba11b006829e671c263bf76a02f51ad21df5538f472bfc4", "city": "cdfe8e0cf85cec1d21131993dc024498afb5f86cc7f8fa398491a5cf9487dba1"],
+            "west": ["block": "285be1bc558691afed536e4b71885547e2deaa910d4d5a2707cf988cce871a7b", "neighborhood": "6269f03695e6d7f30e1c320c388045109d7579b42f00501207238cf82cc342b8", "city": "a3f747241ae260908bc1fbacafd763e7c5745c6d152896cdf44bc816cedfde42"],
+        ]
+        let directions: [(String, RoadConnectionMask)] = [
+            ("north", .north), ("east", .east), ("south", .south), ("west", .west),
+        ]
+        for (direction, roads) in directions {
+            let identity = try XCTUnwrap(IndustrialGeneratedAssetIdentity(level: 1, adjacentRoads: roads))
+            let asset = try XCTUnwrap(catalog.generatedAsset(logicalID: identity.logicalID))
+            XCTAssertEqual(asset.sourceSHA256, expectedRaw[direction])
+            XCTAssertEqual(asset.frontageEdge, direction)
+            XCTAssertEqual(asset.viewDirection, direction)
+            XCTAssertEqual(asset.supportedOrientation, "\(direction)-facing-authored")
+            for detail in CameraDetailLevel.allCases {
+                let lod = try XCTUnwrap(asset.lods[detail.assetSuffix])
+                XCTAssertEqual(lod.normalizedSHA256, expectedLOD[direction]?[detail.assetSuffix])
+                XCTAssertNotNil(lod.pageFile)
+            }
+            let lot = renderer.makeLot(
+                for: CityTile(coordinate: GridCoordinate(x: 20, y: Int(roads.rawValue)), kind: .industrial, level: 1, condition: 1, constructionProgress: 1),
+                adjacentRoads: roads,
+                detail: .block,
+                reducedMotion: true
+            )
+            XCTAssertTrue(descendantNames(in: lot).contains("lot.generated-v4.\(identity.logicalID).block"))
+        }
+        XCTAssertEqual(catalog.residencySnapshot().fallbackCount, 0)
+    }
+
     private func pointSegmentDistanceForTesting(_ point: CGPoint, end: CGPoint) -> CGFloat {
         let lengthSquared = end.x * end.x + end.y * end.y
         guard lengthSquared > 0 else { return hypot(point.x, point.y) }

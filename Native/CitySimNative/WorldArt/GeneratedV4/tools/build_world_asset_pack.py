@@ -26,6 +26,7 @@ PLAY027 = ROOT / "OfflineScene" / "PLAY-027"
 PLAY028_SELECTION = GENERATED / "catalog" / "play-028-residential-directions.json"
 PLAY060_SELECTION = GENERATED / "catalog" / "play-060-commercial-directions.json"
 PLAY062_SELECTION = GENERATED / "catalog" / "play-062-industrial-l1-directions.json"
+PLAY101_SELECTION = GENERATED / "catalog" / "play-101-industrial-l1-directions.json"
 PLAY073_INDUSTRIAL_L2_SELECTION = (
     GENERATED / "catalog" / "play-073-industrial-l2-directions.json"
 )
@@ -643,9 +644,9 @@ def build(output_atlas: Path) -> None:
             "PLAY-060",
         )
         + directional_building_assets(
-            PLAY062_SELECTION,
+            PLAY101_SELECTION,
             "industrial",
-            "PLAY-062",
+            "PLAY-101",
             levels=(1,),
         )
         + directional_building_assets(
@@ -736,7 +737,7 @@ def build(output_atlas: Path) -> None:
             for mask in range(16)
         }
 
-    manifest["generator_version"] = "PLAY-073-wave-010-r2-industrial-l3-production-1"
+    manifest["generator_version"] = "PLAY-101-industrial-l01-four-view-intake-1"
     manifest["pages"] = sorted(pages, key=lambda item: item["id"])
     manifest["inventory"] = [
         {

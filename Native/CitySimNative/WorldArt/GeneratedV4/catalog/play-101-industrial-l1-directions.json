@@ -1,0 +1,96 @@
+{
+  "accepted_family_ledger": "docs/production/evidence/PLAY-101/industrial-l01-v0-family/FAMILY-ADMISSION-LEDGER.json",
+  "accepted_family_ledger_sha256": "d6faa7ad735cb9a299cf9addae56399753b213040a0a2b210c2e08b49624cb61",
+  "schema": 1,
+  "selections": [
+    {
+      "direction": "north",
+      "level": 1,
+      "normalized_files": {
+        "block": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-103/north/normalized/industrial_l01_v0/block/north-v01.png",
+        "city": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-103/north/normalized/industrial_l01_v0/city/north-v01.png",
+        "neighborhood": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-103/north/normalized/industrial_l01_v0/neighborhood/north-v01.png"
+      },
+      "normalized_sha256": {"block": "329e387c7d03b9250e505aab94d5bdd97d0bfef0980bd1ddf3598598f3d8bb4d", "city": "e146af11fba57eb1e1d386938b3c816f4e3ae6fbf17fbd7e2a16b71ffe3d9a75", "neighborhood": "7769ed460078c0d8067b9fb7cf8db0bfae914aa75d73f7d7fb0481a4222193d6"},
+      "normalization_record_file": "docs/production/evidence/PLAY-101/industrial-l01-v0-renderer-intake/normalization/north.json",
+      "normalization_record_sha256": "298fdca1139f3384b8bef738c76c9e23b5e865cf450956f5872807b751f7aadb",
+      "provenance_file": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-103/north/provenance/industrial_l01_v0-north.json",
+      "provenance_sha256": "ad62e06341cf02236f673e11ba154da4ea3c24f67d6e17fc33048e78d6295375",
+      "raw_file": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-103/north/raw/industrial_l01_v0/north-v01.png",
+      "raw_sha256": "81b1770d6e85f5f92a6a619ac55ddff29bab36358c074a6bbd57a6e434a151a7",
+      "scene_descriptor_file": "docs/production/evidence/PLAY-101/industrial-l01-v0-renderer-intake/scenes/north.json",
+      "scene_descriptor_sha256": "2b121f97fa9b202445fe8cd1677ad9e2dd4bab34ea2e5ee65ecd001376afaba6",
+      "source_key": "industrial_l01/variant-0/north/north-v01",
+      "source_revision": "north-v01",
+      "material_library_file": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/materials/industrial-l01-l04-v0-materials.json",
+      "material_library_sha256": "166a19d5569a927d6ccdbaf1b29131835238bb3622e66d3b376d9eb33008f1ef"
+    },
+    {
+      "direction": "east",
+      "level": 1,
+      "normalized_files": {
+        "block": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104/east/lod/industrial_l01_v0/block.png",
+        "city": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104/east/lod/industrial_l01_v0/city.png",
+        "neighborhood": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104/east/lod/industrial_l01_v0/neighborhood.png"
+      },
+      "normalized_sha256": {"block": "1bfc585c45182768d847dd05efbcc1708c69af9480dc31c68ee500ef9f3193aa", "city": "a3b17b46cd796df63a345123dd24231e91a6796e86c754faecab0c83615e7278", "neighborhood": "18e8972cc5a33aa40696d35849994f7b2e518a9bfe3fc33bd74ec0352731fec6"},
+      "normalization_record_file": "docs/production/evidence/PLAY-101/industrial-l01-v0-renderer-intake/normalization/east.json",
+      "normalization_record_sha256": "3b834f959f9714f947ec15d01c7f185bb43b257f4defe0e66c3cad7a75b330a5",
+      "provenance_file": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104/east/provenance/industrial_l01_v0/east-provenance.json",
+      "provenance_sha256": "b9f89fe2f38c6b97650ae51b82c296d94e613589efe2b324bc15e4bba36179b5",
+      "raw_file": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104/east/raw/industrial_l01_v0/east-source-v01.png",
+      "raw_sha256": "994101a17bcdede965ae14093dad796faf8b174384b9fe73acf01dabc0a23264",
+      "scene_descriptor_file": "docs/production/evidence/PLAY-101/industrial-l01-v0-renderer-intake/scenes/east.json",
+      "scene_descriptor_sha256": "58a195c4407b141387d186487cb570a1540e06e2f50db2995608ad33588d2174",
+      "source_key": "industrial_l01/variant-0/east/east-source-v01",
+      "source_revision": "east-source-v01",
+      "material_library_file": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/materials/industrial-l01-l04-v0-materials.json",
+      "material_library_sha256": "166a19d5569a927d6ccdbaf1b29131835238bb3622e66d3b376d9eb33008f1ef"
+    },
+    {
+      "direction": "south",
+      "level": 1,
+      "normalized_files": {
+        "block": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/normalized/south/industrial_l01_v00/block.png",
+        "city": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/normalized/south/industrial_l01_v00/city.png",
+        "neighborhood": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/normalized/south/industrial_l01_v00/neighborhood.png"
+      },
+      "normalized_sha256": {"block": "05b55f373cc921f35d6e6cdd05e74bcb53deaa52ce9ea076ccf6750210eac0ce", "city": "cdfe8e0cf85cec1d21131993dc024498afb5f86cc7f8fa398491a5cf9487dba1", "neighborhood": "7a3d147f3802e110dba11b006829e671c263bf76a02f51ad21df5538f472bfc4"},
+      "normalization_record_file": "docs/production/evidence/PLAY-101/industrial-l01-v0-renderer-intake/normalization/south.json",
+      "normalization_record_sha256": "c9bd0c66f87372e653a199c819e6ef5ee4f365aa45d802887b3003ab94745cf6",
+      "provenance_file": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/handoff/PLAY-099-industrial-south-admission-v3.json",
+      "provenance_sha256": "17eed0b8afe6c05493a771215c57c6c1e6d876b123d98759c0197a3a12607f59",
+      "raw_file": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/raw/industrial_l01_v00-source-v01.png",
+      "raw_sha256": "7ca3e26234e7e15df9a46775a83f7132f89e1ea1f22d97c42ca6d3502099bbd2",
+      "scene_descriptor_file": "docs/production/evidence/PLAY-101/industrial-l01-v0-renderer-intake/scenes/south.json",
+      "scene_descriptor_sha256": "cba302de5dfba30373c73e02eaa5507abe898c733a569c7bc88173deaecc4435",
+      "source_key": "industrial_l01/variant-0/south/source-v01-preserved-south",
+      "source_revision": "source-v01-preserved-south",
+      "material_library_file": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/materials/industrial-l01-l04-v0-materials.json",
+      "material_library_sha256": "166a19d5569a927d6ccdbaf1b29131835238bb3622e66d3b376d9eb33008f1ef"
+    },
+    {
+      "direction": "west",
+      "level": 1,
+      "normalized_files": {
+        "block": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105/west/lod/industrial_l01_v0/block.png",
+        "city": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105/west/lod/industrial_l01_v0/city.png",
+        "neighborhood": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105/west/lod/industrial_l01_v0/neighborhood.png"
+      },
+      "normalized_sha256": {"block": "285be1bc558691afed536e4b71885547e2deaa910d4d5a2707cf988cce871a7b", "city": "a3f747241ae260908bc1fbacafd763e7c5745c6d152896cdf44bc816cedfde42", "neighborhood": "6269f03695e6d7f30e1c320c388045109d7579b42f00501207238cf82cc342b8"},
+      "normalization_record_file": "docs/production/evidence/PLAY-101/industrial-l01-v0-renderer-intake/normalization/west.json",
+      "normalization_record_sha256": "529ebd7da01d334e3c36ca76aa1bab86001637c11455a431314affc5c29b4107",
+      "provenance_file": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105/west/provenance/industrial_l01_v0/west-provenance-v02.json",
+      "provenance_sha256": "27a4573e3edcf233732081049d2461eba535b6b9693843c94e1aa224b19fea5a",
+      "raw_file": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105/west/raw/industrial_l01_v0/west-source-v01.png",
+      "raw_sha256": "376874c84307060b2f9b58337c8d7be40038fe5b8c8b7454334158687530d71b",
+      "scene_descriptor_file": "docs/production/evidence/PLAY-101/industrial-l01-v0-renderer-intake/scenes/west.json",
+      "scene_descriptor_sha256": "709eab958b106c948d8a54268b5e2c433527156116203eec7927c498585c3f05",
+      "source_key": "industrial_l01/variant-0/west/west-source-v01",
+      "source_revision": "west-source-v01",
+      "material_library_file": "Native/CitySimNative/WorldArt/OfflineScene/PLAY-027/materials/industrial-l01-l04-v0-materials.json",
+      "material_library_sha256": "166a19d5569a927d6ccdbaf1b29131835238bb3622e66d3b376d9eb33008f1ef"
+    }
+  ],
+  "task": "PLAY-101"
+}

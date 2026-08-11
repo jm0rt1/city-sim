@@ -142,7 +142,7 @@ struct ContentView: View {
     @AppStorage("reduceGameMotion") private var gameReduceMotion = false
     @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
     @State private var hudChromeFrames = CityHUDChromeFrames()
-    @State private var retainedFocusCityViewportInsets: CityMapViewportInsets?
+    @State private var focusCityChromeFrame = CGRect.zero
 
     private var reduceMotion: Bool { systemReduceMotion || gameReduceMotion }
 
@@ -236,6 +236,21 @@ struct ContentView: View {
         )
     }
 
+    static func focusCityViewportInsets(
+        compact: Bool,
+        chromeFrame: CGRect
+    ) -> CityMapViewportInsets {
+        let fallbackTop = (compact ? GameTheme.compactPadding : GameTheme.regularPadding)
+            + (compact ? FocusCityHUDView.compactMaximumHeight : FocusCityHUDView.regularMaximumHeight)
+            + 10
+        return CityMapViewportInsets(
+            top: chromeFrame.isEmpty ? fallbackTop : chromeFrame.maxY + 10,
+            leading: 0,
+            bottom: 0,
+            trailing: 0
+        )
+    }
+
     static func interactiveMapHeight(
         windowHeight: CGFloat,
         chromeFrames: CityHUDChromeFrames
@@ -323,9 +338,16 @@ struct ContentView: View {
                 compact: compact,
                 chromeFrames: hudChromeFrames
             )
+            let focusCityInsets = Self.focusCityViewportInsets(
+                compact: compact,
+                chromeFrame: focusCityChromeFrame
+            )
+            let retainedFocusInsets = store.isCityFocusModeEnabled || !focusCityChromeFrame.isEmpty
+                ? focusCityInsets
+                : nil
             let viewportInsets = Self.resolvedMapViewportInsets(
                 measured: measuredViewportInsets,
-                retainedForFocusCity: retainedFocusCityViewportInsets,
+                retainedForFocusCity: retainedFocusInsets,
                 focusCity: store.isCityFocusModeEnabled,
                 bottomChromeIsVisible: !hudChromeFrames.bottom.isEmpty
             )
@@ -435,7 +457,7 @@ struct ContentView: View {
             .coordinateSpace(name: "city.game.surface")
             .onChange(of: store.isCityFocusModeEnabled) { _, enabled in
                 if enabled {
-                    retainedFocusCityViewportInsets = measuredViewportInsets
+                    focusCityChromeFrame = .zero
                     hudChromeFrames.bottom = .zero
                 }
             }
@@ -453,6 +475,9 @@ struct ContentView: View {
         switch region {
         case .top:
             updated.top = frame
+            if store.isCityFocusModeEnabled {
+                focusCityChromeFrame = frame
+            }
         case .bottom:
             updated.bottom = frame
         }
@@ -460,7 +485,7 @@ struct ContentView: View {
             hudChromeFrames = updated
         }
         if region == .bottom, !store.isCityFocusModeEnabled {
-            retainedFocusCityViewportInsets = nil
+            focusCityChromeFrame = .zero
         }
     }
 

@@ -835,6 +835,27 @@ final class CitySimulationTests: XCTestCase {
     }
 
     @MainActor
+    func testFocusCityViewportInsetsPublishOnlyVisibleTopRail() {
+        let regular = ContentView.focusCityViewportInsets(
+            compact: false,
+            chromeFrame: CGRect(x: 16, y: 16, width: 1_246, height: FocusCityHUDView.regularMaximumHeight)
+        )
+        XCTAssertEqual(regular.top, 94)
+        XCTAssertEqual(regular.leading, 0)
+        XCTAssertEqual(regular.bottom, 0)
+        XCTAssertEqual(regular.trailing, 0)
+
+        let compactFallback = ContentView.focusCityViewportInsets(
+            compact: true,
+            chromeFrame: .zero
+        )
+        XCTAssertEqual(compactFallback.top, 117)
+        XCTAssertEqual(compactFallback.leading, 0)
+        XCTAssertEqual(compactFallback.bottom, 0)
+        XCTAssertEqual(compactFallback.trailing, 0)
+    }
+
+    @MainActor
     func testSelectedTargetBeaconPresentsInspectBuildBulldozeNilReadyAndBlockedTruth() throws {
         let state = CityGameState.newCity(seed: 42)
         let cityHall = try XCTUnwrap(state.tiles.first { $0.kind == .cityHall })

@@ -158,8 +158,8 @@ struct TopHUDView: View {
     }
 
     static func compactSimulationLabel(for speed: SimulationSpeed) -> String {
-        if speed == .paused { return "PAUSED" }
-        return "RUN \(speed.controlLabel.uppercased())"
+        if speed == .paused { return "Paused" }
+        return speed.controlLabel.replacingOccurrences(of: "x", with: "×")
     }
 
     private var simulationStatus: HUDSimulationStatePresentation {

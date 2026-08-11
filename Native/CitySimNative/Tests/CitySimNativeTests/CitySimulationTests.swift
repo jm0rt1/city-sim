@@ -857,11 +857,18 @@ final class CitySimulationTests: XCTestCase {
 
     @MainActor
     func testCompactSimulationLabelStaysVisibleWhileAccessibilityKeepsFullState() {
-        XCTAssertEqual(TopHUDView.compactSimulationLabel(for: .fast), "RUN 2X")
+        XCTAssertEqual(TopHUDView.compactSimulationLabel(for: .normal), "1×")
+        XCTAssertEqual(TopHUDView.compactSimulationLabel(for: .fast), "2×")
+        XCTAssertEqual(TopHUDView.compactSimulationLabel(for: .fastest), "3×")
+        XCTAssertEqual(TopHUDView.compactSimulationLabel(for: .paused), "Paused")
         XCTAssertEqual(TopHUDView.simulationState(for: .fast).label, "RUNNING 2X")
         XCTAssertEqual(
             TopHUDView.simulationState(for: .fast).accessibilityValue,
             "Running at 2x speed"
+        )
+        XCTAssertEqual(
+            TopHUDView.simulationState(for: .paused).accessibilityValue,
+            "Paused"
         )
     }
 

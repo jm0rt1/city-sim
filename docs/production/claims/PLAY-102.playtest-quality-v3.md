@@ -238,3 +238,80 @@ production release, push, origin parity, complete Renderer recovery, complete
 43-by-4-by-3 art admission, or any broader gate. Product identity remains
 `65c0f4dd2054baa0446d4e9c9a3673dfb4a01521`; this acceptance record changes no
 product or build bytes and authorizes no signal to PID `68544`.
+
+## CITYSIM-BF6 blocked-placement Beta activation V1
+
+The preceding Alpha activations and all retained QA evidence remain immutable
+history. Integration activates this claim once for independent QA task
+`019fe8f2-43ac-7700-9eaf-e137c4c5ecb4` in the canonical worktree and branch
+named above. The immutable product candidate is commit
+`bf6fa73aa31ab66c4b0d2be3b7ab288a40200190`, tree
+`59888dc58359675a69aaf778f32b4a4ca7c49469`. Renderer PLAY-073 and the in-flight
+PLAY-101 source-art family are excluded and are not candidate inputs.
+
+The only launchable build is the aggregate-tested staged app at
+`/Users/James/Library/Mobile Documents/com~apple~CloudDocs/James's Files/Programming/Python/city-sim/dist/CitySim.app`.
+Its exact identities are:
+
+- aggregate result: 356 tests executed, 2 skipped, 0 failures;
+- stage manifest SHA-256 `b0e7582e273063af7a0d7b83a478a91d0a0342d9a2fc7254a66c62b45dcb5757`;
+- executable SHA-256 `6e3cc9a251797c9241ffd70587a84e0af9e061cd7d2ef23fad405bf27ed98a6e`;
+- Info.plist SHA-256 `c552bd0c0756b3385c8485d42298119a71d53549dcb0309bb1b8d45cf5c369fb`;
+- key art SHA-256 `57b1d70ba2e534ae3dc73c8d26604c3ea8a95166ba29f107c74cd4203b455010`;
+- atlas manifest SHA-256 `411934e492a66216787f8c93dd91d3f68cc16637110dba9ed7186b22dda96d3d`;
+- generated-v4 manifest SHA-256 `317802265010fc758b232bea9198f18ec0ca4d75b5ceb6f759206238717cec92`;
+- deterministic resource-tree digest `824db799e1a6a1d4070e0c97a186121b28592603b6dacd6a23f7467e98863764`;
+- deterministic complete app-tree digest `1df32f16131702f1a056afe070d0065307a65d637cffcde363314f7056ec04a2`;
+- app inventory count: 82 files.
+
+QA must reproduce the two tree digests from the main repository root with
+these exact commands and no substitute algorithm:
+
+```sh
+(cd dist/CitySim.app/CitySimNative_CitySimNative.bundle && find . -type f -print0 | LC_ALL=C sort -z | xargs -0 shasum -a 256 | shasum -a 256)
+(cd dist/CitySim.app && find . -type f -print0 | LC_ALL=C sort -z | xargs -0 shasum -a 256 | shasum -a 256)
+```
+
+The isolated data root is exactly
+`/private/tmp/CITYSIM-BF6-BETA-QA-V1-DATA`, initially absent. The exclusive
+output root is exactly `/private/tmp/CITYSIM-BF6-BETA-QA-V1-OUTPUT`, initially
+absent. All fourteen existing untracked PLAY-102/v3 files remain immutable
+inputs and must be rehashed before launch. They may not be rewritten, removed,
+normalized, or treated as Beta proof.
+
+At activation time PID `68544` and every matching CitySim process were observed
+absent; no process signal is authorized for an absent PID. If PID `68544`
+exists at the final preflight, QA may send one SIGTERM to that PID only after
+its full command and executable SHA match the accepted Alpha image exactly,
+then must prove it absent. Any different image, any other matching process, or
+any inability to resolve the identity returns without a signal. No SIGKILL,
+wildcard, cleanup, or interaction with another process is authorized.
+
+After Integration issues an exact schema-2 route, selected dispatch, and
+exclusive lease with `attemptCount=1` and `maximumStartCount=2`, independent QA
+may execute one indivisible Beta journey. Before launch it must rehash all
+authority, candidate, app, resource, manifest, claim, and protected-evidence
+identities; require the two V1 roots absent; and observe window/accessibility
+permission. `UNKNOWN` returns before launch.
+
+Launch one must use only the exact staged app and isolated data root. QA must
+first exercise one blocked placement through pointer and the Return-keyboard
+path against the same blocked target, proving the visible feedback and
+accessibility value expose the same truthful reason while authoritative city
+state and treasury remain unchanged. It must then preserve the accepted Alpha
+journey: create a fresh ordinary city, establish road-connected power and water
+strictly above 88 percent, add job-producing zoning, reach population at least
+500, observe the deterministic first eligible severe storm and its compact and
+accessible signed/severity-coded consequence, recover, and save. QA may then
+revalidate the exact first-launch PID and full executable image, send one
+SIGTERM to that PID only, verify it absent, launch the same app once more
+against the same data root, load the save, verify blocked-placement-independent
+storm/recovery persistence, and leave the accepted second process running.
+
+This activation authorizes independent observation and the exclusive output
+packet only. It authorizes no product, resource, claim, or evidence edit;
+rebuild; automated test; retry; substitute; cleanup; coaching; wildcard signal;
+SIGKILL; stage; commit; push; release; self-acceptance; or broader gate movement.
+Any identity, permission, process, root, interaction, state-integrity, journey,
+save, persistence, lease, or attempt mismatch returns immediately. Integration
+and independent Agent 002 retain disposition authority.

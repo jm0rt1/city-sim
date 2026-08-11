@@ -1,0 +1,107 @@
+{
+  "schema": "citysim.play-105.west-source-candidate.handoff.v2",
+  "task": "PLAY-105",
+  "branch": "codex/citysim-world-art-play105-industrial-l01-v0-west",
+  "worktree": "/private/tmp/citysim-play105-industrial-l01-v0-west",
+  "baseAuthority": "cf3e27f75d033fcd5880b19337ada95030b5e1db",
+  "authorityCommit": "d3bed770eb3bf79194df7b15737a19bddafdcd42",
+  "claimPath": "docs/production/claims/PLAY-105.world-art-west-industrial-l01-v0-currentcf3.md",
+  "claimSha256": "28002fff41fdac52fb6df6da7cf21dca6b733917aa21475014363a16715a753d",
+  "routeId": "west-v2:play-105-currentd3be-industrial-l01-v0-recent-image-v1",
+  "routePath": "docs/production/evidence/PLAY-105/industrial-l01-v0/route-snapshot/MODEL-ROUTE-PLAY-105-WEST-V2.json",
+  "routeSha256": "5d5752a6e42a3cba297aea3b51dcfd9294c96914b7c3f40185eee96ec5c396b7",
+  "routeCanonicalSha256": "1dc897a9d3e717693f77d4d57b60a46dbf1137221185d8299f641fcf7a8cfb23",
+  "identity": "industrial_l01_v0",
+  "family": "industrial",
+  "direction": "west",
+  "stage": "source",
+  "sourceRevision": "west-source-v01",
+  "pixelProduction": "upstream_generated_master_received; derived_outputs_normalized_locally",
+  "abc": {
+    "A": "upstream_source_received",
+    "B": "not_applicable_builtin_imagegen",
+    "C": "not_applicable_builtin_imagegen"
+  },
+  "transport": "central_view_image_recent_image_bridge",
+  "southAnchor": {
+    "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/raw/industrial_l01_v00-source-v01.png",
+    "sha256": "7ca3e26234e7e15df9a46775a83f7132f89e1ea1f22d97c42ca6d3502099bbd2",
+    "role": "immutable authoring identity reference only",
+    "copied": false,
+    "admissionReceiptPath": null,
+    "admissionReceiptSha256": null
+  },
+  "promptPath": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105/west/prompts/industrial_l01_v0/west-prompt-v02.md",
+  "provenancePath": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105/west/provenance/industrial_l01_v0/west-provenance-v02.json",
+  "provenanceSha256": "27a4573e3edcf233732081049d2461eba535b6b9693843c94e1aa224b19fea5a",
+  "raw": {
+    "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105/west/raw/industrial_l01_v0/west-source-v01.png",
+    "sha256": "376874c84307060b2f9b58337c8d7be40038fe5b8c8b7454334158687530d71b",
+    "canvas": [
+      1536,
+      1024
+    ],
+    "mode": "RGB"
+  },
+  "normalized": {
+    "root": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105/west/lod/industrial_l01_v0",
+    "blockSha256": "285be1bc558691afed536e4b71885547e2deaa910d4d5a2707cf988cce871a7b",
+    "neighborhoodSha256": "6269f03695e6d7f30e1c320c388045109d7579b42f00501207238cf82cc342b8",
+    "citySha256": "a3f747241ae260908bc1fbacafd763e7c5745c6d152896cdf44bc816cedfde42",
+    "deterministicReplay": "PASS"
+  },
+  "contactSheets": {
+    "sourceSizePath": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105/west/contact-sheets/west-source-size-contact-sheet.png",
+    "sourceSizeSha256": "75a9a74966e8c9753257db781c541f2b4f4bfbc372a4a70cf04d7870f8255541",
+    "literalColorPath": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105/west/contact-sheets/west-literal-game-scale-color-contact-sheet.png",
+    "literalColorSha256": "fe3fd8609c293dc4c1f81cd65d61e6abdfab7dbfa41a3e1d3b39e74a4eade524",
+    "literalGrayscalePath": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105/west/contact-sheets/west-literal-game-scale-grayscale-contact-sheet.png",
+    "literalGrayscaleSha256": "77f40be713f2748edfeef5264e3205204402044b0f4ea837d3535a3361b05ec2"
+  },
+  "geometryPath": "docs/production/evidence/PLAY-105/industrial-l01-v0/validation/geometry-registration.json",
+  "geometrySha256": "9b8f1ee6fda9f517e9a966382693d9e01e4222092137b7e5d7467f46c315e57d",
+  "validation": {
+    "validatorPath": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105/west/validation/industrial_l01_v0/validate_direction_source.py",
+    "validatorSha256": "07e039bbfdaa30c63df1c9a0f549c088c6d907efc9bff4ca8702638f4534e8c7",
+    "replayReceiptPath": "docs/production/evidence/PLAY-105/industrial-l01-v0/validation/normalization-replay-receipt.json",
+    "replayReceiptSha256": "310004b09a5d599298793ad048429499155ae3bd0145412c390b9caed70f2fb8",
+    "sourceCandidateReceiptPath": "docs/production/evidence/PLAY-105/industrial-l01-v0/source-candidate-receipt.json",
+    "parallelExecutionReceiptPath": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105/west/receipts/parallel-execution-receipt.json",
+    "parallelExecutionReceiptSha256": "4a3a116f56f6f37af5812f0a194b4ca4f6267a9f2e33a1f3d8e5bb221524b0f4",
+    "focusedCommand": "python3 Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105/west/validation/industrial_l01_v0/validate_direction_source.py",
+    "result": "PASS"
+  },
+  "directionRootMap": {
+    "prompt": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105/west/prompts/industrial_l01_v0",
+    "provenance": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105/west/provenance/industrial_l01_v0",
+    "handoff": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105/west/handoffs/industrial_l01_v0",
+    "raw": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105/west/raw/industrial_l01_v0",
+    "normalized": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105/west/lod/industrial_l01_v0",
+    "process": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105/west/replay",
+    "output": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105/west/lod/industrial_l01_v0",
+    "evidence": "docs/production/evidence/PLAY-105/industrial-l01-v0",
+    "receipt": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105/west/receipts"
+  },
+  "parallelExecutionReceiptPath": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105/west/receipts/parallel-execution-receipt.json",
+  "parallelExecutionReceiptSha256": "4a3a116f56f6f37af5812f0a194b4ca4f6267a9f2e33a1f3d8e5bb221524b0f4",
+  "southAnchorAdmission": "raw_authoring_reference_bound_by_route; source_admission_not_claimed",
+  "disposition": "source_candidate_pending_independent_review",
+  "candidateReadyForIndependentReview": true,
+  "sourceReady": false,
+  "integrationAdmitted": false,
+  "rendererQuarantined": false,
+  "productionSelected": false,
+  "independentReviewer": {
+    "required": true,
+    "threadId": "019fe8df-faf7-7b50-a8a3-0d15b1191e10",
+    "model": "gpt-5.6-sol",
+    "effort": "high"
+  },
+  "knownBlockers": [
+    "independent visual/literal-scale review",
+    "Integration admission",
+    "Renderer quarantine",
+    "atomic 4/4 family selection"
+  ],
+  "siblingInputsConsumed": []
+}

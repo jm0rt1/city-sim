@@ -1,0 +1,115 @@
+{
+  "schema": "citysim.play-105.west-source-provenance.v2",
+  "taskId": "PLAY-105",
+  "branch": "codex/citysim-world-art-play105-industrial-l01-v0-west",
+  "worktree": "/private/tmp/citysim-play105-industrial-l01-v0-west",
+  "baseAuthority": "cf3e27f75d033fcd5880b19337ada95030b5e1db",
+  "authorityCommit": "d3bed770eb3bf79194df7b15737a19bddafdcd42",
+  "routeId": "west-v2:play-105-currentd3be-industrial-l01-v0-recent-image-v1",
+  "routeSnapshotPath": "docs/production/evidence/PLAY-105/industrial-l01-v0/route-snapshot/MODEL-ROUTE-PLAY-105-WEST-V2.json",
+  "routeSnapshotSha256": "5d5752a6e42a3cba297aea3b51dcfd9294c96914b7c3f40185eee96ec5c396b7",
+  "routeCanonicalSha256": "1dc897a9d3e717693f77d4d57b60a46dbf1137221185d8299f641fcf7a8cfb23",
+  "dispatchPath": "docs/production/evidence/PLAY-105/industrial-l01-v0/route-snapshot/PLAY-105-WEST-DISPATCH-V2.json",
+  "dispatchSha256": "49ad2ac5f7690a490469a05d7f8c9f632cc63e6b3907e2ad23a187f143fd094d",
+  "dispatchCanonicalSha256": "e9e989a5b322d1a8235cc018d256788d16102518d68f80992f02f4a68288718f",
+  "family": "industrial",
+  "identity": "industrial_l01_v0",
+  "direction": "west",
+  "stage": "source",
+  "sourceRevision": "west-source-v01",
+  "sourceMethod": "upstream built-in ImageGen result supplied by AGENT_001; worker did not regenerate",
+  "transport": "central_view_image_recent_image_bridge",
+  "upstreamGeneration": {
+    "agent": "AGENT_001",
+    "threadId": "019fe85c-8a34-7fb2-9128-cbf05ab837b0",
+    "generatedPath": "/Users/James/.codex/generated_images/019fe85c-8a34-7fb2-9128-cbf05ab837b0/exec-ae9fd7b0-2dd7-4c6a-8f56-5d5e85b413be.png",
+    "generatedSha256": "376874c84307060b2f9b58337c8d7be40038fe5b8c8b7454334158687530d71b",
+    "canvas": [
+      1536,
+      1024
+    ],
+    "imageGenCalls": 1,
+    "workerImageGenCalls": 0,
+    "soleWestGenerationResult": true
+  },
+  "southReference": {
+    "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/raw/industrial_l01_v00-source-v01.png",
+    "sha256": "7ca3e26234e7e15df9a46775a83f7132f89e1ea1f22d97c42ca6d3502099bbd2",
+    "role": "immutable identity and style reference for upstream West authoring only",
+    "copiedIntoWestRoot": false,
+    "admissionReceiptPath": null,
+    "admissionReceiptSha256": null
+  },
+  "prompt": {
+    "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105/west/prompts/industrial_l01_v0/west-prompt-v02.md",
+    "originalUpstreamPromptAvailable": false,
+    "recordNote": "The supplied outcome handoff contained the generated path and hash, not the original prompt text; this worker records the bounded contract brief without inventing unavailable wording."
+  },
+  "rawPath": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105/west/raw/industrial_l01_v0/west-source-v01.png",
+  "rawSha256": "376874c84307060b2f9b58337c8d7be40038fe5b8c8b7454334158687530d71b",
+  "rawCanvas": [
+    1536,
+    1024
+  ],
+  "normalization": {
+    "scriptPath": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105/west/replay/normalize_industrial_l01_v0.py",
+    "scriptSha256": "07fba4f228779bc52322c4d4a8e4521ab19e0bc2b45417e6c2de717e8ce23287",
+    "toolchain": "Python standard library",
+    "parameters": {
+      "keying": "PLAY-104 keyed-magenta strict predicate",
+      "resampling": "PLAY-081 deterministic-premultiplied-bilinear-standard-library",
+      "transparentRgb": "zeroed"
+    },
+    "lodRoot": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105/west/lod/industrial_l01_v0",
+    "outputs": {
+      "block.png": "285be1bc558691afed536e4b71885547e2deaa910d4d5a2707cf988cce871a7b",
+      "neighborhood.png": "6269f03695e6d7f30e1c320c388045109d7579b42f00501207238cf82cc342b8",
+      "city.png": "a3f747241ae260908bc1fbacafd763e7c5745c6d152896cdf44bc816cedfde42"
+    }
+  },
+  "contactSheets": {
+    "root": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105/west/contact-sheets",
+    "sourceSize": "75a9a74966e8c9753257db781c541f2b4f4bfbc372a4a70cf04d7870f8255541",
+    "literalColor": "fe3fd8609c293dc4c1f81cd65d61e6abdfab7dbfa41a3e1d3b39e74a4eade524",
+    "literalGrayscale": "77f40be713f2748edfeef5264e3205204402044b0f4ea837d3535a3361b05ec2"
+  },
+  "geometryPath": "docs/production/evidence/PLAY-105/industrial-l01-v0/validation/geometry-registration.json",
+  "geometrySha256": "9b8f1ee6fda9f517e9a966382693d9e01e4222092137b7e5d7467f46c315e57d",
+  "validation": {
+    "validatorPath": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105/west/validation/industrial_l01_v0/validate_direction_source.py",
+    "validatorSha256": "07e039bbfdaa30c63df1c9a0f549c088c6d907efc9bff4ca8702638f4534e8c7",
+    "replayReceiptPath": "docs/production/evidence/PLAY-105/industrial-l01-v0/validation/normalization-replay-receipt.json",
+    "replayReceiptSha256": "310004b09a5d599298793ad048429499155ae3bd0145412c390b9caed70f2fb8",
+    "sourceCandidateReceiptPath": "docs/production/evidence/PLAY-105/industrial-l01-v0/source-candidate-receipt.json",
+    "parallelExecutionReceiptPath": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105/west/receipts/parallel-execution-receipt.json",
+    "parallelExecutionReceiptSha256": "4a3a116f56f6f37af5812f0a194b4ca4f6267a9f2e33a1f3d8e5bb221524b0f4",
+    "deterministicReplay": "PASS",
+    "siblingInputsConsumed": []
+  },
+  "geometry": {
+    "canvas": [
+      1536,
+      1024
+    ],
+    "pivotPx": [
+      768,
+      896
+    ],
+    "frontage": "west",
+    "projection": "orthographic 2:1 isometric 2.5D",
+    "keyLight": "northwest",
+    "contactShadow": "contained southeast"
+  },
+  "disposition": "source_candidate",
+  "candidateReadyForIndependentReview": true,
+  "sourceReady": false,
+  "integrationAdmitted": false,
+  "rendererQuarantined": false,
+  "productionSelected": false,
+  "siblingInputsConsumed": [],
+  "knownBlockers": [
+    "independent visual and literal-scale review remains required",
+    "Integration source admission is not claimed",
+    "Renderer quarantine and production selection are not claimed"
+  ]
+}

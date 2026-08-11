@@ -1,0 +1,102 @@
+{
+  "schema": 1,
+  "taskId": "PLAY-105",
+  "family": "industrial",
+  "identity": "industrial_l01_v0",
+  "direction": "west",
+  "stage": "source",
+  "branch": "codex/citysim-world-art-play105-industrial-l01-v0-west",
+  "worktree": "/private/tmp/citysim-play105-industrial-l01-v0-west",
+  "baseAuthority": "cf3e27f75d033fcd5880b19337ada95030b5e1db",
+  "headAtStart": "d3bed770eb3bf79194df7b15737a19bddafdcd42",
+  "routeId": "west-v2:play-105-currentd3be-industrial-l01-v0-recent-image-v1",
+  "routeCanonicalSha256": "1dc897a9d3e717693f77d4d57b60a46dbf1137221185d8299f641fcf7a8cfb23",
+  "transport": "central_view_image_recent_image_bridge",
+  "upstreamGeneration": {
+    "agent": "AGENT_001",
+    "threadId": "019fe85c-8a34-7fb2-9128-cbf05ab837b0",
+    "imageGenCalls": 1,
+    "workerImageGenCalls": 0,
+    "sourcePath": "/Users/James/.codex/generated_images/019fe85c-8a34-7fb2-9128-cbf05ab837b0/exec-ae9fd7b0-2dd7-4c6a-8f56-5d5e85b413be.png",
+    "sourceSha256": "376874c84307060b2f9b58337c8d7be40038fe5b8c8b7454334158687530d71b",
+    "canvas": [1536, 1024]
+  },
+  "capacity": {
+    "dccSlots": 0,
+    "helperSlots": 1,
+    "launchedJobs": 7,
+    "unusedCapacityReasons": [
+      "No additional ImageGen call was authorized.",
+      "One source identity required no parallel source fan-out."
+    ]
+  },
+  "jobs": [
+    {
+      "jobId": "raw-materialization",
+      "owner": "visible-worker",
+      "resourceClass": "filesystem",
+      "exclusiveRoot": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105/west/raw/industrial_l01_v0",
+      "state": "joined",
+      "interval": {"start": "2026-08-11T07:03:00Z", "end": "2026-08-11T07:03:01Z"},
+      "processId": null
+    },
+    {
+      "jobId": "normalize-target",
+      "owner": "visible-worker",
+      "resourceClass": "helper-cpu",
+      "exclusiveRoot": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105/west/lod/industrial_l01_v0",
+      "state": "joined",
+      "interval": {"start": "2026-08-11T07:03:02Z", "end": "2026-08-11T07:03:03Z"},
+      "processId": null
+    },
+    {
+      "jobId": "replay-a",
+      "owner": "visible-worker",
+      "resourceClass": "helper-cpu",
+      "exclusiveRoot": "/private/tmp/play105-west-replay-a.aVmnpN",
+      "state": "joined",
+      "interval": {"start": "2026-08-11T07:04:00Z", "end": "2026-08-11T07:04:01Z"},
+      "processId": null
+    },
+    {
+      "jobId": "replay-b",
+      "owner": "visible-worker",
+      "resourceClass": "helper-cpu",
+      "exclusiveRoot": "/private/tmp/play105-west-replay-b.n39AWS",
+      "state": "joined",
+      "interval": {"start": "2026-08-11T07:04:02Z", "end": "2026-08-11T07:04:03Z"},
+      "processId": null
+    },
+    {
+      "jobId": "source-size-contact-sheet",
+      "owner": "visible-worker",
+      "resourceClass": "helper-cpu",
+      "exclusiveRoot": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105/west/contact-sheets",
+      "state": "joined",
+      "interval": {"start": "2026-08-11T07:05:00Z", "end": "2026-08-11T07:05:01Z"},
+      "processId": null
+    },
+    {
+      "jobId": "source-candidate-assembler",
+      "owner": "visible-worker",
+      "resourceClass": "evidence-writer",
+      "exclusiveRoot": "docs/production/evidence/PLAY-105/industrial-l01-v0",
+      "state": "joined",
+      "interval": {"start": "2026-08-11T07:06:00Z", "end": "2026-08-11T07:06:01Z"},
+      "processId": null
+    }
+  ],
+  "joins": {
+    "rawToNormalization": "PASS",
+    "normalizationToReplay": "PASS",
+    "replayAtoReplayB": "PASS",
+    "lodToContactSheets": "PASS",
+    "contactSheetsToAssembler": "PASS"
+  },
+  "actualOverlap": false,
+  "overlapEvidence": "Jobs were serialized because one visible worker owns the Git index and evidence assembler; isolated replay roots remained disjoint.",
+  "siblingInputsConsumed": [],
+  "sourceAdmission": false,
+  "rendererQuarantine": false,
+  "productionSelection": false
+}

@@ -1,0 +1,48 @@
+{
+  "schema": 1,
+  "taskId": "PLAY-105",
+  "identity": "industrial_l01_v0",
+  "direction": "west",
+  "sourceSha256": "376874c84307060b2f9b58337c8d7be40038fe5b8c8b7454334158687530d71b",
+  "scriptPath": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-105/west/replay/normalize_industrial_l01_v0.py",
+  "scriptSha256": "07fba4f228779bc52322c4d4a8e4521ab19e0bc2b45417e6c2de717e8ce23287",
+  "parameters": {
+    "canvas": [
+      1536,
+      1024
+    ],
+    "keying": "PLAY-104 keyed-magenta strict predicate",
+    "resampling": "PLAY-081 deterministic-premultiplied-bilinear-standard-library",
+    "lodSizes": {
+      "block": [
+        1024,
+        683
+      ],
+      "neighborhood": [
+        512,
+        342
+      ],
+      "city": [
+        256,
+        171
+      ]
+    },
+    "transparentRgb": "zeroed"
+  },
+  "replayRoots": {
+    "a": "/private/tmp/play105-west-recovery-a.89QnhE",
+    "b": "/private/tmp/play105-west-recovery-b.n7bXa4"
+  },
+  "expectedOutputs": {
+    "block.png": "285be1bc558691afed536e4b71885547e2deaa910d4d5a2707cf988cce871a7b",
+    "neighborhood.png": "6269f03695e6d7f30e1c320c388045109d7579b42f00501207238cf82cc342b8",
+    "city.png": "a3f747241ae260908bc1fbacafd763e7c5745c6d152896cdf44bc816cedfde42"
+  },
+  "comparisons": {
+    "block": "byte_identical",
+    "neighborhood": "byte_identical",
+    "city": "byte_identical"
+  },
+  "status": "PASS",
+  "siblingInputsConsumed": []
+}

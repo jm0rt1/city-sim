@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "taskId": "PLAY-105",
+  "family": "industrial",
+  "identity": "industrial_l01_v0",
+  "direction": "west",
+  "canvas": [1536, 1024],
+  "pivotPx": [768, 896],
+  "footprint": "CONTRACT-025-bound; not inferred from generated occupied bounds",
+  "frontage": "west",
+  "frontageSocket": "code-owned West road-edge registration; not inferred or rewritten by this worker",
+  "projection": "orthographic 2:1 isometric 2.5D",
+  "keyLight": "northwest",
+  "contactShadow": "contained southeast",
+  "scale": "preserve South identity scale; no crop or auto-scale",
+  "runtimeTransformsForbidden": true,
+  "siblingInputsConsumed": []
+}

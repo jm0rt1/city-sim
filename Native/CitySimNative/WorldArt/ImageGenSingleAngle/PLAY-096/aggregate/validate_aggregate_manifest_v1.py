@@ -19,7 +19,7 @@ from typing import Any
 
 
 TASK = "PLAY-106"
-MASTER = "9997522bc863e8722e9e514beba02fe7e71ef7e7"
+MASTER = "65c0f4dd2054baa0446d4e9c9a3673dfb4a01521"
 DIRECTIONS = ("north", "east", "south", "west")
 LODS = ("city", "neighborhood", "block")
 EXPECTED_COUNTS = {
@@ -29,14 +29,33 @@ EXPECTED_COUNTS = {
     "physical_raw": 44,
 }
 ANCHOR_PATH = "docs/production/decisions/PLAY-106-RAW-SOUTH-ANCHOR-AUTHORITY.md"
-ANCHOR_SHA = "1ed3486f526dc1ab3da352c85fce3920468375f8169529d933bbfc275b1c739d"
+ANCHOR_SHA = "f70e5c2dd95c6642c682a0b93a52873a66005304ae618d37c6c5c5b4c6b59b7b"
 INVENTORY_PATH = "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-096/single-angle-inventory.json"
 INVENTORY_SHA = "3879048afa719ac3dd898d62f8cdfe2422d6972b5cc866ed0e2cc381d1bc4a95"
 HANDOFF_PATH = "docs/production/evidence/PLAY-096/four-view-repair/direction-handoff.json"
 HANDOFF_SHA = "6945c482a4a35240d757ee62522f0f71ff8bc573891031ea77c6a092c169e089"
+INDUSTRIAL_CANONICAL_ID = "industrial_l01_v0"
+INDUSTRIAL_CANONICAL_PATH = (
+    "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/raw/"
+    "industrial_l01_v00-source-v01.png"
+)
+INDUSTRIAL_CANONICAL_SHA = "7ca3e26234e7e15df9a46775a83f7132f89e1ea1f22d97c42ca6d3502099bbd2"
+INDUSTRIAL_EXCLUDED_PATH = (
+    "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/raw/"
+    "industrial_l01_v00-source-v02.png"
+)
+INDUSTRIAL_EXCLUDED_SHA = "8e33dafb3a40f7dac6f5ca8c9c5cb81df2b63011d3fd0d4a0302ec04a99d264a"
+INDUSTRIAL_EXCLUDED_DISPOSITION = "RETURN_source_v02_chroma_gate_failed"
+AUTHORING_READINESS = {
+    "sourceReady": False,
+    "integrationAdmitted": False,
+    "rendererQuarantined": False,
+    "productionSelected": False,
+}
 
-# The South raw inventory is an immutable input to this validator.  The two
-# Industrial v00 bytes intentionally remain separate and unresolved.
+# The South raw inventory is an immutable input to this validator.  Both
+# Industrial v00 files remain physically preserved, but only v01 is canonical
+# for the 43-row South authoring ledger.
 EXPECTED_RAW_SHA256 = {
     "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-097/residential/raw/residential_l01_variant_0/source-v01.png": "a808c5da11450418afa26505261cac196480d7d98578e2e8ac796288c7ee0e57",
     "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-097/residential/raw/residential_l01_variant_1/source-v01.png": "ef1dab1277f0c2dd6cd3a37a1e459e94c417b013fadda5f4f46b6b21187e3577",
@@ -97,6 +116,13 @@ def file_sha(path: Path) -> str:
     return sha256_bytes(path.read_bytes())
 
 
+def report_path_for_display(report_path: Path, root: Path) -> str:
+    try:
+        return str(report_path.relative_to(root))
+    except ValueError:
+        return str(report_path)
+
+
 def repo_root() -> Path:
     here = Path(__file__).resolve()
     for parent in here.parents:
@@ -142,6 +168,130 @@ def raw_records(root: Path) -> list[dict[str, str]]:
             continue
         records.append({"path": relative, "sha256": file_sha(path), "logicalId": canonical_id(relative), "status": "available"})
     return records
+
+
+def authoring_duplicate_policy() -> dict[str, Any]:
+    return {
+        "canonicalId": INDUSTRIAL_CANONICAL_ID,
+        "canonicalPath": INDUSTRIAL_CANONICAL_PATH,
+        "canonicalSha256": INDUSTRIAL_CANONICAL_SHA,
+        "decision": "CANONICAL_V01_PRESERVE",
+        "excludedDisposition": INDUSTRIAL_EXCLUDED_DISPOSITION,
+        "excludedPath": INDUSTRIAL_EXCLUDED_PATH,
+        "excludedSha256": INDUSTRIAL_EXCLUDED_SHA,
+        "unresolved": False,
+    }
+
+
+def canonical_authoring_rows(
+    identities: list[dict[str, Any]], records: list[dict[str, str]]
+) -> list[dict[str, Any]]:
+    by_id: dict[str, list[dict[str, str]]] = {}
+    by_path = {record["path"]: record for record in records}
+    for record in records:
+        by_id.setdefault(record["logicalId"], []).append(record)
+
+    rows: list[dict[str, Any]] = []
+    for identity in identities:
+        logical_id = identity["logicalId"]
+        if logical_id == INDUSTRIAL_CANONICAL_ID:
+            selected = by_path.get(INDUSTRIAL_CANONICAL_PATH)
+        else:
+            candidates = by_id.get(logical_id, [])
+            selected = candidates[0] if len(candidates) == 1 else None
+        rows.append(
+            {
+                "authoringDisposition": "CANONICAL_SOUTH_AUTHORING_ANCHOR",
+                "family": identity["family"],
+                "kind": identity["kind"],
+                "level": identity["level"],
+                "logicalId": logical_id,
+                "path": selected["path"] if selected else None,
+                "readiness": dict(AUTHORING_READINESS),
+                "sha256": selected["sha256"] if selected else None,
+                "status": selected["status"] if selected else "missing_or_ambiguous",
+                "variant": identity["variant"],
+            }
+        )
+    return rows
+
+
+def excluded_raw_evidence(records: list[dict[str, str]]) -> list[dict[str, Any]]:
+    by_path = {record["path"]: record for record in records}
+    record = by_path.get(INDUSTRIAL_EXCLUDED_PATH)
+    return [
+        {
+            "countsToward": {
+                "canonicalDigest": False,
+                "direction": False,
+                "identity": False,
+                "sourceAdmission": False,
+            },
+            "disposition": INDUSTRIAL_EXCLUDED_DISPOSITION,
+            "logicalId": INDUSTRIAL_CANONICAL_ID,
+            "path": INDUSTRIAL_EXCLUDED_PATH,
+            "retryAllowed": False,
+            "sha256": record["sha256"] if record else None,
+            "status": record["status"] if record else "missing",
+        }
+    ]
+
+
+def canonical_authoring_digest(rows: list[dict[str, Any]]) -> str:
+    return sha256_bytes(canonical(rows).encode("utf-8"))
+
+
+def validate_authoring_projection(report: dict[str, Any]) -> list[str]:
+    errors: list[str] = []
+    rows = report.get("canonicalSouthAuthoringRows", [])
+    raw_files = report.get("rawFiles", [])
+    identity_ids = report.get("identityIds", [])
+    excluded = report.get("excludedRawEvidence", [])
+
+    if len(rows) != EXPECTED_COUNTS["identities"]:
+        errors.append(f"canonical_authoring_row_count:{len(rows)}!=43")
+    row_ids = [row.get("logicalId") for row in rows]
+    if len(row_ids) != len(set(row_ids)):
+        errors.append("duplicate_canonical_authoring_ids")
+    if row_ids != identity_ids:
+        errors.append("canonical_authoring_identity_order_or_set_mismatch")
+
+    expected_paths_by_id: dict[str, list[str]] = {}
+    for path in EXPECTED_RAW_SHA256:
+        if path == INDUSTRIAL_EXCLUDED_PATH:
+            continue
+        expected_paths_by_id.setdefault(canonical_id(path), []).append(path)
+    raw_by_path = {record.get("path"): record for record in raw_files}
+    for row in rows:
+        logical_id = row.get("logicalId")
+        expected_paths = expected_paths_by_id.get(logical_id, [])
+        if len(expected_paths) != 1 or row.get("path") != expected_paths[0]:
+            errors.append(f"canonical_authoring_path_mismatch:{logical_id}")
+            continue
+        expected_path = expected_paths[0]
+        expected_sha = EXPECTED_RAW_SHA256[expected_path]
+        if row.get("sha256") != expected_sha:
+            errors.append(f"canonical_authoring_sha_mismatch:{logical_id}")
+        if row.get("status") != "available":
+            errors.append(f"canonical_authoring_unavailable:{logical_id}")
+        if row.get("readiness") != AUTHORING_READINESS:
+            errors.append(f"canonical_authoring_readiness_not_false:{logical_id}")
+        if row.get("authoringDisposition") != "CANONICAL_SOUTH_AUTHORING_ANCHOR":
+            errors.append(f"canonical_authoring_disposition_mismatch:{logical_id}")
+        raw = raw_by_path.get(expected_path)
+        if raw is None or raw.get("sha256") != expected_sha or raw.get("status") != "available":
+            errors.append(f"canonical_authoring_raw_binding_mismatch:{logical_id}")
+
+    expected_excluded = excluded_raw_evidence(raw_files)
+    if excluded != expected_excluded:
+        errors.append("excluded_raw_evidence_mismatch")
+    elif excluded[0].get("sha256") != INDUSTRIAL_EXCLUDED_SHA:
+        errors.append("excluded_raw_evidence_sha_mismatch")
+    if report.get("duplicatePolicy") != authoring_duplicate_policy():
+        errors.append("authoring_duplicate_policy_mismatch")
+    if report.get("canonicalSouthAuthoringDigestSha256") != canonical_authoring_digest(rows):
+        errors.append("canonical_authoring_digest_mismatch")
+    return sorted(set(errors))
 
 
 def build_manifest(root: Path) -> dict[str, Any]:
@@ -308,9 +458,6 @@ def validate_manifest(root: Path, manifest: dict[str, Any]) -> list[str]:
         "unresolved": True,
     }:
         errors.append("industrial_duplicate_policy_mismatch")
-    if duplicate_ids:
-        errors.append("unresolved_duplicate_raw_files:industrial_l01_v0")
-
     flags = manifest.get("flags", {})
     for key, value in flags.items():
         if value is not False:
@@ -362,6 +509,8 @@ def validate_manifest(root: Path, manifest: dict[str, Any]) -> list[str]:
 def run_once(root: Path) -> dict[str, Any]:
     manifest = build_manifest(root)
     errors = validate_manifest(root, manifest)
+    authoring_rows = canonical_authoring_rows(manifest["identities"], manifest["rawFiles"])
+    excluded_evidence = excluded_raw_evidence(manifest["rawFiles"])
     report = {
         "schema": 1,
         "task": TASK,
@@ -370,22 +519,39 @@ def run_once(root: Path) -> dict[str, Any]:
         "authority": manifest["authority"],
         "scope": manifest["scope"],
         "identityIds": [identity["logicalId"] for identity in manifest["identities"]],
+        "canonicalSouthAuthoringRows": authoring_rows,
+        "canonicalSouthAuthoringDigestSha256": canonical_authoring_digest(authoring_rows),
+        "excludedRawEvidence": excluded_evidence,
         "rawFiles": manifest["rawFiles"],
-        "duplicatePolicy": manifest["duplicatePolicy"],
+        "duplicatePolicy": authoring_duplicate_policy(),
         "flags": manifest["flags"],
         "manifestSha256": sha256_bytes(canonical(manifest).encode("utf-8")),
-        "errors": errors,
+        "errors": [],
         "checks": {
             "exact43Identities": manifest["scope"]["identityCount"] == 43,
+            "exact43CanonicalSouthRows": len(authoring_rows) == 43,
+            "uniqueCanonicalSouthIds": len({row["logicalId"] for row in authoring_rows}) == 43,
             "exact172DirectionRows": manifest["scope"]["directionCount"] == 172,
             "exact516LodPayloads": manifest["scope"]["lodPayloadCount"] == 516,
             "exact44PhysicalRawFiles": manifest["scope"]["physicalRawCount"] == 44,
             "rawPathShaBindings": not any(error.startswith("raw_") for error in errors),
-            "duplicateRejected": "unresolved_duplicate_raw_files:industrial_l01_v0" in errors,
+            "canonicalIndustrialV01Selected": any(
+                row["logicalId"] == INDUSTRIAL_CANONICAL_ID
+                and row["path"] == INDUSTRIAL_CANONICAL_PATH
+                and row["sha256"] == INDUSTRIAL_CANONICAL_SHA
+                for row in authoring_rows
+            ),
+            "excludedIndustrialV02Preserved": excluded_evidence
+            == excluded_raw_evidence(manifest["rawFiles"]),
+            "duplicateResolvedForSouthAuthoring": authoring_duplicate_policy()["unresolved"] is False,
             "directionalPayloadsIncomplete": "directional_payloads_incomplete" in errors,
             "allFlagsFalse": all(value is False for value in manifest["flags"].values()),
         },
     }
+    errors = sorted(set(errors + validate_authoring_projection(report)))
+    report["errors"] = errors
+    report["status"] = "FAIL_CLOSED" if errors else "PASS"
+    report["checks"]["canonicalSouthDigestValid"] = "canonical_authoring_digest_mismatch" not in errors
     return report
 
 
@@ -415,7 +581,7 @@ def main(argv: list[str] | None = None) -> int:
     report_path = output_root / "PLAY-106-AGGREGATE-VALIDATOR-REPORT-v1.json"
     report_path.write_text(json.dumps(final, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print(f"{final['status']}: {len(final['errors'])} validation error(s); repeat_equal={equal}")
-    print(f"report={report_path.relative_to(root)}")
+    print(f"report={report_path_for_display(report_path, root)}")
     if final["status"] == "FAIL_CLOSED" and not args.fail_closed:
         return 1
     return 0

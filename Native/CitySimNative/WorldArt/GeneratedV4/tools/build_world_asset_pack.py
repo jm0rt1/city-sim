@@ -35,6 +35,7 @@ PLAY097_RESIDENTIAL_VARIANT_TWO = (
     ROOT / "ImageGenFourView" / "PLAY-101" / "residential_l01_v2"
 )
 PLAY097_RESIDENTIAL_VARIANT_TWO_V02 = PLAY097_RESIDENTIAL_VARIANT_TWO / "visual-repair-v02"
+PLAY097_RESIDENTIAL_VARIANT_TWO_V03 = PLAY097_RESIDENTIAL_VARIANT_TWO / "normalized-v03"
 PLAY097_RESIDENTIAL_VARIANT_TWO_SELECTION = (
     GENERATED / "catalog" / "play-097-residential-l01-v2-directions.json"
 )
@@ -80,6 +81,10 @@ PLAY097_RESIDENTIAL_VARIANT_TWO_DISPOSITION_SHA256 = (
     "46aa74373700c87101c04296e17f7bfed14e7108d542237f1c2da32dfecb10e3"
 )
 PLAY097_RESIDENTIAL_VARIANT_TWO_COMMIT = "9d83bd87339f169d888fce8a56eb574fb85aa6e1"
+PLAY097_RESIDENTIAL_VARIANT_TWO_V03_NORMALIZATION_SHA256 = "219878c2a4a3d3a38f94a88b050555b6196f49d0ebcb5450a55e5dfd9bef8bef"
+PLAY097_RESIDENTIAL_VARIANT_TWO_V03_VALIDATION_SHA256 = "e3c11faca1b1b49d6706e2a2384772eaf9ceca7a369ae6247fa316c09437db1e"
+PLAY097_RESIDENTIAL_VARIANT_TWO_V03_ADMISSION_SHA256 = "f481c9f87fde4d1922b3852bc32b73433fb02a248c4248dbef54997a460a8669"
+PLAY097_RESIDENTIAL_VARIANT_TWO_V03_COMMIT = "514d14746076d67170a0ce37b584381c8c00a3c0"
 
 
 def relative_to_package(path: Path) -> str:
@@ -729,24 +734,24 @@ def residential_variant_two_assets(
     manifest: dict[str, object],
 ) -> list[dict[str, object]]:
     """Bind the exact PLAY-097 residential variant-two family."""
-    receipt_path = PLAY097_RESIDENTIAL_VARIANT_TWO_V02 / "BUILD-RECEIPT.json"
+    receipt_path = PLAY097_RESIDENTIAL_VARIANT_TWO_V03 / "NORMALIZATION-RECEIPT.json"
     validation_path = (
         REPOSITORY
-        / "docs/production/evidence/PLAY-097/residential-l01-v2-visual-repair/VALIDATION-RESULT.json"
+        / "docs/production/evidence/PLAY-097/residential-l01-v2-family/VALIDATION-RESULT-V03.json"
     )
-    disposition_path = (
+    admission_path = (
         REPOSITORY
-        / "docs/production/evidence/PLAY-097/residential-l01-v2-visual-repair/VISUAL-DISPOSITION.json"
+        / "docs/production/evidence/PLAY-097/residential-l01-v2-family/SOURCE-ADMISSION-RECEIPT-V03.json"
     )
     if (
-        sha256(receipt_path) != PLAY097_RESIDENTIAL_VARIANT_TWO_RECEIPT_SHA256
-        or sha256(validation_path) != PLAY097_RESIDENTIAL_VARIANT_TWO_VALIDATION_SHA256
-        or sha256(disposition_path) != PLAY097_RESIDENTIAL_VARIANT_TWO_DISPOSITION_SHA256
+        sha256(receipt_path) != PLAY097_RESIDENTIAL_VARIANT_TWO_V03_NORMALIZATION_SHA256
+        or sha256(validation_path) != PLAY097_RESIDENTIAL_VARIANT_TWO_V03_VALIDATION_SHA256
+        or sha256(admission_path) != PLAY097_RESIDENTIAL_VARIANT_TWO_V03_ADMISSION_SHA256
     ):
         raise SystemExit("build rejected: residential L1 variant-two authority drift")
     receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
     validation = json.loads(validation_path.read_text(encoding="utf-8"))
-    disposition = json.loads(disposition_path.read_text(encoding="utf-8"))
+    admission = json.loads(admission_path.read_text(encoding="utf-8"))
     selection = json.loads(PLAY097_RESIDENTIAL_VARIANT_TWO_SELECTION.read_text(encoding="utf-8"))
     directions = ("north", "east", "south", "west")
     rows = {item["direction"]: item for item in selection.get("selections", [])}
@@ -755,13 +760,12 @@ def residential_variant_two_assets(
         or selection.get("task") != "PLAY-097"
         or selection.get("family") != "residential_l01_v2"
         or set(rows) != set(directions)
-        or receipt.get("schema") != "citysim.play-097.residential-l01-v2.visual-repair-v02.build.v1"
+        or receipt.get("schema") != "citysim.play-097.residential-l01-v2.normalization-v03.v1"
         or receipt.get("family") != "residential_l01_v2"
         or set(receipt.get("directions", [])) != set(directions)
         or validation.get("result") != "PASS"
-        or validation.get("buildReceiptSha256") != PLAY097_RESIDENTIAL_VARIANT_TWO_RECEIPT_SHA256
-        or disposition.get("decision") != "PASS_ART_CANDIDATE"
-        or disposition.get("family") != "residential_l01_v2"
+        or validation.get("result") != "PASS"
+        or admission.get("candidateOnly") is not True
     ):
         raise SystemExit("build rejected: residential L1 variant-two selection mismatch")
     raw_hashes = {direction: receipt["rawSources"][direction]["sha256"] for direction in directions}
@@ -789,20 +793,20 @@ def residential_variant_two_assets(
         logical_id = f"residential_l01_v2_{direction}"
         asset.update({
             "logical_id": logical_id,
-            "source_key": f"residential_l01/variant-2/{direction}/source-v02",
-            "source_revision": "source-v02",
+            "source_key": f"residential_l01/variant-2/{direction}/source-v03",
+            "source_revision": "source-v03",
             "variant": 2,
             "state": "maintained",
             "residency_id": f"generated-v4/residential/{logical_id}",
             "source_sha256": source["sha256"],
             "raw_source_file": source["path"].replace("Native/", "", 1),
             "provenance_file": relative_to_package(receipt_path),
-            "provenance_sha256": PLAY097_RESIDENTIAL_VARIANT_TWO_RECEIPT_SHA256,
+            "provenance_sha256": PLAY097_RESIDENTIAL_VARIANT_TWO_V03_NORMALIZATION_SHA256,
             "normalization_record_file": relative_to_package(receipt_path),
-            "normalization_record_sha256": PLAY097_RESIDENTIAL_VARIANT_TWO_RECEIPT_SHA256,
-            "reference_sha256": [PLAY097_RESIDENTIAL_VARIANT_TWO_VALIDATION_SHA256, PLAY097_RESIDENTIAL_VARIANT_TWO_DISPOSITION_SHA256, PLAY097_RESIDENTIAL_VARIANT_TWO_RECEIPT_SHA256],
+            "normalization_record_sha256": PLAY097_RESIDENTIAL_VARIANT_TWO_V03_NORMALIZATION_SHA256,
+            "reference_sha256": [PLAY097_RESIDENTIAL_VARIANT_TWO_V03_VALIDATION_SHA256, PLAY097_RESIDENTIAL_VARIANT_TWO_V03_ADMISSION_SHA256, PLAY097_RESIDENTIAL_VARIANT_TWO_V03_NORMALIZATION_SHA256],
             "source_packet_file": relative_to_package(receipt_path),
-            "source_packet_commit": PLAY097_RESIDENTIAL_VARIANT_TWO_COMMIT,
+            "source_packet_commit": PLAY097_RESIDENTIAL_VARIANT_TWO_V03_COMMIT,
             "frontage_edge": direction,
             "view_direction": direction,
             "supported_orientation": f"{direction}-facing-authored",
@@ -816,7 +820,7 @@ def residential_variant_two_assets(
         block_registration = None
         for detail in DETAILS:
             row = receipt["lods"][direction][detail]
-            normalized = PLAY097_RESIDENTIAL_VARIANT_TWO_V02 / row["path"]
+            normalized = REPOSITORY / row["path"]
             if sha256(normalized) != row["sha256"] or row["sha256"] != selection["selections"][directions.index(direction)]["normalized_sha256"][detail]:
                 raise SystemExit(f"build rejected: residential L1 variant-two LOD drift for {direction}.{detail}")
             with Image.open(normalized) as image:

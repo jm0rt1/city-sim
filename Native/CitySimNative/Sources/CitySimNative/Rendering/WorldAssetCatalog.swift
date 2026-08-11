@@ -46,10 +46,11 @@ struct GeneratedIndustrialPresentation {
     let presentation: GeneratedWorldPresentation
 }
 
-/// Loads repo-owned world resources through SwiftPM's resource bundle. The
-/// generated-v4 loader validates page digests, creates descriptor-authorized
-/// subtextures, prefetches one adjacent semantic LOD, and keeps decoded pages
-/// bounded. Geometry remains manifest authority; pixels never invent cells.
+/// Loads repo-owned world resources from the packaged app resource bundle or,
+/// for SwiftPM builds and tests, `Bundle.module`. The generated-v4 loader
+/// validates page digests, creates descriptor-authorized subtextures,
+/// prefetches one adjacent semantic LOD, and keeps decoded pages bounded.
+/// Geometry remains manifest authority; pixels never invent cells.
 @MainActor
 final class WorldAssetCatalog {
     static let shared = WorldAssetCatalog()
@@ -61,6 +62,7 @@ final class WorldAssetCatalog {
     private static let generatedPackID = "generated-v4-calibration"
     private static let rollbackPackID = "legacy-v2"
     private static let maximumFallbackDiagnostics = 32
+    static let resourceBundleName = "CitySimNative_CitySimNative.bundle"
 
     private struct TextureRecord {
         let texture: SKTexture
@@ -101,11 +103,19 @@ final class WorldAssetCatalog {
     }()
 
     init(
-        resourceBundle: Bundle = .module,
+        resourceBundle: Bundle? = nil,
         packOverride: String? = nil,
         environment: [String: String] = ProcessInfo.processInfo.environment
     ) {
-        self.resourceBundle = resourceBundle
+        if let resourceBundle {
+            self.resourceBundle = resourceBundle
+        } else if let packagedBundle = Self.packagedResourceBundle(
+            mainResourceURL: Bundle.main.resourceURL
+        ) {
+            self.resourceBundle = packagedBundle
+        } else {
+            self.resourceBundle = .module
+        }
         #if DEBUG
         let requested = packOverride ?? environment["CITYSIM_WORLD_ASSET_PACK"]
         #else
@@ -115,6 +125,15 @@ final class WorldAssetCatalog {
         selectedPackID = requested == Self.rollbackPackID
             ? Self.rollbackPackID
             : Self.generatedPackID
+    }
+
+    static func packagedResourceBundle(mainResourceURL: URL?) -> Bundle? {
+        guard let mainResourceURL else { return nil }
+        let bundleURL = mainResourceURL.appendingPathComponent(
+            resourceBundleName,
+            isDirectory: true
+        )
+        return Bundle(path: bundleURL.path)
     }
 
     private func loadGeneratedManifest() -> GeneratedWorldAssetManifest? {
@@ -130,7 +149,7 @@ final class WorldAssetCatalog {
             withExtension: "json",
             subdirectory: "WorldAssets.atlas"
         ), let data = try? Data(contentsOf: url) else {
-            recordFallback("generated-v4 manifest missing from Bundle.module")
+            recordFallback("generated-v4 manifest missing from resource bundle")
             return nil
         }
         generatedManifestSHA256 = Self.sha256(data)
@@ -704,7 +723,7 @@ final class WorldAssetCatalog {
             withExtension: "png",
             subdirectory: subdirectory
         ), let data = try? Data(contentsOf: url) else {
-            recordFallback("page \(pageID) missing from Bundle.module")
+            recordFallback("page \(pageID) missing from resource bundle")
             return nil
         }
         guard Self.sha256(data) == descriptor.sha256 else {

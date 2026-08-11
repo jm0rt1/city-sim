@@ -9,7 +9,38 @@ MIN_SYSTEM_VERSION="14.0"
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)"
 PACKAGE_DIR="$ROOT_DIR/Native/CitySimNative"
-DIST_DIR="$ROOT_DIR/dist"
+DEFAULT_DIST_DIR="$ROOT_DIR/dist"
+REQUESTED_DIST_DIR="${CITYSIM_DIST_DIR:-$DEFAULT_DIST_DIR}"
+DIST_PARENT="$(dirname "$REQUESTED_DIST_DIR")"
+DIST_BASENAME="$(basename "$REQUESTED_DIST_DIR")"
+
+if [[ "$REQUESTED_DIST_DIR" != /* ]] || [[ "$DIST_BASENAME" == "." || "$DIST_BASENAME" == ".." ]]; then
+  echo "error: CITYSIM_DIST_DIR must resolve from an absolute directory path" >&2
+  exit 1
+fi
+if [[ ! -d "$DIST_PARENT" ]]; then
+  echo "error: CITYSIM_DIST_DIR parent does not exist: $DIST_PARENT" >&2
+  exit 1
+fi
+DIST_DIR="$(cd "$DIST_PARENT" && pwd -P)/$DIST_BASENAME"
+case "$DIST_DIR" in
+  /|"$ROOT_DIR"|"$PACKAGE_DIR"|"$ROOT_DIR/.git"|"$ROOT_DIR/.git/"*)
+    echo "error: unsafe CITYSIM_DIST_DIR: $DIST_DIR" >&2
+    exit 1
+    ;;
+esac
+
+BUNDLE_SHORT_VERSION="${CITYSIM_BUNDLE_SHORT_VERSION:-1.0.0}"
+BUNDLE_VERSION="${CITYSIM_BUNDLE_VERSION:-1}"
+VERSION_PATTERN='^[0-9]+(\.[0-9]+){0,2}$'
+if [[ ! "$BUNDLE_SHORT_VERSION" =~ $VERSION_PATTERN ]]; then
+  echo "error: CITYSIM_BUNDLE_SHORT_VERSION must contain one to three numeric components" >&2
+  exit 1
+fi
+if [[ ! "$BUNDLE_VERSION" =~ $VERSION_PATTERN ]]; then
+  echo "error: CITYSIM_BUNDLE_VERSION must contain one to three numeric components" >&2
+  exit 1
+fi
 BRANCH_NAME="$(git -C "$ROOT_DIR" branch --show-current)"
 COMMIT_SHA="$(git -C "$ROOT_DIR" rev-parse HEAD)"
 
@@ -72,7 +103,7 @@ APP_CONTENTS="$APP_BUNDLE/Contents"
 APP_MACOS="$APP_CONTENTS/MacOS"
 APP_RESOURCES="$APP_CONTENTS/Resources"
 APP_BINARY="$APP_MACOS/$APP_EXECUTABLE_NAME"
-STAGED_RESOURCE_BUNDLE="$APP_BUNDLE/$RESOURCE_BUNDLE_NAME"
+STAGED_RESOURCE_BUNDLE="$APP_RESOURCES/$RESOURCE_BUNDLE_NAME"
 INFO_PLIST="$APP_CONTENTS/Info.plist"
 MANIFEST_DIR="$DIST_DIR/manifests"
 MANIFEST_PATH="$MANIFEST_DIR/$CANDIDATE_ID.manifest"
@@ -87,6 +118,8 @@ print_identity() {
   printf 'bundle_identifier=%s\n' "$BUNDLE_ID"
   printf 'preference_domain=%s\n' "$BUNDLE_ID"
   printf 'display_name=%s\n' "$DISPLAY_NAME"
+  printf 'bundle_short_version=%s\n' "$BUNDLE_SHORT_VERSION"
+  printf 'bundle_version=%s\n' "$BUNDLE_VERSION"
   printf 'data_root=%s\n' "$MANIFEST_DATA_ROOT"
   printf 'staged_bundle_path=%s\n' "$APP_BUNDLE"
   printf 'executable_path=%s\n' "$APP_BINARY"
@@ -109,6 +142,8 @@ candidate_id=$CANDIDATE_ID
 bundle_identifier=$BUNDLE_ID
 preference_domain=$BUNDLE_ID
 display_name=$DISPLAY_NAME
+bundle_short_version=$BUNDLE_SHORT_VERSION
+bundle_version=$BUNDLE_VERSION
 data_root=$MANIFEST_DATA_ROOT
 launch_time=$launch_time
 staged_bundle_path=$APP_BUNDLE
@@ -198,6 +233,11 @@ cp "$PACKAGE_DIR/Resources/CitySim-KeyArt.png" "$APP_RESOURCES/CitySim-KeyArt.pn
 cp -R "$SOURCE_RESOURCE_BUNDLE" "$STAGED_RESOURCE_BUNDLE"
 chmod +x "$APP_BINARY"
 
+if [[ -e "$APP_BUNDLE/$RESOURCE_BUNDLE_NAME" ]]; then
+  echo "error: SwiftPM resource bundle must not remain at the app root" >&2
+  exit 1
+fi
+
 if [[ ! -f "$STAGED_RESOURCE_BUNDLE/WorldAssets.atlas/manifest.json" ]]; then
   echo "error: staged world atlas manifest is missing from $STAGED_RESOURCE_BUNDLE" >&2
   exit 1
@@ -216,6 +256,8 @@ cat >"$INFO_PLIST" <<PLIST
 <key>CFBundleIdentifier</key><string>$BUNDLE_ID</string>
 <key>CFBundleName</key><string>$DISPLAY_NAME</string>
 <key>CFBundleDisplayName</key><string>$DISPLAY_NAME</string>
+<key>CFBundleShortVersionString</key><string>$BUNDLE_SHORT_VERSION</string>
+<key>CFBundleVersion</key><string>$BUNDLE_VERSION</string>
 <key>CFBundleIconFile</key><string>CitySim-KeyArt.png</string>
 <key>CFBundlePackageType</key><string>APPL</string>
 <key>LSMinimumSystemVersion</key><string>$MIN_SYSTEM_VERSION</string>

@@ -2020,6 +2020,48 @@ final class WorldRenderingTests: XCTestCase {
     }
 
     @MainActor
+    func testWorldAssetCatalogPrefersPackagedMainResourcesAndSupportsExplicitBundles() throws {
+        let fileManager = FileManager.default
+        let root = fileManager.temporaryDirectory.appendingPathComponent(
+            "citysim-world-resource-resolution-\(UUID().uuidString)",
+            isDirectory: true
+        )
+        try fileManager.createDirectory(at: root, withIntermediateDirectories: true)
+        defer { try? fileManager.removeItem(at: root) }
+
+        let packagedURL = root.appendingPathComponent(
+            WorldAssetCatalog.resourceBundleName,
+            isDirectory: true
+        )
+        try fileManager.createSymbolicLink(
+            at: packagedURL,
+            withDestinationURL: Bundle.module.bundleURL
+        )
+
+        let packagedBundle = try XCTUnwrap(
+            WorldAssetCatalog.packagedResourceBundle(mainResourceURL: root)
+        )
+        XCTAssertEqual(
+            packagedBundle.bundleURL.resolvingSymlinksInPath(),
+            Bundle.module.bundleURL.resolvingSymlinksInPath()
+        )
+
+        let missingRoot = root.appendingPathComponent("missing", isDirectory: true)
+        XCTAssertNil(WorldAssetCatalog.packagedResourceBundle(mainResourceURL: missingRoot))
+
+        let defaultCatalog = WorldAssetCatalog()
+        XCTAssertNotNil(defaultCatalog.generatedManifest)
+
+        let explicitlyInjected = WorldAssetCatalog(resourceBundle: Bundle.module)
+        XCTAssertNil(explicitlyInjected.generatedManifest)
+        XCTAssertEqual(explicitlyInjected.residencySnapshot().fallbackCount, 1)
+        XCTAssertEqual(
+            explicitlyInjected.residencySnapshot().fallbackDiagnostics,
+            ["generated-v4 manifest missing from resource bundle"]
+        )
+    }
+
+    @MainActor
     func testAuthoredRoadAtlasCoversEveryMaskAndFrontagesFaceConnectedRoads() {
         let catalog = WorldAssetCatalog()
         let style = WorldVisualStyle()

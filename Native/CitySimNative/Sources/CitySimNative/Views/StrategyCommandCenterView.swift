@@ -464,6 +464,14 @@ struct StrategyCommandCenterView: View {
         return Array(presentation.actions.dropFirst())
     }
 
+    private var directRemedy: CityDirectResponse? {
+        guard let feedback = consequenceFeedback,
+              feedback.message.severity == .warning || feedback.message.severity == .critical else {
+            return nil
+        }
+        return CityNoticeActionCatalog.actions(for: feedback.message.title).first
+    }
+
     var body: some View {
         HStack(alignment: .center, spacing: compact ? 6 : 8) {
             Image(systemName: symbol)
@@ -492,7 +500,7 @@ struct StrategyCommandCenterView: View {
                         .lineLimit(1)
                     if !compact {
                         if let consequenceFeedback {
-                            consequenceCue(consequenceFeedback)
+                            consequenceRow(consequenceFeedback)
                         } else {
                             Text(presentation.summary)
                                 .font(.system(size: GameTheme.hudSupportTextSize, weight: .medium))
@@ -504,7 +512,7 @@ struct StrategyCommandCenterView: View {
                     }
                 }
                 if compact, let consequenceFeedback {
-                    consequenceCue(consequenceFeedback)
+                    consequenceRow(consequenceFeedback)
                 }
             }
 
@@ -590,6 +598,32 @@ struct StrategyCommandCenterView: View {
         .accessibilityIdentifier("hud.strategy.consequence")
     }
 
+    @ViewBuilder
+    private func consequenceRow(_ feedback: HUDConsequenceFeedbackPresentation) -> some View {
+        HStack(spacing: 5) {
+            consequenceCue(feedback)
+            if let directRemedy {
+                Button {
+                    Self.perform(directRemedy, on: store)
+                } label: {
+                    Label(compact ? "Act" : "Act: " + directRemedy.title, systemImage: "arrow.right.circle.fill")
+                        .font(.system(size: GameTheme.hudSupportTextSize, weight: .bold))
+                        .lineLimit(1)
+                        .padding(.horizontal, compact ? 5 : 7)
+                        .frame(minHeight: GameTheme.controlMinimum)
+                }
+                .buttonStyle(.borderedProminent)
+                .tint(GameTheme.warning)
+                .help(directRemedy.explanation)
+                .accessibilityLabel("Act on " + feedback.message.title + ": " + directRemedy.title)
+                .accessibilityHint(
+                    directRemedy.explanation + (directRemedy.focusesMap ? " Focus returns to the map." : "")
+                )
+                .accessibilityIdentifier("hud.strategy.remedy")
+            }
+        }
+    }
+
     private func primaryResponseButton(_ response: CityDirectResponse) -> some View {
         Button { perform(response) } label: {
             Label("Next: \(responseButtonTitle(response))", systemImage: "arrow.right.circle.fill")
@@ -635,6 +669,11 @@ struct StrategyCommandCenterView: View {
     }
 
     private func perform(_ response: CityDirectResponse) {
+        Self.perform(response, on: store)
+    }
+
+    @MainActor
+    static func perform(_ response: CityDirectResponse, on store: CityGameStore) {
         if response.focusesMap {
             store.performMapFocused(response.command)
         } else {

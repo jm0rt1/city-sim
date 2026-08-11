@@ -595,6 +595,42 @@ final class SessionPlatformTests: XCTestCase {
         }
     }
 
+    func testDenseThreeXRunningCityRuntimeIsDeterministic() throws {
+        func runProfile() throws -> (state: CityGameState, fingerprint: CityStateFingerprint, milliseconds: Double) {
+            var state = play078DenseTerminalFixtureV8()
+            state.population = 10_000
+            state.treasury = 100_000_000
+            state.happiness = 70
+            state.approval = 70
+
+            let pulseCount = 400
+            let ticksPerPulse = SimulationSpeed.fastest.ticksPerPulse
+            let start = ProcessInfo.processInfo.systemUptime
+            for _ in 0..<pulseCount {
+                for _ in 0..<ticksPerPulse {
+                    CitySimulation.step(&state)
+                }
+            }
+            let milliseconds = elapsedMilliseconds(since: start)
+            let fingerprint = try CityStateFingerprinter.fingerprint(state)
+            return (state, fingerprint, milliseconds)
+        }
+
+        let first = try runProfile()
+        let second = try runProfile()
+
+        XCTAssertEqual(first.state, second.state)
+        XCTAssertEqual(first.fingerprint, second.fingerprint)
+        XCTAssertEqual(first.state.tick, 400 * SimulationSpeed.fastest.ticksPerPulse)
+        XCTAssertEqual(first.state.status, .playing)
+        print(
+            "CITYSIM_DENSE_3X_PROFILE fixture=dense-24x24-running " +
+            "pulses=400 ticks=\(first.state.tick) status=\(first.state.status.rawValue) " +
+            "run_a_ms=\(metric(first.milliseconds)) run_b_ms=\(metric(second.milliseconds)) " +
+            "digest=\(first.fingerprint.digest)"
+        )
+    }
+
     private func withTemporaryRoot(_ body: (URL) throws -> Void) throws {
         let root = FileManager.default.temporaryDirectory
             .appending(path: "citysim-play040-\(UUID().uuidString)", directoryHint: .isDirectory)

@@ -58,6 +58,31 @@ work does not require editing this table for every branch name:
 
 If the branch is detached, unexpected, or does not match the requested lane, do not make product changes. Report the mismatch and obtain an explicit routing decision.
 
+## Autonomy inside an assigned outcome
+
+Once Integration or the user assigns a bounded player outcome on a correctly
+routed lane, the owning agent is responsible for completing the entire local
+loop without asking for command-by-command permission:
+
+1. understand the player problem and inspect the current implementation;
+2. choose the smallest coherent implementation inside owned paths;
+3. edit, run focused proof, and inspect the real output;
+4. make one bounded repair when the first focused proof exposes a local defect;
+5. capture the evidence a human reviewer actually needs; and
+6. stage explicit paths and create one coherent commit.
+
+Agents should make routine engineering decisions themselves, communicate with
+peer agents for read-only facts or interface needs, and keep working while
+other lanes progress. Do not stop merely to request permission for ordinary
+code reads, local reversible edits, focused tests, screenshots, or commits that
+are already inside the assigned outcome and path boundary.
+
+Escalate only when the next step would change shared architecture or contracts,
+alter save/schema compatibility, cross an ownership boundary, require a second
+repair after failed focused proof, perform an irreversible/external action, or
+claim integration acceptance, publication, push, or release. A status update
+is not an escalation and must not pause useful work.
+
 ## Universal boundaries
 
 - `Native/CitySimNative` is the active product. Treat legacy Python as read-only reference unless the claimed task explicitly includes it.

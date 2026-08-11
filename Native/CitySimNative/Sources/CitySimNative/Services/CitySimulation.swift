@@ -1333,8 +1333,13 @@ enum CitySimulation {
         guard var progression = state.progression,
               var secondAct = progression.secondAct,
               let story = progression.strategy,
-              let resolution = story.recoveryResolution,
               !secondAct.regionalCapitalAwarded else { return }
+        // Older awarded states can have a completed first-act strategy without
+        // a recorded recovery choice. Keep those saves moving through the
+        // already-scheduled second act without adding a schema field or
+        // pretending that a choice was made retroactively.
+        let resolution = story.recoveryResolution
+            ?? deferredSecondActResolution(for: story.committedStrategy)
 
         switch secondAct.phase {
         case .mandate:
@@ -1377,6 +1382,17 @@ enum CitySimulation {
 
         progression.secondAct = secondAct
         state.progression = progression
+    }
+
+    private static func deferredSecondActResolution(
+        for strategy: CityStrategy
+    ) -> CityStrategyRecoveryResolution {
+        switch strategy {
+        case .commercialStewardship:
+            .commercialTaxRelief
+        case .industrialExpansion:
+            .industrialUtilityExpansion
+        }
     }
 
     private static func postRegionalWarning(

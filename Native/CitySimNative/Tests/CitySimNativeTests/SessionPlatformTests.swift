@@ -338,6 +338,82 @@ final class SessionPlatformTests: XCTestCase {
         }
     }
 
+    func testDenseDeferredSecondActPressureRecoverySurvivesSaveResume() throws {
+        func denseDeferredSecondAct() -> CityGameState {
+            var state = play078DenseTerminalFixtureV8()
+            for index in state.tiles.indices where state.tiles[index].kind == .park {
+                state.tiles[index].kind = .commercial
+            }
+            state.population = 10_000
+            state.treasury = 100_000_000
+            state.happiness = 70
+            state.approval = 70
+            state.taxRate = 0.10
+            state.progression = CityProgressionState(
+                townCharterQualifyingCycles: 12,
+                townCharterAwarded: true,
+                strategy: CityStrategyProgression(
+                    committedStrategy: .commercialStewardship,
+                    currentPhase: .completed,
+                    nextScheduledTick: nil,
+                    recoveryResolution: nil
+                ),
+                secondAct: CitySecondActProgression(
+                    phase: .mandate,
+                    nextScheduledTick: 4
+                )
+            )
+            return state
+        }
+
+        var uninterrupted = denseDeferredSecondAct()
+        while uninterrupted.tick < 4 { CitySimulation.step(&uninterrupted) }
+        XCTAssertEqual(uninterrupted.progression?.secondAct?.phase, .warnedPressure)
+        XCTAssertNil(uninterrupted.progression?.strategy?.recoveryResolution)
+
+        try withTemporaryRoot { root in
+            let service = SaveGameService(rootURL: root)
+            let write = try service.save(uninterrupted)
+            let loaded = try service.load()
+            XCTAssertEqual(write.schemaVersion, 1)
+            XCTAssertEqual(loaded.state, uninterrupted)
+            XCTAssertEqual(loaded.fingerprint, write.fingerprint)
+
+            var resumed = loaded.state
+            for _ in 0..<CitySimulation.strategyMinimumWarningTicks {
+                CitySimulation.step(&uninterrupted)
+                CitySimulation.step(&resumed)
+            }
+            XCTAssertEqual(uninterrupted.progression?.secondAct?.phase, .recovery)
+            XCTAssertEqual(resumed, uninterrupted)
+
+            XCTAssertEqual(
+                CitySimulationCommandExecutor.apply(.setTaxRate(0.08), to: &uninterrupted),
+                .applied
+            )
+            XCTAssertEqual(
+                CitySimulationCommandExecutor.apply(.setTaxRate(0.08), to: &resumed),
+                .applied
+            )
+            for _ in 0..<8 {
+                CitySimulation.step(&uninterrupted)
+                CitySimulation.step(&resumed)
+                if uninterrupted.progression?.secondAct?.phase == .qualification {
+                    break
+                }
+            }
+
+            XCTAssertEqual(uninterrupted.progression?.secondAct?.phase, .qualification)
+            XCTAssertFalse(uninterrupted.progression?.secondAct?.regionalCapitalAwarded ?? true)
+            XCTAssertEqual(uninterrupted.status, .playing)
+            XCTAssertEqual(resumed, uninterrupted)
+            XCTAssertEqual(
+                try CityStateFingerprinter.fingerprint(resumed),
+                try CityStateFingerprinter.fingerprint(uninterrupted)
+            )
+        }
+    }
+
     func testAcceptedStrategyCommandsProduceFrozenCheckpoints() throws {
         var industry = CityGameState.newCity(seed: 42)
         apply([

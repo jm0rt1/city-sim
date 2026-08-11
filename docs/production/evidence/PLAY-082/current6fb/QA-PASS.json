@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "taskId": "PLAY-082",
+  "routeId": "quality-v28:play-082-current6fb4-selected-target-continuation-v1",
+  "disposition": "APPROVE_PLAY082_SELECTED_TARGET",
+  "candidate": {
+    "head": "6fb457b15df22a493960911d805610694fc66a55",
+    "tree": "cb1e9e2c1c8485a4c14df98e4697d48c332eb70f",
+    "app": "/private/tmp/CITYSIM-6FB4-PLAY036-STAGE-V1/CitySim.app",
+    "executableSha256": "382f4dabb2d6eeee1f33c5af329fdc3f4d4a53305b2e7be4d8609f25f4f9b8b3",
+    "pid": 49697,
+    "processDisposition": "existing exact process left running; no relaunch or signal"
+  },
+  "carrier": {
+    "routeRawSha256": "92bca8e4deddef20507deb0643941a249ac4318431014a36058ec899cfe6f420",
+    "routeCanonicalSha256": "89f9410b6b7801efa840727ca544f6a3ec5132bcec95adc096b37f79c2d2ef4a",
+    "dispatchRawSha256": "eceb67ce609221b6df50b5f2fbeb0e1425301d4a23ade3d614aa36a440e5ba35",
+    "dispatchCanonicalSha256": "8196e3a6578c21faa647d665f54e150e886e90fa46519e1a310f4f8f2ceee374",
+    "routeValidator": "PASS",
+    "selectedDispatchValidator": "PASS"
+  },
+  "journey": {
+    "cityLayer": "PASS",
+    "pollutionLayer": "PASS: active 0/100, scale 0-100, all places, Spatial consequences, fresh at tick 1142",
+    "selectedTarget": "Residential at block 7, 12",
+    "inspect": "PASS: Available; opens Details for selected target",
+    "buildBlocked": "PASS: occupied target truthfully requires demolition before Road placement",
+    "buildReady": "PASS: open block 8, 12 announced Road cost $120 and $2/cycle; no build committed",
+    "bulldozeReady": "PASS: selected Residential target announced $144 demolition and Undo availability; no demolition committed",
+    "detailsActivation": {
+      "pointer": "PASS exactly once",
+      "return": "PASS exactly once",
+      "fullKeyboardAccess": "PASS exactly once via focused selected-target control and Space",
+      "accessibility": "PASS exactly once via selected-target accessibility element",
+      "equivalence": "All four paths opened one selected-block Details surface for Residential at block 7, 12"
+    },
+    "escapeAndFocus": "PASS: each close returned focus to City map and preserved the selected target",
+    "reduceMotion": "PASS: Reduce ambient animation enabled, target beacon remained legible and truthful, then setting restored to its initial off state",
+    "compact": {
+      "capturedFrame": "900x652 including 52px macOS chrome",
+      "contentViewport": "900x600 crop at x=0,y=52",
+      "result": "PASS: selected-target beacon, Pollution truth, primary controls, and map aperture remained usable"
+    },
+    "statePreservation": "PASS: Day 286 paused; treasury $1,925/net -$102; population 380; happiness 54%; jobs 190; utilities 96%; no build or bulldoze action committed"
+  },
+  "evidence": [
+    {"path": "/private/tmp/CITYSIM-6FB4-PLAY082-QA-V1-OUTPUT/01-regular-inspect-beacon.png", "sha256": "a666789b6caa4c00ab30827bbb3789da109d407beaff4dda89dc7ca244c81321"},
+    {"path": "/private/tmp/CITYSIM-6FB4-PLAY082-QA-V1-OUTPUT/02-regular-pollution-beacon.png", "sha256": "4698c97065040c6285d1c55db8ea05c68a65e7e5b31649fee46bff64b367178e"},
+    {"path": "/private/tmp/CITYSIM-6FB4-PLAY082-QA-V1-OUTPUT/03-regular-build-blocked.png", "sha256": "4e9cfa2626d6ce3710aad1be2b8da01bef3daf7a78798d4070f848ee09e39b47"},
+    {"path": "/private/tmp/CITYSIM-6FB4-PLAY082-QA-V1-OUTPUT/04-regular-bulldoze-ready.png", "sha256": "e555cf6505c43a141d7943c7c7f995758bffb9e6dddeaf8fbbd81b4a7915efa3"},
+    {"path": "/private/tmp/CITYSIM-6FB4-PLAY082-QA-V1-OUTPUT/05-reduce-motion-on-settings.png", "sha256": "a0ed12310f4c2a955596da46578dacb2c558578ba50b3b3577fa3ea12c3e5308"},
+    {"path": "/private/tmp/CITYSIM-6FB4-PLAY082-QA-V1-OUTPUT/06-reduce-motion-beacon-regular.png", "sha256": "53d9befb22752eb3171f9d72fd98585b93b5d488c84894a355d261c23672a6a7"},
+    {"path": "/private/tmp/CITYSIM-6FB4-PLAY082-QA-V1-OUTPUT/07-compact-900x600.png", "sha256": "30fde462af38dc9a99ee3936715cf7ea0879cd1c29ad30bdcc791e6539b2c728"}
+  ],
+  "executionAccounting": {
+    "launches": 0,
+    "signals": 0,
+    "tests": 0,
+    "builds": 0,
+    "repositoryWrites": 0,
+    "productMutations": 0
+  },
+  "qaGitState": {
+    "head": "6fb457b15df22a493960911d805610694fc66a55",
+    "tree": "cb1e9e2c1c8485a4c14df98e4697d48c332eb70f",
+    "index": "empty",
+    "protectedPLAY102v3": "preserved"
+  }
+}

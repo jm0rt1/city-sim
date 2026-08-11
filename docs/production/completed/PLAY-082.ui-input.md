@@ -123,3 +123,19 @@ limitation are unchanged.
   authority, or legacy Python file changed.
 - Deterministic rail renders supplement but do not replace real-app proof.
 - No shared-contract blocker was introduced.
+
+## Independent exact-candidate acceptance
+
+Independent QA accepted the integrated product at exact candidate
+`6fb457b15df22a493960911d805610694fc66a55` with executable SHA-256
+`382f4dabb2d6eeee1f33c5af329fdc3f4d4a53305b2e7be4d8609f25f4f9b8b3`.
+The existing exact process PID 49697 was used without relaunch or signal.
+
+Regular and exact 900 x 600 City/Pollution presentation, selected-target
+beacon truth, inspect/build/bulldoze feedback, pointer/Return/FKA/AX Details
+parity, Escape focus restoration, Reduce Motion, state preservation, and map
+aperture all passed. The durable receipt is
+`docs/production/evidence/PLAY-082/current6fb/QA-PASS.json`, byte-identical to
+the accepted source receipt SHA-256
+`27b5f2dd7e58c4f621e9625eef9319e4d1b02dc4f7ea1a287a8f47c399bf42ef`.
+This closes PLAY-082 only; it grants no release or push authority.

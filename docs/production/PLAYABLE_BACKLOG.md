@@ -905,7 +905,7 @@ This is the authoritative first-wave task source. The shared target is one coher
   direction handoff merged at `8a889f2a`; pixel production remains blocked
   pending the North family/material lock and a new production authority.
 
-### [ ] PLAY-082: Make the selected target unmistakable
+### [x] PLAY-082: Make the selected target unmistakable
 
 - **Player outcome:** The selected building, block, and next available action
   remain immediately legible against richer world art and diagnostic overlays
@@ -946,9 +946,11 @@ This is the authoritative first-wave task source. The shared target is one coher
   behavior, clipped compact layout, or selection/camera/focus regression
   becomes necessary.
 - **Claim:** `docs/production/claims/PLAY-082.ui-input.md`.
-- **Integrated status:** Product/evidence integrated through `89340edc`;
-  independent exact-master staged pointer/keyboard/accessibility acceptance
-  and an Integration receipt remain required.
+- **Accepted status:** Product/evidence integrated through `89340edc` and
+  independently accepted on exact candidate `6fb457b1`. The durable QA receipt
+  is `docs/production/evidence/PLAY-082/current6fb/QA-PASS.json` with SHA-256
+  `27b5f2dd7e58c4f621e9625eef9319e4d1b02dc4f7ea1a287a8f47c399bf42ef`.
+  This closes PLAY-082 without release or push authority.
 
 ### [x] PLAY-083: Prove exact lifecycle save bindings without relabeling history
 

@@ -1581,12 +1581,17 @@ final class CityScene: SKScene {
         let isMapEdge = tile.coordinate.x == 0 || tile.coordinate.y == 0
             || tile.coordinate.x == state.gridWidth - 1
             || tile.coordinate.y == state.gridHeight - 1
-        if tile.kind != .empty || isMapEdge {
+        if (tile.kind != .empty && tile.kind != .road) || isMapEdge {
             let terrainLayer = SKNode()
             terrainLayer.name = "terrain.layer"
-            let ground = terrainRenderer.makeGround(for: tile, detail: currentCameraDetailLevel)
-            if !ground.children.isEmpty {
-                terrainLayer.addChild(ground)
+            if tile.kind != .empty && tile.kind != .road {
+                let ground = terrainRenderer.makeGround(
+                    for: tile,
+                    detail: currentCameraDetailLevel
+                )
+                if !ground.children.isEmpty {
+                    terrainLayer.addChild(ground)
+                }
             }
             if isMapEdge {
                 terrainLayer.addChild(terrainRenderer.makeMapEdge(
@@ -1879,7 +1884,9 @@ final class CityScene: SKScene {
     /// Inverse-isometric hit testing remains authoritative for those parcels.
     private func synchronizeTileRootAttachment(_ root: SKNode) {
         if root.children.isEmpty {
-            root.removeFromParent()
+            if root.parent != nil {
+                root.removeFromParent()
+            }
         } else if root.parent == nil {
             tileLayer.addChild(root)
         }

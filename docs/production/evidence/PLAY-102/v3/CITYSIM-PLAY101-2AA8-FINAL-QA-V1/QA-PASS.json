@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "taskId": "CITYSIM-PLAY101-2AA8-FINAL-QA-V1",
+  "verdict": "APPROVE_RELEASE_CANDIDATE",
+  "scope": "independent exact-candidate industrial four-direction intake and core persistence regression",
+  "carrier": {
+    "routeId": "quality-v21:citysim-play101-currentcec8-product2aa8-final-intake-v1",
+    "routeRawSha256": "1fcc94da4967214f708cfdc19a8025cd935b0fbf7487ca883ca3aaa85f229f61",
+    "routeCanonicalSha256": "f7c3698e88b5c6f33faabe332b085cb6b301dfcbdd90b3de04fcd4dbb48266e1",
+    "dispatchRawSha256": "9fd3ba1b56a0bc21ca9138e100c3388b9572870d9807af93f1f3771c727b86e2",
+    "dispatchCanonicalSha256": "ae95df1fe5bd4c15866d85ae709c178d2753d990cad1c1723b84e484b78aca98",
+    "leaseRawSha256": "2ed568c86b13ecbd7f0e49263301118ff04d7539bb0359c63f50cc7f37b2ea24",
+    "leaseCanonicalSha256": "ce0b3d411cf4f12cebc066d1c6911db820eba2d8fd9f96191f1b699a56013ef4",
+    "routeValidator": "PASS",
+    "selectedDispatchValidator": "PASS"
+  },
+  "authority": {
+    "commit": "cec8c6e66bbc4202aa8124081fba921bf34f4437",
+    "tree": "2dedd8b4f9dcb850af590a48059acb93c19651d9",
+    "claimSha256": "beca26f3fed6bcaf4df2b22efdec7fa97cde1de1904b05a8352889abb1c3e81f"
+  },
+  "candidate": {
+    "commit": "2aa8d4edfe17e7ea802fb0defcd2bfe959c6f73a",
+    "tree": "7070c247e196beda94fb3f2baac934c6b8a419ca",
+    "app": "/Users/James/Library/Mobile Documents/com~apple~CloudDocs/James's Files/Programming/Python/city-sim/dist/CitySim.app",
+    "executableSha256": "a8f68a72d064097988331e5671578a96f81f245034880b1f881da43df38a0515",
+    "stageManifestSha256": "8b405fe3ca4ed0893211ef5a725a1ad323d9e5f211f961c0b69f7e79bc5610bb",
+    "resourceTreeDigest": "933a86fb1c785d4aee315cf2a3cc3c4d6fc5c2c5bd202dbb5108c0aaaa866e4a",
+    "appTreeDigest": "53a117b60878e6b264b0891c6ca37b2c494a40313520db52b2842de8e7c03799",
+    "appFiles": 83
+  },
+  "preflight": {
+    "permissions": "OBSERVED_PASS",
+    "priorPid80832": "ALREADY_ABSENT",
+    "matchingProcessCount": 0,
+    "dataRoot": "ABSENT",
+    "outputRoot": "ABSENT",
+    "protectedFileCount": 14,
+    "protectedRelativeTreeDigest": "160ac13866d58ae0435b3013a0508552662de5740920ec51c42da6f43be4afc9"
+  },
+  "industrialVisualGate": {
+    "identity": "industrial_l01_v0",
+    "authoredOrientations": ["North", "East", "South", "West"],
+    "lodRanges": ["block", "neighborhood", "city"],
+    "blankAsset": false,
+    "runtimeFallback": false,
+    "directionAlias": false,
+    "roadOverlapArtifact": false
+  },
+  "launch1": {
+    "pid": 94927,
+    "started": "2026-08-11T05:26:28-04:00",
+    "populationThreshold": 500,
+    "utilitiesAtThreshold": "100%",
+    "storm": "Day 201; emergency repairs $2,000; happiness -3; three completed homes damaged",
+    "recovery": "Day 207; all three recorded Residential lot damages cleared with 26% utility reserve",
+    "savedState": "Day 216; population 515; treasury $50,787; utilities 100%",
+    "savePath": "/private/tmp/CITYSIM-PLAY101-2AA8-FINAL-QA-V1-DATA/quicksave.json",
+    "saveSha256": "fc452deb1f703a3a9e386a1765f55618d5dcd025e3927dc4c287bc02ced59061",
+    "termination": "exact PID/image revalidated; one SIGTERM; absence verified"
+  },
+  "launch2": {
+    "pid": 95831,
+    "started": "2026-08-11T05:37:49-04:00",
+    "imageRevalidated": true,
+    "loadedState": "Day 216 paused; population 515; treasury $50,787; utilities 100%; storm and recovery journal persisted",
+    "finalState": "RUNNING_PAUSED"
+  },
+  "evidence": {
+    "/private/tmp/CITYSIM-PLAY101-2AA8-FINAL-QA-V1-OUTPUT/INDUSTRIAL-FOUR-ORIENTATIONS-BLOCK.jpeg": "93c9e9ce1813dd76e31f5ec6971d0b0aebbd531e858d49aaa37bcb845448abb6",
+    "/private/tmp/CITYSIM-PLAY101-2AA8-FINAL-QA-V1-OUTPUT/INDUSTRIAL-FOUR-ORIENTATIONS-NEIGHBORHOOD-ACTUAL.jpeg": "09cd28945945a612b1f937e18a1ae9e0b2d7a71935c345c2be58153d2f9f22b4",
+    "/private/tmp/CITYSIM-PLAY101-2AA8-FINAL-QA-V1-OUTPUT/INDUSTRIAL-FOUR-ORIENTATIONS-CITY-ACTUAL.jpeg": "1eb6c8664dea52497b23f2c9d31745a9f3379d796d7465f9e002bc51e2b377c4",
+    "/private/tmp/CITYSIM-PLAY101-2AA8-FINAL-QA-V1-OUTPUT/STORM-RECOVERY-JOURNAL.jpeg": "79bf3e970a5ebac207557b2aae023e43d9ca1a0a1a8ffaa3bce6fe3cefc8bcdd",
+    "/private/tmp/CITYSIM-PLAY101-2AA8-FINAL-QA-V1-OUTPUT/LAUNCH-2-PERSISTENCE.jpeg": "4f3d6cdb7838e5d9854d8898bace3d1f2ea3b9731f1c4b112ef10d8207be7d95"
+  },
+  "qaGitState": {
+    "head": "cec8c6e66bbc4202aa8124081fba921bf34f4437",
+    "tree": "2dedd8b4f9dcb850af590a48059acb93c19651d9",
+    "index": "EMPTY",
+    "status": "only fourteen preserved untracked PLAY-102/v3 files"
+  },
+  "releaseExecuted": false,
+  "broaderGateMovement": false
+}

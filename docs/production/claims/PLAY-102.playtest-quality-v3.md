@@ -408,3 +408,28 @@ visual, interaction, process, save, or persistence defect. This activation
 authorizes no product/resource/claim edit, rebuild, automated test, retry,
 substitute, cleanup, stage, commit, push, release, self-acceptance, or broader
 gate movement.
+
+### CITYSIM-PLAY101-2AA8 final intake acceptance
+
+Independent Agent 004 returned `APPROVE_RELEASE_CANDIDATE` for immutable
+product commit `2aa8d4edfe17e7ea802fb0defcd2bfe959c6f73a`, tree
+`7070c247e196beda94fb3f2baac934c6b8a419ca`, under QA activation authority
+`cec8c6e66bbc4202aa8124081fba921bf34f4437`, tree
+`2dedd8b4f9dcb850af590a48059acb93c19651d9`. The exact durable receipt is
+`docs/production/evidence/PLAY-102/v3/CITYSIM-PLAY101-2AA8-FINAL-QA-V1/QA-PASS.json`,
+SHA-256 `9a9288449f18ee406dc23e91254e4786f9826bdc6c48cdd534431fac650ea804`.
+
+The accepted journey visibly proved four distinct `industrial_l01_v0`
+orientations across block, neighborhood, and city LOD ranges with no blank
+asset, runtime fallback, direction alias, or road-overlap artifact. The fresh
+ordinary city reached population 500 with 100 percent utilities; the Day-201
+severe storm imposed `$2,000` in repairs, `-3` happiness, and damage to three
+completed homes; all three recovered by Day 207. Launch one saved at Day 216,
+and launch two restored population 515, treasury `$50,787`, 100 percent
+utilities, and the storm/recovery journal.
+
+Exact launch-two PID `95831` remains paused and running the accepted staged
+CitySimNative executable. This record changes no product or build bytes and
+authorizes no signal to PID `95831`. It closes the exact release-candidate QA
+checkpoint only; push, origin parity, production release, and broader gate
+movement remain separately held.

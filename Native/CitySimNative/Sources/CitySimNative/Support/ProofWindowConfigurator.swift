@@ -8,6 +8,19 @@ struct ProofWindowConfigurator: NSViewRepresentable {
     static let compactContentSize = NSSize(width: 900, height: 600)
     static let regularProofContentSize = NSSize(width: 1_278, height: 768)
 
+    /// `WindowGroup.defaultSize` is applied before the representable has a window.
+    /// Put explicit proof sizes in the scene itself so it cannot restore 1,440 × 900
+    /// after the proof configurator requests a compact content area.
+    static var initialSceneContentSize: NSSize {
+        initialSceneContentSize(environment: ProcessInfo.processInfo.environment)
+    }
+
+    static func initialSceneContentSize(environment: [String: String]) -> NSSize {
+        if environment["CITYSIM_COMPACT_WINDOW"] == "1" { return compactContentSize }
+        if environment["CITYSIM_REGULAR_WINDOW"] == "1" { return regularProofContentSize }
+        return defaultContentSize
+    }
+
     static func requestedContentSize(
         environment: [String: String],
         hasEstablishedCandidateDefault: Bool
@@ -22,7 +35,7 @@ struct ProofWindowConfigurator: NSViewRepresentable {
     }
 
     func makeNSView(context: Context) -> NSView {
-        let view = NSView(frame: .zero)
+        let view = ProofWindowView(frame: .zero)
 #if DEBUG
         let environment = ProcessInfo.processInfo.environment
         let defaults = UserDefaults.standard
@@ -32,8 +45,7 @@ struct ProofWindowConfigurator: NSViewRepresentable {
             hasEstablishedCandidateDefault: hadEstablishedDefault
         )
         guard let proofSize else { return view }
-        DispatchQueue.main.async { [weak view] in
-            guard let window = view?.window else { return }
+        view.configure = { window in
             window.setContentSize(proofSize)
             window.center()
             if environment[SaveGameService.dataRootEnvironmentKey] != nil,
@@ -42,9 +54,35 @@ struct ProofWindowConfigurator: NSViewRepresentable {
                 defaults.set(true, forKey: Self.establishedCandidateDefaultKey)
             }
         }
+        view.scheduleConfiguration()
 #endif
         return view
     }
 
-    func updateNSView(_ nsView: NSView, context: Context) {}
+    func updateNSView(_ nsView: NSView, context: Context) {
+        (nsView as? ProofWindowView)?.scheduleConfiguration()
+    }
+}
+
+private final class ProofWindowView: NSView {
+    var configure: ((NSWindow) -> Void)?
+    private var configurationScheduled = false
+    private var configured = false
+
+    override func viewDidMoveToWindow() {
+        super.viewDidMoveToWindow()
+        scheduleConfiguration()
+    }
+
+    func scheduleConfiguration() {
+        guard !configured, !configurationScheduled, configure != nil else { return }
+        configurationScheduled = true
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            self.configurationScheduled = false
+            guard !self.configured, let window = self.window, let configure = self.configure else { return }
+            configure(window)
+            self.configured = true
+        }
+    }
 }

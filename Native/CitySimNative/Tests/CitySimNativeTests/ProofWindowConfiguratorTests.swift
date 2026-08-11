@@ -3,6 +3,26 @@ import XCTest
 
 final class ProofWindowConfiguratorTests: XCTestCase {
     @MainActor
+    func testExplicitProofRequestsAlsoDriveTheInitialSceneContentSize() {
+        XCTAssertEqual(
+            ProofWindowConfigurator.initialSceneContentSize(
+                environment: ["CITYSIM_COMPACT_WINDOW": "1"]
+            ),
+            ProofWindowConfigurator.compactContentSize
+        )
+        XCTAssertEqual(
+            ProofWindowConfigurator.initialSceneContentSize(
+                environment: ["CITYSIM_REGULAR_WINDOW": "1"]
+            ),
+            ProofWindowConfigurator.regularProofContentSize
+        )
+        XCTAssertEqual(
+            ProofWindowConfigurator.initialSceneContentSize(environment: [:]),
+            ProofWindowConfigurator.defaultContentSize
+        )
+    }
+
+    @MainActor
     func testFreshCandidateGetsDefaultButOnlyExplicitCompactGetsNineHundredBySixHundred() {
         let candidateEnvironment = [SaveGameService.dataRootEnvironmentKey: "/tmp/citysim-candidate"]
 

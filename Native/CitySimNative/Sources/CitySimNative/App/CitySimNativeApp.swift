@@ -30,7 +30,10 @@ struct CitySimNativeApp: App {
             ContentView(store: store)
                 .preferredColorScheme(.dark)
         }
-        .defaultSize(width: 1_440, height: 900)
+        .defaultSize(
+            width: ProofWindowConfigurator.initialSceneContentSize.width,
+            height: ProofWindowConfigurator.initialSceneContentSize.height
+        )
         .windowResizability(.contentMinSize)
         .commands { CityGameCommands(store: store) }
 

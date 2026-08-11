@@ -41,7 +41,7 @@
             1024,
             683
           ],
-          "filter": "CILanczosScaleTransform",
+          "filter": "premultiplied-bilinear-v1",
           "name": "block",
           "path": "normalized/south/industrial_l01_v00/block.png",
           "pivot": [
@@ -49,7 +49,7 @@
             598
           ],
           "rounding": "round-half-even source-coordinate receipts",
-          "sha256": "010953cfe5d0b767da39d15747c1a33e630d62c1b6d0fc9927ca93de763407d1",
+          "sha256": "05b55f373cc921f35d6e6cdd05e74bcb53deaa52ce9ea076ccf6750210eac0ce",
           "socket": [
             427,
             555
@@ -60,7 +60,7 @@
             512,
             342
           ],
-          "filter": "CILanczosScaleTransform",
+          "filter": "premultiplied-bilinear-v1",
           "name": "neighborhood",
           "path": "normalized/south/industrial_l01_v00/neighborhood.png",
           "pivot": [
@@ -68,7 +68,7 @@
             299
           ],
           "rounding": "round-half-even source-coordinate receipts",
-          "sha256": "e2cf7346a0acedcd7e6098c8791b4c33ad3214b42f5659ed7324c46cb2dfc180",
+          "sha256": "7a3d147f3802e110dba11b006829e671c263bf76a02f51ad21df5538f472bfc4",
           "socket": [
             213,
             278
@@ -79,7 +79,7 @@
             256,
             171
           ],
-          "filter": "CILanczosScaleTransform",
+          "filter": "premultiplied-bilinear-v1",
           "name": "city",
           "path": "normalized/south/industrial_l01_v00/city.png",
           "pivot": [
@@ -87,7 +87,7 @@
             150
           ],
           "rounding": "round-half-even source-coordinate receipts",
-          "sha256": "0b65e34cd4d3b13d6405e70566f15d5af8569bf98652c3f62bf218b5a3b8407a",
+          "sha256": "cdfe8e0cf85cec1d21131993dc024498afb5f86cc7f8fa398491a5cf9487dba1",
           "socket": [
             107,
             139
@@ -157,7 +157,7 @@
             1024,
             683
           ],
-          "filter": "CILanczosScaleTransform",
+          "filter": "premultiplied-bilinear-v1",
           "name": "block",
           "path": "normalized/south/industrial_l01_v01/block.png",
           "pivot": [
@@ -165,7 +165,7 @@
             598
           ],
           "rounding": "round-half-even source-coordinate receipts",
-          "sha256": "010953cfe5d0b767da39d15747c1a33e630d62c1b6d0fc9927ca93de763407d1",
+          "sha256": "d26920afd7aa392406cab49ae1886d134be49e1b20a72f692ad9dd34ac37ebcc",
           "socket": [
             427,
             555
@@ -176,7 +176,7 @@
             512,
             342
           ],
-          "filter": "CILanczosScaleTransform",
+          "filter": "premultiplied-bilinear-v1",
           "name": "neighborhood",
           "path": "normalized/south/industrial_l01_v01/neighborhood.png",
           "pivot": [
@@ -184,7 +184,7 @@
             299
           ],
           "rounding": "round-half-even source-coordinate receipts",
-          "sha256": "e2cf7346a0acedcd7e6098c8791b4c33ad3214b42f5659ed7324c46cb2dfc180",
+          "sha256": "71d071a41e8fc77f3c7de5ef6d5f2b9301320995c22646d15d580680fdf2ef4d",
           "socket": [
             213,
             278
@@ -195,7 +195,7 @@
             256,
             171
           ],
-          "filter": "CILanczosScaleTransform",
+          "filter": "premultiplied-bilinear-v1",
           "name": "city",
           "path": "normalized/south/industrial_l01_v01/city.png",
           "pivot": [
@@ -203,7 +203,7 @@
             150
           ],
           "rounding": "round-half-even source-coordinate receipts",
-          "sha256": "0b65e34cd4d3b13d6405e70566f15d5af8569bf98652c3f62bf218b5a3b8407a",
+          "sha256": "3829d3778a7a91b3d911b3f592e5875dfef194051a653c31003f510b76eec73c",
           "socket": [
             107,
             139
@@ -273,7 +273,7 @@
             1024,
             683
           ],
-          "filter": "CILanczosScaleTransform",
+          "filter": "premultiplied-bilinear-v1",
           "name": "block",
           "path": "normalized/south/industrial_l01_v02/block.png",
           "pivot": [
@@ -281,7 +281,7 @@
             598
           ],
           "rounding": "round-half-even source-coordinate receipts",
-          "sha256": "010953cfe5d0b767da39d15747c1a33e630d62c1b6d0fc9927ca93de763407d1",
+          "sha256": "70cb1b86b0805ebcbafe5a1160845cd8aa7886f5cdd386e94cca4fdb9c543503",
           "socket": [
             427,
             555
@@ -292,7 +292,7 @@
             512,
             342
           ],
-          "filter": "CILanczosScaleTransform",
+          "filter": "premultiplied-bilinear-v1",
           "name": "neighborhood",
           "path": "normalized/south/industrial_l01_v02/neighborhood.png",
           "pivot": [
@@ -300,7 +300,7 @@
             299
           ],
           "rounding": "round-half-even source-coordinate receipts",
-          "sha256": "e2cf7346a0acedcd7e6098c8791b4c33ad3214b42f5659ed7324c46cb2dfc180",
+          "sha256": "18cdee44bc2b5a6761505b3adcca6da5737e1814c949031bad0322ad519ff207",
           "socket": [
             213,
             278
@@ -311,7 +311,7 @@
             256,
             171
           ],
-          "filter": "CILanczosScaleTransform",
+          "filter": "premultiplied-bilinear-v1",
           "name": "city",
           "path": "normalized/south/industrial_l01_v02/city.png",
           "pivot": [
@@ -319,7 +319,7 @@
             150
           ],
           "rounding": "round-half-even source-coordinate receipts",
-          "sha256": "0b65e34cd4d3b13d6405e70566f15d5af8569bf98652c3f62bf218b5a3b8407a",
+          "sha256": "734f004441c986c3402659245d7f3be2eddc5af586dbe074cb8d68a6a8454257",
           "socket": [
             107,
             139
@@ -389,7 +389,7 @@
             1024,
             683
           ],
-          "filter": "CILanczosScaleTransform",
+          "filter": "premultiplied-bilinear-v1",
           "name": "block",
           "path": "normalized/south/industrial_l02_v00/block.png",
           "pivot": [
@@ -397,7 +397,7 @@
             598
           ],
           "rounding": "round-half-even source-coordinate receipts",
-          "sha256": "010953cfe5d0b767da39d15747c1a33e630d62c1b6d0fc9927ca93de763407d1",
+          "sha256": "c1abf6b9d2ac10ad7535364ed470b84d6d0f684e92996be86382c0183c9efdcf",
           "socket": [
             427,
             555
@@ -408,7 +408,7 @@
             512,
             342
           ],
-          "filter": "CILanczosScaleTransform",
+          "filter": "premultiplied-bilinear-v1",
           "name": "neighborhood",
           "path": "normalized/south/industrial_l02_v00/neighborhood.png",
           "pivot": [
@@ -416,7 +416,7 @@
             299
           ],
           "rounding": "round-half-even source-coordinate receipts",
-          "sha256": "e2cf7346a0acedcd7e6098c8791b4c33ad3214b42f5659ed7324c46cb2dfc180",
+          "sha256": "053b66917ed70e7bb5b63e288f8239a49efb502a63935197e54ca0117604286f",
           "socket": [
             213,
             278
@@ -427,7 +427,7 @@
             256,
             171
           ],
-          "filter": "CILanczosScaleTransform",
+          "filter": "premultiplied-bilinear-v1",
           "name": "city",
           "path": "normalized/south/industrial_l02_v00/city.png",
           "pivot": [
@@ -435,7 +435,7 @@
             150
           ],
           "rounding": "round-half-even source-coordinate receipts",
-          "sha256": "0b65e34cd4d3b13d6405e70566f15d5af8569bf98652c3f62bf218b5a3b8407a",
+          "sha256": "6502bde71391dae4fa1fff58963303f20bb3f4592f42596f9e1a8811bdb56ddf",
           "socket": [
             107,
             139
@@ -505,7 +505,7 @@
             1024,
             683
           ],
-          "filter": "CILanczosScaleTransform",
+          "filter": "premultiplied-bilinear-v1",
           "name": "block",
           "path": "normalized/south/industrial_l02_v01/block.png",
           "pivot": [
@@ -513,7 +513,7 @@
             598
           ],
           "rounding": "round-half-even source-coordinate receipts",
-          "sha256": "010953cfe5d0b767da39d15747c1a33e630d62c1b6d0fc9927ca93de763407d1",
+          "sha256": "9e728eb7ce7f25d23bbbbaebbd7f0d5532df4b8a89bdef2628dbca1439c2eb45",
           "socket": [
             427,
             555
@@ -524,7 +524,7 @@
             512,
             342
           ],
-          "filter": "CILanczosScaleTransform",
+          "filter": "premultiplied-bilinear-v1",
           "name": "neighborhood",
           "path": "normalized/south/industrial_l02_v01/neighborhood.png",
           "pivot": [
@@ -532,7 +532,7 @@
             299
           ],
           "rounding": "round-half-even source-coordinate receipts",
-          "sha256": "e2cf7346a0acedcd7e6098c8791b4c33ad3214b42f5659ed7324c46cb2dfc180",
+          "sha256": "d52ca010d17b8d98ef46214ee9626263372399e9730587d533fa2a14dd56a92f",
           "socket": [
             213,
             278
@@ -543,7 +543,7 @@
             256,
             171
           ],
-          "filter": "CILanczosScaleTransform",
+          "filter": "premultiplied-bilinear-v1",
           "name": "city",
           "path": "normalized/south/industrial_l02_v01/city.png",
           "pivot": [
@@ -551,7 +551,7 @@
             150
           ],
           "rounding": "round-half-even source-coordinate receipts",
-          "sha256": "0b65e34cd4d3b13d6405e70566f15d5af8569bf98652c3f62bf218b5a3b8407a",
+          "sha256": "c7c6ff8542a0b9882065e3bbc3b2c5249fc5030b6ad0c43ec6ae48343aa2301d",
           "socket": [
             107,
             139
@@ -621,7 +621,7 @@
             1024,
             683
           ],
-          "filter": "CILanczosScaleTransform",
+          "filter": "premultiplied-bilinear-v1",
           "name": "block",
           "path": "normalized/south/industrial_l02_v02/block.png",
           "pivot": [
@@ -629,7 +629,7 @@
             598
           ],
           "rounding": "round-half-even source-coordinate receipts",
-          "sha256": "010953cfe5d0b767da39d15747c1a33e630d62c1b6d0fc9927ca93de763407d1",
+          "sha256": "c7db807b4305eadc4e7fdaec0343c1be86f6c30ad7524946d68606cef02f9f74",
           "socket": [
             427,
             555
@@ -640,7 +640,7 @@
             512,
             342
           ],
-          "filter": "CILanczosScaleTransform",
+          "filter": "premultiplied-bilinear-v1",
           "name": "neighborhood",
           "path": "normalized/south/industrial_l02_v02/neighborhood.png",
           "pivot": [
@@ -648,7 +648,7 @@
             299
           ],
           "rounding": "round-half-even source-coordinate receipts",
-          "sha256": "e2cf7346a0acedcd7e6098c8791b4c33ad3214b42f5659ed7324c46cb2dfc180",
+          "sha256": "8582dc4510e0c4590f3e022ad5cd90b991d83a338eb7c02886f13a157745df23",
           "socket": [
             213,
             278
@@ -659,7 +659,7 @@
             256,
             171
           ],
-          "filter": "CILanczosScaleTransform",
+          "filter": "premultiplied-bilinear-v1",
           "name": "city",
           "path": "normalized/south/industrial_l02_v02/city.png",
           "pivot": [
@@ -667,7 +667,7 @@
             150
           ],
           "rounding": "round-half-even source-coordinate receipts",
-          "sha256": "0b65e34cd4d3b13d6405e70566f15d5af8569bf98652c3f62bf218b5a3b8407a",
+          "sha256": "560d0f17487fdc07cff1e82dbe8fb0972a2c898b4d540a9da773f4059201d290",
           "socket": [
             107,
             139
@@ -737,7 +737,7 @@
             1024,
             683
           ],
-          "filter": "CILanczosScaleTransform",
+          "filter": "premultiplied-bilinear-v1",
           "name": "block",
           "path": "normalized/south/industrial_l03_v00/block.png",
           "pivot": [
@@ -745,7 +745,7 @@
             598
           ],
           "rounding": "round-half-even source-coordinate receipts",
-          "sha256": "010953cfe5d0b767da39d15747c1a33e630d62c1b6d0fc9927ca93de763407d1",
+          "sha256": "d93c30e435f648fca92e94441535176ae823a9e44b63bba87f1df923aa12cc45",
           "socket": [
             427,
             555
@@ -756,7 +756,7 @@
             512,
             342
           ],
-          "filter": "CILanczosScaleTransform",
+          "filter": "premultiplied-bilinear-v1",
           "name": "neighborhood",
           "path": "normalized/south/industrial_l03_v00/neighborhood.png",
           "pivot": [
@@ -764,7 +764,7 @@
             299
           ],
           "rounding": "round-half-even source-coordinate receipts",
-          "sha256": "e2cf7346a0acedcd7e6098c8791b4c33ad3214b42f5659ed7324c46cb2dfc180",
+          "sha256": "9ea1382ed86bbb03f3b1258dd70334dfb49fc65172184b0a08f991730c80566e",
           "socket": [
             213,
             278
@@ -775,7 +775,7 @@
             256,
             171
           ],
-          "filter": "CILanczosScaleTransform",
+          "filter": "premultiplied-bilinear-v1",
           "name": "city",
           "path": "normalized/south/industrial_l03_v00/city.png",
           "pivot": [
@@ -783,7 +783,7 @@
             150
           ],
           "rounding": "round-half-even source-coordinate receipts",
-          "sha256": "0b65e34cd4d3b13d6405e70566f15d5af8569bf98652c3f62bf218b5a3b8407a",
+          "sha256": "ddeab3db72f2b51443ef9b716e9228022d920b251fe84c7dcd86c7f867feefb7",
           "socket": [
             107,
             139
@@ -853,7 +853,7 @@
             1024,
             683
           ],
-          "filter": "CILanczosScaleTransform",
+          "filter": "premultiplied-bilinear-v1",
           "name": "block",
           "path": "normalized/south/industrial_l03_v01/block.png",
           "pivot": [
@@ -861,7 +861,7 @@
             598
           ],
           "rounding": "round-half-even source-coordinate receipts",
-          "sha256": "010953cfe5d0b767da39d15747c1a33e630d62c1b6d0fc9927ca93de763407d1",
+          "sha256": "a9069d07e7937a24e0e1db1212c644152028685dce46759bac70f9f74dc13890",
           "socket": [
             427,
             555
@@ -872,7 +872,7 @@
             512,
             342
           ],
-          "filter": "CILanczosScaleTransform",
+          "filter": "premultiplied-bilinear-v1",
           "name": "neighborhood",
           "path": "normalized/south/industrial_l03_v01/neighborhood.png",
           "pivot": [
@@ -880,7 +880,7 @@
             299
           ],
           "rounding": "round-half-even source-coordinate receipts",
-          "sha256": "e2cf7346a0acedcd7e6098c8791b4c33ad3214b42f5659ed7324c46cb2dfc180",
+          "sha256": "923e748f68ae23e807bfe05aa2c668c7593e02cef65315447e2a0d28b261f1b5",
           "socket": [
             213,
             278
@@ -891,7 +891,7 @@
             256,
             171
           ],
-          "filter": "CILanczosScaleTransform",
+          "filter": "premultiplied-bilinear-v1",
           "name": "city",
           "path": "normalized/south/industrial_l03_v01/city.png",
           "pivot": [
@@ -899,7 +899,7 @@
             150
           ],
           "rounding": "round-half-even source-coordinate receipts",
-          "sha256": "0b65e34cd4d3b13d6405e70566f15d5af8569bf98652c3f62bf218b5a3b8407a",
+          "sha256": "3503ca36078ba62397f70f63f131c412c4b5821a11b7986dcfce19eb1688a64a",
           "socket": [
             107,
             139
@@ -969,7 +969,7 @@
             1024,
             683
           ],
-          "filter": "CILanczosScaleTransform",
+          "filter": "premultiplied-bilinear-v1",
           "name": "block",
           "path": "normalized/south/industrial_l03_v02/block.png",
           "pivot": [
@@ -977,7 +977,7 @@
             598
           ],
           "rounding": "round-half-even source-coordinate receipts",
-          "sha256": "010953cfe5d0b767da39d15747c1a33e630d62c1b6d0fc9927ca93de763407d1",
+          "sha256": "158c1b186a33bfac0380e66c26b0225c78b42d74ab23d5b933028378d2453b67",
           "socket": [
             427,
             555
@@ -988,7 +988,7 @@
             512,
             342
           ],
-          "filter": "CILanczosScaleTransform",
+          "filter": "premultiplied-bilinear-v1",
           "name": "neighborhood",
           "path": "normalized/south/industrial_l03_v02/neighborhood.png",
           "pivot": [
@@ -996,7 +996,7 @@
             299
           ],
           "rounding": "round-half-even source-coordinate receipts",
-          "sha256": "e2cf7346a0acedcd7e6098c8791b4c33ad3214b42f5659ed7324c46cb2dfc180",
+          "sha256": "65813e8ba16c9105e2b72f0fd9985a7a8bd949149a14bd527ddee3adc4471cd5",
           "socket": [
             213,
             278
@@ -1007,7 +1007,7 @@
             256,
             171
           ],
-          "filter": "CILanczosScaleTransform",
+          "filter": "premultiplied-bilinear-v1",
           "name": "city",
           "path": "normalized/south/industrial_l03_v02/city.png",
           "pivot": [
@@ -1015,7 +1015,7 @@
             150
           ],
           "rounding": "round-half-even source-coordinate receipts",
-          "sha256": "0b65e34cd4d3b13d6405e70566f15d5af8569bf98652c3f62bf218b5a3b8407a",
+          "sha256": "f680cf22b1a99a8607d0406ab22e9695846d2e600acebcb8dfb2569d39d1b229",
           "socket": [
             107,
             139
@@ -1085,7 +1085,7 @@
             1024,
             683
           ],
-          "filter": "CILanczosScaleTransform",
+          "filter": "premultiplied-bilinear-v1",
           "name": "block",
           "path": "normalized/south/industrial_l04_v00/block.png",
           "pivot": [
@@ -1093,7 +1093,7 @@
             598
           ],
           "rounding": "round-half-even source-coordinate receipts",
-          "sha256": "010953cfe5d0b767da39d15747c1a33e630d62c1b6d0fc9927ca93de763407d1",
+          "sha256": "624d7bf2dd142db198e55713a797e7e36b3612a99f99c34d99ca35d3c7416e03",
           "socket": [
             427,
             555
@@ -1104,7 +1104,7 @@
             512,
             342
           ],
-          "filter": "CILanczosScaleTransform",
+          "filter": "premultiplied-bilinear-v1",
           "name": "neighborhood",
           "path": "normalized/south/industrial_l04_v00/neighborhood.png",
           "pivot": [
@@ -1112,7 +1112,7 @@
             299
           ],
           "rounding": "round-half-even source-coordinate receipts",
-          "sha256": "e2cf7346a0acedcd7e6098c8791b4c33ad3214b42f5659ed7324c46cb2dfc180",
+          "sha256": "06363cd4b7db6dc167350d00334ff16e5592e72dae5757c909adc4bbe5b804fc",
           "socket": [
             213,
             278
@@ -1123,7 +1123,7 @@
             256,
             171
           ],
-          "filter": "CILanczosScaleTransform",
+          "filter": "premultiplied-bilinear-v1",
           "name": "city",
           "path": "normalized/south/industrial_l04_v00/city.png",
           "pivot": [
@@ -1131,7 +1131,7 @@
             150
           ],
           "rounding": "round-half-even source-coordinate receipts",
-          "sha256": "0b65e34cd4d3b13d6405e70566f15d5af8569bf98652c3f62bf218b5a3b8407a",
+          "sha256": "6c6f16d6a43aab0d44782b0c4bca4b4de09b07b4251c31440ee89aaa471fa57f",
           "socket": [
             107,
             139
@@ -1201,7 +1201,7 @@
             1024,
             683
           ],
-          "filter": "CILanczosScaleTransform",
+          "filter": "premultiplied-bilinear-v1",
           "name": "block",
           "path": "normalized/south/industrial_l04_v01/block.png",
           "pivot": [
@@ -1209,7 +1209,7 @@
             598
           ],
           "rounding": "round-half-even source-coordinate receipts",
-          "sha256": "010953cfe5d0b767da39d15747c1a33e630d62c1b6d0fc9927ca93de763407d1",
+          "sha256": "db2cdf1062348ddaaef9af5ed9dbd6c67fcd3f5ea2a32414582cb262194021d9",
           "socket": [
             427,
             555
@@ -1220,7 +1220,7 @@
             512,
             342
           ],
-          "filter": "CILanczosScaleTransform",
+          "filter": "premultiplied-bilinear-v1",
           "name": "neighborhood",
           "path": "normalized/south/industrial_l04_v01/neighborhood.png",
           "pivot": [
@@ -1228,7 +1228,7 @@
             299
           ],
           "rounding": "round-half-even source-coordinate receipts",
-          "sha256": "e2cf7346a0acedcd7e6098c8791b4c33ad3214b42f5659ed7324c46cb2dfc180",
+          "sha256": "07058e9a515a237c58c275a5f201dca1d611079827b6aa64f639678819fb73e3",
           "socket": [
             213,
             278
@@ -1239,7 +1239,7 @@
             256,
             171
           ],
-          "filter": "CILanczosScaleTransform",
+          "filter": "premultiplied-bilinear-v1",
           "name": "city",
           "path": "normalized/south/industrial_l04_v01/city.png",
           "pivot": [
@@ -1247,7 +1247,7 @@
             150
           ],
           "rounding": "round-half-even source-coordinate receipts",
-          "sha256": "0b65e34cd4d3b13d6405e70566f15d5af8569bf98652c3f62bf218b5a3b8407a",
+          "sha256": "b0b881bc1835ea813a003426d7f2ac03049e88219c27cefcd772fc0588a24d43",
           "socket": [
             107,
             139
@@ -1317,7 +1317,7 @@
             1024,
             683
           ],
-          "filter": "CILanczosScaleTransform",
+          "filter": "premultiplied-bilinear-v1",
           "name": "block",
           "path": "normalized/south/industrial_l04_v02/block.png",
           "pivot": [
@@ -1325,7 +1325,7 @@
             598
           ],
           "rounding": "round-half-even source-coordinate receipts",
-          "sha256": "010953cfe5d0b767da39d15747c1a33e630d62c1b6d0fc9927ca93de763407d1",
+          "sha256": "87429728b18e07df929cb69c58cf8c264e5b8e027e4964c31e7349a9c76fbd56",
           "socket": [
             427,
             555
@@ -1336,7 +1336,7 @@
             512,
             342
           ],
-          "filter": "CILanczosScaleTransform",
+          "filter": "premultiplied-bilinear-v1",
           "name": "neighborhood",
           "path": "normalized/south/industrial_l04_v02/neighborhood.png",
           "pivot": [
@@ -1344,7 +1344,7 @@
             299
           ],
           "rounding": "round-half-even source-coordinate receipts",
-          "sha256": "e2cf7346a0acedcd7e6098c8791b4c33ad3214b42f5659ed7324c46cb2dfc180",
+          "sha256": "4d97c90ac83c493c368730e45d391bc3ce20dff7539718fa6bcc221af3765473",
           "socket": [
             213,
             278
@@ -1355,7 +1355,7 @@
             256,
             171
           ],
-          "filter": "CILanczosScaleTransform",
+          "filter": "premultiplied-bilinear-v1",
           "name": "city",
           "path": "normalized/south/industrial_l04_v02/city.png",
           "pivot": [
@@ -1363,7 +1363,7 @@
             150
           ],
           "rounding": "round-half-even source-coordinate receipts",
-          "sha256": "0b65e34cd4d3b13d6405e70566f15d5af8569bf98652c3f62bf218b5a3b8407a",
+          "sha256": "a485efd769e44ac3046f7b2ce4a893a86de6b22e204a490a9e2d122c284ee8d2",
           "socket": [
             107,
             139
@@ -1404,6 +1404,14 @@
     "path": "docs/production/decisions/CONTRACT-026-authored-four-view-registration.md",
     "sha256": "4781de72429a1f691b9226f7f7668b170b278a4ccd171ac4ea02f5e1df9176eb"
   },
+  "derivedLodRepair": {
+    "byteIdentical": true,
+    "filter": "premultiplied-bilinear-v1",
+    "isolatedReplayCount": 2,
+    "replayDigestSha256": "ff96e6937290a2c75dce14a9a27325239b8a79619777bc603c1b300fc684d806",
+    "tool": "repair_south_derived_lods.py",
+    "toolSha256": "d4e85ce3a847a6d150cf4027591f15181f8fd9801062d2de958d40ae55c1e8c1"
+  },
   "direction": "south",
   "family": "industrial",
   "frontageSocketSource": [
@@ -1431,5 +1439,5 @@
   ],
   "sourceReady": false,
   "task": "PLAY-099",
-  "tool": "task-local deterministic normalizer; no ImageGen call"
+  "tool": "dependency-free premultiplied bilinear derived-LOD repair; no ImageGen call"
 }

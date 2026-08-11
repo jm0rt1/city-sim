@@ -1,5 +1,13 @@
 {
   "candidateReadyForIndependentReview": true,
+  "derivedLodRepair": {
+    "byteIdentical": true,
+    "filter": "premultiplied-bilinear-v1",
+    "isolatedReplayCount": 2,
+    "lodCount": 36,
+    "replayDigestSha256": "ff96e6937290a2c75dce14a9a27325239b8a79619777bc603c1b300fc684d806",
+    "uniqueLodFileHashes": 36
+  },
   "integrationAdmitted": false,
   "lodCount": 36,
   "normalizedSourceCount": 12,

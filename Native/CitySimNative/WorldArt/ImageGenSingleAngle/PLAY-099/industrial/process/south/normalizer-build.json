@@ -1,15 +1,18 @@
 {
-  "compiler": "swiftc -framework CoreImage -framework CoreGraphics -framework ImageIO -framework UniformTypeIdentifiers -framework Foundation -framework CryptoKit",
+  "byteIdentical": true,
+  "compiler": "python3 standard library only",
   "created": "2026-08-08",
-  "filter": "CILanczosScaleTransform",
+  "filter": "premultiplied-bilinear-v1",
   "geometryAuthority": "docs/production/decisions/CONTRACT-026-authored-four-view-registration.md",
   "inputHead": "a544c5d95f6ef1084dc6ee410f64445261d7af43",
-  "normalizer": "normalize_south.swift",
-  "normalizerSha256": "73ee58502255230483cf2cff24637a171b3ca7934fe80de40c11f53d4f209e97",
+  "isolatedReplayCount": 2,
+  "normalizer": "repair_south_derived_lods.py",
+  "normalizerSha256": "d4e85ce3a847a6d150cf4027591f15181f8fd9801062d2de958d40ae55c1e8c1",
   "profile": "docs/production/decisions/CONTRACT-026-registration-profiles-v1.json",
+  "replayDigestSha256": "ff96e6937290a2c75dce14a9a27325239b8a79619777bc603c1b300fc684d806",
   "routeId": "four-view-v3:play-099-south-admission",
   "routeSha256": "5669c3e28d23b46d4e213886809214fa1843988ecb313413ecab9ae39a44116e",
   "schema": "PLAY-099-south-process-v3",
-  "sourceTransform": "whole-canvas only; no crop, trim, recenter, resize-to-bounds, or pixel-derived geometry",
+  "sourceTransform": "immutable full-canvas source-rgba; premultiplied-alpha bilinear resize only",
   "task": "PLAY-099"
 }

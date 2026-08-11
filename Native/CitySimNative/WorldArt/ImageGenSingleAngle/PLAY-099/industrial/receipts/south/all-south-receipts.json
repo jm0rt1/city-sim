@@ -1,9 +1,9 @@
 [
   {
-    "borderConnectedChromaPixelsRemoved" : 1239486,
-    "chromaThreshold" : 160,
-    "direction" : "south",
-    "footprintPolygonSource" : [
+    "borderConnectedChromaPixelsRemoved": 1239486,
+    "chromaThreshold": 160,
+    "direction": "south",
+    "footprintPolygonSource": [
       [
         768,
         640
@@ -21,99 +21,99 @@
         768
       ]
     ],
-    "frontageSocketSource" : [
+    "frontageSocketSource": [
       640,
       832
     ],
-    "groundPivotSource" : [
+    "groundPivotSource": [
       768,
       896
     ],
-    "integrationAdmitted" : false,
-    "level" : 1,
-    "lods" : [
+    "integrationAdmitted": false,
+    "level": 1,
+    "lods": [
       {
-        "canvas" : [
+        "canvas": [
           1024,
           683
         ],
-        "filter" : "CILanczosScaleTransform",
-        "name" : "block",
-        "path" : "normalized\/south\/industrial_l01_v00\/block.png",
-        "pivot" : [
+        "filter": "premultiplied-bilinear-v1",
+        "name": "block",
+        "path": "normalized/south/industrial_l01_v00/block.png",
+        "pivot": [
           512,
           598
         ],
-        "rounding" : "round-half-even source-coordinate receipts",
-        "sha256" : "010953cfe5d0b767da39d15747c1a33e630d62c1b6d0fc9927ca93de763407d1",
-        "socket" : [
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "05b55f373cc921f35d6e6cdd05e74bcb53deaa52ce9ea076ccf6750210eac0ce",
+        "socket": [
           427,
           555
         ]
       },
       {
-        "canvas" : [
+        "canvas": [
           512,
           342
         ],
-        "filter" : "CILanczosScaleTransform",
-        "name" : "neighborhood",
-        "path" : "normalized\/south\/industrial_l01_v00\/neighborhood.png",
-        "pivot" : [
+        "filter": "premultiplied-bilinear-v1",
+        "name": "neighborhood",
+        "path": "normalized/south/industrial_l01_v00/neighborhood.png",
+        "pivot": [
           256,
           299
         ],
-        "rounding" : "round-half-even source-coordinate receipts",
-        "sha256" : "e2cf7346a0acedcd7e6098c8791b4c33ad3214b42f5659ed7324c46cb2dfc180",
-        "socket" : [
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "7a3d147f3802e110dba11b006829e671c263bf76a02f51ad21df5538f472bfc4",
+        "socket": [
           213,
           278
         ]
       },
       {
-        "canvas" : [
+        "canvas": [
           256,
           171
         ],
-        "filter" : "CILanczosScaleTransform",
-        "name" : "city",
-        "path" : "normalized\/south\/industrial_l01_v00\/city.png",
-        "pivot" : [
+        "filter": "premultiplied-bilinear-v1",
+        "name": "city",
+        "path": "normalized/south/industrial_l01_v00/city.png",
+        "pivot": [
           128,
           150
         ],
-        "rounding" : "round-half-even source-coordinate receipts",
-        "sha256" : "0b65e34cd4d3b13d6405e70566f15d5af8569bf98652c3f62bf218b5a3b8407a",
-        "socket" : [
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "cdfe8e0cf85cec1d21131993dc024498afb5f86cc7f8fa398491a5cf9487dba1",
+        "socket": [
           107,
           139
         ]
       }
     ],
-    "logicalId" : "industrial_l01_v00",
-    "normalization" : "full-canvas RGBA; border-connected chroma removal; no crop\/trim; CILanczosScaleTransform whole-canvas LODs",
-    "normalizedPath" : "normalized\/south\/industrial_l01_v00\/source-rgba.png",
-    "normalizedSha256" : "66cdbe03347cfe40a2dedcd44af94682e0e3063be4669eb01e7ffda27b9c4ee4",
-    "productionSelected" : false,
-    "profilePath" : "docs\/production\/decisions\/CONTRACT-026-registration-profiles-v1.json",
-    "profileSha256" : "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8",
-    "rawBytesPreserved" : true,
-    "rawPath" : "raw\/industrial_l01_v00-source-v01.png",
-    "rawSha256" : "7ca3e26234e7e15df9a46775a83f7132f89e1ea1f22d97c42ca6d3502099bbd2",
-    "schema" : "PLAY-099-south-admission-v3-receipt",
-    "sourceCanvas" : [
+    "logicalId": "industrial_l01_v00",
+    "normalization": "full-canvas immutable source-rgba; dependency-free premultiplied bilinear derived LODs",
+    "normalizedPath": "normalized/south/industrial_l01_v00/source-rgba.png",
+    "normalizedSha256": "66cdbe03347cfe40a2dedcd44af94682e0e3063be4669eb01e7ffda27b9c4ee4",
+    "productionSelected": false,
+    "profilePath": "docs/production/decisions/CONTRACT-026-registration-profiles-v1.json",
+    "profileSha256": "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8",
+    "rawBytesPreserved": true,
+    "rawPath": "raw/industrial_l01_v00-source-v01.png",
+    "rawSha256": "7ca3e26234e7e15df9a46775a83f7132f89e1ea1f22d97c42ca6d3502099bbd2",
+    "schema": "PLAY-099-south-admission-v3-receipt",
+    "sourceCanvas": [
       1536,
       1024
     ],
-    "task" : "PLAY-099",
-    "variant" : 0,
-    "visualAcceptance" : "not performed; frontier-owned"
+    "task": "PLAY-099",
+    "variant": 0,
+    "visualAcceptance": "not performed; frontier-owned"
   },
   {
-    "borderConnectedChromaPixelsRemoved" : 1224469,
-    "chromaThreshold" : 160,
-    "direction" : "south",
-    "footprintPolygonSource" : [
+    "borderConnectedChromaPixelsRemoved": 1224469,
+    "chromaThreshold": 160,
+    "direction": "south",
+    "footprintPolygonSource": [
       [
         768,
         640
@@ -131,99 +131,99 @@
         768
       ]
     ],
-    "frontageSocketSource" : [
+    "frontageSocketSource": [
       640,
       832
     ],
-    "groundPivotSource" : [
+    "groundPivotSource": [
       768,
       896
     ],
-    "integrationAdmitted" : false,
-    "level" : 1,
-    "lods" : [
+    "integrationAdmitted": false,
+    "level": 1,
+    "lods": [
       {
-        "canvas" : [
+        "canvas": [
           1024,
           683
         ],
-        "filter" : "CILanczosScaleTransform",
-        "name" : "block",
-        "path" : "normalized\/south\/industrial_l01_v01\/block.png",
-        "pivot" : [
+        "filter": "premultiplied-bilinear-v1",
+        "name": "block",
+        "path": "normalized/south/industrial_l01_v01/block.png",
+        "pivot": [
           512,
           598
         ],
-        "rounding" : "round-half-even source-coordinate receipts",
-        "sha256" : "010953cfe5d0b767da39d15747c1a33e630d62c1b6d0fc9927ca93de763407d1",
-        "socket" : [
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "d26920afd7aa392406cab49ae1886d134be49e1b20a72f692ad9dd34ac37ebcc",
+        "socket": [
           427,
           555
         ]
       },
       {
-        "canvas" : [
+        "canvas": [
           512,
           342
         ],
-        "filter" : "CILanczosScaleTransform",
-        "name" : "neighborhood",
-        "path" : "normalized\/south\/industrial_l01_v01\/neighborhood.png",
-        "pivot" : [
+        "filter": "premultiplied-bilinear-v1",
+        "name": "neighborhood",
+        "path": "normalized/south/industrial_l01_v01/neighborhood.png",
+        "pivot": [
           256,
           299
         ],
-        "rounding" : "round-half-even source-coordinate receipts",
-        "sha256" : "e2cf7346a0acedcd7e6098c8791b4c33ad3214b42f5659ed7324c46cb2dfc180",
-        "socket" : [
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "71d071a41e8fc77f3c7de5ef6d5f2b9301320995c22646d15d580680fdf2ef4d",
+        "socket": [
           213,
           278
         ]
       },
       {
-        "canvas" : [
+        "canvas": [
           256,
           171
         ],
-        "filter" : "CILanczosScaleTransform",
-        "name" : "city",
-        "path" : "normalized\/south\/industrial_l01_v01\/city.png",
-        "pivot" : [
+        "filter": "premultiplied-bilinear-v1",
+        "name": "city",
+        "path": "normalized/south/industrial_l01_v01/city.png",
+        "pivot": [
           128,
           150
         ],
-        "rounding" : "round-half-even source-coordinate receipts",
-        "sha256" : "0b65e34cd4d3b13d6405e70566f15d5af8569bf98652c3f62bf218b5a3b8407a",
-        "socket" : [
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "3829d3778a7a91b3d911b3f592e5875dfef194051a653c31003f510b76eec73c",
+        "socket": [
           107,
           139
         ]
       }
     ],
-    "logicalId" : "industrial_l01_v01",
-    "normalization" : "full-canvas RGBA; border-connected chroma removal; no crop\/trim; CILanczosScaleTransform whole-canvas LODs",
-    "normalizedPath" : "normalized\/south\/industrial_l01_v01\/source-rgba.png",
-    "normalizedSha256" : "541ed7f7ec572669c5ab6d2a9f55d29718c78ddaa58bb4d5502ab150f08116c1",
-    "productionSelected" : false,
-    "profilePath" : "docs\/production\/decisions\/CONTRACT-026-registration-profiles-v1.json",
-    "profileSha256" : "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8",
-    "rawBytesPreserved" : true,
-    "rawPath" : "raw\/industrial_l01_v01-source-v01.png",
-    "rawSha256" : "1c5132289691f74a6cbff9b9ad38fad2d0d92ebfe6560e73e886246be5a3ae9b",
-    "schema" : "PLAY-099-south-admission-v3-receipt",
-    "sourceCanvas" : [
+    "logicalId": "industrial_l01_v01",
+    "normalization": "full-canvas immutable source-rgba; dependency-free premultiplied bilinear derived LODs",
+    "normalizedPath": "normalized/south/industrial_l01_v01/source-rgba.png",
+    "normalizedSha256": "541ed7f7ec572669c5ab6d2a9f55d29718c78ddaa58bb4d5502ab150f08116c1",
+    "productionSelected": false,
+    "profilePath": "docs/production/decisions/CONTRACT-026-registration-profiles-v1.json",
+    "profileSha256": "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8",
+    "rawBytesPreserved": true,
+    "rawPath": "raw/industrial_l01_v01-source-v01.png",
+    "rawSha256": "1c5132289691f74a6cbff9b9ad38fad2d0d92ebfe6560e73e886246be5a3ae9b",
+    "schema": "PLAY-099-south-admission-v3-receipt",
+    "sourceCanvas": [
       1536,
       1024
     ],
-    "task" : "PLAY-099",
-    "variant" : 1,
-    "visualAcceptance" : "not performed; frontier-owned"
+    "task": "PLAY-099",
+    "variant": 1,
+    "visualAcceptance": "not performed; frontier-owned"
   },
   {
-    "borderConnectedChromaPixelsRemoved" : 1207594,
-    "chromaThreshold" : 160,
-    "direction" : "south",
-    "footprintPolygonSource" : [
+    "borderConnectedChromaPixelsRemoved": 1207594,
+    "chromaThreshold": 160,
+    "direction": "south",
+    "footprintPolygonSource": [
       [
         768,
         640
@@ -241,99 +241,99 @@
         768
       ]
     ],
-    "frontageSocketSource" : [
+    "frontageSocketSource": [
       640,
       832
     ],
-    "groundPivotSource" : [
+    "groundPivotSource": [
       768,
       896
     ],
-    "integrationAdmitted" : false,
-    "level" : 1,
-    "lods" : [
+    "integrationAdmitted": false,
+    "level": 1,
+    "lods": [
       {
-        "canvas" : [
+        "canvas": [
           1024,
           683
         ],
-        "filter" : "CILanczosScaleTransform",
-        "name" : "block",
-        "path" : "normalized\/south\/industrial_l01_v02\/block.png",
-        "pivot" : [
+        "filter": "premultiplied-bilinear-v1",
+        "name": "block",
+        "path": "normalized/south/industrial_l01_v02/block.png",
+        "pivot": [
           512,
           598
         ],
-        "rounding" : "round-half-even source-coordinate receipts",
-        "sha256" : "010953cfe5d0b767da39d15747c1a33e630d62c1b6d0fc9927ca93de763407d1",
-        "socket" : [
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "70cb1b86b0805ebcbafe5a1160845cd8aa7886f5cdd386e94cca4fdb9c543503",
+        "socket": [
           427,
           555
         ]
       },
       {
-        "canvas" : [
+        "canvas": [
           512,
           342
         ],
-        "filter" : "CILanczosScaleTransform",
-        "name" : "neighborhood",
-        "path" : "normalized\/south\/industrial_l01_v02\/neighborhood.png",
-        "pivot" : [
+        "filter": "premultiplied-bilinear-v1",
+        "name": "neighborhood",
+        "path": "normalized/south/industrial_l01_v02/neighborhood.png",
+        "pivot": [
           256,
           299
         ],
-        "rounding" : "round-half-even source-coordinate receipts",
-        "sha256" : "e2cf7346a0acedcd7e6098c8791b4c33ad3214b42f5659ed7324c46cb2dfc180",
-        "socket" : [
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "18cdee44bc2b5a6761505b3adcca6da5737e1814c949031bad0322ad519ff207",
+        "socket": [
           213,
           278
         ]
       },
       {
-        "canvas" : [
+        "canvas": [
           256,
           171
         ],
-        "filter" : "CILanczosScaleTransform",
-        "name" : "city",
-        "path" : "normalized\/south\/industrial_l01_v02\/city.png",
-        "pivot" : [
+        "filter": "premultiplied-bilinear-v1",
+        "name": "city",
+        "path": "normalized/south/industrial_l01_v02/city.png",
+        "pivot": [
           128,
           150
         ],
-        "rounding" : "round-half-even source-coordinate receipts",
-        "sha256" : "0b65e34cd4d3b13d6405e70566f15d5af8569bf98652c3f62bf218b5a3b8407a",
-        "socket" : [
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "734f004441c986c3402659245d7f3be2eddc5af586dbe074cb8d68a6a8454257",
+        "socket": [
           107,
           139
         ]
       }
     ],
-    "logicalId" : "industrial_l01_v02",
-    "normalization" : "full-canvas RGBA; border-connected chroma removal; no crop\/trim; CILanczosScaleTransform whole-canvas LODs",
-    "normalizedPath" : "normalized\/south\/industrial_l01_v02\/source-rgba.png",
-    "normalizedSha256" : "f4ca13659ff3caef99e807fcbc9384555415665c51fbf67716c912484b5410d4",
-    "productionSelected" : false,
-    "profilePath" : "docs\/production\/decisions\/CONTRACT-026-registration-profiles-v1.json",
-    "profileSha256" : "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8",
-    "rawBytesPreserved" : true,
-    "rawPath" : "raw\/industrial_l01_v02-source-v01.png",
-    "rawSha256" : "3da2842a0a36ae3aa27d00703572d16e094b49be2e15f36c63e7e1afece0caa5",
-    "schema" : "PLAY-099-south-admission-v3-receipt",
-    "sourceCanvas" : [
+    "logicalId": "industrial_l01_v02",
+    "normalization": "full-canvas immutable source-rgba; dependency-free premultiplied bilinear derived LODs",
+    "normalizedPath": "normalized/south/industrial_l01_v02/source-rgba.png",
+    "normalizedSha256": "f4ca13659ff3caef99e807fcbc9384555415665c51fbf67716c912484b5410d4",
+    "productionSelected": false,
+    "profilePath": "docs/production/decisions/CONTRACT-026-registration-profiles-v1.json",
+    "profileSha256": "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8",
+    "rawBytesPreserved": true,
+    "rawPath": "raw/industrial_l01_v02-source-v01.png",
+    "rawSha256": "3da2842a0a36ae3aa27d00703572d16e094b49be2e15f36c63e7e1afece0caa5",
+    "schema": "PLAY-099-south-admission-v3-receipt",
+    "sourceCanvas": [
       1536,
       1024
     ],
-    "task" : "PLAY-099",
-    "variant" : 2,
-    "visualAcceptance" : "not performed; frontier-owned"
+    "task": "PLAY-099",
+    "variant": 2,
+    "visualAcceptance": "not performed; frontier-owned"
   },
   {
-    "borderConnectedChromaPixelsRemoved" : 1160163,
-    "chromaThreshold" : 160,
-    "direction" : "south",
-    "footprintPolygonSource" : [
+    "borderConnectedChromaPixelsRemoved": 1160163,
+    "chromaThreshold": 160,
+    "direction": "south",
+    "footprintPolygonSource": [
       [
         768,
         640
@@ -351,99 +351,99 @@
         768
       ]
     ],
-    "frontageSocketSource" : [
+    "frontageSocketSource": [
       640,
       832
     ],
-    "groundPivotSource" : [
+    "groundPivotSource": [
       768,
       896
     ],
-    "integrationAdmitted" : false,
-    "level" : 2,
-    "lods" : [
+    "integrationAdmitted": false,
+    "level": 2,
+    "lods": [
       {
-        "canvas" : [
+        "canvas": [
           1024,
           683
         ],
-        "filter" : "CILanczosScaleTransform",
-        "name" : "block",
-        "path" : "normalized\/south\/industrial_l02_v00\/block.png",
-        "pivot" : [
+        "filter": "premultiplied-bilinear-v1",
+        "name": "block",
+        "path": "normalized/south/industrial_l02_v00/block.png",
+        "pivot": [
           512,
           598
         ],
-        "rounding" : "round-half-even source-coordinate receipts",
-        "sha256" : "010953cfe5d0b767da39d15747c1a33e630d62c1b6d0fc9927ca93de763407d1",
-        "socket" : [
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "c1abf6b9d2ac10ad7535364ed470b84d6d0f684e92996be86382c0183c9efdcf",
+        "socket": [
           427,
           555
         ]
       },
       {
-        "canvas" : [
+        "canvas": [
           512,
           342
         ],
-        "filter" : "CILanczosScaleTransform",
-        "name" : "neighborhood",
-        "path" : "normalized\/south\/industrial_l02_v00\/neighborhood.png",
-        "pivot" : [
+        "filter": "premultiplied-bilinear-v1",
+        "name": "neighborhood",
+        "path": "normalized/south/industrial_l02_v00/neighborhood.png",
+        "pivot": [
           256,
           299
         ],
-        "rounding" : "round-half-even source-coordinate receipts",
-        "sha256" : "e2cf7346a0acedcd7e6098c8791b4c33ad3214b42f5659ed7324c46cb2dfc180",
-        "socket" : [
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "053b66917ed70e7bb5b63e288f8239a49efb502a63935197e54ca0117604286f",
+        "socket": [
           213,
           278
         ]
       },
       {
-        "canvas" : [
+        "canvas": [
           256,
           171
         ],
-        "filter" : "CILanczosScaleTransform",
-        "name" : "city",
-        "path" : "normalized\/south\/industrial_l02_v00\/city.png",
-        "pivot" : [
+        "filter": "premultiplied-bilinear-v1",
+        "name": "city",
+        "path": "normalized/south/industrial_l02_v00/city.png",
+        "pivot": [
           128,
           150
         ],
-        "rounding" : "round-half-even source-coordinate receipts",
-        "sha256" : "0b65e34cd4d3b13d6405e70566f15d5af8569bf98652c3f62bf218b5a3b8407a",
-        "socket" : [
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "6502bde71391dae4fa1fff58963303f20bb3f4592f42596f9e1a8811bdb56ddf",
+        "socket": [
           107,
           139
         ]
       }
     ],
-    "logicalId" : "industrial_l02_v00",
-    "normalization" : "full-canvas RGBA; border-connected chroma removal; no crop\/trim; CILanczosScaleTransform whole-canvas LODs",
-    "normalizedPath" : "normalized\/south\/industrial_l02_v00\/source-rgba.png",
-    "normalizedSha256" : "5c2997799a5c5d039b0f4e94ccb14f8938d19033642b29b0459a2037bd777bb2",
-    "productionSelected" : false,
-    "profilePath" : "docs\/production\/decisions\/CONTRACT-026-registration-profiles-v1.json",
-    "profileSha256" : "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8",
-    "rawBytesPreserved" : true,
-    "rawPath" : "raw\/industrial_l02_v00-source-v01.png",
-    "rawSha256" : "294817873333d7ebb9d763f5932624a8f83cd7784cdddb9ab7b5c90d8a64574a",
-    "schema" : "PLAY-099-south-admission-v3-receipt",
-    "sourceCanvas" : [
+    "logicalId": "industrial_l02_v00",
+    "normalization": "full-canvas immutable source-rgba; dependency-free premultiplied bilinear derived LODs",
+    "normalizedPath": "normalized/south/industrial_l02_v00/source-rgba.png",
+    "normalizedSha256": "5c2997799a5c5d039b0f4e94ccb14f8938d19033642b29b0459a2037bd777bb2",
+    "productionSelected": false,
+    "profilePath": "docs/production/decisions/CONTRACT-026-registration-profiles-v1.json",
+    "profileSha256": "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8",
+    "rawBytesPreserved": true,
+    "rawPath": "raw/industrial_l02_v00-source-v01.png",
+    "rawSha256": "294817873333d7ebb9d763f5932624a8f83cd7784cdddb9ab7b5c90d8a64574a",
+    "schema": "PLAY-099-south-admission-v3-receipt",
+    "sourceCanvas": [
       1536,
       1024
     ],
-    "task" : "PLAY-099",
-    "variant" : 0,
-    "visualAcceptance" : "not performed; frontier-owned"
+    "task": "PLAY-099",
+    "variant": 0,
+    "visualAcceptance": "not performed; frontier-owned"
   },
   {
-    "borderConnectedChromaPixelsRemoved" : 1123242,
-    "chromaThreshold" : 160,
-    "direction" : "south",
-    "footprintPolygonSource" : [
+    "borderConnectedChromaPixelsRemoved": 1123242,
+    "chromaThreshold": 160,
+    "direction": "south",
+    "footprintPolygonSource": [
       [
         768,
         640
@@ -461,99 +461,99 @@
         768
       ]
     ],
-    "frontageSocketSource" : [
+    "frontageSocketSource": [
       640,
       832
     ],
-    "groundPivotSource" : [
+    "groundPivotSource": [
       768,
       896
     ],
-    "integrationAdmitted" : false,
-    "level" : 2,
-    "lods" : [
+    "integrationAdmitted": false,
+    "level": 2,
+    "lods": [
       {
-        "canvas" : [
+        "canvas": [
           1024,
           683
         ],
-        "filter" : "CILanczosScaleTransform",
-        "name" : "block",
-        "path" : "normalized\/south\/industrial_l02_v01\/block.png",
-        "pivot" : [
+        "filter": "premultiplied-bilinear-v1",
+        "name": "block",
+        "path": "normalized/south/industrial_l02_v01/block.png",
+        "pivot": [
           512,
           598
         ],
-        "rounding" : "round-half-even source-coordinate receipts",
-        "sha256" : "010953cfe5d0b767da39d15747c1a33e630d62c1b6d0fc9927ca93de763407d1",
-        "socket" : [
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "9e728eb7ce7f25d23bbbbaebbd7f0d5532df4b8a89bdef2628dbca1439c2eb45",
+        "socket": [
           427,
           555
         ]
       },
       {
-        "canvas" : [
+        "canvas": [
           512,
           342
         ],
-        "filter" : "CILanczosScaleTransform",
-        "name" : "neighborhood",
-        "path" : "normalized\/south\/industrial_l02_v01\/neighborhood.png",
-        "pivot" : [
+        "filter": "premultiplied-bilinear-v1",
+        "name": "neighborhood",
+        "path": "normalized/south/industrial_l02_v01/neighborhood.png",
+        "pivot": [
           256,
           299
         ],
-        "rounding" : "round-half-even source-coordinate receipts",
-        "sha256" : "e2cf7346a0acedcd7e6098c8791b4c33ad3214b42f5659ed7324c46cb2dfc180",
-        "socket" : [
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "d52ca010d17b8d98ef46214ee9626263372399e9730587d533fa2a14dd56a92f",
+        "socket": [
           213,
           278
         ]
       },
       {
-        "canvas" : [
+        "canvas": [
           256,
           171
         ],
-        "filter" : "CILanczosScaleTransform",
-        "name" : "city",
-        "path" : "normalized\/south\/industrial_l02_v01\/city.png",
-        "pivot" : [
+        "filter": "premultiplied-bilinear-v1",
+        "name": "city",
+        "path": "normalized/south/industrial_l02_v01/city.png",
+        "pivot": [
           128,
           150
         ],
-        "rounding" : "round-half-even source-coordinate receipts",
-        "sha256" : "0b65e34cd4d3b13d6405e70566f15d5af8569bf98652c3f62bf218b5a3b8407a",
-        "socket" : [
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "c7c6ff8542a0b9882065e3bbc3b2c5249fc5030b6ad0c43ec6ae48343aa2301d",
+        "socket": [
           107,
           139
         ]
       }
     ],
-    "logicalId" : "industrial_l02_v01",
-    "normalization" : "full-canvas RGBA; border-connected chroma removal; no crop\/trim; CILanczosScaleTransform whole-canvas LODs",
-    "normalizedPath" : "normalized\/south\/industrial_l02_v01\/source-rgba.png",
-    "normalizedSha256" : "59154695258de1c1c13d30f0c2086e571cb6e6f4ae1e232f4d6d7310afdbaee9",
-    "productionSelected" : false,
-    "profilePath" : "docs\/production\/decisions\/CONTRACT-026-registration-profiles-v1.json",
-    "profileSha256" : "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8",
-    "rawBytesPreserved" : true,
-    "rawPath" : "raw\/industrial_l02_v01-source-v01.png",
-    "rawSha256" : "008c6ccf5785ef9be39db539a9a5b230292542c8ff269d8eeeaa9b18685e2912",
-    "schema" : "PLAY-099-south-admission-v3-receipt",
-    "sourceCanvas" : [
+    "logicalId": "industrial_l02_v01",
+    "normalization": "full-canvas immutable source-rgba; dependency-free premultiplied bilinear derived LODs",
+    "normalizedPath": "normalized/south/industrial_l02_v01/source-rgba.png",
+    "normalizedSha256": "59154695258de1c1c13d30f0c2086e571cb6e6f4ae1e232f4d6d7310afdbaee9",
+    "productionSelected": false,
+    "profilePath": "docs/production/decisions/CONTRACT-026-registration-profiles-v1.json",
+    "profileSha256": "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8",
+    "rawBytesPreserved": true,
+    "rawPath": "raw/industrial_l02_v01-source-v01.png",
+    "rawSha256": "008c6ccf5785ef9be39db539a9a5b230292542c8ff269d8eeeaa9b18685e2912",
+    "schema": "PLAY-099-south-admission-v3-receipt",
+    "sourceCanvas": [
       1536,
       1024
     ],
-    "task" : "PLAY-099",
-    "variant" : 1,
-    "visualAcceptance" : "not performed; frontier-owned"
+    "task": "PLAY-099",
+    "variant": 1,
+    "visualAcceptance": "not performed; frontier-owned"
   },
   {
-    "borderConnectedChromaPixelsRemoved" : 1179961,
-    "chromaThreshold" : 160,
-    "direction" : "south",
-    "footprintPolygonSource" : [
+    "borderConnectedChromaPixelsRemoved": 1179961,
+    "chromaThreshold": 160,
+    "direction": "south",
+    "footprintPolygonSource": [
       [
         768,
         640
@@ -571,99 +571,99 @@
         768
       ]
     ],
-    "frontageSocketSource" : [
+    "frontageSocketSource": [
       640,
       832
     ],
-    "groundPivotSource" : [
+    "groundPivotSource": [
       768,
       896
     ],
-    "integrationAdmitted" : false,
-    "level" : 2,
-    "lods" : [
+    "integrationAdmitted": false,
+    "level": 2,
+    "lods": [
       {
-        "canvas" : [
+        "canvas": [
           1024,
           683
         ],
-        "filter" : "CILanczosScaleTransform",
-        "name" : "block",
-        "path" : "normalized\/south\/industrial_l02_v02\/block.png",
-        "pivot" : [
+        "filter": "premultiplied-bilinear-v1",
+        "name": "block",
+        "path": "normalized/south/industrial_l02_v02/block.png",
+        "pivot": [
           512,
           598
         ],
-        "rounding" : "round-half-even source-coordinate receipts",
-        "sha256" : "010953cfe5d0b767da39d15747c1a33e630d62c1b6d0fc9927ca93de763407d1",
-        "socket" : [
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "c7db807b4305eadc4e7fdaec0343c1be86f6c30ad7524946d68606cef02f9f74",
+        "socket": [
           427,
           555
         ]
       },
       {
-        "canvas" : [
+        "canvas": [
           512,
           342
         ],
-        "filter" : "CILanczosScaleTransform",
-        "name" : "neighborhood",
-        "path" : "normalized\/south\/industrial_l02_v02\/neighborhood.png",
-        "pivot" : [
+        "filter": "premultiplied-bilinear-v1",
+        "name": "neighborhood",
+        "path": "normalized/south/industrial_l02_v02/neighborhood.png",
+        "pivot": [
           256,
           299
         ],
-        "rounding" : "round-half-even source-coordinate receipts",
-        "sha256" : "e2cf7346a0acedcd7e6098c8791b4c33ad3214b42f5659ed7324c46cb2dfc180",
-        "socket" : [
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "8582dc4510e0c4590f3e022ad5cd90b991d83a338eb7c02886f13a157745df23",
+        "socket": [
           213,
           278
         ]
       },
       {
-        "canvas" : [
+        "canvas": [
           256,
           171
         ],
-        "filter" : "CILanczosScaleTransform",
-        "name" : "city",
-        "path" : "normalized\/south\/industrial_l02_v02\/city.png",
-        "pivot" : [
+        "filter": "premultiplied-bilinear-v1",
+        "name": "city",
+        "path": "normalized/south/industrial_l02_v02/city.png",
+        "pivot": [
           128,
           150
         ],
-        "rounding" : "round-half-even source-coordinate receipts",
-        "sha256" : "0b65e34cd4d3b13d6405e70566f15d5af8569bf98652c3f62bf218b5a3b8407a",
-        "socket" : [
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "560d0f17487fdc07cff1e82dbe8fb0972a2c898b4d540a9da773f4059201d290",
+        "socket": [
           107,
           139
         ]
       }
     ],
-    "logicalId" : "industrial_l02_v02",
-    "normalization" : "full-canvas RGBA; border-connected chroma removal; no crop\/trim; CILanczosScaleTransform whole-canvas LODs",
-    "normalizedPath" : "normalized\/south\/industrial_l02_v02\/source-rgba.png",
-    "normalizedSha256" : "06522265230cf695847bc62976209569a31546b388eef5cf6d9912129a98d2fa",
-    "productionSelected" : false,
-    "profilePath" : "docs\/production\/decisions\/CONTRACT-026-registration-profiles-v1.json",
-    "profileSha256" : "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8",
-    "rawBytesPreserved" : true,
-    "rawPath" : "raw\/industrial_l02_v02-source-v01.png",
-    "rawSha256" : "94e8031146b34e8025b6045410480fd9a51e99770a4c651e48bcd0f7d68ec55b",
-    "schema" : "PLAY-099-south-admission-v3-receipt",
-    "sourceCanvas" : [
+    "logicalId": "industrial_l02_v02",
+    "normalization": "full-canvas immutable source-rgba; dependency-free premultiplied bilinear derived LODs",
+    "normalizedPath": "normalized/south/industrial_l02_v02/source-rgba.png",
+    "normalizedSha256": "06522265230cf695847bc62976209569a31546b388eef5cf6d9912129a98d2fa",
+    "productionSelected": false,
+    "profilePath": "docs/production/decisions/CONTRACT-026-registration-profiles-v1.json",
+    "profileSha256": "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8",
+    "rawBytesPreserved": true,
+    "rawPath": "raw/industrial_l02_v02-source-v01.png",
+    "rawSha256": "94e8031146b34e8025b6045410480fd9a51e99770a4c651e48bcd0f7d68ec55b",
+    "schema": "PLAY-099-south-admission-v3-receipt",
+    "sourceCanvas": [
       1536,
       1024
     ],
-    "task" : "PLAY-099",
-    "variant" : 2,
-    "visualAcceptance" : "not performed; frontier-owned"
+    "task": "PLAY-099",
+    "variant": 2,
+    "visualAcceptance": "not performed; frontier-owned"
   },
   {
-    "borderConnectedChromaPixelsRemoved" : 1085482,
-    "chromaThreshold" : 160,
-    "direction" : "south",
-    "footprintPolygonSource" : [
+    "borderConnectedChromaPixelsRemoved": 1085482,
+    "chromaThreshold": 160,
+    "direction": "south",
+    "footprintPolygonSource": [
       [
         768,
         640
@@ -681,99 +681,99 @@
         768
       ]
     ],
-    "frontageSocketSource" : [
+    "frontageSocketSource": [
       640,
       832
     ],
-    "groundPivotSource" : [
+    "groundPivotSource": [
       768,
       896
     ],
-    "integrationAdmitted" : false,
-    "level" : 3,
-    "lods" : [
+    "integrationAdmitted": false,
+    "level": 3,
+    "lods": [
       {
-        "canvas" : [
+        "canvas": [
           1024,
           683
         ],
-        "filter" : "CILanczosScaleTransform",
-        "name" : "block",
-        "path" : "normalized\/south\/industrial_l03_v00\/block.png",
-        "pivot" : [
+        "filter": "premultiplied-bilinear-v1",
+        "name": "block",
+        "path": "normalized/south/industrial_l03_v00/block.png",
+        "pivot": [
           512,
           598
         ],
-        "rounding" : "round-half-even source-coordinate receipts",
-        "sha256" : "010953cfe5d0b767da39d15747c1a33e630d62c1b6d0fc9927ca93de763407d1",
-        "socket" : [
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "d93c30e435f648fca92e94441535176ae823a9e44b63bba87f1df923aa12cc45",
+        "socket": [
           427,
           555
         ]
       },
       {
-        "canvas" : [
+        "canvas": [
           512,
           342
         ],
-        "filter" : "CILanczosScaleTransform",
-        "name" : "neighborhood",
-        "path" : "normalized\/south\/industrial_l03_v00\/neighborhood.png",
-        "pivot" : [
+        "filter": "premultiplied-bilinear-v1",
+        "name": "neighborhood",
+        "path": "normalized/south/industrial_l03_v00/neighborhood.png",
+        "pivot": [
           256,
           299
         ],
-        "rounding" : "round-half-even source-coordinate receipts",
-        "sha256" : "e2cf7346a0acedcd7e6098c8791b4c33ad3214b42f5659ed7324c46cb2dfc180",
-        "socket" : [
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "9ea1382ed86bbb03f3b1258dd70334dfb49fc65172184b0a08f991730c80566e",
+        "socket": [
           213,
           278
         ]
       },
       {
-        "canvas" : [
+        "canvas": [
           256,
           171
         ],
-        "filter" : "CILanczosScaleTransform",
-        "name" : "city",
-        "path" : "normalized\/south\/industrial_l03_v00\/city.png",
-        "pivot" : [
+        "filter": "premultiplied-bilinear-v1",
+        "name": "city",
+        "path": "normalized/south/industrial_l03_v00/city.png",
+        "pivot": [
           128,
           150
         ],
-        "rounding" : "round-half-even source-coordinate receipts",
-        "sha256" : "0b65e34cd4d3b13d6405e70566f15d5af8569bf98652c3f62bf218b5a3b8407a",
-        "socket" : [
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "ddeab3db72f2b51443ef9b716e9228022d920b251fe84c7dcd86c7f867feefb7",
+        "socket": [
           107,
           139
         ]
       }
     ],
-    "logicalId" : "industrial_l03_v00",
-    "normalization" : "full-canvas RGBA; border-connected chroma removal; no crop\/trim; CILanczosScaleTransform whole-canvas LODs",
-    "normalizedPath" : "normalized\/south\/industrial_l03_v00\/source-rgba.png",
-    "normalizedSha256" : "2d7943b897c14eeba7acecde1b44d23c912034c26abe0514359c41a0d1ef0c66",
-    "productionSelected" : false,
-    "profilePath" : "docs\/production\/decisions\/CONTRACT-026-registration-profiles-v1.json",
-    "profileSha256" : "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8",
-    "rawBytesPreserved" : true,
-    "rawPath" : "raw\/industrial_l03_v00-source-v01.png",
-    "rawSha256" : "22260fb870a981bf18b0f39f10d84f8c1bce594577756ce715bf0f130c31cea1",
-    "schema" : "PLAY-099-south-admission-v3-receipt",
-    "sourceCanvas" : [
+    "logicalId": "industrial_l03_v00",
+    "normalization": "full-canvas immutable source-rgba; dependency-free premultiplied bilinear derived LODs",
+    "normalizedPath": "normalized/south/industrial_l03_v00/source-rgba.png",
+    "normalizedSha256": "2d7943b897c14eeba7acecde1b44d23c912034c26abe0514359c41a0d1ef0c66",
+    "productionSelected": false,
+    "profilePath": "docs/production/decisions/CONTRACT-026-registration-profiles-v1.json",
+    "profileSha256": "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8",
+    "rawBytesPreserved": true,
+    "rawPath": "raw/industrial_l03_v00-source-v01.png",
+    "rawSha256": "22260fb870a981bf18b0f39f10d84f8c1bce594577756ce715bf0f130c31cea1",
+    "schema": "PLAY-099-south-admission-v3-receipt",
+    "sourceCanvas": [
       1536,
       1024
     ],
-    "task" : "PLAY-099",
-    "variant" : 0,
-    "visualAcceptance" : "not performed; frontier-owned"
+    "task": "PLAY-099",
+    "variant": 0,
+    "visualAcceptance": "not performed; frontier-owned"
   },
   {
-    "borderConnectedChromaPixelsRemoved" : 1157050,
-    "chromaThreshold" : 160,
-    "direction" : "south",
-    "footprintPolygonSource" : [
+    "borderConnectedChromaPixelsRemoved": 1157050,
+    "chromaThreshold": 160,
+    "direction": "south",
+    "footprintPolygonSource": [
       [
         768,
         640
@@ -791,99 +791,99 @@
         768
       ]
     ],
-    "frontageSocketSource" : [
+    "frontageSocketSource": [
       640,
       832
     ],
-    "groundPivotSource" : [
+    "groundPivotSource": [
       768,
       896
     ],
-    "integrationAdmitted" : false,
-    "level" : 3,
-    "lods" : [
+    "integrationAdmitted": false,
+    "level": 3,
+    "lods": [
       {
-        "canvas" : [
+        "canvas": [
           1024,
           683
         ],
-        "filter" : "CILanczosScaleTransform",
-        "name" : "block",
-        "path" : "normalized\/south\/industrial_l03_v01\/block.png",
-        "pivot" : [
+        "filter": "premultiplied-bilinear-v1",
+        "name": "block",
+        "path": "normalized/south/industrial_l03_v01/block.png",
+        "pivot": [
           512,
           598
         ],
-        "rounding" : "round-half-even source-coordinate receipts",
-        "sha256" : "010953cfe5d0b767da39d15747c1a33e630d62c1b6d0fc9927ca93de763407d1",
-        "socket" : [
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "a9069d07e7937a24e0e1db1212c644152028685dce46759bac70f9f74dc13890",
+        "socket": [
           427,
           555
         ]
       },
       {
-        "canvas" : [
+        "canvas": [
           512,
           342
         ],
-        "filter" : "CILanczosScaleTransform",
-        "name" : "neighborhood",
-        "path" : "normalized\/south\/industrial_l03_v01\/neighborhood.png",
-        "pivot" : [
+        "filter": "premultiplied-bilinear-v1",
+        "name": "neighborhood",
+        "path": "normalized/south/industrial_l03_v01/neighborhood.png",
+        "pivot": [
           256,
           299
         ],
-        "rounding" : "round-half-even source-coordinate receipts",
-        "sha256" : "e2cf7346a0acedcd7e6098c8791b4c33ad3214b42f5659ed7324c46cb2dfc180",
-        "socket" : [
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "923e748f68ae23e807bfe05aa2c668c7593e02cef65315447e2a0d28b261f1b5",
+        "socket": [
           213,
           278
         ]
       },
       {
-        "canvas" : [
+        "canvas": [
           256,
           171
         ],
-        "filter" : "CILanczosScaleTransform",
-        "name" : "city",
-        "path" : "normalized\/south\/industrial_l03_v01\/city.png",
-        "pivot" : [
+        "filter": "premultiplied-bilinear-v1",
+        "name": "city",
+        "path": "normalized/south/industrial_l03_v01/city.png",
+        "pivot": [
           128,
           150
         ],
-        "rounding" : "round-half-even source-coordinate receipts",
-        "sha256" : "0b65e34cd4d3b13d6405e70566f15d5af8569bf98652c3f62bf218b5a3b8407a",
-        "socket" : [
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "3503ca36078ba62397f70f63f131c412c4b5821a11b7986dcfce19eb1688a64a",
+        "socket": [
           107,
           139
         ]
       }
     ],
-    "logicalId" : "industrial_l03_v01",
-    "normalization" : "full-canvas RGBA; border-connected chroma removal; no crop\/trim; CILanczosScaleTransform whole-canvas LODs",
-    "normalizedPath" : "normalized\/south\/industrial_l03_v01\/source-rgba.png",
-    "normalizedSha256" : "fd6a1e5561243df171f1ced0e7d66e9f211e56039ee1febfac33e804b916d99e",
-    "productionSelected" : false,
-    "profilePath" : "docs\/production\/decisions\/CONTRACT-026-registration-profiles-v1.json",
-    "profileSha256" : "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8",
-    "rawBytesPreserved" : true,
-    "rawPath" : "raw\/industrial_l03_v01-source-v01.png",
-    "rawSha256" : "1f11174b58be21d640fdb122626d5c0f06452dda4f36706f34d51363f220fa72",
-    "schema" : "PLAY-099-south-admission-v3-receipt",
-    "sourceCanvas" : [
+    "logicalId": "industrial_l03_v01",
+    "normalization": "full-canvas immutable source-rgba; dependency-free premultiplied bilinear derived LODs",
+    "normalizedPath": "normalized/south/industrial_l03_v01/source-rgba.png",
+    "normalizedSha256": "fd6a1e5561243df171f1ced0e7d66e9f211e56039ee1febfac33e804b916d99e",
+    "productionSelected": false,
+    "profilePath": "docs/production/decisions/CONTRACT-026-registration-profiles-v1.json",
+    "profileSha256": "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8",
+    "rawBytesPreserved": true,
+    "rawPath": "raw/industrial_l03_v01-source-v01.png",
+    "rawSha256": "1f11174b58be21d640fdb122626d5c0f06452dda4f36706f34d51363f220fa72",
+    "schema": "PLAY-099-south-admission-v3-receipt",
+    "sourceCanvas": [
       1536,
       1024
     ],
-    "task" : "PLAY-099",
-    "variant" : 1,
-    "visualAcceptance" : "not performed; frontier-owned"
+    "task": "PLAY-099",
+    "variant": 1,
+    "visualAcceptance": "not performed; frontier-owned"
   },
   {
-    "borderConnectedChromaPixelsRemoved" : 1071498,
-    "chromaThreshold" : 160,
-    "direction" : "south",
-    "footprintPolygonSource" : [
+    "borderConnectedChromaPixelsRemoved": 1071498,
+    "chromaThreshold": 160,
+    "direction": "south",
+    "footprintPolygonSource": [
       [
         768,
         640
@@ -901,99 +901,99 @@
         768
       ]
     ],
-    "frontageSocketSource" : [
+    "frontageSocketSource": [
       640,
       832
     ],
-    "groundPivotSource" : [
+    "groundPivotSource": [
       768,
       896
     ],
-    "integrationAdmitted" : false,
-    "level" : 3,
-    "lods" : [
+    "integrationAdmitted": false,
+    "level": 3,
+    "lods": [
       {
-        "canvas" : [
+        "canvas": [
           1024,
           683
         ],
-        "filter" : "CILanczosScaleTransform",
-        "name" : "block",
-        "path" : "normalized\/south\/industrial_l03_v02\/block.png",
-        "pivot" : [
+        "filter": "premultiplied-bilinear-v1",
+        "name": "block",
+        "path": "normalized/south/industrial_l03_v02/block.png",
+        "pivot": [
           512,
           598
         ],
-        "rounding" : "round-half-even source-coordinate receipts",
-        "sha256" : "010953cfe5d0b767da39d15747c1a33e630d62c1b6d0fc9927ca93de763407d1",
-        "socket" : [
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "158c1b186a33bfac0380e66c26b0225c78b42d74ab23d5b933028378d2453b67",
+        "socket": [
           427,
           555
         ]
       },
       {
-        "canvas" : [
+        "canvas": [
           512,
           342
         ],
-        "filter" : "CILanczosScaleTransform",
-        "name" : "neighborhood",
-        "path" : "normalized\/south\/industrial_l03_v02\/neighborhood.png",
-        "pivot" : [
+        "filter": "premultiplied-bilinear-v1",
+        "name": "neighborhood",
+        "path": "normalized/south/industrial_l03_v02/neighborhood.png",
+        "pivot": [
           256,
           299
         ],
-        "rounding" : "round-half-even source-coordinate receipts",
-        "sha256" : "e2cf7346a0acedcd7e6098c8791b4c33ad3214b42f5659ed7324c46cb2dfc180",
-        "socket" : [
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "65813e8ba16c9105e2b72f0fd9985a7a8bd949149a14bd527ddee3adc4471cd5",
+        "socket": [
           213,
           278
         ]
       },
       {
-        "canvas" : [
+        "canvas": [
           256,
           171
         ],
-        "filter" : "CILanczosScaleTransform",
-        "name" : "city",
-        "path" : "normalized\/south\/industrial_l03_v02\/city.png",
-        "pivot" : [
+        "filter": "premultiplied-bilinear-v1",
+        "name": "city",
+        "path": "normalized/south/industrial_l03_v02/city.png",
+        "pivot": [
           128,
           150
         ],
-        "rounding" : "round-half-even source-coordinate receipts",
-        "sha256" : "0b65e34cd4d3b13d6405e70566f15d5af8569bf98652c3f62bf218b5a3b8407a",
-        "socket" : [
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "f680cf22b1a99a8607d0406ab22e9695846d2e600acebcb8dfb2569d39d1b229",
+        "socket": [
           107,
           139
         ]
       }
     ],
-    "logicalId" : "industrial_l03_v02",
-    "normalization" : "full-canvas RGBA; border-connected chroma removal; no crop\/trim; CILanczosScaleTransform whole-canvas LODs",
-    "normalizedPath" : "normalized\/south\/industrial_l03_v02\/source-rgba.png",
-    "normalizedSha256" : "12e158b54e6cc608456c6467141f9d8011b8d88bde2fd7ca2a74b368ea8e4564",
-    "productionSelected" : false,
-    "profilePath" : "docs\/production\/decisions\/CONTRACT-026-registration-profiles-v1.json",
-    "profileSha256" : "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8",
-    "rawBytesPreserved" : true,
-    "rawPath" : "raw\/industrial_l03_v02-source-v01.png",
-    "rawSha256" : "4cde35c09d4d3ef86880133420d3f14872f4820fd8207c4c286b17092029c830",
-    "schema" : "PLAY-099-south-admission-v3-receipt",
-    "sourceCanvas" : [
+    "logicalId": "industrial_l03_v02",
+    "normalization": "full-canvas immutable source-rgba; dependency-free premultiplied bilinear derived LODs",
+    "normalizedPath": "normalized/south/industrial_l03_v02/source-rgba.png",
+    "normalizedSha256": "12e158b54e6cc608456c6467141f9d8011b8d88bde2fd7ca2a74b368ea8e4564",
+    "productionSelected": false,
+    "profilePath": "docs/production/decisions/CONTRACT-026-registration-profiles-v1.json",
+    "profileSha256": "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8",
+    "rawBytesPreserved": true,
+    "rawPath": "raw/industrial_l03_v02-source-v01.png",
+    "rawSha256": "4cde35c09d4d3ef86880133420d3f14872f4820fd8207c4c286b17092029c830",
+    "schema": "PLAY-099-south-admission-v3-receipt",
+    "sourceCanvas": [
       1536,
       1024
     ],
-    "task" : "PLAY-099",
-    "variant" : 2,
-    "visualAcceptance" : "not performed; frontier-owned"
+    "task": "PLAY-099",
+    "variant": 2,
+    "visualAcceptance": "not performed; frontier-owned"
   },
   {
-    "borderConnectedChromaPixelsRemoved" : 1181110,
-    "chromaThreshold" : 160,
-    "direction" : "south",
-    "footprintPolygonSource" : [
+    "borderConnectedChromaPixelsRemoved": 1181110,
+    "chromaThreshold": 160,
+    "direction": "south",
+    "footprintPolygonSource": [
       [
         768,
         640
@@ -1011,99 +1011,99 @@
         768
       ]
     ],
-    "frontageSocketSource" : [
+    "frontageSocketSource": [
       640,
       832
     ],
-    "groundPivotSource" : [
+    "groundPivotSource": [
       768,
       896
     ],
-    "integrationAdmitted" : false,
-    "level" : 4,
-    "lods" : [
+    "integrationAdmitted": false,
+    "level": 4,
+    "lods": [
       {
-        "canvas" : [
+        "canvas": [
           1024,
           683
         ],
-        "filter" : "CILanczosScaleTransform",
-        "name" : "block",
-        "path" : "normalized\/south\/industrial_l04_v00\/block.png",
-        "pivot" : [
+        "filter": "premultiplied-bilinear-v1",
+        "name": "block",
+        "path": "normalized/south/industrial_l04_v00/block.png",
+        "pivot": [
           512,
           598
         ],
-        "rounding" : "round-half-even source-coordinate receipts",
-        "sha256" : "010953cfe5d0b767da39d15747c1a33e630d62c1b6d0fc9927ca93de763407d1",
-        "socket" : [
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "624d7bf2dd142db198e55713a797e7e36b3612a99f99c34d99ca35d3c7416e03",
+        "socket": [
           427,
           555
         ]
       },
       {
-        "canvas" : [
+        "canvas": [
           512,
           342
         ],
-        "filter" : "CILanczosScaleTransform",
-        "name" : "neighborhood",
-        "path" : "normalized\/south\/industrial_l04_v00\/neighborhood.png",
-        "pivot" : [
+        "filter": "premultiplied-bilinear-v1",
+        "name": "neighborhood",
+        "path": "normalized/south/industrial_l04_v00/neighborhood.png",
+        "pivot": [
           256,
           299
         ],
-        "rounding" : "round-half-even source-coordinate receipts",
-        "sha256" : "e2cf7346a0acedcd7e6098c8791b4c33ad3214b42f5659ed7324c46cb2dfc180",
-        "socket" : [
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "06363cd4b7db6dc167350d00334ff16e5592e72dae5757c909adc4bbe5b804fc",
+        "socket": [
           213,
           278
         ]
       },
       {
-        "canvas" : [
+        "canvas": [
           256,
           171
         ],
-        "filter" : "CILanczosScaleTransform",
-        "name" : "city",
-        "path" : "normalized\/south\/industrial_l04_v00\/city.png",
-        "pivot" : [
+        "filter": "premultiplied-bilinear-v1",
+        "name": "city",
+        "path": "normalized/south/industrial_l04_v00/city.png",
+        "pivot": [
           128,
           150
         ],
-        "rounding" : "round-half-even source-coordinate receipts",
-        "sha256" : "0b65e34cd4d3b13d6405e70566f15d5af8569bf98652c3f62bf218b5a3b8407a",
-        "socket" : [
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "6c6f16d6a43aab0d44782b0c4bca4b4de09b07b4251c31440ee89aaa471fa57f",
+        "socket": [
           107,
           139
         ]
       }
     ],
-    "logicalId" : "industrial_l04_v00",
-    "normalization" : "full-canvas RGBA; border-connected chroma removal; no crop\/trim; CILanczosScaleTransform whole-canvas LODs",
-    "normalizedPath" : "normalized\/south\/industrial_l04_v00\/source-rgba.png",
-    "normalizedSha256" : "9df4722ce48050e7250f2b9e9693abe16c5e99f19ca3a68939da40bf92d5ea41",
-    "productionSelected" : false,
-    "profilePath" : "docs\/production\/decisions\/CONTRACT-026-registration-profiles-v1.json",
-    "profileSha256" : "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8",
-    "rawBytesPreserved" : true,
-    "rawPath" : "raw\/industrial_l04_v00-source-v01.png",
-    "rawSha256" : "6c631be5f372c351fbeb6a9ac9f0343569a7c2a43cbf172bdb83512aef38cef1",
-    "schema" : "PLAY-099-south-admission-v3-receipt",
-    "sourceCanvas" : [
+    "logicalId": "industrial_l04_v00",
+    "normalization": "full-canvas immutable source-rgba; dependency-free premultiplied bilinear derived LODs",
+    "normalizedPath": "normalized/south/industrial_l04_v00/source-rgba.png",
+    "normalizedSha256": "9df4722ce48050e7250f2b9e9693abe16c5e99f19ca3a68939da40bf92d5ea41",
+    "productionSelected": false,
+    "profilePath": "docs/production/decisions/CONTRACT-026-registration-profiles-v1.json",
+    "profileSha256": "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8",
+    "rawBytesPreserved": true,
+    "rawPath": "raw/industrial_l04_v00-source-v01.png",
+    "rawSha256": "6c631be5f372c351fbeb6a9ac9f0343569a7c2a43cbf172bdb83512aef38cef1",
+    "schema": "PLAY-099-south-admission-v3-receipt",
+    "sourceCanvas": [
       1536,
       1024
     ],
-    "task" : "PLAY-099",
-    "variant" : 0,
-    "visualAcceptance" : "not performed; frontier-owned"
+    "task": "PLAY-099",
+    "variant": 0,
+    "visualAcceptance": "not performed; frontier-owned"
   },
   {
-    "borderConnectedChromaPixelsRemoved" : 993233,
-    "chromaThreshold" : 160,
-    "direction" : "south",
-    "footprintPolygonSource" : [
+    "borderConnectedChromaPixelsRemoved": 993233,
+    "chromaThreshold": 160,
+    "direction": "south",
+    "footprintPolygonSource": [
       [
         768,
         640
@@ -1121,99 +1121,99 @@
         768
       ]
     ],
-    "frontageSocketSource" : [
+    "frontageSocketSource": [
       640,
       832
     ],
-    "groundPivotSource" : [
+    "groundPivotSource": [
       768,
       896
     ],
-    "integrationAdmitted" : false,
-    "level" : 4,
-    "lods" : [
+    "integrationAdmitted": false,
+    "level": 4,
+    "lods": [
       {
-        "canvas" : [
+        "canvas": [
           1024,
           683
         ],
-        "filter" : "CILanczosScaleTransform",
-        "name" : "block",
-        "path" : "normalized\/south\/industrial_l04_v01\/block.png",
-        "pivot" : [
+        "filter": "premultiplied-bilinear-v1",
+        "name": "block",
+        "path": "normalized/south/industrial_l04_v01/block.png",
+        "pivot": [
           512,
           598
         ],
-        "rounding" : "round-half-even source-coordinate receipts",
-        "sha256" : "010953cfe5d0b767da39d15747c1a33e630d62c1b6d0fc9927ca93de763407d1",
-        "socket" : [
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "db2cdf1062348ddaaef9af5ed9dbd6c67fcd3f5ea2a32414582cb262194021d9",
+        "socket": [
           427,
           555
         ]
       },
       {
-        "canvas" : [
+        "canvas": [
           512,
           342
         ],
-        "filter" : "CILanczosScaleTransform",
-        "name" : "neighborhood",
-        "path" : "normalized\/south\/industrial_l04_v01\/neighborhood.png",
-        "pivot" : [
+        "filter": "premultiplied-bilinear-v1",
+        "name": "neighborhood",
+        "path": "normalized/south/industrial_l04_v01/neighborhood.png",
+        "pivot": [
           256,
           299
         ],
-        "rounding" : "round-half-even source-coordinate receipts",
-        "sha256" : "e2cf7346a0acedcd7e6098c8791b4c33ad3214b42f5659ed7324c46cb2dfc180",
-        "socket" : [
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "07058e9a515a237c58c275a5f201dca1d611079827b6aa64f639678819fb73e3",
+        "socket": [
           213,
           278
         ]
       },
       {
-        "canvas" : [
+        "canvas": [
           256,
           171
         ],
-        "filter" : "CILanczosScaleTransform",
-        "name" : "city",
-        "path" : "normalized\/south\/industrial_l04_v01\/city.png",
-        "pivot" : [
+        "filter": "premultiplied-bilinear-v1",
+        "name": "city",
+        "path": "normalized/south/industrial_l04_v01/city.png",
+        "pivot": [
           128,
           150
         ],
-        "rounding" : "round-half-even source-coordinate receipts",
-        "sha256" : "0b65e34cd4d3b13d6405e70566f15d5af8569bf98652c3f62bf218b5a3b8407a",
-        "socket" : [
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "b0b881bc1835ea813a003426d7f2ac03049e88219c27cefcd772fc0588a24d43",
+        "socket": [
           107,
           139
         ]
       }
     ],
-    "logicalId" : "industrial_l04_v01",
-    "normalization" : "full-canvas RGBA; border-connected chroma removal; no crop\/trim; CILanczosScaleTransform whole-canvas LODs",
-    "normalizedPath" : "normalized\/south\/industrial_l04_v01\/source-rgba.png",
-    "normalizedSha256" : "5181ea23476970b91bc8a76031cc7dd91c4a5a433e02237cf6ae0d2b8aae33f8",
-    "productionSelected" : false,
-    "profilePath" : "docs\/production\/decisions\/CONTRACT-026-registration-profiles-v1.json",
-    "profileSha256" : "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8",
-    "rawBytesPreserved" : true,
-    "rawPath" : "raw\/industrial_l04_v01-source-v01.png",
-    "rawSha256" : "81dd05f26b3b5dc0234bcf9cde55a0f961a6fa0b4f0f87e7cfc1065e3bcc240b",
-    "schema" : "PLAY-099-south-admission-v3-receipt",
-    "sourceCanvas" : [
+    "logicalId": "industrial_l04_v01",
+    "normalization": "full-canvas immutable source-rgba; dependency-free premultiplied bilinear derived LODs",
+    "normalizedPath": "normalized/south/industrial_l04_v01/source-rgba.png",
+    "normalizedSha256": "5181ea23476970b91bc8a76031cc7dd91c4a5a433e02237cf6ae0d2b8aae33f8",
+    "productionSelected": false,
+    "profilePath": "docs/production/decisions/CONTRACT-026-registration-profiles-v1.json",
+    "profileSha256": "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8",
+    "rawBytesPreserved": true,
+    "rawPath": "raw/industrial_l04_v01-source-v01.png",
+    "rawSha256": "81dd05f26b3b5dc0234bcf9cde55a0f961a6fa0b4f0f87e7cfc1065e3bcc240b",
+    "schema": "PLAY-099-south-admission-v3-receipt",
+    "sourceCanvas": [
       1536,
       1024
     ],
-    "task" : "PLAY-099",
-    "variant" : 1,
-    "visualAcceptance" : "not performed; frontier-owned"
+    "task": "PLAY-099",
+    "variant": 1,
+    "visualAcceptance": "not performed; frontier-owned"
   },
   {
-    "borderConnectedChromaPixelsRemoved" : 1054638,
-    "chromaThreshold" : 160,
-    "direction" : "south",
-    "footprintPolygonSource" : [
+    "borderConnectedChromaPixelsRemoved": 1054638,
+    "chromaThreshold": 160,
+    "direction": "south",
+    "footprintPolygonSource": [
       [
         768,
         640
@@ -1231,92 +1231,92 @@
         768
       ]
     ],
-    "frontageSocketSource" : [
+    "frontageSocketSource": [
       640,
       832
     ],
-    "groundPivotSource" : [
+    "groundPivotSource": [
       768,
       896
     ],
-    "integrationAdmitted" : false,
-    "level" : 4,
-    "lods" : [
+    "integrationAdmitted": false,
+    "level": 4,
+    "lods": [
       {
-        "canvas" : [
+        "canvas": [
           1024,
           683
         ],
-        "filter" : "CILanczosScaleTransform",
-        "name" : "block",
-        "path" : "normalized\/south\/industrial_l04_v02\/block.png",
-        "pivot" : [
+        "filter": "premultiplied-bilinear-v1",
+        "name": "block",
+        "path": "normalized/south/industrial_l04_v02/block.png",
+        "pivot": [
           512,
           598
         ],
-        "rounding" : "round-half-even source-coordinate receipts",
-        "sha256" : "010953cfe5d0b767da39d15747c1a33e630d62c1b6d0fc9927ca93de763407d1",
-        "socket" : [
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "87429728b18e07df929cb69c58cf8c264e5b8e027e4964c31e7349a9c76fbd56",
+        "socket": [
           427,
           555
         ]
       },
       {
-        "canvas" : [
+        "canvas": [
           512,
           342
         ],
-        "filter" : "CILanczosScaleTransform",
-        "name" : "neighborhood",
-        "path" : "normalized\/south\/industrial_l04_v02\/neighborhood.png",
-        "pivot" : [
+        "filter": "premultiplied-bilinear-v1",
+        "name": "neighborhood",
+        "path": "normalized/south/industrial_l04_v02/neighborhood.png",
+        "pivot": [
           256,
           299
         ],
-        "rounding" : "round-half-even source-coordinate receipts",
-        "sha256" : "e2cf7346a0acedcd7e6098c8791b4c33ad3214b42f5659ed7324c46cb2dfc180",
-        "socket" : [
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "4d97c90ac83c493c368730e45d391bc3ce20dff7539718fa6bcc221af3765473",
+        "socket": [
           213,
           278
         ]
       },
       {
-        "canvas" : [
+        "canvas": [
           256,
           171
         ],
-        "filter" : "CILanczosScaleTransform",
-        "name" : "city",
-        "path" : "normalized\/south\/industrial_l04_v02\/city.png",
-        "pivot" : [
+        "filter": "premultiplied-bilinear-v1",
+        "name": "city",
+        "path": "normalized/south/industrial_l04_v02/city.png",
+        "pivot": [
           128,
           150
         ],
-        "rounding" : "round-half-even source-coordinate receipts",
-        "sha256" : "0b65e34cd4d3b13d6405e70566f15d5af8569bf98652c3f62bf218b5a3b8407a",
-        "socket" : [
+        "rounding": "round-half-even source-coordinate receipts",
+        "sha256": "a485efd769e44ac3046f7b2ce4a893a86de6b22e204a490a9e2d122c284ee8d2",
+        "socket": [
           107,
           139
         ]
       }
     ],
-    "logicalId" : "industrial_l04_v02",
-    "normalization" : "full-canvas RGBA; border-connected chroma removal; no crop\/trim; CILanczosScaleTransform whole-canvas LODs",
-    "normalizedPath" : "normalized\/south\/industrial_l04_v02\/source-rgba.png",
-    "normalizedSha256" : "aba7837574888573c015b58812f9f3ed442709433bfaea6b1f5e49e83b9e2d27",
-    "productionSelected" : false,
-    "profilePath" : "docs\/production\/decisions\/CONTRACT-026-registration-profiles-v1.json",
-    "profileSha256" : "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8",
-    "rawBytesPreserved" : true,
-    "rawPath" : "raw\/industrial_l04_v02-source-v01.png",
-    "rawSha256" : "dcfda7c8f86192cd330fcdc9075e5b2583a1db8497da64d7b5ea99bfae8c55cb",
-    "schema" : "PLAY-099-south-admission-v3-receipt",
-    "sourceCanvas" : [
+    "logicalId": "industrial_l04_v02",
+    "normalization": "full-canvas immutable source-rgba; dependency-free premultiplied bilinear derived LODs",
+    "normalizedPath": "normalized/south/industrial_l04_v02/source-rgba.png",
+    "normalizedSha256": "aba7837574888573c015b58812f9f3ed442709433bfaea6b1f5e49e83b9e2d27",
+    "productionSelected": false,
+    "profilePath": "docs/production/decisions/CONTRACT-026-registration-profiles-v1.json",
+    "profileSha256": "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8",
+    "rawBytesPreserved": true,
+    "rawPath": "raw/industrial_l04_v02-source-v01.png",
+    "rawSha256": "dcfda7c8f86192cd330fcdc9075e5b2583a1db8497da64d7b5ea99bfae8c55cb",
+    "schema": "PLAY-099-south-admission-v3-receipt",
+    "sourceCanvas": [
       1536,
       1024
     ],
-    "task" : "PLAY-099",
-    "variant" : 2,
-    "visualAcceptance" : "not performed; frontier-owned"
+    "task": "PLAY-099",
+    "variant": 2,
+    "visualAcceptance": "not performed; frontier-owned"
   }
 ]

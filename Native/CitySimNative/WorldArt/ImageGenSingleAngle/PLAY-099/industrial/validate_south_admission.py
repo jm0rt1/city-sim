@@ -69,9 +69,30 @@ def main() -> int:
         for lod in receipt["lods"]:
             path = ROOT / lod["path"]
             try:
-                width, height, channels, _, _ = read_png(path)
+                width, height, channels, _, pixels = read_png(path)
                 if (width, height) != tuple(lod["canvas"]) or (width, height) != CANVASES[lod["name"] + ".png"] or channels != 4:
                     failures.append(f"{logical_id}/{lod['name']}: LOD canvas/encoding")
+                visible_alpha = 0
+                visible_rgb = 0
+                hidden_rgb = 0
+                for index in range(0, len(pixels), 4):
+                    red, green, blue, alpha = pixels[index:index + 4]
+                    visible_alpha += alpha != 0
+                    visible_rgb += alpha != 0 and (red != 0 or green != 0 or blue != 0)
+                    hidden_rgb += alpha == 0 and (red != 0 or green != 0 or blue != 0)
+                if not visible_alpha or not visible_rgb:
+                    failures.append(f"{logical_id}/{lod['name']}: empty alpha/RGB payload")
+                if hidden_rgb:
+                    failures.append(f"{logical_id}/{lod['name']}: hidden RGB under transparent pixels")
+                edge_alpha = 0
+                for x in range(width):
+                    edge_alpha += pixels[x * 4 + 3] != 0
+                    edge_alpha += pixels[((height - 1) * width + x) * 4 + 3] != 0
+                for y in range(1, height - 1):
+                    edge_alpha += pixels[(y * width) * 4 + 3] != 0
+                    edge_alpha += pixels[(y * width + width - 1) * 4 + 3] != 0
+                if edge_alpha:
+                    failures.append(f"{logical_id}/{lod['name']}: frame-edge alpha")
                 if sha(path) != lod["sha256"]:
                     failures.append(f"{logical_id}/{lod['name']}: LOD receipt hash")
                 lod_hashes.append(sha(path))

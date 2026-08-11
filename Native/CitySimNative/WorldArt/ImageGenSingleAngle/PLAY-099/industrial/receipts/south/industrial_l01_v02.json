@@ -1,8 +1,8 @@
 {
-  "borderConnectedChromaPixelsRemoved" : 1207594,
-  "chromaThreshold" : 160,
-  "direction" : "south",
-  "footprintPolygonSource" : [
+  "borderConnectedChromaPixelsRemoved": 1207594,
+  "chromaThreshold": 160,
+  "direction": "south",
+  "footprintPolygonSource": [
     [
       768,
       640
@@ -20,91 +20,91 @@
       768
     ]
   ],
-  "frontageSocketSource" : [
+  "frontageSocketSource": [
     640,
     832
   ],
-  "groundPivotSource" : [
+  "groundPivotSource": [
     768,
     896
   ],
-  "integrationAdmitted" : false,
-  "level" : 1,
-  "lods" : [
+  "integrationAdmitted": false,
+  "level": 1,
+  "lods": [
     {
-      "canvas" : [
+      "canvas": [
         1024,
         683
       ],
-      "filter" : "CILanczosScaleTransform",
-      "name" : "block",
-      "path" : "normalized\/south\/industrial_l01_v02\/block.png",
-      "pivot" : [
+      "filter": "premultiplied-bilinear-v1",
+      "name": "block",
+      "path": "normalized/south/industrial_l01_v02/block.png",
+      "pivot": [
         512,
         598
       ],
-      "rounding" : "round-half-even source-coordinate receipts",
-      "sha256" : "010953cfe5d0b767da39d15747c1a33e630d62c1b6d0fc9927ca93de763407d1",
-      "socket" : [
+      "rounding": "round-half-even source-coordinate receipts",
+      "sha256": "70cb1b86b0805ebcbafe5a1160845cd8aa7886f5cdd386e94cca4fdb9c543503",
+      "socket": [
         427,
         555
       ]
     },
     {
-      "canvas" : [
+      "canvas": [
         512,
         342
       ],
-      "filter" : "CILanczosScaleTransform",
-      "name" : "neighborhood",
-      "path" : "normalized\/south\/industrial_l01_v02\/neighborhood.png",
-      "pivot" : [
+      "filter": "premultiplied-bilinear-v1",
+      "name": "neighborhood",
+      "path": "normalized/south/industrial_l01_v02/neighborhood.png",
+      "pivot": [
         256,
         299
       ],
-      "rounding" : "round-half-even source-coordinate receipts",
-      "sha256" : "e2cf7346a0acedcd7e6098c8791b4c33ad3214b42f5659ed7324c46cb2dfc180",
-      "socket" : [
+      "rounding": "round-half-even source-coordinate receipts",
+      "sha256": "18cdee44bc2b5a6761505b3adcca6da5737e1814c949031bad0322ad519ff207",
+      "socket": [
         213,
         278
       ]
     },
     {
-      "canvas" : [
+      "canvas": [
         256,
         171
       ],
-      "filter" : "CILanczosScaleTransform",
-      "name" : "city",
-      "path" : "normalized\/south\/industrial_l01_v02\/city.png",
-      "pivot" : [
+      "filter": "premultiplied-bilinear-v1",
+      "name": "city",
+      "path": "normalized/south/industrial_l01_v02/city.png",
+      "pivot": [
         128,
         150
       ],
-      "rounding" : "round-half-even source-coordinate receipts",
-      "sha256" : "0b65e34cd4d3b13d6405e70566f15d5af8569bf98652c3f62bf218b5a3b8407a",
-      "socket" : [
+      "rounding": "round-half-even source-coordinate receipts",
+      "sha256": "734f004441c986c3402659245d7f3be2eddc5af586dbe074cb8d68a6a8454257",
+      "socket": [
         107,
         139
       ]
     }
   ],
-  "logicalId" : "industrial_l01_v02",
-  "normalization" : "full-canvas RGBA; border-connected chroma removal; no crop\/trim; CILanczosScaleTransform whole-canvas LODs",
-  "normalizedPath" : "normalized\/south\/industrial_l01_v02\/source-rgba.png",
-  "normalizedSha256" : "f4ca13659ff3caef99e807fcbc9384555415665c51fbf67716c912484b5410d4",
-  "productionSelected" : false,
-  "profilePath" : "docs\/production\/decisions\/CONTRACT-026-registration-profiles-v1.json",
-  "profileSha256" : "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8",
-  "rawBytesPreserved" : true,
-  "rawPath" : "raw\/industrial_l01_v02-source-v01.png",
-  "rawSha256" : "3da2842a0a36ae3aa27d00703572d16e094b49be2e15f36c63e7e1afece0caa5",
-  "schema" : "PLAY-099-south-admission-v3-receipt",
-  "sourceCanvas" : [
+  "logicalId": "industrial_l01_v02",
+  "normalization": "full-canvas immutable source-rgba; dependency-free premultiplied bilinear derived LODs",
+  "normalizedPath": "normalized/south/industrial_l01_v02/source-rgba.png",
+  "normalizedSha256": "f4ca13659ff3caef99e807fcbc9384555415665c51fbf67716c912484b5410d4",
+  "productionSelected": false,
+  "profilePath": "docs/production/decisions/CONTRACT-026-registration-profiles-v1.json",
+  "profileSha256": "6663482339e953bdcbcb86bcfc876676989fbcb7f74a91f3f1b480d124fe3bd8",
+  "rawBytesPreserved": true,
+  "rawPath": "raw/industrial_l01_v02-source-v01.png",
+  "rawSha256": "3da2842a0a36ae3aa27d00703572d16e094b49be2e15f36c63e7e1afece0caa5",
+  "schema": "PLAY-099-south-admission-v3-receipt",
+  "sourceCanvas": [
     1536,
     1024
   ],
-  "task" : "PLAY-099",
-  "variant" : 2,
-  "visualAcceptance" : "not performed; frontier-owned"
+  "task": "PLAY-099",
+  "variant": 2,
+  "visualAcceptance": "not performed; frontier-owned"
 }

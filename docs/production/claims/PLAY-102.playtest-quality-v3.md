@@ -433,3 +433,71 @@ CitySimNative executable. This record changes no product or build bytes and
 authorizes no signal to PID `95831`. It closes the exact release-candidate QA
 checkpoint only; push, origin parity, production release, and broader gate
 movement remain separately held.
+
+## CITYSIM-PLAY097-AA57 residential-variant QA activation V1
+
+All earlier PLAY-102 activations and receipts remain immutable history.
+Integration activates this claim once for independent Agent 004 task
+`019fe8f2-43ac-7700-9eaf-e137c4c5ecb4` in worktree
+`/Users/James/.codex/worktrees/2504/city-sim` on branch
+`codex/citysim-playtest-quality`. The immutable product candidate is commit
+`aa578046b08f483dba5aea32318ee08da2e7b8e2`, tree
+`d77d5439e67fb8e8983b5144e045271f90bc9179`.
+
+The only launchable build is the aggregate-tested isolated stage at
+`/private/tmp/CITYSIM-PLAY097-AA57-STAGE/CitySim.app`. Its exact identities
+are:
+
+- aggregate result: 373 tests executed, 2 skipped, 0 failures;
+- stage manifest `/private/tmp/CITYSIM-PLAY097-AA57-STAGE/manifests/master.manifest`, SHA-256 `379ddab2883ffc2e9de174afb8899689e7cd03e193275b56363a823d4267234d`;
+- executable SHA-256 `9ea82b9bcba285c10498a2ddf43a72837f65069a5f152fc93db7428df5840bd0`;
+- Info.plist SHA-256 `b206dd7f7daa491ee11ba7e12cd9aa305d7fdff6ca1085a3169d6ea53535c22f`;
+- generated-v4 manifest SHA-256 `3b8885b0ca005194e660734c86e0eda494d8a40b8ebbaa497ce818383ef94a33`;
+- deterministic resource-tree digest `c6eb0d0dfd1eaef83def4fd2f191bf8fa0e9b475d2eea4904d867078efc7bf4b`;
+- deterministic app-tree digest `ed1e27e39c3aac0ea3f621ce56776c78ce2e91dfb0649e02a991c72cf96d7ea3`;
+- app inventory: 84 files; version `1.0.0` (`1`).
+
+QA must reproduce the two tree digests with these exact commands and no
+substitute algorithm:
+
+```sh
+(cd /private/tmp/CITYSIM-PLAY097-AA57-STAGE/CitySim.app/Contents/Resources/CitySimNative_CitySimNative.bundle && find . -type f -print0 | LC_ALL=C sort -z | xargs -0 /usr/bin/shasum -a 256 | /usr/bin/shasum -a 256)
+(cd /private/tmp/CITYSIM-PLAY097-AA57-STAGE/CitySim.app && find . -type f -print0 | LC_ALL=C sort -z | xargs -0 /usr/bin/shasum -a 256 | /usr/bin/shasum -a 256)
+```
+
+The isolated data root is exactly
+`/private/tmp/CITYSIM-PLAY097-AA57-QA-V1-DATA`, initially absent. The exclusive
+output root is exactly `/private/tmp/CITYSIM-PLAY097-AA57-QA-V1-OUTPUT`,
+initially absent. Every existing file under
+`docs/production/evidence/PLAY-102/v3/` remains protected immutable history.
+
+Retained accepted PID `29778` must remain untouched until the validated lease
+is consumed. Immediately before any signal, QA must resolve that exact PID and
+require its full executable image to equal
+`/private/tmp/CITYSIM-PLAY076-E6D3-STAGE/CitySim.app/Contents/MacOS/CitySimNative`.
+If exact, QA may send one SIGTERM to PID `29778` only and must verify it absent;
+if absent, record `ALREADY_ABSENT`; any other image or ambiguity returns without
+a signal. No wildcard, SIGKILL, cleanup, or interaction with another process is
+authorized.
+
+After Integration issues an exact schema-2 route, selected dispatch, and
+exclusive one-attempt lease with at most two launches, independent QA may run
+one live-city journey. Before launch it must rehash the authority, product,
+stage, app, executable, resource, manifest, claim, and preserved evidence;
+require both V1 roots absent; and observe window and accessibility permission.
+Launch one must use only the exact staged app and isolated data root. At exact
+900 by 600 it must visibly prove the new `residential_l01_v1` family across all
+four authored frontages and block, neighborhood, and city LOD ranges, with no
+blank, fallback, mirrored/aliased direction, or road-overlap artifact. It must
+also perform the existing critical flow: fresh ordinary city, road-connected
+power and water, job-producing zoning, population at least 500, deterministic
+severe-storm consequence and recovery, then save. QA may terminate only its
+exact launch-one PID after full image revalidation, launch the same app once
+more against the same data root, verify persisted city/storm/recovery state,
+and leave the accepted second process running on PASS.
+
+Return `APPROVE_PLAY097_RESIDENTIAL_VARIETY` or the first real identity,
+permission, visual, interaction, process, save, or persistence defect. This
+activation authorizes no product/resource/evidence edit, rebuild, automated
+test, retry, substitute, cleanup, stage, commit, push, release,
+self-acceptance, or broader gate movement.

@@ -38,6 +38,19 @@ These instructions apply to every task in this repository and every linked workt
 | `codex/citysim-playtest-quality` | `.agents/skills/verify-citysim-playability/SKILL.md` |
 | `codex/citysim-os-optimization` | `.agents/skills/optimize-citysim-operating-system/SKILL.md` |
 
+Fresh outcome branches inherit their lane skill by prefix, so current-baseline
+work does not require editing this table for every branch name:
+
+| Branch prefix | Required skill |
+|---|---|
+| `codex/citysim-gameplay-` | `.agents/skills/build-citysim-gameplay-loop/SKILL.md` |
+| `codex/citysim-world-rendering-` | `.agents/skills/render-citysim-world/SKILL.md` |
+| `codex/citysim-world-art-` | `.agents/skills/produce-citysim-world-art/SKILL.md` |
+| `codex/citysim-ui-` | `.agents/skills/build-citysim-ui-input/SKILL.md` |
+| `codex/citysim-simulation-` | `.agents/skills/evolve-citysim-simulation/SKILL.md` |
+| `codex/citysim-playtest-` | `.agents/skills/verify-citysim-playability/SKILL.md` |
+| `codex/citysim-os-` | `.agents/skills/optimize-citysim-operating-system/SKILL.md` |
+
 3. Read `.agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md` and apply its context-loading rule. A complete applicable authority read, including `docs/production/CITYSIM_WORKTREE_OPERATING_SYSTEM.md`, the lane skill, the active claim, and required conditional references, is mandatory for a new thread, new or revised claim, changed claim/authority/skill/routing/conditional-reference hash, branch/worktree/task mismatch, context loss or compaction without a valid compact packet, or a stale/missing/contradictory packet.
 4. On an unchanged same-thread continuation, still run step 1, verify the exact Git revisions and every recorded file hash, and consume the compact lane-context packet. Any mismatch fails closed to the complete-read path.
 5. State the active lane and mission in the first work update.

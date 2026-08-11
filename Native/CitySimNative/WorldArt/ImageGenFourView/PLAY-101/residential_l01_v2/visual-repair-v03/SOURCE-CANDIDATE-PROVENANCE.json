@@ -1,0 +1,74 @@
+{
+  "schema": "citysim.play-097.residential-l01-v2.visual-repair-v03.source-candidate.v1",
+  "task": "PLAY097-ART-DIRECTION-RESET-001",
+  "family": "residential_l01_v2",
+  "candidateRevision": "v03",
+  "status": "SOURCE_CANDIDATE_PENDING_FAST_VISUAL_DISPOSITION",
+  "generator": {
+    "method": "built-in ImageGen",
+    "model": "built-in/model-not-exposed",
+    "authoring": "one distinct generated master per cardinal direction"
+  },
+  "qualityReference": {
+    "role": "read-only visual-quality benchmark; not composited or copied into any candidate raster",
+    "path": "/Users/James/.codex/generated_images/019fe85c-8a34-7fb2-9128-cbf05ab837b0/exec-efd73c63-b200-4fb2-8c48-6a2c5da17590.png",
+    "sha256": "02cdaa057ade9c2c31b6ef762a00ff194b4f0bd01a1c4eeca2eed624cb818c78"
+  },
+  "frozenArchitecture": "2.5-story warm red-brick and pale-limestone townhouse, charcoal slate hipped roof, dormers, chimney, deep masonry-pier porch, divided-light windows, iron fence, compact landscaped lot",
+  "rawMasters": {
+    "north": {
+      "call": "exec-c264d40e-5272-4be2-86e7-b4e9322dab0b",
+      "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-101/residential_l01_v2/raw-revisions/v03/north-source-v03.png",
+      "sha256": "424301b44eb4ef31dc81021917bb222a64f480d1d9d7d7a0f727b0aa7da78bab",
+      "dimensions": [1774, 887],
+      "role": "frozen v03 architectural identity master"
+    },
+    "east": {
+      "call": "exec-b61c1959-1f3a-44cf-87ec-a86341c00e36",
+      "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-101/residential_l01_v2/raw-revisions/v03/east-source-v03.png",
+      "sha256": "5a73d62cfc26d3f1caa07b6f66373c24d06b81bdcb64da6f4c6ef5a061e4a15a",
+      "dimensions": [1774, 887],
+      "role": "independently authored East view; North architecture supplied as identity reference only"
+    },
+    "south": {
+      "call": "exec-5da7f478-9310-4e7e-8871-019f03dd66d5",
+      "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-101/residential_l01_v2/raw-revisions/v03/south-source-v03.png",
+      "sha256": "e9601a663c479b8eff8887ab853dcf6b59719054c4c5eb72a2e391eb053921b6",
+      "dimensions": [1774, 887],
+      "role": "independently authored South view; North architecture supplied as identity reference only"
+    },
+    "west": {
+      "call": "exec-9a499678-755e-4e2d-8f4c-6c51ed3cef47",
+      "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-101/residential_l01_v2/raw-revisions/v03/west-source-v03.png",
+      "sha256": "ec25dae262dc8706b2e063acdd80179dacdf919f0f072c7634dd92516a2f60c3",
+      "dimensions": [1774, 887],
+      "role": "independently authored West view; North architecture supplied as identity reference only"
+    }
+  },
+  "independence": {
+    "separateImageGenCalls": 4,
+    "uniqueRawHashes": 4,
+    "mirrored": false,
+    "rotated": false,
+    "copiedPixels": false,
+    "distinctCompositions": {
+      "north": "covered front porch, centered entry, front walk",
+      "east": "side bay, side garden gate, east facade window rhythm",
+      "south": "south entry, circular dormer, altered porch and garden layout",
+      "west": "covered side stoop, conservatory bay, west garden frontage"
+    }
+  },
+  "contactSheet": {
+    "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-101/residential_l01_v2/visual-repair-v03/contact-sheets/family-source-four-view-v03.png",
+    "sha256": "7b6c025311ceafc25189b38b4fc125333f673004585546d8a517cfcb7943a78d",
+    "dimensions": [3572, 1798],
+    "order": ["north", "east", "south", "west"]
+  },
+  "boundaries": {
+    "sourceAdmission": false,
+    "rendererQuarantined": false,
+    "productionSelected": false,
+    "runtimeOrCatalogMutation": false,
+    "normalizationAndRegistration": "not run; raw source candidates intentionally retain their generated 1774x887 chroma-key canvases"
+  }
+}

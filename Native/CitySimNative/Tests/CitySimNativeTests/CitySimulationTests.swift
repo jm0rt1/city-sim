@@ -1225,7 +1225,7 @@ final class CitySimulationTests: XCTestCase {
         }
 
         let authoredStart = CityGameState.newCity(seed: 42)
-        let store = CityGameStore(state: authoredStart)
+        let store = CityGameStore(state: authoredStart, commandPolicy: .blocked(.welcome))
         let size = CGSize(width: 1_278, height: 768)
         let view = NSHostingView(rootView: ContentView(store: store).frame(width: size.width, height: size.height))
         view.frame = CGRect(origin: .zero, size: size)

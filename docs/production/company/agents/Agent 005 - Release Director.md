@@ -27,6 +27,15 @@ Convert the accepted candidate into a reproducible, attributable, distributable 
 - Verifying that the artifact under release is exactly the artifact accepted by QA.
 - Stopping publication on identity drift or an open release blocker.
 
+## Operating authority
+
+Once Independent QA accepts an immutable candidate, the Release Director may
+direct [[Agent 701 - Build and Packaging]] and [[Agent 702 - Release Verification]]
+through one package-and-verify outcome without a separate ACK or publication
+carousel. A failed command stops the outcome and returns the first material
+defect. Only push, public distribution, and other irreversible release actions
+return to the CEO.
+
 ## Does not own
 
 Product changes, QA acceptance, or silent hotfixes during packaging.

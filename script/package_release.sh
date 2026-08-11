@@ -97,6 +97,30 @@ if [[ ! "$BUILD_VERSION" =~ $VERSION_PATTERN ]]; then
   fail "CITYSIM_BUNDLE_VERSION must contain one to three numeric components"
 fi
 
+SIGN_IDENTITY="${CITYSIM_SIGN_IDENTITY:--}"
+NOTARIZE_REQUESTED="${CITYSIM_NOTARIZE:-0}"
+NOTARY_PROFILE="${CITYSIM_NOTARY_PROFILE:-}"
+
+case "$NOTARIZE_REQUESTED" in
+  0|1) ;;
+  *) fail "CITYSIM_NOTARIZE must be 0 or 1" ;;
+esac
+
+if [[ "$NOTARIZE_REQUESTED" == "1" ]]; then
+  [[ "$SIGN_IDENTITY" != "-" ]] \
+    || fail "CITYSIM_NOTARIZE=1 requires CITYSIM_SIGN_IDENTITY"
+  [[ -n "$NOTARY_PROFILE" ]] \
+    || fail "CITYSIM_NOTARIZE=1 requires CITYSIM_NOTARY_PROFILE"
+  command -v xcrun >/dev/null \
+    || fail "xcrun is required for notarization"
+  xcrun --find notarytool >/dev/null \
+    || fail "xcrun notarytool is unavailable"
+  xcrun --find stapler >/dev/null \
+    || fail "xcrun stapler is unavailable"
+elif [[ -n "$NOTARY_PROFILE" ]]; then
+  fail "CITYSIM_NOTARY_PROFILE requires CITYSIM_NOTARIZE=1"
+fi
+
 ARCHITECTURE="$(uname -m)"
 SHORT_HEAD="${HEAD_SHA:0:12}"
 OUTPUT_BASE_REQUESTED="${CITYSIM_RELEASE_OUTPUT_DIR:-$DEFAULT_DIST_DIR/releases}"
@@ -263,7 +287,6 @@ done
 
 xattr -cr "$APP_BUNDLE"
 
-SIGN_IDENTITY="${CITYSIM_SIGN_IDENTITY:--}"
 if [[ "$SIGN_IDENTITY" == "-" ]]; then
   SIGNING_MODE="ad_hoc"
   SIGNING_IDENTITY_LABEL="ad-hoc"
@@ -276,6 +299,69 @@ else
 fi
 
 codesign --verify --deep --strict --verbose=4 "$APP_BUNDLE"
+
+NOTARIZATION_PERFORMED="false"
+NOTARY_SUBMISSION_ID=""
+NOTARY_STATUS="not-requested"
+NOTARY_SUBMISSION_ARCHIVE_SHA=""
+NOTARY_RESULT_SHA=""
+NOTARY_STAPLED="false"
+NOTARY_VALIDATED="false"
+
+if [[ "$NOTARIZE_REQUESTED" == "1" ]]; then
+  NOTARY_SUBMISSION_ARCHIVE="$WORK_ROOT/CitySim-$VERSION-$ARCHITECTURE-notary-submission.zip"
+  NOTARY_RESULT="$WORK_ROOT/notary-submit-result.json"
+
+  [[ ! -e "$NOTARY_SUBMISSION_ARCHIVE" ]] \
+    || fail "notary submission archive path must be fresh"
+  [[ ! -e "$NOTARY_RESULT" ]] \
+    || fail "notary result path must be fresh"
+
+  ditto -c -k --sequesterRsrc --keepParent \
+    "$APP_BUNDLE" "$NOTARY_SUBMISSION_ARCHIVE"
+  NOTARY_SUBMISSION_ARCHIVE_SHA="$(sha256_file "$NOTARY_SUBMISSION_ARCHIVE")"
+
+  xcrun notarytool submit "$NOTARY_SUBMISSION_ARCHIVE" \
+    --keychain-profile "$NOTARY_PROFILE" \
+    --wait \
+    --output-format json >"$NOTARY_RESULT"
+
+  NOTARY_RESULT_SHA="$(sha256_file "$NOTARY_RESULT")"
+  NOTARY_SUBMISSION_ID="$(python3 - "$NOTARY_RESULT" <<'PY'
+import json
+import sys
+
+with open(sys.argv[1], encoding="utf-8") as source:
+    payload = json.load(source)
+value = payload.get("id")
+if not isinstance(value, str) or not value:
+    raise SystemExit("notary result is missing id")
+print(value)
+PY
+)"
+  NOTARY_STATUS="$(python3 - "$NOTARY_RESULT" <<'PY'
+import json
+import sys
+
+with open(sys.argv[1], encoding="utf-8") as source:
+    payload = json.load(source)
+value = payload.get("status")
+if not isinstance(value, str) or not value:
+    raise SystemExit("notary result is missing status")
+print(value)
+PY
+)"
+  require_equal "notary status" "Accepted" "$NOTARY_STATUS"
+
+  xcrun stapler staple -v "$APP_BUNDLE"
+  NOTARY_STAPLED="true"
+  xcrun stapler validate -v "$APP_BUNDLE"
+  spctl --assess --type execute --verbose=4 "$APP_BUNDLE"
+  codesign --verify --deep --strict --verbose=4 "$APP_BUNDLE"
+  NOTARY_VALIDATED="true"
+  NOTARIZATION_PERFORMED="true"
+fi
+
 SIGNATURE_CDHASH="$(
   codesign -dv --verbose=4 "$APP_BUNDLE" 2>&1 \
     | awk -F= '$1 == "CDHash" { print $2; exit }'
@@ -338,6 +424,9 @@ fi
 TEMP_RELEASE_MANIFEST="$WORK_ROOT/release-manifest.json"
 python3 - "$TEMP_RELEASE_MANIFEST" "$HEAD_SHA" "$VERSION" "$BUILD_VERSION" \
   "$ARCHITECTURE" "$SIGNING_MODE" "$SIGNING_IDENTITY_LABEL" \
+  "$NOTARIZE_REQUESTED" "$NOTARIZATION_PERFORMED" "$NOTARY_SUBMISSION_ID" \
+  "$NOTARY_STATUS" "$NOTARY_SUBMISSION_ARCHIVE_SHA" "$NOTARY_RESULT_SHA" \
+  "$NOTARY_STAPLED" "$NOTARY_VALIDATED" \
   "$STAGE_MANIFEST" "$STAGE_MANIFEST_SHA" "$APP_BUNDLE" "$EXECUTABLE_SHA" \
   "$INFO_PLIST_SHA" "$GENERATED_MANIFEST_SHA" "$RESOURCE_DIGEST" "$APP_DIGEST" \
   "$FINAL_ARCHIVE_PATH" "$ARCHIVE_SHA" "$FINAL_CHECKSUM_PATH" \
@@ -355,6 +444,14 @@ import sys
     architecture,
     signing_mode,
     signing_identity,
+    notarize_requested,
+    notarization_performed,
+    notary_submission_id,
+    notary_status,
+    notary_submission_archive_sha256,
+    notary_result_sha256,
+    notary_stapled,
+    notary_validated,
     stage_manifest_path,
     stage_manifest_sha256,
     app_path,
@@ -393,8 +490,15 @@ payload = {
         "strictDeepVerified": True,
         "hardenedRuntimeAndTimestamp": signing_mode == "identity",
         "notarization": {
-            "supported": False,
-            "performed": False,
+            "supported": True,
+            "requested": notarize_requested == "1",
+            "performed": notarization_performed == "true",
+            "status": notary_status,
+            "submissionId": notary_submission_id or None,
+            "submissionArchiveSha256": notary_submission_archive_sha256 or None,
+            "resultSha256": notary_result_sha256 or None,
+            "stapled": notary_stapled == "true",
+            "validated": notary_validated == "true",
         },
     },
     "paths": {
@@ -483,6 +587,12 @@ printf 'head=%s\n' "$HEAD_SHA"
 printf 'version=%s\n' "$VERSION"
 printf 'build=%s\n' "$BUILD_VERSION"
 printf 'signing_mode=%s\n' "$SIGNING_MODE"
+printf 'notarization_requested=%s\n' "$NOTARIZE_REQUESTED"
+printf 'notarization_performed=%s\n' "$NOTARIZATION_PERFORMED"
+printf 'notary_status=%s\n' "$NOTARY_STATUS"
+if [[ -n "$NOTARY_SUBMISSION_ID" ]]; then
+  printf 'notary_submission_id=%s\n' "$NOTARY_SUBMISSION_ID"
+fi
 printf 'verified_temp_app_path=%s\n' "$APP_BUNDLE"
 printf 'app_tree_sha256=%s\n' "$APP_DIGEST"
 printf 'resource_tree_sha256=%s\n' "$RESOURCE_DIGEST"

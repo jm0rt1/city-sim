@@ -24,6 +24,29 @@ Stage-only builds, resource copying, executable and bundle hashing, manifests, s
 
 An immutable app path, executable identity, resource-tree identity, app-tree identity, and stage manifest.
 
+## Operating commands
+
+Local verified package:
+
+```bash
+bash script/package_release.sh
+```
+
+Developer ID signed and notarized package, after the certificate and a
+`notarytool` keychain profile are provisioned:
+
+```bash
+CITYSIM_SIGN_IDENTITY="Developer ID Application: COMPANY (TEAMID)" \
+CITYSIM_NOTARIZE=1 \
+CITYSIM_NOTARY_PROFILE="citysim-notary" \
+bash script/package_release.sh
+```
+
+The packager validates configuration before building, submits the signed app,
+requires an Accepted result, staples and validates the ticket, verifies the
+final archive, and records the result in its release manifest. Missing or
+inconsistent credentials fail before product work begins.
+
 ## Does not own
 
 Launching for acceptance, product repair, hidden rebuilds, or release approval.

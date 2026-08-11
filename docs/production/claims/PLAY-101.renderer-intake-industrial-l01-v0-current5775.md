@@ -25,6 +25,7 @@ The maximum mutable set is:
 - `Native/CitySimNative/Sources/CitySimNative/Resources/WorldAssets.atlas/generated-v4-manifest.json`;
 - `Native/CitySimNative/Sources/CitySimNative/Resources/WorldAssets.atlas/pages/block/page-00.png`;
 - `Native/CitySimNative/Sources/CitySimNative/Resources/WorldAssets.atlas/pages/block/page-01.png`;
+- `Native/CitySimNative/Sources/CitySimNative/Resources/WorldAssets.atlas/pages/block/page-02.png`;
 - `Native/CitySimNative/Sources/CitySimNative/Resources/WorldAssets.atlas/pages/city/page-00.png`;
 - `Native/CitySimNative/Sources/CitySimNative/Resources/WorldAssets.atlas/pages/neighborhood/page-00.png`;
 - `Native/CitySimNative/Tests/CitySimNativeTests/WorldRenderingTests.swift`, limited to industrial L1 resource/selection assertions and excluding every PLAY-073 camera assertion;

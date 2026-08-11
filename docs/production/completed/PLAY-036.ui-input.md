@@ -52,3 +52,11 @@ Default and exact 900 x 600 content pointer/keyboard/AX journeys are retained in
 - **Accessibility:** actual button semantics, disabled state, labels, values, hints, keyboard focus, and Press action were inspected at both sizes. Spoken VoiceOver was not claimed.
 
 No shared-contract proposal is required. No push or integration was performed.
+
+## Current-baseline rebind addendum
+
+- **Branch:** `codex/citysim-ui-play036-current88b6`
+- **Base:** `d8d2fa799cb5d07d611773fa49418b5a755127da`
+- **Delta:** the current rebind restores an explicit map-focus request when Escape closes the command guide; query state remains local to the dismissed view.
+- **Focused proof:** `PLAY036SearchRemedyTests` passed 2 tests at compact `620 × 480` and regular `760 × 560`; exported images are `/private/tmp/CITYSIM-PLAY036-after-compact.png` and `/private/tmp/CITYSIM-PLAY036-after-regular.png`.
+- **Boundary:** candidate evidence only; no aggregate suite, staged app, launch, push, integration, or release claim.

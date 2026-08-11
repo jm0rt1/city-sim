@@ -553,6 +553,7 @@ final class CityGameStore: ObservableObject {
     private func dismissTopmostSurfaceOrCancel() {
         if showCommandGuide {
             showCommandGuide = false
+            requestMapFocus()
         } else if isCityFocusModeEnabled {
             isCityFocusModeEnabled = false
             requestMapFocus()

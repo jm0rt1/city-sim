@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "verdict": "RETURN",
+  "scope": "exact package save and relaunch close only",
+  "firstDefect": "The single authorized relaunch exited 0 but produced no process for the exact isolated packaged executable; save load and persistence could not be verified.",
+  "candidate": {
+    "appPath": "/private/tmp/CITYSIM-RELEASE-PACKAGING-R1-isolated-stage-v1/CitySim.app",
+    "appTreeSha256": "f3ea98e0b207812e4dfae3a7451d710713073409532ea0a5beb1f5ccd05b03fa",
+    "executablePath": "/private/tmp/CITYSIM-RELEASE-PACKAGING-R1-isolated-stage-v1/CitySim.app/Contents/MacOS/CitySimNative",
+    "executableSha256": "b885d1da1b93a166ebfcca1f6bcf10b7bb88f247e5c83b41a18fc0b2f91f961b"
+  },
+  "protectedProcess": {
+    "pid": 95831,
+    "executablePath": "/Users/James/Library/Mobile Documents/com~apple~CloudDocs/James's Files/Programming/Python/city-sim/dist/CitySim.app/Contents/MacOS/CitySimNative",
+    "finalState": "LIVE_UNTOUCHED"
+  },
+  "initialPackageProcess": {
+    "pid": 99897,
+    "dataRootEnvironment": "/private/tmp/CITYSIM-RELEASE-PACKAGING-R1-QA-DATA",
+    "exactImageRevalidatedBeforeTermination": true,
+    "sigtermCount": 1,
+    "absenceVerified": true
+  },
+  "savedState": {
+    "cityName": "New Arcadia",
+    "visibleTuple": {
+      "day": 5,
+      "population": 304,
+      "treasury": 31498,
+      "utilitiesPercent": 100,
+      "powerMargin": 51,
+      "waterMargin": 46,
+      "simulation": "PAUSED"
+    },
+    "stateTick": 17,
+    "stateTreasury": 31498.2,
+    "savePath": "/private/tmp/CITYSIM-RELEASE-PACKAGING-R1-QA-DATA/quicksave.json",
+    "saveSha256": "7fb362037d7a93f7c2836d24853554c4d1e2f78265acdda2752edbd1ac9c4ab4",
+    "stateDigest": "eaa29a4d8c5457b68ebae466b02fcdadec22f7f2b27e257b6f9ed64830b31501",
+    "playerUiConfirmation": "City saved"
+  },
+  "relaunch": {
+    "authorizedOpenInvocationCount": 1,
+    "openExit": 0,
+    "newExactPackagePid": null,
+    "exactPackageProcessFinalState": "ABSENT",
+    "loadAttempted": false,
+    "persistenceVerified": false,
+    "retryPerformed": false
+  },
+  "evidence": {
+    "screenshotPath": "/private/tmp/CITYSIM-RELEASE-PACKAGING-R1-QA-OUTPUT/EXACT-PACKAGE-SAVE-RELAUNCH-RETURN.jpeg",
+    "screenshotSha256": "866fa9df3378401c77caaf8c5eb0c9312ca9e36c12644eddcf83217b1c3af822",
+    "screenshotScope": "retained exact-package world presentation before termination; not reload proof"
+  },
+  "repository": {
+    "worktree": "/Users/James/.codex/worktrees/2504/city-sim",
+    "head": "cec8c6e66bbc4202aa8124081fba921bf34f4437",
+    "status": "unchanged; only protected untracked docs/production/evidence/PLAY-102/v3/ remains",
+    "mutated": false
+  }
+}

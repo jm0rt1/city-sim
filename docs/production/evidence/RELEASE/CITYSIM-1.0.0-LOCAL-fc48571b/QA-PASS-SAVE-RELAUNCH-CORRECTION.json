@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "verdict": "APPROVE_EXACT_PACKAGE_SAVE_RELAUNCH",
+  "scope": "exact packaged-app save and relaunch persistence correction",
+  "supersedes": {
+    "path": "/private/tmp/CITYSIM-RELEASE-PACKAGING-R1-QA-OUTPUT/QA-RETURN-SAVE-RELAUNCH.json",
+    "sha256": "b07e2942ebe68aad3f4af6d440945bf00ef33e41b60a36bce22ad115c4917e29",
+    "reason": "The earlier process-absence conclusion was an observation-timing error. The already-authorized relaunch had succeeded and remained live."
+  },
+  "candidate": {
+    "appPath": "/private/tmp/CITYSIM-RELEASE-PACKAGING-R1-isolated-stage-v1/CitySim.app",
+    "appTreeSha256": "f3ea98e0b207812e4dfae3a7451d710713073409532ea0a5beb1f5ccd05b03fa",
+    "executablePath": "/private/tmp/CITYSIM-RELEASE-PACKAGING-R1-isolated-stage-v1/CitySim.app/Contents/MacOS/CitySimNative",
+    "executableSha256": "b885d1da1b93a166ebfcca1f6bcf10b7bb88f247e5c83b41a18fc0b2f91f961b"
+  },
+  "relaunch": {
+    "alreadyOccurredCount": 1,
+    "startedAt": "2026-08-11T06:42:46-04:00",
+    "pid": 4107,
+    "executablePath": "/private/tmp/CITYSIM-RELEASE-PACKAGING-R1-isolated-stage-v1/CitySim.app/Contents/MacOS/CitySimNative",
+    "dataRoot": "/private/tmp/CITYSIM-RELEASE-PACKAGING-R1-QA-DATA",
+    "observedState": "LIVE"
+  },
+  "save": {
+    "path": "/private/tmp/CITYSIM-RELEASE-PACKAGING-R1-QA-DATA/quicksave.json",
+    "sha256": "7fb362037d7a93f7c2836d24853554c4d1e2f78265acdda2752edbd1ac9c4ab4"
+  },
+  "persistedCity": {
+    "identity": "New Arcadia",
+    "day": 219,
+    "population": 380,
+    "treasuryDollars": 8772,
+    "utilitiesPercent": 96,
+    "powerMargin": 0,
+    "waterMargin": 0,
+    "simulation": "RUNNING_1X"
+  },
+  "protectedProcess": {
+    "pid": 95831,
+    "executablePath": "/Users/James/Library/Mobile Documents/com~apple~CloudDocs/James's Files/Programming/Python/city-sim/dist/CitySim.app/Contents/MacOS/CitySimNative",
+    "observedState": "LIVE_UNTOUCHED"
+  },
+  "correctionExecutionAccounting": {
+    "launch": 0,
+    "interaction": 0,
+    "save": 0,
+    "signal": 0,
+    "retry": 0
+  }
+}

@@ -4,7 +4,7 @@ import XCTest
 
 final class ProductionStoryStateFixtureTests: XCTestCase {
     private static let fixtureSubdirectory = "Fixtures/StoryStates"
-    private static let currentManifestFile = "story-states-manifest-v4.json"
+    private static let currentManifestFile = "story-states-manifest-v5.json"
     private static let play072ManifestFile = "story-states-manifest-v3.json"
     private static let play069ManifestFile = "story-states-manifest-v2.json"
     private static let legacyManifestFile = "story-states-manifest-v1.json"
@@ -185,8 +185,8 @@ final class ProductionStoryStateFixtureTests: XCTestCase {
         XCTAssertEqual(first.manifest.fixtures.count, 12)
         XCTAssertEqual(Set(first.artifacts.map(\.definition.id)).count, 12)
         XCTAssertTrue(first.artifacts.allSatisfy {
-            $0.definition.id.hasSuffix("-v4")
-                && $0.definition.file.hasSuffix("-v4.json")
+            $0.definition.id.hasSuffix("-v5")
+                && $0.definition.file.hasSuffix("-v5.json")
         })
         XCTAssertEqual(
             first.artifacts.filter { $0.definition.stage == .charterMidpoint }.count,

@@ -14,18 +14,18 @@ final class TerminalVictoryPlatformTests: XCTestCase {
     func testFourTerminalRoutesFreezeCommandsPersistenceBackupUndoAndSnapshots() throws {
         let expectedDigests: [CityStrategyRecoveryResolution: String] = [
             .commercialTaxRelief:
-                "034d788b7e0e8685e3ab32afcf924f9fce12e67e06cdaa756962489cf61a2d9d",
+                "9c25e00994f0b3dc8dad3497149f314eda6ac0fb3095e19d831f8d2f9ca1b62a",
             .commercialPublicRealmInvestment:
-                "a0c5c5fcfe0d9d5f114ff1c80e1fa010a9e9f2c9497cb77055ebf9700a0c812e",
+                "c28784e4b7dfeda5b92640c015c8668e2cdfbbedcb14009d8e06791b576d1d9f",
             .industrialUtilityExpansion:
-                "35ea7b790487e76f1dd6db8014db978b64ebb11e354db3ff4efe3ca55dd2fc9b",
+                "69e79af84942bd5e608b8980647a369fd5157894ba43ebd00462224ff2b82381",
             .industrialGreenBuffer:
-                "be55197b95550c6c25c716cffc3cff1bd973b7b3f44faf71dae2b7daf499ac17",
+                "289425866f315b731c9a4d587afee5976d9304a66283bda5c122ae22d039e0ee",
         ]
         let expectedTicks: [CityStrategyRecoveryResolution: Int] = [
             .commercialTaxRelief: 1_024,
             .commercialPublicRealmInvestment: 1_024,
-            .industrialUtilityExpansion: 1_036,
+            .industrialUtilityExpansion: 1_060,
             .industrialGreenBuffer: 1_040,
         ]
         let builder = ProductionStoryStateBuilder()

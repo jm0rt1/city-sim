@@ -4,7 +4,7 @@ import XCTest
 
 final class VisibleCityStateFixtureTests: XCTestCase {
     private static let fixtureSubdirectory = "Fixtures/VisibleCityStates"
-    private static let manifestFile = "visible-city-states-manifest-v3.json"
+    private static let manifestFile = "visible-city-states-manifest-v4.json"
     private static let play072ManifestFile = "visible-city-states-manifest-v2.json"
     private static let e380ManifestFile = "visible-city-states-manifest-v1.json"
 
@@ -39,8 +39,8 @@ final class VisibleCityStateFixtureTests: XCTestCase {
         XCTAssertEqual(first.manifest.fixtures.count, 14)
         XCTAssertEqual(Set(first.artifacts.map(\.definition.id)).count, 14)
         XCTAssertTrue(first.artifacts.allSatisfy {
-            $0.definition.id.hasSuffix("-v3")
-                && $0.definition.file.hasSuffix("-v3.json")
+            $0.definition.id.hasSuffix("-v4")
+                && $0.definition.file.hasSuffix("-v4.json")
         })
         for strategy in [CityStrategy.commercialStewardship, .industrialExpansion] {
             XCTAssertEqual(

@@ -404,62 +404,62 @@ final class SpatialConsequenceTests: XCTestCase {
     func testStoryFixturesFreezeDiagnosticChannelIdentityWithoutChangingStateFingerprints() throws {
         let corpus = try ProductionStoryFixtureCorpus.build()
         let expectedDiagnosticDigests = [
-            "commercial-opening-v4":
+            "commercial-opening-v5":
                 "362679c053057b7cce596b2ace390d3772875a492f5bee3cd48bf1997c4773a2",
-            "commercial-complication-v4":
+            "commercial-complication-v5":
                 "26ac048aa9c5003c247cd03f70423c74fa7cf2297a7d7085758bd6c834303ce5",
-            "commercial-recovery-v4":
+            "commercial-recovery-v5":
                 "79add2062d6648b5d208f01bc4847897b71166923e8f6f8938de45f0dea576d1",
-            "commercial-charter-midpoint-v4":
-                "a688688cccc66f09c94c8d63024ba16982b0349adfb81942c9d974e35515dc3a",
-            "commercial-tax-relief-regional-capital-v4":
-                "731c99bdb65ce4b6b139686fe0c6df7288c808abf62cebc7ea7a389ef9ecef52",
-            "commercial-public-realm-regional-capital-v4":
-                "8536d04243be80a40cea277799e0c17f25568d5890a4d8235a76961703198260",
+            "commercial-charter-midpoint-v5":
+                "48130f6b0ad13f98a527799f4f3380b5704ab0a1a3292455214668702348e4fc",
+            "commercial-tax-relief-regional-capital-v5":
+                "e705a7664e77ece672c9937d3b882bb8e7a29278e220b0c15f2053b8a6f428fa",
+            "commercial-public-realm-regional-capital-v5":
+                "eb28ee767c06b09ab83f5c53f0105ac2345025ae4e616ced0f09c426b1a24871",
             "commercial-charter-victory-v1":
                 "5806de89dc766fe4041c05e3e720e8af3931f088f3098717e38c21d192f36c33",
-            "industrial-opening-v4":
+            "industrial-opening-v5":
                 "9efd6b44acbdac26dfaf187e40f8ef3d4e9be21ea5396aeab6334e88520a1c2b",
-            "industrial-complication-v4":
+            "industrial-complication-v5":
                 "3fb13431b5082079dde08cd0b367f874632fe5564b20cdf71c1bf82b85b4c25e",
-            "industrial-recovery-v4":
+            "industrial-recovery-v5":
                 "5bfd3e9463034be29f54630fe1969262369888d3b01152596fcb35c6956cece6",
-            "industrial-charter-midpoint-v4":
-                "34aba895cdb311a53e238a72e9da1526045ff1cb2aca7fa550773c8019b58316",
-            "industrial-utility-expansion-regional-capital-v4":
-                "19658b83e3c86279f2ec952568b523760a1ee73720146ef7f6981067daf7c82b",
-            "industrial-green-buffer-regional-capital-v4":
-                "6852c414c76436f6b454d95c7511c15bbdba4bfecbf780daaa8ac3400fc14470",
+            "industrial-charter-midpoint-v5":
+                "f9e72e815c8670e68ec2c0619884b9e5dd0f036bd456ba0f81f3e37f6c94881b",
+            "industrial-utility-expansion-regional-capital-v5":
+                "3341da4c835e62cd972550cf80db515b05909038949623ea4e8c737845856bf6",
+            "industrial-green-buffer-regional-capital-v5":
+                "8f494ddaaad2208b132a909f2f25aa56022814910a24fb506b7bd287f35cc5df",
             "industrial-charter-victory-v1":
                 "dd590d6fe6ffa8f949dba2988c4605917f85650532bd5838bb286f3b7d98ab9c",
         ]
         let expectedActivityDigests = [
-            "commercial-opening-v4":
+            "commercial-opening-v5":
                 "409980357ab76a2f07d77855f3a37fd8568f5f6269524e1eb5e61ea5f1b0886a",
-            "commercial-complication-v4":
+            "commercial-complication-v5":
                 "dd617de9d484f44480224316c1cbe6b854d26a44f0466fd84cfbabb1f5e31a5a",
-            "commercial-recovery-v4":
+            "commercial-recovery-v5":
                 "9033aca3cf076c09b724667a227f323cf1a5c411e160cfe159de9a815e05cbad",
-            "commercial-charter-midpoint-v4":
-                "70d41f14ed16079aaa93cd0fd9ed533747dea1fe6c1e01c3e8e67a2710ad224d",
-            "commercial-tax-relief-regional-capital-v4":
-                "5ac5c6bcc4c2587a7b0fc5dc1c8c67d789e9706635404796ecf5f5761eeebf39",
-            "commercial-public-realm-regional-capital-v4":
-                "c41c9b9084ed2e0c86ba13794c0828d44bd3fb0c86cf7227599cd67cee9e64fb",
+            "commercial-charter-midpoint-v5":
+                "63aaba2f0c740e8893b321e2ec1128d2fff95ead7dba5e3d6e64cc0310629174",
+            "commercial-tax-relief-regional-capital-v5":
+                "110f56a2bc57c186ea54886a0708136ea45203295305b65dc4c81ef146378b7e",
+            "commercial-public-realm-regional-capital-v5":
+                "9dca836441b4027b0a4acc5b405232197026cd48a885f8379abe61ab21319522",
             "commercial-charter-victory-v1":
                 "a57786ae493774b289dfe51d9fbbf65b632ef24bad8dc4c193dff35653e15319",
-            "industrial-opening-v4":
+            "industrial-opening-v5":
                 "3a44bdda20d8e169e6190d56b2f6897ea1c6cfd139b1ccbc80aa6b2e0bf8a209",
-            "industrial-complication-v4":
+            "industrial-complication-v5":
                 "be62fcfe3e1d162e839f6cf753c11dec6585cdf09b48bb0c3303baea8e296d4e",
-            "industrial-recovery-v4":
+            "industrial-recovery-v5":
                 "a7a1f04cfe4cf1d19b48cadf841209fa25a2bcb899cecddb93e503bef564eb6e",
-            "industrial-charter-midpoint-v4":
-                "f0dc8c72b05cb72d4d397cffc3ffc9950dca7c12bf81994c2cb4159ce6207a19",
-            "industrial-utility-expansion-regional-capital-v4":
-                "a2cf23660460609063a96ecc071cb276832eb0d1edd22c711eda2adeb0134dd7",
-            "industrial-green-buffer-regional-capital-v4":
-                "acbe8479d368a05596aa30a89f0df4bb820a2a7b9b71a18b6ec2758a6aebe7e6",
+            "industrial-charter-midpoint-v5":
+                "d32f3366be475676bf105d74df410a648832758f283693a88cfbdb05814f1e2c",
+            "industrial-utility-expansion-regional-capital-v5":
+                "ce296786e056ca1c1ed402c44ba30e0b91cc851559b65ee712abd7dfb5f3f2d1",
+            "industrial-green-buffer-regional-capital-v5":
+                "f1095e39c0bec2a6188a1e46b91646e778abf29a68175681da00962926189d42",
             "industrial-charter-victory-v1":
                 "7a9373a5ef1506c1d3ba85e3fe05222ca89ab2d09a5a44ab5a42d9c9f13aae52",
         ]

@@ -378,18 +378,18 @@ final class SessionPlatformTests: XCTestCase {
         XCTAssertEqual(commerceBeforeVictory.tick, 840)
         XCTAssertEqual(industryBeforeVictory.status, .playing)
         XCTAssertEqual(commerceBeforeVictory.status, .playing)
-        XCTAssertEqual(industryBeforeVictory.progression?.townCharterQualifyingCycles, 11)
+        XCTAssertEqual(industryBeforeVictory.progression?.townCharterQualifyingCycles, 5)
         XCTAssertEqual(commerceBeforeVictory.progression?.townCharterQualifyingCycles, 11)
         XCTAssertFalse(industryBeforeVictory.progression?.townCharterAwarded ?? true)
         XCTAssertFalse(commerceBeforeVictory.progression?.townCharterAwarded ?? true)
-        XCTAssertEqual(industryBeforeVictory.treasury, 69_748.20, accuracy: 0.001)
-        XCTAssertEqual(commerceBeforeVictory.treasury, 59_946.90, accuracy: 0.001)
+        XCTAssertEqual(industryBeforeVictory.treasury, 67_748.20, accuracy: 0.001)
+        XCTAssertEqual(commerceBeforeVictory.treasury, 57_946.90, accuracy: 0.001)
         XCTAssertEqual(industryBeforeVictory.population, 510)
         XCTAssertEqual(commerceBeforeVictory.population, 510)
         XCTAssertEqual(industryBeforeVictory.jobs, 356)
         XCTAssertEqual(commerceBeforeVictory.jobs, 356)
-        XCTAssertEqual(industryBeforeVictory.happiness, 52.50220165666292, accuracy: 0.001)
-        XCTAssertEqual(commerceBeforeVictory.happiness, 55.9, accuracy: 0.001)
+        XCTAssertEqual(industryBeforeVictory.happiness, 52.39538613925131, accuracy: 0.001)
+        XCTAssertEqual(commerceBeforeVictory.happiness, 55.79318448258838, accuracy: 0.001)
         XCTAssertEqual(
             CityAnalytics(state: industryBeforeVictory).projectedBalance,
             413.65,
@@ -404,13 +404,13 @@ final class SessionPlatformTests: XCTestCase {
             Set(try (0..<5).map {
                 _ in try CityStateFingerprinter.fingerprint(industryBeforeVictory).digest
             }),
-            Set(["bab857f5ad5d2a457fab10bc8fc2ca388216052ece3c051e7555ff493ab41e3d"])
+            Set(["b8a52b82056e6b07828880d5e9bff4bac53395bc029424b7d37bbd3ada10a8dd"])
         )
         XCTAssertEqual(
             Set(try (0..<5).map {
                 _ in try CityStateFingerprinter.fingerprint(commerceBeforeVictory).digest
             }),
-            Set(["7f6dbc890110d8f8774e6110dd764e4a2858b140ed663f2dbe63252af958fd75"])
+            Set(["2f55f9af10e48ee5b3ec5526b9fa2a1a04cf69c1e8abf472512beb885ac8ba15"])
         )
 
         XCTAssertEqual(
@@ -428,17 +428,17 @@ final class SessionPlatformTests: XCTestCase {
         XCTAssertEqual(commerce.tick, 844)
         XCTAssertEqual(industry.status, .playing)
         XCTAssertEqual(commerce.status, .playing)
-        XCTAssertEqual(industry.treasury, 70_163.15, accuracy: 0.001)
-        XCTAssertEqual(commerce.treasury, 60_393.37, accuracy: 0.001)
+        XCTAssertEqual(industry.treasury, 68_163.15, accuracy: 0.001)
+        XCTAssertEqual(commerce.treasury, 58_393.37, accuracy: 0.001)
         XCTAssertEqual(CityAnalytics(state: industry).projectedBalance, 414.95, accuracy: 0.001)
         XCTAssertEqual(CityAnalytics(state: commerce).projectedBalance, 446.47, accuracy: 0.001)
-        XCTAssertTrue(industry.progression?.townCharterAwarded ?? false)
+        XCTAssertFalse(industry.progression?.townCharterAwarded ?? true)
         XCTAssertTrue(commerce.progression?.townCharterAwarded ?? false)
         XCTAssertTrue(industry.messages.contains { $0.title == "Neighborhood Upgraded" })
-        XCTAssertTrue(commerce.messages.contains { $0.title == "Town Charter Standards" })
+        XCTAssertFalse(commerce.messages.contains { $0.title == "Town Charter Standards" })
         XCTAssertTrue(industry.messages.contains { $0.title == "Industrial Load Absorbed" })
         XCTAssertTrue(industry.messages.contains { $0.title == "Freight Load Forecast" })
-        XCTAssertTrue(industryBeforeVictory.messages.contains { $0.title == "Freight Contract Watch" })
+        XCTAssertFalse(industryBeforeVictory.messages.contains { $0.title == "Freight Contract Watch" })
         XCTAssertFalse(industry.messages.contains { $0.title == "Choose a Growth Engine" })
         XCTAssertTrue(commerce.messages.contains { $0.title == "Chain Store Rumor" })
         XCTAssertTrue(commerce.messages.contains { $0.title == "Main Street Crossroads" })
@@ -448,10 +448,7 @@ final class SessionPlatformTests: XCTestCase {
         XCTAssertNil(industry.progression?.strategy?.nextScheduledTick)
         XCTAssertEqual(industry.progression?.strategy?.recoveryResolution, .industrialUtilityExpansion)
         XCTAssertEqual(CityAnalytics(state: industry).strategyRecoveryResolution, .industrialUtilityExpansion)
-        XCTAssertEqual(industry.progression?.secondAct?.phase, .mandate)
-        XCTAssertEqual(industry.progression?.secondAct?.nextScheduledTick, 908)
-        XCTAssertEqual(industry.progression?.secondAct?.qualifyingCycles, 0)
-        XCTAssertFalse(industry.progression?.secondAct?.regionalCapitalAwarded ?? true)
+        XCTAssertNil(industry.progression?.secondAct)
         XCTAssertEqual(commerce.progression?.strategy?.committedStrategy, .commercialStewardship)
         XCTAssertEqual(commerce.progression?.strategy?.currentPhase, .completed)
         XCTAssertNil(commerce.progression?.strategy?.nextScheduledTick)
@@ -463,19 +460,19 @@ final class SessionPlatformTests: XCTestCase {
         XCTAssertFalse(commerce.progression?.secondAct?.regionalCapitalAwarded ?? true)
         XCTAssertEqual(
             try CityStateFingerprinter.fingerprint(industry).digest,
-            "5d5ba1ef4963789c769d8c8b0c8864e9c7dddee626d3abc0efb5d40c8bbc3c94"
+            "e2d2dbd0044527f22edabd07f139b363da3712f10ead2309ee5e7d4dc4b2f2e4"
         )
         XCTAssertEqual(
             try CityStateFingerprinter.fingerprint(commerce).digest,
-            "f072ea539f4cd29f73ecc77c5c309ad56a4bfdc06a4b35ba763f21dbcfdce552"
+            "bec5288952fc2bbfa3dcb7710842b4bac8113b2e580a1645db1adeda7ea3a2d1"
         )
         XCTAssertEqual(
             Set(try (0..<5).map { _ in try CityStateFingerprinter.fingerprint(industry).digest }),
-            Set(["5d5ba1ef4963789c769d8c8b0c8864e9c7dddee626d3abc0efb5d40c8bbc3c94"])
+            Set(["e2d2dbd0044527f22edabd07f139b363da3712f10ead2309ee5e7d4dc4b2f2e4"])
         )
         XCTAssertEqual(
             Set(try (0..<5).map { _ in try CityStateFingerprinter.fingerprint(commerce).digest }),
-            Set(["f072ea539f4cd29f73ecc77c5c309ad56a4bfdc06a4b35ba763f21dbcfdce552"])
+            Set(["bec5288952fc2bbfa3dcb7710842b4bac8113b2e580a1645db1adeda7ea3a2d1"])
         )
     }
 

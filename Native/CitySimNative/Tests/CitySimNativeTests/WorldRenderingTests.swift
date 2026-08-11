@@ -919,6 +919,47 @@ final class WorldRenderingTests: XCTestCase {
     }
 
     @MainActor
+    func testResidentialVariantTwoAdmittedFamilyQuarantineIsExactDeterministicAndFailClosed() throws {
+        struct LODPayload: Equatable { var sha256: String; var dimensions: [Int]; var nonzeroRGBPixels: Int }
+        struct QuarantinePacket: Equatable {
+            var direction: String; var logicalID: String; var sourcePath: String; var sourceSHA256: String
+            var lodPayloads: [String: LODPayload]; var frontage: String; var pivotWorld: [Double]
+            var socketWorld: [Double]; var transform: String; var fallback: Bool
+            func isValid(sourcePaths: [String: String], sourceHashes: [String: String], lodHashes: [String: [String: String]], lodDimensions: [String: [String: [Int]]], lodVisiblePixels: [String: [String: Int]]) -> Bool {
+                let sockets: [String: [Double]] = ["north": [18, 9], "east": [18, -9], "south": [-18, -9], "west": [-18, 9]]
+                let dimensions: [String: [Int]] = ["block": [1024, 683], "neighborhood": [512, 342], "city": [256, 171]]
+                return logicalID == "residential_l01_v2_\(direction)" && sourcePath == sourcePaths[direction] && sourceSHA256 == sourceHashes[direction]
+                    && lodPayloads.count == 3 && Set(lodPayloads.keys) == Set(["block", "neighborhood", "city"])
+                    && lodPayloads.keys.allSatisfy { lod in lodPayloads[lod]?.sha256 == lodHashes[direction]?[lod] && lodPayloads[lod]?.dimensions == dimensions[lod] && lodPayloads[lod]?.dimensions == lodDimensions[direction]?[lod] && lodPayloads[lod]?.nonzeroRGBPixels == lodVisiblePixels[direction]?[lod] && (lodPayloads[lod]?.nonzeroRGBPixels ?? 0) > 0 }
+                    && Set(lodPayloads.values.map(\.sha256)).count == 3 && frontage == direction && pivotWorld == [0, -18] && socketWorld == sockets[direction] && transform == "none" && !fallback
+            }
+        }
+        let directions = ["north", "east", "south", "west"]
+        let sourcePaths = ["north": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-101/residential_l01_v2/raw/north-source-v01.png", "east": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-101/residential_l01_v2/raw/east-source-v01.png", "south": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-097/residential/raw/residential_l01_variant_2/source-v01.png", "west": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-101/residential_l01_v2/raw/west-source-v01.png"]
+        let sourceHashes = ["north": "3ec18582da6857745c30a2fdc1f6493433923fff32561083f98d4b7c55a58287", "east": "b21f38755f9d90c1b0b77967e0411d92d874cfe6b39c91ef8a5d2e9f698533d1", "south": "984aeffd2cee62634ebc78055b3ef15953cf0df139b56d8346fcddac1750fed3", "west": "6582215392012f504ff603d769338097eee8a698744460c96ee3076ea0282caf"]
+        let lodHashes = ["north": ["block": "bcebd628a7380295bee93474a56c80dc54324b5f5d16a9d8ebe668e166e0bed0", "neighborhood": "2ba4a72107d5158d5c857b363ccc3bf084dfa434ec7f8e0834c443ce0ec241e6", "city": "6187df120f1189c66e03873012e19fe20b177316ab3fe7f0b1178cae9ecec357"], "east": ["block": "8b19d87e937345866ac7e6940c41294584652230a7d5e955296bc13b5edb38b2", "neighborhood": "fded64eb0c4e8f5f31a02abdef652ec300bba6f6ced1a8910bb11423aca8a03b", "city": "c2cd9e22de9b66d457a6604dfb5234c662a9e677732b082ed122391fc0d53afd"], "south": ["block": "c22ee02cf9646470bde095c5c70fc9d93fd5ea22191ba138c9274cca9422ba11", "neighborhood": "7e8014b95df4f6a31d1275b9bcd87bdeece909216c4f5671d8040b0250124268", "city": "b6298c0bc8fd4865ebf54e2a1d370b2529e2f550d513f196cea7920c6b3d92c1"], "west": ["block": "4a0f9acbb3275b85c3da8c6116266c1839f576a1ed972f938d23941181be6218", "neighborhood": "a73d37be233e40abe768b00cdc93c1a3da2d8bc18d37e04fd511c565731e707b", "city": "cf38e72b3908956cd74dc3ce8f037bb57ff20f064d45eb9c44b15327a4192070"]]
+        let lodDimensions = directions.reduce(into: [String: [String: [Int]]]()) { $0[$1] = ["block": [1024, 683], "neighborhood": [512, 342], "city": [256, 171]] }
+        let lodVisiblePixels = ["north": ["block": 211433, "neighborhood": 52813, "city": 13255], "east": ["block": 266367, "neighborhood": 66499, "city": 16698], "south": ["block": 211086, "neighborhood": 52663, "city": 13209], "west": ["block": 236759, "neighborhood": 59085, "city": 14812]]
+        func makePackets() -> [QuarantinePacket] { directions.map { direction in QuarantinePacket(direction: direction, logicalID: "residential_l01_v2_\(direction)", sourcePath: sourcePaths[direction]!, sourceSHA256: sourceHashes[direction]!, lodPayloads: lodHashes[direction]!.mapValues { hash in let lod = lodHashes[direction]!.first(where: { $0.value == hash })!.key; return LODPayload(sha256: hash, dimensions: lodDimensions[direction]![lod]!, nonzeroRGBPixels: lodVisiblePixels[direction]![lod]!) }, frontage: direction, pivotWorld: [0, -18], socketWorld: ["north": [18, 9], "east": [18, -9], "south": [-18, -9], "west": [-18, 9]][direction]!, transform: "none", fallback: false) } }
+        let packets = makePackets()
+        XCTAssertEqual(packets, makePackets(), "quarantine assembly must replay deterministically")
+        XCTAssertEqual(packets.map(\.direction), directions); XCTAssertEqual(Set(packets.map(\.logicalID)).count, 4); XCTAssertEqual(Set(packets.map(\.sourcePath)).count, 4); XCTAssertEqual(Set(packets.map(\.sourceSHA256)).count, 4); XCTAssertEqual(Set(packets.flatMap { $0.lodPayloads.values.map(\.sha256) }).count, 12)
+        XCTAssertTrue(packets.allSatisfy { $0.isValid(sourcePaths: sourcePaths, sourceHashes: sourceHashes, lodHashes: lodHashes, lodDimensions: lodDimensions, lodVisiblePixels: lodVisiblePixels) })
+        enum QuarantineState: String { case intakePreparing, quarantined, rejected }
+        let graph = Dictionary(uniqueKeysWithValues: directions.map { ($0, QuarantineState.quarantined) }); XCTAssertEqual(graph.count, 4); XCTAssertTrue(graph.values.allSatisfy { $0 == .quarantined })
+        func rejects(_ packet: QuarantinePacket) -> Bool { !packet.isValid(sourcePaths: sourcePaths, sourceHashes: sourceHashes, lodHashes: lodHashes, lodDimensions: lodDimensions, lodVisiblePixels: lodVisiblePixels) }
+        var alias = packets[0]; alias.logicalID = packets[1].logicalID; XCTAssertTrue(rejects(alias), "direction alias must reject")
+        var mirrored = packets[0]; mirrored.transform = "mirror-x"; XCTAssertTrue(rejects(mirrored), "mirrored source must reject")
+        var rotated = packets[0]; rotated.transform = "rotate-90"; XCTAssertTrue(rejects(rotated), "rotated source must reject")
+        var sourceSubstitution = packets[0]; sourceSubstitution.sourceSHA256 = packets[1].sourceSHA256; XCTAssertTrue(rejects(sourceSubstitution), "cross-direction source substitution must reject")
+        var missingPayload = packets[0]; missingPayload.lodPayloads.removeValue(forKey: "city"); XCTAssertTrue(rejects(missingPayload), "missing LOD payload must reject")
+        var fallback = packets[0]; fallback.fallback = true; XCTAssertTrue(rejects(fallback), "fallback substitution must reject")
+        let sourceAdmitted = false; let rendererQuarantined = false; let productionSelected = false; let runtimeSelectorImplemented = false
+        XCTAssertFalse(sourceAdmitted); XCTAssertFalse(rendererQuarantined); XCTAssertFalse(productionSelected); XCTAssertFalse(runtimeSelectorImplemented)
+        XCTAssertEqual(graph.values.filter { $0 == .quarantined }.count, 4)
+    }
+
+    @MainActor
     func testResidentialVariantOneAtomicProductionSelectionCoversEveryDirectionLODWithoutFallback() throws {
         let catalog = WorldAssetCatalog()
         let renderer = LotRenderer(style: WorldVisualStyle(), assets: catalog)

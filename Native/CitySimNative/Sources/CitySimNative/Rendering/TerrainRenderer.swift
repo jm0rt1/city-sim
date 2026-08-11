@@ -247,7 +247,7 @@ final class TerrainRenderer {
         fabricEnvelope.fillColor = style.palette.lotGrass.blended(
             withFraction: 0.40,
             of: style.palette.sidewalk
-        )?.withAlphaComponent(0.34) ?? style.palette.lotGrass.withAlphaComponent(0.34)
+        )?.withAlphaComponent(0.48) ?? style.palette.lotGrass.withAlphaComponent(0.48)
         fabricEnvelope.strokeColor = style.palette.concreteLight.withAlphaComponent(0.18)
         fabricEnvelope.lineWidth = 0.9
         fabricEnvelope.zPosition = 0.2
@@ -265,7 +265,7 @@ final class TerrainRenderer {
                 offset: CGPoint(x: 0.2, y: -0.15)
             ))
             expansion.name = "district.fabric.expansion-band"
-            expansion.fillColor = style.palette.lotGrass.withAlphaComponent(0.16)
+            expansion.fillColor = style.palette.lotGrass.withAlphaComponent(0.24)
             expansion.strokeColor = style.palette.concreteLight.withAlphaComponent(0.22)
             expansion.lineWidth = 0.7
             expansion.zPosition = 0.15
@@ -281,7 +281,7 @@ final class TerrainRenderer {
         publicEnvelope.fillColor = style.palette.sidewalk.blended(
             withFraction: 0.24,
             of: style.palette.lotGrass
-        )?.withAlphaComponent(0.48) ?? style.palette.sidewalk.withAlphaComponent(0.48)
+        )?.withAlphaComponent(0.60) ?? style.palette.sidewalk.withAlphaComponent(0.60)
         publicEnvelope.strokeColor = style.palette.curb.withAlphaComponent(0.36)
         publicEnvelope.lineWidth = 1.1
         publicEnvelope.zPosition = 0.35

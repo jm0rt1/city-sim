@@ -3597,6 +3597,18 @@ final class WorldRenderingTests: XCTestCase {
         )
         XCTAssertTrue(districtNames.contains("district.ground.service-campus.contact"))
         XCTAssertTrue(districtNames.contains("district.ground.service-campus.material"))
+        let authoredEnvelope = districtGround.childNode(
+            withName: "//district.fabric.authored-envelope"
+        ) as? SKShapeNode
+        XCTAssertEqual(authoredEnvelope?.fillColor.alphaComponent ?? -1, 0.48, accuracy: 0.001)
+        let expansionBand = districtGround.childNode(
+            withName: "//district.fabric.expansion-band"
+        ) as? SKShapeNode
+        XCTAssertEqual(expansionBand?.fillColor.alphaComponent ?? -1, 0.24, accuracy: 0.001)
+        let publicEnvelope = districtGround.childNode(
+            withName: "//district.fabric.public-realm-envelope"
+        ) as? SKShapeNode
+        XCTAssertEqual(publicEnvelope?.fillColor.alphaComponent ?? -1, 0.60, accuracy: 0.001)
         XCTAssertEqual(recursiveActiveActionCount(districtGround), 0)
         XCTAssertTrue(
             scene.ambientEnvironmentNamesForTesting.contains(
@@ -3784,6 +3796,8 @@ final class WorldRenderingTests: XCTestCase {
         let defaultInsets = CityMapViewportInsets(top: 104, leading: 24, bottom: 160, trailing: 24)
         let defaultScene = CityScene(size: CGSize(width: 1_280, height: 800))
         defaultScene.reducedMotion = true
+        let defaultView = SKView(frame: CGRect(origin: .zero, size: defaultScene.size))
+        defaultView.presentScene(defaultScene)
         defaultScene.updateViewportInsets(defaultInsets)
         defaultScene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
         XCTAssertEqual(defaultScene.currentCameraDetailLevel, .neighborhood)
@@ -3799,6 +3813,8 @@ final class WorldRenderingTests: XCTestCase {
         let compactInsets = CityMapViewportInsets(top: 138, leading: 19, bottom: 236, trailing: 19)
         let compactScene = CityScene(size: CGSize(width: 900, height: 600))
         compactScene.reducedMotion = true
+        let compactView = SKView(frame: CGRect(origin: .zero, size: compactScene.size))
+        compactView.presentScene(compactScene)
         compactScene.updateViewportInsets(compactInsets)
         compactScene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
         XCTAssertEqual(compactScene.currentCameraDetailLevel, .neighborhood)
@@ -3845,6 +3861,13 @@ final class WorldRenderingTests: XCTestCase {
         )
         XCTAssertTrue(defaultScene.tileDescendantNamesForTesting(at: cityHall)
             .contains("lot.generated-v4.city_hall_l01.city"))
+        if let texture = defaultView.texture(from: defaultScene),
+           let png = NSBitmapImageRep(cgImage: texture.cgImage()).representation(
+               using: .png,
+               properties: [:]
+           ) {
+            try? export(png, environmentKey: "PLAY066_CURRENTCEF6_REGULAR_CITY")
+        }
         XCTAssertFalse(defaultScene.tileDescendantNamesForTesting(at: cityHall)
             .contains("lot.generated-v4.city_hall_l01.block"))
         let cityVisible = defaultScene.tileVisibleDescendantNamesForTesting(at: cityHall)
@@ -3870,6 +3893,13 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertTrue(neighborhoodVisible.contains("lot.lod.neighborhood.public-realm.civic"))
         XCTAssertFalse(neighborhoodVisible.contains { $0.hasPrefix("lot.lod.block.entrance.") })
         XCTAssertTrue(neighborhoodVisible.contains("lot.generated-v4.city_hall_l01.neighborhood"))
+        if let texture = defaultView.texture(from: defaultScene),
+           let png = NSBitmapImageRep(cgImage: texture.cgImage()).representation(
+               using: .png,
+               properties: [:]
+           ) {
+            try? export(png, environmentKey: "PLAY066_CURRENTCEF6_REGULAR_NEIGHBORHOOD")
+        }
         XCTAssertTrue(defaultScene.tileVisibleDescendantNamesForTesting(
             at: cityHallRoad
         ).contains("road.generated-v4.\(cityHallRoadMask).neighborhood"))
@@ -3886,6 +3916,13 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertTrue(blockVisible.contains("lot.lod.neighborhood.public-realm.civic"))
         XCTAssertTrue(blockVisible.contains("lot.lod.block.entrance.cityHall"))
         XCTAssertTrue(blockVisible.contains("lot.generated-v4.city_hall_l01.block"))
+        if let texture = defaultView.texture(from: defaultScene),
+           let png = NSBitmapImageRep(cgImage: texture.cgImage()).representation(
+               using: .png,
+               properties: [:]
+           ) {
+            try? export(png, environmentKey: "PLAY066_CURRENTCEF6_REGULAR_BLOCK")
+        }
         XCTAssertTrue(defaultScene.tileVisibleDescendantNamesForTesting(
             at: cityHallRoad
         ).contains("road.generated-v4.\(cityHallRoadMask).block"))
@@ -3901,6 +3938,13 @@ final class WorldRenderingTests: XCTestCase {
         )
         XCTAssertTrue(compactScene.tileDescendantNamesForTesting(at: cityHall)
             .contains("lot.generated-v4.city_hall_l01.city"))
+        if let texture = compactView.texture(from: compactScene),
+           let png = NSBitmapImageRep(cgImage: texture.cgImage()).representation(
+               using: .png,
+               properties: [:]
+           ) {
+            try? export(png, environmentKey: "PLAY066_CURRENTCEF6_COMPACT_CITY")
+        }
         XCTAssertEqual(compactScene.resolvedCoordinateForTesting(at: compactScene.scenePointForTesting(at: cityHall)), cityHall)
         XCTAssertEqual(compactScene.tileRootIdentifier(at: cityHall), compactCityHallRoot)
 
@@ -3908,12 +3952,26 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertEqual(compactScene.currentCameraDetailLevel, .neighborhood)
         XCTAssertTrue(compactScene.tileDescendantNamesForTesting(at: cityHall)
             .contains("lot.generated-v4.city_hall_l01.neighborhood"))
+        if let texture = compactView.texture(from: compactScene),
+           let png = NSBitmapImageRep(cgImage: texture.cgImage()).representation(
+               using: .png,
+               properties: [:]
+           ) {
+            try? export(png, environmentKey: "PLAY066_CURRENTCEF6_COMPACT_NEIGHBORHOOD")
+        }
         XCTAssertEqual(compactScene.tileRootIdentifier(at: cityHall), compactCityHallRoot)
 
         compactScene.configureProofCamera(detail: .block, centeredOn: cityHall)
         XCTAssertEqual(compactScene.currentCameraDetailLevel, .block)
         XCTAssertTrue(compactScene.tileDescendantNamesForTesting(at: cityHall)
             .contains("lot.generated-v4.city_hall_l01.block"))
+        if let texture = compactView.texture(from: compactScene),
+           let png = NSBitmapImageRep(cgImage: texture.cgImage()).representation(
+               using: .png,
+               properties: [:]
+           ) {
+            try? export(png, environmentKey: "PLAY066_CURRENTCEF6_COMPACT_BLOCK")
+        }
         XCTAssertEqual(compactScene.resolvedCoordinateForTesting(at: compactScene.scenePointForTesting(at: cityHall)), cityHall)
         XCTAssertEqual(compactScene.tileRootIdentifier(at: cityHall), compactCityHallRoot)
 

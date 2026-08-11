@@ -34,6 +34,16 @@
       "stage_explicit_paths",
       "commit_once"
     ],
+    "pathScopeContract": {
+      "allowedPathsAreMaximumMutationBoundary": true,
+      "minimumTouchedPathCountRequired": false,
+      "predictedPathCountIsMutationMinimum": false,
+      "manufacturedNoOpEditsAllowed": false,
+      "fewerChangedPathsAllowedWhenDeliverableAndFocusedProofPass": true,
+      "everyChangedPathMustBeInAllowlist": true,
+      "extraOrUnexpectedPathDecision": "ESCALATE",
+      "exactChangedPathStagingAndProofRequired": true
+    },
     "separateRoundsRequiredWithinEligibility": {
       "ackOnly": false,
       "staticReview": false,
@@ -64,6 +74,28 @@
       "requiresPreProductExecution": true,
       "requiresZeroMutation": true,
       "freshCarrierRequired": false
+    },
+    "correctedMechanicalActionRecovery": {
+      "maxCorrectedMechanicalActions": 1,
+      "sameOutcomeLeaseRequired": true,
+      "freshCarrierRequired": false,
+      "requiresExactPostFailureAudit": true,
+      "auditMustProve": {
+        "zeroOutOfAllowlistMutation": true,
+        "intendedOutcomeUnchanged": true,
+        "intendedPathsUnchanged": true,
+        "noCompletedProductOrProofActionReplayed": true,
+        "noSemanticsOrDataNondeterminism": true
+      },
+      "countsAgainstIdenticalInfrastructureRetry": false,
+      "countsAgainstFocusedProofAttempts": false,
+      "stopOn": [
+        "second_corrected_action",
+        "out_of_allowlist_mutation",
+        "outcome_or_path_change",
+        "completed_product_or_proof_replay",
+        "semantics_or_data_nondeterminism"
+      ]
     },
     "boundedLocalRepair": {
       "maxFocusedProofAttempts": 2,

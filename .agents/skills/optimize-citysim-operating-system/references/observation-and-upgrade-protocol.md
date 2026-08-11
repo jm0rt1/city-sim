@@ -15,6 +15,12 @@ allowed-path edits, focused proof, explicit staging, and one coherent commit.
 It does not require separate ACK-only, static-review, execution-release,
 receipt-review, or routine optimizer-observation rounds.
 
+Allowed paths are a maximum mutation boundary, not a touched-file minimum.
+Never manufacture a no-op edit to satisfy a predicted path count. Fewer changed
+paths are valid when the bounded deliverable and focused proof pass and every
+changed path remains in the allowlist; any extra or unexpected path escalates.
+Stage and prove the exact paths actually changed.
+
 Integration may validate and dispatch eligible routine work directly. Manual
 CTO review remains mandatory at the excluded judgment boundaries. The outcome
 lease never grants acceptance, push, release, or self-review authority.
@@ -26,6 +32,14 @@ durable governance/product artifact or crosses a judgment boundary.
 For sandbox, permission, or tool-transport failure before product execution and
 before mutation, allow one identical retry without a fresh carrier. No changed
 command or second retry is authorized.
+
+A failed mechanical implementation action may be corrected once inside the
+same outcome lease only after an exact post-failure audit proves zero
+out-of-allowlist mutation, unchanged intended outcome and paths, no replay of
+any completed product or proof action, and no semantics or data nondeterminism.
+This corrected mechanical action requires no fresh carrier and is independent
+of both the identical infrastructure retry and the focused proof budget. A
+second correction or any failed audit condition escalates.
 
 An eligible implementation may also use one bounded local repair loop: at most
 two focused proof attempts total, with edits confined to the original

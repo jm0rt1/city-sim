@@ -306,15 +306,28 @@ or optimizer-observation rounds. Integration may validate and dispatch eligible
 routine work directly. Manual CTO review is reserved for the excluded judgment
 boundaries.
 
+Allowed paths are a maximum mutation boundary, not a touched-file minimum.
+Never manufacture a no-op edit to satisfy a predicted path count. Fewer changed
+paths are valid when the bounded deliverable and focused proof pass and every
+changed path remains in the allowlist; any extra or unexpected path escalates.
+Stage and prove the exact paths actually changed.
+
 A validated temp-local route and selected dispatch are sufficient for eligible
 reversible local work. Durable publication is required when the carrier is
 itself a durable governance/product artifact or crosses a judgment boundary.
 
-Two recovery rules are distinct:
+Three recovery rules are distinct:
 
 - If an exact command fails from sandbox, permission, or tool transport before
   product execution and mutation, allow one identical retry without a fresh
   carrier.
+- A failed mechanical implementation action permits one corrected mechanical action
+  inside the same outcome lease only after an exact post-failure audit proves
+  zero out-of-allowlist mutation, unchanged intended outcome and paths, no
+  replay of any completed product or proof action, and no semantics or data
+  nondeterminism. It requires no fresh carrier and consumes neither the
+  infrastructure retry nor a focused proof attempt. A second correction or any
+  failed audit condition escalates.
 - Routine reversible implementation may use at most two focused proof attempts
   total inside the same outcome lease. The first failure may inform one repair
   confined to the original allowlist without a fresh carrier, ACK, or release.

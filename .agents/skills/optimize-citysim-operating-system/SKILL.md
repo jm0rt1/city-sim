@@ -47,6 +47,12 @@ does not require separate ACK-only, static-review, execution-release,
 receipt-review, or routine optimizer-observation rounds. Integration may
 validate and dispatch it directly.
 
+Allowed paths are a maximum mutation boundary, not a touched-file minimum.
+Never manufacture a no-op edit to satisfy a predicted path count. Fewer changed
+paths are valid when the bounded deliverable and focused proof pass and every
+changed path remains in the allowlist; any extra or unexpected path escalates.
+Stage and prove the exact paths actually changed.
+
 Manual CTO review is required at the excluded judgment boundaries, not for
 ordinary bounded execution. Independent QA, distinct acceptance ownership,
 and push/release authority remain mandatory. A worker never self-accepts.
@@ -56,6 +62,14 @@ before product execution and before any mutation, allow one identical retry
 without a fresh carrier. Any changed command, second failure, product
 execution, or mutation ends that recovery allowance and follows the route's
 normal stop/escalation rule.
+
+Separately, a failed mechanical implementation action may be corrected once
+inside the same outcome lease after an exact post-failure audit proves zero
+out-of-allowlist mutation, unchanged intended outcome and paths, no replay of
+any completed product or proof action, and no semantics or data nondeterminism.
+This corrected mechanical action requires no fresh carrier and consumes neither
+the identical infrastructure retry nor a focused proof attempt. A second
+correction or any failed audit condition escalates.
 
 Separately, an eligible implementation may use one bounded local repair loop
 inside the same outcome lease: at most two focused proof attempts total, with

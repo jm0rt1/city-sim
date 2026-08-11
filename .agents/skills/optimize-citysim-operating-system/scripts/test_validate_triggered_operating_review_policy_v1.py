@@ -58,6 +58,35 @@ class TriggeredOperatingReviewPolicyTests(unittest.TestCase):
             lambda p: p["outcomeFastPath"]["optimizer"].update({"observationMode": "every_delegation"})
         )
 
+    def test_allowed_paths_are_a_maximum_boundary_not_a_touch_minimum(self) -> None:
+        contract = "pathScopeContract"
+        self.assert_invalid(
+            lambda p: p["outcomeFastPath"][contract].update({"allowedPathsAreMaximumMutationBoundary": False})
+        )
+        self.assert_invalid(
+            lambda p: p["outcomeFastPath"][contract].update({"minimumTouchedPathCountRequired": True})
+        )
+        self.assert_invalid(
+            lambda p: p["outcomeFastPath"][contract].update({"predictedPathCountIsMutationMinimum": True})
+        )
+        self.assert_invalid(
+            lambda p: p["outcomeFastPath"][contract].update({"manufacturedNoOpEditsAllowed": True})
+        )
+        self.assert_invalid(
+            lambda p: p["outcomeFastPath"][contract].update(
+                {"fewerChangedPathsAllowedWhenDeliverableAndFocusedProofPass": False}
+            )
+        )
+        self.assert_invalid(
+            lambda p: p["outcomeFastPath"][contract].update({"everyChangedPathMustBeInAllowlist": False})
+        )
+        self.assert_invalid(
+            lambda p: p["outcomeFastPath"][contract].update({"extraOrUnexpectedPathDecision": "RETURN"})
+        )
+        self.assert_invalid(
+            lambda p: p["outcomeFastPath"][contract].update({"exactChangedPathStagingAndProofRequired": False})
+        )
+
     def test_exact_command_recovery_is_one_pre_mutation_retry(self) -> None:
         self.assert_invalid(
             lambda p: p["outcomeFastPath"]["exactCommandRecovery"].update({"maxIdenticalRetries": 2})
@@ -67,6 +96,36 @@ class TriggeredOperatingReviewPolicyTests(unittest.TestCase):
         )
         self.assert_invalid(
             lambda p: p["outcomeFastPath"]["exactCommandRecovery"]["allowedFailureClasses"].append("test_failure")
+        )
+
+    def test_corrected_mechanical_action_is_single_audited_and_distinct(self) -> None:
+        recovery = "correctedMechanicalActionRecovery"
+        self.assert_invalid(
+            lambda p: p["outcomeFastPath"][recovery].update({"maxCorrectedMechanicalActions": 2})
+        )
+        self.assert_invalid(
+            lambda p: p["outcomeFastPath"][recovery].update({"requiresExactPostFailureAudit": False})
+        )
+        self.assert_invalid(
+            lambda p: p["outcomeFastPath"][recovery]["auditMustProve"].update(
+                {"zeroOutOfAllowlistMutation": False}
+            )
+        )
+        self.assert_invalid(
+            lambda p: p["outcomeFastPath"][recovery]["auditMustProve"].update(
+                {"noCompletedProductOrProofActionReplayed": False}
+            )
+        )
+        self.assert_invalid(
+            lambda p: p["outcomeFastPath"][recovery]["auditMustProve"].update(
+                {"noSemanticsOrDataNondeterminism": False}
+            )
+        )
+        self.assert_invalid(
+            lambda p: p["outcomeFastPath"][recovery].update({"countsAgainstFocusedProofAttempts": True})
+        )
+        self.assert_invalid(
+            lambda p: p["outcomeFastPath"][recovery]["stopOn"].remove("outcome_or_path_change")
         )
 
     def test_temp_carrier_and_local_repair_are_bounded(self) -> None:
@@ -229,7 +288,9 @@ class TriggeredOperatingReviewPolicyTests(unittest.TestCase):
         }
         required_phrases = (
             "outcome lease",
+            "maximum mutation boundary",
             "one identical retry",
+            "corrected mechanical action",
             "deadline confidence",
             "Obsidian agent note",
             "once per changed candidate",

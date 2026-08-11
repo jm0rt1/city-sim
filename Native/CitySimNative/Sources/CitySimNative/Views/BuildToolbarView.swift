@@ -223,13 +223,7 @@ struct BuildToolbarView: View {
 
             Divider().frame(height: 30)
 
-            if compact {
-                buildCatalogMenu
-            } else {
-                ForEach(BuildCategory.allCases) { category in
-                    categoryButton(category)
-                }
-            }
+            buildCatalogMenu
 
             if !store.showInspector, activeBuildDecision == nil {
                 selectedToolSummary
@@ -753,6 +747,8 @@ struct BuildToolbarView: View {
             HStack(spacing: 5) {
                 Image(systemName: active ? "checkmark.circle.fill" : symbol)
                 Text(title)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.72)
             }
             .font(.caption.weight(.semibold))
             .padding(.horizontal, compact ? 7 : 10)
@@ -763,27 +759,6 @@ struct BuildToolbarView: View {
         .foregroundStyle(active ? Color.black : Color.primary)
         .background(active ? tint : GameTheme.inactiveControl, in: RoundedRectangle(cornerRadius: 9))
         .accessibilityLabel("\(title) mode")
-        .accessibilityValue(active ? "Selected" : "Not selected")
-    }
-
-    private func categoryButton(_ category: BuildCategory) -> some View {
-        let active = store.selectedBuildCategory == category
-        return Button { store.perform(CityCommandCatalog.id(for: category)) } label: {
-            Label(category.title, systemImage: category.symbol)
-                .font(.caption.weight(.semibold))
-                .padding(.horizontal, 8)
-                .frame(minHeight: GameTheme.controlMinimum)
-                .contentShape(Rectangle())
-        }
-        .buttonStyle(.plain)
-        .foregroundStyle(active ? GameTheme.accent : .primary)
-        .background(active ? GameTheme.accent.opacity(0.15) : GameTheme.inactiveControl, in: RoundedRectangle(cornerRadius: 9))
-        .overlay {
-            if active {
-                RoundedRectangle(cornerRadius: 9).stroke(GameTheme.accent.opacity(0.8), lineWidth: 1.5)
-            }
-        }
-        .accessibilityLabel("\(category.title) build category")
         .accessibilityValue(active ? "Selected" : "Not selected")
     }
 

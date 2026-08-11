@@ -67,3 +67,71 @@ self-acceptance, push, release, or gate movement. Any identity, permission,
 process, save, persistence, path, lease, or attempt mismatch returns
 immediately without a second launch attempt or product change. Integration and
 independent CTO retain disposition authority.
+
+## CITYSIM-0700-4B57 exact-candidate Alpha activation V2
+
+The preceding 8439 activation and its returned evidence remain immutable
+history. Integration now activates this same claim once more, without removing
+or reinterpreting that history, for independent QA task
+`019fe8f2-43ac-7700-9eaf-e137c4c5ecb4` in the canonical worktree and branch
+named above. Governance authority is this claim-only successor commit. The
+immutable product candidate is commit
+`4b57e43c4e2329a7d83b97494ea9e9942ba69814`, tree
+`f99705acc1d3a7128bb7f5b13f15000f666736eb`; the governance successor does not
+change or rebuild those product bytes.
+
+The only launchable build is the already aggregate-tested and staged app at
+`/Users/James/Library/Mobile Documents/com~apple~CloudDocs/James's Files/Programming/Python/city-sim/dist/CitySim.app`.
+Its bound identities are:
+
+- stage manifest `/Users/James/Library/Mobile Documents/com~apple~CloudDocs/James's Files/Programming/Python/city-sim/dist/manifests/master.manifest`, SHA-256 `58be309af40241e9bd6b930924816defbf1169cb363502546f4753a58aaf57cb`;
+- executable `/Users/James/Library/Mobile Documents/com~apple~CloudDocs/James's Files/Programming/Python/city-sim/dist/CitySim.app/Contents/MacOS/CitySimNative`, SHA-256 `c3361c6b836c36a37673556509780ee5b42f9f1fc614178d8cbf8649ef86abc8`;
+- Info.plist SHA-256 `c552bd0c0756b3385c8485d42298119a71d53549dcb0309bb1b8d45cf5c369fb`;
+- key art SHA-256 `57b1d70ba2e534ae3dc73c8d26604c3ea8a95166ba29f107c74cd4203b455010`;
+- atlas manifest SHA-256 `411934e492a66216787f8c93dd91d3f68cc16637110dba9ed7186b22dda96d3d`;
+- generated-v4 manifest SHA-256 `317802265010fc758b232bea9198f18ec0ca4d75b5ceb6f759206238717cec92`;
+- deterministic resource-tree digest `824db799e1a6a1d4070e0c97a186121b28592603b6dacd6a23f7467e98863764`;
+- deterministic complete app-tree digest `d9ff03ffc8b3cae9b005865c0923e447f629c868356e4e38024eee1a2984a4f8`;
+- app inventory count 82 files.
+
+QA must reproduce the two tree digests from the main repository root with
+these exact literal commands and no substitute algorithm:
+
+```sh
+(cd dist/CitySim.app/CitySimNative_CitySimNative.bundle && find . -type f -print0 | LC_ALL=C sort -z | xargs -0 shasum -a 256 | shasum -a 256)
+(cd dist/CitySim.app && find . -type f -print0 | LC_ALL=C sort -z | xargs -0 shasum -a 256 | shasum -a 256)
+```
+
+The isolated data root is exactly
+`/private/tmp/CITYSIM-4B57-ALPHA-QA-V2-DATA`, initially absent. The exclusive
+output root is exactly `/private/tmp/CITYSIM-4B57-ALPHA-QA-V2-OUTPUT`, initially
+absent. All fourteen existing untracked PLAY-102/v3 files, including the spent
+8439 return packet and images, remain immutable inputs; their sorted path/hash
+ledger digest is
+`78aaea5e878ac93c23efcbc7bdcfe484d7a4b826c9d66ea8af9cbb6f5776798e`.
+They may not be rewritten, normalized, removed, or treated as V2 proof.
+
+After Integration issues an exact schema-2 route, selected dispatch, and
+exclusive lease with `attemptCount=1` and `maximumStartCount=2`, independent QA
+may perform exactly one two-launch Alpha journey. Before launch it must rehash
+the authority, product candidate, staged app, executable, resource bundle,
+manifest, Info.plist, key art, atlas manifests, both deterministic tree digests,
+and all fourteen preserved PLAY-102/v3 files; require both V2 roots absent;
+require zero matching CitySim candidate processes; and observe window and
+accessibility capture permission. `UNKNOWN` is a fail-closed return.
+
+Launch one must use only the exact staged app and isolated data root, create a
+fresh ordinary city, build and zone, visibly observe a storm consequence,
+perform and observe recovery, and save. QA may then revalidate the exact
+first-launch PID and full executable image, send one SIGTERM to that PID only,
+verify it absent, launch the same immutable app once more against the same data
+root, load the save, verify persistence, and leave the exact second process
+running on PASS.
+
+This V2 activation authorizes only independent observation and the exclusive
+output packet. It authorizes no product or resource edit, rebuild, test, retry,
+substitute, cleanup, coaching, PID wildcard, SIGKILL, stage, commit, push,
+release, broader scoring, self-acceptance, or gate movement. Any identity,
+permission, process, root, journey, save, persistence, lease, or attempt mismatch
+returns immediately without product repair or a second attempt. Integration and
+independent Agent 002 retain disposition authority.

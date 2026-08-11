@@ -218,7 +218,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Stop conditions:** A source-quality repair inside the renderer lane, any cross-family source substitution, frontage inferred from camera rather than authoritative adjacency, runtime pixel transform, changed simulation or store truth, fixture-only proof, unbounded pack/residency growth, or author self-acceptance.
 - **Accepted integration:** Product `a08414c591b0f3600da5588d8c771e74d237727f`, evidence `61b20d47df5a1118e2ca83f06bc8fa91af3cb75c`, and completion `9da0aa9` are integrated through combined product `7b432c4af1ee62553598e70c6103efe7a26e8af9`. Independent PLAY-055 approved all 16 Residential identities at 4/4 with zero fallback, wrong frontage, mirror, rotation, alias, overlap, or automatic reject.
 
-### [ ] PLAY-032: Turn diagnosis into direct action
+### [x] PLAY-032: Turn diagnosis into direct action
 
 - **Player outcome:** Important warnings reveal cause, consequence, and legitimate remedies, and keyboard-only players can navigate and act spatially without falling out of the governed command system.
 - **Owning lane:** UI and input.
@@ -227,6 +227,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Out of scope:** Simulation rules, renderer truth, save schema, and duplicate command state.
 - **Acceptance:** Every critical warning has truthful cause/consequence/remedy routes; pointer and keyboard dispatch the same intent; spatial focus is visible and stable; no shortcut collisions or modal leakage; default/compact/Full Keyboard Access/VoiceOver journeys pass live.
 - **Stop conditions:** Ad hoc shortcuts, inaccessible critical action, duplicated domain truth, broken map dominance, or unapproved shared-store/input architecture.
+- **Accepted integration:** Product `d8d2fa799cb5d07d611773fa49418b5a755127da`; aggregate 369/369 executed tests passed with 2 skipped; independent exact-candidate real-app QA approved pointer/keyboard/FKA/VoiceOver remedy parity, stable state, Escape, and exact 900 × 600 usability in durable receipt `34ac2e469e83664b8cc1a540f6582f4911da8c4d3d841d6710c7033de3276d59`. No release is claimed.
 
 ### [ ] PLAY-051: Prove fun, comprehension, and replay value
 

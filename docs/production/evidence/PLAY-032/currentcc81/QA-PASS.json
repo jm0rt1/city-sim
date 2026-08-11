@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "taskId": "PLAY-032",
+  "result": "APPROVE_PLAY032_DIRECT_REMEDY",
+  "candidate": {
+    "commit": "d8d2fa799cb5d07d611773fa49418b5a755127da",
+    "tree": "f25e7ea5ac144b56fbbcf74de62df04fb70a97b7",
+    "appPath": "/private/tmp/CITYSIM-D8D2-PLAY032-STAGE-V1/CitySim.app",
+    "executablePath": "/private/tmp/CITYSIM-D8D2-PLAY032-STAGE-V1/CitySim.app/Contents/MacOS/CitySimNative",
+    "executableSha256": "192f55ad04b32514b7e68b12afa2189dd9fd048e3329af248202dc75fd21bc33",
+    "stageManifestSha256": "5a7a5a20d65031a13fad8ff12d8d89ace98ef85596ef141b59198fa0bd32532e",
+    "resourceTreeDigest": "0b76a64900ec328130865360d4f42f2ddbad77edd7bea11f51712bd3c04dd3d3",
+    "appTreeDigest": "749f29837ee0d098e7bbcaf3f4e1a8d83ec0dc1debd1236095ee59cfda673afd"
+  },
+  "authority": {
+    "routeId": "quality-v25:play-032-currentd8d2-direct-remedy-real-app-v1",
+    "routeRawSha256": "065fb662f74d03793f06f9dbd840ff85ce91e897cd3c4049441d2ac1ffb24e81",
+    "routeCanonicalSha256": "ad460858c8f3a647a9fa3e2bb2ddae53eb3a46b2dd197260e155cfd219fac02a",
+    "dispatchRawSha256": "b518eca47c4fbe2780b34dfae184f7fcbabbeec6002b0232ce8092550f4053ac",
+    "routeValidator": "PASS",
+    "selectedDispatchValidator": "PASS"
+  },
+  "execution": {
+    "dataRoot": "/private/tmp/CITYSIM-D8D2-PLAY032-QA-V1-DATA",
+    "outputRoot": "/private/tmp/CITYSIM-D8D2-PLAY032-QA-V1-OUTPUT",
+    "launchCount": 1,
+    "signalCount": 0,
+    "testOrBuildCount": 0,
+    "processId": 9249,
+    "processImage": "/private/tmp/CITYSIM-D8D2-PLAY032-STAGE-V1/CitySim.app/Contents/MacOS/CitySimNative",
+    "processLeftRunning": true
+  },
+  "journey": {
+    "warning": {
+      "title": "UTILITY SHORTFALL",
+      "day": 75,
+      "causeAndConsequence": "Power or water is below current use. Growth has stalled and livability will keep falling until capacity or demand changes.",
+      "severity": "critical"
+    },
+    "directRemedy": {
+      "label": "Show utility service",
+      "help": "Find the accepted local service gaps. Focus returns to the map.",
+      "pointerResult": "PASS: opened the Utilities diagnostic layer and returned focus to the map",
+      "keyboardResult": "PASS: Full Keyboard Access focus, Space, Down, Return activated the same remedy and destination",
+      "accessibilityResult": "PASS: warning, truthful cause/consequence, action label, help, and destination were exposed in the accessibility tree",
+      "escapeResult": "PASS: Escape closed the action menu cleanly"
+    },
+    "statePreservation": {
+      "beforeAndAfter": "Day 168; paused; treasury $13,985; residents 380; happiness 54%; jobs 190; utilities 96% (P0/W0); no block selected",
+      "result": "PASS: only the intended diagnostic surface changed"
+    },
+    "compact": {
+      "capturedImageGeometry": "900x652 including 52px macOS chrome",
+      "contentCrop": "left=0, top=52, width=900, height=600",
+      "result": "PASS: action remained legible and the map aperture remained usable"
+    }
+  },
+  "evidence": [
+    {
+      "path": "/private/tmp/CITYSIM-D8D2-PLAY032-QA-V1-OUTPUT/01-default-start.png",
+      "sha256": "e310d94b0c7f8dbef391d4744dff276934a930a4872305cb9bba9e0b62a73462"
+    },
+    {
+      "path": "/private/tmp/CITYSIM-D8D2-PLAY032-QA-V1-OUTPUT/03-severe-warning-default.png",
+      "sha256": "4330e3609014a82f7187c44d1008a4354dc19f839d445eacb00608bb635dd3d4"
+    },
+    {
+      "path": "/private/tmp/CITYSIM-D8D2-PLAY032-QA-V1-OUTPUT/04-pointer-utility-remedy-default.png",
+      "sha256": "30b433da400fca3af3a3660e7c9188de0ffd6be4debd7c81d8784d34f8e62031"
+    },
+    {
+      "path": "/private/tmp/CITYSIM-D8D2-PLAY032-QA-V1-OUTPUT/07-keyboard-utility-remedy-confirmed.png",
+      "sha256": "27c58084f78dc1c4b2cd6be2669c67a621f5ed843e9ae6279e26454e33011e04"
+    },
+    {
+      "path": "/private/tmp/CITYSIM-D8D2-PLAY032-QA-V1-OUTPUT/08-compact-900x600.png",
+      "sha256": "23cfcb0e5a8475cb1d0a1624193b47cdd58b69bf29a25851036846b6618650ae"
+    }
+  ],
+  "boundaries": {
+    "repositoryMutation": false,
+    "productRepair": false,
+    "stormOrSaveReplay": false,
+    "releaseInference": false
+  }
+}

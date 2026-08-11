@@ -1,0 +1,100 @@
+{
+  "schema": 1,
+  "task": "PLAY-101",
+  "family": "industrial_l01_v0",
+  "stage": "source-family-admitted",
+  "authority": {
+    "routeId": "world-art-v2:play-101-currentb246-industrial-l01-v0-family-admission-v2",
+    "routeCanonicalSha256": "6754a6d6e79b45dbf57dc296e7e2e4a72482baf4911581dc07d8255141625e1d",
+    "authorityCommit": "115ec28429a68504753bddea7b83172eaf0f1c34",
+    "baseCommit": "b246fb981a5ecc89e6f1a5ca30f8dd782dd68199",
+    "claim": {
+      "path": "docs/production/claims/PLAY-101.industrial-l01-v0-family-currentcf3.md",
+      "sha256": "0800c99439d3e488af6fcc8b898a79204f3dde2778125f5e502a1c382f67388e"
+    }
+  },
+  "scope": {
+    "logicalIdentities": 1,
+    "authoredDirections": 4,
+    "rawSources": 4,
+    "lodPayloadsPerDirection": 3,
+    "lodPayloadsTotal": 12,
+    "directions": ["north", "east", "south", "west"],
+    "lods": ["block", "neighborhood", "city"]
+  },
+  "canonicalSouth": {
+    "direction": "south",
+    "raw": {
+      "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/raw/industrial_l01_v00-source-v01.png",
+      "sha256": "7ca3e26234e7e15df9a46775a83f7132f89e1ea1f22d97c42ca6d3502099bbd2",
+      "status": "observed-canonical-authoring-anchor"
+    },
+    "lods": [
+      {
+        "lod": "block",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/normalized/south/industrial_l01_v00/block.png",
+        "sha256": "05b55f373cc921f35d6e6cdd05e74bcb53deaa52ce9ea076ccf6750210eac0ce",
+        "status": "repaired-derived-payload-admitted"
+      },
+      {
+        "lod": "neighborhood",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/normalized/south/industrial_l01_v00/neighborhood.png",
+        "sha256": "7a3d147f3802e110dba11b006829e671c263bf76a02f51ad21df5538f472bfc4",
+        "status": "repaired-derived-payload-admitted"
+      },
+      {
+        "lod": "city",
+        "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/normalized/south/industrial_l01_v00/city.png",
+        "sha256": "cdfe8e0cf85cec1d21131993dc024498afb5f86cc7f8fa398491a5cf9487dba1",
+        "status": "repaired-derived-payload-admitted"
+      }
+    ]
+  },
+  "duplicateBoundary": {
+    "excludedPath": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/raw/industrial_l01_v00-source-v02.png",
+    "excludedSha256": "8e33dafb3a40f7dac6f5ca8c9c5cb81df2b63011d3fd0d4a0302ec04a99d264a",
+    "disposition": "RETURN_source_v02_chroma_gate_failed",
+    "mayCount": false
+  },
+  "admission": {
+    "disposition": "ADMIT_SOURCE_FAMILY",
+    "sourceReady": true,
+    "integrationAdmitted": true,
+    "rendererQuarantined": false,
+    "productionSelected": false,
+    "runtimeSelectorReady": false,
+    "reason": "Four independent raw sources and twelve unique LOD payloads passed mechanical and Frontier family review. Renderer quarantine and runtime selection remain closed."
+  },
+  "requiredCombinedChecks": [
+    "four independent raw source identities",
+    "twelve explicit block/neighborhood/city LOD payloads",
+    "schema and provenance",
+    "chroma and padding",
+    "pivot, frontage, light, and shadow",
+    "determinism",
+    "non-alias/non-mirror/non-rotation"
+  ],
+  "visualReview": {
+    "required": true,
+    "reviewer": "Agent 006 Frontier family visual review",
+    "contactSheets": ["source-size", "literal-scale", "grayscale"],
+    "status": "PASS",
+    "disposition": "ADMIT_SOURCE_FAMILY",
+    "findings": [
+      "coherent industrial identity, massing, materials, roofline, and props",
+      "four visually distinct authored orientations; no mirror, rotation, transform, or alias",
+      "repaired South and all sibling LODs remain visible and readable at city scale",
+      "frontage, northwest light, contained shadow, and grayscale silhouette remain coherent"
+    ]
+  },
+  "forbidden": [
+    "direction pixel edits",
+    "Native/CitySimNative/Sources",
+    "Native/CitySimNative/Resources",
+    "renderer/runtime selector",
+    "shipping atlas/resource",
+    "production selection",
+    "Alpha PID 68544",
+    "old GeneratedV4 source-v05 as current admission"
+  ]
+}

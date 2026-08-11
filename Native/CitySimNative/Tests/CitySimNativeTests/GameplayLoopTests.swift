@@ -374,7 +374,7 @@ final class GameplayLoopTests: XCTestCase {
         XCTAssertEqual(industry.progression?.secondAct?.phase, .mandate)
     }
 
-    func testOpeningExposesARealButRecoverableTradeoff() {
+    func testOpeningExposesARealButRecoverableTradeoff() throws {
         let state = CityGameState.newCity(seed: 42)
         let analytics = CityAnalytics(state: state)
 
@@ -389,7 +389,11 @@ final class GameplayLoopTests: XCTestCase {
         XCTAssertEqual(analytics.projectedBalance, -126.2, accuracy: 0.001)
         XCTAssertEqual(analytics.operatingRunwayCycles ?? 0, 253.57, accuracy: 0.01)
         XCTAssertGreaterThan(state.demand.residential, 0.7)
-        XCTAssertTrue(state.messages.contains { $0.title == "A Town at the Crossroads" })
+        let opening = try XCTUnwrap(state.messages.first { $0.title == "Your First City Decision" })
+        XCTAssertEqual(
+            opening.detail,
+            "You are the mayor of New Arcadia, a small road-linked city with homes, shops, industry, and room to grow. The immediate problem: operations lose $126 per cycle and only 54 power and 48 water remain spare. First action: build one road-connected Commercial zone for cleaner growth or Industrial zone for faster cash, then watch the next daily review to see the tradeoff."
+        )
     }
 
     func testIgnoredGrowthWarnsBeforeAUtilityShortfallAndCanRecover() throws {

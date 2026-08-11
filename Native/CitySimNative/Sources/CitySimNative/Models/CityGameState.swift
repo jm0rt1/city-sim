@@ -136,8 +136,8 @@ struct CityGameState: Codable, Equatable, Sendable {
             waterUsed: 222, waterCapacity: 270, taxRate: 0.10,
             demand: DemandLevels(residential: 0.72, commercial: 0.68, industrial: 0.56),
             messages: [CityMessage(tick: 0, severity: .information,
-                                   title: "A Town at the Crossroads",
-                                   detail: "New Arcadia's three-block starter town runs a $126 operating deficit with only 54 power and 48 water spare. Choose Commercial for a cleaner recovery or Industrial for faster cash, or secure utility headroom before growth exposes the shortfall.")],
+                                   title: "Your First City Decision",
+                                   detail: "You are the mayor of New Arcadia, a small road-linked city with homes, shops, industry, and room to grow. The immediate problem: operations lose $126 per cycle and only 54 power and 48 water remain spare. First action: build one road-connected Commercial zone for cleaner growth or Industrial zone for faster cash, then watch the next daily review to see the tradeoff.")],
             progression: CityProgressionState(), stormRecovery: nil,
             status: .playing, seed: seed
         )

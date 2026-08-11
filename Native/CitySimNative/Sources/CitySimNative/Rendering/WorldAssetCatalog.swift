@@ -197,27 +197,22 @@ final class WorldAssetCatalog {
         guard selectedPackID == Self.generatedPackID else { return }
         prepareGeneratedResidency(for: detail)
         var pageIDs = Set<String>()
-        for asset in generatedManifest?.assets ?? [] where logicalIDs.contains(asset.logicalID) {
-            if let page = asset.lods[detail.assetSuffix]?.page {
-                pageIDs.insert(page)
-            }
-        }
-        if let network = generatedManifest?.compiledNetwork.lods[detail.assetSuffix] {
-            for mask in roadMasks.sorted() {
-                if let page = network.textures[String(mask)]?.page {
+        for requestedDetail in [detail, prefetchedGeneratedDetail].compactMap({ $0 }) {
+            for asset in generatedManifest?.assets ?? [] where logicalIDs.contains(asset.logicalID) {
+                if let page = asset.lods[requestedDetail.assetSuffix]?.page {
                     pageIDs.insert(page)
+                }
+            }
+            if let network = generatedManifest?.compiledNetwork.lods[requestedDetail.assetSuffix] {
+                for mask in roadMasks.sorted() {
+                    if let page = network.textures[String(mask)]?.page {
+                        pageIDs.insert(page)
+                    }
                 }
             }
         }
         for pageID in pageIDs.sorted() {
             _ = pageTexture(pageID: pageID)
-        }
-        if let prefetchedGeneratedDetail {
-            for page in (generatedManifest?.pages ?? [])
-                .filter({ $0.lod == prefetchedGeneratedDetail.assetSuffix })
-                .sorted(by: { $0.id < $1.id }) {
-                _ = pageTexture(pageID: page.id)
-            }
         }
     }
 

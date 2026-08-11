@@ -5,6 +5,10 @@
 - **Branch:** `codex/citysim-world-rendering`
 - **Worktree:** `/Users/James/.codex/worktrees/3db4/city-sim`
 - **Authority baseline:** The current Integration master commit containing this claim
+- **Current Beta coordination:** Agent 006 World Art Director owns admission
+  inventory, Agent 007 owns validator-bound ledger identity, and Agent 401 owns
+  any later renderer/runtime implementation. Product identity remains
+  `65c0f4dd2054baa0446d4e9c9a3673dfb4a01521`.
 - **Owning thread:** `019fe8f2-43ac-7700-9eaf-e173f43a569c`
 - **Owned roots:**
   `Native/CitySimNative/Tests/CitySimNativeTests/SingleAngleWorldArtTests.swift`
@@ -29,3 +33,11 @@
   production selection, push, integration, and self-acceptance.
 - **Status:** Fresh current-master candidate-neutral claim; no source or runtime
   readiness is implied.
+- **Beta join rule:** the integrated PLAY-106 South ledger resolves only the
+  canonical raw authoring anchor. It grants zero source admission, renderer
+  quarantine, or production selection. Before any PLAY-101 runtime lease,
+  Agent 006 and Agent 007 must identify one exact logical family for which all
+  four independently authored directions and all three LOD payloads are already
+  source-admitted and renderer-quarantined. If no such family exists, return
+  that exact blocker. Raw inventory, candidate-ready rows, synthetic fixtures,
+  mirrored/rotated aliases, or partial directions may not satisfy the join.

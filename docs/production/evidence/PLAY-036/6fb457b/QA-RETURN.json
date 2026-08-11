@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "taskId": "PLAY-036",
+  "result": "RETURN",
+  "blocker": {
+    "stage": "post_launch_process_binding",
+    "summary": "The single authorized launch command exited 0, but the exact 6fb4 CitySimNative process never appeared in two consecutive read-only inventories.",
+    "expectedImage": "/private/tmp/CITYSIM-6FB4-PLAY036-STAGE-V1/CitySim.app/Contents/MacOS/CitySimNative",
+    "observedCitySimProcesses": [
+      {
+        "pid": 82038,
+        "image": "/private/tmp/CITYSIM-CC8145-PLAY087-STAGE-V1/CitySim.app/Contents/MacOS/CitySimNative",
+        "protectedAndUntouched": true
+      }
+    ]
+  },
+  "candidate": {
+    "commit": "6fb457b15df22a493960911d805610694fc66a55",
+    "tree": "cb1e9e2c1c8485a4c14df98e4697d48c332eb70f",
+    "appPath": "/private/tmp/CITYSIM-6FB4-PLAY036-STAGE-V1/CitySim.app",
+    "executableSha256": "382f4dabb2d6eeee1f33c5af329fdc3f4d4a53305b2e7be4d8609f25f4f9b8b3",
+    "stageManifestSha256": "fc3218134b1885989613f393586c27bb720f6885bf30325615c959d23ff17065",
+    "resourceTreeDigest": "da119ad70367f7238b6d0910da6606d6a74ad5473791ad72bf59c050f4b06e5e",
+    "appTreeDigest": "651186465994599a06d8c9b8b778992317497905ad709a3a00e99c98861b0d5b"
+  },
+  "authority": {
+    "routeId": "quality-v27:play-036-current6fb4-searched-remedies-real-app-v1",
+    "routeRawSha256": "d37c2653027af9872fa974b509a394d2e5efe8583a46c010c046fe63e10817a3",
+    "routeCanonicalSha256": "5b4ec34b470ee23c221fd888134003ed362f0f2c9cc769ef7c18a928be1da65a",
+    "dispatchRawSha256": "103a35d9eeb926d28873cd1291de78140a86925971915b9f6a39e75b7171fdf5",
+    "routeValidator": "PASS",
+    "selectedDispatchValidator": "PASS"
+  },
+  "executionAccounting": {
+    "launchCount": 1,
+    "launchCommandExit": 0,
+    "candidateProcessBound": false,
+    "uiInteractionCount": 0,
+    "screenshotCount": 0,
+    "signalCount": 0,
+    "testOrBuildCount": 0,
+    "retryCount": 0,
+    "dataRoot": "/private/tmp/CITYSIM-6FB4-PLAY036-QA-V1-DATA",
+    "outputRoot": "/private/tmp/CITYSIM-6FB4-PLAY036-QA-V1-OUTPUT"
+  },
+  "preflight": {
+    "identityAndHashes": "PASS",
+    "treeDigestsAndFileCount": "PASS",
+    "routeAndDispatch": "PASS",
+    "exclusiveRootsInitiallyAbsent": "PASS",
+    "windowAndAccessibilityCapture": "PASS",
+    "protectedPid82038": "PASS_UNTOUCHED"
+  },
+  "journey": "NOT_STARTED_NO_CANDIDATE_PROCESS",
+  "nextOwner": "Agent 003 Integration must diagnose the staged app launch/process-exit boundary and issue a fresh exact-candidate lease if another launch is authorized."
+}

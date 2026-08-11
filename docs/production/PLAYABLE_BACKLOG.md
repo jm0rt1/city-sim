@@ -319,7 +319,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Acceptance:** Occupied, no-road, and unaffordable Return attempts expose the same accepted reason and durable guidance as pointer attempts; the selected tool and coordinate remain stable; valid Return mutates exactly once; AX availability/disabled reason remains truthful; modal/text quarantine and compact behavior do not regress.
 - **Stop conditions:** Invalid commands become advertised as available, a second validation path is introduced, selection or active target semantics change, the renderer is edited, or CONTRACT-008 is implemented early.
 
-### [ ] PLAY-036: Make searched remedies reliably actionable
+### [x] PLAY-036: Make searched remedies reliably actionable
 
 - **Player outcome:** Typing the words used by a warning finds the intended remedy, and the visible result actually opens through pointer, keyboard, or accessibility action.
 - **Owning lane:** UI and input.
@@ -328,6 +328,7 @@ This is the authoritative first-wave task source. The shared target is one coher
 - **Out of scope:** New commands, warning prose ownership, simulation policy, renderer, persistence, or a parallel view-only action path.
 - **Acceptance:** Fresh `tax`, `budget`, and `storefront` searches each show the one existing Tax Policy result; pointer, Return, Space, and AX activation execute that result exactly once when available; disabled results retain and announce their reason; Escape restores map focus without shortcut leakage.
 - **Stop conditions:** Unit-only matching replaces live proof, a result is visible but inert, action paths diverge by input method, availability is overstated, or view code bypasses the store/catalog.
+- **Accepted integration:** Current-baseline product `6fb457b15df22a493960911d805610694fc66a55`; independent real-app result `APPROVE_PLAY036_SEARCH_REMEDY`; continuation receipt SHA-256 `58515e2bbe4be393adc44f3188041bc00849efef905d0d2f343c38004e19f45f`. The earlier inventory-only RETURN remains preserved at SHA-256 `c77016aecef946657c31f5e2c1f15da032f27adf655d7ddbf71aa798ffbcf024`; no release or push is claimed.
 
 ### [x] PLAY-037: Restore compact spatial keyboard and Escape parity
 

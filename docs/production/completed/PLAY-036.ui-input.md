@@ -2,7 +2,7 @@
 
 - **Lane:** UI and input
 - **Branch:** `codex/citysim-ui-input`
-- **Status:** ready-for-integration
+- **Status:** accepted
 - **Claim authority:** `a264f3489adaa259d61f32dae281b97d2e3e50b1`
 - **Authority merge:** `539abce4d805c11ede392b3c1aad85e94d18ae87`
 - **Product commit:** `878114e2fde2be18bad88b1b53294cafb19e18e8` — `PLAY-036: Make searched remedies actionable`
@@ -60,3 +60,21 @@ No shared-contract proposal is required. No push or integration was performed.
 - **Delta:** the current rebind restores an explicit map-focus request when Escape closes the command guide; query state remains local to the dismissed view.
 - **Focused proof:** `PLAY036SearchRemedyTests` passed 2 tests at compact `620 × 480` and regular `760 × 560`; exported images are `/private/tmp/CITYSIM-PLAY036-after-compact.png` and `/private/tmp/CITYSIM-PLAY036-after-regular.png`.
 - **Boundary:** candidate evidence only; no aggregate suite, staged app, launch, push, integration, or release claim.
+
+## Current-baseline acceptance
+
+- **Accepted product:** `6fb457b15df22a493960911d805610694fc66a55`
+  (`cb1e9e2c1c8485a4c14df98e4697d48c332eb70f`).
+- **Independent result:** `APPROVE_PLAY036_SEARCH_REMEDY`.
+- **Continuation receipt:**
+  `docs/production/evidence/PLAY-036/6fb457b/QA-PASS-CONTINUATION.json`,
+  SHA-256 `58515e2bbe4be393adc44f3188041bc00849efef905d0d2f343c38004e19f45f`.
+- **Preserved history:**
+  `docs/production/evidence/PLAY-036/6fb457b/QA-RETURN.json`, SHA-256
+  `c77016aecef946657c31f5e2c1f15da032f27adf655d7ddbf71aa798ffbcf024`.
+- QA confirmed tax, budget, and storefront each expose the single Tax Policy
+  result; pointer, Return, Space/FKA, and accessibility activation open
+  Finances exactly once; disabled Undo remains truthful; Escape restores map
+  focus; and regular plus exact 900 × 600 layouts remain usable.
+- The existing candidate process was reused without relaunch. No release or
+  push is claimed.

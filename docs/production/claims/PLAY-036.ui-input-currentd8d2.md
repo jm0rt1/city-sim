@@ -8,7 +8,17 @@
 - **Worktree:** `/private/tmp/citysim-play036-search-remedies-current88b6`
 - **Product base:** `d8d2fa799cb5d07d611773fa49418b5a755127da`
 - **Accepted prerequisite:** PLAY-032 direct warning remedy, QA receipt SHA-256 `34ac2e469e83664b8cc1a540f6582f4911da8c4d3d841d6710c7033de3276d59`
-- **Status:** Active under one outcome-fast-path lease.
+- **Status:** Accepted on current baseline `6fb457b15df22a493960911d805610694fc66a55`.
+
+## Acceptance closure
+
+- Independent QA result: `APPROVE_PLAY036_SEARCH_REMEDY`.
+- Continuation receipt SHA-256: `58515e2bbe4be393adc44f3188041bc00849efef905d0d2f343c38004e19f45f`.
+- The earlier process-inventory RETURN remains immutable history at SHA-256
+  `c77016aecef946657c31f5e2c1f15da032f27adf655d7ddbf71aa798ffbcf024`;
+  read-only lifecycle diagnosis proved the exact candidate PID had launched and
+  remained running, so QA continued without a relaunch.
+- This closes PLAY-036 only. It grants no release or push authority.
 
 ## Player outcome
 

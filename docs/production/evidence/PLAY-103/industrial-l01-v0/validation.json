@@ -1,0 +1,33 @@
+{
+  "artifactTreeSha256": "8f31e1b2ead8617b4db45a73597bc7b870e23852686a567e03884b4382f6052d",
+  "candidateReadyForIndependentReview": true,
+  "contactSheetCount": 3,
+  "direction": "north",
+  "freshProcesses": 2,
+  "integrationAdmitted": false,
+  "lodCount": 3,
+  "logicalId": "industrial_l01_v0",
+  "productionSelected": false,
+  "rawDimensions": [
+    1536,
+    1024
+  ],
+  "rawNorthSha256": "81b1770d6e85f5f92a6a619ac55ddff29bab36358c074a6bbd57a6e434a151a7",
+  "rendererQuarantined": false,
+  "repeat": 2,
+  "replaySha256": [
+    "23fd00fed5e6e42641a98a373e300faa090774792b3d19560d6f7b26224e546d",
+    "23fd00fed5e6e42641a98a373e300faa090774792b3d19560d6f7b26224e546d"
+  ],
+  "replaysIdentical": true,
+  "result": "PASS",
+  "routeCanonicalSha256": "daceb1161d9153a6ec0bb85dd8542e11ee6816a6e775a3c0a60078a4f624ff6a",
+  "routeFileSha256": "4225e9191762673af82bf42e673634b1b5df83f191a821a02c1b02553a67482b",
+  "routeId": "north-v3:play-103-currentd3be-industrial-l01-v0-recent-image-v1",
+  "schema": "citysim.play-103.north-industrial-l01-v0.validation.v1",
+  "siblingInputsConsumed": [],
+  "sourceReady": false,
+  "task": "PLAY-103",
+  "transport": "central_view_image_recent_image_bridge",
+  "visualAcceptance": "not_performed_worker_cannot_self_accept"
+}

@@ -1,0 +1,21 @@
+{
+  "direction": "north",
+  "forbidden": [
+    "mirror",
+    "bitmap-rotation",
+    "pixel-transform",
+    "alias",
+    "sibling-copy",
+    "fallback"
+  ],
+  "logicalId": "industrial_l01_v0",
+  "prompt": "Use case: stylized-concept. Asset type: CitySim authored four-view 2.5D source sprite. Input image: Image 1 is the immutable canonical South raw identity reference for industrial_l01_v0; use it only to preserve identity, variant, materials, massing, roofline, props, gameplay meaning, and scale. Primary request: create exactly one independently authored North sibling view of the same industrial_l01_v0 building, with the visible road-facing frontage and service/loading access facing North. Author new pixels for the North view; do not mirror, bitmap-rotate, copy, alias, or transform the South pixels. Scene/backdrop: a perfectly flat solid #ff00ff chroma-key field filling the entire 1536x1024 canvas, with no gradient, texture, floor plane, reflection, or background shadow. Subject: the same industrial L1 variant identity, preserving its exact massing, roofline, industrial materials, colors, windows, tanks, pipes, gantries, condition, silhouette, gameplay meaning, and full-canvas scale. Style/medium: richly detailed, realistic hand-painted city-builder 2.5D orthographic 2:1 isometric art, not voxel, toy, flat-vector, or raw 3D-render appearance. Composition/framing: full 1536x1024 canvas, code-owned ground pivot [768,896], no crop, no trim, no inferred geometry, no extra buildings or roads. Lighting/mood: frozen northwest key light with a contained southeast contact shadow; no long dark lower-left cast shadow. Constraints: preserve identity and variant; author a believable North-facing entrance/loading/service frontage; keep the full coordinate system and padding; no text, labels, UI, watermark, selection marks, agents, or false simulation state. Avoid: mirror, rotate pixels, raster transform, synthetic substitute, sibling reuse, fallback, alias, extra structures, perspective camera, clipped roofline, cropped canvas, hard background shadow, long lower-left shadow, green or nonuniform background.",
+  "reference": {
+    "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/raw/industrial_l01_v00-source-v01.png",
+    "role": "immutable_canonical_south_identity_anchor",
+    "sha256": "7ca3e26234e7e15df9a46775a83f7132f89e1ea1f22d97c42ca6d3502099bbd2"
+  },
+  "schema": "citysim.play-103.north-industrial-l01-v0.prompt.v1",
+  "task": "PLAY-103",
+  "transport": "central_view_image_recent_image_bridge"
+}

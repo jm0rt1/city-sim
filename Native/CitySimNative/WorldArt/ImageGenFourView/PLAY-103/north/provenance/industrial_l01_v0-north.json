@@ -1,0 +1,45 @@
+{
+  "candidateReadyForIndependentReview": true,
+  "closedOutput": {
+    "dimensions": [
+      1536,
+      1024
+    ],
+    "mode": "RGB",
+    "path": "/Users/James/.codex/generated_images/019fe85c-8a34-7fb2-9128-cbf05ab837b0/exec-f14799e6-d7e6-4559-a728-3e0180384c6d.png",
+    "sha256": "81b1770d6e85f5f92a6a619ac55ddff29bab36358c074a6bbd57a6e434a151a7"
+  },
+  "direction": "north",
+  "disposition": "source_candidate",
+  "generatedOrigin": "/Users/James/.codex/generated_images/019fe85c-8a34-7fb2-9128-cbf05ab837b0/exec-f14799e6-d7e6-4559-a728-3e0180384c6d.png",
+  "integrationAdmitted": false,
+  "logicalId": "industrial_l01_v0",
+  "productionSelected": false,
+  "promptPath": "prompts/industrial_l01_v0-north.json",
+  "rawNorth": {
+    "dimensions": [
+      1536,
+      1024
+    ],
+    "mode": "RGB",
+    "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-103/north/raw/industrial_l01_v0/north-v01.png",
+    "sha256": "81b1770d6e85f5f92a6a619ac55ddff29bab36358c074a6bbd57a6e434a151a7"
+  },
+  "reference": {
+    "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/raw/industrial_l01_v00-source-v01.png",
+    "role": "immutable_canonical_south_identity_anchor",
+    "sha256": "7ca3e26234e7e15df9a46775a83f7132f89e1ea1f22d97c42ca6d3502099bbd2"
+  },
+  "rendererQuarantined": false,
+  "schema": "citysim.play-103.north-industrial-l01-v0.provenance.v1",
+  "siblingInputsConsumed": [],
+  "sourceReady": false,
+  "stage": "source",
+  "task": "PLAY-103",
+  "tool": {
+    "calls": 1,
+    "model": "built-in/model-not-exposed",
+    "name": "OpenAI built-in ImageGen"
+  },
+  "transport": "central_view_image_recent_image_bridge"
+}

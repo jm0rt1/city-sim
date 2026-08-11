@@ -1,0 +1,248 @@
+{
+  "artifactTreeSha256": "8f31e1b2ead8617b4db45a73597bc7b870e23852686a567e03884b4382f6052d",
+  "artifacts": [
+    {
+      "path": "normalized/industrial_l01_v0/block/north-v01.png",
+      "sha256": "329e387c7d03b9250e505aab94d5bdd97d0bfef0980bd1ddf3598598f3d8bb4d"
+    },
+    {
+      "path": "normalized/industrial_l01_v0/city/north-v01.png",
+      "sha256": "e146af11fba57eb1e1d386938b3c816f4e3ae6fbf17fbd7e2a16b71ffe3d9a75"
+    },
+    {
+      "path": "normalized/industrial_l01_v0/neighborhood/north-v01.png",
+      "sha256": "7769ed460078c0d8067b9fb7cf8db0bfae914aa75d73f7d7fb0481a4222193d6"
+    },
+    {
+      "path": "output/contact-sheets/north-industrial_l01_v0-game-scale.png",
+      "sha256": "223a30475bdc2b16e46da685fa532b4e2155f9b5f1514f0071eb7a9e998e9474"
+    },
+    {
+      "path": "output/contact-sheets/north-industrial_l01_v0-grayscale.png",
+      "sha256": "fc2cdfd0bfff3d4f440ed724263a1cdd50058c1b5043eb847e8299be01024bef"
+    },
+    {
+      "path": "output/contact-sheets/north-industrial_l01_v0-source.png",
+      "sha256": "67ee27762bde64ed3e1be9cb627ef108cc2ae8555dc8e5f46ec1b7f6a5b27eab"
+    },
+    {
+      "path": "prompts/industrial_l01_v0-north.json",
+      "sha256": "ea21d86cc93f7f47b81e044c519f3e84d5dc4b8f30b3ad199bea00a2db779f70"
+    },
+    {
+      "path": "provenance/industrial_l01_v0-north.json",
+      "sha256": "ad62e06341cf02236f673e11ba154da4ea3c24f67d6e17fc33048e78d6295375"
+    }
+  ],
+  "candidateReadyForIndependentReview": true,
+  "claim": {
+    "path": "docs/production/claims/PLAY-103.world-art-north-industrial-l01-v0-currentcf3.md",
+    "sha256": "cf3c3a80946f755476595819b4eaaa142208a84195fdf6acd6446692b8affd76"
+  },
+  "contactSheets": [
+    {
+      "path": "output/contact-sheets/north-industrial_l01_v0-source.png",
+      "sha256": "67ee27762bde64ed3e1be9cb627ef108cc2ae8555dc8e5f46ec1b7f6a5b27eab"
+    },
+    {
+      "path": "output/contact-sheets/north-industrial_l01_v0-game-scale.png",
+      "sha256": "223a30475bdc2b16e46da685fa532b4e2155f9b5f1514f0071eb7a9e998e9474"
+    },
+    {
+      "path": "output/contact-sheets/north-industrial_l01_v0-grayscale.png",
+      "sha256": "fc2cdfd0bfff3d4f440ed724263a1cdd50058c1b5043eb847e8299be01024bef"
+    }
+  ],
+  "contract025": {
+    "path": "docs/production/decisions/CONTRACT-025-authored-four-view-2-5d-building-art.md",
+    "sha256": "4e8ab63173d67581332e7d27730b97315906fda4e29b999969456441809479ed"
+  },
+  "direction": "north",
+  "family": "industrial",
+  "groundPivotSource": [
+    768,
+    896
+  ],
+  "integrationAdmitted": false,
+  "lods": {
+    "block": {
+      "boundaryResidualChromaPixels": 0,
+      "dimensions": [
+        1024,
+        683
+      ],
+      "filter": "lanczos",
+      "frameEdgeOpaquePixels": 0,
+      "hiddenRgbPixels": 0,
+      "keyedMagentaPixels": 0,
+      "mode": "RGBA",
+      "path": "normalized/industrial_l01_v0/block/north-v01.png",
+      "registration": {
+        "footprint": [
+          [
+            512,
+            427
+          ],
+          [
+            683,
+            512
+          ],
+          [
+            512,
+            598
+          ],
+          [
+            341,
+            512
+          ]
+        ],
+        "groundPivot": [
+          512,
+          598
+        ],
+        "northFrontageSocket": [
+          597,
+          470
+        ]
+      },
+      "sha256": "329e387c7d03b9250e505aab94d5bdd97d0bfef0980bd1ddf3598598f3d8bb4d",
+      "transparentPixels": 483838,
+      "visiblePixels": 215554
+    },
+    "city": {
+      "boundaryResidualChromaPixels": 0,
+      "dimensions": [
+        256,
+        171
+      ],
+      "filter": "lanczos",
+      "frameEdgeOpaquePixels": 0,
+      "hiddenRgbPixels": 0,
+      "keyedMagentaPixels": 0,
+      "mode": "RGBA",
+      "path": "normalized/industrial_l01_v0/city/north-v01.png",
+      "registration": {
+        "footprint": [
+          [
+            128,
+            107
+          ],
+          [
+            171,
+            128
+          ],
+          [
+            128,
+            150
+          ],
+          [
+            85,
+            128
+          ]
+        ],
+        "groundPivot": [
+          128,
+          150
+        ],
+        "northFrontageSocket": [
+          149,
+          118
+        ]
+      },
+      "sha256": "e146af11fba57eb1e1d386938b3c816f4e3ae6fbf17fbd7e2a16b71ffe3d9a75",
+      "transparentPixels": 29536,
+      "visiblePixels": 14240
+    },
+    "neighborhood": {
+      "boundaryResidualChromaPixels": 0,
+      "dimensions": [
+        512,
+        342
+      ],
+      "filter": "lanczos",
+      "frameEdgeOpaquePixels": 0,
+      "hiddenRgbPixels": 0,
+      "keyedMagentaPixels": 0,
+      "mode": "RGBA",
+      "path": "normalized/industrial_l01_v0/neighborhood/north-v01.png",
+      "registration": {
+        "footprint": [
+          [
+            256,
+            214
+          ],
+          [
+            341,
+            256
+          ],
+          [
+            256,
+            299
+          ],
+          [
+            171,
+            256
+          ]
+        ],
+        "groundPivot": [
+          256,
+          299
+        ],
+        "northFrontageSocket": [
+          299,
+          235
+        ]
+      },
+      "sha256": "7769ed460078c0d8067b9fb7cf8db0bfae914aa75d73f7d7fb0481a4222193d6",
+      "transparentPixels": 120121,
+      "visiblePixels": 54983
+    }
+  },
+  "logicalId": "industrial_l01_v0",
+  "northFrontageSocketSource": [
+    896,
+    704
+  ],
+  "orientationTransform": "none",
+  "pixelDerivedGeometry": false,
+  "productionSelected": false,
+  "raw": {
+    "dimensions": [
+      1536,
+      1024
+    ],
+    "mode": "RGB",
+    "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-103/north/raw/industrial_l01_v0/north-v01.png",
+    "sha256": "81b1770d6e85f5f92a6a619ac55ddff29bab36358c074a6bbd57a6e434a151a7"
+  },
+  "rendererQuarantined": false,
+  "route": {
+    "authorityCommit": "d3bed770eb3bf79194df7b15737a19bddafdcd42",
+    "baseCommit": "cf3e27f75d033fcd5880b19337ada95030b5e1db",
+    "classification": "LUNA_IMPLEMENTATION",
+    "dispatchCanonicalSha256": "81cef20a6b5081e5d3d95272328d2ea151fa047eec00d83b65f992ce4dab9a63",
+    "dispatchFileSha256": "625a8855423e0e6f7042428355f5a05ea0648f3de3975c08de22994ea1cbc20f",
+    "dispatchPath": "/private/tmp/PLAY-103-INDUSTRIAL-L01-V0-NORTH-DISPATCH-V3.json",
+    "effort": "high",
+    "model": "gpt-5.6-luna",
+    "path": "/private/tmp/PLAY-103-INDUSTRIAL-L01-V0-NORTH-ROUTE-V3.json",
+    "routeCanonicalSha256": "daceb1161d9153a6ec0bb85dd8542e11ee6816a6e775a3c0a60078a4f624ff6a",
+    "routeFileSha256": "4225e9191762673af82bf42e673634b1b5df83f191a821a02c1b02553a67482b",
+    "routeId": "north-v3:play-103-currentd3be-industrial-l01-v0-recent-image-v1",
+    "startingHead": "d3bed770eb3bf79194df7b15737a19bddafdcd42"
+  },
+  "schema": "citysim.play-103.north-industrial-l01-v0.manifest.v1",
+  "siblingInputsConsumed": [],
+  "sourceCanvas": [
+    1536,
+    1024
+  ],
+  "sourceReady": false,
+  "southReference": {
+    "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/raw/industrial_l01_v00-source-v01.png",
+    "sha256": "7ca3e26234e7e15df9a46775a83f7132f89e1ea1f22d97c42ca6d3502099bbd2"
+  },
+  "stage": "source",
+  "task": "PLAY-103",
+  "visualAcceptance": "not_performed_worker_cannot_self_accept"
+}

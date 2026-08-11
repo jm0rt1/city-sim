@@ -62,3 +62,41 @@ Stop and return the first real defect on an admitted hash mismatch, missing
 registration input, nondeterministic pack, direction/LOD alias, fallback,
 unexpected path, focused failure, or need to change runtime/product code outside
 the maximum set. Do not repair source art or broaden scope.
+
+## E365 aggregate-repair amendment
+
+Agent 002 authorizes one bounded Agent 404 repair from current authority
+`e365835f8e00067ca461f2e035264f663f1a8605`. For this repair only, the mutable
+maximum is reduced to these exact five paths:
+
+- `Native/CitySimNative/WorldArt/GeneratedV4/catalog/play-101-industrial-l1-directions.json`;
+- `Native/CitySimNative/WorldArt/GeneratedV4/tools/build_world_asset_pack.py`;
+- `Native/CitySimNative/Sources/CitySimNative/Resources/WorldAssets.atlas/generated-v4-manifest.json`;
+- `Native/CitySimNative/Sources/CitySimNative/Rendering/WorldAssetCatalog.swift`; and
+- `Native/CitySimNative/Tests/CitySimNativeTests/WorldRenderingTests.swift`.
+
+The catalog and builder changes are limited to the approved runtime-only
+vertical source-registration offsets: east `+15` px, west `+43` px, and
+north/south `0`. The builder applies each offset identically to
+`groundPivotSource.y`, `frontageSocketSource.y`, and both `doorBaseSource.y`
+values while preserving entrance-socket world values, exclusion geometry, and
+every source, admission, normalized, and atlas-page PNG byte. The manifest may
+change only in the resulting runtime registration metadata.
+
+`WorldAssetCatalog.swift` may remove only the stale
+`manifest.pages.count > 4` rejection; every other consistency, padding,
+extrusion, power-of-two, and active-plus-next residency guard remains frozen.
+`WorldRenderingTests.swift` may change only the two current-bundle cardinality
+assertions from four to five and, after corrected manifest generation, the two
+deterministic camera occupancy-height literals. `CityScene.swift`, camera
+behavior, every other assertion, and every other product/test byte remain
+immutable.
+
+Proof is one outcome: two fresh isolated deterministic pack builds with
+byte-identical manifests, all five page PNG hashes unchanged from `e365835f`,
+all source/admission/normalized hashes unchanged, east/west opaque minimum Y at
+least `-18.51`, allowed bottom overhang at most `0.51`, and one focused Swift
+invocation containing exactly the five Agent-002-listed WorldRendering tests.
+Any drift, unexpected path, or focused failure stops the repair. On PASS, stage
+only the exact paths actually changed from the five-path maximum and create one
+coherent local candidate commit; no aggregate, build, app, QA, push, or release.

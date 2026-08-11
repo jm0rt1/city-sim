@@ -1,6 +1,15 @@
 import AppKit
 import SpriteKit
 
+private func worldSRGB(_ hex: UInt32, alpha: CGFloat = 1) -> NSColor {
+    NSColor(
+        srgbRed: CGFloat((hex >> 16) & 0xff) / 255,
+        green: CGFloat((hex >> 8) & 0xff) / 255,
+        blue: CGFloat(hex & 0xff) / 255,
+        alpha: alpha
+    )
+}
+
 enum RenderQuality: Int, CaseIterable, Sendable {
     case low
     case medium
@@ -155,28 +164,28 @@ struct WorldVisualStyle {
     struct Palette {
         let backdrop = NSColor(calibratedRed: 0.035, green: 0.075, blue: 0.085, alpha: 1)
         let backdropHalo = NSColor(calibratedRed: 0.12, green: 0.28, blue: 0.25, alpha: 0.32)
-        let mapRim = NSColor(calibratedRed: 0.30, green: 0.48, blue: 0.31, alpha: 1)
-        let mapEarth = NSColor(calibratedRed: 0.22, green: 0.17, blue: 0.105, alpha: 1)
-        let mapEarthDark = NSColor(calibratedRed: 0.105, green: 0.09, blue: 0.07, alpha: 1)
+        let mapRim = worldSRGB(0x54634D)
+        let mapEarth = worldSRGB(0x473B2B)
+        let mapEarthDark = worldSRGB(0x1C1A14)
 
         let grass = [
-            NSColor(calibratedRed: 0.235, green: 0.445, blue: 0.285, alpha: 1),
-            NSColor(calibratedRed: 0.255, green: 0.475, blue: 0.30, alpha: 1),
-            NSColor(calibratedRed: 0.215, green: 0.415, blue: 0.265, alpha: 1),
-            NSColor(calibratedRed: 0.285, green: 0.49, blue: 0.305, alpha: 1)
+            worldSRGB(0x5C6B4F),
+            worldSRGB(0x667557),
+            worldSRGB(0x52614A),
+            worldSRGB(0x707A5C)
         ]
-        let lotGrass = NSColor(calibratedRed: 0.29, green: 0.47, blue: 0.29, alpha: 1)
+        let lotGrass = worldSRGB(0x5E6B52)
         let parkGrass = NSColor(calibratedRed: 0.18, green: 0.50, blue: 0.285, alpha: 1)
         let parkPath = NSColor(calibratedRed: 0.77, green: 0.67, blue: 0.49, alpha: 1)
-        let soil = NSColor(calibratedRed: 0.40, green: 0.31, blue: 0.20, alpha: 1)
-        let concrete = NSColor(calibratedWhite: 0.50, alpha: 1)
-        let concreteLight = NSColor(calibratedWhite: 0.69, alpha: 1)
+        let soil = worldSRGB(0x614A36)
+        let concrete = worldSRGB(0x857D70)
+        let concreteLight = worldSRGB(0xADA391)
 
-        let asphalt = NSColor(calibratedRed: 0.115, green: 0.135, blue: 0.15, alpha: 1)
-        let asphaltLight = NSColor(calibratedRed: 0.19, green: 0.21, blue: 0.225, alpha: 1)
-        let curb = NSColor(calibratedRed: 0.53, green: 0.55, blue: 0.54, alpha: 1)
-        let sidewalk = NSColor(calibratedRed: 0.40, green: 0.42, blue: 0.41, alpha: 1)
-        let laneMark = NSColor(calibratedRed: 0.95, green: 0.78, blue: 0.34, alpha: 0.9)
+        let asphalt = worldSRGB(0x262626)
+        let asphaltLight = worldSRGB(0x3B3836)
+        let curb = worldSRGB(0x948C7D)
+        let sidewalk = worldSRGB(0x756E61)
+        let laneMark = worldSRGB(0xD6A64D, alpha: 0.9)
         let crosswalk = NSColor(calibratedWhite: 0.92, alpha: 0.82)
 
         let residential = [

@@ -2290,9 +2290,9 @@ final class WorldRenderingTests: XCTestCase {
                 CGSize(width: 1_280, height: 800),
                 CityMapViewportInsets(top: 104, leading: 24, bottom: 160, trailing: 24),
                 "CITYSIM_PLAY022_M2_DEFAULT",
-                CameraDetailLevel.city,
-                CGFloat(0.6633707860015013),
-                CGFloat(0.7877528083767829)
+                CameraDetailLevel.neighborhood,
+                CGFloat(0.7280898870748186),
+                CGFloat(0.8646067409013471)
             ),
             (
                 CGSize(width: 900, height: 600),
@@ -3524,11 +3524,11 @@ final class WorldRenderingTests: XCTestCase {
         defaultScene.reducedMotion = true
         defaultScene.updateViewportInsets(defaultInsets)
         defaultScene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
-        XCTAssertEqual(defaultScene.currentCameraDetailLevel, .city)
+        XCTAssertEqual(defaultScene.currentCameraDetailLevel, .neighborhood)
         let defaultOccupancy = defaultScene.occupiedDevelopedViewportOccupancyForTesting()
         let defaultPriorityOccupancy = defaultScene.cameraPriorityViewportOccupancyForTesting()
-        XCTAssertEqual(defaultOccupancy.width, 0.6633707860015013, accuracy: 0.000_001)
-        XCTAssertEqual(defaultPriorityOccupancy.width, 0.7877528083767829, accuracy: 0.000_001)
+        XCTAssertEqual(defaultOccupancy.width, 0.7280898870748186, accuracy: 0.000_001)
+        XCTAssertEqual(defaultPriorityOccupancy.width, 0.8646067409013471, accuracy: 0.000_001)
         XCTAssertEqual(defaultScene.occupiedDevelopedVisualBoundsForTesting.width, 576, accuracy: 0.001)
         XCTAssertEqual(defaultScene.occupiedDevelopedVisualBoundsForTesting.height, 318.43652344, accuracy: 0.001)
         XCTAssertEqual(defaultScene.networkOpportunityVisualBoundsForTesting.width, 684, accuracy: 0.001)
@@ -3572,7 +3572,7 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertEqual(cityHallRoadMask, 11)
         let defaultCityHallRoot = defaultScene.tileRootIdentifier(at: cityHall)
         XCTAssertTrue(defaultScene.tileDescendantNamesForTesting(at: cityHall)
-            .contains("lot.generated-v4.city_hall_l01.city"))
+            .contains("lot.generated-v4.city_hall_l01.neighborhood"))
 
         defaultScene.configureProofCamera(detail: .city, centeredOn: cityHall)
         let defaultCityScale = defaultScene.cameraScaleForTesting
@@ -3657,7 +3657,7 @@ final class WorldRenderingTests: XCTestCase {
 
         defaultScene.configureProofCamera(detail: .city, centeredOn: GridCoordinate(x: 0, y: 0))
         defaultScene.frameCity()
-        XCTAssertEqual(defaultScene.currentCameraDetailLevel, .city)
+        XCTAssertEqual(defaultScene.currentCameraDetailLevel, .neighborhood)
         XCTAssertEqual(
             defaultScene.cameraPositionForTesting.x,
             defaultScene.cameraPriorityVisualBoundsForTesting.midX - defaultOffset.x,
@@ -3689,8 +3689,8 @@ final class WorldRenderingTests: XCTestCase {
         }
         scene.render(state: firstPulse, overlay: .none, selection: nil, interactionMode: .inspect)
         let settledScale = scene.cameraScaleForTesting
-        XCTAssertGreaterThan(settledScale, provisionalScale)
-        XCTAssertEqual(settledScale, 0.704783022403717, accuracy: 0.001)
+        XCTAssertLessThan(settledScale, provisionalScale)
+        XCTAssertEqual(settledScale, 0.6421356426344977, accuracy: 0.001)
         XCTAssertGreaterThanOrEqual(
             scene.occupiedDevelopedViewportOccupancyForTesting().width,
             0.60
@@ -3815,8 +3815,8 @@ final class WorldRenderingTests: XCTestCase {
             (
                 CGSize(width: 1_280, height: 800),
                 CityMapViewportInsets(top: 104, leading: 24, bottom: 160, trailing: 24),
-                CGFloat(0.704783022403717),
-                CGSize(width: 0.7877528083767829, height: 1.0588604024979469)
+                CGFloat(0.6421356426344977),
+                CGSize(width: 0.8646067409013471, height: 1.1621638564001857)
             ),
             (
                 CGSize(width: 900, height: 600),

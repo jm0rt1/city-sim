@@ -123,10 +123,10 @@ final class TerrainRenderer {
         // regions read as authored terrain transitions and remain legible as
         // buildable opportunity. A warm soil base also prevents transparent
         // swatches from being mistaken for one uninterrupted green mass.
-        turf.fillColor = style.palette.soil.blended(
-            withFraction: 0.20,
-            of: style.palette.lotGrass
-        ) ?? style.palette.soil
+        turf.fillColor = style.palette.grass[1].blended(
+            withFraction: 0.22,
+            of: style.palette.soil
+        ) ?? style.palette.grass[1]
         turf.strokeColor = .clear
         field.addChild(turf)
 
@@ -152,7 +152,7 @@ final class TerrainRenderer {
         let rim = SKShapeNode(path: path)
         rim.name = "terrain.macro.rim"
         rim.fillColor = .clear
-        rim.strokeColor = NSColor(calibratedRed: 0.47, green: 0.60, blue: 0.36, alpha: 0.72)
+        rim.strokeColor = style.palette.mapRim.withAlphaComponent(0.72)
         rim.lineWidth = 2.4
         rim.zPosition = -100
         root.addChild(rim)
@@ -976,15 +976,30 @@ final class TerrainRenderer {
     private func macroFieldColor(variant: Int) -> NSColor {
         switch variant {
         case 0:
-            NSColor(calibratedRed: 0.12, green: 0.25, blue: 0.15, alpha: 0.17)
+            style.palette.grass[0].blended(
+                withFraction: 0.18,
+                of: style.palette.soil
+            )?.withAlphaComponent(0.13) ?? style.palette.grass[0].withAlphaComponent(0.13)
         case 1:
-            NSColor(calibratedRed: 0.45, green: 0.46, blue: 0.22, alpha: 0.145)
+            style.palette.grass[1].blended(
+                withFraction: 0.28,
+                of: style.palette.soil
+            )?.withAlphaComponent(0.12) ?? style.palette.grass[1].withAlphaComponent(0.12)
         case 2:
-            NSColor(calibratedRed: 0.16, green: 0.34, blue: 0.22, alpha: 0.16)
+            style.palette.grass[2].blended(
+                withFraction: 0.14,
+                of: style.palette.lotGrass
+            )?.withAlphaComponent(0.14) ?? style.palette.grass[2].withAlphaComponent(0.14)
         case 3:
-            NSColor(calibratedRed: 0.34, green: 0.39, blue: 0.18, alpha: 0.145)
+            style.palette.grass[3].blended(
+                withFraction: 0.24,
+                of: style.palette.soil
+            )?.withAlphaComponent(0.115) ?? style.palette.grass[3].withAlphaComponent(0.115)
         default:
-            NSColor(calibratedRed: 0.32, green: 0.25, blue: 0.14, alpha: 0.135)
+            style.palette.soil.blended(
+                withFraction: 0.38,
+                of: style.palette.grass[0]
+            )?.withAlphaComponent(0.11) ?? style.palette.soil.withAlphaComponent(0.11)
         }
     }
 
@@ -1049,12 +1064,11 @@ final class TerrainRenderer {
                         saltOffset: 0x20
                     ))
                     meadow.name = "terrain.macro.meadow.patch.\(materialIndex)"
-                    meadow.fillColor = NSColor(
-                        calibratedRed: 0.54,
-                        green: 0.58,
-                        blue: 0.29,
-                        alpha: 0.068
-                    )
+                    meadow.fillColor = style.palette.grass[3].blended(
+                        withFraction: 0.24,
+                        of: style.palette.soil
+                    )?.withAlphaComponent(0.065)
+                        ?? style.palette.grass[3].withAlphaComponent(0.065)
                     meadow.strokeColor = .clear
                     neighborhood.addChild(meadow)
                 }
@@ -1252,12 +1266,11 @@ final class TerrainRenderer {
         let furrows = SKShapeNode(path: combined)
         furrows.name = "terrain.macro.furrows.\(parcelIndex)"
         furrows.fillColor = .clear
-        furrows.strokeColor = NSColor(
-            calibratedRed: 0.69,
-            green: 0.68,
-            blue: 0.39,
-            alpha: 0.075
-        )
+        furrows.strokeColor = style.palette.concreteLight.blended(
+            withFraction: 0.54,
+            of: style.palette.soil
+        )?.withAlphaComponent(0.075)
+            ?? style.palette.concreteLight.withAlphaComponent(0.075)
         furrows.lineWidth = 0.7
         furrows.lineCap = .round
         layer.addChild(furrows)

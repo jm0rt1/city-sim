@@ -2279,7 +2279,7 @@ final class CityScene: SKScene {
         // shadows may extend beneath translucent chrome instead of forcing the
         // settlement back into the rejected toy-island scale.
         let isCompact = size.width <= 900 || size.height <= 600
-        let targetWidthOccupancy: CGFloat = isCompact ? 0.68 : 0.82
+        let targetWidthOccupancy: CGFloat = isCompact ? 0.68 : 0.90
         // The authoritative two-block opening is taller than the retired
         // one-cross fixture. Give that real vertical mass the same under-chrome
         // breathing room as its horizontal frontage so the new district does

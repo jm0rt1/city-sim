@@ -136,12 +136,29 @@ final class GameplayLoopTests: XCTestCase {
         XCTAssertEqual(commerceStore.primaryObjective.progress, 0.50, accuracy: 0.001)
         XCTAssertTrue(commerceStore.primaryObjective.remaining.contains("Chain-store pressure arrives in 16 days"))
 
+        var commerceRecovery = commerce
+        advanceThroughStrategyPhase(&commerceRecovery, phase: .opportunity)
+        advanceThroughStrategyPhase(&commerceRecovery, phase: .complication)
+        advanceThroughStrategyPhase(&commerceRecovery, phase: .setback)
+        let commerceRecoveryObjective = CityGameStore(state: commerceRecovery).primaryObjective
+        XCTAssertEqual(commerceRecoveryObjective.title, "Recover Main Street")
+        XCTAssertTrue(commerceRecoveryObjective.remaining.contains("The storefront slump cost $3,000 and 5 happiness"))
+        XCTAssertTrue(commerceRecoveryObjective.remaining.contains("Lower tax to 9% or build a second park within 16 days"))
+
         var industry = CityGameState.newCity(seed: 42)
         try buildFirstValid(.industrial, in: &industry)
         advanceToTick(&industry, tick: 4)
         let industryStore = CityGameStore(state: industry)
         XCTAssertEqual(industryStore.primaryObjective.title, "Secure the Freight Network")
         XCTAssertTrue(industryStore.primaryObjective.remaining.contains("Add a second Power Plant and Water Tower"))
+
+        advanceThroughStrategyPhase(&industry, phase: .opportunity)
+        advanceThroughStrategyPhase(&industry, phase: .complication)
+        advanceThroughStrategyPhase(&industry, phase: .setback)
+        let industryRecoveryObjective = CityGameStore(state: industry).primaryObjective
+        XCTAssertEqual(industryRecoveryObjective.title, "Recover the Freight Network")
+        XCTAssertTrue(industryRecoveryObjective.remaining.contains("The freight load cost $5,500 and 8 happiness"))
+        XCTAssertTrue(industryRecoveryObjective.remaining.contains("Add a second Power Plant and Water Tower, or build a second park within 16 days"))
     }
 
     func testDemandDrivenDevelopmentCreatesVariedLevelsForBothStrategies() throws {

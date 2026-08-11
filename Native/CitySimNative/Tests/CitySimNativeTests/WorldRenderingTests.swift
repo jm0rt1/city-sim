@@ -2117,8 +2117,8 @@ final class WorldRenderingTests: XCTestCase {
         let manifest = try XCTUnwrap(catalog.generatedManifest)
 
         XCTAssertEqual(catalog.manifestValidationIssues(), [])
-        XCTAssertEqual(manifest.pages.count, 6)
-        XCTAssertEqual(manifest.inventory.count, 6)
+        XCTAssertEqual(manifest.pages.count, 5)
+        XCTAssertEqual(manifest.inventory.count, 5)
         XCTAssertEqual(manifest.compiledNetwork.connectionMasks, 16)
         XCTAssertEqual(Set(manifest.pages.map(\.file)), Set(manifest.inventory.map(\.file)))
 
@@ -2372,7 +2372,7 @@ final class WorldRenderingTests: XCTestCase {
     func testGeneratedWorldProductionBundleLoadsPagesInsteadOfUnpackedPayloads() throws {
         let catalog = WorldAssetCatalog()
         let manifest = try XCTUnwrap(catalog.generatedManifest)
-        XCTAssertEqual(manifest.pages.count, 6)
+        XCTAssertEqual(manifest.pages.count, 5)
         XCTAssertNil(catalog.texture(named: "generated_v4_residential_l01_block"))
         XCTAssertNotNil(catalog.generatedPresentation(logicalID: "residential_l01", detail: .block))
         let snapshot = catalog.residencySnapshot()

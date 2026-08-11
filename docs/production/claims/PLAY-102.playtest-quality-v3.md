@@ -135,3 +135,74 @@ release, broader scoring, self-acceptance, or gate movement. Any identity,
 permission, process, root, journey, save, persistence, lease, or attempt mismatch
 returns immediately without product repair or a second attempt. Integration and
 independent Agent 002 retain disposition authority.
+
+## CITYSIM-NEXT-WAVE-65C exact-candidate Alpha activation V1
+
+The preceding 8439 and 4B57 activations and their evidence remain immutable
+history. Integration activates this claim once for independent QA task
+`019fe8f2-43ac-7700-9eaf-e137c4c5ecb4` in the canonical worktree and branch
+named above. The immutable product candidate is commit
+`65c0f4dd2054baa0446d4e9c9a3673dfb4a01521`, tree
+`6674934ab87873f6f56d284be06252f5b59da5f9`; the staged build was produced at
+governance commit `d543a83f6174f3a9132b08653da9f1aa35331d68`, tree
+`a48cf0a8d058c75ff867a388db97a0e1143e7a6a`. This activation changes neither
+product nor build bytes.
+
+The only launchable build is the aggregate-tested staged app at
+`/Users/James/Library/Mobile Documents/com~apple~CloudDocs/James's Files/Programming/Python/city-sim/dist/CitySim.app`.
+Its bound identities are:
+
+- aggregate result: 356 tests executed, 2 skipped, 0 failures;
+- stage manifest SHA-256 `efaffa58c4f0532cb78cd3833cf3f85f23e3f27a2c0097d7c47b02552732a6a0`;
+- executable SHA-256 `46cc8eb1cbfc1793f873881d3b54c7a996e0bd9bcead3e43cb22bd1c98537279`;
+- Info.plist SHA-256 `c552bd0c0756b3385c8485d42298119a71d53549dcb0309bb1b8d45cf5c369fb`;
+- key art SHA-256 `57b1d70ba2e534ae3dc73c8d26604c3ea8a95166ba29f107c74cd4203b455010`;
+- atlas manifest SHA-256 `411934e492a66216787f8c93dd91d3f68cc16637110dba9ed7186b22dda96d3d`;
+- generated-v4 manifest SHA-256 `317802265010fc758b232bea9198f18ec0ca4d75b5ceb6f759206238717cec92`;
+- deterministic resource-tree digest `824db799e1a6a1d4070e0c97a186121b28592603b6dacd6a23f7467e98863764`;
+- deterministic complete app-tree digest `64eb2dcdad2b01c58ee07edb921b76375e9e83ed165bbb997e882f617bdf6d1c`;
+- app inventory count 82 files.
+
+QA must reproduce the two tree digests from the main repository root with
+these exact commands and no substitute algorithm:
+
+```sh
+(cd dist/CitySim.app/CitySimNative_CitySimNative.bundle && find . -type f -print0 | LC_ALL=C sort -z | xargs -0 shasum -a 256 | shasum -a 256)
+(cd dist/CitySim.app && find . -type f -print0 | LC_ALL=C sort -z | xargs -0 shasum -a 256 | shasum -a 256)
+```
+
+The isolated data root is exactly
+`/private/tmp/CITYSIM-NEXT-WAVE-65C-QA-V1-DATA`, initially absent. The exclusive
+output root is exactly `/private/tmp/CITYSIM-NEXT-WAVE-65C-QA-V1-OUTPUT`,
+initially absent. All fourteen existing untracked PLAY-102/v3 files remain
+immutable inputs; their sorted path/hash ledger digest is
+`78aaea5e878ac93c23efcbc7bdcfe484d7a4b826c9d66ea8af9cbb6f5776798e`.
+
+After Integration issues an exact schema-2 route, selected dispatch, and
+exclusive lease with `attemptCount=1` and `maximumStartCount=2`, independent QA
+may perform exactly one two-launch Alpha journey. Before launch QA must rehash
+the authority, product, staged app, executable, resource bundle, manifest,
+Info.plist, key art, atlas manifests, both deterministic tree digests, and all
+fourteen preserved evidence files; require both V1 roots absent; require zero
+matching CitySim candidate processes; and observe window and accessibility
+permission. `UNKNOWN` returns before launch.
+
+Launch one must use only the exact staged app and isolated data root. QA must
+create a fresh ordinary city, establish road-connected power and water with
+both utility coverages strictly above 88 percent, add job-producing zoning,
+reach population at least 500, observe the deterministic first eligible severe
+storm, confirm its immediate signed/severity-coded HUD consequence remains
+legible in compact and accessibility presentation, perform and observe storm
+recovery, and save. QA may then revalidate the exact first-launch PID and full
+executable image, send one SIGTERM to that PID only, verify it absent, launch
+the same app once more against the same data root, load the save, verify the
+storm/recovery state and journal persist, and leave the accepted second process
+running on PASS.
+
+This activation authorizes independent observation and the exclusive output
+packet only. It authorizes no product or resource edit, rebuild, test, retry,
+substitute, cleanup, coaching, wildcard process signal, SIGKILL, stage, commit,
+push, release, broader scoring, self-acceptance, or gate movement. Any identity,
+permission, process, root, journey, save, persistence, lease, or attempt mismatch
+returns immediately. Integration and independent Agent 002 retain disposition
+authority.

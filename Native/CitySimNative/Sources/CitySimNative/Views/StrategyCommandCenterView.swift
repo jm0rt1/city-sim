@@ -380,6 +380,62 @@ struct CityStrategyHUDPresentation: Equatable {
     }
 }
 
+struct HUDConsequenceFeedbackPresentation: Equatable {
+    enum Direction: Equatable {
+        case positive
+        case negative
+        case neutral
+
+        var sign: String {
+            switch self {
+            case .positive: "+"
+            case .negative: "−"
+            case .neutral: "•"
+            }
+        }
+    }
+
+    let message: CityMessage
+    let direction: Direction
+
+    var visualText: String {
+        "\(direction.sign) \(message.title) · \(message.detail)"
+    }
+
+    var accessibilityValue: String {
+        "\(direction.sign) \(message.title). \(message.detail)"
+    }
+
+    static func make(from messages: [CityMessage]) -> HUDConsequenceFeedbackPresentation? {
+        guard let message = messages.first, materialTitles.contains(message.title) else {
+            return nil
+        }
+
+        let direction: Direction = switch message.severity {
+        case .good: .positive
+        case .warning, .critical: .negative
+        case .information: .neutral
+        }
+        return HUDConsequenceFeedbackPresentation(message: message, direction: direction)
+    }
+
+    private static let materialTitles: Set<String> = [
+        "Severe Storm",
+        "Storm Recovery Complete",
+        "Storefront Slump",
+        "Main Street Recovery Delayed",
+        "Main Street Rebound",
+        "Industrial Load Surge",
+        "Industrial Load Absorbed",
+        "Regional Retail Pressure",
+        "Regional Main Street Recovery",
+        "Regional Grid Mandate",
+        "Regional Freight Overload",
+        "Regional Freight Recovery",
+        "Regional Capital Recognized"
+    ]
+}
+
 struct StrategyCommandCenterView: View {
     @ObservedObject var store: CityGameStore
     var compact = false
@@ -393,6 +449,10 @@ struct StrategyCommandCenterView: View {
 
     private var trajectory: CityTrajectoryHUDPresentation {
         CityTrajectoryHUDPresentation.make(projectedBalance: store.analytics.projectedBalance)
+    }
+
+    private var consequenceFeedback: HUDConsequenceFeedbackPresentation? {
+        HUDConsequenceFeedbackPresentation.make(from: store.state.messages)
     }
 
     var body: some View {
@@ -422,11 +482,21 @@ struct StrategyCommandCenterView: View {
                         .font(.system(size: 13, weight: .bold, design: .rounded))
                         .lineLimit(1)
                     if !compact {
-                        Text(presentation.summary)
+                        Text(consequenceFeedback?.visualText ?? presentation.summary)
                             .font(.system(size: GameTheme.hudSupportTextSize, weight: .medium))
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(consequenceFeedback == nil ? Color.secondary : consequenceTint)
                             .lineLimit(1)
+                            .truncationMode(.tail)
+                            .accessibilityHidden(true)
                     }
+                }
+                if compact, let consequenceFeedback {
+                    Text(consequenceFeedback.visualText)
+                        .font(.system(size: GameTheme.hudSupportTextSize, weight: .semibold))
+                        .foregroundStyle(consequenceTint)
+                        .lineLimit(1)
+                        .truncationMode(.tail)
+                        .accessibilityHidden(true)
                 }
             }
 
@@ -466,11 +536,24 @@ struct StrategyCommandCenterView: View {
             RoundedRectangle(cornerRadius: 9, style: .continuous)
                 .stroke(tint.opacity(0.48), lineWidth: presentation.tone == .urgent ? 1.5 : 1)
         )
-        .help(presentation.summary)
+        .help(consequenceFeedback?.message.detail ?? presentation.summary)
         .accessibilityElement(children: .contain)
         .accessibilityLabel("City priority: \(presentation.title)")
-        .accessibilityValue(presentation.accessibilityValue)
+        .accessibilityValue(
+            [presentation.accessibilityValue, consequenceFeedback?.accessibilityValue]
+                .compactMap { $0 }
+                .joined(separator: ". ")
+        )
         .accessibilityIdentifier("hud.strategy.priority")
+    }
+
+    private var consequenceTint: Color {
+        guard let consequenceFeedback else { return .secondary }
+        return switch consequenceFeedback.direction {
+        case .positive: GameTheme.accent
+        case .negative: GameTheme.warning
+        case .neutral: .secondary
+        }
     }
 
     private func responseButton(_ response: CityDirectResponse) -> some View {

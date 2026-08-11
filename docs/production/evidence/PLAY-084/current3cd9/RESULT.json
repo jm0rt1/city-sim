@@ -1,0 +1,43 @@
+{
+  "task": "PLAY-084",
+  "candidate": "current3cd9",
+  "commit": "pending",
+  "routeId": "ui-v10:play-084-current71f2-hud-consequence-feedback-v1",
+  "route": {
+    "path": "/private/tmp/PLAY-084-HUD-CONSEQUENCE-OUTCOME-ROUTE-V2.json",
+    "rawSha256": "cdad450424980c180dc1819188369802714018a5fa46d325c0d554d0dda454f4",
+    "canonicalSha256": "df0600a594d765f6363ad7aa5797df35aec039bd298645c58363e0af0ffe04a0"
+  },
+  "dispatch": {
+    "path": "/private/tmp/PLAY-084-HUD-CONSEQUENCE-OUTCOME-DISPATCH-V2.json",
+    "rawSha256": "386d706293e3257100ac954af04722264d40d1f7b46dd2bca2df067565f4311f",
+    "canonicalSha256": "68a3b8911fc7a14c9b9eac8fdf366399d17a9b1fdb25c10b49395463f260c00e"
+  },
+  "identity": {
+    "worktree": "/Users/James/.codex/worktrees/7f1d/city-sim",
+    "branch": "codex/citysim-ui-input-game014-currentcc21",
+    "authorityHead": "71f23bd0155748f3b8d60ea95601db77af836bad",
+    "base": "3cd920216d0c8f93fa17e91fe6be7145986322bd",
+    "claimPath": "docs/production/claims/PLAY-084.ui-input.md",
+    "claimSha256": "83fab49eb70de527e7823c7ad828575ea3de0ffc609ef92f96a97915076963c3"
+  },
+  "changedPaths": [
+    "Native/CitySimNative/Sources/CitySimNative/Views/StrategyCommandCenterView.swift",
+    "Native/CitySimNative/Tests/CitySimNativeTests/HUDConsequenceFeedbackTests.swift",
+    "docs/production/evidence/PLAY-084/current3cd9/RESULT.json",
+    "docs/production/evidence/PLAY-084/current3cd9/HANDOFF.md",
+    "docs/production/completed/PLAY-084.ui-input.md"
+  ],
+  "focusedProof": {
+    "command": "CLANG_MODULE_CACHE_PATH=/private/tmp/PLAY-084-current3cd9-clang SWIFT_MODULECACHE_PATH=/private/tmp/PLAY-084-current3cd9-swift SWIFTPM_MODULECACHE_OVERRIDE=/private/tmp/PLAY-084-current3cd9-swift swift test --disable-sandbox --package-path Native/CitySimNative --scratch-path /private/tmp/PLAY-084-current3cd9-scratch --filter HUDConsequenceFeedbackTests",
+    "exit": 0,
+    "tests": 3,
+    "failures": 0,
+    "diffCheck": {
+      "command": "git diff --check",
+      "exit": 0
+    },
+    "note": "The first focused compile stopped on a local missing return in the new consequence tint switch; the bounded repair was applied, and the one remaining focused attempt passed. SwiftPM also reported non-fatal user-level cache access warnings."
+  },
+  "boundary": "Candidate evidence only. No aggregate suite, staged build, app launch, real-app QA, push, integration, or acceptance was performed."
+}

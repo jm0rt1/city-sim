@@ -371,21 +371,21 @@ final class WorldAssetCatalog {
             }
         }
         let variantTwoRawSHA256 = [
-            "east": "b21f38755f9d90c1b0b77967e0411d92d874cfe6b39c91ef8a5d2e9f698533d1",
-            "north": "3ec18582da6857745c30a2fdc1f6493433923fff32561083f98d4b7c55a58287",
-            "south": "984aeffd2cee62634ebc78055b3ef15953cf0df139b56d8346fcddac1750fed3",
-            "west": "6582215392012f504ff603d769338097eee8a698744460c96ee3076ea0282caf",
+            "east": "3b6f82e8d1d51058aaa3e79932a441019edd4134d77ce49afd5dfe2d306f428b",
+            "north": "f4f2acca85ffb1fe75848f8d103dc0cb0cf92df6a784c2d7e1ebe72c6f3a0d48",
+            "south": "6b12ff44e4bc7a2133ed8995b27d88fd864e2b3d62a7f320bfb24a6971be7a5d",
+            "west": "3aa2581f8525f9d7c39d496c1dcc0c36f6b23dce45b1f4da4d973764b2e89306",
         ]
-        let variantTwoReceipt = "CitySimNative/WorldArt/ImageGenFourView/PLAY-101/residential_l01_v2/BUILD-RECEIPT.json"
-        let variantTwoReceiptSHA256 = "0fab7d130646cbc5e21131976373987067f3a36ff07c321e2c3e81f31b45180c"
+        let variantTwoReceipt = "CitySimNative/WorldArt/ImageGenFourView/PLAY-101/residential_l01_v2/visual-repair-v02/BUILD-RECEIPT.json"
+        let variantTwoReceiptSHA256 = "377a8faf199f6958becc61ce5b745f1c4e42e4d3c2d42f3c8bea51ef903ed01d"
         for asset in residentialVariantTwo {
             let direction = asset.viewDirection
-            let expectedSourceKey = direction.map { "residential_l01/variant-2/\($0)/source-v01" }
+            let expectedSourceKey = direction.map { "residential_l01/variant-2/\($0)/source-v02" }
             let expectedSourceSHA256 = direction.flatMap({ variantTwoRawSHA256[$0] })
             if asset.level != 1
                 || asset.frontageEdge != direction
                 || asset.supportedOrientation != direction.map({ "\($0)-facing-authored" })
-                || asset.sourceRevision != "source-v01"
+                || asset.sourceRevision != "source-v02"
                 || asset.sourceKey != expectedSourceKey
                 || asset.sourceSHA256 != expectedSourceSHA256
                 || asset.provenanceFile != variantTwoReceipt

@@ -970,16 +970,16 @@ final class WorldRenderingTests: XCTestCase {
             ("west", .west),
         ]
         let expectedSources = [
-            "north": "3ec18582da6857745c30a2fdc1f6493433923fff32561083f98d4b7c55a58287",
-            "east": "b21f38755f9d90c1b0b77967e0411d92d874cfe6b39c91ef8a5d2e9f698533d1",
-            "south": "984aeffd2cee62634ebc78055b3ef15953cf0df139b56d8346fcddac1750fed3",
-            "west": "6582215392012f504ff603d769338097eee8a698744460c96ee3076ea0282caf",
+            "north": "f4f2acca85ffb1fe75848f8d103dc0cb0cf92df6a784c2d7e1ebe72c6f3a0d48",
+            "east": "3b6f82e8d1d51058aaa3e79932a441019edd4134d77ce49afd5dfe2d306f428b",
+            "south": "6b12ff44e4bc7a2133ed8995b27d88fd864e2b3d62a7f320bfb24a6971be7a5d",
+            "west": "3aa2581f8525f9d7c39d496c1dcc0c36f6b23dce45b1f4da4d973764b2e89306",
         ]
         let expectedLODs = [
-            "north": ["block": "bcebd628a7380295bee93474a56c80dc54324b5f5d16a9d8ebe668e166e0bed0", "neighborhood": "2ba4a72107d5158d5c857b363ccc3bf084dfa434ec7f8e0834c443ce0ec241e6", "city": "6187df120f1189c66e03873012e19fe20b177316ab3fe7f0b1178cae9ecec357"],
-            "east": ["block": "8b19d87e937345866ac7e6940c41294584652230a7d5e955296bc13b5edb38b2", "neighborhood": "fded64eb0c4e8f5f31a02abdef652ec300bba6f6ced1a8910bb11423aca8a03b", "city": "c2cd9e22de9b66d457a6604dfb5234c662a9e677732b082ed122391fc0d53afd"],
-            "south": ["block": "c22ee02cf9646470bde095c5c70fc9d93fd5ea22191ba138c9274cca9422ba11", "neighborhood": "7e8014b95df4f6a31d1275b9bcd87bdeece909216c4f5671d8040b0250124268", "city": "b6298c0bc8fd4865ebf54e2a1d370b2529e2f550d513f196cea7920c6b3d92c1"],
-            "west": ["block": "4a0f9acbb3275b85c3da8c6116266c1839f576a1ed972f938d23941181be6218", "neighborhood": "a73d37be233e40abe768b00cdc93c1a3da2d8bc18d37e04fd511c565731e707b", "city": "cf38e72b3908956cd74dc3ce8f037bb57ff20f064d45eb9c44b15327a4192070"],
+            "north": ["block": "d9268a73b3c2c0d74b834f401a731cd5cba6ee8f3e8a290e765ba88f4eef507e", "neighborhood": "da5b641f43ef352a8f305493c044d1aae10dc2b0c9087677bbe4423a4d8b80d2", "city": "ad978cc6831d2ecdc2082627f2ff98b3b6bb00a3058efc4726409af497b203ea"],
+            "east": ["block": "e75e638b3c7a4edeef6c6c8578aace4615681886399a10d17ac8b62b402c4bde", "neighborhood": "5303cb7b3fc1e7d9286780dd5e9bedca54e2e5667f3927aaa0fd6c208e151434", "city": "78748466312e1c8831b297a83f464a676ec92102f70a2937eca43a82de7f9558"],
+            "south": ["block": "4f4a81cf03c496a9522e7e4084c110d93d83b2b6e47f0e45f99c83ee2567f7fb", "neighborhood": "d73d6b815feb612e34ed1aebfb324d0d8dd8519ebb490ff16ac079f0d25bc268", "city": "ca1d52e364410a4165759afcf3ba2b8ed165f21742fb9ce4d86cb4c8e83b039c"],
+            "west": ["block": "3503f7a0099de76e5a4b311920d3736122d7761bf1fbeb301cdcdaffb71e9220", "neighborhood": "1f03a448242e56cdfd7c35bbe76d09a2f79e8e825819f44bd99dcac137ce8766", "city": "94131ca387ee54e3bbf7a5a3c80761784b155ff27bb8bdeccd84b56a996fde62"],
         ]
         let manifest = try XCTUnwrap(catalog.generatedManifest)
         let variantTwoAssets = manifest.assets.filter { $0.family == "residential" && $0.level == 1 && $0.variant == 2 }

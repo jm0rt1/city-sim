@@ -545,11 +545,15 @@ enum CitySimulation {
         projectedBalance(in: state) - kind.upkeep * upkeepMultiplier >= 0
     }
 
+    private static let firstOrdinaryStormTick = 800
+
     private static func maybeCreateEvent(_ state: inout CityGameState) {
         guard state.population >= 500, state.tick >= 640, state.tick % 160 == 0 else { return }
         state.seed = state.seed &* 6_364_136_223_846_793_005 &+ 1_442_695_040_888_963_407
         let roll = Double(state.seed % 10_000) / 10_000
-        if roll < 0.22 {
+        let guaranteesFirstOrdinaryStorm = state.stormRecovery == nil
+            && state.tick >= firstOrdinaryStormTick
+        if guaranteesFirstOrdinaryStorm || roll < 0.22 {
             state.treasury -= 2_000
             state.happiness = max(0, state.happiness - 3)
             let outcome = weatherCompletedResidentialLots(in: &state)

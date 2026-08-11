@@ -362,7 +362,7 @@ final class GameplayLoopTests: XCTestCase {
         XCTAssertLessThanOrEqual(commerceAwardTick, 2_200)
         XCTAssertLessThanOrEqual(industryAwardTick, 2_200)
         XCTAssertEqual(commerceAwardTick, 844)
-        XCTAssertEqual(industryAwardTick, 844)
+        XCTAssertEqual(industryAwardTick, 868, "The deterministic first severe storm and recovery add 24 ticks.")
         XCTAssertGreaterThan(commerce.happiness, industry.happiness)
         XCTAssertGreaterThan(CityAnalytics(state: industry).pollutionPressure, CityAnalytics(state: commerce).pollutionPressure)
         XCTAssertGreaterThan(CityAnalytics(state: industry).jobCapacity, CityAnalytics(state: commerce).jobCapacity)
@@ -627,7 +627,8 @@ final class GameplayLoopTests: XCTestCase {
             XCTAssertEqual(state.progression?.strategy?.recoveryResolution, resolution)
             XCTAssertEqual(CityAnalytics(state: state).strategyRecoveryResolution, resolution)
             XCTAssertTrue(state.progression?.townCharterAwarded ?? false, resolution.rawValue)
-            XCTAssertEqual(state.tick, 844, resolution.rawValue)
+            let expectedCharterTick = resolution == .industrialUtilityExpansion ? 868 : 844
+            XCTAssertEqual(state.tick, expectedCharterTick, resolution.rawValue)
             XCTAssertEqual(state.status, .playing, resolution.rawValue)
             XCTAssertGreaterThan(state.treasury, 0, resolution.rawValue)
 
@@ -1449,6 +1450,75 @@ final class GameplayLoopTests: XCTestCase {
         XCTAssertEqual(storm.messages.first?.title, "Severe Storm")
         XCTAssertFalse(calm.messages.contains { $0.title == "Severe Storm" })
         XCTAssertFalse(storm.messages.contains { $0.title == "State Growth Grant" })
+    }
+
+    @MainActor
+    func testFirstOrdinaryCityQualifyingEventIsDeterministicVisibleStorm() throws {
+        func ordinaryCityBeforeFirstEligibleEvent() throws -> CityGameState {
+            var state = CityGameState.newCity(seed: calmSeed)
+            try buildFirstValid(.commercial, in: &state)
+            try buildFirstValid(.powerPlant, in: &state)
+            try buildFirstValid(.waterTower, in: &state)
+            while state.tick < 799 {
+                CitySimulation.step(&state)
+            }
+            return state
+        }
+
+        var first = try ordinaryCityBeforeFirstEligibleEvent()
+        var replay = try ordinaryCityBeforeFirstEligibleEvent()
+        var calmControl = first
+        calmControl.stormRecovery = CityStormRecoveryState(
+            latestEventTick: 640,
+            latestEventSeed: calmSeed,
+            targets: [],
+            disposition: .recovered
+        )
+
+        XCTAssertEqual(first.population, 499)
+        XCTAssertGreaterThan(CitySimulation.utilityCoverage(in: first), 0.88)
+
+        CitySimulation.step(&first)
+        CitySimulation.step(&replay)
+        CitySimulation.step(&calmControl)
+
+        XCTAssertEqual(first, replay)
+        XCTAssertEqual(first.tick, 800)
+        XCTAssertEqual(first.day, 201)
+        XCTAssertEqual(first.population, 500)
+        XCTAssertEqual(first.seed, calmControl.seed)
+        XCTAssertEqual(first.treasury, calmControl.treasury - 2_000, accuracy: 0.000_001)
+        XCTAssertEqual(first.happiness, calmControl.happiness - 3, accuracy: 0.000_001)
+
+        let stormMessages = first.messages.filter { $0.title == "Severe Storm" }
+        let stormMessage = try XCTUnwrap(stormMessages.first)
+        XCTAssertEqual(stormMessages.count, 1)
+        XCTAssertEqual(stormMessage.tick, 800)
+        XCTAssertEqual(stormMessage.severity, .warning)
+
+        let recovery = try XCTUnwrap(first.stormRecovery)
+        XCTAssertEqual(recovery.latestEventTick, 800)
+        XCTAssertEqual(recovery.disposition, .active)
+        XCTAssertEqual(recovery.targets.map(\.coordinate), expectedTargets)
+        XCTAssertTrue(recovery.targets.allSatisfy { $0.remainingConditionDamage > 0 })
+        XCTAssertEqual(
+            CityNoticeActionCatalog.actions(for: stormMessage.title).map(\.command),
+            [.inspectorUtilities]
+        )
+
+        let store = CityGameStore(state: first)
+        store.openMessage(stormMessage)
+        XCTAssertEqual(store.inspectorSection, .utilities)
+
+        var laterCalmEvent = first
+        laterCalmEvent.tick = 959
+        laterCalmEvent.seed = calmSeed
+        CitySimulation.step(&laterCalmEvent)
+        XCTAssertEqual(
+            laterCalmEvent.messages.filter { $0.title == "Severe Storm" }.count,
+            1,
+            "After the first recorded storm, later eligible events remain seeded instead of forced"
+        )
     }
 
     func testCurrentMasterPostStormDecisionProjection() throws {

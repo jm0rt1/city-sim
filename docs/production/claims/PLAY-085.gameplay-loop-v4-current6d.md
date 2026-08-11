@@ -1,32 +1,21 @@
-# PLAY-085 Claim — current-master post-storm decision/recovery successor
+# PLAY-085 Claim — deterministic first ordinary-city storm amendment
 
-- **Title:** Make one post-storm player decision legible, consequential, and recoverable
-- **Lane:** Gameplay loop
-- **Authority base:** `6d8c283d56eef2020a36546f30262757f3cf04e4`; the worker must
-  start only at the Integration bootstrap commit containing this claim.
-- **Branch:** `codex/citysim-gameplay-g003-current6d`
-- **Worktree:** `/Users/James/.codex/worktrees/e895/city-sim`
-- **Owning thread:** `019febf5-f590-7c91-977b-cdeb74614da2`
-- **Player outcome:** Within the existing CONTRACT-022 recovery model, a player
-  sees one clear choice, its numerical consequence, a visible diagnosis cue,
-  and a recoverable next objective in the 20-minute decision loop.
-- **Allowed paths:**
-  `Native/CitySimNative/Sources/CitySimNative/Models/CityGameState.swift`,
-  `Native/CitySimNative/Sources/CitySimNative/Services/CitySimulation.swift`,
-  `Native/CitySimNative/Tests/CitySimNativeTests/GameplayLoopTests.swift`, and
-  `docs/production/evidence/PLAY-085/v4/` only.
-- **Forbidden:** public/save/UI/renderer/art/resource/package/build contracts,
-  migrations, broad balance rewrites, claims, routes, admission, runtime,
-  app launch, integration, push, and self-acceptance.
-- **Focused gate:** owner executes only the future route-bound contained
-  gameplay test; no command is authorized by this claim.
-- **Full and independent gate:** Integration owns aggregate verification;
-  CTO task `019fe8df-faf7-7b50-a8a3-0d15b1191e10` owns independent product
-  judgment; QA remains distinct for real-app evidence.
-- **Stop/refill:** Stop on any contract, save, migration, renderer/UI, balance,
-  or cross-lane semantic question, path drift, or two failed repairs. Refill
-  only through a fresh current-master claim and independently reviewed route.
-- **Execution accounting:** Future route must record exact command, inputs,
-  outputs, owner/acceptance identities, result hash, and zero shared mutation.
-- **Status:** Bootstrap-only; no implementation route or worker execution is
-  authorized by this claim.
+- **Title:** Guarantee the first ordinary-city qualifying Severe Storm
+- **Lane:** Gameplay loop, with a deadline-bounded Integration/Frontier execution exception.
+- **Product base:** `8439d77b766526e29b63b564568349715939af27` (tree `0c201ca8e43c3dc645acb8bcdd032b0ce9eb0386`).
+- **Governance start:** `5fec1df93e4462c7a2cc890b8ee162ed9c1b22e1`.
+- **Branch/worktree:** `master` at `/Users/James/Library/Mobile Documents/com~apple~CloudDocs/James's Files/Programming/Python/city-sim`.
+- **Execution owner:** Integration task `019f7686-4491-7891-86a6-95a78d67e5c8`; feature-author task remains Gameplay `019febf5-f590-7c91-977b-cdeb74614da2`; independent review remains CTO `019fe8df-faf7-7b50-a8a3-0d15b1191e10`.
+- **Player outcome:** In a fresh ordinary city, once the existing population, day, and cadence gates first become satisfiable, the first qualifying event is a visible Severe Storm rather than an unbounded random wait. The existing storm consequence and recovery journey remain unchanged.
+- **Allowed product paths only:**
+  - `Native/CitySimNative/Sources/CitySimNative/Services/CitySimulation.swift`
+  - `Native/CitySimNative/Tests/CitySimNativeTests/GameplayLoopTests.swift`
+- **Frozen repair:** Keep `population >= 500`, `tick >= 640`, the 160-tick cadence, and the existing seed advancement. Because an ordinary new city starts at 300 residents and can add at most one resident per daily boundary before 500, its first possible qualifying check is tick 800 (Day 201). At or after tick 800, if no prior storm-recovery ownership exists, select the existing Severe Storm branch regardless of the otherwise-seeded roll. A prior tick-640 storm prevents a forced second storm. After the first storm exists, all later event selection remains governed by the current seeded probabilities.
+- **Preserved behavior:** Storm title, warning visibility, $2,000 treasury loss, 3-point happiness loss, stable residential targeting, mitigation, durable recovery ownership, repair thresholds, save/fingerprint schema, random-seed advancement, State Growth Grant, later-event probabilities, UI, command catalog, renderer, package/build scripts, and every other gameplay balance byte.
+- **Focused regression:** Add one ordinary-new-city test using normal build APIs to add the minimal commercial/power/water capacity, advance through the existing daily boundaries with a seed whose old roll is calm, and prove population 500 plus exactly one visible Severe Storm at tick 800/Day 201, active durable recovery, and the existing notice action routing to Utilities. Preserve all existing tick-640 storm/calm and recovery tests.
+- **Focused gate:** One route-listed `GameplayLoopTests` SwiftPM invocation with governed writable caches, followed by two-path diff checking. No retry or substitute.
+- **Full gate:** Integration owns one aggregate Swift suite and staged build after the focused checkpoint; a fresh independent QA lease owns the new-candidate two-launch storm/recovery/save journey. The spent 8439 lease is never retried.
+- **Commit boundary:** One later two-path product commit, exact subject `PLAY-085: Guarantee first ordinary-city storm`; forward-revert only.
+- **Forbidden:** Any third path; claim/backlog/policy/ledger/skill mutation during product execution; fixture/debug storm command; UI/renderer/save/schema/package/build change; PID `21615` interaction; existing QA evidence mutation; rebuild before the focused checkpoint; retry, push, release, or gate inference.
+- **Stop conditions:** Any required third product path, altered cadence or seed advancement, save/schema uncertainty, mismatch in product base/current authority/source hashes, focused failure, path drift, protected-dirt staging, or subjective behavior beyond this frozen rule.
+- **Status:** Current claim authority. Product mutation requires the separately validated schema-2 route and selected dispatch.

@@ -1,0 +1,12 @@
+{
+  "buildReceipt": {"path": "BUILD-RECEIPT.json", "sha256": "377a8faf199f6958becc61ce5b745f1c4e42e4d3c2d42f3c8bea51ef903ed01d"},
+  "derivation": "CONTRACT-028 keyed-alpha cleanup, despill, and premultiplied bilinear LOD resize",
+  "directions": 4,
+  "frameEdgeOpaquePixels": 0,
+  "hiddenRgbPixels": 0,
+  "keyedMagentaPixels": 0,
+  "boundaryResidualChromaPixels": 0,
+  "lodPayloads": 12,
+  "result": "PASS",
+  "uniqueLodPayloads": 12
+}

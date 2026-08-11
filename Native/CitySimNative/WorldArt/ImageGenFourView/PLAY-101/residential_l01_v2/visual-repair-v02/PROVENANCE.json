@@ -1,0 +1,22 @@
+{
+  "candidateOnly": true,
+  "family": "residential_l01_v2",
+  "generator": "built-in ImageGen",
+  "identityFreeze": {
+    "direction": "north",
+    "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-101/residential_l01_v2/raw-revisions/north-source-v02.png",
+    "sha256": "f4f2acca85ffb1fe75848f8d103dc0cb0cf92df6a784c2d7e1ebe72c6f3a0d48"
+  },
+  "masters": {
+    "east": {"call": "exec-0dcd7d13-74a1-479e-9615-3876cfc883d0", "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-101/residential_l01_v2/raw-revisions/east-source-v02.png", "sha256": "3b6f82e8d1d51058aaa3e79932a441019edd4134d77ce49afd5dfe2d306f428b"},
+    "north": {"call": "exec-08a2e24e-f355-4005-a948-ffcade78ee30", "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-101/residential_l01_v2/raw-revisions/north-source-v02.png", "sha256": "f4f2acca85ffb1fe75848f8d103dc0cb0cf92df6a784c2d7e1ebe72c6f3a0d48"},
+    "south": {"call": "exec-4c1fb22b-77a4-42ef-ae3f-48c83e3798ca", "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-101/residential_l01_v2/raw-revisions/south-source-v02.png", "sha256": "6b12ff44e4bc7a2133ed8995b27d88fd864e2b3d62a7f320bfb24a6971be7a5d"},
+    "west": {"call": "exec-e4a44d67-45d5-4398-ac69-40818f62aa31", "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-101/residential_l01_v2/raw-revisions/west-source-v02.png", "sha256": "3aa2581f8525f9d7c39d496c1dcc0c36f6b23dce45b1f4da4d973764b2e89306"}
+  },
+  "predecessor": {"commit": "ac392317f599ee9f9a5af53771ff5d0acd573c15", "disposition": "visual RETURN; all v01 bytes preserved"},
+  "siblingReferencePolicy": "East, South, and West each consumed only North v02 as an appearance reference; no sibling output was consumed by another sibling.",
+  "sourceAdmitted": false,
+  "rendererQuarantined": false,
+  "productionSelected": false,
+  "transformations": []
+}

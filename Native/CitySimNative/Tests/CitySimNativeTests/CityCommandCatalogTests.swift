@@ -895,7 +895,7 @@ final class CityCommandCatalogTests: XCTestCase {
                 CGSize(width: 1_278, height: 768),
                 false,
                 CityHUDChromeFrames(
-                    top: CGRect(x: 16, y: 16, width: 1_246, height: 118),
+                    top: CGRect(x: 16, y: 16, width: 1_246, height: 108),
                     bottom: CGRect(x: 79, y: 688, width: 1_120, height: 64)
                 )
             ),

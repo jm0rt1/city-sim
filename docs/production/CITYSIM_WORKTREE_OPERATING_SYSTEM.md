@@ -216,26 +216,22 @@ Primary ownership:
 - recurring recommendations that increase accepted outcomes per frontier turn
   and reduce duplicate work without weakening claims, identity, proof, or QA.
 
-The event policy also reviews frontier worker-route assignments, task
-completion/stoppage, useful concurrency below the governed floor, repeated full
-context loads under unchanged hashes, failed delegation acknowledgements, and
-duplicate full-gate requests. Each unique event receives at most one compact
-Luna mechanical/medium review; the observer does not poll tasks, spawn reviews,
-or run product/full/DCC/real-app gates.
+The event policy is exception-only for eligible outcome leases. It reviews
+frontier judgment assignments, setup/identity/route mismatches, false greens,
+returns, repeated failures, duplicate full-gate requests, ownerless handoffs,
+and material concurrency/context waste. Routine validated delegation,
+acknowledgement, execution, and handoff do not create optimizer receipts. The
+observer does not poll tasks, spawn reviews, or run product/full/DCC/real-app
+gates.
 
-Before mutation authority is sent, a cheap `delegation_ready_for_dispatch`
-review proves the lowest legal model, frozen judgment boundary, exact claim and
-paths, distinct focused/full-gate ownership, independent review, and useful
-parallelism. Freeze branch/HEAD first; authority reading may overlap the review,
-but synchronization and mutation may not. Ordinary lifecycle events are batched through the canonical optimizer
-task, at most eight keys and 32 KiB compact context per Luna-medium turn, while
-retaining one durable receipt per event key. Setup failures before mutation and
-ready handoffs waiting without an owner are explicit exception triggers.
-Integration owns the append-only event ledger and dispositions actionable
-reviews before advancing the related lifecycle.
+Assigned exception events may be batched through the canonical optimizer task,
+at most eight keys and 32 KiB compact context per Luna-medium turn, with one
+receipt per exception key. Integration owns the append-only event ledger and
+dispositions actionable reviews before advancing the related lifecycle.
 Optimizer routes do not recursively review themselves; Integration bootstraps
 them through full schema-2 validation, exact Git/claim/HEAD/path binding, one
-independent static review, and proof of zero worker mutation.
+independent static review, and proof of zero worker mutation only when an
+exceptional observer route is actually required.
 
 Default surfaces are its own skill, `docs/production/evidence/PLAY-089/`, and
 task-owned optimizer tests. `AGENTS.md`, this operating system, shared skills,
@@ -243,7 +239,9 @@ claims, backlog, schemas, validators used by other lanes, and thread authority
 remain Integration-controlled unless a published route names each exact file.
 The lane never owns product architecture, product code, integration acceptance,
 final real-app QA, merge conflict resolution, or push. Observation is
-read-only by default; proposals are exception-driven and compact.
+read-only by default. When repeated waste is proven and exact control-plane
+paths are authorized, it patches the operating rules directly with focused
+static proof instead of creating another observer loop.
 
 ## 5. Shared surfaces and contract locks
 
@@ -290,6 +288,54 @@ Every task must contain:
 - **Stop conditions:** ambiguity, contract conflict, unrelated dirty state, missing asset/input, or failed gate.
 
 Oversized tasks are split before implementation. A normal task should integrate into a playable build within one production iteration and should avoid broad edits across lane ownership.
+
+### 6.1 Outcome fast path
+
+A validated schema-2 claim, route, and selected dispatch form one outcome lease
+for routine work when branch, HEAD, exact status contract, claim, and explicit
+allowed paths match; focused proof is declared; the work is reversible and
+local; and no product-semantics, shared-contract/schema,
+irreversible/external-action, candidate-acceptance, or release judgment is
+required. Frozen or protected user dirt may remain outside the claim when its
+exact status is declared and its bytes remain unchanged.
+
+The lease authorizes the named agent to inspect, edit allowed paths, run focused
+proof, stage explicit paths, and create one coherent commit in the same task.
+Do not add separate ACK-only, static-review, execution-release, receipt-review,
+or optimizer-observation rounds. Integration may validate and dispatch eligible
+routine work directly. Manual CTO review is reserved for the excluded judgment
+boundaries.
+
+A validated temp-local route and selected dispatch are sufficient for eligible
+reversible local work. Durable publication is required when the carrier is
+itself a durable governance/product artifact or crosses a judgment boundary.
+
+Two recovery rules are distinct:
+
+- If an exact command fails from sandbox, permission, or tool transport before
+  product execution and mutation, allow one identical retry without a fresh
+  carrier.
+- Routine reversible implementation may use at most two focused proof attempts
+  total inside the same outcome lease. The first failure may inform one repair
+  confined to the original allowlist without a fresh carrier, ACK, or release.
+  A second failure, scope expansion, semantics ambiguity, or unexpected path
+  escalates.
+
+Keep detailed logs in the task. CEO/user updates contain done, blocker, owner,
+next, and deadline confidence; include hashes or command ledgers only when they
+change a decision. In deadline mode, freeze optional scope, maintain one
+critical path, exclude optional slices at cutoff, and keep build and QA moving.
+
+Every visible task and specialist subagent title exactly matches its Obsidian agent note;
+generic worker, explorer, or task titles are invalid. Agents may
+coordinate documented direct reports for routine work without returning to the
+CEO, but may not expand paths or acquire product, acceptance, push, or release
+authority.
+
+The full aggregate, build, and real-app QA run once per changed candidate, not
+once per handoff. Rerun only when candidate identity changes or evidence is
+stale. Explicit paths, user dirt, independent QA, no worker self-acceptance,
+and authority-gated push/release remain hard safety requirements.
 
 ## 7. Claim protocol
 
@@ -436,16 +482,15 @@ The system uses short vertical integration waves rather than long-lived independ
 7. Commit focused work and write the completion record.
 8. Stop at `ready-for-integration`; do not self-merge.
 
-The operating-system optimization lane instead runs a low-overhead audit once
-per unique event key in its published trigger policy. Reviews cover the route,
-delegation, terminal-task, parallelism, context-reuse, validation-duplication,
-candidate, QA, and integration boundaries without periodic polling. It remains
-idle between those events unless Integration assigns a specific improvement.
-Each audit must end in `NO_CHANGE`, one bounded action/proposal, or one frontier
-escalation. It must not create work merely to justify its existence.
-Ordinary events may share one bounded Luna-medium turn, but never one event key
-or receipt. Immediate identity, setup, delegation, false-green, second-repair,
-and final-QA boundaries close before mutation.
+The operating-system optimization lane runs low-overhead audits only for
+exception keys in its published trigger policy: identity/setup mismatch,
+frontier judgment, false green, return/second repair, duplicate validation,
+ownerless handoff, or material parallelism/context waste. An eligible outcome
+lease produces no optimizer event or receipt. The lane remains idle between
+exceptions unless Integration or the user assigns a specific rule repair.
+Each audit ends in `NO_CHANGE`, one bounded action/proposal, or one frontier
+escalation; repeated proven waste with exact control-plane authority is repaired
+directly instead of observed again.
 
 ### Integration wave
 
@@ -483,6 +528,9 @@ Use writable Swift module-cache paths when the environment requires them. Player
 - performance comparison when renderer, simulation, or observation boundaries change.
 
 The playtest quality lane proposes evidence. Integration owns acceptance.
+The aggregate suite, staged build, and real-app journey run once for the exact
+changed candidate and are reused across handoffs until candidate identity
+changes or evidence becomes stale.
 
 ## 14. Stop conditions
 

@@ -30,6 +30,74 @@ class TriggeredOperatingReviewPolicyTests(unittest.TestCase):
     def test_frontier_default_is_rejected(self) -> None:
         self.assert_invalid(lambda p: p["defaultRoute"].update({"model": "gpt-5.6-sol"}))
 
+    def test_outcome_lease_is_narrow_and_complete(self) -> None:
+        self.assert_invalid(
+            lambda p: p["outcomeFastPath"]["eligibility"].update({"validatedSchema2ClaimRouteAndSelectedDispatch": False})
+        )
+        self.assert_invalid(
+            lambda p: p["outcomeFastPath"]["eligibility"].update({"judgmentBoundaryPresent": True})
+        )
+        self.assert_invalid(
+            lambda p: p["outcomeFastPath"]["eligibility"].update({"reversibleLocalWorkOnly": False})
+        )
+        self.assert_invalid(
+            lambda p: p["outcomeFastPath"]["eligibility"].update({"protectedUserDirtMustRemainUnchanged": False})
+        )
+        self.assert_invalid(
+            lambda p: p["outcomeFastPath"]["authorizedActions"].append("push")
+        )
+
+    def test_outcome_lease_removes_only_eligible_routine_rounds(self) -> None:
+        self.assert_invalid(
+            lambda p: p["outcomeFastPath"]["separateRoundsRequiredWithinEligibility"].update({"ackOnly": True})
+        )
+        self.assert_invalid(
+            lambda p: p["outcomeFastPath"]["manualCtoReviewBoundaries"].remove("candidate_acceptance")
+        )
+        self.assert_invalid(
+            lambda p: p["outcomeFastPath"]["optimizer"].update({"observationMode": "every_delegation"})
+        )
+
+    def test_exact_command_recovery_is_one_pre_mutation_retry(self) -> None:
+        self.assert_invalid(
+            lambda p: p["outcomeFastPath"]["exactCommandRecovery"].update({"maxIdenticalRetries": 2})
+        )
+        self.assert_invalid(
+            lambda p: p["outcomeFastPath"]["exactCommandRecovery"].update({"requiresZeroMutation": False})
+        )
+        self.assert_invalid(
+            lambda p: p["outcomeFastPath"]["exactCommandRecovery"]["allowedFailureClasses"].append("test_failure")
+        )
+
+    def test_temp_carrier_and_local_repair_are_bounded(self) -> None:
+        self.assert_invalid(
+            lambda p: p["outcomeFastPath"]["carrierRules"].update({"durablePublicationRequiredAtJudgmentBoundary": False})
+        )
+        self.assert_invalid(
+            lambda p: p["outcomeFastPath"]["boundedLocalRepair"].update({"maxFocusedProofAttempts": 3})
+        )
+        self.assert_invalid(
+            lambda p: p["outcomeFastPath"]["boundedLocalRepair"].update({"allowlistMayExpand": True})
+        )
+        self.assert_invalid(
+            lambda p: p["outcomeFastPath"]["boundedLocalRepair"]["escalateOn"].remove("semantics_ambiguity")
+        )
+
+    def test_fast_path_preserves_reporting_identity_deadline_and_safety(self) -> None:
+        self.assert_invalid(lambda p: p["outcomeFastPath"]["ceoUpdateFields"].append("hashLedger"))
+        self.assert_invalid(
+            lambda p: p["outcomeFastPath"]["taskIdentity"].update({"genericTitlesAllowed": True})
+        )
+        self.assert_invalid(
+            lambda p: p["outcomeFastPath"]["deadlineMode"].update({"oneCriticalPath": False})
+        )
+        self.assert_invalid(
+            lambda p: p["outcomeFastPath"]["hardSafety"].update({"workerSelfAcceptanceAllowed": True})
+        )
+        self.assert_invalid(
+            lambda p: p["outcomeFastPath"]["aggregateGates"].update({"fullAggregateOncePerChangedCandidate": False})
+        )
+
     def test_extra_or_missing_trigger_is_rejected(self) -> None:
         self.assert_invalid(lambda p: p["triggers"].pop())
         self.assert_invalid(lambda p: p["triggers"].append("hourly_poll"))
@@ -146,6 +214,30 @@ class TriggeredOperatingReviewPolicyTests(unittest.TestCase):
         self.assert_invalid(
             lambda p: p["eventRequirements"]["delegation_acknowledgement_failed"]["requiredEvidence"].remove("modelRouteHash")
         )
+
+    def test_outcome_fast_path_is_documented_across_authority_surfaces(self) -> None:
+        repo_root = ROOT.parents[2]
+        surfaces = {
+            "optimizer skill": (ROOT / "SKILL.md").read_text(encoding="utf-8"),
+            "optimizer protocol": (ROOT / "references" / "observation-and-upgrade-protocol.md").read_text(encoding="utf-8"),
+            "routing contract": (
+                ROOT.parent / "operate-citysim-integration" / "references" / "model-routing-and-cost-control.md"
+            ).read_text(encoding="utf-8"),
+            "worktree operating system": (
+                repo_root / "docs" / "production" / "CITYSIM_WORKTREE_OPERATING_SYSTEM.md"
+            ).read_text(encoding="utf-8"),
+        }
+        required_phrases = (
+            "outcome lease",
+            "one identical retry",
+            "deadline confidence",
+            "Obsidian agent note",
+            "once per changed candidate",
+        )
+        for label, text in surfaces.items():
+            for phrase in required_phrases:
+                with self.subTest(surface=label, phrase=phrase):
+                    self.assertIn(phrase, text)
 
 
 if __name__ == "__main__":

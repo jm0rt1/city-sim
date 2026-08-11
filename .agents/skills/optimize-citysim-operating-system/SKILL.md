@@ -15,7 +15,9 @@ found.
 1. Run `pwd`, `git branch --show-current`, `git status --short --branch`,
    `git worktree list`, and `git log -1 --oneline --decorate`.
 2. Require `codex/citysim-os-optimization`; stop on detached or unexpected
-   routing, dirt outside the claim, or an unbound worktree path.
+   routing, undeclared or changed dirt outside the claim, or an unbound
+   worktree path. Frozen/protected user dirt is allowed only when the exact
+   status contract names it outside the claim and its bytes remain unchanged.
 3. Read the shared model-routing contract and apply its full-read versus
    compact-continuation rule. On a complete read, consume the operating system,
    this skill, PLAY-089, the exact dispatch receipt, and
@@ -24,6 +26,56 @@ found.
    allowed paths, focused/full gate owners, escalation triggers, reviewer, and
    stop condition before mutation.
 5. State the lane, route, observation boundary, dirt risk, and bounded outcome.
+
+## Use one outcome lease for eligible routine work
+
+A validated schema-2 claim, route, and selected dispatch form one outcome lease
+when all of these are true: the branch, HEAD, exact status contract, claim, and
+explicit allowed paths match; any frozen/protected user dirt is outside the
+claim and remains unchanged; the work is reversible and local; focused proof is
+declared; and the packet does not cross a product-semantics, shared-contract/schema,
+irreversible/external-action, candidate-acceptance, or release boundary.
+
+A validated temp-local route and selected dispatch are sufficient for eligible
+reversible local work. Durable publication is required when the carrier is
+itself a durable governance/product artifact or crosses a judgment boundary.
+
+That lease authorizes the named agent, in one continuous task, to inspect,
+edit only allowed paths, run focused proof, stage explicit paths, and create
+one coherent commit. Route validation is the acknowledgement. Eligible work
+does not require separate ACK-only, static-review, execution-release,
+receipt-review, or routine optimizer-observation rounds. Integration may
+validate and dispatch it directly.
+
+Manual CTO review is required at the excluded judgment boundaries, not for
+ordinary bounded execution. Independent QA, distinct acceptance ownership,
+and push/release authority remain mandatory. A worker never self-accepts.
+
+If an exact command fails because of sandbox, permission, or tool transport
+before product execution and before any mutation, allow one identical retry
+without a fresh carrier. Any changed command, second failure, product
+execution, or mutation ends that recovery allowance and follows the route's
+normal stop/escalation rule.
+
+Separately, an eligible implementation may use one bounded local repair loop
+inside the same outcome lease: at most two focused proof attempts total, with
+all edits confined to the original allowlist. The first focused failure may
+inform one repair without a fresh carrier, ACK, or release. A second focused
+failure, scope expansion, semantics ambiguity, or unexpected path escalates.
+
+Keep detailed logs in the task. CEO/user updates use five plain-English fields:
+done, blocker, owner, next, and deadline confidence. Include hashes or command
+ledgers only when they change a decision.
+
+In deadline mode, freeze optional scope, keep one named critical path, exclude
+optional slices at their cutoff, and keep aggregate build and independent QA
+moving. Run the full aggregate, build, and real-app QA once per changed candidate;
+rerun only when candidate identity changes or evidence is stale.
+
+Every visible task and specialist subagent title must exactly match its
+Obsidian agent note. Generic worker, explorer, or task titles are invalid. An
+agent may coordinate documented direct reports for routine work without a CEO
+round; this never expands path, product, acceptance, push, or release authority.
 
 ## Default to cheap observation
 
@@ -36,10 +88,12 @@ found.
 - Frontier Integration owns policy, architecture, shared authority, semantic
   conflict, subjective quality, candidate acceptance, final QA, and push.
 
-## Work exception-first
+## Observe exceptions and patch proven waste
 
-At each unique event in
-[the triggered operating-review policy](references/triggered-operating-review-policy.json):
+Eligible outcome leases do not create optimizer events or receipts. Use
+[the triggered operating-review policy](references/triggered-operating-review-policy.json)
+only when an exception, judgment boundary, or explicit control-plane audit is
+present. At each such unique event:
 
 1. Read only the exact receipts and compact context needed for that boundary.
 2. Separate worker defects from Integration-authored routing/setup defects.
@@ -54,39 +108,36 @@ At each unique event in
    when the frozen route explicitly owns that bounded mutation. Never open
    speculative cleanup.
 
-The default review is one `LUNA_MECHANICAL / gpt-5.6-luna / medium` turn using
-hash-bound compact context capped by the policy. A turn may accept at most eight
-queued event keys and 32 KiB total compact context, but emits one independently
-validated receipt per key. Freeze branch/HEAD first. Immediate triggers close
-before worker synchronization or mutation; authority reading may proceed concurrently. Reuse the
-canonical visible optimizer task instead of creating one task per event. Do not poll tasks, fan reviews
-out into more reviews, or run product builds, full suites, DCC, staged apps, or
-real-app QA merely to observe operations. A trigger is deduplicated by authority,
-task, route, event type, and candidate/result commit. Unknown timing, token, or
-pricing values stay `null`.
+An assigned exception review is one `LUNA_MECHANICAL / gpt-5.6-luna / medium`
+turn using hash-bound compact context capped by the policy. A turn may accept at
+most eight queued exception keys and 32 KiB total compact context, with one
+receipt per key. Freeze branch/HEAD first. Reuse the canonical visible optimizer
+task. Do not poll tasks, fan reviews out into more reviews, or run product
+builds, full suites, DCC, staged apps, or real-app QA merely to observe
+operations. Unknown timing, token, or pricing values stay `null`.
 
-Review the management system, not just worker output. In addition to the normal
-dispatch/return/acceptance boundaries, emit one compact receipt when:
+Review the management system only where it changes action. Emit an exception
+receipt for:
 
-- a delegation is ready to send, proving the lowest legal route, frozen
-  judgment boundary, exact claim/paths, distinct gate owners, independent
-  reviewer, and useful-concurrency delta before mutation;
 - a frontier route is assigned, proving why authority or judgment could not be
   frozen into a Luna packet;
-- a task completes or stops, proving its durable result or exact blocker and
-  naming the next dependency/refill without rerunning its gates;
 - useful concurrency falls below the governed floor, excluding protected active
   operations before demanding a refill;
-- unchanged authority/claim/skill hashes are loaded in full again instead of a
-  compact continuation packet;
-- a delegation acknowledgement fails to bind the exact receipt, route, claim,
-  and allowed paths; or
+- a setup, model-route, claim, baseline, or allowed-path mismatch before
+  mutation;
+- a false green, independent return, second unsuccessful repair, or failure
+  outside focused scope;
 - a full gate is requested again, proving whether the exact candidate changed or
-  prior evidence actually became stale.
-- a worktree, branch, HEAD, cleanliness, or dispatch setup fails before
-  mutation; or
+  prior evidence actually became stale;
+- unchanged authority/claim/skill hashes are loaded in full again instead of a
+  compact continuation packet; or
 - a ready candidate or asset handoff has no assigned review/intake owner,
   refill, or exact serialized dependency.
+
+The policy may retain historical delegation and acknowledgement trigger names,
+but do not emit them for an eligible outcome lease. They are used only when
+Integration explicitly assigns an ineligible-boundary audit or when preserving
+historical evidence.
 
 Validate every durable review receipt with
 `scripts/validate_operating_review_receipt_v1.py` using the repo root and the
@@ -96,7 +147,7 @@ Input paths and hashes must resolve to repository bytes. The observer reports th
 defect and one bounded next action; only Integration changes routes, refills a
 lane, escalates judgment, or mutates shared authority.
 
-If one Integration event envelope declares multiple triggers, emit one receipt
+If one assigned exception envelope declares multiple triggers, emit one receipt
 for each trigger. Missing coverage is a return, not an implicit `NO_CHANGE`.
 The observer never edits the shared ledger; Integration records accepted
 receipts and dispositions when it integrates the optimizer packet.
@@ -104,7 +155,8 @@ receipts and dispositions when it integrates the optimizer packet.
 Never review this lane's own observer dispatch. Integration bootstraps an
 optimizer route with full schema-2 validation, exact Git/claim/HEAD/path
 binding, one independent static route review, and zero worker mutation. This
-non-recursive bootstrap is the only delegation-ready exception.
+non-recursive bootstrap applies only when an exceptional observer route is
+actually needed.
 
 For an idle-lane or no-progress trigger, first distinguish a protected active
 operation (exact-candidate QA, DCC render, frozen proof, coherent commit, or
@@ -118,13 +170,18 @@ claimed behavior was never executed, its artifact is absent/undecodable, or
 independent review finds an immediate runtime failure. Prefer strengthening the
 proof boundary before changing models or adding more retries.
 
+When repeated waste is proven and user or Integration authority names the exact
+control-plane files, patch the operating rules directly with focused static
+proof. Do not create another observer/receipt cycle merely to describe the same
+waste.
+
 ## Commit and hand off
 
 Stage explicit claimed paths, inspect cached diff/check/stat, run focused tests,
 and commit each coherent result as `PLAY-089: Imperative outcome`. Never push,
 integrate, pin, edit product surfaces, or claim cost savings without a measured
-before/after basis. Report exact files, commit, validation, measured effect,
-limitations, and the next event boundary.
+before/after basis. Keep the detailed file, commit, and validation record in the
+task; report upward using done, blocker, owner, next, and deadline confidence.
 
 Validate the shared trigger policy with:
 

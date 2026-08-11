@@ -92,6 +92,51 @@ full route checks only to the selected row. Unrelated sibling HEAD movement
 must not demote a correctly bound worker; an unknown or duplicate route ID and
 any selected-row identity mismatch fail closed.
 
+## Outcome lease fast path
+
+A validated schema-2 claim, route, and selected dispatch form one outcome lease
+when the assigned branch, HEAD, exact status contract, claim, and explicit paths
+match; frozen/protected user dirt is outside the claim and unchanged; focused
+proof is declared; the work is reversible and local; and no product-semantics,
+shared-contract/schema, irreversible/external-action, candidate-acceptance, or
+release judgment is required.
+
+A validated temp-local route and selected dispatch are sufficient for eligible
+reversible local work. Durable publication is required when the carrier is
+itself a durable governance/product artifact or crosses a judgment boundary.
+
+For eligible routine work, the named agent may inspect, edit only allowed
+paths, run focused proof, stage explicit paths, and create one coherent commit
+in the same task. Route validation activates the lease. Do not create separate
+ACK-only, static-review, execution-release, receipt-review, or optimizer
+observer rounds. Integration may validate and dispatch this work directly.
+
+Manual CTO review is reserved for the excluded judgment boundaries. Distinct
+independent QA and acceptance ownership still apply, and no worker may
+self-accept, push, or release.
+
+If the exact command fails from sandbox, permission, or tool transport before
+product execution and before mutation, allow one identical retry without a
+fresh carrier. A changed command, second failure, product execution, or any
+mutation ends this infrastructure allowance.
+
+Separately, routine reversible implementation may use one bounded local repair
+inside the same outcome lease: at most two focused proof attempts total, with
+every edit confined to the original allowlist. The first focused failure may
+inform one repair without a fresh carrier, ACK, or release. A second focused
+failure, scope expansion, semantics ambiguity, or unexpected path escalates.
+
+Keep full logs in the task. CEO/user updates use only done, blocker, owner,
+next, and deadline confidence unless a hash or command ledger changes a
+decision. In deadline mode, freeze optional scope, maintain one critical path,
+exclude optional slices at cutoff, and keep build and QA moving.
+
+Every visible task and specialist subagent title must exactly match its
+Obsidian agent note; generic worker/explorer/task titles are invalid. Agents may
+coordinate documented direct reports for eligible routine work without another
+CEO round, but may not expand path, product, acceptance, push, or release
+authority.
+
 ## Mandatory escalation triggers
 
 Every Luna packet must carry all of these fail-closed triggers:
@@ -222,16 +267,20 @@ exception-driven review replace duplicate prose, not proof.
 ## Dispatch and acknowledgement
 
 Integration sends the canonical visible task with the route object's exact
-model and effort override. The worker must acknowledge the receipt path, route
-ID, canonical route hash,
-authority, claim, allowed roots, bounded deliverable, focused gate, full-gate
-owner, escalation triggers, and stop condition before work begins. Never pin a
-task.
+model and effort override. The worker validates the receipt path, route ID,
+canonical route hash, authority, claim, allowed roots, bounded deliverable,
+focused gate, full-gate owner, escalation triggers, and stop condition inside
+the same task. A passing preflight activates the outcome lease; it does not
+require a separate acknowledgement task or management turn. Never pin a task.
 
 Luna cannot own shared authority, production selection, semantic disposition,
 final QA, integration, publication, or push. Final QA cannot run in a feature
 author's task. Passing sibling rows remain immutable when another direction is
 returned.
+
+The full aggregate, build, and real-app QA run once per changed candidate. A
+handoff alone does not justify a rerun; rerun only when candidate identity
+changes or prior evidence is stale.
 
 ## Pilot measurement
 

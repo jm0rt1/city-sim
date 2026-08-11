@@ -12,6 +12,108 @@
     "trigger",
     "candidateOrResultCommit"
   ],
+  "outcomeFastPath": {
+    "mode": "outcome_lease",
+    "eligibility": {
+      "validatedSchema2ClaimRouteAndSelectedDispatch": true,
+      "exactBranchHeadAndStatusContract": true,
+      "protectedUserDirtOutsideClaimAllowed": true,
+      "protectedUserDirtMustRemainUnchanged": true,
+      "explicitAllowedPaths": true,
+      "reversibleLocalWorkOnly": true,
+      "focusedProofDeclared": true,
+      "judgmentBoundaryPresent": false,
+      "sharedContractMutation": false,
+      "irreversibleOrExternalAction": false,
+      "candidateAcceptanceOrRelease": false
+    },
+    "authorizedActions": [
+      "inspect",
+      "edit_allowed_paths",
+      "run_focused_proof",
+      "stage_explicit_paths",
+      "commit_once"
+    ],
+    "separateRoundsRequiredWithinEligibility": {
+      "ackOnly": false,
+      "staticReview": false,
+      "executionRelease": false,
+      "receiptReview": false,
+      "routineDelegationObservation": false
+    },
+    "manualCtoReviewBoundaries": [
+      "product_semantics",
+      "shared_contract_or_schema",
+      "irreversible_or_external_action",
+      "candidate_acceptance",
+      "release"
+    ],
+    "integrationMayDispatchEligibleRoutineWork": true,
+    "carrierRules": {
+      "validatedTempLocalCarrierAllowedForReversibleLocalWork": true,
+      "durablePublicationRequiredForDurableGovernanceOrProductArtifact": true,
+      "durablePublicationRequiredAtJudgmentBoundary": true
+    },
+    "exactCommandRecovery": {
+      "maxIdenticalRetries": 1,
+      "allowedFailureClasses": [
+        "sandbox",
+        "permission",
+        "tool_transport"
+      ],
+      "requiresPreProductExecution": true,
+      "requiresZeroMutation": true,
+      "freshCarrierRequired": false
+    },
+    "boundedLocalRepair": {
+      "maxFocusedProofAttempts": 2,
+      "firstFailureMayInformOneRepair": true,
+      "freshCarrierRequired": false,
+      "allowlistMayExpand": false,
+      "escalateOn": [
+        "second_focused_failure",
+        "scope_expansion",
+        "semantics_ambiguity",
+        "unexpected_path"
+      ]
+    },
+    "ceoUpdateFields": [
+      "done",
+      "blocker",
+      "owner",
+      "next",
+      "deadlineConfidence"
+    ],
+    "deadlineMode": {
+      "optionalScopeFrozen": true,
+      "oneCriticalPath": true,
+      "optionalSlicesExcludedAtCutoff": true,
+      "buildAndQAContinue": true
+    },
+    "taskIdentity": {
+      "exactObsidianAgentTitleRequired": true,
+      "genericTitlesAllowed": false
+    },
+    "documentedDirectReportCoordinationAllowed": true,
+    "aggregateGates": {
+      "fullAggregateOncePerChangedCandidate": true,
+      "buildOncePerChangedCandidate": true,
+      "realAppQAOncePerChangedCandidate": true,
+      "rerunOnlyWhenCandidateChangesOrEvidenceIsStale": true
+    },
+    "optimizer": {
+      "observationMode": "exception_only",
+      "routineDelegationReceiptRequiredWhenEligible": false,
+      "directRulePatchWhenRepeatedWasteIsProven": true
+    },
+    "hardSafety": {
+      "explicitPathsRequired": true,
+      "preserveUserDirt": true,
+      "independentQARequired": true,
+      "workerSelfAcceptanceAllowed": false,
+      "pushOrReleaseRequiresAuthority": true
+    }
+  },
   "reviewBudget": {
     "maxReviewsPerEventKey": 1,
     "maxTurns": 1,

@@ -63,6 +63,98 @@ EXPECTED_FALSE_GREEN_ESCALATIONS = [
     "cross_lane_semantic_conflict",
     "subjective_acceptance_required",
 ]
+EXPECTED_OUTCOME_FAST_PATH = {
+    "mode": "outcome_lease",
+    "eligibility": {
+        "validatedSchema2ClaimRouteAndSelectedDispatch": True,
+        "exactBranchHeadAndStatusContract": True,
+        "protectedUserDirtOutsideClaimAllowed": True,
+        "protectedUserDirtMustRemainUnchanged": True,
+        "explicitAllowedPaths": True,
+        "reversibleLocalWorkOnly": True,
+        "focusedProofDeclared": True,
+        "judgmentBoundaryPresent": False,
+        "sharedContractMutation": False,
+        "irreversibleOrExternalAction": False,
+        "candidateAcceptanceOrRelease": False,
+    },
+    "authorizedActions": [
+        "inspect",
+        "edit_allowed_paths",
+        "run_focused_proof",
+        "stage_explicit_paths",
+        "commit_once",
+    ],
+    "separateRoundsRequiredWithinEligibility": {
+        "ackOnly": False,
+        "staticReview": False,
+        "executionRelease": False,
+        "receiptReview": False,
+        "routineDelegationObservation": False,
+    },
+    "manualCtoReviewBoundaries": [
+        "product_semantics",
+        "shared_contract_or_schema",
+        "irreversible_or_external_action",
+        "candidate_acceptance",
+        "release",
+    ],
+    "integrationMayDispatchEligibleRoutineWork": True,
+    "carrierRules": {
+        "validatedTempLocalCarrierAllowedForReversibleLocalWork": True,
+        "durablePublicationRequiredForDurableGovernanceOrProductArtifact": True,
+        "durablePublicationRequiredAtJudgmentBoundary": True,
+    },
+    "exactCommandRecovery": {
+        "maxIdenticalRetries": 1,
+        "allowedFailureClasses": ["sandbox", "permission", "tool_transport"],
+        "requiresPreProductExecution": True,
+        "requiresZeroMutation": True,
+        "freshCarrierRequired": False,
+    },
+    "boundedLocalRepair": {
+        "maxFocusedProofAttempts": 2,
+        "firstFailureMayInformOneRepair": True,
+        "freshCarrierRequired": False,
+        "allowlistMayExpand": False,
+        "escalateOn": [
+            "second_focused_failure",
+            "scope_expansion",
+            "semantics_ambiguity",
+            "unexpected_path",
+        ],
+    },
+    "ceoUpdateFields": ["done", "blocker", "owner", "next", "deadlineConfidence"],
+    "deadlineMode": {
+        "optionalScopeFrozen": True,
+        "oneCriticalPath": True,
+        "optionalSlicesExcludedAtCutoff": True,
+        "buildAndQAContinue": True,
+    },
+    "taskIdentity": {
+        "exactObsidianAgentTitleRequired": True,
+        "genericTitlesAllowed": False,
+    },
+    "documentedDirectReportCoordinationAllowed": True,
+    "aggregateGates": {
+        "fullAggregateOncePerChangedCandidate": True,
+        "buildOncePerChangedCandidate": True,
+        "realAppQAOncePerChangedCandidate": True,
+        "rerunOnlyWhenCandidateChangesOrEvidenceIsStale": True,
+    },
+    "optimizer": {
+        "observationMode": "exception_only",
+        "routineDelegationReceiptRequiredWhenEligible": False,
+        "directRulePatchWhenRepeatedWasteIsProven": True,
+    },
+    "hardSafety": {
+        "explicitPathsRequired": True,
+        "preserveUserDirt": True,
+        "independentQARequired": True,
+        "workerSelfAcceptanceAllowed": False,
+        "pushOrReleaseRequiresAuthority": True,
+    },
+}
 EXPECTED_EVENT_REQUIREMENTS = {
     "authority_acknowledged": (
         ["dispatchReceiptHash", "modelRouteHash", "claimHash", "acknowledgedAuthority", "acknowledgedAllowedPaths", "acknowledgedModelEffort"],
@@ -181,6 +273,7 @@ def validate(policy: object) -> list[str]:
         "schema",
         "defaultRoute",
         "eventKeyFields",
+        "outcomeFastPath",
         "reviewBudget",
         "reviewScheduling",
         "observerRouteBootstrap",
@@ -204,6 +297,8 @@ def validate(policy: object) -> list[str]:
         errors.append("default review route must be Luna mechanical/medium")
     if policy.get("eventKeyFields") != EXPECTED_KEY_FIELDS:
         errors.append("event key fields must be exact and ordered")
+    if policy.get("outcomeFastPath") != EXPECTED_OUTCOME_FAST_PATH:
+        errors.append("outcome fast path must preserve the exact eligibility, authority, recovery, reporting, deadline, identity, gate, and safety contract")
 
     budget = policy.get("reviewBudget")
     if not isinstance(budget, dict):

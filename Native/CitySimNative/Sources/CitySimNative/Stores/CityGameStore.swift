@@ -396,6 +396,13 @@ final class CityGameStore: ObservableObject {
               let coordinate = selectedCoordinate,
               state.tile(at: coordinate) != nil else { return false }
         if primary {
+            if case .build(let kind) = interactionMode,
+               let action = activeMapActionTargetPresentation?.primaryAction,
+               !action.isAvailable,
+               let reason = action.buildDecision?.disabledReason {
+                publishBlockedPlacementFeedback(for: kind, reason: reason)
+                return true
+            }
             primaryAction(at: coordinate)
         } else {
             secondaryAction(at: coordinate)
@@ -657,14 +664,18 @@ final class CityGameStore: ObservableObject {
                 showFeedback("\(kind.title) construction approved", tone: .positive)
                 playSound(named: "Tink")
             case .failure(let rejection):
-                showFeedback(
-                    "\(rejection.message) \(kind.title) remains selected — choose another block.",
-                    tone: .caution,
-                    autoDismissAfter: nil
-                )
-                playSound(named: "Basso")
+                publishBlockedPlacementFeedback(for: kind, reason: rejection.message)
             }
         }
+    }
+
+    private func publishBlockedPlacementFeedback(for kind: BuildingKind, reason: String) {
+        showFeedback(
+            "\(reason) \(kind.title) remains selected — choose another block.",
+            tone: .caution,
+            autoDismissAfter: nil
+        )
+        playSound(named: "Basso")
     }
 
     func secondaryAction(at coordinate: GridCoordinate) {

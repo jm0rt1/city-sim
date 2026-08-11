@@ -2073,6 +2073,13 @@ final class CityCommandCatalogTests: XCTestCase {
         XCTAssertEqual(store.selectedCoordinate, occupied.coordinate)
         XCTAssertEqual(store.lastFeedback, "\(BuildRejection.occupied.message) Commercial remains selected — choose another block.")
 
+        let coordinator = CitySceneView.Coordinator(store: store)
+        let accessibilityMap = CityMapSKView(frame: CGRect(x: 0, y: 0, width: 900, height: 600))
+        coordinator.configureMapAccessibility(in: accessibilityMap)
+        let accessibilityValue = try XCTUnwrap(accessibilityMap.accessibilityValue() as? String)
+        XCTAssertTrue(accessibilityValue.contains(BuildRejection.occupied.message))
+        XCTAssertFalse(accessibilityValue.contains("construction approved"))
+
         store.clearFeedback()
         store.selectedCoordinate = valid.coordinate
         let treasuryBeforeValidBuild = store.state.treasury

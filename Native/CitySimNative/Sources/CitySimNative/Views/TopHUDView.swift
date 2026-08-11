@@ -77,7 +77,7 @@ struct TopHUDView: View {
                     Text(store.state.formattedDay)
                         .foregroundStyle(.secondary)
                     if compact {
-                        Text(simulationStatus.label)
+                        Text(Self.compactSimulationLabel(for: store.speed))
                             .fontWeight(.heavy)
                             .foregroundStyle(simulationStatusTint)
                             .lineLimit(1)
@@ -155,6 +155,11 @@ struct TopHUDView: View {
             symbol: "play.fill",
             accessibilityValue: "Running at \(speed.controlLabel) speed"
         )
+    }
+
+    static func compactSimulationLabel(for speed: SimulationSpeed) -> String {
+        if speed == .paused { return "PAUSED" }
+        return "RUN \(speed.controlLabel.uppercased())"
     }
 
     private var simulationStatus: HUDSimulationStatePresentation {

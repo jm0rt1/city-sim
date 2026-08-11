@@ -856,6 +856,16 @@ final class CitySimulationTests: XCTestCase {
     }
 
     @MainActor
+    func testCompactSimulationLabelStaysVisibleWhileAccessibilityKeepsFullState() {
+        XCTAssertEqual(TopHUDView.compactSimulationLabel(for: .fast), "RUN 2X")
+        XCTAssertEqual(TopHUDView.simulationState(for: .fast).label, "RUNNING 2X")
+        XCTAssertEqual(
+            TopHUDView.simulationState(for: .fast).accessibilityValue,
+            "Running at 2x speed"
+        )
+    }
+
+    @MainActor
     func testSelectedTargetBeaconPresentsInspectBuildBulldozeNilReadyAndBlockedTruth() throws {
         let state = CityGameState.newCity(seed: 42)
         let cityHall = try XCTUnwrap(state.tiles.first { $0.kind == .cityHall })
@@ -1279,7 +1289,7 @@ final class CitySimulationTests: XCTestCase {
         }
 
         let store = CityGameStore(state: .newCity(seed: 42))
-        store.speed = .paused
+        store.speed = .fast
         let bitmap = try hudBitmap(size: CGSize(width: 900, height: 600), store: store)
         XCTAssertGreaterThan(bitmap.pixelsWide, 850)
         XCTAssertGreaterThan(bitmap.pixelsHigh, 550)

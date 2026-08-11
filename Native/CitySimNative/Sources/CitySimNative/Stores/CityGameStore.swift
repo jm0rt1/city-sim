@@ -778,7 +778,7 @@ final class CityGameStore: ObservableObject {
 
     func newCity() {
         state = .newCity(seed: UInt64.random(in: 1...UInt64.max))
-        speed = .normal
+        speed = .paused
         lastNonPausedSpeed = .normal
         selectedTool = .road
         selectedBuildCategory = .roads

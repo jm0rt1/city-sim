@@ -91,10 +91,15 @@ final class GameStatusOverlayTests: XCTestCase {
         let focusGeneration = store.mapFocusRequestGeneration
         XCTAssertTrue(store.perform(.newRegion))
         XCTAssertEqual(store.state.status, .playing)
+        XCTAssertEqual(store.state.tick, 0)
+        XCTAssertEqual(store.state.formattedDay, "Day 1")
         XCTAssertEqual(store.state.population, 300)
-        XCTAssertEqual(store.speed, .normal)
+        XCTAssertEqual(store.speed, .paused)
         XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration + 1)
         XCTAssertEqual(store.lastFeedback, "A fresh region is ready")
+        XCTAssertTrue(store.perform(.togglePause))
+        XCTAssertEqual(store.speed, .normal)
+        XCTAssertEqual(store.speed.controlLabel, "1x")
     }
 
     @MainActor

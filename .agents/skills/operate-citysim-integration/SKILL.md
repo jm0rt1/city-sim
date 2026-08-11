@@ -26,6 +26,14 @@ proof, explicit staging, and one coherent commit in the same visible task.
 Do not add duplicate ACK-only, static-review, execution-release,
 receipt-review, or optimizer-observer rounds to that eligible lease.
 
+Apply a strict manual-review budget: mechanize identity, ownership, complete
+path/diff, focused-proof, and clean-commit checks for every candidate, but
+deep-read no more than a risk-weighted 10% sample of routine fast-path work.
+Automatically integrate the remaining passing routine candidates. Review 100%
+only for an existing escalation trigger or the final integrated player
+milestone. A new manual round requires a new material defect; receipt shape,
+status wording, or reviewer preference never creates one.
+
 This fast path does not waive route validation, path ownership, protected dirt,
 focused proof, independent candidate acceptance, push authority, or release
 authority. Use manual frontier review whenever the route's existing escalation
@@ -36,6 +44,21 @@ Keep detailed logs in the owning task. Report to the user in plain language:
 what changed for the game, the one material blocker if any, its owner, the next
 action, and deadline confidence. Include hashes or command ledgers only when
 they change a decision.
+
+## Interpret and push down the mandate
+
+Treat the user's message as executive intent, not as a script the user must
+continue operating. Translate it into player outcomes, priorities, constraints,
+owners, decision rights, dependencies, and acceptance criteria. Dispatch those
+outcomes downward, let accountable owners choose the implementation, and keep
+the company moving without returning routine choices to the user.
+
+Conduct oversight at the system level: watch outcome progress, dependency
+health, candidate quality, integration order, and the running game. Intervene
+when an owner stalls, work collides, scope drifts, or evidence reveals a real
+defect. Send completed outcomes and material exceptions upward. Escalate to the
+user only when the product promise, priority, budget, irreversible external
+action, or publish/release authority must change.
 
 Resolve every baseline, authority, and worker commit in its owning worktree
 with `git rev-parse --verify '<ref>^{commit}'`. Never type, infer, or expand an
@@ -78,6 +101,10 @@ execution packets and independent acceptance of the aggregated candidate.
 - `FRONTIER_AUTHORITY` (`gpt-5.6-sol`, `high`) alone changes shared authority,
   decides architecture or product/visual/interaction ambiguity, resolves
   semantic conflicts, accepts exact candidates, integrates, publishes, or pushes.
+- Routine contract-preserving candidate integration is delegated to Integration
+  after automated fast-path checks and does not require a separate Frontier or
+  CTO turn. Frontier acceptance applies at real escalation boundaries and the
+  integrated player milestone.
 - `LUNA_IMPLEMENTATION`, `LUNA_MECHANICAL`, and `LUNA_LOCAL_DEBUG` receive
   only bounded frozen-contract work, exact claim-owned paths, focused gates,
   coherent result/commit requirements, and explicit escalation boundaries.

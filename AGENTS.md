@@ -83,6 +83,42 @@ repair after failed focused proof, perform an irreversible/external action, or
 claim integration acceptance, publication, push, or release. A status update
 is not an escalation and must not pause useful work.
 
+## Ten-percent manual review budget
+
+Routine, contract-preserving work must flow without serial approval. Apply
+automated identity, owned-path, diff, focused-test, and clean-commit checks to
+100% of candidate commits, but deep manual review to no more than a
+risk-weighted 10% sample of routine commits.
+
+Do not create separate static-review, ACK, execution-release, receipt-review,
+or CTO approval turns for an outcome that satisfies the fast-path checks.
+Integration accepts and integrates it automatically. One reviewer gives one
+decision at an integrated player milestone; a second review round requires a
+new material defect, not a formatting or receipt preference.
+
+Review 100% only when work changes shared architecture or contracts, alters
+save/schema compatibility, crosses ownership, performs an irreversible or
+external action, or claims final candidate acceptance, publication, push, or
+release. The CEO sets product promise, priority, budget, and publish authority;
+the CTO owns cross-lane product judgment and integrated milestone acceptance;
+neither is part of routine implementation flow.
+
+## Mandate cascade
+
+The user sets the company mandate: desired player outcome, priority, deadline,
+budget, and non-negotiable constraints. Integration interprets that mandate
+into a small set of owned outcomes, assigns one accountable agent per outcome,
+states decision rights and acceptance criteria, and keeps dependencies moving.
+Do not forward raw executive language as command-by-command work.
+
+Owning agents choose implementation details, coordinate directly with peers,
+delegate bounded subtasks, and deliver coherent commits. Integration conducts
+oversight through outcome progress, product evidence, dependency health, and
+the integrated build; it intervenes on stalls, collisions, scope drift, and
+quality failures. Report completed outcomes and material exceptions upward.
+Ask the user only for a change to product promise, priority, budget, an
+irreversible external action, or explicit publish/release authority.
+
 ## Universal boundaries
 
 - `Native/CitySimNative` is the active product. Treat legacy Python as read-only reference unless the claimed task explicitly includes it.

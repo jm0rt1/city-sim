@@ -6,8 +6,13 @@ Read this reference before candidate review, acceptance, integration, rollback, 
 
 1. Freeze the exact candidate commit and confirm the worktree is clean.
 2. Confirm its completion record contains scope, commits, validation, live evidence, proof, risks, and shared-contract notes.
-3. Review the full commit range and verify only claimed surfaces changed.
-4. Return oversized, mixed, weakly proven, or cross-lane work to its owner.
+3. Mechanically inspect the complete commit range for path, ownership, and
+   contract scope. Deep-read no more than a risk-weighted 10% sample of routine
+   fast-path commits; deep-read every escalated/shared-contract change and the
+   final integrated player candidate.
+4. Automatically integrate routine candidates that pass identity, path, diff,
+   focused-proof, and cleanliness checks. Return oversized, mixed, weakly
+   proven, or cross-lane work to its owner.
    A static/AST/token-presence check may prove source structure only. If the
    completion claim says launch, execute, render, save, reload, interact,
    deterministic output, or visual quality, independently run the matching

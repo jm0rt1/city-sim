@@ -23,7 +23,7 @@ struct ResidentialGeneratedAssetIdentity: Equatable, Sendable {
             return nil
         }
         self.level = min(4, max(1, level))
-        variant = self.level == 1 && visualVariant == 1 ? 1 : 0
+        variant = self.level == 1 ? min(2, max(0, visualVariant)) : 0
         self.frontage = frontage
         direction = switch frontage {
         case .north: "north"

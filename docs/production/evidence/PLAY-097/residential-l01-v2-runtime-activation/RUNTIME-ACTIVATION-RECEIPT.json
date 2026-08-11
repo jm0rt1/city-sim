@@ -1,0 +1,36 @@
+{
+  "schema": "citysim.play-097.residential-l01-v2.runtime-activation.v1",
+  "authorityHead": "26c9dce11ddc1fcd6e254e1817b1b9361230bafb",
+  "sourceCandidate": "ac392317f599ee9f9a5af53771ff5d0acd573c15",
+  "family": "residential_l01_v2",
+  "selection": {
+    "directions": ["north", "east", "south", "west"],
+    "assets": 4,
+    "lodPayloads": 12,
+    "manifestSha256": "3b8885b0ca005194e660734c86e0eda494d8a40b8ebbaa497ce818383ef94a33",
+    "selectionSha256": "ee2d328c3960df62e55fe80438afa4aa3e435419d60096cc7753f97801f5cd4e"
+  },
+  "deterministicReplay": {
+    "packA": "/private/tmp/PLAY-097-runtime-pack-a",
+    "packB": "/private/tmp/PLAY-097-runtime-pack-b",
+    "recursiveDiff": "PASS",
+    "manifestSha256A": "3b8885b0ca005194e660734c86e0eda494d8a40b8ebbaa497ce818383ef94a33",
+    "manifestSha256B": "3b8885b0ca005194e660734c86e0eda494d8a40b8ebbaa497ce818383ef94a33",
+    "pageSha256": {
+      "block/page-00.png": "5e8df176674f37e76caa254e4d7f09efea4b7e0efe65879628f4c7a77de87055",
+      "block/page-01.png": "e92e61e0e64371ae0af8eab00dad5ea391907d71ad1ba66982598e1acd3135b8",
+      "block/page-02.png": "eea4052679cab6a9bbdc7938fe9fe9fbd0e205311e964c45a4827a2272d2466f",
+      "block/page-03.png": "aa78027ad1fde4bde04b58b4a7c379efb1a44cb54e54b01817eb1cc88c1fdc9c",
+      "city/page-00.png": "542fb3e761bc75a2ecc219d30c0e4515e69ca3a62261ed3c3b3e4850a489121a",
+      "neighborhood/page-00.png": "4cc26a492a3f30d528e00061663c17622f9da9b8f0b186964a6917c9a052b112"
+    }
+  },
+  "focusedProof": {
+    "test": "WorldRenderingTests/testResidentialVariantTwoProductionResourcesResolveAcrossFourFrontagesAndThreeLODsWithoutFallback",
+    "result": "PASS: 1 test, 0 failures",
+    "fallbackCount": 0
+  },
+  "sourceArtMutated": false,
+  "cameraOrGameplayMutated": false,
+  "saveOrMigrationChanged": false
+}

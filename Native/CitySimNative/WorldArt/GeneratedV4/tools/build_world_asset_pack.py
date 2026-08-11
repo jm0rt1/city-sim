@@ -31,6 +31,12 @@ PLAY101_SELECTION = GENERATED / "catalog" / "play-101-industrial-l1-directions.j
 PLAY101_RESIDENTIAL_VARIANT_ONE = (
     ROOT / "ImageGenFourView" / "PLAY-101" / "residential_l01_v1"
 )
+PLAY097_RESIDENTIAL_VARIANT_TWO = (
+    ROOT / "ImageGenFourView" / "PLAY-101" / "residential_l01_v2"
+)
+PLAY097_RESIDENTIAL_VARIANT_TWO_SELECTION = (
+    GENERATED / "catalog" / "play-097-residential-l01-v2-directions.json"
+)
 PLAY073_INDUSTRIAL_L2_SELECTION = (
     GENERATED / "catalog" / "play-073-industrial-l2-directions.json"
 )
@@ -63,6 +69,13 @@ PLAY101_RESIDENTIAL_VARIANT_ONE_RECEIPT_SHA256 = (
 PLAY101_RESIDENTIAL_VARIANT_ONE_ADMISSION_SHA256 = (
     "1bb0dc7e624c7daf926d057df091677f1b06463a812886b6b86d901743ff309b"
 )
+PLAY097_RESIDENTIAL_VARIANT_TWO_RECEIPT_SHA256 = (
+    "0fab7d130646cbc5e21131976373987067f3a36ff07c321e2c3e81f31b45180c"
+)
+PLAY097_RESIDENTIAL_VARIANT_TWO_QUARANTINE_SHA256 = (
+    "218fec1ea07456909ef77234d7a56e359f54c8b3482783320974a21edaced150"
+)
+PLAY097_RESIDENTIAL_VARIANT_TWO_COMMIT = "ac392317f599ee9f9a5af53771ff5d0acd573c15"
 
 
 def relative_to_package(path: Path) -> str:
@@ -708,6 +721,121 @@ def residential_variant_one_assets(
     return assets
 
 
+def residential_variant_two_assets(
+    manifest: dict[str, object],
+) -> list[dict[str, object]]:
+    """Bind the exact PLAY-097 residential variant-two family."""
+    receipt_path = PLAY097_RESIDENTIAL_VARIANT_TWO / "BUILD-RECEIPT.json"
+    quarantine_path = (
+        REPOSITORY
+        / "docs/production/evidence/PLAY-097/residential-l01-v2-renderer-intake/QUARANTINE-RECEIPT.json"
+    )
+    if (
+        sha256(receipt_path) != PLAY097_RESIDENTIAL_VARIANT_TWO_RECEIPT_SHA256
+        or sha256(quarantine_path) != PLAY097_RESIDENTIAL_VARIANT_TWO_QUARANTINE_SHA256
+    ):
+        raise SystemExit("build rejected: residential L1 variant-two authority drift")
+    receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+    selection = json.loads(PLAY097_RESIDENTIAL_VARIANT_TWO_SELECTION.read_text(encoding="utf-8"))
+    directions = ("north", "east", "south", "west")
+    rows = {item["direction"]: item for item in selection.get("selections", [])}
+    if (
+        selection.get("schema") != 1
+        or selection.get("task") != "PLAY-097"
+        or selection.get("family") != "residential_l01_v2"
+        or set(rows) != set(directions)
+        or receipt.get("schema") != "citysim.play-097.residential-l01-v2.build.v1"
+        or receipt.get("family") != "residential_l01_v2"
+        or set(receipt.get("directions", [])) != set(directions)
+    ):
+        raise SystemExit("build rejected: residential L1 variant-two selection mismatch")
+    raw_hashes = {direction: receipt["rawSources"][direction]["sha256"] for direction in directions}
+    lod_hashes = [receipt["lods"][direction][detail]["sha256"] for direction in directions for detail in DETAILS]
+    if len(set(raw_hashes.values())) != 4 or len(set(lod_hashes)) != 12:
+        raise SystemExit("build rejected: residential L1 variant-two source alias")
+    templates = {
+        asset["view_direction"]: asset
+        for asset in manifest["assets"]
+        if asset.get("family") == "residential"
+        and asset.get("level") == 1
+        and asset.get("variant") == 0
+        and asset.get("view_direction") in directions
+    }
+    if set(templates) != set(directions):
+        raise SystemExit("build rejected: residential L1 variant-two templates missing")
+    assets: list[dict[str, object]] = []
+    for direction in directions:
+        row = rows[direction]
+        source = receipt["rawSources"][direction]
+        raw = REPOSITORY / source["path"]
+        if sha256(raw) != source["sha256"] or row["raw_sha256"] != source["sha256"]:
+            raise SystemExit(f"build rejected: residential L1 variant-two raw drift for {direction}")
+        asset = copy.deepcopy(templates[direction])
+        logical_id = f"residential_l01_v2_{direction}"
+        asset.update({
+            "logical_id": logical_id,
+            "source_key": f"residential_l01/variant-2/{direction}/source-v01",
+            "source_revision": "source-v01",
+            "variant": 2,
+            "state": "maintained",
+            "residency_id": f"generated-v4/residential/{logical_id}",
+            "source_sha256": source["sha256"],
+            "raw_source_file": source["path"].replace("Native/", "", 1),
+            "provenance_file": relative_to_package(receipt_path),
+            "provenance_sha256": PLAY097_RESIDENTIAL_VARIANT_TWO_RECEIPT_SHA256,
+            "normalization_record_file": relative_to_package(receipt_path),
+            "normalization_record_sha256": PLAY097_RESIDENTIAL_VARIANT_TWO_RECEIPT_SHA256,
+            "reference_sha256": [PLAY097_RESIDENTIAL_VARIANT_TWO_QUARANTINE_SHA256, PLAY097_RESIDENTIAL_VARIANT_TWO_RECEIPT_SHA256],
+            "source_packet_file": relative_to_package(receipt_path),
+            "source_packet_commit": PLAY097_RESIDENTIAL_VARIANT_TWO_COMMIT,
+            "frontage_edge": direction,
+            "view_direction": direction,
+            "supported_orientation": f"{direction}-facing-authored",
+            "entrance_socket_world": list(DIRECTION_SOCKET_WORLD[direction]),
+            "ground_pivot_source": list(GROUND_PIVOT),
+            "placement_offset_world": list(PLACEMENT_OFFSET),
+        })
+        for key in ("prompt_file", "prompt_sha256", "scene_descriptor_file", "scene_descriptor_sha256", "material_library_file", "material_library_sha256"):
+            asset.pop(key, None)
+        lods: dict[str, dict[str, object]] = {}
+        block_registration = None
+        for detail in DETAILS:
+            row = receipt["lods"][direction][detail]
+            normalized = PLAY097_RESIDENTIAL_VARIANT_TWO / row["path"]
+            if sha256(normalized) != row["sha256"] or row["sha256"] != selection["selections"][directions.index(direction)]["normalized_sha256"][detail]:
+                raise SystemExit(f"build rejected: residential L1 variant-two LOD drift for {direction}.{detail}")
+            with Image.open(normalized) as image:
+                if image.mode != "RGBA" or list(image.size) != row["dimensions"]:
+                    raise SystemExit(f"build rejected: residential L1 variant-two LOD shape for {direction}.{detail}")
+                alpha_bounds = image.getchannel("A").getbbox()
+                if alpha_bounds is None:
+                    raise SystemExit(f"build rejected: empty residential L1 variant-two LOD {direction}.{detail}")
+                left, top, right, bottom = alpha_bounds
+                width, height = right - left, bottom - top
+                pivot_x = GROUND_PIVOT[0] * image.width / RAW_CANVAS[0]
+                pivot_y = GROUND_PIVOT[1] * image.height / RAW_CANVAS[1]
+                anchor = [rounded((pivot_x - left) / width), rounded((bottom - pivot_y) / height)]
+                if detail == "block":
+                    points_per_pixel = min(WORLD_POINTS_PER_RAW_PIXEL * RAW_CANVAS[0] / image.width, WORLD_POINTS_PER_RAW_PIXEL * RAW_CANVAS[1] / image.height)
+                    world_size = [rounded(width * points_per_pixel), rounded(height * points_per_pixel)]
+                    opaque_bounds = [rounded((left - pivot_x) * points_per_pixel), rounded(PLACEMENT_OFFSET[1] - (bottom - pivot_y) * points_per_pixel), rounded((right - pivot_x) * points_per_pixel), rounded(PLACEMENT_OFFSET[1] + (pivot_y - top) * points_per_pixel)]
+                    block_registration = (anchor[0], anchor[1], world_size, opaque_bounds)
+            lods[detail] = {"file": f"generated_v4_{logical_id}_{detail}.png", "normalized_file": relative_to_package(normalized), "normalized_sha256": row["sha256"], "pixels": [width, height], "source_pixels": row["dimensions"], "source_trim_rect_pixels": [left, top, width, height], "trim_rect_pixels": [0, 0, width, height], "anchor": anchor, "world_size": [], "decoded_byte_estimate": width * height * 4, "padding_pixels": 4, "extrusion_pixels": 2}
+        if block_registration is None:
+            raise SystemExit(f"build rejected: residential L1 variant-two registration missing for {direction}")
+        anchor_x, anchor_y, world_size, opaque_bounds = block_registration
+        for detail in DETAILS:
+            lods[detail]["anchor"] = [anchor_x, anchor_y]
+            lods[detail]["world_size"] = world_size
+        asset["lods"] = lods
+        asset["opaque_bounds_world"] = opaque_bounds
+        asset["shadow_bounds_world"] = opaque_bounds
+        asset["allowed_overhang_world"] = [rounded(max(0.0, -36.0 - opaque_bounds[0])), rounded(max(0.0, opaque_bounds[2] - 36.0)), rounded(max(0.0, -18.0 - opaque_bounds[1])), rounded(max(0.0, opaque_bounds[3] - 18.0))]
+        asset["decoded_byte_estimate"] = sum(int(lod["decoded_byte_estimate"]) for lod in lods.values())
+        assets.append(asset)
+    return assets
+
+
 def materialize_asset_payloads(
     manifest: dict[str, object],
     temporary: Path,
@@ -905,6 +1033,7 @@ def build(output_atlas: Path) -> None:
             levels=(3,),
         )
         + residential_variant_one_assets(manifest)
+        + residential_variant_two_assets(manifest)
     )
     directional_ids = {asset["logical_id"] for asset in directional_assets}
     manifest["assets"] = [
@@ -981,7 +1110,7 @@ def build(output_atlas: Path) -> None:
             for mask in range(16)
         }
 
-    manifest["generator_version"] = "PLAY-101-residential-l01-v1-atomic-activation-1"
+    manifest["generator_version"] = "PLAY-097-residential-l01-v2-atomic-activation-1"
     manifest["pages"] = sorted(pages, key=lambda item: item["id"])
     manifest["inventory"] = [
         {

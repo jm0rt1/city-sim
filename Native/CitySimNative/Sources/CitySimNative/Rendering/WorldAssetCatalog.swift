@@ -266,6 +266,7 @@ final class WorldAssetCatalog {
         let directions = ["north", "east", "south", "west"]
         let residentialVariantZero = residential.filter { $0.variant == 0 }
         let residentialVariantOne = residential.filter { $0.variant == 1 }
+        let residentialVariantTwo = residential.filter { $0.variant == 2 }
         let expectedResidentialVariantZero = Set(
             (1...4).flatMap { level in
                 directions.map {
@@ -274,11 +275,15 @@ final class WorldAssetCatalog {
             }
         )
         let expectedResidentialVariantOne = Set(directions.map { "residential_l01_v1_\($0)" })
+        let expectedResidentialVariantTwo = Set(directions.map { "residential_l01_v2_\($0)" })
         if Set(residentialVariantZero.map(\.logicalID)) != expectedResidentialVariantZero {
             issues.append("residential v0 production selection is not the exact L1-L4 N/E/S/W matrix")
         }
         if Set(residentialVariantOne.map(\.logicalID)) != expectedResidentialVariantOne {
             issues.append("residential L1 variant-one production selection is not the exact N/E/S/W quartet")
+        }
+        if Set(residentialVariantTwo.map(\.logicalID)) != expectedResidentialVariantTwo {
+            issues.append("residential L1 variant-two production selection is not the exact N/E/S/W quartet")
         }
         if Set(residentialVariantZero.compactMap(\.sourceKey)).count != 16
             || Set(residentialVariantZero.compactMap(\.sourceSHA256)).count != 16 {
@@ -287,6 +292,10 @@ final class WorldAssetCatalog {
         if Set(residentialVariantOne.compactMap(\.sourceKey)).count != 4
             || Set(residentialVariantOne.compactMap(\.sourceSHA256)).count != 4 {
             issues.append("residential L1 variant-one production sources are missing or aliased")
+        }
+        if Set(residentialVariantTwo.compactMap(\.sourceKey)).count != 4
+            || Set(residentialVariantTwo.compactMap(\.sourceSHA256)).count != 4 {
+            issues.append("residential L1 variant-two production sources are missing or aliased")
         }
         let normalizedResidentialVariantZeroHashes = residentialVariantZero.flatMap { asset in
             CameraDetailLevel.allCases.compactMap {
@@ -300,11 +309,22 @@ final class WorldAssetCatalog {
         }
         let variantZeroLODHashes = Set(normalizedResidentialVariantZeroHashes)
         let variantOneLODHashes = Set(normalizedResidentialVariantOneHashes)
+        let normalizedResidentialVariantTwoHashes = residentialVariantTwo.flatMap { asset in
+            CameraDetailLevel.allCases.compactMap {
+                asset.lods[$0.assetSuffix]?.normalizedSHA256
+            }
+        }
+        let variantTwoLODHashes = Set(normalizedResidentialVariantTwoHashes)
         if variantZeroLODHashes.count != 48 {
             issues.append("residential v0 normalized LODs are missing or aliased")
         }
         if variantOneLODHashes.count != 12 || !variantZeroLODHashes.isDisjoint(with: variantOneLODHashes) {
             issues.append("residential L1 variant-one normalized LODs are missing or aliased")
+        }
+        if variantTwoLODHashes.count != 12
+            || !variantZeroLODHashes.isDisjoint(with: variantTwoLODHashes)
+            || !variantOneLODHashes.isDisjoint(with: variantTwoLODHashes) {
+            issues.append("residential L1 variant-two normalized LODs are missing or aliased")
         }
         for asset in residentialVariantZero {
             guard let direction = asset.viewDirection else {
@@ -348,6 +368,33 @@ final class WorldAssetCatalog {
                 || asset.sceneDescriptorFile != nil
                 || asset.sceneDescriptorSHA256 != nil {
                 issues.append("\(asset.logicalID) does not bind the admitted variant-one build receipt")
+            }
+        }
+        let variantTwoRawSHA256 = [
+            "east": "b21f38755f9d90c1b0b77967e0411d92d874cfe6b39c91ef8a5d2e9f698533d1",
+            "north": "3ec18582da6857745c30a2fdc1f6493433923fff32561083f98d4b7c55a58287",
+            "south": "984aeffd2cee62634ebc78055b3ef15953cf0df139b56d8346fcddac1750fed3",
+            "west": "6582215392012f504ff603d769338097eee8a698744460c96ee3076ea0282caf",
+        ]
+        let variantTwoReceipt = "CitySimNative/WorldArt/ImageGenFourView/PLAY-101/residential_l01_v2/BUILD-RECEIPT.json"
+        let variantTwoReceiptSHA256 = "0fab7d130646cbc5e21131976373987067f3a36ff07c321e2c3e81f31b45180c"
+        for asset in residentialVariantTwo {
+            let direction = asset.viewDirection
+            let expectedSourceKey = direction.map { "residential_l01/variant-2/\($0)/source-v01" }
+            let expectedSourceSHA256 = direction.flatMap({ variantTwoRawSHA256[$0] })
+            if asset.level != 1
+                || asset.frontageEdge != direction
+                || asset.supportedOrientation != direction.map({ "\($0)-facing-authored" })
+                || asset.sourceRevision != "source-v01"
+                || asset.sourceKey != expectedSourceKey
+                || asset.sourceSHA256 != expectedSourceSHA256
+                || asset.provenanceFile != variantTwoReceipt
+                || asset.provenanceSHA256 != variantTwoReceiptSHA256
+                || asset.normalizationRecordFile != variantTwoReceipt
+                || asset.normalizationRecordSHA256 != variantTwoReceiptSHA256
+                || asset.sceneDescriptorFile != nil
+                || asset.sceneDescriptorSHA256 != nil {
+                issues.append("\(asset.logicalID) does not bind the admitted variant-two build receipt")
             }
         }
         let industrial = manifest.assets.filter {

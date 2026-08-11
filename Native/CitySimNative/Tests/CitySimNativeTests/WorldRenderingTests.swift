@@ -960,6 +960,65 @@ final class WorldRenderingTests: XCTestCase {
     }
 
     @MainActor
+    func testResidentialVariantTwoProductionResourcesResolveAcrossFourFrontagesAndThreeLODsWithoutFallback() throws {
+        let catalog = WorldAssetCatalog()
+        let renderer = LotRenderer(style: WorldVisualStyle(), assets: catalog)
+        let directions: [(String, RoadConnectionMask)] = [
+            ("north", .north),
+            ("east", .east),
+            ("south", .south),
+            ("west", .west),
+        ]
+        let expectedSources = [
+            "north": "3ec18582da6857745c30a2fdc1f6493433923fff32561083f98d4b7c55a58287",
+            "east": "b21f38755f9d90c1b0b77967e0411d92d874cfe6b39c91ef8a5d2e9f698533d1",
+            "south": "984aeffd2cee62634ebc78055b3ef15953cf0df139b56d8346fcddac1750fed3",
+            "west": "6582215392012f504ff603d769338097eee8a698744460c96ee3076ea0282caf",
+        ]
+        let expectedLODs = [
+            "north": ["block": "bcebd628a7380295bee93474a56c80dc54324b5f5d16a9d8ebe668e166e0bed0", "neighborhood": "2ba4a72107d5158d5c857b363ccc3bf084dfa434ec7f8e0834c443ce0ec241e6", "city": "6187df120f1189c66e03873012e19fe20b177316ab3fe7f0b1178cae9ecec357"],
+            "east": ["block": "8b19d87e937345866ac7e6940c41294584652230a7d5e955296bc13b5edb38b2", "neighborhood": "fded64eb0c4e8f5f31a02abdef652ec300bba6f6ced1a8910bb11423aca8a03b", "city": "c2cd9e22de9b66d457a6604dfb5234c662a9e677732b082ed122391fc0d53afd"],
+            "south": ["block": "c22ee02cf9646470bde095c5c70fc9d93fd5ea22191ba138c9274cca9422ba11", "neighborhood": "7e8014b95df4f6a31d1275b9bcd87bdeece909216c4f5671d8040b0250124268", "city": "b6298c0bc8fd4865ebf54e2a1d370b2529e2f550d513f196cea7920c6b3d92c1"],
+            "west": ["block": "4a0f9acbb3275b85c3da8c6116266c1839f576a1ed972f938d23941181be6218", "neighborhood": "a73d37be233e40abe768b00cdc93c1a3da2d8bc18d37e04fd511c565731e707b", "city": "cf38e72b3908956cd74dc3ce8f037bb57ff20f064d45eb9c44b15327a4192070"],
+        ]
+        let manifest = try XCTUnwrap(catalog.generatedManifest)
+        let variantTwoAssets = manifest.assets.filter { $0.family == "residential" && $0.level == 1 && $0.variant == 2 }
+        XCTAssertEqual(variantTwoAssets.count, 4)
+        XCTAssertEqual(Set(variantTwoAssets.compactMap(\.viewDirection)), Set(directions.map { $0.0 }))
+        XCTAssertEqual(catalog.manifestValidationIssues(), [])
+        let variantTwoCoordinate = try XCTUnwrap(
+            (0..<16).flatMap { y in (0..<16).map { GridCoordinate(x: $0, y: y) } }
+                .first { WorldVisualSeed.variant(count: 3, for: $0, kind: .residential) == 2 }
+        )
+        var sourceHashes: Set<String> = []
+        var normalizedHashes: Set<String> = []
+        for (direction, edge) in directions {
+            let identity = try XCTUnwrap(ResidentialGeneratedAssetIdentity(level: 1, adjacentRoads: edge, visualVariant: 2))
+            XCTAssertEqual(identity.variant, 2)
+            XCTAssertEqual(identity.logicalID, "residential_l01_v2_\(direction)")
+            let asset = try XCTUnwrap(catalog.generatedAsset(logicalID: identity.logicalID))
+            XCTAssertEqual(asset.sourceSHA256, expectedSources[direction])
+            sourceHashes.insert(try XCTUnwrap(asset.sourceSHA256))
+            for detail in CameraDetailLevel.allCases {
+                let expectedHash = try XCTUnwrap(expectedLODs[direction]?[detail.assetSuffix])
+                let lod = try XCTUnwrap(asset.lods[detail.assetSuffix])
+                XCTAssertEqual(lod.normalizedSHA256, expectedHash)
+                normalizedHashes.insert(try XCTUnwrap(lod.normalizedSHA256))
+                let presentation = try XCTUnwrap(catalog.generatedResidentialPresentation(level: 1, adjacentRoads: edge, visualVariant: 2, detail: detail))
+                XCTAssertEqual(presentation.identity, identity)
+                XCTAssertEqual(presentation.presentation.asset.logicalID, identity.logicalID)
+                XCTAssertEqual(presentation.presentation.lod.normalizedSHA256, expectedHash)
+                let lot = renderer.makeLot(for: CityTile(coordinate: variantTwoCoordinate, kind: .residential, level: 1, condition: 1, constructionProgress: 1), adjacentRoads: edge, detail: detail, reducedMotion: true)
+                XCTAssertEqual(descendantNames(in: lot).filter { $0 == "lot.generated-v4.\(identity.logicalID).\(detail.assetSuffix)" }.count, 1)
+            }
+        }
+        XCTAssertEqual(sourceHashes.count, 4)
+        XCTAssertEqual(normalizedHashes.count, 12)
+        XCTAssertEqual(catalog.residencySnapshot().fallbackCount, 0)
+        XCTAssertEqual(catalog.residencySnapshot().fallbackDiagnostics, [])
+    }
+
+    @MainActor
     func testResidentialVariantOneAtomicProductionSelectionCoversEveryDirectionLODWithoutFallback() throws {
         let catalog = WorldAssetCatalog()
         let renderer = LotRenderer(style: WorldVisualStyle(), assets: catalog)

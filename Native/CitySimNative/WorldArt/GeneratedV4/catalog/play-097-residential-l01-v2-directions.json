@@ -1,0 +1,14 @@
+{
+  "accepted_source_commit": "ac392317f599ee9f9a5af53771ff5d0acd573c15",
+  "accepted_quarantine_receipt": "docs/production/evidence/PLAY-097/residential-l01-v2-renderer-intake/QUARANTINE-RECEIPT.json",
+  "accepted_quarantine_receipt_sha256": "218fec1ea07456909ef77234d7a56e359f54c8b3482783320974a21edaced150",
+  "family": "residential_l01_v2",
+  "schema": 1,
+  "task": "PLAY-097",
+  "selections": [
+    {"direction": "north", "level": 1, "raw_sha256": "3ec18582da6857745c30a2fdc1f6493433923fff32561083f98d4b7c55a58287", "normalized_sha256": {"block": "bcebd628a7380295bee93474a56c80dc54324b5f5d16a9d8ebe668e166e0bed0", "neighborhood": "2ba4a72107d5158d5c857b363ccc3bf084dfa434ec7f8e0834c443ce0ec241e6", "city": "6187df120f1189c66e03873012e19fe20b177316ab3fe7f0b1178cae9ecec357"}},
+    {"direction": "east", "level": 1, "raw_sha256": "b21f38755f9d90c1b0b77967e0411d92d874cfe6b39c91ef8a5d2e9f698533d1", "normalized_sha256": {"block": "8b19d87e937345866ac7e6940c41294584652230a7d5e955296bc13b5edb38b2", "neighborhood": "fded64eb0c4e8f5f31a02abdef652ec300bba6f6ced1a8910bb11423aca8a03b", "city": "c2cd9e22de9b66d457a6604dfb5234c662a9e677732b082ed122391fc0d53afd"}},
+    {"direction": "south", "level": 1, "raw_sha256": "984aeffd2cee62634ebc78055b3ef15953cf0df139b56d8346fcddac1750fed3", "normalized_sha256": {"block": "c22ee02cf9646470bde095c5c70fc9d93fd5ea22191ba138c9274cca9422ba11", "neighborhood": "7e8014b95df4f6a31d1275b9bcd87bdeece909216c4f5671d8040b0250124268", "city": "b6298c0bc8fd4865ebf54e2a1d370b2529e2f550d513f196cea7920c6b3d92c1"}},
+    {"direction": "west", "level": 1, "raw_sha256": "6582215392012f504ff603d769338097eee8a698744460c96ee3076ea0282caf", "normalized_sha256": {"block": "4a0f9acbb3275b85c3da8c6116266c1839f576a1ed972f938d23941181be6218", "neighborhood": "a73d37be233e40abe768b00cdc93c1a3da2d8bc18d37e04fd511c565731e707b", "city": "cf38e72b3908956cd74dc3ce8f037bb57ff20f064d45eb9c44b15327a4192070"}}
+  ]
+}

@@ -678,7 +678,7 @@ final class CityCommandCatalogTests: XCTestCase {
         XCTAssertTrue(store.showObjectives)
         XCTAssertEqual(store.interactionMode, .build(.residential))
         XCTAssertEqual(store.selectedCoordinate, selectedCoordinate)
-        XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration)
+        XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration + 1)
 
         XCTAssertTrue(store.perform(.cancelInteraction))
         XCTAssertFalse(store.isCityFocusModeEnabled)
@@ -686,25 +686,25 @@ final class CityCommandCatalogTests: XCTestCase {
         XCTAssertTrue(store.showObjectives)
         XCTAssertEqual(store.interactionMode, .build(.residential))
         XCTAssertEqual(store.selectedCoordinate, selectedCoordinate)
-        XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration + 1)
+        XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration + 2)
 
         XCTAssertTrue(store.perform(.cancelInteraction))
         XCTAssertFalse(store.showInspector)
         XCTAssertTrue(store.showObjectives)
         XCTAssertEqual(store.interactionMode, .build(.residential))
         XCTAssertEqual(store.selectedCoordinate, selectedCoordinate)
-        XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration + 2)
+        XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration + 3)
 
         XCTAssertTrue(store.perform(.cancelInteraction))
         XCTAssertFalse(store.showObjectives)
         XCTAssertEqual(store.interactionMode, .build(.residential))
         XCTAssertEqual(store.selectedCoordinate, selectedCoordinate)
-        XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration + 3)
+        XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration + 4)
 
         XCTAssertTrue(store.perform(.cancelInteraction))
         XCTAssertEqual(store.interactionMode, .inspect)
         XCTAssertNil(store.selectedCoordinate)
-        XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration + 3)
+        XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration + 4)
     }
 
     @MainActor

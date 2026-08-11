@@ -179,8 +179,8 @@ final class CityGameStore: ObservableObject {
     func perform(_ command: CityCommandID) -> Bool {
         if command == .toggleCityFocus,
            Self.shouldQuarantineCityFocusShortcut(
-               firstResponder: NSApp.keyWindow?.firstResponder,
-               event: NSApp.currentEvent
+               firstResponder: NSApp?.keyWindow?.firstResponder,
+               event: NSApp?.currentEvent
            ) {
             return false
         }

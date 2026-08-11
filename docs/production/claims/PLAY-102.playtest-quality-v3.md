@@ -342,3 +342,69 @@ This acceptance record changes no product or build bytes and authorizes no
 signal to PID `80832`. It accepts this exact Beta candidate only; it does not
 claim v1, production release, push, origin parity, Renderer recovery, PLAY-101
 family admission, or any broader gate.
+
+## CITYSIM-PLAY101-2AA8 final intake QA activation V1
+
+All earlier PLAY-102 activations and receipts remain immutable history.
+Integration activates this claim once for independent Agent 004 task
+`019fe8f2-43ac-7700-9eaf-e137c4c5ecb4` in worktree
+`/Users/James/.codex/worktrees/2504/city-sim` on branch
+`codex/citysim-playtest-quality`. The immutable product candidate is commit
+`2aa8d4edfe17e7ea802fb0defcd2bfe959c6f73a`, tree
+`7070c247e196beda94fb3f2baac934c6b8a419ca`.
+
+The only launchable build is the aggregate-tested staged app at
+`/Users/James/Library/Mobile Documents/com~apple~CloudDocs/James's Files/Programming/Python/city-sim/dist/CitySim.app`.
+Its exact identities are:
+
+- aggregate result: 357 tests executed, 2 skipped, 0 failures;
+- stage manifest SHA-256 `8b405fe3ca4ed0893211ef5a725a1ad323d9e5f211f961c0b69f7e79bc5610bb`;
+- executable SHA-256 `a8f68a72d064097988331e5671578a96f81f245034880b1f881da43df38a0515`;
+- Info.plist SHA-256 `c552bd0c0756b3385c8485d42298119a71d53549dcb0309bb1b8d45cf5c369fb`;
+- key art SHA-256 `57b1d70ba2e534ae3dc73c8d26604c3ea8a95166ba29f107c74cd4203b455010`;
+- atlas manifest SHA-256 `411934e492a66216787f8c93dd91d3f68cc16637110dba9ed7186b22dda96d3d`;
+- generated-v4 manifest SHA-256 `517975b875dd2b9baefb5d098926a0c8b8231c2ffb65d65b4fb3603ba643324e`;
+- deterministic resource-tree digest `933a86fb1c785d4aee315cf2a3cc3c4d6fc5c2c5bd202dbb5108c0aaaa866e4a`;
+- deterministic complete app-tree digest `53a117b60878e6b264b0891c6ca37b2c494a40313520db52b2842de8e7c03799`;
+- app inventory count: 83 files.
+
+QA must reproduce the tree digests with these exact commands and no substitute
+algorithm:
+
+```sh
+(cd dist/CitySim.app/CitySimNative_CitySimNative.bundle && find . -type f -print0 | LC_ALL=C sort -z | xargs -0 shasum -a 256 | shasum -a 256)
+(cd dist/CitySim.app && find . -type f -print0 | LC_ALL=C sort -z | xargs -0 shasum -a 256 | shasum -a 256)
+```
+
+The isolated data root is exactly
+`/private/tmp/CITYSIM-PLAY101-2AA8-FINAL-QA-V1-DATA`, initially absent. The
+exclusive output root is exactly
+`/private/tmp/CITYSIM-PLAY101-2AA8-FINAL-QA-V1-OUTPUT`, initially absent. Every
+existing untracked file under `docs/production/evidence/PLAY-102/v3/` remains
+protected, immutable history and must be hash-ledgered before execution.
+
+Read-only Integration preflight found prior accepted PID `80832` absent and no
+matching CitySim process. No signal was sent. QA must recheck immediately before
+launch. If no process exists, record `ALREADY_ABSENT`; any unexpected matching
+process or identity ambiguity returns without a signal. No wildcard, SIGKILL,
+cleanup, or interaction with another process is authorized.
+
+This is one exclusive independent outcome attempt with at most two launches.
+Before launch, QA must rehash the authority, product, app, manifest, resource,
+claim, and protected-evidence identities; require both V1 roots absent; and
+observe window and accessibility permission. Launch one must visibly exercise
+the admitted `industrial_l01_v0` family in all four authored orientations and
+at block, neighborhood, and city LOD ranges, with no blank asset, fallback,
+direction alias, or road-overlap artifact. QA must also run a proportionate
+core playable regression: fresh ordinary city, road-connected power and water,
+job-producing zoning, population at least 500, deterministic severe-storm
+consequence and recovery, then save. QA may terminate only its exact launch-one
+PID after full image revalidation, relaunch once against the same isolated data
+root, verify persisted storm/recovery state, and leave the accepted second
+process running on PASS.
+
+Return `APPROVE_RELEASE_CANDIDATE` or the first real identity, permission,
+visual, interaction, process, save, or persistence defect. This activation
+authorizes no product/resource/claim edit, rebuild, automated test, retry,
+substitute, cleanup, stage, commit, push, release, self-acceptance, or broader
+gate movement.

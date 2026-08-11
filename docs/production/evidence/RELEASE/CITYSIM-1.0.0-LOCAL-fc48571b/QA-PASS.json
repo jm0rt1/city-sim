@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "verdict": "APPROVE_RELEASE_PACKAGE_SMOKE",
+  "scope": "release-packaging delta live smoke only",
+  "candidateCommit": "77815d06c8e6566ec99def6cf2bb49fd9bcaed90",
+  "app": {
+    "path": "/private/tmp/CITYSIM-RELEASE-PACKAGING-R1-isolated-stage-v1/CitySim.app",
+    "executablePath": "/private/tmp/CITYSIM-RELEASE-PACKAGING-R1-isolated-stage-v1/CitySim.app/Contents/MacOS/CitySimNative",
+    "executableSha256": "b885d1da1b93a166ebfcca1f6bcf10b7bb88f247e5c83b41a18fc0b2f91f961b",
+    "infoPlistSha256": "b206dd7f7daa491ee11ba7e12cd9aa305d7fdff6ca1085a3169d6ea53535c22f",
+    "version": "1.0.0",
+    "build": "1",
+    "resourceManifestSha256": "517975b875dd2b9baefb5d098926a0c8b8231c2ffb65d65b4fb3603ba643324e",
+    "strictDeepCodesign": "PASS",
+    "resourceBundleUnderContentsResources": true,
+    "resourceBundleAbsentAtAppRoot": true
+  },
+  "protectedAcceptedProcess": {
+    "pid": 95831,
+    "executablePath": "/Users/James/Library/Mobile Documents/com~apple~CloudDocs/James's Files/Programming/Python/city-sim/dist/CitySim.app/Contents/MacOS/CitySimNative",
+    "disposition": "LIVE_UNTOUCHED"
+  },
+  "launch": {
+    "count": 1,
+    "dataRoot": "/private/tmp/CITYSIM-RELEASE-PACKAGING-R1-QA-DATA",
+    "pid": 99897,
+    "startedAt": "2026-08-11T06:12:18-04:00",
+    "exactImageBound": true,
+    "finalState": "RUNNING"
+  },
+  "observation": {
+    "window": "CitySim",
+    "windowId": "main-AppWindow-1",
+    "screenCapture": "PASS",
+    "accessibilityCapture": "PASS",
+    "terrainVisible": true,
+    "buildingsVisible": true,
+    "roadsVisible": true,
+    "blankOrFallbackPresentation": false,
+    "resourceLoadingErrorVisible": false,
+    "screenshotPath": "/private/tmp/CITYSIM-RELEASE-PACKAGING-R1-QA-OUTPUT/RELEASE-PACKAGE-WORLD.jpeg",
+    "screenshotSha256": "866fa9df3378401c77caaf8c5eb0c9312ca9e36c12644eddcf83217b1c3af822"
+  },
+  "boundaries": {
+    "gameplayJourneyReplayed": false,
+    "saveMigrationTested": false,
+    "notarizationInferred": false,
+    "releaseAcceptanceInferred": false,
+    "repositoryMutated": false
+  }
+}

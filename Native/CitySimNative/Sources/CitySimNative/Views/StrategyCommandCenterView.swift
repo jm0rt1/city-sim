@@ -491,21 +491,20 @@ struct StrategyCommandCenterView: View {
                         .font(.system(size: 13, weight: .bold, design: .rounded))
                         .lineLimit(1)
                     if !compact {
-                        Text(consequenceFeedback?.visualText ?? presentation.summary)
-                            .font(.system(size: GameTheme.hudSupportTextSize, weight: .medium))
-                            .foregroundStyle(consequenceFeedback == nil ? Color.secondary : consequenceTint)
-                            .lineLimit(1)
-                            .truncationMode(.tail)
-                            .accessibilityHidden(true)
+                        if let consequenceFeedback {
+                            consequenceCue(consequenceFeedback)
+                        } else {
+                            Text(presentation.summary)
+                                .font(.system(size: GameTheme.hudSupportTextSize, weight: .medium))
+                                .foregroundStyle(.secondary)
+                                .lineLimit(1)
+                                .truncationMode(.tail)
+                                .accessibilityHidden(true)
+                        }
                     }
                 }
                 if compact, let consequenceFeedback {
-                    Text(consequenceFeedback.visualText)
-                        .font(.system(size: GameTheme.hudSupportTextSize, weight: .semibold))
-                        .foregroundStyle(consequenceTint)
-                        .lineLimit(1)
-                        .truncationMode(.tail)
-                        .accessibilityHidden(true)
+                    consequenceCue(consequenceFeedback)
                 }
             }
 
@@ -563,6 +562,32 @@ struct StrategyCommandCenterView: View {
         case .negative: GameTheme.warning
         case .neutral: .secondary
         }
+    }
+
+    private func consequenceCue(_ feedback: HUDConsequenceFeedbackPresentation) -> some View {
+        Button {
+            store.openMessage(feedback.message)
+        } label: {
+            HStack(spacing: 3) {
+                Image(systemName: "bell.badge.fill")
+                    .accessibilityHidden(true)
+                Text("Latest \(feedback.visualText)")
+                    .lineLimit(1)
+                    .truncationMode(.tail)
+            }
+            .font(.system(size: GameTheme.hudSupportTextSize, weight: .semibold))
+            .foregroundStyle(consequenceTint)
+            .padding(.horizontal, 4)
+            .frame(minHeight: 24)
+            .background(consequenceTint.opacity(0.12), in: Capsule())
+        }
+        .buttonStyle(.plain)
+        .layoutPriority(1)
+        .help("Open the latest consequence: \(feedback.message.title)")
+        .accessibilityLabel("Open latest consequence: \(feedback.message.title)")
+        .accessibilityValue(feedback.accessibilityValue)
+        .accessibilityHint("Opens the related city details")
+        .accessibilityIdentifier("hud.strategy.consequence")
     }
 
     private func primaryResponseButton(_ response: CityDirectResponse) -> some View {

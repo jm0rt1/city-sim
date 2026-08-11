@@ -2952,11 +2952,20 @@ final class CityCommandCatalogTests: XCTestCase {
 
     @MainActor
     func testStrategyCommandCenterRendersAtDefaultAndExactCompactSizes() throws {
-        let state = try XCTUnwrap(
+        var state = try XCTUnwrap(
             ProductionStoryStateBuilder().buildAll().first {
                 $0.definition.strategy == .commercialStewardship
                     && $0.definition.moment == .complication
             }?.state
+        )
+        state.messages.insert(
+            CityMessage(
+                tick: state.tick,
+                severity: .warning,
+                title: "Severe Storm",
+                detail: "Emergency repairs cost $2,000 and happiness fell 3 points."
+            ),
+            at: 0
         )
         let store = CityGameStore(state: state)
         let compactSize = CGSize(width: 884, height: StrategyCommandCenterView.compactMaximumHeight)
@@ -2979,6 +2988,10 @@ final class CityCommandCatalogTests: XCTestCase {
 
         if let path = ProcessInfo.processInfo.environment["CITYSIM_STRATEGY_HUD_PROOF"] {
             let data = try XCTUnwrap(compact.representation(using: .png, properties: [:]))
+            try data.write(to: URL(fileURLWithPath: path), options: .atomic)
+        }
+        if let path = ProcessInfo.processInfo.environment["CITYSIM_STRATEGY_HUD_REGULAR_PROOF"] {
+            let data = try XCTUnwrap(regular.representation(using: .png, properties: [:]))
             try data.write(to: URL(fileURLWithPath: path), options: .atomic)
         }
     }

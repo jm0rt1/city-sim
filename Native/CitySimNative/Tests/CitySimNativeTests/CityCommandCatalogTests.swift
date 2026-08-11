@@ -755,7 +755,7 @@ final class CityCommandCatalogTests: XCTestCase {
     }
 
     @MainActor
-    func testFocusCityFramesDevelopedCityAfterSelectionClearsButPreservesRealTargetCamera() throws {
+    func testFocusCityFramesDevelopedCityOnceWhilePreservingSelectedTargetIdentity() throws {
         _ = NSApplication.shared
         for size in [
             CGSize(width: 1_278, height: 768),
@@ -786,14 +786,17 @@ final class CityCommandCatalogTests: XCTestCase {
             let retainedPosition = scene.camera?.position
 
             XCTAssertTrue(store.perform(.toggleCityFocus))
-            XCTAssertFalse(
+            XCTAssertTrue(
                 coordinator.synchronizeCityFocusCamera(
                     isEnabled: store.isCityFocusModeEnabled,
                     selectedCoordinate: store.selectedCoordinate
                 )
             )
-            XCTAssertEqual(scene.cameraScale, retainedScale, accuracy: 0.000_001)
-            XCTAssertEqual(scene.camera?.position, retainedPosition)
+            XCTAssertEqual(scene.cameraScale, expectedFocusScale, accuracy: 0.000_001)
+            XCTAssertEqual(scene.camera?.position, expectedFocusPosition)
+            XCTAssertNotEqual(scene.cameraScale, retainedScale)
+            XCTAssertNotEqual(scene.camera?.position, retainedPosition)
+            XCTAssertEqual(store.selectedCoordinate, retainedTarget)
 
             XCTAssertTrue(store.perform(.toggleCityFocus))
             XCTAssertFalse(

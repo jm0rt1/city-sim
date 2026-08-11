@@ -183,13 +183,18 @@ struct CitySceneView: NSViewRepresentable {
         @discardableResult
         func synchronizeCityFocusCamera(
             isEnabled: Bool,
-            selectedCoordinate: GridCoordinate?
+            selectedCoordinate _: GridCoordinate?
         ) -> Bool {
             let enteredFocusCity = isEnabled && !previousCityFocusModeEnabled
             previousCityFocusModeEnabled = isEnabled
-            guard enteredFocusCity, selectedCoordinate == nil, let scene else {
+            guard enteredFocusCity, let scene else {
                 return false
             }
+            // ContentView owns the exact Focus City aperture and publishes it
+            // through the existing viewport-insets handoff before this point.
+            // Refit once on the mode transition even when a block is selected;
+            // selection remains authoritative, while the renderer consumes the
+            // larger safe aperture instead of retaining stale pre-focus framing.
             scene.frameCity()
             return true
         }

@@ -3798,6 +3798,82 @@ final class WorldRenderingTests: XCTestCase {
     }
 
     @MainActor
+    func testFocusCityConsumesPublishedSafeApertureWithOneRefit() throws {
+        let size = CGSize(width: 1_280, height: 800)
+        let defaultInsets = CityMapViewportInsets(
+            top: 104,
+            leading: 24,
+            bottom: 160,
+            trailing: 24
+        )
+        // This is a test input supplied through the existing public handoff,
+        // not a renderer-owned copy of HUD dimensions. ContentView remains the
+        // authority for the exact production Focus City aperture.
+        let publishedFocusInsets = CityMapViewportInsets(
+            top: 72,
+            leading: 16,
+            bottom: 16,
+            trailing: 16
+        )
+        let state = CityGameState.newCity(seed: 42)
+        let cityHall = try XCTUnwrap(state.tiles.first { $0.kind == .cityHall }?.coordinate)
+        let view = SKView(frame: CGRect(origin: .zero, size: size))
+        let scene = CityScene(size: size)
+        scene.reducedMotion = true
+        view.presentScene(scene)
+        scene.updateViewportInsets(defaultInsets)
+        scene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
+        RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.1))
+
+        let originalRoot = try XCTUnwrap(scene.tileRootIdentifier(at: cityHall))
+        let originalScenePoint = scene.scenePointForTesting(at: cityHall)
+        let defaultScale = scene.cameraScaleForTesting
+        let defaultPosition = scene.cameraPositionForTesting
+        let defaultTexture = try XCTUnwrap(view.texture(from: scene))
+        let defaultRepresentation = NSBitmapImageRep(cgImage: defaultTexture.cgImage())
+        let defaultPNG = try XCTUnwrap(defaultRepresentation.representation(using: .png, properties: [:]))
+        try export(defaultPNG, environmentKey: "CITYSIM_PLAY073_FOCUS_APERTURE_BEFORE")
+
+        let store = CityGameStore(state: state)
+        let coordinator = CitySceneView.Coordinator(store: store)
+        coordinator.scene = scene
+        scene.updateViewportInsets(publishedFocusInsets)
+        XCTAssertTrue(store.perform(.toggleCityFocus))
+        XCTAssertTrue(
+            coordinator.synchronizeCityFocusCamera(
+                isEnabled: store.isCityFocusModeEnabled,
+                selectedCoordinate: store.selectedCoordinate
+            )
+        )
+        let focusScale = scene.cameraScaleForTesting
+        let focusPosition = scene.cameraPositionForTesting
+        XCTAssertLessThan(focusScale, defaultScale)
+        XCTAssertNotEqual(focusPosition, defaultPosition)
+        XCTAssertGreaterThanOrEqual(scene.occupiedDevelopedViewportOccupancyForTesting().width, 0.60)
+        XCTAssertEqual(scene.tileRootIdentifier(at: cityHall), originalRoot)
+        XCTAssertEqual(scene.scenePointForTesting(at: cityHall), originalScenePoint)
+        XCTAssertEqual(scene.resolvedCoordinateForTesting(at: originalScenePoint), cityHall)
+        XCTAssertNil(store.selectedCoordinate)
+
+        RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.1))
+        let focusTexture = try XCTUnwrap(view.texture(from: scene))
+        let focusRepresentation = NSBitmapImageRep(cgImage: focusTexture.cgImage())
+        let focusPNG = try XCTUnwrap(focusRepresentation.representation(using: .png, properties: [:]))
+        try export(focusPNG, environmentKey: "CITYSIM_PLAY073_FOCUS_APERTURE_AFTER")
+
+        XCTAssertFalse(
+            coordinator.synchronizeCityFocusCamera(
+                isEnabled: store.isCityFocusModeEnabled,
+                selectedCoordinate: store.selectedCoordinate
+            ),
+            "A settled Focus City update must not refit the camera a second time"
+        )
+        XCTAssertEqual(scene.cameraScaleForTesting, focusScale, accuracy: 0.000_001)
+        XCTAssertEqual(scene.cameraPositionForTesting.x, focusPosition.x, accuracy: 0.000_001)
+        XCTAssertEqual(scene.cameraPositionForTesting.y, focusPosition.y, accuracy: 0.000_001)
+    }
+
+    @MainActor
     func testIndustrialStrainCameraPrioritizesTheDominantDistrictWithoutHidingRemoteTruth() throws {
         let fixture = try XCTUnwrap(
             try ProductionStoryStateBuilder().buildAll().first {

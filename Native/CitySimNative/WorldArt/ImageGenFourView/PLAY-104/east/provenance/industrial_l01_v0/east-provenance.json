@@ -1,0 +1,112 @@
+{
+  "candidateReadyForIndependentReview": true,
+  "canonicalModelRouteSha256": "933cd4e01111c651887605e5421eb757f3b96c1dfc517786d3611033a0ce2574",
+  "claim": {
+    "path": "docs/production/claims/PLAY-104.world-art-east-industrial-l01-v0-currentcf3.md",
+    "sha256": "525c5ca963114b4a406e239f4db448267655ffcb905ed6df1cc484de63e386c6"
+  },
+  "contactSheets": {
+    "industrial_l01_v0-literal-game-scale-color-contact-sheet.png": {
+      "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104/east/contact-sheets/industrial_l01_v0-literal-game-scale-color-contact-sheet.png",
+      "sha256": "86a96cd320ef27ecc1954c714616df6e196735ac527f452f9ca8340b9dcfc62d"
+    },
+    "industrial_l01_v0-literal-game-scale-grayscale-contact-sheet.png": {
+      "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104/east/contact-sheets/industrial_l01_v0-literal-game-scale-grayscale-contact-sheet.png",
+      "sha256": "6e1aab5e5e8802bee8887602ea742976dbb3c69eff195c7fae337aa56426b958"
+    },
+    "industrial_l01_v0-source-size-contact-sheet.png": {
+      "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104/east/contact-sheets/industrial_l01_v0-source-size-contact-sheet.png",
+      "sha256": "86a96cd320ef27ecc1954c714616df6e196735ac527f452f9ca8340b9dcfc62d"
+    }
+  },
+  "direction": "east",
+  "disposition": "source_candidate",
+  "effort": "high",
+  "family": "industrial",
+  "generation": "integration-direct-closed-helper",
+  "handoffPath": "docs/production/evidence/PLAY-104/industrial-l01-v0/handoffs/industrial_l01_v0/east-handoff.json",
+  "handoffSha256": "6aa5e96e21957e8990bec574022a0435d83632f30fc817c15ac3054057cc6744",
+  "identity": "industrial_l01_v0",
+  "integrationAdmitted": false,
+  "lods": {
+    "block": {
+      "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104/east/lod/industrial_l01_v0/block.png",
+      "sha256": "1bfc585c45182768d847dd05efbcc1708c69af9480dc31c68ee500ef9f3193aa"
+    },
+    "city": {
+      "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104/east/lod/industrial_l01_v0/city.png",
+      "sha256": "a3b17b46cd796df63a345123dd24231e91a6796e86c754faecab0c83615e7278"
+    },
+    "neighborhood": {
+      "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104/east/lod/industrial_l01_v0/neighborhood.png",
+      "sha256": "18e8972cc5a33aa40696d35849994f7b2e518a9bfe3fc33bd74ec0352731fec6"
+    }
+  },
+  "model": "gpt-5.6-luna",
+  "normalization": {
+    "algorithm": "deterministic-premultiplied-bilinear-chroma-key",
+    "orientationTransform": "none",
+    "pixelDerivedGeometry": false,
+    "sizes": {
+      "block": [
+        1024,
+        683
+      ],
+      "city": [
+        256,
+        171
+      ],
+      "neighborhood": [
+        512,
+        342
+      ]
+    }
+  },
+  "originPath": "/Users/James/.codex/generated_images/019fe85c-8a34-7fb2-9128-cbf05ab837b0/exec-f73cc5c7-b8be-4d03-8a91-1f6c1e638c19.png",
+  "originSha256": "994101a17bcdede965ae14093dad796faf8b174384b9fe73acf01dabc0a23264",
+  "productionSelected": false,
+  "promptPath": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104/east/prompts/industrial_l01_v0/east-prompt.md",
+  "promptSha256": "cd89de97c296705526c32b99805c1d1060676241f773cf18e8f7f071c9eef0e4",
+  "rawDimensions": [
+    1536,
+    1024
+  ],
+  "rawMode": "RGB",
+  "rawPath": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-104/east/raw/industrial_l01_v0/east-source-v01.png",
+  "rawSha256": "994101a17bcdede965ae14093dad796faf8b174384b9fe73acf01dabc0a23264",
+  "registration": {
+    "canvas": [
+      1536,
+      1024
+    ],
+    "eastSocket": [
+      896,
+      832
+    ],
+    "frontage": "east",
+    "geometrySource": "code-owned CONTRACT-025 metadata",
+    "groundPivot": [
+      768,
+      896
+    ],
+    "light": "northwest",
+    "shadow": "contained-southeast"
+  },
+  "rendererQuarantined": false,
+  "routeFileSha256": "0e14c1c36b828edf603de4818c411ad44380301bfd9ef5e25c4440af5bb6783c",
+  "routeId": "east-v2:play-104-currentd3be-industrial-l01-v0-recent-image-v1",
+  "schema": 1,
+  "siblingInputsConsumed": [],
+  "sourceMethod": "built-in-imagegen",
+  "sourceReady": false,
+  "southReference": {
+    "admitted": false,
+    "authoringOnly": true,
+    "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-099/industrial/raw/industrial_l01_v00-source-v01.png",
+    "sha256": "7ca3e26234e7e15df9a46775a83f7132f89e1ea1f22d97c42ca6d3502099bbd2",
+    "shipping": false
+  },
+  "stage": "source",
+  "taskId": "PLAY-104",
+  "transport": "central_view_image_recent_image_bridge"
+}

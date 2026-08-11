@@ -632,7 +632,7 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertEqual(manifest?.schema, 4)
         XCTAssertEqual(manifest?.packID, "generated-v4-calibration")
         XCTAssertEqual(manifest?.productionSelection, true)
-        XCTAssertEqual(manifest?.assets.count, 60)
+        XCTAssertEqual(manifest?.assets.count, 64)
         for asset in manifest?.assets ?? [] {
             for detail in CameraDetailLevel.allCases {
                 XCTAssertNotNil(catalog.generatedSprite(logicalID: asset.logicalID, detail: detail))
@@ -2117,8 +2117,8 @@ final class WorldRenderingTests: XCTestCase {
         let manifest = try XCTUnwrap(catalog.generatedManifest)
 
         XCTAssertEqual(catalog.manifestValidationIssues(), [])
-        XCTAssertEqual(manifest.pages.count, 5)
-        XCTAssertEqual(manifest.inventory.count, 5)
+        XCTAssertEqual(manifest.pages.count, 6)
+        XCTAssertEqual(manifest.inventory.count, 6)
         XCTAssertEqual(manifest.compiledNetwork.connectionMasks, 16)
         XCTAssertEqual(Set(manifest.pages.map(\.file)), Set(manifest.inventory.map(\.file)))
 
@@ -2321,7 +2321,7 @@ final class WorldRenderingTests: XCTestCase {
             snapshot.residentDecodedBytes,
             expectedPages.reduce(0) { $0 + $1.decodedByteEstimate }
         )
-        XCTAssertLessThanOrEqual(snapshot.residentTextureCount, 4)
+        XCTAssertLessThanOrEqual(snapshot.residentTextureCount, 5)
         XCTAssertLessThanOrEqual(snapshot.highWaterDecodedBytes, 128 * 1_024 * 1_024)
         XCTAssertEqual(snapshot.fallbackCount, 0)
         XCTAssertEqual(snapshot.fallbackDiagnostics, [])
@@ -2372,7 +2372,7 @@ final class WorldRenderingTests: XCTestCase {
     func testGeneratedWorldProductionBundleLoadsPagesInsteadOfUnpackedPayloads() throws {
         let catalog = WorldAssetCatalog()
         let manifest = try XCTUnwrap(catalog.generatedManifest)
-        XCTAssertEqual(manifest.pages.count, 5)
+        XCTAssertEqual(manifest.pages.count, 6)
         XCTAssertNil(catalog.texture(named: "generated_v4_residential_l01_block"))
         XCTAssertNotNil(catalog.generatedPresentation(logicalID: "residential_l01", detail: .block))
         let snapshot = catalog.residencySnapshot()

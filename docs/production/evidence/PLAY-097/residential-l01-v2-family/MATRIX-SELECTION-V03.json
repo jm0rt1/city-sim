@@ -1,0 +1,18 @@
+{
+  "candidateOnly": true,
+  "directions": [
+    "south",
+    "north",
+    "east",
+    "west"
+  ],
+  "family": "residential_l01_v2",
+  "lodCount": 12,
+  "normalizedCount": 4,
+  "rawCount": 4,
+  "result": "PASS_CANDIDATE_SOURCE_HANDOFF",
+  "schema": "citysim.play-097.residential-l01-v2.matrix-v03.v1",
+  "uniqueLod": 12,
+  "uniqueNormalized": 4,
+  "uniqueRaw": 4
+}

@@ -1,0 +1,314 @@
+{
+  "candidateOnly": true,
+  "copiedPixels": false,
+  "directions": {
+    "east": {
+      "dimensions": [
+        1774,
+        887
+      ],
+      "mode": "RGB",
+      "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-101/residential_l01_v2/raw-revisions/v03/east-source-v03.png",
+      "sha256": "5a73d62cfc26d3f1caa07b6f66373c24d06b81bdcb64da6f4c6ef5a061e4a15a"
+    },
+    "north": {
+      "dimensions": [
+        1774,
+        887
+      ],
+      "mode": "RGB",
+      "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-101/residential_l01_v2/raw-revisions/v03/north-source-v03.png",
+      "sha256": "424301b44eb4ef31dc81021917bb222a64f480d1d9d7d7a0f727b0aa7da78bab"
+    },
+    "south": {
+      "dimensions": [
+        1774,
+        887
+      ],
+      "mode": "RGB",
+      "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-101/residential_l01_v2/raw-revisions/v03/south-source-v03.png",
+      "sha256": "e9601a663c479b8eff8887ab853dcf6b59719054c4c5eb72a2e391eb053921b6"
+    },
+    "west": {
+      "dimensions": [
+        1774,
+        887
+      ],
+      "mode": "RGB",
+      "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-101/residential_l01_v2/raw-revisions/v03/west-source-v03.png",
+      "sha256": "ec25dae262dc8706b2e063acdd80179dacdf919f0f072c7634dd92516a2f60c3"
+    }
+  },
+  "family": "residential_l01_v2",
+  "integrationAdmitted": false,
+  "lods": {
+    "east": {
+      "block": {
+        "boundaryResidualChromaPixels": 0,
+        "dimensions": [
+          1024,
+          683
+        ],
+        "frameEdgeOpaquePixels": 0,
+        "hiddenRgbPixels": 0,
+        "keyedMagentaPixels": 0,
+        "mode": "RGBA",
+        "nonzeroRgbPixels": 161098,
+        "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-101/residential_l01_v2/normalized-v03/lod/east/block.png",
+        "sha256": "04daffc86412e57b3fac7ff1d2147f3fb60299cbb60834bba02c587df1f6d90a",
+        "visiblePixels": 161100
+      },
+      "city": {
+        "boundaryResidualChromaPixels": 0,
+        "dimensions": [
+          256,
+          171
+        ],
+        "frameEdgeOpaquePixels": 0,
+        "hiddenRgbPixels": 0,
+        "keyedMagentaPixels": 0,
+        "mode": "RGBA",
+        "nonzeroRgbPixels": 10088,
+        "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-101/residential_l01_v2/normalized-v03/lod/east/city.png",
+        "sha256": "55262145cf35fc4155844750d61d4f078ad860ab597c6562a967677537b01730",
+        "visiblePixels": 10088
+      },
+      "neighborhood": {
+        "boundaryResidualChromaPixels": 0,
+        "dimensions": [
+          512,
+          342
+        ],
+        "frameEdgeOpaquePixels": 0,
+        "hiddenRgbPixels": 0,
+        "keyedMagentaPixels": 0,
+        "mode": "RGBA",
+        "nonzeroRgbPixels": 40133,
+        "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-101/residential_l01_v2/normalized-v03/lod/east/neighborhood.png",
+        "sha256": "7ff9c25f1f27e4dd3f115fbb964f9b4132b364e3f86fa46e8b6368cb0a68073e",
+        "visiblePixels": 40133
+      }
+    },
+    "north": {
+      "block": {
+        "boundaryResidualChromaPixels": 0,
+        "dimensions": [
+          1024,
+          683
+        ],
+        "frameEdgeOpaquePixels": 0,
+        "hiddenRgbPixels": 0,
+        "keyedMagentaPixels": 0,
+        "mode": "RGBA",
+        "nonzeroRgbPixels": 166306,
+        "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-101/residential_l01_v2/normalized-v03/lod/north/block.png",
+        "sha256": "e5370ec16f5a7650f2957fa33fc5cca6a05c816bf331c96c7a7fff05471e0e70",
+        "visiblePixels": 166306
+      },
+      "city": {
+        "boundaryResidualChromaPixels": 0,
+        "dimensions": [
+          256,
+          171
+        ],
+        "frameEdgeOpaquePixels": 0,
+        "hiddenRgbPixels": 0,
+        "keyedMagentaPixels": 0,
+        "mode": "RGBA",
+        "nonzeroRgbPixels": 10424,
+        "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-101/residential_l01_v2/normalized-v03/lod/north/city.png",
+        "sha256": "635aac053edd900708ac8e968ddd75d8360348966836cee62fbd33d02590282c",
+        "visiblePixels": 10424
+      },
+      "neighborhood": {
+        "boundaryResidualChromaPixels": 0,
+        "dimensions": [
+          512,
+          342
+        ],
+        "frameEdgeOpaquePixels": 0,
+        "hiddenRgbPixels": 0,
+        "keyedMagentaPixels": 0,
+        "mode": "RGBA",
+        "nonzeroRgbPixels": 41449,
+        "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-101/residential_l01_v2/normalized-v03/lod/north/neighborhood.png",
+        "sha256": "f50a861e753e875e54fbc7445ca62754b1689b4818f43d5b82ee0b07d54b1c42",
+        "visiblePixels": 41451
+      }
+    },
+    "south": {
+      "block": {
+        "boundaryResidualChromaPixels": 0,
+        "dimensions": [
+          1024,
+          683
+        ],
+        "frameEdgeOpaquePixels": 0,
+        "hiddenRgbPixels": 0,
+        "keyedMagentaPixels": 0,
+        "mode": "RGBA",
+        "nonzeroRgbPixels": 177707,
+        "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-101/residential_l01_v2/normalized-v03/lod/south/block.png",
+        "sha256": "529c3c2afc8c217b169f1139cffcd89ff73fe780a71cc1ebc70a5f6987cb56cf",
+        "visiblePixels": 177707
+      },
+      "city": {
+        "boundaryResidualChromaPixels": 0,
+        "dimensions": [
+          256,
+          171
+        ],
+        "frameEdgeOpaquePixels": 0,
+        "hiddenRgbPixels": 0,
+        "keyedMagentaPixels": 0,
+        "mode": "RGBA",
+        "nonzeroRgbPixels": 11119,
+        "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-101/residential_l01_v2/normalized-v03/lod/south/city.png",
+        "sha256": "b7d302ad8b8e859bdbd38da305f05b8a929cfc2937d9ae66bb5ccd297c6729cd",
+        "visiblePixels": 11119
+      },
+      "neighborhood": {
+        "boundaryResidualChromaPixels": 0,
+        "dimensions": [
+          512,
+          342
+        ],
+        "frameEdgeOpaquePixels": 0,
+        "hiddenRgbPixels": 0,
+        "keyedMagentaPixels": 0,
+        "mode": "RGBA",
+        "nonzeroRgbPixels": 44299,
+        "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-101/residential_l01_v2/normalized-v03/lod/south/neighborhood.png",
+        "sha256": "604ca0fee489672db82bd836db8ef9533cbc1ebee9cef830a27e9b74fb589596",
+        "visiblePixels": 44299
+      }
+    },
+    "west": {
+      "block": {
+        "boundaryResidualChromaPixels": 0,
+        "dimensions": [
+          1024,
+          683
+        ],
+        "frameEdgeOpaquePixels": 0,
+        "hiddenRgbPixels": 0,
+        "keyedMagentaPixels": 0,
+        "mode": "RGBA",
+        "nonzeroRgbPixels": 181775,
+        "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-101/residential_l01_v2/normalized-v03/lod/west/block.png",
+        "sha256": "8ea285ba046755e9cd1e77d2c21fc11baeafb940cfd01876ac6f626e6939a4e3",
+        "visiblePixels": 181775
+      },
+      "city": {
+        "boundaryResidualChromaPixels": 0,
+        "dimensions": [
+          256,
+          171
+        ],
+        "frameEdgeOpaquePixels": 0,
+        "hiddenRgbPixels": 0,
+        "keyedMagentaPixels": 0,
+        "mode": "RGBA",
+        "nonzeroRgbPixels": 11424,
+        "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-101/residential_l01_v2/normalized-v03/lod/west/city.png",
+        "sha256": "e2a1a56ea1a8f39e17925f518edeb930f61886cd80e7c1b46fb9f17e191869b4",
+        "visiblePixels": 11424
+      },
+      "neighborhood": {
+        "boundaryResidualChromaPixels": 0,
+        "dimensions": [
+          512,
+          342
+        ],
+        "frameEdgeOpaquePixels": 0,
+        "hiddenRgbPixels": 0,
+        "keyedMagentaPixels": 0,
+        "mode": "RGBA",
+        "nonzeroRgbPixels": 45176,
+        "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-101/residential_l01_v2/normalized-v03/lod/west/neighborhood.png",
+        "sha256": "eccb91ad297192e67f3f9cf530ec72c92a0ee12a02d3b6510711a3265a89fccb",
+        "visiblePixels": 45176
+      }
+    }
+  },
+  "mirrored": false,
+  "normalized": {
+    "east": {
+      "boundaryResidualChromaPixels": 0,
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "frameEdgeOpaquePixels": 0,
+      "hiddenRgbPixels": 0,
+      "keyedMagentaPixels": 0,
+      "mode": "RGBA",
+      "nonzeroRgbPixels": 358740,
+      "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-101/residential_l01_v2/normalized-v03/source/east.png",
+      "sha256": "ef93a466e904157a2d1d16baf7ae411d90d82300e881098578fe5b2c24436339",
+      "visiblePixels": 358772
+    },
+    "north": {
+      "boundaryResidualChromaPixels": 0,
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "frameEdgeOpaquePixels": 0,
+      "hiddenRgbPixels": 0,
+      "keyedMagentaPixels": 0,
+      "mode": "RGBA",
+      "nonzeroRgbPixels": 370785,
+      "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-101/residential_l01_v2/normalized-v03/source/north.png",
+      "sha256": "216a839ac41f618198c5edb2b8845e3da3deb509d798c9ba904e88c654b722fc",
+      "visiblePixels": 370803
+    },
+    "south": {
+      "boundaryResidualChromaPixels": 0,
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "frameEdgeOpaquePixels": 0,
+      "hiddenRgbPixels": 0,
+      "keyedMagentaPixels": 0,
+      "mode": "RGBA",
+      "nonzeroRgbPixels": 395616,
+      "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-101/residential_l01_v2/normalized-v03/source/south.png",
+      "sha256": "627a0349c9b0fae875e5e64683be5354d76b8c46cd009e501c36dd7f0a99d40d",
+      "visiblePixels": 395630
+    },
+    "west": {
+      "boundaryResidualChromaPixels": 0,
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "frameEdgeOpaquePixels": 0,
+      "hiddenRgbPixels": 0,
+      "keyedMagentaPixels": 0,
+      "mode": "RGBA",
+      "nonzeroRgbPixels": 403657,
+      "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-101/residential_l01_v2/normalized-v03/source/west.png",
+      "sha256": "c196be599a2939aa1254d0de0cbc07c2b5efc0408dda16ed3c95dccf37b95a8e",
+      "visiblePixels": 403664
+    }
+  },
+  "productionSelected": false,
+  "rendererQuarantined": false,
+  "rotated": false,
+  "schema": "citysim.play-097.residential-l01-v2.provenance-v03.v1",
+  "siblingInputsConsumed": {
+    "east": [
+      "north architectural identity reference only"
+    ],
+    "north": [],
+    "south": [
+      "north architectural identity reference only"
+    ],
+    "west": [
+      "north architectural identity reference only"
+    ]
+  },
+  "sourceAdmitted": false
+}

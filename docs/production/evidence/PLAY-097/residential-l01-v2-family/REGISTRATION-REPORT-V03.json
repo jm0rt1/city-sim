@@ -1,0 +1,82 @@
+{
+  "canvas": [
+    1536,
+    1024
+  ],
+  "footprint": [
+    [
+      768,
+      640
+    ],
+    [
+      1024,
+      768
+    ],
+    [
+      768,
+      896
+    ],
+    [
+      512,
+      768
+    ]
+  ],
+  "lodRegistration": {
+    "block": {
+      "dimensions": [
+        1024,
+        683
+      ],
+      "pivot": [
+        512,
+        598
+      ]
+    },
+    "city": {
+      "dimensions": [
+        256,
+        171
+      ],
+      "pivot": [
+        128,
+        150
+      ]
+    },
+    "neighborhood": {
+      "dimensions": [
+        512,
+        342
+      ],
+      "pivot": [
+        256,
+        299
+      ]
+    }
+  },
+  "method": "fixed code-owned fit and pivot; no pixel-inferred geometry",
+  "pivot": [
+    768,
+    896
+  ],
+  "profile": "citysim-registration-profile-v1 building_1536x1024",
+  "result": "PASS",
+  "schema": "citysim.play-097.residential-l01-v2.registration-v03.v1",
+  "sockets": {
+    "east": [
+      896,
+      832
+    ],
+    "north": [
+      896,
+      704
+    ],
+    "south": [
+      640,
+      832
+    ],
+    "west": [
+      640,
+      704
+    ]
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "branch": "codex/citysim-world-art-residential-l01-v2-current88ea",
+  "claim": {
+    "path": "docs/production/claims/PLAY-097.world-art-residential-l01-v2-current88ea.md",
+    "sha256": "c9e58426ab4b8b88b87a9ba1cb7b55286c27bb9396f762e8e64afcde6039bdf4"
+  },
+  "counts": {
+    "lodPayloads": 12,
+    "normalizedSources": 4,
+    "rawSources": 4,
+    "uniqueLodPayloads": 12
+  },
+  "gates": {
+    "alphaChroma": "PASS",
+    "candidateOnlyBoundary": "PASS",
+    "deterministicReplay": "PASS",
+    "geometry": "PASS",
+    "identity": "PASS",
+    "normalization": "PASS",
+    "rawHashes": "PASS",
+    "uniqueness": "PASS"
+  },
+  "head": "514d14746076d67170a0ce37b584381c8c00a3c0",
+  "integrationAdmitted": false,
+  "productionSelected": false,
+  "rendererQuarantined": false,
+  "result": "PASS",
+  "schema": "citysim.play-097.residential-l01-v2.validation-v03.v1",
+  "sourceAdmitted": false
+}

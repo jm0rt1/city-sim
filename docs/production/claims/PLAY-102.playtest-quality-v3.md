@@ -206,3 +206,35 @@ push, release, broader scoring, self-acceptance, or gate movement. Any identity,
 permission, process, root, journey, save, persistence, lease, or attempt mismatch
 returns immediately. Integration and independent Agent 002 retain disposition
 authority.
+
+### CITYSIM-NEXT-WAVE-65C Alpha acceptance
+
+Independent Agent 004 returned `APPROVE_ALPHA` for immutable product commit
+`65c0f4dd2054baa0446d4e9c9a3673dfb4a01521`, tree
+`6674934ab87873f6f56d284be06252f5b59da5f9`, using the exact staged build
+produced at governance commit `d543a83f6174f3a9132b08653da9f1aa35331d68`.
+The corrected final receipt is
+`/private/tmp/CITYSIM-NEXT-WAVE-65C-QA-V1-OUTPUT/QA-PASS.json`, SHA-256
+`f8c6e086cf3a2688c2f8653c6e3e9d54d473d090d09de72161df054aa515de5a`.
+Its predecessor SHA-256
+`1995baf8e3de7935c304d878a6cf5666bee8e0fa771b46fd8cc35dfd95c84ae7`
+contained one transcription-only app-tree digest error; Agent 004 changed only
+that field to the independently reproduced lease-bound digest
+`64eb2dcdad2b01c58ee07edb921b76375e9e83ed165bbb997e882f617bdf6d1c`.
+No app journey, product byte, QA repository byte, or other receipt field was
+rerun or changed.
+
+The accepted journey reached population 500 with 100% utilities before the
+Day-201 severe storm; exposed the signed, warning-coded `$2,000` repair and
+`-3` happiness consequence in compact visual and accessibility presentation;
+recorded three damaged homes; recovered all three by Day 207; saved Day 235 at
+population 534, treasury `$58,178`, and 100% utilities; and restored identical
+storm and recovery history on launch two. Exact PID-only termination passed.
+Launch-two PID `68544` remains paused and running the staged executable with
+SHA-256 `46cc8eb1cbfc1793f873881d3b54c7a996e0bd9bcead3e43cb22bd1c98537279`.
+
+This is the accepted Alpha identity only. It does not claim Beta, v1,
+production release, push, origin parity, complete Renderer recovery, complete
+43-by-4-by-3 art admission, or any broader gate. Product identity remains
+`65c0f4dd2054baa0446d4e9c9a3673dfb4a01521`; this acceptance record changes no
+product or build bytes and authorizes no signal to PID `68544`.

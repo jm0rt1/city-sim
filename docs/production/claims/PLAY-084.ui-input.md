@@ -12,7 +12,8 @@
 - **Planned surfaces:**
   `Native/CitySimNative/Sources/CitySimNative/Views/TopHUDView.swift`,
   `Native/CitySimNative/Sources/CitySimNative/Views/StrategyCommandCenterView.swift`,
-  one new focused HUD test file, `docs/production/evidence/PLAY-084/`, and
+  `Native/CitySimNative/Tests/CitySimNativeTests/HUDConsequenceFeedbackTests.swift`,
+  `docs/production/evidence/PLAY-084/`, and
   `docs/production/completed/PLAY-084.ui-input.md`
 - **Dependencies:** PLAY-082 product/evidence frozen on master through
   `89340edce77c3e2014012b2c1cf898f393cc37e4`

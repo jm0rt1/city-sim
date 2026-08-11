@@ -1,0 +1,13 @@
+{
+  "family": "residential_l01_v2",
+  "playerOutcome": "A third genuinely authored Residential L1 family for the opening city fabric",
+  "selection": {
+    "canonicalSouth": "compact steep-gabled ochre-brick rowhouse end-unit with dark timber trim and narrow canopy",
+    "distinctFromVariant0": "Variant zero is a cream-stucco cottage with green trim and garden-heavy frontage.",
+    "distinctFromVariant1": "Variant one is a blue-gray horizontal-siding bungalow with a broad hipped roof and recessed porch.",
+    "result": "MATERIALLY_DISTINCT"
+  },
+  "sourceAuthority": "PLAY-097 canonical South anchor plus three separate built-in ImageGen calls",
+  "variantZeroSouthSha256": "a808c5da11450418afa26505261cac196480d7d98578e2e8ac796288c7ee0e57",
+  "variantOneSouthSha256": "ef1dab1277f0c2dd6cd3a37a1e459e94c417b013fadda5f4f46b6b21187e3577"
+}

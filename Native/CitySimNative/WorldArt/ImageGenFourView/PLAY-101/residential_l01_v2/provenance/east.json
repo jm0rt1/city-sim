@@ -1,0 +1,17 @@
+{
+  "candidateReadyForIndependentReview": true,
+  "direction": "east",
+  "family": "residential_l01_v2",
+  "generator": "built-in ImageGen",
+  "generatorCall": "exec-b5dd6fb6-fb57-4f02-bad8-2af1a9d95c8b",
+  "integrationAdmitted": false,
+  "productionSelected": false,
+  "prompt": "prompts/east-prompt-v01.md",
+  "raw": {"path": "raw/east-source-v01.png", "sha256": "b21f38755f9d90c1b0b77967e0411d92d874cfe6b39c91ef8a5d2e9f698533d1"},
+  "referenceInputs": [{"direction": "south", "role": "appearance reference only", "sha256": "984aeffd2cee62634ebc78055b3ef15953cf0df139b56d8346fcddac1750fed3"}],
+  "rejectedAttempts": [],
+  "rendererQuarantined": false,
+  "siblingInputsConsumed": [],
+  "sourceReady": false,
+  "transformations": []
+}

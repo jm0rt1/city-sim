@@ -1,0 +1,17 @@
+{
+  "candidateReadyForIndependentReview": true,
+  "direction": "north",
+  "family": "residential_l01_v2",
+  "generator": "built-in ImageGen",
+  "generatorCall": "exec-0f785b8a-62ba-46ca-91c5-d1ced14ee54a",
+  "integrationAdmitted": false,
+  "productionSelected": false,
+  "prompt": "prompts/north-prompt-v01.md",
+  "raw": {"path": "raw/north-source-v01.png", "sha256": "3ec18582da6857745c30a2fdc1f6493433923fff32561083f98d4b7c55a58287"},
+  "referenceInputs": [{"direction": "south", "role": "appearance reference only", "sha256": "984aeffd2cee62634ebc78055b3ef15953cf0df139b56d8346fcddac1750fed3"}],
+  "rejectedAttempts": [],
+  "rendererQuarantined": false,
+  "siblingInputsConsumed": [],
+  "sourceReady": false,
+  "transformations": []
+}

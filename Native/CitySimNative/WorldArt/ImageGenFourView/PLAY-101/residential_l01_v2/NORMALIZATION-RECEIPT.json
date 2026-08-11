@@ -1,0 +1,13 @@
+{
+  "buildReceipt": {"path": "BUILD-RECEIPT.json", "sha256": "0fab7d130646cbc5e21131976373987067f3a36ff07c321e2c3e81f31b45180c"},
+  "contract": "CONTRACT-028 alpha-aware keyed normalization",
+  "derivation": "dependency-free keyed-alpha despill and premultiplied bilinear resize",
+  "directions": 4,
+  "family": "residential_l01_v2",
+  "frameEdgeOpaquePixels": 0,
+  "hiddenRgbPixels": 0,
+  "keyedMagentaPixels": 0,
+  "lodPayloads": 12,
+  "result": "PASS",
+  "uniqueLodPayloads": 12
+}

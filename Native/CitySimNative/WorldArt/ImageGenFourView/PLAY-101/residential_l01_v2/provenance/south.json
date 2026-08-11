@@ -1,0 +1,16 @@
+{
+  "candidateReadyForIndependentReview": true,
+  "direction": "south",
+  "family": "residential_l01_v2",
+  "integrationAdmitted": false,
+  "productionSelected": false,
+  "raw": {
+    "path": "Native/CitySimNative/WorldArt/ImageGenSingleAngle/PLAY-097/residential/raw/residential_l01_variant_2/source-v01.png",
+    "sha256": "984aeffd2cee62634ebc78055b3ef15953cf0df139b56d8346fcddac1750fed3"
+  },
+  "rendererQuarantined": false,
+  "siblingInputsConsumed": [],
+  "sourceAuthority": "canonical PLAY-097 South rotation-zero anchor",
+  "sourceReady": false,
+  "transformations": []
+}

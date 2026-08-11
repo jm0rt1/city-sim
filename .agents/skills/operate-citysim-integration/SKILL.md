@@ -16,6 +16,27 @@ Keep one game coherent while specialist lanes and contract-separable cells move 
 5. Treat every dirty or untracked file as user-owned until provenance and intended commit are established.
 6. State the integration lane, current baseline, dirty-state risk, active workers, and immediate management objective.
 
+## Apply the outcome fast path first
+
+For routine reversible work, first test eligibility against the outcome-lease
+contract in `references/model-routing-and-cost-control.md`. When the validated
+claim, route, selected dispatch, Git identity, exact status contract, allowed
+paths, and focused proof all match, keep preflight, implementation, focused
+proof, explicit staging, and one coherent commit in the same visible task.
+Do not add duplicate ACK-only, static-review, execution-release,
+receipt-review, or optimizer-observer rounds to that eligible lease.
+
+This fast path does not waive route validation, path ownership, protected dirt,
+focused proof, independent candidate acceptance, push authority, or release
+authority. Use manual frontier review whenever the route's existing escalation
+triggers identify a real product, architecture, shared-contract, visual,
+interaction, acceptance, irreversible-action, or release judgment.
+
+Keep detailed logs in the owning task. Report to the user in plain language:
+what changed for the game, the one material blocker if any, its owner, the next
+action, and deadline confidence. Include hashes or command ledgers only when
+they change a decision.
+
 Resolve every baseline, authority, and worker commit in its owning worktree
 with `git rev-parse --verify '<ref>^{commit}'`. Never type, infer, or expand an
 abbreviated SHA. Before dispatch, compare the exact full SHA across the
@@ -49,9 +70,10 @@ Use the immutable tier tuples, mandatory `modelRoute` shape, nine fail-closed
 escalation triggers, compact-context protocol, lane boundaries, and tiered
 validation in
 [references/model-routing-and-cost-control.md](references/model-routing-and-cost-control.md).
-Every substantial `PLAY-*` task is split at judgment boundaries into a frontier
-design/authority packet, one or more disjoint Luna execution packets, and an
-independent frontier acceptance packet.
+Split substantial `PLAY-*` work at actual judgment boundaries. Deterministic
+execution that satisfies the outcome-lease contract stays in one lease. When a
+frontier judgment is present, isolate that decision from one or more disjoint
+execution packets and independent acceptance of the aggregated candidate.
 
 - `FRONTIER_AUTHORITY` (`gpt-5.6-sol`, `high`) alone changes shared authority,
   decides architecture or product/visual/interaction ambiguity, resolves
@@ -74,10 +96,13 @@ independent frontier acceptance packet.
 
 ## Enforce useful parallelism
 
-For every directional family, dispatch, state transition, candidate return, or
-directional parallelism checkpoint, read
+Read
 [references/directional-art-parallelism.md](references/directional-art-parallelism.md)
-completely. Apply its four-direction ownership, failure-isolation, 4/4 join,
+completely for a new or revised directional family contract, source release,
+state transition, source admission, Renderer activation, or exact-candidate QA
+gate. An unchanged status continuation may use the compact ledger only after
+rehashing its family contract, claims, live row identities, and validator.
+Apply the reference's four-direction ownership, failure-isolation, 4/4 join,
 renderer, and QA rules to CONTRACT-025, while treating Blender/DCC launch
 controls as historical and inapplicable to built-in ImageGen. The reference preserves the six-row state machine, executable
 schedule and closure gates, ledger/receipt projection, direction-local failure
@@ -181,13 +206,17 @@ frontier-owned.
 
 ## Report as command center
 
-Report:
+Keep exact baseline, branch, claim, evidence, gate, and merge-order detail in
+the owning tasks and machine artifacts. In the user-facing update, lead with:
 
-- baseline and `master`/remote parity;
-- each lane's thread status, branch, claim, cleanliness, latest commit, evidence, blocker, and next action;
-- accepted/rejected task IDs and commit hashes;
-- gate and hands-on results;
-- shared-contract decisions and merge order;
-- proof paths, remaining product risks, and decisions required from the user.
+- **Done:** player-visible progress or accepted operating improvement;
+- **Blocker:** the first material blocker only, or `none`;
+- **Owner:** the agent title responsible for clearing it;
+- **Next:** the next executable action, not another review summary;
+- **Confidence:** whether the current target remains credible.
+
+Add a hash, path, or command only when it helps the user make a decision or
+inspect an artifact. Expand into the full lane table only when requested or
+when multiple lane states materially affect the decision.
 
 Never hide dirty state, uncommitted finished work, skipped validation, rejected candidates, or deferred risks behind a green test count.

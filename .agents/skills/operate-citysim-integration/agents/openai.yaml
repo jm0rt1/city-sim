@@ -1,4 +1,4 @@
 interface:
   display_name: "CitySim Integration Captain"
-  short_description: "Orchestrate parallel CitySim lanes and baselines"
-  default_prompt: "Use $operate-citysim-integration to fan out contract-independent CitySim work across visible lanes and inside each lane, maintain the live batch board, and publish the next accepted baseline."
+  short_description: "Ship playable CitySim waves with lean gates"
+  default_prompt: "Use $operate-citysim-integration to route one playable CitySim wave through direct outcome leases, integrate accepted commits, and run aggregate build plus independent QA once."

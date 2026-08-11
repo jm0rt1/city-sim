@@ -238,6 +238,7 @@ struct BuildToolbarView: View {
                         maxWidth: compact ? 210 : 260,
                         alignment: .trailing
                     )
+                    .layoutPriority(1)
             }
 
             Spacer(minLength: 2)
@@ -558,11 +559,13 @@ struct BuildToolbarView: View {
                 Text(presentation.title)
                     .font(.system(size: GameTheme.hudCriticalTextSize, weight: .heavy, design: .rounded))
                     .lineLimit(1)
+                    .minimumScaleFactor(0.78)
                     .layoutPriority(1)
                 Text(presentation.detail)
                     .font(.system(size: GameTheme.hudSupportTextSize, weight: .semibold, design: .rounded))
                     .foregroundStyle(.secondary)
                     .lineLimit(1)
+                    .minimumScaleFactor(0.78)
             }
 
             Spacer(minLength: 2)
@@ -571,6 +574,7 @@ struct BuildToolbarView: View {
                 .font(.system(size: GameTheme.hudSupportTextSize, weight: .heavy, design: .rounded))
                 .foregroundStyle(tint)
                 .lineLimit(1)
+                .minimumScaleFactor(0.78)
                 .padding(.horizontal, 5)
                 .padding(.vertical, 2)
                 .background(tint.opacity(0.14), in: Capsule())

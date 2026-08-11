@@ -48,7 +48,7 @@ final class HUDConsequenceFeedbackTests: XCTestCase {
 
     func testFeedbackPreservesCurrentStrategyAccessibilityAndHUDBounds() {
         XCTAssertEqual(TopHUDView.compactMaximumHeight, 104)
-        XCTAssertEqual(TopHUDView.regularMaximumHeight, 118)
+        XCTAssertEqual(TopHUDView.regularMaximumHeight, 108)
         XCTAssertEqual(StrategyCommandCenterView.compactMaximumHeight, 48)
         XCTAssertEqual(StrategyCommandCenterView.regularMaximumHeight, 52)
         XCTAssertEqual(GameTheme.controlMinimum, 44)

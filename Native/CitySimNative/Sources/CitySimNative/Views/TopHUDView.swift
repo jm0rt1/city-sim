@@ -13,7 +13,7 @@ struct TopHUDView: View {
     @AppStorage("reduceGameMotion") private var gameReduceMotion = false
 
     static let compactMaximumHeight: CGFloat = 104
-    static let regularMaximumHeight: CGFloat = 118
+    static let regularMaximumHeight: CGFloat = 108
 
     private var reduceMotion: Bool { systemReduceMotion || gameReduceMotion }
 
@@ -22,7 +22,8 @@ struct TopHUDView: View {
             statusRow
             StrategyCommandCenterView(store: store, compact: compact)
         }
-        .padding(6)
+        .padding(.horizontal, 6)
+        .padding(.vertical, compact ? 6 : 4)
         .frame(maxHeight: compact ? Self.compactMaximumHeight : Self.regularMaximumHeight)
         .background(
             .thinMaterial,
@@ -50,6 +51,7 @@ struct TopHUDView: View {
 
             hudDivider
             metricRibbon
+                .layoutPriority(1)
             hudDivider
             timeAndNotices
         }
@@ -168,40 +170,36 @@ struct TopHUDView: View {
             MetricCard(
                 identifier: "hud.metric.treasury",
                 title: "Treasury",
-                shortTitle: compact ? "Cash" : nil,
+                shortTitle: "Cash",
                 value: store.state.treasury.currencyText,
                 symbol: "dollarsign.circle.fill",
                 tint: store.state.treasury >= 0 ? GameTheme.accent : GameTheme.danger,
-                detail: compact
-                    ? "Net \(store.analytics.projectedBalance.signedCurrencyText)"
-                    : "\(store.analytics.projectedBalance.signedCurrencyText) / cycle",
-                dense: compact
+                detail: "Net \(store.analytics.projectedBalance.signedCurrencyText)",
+                dense: true
             ) { store.perform(.inspectorFinances) }
 
             MetricCard(
                 identifier: "hud.metric.population",
                 title: "Residents",
-                shortTitle: compact ? "People" : nil,
+                shortTitle: "People",
                 value: store.state.population.compactText,
                 symbol: "person.3.fill",
                 tint: .cyan,
-                detail: compact
-                    ? "Open \(store.analytics.housingHeadroom.compactText)"
-                    : "\(store.analytics.housingHeadroom.formatted()) homes open",
+                detail: "Open \(store.analytics.housingHeadroom.compactText)",
                 progress: store.analytics.housingUtilization,
-                dense: compact
+                dense: true
             ) { store.perform(.inspectorPopulation) }
 
             MetricCard(
                 identifier: "hud.metric.happiness",
                 title: "Happiness",
-                shortTitle: compact ? "Happy" : nil,
+                shortTitle: "Happy",
                 value: store.state.happiness.percentText,
                 symbol: "face.smiling.fill",
                 tint: store.state.happiness >= 60 ? GameTheme.accent : GameTheme.warning,
-                detail: compact ? "Appr \(store.state.approval.percentText)" : "\(store.state.approval.percentText) mayor approval",
+                detail: "Appr \(store.state.approval.percentText)",
                 progress: store.state.happiness / 100,
-                dense: compact
+                dense: true
             ) { store.perform(.inspectorHappiness) }
 
             MetricCard(
@@ -211,21 +209,21 @@ struct TopHUDView: View {
                 value: store.state.jobs.compactText,
                 symbol: "briefcase.fill",
                 tint: .purple,
-                detail: compact ? "Open \(store.analytics.jobHeadroom.compactText)" : "\(store.analytics.jobHeadroom.formatted()) openings",
+                detail: "Open \(store.analytics.jobHeadroom.compactText)",
                 progress: store.analytics.jobUtilization,
-                dense: compact
+                dense: true
             ) { store.perform(.inspectorEmployment) }
 
             MetricCard(
                 identifier: "hud.metric.utilities",
                 title: "Utilities",
-                shortTitle: compact ? "Utility" : nil,
+                shortTitle: "Utility",
                 value: (store.analytics.utilityCoverage * 100).percentText,
                 symbol: "bolt.horizontal.fill",
                 tint: store.analytics.utilityCoverage >= 1 ? GameTheme.accent : GameTheme.danger,
-                detail: "P \(store.analytics.powerHeadroom.formatted()) · W \(store.analytics.waterHeadroom.formatted())",
+                detail: "P \(store.analytics.powerHeadroom.compactText) · W \(store.analytics.waterHeadroom.compactText)",
                 progress: store.analytics.utilityCoverage,
-                dense: compact
+                dense: true
             ) { store.perform(.inspectorUtilities) }
         }
         .frame(maxWidth: .infinity)

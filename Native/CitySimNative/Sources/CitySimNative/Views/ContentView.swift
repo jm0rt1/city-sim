@@ -337,7 +337,7 @@ struct ContentView: View {
                 )
                 .ignoresSafeArea()
 
-                VStack(spacing: compact ? 8 : 10) {
+                VStack(spacing: compact ? 8 : 4) {
                     if store.isCityFocusModeEnabled {
                         FocusCityHUDView(
                             store: store,
@@ -376,6 +376,8 @@ struct ContentView: View {
                             }
                             Spacer(minLength: 8)
                             EventFeedView(store: store, compact: compact)
+                                .opacity(compact ? 1 : 0.78)
+                                .scaleEffect(compact ? 1 : 0.88, anchor: .topTrailing)
                         }
                     }
 
@@ -427,7 +429,7 @@ struct ContentView: View {
                             .transition(.opacity)
                     }
                 }
-                .padding(compact ? GameTheme.compactPadding : GameTheme.regularPadding)
+                .padding(compact ? GameTheme.compactPadding : 8)
 
             }
             .coordinateSpace(name: "city.game.surface")

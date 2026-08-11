@@ -455,6 +455,15 @@ struct StrategyCommandCenterView: View {
         HUDConsequenceFeedbackPresentation.make(from: store.state.messages)
     }
 
+    private var primaryResponse: CityDirectResponse? {
+        presentation.diagnostic ?? presentation.actions.first
+    }
+
+    private var secondaryResponses: [CityDirectResponse] {
+        guard presentation.diagnostic == nil else { return presentation.actions }
+        return Array(presentation.actions.dropFirst())
+    }
+
     var body: some View {
         HStack(alignment: .center, spacing: compact ? 6 : 8) {
             Image(systemName: symbol)
@@ -516,10 +525,10 @@ struct StrategyCommandCenterView: View {
                     .accessibilityLabel("City trajectory")
                     .accessibilityValue(trajectory.accessibilityValue)
                     .accessibilityIdentifier("hud.city.trajectory")
-                if let diagnostic = presentation.diagnostic {
-                    responseButton(diagnostic)
+                if let primaryResponse {
+                    primaryResponseButton(primaryResponse)
                 }
-                if !presentation.actions.isEmpty {
+                if !secondaryResponses.isEmpty {
                     responseMenu
                 }
             }
@@ -556,20 +565,22 @@ struct StrategyCommandCenterView: View {
         }
     }
 
-    private func responseButton(_ response: CityDirectResponse) -> some View {
+    private func primaryResponseButton(_ response: CityDirectResponse) -> some View {
         Button { perform(response) } label: {
-            Label(responseButtonTitle(response), systemImage: "waveform.path.ecg.rectangle")
+            Label("Next: \(responseButtonTitle(response))", systemImage: "arrow.right.circle.fill")
                 .font(.system(size: GameTheme.hudCriticalTextSize, weight: .bold))
                 .lineLimit(1)
-                .fixedSize(horizontal: true, vertical: false)
-                .padding(.horizontal, compact ? 2 : 5)
-                .frame(minWidth: GameTheme.controlMinimum, minHeight: GameTheme.controlMinimum)
+                .minimumScaleFactor(0.78)
+                .padding(.horizontal, compact ? 4 : 7)
+                .frame(minWidth: compact ? 76 : 116, minHeight: GameTheme.controlMinimum)
         }
-        .buttonStyle(.bordered)
+        .buttonStyle(.borderedProminent)
+        .tint(tint)
         .disabled(!store.canPerform(response.command))
         .help(store.disabledReason(for: response.command) ?? response.explanation)
         .accessibilityLabel(response.title)
         .accessibilityHint(response.explanation)
+        .accessibilityIdentifier("hud.strategy.primary")
     }
 
     private func responseButtonTitle(_ response: CityDirectResponse) -> String {
@@ -580,7 +591,7 @@ struct StrategyCommandCenterView: View {
 
     private var responseMenu: some View {
         Menu {
-            ForEach(presentation.actions) { response in
+            ForEach(secondaryResponses) { response in
                 Button(response.title) { perform(response) }
                     .disabled(!store.canPerform(response.command))
                     .accessibilityHint(

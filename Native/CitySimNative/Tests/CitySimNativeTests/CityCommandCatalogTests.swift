@@ -893,23 +893,9 @@ final class CityCommandCatalogTests: XCTestCase {
             }
         }
 
-        let cases: [(size: CGSize, compact: Bool, chrome: CityHUDChromeFrames)] = [
-            (
-                CGSize(width: 1_278, height: 768),
-                false,
-                CityHUDChromeFrames(
-                    top: CGRect(x: 16, y: 16, width: 1_246, height: 108),
-                    bottom: CGRect(x: 79, y: 688, width: 1_120, height: 64)
-                )
-            ),
-            (
-                CGSize(width: 900, height: 600),
-                true,
-                CityHUDChromeFrames(
-                    top: CGRect(x: 8, y: 8, width: 884, height: 104),
-                    bottom: CGRect(x: 8, y: 528, width: 884, height: 64)
-                )
-            ),
+        let cases: [(size: CGSize, compact: Bool)] = [
+            (CGSize(width: 1_278, height: 768), false),
+            (CGSize(width: 900, height: 600), true),
         ]
 
         for testCase in cases {
@@ -967,10 +953,9 @@ final class CityCommandCatalogTests: XCTestCase {
             host.layoutSubtreeIfNeeded()
             RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.3))
 
-            let expectedInsets = ContentView.mapViewportInsets(
-                windowSize: testCase.size,
+            let expectedInsets = ContentView.focusCityViewportInsets(
                 compact: testCase.compact,
-                chromeFrames: testCase.chrome
+                chromeFrame: .zero
             )
             let expectedScene = CityScene(size: testCase.size)
             expectedScene.reducedMotion = true
@@ -1863,6 +1848,19 @@ final class CityCommandCatalogTests: XCTestCase {
         let cameraScale = scene.cameraScale
         let cameraPosition = scene.camera?.position
 
+        let expectedFocusedScene = CityScene(size: size)
+        expectedFocusedScene.reducedMotion = true
+        expectedFocusedScene.updateViewportInsets(
+            ContentView.focusCityViewportInsets(compact: true, chromeFrame: .zero)
+        )
+        expectedFocusedScene.render(
+            state: stateBeforeEscape,
+            overlay: store.overlay,
+            selection: shiftedSelection,
+            interactionMode: store.interactionMode
+        )
+        expectedFocusedScene.frameCity()
+
         XCTAssertTrue(store.perform(.toggleCityFocus))
         host.layoutSubtreeIfNeeded()
         RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.1))
@@ -1874,8 +1872,19 @@ final class CityCommandCatalogTests: XCTestCase {
         XCTAssertEqual(store.interactionMode, .build(.residential))
         XCTAssertEqual(store.selectedCoordinate, shiftedSelection)
         XCTAssertEqual(store.state, stateBeforeEscape)
-        XCTAssertEqual(scene.cameraScale, cameraScale, accuracy: 0.000_001)
-        XCTAssertEqual(scene.camera?.position, cameraPosition)
+        XCTAssertNotEqual(scene.cameraScale, cameraScale)
+        XCTAssertNotEqual(scene.camera?.position, cameraPosition)
+        XCTAssertEqual(scene.cameraScale, expectedFocusedScene.cameraScale, accuracy: 0.000_001)
+        XCTAssertEqual(
+            scene.cameraPositionForTesting.x,
+            expectedFocusedScene.cameraPositionForTesting.x,
+            accuracy: 0.5
+        )
+        XCTAssertEqual(
+            scene.cameraPositionForTesting.y,
+            expectedFocusedScene.cameraPositionForTesting.y,
+            accuracy: 0.5
+        )
         XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration + 1)
 
         scene.keyDown(with: try keyEvent(characters: "\u{1b}", keyCode: 53))

@@ -2085,7 +2085,7 @@ final class CityCommandCatalogTests: XCTestCase {
     }
 
     @MainActor
-    func testAccessibilitySelectBuildableBlockChoosesDeterministicCommercialTarget() throws {
+    func testNativeMapAccessibilityActionPublishesAndBuildsCommercial() throws {
         let store = CityGameStore(state: .newCity(seed: 42))
         store.selectTool(.commercial)
         store.clearFeedback()

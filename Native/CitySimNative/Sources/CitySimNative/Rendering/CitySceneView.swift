@@ -8,10 +8,15 @@ final class CityMapSKView: SKView {
     var cityAccessibilityLabel = "City map"
     var cityAccessibilityValue: String = "No block selected"
     var cityAccessibilityHelp = CityMapSKView.defaultAccessibilityHelp
+    // SKView's stored accessibility action attribute is not reliably queried by
+    // external AX clients. Keep the actions on the native map view and publish
+    // them through the protocol getter that AppKit consults for this element.
+    var cityAccessibilityActions: [NSAccessibilityCustomAction] = []
     override func accessibilityRole() -> NSAccessibility.Role? { .group }
     override func accessibilityLabel() -> String? { cityAccessibilityLabel }
     override func accessibilityValue() -> Any? { cityAccessibilityValue }
     override func accessibilityHelp() -> String? { cityAccessibilityHelp }
+    override func accessibilityCustomActions() -> [NSAccessibilityCustomAction]? { cityAccessibilityActions }
 
     override func keyDown(with event: NSEvent) {
         let modifiers = event.modifierFlags.intersection(.deviceIndependentFlagsMask)
@@ -226,7 +231,7 @@ struct CitySceneView: NSViewRepresentable {
                 view.cityAccessibilityValue = "No block selected"
                 view.cityAccessibilityHelp = CityMapSKView.defaultAccessibilityHelp
                 if case .build(let kind) = store.interactionMode {
-                    view.setAccessibilityCustomActions([
+                    view.cityAccessibilityActions = [
                         NSAccessibilityCustomAction(name: "Select buildable block") { [weak self] in
                             guard let self,
                                   let coordinate = self.firstBuildableCoordinate(for: kind) else {
@@ -238,9 +243,9 @@ struct CitySceneView: NSViewRepresentable {
                             self.configureMapAccessibility(in: view)
                             return true
                         }
-                    ])
+                    ]
                 } else {
-                    view.setAccessibilityCustomActions([])
+                    view.cityAccessibilityActions = []
                 }
                 return
             }
@@ -255,7 +260,7 @@ struct CitySceneView: NSViewRepresentable {
                 activeCoordinate = "Selected target, pending bulldoze at \(tile.kind.title), block \(coordinate.x + 1), \(coordinate.y + 1)"
             }
             guard let primary = store.activeMapActionTargetPresentation?.primaryAction else {
-                view.setAccessibilityCustomActions([])
+                view.cityAccessibilityActions = []
                 return
             }
             var valueParts = [activeCoordinate]
@@ -298,7 +303,7 @@ struct CitySceneView: NSViewRepresentable {
                     self?.store.performMapCommand(.mapSecondaryAction) ?? false
                 })
             }
-            view.setAccessibilityCustomActions(actions)
+            view.cityAccessibilityActions = actions
         }
 
         private func firstBuildableCoordinate(for kind: BuildingKind) -> GridCoordinate? {

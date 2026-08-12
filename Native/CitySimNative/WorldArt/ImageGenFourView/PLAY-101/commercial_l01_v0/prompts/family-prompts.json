@@ -1,0 +1,10 @@
+{
+  "family": "commercial_l01_v0",
+  "candidateOnly": true,
+  "directions": {
+    "north": "Independently authored north-facing source sprite of a compact low-rise neighborhood bakery and greengrocer. Warm ochre and red brick upper storey, deep teal painted timber storefront, dark slate roof, chimney, flower boxes, bakery window, produce crates, one clear north-facing front entry. Orthographic three-quarter isometric game asset; believable lived-in commercial block; no people, vehicles, road, text, logos, borders, shadows outside the footprint, or crop. Flat #ff00ff background.",
+    "east": "Independently authored east-facing source sprite of the same compact neighborhood bakery and greengrocer family, not a mirrored copy. Show the east-facing shop entry, broad produce display, a narrow side delivery alcove, distinct roof/chimney composition, teal storefront trim, warm brick, flower boxes and grounded stoop. Orthographic three-quarter isometric game asset; no people, vehicles, road, text, logos, borders, or crop. Flat #ff00ff background.",
+    "south": "Independently authored south-facing source sprite of the same compact neighborhood bakery and greengrocer family, not a mirrored copy. Make the south frontage primary: curved bakery display window, striped canopy, produce stall, rear-side service door, distinct dormer and chimney arrangement, warm brick plus teal shopfront. Orthographic three-quarter isometric game asset; no people, vehicles, road, text, logos, borders, or crop. Flat #ff00ff background.",
+    "west": "Independently authored west-facing source sprite of the same compact neighborhood bakery and greengrocer family, not a mirrored copy. Make the west frontage primary: shop doorway, deep display window, side service door, planter crates, striped canopy, distinct gabled roof and chimney silhouette, warm brick and teal storefront. Orthographic three-quarter isometric game asset; no people, vehicles, road, text, logos, borders, or crop. Flat #ff00ff background."
+  }
+}

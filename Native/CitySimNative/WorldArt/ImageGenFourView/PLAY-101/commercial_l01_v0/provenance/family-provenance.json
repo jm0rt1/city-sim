@@ -1,0 +1,40 @@
+{
+  "task": "PLAY-098",
+  "family": "commercial_l01_v0",
+  "candidateOnly": true,
+  "sourceTransport": "ImageGen native outputs copied byte-for-byte into the candidate source root",
+  "style": "cohesive low-rise neighborhood bakery and greengrocer with warm brick, teal storefront, slate roof, entries, windows, produce, and planted frontage",
+  "directions": {
+    "north": {
+      "raw": "raw/north-source-v01.png",
+      "imageGenOutput": "/Users/James/.codex/generated_images/019ff361-630f-7ab3-8f81-ef4ff1dc85b1/exec-6f680a85-a0d0-41c2-9895-89ced39825ba.png",
+      "sha256": "3d0f771f72525740dace420163de67f124f7f84adbcd4c2b7c34375a8f4b2fa0",
+      "frontageIdentity": "north front entry, bakery window, produce crates and stoop"
+    },
+    "east": {
+      "raw": "raw/east-source-v01.png",
+      "imageGenOutput": "/Users/James/.codex/generated_images/019ff361-630f-7ab3-8f81-ef4ff1dc85b1/exec-1f576d44-23fa-4932-a21c-4a59b76f4270.png",
+      "sha256": "ed3ae1e4c4b6198a98a3f917ad844c42e9c92c1efc9fc97af290bc6eb2bc36a8",
+      "frontageIdentity": "east entry, produce display and delivery alcove"
+    },
+    "south": {
+      "raw": "raw/south-source-v01.png",
+      "imageGenOutput": "/Users/James/.codex/generated_images/019ff361-630f-7ab3-8f81-ef4ff1dc85b1/exec-7b46a99b-5d8d-489b-b2b9-d63bc346dd07.png",
+      "sha256": "7fb0044d1b1ae46110528cb1ee8ad82c64d755e984564e1017c91d0f54bfb51e",
+      "frontageIdentity": "south curved bakery display, striped canopy and service door"
+    },
+    "west": {
+      "raw": "raw/west-source-v01.png",
+      "imageGenOutput": "/Users/James/.codex/generated_images/019ff361-630f-7ab3-8f81-ef4ff1dc85b1/exec-2f864e7b-b17a-4a43-a587-ab52430c14c0.png",
+      "sha256": "b28311c8c958e2e35e4999e2b5b3de200bdc6430c7a30fc40b64aa362e514b00",
+      "frontageIdentity": "west shop door, display window and side service door"
+    }
+  },
+  "exclusions": [
+    "normalization",
+    "runtime intake",
+    "atlas generation",
+    "renderer activation",
+    "product code"
+  ]
+}

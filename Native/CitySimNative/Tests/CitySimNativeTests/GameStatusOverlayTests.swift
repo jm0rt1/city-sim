@@ -132,6 +132,14 @@ final class GameStatusOverlayTests: XCTestCase {
     }
 
     @MainActor
+    func testAppDelegateLeavesCityRestoreToTheExplicitSaveRoot() {
+        let delegate = CitySimAppDelegate()
+
+        XCTAssertFalse(delegate.applicationShouldRestoreSecureState(NSApplication.shared))
+        XCTAssertFalse(delegate.applicationShouldSaveSecureState(NSApplication.shared))
+    }
+
+    @MainActor
     func testTerminalStatusSuppressesUnderlyingGameSurfaceWithoutChangingWelcomePolicy() {
         XCTAssertFalse(ContentView.suppressesGameSurface(for: .enabled, status: .playing))
         XCTAssertTrue(ContentView.suppressesGameSurface(for: .enabled, status: .won))

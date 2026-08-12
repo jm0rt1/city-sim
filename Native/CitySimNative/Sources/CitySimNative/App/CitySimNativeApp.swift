@@ -3,6 +3,17 @@ import SwiftUI
 
 @MainActor
 final class CitySimAppDelegate: NSObject, NSApplicationDelegate {
+    // CitySim restores player progress only through the explicit quicksave in
+    // the selected data root. AppKit's secure window restoration can otherwise
+    // show a stale scene snapshot before a fresh isolated session is rendered.
+    func applicationShouldRestoreSecureState(_ app: NSApplication) -> Bool {
+        false
+    }
+
+    func applicationShouldSaveSecureState(_ app: NSApplication) -> Bool {
+        false
+    }
+
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSApp.setActivationPolicy(.regular)
         if let iconURL = Bundle.main.url(forResource: "CitySim-KeyArt", withExtension: "png"),

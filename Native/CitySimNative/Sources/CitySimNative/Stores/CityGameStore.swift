@@ -77,6 +77,13 @@ final class CityGameStore: ObservableObject {
         )
     }
 
+    var hasUnsavedProgress: Bool {
+        CityTerminationConfirmationPresentation.isRequired(
+            state: state,
+            persistenceStatus: persistenceStatus
+        )
+    }
+
     var objectives: [CityObjective] {
         let metrics = analytics
         let budgetProgress = min(1, max(0, 1 + metrics.projectedBalance / 250))
@@ -1034,12 +1041,14 @@ final class CityGameStore: ObservableObject {
         return true
     }
 
-    func save() {
+    @discardableResult
+    func save() -> Bool {
         do {
             try saves.save(state)
             lastPersistedState = state
             showFeedback(CityPersistenceFeedbackPresentation.saved(state).message, tone: .positive)
             playSound(named: "Glass")
+            return true
         }
         catch {
             showFeedback(
@@ -1047,6 +1056,7 @@ final class CityGameStore: ObservableObject {
                 tone: .caution,
                 autoDismissAfter: nil
             )
+            return false
         }
     }
 

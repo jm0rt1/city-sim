@@ -3,6 +3,15 @@ import SwiftUI
 
 @MainActor
 final class CitySimAppDelegate: NSObject, NSApplicationDelegate {
+    private weak var store: CityGameStore?
+    var terminationConfirmationHandler: (CityTerminationConfirmationPresentation) -> CityTerminationAction = {
+        CitySimAppDelegate.presentTerminationConfirmation($0)
+    }
+
+    func bind(store: CityGameStore) {
+        self.store = store
+    }
+
     // CitySim restores player progress only through the explicit quicksave in
     // the selected data root. AppKit's secure window restoration can otherwise
     // show a stale scene snapshot before a fresh isolated session is rendered.
@@ -21,6 +30,47 @@ final class CitySimAppDelegate: NSObject, NSApplicationDelegate {
             NSApp.applicationIconImage = icon
         }
         NSApp.activate(ignoringOtherApps: true)
+    }
+
+    func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
+        guard let store, store.hasUnsavedProgress else { return .terminateNow }
+        let previousSpeed = store.speed
+        store.speed = .paused
+        let presentation = CityTerminationConfirmationPresentation.make(
+            state: store.state,
+            persistenceStatus: store.persistenceStatus
+        )
+        switch terminationConfirmationHandler(presentation) {
+        case .saveAndQuit:
+            guard store.save() else {
+                store.speed = previousSpeed
+                return .terminateCancel
+            }
+            return .terminateNow
+        case .quitWithoutSaving:
+            return .terminateNow
+        case .cancel:
+            store.speed = previousSpeed
+            return .terminateCancel
+        }
+    }
+
+    private static func presentTerminationConfirmation(
+        _ presentation: CityTerminationConfirmationPresentation
+    ) -> CityTerminationAction {
+        let alert = NSAlert()
+        alert.alertStyle = .warning
+        alert.messageText = presentation.title
+        alert.informativeText = presentation.message
+        alert.addButton(withTitle: presentation.saveActionTitle)
+        alert.addButton(withTitle: presentation.cancelActionTitle)
+        alert.addButton(withTitle: presentation.discardActionTitle)
+        alert.buttons[1].keyEquivalent = "\u{1b}"
+        switch alert.runModal() {
+        case .alertFirstButtonReturn: return .saveAndQuit
+        case .alertThirdButtonReturn: return .quitWithoutSaving
+        default: return .cancel
+        }
     }
 }
 
@@ -41,6 +91,7 @@ struct CitySimNativeApp: App {
         WindowGroup("CitySim", id: "main") {
             ContentView(store: store)
                 .preferredColorScheme(.dark)
+                .onAppear { appDelegate.bind(store: store) }
         }
         .defaultSize(
             width: ProofWindowConfigurator.initialSceneContentSize.width,

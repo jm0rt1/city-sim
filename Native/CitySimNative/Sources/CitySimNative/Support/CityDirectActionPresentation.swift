@@ -498,7 +498,8 @@ enum CityNoticeActionCatalog {
         "Main Street Recovery Delayed", "Freight Contract Watch", "Industrial Load Surge",
         "Freight Recovery Delayed", "Budget Gap", "Utility Reserve Tight", "Utility Shortfall",
         "Hiring Bottleneck", "Severe Storm", "Regional Retail Challenge",
-        "Regional Retail Pressure", "Regional Grid Mandate", "Regional Freight Overload"
+        "Regional Retail Pressure", "Regional Grid Mandate", "Regional Freight Overload",
+        "Regional Qualification Interrupted"
     ]
 
     static func actions(for title: String) -> [CityDirectResponse] {
@@ -533,12 +534,23 @@ enum CityNoticeActionCatalog {
                 .init(title: "Add power", command: .buildPowerPlant, explanation: "Add capacity where power service can reach demand.", focusesMap: true),
                 .init(title: "Add water", command: .buildWaterTower, explanation: "Add capacity where water service can reach demand.", focusesMap: true)
             ]
+        case "Regional Qualification Interrupted":
+            return [.init(
+                title: "Review regional standards",
+                command: .inspectorOverview,
+                explanation: "Review the current Regional Capital standards and restart qualification.",
+                focusesMap: false
+            )]
         default:
             return []
         }
     }
 
     static func actions(for title: String, analytics: CityAnalytics) -> [CityDirectResponse] {
+        if title == "Regional Qualification Interrupted" {
+            let support = CityRegionalCapitalDecisionSupport.make(analytics: analytics)
+            return ([support.primaryResponse] + support.secondaryResponses).uniquedByCommand()
+        }
         guard title == "Utility Reserve Tight" || title == "Utility Shortfall" else {
             return actions(for: title)
         }

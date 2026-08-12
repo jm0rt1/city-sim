@@ -1417,6 +1417,12 @@ final class GameplayLoopTests: XCTestCase {
         XCTAssertEqual(state.progression?.secondAct?.qualifyingCycles, 0)
         XCTAssertEqual(state.progression?.secondAct?.phase, .qualification)
         XCTAssertFalse(state.progression?.secondAct?.regionalCapitalAwarded ?? true)
+        let interruption = try XCTUnwrap(
+            state.messages.first { $0.title == "Regional Qualification Interrupted" }
+        )
+        XCTAssertEqual(interruption.severity, .warning)
+        XCTAssertTrue(interruption.detail.contains("6 qualifying days were lost"))
+        XCTAssertTrue(interruption.detail.contains("Raise happiness to 56%"))
 
         advanceRegionalQualifying(&state, days: 12)
         XCTAssertEqual(state.status, .won)

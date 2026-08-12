@@ -447,6 +447,41 @@ final class CityCommandCatalogTests: XCTestCase {
     }
 
     @MainActor
+    func testRegionalQualificationInterruptionRoutesTheLiveRemedyAndPauses() throws {
+        var state = try XCTUnwrap(
+            ProductionStoryStateBuilder().buildAll().first {
+                $0.definition.strategy == .commercialStewardship
+                    && $0.definition.stage == .regionalCapital
+            }?.state
+        )
+        state.status = .playing
+        state.progression?.secondAct?.phase = .qualification
+        state.progression?.secondAct?.regionalCapitalAwarded = false
+        state.progression?.secondAct?.qualifyingCycles = 0
+        state.happiness = 40
+
+        let store = CityGameStore(state: state)
+        store.speed = .fastest
+        let interruption = CityMessage(
+            tick: state.tick,
+            severity: .warning,
+            title: "Regional Qualification Interrupted",
+            detail: "Three qualifying days were lost. Raise happiness to 56%."
+        )
+        let actions = CityNoticeActionCatalog.actions(
+            for: interruption.title,
+            analytics: store.analytics
+        )
+        XCTAssertEqual(actions.first?.command, .buildPark)
+        XCTAssertTrue(actions.contains { $0.command == .inspectorHappiness })
+
+        store.openMessage(interruption)
+        XCTAssertTrue(store.showObjectives)
+        XCTAssertEqual(store.inspectorSection, .happiness)
+        XCTAssertEqual(store.speed, .paused)
+    }
+
+    @MainActor
     func testStrategyHUDDiagnosisAndMapRemediesUseOneStoreIntentAndFocusHandoff() throws {
         let fixtures = try ProductionStoryStateBuilder().buildAll()
         let commercialState = try XCTUnwrap(fixtures.first {
@@ -3194,7 +3229,8 @@ final class CityCommandCatalogTests: XCTestCase {
             "Industrial Load Surge", "Main Street Crossroads", "Main Street Recovery Delayed",
             "Severe Storm", "Storefront Slump", "Utility Reserve Tight", "Utility Shortfall",
             "Regional Retail Challenge", "Regional Retail Pressure",
-            "Regional Grid Mandate", "Regional Freight Overload"
+            "Regional Grid Mandate", "Regional Freight Overload",
+            "Regional Qualification Interrupted"
         ]
         XCTAssertEqual(
             authoredWarningAndCriticalTitles,

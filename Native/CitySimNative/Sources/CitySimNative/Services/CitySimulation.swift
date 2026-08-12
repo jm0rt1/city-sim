@@ -1446,6 +1446,22 @@ enum CitySimulation {
                     secondAct.qualifyingCycles + 1
                 )
             } else {
+                let interruptedCycles = secondAct.qualifyingCycles
+                if interruptedCycles > 0 {
+                    let guidance = CityRegionalCapitalDecisionSupport.make(
+                        analytics: CityAnalytics(state: state)
+                    )
+                    state.messages.removeAll { $0.title == "Regional Qualification Interrupted" }
+                    post(
+                        CityMessage(
+                            tick: state.tick,
+                            severity: .warning,
+                            title: "Regional Qualification Interrupted",
+                            detail: "\(interruptedCycles) qualifying \(interruptedCycles == 1 ? "day was" : "days were") lost. \(guidance.detail)"
+                        ),
+                        to: &state
+                    )
+                }
                 secondAct.qualifyingCycles = 0
             }
 

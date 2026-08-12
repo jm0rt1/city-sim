@@ -825,6 +825,16 @@ final class CityGameStore: ObservableObject {
         case "Regional Grid Mandate", "Regional Freight Overload":
             overlay = .utilities
             openInspector(.utilities)
+        case "Regional Qualification Interrupted":
+            showObjectives = true
+            let support = CityRegionalCapitalDecisionSupport.make(analytics: analytics)
+            let diagnosis = support.secondaryResponses.first ?? support.primaryResponse
+            if diagnosis.focusesMap {
+                openInspector(.overview)
+            } else {
+                _ = perform(diagnosis.command)
+            }
+            setSpeed(.paused)
         case "Regional Main Street Recovery", "Regional Freight Recovery", "Regional Capital Recognized":
             showObjectives = true
             openInspector(.overview)

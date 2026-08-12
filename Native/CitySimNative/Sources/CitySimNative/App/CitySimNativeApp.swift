@@ -143,7 +143,8 @@ struct CityGameCommands: Commands {
             }
             Divider()
             ForEach(CityCommandCatalog.descriptors(in: .panels).filter {
-                [.toggleObjectives, .toggleCommandCenter, .toggleCityFocus, .openNotices].contains($0.id)
+                [.toggleObjectives, .toggleCommandCenter, .toggleCityFocus, .togglePhotoMode,
+                 .capturePhoto, .openNotices].contains($0.id)
             }) {
                 commandButton($0)
             }

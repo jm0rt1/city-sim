@@ -18,13 +18,13 @@ final class CityHandbookTests: XCTestCase {
                 .accessibility
             ]
         )
-        XCTAssertEqual(presentation.sections.map(\.entries.count), [3, 3, 3, 4, 4, 4])
-        XCTAssertEqual(Set(presentation.sections.flatMap { $0.entries.map(\.id) }).count, 21)
+        XCTAssertEqual(presentation.sections.map(\.entries.count), [3, 3, 3, 4, 5, 4])
+        XCTAssertEqual(Set(presentation.sections.flatMap { $0.entries.map(\.id) }).count, 22)
 
         let all = presentation.search(query: "")
         XCTAssertEqual(all.sections, presentation.sections)
-        XCTAssertEqual(all.entryCount, 21)
-        XCTAssertEqual(all.countSummary, "6 sections · 21 items")
+        XCTAssertEqual(all.entryCount, 22)
+        XCTAssertEqual(all.countSummary, "6 sections · 22 items")
     }
 
     func testSearchMatchesTitlesSummariesKeywordsAndIndividualEntries() throws {
@@ -43,6 +43,10 @@ final class CityHandbookTests: XCTestCase {
         let entryKeyword = try XCTUnwrap(presentation.search(query: "motor pointer").sections.first)
         XCTAssertEqual(entryKeyword.id, .accessibility)
         XCTAssertEqual(entryKeyword.entries.map(\.id), ["access-keyboard"])
+
+        let photoMode = try XCTUnwrap(presentation.search(query: "photo mode png").sections.first)
+        XCTAssertEqual(photoMode.id, .keyboardControls)
+        XCTAssertEqual(photoMode.entries.map(\.id), ["keys-photo-mode"])
 
         XCTAssertEqual(
             presentation.search(query: "  VOICEOVER  ").sections.map(\.id),

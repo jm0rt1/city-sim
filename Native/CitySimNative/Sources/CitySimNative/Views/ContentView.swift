@@ -182,7 +182,14 @@ struct ContentView: View {
         .toolbar {
             if !Self.suppressesGameSurface(for: store.commandPolicy, status: store.state.status) {
                 ToolbarItemGroup(placement: .primaryAction) {
-                    if store.isCityFocusModeEnabled {
+                    if store.isPhotoModeEnabled {
+                        Button { store.perform(.capturePhoto) } label: {
+                            Label("Capture PNG", systemImage: "camera.fill")
+                        }
+                        Button { store.perform(.togglePhotoMode) } label: {
+                            Label("Exit Photo Mode", systemImage: "xmark.circle")
+                        }
+                    } else if store.isCityFocusModeEnabled {
                         Button { store.perform(.toggleCityFocus) } label: {
                             Label("Exit Focus City", systemImage: "viewfinder.circle")
                         }
@@ -484,12 +491,13 @@ struct ContentView: View {
             let retainedFocusInsets = store.isCityFocusModeEnabled || !focusCityChromeFrame.isEmpty
                 ? focusCityInsets
                 : nil
-            let viewportInsets = Self.resolvedMapViewportInsets(
+            let resolvedViewportInsets = Self.resolvedMapViewportInsets(
                 measured: measuredViewportInsets,
                 retainedForFocusCity: retainedFocusInsets,
                 focusCity: store.isCityFocusModeEnabled,
                 bottomChromeIsVisible: !hudChromeFrames.bottom.isEmpty
             )
+            let viewportInsets = store.isPhotoModeEnabled ? CityMapViewportInsets.zero : resolvedViewportInsets
             ZStack {
                 CitySceneView(
                     store: store,
@@ -498,6 +506,10 @@ struct ContentView: View {
                 )
                 .ignoresSafeArea()
 
+                if store.isPhotoModeEnabled {
+                    PhotoModeHUDView(store: store, compact: compact)
+                        .transition(.opacity)
+                } else {
                 VStack(spacing: compact ? 8 : 4) {
                     if store.isCityFocusModeEnabled {
                         FocusCityHUDView(
@@ -602,6 +614,7 @@ struct ContentView: View {
                     }
                 }
                 .padding(compact ? GameTheme.compactPadding : 8)
+                }
 
             }
             .coordinateSpace(name: "city.game.surface")
@@ -609,6 +622,12 @@ struct ContentView: View {
                 if enabled {
                     focusCityChromeFrame = .zero
                     hudChromeFrames.bottom = .zero
+                }
+            }
+            .onChange(of: store.isPhotoModeEnabled) { _, enabled in
+                if enabled {
+                    focusCityChromeFrame = .zero
+                    hudChromeFrames = CityHUDChromeFrames()
                 }
             }
             .onDisappear {

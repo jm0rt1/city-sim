@@ -129,13 +129,17 @@ struct CitySceneView: NSViewRepresentable {
         scene.render(
             snapshot: snapshot,
             overlay: store.overlay,
-            selection: store.selectedCoordinate,
-            interactionMode: store.interactionMode,
-            activeActionTarget: store.activeMapActionTargetPresentation
+            selection: store.isPhotoModeEnabled ? nil : store.selectedCoordinate,
+            interactionMode: store.isPhotoModeEnabled ? .inspect : store.interactionMode,
+            activeActionTarget: store.isPhotoModeEnabled ? nil : store.activeMapActionTargetPresentation
         )
         context.coordinator.synchronizeCityFocusCamera(
             isEnabled: store.isCityFocusModeEnabled,
             selectedCoordinate: store.selectedCoordinate
+        )
+        context.coordinator.synchronizePhotoCaptureRequest(
+            store.photoCaptureRequestGeneration,
+            in: view
         )
         // The representable's first update can render before AppKit has
         // delivered its final map aperture. Reapply the same authoritative
@@ -163,6 +167,7 @@ struct CitySceneView: NSViewRepresentable {
         private(set) var focusHandoffGeneration: UInt = 0
         private(set) var pendingFocusHandoffGeneration: UInt?
         private(set) var observedMapFocusRequestGeneration: UInt
+        private var observedPhotoCaptureRequestGeneration: UInt
         private var previousCityFocusModeEnabled: Bool
         private var cachedPresentationSnapshot: CityPresentationSnapshot?
         private let enqueueOnMain: MainLoopEnqueuer
@@ -178,8 +183,30 @@ struct CitySceneView: NSViewRepresentable {
             self.pointerTransitionGate = pointerTransitionGate
             previousCommandPolicy = store.commandPolicy
             observedMapFocusRequestGeneration = store.mapFocusRequestGeneration
+            observedPhotoCaptureRequestGeneration = store.photoCaptureRequestGeneration
             previousCityFocusModeEnabled = store.isCityFocusModeEnabled
             self.enqueueOnMain = enqueueOnMain
+        }
+
+        @discardableResult
+        func synchronizePhotoCaptureRequest(
+            _ generation: UInt,
+            in view: CityMapSKView
+        ) -> Bool {
+            guard generation != observedPhotoCaptureRequestGeneration else { return false }
+            observedPhotoCaptureRequestGeneration = generation
+            guard store.isPhotoModeEnabled, let scene,
+                  let texture = view.texture(from: scene) else {
+                store.failPhotoCapture()
+                return false
+            }
+            let representation = NSBitmapImageRep(cgImage: texture.cgImage())
+            guard let data = representation.representation(using: .png, properties: [:]) else {
+                store.failPhotoCapture()
+                return false
+            }
+            store.completePhotoCapture(pngData: data)
+            return true
         }
 
         @discardableResult
@@ -328,7 +355,7 @@ struct CitySceneView: NSViewRepresentable {
         }
 
         func allowsPointerMapActionCandidate(in view: CityMapSKView) -> Bool {
-            guard store.commandPolicy == .enabled else { return false }
+            guard store.commandPolicy == .enabled, !store.isPhotoModeEnabled else { return false }
             guard !pointerTransitionGate.blocksPointerInput(in: view.window) else { return false }
             let responder = view.window?.firstResponder
             return !(responder is NSTextView) && !(responder is NSTextField)

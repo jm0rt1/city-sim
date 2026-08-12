@@ -29,6 +29,9 @@ final class CityGameStore: ObservableObject {
     @Published var showCommandGuide = false
     @Published var showCityHandbook = false
     @Published private(set) var isCityFocusModeEnabled = false
+    @Published private(set) var isPhotoModeEnabled = false
+    @Published private(set) var photoCaptureRequestGeneration: UInt = 0
+    @Published private(set) var latestPhotoCaptureURL: URL?
     @Published private(set) var commandPolicy: CityCommandPolicy
     @Published var inspectorSection: InspectorSection = .overview
     @Published var hudContextScope: HUDContextScope = .city
@@ -46,6 +49,7 @@ final class CityGameStore: ObservableObject {
     @Published private(set) var mapFocusRequestGeneration: UInt = 0
 
     private let saves: SaveGameService
+    private let photos: CityPhotoService
     private let capturesScenarioCheckpoints: Bool
     private let revealSupportReport: (URL) -> Void
     private var undoStates: [CityGameState] = []
@@ -67,6 +71,11 @@ final class CityGameStore: ObservableObject {
     private var lastPersistenceCheckpointKind: CityPersistenceCheckpointKind = .manual
     private var nextAutosaveTick: Int
     private var previousObjectiveProgressByID: [String: Double] = [:]
+    private var speedBeforePhotoMode: SimulationSpeed?
+    private var overlayBeforePhotoMode: DataOverlay?
+    private var cityFocusBeforePhotoMode = false
+    private var inspectorBeforePhotoMode = false
+    private var objectivesBeforePhotoMode = false
 
     init(
         state: CityGameState = .newCity(),
@@ -74,12 +83,14 @@ final class CityGameStore: ObservableObject {
         saveService: SaveGameService = SaveGameService(),
         startsPaused: Bool = false,
         capturesScenarioCheckpoints: Bool = false,
+        photoService: CityPhotoService? = nil,
         revealSupportReport: ((URL) -> Void)? = nil
     ) {
         self.state = state
         self.cityNameDraft = state.cityName
         self.commandPolicy = commandPolicy
         self.saves = saveService
+        self.photos = photoService ?? CityPhotoService()
         self.capturesScenarioCheckpoints = capturesScenarioCheckpoints
         self.revealSupportReport = revealSupportReport ?? { url in
             NSWorkspace.shared.activateFileViewerSelecting([url])
@@ -337,6 +348,10 @@ final class CityGameStore: ObservableObject {
             toggleInspector()
         case .toggleCityFocus:
             toggleCityFocus()
+        case .togglePhotoMode:
+            togglePhotoMode()
+        case .capturePhoto:
+            requestPhotoCapture()
         case .openNotices:
             openAlertCenter()
         case .openCommandGuide:
@@ -380,11 +395,15 @@ final class CityGameStore: ObservableObject {
         case .dismissFeedback:
             lastFeedback != nil
         case .cancelInteraction:
-            showCityHandbook || showCommandGuide || isCityFocusModeEnabled
+            showCityHandbook || showCommandGuide || isPhotoModeEnabled || isCityFocusModeEnabled
                 || showInspector || showObjectives
                 || selectedCoordinate != nil || interactionMode != .inspect
-        default:
+        case .capturePhoto:
+            isPhotoModeEnabled
+        case .togglePhotoMode:
             true
+        default:
+            !isPhotoModeEnabled
         }
     }
 
@@ -406,6 +425,8 @@ final class CityGameStore: ObservableObject {
             case .undo: return "There is no reversible construction action"
             case .loadCity: return "No saved checkpoint is available"
             case .dismissFeedback: return "There is no transient action message"
+            case .capturePhoto: return "Enter Photo Mode before taking a city photograph"
+            case .togglePhotoMode: return "Photo Mode is unavailable in the current context"
             case .cancelInteraction: return "There is no open surface or active tool to cancel"
             default:
                 return switch state.status {
@@ -423,6 +444,7 @@ final class CityGameStore: ObservableObject {
     func canRouteMapCommand(_ command: CityCommandID) -> Bool {
         guard sessionReplacementConfirmation == nil,
               state.status == .playing,
+              !isPhotoModeEnabled,
               commandPolicy.allows(command),
               CityCommandCatalog.mapFocusedCommands.contains(command) else {
             return false
@@ -687,8 +709,88 @@ final class CityGameStore: ObservableObject {
     }
 
     func toggleCityFocus() {
+        guard !isPhotoModeEnabled else { return }
         isCityFocusModeEnabled.toggle()
         requestMapFocus()
+    }
+
+    func togglePhotoMode() {
+        isPhotoModeEnabled ? exitPhotoMode() : enterPhotoMode()
+    }
+
+    func enterPhotoMode() {
+        guard state.status == .playing, commandPolicy == .enabled,
+              !isPhotoModeEnabled else { return }
+        speedBeforePhotoMode = speed
+        overlayBeforePhotoMode = overlay
+        cityFocusBeforePhotoMode = isCityFocusModeEnabled
+        inspectorBeforePhotoMode = showInspector
+        objectivesBeforePhotoMode = showObjectives
+        speed = .paused
+        overlay = .none
+        isPhotoModeEnabled = true
+        isCityFocusModeEnabled = false
+        showInspector = false
+        showObjectives = false
+        showCommandGuide = false
+        showCityHandbook = false
+        latestPhotoCaptureURL = nil
+        clearFeedback()
+        requestMapFocus()
+    }
+
+    func exitPhotoMode() {
+        guard isPhotoModeEnabled else { return }
+        isPhotoModeEnabled = false
+        if state.status == .playing, let prior = speedBeforePhotoMode {
+            speed = prior
+        }
+        if let prior = overlayBeforePhotoMode { overlay = prior }
+        isCityFocusModeEnabled = cityFocusBeforePhotoMode
+        showInspector = inspectorBeforePhotoMode
+        showObjectives = objectivesBeforePhotoMode
+        speedBeforePhotoMode = nil
+        overlayBeforePhotoMode = nil
+        cityFocusBeforePhotoMode = false
+        inspectorBeforePhotoMode = false
+        objectivesBeforePhotoMode = false
+        requestMapFocus()
+    }
+
+    func requestPhotoCapture() {
+        guard isPhotoModeEnabled else { return }
+        photoCaptureRequestGeneration &+= 1
+    }
+
+    func completePhotoCapture(pngData: Data) {
+        guard isPhotoModeEnabled else { return }
+        do {
+            let result = try photos.export(
+                pngData: pngData,
+                cityName: state.cityName,
+                day: state.day
+            )
+            latestPhotoCaptureURL = result.url
+            showFeedback(
+                "Photo saved to Pictures/CitySim · \(result.url.lastPathComponent)",
+                tone: .positive
+            )
+        } catch {
+            showFeedback(
+                "Photo could not be saved · \(error.localizedDescription)",
+                tone: .caution,
+                autoDismissAfter: nil
+            )
+        }
+    }
+
+    func failPhotoCapture() {
+        guard isPhotoModeEnabled else { return }
+        showFeedback(
+            "Photo could not be captured · Keep Photo Mode open and try again",
+            tone: .caution,
+            autoDismissAfter: nil
+        )
     }
 
     func presentBlockingModal(_ modal: CityBlockingModal) {
@@ -764,6 +866,8 @@ final class CityGameStore: ObservableObject {
         } else if showCommandGuide {
             showCommandGuide = false
             requestMapFocus()
+        } else if isPhotoModeEnabled {
+            exitPhotoMode()
         } else if isCityFocusModeEnabled {
             isCityFocusModeEnabled = false
             requestMapFocus()
@@ -1101,6 +1205,13 @@ final class CityGameStore: ObservableObject {
         speedBeforeCheckpointLibrary = nil
         clearBranchNamingState()
         state = .newCity(seed: UInt64.random(in: 1...UInt64.max))
+        isPhotoModeEnabled = false
+        speedBeforePhotoMode = nil
+        overlayBeforePhotoMode = nil
+        cityFocusBeforePhotoMode = false
+        inspectorBeforePhotoMode = false
+        objectivesBeforePhotoMode = false
+        latestPhotoCaptureURL = nil
         previousObjectiveProgressByID.removeAll()
         lastPersistedState = nil
         lastPersistenceCheckpointKind = .manual
@@ -1503,6 +1614,13 @@ final class CityGameStore: ObservableObject {
         speedBeforeCheckpointLibrary = nil
         clearBranchNamingState()
         state = result.state
+        isPhotoModeEnabled = false
+        speedBeforePhotoMode = nil
+        overlayBeforePhotoMode = nil
+        cityFocusBeforePhotoMode = false
+        inspectorBeforePhotoMode = false
+        objectivesBeforePhotoMode = false
+        latestPhotoCaptureURL = nil
         previousObjectiveProgressByID.removeAll()
         lastPersistedState = result.state
         lastPersistenceCheckpointKind = if migration != nil || result.isMigration {

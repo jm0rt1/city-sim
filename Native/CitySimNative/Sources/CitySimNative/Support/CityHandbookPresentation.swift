@@ -318,6 +318,14 @@ struct CityHandbookPresentation: Equatable, Sendable {
                         keywords: ["selection", "jump", "primary action", "zoom", "frame"]
                     ),
                     CityHandbookEntry(
+                        id: "keys-photo-mode",
+                        title: "Photograph the city",
+                        detail: "Photo Mode pauses safely, clears overlays and gameplay chrome, and keeps zoom and frame controls available. Capture PNG exports only the city composition to Pictures/CitySim; Escape restores the prior speed and workspace.",
+                        symbol: "camera.aperture",
+                        shortcut: "⇧⌘P · ⇧⌘C",
+                        keywords: ["photo mode", "screenshot", "capture", "png", "export", "pictures"]
+                    ),
+                    CityHandbookEntry(
                         id: "keys-guide",
                         title: "Search every command",
                         detail: "Open the Command Guide for the complete command deck, focus rules, shortcuts, and current availability.",

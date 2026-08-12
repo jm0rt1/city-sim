@@ -258,6 +258,7 @@ struct BuildToolbarView: View {
 
             Spacer(minLength: 2)
             cityFocusButton
+            photoModeButton
             commandGuideButton
             detailsButton
         }
@@ -529,6 +530,24 @@ struct BuildToolbarView: View {
         .accessibilityValue(descriptor.shortcut?.display ?? "No shortcut")
         .accessibilityHint(descriptor.discoverability)
         .accessibilityIdentifier("hud.focus-city.enter")
+    }
+
+    private var photoModeButton: some View {
+        let descriptor = CityCommandCatalog.descriptor(for: .togglePhotoMode)
+        return Button { store.perform(.togglePhotoMode) } label: {
+            Label(compact ? "Photo" : "Photo Mode", systemImage: "camera.aperture")
+                .font(.caption.weight(.semibold))
+                .padding(.horizontal, compact ? 2 : 8)
+                .frame(minWidth: GameTheme.controlMinimum, minHeight: GameTheme.controlMinimum)
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .background(GameTheme.inactiveControl, in: RoundedRectangle(cornerRadius: 9))
+        .help("\(descriptor.discoverability) \(descriptor.shortcut?.display ?? "")")
+        .accessibilityLabel("Enter Photo Mode")
+        .accessibilityValue(descriptor.shortcut?.display ?? "No shortcut")
+        .accessibilityHint("Pauses the simulation and opens distraction-free capture controls")
+        .accessibilityIdentifier("hud.photo-mode.enter")
     }
 
     @ViewBuilder

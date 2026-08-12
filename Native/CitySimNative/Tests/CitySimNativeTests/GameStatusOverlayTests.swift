@@ -163,13 +163,21 @@ final class GameStatusOverlayTests: XCTestCase {
 
         let focusGeneration = store.mapFocusRequestGeneration
         XCTAssertTrue(store.perform(.newRegion))
+        XCTAssertEqual(store.commandPolicy, .blocked(.newRegionSetup))
+        XCTAssertNotNil(store.newRegionSetup)
+        XCTAssertEqual(store.state.status, .won)
+        store.updateNewRegionSeed("424242")
+        XCTAssertTrue(store.createNewRegion())
         XCTAssertEqual(store.state.status, .playing)
         XCTAssertEqual(store.state.tick, 0)
         XCTAssertEqual(store.state.formattedDay, "Day 1")
         XCTAssertEqual(store.state.population, 300)
         XCTAssertEqual(store.speed, .paused)
         XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration + 1)
-        XCTAssertEqual(store.lastFeedback, "A fresh region is ready")
+        XCTAssertEqual(
+            store.lastFeedback,
+            "Guided Foundations ready · New Arcadia · Seed 424242"
+        )
         XCTAssertTrue(store.perform(.togglePause))
         XCTAssertEqual(store.speed, .normal)
         XCTAssertEqual(store.speed.controlLabel, "1x")

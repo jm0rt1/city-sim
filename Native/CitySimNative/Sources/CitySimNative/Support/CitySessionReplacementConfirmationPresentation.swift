@@ -26,7 +26,7 @@ struct CitySessionReplacementConfirmationPresentation: Equatable, Sendable {
                 title: "Replace \(state.cityName)?",
                 message: "\(checkpoint) will be replaced. "
                     + "Save the city first if you want to return to this checkpoint.",
-                destructiveActionTitle: "Start New Region",
+                destructiveActionTitle: "Choose New Region",
                 cancelActionTitle: "Keep \(state.cityName)"
             )
         case .loadQuicksave:

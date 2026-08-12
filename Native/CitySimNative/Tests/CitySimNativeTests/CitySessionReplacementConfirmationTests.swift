@@ -22,7 +22,7 @@ final class CitySessionReplacementConfirmationTests: XCTestCase {
                 title: "Replace Harbor Point?",
                 message: "Harbor Point · Day 12 · 512 residents will be replaced. "
                     + "Save the city first if you want to return to this checkpoint.",
-                destructiveActionTitle: "Start New Region",
+                destructiveActionTitle: "Choose New Region",
                 cancelActionTitle: "Keep Harbor Point"
             )
         )
@@ -94,6 +94,8 @@ final class CitySessionReplacementConfirmationTests: XCTestCase {
         state.population = 512
         let store = CityGameStore(state: state)
         store.setSpeed(.fastest)
+        store.overlay = .pollution
+        store.showObjectives = true
         let fingerprint = try CityStateFingerprinter.fingerprint(store.state)
 
         XCTAssertTrue(store.perform(.newRegion))
@@ -110,11 +112,27 @@ final class CitySessionReplacementConfirmationTests: XCTestCase {
 
         XCTAssertTrue(store.confirmSessionReplacement())
         XCTAssertNil(store.sessionReplacementConfirmation)
-        XCTAssertEqual(store.state.cityName, "New Arcadia")
+        XCTAssertEqual(try CityStateFingerprinter.fingerprint(store.state), fingerprint)
+        XCTAssertEqual(store.commandPolicy, .blocked(.newRegionSetup))
+        XCTAssertNotNil(store.newRegionSetup)
+        XCTAssertEqual(store.speed, .paused)
+        store.updateNewRegionExperience(.openSandbox)
+        store.updateNewRegionCityName("  Alder Bay  ")
+        store.updateNewRegionSeed("987654")
+        store.updateNewRegionStartingResources(.generous)
+        XCTAssertTrue(store.createNewRegion())
+        XCTAssertEqual(store.state.cityName, "Alder Bay")
+        XCTAssertEqual(store.state.seed, 987654)
+        XCTAssertEqual(store.state.treasury, 60_000)
         XCTAssertEqual(store.state.formattedDay, "Day 1")
         XCTAssertEqual(store.state.population, 300)
-        XCTAssertEqual(store.speed, .paused)
-        XCTAssertEqual(store.lastFeedback, "A fresh region is ready")
+        XCTAssertEqual(store.commandPolicy, .enabled)
+        XCTAssertEqual(store.overlay, .none)
+        XCTAssertFalse(store.showObjectives)
+        XCTAssertEqual(
+            store.lastFeedback,
+            "Sandbox ready · Alder Bay · Seed 987654 · Generous · $60,000"
+        )
     }
 
     @MainActor
@@ -195,6 +213,8 @@ final class CitySessionReplacementConfirmationTests: XCTestCase {
         let starting = CityGameStore(state: .newCity(seed: 42))
         XCTAssertTrue(starting.perform(.newRegion))
         XCTAssertNil(starting.sessionReplacementConfirmation)
-        XCTAssertEqual(starting.lastFeedback, "A fresh region is ready")
+        XCTAssertEqual(starting.commandPolicy, .blocked(.newRegionSetup))
+        XCTAssertNotNil(starting.newRegionSetup)
+        XCTAssertEqual(starting.state, .newCity(seed: 42))
     }
 }

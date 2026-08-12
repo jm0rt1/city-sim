@@ -105,6 +105,7 @@ enum CityCommandRoute: String, Sendable {
 enum CityBlockingModal: String, Equatable, Sendable {
     case welcome
     case startupResume
+    case newRegionSetup
     case checkpointLibrary
     case branchNaming
 }
@@ -130,6 +131,8 @@ enum CityCommandPolicy: Equatable, Sendable {
             "Finish Welcome to New Arcadia to use city commands"
         case .blocked(.startupResume):
             "Choose whether to resume the saved city or start fresh"
+        case .blocked(.newRegionSetup):
+            "Choose a guided city or configure the new sandbox"
         case .blocked(.checkpointLibrary):
             "Choose a verified checkpoint or return to the current city"
         case .blocked(.branchNaming):

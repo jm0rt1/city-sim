@@ -39,6 +39,8 @@ final class CityGameStore: ObservableObject {
     @Published private(set) var lastFeedbackTone: PlayerFeedbackTone = .neutral
     @Published private(set) var resumeBrief: CityResumeBriefPresentation?
     @Published private(set) var startupResumeOffer: CityStartupResumePresentation?
+    @Published private(set) var newRegionSetup: CityNewRegionSetupPresentation?
+    @Published private(set) var newRegionDraft = CityNewRegionDraft.initial(seed: 1)
     @Published private(set) var checkpointLibrary: CityCheckpointLibraryPresentation?
     @Published private(set) var checkpointSupportFeedback: CityCheckpointSupportFeedback?
     @Published private(set) var branchNaming: CityBranchNamingPresentation?
@@ -58,6 +60,7 @@ final class CityGameStore: ObservableObject {
     private var speedBeforeSessionReplacementConfirmation: SimulationSpeed?
     private var pendingSessionReplacementLoad: SaveGameLoadResult?
     private var speedBeforeStartupResumeOffer: SimulationSpeed?
+    private var speedBeforeNewRegionSetup: SimulationSpeed?
     private var pendingStartupResumeLoad: SaveGameLoadResult?
     private var startupResumeOfferWasConsidered = false
     private var checkpointLoadsByID: [String: SaveGameLoadResult] = [:]
@@ -284,6 +287,10 @@ final class CityGameStore: ObservableObject {
            commandPolicy == .blocked(.checkpointLibrary) {
             return cancelCheckpointLibrary()
         }
+        if command == .cancelInteraction,
+           commandPolicy == .blocked(.newRegionSetup) {
+            return cancelNewRegionSetup()
+        }
         if command == .toggleCityFocus,
            Self.shouldQuarantineCityFocusShortcut(
                firstResponder: NSApp?.keyWindow?.firstResponder,
@@ -315,7 +322,7 @@ final class CityGameStore: ObservableObject {
             if currentCityHasProgress {
                 requestSessionReplacementConfirmation(for: .newRegion)
             } else {
-                newCity()
+                openNewRegionSetup()
             }
         case .saveCity:
             save()
@@ -854,7 +861,9 @@ final class CityGameStore: ObservableObject {
     }
 
     private func dismissTopmostSurfaceOrCancel() {
-        if branchNaming != nil {
+        if newRegionSetup != nil {
+            cancelNewRegionSetup()
+        } else if branchNaming != nil {
             cancelBranchNaming()
         } else if checkpointLibrary != nil {
             cancelCheckpointLibrary()
@@ -1195,16 +1204,87 @@ final class CityGameStore: ObservableObject {
     }
 
     func newCity() {
+        applyNewRegion(
+            CityNewRegionConfiguration(
+                experience: .guidedFoundations,
+                cityName: "New Arcadia",
+                seed: UInt64.random(in: 1...UInt64.max),
+                startingResources: .balanced
+            )
+        )
+    }
+
+    func openNewRegionSetup(suggestedSeed: UInt64? = nil) {
+        guard newRegionSetup == nil, commandPolicy == .enabled else { return }
+        speedBeforeNewRegionSetup = speed
+        speed = .paused
+        showCommandGuide = false
+        showCityHandbook = false
+        let seed = suggestedSeed ?? UInt64.random(in: 1...UInt64.max)
+        newRegionDraft = .initial(seed: seed)
+        newRegionSetup = .standard
+        presentBlockingModal(.newRegionSetup)
+    }
+
+    func updateNewRegionExperience(_ experience: CityNewRegionExperience) {
+        guard commandPolicy == .blocked(.newRegionSetup) else { return }
+        newRegionDraft.experience = experience
+    }
+
+    func updateNewRegionCityName(_ cityName: String) {
+        guard commandPolicy == .blocked(.newRegionSetup) else { return }
+        newRegionDraft.cityName = String(cityName.prefix(60))
+    }
+
+    func updateNewRegionSeed(_ seed: String) {
+        guard commandPolicy == .blocked(.newRegionSetup) else { return }
+        newRegionDraft.seedText = String(seed.prefix(24))
+    }
+
+    func updateNewRegionStartingResources(_ resources: CitySandboxStartingResources) {
+        guard commandPolicy == .blocked(.newRegionSetup) else { return }
+        newRegionDraft.startingResources = resources
+    }
+
+    @discardableResult
+    func createNewRegion() -> Bool {
+        guard commandPolicy == .blocked(.newRegionSetup),
+              let configuration = newRegionDraft.configuration else { return false }
+        _ = dismissBlockingModal(.newRegionSetup)
+        newRegionSetup = nil
+        speedBeforeNewRegionSetup = nil
+        applyNewRegion(configuration)
+        return true
+    }
+
+    @discardableResult
+    func cancelNewRegionSetup() -> Bool {
+        guard commandPolicy == .blocked(.newRegionSetup), newRegionSetup != nil else {
+            return false
+        }
+        let previousSpeed = speedBeforeNewRegionSetup ?? .paused
+        newRegionSetup = nil
+        speedBeforeNewRegionSetup = nil
+        _ = dismissBlockingModal(.newRegionSetup)
+        speed = previousSpeed
+        requestMapFocus()
+        showFeedback("\(state.cityName) kept · New region setup canceled")
+        return true
+    }
+
+    private func applyNewRegion(_ configuration: CityNewRegionConfiguration) {
         sessionReplacementConfirmation = nil
         speedBeforeSessionReplacementConfirmation = nil
         pendingSessionReplacementLoad = nil
+        newRegionSetup = nil
+        speedBeforeNewRegionSetup = nil
         checkpointLibrary = nil
         checkpointLoadsByID.removeAll()
         checkpointEntriesByID.removeAll()
         checkpointSupportFeedback = nil
         speedBeforeCheckpointLibrary = nil
         clearBranchNamingState()
-        state = .newCity(seed: UInt64.random(in: 1...UInt64.max))
+        state = configuration.makeState()
         isPhotoModeEnabled = false
         speedBeforePhotoMode = nil
         overlayBeforePhotoMode = nil
@@ -1223,16 +1303,27 @@ final class CityGameStore: ObservableObject {
         selectedBuildCategory = .roads
         interactionMode = .inspect
         selectedCoordinate = nil
+        overlay = .none
         inspectorSection = .overview
         hudContextScope = .city
         showInspector = false
+        showObjectives = false
         showCommandGuide = false
         showCityHandbook = false
         isCityFocusModeEnabled = false
         undoStates.removeAll()
         canUndo = false
         requestMapFocus()
-        showFeedback("A fresh region is ready")
+        switch configuration.experience {
+        case .guidedFoundations:
+            showFeedback("Guided Foundations ready · New Arcadia · Seed \(configuration.seed)")
+        case .openSandbox:
+            showFeedback(
+                "Sandbox ready · \(configuration.cityName) · Seed \(configuration.seed) · "
+                    + configuration.startingResources.title,
+                tone: .positive
+            )
+        }
     }
 
     private var currentCityHasProgress: Bool {
@@ -1471,12 +1562,14 @@ final class CityGameStore: ObservableObject {
     func confirmSessionReplacement() -> Bool {
         guard let action = sessionReplacementConfirmation?.action else { return false }
         let preparedLoad = pendingSessionReplacementLoad
+        let previousSpeed = speedBeforeSessionReplacementConfirmation ?? .paused
         sessionReplacementConfirmation = nil
         speedBeforeSessionReplacementConfirmation = nil
         pendingSessionReplacementLoad = nil
         switch action {
         case .newRegion:
-            newCity()
+            openNewRegionSetup()
+            speedBeforeNewRegionSetup = previousSpeed
         case .loadQuicksave:
             guard let preparedLoad else { return false }
             applyLoadedResult(preparedLoad)

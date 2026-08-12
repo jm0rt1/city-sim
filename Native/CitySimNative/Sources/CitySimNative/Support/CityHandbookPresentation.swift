@@ -156,6 +156,14 @@ struct CityHandbookPresentation: Equatable, Sendable {
                 keywords: ["growth loop", "new city", "beginner", "objectives", "cashflow"],
                 entries: [
                     CityHandbookEntry(
+                        id: "start-new-region",
+                        title: "Choose guided or sandbox play",
+                        detail: "New Region offers Guided Foundations with an authored two-act mandate, or Open Sandbox with a custom city name, reproducible seed, and lean, balanced, or generous starting resources. The current city is preserved until you create the new start.",
+                        symbol: "map.fill",
+                        shortcut: "⌘N",
+                        keywords: ["mode", "sandbox", "seed", "starting resources", "guided", "new region"]
+                    ),
+                    CityHandbookEntry(
                         id: "start-pause",
                         title: "Pause and read the city",
                         detail: "Start paused. Check the treasury, demand, objectives, and existing services before spending. A short plan is cheaper than an emergency repair.",

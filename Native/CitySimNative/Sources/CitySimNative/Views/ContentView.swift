@@ -238,6 +238,9 @@ struct ContentView: View {
         .onChange(of: store.sessionReplacementConfirmation != nil) { _, _ in
             synchronizeWelcomePolicy()
         }
+        .onChange(of: store.newRegionSetup != nil) { _, _ in
+            synchronizeWelcomePolicy()
+        }
         .onChange(of: store.showCommandGuide) { _, _ in
             synchronizeWelcomePolicy()
         }
@@ -441,6 +444,18 @@ struct ContentView: View {
                     presentation: offer,
                     resumeAction: { store.resumeStartupCity() },
                     startFreshAction: { store.startFreshFromStartupOffer() }
+                )
+                .transition(.opacity)
+            } else if let setup = store.newRegionSetup {
+                NewRegionSetupView(
+                    presentation: setup,
+                    draft: store.newRegionDraft,
+                    updateExperience: store.updateNewRegionExperience,
+                    updateCityName: store.updateNewRegionCityName,
+                    updateSeed: store.updateNewRegionSeed,
+                    updateStartingResources: store.updateNewRegionStartingResources,
+                    createAction: { _ = store.createNewRegion() },
+                    cancelAction: { _ = store.cancelNewRegionSetup() }
                 )
                 .transition(.opacity)
             } else if let library = store.checkpointLibrary {
@@ -665,6 +680,7 @@ struct ContentView: View {
         } else if store.commandPolicy == .enabled,
                   store.state.status == .playing,
                   store.sessionReplacementConfirmation == nil,
+                  store.newRegionSetup == nil,
                   !store.showCommandGuide,
                   !store.showCityHandbook {
             store.presentBlockingModal(.welcome)

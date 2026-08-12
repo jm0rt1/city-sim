@@ -41,12 +41,13 @@ final class CityGameStore: ObservableObject {
     init(
         state: CityGameState = .newCity(),
         commandPolicy: CityCommandPolicy = .enabled,
-        saveService: SaveGameService = SaveGameService()
+        saveService: SaveGameService = SaveGameService(),
+        startsPaused: Bool = false
     ) {
         self.state = state
         self.commandPolicy = commandPolicy
         self.saves = saveService
-        if state.status != .playing {
+        if startsPaused || state.status != .playing {
             speed = .paused
         }
     }

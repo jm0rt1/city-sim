@@ -103,6 +103,35 @@ final class GameStatusOverlayTests: XCTestCase {
     }
 
     @MainActor
+    func testPausedAppStartupKeepsFreshRootAtDayOneUntilUserExplicitlyLoadsItsSave() throws {
+        let root = FileManager.default.temporaryDirectory
+            .appending(path: "citysim-play051-startup-\(UUID().uuidString)", directoryHint: .isDirectory)
+        defer { try? FileManager.default.removeItem(at: root) }
+
+        let service = SaveGameService(rootURL: root)
+        let fresh = CityGameStore(saveService: service, startsPaused: true)
+
+        XCTAssertFalse(service.hasLoadCandidate)
+        XCTAssertEqual(fresh.state.tick, 0)
+        XCTAssertEqual(fresh.state.formattedDay, "Day 1")
+        XCTAssertEqual(fresh.speed, .paused)
+        XCTAssertTrue(fresh.perform(.togglePause))
+        XCTAssertEqual(fresh.speed, .normal)
+
+        var saved = CityGameState.newCity(seed: 0x051)
+        for _ in 0..<20 { CitySimulation.step(&saved) }
+        try service.save(saved)
+
+        let relaunched = CityGameStore(saveService: service, startsPaused: true)
+        XCTAssertTrue(service.hasLoadCandidate)
+        XCTAssertEqual(relaunched.state.tick, 0, "Startup must not restore a save without the Load command")
+        XCTAssertEqual(relaunched.speed, .paused)
+        XCTAssertTrue(relaunched.perform(.loadCity))
+        XCTAssertEqual(relaunched.state, saved)
+        XCTAssertEqual(relaunched.speed, .paused)
+    }
+
+    @MainActor
     func testTerminalStatusSuppressesUnderlyingGameSurfaceWithoutChangingWelcomePolicy() {
         XCTAssertFalse(ContentView.suppressesGameSurface(for: .enabled, status: .playing))
         XCTAssertTrue(ContentView.suppressesGameSurface(for: .enabled, status: .won))

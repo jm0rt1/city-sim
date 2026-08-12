@@ -574,6 +574,48 @@ final class CityCommandCatalogTests: XCTestCase {
         XCTAssertNil(store.selectedCoordinate)
     }
 
+    func testTownCharterGuidancePreparesForecastUtilityReserveBeforeMoreHousing() throws {
+        var state = try XCTUnwrap(
+            ProductionStoryStateBuilder().buildAll().first {
+                $0.definition.strategy == .commercialStewardship
+                    && $0.definition.stage == .regionalCapital
+            }?.state
+        )
+        state.status = .playing
+        state.progression?.townCharterAwarded = false
+        state.progression?.townCharterQualifyingCycles = 0
+        state.progression?.secondAct = nil
+        state.population = 470
+        state.powerUsed = 410
+        state.powerCapacity = 500
+        state.waterUsed = 360
+        state.waterCapacity = 540
+
+        let analytics = CityAnalytics(state: state)
+        XCTAssertGreaterThan(analytics.utilityReserve, 0.15)
+        let forecast = try XCTUnwrap(analytics.townCharterUtilityForecast)
+        XCTAssertEqual(forecast.kind, .powerPlant)
+        XCTAssertEqual(forecast.projectedUse, 435)
+        XCTAssertEqual(forecast.requiredCapacity, 512)
+        XCTAssertEqual(forecast.capacityGap, 12)
+        XCTAssertEqual(
+            analytics.townCharterStatusText,
+            "Next: prepare 12 more power capacity for 500 residents"
+        )
+
+        let support = CityTownCharterDecisionSupport.make(analytics: analytics)
+        XCTAssertEqual(support.title, "Prepare power for 500 residents")
+        XCTAssertEqual(support.primaryResponse.command, .buildPowerPlant)
+        XCTAssertTrue(support.primaryResponse.explanation.contains("projected use of 435"))
+        XCTAssertTrue(support.primaryResponse.explanation.contains("15% reserve"))
+        XCTAssertTrue(support.secondaryResponses.contains { $0.command == .inspectorUtilities })
+        XCTAssertFalse(
+            ([support.primaryResponse] + support.secondaryResponses).contains {
+                $0.command == .buildResidential
+            }
+        )
+    }
+
     @MainActor
     func testRegionalQualificationInterruptionRoutesTheLiveRemedyAndPauses() throws {
         var state = try XCTUnwrap(

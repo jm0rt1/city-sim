@@ -113,6 +113,14 @@ struct CityTownCharterDecisionSupport: Equatable, Sendable {
             )
         }
         if analytics.state.population < 500 {
+            if let forecast = analytics.townCharterUtilityForecast {
+                let network = forecast.kind == .waterTower ? "water" : "power"
+                return utility(
+                    title: "Prepare \(network) for 500 residents",
+                    kind: forecast.kind,
+                    explanation: "Add at least \(forecast.capacityGap.formatted()) \(network) capacity so projected use of \(forecast.projectedUse.formatted()) keeps the Charter's 15% reserve."
+                )
+            }
             let charterWorkforceTarget = 500 * 7 / 10
             let charterJobCapacity = Int(ceil(Double(charterWorkforceTarget) * 0.9))
             if analytics.jobCapacity < charterJobCapacity {

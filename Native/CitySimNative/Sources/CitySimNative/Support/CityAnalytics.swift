@@ -1,5 +1,12 @@
 import Foundation
 
+struct CityTownCharterUtilityForecast: Equatable, Sendable {
+    let kind: BuildingKind
+    let capacityGap: Int
+    let projectedUse: Int
+    let requiredCapacity: Int
+}
+
 struct CityAnalytics {
     let state: CityGameState
 
@@ -61,6 +68,39 @@ struct CityAnalytics {
 
     var utilityReserve: Double {
         CitySimulation.utilityReserve(in: state)
+    }
+
+    var townCharterUtilityForecast: CityTownCharterUtilityForecast? {
+        guard state.population < 500 else { return nil }
+
+        let currentPopulationPower = Int(Double(state.population) * 0.82)
+        let currentPopulationWater = Int(Double(state.population) * 0.74)
+        let nonPopulationPower = max(0, state.powerUsed - currentPopulationPower)
+        let nonPopulationWater = max(0, state.waterUsed - currentPopulationWater)
+        let projectedPowerUse = Int(Double(500) * 0.82) + nonPopulationPower
+        let projectedWaterUse = Int(Double(500) * 0.74) + nonPopulationWater
+        let requiredPowerCapacity = Int(ceil(Double(projectedPowerUse) / 0.85))
+        let requiredWaterCapacity = Int(ceil(Double(projectedWaterUse) / 0.85))
+        let powerGap = max(0, requiredPowerCapacity - state.powerCapacity)
+        let waterGap = max(0, requiredWaterCapacity - state.waterCapacity)
+
+        guard powerGap > 0 || waterGap > 0 else { return nil }
+        let powerDeficit = Double(powerGap) / Double(max(1, requiredPowerCapacity))
+        let waterDeficit = Double(waterGap) / Double(max(1, requiredWaterCapacity))
+        if waterDeficit >= powerDeficit {
+            return .init(
+                kind: .waterTower,
+                capacityGap: waterGap,
+                projectedUse: projectedWaterUse,
+                requiredCapacity: requiredWaterCapacity
+            )
+        }
+        return .init(
+            kind: .powerPlant,
+            capacityGap: powerGap,
+            projectedUse: projectedPowerUse,
+            requiredCapacity: requiredPowerCapacity
+        )
     }
 
     var projectedRevenue: Double {
@@ -283,6 +323,10 @@ struct CityAnalytics {
             return "Next: restore utilities or parks to lift happiness \(Int(ceil(52 - state.happiness))) points"
         }
         if state.population < 500 {
+            if let forecast = townCharterUtilityForecast {
+                let network = forecast.kind == .waterTower ? "water" : "power"
+                return "Next: prepare \(forecast.capacityGap.formatted()) more \(network) capacity for 500 residents"
+            }
             // The charter's 500-resident review has a 350-person workforce
             // target; 90% employment therefore requires 315 available jobs.
             let charterWorkforceTarget = 500 * 7 / 10

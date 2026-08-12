@@ -1,0 +1,31 @@
+{
+  "admittedFor": "PLAY-113 renderer runtime intake only",
+  "authorityCommit": "8acbf6ae4e39e0e1cf54b43d6366582eeac98cc0",
+  "candidateOnlyHistoricalPacket": true,
+  "disposition": "ADMIT_SOURCE_FAMILY",
+  "family": "civic_l01_v0",
+  "immutablePacket": {
+    "handoff": {
+      "path": "docs/production/evidence/PLAY-113/civic-l01-v0-family/RENDERER-HANDOFF.json",
+      "sha256": "120db6f50010cdca691c619c92b47bac133635b91973c5fca73a3267584ce105"
+    },
+    "normalizedProvenance": {
+      "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-101/civic_l01_v0/normalized/PROVENANCE.json",
+      "sha256": "3e95389119931c26daf2172d153cd6a51d90437cdc221be6f669afe44baef3c1"
+    },
+    "rawMasters": {
+      "east": "38fa961caf29e11c839ee58f6cd61b3cc311352ae9a268d64f34747153e2e6f1",
+      "north": "b5bd3b6259d04626f59513f8ced0aa069fd72a4281a6ac04b7ca678255692fb9",
+      "south": "a55562c33064dd6dcd5d4e063f52cafe3c593b804a9eec2ec15e8ac6d8319af7",
+      "west": "938e71d8c938519302719b22d15bd117e8ea0ffcb5661f22442e3edf8915c529"
+    },
+    "validation": {
+      "path": "docs/production/evidence/PLAY-113/civic-l01-v0-family/VALIDATION-RESULT.json",
+      "sha256": "c10674bcb6ef4403cb04c5655ae8b20c109e1a57d223d22f2833bf616d16d76d"
+    }
+  },
+  "integrationAdmitted": true,
+  "schema": "citysim.play-113.civic-l01-v0.integration-admission.v1",
+  "sourceCommit": "307094c65a595602cbbb7ddd5e8a434399dbb0cc",
+  "task": "PLAY-113"
+}

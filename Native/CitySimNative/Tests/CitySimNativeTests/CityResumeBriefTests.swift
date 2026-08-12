@@ -99,6 +99,7 @@ final class CityResumeBriefTests: XCTestCase {
 
         let primary = CityGameStore(saveService: service, startsPaused: true)
         XCTAssertTrue(primary.perform(.loadCity))
+        try primary.selectNewestCheckpointForTesting()
         XCTAssertEqual(
             primary.lastFeedback,
             CityPersistenceFeedbackPresentation.loaded(
@@ -122,6 +123,7 @@ final class CityResumeBriefTests: XCTestCase {
 
         let recovered = CityGameStore(saveService: service, startsPaused: true)
         XCTAssertTrue(recovered.perform(.loadCity))
+        try recovered.selectNewestCheckpointForTesting()
         XCTAssertEqual(
             recovered.lastFeedback,
             CityPersistenceFeedbackPresentation.loaded(

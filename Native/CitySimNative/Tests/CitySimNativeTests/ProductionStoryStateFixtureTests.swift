@@ -282,6 +282,7 @@ final class ProductionStoryStateFixtureTests: XCTestCase {
                 XCTAssertTrue(store.canUndo, entry.id)
                 store.speed = .fastest
                 XCTAssertTrue(store.perform(.loadCity), entry.id)
+                try store.selectNewestCheckpointForTesting()
                 XCTAssertEqual(
                     store.sessionReplacementConfirmation?.action,
                     .loadQuicksave,
@@ -338,6 +339,7 @@ final class ProductionStoryStateFixtureTests: XCTestCase {
                 let store = preparedStore(saveService: service)
                 store.speed = .fastest
                 XCTAssertTrue(store.perform(.loadCity), entry.id)
+                try store.selectNewestCheckpointForTesting()
                 XCTAssertEqual(
                     store.sessionReplacementConfirmation?.action,
                     .loadQuicksave,

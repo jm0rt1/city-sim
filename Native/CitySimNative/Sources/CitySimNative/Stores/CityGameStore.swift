@@ -35,6 +35,7 @@ final class CityGameStore: ObservableObject {
     @Published private(set) var lastFeedbackTone: PlayerFeedbackTone = .neutral
     @Published private(set) var resumeBrief: CityResumeBriefPresentation?
     @Published private(set) var startupResumeOffer: CityStartupResumePresentation?
+    @Published private(set) var checkpointLibrary: CityCheckpointLibraryPresentation?
     @Published private(set) var sessionReplacementConfirmation: CitySessionReplacementConfirmationPresentation?
     @Published private(set) var canUndo = false
     @Published private(set) var mapFocusRequestGeneration: UInt = 0
@@ -48,6 +49,8 @@ final class CityGameStore: ObservableObject {
     private var speedBeforeStartupResumeOffer: SimulationSpeed?
     private var pendingStartupResumeLoad: SaveGameLoadResult?
     private var startupResumeOfferWasConsidered = false
+    private var checkpointLoadsByID: [String: SaveGameLoadResult] = [:]
+    private var speedBeforeCheckpointLibrary: SimulationSpeed?
     private var lastPersistedState: CityGameState?
     private var lastPersistenceCheckpointKind: CityPersistenceCheckpointKind = .manual
     private var nextAutosaveTick: Int
@@ -214,6 +217,10 @@ final class CityGameStore: ObservableObject {
 
     @discardableResult
     func perform(_ command: CityCommandID) -> Bool {
+        if command == .cancelInteraction,
+           commandPolicy == .blocked(.checkpointLibrary) {
+            return cancelCheckpointLibrary()
+        }
         if command == .toggleCityFocus,
            Self.shouldQuarantineCityFocusShortcut(
                firstResponder: NSApp?.keyWindow?.firstResponder,
@@ -250,11 +257,7 @@ final class CityGameStore: ObservableObject {
         case .saveCity:
             save()
         case .loadCity:
-            if currentCityHasProgress {
-                prepareLoadReplacementConfirmation()
-            } else {
-                load()
-            }
+            openCheckpointLibrary()
         case .undo:
             undoLastAction()
         case .togglePause:
@@ -689,7 +692,9 @@ final class CityGameStore: ObservableObject {
     }
 
     private func dismissTopmostSurfaceOrCancel() {
-        if sessionReplacementConfirmation != nil {
+        if checkpointLibrary != nil {
+            cancelCheckpointLibrary()
+        } else if sessionReplacementConfirmation != nil {
             cancelSessionReplacement()
         } else if showCommandGuide {
             showCommandGuide = false
@@ -1017,6 +1022,9 @@ final class CityGameStore: ObservableObject {
         sessionReplacementConfirmation = nil
         speedBeforeSessionReplacementConfirmation = nil
         pendingSessionReplacementLoad = nil
+        checkpointLibrary = nil
+        checkpointLoadsByID.removeAll()
+        speedBeforeCheckpointLibrary = nil
         state = .newCity(seed: UInt64.random(in: 1...UInt64.max))
         lastPersistedState = nil
         lastPersistenceCheckpointKind = .manual
@@ -1059,20 +1067,60 @@ final class CityGameStore: ObservableObject {
         )
     }
 
-    private func prepareLoadReplacementConfirmation() {
-        do {
-            let result = try saves.loadLatestResumeCandidate()
-            guard result.state != state else {
-                applyLoadedResult(result)
-                return
-            }
+    func openCheckpointLibrary() {
+        guard checkpointLibrary == nil, commandPolicy == .enabled else { return }
+        let entries = saves.checkpointCatalog()
+        guard !entries.isEmpty else {
+            showInvalidQuicksaveFeedback()
+            return
+        }
+        checkpointLoadsByID = Dictionary(uniqueKeysWithValues: entries.compactMap { entry in
+            entry.loadResult.map { (entry.id, $0) }
+        })
+        speedBeforeCheckpointLibrary = speed
+        speed = .paused
+        showCommandGuide = false
+        checkpointLibrary = CityCheckpointLibraryPresentation.make(entries)
+        presentBlockingModal(.checkpointLibrary)
+    }
+
+    @discardableResult
+    func selectCheckpoint(_ id: String) -> Bool {
+        guard commandPolicy == .blocked(.checkpointLibrary),
+              let result = checkpointLoadsByID[id] else { return false }
+        let previousSpeed = speedBeforeCheckpointLibrary ?? .paused
+        checkpointLibrary = nil
+        checkpointLoadsByID.removeAll()
+        speedBeforeCheckpointLibrary = nil
+        _ = dismissBlockingModal(.checkpointLibrary)
+        speed = previousSpeed
+
+        if currentCityHasProgress, result.state != state {
             requestSessionReplacementConfirmation(
                 for: .loadQuicksave,
                 loadResult: result
             )
-        } catch {
-            showInvalidQuicksaveFeedback()
+        } else {
+            applyLoadedResult(result)
+            requestMapFocus()
         }
+        return true
+    }
+
+    @discardableResult
+    func cancelCheckpointLibrary() -> Bool {
+        guard commandPolicy == .blocked(.checkpointLibrary), checkpointLibrary != nil else {
+            return false
+        }
+        let previousSpeed = speedBeforeCheckpointLibrary ?? .paused
+        checkpointLibrary = nil
+        checkpointLoadsByID.removeAll()
+        speedBeforeCheckpointLibrary = nil
+        _ = dismissBlockingModal(.checkpointLibrary)
+        speed = previousSpeed
+        requestMapFocus()
+        showFeedback("\(state.cityName) kept · No checkpoint loaded")
+        return true
     }
 
     @discardableResult
@@ -1161,6 +1209,9 @@ final class CityGameStore: ObservableObject {
     }
 
     private func applyLoadedResult(_ result: SaveGameLoadResult) {
+        checkpointLibrary = nil
+        checkpointLoadsByID.removeAll()
+        speedBeforeCheckpointLibrary = nil
         state = result.state
         lastPersistedState = result.state
         lastPersistenceCheckpointKind = result.isAutosave ? .autosave : .manual

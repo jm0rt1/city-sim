@@ -113,6 +113,9 @@ final class CitySessionReplacementConfirmationTests: XCTestCase {
         let fingerprint = try CityStateFingerprinter.fingerprint(current)
 
         XCTAssertTrue(store.perform(.loadCity))
+        XCTAssertEqual(store.commandPolicy, .blocked(.checkpointLibrary))
+        XCTAssertNil(store.sessionReplacementConfirmation)
+        try store.selectNewestCheckpointForTesting()
         XCTAssertEqual(store.sessionReplacementConfirmation?.action, .loadQuicksave)
         XCTAssertEqual(store.sessionReplacementConfirmation?.title, "Load Saved Harbor?")
         XCTAssertTrue(
@@ -128,6 +131,7 @@ final class CitySessionReplacementConfirmationTests: XCTestCase {
         XCTAssertEqual(store.lastFeedback, "Harbor Point kept · Simulation resumed at 3x")
 
         XCTAssertTrue(store.perform(.loadCity))
+        try store.selectNewestCheckpointForTesting()
         XCTAssertTrue(store.confirmSessionReplacement())
         XCTAssertEqual(store.state, saved)
         XCTAssertEqual(store.speed, .paused)
@@ -152,11 +156,13 @@ final class CitySessionReplacementConfirmationTests: XCTestCase {
 
         let loading = CityGameStore(state: .newCity(seed: 42), saveService: service)
         XCTAssertTrue(loading.perform(.loadCity))
+        try loading.selectNewestCheckpointForTesting()
         XCTAssertNil(loading.sessionReplacementConfirmation)
         XCTAssertEqual(loading.state, saved)
 
         let identical = CityGameStore(state: saved, saveService: service)
         XCTAssertTrue(identical.perform(.loadCity))
+        try identical.selectNewestCheckpointForTesting()
         XCTAssertNil(identical.sessionReplacementConfirmation)
         XCTAssertEqual(identical.state, saved)
         XCTAssertEqual(identical.speed, .paused)

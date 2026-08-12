@@ -222,6 +222,7 @@ final class GameStatusOverlayTests: XCTestCase {
         XCTAssertEqual(relaunched.state.tick, 0, "Startup must not restore a save without the Load command")
         XCTAssertEqual(relaunched.speed, .paused)
         XCTAssertTrue(relaunched.perform(.loadCity))
+        try relaunched.selectNewestCheckpointForTesting()
         XCTAssertEqual(relaunched.state, saved)
         XCTAssertEqual(relaunched.speed, .paused)
     }

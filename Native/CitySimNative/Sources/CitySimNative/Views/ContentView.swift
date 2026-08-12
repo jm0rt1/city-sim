@@ -392,6 +392,13 @@ struct ContentView: View {
                     startFreshAction: { store.startFreshFromStartupOffer() }
                 )
                 .transition(.opacity)
+            } else if let library = store.checkpointLibrary {
+                CheckpointLibraryView(
+                    presentation: library,
+                    selectAction: { _ = store.selectCheckpoint($0) },
+                    cancelAction: { store.cancelCheckpointLibrary() }
+                )
+                .transition(.opacity)
             } else if store.state.status != .playing {
                 GameStatusOverlay(store: store)
                     .transition(.opacity)

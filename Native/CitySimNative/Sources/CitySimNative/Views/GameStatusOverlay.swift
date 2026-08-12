@@ -423,14 +423,15 @@ struct GameStatusOverlay: View {
                 .accessibilityIdentifier("victory.start-new-region")
                 .accessibilityHint("Starts one fresh authored city and closes this result")
 
-            Button("Load Quicksave") { store.perform(.loadCity) }
+            Button("Browse Checkpoints") { store.perform(.loadCity) }
                 .buttonStyle(.bordered)
                 .controlSize(.large)
                 .focused($replayFocus, equals: .loadQuicksave)
                 .disabled(!store.canPerform(.loadCity))
                 .accessibilityIdentifier("victory.load-quicksave")
                 .accessibilityHint(
-                    store.disabledReason(for: .loadCity) ?? "Loads the quicksave and pauses the city"
+                    store.disabledReason(for: .loadCity)
+                        ?? "Shows verified manual and automatic recovery checkpoints"
                 )
 
             if !compact {

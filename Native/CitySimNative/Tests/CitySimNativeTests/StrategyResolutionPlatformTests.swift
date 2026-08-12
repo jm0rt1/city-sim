@@ -230,6 +230,7 @@ final class StrategyResolutionPlatformTests: XCTestCase {
 
                 XCTAssertTrue(store.canPerform(.loadCity), resolution.rawValue)
                 XCTAssertTrue(store.perform(.loadCity), resolution.rawValue)
+                try store.selectNewestCheckpointForTesting()
                 XCTAssertEqual(
                     store.sessionReplacementConfirmation?.action,
                     .loadQuicksave,

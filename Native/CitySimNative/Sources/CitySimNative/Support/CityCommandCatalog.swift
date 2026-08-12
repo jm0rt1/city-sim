@@ -101,6 +101,7 @@ enum CityCommandRoute: String, Sendable {
 enum CityBlockingModal: String, Equatable, Sendable {
     case welcome
     case startupResume
+    case checkpointLibrary
 }
 
 enum CityCommandPolicy: Equatable, Sendable {
@@ -124,6 +125,8 @@ enum CityCommandPolicy: Equatable, Sendable {
             "Finish Welcome to New Arcadia to use city commands"
         case .blocked(.startupResume):
             "Choose whether to resume the saved city or start fresh"
+        case .blocked(.checkpointLibrary):
+            "Choose a verified checkpoint or return to the current city"
         }
     }
 }
@@ -210,7 +213,7 @@ enum CityCommandCatalog {
 
         add(.newRegion, "New Region", .files, "Start a fresh authored city.", shortcut: shortcut("n", [.command], "⌘N", scope: .global))
         add(.saveCity, "Save City", .files, "Save the current city.", shortcut: shortcut("s", [.command], "⌘S", scope: .global))
-        add(.loadCity, "Load City", .files, "Load the current quicksave.", shortcut: shortcut("o", [.command], "⌘O", scope: .global))
+        add(.loadCity, "Load City", .files, "Browse verified manual and automatic checkpoints.", shortcut: shortcut("o", [.command], "⌘O", scope: .global))
         add(.undo, "Undo Construction", .files, "Undo the latest reversible build or demolition.", shortcut: shortcut("z", [.command], "⌘Z", scope: .global))
 
         add(.togglePause, "Pause or Resume", .simulation, "Toggle between paused and the last active speed.", shortcut: shortcut(" ", [], "Space", scope: .gameplay))

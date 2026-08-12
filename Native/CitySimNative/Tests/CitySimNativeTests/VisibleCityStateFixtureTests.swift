@@ -380,6 +380,7 @@ final class VisibleCityStateFixtureTests: XCTestCase {
                 let store = preparedStore(saveService: service)
                 store.speed = .fastest
                 XCTAssertTrue(store.perform(.loadCity), entry.id)
+                try store.selectNewestCheckpointForTesting()
                 XCTAssertEqual(
                     store.sessionReplacementConfirmation?.action,
                     .loadQuicksave,

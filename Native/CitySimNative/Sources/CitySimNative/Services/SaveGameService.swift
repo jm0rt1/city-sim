@@ -31,6 +31,24 @@ struct SaveGameWriteResult: Equatable, Sendable {
     let byteCount: Int
 }
 
+enum SaveGameCheckpointIntegrity: Equatable, Sendable {
+    case verified
+    case invalid
+}
+
+struct SaveGameCheckpointCatalogEntry: Identifiable, Equatable, Sendable {
+    let id: String
+    let source: SaveGameSource
+    let fileName: String
+    let modifiedAt: Date
+    let integrity: SaveGameCheckpointIntegrity
+    let loadResult: SaveGameLoadResult?
+
+    var isLoadable: Bool {
+        integrity == .verified && loadResult != nil
+    }
+}
+
 enum SaveGameError: Error, Equatable {
     case unsupportedSchema(Int)
     case fingerprintVersionMismatch(expected: Int, actual: Int)
@@ -238,6 +256,32 @@ struct SaveGameService {
             throw SaveGameError.noValidSave(primary: nil, backup: nil)
         }
         return latest.result
+    }
+
+    func checkpointCatalog() -> [SaveGameCheckpointCatalogEntry] {
+        let locations = [
+            (saveURL, SaveGameSource.primary),
+            (backupURL, SaveGameSource.backup),
+        ] + autosaveURLs.map { ($0, SaveGameSource.autosave) }
+
+        return locations.compactMap { url, source in
+            guard fileManager.fileExists(atPath: url.path) else { return nil }
+            let result = try? decodeSave(at: url, source: source)
+            return SaveGameCheckpointCatalogEntry(
+                id: "\(source.rawValue):\(url.lastPathComponent)",
+                source: source,
+                fileName: url.lastPathComponent,
+                modifiedAt: modificationDate(for: url),
+                integrity: result == nil ? .invalid : .verified,
+                loadResult: result
+            )
+        }.sorted { lhs, rhs in
+            if lhs.modifiedAt != rhs.modifiedAt { return lhs.modifiedAt > rhs.modifiedAt }
+            let lhsPriority = sourcePriority(lhs.source)
+            let rhsPriority = sourcePriority(rhs.source)
+            if lhsPriority != rhsPriority { return lhsPriority > rhsPriority }
+            return lhs.fileName < rhs.fileName
+        }
     }
 
     private func nextAutosaveURL() -> URL {

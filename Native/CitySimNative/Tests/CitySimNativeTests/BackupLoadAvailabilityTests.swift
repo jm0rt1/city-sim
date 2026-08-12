@@ -69,6 +69,7 @@ final class BackupLoadAvailabilityTests: XCTestCase {
             XCTAssertTrue(service.hasLoadCandidate)
             XCTAssertTrue(primaryStore.canPerform(.loadCity))
             XCTAssertTrue(primaryStore.perform(.loadCity))
+            try primaryStore.selectNewestCheckpointForTesting()
             XCTAssertEqual(primaryStore.state, saved)
             XCTAssertEqual(
                 try CityStateFingerprinter.fingerprint(primaryStore.state),
@@ -123,6 +124,7 @@ final class BackupLoadAvailabilityTests: XCTestCase {
                 store.speed = .fastest
                 XCTAssertTrue(store.canPerform(.loadCity), fixture.name)
                 XCTAssertTrue(store.perform(.loadCity), fixture.name)
+                try store.selectNewestCheckpointForTesting()
                 XCTAssertEqual(store.state, directLoad.state, fixture.name)
                 XCTAssertEqual(store.speed, .paused, fixture.name)
                 XCTAssertFalse(store.canUndo, fixture.name)
@@ -155,7 +157,7 @@ final class BackupLoadAvailabilityTests: XCTestCase {
     }
 
     @MainActor
-    func testInvalidBackupAvailabilityPreservesStateFilesAndPersistentWarning() throws {
+    func testInvalidBackupRemainsVisibleAndUntouchedInCheckpointLibrary() throws {
         try withTemporaryRoot { root in
             let service = SaveGameService(rootURL: root)
             try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
@@ -172,29 +174,24 @@ final class BackupLoadAvailabilityTests: XCTestCase {
             XCTAssertTrue(store.canPerform(.loadCity))
             XCTAssertTrue(store.perform(.loadCity))
             XCTAssertEqual(store.state, initial)
-            XCTAssertEqual(store.speed, .normal)
+            XCTAssertEqual(store.speed, .paused)
             XCTAssertFalse(store.canUndo)
+            XCTAssertEqual(store.commandPolicy, .blocked(.checkpointLibrary))
+            XCTAssertEqual(store.checkpointLibrary?.verifiedCount, 0)
+            XCTAssertEqual(store.checkpointLibrary?.invalidCount, 1)
             XCTAssertEqual(
-                store.lastFeedback,
-                "Saved checkpoint could not be verified · Original save files were preserved"
+                store.checkpointLibrary?.cards.first?.integrityLabel,
+                "Integrity check failed"
             )
-            XCTAssertEqual(store.lastFeedbackTone, .caution)
+            XCTAssertNil(store.lastFeedback)
             XCTAssertEqual(try Data(contentsOf: service.backupURL), invalidBytes)
             XCTAssertFalse(FileManager.default.fileExists(atPath: service.saveURL.path))
+            XCTAssertEqual(try rootFileNames(root), filesBeforeAvailability)
 
-            let preserved = try rootFileNames(root).filter {
-                $0.hasPrefix("quicksave.backup.corrupt-")
-            }
-            XCTAssertEqual(preserved.count, 1)
-
-            RunLoop.main.run(until: Date(timeIntervalSinceNow: 3.3))
-            XCTAssertEqual(
-                store.lastFeedback,
-                "Saved checkpoint could not be verified · Original save files were preserved",
-                "Data-integrity warnings must remain until the player dismisses them"
-            )
-            XCTAssertTrue(store.perform(.dismissFeedback))
-            XCTAssertNil(store.lastFeedback)
+            XCTAssertTrue(store.perform(.cancelInteraction))
+            XCTAssertEqual(store.commandPolicy, .enabled)
+            XCTAssertEqual(store.speed, .normal)
+            XCTAssertEqual(store.lastFeedback, "New Arcadia kept · No checkpoint loaded")
         }
     }
 

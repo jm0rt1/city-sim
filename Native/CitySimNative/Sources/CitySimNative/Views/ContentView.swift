@@ -17,6 +17,12 @@ enum ObjectiveSurfacePresentation: Equatable {
     case compactSummary
 }
 
+enum ContextualGuidancePresentation: Equatable {
+    case hidden
+    case objectives
+    case activity
+}
+
 @MainActor
 final class CityFocusPointerTransitionView: NSView {
     let pointerTransitionGate: CityMapPointerTransitionGate
@@ -282,6 +288,16 @@ struct ContentView: View {
         return compact && showInspector ? .compactSummary : .expanded
     }
 
+    static func contextualGuidancePresentation(
+        showObjectives: Bool,
+        showInspector: Bool,
+        hasActivity: Bool
+    ) -> ContextualGuidancePresentation {
+        guard !showInspector else { return .hidden }
+        if showObjectives { return .objectives }
+        return hasActivity ? .activity : .hidden
+    }
+
     private var feedbackSymbol: String {
         switch store.lastFeedbackTone {
         case .positive: "checkmark.circle.fill"
@@ -381,25 +397,22 @@ struct ContentView: View {
                             }
 
                         HStack(alignment: .top) {
-                            switch Self.objectiveSurfacePresentation(
-                                compact: compact,
+                            switch Self.contextualGuidancePresentation(
                                 showObjectives: store.showObjectives,
-                                showInspector: store.showInspector
+                                showInspector: store.showInspector,
+                                hasActivity: !store.messageSummaries.isEmpty
                             ) {
                             case .hidden:
                                 EmptyView()
-                            case .expanded:
+                            case .objectives:
                                 ObjectivesView(store: store)
                                     .transition(GameTheme.transition(edge: .leading, reduceMotion: reduceMotion))
-                            case .compactSummary:
-                                ObjectiveSummaryView(store: store)
-                                    .transition(GameTheme.transition(edge: .leading, reduceMotion: reduceMotion))
-                                    .accessibilityHint("Close command-center details to expand all objectives")
+                            case .activity:
+                                Spacer(minLength: 8)
+                                EventFeedView(store: store, compact: compact)
+                                    .opacity(compact ? 1 : 0.78)
+                                    .scaleEffect(compact ? 1 : 0.88, anchor: .topTrailing)
                             }
-                            Spacer(minLength: 8)
-                            EventFeedView(store: store, compact: compact)
-                                .opacity(compact ? 1 : 0.78)
-                                .scaleEffect(compact ? 1 : 0.88, anchor: .topTrailing)
                         }
                     }
 

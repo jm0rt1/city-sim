@@ -106,7 +106,7 @@ struct OverlayDiagnosticsPaletteView: View {
     @ObservedObject var store: CityGameStore
     var compact = false
 
-    static let compactMaximumHeight: CGFloat = 70
+    static let compactMaximumHeight: CGFloat = 48
     static let regularMaximumHeight: CGFloat = 74
 
     private var selectedConsequence: CitySpatialConsequence? {
@@ -131,6 +131,68 @@ struct OverlayDiagnosticsPaletteView: View {
         let sourceAndFreshness: String = presentation.source + " · " + presentation.freshness
         let activeSummary: String = titleAndDetail + " · " + sourceAndFreshness
 
+        if compact {
+            compactPalette(presentation: presentation)
+        } else {
+            expandedPalette(
+                presentation: presentation,
+                activeSummary: activeSummary
+            )
+        }
+    }
+
+    private func compactPalette(presentation: OverlayDiagnosticsPalettePresentation) -> some View {
+        Menu {
+            ForEach(DataOverlay.allCases) { overlay in
+                let overlayPresentation = OverlayDiagnosticsPalettePresentation.make(
+                    overlay: overlay,
+                    consequence: selectedConsequence,
+                    tick: store.state.tick
+                )
+                Button {
+                    store.perform(CityCommandCatalog.id(for: overlay))
+                } label: {
+                    Label(overlayPresentation.title, systemImage: overlay.symbol)
+                }
+                .accessibilityLabel(overlayPresentation.title + " layer")
+                .accessibilityValue(
+                    store.overlay == overlay
+                        ? "Active. " + overlayPresentation.accessibilityValue
+                        : overlayPresentation.accessibilityValue
+                )
+                .accessibilityHint("Switches the map to this layer")
+            }
+        } label: {
+            HStack(spacing: 6) {
+                Label("Map layers", systemImage: "square.grid.2x2.fill")
+                    .font(.system(size: 11, weight: .bold, design: .rounded))
+                Text(presentation.title + " · " + presentation.shortDetail)
+                    .font(.system(size: 10, weight: .medium, design: .rounded))
+                    .foregroundStyle(.secondary)
+                    .lineLimit(1)
+                    .truncationMode(.tail)
+                    .layoutPriority(1)
+            }
+            .padding(.horizontal, 8)
+            .frame(maxWidth: .infinity, minHeight: GameTheme.controlMinimum, alignment: .leading)
+        }
+        .menuStyle(.borderlessButton)
+        .background(.thinMaterial, in: RoundedRectangle(cornerRadius: GameTheme.panelRadius, style: .continuous))
+        .background(
+            GameTheme.hudSurfaceFill,
+            in: RoundedRectangle(cornerRadius: GameTheme.panelRadius, style: .continuous)
+        )
+        .overlay(RoundedRectangle(cornerRadius: GameTheme.panelRadius).stroke(GameTheme.strongPanelStroke))
+        .accessibilityLabel("Map layers")
+        .accessibilityValue(activePresentation.accessibilityValue)
+        .accessibilityHint("Open to choose City or a diagnostic layer. Select a place on the map for local details.")
+        .accessibilityIdentifier("hud.diagnostics.palette")
+    }
+
+    private func expandedPalette(
+        presentation: OverlayDiagnosticsPalettePresentation,
+        activeSummary: String
+    ) -> some View {
         VStack(alignment: .leading, spacing: 3) {
             HStack(spacing: 6) {
                 Label("MAP DIAGNOSTICS", systemImage: "square.grid.2x2.fill")
@@ -160,10 +222,10 @@ struct OverlayDiagnosticsPaletteView: View {
             }
             .scrollClipDisabled()
         }
-        .padding(.horizontal, compact ? 8 : 10)
+        .padding(.horizontal, 10)
         .padding(.vertical, 5)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .frame(height: compact ? Self.compactMaximumHeight : Self.regularMaximumHeight)
+        .frame(height: Self.regularMaximumHeight)
         .background(.thinMaterial, in: RoundedRectangle(cornerRadius: GameTheme.panelRadius, style: .continuous))
         .background(
             GameTheme.hudSurfaceFill,

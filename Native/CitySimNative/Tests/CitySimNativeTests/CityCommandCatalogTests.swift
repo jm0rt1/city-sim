@@ -399,6 +399,8 @@ final class CityCommandCatalogTests: XCTestCase {
         populationStore.speed = .fastest
         let population = CityStrategyHUDPresentation.make(analytics: populationStore.analytics)
         XCTAssertEqual(population.title, "Grow to 525 residents")
+        XCTAssertEqual(population.status, "INTERRUPTED · 0/12")
+        XCTAssertEqual(population.tone, .recovery)
         XCTAssertEqual(population.diagnostic?.command, .buildResidential)
         XCTAssertTrue(population.actions.contains { $0.command == .inspectorPopulation })
         XCTAssertTrue(population.summary.contains("Also below standard:"))
@@ -444,6 +446,24 @@ final class CityCommandCatalogTests: XCTestCase {
         XCTAssertTrue([CityCommandID.buildPowerPlant, .buildWaterTower].contains(utility.diagnostic?.command))
         XCTAssertTrue(utility.actions.contains { $0.command == .inspectorUtilities })
         XCTAssertTrue(utility.summary.contains("20%"))
+
+        var healthyState = try XCTUnwrap(
+            ProductionStoryStateBuilder().buildAll().first {
+                $0.definition.strategy == .industrialExpansion
+                    && $0.definition.stage == .regionalCapital
+            }?.state
+        )
+        healthyState.status = .playing
+        healthyState.progression?.secondAct?.phase = .qualification
+        healthyState.progression?.secondAct?.regionalCapitalAwarded = false
+        healthyState.progression?.secondAct?.qualifyingCycles = 7
+        let healthyAnalytics = CityAnalytics(state: healthyState)
+        XCTAssertTrue(healthyAnalytics.meetsRegionalCapitalStandards)
+        let healthy = CityStrategyHUDPresentation.make(analytics: healthyAnalytics)
+        XCTAssertEqual(healthy.status, "QUALIFYING · 7/12")
+        XCTAssertEqual(healthy.tone, .active)
+        XCTAssertEqual(healthy.title, "Hold every regional standard")
+        XCTAssertTrue(healthy.accessibilityValue.contains("QUALIFYING · 7/12"))
     }
 
     @MainActor

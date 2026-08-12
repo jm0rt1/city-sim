@@ -139,6 +139,8 @@ struct CityStrategyHUDPresentation: Equatable {
             ]
         let eyebrow = commercial ? "REGIONAL MAIN STREET" : "REGIONAL FREIGHT"
         let qualificationSupport = CityRegionalCapitalDecisionSupport.make(analytics: analytics)
+        let qualificationStandardsMet = analytics.meetsRegionalCapitalStandards
+        let qualificationProgress = "\(analytics.regionalCapitalQualifyingCycles)/\(CitySimulation.regionalCapitalQualificationCycles)"
 
         return switch phase {
         case .mandate:
@@ -175,9 +177,9 @@ struct CityStrategyHUDPresentation: Equatable {
             .init(
                 eyebrow: eyebrow,
                 title: qualificationSupport.title,
-                status: "QUALIFYING",
+                status: "\(qualificationStandardsMet ? "QUALIFYING" : "INTERRUPTED") · \(qualificationProgress)",
                 summary: statusText,
-                tone: .active,
+                tone: qualificationStandardsMet ? .active : .recovery,
                 diagnostic: qualificationSupport.primaryResponse,
                 actions: qualificationSupport.secondaryResponses
             )

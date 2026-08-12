@@ -374,6 +374,34 @@ class ModelRouteTests(unittest.TestCase):
             },
         }
 
+    def qa_launch_receipt(self, handoff: dict, *, pid: int = 5252) -> dict:
+        handoff_path = self.repo / "inputs" / "qa-handoff.json"
+        handoff_path.write_text(json.dumps(handoff), encoding="utf-8")
+        observation_path = self.repo / "qa-process.log"
+        environment = handoff["launch"]["environment"]
+        executable = handoff["stageProcess"]["executable"]
+        observation_path.write_text(
+            "PID TT STAT TIME COMMAND\n"
+            + f"{pid} ?? S 0:00.01 {executable} "
+            + " ".join(f"{key}={value}" for key, value in environment.items())
+            + "\n",
+            encoding="utf-8",
+        )
+        return {
+            "schema": 1,
+            "kind": "qa_launch_receipt",
+            "handoff": self._binding("inputs/qa-handoff.json"),
+            "pid": pid,
+            "executable": executable,
+            "command": copy.deepcopy(handoff["launch"]["command"]),
+            "environment": copy.deepcopy(environment),
+            "observation": {
+                "command": ["ps", "eww", "-p", str(pid)],
+                "path": str(observation_path),
+                "sha256": hashlib.sha256(observation_path.read_bytes()).hexdigest(),
+            },
+        }
+
     def test_all_supported_route_tuples(self) -> None:
         kinds = {
             "FRONTIER_AUTHORITY": "authority",
@@ -937,6 +965,56 @@ class ModelRouteTests(unittest.TestCase):
         ):
             errors = validator.validate_qa_handoff(handoff, self.repo)
         self.assertTrue(any("no unnamed same-executable" in error for error in errors), errors)
+
+    def test_qa_launch_receipt_binds_result_bearing_actual_pid_observation(self) -> None:
+        handoff = self.qa_handoff()
+        receipt = self.qa_launch_receipt(handoff)
+        self.assertEqual(
+            [], validator.validate_qa_launch_receipt(receipt, handoff, self.repo)
+        )
+
+    def test_qa_launch_receipt_rejects_handoff_or_observation_drift(self) -> None:
+        handoff = self.qa_handoff()
+        receipt = self.qa_launch_receipt(handoff)
+        receipt["handoff"]["sha256"] = "0" * 64
+        errors = validator.validate_qa_launch_receipt(receipt, handoff, self.repo)
+        self.assertTrue(any("does not match repository bytes" in error for error in errors), errors)
+
+        receipt = self.qa_launch_receipt(handoff)
+        Path(receipt["observation"]["path"]).write_text("drifted\n", encoding="utf-8")
+        errors = validator.validate_qa_launch_receipt(receipt, handoff, self.repo)
+        self.assertTrue(any("hash does not match" in error for error in errors), errors)
+
+    def test_qa_launch_receipt_rejects_wrong_pid_executable_or_environment(self) -> None:
+        handoff = self.qa_handoff()
+        receipt = self.qa_launch_receipt(handoff)
+        receipt["observation"]["command"][-1] = "9999"
+        errors = validator.validate_qa_launch_receipt(receipt, handoff, self.repo)
+        self.assertTrue(any("exact PID" in error for error in errors), errors)
+
+        receipt = self.qa_launch_receipt(handoff)
+        receipt["executable"] = str(self.repo / "wrong")
+        errors = validator.validate_qa_launch_receipt(receipt, handoff, self.repo)
+        self.assertTrue(any("sealed bundle" in error for error in errors), errors)
+
+        receipt = self.qa_launch_receipt(handoff)
+        observation_path = Path(receipt["observation"]["path"])
+        text = observation_path.read_text(encoding="utf-8").replace(
+            "CITYSIM_COMPACT_WINDOW=1", ""
+        )
+        observation_path.write_text(text, encoding="utf-8")
+        receipt["observation"]["sha256"] = hashlib.sha256(
+            observation_path.read_bytes()
+        ).hexdigest()
+        errors = validator.validate_qa_launch_receipt(receipt, handoff, self.repo)
+        self.assertTrue(any("missing required environment" in error for error in errors), errors)
+
+    def test_qa_launch_receipt_requires_transferred_pid_identity(self) -> None:
+        handoff = self.qa_handoff()
+        handoff["stageProcess"]["disposition"] = "transferred_to_qa"
+        receipt = self.qa_launch_receipt(handoff, pid=5252)
+        errors = validator.validate_qa_launch_receipt(receipt, handoff, self.repo)
+        self.assertTrue(any("transferred stage process" in error for error in errors), errors)
 
     def test_swift_test_log_requires_result_bearing_pass_summary(self) -> None:
         xctest = (

@@ -134,7 +134,11 @@ the process before handoff and no same-executable process remains, or it
 transferred that exact live PID to QA and no unnamed same-executable process
 exists. The validator enforces this live preflight. Independent QA then
 verifies the required environment on the actual transferred or newly launched
-PID before interacting. A missing or mismatched envelope is setup failure, not
+PID before interacting. That verification is result-bearing: QA retains the
+exact `ps eww -p <pid>` output and validates one `qa_launch_receipt` that binds
+the handoff hash, actual PID, sealed executable, launch argv/environment, and
+retained output hash. Interaction cannot begin from a declaration or sampled
+PID alone. A missing or mismatched envelope or launch receipt is setup failure, not
 a product RETURN, rebuild request, reviewer, or second acceptance gate.
 
 ## Outcome lease fast path

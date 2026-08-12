@@ -603,6 +603,11 @@ process before handoff, leaving no live same-executable process, or explicitly
 transfer the exact live PID to QA; validator preflight rejects every unnamed
 same-executable process. This is process ownership inside the existing handoff,
 not another launch, aggregate, review, or acceptance layer.
+Before interaction, QA retains the exact actual-PID `ps eww` output and
+validates one result-bearing launch receipt binding the handoff hash, actual
+PID, sealed executable, launch argv/environment, and observation hash. A
+declared command or sampled PID without those retained bytes is not launch
+proof. The receipt belongs to the existing QA journey and adds no reviewer.
 Mismatch is setup failure owned by Integration; it neither condemns product
 bytes nor creates another reviewer or acceptance gate.
 The composed-screen comparison is part of that one existing real-app journey,

@@ -26,6 +26,7 @@ OPTIONAL_ROUTE_FIELDS = {"compositionContract", "swiftExecution", "writerExecuti
 ROUTE_SCHEMA = 2
 DISPATCH_SCHEMA = 2
 QA_HANDOFF_SCHEMA = 2
+QA_LAUNCH_RECEIPT_SCHEMA = 1
 ROUTES = {
     "FRONTIER_AUTHORITY": ("gpt-5.6-sol", "high"),
     "LUNA_IMPLEMENTATION": ("gpt-5.6-luna", "high"),
@@ -1468,6 +1469,121 @@ def validate_qa_handoff(handoff: Any, repo: Path) -> list[str]:
     return errors
 
 
+def validate_qa_launch_receipt(receipt: Any, handoff: Any, repo: Path) -> list[str]:
+    """Validate retained actual-PID observation before QA interaction."""
+    errors: list[str] = []
+    fields = {
+        "schema", "kind", "handoff", "pid", "executable", "command",
+        "environment", "observation",
+    }
+    if not isinstance(receipt, dict) or set(receipt) != fields:
+        return ["QA launch receipt has unsupported or missing fields"]
+    if (
+        receipt["schema"] != QA_LAUNCH_RECEIPT_SCHEMA
+        or receipt["kind"] != "qa_launch_receipt"
+    ):
+        errors.append("QA launch receipt must be schema 1 kind qa_launch_receipt")
+
+    _check_binding(repo, receipt["handoff"], "QA launch receipt handoff", errors)
+    handoff_binding = receipt["handoff"] if isinstance(receipt["handoff"], dict) else {}
+    handoff_path = handoff_binding.get("path")
+    if isinstance(handoff_path, str) and (repo / handoff_path).is_file():
+        try:
+            bound_handoff = load_json(repo / handoff_path)
+        except ValidationError as exc:
+            errors.append(f"cannot load QA launch receipt handoff: {exc}")
+        else:
+            if bound_handoff != handoff:
+                errors.append("QA launch receipt does not bind the exact QA handoff")
+
+    pid = receipt["pid"]
+    if isinstance(pid, bool) or not isinstance(pid, int) or pid <= 0:
+        errors.append("QA launch receipt pid must be a positive integer")
+    launch = handoff.get("launch", {}) if isinstance(handoff, dict) else {}
+    if receipt["command"] != launch.get("command"):
+        errors.append("QA launch receipt command does not match QA handoff")
+    environment = launch.get("environment")
+    if receipt["environment"] != environment:
+        errors.append("QA launch receipt environment does not match QA handoff")
+
+    stage = handoff.get("stage", {}) if isinstance(handoff, dict) else {}
+    app_root_value = stage.get("appRoot") if isinstance(stage, dict) else None
+    expected_executable: Path | None = None
+    if isinstance(app_root_value, str) and Path(app_root_value).is_absolute():
+        app_root = Path(app_root_value)
+        try:
+            with (app_root / "Contents" / "Info.plist").open("rb") as handle:
+                info = plistlib.load(handle)
+            executable_name = info.get("CFBundleExecutable") if isinstance(info, dict) else None
+        except (OSError, plistlib.InvalidFileException) as exc:
+            errors.append(f"QA launch receipt cannot resolve staged executable: {exc}")
+        else:
+            if isinstance(executable_name, str) and executable_name:
+                expected_executable = app_root / "Contents" / "MacOS" / executable_name
+    if expected_executable is None:
+        errors.append("QA launch receipt requires the sealed bundle executable")
+    elif receipt["executable"] != str(expected_executable):
+        errors.append("QA launch receipt executable does not match the sealed bundle")
+
+    stage_process = handoff.get("stageProcess", {}) if isinstance(handoff, dict) else {}
+    if (
+        isinstance(stage_process, dict)
+        and stage_process.get("disposition") == "transferred_to_qa"
+        and pid != stage_process.get("pid")
+    ):
+        errors.append("QA launch receipt PID does not match the transferred stage process")
+
+    observation = receipt["observation"]
+    if not isinstance(observation, dict) or set(observation) != {
+        "command", "path", "sha256",
+    }:
+        errors.append("QA launch receipt observation has unsupported or missing fields")
+        return errors
+    expected_observation_command = ["ps", "eww", "-p", str(pid)]
+    if observation["command"] != expected_observation_command:
+        errors.append("QA launch receipt observation command must inspect the exact PID")
+    observation_path_value = observation["path"]
+    observation_path = (
+        Path(observation_path_value)
+        if isinstance(observation_path_value, str)
+        else None
+    )
+    if observation_path is None or not observation_path.is_absolute():
+        errors.append("QA launch receipt observation.path must be absolute")
+        return errors
+    try:
+        observation_bytes = observation_path.read_bytes()
+        observation_text = observation_bytes.decode("utf-8")
+    except (OSError, UnicodeError) as exc:
+        errors.append(f"QA launch receipt cannot read observation output: {exc}")
+        return errors
+    actual_sha = hashlib.sha256(observation_bytes).hexdigest()
+    if observation["sha256"] != actual_sha:
+        errors.append("QA launch receipt observation hash does not match retained bytes")
+
+    process_lines = [
+        line.strip() for line in observation_text.splitlines()
+        if line.strip().startswith(f"{pid} ")
+    ]
+    if len(process_lines) != 1:
+        errors.append("QA launch receipt observation must contain exactly one actual PID row")
+        return errors
+    process_line = process_lines[0]
+    if expected_executable is not None and str(expected_executable) not in process_line:
+        errors.append("QA launch receipt observation does not contain the sealed executable")
+    if isinstance(environment, dict):
+        missing = [
+            f"{key}={value}" for key, value in environment.items()
+            if f"{key}={value}" not in process_line
+        ]
+        if missing:
+            errors.append(
+                "QA launch receipt observation is missing required environment: "
+                + ", ".join(sorted(missing))
+            )
+    return errors
+
+
 def validate_siblings(previous: Any, current: Any, failed_direction: str) -> list[str]:
     errors: list[str] = []
     if not isinstance(previous, dict) or not isinstance(current, dict):
@@ -1494,6 +1610,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--dispatch")
     parser.add_argument("--dispatch-route-id")
     parser.add_argument("--qa-handoff")
+    parser.add_argument("--qa-launch-receipt")
     parser.add_argument("--swift-test-log", action="append")
     parser.add_argument("--writer-route")
     parser.add_argument("--writer-receipt")
@@ -1514,8 +1631,17 @@ def main(argv: list[str] | None = None) -> int:
                     load_json(Path(args.dispatch)), repo, args.dispatch_route_id
                 )
             )
+        qa_handoff: Any = None
         if args.qa_handoff:
-            errors.extend(validate_qa_handoff(load_json(Path(args.qa_handoff)), repo))
+            qa_handoff = load_json(Path(args.qa_handoff))
+            errors.extend(validate_qa_handoff(qa_handoff, repo))
+        if args.qa_launch_receipt:
+            if qa_handoff is None:
+                errors.append("--qa-launch-receipt requires --qa-handoff")
+            else:
+                errors.extend(validate_qa_launch_receipt(
+                    load_json(Path(args.qa_launch_receipt)), qa_handoff, repo
+                ))
         if args.swift_test_log:
             for log_path in args.swift_test_log:
                 try:
@@ -1546,12 +1672,14 @@ def main(argv: list[str] | None = None) -> int:
     except ValidationError as exc:
         errors.append(str(exc))
     if not any((
-        args.route, args.dispatch, args.qa_handoff, args.swift_test_log,
+        args.route, args.dispatch, args.qa_handoff, args.qa_launch_receipt,
+        args.swift_test_log,
         args.writer_receipt,
         args.previous_ledger,
     )):
         errors.append(
-            "provide --route, --dispatch, --qa-handoff, --swift-test-log, "
+            "provide --route, --dispatch, --qa-handoff/--qa-launch-receipt, "
+            "--swift-test-log, "
             "--writer-route/--writer-receipt, "
             "or sibling ledger arguments"
         )

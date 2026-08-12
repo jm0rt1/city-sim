@@ -505,6 +505,14 @@ Each audit ends in `NO_CHANGE`, one bounded action/proposal, or one frontier
 escalation; repeated proven waste with exact control-plane authority is repaired
 directly instead of observed again.
 
+### Unresolved product RETURN liveness
+
+An unresolved product `RETURN` may never leave its owning lane idle. In the
+same Integration management turn, either wake or refill that owner with the
+smallest bounded repair outcome, or record the exact serialized dependency
+that prevents it. CEO inactivity is not a valid state while ready work or an
+unowned product blocker exists.
+
 ### Integration wave
 
 1. Freeze candidate lanes at their completion commits.

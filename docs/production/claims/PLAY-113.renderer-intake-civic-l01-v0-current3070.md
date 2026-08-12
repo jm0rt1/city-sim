@@ -21,6 +21,15 @@
   `Native/CitySimNative/Sources/CitySimNative/Rendering/LotRenderer.swift`,
   focused `WorldRenderingTests.swift`, and
   `docs/production/evidence/PLAY-113/civic-l01-v0-renderer/` plus completion.
+- **Exact writable roots:**
+  `Native/CitySimNative/WorldArt/GeneratedV4/catalog/`,
+  `Native/CitySimNative/WorldArt/GeneratedV4/tools/build_world_asset_pack.py`,
+  `Native/CitySimNative/Sources/CitySimNative/Resources/WorldAssets.atlas/`,
+  `Native/CitySimNative/Sources/CitySimNative/Rendering/WorldAssetCatalog.swift`,
+  `Native/CitySimNative/Sources/CitySimNative/Rendering/LotRenderer.swift`,
+  `Native/CitySimNative/Tests/CitySimNativeTests/WorldRenderingTests.swift`,
+  `docs/production/evidence/PLAY-113/civic-l01-v0-renderer/`, and
+  `docs/production/completed/PLAY-113.renderer-intake-civic-l01-v0.md`.
 - **Proof / stop:** Two isolated pack runs must be byte-identical; every source
   and normalized handoff hash remains exact; one focused four-frontage ×
   three-LOD civic production-selection proof shows zero fallback. Stop on any

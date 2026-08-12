@@ -280,6 +280,54 @@ final class CityCommandCatalogTests: XCTestCase {
     }
 
     @MainActor
+    func testStrategyHUDRecoveryRoutesStateDestinationAndUncertainOutcomeAtCompactAndRegularSizes() throws {
+        let state = try XCTUnwrap(
+            ProductionStoryStateBuilder().buildAll().first {
+                $0.definition.strategy == .commercialStewardship
+                    && $0.definition.moment == .complication
+            }?.state
+        )
+        let store = CityGameStore(state: state)
+        let presentation = CityStrategyHUDPresentation.make(analytics: store.analytics)
+        let taxPolicy = try XCTUnwrap(presentation.diagnostic)
+        let park = try XCTUnwrap(presentation.actions.first { $0.command == .buildPark })
+
+        XCTAssertEqual(StrategyCommandCenterView.recoveryRouteTitle(for: taxPolicy, compact: true), "Tax Policy")
+        XCTAssertEqual(StrategyCommandCenterView.recoveryRouteTitle(for: taxPolicy, compact: false), "Open Tax Policy")
+        XCTAssertEqual(
+            StrategyCommandCenterView.recoveryRouteOutcome(for: taxPolicy),
+            "Tax relief may support demand; revenue may fall."
+        )
+        XCTAssertEqual(StrategyCommandCenterView.recoveryRouteTitle(for: park, compact: true), "Build Park")
+        XCTAssertEqual(
+            StrategyCommandCenterView.recoveryRouteOutcome(for: park),
+            "A park may support recovery; placement is not guaranteed."
+        )
+
+        let compactSize = CGSize(width: 884, height: StrategyCommandCenterView.compactMaximumHeight)
+        let compact = try bitmap(
+            of: StrategyCommandCenterView(store: store, compact: true)
+                .frame(width: compactSize.width, height: compactSize.height),
+            size: compactSize
+        )
+        let regularSize = CGSize(width: 1_240, height: StrategyCommandCenterView.regularMaximumHeight)
+        let regular = try bitmap(
+            of: StrategyCommandCenterView(store: store, compact: false)
+                .frame(width: regularSize.width, height: regularSize.height),
+            size: regularSize
+        )
+        XCTAssertEqual(compact.size, compactSize)
+        XCTAssertEqual(regular.size, regularSize)
+
+        XCTAssertTrue(store.perform(taxPolicy.command), "Pointer and FKA retain the existing Tax Policy command")
+        XCTAssertEqual(store.inspectorSection, .finances)
+        let focusBeforePark = store.mapFocusRequestGeneration
+        XCTAssertTrue(store.performMapFocused(park.command), "Pointer and FKA retain the existing map-focused route")
+        XCTAssertEqual(store.interactionMode, .build(.park))
+        XCTAssertEqual(store.mapFocusRequestGeneration, focusBeforePark + 1)
+    }
+
+    @MainActor
     func testTaxPolicySearchResultUsesCurrentAvailabilityAndDisabledReason() throws {
         let enabled = CityGameStore(state: .newCity(seed: 42))
         let result = try XCTUnwrap(CityCommandCatalog.matchingDescriptors(query: "storefront").first)

@@ -625,47 +625,98 @@ struct StrategyCommandCenterView: View {
     }
 
     private func primaryResponseButton(_ response: CityDirectResponse) -> some View {
-        Button { perform(response) } label: {
-            Label("Next: \(responseButtonTitle(response))", systemImage: "arrow.right.circle.fill")
-                .font(.system(size: GameTheme.hudCriticalTextSize, weight: .bold))
-                .lineLimit(1)
-                .minimumScaleFactor(0.78)
-                .padding(.horizontal, compact ? 4 : 7)
-                .frame(minWidth: compact ? 76 : 116, minHeight: GameTheme.controlMinimum)
+        let compactTitle = Self.recoveryRouteTitle(for: response, compact: compact)
+        let outcome = Self.recoveryRouteOutcome(for: response)
+        return Button { perform(response) } label: {
+            HStack(spacing: 3) {
+                Image(systemName: "arrow.right.circle.fill")
+                    .accessibilityHidden(true)
+                VStack(alignment: .leading, spacing: 0) {
+                    Text("Next: \(compactTitle)")
+                        .font(.system(size: GameTheme.hudCriticalTextSize, weight: .bold))
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.78)
+                    Text(outcome)
+                        .font(.system(size: GameTheme.hudSupportTextSize, weight: .medium))
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.75)
+                }
+            }
+            .padding(.horizontal, compact ? 4 : 7)
+            .frame(minWidth: compact ? 76 : 116, minHeight: GameTheme.controlMinimum)
         }
         .buttonStyle(.borderedProminent)
         .tint(tint)
         .disabled(!store.canPerform(response.command))
         .help(store.disabledReason(for: response.command) ?? response.explanation)
-        .accessibilityLabel(response.title)
+        .accessibilityLabel(Self.recoveryRouteTitle(for: response, compact: false))
+        .accessibilityValue(outcome)
         .accessibilityHint(response.explanation)
         .accessibilityIdentifier("hud.strategy.primary")
     }
 
-    private func responseButtonTitle(_ response: CityDirectResponse) -> String {
-        if response.command == .inspectorFinances { return "Tax & cashflow" }
-        if response.command == .inspectorUtilities { return "Utilities" }
-        return response.title
+    static func recoveryRouteTitle(for response: CityDirectResponse, compact: Bool) -> String {
+        switch response.command {
+        case .inspectorFinances:
+            return compact ? "Tax Policy" : "Open Tax Policy"
+        case .inspectorUtilities:
+            return compact ? "Utilities" : "Open Utilities"
+        case .buildPark:
+            return compact ? "Build Park" : "Build a Park"
+        case .buildPowerPlant:
+            return compact ? "Add Power" : "Add Power Plant"
+        case .buildWaterTower:
+            return compact ? "Add Water" : "Add Water Tower"
+        default:
+            return response.title
+        }
+    }
+
+    static func recoveryRouteOutcome(for response: CityDirectResponse) -> String {
+        switch response.command {
+        case .inspectorFinances:
+            return "Tax relief may support demand; revenue may fall."
+        case .inspectorUtilities:
+            return "More capacity may protect the grid."
+        case .buildPark:
+            return "A park may support recovery; placement is not guaranteed."
+        case .buildPowerPlant:
+            return "Reserve power may protect freight; placement is not guaranteed."
+        case .buildWaterTower:
+            return "Water reserve may protect freight; placement is not guaranteed."
+        default:
+            return response.explanation
+        }
     }
 
     private var responseMenu: some View {
         Menu {
             ForEach(secondaryResponses) { response in
-                Button(response.title) { perform(response) }
+                let title = Self.recoveryRouteTitle(for: response, compact: false)
+                let outcome = Self.recoveryRouteOutcome(for: response)
+                Button { perform(response) } label: {
+                    VStack(alignment: .leading, spacing: 1) {
+                        Text(title)
+                        Text(outcome)
+                            .font(.caption)
+                    }
+                }
                     .disabled(!store.canPerform(response.command))
+                    .accessibilityLabel(title)
+                    .accessibilityValue(outcome)
                     .accessibilityHint(
                         store.disabledReason(for: response.command) ?? response.explanation
                     )
             }
         } label: {
-            Label("Act", systemImage: "arrow.turn.down.right")
+            Label(compact ? "Routes" : "Recovery routes", systemImage: "arrow.turn.down.right")
                 .font(.system(size: GameTheme.hudCriticalTextSize, weight: .bold))
                 .frame(minWidth: GameTheme.controlMinimum, minHeight: GameTheme.controlMinimum)
         }
         .menuStyle(.borderlessButton)
         .background(tint.opacity(0.14), in: RoundedRectangle(cornerRadius: 8))
-        .accessibilityLabel("Act on \(presentation.title)")
-        .accessibilityValue("\(presentation.actions.count) available routes")
+        .accessibilityLabel("Recovery routes for \(presentation.title)")
+        .accessibilityValue("\(secondaryResponses.count) routes with destination and likely outcome")
     }
 
     private func perform(_ response: CityDirectResponse) {

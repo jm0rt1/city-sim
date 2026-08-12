@@ -45,6 +45,12 @@ PLAY098_COMMERCIAL_L01_VARIANT_ZERO = (
 PLAY098_COMMERCIAL_L01_VARIANT_ZERO_SELECTION = (
     GENERATED / "catalog" / "play-098-commercial-l01-v0-directions.json"
 )
+PLAY113_CIVIC_L01_VARIANT_ZERO = (
+    ROOT / "ImageGenFourView" / "PLAY-101" / "civic_l01_v0"
+)
+PLAY113_CIVIC_L01_VARIANT_ZERO_SELECTION = (
+    GENERATED / "catalog" / "play-113-civic-l01-v0-directions.json"
+)
 PLAY073_INDUSTRIAL_L2_SELECTION = (
     GENERATED / "catalog" / "play-073-industrial-l2-directions.json"
 )
@@ -94,6 +100,10 @@ PLAY097_RESIDENTIAL_VARIANT_TWO_V03_COMMIT = "514d14746076d67170a0ce37b584381c8c
 PLAY098_COMMERCIAL_L01_VARIANT_ZERO_NORMALIZATION_SHA256 = "fee98cce9a9285a5140721cd588bd6136ec6efced0daf807697d5b8fb3e9133f"
 PLAY098_COMMERCIAL_L01_VARIANT_ZERO_ADMISSION_SHA256 = "7f129e06aa5a2c60b79f5c8e2d40ff41d089e065c190ff7768b51fcac1102812"
 PLAY098_COMMERCIAL_L01_VARIANT_ZERO_COMMIT = "846fffe4146ae355d154dcae37a657ece4a62d49"
+PLAY113_CIVIC_L01_VARIANT_ZERO_HANDOFF_SHA256 = "120db6f50010cdca691c619c92b47bac133635b91973c5fca73a3267584ce105"
+PLAY113_CIVIC_L01_VARIANT_ZERO_VALIDATION_SHA256 = "c10674bcb6ef4403cb04c5655ae8b20c109e1a57d223d22f2833bf616d16d76d"
+PLAY113_CIVIC_L01_VARIANT_ZERO_ADMISSION_SHA256 = "4efe5d9c7fe2dd67afe2a41c39c3e74496f9779e7e783334ece882ca0503eb5a"
+PLAY113_CIVIC_L01_VARIANT_ZERO_COMMIT = "307094c65a595602cbbb7ddd5e8a434399dbb0cc"
 
 
 def relative_to_package(path: Path) -> str:
@@ -1035,6 +1045,203 @@ def commercial_l01_variant_zero_assets(
     return assets
 
 
+def civic_l01_variant_zero_assets(
+    manifest: dict[str, object],
+) -> list[dict[str, object]]:
+    """Bind the Integration-admitted PLAY-113 civic quartet to generated-v4."""
+    handoff_path = (
+        REPOSITORY
+        / "docs/production/evidence/PLAY-113/civic-l01-v0-family/RENDERER-HANDOFF.json"
+    )
+    validation_path = (
+        REPOSITORY
+        / "docs/production/evidence/PLAY-113/civic-l01-v0-family/VALIDATION-RESULT.json"
+    )
+    admission_path = (
+        REPOSITORY
+        / "docs/production/evidence/INTEGRATION/PLAY-113-CIVIC-L01-V0-SOURCE-ADMISSION-CURRENT8AC.json"
+    )
+    if (
+        sha256(handoff_path) != PLAY113_CIVIC_L01_VARIANT_ZERO_HANDOFF_SHA256
+        or sha256(validation_path) != PLAY113_CIVIC_L01_VARIANT_ZERO_VALIDATION_SHA256
+        or sha256(admission_path) != PLAY113_CIVIC_L01_VARIANT_ZERO_ADMISSION_SHA256
+    ):
+        raise SystemExit("build rejected: civic L1 v0 authority drift")
+
+    handoff = json.loads(handoff_path.read_text(encoding="utf-8"))
+    validation = json.loads(validation_path.read_text(encoding="utf-8"))
+    admission = json.loads(admission_path.read_text(encoding="utf-8"))
+    selection = json.loads(
+        PLAY113_CIVIC_L01_VARIANT_ZERO_SELECTION.read_text(encoding="utf-8")
+    )
+    directions = ("north", "east", "south", "west")
+    rows = {item["direction"]: item for item in selection.get("selections", [])}
+    immutable = admission.get("immutablePacket", {})
+    handoff_binding = immutable.get("handoff", {}) if isinstance(immutable, dict) else {}
+    if (
+        selection.get("schema") != 1
+        or selection.get("task") != "PLAY-113"
+        or selection.get("family") != "civic_l01_v0"
+        or set(rows) != set(directions)
+        or handoff.get("schema") != "citysim.play-113.civic-l01-v0.renderer-handoff.v1"
+        or handoff.get("result") != "PASS_CANDIDATE_SOURCE_HANDOFF"
+        or handoff.get("family") != "civic_l01_v0"
+        or validation.get("result") != "PASS"
+        or admission.get("disposition") != "ADMIT_SOURCE_FAMILY"
+        or admission.get("integrationAdmitted") is not True
+        or admission.get("candidateOnlyHistoricalPacket") is not True
+        or handoff_binding.get("sha256") != PLAY113_CIVIC_L01_VARIANT_ZERO_HANDOFF_SHA256
+    ):
+        raise SystemExit("build rejected: civic L1 v0 admission mismatch")
+
+    template = next(
+        (
+            asset
+            for asset in manifest["assets"]
+            if asset.get("family") == "civic"
+            and asset.get("logical_id") == "city_hall_l01"
+            and asset.get("level") == 1
+        ),
+        None,
+    )
+    if template is None:
+        raise SystemExit("build rejected: civic L1 v0 registration template missing")
+    template_world_size = list(template["lods"]["block"]["world_size"])
+    raw_hashes = []
+    lod_hashes = []
+    assets: list[dict[str, object]] = []
+    for direction in directions:
+        source = handoff["rawSources"][direction]
+        raw = REPOSITORY / source["path"]
+        if sha256(raw) != source["sha256"] or rows[direction]["raw_sha256"] != source["sha256"]:
+            raise SystemExit(f"build rejected: civic L1 v0 raw drift for {direction}")
+        raw_hashes.append(source["sha256"])
+
+        asset = copy.deepcopy(template)
+        logical_id = f"civic_l01_v0_{direction}"
+        asset.update(
+            {
+                "logical_id": logical_id,
+                "source_key": f"civic_l01/variant-0/{direction}/source-v01",
+                "source_revision": "source-v01",
+                "variant": 0,
+                "state": "maintained",
+                "residency_id": f"generated-v4/civic/{logical_id}",
+                "source_sha256": source["sha256"],
+                "raw_source_file": source["path"].replace("Native/", "", 1),
+                "provenance_file": relative_to_package(handoff_path),
+                "provenance_sha256": PLAY113_CIVIC_L01_VARIANT_ZERO_HANDOFF_SHA256,
+                "normalization_record_file": relative_to_package(handoff_path),
+                "normalization_record_sha256": PLAY113_CIVIC_L01_VARIANT_ZERO_HANDOFF_SHA256,
+                "reference_sha256": [
+                    PLAY113_CIVIC_L01_VARIANT_ZERO_ADMISSION_SHA256,
+                    PLAY113_CIVIC_L01_VARIANT_ZERO_VALIDATION_SHA256,
+                    PLAY113_CIVIC_L01_VARIANT_ZERO_HANDOFF_SHA256,
+                ],
+                "source_packet_file": relative_to_package(handoff_path),
+                "source_packet_commit": PLAY113_CIVIC_L01_VARIANT_ZERO_COMMIT,
+                "frontage_edge": direction,
+                "view_direction": direction,
+                "supported_orientation": f"{direction}-facing-authored",
+                "entrance_socket_world": list(DIRECTION_SOCKET_WORLD[direction]),
+                "ground_pivot_source": list(GROUND_PIVOT),
+                "placement_offset_world": list(PLACEMENT_OFFSET),
+                "road_setback_points": 0.0,
+            }
+        )
+        for key in (
+            "prompt_file",
+            "prompt_sha256",
+            "scene_descriptor_file",
+            "scene_descriptor_sha256",
+            "material_library_file",
+            "material_library_sha256",
+        ):
+            asset.pop(key, None)
+
+        lods: dict[str, dict[str, object]] = {}
+        block_registration: tuple[float, float, list[float], list[float]] | None = None
+        for detail in DETAILS:
+            row = handoff["lods"][direction][detail]
+            normalized = REPOSITORY / row["path"]
+            expected_sha = rows[direction]["normalized_sha256"][detail]
+            if sha256(normalized) != row["sha256"] or row["sha256"] != expected_sha:
+                raise SystemExit(
+                    f"build rejected: civic L1 v0 normalized drift for {direction}.{detail}"
+                )
+            lod_hashes.append(row["sha256"])
+            with Image.open(normalized) as image:
+                if image.mode != "RGBA" or list(image.size) != row["dimensions"]:
+                    raise SystemExit(
+                        f"build rejected: civic L1 v0 LOD shape for {direction}.{detail}"
+                    )
+                alpha_bounds = image.getchannel("A").getbbox()
+                if alpha_bounds is None:
+                    raise SystemExit(
+                        f"build rejected: empty civic L1 v0 LOD {direction}.{detail}"
+                    )
+                left, top, right, bottom = alpha_bounds
+                width, height = right - left, bottom - top
+                pivot_x = GROUND_PIVOT[0] * image.width / RAW_CANVAS[0]
+                pivot_y = GROUND_PIVOT[1] * image.height / RAW_CANVAS[1]
+                anchor = [
+                    rounded((pivot_x - left) / width),
+                    rounded((bottom - pivot_y) / height),
+                ]
+                if detail == "block":
+                    points_per_pixel = min(
+                        template_world_size[0] / width,
+                        template_world_size[1] / height,
+                    )
+                    world_size = [
+                        rounded(width * points_per_pixel),
+                        rounded(height * points_per_pixel),
+                    ]
+                    opaque_bounds = [
+                        rounded((left - pivot_x) * points_per_pixel),
+                        rounded(PLACEMENT_OFFSET[1] - (bottom - pivot_y) * points_per_pixel),
+                        rounded((right - pivot_x) * points_per_pixel),
+                        rounded(PLACEMENT_OFFSET[1] + (pivot_y - top) * points_per_pixel),
+                    ]
+                    block_registration = (anchor[0], anchor[1], world_size, opaque_bounds)
+            lods[detail] = {
+                "file": f"generated_v4_{logical_id}_{detail}.png",
+                "normalized_file": relative_to_package(normalized),
+                "normalized_sha256": expected_sha,
+                "pixels": [width, height],
+                "source_pixels": row["dimensions"],
+                "source_trim_rect_pixels": [left, top, width, height],
+                "trim_rect_pixels": [0, 0, width, height],
+                "anchor": anchor,
+                "world_size": [],
+                "decoded_byte_estimate": width * height * 4,
+                "padding_pixels": 4,
+                "extrusion_pixels": 2,
+            }
+        if block_registration is None:
+            raise SystemExit(f"build rejected: civic L1 v0 registration missing for {direction}")
+        anchor_x, anchor_y, world_size, opaque_bounds = block_registration
+        for detail in DETAILS:
+            lods[detail]["anchor"] = [anchor_x, anchor_y]
+            lods[detail]["world_size"] = world_size
+        asset["lods"] = lods
+        asset["opaque_bounds_world"] = opaque_bounds
+        asset["shadow_bounds_world"] = opaque_bounds
+        asset["allowed_overhang_world"] = [
+            rounded(max(0.0, -36.0 - opaque_bounds[0])),
+            rounded(max(0.0, opaque_bounds[2] - 36.0)),
+            rounded(max(0.0, -18.0 - opaque_bounds[1])),
+            rounded(max(0.0, opaque_bounds[3] - 18.0)),
+        ]
+        asset["decoded_byte_estimate"] = sum(
+            int(lod["decoded_byte_estimate"]) for lod in lods.values()
+        )
+        assets.append(asset)
+    if len(set(raw_hashes)) != 4 or len(set(lod_hashes)) != 12:
+        raise SystemExit("build rejected: civic L1 v0 source alias")
+    return assets
+
+
 def materialize_asset_payloads(
     manifest: dict[str, object],
     temporary: Path,
@@ -1238,6 +1445,7 @@ def build(output_atlas: Path) -> None:
         + residential_variant_one_assets(manifest)
         + residential_variant_two_assets(manifest)
         + commercial_l01_variant_zero_assets(manifest)
+        + civic_l01_variant_zero_assets(manifest)
     )
     directional_ids = {asset["logical_id"] for asset in directional_assets}
     manifest["assets"] = [

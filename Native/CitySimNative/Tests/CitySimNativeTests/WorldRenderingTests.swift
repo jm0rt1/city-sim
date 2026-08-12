@@ -1205,6 +1205,54 @@ final class WorldRenderingTests: XCTestCase {
     }
 
     @MainActor
+    func testCivicL1ProductionSelectionResolvesFourFrontagesAcrossThreeLODsWithoutFallback() throws {
+        let catalog = WorldAssetCatalog()
+        let renderer = LotRenderer(style: WorldVisualStyle(), assets: catalog)
+        let expectedRaw = [
+            "north": "b5bd3b6259d04626f59513f8ced0aa069fd72a4281a6ac04b7ca678255692fb9",
+            "east": "38fa961caf29e11c839ee58f6cd61b3cc311352ae9a268d64f34747153e2e6f1",
+            "south": "a55562c33064dd6dcd5d4e063f52cafe3c593b804a9eec2ec15e8ac6d8319af7",
+            "west": "938e71d8c938519302719b22d15bd117e8ea0ffcb5661f22442e3edf8915c529",
+        ]
+        let directions: [(String, RoadConnectionMask)] = [
+            ("north", .north), ("east", .east), ("south", .south), ("west", .west),
+        ]
+        for (direction, roads) in directions {
+            let identity = try XCTUnwrap(CivicGeneratedAssetIdentity(adjacentRoads: roads))
+            XCTAssertEqual(identity.logicalID, "civic_l01_v0_\(direction)")
+            let asset = try XCTUnwrap(catalog.generatedAsset(logicalID: identity.logicalID))
+            XCTAssertEqual(asset.family, "civic")
+            XCTAssertEqual(asset.level, 1)
+            XCTAssertEqual(asset.variant, 0)
+            XCTAssertEqual(asset.frontageEdge, direction)
+            XCTAssertEqual(asset.viewDirection, direction)
+            XCTAssertEqual(asset.sourceSHA256, expectedRaw[direction])
+            XCTAssertEqual(asset.supportedOrientation, "\(direction)-facing-authored")
+            for detail in CameraDetailLevel.allCases {
+                XCTAssertNotNil(asset.lods[detail.assetSuffix]?.pageFile)
+                let lot = renderer.makeLot(
+                    for: CityTile(
+                        coordinate: GridCoordinate(x: 20, y: Int(roads.rawValue)),
+                        kind: .cityHall,
+                        level: 1,
+                        condition: 1,
+                        constructionProgress: 1
+                    ),
+                    adjacentRoads: roads,
+                    detail: detail,
+                    reducedMotion: true
+                )
+                XCTAssertTrue(
+                    descendantNames(in: lot).contains(
+                        "lot.generated-v4.\(identity.logicalID).\(detail.assetSuffix)"
+                    )
+                )
+            }
+        }
+        XCTAssertEqual(catalog.residencySnapshot().fallbackCount, 0)
+    }
+
+    @MainActor
     func testDirectionalCommercialProductionSelectionCoversEveryLevelAndAuthoritativeFrontage() throws {
         let catalog = WorldAssetCatalog()
         let renderer = LotRenderer(style: WorldVisualStyle(), assets: catalog)

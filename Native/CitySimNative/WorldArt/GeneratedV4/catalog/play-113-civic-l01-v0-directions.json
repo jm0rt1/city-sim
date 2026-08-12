@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "task": "PLAY-113",
+  "family": "civic_l01_v0",
+  "integration_admission": "docs/production/evidence/INTEGRATION/PLAY-113-CIVIC-L01-V0-SOURCE-ADMISSION-CURRENT8AC.json",
+  "integration_admission_sha256": "4efe5d9c7fe2dd67afe2a41c39c3e74496f9779e7e783334ece882ca0503eb5a",
+  "renderer_handoff": "docs/production/evidence/PLAY-113/civic-l01-v0-family/RENDERER-HANDOFF.json",
+  "renderer_handoff_sha256": "120db6f50010cdca691c619c92b47bac133635b91973c5fca73a3267584ce105",
+  "selections": [
+    {"direction": "north", "level": 1, "raw_sha256": "b5bd3b6259d04626f59513f8ced0aa069fd72a4281a6ac04b7ca678255692fb9", "normalized_sha256": {"block": "9133b312fc23009a5b8bf3ccd044e262f121d2aea7e095167f53a2f0d3c5ee1f", "neighborhood": "7a64aca45b24f2c00deeae65a4154a36cdf3321bf602b671d93de1a478e46b69", "city": "6cdfc0eaccf51f319d1cba1ec8eee8e2cc5f9f0dd3a788e799a0a7162eeba2bb"}},
+    {"direction": "east", "level": 1, "raw_sha256": "38fa961caf29e11c839ee58f6cd61b3cc311352ae9a268d64f34747153e2e6f1", "normalized_sha256": {"block": "0f8d2203972bb35052ebe4aa049733bef12e45a11561eb885dda60f4eeeedb23", "neighborhood": "d7b30d27003020350c54f6e0dd29f5e79e7aec10fa1a42d8ec34d0df6b790928", "city": "53f1a8b7b6a917954fcfda42ca5c3798b5fea2795bfb4848bb1d8f738bfde520"}},
+    {"direction": "south", "level": 1, "raw_sha256": "a55562c33064dd6dcd5d4e063f52cafe3c593b804a9eec2ec15e8ac6d8319af7", "normalized_sha256": {"block": "6089797e14f2e5be6ba2c652a1e8f72e6940974c859ec2ef495800895ffdc799", "neighborhood": "0dbaeb87e4d09b5c24b1b0220f8bc11da74a117ba644cb7908de0a024220b82b", "city": "7fd70e6247d21f4fd9f386a46a4e8a27672156884db1a6d5653c0dcb988f55e4"}},
+    {"direction": "west", "level": 1, "raw_sha256": "938e71d8c938519302719b22d15bd117e8ea0ffcb5661f22442e3edf8915c529", "normalized_sha256": {"block": "89be8e55d98abb2d6701bb0e826c362c6e71b6e9d8256d077038da2598a66b95", "neighborhood": "93fd70832cc2ed7769caedb561fa87d2d5540b9ed44e847c6e19b06dc0083d41", "city": "7fa4445ce1a847056e41f62db34c5608941b93bbaf1d335a19480406a1bb04d9"}}
+  ]
+}

@@ -93,6 +93,32 @@ struct IndustrialGeneratedAssetIdentity: Equatable, Sendable {
     }
 }
 
+struct CivicGeneratedAssetIdentity: Equatable, Sendable {
+    static let authoritativeFrontagePriority =
+        ResidentialGeneratedAssetIdentity.authoritativeFrontagePriority
+
+    let frontage: RoadConnectionMask
+    let direction: String
+    let logicalID: String
+
+    init?(adjacentRoads: RoadConnectionMask) {
+        guard let frontage = Self.authoritativeFrontagePriority.first(
+            where: adjacentRoads.contains
+        ) else {
+            return nil
+        }
+        self.frontage = frontage
+        direction = switch frontage {
+        case .north: "north"
+        case .east: "east"
+        case .south: "south"
+        case .west: "west"
+        default: preconditionFailure("frontage priority contains only cardinal edges")
+        }
+        logicalID = "civic_l01_v0_\(direction)"
+    }
+}
+
 @MainActor
 final class LotRenderer {
     private let style: WorldVisualStyle
@@ -132,6 +158,12 @@ final class LotRenderer {
                 adjacentRoads: adjacentRoads
             )
             : nil
+        let civicIdentity: CivicGeneratedAssetIdentity? = switch tile.kind {
+        case .cityHall, .fireStation, .policeStation, .school:
+            CivicGeneratedAssetIdentity(adjacentRoads: adjacentRoads)
+        default:
+            nil
+        }
         let root = SKNode()
         root.name = if let strategyIdentity {
             "lot.\(tile.kind.rawValue).density.\(strategyIdentity.densityTier).variant.\(variant)"
@@ -153,7 +185,8 @@ final class LotRenderer {
                 adjacentRoads: adjacentRoads,
                 selectedFrontage: residentialIdentity?.frontage
                     ?? commercialIdentity?.frontage
-                    ?? industrialIdentity?.frontage,
+                    ?? industrialIdentity?.frontage
+                    ?? civicIdentity?.frontage,
                 city: cityLayer,
                 neighborhood: neighborhoodLayer,
                 block: blockLayer
@@ -164,7 +197,8 @@ final class LotRenderer {
             adjacentRoads: adjacentRoads,
             selectedEdge: residentialIdentity?.frontage
                 ?? commercialIdentity?.frontage
-                ?? industrialIdentity?.frontage,
+                ?? industrialIdentity?.frontage
+                ?? civicIdentity?.frontage,
             detail: detail,
             to: neighborhoodLayer
         )
@@ -182,6 +216,7 @@ final class LotRenderer {
                 residentialIdentity: residentialIdentity,
                 commercialIdentity: commercialIdentity,
                 industrialIdentity: industrialIdentity,
+                civicIdentity: civicIdentity,
                 adjacentRoads: adjacentRoads,
                 detail: detail,
                 city: cityLayer,
@@ -195,7 +230,8 @@ final class LotRenderer {
                 adjacentRoads: adjacentRoads,
                 selectedFrontage: residentialIdentity?.frontage
                     ?? commercialIdentity?.frontage
-                    ?? industrialIdentity?.frontage,
+                    ?? industrialIdentity?.frontage
+                    ?? civicIdentity?.frontage,
                 city: cityLayer,
                 neighborhood: neighborhoodLayer,
                 block: blockLayer
@@ -233,6 +269,7 @@ final class LotRenderer {
         residentialIdentity: ResidentialGeneratedAssetIdentity?,
         commercialIdentity: CommercialGeneratedAssetIdentity?,
         industrialIdentity: IndustrialGeneratedAssetIdentity?,
+        civicIdentity: CivicGeneratedAssetIdentity?,
         adjacentRoads: RoadConnectionMask,
         detail: CameraDetailLevel,
         city: SKNode,
@@ -283,6 +320,21 @@ final class LotRenderer {
             sprite.name = "lot.generated-v4.\(result.identity.logicalID).\(detail.assetSuffix)"
             harmonizeAuthoredSprite(sprite, for: tile, variant: variant)
             city.addChild(sprite)
+            return true
+        }
+        if civicIdentity != nil {
+            guard let result = assets.generatedCivicPresentation(
+                adjacentRoads: adjacentRoads,
+                detail: detail
+            ) else {
+                return false
+            }
+            guard civicIdentity == result.identity else { return false }
+            let sprite = result.presentation.sprite
+            sprite.name = "lot.generated-v4.\(result.identity.logicalID).\(detail.assetSuffix)"
+            harmonizeAuthoredSprite(sprite, for: tile, variant: variant)
+            city.addChild(sprite)
+            addGeneratedRoleIdentity(for: tile.kind, to: block)
             return true
         }
         if let generatedID = generatedLogicalID(for: tile.kind),

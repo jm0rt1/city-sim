@@ -46,6 +46,12 @@ struct GeneratedIndustrialPresentation {
     let presentation: GeneratedWorldPresentation
 }
 
+@MainActor
+struct GeneratedCivicPresentation {
+    let identity: CivicGeneratedAssetIdentity
+    let presentation: GeneratedWorldPresentation
+}
+
 /// Loads repo-owned world resources from the packaged app resource bundle or,
 /// for SwiftPM builds and tests, `Bundle.module`. The generated-v4 loader
 /// validates page digests, creates descriptor-authorized subtextures,
@@ -294,6 +300,38 @@ final class WorldAssetCatalog {
         }
         if Set(residentialVariantTwo.map(\.logicalID)) != expectedResidentialVariantTwo {
             issues.append("residential L1 variant-two production selection is not the exact N/E/S/W quartet")
+        }
+        let civic = manifest.assets.filter {
+            $0.family == "civic" && $0.level == 1 && $0.viewDirection != nil
+        }
+        let expectedCivic = Set(directions.map { "civic_l01_v0_\($0)" })
+        if Set(civic.map(\.logicalID)) != expectedCivic {
+            issues.append("civic L1 production selection is not the exact N/E/S/W quartet")
+        }
+        if Set(civic.compactMap(\.sourceSHA256)).count != 4 {
+            issues.append("civic L1 production sources are missing or aliased")
+        }
+        let civicLODHashes = civic.flatMap { asset in
+            CameraDetailLevel.allCases.compactMap {
+                asset.lods[$0.assetSuffix]?.normalizedSHA256
+            }
+        }
+        if Set(civicLODHashes).count != 12 {
+            issues.append("civic L1 normalized LODs are missing or aliased")
+        }
+        for asset in civic {
+            guard let direction = asset.viewDirection else {
+                issues.append("\(asset.logicalID) is missing view direction")
+                continue
+            }
+            if asset.frontageEdge != direction
+                || asset.supportedOrientation != "\(direction)-facing-authored"
+                || asset.provenanceFile == nil
+                || asset.provenanceSHA256 == nil
+                || asset.normalizationRecordFile == nil
+                || asset.normalizationRecordSHA256 == nil {
+                issues.append("\(asset.logicalID) has incomplete civic directional provenance")
+            }
         }
         if Set(residentialVariantZero.compactMap(\.sourceKey)).count != 16
             || Set(residentialVariantZero.compactMap(\.sourceSHA256)).count != 16 {
@@ -716,6 +754,35 @@ final class WorldAssetCatalog {
             return nil
         }
         return GeneratedIndustrialPresentation(
+            identity: identity,
+            presentation: presentation
+        )
+    }
+
+    func generatedCivicPresentation(
+        adjacentRoads: RoadConnectionMask,
+        detail: CameraDetailLevel
+    ) -> GeneratedCivicPresentation? {
+        guard let identity = CivicGeneratedAssetIdentity(adjacentRoads: adjacentRoads) else {
+            recordFallback("civic L1 has no authoritative adjacent road")
+            return nil
+        }
+        guard let asset = generatedAssetsByID[identity.logicalID],
+              asset.family == "civic",
+              asset.level == 1,
+              asset.variant == 0,
+              asset.frontageEdge == identity.direction,
+              asset.viewDirection == identity.direction else {
+            recordFallback("directional descriptor mismatch \(identity.logicalID)")
+            return nil
+        }
+        guard let presentation = generatedPresentation(
+            logicalID: identity.logicalID,
+            detail: detail
+        ) else {
+            return nil
+        }
+        return GeneratedCivicPresentation(
             identity: identity,
             presentation: presentation
         )

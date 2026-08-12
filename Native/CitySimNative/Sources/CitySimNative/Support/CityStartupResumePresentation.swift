@@ -29,6 +29,10 @@ struct CityStartupResumePresentation: Equatable, Sendable {
             sourceLabel = "Latest rotating autosave"
             sourceSymbol = "clock.arrow.circlepath"
             detail = "Continue from this verified automatic checkpoint; the simulation will remain paused while you review the city's active pressures."
+        } else if result.isNamedBranch {
+            sourceLabel = "Named branch · \(result.branchName ?? state.cityName)"
+            sourceSymbol = "arrow.triangle.branch"
+            detail = "Continue from this preserved timeline branch; the simulation will remain paused while you review the city's active pressures."
         } else {
             sourceLabel = "Verified quicksave"
             sourceSymbol = "checkmark.icloud.fill"

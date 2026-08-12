@@ -11,6 +11,7 @@ struct CityCheckpointCardPresentation: Identifiable, Equatable, Sendable {
     let integrityLabel: String
     let integritySymbol: String
     let isLoadable: Bool
+    let canBranch: Bool
 
     var accessibilitySummary: String {
         "\(title). \(sourceLabel). \(checkpoint). \(detail). \(integrityLabel)."
@@ -29,6 +30,9 @@ struct CityCheckpointCardPresentation: Identifiable, Equatable, Sendable {
         case .autosave:
             sourceLabel = "Rotating autosave"
             sourceSymbol = "clock.arrow.circlepath"
+        case .branch:
+            sourceLabel = "Named timeline branch"
+            sourceSymbol = "arrow.triangle.branch"
         }
 
         guard let result = entry.loadResult, entry.integrity == .verified else {
@@ -42,7 +46,8 @@ struct CityCheckpointCardPresentation: Identifiable, Equatable, Sendable {
                 modifiedAt: entry.modifiedAt,
                 integrityLabel: "Integrity check failed",
                 integritySymbol: "exclamationmark.triangle.fill",
-                isLoadable: false
+                isLoadable: false,
+                canBranch: false
             )
         }
 
@@ -50,17 +55,21 @@ struct CityCheckpointCardPresentation: Identifiable, Equatable, Sendable {
         let schemaLabel = result.schemaVersion == 0
             ? "Legacy save format"
             : "Save format v\(result.schemaVersion)"
+        let checkpoint = entry.source == .branch
+            ? "\(state.cityName) · \(state.formattedDay) · \(state.population.formatted()) residents"
+            : "\(state.formattedDay) · \(state.population.formatted()) residents"
         return Self(
             id: entry.id,
-            title: state.cityName,
+            title: entry.branchName ?? state.cityName,
             sourceLabel: sourceLabel,
             sourceSymbol: sourceSymbol,
-            checkpoint: "\(state.formattedDay) · \(state.population.formatted()) residents",
+            checkpoint: checkpoint,
             detail: "\(state.treasury.currencyText) treasury · \(schemaLabel)",
             modifiedAt: entry.modifiedAt,
             integrityLabel: "Verified",
             integritySymbol: "checkmark.shield.fill",
-            isLoadable: true
+            isLoadable: true,
+            canBranch: true
         )
     }
 }
@@ -80,7 +89,7 @@ struct CityCheckpointLibraryPresentation: Equatable, Sendable {
             ? "1 verified checkpoint"
             : "\(verifiedCount) verified checkpoints"
         let detail = invalidCount == 0
-            ? "Choose a checkpoint to resume. Your current city remains unchanged until you confirm."
+            ? "Load a checkpoint, or preserve any verified moment as a named timeline branch."
             : "Choose from \(verifiedLabel). \(invalidCount) recovery file"
                 + (invalidCount == 1 ? " is" : "s are")
                 + " visible but unavailable because integrity verification failed."

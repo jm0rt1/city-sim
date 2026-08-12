@@ -36,6 +36,9 @@ final class CityGameStore: ObservableObject {
     @Published private(set) var resumeBrief: CityResumeBriefPresentation?
     @Published private(set) var startupResumeOffer: CityStartupResumePresentation?
     @Published private(set) var checkpointLibrary: CityCheckpointLibraryPresentation?
+    @Published private(set) var branchNaming: CityBranchNamingPresentation?
+    @Published private(set) var branchNameDraft = ""
+    @Published private(set) var branchNameError: String?
     @Published private(set) var sessionReplacementConfirmation: CitySessionReplacementConfirmationPresentation?
     @Published private(set) var canUndo = false
     @Published private(set) var mapFocusRequestGeneration: UInt = 0
@@ -51,6 +54,10 @@ final class CityGameStore: ObservableObject {
     private var startupResumeOfferWasConsidered = false
     private var checkpointLoadsByID: [String: SaveGameLoadResult] = [:]
     private var speedBeforeCheckpointLibrary: SimulationSpeed?
+    private var pendingBranchState: CityGameState?
+    private var pendingBranchSource: SaveGameSource?
+    private var branchNamingReturnsToLibrary = false
+    private var speedBeforeBranchNaming: SimulationSpeed?
     private var lastPersistedState: CityGameState?
     private var lastPersistenceCheckpointKind: CityPersistenceCheckpointKind = .manual
     private var nextAutosaveTick: Int
@@ -218,6 +225,10 @@ final class CityGameStore: ObservableObject {
     @discardableResult
     func perform(_ command: CityCommandID) -> Bool {
         if command == .cancelInteraction,
+           commandPolicy == .blocked(.branchNaming) {
+            return cancelBranchNaming()
+        }
+        if command == .cancelInteraction,
            commandPolicy == .blocked(.checkpointLibrary) {
             return cancelCheckpointLibrary()
         }
@@ -256,6 +267,8 @@ final class CityGameStore: ObservableObject {
             }
         case .saveCity:
             save()
+        case .saveBranch:
+            openBranchNamingForCurrentCity()
         case .loadCity:
             openCheckpointLibrary()
         case .undo:
@@ -310,7 +323,7 @@ final class CityGameStore: ObservableObject {
             return command == .cancelInteraction
         }
         if state.status != .playing,
-           ![CityCommandID.newRegion, .saveCity, .loadCity].contains(command) {
+           ![CityCommandID.newRegion, .saveCity, .saveBranch, .loadCity].contains(command) {
             return false
         }
         return switch command {
@@ -692,7 +705,9 @@ final class CityGameStore: ObservableObject {
     }
 
     private func dismissTopmostSurfaceOrCancel() {
-        if checkpointLibrary != nil {
+        if branchNaming != nil {
+            cancelBranchNaming()
+        } else if checkpointLibrary != nil {
             cancelCheckpointLibrary()
         } else if sessionReplacementConfirmation != nil {
             cancelSessionReplacement()
@@ -1025,6 +1040,7 @@ final class CityGameStore: ObservableObject {
         checkpointLibrary = nil
         checkpointLoadsByID.removeAll()
         speedBeforeCheckpointLibrary = nil
+        clearBranchNamingState()
         state = .newCity(seed: UInt64.random(in: 1...UInt64.max))
         lastPersistedState = nil
         lastPersistenceCheckpointKind = .manual
@@ -1082,6 +1098,120 @@ final class CityGameStore: ObservableObject {
         showCommandGuide = false
         checkpointLibrary = CityCheckpointLibraryPresentation.make(entries)
         presentBlockingModal(.checkpointLibrary)
+    }
+
+    func openBranchNamingForCurrentCity() {
+        guard branchNaming == nil, commandPolicy == .enabled else { return }
+        speedBeforeBranchNaming = speed
+        speed = .paused
+        pendingBranchState = state
+        pendingBranchSource = nil
+        branchNamingReturnsToLibrary = false
+        branchNameDraft = suggestedBranchName(for: state)
+        branchNameError = nil
+        branchNaming = CityBranchNamingPresentation.make(state: state, source: nil)
+        presentBlockingModal(.branchNaming)
+    }
+
+    @discardableResult
+    func beginBranchNaming(for checkpointID: String) -> Bool {
+        guard commandPolicy == .blocked(.checkpointLibrary),
+              let result = checkpointLoadsByID[checkpointID] else { return false }
+        pendingBranchState = result.state
+        pendingBranchSource = result.source
+        branchNamingReturnsToLibrary = true
+        speedBeforeBranchNaming = speedBeforeCheckpointLibrary
+        branchNameDraft = suggestedBranchName(for: result.state)
+        branchNameError = nil
+        branchNaming = CityBranchNamingPresentation.make(
+            state: result.state,
+            source: result.source
+        )
+        checkpointLibrary = nil
+        _ = dismissBlockingModal(.checkpointLibrary)
+        presentBlockingModal(.branchNaming)
+        return true
+    }
+
+    func updateBranchNameDraft(_ value: String) {
+        branchNameDraft = String(value.prefix(40))
+        branchNameError = nil
+    }
+
+    var canCreateBranch: Bool {
+        !branchNameDraft.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+
+    @discardableResult
+    func createNamedBranch() -> Bool {
+        guard commandPolicy == .blocked(.branchNaming),
+              let pendingBranchState else { return false }
+        let cleanedName = branchNameDraft.trimmingCharacters(in: .whitespacesAndNewlines)
+        do {
+            try saves.saveNamedBranch(pendingBranchState, name: cleanedName)
+            let branchedCurrentState = pendingBranchSource == nil && pendingBranchState == state
+            if branchedCurrentState {
+                lastPersistedState = state
+                lastPersistenceCheckpointKind = .branch
+                nextAutosaveTick = state.tick + Self.autosaveIntervalTicks
+            }
+            let previousSpeed = speedBeforeBranchNaming ?? .paused
+            clearBranchNamingState()
+            checkpointLibrary = nil
+            checkpointLoadsByID.removeAll()
+            speedBeforeCheckpointLibrary = nil
+            _ = dismissBlockingModal(.branchNaming)
+            speed = previousSpeed
+            requestMapFocus()
+            showFeedback(
+                CityPersistenceFeedbackPresentation.branched(
+                    pendingBranchState,
+                    name: cleanedName
+                ).message,
+                tone: .positive
+            )
+            return true
+        } catch {
+            branchNameError = error.localizedDescription
+            showFeedback(
+                "Timeline branch failed · The source checkpoint is unchanged: "
+                    + error.localizedDescription,
+                tone: .caution,
+                autoDismissAfter: nil
+            )
+            return false
+        }
+    }
+
+    @discardableResult
+    func cancelBranchNaming() -> Bool {
+        guard commandPolicy == .blocked(.branchNaming), branchNaming != nil else { return false }
+        let returnsToLibrary = branchNamingReturnsToLibrary
+        let previousSpeed = speedBeforeBranchNaming ?? .paused
+        clearBranchNamingState()
+        _ = dismissBlockingModal(.branchNaming)
+        if returnsToLibrary {
+            checkpointLibrary = CityCheckpointLibraryPresentation.make(saves.checkpointCatalog())
+            presentBlockingModal(.checkpointLibrary)
+        } else {
+            speed = previousSpeed
+            requestMapFocus()
+        }
+        return true
+    }
+
+    private func suggestedBranchName(for state: CityGameState) -> String {
+        String("\(state.cityName) · \(state.formattedDay)".prefix(40))
+    }
+
+    private func clearBranchNamingState() {
+        branchNaming = nil
+        branchNameDraft = ""
+        branchNameError = nil
+        pendingBranchState = nil
+        pendingBranchSource = nil
+        branchNamingReturnsToLibrary = false
+        speedBeforeBranchNaming = nil
     }
 
     @discardableResult
@@ -1212,9 +1342,12 @@ final class CityGameStore: ObservableObject {
         checkpointLibrary = nil
         checkpointLoadsByID.removeAll()
         speedBeforeCheckpointLibrary = nil
+        clearBranchNamingState()
         state = result.state
         lastPersistedState = result.state
-        lastPersistenceCheckpointKind = result.isAutosave ? .autosave : .manual
+        lastPersistenceCheckpointKind = result.isAutosave
+            ? .autosave
+            : (result.isNamedBranch ? .branch : .manual)
         nextAutosaveTick = state.tick + Self.autosaveIntervalTicks
         cityNameDraft = state.cityName
         speed = .paused
@@ -1231,12 +1364,19 @@ final class CityGameStore: ObservableObject {
         undoStates.removeAll()
         canUndo = false
         let brief = CityResumeBriefPresentation.make(analytics: analytics)
-        let persistenceFeedback = result.isAutosave
-            ? CityPersistenceFeedbackPresentation.loadedAutosave(state)
-            : CityPersistenceFeedbackPresentation.loaded(
+        let persistenceFeedback = if result.isAutosave {
+            CityPersistenceFeedbackPresentation.loadedAutosave(state)
+        } else if result.isNamedBranch {
+            CityPersistenceFeedbackPresentation.loadedBranch(
+                state,
+                name: result.branchName ?? state.cityName
+            )
+        } else {
+            CityPersistenceFeedbackPresentation.loaded(
                 state,
                 recoveredFromBackup: result.recoveredFromBackup
             )
+        }
         showFeedback(
             persistenceFeedback.message,
             tone: .positive,

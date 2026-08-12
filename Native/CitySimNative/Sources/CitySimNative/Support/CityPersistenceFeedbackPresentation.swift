@@ -15,6 +15,12 @@ struct CityPersistenceFeedbackPresentation: Equatable, Sendable {
         )
     }
 
+    static func branched(_ state: CityGameState, name: String) -> Self {
+        Self(
+            message: "Timeline branch “\(name)” created · \(checkpointDescription(for: state))"
+        )
+    }
+
     static func loaded(_ state: CityGameState, recoveredFromBackup: Bool) -> Self {
         let action = recoveredFromBackup
             ? "Recovered \(state.cityName) from last known-good save"
@@ -28,6 +34,12 @@ struct CityPersistenceFeedbackPresentation: Equatable, Sendable {
         Self(
             message: "\(state.cityName) resumed from autosave · "
                 + "\(checkpointDescription(for: state)) · Simulation paused"
+        )
+    }
+
+    static func loadedBranch(_ state: CityGameState, name: String) -> Self {
+        Self(
+            message: "Resumed “\(name)” · \(checkpointDescription(for: state)) · Simulation paused"
         )
     }
 

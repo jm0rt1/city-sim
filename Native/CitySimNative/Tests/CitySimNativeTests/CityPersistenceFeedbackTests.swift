@@ -39,6 +39,19 @@ final class CityPersistenceFeedbackTests: XCTestCase {
             )
         )
         XCTAssertEqual(
+            CityPersistenceStatusPresentation.make(
+                current: original,
+                lastPersisted: original,
+                checkpointKind: .branch
+            ),
+            CityPersistenceStatusPresentation(
+                kind: .saved,
+                label: "Branched",
+                symbol: "arrow.triangle.branch",
+                help: "This city matches its latest named timeline branch"
+            )
+        )
+        XCTAssertEqual(
             CityPersistenceStatusPresentation.make(current: changed, lastPersisted: original),
             CityPersistenceStatusPresentation(
                 kind: .unsavedChanges,
@@ -64,6 +77,13 @@ final class CityPersistenceFeedbackTests: XCTestCase {
             "Harbor Point autosaved · Day 12 · 512 residents"
         )
         XCTAssertEqual(
+            CityPersistenceFeedbackPresentation.branched(
+                state,
+                name: "Before Freight"
+            ).message,
+            "Timeline branch “Before Freight” created · Day 12 · 512 residents"
+        )
+        XCTAssertEqual(
             CityPersistenceFeedbackPresentation.loaded(
                 state,
                 recoveredFromBackup: false
@@ -80,6 +100,13 @@ final class CityPersistenceFeedbackTests: XCTestCase {
         XCTAssertEqual(
             CityPersistenceFeedbackPresentation.loadedAutosave(state).message,
             "Harbor Point resumed from autosave · Day 12 · 512 residents · Simulation paused"
+        )
+        XCTAssertEqual(
+            CityPersistenceFeedbackPresentation.loadedBranch(
+                state,
+                name: "Before Freight"
+            ).message,
+            "Resumed “Before Freight” · Day 12 · 512 residents · Simulation paused"
         )
     }
 

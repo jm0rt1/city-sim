@@ -184,6 +184,7 @@ final class CheckpointLibraryTests: XCTestCase {
                 of: CheckpointLibraryView(
                     presentation: presentation,
                     selectAction: { _ in },
+                    branchAction: { _ in },
                     cancelAction: {}
                 ).frame(width: size.width, height: size.height),
                 size: size

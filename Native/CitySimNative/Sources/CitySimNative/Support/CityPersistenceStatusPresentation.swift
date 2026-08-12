@@ -9,6 +9,7 @@ enum CityPersistenceStatusKind: Equatable, Sendable {
 enum CityPersistenceCheckpointKind: Equatable, Sendable {
     case manual
     case autosave
+    case branch
 }
 
 struct CityPersistenceStatusPresentation: Equatable, Sendable {
@@ -44,6 +45,14 @@ struct CityPersistenceStatusPresentation: Equatable, Sendable {
                 label: "Autosaved",
                 symbol: "checkmark.icloud.fill",
                 help: "This city matches its latest rotating autosave"
+            )
+        }
+        if checkpointKind == .branch {
+            return Self(
+                kind: .saved,
+                label: "Branched",
+                symbol: "arrow.triangle.branch",
+                help: "This city matches its latest named timeline branch"
             )
         }
         return Self(

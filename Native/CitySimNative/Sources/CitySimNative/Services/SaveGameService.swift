@@ -7,12 +7,28 @@ struct SaveGameEnvelope: Codable, Equatable, Sendable {
     let fingerprintVersion: Int
     let state: CityGameState
     let digest: String
+    let branchName: String?
+
+    init(
+        schemaVersion: Int,
+        fingerprintVersion: Int,
+        state: CityGameState,
+        digest: String,
+        branchName: String? = nil
+    ) {
+        self.schemaVersion = schemaVersion
+        self.fingerprintVersion = fingerprintVersion
+        self.state = state
+        self.digest = digest
+        self.branchName = branchName
+    }
 }
 
 enum SaveGameSource: String, Codable, Equatable, Sendable {
     case primary
     case backup
     case autosave
+    case branch
 }
 
 struct SaveGameLoadResult: Equatable, Sendable {
@@ -20,9 +36,25 @@ struct SaveGameLoadResult: Equatable, Sendable {
     let schemaVersion: Int
     let fingerprint: CityStateFingerprint
     let source: SaveGameSource
+    let branchName: String?
+
+    init(
+        state: CityGameState,
+        schemaVersion: Int,
+        fingerprint: CityStateFingerprint,
+        source: SaveGameSource,
+        branchName: String? = nil
+    ) {
+        self.state = state
+        self.schemaVersion = schemaVersion
+        self.fingerprint = fingerprint
+        self.source = source
+        self.branchName = branchName
+    }
 
     var recoveredFromBackup: Bool { source == .backup }
     var isAutosave: Bool { source == .autosave }
+    var isNamedBranch: Bool { source == .branch }
 }
 
 struct SaveGameWriteResult: Equatable, Sendable {
@@ -43,6 +75,7 @@ struct SaveGameCheckpointCatalogEntry: Identifiable, Equatable, Sendable {
     let modifiedAt: Date
     let integrity: SaveGameCheckpointIntegrity
     let loadResult: SaveGameLoadResult?
+    let branchName: String?
 
     var isLoadable: Bool {
         integrity == .verified && loadResult != nil
@@ -54,6 +87,8 @@ enum SaveGameError: Error, Equatable {
     case fingerprintVersionMismatch(expected: Int, actual: Int)
     case digestMismatch(expected: String, actual: String)
     case noValidSave(primary: String?, backup: String?)
+    case invalidBranchName
+    case duplicateBranchName(String)
 }
 
 extension SaveGameError: LocalizedError {
@@ -67,6 +102,10 @@ extension SaveGameError: LocalizedError {
             "The save's integrity fingerprint does not match its city state."
         case .noValidSave:
             "No valid primary or backup save was found."
+        case .invalidBranchName:
+            "Enter a branch name between 1 and 40 characters."
+        case .duplicateBranchName(let name):
+            "A timeline branch named \(name) already exists."
         }
     }
 }
@@ -100,6 +139,9 @@ struct SaveGameService {
 
     var saveURL: URL { rootURL.appending(path: "quicksave.json") }
     var backupURL: URL { rootURL.appending(path: "quicksave.backup.json") }
+    var branchDirectoryURL: URL {
+        rootURL.appending(path: "branches", directoryHint: .isDirectory)
+    }
     private var candidateURL: URL { rootURL.appending(path: ".quicksave.candidate.json") }
     var autosaveURLs: [URL] {
         (0..<Self.autosaveSlotCount).map {
@@ -116,7 +158,16 @@ struct SaveGameService {
     var hasResumeCandidate: Bool {
         hasLoadCandidate || autosaveURLs.contains {
             fileManager.fileExists(atPath: $0.path)
-        }
+        } || !branchURLs.isEmpty
+    }
+
+    var branchURLs: [URL] {
+        guard let urls = try? fileManager.contentsOfDirectory(
+            at: branchDirectoryURL,
+            includingPropertiesForKeys: nil,
+            options: [.skipsHiddenFiles]
+        ) else { return [] }
+        return urls.filter { $0.pathExtension.lowercased() == "json" }
     }
 
     @discardableResult
@@ -208,6 +259,52 @@ struct SaveGameService {
         )
     }
 
+    @discardableResult
+    func saveNamedBranch(_ state: CityGameState, name: String) throws -> SaveGameWriteResult {
+        let cleanedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !cleanedName.isEmpty, cleanedName.count <= 40 else {
+            throw SaveGameError.invalidBranchName
+        }
+        let existingNames = checkpointCatalog().compactMap(\.branchName)
+        guard !existingNames.contains(where: {
+            $0.compare(cleanedName, options: [.caseInsensitive, .diacriticInsensitive]) == .orderedSame
+        }) else {
+            throw SaveGameError.duplicateBranchName(cleanedName)
+        }
+
+        try fileManager.createDirectory(at: branchDirectoryURL, withIntermediateDirectories: true)
+        let fingerprint = try CityStateFingerprinter.fingerprint(state)
+        let envelope = SaveGameEnvelope(
+            schemaVersion: SaveGameEnvelope.currentSchemaVersion,
+            fingerprintVersion: fingerprint.version,
+            state: state,
+            digest: fingerprint.digest,
+            branchName: cleanedName
+        )
+        let data = try Self.envelopeEncoder.encode(envelope)
+        let identifier = UUID().uuidString.lowercased()
+        let destinationURL = branchDirectoryURL.appending(path: "branch-\(identifier).json")
+        let candidateURL = branchDirectoryURL.appending(path: ".branch-\(identifier).candidate")
+        defer { try? fileManager.removeItem(at: candidateURL) }
+        try data.write(to: candidateURL, options: .atomic)
+
+        let validated = try decodeSave(at: candidateURL, source: .branch)
+        guard validated.state == state,
+              validated.fingerprint == fingerprint,
+              validated.branchName == cleanedName else {
+            throw SaveGameError.digestMismatch(
+                expected: fingerprint.digest,
+                actual: validated.fingerprint.digest
+            )
+        }
+        try fileManager.moveItem(at: candidateURL, to: destinationURL)
+        return SaveGameWriteResult(
+            schemaVersion: envelope.schemaVersion,
+            fingerprint: fingerprint,
+            byteCount: data.count
+        )
+    }
+
     func load() throws -> SaveGameLoadResult {
         var primaryFailure: String?
         if fileManager.fileExists(atPath: saveURL.path) {
@@ -249,6 +346,12 @@ struct SaveGameService {
             }
         }
 
+        for url in branchURLs {
+            if let result = try? decodeSave(at: url, source: .branch) {
+                candidates.append((result, modificationDate(for: url), sourcePriority(.branch)))
+            }
+        }
+
         guard let latest = candidates.max(by: { lhs, rhs in
             if lhs.date != rhs.date { return lhs.date < rhs.date }
             return lhs.priority < rhs.priority
@@ -263,6 +366,7 @@ struct SaveGameService {
             (saveURL, SaveGameSource.primary),
             (backupURL, SaveGameSource.backup),
         ] + autosaveURLs.map { ($0, SaveGameSource.autosave) }
+            + branchURLs.map { ($0, SaveGameSource.branch) }
 
         return locations.compactMap { url, source in
             guard fileManager.fileExists(atPath: url.path) else { return nil }
@@ -273,7 +377,8 @@ struct SaveGameService {
                 fileName: url.lastPathComponent,
                 modifiedAt: modificationDate(for: url),
                 integrity: result == nil ? .invalid : .verified,
-                loadResult: result
+                loadResult: result,
+                branchName: result?.branchName
             )
         }.sorted { lhs, rhs in
             if lhs.modifiedAt != rhs.modifiedAt { return lhs.modifiedAt > rhs.modifiedAt }
@@ -305,9 +410,10 @@ struct SaveGameService {
 
     private func sourcePriority(_ source: SaveGameSource) -> Int {
         switch source {
-        case .primary: 3
-        case .backup: 2
+        case .primary: 4
+        case .backup: 3
         case .autosave: 1
+        case .branch: 2
         }
     }
 
@@ -340,7 +446,8 @@ struct SaveGameService {
                 state: state,
                 schemaVersion: envelope.schemaVersion,
                 fingerprint: fingerprint,
-                source: source
+                source: source,
+                branchName: envelope.branchName
             )
         }
 

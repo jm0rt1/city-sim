@@ -3,6 +3,7 @@ import SwiftUI
 struct CheckpointLibraryView: View {
     let presentation: CityCheckpointLibraryPresentation
     let selectAction: (String) -> Void
+    let branchAction: (String) -> Void
     let cancelAction: () -> Void
     @FocusState private var focusedCheckpointID: String?
 
@@ -93,10 +94,7 @@ struct CheckpointLibraryView: View {
         _ card: CityCheckpointCardPresentation,
         compact: Bool
     ) -> some View {
-        Button {
-            selectAction(card.id)
-        } label: {
-            HStack(spacing: compact ? 12 : 16) {
+        HStack(spacing: compact ? 12 : 16) {
                 Image(systemName: card.sourceSymbol)
                     .font(.title3.weight(.semibold))
                     .foregroundStyle(card.isLoadable ? GameTheme.accent : GameTheme.warning)
@@ -130,7 +128,7 @@ struct CheckpointLibraryView: View {
                         .lineLimit(compact ? 1 : 2)
                 }
                 Spacer(minLength: 12)
-                VStack(alignment: .trailing, spacing: 6) {
+                VStack(alignment: .trailing, spacing: 5) {
                     Label(card.integrityLabel, systemImage: card.integritySymbol)
                         .font(.caption.weight(.semibold))
                         .foregroundStyle(card.isLoadable ? GameTheme.accent : GameTheme.warning)
@@ -141,9 +139,18 @@ struct CheckpointLibraryView: View {
                     .font(.caption2)
                     .foregroundStyle(.secondary)
                     if card.isLoadable {
-                        Label("Load", systemImage: "arrow.right.circle.fill")
-                            .font(.caption.weight(.bold))
-                            .foregroundStyle(GameTheme.accent)
+                        HStack(spacing: 8) {
+                            Button("Branch") { branchAction(card.id) }
+                                .buttonStyle(.bordered)
+                                .controlSize(.small)
+                                .accessibilityHint("Preserves this checkpoint under a new timeline name")
+                            Button("Load") { selectAction(card.id) }
+                                .buttonStyle(.borderedProminent)
+                                .controlSize(.small)
+                                .tint(GameTheme.accent)
+                                .focused($focusedCheckpointID, equals: card.id)
+                                .accessibilityHint("Loads this checkpoint after protecting the current city")
+                        }
                     }
                 }
             }
@@ -161,16 +168,8 @@ struct CheckpointLibraryView: View {
                     )
             )
             .contentShape(Rectangle())
-        }
-        .buttonStyle(.plain)
-        .disabled(!card.isLoadable)
-        .focused($focusedCheckpointID, equals: card.id)
+        .opacity(card.isLoadable ? 1 : 0.82)
         .accessibilityLabel(card.accessibilitySummary)
-        .accessibilityHint(
-            card.isLoadable
-                ? "Loads this verified checkpoint after protecting the current city"
-                : "This checkpoint cannot be loaded"
-        )
         .accessibilityIdentifier("checkpoint-library.card.\(card.id)")
     }
 }

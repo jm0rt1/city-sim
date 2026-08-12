@@ -37,6 +37,18 @@ final class CitySessionReplacementConfirmationTests: XCTestCase {
             )
         )
         XCTAssertTrue(autosave.message.contains("latest verified rotating autosave"))
+        let branch = CitySessionReplacementConfirmationPresentation.make(
+            state: state,
+            action: .loadQuicksave,
+            loadResult: SaveGameLoadResult(
+                state: saved,
+                schemaVersion: 1,
+                fingerprint: try CityStateFingerprinter.fingerprint(saved),
+                source: .branch,
+                branchName: "Before Freight"
+            )
+        )
+        XCTAssertTrue(branch.message.contains("named timeline branch “Before Freight”"))
         XCTAssertEqual(
             CitySessionReplacementConfirmationPresentation.make(
                 state: state,

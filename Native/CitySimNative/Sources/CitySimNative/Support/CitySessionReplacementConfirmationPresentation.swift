@@ -38,6 +38,9 @@ struct CitySessionReplacementConfirmationPresentation: Equatable, Sendable {
                 sourceNote = " This checkpoint was recovered from the last known-good backup."
             } else if loadResult?.isAutosave == true {
                 sourceNote = " This is the latest verified rotating autosave."
+            } else if loadResult?.isNamedBranch == true {
+                sourceNote = " This checkpoint is the named timeline branch “"
+                    + "\(loadResult?.branchName ?? loaded.cityName)”."
             } else {
                 sourceNote = ""
             }

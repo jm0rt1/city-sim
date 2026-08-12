@@ -396,7 +396,19 @@ struct ContentView: View {
                 CheckpointLibraryView(
                     presentation: library,
                     selectAction: { _ = store.selectCheckpoint($0) },
+                    branchAction: { _ = store.beginBranchNaming(for: $0) },
                     cancelAction: { store.cancelCheckpointLibrary() }
+                )
+                .transition(.opacity)
+            } else if let branchNaming = store.branchNaming {
+                BranchNamingView(
+                    presentation: branchNaming,
+                    name: store.branchNameDraft,
+                    error: store.branchNameError,
+                    canCreate: store.canCreateBranch,
+                    updateName: store.updateBranchNameDraft,
+                    createAction: { _ = store.createNamedBranch() },
+                    cancelAction: { store.cancelBranchNaming() }
                 )
                 .transition(.opacity)
             } else if store.state.status != .playing {

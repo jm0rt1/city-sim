@@ -54,6 +54,7 @@ struct CityFinanceDecisionSupport: Equatable {
 struct InspectorView: View {
     @ObservedObject var store: CityGameStore
     var compact = false
+    @FocusState private var cityNameFieldFocused: Bool
 
     static let compactColumnCount = 2
     static let regularColumnCount = 4
@@ -357,12 +358,17 @@ struct InspectorView: View {
                 TextField(
                     "City name",
                     text: Binding(
-                        get: { store.state.cityName },
-                        set: { store.state.cityName = String($0.prefix(32)) }
+                        get: { store.cityNameDraft },
+                        set: { store.updateCityNameDraft($0) }
                     )
                 )
                 .textFieldStyle(.roundedBorder)
-                .onSubmit { store.setCityName(store.state.cityName) }
+                .focused($cityNameFieldFocused)
+                .onSubmit { store.commitCityNameDraft() }
+                .onChange(of: cityNameFieldFocused) { _, focused in
+                    if !focused { store.commitCityNameDraft() }
+                }
+                .onDisappear { store.commitCityNameDraft() }
                 ContextValueRow(label: "Today", value: store.state.formattedDay)
             }
 

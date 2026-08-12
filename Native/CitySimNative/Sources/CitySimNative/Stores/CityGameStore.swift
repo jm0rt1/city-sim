@@ -11,6 +11,7 @@ enum PlayerFeedbackTone: Sendable {
 @MainActor
 final class CityGameStore: ObservableObject {
     @Published var state: CityGameState
+    @Published var cityNameDraft: String
     @Published var speed: SimulationSpeed = .normal {
         didSet {
             if speed != .paused { lastNonPausedSpeed = speed }
@@ -45,6 +46,7 @@ final class CityGameStore: ObservableObject {
         startsPaused: Bool = false
     ) {
         self.state = state
+        self.cityNameDraft = state.cityName
         self.commandPolicy = commandPolicy
         self.saves = saveService
         if startsPaused || state.status != .playing {
@@ -766,7 +768,17 @@ final class CityGameStore: ObservableObject {
 
     func setCityName(_ value: String) {
         let cleaned = value.trimmingCharacters(in: .whitespacesAndNewlines)
-        state.cityName = cleaned.isEmpty ? "New Arcadia" : String(cleaned.prefix(32))
+        let accepted = cleaned.isEmpty ? "New Arcadia" : String(cleaned.prefix(32))
+        state.cityName = accepted
+        cityNameDraft = accepted
+    }
+
+    func updateCityNameDraft(_ value: String) {
+        cityNameDraft = String(value.prefix(32))
+    }
+
+    func commitCityNameDraft() {
+        setCityName(cityNameDraft)
     }
 
     func openObjective(_ objective: CityObjective) {
@@ -893,6 +905,7 @@ final class CityGameStore: ObservableObject {
 
     func newCity() {
         state = .newCity(seed: UInt64.random(in: 1...UInt64.max))
+        cityNameDraft = state.cityName
         speed = .paused
         lastNonPausedSpeed = .normal
         selectedTool = .road
@@ -919,6 +932,7 @@ final class CityGameStore: ObservableObject {
         do {
             let result = try saves.load()
             state = result.state
+            cityNameDraft = state.cityName
             speed = .paused
             lastNonPausedSpeed = .normal
             selectedTool = .road
@@ -946,7 +960,10 @@ final class CityGameStore: ObservableObject {
             showFeedback("Nothing to undo", tone: .caution)
             return
         }
+        let currentCityName = state.cityName
         state = previous
+        state.cityName = currentCityName
+        cityNameDraft = currentCityName
         selectedCoordinate = nil
         showInspector = false
         canUndo = !undoStates.isEmpty

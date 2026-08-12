@@ -1188,6 +1188,66 @@ final class CityCommandCatalogTests: XCTestCase {
     }
 
     @MainActor
+    func testCityNameDraftCannotLeakBlankIdentityAndConstructionUndoPreservesRename() throws {
+        let root = FileManager.default.temporaryDirectory
+            .appending(path: "citysim-name-draft-\(UUID().uuidString)", directoryHint: .isDirectory)
+        defer { try? FileManager.default.removeItem(at: root) }
+        let store = CityGameStore(
+            state: .newCity(seed: 42),
+            saveService: SaveGameService(rootURL: root)
+        )
+        XCTAssertEqual(store.cityNameDraft, "New Arcadia")
+
+        store.updateCityNameDraft("   ")
+        XCTAssertEqual(store.state.cityName, "New Arcadia")
+        store.commitCityNameDraft()
+        XCTAssertEqual(store.state.cityName, "New Arcadia")
+        XCTAssertEqual(store.cityNameDraft, "New Arcadia")
+
+        store.updateCityNameDraft("  Harbor Light  ")
+        XCTAssertEqual(
+            store.state.cityName,
+            "New Arcadia",
+            "Typing edits only the draft until submit or focus loss"
+        )
+        store.commitCityNameDraft()
+        XCTAssertEqual(store.state.cityName, "Harbor Light")
+        XCTAssertEqual(store.cityNameDraft, "Harbor Light")
+
+        store.selectTool(.commercial)
+        let target = try XCTUnwrap(store.state.tiles.first { tile in
+            guard tile.kind == .empty else { return false }
+            if case .success = CitySimulation.validateBuild(
+                .commercial,
+                at: tile.coordinate,
+                in: store.state
+            ) {
+                return true
+            }
+            return false
+        }?.coordinate)
+        store.primaryAction(at: target)
+        XCTAssertTrue(store.canUndo)
+
+        store.setCityName("Harbor Point")
+        store.undoLastAction()
+        XCTAssertEqual(store.state.cityName, "Harbor Point")
+        XCTAssertEqual(store.cityNameDraft, "Harbor Point")
+        XCTAssertEqual(store.state.tile(at: target)?.kind, .empty)
+
+        store.save()
+        store.setCityName("Transient Rename")
+        store.load()
+        XCTAssertEqual(store.state.cityName, "Harbor Point")
+        XCTAssertEqual(store.cityNameDraft, "Harbor Point")
+        XCTAssertEqual(store.speed, .paused)
+
+        store.newCity()
+        XCTAssertEqual(store.state.cityName, "New Arcadia")
+        XCTAssertEqual(store.cityNameDraft, "New Arcadia")
+    }
+
+    @MainActor
     func testPauseRestoresLastActiveSpeedAndEscapeClosesTopmostSurfaceFirst() {
         let store = CityGameStore(state: .newCity(seed: 42))
         store.perform(.speedFastest)

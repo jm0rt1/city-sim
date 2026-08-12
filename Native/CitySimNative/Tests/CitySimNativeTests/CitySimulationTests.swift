@@ -64,11 +64,11 @@ final class CitySimulationTests: XCTestCase {
             return XCTFail("Expected road-connected power construction to succeed")
         }
 
-        for _ in 0..<3 {
+        for expectedProgress in [0.25, 0.5, 0.75] {
             CitySimulation.step(&lhs)
             CitySimulation.step(&rhs)
             XCTAssertEqual(lhs, rhs, "The same construction command and ticks must replay identically")
-            XCTAssertEqual(lhs.tile(at: coordinate)?.constructionProgress, 0.75)
+            XCTAssertEqual(lhs.tile(at: coordinate)?.constructionProgress, expectedProgress)
             XCTAssertEqual(lhs.powerCapacity, initialPowerCapacity)
             XCTAssertFalse(lhs.messages.contains(where: { $0.title == "Construction Online" }))
         }

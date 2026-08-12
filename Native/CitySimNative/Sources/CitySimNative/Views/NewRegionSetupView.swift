@@ -127,9 +127,68 @@ struct NewRegionSetupView: View {
                 scenarioConfiguration(compact: compact)
             case .openSandbox:
                 sandboxConfiguration(compact: compact)
+            case .benchmark:
+                benchmarkConfiguration(compact: compact)
             }
         }
         .frame(maxWidth: .infinity, alignment: .top)
+    }
+
+    private func benchmarkConfiguration(compact: Bool) -> some View {
+        let benchmark = CityBenchmarkDefinition.verticalSlice
+        return VStack(alignment: .leading, spacing: compact ? 10 : 14) {
+            HStack {
+                Label("LOCAL PERFORMANCE CHECK", systemImage: "gauge.with.dots.needle.67percent")
+                    .font(.headline)
+                    .foregroundStyle(GameTheme.information)
+                Spacer()
+                Text("Usually under a minute")
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(.secondary)
+            }
+            Text(benchmark.detail)
+                .font(.callout)
+                .foregroundStyle(.secondary)
+            HStack(spacing: 10) {
+                benchmarkFact("Workload", benchmark.title, symbol: "building.2.fill")
+                benchmarkFact("Map", benchmark.citySize, symbol: "square.grid.3x3.fill")
+                benchmarkFact("Measurement", "Average · p95 · throughput", symbol: "chart.xyaxis.line")
+            }
+            Label(
+                "Runs on a temporary city. It never autosaves, overwrites, or advances your current city.",
+                systemImage: "lock.shield.fill"
+            )
+            .font(.caption.weight(.semibold))
+            .foregroundStyle(GameTheme.accent)
+            Text(benchmark.qualification)
+                .font(.caption2)
+                .foregroundStyle(.secondary)
+        }
+        .padding(compact ? 14 : 18)
+        .frame(maxWidth: .infinity, alignment: .topLeading)
+        .background(
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .fill(Color.white.opacity(0.035))
+        )
+    }
+
+    private func benchmarkFact(_ label: String, _ value: String, symbol: String) -> some View {
+        HStack(spacing: 8) {
+            Image(systemName: symbol)
+                .foregroundStyle(GameTheme.information)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(label.uppercased())
+                    .font(.system(size: 9, weight: .black))
+                    .foregroundStyle(.secondary)
+                Text(value)
+                    .font(.caption.weight(.semibold))
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            Spacer(minLength: 0)
+        }
+        .padding(10)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(.black.opacity(0.14), in: RoundedRectangle(cornerRadius: 10))
     }
 
     private func scenarioConfiguration(compact: Bool) -> some View {
@@ -323,7 +382,7 @@ struct NewRegionSetupView: View {
                 .controlSize(.large)
                 .tint(GameTheme.accent)
                 .keyboardShortcut(.defaultAction)
-                .disabled(draft.configuration == nil)
+                .disabled(!draft.canStart)
                 .accessibilityIdentifier("new-region-setup.create")
         }
     }
@@ -336,6 +395,8 @@ struct NewRegionSetupView: View {
             "The deterministic start, deadline, medal, and outcome persist with the city."
         case .openSandbox:
             "The seed makes this start reproducible across new sessions."
+        case .benchmark:
+            "The benchmark runs separately; your current city remains untouched."
         }
     }
 }

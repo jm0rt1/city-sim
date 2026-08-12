@@ -41,6 +41,7 @@ final class CityGameStore: ObservableObject {
     @Published private(set) var startupResumeOffer: CityStartupResumePresentation?
     @Published private(set) var newRegionSetup: CityNewRegionSetupPresentation?
     @Published private(set) var newRegionDraft = CityNewRegionDraft.initial(seed: 1)
+    @Published private(set) var benchmarkSession: CityBenchmarkSessionPresentation?
     @Published private(set) var checkpointLibrary: CityCheckpointLibraryPresentation?
     @Published private(set) var checkpointSupportFeedback: CityCheckpointSupportFeedback?
     @Published private(set) var branchNaming: CityBranchNamingPresentation?
@@ -52,6 +53,7 @@ final class CityGameStore: ObservableObject {
 
     private let saves: SaveGameService
     private let photos: CityPhotoService
+    private let benchmarkReports: CityBenchmarkReportService
     private let capturesScenarioCheckpoints: Bool
     private let revealSupportReport: (URL) -> Void
     private var undoStates: [CityGameState] = []
@@ -79,6 +81,7 @@ final class CityGameStore: ObservableObject {
     private var cityFocusBeforePhotoMode = false
     private var inspectorBeforePhotoMode = false
     private var objectivesBeforePhotoMode = false
+    private var benchmarkTask: Task<Void, Never>?
 
     init(
         state: CityGameState = .newCity(),
@@ -87,6 +90,7 @@ final class CityGameStore: ObservableObject {
         startsPaused: Bool = false,
         capturesScenarioCheckpoints: Bool = false,
         photoService: CityPhotoService? = nil,
+        benchmarkReportService: CityBenchmarkReportService? = nil,
         revealSupportReport: ((URL) -> Void)? = nil
     ) {
         self.state = state
@@ -94,6 +98,7 @@ final class CityGameStore: ObservableObject {
         self.commandPolicy = commandPolicy
         self.saves = saveService
         self.photos = photoService ?? CityPhotoService()
+        self.benchmarkReports = benchmarkReportService ?? CityBenchmarkReportService()
         self.capturesScenarioCheckpoints = capturesScenarioCheckpoints
         self.revealSupportReport = revealSupportReport ?? { url in
             NSWorkspace.shared.activateFileViewerSelecting([url])
@@ -295,7 +300,7 @@ final class CityGameStore: ObservableObject {
         }
         if command == .cancelInteraction,
            commandPolicy == .blocked(.newRegionSetup) {
-            return cancelNewRegionSetup()
+            return benchmarkSession == nil ? cancelNewRegionSetup() : closeBenchmark()
         }
         if command == .toggleCityFocus,
            Self.shouldQuarantineCityFocusShortcut(
@@ -424,7 +429,9 @@ final class CityGameStore: ObservableObject {
         guard !canPerform(command) else { return nil }
         if let policyReason = commandPolicy.disabledReason { return policyReason }
         if sessionReplacementConfirmation != nil {
-            return "Choose whether to keep or replace \(state.cityName)"
+            return sessionReplacementConfirmation?.action == .newRegion
+                ? "Choose whether to open the mode chooser or keep \(state.cityName)"
+                : "Choose whether to keep or replace \(state.cityName)"
         }
         let descriptor = CityCommandCatalog.descriptor(for: command)
         if descriptor.isSpatial { return "Available when the city map has focus" }
@@ -871,7 +878,9 @@ final class CityGameStore: ObservableObject {
     }
 
     private func dismissTopmostSurfaceOrCancel() {
-        if newRegionSetup != nil {
+        if benchmarkSession != nil {
+            closeBenchmark()
+        } else if newRegionSetup != nil {
             cancelNewRegionSetup()
         } else if branchNaming != nil {
             cancelBranchNaming()
@@ -1272,8 +1281,13 @@ final class CityGameStore: ObservableObject {
 
     @discardableResult
     func createNewRegion() -> Bool {
-        guard commandPolicy == .blocked(.newRegionSetup),
-              let configuration = newRegionDraft.configuration else { return false }
+        guard commandPolicy == .blocked(.newRegionSetup) else { return false }
+        if newRegionDraft.experience == .benchmark {
+            newRegionSetup = nil
+            benchmarkSession = .ready()
+            return true
+        }
+        guard let configuration = newRegionDraft.configuration else { return false }
         _ = dismissBlockingModal(.newRegionSetup)
         newRegionSetup = nil
         speedBeforeNewRegionSetup = nil
@@ -1296,11 +1310,133 @@ final class CityGameStore: ObservableObject {
         return true
     }
 
+    @discardableResult
+    func startBenchmark() -> Bool {
+        guard commandPolicy == .blocked(.newRegionSetup),
+              var session = benchmarkSession,
+              session.phase != .running else { return false }
+        benchmarkTask?.cancel()
+        session.phase = .running
+        session.completedPulses = 0
+        session.result = nil
+        session.reportURL = nil
+        session.message = nil
+        benchmarkSession = session
+
+        let definition = session.definition
+        let benchmarkStore = self
+        benchmarkTask = Task.detached(priority: .userInitiated) {
+            do {
+                let result = try await CityBenchmarkRunner.run(definition: definition) {
+                    completed, _ in
+                    await benchmarkStore.updateBenchmarkProgress(completed)
+                }
+                await benchmarkStore.completeBenchmark(result)
+            } catch CityBenchmarkRunError.canceled {
+                await benchmarkStore.finishBenchmarkCancellation()
+            } catch {
+                await benchmarkStore.failBenchmark(error.localizedDescription)
+            }
+        }
+        return true
+    }
+
+    @discardableResult
+    func cancelBenchmarkRun() -> Bool {
+        guard benchmarkSession?.phase == .running else { return false }
+        benchmarkTask?.cancel()
+        benchmarkTask = nil
+        finishBenchmarkCancellation()
+        return true
+    }
+
+    @discardableResult
+    func exportBenchmarkReport() -> Bool {
+        guard var session = benchmarkSession, let result = session.result else { return false }
+        do {
+            let url = try benchmarkReports.export(result: result)
+            session.reportURL = url
+            session.message = nil
+            benchmarkSession = session
+            revealSupportReport(url)
+            return true
+        } catch {
+            session.reportURL = nil
+            session.message = "Report could not be saved · \(error.localizedDescription)"
+            benchmarkSession = session
+            return false
+        }
+    }
+
+    @discardableResult
+    func returnToModeChooserFromBenchmark() -> Bool {
+        guard commandPolicy == .blocked(.newRegionSetup), benchmarkSession != nil else {
+            return false
+        }
+        benchmarkTask?.cancel()
+        benchmarkTask = nil
+        benchmarkSession = nil
+        newRegionSetup = .standard
+        return true
+    }
+
+    @discardableResult
+    func closeBenchmark() -> Bool {
+        guard commandPolicy == .blocked(.newRegionSetup), benchmarkSession != nil else {
+            return false
+        }
+        benchmarkTask?.cancel()
+        benchmarkTask = nil
+        benchmarkSession = nil
+        newRegionSetup = nil
+        let previousSpeed = speedBeforeNewRegionSetup ?? .paused
+        speedBeforeNewRegionSetup = nil
+        _ = dismissBlockingModal(.newRegionSetup)
+        speed = previousSpeed
+        requestMapFocus()
+        showFeedback("\(state.cityName) kept · Benchmark closed without changing the city")
+        return true
+    }
+
+    private func updateBenchmarkProgress(_ completedPulses: Int) {
+        guard var session = benchmarkSession, session.phase == .running else { return }
+        session.completedPulses = completedPulses
+        benchmarkSession = session
+    }
+
+    private func completeBenchmark(_ result: CityBenchmarkResult) {
+        guard var session = benchmarkSession, session.phase == .running else { return }
+        benchmarkTask = nil
+        session.phase = .complete
+        session.completedPulses = session.definition.pulseCount
+        session.result = result
+        benchmarkSession = session
+    }
+
+    private func finishBenchmarkCancellation() {
+        guard var session = benchmarkSession, session.phase == .running else { return }
+        benchmarkTask = nil
+        session.phase = .canceled
+        session.message = "The temporary workload stopped. Your current city was not changed."
+        benchmarkSession = session
+    }
+
+    private func failBenchmark(_ message: String) {
+        guard var session = benchmarkSession else { return }
+        benchmarkTask = nil
+        session.phase = .failed
+        session.message = "Benchmark could not finish · \(message)"
+        benchmarkSession = session
+    }
+
     private func applyNewRegion(_ configuration: CityNewRegionConfiguration) {
         sessionReplacementConfirmation = nil
         speedBeforeSessionReplacementConfirmation = nil
         pendingSessionReplacementLoad = nil
         newRegionSetup = nil
+        benchmarkTask?.cancel()
+        benchmarkTask = nil
+        benchmarkSession = nil
         speedBeforeNewRegionSetup = nil
         checkpointLibrary = nil
         checkpointLoadsByID.removeAll()
@@ -1355,6 +1491,8 @@ final class CityGameStore: ObservableObject {
                     + configuration.startingResources.title,
                 tone: .positive
             )
+        case .benchmark:
+            break
         }
     }
 

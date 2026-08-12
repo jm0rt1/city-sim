@@ -59,7 +59,7 @@ final class CityNewRegionSetupTests: XCTestCase {
 
         XCTAssertEqual(
             CityNewRegionExperience.allCases,
-            [.guidedFoundations, .authoredScenario, .openSandbox]
+            [.guidedFoundations, .authoredScenario, .openSandbox, .benchmark]
         )
         XCTAssertTrue(presentation.title.contains("Next City"))
         XCTAssertTrue(presentation.guidedHighlights.contains {

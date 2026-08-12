@@ -52,6 +52,10 @@ final class CityHandbookTests: XCTestCase {
         XCTAssertEqual(sandbox.id, .gettingStarted)
         XCTAssertEqual(sandbox.entries.map(\.id), ["start-new-region"])
 
+        let benchmark = try XCTUnwrap(presentation.search(query: "local performance benchmark").sections.first)
+        XCTAssertEqual(benchmark.id, .gettingStarted)
+        XCTAssertEqual(benchmark.entries.map(\.id), ["start-new-region"])
+
         XCTAssertEqual(
             presentation.search(query: "  VOICEOVER  ").sections.map(\.id),
             [.accessibility]

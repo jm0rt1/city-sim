@@ -23,10 +23,9 @@ struct CitySessionReplacementConfirmationPresentation: Equatable, Sendable {
         case .newRegion:
             return Self(
                 action: action,
-                title: "Replace \(state.cityName)?",
-                message: "\(checkpoint) will be replaced. "
-                    + "Save the city first if you want to return to this checkpoint.",
-                destructiveActionTitle: "Choose New Region",
+                title: "Choose another mode for \(state.cityName)?",
+                message: "The current checkpoint — \(checkpoint) — stays unchanged while you browse. Starting a guided city, scenario, or sandbox replaces this session; Benchmark runs separately without changing it. Save first if you want a return checkpoint.",
+                destructiveActionTitle: "Open Mode Chooser",
                 cancelActionTitle: "Keep \(state.cityName)"
             )
         case .loadQuicksave:

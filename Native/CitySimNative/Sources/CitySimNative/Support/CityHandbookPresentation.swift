@@ -157,11 +157,11 @@ struct CityHandbookPresentation: Equatable, Sendable {
                 entries: [
                     CityHandbookEntry(
                         id: "start-new-region",
-                        title: "Choose guided, scenario, or sandbox play",
-                        detail: "New Region offers Guided Foundations, the deterministic Harbor Recovery scenario with a deadline and medal tiers, or Open Sandbox with a custom city name, reproducible seed, and starting resources. The current city is preserved until you create the new start.",
+                        title: "Choose guided, scenario, sandbox, or benchmark play",
+                        detail: "New Region offers Guided Foundations, the deterministic Harbor Recovery scenario with a deadline and medal tiers, Open Sandbox with configurable identity and resources, or a local performance benchmark that runs on a temporary city without changing your current city.",
                         symbol: "map.fill",
                         shortcut: "⌘N",
-                        keywords: ["mode", "scenario", "harbor recovery", "medal", "sandbox", "seed", "starting resources", "guided", "new region"]
+                        keywords: ["mode", "scenario", "harbor recovery", "medal", "sandbox", "seed", "starting resources", "guided", "benchmark", "performance", "new region"]
                     ),
                     CityHandbookEntry(
                         id: "start-pause",

@@ -19,10 +19,11 @@ final class CitySessionReplacementConfirmationTests: XCTestCase {
             ),
             CitySessionReplacementConfirmationPresentation(
                 action: .newRegion,
-                title: "Replace Harbor Point?",
-                message: "Harbor Point · Day 12 · 512 residents will be replaced. "
-                    + "Save the city first if you want to return to this checkpoint.",
-                destructiveActionTitle: "Choose New Region",
+                title: "Choose another mode for Harbor Point?",
+                message: "The current checkpoint — Harbor Point · Day 12 · 512 residents — stays unchanged while you browse. "
+                    + "Starting a guided city, scenario, or sandbox replaces this session; "
+                    + "Benchmark runs separately without changing it. Save first if you want a return checkpoint.",
+                destructiveActionTitle: "Open Mode Chooser",
                 cancelActionTitle: "Keep Harbor Point"
             )
         )
@@ -107,7 +108,7 @@ final class CitySessionReplacementConfirmationTests: XCTestCase {
         XCTAssertFalse(store.canPerform(.saveCity))
         XCTAssertEqual(
             store.disabledReason(for: .saveCity),
-            "Choose whether to keep or replace Harbor Point"
+            "Choose whether to open the mode chooser or keep Harbor Point"
         )
 
         XCTAssertTrue(store.confirmSessionReplacement())

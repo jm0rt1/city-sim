@@ -285,7 +285,9 @@ struct ContentView: View {
         ) {
             Button(
                 store.sessionReplacementConfirmation?.destructiveActionTitle ?? "Replace City",
-                role: .destructive
+                role: store.sessionReplacementConfirmation?.action == .loadQuicksave
+                    ? .destructive
+                    : nil
             ) {
                 store.confirmSessionReplacement()
             }
@@ -444,6 +446,16 @@ struct ContentView: View {
                     presentation: offer,
                     resumeAction: { store.resumeStartupCity() },
                     startFreshAction: { store.startFreshFromStartupOffer() }
+                )
+                .transition(.opacity)
+            } else if let benchmark = store.benchmarkSession {
+                CityBenchmarkView(
+                    session: benchmark,
+                    runAction: { _ = store.startBenchmark() },
+                    cancelRunAction: { _ = store.cancelBenchmarkRun() },
+                    exportAction: { _ = store.exportBenchmarkReport() },
+                    backAction: { _ = store.returnToModeChooserFromBenchmark() },
+                    doneAction: { _ = store.closeBenchmark() }
                 )
                 .transition(.opacity)
             } else if let setup = store.newRegionSetup {

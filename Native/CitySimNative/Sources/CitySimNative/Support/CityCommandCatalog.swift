@@ -132,7 +132,7 @@ enum CityCommandPolicy: Equatable, Sendable {
         case .blocked(.startupResume):
             "Choose whether to resume the saved city or start fresh"
         case .blocked(.newRegionSetup):
-            "Choose a guided city or configure the new sandbox"
+            "Choose a guided city, authored scenario, sandbox, or benchmark"
         case .blocked(.checkpointLibrary):
             "Choose a verified checkpoint or return to the current city"
         case .blocked(.branchNaming):
@@ -221,7 +221,7 @@ enum CityCommandCatalog {
             ))
         }
 
-        add(.newRegion, "New Region", .files, "Choose a guided city, authored scenario, or sandbox.", shortcut: shortcut("n", [.command], "⌘N", scope: .global))
+        add(.newRegion, "New Region", .files, "Choose a guided city, authored scenario, sandbox, or local benchmark.", shortcut: shortcut("n", [.command], "⌘N", scope: .global))
         add(.saveCity, "Save City", .files, "Save the current city.", shortcut: shortcut("s", [.command], "⌘S", scope: .global))
         add(.saveBranch, "Create Timeline Branch…", .files, "Preserve the current city as a named timeline.", shortcut: shortcut("s", [.command, .shift], "⇧⌘S", scope: .global))
         add(.loadCity, "Load City", .files, "Browse every verified recovery checkpoint.", shortcut: shortcut("o", [.command], "⌘O", scope: .global))

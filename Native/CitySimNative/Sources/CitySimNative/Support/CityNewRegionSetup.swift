@@ -4,6 +4,7 @@ enum CityNewRegionExperience: String, CaseIterable, Identifiable, Equatable, Sen
     case guidedFoundations
     case authoredScenario
     case openSandbox
+    case benchmark
 
     var id: String { rawValue }
 
@@ -12,6 +13,7 @@ enum CityNewRegionExperience: String, CaseIterable, Identifiable, Equatable, Sen
         case .guidedFoundations: "Guided Foundations"
         case .authoredScenario: "Harbor Recovery"
         case .openSandbox: "Open Sandbox"
+        case .benchmark: "Benchmark"
         }
     }
 
@@ -20,6 +22,7 @@ enum CityNewRegionExperience: String, CaseIterable, Identifiable, Equatable, Sen
         case .guidedFoundations: "signpost.right.and.left.fill"
         case .authoredScenario: "flag.checkered.2.crossed"
         case .openSandbox: "slider.horizontal.3"
+        case .benchmark: "gauge.with.dots.needle.67percent"
         }
     }
 
@@ -31,6 +34,8 @@ enum CityNewRegionExperience: String, CaseIterable, Identifiable, Equatable, Sen
             "Stabilize a pressured harbor town before its 40-day deadline."
         case .openSandbox:
             "Choose your city identity, deterministic seed, and starting resources."
+        case .benchmark:
+            "Measure a known city workload without changing your current city."
         }
     }
 
@@ -39,6 +44,7 @@ enum CityNewRegionExperience: String, CaseIterable, Identifiable, Equatable, Sen
         case .guidedFoundations: "Begin Guided City"
         case .authoredScenario: "Start Scenario"
         case .openSandbox: "Create Sandbox"
+        case .benchmark: "Open Benchmark"
         }
     }
 }
@@ -118,9 +124,9 @@ struct CityNewRegionDraft: Equatable, Sendable {
     }
 
     var configuration: CityNewRegionConfiguration? {
-        guard let seed = parsedSeed else { return nil }
         switch experience {
         case .guidedFoundations:
+            guard let seed = parsedSeed else { return nil }
             return CityNewRegionConfiguration(
                 experience: experience,
                 cityName: "New Arcadia",
@@ -136,6 +142,7 @@ struct CityNewRegionDraft: Equatable, Sendable {
                 startingResources: .balanced
             )
         case .openSandbox:
+            guard let seed = parsedSeed else { return nil }
             let cleanedName = cityName.trimmingCharacters(in: .whitespacesAndNewlines)
             guard !cleanedName.isEmpty, cleanedName.count <= 40 else { return nil }
             return CityNewRegionConfiguration(
@@ -144,8 +151,12 @@ struct CityNewRegionDraft: Equatable, Sendable {
                 seed: seed,
                 startingResources: startingResources
             )
+        case .benchmark:
+            return nil
         }
     }
+
+    var canStart: Bool { experience == .benchmark || configuration != nil }
 
     var validationMessage: String? {
         guard experience == .openSandbox else { return nil }
@@ -171,7 +182,7 @@ struct CityNewRegionSetupPresentation: Equatable, Sendable {
 
     static let standard = CityNewRegionSetupPresentation(
         title: "Choose Your Next City",
-        detail: "Choose a guided city, an authored challenge, or a deterministic sandbox.",
+        detail: "Choose a guided city, challenge, sandbox, or local performance benchmark.",
         guidedHighlights: [
             "Two-act Town Charter and Regional Capital journey",
             "Contextual objectives, recovery choices, and checkpoints",

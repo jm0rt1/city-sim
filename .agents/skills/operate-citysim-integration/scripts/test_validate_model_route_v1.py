@@ -268,6 +268,64 @@ class ModelRouteTests(unittest.TestCase):
         }
         return output, receipt, command
 
+    def make_xctest_writer_execution(self, route: dict) -> tuple[Path, Path, Path]:
+        output, _receipt, old_command = self.add_writer_execution(route)
+        build_root = (self.repo / "swift-build").resolve()
+        bundle = build_root / "debug" / "FixturePackageTests.xctest"
+        executable = bundle / "Contents" / "MacOS" / "FixturePackageTests"
+        executable.parent.mkdir(parents=True)
+        executable.write_bytes(b"fresh-xctest-executable\n")
+        executable.chmod(0o755)
+        log = self.repo / "xctest-prebuild.log"
+        log.write_text(
+            "Build complete!\nExecuted 1 test, with 0 failures in 0.01 seconds\n",
+            encoding="utf-8",
+        )
+        prebuild_receipt = self.repo / "xctest-prebuild-receipt.json"
+        prebuild_receipt.write_text(json.dumps({
+            "status": "terminal",
+            "terminal": True,
+            "parentExited": True,
+            "processGroupExited": True,
+            "descendantsExited": True,
+            "liveProcessGroupPids": [],
+            "liveObservedDescendantPids": [],
+            "exitCode": 0,
+            "validatorExitCode": 0,
+            "argv": [
+                "swift", "test", "--package-path", "Native/CitySimNative",
+                "--filter", "WriterPrebuildTests",
+            ],
+            "validatorArgv": [
+                "python3", "inputs/route-validator.py", "--swift-test-log",
+                str(log.resolve()),
+            ],
+            "logSha256": hashlib.sha256(log.read_bytes()).hexdigest(),
+            "buildRoot": str(build_root),
+        }), encoding="utf-8")
+        command = shlex.join([
+            "env", "CITYSIM_WRITER_MODE=successor", "CITYSIM_SEED=131",
+            "xcrun", "xctest", "-XCTest", "FixtureTests.Writer", str(bundle),
+        ])
+        route["validation"]["focusedCommands"].remove(old_command)
+        route["validation"]["focusedCommands"].append(command)
+        writer = route["writerExecution"]["writers"][0]
+        writer["command"] = command
+        route["writerExecution"].update({
+            "schema": 2,
+            "xctestPrebuild": {
+                "receipt": {
+                    "path": str(prebuild_receipt.resolve()),
+                    "sha256": hashlib.sha256(prebuild_receipt.read_bytes()).hexdigest(),
+                },
+                "testBundleExecutable": {
+                    "path": str(executable.resolve()),
+                    "sha256": hashlib.sha256(executable.read_bytes()).hexdigest(),
+                },
+            },
+        })
+        return output, prebuild_receipt, executable
+
     def make_visual_route(self, root: str) -> dict:
         route = self.route()
         (self.repo / "claims" / "PLAY-999.md").write_text(
@@ -559,6 +617,43 @@ class ModelRouteTests(unittest.TestCase):
         self.assert_invalid(route, "required_input sha256 does not match")
         artifact["path"] = "inputs/missing.json"
         self.assert_invalid(route, "required_input does not exist")
+
+    def test_xctest_writer_binds_result_bearing_prebuild_and_exact_bundle(self) -> None:
+        route = self.route()
+        _, prebuild_receipt, executable = self.make_xctest_writer_execution(route)
+        self.assert_valid(route)
+
+        route["writerExecution"]["xctestPrebuild"]["testBundleExecutable"]["sha256"] = "0" * 64
+        self.assert_invalid(route, "does not match file bytes")
+        route["writerExecution"]["xctestPrebuild"]["testBundleExecutable"]["sha256"] = (
+            hashlib.sha256(executable.read_bytes()).hexdigest()
+        )
+
+        writer = route["writerExecution"]["writers"][0]
+        exact_command = writer["command"]
+        writer["command"] = exact_command.replace(
+            "FixturePackageTests.xctest", "StalePackageTests.xctest"
+        )
+        route["validation"]["focusedCommands"].remove(exact_command)
+        route["validation"]["focusedCommands"].append(writer["command"])
+        self.assert_invalid(route, "must consume the exact prebuilt .xctest bundle")
+
+        writer["command"] = exact_command
+        route["validation"]["focusedCommands"][-1] = exact_command
+        receipt = json.loads(prebuild_receipt.read_text(encoding="utf-8"))
+        receipt["validatorExitCode"] = 1
+        prebuild_receipt.write_text(json.dumps(receipt), encoding="utf-8")
+        route["writerExecution"]["xctestPrebuild"]["receipt"]["sha256"] = (
+            hashlib.sha256(prebuild_receipt.read_bytes()).hexdigest()
+        )
+        self.assert_invalid(route, "must be terminal, descendant-free, result-bearing")
+
+    def test_historical_writer_schema_cannot_authorize_new_xctest_writer(self) -> None:
+        route = self.route()
+        self.make_xctest_writer_execution(route)
+        del route["writerExecution"]["xctestPrebuild"]
+        route["writerExecution"]["schema"] = 1
+        self.assert_invalid(route, "XCTest-backed writers require writerExecution schema 2")
 
     def test_writer_receipt_binds_terminal_outputs_and_generated_bytes(self) -> None:
         route = self.route()

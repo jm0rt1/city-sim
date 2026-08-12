@@ -90,6 +90,18 @@ output byte. Compare and materialization inputs may not escape or substitute
 the declared root. This applies prospectively and adds no reviewer or
 acceptance turn.
 
+An XCTest-backed artifact writer additionally uses prospective
+`writerExecution` schema 2. Before any writer runs, its contract binds one
+terminal, descendant-free, zero-exit Swift prebuild receipt whose retained log
+contains a positive executed-test result, plus the exact executable inside the
+produced `.xctest` bundle by canonical path and SHA-256. The executable must be
+contained by the receipt's build root, and every XCTest writer argv must consume
+that exact bundle. A stale or substituted bundle, compile-only receipt, hash
+mismatch, or writer that names another bundle fails preflight. Schema-1
+non-XCTest routes and historical route bytes remain valid evidence; they cannot
+authorize a new XCTest writer. This is execution identity inside the existing
+writer gate, not another reviewer, aggregate, or acceptance layer.
+
 `Build complete!` is an intermediate compilation marker, not a terminal test
 result. The runner holds its live OS lease and build-root locks until the parent,
 process group, and every observed descendant exit, then applies

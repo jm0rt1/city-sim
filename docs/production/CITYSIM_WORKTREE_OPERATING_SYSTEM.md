@@ -260,6 +260,17 @@ binds the unchanged command/environment/root, zero exit, and every generated
 output hash. This is an executable route invariant, not a review or acceptance
 layer, and product aggregates do not wait for unrelated control-plane repair.
 
+New or rebound XCTest-backed writers use `writerExecution` schema 2 and may run
+only after one result-bearing Swift prebuild receipt is terminal,
+descendant-free, and zero-exit. The same preflight binds the exact
+`Contents/MacOS` executable inside the produced `.xctest` bundle by canonical
+path and SHA-256, proves it lies under the receipt's build root, and requires
+every XCTest writer command to consume that exact bundle. Compile-only proof,
+stale executable bytes, or a different bundle argv fails before writer
+execution. Existing schema-1 non-XCTest and historical route bytes remain
+unchanged. This extends the existing execution gate without delaying product
+aggregate, stage, or QA and without creating a reviewer.
+
 ## 5. Shared surfaces and contract locks
 
 The following are integration-controlled because they are likely collision points:

@@ -111,7 +111,10 @@ SWIFT_EXECUTION_ROW_FIELDS = {
     "receiptPath", "priorAttemptReceipt",
 }
 SWIFT_TERMINAL_POLICY = "parent_group_and_observed_descendants_exited"
-WRITER_EXECUTION_FIELDS = {"schema", "generatedOutputRoot", "writers"}
+WRITER_EXECUTION_V1_FIELDS = {"schema", "generatedOutputRoot", "writers"}
+WRITER_EXECUTION_V2_FIELDS = {
+    "schema", "generatedOutputRoot", "writers", "xctestPrebuild",
+}
 WRITER_ROW_FIELDS = {"writerId", "command", "environment", "artifacts"}
 WRITER_ARTIFACT_FIELDS = {"phase", "path", "sha256"}
 WRITER_ARTIFACT_PHASES = {
@@ -122,6 +125,8 @@ WRITER_RECEIPT_FIELDS = {
     "generatedOutputRoot", "status", "exitCode", "outputs",
 }
 WRITER_RECEIPT_OUTPUT_FIELDS = {"path", "sha256"}
+XCTEST_PREBUILD_FIELDS = {"receipt", "testBundleExecutable"}
+ABSOLUTE_BINDING_FIELDS = {"path", "sha256"}
 
 
 class ValidationError(Exception):
@@ -259,6 +264,148 @@ def _declared_command_environment(
     return environment
 
 
+def _is_xctest_writer_argv(argv: list[str]) -> bool:
+    return any(token.rsplit("/", 1)[-1] == "xctest" for token in argv)
+
+
+def _absolute_binding_path(
+    binding: Any, label: str, errors: list[str]
+) -> Path | None:
+    if not isinstance(binding, dict) or set(binding) != ABSOLUTE_BINDING_FIELDS:
+        errors.append(f"{label} must contain exactly path and sha256")
+        return None
+    value = binding.get("path")
+    digest = binding.get("sha256")
+    if not _canonical_absolute(value):
+        errors.append(f"{label}.path must be a canonical absolute path")
+        return None
+    if not _is_hex(digest, 64):
+        errors.append(f"{label}.sha256 must be 64 lowercase hex characters")
+    path = Path(value)
+    if not path.is_file():
+        errors.append(f"{label}.path does not resolve to a file")
+    elif _is_hex(digest, 64) and file_sha(path) != digest:
+        errors.append(f"{label}.sha256 does not match file bytes")
+    return path
+
+
+def _xctest_bundle_for_executable(
+    executable: Path, label: str, errors: list[str]
+) -> Path | None:
+    parts = executable.parts
+    indexes = [index for index, part in enumerate(parts) if part.endswith(".xctest")]
+    if len(indexes) != 1:
+        errors.append(f"{label} must be inside exactly one .xctest bundle")
+        return None
+    index = indexes[0]
+    suffix = parts[index + 1:]
+    if len(suffix) != 3 or suffix[:2] != ("Contents", "MacOS"):
+        errors.append(f"{label} must name the exact .xctest Contents/MacOS executable")
+        return None
+    bundle = Path(*parts[:index + 1])
+    if executable.name != bundle.name.removesuffix(".xctest"):
+        errors.append(f"{label} executable name must match its .xctest bundle")
+    return bundle
+
+
+def _validate_xctest_prebuild(
+    contract: dict[str, Any], writer_argvs: list[tuple[str, list[str]]],
+    errors: list[str],
+) -> None:
+    prebuild = contract.get("xctestPrebuild")
+    if not isinstance(prebuild, dict) or set(prebuild) != XCTEST_PREBUILD_FIELDS:
+        errors.append("writerExecution.xctestPrebuild has unsupported or missing fields")
+        return
+    receipt_path = _absolute_binding_path(
+        prebuild.get("receipt"), "writerExecution.xctestPrebuild.receipt", errors
+    )
+    executable = _absolute_binding_path(
+        prebuild.get("testBundleExecutable"),
+        "writerExecution.xctestPrebuild.testBundleExecutable", errors,
+    )
+    bundle = (
+        _xctest_bundle_for_executable(
+            executable, "writerExecution.xctestPrebuild.testBundleExecutable", errors
+        )
+        if executable is not None else None
+    )
+    receipt: Any = None
+    if receipt_path is not None and receipt_path.is_file():
+        try:
+            receipt = load_json(receipt_path)
+        except ValidationError as exc:
+            errors.append(f"writerExecution.xctestPrebuild.receipt is unreadable: {exc}")
+    if not isinstance(receipt, dict):
+        if receipt is not None:
+            errors.append("writerExecution.xctestPrebuild.receipt must contain a JSON object")
+    else:
+        if (
+            receipt.get("status") != "terminal"
+            or receipt.get("terminal") is not True
+            or receipt.get("parentExited") is not True
+            or receipt.get("processGroupExited") is not True
+            or receipt.get("descendantsExited") is not True
+            or receipt.get("liveProcessGroupPids") != []
+            or receipt.get("liveObservedDescendantPids") != []
+            or receipt.get("exitCode") != 0
+            or receipt.get("validatorExitCode") != 0
+        ):
+            errors.append(
+                "writerExecution.xctestPrebuild.receipt must be terminal, "
+                "descendant-free, result-bearing, and exit 0"
+            )
+        argv = receipt.get("argv")
+        if not isinstance(argv, list) or not all(isinstance(token, str) for token in argv):
+            errors.append("writerExecution.xctestPrebuild.receipt argv must be a string list")
+        elif not _is_swift_test_argv(argv):
+            errors.append("writerExecution.xctestPrebuild.receipt must execute swift test")
+        validator_argv = receipt.get("validatorArgv")
+        if not isinstance(validator_argv, list) or not all(
+            isinstance(token, str) for token in validator_argv
+        ):
+            errors.append("writerExecution.xctestPrebuild.receipt validatorArgv must be a string list")
+        else:
+            log_value = _single_option(
+                validator_argv, "--swift-test-log",
+                "writerExecution.xctestPrebuild.receipt.validatorArgv", errors,
+            )
+            if log_value is not None:
+                if not _canonical_absolute(log_value):
+                    errors.append("writerExecution.xctestPrebuild log path must be canonical absolute")
+                else:
+                    log_path = Path(log_value)
+                    try:
+                        log_bytes = log_path.read_bytes()
+                        log_text = log_bytes.decode("utf-8")
+                    except (OSError, UnicodeError) as exc:
+                        errors.append(f"writerExecution.xctestPrebuild cannot read retained log: {exc}")
+                    else:
+                        log_sha = hashlib.sha256(log_bytes).hexdigest()
+                        if receipt.get("logSha256") != log_sha:
+                            errors.append("writerExecution.xctestPrebuild retained log hash does not match receipt")
+                        errors.extend(
+                            f"writerExecution.xctestPrebuild retained log: {error}"
+                            for error in validate_swift_test_log(log_text)
+                        )
+        build_root = receipt.get("buildRoot")
+        if not _canonical_absolute(build_root):
+            errors.append("writerExecution.xctestPrebuild.receipt buildRoot must be canonical absolute")
+        elif executable is not None:
+            try:
+                executable.relative_to(Path(build_root))
+            except ValueError:
+                errors.append("writerExecution.xctestPrebuild executable lies outside receipt buildRoot")
+    if executable is not None and executable.is_file() and not executable.stat().st_mode & 0o111:
+        errors.append("writerExecution.xctestPrebuild test bundle executable is not executable")
+    if bundle is not None:
+        for label, argv in writer_argvs:
+            if str(bundle) not in argv:
+                errors.append(
+                    f"{label}.command must consume the exact prebuilt .xctest bundle "
+                    "bound by testBundleExecutable"
+                )
+
+
 def _validate_writer_execution(
     route: dict[str, Any],
     focused_commands: Any,
@@ -270,11 +417,21 @@ def _validate_writer_execution(
     contract = route.get("writerExecution")
     if contract is None:
         return
-    if not isinstance(contract, dict) or set(contract) != WRITER_EXECUTION_FIELDS:
+    if not isinstance(contract, dict):
         errors.append("writerExecution has unsupported or missing fields")
         return
-    if contract.get("schema") != 1:
-        errors.append("writerExecution.schema must equal 1")
+    schema = contract.get("schema")
+    expected_fields = (
+        WRITER_EXECUTION_V1_FIELDS if schema == 1
+        else WRITER_EXECUTION_V2_FIELDS if schema == 2
+        else None
+    )
+    if expected_fields is None:
+        errors.append("writerExecution.schema must equal 1 or 2")
+        return
+    if set(contract) != expected_fields:
+        errors.append("writerExecution has unsupported or missing fields")
+        return
     root_value = contract.get("generatedOutputRoot")
     if not _canonical_absolute(root_value):
         errors.append("writerExecution.generatedOutputRoot must be a canonical absolute path")
@@ -294,6 +451,7 @@ def _validate_writer_execution(
     writer_ids: list[str] = []
     prospective_paths: list[str] = []
     receipt_paths: list[str] = []
+    xctest_writer_argvs: list[tuple[str, list[str]]] = []
     for writer_index, writer in enumerate(writers):
         label = f"writerExecution.writers[{writer_index}]"
         if not isinstance(writer, dict) or set(writer) != WRITER_ROW_FIELDS:
@@ -311,6 +469,8 @@ def _validate_writer_execution(
         if command not in gate_commands:
             errors.append(f"{label}.command must be an exact focused/full gate command")
         argv = _parse_command(command, f"{label}.command", errors)
+        if _is_xctest_writer_argv(argv):
+            xctest_writer_argvs.append((label, argv))
         command_environment = _declared_command_environment(
             argv, f"{label}.command", errors
         )
@@ -388,6 +548,15 @@ def _validate_writer_execution(
         errors.append("writerExecution prospective_output paths must be unique")
     if len(receipt_paths) != len(set(receipt_paths)):
         errors.append("writerExecution post_execution_receipt paths must be unique")
+    if xctest_writer_argvs and schema != 2:
+        errors.append(
+            "XCTest-backed writers require writerExecution schema 2 and an exact prebuild"
+        )
+    elif schema == 2:
+        if not xctest_writer_argvs:
+            errors.append("writerExecution schema 2 requires at least one XCTest-backed writer")
+        else:
+            _validate_xctest_prebuild(contract, xctest_writer_argvs, errors)
 
 
 def validate_writer_receipt(

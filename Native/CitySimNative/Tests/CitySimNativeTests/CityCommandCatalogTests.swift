@@ -2091,8 +2091,18 @@ final class CityCommandCatalogTests: XCTestCase {
         store.clearFeedback()
         let mapView = CityMapSKView(frame: CGRect(x: 0, y: 0, width: 900, height: 600))
         let coordinator = CitySceneView.Coordinator(store: store)
+        let window = NSWindow(
+            contentRect: mapView.frame,
+            styleMask: [.titled],
+            backing: .buffered,
+            defer: false
+        )
+        window.contentView = mapView
+        window.makeKeyAndOrderFront(nil)
+        defer { window.orderOut(nil) }
 
         coordinator.configureMapAccessibility(in: mapView)
+        XCTAssertTrue(mapView.isAccessibilityElement())
         XCTAssertEqual(mapView.accessibilityValue() as? String, "No block selected")
         XCTAssertEqual(
             mapView.accessibilityCustomActions()?.map(\.name),
@@ -2106,7 +2116,6 @@ final class CityCommandCatalogTests: XCTestCase {
         XCTAssertEqual(store.selectedTile?.kind, .empty)
         XCTAssertTrue(store.state.neighbors(of: expected).contains { $0.kind == .road })
 
-        coordinator.configureMapAccessibility(in: mapView)
         let accessibilityValue = try XCTUnwrap(mapView.accessibilityValue() as? String)
         XCTAssertTrue(accessibilityValue.contains("block 5, 9"))
         XCTAssertTrue(store.performMapCommand(.mapPrimaryAction))

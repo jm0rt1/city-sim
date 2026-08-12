@@ -166,7 +166,7 @@ struct OverlayDiagnosticsPaletteView: View {
         .frame(maxWidth: .infinity, minHeight: GameTheme.controlMinimum, alignment: .leading)
         }
         .menuStyle(.borderlessButton)
-        .background(.thinMaterial, in: RoundedRectangle(cornerRadius: GameTheme.panelRadius, style: .continuous))
+        .cityPanelBackground(.thin, in: RoundedRectangle(cornerRadius: GameTheme.panelRadius, style: .continuous))
         .background(
             GameTheme.hudSurfaceFill,
             in: RoundedRectangle(cornerRadius: GameTheme.panelRadius, style: .continuous)

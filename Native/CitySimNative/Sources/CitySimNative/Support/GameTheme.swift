@@ -6,6 +6,7 @@ enum GameTheme {
     static let warning = Color(red: 1.0, green: 0.67, blue: 0.24)
     static let danger = Color(red: 0.95, green: 0.31, blue: 0.31)
     static let panel = Color.black.opacity(0.56)
+    static let opaquePanel = Color(red: 0.075, green: 0.082, blue: 0.095)
     static let panelStroke = Color.white.opacity(0.14)
     static let strongPanelStroke = Color.white.opacity(0.22)
     static let inactiveControl = Color.primary.opacity(0.09)

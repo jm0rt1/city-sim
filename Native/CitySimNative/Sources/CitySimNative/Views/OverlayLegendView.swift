@@ -15,7 +15,7 @@ struct OverlayLegendView: View {
         }
         .padding(10)
         .frame(width: 220, alignment: .leading)
-        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 11))
+        .cityPanelBackground(.ultraThin, in: RoundedRectangle(cornerRadius: 11))
         .overlay(RoundedRectangle(cornerRadius: 11).stroke(GameTheme.panelStroke))
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(overlay.title) layer legend")

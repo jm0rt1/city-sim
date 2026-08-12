@@ -1608,7 +1608,8 @@ final class CityGameStore: ObservableObject {
     }
 
     private func playSound(named name: String) {
-        guard UserDefaults.standard.object(forKey: "soundEffects") as? Bool ?? true else { return }
+        guard UserDefaults.standard.object(forKey: CityPlayerPreferenceKey.soundEffects) as? Bool
+            ?? true else { return }
         NSSound(named: NSSound.Name(name))?.play()
     }
 

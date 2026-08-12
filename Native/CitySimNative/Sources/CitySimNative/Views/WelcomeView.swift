@@ -85,7 +85,7 @@ struct WelcomeView: View {
             }
             .padding(34)
             .frame(width: 820)
-            .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 26, style: .continuous))
+            .cityPanelBackground(.regular, in: RoundedRectangle(cornerRadius: 26, style: .continuous))
             .overlay(RoundedRectangle(cornerRadius: 26).stroke(.white.opacity(0.15)))
             .shadow(color: .black.opacity(0.45), radius: 36, y: 18)
             .accessibilityElement(children: .contain)

@@ -233,7 +233,7 @@ struct GameStatusOverlay: View {
                     width: min(compact ? 720 : 780, max(520, proxy.size.width - 32)),
                     height: min(compact ? 560 : 620, max(440, proxy.size.height - 32))
                 )
-                .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
+                .cityPanelBackground(.regular, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
                 .overlay(RoundedRectangle(cornerRadius: 24).stroke(.white.opacity(0.16)))
                 .shadow(color: .black.opacity(0.45), radius: 36, y: 18)
                 .accessibilityElement(children: .contain)

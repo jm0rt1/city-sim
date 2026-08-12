@@ -33,7 +33,7 @@ struct CommandGuideView: View {
             .accessibilityLabel("Searchable CitySim command catalog")
         }
         .frame(minWidth: 620, idealWidth: 760, maxWidth: 860, minHeight: 480, idealHeight: 560, maxHeight: 680)
-        .background(.regularMaterial)
+        .cityPanelBackground(.regular, in: Rectangle())
         .onAppear {
             query = ""
             DispatchQueue.main.async { searchFocused = true }

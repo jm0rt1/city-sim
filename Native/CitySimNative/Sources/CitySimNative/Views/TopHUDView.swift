@@ -87,7 +87,7 @@ struct TopHUDView: View {
     @ObservedObject var store: CityGameStore
     var compact = false
     @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
-    @AppStorage("reduceGameMotion") private var gameReduceMotion = false
+    @AppStorage(CityPlayerPreferenceKey.reduceMotion) private var gameReduceMotion = false
 
     static let compactMaximumHeight: CGFloat = 104
     static let regularMaximumHeight: CGFloat = 108
@@ -102,8 +102,8 @@ struct TopHUDView: View {
         .padding(.horizontal, 6)
         .padding(.vertical, compact ? 6 : 4)
         .frame(maxHeight: compact ? Self.compactMaximumHeight : Self.regularMaximumHeight)
-        .background(
-            .thinMaterial,
+        .cityPanelBackground(
+            .thin,
             in: RoundedRectangle(cornerRadius: GameTheme.panelRadius, style: .continuous)
         )
         .background(
@@ -512,8 +512,8 @@ struct FocusCityHUDView: View {
         .padding(6)
         .frame(maxWidth: .infinity)
         .frame(maxHeight: compact ? Self.compactMaximumHeight : Self.regularMaximumHeight)
-        .background(
-            .thinMaterial,
+        .cityPanelBackground(
+            .thin,
             in: RoundedRectangle(cornerRadius: GameTheme.panelRadius, style: .continuous)
         )
         .background(

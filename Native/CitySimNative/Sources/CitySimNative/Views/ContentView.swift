@@ -146,9 +146,17 @@ struct ContentView: View {
     private let startupResumeEnabled: Bool
     private let onChromeFrames: ((CityHUDChromeFrames) -> Void)?
     @StateObject private var pointerTransitionGate = CityMapPointerTransitionGate()
-    @AppStorage("hasSeenCitySimWelcome") private var hasSeenWelcome = false
-    @AppStorage("reduceGameMotion") private var gameReduceMotion = false
+    @AppStorage(CityPlayerPreferenceKey.hasSeenWelcome) private var hasSeenWelcome = false
+    @AppStorage(CityPlayerPreferenceKey.reduceMotion) private var gameReduceMotion = false
+    @AppStorage(CityPlayerPreferenceKey.reduceTransparency) private var gameReduceTransparency = false
+    @AppStorage(CityPlayerPreferenceKey.increaseContrast) private var gameIncreaseContrast = false
+    @AppStorage(CityPlayerPreferenceKey.differentiateWithoutColor)
+    private var gameDifferentiateWithoutColor = false
     @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
+    @Environment(\.accessibilityReduceTransparency) private var systemReduceTransparency
+    @Environment(\.accessibilityDifferentiateWithoutColor)
+    private var systemDifferentiateWithoutColor
+    @Environment(\.colorSchemeContrast) private var systemContrast
     @State private var hudChromeFrames = CityHUDChromeFrames()
     @State private var focusCityChromeFrame = CGRect.zero
 
@@ -214,6 +222,21 @@ struct ContentView: View {
             synchronizeWelcomePolicy()
             synchronizeStartupResumeOffer()
         }
+        .onChange(of: store.commandPolicy) { _, _ in
+            synchronizeWelcomePolicy()
+        }
+        .onChange(of: store.state.status) { _, _ in
+            synchronizeWelcomePolicy()
+        }
+        .onChange(of: store.sessionReplacementConfirmation != nil) { _, _ in
+            synchronizeWelcomePolicy()
+        }
+        .onChange(of: store.showCommandGuide) { _, _ in
+            synchronizeWelcomePolicy()
+        }
+        .onChange(of: store.showCityHandbook) { _, _ in
+            synchronizeWelcomePolicy()
+        }
         .task(id: hasSeenWelcome) {
             guard hasSeenWelcome else { return }
             while !Task.isCancelled {
@@ -265,6 +288,22 @@ struct ContentView: View {
         } message: {
             Text(store.sessionReplacementConfirmation?.message ?? "")
         }
+        .cityAccessibilityAppearance(
+            CityAccessibilityAppearance(
+                reduceTransparency: CityPlayerPreferenceSnapshot.resolved(
+                    playerOverride: gameReduceTransparency,
+                    systemPreference: systemReduceTransparency
+                ),
+                increaseContrast: CityPlayerPreferenceSnapshot.resolved(
+                    playerOverride: gameIncreaseContrast,
+                    systemPreference: systemContrast == .increased
+                ),
+                differentiateWithoutColor: CityPlayerPreferenceSnapshot.resolved(
+                    playerOverride: gameDifferentiateWithoutColor,
+                    systemPreference: systemDifferentiateWithoutColor
+                )
+            )
+        )
     }
 
     static func isCompactLayout(_ size: CGSize) -> Bool {
@@ -534,7 +573,7 @@ struct ContentView: View {
                         }
                         .padding(.leading, 14)
                         .padding(.trailing, 4)
-                        .background(.thickMaterial, in: Capsule())
+                        .cityPanelBackground(.thick, in: Capsule())
                         .shadow(color: .black.opacity(0.3), radius: 12, y: 5)
                         .transition(reduceMotion ? .opacity : .scale.combined(with: .opacity))
                         .accessibilityElement(children: .combine)
@@ -604,7 +643,11 @@ struct ContentView: View {
     private func synchronizeWelcomePolicy() {
         if hasSeenWelcome {
             _ = store.dismissBlockingModal(.welcome)
-        } else {
+        } else if store.commandPolicy == .enabled,
+                  store.state.status == .playing,
+                  store.sessionReplacementConfirmation == nil,
+                  !store.showCommandGuide,
+                  !store.showCityHandbook {
             store.presentBlockingModal(.welcome)
         }
     }

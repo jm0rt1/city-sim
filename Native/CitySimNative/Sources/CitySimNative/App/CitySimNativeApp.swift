@@ -80,7 +80,9 @@ struct CitySimNativeApp: App {
     @StateObject private var store: CityGameStore
 
     init() {
-        let hasSeenWelcome = UserDefaults.standard.bool(forKey: "hasSeenCitySimWelcome")
+        let hasSeenWelcome = UserDefaults.standard.bool(
+            forKey: CityPlayerPreferenceKey.hasSeenWelcome
+        )
         _store = StateObject(wrappedValue: CityGameStore(
             commandPolicy: hasSeenWelcome ? .enabled : .blocked(.welcome),
             startsPaused: true,

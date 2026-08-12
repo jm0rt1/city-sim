@@ -160,7 +160,7 @@ struct BuildToolbarView: View {
         }
         .padding(compact ? 7 : 8)
         .frame(height: persistentDeckHeight)
-        .background(.thinMaterial, in: RoundedRectangle(cornerRadius: GameTheme.panelRadius, style: .continuous))
+        .cityPanelBackground(.thin, in: RoundedRectangle(cornerRadius: GameTheme.panelRadius, style: .continuous))
         .background(
             GameTheme.hudSurfaceFill,
             in: RoundedRectangle(cornerRadius: GameTheme.panelRadius, style: .continuous)
@@ -174,8 +174,8 @@ struct BuildToolbarView: View {
                 inspectorDetails
                     .frame(maxWidth: compact ? 620 : 760)
                     .padding(8)
-                    .background(
-                        .thickMaterial,
+                    .cityPanelBackground(
+                        .thick,
                         in: RoundedRectangle(cornerRadius: GameTheme.panelRadius, style: .continuous)
                     )
                     .background(

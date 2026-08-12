@@ -32,7 +32,7 @@ struct CityHandbookView: View {
                     detail(compact: compact)
                 }
             }
-            .background(.regularMaterial)
+            .cityPanelBackground(.regular, in: Rectangle())
             .clipShape(RoundedRectangle(cornerRadius: compact ? 18 : 24, style: .continuous))
             .overlay(
                 RoundedRectangle(cornerRadius: compact ? 18 : 24, style: .continuous)

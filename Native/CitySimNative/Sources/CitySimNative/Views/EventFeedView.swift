@@ -70,7 +70,7 @@ struct EventFeedView: View {
             }
             .padding(10)
             .frame(width: 430, alignment: .leading)
-            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 11))
+            .cityPanelBackground(.ultraThin, in: RoundedRectangle(cornerRadius: 11))
             .overlay(RoundedRectangle(cornerRadius: 11).stroke(color(summary.message.severity).opacity(0.55), lineWidth: 1.5))
                 .help("Open the related city information")
             }

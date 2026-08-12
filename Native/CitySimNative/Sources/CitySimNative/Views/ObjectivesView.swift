@@ -39,7 +39,7 @@ struct ObjectivesView: View {
         }
         .padding(14)
         .frame(width: 245)
-        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 14))
+        .cityPanelBackground(.ultraThin, in: RoundedRectangle(cornerRadius: 14))
         .overlay(RoundedRectangle(cornerRadius: 14).stroke(GameTheme.panelStroke))
     }
 }
@@ -77,7 +77,7 @@ struct ObjectiveSummaryView: View {
             }
             .padding(.horizontal, 10)
             .padding(.vertical, 7)
-            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 11))
+            .cityPanelBackground(.ultraThin, in: RoundedRectangle(cornerRadius: 11))
         }
         .buttonStyle(.plain)
         .help(store.showObjectives ? "Hide objectives" : "Show objectives")

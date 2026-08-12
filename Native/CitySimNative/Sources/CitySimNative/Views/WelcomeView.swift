@@ -1,8 +1,54 @@
 import SwiftUI
 
+struct WelcomeTipPresentation: Equatable {
+    let symbol: String
+    let title: String
+    let detail: String
+}
+
+struct WelcomePresentation: Equatable {
+    let title: String
+    let objective: String
+    let tips: [WelcomeTipPresentation]
+    let controls: String
+    let continueTitle: String
+    let continueHint: String
+
+    static let firstRun = WelcomePresentation(
+        title: "Welcome to New Arcadia",
+        objective: "Stabilize the current operating gap, choose a growth strategy, and earn a Town Charter at 500 residents—then keep growing toward a Regional Capital.",
+        tips: [
+            WelcomeTipPresentation(
+                symbol: "chart.line.uptrend.xyaxis",
+                title: "Stabilize",
+                detail: "Protect cashflow, utilities, happiness, and jobs before expanding."
+            ),
+            WelcomeTipPresentation(
+                symbol: "arrow.triangle.branch",
+                title: "Choose Growth",
+                detail: "Commercial Stewardship is cleaner; Industrial Expansion adds jobs faster, with more pollution and utility load."
+            ),
+            WelcomeTipPresentation(
+                symbol: "waveform.path.ecg",
+                title: "Diagnose",
+                detail: "Use the inspector and data overlays to find the block, service, or budget pressure that needs attention."
+            )
+        ],
+        controls: "Space pauses · 1–3 set speed · ⌘Z undoes · Return starts the city",
+        continueTitle: "Start Building",
+        continueHint: "Dismisses Welcome and enables city commands at normal speed"
+    )
+
+    var accessibilitySummary: String {
+        let guidance = tips.map { "\($0.title): \($0.detail)" }.joined(separator: " ")
+        return "\(title). \(objective) \(guidance) Keyboard controls: \(controls). Press Return or choose \(continueTitle) to continue."
+    }
+}
+
 struct WelcomeView: View {
     let continueAction: () -> Void
     @FocusState private var modalHasKeyboardFocus: Bool
+    private let presentation = WelcomePresentation.firstRun
 
     var body: some View {
         ZStack {
@@ -15,26 +61,26 @@ struct WelcomeView: View {
                         .foregroundStyle(GameTheme.accent.gradient)
                 }
                 VStack(spacing: 7) {
-                    Text("Welcome to New Arcadia")
+                    Text(presentation.title)
                         .font(.system(size: 30, weight: .heavy, design: .rounded))
-                    Text("Build a connected, solvent city that 2,500 residents are proud to call home.")
+                    Text(presentation.objective)
                         .font(.title3).foregroundStyle(.secondary).multilineTextAlignment(.center)
                 }
                 HStack(alignment: .top, spacing: 28) {
-                    tip("hammer.fill", "Build", "Choose a tool and click open land. Most buildings need a neighboring road.")
-                    tip("waveform.path.ecg", "Balance", "Watch demand, utilities, happiness, jobs, and the city treasury.")
-                    tip("map.fill", "Diagnose", "Use data overlays and the inspector to understand every block.")
+                    ForEach(Array(presentation.tips.enumerated()), id: \.offset) { _, tip in
+                        tipView(tip)
+                    }
                 }
                 .frame(maxWidth: 720)
                 HStack {
-                    Label("Space pauses · 1–3 set speed · ⌘Z undoes", systemImage: "keyboard")
+                    Label(presentation.controls, systemImage: "keyboard")
                         .font(.callout).foregroundStyle(.secondary)
                     Spacer()
-                    Button("Start Building") { dismissWelcome() }
+                    Button(presentation.continueTitle) { dismissWelcome() }
                         .buttonStyle(.borderedProminent).controlSize(.large).tint(GameTheme.accent)
                         .keyboardShortcut(.defaultAction)
                         .accessibilityIdentifier("welcome.start-building")
-                        .accessibilityHint("Dismisses Welcome and enables city commands at normal speed")
+                        .accessibilityHint(presentation.continueHint)
                 }
             }
             .padding(34)
@@ -43,7 +89,7 @@ struct WelcomeView: View {
             .overlay(RoundedRectangle(cornerRadius: 26).stroke(.white.opacity(0.15)))
             .shadow(color: .black.opacity(0.45), radius: 36, y: 18)
             .accessibilityElement(children: .contain)
-            .accessibilityLabel("Welcome to New Arcadia")
+            .accessibilityLabel(presentation.accessibilitySummary)
         }
         .focusable()
         .focused($modalHasKeyboardFocus)
@@ -60,11 +106,11 @@ struct WelcomeView: View {
         continueAction()
     }
 
-    private func tip(_ symbol: String, _ title: String, _ detail: String) -> some View {
+    private func tipView(_ presentation: WelcomeTipPresentation) -> some View {
         VStack(alignment: .leading, spacing: 8) {
-            Image(systemName: symbol).font(.title2).foregroundStyle(GameTheme.accent)
-            Text(title).font(.headline)
-            Text(detail).font(.callout).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
+            Image(systemName: presentation.symbol).font(.title2).foregroundStyle(GameTheme.accent)
+            Text(presentation.title).font(.headline)
+            Text(presentation.detail).font(.callout).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }

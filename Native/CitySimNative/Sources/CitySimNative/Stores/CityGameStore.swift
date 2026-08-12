@@ -770,7 +770,13 @@ final class CityGameStore: ObservableObject {
         case "capacity": openInspector(.utilities)
         case "town-charter":
             showObjectives = true
-            openInspector(.overview)
+            let support = CityTownCharterDecisionSupport.make(analytics: analytics)
+            let diagnosis = support.secondaryResponses.first ?? support.primaryResponse
+            if diagnosis.focusesMap {
+                openInspector(.overview)
+            } else {
+                _ = perform(diagnosis.command)
+            }
         case "regional-capital":
             showObjectives = true
             guard analytics.secondActPhase == .qualification else {

@@ -58,6 +58,10 @@ struct CityStrategyHUDPresentation: Equatable {
             )
         }
 
+        if analytics.strategyPhase == .completed, !analytics.townCharterAwarded {
+            return townCharter(analytics: analytics)
+        }
+
         guard let phase = analytics.strategyPhase else {
             return CityStrategyHUDPresentation(
                 eyebrow: "CITY PRIORITY",
@@ -84,6 +88,31 @@ struct CityStrategyHUDPresentation: Equatable {
                 resolution: analytics.strategyRecoveryResolution
             )
         }
+    }
+
+    private static func townCharter(
+        analytics: CityAnalytics
+    ) -> CityStrategyHUDPresentation {
+        let support = CityTownCharterDecisionSupport.make(analytics: analytics)
+        let standardsMet = analytics.meetsTownCharterStandards
+        let progress = "\(analytics.townCharterQualifyingCycles)/\(CitySimulation.townCharterQualificationCycles)"
+        let status: String
+        if standardsMet {
+            status = "QUALIFYING · \(progress)"
+        } else if analytics.townCharterQualifyingCycles > 0 {
+            status = "AT RISK · \(progress)"
+        } else {
+            status = "CHARTER PREP · \(progress)"
+        }
+        return CityStrategyHUDPresentation(
+            eyebrow: "TOWN CHARTER",
+            title: support.title,
+            status: status,
+            summary: analytics.townCharterStatusText,
+            tone: standardsMet ? .active : .recovery,
+            diagnostic: support.primaryResponse,
+            actions: support.secondaryResponses
+        )
     }
 
     private static func regional(

@@ -467,6 +467,58 @@ final class CityCommandCatalogTests: XCTestCase {
     }
 
     @MainActor
+    func testCompletedStrategyHandsThePrimaryHUDToActionableTownCharterProgress() throws {
+        var state = try XCTUnwrap(
+            ProductionStoryStateBuilder().buildAll().first {
+                $0.definition.strategy == .commercialStewardship
+                    && $0.definition.stage == .regionalCapital
+            }?.state
+        )
+        state.status = .playing
+        state.progression?.townCharterAwarded = false
+        state.progression?.townCharterQualifyingCycles = 4
+        state.progression?.secondAct = nil
+        state.population = 470
+
+        let store = CityGameStore(state: state)
+        store.speed = .fastest
+        let blocked = CityStrategyHUDPresentation.make(analytics: store.analytics)
+        XCTAssertEqual(blocked.eyebrow, "TOWN CHARTER")
+        XCTAssertEqual(blocked.title, "Grow to 500 residents")
+        XCTAssertEqual(blocked.status, "AT RISK · 4/12")
+        XCTAssertEqual(blocked.tone, .recovery)
+        XCTAssertEqual(blocked.diagnostic?.command, .buildResidential)
+        XCTAssertTrue(blocked.actions.contains { $0.command == .inspectorPopulation })
+
+        let objective = try XCTUnwrap(store.objectives.first { $0.id == "town-charter" })
+        store.openObjective(objective)
+        XCTAssertTrue(store.showObjectives)
+        XCTAssertEqual(store.inspectorSection, .population)
+
+        let homes = try XCTUnwrap(blocked.diagnostic)
+        StrategyCommandCenterView.perform(homes, on: store)
+        XCTAssertEqual(store.interactionMode, .build(.residential))
+        XCTAssertEqual(store.speed, .paused)
+        let target = try XCTUnwrap(store.selectedCoordinate)
+        if case .failure(let rejection) = CitySimulation.validateBuild(
+            .residential,
+            at: target,
+            in: store.state
+        ) {
+            XCTFail("Town Charter housing route selected a blocked parcel: \(rejection)")
+        }
+
+        state.population = 500
+        let healthyAnalytics = CityAnalytics(state: state)
+        XCTAssertTrue(healthyAnalytics.meetsTownCharterStandards)
+        let healthy = CityStrategyHUDPresentation.make(analytics: healthyAnalytics)
+        XCTAssertEqual(healthy.title, "Hold every Charter standard")
+        XCTAssertEqual(healthy.status, "QUALIFYING · 4/12")
+        XCTAssertEqual(healthy.tone, .active)
+        XCTAssertTrue(healthy.accessibilityValue.contains("QUALIFYING · 4/12"))
+    }
+
+    @MainActor
     func testRegionalQualificationInterruptionRoutesTheLiveRemedyAndPauses() throws {
         var state = try XCTUnwrap(
             ProductionStoryStateBuilder().buildAll().first {

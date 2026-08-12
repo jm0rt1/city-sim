@@ -86,6 +86,195 @@ struct CityUtilityDecisionSupport: Equatable, Sendable {
     }
 }
 
+struct CityTownCharterDecisionSupport: Equatable, Sendable {
+    let title: String
+    let primaryResponse: CityDirectResponse
+    let secondaryResponses: [CityDirectResponse]
+
+    static func make(analytics: CityAnalytics) -> Self {
+        if analytics.waterHeadroom == 0 {
+            return utility(
+                title: "Add water capacity",
+                kind: .waterTower,
+                explanation: "Add water capacity before committing more growth."
+            )
+        }
+        if analytics.powerHeadroom == 0 {
+            return utility(
+                title: "Add power capacity",
+                kind: .powerPlant,
+                explanation: "Add power capacity before committing more growth."
+            )
+        }
+        if analytics.state.happiness < 45 {
+            return park(
+                title: "Restore livability",
+                explanation: "Place a park while reviewing utility service and local happiness."
+            )
+        }
+        if analytics.state.population < 500 {
+            let charterWorkforceTarget = 500 * 7 / 10
+            let charterJobCapacity = Int(ceil(Double(charterWorkforceTarget) * 0.9))
+            if analytics.jobCapacity < charterJobCapacity {
+                return jobs(
+                    analytics: analytics,
+                    title: "Prepare \((charterJobCapacity - analytics.jobCapacity).formatted()) jobs"
+                )
+            }
+            return build(
+                title: "Grow to 500 residents",
+                kind: .residential,
+                explanation: "Add housing capacity for the remaining \((500 - analytics.state.population).formatted()) residents.",
+                inspectorTitle: "Review population",
+                inspectorCommand: .inspectorPopulation,
+                inspectorExplanation: "Review residents, housing capacity, and current growth conditions."
+            )
+        }
+        if analytics.state.treasury < 10_000 {
+            return finances(
+                title: "Restore the treasury",
+                explanation: "Review revenue, upkeep, tax policy, and runway before spending again."
+            )
+        }
+        if analytics.projectedBalance < 0 {
+            return finances(
+                title: "Balance city operations",
+                explanation: "Review revenue, upkeep, and tax policy to close the operating gap."
+            )
+        }
+        if analytics.employmentRate < 0.9 {
+            return jobs(analytics: analytics, title: "Restore 90% employment")
+        }
+        if analytics.utilityCoverage < 1 || analytics.utilityReserve < 0.15 {
+            let utilitySupport = CityUtilityDecisionSupport.make(analytics: analytics)
+            let kind = utilitySupport.priorityKind
+            return utility(
+                title: analytics.utilityCoverage < 1
+                    ? "Restore utility coverage"
+                    : "Build 15% utility reserve",
+                kind: kind,
+                explanation: "Expand the tighter utility network before Charter qualification continues."
+            )
+        }
+        if analytics.state.happiness < 52 {
+            return park(
+                title: "Raise happiness to 52%",
+                explanation: "Place a park where it can improve livability without promising a fixed result."
+            )
+        }
+        for kind in [BuildingKind.residential, .commercial, .industrial]
+        where analytics.count(kind) < (kind == .residential ? 2 : 1) {
+            return build(
+                title: "Restore \(kind.title) activity",
+                kind: kind,
+                explanation: "Select \(kind.title) and target the nearest valid parcel for the Charter's balanced-town standard.",
+                inspectorTitle: "Review development demand",
+                inspectorCommand: .inspectorDemand,
+                inspectorExplanation: "Review current demand before restoring the missing district activity."
+            )
+        }
+
+        return Self(
+            title: "Hold every Charter standard",
+            primaryResponse: inspect(
+                title: "Review Charter standards",
+                command: .inspectorOverview,
+                explanation: "Review the balanced city indicators while qualification advances."
+            ),
+            secondaryResponses: []
+        )
+    }
+
+    private static func jobs(analytics: CityAnalytics, title: String) -> Self {
+        let kind: BuildingKind = analytics.committedStrategy == .industrialExpansion
+            ? .industrial
+            : .commercial
+        return build(
+            title: title,
+            kind: kind,
+            explanation: "Add \(kind.title) jobs on the committed growth route.",
+            inspectorTitle: "Review employment",
+            inspectorCommand: .inspectorEmployment,
+            inspectorExplanation: "Review workforce size, job capacity, and the remaining employment gap."
+        )
+    }
+
+    private static func utility(
+        title: String,
+        kind: BuildingKind,
+        explanation: String
+    ) -> Self {
+        build(
+            title: title,
+            kind: kind,
+            explanation: explanation,
+            inspectorTitle: "Review utilities",
+            inspectorCommand: .inspectorUtilities,
+            inspectorExplanation: "Review power, water, coverage, and reserve before placing the project."
+        )
+    }
+
+    private static func park(title: String, explanation: String) -> Self {
+        build(
+            title: title,
+            kind: .park,
+            explanation: explanation,
+            inspectorTitle: "Review happiness",
+            inspectorCommand: .inspectorHappiness,
+            inspectorExplanation: "Review the citywide happiness factors before choosing a location."
+        )
+    }
+
+    private static func finances(title: String, explanation: String) -> Self {
+        Self(
+            title: title,
+            primaryResponse: inspect(
+                title: "Review finances",
+                command: .inspectorFinances,
+                explanation: explanation
+            ),
+            secondaryResponses: []
+        )
+    }
+
+    private static func build(
+        title: String,
+        kind: BuildingKind,
+        explanation: String,
+        inspectorTitle: String,
+        inspectorCommand: CityCommandID,
+        inspectorExplanation: String
+    ) -> Self {
+        Self(
+            title: title,
+            primaryResponse: .init(
+                title: "Build \(kind.title)",
+                command: CityCommandCatalog.id(for: kind),
+                explanation: explanation,
+                focusesMap: true
+            ),
+            secondaryResponses: [inspect(
+                title: inspectorTitle,
+                command: inspectorCommand,
+                explanation: inspectorExplanation
+            )]
+        )
+    }
+
+    private static func inspect(
+        title: String,
+        command: CityCommandID,
+        explanation: String
+    ) -> CityDirectResponse {
+        CityDirectResponse(
+            title: title,
+            command: command,
+            explanation: explanation,
+            focusesMap: false
+        )
+    }
+}
+
 struct CityRegionalCapitalDecisionSupport: Equatable, Sendable {
     let title: String
     let detail: String

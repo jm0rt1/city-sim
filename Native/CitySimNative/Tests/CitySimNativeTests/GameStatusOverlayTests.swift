@@ -20,10 +20,13 @@ final class GameStatusOverlayTests: XCTestCase {
         XCTAssertTrue(presentation.summary.contains("-$75,001"))
         XCTAssertTrue(presentation.recoveryGuidance.contains("cash reserve"))
         XCTAssertTrue(presentation.recoveryGuidance.contains("service upkeep"))
-        XCTAssertEqual(
-            presentation.accessibilitySummary,
-            "\(presentation.summary) \(presentation.recoveryGuidance)"
-        )
+        XCTAssertEqual(presentation.metrics.map(\.label), ["Residents", "Treasury", "Cashflow", "Happiness"])
+        XCTAssertEqual(presentation.metrics[1].value, "-$75,001")
+        XCTAssertTrue(presentation.accessibilitySummary.contains("Treasury: -$75,001"))
+        XCTAssertTrue(presentation.accessibilitySummary.hasSuffix(presentation.recoveryGuidance))
+        XCTAssertFalse(presentation.accessibilitySummary.contains(".."))
+        XCTAssertNil(presentation.strategy)
+        XCTAssertNil(presentation.recovery)
         XCTAssertFalse(presentation.accessibilitySummary.contains("New Arcadia"))
     }
 
@@ -43,11 +46,35 @@ final class GameStatusOverlayTests: XCTestCase {
         XCTAssertTrue(presentation.summary.contains("after the first 10 days"))
         XCTAssertTrue(presentation.recoveryGuidance.contains("utility coverage and parks"))
         XCTAssertTrue(presentation.recoveryGuidance.contains("below 10%"))
-        XCTAssertEqual(
-            presentation.accessibilitySummary,
-            "\(presentation.summary) \(presentation.recoveryGuidance)"
-        )
+        XCTAssertEqual(presentation.metrics.last?.value, "9%")
+        XCTAssertTrue(presentation.accessibilitySummary.contains("Happiness: 9%"))
+        XCTAssertTrue(presentation.accessibilitySummary.hasSuffix(presentation.recoveryGuidance))
+        XCTAssertFalse(presentation.accessibilitySummary.contains(".."))
         XCTAssertFalse(presentation.accessibilitySummary.localizedCaseInsensitiveContains("insolven"))
+    }
+
+    func testLossDebriefPreservesTheChosenStrategyAndRecoveryStory() throws {
+        var state = CityGameState.newCity(seed: 0x1058)
+        state.cityName = "Foundry Bay"
+        state.treasury = -80_000
+        state.happiness = 38
+        state.status = .lost
+        state.progression = CityProgressionState(
+            strategy: CityStrategyProgression(
+                committedStrategy: .industrialExpansion,
+                currentPhase: .completed,
+                nextScheduledTick: nil,
+                recoveryResolution: .industrialGreenBuffer
+            )
+        )
+
+        let presentation = CityLossPresentation.make(state: state)
+
+        XCTAssertEqual(presentation.strategy?.title, "Industrial Expansion")
+        XCTAssertEqual(presentation.recovery?.title, "Recovery · Green Buffer")
+        XCTAssertTrue(presentation.accessibilitySummary.contains("Industrial Expansion"))
+        XCTAssertTrue(presentation.accessibilitySummary.contains("Green Buffer"))
+        XCTAssertFalse(presentation.accessibilitySummary.contains("New Arcadia"))
     }
 
     @MainActor

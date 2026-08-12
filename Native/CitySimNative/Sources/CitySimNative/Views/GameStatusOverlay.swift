@@ -78,19 +78,37 @@ struct CityLossPresentation: Equatable {
     let summary: String
     let recoveryGuidance: String
     let accessibilityLabel: String
+    let metrics: [CityVictoryMetric]
+    let strategy: CityVictoryStory?
+    let recovery: CityVictoryStory?
 
     var accessibilitySummary: String {
-        "\(summary) \(recoveryGuidance)"
+        let terminalPunctuation = CharacterSet(charactersIn: ".!?")
+        return ([summary] + metrics.map { "\($0.label): \($0.value)" }
+            + [strategy, recovery].compactMap { story in
+                story.map { "\($0.title). \($0.detail)" }
+            }
+            + [recoveryGuidance])
+            .map { $0.trimmingCharacters(in: terminalPunctuation) }
+            .joined(separator: ". ")
+            + "."
     }
 
     static func make(state: CityGameState) -> CityLossPresentation {
+        let analytics = CityAnalytics(state: state)
+        let metrics = terminalMetrics(state: state, analytics: analytics)
+        let strategy = analytics.committedStrategy.map(CityVictoryStory.strategy)
+        let recovery = analytics.strategyRecoveryResolution.map(CityVictoryStory.recovery)
         if state.treasury < -75_000 {
             return CityLossPresentation(
                 cause: .insolvency,
                 title: "\(state.cityName) Became Insolvent",
                 summary: "\(state.cityName)'s treasury fell to \(state.treasury.currencyText), below the -$75,000 operating limit.",
                 recoveryGuidance: "Next region, grow in smaller steps, keep a cash reserve, and cover service upkeep before expanding.",
-                accessibilityLabel: "\(state.cityName) loss: insolvency"
+                accessibilityLabel: "\(state.cityName) loss: insolvency",
+                metrics: metrics,
+                strategy: strategy,
+                recovery: recovery
             )
         }
 
@@ -99,8 +117,33 @@ struct CityLossPresentation: Equatable {
             title: "\(state.cityName) Lost Public Confidence",
             summary: "\(state.cityName)'s happiness fell to \(Int(state.happiness.rounded()))% after the first 10 days.",
             recoveryGuidance: "Next region, protect utility coverage and parks, limit pollution, and respond before happiness falls below 10%.",
-            accessibilityLabel: "\(state.cityName) loss: happiness collapse"
+            accessibilityLabel: "\(state.cityName) loss: happiness collapse",
+            metrics: metrics,
+            strategy: strategy,
+            recovery: recovery
         )
+    }
+
+    private static func terminalMetrics(
+        state: CityGameState,
+        analytics: CityAnalytics
+    ) -> [CityVictoryMetric] {
+        [
+            CityVictoryMetric(label: "Residents", value: state.population.formatted(), symbol: "person.3.fill"),
+            CityVictoryMetric(label: "Treasury", value: state.treasury.currencyText, symbol: "banknote.fill"),
+            CityVictoryMetric(
+                label: "Cashflow",
+                value: analytics.projectedBalance.currencyText,
+                symbol: analytics.projectedBalance >= 0
+                    ? "arrow.up.right.circle.fill"
+                    : "arrow.down.right.circle.fill"
+            ),
+            CityVictoryMetric(
+                label: "Happiness",
+                value: "\(Int(state.happiness.rounded()))%",
+                symbol: "face.smiling.fill"
+            ),
+        ]
     }
 }
 
@@ -299,6 +342,43 @@ struct GameStatusOverlay: View {
             Text(presentation.summary)
                 .font(.title3)
                 .foregroundStyle(.secondary)
+
+            LazyVGrid(
+                columns: Array(repeating: GridItem(.flexible(), spacing: 10), count: 2),
+                spacing: 10
+            ) {
+                ForEach(presentation.metrics) { metric in
+                    HStack(spacing: 8) {
+                        Image(systemName: metric.symbol)
+                            .foregroundStyle(GameTheme.accent)
+                            .accessibilityHidden(true)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(metric.label)
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                            Text(metric.value)
+                                .font(.headline.monospacedDigit())
+                        }
+                        Spacer(minLength: 0)
+                    }
+                    .padding(10)
+                    .background(.white.opacity(0.055), in: RoundedRectangle(cornerRadius: 12))
+                    .accessibilityElement(children: .combine)
+                }
+            }
+
+            if presentation.strategy != nil || presentation.recovery != nil {
+                VStack(alignment: .leading, spacing: 10) {
+                    Label("This Region's Story", systemImage: "book.closed.fill")
+                        .font(.headline)
+                        .foregroundStyle(GameTheme.warning)
+                    if let strategy = presentation.strategy { storyRow(strategy) }
+                    if let recovery = presentation.recovery { storyRow(recovery) }
+                }
+                .padding(14)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(.black.opacity(0.16), in: RoundedRectangle(cornerRadius: 16))
+            }
 
             VStack(spacing: 6) {
                 Label("For Your Next Region", systemImage: "arrow.counterclockwise.circle.fill")

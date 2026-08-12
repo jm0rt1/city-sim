@@ -1253,6 +1253,66 @@ final class WorldRenderingTests: XCTestCase {
     }
 
     @MainActor
+    func testMixedFamilyRuntimePresentationPreservesSelectionAndFallback() throws {
+        let catalog = WorldAssetCatalog()
+        let renderer = LotRenderer(style: WorldVisualStyle(), assets: catalog)
+        let families: [BuildingKind] = [
+            .residential,
+            .commercial,
+            .industrial,
+            .cityHall,
+        ]
+
+        for detail in CameraDetailLevel.allCases {
+            var widths: [CGFloat] = []
+            var heights: [CGFloat] = []
+            for (offset, family) in families.enumerated() {
+                let lot = renderer.makeLot(
+                    for: CityTile(
+                        coordinate: GridCoordinate(x: 10 + offset, y: 12),
+                        kind: family,
+                        level: 1,
+                        condition: 1,
+                        constructionProgress: 1
+                    ),
+                    adjacentRoads: .south,
+                    detail: detail,
+                    reducedMotion: true
+                )
+                let sprite = try XCTUnwrap(
+                    lot.childNode(withName: "//lot.generated-v4.*") as? SKSpriteNode,
+                    "\(family.rawValue) should retain its existing generated selection"
+                )
+                XCTAssertEqual(sprite.position.y, -18, accuracy: 0.000_001)
+                // SpriteKit's `size` already reflects a node's own scale for
+                // this generated presentation. Measure its accumulated frame
+                // once in parent coordinates rather than multiplying by
+                // `xScale`/`yScale` a second time.
+                let renderedFrame = sprite.calculateAccumulatedFrame()
+                widths.append(renderedFrame.width)
+                heights.append(renderedFrame.height)
+                XCTAssertLessThanOrEqual(widths.last ?? .greatestFiniteMagnitude, 64)
+                XCTAssertLessThanOrEqual(heights.last ?? .greatestFiniteMagnitude, 54)
+            }
+            let minimumWidth = try XCTUnwrap(widths.min())
+            let maximumWidth = try XCTUnwrap(widths.max())
+            let minimumHeight = try XCTUnwrap(heights.min())
+            let maximumHeight = try XCTUnwrap(heights.max())
+            XCTAssertLessThanOrEqual(
+                maximumWidth - minimumWidth,
+                14,
+                "\(detail.assetSuffix) family widths should share a readable one-cell range"
+            )
+            XCTAssertLessThanOrEqual(
+                maximumHeight - minimumHeight,
+                18,
+                "\(detail.assetSuffix) family heights should share a readable one-cell range"
+            )
+        }
+        XCTAssertEqual(catalog.residencySnapshot().fallbackCount, 0)
+    }
+
+    @MainActor
     func testDirectionalCommercialProductionSelectionCoversEveryLevelAndAuthoritativeFrontage() throws {
         let catalog = WorldAssetCatalog()
         let renderer = LotRenderer(style: WorldVisualStyle(), assets: catalog)

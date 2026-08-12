@@ -361,6 +361,20 @@ final class LotRenderer {
         for tile: CityTile,
         variant _: Int
     ) {
+        // Preserve every generated descriptor's anchor and placement pivot.
+        // Normalize only sprites whose measured authored bounds exceed the
+        // established one-cell presentation envelope. This leaves families
+        // already inside that envelope at their accepted scale while bringing
+        // the larger Industrial and residential-variant payloads into the
+        // same composed-city range without changing source art or metadata.
+        let presentationScale = min(
+            1,
+            64 / sprite.size.width,
+            54 / sprite.size.height
+        )
+        if presentationScale != 1 {
+            sprite.setScale(presentationScale)
+        }
         switch tile.kind {
         case .residential:
             sprite.colorBlendFactor = 0

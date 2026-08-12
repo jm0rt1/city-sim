@@ -285,7 +285,14 @@ final class ProductionStoryStateFixtureTests: XCTestCase {
                 XCTAssertEqual(store.state, direct.state, entry.id)
                 XCTAssertEqual(store.speed, .paused, entry.id)
                 XCTAssertFalse(store.canUndo, entry.id)
-                XCTAssertEqual(store.lastFeedback, "City loaded · Simulation paused", entry.id)
+                XCTAssertEqual(
+                    store.lastFeedback,
+                    CityPersistenceFeedbackPresentation.loaded(
+                        direct.state,
+                        recoveredFromBackup: false
+                    ).message,
+                    entry.id
+                )
                 XCTAssertEqual(try Data(contentsOf: service.saveURL), bytes, entry.id)
 
                 let snapshot = try CityPresentationSnapshot(state: store.state)
@@ -330,7 +337,10 @@ final class ProductionStoryStateFixtureTests: XCTestCase {
                 XCTAssertFalse(store.canUndo, entry.id)
                 XCTAssertEqual(
                     store.lastFeedback,
-                    "Recovered last known-good city · Simulation paused",
+                    CityPersistenceFeedbackPresentation.loaded(
+                        direct.state,
+                        recoveredFromBackup: true
+                    ).message,
                     entry.id
                 )
                 XCTAssertEqual(try Data(contentsOf: service.saveURL), corruptBytes, entry.id)

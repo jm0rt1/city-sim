@@ -194,7 +194,10 @@ final class TerminalVictoryPlatformTests: XCTestCase {
                 XCTAssertEqual(store.state, terminal, resolution.rawValue)
                 XCTAssertEqual(
                     store.lastFeedback,
-                    "Recovered last known-good city · Simulation paused",
+                    CityPersistenceFeedbackPresentation.loaded(
+                        terminal,
+                        recoveredFromBackup: true
+                    ).message,
                     resolution.rawValue
                 )
                 XCTAssertEqual(

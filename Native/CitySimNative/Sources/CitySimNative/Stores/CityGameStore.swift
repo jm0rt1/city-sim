@@ -935,7 +935,11 @@ final class CityGameStore: ObservableObject {
     }
 
     func save() {
-        do { try saves.save(state); showFeedback("City saved", tone: .positive); playSound(named: "Glass") }
+        do {
+            try saves.save(state)
+            showFeedback(CityPersistenceFeedbackPresentation.saved(state).message, tone: .positive)
+            playSound(named: "Glass")
+        }
         catch {
             showFeedback(
                 "Save failed · Your current city is still open: \(error.localizedDescription)",
@@ -965,9 +969,10 @@ final class CityGameStore: ObservableObject {
             canUndo = false
             let brief = CityResumeBriefPresentation.make(analytics: analytics)
             showFeedback(
-                result.recoveredFromBackup
-                    ? "Recovered last known-good city · Simulation paused"
-                    : "City loaded · Simulation paused",
+                CityPersistenceFeedbackPresentation.loaded(
+                    state,
+                    recoveredFromBackup: result.recoveredFromBackup
+                ).message,
                 tone: .positive,
                 autoDismissAfter: brief == nil ? 3.2 : nil,
                 resumeBrief: brief

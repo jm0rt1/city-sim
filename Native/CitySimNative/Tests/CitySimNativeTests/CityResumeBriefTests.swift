@@ -99,7 +99,13 @@ final class CityResumeBriefTests: XCTestCase {
 
         let primary = CityGameStore(saveService: service, startsPaused: true)
         XCTAssertTrue(primary.perform(.loadCity))
-        XCTAssertEqual(primary.lastFeedback, "City loaded · Simulation paused")
+        XCTAssertEqual(
+            primary.lastFeedback,
+            CityPersistenceFeedbackPresentation.loaded(
+                saved,
+                recoveredFromBackup: false
+            ).message
+        )
         XCTAssertEqual(primary.resumeBrief?.compactText, "Budget Gap · Next: Review finances")
         XCTAssertEqual(primary.speed, .paused)
         XCTAssertTrue(primary.performResumeBriefAction())
@@ -118,7 +124,10 @@ final class CityResumeBriefTests: XCTestCase {
         XCTAssertTrue(recovered.perform(.loadCity))
         XCTAssertEqual(
             recovered.lastFeedback,
-            "Recovered last known-good city · Simulation paused"
+            CityPersistenceFeedbackPresentation.loaded(
+                saved,
+                recoveredFromBackup: true
+            ).message
         )
         XCTAssertEqual(recovered.resumeBrief?.title, "Budget Gap")
         XCTAssertEqual(recovered.resumeBrief?.nextAction, "Review finances")

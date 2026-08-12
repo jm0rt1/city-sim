@@ -235,7 +235,10 @@ final class StrategyResolutionPlatformTests: XCTestCase {
                 XCTAssertFalse(store.canUndo, resolution.rawValue)
                 XCTAssertEqual(
                     store.lastFeedback,
-                    "Recovered last known-good city · Simulation paused",
+                    CityPersistenceFeedbackPresentation.loaded(
+                        saved,
+                        recoveredFromBackup: true
+                    ).message,
                     resolution.rawValue
                 )
                 XCTAssertEqual(write.schemaVersion, 1, resolution.rawValue)

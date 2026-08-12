@@ -158,7 +158,13 @@ final class PLAY083LifecycleBindingTests: XCTestCase {
                 XCTAssertEqual(store.state, load.state)
                 XCTAssertEqual(store.speed, .paused)
                 XCTAssertFalse(store.canUndo)
-                XCTAssertEqual(store.lastFeedback, "City loaded · Simulation paused")
+                XCTAssertEqual(
+                    store.lastFeedback,
+                    CityPersistenceFeedbackPresentation.loaded(
+                        load.state,
+                        recoveredFromBackup: false
+                    ).message
+                )
 
                 let snapshot = try CityPresentationSnapshot(state: load.state)
                 let frozenState = snapshot.state

@@ -76,7 +76,13 @@ final class BackupLoadAvailabilityTests: XCTestCase {
             )
             XCTAssertEqual(primaryStore.speed, .paused)
             XCTAssertFalse(primaryStore.canUndo)
-            XCTAssertEqual(primaryStore.lastFeedback, "City loaded · Simulation paused")
+            XCTAssertEqual(
+                primaryStore.lastFeedback,
+                CityPersistenceFeedbackPresentation.loaded(
+                    saved,
+                    recoveredFromBackup: false
+                ).message
+            )
             XCTAssertEqual(try Data(contentsOf: service.saveURL), primaryBytes)
             XCTAssertFalse(FileManager.default.fileExists(atPath: service.backupURL.path))
         }
@@ -122,7 +128,10 @@ final class BackupLoadAvailabilityTests: XCTestCase {
                 XCTAssertFalse(store.canUndo, fixture.name)
                 XCTAssertEqual(
                     store.lastFeedback,
-                    "Recovered last known-good city · Simulation paused",
+                    CityPersistenceFeedbackPresentation.loaded(
+                        directLoad.state,
+                        recoveredFromBackup: true
+                    ).message,
                     fixture.name
                 )
                 XCTAssertEqual(

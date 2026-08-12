@@ -383,7 +383,13 @@ final class VisibleCityStateFixtureTests: XCTestCase {
                 XCTAssertEqual(store.state, direct.state, entry.id)
                 XCTAssertEqual(store.speed, .paused, entry.id)
                 XCTAssertFalse(store.canUndo, entry.id)
-                XCTAssertEqual(store.lastFeedback, "City loaded · Simulation paused")
+                XCTAssertEqual(
+                    store.lastFeedback,
+                    CityPersistenceFeedbackPresentation.loaded(
+                        direct.state,
+                        recoveredFromBackup: false
+                    ).message
+                )
 
                 let frozenState = snapshot.state
                 let frozenFingerprint = snapshot.fingerprint

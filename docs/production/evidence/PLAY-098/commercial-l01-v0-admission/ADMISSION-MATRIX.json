@@ -1,0 +1,16 @@
+{
+  "candidateOnly": true,
+  "directions": [
+    "north",
+    "east",
+    "south",
+    "west"
+  ],
+  "lodCount": 12,
+  "normalizedCount": 4,
+  "rawCount": 4,
+  "result": "PASS_CANDIDATE_SOURCE_HANDOFF",
+  "uniqueLod": 12,
+  "uniqueNormalized": 4,
+  "uniqueRaw": 4
+}

@@ -1,0 +1,48 @@
+{
+  "canvas": [
+    1536,
+    1024
+  ],
+  "footprint": [
+    [
+      768,
+      640
+    ],
+    [
+      1024,
+      768
+    ],
+    [
+      768,
+      896
+    ],
+    [
+      512,
+      768
+    ]
+  ],
+  "method": "fixed template; no pixel-derived registration",
+  "pivot": [
+    768,
+    896
+  ],
+  "result": "PASS",
+  "sockets": {
+    "east": [
+      896,
+      768
+    ],
+    "north": [
+      768,
+      704
+    ],
+    "south": [
+      768,
+      832
+    ],
+    "west": [
+      640,
+      768
+    ]
+  }
+}

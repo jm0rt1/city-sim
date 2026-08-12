@@ -1,0 +1,30 @@
+{
+  "candidateOnly": true,
+  "claim": {
+    "path": "docs/production/claims/PLAY-098.commercial-l01-v0-admission-currente298.md",
+    "sha256": "0b105ec9cb07df1e740b409ab7f14dda3c0ebed176efbd5d8f1b288ad30087cf"
+  },
+  "counts": {
+    "lods": 12,
+    "normalized": 4,
+    "raw": 4
+  },
+  "gates": {
+    "alphaChromaFrame": "PASS",
+    "deterministicReplay": "PASS",
+    "distinctDirections": "PASS",
+    "immutableRaw": "PASS",
+    "registration": "PASS",
+    "rendererBoundary": "PASS"
+  },
+  "integrationAdmitted": false,
+  "normalizationReceipt": {
+    "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-101/commercial_l01_v0/normalized/NORMALIZATION-RECEIPT.json",
+    "sha256": "fee98cce9a9285a5140721cd588bd6136ec6efced0daf807697d5b8fb3e9133f"
+  },
+  "productionSelected": false,
+  "rendererQuarantined": false,
+  "result": "PASS",
+  "schema": "citysim.play-098.commercial-l01-v0.admission-validation.v1",
+  "sourceAdmitted": false
+}

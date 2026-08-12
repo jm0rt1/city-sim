@@ -107,7 +107,7 @@ struct OverlayDiagnosticsPaletteView: View {
     var compact = false
 
     static let compactMaximumHeight: CGFloat = 48
-    static let regularMaximumHeight: CGFloat = 74
+    static let regularMaximumHeight: CGFloat = 48
 
     private var selectedConsequence: CitySpatialConsequence? {
         guard let coordinate = store.selectedCoordinate,
@@ -127,18 +127,7 @@ struct OverlayDiagnosticsPaletteView: View {
 
     var body: some View {
         let presentation: OverlayDiagnosticsPalettePresentation = activePresentation
-        let titleAndDetail: String = presentation.title + " · " + presentation.shortDetail
-        let sourceAndFreshness: String = presentation.source + " · " + presentation.freshness
-        let activeSummary: String = titleAndDetail + " · " + sourceAndFreshness
-
-        if compact {
-            compactPalette(presentation: presentation)
-        } else {
-            expandedPalette(
-                presentation: presentation,
-                activeSummary: activeSummary
-            )
-        }
+        compactPalette(presentation: presentation)
     }
 
     private func compactPalette(presentation: OverlayDiagnosticsPalettePresentation) -> some View {
@@ -174,7 +163,7 @@ struct OverlayDiagnosticsPaletteView: View {
                     .layoutPriority(1)
             }
             .padding(.horizontal, 8)
-            .frame(maxWidth: .infinity, minHeight: GameTheme.controlMinimum, alignment: .leading)
+        .frame(maxWidth: .infinity, minHeight: GameTheme.controlMinimum, alignment: .leading)
         }
         .menuStyle(.borderlessButton)
         .background(.thinMaterial, in: RoundedRectangle(cornerRadius: GameTheme.panelRadius, style: .continuous))
@@ -189,95 +178,4 @@ struct OverlayDiagnosticsPaletteView: View {
         .accessibilityIdentifier("hud.diagnostics.palette")
     }
 
-    private func expandedPalette(
-        presentation: OverlayDiagnosticsPalettePresentation,
-        activeSummary: String
-    ) -> some View {
-        VStack(alignment: .leading, spacing: 3) {
-            HStack(spacing: 6) {
-                Label("MAP DIAGNOSTICS", systemImage: "square.grid.2x2.fill")
-                    .font(.system(size: 10, weight: .heavy, design: .rounded))
-                    .foregroundStyle(.secondary)
-                    .fixedSize()
-                Text(activeSummary)
-                    .font(.system(size: 10, weight: .medium, design: .rounded))
-                    .foregroundStyle(.secondary)
-                    .lineLimit(1)
-                    .truncationMode(.tail)
-                    .layoutPriority(1)
-                Spacer(minLength: 4)
-                Text("Click a place for details")
-                    .font(.system(size: 10, weight: .medium, design: .rounded))
-                    .foregroundStyle(.secondary)
-                    .lineLimit(1)
-                    .fixedSize(horizontal: true, vertical: false)
-            }
-
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 5) {
-                    ForEach(DataOverlay.allCases) { overlay in
-                        overlayButton(overlay)
-                    }
-                }
-            }
-            .scrollClipDisabled()
-        }
-        .padding(.horizontal, 10)
-        .padding(.vertical, 5)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .frame(height: Self.regularMaximumHeight)
-        .background(.thinMaterial, in: RoundedRectangle(cornerRadius: GameTheme.panelRadius, style: .continuous))
-        .background(
-            GameTheme.hudSurfaceFill,
-            in: RoundedRectangle(cornerRadius: GameTheme.panelRadius, style: .continuous)
-        )
-        .overlay(RoundedRectangle(cornerRadius: GameTheme.panelRadius).stroke(GameTheme.strongPanelStroke))
-        .accessibilityElement(children: .contain)
-        .accessibilityLabel("City diagnostics palette")
-        .accessibilityValue(activePresentation.accessibilityValue)
-        .accessibilityHint("Choose City or a diagnostic layer. Select a place on the map for local details.")
-        .accessibilityIdentifier("hud.diagnostics.palette")
-    }
-
-    private func overlayButton(_ overlay: DataOverlay) -> some View {
-        let presentation = OverlayDiagnosticsPalettePresentation.make(
-            overlay: overlay,
-            consequence: selectedConsequence,
-            tick: store.state.tick
-        )
-        let isActive = store.overlay == overlay
-
-        return Button {
-            store.perform(CityCommandCatalog.id(for: overlay))
-        } label: {
-            VStack(alignment: .leading, spacing: 1) {
-                Label(presentation.title, systemImage: overlay.symbol)
-                    .font(.system(size: 11, weight: .semibold, design: .rounded))
-                    .lineLimit(1)
-                Text(presentation.shortDetail)
-                    .font(.system(size: 9, weight: .medium, design: .rounded))
-                    .foregroundStyle(isActive ? .primary : .secondary)
-                    .lineLimit(1)
-            }
-            .frame(minWidth: compact ? 100 : 112, alignment: .leading)
-            .frame(minHeight: GameTheme.controlMinimum, alignment: .center)
-            .padding(.horizontal, 7)
-            .contentShape(Rectangle())
-        }
-        .buttonStyle(.plain)
-        .foregroundStyle(isActive ? GameTheme.accent : .primary)
-        .background(
-            isActive ? GameTheme.accent.opacity(0.18) : GameTheme.inactiveControl,
-            in: RoundedRectangle(cornerRadius: 8, style: .continuous)
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: 8, style: .continuous)
-                .stroke(isActive ? GameTheme.accent : GameTheme.panelStroke)
-        )
-        .help(presentation.title + " layer. " + presentation.accessibilityValue)
-        .accessibilityLabel(presentation.title + " layer")
-        .accessibilityValue(isActive ? "Active. " + presentation.accessibilityValue : presentation.accessibilityValue)
-        .accessibilityHint("Switches the map to this layer")
-        .accessibilityIdentifier("hud.diagnostics." + overlay.rawValue)
-    }
 }

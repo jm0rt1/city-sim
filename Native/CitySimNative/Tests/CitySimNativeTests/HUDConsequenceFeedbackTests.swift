@@ -72,6 +72,14 @@ final class HUDConsequenceFeedbackTests: XCTestCase {
 
     @MainActor
     func testMapFirstComposedViewKeepsMapApertureAtCompactAndRegularSizes() throws {
+        let defaults = UserDefaults.standard
+        let priorWelcome = defaults.object(forKey: "hasSeenCitySimWelcome")
+        defaults.set(true, forKey: "hasSeenCitySimWelcome")
+        defer {
+            if let priorWelcome { defaults.set(priorWelcome, forKey: "hasSeenCitySimWelcome") }
+            else { defaults.removeObject(forKey: "hasSeenCitySimWelcome") }
+        }
+
         XCTAssertEqual(
             ContentView.contextualGuidancePresentation(
                 showObjectives: true,
@@ -103,7 +111,7 @@ final class HUDConsequenceFeedbackTests: XCTestCase {
             windowHeight: 600,
             chromeFrames: CityHUDChromeFrames(
                 top: CGRect(x: 0, y: 0, width: 900, height: TopHUDView.compactMaximumHeight),
-                bottom: CGRect(x: 0, y: 600 - (70 + BuildToolbarView.compactClosedMaximumHeight), width: 900, height: 70 + BuildToolbarView.compactClosedMaximumHeight)
+                bottom: CGRect(x: 0, y: 600 - (OverlayDiagnosticsPaletteView.compactMaximumHeight + BuildToolbarView.compactOpenMaximumHeight), width: 900, height: OverlayDiagnosticsPaletteView.compactMaximumHeight + BuildToolbarView.compactOpenMaximumHeight)
             )
         )
         let compactAfter = ContentView.interactiveMapHeight(
@@ -114,7 +122,8 @@ final class HUDConsequenceFeedbackTests: XCTestCase {
             )
         )
         XCTAssertEqual(OverlayDiagnosticsPaletteView.compactMaximumHeight, 48)
-        XCTAssertEqual(compactAfter - compactBefore, 22, accuracy: 0.001)
+        XCTAssertEqual(OverlayDiagnosticsPaletteView.regularMaximumHeight, 48)
+        XCTAssertEqual(compactAfter - compactBefore, 112, accuracy: 0.001)
         XCTAssertGreaterThan(compactAfter, compactBefore)
 
         let store = CityGameStore(state: .newCity(seed: 42))
@@ -132,6 +141,66 @@ final class HUDConsequenceFeedbackTests: XCTestCase {
         )
         XCTAssertEqual(compact.size, compactSize)
         XCTAssertEqual(regular.size, regularSize)
+
+        let regularComposed = try composedCapture(
+            size: CGSize(width: 1_280, height: 800),
+            selectedDetails: true,
+            focusCity: false
+        )
+        let compactComposed = try composedCapture(
+            size: CGSize(width: 900, height: 600),
+            selectedDetails: true,
+            focusCity: false
+        )
+        let regularFocus = try composedCapture(
+            size: CGSize(width: 1_280, height: 800),
+            selectedDetails: true,
+            focusCity: true
+        )
+        let compactFocus = try composedCapture(
+            size: CGSize(width: 900, height: 600),
+            selectedDetails: true,
+            focusCity: true
+        )
+
+        XCTAssertEqual(regularComposed.bitmap.size, CGSize(width: 1_280, height: 800))
+        XCTAssertEqual(compactComposed.bitmap.size, CGSize(width: 900, height: 600))
+
+        let regularAperture = ContentView.interactiveMapHeight(
+            windowHeight: 800,
+            chromeFrames: regularComposed.frames
+        )
+        let compactAperture = ContentView.interactiveMapHeight(
+            windowHeight: 600,
+            chromeFrames: compactComposed.frames
+        )
+        let regularFocusAperture = ContentView.interactiveMapHeight(
+            windowHeight: 800,
+            chromeFrames: regularFocus.frames
+        )
+        let compactFocusAperture = ContentView.interactiveMapHeight(
+            windowHeight: 600,
+            chromeFrames: compactFocus.frames
+        )
+        let previousRegularAperture = 800 - TopHUDView.regularMaximumHeight
+            - OverlayDiagnosticsPaletteView.regularMaximumHeight
+            - BuildToolbarView.regularOpenMaximumHeight
+        let previousCompactAperture = 600 - TopHUDView.compactMaximumHeight
+            - OverlayDiagnosticsPaletteView.compactMaximumHeight
+            - BuildToolbarView.compactOpenMaximumHeight
+
+        XCTAssertGreaterThan(regularAperture, previousRegularAperture)
+        XCTAssertGreaterThan(compactAperture, previousCompactAperture)
+        XCTAssertGreaterThanOrEqual(regularAperture / 800, 0.60)
+        XCTAssertGreaterThanOrEqual(compactAperture / 600, 0.50)
+        XCTAssertGreaterThanOrEqual(regularAperture, regularFocusAperture * 0.60)
+        XCTAssertGreaterThanOrEqual(compactAperture, compactFocusAperture * 0.50)
+        print(
+            "PLAY145_COMPOSED_APERTURE before_regular=\(previousRegularAperture) " +
+            "after_regular=\(regularAperture) focus_regular=\(regularFocusAperture) " +
+            "before_compact=\(previousCompactAperture) after_compact=\(compactAperture) " +
+            "focus_compact=\(compactFocusAperture)"
+        )
 
         if let directory = ProcessInfo.processInfo.environment["CITYSIM_PLAY115_PROOF_DIR"] {
             let output = URL(fileURLWithPath: directory, isDirectory: true)
@@ -152,4 +221,47 @@ final class HUDConsequenceFeedbackTests: XCTestCase {
         view.cacheDisplay(in: view.bounds, to: representation)
         return representation
     }
+
+    @MainActor
+    private func composedCapture(
+        size: CGSize,
+        selectedDetails: Bool,
+        focusCity: Bool
+    ) throws -> (bitmap: NSBitmapImageRep, frames: CityHUDChromeFrames) {
+        let store = CityGameStore(state: .newCity(seed: 42))
+        store.speed = .paused
+        if selectedDetails {
+            store.select(GridCoordinate(x: 10, y: 11))
+        }
+        if focusCity {
+            XCTAssertTrue(store.perform(.toggleCityFocus))
+        }
+
+        let capture = ChromeFrameCapture()
+        let view = NSHostingView(
+            rootView: ContentView(store: store) { frames in
+                capture.frames = frames
+            }
+            .frame(width: size.width, height: size.height)
+        )
+        view.frame = CGRect(origin: .zero, size: size)
+        view.layoutSubtreeIfNeeded()
+        RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.3))
+        view.layoutSubtreeIfNeeded()
+
+        let bitmap = try XCTUnwrap(view.bitmapImageRepForCachingDisplay(in: view.bounds))
+        view.cacheDisplay(in: view.bounds, to: bitmap)
+        XCTAssertFalse(capture.frames.top.isEmpty)
+        if focusCity {
+            XCTAssertTrue(capture.frames.bottom.isEmpty)
+        } else {
+            XCTAssertFalse(capture.frames.bottom.isEmpty)
+        }
+        return (bitmap, capture.frames)
+    }
+}
+
+@MainActor
+private final class ChromeFrameCapture {
+    var frames = CityHUDChromeFrames()
 }

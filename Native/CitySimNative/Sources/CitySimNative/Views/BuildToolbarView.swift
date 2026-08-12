@@ -137,8 +137,9 @@ struct BuildToolbarView: View {
         let opensDetails: Bool
     }
 
-    // The low command rail preserves the world aperture; details remain
-    // reachable in a visibly scrolling region instead of growing over the map.
+    // The low command rail is the only persistent map inset. Details are a
+    // bounded contextual surface above it, so a selection never reserves city
+    // height until the player explicitly asks to inspect it.
     static let compactClosedMaximumHeight: CGFloat = 64
     static let compactBuildDecisionMaximumHeight: CGFloat = 118
     static let regularClosedMaximumHeight: CGFloat = 108
@@ -151,24 +152,14 @@ struct BuildToolbarView: View {
     var body: some View {
         VStack(spacing: compact ? 5 : 6) {
             commandRow
-            if store.showInspector {
-                inspectorDetails
-            } else if let decision = activeBuildDecision {
+            if let decision = activeBuildDecision {
                 buildDecisionRow(decision)
             } else if !compact, isBuildMode {
                 operationalRow
             }
         }
         .padding(compact ? 7 : 8)
-        .frame(
-            maxHeight: store.showInspector
-                ? (compact ? Self.compactOpenMaximumHeight : Self.regularOpenMaximumHeight)
-                : Self.closedMaximumHeight(
-                    compact: compact,
-                    isBuildMode: isBuildMode,
-                    hasBuildDecision: activeBuildDecision != nil
-                )
-        )
+        .frame(height: persistentDeckHeight)
         .background(.thinMaterial, in: RoundedRectangle(cornerRadius: GameTheme.panelRadius, style: .continuous))
         .background(
             GameTheme.hudSurfaceFill,
@@ -178,6 +169,36 @@ struct BuildToolbarView: View {
         .shadow(color: .black.opacity(0.2), radius: 12, y: 5)
         .accessibilityElement(children: .contain)
         .accessibilityLabel(store.showInspector ? "City command deck with details open" : "City command deck")
+        .overlay(alignment: .bottom) {
+            if store.showInspector {
+                inspectorDetails
+                    .frame(maxWidth: compact ? 620 : 760)
+                    .padding(8)
+                    .background(
+                        .thickMaterial,
+                        in: RoundedRectangle(cornerRadius: GameTheme.panelRadius, style: .continuous)
+                    )
+                    .background(
+                        GameTheme.hudSurfaceFill,
+                        in: RoundedRectangle(cornerRadius: GameTheme.panelRadius, style: .continuous)
+                    )
+                    .overlay(
+                        RoundedRectangle(cornerRadius: GameTheme.panelRadius)
+                            .stroke(GameTheme.strongPanelStroke)
+                    )
+                    .shadow(color: .black.opacity(0.28), radius: 14, y: 5)
+                    .offset(y: -persistentDeckHeight - 8)
+                    .accessibilityIdentifier("hud.command.details.overlay")
+            }
+        }
+    }
+
+    private var persistentDeckHeight: CGFloat {
+        Self.closedMaximumHeight(
+            compact: compact,
+            isBuildMode: isBuildMode,
+            hasBuildDecision: activeBuildDecision != nil
+        )
     }
 
     private var inspectorDetails: some View {
@@ -225,7 +246,7 @@ struct BuildToolbarView: View {
 
             buildCatalogMenu
 
-            if !store.showInspector, activeBuildDecision == nil {
+            if activeBuildDecision == nil {
                 selectedToolSummary
                     .frame(
                         minWidth: compact ? 172 : 184,

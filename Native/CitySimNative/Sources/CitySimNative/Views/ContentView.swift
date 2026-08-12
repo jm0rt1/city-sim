@@ -143,12 +143,21 @@ struct CityFocusPointerTransitionMonitor: NSViewRepresentable {
 
 struct ContentView: View {
     @ObservedObject var store: CityGameStore
+    private let onChromeFrames: ((CityHUDChromeFrames) -> Void)?
     @StateObject private var pointerTransitionGate = CityMapPointerTransitionGate()
     @AppStorage("hasSeenCitySimWelcome") private var hasSeenWelcome = false
     @AppStorage("reduceGameMotion") private var gameReduceMotion = false
     @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
     @State private var hudChromeFrames = CityHUDChromeFrames()
     @State private var focusCityChromeFrame = CGRect.zero
+
+    init(
+        store: CityGameStore,
+        onChromeFrames: ((CityHUDChromeFrames) -> Void)? = nil
+    ) {
+        self.store = store
+        self.onChromeFrames = onChromeFrames
+    }
 
     private var reduceMotion: Bool { systemReduceMotion || gameReduceMotion }
 
@@ -491,6 +500,7 @@ struct ContentView: View {
         }
         if updated != hudChromeFrames {
             hudChromeFrames = updated
+            onChromeFrames?(updated)
         }
         if region == .bottom, !store.isCityFocusModeEnabled {
             focusCityChromeFrame = .zero

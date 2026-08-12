@@ -1,0 +1,16 @@
+{
+  "schema": 1,
+  "task": "PLAY-098",
+  "family": "commercial_l01_v0",
+  "accepted_source_commit": "846fffe4146ae355d154dcae37a657ece4a62d49",
+  "normalization_receipt": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-101/commercial_l01_v0/normalized/NORMALIZATION-RECEIPT.json",
+  "normalization_receipt_sha256": "fee98cce9a9285a5140721cd588bd6136ec6efced0daf807697d5b8fb3e9133f",
+  "integration_admission": "docs/production/evidence/PLAY-098/commercial-l01-v0-admission/INTEGRATION-ADMISSION.json",
+  "integration_admission_sha256": "7f129e06aa5a2c60b79f5c8e2d40ff41d089e065c190ff7768b51fcac1102812",
+  "selections": [
+    {"direction": "north", "level": 1, "raw_sha256": "3d0f771f72525740dace420163de67f124f7f84adbcd4c2b7c34375a8f4b2fa0", "normalized_sha256": {"block": "125fa1f7b73681ce3269e3b8bd81c814412d47a08f05224f6c0e750e229063bf", "neighborhood": "e8cc54ae7a9f1ced1d0ff9523d0eaa0979691bc3703296e916ec4dd1bec96503", "city": "692f62fa330c5f7549a54c2c1b261292fb36a99551f9dc72db522a50dafae14e"}},
+    {"direction": "east", "level": 1, "raw_sha256": "ed3ae1e4c4b6198a98a3f917ad844c42e9c92c1efc9fc97af290bc6eb2bc36a8", "normalized_sha256": {"block": "0cbcd6c36f6451e08c1140ee039e4740bb278d1ee294128b6f3fe84f72ae7709", "neighborhood": "3de64353894df18ca94950217dc96cf3377fb3094a15d62edea85dbaf3a58d2c", "city": "44896e62200f377468961560e624d816911d45b394c6227ad7829c80f8e45212"}},
+    {"direction": "south", "level": 1, "raw_sha256": "7fb0044d1b1ae46110528cb1ee8ad82c64d755e984564e1017c91d0f54bfb51e", "normalized_sha256": {"block": "8a157df0518d78ba8359ec6c9d5dba68e0bbd0ab978fd89b8d0c8460be08eb32", "neighborhood": "2251be40f5516d21ef3fc3a4c50ebb00c73ca4dde380f697207e5969a08e3e70", "city": "c0635ae15cb3fbc440dbde48f8990cbd9798fae84ab763796760d9bde61b1874"}},
+    {"direction": "west", "level": 1, "raw_sha256": "b28311c8c958e2e35e4999e2b5b3de200bdc6430c7a30fc40b64aa362e514b00", "normalized_sha256": {"block": "9f9e9078a6e1bcfb676fc62d7fb04e4cc9c91a669ed77261fe2b568c99925904", "neighborhood": "4f9b63bd545a6e6cc8d2456e9b63921867511f1b2be6d042ebc2f9ad088916bf", "city": "910ffda1790a0e2d7c32b22ec4f3617db38966ed08ac04bb2ecac62d0c68ffc2"}}
+  ]
+}

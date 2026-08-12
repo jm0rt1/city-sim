@@ -466,6 +466,9 @@ struct ContentView: View {
                     updateCityName: store.updateNewRegionCityName,
                     updateSeed: store.updateNewRegionSeed,
                     updateStartingResources: store.updateNewRegionStartingResources,
+                    updateSandboxEconomy: store.updateNewRegionSandboxEconomy,
+                    updateSandboxIncidents: store.updateNewRegionSandboxIncidents,
+                    updateSandboxUnlimitedFunds: store.updateNewRegionSandboxUnlimitedFunds,
                     createAction: { _ = store.createNewRegion() },
                     cancelAction: { _ = store.cancelNewRegionSetup() }
                 )

@@ -158,10 +158,10 @@ struct CityHandbookPresentation: Equatable, Sendable {
                     CityHandbookEntry(
                         id: "start-new-region",
                         title: "Choose guided, scenario, sandbox, or benchmark play",
-                        detail: "New Region offers Guided Foundations, the deterministic Harbor Recovery scenario with a deadline and medal tiers, Open Sandbox with configurable identity and resources, or a local performance benchmark that runs on a temporary city without changing your current city.",
+                        detail: "New Region offers Guided Foundations, the deterministic Harbor Recovery scenario with a deadline and medal tiers, Open Sandbox with persistent economy, incident, and unlimited-funds rules, or a local performance benchmark that runs on a temporary city without changing your current city. Sandbox economy changes revenue and upkeep by 15%; disabling incidents prevents random storms and grants; unlimited funds waives construction, demolition, and operating spending while keeping the displayed treasury fixed.",
                         symbol: "map.fill",
                         shortcut: "⌘N",
-                        keywords: ["mode", "scenario", "harbor recovery", "medal", "sandbox", "seed", "starting resources", "guided", "benchmark", "performance", "new region"]
+                        keywords: ["mode", "scenario", "harbor recovery", "medal", "sandbox", "seed", "starting resources", "economy", "incidents", "unlimited funds", "guided", "benchmark", "performance", "new region"]
                     ),
                     CityHandbookEntry(
                         id: "start-pause",

@@ -37,7 +37,9 @@ enum CitySimulation {
     ) -> Result<Void, BuildRejection> {
         guard let existing = state.tile(at: coordinate) else { return .failure(.outsideMap) }
         guard existing.kind == .empty else { return .failure(.occupied) }
-        guard state.treasury >= kind.buildCost else { return .failure(.insufficientFunds) }
+        guard state.usesUnlimitedFunds || state.treasury >= kind.buildCost else {
+            return .failure(.insufficientFunds)
+        }
         if kind.requiresRoad && !state.neighbors(of: coordinate).contains(where: { $0.kind == .road }) {
             return .failure(.roadAccessRequired)
         }
@@ -50,7 +52,9 @@ enum CitySimulation {
     static func build(_ kind: BuildingKind, at coordinate: GridCoordinate, in state: inout CityGameState) -> Result<Void, BuildRejection> {
         let validation = validateBuild(kind, at: coordinate, in: state)
         guard case .success = validation else { return validation }
-        state.treasury -= kind.buildCost
+        if !state.usesUnlimitedFunds {
+            state.treasury -= kind.buildCost
+        }
         state.updateTile(at: coordinate) {
             $0.kind = kind
             $0.level = 1
@@ -64,7 +68,9 @@ enum CitySimulation {
 
     static func demolish(at coordinate: GridCoordinate, in state: inout CityGameState) -> Bool {
         guard let tile = state.tile(at: coordinate), tile.kind != .empty, tile.kind != .cityHall else { return false }
-        state.treasury -= tile.kind.demolitionCost
+        if !state.usesUnlimitedFunds {
+            state.treasury -= tile.kind.demolitionCost
+        }
         state.updateTile(at: coordinate) { $0 = CityTile(coordinate: coordinate, kind: .empty) }
         retireActiveStormRecoveryTarget(at: coordinate, in: &state)
         return true
@@ -120,12 +126,13 @@ enum CitySimulation {
         let industrialLevelGrowth = active
             .filter { $0.kind == .industrial }
             .reduce(0) { $0 + max(0, $1.level - 1) }
-        return (Double(state.population) * residentRevenueBase
+        let baseRevenue = (Double(state.population) * residentRevenueBase
                 + Double(state.jobs) * employedResidentRevenueBase) * state.taxRate
             + Double(counts[.commercial] ?? 0) * commercialRevenue
             + Double(counts[.industrial] ?? 0) * industrialRevenue
             + Double(commercialLevelGrowth) * 45
             + Double(industrialLevelGrowth) * 60
+        return baseRevenue * (state.sandboxRules?.economy.revenueMultiplier ?? 1)
     }
 
     static func projectedUpkeep(in state: CityGameState) -> Double {
@@ -137,8 +144,9 @@ enum CitySimulation {
             let reserveUnits = max(0, active.filter { $0.kind == kind }.count - 1)
             return discount + Double(reserveUnits) * kind.upkeep * (1 - reserveUtilityUpkeepFactor)
         }
-        return (grossUpkeep - reserveUtilityDiscount) * upkeepMultiplier
+        let baseUpkeep = (grossUpkeep - reserveUtilityDiscount) * upkeepMultiplier
             + max(0, -state.treasury) * 0.006
+        return baseUpkeep * (state.sandboxRules?.economy.upkeepMultiplier ?? 1)
     }
 
     static func projectedBalance(in state: CityGameState) -> Double {
@@ -210,6 +218,7 @@ enum CitySimulation {
 
     static func step(_ state: inout CityGameState) {
         guard state.status == .playing else { return }
+        let unlimitedTreasury = state.usesUnlimitedFunds ? state.treasury : nil
         state.preserveLegacyReplayConsequencesIfKnownFixture()
         let previousPopulation = state.population
         state.tick += 1
@@ -322,6 +331,9 @@ enum CitySimulation {
             checkMilestones(&state, previousPopulation: previousPopulation)
             checkEndState(&state)
             CityAuthoredScenarioEngine.evaluate(&state)
+        }
+        if let unlimitedTreasury {
+            state.treasury = unlimitedTreasury
         }
     }
 
@@ -595,6 +607,7 @@ enum CitySimulation {
     private static let firstOrdinaryStormTick = 800
 
     private static func maybeCreateEvent(_ state: inout CityGameState) {
+        guard state.sandboxRules?.incidentsEnabled != false else { return }
         guard state.population >= 500, state.tick >= 640, state.tick % 160 == 0 else { return }
         state.seed = state.seed &* 6_364_136_223_846_793_005 &+ 1_442_695_040_888_963_407
         let roll = Double(state.seed % 10_000) / 10_000
@@ -855,7 +868,7 @@ enum CitySimulation {
     }
 
     private static func advanceStrategyStory(_ state: inout CityGameState) {
-        guard state.authoredScenario == nil else { return }
+        guard state.authoredScenario == nil, state.sandboxRules == nil else { return }
         var progression = state.progression ?? CityProgressionState()
 
         guard var story = progression.strategy else {
@@ -1242,7 +1255,7 @@ enum CitySimulation {
         let coverage = utilityCoverage(in: state)
         let reserve = utilityReserve(in: state)
 
-        if state.progression?.strategy == nil {
+        if state.sandboxRules == nil, state.progression?.strategy == nil {
             postOnce(
                 CityMessage(
                     tick: state.tick,
@@ -1254,19 +1267,20 @@ enum CitySimulation {
             )
         }
 
-        announceCommercialTaxReliefAtDailyReview(&state)
+        if state.sandboxRules == nil {
+            announceCommercialTaxReliefAtDailyReview(&state)
+            postOnce(
+                CityMessage(
+                    tick: state.tick,
+                    severity: .information,
+                    title: "Town Charter Standards",
+                    detail: "Reach 500 residents, $10,000 treasury, non-negative cashflow, 90% employment, full utilities with 15% reserve, and 52% happiness; keep every zone active for 12 consecutive days. Growth needs job openings and utility headroom."
+                ),
+                to: &state
+            )
+        }
 
-        postOnce(
-            CityMessage(
-                tick: state.tick,
-                severity: .information,
-                title: "Town Charter Standards",
-                detail: "Reach 500 residents, $10,000 treasury, non-negative cashflow, 90% employment, full utilities with 15% reserve, and 52% happiness; keep every zone active for 12 consecutive days. Growth needs job openings and utility headroom."
-            ),
-            to: &state
-        )
-
-        if balance < 0 {
+        if balance < 0, !state.usesUnlimitedFunds {
             postOnce(
                 CityMessage(
                     tick: state.tick,
@@ -1378,7 +1392,7 @@ enum CitySimulation {
     }
 
     private static func updateTownCharterProgression(_ state: inout CityGameState) {
-        guard state.authoredScenario == nil else { return }
+        guard state.authoredScenario == nil, state.sandboxRules == nil else { return }
         var progression = state.progression ?? CityProgressionState()
         guard !progression.townCharterAwarded else {
             state.progression = progression
@@ -1460,7 +1474,7 @@ enum CitySimulation {
     }
 
     private static func updateSecondActProgression(_ state: inout CityGameState) {
-        guard state.authoredScenario == nil else { return }
+        guard state.authoredScenario == nil, state.sandboxRules == nil else { return }
         guard var progression = state.progression,
               var secondAct = progression.secondAct,
               let story = progression.strategy,
@@ -1799,14 +1813,28 @@ enum CitySimulation {
 
     private static func checkMilestones(_ state: inout CityGameState, previousPopulation: Int) {
         for milestone in [500, 1_000, 1_500, 2_000] where previousPopulation < milestone && state.population >= milestone {
-            state.messages.insert(CityMessage(tick: state.tick, severity: .good, title: "Population Milestone", detail: "\(milestone.formatted()) residents. Growth alone is not enough: protect the treasury, jobs, utilities, and livability to earn the Town Charter."), at: 0)
+            let detail = if state.sandboxRules != nil {
+                "\(milestone.formatted()) residents. Keep jobs, utilities, and livability healthy as the sandbox grows."
+            } else {
+                "\(milestone.formatted()) residents. Growth alone is not enough: protect the treasury, jobs, utilities, and livability to earn the Town Charter."
+            }
+            state.messages.insert(
+                CityMessage(
+                    tick: state.tick,
+                    severity: .good,
+                    title: "Population Milestone",
+                    detail: detail
+                ),
+                at: 0
+            )
         }
         state.messages = Array(state.messages.prefix(12))
     }
 
     private static func checkEndState(_ state: inout CityGameState) {
         guard state.status == .playing else { return }
-        if state.treasury < -75_000 || (state.tick > 40 && state.happiness < 10) {
+        if (!state.usesUnlimitedFunds && state.treasury < -75_000)
+            || (state.tick > 40 && state.happiness < 10) {
             state.status = .lost
         }
     }

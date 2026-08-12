@@ -214,6 +214,9 @@ final class CityAuthoredScenarioTests: XCTestCase {
                     updateCityName: { _ in },
                     updateSeed: { _ in },
                     updateStartingResources: { _ in },
+                    updateSandboxEconomy: { _ in },
+                    updateSandboxIncidents: { _ in },
+                    updateSandboxUnlimitedFunds: { _ in },
                     createAction: {},
                     cancelAction: {}
                 )

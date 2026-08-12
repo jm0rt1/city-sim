@@ -555,7 +555,8 @@ struct BuildToolbarView: View {
         let presentation = Self.targetBeaconPresentation(
             interactionMode: store.interactionMode,
             selectedTile: store.selectedTile,
-            target: store.activeMapActionTargetPresentation
+            target: store.activeMapActionTargetPresentation,
+            unlimitedFunds: store.state.usesUnlimitedFunds
         )
         if presentation.opensDetails {
             Button {
@@ -633,7 +634,8 @@ struct BuildToolbarView: View {
     static func targetBeaconPresentation(
         interactionMode: CityInteractionMode,
         selectedTile: CityTile?,
-        target: CityMapActionTargetPresentation?
+        target: CityMapActionTargetPresentation?,
+        unlimitedFunds: Bool = false
     ) -> TargetBeaconPresentation {
         switch interactionMode {
         case .inspect:
@@ -663,15 +665,20 @@ struct BuildToolbarView: View {
             )
         case .build(let kind):
             guard let target else {
+                let detail = unlimitedFunds
+                    ? "COST WAIVED · upkeep tracked"
+                    : "\(kind.buildCost.currencyText) · \(kind.upkeep.currencyText)/cycle"
+                let accessibilityValue = unlimitedFunds
+                    ? "Selected \(kind.title). Construction and operating spending are waived. Choose a block."
+                    : "Selected \(kind.title). Cost \(kind.buildCost.currencyText), upkeep \(kind.upkeep.currencyText) per cycle. Choose a block."
                 return TargetBeaconPresentation(
                     title: kind.title,
-                    detail: "\(kind.buildCost.currencyText) · \(kind.upkeep.currencyText)/cycle",
+                    detail: detail,
                     status: "CHOOSE",
                     symbol: kind.symbol,
                     tone: .information,
                     accessibilityLabel: "Build \(kind.title)",
-                    accessibilityValue: "Selected \(kind.title). Cost \(kind.buildCost.currencyText), "
-                        + "upkeep \(kind.upkeep.currencyText) per cycle. Choose a block.",
+                    accessibilityValue: accessibilityValue,
                     opensDetails: false
                 )
             }
@@ -803,13 +810,20 @@ struct BuildToolbarView: View {
 
     private func toolButton(_ kind: BuildingKind) -> some View {
         let active = store.interactionMode == .build(kind)
+        let costLabel = store.state.usesUnlimitedFunds ? "COST WAIVED" : kind.buildCost.currencyText
+        let help = store.state.usesUnlimitedFunds
+            ? "Build \(kind.title) · sandbox spending waived"
+            : "Build \(kind.title) · \(kind.buildCost.currencyText) · \(kind.upkeep.currencyText) per cycle"
+        let accessibilityValue = store.state.usesUnlimitedFunds
+            ? "Construction and operating spending waived"
+            : "Cost \(kind.buildCost.currencyText), upkeep \(kind.upkeep.currencyText) per cycle"
         return Button { store.perform(CityCommandCatalog.id(for: kind)) } label: {
             HStack(spacing: 7) {
                 Image(systemName: active ? "checkmark.circle.fill" : kind.symbol)
                     .font(.system(size: 15, weight: .semibold))
                 VStack(alignment: .leading, spacing: 1) {
                     Text(kind.title).font(.caption.weight(.semibold)).lineLimit(1)
-                    Text(kind.buildCost.currencyText).font(.caption2.monospacedDigit()).foregroundStyle(.secondary)
+                    Text(costLabel).font(.caption2.monospacedDigit()).foregroundStyle(.secondary)
                 }
             }
             .padding(.horizontal, 9)
@@ -819,9 +833,9 @@ struct BuildToolbarView: View {
         .buttonStyle(.plain)
         .foregroundStyle(active ? Color.black : Color.primary)
         .background(active ? GameTheme.accent : GameTheme.inactiveControl, in: RoundedRectangle(cornerRadius: 9))
-        .help("Build \(kind.title) · \(kind.buildCost.currencyText) · \(kind.upkeep.currencyText) per cycle")
+        .help(help)
         .accessibilityLabel("Build \(kind.title)")
-        .accessibilityValue("Cost \(kind.buildCost.currencyText), upkeep \(kind.upkeep.currencyText) per cycle")
+        .accessibilityValue(accessibilityValue)
     }
 
     private var isBuildMode: Bool {

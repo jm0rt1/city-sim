@@ -7,6 +7,9 @@ struct NewRegionSetupView: View {
     let updateCityName: (String) -> Void
     let updateSeed: (String) -> Void
     let updateStartingResources: (CitySandboxStartingResources) -> Void
+    let updateSandboxEconomy: (CitySandboxEconomy) -> Void
+    let updateSandboxIncidents: (Bool) -> Void
+    let updateSandboxUnlimitedFunds: (Bool) -> Void
     let createAction: () -> Void
     let cancelAction: () -> Void
     @FocusState private var focusedField: Field?
@@ -305,28 +308,48 @@ struct NewRegionSetupView: View {
                 .frame(maxWidth: 250)
             }
 
-            labeledField("Starting resources") {
-                Picker(
-                    "Starting resources",
-                    selection: Binding(
-                        get: { draft.startingResources },
-                        set: { updateStartingResources($0) }
-                    )
-                ) {
-                    ForEach(CitySandboxStartingResources.allCases) { resources in
-                        Text(resources.title).tag(resources)
+            HStack(alignment: .top, spacing: 16) {
+                labeledField(draft.unlimitedFunds ? "Fixed treasury display" : "Starting resources") {
+                    Picker(
+                        "Starting resources",
+                        selection: Binding(
+                            get: { draft.startingResources },
+                            set: { updateStartingResources($0) }
+                        )
+                    ) {
+                        ForEach(CitySandboxStartingResources.allCases) { resources in
+                            Text(resources.title).tag(resources)
+                        }
                     }
+                    .labelsHidden()
+                    .pickerStyle(.segmented)
+                    .disabled(draft.unlimitedFunds)
+                    .accessibilityIdentifier("new-region-setup.resources")
                 }
-                .labelsHidden()
-                .pickerStyle(.segmented)
-                .accessibilityIdentifier("new-region-setup.resources")
+
+                labeledField("Economy") {
+                    Picker(
+                        "Economy",
+                        selection: Binding(
+                            get: { draft.sandboxEconomy },
+                            set: { updateSandboxEconomy($0) }
+                        )
+                    ) {
+                        ForEach(CitySandboxEconomy.allCases) { economy in
+                            Text(economy.title).tag(economy)
+                        }
+                    }
+                    .labelsHidden()
+                    .pickerStyle(.segmented)
+                    .accessibilityIdentifier("new-region-setup.economy")
+                }
             }
 
             HStack(alignment: .top, spacing: 10) {
                 Image(systemName: draft.validationMessage == nil
                     ? "info.circle.fill"
                     : "exclamationmark.triangle.fill")
-                Text(draft.validationMessage ?? draft.startingResources.detail)
+                Text(draft.validationMessage ?? sandboxRuleDetail)
                     .fixedSize(horizontal: false, vertical: true)
                 Spacer()
                 Text("\(draft.cityName.count)/40")
@@ -335,13 +358,34 @@ struct NewRegionSetupView: View {
             .font(.caption)
             .foregroundStyle(draft.validationMessage == nil ? .secondary : GameTheme.warning)
 
-            Divider().overlay(Color.white.opacity(0.10))
-            HStack(alignment: .top, spacing: 18) {
-                ForEach(presentation.sandboxHighlights, id: \.self) { highlight in
-                    Label(highlight, systemImage: "checkmark.circle.fill")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                        .frame(maxWidth: .infinity, alignment: .topLeading)
+            HStack(spacing: 12) {
+                sandboxRuleToggle(
+                    title: "City incidents",
+                    detail: draft.incidentsEnabled ? "Storms and grants can occur" : "Random incidents are disabled",
+                    symbol: draft.incidentsEnabled ? "cloud.bolt.rain.fill" : "cloud.sun.fill",
+                    isOn: draft.incidentsEnabled,
+                    update: updateSandboxIncidents,
+                    identifier: "new-region-setup.incidents"
+                )
+                sandboxRuleToggle(
+                    title: "Unlimited funds",
+                    detail: draft.unlimitedFunds ? "Spending is waived; cash stays fixed" : "Construction and operations affect cash",
+                    symbol: draft.unlimitedFunds ? "infinity.circle.fill" : "banknote.fill",
+                    isOn: draft.unlimitedFunds,
+                    update: updateSandboxUnlimitedFunds,
+                    identifier: "new-region-setup.unlimited-funds"
+                )
+            }
+
+            if !compact {
+                Divider().overlay(Color.white.opacity(0.10))
+                HStack(alignment: .top, spacing: 18) {
+                    ForEach(presentation.sandboxHighlights, id: \.self) { highlight in
+                        Label(highlight, systemImage: "checkmark.circle.fill")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                            .frame(maxWidth: .infinity, alignment: .topLeading)
+                    }
                 }
             }
         }
@@ -351,6 +395,44 @@ struct NewRegionSetupView: View {
             RoundedRectangle(cornerRadius: 16, style: .continuous)
                 .fill(Color.white.opacity(0.035))
         )
+    }
+
+    private var sandboxRuleDetail: String {
+        let funds = draft.unlimitedFunds
+            ? "Treasury remains fixed at \(draft.startingResources.treasury.currencyText)."
+            : draft.startingResources.detail
+        return "\(draft.sandboxEconomy.detail). \(funds)"
+    }
+
+    private func sandboxRuleToggle(
+        title: String,
+        detail: String,
+        symbol: String,
+        isOn: Bool,
+        update: @escaping (Bool) -> Void,
+        identifier: String
+    ) -> some View {
+        Toggle(
+            isOn: Binding(get: { isOn }, set: { update($0) }),
+            label: {
+                HStack(spacing: 9) {
+                    Image(systemName: symbol)
+                        .foregroundStyle(isOn ? GameTheme.accent : .secondary)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(title).font(.caption.weight(.bold))
+                        Text(detail)
+                            .font(.system(size: 9))
+                            .foregroundStyle(.secondary)
+                            .lineLimit(2)
+                    }
+                }
+            }
+        )
+        .toggleStyle(.switch)
+        .padding(10)
+        .frame(maxWidth: .infinity, minHeight: 52, alignment: .leading)
+        .background(.black.opacity(0.14), in: RoundedRectangle(cornerRadius: 11))
+        .accessibilityIdentifier(identifier)
     }
 
     private func labeledField<Content: View>(

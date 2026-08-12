@@ -81,11 +81,84 @@ enum CitySandboxStartingResources: String, CaseIterable, Identifiable, Equatable
     }
 }
 
+enum CitySandboxEconomy: String, Codable, CaseIterable, Identifiable, Equatable, Sendable {
+    case relaxed
+    case standard
+    case demanding
+
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .relaxed: "Relaxed"
+        case .standard: "Standard"
+        case .demanding: "Demanding"
+        }
+    }
+
+    var detail: String {
+        switch self {
+        case .relaxed: "15% stronger revenue and 15% lower upkeep"
+        case .standard: "The authored city economy"
+        case .demanding: "15% lower revenue and 15% higher upkeep"
+        }
+    }
+
+    var revenueMultiplier: Double {
+        switch self {
+        case .relaxed: 1.15
+        case .standard: 1
+        case .demanding: 0.85
+        }
+    }
+
+    var upkeepMultiplier: Double {
+        switch self {
+        case .relaxed: 0.85
+        case .standard: 1
+        case .demanding: 1.15
+        }
+    }
+}
+
+struct CitySandboxRules: Codable, Equatable, Sendable {
+    var economy: CitySandboxEconomy
+    var incidentsEnabled: Bool
+    var unlimitedFunds: Bool
+
+    static let standard = CitySandboxRules(
+        economy: .standard,
+        incidentsEnabled: true,
+        unlimitedFunds: false
+    )
+
+    var summary: String {
+        let incidents = incidentsEnabled ? "Incidents on" : "Incidents off"
+        let funds = unlimitedFunds ? "Unlimited funds" : "Budget active"
+        return "\(economy.title) economy · \(incidents) · \(funds)"
+    }
+}
+
 struct CityNewRegionConfiguration: Equatable, Sendable {
     let experience: CityNewRegionExperience
     let cityName: String
     let seed: UInt64
     let startingResources: CitySandboxStartingResources
+    let sandboxRules: CitySandboxRules
+
+    init(
+        experience: CityNewRegionExperience,
+        cityName: String,
+        seed: UInt64,
+        startingResources: CitySandboxStartingResources,
+        sandboxRules: CitySandboxRules = .standard
+    ) {
+        self.experience = experience
+        self.cityName = cityName
+        self.seed = seed
+        self.startingResources = startingResources
+        self.sandboxRules = sandboxRules
+    }
 
     func makeState() -> CityGameState {
         if experience == .authoredScenario {
@@ -95,12 +168,14 @@ struct CityNewRegionConfiguration: Equatable, Sendable {
         state.cityName = cityName
         state.treasury = startingResources.treasury
         if experience == .openSandbox {
+            state.progression = nil
+            state.sandboxRules = sandboxRules
             state.messages = [
                 CityMessage(
                     tick: 0,
                     severity: .information,
                     title: "Open Sandbox Ready",
-                    detail: "Shape \(cityName) in any direction. The Town Charter and Regional Capital remain optional milestones, while budget, utilities, demand, and city consequences stay fully active. This region uses deterministic seed \(seed)."
+                    detail: "Shape \(cityName) in any direction with \(sandboxRules.summary.lowercased()). Utilities, demand, growth, and city consequences remain active. This region uses deterministic seed \(seed), and its sandbox rules persist with the city."
                 )
             ]
         }
@@ -113,13 +188,19 @@ struct CityNewRegionDraft: Equatable, Sendable {
     var cityName: String
     var seedText: String
     var startingResources: CitySandboxStartingResources
+    var sandboxEconomy: CitySandboxEconomy
+    var incidentsEnabled: Bool
+    var unlimitedFunds: Bool
 
     static func initial(seed: UInt64) -> Self {
         Self(
             experience: .guidedFoundations,
             cityName: "New Arcadia",
             seedText: String(seed),
-            startingResources: .balanced
+            startingResources: .balanced,
+            sandboxEconomy: .standard,
+            incidentsEnabled: true,
+            unlimitedFunds: false
         )
     }
 
@@ -149,7 +230,12 @@ struct CityNewRegionDraft: Equatable, Sendable {
                 experience: experience,
                 cityName: cleanedName,
                 seed: seed,
-                startingResources: startingResources
+                startingResources: startingResources,
+                sandboxRules: CitySandboxRules(
+                    economy: sandboxEconomy,
+                    incidentsEnabled: incidentsEnabled,
+                    unlimitedFunds: unlimitedFunds
+                )
             )
         case .benchmark:
             return nil
@@ -190,8 +276,8 @@ struct CityNewRegionSetupPresentation: Equatable, Sendable {
         ],
         sandboxHighlights: [
             "Custom city name and reproducible seed",
-            "Lean, balanced, or generous starting treasury",
-            "All simulation pressures stay active; milestones are optional",
+            "Choose economic pressure and starting treasury",
+            "Toggle incidents or waive all city spending",
         ]
     )
 }

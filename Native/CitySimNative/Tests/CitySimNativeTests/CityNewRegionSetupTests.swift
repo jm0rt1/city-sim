@@ -26,8 +26,11 @@ final class CityNewRegionSetupTests: XCTestCase {
         XCTAssertEqual(first.cityName, "Cedar Shore")
         XCTAssertEqual(first.seed, 20260812)
         XCTAssertEqual(first.treasury, 20_000)
+        XCTAssertNil(first.progression)
+        XCTAssertEqual(first.sandboxRules, .standard)
         XCTAssertEqual(first.messages.first?.title, "Open Sandbox Ready")
-        XCTAssertTrue(first.messages.first?.detail.contains("optional milestones") == true)
+        XCTAssertTrue(first.messages.first?.detail.contains("standard economy") == true)
+        XCTAssertTrue(first.messages.first?.detail.contains("persist with the city") == true)
         XCTAssertNotEqual(first, guided.makeState())
     }
 
@@ -69,7 +72,7 @@ final class CityNewRegionSetupTests: XCTestCase {
             $0.contains("reproducible seed")
         })
         XCTAssertTrue(presentation.sandboxHighlights.contains {
-            $0.contains("milestones are optional")
+            $0.contains("incidents")
         })
         let scenario = CityAuthoredScenarioCatalog.harborRecovery
         XCTAssertTrue(scenario.briefing.contains("harbor town"))
@@ -108,6 +111,9 @@ final class CityNewRegionSetupTests: XCTestCase {
         draft.experience = .openSandbox
         draft.cityName = "Cedar Shore"
         draft.startingResources = .generous
+        draft.sandboxEconomy = .demanding
+        draft.incidentsEnabled = false
+        draft.unlimitedFunds = true
 
         for size in [CGSize(width: 900, height: 600), CGSize(width: 1_280, height: 800)] {
             let image = try bitmap(
@@ -118,6 +124,9 @@ final class CityNewRegionSetupTests: XCTestCase {
                     updateCityName: { _ in },
                     updateSeed: { _ in },
                     updateStartingResources: { _ in },
+                    updateSandboxEconomy: { _ in },
+                    updateSandboxIncidents: { _ in },
+                    updateSandboxUnlimitedFunds: { _ in },
                     createAction: {},
                     cancelAction: {}
                 )

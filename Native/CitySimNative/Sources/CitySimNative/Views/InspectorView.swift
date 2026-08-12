@@ -315,7 +315,10 @@ struct InspectorView: View {
                     .lineLimit(2)
                 compactAction("City data", symbol: "chart.dots.scatter") { store.perform(.inspectorOverview) }
             } else {
-                ContextValueRow(label: "Demolition", value: tile.kind.demolitionCost.currencyText)
+                ContextValueRow(
+                    label: "Demolition",
+                    value: store.state.usesUnlimitedFunds ? "Waived" : tile.kind.demolitionCost.currencyText
+                )
                 HStack(spacing: 6) {
                     compactAction("City data", symbol: "chart.dots.scatter") { store.perform(.inspectorOverview) }
                     Button(role: .destructive) { store.demolishSelected() } label: {
@@ -323,8 +326,16 @@ struct InspectorView: View {
                             .frame(maxWidth: .infinity, minHeight: GameTheme.controlMinimum)
                     }
                     .buttonStyle(.bordered)
-                    .accessibilityLabel("Demolish \(tile.kind.title) for \(tile.kind.demolitionCost.currencyText)")
-                    .accessibilityHint("Demolition costs \(tile.kind.demolitionCost.currencyText). Undo is available after activation.")
+                    .accessibilityLabel(
+                        store.state.usesUnlimitedFunds
+                            ? "Demolish \(tile.kind.title) with spending waived"
+                            : "Demolish \(tile.kind.title) for \(tile.kind.demolitionCost.currencyText)"
+                    )
+                    .accessibilityHint(
+                        store.state.usesUnlimitedFunds
+                            ? "Sandbox demolition spending is waived. Undo is available after activation."
+                            : "Demolition costs \(tile.kind.demolitionCost.currencyText). Undo is available after activation."
+                    )
                 }
             }
         }
@@ -398,10 +409,16 @@ struct InspectorView: View {
     private func financeCard(_ card: FinanceCard) -> some View {
         switch card {
         case .treasury:
-            ContextCard(title: "Treasury", symbol: "dollarsign.circle.fill", tint: store.state.treasury >= 0 ? GameTheme.accent : GameTheme.danger) {
-                Text(store.state.treasury.currencyText)
+            ContextCard(
+                title: "Treasury",
+                symbol: "dollarsign.circle.fill",
+                tint: store.state.usesUnlimitedFunds || store.state.treasury >= 0
+                    ? GameTheme.accent
+                    : GameTheme.danger
+            ) {
+                Text(store.state.usesUnlimitedFunds ? "Unlimited" : store.state.treasury.currencyText)
                     .font(.title3.bold().monospacedDigit())
-                Text("Available for construction and operating commitments")
+                Text(treasuryDetail)
                     .font(.caption2)
                     .foregroundStyle(.secondary)
             }
@@ -524,13 +541,28 @@ struct InspectorView: View {
             demandCard(title: "Commercial", kind: .commercial, value: store.state.demand.commercial, tint: .purple)
             demandCard(title: "Industrial", kind: .industrial, value: store.state.demand.industrial, tint: .orange)
             ContextCard(title: "Development readiness", symbol: "checklist", tint: GameTheme.information) {
-                ContextValueRow(label: "Treasury", value: store.state.treasury.currencyText)
+                ContextValueRow(
+                    label: "Treasury",
+                    value: store.state.usesUnlimitedFunds ? "Unlimited" : store.state.treasury.currencyText
+                )
                 ContextValueRow(label: "Power spare", value: store.analytics.powerHeadroom.formatted())
                 ContextValueRow(label: "Water spare", value: store.analytics.waterHeadroom.formatted())
-                Text("Demand is opportunity; access, utilities, funds, and workforce still govern placement.")
+                Text(store.state.usesUnlimitedFunds
+                    ? "Demand is opportunity; access, utilities, and workforce still govern placement."
+                    : "Demand is opportunity; access, utilities, funds, and workforce still govern placement.")
                     .font(.caption2).foregroundStyle(.secondary).lineLimit(2)
             }
         }
+    }
+
+    private var treasuryDetail: String {
+        guard let rules = store.state.sandboxRules else {
+            return "Available for construction and operating commitments"
+        }
+        if rules.unlimitedFunds {
+            return "Spending waived · cash fixed · \(rules.economy.title) economy · \(rules.incidentsEnabled ? "incidents on" : "incidents off")"
+        }
+        return "\(rules.economy.title) economy · \(rules.incidentsEnabled ? "incidents on" : "incidents off")"
     }
 
     private var utilityContext: some View {

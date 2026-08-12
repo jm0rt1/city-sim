@@ -1279,6 +1279,21 @@ final class CityGameStore: ObservableObject {
         newRegionDraft.startingResources = resources
     }
 
+    func updateNewRegionSandboxEconomy(_ economy: CitySandboxEconomy) {
+        guard commandPolicy == .blocked(.newRegionSetup) else { return }
+        newRegionDraft.sandboxEconomy = economy
+    }
+
+    func updateNewRegionSandboxIncidents(_ incidentsEnabled: Bool) {
+        guard commandPolicy == .blocked(.newRegionSetup) else { return }
+        newRegionDraft.incidentsEnabled = incidentsEnabled
+    }
+
+    func updateNewRegionSandboxUnlimitedFunds(_ unlimitedFunds: Bool) {
+        guard commandPolicy == .blocked(.newRegionSetup) else { return }
+        newRegionDraft.unlimitedFunds = unlimitedFunds
+    }
+
     @discardableResult
     func createNewRegion() -> Bool {
         guard commandPolicy == .blocked(.newRegionSetup) else { return false }
@@ -1488,7 +1503,7 @@ final class CityGameStore: ObservableObject {
         case .openSandbox:
             showFeedback(
                 "Sandbox ready · \(configuration.cityName) · Seed \(configuration.seed) · "
-                    + configuration.startingResources.title,
+                    + configuration.sandboxRules.summary,
                 tone: .positive
             )
         case .benchmark:

@@ -669,14 +669,18 @@ struct CityBuildDecisionPresentation: Equatable, Sendable {
     static func make(
         kind: BuildingKind,
         tile: CityTile,
-        rejection: BuildRejection?
+        rejection: BuildRejection?,
+        unlimitedFunds: Bool = false
     ) -> CityBuildDecisionPresentation {
-        CityBuildDecisionPresentation(
+        let cost = unlimitedFunds
+            ? "Cost waived · upkeep tracked only"
+            : "Cost \(kind.buildCost.currencyText) · \(kind.upkeep.currencyText) / cycle"
+        return CityBuildDecisionPresentation(
             buildingTitle: kind.title,
             buildingSymbol: kind.symbol,
             target: "Block \(tile.coordinate.x + 1), \(tile.coordinate.y + 1)",
             footprint: "1 × 1 block",
-            cost: "Cost \(kind.buildCost.currencyText) · \(kind.upkeep.currencyText) / cycle",
+            cost: cost,
             availability: rejection == nil ? "Ready to build" : "Blocked",
             disabledReason: rejection?.message,
             likelyConsequence: kind.buildConsequenceSummary,
@@ -720,18 +724,31 @@ struct CityMapPrimaryActionPresentation: Equatable, Sendable {
         case .build(let kind):
             switch CitySimulation.validateBuild(kind, at: tile.coordinate, in: state) {
             case .success:
+                let disclosure = state.usesUnlimitedFunds
+                    ? "Available. Sandbox funds waive construction and operating spending."
+                    : "Available. Costs \(kind.buildCost.currencyText) and \(kind.upkeep.currencyText) upkeep per cycle."
                 return .init(
                     name: "Build \(kind.title) at \(block)",
-                    disclosure: "Available. Costs \(kind.buildCost.currencyText) and \(kind.upkeep.currencyText) upkeep per cycle.",
+                    disclosure: disclosure,
                     isAvailable: true,
-                    buildDecision: .make(kind: kind, tile: tile, rejection: nil)
+                    buildDecision: .make(
+                        kind: kind,
+                        tile: tile,
+                        rejection: nil,
+                        unlimitedFunds: state.usesUnlimitedFunds
+                    )
                 )
             case .failure(let rejection):
                 return .init(
                     name: "Build \(kind.title) at \(block)",
                     disclosure: "Unavailable. \(rejection.message)",
                     isAvailable: false,
-                    buildDecision: .make(kind: kind, tile: tile, rejection: rejection)
+                    buildDecision: .make(
+                        kind: kind,
+                        tile: tile,
+                        rejection: rejection,
+                        unlimitedFunds: state.usesUnlimitedFunds
+                    )
                 )
             }
         case .bulldoze:
@@ -749,9 +766,15 @@ struct CityMapPrimaryActionPresentation: Equatable, Sendable {
                     isAvailable: false
                 )
             }
+            let demolitionName = state.usesUnlimitedFunds
+                ? "Demolish \(tile.kind.title) at \(block)"
+                : "Demolish \(tile.kind.title) at \(block) for \(tile.kind.demolitionCost.currencyText)"
+            let demolitionDisclosure = state.usesUnlimitedFunds
+                ? "Available. Demolition spending is waived. Undo is available after activation."
+                : "Available. Demolition costs \(tile.kind.demolitionCost.currencyText). Undo is available after activation."
             return .init(
-                name: "Demolish \(tile.kind.title) at \(block) for \(tile.kind.demolitionCost.currencyText)",
-                disclosure: "Available. Demolition costs \(tile.kind.demolitionCost.currencyText). Undo is available after activation.",
+                name: demolitionName,
+                disclosure: demolitionDisclosure,
                 isAvailable: true
             )
         }

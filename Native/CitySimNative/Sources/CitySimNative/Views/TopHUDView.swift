@@ -273,10 +273,12 @@ struct TopHUDView: View {
                 identifier: "hud.metric.treasury",
                 title: "Treasury",
                 shortTitle: "Cash",
-                value: store.state.treasury.currencyText,
+                value: treasuryMetricValue,
                 symbol: "dollarsign.circle.fill",
-                tint: store.state.treasury >= 0 ? GameTheme.accent : GameTheme.danger,
-                detail: "Net \(store.analytics.projectedBalance.signedCurrencyText)",
+                tint: store.state.usesUnlimitedFunds || store.state.treasury >= 0
+                    ? GameTheme.accent
+                    : GameTheme.danger,
+                detail: treasuryMetricDetail,
                 dense: true
             ) { store.perform(.inspectorFinances) }
 
@@ -343,6 +345,17 @@ struct TopHUDView: View {
         .frame(maxWidth: .infinity)
         .accessibilityElement(children: .contain)
         .accessibilityLabel("City status")
+    }
+
+    private var treasuryMetricValue: String {
+        store.state.usesUnlimitedFunds ? "Unlimited" : store.state.treasury.currencyText
+    }
+
+    private var treasuryMetricDetail: String {
+        guard let rules = store.state.sandboxRules else {
+            return "Net \(store.analytics.projectedBalance.signedCurrencyText)"
+        }
+        return "\(rules.economy.title) · \(rules.incidentsEnabled ? "Incidents on" : "No incidents")"
     }
 
     private var timeAndNotices: some View {
@@ -552,9 +565,9 @@ struct FocusCityHUDView: View {
 
     private var treasury: some View {
         VStack(alignment: .leading, spacing: 1) {
-            Text(store.state.treasury.currencyText)
+            Text(treasuryMetricValue)
                 .font(.system(size: 14, weight: .bold, design: .rounded).monospacedDigit())
-            Text("\(store.analytics.projectedBalance.signedCurrencyText) / cycle")
+            Text(treasuryMetricDetail)
                 .font(.system(size: GameTheme.hudSupportTextSize, weight: .semibold, design: .rounded).monospacedDigit())
                 .foregroundStyle(treasuryTint)
         }
@@ -562,9 +575,30 @@ struct FocusCityHUDView: View {
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("Treasury")
         .accessibilityValue(
-            "\(store.state.treasury.currencyText), \(store.analytics.projectedBalance.signedCurrencyText) per cycle"
+            treasuryAccessibilityValue
         )
         .accessibilityIdentifier("hud.focus-city.treasury")
+    }
+
+    private var treasuryMetricValue: String {
+        store.state.usesUnlimitedFunds ? "Unlimited" : store.state.treasury.currencyText
+    }
+
+    private var treasuryMetricDetail: String {
+        guard let rules = store.state.sandboxRules else {
+            return "Net \(store.analytics.projectedBalance.signedCurrencyText)"
+        }
+        return "\(rules.economy.title) · \(rules.incidentsEnabled ? "Incidents on" : "No incidents")"
+    }
+
+    private var treasuryAccessibilityValue: String {
+        guard let rules = store.state.sandboxRules else {
+            return "\(store.state.treasury.currencyText), \(store.analytics.projectedBalance.signedCurrencyText) per cycle"
+        }
+        let funding = rules.unlimitedFunds
+            ? "Unlimited funds; treasury fixed at \(store.state.treasury.currencyText)"
+            : "Treasury \(store.state.treasury.currencyText), net \(store.analytics.projectedBalance.signedCurrencyText) per cycle"
+        return "\(funding). \(rules.summary)"
     }
 
     private var priority: some View {
@@ -699,7 +733,9 @@ struct FocusCityHUDView: View {
     }
 
     private var treasuryTint: Color {
-        store.analytics.projectedBalance >= 0 ? GameTheme.accent : GameTheme.danger
+        store.state.usesUnlimitedFunds || store.analytics.projectedBalance >= 0
+            ? GameTheme.accent
+            : GameTheme.danger
     }
 
     private var priorityTint: Color {

@@ -125,6 +125,7 @@ final class CitySessionReplacementConfirmationTests: XCTestCase {
         XCTAssertEqual(store.state.cityName, "Alder Bay")
         XCTAssertEqual(store.state.seed, 987654)
         XCTAssertEqual(store.state.treasury, 60_000)
+        XCTAssertEqual(store.state.sandboxRules, .standard)
         XCTAssertEqual(store.state.formattedDay, "Day 1")
         XCTAssertEqual(store.state.population, 300)
         XCTAssertEqual(store.commandPolicy, .enabled)
@@ -132,7 +133,7 @@ final class CitySessionReplacementConfirmationTests: XCTestCase {
         XCTAssertFalse(store.showObjectives)
         XCTAssertEqual(
             store.lastFeedback,
-            "Sandbox ready · Alder Bay · Seed 987654 · Generous · $60,000"
+            "Sandbox ready · Alder Bay · Seed 987654 · Standard economy · Incidents on · Budget active"
         )
     }
 

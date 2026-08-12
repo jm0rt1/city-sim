@@ -150,11 +150,14 @@ struct CityGameState: Codable, Equatable, Sendable {
     var progression: CityProgressionState?
     var stormRecovery: CityStormRecoveryState? = nil
     var authoredScenario: CityAuthoredScenarioSession? = nil
+    var sandboxRules: CitySandboxRules? = nil
     var status: GameStatus
     var seed: UInt64
 
     var day: Int { tick / 4 + 1 }
     var formattedDay: String { "Day \(day)" }
+
+    var usesUnlimitedFunds: Bool { sandboxRules?.unlimitedFunds == true }
 
     var preservesLegacyReplayConsequences: Bool {
         progression?.preservesLegacyReplayConsequences ?? false

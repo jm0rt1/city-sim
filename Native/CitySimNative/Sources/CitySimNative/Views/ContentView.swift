@@ -431,7 +431,24 @@ struct ContentView: View {
                         HStack(spacing: 9) {
                             Image(systemName: feedbackSymbol)
                                 .foregroundStyle(feedbackColor)
-                            Text(feedback).font(.callout.weight(.semibold))
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(feedback).font(.callout.weight(.semibold))
+                                if let brief = store.resumeBrief {
+                                    Text(brief.compactText)
+                                        .font(.caption)
+                                        .foregroundStyle(.secondary)
+                                    .lineLimit(2)
+                                }
+                            }
+                            if let command = store.resumeBrief?.command {
+                                Button(store.resumeBrief?.nextAction ?? "Continue") {
+                                    store.performResumeBriefAction()
+                                }
+                                .buttonStyle(.bordered)
+                                .controlSize(.small)
+                                .disabled(!store.canPerform(command))
+                                .accessibilityHint("Opens the diagnosed next step for the loaded city")
+                            }
                             Button { store.perform(.dismissFeedback) } label: {
                                 Image(systemName: "xmark")
                                     .frame(width: GameTheme.controlMinimum, height: GameTheme.controlMinimum)
@@ -447,7 +464,9 @@ struct ContentView: View {
                         .transition(reduceMotion ? .opacity : .scale.combined(with: .opacity))
                         .accessibilityElement(children: .combine)
                         .accessibilityLabel(store.lastFeedbackTone == .caution ? "Action blocked" : "Action update")
-                        .accessibilityValue(feedback)
+                        .accessibilityValue(
+                            store.resumeBrief?.accessibilitySummary ?? feedback
+                        )
                     }
 
                     if !store.isCityFocusModeEnabled {

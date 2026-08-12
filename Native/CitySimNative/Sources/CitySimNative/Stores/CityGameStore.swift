@@ -31,6 +31,7 @@ final class CityGameStore: ObservableObject {
     @Published var hudContextScope: HUDContextScope = .city
     @Published var lastFeedback: String?
     @Published private(set) var lastFeedbackTone: PlayerFeedbackTone = .neutral
+    @Published private(set) var resumeBrief: CityResumeBriefPresentation?
     @Published private(set) var canUndo = false
     @Published private(set) var mapFocusRequestGeneration: UInt = 0
 
@@ -956,11 +957,14 @@ final class CityGameStore: ObservableObject {
             isCityFocusModeEnabled = false
             undoStates.removeAll()
             canUndo = false
+            let brief = CityResumeBriefPresentation.make(analytics: analytics)
             showFeedback(
                 result.recoveredFromBackup
                     ? "Recovered last known-good city · Simulation paused"
                     : "City loaded · Simulation paused",
-                tone: .positive
+                tone: .positive,
+                autoDismissAfter: brief == nil ? 3.2 : nil,
+                resumeBrief: brief
             )
         } catch { showFeedback("No valid save was found", tone: .caution) }
     }
@@ -984,6 +988,14 @@ final class CityGameStore: ObservableObject {
     func clearFeedback() {
         feedbackDismissal?.cancel()
         lastFeedback = nil
+        resumeBrief = nil
+    }
+
+    @discardableResult
+    func performResumeBriefAction() -> Bool {
+        guard let command = resumeBrief?.command, canPerform(command) else { return false }
+        clearFeedback()
+        return perform(command)
     }
 
     private func recordUndo(_ snapshot: CityGameState) {
@@ -995,11 +1007,13 @@ final class CityGameStore: ObservableObject {
     private func showFeedback(
         _ message: String,
         tone: PlayerFeedbackTone = .neutral,
-        autoDismissAfter delay: TimeInterval? = 3.2
+        autoDismissAfter delay: TimeInterval? = 3.2,
+        resumeBrief: CityResumeBriefPresentation? = nil
     ) {
         feedbackDismissal?.cancel()
         lastFeedback = message
         lastFeedbackTone = tone
+        self.resumeBrief = resumeBrief
         guard let delay else {
             feedbackDismissal = nil
             return

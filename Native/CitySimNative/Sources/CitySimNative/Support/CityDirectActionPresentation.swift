@@ -9,6 +9,165 @@ struct CityDirectResponse: Identifiable, Hashable, Sendable {
     var id: String { "\(command.rawValue)|\(title)" }
 }
 
+struct CityResumeBriefPresentation: Equatable, Sendable {
+    let title: String
+    let detail: String
+    let nextAction: String
+    let command: CityCommandID?
+
+    init(
+        title: String,
+        detail: String,
+        nextAction: String,
+        command: CityCommandID? = nil
+    ) {
+        self.title = title
+        self.detail = detail
+        self.nextAction = nextAction
+        self.command = command
+    }
+
+    var compactText: String {
+        "\(title) · Next: \(nextAction)"
+    }
+
+    var accessibilitySummary: String {
+        "\(title). \(detail) Next: \(nextAction)."
+    }
+
+    static func make(analytics: CityAnalytics) -> Self? {
+        guard analytics.state.status == .playing else { return nil }
+
+        if let pressure = currentPressure(analytics: analytics) { return pressure }
+
+        if analytics.awaitingStrategyChoice {
+            return Self(
+                title: "Choose a Growth Engine",
+                detail: "Commit Commercial Stewardship or Industrial Expansion by building one route first.",
+                nextAction: "Build commercial or industrial"
+            )
+        }
+
+        if let phase = analytics.strategyPhase, phase != .completed {
+            if let objective = analytics.strategyObjective {
+                let action = strategyAction(analytics: analytics, phase: phase)
+                return Self(
+                    title: objective.title,
+                    detail: objective.remaining,
+                    nextAction: action.title,
+                    command: action.command
+                )
+            }
+        }
+
+        if analytics.townCharterAwarded, let phase = analytics.secondActPhase {
+            if phase == .qualification {
+                let support = CityRegionalCapitalDecisionSupport.make(analytics: analytics)
+                return Self(
+                    title: support.title,
+                    detail: support.detail,
+                    nextAction: support.primaryResponse.title,
+                    command: support.primaryResponse.command
+                )
+            }
+
+            let action = regionalCapitalAction(analytics: analytics, phase: phase)
+            return Self(
+                title: "Continue the Regional Capital mandate",
+                detail: analytics.regionalCapitalStatusText,
+                nextAction: action.title,
+                command: action.command
+            )
+        }
+
+        let support = CityTownCharterDecisionSupport.make(analytics: analytics)
+        return Self(
+            title: support.title,
+            detail: analytics.townCharterStatusText,
+            nextAction: support.primaryResponse.title,
+            command: support.primaryResponse.command
+        )
+    }
+
+    private static func currentPressure(analytics: CityAnalytics) -> Self? {
+        let utility = CityUtilityDecisionSupport.make(analytics: analytics)
+        if utility.status == .shortfall {
+            return Self(
+                title: "Utility Shortfall",
+                detail: utility.detail,
+                nextAction: utility.response?.title ?? "Review utilities",
+                command: utility.response?.command ?? .inspectorUtilities
+            )
+        }
+        if analytics.projectedBalance < 0 {
+            return Self(
+                title: "Budget Gap",
+                detail: "Operations are projected to use \((-analytics.projectedBalance).currencyText) per cycle.",
+                nextAction: "Review finances",
+                command: .inspectorFinances
+            )
+        }
+        if analytics.employmentRate < 0.82 {
+            let routeKind: BuildingKind? = analytics.committedStrategy.map {
+                $0 == .industrialExpansion ? .industrial : .commercial
+            }
+            let route = routeKind.map { "\($0.title.lowercased()) jobs" }
+                ?? "commercial or industrial jobs"
+            return Self(
+                title: "Hiring Bottleneck",
+                detail: "The city is short \(analytics.jobShortfall.formatted()) filled jobs.",
+                nextAction: "Build \(route)",
+                command: routeKind.map(CityCommandCatalog.id(for:)) ?? .inspectorEmployment
+            )
+        }
+        if utility.status == .tight {
+            return Self(
+                title: "Utility Reserve Tight",
+                detail: utility.detail,
+                nextAction: utility.response?.title ?? "Review utilities",
+                command: utility.response?.command ?? .inspectorUtilities
+            )
+        }
+        return nil
+    }
+
+    private static func strategyAction(
+        analytics: CityAnalytics,
+        phase: CityStrategyPhase
+    ) -> (title: String, command: CityCommandID) {
+        guard phase == .recovery else {
+            return ("Review the strategy timeline", .inspectorOverview)
+        }
+        if analytics.strategyRecoveryResolution != nil {
+            return ("Review recovery progress", .inspectorOverview)
+        }
+        return analytics.committedStrategy == .industrialExpansion
+            ? ("Review reserve utilities", .inspectorUtilities)
+            : ("Review tax policy", .inspectorFinances)
+    }
+
+    private static func regionalCapitalAction(
+        analytics: CityAnalytics,
+        phase: CitySecondActPhase
+    ) -> (title: String, command: CityCommandID) {
+        guard phase == .recovery else {
+            return ("Review Regional Capital progress", .inspectorOverview)
+        }
+        return switch analytics.strategyRecoveryResolution {
+        case .commercialTaxRelief:
+            ("Review tax policy", .inspectorFinances)
+        case .commercialPublicRealmInvestment, .industrialGreenBuffer:
+            ("Build a park", .buildPark)
+        case .industrialUtilityExpansion:
+            CityUtilityDecisionSupport.make(analytics: analytics).priorityKind == .waterTower
+                ? ("Build Water Tower", .buildWaterTower)
+                : ("Build Power Plant", .buildPowerPlant)
+        case nil:
+            ("Review the established recovery", .inspectorOverview)
+        }
+    }
+}
+
 struct CityUtilityDecisionSupport: Equatable, Sendable {
     enum Status: Equatable, Sendable {
         case healthy

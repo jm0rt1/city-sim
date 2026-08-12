@@ -192,8 +192,9 @@ struct ContentView: View {
                             Label("Commands", systemImage: "command.square")
                         }
                         Button { store.perform(.saveCity) } label: {
-                            Label("Save", systemImage: "square.and.arrow.down")
+                            Label("Save", systemImage: store.persistenceStatus.symbol)
                         }
+                        .help("Save city · \(store.persistenceStatus.help)")
                         Button { store.perform(.undo) } label: {
                             Label("Undo", systemImage: "arrow.uturn.backward")
                         }

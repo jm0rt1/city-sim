@@ -42,6 +42,7 @@ final class CityGameStore: ObservableObject {
     private var lastNonPausedSpeed: SimulationSpeed = .normal
     private var speedBeforeSessionReplacementConfirmation: SimulationSpeed?
     private var pendingSessionReplacementLoad: SaveGameLoadResult?
+    private var lastPersistedState: CityGameState?
 
     init(
         state: CityGameState = .newCity(),
@@ -68,6 +69,13 @@ final class CityGameStore: ObservableObject {
     }
 
     var analytics: CityAnalytics { CityAnalytics(state: state) }
+
+    var persistenceStatus: CityPersistenceStatusPresentation {
+        CityPersistenceStatusPresentation.make(
+            current: state,
+            lastPersisted: lastPersistedState
+        )
+    }
 
     var objectives: [CityObjective] {
         let metrics = analytics
@@ -939,6 +947,7 @@ final class CityGameStore: ObservableObject {
         speedBeforeSessionReplacementConfirmation = nil
         pendingSessionReplacementLoad = nil
         state = .newCity(seed: UInt64.random(in: 1...UInt64.max))
+        lastPersistedState = nil
         cityNameDraft = state.cityName
         speed = .paused
         lastNonPausedSpeed = .normal
@@ -1028,6 +1037,7 @@ final class CityGameStore: ObservableObject {
     func save() {
         do {
             try saves.save(state)
+            lastPersistedState = state
             showFeedback(CityPersistenceFeedbackPresentation.saved(state).message, tone: .positive)
             playSound(named: "Glass")
         }
@@ -1050,6 +1060,7 @@ final class CityGameStore: ObservableObject {
 
     private func applyLoadedResult(_ result: SaveGameLoadResult) {
         state = result.state
+        lastPersistedState = result.state
         cityNameDraft = state.cityName
         speed = .paused
         lastNonPausedSpeed = .normal

@@ -143,12 +143,11 @@ struct TopHUDView: View {
                         .font(.system(size: compact ? 14 : 15, weight: .bold, design: .rounded))
                         .lineLimit(1)
                         .minimumScaleFactor(0.8)
-                    if !compact {
-                        Spacer(minLength: 1)
-                        Image(systemName: "building.2.crop.circle")
-                            .foregroundStyle(GameTheme.accent)
-                            .accessibilityHidden(true)
-                    }
+                    Spacer(minLength: 1)
+                    Image(systemName: store.persistenceStatus.symbol)
+                        .font(.system(size: compact ? 9 : 11, weight: .bold))
+                        .foregroundStyle(persistenceStatusTint)
+                        .accessibilityHidden(true)
                 }
                 HStack(spacing: 5) {
                     Text(store.state.formattedDay)
@@ -173,8 +172,11 @@ struct TopHUDView: View {
         }
         .buttonStyle(.plain)
         .background(GameTheme.contextCard.opacity(0.48), in: RoundedRectangle(cornerRadius: 9))
+        .help(store.persistenceStatus.help)
         .accessibilityLabel("Open \(store.state.cityName) command center")
-        .accessibilityValue("\(store.state.formattedDay). \(simulationStatus.accessibilityValue)")
+        .accessibilityValue(
+            "\(store.state.formattedDay). \(simulationStatus.accessibilityValue). \(store.persistenceStatus.label)"
+        )
         .accessibilityIdentifier("hud.city.identity")
     }
 
@@ -253,6 +255,14 @@ struct TopHUDView: View {
 
     private var simulationStatusTint: Color {
         store.speed == .paused ? GameTheme.warning : GameTheme.accent
+    }
+
+    private var persistenceStatusTint: Color {
+        switch store.persistenceStatus.kind {
+        case .saved: GameTheme.accent
+        case .unsavedChanges: GameTheme.warning
+        case .notSaved: .secondary
+        }
     }
 
     private var metricRibbon: some View {

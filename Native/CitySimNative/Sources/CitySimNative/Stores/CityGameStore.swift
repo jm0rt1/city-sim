@@ -50,8 +50,10 @@ final class CityGameStore: ObservableObject {
     @Published private(set) var sessionReplacementConfirmation: CitySessionReplacementConfirmationPresentation?
     @Published private(set) var canUndo = false
     @Published private(set) var mapFocusRequestGeneration: UInt = 0
+    @Published private(set) var foundationsGuideProgress: CityFoundationsGuideProgress
 
     private let saves: SaveGameService
+    private let playerDefaults: UserDefaults?
     private let photos: CityPhotoService
     private let benchmarkReports: CityBenchmarkReportService
     private let capturesScenarioCheckpoints: Bool
@@ -91,12 +93,17 @@ final class CityGameStore: ObservableObject {
         capturesScenarioCheckpoints: Bool = false,
         photoService: CityPhotoService? = nil,
         benchmarkReportService: CityBenchmarkReportService? = nil,
-        revealSupportReport: ((URL) -> Void)? = nil
+        revealSupportReport: ((URL) -> Void)? = nil,
+        playerDefaults: UserDefaults? = nil
     ) {
         self.state = state
         self.cityNameDraft = state.cityName
         self.commandPolicy = commandPolicy
         self.saves = saveService
+        self.playerDefaults = playerDefaults
+        self.foundationsGuideProgress = playerDefaults.map {
+            CityFoundationsGuidePersistence.read(from: $0)
+        } ?? .fresh
         self.photos = photoService ?? CityPhotoService()
         self.benchmarkReports = benchmarkReportService ?? CityBenchmarkReportService()
         self.capturesScenarioCheckpoints = capturesScenarioCheckpoints
@@ -119,6 +126,14 @@ final class CityGameStore: ObservableObject {
     }
 
     var analytics: CityAnalytics { CityAnalytics(state: state) }
+
+    var foundationsGuidePresentation: CityFoundationsGuidePresentation? {
+        guard state.cityHistory != nil,
+              state.authoredScenario == nil,
+              state.sandboxRules == nil,
+              !foundationsGuideProgress.isDismissed else { return nil }
+        return CityFoundationsGuidePresentation.make(progress: foundationsGuideProgress)
+    }
 
     var persistenceStatus: CityPersistenceStatusPresentation {
         CityPersistenceStatusPresentation.make(
@@ -260,6 +275,7 @@ final class CityGameStore: ObservableObject {
     func pulse() {
         guard commandPolicy == .enabled else { return }
         guard speed != .paused else { return }
+        let dayBeforePulse = state.day
         let progressBeforePulse = Dictionary(uniqueKeysWithValues: objectives.map { ($0.id, $0.progress) })
         let initialStatus = state.status
         var scenarioFailure: String?
@@ -286,6 +302,9 @@ final class CityGameStore: ObservableObject {
             showFeedback(failure, tone: .caution, autoDismissAfter: nil)
         }
         previousObjectiveProgressByID = progressBeforePulse
+        if state.day > dayBeforePulse {
+            completeFoundationsLesson(.runCity)
+        }
     }
 
     @discardableResult
@@ -321,6 +340,9 @@ final class CityGameStore: ObservableObject {
         }
         if let overlay = CityCommandCatalog.overlay(for: command) {
             self.overlay = overlay
+            if overlay == .utilities {
+                completeFoundationsLesson(.utilities)
+            }
             return true
         }
         if let section = CityCommandCatalog.inspectorSection(for: command) {
@@ -918,6 +940,7 @@ final class CityGameStore: ObservableObject {
         selectedCoordinate = coordinate
         hudContextScope = .selection
         showInspector = true
+        completeFoundationsLesson(.observe)
     }
 
     func selectTool(_ kind: BuildingKind) {
@@ -974,6 +997,18 @@ final class CityGameStore: ObservableObject {
         inspectorSection = section
         hudContextScope = .city
         showInspector = true
+        switch section {
+        case .overview:
+            completeFoundationsLesson(.observe)
+        case .finances:
+            completeFoundationsLesson(.budget)
+        case .utilities:
+            completeFoundationsLesson(.utilities)
+        case .journal:
+            completeFoundationsLesson(.services)
+        default:
+            break
+        }
     }
 
     func showSelectionContext() {
@@ -1008,6 +1043,7 @@ final class CityGameStore: ObservableObject {
             switch CitySimulation.build(kind, at: coordinate, in: &state) {
             case .success:
                 recordUndo(previousState)
+                completeFoundationsLesson(for: kind)
                 selectedCoordinate = coordinate
                 if kind != .road {
                     // A completed one-off place should read as success, not
@@ -1234,6 +1270,40 @@ final class CityGameStore: ObservableObject {
 
     func openAlertCenter() {
         openInspector(.journal)
+    }
+
+    @discardableResult
+    func performFoundationsGuideAction() -> Bool {
+        guard let command = foundationsGuidePresentation?.currentLesson?.command else {
+            return false
+        }
+        if CityCommandCatalog.mapFocusedCommands.contains(command) {
+            return performMapFocused(command)
+        }
+        return perform(command)
+    }
+
+    func dismissFoundationsGuide() {
+        guard foundationsGuidePresentation != nil else { return }
+        var updated = foundationsGuideProgress
+        updated.isDismissed = true
+        foundationsGuideProgress = updated
+        if let playerDefaults {
+            CityFoundationsGuidePersistence.write(updated, to: playerDefaults)
+        }
+        showFeedback("Foundations Guide hidden · Restart it anytime in Settings")
+    }
+
+    func restartFoundationsGuide() {
+        foundationsGuideProgress = .fresh
+        if let playerDefaults {
+            CityFoundationsGuidePersistence.write(.fresh, to: playerDefaults)
+        }
+    }
+
+    func reloadFoundationsGuideProgress() {
+        guard let playerDefaults else { return }
+        foundationsGuideProgress = CityFoundationsGuidePersistence.read(from: playerDefaults)
     }
 
     func newCity() {
@@ -1491,6 +1561,7 @@ final class CityGameStore: ObservableObject {
         requestMapFocus()
         switch configuration.experience {
         case .guidedFoundations:
+            restartFoundationsGuide()
             showFeedback("Guided Foundations ready · New Arcadia · Seed \(configuration.seed)")
         case .authoredScenario:
             showObjectives = true
@@ -2011,6 +2082,31 @@ final class CityGameStore: ObservableObject {
         guard let command = resumeBrief?.command, canPerform(command) else { return false }
         clearFeedback()
         return perform(command)
+    }
+
+    private func completeFoundationsLesson(for kind: BuildingKind) {
+        switch kind {
+        case .road:
+            completeFoundationsLesson(.roads)
+        case .residential, .commercial, .industrial:
+            completeFoundationsLesson(.zoning)
+        case .powerPlant, .waterTower:
+            completeFoundationsLesson(.utilities)
+        case .park, .fireStation, .policeStation, .school:
+            completeFoundationsLesson(.services)
+        default:
+            break
+        }
+    }
+
+    private func completeFoundationsLesson(_ lessonID: CityFoundationsLessonID) {
+        guard foundationsGuidePresentation != nil else { return }
+        var updated = foundationsGuideProgress
+        guard updated.complete(lessonID) else { return }
+        foundationsGuideProgress = updated
+        if let playerDefaults {
+            CityFoundationsGuidePersistence.write(updated, to: playerDefaults)
+        }
     }
 
     private func recordUndo(_ snapshot: CityGameState) {

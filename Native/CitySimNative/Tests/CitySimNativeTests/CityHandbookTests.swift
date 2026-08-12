@@ -18,13 +18,13 @@ final class CityHandbookTests: XCTestCase {
                 .accessibility
             ]
         )
-        XCTAssertEqual(presentation.sections.map(\.entries.count), [4, 3, 3, 4, 5, 4])
-        XCTAssertEqual(Set(presentation.sections.flatMap { $0.entries.map(\.id) }).count, 23)
+        XCTAssertEqual(presentation.sections.map(\.entries.count), [5, 3, 3, 4, 5, 4])
+        XCTAssertEqual(Set(presentation.sections.flatMap { $0.entries.map(\.id) }).count, 24)
 
         let all = presentation.search(query: "")
         XCTAssertEqual(all.sections, presentation.sections)
-        XCTAssertEqual(all.entryCount, 23)
-        XCTAssertEqual(all.countSummary, "6 sections · 23 items")
+        XCTAssertEqual(all.entryCount, 24)
+        XCTAssertEqual(all.countSummary, "6 sections · 24 items")
     }
 
     func testSearchMatchesTitlesSummariesKeywordsAndIndividualEntries() throws {
@@ -55,6 +55,10 @@ final class CityHandbookTests: XCTestCase {
         let benchmark = try XCTUnwrap(presentation.search(query: "local performance benchmark").sections.first)
         XCTAssertEqual(benchmark.id, .gettingStarted)
         XCTAssertEqual(benchmark.entries.map(\.id), ["start-new-region"])
+
+        let tutorial = try XCTUnwrap(presentation.search(query: "tutorial skip reset").sections.first)
+        XCTAssertEqual(tutorial.id, .gettingStarted)
+        XCTAssertEqual(tutorial.entries.map(\.id), ["start-foundations-guide"])
 
         XCTAssertEqual(
             presentation.search(query: "  VOICEOVER  ").sections.map(\.id),

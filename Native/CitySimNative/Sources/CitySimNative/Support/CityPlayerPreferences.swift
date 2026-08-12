@@ -8,6 +8,8 @@ enum CityPlayerPreferenceKey {
     static let increaseContrast = "increaseGameContrast"
     static let differentiateWithoutColor = "differentiateGameWithoutColor"
     static let hasSeenWelcome = "hasSeenCitySimWelcome"
+    static let foundationsGuideProgress = "cityFoundationsGuideProgress.v1"
+    static let foundationsGuideRevision = "cityFoundationsGuideRevision"
 }
 
 struct CityPlayerPreferenceSnapshot: Equatable, Sendable {
@@ -60,6 +62,14 @@ enum CitySettingsActions {
 
     static func restorePreferenceDefaults(in defaults: UserDefaults) {
         CityPlayerPreferenceSnapshot.standard.write(to: defaults)
+    }
+
+    static func restartFoundationsGuide(in defaults: UserDefaults) {
+        CityFoundationsGuidePersistence.reset(in: defaults)
+        defaults.set(
+            defaults.integer(forKey: CityPlayerPreferenceKey.foundationsGuideRevision) + 1,
+            forKey: CityPlayerPreferenceKey.foundationsGuideRevision
+        )
     }
 }
 

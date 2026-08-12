@@ -20,6 +20,7 @@ enum ObjectiveSurfacePresentation: Equatable {
 enum ContextualGuidancePresentation: Equatable {
     case hidden
     case objectives
+    case foundations
     case activity
 }
 
@@ -147,6 +148,8 @@ struct ContentView: View {
     private let onChromeFrames: ((CityHUDChromeFrames) -> Void)?
     @StateObject private var pointerTransitionGate = CityMapPointerTransitionGate()
     @AppStorage(CityPlayerPreferenceKey.hasSeenWelcome) private var hasSeenWelcome = false
+    @AppStorage(CityPlayerPreferenceKey.foundationsGuideRevision)
+    private var foundationsGuideRevision = 0
     @AppStorage(CityPlayerPreferenceKey.reduceMotion) private var gameReduceMotion = false
     @AppStorage(CityPlayerPreferenceKey.reduceTransparency) private var gameReduceTransparency = false
     @AppStorage(CityPlayerPreferenceKey.increaseContrast) private var gameIncreaseContrast = false
@@ -228,6 +231,9 @@ struct ContentView: View {
         .onChange(of: hasSeenWelcome) { _, _ in
             synchronizeWelcomePolicy()
             synchronizeStartupResumeOffer()
+        }
+        .onChange(of: foundationsGuideRevision) { _, _ in
+            store.reloadFoundationsGuideProgress()
         }
         .onChange(of: store.commandPolicy) { _, _ in
             synchronizeWelcomePolicy()
@@ -396,10 +402,12 @@ struct ContentView: View {
     static func contextualGuidancePresentation(
         showObjectives: Bool,
         showInspector: Bool,
-        hasActivity: Bool
+        hasActivity: Bool,
+        hasFoundationsGuide: Bool = false
     ) -> ContextualGuidancePresentation {
         guard !showInspector else { return .hidden }
         if showObjectives { return .objectives }
+        if hasFoundationsGuide { return .foundations }
         return hasActivity ? .activity : .hidden
     }
 
@@ -565,12 +573,16 @@ struct ContentView: View {
                             switch Self.contextualGuidancePresentation(
                                 showObjectives: store.showObjectives,
                                 showInspector: store.showInspector,
-                                hasActivity: !store.messageSummaries.isEmpty
+                                hasActivity: !store.messageSummaries.isEmpty,
+                                hasFoundationsGuide: store.foundationsGuidePresentation != nil
                             ) {
                             case .hidden:
                                 EmptyView()
                             case .objectives:
                                 ObjectivesView(store: store)
+                                    .transition(GameTheme.transition(edge: .leading, reduceMotion: reduceMotion))
+                            case .foundations:
+                                FoundationsGuideView(store: store)
                                     .transition(GameTheme.transition(edge: .leading, reduceMotion: reduceMotion))
                             case .activity:
                                 Spacer(minLength: 8)

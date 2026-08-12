@@ -87,7 +87,8 @@ struct CitySimNativeApp: App {
             state: .newTrackedCity(),
             commandPolicy: hasSeenWelcome ? .enabled : .blocked(.welcome),
             startsPaused: true,
-            capturesScenarioCheckpoints: true
+            capturesScenarioCheckpoints: true,
+            playerDefaults: .standard
         ))
     }
 

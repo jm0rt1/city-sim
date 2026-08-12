@@ -7,6 +7,7 @@ struct SettingsView: View {
     @AppStorage private var increaseContrast: Bool
     @AppStorage private var differentiateWithoutColor: Bool
     @AppStorage private var hasSeenWelcome: Bool
+    @AppStorage private var foundationsGuideRevision: Int
     @State private var guidanceFeedback: String?
     private let defaults: UserDefaults
 
@@ -40,6 +41,11 @@ struct SettingsView: View {
         _hasSeenWelcome = AppStorage(
             wrappedValue: false,
             CityPlayerPreferenceKey.hasSeenWelcome,
+            store: defaults
+        )
+        _foundationsGuideRevision = AppStorage(
+            wrappedValue: 0,
+            CityPlayerPreferenceKey.foundationsGuideRevision,
             store: defaults
         )
     }
@@ -115,6 +121,20 @@ struct SettingsView: View {
                 .font(.caption)
                 .foregroundStyle(.secondary)
                 .accessibilityIdentifier("settings.guidance-status")
+
+                LabeledContent {
+                    Button("Restart Foundations Guide") {
+                        CitySettingsActions.restartFoundationsGuide(in: defaults)
+                        foundationsGuideRevision = defaults.integer(
+                            forKey: CityPlayerPreferenceKey.foundationsGuideRevision
+                        )
+                        guidanceFeedback = "Foundations Guide restarted in the main city window."
+                    }
+                    .accessibilityHint("Restarts contextual lessons without changing the current city")
+                    .accessibilityIdentifier("settings.restart-foundations-guide")
+                } label: {
+                    Label("Contextual lessons", systemImage: "signpost.right.and.left.fill")
+                }
 
                 HStack {
                     Spacer()

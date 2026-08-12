@@ -164,6 +164,14 @@ struct CityHandbookPresentation: Equatable, Sendable {
                         keywords: ["mode", "scenario", "harbor recovery", "medal", "sandbox", "seed", "starting resources", "economy", "incidents", "unlimited funds", "guided", "benchmark", "performance", "new region"]
                     ),
                     CityHandbookEntry(
+                        id: "start-foundations-guide",
+                        title: "Learn with the Foundations Guide",
+                        detail: "The in-city guide responds to real inspection, road, zoning, utility, budget, service, and simulation actions. Alternate zone and service choices count. Skip it from the guide card or restart every lesson in Settings without changing the current city.",
+                        symbol: "signpost.right.and.left.fill",
+                        shortcut: "⌘, to restart",
+                        keywords: ["tutorial", "lesson", "onboarding", "contextual hint", "skip", "replay", "reset", "guided foundations"]
+                    ),
+                    CityHandbookEntry(
                         id: "start-pause",
                         title: "Pause and read the city",
                         detail: "Start paused. Check the treasury, demand, objectives, and existing services before spending. A short plan is cheaper than an emergency repair.",

@@ -23,6 +23,18 @@ final class CitySimulationTests: XCTestCase {
         XCTAssertEqual(lhs, rhs)
     }
 
+    func testProductionStoryCorpusBuildsAreByteIdentical() throws {
+        let first = try ProductionStoryFixtureCorpus.build()
+        let second = try ProductionStoryFixtureCorpus.build()
+
+        XCTAssertEqual(first, second)
+        XCTAssertEqual(first.manifestData, second.manifestData)
+        XCTAssertEqual(
+            first.artifacts.map(\.bytes),
+            second.artifacts.map(\.bytes)
+        )
+    }
+
     func testRoadAccessIsRequiredForZoning() {
         let state = CityGameState.newCity()
         let remote = GridCoordinate(x: 0, y: 0)

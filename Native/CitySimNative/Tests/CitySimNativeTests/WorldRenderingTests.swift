@@ -632,7 +632,7 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertEqual(manifest?.schema, 4)
         XCTAssertEqual(manifest?.packID, "generated-v4-calibration")
         XCTAssertEqual(manifest?.productionSelection, true)
-        XCTAssertEqual(manifest?.assets.count, 64)
+        XCTAssertEqual(manifest?.assets.count, 68)
         for asset in manifest?.assets ?? [] {
             for detail in CameraDetailLevel.allCases {
                 XCTAssertNotNil(catalog.generatedSprite(logicalID: asset.logicalID, detail: detail))
@@ -2225,8 +2225,8 @@ final class WorldRenderingTests: XCTestCase {
         let manifest = try XCTUnwrap(catalog.generatedManifest)
 
         XCTAssertEqual(catalog.manifestValidationIssues(), [])
-        XCTAssertEqual(manifest.pages.count, 5)
-        XCTAssertEqual(manifest.inventory.count, 5)
+        XCTAssertEqual(manifest.pages.count, 6)
+        XCTAssertEqual(manifest.inventory.count, 6)
         XCTAssertEqual(manifest.compiledNetwork.connectionMasks, 16)
         XCTAssertEqual(Set(manifest.pages.map(\.file)), Set(manifest.inventory.map(\.file)))
 
@@ -2480,7 +2480,7 @@ final class WorldRenderingTests: XCTestCase {
     func testGeneratedWorldProductionBundleLoadsPagesInsteadOfUnpackedPayloads() throws {
         let catalog = WorldAssetCatalog()
         let manifest = try XCTUnwrap(catalog.generatedManifest)
-        XCTAssertEqual(manifest.pages.count, 5)
+        XCTAssertEqual(manifest.pages.count, 6)
         XCTAssertNil(catalog.texture(named: "generated_v4_residential_l01_block"))
         XCTAssertNotNil(catalog.generatedPresentation(logicalID: "residential_l01", detail: .block))
         let snapshot = catalog.residencySnapshot()
@@ -2818,10 +2818,10 @@ final class WorldRenderingTests: XCTestCase {
             (.park, "park_l01"),
             (.powerPlant, "industrial_l01"),
             (.waterTower, "water_tower_l01"),
-            (.fireStation, "commercial_l01"),
-            (.policeStation, "city_hall_l01"),
-            (.school, "residential_l01"),
-            (.cityHall, "city_hall_l01"),
+            (.fireStation, "civic_l01_v0_south"),
+            (.policeStation, "civic_l01_v0_south"),
+            (.school, "civic_l01_v0_south"),
+            (.cityHall, "civic_l01_v0_south"),
         ]
 
         for tier in 1...4 {
@@ -4058,7 +4058,7 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertEqual(cityHallRoadMask, 11)
         let defaultCityHallRoot = defaultScene.tileRootIdentifier(at: cityHall)
         XCTAssertTrue(defaultScene.tileDescendantNamesForTesting(at: cityHall)
-            .contains("lot.generated-v4.city_hall_l01.neighborhood"))
+            .contains("lot.generated-v4.civic_l01_v0_south.neighborhood"))
 
         defaultScene.configureProofCamera(detail: .city, centeredOn: cityHall)
         let defaultCityScale = defaultScene.cameraScaleForTesting
@@ -4068,7 +4068,7 @@ final class WorldRenderingTests: XCTestCase {
             0.67
         )
         XCTAssertTrue(defaultScene.tileDescendantNamesForTesting(at: cityHall)
-            .contains("lot.generated-v4.city_hall_l01.city"))
+            .contains("lot.generated-v4.civic_l01_v0_south.city"))
         if let texture = defaultView.texture(from: defaultScene),
            let png = NSBitmapImageRep(cgImage: texture.cgImage()).representation(
                using: .png,
@@ -4077,13 +4077,13 @@ final class WorldRenderingTests: XCTestCase {
             try? export(png, environmentKey: "PLAY066_CURRENTCEF6_REGULAR_CITY")
         }
         XCTAssertFalse(defaultScene.tileDescendantNamesForTesting(at: cityHall)
-            .contains("lot.generated-v4.city_hall_l01.block"))
+            .contains("lot.generated-v4.civic_l01_v0_south.block"))
         let cityVisible = defaultScene.tileVisibleDescendantNamesForTesting(at: cityHall)
         XCTAssertTrue(cityVisible.contains("lot.lod.city.mass.cityHall"))
         XCTAssertFalse(cityVisible.contains { $0.hasPrefix("lot.frontage.") })
         XCTAssertFalse(cityVisible.contains { $0.hasPrefix("lot.lod.neighborhood.public-realm.") })
         XCTAssertFalse(cityVisible.contains { $0.hasPrefix("lot.lod.block.entrance.") })
-        XCTAssertTrue(cityVisible.contains("lot.generated-v4.city_hall_l01.city"))
+        XCTAssertTrue(cityVisible.contains("lot.generated-v4.civic_l01_v0_south.city"))
         XCTAssertTrue(defaultScene.tileVisibleDescendantNamesForTesting(
             at: cityHallRoad
         ).contains("road.generated-v4.\(cityHallRoadMask).city"))
@@ -4095,12 +4095,12 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertEqual(defaultScene.currentCameraDetailLevel, .neighborhood)
         XCTAssertLessThan(defaultNeighborhoodScale, defaultCityScale)
         XCTAssertTrue(defaultScene.tileDescendantNamesForTesting(at: cityHall)
-            .contains("lot.generated-v4.city_hall_l01.neighborhood"))
+            .contains("lot.generated-v4.civic_l01_v0_south.neighborhood"))
         let neighborhoodVisible = defaultScene.tileVisibleDescendantNamesForTesting(at: cityHall)
         XCTAssertTrue(neighborhoodVisible.contains { $0.hasPrefix("lot.frontage.") })
         XCTAssertTrue(neighborhoodVisible.contains("lot.lod.neighborhood.public-realm.civic"))
         XCTAssertFalse(neighborhoodVisible.contains { $0.hasPrefix("lot.lod.block.entrance.") })
-        XCTAssertTrue(neighborhoodVisible.contains("lot.generated-v4.city_hall_l01.neighborhood"))
+        XCTAssertTrue(neighborhoodVisible.contains("lot.generated-v4.civic_l01_v0_south.neighborhood"))
         if let texture = defaultView.texture(from: defaultScene),
            let png = NSBitmapImageRep(cgImage: texture.cgImage()).representation(
                using: .png,
@@ -4118,12 +4118,12 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertEqual(defaultScene.currentCameraDetailLevel, .block)
         XCTAssertLessThan(defaultScene.cameraScaleForTesting, defaultNeighborhoodScale)
         XCTAssertTrue(defaultScene.tileDescendantNamesForTesting(at: cityHall)
-            .contains("lot.generated-v4.city_hall_l01.block"))
+            .contains("lot.generated-v4.civic_l01_v0_south.block"))
         let blockVisible = defaultScene.tileVisibleDescendantNamesForTesting(at: cityHall)
         XCTAssertTrue(blockVisible.contains { $0.hasPrefix("lot.frontage.") })
         XCTAssertTrue(blockVisible.contains("lot.lod.neighborhood.public-realm.civic"))
         XCTAssertTrue(blockVisible.contains("lot.lod.block.entrance.cityHall"))
-        XCTAssertTrue(blockVisible.contains("lot.generated-v4.city_hall_l01.block"))
+        XCTAssertTrue(blockVisible.contains("lot.generated-v4.civic_l01_v0_south.block"))
         if let texture = defaultView.texture(from: defaultScene),
            let png = NSBitmapImageRep(cgImage: texture.cgImage()).representation(
                using: .png,
@@ -4145,7 +4145,7 @@ final class WorldRenderingTests: XCTestCase {
             0.78
         )
         XCTAssertTrue(compactScene.tileDescendantNamesForTesting(at: cityHall)
-            .contains("lot.generated-v4.city_hall_l01.city"))
+            .contains("lot.generated-v4.civic_l01_v0_south.city"))
         if let texture = compactView.texture(from: compactScene),
            let png = NSBitmapImageRep(cgImage: texture.cgImage()).representation(
                using: .png,
@@ -4159,7 +4159,7 @@ final class WorldRenderingTests: XCTestCase {
         compactScene.configureProofCamera(detail: .neighborhood, centeredOn: cityHall)
         XCTAssertEqual(compactScene.currentCameraDetailLevel, .neighborhood)
         XCTAssertTrue(compactScene.tileDescendantNamesForTesting(at: cityHall)
-            .contains("lot.generated-v4.city_hall_l01.neighborhood"))
+            .contains("lot.generated-v4.civic_l01_v0_south.neighborhood"))
         if let texture = compactView.texture(from: compactScene),
            let png = NSBitmapImageRep(cgImage: texture.cgImage()).representation(
                using: .png,
@@ -4172,7 +4172,7 @@ final class WorldRenderingTests: XCTestCase {
         compactScene.configureProofCamera(detail: .block, centeredOn: cityHall)
         XCTAssertEqual(compactScene.currentCameraDetailLevel, .block)
         XCTAssertTrue(compactScene.tileDescendantNamesForTesting(at: cityHall)
-            .contains("lot.generated-v4.city_hall_l01.block"))
+            .contains("lot.generated-v4.civic_l01_v0_south.block"))
         if let texture = compactView.texture(from: compactScene),
            let png = NSBitmapImageRep(cgImage: texture.cgImage()).representation(
                using: .png,

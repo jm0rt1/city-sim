@@ -48,6 +48,28 @@ final class HUDConsequenceFeedbackTests: XCTestCase {
         XCTAssertTrue(feedback?.accessibilityValue.contains(recovery.detail) == true)
     }
 
+    func testRegionalQualificationInterruptionAndResumptionStaySignedInTheHUD() {
+        let interruption = CityMessage(
+            tick: 900,
+            severity: .warning,
+            title: "Regional Qualification Interrupted",
+            detail: "Six qualifying days were lost. Raise happiness to 56%."
+        )
+        let interrupted = HUDConsequenceFeedbackPresentation.make(from: [interruption])
+        XCTAssertEqual(interrupted?.direction, .negative)
+        XCTAssertTrue(interrupted?.visualText.contains("Six qualifying days were lost") == true)
+
+        let resumption = CityMessage(
+            tick: 904,
+            severity: .good,
+            title: "Regional Qualification Resumed",
+            detail: "Every Regional Capital standard is met again."
+        )
+        let resumed = HUDConsequenceFeedbackPresentation.make(from: [resumption])
+        XCTAssertEqual(resumed?.direction, .positive)
+        XCTAssertTrue(resumed?.visualText.hasPrefix("+") == true)
+    }
+
     func testFeedbackPreservesCurrentStrategyAccessibilityAndHUDBounds() {
         XCTAssertEqual(TopHUDView.compactMaximumHeight, 104)
         XCTAssertEqual(TopHUDView.regularMaximumHeight, 108)

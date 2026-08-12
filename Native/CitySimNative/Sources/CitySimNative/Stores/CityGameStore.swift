@@ -835,7 +835,8 @@ final class CityGameStore: ObservableObject {
                 _ = perform(diagnosis.command)
             }
             setSpeed(.paused)
-        case "Regional Main Street Recovery", "Regional Freight Recovery", "Regional Capital Recognized":
+        case "Regional Main Street Recovery", "Regional Freight Recovery",
+             "Regional Qualification Resumed", "Regional Capital Recognized":
             showObjectives = true
             openInspector(.overview)
         default:

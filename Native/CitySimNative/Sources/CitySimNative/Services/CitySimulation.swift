@@ -1441,17 +1441,41 @@ enum CitySimulation {
             secondAct.nextScheduledTick = nil
         case .qualification:
             if meetsRegionalCapitalStandards(in: state) {
+                let resumedAfterInterruption = secondAct.qualifyingCycles == 0
+                    && state.messages.contains {
+                        $0.title == "Regional Qualification Interrupted"
+                    }
                 secondAct.qualifyingCycles = min(
                     regionalCapitalQualificationCycles,
                     secondAct.qualifyingCycles + 1
                 )
+                if resumedAfterInterruption {
+                    state.messages.removeAll {
+                        $0.title == "Regional Qualification Interrupted"
+                            || $0.title == "Regional Qualification Resumed"
+                    }
+                    let remaining = regionalCapitalQualificationCycles
+                        - secondAct.qualifyingCycles
+                    post(
+                        CityMessage(
+                            tick: state.tick,
+                            severity: .good,
+                            title: "Regional Qualification Resumed",
+                            detail: "Every Regional Capital standard is met again. Qualification restarted at \(secondAct.qualifyingCycles) of \(regionalCapitalQualificationCycles) days; hold them together for \(remaining) more days."
+                        ),
+                        to: &state
+                    )
+                }
             } else {
                 let interruptedCycles = secondAct.qualifyingCycles
                 if interruptedCycles > 0 {
                     let guidance = CityRegionalCapitalDecisionSupport.make(
                         analytics: CityAnalytics(state: state)
                     )
-                    state.messages.removeAll { $0.title == "Regional Qualification Interrupted" }
+                    state.messages.removeAll {
+                        $0.title == "Regional Qualification Interrupted"
+                            || $0.title == "Regional Qualification Resumed"
+                    }
                     post(
                         CityMessage(
                             tick: state.tick,

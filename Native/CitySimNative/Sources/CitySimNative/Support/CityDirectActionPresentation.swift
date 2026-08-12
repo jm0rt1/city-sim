@@ -499,7 +499,7 @@ enum CityNoticeActionCatalog {
         "Freight Recovery Delayed", "Budget Gap", "Utility Reserve Tight", "Utility Shortfall",
         "Hiring Bottleneck", "Severe Storm", "Regional Retail Challenge",
         "Regional Retail Pressure", "Regional Grid Mandate", "Regional Freight Overload",
-        "Regional Qualification Interrupted"
+        "Regional Qualification Interrupted", "Regional Qualification Resumed"
     ]
 
     static func actions(for title: String) -> [CityDirectResponse] {
@@ -539,6 +539,13 @@ enum CityNoticeActionCatalog {
                 title: "Review regional standards",
                 command: .inspectorOverview,
                 explanation: "Review the current Regional Capital standards and restart qualification.",
+                focusesMap: false
+            )]
+        case "Regional Qualification Resumed":
+            return [.init(
+                title: "Review qualifying progress",
+                command: .inspectorOverview,
+                explanation: "Review the restored standards and remaining qualifying days.",
                 focusesMap: false
             )]
         default:

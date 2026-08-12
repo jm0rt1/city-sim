@@ -437,6 +437,8 @@ struct HUDConsequenceFeedbackPresentation: Equatable {
         "Regional Grid Mandate",
         "Regional Freight Overload",
         "Regional Freight Recovery",
+        "Regional Qualification Interrupted",
+        "Regional Qualification Resumed",
         "Regional Capital Recognized"
     ]
 }

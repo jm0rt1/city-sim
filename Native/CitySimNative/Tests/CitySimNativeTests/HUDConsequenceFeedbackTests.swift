@@ -94,6 +94,53 @@ final class HUDConsequenceFeedbackTests: XCTestCase {
         )
     }
 
+    @MainActor
+    func testTownCharterAwardStaysVisibleWhileTheHUDHandsOffToRegionalCapital() throws {
+        var state = CityGameState.newCity(seed: 42)
+        state.progression = CityProgressionState(
+            townCharterQualifyingCycles: CitySimulation.townCharterQualificationCycles,
+            townCharterAwarded: true,
+            strategy: CityStrategyProgression(
+                committedStrategy: .commercialStewardship,
+                currentPhase: .completed,
+                nextScheduledTick: nil,
+                recoveryResolution: .commercialTaxRelief
+            ),
+            secondAct: CitySecondActProgression(
+                phase: .mandate,
+                nextScheduledTick: state.tick + 64
+            )
+        )
+        let award = CityMessage(
+            tick: state.tick,
+            severity: .good,
+            title: "Town Charter Awarded",
+            detail: "The Charter is permanent; a Regional Capital mandate arrives by Day 17."
+        )
+        state.messages.insert(award, at: 0)
+
+        let priority = CityStrategyHUDPresentation.make(analytics: CityAnalytics(state: state))
+        XCTAssertEqual(priority.title, "Regional Capital mandate")
+        XCTAssertEqual(priority.status, "MANDATE · 16 DAYS")
+
+        let feedback = try XCTUnwrap(
+            HUDConsequenceFeedbackPresentation.make(from: state.messages)
+        )
+        XCTAssertEqual(feedback.direction, .positive)
+        XCTAssertEqual(
+            feedback.visualText,
+            "+ Town Charter Awarded · The Charter is permanent; a Regional Capital mandate arrives by Day 17."
+        )
+        XCTAssertTrue(feedback.accessibilityValue.contains("Town Charter Awarded"))
+        XCTAssertTrue(feedback.accessibilityValue.contains("Regional Capital mandate"))
+
+        let store = CityGameStore(state: state)
+        store.openMessage(award)
+        XCTAssertTrue(store.showObjectives)
+        XCTAssertEqual(store.inspectorSection, .overview)
+        XCTAssertEqual(store.objectives.map(\.id), ["town-charter", "regional-capital"])
+    }
+
     func testFeedbackPreservesCurrentStrategyAccessibilityAndHUDBounds() {
         XCTAssertEqual(TopHUDView.compactMaximumHeight, 104)
         XCTAssertEqual(TopHUDView.regularMaximumHeight, 108)

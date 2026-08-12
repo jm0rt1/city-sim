@@ -1,5 +1,15 @@
 # CitySim restart brief
 
+## Standing mandate
+
+Build a polished, playable city-building game inspired by the depth and core
+loop of SimCity 4, with an original art style and original assets. Deliver
+roads, zoning, utilities, growth, money, and useful city feedback as one
+satisfying management experience. The project owner may choose and sequence
+the concrete outcomes needed to reach that mandate, escalating only critical
+product tradeoffs, material scope or budget changes, irreversible actions, or
+true external blockers.
+
 ## Next outcome
 
 Make one representative city block look intentional and coherent inside the

@@ -1448,6 +1448,15 @@ final class CityGameStore: ObservableObject {
     }
 
     private func applyLoadedResult(_ result: SaveGameLoadResult) {
+        var migration: SaveGameMigrationResult?
+        var migrationError: Error?
+        if result.isLegacy {
+            do {
+                migration = try saves.migrateLegacyCheckpoint(result)
+            } catch {
+                migrationError = error
+            }
+        }
         checkpointLibrary = nil
         checkpointLoadsByID.removeAll()
         checkpointEntriesByID.removeAll()
@@ -1456,7 +1465,9 @@ final class CityGameStore: ObservableObject {
         clearBranchNamingState()
         state = result.state
         lastPersistedState = result.state
-        lastPersistenceCheckpointKind = if result.isAutosave {
+        lastPersistenceCheckpointKind = if migration != nil || result.isMigration {
+            .migration
+        } else if result.isAutosave {
             .autosave
         } else if result.isNamedBranch {
             .branch
@@ -1481,7 +1492,20 @@ final class CityGameStore: ObservableObject {
         undoStates.removeAll()
         canUndo = false
         let brief = CityResumeBriefPresentation.make(analytics: analytics)
-        let persistenceFeedback = if result.isAutosave {
+        let persistenceFeedback = if let migration {
+            CityPersistenceFeedbackPresentation.loadedLegacyMigration(
+                state,
+                migration: migration
+            )
+        } else if let migrationError {
+            CityPersistenceFeedbackPresentation.legacyMigrationFailed(
+                state,
+                originalFileName: result.checkpointFileName,
+                error: migrationError
+            )
+        } else if result.isMigration {
+            CityPersistenceFeedbackPresentation.loadedMigration(state)
+        } else if result.isAutosave {
             CityPersistenceFeedbackPresentation.loadedAutosave(state)
         } else if result.isNamedBranch {
             CityPersistenceFeedbackPresentation.loadedBranch(
@@ -1501,8 +1525,8 @@ final class CityGameStore: ObservableObject {
         }
         showFeedback(
             persistenceFeedback.message,
-            tone: .positive,
-            autoDismissAfter: brief == nil ? 3.2 : nil,
+            tone: migrationError == nil ? .positive : .caution,
+            autoDismissAfter: migrationError == nil && brief == nil ? 3.2 : nil,
             resumeBrief: brief
         )
     }

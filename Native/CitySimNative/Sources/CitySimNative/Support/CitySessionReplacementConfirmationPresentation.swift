@@ -44,15 +44,20 @@ struct CitySessionReplacementConfirmationPresentation: Equatable, Sendable {
             } else if loadResult?.isScenarioCheckpoint == true {
                 sourceNote = " This is the authored scenario checkpoint “"
                     + "\(loadResult?.scenarioCheckpointTitle ?? "Scenario checkpoint")”."
+            } else if loadResult?.isMigration == true {
+                sourceNote = " This is a verified current-format copy of a legacy checkpoint."
             } else {
                 sourceNote = ""
             }
+            let migrationNote = loadResult?.isLegacy == true
+                ? " CitySim will create or reuse a verified current-format copy and leave the legacy file unchanged."
+                : ""
             return Self(
                 action: action,
                 title: "Load \(loaded.cityName)?",
                 message: "\(savedCheckpoint) will replace \(checkpoint). "
                     + "Save \(state.cityName) first if you want to return to its current checkpoint."
-                    + sourceNote,
+                    + sourceNote + migrationNote,
                 destructiveActionTitle: "Load \(loaded.cityName)",
                 cancelActionTitle: "Keep \(state.cityName)"
             )

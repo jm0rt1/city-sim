@@ -33,6 +33,10 @@ struct CityBranchNamingPresentation: Equatable, Sendable {
             sourceLabel = "Branch from scenario checkpoint"
             sourceSymbol = "flag.checkered"
             detail = "Preserve this authored milestone under a timeline name without changing the current city."
+        case .migration:
+            sourceLabel = "Branch from upgraded legacy copy"
+            sourceSymbol = "arrow.up.doc.fill"
+            detail = "Preserve this upgraded checkpoint under a timeline name without changing the current city."
         case nil:
             sourceLabel = "Branch from current city"
             sourceSymbol = "building.2.crop.circle.fill"

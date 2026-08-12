@@ -20,7 +20,7 @@ struct CityStartupResumePresentation: Equatable, Sendable {
             + "\(state.population.formatted()) residents"
         let sourceLabel: String
         let sourceSymbol: String
-        let detail: String
+        var detail: String
         if result.recoveredFromBackup {
             sourceLabel = "Last known-good backup"
             sourceSymbol = "arrow.clockwise.icloud.fill"
@@ -38,10 +38,18 @@ struct CityStartupResumePresentation: Equatable, Sendable {
                 + (result.scenarioCheckpointTitle ?? "Authored milestone")
             sourceSymbol = "flag.checkered"
             detail = "Continue from this authored milestone; the simulation will remain paused while you review the city's active pressures."
+        } else if result.isMigration {
+            sourceLabel = "Upgraded legacy copy"
+            sourceSymbol = "arrow.up.doc.fill"
+            detail = "Continue from this verified current-format copy; the original legacy checkpoint remains available in Load City."
         } else {
             sourceLabel = "Verified quicksave"
             sourceSymbol = "checkmark.icloud.fill"
             detail = "Continue from this verified quicksave; the simulation will remain paused while you review the city's active pressures."
+        }
+        if result.isLegacy {
+            let original = result.checkpointFileName ?? "legacy checkpoint"
+            detail = "Continue from this legacy checkpoint. CitySim will create a verified save-format v\(SaveGameEnvelope.currentSchemaVersion) copy, keep \(original) unchanged, and pause the simulation."
         }
         return Self(
             title: result.recoveredFromBackup

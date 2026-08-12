@@ -36,6 +36,7 @@ enum SaveGameSource: String, Codable, Equatable, Sendable {
     case autosave
     case branch
     case scenario
+    case migration
 }
 
 struct SaveGameLoadResult: Equatable, Sendable {
@@ -46,6 +47,7 @@ struct SaveGameLoadResult: Equatable, Sendable {
     let branchName: String?
     let scenarioCheckpointID: String?
     let scenarioCheckpointTitle: String?
+    let checkpointFileName: String?
 
     init(
         state: CityGameState,
@@ -54,7 +56,8 @@ struct SaveGameLoadResult: Equatable, Sendable {
         source: SaveGameSource,
         branchName: String? = nil,
         scenarioCheckpointID: String? = nil,
-        scenarioCheckpointTitle: String? = nil
+        scenarioCheckpointTitle: String? = nil,
+        checkpointFileName: String? = nil
     ) {
         self.state = state
         self.schemaVersion = schemaVersion
@@ -63,18 +66,29 @@ struct SaveGameLoadResult: Equatable, Sendable {
         self.branchName = branchName
         self.scenarioCheckpointID = scenarioCheckpointID
         self.scenarioCheckpointTitle = scenarioCheckpointTitle
+        self.checkpointFileName = checkpointFileName
     }
 
     var recoveredFromBackup: Bool { source == .backup }
     var isAutosave: Bool { source == .autosave }
     var isNamedBranch: Bool { source == .branch }
     var isScenarioCheckpoint: Bool { source == .scenario }
+    var isMigration: Bool { source == .migration }
+    var isLegacy: Bool { schemaVersion < SaveGameEnvelope.currentSchemaVersion }
 }
 
 struct SaveGameWriteResult: Equatable, Sendable {
     let schemaVersion: Int
     let fingerprint: CityStateFingerprint
     let byteCount: Int
+}
+
+struct SaveGameMigrationResult: Equatable, Sendable {
+    let originalFileName: String
+    let migratedFileName: String
+    let fingerprint: CityStateFingerprint
+    let byteCount: Int
+    let createdCopy: Bool
 }
 
 enum SaveGameCheckpointIntegrity: Equatable, Sendable {
@@ -178,6 +192,8 @@ enum SaveGameError: Error, Equatable {
     case invalidScenarioCheckpoint
     case scenarioCheckpointConflict(String)
     case invalidSupportReportTarget
+    case invalidMigrationTarget
+    case migrationConflict(String)
 }
 
 extension SaveGameError: LocalizedError {
@@ -201,6 +217,10 @@ extension SaveGameError: LocalizedError {
             "The existing scenario checkpoint \(title) could not be verified and was left untouched."
         case .invalidSupportReportTarget:
             "A support report can only be created for an unavailable recovery file."
+        case .invalidMigrationTarget:
+            "Only a verified legacy checkpoint can be upgraded."
+        case .migrationConflict(let fileName):
+            "The existing migration copy \(fileName) did not match this checkpoint and was left untouched."
         }
     }
 }
@@ -243,6 +263,9 @@ struct SaveGameService {
     var supportReportDirectoryURL: URL {
         rootURL.appending(path: "support-reports", directoryHint: .isDirectory)
     }
+    var migrationDirectoryURL: URL {
+        rootURL.appending(path: "migrations", directoryHint: .isDirectory)
+    }
     private var candidateURL: URL { rootURL.appending(path: ".quicksave.candidate.json") }
     var autosaveURLs: [URL] {
         (0..<Self.autosaveSlotCount).map {
@@ -261,6 +284,7 @@ struct SaveGameService {
             fileManager.fileExists(atPath: $0.path)
         } || !branchURLs.isEmpty
             || !scenarioCheckpointURLs.isEmpty
+            || !migrationURLs.isEmpty
     }
 
     var branchURLs: [URL] {
@@ -275,6 +299,15 @@ struct SaveGameService {
     var scenarioCheckpointURLs: [URL] {
         guard let urls = try? fileManager.contentsOfDirectory(
             at: scenarioCheckpointDirectoryURL,
+            includingPropertiesForKeys: nil,
+            options: [.skipsHiddenFiles]
+        ) else { return [] }
+        return urls.filter { $0.pathExtension.lowercased() == "json" }
+    }
+
+    var migrationURLs: [URL] {
+        guard let urls = try? fileManager.contentsOfDirectory(
+            at: migrationDirectoryURL,
             includingPropertiesForKeys: nil,
             options: [.skipsHiddenFiles]
         ) else { return [] }
@@ -530,6 +563,12 @@ struct SaveGameService {
             }
         }
 
+        for url in migrationURLs {
+            if let result = try? decodeSave(at: url, source: .migration) {
+                candidates.append((result, modificationDate(for: url), sourcePriority(.migration)))
+            }
+        }
+
         guard let latest = candidates.max(by: { lhs, rhs in
             if lhs.date != rhs.date { return lhs.date < rhs.date }
             return lhs.priority < rhs.priority
@@ -546,6 +585,7 @@ struct SaveGameService {
         ] + autosaveURLs.map { ($0, SaveGameSource.autosave) }
             + branchURLs.map { ($0, SaveGameSource.branch) }
             + scenarioCheckpointURLs.map { ($0, SaveGameSource.scenario) }
+            + migrationURLs.map { ($0, SaveGameSource.migration) }
 
         return locations.compactMap { url, source in
             guard fileManager.fileExists(atPath: url.path) else { return nil }
@@ -611,6 +651,85 @@ struct SaveGameService {
         return destination
     }
 
+    @discardableResult
+    func migrateLegacyCheckpoint(_ result: SaveGameLoadResult) throws -> SaveGameMigrationResult {
+        guard result.isLegacy,
+              result.schemaVersion == 0,
+              let originalURL = checkpointURL(for: result),
+              let originalFileName = result.checkpointFileName else {
+            throw SaveGameError.invalidMigrationTarget
+        }
+
+        let currentSource = try decodeSave(at: originalURL, source: result.source)
+        guard currentSource.schemaVersion == result.schemaVersion,
+              currentSource.state == result.state,
+              currentSource.fingerprint == result.fingerprint else {
+            throw SaveGameError.invalidMigrationTarget
+        }
+
+        try fileManager.createDirectory(
+            at: migrationDirectoryURL,
+            withIntermediateDirectories: true
+        )
+        let migratedFileName = "migration-\(result.fingerprint.digest).json"
+        let destinationURL = migrationDirectoryURL.appending(path: migratedFileName)
+        if fileManager.fileExists(atPath: destinationURL.path) {
+            let existing: SaveGameLoadResult
+            do {
+                existing = try decodeSave(at: destinationURL, source: .migration)
+            } catch {
+                throw SaveGameError.migrationConflict(migratedFileName)
+            }
+            guard existing.schemaVersion == SaveGameEnvelope.currentSchemaVersion,
+                  existing.state == result.state,
+                  existing.fingerprint == result.fingerprint else {
+                throw SaveGameError.migrationConflict(migratedFileName)
+            }
+            return SaveGameMigrationResult(
+                originalFileName: originalFileName,
+                migratedFileName: migratedFileName,
+                fingerprint: existing.fingerprint,
+                byteCount: fileByteCount(for: destinationURL) ?? 0,
+                createdCopy: false
+            )
+        }
+
+        let fingerprint = try CityStateFingerprinter.fingerprint(result.state)
+        let envelope = SaveGameEnvelope(
+            schemaVersion: SaveGameEnvelope.currentSchemaVersion,
+            fingerprintVersion: fingerprint.version,
+            state: result.state,
+            digest: fingerprint.digest,
+            branchName: result.branchName,
+            scenarioCheckpointID: result.scenarioCheckpointID,
+            scenarioCheckpointTitle: result.scenarioCheckpointTitle
+        )
+        let data = try Self.envelopeEncoder.encode(envelope)
+        let candidateURL = migrationDirectoryURL.appending(
+            path: ".\(migratedFileName).candidate"
+        )
+        defer { try? fileManager.removeItem(at: candidateURL) }
+        try data.write(to: candidateURL, options: .atomic)
+
+        let validated = try decodeSave(at: candidateURL, source: .migration)
+        guard validated.schemaVersion == SaveGameEnvelope.currentSchemaVersion,
+              validated.state == result.state,
+              validated.fingerprint == fingerprint else {
+            throw SaveGameError.digestMismatch(
+                expected: fingerprint.digest,
+                actual: validated.fingerprint.digest
+            )
+        }
+        try fileManager.moveItem(at: candidateURL, to: destinationURL)
+        return SaveGameMigrationResult(
+            originalFileName: originalFileName,
+            migratedFileName: migratedFileName,
+            fingerprint: fingerprint,
+            byteCount: data.count,
+            createdCopy: true
+        )
+    }
+
     private func nextAutosaveURL() -> URL {
         if let empty = autosaveURLs.first(where: {
             !fileManager.fileExists(atPath: $0.path)
@@ -656,7 +775,7 @@ struct SaveGameService {
             return .integrityMismatch
         case .noValidSave, .invalidBranchName, .duplicateBranchName,
              .invalidScenarioCheckpoint, .scenarioCheckpointConflict,
-             .invalidSupportReportTarget:
+             .invalidSupportReportTarget, .invalidMigrationTarget, .migrationConflict:
             return .unreadable
         }
     }
@@ -668,7 +787,28 @@ struct SaveGameService {
         case .autosave: 1
         case .branch: 2
         case .scenario: 3
+        case .migration: 6
         }
+    }
+
+    private func checkpointURL(for result: SaveGameLoadResult) -> URL? {
+        guard let fileName = result.checkpointFileName else { return nil }
+        let candidates: [URL]
+        switch result.source {
+        case .primary:
+            candidates = [saveURL]
+        case .backup:
+            candidates = [backupURL]
+        case .autosave:
+            candidates = autosaveURLs
+        case .branch:
+            candidates = branchURLs
+        case .scenario:
+            candidates = scenarioCheckpointURLs
+        case .migration:
+            candidates = migrationURLs
+        }
+        return candidates.first { $0.lastPathComponent == fileName }
     }
 
     private func decodeSave(at url: URL, source: SaveGameSource) throws -> SaveGameLoadResult {
@@ -703,7 +843,8 @@ struct SaveGameService {
                 source: source,
                 branchName: envelope.branchName,
                 scenarioCheckpointID: envelope.scenarioCheckpointID,
-                scenarioCheckpointTitle: envelope.scenarioCheckpointTitle
+                scenarioCheckpointTitle: envelope.scenarioCheckpointTitle,
+                checkpointFileName: url.lastPathComponent
             )
         }
 
@@ -712,7 +853,8 @@ struct SaveGameService {
             state: state,
             schemaVersion: 0,
             fingerprint: try CityStateFingerprinter.fingerprint(state),
-            source: source
+            source: source,
+            checkpointFileName: url.lastPathComponent
         )
     }
 

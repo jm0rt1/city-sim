@@ -128,14 +128,24 @@ final class BackupLoadAvailabilityTests: XCTestCase {
                 XCTAssertEqual(store.state, directLoad.state, fixture.name)
                 XCTAssertEqual(store.speed, .paused, fixture.name)
                 XCTAssertFalse(store.canUndo, fixture.name)
-                XCTAssertEqual(
-                    store.lastFeedback,
-                    CityPersistenceFeedbackPresentation.loaded(
-                        directLoad.state,
-                        recoveredFromBackup: true
-                    ).message,
-                    fixture.name
-                )
+                if fixture.schema == 0 {
+                    XCTAssertTrue(
+                        store.lastFeedback?.hasPrefix("Legacy save upgraded to format v1") == true,
+                        fixture.name
+                    )
+                    XCTAssertEqual(store.persistenceStatus.label, "Upgraded", fixture.name)
+                    XCTAssertEqual(service.migrationURLs.count, 1, fixture.name)
+                } else {
+                    XCTAssertEqual(
+                        store.lastFeedback,
+                        CityPersistenceFeedbackPresentation.loaded(
+                            directLoad.state,
+                            recoveredFromBackup: true
+                        ).message,
+                        fixture.name
+                    )
+                    XCTAssertTrue(service.migrationURLs.isEmpty, fixture.name)
+                }
                 XCTAssertEqual(
                     try CityStateFingerprinter.fingerprint(store.state).digest,
                     fixture.digest,

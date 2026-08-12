@@ -42,6 +42,9 @@ struct CityCheckpointCardPresentation: Identifiable, Equatable, Sendable {
         case .scenario:
             sourceLabel = "Authored scenario checkpoint"
             sourceSymbol = "flag.checkered"
+        case .migration:
+            sourceLabel = "Upgraded legacy copy"
+            sourceSymbol = "arrow.up.doc.fill"
         }
 
         guard let result = entry.loadResult, entry.integrity == .verified else {
@@ -63,8 +66,8 @@ struct CityCheckpointCardPresentation: Identifiable, Equatable, Sendable {
         }
 
         let state = result.state
-        let schemaLabel = result.schemaVersion == 0
-            ? "Legacy save format"
+        let schemaLabel = result.isLegacy
+            ? "Legacy save format · Opens with a preserved v1 upgrade copy"
             : "Save format v\(result.schemaVersion)"
         let checkpoint = [.branch, .scenario].contains(entry.source)
             ? "\(state.cityName) · \(state.formattedDay) · \(state.population.formatted()) residents"

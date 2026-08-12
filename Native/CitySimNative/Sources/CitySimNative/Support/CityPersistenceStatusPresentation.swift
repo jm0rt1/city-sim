@@ -11,6 +11,7 @@ enum CityPersistenceCheckpointKind: Equatable, Sendable {
     case autosave
     case branch
     case scenario
+    case migration
 }
 
 struct CityPersistenceStatusPresentation: Equatable, Sendable {
@@ -62,6 +63,14 @@ struct CityPersistenceStatusPresentation: Equatable, Sendable {
                 label: "Checkpointed",
                 symbol: "flag.checkered",
                 help: "This city matches its latest authored scenario checkpoint"
+            )
+        }
+        if checkpointKind == .migration {
+            return Self(
+                kind: .saved,
+                label: "Upgraded",
+                symbol: "arrow.up.doc.fill",
+                help: "This city matches its verified current-format migration copy"
             )
         }
         return Self(

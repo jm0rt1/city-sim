@@ -1,7 +1,7 @@
 import AppKit
 import SwiftUI
 
-/// Debug-only window sizing for deterministic real-app layout proof.
+/// Explicit window sizing for deterministic real-app layout proof.
 struct ProofWindowConfigurator: NSViewRepresentable {
     static let establishedCandidateDefaultKey = "hasEstablishedCitySimCandidateWindowDefault"
     static let defaultContentSize = NSSize(width: 1_440, height: 900)
@@ -34,9 +34,16 @@ struct ProofWindowConfigurator: NSViewRepresentable {
         return nil
     }
 
+    /// SwiftUI may apply an established frame after the representable attaches.
+    /// Reassert only an explicit proof request on activation; normal launches
+    /// and data-root defaults must remain user-resizable after their first size.
+    static func reassertsSizeAfterWindowActivation(environment: [String: String]) -> Bool {
+        environment["CITYSIM_COMPACT_WINDOW"] == "1"
+            || environment["CITYSIM_REGULAR_WINDOW"] == "1"
+    }
+
     func makeNSView(context: Context) -> NSView {
         let view = ProofWindowView(frame: .zero)
-#if DEBUG
         let environment = ProcessInfo.processInfo.environment
         let defaults = UserDefaults.standard
         let hadEstablishedDefault = defaults.bool(forKey: Self.establishedCandidateDefaultKey)
@@ -54,8 +61,10 @@ struct ProofWindowConfigurator: NSViewRepresentable {
                 defaults.set(true, forKey: Self.establishedCandidateDefaultKey)
             }
         }
+        view.reassertsSizeAfterWindowActivation = Self.reassertsSizeAfterWindowActivation(
+            environment: environment
+        )
         view.scheduleConfiguration()
-#endif
         return view
     }
 
@@ -66,23 +75,73 @@ struct ProofWindowConfigurator: NSViewRepresentable {
 
 private final class ProofWindowView: NSView {
     var configure: ((NSWindow) -> Void)?
+    var reassertsSizeAfterWindowActivation = false
     private var configurationScheduled = false
     private var configured = false
+    private var activationConfigurationScheduled = false
+    private var activationConfigured = false
+    private var observedWindow: NSWindow?
+
+    override func viewWillMove(toWindow newWindow: NSWindow?) {
+        if observedWindow !== newWindow {
+            NotificationCenter.default.removeObserver(
+                self,
+                name: NSWindow.didBecomeKeyNotification,
+                object: observedWindow
+            )
+            observedWindow = nil
+        }
+        super.viewWillMove(toWindow: newWindow)
+    }
 
     override func viewDidMoveToWindow() {
         super.viewDidMoveToWindow()
+        observeWindowActivationIfNeeded()
         scheduleConfiguration()
     }
 
-    func scheduleConfiguration() {
-        guard !configured, !configurationScheduled, configure != nil else { return }
-        configurationScheduled = true
+    func scheduleConfiguration(afterWindowActivation: Bool = false) {
+        guard configure != nil else { return }
+        if afterWindowActivation {
+            guard !activationConfigured, !activationConfigurationScheduled else { return }
+            activationConfigurationScheduled = true
+        } else {
+            guard !configured, !configurationScheduled else { return }
+            configurationScheduled = true
+        }
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
-            self.configurationScheduled = false
-            guard !self.configured, let window = self.window, let configure = self.configure else { return }
+            if afterWindowActivation {
+                self.activationConfigurationScheduled = false
+                guard !self.activationConfigured else { return }
+            } else {
+                self.configurationScheduled = false
+                guard !self.configured else { return }
+            }
+            guard let window = self.window, let configure = self.configure else { return }
             configure(window)
-            self.configured = true
+            if afterWindowActivation {
+                self.activationConfigured = true
+            } else {
+                self.configured = true
+            }
         }
+    }
+
+    private func observeWindowActivationIfNeeded() {
+        guard reassertsSizeAfterWindowActivation,
+              let window,
+              observedWindow !== window else { return }
+        observedWindow = window
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(windowDidBecomeKey(_:)),
+            name: NSWindow.didBecomeKeyNotification,
+            object: window
+        )
+    }
+
+    @objc private func windowDidBecomeKey(_ notification: Notification) {
+        scheduleConfiguration(afterWindowActivation: true)
     }
 }

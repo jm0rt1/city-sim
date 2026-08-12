@@ -59,4 +59,18 @@ final class ProofWindowConfiguratorTests: XCTestCase {
             ProofWindowConfigurator.regularProofContentSize
         )
     }
+
+    @MainActor
+    func testOnlyExplicitProofGeometryReassertsAfterWindowActivation() {
+        XCTAssertTrue(ProofWindowConfigurator.reassertsSizeAfterWindowActivation(
+            environment: ["CITYSIM_COMPACT_WINDOW": "1"]
+        ))
+        XCTAssertTrue(ProofWindowConfigurator.reassertsSizeAfterWindowActivation(
+            environment: ["CITYSIM_REGULAR_WINDOW": "1"]
+        ))
+        XCTAssertFalse(ProofWindowConfigurator.reassertsSizeAfterWindowActivation(
+            environment: [SaveGameService.dataRootEnvironmentKey: "/tmp/citysim-candidate"]
+        ))
+        XCTAssertFalse(ProofWindowConfigurator.reassertsSizeAfterWindowActivation(environment: [:]))
+    }
 }

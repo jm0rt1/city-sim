@@ -7,6 +7,7 @@ import argparse
 import hashlib
 import json
 import math
+import plistlib
 import re
 import shlex
 import subprocess
@@ -858,9 +859,20 @@ def validate_qa_handoff(handoff: Any, repo: Path) -> list[str]:
     ):
         errors.append("QA handoff launch.command must be a non-empty argv list")
     elif app_root is not None and app_root.is_absolute():
-        expected_executable = app_root / "Contents" / "MacOS" / "CitySim"
-        if Path(command[0]) != expected_executable:
-            errors.append("QA handoff launch command must start the sealed staged app executable")
+        info_plist = app_root / "Contents" / "Info.plist"
+        try:
+            with info_plist.open("rb") as handle:
+                info = plistlib.load(handle)
+            bundle_executable = info.get("CFBundleExecutable") if isinstance(info, dict) else None
+        except (OSError, plistlib.InvalidFileException) as exc:
+            errors.append(f"QA handoff cannot read staged bundle executable: {exc}")
+            bundle_executable = None
+        if not isinstance(bundle_executable, str) or not bundle_executable:
+            errors.append("QA handoff staged Info.plist must declare CFBundleExecutable")
+        else:
+            expected_executable = app_root / "Contents" / "MacOS" / bundle_executable
+            if Path(command[0]) != expected_executable:
+                errors.append("QA handoff launch command must start the sealed staged app executable")
     environment = launch.get("environment")
     if not isinstance(environment, dict) or not environment or not all(
         isinstance(key, str) and key and isinstance(value, str) and value

@@ -6,6 +6,7 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
+import plistlib
 import shutil
 import subprocess
 import tempfile
@@ -233,6 +234,9 @@ class ModelRouteTests(unittest.TestCase):
         executable = app_root / "Contents" / "MacOS" / "CitySim"
         executable.parent.mkdir(parents=True, exist_ok=True)
         executable.write_text("staged application bytes\n", encoding="utf-8")
+        (app_root / "Contents" / "Info.plist").write_bytes(
+            plistlib.dumps({"CFBundleExecutable": "CitySim"})
+        )
         data_root = self.repo / "qa-data"
         data_root.mkdir(exist_ok=True)
         digest = subprocess.check_output(
@@ -565,6 +569,20 @@ class ModelRouteTests(unittest.TestCase):
 
     def test_qa_handoff_binds_route_dispatch_candidate_stage_and_launch(self) -> None:
         handoff = self.qa_handoff()
+        self.assertEqual([], validator.validate_qa_handoff(handoff, self.repo))
+
+    def test_qa_handoff_uses_declared_bundle_executable(self) -> None:
+        handoff = self.qa_handoff()
+        original = Path(handoff["launch"]["command"][0])
+        native = original.with_name("CitySimNative")
+        original.rename(native)
+        info_path = native.parent.parent / "Info.plist"
+        info_path.write_bytes(plistlib.dumps({"CFBundleExecutable": "CitySimNative"}))
+        handoff["launch"]["command"] = [str(native)]
+        handoff["stage"]["sha256"] = subprocess.check_output(
+            ["bash", str(self.repo / "script" / "canonical_tree_digest.sh"), handoff["stage"]["appRoot"]],
+            text=True,
+        ).strip()
         self.assertEqual([], validator.validate_qa_handoff(handoff, self.repo))
 
     def test_qa_handoff_rejects_missing_or_substituted_contracts(self) -> None:

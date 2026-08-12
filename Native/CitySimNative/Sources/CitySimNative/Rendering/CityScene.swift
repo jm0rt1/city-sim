@@ -1271,6 +1271,15 @@ final class CityScene: SKScene {
                         } else if layer.parent == nil {
                             existing.root.addChild(layer)
                         }
+                        if existing.consequenceLayer == nil,
+                           let consequenceLayer = makePersistentConsequenceLayer(
+                               for: consequence,
+                               at: tile.coordinate,
+                               overlay: overlay
+                           ) {
+                            existing.consequenceLayer = consequenceLayer
+                            existing.root.addChild(consequenceLayer)
+                        }
                     }
                     synchronizeTileRootAttachment(existing.root)
                     applyRuntimeDelta(
@@ -1488,20 +1497,12 @@ final class CityScene: SKScene {
             }
         }
 
-        var consequenceLayer: SKNode?
-        if consequence.vitality != .notApplicable {
-            let candidate = makeConsequenceLayer()
-            let persistentCues = spatialConsequenceRenderer.makePersistentCues(
-                for: consequence,
-                detail: currentCameraDetailLevel
-            )
-            if !persistentCues.children.isEmpty { candidate.addChild(persistentCues) }
-            updatePersistentConsequenceEmphasis(in: candidate, at: tile.coordinate, overlay: overlay)
-            if !candidate.children.isEmpty {
-                root.addChild(candidate)
-                consequenceLayer = candidate
-            }
-        }
+        let consequenceLayer = makePersistentConsequenceLayer(
+            for: consequence,
+            at: tile.coordinate,
+            overlay: overlay
+        )
+        if let consequenceLayer { root.addChild(consequenceLayer) }
         return TileRenderRecord(
             root: root,
             overlayLayer: existing.overlayLayer,
@@ -1650,20 +1651,12 @@ final class CityScene: SKScene {
             root.addChild(contentLayer)
         }
 
-        var consequenceLayer: SKNode?
-        if consequence.vitality != .notApplicable {
-            let candidate = makeConsequenceLayer()
-            let persistentCues = spatialConsequenceRenderer.makePersistentCues(
-                for: consequence,
-                detail: currentCameraDetailLevel
-            )
-            if !persistentCues.children.isEmpty { candidate.addChild(persistentCues) }
-            updatePersistentConsequenceEmphasis(in: candidate, at: tile.coordinate, overlay: overlay)
-            if !candidate.children.isEmpty {
-                root.addChild(candidate)
-                consequenceLayer = candidate
-            }
-        }
+        let consequenceLayer = makePersistentConsequenceLayer(
+            for: consequence,
+            at: tile.coordinate,
+            overlay: overlay
+        )
+        if let consequenceLayer { root.addChild(consequenceLayer) }
         return TileRenderRecord(
             root: root,
             overlayLayer: overlayLayer,
@@ -1700,6 +1693,26 @@ final class CityScene: SKScene {
         let layer = SKNode()
         layer.name = "spatial.layer"
         layer.zPosition = 72
+        return layer
+    }
+
+    /// No-overlay frames deliberately hide the compound consequence glyphs;
+    /// defer their SpriteKit subtree until an overlay actually needs the
+    /// established hidden-priority behavior. Event cues remain independent.
+    private func makePersistentConsequenceLayer(
+        for consequence: CitySpatialConsequence,
+        at coordinate: GridCoordinate,
+        overlay: DataOverlay
+    ) -> SKNode? {
+        guard overlay != .none, consequence.vitality != .notApplicable else { return nil }
+        let layer = makeConsequenceLayer()
+        let persistentCues = spatialConsequenceRenderer.makePersistentCues(
+            for: consequence,
+            detail: currentCameraDetailLevel
+        )
+        guard !persistentCues.children.isEmpty else { return nil }
+        layer.addChild(persistentCues)
+        updatePersistentConsequenceEmphasis(in: layer, at: coordinate, overlay: overlay)
         return layer
     }
 

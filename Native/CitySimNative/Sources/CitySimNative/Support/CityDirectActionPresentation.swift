@@ -107,7 +107,7 @@ struct CityResumeBriefPresentation: Equatable, Sendable {
                 command: .inspectorFinances
             )
         }
-        if analytics.employmentRate < 0.82 {
+        if let warning = CitySimulation.hiringBottleneckWarning(in: analytics.state) {
             let routeKind: BuildingKind? = analytics.committedStrategy.map {
                 $0 == .industrialExpansion ? .industrial : .commercial
             }
@@ -115,7 +115,7 @@ struct CityResumeBriefPresentation: Equatable, Sendable {
                 ?? "commercial or industrial jobs"
             return Self(
                 title: "Hiring Bottleneck",
-                detail: "The city is short \(analytics.jobShortfall.formatted()) filled jobs.",
+                detail: warning.detail,
                 nextAction: "Build \(route)",
                 command: routeKind.map(CityCommandCatalog.id(for:)) ?? .inspectorEmployment
             )

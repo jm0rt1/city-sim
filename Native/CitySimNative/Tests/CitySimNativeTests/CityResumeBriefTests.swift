@@ -32,10 +32,10 @@ final class CityResumeBriefTests: XCTestCase {
         let charterBrief = try XCTUnwrap(
             CityResumeBriefPresentation.make(analytics: CityAnalytics(state: charter))
         )
-        XCTAssertEqual(charterBrief.title, "Prepare 125 jobs")
-        XCTAssertEqual(charterBrief.nextAction, "Build Commercial")
-        XCTAssertEqual(charterBrief.command, .buildCommercial)
-        XCTAssertTrue(charterBrief.detail.contains("prepare 125 jobs"))
+        XCTAssertEqual(charterBrief.title, "Grow to 500 residents")
+        XCTAssertEqual(charterBrief.nextAction, "Build Residential")
+        XCTAssertEqual(charterBrief.command, .buildResidential)
+        XCTAssertTrue(charterBrief.detail.contains("grow 10 residents"))
 
         var regional = progressedState(secondAct: CitySecondActProgression(
             phase: .qualification,
@@ -53,6 +53,37 @@ final class CityResumeBriefTests: XCTestCase {
         XCTAssertEqual(regionalBrief.nextAction, "Build homes")
         XCTAssertEqual(regionalBrief.command, .buildResidential)
         XCTAssertTrue(regionalBrief.detail.contains("5 more residents"))
+    }
+
+    func testResumeBriefIgnoresFilledJobsLagButExplainsARealCapacityGap() throws {
+        var laggingJobs = CityGameState.newCity(seed: 42)
+        laggingJobs.treasury = 50_000
+        laggingJobs.jobs = 170
+        laggingJobs.taxRate = 0.18
+        laggingJobs.powerCapacity = 600
+        laggingJobs.waterCapacity = 600
+        laggingJobs.powerUsed = 200
+        laggingJobs.waterUsed = 200
+
+        let healthyCapacity = try XCTUnwrap(
+            CityResumeBriefPresentation.make(analytics: CityAnalytics(state: laggingJobs))
+        )
+        XCTAssertEqual(healthyCapacity.title, "Choose a Growth Engine")
+        XCTAssertFalse(healthyCapacity.detail.contains("Hiring Bottleneck"))
+
+        var actualGap = laggingJobs
+        for index in actualGap.tiles.indices {
+            if [.commercial, .cityHall].contains(actualGap.tiles[index].kind) {
+                actualGap.tiles[index].constructionProgress = 0
+            }
+        }
+        XCTAssertGreaterThanOrEqual(CityAnalytics(state: actualGap).projectedBalance, 0)
+        let gap = try XCTUnwrap(
+            CityResumeBriefPresentation.make(analytics: CityAnalytics(state: actualGap))
+        )
+        XCTAssertEqual(gap.title, "Hiring Bottleneck")
+        XCTAssertTrue(gap.detail.contains("100-job capacity gap"))
+        XCTAssertEqual(gap.command, .inspectorEmployment)
     }
 
     @MainActor
@@ -126,6 +157,10 @@ final class CityResumeBriefTests: XCTestCase {
         state.waterCapacity = 600
         state.powerUsed = 300
         state.waterUsed = 300
+        for index in state.tiles.indices
+            where [.commercial, .industrial].contains(state.tiles[index].kind) {
+            state.tiles[index].level = 4
+        }
         return state
     }
 }

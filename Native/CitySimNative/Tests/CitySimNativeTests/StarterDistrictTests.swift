@@ -189,6 +189,43 @@ final class StarterDistrictTests: XCTestCase {
         XCTAssertGreaterThan(industryAnalytics.jobCapacity, commerceAnalytics.jobCapacity)
     }
 
+    func testHiringBottleneckStaysSilentWhenCapacityIsHealthyDespiteFilledJobsLag() {
+        var state = CityGameState.newCity(seed: 42)
+        state.jobs = 170
+
+        let analytics = CityAnalytics(state: state)
+        XCTAssertLessThan(analytics.employmentRate, 0.82)
+        XCTAssertGreaterThanOrEqual(
+            Double(analytics.jobCapacity) / Double(analytics.workforceTarget),
+            0.82,
+            "Available capacity must prove that another workplace is unnecessary"
+        )
+        XCTAssertNil(CitySimulation.hiringBottleneckWarning(in: state))
+    }
+
+    func testHiringBottleneckReportsCapacityGapAndBothGrowthRoutes() throws {
+        var state = CityGameState.newCity(seed: 42)
+        for index in state.tiles.indices where state.tiles[index].kind == .commercial {
+            state.tiles[index].constructionProgress = 0
+        }
+
+        let analytics = CityAnalytics(state: state)
+        XCTAssertEqual(analytics.jobCapacity, 110)
+        XCTAssertLessThan(
+            Double(analytics.jobCapacity) / Double(analytics.workforceTarget),
+            0.82,
+            "Available capacity must prove that another workplace is needed"
+        )
+
+        let warning = try XCTUnwrap(CitySimulation.hiringBottleneckWarning(in: state))
+        XCTAssertEqual(warning.title, "Hiring Bottleneck")
+        XCTAssertEqual(warning.severity, .warning)
+        XCTAssertEqual(
+            warning.detail,
+            "Job capacity covers 52% of the workforce target: 110 available jobs for 210 workers, a 100-job capacity gap. Add Commercial or Industrial workplaces to close it: Commercial is cleaner; Industrial adds jobs faster but brings more pollution and utility load."
+        )
+    }
+
     func testDayOneAndDayElevenFreezeNoChoiceAndBothStrategyLedgers() throws {
         var noChoice = CityGameState.newCity(seed: 42)
         var commerce = noChoice

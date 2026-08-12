@@ -1238,8 +1238,6 @@ enum CitySimulation {
         let balance = projectedBalance(in: state)
         let coverage = utilityCoverage(in: state)
         let reserve = utilityReserve(in: state)
-        let workforceTarget = max(1, state.population * 7 / 10)
-        let employment = min(1, Double(jobCapacity(in: state)) / Double(workforceTarget))
 
         if state.progression?.strategy == nil {
             postOnce(
@@ -1315,17 +1313,28 @@ enum CitySimulation {
                 to: &state
             )
         }
-        if employment < 0.82 {
-            postOnce(
-                CityMessage(
-                    tick: state.tick,
-                    severity: .warning,
-                    title: "Hiring Bottleneck",
-                    detail: "The town is short \(max(0, workforceTarget - state.jobs)) filled jobs. Commercial growth is cleaner; industry restores the tax base faster but adds pollution."
-                ),
-                to: &state
-            )
+        if let warning = hiringBottleneckWarning(in: state) {
+            postOnce(warning, to: &state)
         }
+    }
+
+    static func hiringBottleneckWarning(in state: CityGameState) -> CityMessage? {
+        let workforceTarget = max(1, state.population * 7 / 10)
+        let availableJobCapacity = jobCapacity(in: state)
+        let capacityCoverage = min(
+            1,
+            Double(availableJobCapacity) / Double(workforceTarget)
+        )
+        guard capacityCoverage < 0.82 else { return nil }
+
+        let capacityShortfall = max(0, workforceTarget - availableJobCapacity)
+        let capacityPercent = Int((capacityCoverage * 100).rounded())
+        return CityMessage(
+            tick: state.tick,
+            severity: .warning,
+            title: "Hiring Bottleneck",
+            detail: "Job capacity covers \(capacityPercent)% of the workforce target: \(availableJobCapacity) available jobs for \(workforceTarget) workers, a \(capacityShortfall)-job capacity gap. Add Commercial or Industrial workplaces to close it: Commercial is cleaner; Industrial adds jobs faster but brings more pollution and utility load."
+        )
     }
 
     private static func announceCommercialTaxReliefAtDailyReview(_ state: inout CityGameState) {

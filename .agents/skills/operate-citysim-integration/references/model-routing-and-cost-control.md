@@ -126,7 +126,10 @@ Before Integration activates final QA, it creates one schema-2 `qa_handoff`
 envelope and runs `validate_model_route_v1.py --qa-handoff <path>`. The
 envelope binds the exact acceptance route and dispatch bytes, candidate
 ref/commit, absolute staged-app root, canonical tree seal and producer, and
-launch argv/environment/window. A 900x600 handoff must carry
+launch argv/environment/window. Its Integration-produced `stage_receipt`
+machine-binds `sourceCommit` to the candidate commit and projects the exact
+staged root, canonical digest producer, and seal into the handoff; a seal alone
+cannot establish source provenance. A 900x600 handoff must carry
 `CITYSIM_COMPACT_WINDOW=1` and an absolute isolated `CITYSIM_DATA_ROOT`.
 It also binds the stage producer's exact PID, sealed bundle executable, and
 required environment with exactly one disposition: the producer terminated

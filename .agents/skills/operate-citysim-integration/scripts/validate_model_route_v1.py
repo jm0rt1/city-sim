@@ -1297,8 +1297,12 @@ def validate_qa_handoff(handoff: Any, repo: Path) -> list[str]:
                     errors.append(f"cannot load composed-screen contract for QA handoff: {exc}")
 
     stage = handoff["stage"]
-    if not isinstance(stage, dict) or set(stage) != {"appRoot", "sha256", "producer"}:
-        errors.append("QA handoff stage must contain exactly appRoot, sha256, and producer")
+    if not isinstance(stage, dict) or set(stage) != {
+        "appRoot", "sha256", "producer", "receipt",
+    }:
+        errors.append(
+            "QA handoff stage must contain exactly appRoot, sha256, producer, and receipt"
+        )
         stage = {}
     app_root_value = stage.get("appRoot")
     app_root = Path(app_root_value) if isinstance(app_root_value, str) else None
@@ -1329,6 +1333,45 @@ def validate_qa_handoff(handoff: Any, repo: Path) -> list[str]:
             errors.append("QA handoff canonical stage producer failed")
         elif actual != stage_digest:
             errors.append("QA handoff staged-app seal does not match current bytes")
+
+    stage_receipt_binding = stage.get("receipt")
+    _check_binding(repo, stage_receipt_binding, "QA handoff stage.receipt", errors)
+    receipt_path = (
+        stage_receipt_binding.get("path")
+        if isinstance(stage_receipt_binding, dict)
+        else None
+    )
+    if isinstance(receipt_path, str) and (repo / receipt_path).is_file():
+        try:
+            stage_receipt = load_json(repo / receipt_path)
+        except ValidationError as exc:
+            errors.append(f"cannot load QA handoff stage receipt: {exc}")
+        else:
+            receipt_fields = {
+                "schema", "kind", "producerRole", "sourceCommit", "appRoot",
+                "sha256", "producer",
+            }
+            if not isinstance(stage_receipt, dict) or set(stage_receipt) != receipt_fields:
+                errors.append("QA handoff stage receipt has unsupported or missing fields")
+            else:
+                if (
+                    stage_receipt["schema"] != 1
+                    or stage_receipt["kind"] != "stage_receipt"
+                    or stage_receipt["producerRole"] != "integration"
+                ):
+                    errors.append(
+                        "QA handoff stage receipt must be schema 1 Integration stage_receipt"
+                    )
+                if stage_receipt["sourceCommit"] != candidate_commit:
+                    errors.append(
+                        "QA handoff stage receipt sourceCommit does not match candidate"
+                    )
+                if stage_receipt["appRoot"] != app_root_value:
+                    errors.append("QA handoff stage receipt appRoot does not match handoff")
+                if stage_receipt["sha256"] != stage_digest:
+                    errors.append("QA handoff stage receipt seal does not match handoff")
+                if stage_receipt["producer"] != producer:
+                    errors.append("QA handoff stage receipt producer does not match handoff")
 
     launch = handoff["launch"]
     launch_fields = {"command", "environment", "expectedWindow", "pidVerification"}

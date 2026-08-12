@@ -338,6 +338,17 @@ class ModelRouteTests(unittest.TestCase):
             ["bash", str(self.repo / "script" / "canonical_tree_digest.sh"), str(app_root)],
             text=True,
         ).strip()
+        stage_receipt = {
+            "schema": 1,
+            "kind": "stage_receipt",
+            "producerRole": "integration",
+            "sourceCommit": self.head,
+            "appRoot": str(app_root),
+            "sha256": digest,
+            "producer": copy.deepcopy(self.producer),
+        }
+        stage_receipt_path = self.repo / "inputs" / "stage-receipt.json"
+        stage_receipt_path.write_text(json.dumps(stage_receipt), encoding="utf-8")
         return {
             "schema": 2,
             "kind": "qa_handoff",
@@ -349,6 +360,7 @@ class ModelRouteTests(unittest.TestCase):
                 "appRoot": str(app_root),
                 "sha256": digest,
                 "producer": copy.deepcopy(self.producer),
+                "receipt": self._binding("inputs/stage-receipt.json"),
             },
             "stageProcess": {
                 "disposition": "terminated_before_handoff",
@@ -828,6 +840,11 @@ class ModelRouteTests(unittest.TestCase):
             ["bash", str(self.repo / "script" / "canonical_tree_digest.sh"), handoff["stage"]["appRoot"]],
             text=True,
         ).strip()
+        stage_receipt_path = self.repo / handoff["stage"]["receipt"]["path"]
+        stage_receipt = json.loads(stage_receipt_path.read_text(encoding="utf-8"))
+        stage_receipt["sha256"] = handoff["stage"]["sha256"]
+        stage_receipt_path.write_text(json.dumps(stage_receipt), encoding="utf-8")
+        handoff["stage"]["receipt"] = self._binding("inputs/stage-receipt.json")
         self.assertEqual([], validator.validate_qa_handoff(handoff, self.repo))
 
     def test_qa_handoff_accepts_exact_launchservices_environment(self) -> None:
@@ -931,6 +948,33 @@ class ModelRouteTests(unittest.TestCase):
         handoff["launch"]["pidVerification"]["command"] = ["pgrep", "CitySim"]
         errors = validator.validate_qa_handoff(handoff, self.repo)
         self.assertTrue(any("actual-PID" in error for error in errors), errors)
+
+    def test_qa_handoff_stage_receipt_binds_source_commit_and_seal(self) -> None:
+        handoff = self.qa_handoff()
+        self.assertEqual([], validator.validate_qa_handoff(handoff, self.repo))
+
+        receipt_path = self.repo / handoff["stage"]["receipt"]["path"]
+        receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+        receipt["sourceCommit"] = self.baseline
+        receipt_path.write_text(json.dumps(receipt), encoding="utf-8")
+        handoff["stage"]["receipt"] = self._binding("inputs/stage-receipt.json")
+        errors = validator.validate_qa_handoff(handoff, self.repo)
+        self.assertTrue(any("sourceCommit does not match" in error for error in errors), errors)
+
+    def test_qa_handoff_stage_receipt_rejects_projection_or_binding_drift(self) -> None:
+        handoff = self.qa_handoff()
+        receipt_path = self.repo / handoff["stage"]["receipt"]["path"]
+        receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+        receipt["sha256"] = "0" * 64
+        receipt_path.write_text(json.dumps(receipt), encoding="utf-8")
+        handoff["stage"]["receipt"] = self._binding("inputs/stage-receipt.json")
+        errors = validator.validate_qa_handoff(handoff, self.repo)
+        self.assertTrue(any("seal does not match handoff" in error for error in errors), errors)
+
+        handoff = self.qa_handoff()
+        handoff["stage"]["receipt"]["sha256"] = "0" * 64
+        errors = validator.validate_qa_handoff(handoff, self.repo)
+        self.assertTrue(any("does not match repository bytes" in error for error in errors), errors)
 
     def test_qa_handoff_rejects_legacy_or_mismatched_stage_process_contract(self) -> None:
         handoff = self.qa_handoff()

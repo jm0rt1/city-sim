@@ -594,7 +594,10 @@ commands cannot establish drift and must not trigger a rebuild or second gate.
 Before final-QA activation, Integration also validates one schema-2
 `qa_handoff` envelope that binds the acceptance route and dispatch, exact
 candidate ref/commit, staged root/seal/producer, and launch
-argv/environment/window. QA launches that contract and verifies its environment
+argv/environment/window. An Integration-produced stage receipt binds its exact
+`sourceCommit` to the candidate and projects the same staged root, canonical
+digest producer, and seal; an otherwise valid tree seal with different or
+unbound source provenance is setup failure. QA launches that contract and verifies its environment
 on the actual PID before interaction. A 900x600 run requires
 `CITYSIM_COMPACT_WINDOW=1` plus an absolute isolated `CITYSIM_DATA_ROOT`.
 The same envelope binds the stage producer's exact PID, sealed bundle

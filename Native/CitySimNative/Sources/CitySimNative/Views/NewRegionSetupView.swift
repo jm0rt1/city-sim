@@ -115,18 +115,84 @@ struct NewRegionSetupView: View {
     @ViewBuilder
     private func configurationPanel(compact: Bool) -> some View {
         Group {
-            if draft.experience == .guidedFoundations {
+            switch draft.experience {
+            case .guidedFoundations:
                 highlightPanel(
                     title: "Authored opening",
                     symbol: "sparkles",
                     highlights: presentation.guidedHighlights,
                     compact: compact
                 )
-            } else {
+            case .authoredScenario:
+                scenarioConfiguration(compact: compact)
+            case .openSandbox:
                 sandboxConfiguration(compact: compact)
             }
         }
         .frame(maxWidth: .infinity, alignment: .top)
+    }
+
+    private func scenarioConfiguration(compact: Bool) -> some View {
+        let scenario = CityAuthoredScenarioCatalog.harborRecovery
+        return VStack(alignment: .leading, spacing: compact ? 8 : 10) {
+            HStack {
+                Label(scenario.eyebrow, systemImage: "flag.checkered")
+                    .font(.headline)
+                    .foregroundStyle(GameTheme.warning)
+                Spacer()
+                Label(scenario.estimatedDuration, systemImage: "clock.fill")
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(.secondary)
+            }
+            Text(scenario.briefing)
+                .font(.callout)
+                .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+            Label(scenario.objective, systemImage: "scope")
+                .font(.caption.weight(.semibold))
+                .fixedSize(horizontal: false, vertical: true)
+
+            HStack(alignment: .top, spacing: 8) {
+                ForEach(scenario.targetTiers) { tier in
+                    VStack(alignment: .leading, spacing: 3) {
+                        Label(tier.medal.title, systemImage: tier.medal.symbol)
+                            .font(.caption.weight(.bold))
+                            .foregroundStyle(tier.medal == .gold ? GameTheme.warning : GameTheme.accent)
+                        Text(tier.requirements)
+                            .font(.system(size: 9))
+                            .foregroundStyle(.secondary)
+                            .fixedSize(horizontal: false, vertical: true)
+                        Text(tier.deadline)
+                            .font(.system(size: 9, weight: .bold))
+                            .foregroundStyle(.secondary)
+                    }
+                    .padding(8)
+                    .frame(maxWidth: .infinity, alignment: .topLeading)
+                    .background(.black.opacity(0.14), in: RoundedRectangle(cornerRadius: 10))
+                }
+            }
+
+            if !compact {
+                HStack(alignment: .top, spacing: 14) {
+                    ForEach(scenario.constraints, id: \.self) { constraint in
+                        Label(constraint, systemImage: "checkmark.shield.fill")
+                            .font(.system(size: 9))
+                            .foregroundStyle(.secondary)
+                            .frame(maxWidth: .infinity, alignment: .topLeading)
+                    }
+                }
+            } else {
+                Text("Normal costs and crises stay active · Pause is safe · Deadline: Day 41")
+                    .font(.caption2.weight(.semibold))
+                    .foregroundStyle(.secondary)
+            }
+        }
+        .padding(compact ? 12 : 16)
+        .frame(maxWidth: .infinity, alignment: .topLeading)
+        .background(
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .fill(Color.white.opacity(0.035))
+        )
     }
 
     private func highlightPanel(
@@ -243,9 +309,7 @@ struct NewRegionSetupView: View {
 
     private var actionBar: some View {
         HStack(spacing: 12) {
-            Text(draft.experience == .guidedFoundations
-                ? "Guidance can be revisited in the City Handbook."
-                : "The seed makes this start reproducible across new sessions.")
+            Text(supportingFooter)
                 .font(.caption)
                 .foregroundStyle(.secondary)
             Spacer()
@@ -261,6 +325,17 @@ struct NewRegionSetupView: View {
                 .keyboardShortcut(.defaultAction)
                 .disabled(draft.configuration == nil)
                 .accessibilityIdentifier("new-region-setup.create")
+        }
+    }
+
+    private var supportingFooter: String {
+        switch draft.experience {
+        case .guidedFoundations:
+            "Guidance can be revisited in the City Handbook."
+        case .authoredScenario:
+            "The deterministic start, deadline, medal, and outcome persist with the city."
+        case .openSandbox:
+            "The seed makes this start reproducible across new sessions."
         }
     }
 }

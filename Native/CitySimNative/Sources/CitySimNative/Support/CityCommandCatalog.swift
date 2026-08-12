@@ -221,7 +221,7 @@ enum CityCommandCatalog {
             ))
         }
 
-        add(.newRegion, "New Region", .files, "Start a fresh authored city.", shortcut: shortcut("n", [.command], "⌘N", scope: .global))
+        add(.newRegion, "New Region", .files, "Choose a guided city, authored scenario, or sandbox.", shortcut: shortcut("n", [.command], "⌘N", scope: .global))
         add(.saveCity, "Save City", .files, "Save the current city.", shortcut: shortcut("s", [.command], "⌘S", scope: .global))
         add(.saveBranch, "Create Timeline Branch…", .files, "Preserve the current city as a named timeline.", shortcut: shortcut("s", [.command, .shift], "⇧⌘S", scope: .global))
         add(.loadCity, "Load City", .files, "Browse every verified recovery checkpoint.", shortcut: shortcut("o", [.command], "⌘O", scope: .global))

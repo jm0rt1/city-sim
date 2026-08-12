@@ -321,6 +321,7 @@ enum CitySimulation {
             updateSecondActProgression(&state)
             checkMilestones(&state, previousPopulation: previousPopulation)
             checkEndState(&state)
+            CityAuthoredScenarioEngine.evaluate(&state)
         }
     }
 
@@ -854,6 +855,7 @@ enum CitySimulation {
     }
 
     private static func advanceStrategyStory(_ state: inout CityGameState) {
+        guard state.authoredScenario == nil else { return }
         var progression = state.progression ?? CityProgressionState()
 
         guard var story = progression.strategy else {
@@ -1235,6 +1237,7 @@ enum CitySimulation {
     }
 
     private static func issuePressureWarnings(_ state: inout CityGameState) {
+        guard state.authoredScenario == nil else { return }
         let balance = projectedBalance(in: state)
         let coverage = utilityCoverage(in: state)
         let reserve = utilityReserve(in: state)
@@ -1375,6 +1378,7 @@ enum CitySimulation {
     }
 
     private static func updateTownCharterProgression(_ state: inout CityGameState) {
+        guard state.authoredScenario == nil else { return }
         var progression = state.progression ?? CityProgressionState()
         guard !progression.townCharterAwarded else {
             state.progression = progression
@@ -1456,6 +1460,7 @@ enum CitySimulation {
     }
 
     private static func updateSecondActProgression(_ state: inout CityGameState) {
+        guard state.authoredScenario == nil else { return }
         guard var progression = state.progression,
               var secondAct = progression.secondAct,
               let story = progression.strategy,

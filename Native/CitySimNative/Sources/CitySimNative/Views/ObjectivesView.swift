@@ -7,7 +7,10 @@ struct ObjectivesView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
-                Label("MAYOR'S MANDATE", systemImage: "flag.checkered")
+                Label(
+                    store.state.authoredScenario == nil ? "MAYOR'S MANDATE" : "SCENARIO OBJECTIVES",
+                    systemImage: "flag.checkered"
+                )
                     .font(.system(size: 11, weight: .heavy, design: .rounded))
                 Spacer()
                 Button { store.perform(.toggleObjectives) } label: {
@@ -152,7 +155,9 @@ struct ObjectiveSummaryView: View {
                 Image(systemName: objective.completed ? "checkmark.circle.fill" : "flag.checkered")
                     .foregroundStyle(objective.completed ? GameTheme.accent : .cyan)
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(objective.completed ? "Mandate complete" : objective.title)
+                    Text(objective.completed
+                        ? (store.state.authoredScenario == nil ? "Mandate complete" : "Scenario target complete")
+                        : objective.title)
                         .font(.caption.weight(.semibold))
                         .lineLimit(1)
                     Text(objective.remaining)

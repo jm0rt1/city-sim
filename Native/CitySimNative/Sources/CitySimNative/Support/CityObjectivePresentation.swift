@@ -165,6 +165,18 @@ struct CityObjectivePresentation: Identifiable, Equatable, Sendable {
         }
     }
 
+    static func trendForScenario(
+        progress: Double,
+        completed: Bool,
+        previousProgress: Double?
+    ) -> CityObjectiveTrend {
+        trend(
+            progress: progress,
+            completed: completed,
+            previousProgress: previousProgress
+        )
+    }
+
     private static func trend(
         progress: Double,
         completed: Bool,

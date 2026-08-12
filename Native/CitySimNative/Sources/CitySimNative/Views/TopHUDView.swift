@@ -195,7 +195,9 @@ struct TopHUDView: View {
                     .accessibilityHidden(true)
                 VStack(alignment: .leading, spacing: 2) {
                     HStack(spacing: 3) {
-                        Text(mandateComplete ? "Mandate complete" : objective.title)
+                        Text(mandateComplete
+                            ? (store.state.authoredScenario == nil ? "Mandate complete" : "Scenario targets complete")
+                            : objective.title)
                             .font(.system(size: GameTheme.hudCriticalTextSize, weight: .bold, design: .rounded))
                             .lineLimit(1)
                         Spacer(minLength: 1)
@@ -461,7 +463,7 @@ struct FocusCityHUDView: View {
     static let regularMaximumHeight: CGFloat = 68
 
     private var strategy: CityStrategyHUDPresentation {
-        CityStrategyHUDPresentation.make(analytics: store.analytics)
+        CityStrategyHUDPresentation.make(state: store.state)
     }
 
     private var simulationStatus: HUDSimulationStatePresentation {

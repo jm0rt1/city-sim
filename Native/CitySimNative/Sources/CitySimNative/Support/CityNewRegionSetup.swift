@@ -2,6 +2,7 @@ import Foundation
 
 enum CityNewRegionExperience: String, CaseIterable, Identifiable, Equatable, Sendable {
     case guidedFoundations
+    case authoredScenario
     case openSandbox
 
     var id: String { rawValue }
@@ -9,6 +10,7 @@ enum CityNewRegionExperience: String, CaseIterable, Identifiable, Equatable, Sen
     var title: String {
         switch self {
         case .guidedFoundations: "Guided Foundations"
+        case .authoredScenario: "Harbor Recovery"
         case .openSandbox: "Open Sandbox"
         }
     }
@@ -16,6 +18,7 @@ enum CityNewRegionExperience: String, CaseIterable, Identifiable, Equatable, Sen
     var symbol: String {
         switch self {
         case .guidedFoundations: "signpost.right.and.left.fill"
+        case .authoredScenario: "flag.checkered.2.crossed"
         case .openSandbox: "slider.horizontal.3"
         }
     }
@@ -24,6 +27,8 @@ enum CityNewRegionExperience: String, CaseIterable, Identifiable, Equatable, Sen
         switch self {
         case .guidedFoundations:
             "Rebuild New Arcadia through an authored two-act mayoral mandate."
+        case .authoredScenario:
+            "Stabilize a pressured harbor town before its 40-day deadline."
         case .openSandbox:
             "Choose your city identity, deterministic seed, and starting resources."
         }
@@ -32,6 +37,7 @@ enum CityNewRegionExperience: String, CaseIterable, Identifiable, Equatable, Sen
     var actionTitle: String {
         switch self {
         case .guidedFoundations: "Begin Guided City"
+        case .authoredScenario: "Start Scenario"
         case .openSandbox: "Create Sandbox"
         }
     }
@@ -76,6 +82,9 @@ struct CityNewRegionConfiguration: Equatable, Sendable {
     let startingResources: CitySandboxStartingResources
 
     func makeState() -> CityGameState {
+        if experience == .authoredScenario {
+            return CityAuthoredScenarioCatalog.harborRecovery.makeState()
+        }
         var state = CityGameState.newCity(seed: seed)
         state.cityName = cityName
         state.treasury = startingResources.treasury
@@ -118,6 +127,14 @@ struct CityNewRegionDraft: Equatable, Sendable {
                 seed: seed,
                 startingResources: .balanced
             )
+        case .authoredScenario:
+            let scenario = CityAuthoredScenarioCatalog.harborRecovery
+            return CityNewRegionConfiguration(
+                experience: experience,
+                cityName: scenario.cityName,
+                seed: scenario.seed,
+                startingResources: .balanced
+            )
         case .openSandbox:
             let cleanedName = cityName.trimmingCharacters(in: .whitespacesAndNewlines)
             guard !cleanedName.isEmpty, cleanedName.count <= 40 else { return nil }
@@ -154,7 +171,7 @@ struct CityNewRegionSetupPresentation: Equatable, Sendable {
 
     static let standard = CityNewRegionSetupPresentation(
         title: "Choose Your Next City",
-        detail: "Start with authored guidance or shape a deterministic sandbox on your terms.",
+        detail: "Choose a guided city, an authored challenge, or a deterministic sandbox.",
         guidedHighlights: [
             "Two-act Town Charter and Regional Capital journey",
             "Contextual objectives, recovery choices, and checkpoints",

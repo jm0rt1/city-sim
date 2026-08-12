@@ -57,7 +57,10 @@ final class CityNewRegionSetupTests: XCTestCase {
     func testModePresentationExplainsPlayerConsequencesBeforeCommitment() {
         let presentation = CityNewRegionSetupPresentation.standard
 
-        XCTAssertEqual(CityNewRegionExperience.allCases.count, 2)
+        XCTAssertEqual(
+            CityNewRegionExperience.allCases,
+            [.guidedFoundations, .authoredScenario, .openSandbox]
+        )
         XCTAssertTrue(presentation.title.contains("Next City"))
         XCTAssertTrue(presentation.guidedHighlights.contains {
             $0.contains("Town Charter and Regional Capital")
@@ -68,6 +71,10 @@ final class CityNewRegionSetupTests: XCTestCase {
         XCTAssertTrue(presentation.sandboxHighlights.contains {
             $0.contains("milestones are optional")
         })
+        let scenario = CityAuthoredScenarioCatalog.harborRecovery
+        XCTAssertTrue(scenario.briefing.contains("harbor town"))
+        XCTAssertTrue(scenario.objective.contains("Day 41"))
+        XCTAssertEqual(scenario.targetTiers.map(\.medal), [.bronze, .silver, .gold])
     }
 
     @MainActor

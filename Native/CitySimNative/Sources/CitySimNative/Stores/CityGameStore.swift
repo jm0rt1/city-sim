@@ -131,6 +131,9 @@ final class CityGameStore: ObservableObject {
     }
 
     var objectives: [CityObjective] {
+        if let scenario = CityAuthoredScenarioEvaluation.make(state: state) {
+            return scenario.objectives
+        }
         let metrics = analytics
         let budgetProgress = min(1, max(0, 1 + metrics.projectedBalance / 250))
         let capacityProgress = min(
@@ -210,6 +213,9 @@ final class CityGameStore: ObservableObject {
     }
 
     var objectivePresentations: [CityObjectivePresentation] {
+        if let scenario = CityAuthoredScenarioEvaluation.make(state: state) {
+            return scenario.presentations(previousProgressByID: previousObjectiveProgressByID)
+        }
         let metrics = analytics
         return objectives.map {
             CityObjectivePresentation.make(
@@ -440,9 +446,13 @@ final class CityGameStore: ObservableObject {
                 case .playing:
                     "Unavailable in the current context"
                 case .won:
-                    "The mayoral mandate is complete; start a new region or load a city"
+                    state.authoredScenario == nil
+                        ? "The mayoral mandate is complete; start a new region or load a city"
+                        : "The authored scenario is complete; start a new region or load a city"
                 case .lost:
-                    "This city session ended in crisis; start a new region or load a city"
+                    state.authoredScenario == nil
+                        ? "This city session ended in crisis; start a new region or load a city"
+                        : "The authored scenario ended; start a new region or load a city"
                 }
             }
         }
@@ -1066,6 +1076,20 @@ final class CityGameStore: ObservableObject {
 
     func openObjective(_ objective: CityObjective) {
         switch objective.id {
+        case "scenario-stability":
+            showObjectives = true
+            if CitySimulation.utilityCoverage(in: state) < 1 {
+                overlay = .utilities
+                openInspector(.utilities)
+            } else {
+                openInspector(.finances)
+            }
+        case "scenario-reserve":
+            showObjectives = true
+            openInspector(.finances)
+        case "scenario-population":
+            showObjectives = true
+            openInspector(.population)
         case "stabilize": openInspector(.finances)
         case "capacity": openInspector(.utilities)
         case "strategy":
@@ -1317,6 +1341,14 @@ final class CityGameStore: ObservableObject {
         switch configuration.experience {
         case .guidedFoundations:
             showFeedback("Guided Foundations ready · New Arcadia · Seed \(configuration.seed)")
+        case .authoredScenario:
+            showObjectives = true
+            let scenario = CityAuthoredScenarioCatalog.harborRecovery
+            showFeedback(
+                "Scenario ready · \(scenario.title) · 40 city days · Start paused",
+                tone: .positive,
+                autoDismissAfter: nil
+            )
         case .openSandbox:
             showFeedback(
                 "Sandbox ready · \(configuration.cityName) · Seed \(configuration.seed) · "
@@ -1738,12 +1770,14 @@ final class CityGameStore: ObservableObject {
         inspectorSection = .overview
         hudContextScope = .city
         showInspector = false
+        showObjectives = state.authoredScenario?.result == .active
         showCommandGuide = false
         showCityHandbook = false
         isCityFocusModeEnabled = false
         undoStates.removeAll()
         canUndo = false
-        let brief = CityResumeBriefPresentation.make(analytics: analytics)
+        let scenario = CityAuthoredScenarioEvaluation.make(state: state)
+        let brief = scenario == nil ? CityResumeBriefPresentation.make(analytics: analytics) : nil
         let persistenceFeedback = if let migration {
             CityPersistenceFeedbackPresentation.loadedLegacyMigration(
                 state,
@@ -1775,10 +1809,16 @@ final class CityGameStore: ObservableObject {
                 recoveredFromBackup: result.recoveredFromBackup
             )
         }
+        let loadedMessage = if let scenario, scenario.session.result == .active {
+            persistenceFeedback.message + " · \(scenario.definition.title) · "
+                + "\(scenario.daysRemaining) days remaining · \(scenario.adaptiveHint)"
+        } else {
+            persistenceFeedback.message
+        }
         showFeedback(
-            persistenceFeedback.message,
+            loadedMessage,
             tone: migrationError == nil ? .positive : .caution,
-            autoDismissAfter: migrationError == nil && brief == nil ? 3.2 : nil,
+            autoDismissAfter: migrationError == nil && brief == nil && scenario == nil ? 3.2 : nil,
             resumeBrief: brief
         )
     }

@@ -149,6 +149,7 @@ struct CityGameState: Codable, Equatable, Sendable {
     var messages: [CityMessage]
     var progression: CityProgressionState?
     var stormRecovery: CityStormRecoveryState? = nil
+    var authoredScenario: CityAuthoredScenarioSession? = nil
     var status: GameStatus
     var seed: UInt64
 

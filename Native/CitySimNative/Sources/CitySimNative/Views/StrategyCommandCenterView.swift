@@ -21,6 +21,13 @@ struct CityStrategyHUDPresentation: Equatable {
         [status, summary].filter { !$0.isEmpty }.joined(separator: ". ")
     }
 
+    static func make(state: CityGameState) -> CityStrategyHUDPresentation {
+        if let scenario = CityAuthoredScenarioEvaluation.make(state: state) {
+            return authoredScenario(scenario)
+        }
+        return make(analytics: CityAnalytics(state: state))
+    }
+
     static func make(analytics: CityAnalytics) -> CityStrategyHUDPresentation {
         guard !analytics.awaitingStrategyChoice,
               let strategy = analytics.committedStrategy else {
@@ -88,6 +95,86 @@ struct CityStrategyHUDPresentation: Equatable {
                 resolution: analytics.strategyRecoveryResolution
             )
         }
+    }
+
+    private static func authoredScenario(
+        _ scenario: CityAuthoredScenarioEvaluation
+    ) -> CityStrategyHUDPresentation {
+        let diagnostic: CityDirectResponse
+        if scenario.utilityCoverage < 1 || scenario.utilityReserve < 0.08 {
+            diagnostic = CityDirectResponse(
+                title: "Diagnose utilities",
+                command: .inspectorUtilities,
+                explanation: "Review power and water coverage, capacity, and reserve before committing to more growth.",
+                focusesMap: false
+            )
+        } else if scenario.projectedBalance < 0 || scenario.treasury < 15_000 {
+            diagnostic = CityDirectResponse(
+                title: "Diagnose cashflow",
+                command: .inspectorFinances,
+                explanation: "Review revenue, upkeep, tax policy, and the emergency reserve.",
+                focusesMap: false
+            )
+        } else if scenario.population < 380 {
+            diagnostic = CityDirectResponse(
+                title: "Plan measured growth",
+                command: .inspectorPopulation,
+                explanation: "Review housing and population conditions before welcoming more residents.",
+                focusesMap: false
+            )
+        } else {
+            diagnostic = CityDirectResponse(
+                title: "Protect happiness",
+                command: .inspectorHappiness,
+                explanation: "Review the conditions affecting resident happiness before the next daily review.",
+                focusesMap: false
+            )
+        }
+
+        let routes = [
+            CityDirectResponse(
+                title: "Review finances",
+                command: .inspectorFinances,
+                explanation: "Review cashflow, tax policy, upkeep, and the $15,000 reserve requirement.",
+                focusesMap: false
+            ),
+            CityDirectResponse(
+                title: "Review utilities",
+                command: .inspectorUtilities,
+                explanation: "Review full coverage and reserve capacity for power and water.",
+                focusesMap: false
+            ),
+            CityDirectResponse(
+                title: "Review population",
+                command: .inspectorPopulation,
+                explanation: "Review progress toward 380 residents and the conditions supporting measured growth.",
+                focusesMap: false
+            ),
+        ].filter { $0.command != diagnostic.command }
+
+        let status: String
+        let tone: CityStrategyHUDTone
+        switch scenario.session.result {
+        case .active:
+            status = "\(scenario.daysRemaining) DAYS LEFT"
+            tone = scenario.daysRemaining <= 10 ? .urgent : .recovery
+        case .bronze, .silver, .gold:
+            status = "RECOVERY SECURED"
+            tone = .resolved
+        case .failedDeadline, .failedCityCrisis:
+            status = "SCENARIO ENDED"
+            tone = .urgent
+        }
+
+        return CityStrategyHUDPresentation(
+            eyebrow: scenario.definition.title.uppercased(),
+            title: "Stabilize \(scenario.definition.cityName)",
+            status: status,
+            summary: scenario.adaptiveHint,
+            tone: tone,
+            diagnostic: diagnostic,
+            actions: routes
+        )
     }
 
     private static func townCharter(
@@ -489,7 +576,7 @@ struct StrategyCommandCenterView: View {
     static let regularMaximumHeight: CGFloat = 52
 
     private var presentation: CityStrategyHUDPresentation {
-        CityStrategyHUDPresentation.make(analytics: store.analytics)
+        CityStrategyHUDPresentation.make(state: store.state)
     }
 
     private var trajectory: CityTrajectoryHUDPresentation {

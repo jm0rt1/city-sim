@@ -157,11 +157,11 @@ struct CityHandbookPresentation: Equatable, Sendable {
                 entries: [
                     CityHandbookEntry(
                         id: "start-new-region",
-                        title: "Choose guided or sandbox play",
-                        detail: "New Region offers Guided Foundations with an authored two-act mandate, or Open Sandbox with a custom city name, reproducible seed, and lean, balanced, or generous starting resources. The current city is preserved until you create the new start.",
+                        title: "Choose guided, scenario, or sandbox play",
+                        detail: "New Region offers Guided Foundations, the deterministic Harbor Recovery scenario with a deadline and medal tiers, or Open Sandbox with a custom city name, reproducible seed, and starting resources. The current city is preserved until you create the new start.",
                         symbol: "map.fill",
                         shortcut: "⌘N",
-                        keywords: ["mode", "sandbox", "seed", "starting resources", "guided", "new region"]
+                        keywords: ["mode", "scenario", "harbor recovery", "medal", "sandbox", "seed", "starting resources", "guided", "new region"]
                     ),
                     CityHandbookEntry(
                         id: "start-pause",

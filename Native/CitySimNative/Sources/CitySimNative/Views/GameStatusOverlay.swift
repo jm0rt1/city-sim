@@ -205,6 +205,10 @@ struct GameStatusOverlay: View {
     @FocusState private var replayFocus: ReplayFocus?
     @State private var replayTransitionStarted = false
 
+    private var scenarioDebrief: CityScenarioDebriefPresentation? {
+        CityScenarioDebriefPresentation.make(state: store.state)
+    }
+
     var body: some View {
         GeometryReader { proxy in
             let compact = proxy.size.width < 1_100 || proxy.size.height < 700
@@ -217,7 +221,9 @@ struct GameStatusOverlay: View {
                     statusHeader(compact: compact)
 
                     ScrollView {
-                        if store.state.status == .won {
+                        if let scenarioDebrief {
+                            scenarioContent(scenarioDebrief, compact: compact)
+                        } else if store.state.status == .won {
                             victoryContent(compact: compact)
                         } else {
                             lossContent
@@ -258,11 +264,20 @@ struct GameStatusOverlay: View {
     @ViewBuilder
     private func statusHeader(compact: Bool) -> some View {
         VStack(spacing: compact ? 7 : 10) {
-            Image(systemName: store.state.status == .won ? "checkmark.seal.fill" : "exclamationmark.octagon.fill")
+            let succeeded = scenarioDebrief?.succeeded ?? (store.state.status == .won)
+            Image(systemName: succeeded ? "checkmark.seal.fill" : "exclamationmark.octagon.fill")
                 .font(.system(size: compact ? 38 : 50, weight: .bold))
-                .foregroundStyle(store.state.status == .won ? GameTheme.warning : GameTheme.danger)
+                .foregroundStyle(succeeded ? GameTheme.warning : GameTheme.danger)
                 .accessibilityHidden(true)
-            if store.state.status == .won {
+            if let scenarioDebrief {
+                Text(scenarioDebrief.eyebrow.uppercased())
+                    .font(.caption.weight(.black))
+                    .tracking(1.4)
+                    .foregroundStyle(scenarioDebrief.succeeded ? GameTheme.warning : GameTheme.danger)
+                Text(scenarioDebrief.title)
+                    .font(.system(size: compact ? 25 : 31, weight: .heavy, design: .rounded))
+                    .multilineTextAlignment(.center)
+            } else if store.state.status == .won {
                 let presentation = CityVictoryPresentation.make(state: store.state, analytics: store.analytics)
                 Text(presentation.eyebrow.uppercased())
                     .font(.caption.weight(.black))
@@ -277,6 +292,68 @@ struct GameStatusOverlay: View {
                     .multilineTextAlignment(.center)
             }
         }
+    }
+
+    private func scenarioContent(
+        _ presentation: CityScenarioDebriefPresentation,
+        compact: Bool
+    ) -> some View {
+        VStack(spacing: compact ? 12 : 16) {
+            Text(presentation.summary)
+                .font(compact ? .body : .title3)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+
+            LazyVGrid(
+                columns: Array(
+                    repeating: GridItem(.flexible(), spacing: 10),
+                    count: compact ? 2 : 4
+                ),
+                spacing: 10
+            ) {
+                ForEach(presentation.metrics) { metric in
+                    HStack(spacing: 8) {
+                        Image(systemName: metric.symbol)
+                            .foregroundStyle(GameTheme.accent)
+                            .accessibilityHidden(true)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(metric.label)
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                            Text(metric.value)
+                                .font(.headline.monospacedDigit())
+                                .lineLimit(2)
+                        }
+                        Spacer(minLength: 0)
+                    }
+                    .padding(10)
+                    .background(.white.opacity(0.055), in: RoundedRectangle(cornerRadius: 12))
+                    .accessibilityElement(children: .combine)
+                }
+            }
+
+            VStack(alignment: .leading, spacing: 10) {
+                Label(
+                    presentation.succeeded ? "Outcome" : "What Blocked Recovery",
+                    systemImage: presentation.succeeded ? "medal.fill" : "waveform.path.ecg"
+                )
+                .font(.headline)
+                .foregroundStyle(presentation.succeeded ? GameTheme.warning : GameTheme.danger)
+                Text(presentation.outcomeDetail)
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+                Divider()
+                Label(presentation.nextStep, systemImage: "arrow.counterclockwise.circle.fill")
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            .padding(14)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(.black.opacity(0.16), in: RoundedRectangle(cornerRadius: 16))
+        }
+        .padding(.horizontal, 2)
     }
 
     @ViewBuilder
@@ -421,7 +498,7 @@ struct GameStatusOverlay: View {
                 .focused($replayFocus, equals: .newRegion)
                 .disabled(replayTransitionStarted)
                 .accessibilityIdentifier("victory.start-new-region")
-                .accessibilityHint("Starts one fresh authored city and closes this result")
+                .accessibilityHint("Opens guided, scenario, and sandbox choices")
 
             Button("Browse Checkpoints") { store.perform(.loadCity) }
                 .buttonStyle(.bordered)
@@ -444,6 +521,7 @@ struct GameStatusOverlay: View {
     }
 
     private var accessibilitySummary: String {
+        if let scenarioDebrief { return scenarioDebrief.accessibilitySummary }
         if store.state.status == .won {
             return CityVictoryPresentation.make(state: store.state, analytics: store.analytics)
                 .accessibilitySummary
@@ -452,6 +530,7 @@ struct GameStatusOverlay: View {
     }
 
     private var blockingAccessibilityLabel: String {
+        if let scenarioDebrief { return scenarioDebrief.accessibilityLabel }
         if store.state.status == .won {
             return CityVictoryPresentation.make(state: store.state, analytics: store.analytics)
                 .accessibilityLabel

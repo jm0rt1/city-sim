@@ -146,7 +146,7 @@ final class BackupLoadAvailabilityTests: XCTestCase {
     }
 
     @MainActor
-    func testInvalidBackupAvailabilityDoesNotValidateRepairOrReportFalseSuccess() throws {
+    func testInvalidBackupAvailabilityPreservesStateFilesAndPersistentWarning() throws {
         try withTemporaryRoot { root in
             let service = SaveGameService(rootURL: root)
             try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
@@ -165,7 +165,11 @@ final class BackupLoadAvailabilityTests: XCTestCase {
             XCTAssertEqual(store.state, initial)
             XCTAssertEqual(store.speed, .normal)
             XCTAssertFalse(store.canUndo)
-            XCTAssertEqual(store.lastFeedback, "No valid save was found")
+            XCTAssertEqual(
+                store.lastFeedback,
+                "Quicksave could not be verified · Original save files were preserved"
+            )
+            XCTAssertEqual(store.lastFeedbackTone, .caution)
             XCTAssertEqual(try Data(contentsOf: service.backupURL), invalidBytes)
             XCTAssertFalse(FileManager.default.fileExists(atPath: service.saveURL.path))
 
@@ -173,6 +177,45 @@ final class BackupLoadAvailabilityTests: XCTestCase {
                 $0.hasPrefix("quicksave.backup.corrupt-")
             }
             XCTAssertEqual(preserved.count, 1)
+
+            RunLoop.main.run(until: Date(timeIntervalSinceNow: 3.3))
+            XCTAssertEqual(
+                store.lastFeedback,
+                "Quicksave could not be verified · Original save files were preserved",
+                "Data-integrity warnings must remain until the player dismisses them"
+            )
+            XCTAssertTrue(store.perform(.dismissFeedback))
+            XCTAssertNil(store.lastFeedback)
+        }
+    }
+
+    @MainActor
+    func testSaveFailureKeepsTheLiveCityAndPersistentWarning() throws {
+        try withTemporaryRoot { temporaryRoot in
+            try FileManager.default.createDirectory(
+                at: temporaryRoot,
+                withIntermediateDirectories: true
+            )
+            let blockedRoot = temporaryRoot.appending(path: "not-a-directory")
+            try Data("occupied".utf8).write(to: blockedRoot)
+            let service = SaveGameService(rootURL: blockedRoot)
+            let initial = CityGameState.newCity(seed: 77)
+            let store = CityGameStore(state: initial, saveService: service)
+
+            XCTAssertTrue(store.perform(.saveCity))
+            XCTAssertEqual(store.state, initial)
+            XCTAssertTrue(
+                store.lastFeedback?.hasPrefix("Save failed · Your current city is still open:") == true
+            )
+            XCTAssertEqual(store.lastFeedbackTone, .caution)
+
+            RunLoop.main.run(until: Date(timeIntervalSinceNow: 3.3))
+            XCTAssertTrue(
+                store.lastFeedback?.hasPrefix("Save failed · Your current city is still open:") == true,
+                "Save failures must remain until the player dismisses them"
+            )
+            XCTAssertTrue(store.perform(.dismissFeedback))
+            XCTAssertNil(store.lastFeedback)
         }
     }
 

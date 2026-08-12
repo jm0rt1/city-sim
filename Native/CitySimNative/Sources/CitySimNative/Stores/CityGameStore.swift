@@ -936,7 +936,13 @@ final class CityGameStore: ObservableObject {
 
     func save() {
         do { try saves.save(state); showFeedback("City saved", tone: .positive); playSound(named: "Glass") }
-        catch { showFeedback("Save failed: \(error.localizedDescription)", tone: .caution) }
+        catch {
+            showFeedback(
+                "Save failed · Your current city is still open: \(error.localizedDescription)",
+                tone: .caution,
+                autoDismissAfter: nil
+            )
+        }
     }
 
     func load() {
@@ -966,7 +972,13 @@ final class CityGameStore: ObservableObject {
                 autoDismissAfter: brief == nil ? 3.2 : nil,
                 resumeBrief: brief
             )
-        } catch { showFeedback("No valid save was found", tone: .caution) }
+        } catch {
+            showFeedback(
+                "Quicksave could not be verified · Original save files were preserved",
+                tone: .caution,
+                autoDismissAfter: nil
+            )
+        }
     }
 
     func undoLastAction() {

@@ -5370,17 +5370,13 @@ final class WorldRenderingTests: XCTestCase {
 
     @MainActor
     func testRendererDiagnosticsSeparateWorldUpdateTotalRenderAndAssetDecode() throws {
-        let scene = CityScene(size: CGSize(width: 1_280, height: 800))
-        scene.reducedMotion = true
-        let snapshot = try CityPresentationSnapshot(state: goldenNeighborhoodState())
-
-        scene.render(
-            snapshot: snapshot,
-            overlay: .none,
-            selection: nil,
-            interactionMode: .inspect
+        let state = goldenNeighborhoodState()
+        let fixture = freshSKViewAttachedLifecycleFixture(
+            state: state,
+            size: CGSize(width: 1_280, height: 800)
         )
-        let cold = scene.diagnosticsSnapshot
+        XCTAssertTrue(fixture.view.scene === fixture.scene)
+        let cold = fixture.scene.diagnosticsSnapshot
         XCTAssertEqual(cold.updateDurationMilliseconds, cold.worldUpdateDurationMilliseconds)
         XCTAssertGreaterThan(cold.worldUpdateDurationMilliseconds, 0)
         XCTAssertGreaterThanOrEqual(cold.totalRenderDurationMilliseconds, cold.worldUpdateDurationMilliseconds)
@@ -5398,19 +5394,15 @@ final class WorldRenderingTests: XCTestCase {
                 + cold.tileBuildDurationMilliseconds,
             cold.worldUpdateDurationMilliseconds
         )
-        scene.render(
-            snapshot: snapshot,
-            overlay: .none,
-            selection: nil,
-            interactionMode: .inspect
-        )
-        let unchanged = scene.diagnosticsSnapshot
+        fixture.scene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
+        let unchanged = fixture.scene.diagnosticsSnapshot
         XCTAssertEqual(unchanged.worldUpdateDurationMilliseconds, 0)
         XCTAssertGreaterThan(unchanged.totalRenderDurationMilliseconds, 0)
         XCTAssertEqual(unchanged.assetDecodeLoadCount, 0)
         XCTAssertEqual(unchanged.assetDecodeLoadDurationMilliseconds, 0, accuracy: 0.000_001)
         print(
             "PLAY022_ROUND1C_COLD_PROFILE " +
+            "fixture=skview_attached_fresh " +
             "backdrop_ms=\(String(format: "%.3f", cold.backdropUpdateDurationMilliseconds)) " +
             "preparation_ms=\(String(format: "%.3f", cold.renderPreparationDurationMilliseconds)) " +
             "tile_build_ms=\(String(format: "%.3f", cold.tileBuildDurationMilliseconds)) " +
@@ -5505,6 +5497,7 @@ final class WorldRenderingTests: XCTestCase {
         try export(compact.png, environmentKey: "CITYSIM_PLAY021_GOLDEN_COMPACT_PROOF")
         print(
             "CITYSIM_PLAY021_GOLDEN_DIAGNOSTICS " +
+            "fixture=skview_attached_fresh " +
             "nodes=\(block.diagnostics.nodeCount) drawables=\(block.diagnostics.drawableNodeCount) " +
             "actions=\(block.diagnostics.activeActionCount) " +
             "world_update_ms=\(String(format: "%.3f", block.diagnostics.worldUpdateDurationMilliseconds)) " +
@@ -5658,11 +5651,9 @@ final class WorldRenderingTests: XCTestCase {
         detail: CameraDetailLevel,
         centeredOn coordinate: GridCoordinate = GridCoordinate(x: 5, y: 4)
     ) throws -> (png: Data, diagnostics: RendererDiagnosticsSnapshot) {
-        let view = SKView(frame: CGRect(origin: .zero, size: size))
-        let scene = CityScene(size: size)
-        scene.reducedMotion = true
-        view.presentScene(scene)
-        scene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
+        let fixture = freshSKViewAttachedLifecycleFixture(state: state, size: size)
+        let view = fixture.view
+        let scene = fixture.scene
         scene.configureProofCamera(detail: detail, centeredOn: coordinate)
         RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.12))
 
@@ -5670,6 +5661,19 @@ final class WorldRenderingTests: XCTestCase {
         let representation = NSBitmapImageRep(cgImage: texture.cgImage())
         let png = try XCTUnwrap(representation.representation(using: .png, properties: [:]))
         return (png, scene.diagnosticsSnapshot)
+    }
+
+    @MainActor
+    private func freshSKViewAttachedLifecycleFixture(
+        state: CityGameState,
+        size: CGSize
+    ) -> (view: SKView, scene: CityScene) {
+        let view = SKView(frame: CGRect(origin: .zero, size: size))
+        let scene = CityScene(size: size)
+        scene.reducedMotion = true
+        view.presentScene(scene)
+        scene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
+        return (view, scene)
     }
 
     @MainActor

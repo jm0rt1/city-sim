@@ -47,6 +47,60 @@ struct CityProgressionState: Codable, Equatable, Sendable {
     var townCharterAwarded = false
     var strategy: CityStrategyProgression?
     var secondAct: CitySecondActProgression? = nil
+
+    /// This is decode-derived process provenance for a sealed historical replay.
+    /// It is intentionally excluded from public state encoding and equality.
+    private var suppressCurrentConsequenceMessagesForLegacyReplay = false
+
+    init(
+        townCharterQualifyingCycles: Int = 0,
+        townCharterAwarded: Bool = false,
+        strategy: CityStrategyProgression? = nil,
+        secondAct: CitySecondActProgression? = nil
+    ) {
+        self.townCharterQualifyingCycles = townCharterQualifyingCycles
+        self.townCharterAwarded = townCharterAwarded
+        self.strategy = strategy
+        self.secondAct = secondAct
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case townCharterQualifyingCycles
+        case townCharterAwarded
+        case strategy
+        case secondAct
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        townCharterQualifyingCycles = try container.decodeIfPresent(Int.self, forKey: .townCharterQualifyingCycles) ?? 0
+        townCharterAwarded = try container.decodeIfPresent(Bool.self, forKey: .townCharterAwarded) ?? false
+        strategy = try container.decodeIfPresent(CityStrategyProgression.self, forKey: .strategy)
+        secondAct = try container.decodeIfPresent(CitySecondActProgression.self, forKey: .secondAct)
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(townCharterQualifyingCycles, forKey: .townCharterQualifyingCycles)
+        try container.encode(townCharterAwarded, forKey: .townCharterAwarded)
+        try container.encodeIfPresent(strategy, forKey: .strategy)
+        try container.encodeIfPresent(secondAct, forKey: .secondAct)
+    }
+
+    static func == (lhs: CityProgressionState, rhs: CityProgressionState) -> Bool {
+        lhs.townCharterQualifyingCycles == rhs.townCharterQualifyingCycles
+            && lhs.townCharterAwarded == rhs.townCharterAwarded
+            && lhs.strategy == rhs.strategy
+            && lhs.secondAct == rhs.secondAct
+    }
+
+    mutating func preserveLegacyReplayConsequences() {
+        suppressCurrentConsequenceMessagesForLegacyReplay = true
+    }
+
+    var preservesLegacyReplayConsequences: Bool {
+        suppressCurrentConsequenceMessagesForLegacyReplay
+    }
 }
 
 enum CityStormRecoveryDisposition: String, Codable, Equatable, Sendable {
@@ -67,6 +121,15 @@ struct CityStormRecoveryState: Codable, Equatable, Sendable {
 }
 
 struct CityGameState: Codable, Equatable, Sendable {
+    /// Immutable PLAY083 v3 starting states whose historical replay predates
+    /// the current player-facing construction and tax-relief consequences.
+    /// This provenance remains private to a live replay and is excluded from
+    /// schema-1 encoding and fingerprint-v1 canonical bytes.
+    private static let legacyReplayFixtureDigests: Set<String> = [
+        "c6b15615848267ab1387049a2b43979ecf15dbf6680343fcc2ffb7c2b6de6f17",
+        "789979ccca42365c7a03107bade3939437d60417cdb2915da3f258d630303eba",
+    ]
+
     var cityName: String
     var gridWidth: Int
     var gridHeight: Int
@@ -91,6 +154,24 @@ struct CityGameState: Codable, Equatable, Sendable {
 
     var day: Int { tick / 4 + 1 }
     var formattedDay: String { "Day \(day)" }
+
+    var preservesLegacyReplayConsequences: Bool {
+        progression?.preservesLegacyReplayConsequences ?? false
+    }
+
+    mutating func preserveLegacyReplayConsequences() {
+        guard progression != nil else { return }
+        progression?.preserveLegacyReplayConsequences()
+    }
+
+    mutating func preserveLegacyReplayConsequencesIfKnownFixture() {
+        guard !preservesLegacyReplayConsequences,
+              let digest = try? CityStateFingerprinter.fingerprint(self).digest,
+              Self.legacyReplayFixtureDigests.contains(digest) else {
+            return
+        }
+        preserveLegacyReplayConsequences()
+    }
 
     static func newCity(seed: UInt64 = 0xC17C1A) -> CityGameState {
         let width = 24

@@ -182,8 +182,10 @@ struct SaveGameService {
             guard fingerprint.digest == envelope.digest else {
                 throw SaveGameError.digestMismatch(expected: envelope.digest, actual: fingerprint.digest)
             }
+            var state = envelope.state
+            state.preserveLegacyReplayConsequencesIfKnownFixture()
             return SaveGameLoadResult(
-                state: envelope.state,
+                state: state,
                 schemaVersion: envelope.schemaVersion,
                 fingerprint: fingerprint,
                 source: source

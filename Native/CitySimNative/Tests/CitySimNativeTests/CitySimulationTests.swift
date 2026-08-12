@@ -102,6 +102,47 @@ final class CitySimulationTests: XCTestCase {
         XCTAssertTrue(message.detail.contains("protects growth at the next daily review"))
     }
 
+    func testCurrentConsequenceMessagesPersistThroughSaveAndReplay() throws {
+        let root = FileManager.default.temporaryDirectory
+            .appending(path: "citysim-play129-current-\(UUID().uuidString)", directoryHint: .isDirectory)
+        defer { try? FileManager.default.removeItem(at: root) }
+
+        var construction = CityGameState.newCity(seed: 129)
+        guard case .success = CitySimulation.build(.powerPlant, at: GridCoordinate(x: 5, y: 8), in: &construction) else {
+            return XCTFail("Expected current utility construction to succeed")
+        }
+        for _ in 0..<4 { CitySimulation.step(&construction) }
+        XCTAssertTrue(construction.messages.contains { $0.title == "Construction Online" })
+
+        let service = SaveGameService(rootURL: root)
+        let constructionWrite = try service.save(construction)
+        let constructionLoad = try service.load()
+        XCTAssertEqual(constructionLoad.state, construction)
+        XCTAssertEqual(constructionLoad.fingerprint, constructionWrite.fingerprint)
+        XCTAssertTrue(constructionLoad.state.messages.contains { $0.title == "Construction Online" })
+
+        var taxRelief = CityGameState.newCity(seed: 130)
+        taxRelief.taxRate = 0.09
+        taxRelief.progression?.strategy = CityStrategyProgression(
+            committedStrategy: .commercialStewardship,
+            currentPhase: .recovery,
+            nextScheduledTick: 128
+        )
+        for _ in 0..<4 { CitySimulation.step(&taxRelief) }
+        XCTAssertTrue(taxRelief.messages.contains { $0.title == "Tax Relief Confirmed" })
+
+        let taxReliefWrite = try service.save(taxRelief)
+        let taxReliefLoad = try service.load()
+        XCTAssertEqual(taxReliefLoad.state, taxRelief)
+        XCTAssertEqual(taxReliefLoad.fingerprint, taxReliefWrite.fingerprint)
+        XCTAssertEqual(
+            taxReliefLoad.state.messages.filter { $0.title == "Tax Relief Confirmed" }.count,
+            1
+        )
+        CitySimulation.step(&taxRelief)
+        XCTAssertEqual(taxRelief.messages.filter { $0.title == "Tax Relief Confirmed" }.count, 1)
+    }
+
     func testStateRoundTripsThroughJSON() throws {
         var state = CityGameState.newCity(seed: 99)
         for _ in 0..<12 { CitySimulation.step(&state) }

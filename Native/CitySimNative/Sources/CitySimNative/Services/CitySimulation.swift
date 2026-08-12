@@ -210,6 +210,7 @@ enum CitySimulation {
 
     static func step(_ state: inout CityGameState) {
         guard state.status == .playing else { return }
+        state.preserveLegacyReplayConsequencesIfKnownFixture()
         let previousPopulation = state.population
         state.tick += 1
 
@@ -309,7 +310,9 @@ enum CitySimulation {
         rebalanceOccupancy(&state, capacity: residentialCapacity)
         maybeUpgrade(&state)
         if state.tick.isMultiple(of: 4) {
-            announceCompletedConstruction(newlyCompletedConstruction, in: &state)
+            if !state.preservesLegacyReplayConsequences {
+                announceCompletedConstruction(newlyCompletedConstruction, in: &state)
+            }
             repairResidentialStormDamage(&state)
             issuePressureWarnings(&state)
             advanceStrategyStory(&state)
@@ -1314,7 +1317,8 @@ enum CitySimulation {
     }
 
     private static func announceCommercialTaxReliefAtDailyReview(_ state: inout CityGameState) {
-        guard let story = state.progression?.strategy,
+        guard !state.preservesLegacyReplayConsequences,
+              let story = state.progression?.strategy,
               story.committedStrategy == .commercialStewardship,
               story.currentPhase == .recovery,
               story.recoveryResolution == nil,

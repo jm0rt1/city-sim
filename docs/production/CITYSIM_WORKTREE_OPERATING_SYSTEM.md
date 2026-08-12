@@ -558,6 +558,11 @@ The playtest quality lane proposes evidence. Integration owns acceptance.
 The aggregate suite, staged build, and real-app journey run once for the exact
 changed candidate and are reused across handoffs until candidate identity
 changes or evidence becomes stale.
+The staged app has one tree-identity producer:
+`bash script/canonical_tree_digest.sh <staged-app-path>`. Integration records
+the producer's Git blob SHA-256 and output in the QA lease; QA recomputes with
+that exact producer. Competing absolute-path inventories or ad hoc digest
+commands cannot establish drift and must not trigger a rebuild or second gate.
 The composed-screen comparison is part of that one existing real-app journey,
 not an additional review or acceptance layer. A candidate that improves its
 local claim but degrades the integrated player view is returned.

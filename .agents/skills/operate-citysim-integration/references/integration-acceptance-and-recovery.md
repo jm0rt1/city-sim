@@ -25,15 +25,22 @@ Read this reference before candidate review, acceptance, integration, rollback, 
    - `git diff --check`
    - `bash -n script/build_and_run.sh`
    - `./script/build_and_run.sh --verify`
-9. Operate the target journey in the staged app using pointer and affected keyboard paths at default and compact layouts.
-10. Check accessibility, focus, save/load, undo, visual truth, performance, and recovery when affected.
+9. Seal the staged app exactly once with
+   `bash script/canonical_tree_digest.sh <staged-app-path>`. Record the helper's
+   Git blob SHA-256 beside its output and give both unchanged values to QA.
+   Integration and QA must use this producer; an absolute-path inventory or
+   any locally reconstructed digest is not candidate identity. If a supplied
+   seal differs, compare the same staged tree with this producer before
+   rebuilding, rerunning, or declaring byte drift.
+10. Operate the target journey in the staged app using pointer and affected keyboard paths at default and compact layouts.
+11. Check accessibility, focus, save/load, undo, visual truth, performance, and recovery when affected.
     For UI, Renderer, WorldArt, or visual/interaction acceptance routes, reject
     dispatch without the validator-approved immutable composed-screen contract.
     The existing final journey compares predecessor and candidate at identical
     fixture, camera, and regular/900x600 geometry, including map aperture,
     guidance-layer exclusivity, overlap/clipping, and visible-asset coherence.
-11. Update completion, baseline, proof, decision, and requirement records truthfully.
-12. Commit integration-only changes separately, push accepted `master`, verify remote parity, and announce the next baseline.
+12. Update completion, baseline, proof, decision, and requirement records truthfully.
+13. Commit integration-only changes separately, push accepted `master`, verify remote parity, and announce the next baseline.
 
 ## Reject false completion
 

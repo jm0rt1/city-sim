@@ -44,6 +44,12 @@ immutable APPROVE/RETURN result; do not run a duplicate acceptance journey.
    and current. Run only preregistered QA-focused automated checks; rerun the
    full suite only when the Renderer record is missing, stale, mismatched, or
    the QA journey exposes a defect that requires independent reproduction.
+   Recompute staged-app identity only with
+   `bash script/canonical_tree_digest.sh <staged-app-path>` and verify both its
+   output and the helper's Git blob SHA-256 match Integration's lease. Do not
+   compare an absolute-path inventory with the canonical relative-path digest,
+   invent an equivalent command, or rebuild unchanged bytes to repair a seal
+   mismatch. A mismatch from this exact producer is a candidate-identity stop.
 2. Build and launch the real staged app.
 3. Perform the journey without developer shortcuts or hidden state.
 4. Capture exact timestamps/steps for confusion, error, dead time, misleading feedback, or failure.

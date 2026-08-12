@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
+source "$SCRIPT_DIR/canonical_tree_digest.sh"
+
 fail() {
   printf 'error: %s\n' "$1" >&2
   exit 1
@@ -8,19 +11,6 @@ fail() {
 
 sha256_file() {
   shasum -a 256 "$1" | awk '{ print $1 }'
-}
-
-tree_digest() {
-  local root="$1"
-
-  (
-    cd "$root"
-    find . -type f -print0 \
-      | LC_ALL=C sort -z \
-      | xargs -0 shasum -a 256 \
-      | shasum -a 256 \
-      | awk '{ print $1 }'
-  )
 }
 
 manifest_value() {
@@ -73,6 +63,7 @@ COMMIT_TIMESTAMP="$(git -C "$ROOT_DIR" show -s --format=%cI "$HEAD_SHA")"
 RELEASE_INPUTS=(
   "Native/CitySimNative"
   "script/build_and_run.sh"
+  "script/canonical_tree_digest.sh"
   "script/package_release.sh"
 )
 
@@ -228,7 +219,7 @@ fi
 DEFAULT_APP_DIGEST_BEFORE=""
 DEFAULT_MANIFEST_SHA_BEFORE=""
 if [[ -d "$DEFAULT_APP" ]]; then
-  DEFAULT_APP_DIGEST_BEFORE="$(tree_digest "$DEFAULT_APP")"
+  DEFAULT_APP_DIGEST_BEFORE="$(citysim_canonical_tree_digest "$DEFAULT_APP")"
 fi
 if [[ -f "$DEFAULT_MANIFEST" ]]; then
   DEFAULT_MANIFEST_SHA_BEFORE="$(sha256_file "$DEFAULT_MANIFEST")"
@@ -390,8 +381,8 @@ SIGNATURE_CDHASH="$(
 )"
 [[ -n "$SIGNATURE_CDHASH" ]] || fail "signed app did not expose a CDHash"
 
-RESOURCE_DIGEST="$(tree_digest "$RESOURCE_BUNDLE")"
-APP_DIGEST="$(tree_digest "$APP_BUNDLE")"
+RESOURCE_DIGEST="$(citysim_canonical_tree_digest "$RESOURCE_BUNDLE")"
+APP_DIGEST="$(citysim_canonical_tree_digest "$APP_BUNDLE")"
 STAGE_MANIFEST_SHA="$(sha256_file "$STAGE_MANIFEST")"
 EXECUTABLE_SHA="$(sha256_file "$EXECUTABLE")"
 INFO_PLIST_SHA="$(sha256_file "$INFO_PLIST")"
@@ -568,12 +559,13 @@ EXTRACTED_RESOURCE_BUNDLE="$EXTRACTED_APP/Contents/Resources/$RESOURCE_BUNDLE_NA
 [[ ! -e "$EXTRACTED_APP/$RESOURCE_BUNDLE_NAME" ]] \
   || fail "extracted app contains a root-level resource bundle"
 require_equal "extracted resource digest" "$RESOURCE_DIGEST" \
-  "$(tree_digest "$EXTRACTED_RESOURCE_BUNDLE")"
-require_equal "extracted app digest" "$APP_DIGEST" "$(tree_digest "$EXTRACTED_APP")"
+  "$(citysim_canonical_tree_digest "$EXTRACTED_RESOURCE_BUNDLE")"
+require_equal "extracted app digest" "$APP_DIGEST" \
+  "$(citysim_canonical_tree_digest "$EXTRACTED_APP")"
 
 if [[ -d "$DEFAULT_APP" ]]; then
   require_equal "default app preservation" "$DEFAULT_APP_DIGEST_BEFORE" \
-    "$(tree_digest "$DEFAULT_APP")"
+    "$(citysim_canonical_tree_digest "$DEFAULT_APP")"
 fi
 if [[ -f "$DEFAULT_MANIFEST" ]]; then
   require_equal "default manifest preservation" "$DEFAULT_MANIFEST_SHA_BEFORE" \

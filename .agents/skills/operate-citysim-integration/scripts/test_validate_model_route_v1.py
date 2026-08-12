@@ -618,6 +618,31 @@ class ModelRouteTests(unittest.TestCase):
         errors = validator.validate_qa_handoff(handoff, self.repo)
         self.assertTrue(any("actual-PID" in error for error in errors), errors)
 
+    def test_swift_test_log_requires_result_bearing_pass_summary(self) -> None:
+        xctest = (
+            "Test Suite 'Selected tests' passed.\n"
+            "Executed 59 tests, with 0 failures (0 unexpected) in 2.4 seconds\n"
+        )
+        swift_testing = "✔ Test run with 3 tests passed after 0.012 seconds.\n"
+        self.assertEqual([], validator.validate_swift_test_log(xctest))
+        self.assertEqual([], validator.validate_swift_test_log(swift_testing))
+
+    def test_swift_test_log_rejects_compilation_only_or_zero_tests(self) -> None:
+        errors = validator.validate_swift_test_log("Build complete! (4.21s)\n")
+        self.assertTrue(any("compilation_only" in error for error in errors), errors)
+        errors = validator.validate_swift_test_log(
+            "Executed 0 tests, with 0 failures (0 unexpected) in 0.0 seconds\n"
+        )
+        self.assertTrue(any("zero tests" in error for error in errors), errors)
+
+    def test_swift_test_log_rejects_failure_or_missing_summary(self) -> None:
+        errors = validator.validate_swift_test_log(
+            "Executed 2 tests, with 1 failure (0 unexpected) in 0.2 seconds\n"
+        )
+        self.assertTrue(any("failing" in error for error in errors), errors)
+        errors = validator.validate_swift_test_log("Test Case passed\n")
+        self.assertTrue(any("lacks a positive" in error for error in errors), errors)
+
     def test_unchanged_passing_sibling_cannot_be_demoted(self) -> None:
         previous = {"cells": [
             {"direction": "east", "state": "returned", "claimRevision": "a"},

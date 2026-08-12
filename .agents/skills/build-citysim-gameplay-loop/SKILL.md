@@ -22,6 +22,10 @@ Make CitySim worth playing: every important choice must create measurable, visib
 - `FRONTIER_AUTHORITY` owns tradeoff design, pacing, economy balance, recovery quality, cross-system tuning, shared-contract decisions, and final subjective acceptance.
 - A substantial `PLAY-*` task must arrive as a frontier authority packet, one or more disjoint Luna execution packets, and an independent frontier acceptance packet. Stop on every escalation trigger in the shared contract.
 - Luna runs only the focused owner and affected gates in its validated `modelRoute`. The lane coordinator aggregates coherent packets; the full Swift suite, staged build, and real-app journey run once against the exact aggregate/integrated candidate unless identity changes or evidence is stale.
+- A focused `swift test` result is complete only when its combined output passes
+  the shared model-route validator's `--swift-test-log` check. `Build complete!`
+  alone is compilation-only; capture a result-bearing run without source edits
+  before handoff.
 
 ## Own the gameplay outcome
 

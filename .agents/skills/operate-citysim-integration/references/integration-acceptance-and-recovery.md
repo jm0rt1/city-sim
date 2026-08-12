@@ -17,6 +17,10 @@ Read this reference before candidate review, acceptance, integration, rollback, 
    completion claim says launch, execute, render, save, reload, interact,
    deterministic output, or visual quality, independently run the matching
    schema-2 behavioral/full proof before acceptance.
+   When that proof uses `swift test`, require its combined output to pass
+   `validate_model_route_v1.py --swift-test-log <path>`. Exit zero with only
+   `Build complete!` is compilation-only evidence; preserve the candidate and
+   request one result-capture continuation without source edits or a new gate.
 5. Preserve a recoverable pre-integration `master` commit.
 6. Integrate in dependency order: platform contracts, simulation/gameplay, rendering, UI/input, quality fixtures.
 7. Resolve only narrow mechanical conflicts; return semantic conflicts to owners.

@@ -7,6 +7,7 @@ import argparse
 import hashlib
 import json
 import math
+import re
 import shlex
 import subprocess
 import sys
@@ -133,6 +134,38 @@ def load_json(path: Path) -> Any:
 def canonical_sha(value: Any) -> str:
     payload = json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
     return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+
+
+def validate_swift_test_log(log: Any) -> list[str]:
+    """Reject compilation-only output presented as executed Swift test proof."""
+    if not isinstance(log, str) or not log.strip():
+        return ["Swift test proof log must be non-empty"]
+    failure_summaries = (
+        re.search(r"Executed\s+\d+\s+tests?,\s+with\s+[1-9]\d*\s+failures?", log),
+        re.search(r"Test run with\s+\d+\s+tests?\s+failed\b", log),
+    )
+    if any(failure_summaries):
+        return ["Swift test proof contains a failing test-run summary"]
+    xctest_counts = [
+        int(match.group(1))
+        for match in re.finditer(
+            r"Executed\s+(\d+)\s+tests?,\s+with\s+0\s+failures?", log
+        )
+    ]
+    swift_testing_counts = [
+        int(match.group(1))
+        for match in re.finditer(
+            r"Test run with\s+(\d+)\s+tests?\s+passed\b", log
+        )
+    ]
+    counts = xctest_counts + swift_testing_counts
+    if any(count > 0 for count in counts):
+        return []
+    if counts:
+        return ["Swift test proof executed zero tests"]
+    if "Build complete!" in log or "Build complete" in log:
+        return ["Swift test proof is compilation_only; no tests executed"]
+    return ["Swift test proof lacks a positive executed-test pass summary"]
 
 
 def file_sha(path: Path) -> str:
@@ -883,6 +916,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--dispatch")
     parser.add_argument("--dispatch-route-id")
     parser.add_argument("--qa-handoff")
+    parser.add_argument("--swift-test-log", action="append")
     parser.add_argument("--previous-ledger")
     parser.add_argument("--current-ledger")
     parser.add_argument("--failed-direction")
@@ -902,6 +936,17 @@ def main(argv: list[str] | None = None) -> int:
             )
         if args.qa_handoff:
             errors.extend(validate_qa_handoff(load_json(Path(args.qa_handoff)), repo))
+        if args.swift_test_log:
+            for log_path in args.swift_test_log:
+                try:
+                    log = Path(log_path).read_text(encoding="utf-8")
+                except (OSError, UnicodeError) as exc:
+                    errors.append(f"{log_path}: {exc}")
+                    continue
+                errors.extend(
+                    f"{log_path}: {error}"
+                    for error in validate_swift_test_log(log)
+                )
         ledger_args = (args.previous_ledger, args.current_ledger, args.failed_direction)
         if any(ledger_args) and not all(ledger_args):
             errors.append("sibling validation requires previous ledger, current ledger, and failed direction")
@@ -909,8 +954,14 @@ def main(argv: list[str] | None = None) -> int:
             errors.extend(validate_siblings(load_json(Path(args.previous_ledger)), load_json(Path(args.current_ledger)), args.failed_direction))
     except ValidationError as exc:
         errors.append(str(exc))
-    if not any((args.route, args.dispatch, args.qa_handoff, args.previous_ledger)):
-        errors.append("provide --route, --dispatch, --qa-handoff, or sibling ledger arguments")
+    if not any((
+        args.route, args.dispatch, args.qa_handoff, args.swift_test_log,
+        args.previous_ledger,
+    )):
+        errors.append(
+            "provide --route, --dispatch, --qa-handoff, --swift-test-log, "
+            "or sibling ledger arguments"
+        )
     if errors:
         for error in errors:
             print(f"FAIL: {error}")

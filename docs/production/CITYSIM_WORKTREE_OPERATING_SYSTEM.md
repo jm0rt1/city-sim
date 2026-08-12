@@ -350,6 +350,13 @@ once per handoff. Rerun only when candidate identity changes or evidence is
 stale. Explicit paths, user dirt, independent QA, no worker self-acceptance,
 and authority-gated push/release remain hard safety requirements.
 
+A `swift test` command is result-bearing only when its combined output passes
+`validate_model_route_v1.py --swift-test-log <path>` with a positive executed
+test count and a zero-failure/pass summary. Exit zero plus `Build complete!`
+proves compilation only. Correct that evidence capture once without source
+edits; do not call it a product failure, completed behavioral proof, or a reason
+to add a receipt, reviewer, or gate.
+
 ## 7. Claim protocol
 
 Only one lane may claim a task.

@@ -69,6 +69,15 @@ worker's self-report can prove structure or intent only. They cannot prove that
 an executable launches, a renderer emits valid pixels, repeated runs are
 deterministic, a visual is good, or an independent player journey passes.
 
+For any focused or full command invoking `swift test`, exit zero and
+`Build complete!` prove compilation only. The captured combined output is
+result-bearing only when
+`validate_model_route_v1.py --swift-test-log <path>` finds a positive executed
+test count and a zero-failure/pass summary. Run this check inside the existing
+focused/full gate; it adds no receipt, reviewer, or gate. A compile-only log is
+an evidence-capture correction with no source edits, not a product failure or
+completed behavioral proof.
+
 Before the first DCC scene launch for an exact executable hash, Integration
 must bind the executable path, SHA-256, architecture, version/build, and host
 architecture, then require one contained factory-startup version probe. Reuse

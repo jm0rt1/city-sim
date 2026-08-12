@@ -21,11 +21,12 @@ Build the trustworthy foundation on which gameplay, rendering, UI, saves, and ev
 - `FRONTIER_AUTHORITY` owns schemas, snapshot contracts, migrations, persistence decisions, subtle nondeterminism, shared-contract decisions, and final acceptance.
 - A substantial `PLAY-*` task must arrive as a frontier authority packet, one or more disjoint Luna execution packets, and an independent frontier acceptance packet. Stop on every escalation trigger in the shared contract.
 - Luna runs only the focused owner and affected gates in its validated `modelRoute`. The lane coordinator aggregates coherent packets; the full Swift suite, staged build, and real-app journey run once against the exact aggregate/integrated candidate unless identity changes or evidence is stale.
-- A focused `swift test` result is complete only when its combined output passes
-  the shared model-route validator's `--swift-test-log` check. `Build complete!`
-  alone is an intermediate marker; keep waiting on the original process. Only
-  if it truly exits without a terminal test summary, capture one result-bearing
-  run without source edits before handoff.
+- Every new or rebound focused `swift test` command must have a validator-clean
+  `swiftExecution` contract and run through `run_swift_test_lease_v1.py`; raw
+  Swift commands are invalid. `Build complete!` is not completion. Retry or
+  result capture is legal only after the bound prior receipt proves the parent,
+  process group, and observed descendants terminal and retains original output
+  and integer exit.
 
 ## Own runtime trust
 

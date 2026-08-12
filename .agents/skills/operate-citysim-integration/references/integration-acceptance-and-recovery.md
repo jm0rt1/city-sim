@@ -17,17 +17,18 @@ Read this reference before candidate review, acceptance, integration, rollback, 
    completion claim says launch, execute, render, save, reload, interact,
    deterministic output, or visual quality, independently run the matching
    schema-2 behavioral/full proof before acceptance.
-   When that proof uses `swift test`, require its combined output to pass
-   `validate_model_route_v1.py --swift-test-log <path>`. `Build complete!`
-   alone is an intermediate compilation marker; keep waiting on the original
-   process rather than launching a duplicate. If the process truly exits
-   without a terminal test summary, preserve the candidate and request one
-   result-capture continuation without source edits or a new gate.
+   When that proof uses `swift test`, require a prospective validator-clean
+   `swiftExecution` binding and run the exact route command through
+   `run_swift_test_lease_v1.py`. The runner owns the live lease/build-root
+   locks, original combined output and integer exit, and parent/group/observed
+   descendant closure before applying `--swift-test-log`. `Build complete!`
+   alone is intermediate. A continuation or retry requires the bound prior
+   terminal descendant-free receipt; sampled PID visibility and raw Swift
+   commands cannot authorize another launch.
 5. Preserve a recoverable pre-integration `master` commit.
 6. Integrate in dependency order: platform contracts, simulation/gameplay, rendering, UI/input, quality fixtures.
 7. Resolve only narrow mechanical conflicts; return semantic conflicts to owners.
-8. Run:
-   - `swift test --package-path Native/CitySimNative`
+8. Run the exact route-bound `swiftExecution` command, then:
    - `git diff --check`
    - `bash -n script/build_and_run.sh`
    - `./script/build_and_run.sh --verify`

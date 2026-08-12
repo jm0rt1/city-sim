@@ -59,9 +59,10 @@ and push/release authority remain mandatory. A worker never self-accepts.
 
 If an exact command fails because of sandbox, permission, or tool transport
 before product execution and before any mutation, allow one identical retry
-without a fresh carrier. Any changed command, second failure, product
-execution, or mutation ends that recovery allowance and follows the route's
-normal stop/escalation rule.
+without a fresh carrier only after a Swift runner receipt, when applicable,
+proves terminal parent/group/observed-descendant closure. Any changed command,
+second failure, live/unterminated attempt, product execution, or mutation ends
+that recovery allowance and follows the route's normal stop/escalation rule.
 
 Separately, a failed mechanical implementation action may be corrected once
 inside the same outcome lease after an exact post-failure audit proves zero

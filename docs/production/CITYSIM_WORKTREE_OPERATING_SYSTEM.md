@@ -350,14 +350,16 @@ once per handoff. Rerun only when candidate identity changes or evidence is
 stale. Explicit paths, user dirt, independent QA, no worker self-acceptance,
 and authority-gated push/release remain hard safety requirements.
 
-A `swift test` command is result-bearing only when its combined output passes
-`validate_model_route_v1.py --swift-test-log <path>` with a positive executed
-test count and a zero-failure/pass summary. `Build complete!` alone is an
-intermediate compilation marker: keep waiting on the original process and do
-not start a compensating duplicate. If the process truly ends without a test
-summary, correct that evidence capture once without source edits; do not call
-it a product failure, completed behavioral proof, or a reason to add a receipt,
-reviewer, or gate.
+Every new or rebound route invoking `swift test` must bind `swiftExecution` and
+invoke the command through `run_swift_test_lease_v1.py`; a raw Swift command is
+invalid. The runner owns one OS-level lease and canonical build-root lock,
+retains original argv/output/integer exit, and holds both locks until parent,
+process group, and observed descendants are terminal. Only then may
+`--swift-test-log` decide whether the retained output is result-bearing.
+`Build complete!` remains intermediate. Retry or evidence capture requires the
+bound prior terminal, descendant-free receipt; sampled PID visibility cannot
+authorize a compensating process. This is execution machinery inside the
+existing gate, not a new receipt, reviewer, or acceptance layer.
 
 ## 7. Claim protocol
 
@@ -537,10 +539,10 @@ One or two small accepted outcomes per lane per wave is preferable to a large me
 
 ## 13. Integration gate
 
-At minimum, every integration candidate runs:
+At minimum, every integration candidate runs the exact route-bound
+`swiftExecution` command plus:
 
 ```bash
-swift test --package-path Native/CitySimNative
 git diff --check
 bash -n script/build_and_run.sh
 ./script/build_and_run.sh --verify

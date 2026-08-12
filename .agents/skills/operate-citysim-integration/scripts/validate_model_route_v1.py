@@ -22,7 +22,7 @@ ROUTE_FIELDS = {
     "boundedDeliverable", "validation", "expectedResult", "escalationTriggers",
     "stopCondition", "independentReviewer", "context", "proofPolicy",
 }
-OPTIONAL_ROUTE_FIELDS = {"compositionContract"}
+OPTIONAL_ROUTE_FIELDS = {"compositionContract", "swiftExecution"}
 ROUTE_SCHEMA = 2
 DISPATCH_SCHEMA = 2
 QA_HANDOFF_SCHEMA = 1
@@ -102,6 +102,14 @@ VISUAL_ROUTE_ROOTS = (
     "Native/CitySimNative/Sources/CitySimNative/Rendering",
     "Native/CitySimNative/WorldArt",
 )
+SWIFT_EXECUTION_FIELDS = {
+    "schema", "runner", "resultValidator", "terminalPolicy", "executions",
+}
+SWIFT_EXECUTION_ROW_FIELDS = {
+    "command", "leaseId", "buildRoot", "lockDir", "attempt", "logPath",
+    "receiptPath", "priorAttemptReceipt",
+}
+SWIFT_TERMINAL_POLICY = "parent_group_and_observed_descendants_exited"
 
 
 class ValidationError(Exception):
@@ -170,6 +178,195 @@ def validate_swift_test_log(log: Any) -> list[str]:
             "no terminal test summary"
         ]
     return ["Swift test proof lacks a positive executed-test pass summary"]
+
+
+def _parse_command(command: str, label: str, errors: list[str]) -> list[str]:
+    try:
+        argv = shlex.split(command, posix=True)
+    except ValueError as exc:
+        errors.append(f"{label} is not shell-parseable: {exc}")
+        return []
+    if not argv:
+        errors.append(f"{label} must parse to a non-empty argv")
+    return argv
+
+
+def _is_swift_test_argv(argv: list[str]) -> bool:
+    return any(
+        token.rsplit("/", 1)[-1] == "swift" and argv[index + 1] == "test"
+        for index, token in enumerate(argv[:-1])
+    )
+
+
+def _canonical_absolute(value: Any) -> bool:
+    return (
+        isinstance(value, str)
+        and bool(value)
+        and Path(value).is_absolute()
+        and str(Path(value).resolve()) == value
+    )
+
+
+def _single_option(argv: list[str], option: str, label: str, errors: list[str]) -> str | None:
+    indexes = [index for index, token in enumerate(argv) if token == option]
+    if len(indexes) != 1 or indexes[0] + 1 >= len(argv):
+        errors.append(f"{label} must contain exactly one {option} value")
+        return None
+    return argv[indexes[0] + 1]
+
+
+def _validate_prior_swift_attempt(
+    repo: Path,
+    binding: Any,
+    lease_id: str,
+    build_root: str,
+    label: str,
+    errors: list[str],
+) -> None:
+    _check_binding(repo, binding, label, errors)
+    if not isinstance(binding, dict) or not isinstance(binding.get("path"), str):
+        return
+    path = repo / binding["path"]
+    if not path.is_file():
+        return
+    try:
+        receipt = load_json(path)
+    except ValidationError as exc:
+        errors.append(f"{label} is unreadable: {exc}")
+        return
+    if not isinstance(receipt, dict):
+        errors.append(f"{label} must contain a JSON object")
+        return
+    if (
+        receipt.get("status") != "terminal"
+        or receipt.get("terminal") is not True
+        or receipt.get("parentExited") is not True
+        or receipt.get("processGroupExited") is not True
+        or receipt.get("descendantsExited") is not True
+        or receipt.get("liveProcessGroupPids") != []
+        or receipt.get("liveObservedDescendantPids") != []
+    ):
+        errors.append(f"{label} is not terminal and descendant-free")
+    if receipt.get("leaseId") != lease_id or receipt.get("buildRoot") != build_root:
+        errors.append(f"{label} does not match leaseId/buildRoot")
+    if not isinstance(receipt.get("exitCode"), int) or not _is_hex(receipt.get("logSha256"), 64):
+        errors.append(f"{label} lacks integer exitCode or retained log hash")
+
+
+def _validate_swift_execution(
+    route: dict[str, Any],
+    repo: Path,
+    focused_commands: Any,
+    full_commands: Any,
+    errors: list[str],
+) -> None:
+    all_commands = [
+        command
+        for commands in (focused_commands, full_commands)
+        if isinstance(commands, list)
+        for command in commands
+        if isinstance(command, str)
+    ]
+    swift_commands = [
+        command for command in all_commands
+        if _is_swift_test_argv(_parse_command(command, "Swift-bearing gate command", errors))
+    ]
+    contract = route.get("swiftExecution")
+    if not swift_commands:
+        if contract is not None:
+            errors.append("swiftExecution is forbidden when no gate command invokes swift test")
+        return
+    if not isinstance(contract, dict) or set(contract) != SWIFT_EXECUTION_FIELDS:
+        errors.append("Swift-bearing route requires an exact swiftExecution contract")
+        return
+    if contract.get("schema") != 1:
+        errors.append("swiftExecution.schema must equal 1")
+    runner = contract.get("runner")
+    result_validator = contract.get("resultValidator")
+    _check_binding(repo, runner, "swiftExecution.runner", errors)
+    _check_binding(repo, result_validator, "swiftExecution.resultValidator", errors)
+    if contract.get("terminalPolicy") != SWIFT_TERMINAL_POLICY:
+        errors.append(f"swiftExecution.terminalPolicy must equal {SWIFT_TERMINAL_POLICY}")
+    executions = contract.get("executions")
+    if not isinstance(executions, list) or not executions:
+        errors.append("swiftExecution.executions must be a non-empty list")
+        return
+    if len(executions) != len(swift_commands):
+        errors.append("swiftExecution must contain exactly one row per Swift-bearing gate command")
+    runner_path = runner.get("path") if isinstance(runner, dict) else None
+    validator_path = result_validator.get("path") if isinstance(result_validator, dict) else None
+    row_commands: list[str] = []
+    lease_ids: list[str] = []
+    output_paths: list[str] = []
+    for index, row in enumerate(executions):
+        label = f"swiftExecution.executions[{index}]"
+        if not isinstance(row, dict) or set(row) != SWIFT_EXECUTION_ROW_FIELDS:
+            errors.append(f"{label} has unsupported or missing fields")
+            continue
+        command = row.get("command")
+        if not isinstance(command, str) or not command:
+            errors.append(f"{label}.command must be non-empty")
+            continue
+        row_commands.append(command)
+        argv = _parse_command(command, f"{label}.command", errors)
+        try:
+            separator = argv.index("--")
+        except ValueError:
+            separator = -1
+            errors.append(f"{label}.command must separate the owned Swift command with --")
+        if runner_path not in argv[:separator] if separator >= 0 else True:
+            errors.append(f"{label}.command does not invoke the bound runner before --")
+        if separator >= 0 and not _is_swift_test_argv(argv[separator + 1:]):
+            errors.append(f"{label}.command does not run swift test after --")
+        lease_id = row.get("leaseId")
+        if not isinstance(lease_id, str) or not lease_id or route["routeId"] not in lease_id:
+            errors.append(f"{label}.leaseId must be unique and include routeId")
+        else:
+            lease_ids.append(lease_id)
+        build_root = row.get("buildRoot")
+        lock_dir = row.get("lockDir")
+        log_path = row.get("logPath")
+        receipt_path = row.get("receiptPath")
+        for field, value in (
+            ("buildRoot", build_root), ("lockDir", lock_dir),
+            ("logPath", log_path), ("receiptPath", receipt_path),
+        ):
+            if not _canonical_absolute(value):
+                errors.append(f"{label}.{field} must be a canonical absolute path")
+        if isinstance(log_path, str):
+            output_paths.append(log_path)
+        if isinstance(receipt_path, str):
+            output_paths.append(receipt_path)
+        expected_options = (
+            ("--lease-id", lease_id), ("--build-root", build_root),
+            ("--lock-dir", lock_dir),
+            ("--log", log_path), ("--metadata", receipt_path),
+            ("--validator", validator_path),
+        )
+        for option, expected in expected_options:
+            actual = _single_option(argv[:separator] if separator >= 0 else argv, option, label, errors)
+            if actual is not None and actual != expected:
+                errors.append(f"{label}.command {option} does not match swiftExecution binding")
+        attempt = row.get("attempt")
+        if not isinstance(attempt, int) or isinstance(attempt, bool) or attempt < 1:
+            errors.append(f"{label}.attempt must be a positive integer")
+        prior = row.get("priorAttemptReceipt")
+        if attempt == 1 and prior is not None:
+            errors.append(f"{label}.priorAttemptReceipt must be null for attempt 1")
+        elif isinstance(attempt, int) and attempt > 1:
+            if prior is None:
+                errors.append(f"{label}.retry requires a terminal priorAttemptReceipt")
+            elif isinstance(lease_id, str) and isinstance(build_root, str):
+                _validate_prior_swift_attempt(
+                    repo, prior, lease_id, build_root,
+                    f"{label}.priorAttemptReceipt", errors,
+                )
+    if sorted(row_commands) != sorted(swift_commands):
+        errors.append("swiftExecution execution commands must exactly match Swift-bearing gate commands")
+    if len(lease_ids) != len(set(lease_ids)):
+        errors.append("swiftExecution leaseId values must be unique per route")
+    if len(output_paths) != len(set(output_paths)):
+        errors.append("swiftExecution logPath and receiptPath values must be unique")
 
 
 def file_sha(path: Path) -> str:
@@ -599,6 +796,7 @@ def validate_route(route: Any, repo: Path) -> list[str]:
             other_full_gate = any(marker in command for marker in FULL_GATE_MARKERS[1:])
             if unfiltered_swift or other_full_gate:
                 errors.append(f"Luna focused gate contains aggregate/final command: {command}")
+    _validate_swift_execution(route, repo, focused_commands, full_commands, errors)
     command_owner_list = (
         focused_commands
         if focused_level in PROOF_LEVEL_RANK

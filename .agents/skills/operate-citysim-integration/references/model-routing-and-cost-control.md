@@ -69,16 +69,23 @@ worker's self-report can prove structure or intent only. They cannot prove that
 an executable launches, a renderer emits valid pixels, repeated runs are
 deterministic, a visual is good, or an independent player journey passes.
 
-For any focused or full command invoking `swift test`, `Build complete!` is an
-intermediate compilation marker, not a terminal test result. Do not launch a
-compensating test process while the original process remains live. The captured
-combined output is result-bearing only when
-`validate_model_route_v1.py --swift-test-log <path>` finds a positive executed
-test count and a zero-failure/pass summary. Run this check inside the existing
-focused/full gate; it adds no receipt, reviewer, or gate. If the original
-process truly exits without a terminal result, a compile-only log requires an
-evidence-capture correction with no source edits; it is not a product failure
-or completed behavioral proof.
+Every new or rebound route with a focused or full command invoking `swift test`
+must carry a validator-clean `swiftExecution` contract and invoke that command
+through `run_swift_test_lease_v1.py`; raw Swift test commands cannot authorize
+execution. The contract binds the runner and result-validator bytes, one unique
+lease, canonical build/scratch root, attempt, retained log and terminal receipt,
+and the mandatory parent/process-group/observed-descendant closure policy.
+Historical routes remain immutable evidence, but cannot authorize a new Swift
+execution until rebound prospectively.
+
+`Build complete!` is an intermediate compilation marker, not a terminal test
+result. The runner holds its live OS lease and build-root locks until the parent,
+process group, and every observed descendant exit, then applies
+`validate_model_route_v1.py --swift-test-log <path>` to the original combined
+output. A retry or evidence-capture continuation requires the prior attempt's
+bound terminal, descendant-free receipt; never infer completion from sampled
+PID visibility. This remains inside the existing gate and adds no reviewer or
+acceptance layer.
 
 Before the first DCC scene launch for an exact executable hash, Integration
 must bind the executable path, SHA-256, architecture, version/build, and host
@@ -144,8 +151,9 @@ self-accept, push, or release.
 
 If the exact command fails from sandbox, permission, or tool transport before
 product execution and before mutation, allow one identical retry without a
-fresh carrier. A changed command, second failure, product execution, or any
-mutation ends this infrastructure allowance.
+fresh carrier only after its runner receipt proves terminal descendant closure.
+A changed command, second failure, live/unterminated receipt, product execution,
+or any mutation ends this infrastructure allowance.
 
 Separately, a failed mechanical implementation action may be corrected once
 inside the same outcome lease after an exact post-failure audit proves zero
@@ -158,8 +166,10 @@ correction or any failed audit condition escalates.
 Separately, routine reversible implementation may use one bounded local repair
 inside the same outcome lease: at most two focused proof attempts total, with
 every edit confined to the original allowlist. The first focused failure may
-inform one repair without a fresh carrier, ACK, or release. A second focused
-failure, scope expansion, semantics ambiguity, or unexpected path escalates.
+inform one repair without a fresh carrier, ACK, or release only after any Swift
+attempt has a bound terminal, descendant-free runner receipt. A second focused
+failure, live/unterminated attempt, scope expansion, semantics ambiguity, or
+unexpected path escalates.
 
 Keep full logs in the task. CEO/user updates use only done, blocker, owner,
 next, and deadline confidence unless a hash or command ledger changes a

@@ -7,6 +7,7 @@ import copy
 import hashlib
 import json
 import plistlib
+import shlex
 import shutil
 import subprocess
 import tempfile
@@ -31,6 +32,8 @@ class ModelRouteTests(unittest.TestCase):
             "# PLAY-999\nOwn `owned/` and `owned/evidence/`.\n", encoding="utf-8"
         )
         (self.repo / "inputs" / "authority.txt").write_text("frozen\n", encoding="utf-8")
+        (self.repo / "inputs" / "swift-runner.py").write_text("# frozen runner\n", encoding="utf-8")
+        (self.repo / "inputs" / "route-validator.py").write_text("# frozen validator\n", encoding="utf-8")
         subprocess.run(
             ["git", "-C", str(self.repo), "commit", "--allow-empty", "-qm", "baseline"],
             check=True,
@@ -172,6 +175,48 @@ class ModelRouteTests(unittest.TestCase):
         route["compositionContract"] = {**binding, "aggregateCommand": command}
         route["authority"]["immutableInputs"].append(copy.deepcopy(binding))
         route["validation"]["fullCommands"].append(command)
+
+    def add_swift_execution(
+        self,
+        route: dict,
+        raw_command: str = "swift test --package-path Native/CitySimNative --filter FocusedTests",
+        *,
+        attempt: int = 1,
+        prior: dict | None = None,
+    ) -> str:
+        build_root = str((self.repo / "swift-build").resolve())
+        lock_dir = str((self.repo / "swift-locks").resolve())
+        log_path = str((self.repo / "swift-proof.log").resolve())
+        receipt_path = str((self.repo / "swift-proof.json").resolve())
+        lease_id = f"{route['routeId']}:focused"
+        command = shlex.join([
+            "python3", "inputs/swift-runner.py",
+            "--lease-id", lease_id,
+            "--build-root", build_root,
+            "--lock-dir", lock_dir,
+            "--log", log_path,
+            "--metadata", receipt_path,
+            "--validator", "inputs/route-validator.py",
+            "--", *shlex.split(raw_command),
+        ])
+        route["validation"]["focusedCommands"] = [command]
+        route["swiftExecution"] = {
+            "schema": 1,
+            "runner": self._binding("inputs/swift-runner.py"),
+            "resultValidator": self._binding("inputs/route-validator.py"),
+            "terminalPolicy": validator.SWIFT_TERMINAL_POLICY,
+            "executions": [{
+                "command": command,
+                "leaseId": lease_id,
+                "buildRoot": build_root,
+                "lockDir": lock_dir,
+                "attempt": attempt,
+                "logPath": log_path,
+                "receiptPath": receipt_path,
+                "priorAttemptReceipt": prior,
+            }],
+        }
+        return command
 
     def make_visual_route(self, root: str) -> dict:
         route = self.route()
@@ -337,6 +382,56 @@ class ModelRouteTests(unittest.TestCase):
         route["validation"]["focusedCommands"] = ["swift test --package-path Native/CitySimNative"]
         self.assert_invalid(route, "aggregate/final command")
         route["validation"]["focusedCommands"] = ["swift test --package-path Native/CitySimNative --filter FocusedTests"]
+        self.assert_invalid(route, "requires an exact swiftExecution contract")
+        self.add_swift_execution(route)
+        self.assert_valid(route)
+
+    def test_raw_swift_route_is_rejected_and_bound_runner_passes(self) -> None:
+        route = self.route("FRONTIER_AUTHORITY", "authority")
+        route["validation"]["fullCommands"] = ["swift test --package-path Native/CitySimNative"]
+        self.assert_invalid(route, "requires an exact swiftExecution contract")
+        command = self.add_swift_execution(route)
+        route["validation"]["fullCommands"] = [command]
+        route["validation"]["focusedCommands"] = ["python3 focused_check.py"]
+        self.assert_valid(route)
+
+    def test_swift_retry_requires_terminal_descendant_free_prior_receipt(self) -> None:
+        route = self.route()
+        self.add_swift_execution(route, attempt=2)
+        self.assert_invalid(route, "requires a terminal priorAttemptReceipt")
+
+        row = route["swiftExecution"]["executions"][0]
+        prior_path = self.repo / "inputs" / "prior-swift-attempt.json"
+        prior_path.write_text(json.dumps({
+            "status": "running",
+            "terminal": False,
+            "parentExited": False,
+            "processGroupExited": False,
+            "descendantsExited": False,
+            "liveProcessGroupPids": [123],
+            "liveObservedDescendantPids": [124],
+            "leaseId": row["leaseId"],
+            "buildRoot": row["buildRoot"],
+            "exitCode": 0,
+            "logSha256": "a" * 64,
+        }), encoding="utf-8")
+        row["priorAttemptReceipt"] = self._binding("inputs/prior-swift-attempt.json")
+        self.assert_invalid(route, "not terminal and descendant-free")
+
+        prior_path.write_text(json.dumps({
+            "status": "terminal",
+            "terminal": True,
+            "parentExited": True,
+            "processGroupExited": True,
+            "descendantsExited": True,
+            "liveProcessGroupPids": [],
+            "liveObservedDescendantPids": [],
+            "leaseId": row["leaseId"],
+            "buildRoot": row["buildRoot"],
+            "exitCode": 1,
+            "logSha256": "b" * 64,
+        }), encoding="utf-8")
+        row["priorAttemptReceipt"] = self._binding("inputs/prior-swift-attempt.json")
         self.assert_valid(route)
 
     def test_executable_claim_requires_real_focused_behavior(self) -> None:

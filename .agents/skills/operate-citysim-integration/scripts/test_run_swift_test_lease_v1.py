@@ -57,6 +57,7 @@ class SwiftTestLeaseTests(unittest.TestCase):
         self.assertTrue(value["utcEnded"].endswith("Z"))
         self.assertEqual(value["rootLockPid"], value["leasePid"])
         self.assertEqual(value["rootLockPgid"], value["leasePgid"])
+        self.assertEqual(value["lockDir"], str(self.locks.resolve()))
         self.assertEqual(value["argv"][-3:], [sys.executable, "-c", value["argv"][-1]])
         self.assertTrue(value["literalCommand"])
         return value

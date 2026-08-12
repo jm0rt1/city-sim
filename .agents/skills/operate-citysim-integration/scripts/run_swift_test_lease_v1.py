@@ -59,6 +59,11 @@ def process_rows() -> dict[int, tuple[int, int, str]]:
         ["ps", "-axo", "pid=,ppid=,pgid=,state="],
         capture_output=True, text=True, check=False,
     )
+    if completed.returncode != 0:
+        raise RuntimeError(
+            "cannot inspect process ancestry: "
+            + (completed.stderr.strip() or f"ps exit {completed.returncode}")
+        )
     rows: dict[int, tuple[int, int, str]] = {}
     for line in completed.stdout.splitlines():
         fields = line.split()
@@ -149,6 +154,9 @@ def parse_args(argv: list[str] | None) -> argparse.Namespace:
 
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
+    # Fail before acquiring a lease or launching a command if this host cannot
+    # provide the process inventory required for descendant-safe completion.
+    process_rows()
     lease_path = args.lock_dir / lock_name("lease", args.lease_id)
     root_key = str(args.build_root.resolve())
     root_path = args.lock_dir / lock_name("build-root", root_key)
@@ -168,6 +176,7 @@ def main(argv: list[str] | None = None) -> int:
         "schema": 1,
         "leaseId": args.lease_id,
         "buildRoot": root_key,
+        "lockDir": str(args.lock_dir.resolve()),
         "argv": args.command,
         "literalCommand": shlex.join(args.command),
         "utcStarted": started,

@@ -461,6 +461,8 @@ struct HUDConsequenceFeedbackPresentation: Equatable {
         "Main Street Rebound",
         "Industrial Load Surge",
         "Industrial Load Absorbed",
+        "Freight Network Secured",
+        "Cleaner Industry Compact",
         "Utility Reserve Tight",
         "Utility Shortfall",
         "Regional Retail Pressure",

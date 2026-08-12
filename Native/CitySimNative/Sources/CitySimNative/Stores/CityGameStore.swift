@@ -834,6 +834,16 @@ final class CityGameStore: ObservableObject {
             } else {
                 _ = perform(diagnosis.command)
             }
+        case "Main Street Rebound", "Main Street Recovery Delayed",
+             "Freight Network Secured", "Cleaner Industry Compact", "Freight Recovery Delayed":
+            showObjectives = true
+            let support = CityTownCharterDecisionSupport.make(analytics: analytics)
+            let diagnosis = support.secondaryResponses.first ?? support.primaryResponse
+            if diagnosis.focusesMap {
+                openInspector(.overview)
+            } else {
+                _ = perform(diagnosis.command)
+            }
         case "Town Charter Qualification Interrupted":
             showObjectives = true
             let support = CityTownCharterDecisionSupport.make(analytics: analytics)

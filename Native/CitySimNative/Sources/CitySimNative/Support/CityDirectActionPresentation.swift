@@ -692,6 +692,7 @@ enum CityNoticeActionCatalog {
     static let governedTitles: Set<String> = [
         "Choose a Growth Engine", "Chain Store Rumor", "Freight Load Forecast",
         "Industrial Load Absorbed", "Main Street Crossroads", "Storefront Slump",
+        "Main Street Rebound", "Freight Network Secured", "Cleaner Industry Compact",
         "Main Street Recovery Delayed", "Freight Contract Watch", "Industrial Load Surge",
         "Freight Recovery Delayed", "Budget Gap", "Utility Reserve Tight", "Utility Shortfall",
         "Hiring Bottleneck", "Severe Storm", "Regional Retail Challenge",
@@ -768,14 +769,28 @@ enum CityNoticeActionCatalog {
                 explanation: "Review the live Charter standard that needs attention next.",
                 focusesMap: false
             )]
+        case "Main Street Rebound", "Freight Network Secured", "Cleaner Industry Compact":
+            return [.init(
+                title: "Continue to the Town Charter",
+                command: .inspectorOverview,
+                explanation: "Review the live Town Charter standard that needs attention next.",
+                focusesMap: false
+            )]
         default:
             return []
         }
     }
 
     static func actions(for title: String, analytics: CityAnalytics) -> [CityDirectResponse] {
+        let strategyCompletionTitles: Set<String> = [
+            "Main Street Rebound", "Main Street Recovery Delayed",
+            "Freight Network Secured", "Cleaner Industry Compact", "Freight Recovery Delayed"
+        ]
         if title == "Town Charter Standards"
-            || title == "Town Charter Qualification Interrupted" {
+            || title == "Town Charter Qualification Interrupted"
+            || (strategyCompletionTitles.contains(title)
+                && analytics.strategyPhase == .completed
+                && !analytics.townCharterAwarded) {
             let support = CityTownCharterDecisionSupport.make(analytics: analytics)
             return ([support.primaryResponse] + support.secondaryResponses).uniquedByCommand()
         }

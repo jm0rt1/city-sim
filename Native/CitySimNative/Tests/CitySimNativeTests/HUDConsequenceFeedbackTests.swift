@@ -48,6 +48,24 @@ final class HUDConsequenceFeedbackTests: XCTestCase {
         XCTAssertTrue(feedback?.accessibilityValue.contains(recovery.detail) == true)
     }
 
+    func testBothIndustrialRecoveryResultsRemainPositiveSignedConsequences() throws {
+        for title in ["Freight Network Secured", "Cleaner Industry Compact"] {
+            let result = CityMessage(
+                tick: 780,
+                severity: .good,
+                title: title,
+                detail: "The industrial recovery is complete; Town Charter preparation is next."
+            )
+            let feedback = try XCTUnwrap(
+                HUDConsequenceFeedbackPresentation.make(from: [result]),
+                title
+            )
+            XCTAssertEqual(feedback.direction, .positive, title)
+            XCTAssertTrue(feedback.visualText.hasPrefix("+ \(title)"), title)
+            XCTAssertTrue(feedback.accessibilityValue.contains("Town Charter"), title)
+        }
+    }
+
     func testRegionalQualificationInterruptionAndResumptionStaySignedInTheHUD() {
         let interruption = CityMessage(
             tick: 900,

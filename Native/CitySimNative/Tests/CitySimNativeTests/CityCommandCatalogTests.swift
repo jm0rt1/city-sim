@@ -617,6 +617,63 @@ final class CityCommandCatalogTests: XCTestCase {
     }
 
     @MainActor
+    func testEveryStrategyRecoveryResultHandsOffToTheLiveTownCharterBlocker() throws {
+        let cases: [(CityStrategy, String)] = [
+            (.commercialStewardship, "Main Street Rebound"),
+            (.commercialStewardship, "Main Street Recovery Delayed"),
+            (.industrialExpansion, "Freight Network Secured"),
+            (.industrialExpansion, "Cleaner Industry Compact"),
+            (.industrialExpansion, "Freight Recovery Delayed")
+        ]
+        let fixtures = try ProductionStoryStateBuilder().buildAll()
+
+        for (strategy, title) in cases {
+            var state = try XCTUnwrap(fixtures.first {
+                $0.definition.strategy == strategy
+                    && $0.definition.stage == .regionalCapital
+            }?.state, title)
+            state.status = .playing
+            state.progression?.townCharterAwarded = false
+            state.progression?.townCharterQualifyingCycles = 0
+            state.progression?.strategy?.currentPhase = .completed
+            state.progression?.secondAct = nil
+            state.population = 470
+            state.happiness = max(60, state.happiness)
+            state.treasury = max(20_000, state.treasury)
+
+            let store = CityGameStore(state: state)
+            store.speed = .fastest
+            let support = CityTownCharterDecisionSupport.make(analytics: store.analytics)
+            let actions = CityNoticeActionCatalog.actions(for: title, analytics: store.analytics)
+            XCTAssertEqual(actions.first?.command, support.primaryResponse.command, title)
+            XCTAssertEqual(
+                Set(actions.map(\.command)),
+                Set(([support.primaryResponse] + support.secondaryResponses).map(\.command)),
+                title
+            )
+
+            let result = CityMessage(
+                tick: state.tick,
+                severity: title.contains("Delayed") ? .warning : .good,
+                title: title,
+                detail: "Strategy result"
+            )
+            store.openMessage(result)
+            XCTAssertTrue(store.showObjectives, title)
+            XCTAssertEqual(store.inspectorSection, .population, title)
+            XCTAssertEqual(store.speed, .fastest, title)
+            XCTAssertEqual(store.interactionMode, .inspect, title)
+            XCTAssertNil(store.selectedCoordinate, title)
+        }
+
+        XCTAssertEqual(
+            CityNoticeActionCatalog.actions(for: "Industrial Load Absorbed").map(\.command),
+            [.inspectorUtilities],
+            "The complication-stage success must retain its utility diagnosis"
+        )
+    }
+
+    @MainActor
     func testRegionalQualificationInterruptionRoutesTheLiveRemedyAndPauses() throws {
         var state = try XCTUnwrap(
             ProductionStoryStateBuilder().buildAll().first {

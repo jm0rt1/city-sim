@@ -287,7 +287,7 @@ struct DemandLevels: Codable, Equatable, Sendable {
     var industrial: Double = 0.40
 }
 
-struct CityObjective: Identifiable, Sendable {
+struct CityObjective: Identifiable, Equatable, Sendable {
     let id: String
     let title: String
     let detail: String

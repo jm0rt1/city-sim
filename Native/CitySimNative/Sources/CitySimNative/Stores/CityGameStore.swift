@@ -66,6 +66,7 @@ final class CityGameStore: ObservableObject {
     private var lastPersistedState: CityGameState?
     private var lastPersistenceCheckpointKind: CityPersistenceCheckpointKind = .manual
     private var nextAutosaveTick: Int
+    private var previousObjectiveProgressByID: [String: Double] = [:]
 
     init(
         state: CityGameState = .newCity(),
@@ -194,6 +195,21 @@ final class CityGameStore: ObservableObject {
         objectives.first(where: { !$0.completed }) ?? objectives[0]
     }
 
+    var objectivePresentations: [CityObjectivePresentation] {
+        let metrics = analytics
+        return objectives.map {
+            CityObjectivePresentation.make(
+                objective: $0,
+                analytics: metrics,
+                previousProgress: previousObjectiveProgressByID[$0.id]
+            )
+        }
+    }
+
+    var primaryObjectivePresentation: CityObjectivePresentation {
+        objectivePresentations.first(where: { !$0.completed }) ?? objectivePresentations[0]
+    }
+
     var completedObjectiveCount: Int {
         objectives.filter(\.completed).count
     }
@@ -219,6 +235,7 @@ final class CityGameStore: ObservableObject {
     func pulse() {
         guard commandPolicy == .enabled else { return }
         guard speed != .paused else { return }
+        let progressBeforePulse = Dictionary(uniqueKeysWithValues: objectives.map { ($0.id, $0.progress) })
         let initialStatus = state.status
         var scenarioFailure: String?
         for _ in 0..<speed.ticksPerPulse {
@@ -243,6 +260,7 @@ final class CityGameStore: ObservableObject {
         if let failure = scenarioFailure {
             showFeedback(failure, tone: .caution, autoDismissAfter: nil)
         }
+        previousObjectiveProgressByID = progressBeforePulse
     }
 
     @discardableResult
@@ -937,6 +955,13 @@ final class CityGameStore: ObservableObject {
         switch objective.id {
         case "stabilize": openInspector(.finances)
         case "capacity": openInspector(.utilities)
+        case "strategy":
+            showObjectives = true
+            if analytics.strategyPhase == .recovery {
+                openInspector(analytics.committedStrategy == .industrialExpansion ? .utilities : .finances)
+            } else {
+                openInspector(.overview)
+            }
         case "town-charter":
             showObjectives = true
             let support = CityTownCharterDecisionSupport.make(analytics: analytics)
@@ -1076,6 +1101,7 @@ final class CityGameStore: ObservableObject {
         speedBeforeCheckpointLibrary = nil
         clearBranchNamingState()
         state = .newCity(seed: UInt64.random(in: 1...UInt64.max))
+        previousObjectiveProgressByID.removeAll()
         lastPersistedState = nil
         lastPersistenceCheckpointKind = .manual
         nextAutosaveTick = state.tick + Self.autosaveIntervalTicks
@@ -1477,6 +1503,7 @@ final class CityGameStore: ObservableObject {
         speedBeforeCheckpointLibrary = nil
         clearBranchNamingState()
         state = result.state
+        previousObjectiveProgressByID.removeAll()
         lastPersistedState = result.state
         lastPersistenceCheckpointKind = if migration != nil || result.isMigration {
             .migration

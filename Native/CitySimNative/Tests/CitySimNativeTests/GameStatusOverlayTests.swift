@@ -4,6 +4,52 @@ import XCTest
 @testable import CitySimNative
 
 final class GameStatusOverlayTests: XCTestCase {
+    func testLossPresentationNamesRenamedCityAndExplainsInsolvency() {
+        var state = CityGameState.newCity(seed: 0x1055)
+        state.cityName = "Harbor Light"
+        state.treasury = -75_001
+        state.happiness = 64
+        state.status = .lost
+
+        let presentation = CityLossPresentation.make(state: state)
+
+        XCTAssertEqual(presentation.cause, .insolvency)
+        XCTAssertEqual(presentation.title, "Harbor Light Became Insolvent")
+        XCTAssertEqual(presentation.accessibilityLabel, "Harbor Light loss: insolvency")
+        XCTAssertTrue(presentation.summary.contains("Harbor Light's treasury"))
+        XCTAssertTrue(presentation.summary.contains("-$75,001"))
+        XCTAssertTrue(presentation.recoveryGuidance.contains("cash reserve"))
+        XCTAssertTrue(presentation.recoveryGuidance.contains("service upkeep"))
+        XCTAssertEqual(
+            presentation.accessibilitySummary,
+            "\(presentation.summary) \(presentation.recoveryGuidance)"
+        )
+        XCTAssertFalse(presentation.accessibilitySummary.contains("New Arcadia"))
+    }
+
+    func testLossPresentationExplainsHappinessCollapseAfterGracePeriod() {
+        var state = CityGameState.newCity(seed: 0x1056)
+        state.tick = 41
+        state.treasury = 12_000
+        state.happiness = 9
+        state.status = .lost
+
+        let presentation = CityLossPresentation.make(state: state)
+
+        XCTAssertEqual(presentation.cause, .happinessCollapse)
+        XCTAssertEqual(presentation.title, "New Arcadia Lost Public Confidence")
+        XCTAssertEqual(presentation.accessibilityLabel, "New Arcadia loss: happiness collapse")
+        XCTAssertTrue(presentation.summary.contains("happiness fell to 9%"))
+        XCTAssertTrue(presentation.summary.contains("after the first 10 days"))
+        XCTAssertTrue(presentation.recoveryGuidance.contains("utility coverage and parks"))
+        XCTAssertTrue(presentation.recoveryGuidance.contains("below 10%"))
+        XCTAssertEqual(
+            presentation.accessibilitySummary,
+            "\(presentation.summary) \(presentation.recoveryGuidance)"
+        )
+        XCTAssertFalse(presentation.accessibilitySummary.localizedCaseInsensitiveContains("insolven"))
+    }
+
     @MainActor
     func testVictoryPresentationPreservesAuthenticLegacyCharterIdentity() throws {
         let expectations: [(CityStrategyRecoveryResolution, String, String)] = [

@@ -67,6 +67,43 @@ struct CityVictoryPresentation: Equatable {
     }
 }
 
+enum CityLossCause: Equatable {
+    case insolvency
+    case happinessCollapse
+}
+
+struct CityLossPresentation: Equatable {
+    let cause: CityLossCause
+    let title: String
+    let summary: String
+    let recoveryGuidance: String
+    let accessibilityLabel: String
+
+    var accessibilitySummary: String {
+        "\(summary) \(recoveryGuidance)"
+    }
+
+    static func make(state: CityGameState) -> CityLossPresentation {
+        if state.treasury < -75_000 {
+            return CityLossPresentation(
+                cause: .insolvency,
+                title: "\(state.cityName) Became Insolvent",
+                summary: "\(state.cityName)'s treasury fell to \(state.treasury.currencyText), below the -$75,000 operating limit.",
+                recoveryGuidance: "Next region, grow in smaller steps, keep a cash reserve, and cover service upkeep before expanding.",
+                accessibilityLabel: "\(state.cityName) loss: insolvency"
+            )
+        }
+
+        return CityLossPresentation(
+            cause: .happinessCollapse,
+            title: "\(state.cityName) Lost Public Confidence",
+            summary: "\(state.cityName)'s happiness fell to \(Int(state.happiness.rounded()))% after the first 10 days.",
+            recoveryGuidance: "Next region, protect utility coverage and parks, limit pollution, and respond before happiness falls below 10%.",
+            accessibilityLabel: "\(state.cityName) loss: happiness collapse"
+        )
+    }
+}
+
 private extension CityVictoryStory {
     static func strategy(_ strategy: CityStrategy) -> CityVictoryStory {
         switch strategy {
@@ -192,8 +229,9 @@ struct GameStatusOverlay: View {
                     .font(.system(size: compact ? 25 : 31, weight: .heavy, design: .rounded))
                     .multilineTextAlignment(.center)
             } else {
-                Text("The City Is in Crisis")
+                Text(CityLossPresentation.make(state: store.state).title)
                     .font(.system(size: compact ? 25 : 30, weight: .heavy, design: .rounded))
+                    .multilineTextAlignment(.center)
             }
         }
     }
@@ -256,12 +294,24 @@ struct GameStatusOverlay: View {
     }
 
     private var lossContent: some View {
-        Text("New Arcadia can no longer meet its obligations. Reconsider the balance between growth, services, and taxation.")
-            .font(.title3)
-            .multilineTextAlignment(.center)
-            .foregroundStyle(.secondary)
-            .frame(maxWidth: 520)
-            .padding(.top, 8)
+        let presentation = CityLossPresentation.make(state: store.state)
+        return VStack(spacing: 14) {
+            Text(presentation.summary)
+                .font(.title3)
+                .foregroundStyle(.secondary)
+
+            VStack(spacing: 6) {
+                Label("For Your Next Region", systemImage: "arrow.counterclockwise.circle.fill")
+                    .font(.headline)
+                    .foregroundStyle(GameTheme.warning)
+                Text(presentation.recoveryGuidance)
+                    .font(.body)
+                    .foregroundStyle(.secondary)
+            }
+        }
+        .multilineTextAlignment(.center)
+        .frame(maxWidth: 560)
+        .padding(.top, 8)
     }
 
     private func storyRow(_ story: CityVictoryStory) -> some View {
@@ -317,13 +367,15 @@ struct GameStatusOverlay: View {
             return CityVictoryPresentation.make(state: store.state, analytics: store.analytics)
                 .accessibilitySummary
         }
-        return "New Arcadia can no longer meet its obligations."
+        return CityLossPresentation.make(state: store.state).accessibilitySummary
     }
 
     private var blockingAccessibilityLabel: String {
-        guard store.state.status == .won else { return "City crisis" }
-        return CityVictoryPresentation.make(state: store.state, analytics: store.analytics)
-            .accessibilityLabel
+        if store.state.status == .won {
+            return CityVictoryPresentation.make(state: store.state, analytics: store.analytics)
+                .accessibilityLabel
+        }
+        return CityLossPresentation.make(state: store.state).accessibilityLabel
     }
 
     private func startNewRegion() {

@@ -86,6 +86,202 @@ struct CityUtilityDecisionSupport: Equatable, Sendable {
     }
 }
 
+struct CityRegionalCapitalDecisionSupport: Equatable, Sendable {
+    let title: String
+    let detail: String
+    let primaryResponse: CityDirectResponse
+    let secondaryResponses: [CityDirectResponse]
+
+    static func make(analytics: CityAnalytics) -> Self {
+        let strategy = analytics.committedStrategy ?? .commercialStewardship
+        var requirements: [Requirement] = []
+
+        if analytics.state.population < 525 {
+            requirements.append(.init(
+                title: "Grow to 525 residents",
+                detail: "Add housing for \((525 - analytics.state.population).formatted()) more residents while protecting the other standards.",
+                shortfall: "population \(analytics.state.population.formatted()) / 525",
+                primaryResponse: .init(
+                    title: "Build homes",
+                    command: .buildResidential,
+                    explanation: "Select Residential and target the nearest valid parcel to create growth capacity.",
+                    focusesMap: true
+                ),
+                secondaryResponses: [inspect(
+                    title: "Review population",
+                    command: .inspectorPopulation,
+                    explanation: "Review residents, housing capacity, and current growth conditions."
+                )]
+            ))
+        }
+
+        let treasuryTarget = strategy == .commercialStewardship ? 12_000.0 : 15_000.0
+        if analytics.state.treasury < treasuryTarget {
+            requirements.append(.init(
+                title: "Restore the treasury",
+                detail: "Reach \(treasuryTarget.currencyText) before the Regional Capital review can advance.",
+                shortfall: "treasury \(analytics.state.treasury.currencyText) / \(treasuryTarget.currencyText)",
+                primaryResponse: inspect(
+                    title: "Review finances",
+                    command: .inspectorFinances,
+                    explanation: "Review revenue, upkeep, tax policy, and runway before committing more spending."
+                ),
+                secondaryResponses: []
+            ))
+        }
+
+        let happinessTarget = strategy == .commercialStewardship ? 56.0 : 44.0
+        if analytics.state.happiness < happinessTarget {
+            requirements.append(.init(
+                title: "Restore livability",
+                detail: "Raise happiness to \(Int(happinessTarget))% while keeping the city financially stable.",
+                shortfall: "happiness \(Int(analytics.state.happiness))% / \(Int(happinessTarget))%",
+                primaryResponse: .init(
+                    title: "Build a park",
+                    command: .buildPark,
+                    explanation: "Select Park and target the nearest valid parcel; local conditions still determine the result.",
+                    focusesMap: true
+                ),
+                secondaryResponses: [inspect(
+                    title: "Review happiness",
+                    command: .inspectorHappiness,
+                    explanation: "Review the citywide happiness factors before choosing a location."
+                )]
+            ))
+        }
+
+        let routeKind: BuildingKind = strategy == .commercialStewardship ? .commercial : .industrial
+        if analytics.count(routeKind) < 3 {
+            requirements.append(.init(
+                title: "Complete the \(routeKind.title) district",
+                detail: "Maintain three active \(routeKind.title) zones for the committed regional strategy.",
+                shortfall: "\(routeKind.title.lowercased()) zones \(analytics.count(routeKind)) / 3",
+                primaryResponse: .init(
+                    title: "Build \(routeKind.title.lowercased())",
+                    command: CityCommandCatalog.id(for: routeKind),
+                    explanation: "Select \(routeKind.title) and target the nearest valid parcel to complete the committed district.",
+                    focusesMap: true
+                ),
+                secondaryResponses: [inspect(
+                    title: "Review demand",
+                    command: .inspectorDemand,
+                    explanation: "Review current development demand and route conditions."
+                )]
+            ))
+        }
+
+        if analytics.projectedBalance < 0 {
+            requirements.append(.init(
+                title: "Balance city operations",
+                detail: "Close the \((-analytics.projectedBalance).currencyText) operating gap before restarting qualification.",
+                shortfall: "operating gap \((-analytics.projectedBalance).currencyText)",
+                primaryResponse: inspect(
+                    title: "Review finances",
+                    command: .inspectorFinances,
+                    explanation: "Review revenue, upkeep, and tax policy to close the operating gap."
+                ),
+                secondaryResponses: []
+            ))
+        }
+
+        if analytics.employmentRate < 0.92 {
+            requirements.append(.init(
+                title: "Restore employment",
+                detail: "Raise employment to 92% by adding jobs on the committed \(routeKind.title) route.",
+                shortfall: "employment \((analytics.employmentRate * 100).percentText) / 92%",
+                primaryResponse: .init(
+                    title: "Build \(routeKind.title.lowercased()) jobs",
+                    command: CityCommandCatalog.id(for: routeKind),
+                    explanation: "Select \(routeKind.title) and target the nearest valid parcel to add route-aligned jobs.",
+                    focusesMap: true
+                ),
+                secondaryResponses: [inspect(
+                    title: "Review employment",
+                    command: .inspectorEmployment,
+                    explanation: "Review workforce size, job capacity, and the remaining employment gap."
+                )]
+            ))
+        }
+
+        let reserveTarget = strategy == .industrialExpansion ? 0.20 : 0.18
+        if analytics.utilityCoverage < 1 || analytics.utilityReserve < reserveTarget {
+            let utility = CityUtilityDecisionSupport.make(analytics: analytics)
+            let kind = utility.priorityKind
+            let network = kind == .powerPlant ? "power" : "water"
+            requirements.append(.init(
+                title: analytics.utilityCoverage < 1 ? "Restore complete utility coverage" : "Build regional utility reserve",
+                detail: analytics.utilityCoverage < 1
+                    ? "Restore full utility coverage, then hold \((reserveTarget * 100).percentText) reserve. Add \(network) capacity first."
+                    : "Raise the tighter \(network) network to keep at least \((reserveTarget * 100).percentText) citywide reserve.",
+                shortfall: analytics.utilityCoverage < 1
+                    ? "utility coverage \((analytics.utilityCoverage * 100).percentText) / 100%"
+                    : "utility reserve \((analytics.utilityReserve * 100).percentText) / \((reserveTarget * 100).percentText)",
+                primaryResponse: .init(
+                    title: kind == .powerPlant ? "Build Power Plant" : "Build Water Tower",
+                    command: CityCommandCatalog.id(for: kind),
+                    explanation: "Expand the tighter utility network before qualification resumes.",
+                    focusesMap: true
+                ),
+                secondaryResponses: [inspect(
+                    title: "Review utilities",
+                    command: .inspectorUtilities,
+                    explanation: "Review power, water, coverage, and reserve before placing the project."
+                )]
+            ))
+        }
+
+        guard let primary = requirements.first else {
+            let remaining = max(
+                0,
+                CitySimulation.regionalCapitalQualificationCycles
+                    - analytics.regionalCapitalQualifyingCycles
+            )
+            return Self(
+                title: "Hold every regional standard",
+                detail: "All standards are met now. Hold them together for \(remaining) more qualifying days.",
+                primaryResponse: inspect(
+                    title: "Review city standards",
+                    command: .inspectorOverview,
+                    explanation: "Review the citywide indicators while the qualification clock advances."
+                ),
+                secondaryResponses: []
+            )
+        }
+
+        let concurrent = requirements.dropFirst().map(\.shortfall)
+        let detail = concurrent.isEmpty
+            ? primary.detail
+            : "\(primary.detail) Also below standard: \(concurrent.joined(separator: "; "))."
+        return Self(
+            title: primary.title,
+            detail: detail,
+            primaryResponse: primary.primaryResponse,
+            secondaryResponses: primary.secondaryResponses
+        )
+    }
+
+    private struct Requirement {
+        let title: String
+        let detail: String
+        let shortfall: String
+        let primaryResponse: CityDirectResponse
+        let secondaryResponses: [CityDirectResponse]
+    }
+
+    private static func inspect(
+        title: String,
+        command: CityCommandID,
+        explanation: String
+    ) -> CityDirectResponse {
+        CityDirectResponse(
+            title: title,
+            command: command,
+            explanation: explanation,
+            focusesMap: false
+        )
+    }
+}
+
 struct CityBuildDecisionPresentation: Equatable, Sendable {
     let buildingTitle: String
     let buildingSymbol: String

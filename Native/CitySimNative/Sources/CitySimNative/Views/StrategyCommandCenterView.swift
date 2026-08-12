@@ -53,7 +53,8 @@ struct CityStrategyHUDPresentation: Equatable {
                 strategy: strategy,
                 phase: secondActPhase,
                 days: analytics.secondActDaysUntilConsequence,
-                statusText: analytics.regionalCapitalStatusText
+                statusText: analytics.regionalCapitalStatusText,
+                analytics: analytics
             )
         }
 
@@ -89,7 +90,8 @@ struct CityStrategyHUDPresentation: Equatable {
         strategy: CityStrategy,
         phase: CitySecondActPhase,
         days: Int?,
-        statusText: String
+        statusText: String,
+        analytics: CityAnalytics
     ) -> CityStrategyHUDPresentation {
         let commercial = strategy == .commercialStewardship
         let diagnostic = CityDirectResponse(
@@ -136,6 +138,7 @@ struct CityStrategyHUDPresentation: Equatable {
                 ),
             ]
         let eyebrow = commercial ? "REGIONAL MAIN STREET" : "REGIONAL FREIGHT"
+        let qualificationSupport = CityRegionalCapitalDecisionSupport.make(analytics: analytics)
 
         return switch phase {
         case .mandate:
@@ -171,12 +174,12 @@ struct CityStrategyHUDPresentation: Equatable {
         case .qualification:
             .init(
                 eyebrow: eyebrow,
-                title: "Sustain Regional Capital standards",
+                title: qualificationSupport.title,
                 status: "QUALIFYING",
                 summary: statusText,
                 tone: .active,
-                diagnostic: diagnostic,
-                actions: []
+                diagnostic: qualificationSupport.primaryResponse,
+                actions: qualificationSupport.secondaryResponses
             )
         case .completed:
             .init(

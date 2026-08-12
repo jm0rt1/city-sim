@@ -260,26 +260,7 @@ struct CityAnalytics {
                 return "Complete the established recovery before qualification"
             }
         case .qualification:
-            if state.population < 525 {
-                return "Grow \((525 - state.population).formatted()) residents without losing daily standards"
-            }
-            if committedStrategy == .commercialStewardship {
-                if state.treasury < 12_000 { return "Restore the treasury to $12,000" }
-                if state.happiness < 56 { return "Raise happiness to 56%" }
-                if count(.commercial) < 3 { return "Maintain three active Commercial zones" }
-            } else {
-                if state.treasury < 15_000 { return "Restore the treasury to $15,000" }
-                if state.happiness < 44 { return "Raise happiness to 44%" }
-                if count(.industrial) < 3 { return "Maintain three active Industrial zones" }
-                if utilityReserve < 0.20 { return "Build 20% utility reserve" }
-            }
-            if projectedBalance < 0 {
-                return "Close the \((-projectedBalance).currencyText) operating gap"
-            }
-            if employmentRate < 0.92 { return "Raise employment to 92%" }
-            if utilityCoverage < 1 { return "Restore complete utility coverage" }
-            if utilityReserve < 0.18 { return "Build 18% utility reserve" }
-            return "\(regionalCapitalQualifyingCycles) of \(CitySimulation.regionalCapitalQualificationCycles) qualifying days complete"
+            return CityRegionalCapitalDecisionSupport.make(analytics: self).detail
         case .completed:
             return "Regional Capital recognition secured permanently"
         }

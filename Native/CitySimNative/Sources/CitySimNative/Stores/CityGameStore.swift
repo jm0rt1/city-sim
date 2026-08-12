@@ -419,7 +419,8 @@ final class CityGameStore: ObservableObject {
     @discardableResult
     func performMapFocused(_ command: CityCommandID) -> Bool {
         let approved: Set<CityCommandID> = [
-            .buildRoad, .buildCommercial, .buildIndustrial, .buildPark, .buildPowerPlant, .buildWaterTower,
+            .buildRoad, .buildResidential, .buildCommercial, .buildIndustrial, .buildPark,
+            .buildPowerPlant, .buildWaterTower,
             .bulldozeMode,
             .overlayUtilities, .overlayPollution, .overlayCity
         ]
@@ -767,9 +768,22 @@ final class CityGameStore: ObservableObject {
         switch objective.id {
         case "stabilize": openInspector(.finances)
         case "capacity": openInspector(.utilities)
-        case "town-charter", "regional-capital":
+        case "town-charter":
             showObjectives = true
             openInspector(.overview)
+        case "regional-capital":
+            showObjectives = true
+            guard analytics.secondActPhase == .qualification else {
+                openInspector(.overview)
+                return
+            }
+            let support = CityRegionalCapitalDecisionSupport.make(analytics: analytics)
+            let diagnosis = support.secondaryResponses.first ?? support.primaryResponse
+            if diagnosis.focusesMap {
+                openInspector(.overview)
+            } else {
+                _ = perform(diagnosis.command)
+            }
         default: openInspector(.overview)
         }
     }

@@ -383,6 +383,70 @@ final class CityCommandCatalogTests: XCTestCase {
     }
 
     @MainActor
+    func testRegionalQualificationRoutesTheCurrentBlockerAndNamesConcurrentStandards() throws {
+        var populationState = try XCTUnwrap(
+            ProductionStoryStateBuilder().buildAll().first {
+                $0.definition.strategy == .industrialExpansion
+                    && $0.definition.stage == .charterMidpoint
+            }?.state
+        )
+        populationState.progression?.secondAct?.phase = .qualification
+        populationState.progression?.secondAct?.nextScheduledTick = nil
+        populationState.population = 500
+        populationState.happiness = 40
+
+        let populationStore = CityGameStore(state: populationState)
+        populationStore.speed = .fastest
+        let population = CityStrategyHUDPresentation.make(analytics: populationStore.analytics)
+        XCTAssertEqual(population.title, "Grow to 525 residents")
+        XCTAssertEqual(population.diagnostic?.command, .buildResidential)
+        XCTAssertTrue(population.actions.contains { $0.command == .inspectorPopulation })
+        XCTAssertTrue(population.summary.contains("Also below standard:"))
+
+        let regionalObjective = try XCTUnwrap(
+            populationStore.objectives.first { $0.id == "regional-capital" }
+        )
+        XCTAssertEqual(regionalObjective.remaining, population.summary)
+        populationStore.openObjective(regionalObjective)
+        XCTAssertTrue(populationStore.showObjectives)
+        XCTAssertEqual(populationStore.inspectorSection, .population)
+
+        let homes = try XCTUnwrap(population.diagnostic)
+        let focusBeforeHomes = populationStore.mapFocusRequestGeneration
+        StrategyCommandCenterView.perform(homes, on: populationStore)
+        XCTAssertEqual(populationStore.interactionMode, .build(.residential))
+        XCTAssertEqual(populationStore.mapFocusRequestGeneration, focusBeforeHomes + 1)
+        XCTAssertEqual(populationStore.speed, .paused)
+        let homeTarget = try XCTUnwrap(populationStore.selectedCoordinate)
+        if case .failure(let rejection) = CitySimulation.validateBuild(
+            .residential,
+            at: homeTarget,
+            in: populationStore.state
+        ) {
+            XCTFail("Regional housing route selected a blocked parcel: \(rejection)")
+        }
+
+        var utilityState = try XCTUnwrap(
+            ProductionStoryStateBuilder().buildAll().first {
+                $0.definition.strategy == .industrialExpansion
+                    && $0.definition.stage == .regionalCapital
+            }?.state
+        )
+        utilityState.status = .playing
+        utilityState.progression?.secondAct?.phase = .qualification
+        utilityState.progression?.secondAct?.regionalCapitalAwarded = false
+        utilityState.progression?.secondAct?.qualifyingCycles = 0
+        utilityState.powerUsed = Int(Double(utilityState.powerCapacity) * 0.81)
+        utilityState.waterUsed = Int(Double(utilityState.waterCapacity) * 0.81)
+
+        let utility = CityStrategyHUDPresentation.make(analytics: CityAnalytics(state: utilityState))
+        XCTAssertEqual(utility.title, "Build regional utility reserve")
+        XCTAssertTrue([CityCommandID.buildPowerPlant, .buildWaterTower].contains(utility.diagnostic?.command))
+        XCTAssertTrue(utility.actions.contains { $0.command == .inspectorUtilities })
+        XCTAssertTrue(utility.summary.contains("20%"))
+    }
+
+    @MainActor
     func testStrategyHUDDiagnosisAndMapRemediesUseOneStoreIntentAndFocusHandoff() throws {
         let fixtures = try ProductionStoryStateBuilder().buildAll()
         let commercialState = try XCTUnwrap(fixtures.first {

@@ -541,9 +541,10 @@ final class CityScene: SKScene {
     }
 
     func persistentConsequenceAlphaForTesting(at coordinate: GridCoordinate) -> CGFloat? {
-        tileRecords[coordinate]?.consequenceLayer?
+        guard let record = tileRecords[coordinate] else { return nil }
+        return record.consequenceLayer?
             .childNode(withName: "spatial.consequences")?
-            .alpha
+            .alpha ?? 0
     }
 
     func developedViewportOccupancyForTesting() -> CGSize {
@@ -1271,15 +1272,6 @@ final class CityScene: SKScene {
                         } else if layer.parent == nil {
                             existing.root.addChild(layer)
                         }
-                        if existing.consequenceLayer == nil,
-                           let consequenceLayer = makePersistentConsequenceLayer(
-                               for: consequence,
-                               at: tile.coordinate,
-                               overlay: overlay
-                           ) {
-                            existing.consequenceLayer = consequenceLayer
-                            existing.root.addChild(consequenceLayer)
-                        }
                     }
                     synchronizeTileRootAttachment(existing.root)
                     applyRuntimeDelta(
@@ -1497,16 +1489,10 @@ final class CityScene: SKScene {
             }
         }
 
-        let consequenceLayer = makePersistentConsequenceLayer(
-            for: consequence,
-            at: tile.coordinate,
-            overlay: overlay
-        )
-        if let consequenceLayer { root.addChild(consequenceLayer) }
         return TileRenderRecord(
             root: root,
             overlayLayer: existing.overlayLayer,
-            consequenceLayer: consequenceLayer,
+            consequenceLayer: nil,
             signature: signature,
             overlaySignature: existing.overlaySignature
         )
@@ -1651,16 +1637,10 @@ final class CityScene: SKScene {
             root.addChild(contentLayer)
         }
 
-        let consequenceLayer = makePersistentConsequenceLayer(
-            for: consequence,
-            at: tile.coordinate,
-            overlay: overlay
-        )
-        if let consequenceLayer { root.addChild(consequenceLayer) }
         return TileRenderRecord(
             root: root,
             overlayLayer: overlayLayer,
-            consequenceLayer: consequenceLayer,
+            consequenceLayer: nil,
             signature: signature,
             overlaySignature: overlaySignature
         )
@@ -1693,26 +1673,6 @@ final class CityScene: SKScene {
         let layer = SKNode()
         layer.name = "spatial.layer"
         layer.zPosition = 72
-        return layer
-    }
-
-    /// No-overlay frames deliberately hide the compound consequence glyphs;
-    /// defer their SpriteKit subtree until an overlay actually needs the
-    /// established hidden-priority behavior. Event cues remain independent.
-    private func makePersistentConsequenceLayer(
-        for consequence: CitySpatialConsequence,
-        at coordinate: GridCoordinate,
-        overlay: DataOverlay
-    ) -> SKNode? {
-        guard overlay != .none, consequence.vitality != .notApplicable else { return nil }
-        let layer = makeConsequenceLayer()
-        let persistentCues = spatialConsequenceRenderer.makePersistentCues(
-            for: consequence,
-            detail: currentCameraDetailLevel
-        )
-        guard !persistentCues.children.isEmpty else { return nil }
-        layer.addChild(persistentCues)
-        updatePersistentConsequenceEmphasis(in: layer, at: coordinate, overlay: overlay)
         return layer
     }
 

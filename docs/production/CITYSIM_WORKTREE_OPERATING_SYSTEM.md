@@ -591,12 +591,18 @@ The staged app has one tree-identity producer:
 the producer's Git blob SHA-256 and output in the QA lease; QA recomputes with
 that exact producer. Competing absolute-path inventories or ad hoc digest
 commands cannot establish drift and must not trigger a rebuild or second gate.
-Before final-QA activation, Integration also validates one schema-1
+Before final-QA activation, Integration also validates one schema-2
 `qa_handoff` envelope that binds the acceptance route and dispatch, exact
 candidate ref/commit, staged root/seal/producer, and launch
 argv/environment/window. QA launches that contract and verifies its environment
 on the actual PID before interaction. A 900x600 run requires
 `CITYSIM_COMPACT_WINDOW=1` plus an absolute isolated `CITYSIM_DATA_ROOT`.
+The same envelope binds the stage producer's exact PID, sealed bundle
+executable, and required environment. Integration must either terminate that
+process before handoff, leaving no live same-executable process, or explicitly
+transfer the exact live PID to QA; validator preflight rejects every unnamed
+same-executable process. This is process ownership inside the existing handoff,
+not another launch, aggregate, review, or acceptance layer.
 Mismatch is setup failure owned by Integration; it neither condemns product
 bytes nor creates another reviewer or acceptance gate.
 The composed-screen comparison is part of that one existing real-app journey,

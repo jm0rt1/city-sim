@@ -13,12 +13,18 @@ import subprocess
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 import validate_model_route_v1 as validator
 
 
 class ModelRouteTests(unittest.TestCase):
     def setUp(self) -> None:
+        process_patch = mock.patch.object(
+            validator, "_live_same_executable_pids", return_value=[]
+        )
+        process_patch.start()
+        self.addCleanup(process_patch.stop)
         self.temp = tempfile.TemporaryDirectory()
         self.repo = Path(self.temp.name)
         subprocess.run(["git", "init", "-q", str(self.repo)], check=True)
@@ -333,7 +339,7 @@ class ModelRouteTests(unittest.TestCase):
             text=True,
         ).strip()
         return {
-            "schema": 1,
+            "schema": 2,
             "kind": "qa_handoff",
             "taskId": "PLAY-999",
             "route": self._binding("inputs/qa-route.json"),
@@ -343,6 +349,15 @@ class ModelRouteTests(unittest.TestCase):
                 "appRoot": str(app_root),
                 "sha256": digest,
                 "producer": copy.deepcopy(self.producer),
+            },
+            "stageProcess": {
+                "disposition": "terminated_before_handoff",
+                "pid": 4242,
+                "executable": str(executable),
+                "environment": {
+                    "CITYSIM_DATA_ROOT": str(data_root),
+                    "CITYSIM_COMPACT_WINDOW": "1",
+                },
             },
             "launch": {
                 "command": [str(executable)],
@@ -354,6 +369,7 @@ class ModelRouteTests(unittest.TestCase):
                 "pidVerification": {
                     "required": True,
                     "command": ["ps", "eww", "-p", "{pid}"],
+                    "sameExecutablePolicy": "reject_unnamed_processes",
                 },
             },
         }
@@ -779,6 +795,7 @@ class ModelRouteTests(unittest.TestCase):
         info_path = native.parent.parent / "Info.plist"
         info_path.write_bytes(plistlib.dumps({"CFBundleExecutable": "CitySimNative"}))
         handoff["launch"]["command"] = [str(native)]
+        handoff["stageProcess"]["executable"] = str(native)
         handoff["stage"]["sha256"] = subprocess.check_output(
             ["bash", str(self.repo / "script" / "canonical_tree_digest.sh"), handoff["stage"]["appRoot"]],
             text=True,
@@ -886,6 +903,40 @@ class ModelRouteTests(unittest.TestCase):
         handoff["launch"]["pidVerification"]["command"] = ["pgrep", "CitySim"]
         errors = validator.validate_qa_handoff(handoff, self.repo)
         self.assertTrue(any("actual-PID" in error for error in errors), errors)
+
+    def test_qa_handoff_rejects_legacy_or_mismatched_stage_process_contract(self) -> None:
+        handoff = self.qa_handoff()
+        handoff["schema"] = 1
+        errors = validator.validate_qa_handoff(handoff, self.repo)
+        self.assertTrue(any("schema 2" in error for error in errors), errors)
+
+        handoff = self.qa_handoff()
+        handoff["stageProcess"]["executable"] = str(self.repo / "wrong-binary")
+        errors = validator.validate_qa_handoff(handoff, self.repo)
+        self.assertTrue(any("sealed bundle executable" in error for error in errors), errors)
+
+        handoff = self.qa_handoff()
+        handoff["stageProcess"]["environment"]["CITYSIM_COMPACT_WINDOW"] = "0"
+        errors = validator.validate_qa_handoff(handoff, self.repo)
+        self.assertTrue(any("required launch environment" in error for error in errors), errors)
+
+    def test_qa_handoff_rejects_live_process_after_termination(self) -> None:
+        handoff = self.qa_handoff()
+        with mock.patch.object(validator, "_live_same_executable_pids", return_value=[4242]):
+            errors = validator.validate_qa_handoff(handoff, self.repo)
+        self.assertTrue(any("still has live same-executable" in error for error in errors), errors)
+
+    def test_qa_handoff_accepts_exact_transfer_and_rejects_unnamed_sibling(self) -> None:
+        handoff = self.qa_handoff()
+        handoff["stageProcess"]["disposition"] = "transferred_to_qa"
+        with mock.patch.object(validator, "_live_same_executable_pids", return_value=[4242]):
+            self.assertEqual([], validator.validate_qa_handoff(handoff, self.repo))
+
+        with mock.patch.object(
+            validator, "_live_same_executable_pids", return_value=[4242, 4343]
+        ):
+            errors = validator.validate_qa_handoff(handoff, self.repo)
+        self.assertTrue(any("no unnamed same-executable" in error for error in errors), errors)
 
     def test_swift_test_log_requires_result_bearing_pass_summary(self) -> None:
         xctest = (

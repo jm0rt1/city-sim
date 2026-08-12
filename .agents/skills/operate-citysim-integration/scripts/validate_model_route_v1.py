@@ -25,7 +25,7 @@ ROUTE_FIELDS = {
 OPTIONAL_ROUTE_FIELDS = {"compositionContract", "swiftExecution", "writerExecution"}
 ROUTE_SCHEMA = 2
 DISPATCH_SCHEMA = 2
-QA_HANDOFF_SCHEMA = 1
+QA_HANDOFF_SCHEMA = 2
 ROUTES = {
     "FRONTIER_AUTHORITY": ("gpt-5.6-sol", "high"),
     "LUNA_IMPLEMENTATION": ("gpt-5.6-luna", "high"),
@@ -1186,17 +1186,39 @@ def validate_dispatch(
     return errors
 
 
+def _live_same_executable_pids(executable: Path) -> list[int]:
+    """Return live PIDs whose command starts with the exact staged executable."""
+    result = subprocess.run(
+        ["ps", "-axo", "pid=,command="], capture_output=True, text=True,
+    )
+    if result.returncode != 0:
+        raise ValidationError("QA handoff same-executable process preflight failed")
+    expected = str(executable.resolve())
+    live: list[int] = []
+    for raw_line in result.stdout.splitlines():
+        line = raw_line.strip()
+        if not line:
+            continue
+        pid_text, separator, command = line.partition(" ")
+        if not separator or not pid_text.isdigit():
+            continue
+        command = command.lstrip()
+        if command == expected or command.startswith(f"{expected} "):
+            live.append(int(pid_text))
+    return sorted(set(live))
+
+
 def validate_qa_handoff(handoff: Any, repo: Path) -> list[str]:
     """Validate the exact candidate, stage, and launch contract sent to QA."""
     errors: list[str] = []
     fields = {
         "schema", "kind", "taskId", "route", "dispatch", "candidate",
-        "stage", "launch",
+        "stage", "stageProcess", "launch",
     }
     if not isinstance(handoff, dict) or set(handoff) != fields:
         return ["QA handoff has unsupported or missing fields"]
     if handoff["schema"] != QA_HANDOFF_SCHEMA or handoff["kind"] != "qa_handoff":
-        errors.append("QA handoff must be schema 1 kind qa_handoff")
+        errors.append("QA handoff must be schema 2 kind qa_handoff")
     task_id = handoff["taskId"]
     if not isinstance(task_id, str) or not task_id.startswith("PLAY-"):
         errors.append("QA handoff taskId must be a PLAY task")
@@ -1393,12 +1415,56 @@ def validate_qa_handoff(handoff: Any, repo: Path) -> list[str]:
     if (width, height) == (900, 600) and environment.get("CITYSIM_COMPACT_WINDOW") != "1":
         errors.append("900x600 QA handoff requires CITYSIM_COMPACT_WINDOW=1")
     pid = launch.get("pidVerification")
-    if not isinstance(pid, dict) or set(pid) != {"required", "command"}:
-        errors.append("QA handoff pidVerification must contain exactly required and command")
+    if not isinstance(pid, dict) or set(pid) != {
+        "required", "command", "sameExecutablePolicy",
+    }:
+        errors.append(
+            "QA handoff pidVerification must contain exactly required, command, "
+            "and sameExecutablePolicy"
+        )
     elif pid.get("required") is not True or pid.get("command") != [
         "ps", "eww", "-p", "{pid}"
-    ]:
+    ] or pid.get("sameExecutablePolicy") != "reject_unnamed_processes":
         errors.append("QA handoff requires exact actual-PID environment verification")
+
+    stage_process = handoff["stageProcess"]
+    process_fields = {"disposition", "pid", "executable", "environment"}
+    if not isinstance(stage_process, dict) or set(stage_process) != process_fields:
+        errors.append("QA handoff stageProcess has unsupported or missing fields")
+        stage_process = {}
+    disposition = stage_process.get("disposition")
+    if disposition not in {"terminated_before_handoff", "transferred_to_qa"}:
+        errors.append("QA handoff stageProcess disposition is unsupported")
+    stage_pid = stage_process.get("pid")
+    if isinstance(stage_pid, bool) or not isinstance(stage_pid, int) or stage_pid <= 0:
+        errors.append("QA handoff stageProcess.pid must be a positive integer")
+    process_executable = stage_process.get("executable")
+    if expected_executable is not None and process_executable != str(expected_executable):
+        errors.append("QA handoff stageProcess executable must equal the sealed bundle executable")
+    process_environment = stage_process.get("environment")
+    if process_environment != environment:
+        errors.append("QA handoff stageProcess environment must equal the required launch environment")
+
+    if expected_executable is not None:
+        try:
+            live_same_executable = _live_same_executable_pids(expected_executable)
+        except ValidationError as exc:
+            errors.append(str(exc))
+        else:
+            if disposition == "terminated_before_handoff" and live_same_executable:
+                errors.append(
+                    "QA handoff terminated stageProcess still has live same-executable "
+                    f"PIDs: {live_same_executable}"
+                )
+            elif disposition == "transferred_to_qa" and (
+                not isinstance(stage_pid, int)
+                or isinstance(stage_pid, bool)
+                or live_same_executable != [stage_pid]
+            ):
+                errors.append(
+                    "QA handoff transferred stageProcess requires exactly its named PID "
+                    f"and no unnamed same-executable process; live={live_same_executable}"
+                )
     return errors
 
 

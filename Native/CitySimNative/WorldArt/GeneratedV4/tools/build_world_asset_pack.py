@@ -891,7 +891,7 @@ def commercial_l01_variant_zero_assets(
         or selection.get("task") != "PLAY-098"
         or selection.get("family") != "commercial_l01_v0"
         or set(rows) != set(directions)
-        or receipt.get("schema") != "citysim.play-098.commercial-l01-v0.normalization.v1"
+        or receipt.get("schema") != "citysim.play-098.commercial-l01-v0.admission.v1"
         or receipt.get("family") != "commercial_l01_v0"
         or set(receipt.get("directions", [])) != set(directions)
         or admission.get("disposition") != "ADMIT_SOURCE_FAMILY"

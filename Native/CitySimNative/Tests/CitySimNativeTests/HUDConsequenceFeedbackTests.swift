@@ -66,6 +66,24 @@ final class HUDConsequenceFeedbackTests: XCTestCase {
         }
     }
 
+    func testOpeningBudgetAndHiringWarningsRemainNegativeSignedConsequences() throws {
+        for title in ["Budget Gap", "Hiring Bottleneck"] {
+            let warning = CityMessage(
+                tick: 4,
+                severity: .warning,
+                title: title,
+                detail: "The opening city needs a decision."
+            )
+            let feedback = try XCTUnwrap(
+                HUDConsequenceFeedbackPresentation.make(from: [warning]),
+                title
+            )
+            XCTAssertEqual(feedback.direction, .negative, title)
+            XCTAssertTrue(feedback.visualText.hasPrefix("− \(title)"), title)
+            XCTAssertTrue(feedback.accessibilityValue.contains(warning.detail), title)
+        }
+    }
+
     func testRegionalQualificationInterruptionAndResumptionStaySignedInTheHUD() {
         let interruption = CityMessage(
             tick: 900,

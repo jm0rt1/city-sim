@@ -839,6 +839,16 @@ final class CityGameStore: ObservableObject {
             openInspector(.demand)
         case "State Growth Grant":
             openInspector(.finances)
+        case "Budget Gap":
+            openInspector(.finances)
+            if message.severity == .warning || message.severity == .critical {
+                setSpeed(.paused)
+            }
+        case "Hiring Bottleneck":
+            openInspector(.employment)
+            if message.severity == .warning || message.severity == .critical {
+                setSpeed(.paused)
+            }
         case "Town Charter Awarded":
             showObjectives = true
             openInspector(.overview)

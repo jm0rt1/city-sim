@@ -709,6 +709,67 @@ final class CityCommandCatalogTests: XCTestCase {
     }
 
     @MainActor
+    func testOpeningBudgetAndCommittedHiringWarningsExposeExactDiagnosisAndPause() {
+        var opening = CityGameState.newCity(seed: 42)
+        for _ in 0..<4 { CitySimulation.step(&opening) }
+        XCTAssertEqual(opening.messages.first?.title, "Budget Gap")
+        XCTAssertEqual(
+            HUDConsequenceFeedbackPresentation.make(from: opening.messages)?.message.title,
+            "Budget Gap"
+        )
+        XCTAssertEqual(
+            CityNoticeActionCatalog.actions(
+                for: "Budget Gap",
+                analytics: CityAnalytics(state: opening)
+            ).map(\.command),
+            [.inspectorFinances]
+        )
+
+        var state = CityGameState.newCity(seed: 42)
+        state.progression?.strategy = CityStrategyProgression(
+            committedStrategy: .industrialExpansion,
+            currentPhase: .opportunity,
+            nextScheduledTick: state.tick + 64
+        )
+        let store = CityGameStore(state: state)
+        store.speed = .fastest
+
+        let hiring = CityMessage(
+            tick: state.tick,
+            severity: .warning,
+            title: "Hiring Bottleneck",
+            detail: "The city needs more jobs."
+        )
+        let hiringActions = CityNoticeActionCatalog.actions(
+            for: hiring.title,
+            analytics: store.analytics
+        )
+        XCTAssertEqual(hiringActions.map(\.command), [.buildIndustrial, .inspectorEmployment])
+        XCTAssertFalse(hiringActions.contains { $0.command == .buildCommercial })
+        store.openMessage(hiring)
+        XCTAssertEqual(store.inspectorSection, .employment)
+        XCTAssertEqual(store.speed, .paused)
+
+        store.speed = .fastest
+        let budget = CityMessage(
+            tick: state.tick,
+            severity: .warning,
+            title: "Budget Gap",
+            detail: "Operations are running a deficit."
+        )
+        XCTAssertEqual(
+            CityNoticeActionCatalog.actions(
+                for: budget.title,
+                analytics: store.analytics
+            ).map(\.command),
+            [.inspectorFinances]
+        )
+        store.openMessage(budget)
+        XCTAssertEqual(store.inspectorSection, .finances)
+        XCTAssertEqual(store.speed, .paused)
+    }
+
+    @MainActor
     func testStrategyHUDDiagnosisAndMapRemediesUseOneStoreIntentAndFocusHandoff() throws {
         let fixtures = try ProductionStoryStateBuilder().buildAll()
         let commercialState = try XCTUnwrap(fixtures.first {

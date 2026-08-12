@@ -798,6 +798,23 @@ enum CityNoticeActionCatalog {
             let support = CityRegionalCapitalDecisionSupport.make(analytics: analytics)
             return ([support.primaryResponse] + support.secondaryResponses).uniquedByCommand()
         }
+        if title == "Hiring Bottleneck", let strategy = analytics.committedStrategy {
+            let kind: BuildingKind = strategy == .industrialExpansion ? .industrial : .commercial
+            return [
+                .init(
+                    title: "Build \(kind.title.lowercased()) jobs",
+                    command: CityCommandCatalog.id(for: kind),
+                    explanation: "Add jobs on the committed \(kind.title) route without reopening the growth-engine decision.",
+                    focusesMap: true
+                ),
+                .init(
+                    title: "Review employment",
+                    command: .inspectorEmployment,
+                    explanation: "Review workforce size, job capacity, and the remaining employment gap.",
+                    focusesMap: false
+                )
+            ]
+        }
         guard title == "Utility Reserve Tight" || title == "Utility Shortfall" else {
             return actions(for: title)
         }

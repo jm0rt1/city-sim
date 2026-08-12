@@ -463,6 +463,8 @@ struct HUDConsequenceFeedbackPresentation: Equatable {
         "Industrial Load Absorbed",
         "Freight Network Secured",
         "Cleaner Industry Compact",
+        "Budget Gap",
+        "Hiring Bottleneck",
         "Utility Reserve Tight",
         "Utility Shortfall",
         "Regional Retail Pressure",

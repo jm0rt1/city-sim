@@ -11,6 +11,11 @@ Read this reference when implementing, validating, or completing a UI/input pack
 5. Capture real default and compact proof for every changed surface.
 6. Check HUD terminology and denominators against simulation analytics.
 7. Report VoiceOver and Full Keyboard Access separately.
+8. If the route can change a player-visible view, consume its immutable
+   `composed_screen_contract`. The aggregate gate—not the worker focused gate—
+   compares the frozen predecessor and exact candidate with the same fixture,
+   camera, regular/900x600 geometry, and command. A local UI PASS may not claim
+   that map aperture, guidance exclusivity, or whole-screen hierarchy improved.
 
 ## Completion
 

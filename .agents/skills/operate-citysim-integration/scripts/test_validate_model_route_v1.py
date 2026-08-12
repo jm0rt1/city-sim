@@ -28,6 +28,13 @@ class ModelRouteTests(unittest.TestCase):
             "# PLAY-999\nOwn `owned/` and `owned/evidence/`.\n", encoding="utf-8"
         )
         (self.repo / "inputs" / "authority.txt").write_text("frozen\n", encoding="utf-8")
+        subprocess.run(
+            ["git", "-C", str(self.repo), "commit", "--allow-empty", "-qm", "baseline"],
+            check=True,
+        )
+        self.baseline = subprocess.check_output(
+            ["git", "-C", str(self.repo), "rev-parse", "HEAD"], text=True
+        ).strip()
         subprocess.run(["git", "-C", str(self.repo), "add", "claims", "inputs"], check=True)
         subprocess.run(["git", "-C", str(self.repo), "commit", "-qm", "fixture"], check=True)
         self.head = subprocess.check_output(["git", "-C", str(self.repo), "rev-parse", "HEAD"], text=True).strip()
@@ -125,6 +132,48 @@ class ModelRouteTests(unittest.TestCase):
     def assert_invalid(self, route: dict, fragment: str) -> None:
         errors = validator.validate_route(route, self.repo)
         self.assertTrue(any(fragment in error for error in errors), errors)
+
+    def add_composition_contract(self, route: dict, candidate: str | None) -> None:
+        command = "python3 aggregate_composed_screen.py"
+        contract = {
+            "schema": 1,
+            "kind": "composed_screen_contract",
+            "taskId": route["taskId"],
+            "routeId": route["routeId"],
+            "comparisonRequired": True,
+            "baselineCommit": self.baseline,
+            "candidateCommit": candidate,
+            "fixtureSha256": "a" * 64,
+            "viewports": [
+                {
+                    "id": "regular", "width": 1280, "height": 800,
+                    "minMapFraction": 0.60, "maxGuidanceLayers": 1,
+                },
+                {
+                    "id": "compact", "width": 900, "height": 600,
+                    "minMapFraction": 0.50, "maxGuidanceLayers": 1,
+                },
+            ],
+            "candidateAssetProfileSha256": "b" * 64,
+            "aggregateCommand": command,
+        }
+        path = self.repo / "inputs" / "composed-screen.json"
+        path.write_text(json.dumps(contract), encoding="utf-8")
+        binding = self._binding("inputs/composed-screen.json")
+        route["compositionContract"] = {**binding, "aggregateCommand": command}
+        route["authority"]["immutableInputs"].append(copy.deepcopy(binding))
+        route["validation"]["fullCommands"].append(command)
+
+    def make_visual_route(self, root: str) -> dict:
+        route = self.route()
+        (self.repo / "claims" / "PLAY-999.md").write_text(
+            f"# PLAY-999\nOwn `{root}` and `owned`.\n", encoding="utf-8"
+        )
+        route["authority"]["claim"] = self._binding("claims/PLAY-999.md")
+        route["pathPolicy"]["claimOwnedRoots"] = [root, "owned"]
+        route["pathPolicy"]["allowed"] = [root, "owned/evidence"]
+        self.add_composition_contract(route, None)
+        return route
 
     def test_all_supported_route_tuples(self) -> None:
         kinds = {
@@ -303,9 +352,45 @@ class ModelRouteTests(unittest.TestCase):
         route["independentReviewer"] = {
             "required": True, "threadId": "qa-thread", "model": "gpt-5.6-sol", "effort": "high"
         }
+        self.assert_invalid(route, "requires compositionContract")
+        self.add_composition_contract(route, self.head)
         self.assert_invalid(route, "feature-author")
         route["assignment"]["featureAuthorThreadId"] = "author-thread"
         self.assert_valid(route)
+
+    def test_visual_routes_require_exact_composed_screen_contract(self) -> None:
+        for root in validator.VISUAL_ROUTE_ROOTS:
+            with self.subTest(root=root):
+                route = self.make_visual_route(root)
+                self.assert_valid(route)
+                missing = copy.deepcopy(route)
+                del missing["compositionContract"]
+                self.assert_invalid(missing, "requires compositionContract")
+
+    def test_composed_screen_contract_rejects_weak_map_or_unbound_command(self) -> None:
+        route = self.make_visual_route(validator.VISUAL_ROUTE_ROOTS[0])
+        contract_path = self.repo / route["compositionContract"]["path"]
+        contract = json.loads(contract_path.read_text(encoding="utf-8"))
+        contract["viewports"][1]["minMapFraction"] = 0.40
+        contract_path.write_text(json.dumps(contract), encoding="utf-8")
+        binding = self._binding("inputs/composed-screen.json")
+        route["compositionContract"]["sha256"] = binding["sha256"]
+        route["authority"]["immutableInputs"][-1] = binding
+        self.assert_invalid(route, "minMapFraction")
+
+        contract["viewports"][1]["minMapFraction"] = 0.50
+        contract["aggregateCommand"] = "python3 different_aggregate.py"
+        contract_path.write_text(json.dumps(contract), encoding="utf-8")
+        binding = self._binding("inputs/composed-screen.json")
+        route["compositionContract"]["sha256"] = binding["sha256"]
+        route["authority"]["immutableInputs"][-1] = binding
+        self.assert_invalid(route, "aggregateCommand does not match")
+
+        contract_path.write_text("{", encoding="utf-8")
+        binding = self._binding("inputs/composed-screen.json")
+        route["compositionContract"]["sha256"] = binding["sha256"]
+        route["authority"]["immutableInputs"][-1] = binding
+        self.assert_invalid(route, "cannot load compositionContract")
 
     def test_compact_context_requires_exact_bound_packet(self) -> None:
         route = self.route()

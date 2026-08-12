@@ -20,6 +20,7 @@ ROUTE_FIELDS = {
     "boundedDeliverable", "validation", "expectedResult", "escalationTriggers",
     "stopCondition", "independentReviewer", "context", "proofPolicy",
 }
+OPTIONAL_ROUTE_FIELDS = {"compositionContract"}
 ROUTE_SCHEMA = 2
 DISPATCH_SCHEMA = 2
 ROUTES = {
@@ -93,6 +94,11 @@ PROHIBITED_EVIDENCE_SUBSTITUTIONS = {
     "unit_tests_for_visual_acceptance",
     "worker_self_report_for_independent_acceptance",
 }
+VISUAL_ROUTE_ROOTS = (
+    "Native/CitySimNative/Sources/CitySimNative/Views",
+    "Native/CitySimNative/Sources/CitySimNative/Rendering",
+    "Native/CitySimNative/WorldArt",
+)
 
 
 class ValidationError(Exception):
@@ -177,11 +183,135 @@ def _check_binding(repo: Path, binding: Any, label: str, errors: list[str]) -> N
         errors.append(f"{label}.sha256 does not match repository bytes: {rel}")
 
 
+def _validate_composition_contract(
+    route: dict[str, Any], repo: Path, allowed: list[str], claims: list[str],
+    full_commands: Any, errors: list[str],
+) -> None:
+    visual_path = any(
+        _within(path, root) or _within(root, path)
+        for path in allowed for root in VISUAL_ROUTE_ROOTS
+    )
+    acceptance_visual = route["packetKind"] == "acceptance" and any(
+        claim in {"visual_quality", "real_app_interaction"} for claim in claims
+    )
+    required = visual_path or acceptance_visual
+    binding = route.get("compositionContract")
+    if not required and binding is None:
+        return
+    if binding is None:
+        errors.append("visual or acceptance route requires compositionContract")
+        return
+    if not isinstance(binding, dict) or set(binding) != {"path", "sha256", "aggregateCommand"}:
+        errors.append("compositionContract must contain exactly path, sha256, and aggregateCommand")
+        return
+    contract_path = _repo_path(
+        binding.get("path"), "compositionContract.path", errors
+    )
+    if contract_path is None:
+        return
+    _check_binding(
+        repo, {"path": binding.get("path"), "sha256": binding.get("sha256")},
+        "compositionContract", errors,
+    )
+    if not (repo / contract_path).is_file():
+        return
+    try:
+        contract = load_json(repo / contract_path)
+    except ValidationError as exc:
+        errors.append(f"cannot load compositionContract: {exc}")
+        return
+    fields = {
+        "schema", "kind", "taskId", "routeId", "comparisonRequired",
+        "baselineCommit", "candidateCommit", "fixtureSha256", "viewports",
+        "candidateAssetProfileSha256", "aggregateCommand",
+    }
+    if not isinstance(contract, dict) or set(contract) != fields:
+        errors.append("composed-screen contract has unsupported or missing fields")
+        return
+    if contract["schema"] != 1 or contract["kind"] != "composed_screen_contract":
+        errors.append("compositionContract must bind schema 1 composed_screen_contract")
+    if contract["taskId"] != route["taskId"] or contract["routeId"] != route["routeId"]:
+        errors.append("composed-screen contract identity does not match route")
+    if contract["comparisonRequired"] is not True:
+        errors.append("composed-screen comparisonRequired must be true")
+    if not _is_hex(contract["baselineCommit"], 40):
+        errors.append("composed-screen baselineCommit must be a full Git SHA")
+    candidate = contract["candidateCommit"]
+    if route["packetKind"] == "acceptance":
+        if not _is_hex(candidate, 40):
+            errors.append("acceptance composed-screen candidateCommit must be exact")
+        elif candidate == contract["baselineCommit"]:
+            errors.append("composed-screen baseline and candidate must differ")
+        elif candidate != (
+            route.get("assignment", {}).get("expectedHead")
+            if isinstance(route.get("assignment"), dict) else None
+        ):
+            errors.append("composed-screen candidateCommit does not match acceptance HEAD")
+    elif candidate is not None:
+        errors.append("pre-candidate composed-screen contract must leave candidateCommit null")
+    for field in ("fixtureSha256", "candidateAssetProfileSha256"):
+        if not _is_hex(contract[field], 64):
+            errors.append(f"composed-screen {field} must be 64 lowercase hex characters")
+    viewports = contract["viewports"]
+    if not isinstance(viewports, list) or len(viewports) != 2:
+        errors.append("composed-screen contract requires exactly regular and compact viewports")
+    else:
+        by_id: dict[str, dict[str, Any]] = {}
+        duplicate_or_invalid_id = False
+        for row in viewports:
+            viewport_id = row.get("id") if isinstance(row, dict) else None
+            if not isinstance(viewport_id, str) or viewport_id in by_id:
+                duplicate_or_invalid_id = True
+                continue
+            by_id[viewport_id] = row
+        if duplicate_or_invalid_id or set(by_id) != {"regular", "compact"}:
+            errors.append("composed-screen viewports must be unique regular and compact rows")
+        expected = {"regular": (1280, 800, 0.60), "compact": (900, 600, 0.50)}
+        for viewport_id, (width, height, minimum) in expected.items():
+            row = by_id.get(viewport_id)
+            if not isinstance(row, dict) or set(row) != {
+                "id", "width", "height", "minMapFraction", "maxGuidanceLayers"
+            }:
+                errors.append(f"composed-screen {viewport_id} viewport has invalid fields")
+                continue
+            if (row["width"], row["height"]) != (width, height):
+                errors.append(f"composed-screen {viewport_id} viewport must be {width}x{height}")
+            map_fraction = row["minMapFraction"]
+            if (
+                isinstance(map_fraction, bool)
+                or not isinstance(map_fraction, (int, float))
+                or not math.isfinite(map_fraction)
+                or map_fraction < minimum
+                or map_fraction > 1
+            ):
+                errors.append(
+                    f"composed-screen {viewport_id} minMapFraction must be at least {minimum}"
+                )
+            if row["maxGuidanceLayers"] != 1:
+                errors.append(f"composed-screen {viewport_id} maxGuidanceLayers must equal 1")
+    command = contract["aggregateCommand"]
+    if not isinstance(command, str) or not command:
+        errors.append("composed-screen aggregateCommand must be non-empty")
+    elif binding["aggregateCommand"] != command:
+        errors.append("compositionContract aggregateCommand does not match bound contract")
+    elif not isinstance(full_commands, list) or command not in full_commands:
+        errors.append("composed-screen aggregateCommand must be an exact full-gate command")
+    authority = route.get("authority")
+    immutable = authority.get("immutableInputs", []) if isinstance(authority, dict) else []
+    matching = [
+        row for row in immutable
+        if isinstance(row, dict) and row.get("path") == contract_path
+    ]
+    if len(matching) != 1 or matching[0].get("sha256") != binding.get("sha256"):
+        errors.append("compositionContract must be one exact authority immutable input")
+
+
 def validate_route(route: Any, repo: Path) -> list[str]:
     errors: list[str] = []
     if not isinstance(route, dict):
         return ["route packet must be a JSON object"]
-    missing, extra = ROUTE_FIELDS - set(route), set(route) - ROUTE_FIELDS
+    missing = ROUTE_FIELDS - set(route)
+    extra = set(route) - ROUTE_FIELDS - OPTIONAL_ROUTE_FIELDS
     if missing:
         errors.append(f"missing route fields: {sorted(missing)}")
     if extra:
@@ -444,6 +574,8 @@ def validate_route(route: Any, repo: Path) -> list[str]:
                     "behavioral command is not an exact command of the gate "
                     f"that owns behavioral proof: {command}"
                 )
+
+    _validate_composition_contract(route, repo, allowed, claims, full_commands, errors)
 
     result = route["expectedResult"]
     if not isinstance(result, dict) or set(result) != {"evidencePaths", "commitRequired", "commitMessagePattern"}:

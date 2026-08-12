@@ -52,3 +52,12 @@ immutable APPROVE/RETURN result; do not run a duplicate acceptance journey.
 7. Exercise critical input, accessibility, and layout variants as separately
    recorded segments inside the same preregistered, same-SHA acceptance gate;
    do not create separate candidate builds or acceptance gates for them.
+8. For a visual-facing candidate, validate the route's immutable
+   `composed_screen_contract`, then capture the exact predecessor and candidate
+   under its identical fixture, camera, command, and 1280x800/900x600 layouts.
+   Record measured unobscured map fraction, simultaneous contextual guidance
+   layers, overlap/clipping, and candidate asset-profile identity. Return the
+   candidate if either map fraction misses its bound, more than one contextual
+   guidance layer competes, overlap/clipping appears, or the visible asset
+   profile is internally inconsistent. A locally correct component does not
+   excuse a globally worse player view.

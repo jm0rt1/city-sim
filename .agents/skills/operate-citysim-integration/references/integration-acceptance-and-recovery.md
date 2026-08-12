@@ -27,6 +27,11 @@ Read this reference before candidate review, acceptance, integration, rollback, 
    - `./script/build_and_run.sh --verify`
 9. Operate the target journey in the staged app using pointer and affected keyboard paths at default and compact layouts.
 10. Check accessibility, focus, save/load, undo, visual truth, performance, and recovery when affected.
+    For UI, Renderer, WorldArt, or visual/interaction acceptance routes, reject
+    dispatch without the validator-approved immutable composed-screen contract.
+    The existing final journey compares predecessor and candidate at identical
+    fixture, camera, and regular/900x600 geometry, including map aperture,
+    guidance-layer exclusivity, overlap/clipping, and visible-asset coherence.
 11. Update completion, baseline, proof, decision, and requirement records truthfully.
 12. Commit integration-only changes separately, push accepted `master`, verify remote parity, and announce the next baseline.
 
@@ -38,6 +43,9 @@ Require an understandable decision, visible consequence, recovery path,
 correct ownership, live operation, and retained evidence. A worker PASS whose
 claimed behavior was not executed is a returned false-green, not partial
 acceptance.
+An isolated component PASS cannot overrule a composed-screen RETURN. This
+comparison strengthens the one existing aggregate/final gate; it does not add
+a reviewer, ACK, or second acceptance turn.
 
 ## Recover safely
 

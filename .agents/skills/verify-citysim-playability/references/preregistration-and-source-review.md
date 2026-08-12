@@ -15,6 +15,11 @@ acceptance contract while implementation or art production continues:
   capture names, and evidence destinations;
 - quantitative visual, interaction, performance, persistence, and accessibility
   thresholds that apply to the claimed player outcome.
+- for UI, Renderer, WorldArt, or other visual-facing work, one immutable
+  composed-screen contract with the accepted predecessor commit, exact fixture
+  and camera, 1280x800 and true 900x600 layouts, minimum unobscured map
+  fractions, at most one simultaneous contextual guidance layer, and the
+  candidate asset-profile target.
 
 Commit the preregistration as its own QA checkpoint before inspecting the final
 candidate. It may be exercised against the accepted baseline to prove that the
@@ -24,6 +29,9 @@ candidate-specific coaching into the journey. If the candidate legitimately
 changes a preregistered contract, preserve the original record and obtain an
 Integration-approved revision before testing; never silently relax the rubric
 after seeing a result.
+Retain the baseline captures and hashes as comparison inputs. They are not
+candidate evidence, but candidate acceptance cannot pass without comparing the
+same fixture/camera/layout against those frozen predecessor artifacts.
 
 Preregistration is complete only when the fixture materializer,
 camera/capture coordinates, regular/compact variants, rubric, stop conditions,

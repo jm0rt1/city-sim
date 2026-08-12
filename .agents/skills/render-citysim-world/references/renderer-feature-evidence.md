@@ -11,3 +11,8 @@ Read this reference for an ordinary non-directional renderer implementation pack
 5. At that final renderer-candidate stage, retain technical resource, geometry, LOD, fixture-render, and telemetry proof. Do not capture or score default/compact player interaction as Renderer acceptance evidence.
 6. Record performance before and after at the final affected candidate; inspect accumulating nodes/actions during longer play.
 7. Disclose when a deterministic harness substitutes for window capture.
+8. Every route that can change visible Renderer or WorldArt output binds one
+   immutable `composed_screen_contract`. Technical resource PASS remains valid
+   evidence, but final acceptance also compares the exact predecessor and
+   candidate at identical fixture/camera/window states and verifies one
+   coherent scale, perspective, pivot, and ground-registration profile.

@@ -547,11 +547,20 @@ Use writable Swift module-cache paths when the environment requires them. Player
 - focused accessibility checks;
 - save/load and undo checks when state changes;
 - performance comparison when renderer, simulation, or observation boundaries change.
+- for UI, Renderer, WorldArt, or any visual/interaction acceptance route, a
+  validator-bound composed-screen comparison against the frozen predecessor at
+  identical fixture, camera, command, and 1280x800 plus true 900x600 layouts;
+  regular map aperture is at least 60%, compact at least 50%, at most one
+  contextual guidance layer competes, no controls overlap or clip, and visible
+  assets share one declared scale/perspective/pivot/ground profile.
 
 The playtest quality lane proposes evidence. Integration owns acceptance.
 The aggregate suite, staged build, and real-app journey run once for the exact
 changed candidate and are reused across handoffs until candidate identity
 changes or evidence becomes stale.
+The composed-screen comparison is part of that one existing real-app journey,
+not an additional review or acceptance layer. A candidate that improves its
+local claim but degrades the integrated player view is returned.
 
 ## 14. Stop conditions
 

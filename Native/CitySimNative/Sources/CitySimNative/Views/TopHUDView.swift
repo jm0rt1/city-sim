@@ -162,6 +162,14 @@ struct TopHUDView: View {
         return speed.controlLabel.replacingOccurrences(of: "x", with: "×")
     }
 
+    static func simulationControlAccessibilityLabel(for speed: SimulationSpeed) -> String {
+        speed == .paused ? "Resume simulation" : "Pause simulation"
+    }
+
+    static func simulationControlHelp(for speed: SimulationSpeed) -> String {
+        "\(simulationControlAccessibilityLabel(for: speed)) · Space"
+    }
+
     private var simulationStatus: HUDSimulationStatePresentation {
         Self.simulationState(for: store.speed)
     }
@@ -254,11 +262,13 @@ struct TopHUDView: View {
                 )
                 .help(
                     speed == .paused
-                        ? "Pause simulation · Space"
+                        ? Self.simulationControlHelp(for: store.speed)
                         : "Set simulation to \(speed.controlLabel) · \(speed.rawValue)"
                 )
                 .accessibilityLabel(
-                    speed == .paused ? "Pause simulation" : "Set simulation speed to \(speed.controlLabel)"
+                    speed == .paused
+                        ? Self.simulationControlAccessibilityLabel(for: store.speed)
+                        : "Set simulation speed to \(speed.controlLabel)"
                 )
                 .accessibilityValue(store.speed == speed ? "Selected" : "Not selected")
                 .accessibilityIdentifier("hud.speed.\(speed.rawValue)")
@@ -540,8 +550,15 @@ struct FocusCityHUDView: View {
                     store.speed == speed ? GameTheme.accent : GameTheme.inactiveControl,
                     in: RoundedRectangle(cornerRadius: 9)
                 )
+                .help(
+                    speed == .paused
+                        ? TopHUDView.simulationControlHelp(for: store.speed)
+                        : "Set simulation to \(speed.controlLabel) · \(speed.rawValue)"
+                )
                 .accessibilityLabel(
-                    speed == .paused ? "Pause simulation" : "Set simulation speed to \(speed.controlLabel)"
+                    speed == .paused
+                        ? TopHUDView.simulationControlAccessibilityLabel(for: store.speed)
+                        : "Set simulation speed to \(speed.controlLabel)"
                 )
                 .accessibilityValue(store.speed == speed ? "Selected" : "Not selected")
                 .accessibilityIdentifier("hud.focus-city.speed.\(speed.rawValue)")

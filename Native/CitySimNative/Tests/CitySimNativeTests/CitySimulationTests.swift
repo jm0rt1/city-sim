@@ -870,6 +870,22 @@ final class CitySimulationTests: XCTestCase {
             TopHUDView.simulationState(for: .paused).accessibilityValue,
             "Paused"
         )
+        XCTAssertEqual(
+            TopHUDView.simulationControlAccessibilityLabel(for: .paused),
+            "Resume simulation"
+        )
+        XCTAssertEqual(
+            TopHUDView.simulationControlAccessibilityLabel(for: .normal),
+            "Pause simulation"
+        )
+        XCTAssertEqual(
+            TopHUDView.simulationControlHelp(for: .paused),
+            "Resume simulation · Space"
+        )
+        XCTAssertEqual(
+            TopHUDView.simulationControlHelp(for: .fast),
+            "Pause simulation · Space"
+        )
     }
 
     @MainActor

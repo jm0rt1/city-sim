@@ -585,6 +585,18 @@ class ModelRouteTests(unittest.TestCase):
         ).strip()
         self.assertEqual([], validator.validate_qa_handoff(handoff, self.repo))
 
+    def test_qa_handoff_accepts_exact_launchservices_environment(self) -> None:
+        handoff = self.qa_handoff()
+        app_root = handoff["stage"]["appRoot"]
+        environment = handoff["launch"]["environment"]
+        handoff["launch"]["command"] = [
+            "/usr/bin/open", "-n",
+            "--env", f"CITYSIM_DATA_ROOT={environment['CITYSIM_DATA_ROOT']}",
+            "--env", f"CITYSIM_COMPACT_WINDOW={environment['CITYSIM_COMPACT_WINDOW']}",
+            app_root,
+        ]
+        self.assertEqual([], validator.validate_qa_handoff(handoff, self.repo))
+
     def test_qa_handoff_rejects_missing_or_substituted_contracts(self) -> None:
         handoff = self.qa_handoff()
         del handoff["launch"]

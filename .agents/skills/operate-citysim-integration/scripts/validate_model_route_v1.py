@@ -854,6 +854,7 @@ def validate_qa_handoff(handoff: Any, repo: Path) -> list[str]:
         errors.append("QA handoff launch has unsupported or missing fields")
         launch = {}
     command = launch.get("command")
+    expected_executable: Path | None = None
     if not isinstance(command, list) or not command or not all(
         isinstance(item, str) and item for item in command
     ):
@@ -871,8 +872,6 @@ def validate_qa_handoff(handoff: Any, repo: Path) -> list[str]:
             errors.append("QA handoff staged Info.plist must declare CFBundleExecutable")
         else:
             expected_executable = app_root / "Contents" / "MacOS" / bundle_executable
-            if Path(command[0]) != expected_executable:
-                errors.append("QA handoff launch command must start the sealed staged app executable")
     environment = launch.get("environment")
     if not isinstance(environment, dict) or not environment or not all(
         isinstance(key, str) and key and isinstance(value, str) and value
@@ -883,6 +882,27 @@ def validate_qa_handoff(handoff: Any, repo: Path) -> list[str]:
     data_root = environment.get("CITYSIM_DATA_ROOT")
     if not isinstance(data_root, str) or not Path(data_root).is_absolute():
         errors.append("QA handoff requires an absolute isolated CITYSIM_DATA_ROOT")
+    if expected_executable is not None and isinstance(command, list) and command:
+        direct = Path(command[0]) == expected_executable
+        launchservices = (
+            command[0] == "/usr/bin/open"
+            and len(command) >= 3
+            and command[1] == "-n"
+            and Path(command[-1]) == app_root
+        )
+        if launchservices:
+            declared_pairs = {
+                command[index + 1]
+                for index, value in enumerate(command[:-1])
+                if value == "--env"
+            }
+            expected_pairs = {f"{key}={value}" for key, value in environment.items()}
+            launchservices = declared_pairs == expected_pairs
+        if not direct and not launchservices:
+            errors.append(
+                "QA handoff launch command must directly invoke the sealed executable "
+                "or use exact LaunchServices --env bindings for the sealed app"
+            )
     window = launch.get("expectedWindow")
     if not isinstance(window, dict) or set(window) != {"width", "height"}:
         errors.append("QA handoff expectedWindow must contain exactly width and height")

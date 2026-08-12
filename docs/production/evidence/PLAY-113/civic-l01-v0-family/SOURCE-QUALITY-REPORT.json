@@ -1,0 +1,61 @@
+{
+  "candidateOnly": true,
+  "contactSheet": {
+    "dimensions": [
+      1536,
+      1024
+    ],
+    "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-101/civic_l01_v0/normalized/contact-sheets/family-source-four-view.png",
+    "sha256": "6ba1ac82d390c4dbb45b7b3d4bb83983c781cf3399214ce9e0570b8bf2f1615e"
+  },
+  "criteria": {
+    "fourIndependentRoadFacingViews": true,
+    "groundedFootprint": true,
+    "noBakedRoadUiOrText": true,
+    "noBlackVoidRoof": true,
+    "noMirroringRotationOrAliasing": true,
+    "paletteDistinction": "pale sandstone, teal civic doors, red-brick base, slate roof",
+    "publicServiceIdentity": "library and community hall with distinct forecourt and entrances"
+  },
+  "family": "civic_l01_v0",
+  "rawSources": {
+    "east": {
+      "dimensions": [
+        1774,
+        887
+      ],
+      "mode": "RGB",
+      "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-101/civic_l01_v0/raw/east-source-v01.png",
+      "sha256": "38fa961caf29e11c839ee58f6cd61b3cc311352ae9a268d64f34747153e2e6f1"
+    },
+    "north": {
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-101/civic_l01_v0/raw/north-source-v01.png",
+      "sha256": "b5bd3b6259d04626f59513f8ced0aa069fd72a4281a6ac04b7ca678255692fb9"
+    },
+    "south": {
+      "dimensions": [
+        1774,
+        887
+      ],
+      "mode": "RGB",
+      "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-101/civic_l01_v0/raw/south-source-v01.png",
+      "sha256": "a55562c33064dd6dcd5d4e063f52cafe3c593b804a9eec2ec15e8ac6d8319af7"
+    },
+    "west": {
+      "dimensions": [
+        1774,
+        887
+      ],
+      "mode": "RGB",
+      "path": "Native/CitySimNative/WorldArt/ImageGenFourView/PLAY-101/civic_l01_v0/raw/west-source-v01.png",
+      "sha256": "938e71d8c938519302719b22d15bd117e8ea0ffcb5661f22442e3edf8915c529"
+    }
+  },
+  "result": "PASS_CANDIDATE_SOURCE_QUALITY",
+  "task": "PLAY-113"
+}

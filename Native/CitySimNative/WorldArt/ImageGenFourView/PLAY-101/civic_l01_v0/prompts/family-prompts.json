@@ -1,0 +1,13 @@
+{
+  "candidateOnly": true,
+  "family": "civic_l01_v0",
+  "generator": "OpenAI built-in ImageGen",
+  "styleAnchor": "CitySim hand-painted 2:1 isometric public-service building; northwest light; short southeast shadow; flat #ff00ff chroma-key field",
+  "directions": {
+    "north": "North road-facing library and community hall: broad stone steps, colonnaded entry canopy, civic notice board without readable text, two shade trees and forecourt; pale sandstone, teal doors, red-brick base, slate roof and cupola.",
+    "east": "Independently authored east road-facing library and community hall: accessible side entrance with shallow steps and rail, tall reading-room window wall, courtyard bench and planted forecourt; distinct roof and cupola composition.",
+    "south": "Independently authored south road-facing library and community hall: community-room entry and modest portico, wide arched meeting-room window, notice case without readable text, benches and planted forecourt; distinct roofline and facade rhythm.",
+    "west": "Independently authored west road-facing library and community hall: recessed reading-garden entrance with low colonnade, book-return vestibule without text, warm tall window bays, planted low wall and trees; distinct gables and cupola placement."
+  },
+  "forbidden": ["mirroring", "rotation", "roads", "people", "vehicles", "readable text", "logos", "UI", "watermarks", "black void roofs", "empty pads", "magenta subject pixels"]
+}

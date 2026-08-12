@@ -1,0 +1,24 @@
+{
+  "candidateOnly": true,
+  "counts": {
+    "lods": 12,
+    "normalized": 4,
+    "raw": 4
+  },
+  "family": "civic_l01_v0",
+  "gates": {
+    "alphaChromaFrame": "PASS",
+    "directionDistinctness": "PASS",
+    "fixedRegistration": "PASS",
+    "fourIndependentRoadFacingViews": "PASS",
+    "isolatedDeterministicReplay": "PASS",
+    "rendererBoundary": "PASS"
+  },
+  "integrationAdmitted": false,
+  "productionSelected": false,
+  "rendererQuarantined": false,
+  "result": "PASS",
+  "schema": "citysim.play-113.civic-l01-v0.validation.v1",
+  "sourceAdmitted": false,
+  "task": "PLAY-113"
+}

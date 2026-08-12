@@ -1,0 +1,12 @@
+{
+  "candidateOnly": true,
+  "family": "civic_l01_v0",
+  "sourceTransport": "OpenAI built-in ImageGen outputs copied byte-for-byte into the exclusive candidate raw root",
+  "directions": {
+    "north": {"raw": "raw/north-source-v01.png", "imageGenOutput": "/Users/James/.codex/generated_images/019ff3ba-d192-7b02-8f5d-7bdf425da29a/exec-140c9523-cdb1-4ac2-8cdc-597fc30257aa.png", "sha256": "b5bd3b6259d04626f59513f8ced0aa069fd72a4281a6ac04b7ca678255692fb9", "frontageIdentity": "north colonnaded entrance and steps"},
+    "east": {"raw": "raw/east-source-v01.png", "imageGenOutput": "/Users/James/.codex/generated_images/019ff3ba-d192-7b02-8f5d-7bdf425da29a/exec-9731ea47-d8c3-4cc0-bfda-0fdbc787fc1c.png", "sha256": "38fa961caf29e11c839ee58f6cd61b3cc311352ae9a268d64f34747153e2e6f1", "frontageIdentity": "east accessible reading-room entry"},
+    "south": {"raw": "raw/south-source-v01.png", "imageGenOutput": "/Users/James/.codex/generated_images/019ff3ba-d192-7b02-8f5d-7bdf425da29a/exec-dca641a5-1bf6-4c7c-bdc3-9bfbf507972b.png", "sha256": "a55562c33064dd6dcd5d4e063f52cafe3c593b804a9eec2ec15e8ac6d8319af7", "frontageIdentity": "south community-room entry and arched window"},
+    "west": {"raw": "raw/west-source-v01.png", "imageGenOutput": "/Users/James/.codex/generated_images/019ff3ba-d192-7b02-8f5d-7bdf425da29a/exec-5522184d-7fed-4d0c-9455-ac780abe849b.png", "sha256": "938e71d8c938519302719b22d15bd117e8ea0ffcb5661f22442e3edf8915c529", "frontageIdentity": "west reading-garden entry and book-return vestibule"}
+  },
+  "exclusions": ["renderer intake", "atlas generation", "runtime activation", "product code", "simulation", "UI"]
+}

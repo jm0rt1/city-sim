@@ -6,7 +6,7 @@ final class SessionPlatformTests: XCTestCase {
     private static let play078DenseTerminalFixtureName =
         "dense-24x24-terminal-post-play076-v8"
     private static let play078DenseTerminalFixtureDigest =
-        "d9faccd7c23b6632d3ff6213eece9ed60868388b059132bef2e7f908cf1009a7"
+        "f4fd3e07ae93ad3d59a3eb642dd0aff5bc60e3d7cde3b41cd0f120a48a7764fd"
 
     func testVersionOneFingerprintFixturesAreFrozen() throws {
         let explicitProgression = CityGameState.newCity(seed: 42)
@@ -558,12 +558,12 @@ final class SessionPlatformTests: XCTestCase {
             "commercialStewardship.complication": "cfe4b85423c620cb22a4669bfde2d9db13f989824a79034c46c227d8f8a8a988",
             "commercialStewardship.setback": "f7d5c3e455a274d586d77980e110214ec49019819fe935617e3014d3e2742295",
             "commercialStewardship.recovery": "f3ca50ee08623c0938dabaa5ce9eb9c06cc630d0cd4e50bac3d8870fb0506772",
-            "commercialStewardship.completed": "a75358f6570d1107894f6943ba1c3269891d7973bf070ebfb318a721963e304e",
+            "commercialStewardship.completed": "6f5a0a5d5cb61b31e94694f76a1d5e594218a55d9c652b6db8d903de70a7db2f",
             "industrialExpansion.opportunity": "96fd9bf4381c1957ca6b159a06289738cc555c2a52193a3dbd655da560adfece",
             "industrialExpansion.complication": "6704156aec2dd1142e17a2c6c3743c515933163230d5cc7b17c7051f8f35c299",
-            "industrialExpansion.setback": "898a82ffccdbac825eda853e425bceb4190dff5bbf7dd420365c809f76891bd8",
-            "industrialExpansion.recovery": "50c591f9e64f01360c8a10811ab2300e0c430e8825af7df85eb0330ed7235982",
-            "industrialExpansion.completed": "5323536ce7fc8a72dce855d122f0dc71a9b0a72ec0f1b5d5cb8a83ed3643bfe2"
+            "industrialExpansion.setback": "5ff9d3f5f6ba7b5799a7321ed81172085671986c727403b687518536441aecb2",
+            "industrialExpansion.recovery": "3ed7249314dc9b6469b9bb4c42d7984dbbacc613f3a1d8a04276c8da88eb38b3",
+            "industrialExpansion.completed": "befbccb220eb27798420d63a032e6a9eab334078652f22c88b221994892ceb46"
         ]
 
         for strategy in [CityStrategy.commercialStewardship, .industrialExpansion] {

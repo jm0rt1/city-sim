@@ -1,0 +1,121 @@
+{
+  "schema": 2,
+  "authorityCommit": "e30d6eb960ff32b4643975e4df7dcd4856515e8b",
+  "assignments": [
+    {
+      "modelRouteSha256": "6ab0173d98dc7b20355d84e83276fb443a30bb47804891e62c11ca1bdafd0bc1",
+      "modelRoute": {
+        "schema": 2,
+        "packetKind": "authority",
+        "routeId": "operational-excellence:play-119-qa-handoff-v1",
+        "taskId": "PLAY-119",
+        "classification": "FRONTIER_AUTHORITY",
+        "model": "gpt-5.6-sol",
+        "effort": "high",
+        "rationale": "In one PLAY-116/117 acceptance wave, QA stopped before launch on a noncanonical seal, then on a missing candidate-bound route, then launched without the compact environment or isolated data root. Two read-only contract audits confirmed that current validation has no executable object joining route, dispatch, integrated candidate, staged seal, and launch contract. The user authorized Operational Excellence to repair current control-plane validators and guidance.",
+        "authority": {
+          "authorityCommit": "e30d6eb960ff32b4643975e4df7dcd4856515e8b",
+          "baseCommit": "e30d6eb960ff32b4643975e4df7dcd4856515e8b",
+          "claim": {
+            "path": "docs/production/claims/PLAY-119.operational-excellence-qa-handoff.md",
+            "sha256": "7757398cf64b1cbdf561605dc3b02411ca0e8c9640a666faf35dbc6f88f5449c"
+          },
+          "immutableInputs": [
+            {"path": ".agents/skills/optimize-citysim-operating-system/SKILL.md", "sha256": "738062d9afae5b89cd37eaf4231dfa10c9d518608be83887d928b26825bbe870"},
+            {"path": ".agents/skills/optimize-citysim-operating-system/references/observation-and-upgrade-protocol.md", "sha256": "a51908a6015bbb6cca663bbda00f22b1a1f6518fb169b5b60655fa0aaa1e45e0"},
+            {"path": "script/canonical_tree_digest.sh", "sha256": "0c08adf670765e0b5fd9f4dd62f288c4ef5dc37637771f2b08ac33d508a19dca"}
+          ]
+        },
+        "assignment": {
+          "threadId": "019ff2ea-cde0-7c72-86ce-805918e21956",
+          "featureAuthorThreadId": "019ff2ea-cde0-7c72-86ce-805918e21956",
+          "branch": "codex/citysim-os-qa-handoff-currente30d",
+          "worktree": "/Users/James/.codex/worktrees/e742/city-sim",
+          "expectedHead": "e30d6eb960ff32b4643975e4df7dcd4856515e8b",
+          "sharedAuthorityOwnership": true,
+          "subjectiveJudgmentRequired": false,
+          "finalQAOwnership": false
+        },
+        "pathPolicy": {
+          "claimOwnedRoots": [
+            "docs/production/claims/PLAY-119.operational-excellence-qa-handoff.md",
+            "docs/production/evidence/INTEGRATION/MODEL-ROUTE-PLAY-119-OPERATIONAL-EXCELLENCE-QA-HANDOFF-V1.json",
+            "docs/production/evidence/INTEGRATION/MODEL-DISPATCH-PLAY-119-OPERATIONAL-EXCELLENCE-QA-HANDOFF-V1.json",
+            "docs/production/CITYSIM_WORKTREE_OPERATING_SYSTEM.md",
+            ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+            ".agents/skills/operate-citysim-integration/references/integration-acceptance-and-recovery.md",
+            ".agents/skills/operate-citysim-integration/scripts/validate_model_route_v1.py",
+            ".agents/skills/operate-citysim-integration/scripts/test_validate_model_route_v1.py",
+            ".agents/skills/build-citysim-ui-input/SKILL.md",
+            ".agents/skills/render-citysim-world/SKILL.md",
+            ".agents/skills/verify-citysim-playability/references/exact-candidate-real-app-gate.md"
+          ],
+          "allowed": [
+            "docs/production/claims/PLAY-119.operational-excellence-qa-handoff.md",
+            "docs/production/evidence/INTEGRATION/MODEL-ROUTE-PLAY-119-OPERATIONAL-EXCELLENCE-QA-HANDOFF-V1.json",
+            "docs/production/evidence/INTEGRATION/MODEL-DISPATCH-PLAY-119-OPERATIONAL-EXCELLENCE-QA-HANDOFF-V1.json",
+            "docs/production/CITYSIM_WORKTREE_OPERATING_SYSTEM.md",
+            ".agents/skills/operate-citysim-integration/references/model-routing-and-cost-control.md",
+            ".agents/skills/operate-citysim-integration/references/integration-acceptance-and-recovery.md",
+            ".agents/skills/operate-citysim-integration/scripts/validate_model_route_v1.py",
+            ".agents/skills/operate-citysim-integration/scripts/test_validate_model_route_v1.py",
+            ".agents/skills/build-citysim-ui-input/SKILL.md",
+            ".agents/skills/render-citysim-world/SKILL.md",
+            ".agents/skills/verify-citysim-playability/references/exact-candidate-real-app-gate.md"
+          ],
+          "forbidden": [
+            "Native/CitySimNative",
+            "script/build_and_run.sh",
+            "script/package_release.sh",
+            "script/canonical_tree_digest.sh",
+            "docs/production/completed",
+            "docs/production/decisions",
+            "docs/production/evidence/PLAY-089",
+            "docs/production/PLAYABLE_BACKLOG.md"
+          ]
+        },
+        "boundedDeliverable": "Require one executable QA-handoff envelope before final-QA activation, binding the exact acceptance route and dispatch, integrated candidate ref/commit, canonical staged-app root/seal/producer, and launch command/environment/window contract. Require actual-PID launch-contract verification before visual interaction; add no reviewer or gate.",
+        "stopCondition": "Stop on product/app/asset/build-script mutation, out-of-claim paths, weakened independent QA, a new review layer, nondeterministic validation, second focused failure, or need for product priority, acceptance, publication, push, or release judgment.",
+        "proofPolicy": {
+          "architectureState": "novel_or_ambiguous",
+          "referenceImplementation": null,
+          "deliverableClaims": ["static_structure", "executable_behavior"],
+          "focusedProofLevel": "contained_smoke",
+          "fullProofLevel": "contained_smoke",
+          "behavioralCommands": ["PYTHONDONTWRITEBYTECODE=1 python3 .agents/skills/operate-citysim-integration/scripts/test_validate_model_route_v1.py"],
+          "prohibitedSubstitutions": ["source_token_presence_for_execution", "ast_shape_for_runtime_success", "manifest_or_prose_for_rendered_pixels", "unit_tests_for_visual_acceptance", "worker_self_report_for_independent_acceptance"]
+        },
+        "validation": {
+          "focusedGateOwner": {"role": "Operational Excellence Officer focused gate", "threadId": "019ff2ea-cde0-7c72-86ce-805918e21956"},
+          "focusedCommands": [
+            "PYTHONDONTWRITEBYTECODE=1 python3 .agents/skills/operate-citysim-integration/scripts/test_validate_model_route_v1.py",
+            "python3 .agents/skills/operate-citysim-integration/scripts/validate_model_route_v1.py --route docs/production/evidence/INTEGRATION/MODEL-ROUTE-PLAY-119-OPERATIONAL-EXCELLENCE-QA-HANDOFF-V1.json --dispatch docs/production/evidence/INTEGRATION/MODEL-DISPATCH-PLAY-119-OPERATIONAL-EXCELLENCE-QA-HANDOFF-V1.json --dispatch-route-id operational-excellence:play-119-qa-handoff-v1",
+            "git diff --check"
+          ],
+          "fullGateOwner": {"role": "Integration Captain control-plane incorporation review", "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8", "model": "gpt-5.6-sol", "effort": "high"},
+          "fullCommands": ["Integration reviews the exact validator, adversarial tests, and guidance diff; no product/full-suite/build/app gate"]
+        },
+        "expectedResult": {
+          "commitRequired": true,
+          "commitMessagePattern": "PLAY-119:",
+          "evidencePaths": [
+            "docs/production/evidence/INTEGRATION/MODEL-DISPATCH-PLAY-119-OPERATIONAL-EXCELLENCE-QA-HANDOFF-V1.json",
+            ".agents/skills/operate-citysim-integration/scripts/test_validate_model_route_v1.py"
+          ]
+        },
+        "independentReviewer": {"required": true, "threadId": "019f7686-4491-7891-86a6-95a78d67e5c8", "model": "gpt-5.6-sol", "effort": "high"},
+        "context": {
+          "mode": "full_authority_read",
+          "packet": null,
+          "verifiedHashes": [
+            {"path": "docs/production/claims/PLAY-119.operational-excellence-qa-handoff.md", "sha256": "7757398cf64b1cbdf561605dc3b02411ca0e8c9640a666faf35dbc6f88f5449c"},
+            {"path": ".agents/skills/optimize-citysim-operating-system/SKILL.md", "sha256": "738062d9afae5b89cd37eaf4231dfa10c9d518608be83887d928b26825bbe870"},
+            {"path": ".agents/skills/optimize-citysim-operating-system/references/observation-and-upgrade-protocol.md", "sha256": "a51908a6015bbb6cca663bbda00f22b1a1f6518fb169b5b60655fa0aaa1e45e0"},
+            {"path": "script/canonical_tree_digest.sh", "sha256": "0c08adf670765e0b5fd9f4dd62f288c4ef5dc37637771f2b08ac33d508a19dca"}
+          ]
+        },
+        "escalationTriggers": ["shared_contract_or_schema_decision", "unresolved_product_visual_or_interaction_judgment", "path_outside_claim", "baseline_or_candidate_identity_mismatch", "failure_outside_focused_scope", "save_or_migration_uncertainty", "cross_lane_semantic_conflict", "two_unsuccessful_repair_attempts", "subjective_acceptance_required"]
+      }
+    }
+  ]
+}

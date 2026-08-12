@@ -92,6 +92,16 @@ full route checks only to the selected row. Unrelated sibling HEAD movement
 must not demote a correctly bound worker; an unknown or duplicate route ID and
 any selected-row identity mismatch fail closed.
 
+Before Integration activates final QA, it creates one schema-1 `qa_handoff`
+envelope and runs `validate_model_route_v1.py --qa-handoff <path>`. The
+envelope binds the exact acceptance route and dispatch bytes, candidate
+ref/commit, absolute staged-app root, canonical tree seal and producer, and
+launch argv/environment/window. A 900x600 handoff must carry
+`CITYSIM_COMPACT_WINDOW=1` and an absolute isolated `CITYSIM_DATA_ROOT`.
+Independent QA verifies those environment values on the actual launched PID
+before interacting. A missing or mismatched envelope is setup failure, not a
+product RETURN, rebuild request, reviewer, or second acceptance gate.
+
 ## Outcome lease fast path
 
 A validated schema-2 claim, route, and selected dispatch form one outcome lease

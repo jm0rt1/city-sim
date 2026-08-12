@@ -6,6 +6,7 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
+import shutil
 import subprocess
 import tempfile
 import unittest
@@ -24,6 +25,7 @@ class ModelRouteTests(unittest.TestCase):
         (self.repo / "claims").mkdir()
         (self.repo / "inputs").mkdir()
         (self.repo / "owned" / "evidence").mkdir(parents=True)
+        (self.repo / "script").mkdir()
         (self.repo / "claims" / "PLAY-999.md").write_text(
             "# PLAY-999\nOwn `owned/` and `owned/evidence/`.\n", encoding="utf-8"
         )
@@ -40,6 +42,12 @@ class ModelRouteTests(unittest.TestCase):
         self.head = subprocess.check_output(["git", "-C", str(self.repo), "rev-parse", "HEAD"], text=True).strip()
         self.claim = self._binding("claims/PLAY-999.md")
         self.input = self._binding("inputs/authority.txt")
+        source_root = Path(__file__).resolve().parents[4]
+        shutil.copyfile(
+            source_root / "script" / "canonical_tree_digest.sh",
+            self.repo / "script" / "canonical_tree_digest.sh",
+        )
+        self.producer = self._binding("script/canonical_tree_digest.sh")
 
     def tearDown(self) -> None:
         self.temp.cleanup()
@@ -174,6 +182,88 @@ class ModelRouteTests(unittest.TestCase):
         route["pathPolicy"]["allowed"] = [root, "owned/evidence"]
         self.add_composition_contract(route, None)
         return route
+
+    def acceptance_route(self) -> dict:
+        route = self.route("FRONTIER_AUTHORITY", "acceptance")
+        route["proofPolicy"].update(
+            {
+                "deliverableClaims": ["visual_quality", "real_app_interaction"],
+                "focusedProofLevel": "static_only",
+                "fullProofLevel": "real_app_journey",
+                "behavioralCommands": ["fresh-player real-app final journey"],
+            }
+        )
+        route["assignment"].update(
+            {
+                "threadId": "qa-thread",
+                "featureAuthorThreadId": "author-thread",
+                "finalQAOwnership": True,
+                "subjectiveJudgmentRequired": True,
+            }
+        )
+        route["validation"]["focusedGateOwner"]["threadId"] = "fixture-thread"
+        route["validation"]["fullGateOwner"]["threadId"] = "qa-thread"
+        route["validation"]["fullCommands"] = ["fresh-player real-app final journey"]
+        route["independentReviewer"] = {
+            "required": True,
+            "threadId": "qa-thread",
+            "model": "gpt-5.6-sol",
+            "effort": "high",
+        }
+        self.add_composition_contract(route, self.head)
+        return route
+
+    def qa_handoff(self) -> dict:
+        route = self.acceptance_route()
+        route_path = self.repo / "inputs" / "qa-route.json"
+        route_path.write_text(json.dumps(route), encoding="utf-8")
+        dispatch = {
+            "schema": 2,
+            "authorityCommit": self.head,
+            "assignments": [
+                {
+                    "modelRouteSha256": validator.canonical_sha(route),
+                    "modelRoute": copy.deepcopy(route),
+                }
+            ],
+        }
+        dispatch_path = self.repo / "inputs" / "qa-dispatch.json"
+        dispatch_path.write_text(json.dumps(dispatch), encoding="utf-8")
+        app_root = self.repo / "stage" / "CitySim.app"
+        executable = app_root / "Contents" / "MacOS" / "CitySim"
+        executable.parent.mkdir(parents=True, exist_ok=True)
+        executable.write_text("staged application bytes\n", encoding="utf-8")
+        data_root = self.repo / "qa-data"
+        data_root.mkdir(exist_ok=True)
+        digest = subprocess.check_output(
+            ["bash", str(self.repo / "script" / "canonical_tree_digest.sh"), str(app_root)],
+            text=True,
+        ).strip()
+        return {
+            "schema": 1,
+            "kind": "qa_handoff",
+            "taskId": "PLAY-999",
+            "route": self._binding("inputs/qa-route.json"),
+            "dispatch": self._binding("inputs/qa-dispatch.json"),
+            "candidate": {"ref": "HEAD", "commit": self.head},
+            "stage": {
+                "appRoot": str(app_root),
+                "sha256": digest,
+                "producer": copy.deepcopy(self.producer),
+            },
+            "launch": {
+                "command": [str(executable)],
+                "environment": {
+                    "CITYSIM_DATA_ROOT": str(data_root),
+                    "CITYSIM_COMPACT_WINDOW": "1",
+                },
+                "expectedWindow": {"width": 900, "height": 600},
+                "pidVerification": {
+                    "required": True,
+                    "command": ["ps", "eww", "-p", "{pid}"],
+                },
+            },
+        }
 
     def test_all_supported_route_tuples(self) -> None:
         kinds = {
@@ -472,6 +562,61 @@ class ModelRouteTests(unittest.TestCase):
         dispatch, stale_id, _ = self._route_local_dispatch()
         errors = validator.validate_dispatch(dispatch, self.repo, stale_id)
         self.assertTrue(any("assignment HEAD mismatch" in error for error in errors), errors)
+
+    def test_qa_handoff_binds_route_dispatch_candidate_stage_and_launch(self) -> None:
+        handoff = self.qa_handoff()
+        self.assertEqual([], validator.validate_qa_handoff(handoff, self.repo))
+
+    def test_qa_handoff_rejects_missing_or_substituted_contracts(self) -> None:
+        handoff = self.qa_handoff()
+        del handoff["launch"]
+        errors = validator.validate_qa_handoff(handoff, self.repo)
+        self.assertTrue(any("unsupported or missing fields" in error for error in errors), errors)
+
+        handoff = self.qa_handoff()
+        handoff["route"]["sha256"] = "0" * 64
+        errors = validator.validate_qa_handoff(handoff, self.repo)
+        self.assertTrue(any("does not match repository bytes" in error for error in errors), errors)
+
+        handoff = self.qa_handoff()
+        handoff["stage"]["producer"] = copy.deepcopy(self.input)
+        errors = validator.validate_qa_handoff(handoff, self.repo)
+        self.assertTrue(any("canonical_tree_digest.sh" in error for error in errors), errors)
+
+    def test_qa_handoff_rejects_candidate_or_dispatch_drift(self) -> None:
+        handoff = self.qa_handoff()
+        handoff["candidate"]["commit"] = self.baseline
+        errors = validator.validate_qa_handoff(handoff, self.repo)
+        self.assertTrue(any("does not resolve" in error for error in errors), errors)
+
+        handoff = self.qa_handoff()
+        dispatch_path = self.repo / handoff["dispatch"]["path"]
+        dispatch = json.loads(dispatch_path.read_text(encoding="utf-8"))
+        dispatch["assignments"][0]["modelRoute"]["boundedDeliverable"] = "Drifted."
+        dispatch["assignments"][0]["modelRouteSha256"] = validator.canonical_sha(
+            dispatch["assignments"][0]["modelRoute"]
+        )
+        dispatch_path.write_text(json.dumps(dispatch), encoding="utf-8")
+        handoff["dispatch"] = self._binding("inputs/qa-dispatch.json")
+        errors = validator.validate_qa_handoff(handoff, self.repo)
+        self.assertTrue(any("does not embed the exact" in error for error in errors), errors)
+
+    def test_qa_handoff_rejects_stage_or_launch_drift(self) -> None:
+        handoff = self.qa_handoff()
+        executable = Path(handoff["launch"]["command"][0])
+        executable.write_text("mutated staged bytes\n", encoding="utf-8")
+        errors = validator.validate_qa_handoff(handoff, self.repo)
+        self.assertTrue(any("staged-app seal" in error for error in errors), errors)
+
+        handoff = self.qa_handoff()
+        del handoff["launch"]["environment"]["CITYSIM_COMPACT_WINDOW"]
+        errors = validator.validate_qa_handoff(handoff, self.repo)
+        self.assertTrue(any("CITYSIM_COMPACT_WINDOW=1" in error for error in errors), errors)
+
+        handoff = self.qa_handoff()
+        handoff["launch"]["pidVerification"]["command"] = ["pgrep", "CitySim"]
+        errors = validator.validate_qa_handoff(handoff, self.repo)
+        self.assertTrue(any("actual-PID" in error for error in errors), errors)
 
     def test_unchanged_passing_sibling_cannot_be_demoted(self) -> None:
         previous = {"cells": [

@@ -563,6 +563,14 @@ The staged app has one tree-identity producer:
 the producer's Git blob SHA-256 and output in the QA lease; QA recomputes with
 that exact producer. Competing absolute-path inventories or ad hoc digest
 commands cannot establish drift and must not trigger a rebuild or second gate.
+Before final-QA activation, Integration also validates one schema-1
+`qa_handoff` envelope that binds the acceptance route and dispatch, exact
+candidate ref/commit, staged root/seal/producer, and launch
+argv/environment/window. QA launches that contract and verifies its environment
+on the actual PID before interaction. A 900x600 run requires
+`CITYSIM_COMPACT_WINDOW=1` plus an absolute isolated `CITYSIM_DATA_ROOT`.
+Mismatch is setup failure owned by Integration; it neither condemns product
+bytes nor creates another reviewer or acceptance gate.
 The composed-screen comparison is part of that one existing real-app journey,
 not an additional review or acceptance layer. A candidate that improves its
 local claim but degrades the integrated player view is returned.

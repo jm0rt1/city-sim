@@ -50,6 +50,13 @@ immutable APPROVE/RETURN result; do not run a duplicate acceptance journey.
    compare an absolute-path inventory with the canonical relative-path digest,
    invent an equivalent command, or rebuild unchanged bytes to repair a seal
    mismatch. A mismatch from this exact producer is a candidate-identity stop.
+   Independently run `validate_model_route_v1.py --qa-handoff <path>` on the
+   Integration-supplied schema-1 envelope. Launch only its exact staged
+   executable with its exact environment, then inspect the actual PID with the
+   bound `ps eww -p <pid>` check before interaction. Require the declared
+   `CITYSIM_DATA_ROOT`; for 900x600 also require
+   `CITYSIM_COMPACT_WINDOW=1`. Missing PID values are an Integration launch
+   setup RETURN, not product evidence and not authority to rebuild.
 2. Build and launch the real staged app.
 3. Perform the journey without developer shortcuts or hidden state.
 4. Capture exact timestamps/steps for confusion, error, dead time, misleading feedback, or failure.

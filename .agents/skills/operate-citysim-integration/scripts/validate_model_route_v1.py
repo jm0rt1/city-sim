@@ -23,6 +23,7 @@ ROUTE_FIELDS = {
 OPTIONAL_ROUTE_FIELDS = {"compositionContract"}
 ROUTE_SCHEMA = 2
 DISPATCH_SCHEMA = 2
+QA_HANDOFF_SCHEMA = 1
 ROUTES = {
     "FRONTIER_AUTHORITY": ("gpt-5.6-sol", "high"),
     "LUNA_IMPLEMENTATION": ("gpt-5.6-luna", "high"),
@@ -689,6 +690,173 @@ def validate_dispatch(
     return errors
 
 
+def validate_qa_handoff(handoff: Any, repo: Path) -> list[str]:
+    """Validate the exact candidate, stage, and launch contract sent to QA."""
+    errors: list[str] = []
+    fields = {
+        "schema", "kind", "taskId", "route", "dispatch", "candidate",
+        "stage", "launch",
+    }
+    if not isinstance(handoff, dict) or set(handoff) != fields:
+        return ["QA handoff has unsupported or missing fields"]
+    if handoff["schema"] != QA_HANDOFF_SCHEMA or handoff["kind"] != "qa_handoff":
+        errors.append("QA handoff must be schema 1 kind qa_handoff")
+    task_id = handoff["taskId"]
+    if not isinstance(task_id, str) or not task_id.startswith("PLAY-"):
+        errors.append("QA handoff taskId must be a PLAY task")
+
+    for name in ("route", "dispatch"):
+        _check_binding(repo, handoff[name], f"QA handoff {name}", errors)
+    route_binding = handoff["route"] if isinstance(handoff["route"], dict) else {}
+    dispatch_binding = handoff["dispatch"] if isinstance(handoff["dispatch"], dict) else {}
+    route: Any = None
+    dispatch: Any = None
+    route_path = route_binding.get("path")
+    dispatch_path = dispatch_binding.get("path")
+    if isinstance(route_path, str) and (repo / route_path).is_file():
+        try:
+            route = load_json(repo / route_path)
+        except ValidationError as exc:
+            errors.append(f"cannot load QA handoff route: {exc}")
+    if isinstance(dispatch_path, str) and (repo / dispatch_path).is_file():
+        try:
+            dispatch = load_json(repo / dispatch_path)
+        except ValidationError as exc:
+            errors.append(f"cannot load QA handoff dispatch: {exc}")
+    route_id = route.get("routeId") if isinstance(route, dict) else None
+    if isinstance(route, dict):
+        errors.extend(f"QA handoff route: {error}" for error in validate_route(route, repo))
+        if route.get("packetKind") != "acceptance":
+            errors.append("QA handoff route must be an acceptance packet")
+        if route.get("taskId") != task_id:
+            errors.append("QA handoff taskId does not match acceptance route")
+    if isinstance(dispatch, dict):
+        errors.extend(
+            f"QA handoff dispatch: {error}"
+            for error in validate_dispatch(dispatch, repo, route_id)
+        )
+        matches = [
+            row for row in dispatch.get("assignments", [])
+            if isinstance(row, dict)
+            and isinstance(row.get("modelRoute"), dict)
+            and row["modelRoute"].get("routeId") == route_id
+        ]
+        if len(matches) == 1 and isinstance(route, dict):
+            if matches[0].get("modelRoute") != route:
+                errors.append("QA handoff dispatch does not embed the exact acceptance route")
+
+    candidate = handoff["candidate"]
+    if not isinstance(candidate, dict) or set(candidate) != {"ref", "commit"}:
+        errors.append("QA handoff candidate must contain exactly ref and commit")
+        candidate = {}
+    candidate_ref = candidate.get("ref")
+    candidate_commit = candidate.get("commit")
+    if not isinstance(candidate_ref, str) or not candidate_ref:
+        errors.append("QA handoff candidate.ref must be non-empty")
+    if not _is_hex(candidate_commit, 40):
+        errors.append("QA handoff candidate.commit must be a full Git SHA")
+    if isinstance(candidate_ref, str) and candidate_ref and _is_hex(candidate_commit, 40):
+        try:
+            resolved = _git(repo, "rev-parse", "--verify", f"{candidate_ref}^{{commit}}")
+            if resolved != candidate_commit:
+                errors.append("QA handoff candidate ref does not resolve to candidate commit")
+        except ValidationError as exc:
+            errors.append(str(exc))
+    if isinstance(route, dict):
+        expected_head = route.get("assignment", {}).get("expectedHead")
+        if candidate_commit != expected_head:
+            errors.append("QA handoff candidate does not match acceptance route HEAD")
+        composition = route.get("compositionContract")
+        if isinstance(composition, dict):
+            composition_path = composition.get("path")
+            if isinstance(composition_path, str) and (repo / composition_path).is_file():
+                try:
+                    contract = load_json(repo / composition_path)
+                    if isinstance(contract, dict) and contract.get("candidateCommit") != candidate_commit:
+                        errors.append("QA handoff candidate does not match composed-screen contract")
+                except ValidationError as exc:
+                    errors.append(f"cannot load composed-screen contract for QA handoff: {exc}")
+
+    stage = handoff["stage"]
+    if not isinstance(stage, dict) or set(stage) != {"appRoot", "sha256", "producer"}:
+        errors.append("QA handoff stage must contain exactly appRoot, sha256, and producer")
+        stage = {}
+    app_root_value = stage.get("appRoot")
+    app_root = Path(app_root_value) if isinstance(app_root_value, str) else None
+    if app_root is None or not app_root.is_absolute():
+        errors.append("QA handoff stage.appRoot must be an absolute path")
+    elif not app_root.is_dir():
+        errors.append("QA handoff stage.appRoot does not resolve to a directory")
+    stage_digest = stage.get("sha256")
+    if not _is_hex(stage_digest, 64):
+        errors.append("QA handoff stage.sha256 must be 64 lowercase hex characters")
+    producer = stage.get("producer")
+    _check_binding(repo, producer, "QA handoff stage.producer", errors)
+    producer_path = producer.get("path") if isinstance(producer, dict) else None
+    if producer_path != "script/canonical_tree_digest.sh":
+        errors.append("QA handoff must use script/canonical_tree_digest.sh")
+    if (
+        app_root is not None and app_root.is_dir()
+        and _is_hex(stage_digest, 64)
+        and isinstance(producer_path, str)
+        and (repo / producer_path).is_file()
+    ):
+        result = subprocess.run(
+            ["bash", str(repo / producer_path), str(app_root)],
+            capture_output=True, text=True,
+        )
+        actual = result.stdout.strip()
+        if result.returncode != 0 or not _is_hex(actual, 64):
+            errors.append("QA handoff canonical stage producer failed")
+        elif actual != stage_digest:
+            errors.append("QA handoff staged-app seal does not match current bytes")
+
+    launch = handoff["launch"]
+    launch_fields = {"command", "environment", "expectedWindow", "pidVerification"}
+    if not isinstance(launch, dict) or set(launch) != launch_fields:
+        errors.append("QA handoff launch has unsupported or missing fields")
+        launch = {}
+    command = launch.get("command")
+    if not isinstance(command, list) or not command or not all(
+        isinstance(item, str) and item for item in command
+    ):
+        errors.append("QA handoff launch.command must be a non-empty argv list")
+    elif app_root is not None and app_root.is_absolute():
+        expected_executable = app_root / "Contents" / "MacOS" / "CitySim"
+        if Path(command[0]) != expected_executable:
+            errors.append("QA handoff launch command must start the sealed staged app executable")
+    environment = launch.get("environment")
+    if not isinstance(environment, dict) or not environment or not all(
+        isinstance(key, str) and key and isinstance(value, str) and value
+        for key, value in environment.items()
+    ):
+        errors.append("QA handoff launch.environment must be a non-empty string map")
+        environment = {}
+    data_root = environment.get("CITYSIM_DATA_ROOT")
+    if not isinstance(data_root, str) or not Path(data_root).is_absolute():
+        errors.append("QA handoff requires an absolute isolated CITYSIM_DATA_ROOT")
+    window = launch.get("expectedWindow")
+    if not isinstance(window, dict) or set(window) != {"width", "height"}:
+        errors.append("QA handoff expectedWindow must contain exactly width and height")
+        window = {}
+    width, height = window.get("width"), window.get("height")
+    if (
+        isinstance(width, bool) or not isinstance(width, int) or width <= 0
+        or isinstance(height, bool) or not isinstance(height, int) or height <= 0
+    ):
+        errors.append("QA handoff expectedWindow dimensions must be positive integers")
+    if (width, height) == (900, 600) and environment.get("CITYSIM_COMPACT_WINDOW") != "1":
+        errors.append("900x600 QA handoff requires CITYSIM_COMPACT_WINDOW=1")
+    pid = launch.get("pidVerification")
+    if not isinstance(pid, dict) or set(pid) != {"required", "command"}:
+        errors.append("QA handoff pidVerification must contain exactly required and command")
+    elif pid.get("required") is not True or pid.get("command") != [
+        "ps", "eww", "-p", "{pid}"
+    ]:
+        errors.append("QA handoff requires exact actual-PID environment verification")
+    return errors
+
+
 def validate_siblings(previous: Any, current: Any, failed_direction: str) -> list[str]:
     errors: list[str] = []
     if not isinstance(previous, dict) or not isinstance(current, dict):
@@ -714,6 +882,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--route")
     parser.add_argument("--dispatch")
     parser.add_argument("--dispatch-route-id")
+    parser.add_argument("--qa-handoff")
     parser.add_argument("--previous-ledger")
     parser.add_argument("--current-ledger")
     parser.add_argument("--failed-direction")
@@ -731,6 +900,8 @@ def main(argv: list[str] | None = None) -> int:
                     load_json(Path(args.dispatch)), repo, args.dispatch_route_id
                 )
             )
+        if args.qa_handoff:
+            errors.extend(validate_qa_handoff(load_json(Path(args.qa_handoff)), repo))
         ledger_args = (args.previous_ledger, args.current_ledger, args.failed_direction)
         if any(ledger_args) and not all(ledger_args):
             errors.append("sibling validation requires previous ledger, current ledger, and failed direction")
@@ -738,8 +909,8 @@ def main(argv: list[str] | None = None) -> int:
             errors.extend(validate_siblings(load_json(Path(args.previous_ledger)), load_json(Path(args.current_ledger)), args.failed_direction))
     except ValidationError as exc:
         errors.append(str(exc))
-    if not any((args.route, args.dispatch, args.previous_ledger)):
-        errors.append("provide --route, --dispatch, or sibling ledger arguments")
+    if not any((args.route, args.dispatch, args.qa_handoff, args.previous_ledger)):
+        errors.append("provide --route, --dispatch, --qa-handoff, or sibling ledger arguments")
     if errors:
         for error in errors:
             print(f"FAIL: {error}")

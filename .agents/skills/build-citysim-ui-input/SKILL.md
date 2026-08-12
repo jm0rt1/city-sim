@@ -31,6 +31,10 @@ Make every important action quick, understandable, reversible, discoverable, and
 - Keep simulation rules in models/services and visual world work in SpriteKit.
 - Preserve stable focus and identity during simulation pulses.
 - Design default and compact layouts together; never create map space by shrinking hit targets.
+- Treat compact/default acceptance as exact launch-contract evidence: final QA
+  must use the validator-approved candidate/stage/environment handoff and verify
+  the actual PID before judging layout. A missing compact flag is setup failure,
+  not evidence against UI bytes.
 - Use labels, shape, icon, pattern, and text so color is never the only status channel.
 
 ## Define the interaction contract

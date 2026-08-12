@@ -32,6 +32,14 @@ Read this reference before candidate review, acceptance, integration, rollback, 
    any locally reconstructed digest is not candidate identity. If a supplied
    seal differs, compare the same staged tree with this producer before
    rebuilding, rerunning, or declaring byte drift.
+   Before sending the lease, bind route, dispatch, candidate ref/commit, this
+   staged root/seal/producer, and exact launch argv/environment/window in one
+   schema-1 `qa_handoff`; require
+   `validate_model_route_v1.py --qa-handoff <path>` to PASS. For compact proof,
+   include `CITYSIM_COMPACT_WINDOW=1` and an absolute isolated
+   `CITYSIM_DATA_ROOT`. QA must verify the actual PID environment before
+   interaction. Handoff failure returns to Integration setup without rebuilding
+   or adding review.
 10. Operate the target journey in the staged app using pointer and affected keyboard paths at default and compact layouts.
 11. Check accessibility, focus, save/load, undo, visual truth, performance, and recovery when affected.
     For UI, Renderer, WorldArt, or visual/interaction acceptance routes, reject

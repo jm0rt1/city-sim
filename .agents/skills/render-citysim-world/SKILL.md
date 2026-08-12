@@ -27,6 +27,10 @@ Make the city dominant, readable, alive, and truthful. Visual spectacle must imp
 - Keep deterministic variation stable across relaunch and save/load.
 - Preserve selection, placement, roads, warnings, and overlays at every camera detail level.
 - Honor Reduce Motion, non-color cues, compact viewport, and performance tiers.
+- Accept composed-screen comparison only from the validator-approved exact
+  candidate/stage/launch handoff. QA verifies the actual PID environment before
+  judging scene scale or composition; absent compact/data-root values are
+  Integration setup failure, not a Renderer regression.
 - Do not rebalance systems, redesign general HUD composition, or change save schemas.
 
 ## Define the visual contract

@@ -213,8 +213,14 @@ enum CitySimulation {
         let previousPopulation = state.population
         state.tick += 1
 
+        let constructionProgressBeforeStep = state.tiles.map(\.constructionProgress)
         for index in state.tiles.indices where state.tiles[index].constructionProgress < 1 {
             state.tiles[index].constructionProgress = min(1, state.tiles[index].constructionProgress + 0.25)
+        }
+        let newlyCompletedConstruction = state.tiles.indices.compactMap { index -> CityTile? in
+            guard constructionProgressBeforeStep[index] < 1,
+                  state.tiles[index].constructionProgress >= 1 else { return nil }
+            return state.tiles[index]
         }
 
         let active = activeTiles(in: state)
@@ -303,6 +309,7 @@ enum CitySimulation {
         rebalanceOccupancy(&state, capacity: residentialCapacity)
         maybeUpgrade(&state)
         if state.tick.isMultiple(of: 4) {
+            announceCompletedConstruction(newlyCompletedConstruction, in: &state)
             repairResidentialStormDamage(&state)
             issuePressureWarnings(&state)
             advanceStrategyStory(&state)
@@ -311,6 +318,42 @@ enum CitySimulation {
             updateSecondActProgression(&state)
             checkMilestones(&state, previousPopulation: previousPopulation)
             checkEndState(&state)
+        }
+    }
+
+    private static func announceCompletedConstruction(
+        _ completedTiles: [CityTile],
+        in state: inout CityGameState
+    ) {
+        for tile in completedTiles where [.residential, .commercial, .industrial, .powerPlant, .waterTower].contains(tile.kind) {
+            let block = "\(tile.coordinate.x + 1), \(tile.coordinate.y + 1)"
+            let detail: String
+
+            switch tile.kind {
+            case .powerPlant:
+                let spare = max(0, state.powerCapacity - state.powerUsed)
+                detail = "Power Plant at block \(block) came online. Power capacity is \(state.powerCapacity) against \(state.powerUsed) current use, leaving \(spare) power spare. The added capacity protects growth at the next daily review."
+            case .waterTower:
+                let spare = max(0, state.waterCapacity - state.waterUsed)
+                detail = "Water Tower at block \(block) came online. Water capacity is \(state.waterCapacity) against \(state.waterUsed) current use, leaving \(spare) water spare. The added capacity protects growth at the next daily review."
+            case .residential:
+                detail = "Residential at block \(block) came online. Housing capacity is \(housingCapacity(in: state)) for \(state.population) residents; utility coverage is \(Int((utilityCoverage(in: state) * 100).rounded()))%. This home can now support growth at the next daily review."
+            case .commercial, .industrial:
+                let jobs = jobCapacity(in: state)
+                detail = "\(tile.kind.title) at block \(block) came online. Job capacity is \(jobs) for \(state.population) residents, and the new workplace now changes employment pressure at the next daily review."
+            default:
+                continue
+            }
+
+            post(
+                CityMessage(
+                    tick: state.tick,
+                    severity: .good,
+                    title: "Construction Online",
+                    detail: detail
+                ),
+                to: &state
+            )
         }
     }
 

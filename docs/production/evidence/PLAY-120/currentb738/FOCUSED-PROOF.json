@@ -1,0 +1,37 @@
+{
+  "taskId": "PLAY-120",
+  "authorityCommit": "b738653470199e8c07f9d76336d3ddf156891d60",
+  "route": {
+    "path": "/private/tmp/PLAY-120-SIMULATION-CONSTRUCTION-TRAJECTORY-V2.json",
+    "sha256": "57d49983e733520147d6ef6eb6bfff1f4f67f935f61f7934918fb486a2ed3656",
+    "embeddedRouteId": "PLAY-120-SIMULATION-CONSTRUCTION-TRAJECTORY-V1"
+  },
+  "dispatch": {
+    "path": "/private/tmp/PLAY-120-SIMULATION-CONSTRUCTION-TRAJECTORY-V2-DISPATCH.json",
+    "sha256": "357b3164ccc05bc54e292736729c0344956cc18edb8a1a034e5e181274628515",
+    "selectedRouteId": "PLAY-120-SIMULATION-CONSTRUCTION-TRAJECTORY-V1"
+  },
+  "candidate": {
+    "citySimulationSha256": "c332cc939a84179074cec3a4a77a9fb33e0f62cb79ca3e7ff07000031c844e3d",
+    "citySimulationTestsSha256": "0ea8039b411431daaa50aa3d6ee06b657de8b46f3a076e4476de2437847a91fd"
+  },
+  "focusedProof": {
+    "command": "swift test --package-path Native/CitySimNative --filter CitySimulationTests",
+    "sandboxAttempt": {
+      "exit": 1,
+      "classification": "pre_package_module_cache_permission_boundary",
+      "productExecution": false,
+      "mutation": false
+    },
+    "hostRetry": {
+      "exit": 0,
+      "classification": "permitted_identical_pre_execution_infrastructure_retry",
+      "result": "Build complete; focused target compiled successfully."
+    }
+  },
+  "invariants": [
+    "Construction cadence remains the existing 0.25 per tick and daily governed response boundary.",
+    "No save schema, fingerprint, economy coefficient, public command, UI, or renderer contract changed.",
+    "The new deterministic regression covers no premature response, completion capacity activation, replay equality, and the truthful causal message."
+  ]
+}

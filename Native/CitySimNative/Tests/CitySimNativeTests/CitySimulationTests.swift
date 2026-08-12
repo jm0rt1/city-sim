@@ -53,6 +53,43 @@ final class CitySimulationTests: XCTestCase {
         XCTAssertGreaterThanOrEqual(state.population, 180)
     }
 
+    func testCompletedUtilityPostsCausalResponseAtFirstGovernedReviewAndReplays() throws {
+        let coordinate = GridCoordinate(x: 5, y: 8)
+        var lhs = CityGameState.newCity(seed: 120)
+        var rhs = CityGameState.newCity(seed: 120)
+        let initialPowerCapacity = lhs.powerCapacity
+
+        guard case .success = CitySimulation.build(.powerPlant, at: coordinate, in: &lhs),
+              case .success = CitySimulation.build(.powerPlant, at: coordinate, in: &rhs) else {
+            return XCTFail("Expected road-connected power construction to succeed")
+        }
+
+        for _ in 0..<3 {
+            CitySimulation.step(&lhs)
+            CitySimulation.step(&rhs)
+            XCTAssertEqual(lhs, rhs, "The same construction command and ticks must replay identically")
+            XCTAssertEqual(lhs.tile(at: coordinate)?.constructionProgress, 0.75)
+            XCTAssertEqual(lhs.powerCapacity, initialPowerCapacity)
+            XCTAssertFalse(lhs.messages.contains(where: { $0.title == "Construction Online" }))
+        }
+
+        CitySimulation.step(&lhs)
+        CitySimulation.step(&rhs)
+
+        XCTAssertEqual(lhs, rhs, "The governed completion response must replay byte-for-byte through CityGameState")
+        XCTAssertEqual(lhs.tick, 4)
+        XCTAssertEqual(lhs.tile(at: coordinate)?.constructionProgress, 1)
+        XCTAssertEqual(lhs.powerCapacity, initialPowerCapacity + CitySimulation.powerCapacityPerPlant)
+        XCTAssertGreaterThan(lhs.powerCapacity, lhs.powerUsed)
+
+        let message = try XCTUnwrap(lhs.messages.first(where: { $0.title == "Construction Online" }))
+        XCTAssertEqual(message.tick, lhs.tick)
+        XCTAssertEqual(message.severity, .good)
+        XCTAssertTrue(message.detail.contains("Power Plant at block 6, 9 came online."))
+        XCTAssertTrue(message.detail.contains("Power capacity is \(lhs.powerCapacity) against \(lhs.powerUsed) current use"))
+        XCTAssertTrue(message.detail.contains("protects growth at the next daily review"))
+    }
+
     func testStateRoundTripsThroughJSON() throws {
         var state = CityGameState.newCity(seed: 99)
         for _ in 0..<12 { CitySimulation.step(&state) }

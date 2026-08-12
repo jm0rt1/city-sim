@@ -10,6 +10,15 @@
   `OverlayPickerView.swift`, focused `HUDConsequenceFeedbackTests.swift` and
   `CityCommandCatalogTests.swift`, plus
   `docs/production/evidence/PLAY-115/composed-view/` and completion.
+- **Exact mutation roots:**
+  `Native/CitySimNative/Sources/CitySimNative/Views/ContentView.swift`,
+  `Native/CitySimNative/Sources/CitySimNative/Views/TopHUDView.swift`,
+  `Native/CitySimNative/Sources/CitySimNative/Views/StrategyCommandCenterView.swift`,
+  `Native/CitySimNative/Sources/CitySimNative/Views/InspectorView.swift`,
+  `Native/CitySimNative/Sources/CitySimNative/Views/OverlayPickerView.swift`,
+  `Native/CitySimNative/Tests/CitySimNativeTests/HUDConsequenceFeedbackTests.swift`,
+  `Native/CitySimNative/Tests/CitySimNativeTests/CityCommandCatalogTests.swift`,
+  and `docs/production/evidence/PLAY-115/composed-view/`.
 - **Frozen contracts:** Existing commands, AX map selection/custom actions,
   pointer/keyboard/FKA routes, Escape behavior, and PLAY-114 recovery wording
   must remain truthful and usable. Do not change simulation, saves, renderer,

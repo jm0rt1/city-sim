@@ -10,6 +10,15 @@
   builder and manifest only when required for deterministic runtime metadata,
   focused `WorldRenderingTests.swift`, and
   `docs/production/evidence/PLAY-116/composed-view/` plus completion.
+- **Exact mutation roots:**
+  `Native/CitySimNative/Sources/CitySimNative/Rendering/LotRenderer.swift`,
+  `Native/CitySimNative/Sources/CitySimNative/Rendering/WorldAssetCatalog.swift`,
+  `Native/CitySimNative/Sources/CitySimNative/Rendering/WorldVisualStyle.swift`,
+  `Native/CitySimNative/Sources/CitySimNative/Rendering/TerrainRenderer.swift`,
+  `Native/CitySimNative/WorldArt/GeneratedV4/tools/build_world_asset_pack.py`,
+  `Native/CitySimNative/Sources/CitySimNative/Resources/WorldAssets.atlas/generated-v4-manifest.json`,
+  `Native/CitySimNative/Tests/CitySimNativeTests/WorldRenderingTests.swift`,
+  and `docs/production/evidence/PLAY-116/composed-view/`.
 - **Frozen contracts:** Accepted source/raw/normalized/provenance bytes, atlas
   pixels unless pack metadata requires a deterministic derived update, normal
   selection/fallback/residency contracts, CityScene camera behavior, gameplay,

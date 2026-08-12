@@ -2,8 +2,10 @@ import SwiftUI
 
 struct CheckpointLibraryView: View {
     let presentation: CityCheckpointLibraryPresentation
+    let supportFeedback: CityCheckpointSupportFeedback?
     let selectAction: (String) -> Void
     let branchAction: (String) -> Void
+    let exportSupportReportAction: (String) -> Void
     let cancelAction: () -> Void
     @FocusState private var focusedCheckpointID: String?
 
@@ -30,6 +32,21 @@ struct CheckpointLibraryView: View {
                         .padding(.vertical, 2)
                     }
                     .scrollIndicators(.visible)
+
+                    if let supportFeedback {
+                        Label(
+                            supportFeedback.message,
+                            systemImage: supportFeedback.isError
+                                ? "exclamationmark.triangle.fill"
+                                : "doc.badge.checkmark"
+                        )
+                        .font(.caption.weight(.semibold))
+                        .foregroundStyle(
+                            supportFeedback.isError ? GameTheme.warning : GameTheme.accent
+                        )
+                        .fixedSize(horizontal: false, vertical: true)
+                        .accessibilityIdentifier("checkpoint-library.support-feedback")
+                    }
 
                     HStack {
                         Label(
@@ -151,6 +168,13 @@ struct CheckpointLibraryView: View {
                                 .focused($focusedCheckpointID, equals: card.id)
                                 .accessibilityHint("Loads this checkpoint after protecting the current city")
                         }
+                    } else if card.canExportSupportReport {
+                        Button("Export Report") { exportSupportReportAction(card.id) }
+                            .buttonStyle(.bordered)
+                            .controlSize(.small)
+                            .accessibilityHint(
+                                "Creates a sanitized diagnostic report and leaves the recovery file unchanged"
+                            )
                     }
                 }
             }

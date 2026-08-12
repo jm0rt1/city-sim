@@ -82,6 +82,60 @@ enum SaveGameCheckpointIntegrity: Equatable, Sendable {
     case invalid
 }
 
+enum SaveGameCheckpointIssue: Equatable, Sendable {
+    case unsupportedSchema(expected: Int, actual: Int)
+    case fingerprintVersionMismatch(expected: Int, actual: Int)
+    case integrityMismatch
+    case unreadable
+
+    var code: String {
+        switch self {
+        case .unsupportedSchema: "unsupported-schema"
+        case .fingerprintVersionMismatch: "fingerprint-version-mismatch"
+        case .integrityMismatch: "integrity-mismatch"
+        case .unreadable: "unreadable"
+        }
+    }
+
+    var title: String {
+        switch self {
+        case .unsupportedSchema: "Newer Save Version"
+        case .fingerprintVersionMismatch: "Incompatible Integrity Version"
+        case .integrityMismatch: "Integrity Check Failed"
+        case .unreadable: "Unreadable Recovery File"
+        }
+    }
+
+    var explanation: String {
+        switch self {
+        case .unsupportedSchema(let expected, let actual):
+            "This checkpoint uses save format v\(actual); this build supports v\(expected)."
+        case .fingerprintVersionMismatch(let expected, let actual):
+            "This checkpoint uses integrity format v\(actual); this build supports v\(expected)."
+        case .integrityMismatch:
+            "The checkpoint contents no longer match their recorded integrity fingerprint."
+        case .unreadable:
+            "This file is not a readable CitySim checkpoint."
+        }
+    }
+
+    var expectedVersion: Int? {
+        switch self {
+        case .unsupportedSchema(let expected, _),
+             .fingerprintVersionMismatch(let expected, _): expected
+        case .integrityMismatch, .unreadable: nil
+        }
+    }
+
+    var actualVersion: Int? {
+        switch self {
+        case .unsupportedSchema(_, let actual),
+             .fingerprintVersionMismatch(_, let actual): actual
+        case .integrityMismatch, .unreadable: nil
+        }
+    }
+}
+
 struct SaveGameCheckpointCatalogEntry: Identifiable, Equatable, Sendable {
     let id: String
     let source: SaveGameSource
@@ -91,10 +145,27 @@ struct SaveGameCheckpointCatalogEntry: Identifiable, Equatable, Sendable {
     let loadResult: SaveGameLoadResult?
     let branchName: String?
     let scenarioCheckpointTitle: String?
+    let byteCount: Int?
+    let issue: SaveGameCheckpointIssue?
 
     var isLoadable: Bool {
         integrity == .verified && loadResult != nil
     }
+}
+
+struct SaveGameSupportReport: Codable, Equatable, Sendable {
+    static let currentVersion = 1
+
+    let reportVersion: Int
+    let generatedAt: Date
+    let checkpointSource: String
+    let checkpointFileName: String
+    let checkpointModifiedAt: Date
+    let checkpointByteCount: Int?
+    let issueCode: String
+    let issueSummary: String
+    let expectedVersion: Int?
+    let actualVersion: Int?
 }
 
 enum SaveGameError: Error, Equatable {
@@ -106,6 +177,7 @@ enum SaveGameError: Error, Equatable {
     case duplicateBranchName(String)
     case invalidScenarioCheckpoint
     case scenarioCheckpointConflict(String)
+    case invalidSupportReportTarget
 }
 
 extension SaveGameError: LocalizedError {
@@ -127,6 +199,8 @@ extension SaveGameError: LocalizedError {
             "The scenario checkpoint definition is invalid."
         case .scenarioCheckpointConflict(let title):
             "The existing scenario checkpoint \(title) could not be verified and was left untouched."
+        case .invalidSupportReportTarget:
+            "A support report can only be created for an unavailable recovery file."
         }
     }
 }
@@ -165,6 +239,9 @@ struct SaveGameService {
     }
     var scenarioCheckpointDirectoryURL: URL {
         rootURL.appending(path: "scenario-checkpoints", directoryHint: .isDirectory)
+    }
+    var supportReportDirectoryURL: URL {
+        rootURL.appending(path: "support-reports", directoryHint: .isDirectory)
     }
     private var candidateURL: URL { rootURL.appending(path: ".quicksave.candidate.json") }
     var autosaveURLs: [URL] {
@@ -472,7 +549,15 @@ struct SaveGameService {
 
         return locations.compactMap { url, source in
             guard fileManager.fileExists(atPath: url.path) else { return nil }
-            let result = try? decodeSave(at: url, source: source)
+            let result: SaveGameLoadResult?
+            let issue: SaveGameCheckpointIssue?
+            do {
+                result = try decodeSave(at: url, source: source)
+                issue = nil
+            } catch {
+                result = nil
+                issue = checkpointIssue(for: error)
+            }
             return SaveGameCheckpointCatalogEntry(
                 id: "\(source.rawValue):\(url.lastPathComponent)",
                 source: source,
@@ -481,7 +566,9 @@ struct SaveGameService {
                 integrity: result == nil ? .invalid : .verified,
                 loadResult: result,
                 branchName: result?.branchName,
-                scenarioCheckpointTitle: result?.scenarioCheckpointTitle
+                scenarioCheckpointTitle: result?.scenarioCheckpointTitle,
+                byteCount: fileByteCount(for: url),
+                issue: issue
             )
         }.sorted { lhs, rhs in
             if lhs.modifiedAt != rhs.modifiedAt { return lhs.modifiedAt > rhs.modifiedAt }
@@ -490,6 +577,38 @@ struct SaveGameService {
             if lhsPriority != rhsPriority { return lhsPriority > rhsPriority }
             return lhs.fileName < rhs.fileName
         }
+    }
+
+    @discardableResult
+    func exportSupportReport(
+        for entry: SaveGameCheckpointCatalogEntry,
+        generatedAt: Date = Date()
+    ) throws -> URL {
+        guard !entry.isLoadable, let issue = entry.issue else {
+            throw SaveGameError.invalidSupportReportTarget
+        }
+        try fileManager.createDirectory(
+            at: supportReportDirectoryURL,
+            withIntermediateDirectories: true
+        )
+        let report = SaveGameSupportReport(
+            reportVersion: SaveGameSupportReport.currentVersion,
+            generatedAt: generatedAt,
+            checkpointSource: entry.source.rawValue,
+            checkpointFileName: entry.fileName,
+            checkpointModifiedAt: entry.modifiedAt,
+            checkpointByteCount: entry.byteCount,
+            issueCode: issue.code,
+            issueSummary: issue.explanation,
+            expectedVersion: issue.expectedVersion,
+            actualVersion: issue.actualVersion
+        )
+        let destination = supportReportDirectoryURL.appending(
+            path: "save-diagnostic-\(UUID().uuidString.lowercased()).json"
+        )
+        let data = try Self.supportReportEncoder.encode(report)
+        try data.write(to: destination, options: .atomic)
+        return destination
     }
 
     private func nextAutosaveURL() -> URL {
@@ -513,6 +632,33 @@ struct SaveGameService {
     private func modificationDate(for url: URL) -> Date {
         let attributes = try? fileManager.attributesOfItem(atPath: url.path)
         return attributes?[.modificationDate] as? Date ?? .distantPast
+    }
+
+    private func fileByteCount(for url: URL) -> Int? {
+        let attributes = try? fileManager.attributesOfItem(atPath: url.path)
+        return (attributes?[.size] as? NSNumber)?.intValue
+    }
+
+    private func checkpointIssue(for error: Error) -> SaveGameCheckpointIssue {
+        guard let saveError = error as? SaveGameError else { return .unreadable }
+        switch saveError {
+        case .unsupportedSchema(let actual):
+            return SaveGameCheckpointIssue.unsupportedSchema(
+                expected: SaveGameEnvelope.currentSchemaVersion,
+                actual: actual
+            )
+        case .fingerprintVersionMismatch(let expected, let actual):
+            return SaveGameCheckpointIssue.fingerprintVersionMismatch(
+                expected: expected,
+                actual: actual
+            )
+        case .digestMismatch:
+            return .integrityMismatch
+        case .noValidSave, .invalidBranchName, .duplicateBranchName,
+             .invalidScenarioCheckpoint, .scenarioCheckpointConflict,
+             .invalidSupportReportTarget:
+            return .unreadable
+        }
     }
 
     private func sourcePriority(_ source: SaveGameSource) -> Int {
@@ -582,6 +728,13 @@ struct SaveGameService {
 
     private static let envelopeEncoder: JSONEncoder = {
         let encoder = JSONEncoder()
+        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+        return encoder
+    }()
+
+    private static let supportReportEncoder: JSONEncoder = {
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .iso8601
         encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
         return encoder
     }()

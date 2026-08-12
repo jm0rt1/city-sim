@@ -48,6 +48,8 @@ final class CheckpointLibraryTests: XCTestCase {
         XCTAssertEqual(catalog.map(\.source), [.autosave, .autosave, .primary, .autosave, .backup])
         XCTAssertEqual(catalog[1].integrity, .invalid)
         XCTAssertFalse(catalog[1].isLoadable)
+        XCTAssertEqual(catalog[1].issue, .unreadable)
+        XCTAssertEqual(catalog[1].byteCount, invalidBytes.count)
         XCTAssertEqual(try Data(contentsOf: service.autosaveURLs[2]), invalidBytes)
         XCTAssertEqual(
             try FileManager.default.contentsOfDirectory(atPath: root.path).sorted(),
@@ -61,9 +63,11 @@ final class CheckpointLibraryTests: XCTestCase {
         XCTAssertEqual(presentation.cards[0].title, "Latest Autosave")
         XCTAssertEqual(presentation.cards[0].sourceLabel, "Rotating autosave")
         XCTAssertEqual(presentation.cards[0].integrityLabel, "Verified")
-        XCTAssertEqual(presentation.cards[1].title, "Recovery File Unavailable")
+        XCTAssertEqual(presentation.cards[1].title, "Unreadable Recovery File")
         XCTAssertEqual(presentation.cards[1].checkpoint, "Unavailable checkpoint")
+        XCTAssertTrue(presentation.cards[1].detail.contains("not a readable CitySim checkpoint"))
         XCTAssertTrue(presentation.cards[1].detail.contains("left untouched"))
+        XCTAssertTrue(presentation.cards[1].canExportSupportReport)
     }
 
     @MainActor
@@ -196,8 +200,13 @@ final class CheckpointLibraryTests: XCTestCase {
             let image = try bitmap(
                 of: CheckpointLibraryView(
                     presentation: presentation,
+                    supportFeedback: CityCheckpointSupportFeedback(
+                        message: "Support report created · save-diagnostic-example.json · Original recovery file unchanged",
+                        isError: false
+                    ),
                     selectAction: { _ in },
                     branchAction: { _ in },
+                    exportSupportReportAction: { _ in },
                     cancelAction: {}
                 ).frame(width: size.width, height: size.height),
                 size: size

@@ -36,6 +36,7 @@ final class CityGameStore: ObservableObject {
     @Published private(set) var resumeBrief: CityResumeBriefPresentation?
     @Published private(set) var startupResumeOffer: CityStartupResumePresentation?
     @Published private(set) var checkpointLibrary: CityCheckpointLibraryPresentation?
+    @Published private(set) var checkpointSupportFeedback: CityCheckpointSupportFeedback?
     @Published private(set) var branchNaming: CityBranchNamingPresentation?
     @Published private(set) var branchNameDraft = ""
     @Published private(set) var branchNameError: String?
@@ -45,6 +46,7 @@ final class CityGameStore: ObservableObject {
 
     private let saves: SaveGameService
     private let capturesScenarioCheckpoints: Bool
+    private let revealSupportReport: (URL) -> Void
     private var undoStates: [CityGameState] = []
     private var feedbackDismissal: DispatchWorkItem?
     private var lastNonPausedSpeed: SimulationSpeed = .normal
@@ -54,6 +56,7 @@ final class CityGameStore: ObservableObject {
     private var pendingStartupResumeLoad: SaveGameLoadResult?
     private var startupResumeOfferWasConsidered = false
     private var checkpointLoadsByID: [String: SaveGameLoadResult] = [:]
+    private var checkpointEntriesByID: [String: SaveGameCheckpointCatalogEntry] = [:]
     private var speedBeforeCheckpointLibrary: SimulationSpeed?
     private var pendingBranchState: CityGameState?
     private var pendingBranchSource: SaveGameSource?
@@ -68,13 +71,17 @@ final class CityGameStore: ObservableObject {
         commandPolicy: CityCommandPolicy = .enabled,
         saveService: SaveGameService = SaveGameService(),
         startsPaused: Bool = false,
-        capturesScenarioCheckpoints: Bool = false
+        capturesScenarioCheckpoints: Bool = false,
+        revealSupportReport: ((URL) -> Void)? = nil
     ) {
         self.state = state
         self.cityNameDraft = state.cityName
         self.commandPolicy = commandPolicy
         self.saves = saveService
         self.capturesScenarioCheckpoints = capturesScenarioCheckpoints
+        self.revealSupportReport = revealSupportReport ?? { url in
+            NSWorkspace.shared.activateFileViewerSelecting([url])
+        }
         self.nextAutosaveTick = state.tick + Self.autosaveIntervalTicks
         if startsPaused || state.status != .playing {
             speed = .paused
@@ -1054,6 +1061,8 @@ final class CityGameStore: ObservableObject {
         pendingSessionReplacementLoad = nil
         checkpointLibrary = nil
         checkpointLoadsByID.removeAll()
+        checkpointEntriesByID.removeAll()
+        checkpointSupportFeedback = nil
         speedBeforeCheckpointLibrary = nil
         clearBranchNamingState()
         state = .newCity(seed: UInt64.random(in: 1...UInt64.max))
@@ -1108,11 +1117,37 @@ final class CityGameStore: ObservableObject {
         checkpointLoadsByID = Dictionary(uniqueKeysWithValues: entries.compactMap { entry in
             entry.loadResult.map { (entry.id, $0) }
         })
+        checkpointEntriesByID = Dictionary(uniqueKeysWithValues: entries.map { ($0.id, $0) })
+        checkpointSupportFeedback = nil
         speedBeforeCheckpointLibrary = speed
         speed = .paused
         showCommandGuide = false
         checkpointLibrary = CityCheckpointLibraryPresentation.make(entries)
         presentBlockingModal(.checkpointLibrary)
+    }
+
+    @discardableResult
+    func exportCheckpointSupportReport(for checkpointID: String) -> Bool {
+        guard commandPolicy == .blocked(.checkpointLibrary),
+              let entry = checkpointEntriesByID[checkpointID],
+              !entry.isLoadable else { return false }
+        do {
+            let url = try saves.exportSupportReport(for: entry)
+            checkpointSupportFeedback = CityCheckpointSupportFeedback(
+                message: "Support report created · \(url.lastPathComponent) · "
+                    + "Original recovery file unchanged",
+                isError: false
+            )
+            revealSupportReport(url)
+            return true
+        } catch {
+            checkpointSupportFeedback = CityCheckpointSupportFeedback(
+                message: "Support report failed · The recovery file is unchanged: "
+                    + error.localizedDescription,
+                isError: true
+            )
+            return false
+        }
     }
 
     func openBranchNamingForCurrentCity() {
@@ -1174,6 +1209,8 @@ final class CityGameStore: ObservableObject {
             clearBranchNamingState()
             checkpointLibrary = nil
             checkpointLoadsByID.removeAll()
+            checkpointEntriesByID.removeAll()
+            checkpointSupportFeedback = nil
             speedBeforeCheckpointLibrary = nil
             _ = dismissBlockingModal(.branchNaming)
             speed = previousSpeed
@@ -1206,7 +1243,15 @@ final class CityGameStore: ObservableObject {
         clearBranchNamingState()
         _ = dismissBlockingModal(.branchNaming)
         if returnsToLibrary {
-            checkpointLibrary = CityCheckpointLibraryPresentation.make(saves.checkpointCatalog())
+            let entries = saves.checkpointCatalog()
+            checkpointLoadsByID = Dictionary(uniqueKeysWithValues: entries.compactMap { entry in
+                entry.loadResult.map { (entry.id, $0) }
+            })
+            checkpointEntriesByID = Dictionary(
+                uniqueKeysWithValues: entries.map { ($0.id, $0) }
+            )
+            checkpointSupportFeedback = nil
+            checkpointLibrary = CityCheckpointLibraryPresentation.make(entries)
             presentBlockingModal(.checkpointLibrary)
         } else {
             speed = previousSpeed
@@ -1236,6 +1281,8 @@ final class CityGameStore: ObservableObject {
         let previousSpeed = speedBeforeCheckpointLibrary ?? .paused
         checkpointLibrary = nil
         checkpointLoadsByID.removeAll()
+        checkpointEntriesByID.removeAll()
+        checkpointSupportFeedback = nil
         speedBeforeCheckpointLibrary = nil
         _ = dismissBlockingModal(.checkpointLibrary)
         speed = previousSpeed
@@ -1260,6 +1307,8 @@ final class CityGameStore: ObservableObject {
         let previousSpeed = speedBeforeCheckpointLibrary ?? .paused
         checkpointLibrary = nil
         checkpointLoadsByID.removeAll()
+        checkpointEntriesByID.removeAll()
+        checkpointSupportFeedback = nil
         speedBeforeCheckpointLibrary = nil
         _ = dismissBlockingModal(.checkpointLibrary)
         speed = previousSpeed
@@ -1401,6 +1450,8 @@ final class CityGameStore: ObservableObject {
     private func applyLoadedResult(_ result: SaveGameLoadResult) {
         checkpointLibrary = nil
         checkpointLoadsByID.removeAll()
+        checkpointEntriesByID.removeAll()
+        checkpointSupportFeedback = nil
         speedBeforeCheckpointLibrary = nil
         clearBranchNamingState()
         state = result.state

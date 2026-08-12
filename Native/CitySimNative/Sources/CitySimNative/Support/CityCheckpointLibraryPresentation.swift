@@ -1,5 +1,10 @@
 import Foundation
 
+struct CityCheckpointSupportFeedback: Equatable, Sendable {
+    let message: String
+    let isError: Bool
+}
+
 struct CityCheckpointCardPresentation: Identifiable, Equatable, Sendable {
     let id: String
     let title: String
@@ -12,6 +17,7 @@ struct CityCheckpointCardPresentation: Identifiable, Equatable, Sendable {
     let integritySymbol: String
     let isLoadable: Bool
     let canBranch: Bool
+    let canExportSupportReport: Bool
 
     var accessibilitySummary: String {
         "\(title). \(sourceLabel). \(checkpoint). \(detail). \(integrityLabel)."
@@ -39,18 +45,20 @@ struct CityCheckpointCardPresentation: Identifiable, Equatable, Sendable {
         }
 
         guard let result = entry.loadResult, entry.integrity == .verified else {
+            let issue = entry.issue ?? .unreadable
             return Self(
                 id: entry.id,
-                title: "Recovery File Unavailable",
+                title: issue.title,
                 sourceLabel: sourceLabel,
                 sourceSymbol: sourceSymbol,
                 checkpoint: "Unavailable checkpoint",
-                detail: "Could not verify \(entry.fileName). The original file was left untouched.",
+                detail: "\(issue.explanation) The original file was left untouched.",
                 modifiedAt: entry.modifiedAt,
                 integrityLabel: "Integrity check failed",
                 integritySymbol: "exclamationmark.triangle.fill",
                 isLoadable: false,
-                canBranch: false
+                canBranch: false,
+                canExportSupportReport: true
             )
         }
 
@@ -72,7 +80,8 @@ struct CityCheckpointCardPresentation: Identifiable, Equatable, Sendable {
             integrityLabel: "Verified",
             integritySymbol: "checkmark.shield.fill",
             isLoadable: true,
-            canBranch: true
+            canBranch: true,
+            canExportSupportReport: false
         )
     }
 }

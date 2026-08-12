@@ -395,8 +395,12 @@ struct ContentView: View {
             } else if let library = store.checkpointLibrary {
                 CheckpointLibraryView(
                     presentation: library,
+                    supportFeedback: store.checkpointSupportFeedback,
                     selectAction: { _ = store.selectCheckpoint($0) },
                     branchAction: { _ = store.beginBranchNaming(for: $0) },
+                    exportSupportReportAction: {
+                        _ = store.exportCheckpointSupportReport(for: $0)
+                    },
                     cancelAction: { store.cancelCheckpointLibrary() }
                 )
                 .transition(.opacity)

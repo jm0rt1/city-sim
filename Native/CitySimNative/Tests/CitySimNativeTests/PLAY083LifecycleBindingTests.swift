@@ -155,6 +155,8 @@ final class PLAY083LifecycleBindingTests: XCTestCase {
                 let store = preparedStore(saveService: service)
                 store.speed = .fastest
                 XCTAssertTrue(store.perform(.loadCity))
+                XCTAssertEqual(store.sessionReplacementConfirmation?.action, .loadQuicksave)
+                XCTAssertTrue(store.confirmSessionReplacement())
                 XCTAssertEqual(store.state, load.state)
                 XCTAssertEqual(store.speed, .paused)
                 XCTAssertFalse(store.canUndo)

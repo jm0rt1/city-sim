@@ -230,6 +230,12 @@ final class StrategyResolutionPlatformTests: XCTestCase {
 
                 XCTAssertTrue(store.canPerform(.loadCity), resolution.rawValue)
                 XCTAssertTrue(store.perform(.loadCity), resolution.rawValue)
+                XCTAssertEqual(
+                    store.sessionReplacementConfirmation?.action,
+                    .loadQuicksave,
+                    resolution.rawValue
+                )
+                XCTAssertTrue(store.confirmSessionReplacement(), resolution.rawValue)
                 XCTAssertEqual(store.state, saved, resolution.rawValue)
                 XCTAssertEqual(store.speed, .paused, resolution.rawValue)
                 XCTAssertFalse(store.canUndo, resolution.rawValue)

@@ -187,6 +187,12 @@ final class TerminalVictoryPlatformTests: XCTestCase {
                 XCTAssertTrue(store.canUndo, resolution.rawValue)
                 store.speed = .fastest
                 XCTAssertTrue(store.perform(.loadCity), resolution.rawValue)
+                XCTAssertEqual(
+                    store.sessionReplacementConfirmation?.action,
+                    .loadQuicksave,
+                    resolution.rawValue
+                )
+                XCTAssertTrue(store.confirmSessionReplacement(), resolution.rawValue)
                 XCTAssertEqual(store.state, terminal, resolution.rawValue)
                 XCTAssertEqual(store.speed, .paused, resolution.rawValue)
                 XCTAssertFalse(store.canUndo, resolution.rawValue)

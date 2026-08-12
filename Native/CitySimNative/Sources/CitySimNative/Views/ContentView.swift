@@ -221,34 +221,34 @@ struct ContentView: View {
             CommandGuideView(store: store)
         }
         .confirmationDialog(
-            store.newRegionConfirmation?.title ?? "Start a New Region?",
+            store.sessionReplacementConfirmation?.title ?? "Replace the Current City?",
             isPresented: Binding(
-                get: { store.newRegionConfirmation != nil },
+                get: { store.sessionReplacementConfirmation != nil },
                 set: { isPresented in
                     guard !isPresented else { return }
                     // Confirmation actions run in the same event that dismisses the dialog.
                     // Defer implicit dismissal so an explicit destructive action wins first.
                     DispatchQueue.main.async {
-                        store.cancelNewRegionReplacement()
+                        store.cancelSessionReplacement()
                     }
                 }
             ),
             titleVisibility: .visible
         ) {
             Button(
-                store.newRegionConfirmation?.destructiveActionTitle ?? "Start New Region",
+                store.sessionReplacementConfirmation?.destructiveActionTitle ?? "Replace City",
                 role: .destructive
             ) {
-                store.confirmNewRegionReplacement()
+                store.confirmSessionReplacement()
             }
             Button(
-                store.newRegionConfirmation?.cancelActionTitle ?? "Keep Current City",
+                store.sessionReplacementConfirmation?.cancelActionTitle ?? "Keep Current City",
                 role: .cancel
             ) {
-                store.cancelNewRegionReplacement()
+                store.cancelSessionReplacement()
             }
         } message: {
-            Text(store.newRegionConfirmation?.message ?? "")
+            Text(store.sessionReplacementConfirmation?.message ?? "")
         }
     }
 

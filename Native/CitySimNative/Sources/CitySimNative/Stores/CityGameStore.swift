@@ -32,7 +32,7 @@ final class CityGameStore: ObservableObject {
     @Published var lastFeedback: String?
     @Published private(set) var lastFeedbackTone: PlayerFeedbackTone = .neutral
     @Published private(set) var resumeBrief: CityResumeBriefPresentation?
-    @Published private(set) var newRegionConfirmation: NewRegionConfirmationPresentation?
+    @Published private(set) var sessionReplacementConfirmation: CitySessionReplacementConfirmationPresentation?
     @Published private(set) var canUndo = false
     @Published private(set) var mapFocusRequestGeneration: UInt = 0
 
@@ -40,7 +40,7 @@ final class CityGameStore: ObservableObject {
     private var undoStates: [CityGameState] = []
     private var feedbackDismissal: DispatchWorkItem?
     private var lastNonPausedSpeed: SimulationSpeed = .normal
-    private var speedBeforeNewRegionConfirmation: SimulationSpeed?
+    private var speedBeforeSessionReplacementConfirmation: SimulationSpeed?
 
     init(
         state: CityGameState = .newCity(),
@@ -211,15 +211,19 @@ final class CityGameStore: ObservableObject {
 
         switch command {
         case .newRegion:
-            if state.status == .playing {
-                requestNewRegionConfirmation()
+            if currentCityHasProgress {
+                requestSessionReplacementConfirmation(for: .newRegion)
             } else {
                 newCity()
             }
         case .saveCity:
             save()
         case .loadCity:
-            load()
+            if currentCityHasProgress {
+                requestSessionReplacementConfirmation(for: .loadQuicksave)
+            } else {
+                load()
+            }
         case .undo:
             undoLastAction()
         case .togglePause:
@@ -268,7 +272,7 @@ final class CityGameStore: ObservableObject {
         guard commandPolicy.allows(command) else { return false }
         let descriptor = CityCommandCatalog.descriptor(for: command)
         guard descriptor.route == .store, !descriptor.isSpatial else { return false }
-        if newRegionConfirmation != nil {
+        if sessionReplacementConfirmation != nil {
             return command == .cancelInteraction
         }
         if state.status != .playing,
@@ -293,7 +297,7 @@ final class CityGameStore: ObservableObject {
     func disabledReason(for command: CityCommandID) -> String? {
         guard !canPerform(command) else { return nil }
         if let policyReason = commandPolicy.disabledReason { return policyReason }
-        if newRegionConfirmation != nil {
+        if sessionReplacementConfirmation != nil {
             return "Choose whether to keep or replace \(state.cityName)"
         }
         let descriptor = CityCommandCatalog.descriptor(for: command)
@@ -323,7 +327,7 @@ final class CityGameStore: ObservableObject {
     }
 
     func canRouteMapCommand(_ command: CityCommandID) -> Bool {
-        guard newRegionConfirmation == nil,
+        guard sessionReplacementConfirmation == nil,
               state.status == .playing,
               commandPolicy.allows(command),
               CityCommandCatalog.mapFocusedCommands.contains(command) else {
@@ -605,8 +609,8 @@ final class CityGameStore: ObservableObject {
     }
 
     private func dismissTopmostSurfaceOrCancel() {
-        if newRegionConfirmation != nil {
-            cancelNewRegionReplacement()
+        if sessionReplacementConfirmation != nil {
+            cancelSessionReplacement()
         } else if showCommandGuide {
             showCommandGuide = false
             requestMapFocus()
@@ -930,8 +934,8 @@ final class CityGameStore: ObservableObject {
     }
 
     func newCity() {
-        newRegionConfirmation = nil
-        speedBeforeNewRegionConfirmation = nil
+        sessionReplacementConfirmation = nil
+        speedBeforeSessionReplacementConfirmation = nil
         state = .newCity(seed: UInt64.random(in: 1...UInt64.max))
         cityNameDraft = state.cityName
         speed = .paused
@@ -951,27 +955,43 @@ final class CityGameStore: ObservableObject {
         showFeedback("A fresh region is ready")
     }
 
-    private func requestNewRegionConfirmation() {
-        guard newRegionConfirmation == nil else { return }
-        speedBeforeNewRegionConfirmation = speed
+    private var currentCityHasProgress: Bool {
+        state.status == .playing && state != .newCity(seed: state.seed)
+    }
+
+    private func requestSessionReplacementConfirmation(
+        for action: CitySessionReplacementAction
+    ) {
+        guard sessionReplacementConfirmation == nil else { return }
+        speedBeforeSessionReplacementConfirmation = speed
         speed = .paused
         showCommandGuide = false
-        newRegionConfirmation = NewRegionConfirmationPresentation.make(state: state)
+        sessionReplacementConfirmation = CitySessionReplacementConfirmationPresentation.make(
+            state: state,
+            action: action
+        )
     }
 
     @discardableResult
-    func confirmNewRegionReplacement() -> Bool {
-        guard newRegionConfirmation != nil else { return false }
-        newCity()
+    func confirmSessionReplacement() -> Bool {
+        guard let action = sessionReplacementConfirmation?.action else { return false }
+        sessionReplacementConfirmation = nil
+        speedBeforeSessionReplacementConfirmation = nil
+        switch action {
+        case .newRegion:
+            newCity()
+        case .loadQuicksave:
+            load()
+        }
         return true
     }
 
     @discardableResult
-    func cancelNewRegionReplacement() -> Bool {
-        guard newRegionConfirmation != nil else { return false }
-        let previousSpeed = speedBeforeNewRegionConfirmation ?? .paused
-        newRegionConfirmation = nil
-        speedBeforeNewRegionConfirmation = nil
+    func cancelSessionReplacement() -> Bool {
+        guard sessionReplacementConfirmation != nil else { return false }
+        let previousSpeed = speedBeforeSessionReplacementConfirmation ?? .paused
+        sessionReplacementConfirmation = nil
+        speedBeforeSessionReplacementConfirmation = nil
         speed = previousSpeed
         let simulationStatus = previousSpeed == .paused
             ? "Simulation remains paused"

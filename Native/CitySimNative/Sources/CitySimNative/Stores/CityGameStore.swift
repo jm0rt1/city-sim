@@ -295,9 +295,14 @@ final class CityGameStore: ObservableObject {
             case .dismissFeedback: return "There is no transient action message"
             case .cancelInteraction: return "There is no open surface or active tool to cancel"
             default:
-                return state.status == .playing
-                    ? "Unavailable in the current context"
-                    : "The mayoral mandate is complete; start a new region or load a city"
+                return switch state.status {
+                case .playing:
+                    "Unavailable in the current context"
+                case .won:
+                    "The mayoral mandate is complete; start a new region or load a city"
+                case .lost:
+                    "This city session ended in crisis; start a new region or load a city"
+                }
             }
         }
     }

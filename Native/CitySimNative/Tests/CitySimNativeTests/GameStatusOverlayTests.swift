@@ -149,6 +149,28 @@ final class GameStatusOverlayTests: XCTestCase {
     }
 
     @MainActor
+    func testLostStoreExplainsCrisisInsteadOfClaimingTheMandateWasCompleted() {
+        var lost = CityGameState.newCity(seed: 0x1057)
+        lost.cityName = "Harbor Light"
+        lost.treasury = -75_001
+        lost.status = .lost
+        let store = CityGameStore(state: lost)
+
+        XCTAssertEqual(store.speed, .paused)
+        XCTAssertFalse(store.canPerform(.togglePause))
+        XCTAssertFalse(store.canPerform(.openCommandGuide))
+        XCTAssertEqual(
+            store.disabledReason(for: .togglePause),
+            "This city session ended in crisis; start a new region or load a city"
+        )
+        XCTAssertFalse(
+            store.disabledReason(for: .togglePause)?.contains("mandate is complete") == true
+        )
+        XCTAssertTrue(store.canPerform(.newRegion))
+        XCTAssertTrue(store.canPerform(.saveCity))
+    }
+
+    @MainActor
     func testPausedAppStartupKeepsFreshRootAtDayOneUntilUserExplicitlyLoadsItsSave() throws {
         let root = FileManager.default.temporaryDirectory
             .appending(path: "citysim-play051-startup-\(UUID().uuidString)", directoryHint: .isDirectory)

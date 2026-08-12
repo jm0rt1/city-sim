@@ -702,9 +702,14 @@ final class WorldRenderingTests: XCTestCase {
                         ResidentialGeneratedAssetIdentity(
                             level: tile.level,
                             adjacentRoads: edge,
-                            visualVariant: WorldVisualSeed.variant(count: 3, for: tile.coordinate, kind: tile.kind)
+                            visualVariant: ResidentialGeneratedAssetIdentity.liveVisualVariant(
+                                at: tile.coordinate
+                            )
                         )
                     )
+                    if level == 1 {
+                        XCTAssertTrue([1, 2].contains(renderedIdentity.variant))
+                    }
                     let lot = renderer.makeLot(
                         for: tile,
                         adjacentRoads: edge,

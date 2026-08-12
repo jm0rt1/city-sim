@@ -208,7 +208,7 @@ struct BuildToolbarView: View {
         }
         .scrollIndicators(.visible)
         .frame(
-            maxHeight: compact ? Self.compactDetailsMaxHeight : Self.regularDetailsMaxHeight,
+            height: compact ? Self.compactDetailsMaxHeight : Self.regularDetailsMaxHeight,
             alignment: .top
         )
         .focusable()

@@ -278,29 +278,54 @@ final class CityCommandCatalogTests: XCTestCase {
                 && $0.definition.moment == .complication
         }?.state)
         let commercialStore = CityGameStore(state: commercialState)
+        commercialStore.speed = .fastest
         let commercial = CityStrategyHUDPresentation.make(analytics: commercialStore.analytics)
         let diagnostic = try XCTUnwrap(commercial.diagnostic)
         let park = try XCTUnwrap(commercial.actions.first { $0.command == .buildPark })
 
-        XCTAssertTrue(commercialStore.perform(diagnostic.command))
+        StrategyCommandCenterView.perform(diagnostic, on: commercialStore)
         XCTAssertTrue(commercialStore.showInspector)
         XCTAssertEqual(commercialStore.inspectorSection, .finances)
+        XCTAssertEqual(commercialStore.speed, .paused)
+        commercialStore.speed = .fastest
         let focusBeforePark = commercialStore.mapFocusRequestGeneration
-        XCTAssertTrue(commercialStore.performMapFocused(park.command))
+        StrategyCommandCenterView.perform(park, on: commercialStore)
         XCTAssertEqual(commercialStore.interactionMode, .build(.park))
         XCTAssertEqual(commercialStore.mapFocusRequestGeneration, focusBeforePark + 1)
+        XCTAssertEqual(commercialStore.speed, .paused)
+        let commercialTarget = try XCTUnwrap(commercialStore.selectedCoordinate)
+        if case .failure(let rejection) = CitySimulation.validateBuild(
+            .park,
+            at: commercialTarget,
+            in: commercialStore.state
+        ) {
+            XCTFail("Strategic Park route selected a blocked parcel: \(rejection)")
+        }
+        commercialStore.togglePause()
+        XCTAssertEqual(commercialStore.speed, .fastest, "Space resumes the player's prior decision speed")
+        commercialStore.togglePause()
 
         let industrialState = try XCTUnwrap(fixtures.first {
             $0.definition.strategy == .industrialExpansion
                 && $0.definition.moment == .complication
         }?.state)
         let industrialStore = CityGameStore(state: industrialState)
+        industrialStore.speed = .fastest
         let industrial = CityStrategyHUDPresentation.make(analytics: industrialStore.analytics)
         let power = try XCTUnwrap(industrial.actions.first { $0.command == .buildPowerPlant })
         let focusBeforePower = industrialStore.mapFocusRequestGeneration
-        XCTAssertTrue(industrialStore.performMapFocused(power.command))
+        StrategyCommandCenterView.perform(power, on: industrialStore)
         XCTAssertEqual(industrialStore.interactionMode, .build(.powerPlant))
         XCTAssertEqual(industrialStore.mapFocusRequestGeneration, focusBeforePower + 1)
+        XCTAssertEqual(industrialStore.speed, .paused)
+        let industrialTarget = try XCTUnwrap(industrialStore.selectedCoordinate)
+        if case .failure(let rejection) = CitySimulation.validateBuild(
+            .powerPlant,
+            at: industrialTarget,
+            in: industrialStore.state
+        ) {
+            XCTFail("Strategic Power Plant route selected a blocked parcel: \(rejection)")
+        }
     }
 
     @MainActor
@@ -2941,7 +2966,13 @@ final class CityCommandCatalogTests: XCTestCase {
         XCTAssertEqual(store.state.tile(at: valid.coordinate)?.kind, .commercial)
         XCTAssertEqual(store.state.treasury, treasuryBefore - BuildingKind.commercial.buildCost)
         XCTAssertEqual(store.selectedCoordinate, valid.coordinate)
-        XCTAssertEqual(store.interactionMode, .build(.commercial))
+        XCTAssertEqual(store.interactionMode, .inspect)
+        XCTAssertEqual(store.hudContextScope, .selection)
+        XCTAssertTrue(
+            store.activeMapActionTargetPresentation?.primaryAction.name.hasPrefix(
+                "Inspect Commercial"
+            ) == true
+        )
         XCTAssertTrue(store.canUndo)
 
         XCTAssertTrue(store.perform(.undo))
@@ -3141,6 +3172,103 @@ final class CityCommandCatalogTests: XCTestCase {
                     || CityNoticeActionCatalog.actions(for: $0.message.title).isEmpty
             }
         )
+    }
+
+    @MainActor
+    func testCompactFinancePutsTheTaxDecisionInTheFirstVisibleRow() throws {
+        XCTAssertEqual(
+            InspectorView.financeCardOrder(compact: true, projectedBalance: -168),
+            [.taxPolicy, .decisionSupport, .nextCycle, .treasury]
+        )
+        XCTAssertEqual(
+            InspectorView.financeCardOrder(compact: true, projectedBalance: 20),
+            [.taxPolicy, .treasury, .nextCycle, .decisionSupport]
+        )
+        XCTAssertEqual(
+            InspectorView.financeCardOrder(compact: false, projectedBalance: -168),
+            [.treasury, .nextCycle, .taxPolicy, .decisionSupport]
+        )
+
+        let store = CityGameStore(state: .newCity(seed: 42))
+        store.openInspector(.finances)
+        let size = CGSize(width: 854, height: BuildToolbarView.compactDetailsMaxHeight)
+        let finance = try bitmap(
+            of: InspectorView(store: store, compact: true)
+                .frame(width: size.width, height: size.height, alignment: .top),
+            size: size
+        )
+
+        XCTAssertEqual(finance.size.height, BuildToolbarView.compactDetailsMaxHeight, accuracy: 0.5)
+        XCTAssertEqual(store.inspectorSection, .finances)
+    }
+
+    func testFinanceDecisionSupportNamesTheFirstWholePercentThatRestoresCashflow() throws {
+        var state = CityGameState.newCity(seed: 42)
+        state.taxRate = 0.04
+        let analytics = CityAnalytics(state: state)
+        let recoveryRate = try XCTUnwrap(analytics.breakEvenTaxRate)
+        let recoveryPercent = Int((recoveryRate * 100).rounded())
+
+        XCTAssertGreaterThan(recoveryRate, state.taxRate)
+        XCTAssertGreaterThanOrEqual(analytics.projectedBalance(atTaxRate: recoveryRate), 0)
+        XCTAssertLessThan(
+            analytics.projectedBalance(atTaxRate: Double(recoveryPercent - 1) / 100),
+            0
+        )
+
+        let support = CityFinanceDecisionSupport.make(analytics: analytics)
+        XCTAssertEqual(support.recoveryTaxRate, recoveryRate)
+        XCTAssertTrue(support.detail.contains("\(recoveryPercent)% tax forecasts"))
+        XCTAssertTrue(support.detail.contains("Higher tax cools demand"))
+        XCTAssertTrue(support.accessibilityHint.contains("restore non-negative cashflow"))
+        XCTAssertFalse(support.offersParkAlternative)
+    }
+
+    func testFinanceDecisionSupportFallsBackToTaxBaseOrUpkeepWhenTaxCannotCloseGap() {
+        var state = CityGameState.newCity(seed: 42)
+        state.treasury = -1_000_000
+        let analytics = CityAnalytics(state: state)
+        let support = CityFinanceDecisionSupport.make(analytics: analytics)
+
+        XCTAssertNil(analytics.breakEvenTaxRate)
+        XCTAssertNil(support.recoveryTaxRate)
+        XCTAssertTrue(support.detail.contains("Tax alone cannot close"))
+        XCTAssertTrue(support.detail.contains("occupied homes or jobs"))
+        XCTAssertTrue(support.detail.contains("remove unneeded upkeep"))
+        XCTAssertFalse(support.offersParkAlternative)
+    }
+
+    func testFinanceDecisionSupportExplainsMainStreetConflictAndOffersParkRoute() throws {
+        var state = CityGameState.newCity(seed: 42)
+        state.taxRate = 0.04
+        state.progression?.strategy = CityStrategyProgression(
+            committedStrategy: .commercialStewardship,
+            currentPhase: .complication,
+            nextScheduledTick: state.tick + 40
+        )
+        let analytics = CityAnalytics(state: state)
+        let support = CityFinanceDecisionSupport.make(analytics: analytics)
+
+        XCTAssertGreaterThan(try XCTUnwrap(support.recoveryTaxRate), 0.09)
+        XCTAssertTrue(support.detail.contains("ends the 9% tax-relief route"))
+        XCTAssertTrue(support.detail.contains("Build a second park"))
+        XCTAssertTrue(support.accessibilityHint.contains("conflicts with the 9% Main Street"))
+        XCTAssertTrue(support.offersParkAlternative)
+    }
+
+    func testFinanceDecisionSupportStopsOfferingParkAfterMainStreetResponseIsLocked() {
+        var state = CityGameState.newCity(seed: 42)
+        state.taxRate = 0.04
+        state.progression?.strategy = CityStrategyProgression(
+            committedStrategy: .commercialStewardship,
+            currentPhase: .recovery,
+            nextScheduledTick: state.tick + 40,
+            recoveryResolution: .commercialTaxRelief
+        )
+        let support = CityFinanceDecisionSupport.make(analytics: CityAnalytics(state: state))
+
+        XCTAssertFalse(support.detail.contains("ends the 9% tax-relief route"))
+        XCTAssertFalse(support.offersParkAlternative)
     }
 
     @MainActor

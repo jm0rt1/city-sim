@@ -725,10 +725,17 @@ struct StrategyCommandCenterView: View {
 
     @MainActor
     static func perform(_ response: CityDirectResponse, on store: CityGameStore) {
+        let performed: Bool
         if response.focusesMap {
-            store.performMapFocused(response.command)
+            performed = store.performMapFocused(response.command)
         } else {
-            store.perform(response.command)
+            performed = store.perform(response.command)
+        }
+        if performed {
+            // Strategy responses are deliberate management decisions. Freeze
+            // the clock while the player inspects the destination or chooses
+            // an exact parcel, preserving their prior speed for Space-resume.
+            store.setSpeed(.paused)
         }
     }
 

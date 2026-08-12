@@ -1,5 +1,56 @@
 import SwiftUI
 
+struct CityFinanceDecisionSupport: Equatable {
+    let detail: String
+    let accessibilityHint: String
+    let recoveryTaxRate: Double?
+    let offersParkAlternative: Bool
+
+    static func make(analytics: CityAnalytics) -> CityFinanceDecisionSupport {
+        if analytics.projectedBalance >= 0 {
+            let detail = "Operations forecast \(analytics.projectedBalance.signedCurrencyText) per cycle. Lower tax supports demand; higher tax builds reserves."
+            return CityFinanceDecisionSupport(
+                detail: detail,
+                accessibilityHint: detail,
+                recoveryTaxRate: nil,
+                offersParkAlternative: false
+            )
+        }
+
+        if let recoveryTaxRate = analytics.breakEvenTaxRate {
+            let recoveryBalance = analytics.projectedBalance(atTaxRate: recoveryTaxRate)
+            let rate = (recoveryTaxRate * 100).percentText
+            let conflictsWithMainStreet = recoveryTaxRate > 0.09
+                && analytics.committedStrategy == .commercialStewardship
+                && analytics.strategyRecoveryResolution == nil
+                && analytics.strategyPhase != .completed
+            let offersParkAlternative = conflictsWithMainStreet && analytics.count(.park) < 2
+            let detail = if conflictsWithMainStreet {
+                "\(rate) restores \(recoveryBalance.signedCurrencyText) per cycle but ends the 9% tax-relief route. \(offersParkAlternative ? "Build a second park first, or grow revenue." : "Main Street already has its park alternative; raise tax when ready.")"
+            } else {
+                "\(rate) tax forecasts \(recoveryBalance.signedCurrencyText) per cycle. Higher tax cools demand; growth or lower upkeep preserves today's rate."
+            }
+            return CityFinanceDecisionSupport(
+                detail: detail,
+                accessibilityHint: conflictsWithMainStreet
+                    ? "Raising tax to \(rate) restores non-negative cashflow but conflicts with the 9% Main Street tax-relief route."
+                    : "Raise the tax slider to \(rate) to restore non-negative cashflow now. Higher taxes can reduce demand.",
+                recoveryTaxRate: recoveryTaxRate,
+                offersParkAlternative: offersParkAlternative
+            )
+        }
+
+        let gap = (-analytics.projectedBalance).currencyText
+        let detail = "Tax alone cannot close the \(gap) gap. Add occupied homes or jobs, or remove unneeded upkeep."
+        return CityFinanceDecisionSupport(
+            detail: detail,
+            accessibilityHint: detail,
+            recoveryTaxRate: nil,
+            offersParkAlternative: false
+        )
+    }
+}
+
 struct InspectorView: View {
     @ObservedObject var store: CityGameStore
     var compact = false
@@ -8,7 +59,26 @@ struct InspectorView: View {
     static let regularColumnCount = 4
     static let compactMinimumVisibleNoticeCount = 2
 
+    enum FinanceCard: Hashable {
+        case treasury
+        case nextCycle
+        case taxPolicy
+        case decisionSupport
+    }
+
+    static func financeCardOrder(compact: Bool, projectedBalance: Double) -> [FinanceCard] {
+        guard compact else {
+            return [.treasury, .nextCycle, .taxPolicy, .decisionSupport]
+        }
+        return projectedBalance < 0
+            ? [.taxPolicy, .decisionSupport, .nextCycle, .treasury]
+            : [.taxPolicy, .treasury, .nextCycle, .decisionSupport]
+    }
+
     private var analytics: CityAnalytics { store.analytics }
+    private var financeDecisionSupport: CityFinanceDecisionSupport {
+        CityFinanceDecisionSupport.make(analytics: analytics)
+    }
     private var contextColumns: [GridItem] {
         Array(
             repeating: GridItem(.flexible(), spacing: 8, alignment: .top),
@@ -303,6 +373,22 @@ struct InspectorView: View {
 
     private var financeContext: some View {
         LazyVGrid(columns: contextColumns, alignment: .leading, spacing: 8) {
+            ForEach(
+                Self.financeCardOrder(
+                    compact: compact,
+                    projectedBalance: analytics.projectedBalance
+                ),
+                id: \.self
+            ) { card in
+                financeCard(card)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func financeCard(_ card: FinanceCard) -> some View {
+        switch card {
+        case .treasury:
             ContextCard(title: "Treasury", symbol: "dollarsign.circle.fill", tint: store.state.treasury >= 0 ? GameTheme.accent : GameTheme.danger) {
                 Text(store.state.treasury.currencyText)
                     .font(.title3.bold().monospacedDigit())
@@ -310,13 +396,13 @@ struct InspectorView: View {
                     .font(.caption2)
                     .foregroundStyle(.secondary)
             }
-
+        case .nextCycle:
             ContextCard(title: "Next cycle", symbol: "arrow.triangle.2.circlepath", tint: store.analytics.projectedBalance >= 0 ? GameTheme.accent : GameTheme.danger) {
                 ContextValueRow(label: "Revenue", value: store.analytics.projectedRevenue.currencyText)
                 ContextValueRow(label: "Upkeep", value: store.analytics.projectedUpkeep.currencyText)
                 ContextValueRow(label: "Net", value: store.analytics.projectedBalance.signedCurrencyText)
             }
-
+        case .taxPolicy:
             ContextCard(title: "Tax policy", symbol: "percent", tint: GameTheme.warning) {
                 HStack {
                     Text("Tax rate").font(.caption.weight(.semibold))
@@ -330,14 +416,21 @@ struct InspectorView: View {
                 )
                 .accessibilityLabel("City tax rate")
                 .accessibilityValue((store.state.taxRate * 100).percentText)
+                .accessibilityHint(financeDecisionSupport.accessibilityHint)
             }
-
+        case .decisionSupport:
             ContextCard(title: "Decision support", symbol: "lightbulb.fill", tint: GameTheme.information) {
-                Text(store.analytics.projectedBalance >= 0 ? "Operations are forecast to add to the treasury." : "Operating commitments exceed forecast revenue.")
+                Text(financeDecisionSupport.detail)
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .lineLimit(3)
-                compactAction("Demand", symbol: "chart.bar.fill") { store.perform(.inspectorDemand) }
+                if financeDecisionSupport.offersParkAlternative {
+                    compactAction("Build second park", symbol: BuildingKind.park.symbol) {
+                        store.performMapFocused(.buildPark)
+                    }
+                } else if analytics.projectedBalance >= 0 {
+                    compactAction("Demand", symbol: "chart.bar.fill") { store.perform(.inspectorDemand) }
+                }
             }
         }
     }

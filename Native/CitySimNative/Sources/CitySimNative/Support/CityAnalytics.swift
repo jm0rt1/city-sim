@@ -73,6 +73,25 @@ struct CityAnalytics {
 
     var projectedBalance: Double { CitySimulation.projectedBalance(in: state) }
 
+    func projectedBalance(atTaxRate taxRate: Double) -> Double {
+        var forecast = state
+        forecast.taxRate = min(0.18, max(0.04, taxRate))
+        return CitySimulation.projectedBalance(in: forecast)
+    }
+
+    var breakEvenTaxRate: Double? {
+        guard projectedBalance < 0 else { return state.taxRate }
+
+        let currentPercent = Int((state.taxRate * 100).rounded(.up))
+        for percent in max(4, currentPercent)...18 {
+            let candidate = Double(percent) / 100
+            if projectedBalance(atTaxRate: candidate) >= 0 {
+                return candidate
+            }
+        }
+        return nil
+    }
+
     var operatingRunwayCycles: Double? {
         guard projectedBalance < 0, state.treasury > 0 else { return nil }
         return state.treasury / -projectedBalance

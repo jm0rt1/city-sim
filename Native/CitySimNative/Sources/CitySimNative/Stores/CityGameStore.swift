@@ -424,8 +424,39 @@ final class CityGameStore: ObservableObject {
             .overlayUtilities, .overlayPollution, .overlayCity
         ]
         guard approved.contains(command), perform(command) else { return false }
+        if let kind = CityCommandCatalog.buildingKind(for: command) {
+            targetNearestBuildableParcel(for: kind)
+        }
         mapFocusRequestGeneration &+= 1
         return true
+    }
+
+    private func targetNearestBuildableParcel(for kind: BuildingKind) {
+        if let selectedCoordinate,
+           case .success = CitySimulation.validateBuild(kind, at: selectedCoordinate, in: state) {
+            hudContextScope = .selection
+            return
+        }
+
+        let origin = selectedCoordinate ?? initialMapSelectionCoordinate()
+        let target = state.tiles.lazy
+            .filter { tile in
+                if case .success = CitySimulation.validateBuild(kind, at: tile.coordinate, in: self.state) {
+                    return true
+                }
+                return false
+            }
+            .min { lhs, rhs in
+                let lhsDistance = abs(lhs.coordinate.x - origin.x) + abs(lhs.coordinate.y - origin.y)
+                let rhsDistance = abs(rhs.coordinate.x - origin.x) + abs(rhs.coordinate.y - origin.y)
+                if lhsDistance != rhsDistance { return lhsDistance < rhsDistance }
+                if lhs.coordinate.y != rhs.coordinate.y { return lhs.coordinate.y < rhs.coordinate.y }
+                return lhs.coordinate.x < rhs.coordinate.x
+            }
+
+        guard let target else { return }
+        selectedCoordinate = target.coordinate
+        hudContextScope = .selection
     }
 
     @discardableResult
@@ -668,6 +699,15 @@ final class CityGameStore: ObservableObject {
             case .success:
                 recordUndo(previousState)
                 selectedCoordinate = coordinate
+                if kind != .road {
+                    // A completed one-off place should read as success, not
+                    // immediately re-evaluate the newly occupied block as an
+                    // invalid second placement. Roads retain their continuous
+                    // build tool; places return to an inspectable result.
+                    interactionMode = .inspect
+                    hudContextScope = .selection
+                    showInspector = false
+                }
                 showFeedback("\(kind.title) construction approved", tone: .positive)
                 playSound(named: "Tink")
             case .failure(let rejection):

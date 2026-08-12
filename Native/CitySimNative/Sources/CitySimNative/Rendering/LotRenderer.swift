@@ -12,6 +12,14 @@ struct ResidentialGeneratedAssetIdentity: Equatable, Sendable {
     let direction: String
     let logicalID: String
 
+    static func liveVisualVariant(at coordinate: GridCoordinate) -> Int {
+        1 + WorldVisualSeed.variant(
+            count: 2,
+            for: coordinate,
+            kind: .residential
+        )
+    }
+
     init?(
         level: Int,
         adjacentRoads: RoadConnectionMask,
@@ -140,13 +148,21 @@ final class LotRenderer {
         reducedMotion: Bool
     ) -> SKNode {
         let variant = WorldVisualSeed.variant(count: 3, for: tile.coordinate, kind: tile.kind)
+        // Variant 0 remains in the catalog for provenance and focused asset
+        // inspection, but its flat black-roof silhouette belongs to a
+        // different visual family than the starter district. Live level-one
+        // homes intentionally alternate between the two projection-, scale-,
+        // and lighting-compatible families until that source is re-authored.
+        let residentialVariant = ResidentialGeneratedAssetIdentity.liveVisualVariant(
+            at: tile.coordinate
+        )
         let presentation = LotConsequencePresentation(tile: tile)
         let strategyIdentity = StrategyDistrictVisualIdentity(tile: tile)
         let residentialIdentity = tile.kind == .residential
             ? ResidentialGeneratedAssetIdentity(
                 level: tile.level,
                 adjacentRoads: adjacentRoads,
-                visualVariant: variant
+                visualVariant: residentialVariant
             )
             : nil
         let commercialIdentity = tile.kind == .commercial
@@ -212,7 +228,7 @@ final class LotRenderer {
         if presentation.construction == .complete || presentation.construction == .finishing {
             _ = addAuthoredPlaceFamily(
                 tile,
-                variant: variant,
+                variant: tile.kind == .residential ? residentialVariant : variant,
                 residentialIdentity: residentialIdentity,
                 commercialIdentity: commercialIdentity,
                 industrialIdentity: industrialIdentity,

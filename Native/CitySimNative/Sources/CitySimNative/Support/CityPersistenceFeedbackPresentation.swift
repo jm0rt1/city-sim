@@ -21,6 +21,19 @@ struct CityPersistenceFeedbackPresentation: Equatable, Sendable {
         )
     }
 
+    static func scenarioCheckpoint(_ state: CityGameState, title: String) -> Self {
+        Self(
+            message: "Scenario checkpoint “\(title)” secured · \(checkpointDescription(for: state))"
+        )
+    }
+
+    static func scenarioCheckpointAlreadyExists(title: String) -> Self {
+        Self(
+            message: "Scenario checkpoint “\(title)” is already preserved · "
+                + "Create a named branch to keep this timeline"
+        )
+    }
+
     static func loaded(_ state: CityGameState, recoveredFromBackup: Bool) -> Self {
         let action = recoveredFromBackup
             ? "Recovered \(state.cityName) from last known-good save"
@@ -40,6 +53,13 @@ struct CityPersistenceFeedbackPresentation: Equatable, Sendable {
     static func loadedBranch(_ state: CityGameState, name: String) -> Self {
         Self(
             message: "Resumed “\(name)” · \(checkpointDescription(for: state)) · Simulation paused"
+        )
+    }
+
+    static func loadedScenarioCheckpoint(_ state: CityGameState, title: String) -> Self {
+        Self(
+            message: "Resumed scenario “\(title)” · "
+                + "\(checkpointDescription(for: state)) · Simulation paused"
         )
     }
 

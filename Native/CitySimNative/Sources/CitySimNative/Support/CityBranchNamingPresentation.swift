@@ -29,6 +29,10 @@ struct CityBranchNamingPresentation: Equatable, Sendable {
             sourceLabel = "Branch from known-good backup"
             sourceSymbol = "arrow.clockwise.icloud.fill"
             detail = "Preserve this recovery checkpoint under a timeline name without changing the current city."
+        case .scenario:
+            sourceLabel = "Branch from scenario checkpoint"
+            sourceSymbol = "flag.checkered"
+            detail = "Preserve this authored milestone under a timeline name without changing the current city."
         case nil:
             sourceLabel = "Branch from current city"
             sourceSymbol = "building.2.crop.circle.fill"

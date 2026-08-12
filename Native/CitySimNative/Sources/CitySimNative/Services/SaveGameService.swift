@@ -8,19 +8,25 @@ struct SaveGameEnvelope: Codable, Equatable, Sendable {
     let state: CityGameState
     let digest: String
     let branchName: String?
+    let scenarioCheckpointID: String?
+    let scenarioCheckpointTitle: String?
 
     init(
         schemaVersion: Int,
         fingerprintVersion: Int,
         state: CityGameState,
         digest: String,
-        branchName: String? = nil
+        branchName: String? = nil,
+        scenarioCheckpointID: String? = nil,
+        scenarioCheckpointTitle: String? = nil
     ) {
         self.schemaVersion = schemaVersion
         self.fingerprintVersion = fingerprintVersion
         self.state = state
         self.digest = digest
         self.branchName = branchName
+        self.scenarioCheckpointID = scenarioCheckpointID
+        self.scenarioCheckpointTitle = scenarioCheckpointTitle
     }
 }
 
@@ -29,6 +35,7 @@ enum SaveGameSource: String, Codable, Equatable, Sendable {
     case backup
     case autosave
     case branch
+    case scenario
 }
 
 struct SaveGameLoadResult: Equatable, Sendable {
@@ -37,24 +44,31 @@ struct SaveGameLoadResult: Equatable, Sendable {
     let fingerprint: CityStateFingerprint
     let source: SaveGameSource
     let branchName: String?
+    let scenarioCheckpointID: String?
+    let scenarioCheckpointTitle: String?
 
     init(
         state: CityGameState,
         schemaVersion: Int,
         fingerprint: CityStateFingerprint,
         source: SaveGameSource,
-        branchName: String? = nil
+        branchName: String? = nil,
+        scenarioCheckpointID: String? = nil,
+        scenarioCheckpointTitle: String? = nil
     ) {
         self.state = state
         self.schemaVersion = schemaVersion
         self.fingerprint = fingerprint
         self.source = source
         self.branchName = branchName
+        self.scenarioCheckpointID = scenarioCheckpointID
+        self.scenarioCheckpointTitle = scenarioCheckpointTitle
     }
 
     var recoveredFromBackup: Bool { source == .backup }
     var isAutosave: Bool { source == .autosave }
     var isNamedBranch: Bool { source == .branch }
+    var isScenarioCheckpoint: Bool { source == .scenario }
 }
 
 struct SaveGameWriteResult: Equatable, Sendable {
@@ -76,6 +90,7 @@ struct SaveGameCheckpointCatalogEntry: Identifiable, Equatable, Sendable {
     let integrity: SaveGameCheckpointIntegrity
     let loadResult: SaveGameLoadResult?
     let branchName: String?
+    let scenarioCheckpointTitle: String?
 
     var isLoadable: Bool {
         integrity == .verified && loadResult != nil
@@ -89,6 +104,8 @@ enum SaveGameError: Error, Equatable {
     case noValidSave(primary: String?, backup: String?)
     case invalidBranchName
     case duplicateBranchName(String)
+    case invalidScenarioCheckpoint
+    case scenarioCheckpointConflict(String)
 }
 
 extension SaveGameError: LocalizedError {
@@ -106,6 +123,10 @@ extension SaveGameError: LocalizedError {
             "Enter a branch name between 1 and 40 characters."
         case .duplicateBranchName(let name):
             "A timeline branch named \(name) already exists."
+        case .invalidScenarioCheckpoint:
+            "The scenario checkpoint definition is invalid."
+        case .scenarioCheckpointConflict(let title):
+            "The existing scenario checkpoint \(title) could not be verified and was left untouched."
         }
     }
 }
@@ -142,6 +163,9 @@ struct SaveGameService {
     var branchDirectoryURL: URL {
         rootURL.appending(path: "branches", directoryHint: .isDirectory)
     }
+    var scenarioCheckpointDirectoryURL: URL {
+        rootURL.appending(path: "scenario-checkpoints", directoryHint: .isDirectory)
+    }
     private var candidateURL: URL { rootURL.appending(path: ".quicksave.candidate.json") }
     var autosaveURLs: [URL] {
         (0..<Self.autosaveSlotCount).map {
@@ -159,11 +183,21 @@ struct SaveGameService {
         hasLoadCandidate || autosaveURLs.contains {
             fileManager.fileExists(atPath: $0.path)
         } || !branchURLs.isEmpty
+            || !scenarioCheckpointURLs.isEmpty
     }
 
     var branchURLs: [URL] {
         guard let urls = try? fileManager.contentsOfDirectory(
             at: branchDirectoryURL,
+            includingPropertiesForKeys: nil,
+            options: [.skipsHiddenFiles]
+        ) else { return [] }
+        return urls.filter { $0.pathExtension.lowercased() == "json" }
+    }
+
+    var scenarioCheckpointURLs: [URL] {
+        guard let urls = try? fileManager.contentsOfDirectory(
+            at: scenarioCheckpointDirectoryURL,
             includingPropertiesForKeys: nil,
             options: [.skipsHiddenFiles]
         ) else { return [] }
@@ -305,6 +339,67 @@ struct SaveGameService {
         )
     }
 
+    @discardableResult
+    func saveScenarioCheckpoint(
+        _ state: CityGameState,
+        id: String,
+        title: String
+    ) throws -> SaveGameWriteResult? {
+        let cleanedTitle = title.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard id.range(of: #"^[a-z0-9][a-z0-9-]{0,63}$"#, options: .regularExpression) != nil,
+              !cleanedTitle.isEmpty,
+              cleanedTitle.count <= 60 else {
+            throw SaveGameError.invalidScenarioCheckpoint
+        }
+
+        try fileManager.createDirectory(
+            at: scenarioCheckpointDirectoryURL,
+            withIntermediateDirectories: true
+        )
+        let destinationURL = scenarioCheckpointURL(seed: state.seed, id: id)
+        if fileManager.fileExists(atPath: destinationURL.path) {
+            guard let existing = try? decodeSave(at: destinationURL, source: .scenario),
+                  existing.scenarioCheckpointID == id,
+                  existing.state.seed == state.seed else {
+                throw SaveGameError.scenarioCheckpointConflict(cleanedTitle)
+            }
+            return nil
+        }
+
+        let fingerprint = try CityStateFingerprinter.fingerprint(state)
+        let envelope = SaveGameEnvelope(
+            schemaVersion: SaveGameEnvelope.currentSchemaVersion,
+            fingerprintVersion: fingerprint.version,
+            state: state,
+            digest: fingerprint.digest,
+            scenarioCheckpointID: id,
+            scenarioCheckpointTitle: cleanedTitle
+        )
+        let data = try Self.envelopeEncoder.encode(envelope)
+        let candidateURL = scenarioCheckpointDirectoryURL.appending(
+            path: ".scenario-\(state.seed)-\(id).candidate"
+        )
+        defer { try? fileManager.removeItem(at: candidateURL) }
+        try data.write(to: candidateURL, options: .atomic)
+
+        let validated = try decodeSave(at: candidateURL, source: .scenario)
+        guard validated.state == state,
+              validated.fingerprint == fingerprint,
+              validated.scenarioCheckpointID == id,
+              validated.scenarioCheckpointTitle == cleanedTitle else {
+            throw SaveGameError.digestMismatch(
+                expected: fingerprint.digest,
+                actual: validated.fingerprint.digest
+            )
+        }
+        try fileManager.moveItem(at: candidateURL, to: destinationURL)
+        return SaveGameWriteResult(
+            schemaVersion: envelope.schemaVersion,
+            fingerprint: fingerprint,
+            byteCount: data.count
+        )
+    }
+
     func load() throws -> SaveGameLoadResult {
         var primaryFailure: String?
         if fileManager.fileExists(atPath: saveURL.path) {
@@ -352,6 +447,12 @@ struct SaveGameService {
             }
         }
 
+        for url in scenarioCheckpointURLs {
+            if let result = try? decodeSave(at: url, source: .scenario) {
+                candidates.append((result, modificationDate(for: url), sourcePriority(.scenario)))
+            }
+        }
+
         guard let latest = candidates.max(by: { lhs, rhs in
             if lhs.date != rhs.date { return lhs.date < rhs.date }
             return lhs.priority < rhs.priority
@@ -367,6 +468,7 @@ struct SaveGameService {
             (backupURL, SaveGameSource.backup),
         ] + autosaveURLs.map { ($0, SaveGameSource.autosave) }
             + branchURLs.map { ($0, SaveGameSource.branch) }
+            + scenarioCheckpointURLs.map { ($0, SaveGameSource.scenario) }
 
         return locations.compactMap { url, source in
             guard fileManager.fileExists(atPath: url.path) else { return nil }
@@ -378,7 +480,8 @@ struct SaveGameService {
                 modifiedAt: modificationDate(for: url),
                 integrity: result == nil ? .invalid : .verified,
                 loadResult: result,
-                branchName: result?.branchName
+                branchName: result?.branchName,
+                scenarioCheckpointTitle: result?.scenarioCheckpointTitle
             )
         }.sorted { lhs, rhs in
             if lhs.modifiedAt != rhs.modifiedAt { return lhs.modifiedAt > rhs.modifiedAt }
@@ -403,6 +506,10 @@ struct SaveGameService {
         } ?? autosaveURLs[0]
     }
 
+    func scenarioCheckpointURL(seed: UInt64, id: String) -> URL {
+        scenarioCheckpointDirectoryURL.appending(path: "scenario-\(seed)-\(id).json")
+    }
+
     private func modificationDate(for url: URL) -> Date {
         let attributes = try? fileManager.attributesOfItem(atPath: url.path)
         return attributes?[.modificationDate] as? Date ?? .distantPast
@@ -410,10 +517,11 @@ struct SaveGameService {
 
     private func sourcePriority(_ source: SaveGameSource) -> Int {
         switch source {
-        case .primary: 4
-        case .backup: 3
+        case .primary: 5
+        case .backup: 4
         case .autosave: 1
         case .branch: 2
+        case .scenario: 3
         }
     }
 
@@ -447,7 +555,9 @@ struct SaveGameService {
                 schemaVersion: envelope.schemaVersion,
                 fingerprint: fingerprint,
                 source: source,
-                branchName: envelope.branchName
+                branchName: envelope.branchName,
+                scenarioCheckpointID: envelope.scenarioCheckpointID,
+                scenarioCheckpointTitle: envelope.scenarioCheckpointTitle
             )
         }
 

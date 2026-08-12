@@ -33,6 +33,11 @@ struct CityStartupResumePresentation: Equatable, Sendable {
             sourceLabel = "Named branch · \(result.branchName ?? state.cityName)"
             sourceSymbol = "arrow.triangle.branch"
             detail = "Continue from this preserved timeline branch; the simulation will remain paused while you review the city's active pressures."
+        } else if result.isScenarioCheckpoint {
+            sourceLabel = "Scenario checkpoint · "
+                + (result.scenarioCheckpointTitle ?? "Authored milestone")
+            sourceSymbol = "flag.checkered"
+            detail = "Continue from this authored milestone; the simulation will remain paused while you review the city's active pressures."
         } else {
             sourceLabel = "Verified quicksave"
             sourceSymbol = "checkmark.icloud.fill"

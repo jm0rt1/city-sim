@@ -52,6 +52,19 @@ final class CityPersistenceFeedbackTests: XCTestCase {
             )
         )
         XCTAssertEqual(
+            CityPersistenceStatusPresentation.make(
+                current: original,
+                lastPersisted: original,
+                checkpointKind: .scenario
+            ),
+            CityPersistenceStatusPresentation(
+                kind: .saved,
+                label: "Checkpointed",
+                symbol: "flag.checkered",
+                help: "This city matches its latest authored scenario checkpoint"
+            )
+        )
+        XCTAssertEqual(
             CityPersistenceStatusPresentation.make(current: changed, lastPersisted: original),
             CityPersistenceStatusPresentation(
                 kind: .unsavedChanges,
@@ -84,6 +97,20 @@ final class CityPersistenceFeedbackTests: XCTestCase {
             "Timeline branch “Before Freight” created · Day 12 · 512 residents"
         )
         XCTAssertEqual(
+            CityPersistenceFeedbackPresentation.scenarioCheckpoint(
+                state,
+                title: "Town Charter Secured"
+            ).message,
+            "Scenario checkpoint “Town Charter Secured” secured · Day 12 · 512 residents"
+        )
+        XCTAssertEqual(
+            CityPersistenceFeedbackPresentation.scenarioCheckpointAlreadyExists(
+                title: "Town Charter Secured"
+            ).message,
+            "Scenario checkpoint “Town Charter Secured” is already preserved · "
+                + "Create a named branch to keep this timeline"
+        )
+        XCTAssertEqual(
             CityPersistenceFeedbackPresentation.loaded(
                 state,
                 recoveredFromBackup: false
@@ -107,6 +134,13 @@ final class CityPersistenceFeedbackTests: XCTestCase {
                 name: "Before Freight"
             ).message,
             "Resumed “Before Freight” · Day 12 · 512 residents · Simulation paused"
+        )
+        XCTAssertEqual(
+            CityPersistenceFeedbackPresentation.loadedScenarioCheckpoint(
+                state,
+                title: "Town Charter Secured"
+            ).message,
+            "Resumed scenario “Town Charter Secured” · Day 12 · 512 residents · Simulation paused"
         )
     }
 

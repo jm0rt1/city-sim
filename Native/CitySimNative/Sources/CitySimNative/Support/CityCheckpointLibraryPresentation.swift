@@ -33,6 +33,9 @@ struct CityCheckpointCardPresentation: Identifiable, Equatable, Sendable {
         case .branch:
             sourceLabel = "Named timeline branch"
             sourceSymbol = "arrow.triangle.branch"
+        case .scenario:
+            sourceLabel = "Authored scenario checkpoint"
+            sourceSymbol = "flag.checkered"
         }
 
         guard let result = entry.loadResult, entry.integrity == .verified else {
@@ -55,12 +58,12 @@ struct CityCheckpointCardPresentation: Identifiable, Equatable, Sendable {
         let schemaLabel = result.schemaVersion == 0
             ? "Legacy save format"
             : "Save format v\(result.schemaVersion)"
-        let checkpoint = entry.source == .branch
+        let checkpoint = [.branch, .scenario].contains(entry.source)
             ? "\(state.cityName) · \(state.formattedDay) · \(state.population.formatted()) residents"
             : "\(state.formattedDay) · \(state.population.formatted()) residents"
         return Self(
             id: entry.id,
-            title: entry.branchName ?? state.cityName,
+            title: entry.branchName ?? entry.scenarioCheckpointTitle ?? state.cityName,
             sourceLabel: sourceLabel,
             sourceSymbol: sourceSymbol,
             checkpoint: checkpoint,

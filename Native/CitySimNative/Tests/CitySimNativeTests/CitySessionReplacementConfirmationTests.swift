@@ -49,6 +49,19 @@ final class CitySessionReplacementConfirmationTests: XCTestCase {
             )
         )
         XCTAssertTrue(branch.message.contains("named timeline branch “Before Freight”"))
+        let scenario = CitySessionReplacementConfirmationPresentation.make(
+            state: state,
+            action: .loadQuicksave,
+            loadResult: SaveGameLoadResult(
+                state: saved,
+                schemaVersion: 1,
+                fingerprint: try CityStateFingerprinter.fingerprint(saved),
+                source: .scenario,
+                scenarioCheckpointID: "town-charter",
+                scenarioCheckpointTitle: "Town Charter Secured"
+            )
+        )
+        XCTAssertTrue(scenario.message.contains("authored scenario checkpoint “Town Charter Secured”"))
         XCTAssertEqual(
             CitySessionReplacementConfirmationPresentation.make(
                 state: state,

@@ -218,7 +218,7 @@ enum CityCommandCatalog {
         add(.newRegion, "New Region", .files, "Start a fresh authored city.", shortcut: shortcut("n", [.command], "⌘N", scope: .global))
         add(.saveCity, "Save City", .files, "Save the current city.", shortcut: shortcut("s", [.command], "⌘S", scope: .global))
         add(.saveBranch, "Create Timeline Branch…", .files, "Preserve the current city as a named timeline.", shortcut: shortcut("s", [.command, .shift], "⇧⌘S", scope: .global))
-        add(.loadCity, "Load City", .files, "Browse verified manual and automatic checkpoints.", shortcut: shortcut("o", [.command], "⌘O", scope: .global))
+        add(.loadCity, "Load City", .files, "Browse every verified recovery checkpoint.", shortcut: shortcut("o", [.command], "⌘O", scope: .global))
         add(.undo, "Undo Construction", .files, "Undo the latest reversible build or demolition.", shortcut: shortcut("z", [.command], "⌘Z", scope: .global))
 
         add(.togglePause, "Pause or Resume", .simulation, "Toggle between paused and the last active speed.", shortcut: shortcut(" ", [], "Space", scope: .gameplay))

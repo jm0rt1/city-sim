@@ -177,9 +177,22 @@ final class CheckpointLibraryTests: XCTestCase {
             try service.saveAutosave(state)
         }
         try Data("invalid".utf8).write(to: service.saveURL, options: .atomic)
+        var scenario = CityGameState.newCity(seed: 75)
+        scenario.cityName = "Charter Harbor"
+        scenario.tick = 72
+        try service.saveScenarioCheckpoint(
+            scenario,
+            id: "town-charter",
+            title: "Town Charter Secured"
+        )
         let presentation = CityCheckpointLibraryPresentation.make(service.checkpointCatalog())
+        let scenarioCard = try XCTUnwrap(presentation.cards.first {
+            $0.sourceLabel == "Authored scenario checkpoint"
+        })
+        XCTAssertEqual(scenarioCard.title, "Town Charter Secured")
+        XCTAssertTrue(scenarioCard.checkpoint.contains("Charter Harbor"))
 
-        for size in [CGSize(width: 900, height: 600), CGSize(width: 1_278, height: 768)] {
+        for size in [CGSize(width: 900, height: 600), CGSize(width: 1_280, height: 800)] {
             let image = try bitmap(
                 of: CheckpointLibraryView(
                     presentation: presentation,

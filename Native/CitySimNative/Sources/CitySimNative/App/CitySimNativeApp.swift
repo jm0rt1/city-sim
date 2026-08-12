@@ -83,7 +83,8 @@ struct CitySimNativeApp: App {
         let hasSeenWelcome = UserDefaults.standard.bool(forKey: "hasSeenCitySimWelcome")
         _store = StateObject(wrappedValue: CityGameStore(
             commandPolicy: hasSeenWelcome ? .enabled : .blocked(.welcome),
-            startsPaused: true
+            startsPaused: true,
+            capturesScenarioCheckpoints: true
         ))
     }
 

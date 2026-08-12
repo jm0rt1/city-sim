@@ -44,6 +44,7 @@ final class CityGameStore: ObservableObject {
     @Published private(set) var mapFocusRequestGeneration: UInt = 0
 
     private let saves: SaveGameService
+    private let capturesScenarioCheckpoints: Bool
     private var undoStates: [CityGameState] = []
     private var feedbackDismissal: DispatchWorkItem?
     private var lastNonPausedSpeed: SimulationSpeed = .normal
@@ -66,12 +67,14 @@ final class CityGameStore: ObservableObject {
         state: CityGameState = .newCity(),
         commandPolicy: CityCommandPolicy = .enabled,
         saveService: SaveGameService = SaveGameService(),
-        startsPaused: Bool = false
+        startsPaused: Bool = false,
+        capturesScenarioCheckpoints: Bool = false
     ) {
         self.state = state
         self.cityNameDraft = state.cityName
         self.commandPolicy = commandPolicy
         self.saves = saveService
+        self.capturesScenarioCheckpoints = capturesScenarioCheckpoints
         self.nextAutosaveTick = state.tick + Self.autosaveIntervalTicks
         if startsPaused || state.status != .playing {
             speed = .paused
@@ -209,8 +212,17 @@ final class CityGameStore: ObservableObject {
         guard commandPolicy == .enabled else { return }
         guard speed != .paused else { return }
         let initialStatus = state.status
+        var scenarioFailure: String?
         for _ in 0..<speed.ticksPerPulse {
+            let progressionBeforeStep = capturesScenarioCheckpoints
+                ? state.progression
+                : nil
             CitySimulation.step(&state)
+            if capturesScenarioCheckpoints {
+                scenarioFailure = captureScenarioCheckpoints(
+                    reachedSince: progressionBeforeStep
+                ) ?? scenarioFailure
+            }
             if state.status != .playing {
                 speed = .paused
                 break
@@ -219,6 +231,9 @@ final class CityGameStore: ObservableObject {
         if state.tick >= nextAutosaveTick
             || (initialStatus == .playing && state.status != .playing) {
             autosave()
+        }
+        if let failure = scenarioFailure {
+            showFeedback(failure, tone: .caution, autoDismissAfter: nil)
         }
     }
 
@@ -1338,6 +1353,51 @@ final class CityGameStore: ObservableObject {
         }
     }
 
+    private func captureScenarioCheckpoints(
+        reachedSince previousProgression: CityProgressionState?
+    ) -> String? {
+        let checkpoints = CityScenarioCheckpointDetector.newlyReached(
+            from: previousProgression,
+            to: state.progression
+        )
+        guard !checkpoints.isEmpty else { return nil }
+
+        var failureMessage: String?
+        for checkpoint in checkpoints {
+            do {
+                guard try saves.saveScenarioCheckpoint(
+                    state,
+                    id: checkpoint.id,
+                    title: checkpoint.title
+                ) != nil else {
+                    showFeedback(
+                        CityPersistenceFeedbackPresentation.scenarioCheckpointAlreadyExists(
+                            title: checkpoint.title
+                        ).message,
+                        tone: .neutral,
+                        autoDismissAfter: 3.2
+                    )
+                    continue
+                }
+                lastPersistedState = state
+                lastPersistenceCheckpointKind = .scenario
+                nextAutosaveTick = state.tick + Self.autosaveIntervalTicks
+                showFeedback(
+                    CityPersistenceFeedbackPresentation.scenarioCheckpoint(
+                        state,
+                        title: checkpoint.title
+                    ).message,
+                    tone: .positive,
+                    autoDismissAfter: 3.2
+                )
+            } catch {
+                failureMessage = "Scenario checkpoint failed · Keep playing or save manually: "
+                    + error.localizedDescription
+            }
+        }
+        return failureMessage
+    }
+
     private func applyLoadedResult(_ result: SaveGameLoadResult) {
         checkpointLibrary = nil
         checkpointLoadsByID.removeAll()
@@ -1345,9 +1405,15 @@ final class CityGameStore: ObservableObject {
         clearBranchNamingState()
         state = result.state
         lastPersistedState = result.state
-        lastPersistenceCheckpointKind = result.isAutosave
-            ? .autosave
-            : (result.isNamedBranch ? .branch : .manual)
+        lastPersistenceCheckpointKind = if result.isAutosave {
+            .autosave
+        } else if result.isNamedBranch {
+            .branch
+        } else if result.isScenarioCheckpoint {
+            .scenario
+        } else {
+            .manual
+        }
         nextAutosaveTick = state.tick + Self.autosaveIntervalTicks
         cityNameDraft = state.cityName
         speed = .paused
@@ -1370,6 +1436,11 @@ final class CityGameStore: ObservableObject {
             CityPersistenceFeedbackPresentation.loadedBranch(
                 state,
                 name: result.branchName ?? state.cityName
+            )
+        } else if result.isScenarioCheckpoint {
+            CityPersistenceFeedbackPresentation.loadedScenarioCheckpoint(
+                state,
+                title: result.scenarioCheckpointTitle ?? "Scenario checkpoint"
             )
         } else {
             CityPersistenceFeedbackPresentation.loaded(

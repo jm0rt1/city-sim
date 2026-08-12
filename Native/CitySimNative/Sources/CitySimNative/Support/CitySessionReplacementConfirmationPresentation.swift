@@ -41,6 +41,9 @@ struct CitySessionReplacementConfirmationPresentation: Equatable, Sendable {
             } else if loadResult?.isNamedBranch == true {
                 sourceNote = " This checkpoint is the named timeline branch “"
                     + "\(loadResult?.branchName ?? loaded.cityName)”."
+            } else if loadResult?.isScenarioCheckpoint == true {
+                sourceNote = " This is the authored scenario checkpoint “"
+                    + "\(loadResult?.scenarioCheckpointTitle ?? "Scenario checkpoint")”."
             } else {
                 sourceNote = ""
             }

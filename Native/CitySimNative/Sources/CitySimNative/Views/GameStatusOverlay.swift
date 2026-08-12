@@ -431,7 +431,7 @@ struct GameStatusOverlay: View {
                 .accessibilityIdentifier("victory.load-quicksave")
                 .accessibilityHint(
                     store.disabledReason(for: .loadCity)
-                        ?? "Shows verified manual and automatic recovery checkpoints"
+                        ?? "Shows verified manual, automatic, branch, and scenario checkpoints"
                 )
 
             if !compact {

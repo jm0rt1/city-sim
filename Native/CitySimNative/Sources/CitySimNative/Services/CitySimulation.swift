@@ -1207,6 +1207,8 @@ enum CitySimulation {
             )
         }
 
+        announceCommercialTaxReliefAtDailyReview(&state)
+
         postOnce(
             CityMessage(
                 tick: state.tick,
@@ -1266,6 +1268,24 @@ enum CitySimulation {
                 to: &state
             )
         }
+    }
+
+    private static func announceCommercialTaxReliefAtDailyReview(_ state: inout CityGameState) {
+        guard let story = state.progression?.strategy,
+              story.committedStrategy == .commercialStewardship,
+              story.currentPhase == .recovery,
+              story.recoveryResolution == nil,
+              state.taxRate <= 0.09 else { return }
+
+        postOnce(
+            CityMessage(
+                tick: state.tick,
+                severity: .good,
+                title: "Tax Relief Confirmed",
+                detail: "The daily review confirms 9% tax relief is active: it removes the current tax-pressure penalty from demand. Hold the policy through the recovery review to stabilize Main Street."
+            ),
+            to: &state
+        )
     }
 
     private static func postOnce(_ message: CityMessage, to state: inout CityGameState) {

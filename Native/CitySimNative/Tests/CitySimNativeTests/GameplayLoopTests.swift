@@ -588,6 +588,47 @@ final class GameplayLoopTests: XCTestCase {
         XCTAssertNotEqual(placemaking.happiness, taxRelief.happiness)
     }
 
+    func testTaxReliefPublishesAVisibleDailyRecoveryConsequence() throws {
+        var pressured = try commercialStrategy()
+        pressured.taxRate = 0.14
+        advanceToTick(&pressured, tick: 4)
+        advanceThroughStrategyPhase(&pressured, phase: .opportunity)
+        advanceThroughStrategyPhase(&pressured, phase: .complication)
+        advanceThroughStrategyPhase(&pressured, phase: .setback)
+        XCTAssertEqual(pressured.progression?.strategy?.currentPhase, .recovery)
+        XCTAssertNil(pressured.progression?.strategy?.recoveryResolution)
+
+        var taxRelief = pressured
+        taxRelief.taxRate = 0.09
+        advanceToTick(&taxRelief, tick: taxRelief.tick + 3)
+        XCTAssertFalse(taxRelief.messages.contains { $0.title == "Tax Relief Confirmed" })
+        CitySimulation.step(&taxRelief)
+
+        let confirmation = try XCTUnwrap(taxRelief.messages.first {
+            $0.title == "Tax Relief Confirmed"
+        })
+        XCTAssertEqual(confirmation.tick, taxRelief.tick)
+        XCTAssertTrue(confirmation.detail.contains("removes the current tax-pressure penalty from demand"))
+        XCTAssertNil(taxRelief.progression?.strategy?.recoveryResolution)
+
+        var noChangeControl = pressured
+        advanceDays(&noChangeControl, days: 1)
+        XCTAssertFalse(noChangeControl.messages.contains { $0.title == "Tax Relief Confirmed" })
+        XCTAssertLessThan(noChangeControl.demand.commercial, taxRelief.demand.commercial)
+
+        let replayed = try JSONDecoder().decode(
+            CityGameState.self,
+            from: JSONEncoder().encode(taxRelief)
+        )
+        XCTAssertEqual(replayed, taxRelief)
+
+        var resumed = replayed
+        var uninterrupted = taxRelief
+        advanceDays(&resumed, days: 1)
+        advanceDays(&uninterrupted, days: 1)
+        XCTAssertEqual(resumed, uninterrupted)
+    }
+
     func testIndustrialSetbackSupportsUtilityAndGreenBufferRecovery() throws {
         var pressured = try industrialStrategy()
         advanceToTick(&pressured, tick: 4)

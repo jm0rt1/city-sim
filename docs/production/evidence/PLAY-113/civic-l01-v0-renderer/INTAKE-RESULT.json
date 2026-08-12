@@ -1,0 +1,25 @@
+{
+  "schema": "citysim.play-113.civic-l01-v0.renderer-intake.v1",
+  "task": "PLAY-113",
+  "family": "civic_l01_v0",
+  "baseCommit": "307094c65a595602cbbb7ddd5e8a434399dbb0cc",
+  "routeId": "renderer-play113-civic-l01-v0-r3-materialize-bf1f",
+  "integrationAdmissionSha256": "4efe5d9c7fe2dd67afe2a41c39c3e74496f9779e7e783334ece882ca0503eb5a",
+  "rendererHandoffSha256": "120db6f50010cdca691c619c92b47bac133635b91973c5fca73a3267584ce105",
+  "deterministicPack": {
+    "manifestSha256": "cbef8b248bd67803f116bdffa663aac2fefbf245c4ac85a742e398df71d817e5",
+    "isolatedRoots": [
+      "/private/tmp/CITYSIM-PLAY113-CIVIC-R2-PACK-A",
+      "/private/tmp/CITYSIM-PLAY113-CIVIC-R2-PACK-B"
+    ],
+    "result": "BYTE_IDENTICAL"
+  },
+  "focusedProof": {
+    "test": "WorldRenderingTests/testCivicL1ProductionSelectionResolvesFourFrontagesAcrossThreeLODsWithoutFallback",
+    "result": "PASS",
+    "executed": 1,
+    "failures": 0,
+    "fallbackCount": 0
+  },
+  "result": "PASS_CANDIDATE_RENDERER_INTAKE"
+}

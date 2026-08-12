@@ -198,7 +198,11 @@ completely. Never pin a task.
    static route review, and proves zero worker mutation before dispatch.
 10. When a claimed lane becomes idle while contract-independent work is ready,
     refill it in the same management turn or record the exact serialized
-    dependency. Maintain at least three useful active workstreams whenever the
+    dependency. Validate unresolved-return termination with
+    `script/validate_unresolved_return_liveness.py`: a receiver is live only
+    when its structured receipt carries same-turn acknowledgement or
+    first-job-start evidence; a sent task or owner name alone is insufficient.
+    Maintain at least three useful active workstreams whenever the
     backlog and ownership boundaries permit; do not manufacture busywork to hit
     the number.
 11. Treat an independent return after a worker's focused PASS as a false-green

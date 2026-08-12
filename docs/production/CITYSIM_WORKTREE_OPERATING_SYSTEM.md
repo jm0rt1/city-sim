@@ -538,8 +538,12 @@ directly instead of observed again.
 An unresolved product `RETURN` may never leave its owning lane idle. In the
 same Integration management turn, either wake or refill that owner with the
 smallest bounded repair outcome, or record the exact serialized dependency
-that prevents it. CEO inactivity is not a valid state while ready work or an
-unowned product blocker exists.
+that prevents it. The schema-2 receipt validated by
+`script/validate_unresolved_return_liveness.py` binds the management-turn
+window and exact route/artifact identity. A refill is live only after the
+receiver acknowledges it or first-job-start evidence is recorded; sending a
+task or naming an owner is not liveness. CEO inactivity is not a valid state
+while ready work or an unowned product blocker exists.
 
 ### Integration wave
 

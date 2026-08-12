@@ -1111,6 +1111,55 @@ final class GameplayLoopTests: XCTestCase {
         XCTAssertEqual(state.status, .playing)
     }
 
+    func testRenamedCityIdentitySurvivesGrantCharterAndRegionalCapitalMessages() throws {
+        let name = "Harbor Light"
+        let multiplier: UInt64 = 6_364_136_223_846_793_005
+        let increment: UInt64 = 1_442_695_040_888_963_407
+        let grantSeed = try XCTUnwrap((UInt64(1)...10_000).first { seed in
+            let next = seed &* multiplier &+ increment
+            return Double(next % 10_000) / 10_000 > 0.82
+        })
+        var grant = stormReadyState(seed: grantSeed)
+        grant.cityName = name
+        CitySimulation.step(&grant)
+        let grantMessage = try XCTUnwrap(
+            grant.messages.first { $0.title == "State Growth Grant" }
+        )
+        XCTAssertEqual(
+            grantMessage.detail,
+            "Harbor Light received $3,000 for responsible growth."
+        )
+
+        var charter = try qualifyingTown()
+        charter.cityName = name
+        advanceDays(&charter, days: 11)
+        let charterMessage = try XCTUnwrap(
+            charter.messages.first { $0.title == "Town Charter Awarded" }
+        )
+        XCTAssertTrue(charterMessage.detail.hasPrefix("Harbor Light sustained"))
+        XCTAssertFalse(charterMessage.detail.contains("New Arcadia"))
+
+        for (resolution, narrative) in [
+            (CityStrategyRecoveryResolution.commercialTaxRelief, "Main Street model"),
+            (.industrialGreenBuffer, "freight network")
+        ] {
+            var regional = try charterCity(resolvedBy: resolution)
+            regional.cityName = name
+            try completeSecondAct(&regional)
+            let regionalMessage = try XCTUnwrap(
+                regional.messages.first { $0.title == "Regional Capital Recognized" }
+            )
+            XCTAssertTrue(
+                regionalMessage.detail.contains("Harbor Light's \(narrative)"),
+                resolution.rawValue
+            )
+            XCTAssertFalse(
+                regionalMessage.detail.contains("New Arcadia"),
+                resolution.rawValue
+            )
+        }
+    }
+
     func testFailedTownCharterCheckResetsBeforeLaterSuccessfulRun() throws {
         var state = try qualifyingTown()
         advanceDays(&state, days: 4)

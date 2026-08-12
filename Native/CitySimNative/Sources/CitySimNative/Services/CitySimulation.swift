@@ -630,7 +630,7 @@ enum CitySimulation {
             )
         } else if roll > 0.82 {
             state.treasury += 3_000
-            state.messages.insert(CityMessage(tick: state.tick, severity: .good, title: "State Growth Grant", detail: "New Arcadia received $3,000 for responsible growth."), at: 0)
+            state.messages.insert(CityMessage(tick: state.tick, severity: .good, title: "State Growth Grant", detail: "\(state.cityName) received $3,000 for responsible growth."), at: 0)
         }
     }
 
@@ -1439,7 +1439,7 @@ enum CitySimulation {
                     tick: state.tick,
                     severity: .good,
                     title: "Town Charter Awarded",
-                    detail: "New Arcadia sustained healthy finances, employment, utilities, and livability for 12 consecutive days. The Charter is permanent; a Regional Capital mandate arrives by \(formattedDay(for: state.tick + strategyPhaseIntervalTicks))."
+                    detail: "\(state.cityName) sustained healthy finances, employment, utilities, and livability for 12 consecutive days. The Charter is permanent; a Regional Capital mandate arrives by \(formattedDay(for: state.tick + strategyPhaseIntervalTicks))."
                 ),
                 to: &state
             )
@@ -1763,7 +1763,7 @@ enum CitySimulation {
                     tick: state.tick,
                     severity: .good,
                     title: "Regional Capital Recognized",
-                    detail: "Twelve durable days proved New Arcadia's Main Street model. Regional Capital recognition grants $8,000, 6 happiness, and a permanent commercial-stewardship victory."
+                    detail: "Twelve durable days proved \(state.cityName)'s Main Street model. Regional Capital recognition grants $8,000, 6 happiness, and a permanent commercial-stewardship victory."
                 ),
                 to: &state
             )
@@ -1776,7 +1776,7 @@ enum CitySimulation {
                     tick: state.tick,
                     severity: .good,
                     title: "Regional Capital Recognized",
-                    detail: "Twelve durable days proved New Arcadia's freight network. Regional Capital recognition grants $12,000, 3 happiness, and a permanent industrial-expansion victory."
+                    detail: "Twelve durable days proved \(state.cityName)'s freight network. Regional Capital recognition grants $12,000, 3 happiness, and a permanent industrial-expansion victory."
                 ),
                 to: &state
             )

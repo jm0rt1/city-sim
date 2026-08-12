@@ -868,10 +868,20 @@ def validate_qa_handoff(handoff: Any, repo: Path) -> list[str]:
         except (OSError, plistlib.InvalidFileException) as exc:
             errors.append(f"QA handoff cannot read staged bundle executable: {exc}")
             bundle_executable = None
-        if not isinstance(bundle_executable, str) or not bundle_executable:
+        executable_name = PurePosixPath(bundle_executable) if isinstance(bundle_executable, str) else None
+        if (
+            not isinstance(bundle_executable, str)
+            or not bundle_executable
+            or executable_name is None
+            or executable_name.is_absolute()
+            or executable_name.name != bundle_executable
+            or bundle_executable in (".", "..")
+        ):
             errors.append("QA handoff staged Info.plist must declare CFBundleExecutable")
         else:
             expected_executable = app_root / "Contents" / "MacOS" / bundle_executable
+            if not expected_executable.is_file():
+                errors.append("QA handoff staged CFBundleExecutable does not resolve to a file")
     environment = launch.get("environment")
     if not isinstance(environment, dict) or not environment or not all(
         isinstance(key, str) and key and isinstance(value, str) and value
@@ -891,13 +901,21 @@ def validate_qa_handoff(handoff: Any, repo: Path) -> list[str]:
             and Path(command[-1]) == app_root
         )
         if launchservices:
-            declared_pairs = {
-                command[index + 1]
-                for index, value in enumerate(command[:-1])
-                if value == "--env"
-            }
+            environment_tokens = command[2:-1]
+            if (
+                len(environment_tokens) != 2 * len(environment)
+                or any(environment_tokens[index] != "--env" for index in range(0, len(environment_tokens), 2))
+            ):
+                launchservices = False
+                declared_pairs = []
+            else:
+                declared_pairs = environment_tokens[1::2]
             expected_pairs = {f"{key}={value}" for key, value in environment.items()}
-            launchservices = declared_pairs == expected_pairs
+            launchservices = (
+                launchservices
+                and len(declared_pairs) == len(set(declared_pairs))
+                and set(declared_pairs) == expected_pairs
+            )
         if not direct and not launchservices:
             errors.append(
                 "QA handoff launch command must directly invoke the sealed executable "

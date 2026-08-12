@@ -597,6 +597,45 @@ class ModelRouteTests(unittest.TestCase):
         ]
         self.assertEqual([], validator.validate_qa_handoff(handoff, self.repo))
 
+    def test_qa_handoff_rejects_substituted_launcher_target_or_bundle_executable(self) -> None:
+        def launchservices_command(handoff: dict) -> list[str]:
+            environment = handoff["launch"]["environment"]
+            return [
+                "/usr/bin/open", "-n",
+                "--env", f"CITYSIM_DATA_ROOT={environment['CITYSIM_DATA_ROOT']}",
+                "--env", f"CITYSIM_COMPACT_WINDOW={environment['CITYSIM_COMPACT_WINDOW']}",
+                handoff["stage"]["appRoot"],
+            ]
+
+        handoff = self.qa_handoff()
+        handoff["launch"]["command"] = launchservices_command(handoff)
+        handoff["launch"]["command"][0] = "/usr/bin/env"
+        errors = validator.validate_qa_handoff(handoff, self.repo)
+        self.assertTrue(any("directly invoke" in error for error in errors), errors)
+
+        handoff = self.qa_handoff()
+        handoff["launch"]["command"] = launchservices_command(handoff)[:-1] + [str(self.repo / "wrong.app")]
+        errors = validator.validate_qa_handoff(handoff, self.repo)
+        self.assertTrue(any("directly invoke" in error for error in errors), errors)
+
+        handoff = self.qa_handoff()
+        command = launchservices_command(handoff)
+        command[5] = command[3]
+        handoff["launch"]["command"] = command
+        errors = validator.validate_qa_handoff(handoff, self.repo)
+        self.assertTrue(any("directly invoke" in error for error in errors), errors)
+
+        handoff = self.qa_handoff()
+        info_path = Path(handoff["stage"]["appRoot"]) / "Contents" / "Info.plist"
+        info_path.write_bytes(plistlib.dumps({"CFBundleExecutable": "../CitySim"}))
+        errors = validator.validate_qa_handoff(handoff, self.repo)
+        self.assertTrue(any("CFBundleExecutable" in error for error in errors), errors)
+
+        handoff = self.qa_handoff()
+        Path(handoff["launch"]["command"][0]).unlink()
+        errors = validator.validate_qa_handoff(handoff, self.repo)
+        self.assertTrue(any("does not resolve to a file" in error for error in errors), errors)
+
     def test_qa_handoff_rejects_missing_or_substituted_contracts(self) -> None:
         handoff = self.qa_handoff()
         del handoff["launch"]

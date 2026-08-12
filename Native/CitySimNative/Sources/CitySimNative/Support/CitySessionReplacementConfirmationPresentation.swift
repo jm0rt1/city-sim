@@ -14,13 +14,14 @@ struct CitySessionReplacementConfirmationPresentation: Equatable, Sendable {
 
     static func make(
         state: CityGameState,
-        action: CitySessionReplacementAction
+        action: CitySessionReplacementAction,
+        loadResult: SaveGameLoadResult? = nil
     ) -> Self {
         let checkpoint = "\(state.cityName) · \(state.formattedDay) · "
             + "\(state.population.formatted()) residents"
-        return switch action {
+        switch action {
         case .newRegion:
-            Self(
+            return Self(
                 action: action,
                 title: "Replace \(state.cityName)?",
                 message: "\(checkpoint) will be replaced. "
@@ -29,12 +30,19 @@ struct CitySessionReplacementConfirmationPresentation: Equatable, Sendable {
                 cancelActionTitle: "Keep \(state.cityName)"
             )
         case .loadQuicksave:
-            Self(
+            let loaded = loadResult?.state ?? state
+            let savedCheckpoint = "\(loaded.cityName) · \(loaded.formattedDay) · "
+                + "\(loaded.population.formatted()) residents"
+            let recoveryNote = loadResult?.recoveredFromBackup == true
+                ? " This checkpoint was recovered from the last known-good backup."
+                : ""
+            return Self(
                 action: action,
-                title: "Load Quicksave over \(state.cityName)?",
-                message: "\(checkpoint) is currently open. Loading the quicksave will replace it. "
-                    + "Save this city first if you want to return to this checkpoint.",
-                destructiveActionTitle: "Load Quicksave",
+                title: "Load \(loaded.cityName)?",
+                message: "\(savedCheckpoint) will replace \(checkpoint). "
+                    + "Save \(state.cityName) first if you want to return to its current checkpoint."
+                    + recoveryNote,
+                destructiveActionTitle: "Load \(loaded.cityName)",
                 cancelActionTitle: "Keep \(state.cityName)"
             )
         }

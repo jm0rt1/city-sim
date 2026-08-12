@@ -2,11 +2,15 @@ import XCTest
 @testable import CitySimNative
 
 final class CitySessionReplacementConfirmationTests: XCTestCase {
-    func testPresentationsIdentifyTheExactCityCheckpointAndReplacementAction() {
+    func testPresentationsIdentifyTheExactCityCheckpointAndReplacementAction() throws {
         var state = CityGameState.newCity(seed: 42)
         state.cityName = "Harbor Point"
         state.tick = 44
         state.population = 512
+        var saved = CityGameState.newCity(seed: 99)
+        saved.cityName = "Saved Harbor"
+        saved.tick = 8
+        saved.population = 304
 
         XCTAssertEqual(
             CitySessionReplacementConfirmationPresentation.make(
@@ -25,15 +29,22 @@ final class CitySessionReplacementConfirmationTests: XCTestCase {
         XCTAssertEqual(
             CitySessionReplacementConfirmationPresentation.make(
                 state: state,
-                action: .loadQuicksave
+                action: .loadQuicksave,
+                loadResult: SaveGameLoadResult(
+                    state: saved,
+                    schemaVersion: 1,
+                    fingerprint: try CityStateFingerprinter.fingerprint(saved),
+                    source: .backup
+                )
             ),
             CitySessionReplacementConfirmationPresentation(
                 action: .loadQuicksave,
-                title: "Load Quicksave over Harbor Point?",
-                message: "Harbor Point · Day 12 · 512 residents is currently open. "
-                    + "Loading the quicksave will replace it. Save this city first if you want "
-                    + "to return to this checkpoint.",
-                destructiveActionTitle: "Load Quicksave",
+                title: "Load Saved Harbor?",
+                message: "Saved Harbor · Day 3 · 304 residents will replace "
+                    + "Harbor Point · Day 12 · 512 residents. Save Harbor Point first if you "
+                    + "want to return to its current checkpoint. This checkpoint was recovered "
+                    + "from the last known-good backup.",
+                destructiveActionTitle: "Load Saved Harbor",
                 cancelActionTitle: "Keep Harbor Point"
             )
         )
@@ -92,6 +103,10 @@ final class CitySessionReplacementConfirmationTests: XCTestCase {
 
         XCTAssertTrue(store.perform(.loadCity))
         XCTAssertEqual(store.sessionReplacementConfirmation?.action, .loadQuicksave)
+        XCTAssertEqual(store.sessionReplacementConfirmation?.title, "Load Saved Harbor?")
+        XCTAssertTrue(
+            store.sessionReplacementConfirmation?.message.contains("Saved Harbor · Day 3") == true
+        )
         XCTAssertEqual(try CityStateFingerprinter.fingerprint(store.state), fingerprint)
         XCTAssertEqual(store.speed, .paused)
 
@@ -128,6 +143,12 @@ final class CitySessionReplacementConfirmationTests: XCTestCase {
         XCTAssertTrue(loading.perform(.loadCity))
         XCTAssertNil(loading.sessionReplacementConfirmation)
         XCTAssertEqual(loading.state, saved)
+
+        let identical = CityGameStore(state: saved, saveService: service)
+        XCTAssertTrue(identical.perform(.loadCity))
+        XCTAssertNil(identical.sessionReplacementConfirmation)
+        XCTAssertEqual(identical.state, saved)
+        XCTAssertEqual(identical.speed, .paused)
 
         let starting = CityGameStore(state: .newCity(seed: 42))
         XCTAssertTrue(starting.perform(.newRegion))

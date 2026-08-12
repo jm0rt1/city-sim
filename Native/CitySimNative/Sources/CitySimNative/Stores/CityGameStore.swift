@@ -41,6 +41,7 @@ final class CityGameStore: ObservableObject {
     private var feedbackDismissal: DispatchWorkItem?
     private var lastNonPausedSpeed: SimulationSpeed = .normal
     private var speedBeforeSessionReplacementConfirmation: SimulationSpeed?
+    private var pendingSessionReplacementLoad: SaveGameLoadResult?
 
     init(
         state: CityGameState = .newCity(),
@@ -220,7 +221,7 @@ final class CityGameStore: ObservableObject {
             save()
         case .loadCity:
             if currentCityHasProgress {
-                requestSessionReplacementConfirmation(for: .loadQuicksave)
+                prepareLoadReplacementConfirmation()
             } else {
                 load()
             }
@@ -936,6 +937,7 @@ final class CityGameStore: ObservableObject {
     func newCity() {
         sessionReplacementConfirmation = nil
         speedBeforeSessionReplacementConfirmation = nil
+        pendingSessionReplacementLoad = nil
         state = .newCity(seed: UInt64.random(in: 1...UInt64.max))
         cityNameDraft = state.cityName
         speed = .paused
@@ -960,28 +962,50 @@ final class CityGameStore: ObservableObject {
     }
 
     private func requestSessionReplacementConfirmation(
-        for action: CitySessionReplacementAction
+        for action: CitySessionReplacementAction,
+        loadResult: SaveGameLoadResult? = nil
     ) {
         guard sessionReplacementConfirmation == nil else { return }
         speedBeforeSessionReplacementConfirmation = speed
+        pendingSessionReplacementLoad = loadResult
         speed = .paused
         showCommandGuide = false
         sessionReplacementConfirmation = CitySessionReplacementConfirmationPresentation.make(
             state: state,
-            action: action
+            action: action,
+            loadResult: loadResult
         )
+    }
+
+    private func prepareLoadReplacementConfirmation() {
+        do {
+            let result = try saves.load()
+            guard result.state != state else {
+                applyLoadedResult(result)
+                return
+            }
+            requestSessionReplacementConfirmation(
+                for: .loadQuicksave,
+                loadResult: result
+            )
+        } catch {
+            showInvalidQuicksaveFeedback()
+        }
     }
 
     @discardableResult
     func confirmSessionReplacement() -> Bool {
         guard let action = sessionReplacementConfirmation?.action else { return false }
+        let preparedLoad = pendingSessionReplacementLoad
         sessionReplacementConfirmation = nil
         speedBeforeSessionReplacementConfirmation = nil
+        pendingSessionReplacementLoad = nil
         switch action {
         case .newRegion:
             newCity()
         case .loadQuicksave:
-            load()
+            guard let preparedLoad else { return false }
+            applyLoadedResult(preparedLoad)
         }
         return true
     }
@@ -992,6 +1016,7 @@ final class CityGameStore: ObservableObject {
         let previousSpeed = speedBeforeSessionReplacementConfirmation ?? .paused
         sessionReplacementConfirmation = nil
         speedBeforeSessionReplacementConfirmation = nil
+        pendingSessionReplacementLoad = nil
         speed = previousSpeed
         let simulationStatus = previousSpeed == .paused
             ? "Simulation remains paused"
@@ -1017,39 +1042,46 @@ final class CityGameStore: ObservableObject {
 
     func load() {
         do {
-            let result = try saves.load()
-            state = result.state
-            cityNameDraft = state.cityName
-            speed = .paused
-            lastNonPausedSpeed = .normal
-            selectedTool = .road
-            selectedBuildCategory = .roads
-            interactionMode = .inspect
-            selectedCoordinate = nil
-            inspectorSection = .overview
-            hudContextScope = .city
-            showInspector = false
-            showCommandGuide = false
-            isCityFocusModeEnabled = false
-            undoStates.removeAll()
-            canUndo = false
-            let brief = CityResumeBriefPresentation.make(analytics: analytics)
-            showFeedback(
-                CityPersistenceFeedbackPresentation.loaded(
-                    state,
-                    recoveredFromBackup: result.recoveredFromBackup
-                ).message,
-                tone: .positive,
-                autoDismissAfter: brief == nil ? 3.2 : nil,
-                resumeBrief: brief
-            )
+            applyLoadedResult(try saves.load())
         } catch {
-            showFeedback(
-                "Quicksave could not be verified · Original save files were preserved",
-                tone: .caution,
-                autoDismissAfter: nil
-            )
+            showInvalidQuicksaveFeedback()
         }
+    }
+
+    private func applyLoadedResult(_ result: SaveGameLoadResult) {
+        state = result.state
+        cityNameDraft = state.cityName
+        speed = .paused
+        lastNonPausedSpeed = .normal
+        selectedTool = .road
+        selectedBuildCategory = .roads
+        interactionMode = .inspect
+        selectedCoordinate = nil
+        inspectorSection = .overview
+        hudContextScope = .city
+        showInspector = false
+        showCommandGuide = false
+        isCityFocusModeEnabled = false
+        undoStates.removeAll()
+        canUndo = false
+        let brief = CityResumeBriefPresentation.make(analytics: analytics)
+        showFeedback(
+            CityPersistenceFeedbackPresentation.loaded(
+                state,
+                recoveredFromBackup: result.recoveredFromBackup
+            ).message,
+            tone: .positive,
+            autoDismissAfter: brief == nil ? 3.2 : nil,
+            resumeBrief: brief
+        )
+    }
+
+    private func showInvalidQuicksaveFeedback() {
+        showFeedback(
+            "Quicksave could not be verified · Original save files were preserved",
+            tone: .caution,
+            autoDismissAfter: nil
+        )
     }
 
     func undoLastAction() {

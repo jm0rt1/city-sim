@@ -1,4 +1,0 @@
-interface:
-  display_name: "CitySim World Rendering"
-  short_description: "Prepare and ingest exact directional world art"
-  default_prompt: "Use $render-citysim-world to fan out intake-ahead preparation, quarantine exact directions concurrently, and assemble an atomic 4/4 staged candidate."

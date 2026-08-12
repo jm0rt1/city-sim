@@ -1,4 +1,0 @@
-interface:
-  display_name: "Implement CitySim UI Audit"
-  short_description: "Turn native UI audit findings into verified fixes"
-  default_prompt: "Use $implement-citysim-ui-audit to implement and visibly verify the highest-priority open CitySim native UI audit findings."

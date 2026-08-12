@@ -1,4 +1,0 @@
-process_id=87270
-process_command=/Users/James/.codex/worktrees/80f0/city-sim/dist/CitySim-gameplay-loop-w8f1a46b88376.app/Contents/MacOS/CitySimNative-w8f1a46b88376
-CITYSIM_DATA_ROOT=/Users/James/.codex/worktrees/80f0/city-sim/dist/test-data/gameplay-loop-w8f1a46b88376
-CITYSIM_COMPACT_WINDOW=1

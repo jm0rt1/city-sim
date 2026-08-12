@@ -1,8 +1,0 @@
-route,pid,window,camera_scale,data_root,result
-staged-verify,15633,default,default,dist/test-data/world-rendering-w5f893ad1da1b,verified-then-terminated
-regular-city,15928,regular,0.85,/private/tmp/citysim-play073-candidate-53c0ee1.ft86So/regular-city,captured-then-terminated
-regular-neighborhood,21051,regular,0.65,/private/tmp/citysim-play073-candidate-53c0ee1.ft86So/regular-neighborhood,captured-then-terminated
-regular-block,22458,regular,0.50,/private/tmp/citysim-play073-candidate-53c0ee1.ft86So/regular-block,captured-then-terminated
-compact-city,23431,compact,0.576345682144165,/private/tmp/citysim-play073-candidate-53c0ee1.ft86So/compact-city,captured-then-terminated
-compact-neighborhood,25402,compact,0.52,/private/tmp/citysim-play073-candidate-53c0ee1.ft86So/compact-neighborhood,captured-then-terminated
-compact-block,25984,compact,0.45,/private/tmp/citysim-play073-candidate-53c0ee1.ft86So/compact-block,captured-then-terminated

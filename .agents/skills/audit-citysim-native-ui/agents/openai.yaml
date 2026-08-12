@@ -1,4 +1,0 @@
-interface:
-  display_name: "Audit CitySim Native UI"
-  short_description: "Repeat hands-on native UI and accessibility audits"
-  default_prompt: "Use $audit-citysim-native-ui to rerun a hands-on UI and accessibility audit of the current CitySim native app."

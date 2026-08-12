@@ -1,4 +1,0 @@
-interface:
-  display_name: "CitySim Integration Captain"
-  short_description: "Ship playable CitySim waves with lean gates"
-  default_prompt: "Use $operate-citysim-integration to route one playable CitySim wave through direct outcome leases, integrate accepted commits, and run aggregate build plus independent QA once."

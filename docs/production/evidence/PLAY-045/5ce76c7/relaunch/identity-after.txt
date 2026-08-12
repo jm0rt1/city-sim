@@ -1,3 +1,0 @@
-finished_utc=2026-07-23T11:33:01Z
-proof_pid=26850
-process_command=/Users/James/.codex/worktrees/e909/city-sim/dist/CitySim-simulation-platform-w8bb1822a1e25.app/Contents/MacOS/CitySimNative-w8bb1822a1e25

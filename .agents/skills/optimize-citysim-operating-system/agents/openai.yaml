@@ -1,4 +1,0 @@
-interface:
-  display_name: "Optimize CitySim Operating System"
-  short_description: "Reduce agent cost without weakening CitySim quality"
-  default_prompt: "Use $optimize-citysim-operating-system to inspect the latest committed CitySim execution boundary and return NO_CHANGE or one evidence-backed, low-overhead improvement."

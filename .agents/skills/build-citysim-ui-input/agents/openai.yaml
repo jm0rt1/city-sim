@@ -1,4 +1,0 @@
-interface:
-  display_name: "CitySim UI and Input"
-  short_description: "Build map-first UI and complete input paths"
-  default_prompt: "Use $build-citysim-ui-input to implement the claimed CitySim interface or input outcome across default and compact layouts."

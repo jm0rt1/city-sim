@@ -1,7 +1,0 @@
-viewport,mode,baseline_image,baseline_world_band_px,baseline_content_share,candidate_image,candidate_world_band_px,candidate_content_share,delta_points,target,result,evidence
-regular,normal,live/regular/baseline-regular-block-normal.jpg,446,62.3%,,,,,>=+5.0,,
-regular,details,live/regular/baseline-regular-block-details.jpg,316,44.1%,,,,,>=+5.0,,
-regular,focus,live/regular/baseline-regular-block-focus.jpg,634,88.5%,,,,,>=-2.0,,
-compact-900x600,normal,live/compact/baseline-compact-block-normal.jpg,359,59.8%,,,,,>=+5.0,,
-compact-900x600,details,live/compact/baseline-compact-block-details.jpg,268,44.7%,,,,,>=+5.0,,
-compact-900x600,focus,live/compact/baseline-compact-block-focus.jpg,494,82.3%,,,,,>=-2.0,,

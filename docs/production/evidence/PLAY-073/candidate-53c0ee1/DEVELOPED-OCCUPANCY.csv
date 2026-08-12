@@ -1,7 +1,0 @@
-route,baseline_developed_percent,candidate_developed_percent,delta_points,baseline_terrain_percent,candidate_terrain_percent
-regular-city,11.54,11.83,0.29,88.46,88.17
-regular-neighborhood,16.76,17.69,0.93,83.24,82.31
-regular-block,25.54,26.94,1.40,74.46,73.06
-compact-city,32.47,35.68,3.21,67.53,64.32
-compact-neighborhood,37.08,40.22,3.14,62.92,59.78
-compact-block,43.53,46.69,3.16,56.47,53.31

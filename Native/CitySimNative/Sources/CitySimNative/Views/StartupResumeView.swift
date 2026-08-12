@@ -14,9 +14,7 @@ struct StartupResumeView: View {
                     Circle()
                         .fill(GameTheme.accent.opacity(0.16))
                         .frame(width: 78, height: 78)
-                    Image(systemName: presentation.recoveredFromBackup
-                        ? "arrow.clockwise.icloud.fill"
-                        : "building.2.crop.circle.fill")
+                    Image(systemName: presentation.sourceSymbol)
                         .font(.system(size: 42, weight: .semibold))
                         .foregroundStyle(GameTheme.accent.gradient)
                 }
@@ -26,6 +24,9 @@ struct StartupResumeView: View {
                     Text(presentation.checkpoint)
                         .font(.title3.weight(.semibold))
                         .monospacedDigit()
+                    Label(presentation.sourceLabel, systemImage: presentation.sourceSymbol)
+                        .font(.caption.weight(.semibold))
+                        .foregroundStyle(GameTheme.accent)
                     Text(presentation.detail)
                         .font(.callout)
                         .foregroundStyle(.secondary)

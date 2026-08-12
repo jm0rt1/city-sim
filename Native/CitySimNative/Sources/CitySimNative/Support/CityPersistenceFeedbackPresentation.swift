@@ -9,12 +9,25 @@ struct CityPersistenceFeedbackPresentation: Equatable, Sendable {
         )
     }
 
+    static func autosaved(_ state: CityGameState) -> Self {
+        Self(
+            message: "\(state.cityName) autosaved · \(checkpointDescription(for: state))"
+        )
+    }
+
     static func loaded(_ state: CityGameState, recoveredFromBackup: Bool) -> Self {
         let action = recoveredFromBackup
             ? "Recovered \(state.cityName) from last known-good save"
             : "\(state.cityName) loaded"
         return Self(
             message: "\(action) · \(checkpointDescription(for: state)) · Simulation paused"
+        )
+    }
+
+    static func loadedAutosave(_ state: CityGameState) -> Self {
+        Self(
+            message: "\(state.cityName) resumed from autosave · "
+                + "\(checkpointDescription(for: state)) · Simulation paused"
         )
     }
 

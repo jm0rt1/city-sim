@@ -10,6 +10,8 @@ enum PlayerFeedbackTone: Sendable {
 
 @MainActor
 final class CityGameStore: ObservableObject {
+    static let autosaveIntervalTicks = 240
+
     @Published var state: CityGameState
     @Published var cityNameDraft: String
     @Published var speed: SimulationSpeed = .normal {
@@ -47,6 +49,8 @@ final class CityGameStore: ObservableObject {
     private var pendingStartupResumeLoad: SaveGameLoadResult?
     private var startupResumeOfferWasConsidered = false
     private var lastPersistedState: CityGameState?
+    private var lastPersistenceCheckpointKind: CityPersistenceCheckpointKind = .manual
+    private var nextAutosaveTick: Int
 
     init(
         state: CityGameState = .newCity(),
@@ -58,6 +62,7 @@ final class CityGameStore: ObservableObject {
         self.cityNameDraft = state.cityName
         self.commandPolicy = commandPolicy
         self.saves = saveService
+        self.nextAutosaveTick = state.tick + Self.autosaveIntervalTicks
         if startsPaused || state.status != .playing {
             speed = .paused
         }
@@ -77,7 +82,8 @@ final class CityGameStore: ObservableObject {
     var persistenceStatus: CityPersistenceStatusPresentation {
         CityPersistenceStatusPresentation.make(
             current: state,
-            lastPersisted: lastPersistedState
+            lastPersisted: lastPersistedState,
+            checkpointKind: lastPersistenceCheckpointKind
         )
     }
 
@@ -192,12 +198,17 @@ final class CityGameStore: ObservableObject {
     func pulse() {
         guard commandPolicy == .enabled else { return }
         guard speed != .paused else { return }
+        let initialStatus = state.status
         for _ in 0..<speed.ticksPerPulse {
             CitySimulation.step(&state)
             if state.status != .playing {
                 speed = .paused
                 break
             }
+        }
+        if state.tick >= nextAutosaveTick
+            || (initialStatus == .playing && state.status != .playing) {
+            autosave()
         }
     }
 
@@ -303,7 +314,7 @@ final class CityGameStore: ObservableObject {
         case .undo:
             canUndo
         case .loadCity:
-            saves.hasLoadCandidate
+            saves.hasResumeCandidate
         case .dismissFeedback:
             lastFeedback != nil
         case .cancelInteraction:
@@ -330,7 +341,7 @@ final class CityGameStore: ObservableObject {
         case .store:
             switch command {
             case .undo: return "There is no reversible construction action"
-            case .loadCity: return "No quicksave is available"
+            case .loadCity: return "No saved checkpoint is available"
             case .dismissFeedback: return "There is no transient action message"
             case .cancelInteraction: return "There is no open surface or active tool to cancel"
             default:
@@ -634,9 +645,9 @@ final class CityGameStore: ObservableObject {
               state.status == .playing,
               state == .newCity(seed: state.seed) else { return }
         startupResumeOfferWasConsidered = true
-        guard saves.hasLoadCandidate else { return }
+        guard saves.hasResumeCandidate else { return }
         do {
-            let result = try saves.load()
+            let result = try saves.loadLatestResumeCandidate()
             speedBeforeStartupResumeOffer = speed
             speed = .paused
             pendingStartupResumeLoad = result
@@ -1008,6 +1019,8 @@ final class CityGameStore: ObservableObject {
         pendingSessionReplacementLoad = nil
         state = .newCity(seed: UInt64.random(in: 1...UInt64.max))
         lastPersistedState = nil
+        lastPersistenceCheckpointKind = .manual
+        nextAutosaveTick = state.tick + Self.autosaveIntervalTicks
         cityNameDraft = state.cityName
         speed = .paused
         lastNonPausedSpeed = .normal
@@ -1048,7 +1061,7 @@ final class CityGameStore: ObservableObject {
 
     private func prepareLoadReplacementConfirmation() {
         do {
-            let result = try saves.load()
+            let result = try saves.loadLatestResumeCandidate()
             guard result.state != state else {
                 applyLoadedResult(result)
                 return
@@ -1099,6 +1112,8 @@ final class CityGameStore: ObservableObject {
         do {
             try saves.save(state)
             lastPersistedState = state
+            lastPersistenceCheckpointKind = .manual
+            nextAutosaveTick = state.tick + Self.autosaveIntervalTicks
             showFeedback(CityPersistenceFeedbackPresentation.saved(state).message, tone: .positive)
             playSound(named: "Glass")
             return true
@@ -1115,15 +1130,41 @@ final class CityGameStore: ObservableObject {
 
     func load() {
         do {
-            applyLoadedResult(try saves.load())
+            applyLoadedResult(try saves.loadLatestResumeCandidate())
         } catch {
             showInvalidQuicksaveFeedback()
+        }
+    }
+
+    @discardableResult
+    private func autosave() -> Bool {
+        nextAutosaveTick = state.tick + Self.autosaveIntervalTicks
+        guard state != lastPersistedState else { return true }
+        do {
+            try saves.saveAutosave(state)
+            lastPersistedState = state
+            lastPersistenceCheckpointKind = .autosave
+            showFeedback(
+                CityPersistenceFeedbackPresentation.autosaved(state).message,
+                tone: .positive,
+                autoDismissAfter: 2.4
+            )
+            return true
+        } catch {
+            showFeedback(
+                "Autosave failed · Keep playing or save manually: \(error.localizedDescription)",
+                tone: .caution,
+                autoDismissAfter: nil
+            )
+            return false
         }
     }
 
     private func applyLoadedResult(_ result: SaveGameLoadResult) {
         state = result.state
         lastPersistedState = result.state
+        lastPersistenceCheckpointKind = result.isAutosave ? .autosave : .manual
+        nextAutosaveTick = state.tick + Self.autosaveIntervalTicks
         cityNameDraft = state.cityName
         speed = .paused
         lastNonPausedSpeed = .normal
@@ -1139,11 +1180,14 @@ final class CityGameStore: ObservableObject {
         undoStates.removeAll()
         canUndo = false
         let brief = CityResumeBriefPresentation.make(analytics: analytics)
-        showFeedback(
-            CityPersistenceFeedbackPresentation.loaded(
+        let persistenceFeedback = result.isAutosave
+            ? CityPersistenceFeedbackPresentation.loadedAutosave(state)
+            : CityPersistenceFeedbackPresentation.loaded(
                 state,
                 recoveredFromBackup: result.recoveredFromBackup
-            ).message,
+            )
+        showFeedback(
+            persistenceFeedback.message,
             tone: .positive,
             autoDismissAfter: brief == nil ? 3.2 : nil,
             resumeBrief: brief
@@ -1152,7 +1196,7 @@ final class CityGameStore: ObservableObject {
 
     private func showInvalidQuicksaveFeedback() {
         showFeedback(
-            "Quicksave could not be verified · Original save files were preserved",
+            "Saved checkpoint could not be verified · Original save files were preserved",
             tone: .caution,
             autoDismissAfter: nil
         )

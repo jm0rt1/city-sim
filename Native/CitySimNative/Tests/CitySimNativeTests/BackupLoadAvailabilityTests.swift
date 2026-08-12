@@ -58,7 +58,7 @@ final class BackupLoadAvailabilityTests: XCTestCase {
 
             XCTAssertFalse(service.hasLoadCandidate)
             XCTAssertFalse(emptyStore.canPerform(.loadCity))
-            XCTAssertEqual(emptyStore.disabledReason(for: .loadCity), "No quicksave is available")
+            XCTAssertEqual(emptyStore.disabledReason(for: .loadCity), "No saved checkpoint is available")
 
             let saved = CityGameState.newCity(seed: 42)
             let write = try service.save(saved)
@@ -176,7 +176,7 @@ final class BackupLoadAvailabilityTests: XCTestCase {
             XCTAssertFalse(store.canUndo)
             XCTAssertEqual(
                 store.lastFeedback,
-                "Quicksave could not be verified · Original save files were preserved"
+                "Saved checkpoint could not be verified · Original save files were preserved"
             )
             XCTAssertEqual(store.lastFeedbackTone, .caution)
             XCTAssertEqual(try Data(contentsOf: service.backupURL), invalidBytes)
@@ -190,7 +190,7 @@ final class BackupLoadAvailabilityTests: XCTestCase {
             RunLoop.main.run(until: Date(timeIntervalSinceNow: 3.3))
             XCTAssertEqual(
                 store.lastFeedback,
-                "Quicksave could not be verified · Original save files were preserved",
+                "Saved checkpoint could not be verified · Original save files were preserved",
                 "Data-integrity warnings must remain until the player dismisses them"
             )
             XCTAssertTrue(store.perform(.dismissFeedback))

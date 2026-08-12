@@ -12,6 +12,7 @@ struct SaveGameEnvelope: Codable, Equatable, Sendable {
 enum SaveGameSource: String, Codable, Equatable, Sendable {
     case primary
     case backup
+    case autosave
 }
 
 struct SaveGameLoadResult: Equatable, Sendable {
@@ -21,6 +22,7 @@ struct SaveGameLoadResult: Equatable, Sendable {
     let source: SaveGameSource
 
     var recoveredFromBackup: Bool { source == .backup }
+    var isAutosave: Bool { source == .autosave }
 }
 
 struct SaveGameWriteResult: Equatable, Sendable {
@@ -53,6 +55,7 @@ extension SaveGameError: LocalizedError {
 
 struct SaveGameService {
     static let dataRootEnvironmentKey = "CITYSIM_DATA_ROOT"
+    static let autosaveSlotCount = 3
 
     let rootURL: URL
     let fileManager: FileManager
@@ -80,11 +83,22 @@ struct SaveGameService {
     var saveURL: URL { rootURL.appending(path: "quicksave.json") }
     var backupURL: URL { rootURL.appending(path: "quicksave.backup.json") }
     private var candidateURL: URL { rootURL.appending(path: ".quicksave.candidate.json") }
+    var autosaveURLs: [URL] {
+        (0..<Self.autosaveSlotCount).map {
+            rootURL.appending(path: "autosave-\($0).json")
+        }
+    }
 
     var hasLoadCandidate: Bool {
         let primaryExists = fileManager.fileExists(atPath: saveURL.path)
         let backupExists = fileManager.fileExists(atPath: backupURL.path)
         return primaryExists || backupExists
+    }
+
+    var hasResumeCandidate: Bool {
+        hasLoadCandidate || autosaveURLs.contains {
+            fileManager.fileExists(atPath: $0.path)
+        }
     }
 
     @discardableResult
@@ -135,6 +149,47 @@ struct SaveGameService {
         )
     }
 
+    @discardableResult
+    func saveAutosave(_ state: CityGameState) throws -> SaveGameWriteResult {
+        try fileManager.createDirectory(at: rootURL, withIntermediateDirectories: true)
+
+        let fingerprint = try CityStateFingerprinter.fingerprint(state)
+        let envelope = SaveGameEnvelope(
+            schemaVersion: SaveGameEnvelope.currentSchemaVersion,
+            fingerprintVersion: fingerprint.version,
+            state: state,
+            digest: fingerprint.digest
+        )
+        let data = try Self.envelopeEncoder.encode(envelope)
+        let destinationURL = nextAutosaveURL()
+        let candidateURL = rootURL.appending(path: ".\(destinationURL.lastPathComponent).candidate")
+
+        try? fileManager.removeItem(at: candidateURL)
+        defer { try? fileManager.removeItem(at: candidateURL) }
+        try data.write(to: candidateURL, options: .atomic)
+
+        let validatedCandidate = try decodeSave(at: candidateURL, source: .autosave)
+        guard validatedCandidate.state == state,
+              validatedCandidate.fingerprint == fingerprint else {
+            throw SaveGameError.digestMismatch(
+                expected: fingerprint.digest,
+                actual: validatedCandidate.fingerprint.digest
+            )
+        }
+
+        if fileManager.fileExists(atPath: destinationURL.path) {
+            _ = try fileManager.replaceItemAt(destinationURL, withItemAt: candidateURL)
+        } else {
+            try fileManager.moveItem(at: candidateURL, to: destinationURL)
+        }
+
+        return SaveGameWriteResult(
+            schemaVersion: envelope.schemaVersion,
+            fingerprint: fingerprint,
+            byteCount: data.count
+        )
+    }
+
     func load() throws -> SaveGameLoadResult {
         var primaryFailure: String?
         if fileManager.fileExists(atPath: saveURL.path) {
@@ -157,6 +212,59 @@ struct SaveGameService {
         }
 
         throw SaveGameError.noValidSave(primary: primaryFailure, backup: backupFailure)
+    }
+
+    func loadLatestResumeCandidate() throws -> SaveGameLoadResult {
+        var candidates: [(result: SaveGameLoadResult, date: Date, priority: Int)] = []
+
+        if hasLoadCandidate, let result = try? load() {
+            let url = result.source == .backup ? backupURL : saveURL
+            candidates.append((result, modificationDate(for: url), sourcePriority(result.source)))
+        }
+
+        for url in autosaveURLs where fileManager.fileExists(atPath: url.path) {
+            do {
+                let result = try decodeSave(at: url, source: .autosave)
+                candidates.append((result, modificationDate(for: url), sourcePriority(.autosave)))
+            } catch {
+                _ = try? preserveCorruptFile(at: url)
+            }
+        }
+
+        guard let latest = candidates.max(by: { lhs, rhs in
+            if lhs.date != rhs.date { return lhs.date < rhs.date }
+            return lhs.priority < rhs.priority
+        }) else {
+            throw SaveGameError.noValidSave(primary: nil, backup: nil)
+        }
+        return latest.result
+    }
+
+    private func nextAutosaveURL() -> URL {
+        if let empty = autosaveURLs.first(where: {
+            !fileManager.fileExists(atPath: $0.path)
+        }) {
+            return empty
+        }
+        return autosaveURLs.min {
+            let lhsDate = modificationDate(for: $0)
+            let rhsDate = modificationDate(for: $1)
+            if lhsDate != rhsDate { return lhsDate < rhsDate }
+            return $0.lastPathComponent < $1.lastPathComponent
+        } ?? autosaveURLs[0]
+    }
+
+    private func modificationDate(for url: URL) -> Date {
+        let attributes = try? fileManager.attributesOfItem(atPath: url.path)
+        return attributes?[.modificationDate] as? Date ?? .distantPast
+    }
+
+    private func sourcePriority(_ source: SaveGameSource) -> Int {
+        switch source {
+        case .primary: 3
+        case .backup: 2
+        case .autosave: 1
+        }
     }
 
     private func decodeSave(at url: URL, source: SaveGameSource) throws -> SaveGameLoadResult {

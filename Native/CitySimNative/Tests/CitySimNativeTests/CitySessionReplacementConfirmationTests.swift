@@ -26,6 +26,17 @@ final class CitySessionReplacementConfirmationTests: XCTestCase {
                 cancelActionTitle: "Keep Harbor Point"
             )
         )
+        let autosave = CitySessionReplacementConfirmationPresentation.make(
+            state: state,
+            action: .loadQuicksave,
+            loadResult: SaveGameLoadResult(
+                state: saved,
+                schemaVersion: 1,
+                fingerprint: try CityStateFingerprinter.fingerprint(saved),
+                source: .autosave
+            )
+        )
+        XCTAssertTrue(autosave.message.contains("latest verified rotating autosave"))
         XCTAssertEqual(
             CitySessionReplacementConfirmationPresentation.make(
                 state: state,

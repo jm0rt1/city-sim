@@ -21,6 +21,8 @@ final class CityStartupResumeTests: XCTestCase {
             CityStartupResumePresentation(
                 title: "Resume Harbor Point?",
                 checkpoint: "Harbor Point · Day 12 · 512 residents",
+                sourceLabel: "Verified quicksave",
+                sourceSymbol: "checkmark.icloud.fill",
                 detail: "Continue from this verified quicksave; the simulation will remain paused while you review the city's active pressures.",
                 resumeActionTitle: "Resume Harbor Point",
                 startFreshActionTitle: "Start Fresh",
@@ -35,8 +37,21 @@ final class CityStartupResumeTests: XCTestCase {
         ))
         XCTAssertEqual(recovered.title, "Recover Harbor Point?")
         XCTAssertEqual(recovered.resumeActionTitle, "Recover Harbor Point")
-        XCTAssertTrue(recovered.detail.contains("last known-good backup"))
+        XCTAssertEqual(recovered.sourceLabel, "Last known-good backup")
+        XCTAssertEqual(recovered.sourceSymbol, "arrow.clockwise.icloud.fill")
         XCTAssertTrue(recovered.recoveredFromBackup)
+
+        let autosave = CityStartupResumePresentation.make(SaveGameLoadResult(
+            state: state,
+            schemaVersion: 1,
+            fingerprint: fingerprint,
+            source: .autosave
+        ))
+        XCTAssertEqual(autosave.title, "Resume Harbor Point?")
+        XCTAssertEqual(autosave.sourceLabel, "Latest rotating autosave")
+        XCTAssertEqual(autosave.sourceSymbol, "clock.arrow.circlepath")
+        XCTAssertTrue(autosave.detail.contains("automatic checkpoint"))
+        XCTAssertFalse(autosave.recoveredFromBackup)
     }
 
     @MainActor
@@ -156,7 +171,7 @@ final class CityStartupResumeTests: XCTestCase {
         XCTAssertEqual(store.state, fresh)
         XCTAssertEqual(
             store.lastFeedback,
-            "Quicksave could not be verified · Original save files were preserved"
+            "Saved checkpoint could not be verified · Original save files were preserved"
         )
         XCTAssertTrue(try FileManager.default.contentsOfDirectory(atPath: root.path).contains {
             $0.hasPrefix("quicksave.corrupt-")

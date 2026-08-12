@@ -26,6 +26,19 @@ final class CityPersistenceFeedbackTests: XCTestCase {
             )
         )
         XCTAssertEqual(
+            CityPersistenceStatusPresentation.make(
+                current: original,
+                lastPersisted: original,
+                checkpointKind: .autosave
+            ),
+            CityPersistenceStatusPresentation(
+                kind: .saved,
+                label: "Autosaved",
+                symbol: "checkmark.icloud.fill",
+                help: "This city matches its latest rotating autosave"
+            )
+        )
+        XCTAssertEqual(
             CityPersistenceStatusPresentation.make(current: changed, lastPersisted: original),
             CityPersistenceStatusPresentation(
                 kind: .unsavedChanges,
@@ -47,6 +60,10 @@ final class CityPersistenceFeedbackTests: XCTestCase {
             "Harbor Point saved · Day 12 · 512 residents"
         )
         XCTAssertEqual(
+            CityPersistenceFeedbackPresentation.autosaved(state).message,
+            "Harbor Point autosaved · Day 12 · 512 residents"
+        )
+        XCTAssertEqual(
             CityPersistenceFeedbackPresentation.loaded(
                 state,
                 recoveredFromBackup: false
@@ -59,6 +76,10 @@ final class CityPersistenceFeedbackTests: XCTestCase {
                 recoveredFromBackup: true
             ).message,
             "Recovered Harbor Point from last known-good save · Day 12 · 512 residents · Simulation paused"
+        )
+        XCTAssertEqual(
+            CityPersistenceFeedbackPresentation.loadedAutosave(state).message,
+            "Harbor Point resumed from autosave · Day 12 · 512 residents · Simulation paused"
         )
     }
 

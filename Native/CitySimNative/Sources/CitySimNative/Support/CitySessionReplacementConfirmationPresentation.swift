@@ -33,15 +33,20 @@ struct CitySessionReplacementConfirmationPresentation: Equatable, Sendable {
             let loaded = loadResult?.state ?? state
             let savedCheckpoint = "\(loaded.cityName) · \(loaded.formattedDay) · "
                 + "\(loaded.population.formatted()) residents"
-            let recoveryNote = loadResult?.recoveredFromBackup == true
-                ? " This checkpoint was recovered from the last known-good backup."
-                : ""
+            let sourceNote: String
+            if loadResult?.recoveredFromBackup == true {
+                sourceNote = " This checkpoint was recovered from the last known-good backup."
+            } else if loadResult?.isAutosave == true {
+                sourceNote = " This is the latest verified rotating autosave."
+            } else {
+                sourceNote = ""
+            }
             return Self(
                 action: action,
                 title: "Load \(loaded.cityName)?",
                 message: "\(savedCheckpoint) will replace \(checkpoint). "
                     + "Save \(state.cityName) first if you want to return to its current checkpoint."
-                    + recoveryNote,
+                    + sourceNote,
                 destructiveActionTitle: "Load \(loaded.cityName)",
                 cancelActionTitle: "Keep \(state.cityName)"
             )

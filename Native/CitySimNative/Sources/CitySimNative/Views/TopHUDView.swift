@@ -6,6 +6,83 @@ struct HUDSimulationStatePresentation: Equatable {
     let accessibilityValue: String
 }
 
+struct HUDUtilityHeadroomPresentation: Equatable {
+    let powerValue: String
+    let waterValue: String
+
+    var powerLabel: String { "Power \(powerValue)" }
+    var waterLabel: String { "Water \(waterValue)" }
+    var accessibilityValue: String {
+        "Power headroom \(powerValue), Water headroom \(waterValue)"
+    }
+
+    static func make(powerHeadroom: Int, waterHeadroom: Int) -> Self {
+        Self(
+            powerValue: powerHeadroom.compactText,
+            waterValue: waterHeadroom.compactText
+        )
+    }
+}
+
+private struct CompactUtilityMetricCard: View {
+    let coverage: String
+    let headroom: HUDUtilityHeadroomPresentation
+    let progress: Double
+    let tint: Color
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            VStack(alignment: .leading, spacing: 0) {
+                HStack(spacing: 3) {
+                    Text("UTILITY")
+                        .font(.system(size: MetricCard.criticalTextSize, weight: .bold, design: .rounded))
+                        .tracking(0.15)
+                        .foregroundStyle(.secondary)
+                        .lineLimit(1)
+                    Spacer(minLength: 0)
+                    Text(coverage)
+                        .font(.system(size: GameTheme.hudMetricValueTextSize, weight: .bold, design: .rounded))
+                        .monospacedDigit()
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.72)
+                }
+                Text(headroom.powerLabel)
+                    .font(.system(size: MetricCard.supportTextSize, weight: .semibold, design: .rounded))
+                    .foregroundStyle(.secondary)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.72)
+                Text(headroom.waterLabel)
+                    .font(.system(size: MetricCard.supportTextSize, weight: .semibold, design: .rounded))
+                    .foregroundStyle(.secondary)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.72)
+                GeometryReader { proxy in
+                    ZStack(alignment: .leading) {
+                        Capsule().fill(.primary.opacity(0.10))
+                        Capsule()
+                            .fill(tint)
+                            .frame(width: proxy.size.width * min(1, max(0, progress)))
+                    }
+                }
+                .frame(height: 2)
+            }
+            .padding(.horizontal, 5)
+            .padding(.vertical, 1)
+            .frame(maxWidth: .infinity, minHeight: GameTheme.controlMinimum, alignment: .leading)
+            .contentShape(RoundedRectangle(cornerRadius: 9))
+        }
+        .buttonStyle(.plain)
+        .frame(minWidth: 60, maxWidth: .infinity, alignment: .leading)
+        .background(GameTheme.hudRaisedFill, in: RoundedRectangle(cornerRadius: 9))
+        .help("Open utilities details")
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Utilities")
+        .accessibilityValue("\(coverage), \(headroom.accessibilityValue)")
+        .accessibilityIdentifier("hud.metric.utilities")
+    }
+}
+
 struct TopHUDView: View {
     @ObservedObject var store: CityGameStore
     var compact = false
@@ -227,17 +304,29 @@ struct TopHUDView: View {
                 dense: true
             ) { store.perform(.inspectorEmployment) }
 
-            MetricCard(
-                identifier: "hud.metric.utilities",
-                title: "Utilities",
-                shortTitle: "Utility",
-                value: (store.analytics.utilityCoverage * 100).percentText,
-                symbol: "bolt.horizontal.fill",
-                tint: store.analytics.utilityCoverage >= 1 ? GameTheme.accent : GameTheme.danger,
-                detail: "P \(store.analytics.powerHeadroom.compactText) · W \(store.analytics.waterHeadroom.compactText)",
-                progress: store.analytics.utilityCoverage,
-                dense: true
-            ) { store.perform(.inspectorUtilities) }
+            if compact {
+                CompactUtilityMetricCard(
+                    coverage: (store.analytics.utilityCoverage * 100).percentText,
+                    headroom: HUDUtilityHeadroomPresentation.make(
+                        powerHeadroom: store.analytics.powerHeadroom,
+                        waterHeadroom: store.analytics.waterHeadroom
+                    ),
+                    progress: store.analytics.utilityCoverage,
+                    tint: store.analytics.utilityCoverage >= 1 ? GameTheme.accent : GameTheme.danger
+                ) { store.perform(.inspectorUtilities) }
+            } else {
+                MetricCard(
+                    identifier: "hud.metric.utilities",
+                    title: "Utilities",
+                    shortTitle: "Utility",
+                    value: (store.analytics.utilityCoverage * 100).percentText,
+                    symbol: "bolt.horizontal.fill",
+                    tint: store.analytics.utilityCoverage >= 1 ? GameTheme.accent : GameTheme.danger,
+                    detail: "Power \(store.analytics.powerHeadroom.compactText) · Water \(store.analytics.waterHeadroom.compactText)",
+                    progress: store.analytics.utilityCoverage,
+                    dense: true
+                ) { store.perform(.inspectorUtilities) }
+            }
         }
         .frame(maxWidth: .infinity)
         .accessibilityElement(children: .contain)

@@ -10,6 +10,30 @@ private final class FocusProbeView: NSView {
 }
 
 final class CityCommandCatalogTests: XCTestCase {
+    @MainActor
+    func testCompactUtilityDetailNamesPowerAndWaterWithoutWeakeningAccessibilityTruth() {
+        let store = CityGameStore(state: .newCity(seed: 42))
+        let presentation = HUDUtilityHeadroomPresentation.make(
+            powerHeadroom: store.analytics.powerHeadroom,
+            waterHeadroom: store.analytics.waterHeadroom
+        )
+
+        XCTAssertEqual(presentation.powerLabel, "Power 54")
+        XCTAssertEqual(presentation.waterLabel, "Water 48")
+        XCTAssertEqual(
+            presentation.accessibilityValue,
+            "Power headroom 54, Water headroom 48"
+        )
+        let coverage = (store.analytics.utilityCoverage * 100).percentText
+        XCTAssertEqual(coverage, "100%")
+        XCTAssertEqual(
+            "\(coverage), \(presentation.accessibilityValue)",
+            "100%, Power headroom 54, Water headroom 48"
+        )
+        XCTAssertEqual(TopHUDView.compactMaximumHeight, 104)
+        XCTAssertEqual(TopHUDView.regularMaximumHeight, 108)
+    }
+
     func testCatalogDeclaresEveryCommandExactlyOnceAndCoversNonSpatialInventory() {
         let descriptors = CityCommandCatalog.descriptors
         let descriptorIDs = descriptors.map(\.id)

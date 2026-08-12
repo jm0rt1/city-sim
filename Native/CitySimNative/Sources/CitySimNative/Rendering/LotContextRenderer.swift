@@ -310,7 +310,7 @@ final class LotContextRenderer {
             frontage: frontage,
             to: groundCity
         )
-        if Self.isOrdinaryFamily(family) {
+        if family != .park {
             addContactShadow(family: family, variant: variant, to: groundCity)
         }
         addBoundary(
@@ -470,12 +470,7 @@ final class LotContextRenderer {
         variant: Int,
         to node: SKNode
     ) {
-        let width: CGFloat = switch family {
-        case .residential: 58
-        case .commercial: 62
-        case .industrial: 66
-        case .civic, .park: 0
-        }
+        let width: CGFloat = 60
         let shadow = SKShapeNode(path: style.diamondPath(
             width: width + CGFloat(variant % 2),
             height: width / 2 + CGFloat(variant % 2) * 0.5

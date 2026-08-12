@@ -369,8 +369,8 @@ final class LotRenderer {
         // same composed-city range without changing source art or metadata.
         let presentationScale = min(
             1,
-            64 / sprite.size.width,
-            54 / sprite.size.height
+            60 / sprite.size.width,
+            50 / sprite.size.height
         )
         if presentationScale != 1 {
             sprite.setScale(presentationScale)

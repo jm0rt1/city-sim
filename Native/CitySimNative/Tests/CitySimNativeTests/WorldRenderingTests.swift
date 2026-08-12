@@ -1291,8 +1291,15 @@ final class WorldRenderingTests: XCTestCase {
                 let renderedFrame = sprite.calculateAccumulatedFrame()
                 widths.append(renderedFrame.width)
                 heights.append(renderedFrame.height)
-                XCTAssertLessThanOrEqual(widths.last ?? .greatestFiniteMagnitude, 64)
-                XCTAssertLessThanOrEqual(heights.last ?? .greatestFiniteMagnitude, 54)
+                XCTAssertLessThanOrEqual(widths.last ?? .greatestFiniteMagnitude, 60)
+                XCTAssertLessThanOrEqual(heights.last ?? .greatestFiniteMagnitude, 50)
+                XCTAssertTrue(
+                    descendantNames(in: lot).contains {
+                        $0.hasPrefix("lot.context.city.")
+                            && $0.contains(".contact-shadow.")
+                    },
+                    "\(family.rawValue) should use the shared one-cell contact-shadow treatment"
+                )
             }
             let minimumWidth = try XCTUnwrap(widths.min())
             let maximumWidth = try XCTUnwrap(widths.max())

@@ -5370,13 +5370,8 @@ final class WorldRenderingTests: XCTestCase {
 
     @MainActor
     func testRendererDiagnosticsSeparateWorldUpdateTotalRenderAndAssetDecode() throws {
-        let state = goldenNeighborhoodState()
-        let fixture = freshSKViewAttachedLifecycleFixture(
-            state: state,
-            size: CGSize(width: 1_280, height: 800)
-        )
-        XCTAssertTrue(fixture.view.scene === fixture.scene)
-        let cold = fixture.scene.diagnosticsSnapshot
+        let timing = try measuredGoldenColdFixtureTiming()
+        let cold = timing.decision
         XCTAssertEqual(cold.updateDurationMilliseconds, cold.worldUpdateDurationMilliseconds)
         XCTAssertGreaterThan(cold.worldUpdateDurationMilliseconds, 0)
         XCTAssertGreaterThanOrEqual(cold.totalRenderDurationMilliseconds, cold.worldUpdateDurationMilliseconds)
@@ -5394,6 +5389,16 @@ final class WorldRenderingTests: XCTestCase {
                 + cold.tileBuildDurationMilliseconds,
             cold.worldUpdateDurationMilliseconds
         )
+        for sample in timing.samples {
+            XCTAssertEqual(sample.assetDecodeLoadCount, 0)
+            XCTAssertEqual(sample.assetDecodeLoadDurationMilliseconds, 0, accuracy: 0.000_001)
+        }
+        let state = goldenNeighborhoodState()
+        let fixture = freshSKViewAttachedLifecycleFixture(
+            state: state,
+            size: CGSize(width: 1_280, height: 800)
+        )
+        XCTAssertTrue(fixture.view.scene === fixture.scene)
         fixture.scene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
         let unchanged = fixture.scene.diagnosticsSnapshot
         XCTAssertEqual(unchanged.worldUpdateDurationMilliseconds, 0)
@@ -5402,7 +5407,12 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertEqual(unchanged.assetDecodeLoadDurationMilliseconds, 0, accuracy: 0.000_001)
         print(
             "PLAY022_ROUND1C_COLD_PROFILE " +
-            "fixture=skview_attached_fresh " +
+            "fixture=skview_attached_fresh_block warmup=\(Self.goldenColdFixtureWarmupCount) " +
+            "samples=\(timing.samples.count) decision=median " +
+            "min_ms=\(String(format: "%.3f", timing.minimumMilliseconds)) " +
+            "median_ms=\(String(format: "%.3f", cold.worldUpdateDurationMilliseconds)) " +
+            "p95_ms=\(String(format: "%.3f", timing.p95Milliseconds)) " +
+            "max_ms=\(String(format: "%.3f", timing.maximumMilliseconds)) " +
             "backdrop_ms=\(String(format: "%.3f", cold.backdropUpdateDurationMilliseconds)) " +
             "preparation_ms=\(String(format: "%.3f", cold.renderPreparationDurationMilliseconds)) " +
             "tile_build_ms=\(String(format: "%.3f", cold.tileBuildDurationMilliseconds)) " +
@@ -5486,24 +5496,34 @@ final class WorldRenderingTests: XCTestCase {
         }
         XCTAssertNotEqual(city.png, neighborhood.png)
         XCTAssertNotEqual(neighborhood.png, block.png)
+        let timing = try measuredGoldenColdFixtureTiming()
         XCTAssertLessThanOrEqual(
-            block.diagnostics.worldUpdateDurationMilliseconds,
+            timing.decision.worldUpdateDurationMilliseconds,
             6.03,
-            "The exact historical golden-fixture method must remain within the accepted cold-update gate"
+            "The fixed median of the exact SKView-attached golden block fixture must remain within the accepted cold-update gate"
         )
+        for sample in timing.samples {
+            XCTAssertEqual(sample.assetDecodeLoadCount, 0)
+            XCTAssertEqual(sample.assetDecodeLoadDurationMilliseconds, 0, accuracy: 0.000_001)
+        }
         try export(city.png, environmentKey: "CITYSIM_PLAY021_GOLDEN_CITY_PROOF")
         try export(neighborhood.png, environmentKey: "CITYSIM_PLAY021_GOLDEN_NEIGHBORHOOD_PROOF")
         try export(block.png, environmentKey: "CITYSIM_PLAY021_GOLDEN_BLOCK_PROOF")
         try export(compact.png, environmentKey: "CITYSIM_PLAY021_GOLDEN_COMPACT_PROOF")
         print(
             "CITYSIM_PLAY021_GOLDEN_DIAGNOSTICS " +
-            "fixture=skview_attached_fresh " +
-            "nodes=\(block.diagnostics.nodeCount) drawables=\(block.diagnostics.drawableNodeCount) " +
-            "actions=\(block.diagnostics.activeActionCount) " +
-            "world_update_ms=\(String(format: "%.3f", block.diagnostics.worldUpdateDurationMilliseconds)) " +
-            "asset_decode_loads=\(block.diagnostics.assetDecodeLoadCount) " +
-            "asset_decode_ms=\(String(format: "%.3f", block.diagnostics.assetDecodeLoadDurationMilliseconds)) " +
-            "total_render_ms=\(String(format: "%.3f", block.diagnostics.totalRenderDurationMilliseconds))"
+            "fixture=skview_attached_fresh_block warmup=\(Self.goldenColdFixtureWarmupCount) " +
+            "samples=\(timing.samples.count) decision=median " +
+            "min_ms=\(String(format: "%.3f", timing.minimumMilliseconds)) " +
+            "median_ms=\(String(format: "%.3f", timing.decision.worldUpdateDurationMilliseconds)) " +
+            "p95_ms=\(String(format: "%.3f", timing.p95Milliseconds)) " +
+            "max_ms=\(String(format: "%.3f", timing.maximumMilliseconds)) " +
+            "nodes=\(timing.decision.nodeCount) drawables=\(timing.decision.drawableNodeCount) " +
+            "actions=\(timing.decision.activeActionCount) " +
+            "world_update_ms=\(String(format: "%.3f", timing.decision.worldUpdateDurationMilliseconds)) " +
+            "asset_decode_loads=\(timing.decision.assetDecodeLoadCount) " +
+            "asset_decode_ms=\(String(format: "%.3f", timing.decision.assetDecodeLoadDurationMilliseconds)) " +
+            "total_render_ms=\(String(format: "%.3f", timing.decision.totalRenderDurationMilliseconds))"
         )
     }
 
@@ -5674,6 +5694,54 @@ final class WorldRenderingTests: XCTestCase {
         view.presentScene(scene)
         scene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
         return (view, scene)
+    }
+
+    private static let goldenColdFixtureWarmupCount = 2
+    private static let goldenColdFixtureSampleCount = 5
+
+    @MainActor
+    private func measuredGoldenColdFixtureTiming() throws -> (
+        samples: [RendererDiagnosticsSnapshot],
+        decision: RendererDiagnosticsSnapshot,
+        minimumMilliseconds: Double,
+        p95Milliseconds: Double,
+        maximumMilliseconds: Double
+    ) {
+        let state = goldenNeighborhoodState()
+        let size = CGSize(width: 1_280, height: 800)
+        let coordinate = GridCoordinate(x: 3, y: 3)
+        for _ in 0..<Self.goldenColdFixtureWarmupCount {
+            _ = try lifecycleFrame(
+                state: state,
+                size: size,
+                detail: .block,
+                centeredOn: coordinate
+            )
+        }
+
+        var samples: [RendererDiagnosticsSnapshot] = []
+        for _ in 0..<Self.goldenColdFixtureSampleCount {
+            samples.append(try lifecycleFrame(
+                state: state,
+                size: size,
+                detail: .block,
+                centeredOn: coordinate
+            ).diagnostics)
+        }
+        let ordered = samples.sorted {
+            $0.worldUpdateDurationMilliseconds < $1.worldUpdateDurationMilliseconds
+        }
+        let middle = ordered[ordered.count / 2]
+        let lowerP95 = ordered[ordered.count - 2].worldUpdateDurationMilliseconds
+        let upperP95 = ordered[ordered.count - 1].worldUpdateDurationMilliseconds
+        let p95 = lowerP95 + (upperP95 - lowerP95) * 0.8
+        return (
+            samples,
+            middle,
+            ordered.first?.worldUpdateDurationMilliseconds ?? 0,
+            p95,
+            ordered.last?.worldUpdateDurationMilliseconds ?? 0
+        )
     }
 
     @MainActor

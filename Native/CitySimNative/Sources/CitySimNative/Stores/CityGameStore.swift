@@ -32,6 +32,7 @@ final class CityGameStore: ObservableObject {
     @Published var lastFeedback: String?
     @Published private(set) var lastFeedbackTone: PlayerFeedbackTone = .neutral
     @Published private(set) var resumeBrief: CityResumeBriefPresentation?
+    @Published private(set) var newRegionConfirmation: NewRegionConfirmationPresentation?
     @Published private(set) var canUndo = false
     @Published private(set) var mapFocusRequestGeneration: UInt = 0
 
@@ -39,6 +40,7 @@ final class CityGameStore: ObservableObject {
     private var undoStates: [CityGameState] = []
     private var feedbackDismissal: DispatchWorkItem?
     private var lastNonPausedSpeed: SimulationSpeed = .normal
+    private var speedBeforeNewRegionConfirmation: SimulationSpeed?
 
     init(
         state: CityGameState = .newCity(),
@@ -209,7 +211,11 @@ final class CityGameStore: ObservableObject {
 
         switch command {
         case .newRegion:
-            newCity()
+            if state.status == .playing {
+                requestNewRegionConfirmation()
+            } else {
+                newCity()
+            }
         case .saveCity:
             save()
         case .loadCity:
@@ -262,6 +268,9 @@ final class CityGameStore: ObservableObject {
         guard commandPolicy.allows(command) else { return false }
         let descriptor = CityCommandCatalog.descriptor(for: command)
         guard descriptor.route == .store, !descriptor.isSpatial else { return false }
+        if newRegionConfirmation != nil {
+            return command == .cancelInteraction
+        }
         if state.status != .playing,
            ![CityCommandID.newRegion, .saveCity, .loadCity].contains(command) {
             return false
@@ -284,6 +293,9 @@ final class CityGameStore: ObservableObject {
     func disabledReason(for command: CityCommandID) -> String? {
         guard !canPerform(command) else { return nil }
         if let policyReason = commandPolicy.disabledReason { return policyReason }
+        if newRegionConfirmation != nil {
+            return "Choose whether to keep or replace \(state.cityName)"
+        }
         let descriptor = CityCommandCatalog.descriptor(for: command)
         if descriptor.isSpatial { return "Available when the city map has focus" }
         switch descriptor.route {
@@ -311,7 +323,8 @@ final class CityGameStore: ObservableObject {
     }
 
     func canRouteMapCommand(_ command: CityCommandID) -> Bool {
-        guard state.status == .playing,
+        guard newRegionConfirmation == nil,
+              state.status == .playing,
               commandPolicy.allows(command),
               CityCommandCatalog.mapFocusedCommands.contains(command) else {
             return false
@@ -592,7 +605,9 @@ final class CityGameStore: ObservableObject {
     }
 
     private func dismissTopmostSurfaceOrCancel() {
-        if showCommandGuide {
+        if newRegionConfirmation != nil {
+            cancelNewRegionReplacement()
+        } else if showCommandGuide {
             showCommandGuide = false
             requestMapFocus()
         } else if isCityFocusModeEnabled {
@@ -915,6 +930,8 @@ final class CityGameStore: ObservableObject {
     }
 
     func newCity() {
+        newRegionConfirmation = nil
+        speedBeforeNewRegionConfirmation = nil
         state = .newCity(seed: UInt64.random(in: 1...UInt64.max))
         cityNameDraft = state.cityName
         speed = .paused
@@ -932,6 +949,35 @@ final class CityGameStore: ObservableObject {
         canUndo = false
         requestMapFocus()
         showFeedback("A fresh region is ready")
+    }
+
+    private func requestNewRegionConfirmation() {
+        guard newRegionConfirmation == nil else { return }
+        speedBeforeNewRegionConfirmation = speed
+        speed = .paused
+        showCommandGuide = false
+        newRegionConfirmation = NewRegionConfirmationPresentation.make(state: state)
+    }
+
+    @discardableResult
+    func confirmNewRegionReplacement() -> Bool {
+        guard newRegionConfirmation != nil else { return false }
+        newCity()
+        return true
+    }
+
+    @discardableResult
+    func cancelNewRegionReplacement() -> Bool {
+        guard newRegionConfirmation != nil else { return false }
+        let previousSpeed = speedBeforeNewRegionConfirmation ?? .paused
+        newRegionConfirmation = nil
+        speedBeforeNewRegionConfirmation = nil
+        speed = previousSpeed
+        let simulationStatus = previousSpeed == .paused
+            ? "Simulation remains paused"
+            : "Simulation resumed at \(previousSpeed.controlLabel)"
+        showFeedback("\(state.cityName) kept · \(simulationStatus)", tone: .positive)
+        return true
     }
 
     func save() {

@@ -220,6 +220,36 @@ struct ContentView: View {
         .sheet(isPresented: $store.showCommandGuide) {
             CommandGuideView(store: store)
         }
+        .confirmationDialog(
+            store.newRegionConfirmation?.title ?? "Start a New Region?",
+            isPresented: Binding(
+                get: { store.newRegionConfirmation != nil },
+                set: { isPresented in
+                    guard !isPresented else { return }
+                    // Confirmation actions run in the same event that dismisses the dialog.
+                    // Defer implicit dismissal so an explicit destructive action wins first.
+                    DispatchQueue.main.async {
+                        store.cancelNewRegionReplacement()
+                    }
+                }
+            ),
+            titleVisibility: .visible
+        ) {
+            Button(
+                store.newRegionConfirmation?.destructiveActionTitle ?? "Start New Region",
+                role: .destructive
+            ) {
+                store.confirmNewRegionReplacement()
+            }
+            Button(
+                store.newRegionConfirmation?.cancelActionTitle ?? "Keep Current City",
+                role: .cancel
+            ) {
+                store.cancelNewRegionReplacement()
+            }
+        } message: {
+            Text(store.newRegionConfirmation?.message ?? "")
+        }
     }
 
     static func isCompactLayout(_ size: CGSize) -> Bool {

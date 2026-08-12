@@ -89,7 +89,7 @@ struct CitySimNativeApp: App {
 
     var body: some Scene {
         WindowGroup("CitySim", id: "main") {
-            ContentView(store: store)
+            ContentView(store: store, startupResumeEnabled: true)
                 .preferredColorScheme(.dark)
                 .onAppear { appDelegate.bind(store: store) }
         }

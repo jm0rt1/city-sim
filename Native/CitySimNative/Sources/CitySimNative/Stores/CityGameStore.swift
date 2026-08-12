@@ -32,6 +32,7 @@ final class CityGameStore: ObservableObject {
     @Published var lastFeedback: String?
     @Published private(set) var lastFeedbackTone: PlayerFeedbackTone = .neutral
     @Published private(set) var resumeBrief: CityResumeBriefPresentation?
+    @Published private(set) var startupResumeOffer: CityStartupResumePresentation?
     @Published private(set) var sessionReplacementConfirmation: CitySessionReplacementConfirmationPresentation?
     @Published private(set) var canUndo = false
     @Published private(set) var mapFocusRequestGeneration: UInt = 0
@@ -42,6 +43,9 @@ final class CityGameStore: ObservableObject {
     private var lastNonPausedSpeed: SimulationSpeed = .normal
     private var speedBeforeSessionReplacementConfirmation: SimulationSpeed?
     private var pendingSessionReplacementLoad: SaveGameLoadResult?
+    private var speedBeforeStartupResumeOffer: SimulationSpeed?
+    private var pendingStartupResumeLoad: SaveGameLoadResult?
+    private var startupResumeOfferWasConsidered = false
     private var lastPersistedState: CityGameState?
 
     init(
@@ -621,6 +625,55 @@ final class CityGameStore: ObservableObject {
     func dismissBlockingModal(_ modal: CityBlockingModal) -> Bool {
         guard commandPolicy == .blocked(modal) else { return false }
         commandPolicy = .enabled
+        return true
+    }
+
+    func prepareStartupResumeOffer() {
+        guard !startupResumeOfferWasConsidered,
+              commandPolicy == .enabled,
+              state.status == .playing,
+              state == .newCity(seed: state.seed) else { return }
+        startupResumeOfferWasConsidered = true
+        guard saves.hasLoadCandidate else { return }
+        do {
+            let result = try saves.load()
+            speedBeforeStartupResumeOffer = speed
+            speed = .paused
+            pendingStartupResumeLoad = result
+            startupResumeOffer = CityStartupResumePresentation.make(result)
+            presentBlockingModal(.startupResume)
+        } catch {
+            showInvalidQuicksaveFeedback()
+        }
+    }
+
+    @discardableResult
+    func resumeStartupCity() -> Bool {
+        guard commandPolicy == .blocked(.startupResume),
+              let result = pendingStartupResumeLoad else { return false }
+        startupResumeOffer = nil
+        pendingStartupResumeLoad = nil
+        speedBeforeStartupResumeOffer = nil
+        _ = dismissBlockingModal(.startupResume)
+        applyLoadedResult(result)
+        requestMapFocus()
+        return true
+    }
+
+    @discardableResult
+    func startFreshFromStartupOffer() -> Bool {
+        guard commandPolicy == .blocked(.startupResume),
+              let offer = startupResumeOffer else { return false }
+        let previousSpeed = speedBeforeStartupResumeOffer ?? .paused
+        startupResumeOffer = nil
+        pendingStartupResumeLoad = nil
+        speedBeforeStartupResumeOffer = nil
+        _ = dismissBlockingModal(.startupResume)
+        speed = previousSpeed
+        requestMapFocus()
+        showFeedback(
+            "\(state.cityName) kept · \(offer.checkpoint) remains available from Load City"
+        )
         return true
     }
 

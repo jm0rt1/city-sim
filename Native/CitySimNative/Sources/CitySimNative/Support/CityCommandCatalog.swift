@@ -100,6 +100,7 @@ enum CityCommandRoute: String, Sendable {
 
 enum CityBlockingModal: String, Equatable, Sendable {
     case welcome
+    case startupResume
 }
 
 enum CityCommandPolicy: Equatable, Sendable {
@@ -121,6 +122,8 @@ enum CityCommandPolicy: Equatable, Sendable {
             nil
         case .blocked(.welcome):
             "Finish Welcome to New Arcadia to use city commands"
+        case .blocked(.startupResume):
+            "Choose whether to resume the saved city or start fresh"
         }
     }
 }

@@ -143,6 +143,7 @@ struct CityFocusPointerTransitionMonitor: NSViewRepresentable {
 
 struct ContentView: View {
     @ObservedObject var store: CityGameStore
+    private let startupResumeEnabled: Bool
     private let onChromeFrames: ((CityHUDChromeFrames) -> Void)?
     @StateObject private var pointerTransitionGate = CityMapPointerTransitionGate()
     @AppStorage("hasSeenCitySimWelcome") private var hasSeenWelcome = false
@@ -153,9 +154,11 @@ struct ContentView: View {
 
     init(
         store: CityGameStore,
+        startupResumeEnabled: Bool = false,
         onChromeFrames: ((CityHUDChromeFrames) -> Void)? = nil
     ) {
         self.store = store
+        self.startupResumeEnabled = startupResumeEnabled
         self.onChromeFrames = onChromeFrames
     }
 
@@ -203,8 +206,14 @@ struct ContentView: View {
                 }
             }
         }
-        .onAppear { synchronizeWelcomePolicy() }
-        .onChange(of: hasSeenWelcome) { _, _ in synchronizeWelcomePolicy() }
+        .onAppear {
+            synchronizeWelcomePolicy()
+            synchronizeStartupResumeOffer()
+        }
+        .onChange(of: hasSeenWelcome) { _, _ in
+            synchronizeWelcomePolicy()
+            synchronizeStartupResumeOffer()
+        }
         .task(id: hasSeenWelcome) {
             guard hasSeenWelcome else { return }
             while !Task.isCancelled {
@@ -375,6 +384,13 @@ struct ContentView: View {
                         }
                     }
                 }
+                .transition(.opacity)
+            } else if let offer = store.startupResumeOffer {
+                StartupResumeView(
+                    presentation: offer,
+                    resumeAction: { store.resumeStartupCity() },
+                    startFreshAction: { store.startFreshFromStartupOffer() }
+                )
                 .transition(.opacity)
             } else if store.state.status != .playing {
                 GameStatusOverlay(store: store)
@@ -563,5 +579,10 @@ struct ContentView: View {
         } else {
             store.presentBlockingModal(.welcome)
         }
+    }
+
+    private func synchronizeStartupResumeOffer() {
+        guard startupResumeEnabled, hasSeenWelcome else { return }
+        store.prepareStartupResumeOffer()
     }
 }

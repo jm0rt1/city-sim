@@ -78,6 +78,18 @@ and the mandatory parent/process-group/observed-descendant closure policy.
 Historical routes remain immutable evidence, but cannot authorize a new Swift
 execution until rebound prospectively.
 
+Every new or rebound route whose focused or full gate invokes an artifact
+writer must carry a validator-clean `writerExecution` contract. It binds the
+exact command environment, one canonical absolute generated-output root, and
+root-relative artifacts in three explicit phases: hash-bound
+`required_input`, absent-at-preflight `prospective_output`, and one
+`post_execution_receipt`. Validate the terminal receipt with
+`validate_model_route_v1.py --writer-route <route> --writer-receipt <receipt>`;
+it must bind the same command, environment, root, zero exit, and every declared
+output byte. Compare and materialization inputs may not escape or substitute
+the declared root. This applies prospectively and adds no reviewer or
+acceptance turn.
+
 `Build complete!` is an intermediate compilation marker, not a terminal test
 result. The runner holds its live OS lease and build-root locks until the parent,
 process group, and every observed descendant exit, then applies
@@ -214,6 +226,12 @@ For every substantial `PLAY-*` task, Integration publishes three layers:
 Do not assign an ambiguous feature end-to-end when deterministic
 implementation, mechanical evidence, and subjective judgment can be separated.
 One writer owns each worktree, Git index, governed evidence packet, and commit.
+
+A user-authorized standing Operational Excellence goal plus a validator-clean
+`FRONTIER_AUTHORITY` carrier with `sharedAuthorityOwnership: true` is sufficient
+authority for the named control-plane paths. Do not invent a fresh-user
+authorization round when task, route, claim, branch, HEAD, and allowed paths
+still match; any mismatch remains a zero-mutation return.
 
 `LUNA_IMPLEMENTATION` and `LUNA_LOCAL_DEBUG` may claim executable behavior only
 when an accepted executable reference is bound and the focused gate runs a

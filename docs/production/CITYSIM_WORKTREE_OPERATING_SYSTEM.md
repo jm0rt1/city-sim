@@ -243,6 +243,23 @@ read-only by default. When repeated waste is proven and exact control-plane
 paths are authorized, it patches the operating rules directly with focused
 static proof instead of creating another observer loop.
 
+A user-authorized standing Operational Excellence goal may directly own a
+validator-clean `FRONTIER_AUTHORITY` carrier when the route explicitly binds
+`sharedAuthorityOwnership: true`, the exact clean branch/HEAD, claim, and
+control-plane allowlist. That carrier is sufficient mutation authority for its
+named paths; agents must not manufacture another direct-user approval turn.
+Identity or path drift still returns without mutation.
+
+New or rebound artifact-writer routes bind a `writerExecution` contract before
+execution. The contract carries the exact writer environment, canonical
+generated-output root, root-contained compare/materialization paths, and
+explicit `required_input`, `prospective_output`, and
+`post_execution_receipt` phases. Required inputs exist and are hash-bound at
+preflight; prospective outputs and receipts are new; the terminal receipt
+binds the unchanged command/environment/root, zero exit, and every generated
+output hash. This is an executable route invariant, not a review or acceptance
+layer, and product aggregates do not wait for unrelated control-plane repair.
+
 ## 5. Shared surfaces and contract locks
 
 The following are integration-controlled because they are likely collision points:

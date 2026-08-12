@@ -22,7 +22,7 @@ ROUTE_FIELDS = {
     "boundedDeliverable", "validation", "expectedResult", "escalationTriggers",
     "stopCondition", "independentReviewer", "context", "proofPolicy",
 }
-OPTIONAL_ROUTE_FIELDS = {"compositionContract", "swiftExecution"}
+OPTIONAL_ROUTE_FIELDS = {"compositionContract", "swiftExecution", "writerExecution"}
 ROUTE_SCHEMA = 2
 DISPATCH_SCHEMA = 2
 QA_HANDOFF_SCHEMA = 1
@@ -110,6 +110,17 @@ SWIFT_EXECUTION_ROW_FIELDS = {
     "receiptPath", "priorAttemptReceipt",
 }
 SWIFT_TERMINAL_POLICY = "parent_group_and_observed_descendants_exited"
+WRITER_EXECUTION_FIELDS = {"schema", "generatedOutputRoot", "writers"}
+WRITER_ROW_FIELDS = {"writerId", "command", "environment", "artifacts"}
+WRITER_ARTIFACT_FIELDS = {"phase", "path", "sha256"}
+WRITER_ARTIFACT_PHASES = {
+    "required_input", "prospective_output", "post_execution_receipt",
+}
+WRITER_RECEIPT_FIELDS = {
+    "schema", "routeId", "writerId", "command", "environment",
+    "generatedOutputRoot", "status", "exitCode", "outputs",
+}
+WRITER_RECEIPT_OUTPUT_FIELDS = {"path", "sha256"}
 
 
 class ValidationError(Exception):
@@ -205,6 +216,253 @@ def _canonical_absolute(value: Any) -> bool:
         and Path(value).is_absolute()
         and str(Path(value).resolve()) == value
     )
+
+
+def _contained_relative(value: Any, label: str, errors: list[str]) -> str | None:
+    if not isinstance(value, str) or not value:
+        errors.append(f"{label} must be a non-empty root-relative path")
+        return None
+    path = PurePosixPath(value)
+    if (
+        path.is_absolute()
+        or value != path.as_posix()
+        or value in (".", "..")
+        or "." in path.parts
+        or ".." in path.parts
+        or any(character in value for character in "*?[]")
+    ):
+        errors.append(f"{label} must be an exact normalized root-relative path")
+        return None
+    return value
+
+
+def _declared_command_environment(
+    argv: list[str], label: str, errors: list[str]
+) -> dict[str, str]:
+    index = 0
+    if argv and argv[0].rsplit("/", 1)[-1] == "env":
+        index = 1
+    environment: dict[str, str] = {}
+    while index < len(argv) and re.fullmatch(
+        r"[A-Za-z_][A-Za-z0-9_]*=.*", argv[index]
+    ):
+        key, value = argv[index].split("=", 1)
+        if key in environment:
+            errors.append(f"{label} repeats environment key {key}")
+        environment[key] = value
+        index += 1
+    if not environment:
+        errors.append(f"{label} must carry its exact environment in the command")
+    if index >= len(argv):
+        errors.append(f"{label} has no executable after its environment")
+    return environment
+
+
+def _validate_writer_execution(
+    route: dict[str, Any],
+    focused_commands: Any,
+    full_commands: Any,
+    errors: list[str],
+    *,
+    phase: str = "preflight",
+) -> None:
+    contract = route.get("writerExecution")
+    if contract is None:
+        return
+    if not isinstance(contract, dict) or set(contract) != WRITER_EXECUTION_FIELDS:
+        errors.append("writerExecution has unsupported or missing fields")
+        return
+    if contract.get("schema") != 1:
+        errors.append("writerExecution.schema must equal 1")
+    root_value = contract.get("generatedOutputRoot")
+    if not _canonical_absolute(root_value):
+        errors.append("writerExecution.generatedOutputRoot must be a canonical absolute path")
+        return
+    root = Path(root_value)
+    gate_commands = {
+        command
+        for commands in (focused_commands, full_commands)
+        if isinstance(commands, list)
+        for command in commands
+        if isinstance(command, str)
+    }
+    writers = contract.get("writers")
+    if not isinstance(writers, list) or not writers:
+        errors.append("writerExecution.writers must be a non-empty list")
+        return
+    writer_ids: list[str] = []
+    prospective_paths: list[str] = []
+    receipt_paths: list[str] = []
+    for writer_index, writer in enumerate(writers):
+        label = f"writerExecution.writers[{writer_index}]"
+        if not isinstance(writer, dict) or set(writer) != WRITER_ROW_FIELDS:
+            errors.append(f"{label} has unsupported or missing fields")
+            continue
+        writer_id = writer.get("writerId")
+        if not isinstance(writer_id, str) or not writer_id:
+            errors.append(f"{label}.writerId must be non-empty")
+        else:
+            writer_ids.append(writer_id)
+        command = writer.get("command")
+        if not isinstance(command, str) or not command:
+            errors.append(f"{label}.command must be non-empty")
+            continue
+        if command not in gate_commands:
+            errors.append(f"{label}.command must be an exact focused/full gate command")
+        argv = _parse_command(command, f"{label}.command", errors)
+        command_environment = _declared_command_environment(
+            argv, f"{label}.command", errors
+        )
+        environment = writer.get("environment")
+        if not isinstance(environment, dict) or not all(
+            isinstance(key, str) and key
+            and isinstance(value, str)
+            for key, value in environment.items()
+        ):
+            errors.append(f"{label}.environment must be a string map")
+            environment = {}
+        if environment != command_environment:
+            errors.append(
+                f"{label}.environment must exactly match command environment; "
+                "missing, extra, or substituted values are forbidden"
+            )
+        artifacts = writer.get("artifacts")
+        if not isinstance(artifacts, list) or not artifacts:
+            errors.append(f"{label}.artifacts must be a non-empty list")
+            continue
+        phases: list[str] = []
+        writer_receipts = 0
+        writer_outputs = 0
+        for artifact_index, artifact in enumerate(artifacts):
+            artifact_label = f"{label}.artifacts[{artifact_index}]"
+            if not isinstance(artifact, dict) or set(artifact) != WRITER_ARTIFACT_FIELDS:
+                errors.append(f"{artifact_label} has unsupported or missing fields")
+                continue
+            artifact_phase = artifact.get("phase")
+            if artifact_phase not in WRITER_ARTIFACT_PHASES:
+                errors.append(f"{artifact_label}.phase is unsupported")
+                continue
+            phases.append(artifact_phase)
+            relative = _contained_relative(
+                artifact.get("path"), f"{artifact_label}.path", errors
+            )
+            digest = artifact.get("sha256")
+            if artifact_phase == "required_input":
+                if not _is_hex(digest, 64):
+                    errors.append(f"{artifact_label}.sha256 must bind required input bytes")
+            elif digest is not None:
+                errors.append(f"{artifact_label}.sha256 must be null before execution")
+            if relative is None:
+                continue
+            resolved = (root / relative).resolve()
+            try:
+                resolved.relative_to(root)
+            except ValueError:
+                errors.append(f"{artifact_label}.path escapes generatedOutputRoot")
+                continue
+            if artifact_phase == "required_input":
+                if not resolved.is_file():
+                    errors.append(f"{artifact_label}.required_input does not exist")
+                elif _is_hex(digest, 64) and file_sha(resolved) != digest:
+                    errors.append(f"{artifact_label}.required_input sha256 does not match")
+            elif artifact_phase == "prospective_output":
+                prospective_paths.append(relative)
+                writer_outputs += 1
+                if phase == "preflight" and resolved.exists():
+                    errors.append(f"{artifact_label}.prospective_output already exists")
+            else:
+                receipt_paths.append(relative)
+                writer_receipts += 1
+                if phase == "preflight" and resolved.exists():
+                    errors.append(f"{artifact_label}.post_execution_receipt already exists")
+        if set(phases) != WRITER_ARTIFACT_PHASES:
+            errors.append(f"{label} must declare all three artifact phases")
+        if writer_outputs == 0:
+            errors.append(f"{label} must declare at least one prospective_output")
+        if writer_receipts != 1:
+            errors.append(f"{label} must declare exactly one post_execution_receipt")
+    if len(writer_ids) != len(set(writer_ids)):
+        errors.append("writerExecution writerId values must be unique")
+    if len(prospective_paths) != len(set(prospective_paths)):
+        errors.append("writerExecution prospective_output paths must be unique")
+    if len(receipt_paths) != len(set(receipt_paths)):
+        errors.append("writerExecution post_execution_receipt paths must be unique")
+
+
+def validate_writer_receipt(
+    receipt: Any,
+    receipt_path: Path,
+    route: Any,
+) -> list[str]:
+    errors: list[str] = []
+    if not isinstance(route, dict):
+        return ["writer receipt route must be a JSON object"]
+    contract = route.get("writerExecution")
+    if not isinstance(contract, dict):
+        return ["writer receipt route lacks writerExecution"]
+    if not isinstance(receipt, dict) or set(receipt) != WRITER_RECEIPT_FIELDS:
+        return ["writer receipt has unsupported or missing fields"]
+    if receipt.get("schema") != 1:
+        errors.append("writer receipt schema must equal 1")
+    if receipt.get("routeId") != route.get("routeId"):
+        errors.append("writer receipt routeId does not match route")
+    writers = contract.get("writers")
+    matching = [
+        row for row in writers if isinstance(row, dict)
+        and row.get("writerId") == receipt.get("writerId")
+    ] if isinstance(writers, list) else []
+    if len(matching) != 1:
+        errors.append("writer receipt must name exactly one declared writerId")
+        return errors
+    writer = matching[0]
+    root_value = contract.get("generatedOutputRoot")
+    if receipt.get("generatedOutputRoot") != root_value:
+        errors.append("writer receipt generatedOutputRoot does not match route")
+    if receipt.get("command") != writer.get("command"):
+        errors.append("writer receipt command does not match route")
+    if receipt.get("environment") != writer.get("environment"):
+        errors.append("writer receipt environment does not match route")
+    if receipt.get("status") != "terminal" or receipt.get("exitCode") != 0:
+        errors.append("writer receipt must be terminal with exitCode 0")
+    artifacts = writer.get("artifacts", [])
+    expected_outputs = sorted(
+        artifact.get("path") for artifact in artifacts
+        if isinstance(artifact, dict) and artifact.get("phase") == "prospective_output"
+    )
+    receipt_artifacts = [
+        artifact.get("path") for artifact in artifacts
+        if isinstance(artifact, dict) and artifact.get("phase") == "post_execution_receipt"
+    ]
+    if len(receipt_artifacts) == 1 and isinstance(root_value, str):
+        expected_receipt = (Path(root_value) / receipt_artifacts[0]).resolve()
+        if receipt_path.resolve() != expected_receipt:
+            errors.append("writer receipt path does not match declared post_execution_receipt")
+    outputs = receipt.get("outputs")
+    if not isinstance(outputs, list) or not outputs:
+        errors.append("writer receipt outputs must be a non-empty list")
+        return errors
+    actual_paths: list[str] = []
+    root = Path(root_value) if isinstance(root_value, str) else Path("/")
+    for index, output in enumerate(outputs):
+        label = f"writer receipt outputs[{index}]"
+        if not isinstance(output, dict) or set(output) != WRITER_RECEIPT_OUTPUT_FIELDS:
+            errors.append(f"{label} has unsupported or missing fields")
+            continue
+        relative = _contained_relative(output.get("path"), f"{label}.path", errors)
+        digest = output.get("sha256")
+        if not _is_hex(digest, 64):
+            errors.append(f"{label}.sha256 must bind generated bytes")
+        if relative is None:
+            continue
+        actual_paths.append(relative)
+        generated = (root / relative).resolve()
+        if not generated.is_file():
+            errors.append(f"{label} does not exist under generatedOutputRoot")
+        elif _is_hex(digest, 64) and file_sha(generated) != digest:
+            errors.append(f"{label}.sha256 does not match generated bytes")
+    if sorted(actual_paths) != expected_outputs:
+        errors.append("writer receipt outputs must exactly match prospective_output paths")
+    return errors
 
 
 def _single_option(argv: list[str], option: str, label: str, errors: list[str]) -> str | None:
@@ -541,7 +799,7 @@ def _validate_composition_contract(
         errors.append("compositionContract must be one exact authority immutable input")
 
 
-def validate_route(route: Any, repo: Path) -> list[str]:
+def validate_route(route: Any, repo: Path, *, writer_phase: str = "preflight") -> list[str]:
     errors: list[str] = []
     if not isinstance(route, dict):
         return ["route packet must be a JSON object"]
@@ -797,6 +1055,9 @@ def validate_route(route: Any, repo: Path) -> list[str]:
             if unfiltered_swift or other_full_gate:
                 errors.append(f"Luna focused gate contains aggregate/final command: {command}")
     _validate_swift_execution(route, repo, focused_commands, full_commands, errors)
+    _validate_writer_execution(
+        route, focused_commands, full_commands, errors, phase=writer_phase
+    )
     command_owner_list = (
         focused_commands
         if focused_level in PROOF_LEVEL_RANK
@@ -1168,6 +1429,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--dispatch-route-id")
     parser.add_argument("--qa-handoff")
     parser.add_argument("--swift-test-log", action="append")
+    parser.add_argument("--writer-route")
+    parser.add_argument("--writer-receipt")
     parser.add_argument("--previous-ledger")
     parser.add_argument("--current-ledger")
     parser.add_argument("--failed-direction")
@@ -1198,6 +1461,17 @@ def main(argv: list[str] | None = None) -> int:
                     f"{log_path}: {error}"
                     for error in validate_swift_test_log(log)
                 )
+        writer_args = (args.writer_route, args.writer_receipt)
+        if any(writer_args) and not all(writer_args):
+            errors.append("writer receipt validation requires --writer-route and --writer-receipt")
+        elif all(writer_args):
+            writer_route = load_json(Path(args.writer_route))
+            errors.extend(validate_route(writer_route, repo, writer_phase="post_execution"))
+            errors.extend(validate_writer_receipt(
+                load_json(Path(args.writer_receipt)),
+                Path(args.writer_receipt),
+                writer_route,
+            ))
         ledger_args = (args.previous_ledger, args.current_ledger, args.failed_direction)
         if any(ledger_args) and not all(ledger_args):
             errors.append("sibling validation requires previous ledger, current ledger, and failed direction")
@@ -1207,10 +1481,12 @@ def main(argv: list[str] | None = None) -> int:
         errors.append(str(exc))
     if not any((
         args.route, args.dispatch, args.qa_handoff, args.swift_test_log,
+        args.writer_receipt,
         args.previous_ledger,
     )):
         errors.append(
             "provide --route, --dispatch, --qa-handoff, --swift-test-log, "
+            "--writer-route/--writer-receipt, "
             "or sibling ledger arguments"
         )
     if errors:

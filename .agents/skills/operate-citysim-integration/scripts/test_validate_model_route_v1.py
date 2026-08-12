@@ -218,6 +218,50 @@ class ModelRouteTests(unittest.TestCase):
         }
         return command
 
+    def add_writer_execution(self, route: dict) -> tuple[Path, Path, str]:
+        root = (self.repo / "writer-output").resolve()
+        root.mkdir()
+        required = root / "inputs" / "source.json"
+        required.parent.mkdir()
+        required.write_text('{"source":true}\n', encoding="utf-8")
+        output = root / "materialized" / "successor.json"
+        receipt = root / "receipts" / "writer.json"
+        command = shlex.join([
+            "env", "CITYSIM_WRITER_MODE=successor", "CITYSIM_SEED=131",
+            "python3", "inputs/writer.py", "--output-root", str(root),
+        ])
+        route["validation"]["focusedCommands"].append(command)
+        route["writerExecution"] = {
+            "schema": 1,
+            "generatedOutputRoot": str(root),
+            "writers": [{
+                "writerId": "successor-corpus",
+                "command": command,
+                "environment": {
+                    "CITYSIM_WRITER_MODE": "successor",
+                    "CITYSIM_SEED": "131",
+                },
+                "artifacts": [
+                    {
+                        "phase": "required_input",
+                        "path": "inputs/source.json",
+                        "sha256": hashlib.sha256(required.read_bytes()).hexdigest(),
+                    },
+                    {
+                        "phase": "prospective_output",
+                        "path": "materialized/successor.json",
+                        "sha256": None,
+                    },
+                    {
+                        "phase": "post_execution_receipt",
+                        "path": "receipts/writer.json",
+                        "sha256": None,
+                    },
+                ],
+            }],
+        }
+        return output, receipt, command
+
     def make_visual_route(self, root: str) -> dict:
         route = self.route()
         (self.repo / "claims" / "PLAY-999.md").write_text(
@@ -433,6 +477,67 @@ class ModelRouteTests(unittest.TestCase):
         }), encoding="utf-8")
         row["priorAttemptReceipt"] = self._binding("inputs/prior-swift-attempt.json")
         self.assert_valid(route)
+
+    def test_writer_execution_binds_environment_root_and_phases(self) -> None:
+        route = self.route()
+        output, _, _ = self.add_writer_execution(route)
+        self.assert_valid(route)
+
+        route["writerExecution"]["writers"][0]["environment"]["EXTRA"] = "forbidden"
+        self.assert_invalid(route, "must exactly match command environment")
+        del route["writerExecution"]["writers"][0]["environment"]["EXTRA"]
+
+        route["writerExecution"]["writers"][0]["artifacts"][1]["path"] = "../escape.json"
+        self.assert_invalid(route, "normalized root-relative")
+        route["writerExecution"]["writers"][0]["artifacts"][1]["path"] = "materialized/successor.json"
+
+        output.parent.mkdir()
+        output.write_text("stale\n", encoding="utf-8")
+        self.assert_invalid(route, "prospective_output already exists")
+
+    def test_writer_execution_rejects_missing_or_unbound_required_input(self) -> None:
+        route = self.route()
+        self.add_writer_execution(route)
+        artifact = route["writerExecution"]["writers"][0]["artifacts"][0]
+        artifact["sha256"] = "0" * 64
+        self.assert_invalid(route, "required_input sha256 does not match")
+        artifact["path"] = "inputs/missing.json"
+        self.assert_invalid(route, "required_input does not exist")
+
+    def test_writer_receipt_binds_terminal_outputs_and_generated_bytes(self) -> None:
+        route = self.route()
+        output, receipt_path, command = self.add_writer_execution(route)
+        output.parent.mkdir()
+        output.write_text('{"successor":6}\n', encoding="utf-8")
+        receipt_path.parent.mkdir()
+        receipt = {
+            "schema": 1,
+            "routeId": route["routeId"],
+            "writerId": "successor-corpus",
+            "command": command,
+            "environment": {
+                "CITYSIM_WRITER_MODE": "successor",
+                "CITYSIM_SEED": "131",
+            },
+            "generatedOutputRoot": route["writerExecution"]["generatedOutputRoot"],
+            "status": "terminal",
+            "exitCode": 0,
+            "outputs": [{
+                "path": "materialized/successor.json",
+                "sha256": hashlib.sha256(output.read_bytes()).hexdigest(),
+            }],
+        }
+        receipt_path.write_text(json.dumps(receipt), encoding="utf-8")
+        self.assertEqual([], validator.validate_route(
+            route, self.repo, writer_phase="post_execution"
+        ))
+        self.assertEqual([], validator.validate_writer_receipt(
+            receipt, receipt_path, route
+        ))
+
+        receipt["outputs"][0]["sha256"] = "0" * 64
+        errors = validator.validate_writer_receipt(receipt, receipt_path, route)
+        self.assertTrue(any("does not match generated bytes" in error for error in errors), errors)
 
     def test_executable_claim_requires_real_focused_behavior(self) -> None:
         route = self.route()

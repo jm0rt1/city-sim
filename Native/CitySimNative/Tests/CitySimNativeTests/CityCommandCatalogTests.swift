@@ -536,6 +536,45 @@ final class CityCommandCatalogTests: XCTestCase {
     }
 
     @MainActor
+    func testTownCharterStandardsNoticeRoutesTheLiveFirstActBlockerWithoutChangingSpeed() throws {
+        var state = try XCTUnwrap(
+            ProductionStoryStateBuilder().buildAll().first {
+                $0.definition.strategy == .commercialStewardship
+                    && $0.definition.stage == .regionalCapital
+            }?.state
+        )
+        state.status = .playing
+        state.progression?.townCharterAwarded = false
+        state.progression?.townCharterQualifyingCycles = 0
+        state.progression?.secondAct = nil
+        state.population = 470
+
+        let store = CityGameStore(state: state)
+        store.speed = .fastest
+        let notice = CityMessage(
+            tick: state.tick,
+            severity: .information,
+            title: "Town Charter Standards",
+            detail: "Sustain every standard for 12 consecutive days."
+        )
+
+        let actions = CityNoticeActionCatalog.actions(
+            for: notice.title,
+            analytics: store.analytics
+        )
+        XCTAssertEqual(actions.first?.command, .buildResidential)
+        XCTAssertTrue(actions.contains { $0.command == .inspectorPopulation })
+
+        store.openMessage(notice)
+
+        XCTAssertTrue(store.showObjectives)
+        XCTAssertEqual(store.inspectorSection, .population)
+        XCTAssertEqual(store.speed, .fastest)
+        XCTAssertEqual(store.interactionMode, .inspect)
+        XCTAssertNil(store.selectedCoordinate)
+    }
+
+    @MainActor
     func testRegionalQualificationInterruptionRoutesTheLiveRemedyAndPauses() throws {
         var state = try XCTUnwrap(
             ProductionStoryStateBuilder().buildAll().first {

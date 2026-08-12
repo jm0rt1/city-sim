@@ -689,7 +689,8 @@ enum CityNoticeActionCatalog {
         "Hiring Bottleneck", "Severe Storm", "Regional Retail Challenge",
         "Regional Retail Pressure", "Regional Grid Mandate", "Regional Freight Overload",
         "Regional Qualification Interrupted", "Regional Qualification Resumed",
-        "Town Charter Qualification Interrupted", "Town Charter Qualification Resumed"
+        "Town Charter Standards", "Town Charter Qualification Interrupted",
+        "Town Charter Qualification Resumed"
     ]
 
     static func actions(for title: String) -> [CityDirectResponse] {
@@ -752,13 +753,21 @@ enum CityNoticeActionCatalog {
                 explanation: "Review the restored standards and remaining qualifying days.",
                 focusesMap: false
             )]
+        case "Town Charter Standards":
+            return [.init(
+                title: "Review Town Charter standards",
+                command: .inspectorOverview,
+                explanation: "Review the live Charter standard that needs attention next.",
+                focusesMap: false
+            )]
         default:
             return []
         }
     }
 
     static func actions(for title: String, analytics: CityAnalytics) -> [CityDirectResponse] {
-        if title == "Town Charter Qualification Interrupted" {
+        if title == "Town Charter Standards"
+            || title == "Town Charter Qualification Interrupted" {
             let support = CityTownCharterDecisionSupport.make(analytics: analytics)
             return ([support.primaryResponse] + support.secondaryResponses).uniquedByCommand()
         }

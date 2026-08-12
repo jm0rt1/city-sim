@@ -825,6 +825,15 @@ final class CityGameStore: ObservableObject {
         case "Town Charter Awarded":
             showObjectives = true
             openInspector(.overview)
+        case "Town Charter Standards":
+            showObjectives = true
+            let support = CityTownCharterDecisionSupport.make(analytics: analytics)
+            let diagnosis = support.secondaryResponses.first ?? support.primaryResponse
+            if diagnosis.focusesMap {
+                openInspector(.overview)
+            } else {
+                _ = perform(diagnosis.command)
+            }
         case "Town Charter Qualification Interrupted":
             showObjectives = true
             let support = CityTownCharterDecisionSupport.make(analytics: analytics)

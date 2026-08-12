@@ -688,7 +688,8 @@ enum CityNoticeActionCatalog {
         "Freight Recovery Delayed", "Budget Gap", "Utility Reserve Tight", "Utility Shortfall",
         "Hiring Bottleneck", "Severe Storm", "Regional Retail Challenge",
         "Regional Retail Pressure", "Regional Grid Mandate", "Regional Freight Overload",
-        "Regional Qualification Interrupted", "Regional Qualification Resumed"
+        "Regional Qualification Interrupted", "Regional Qualification Resumed",
+        "Town Charter Qualification Interrupted", "Town Charter Qualification Resumed"
     ]
 
     static func actions(for title: String) -> [CityDirectResponse] {
@@ -737,12 +738,30 @@ enum CityNoticeActionCatalog {
                 explanation: "Review the restored standards and remaining qualifying days.",
                 focusesMap: false
             )]
+        case "Town Charter Qualification Interrupted":
+            return [.init(
+                title: "Review Town Charter standards",
+                command: .inspectorOverview,
+                explanation: "Review the current Town Charter blocker and restart qualification.",
+                focusesMap: false
+            )]
+        case "Town Charter Qualification Resumed":
+            return [.init(
+                title: "Review Charter progress",
+                command: .inspectorOverview,
+                explanation: "Review the restored standards and remaining qualifying days.",
+                focusesMap: false
+            )]
         default:
             return []
         }
     }
 
     static func actions(for title: String, analytics: CityAnalytics) -> [CityDirectResponse] {
+        if title == "Town Charter Qualification Interrupted" {
+            let support = CityTownCharterDecisionSupport.make(analytics: analytics)
+            return ([support.primaryResponse] + support.secondaryResponses).uniquedByCommand()
+        }
         if title == "Regional Qualification Interrupted" {
             let support = CityRegionalCapitalDecisionSupport.make(analytics: analytics)
             return ([support.primaryResponse] + support.secondaryResponses).uniquedByCommand()

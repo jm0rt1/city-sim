@@ -470,6 +470,8 @@ struct HUDConsequenceFeedbackPresentation: Equatable {
         "Regional Freight Recovery",
         "Regional Qualification Interrupted",
         "Regional Qualification Resumed",
+        "Town Charter Qualification Interrupted",
+        "Town Charter Qualification Resumed",
         "Regional Capital Recognized"
     ]
 }

@@ -490,6 +490,23 @@ final class CityCommandCatalogTests: XCTestCase {
         XCTAssertEqual(blocked.diagnostic?.command, .buildResidential)
         XCTAssertTrue(blocked.actions.contains { $0.command == .inspectorPopulation })
 
+        let interruption = CityMessage(
+            tick: state.tick,
+            severity: .warning,
+            title: "Town Charter Qualification Interrupted",
+            detail: "Four qualifying days were lost. Grow to 500 residents."
+        )
+        let interruptionActions = CityNoticeActionCatalog.actions(
+            for: interruption.title,
+            analytics: store.analytics
+        )
+        XCTAssertEqual(interruptionActions.first?.command, .buildResidential)
+        XCTAssertTrue(interruptionActions.contains { $0.command == .inspectorPopulation })
+        store.openMessage(interruption)
+        XCTAssertEqual(store.inspectorSection, .population)
+        XCTAssertEqual(store.speed, .paused)
+        store.speed = .fastest
+
         let objective = try XCTUnwrap(store.objectives.first { $0.id == "town-charter" })
         store.openObjective(objective)
         XCTAssertTrue(store.showObjectives)
@@ -3302,7 +3319,7 @@ final class CityCommandCatalogTests: XCTestCase {
             "Severe Storm", "Storefront Slump", "Utility Reserve Tight", "Utility Shortfall",
             "Regional Retail Challenge", "Regional Retail Pressure",
             "Regional Grid Mandate", "Regional Freight Overload",
-            "Regional Qualification Interrupted"
+            "Regional Qualification Interrupted", "Town Charter Qualification Interrupted"
         ]
         XCTAssertEqual(
             authoredWarningAndCriticalTitles,

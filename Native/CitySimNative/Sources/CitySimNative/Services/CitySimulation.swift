@@ -1377,11 +1377,49 @@ enum CitySimulation {
         }
 
         if meetsTownCharterStandards(in: state) {
+            let resumedAfterInterruption = progression.townCharterQualifyingCycles == 0
+                && state.messages.contains {
+                    $0.title == "Town Charter Qualification Interrupted"
+                }
             progression.townCharterQualifyingCycles = min(
                 townCharterQualificationCycles,
                 progression.townCharterQualifyingCycles + 1
             )
+            if resumedAfterInterruption {
+                state.messages.removeAll {
+                    $0.title == "Town Charter Qualification Interrupted"
+                        || $0.title == "Town Charter Qualification Resumed"
+                }
+                let remaining = townCharterQualificationCycles
+                    - progression.townCharterQualifyingCycles
+                post(
+                    CityMessage(
+                        tick: state.tick,
+                        severity: .good,
+                        title: "Town Charter Qualification Resumed",
+                        detail: "Every Town Charter standard is met again. Qualification restarted at \(progression.townCharterQualifyingCycles) of \(townCharterQualificationCycles) days; hold them together for \(remaining) more days."
+                    ),
+                    to: &state
+                )
+            }
         } else {
+            let interruptedCycles = progression.townCharterQualifyingCycles
+            if interruptedCycles > 0 {
+                let analytics = CityAnalytics(state: state)
+                state.messages.removeAll {
+                    $0.title == "Town Charter Qualification Interrupted"
+                        || $0.title == "Town Charter Qualification Resumed"
+                }
+                post(
+                    CityMessage(
+                        tick: state.tick,
+                        severity: .warning,
+                        title: "Town Charter Qualification Interrupted",
+                        detail: "\(interruptedCycles) qualifying \(interruptedCycles == 1 ? "day was" : "days were") lost. \(analytics.townCharterStatusText)"
+                    ),
+                    to: &state
+                )
+            }
             progression.townCharterQualifyingCycles = 0
         }
 

@@ -1123,10 +1123,25 @@ final class GameplayLoopTests: XCTestCase {
         XCTAssertEqual(state.progression?.townCharterQualifyingCycles, 0)
         XCTAssertFalse(state.progression?.townCharterAwarded ?? true)
         XCTAssertEqual(state.status, .playing)
+        let interruption = try XCTUnwrap(
+            state.messages.first { $0.title == "Town Charter Qualification Interrupted" }
+        )
+        XCTAssertEqual(interruption.severity, .warning)
+        XCTAssertTrue(interruption.detail.contains("5 qualifying days were lost"))
+        XCTAssertTrue(interruption.detail.contains("restore utilities or parks"))
 
         advanceQualifyingTown(&state, days: 12)
         XCTAssertTrue(state.progression?.townCharterAwarded ?? false)
         XCTAssertEqual(state.messages.filter { $0.title == "Town Charter Awarded" }.count, 1)
+        let resumed = try XCTUnwrap(
+            state.messages.first { $0.title == "Town Charter Qualification Resumed" }
+        )
+        XCTAssertEqual(resumed.severity, .good)
+        XCTAssertTrue(resumed.detail.contains("restarted at 1 of 12 days"))
+        XCTAssertTrue(resumed.detail.contains("11 more days"))
+        XCTAssertFalse(
+            state.messages.contains { $0.title == "Town Charter Qualification Interrupted" }
+        )
         XCTAssertEqual(state.status, .playing)
         XCTAssertEqual(state.progression?.secondAct?.phase, .mandate)
     }

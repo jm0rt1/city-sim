@@ -70,6 +70,30 @@ final class HUDConsequenceFeedbackTests: XCTestCase {
         XCTAssertTrue(resumed?.visualText.hasPrefix("+") == true)
     }
 
+    func testTownCharterInterruptionAndResumptionStaySignedInTheHUD() {
+        let interruption = CityMessage(
+            tick: 700,
+            severity: .warning,
+            title: "Town Charter Qualification Interrupted",
+            detail: "Five qualifying days were lost. Raise happiness to 52%."
+        )
+        XCTAssertEqual(
+            HUDConsequenceFeedbackPresentation.make(from: [interruption])?.direction,
+            .negative
+        )
+
+        let resumption = CityMessage(
+            tick: 704,
+            severity: .good,
+            title: "Town Charter Qualification Resumed",
+            detail: "Every Town Charter standard is met again."
+        )
+        XCTAssertEqual(
+            HUDConsequenceFeedbackPresentation.make(from: [resumption])?.direction,
+            .positive
+        )
+    }
+
     func testFeedbackPreservesCurrentStrategyAccessibilityAndHUDBounds() {
         XCTAssertEqual(TopHUDView.compactMaximumHeight, 104)
         XCTAssertEqual(TopHUDView.regularMaximumHeight, 108)

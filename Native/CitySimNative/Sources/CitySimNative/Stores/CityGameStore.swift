@@ -27,6 +27,7 @@ final class CityGameStore: ObservableObject {
     @Published var showInspector = false
     @Published var showObjectives = false
     @Published var showCommandGuide = false
+    @Published var showCityHandbook = false
     @Published private(set) var isCityFocusModeEnabled = false
     @Published private(set) var commandPolicy: CityCommandPolicy
     @Published var inspectorSection: InspectorSection = .overview
@@ -321,7 +322,11 @@ final class CityGameStore: ObservableObject {
         case .openNotices:
             openAlertCenter()
         case .openCommandGuide:
+            showCityHandbook = false
             showCommandGuide = true
+        case .openHandbook:
+            showCommandGuide = false
+            showCityHandbook = true
         case .dismissFeedback:
             clearFeedback()
         default:
@@ -342,10 +347,11 @@ final class CityGameStore: ObservableObject {
         let descriptor = CityCommandCatalog.descriptor(for: command)
         guard descriptor.route == .store, !descriptor.isSpatial else { return false }
         if sessionReplacementConfirmation != nil {
-            return command == .cancelInteraction
+            return command == .cancelInteraction || command == .openHandbook
         }
         if state.status != .playing,
-           ![CityCommandID.newRegion, .saveCity, .saveBranch, .loadCity].contains(command) {
+           ![CityCommandID.newRegion, .saveCity, .saveBranch, .loadCity, .openHandbook]
+            .contains(command) {
             return false
         }
         return switch command {
@@ -356,7 +362,8 @@ final class CityGameStore: ObservableObject {
         case .dismissFeedback:
             lastFeedback != nil
         case .cancelInteraction:
-            showCommandGuide || isCityFocusModeEnabled || showInspector || showObjectives
+            showCityHandbook || showCommandGuide || isCityFocusModeEnabled
+                || showInspector || showObjectives
                 || selectedCoordinate != nil || interactionMode != .inspect
         default:
             true
@@ -733,6 +740,9 @@ final class CityGameStore: ObservableObject {
             cancelCheckpointLibrary()
         } else if sessionReplacementConfirmation != nil {
             cancelSessionReplacement()
+        } else if showCityHandbook {
+            showCityHandbook = false
+            requestMapFocus()
         } else if showCommandGuide {
             showCommandGuide = false
             requestMapFocus()
@@ -1080,6 +1090,7 @@ final class CityGameStore: ObservableObject {
         hudContextScope = .city
         showInspector = false
         showCommandGuide = false
+        showCityHandbook = false
         isCityFocusModeEnabled = false
         undoStates.removeAll()
         canUndo = false
@@ -1100,6 +1111,7 @@ final class CityGameStore: ObservableObject {
         pendingSessionReplacementLoad = loadResult
         speed = .paused
         showCommandGuide = false
+        showCityHandbook = false
         sessionReplacementConfirmation = CitySessionReplacementConfirmationPresentation.make(
             state: state,
             action: action,
@@ -1122,6 +1134,7 @@ final class CityGameStore: ObservableObject {
         speedBeforeCheckpointLibrary = speed
         speed = .paused
         showCommandGuide = false
+        showCityHandbook = false
         checkpointLibrary = CityCheckpointLibraryPresentation.make(entries)
         presentBlockingModal(.checkpointLibrary)
     }
@@ -1488,6 +1501,7 @@ final class CityGameStore: ObservableObject {
         hudContextScope = .city
         showInspector = false
         showCommandGuide = false
+        showCityHandbook = false
         isCityFocusModeEnabled = false
         undoStates.removeAll()
         canUndo = false

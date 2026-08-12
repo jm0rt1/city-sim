@@ -47,6 +47,7 @@ enum CityCommandID: String, CaseIterable, Identifiable, Sendable {
     case toggleCityFocus = "panel.focus-city"
     case openNotices = "panel.notices"
     case openCommandGuide = "panel.command-guide"
+    case openHandbook = "panel.handbook"
     case dismissFeedback = "panel.dismiss-feedback"
 
     case inspectorOverview = "inspector.overview"
@@ -115,7 +116,7 @@ enum CityCommandPolicy: Equatable, Sendable {
         case .enabled:
             true
         case .blocked:
-            false
+            command == .openHandbook
         }
     }
 
@@ -274,6 +275,7 @@ enum CityCommandCatalog {
         add(.toggleCityFocus, "Toggle Focus City", .panels, "Give the city maximum space while retaining critical operating truth.", shortcut: shortcut("f", [.command, .shift], "⇧⌘F", scope: .global))
         add(.openNotices, "Open City Notices", .panels, "Open the notice journal and related diagnostics.", shortcut: shortcut("a", [.command, .shift], "⇧⌘A", scope: .global))
         add(.openCommandGuide, "Open Command Guide", .panels, "Search every command, shortcut, and availability rule.", shortcut: shortcut("/", [.command], "⌘/", scope: .global))
+        add(.openHandbook, "City Handbook", .panels, "Search gameplay, diagnosis, save, recovery, controls, and accessibility guidance.", shortcut: shortcut("/", [.command, .shift], "⇧⌘?", scope: .global))
         add(.dismissFeedback, "Dismiss Action Message", .panels, "Dismiss the transient action message only.", shortcut: shortcut(".", [.command], "⌘.", scope: .global))
 
         for section in InspectorSection.allCases {

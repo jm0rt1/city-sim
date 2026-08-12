@@ -152,7 +152,7 @@ struct CityGameCommands: Commands {
         }
         CommandGroup(after: .help) {
             ForEach(CityCommandCatalog.descriptors(in: .panels).filter {
-                [.openCommandGuide, .dismissFeedback].contains($0.id)
+                [.openHandbook, .openCommandGuide, .dismissFeedback].contains($0.id)
             }) {
                 commandButton($0)
             }

@@ -230,6 +230,11 @@ struct ContentView: View {
         .sheet(isPresented: $store.showCommandGuide) {
             CommandGuideView(store: store)
         }
+        .sheet(isPresented: $store.showCityHandbook) {
+            CityHandbookView {
+                store.showCityHandbook = false
+            }
+        }
         .confirmationDialog(
             store.sessionReplacementConfirmation?.title ?? "Replace the Current City?",
             isPresented: Binding(

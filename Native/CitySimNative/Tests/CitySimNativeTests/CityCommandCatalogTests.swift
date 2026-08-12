@@ -2037,6 +2037,35 @@ final class CityCommandCatalogTests: XCTestCase {
     }
 
     @MainActor
+    func testAccessibilitySelectBuildableBlockChoosesDeterministicCommercialTarget() throws {
+        let store = CityGameStore(state: .newCity(seed: 42))
+        store.selectTool(.commercial)
+        store.clearFeedback()
+        let mapView = CityMapSKView(frame: CGRect(x: 0, y: 0, width: 900, height: 600))
+        let coordinator = CitySceneView.Coordinator(store: store)
+
+        coordinator.configureMapAccessibility(in: mapView)
+        XCTAssertEqual(mapView.accessibilityValue() as? String, "No block selected")
+        XCTAssertEqual(
+            mapView.accessibilityCustomActions()?.map(\.name),
+            ["Select buildable block"]
+        )
+
+        let action = try XCTUnwrap(mapView.accessibilityCustomActions()?.first)
+        XCTAssertTrue(action.handler?() == true)
+        let expected = GridCoordinate(x: 4, y: 8)
+        XCTAssertEqual(store.selectedCoordinate, expected)
+        XCTAssertEqual(store.selectedTile?.kind, .empty)
+        XCTAssertTrue(store.state.neighbors(of: expected).contains { $0.kind == .road })
+
+        coordinator.configureMapAccessibility(in: mapView)
+        let accessibilityValue = try XCTUnwrap(mapView.accessibilityValue() as? String)
+        XCTAssertTrue(accessibilityValue.contains("block 5, 9"))
+        XCTAssertTrue(store.performMapCommand(.mapPrimaryAction))
+        XCTAssertEqual(store.state.tile(at: expected)?.kind, .commercial)
+    }
+
+    @MainActor
     func testFocusedReturnRoutesOneRejectedAttemptButTextAndWelcomeRemainQuarantined() throws {
         let store = CityGameStore(state: .newCity(seed: 42))
         let occupied = try XCTUnwrap(store.state.tiles.first { $0.kind != .empty })

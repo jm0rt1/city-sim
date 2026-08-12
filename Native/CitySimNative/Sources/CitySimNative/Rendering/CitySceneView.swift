@@ -228,7 +228,19 @@ struct CitySceneView: NSViewRepresentable {
                   let tile = store.state.tile(at: coordinate) else {
                 view.cityAccessibilityValue = "No block selected"
                 view.cityAccessibilityHelp = CityMapSKView.defaultAccessibilityHelp
-                view.cityAccessibilityActions = []
+                if case .build(let kind) = store.interactionMode {
+                    view.cityAccessibilityActions = [
+                        NSAccessibilityCustomAction(name: "Select buildable block") { [weak self] in
+                            guard let self,
+                                  let coordinate = self.firstBuildableCoordinate(for: kind) else {
+                                return false
+                            }
+                            return self.store.acceptPointerMapActionCandidate(coordinate) != nil
+                        }
+                    ]
+                } else {
+                    view.cityAccessibilityActions = []
+                }
                 return
             }
 
@@ -286,6 +298,27 @@ struct CitySceneView: NSViewRepresentable {
                 })
             }
             view.cityAccessibilityActions = actions
+        }
+
+        private func firstBuildableCoordinate(for kind: BuildingKind) -> GridCoordinate? {
+            store.state.tiles
+                .sorted {
+                    if $0.coordinate.y != $1.coordinate.y {
+                        return $0.coordinate.y < $1.coordinate.y
+                    }
+                    return $0.coordinate.x < $1.coordinate.x
+                }
+                .first {
+                    if case .success = CitySimulation.validateBuild(
+                        kind,
+                        at: $0.coordinate,
+                        in: store.state
+                    ) {
+                        return true
+                    }
+                    return false
+                }?
+                .coordinate
         }
 
         func allowsPointerMapActionCandidate(in view: CityMapSKView) -> Bool {

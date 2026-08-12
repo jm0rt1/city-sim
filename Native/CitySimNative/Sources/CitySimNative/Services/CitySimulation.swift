@@ -1320,7 +1320,7 @@ enum CitySimulation {
         guard !state.preservesLegacyReplayConsequences,
               let story = state.progression?.strategy,
               story.committedStrategy == .commercialStewardship,
-              story.currentPhase == .recovery,
+              story.currentPhase != .completed,
               story.recoveryResolution == nil,
               state.taxRate <= 0.09 else { return }
 

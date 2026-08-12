@@ -588,19 +588,17 @@ final class GameplayLoopTests: XCTestCase {
         XCTAssertNotEqual(placemaking.happiness, taxRelief.happiness)
     }
 
-    func testTaxReliefPublishesAVisibleDailyRecoveryConsequence() throws {
-        var pressured = try commercialStrategy()
-        pressured.taxRate = 0.14
-        advanceToTick(&pressured, tick: 4)
-        advanceThroughStrategyPhase(&pressured, phase: .opportunity)
-        advanceThroughStrategyPhase(&pressured, phase: .complication)
-        advanceThroughStrategyPhase(&pressured, phase: .setback)
-        XCTAssertEqual(pressured.progression?.strategy?.currentPhase, .recovery)
-        XCTAssertNil(pressured.progression?.strategy?.recoveryResolution)
+    func testTaxReliefPublishesAVisibleDailyStrategyConsequence() throws {
+        var commercial = CityGameState.newCity(seed: 42)
+        try buildFirstValid(.commercial, in: &commercial)
+        advanceToTick(&commercial, tick: 64)
+        XCTAssertEqual(commercial.day, 17)
+        XCTAssertEqual(commercial.progression?.strategy?.currentPhase, .opportunity)
+        XCTAssertNil(commercial.progression?.strategy?.recoveryResolution)
 
-        var taxRelief = pressured
+        var taxRelief = commercial
         taxRelief.taxRate = 0.09
-        advanceToTick(&taxRelief, tick: taxRelief.tick + 3)
+        advanceToTick(&taxRelief, tick: 67)
         XCTAssertFalse(taxRelief.messages.contains { $0.title == "Tax Relief Confirmed" })
         CitySimulation.step(&taxRelief)
 
@@ -609,12 +607,21 @@ final class GameplayLoopTests: XCTestCase {
         })
         XCTAssertEqual(confirmation.tick, taxRelief.tick)
         XCTAssertTrue(confirmation.detail.contains("removes the current tax-pressure penalty from demand"))
+        XCTAssertEqual(taxRelief.day, 18)
+        XCTAssertEqual(taxRelief.progression?.strategy?.currentPhase, .complication)
+        XCTAssertTrue(taxRelief.messages.contains { $0.title == "Market Weekend" })
         XCTAssertNil(taxRelief.progression?.strategy?.recoveryResolution)
 
-        var noChangeControl = pressured
-        advanceDays(&noChangeControl, days: 1)
+        var noChangeControl = commercial
+        noChangeControl.taxRate = 0.10
+        advanceToTick(&noChangeControl, tick: 68)
         XCTAssertFalse(noChangeControl.messages.contains { $0.title == "Tax Relief Confirmed" })
-        XCTAssertLessThan(noChangeControl.demand.commercial, taxRelief.demand.commercial)
+
+        var resolvedControl = commercial
+        resolvedControl.taxRate = 0.09
+        resolvedControl.progression?.strategy?.recoveryResolution = .commercialTaxRelief
+        advanceToTick(&resolvedControl, tick: 68)
+        XCTAssertFalse(resolvedControl.messages.contains { $0.title == "Tax Relief Confirmed" })
 
         let replayed = try JSONDecoder().decode(
             CityGameState.self,
@@ -627,6 +634,10 @@ final class GameplayLoopTests: XCTestCase {
         advanceDays(&resumed, days: 1)
         advanceDays(&uninterrupted, days: 1)
         XCTAssertEqual(resumed, uninterrupted)
+        XCTAssertEqual(
+            uninterrupted.messages.filter { $0.title == "Tax Relief Confirmed" }.count,
+            1
+        )
     }
 
     func testIndustrialSetbackSupportsUtilityAndGreenBufferRecovery() throws {

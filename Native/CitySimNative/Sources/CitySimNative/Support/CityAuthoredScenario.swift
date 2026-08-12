@@ -90,6 +90,7 @@ struct CityAuthoredScenarioDefinition: Identifiable, Equatable, Sendable {
                 detail: "Harbor Point has 40 city days to restore non-negative cashflow, full utility coverage, at least 50% happiness, a $15,000 reserve, and 380 residents. Start by diagnosing the operating gap and near-capacity utilities."
             )
         ]
+        state.beginHistoryTracking()
         return state
     }
 }

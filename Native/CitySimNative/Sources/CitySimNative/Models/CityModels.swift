@@ -213,7 +213,7 @@ enum DataOverlay: String, CaseIterable, Identifiable, Sendable {
 }
 
 enum InspectorSection: String, CaseIterable, Identifiable, Sendable {
-    case overview, finances, population, happiness, employment, demand, utilities, journal
+    case overview, finances, population, happiness, employment, demand, utilities, journal, trends
 
     var id: String { rawValue }
 
@@ -227,6 +227,7 @@ enum InspectorSection: String, CaseIterable, Identifiable, Sendable {
         case .demand: "Development Demand"
         case .utilities: "Utilities"
         case .journal: "City Journal"
+        case .trends: "City Trends"
         }
     }
 
@@ -240,6 +241,7 @@ enum InspectorSection: String, CaseIterable, Identifiable, Sendable {
         case .demand: "chart.bar.fill"
         case .utilities: "bolt.horizontal.fill"
         case .journal: "newspaper.fill"
+        case .trends: "chart.xyaxis.line"
         }
     }
 }

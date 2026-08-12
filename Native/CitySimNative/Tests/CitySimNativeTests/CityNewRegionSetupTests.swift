@@ -11,7 +11,8 @@ final class CityNewRegionSetupTests: XCTestCase {
         XCTAssertEqual(guided.experience, .guidedFoundations)
         XCTAssertEqual(guided.cityName, "New Arcadia")
         XCTAssertEqual(guided.startingResources, .balanced)
-        XCTAssertEqual(guided.makeState(), CityGameState.newCity(seed: 42))
+        XCTAssertEqual(guided.makeState(), CityGameState.newTrackedCity(seed: 42))
+        XCTAssertEqual(guided.makeState().cityHistory?.map(\.tick), [0])
 
         var sandboxDraft = CityNewRegionDraft.initial(seed: 42)
         sandboxDraft.experience = .openSandbox
@@ -28,6 +29,7 @@ final class CityNewRegionSetupTests: XCTestCase {
         XCTAssertEqual(first.treasury, 20_000)
         XCTAssertNil(first.progression)
         XCTAssertEqual(first.sandboxRules, .standard)
+        XCTAssertEqual(first.cityHistory?.map(\.tick), [0])
         XCTAssertEqual(first.messages.first?.title, "Open Sandbox Ready")
         XCTAssertTrue(first.messages.first?.detail.contains("standard economy") == true)
         XCTAssertTrue(first.messages.first?.detail.contains("persist with the city") == true)

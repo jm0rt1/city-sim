@@ -60,6 +60,7 @@ enum CityCommandID: String, CaseIterable, Identifiable, Sendable {
     case inspectorDemand = "inspector.demand"
     case inspectorUtilities = "inspector.utilities"
     case inspectorJournal = "inspector.journal"
+    case inspectorTrends = "inspector.trends"
 
     case openSettings = "system.settings"
     case toggleFullScreen = "system.full-screen"
@@ -441,6 +442,7 @@ enum CityCommandCatalog {
         case .demand: .inspectorDemand
         case .utilities: .inspectorUtilities
         case .journal: .inspectorJournal
+        case .trends: .inspectorTrends
         }
     }
 
@@ -470,6 +472,7 @@ enum CityCommandCatalog {
         case .demand: "Demand"
         case .utilities: "Utilities"
         case .journal: "Journal"
+        case .trends: "Trends"
         }
     }
 }

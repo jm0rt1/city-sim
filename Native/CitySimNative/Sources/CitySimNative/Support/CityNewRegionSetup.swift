@@ -179,6 +179,7 @@ struct CityNewRegionConfiguration: Equatable, Sendable {
                 )
             ]
         }
+        state.beginHistoryTracking()
         return state
     }
 }

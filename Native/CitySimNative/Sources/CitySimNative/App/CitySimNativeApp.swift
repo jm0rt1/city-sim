@@ -84,6 +84,7 @@ struct CitySimNativeApp: App {
             forKey: CityPlayerPreferenceKey.hasSeenWelcome
         )
         _store = StateObject(wrappedValue: CityGameStore(
+            state: .newTrackedCity(),
             commandPolicy: hasSeenWelcome ? .enabled : .blocked(.welcome),
             startsPaused: true,
             capturesScenarioCheckpoints: true

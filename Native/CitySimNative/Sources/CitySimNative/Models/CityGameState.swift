@@ -120,6 +120,19 @@ struct CityStormRecoveryState: Codable, Equatable, Sendable {
     var disposition: CityStormRecoveryDisposition
 }
 
+struct CityHistorySample: Codable, Equatable, Sendable, Identifiable {
+    let tick: Int
+    let treasury: Double
+    let population: Int
+    let jobs: Int
+    let happiness: Double
+    let approval: Double
+    let projectedBalance: Double
+
+    var id: Int { tick }
+    var day: Int { tick / 4 + 1 }
+}
+
 struct CityGameState: Codable, Equatable, Sendable {
     /// Immutable PLAY083 v3 starting states whose historical replay predates
     /// the current player-facing construction and tax-relief consequences.
@@ -151,6 +164,9 @@ struct CityGameState: Codable, Equatable, Sendable {
     var stormRecovery: CityStormRecoveryState? = nil
     var authoredScenario: CityAuthoredScenarioSession? = nil
     var sandboxRules: CitySandboxRules? = nil
+    /// Daily, bounded observations for cities created by versions that support
+    /// trend history. `nil` preserves the exact identity of older checkpoints.
+    var cityHistory: [CityHistorySample]? = nil
     var status: GameStatus
     var seed: UInt64
 
@@ -244,5 +260,42 @@ struct CityGameState: Codable, Equatable, Sendable {
         [(1, 0), (-1, 0), (0, 1), (0, -1)].compactMap {
             tile(at: GridCoordinate(x: coordinate.x + $0.0, y: coordinate.y + $0.1))
         }
+    }
+}
+
+extension CityGameState {
+    static let maximumHistorySampleCount = 90
+
+    static func newTrackedCity(seed: UInt64 = 0xC17C1A) -> CityGameState {
+        var state = newCity(seed: seed)
+        state.beginHistoryTracking()
+        return state
+    }
+
+    mutating func beginHistoryTracking() {
+        cityHistory = []
+        recordHistorySample()
+    }
+
+    mutating func recordHistorySample() {
+        guard var history = cityHistory else { return }
+        let sample = CityHistorySample(
+            tick: tick,
+            treasury: treasury,
+            population: population,
+            jobs: jobs,
+            happiness: happiness,
+            approval: approval,
+            projectedBalance: CitySimulation.projectedBalance(in: self)
+        )
+        if history.last?.tick == tick {
+            history[history.count - 1] = sample
+        } else {
+            history.append(sample)
+        }
+        if history.count > Self.maximumHistorySampleCount {
+            history.removeFirst(history.count - Self.maximumHistorySampleCount)
+        }
+        cityHistory = history
     }
 }

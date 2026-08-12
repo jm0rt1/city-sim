@@ -221,6 +221,7 @@ struct InspectorView: View {
         case .demand: demandContext
         case .utilities: utilityContext
         case .journal: journalContext
+        case .trends: trendsContext
         }
     }
 
@@ -641,6 +642,53 @@ struct InspectorView: View {
     }
 
     @ViewBuilder
+    private var trendsContext: some View {
+        let samples = store.state.cityHistory ?? []
+        if samples.isEmpty {
+            LazyVGrid(columns: contextColumns, alignment: .leading, spacing: 8) {
+                ContextCard(title: "History starts here", symbol: "clock.arrow.circlepath", tint: GameTheme.information) {
+                    Text("This checkpoint predates daily trends. New regions retain up to 90 daily observations in their saves.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .lineLimit(4)
+                }
+            }
+        } else {
+            LazyVGrid(columns: contextColumns, alignment: .leading, spacing: 8) {
+                ForEach(CityTrendMetric.allCases) { metric in
+                    trendCard(metric, samples: samples)
+                }
+            }
+        }
+    }
+
+    private func trendCard(_ metric: CityTrendMetric, samples: [CityHistorySample]) -> some View {
+        let values = samples.map { metric.value(in: $0) }
+        let first = values.first ?? 0
+        let latest = values.last ?? 0
+        let change = latest - first
+        let firstDay = samples.first?.day ?? store.state.day
+        let latestDay = samples.last?.day ?? store.state.day
+        return ContextCard(title: metric.title, symbol: metric.symbol, tint: metric.tint(change: change)) {
+            HStack(alignment: .firstTextBaseline) {
+                Text(metric.formatted(latest))
+                    .font(.title3.bold().monospacedDigit())
+                Spacer(minLength: 4)
+                Text(metric.formattedChange(change))
+                    .font(.caption.bold().monospacedDigit())
+                    .foregroundStyle(metric.tint(change: change))
+            }
+            CityTrendSparkline(values: values, tint: metric.tint(change: change))
+            Text(samples.count == 1 ? "Day \(latestDay) baseline" : "Day \(firstDay) to Day \(latestDay) · \(samples.count) daily points")
+                .font(.caption2)
+                .foregroundStyle(.secondary)
+                .lineLimit(1)
+        }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(metric.accessibilityLabel(first: first, latest: latest, change: change, firstDay: firstDay, latestDay: latestDay))
+    }
+
+    @ViewBuilder
     private func journalGrid(_ summaries: [CityMessageSummary]) -> some View {
         LazyVGrid(columns: contextColumns, alignment: .leading, spacing: 8) {
             if summaries.isEmpty {
@@ -828,7 +876,103 @@ private extension InspectorSection {
         case .demand: "Demand"
         case .utilities: "Utilities"
         case .journal: "Journal"
+        case .trends: "Trends"
         }
+    }
+}
+
+private enum CityTrendMetric: String, CaseIterable, Identifiable {
+    case population, treasury, cashflow, happiness
+
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .population: "Population"
+        case .treasury: "Treasury"
+        case .cashflow: "Cashflow"
+        case .happiness: "Happiness"
+        }
+    }
+
+    var symbol: String {
+        switch self {
+        case .population: "person.3.fill"
+        case .treasury: "dollarsign.circle.fill"
+        case .cashflow: "arrow.up.arrow.down.circle.fill"
+        case .happiness: "face.smiling.fill"
+        }
+    }
+
+    func value(in sample: CityHistorySample) -> Double {
+        switch self {
+        case .population: Double(sample.population)
+        case .treasury: sample.treasury
+        case .cashflow: sample.projectedBalance
+        case .happiness: sample.happiness
+        }
+    }
+
+    func formatted(_ value: Double) -> String {
+        switch self {
+        case .population: Int(value.rounded()).formatted()
+        case .treasury: value.currencyText
+        case .cashflow: value.signedCurrencyText
+        case .happiness: value.percentText
+        }
+    }
+
+    func formattedChange(_ change: Double) -> String {
+        switch self {
+        case .population:
+            let value = Int(change.rounded())
+            return value == 0 ? "No change" : "\(value > 0 ? "+" : "")\(value.formatted())"
+        case .treasury, .cashflow:
+            return change == 0 ? "No change" : change.signedCurrencyText
+        case .happiness:
+            return change == 0 ? "No change" : "\(change > 0 ? "+" : "")\(change.formatted(.number.precision(.fractionLength(1)))) pts"
+        }
+    }
+
+    func tint(change: Double) -> Color {
+        if abs(change) < 0.001 { return GameTheme.information }
+        return change > 0 ? GameTheme.accent : GameTheme.warning
+    }
+
+    func accessibilityLabel(first: Double, latest: Double, change: Double, firstDay: Int, latestDay: Int) -> String {
+        "\(title). Day \(firstDay), \(formatted(first)). Day \(latestDay), \(formatted(latest)). Change, \(formattedChange(change))."
+    }
+}
+
+private struct CityTrendSparkline: View {
+    let values: [Double]
+    let tint: Color
+
+    var body: some View {
+        Canvas { context, size in
+            guard let minimum = values.min(), let maximum = values.max(), !values.isEmpty else { return }
+            let range = max(maximum - minimum, 1)
+            let denominator = max(1, values.count - 1)
+            if values.count == 1 {
+                context.fill(
+                    Path(ellipseIn: CGRect(x: 0, y: size.height / 2 - 2, width: 4, height: 4)),
+                    with: .color(tint)
+                )
+                return
+            }
+            var path = Path()
+            for (index, value) in values.enumerated() {
+                let x = size.width * CGFloat(index) / CGFloat(denominator)
+                let normalized = (value - minimum) / range
+                let y = size.height - 3 - ((size.height - 6) * CGFloat(normalized))
+                if index == 0 { path.move(to: CGPoint(x: x, y: y)) }
+                else { path.addLine(to: CGPoint(x: x, y: y)) }
+            }
+            context.stroke(path, with: .color(tint), style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
+        }
+        .frame(height: 28)
+        .padding(.vertical, 2)
+        .accessibilityHidden(true)
     }
 }
 

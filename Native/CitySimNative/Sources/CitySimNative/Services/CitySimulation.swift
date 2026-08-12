@@ -335,6 +335,9 @@ enum CitySimulation {
         if let unlimitedTreasury {
             state.treasury = unlimitedTreasury
         }
+        if state.tick.isMultiple(of: 4) {
+            state.recordHistorySample()
+        }
     }
 
     private static func announceCompletedConstruction(

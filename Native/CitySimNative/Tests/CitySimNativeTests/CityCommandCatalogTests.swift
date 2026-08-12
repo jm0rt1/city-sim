@@ -10,6 +10,118 @@ private final class FocusProbeView: NSView {
 }
 
 final class CityCommandCatalogTests: XCTestCase {
+    func testUtilityDecisionSupportNamesTheConstraintAndPrioritizesItsProject() throws {
+        var state = CityGameState.newCity(seed: 42)
+        state.powerUsed = state.powerCapacity + 18
+        state.waterUsed = state.waterCapacity - 40
+        let analytics = CityAnalytics(state: state)
+        let support = CityUtilityDecisionSupport.make(analytics: analytics)
+
+        XCTAssertEqual(support.status, .shortfall)
+        XCTAssertEqual(support.priorityKind, .powerPlant)
+        XCTAssertEqual(support.title, "Power shortfall")
+        XCTAssertTrue(support.detail.contains("short by 18"))
+        XCTAssertTrue(support.detail.contains("Water still has 40 spare"))
+        XCTAssertEqual(support.response?.command, .buildPowerPlant)
+
+        let actions = CityNoticeActionCatalog.actions(
+            for: "Utility Shortfall",
+            analytics: analytics
+        )
+        XCTAssertEqual(actions.first?.command, .buildPowerPlant)
+        XCTAssertEqual(actions.filter { $0.command == .buildPowerPlant }.count, 1)
+        XCTAssertTrue(actions.contains { $0.command == .overlayUtilities })
+        XCTAssertTrue(actions.contains { $0.command == .buildWaterTower })
+
+        state.powerUsed = state.powerCapacity - 30
+        state.waterUsed = state.waterCapacity + 12
+        let waterSupport = CityUtilityDecisionSupport.make(
+            analytics: CityAnalytics(state: state)
+        )
+        XCTAssertEqual(waterSupport.priorityKind, .waterTower)
+        XCTAssertEqual(waterSupport.response?.command, .buildWaterTower)
+    }
+
+    @MainActor
+    func testUrgentUtilityRemedyPausesAndTargetsAReadyParcel() throws {
+        var state = CityGameState.newCity(seed: 42)
+        state.powerUsed = state.powerCapacity + 18
+        let store = CityGameStore(state: state)
+        store.speed = .fastest
+        let response = try XCTUnwrap(
+            CityNoticeActionCatalog.actions(
+                for: "Utility Shortfall",
+                analytics: store.analytics
+            ).first
+        )
+
+        StrategyCommandCenterView.perform(response, on: store)
+
+        XCTAssertEqual(response.command, .buildPowerPlant)
+        XCTAssertEqual(store.interactionMode, .build(.powerPlant))
+        XCTAssertEqual(store.speed, .paused)
+        let target = try XCTUnwrap(store.selectedCoordinate)
+        if case .failure(let rejection) = CitySimulation.validateBuild(
+            .powerPlant,
+            at: target,
+            in: store.state
+        ) {
+            XCTFail("Urgent utility remedy selected a blocked parcel: \(rejection)")
+        }
+        store.togglePause()
+        XCTAssertEqual(store.speed, .fastest)
+    }
+
+    @MainActor
+    func testUtilityAlertOpensLiveDiagnosisAndProtectsDecisionTime() {
+        let message = CityMessage(
+            tick: 80,
+            severity: .critical,
+            title: "Utility Shortfall",
+            detail: "Power is short by 18."
+        )
+        var state = CityGameState.newCity(seed: 42)
+        state.messages = [message]
+        let store = CityGameStore(state: state)
+        store.speed = .fastest
+
+        store.openMessage(message)
+
+        XCTAssertEqual(store.overlay, .utilities)
+        XCTAssertTrue(store.showInspector)
+        XCTAssertEqual(store.inspectorSection, .utilities)
+        XCTAssertEqual(store.speed, .paused)
+        store.togglePause()
+        XCTAssertEqual(store.speed, .fastest)
+
+        let consequence = HUDConsequenceFeedbackPresentation.make(from: [message])
+        XCTAssertEqual(consequence?.message.title, "Utility Shortfall")
+        XCTAssertEqual(consequence?.direction, .negative)
+    }
+
+    @MainActor
+    func testCompactUtilityDiagnosisRendersThePriorityWithinTheDetailsBudget() throws {
+        var state = CityGameState.newCity(seed: 42)
+        state.powerUsed = state.powerCapacity + 18
+        state.waterUsed = state.waterCapacity - 40
+        let store = CityGameStore(state: state)
+        store.openInspector(.utilities)
+        let size = CGSize(width: 854, height: BuildToolbarView.compactDetailsMaxHeight)
+
+        let utilityDetails = try bitmap(
+            of: InspectorView(store: store, compact: true)
+                .frame(width: size.width, height: size.height, alignment: .top),
+            size: size
+        )
+
+        XCTAssertEqual(utilityDetails.size.height, BuildToolbarView.compactDetailsMaxHeight, accuracy: 0.5)
+        XCTAssertEqual(store.inspectorSection, .utilities)
+        XCTAssertEqual(
+            CityUtilityDecisionSupport.make(analytics: store.analytics).title,
+            "Power shortfall"
+        )
+    }
+
     @MainActor
     func testCompactUtilityDetailNamesPowerAndWaterWithoutWeakeningAccessibilityTruth() {
         let store = CityGameStore(state: .newCity(seed: 42))

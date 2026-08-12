@@ -427,6 +427,8 @@ struct HUDConsequenceFeedbackPresentation: Equatable {
         "Main Street Rebound",
         "Industrial Load Surge",
         "Industrial Load Absorbed",
+        "Utility Reserve Tight",
+        "Utility Shortfall",
         "Regional Retail Pressure",
         "Regional Main Street Recovery",
         "Regional Grid Mandate",
@@ -469,7 +471,10 @@ struct StrategyCommandCenterView: View {
               feedback.message.severity == .warning || feedback.message.severity == .critical else {
             return nil
         }
-        return CityNoticeActionCatalog.actions(for: feedback.message.title).first
+        return CityNoticeActionCatalog.actions(
+            for: feedback.message.title,
+            analytics: store.analytics
+        ).first
     }
 
     var body: some View {

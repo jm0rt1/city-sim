@@ -786,6 +786,12 @@ final class CityGameStore: ObservableObject {
 
     func openMessage(_ message: CityMessage) {
         switch message.title {
+        case "Utility Reserve Tight", "Utility Shortfall":
+            overlay = .utilities
+            openInspector(.utilities)
+            if message.severity == .warning || message.severity == .critical {
+                setSpeed(.paused)
+            }
         case "Severe Storm":
             overlay = .utilities
             openInspector(.utilities)

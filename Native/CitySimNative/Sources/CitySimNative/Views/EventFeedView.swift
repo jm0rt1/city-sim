@@ -43,16 +43,15 @@ struct EventFeedView: View {
                 .buttonStyle(.plain)
                 .accessibilityLabel("Open \(summary.message.title)")
                 .accessibilityValue(summary.count > 1 ? "\(summary.count) similar events" : summary.message.detail)
-                let actions = CityNoticeActionCatalog.actions(for: summary.message.title)
+                let actions = CityNoticeActionCatalog.actions(
+                    for: summary.message.title,
+                    analytics: store.analytics
+                )
                 if !actions.isEmpty {
                     Menu("Act") {
                         ForEach(actions) { response in
                             Button(response.title) {
-                                if response.focusesMap {
-                                    store.performMapFocused(response.command)
-                                } else {
-                                    store.perform(response.command)
-                                }
+                                StrategyCommandCenterView.perform(response, on: store)
                             }
                             .accessibilityHint(response.explanation + (response.focusesMap ? " Focus returns to the map." : ""))
                         }

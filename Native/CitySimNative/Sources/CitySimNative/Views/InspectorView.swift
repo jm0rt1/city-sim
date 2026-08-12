@@ -79,6 +79,9 @@ struct InspectorView: View {
     private var financeDecisionSupport: CityFinanceDecisionSupport {
         CityFinanceDecisionSupport.make(analytics: analytics)
     }
+    private var utilityDecisionSupport: CityUtilityDecisionSupport {
+        CityUtilityDecisionSupport.make(analytics: analytics)
+    }
     private var contextColumns: [GridItem] {
         Array(
             repeating: GridItem(.flexible(), spacing: 8, alignment: .top),
@@ -525,7 +528,27 @@ struct InspectorView: View {
     }
 
     private var utilityContext: some View {
-        LazyVGrid(columns: contextColumns, alignment: .leading, spacing: 8) {
+        let support = utilityDecisionSupport
+        return LazyVGrid(columns: contextColumns, alignment: .leading, spacing: 8) {
+            ContextCard(
+                title: support.title,
+                symbol: support.status == .shortfall ? "exclamationmark.octagon.fill" : "gauge.with.dots.needle.67percent",
+                tint: utilityDecisionTint
+            ) {
+                Text(support.detail)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(3)
+                if let response = support.response {
+                    compactAction(response.title, symbol: support.priorityKind.symbol) {
+                        StrategyCommandCenterView.perform(response, on: store)
+                    }
+                } else {
+                    compactAction("Utility map", symbol: DataOverlay.utilities.symbol) {
+                        store.performMapFocused(.overlayUtilities)
+                    }
+                }
+            }
             utilityCard(
                 title: "Power",
                 symbol: "bolt.fill",
@@ -552,11 +575,14 @@ struct InspectorView: View {
                     .font(.caption2).foregroundStyle(.secondary).lineLimit(3)
                 compactAction("Utility map", symbol: DataOverlay.utilities.symbol) { store.perform(.overlayUtilities) }
             }
-            ContextCard(title: "Expansion signal", symbol: "chart.line.uptrend.xyaxis", tint: GameTheme.information) {
-                ContextValueRow(label: "Residents", value: store.state.population.formatted())
-                ContextValueRow(label: "Housing open", value: store.analytics.housingHeadroom.formatted())
-                ContextValueRow(label: "Growth demand", value: (store.state.demand.residential * 100).percentText)
-            }
+        }
+    }
+
+    private var utilityDecisionTint: Color {
+        switch utilityDecisionSupport.status {
+        case .healthy: GameTheme.accent
+        case .tight: GameTheme.warning
+        case .shortfall: GameTheme.danger
         }
     }
 
@@ -634,11 +660,13 @@ struct InspectorView: View {
 
     @ViewBuilder
     private func noticeActionMenu(_ message: CityMessage) -> some View {
-        let actions = CityNoticeActionCatalog.actions(for: message.title)
+        let actions = CityNoticeActionCatalog.actions(for: message.title, analytics: analytics)
         if !actions.isEmpty {
             Menu("Act") {
                 ForEach(actions) { response in
-                    Button(response.title) { perform(response) }
+                    Button(response.title) {
+                        StrategyCommandCenterView.perform(response, on: store)
+                    }
                         .accessibilityHint(response.explanation + (response.focusesMap ? " Focus returns to the map." : ""))
                 }
             }

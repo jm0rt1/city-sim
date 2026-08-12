@@ -443,6 +443,10 @@ final class GameplayLoopTests: XCTestCase {
 
         XCTAssertTrue(state.messages.contains { $0.title == "Utility Reserve Tight" })
         XCTAssertTrue(state.messages.contains { $0.title == "Hiring Bottleneck" })
+        let shortfall = try XCTUnwrap(state.messages.first { $0.title == "Utility Shortfall" })
+        XCTAssertTrue(shortfall.detail.contains("short by"))
+        XCTAssertTrue(shortfall.detail.contains("Add both utility projects"))
+        XCTAssertFalse(shortfall.detail.contains("Power or water"))
         XCTAssertLessThan(CityAnalytics(state: state).utilityCoverage, 0.98)
         XCTAssertEqual(state.status, .playing)
 

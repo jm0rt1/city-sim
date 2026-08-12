@@ -9,6 +9,83 @@ struct CityDirectResponse: Identifiable, Hashable, Sendable {
     var id: String { "\(command.rawValue)|\(title)" }
 }
 
+struct CityUtilityDecisionSupport: Equatable, Sendable {
+    enum Status: Equatable, Sendable {
+        case healthy
+        case tight
+        case shortfall
+    }
+
+    let status: Status
+    let title: String
+    let detail: String
+    let priorityKind: BuildingKind
+    let response: CityDirectResponse?
+
+    static func make(analytics: CityAnalytics) -> Self {
+        let state = analytics.state
+        let powerSpare = state.powerCapacity - state.powerUsed
+        let waterSpare = state.waterCapacity - state.waterUsed
+        let powerReserve = reserve(capacity: state.powerCapacity, used: state.powerUsed)
+        let waterReserve = reserve(capacity: state.waterCapacity, used: state.waterUsed)
+        let priorityKind: BuildingKind = waterReserve <= powerReserve ? .waterTower : .powerPlant
+        let prioritySpare = priorityKind == .waterTower ? waterSpare : powerSpare
+        let priorityReserve = priorityKind == .waterTower ? waterReserve : powerReserve
+        let otherTitle = priorityKind == .waterTower ? "Power" : "Water"
+        let otherSpare = priorityKind == .waterTower ? powerSpare : waterSpare
+
+        if powerSpare < 0 || waterSpare < 0 {
+            let priorityTitle = priorityKind == .waterTower ? "Water" : "Power"
+            let projectTitle = priorityKind == .waterTower ? "Build Water Tower" : "Build Power Plant"
+            let otherState = otherSpare < 0
+                ? "\(otherTitle) is also short by \((-otherSpare).formatted())."
+                : "\(otherTitle) still has \(otherSpare.formatted()) spare."
+            return Self(
+                status: .shortfall,
+                title: "\(priorityTitle) shortfall",
+                detail: "\(priorityTitle) is short by \((-prioritySpare).formatted()). \(otherState) Restore capacity before resuming growth.",
+                priorityKind: priorityKind,
+                response: .init(
+                    title: projectTitle,
+                    command: CityCommandCatalog.id(for: priorityKind),
+                    explanation: "Restore the most constrained utility first; the city may still need the other network afterward.",
+                    focusesMap: true
+                )
+            )
+        }
+
+        let priorityTitle = priorityKind == .waterTower ? "Water" : "Power"
+        if priorityReserve < 0.12 {
+            let projectTitle = priorityKind == .waterTower ? "Build Water Tower" : "Build Power Plant"
+            return Self(
+                status: .tight,
+                title: "\(priorityTitle) reserve tight",
+                detail: "\(priorityTitle) is limiting growth with \(prioritySpare.formatted()) spare (\((priorityReserve * 100).percentText) reserve). Expand before adding homes or jobs.",
+                priorityKind: priorityKind,
+                response: .init(
+                    title: projectTitle,
+                    command: CityCommandCatalog.id(for: priorityKind),
+                    explanation: "Add capacity to the tighter network before committing more growth.",
+                    focusesMap: true
+                )
+            )
+        }
+
+        return Self(
+            status: .healthy,
+            title: "\(priorityTitle) is the tighter network",
+            detail: "\(priorityTitle) has \(prioritySpare.formatted()) spare (\((priorityReserve * 100).percentText) reserve). Both utilities cover current use.",
+            priorityKind: priorityKind,
+            response: nil
+        )
+    }
+
+    private static func reserve(capacity: Int, used: Int) -> Double {
+        guard capacity > 0 else { return used > 0 ? -Double(used) : 0 }
+        return Double(capacity - used) / Double(capacity)
+    }
+}
+
 struct CityBuildDecisionPresentation: Equatable, Sendable {
     let buildingTitle: String
     let buildingSymbol: String
@@ -263,6 +340,25 @@ enum CityNoticeActionCatalog {
         default:
             return []
         }
+    }
+
+    static func actions(for title: String, analytics: CityAnalytics) -> [CityDirectResponse] {
+        guard title == "Utility Reserve Tight" || title == "Utility Shortfall" else {
+            return actions(for: title)
+        }
+
+        let support = CityUtilityDecisionSupport.make(analytics: analytics)
+        guard let priority = support.response else {
+            return [
+                .init(
+                    title: "Review utilities",
+                    command: .inspectorUtilities,
+                    explanation: "Current use is covered; inspect live reserve before adding more capacity.",
+                    focusesMap: false
+                )
+            ]
+        }
+        return [priority] + actions(for: title).filter { $0.command != priority.command }
     }
 }
 

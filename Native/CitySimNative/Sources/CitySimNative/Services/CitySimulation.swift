@@ -1293,12 +1293,24 @@ enum CitySimulation {
             )
         }
         if coverage < 0.98 {
+            let powerGap = max(0, state.powerUsed - state.powerCapacity)
+            let waterGap = max(0, state.waterUsed - state.waterCapacity)
+            let powerSpare = max(0, state.powerCapacity - state.powerUsed)
+            let waterSpare = max(0, state.waterCapacity - state.waterUsed)
+            let detail: String
+            if powerGap > 0, waterGap > 0 {
+                detail = "Power is short by \(powerGap) and water by \(waterGap). Add both utility projects; growth and livability remain constrained until both networks recover."
+            } else if powerGap > 0 {
+                detail = "Power is short by \(powerGap); water still has \(waterSpare) spare. Build a Power Plant before resuming growth."
+            } else {
+                detail = "Water is short by \(waterGap); power still has \(powerSpare) spare. Build a Water Tower before resuming growth."
+            }
             postOnce(
                 CityMessage(
                     tick: state.tick,
                     severity: .critical,
                     title: "Utility Shortfall",
-                    detail: "Power or water is below current use. Growth has stalled and livability will keep falling until capacity or demand changes."
+                    detail: detail
                 ),
                 to: &state
             )

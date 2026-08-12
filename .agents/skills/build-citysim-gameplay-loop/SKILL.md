@@ -24,8 +24,9 @@ Make CitySim worth playing: every important choice must create measurable, visib
 - Luna runs only the focused owner and affected gates in its validated `modelRoute`. The lane coordinator aggregates coherent packets; the full Swift suite, staged build, and real-app journey run once against the exact aggregate/integrated candidate unless identity changes or evidence is stale.
 - A focused `swift test` result is complete only when its combined output passes
   the shared model-route validator's `--swift-test-log` check. `Build complete!`
-  alone is compilation-only; capture a result-bearing run without source edits
-  before handoff.
+  alone is an intermediate marker; keep waiting on the original process. Only
+  if it truly exits without a terminal test summary, capture one result-bearing
+  run without source edits before handoff.
 
 ## Own the gameplay outcome
 

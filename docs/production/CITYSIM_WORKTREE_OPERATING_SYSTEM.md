@@ -352,10 +352,12 @@ and authority-gated push/release remain hard safety requirements.
 
 A `swift test` command is result-bearing only when its combined output passes
 `validate_model_route_v1.py --swift-test-log <path>` with a positive executed
-test count and a zero-failure/pass summary. Exit zero plus `Build complete!`
-proves compilation only. Correct that evidence capture once without source
-edits; do not call it a product failure, completed behavioral proof, or a reason
-to add a receipt, reviewer, or gate.
+test count and a zero-failure/pass summary. `Build complete!` alone is an
+intermediate compilation marker: keep waiting on the original process and do
+not start a compensating duplicate. If the process truly ends without a test
+summary, correct that evidence capture once without source edits; do not call
+it a product failure, completed behavioral proof, or a reason to add a receipt,
+reviewer, or gate.
 
 ## 7. Claim protocol
 

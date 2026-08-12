@@ -6,13 +6,13 @@
   "classification": "FRONTIER_AUTHORITY",
   "model": "gpt-5.6-sol",
   "effort": "high",
-  "rationale": "PLAY-121 and PLAY-120 each produced an exit-zero Build complete receipt without executing XCTest, consuming one extra management and worker continuation per lane. Integration caught both false greens before merge. The user authorized Operational Excellence to repair current control-plane validators and guidance without blocking product work.",
+  "rationale": "PLAY-121 and PLAY-120 each produced a premature Build complete receipt before a terminal XCTest result, consuming one extra management and worker continuation per lane. Integration later confirmed PLAY-120 SwiftPM XCTest was still running when a compensating direct invocation overlapped it. The user authorized Operational Excellence to repair current control-plane validators and guidance without blocking product work.",
   "authority": {
     "authorityCommit": "b738653470199e8c07f9d76336d3ddf156891d60",
     "baseCommit": "b738653470199e8c07f9d76336d3ddf156891d60",
     "claim": {
       "path": "docs/production/claims/PLAY-122.operational-excellence-result-bearing-swift-proof.md",
-      "sha256": "9c98db7fa2c0759bfa695d3f9be27d3498e9cd959832bdb959fb0c15772f9f8c"
+      "sha256": "84bcbf47b81e85f000943d4c7706de281ea2aadeaa79fd8f9e964355513b7c63"
     },
     "immutableInputs": [
       {
@@ -131,7 +131,7 @@
     "verifiedHashes": [
       {
         "path": "docs/production/claims/PLAY-122.operational-excellence-result-bearing-swift-proof.md",
-        "sha256": "9c98db7fa2c0759bfa695d3f9be27d3498e9cd959832bdb959fb0c15772f9f8c"
+        "sha256": "84bcbf47b81e85f000943d4c7706de281ea2aadeaa79fd8f9e964355513b7c63"
       },
       {
         "path": ".agents/skills/optimize-citysim-operating-system/SKILL.md",

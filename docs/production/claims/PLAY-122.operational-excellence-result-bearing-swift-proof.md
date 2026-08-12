@@ -25,18 +25,20 @@
 
 Make focused Swift test evidence result-bearing. Extend the current model-route
 validator so a supplied Swift-test log passes only when it contains a positive
-executed-test count and a zero-failure/pass summary. `Build complete!` alone,
-zero executed tests, failures, or a missing summary fail closed as
-`compilation_only` or failed proof. Wire that distinction into current
+executed-test count and a zero-failure/pass summary. An intermediate
+`Build complete!` capture alone, zero executed tests, failures, or a missing
+summary fail closed as `compilation_only` or incomplete proof. Wire that distinction into current
 Integration, Gameplay, Simulation, and operating-system guidance. This does not
 change any test command, add a receipt/reviewer/gate, or touch product code.
 
 ## Evidence
 
-`PLAY-121` and `PLAY-120` each consumed an extra manager/worker turn after an
-exit-zero Swift command emitted only `Build complete!` and did not execute
-XCTest. Integration caught both before merge. The before rate is two
-compile-only receipts in two consecutive affected lanes.
+`PLAY-121` and `PLAY-120` each consumed an extra manager/worker turn after a
+receipt captured only `Build complete!` before a terminal XCTest result.
+Integration later confirmed that the PLAY-120 SwiftPM XCTest process was still
+running when a compensating direct invocation was started. The before rate is
+two premature build-only receipts in two consecutive affected lanes, with one
+duplicate full-suite process in the second lane.
 
 ## Focused proof
 

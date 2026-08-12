@@ -164,7 +164,10 @@ def validate_swift_test_log(log: Any) -> list[str]:
     if counts:
         return ["Swift test proof executed zero tests"]
     if "Build complete!" in log or "Build complete" in log:
-        return ["Swift test proof is compilation_only; no tests executed"]
+        return [
+            "Swift test proof is compilation_only or incomplete; "
+            "no terminal test summary"
+        ]
     return ["Swift test proof lacks a positive executed-test pass summary"]
 
 

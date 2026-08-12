@@ -94,7 +94,9 @@ An XCTest-backed artifact writer additionally uses prospective
 `writerExecution` schema 2. Before any writer runs, its contract binds one
 terminal, descendant-free, zero-exit Swift prebuild receipt whose retained log
 contains a positive executed-test result, plus the exact executable inside the
-produced `.xctest` bundle by canonical path and SHA-256. The executable must be
+produced `.xctest` bundle by canonical path and SHA-256. The runner writes that
+same path/hash into the terminal receipt; the writer contract must match it
+exactly. The executable must be
 contained by the receipt's build root, and every XCTest writer argv must consume
 that exact bundle. A stale or substituted bundle, compile-only receipt, hash
 mismatch, or writer that names another bundle fails preflight. Schema-1

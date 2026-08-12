@@ -264,7 +264,8 @@ New or rebound XCTest-backed writers use `writerExecution` schema 2 and may run
 only after one result-bearing Swift prebuild receipt is terminal,
 descendant-free, and zero-exit. The same preflight binds the exact
 `Contents/MacOS` executable inside the produced `.xctest` bundle by canonical
-path and SHA-256, proves it lies under the receipt's build root, and requires
+path and SHA-256, requires the runner's terminal receipt to emit that identical
+path/hash, proves it lies under the receipt's build root, and requires
 every XCTest writer command to consume that exact bundle. Compile-only proof,
 stale executable bytes, or a different bundle argv fails before writer
 execution. Existing schema-1 non-XCTest and historical route bytes remain

@@ -282,6 +282,10 @@ class ModelRouteTests(unittest.TestCase):
             encoding="utf-8",
         )
         prebuild_receipt = self.repo / "xctest-prebuild-receipt.json"
+        executable_binding = {
+            "path": str(executable.resolve()),
+            "sha256": hashlib.sha256(executable.read_bytes()).hexdigest(),
+        }
         prebuild_receipt.write_text(json.dumps({
             "status": "terminal",
             "terminal": True,
@@ -302,6 +306,7 @@ class ModelRouteTests(unittest.TestCase):
             ],
             "logSha256": hashlib.sha256(log.read_bytes()).hexdigest(),
             "buildRoot": str(build_root),
+            "producedTestBundleExecutable": executable_binding,
         }), encoding="utf-8")
         command = shlex.join([
             "env", "CITYSIM_WRITER_MODE=successor", "CITYSIM_SEED=131",
@@ -318,10 +323,7 @@ class ModelRouteTests(unittest.TestCase):
                     "path": str(prebuild_receipt.resolve()),
                     "sha256": hashlib.sha256(prebuild_receipt.read_bytes()).hexdigest(),
                 },
-                "testBundleExecutable": {
-                    "path": str(executable.resolve()),
-                    "sha256": hashlib.sha256(executable.read_bytes()).hexdigest(),
-                },
+                "testBundleExecutable": executable_binding,
             },
         })
         return output, prebuild_receipt, executable
@@ -625,6 +627,19 @@ class ModelRouteTests(unittest.TestCase):
 
         route["writerExecution"]["xctestPrebuild"]["testBundleExecutable"]["sha256"] = "0" * 64
         self.assert_invalid(route, "does not match file bytes")
+        route["writerExecution"]["xctestPrebuild"]["testBundleExecutable"]["sha256"] = (
+            hashlib.sha256(executable.read_bytes()).hexdigest()
+        )
+
+        original_executable = executable.read_bytes()
+        executable.write_bytes(b"substituted-same-root-executable\n")
+        executable.chmod(0o755)
+        route["writerExecution"]["xctestPrebuild"]["testBundleExecutable"]["sha256"] = (
+            hashlib.sha256(executable.read_bytes()).hexdigest()
+        )
+        self.assert_invalid(route, "receipt executable path/hash does not match")
+        executable.write_bytes(original_executable)
+        executable.chmod(0o755)
         route["writerExecution"]["xctestPrebuild"]["testBundleExecutable"]["sha256"] = (
             hashlib.sha256(executable.read_bytes()).hexdigest()
         )

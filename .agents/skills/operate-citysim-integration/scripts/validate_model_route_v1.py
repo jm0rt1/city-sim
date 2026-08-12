@@ -359,6 +359,13 @@ def _validate_xctest_prebuild(
             errors.append("writerExecution.xctestPrebuild.receipt argv must be a string list")
         elif not _is_swift_test_argv(argv):
             errors.append("writerExecution.xctestPrebuild.receipt must execute swift test")
+        if receipt.get("producedTestBundleExecutable") != prebuild.get(
+            "testBundleExecutable"
+        ):
+            errors.append(
+                "writerExecution.xctestPrebuild receipt executable path/hash "
+                "does not match testBundleExecutable"
+            )
         validator_argv = receipt.get("validatorArgv")
         if not isinstance(validator_argv, list) or not all(
             isinstance(token, str) for token in validator_argv

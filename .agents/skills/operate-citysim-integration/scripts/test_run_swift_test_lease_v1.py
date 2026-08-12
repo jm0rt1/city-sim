@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import subprocess
 import sys
@@ -26,12 +27,20 @@ class SwiftTestLeaseTests(unittest.TestCase):
     def tearDown(self) -> None:
         self.temp.cleanup()
 
-    def invoke(self, lease: str, code: str, *, build: Path | None = None) -> subprocess.CompletedProcess[str]:
+    def invoke(
+        self, lease: str, code: str, *, build: Path | None = None,
+        produced: Path | None = None,
+    ) -> subprocess.CompletedProcess[str]:
         stem = f"{lease}-{time.time_ns()}"
+        produced_args = (
+            ["--produced-test-bundle-executable", str(produced)]
+            if produced is not None else []
+        )
         return subprocess.run(
             [sys.executable, str(RUNNER), "--lease-id", lease, "--build-root", str(build or self.build),
              "--lock-dir", str(self.locks), "--log", str(self.root / f"{stem}.log"),
-             "--metadata", str(self.root / f"{stem}.json"), "--", sys.executable, "-c", code],
+             "--metadata", str(self.root / f"{stem}.json"), *produced_args,
+             "--", sys.executable, "-c", code],
             text=True, capture_output=True, check=False,
         )
 
@@ -77,6 +86,35 @@ class SwiftTestLeaseTests(unittest.TestCase):
     def test_compilation_only_log_is_rejected(self) -> None:
         result = self.invoke("compile", "print('Build complete!')")
         self.assertEqual(result.returncode, 1)
+
+    def test_result_receipt_binds_exact_produced_xctest_executable(self) -> None:
+        executable = (
+            self.build / "debug" / "FixtureTests.xctest" / "Contents" /
+            "MacOS" / "FixtureTests"
+        )
+        executable.parent.mkdir(parents=True)
+        executable.write_bytes(b"fresh test bundle\n")
+        executable.chmod(0o755)
+        value = self.assert_pass_metadata(self.invoke(
+            "produced", "print('Test run with 1 test passed')", produced=executable
+        ))
+        self.assertEqual(value["producedTestBundleExecutable"], {
+            "path": str(executable.resolve()),
+            "sha256": hashlib.sha256(executable.read_bytes()).hexdigest(),
+        })
+        self.assertIsNone(value["producedTestBundleError"])
+
+    def test_missing_produced_xctest_executable_fails_terminal_receipt(self) -> None:
+        missing = self.build / "debug" / "MissingTests.xctest" / "Contents" / "MacOS" / "MissingTests"
+        result = self.invoke(
+            "missing-produced", "print('Test run with 1 test passed')", produced=missing
+        )
+        self.assertEqual(result.returncode, 4)
+        self.assertIn("does not exist", result.stderr)
+        receipt = sorted(self.root.glob("*.json"))[-1]
+        value = json.loads(receipt.read_text(encoding="utf-8"))
+        self.assertTrue(value["terminal"])
+        self.assertNotIn("producedTestBundleExecutable", value)
 
     def test_stale_lock_file_does_not_block_new_os_lock_holder(self) -> None:
         self.locks.mkdir()

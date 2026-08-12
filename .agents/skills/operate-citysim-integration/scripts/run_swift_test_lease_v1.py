@@ -130,6 +130,7 @@ def parse_args(argv: list[str] | None) -> argparse.Namespace:
     parser.add_argument("--lock-dir", required=True, type=Path)
     parser.add_argument("--log", required=True, type=Path)
     parser.add_argument("--metadata", required=True, type=Path)
+    parser.add_argument("--produced-test-bundle-executable", type=Path)
     parser.add_argument("--cwd", type=Path)
     parser.add_argument(
         "--validator",
@@ -147,6 +148,11 @@ def parse_args(argv: list[str] | None) -> argparse.Namespace:
             parser.error(f"--{label} must be absolute")
     if args.log == args.metadata:
         parser.error("--log and --metadata must be distinct")
+    if (
+        args.produced_test_bundle_executable is not None
+        and not args.produced_test_bundle_executable.is_absolute()
+    ):
+        parser.error("--produced-test-bundle-executable must be absolute")
     if args.log.exists() or args.metadata.exists():
         parser.error("--log and --metadata must be new paths for this attempt")
     return args
@@ -232,6 +238,18 @@ def main(argv: list[str] | None = None) -> int:
             [sys.executable, str(args.validator), "--swift-test-log", str(args.log)],
             capture_output=True, text=True, check=False,
         )
+        produced_error: str | None = None
+        if args.produced_test_bundle_executable is not None:
+            produced = args.produced_test_bundle_executable.resolve()
+            if not produced.is_file():
+                produced_error = f"produced XCTest executable does not exist: {produced}"
+            elif not produced.stat().st_mode & 0o111:
+                produced_error = f"produced XCTest executable is not executable: {produced}"
+            else:
+                state["producedTestBundleExecutable"] = {
+                    "path": str(produced),
+                    "sha256": hashlib.sha256(produced.read_bytes()).hexdigest(),
+                }
         state.update({
             "utcEnded": utc_now(),
             "exitCode": exit_code,
@@ -240,6 +258,7 @@ def main(argv: list[str] | None = None) -> int:
             "validatorExitCode": validator.returncode,
             "validatorStdout": validator.stdout,
             "validatorStderr": validator.stderr,
+            "producedTestBundleError": produced_error,
             "parentExited": True,
             "processGroupExited": True,
             "descendantsExited": True,
@@ -255,6 +274,9 @@ def main(argv: list[str] | None = None) -> int:
 
     if exit_code != 0:
         return exit_code if exit_code > 0 else 1
+    if produced_error is not None:
+        print(produced_error, file=sys.stderr)
+        return 4
     return validator.returncode
 
 

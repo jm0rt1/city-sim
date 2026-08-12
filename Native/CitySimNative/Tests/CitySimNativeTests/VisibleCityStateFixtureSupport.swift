@@ -70,12 +70,12 @@ struct VisibleCityFixtureArtifact: Equatable, Sendable {
 }
 
 struct VisibleCityFixtureCorpus: Equatable, Sendable {
-    static let fixtureSet = "PLAY-130 current visible-city states"
+    static let fixtureSet = "PLAY-142 current visible-city states"
     static let authorityCommit =
-        "703a8968e62654b7037c9b0437686930f46368f8"
+        "b744319e0282df84339546dc363464089fa306c2"
     static let sourceStoryManifestSHA256 =
-        "f7b9feb3c581cf194616213886ccd6f68a9991702a69834cd3662e055245d4aa"
-    static let manifestFile = "visible-city-states-manifest-v5.json"
+        "56e13018dcc15f2e03df3bfa1eb276e75e4f6af55369c6a1878eee71874598ff"
+    static let manifestFile = "visible-city-states-manifest-v6.json"
     static let schemaVersion = 1
     static let fingerprintVersion = 1
     static let seed: UInt64 = 42
@@ -323,7 +323,7 @@ struct VisibleCityStateBuilder {
         let prefix = strategy == .commercialStewardship
             ? "commercial"
             : "industrial"
-        let id = "\(prefix)-\(lifecycle.rawValue)-district-v5"
+        let id = "\(prefix)-\(lifecycle.rawValue)-district-v6"
         return VisibleCityFixtureState(
             definition: VisibleCityFixtureDefinition(
                 id: id,

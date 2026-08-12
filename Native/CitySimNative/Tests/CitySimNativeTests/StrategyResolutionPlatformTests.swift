@@ -12,7 +12,7 @@ final class StrategyResolutionPlatformTests: XCTestCase {
 
     func testFourResolutionFingerprintsRoundTripAndMeetPersistenceBudgets() throws {
         let expectedDigests: [CityStrategyRecoveryResolution: String] = [
-            .commercialTaxRelief: "613780971c7e85bf0a29f74de0181cb935abaca659d340ae692eb7913ea86dec",
+            .commercialTaxRelief: "d8762e74c51d999b91eeef3d5a379af316c057d6a6eb7718c86ec4c577c2adfc",
             .commercialPublicRealmInvestment: "1e4a84ea324ef21861a42dd395919532f50a83d231dfa047b55e8c5a5a403e78",
             .industrialUtilityExpansion: "ccb2f59677e2b213813540cbb8a4212941179aad185cd539be6f408f3774a7cb",
             .industrialGreenBuffer: "c28a670503a57d91da03e4670c60d4905c48a6a8976cd1b5cde4508a974b6f83",

@@ -95,8 +95,8 @@ struct ProductionStoryFixtureArtifact: Equatable, Sendable {
 }
 
 struct ProductionStoryFixtureCorpus: Equatable, Sendable {
-    static let fixtureSet = "PLAY-130 current production story states"
-    static let manifestFile = "story-states-manifest-v6.json"
+    static let fixtureSet = "PLAY-142 current production story states"
+    static let manifestFile = "story-states-manifest-v7.json"
     static let schemaVersion = 1
     static let fingerprintVersion = 1
     static let seed: UInt64 = 42
@@ -556,7 +556,7 @@ struct ProductionStoryStateBuilder {
             messageTitle = strategy == .commercialStewardship
                 ? "Main Street Crossroads"
                 : "Freight Contract Watch"
-            suffix = "opening-v6"
+            suffix = "opening-v7"
             moment = .opening
         case .complication:
             resolution = nil
@@ -566,7 +566,7 @@ struct ProductionStoryStateBuilder {
             messageTitle = strategy == .commercialStewardship
                 ? "Market Weekend"
                 : "Regional Freight Contract"
-            suffix = "complication-v6"
+            suffix = "complication-v7"
             moment = .complication
         case .recovery:
             resolution = defaultResolution(for: strategy)
@@ -576,7 +576,7 @@ struct ProductionStoryStateBuilder {
             messageTitle = strategy == .commercialStewardship
                 ? "Storefront Slump Avoided"
                 : "Industrial Load Absorbed"
-            suffix = "recovery-v6"
+            suffix = "recovery-v7"
             moment = .recovery
         case .charterMidpoint:
             resolution = defaultResolution(for: strategy)
@@ -584,7 +584,7 @@ struct ProductionStoryStateBuilder {
             secondActPhase = .mandate
             status = .playing
             messageTitle = "Town Charter Awarded"
-            suffix = "charter-midpoint-v6"
+            suffix = "charter-midpoint-v7"
             moment = .charterVictory
         case .regionalCapital:
             let route = suppliedResolution ?? defaultResolution(for: strategy)
@@ -593,7 +593,7 @@ struct ProductionStoryStateBuilder {
             secondActPhase = .completed
             status = .won
             messageTitle = "Regional Capital Recognized"
-            suffix = "\(route.fixtureName)-regional-capital-v6"
+            suffix = "\(route.fixtureName)-regional-capital-v7"
             moment = .charterVictory
         }
 

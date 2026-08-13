@@ -7,6 +7,9 @@ enum CitySoundCue: Equatable, Sendable {
     case persistenceSucceeded
     case actionReversed
     case demolitionApproved
+    case objectiveCompleted
+    case warningRaised
+    case criticalAlertRaised
 
     fileprivate var systemSoundName: NSSound.Name {
         switch self {
@@ -15,7 +18,32 @@ enum CitySoundCue: Equatable, Sendable {
         case .persistenceSucceeded: NSSound.Name("Glass")
         case .actionReversed: NSSound.Name("Pop")
         case .demolitionApproved: NSSound.Name("Funk")
+        case .objectiveCompleted: NSSound.Name("Hero")
+        case .warningRaised: NSSound.Name("Frog")
+        case .criticalAlertRaised: NSSound.Name("Sosumi")
         }
+    }
+}
+
+enum CitySimulationSoundTransition {
+    static func resolve(
+        messagesBefore: [CityMessage],
+        messagesAfter: [CityMessage],
+        objectivesBefore: [CityObjective],
+        objectivesAfter: [CityObjective]
+    ) -> CitySoundCue? {
+        let priorMessageIDs = Set(messagesBefore.map(\.id))
+        let newSeverities = messagesAfter.lazy
+            .filter { !priorMessageIDs.contains($0.id) }
+            .map(\.severity)
+        if newSeverities.contains(.critical) { return .criticalAlertRaised }
+        if newSeverities.contains(.warning) { return .warningRaised }
+
+        let completedBefore = Set(objectivesBefore.filter(\.completed).map(\.id))
+        if objectivesAfter.contains(where: { $0.completed && !completedBefore.contains($0.id) }) {
+            return .objectiveCompleted
+        }
+        return nil
     }
 }
 

@@ -282,6 +282,8 @@ final class CityGameStore: ObservableObject {
         guard commandPolicy == .enabled else { return }
         guard speed != .paused else { return }
         let dayBeforePulse = state.day
+        let messagesBeforePulse = state.messages
+        let objectivesBeforePulse = objectives
         let progressBeforePulse = Dictionary(uniqueKeysWithValues: objectives.map { ($0.id, $0.progress) })
         let initialStatus = state.status
         var scenarioFailure: String?
@@ -306,6 +308,14 @@ final class CityGameStore: ObservableObject {
         }
         if let failure = scenarioFailure {
             showFeedback(failure, tone: .caution, autoDismissAfter: nil)
+        }
+        if let cue = CitySimulationSoundTransition.resolve(
+            messagesBefore: messagesBeforePulse,
+            messagesAfter: state.messages,
+            objectivesBefore: objectivesBeforePulse,
+            objectivesAfter: objectives
+        ) {
+            soundFeedback.play(cue)
         }
         previousObjectiveProgressByID = progressBeforePulse
         if state.day > dayBeforePulse {

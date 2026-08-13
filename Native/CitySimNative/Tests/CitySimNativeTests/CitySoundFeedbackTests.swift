@@ -142,6 +142,118 @@ final class CitySoundFeedbackTests: XCTestCase {
         XCTAssertEqual(player.events.map(\.cue), [.persistenceSucceeded])
     }
 
+    func testSimulationTransitionPrioritizesOneCriticalCueOverWarningAndObjective() {
+        let beforeObjectives = [objective(id: "budget", progress: 0.9)]
+        let afterObjectives = [objective(id: "budget", progress: 1)]
+        let afterMessages = [
+            CityMessage(tick: 4, severity: .warning, title: "Utility Reserve Tight", detail: "Build reserve."),
+            CityMessage(tick: 4, severity: .critical, title: "Utility Shortfall", detail: "Restore service."),
+        ]
+
+        XCTAssertEqual(
+            CitySimulationSoundTransition.resolve(
+                messagesBefore: [],
+                messagesAfter: afterMessages,
+                objectivesBefore: beforeObjectives,
+                objectivesAfter: afterObjectives
+            ),
+            .criticalAlertRaised
+        )
+    }
+
+    func testSimulationTransitionEmitsWarningAndObjectiveOnlyWhenNew() {
+        let warning = CityMessage(
+            tick: 8,
+            severity: .warning,
+            title: "Hiring Bottleneck",
+            detail: "Add jobs."
+        )
+        XCTAssertEqual(
+            CitySimulationSoundTransition.resolve(
+                messagesBefore: [],
+                messagesAfter: [warning],
+                objectivesBefore: [objective(id: "capacity", progress: 0.8)],
+                objectivesAfter: [objective(id: "capacity", progress: 0.8)]
+            ),
+            .warningRaised
+        )
+        XCTAssertNil(
+            CitySimulationSoundTransition.resolve(
+                messagesBefore: [warning],
+                messagesAfter: [warning],
+                objectivesBefore: [objective(id: "capacity", progress: 1)],
+                objectivesAfter: [objective(id: "capacity", progress: 1)]
+            )
+        )
+        XCTAssertEqual(
+            CitySimulationSoundTransition.resolve(
+                messagesBefore: [],
+                messagesAfter: [],
+                objectivesBefore: [objective(id: "capacity", progress: 0.8)],
+                objectivesAfter: [objective(id: "capacity", progress: 1)]
+            ),
+            .objectiveCompleted
+        )
+    }
+
+    func testLivePulsePlaysObjectiveCueAfterTownCharterIsAwarded() throws {
+        let defaults = try isolatedDefaults()
+        let player = RecordingCitySoundPlayer()
+        var state = try qualifyingTown()
+        state.progression?.townCharterQualifyingCycles = 11
+        state.progression?.townCharterAwarded = false
+        state.progression?.secondAct = nil
+        state.messages.removeAll()
+        let store = CityGameStore(
+            state: state,
+            playerDefaults: defaults,
+            soundPlayer: player
+        )
+        player.onPlay = { cue in
+            if cue == .objectiveCompleted {
+                XCTAssertTrue(store.state.progression?.townCharterAwarded == true)
+                XCTAssertTrue(store.state.messages.contains { $0.title == "Town Charter Awarded" })
+            }
+        }
+
+        for _ in 0..<4 { store.pulse() }
+
+        XCTAssertEqual(player.events.map(\.cue), [.objectiveCompleted])
+    }
+
+    private func objective(id: String, progress: Double) -> CityObjective {
+        CityObjective(
+            id: id,
+            title: id,
+            detail: "",
+            progress: progress,
+            remaining: ""
+        )
+    }
+
+    private func qualifyingTown() throws -> CityGameState {
+        var state = CityGameState.newCity(seed: 42)
+        state.treasury = 50_000
+        for kind in [BuildingKind.industrial, .industrial, .powerPlant, .waterTower] {
+            let coordinate = try XCTUnwrap(state.tiles.first { tile in
+                guard tile.kind == .empty else { return false }
+                if case .success = CitySimulation.validateBuild(kind, at: tile.coordinate, in: state) {
+                    return true
+                }
+                return false
+            }?.coordinate)
+            if case .failure(let rejection) = CitySimulation.build(kind, at: coordinate, in: &state) {
+                throw rejection
+            }
+        }
+        state.population = 500
+        state.treasury = 50_000
+        state.happiness = 60
+        for _ in 0..<4 { CitySimulation.step(&state) }
+        XCTAssertTrue(CitySimulation.meetsTownCharterStandards(in: state))
+        return state
+    }
+
     private func isolatedDefaults() throws -> UserDefaults {
         let suite = "CitySoundFeedbackTests.\(UUID().uuidString)"
         let defaults = try XCTUnwrap(UserDefaults(suiteName: suite))

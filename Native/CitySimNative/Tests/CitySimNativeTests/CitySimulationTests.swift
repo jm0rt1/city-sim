@@ -1708,6 +1708,67 @@ final class CitySimulationTests: XCTestCase {
     }
 
     @MainActor
+    func testFourViewNativeRepresentativeBlockProofExports() throws {
+        let proofKeys = [
+            "CITYSIM_FOUR_VIEW_NATIVE_1280_PROOF",
+            "CITYSIM_FOUR_VIEW_NATIVE_900_PROOF",
+        ]
+        guard proofKeys.contains(where: { ProcessInfo.processInfo.environment[$0] != nil }) else {
+            return
+        }
+
+        var state = CityGameState.newCity(seed: 42)
+        let unsupportedKinds: Set<BuildingKind> = [
+            .powerPlant, .waterTower, .fireStation, .policeStation, .school,
+        ]
+        for coordinate in state.tiles.filter({ unsupportedKinds.contains($0.kind) }).map(\.coordinate) {
+            state.updateTile(at: coordinate) {
+                $0.kind = .empty
+                $0.level = 1
+                $0.occupancy = 0
+            }
+        }
+        if let apartment = state.tiles.first(where: { $0.kind == .residential })?.coordinate {
+            state.updateTile(at: apartment) { $0.level = 3 }
+        }
+
+        let developed = state.tiles.filter { ![.empty, .road].contains($0.kind) }
+        let catalog = FourViewWorldAssetCatalog()
+        let core = GridCoordinate(x: 11, y: 11)
+        let compactCore = GridCoordinate(x: 10, y: 10)
+        XCTAssertGreaterThanOrEqual(developed.count, 7)
+        XCTAssertTrue(developed.allSatisfy { catalog.assetID(for: $0, variant: 1) != nil })
+
+        let regular = try rendererProofFrame(
+            size: CGSize(width: 1_280, height: 800),
+            state: state,
+            overlay: .none,
+            selection: nil,
+            interactionMode: .inspect,
+            detail: .city,
+            centeredOn: core,
+            framingScale: 1.08,
+            hover: nil
+        )
+        let compact = try rendererProofFrame(
+            size: CGSize(width: 900, height: 600),
+            state: state,
+            overlay: .none,
+            selection: nil,
+            interactionMode: .inspect,
+            detail: .city,
+            centeredOn: compactCore,
+            framingScale: 1.24,
+            hover: nil
+        )
+
+        XCTAssertGreaterThan(regular.png.count, 40_000)
+        XCTAssertGreaterThan(compact.png.count, 30_000)
+        try export(regular, environmentKeys: ["CITYSIM_FOUR_VIEW_NATIVE_1280_PROOF"])
+        try export(compact, environmentKeys: ["CITYSIM_FOUR_VIEW_NATIVE_900_PROOF"])
+    }
+
+    @MainActor
     private func hudBitmap(size: CGSize, store: CityGameStore) throws -> NSBitmapImageRep {
         let view = NSHostingView(rootView: ContentView(store: store).frame(width: size.width, height: size.height))
         view.frame = CGRect(origin: .zero, size: size)
@@ -1818,6 +1879,7 @@ final class CitySimulationTests: XCTestCase {
         interactionMode: CityInteractionMode,
         detail: CameraDetailLevel?,
         centeredOn coordinate: GridCoordinate?,
+        framingScale: CGFloat = 1,
         hover: GridCoordinate?
     ) throws -> RendererProofFrame {
         let view = SKView(frame: CGRect(origin: .zero, size: size))
@@ -1832,7 +1894,13 @@ final class CitySimulationTests: XCTestCase {
             selection: selection,
             interactionMode: interactionMode
         )
-        if let detail { scene.configureProofCamera(detail: detail, centeredOn: coordinate) }
+        if let detail {
+            scene.configureProofCamera(
+                detail: detail,
+                centeredOn: coordinate,
+                framingScale: framingScale
+            )
+        }
         if let hover { scene.configureProofInteraction(at: hover) }
         RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.05))
 

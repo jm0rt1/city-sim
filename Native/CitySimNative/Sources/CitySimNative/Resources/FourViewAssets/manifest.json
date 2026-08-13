@@ -1,0 +1,57 @@
+{
+  "schema": "citysim.native-four-view-assets.v1",
+  "camera": "camNE",
+  "cameraAzimuthDegrees": 45,
+  "cameraElevationDegrees": 30,
+  "projectedTilePixels": [88, 44],
+  "canvas": {
+    "width": 384,
+    "height": 384,
+    "footprintPivotPixel": [192, 300]
+  },
+  "postRenderCompensation": "none",
+  "assets": [
+    {
+      "assetID": "copper_finch_house",
+      "file": "copper_finch_house_camNE.png",
+      "sha256": "68dd822e659e006947d65547b1eadeb9afae722b6200eab6f3b6f2c10663611d",
+      "roles": ["residential-low"]
+    },
+    {
+      "assetID": "marigold_court_house",
+      "file": "marigold_court_house_camNE.png",
+      "sha256": "995eb3314aa9cfb006d93c3e7671686ff7638a25abcd68cb517cca78fadc2863",
+      "roles": ["residential-low"]
+    },
+    {
+      "assetID": "brickline_rowhouse_apartments",
+      "file": "brickline_rowhouse_apartments_camNE.png",
+      "sha256": "e5eba683df85197beb5bb601707dbf41717911829fe430d8b6ca520068111ae2",
+      "roles": ["residential-medium", "residential-high"]
+    },
+    {
+      "assetID": "harbor_corner_storefront",
+      "file": "harbor_corner_storefront_camNE.png",
+      "sha256": "e98cdcf50592089d7a0b6ded522af7c2892c78dda8bf0c623940e39f57241ebd",
+      "roles": ["commercial"]
+    },
+    {
+      "assetID": "ironleaf_service_workshop",
+      "file": "ironleaf_service_workshop_camNE.png",
+      "sha256": "bdcbfe10195cf1fe0e5dda6999fa7aaf8523735afae04faa4cbc7f6ceae69550",
+      "roles": ["industrial"]
+    },
+    {
+      "assetID": "hearthside_council_hall",
+      "file": "hearthside_council_hall_camNE.png",
+      "sha256": "5fbdf8cfd63317218546c7eb0f728be4f81353043d9c371b07505357661d02b9",
+      "roles": ["city-hall"]
+    },
+    {
+      "assetID": "pocket_grove_park",
+      "file": "pocket_grove_park_camNE.png",
+      "sha256": "2b1c41cf98f0fa3e53627ba9b32336754c14cd5759b66357d965836ac5e0e2dc",
+      "roles": ["park"]
+    }
+  ]
+}

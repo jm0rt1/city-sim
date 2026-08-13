@@ -282,7 +282,11 @@ final class CityScene: SKScene {
         self.assets = assets
         self.terrainRenderer = TerrainRenderer(style: style, assets: assets)
         self.roadRenderer = RoadRenderer(style: style, assets: assets)
-        self.lotRenderer = LotRenderer(style: style, assets: assets)
+        self.lotRenderer = LotRenderer(
+            style: style,
+            assets: assets,
+            fourViewAssets: .shared
+        )
         self.ambientLifeRenderer = AmbientLifeRenderer(style: style, assets: assets)
         self.overlayRenderer = WorldOverlayRenderer(style: style)
         self.spatialConsequenceRenderer = SpatialConsequenceRenderer(style: style)
@@ -603,14 +607,20 @@ final class CityScene: SKScene {
         return (metrics.nodes - 1, metrics.drawables, metrics.actions)
     }
 
-    func configureProofCamera(detail: CameraDetailLevel, centeredOn coordinate: GridCoordinate? = nil) {
+    func configureProofCamera(
+        detail: CameraDetailLevel,
+        centeredOn coordinate: GridCoordinate? = nil,
+        framingScale: CGFloat = 1
+    ) {
         let canonicalScale: CGFloat
         switch detail {
         case .city: canonicalScale = Self.canonicalCityCameraScale
         case .neighborhood: canonicalScale = 0.66
         case .block: canonicalScale = 0.50
         }
-        cameraNode.setScale(actualCameraScale(forCanonicalScale: canonicalScale))
+        cameraNode.setScale(
+            actualCameraScale(forCanonicalScale: canonicalScale) * max(1, framingScale)
+        )
         if let coordinate { cameraNode.position = style.isoPosition(coordinate) }
         refreshForCameraChange()
     }
@@ -1967,6 +1977,21 @@ final class CityScene: SKScene {
             }
         } else if let sprite = node as? SKSpriteNode,
                   let name = sprite.name,
+                  name.hasPrefix("lot.generated-v4."),
+                  sprite.children.contains(where: {
+                      $0.name?.hasPrefix("lot.four-view.") == true
+                  }) {
+            // Four-View sprites retain one fixed camNE source at every LOD.
+            // Preserve the semantic suffix expected by diagnostics and save/
+            // load tests, but never hand their texture back to the legacy
+            // generated-atlas residency updater.
+            let components = name.split(separator: ".")
+            if components.count >= 4 {
+                let logicalID = String(components[2])
+                sprite.name = "lot.generated-v4.\(logicalID).\(detail.assetSuffix)"
+            }
+        } else if let sprite = node as? SKSpriteNode,
+                  let name = sprite.name,
                   name.hasPrefix("lot.generated-v4.")
                     || name.hasPrefix("terrain.generated-v4.") {
             let components = name.split(separator: ".")
@@ -2600,8 +2625,15 @@ final class CityScene: SKScene {
         var node: SKNode? = atPoint(scenePoint)
         hoverNode.isHidden = hoverHidden
         selectionNode.isHidden = selectionHidden
+        var hitFourViewCanvas = false
         while let current = node {
+            if current.children.contains(where: {
+                $0.name?.hasPrefix("lot.four-view.") == true
+            }) {
+                hitFourViewCanvas = true
+            }
             if let name = current.name, name.hasPrefix("tile:") {
+                if hitFourViewCanvas { break }
                 let parts = name.split(separator: ":")
                 if parts.count == 3, let x = Int(parts[1]), let y = Int(parts[2]) { return GridCoordinate(x: x, y: y) }
             }

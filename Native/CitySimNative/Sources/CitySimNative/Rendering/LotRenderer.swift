@@ -131,12 +131,18 @@ struct CivicGeneratedAssetIdentity: Equatable, Sendable {
 final class LotRenderer {
     private let style: WorldVisualStyle
     private let assets: WorldAssetCatalog
+    private let fourViewAssets: FourViewWorldAssetCatalog?
     private let lifecycleRenderer: LotLifecycleRenderer
     private let contextRenderer: LotContextRenderer
 
-    init(style: WorldVisualStyle, assets: WorldAssetCatalog = .shared) {
+    init(
+        style: WorldVisualStyle,
+        assets: WorldAssetCatalog = .shared,
+        fourViewAssets: FourViewWorldAssetCatalog? = nil
+    ) {
         self.style = style
         self.assets = assets
+        self.fourViewAssets = fourViewAssets
         self.lifecycleRenderer = LotLifecycleRenderer(style: style)
         self.contextRenderer = LotContextRenderer(style: style)
     }
@@ -292,6 +298,28 @@ final class LotRenderer {
         neighborhood _: SKNode,
         block: SKNode
     ) -> Bool {
+        if let fourViewAssets,
+           let logicalID = fourViewCompatibilityLogicalID(
+               for: tile,
+               residentialIdentity: residentialIdentity,
+               commercialIdentity: commercialIdentity,
+               industrialIdentity: industrialIdentity,
+               civicIdentity: civicIdentity
+           ),
+           let sprite = fourViewAssets.makeSprite(
+               for: tile,
+               variant: variant,
+               worldTileWidth: style.tileWidth
+           ) {
+            // Keep the existing semantic node identity while replacing only
+            // its pixels. This preserves save/load, LOD, and renderer
+            // diagnostics contracts; the child source identity makes the new
+            // Four-View family directly inspectable in live scene evidence.
+            sprite.name = "lot.generated-v4.\(logicalID).\(detail.assetSuffix)"
+            city.addChild(sprite)
+            addGeneratedRoleIdentity(for: tile.kind, to: block)
+            return true
+        }
         if tile.kind == .residential {
             guard let result = assets.generatedResidentialPresentation(
                 level: tile.level,
@@ -365,6 +393,29 @@ final class LotRenderer {
         // buildings. A missing generated source is counted by the catalog and
         // leaves an explicit semantic hole for staged verification to reject.
         return false
+    }
+
+    private func fourViewCompatibilityLogicalID(
+        for tile: CityTile,
+        residentialIdentity: ResidentialGeneratedAssetIdentity?,
+        commercialIdentity: CommercialGeneratedAssetIdentity?,
+        industrialIdentity: IndustrialGeneratedAssetIdentity?,
+        civicIdentity: CivicGeneratedAssetIdentity?
+    ) -> String? {
+        switch tile.kind {
+        case .residential:
+            residentialIdentity?.logicalID
+        case .commercial:
+            commercialIdentity?.logicalID
+        case .industrial:
+            industrialIdentity?.logicalID
+        case .cityHall:
+            civicIdentity?.logicalID
+        case .park:
+            generatedLogicalID(for: .park)
+        case .empty, .road, .powerPlant, .waterTower, .fireStation, .policeStation, .school:
+            nil
+        }
     }
 
     /// Applies a secondary deterministic presentation grade without changing

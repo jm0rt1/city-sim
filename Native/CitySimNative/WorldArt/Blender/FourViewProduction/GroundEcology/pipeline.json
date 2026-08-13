@@ -1,0 +1,103 @@
+{
+  "schema": "citysim.world-art.ground-ecology-four-view.v1",
+  "toolchain": {
+    "blenderVersion": "4.5.12",
+    "renderEngine": "BLENDER_EEVEE_NEXT"
+  },
+  "grid": {
+    "worldTileSize": 2.0,
+    "projectedTilePixels": [88, 44],
+    "projection": "orthographic-2:1-dimetric",
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0
+  },
+  "canvas": {
+    "width": 384,
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "footprintPivotPixelTopOrigin": [192, 300]
+  },
+  "cameraRig": {
+    "distance": 32.0,
+    "orthoScale": 12.341995,
+    "shiftY": 0.28125,
+    "views": [
+      {"name": "camNE", "azimuthDegrees": 45.0},
+      {"name": "camSE", "azimuthDegrees": 135.0},
+      {"name": "camSW", "azimuthDegrees": 225.0},
+      {"name": "camNW", "azimuthDegrees": 315.0}
+    ]
+  },
+  "root": {
+    "name": "AssetRoot",
+    "pivotName": "FootprintPivot",
+    "location": [0.0, 0.0, 0.0],
+    "rotationEuler": [0.0, 0.0, 0.0],
+    "scale": [1.0, 1.0, 1.0]
+  },
+  "lighting": {
+    "name": "CitySimKey",
+    "type": "AREA",
+    "location": [-6.0, -8.0, 12.0],
+    "energy": 1100.0,
+    "size": 5.0,
+    "color": [1.0, 0.86, 0.72],
+    "worldColor": [0.20, 0.17, 0.14, 1.0],
+    "worldStrength": 0.72
+  },
+  "assets": [
+    {
+      "assetId": "civic_meadow_ground",
+      "assetKind": "ground-treatment",
+      "description": "Warm mixed grass and soil cell for civic edges and open neighborhood lots"
+    },
+    {
+      "assetId": "worn_neighborhood_ground",
+      "assetKind": "ground-treatment",
+      "description": "Warm neighborhood turf with subtle axis-aligned foot wear contained within the cell"
+    },
+    {
+      "assetId": "park_grove_ground",
+      "assetKind": "ground-treatment",
+      "description": "Landscaped park cell with restrained orthogonal paths and planted corners"
+    },
+    {
+      "assetId": "utility_service_ground",
+      "assetKind": "ground-treatment",
+      "description": "Durable aggregate and planted utility verge treatment on the exact cell"
+    },
+    {
+      "assetId": "maple_street_tree",
+      "assetKind": "vegetation-dressing",
+      "description": "Modeled street maple with branching trunk and layered warm-green crown"
+    },
+    {
+      "assetId": "sage_shrub_cluster",
+      "assetKind": "vegetation-dressing",
+      "description": "Modeled blue-green sage cluster with woody stems and dimensional foliage"
+    },
+    {
+      "assetId": "marigold_planter_cluster",
+      "assetKind": "vegetation-dressing",
+      "description": "Modeled terracotta neighborhood planters with dimensional marigold flowers"
+    }
+  ],
+  "preview": {
+    "name": "greenworks-neighborhood-ground",
+    "dimensions": [[1280, 800], [900, 600]],
+    "projection": "orthographic",
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0,
+    "perAssetTransformCompensation": "none"
+  },
+  "postRenderCompensation": "none",
+  "provenance": {
+    "originalGeometry": true,
+    "sourcePixelsReused": false,
+    "cedarMarketReused": false,
+    "rejectedVectorAssetsReused": false,
+    "liveAsset": false,
+    "purpose": "source-only Four-View ground ecology production and district preview"
+  }
+}

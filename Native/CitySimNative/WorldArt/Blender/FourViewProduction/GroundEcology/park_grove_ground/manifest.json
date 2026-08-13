@@ -1,0 +1,262 @@
+{
+  "artifacts": [
+    {
+      "bytes": 765059,
+      "path": "park_grove_ground.blend",
+      "sha256": "6ae994babb24cad8e52a87c5e46cdd87a3522ec69f8a30a64c0840f494b66863"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 49,
+          "maxX": 236,
+          "maxY": 325,
+          "minX": 147,
+          "minY": 277,
+          "width": 90
+        },
+        "lowestOpaqueRowTopOrigin": 325,
+        "opaquePixelCount": 2432,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 36213,
+      "decodedRgbaSha256": "139827263f4db56c785b49dc500441b38baa78f093c8bcc027405649965490b3",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/park_grove_ground_camNE.png",
+      "sha256": "5e45f2e48ff4b09fb8b8b78ed54424714ba2dc2a009a1bb0200c68eebf8f2207"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 50,
+          "maxX": 236,
+          "maxY": 325,
+          "minX": 147,
+          "minY": 276,
+          "width": 90
+        },
+        "lowestOpaqueRowTopOrigin": 325,
+        "opaquePixelCount": 2446,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 36517,
+      "decodedRgbaSha256": "5e87a290756f0821ff7b77c12597862d86aa52f1cff7fb9fbfc91d9b3687db1e",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/park_grove_ground_camSE.png",
+      "sha256": "489c306cfde5eeda21d68b5740025cb5f79532f85a8b705d73e36359b14f7c5f"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 50,
+          "maxX": 236,
+          "maxY": 325,
+          "minX": 147,
+          "minY": 276,
+          "width": 90
+        },
+        "lowestOpaqueRowTopOrigin": 325,
+        "opaquePixelCount": 2444,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 36314,
+      "decodedRgbaSha256": "4aa9c6334dfe5903d1c6707c2a7e5263457f733a993318edb31a2d68a353d2d4",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/park_grove_ground_camSW.png",
+      "sha256": "e877fa43f517853c2faf2075023adfd4c394b117ea927ceb285c3d07e42637b7"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 49,
+          "maxX": 236,
+          "maxY": 325,
+          "minX": 147,
+          "minY": 277,
+          "width": 90
+        },
+        "lowestOpaqueRowTopOrigin": 325,
+        "opaquePixelCount": 2433,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 36450,
+      "decodedRgbaSha256": "73999afa0f1be0553c89c0a03916b95e93c907470dadff3779400c0f5155fdfa",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/park_grove_ground_camNW.png",
+      "sha256": "d17870db690dec7a2ae960a1277a893271e7139aea7a5efef8f9345ebcd81fe5"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 564,
+          "maxX": 783,
+          "maxY": 839,
+          "minX": 0,
+          "minY": 276,
+          "width": 784
+        },
+        "lowestOpaqueRowTopOrigin": 839,
+        "opaquePixelCount": 52763,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 102930,
+      "decodedRgbaSha256": "d6bb5a2f58628ac1a7220c4969ec276730673371a1b7a0cca5f87185e400162d",
+      "dimensions": [
+        784,
+        840
+      ],
+      "path": "park_grove_ground_contact-sheet.png",
+      "sha256": "3a6ab541e3da2c16994bcbc5cc528aa3ce079cf5a4dedadc3ab192a9d49a59d5"
+    }
+  ],
+  "assetId": "park_grove_ground",
+  "assetKind": "ground-treatment",
+  "billboardGeometry": false,
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "cameraRig": {
+    "distance": 32.0,
+    "orthoScale": 12.341995,
+    "shiftY": 0.28125,
+    "views": [
+      {
+        "azimuthDegrees": 45.0,
+        "name": "camNE"
+      },
+      {
+        "azimuthDegrees": 135.0,
+        "name": "camSE"
+      },
+      {
+        "azimuthDegrees": 225.0,
+        "name": "camSW"
+      },
+      {
+        "azimuthDegrees": 315.0,
+        "name": "camNW"
+      }
+    ]
+  },
+  "canvas": {
+    "footprintPivotPixelTopOrigin": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "cedarMarketReused": false,
+  "contactSheetLayout": [
+    [
+      "camNE",
+      "camSE"
+    ],
+    [
+      "camSW",
+      "camNW"
+    ]
+  ],
+  "description": "Landscaped park cell with restrained orthogonal paths and planted corners",
+  "grid": {
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0,
+    "projectedTilePixels": [
+      88,
+      44
+    ],
+    "projection": "orthographic-2:1-dimetric",
+    "worldTileSize": 2.0
+  },
+  "groundContract": {
+    "arbitraryPad": false,
+    "edgeAlignment": "world-x-y",
+    "exactWorldBoundsXY": [
+      -1.0,
+      1.0,
+      -1.0,
+      1.0
+    ]
+  },
+  "lightingConvention": {
+    "color": [
+      1.0,
+      0.86,
+      0.72
+    ],
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldColor": [
+      0.2,
+      0.17,
+      0.14,
+      1.0
+    ],
+    "worldStrength": 0.72
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "perAssetCompensation": {
+    "crop": false,
+    "offsetPixels": [
+      0,
+      0
+    ],
+    "rotationDegrees": 0.0,
+    "scale": 1.0,
+    "skew": [
+      0.0,
+      0.0
+    ]
+  },
+  "pipelineSchema": "citysim.world-art.ground-ecology-four-view.v1",
+  "postRenderCompensation": "none",
+  "rejectedVectorAssetsReused": false,
+  "root": {
+    "location": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "name": "AssetRoot",
+    "pivotName": "FootprintPivot",
+    "rotationEuler": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "schema": "citysim.world-art.ground-ecology-asset.v1",
+  "sourcePixelsReused": false,
+  "status": "source-only-not-live",
+  "vegetationContract": null
+}

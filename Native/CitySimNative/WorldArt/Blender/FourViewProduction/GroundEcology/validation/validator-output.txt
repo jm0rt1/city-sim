@@ -1,0 +1,468 @@
+GROUND_ECOLOGY_FOUR_VIEW_VALIDATION_PASS
+{
+  "assets": {
+    "civic_meadow_ground": {
+      "deterministicCanonicalPngSha256": {
+        "civic_meadow_ground_camNE.png": "928a467d4ecf851adcaf9ad9aea95ca3723c0be9cd93991946411c2e399d5fbc",
+        "civic_meadow_ground_camNW.png": "6aeb924366e53c3c1a7179e6ab10bc4b73e09a7874dc0a82853a4190ab8fbc5e",
+        "civic_meadow_ground_camSE.png": "6888d23ca7534690e34ce265bcb10ab4313278da246be23cf8d6f753583381cb",
+        "civic_meadow_ground_camSW.png": "1e788074c91eb84636359976199d9f23d9447969721bd1d336a3e62b1405c6c0"
+      },
+      "geometry": {
+        "exactGroundCellBounds": {
+          "maxX": 0.17366549372673035,
+          "maxY": -0.7401900291442871,
+          "maxZ": 0.04320000112056732,
+          "minX": 0.06633450090885162,
+          "minY": -0.8198099136352539,
+          "minZ": 0.0
+        }
+      },
+      "meshCount": 24,
+      "projectedAxisPixels": {
+        "camNE": [
+          [
+            -44,
+            22
+          ],
+          [
+            44,
+            22
+          ]
+        ],
+        "camNW": [
+          [
+            -44,
+            -22
+          ],
+          [
+            -44,
+            22
+          ]
+        ],
+        "camSE": [
+          [
+            44,
+            22
+          ],
+          [
+            44,
+            -22
+          ]
+        ],
+        "camSW": [
+          [
+            44,
+            -22
+          ],
+          [
+            -44,
+            -22
+          ]
+        ]
+      }
+    },
+    "maple_street_tree": {
+      "deterministicCanonicalPngSha256": {
+        "maple_street_tree_camNE.png": "90d78851edf3292f4d25646bb725bf9f32a232fa219eb5d6e1a5ca0902853ec0",
+        "maple_street_tree_camNW.png": "6126bbeb2d3442dc3a2b14d26dac1c255887e8cdba79a2c622e52602d0c54def",
+        "maple_street_tree_camSE.png": "5bca9196d13146d6b4273b0e75a8704ac20dcdcf3caea84250ef176149cffb91",
+        "maple_street_tree_camSW.png": "fcb797c6785c5a064b0255bbadc65b2c8a169f69fc2f965c7c3727d014ed9acb"
+      },
+      "geometry": {
+        "groundContactBounds": {
+          "maxX": 0.15756922960281372,
+          "maxY": 0.1599999964237213,
+          "maxZ": 1.2400000095367432,
+          "minX": -0.15756922960281372,
+          "minY": -0.1599999964237213,
+          "minZ": 0.0
+        },
+        "modeledHeight": 2.6511998176574707
+      },
+      "meshCount": 15,
+      "projectedAxisPixels": {
+        "camNE": [
+          [
+            -44,
+            22
+          ],
+          [
+            44,
+            22
+          ]
+        ],
+        "camNW": [
+          [
+            -44,
+            -22
+          ],
+          [
+            -44,
+            22
+          ]
+        ],
+        "camSE": [
+          [
+            44,
+            22
+          ],
+          [
+            44,
+            -22
+          ]
+        ],
+        "camSW": [
+          [
+            44,
+            -22
+          ],
+          [
+            -44,
+            -22
+          ]
+        ]
+      }
+    },
+    "marigold_planter_cluster": {
+      "deterministicCanonicalPngSha256": {
+        "marigold_planter_cluster_camNE.png": "843c21e1fb96084598c7eac136da94f5f565e9c0ce4578924b9efcdeb89c97c0",
+        "marigold_planter_cluster_camNW.png": "257d5f5276e2fad9fe0eab6865873e3d22fbf8f540a903b9a257d1e381f06fd4",
+        "marigold_planter_cluster_camSE.png": "7a68fcc3f9a5149f6af0716110dc426091af08918e1ba258b5096130d9bf0dd8",
+        "marigold_planter_cluster_camSW.png": "d67ce7b9024131ad145cf01e39f070cf96fc15214b4c64160553c1eed01190d5"
+      },
+      "geometry": {
+        "groundContactBounds": {
+          "maxX": 0.3700000047683716,
+          "maxY": 0.27000001072883606,
+          "maxZ": 0.1599999964237213,
+          "minX": -0.3700000047683716,
+          "minY": -0.27000001072883606,
+          "minZ": 0.0
+        },
+        "modeledHeight": 0.5960000157356262
+      },
+      "meshCount": 30,
+      "projectedAxisPixels": {
+        "camNE": [
+          [
+            -44,
+            22
+          ],
+          [
+            44,
+            22
+          ]
+        ],
+        "camNW": [
+          [
+            -44,
+            -22
+          ],
+          [
+            -44,
+            22
+          ]
+        ],
+        "camSE": [
+          [
+            44,
+            22
+          ],
+          [
+            44,
+            -22
+          ]
+        ],
+        "camSW": [
+          [
+            44,
+            -22
+          ],
+          [
+            -44,
+            -22
+          ]
+        ]
+      }
+    },
+    "park_grove_ground": {
+      "deterministicCanonicalPngSha256": {
+        "park_grove_ground_camNE.png": "5e45f2e48ff4b09fb8b8b78ed54424714ba2dc2a009a1bb0200c68eebf8f2207",
+        "park_grove_ground_camNW.png": "d17870db690dec7a2ae960a1277a893271e7139aea7a5efef8f9345ebcd81fe5",
+        "park_grove_ground_camSE.png": "489c306cfde5eeda21d68b5740025cb5f79532f85a8b705d73e36359b14f7c5f",
+        "park_grove_ground_camSW.png": "e877fa43f517853c2faf2075023adfd4c394b117ea927ceb285c3d07e42637b7"
+      },
+      "geometry": {
+        "exactGroundCellBounds": {
+          "maxX": 0.1899999976158142,
+          "maxY": 0.9599999785423279,
+          "maxZ": 0.024000000208616257,
+          "minX": -0.1899999976158142,
+          "minY": -0.9599999785423279,
+          "minZ": 0.0
+        }
+      },
+      "meshCount": 19,
+      "projectedAxisPixels": {
+        "camNE": [
+          [
+            -44,
+            22
+          ],
+          [
+            44,
+            22
+          ]
+        ],
+        "camNW": [
+          [
+            -44,
+            -22
+          ],
+          [
+            -44,
+            22
+          ]
+        ],
+        "camSE": [
+          [
+            44,
+            22
+          ],
+          [
+            44,
+            -22
+          ]
+        ],
+        "camSW": [
+          [
+            44,
+            -22
+          ],
+          [
+            -44,
+            -22
+          ]
+        ]
+      }
+    },
+    "sage_shrub_cluster": {
+      "deterministicCanonicalPngSha256": {
+        "sage_shrub_cluster_camNE.png": "a965235db70ccf75042661628365d2941cebf105ecf8b3d91d7daf3a1116cbf4",
+        "sage_shrub_cluster_camNW.png": "f14b577b1a56facb88a2eeee715b41ca1b663c601a8b0c354f5f04c607f9576c",
+        "sage_shrub_cluster_camSE.png": "da6cbe11068009182f0d63bdd9541e8d3c7c5481dfe29913f6324efe7e09548a",
+        "sage_shrub_cluster_camSW.png": "8205414e21ba437755bcc4fcec0bd685f71d6511ecfe6f67b4dfad7d92958766"
+      },
+      "geometry": {
+        "groundContactBounds": {
+          "maxX": 0.054999999701976776,
+          "maxY": 0.054999999701976776,
+          "maxZ": 0.23999999463558197,
+          "minX": -0.054999999701976776,
+          "minY": -0.054999999701976776,
+          "minZ": 0.0
+        },
+        "modeledHeight": 0.8700000047683716
+      },
+      "meshCount": 19,
+      "projectedAxisPixels": {
+        "camNE": [
+          [
+            -44,
+            22
+          ],
+          [
+            44,
+            22
+          ]
+        ],
+        "camNW": [
+          [
+            -44,
+            -22
+          ],
+          [
+            -44,
+            22
+          ]
+        ],
+        "camSE": [
+          [
+            44,
+            22
+          ],
+          [
+            44,
+            -22
+          ]
+        ],
+        "camSW": [
+          [
+            44,
+            -22
+          ],
+          [
+            -44,
+            -22
+          ]
+        ]
+      }
+    },
+    "utility_service_ground": {
+      "deterministicCanonicalPngSha256": {
+        "utility_service_ground_camNE.png": "65e0f70910c48ace1a9ecbbbdcf635f3c841f0cd671213bbca7d43af31322fce",
+        "utility_service_ground_camNW.png": "68e204a4fe3a9abae120075e774bcccf801d3f1a190ac2ac620fa93d8e6c1821",
+        "utility_service_ground_camSE.png": "92c75830027e782d3191987464cccec65d5134ba39c29b19de75260c677aa56a",
+        "utility_service_ground_camSW.png": "a7421b0b441204845c60dc615faeab4b91d10ed05e23a8395b9c1e3d3723e775"
+      },
+      "geometry": {
+        "exactGroundCellBounds": {
+          "maxX": -0.5658362507820129,
+          "maxY": 0.8020768165588379,
+          "maxZ": 0.20999999344348907,
+          "minX": -0.8341637253761292,
+          "minY": 0.5979231595993042,
+          "minZ": 0.0
+        }
+      },
+      "meshCount": 14,
+      "projectedAxisPixels": {
+        "camNE": [
+          [
+            -44,
+            22
+          ],
+          [
+            44,
+            22
+          ]
+        ],
+        "camNW": [
+          [
+            -44,
+            -22
+          ],
+          [
+            -44,
+            22
+          ]
+        ],
+        "camSE": [
+          [
+            44,
+            22
+          ],
+          [
+            44,
+            -22
+          ]
+        ],
+        "camSW": [
+          [
+            44,
+            -22
+          ],
+          [
+            -44,
+            -22
+          ]
+        ]
+      }
+    },
+    "worn_neighborhood_ground": {
+      "deterministicCanonicalPngSha256": {
+        "worn_neighborhood_ground_camNE.png": "5652642892cc577084d48d231a3c617e7e9da0198aab548891a7cec16bf0438b",
+        "worn_neighborhood_ground_camNW.png": "4be1516c7b0c25a3f04ec4760050513d8668c10ca644ee4150b1757d1690fa1c",
+        "worn_neighborhood_ground_camSE.png": "86f705cb9eb93a2fc591b7732550aefbe8b6e204f1b571a8ed7b70c9d5d8f655",
+        "worn_neighborhood_ground_camSW.png": "a3e4ca329c8925fdd6ee2220011c2b4d8605decf7a03d6ddda895c5e7868bc32"
+      },
+      "geometry": {
+        "exactGroundCellBounds": {
+          "maxX": 0.7539146542549133,
+          "maxY": -0.4204551875591278,
+          "maxZ": 0.03400000184774399,
+          "minX": 0.5660853981971741,
+          "minY": -0.5395448207855225,
+          "minZ": 0.0
+        }
+      },
+      "meshCount": 21,
+      "projectedAxisPixels": {
+        "camNE": [
+          [
+            -44,
+            22
+          ],
+          [
+            44,
+            22
+          ]
+        ],
+        "camNW": [
+          [
+            -44,
+            -22
+          ],
+          [
+            -44,
+            22
+          ]
+        ],
+        "camSE": [
+          [
+            44,
+            22
+          ],
+          [
+            44,
+            -22
+          ]
+        ],
+        "camSW": [
+          [
+            44,
+            -22
+          ],
+          [
+            -44,
+            -22
+          ]
+        ]
+      }
+    }
+  },
+  "blenderVersion": "4.5.12",
+  "contract": {
+    "azimuthDegrees": 45.0,
+    "cameraOrder": [
+      "camNE",
+      "camSE",
+      "camSW",
+      "camNW"
+    ],
+    "canonicalRerenders": 28,
+    "determinism": "byte-identical canonical PNG files",
+    "elevationDegrees": 30.0,
+    "orthoScale": 12.341995,
+    "pivotPixelTopOrigin": [
+      192,
+      300
+    ],
+    "postRenderCompensation": "none",
+    "previewRerenders": 2,
+    "projectedWorldCellPixels": [
+      88,
+      44
+    ],
+    "projection": "orthographic-2:1-dimetric",
+    "shiftY": 0.28125
+  },
+  "deterministicPreviewPngSha256": {
+    "greenworks-neighborhood-ground-1280x800.png": "74729d9a708aa4abb9d8c40b382cdf13413fe33040a5a4bd4090f9bdbcbd2a89",
+    "greenworks-neighborhood-ground-900x600.png": "b14a63e8180a45cd6c6d7ad7359627e851acbfc424ddfae80c1b674b934bcaa3"
+  },
+  "familyManifestSha256": "eca62fff1f46e59e3eafd23de264c84d8012224c56caac6f47d5a72e5745f4ae",
+  "schema": "citysim.world-art.ground-ecology-validation.v1",
+  "status": "PASS"
+}

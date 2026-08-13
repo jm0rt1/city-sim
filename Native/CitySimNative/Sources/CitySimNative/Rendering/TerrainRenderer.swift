@@ -26,6 +26,7 @@ final class TerrainRenderer {
         let roles: [DevelopedGroundRole]
         let tileWidthHundredths: Int
         let tileHeightHundredths: Int
+        let usesFourViewGroundEcology: Bool
     }
 
     private static var developedGroundTemplates: [DevelopedGroundTemplateKey: SKNode] = [:]
@@ -33,10 +34,16 @@ final class TerrainRenderer {
 
     private let style: WorldVisualStyle
     private let assets: WorldAssetCatalog
+    private let groundEcologyAssets: FourViewGroundEcologyCatalog?
 
-    init(style: WorldVisualStyle, assets: WorldAssetCatalog = .shared) {
+    init(
+        style: WorldVisualStyle,
+        assets: WorldAssetCatalog = .shared,
+        groundEcologyAssets: FourViewGroundEcologyCatalog? = nil
+    ) {
         self.style = style
         self.assets = assets
+        self.groundEcologyAssets = groundEcologyAssets
     }
 
     func makeGround(for tile: CityTile, detail: CameraDetailLevel) -> SKNode {
@@ -57,9 +64,22 @@ final class TerrainRenderer {
         root.addChild(neighborhoodLayer)
         root.addChild(blockLayer)
 
-        addLotSurface(for: tile, to: cityLayer)
-        addStableTerrainBreakup(for: tile, to: neighborhoodLayer)
-        addCloseTerrainDetail(for: tile, to: blockLayer)
+        if tile.constructionProgress >= 1,
+           let authoredGround = groundEcologyAssets?.makeGroundSprite(
+               for: tile,
+               worldTileWidth: style.tileWidth
+           ) {
+            let assetID = groundEcologyAssets?.groundAssetID(for: tile) ?? "unknown"
+            authoredGround.name = "terrain.ground-ecology.\(assetID).\(detail.assetSuffix)"
+            authoredGround.color = .clear
+            authoredGround.colorBlendFactor = 0
+            authoredGround.position = .zero
+            cityLayer.addChild(authoredGround)
+        } else {
+            addLotSurface(for: tile, to: cityLayer)
+            addStableTerrainBreakup(for: tile, to: neighborhoodLayer)
+            addCloseTerrainDetail(for: tile, to: blockLayer)
+        }
         return root
     }
 
@@ -202,7 +222,8 @@ final class TerrainRenderer {
                 ($0.y, $0.x, $0.kind.rawValue) < ($1.y, $1.x, $1.kind.rawValue)
             },
             tileWidthHundredths: Int((style.tileWidth * 100).rounded()),
-            tileHeightHundredths: Int((style.tileHeight * 100).rounded())
+            tileHeightHundredths: Int((style.tileHeight * 100).rounded()),
+            usesFourViewGroundEcology: groundEcologyAssets?.manifest != nil
         )
         if let prototype = Self.developedGroundTemplates[key],
            let copy = prototype.copy() as? SKNode {
@@ -270,6 +291,12 @@ final class TerrainRenderer {
             expansion.lineWidth = 0.7
             expansion.zPosition = 0.15
             cityLayer.addChild(expansion)
+
+            addFourViewExpansionGround(
+                coordinates: expansionCoordinates,
+                detail: detail,
+                to: cityLayer
+            )
         }
 
         let publicEnvelope = SKShapeNode(path: combinedDiamondPath(
@@ -700,6 +727,34 @@ final class TerrainRenderer {
                 return tile.kind == .empty
             }
             .sorted(by: coordinateComesBefore)
+    }
+
+    private func addFourViewExpansionGround(
+        coordinates: [GridCoordinate],
+        detail: CameraDetailLevel,
+        to layer: SKNode
+    ) {
+        guard let groundEcologyAssets else { return }
+        for coordinate in coordinates {
+            let assetID = WorldVisualSeed.variant(
+                count: 4,
+                for: coordinate,
+                kind: .empty,
+                salt: 0x6EC0
+            ) == 0
+                ? "worn_neighborhood_ground"
+                : "civic_meadow_ground"
+            guard let sprite = groundEcologyAssets.makeSprite(
+                assetID: assetID,
+                worldTileWidth: style.tileWidth,
+                zPosition: 0.24
+            ) else { continue }
+            sprite.name = "terrain.ground-ecology.\(assetID).\(detail.assetSuffix)"
+            sprite.position = style.isoPosition(coordinate)
+            sprite.color = .clear
+            sprite.colorBlendFactor = 0
+            layer.addChild(sprite)
+        }
     }
 
     private func coordinateComesBefore(_ lhs: GridCoordinate, _ rhs: GridCoordinate) -> Bool {

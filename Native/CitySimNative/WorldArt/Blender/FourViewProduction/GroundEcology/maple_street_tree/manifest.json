@@ -1,0 +1,262 @@
+{
+  "artifacts": [
+    {
+      "bytes": 709346,
+      "path": "maple_street_tree.blend",
+      "sha256": "09b570632f06d52ad218d9ecc302c91d2ac7cb93e64dd9d498f5e393a3d2b9bf"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 80,
+          "maxX": 217,
+          "maxY": 303,
+          "minX": 165,
+          "minY": 224,
+          "width": 53
+        },
+        "lowestOpaqueRowTopOrigin": 303,
+        "opaquePixelCount": 2074,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 35991,
+      "decodedRgbaSha256": "4b6eaf68f8e06d16197f0551093edae8f91dfe9b274f8e59d8c5bfa9f48d83e4",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/maple_street_tree_camNE.png",
+      "sha256": "90d78851edf3292f4d25646bb725bf9f32a232fa219eb5d6e1a5ca0902853ec0"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 79,
+          "maxX": 215,
+          "maxY": 303,
+          "minX": 168,
+          "minY": 225,
+          "width": 48
+        },
+        "lowestOpaqueRowTopOrigin": 303,
+        "opaquePixelCount": 2049,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 36630,
+      "decodedRgbaSha256": "4aff187d7f61f7b538ecdce919765508fbfc0448f9ea63ad32f5e68e37989911",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/maple_street_tree_camSE.png",
+      "sha256": "5bca9196d13146d6b4273b0e75a8704ac20dcdcf3caea84250ef176149cffb91"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 79,
+          "maxX": 218,
+          "maxY": 303,
+          "minX": 166,
+          "minY": 225,
+          "width": 53
+        },
+        "lowestOpaqueRowTopOrigin": 303,
+        "opaquePixelCount": 2130,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 36924,
+      "decodedRgbaSha256": "5aa4a7e364c0a08c165d507bfe04cd68a97683fe487e415c5cd7c75d8e319df8",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/maple_street_tree_camSW.png",
+      "sha256": "fcb797c6785c5a064b0255bbadc65b2c8a169f69fc2f965c7c3727d014ed9acb"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 79,
+          "maxX": 215,
+          "maxY": 303,
+          "minX": 168,
+          "minY": 225,
+          "width": 48
+        },
+        "lowestOpaqueRowTopOrigin": 303,
+        "opaquePixelCount": 2070,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 36219,
+      "decodedRgbaSha256": "10b31c2d6422df7b06c9a788c3cf6c01705e4a128e2a36cd30a81b4358b713ad",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/maple_street_tree_camNW.png",
+      "sha256": "6126bbeb2d3442dc3a2b14d26dac1c255887e8cdba79a2c622e52602d0c54def"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 616,
+          "maxX": 783,
+          "maxY": 839,
+          "minX": 0,
+          "minY": 224,
+          "width": 784
+        },
+        "lowestOpaqueRowTopOrigin": 839,
+        "opaquePixelCount": 51331,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 103171,
+      "decodedRgbaSha256": "d52f11e3b673ea95ab393640f217eb100b894eee1472850943d47735c6ef2a87",
+      "dimensions": [
+        784,
+        840
+      ],
+      "path": "maple_street_tree_contact-sheet.png",
+      "sha256": "fcadb3a2518e684cc3c8bb077dc3d407ecf9c7c5739777401d08509b655e8572"
+    }
+  ],
+  "assetId": "maple_street_tree",
+  "assetKind": "vegetation-dressing",
+  "billboardGeometry": false,
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "cameraRig": {
+    "distance": 32.0,
+    "orthoScale": 12.341995,
+    "shiftY": 0.28125,
+    "views": [
+      {
+        "azimuthDegrees": 45.0,
+        "name": "camNE"
+      },
+      {
+        "azimuthDegrees": 135.0,
+        "name": "camSE"
+      },
+      {
+        "azimuthDegrees": 225.0,
+        "name": "camSW"
+      },
+      {
+        "azimuthDegrees": 315.0,
+        "name": "camNW"
+      }
+    ]
+  },
+  "canvas": {
+    "footprintPivotPixelTopOrigin": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "cedarMarketReused": false,
+  "contactSheetLayout": [
+    [
+      "camNE",
+      "camSE"
+    ],
+    [
+      "camSW",
+      "camNW"
+    ]
+  ],
+  "description": "Modeled street maple with branching trunk and layered warm-green crown",
+  "grid": {
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0,
+    "projectedTilePixels": [
+      88,
+      44
+    ],
+    "projection": "orthographic-2:1-dimetric",
+    "worldTileSize": 2.0
+  },
+  "groundContract": null,
+  "lightingConvention": {
+    "color": [
+      1.0,
+      0.86,
+      0.72
+    ],
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldColor": [
+      0.2,
+      0.17,
+      0.14,
+      1.0
+    ],
+    "worldStrength": 0.72
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "perAssetCompensation": {
+    "crop": false,
+    "offsetPixels": [
+      0,
+      0
+    ],
+    "rotationDegrees": 0.0,
+    "scale": 1.0,
+    "skew": [
+      0.0,
+      0.0
+    ]
+  },
+  "pipelineSchema": "citysim.world-art.ground-ecology-four-view.v1",
+  "postRenderCompensation": "none",
+  "rejectedVectorAssetsReused": false,
+  "root": {
+    "location": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "name": "AssetRoot",
+    "pivotName": "FootprintPivot",
+    "rotationEuler": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "schema": "citysim.world-art.ground-ecology-asset.v1",
+  "sourcePixelsReused": false,
+  "status": "source-only-not-live",
+  "vegetationContract": {
+    "billboard": false,
+    "groundContactZ": 0.0,
+    "modeled3D": true,
+    "pivotWorld": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  }
+}

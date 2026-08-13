@@ -1,0 +1,57 @@
+{
+  "schema": "citysim.native-four-view-ground-ecology.v1",
+  "camera": "camNE",
+  "cameraAzimuthDegrees": 45,
+  "cameraElevationDegrees": 30,
+  "projectedTilePixels": [88, 44],
+  "canvas": {
+    "width": 384,
+    "height": 384,
+    "footprintPivotPixel": [192, 300]
+  },
+  "postRenderCompensation": "none",
+  "assets": [
+    {
+      "assetID": "civic_meadow_ground",
+      "file": "civic_meadow_ground_camNE.png",
+      "sha256": "928a467d4ecf851adcaf9ad9aea95ca3723c0be9cd93991946411c2e399d5fbc",
+      "role": "ground-treatment"
+    },
+    {
+      "assetID": "worn_neighborhood_ground",
+      "file": "worn_neighborhood_ground_camNE.png",
+      "sha256": "5652642892cc577084d48d231a3c617e7e9da0198aab548891a7cec16bf0438b",
+      "role": "ground-treatment"
+    },
+    {
+      "assetID": "park_grove_ground",
+      "file": "park_grove_ground_camNE.png",
+      "sha256": "5e45f2e48ff4b09fb8b8b78ed54424714ba2dc2a009a1bb0200c68eebf8f2207",
+      "role": "ground-treatment"
+    },
+    {
+      "assetID": "utility_service_ground",
+      "file": "utility_service_ground_camNE.png",
+      "sha256": "65e0f70910c48ace1a9ecbbbdcf635f3c841f0cd671213bbca7d43af31322fce",
+      "role": "ground-treatment"
+    },
+    {
+      "assetID": "maple_street_tree",
+      "file": "maple_street_tree_camNE.png",
+      "sha256": "90d78851edf3292f4d25646bb725bf9f32a232fa219eb5d6e1a5ca0902853ec0",
+      "role": "vegetation-dressing"
+    },
+    {
+      "assetID": "sage_shrub_cluster",
+      "file": "sage_shrub_cluster_camNE.png",
+      "sha256": "a965235db70ccf75042661628365d2941cebf105ecf8b3d91d7daf3a1116cbf4",
+      "role": "vegetation-dressing"
+    },
+    {
+      "assetID": "marigold_planter_cluster",
+      "file": "marigold_planter_cluster_camNE.png",
+      "sha256": "843c21e1fb96084598c7eac136da94f5f565e9c0ce4578924b9efcdeb89c97c0",
+      "role": "vegetation-dressing"
+    }
+  ]
+}

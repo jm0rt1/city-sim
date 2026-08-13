@@ -1,0 +1,249 @@
+{
+  "artifacts": [
+    {
+      "bytes": 3844073,
+      "path": "preview/greenworks-neighborhood-ground.blend",
+      "sha256": "02ea2bd3dd132ff765029ee9ff0ad23eaf4e1b137d7622838f7eb4c059911bf0"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 800,
+          "maxX": 1279,
+          "maxY": 799,
+          "minX": 0,
+          "minY": 0,
+          "width": 1280
+        },
+        "lowestOpaqueRowTopOrigin": 799,
+        "opaquePixelCount": 1024000,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 932890,
+      "decodedRgbaSha256": "de51e910bb6e7e5c6f223865e5270c34fbb515b5567f278e50dc41d725427129",
+      "dimensions": [
+        1280,
+        800
+      ],
+      "path": "preview/greenworks-neighborhood-ground-1280x800.png",
+      "sha256": "74729d9a708aa4abb9d8c40b382cdf13413fe33040a5a4bd4090f9bdbcbd2a89"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 600,
+          "maxX": 899,
+          "maxY": 599,
+          "minX": 0,
+          "minY": 0,
+          "width": 900
+        },
+        "lowestOpaqueRowTopOrigin": 599,
+        "opaquePixelCount": 540000,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 501184,
+      "decodedRgbaSha256": "7f2d003d993e4017131478a62b1f1263df50cd4cdc2a1b4f768c424fc2feb1b3",
+      "dimensions": [
+        900,
+        600
+      ],
+      "path": "preview/greenworks-neighborhood-ground-900x600.png",
+      "sha256": "b14a63e8180a45cd6c6d7ad7359627e851acbfc424ddfae80c1b674b934bcaa3"
+    }
+  ],
+  "camera": {
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0,
+    "name": "DistrictPreviewCamera",
+    "projection": "orthographic"
+  },
+  "cedarMarketReused": false,
+  "gridSpacingWorld": 2.0,
+  "lightingConvention": {
+    "color": [
+      1.0,
+      0.86,
+      0.72
+    ],
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldColor": [
+      0.2,
+      0.17,
+      0.14,
+      1.0
+    ],
+    "worldStrength": 0.72
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "perAssetTransformCompensation": "none",
+  "placements": [
+    {
+      "assetId": "civic_meadow_ground",
+      "meshCount": 24,
+      "originWorld": [
+        -5.0,
+        3.0,
+        0.1
+      ],
+      "perAssetTransformCompensation": "none",
+      "rotationEuler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "sourceBlend": "FourViewProduction/GroundEcology/civic_meadow_ground/civic_meadow_ground.blend",
+      "sourceBlendSha256": "30ff8ba3b564108708e8f7624e0eb67b6812e15baf0b52cbf2c4e8dcaaa3ecdc"
+    },
+    {
+      "assetId": "worn_neighborhood_ground",
+      "meshCount": 21,
+      "originWorld": [
+        -3.0,
+        3.0,
+        0.1
+      ],
+      "perAssetTransformCompensation": "none",
+      "rotationEuler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "sourceBlend": "FourViewProduction/GroundEcology/worn_neighborhood_ground/worn_neighborhood_ground.blend",
+      "sourceBlendSha256": "b21dfe423aa8037cffb2313f62a93ff33f21d0151e80efa24e9ffc3b2dfb9ab4"
+    },
+    {
+      "assetId": "park_grove_ground",
+      "meshCount": 19,
+      "originWorld": [
+        3.0,
+        3.0,
+        0.1
+      ],
+      "perAssetTransformCompensation": "none",
+      "rotationEuler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "sourceBlend": "FourViewProduction/GroundEcology/park_grove_ground/park_grove_ground.blend",
+      "sourceBlendSha256": "6ae994babb24cad8e52a87c5e46cdd87a3522ec69f8a30a64c0840f494b66863"
+    },
+    {
+      "assetId": "utility_service_ground",
+      "meshCount": 14,
+      "originWorld": [
+        5.0,
+        3.0,
+        0.1
+      ],
+      "perAssetTransformCompensation": "none",
+      "rotationEuler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "sourceBlend": "FourViewProduction/GroundEcology/utility_service_ground/utility_service_ground.blend",
+      "sourceBlendSha256": "3dec46ef36a01caca7b5e64bb3be87cd645a0074a9dd836588d1ebef22565b47"
+    },
+    {
+      "assetId": "maple_street_tree",
+      "meshCount": 15,
+      "originWorld": [
+        3.0,
+        3.0,
+        0.1
+      ],
+      "perAssetTransformCompensation": "none",
+      "rotationEuler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "sourceBlend": "FourViewProduction/GroundEcology/maple_street_tree/maple_street_tree.blend",
+      "sourceBlendSha256": "09b570632f06d52ad218d9ecc302c91d2ac7cb93e64dd9d498f5e393a3d2b9bf"
+    },
+    {
+      "assetId": "sage_shrub_cluster",
+      "meshCount": 19,
+      "originWorld": [
+        5.0,
+        3.0,
+        0.1
+      ],
+      "perAssetTransformCompensation": "none",
+      "rotationEuler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "sourceBlend": "FourViewProduction/GroundEcology/sage_shrub_cluster/sage_shrub_cluster.blend",
+      "sourceBlendSha256": "fb70a8a20cd0a7d5576e4e253c08e722b155802d4127b8a14bd8623369764652"
+    },
+    {
+      "assetId": "marigold_planter_cluster",
+      "meshCount": 30,
+      "originWorld": [
+        -5.0,
+        3.0,
+        0.1
+      ],
+      "perAssetTransformCompensation": "none",
+      "rotationEuler": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "sourceBlend": "FourViewProduction/GroundEcology/marigold_planter_cluster/marigold_planter_cluster.blend",
+      "sourceBlendSha256": "cafcb6a075e8141ad9ab8d8f53bd62a575cb7918d7462a25d116f4013cd0e1c5"
+    }
+  ],
+  "schema": "citysim.world-art.ground-ecology-preview.v1",
+  "singleGrid": true,
+  "sourcePixelsReused": false,
+  "status": "source-only-review-evidence"
+}

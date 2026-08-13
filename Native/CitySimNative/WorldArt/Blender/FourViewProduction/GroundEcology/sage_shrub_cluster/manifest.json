@@ -1,0 +1,262 @@
+{
+  "artifacts": [
+    {
+      "bytes": 683807,
+      "path": "sage_shrub_cluster.blend",
+      "sha256": "fb70a8a20cd0a7d5576e4e253c08e722b155802d4127b8a14bd8623369764652"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 31,
+          "maxX": 216,
+          "maxY": 304,
+          "minX": 173,
+          "minY": 274,
+          "width": 44
+        },
+        "lowestOpaqueRowTopOrigin": 304,
+        "opaquePixelCount": 883,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 32733,
+      "decodedRgbaSha256": "a023ec90dc033f9eb2c1c3a0d6c048a3ad2743c499138fbb0b46c1df6986e427",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/sage_shrub_cluster_camNE.png",
+      "sha256": "a965235db70ccf75042661628365d2941cebf105ecf8b3d91d7daf3a1116cbf4"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 30,
+          "maxX": 214,
+          "maxY": 301,
+          "minX": 170,
+          "minY": 272,
+          "width": 45
+        },
+        "lowestOpaqueRowTopOrigin": 301,
+        "opaquePixelCount": 868,
+        "pivotPixelAlpha": 174
+      },
+      "bytes": 33181,
+      "decodedRgbaSha256": "04afbfdcbd54ed1a83cdc9de2862fd7537c6f839c90d9dfe9ba02f9029883ee8",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/sage_shrub_cluster_camSE.png",
+      "sha256": "da6cbe11068009182f0d63bdd9541e8d3c7c5481dfe29913f6324efe7e09548a"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 31,
+          "maxX": 210,
+          "maxY": 303,
+          "minX": 167,
+          "minY": 273,
+          "width": 44
+        },
+        "lowestOpaqueRowTopOrigin": 303,
+        "opaquePixelCount": 880,
+        "pivotPixelAlpha": 228
+      },
+      "bytes": 33053,
+      "decodedRgbaSha256": "e0b5fe5276c65d838ee49a569e86391166c6c6df722850e5c0b7c3df58e1d343",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/sage_shrub_cluster_camSW.png",
+      "sha256": "8205414e21ba437755bcc4fcec0bd685f71d6511ecfe6f67b4dfad7d92958766"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 33,
+          "maxX": 213,
+          "maxY": 306,
+          "minX": 169,
+          "minY": 274,
+          "width": 45
+        },
+        "lowestOpaqueRowTopOrigin": 306,
+        "opaquePixelCount": 924,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 33184,
+      "decodedRgbaSha256": "12fdb464304b608fda459325d8c3b8d3aca87443f6db8b39c1f53a3db4a1faf1",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/sage_shrub_cluster_camNW.png",
+      "sha256": "f14b577b1a56facb88a2eeee715b41ca1b663c601a8b0c354f5f04c607f9576c"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 568,
+          "maxX": 783,
+          "maxY": 839,
+          "minX": 0,
+          "minY": 272,
+          "width": 784
+        },
+        "lowestOpaqueRowTopOrigin": 839,
+        "opaquePixelCount": 46563,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 89360,
+      "decodedRgbaSha256": "5b8637614eeb5c1ea20a1ed7673568b752981d05cb97a52e6b0bd60009bae3fe",
+      "dimensions": [
+        784,
+        840
+      ],
+      "path": "sage_shrub_cluster_contact-sheet.png",
+      "sha256": "90e6cafd717f9fd3b3ac251b9e0cd3045a42d14c7ceafb2d68cb7c1f0904ca4d"
+    }
+  ],
+  "assetId": "sage_shrub_cluster",
+  "assetKind": "vegetation-dressing",
+  "billboardGeometry": false,
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "cameraRig": {
+    "distance": 32.0,
+    "orthoScale": 12.341995,
+    "shiftY": 0.28125,
+    "views": [
+      {
+        "azimuthDegrees": 45.0,
+        "name": "camNE"
+      },
+      {
+        "azimuthDegrees": 135.0,
+        "name": "camSE"
+      },
+      {
+        "azimuthDegrees": 225.0,
+        "name": "camSW"
+      },
+      {
+        "azimuthDegrees": 315.0,
+        "name": "camNW"
+      }
+    ]
+  },
+  "canvas": {
+    "footprintPivotPixelTopOrigin": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "cedarMarketReused": false,
+  "contactSheetLayout": [
+    [
+      "camNE",
+      "camSE"
+    ],
+    [
+      "camSW",
+      "camNW"
+    ]
+  ],
+  "description": "Modeled blue-green sage cluster with woody stems and dimensional foliage",
+  "grid": {
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0,
+    "projectedTilePixels": [
+      88,
+      44
+    ],
+    "projection": "orthographic-2:1-dimetric",
+    "worldTileSize": 2.0
+  },
+  "groundContract": null,
+  "lightingConvention": {
+    "color": [
+      1.0,
+      0.86,
+      0.72
+    ],
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldColor": [
+      0.2,
+      0.17,
+      0.14,
+      1.0
+    ],
+    "worldStrength": 0.72
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "perAssetCompensation": {
+    "crop": false,
+    "offsetPixels": [
+      0,
+      0
+    ],
+    "rotationDegrees": 0.0,
+    "scale": 1.0,
+    "skew": [
+      0.0,
+      0.0
+    ]
+  },
+  "pipelineSchema": "citysim.world-art.ground-ecology-four-view.v1",
+  "postRenderCompensation": "none",
+  "rejectedVectorAssetsReused": false,
+  "root": {
+    "location": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "name": "AssetRoot",
+    "pivotName": "FootprintPivot",
+    "rotationEuler": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "schema": "citysim.world-art.ground-ecology-asset.v1",
+  "sourcePixelsReused": false,
+  "status": "source-only-not-live",
+  "vegetationContract": {
+    "billboard": false,
+    "groundContactZ": 0.0,
+    "modeled3D": true,
+    "pivotWorld": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  }
+}

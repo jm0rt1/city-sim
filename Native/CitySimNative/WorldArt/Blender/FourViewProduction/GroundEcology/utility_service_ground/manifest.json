@@ -1,0 +1,262 @@
+{
+  "artifacts": [
+    {
+      "bytes": 757885,
+      "path": "utility_service_ground.blend",
+      "sha256": "3dec46ef36a01caca7b5e64bb3be87cd645a0074a9dd836588d1ebef22565b47"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 49,
+          "maxX": 236,
+          "maxY": 325,
+          "minX": 147,
+          "minY": 277,
+          "width": 90
+        },
+        "lowestOpaqueRowTopOrigin": 325,
+        "opaquePixelCount": 2430,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 36150,
+      "decodedRgbaSha256": "7f356cd61a07d063ac17cc514ab990ce3f3a1b787626f884505c66ac7ffa07bd",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/utility_service_ground_camNE.png",
+      "sha256": "65e0f70910c48ace1a9ecbbbdcf635f3c841f0cd671213bbca7d43af31322fce"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 49,
+          "maxX": 236,
+          "maxY": 325,
+          "minX": 147,
+          "minY": 277,
+          "width": 90
+        },
+        "lowestOpaqueRowTopOrigin": 325,
+        "opaquePixelCount": 2430,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 36358,
+      "decodedRgbaSha256": "5d57507f0da9f4adc162288d7a3a95fd5b9da90400f3b42da9381985dd045150",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/utility_service_ground_camSE.png",
+      "sha256": "92c75830027e782d3191987464cccec65d5134ba39c29b19de75260c677aa56a"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 49,
+          "maxX": 236,
+          "maxY": 325,
+          "minX": 147,
+          "minY": 277,
+          "width": 90
+        },
+        "lowestOpaqueRowTopOrigin": 325,
+        "opaquePixelCount": 2430,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 36145,
+      "decodedRgbaSha256": "7f913f85af1ae1b17cf03f488aa6047c3a88485f023c0939f6385a3a9061e243",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/utility_service_ground_camSW.png",
+      "sha256": "a7421b0b441204845c60dc615faeab4b91d10ed05e23a8395b9c1e3d3723e775"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 49,
+          "maxX": 236,
+          "maxY": 325,
+          "minX": 147,
+          "minY": 277,
+          "width": 90
+        },
+        "lowestOpaqueRowTopOrigin": 325,
+        "opaquePixelCount": 2430,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 36292,
+      "decodedRgbaSha256": "906bab3629cc2d66274fdcd19adb9ce46a0bbb769cd4fd5a54082eacd5400a2e",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/utility_service_ground_camNW.png",
+      "sha256": "68e204a4fe3a9abae120075e774bcccf801d3f1a190ac2ac620fa93d8e6c1821"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 563,
+          "maxX": 783,
+          "maxY": 839,
+          "minX": 0,
+          "minY": 277,
+          "width": 784
+        },
+        "lowestOpaqueRowTopOrigin": 839,
+        "opaquePixelCount": 52728,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 101897,
+      "decodedRgbaSha256": "9f2bc644dd87e884fa57f43a35b817812ed0c6b199451961e8a722026f92fcf7",
+      "dimensions": [
+        784,
+        840
+      ],
+      "path": "utility_service_ground_contact-sheet.png",
+      "sha256": "78f992b0856541eac46c1d76e9ff4c230189d4d8975f9be89033fed4473edafd"
+    }
+  ],
+  "assetId": "utility_service_ground",
+  "assetKind": "ground-treatment",
+  "billboardGeometry": false,
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "cameraRig": {
+    "distance": 32.0,
+    "orthoScale": 12.341995,
+    "shiftY": 0.28125,
+    "views": [
+      {
+        "azimuthDegrees": 45.0,
+        "name": "camNE"
+      },
+      {
+        "azimuthDegrees": 135.0,
+        "name": "camSE"
+      },
+      {
+        "azimuthDegrees": 225.0,
+        "name": "camSW"
+      },
+      {
+        "azimuthDegrees": 315.0,
+        "name": "camNW"
+      }
+    ]
+  },
+  "canvas": {
+    "footprintPivotPixelTopOrigin": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "cedarMarketReused": false,
+  "contactSheetLayout": [
+    [
+      "camNE",
+      "camSE"
+    ],
+    [
+      "camSW",
+      "camNW"
+    ]
+  ],
+  "description": "Durable aggregate and planted utility verge treatment on the exact cell",
+  "grid": {
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0,
+    "projectedTilePixels": [
+      88,
+      44
+    ],
+    "projection": "orthographic-2:1-dimetric",
+    "worldTileSize": 2.0
+  },
+  "groundContract": {
+    "arbitraryPad": false,
+    "edgeAlignment": "world-x-y",
+    "exactWorldBoundsXY": [
+      -1.0,
+      1.0,
+      -1.0,
+      1.0
+    ]
+  },
+  "lightingConvention": {
+    "color": [
+      1.0,
+      0.86,
+      0.72
+    ],
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldColor": [
+      0.2,
+      0.17,
+      0.14,
+      1.0
+    ],
+    "worldStrength": 0.72
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "perAssetCompensation": {
+    "crop": false,
+    "offsetPixels": [
+      0,
+      0
+    ],
+    "rotationDegrees": 0.0,
+    "scale": 1.0,
+    "skew": [
+      0.0,
+      0.0
+    ]
+  },
+  "pipelineSchema": "citysim.world-art.ground-ecology-four-view.v1",
+  "postRenderCompensation": "none",
+  "rejectedVectorAssetsReused": false,
+  "root": {
+    "location": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "name": "AssetRoot",
+    "pivotName": "FootprintPivot",
+    "rotationEuler": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "schema": "citysim.world-art.ground-ecology-asset.v1",
+  "sourcePixelsReused": false,
+  "status": "source-only-not-live",
+  "vegetationContract": null
+}

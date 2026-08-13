@@ -1,0 +1,182 @@
+{
+  "assetCount": 7,
+  "canonicalViewCount": 28,
+  "contract": {
+    "cameraRig": {
+      "distance": 32.0,
+      "orthoScale": 12.341995,
+      "shiftY": 0.28125,
+      "views": [
+        {
+          "azimuthDegrees": 45.0,
+          "name": "camNE"
+        },
+        {
+          "azimuthDegrees": 135.0,
+          "name": "camSE"
+        },
+        {
+          "azimuthDegrees": 225.0,
+          "name": "camSW"
+        },
+        {
+          "azimuthDegrees": 315.0,
+          "name": "camNW"
+        }
+      ]
+    },
+    "canvas": {
+      "footprintPivotPixelTopOrigin": [
+        192,
+        300
+      ],
+      "height": 384,
+      "transparent": true,
+      "trim": false,
+      "width": 384
+    },
+    "grid": {
+      "azimuthDegrees": 45.0,
+      "elevationDegrees": 30.0,
+      "projectedTilePixels": [
+        88,
+        44
+      ],
+      "projection": "orthographic-2:1-dimetric",
+      "worldTileSize": 2.0
+    },
+    "lighting": {
+      "color": [
+        1.0,
+        0.86,
+        0.72
+      ],
+      "energy": 1100.0,
+      "location": [
+        -6.0,
+        -8.0,
+        12.0
+      ],
+      "name": "CitySimKey",
+      "size": 5.0,
+      "type": "AREA",
+      "worldColor": [
+        0.2,
+        0.17,
+        0.14,
+        1.0
+      ],
+      "worldStrength": 0.72
+    },
+    "postRenderCompensation": "none"
+  },
+  "familyId": "greenworks-nursery-ground-ecology",
+  "members": [
+    {
+      "assetId": "civic_meadow_ground",
+      "assetKind": "ground-treatment",
+      "manifest": {
+        "bytes": 5828,
+        "path": "civic_meadow_ground/manifest.json",
+        "sha256": "3a3488b59547388e4680d657ac895d96137f1b10e5328db37c55b764ad477ae2"
+      }
+    },
+    {
+      "assetId": "worn_neighborhood_ground",
+      "assetKind": "ground-treatment",
+      "manifest": {
+        "bytes": 5873,
+        "path": "worn_neighborhood_ground/manifest.json",
+        "sha256": "6e3faffe1cae38dae14403da62120c7c0f2100c20231dc2211f6f5aa0fae8292"
+      }
+    },
+    {
+      "assetId": "park_grove_ground",
+      "assetKind": "ground-treatment",
+      "manifest": {
+        "bytes": 5815,
+        "path": "park_grove_ground/manifest.json",
+        "sha256": "16fb0e4f6a6261016687fdcb43fa6cc09d8464056d8813f7fe856feb0dfce779"
+      }
+    },
+    {
+      "assetId": "utility_service_ground",
+      "assetKind": "ground-treatment",
+      "manifest": {
+        "bytes": 5848,
+        "path": "utility_service_ground/manifest.json",
+        "sha256": "8345b9780018217ac6fc9a1572e7207e48f7aa196c904fdabf5d403d9299708d"
+      }
+    },
+    {
+      "assetId": "maple_street_tree",
+      "assetKind": "vegetation-dressing",
+      "manifest": {
+        "bytes": 5807,
+        "path": "maple_street_tree/manifest.json",
+        "sha256": "d8de3f30cd9ad23183167a98b6316ebd9219ea8d92e0c4f130490b21de34a234"
+      }
+    },
+    {
+      "assetId": "sage_shrub_cluster",
+      "assetKind": "vegetation-dressing",
+      "manifest": {
+        "bytes": 5811,
+        "path": "sage_shrub_cluster/manifest.json",
+        "sha256": "8bb329e5a22eef85f2078b97435469497dbbd33cbedadbb965b73820ede73a0d"
+      }
+    },
+    {
+      "assetId": "marigold_planter_cluster",
+      "assetKind": "vegetation-dressing",
+      "manifest": {
+        "bytes": 5855,
+        "path": "marigold_planter_cluster/manifest.json",
+        "sha256": "fd2dc20c4bdf3c505020e72a85c94bea2f04be2fad43d55ed72317d48ab9230a"
+      }
+    }
+  ],
+  "previewCount": 2,
+  "previewManifest": {
+    "bytes": 6020,
+    "path": "preview/manifest.json",
+    "sha256": "c7418600cb20f237d7725c0e143e94fb9b547d7d1dfbb22130b5048c7f8dffc1"
+  },
+  "provenance": {
+    "cedarMarketReused": false,
+    "liveAsset": false,
+    "originalGeometry": true,
+    "purpose": "source-only Four-View ground ecology production and district preview",
+    "rejectedVectorAssetsReused": false,
+    "sourcePixelsReused": false
+  },
+  "schema": "citysim.world-art.ground-ecology-family.v1",
+  "sourceArtifacts": [
+    {
+      "bytes": 3140,
+      "path": "pipeline.json",
+      "sha256": "67205cb438cfbd5adaf7a9af010338f039d35bc79550d28059b052a2c49345e9"
+    },
+    {
+      "bytes": 33368,
+      "path": "build_and_render.py",
+      "sha256": "513dcbf4188239550de90239e1cac682b0761c289803dc4856f7ea7c165ea3f0"
+    },
+    {
+      "bytes": 21185,
+      "path": "validate.py",
+      "sha256": "2a48af0262609e65a90c8c2c6a43c40868f0e779a8e04e576c34c3c6cd99e7d8"
+    },
+    {
+      "bytes": 627,
+      "path": "run_pipeline.sh",
+      "sha256": "13f4137696143c179fdeb0f187e979ce240acbe7222ccc429b211a9efe3c664a"
+    },
+    {
+      "bytes": 1432,
+      "path": "README.md",
+      "sha256": "bdc466cea546c37ae702810d49807b0a1f3fecef5c651dee6b0ed0d468f004dd"
+    }
+  ],
+  "status": "source-only-not-live"
+}

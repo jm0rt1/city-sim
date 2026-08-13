@@ -58,11 +58,17 @@ final class AmbientLifeRenderer {
 
     private let style: WorldVisualStyle
     private let assets: WorldAssetCatalog
+    private let groundEcologyAssets: FourViewGroundEcologyCatalog?
     private(set) var lastActivityPlacements: [ActivityPlacement] = []
 
-    init(style: WorldVisualStyle, assets: WorldAssetCatalog) {
+    init(
+        style: WorldVisualStyle,
+        assets: WorldAssetCatalog,
+        groundEcologyAssets: FourViewGroundEcologyCatalog? = nil
+    ) {
         self.style = style
         self.assets = assets
+        self.groundEcologyAssets = groundEcologyAssets
     }
 
     /// Creates a bounded corridor vignette plus a truth-safe vacant-land
@@ -130,11 +136,33 @@ final class AmbientLifeRenderer {
                 vignette.addChild(furniture)
             }
 
-            // Two authored groves anchor the lived-in corridor. Vacant-land
-            // compositions below carry the wider landscape rhythm; repeating
-            // this same source at every road vignette reads as a stamped
-            // perimeter even when the coordinates and scale differ.
-            if (index == 0 || index == 4), let coordinate = vegetationCoordinate(
+            let fourViewVegetation: [Int: String] = [
+                0: "maple_street_tree",
+                2: "marigold_planter_cluster",
+                4: "sage_shrub_cluster",
+            ]
+            if let assetID = fourViewVegetation[index],
+               let coordinate = vegetationCoordinate(
+                   in: state,
+                   near: road.coordinate,
+                   excluding: occupiedVegetationCoordinates
+               ), let sprite = groundEcologyAssets?.makeSprite(
+                   assetID: assetID,
+                   worldTileWidth: style.tileWidth,
+                   zPosition: 0
+               ) {
+                occupiedVegetationCoordinates.insert(coordinate)
+                let composition = SKNode()
+                composition.name = "world.ambient.ground-ecology.\(assetID).\(index)"
+                composition.position = style.isoPosition(coordinate)
+                composition.zPosition = style.depth(for: coordinate) + 48
+                sprite.name = "\(composition.name ?? "world.ambient.ground-ecology").four-view.\(detail.assetSuffix)"
+                sprite.position = .zero
+                sprite.color = .clear
+                sprite.colorBlendFactor = 0
+                composition.addChild(sprite)
+                vignette.addChild(composition)
+            } else if (index == 0 || index == 4), let coordinate = vegetationCoordinate(
                 in: state,
                 near: road.coordinate,
                 excluding: occupiedVegetationCoordinates

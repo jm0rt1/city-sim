@@ -14,7 +14,8 @@ let package = Package(
             resources: [
                 .copy("Resources/WorldAssets.atlas"),
                 .copy("Resources/FourViewAssets"),
-                .copy("Resources/FourViewRoadAssets")
+                .copy("Resources/FourViewRoadAssets"),
+                .copy("Resources/FourViewGroundEcologyAssets")
             ]
         ),
         .testTarget(

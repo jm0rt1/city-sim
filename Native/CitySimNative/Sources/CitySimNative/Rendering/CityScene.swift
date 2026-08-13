@@ -280,7 +280,11 @@ final class CityScene: SKScene {
         let assets = WorldAssetCatalog.shared
         self.style = style
         self.assets = assets
-        self.terrainRenderer = TerrainRenderer(style: style, assets: assets)
+        self.terrainRenderer = TerrainRenderer(
+            style: style,
+            assets: assets,
+            groundEcologyAssets: .shared
+        )
         self.roadRenderer = RoadRenderer(
             style: style,
             assets: assets,
@@ -291,7 +295,11 @@ final class CityScene: SKScene {
             assets: assets,
             fourViewAssets: .shared
         )
-        self.ambientLifeRenderer = AmbientLifeRenderer(style: style, assets: assets)
+        self.ambientLifeRenderer = AmbientLifeRenderer(
+            style: style,
+            assets: assets,
+            groundEcologyAssets: .shared
+        )
         self.overlayRenderer = WorldOverlayRenderer(style: style)
         self.spatialConsequenceRenderer = SpatialConsequenceRenderer(style: style)
         self.currentCameraDetailLevel = style.detailLevel(cameraScale: 1)
@@ -1994,6 +2002,17 @@ final class CityScene: SKScene {
             }
         } else if let sprite = node as? SKSpriteNode,
                   let name = sprite.name,
+                  name.hasPrefix("terrain.ground-ecology."),
+                  sprite.children.contains(where: {
+                      $0.name?.hasPrefix("ground-ecology.four-view.") == true
+                  }) {
+            let components = name.split(separator: ".")
+            if components.count >= 4 {
+                let assetID = String(components[2])
+                sprite.name = "terrain.ground-ecology.\(assetID).\(detail.assetSuffix)"
+            }
+        } else if let sprite = node as? SKSpriteNode,
+                  let name = sprite.name,
                   name.hasPrefix("lot.generated-v4."),
                   sprite.children.contains(where: {
                       $0.name?.hasPrefix("lot.four-view.") == true
@@ -2647,6 +2666,7 @@ final class CityScene: SKScene {
             if current.children.contains(where: {
                 $0.name?.hasPrefix("lot.four-view.") == true
                     || $0.name?.hasPrefix("road.four-view.") == true
+                    || $0.name?.hasPrefix("ground-ecology.four-view.") == true
             }) {
                 hitFourViewCanvas = true
             }

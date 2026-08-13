@@ -1,0 +1,262 @@
+{
+  "artifacts": [
+    {
+      "bytes": 752600,
+      "path": "worn_neighborhood_ground.blend",
+      "sha256": "b21dfe423aa8037cffb2313f62a93ff33f21d0151e80efa24e9ffc3b2dfb9ab4"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 49,
+          "maxX": 236,
+          "maxY": 325,
+          "minX": 147,
+          "minY": 277,
+          "width": 90
+        },
+        "lowestOpaqueRowTopOrigin": 325,
+        "opaquePixelCount": 2430,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 35156,
+      "decodedRgbaSha256": "6ed50458c6e82850de130d3ca63673d59eeefa6167e91c27ad55afcefbff6d21",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/worn_neighborhood_ground_camNE.png",
+      "sha256": "5652642892cc577084d48d231a3c617e7e9da0198aab548891a7cec16bf0438b"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 49,
+          "maxX": 236,
+          "maxY": 325,
+          "minX": 147,
+          "minY": 277,
+          "width": 90
+        },
+        "lowestOpaqueRowTopOrigin": 325,
+        "opaquePixelCount": 2430,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 35242,
+      "decodedRgbaSha256": "c81907eecf307fda19f15ee2b1beb0d6e9a45d8417dc68e56d9faa12bb9a0b4d",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/worn_neighborhood_ground_camSE.png",
+      "sha256": "86f705cb9eb93a2fc591b7732550aefbe8b6e204f1b571a8ed7b70c9d5d8f655"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 49,
+          "maxX": 236,
+          "maxY": 325,
+          "minX": 147,
+          "minY": 277,
+          "width": 90
+        },
+        "lowestOpaqueRowTopOrigin": 325,
+        "opaquePixelCount": 2430,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 35191,
+      "decodedRgbaSha256": "8a9616351ead57674a028b82778f639485ee81f0e7f09661049a7e369cca91f5",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/worn_neighborhood_ground_camSW.png",
+      "sha256": "a3e4ca329c8925fdd6ee2220011c2b4d8605decf7a03d6ddda895c5e7868bc32"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 49,
+          "maxX": 236,
+          "maxY": 325,
+          "minX": 147,
+          "minY": 277,
+          "width": 90
+        },
+        "lowestOpaqueRowTopOrigin": 325,
+        "opaquePixelCount": 2430,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 35438,
+      "decodedRgbaSha256": "28766afc4373549dd10471a1dbe14bf24a7bd92ce46542808cac8ceb60b748ce",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/worn_neighborhood_ground_camNW.png",
+      "sha256": "4be1516c7b0c25a3f04ec4760050513d8668c10ca644ee4150b1757d1690fa1c"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 563,
+          "maxX": 783,
+          "maxY": 839,
+          "minX": 0,
+          "minY": 277,
+          "width": 784
+        },
+        "lowestOpaqueRowTopOrigin": 839,
+        "opaquePixelCount": 52728,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 98574,
+      "decodedRgbaSha256": "b557a3099d968ccadd52b42c9b8d0607789e25117ed151009b6a36acaeef0369",
+      "dimensions": [
+        784,
+        840
+      ],
+      "path": "worn_neighborhood_ground_contact-sheet.png",
+      "sha256": "2e26dc5d969a24237b1f0bab50dcf993582e90614dae65679cbf3f1676ed87c3"
+    }
+  ],
+  "assetId": "worn_neighborhood_ground",
+  "assetKind": "ground-treatment",
+  "billboardGeometry": false,
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "cameraRig": {
+    "distance": 32.0,
+    "orthoScale": 12.341995,
+    "shiftY": 0.28125,
+    "views": [
+      {
+        "azimuthDegrees": 45.0,
+        "name": "camNE"
+      },
+      {
+        "azimuthDegrees": 135.0,
+        "name": "camSE"
+      },
+      {
+        "azimuthDegrees": 225.0,
+        "name": "camSW"
+      },
+      {
+        "azimuthDegrees": 315.0,
+        "name": "camNW"
+      }
+    ]
+  },
+  "canvas": {
+    "footprintPivotPixelTopOrigin": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "cedarMarketReused": false,
+  "contactSheetLayout": [
+    [
+      "camNE",
+      "camSE"
+    ],
+    [
+      "camSW",
+      "camNW"
+    ]
+  ],
+  "description": "Warm neighborhood turf with subtle axis-aligned foot wear contained within the cell",
+  "grid": {
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0,
+    "projectedTilePixels": [
+      88,
+      44
+    ],
+    "projection": "orthographic-2:1-dimetric",
+    "worldTileSize": 2.0
+  },
+  "groundContract": {
+    "arbitraryPad": false,
+    "edgeAlignment": "world-x-y",
+    "exactWorldBoundsXY": [
+      -1.0,
+      1.0,
+      -1.0,
+      1.0
+    ]
+  },
+  "lightingConvention": {
+    "color": [
+      1.0,
+      0.86,
+      0.72
+    ],
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldColor": [
+      0.2,
+      0.17,
+      0.14,
+      1.0
+    ],
+    "worldStrength": 0.72
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "perAssetCompensation": {
+    "crop": false,
+    "offsetPixels": [
+      0,
+      0
+    ],
+    "rotationDegrees": 0.0,
+    "scale": 1.0,
+    "skew": [
+      0.0,
+      0.0
+    ]
+  },
+  "pipelineSchema": "citysim.world-art.ground-ecology-four-view.v1",
+  "postRenderCompensation": "none",
+  "rejectedVectorAssetsReused": false,
+  "root": {
+    "location": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "name": "AssetRoot",
+    "pivotName": "FootprintPivot",
+    "rotationEuler": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "schema": "citysim.world-art.ground-ecology-asset.v1",
+  "sourcePixelsReused": false,
+  "status": "source-only-not-live",
+  "vegetationContract": null
+}

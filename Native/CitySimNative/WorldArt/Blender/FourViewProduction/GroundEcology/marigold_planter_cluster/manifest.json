@@ -1,0 +1,262 @@
+{
+  "artifacts": [
+    {
+      "bytes": 851318,
+      "path": "marigold_planter_cluster.blend",
+      "sha256": "cafcb6a075e8141ad9ab8d8f53bd62a575cb7918d7462a25d116f4013cd0e1c5"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 35,
+          "maxX": 222,
+          "maxY": 314,
+          "minX": 174,
+          "minY": 280,
+          "width": 49
+        },
+        "lowestOpaqueRowTopOrigin": 314,
+        "opaquePixelCount": 987,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 33751,
+      "decodedRgbaSha256": "f7988139be9749de5f01ab1d726941dd2fc367456bcf9c593b58ce81b3be55d3",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/marigold_planter_cluster_camNE.png",
+      "sha256": "843c21e1fb96084598c7eac136da94f5f565e9c0ce4578924b9efcdeb89c97c0"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 35,
+          "maxX": 222,
+          "maxY": 307,
+          "minX": 175,
+          "minY": 273,
+          "width": 48
+        },
+        "lowestOpaqueRowTopOrigin": 307,
+        "opaquePixelCount": 987,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 33934,
+      "decodedRgbaSha256": "22fe1ed0d4cabe2bf86a88480e89a9822549335da23c2dda0eb712077dad199b",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/marigold_planter_cluster_camSE.png",
+      "sha256": "7a68fcc3f9a5149f6af0716110dc426091af08918e1ba258b5096130d9bf0dd8"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 35,
+          "maxX": 209,
+          "maxY": 307,
+          "minX": 161,
+          "minY": 273,
+          "width": 49
+        },
+        "lowestOpaqueRowTopOrigin": 307,
+        "opaquePixelCount": 986,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 33805,
+      "decodedRgbaSha256": "55ac03031857326f7ae7b6ce1473484b695fe6daa1a5c1584b425c135d3b51cf",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/marigold_planter_cluster_camSW.png",
+      "sha256": "d67ce7b9024131ad145cf01e39f070cf96fc15214b4c64160553c1eed01190d5"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 35,
+          "maxX": 208,
+          "maxY": 314,
+          "minX": 161,
+          "minY": 280,
+          "width": 48
+        },
+        "lowestOpaqueRowTopOrigin": 314,
+        "opaquePixelCount": 990,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 33873,
+      "decodedRgbaSha256": "201987044a0e39f2bb95914c188654662fd3b79bf2dc1a77d260d7846d2289d5",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/marigold_planter_cluster_camNW.png",
+      "sha256": "257d5f5276e2fad9fe0eab6865873e3d22fbf8f540a903b9a257d1e381f06fd4"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 567,
+          "maxX": 783,
+          "maxY": 839,
+          "minX": 0,
+          "minY": 273,
+          "width": 784
+        },
+        "lowestOpaqueRowTopOrigin": 839,
+        "opaquePixelCount": 46958,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 92354,
+      "decodedRgbaSha256": "de5f596d499fbf9567a75535fdd8a3d3692bdb89c882305b358cb618fc3170a6",
+      "dimensions": [
+        784,
+        840
+      ],
+      "path": "marigold_planter_cluster_contact-sheet.png",
+      "sha256": "e80939f944e0e7865f75a67df373e931f22ecf7310466e53ca85ad7f16e71d0a"
+    }
+  ],
+  "assetId": "marigold_planter_cluster",
+  "assetKind": "vegetation-dressing",
+  "billboardGeometry": false,
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "cameraRig": {
+    "distance": 32.0,
+    "orthoScale": 12.341995,
+    "shiftY": 0.28125,
+    "views": [
+      {
+        "azimuthDegrees": 45.0,
+        "name": "camNE"
+      },
+      {
+        "azimuthDegrees": 135.0,
+        "name": "camSE"
+      },
+      {
+        "azimuthDegrees": 225.0,
+        "name": "camSW"
+      },
+      {
+        "azimuthDegrees": 315.0,
+        "name": "camNW"
+      }
+    ]
+  },
+  "canvas": {
+    "footprintPivotPixelTopOrigin": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "cedarMarketReused": false,
+  "contactSheetLayout": [
+    [
+      "camNE",
+      "camSE"
+    ],
+    [
+      "camSW",
+      "camNW"
+    ]
+  ],
+  "description": "Modeled terracotta neighborhood planters with dimensional marigold flowers",
+  "grid": {
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0,
+    "projectedTilePixels": [
+      88,
+      44
+    ],
+    "projection": "orthographic-2:1-dimetric",
+    "worldTileSize": 2.0
+  },
+  "groundContract": null,
+  "lightingConvention": {
+    "color": [
+      1.0,
+      0.86,
+      0.72
+    ],
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldColor": [
+      0.2,
+      0.17,
+      0.14,
+      1.0
+    ],
+    "worldStrength": 0.72
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "perAssetCompensation": {
+    "crop": false,
+    "offsetPixels": [
+      0,
+      0
+    ],
+    "rotationDegrees": 0.0,
+    "scale": 1.0,
+    "skew": [
+      0.0,
+      0.0
+    ]
+  },
+  "pipelineSchema": "citysim.world-art.ground-ecology-four-view.v1",
+  "postRenderCompensation": "none",
+  "rejectedVectorAssetsReused": false,
+  "root": {
+    "location": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "name": "AssetRoot",
+    "pivotName": "FootprintPivot",
+    "rotationEuler": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "schema": "citysim.world-art.ground-ecology-asset.v1",
+  "sourcePixelsReused": false,
+  "status": "source-only-not-live",
+  "vegetationContract": {
+    "billboard": false,
+    "groundContactZ": 0.0,
+    "modeled3D": true,
+    "pivotWorld": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  }
+}

@@ -1,0 +1,262 @@
+{
+  "artifacts": [
+    {
+      "bytes": 781888,
+      "path": "civic_meadow_ground.blend",
+      "sha256": "30ff8ba3b564108708e8f7624e0eb67b6812e15baf0b52cbf2c4e8dcaaa3ecdc"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 49,
+          "maxX": 236,
+          "maxY": 325,
+          "minX": 147,
+          "minY": 277,
+          "width": 90
+        },
+        "lowestOpaqueRowTopOrigin": 325,
+        "opaquePixelCount": 2430,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 35266,
+      "decodedRgbaSha256": "8832f3b5635b4d4b8777ce92c06d72fa6f213926f63f3108ce82b8d0f9032c80",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/civic_meadow_ground_camNE.png",
+      "sha256": "928a467d4ecf851adcaf9ad9aea95ca3723c0be9cd93991946411c2e399d5fbc"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 49,
+          "maxX": 236,
+          "maxY": 325,
+          "minX": 147,
+          "minY": 277,
+          "width": 90
+        },
+        "lowestOpaqueRowTopOrigin": 325,
+        "opaquePixelCount": 2430,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 35488,
+      "decodedRgbaSha256": "a41dc6046c700b4b6af2ba65b2929003268a058db5a3b93053a3557a326c7e68",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/civic_meadow_ground_camSE.png",
+      "sha256": "6888d23ca7534690e34ce265bcb10ab4313278da246be23cf8d6f753583381cb"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 49,
+          "maxX": 236,
+          "maxY": 325,
+          "minX": 147,
+          "minY": 277,
+          "width": 90
+        },
+        "lowestOpaqueRowTopOrigin": 325,
+        "opaquePixelCount": 2430,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 35330,
+      "decodedRgbaSha256": "08dd107d32d88c75a8e4f8085411ba9a75e1114b61fe59ba454f7a388beef32d",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/civic_meadow_ground_camSW.png",
+      "sha256": "1e788074c91eb84636359976199d9f23d9447969721bd1d336a3e62b1405c6c0"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 49,
+          "maxX": 236,
+          "maxY": 325,
+          "minX": 147,
+          "minY": 277,
+          "width": 90
+        },
+        "lowestOpaqueRowTopOrigin": 325,
+        "opaquePixelCount": 2430,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 35610,
+      "decodedRgbaSha256": "b350c6e2fc64f99af47fe4989cd4c43526c38a5a62f5937ed7c80ce82c8e7e51",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/civic_meadow_ground_camNW.png",
+      "sha256": "6aeb924366e53c3c1a7179e6ab10bc4b73e09a7874dc0a82853a4190ab8fbc5e"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 563,
+          "maxX": 783,
+          "maxY": 839,
+          "minX": 0,
+          "minY": 277,
+          "width": 784
+        },
+        "lowestOpaqueRowTopOrigin": 839,
+        "opaquePixelCount": 52728,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 99211,
+      "decodedRgbaSha256": "7168ef242dbf6de5181be2bec79de227ac6e7186cd2b10b839717e55e06a45e2",
+      "dimensions": [
+        784,
+        840
+      ],
+      "path": "civic_meadow_ground_contact-sheet.png",
+      "sha256": "e5c0fd6a6f96c87221a307f03498f4dd7c57cb353a7e02cbb936a82050df1353"
+    }
+  ],
+  "assetId": "civic_meadow_ground",
+  "assetKind": "ground-treatment",
+  "billboardGeometry": false,
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "cameraRig": {
+    "distance": 32.0,
+    "orthoScale": 12.341995,
+    "shiftY": 0.28125,
+    "views": [
+      {
+        "azimuthDegrees": 45.0,
+        "name": "camNE"
+      },
+      {
+        "azimuthDegrees": 135.0,
+        "name": "camSE"
+      },
+      {
+        "azimuthDegrees": 225.0,
+        "name": "camSW"
+      },
+      {
+        "azimuthDegrees": 315.0,
+        "name": "camNW"
+      }
+    ]
+  },
+  "canvas": {
+    "footprintPivotPixelTopOrigin": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "cedarMarketReused": false,
+  "contactSheetLayout": [
+    [
+      "camNE",
+      "camSE"
+    ],
+    [
+      "camSW",
+      "camNW"
+    ]
+  ],
+  "description": "Warm mixed grass and soil cell for civic edges and open neighborhood lots",
+  "grid": {
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0,
+    "projectedTilePixels": [
+      88,
+      44
+    ],
+    "projection": "orthographic-2:1-dimetric",
+    "worldTileSize": 2.0
+  },
+  "groundContract": {
+    "arbitraryPad": false,
+    "edgeAlignment": "world-x-y",
+    "exactWorldBoundsXY": [
+      -1.0,
+      1.0,
+      -1.0,
+      1.0
+    ]
+  },
+  "lightingConvention": {
+    "color": [
+      1.0,
+      0.86,
+      0.72
+    ],
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldColor": [
+      0.2,
+      0.17,
+      0.14,
+      1.0
+    ],
+    "worldStrength": 0.72
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "perAssetCompensation": {
+    "crop": false,
+    "offsetPixels": [
+      0,
+      0
+    ],
+    "rotationDegrees": 0.0,
+    "scale": 1.0,
+    "skew": [
+      0.0,
+      0.0
+    ]
+  },
+  "pipelineSchema": "citysim.world-art.ground-ecology-four-view.v1",
+  "postRenderCompensation": "none",
+  "rejectedVectorAssetsReused": false,
+  "root": {
+    "location": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "name": "AssetRoot",
+    "pivotName": "FootprintPivot",
+    "rotationEuler": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "schema": "citysim.world-art.ground-ecology-asset.v1",
+  "sourcePixelsReused": false,
+  "status": "source-only-not-live",
+  "vegetationContract": null
+}

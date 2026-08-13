@@ -1,0 +1,107 @@
+{
+  "artifacts": [
+    {
+      "bytes": 908226,
+      "path": "ironleaf_service_workshop/ironleaf_service_workshop.blend",
+      "sha256": "b77e096af3fc2ede1696aa852fb73b9dceacbe416eaf3df55228509c4d11f1c8"
+    },
+    {
+      "bytes": 48638,
+      "decodedRgbaSha256": "0bb934b1704b598792258c2d0afb83c3e6a8420519a9e35fa17fbc69e5114616",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "ironleaf_service_workshop/renders/ironleaf_service_workshop_camNE.png",
+      "sha256": "0fa96cf7a8b2471f01916f7038053b24e373e016b3bd96957fed227cda3745eb"
+    },
+    {
+      "bytes": 56087,
+      "decodedRgbaSha256": "334b5334be9010f88cddb3f68679b1e431662151298e4426a08c09d35fa51761",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "ironleaf_service_workshop/renders/ironleaf_service_workshop_camSE.png",
+      "sha256": "d7a4e44128fee6956acf6c0d23e308cb1303fa7ce3a180a3f51a139c80fa95df"
+    },
+    {
+      "bytes": 55663,
+      "decodedRgbaSha256": "4785ae2d2670bde86e6f3069903217cc4205aaecb58a8322896fc4607e2bbd66",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "ironleaf_service_workshop/renders/ironleaf_service_workshop_camSW.png",
+      "sha256": "82f4a3b0c20c597c57fba5e157405fb0922126a08d10ce166c264da7f97061d1"
+    },
+    {
+      "bytes": 48672,
+      "decodedRgbaSha256": "4272764fa9799599c715674277c26f305f52b519b82550c55d842c71479f1428",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "ironleaf_service_workshop/renders/ironleaf_service_workshop_camNW.png",
+      "sha256": "571519eae908977d2d1bae440633dd931fcdbe07d72c8b5f7adccdce15c943f4"
+    },
+    {
+      "bytes": 170251,
+      "decodedRgbaSha256": "5b025e143d44ea1bb0754e187df49bc87a26979cf431e9ec182cf5ced4b62835",
+      "dimensions": [
+        784,
+        832
+      ],
+      "path": "ironleaf_service_workshop/ironleaf_service_workshop_contact-sheet.png",
+      "sha256": "151b6d8d570461897d2a7fee41b548fa6a9b20a8d1ca8412ff3fcf24d2a3bbaa"
+    }
+  ],
+  "assetFamily": "light-industrial",
+  "assetId": "ironleaf_service_workshop",
+  "cameraAzimuthDegrees": {
+    "camNE": 45.0,
+    "camNW": 315.0,
+    "camSE": 135.0,
+    "camSW": 225.0
+  },
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "elevationDegrees": 30,
+  "lightingConvention": {
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldStrength": 0.65
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "pipelineSchema": "citysim.world-art.blender-four-view-pipeline.v1",
+  "postRenderCompensation": "none",
+  "projectedTilePixels": [
+    88,
+    44
+  ],
+  "schema": "citysim.four-view-production.v1",
+  "sourcePixelsReused": false,
+  "status": "source-only-not-live"
+}

@@ -1,0 +1,107 @@
+{
+  "artifacts": [
+    {
+      "bytes": 869180,
+      "path": "harbor_corner_storefront/harbor_corner_storefront.blend",
+      "sha256": "ce1492d73d623ef691d7a7b7ec1b5dae24c7f68671eec2fceb138703508444a2"
+    },
+    {
+      "bytes": 45943,
+      "decodedRgbaSha256": "3671561606d38c3920a98ae1d2e8ef7bdc3289317ff4da20b57bdbbe235e2c82",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "harbor_corner_storefront/renders/harbor_corner_storefront_camNE.png",
+      "sha256": "87ca6d2dc221d4bbdfaf960b6d78ae8130c99635caa1df9a7ad0d4459cfc9240"
+    },
+    {
+      "bytes": 54309,
+      "decodedRgbaSha256": "b11e4b98fe49dae036ffca4bf7ee3cccb2d4b224ca89199c6ba681157209c3ff",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "harbor_corner_storefront/renders/harbor_corner_storefront_camSE.png",
+      "sha256": "de6e6d79f5b894a4f7274c4e5ec304a6687f5adff7987756f4f0b76f595f7758"
+    },
+    {
+      "bytes": 54507,
+      "decodedRgbaSha256": "883b3641b0acd9838c727a39f67f84caf45cf9cde29e1b586253b0f3e629bc47",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "harbor_corner_storefront/renders/harbor_corner_storefront_camSW.png",
+      "sha256": "e49e9d09fab6223092bbd633f91fae04d4c086e9559f5cdf443e1df818a101f6"
+    },
+    {
+      "bytes": 48809,
+      "decodedRgbaSha256": "bd8a2fa05c511ba965c96fdb01c4ec24a1b21da3ff7c85a7475e94a171604ab5",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "harbor_corner_storefront/renders/harbor_corner_storefront_camNW.png",
+      "sha256": "80e7f6f93e439108933325a0891a33931bdf0e964b75a72925c6862c1109f30a"
+    },
+    {
+      "bytes": 162262,
+      "decodedRgbaSha256": "bdcaf7e7435921e69a9f4b9ca5ae28cd80d83143ecf23be4ae445942f9d168ba",
+      "dimensions": [
+        784,
+        832
+      ],
+      "path": "harbor_corner_storefront/harbor_corner_storefront_contact-sheet.png",
+      "sha256": "f495dcfafd05d741d6f8f02739f1eb892ee5b3747ef32689d8c5fcab7a419478"
+    }
+  ],
+  "assetFamily": "small-commercial",
+  "assetId": "harbor_corner_storefront",
+  "cameraAzimuthDegrees": {
+    "camNE": 45.0,
+    "camNW": 315.0,
+    "camSE": 135.0,
+    "camSW": 225.0
+  },
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "elevationDegrees": 30,
+  "lightingConvention": {
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldStrength": 0.65
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "pipelineSchema": "citysim.world-art.blender-four-view-pipeline.v1",
+  "postRenderCompensation": "none",
+  "projectedTilePixels": [
+    88,
+    44
+  ],
+  "schema": "citysim.four-view-production.v1",
+  "sourcePixelsReused": false,
+  "status": "source-only-not-live"
+}

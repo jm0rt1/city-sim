@@ -1,0 +1,48 @@
+{
+  "artifacts": [
+    {
+      "bytes": 1360609,
+      "path": "employment_block_preview.blend",
+      "sha256": "dcd398cd14fa15e2c3e1af7213a6aa6c43637c5294193273e85ef93ea497387c"
+    },
+    {
+      "bytes": 76250,
+      "decodedRgbaSha256": "e8306432443ecba17b0edaf6ad19b8d91d8319f2c50f2636950d2a010bda95c8",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "employment_block_preview.png",
+      "sha256": "47ffc4ccdd822aa76292c8de2442de632503a2036f9387bd66a48710bce61027"
+    }
+  ],
+  "assetScale": [
+    1,
+    1,
+    1
+  ],
+  "assets": [
+    "harbor_corner_storefront",
+    "ironleaf_service_workshop"
+  ],
+  "camera": "camSE",
+  "grid": {
+    "placementCentersWorld": [
+      [
+        -2.5,
+        0
+      ],
+      [
+        2.5,
+        0
+      ]
+    ],
+    "projectedTilePixels": [
+      88,
+      44
+    ],
+    "worldTileSize": 2
+  },
+  "schema": "citysim.composed-preview.v1",
+  "status": "source-only-review-evidence-not-live"
+}

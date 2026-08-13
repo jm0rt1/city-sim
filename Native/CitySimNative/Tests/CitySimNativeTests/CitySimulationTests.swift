@@ -2611,6 +2611,190 @@ final class CitySimulationTests: XCTestCase {
     }
 
     @MainActor
+    func testFourViewNativeUnifiedNeighborhoodProofExportsEveryAdmittedAsset() throws {
+        let regularKey = "CITYSIM_FOUR_VIEW_UNIFIED_NEIGHBORHOOD_1280_PROOF"
+        let compactKey = "CITYSIM_FOUR_VIEW_UNIFIED_NEIGHBORHOOD_900_PROOF"
+        guard ProcessInfo.processInfo.environment[regularKey] != nil
+                || ProcessInfo.processInfo.environment[compactKey] != nil else {
+            return
+        }
+
+        var state = CityGameState.newCity(seed: 42)
+        for coordinate in state.tiles.map(\.coordinate) {
+            state.updateTile(at: coordinate) {
+                $0 = CityTile(coordinate: coordinate, kind: .empty)
+            }
+        }
+        for y in [6, 9, 12, 15, 18, 21] {
+            for x in 3...23 {
+                let coordinate = GridCoordinate(x: x, y: y)
+                state.updateTile(at: coordinate) {
+                    $0 = CityTile(coordinate: coordinate, kind: .road)
+                }
+            }
+        }
+        for x in [4, 7, 10, 13, 16, 19, 22] {
+            for y in 5...22 {
+                let coordinate = GridCoordinate(x: x, y: y)
+                state.updateTile(at: coordinate) {
+                    $0 = CityTile(coordinate: coordinate, kind: .road)
+                }
+            }
+        }
+
+        var used: Set<GridCoordinate> = []
+        func place(
+            _ kind: BuildingKind,
+            level: Int = 1,
+            near target: GridCoordinate,
+            where matches: (GridCoordinate) -> Bool = { _ in true }
+        ) throws -> GridCoordinate {
+            let candidates = state.tiles
+                .filter { tile in
+                    guard tile.kind == .empty,
+                          (5...21).contains(tile.coordinate.x),
+                          (7...20).contains(tile.coordinate.y),
+                          !used.contains(tile.coordinate),
+                          matches(tile.coordinate) else { return false }
+                    return !RoadConnectionMask.resolving(
+                        at: tile.coordinate,
+                        in: state
+                    ).isEmpty
+                }
+                .sorted { lhs, rhs in
+                    let lhsDistance = abs(lhs.coordinate.x - target.x)
+                        + abs(lhs.coordinate.y - target.y)
+                    let rhsDistance = abs(rhs.coordinate.x - target.x)
+                        + abs(rhs.coordinate.y - target.y)
+                    return (lhsDistance, lhs.coordinate.y, lhs.coordinate.x)
+                        < (rhsDistance, rhs.coordinate.y, rhs.coordinate.x)
+                }
+            let coordinate = try XCTUnwrap(candidates.first?.coordinate, kind.rawValue)
+            used.insert(coordinate)
+            state.updateTile(at: coordinate) {
+                $0 = CityTile(
+                    coordinate: coordinate,
+                    kind: kind,
+                    level: level,
+                    condition: 1,
+                    constructionProgress: 1
+                )
+            }
+            return coordinate
+        }
+
+        _ = try place(.residential, near: GridCoordinate(x: 5, y: 8)) {
+            ResidentialGeneratedAssetIdentity.liveVisualVariant(at: $0) == 1
+        }
+        _ = try place(.residential, near: GridCoordinate(x: 8, y: 8)) {
+            ResidentialGeneratedAssetIdentity.liveVisualVariant(at: $0) == 2
+        }
+        _ = try place(.residential, level: 2, near: GridCoordinate(x: 11, y: 8))
+        _ = try place(.residential, level: 3, near: GridCoordinate(x: 14, y: 8))
+        _ = try place(.policeStation, near: GridCoordinate(x: 17, y: 8))
+
+        for (variant, targetX) in zip(0..<3, [5, 8, 11]) {
+            _ = try place(.commercial, near: GridCoordinate(x: targetX, y: 11)) {
+                WorldVisualSeed.variant(count: 3, for: $0, kind: .commercial) == variant
+            }
+        }
+        _ = try place(.commercial, level: 2, near: GridCoordinate(x: 14, y: 11))
+        _ = try place(.commercial, level: 3, near: GridCoordinate(x: 17, y: 11))
+
+        for (variant, targetX) in zip(0..<2, [5, 8]) {
+            _ = try place(.industrial, near: GridCoordinate(x: targetX, y: 14)) {
+                WorldVisualSeed.variant(count: 3, for: $0, kind: .industrial) == variant
+            }
+        }
+        _ = try place(.industrial, level: 2, near: GridCoordinate(x: 11, y: 14))
+        _ = try place(.industrial, level: 3, near: GridCoordinate(x: 14, y: 14))
+
+        _ = try place(.cityHall, near: GridCoordinate(x: 17, y: 14))
+        for (variant, targetX) in zip(0..<2, [5, 8]) {
+            _ = try place(.park, near: GridCoordinate(x: targetX, y: 17)) {
+                WorldVisualSeed.variant(count: 3, for: $0, kind: .park) == variant
+            }
+        }
+        _ = try place(.powerPlant, near: GridCoordinate(x: 11, y: 17))
+        _ = try place(.waterTower, near: GridCoordinate(x: 14, y: 17))
+        _ = try place(.school, near: GridCoordinate(x: 17, y: 17))
+        _ = try place(.fireStation, near: GridCoordinate(x: 11, y: 20))
+
+        let infill: [(BuildingKind, Int, GridCoordinate)] = [
+            (.residential, 1, GridCoordinate(x: 20, y: 8)),
+            (.residential, 1, GridCoordinate(x: 20, y: 11)),
+            (.commercial, 1, GridCoordinate(x: 20, y: 14)),
+            (.commercial, 1, GridCoordinate(x: 20, y: 17)),
+            (.industrial, 1, GridCoordinate(x: 20, y: 20)),
+            (.residential, 1, GridCoordinate(x: 6, y: 20)),
+            (.residential, 2, GridCoordinate(x: 9, y: 20)),
+            (.commercial, 1, GridCoordinate(x: 12, y: 20)),
+            (.commercial, 2, GridCoordinate(x: 15, y: 20)),
+            (.park, 1, GridCoordinate(x: 18, y: 20)),
+            (.residential, 1, GridCoordinate(x: 20, y: 10)),
+            (.commercial, 1, GridCoordinate(x: 20, y: 16)),
+        ]
+        for (kind, level, target) in infill {
+            _ = try place(kind, level: level, near: target)
+        }
+
+        let sourceScene = CityScene(size: CGSize(width: 1_280, height: 800))
+        sourceScene.reducedMotion = true
+        sourceScene.render(
+            state: state,
+            overlay: .none,
+            selection: nil,
+            interactionMode: .inspect
+        )
+        let sourceNames = Set(sourceScene.children.flatMap(descendantNodeNames))
+        let admittedAssetIDs = try XCTUnwrap(
+            FourViewWorldAssetCatalog().manifest
+        ).assets.map(\.assetID)
+        XCTAssertEqual(admittedAssetIDs.count, 21)
+        for assetID in admittedAssetIDs {
+            XCTAssertTrue(
+                sourceNames.contains("lot.four-view.\(assetID).camNE"),
+                assetID
+            )
+        }
+
+        let center = GridCoordinate(x: 11, y: 14)
+        let regular = try rendererProofFrame(
+            size: CGSize(width: 1_280, height: 800),
+            state: state,
+            overlay: .none,
+            selection: nil,
+            interactionMode: .inspect,
+            detail: .city,
+            centeredOn: center,
+            framingScale: 1.04,
+            hover: nil,
+            exactPixelDimensions: true
+        )
+        let compact = try rendererProofFrame(
+            size: CGSize(width: 900, height: 600),
+            state: state,
+            overlay: .none,
+            selection: nil,
+            interactionMode: .inspect,
+            detail: .city,
+            centeredOn: center,
+            framingScale: 1.28,
+            hover: nil,
+            exactPixelDimensions: true
+        )
+
+        XCTAssertEqual(regular.width, 1_280)
+        XCTAssertEqual(regular.height, 800)
+        XCTAssertEqual(compact.width, 900)
+        XCTAssertEqual(compact.height, 600)
+        XCTAssertGreaterThan(regular.png.count, 50_000)
+        XCTAssertGreaterThan(compact.png.count, 35_000)
+        try export(regular, environmentKeys: [regularKey])
+        try export(compact, environmentKeys: [compactKey])
+    }
+
+    @MainActor
     private func descendantNodeNames(in node: SKNode) -> [String] {
         (node.name.map { [$0] } ?? []) + node.children.flatMap(descendantNodeNames)
     }

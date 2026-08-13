@@ -261,7 +261,7 @@ enum CityCommandCatalog {
                 id(for: kind),
                 "Build \(kind.title)",
                 .buildTools,
-                "Select \(kind.title.lowercased()) for placement. Cost \(kind.buildCost.currencyText), upkeep \(kind.upkeep.currencyText) per cycle.",
+                "Select \(kind.title.lowercased()) for placement. Cost \(kind.buildCost.currencyText); choose a block for the authoritative operating forecast.",
                 shortcut: shortcut(key.0, [], key.1, scope: .gameplay)
             )
         }

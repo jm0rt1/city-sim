@@ -832,8 +832,8 @@ struct FocusCityHUDView: View {
                 "Selected \($0.kind.title) at block \($0.coordinate.x + 1), \($0.coordinate.y + 1)"
             } ?? "No block selected"
         case .build(let kind):
-            return "Selected \(kind.title). Cost \(kind.buildCost.currencyText), "
-                + "upkeep \(kind.upkeep.currencyText) per cycle. Choose a block."
+            return "Selected \(kind.title). Cost \(kind.buildCost.currencyText). "
+                + "Choose a block for the authoritative operating forecast."
         case .bulldoze:
             return "Choose a structure. Protected structures and open land remain unavailable."
         }

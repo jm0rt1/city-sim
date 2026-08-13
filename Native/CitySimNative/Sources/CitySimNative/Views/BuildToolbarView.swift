@@ -671,11 +671,11 @@ struct BuildToolbarView: View {
         case .build(let kind):
             guard let target else {
                 let detail = unlimitedFunds
-                    ? "COST WAIVED · upkeep tracked"
-                    : "\(kind.buildCost.currencyText) · \(kind.upkeep.currencyText)/cycle"
+                    ? "COST WAIVED · choose block for forecast"
+                    : "\(kind.buildCost.currencyText) · choose block for forecast"
                 let accessibilityValue = unlimitedFunds
-                    ? "Selected \(kind.title). Construction and operating spending are waived. Choose a block."
-                    : "Selected \(kind.title). Cost \(kind.buildCost.currencyText), upkeep \(kind.upkeep.currencyText) per cycle. Choose a block."
+                    ? "Selected \(kind.title). Spending is waived. Choose a block for the tracked operating forecast."
+                    : "Selected \(kind.title). Cost \(kind.buildCost.currencyText). Choose a block for the authoritative operating forecast."
                 return TargetBeaconPresentation(
                     title: kind.title,
                     detail: detail,
@@ -749,7 +749,7 @@ struct BuildToolbarView: View {
                             )
                         } label: {
                             Label(
-                                "\(kind.title) · \(kind.buildCost.currencyText) · \(kind.upkeep.currencyText)/cycle",
+                                "\(kind.title) · \(kind.buildCost.currencyText) · forecast at block",
                                 systemImage: kind.symbol
                             )
                         }
@@ -818,10 +818,10 @@ struct BuildToolbarView: View {
         let costLabel = store.state.usesUnlimitedFunds ? "COST WAIVED" : kind.buildCost.currencyText
         let help = store.state.usesUnlimitedFunds
             ? "Build \(kind.title) · sandbox spending waived"
-            : "Build \(kind.title) · \(kind.buildCost.currencyText) · \(kind.upkeep.currencyText) per cycle"
+            : "Build \(kind.title) · \(kind.buildCost.currencyText) · operating forecast at selected block"
         let accessibilityValue = store.state.usesUnlimitedFunds
-            ? "Construction and operating spending waived"
-            : "Cost \(kind.buildCost.currencyText), upkeep \(kind.upkeep.currencyText) per cycle"
+            ? "Spending waived; tracked operating forecast appears after choosing a block"
+            : "Cost \(kind.buildCost.currencyText); authoritative operating forecast appears after choosing a block"
         return Button { store.perform(CityCommandCatalog.id(for: kind)) } label: {
             HStack(spacing: 7) {
                 Image(systemName: active ? "checkmark.circle.fill" : kind.symbol)

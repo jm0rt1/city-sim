@@ -2009,7 +2009,7 @@ final class CityCommandCatalogTests: XCTestCase {
         for kind in BuildingKind.allCases {
             catalogMenu.addItem(
                 NSMenuItem(
-                    title: "\(kind.title) · \(kind.buildCost.currencyText) · \(kind.upkeep.currencyText)/cycle",
+                    title: "\(kind.title) · \(kind.buildCost.currencyText) · forecast at block",
                     action: nil,
                     keyEquivalent: ""
                 )

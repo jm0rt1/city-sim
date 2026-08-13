@@ -70,6 +70,19 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
             for: CityTile(coordinate: coordinate, kind: .residential, level: 4),
             variant: 1
         ), "foundry_crown_apartments")
+        let lowCommercial = CityTile(
+            coordinate: coordinate,
+            kind: .commercial,
+            level: 1
+        )
+        XCTAssertEqual(
+            (0..<3).compactMap { catalog.assetID(for: lowCommercial, variant: $0) },
+            [
+                "harbor_corner_storefront",
+                "lantern_row_bakery",
+                "ironwood_hardware_shop",
+            ]
+        )
 
         let densityExpected: [(BuildingKind, Int, String)] = [
             (.commercial, 1, "harbor_corner_storefront"),
@@ -107,6 +120,57 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
                 assetID,
                 kind.rawValue
             )
+        }
+    }
+
+    @MainActor
+    func testLowCommercialVariantsUseFixedTransformWithoutChangingGameplayIdentity() throws {
+        let style = WorldVisualStyle()
+        let catalog = FourViewWorldAssetCatalog()
+        let renderer = LotRenderer(
+            style: style,
+            assets: WorldAssetCatalog(),
+            fourViewAssets: catalog
+        )
+        let assetIDs = [
+            "harbor_corner_storefront",
+            "lantern_row_bakery",
+            "ironwood_hardware_shop",
+        ]
+
+        for variant in 0..<3 {
+            let coordinate = try XCTUnwrap((0..<32).lazy
+                .flatMap { y in (0..<32).map { GridCoordinate(x: $0, y: y) } }
+                .first {
+                    WorldVisualSeed.variant(
+                        count: 3,
+                        for: $0,
+                        kind: .commercial
+                    ) == variant
+                })
+            let lot = renderer.makeLot(
+                for: CityTile(
+                    coordinate: coordinate,
+                    kind: .commercial,
+                    level: 1,
+                    condition: 1,
+                    constructionProgress: 1
+                ),
+                adjacentRoads: .south,
+                detail: .block,
+                reducedMotion: true
+            )
+            let marker = try XCTUnwrap(
+                lot.childNode(withName: "//lot.four-view.\(assetIDs[variant]).camNE")
+            )
+            let sprite = try XCTUnwrap(marker.parent as? SKSpriteNode)
+            XCTAssertEqual(sprite.anchorPoint, FourViewWorldAssetCatalog.spriteAnchor)
+            XCTAssertEqual(sprite.xScale, style.tileWidth / 88, accuracy: 0.000_001)
+            XCTAssertEqual(sprite.yScale, style.tileWidth / 88, accuracy: 0.000_001)
+            XCTAssertEqual(sprite.zRotation, 0, accuracy: 0.000_001)
+            XCTAssertEqual(sprite.position, .zero)
+            XCTAssertEqual(sprite.colorBlendFactor, 0, accuracy: 0.000_001)
+            XCTAssertEqual(sprite.name, "lot.generated-v4.commercial_l01_v0_south.block")
         }
     }
 
@@ -201,6 +265,17 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
     func testLiveSceneLODChangesNeverReplaceFourViewTexture() throws {
         let state = CityGameState.newCity(seed: 42)
         let commercial = try XCTUnwrap(state.tiles.first { $0.kind == .commercial })
+        let visualVariant = WorldVisualSeed.variant(
+            count: 3,
+            for: commercial.coordinate,
+            kind: .commercial
+        )
+        let assetID = try XCTUnwrap(
+            FourViewWorldAssetCatalog().assetID(
+                for: commercial,
+                variant: visualVariant
+            )
+        )
         let scene = CityScene(size: CGSize(width: 1_280, height: 800))
         scene.reducedMotion = true
         scene.render(
@@ -211,7 +286,7 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
         )
 
         let marker = try XCTUnwrap(
-            scene.childNode(withName: "//lot.four-view.harbor_corner_storefront.camNE")
+            scene.childNode(withName: "//lot.four-view.\(assetID).camNE")
         )
         let sprite = try XCTUnwrap(marker.parent as? SKSpriteNode)
         let texture = try XCTUnwrap(sprite.texture)
@@ -219,7 +294,7 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
         scene.configureProofCamera(detail: .city, centeredOn: commercial.coordinate)
 
         let updatedMarker = try XCTUnwrap(
-            scene.childNode(withName: "//lot.four-view.harbor_corner_storefront.camNE")
+            scene.childNode(withName: "//lot.four-view.\(assetID).camNE")
         )
         let updatedSprite = try XCTUnwrap(updatedMarker.parent as? SKSpriteNode)
         XCTAssertTrue(updatedSprite.texture === texture)

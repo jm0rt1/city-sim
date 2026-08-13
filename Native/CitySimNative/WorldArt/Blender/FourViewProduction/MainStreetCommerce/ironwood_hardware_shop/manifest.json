@@ -1,0 +1,253 @@
+{
+  "artifacts": [
+    {
+      "bytes": 1889802,
+      "path": "ironwood_hardware_shop.blend",
+      "sha256": "a4d6f9346980df3cd4975a1c3b0f8b6bf9ce37b9ce2697ec95a6a774b1a7d485"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 147,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 202,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 16198,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 60686,
+      "decodedRgbaSha256": "cbf175f448f7df9f66c9e5fd02efd06a2a8f0bc3f8ac113777d3d0195490d245",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/ironwood_hardware_shop_camNE.png",
+      "sha256": "759b466b9c7a8e479e448849a8cdf613bdfff834c22d551a0316b113e18242ca"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 143,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 206,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 15537,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 59799,
+      "decodedRgbaSha256": "b4a7f882ffe9199897e5fbe38fe3c49fa90fc2288696bfef42e39b97af6686cc",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/ironwood_hardware_shop_camSE.png",
+      "sha256": "a6a029d1fa96311b2321dd6b9c986f805663f4ebc430c2da689f845a14313bee"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 140,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 209,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 15202,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 59189,
+      "decodedRgbaSha256": "5c7924674611546b6c4094c80fb8d4321e8785a92c2aa939a68dfaeeedb25164",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/ironwood_hardware_shop_camSW.png",
+      "sha256": "f1001004aa29fb06d456c3ab1f914e6cd4bf9d8b0f778985ebf62dfc7db99796"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 147,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 202,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 15606,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 60737,
+      "decodedRgbaSha256": "f0ea8da2800a5df20e9beae907ab12040a4379bf80fdcfdc9bb89333e96601e5",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/ironwood_hardware_shop_camNW.png",
+      "sha256": "d2eb721a10df1dcb262accc4437059bac0fbedd0ff1447c2bc4dbab4cb2a0040"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 638,
+          "maxX": 783,
+          "maxY": 839,
+          "minX": 0,
+          "minY": 202,
+          "width": 784
+        },
+        "lowestOpaqueRowTopOrigin": 839,
+        "opaquePixelCount": 105551,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 200498,
+      "decodedRgbaSha256": "bf78e3dbf2c394882c67cbdd83cfd1a9c7821fe1ce09d149926a5c76572ffa4e",
+      "dimensions": [
+        784,
+        840
+      ],
+      "path": "ironwood_hardware_shop_contact-sheet.png",
+      "sha256": "d895a56c479a85ec4b6efc58e9d656dde5f49e8d6335d0fbc47ff04ea781b2c4"
+    }
+  ],
+  "assetId": "ironwood_hardware_shop",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "cameraRig": {
+    "distance": 32.0,
+    "orthoScale": 12.341995,
+    "shiftY": 0.28125,
+    "views": [
+      {
+        "azimuthDegrees": 45.0,
+        "name": "camNE"
+      },
+      {
+        "azimuthDegrees": 135.0,
+        "name": "camSE"
+      },
+      {
+        "azimuthDegrees": 225.0,
+        "name": "camSW"
+      },
+      {
+        "azimuthDegrees": 315.0,
+        "name": "camNW"
+      }
+    ]
+  },
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "footprintPivotPixelTopOrigin": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "cedarMarketReused": false,
+  "commerceRole": "neighborhood-hardware",
+  "description": "Painted-brick hardware shop with broad display windows, deep parapet and sign band, side service door, roof monitor, crates, and planters",
+  "grid": {
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0,
+    "exactWorldFootprint": [
+      4.0,
+      4.0
+    ],
+    "footprintTiles": [
+      2,
+      2
+    ],
+    "projectedTilePixels": [
+      88,
+      44
+    ],
+    "projection": "orthographic-2:1-dimetric",
+    "worldTileSize": 2.0
+  },
+  "lightingConvention": {
+    "color": [
+      1.0,
+      0.86,
+      0.72
+    ],
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldColor": [
+      0.2,
+      0.17,
+      0.14,
+      1.0
+    ],
+    "worldStrength": 0.72
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "perViewCompensation": {
+    "crop": false,
+    "offsetPixels": [
+      0,
+      0
+    ],
+    "rotationDegrees": 0.0,
+    "scale": 1.0,
+    "skew": [
+      0.0,
+      0.0
+    ]
+  },
+  "pipelineSchema": "citysim.world-art.main-street-commerce-four-view.v1",
+  "postRenderCompensation": "none",
+  "rejectedVectorAssetsReused": false,
+  "root": {
+    "location": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "name": "AssetRoot",
+    "pivotName": "FootprintPivot",
+    "rotationEuler": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "schema": "citysim.world-art.main-street-commerce-asset.v1",
+  "serviceRole": "neighborhood-hardware",
+  "sourcePixelsReused": false,
+  "status": "source-only-not-live"
+}

@@ -1,0 +1,253 @@
+{
+  "artifacts": [
+    {
+      "bytes": 2007941,
+      "path": "lantern_row_bakery.blend",
+      "sha256": "b75a2e9ae842efeea868b053c9574c0d9dfc9d12bd7c7678aed028ea3d49d32f"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 160,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 189,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 16612,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 60101,
+      "decodedRgbaSha256": "8c415abd7df2e78e132578678eb75ddcf001a6fc091ad7ca1681e5047a938286",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/lantern_row_bakery_camNE.png",
+      "sha256": "166f4229393961cfd3d15e5103316eeeb4049f269b22c828271d74d515677e56"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 146,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 203,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 16023,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 60863,
+      "decodedRgbaSha256": "6671c264812d0cc55f206c48f2733b7cb677b760cdfe07c3fee48103ec29b75c",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/lantern_row_bakery_camSE.png",
+      "sha256": "5b40693356e8023efbc5b20924102ea27997f91f31f33dde68b9889bb64eaf50"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 141,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 208,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 15316,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 59722,
+      "decodedRgbaSha256": "aa2c5047245c43c60fa38a454e5077139e5a82f36dbe8c56442b7b64d2013cdc",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/lantern_row_bakery_camSW.png",
+      "sha256": "940186027074d0086acf028ac6f30e49d3d2d9c06402ea2d79d05c66ec81550a"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 146,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 203,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 16308,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 61855,
+      "decodedRgbaSha256": "dac503897a80047a55d8ffd6e828babd9db33a08d695f7058e6d12b0d64b24da",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/lantern_row_bakery_camNW.png",
+      "sha256": "81de42fcdb8b160372bc4a75cd65713f11a8aa84db7bf097ad24fdb3d486d8dd"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 651,
+          "maxX": 783,
+          "maxY": 839,
+          "minX": 0,
+          "minY": 189,
+          "width": 784
+        },
+        "lowestOpaqueRowTopOrigin": 839,
+        "opaquePixelCount": 107267,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 203242,
+      "decodedRgbaSha256": "1b517bc42ec22f78e8b1cae6c5ada818246e1cb8412d0d73558c046c19f41cc7",
+      "dimensions": [
+        784,
+        840
+      ],
+      "path": "lantern_row_bakery_contact-sheet.png",
+      "sha256": "0a4ce9b4376670039af04613510824630e066d8484e8cd09f81185c12be299fd"
+    }
+  ],
+  "assetId": "lantern_row_bakery",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "cameraRig": {
+    "distance": 32.0,
+    "orthoScale": 12.341995,
+    "shiftY": 0.28125,
+    "views": [
+      {
+        "azimuthDegrees": 45.0,
+        "name": "camNE"
+      },
+      {
+        "azimuthDegrees": 135.0,
+        "name": "camSE"
+      },
+      {
+        "azimuthDegrees": 225.0,
+        "name": "camSW"
+      },
+      {
+        "azimuthDegrees": 315.0,
+        "name": "camNW"
+      }
+    ]
+  },
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "footprintPivotPixelTopOrigin": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "cedarMarketReused": false,
+  "commerceRole": "neighborhood-bakery",
+  "description": "Warm brick and stucco corner bakery with broad shop glazing, striped awning, tile roof, lantern sign, planters, and restrained rear service detail",
+  "grid": {
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0,
+    "exactWorldFootprint": [
+      4.0,
+      4.0
+    ],
+    "footprintTiles": [
+      2,
+      2
+    ],
+    "projectedTilePixels": [
+      88,
+      44
+    ],
+    "projection": "orthographic-2:1-dimetric",
+    "worldTileSize": 2.0
+  },
+  "lightingConvention": {
+    "color": [
+      1.0,
+      0.86,
+      0.72
+    ],
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldColor": [
+      0.2,
+      0.17,
+      0.14,
+      1.0
+    ],
+    "worldStrength": 0.72
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "perViewCompensation": {
+    "crop": false,
+    "offsetPixels": [
+      0,
+      0
+    ],
+    "rotationDegrees": 0.0,
+    "scale": 1.0,
+    "skew": [
+      0.0,
+      0.0
+    ]
+  },
+  "pipelineSchema": "citysim.world-art.main-street-commerce-four-view.v1",
+  "postRenderCompensation": "none",
+  "rejectedVectorAssetsReused": false,
+  "root": {
+    "location": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "name": "AssetRoot",
+    "pivotName": "FootprintPivot",
+    "rotationEuler": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "schema": "citysim.world-art.main-street-commerce-asset.v1",
+  "serviceRole": "neighborhood-bakery",
+  "sourcePixelsReused": false,
+  "status": "source-only-not-live"
+}

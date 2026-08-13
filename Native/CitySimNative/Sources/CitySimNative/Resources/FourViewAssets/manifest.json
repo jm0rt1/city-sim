@@ -36,6 +36,18 @@
       "roles": ["commercial", "commercial-low"]
     },
     {
+      "assetID": "lantern_row_bakery",
+      "file": "lantern_row_bakery_camNE.png",
+      "sha256": "166f4229393961cfd3d15e5103316eeeb4049f269b22c828271d74d515677e56",
+      "roles": ["commercial", "commercial-low"]
+    },
+    {
+      "assetID": "ironwood_hardware_shop",
+      "file": "ironwood_hardware_shop_camNE.png",
+      "sha256": "759b466b9c7a8e479e448849a8cdf613bdfff834c22d551a0316b113e18242ca",
+      "roles": ["commercial", "commercial-low"]
+    },
+    {
       "assetID": "ironleaf_service_workshop",
       "file": "ironleaf_service_workshop_camNE.png",
       "sha256": "bdcbfe10195cf1fe0e5dda6999fa7aaf8523735afae04faa4cbc7f6ceae69550",

@@ -2154,6 +2154,161 @@ final class CitySimulationTests: XCTestCase {
     }
 
     @MainActor
+    func testFourViewNativeMainStreetCommerceProofExports() throws {
+        let proofKeys = [
+            "CITYSIM_FOUR_VIEW_MAIN_STREET_BASELINE_1280_PROOF",
+            "CITYSIM_FOUR_VIEW_MAIN_STREET_BASELINE_900_PROOF",
+            "CITYSIM_FOUR_VIEW_MAIN_STREET_1280_PROOF",
+            "CITYSIM_FOUR_VIEW_MAIN_STREET_900_PROOF",
+        ]
+        guard proofKeys.contains(where: { ProcessInfo.processInfo.environment[$0] != nil }) else {
+            return
+        }
+        let candidateRequested = [
+            "CITYSIM_FOUR_VIEW_MAIN_STREET_1280_PROOF",
+            "CITYSIM_FOUR_VIEW_MAIN_STREET_900_PROOF",
+        ].contains(where: { ProcessInfo.processInfo.environment[$0] != nil })
+
+        var state = CityGameState.newCity(seed: 42)
+        for coordinate in state.tiles.map(\.coordinate) {
+            state.updateTile(at: coordinate) {
+                $0 = CityTile(coordinate: coordinate, kind: .empty)
+            }
+        }
+        for y in [8, 12, 16] {
+            for x in 4...18 {
+                let coordinate = GridCoordinate(x: x, y: y)
+                state.updateTile(at: coordinate) {
+                    $0 = CityTile(coordinate: coordinate, kind: .road)
+                }
+            }
+        }
+        for x in [4, 8, 12, 16, 18] {
+            for y in 7...17 {
+                let coordinate = GridCoordinate(x: x, y: y)
+                state.updateTile(at: coordinate) {
+                    $0 = CityTile(coordinate: coordinate, kind: .road)
+                }
+            }
+        }
+
+        let commercialCandidates = state.tiles
+            .filter { tile in
+                guard tile.kind == .empty,
+                      (7...17).contains(tile.coordinate.y),
+                      (4...18).contains(tile.coordinate.x) else { return false }
+                return !RoadConnectionMask.resolving(
+                    at: tile.coordinate,
+                    in: state
+                ).isEmpty
+            }
+            .sorted { ($0.coordinate.y, $0.coordinate.x) < ($1.coordinate.y, $1.coordinate.x) }
+        var commercialCoordinates: [GridCoordinate] = []
+        for variant in 0..<3 {
+            commercialCoordinates.append(contentsOf: commercialCandidates
+                .filter {
+                    WorldVisualSeed.variant(
+                        count: 3,
+                        for: $0.coordinate,
+                        kind: .commercial
+                    ) == variant
+                }
+                .prefix(4)
+                .map(\.coordinate))
+        }
+        XCTAssertEqual(commercialCoordinates.count, 12)
+        for coordinate in commercialCoordinates {
+            state.updateTile(at: coordinate) {
+                $0 = CityTile(
+                    coordinate: coordinate,
+                    kind: .commercial,
+                    level: 1,
+                    condition: 1,
+                    constructionProgress: 1
+                )
+            }
+        }
+        let supportingLots: [(GridCoordinate, BuildingKind, Int)] = [
+            (GridCoordinate(x: 5, y: 10), .residential, 2),
+            (GridCoordinate(x: 13, y: 10), .residential, 3),
+            (GridCoordinate(x: 9, y: 14), .park, 1),
+            (GridCoordinate(x: 17, y: 14), .fireStation, 1),
+        ]
+        for (coordinate, kind, level) in supportingLots {
+            guard state.tile(at: coordinate)?.kind == .empty else { continue }
+            state.updateTile(at: coordinate) {
+                $0 = CityTile(
+                    coordinate: coordinate,
+                    kind: kind,
+                    level: level,
+                    condition: 1,
+                    constructionProgress: 1
+                )
+            }
+        }
+
+        let sourceScene = CityScene(size: CGSize(width: 1_280, height: 800))
+        sourceScene.reducedMotion = true
+        sourceScene.render(
+            state: state,
+            overlay: .none,
+            selection: nil,
+            interactionMode: .inspect
+        )
+        let sourceNames = sourceScene.children.flatMap(descendantNodeNames)
+        XCTAssertTrue(sourceNames.contains("lot.four-view.harbor_corner_storefront.camNE"))
+        if candidateRequested {
+            for assetID in ["lantern_row_bakery", "ironwood_hardware_shop"] {
+                XCTAssertTrue(
+                    sourceNames.contains("lot.four-view.\(assetID).camNE"),
+                    assetID
+                )
+            }
+        }
+
+        let center = GridCoordinate(x: 11, y: 12)
+        let regular = try rendererProofFrame(
+            size: CGSize(width: 1_280, height: 800),
+            state: state,
+            overlay: .none,
+            selection: nil,
+            interactionMode: .inspect,
+            detail: .city,
+            centeredOn: center,
+            framingScale: 0.90,
+            hover: nil,
+            exactPixelDimensions: true
+        )
+        let compact = try rendererProofFrame(
+            size: CGSize(width: 900, height: 600),
+            state: state,
+            overlay: .none,
+            selection: nil,
+            interactionMode: .inspect,
+            detail: .city,
+            centeredOn: center,
+            framingScale: 1.02,
+            hover: nil,
+            exactPixelDimensions: true
+        )
+
+        XCTAssertEqual(regular.width, 1_280)
+        XCTAssertEqual(regular.height, 800)
+        XCTAssertEqual(compact.width, 900)
+        XCTAssertEqual(compact.height, 600)
+        XCTAssertGreaterThan(regular.png.count, 40_000)
+        XCTAssertGreaterThan(compact.png.count, 30_000)
+        try export(regular, environmentKeys: [
+            "CITYSIM_FOUR_VIEW_MAIN_STREET_BASELINE_1280_PROOF",
+            "CITYSIM_FOUR_VIEW_MAIN_STREET_1280_PROOF",
+        ])
+        try export(compact, environmentKeys: [
+            "CITYSIM_FOUR_VIEW_MAIN_STREET_BASELINE_900_PROOF",
+            "CITYSIM_FOUR_VIEW_MAIN_STREET_900_PROOF",
+        ])
+    }
+
+    @MainActor
     private func descendantNodeNames(in node: SKNode) -> [String] {
         (node.name.map { [$0] } ?? []) + node.children.flatMap(descendantNodeNames)
     }

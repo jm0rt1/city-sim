@@ -1,0 +1,151 @@
+MAIN_STREET_COMMERCE_FOUR_VIEW_VALIDATION_PASS
+{
+  "assets": {
+    "ironwood_hardware_shop": {
+      "deterministicCanonicalPngSha256": {
+        "ironwood_hardware_shop_camNE.png": "759b466b9c7a8e479e448849a8cdf613bdfff834c22d551a0316b113e18242ca",
+        "ironwood_hardware_shop_camNW.png": "d2eb721a10df1dcb262accc4437059bac0fbedd0ff1447c2bc4dbab4cb2a0040",
+        "ironwood_hardware_shop_camSE.png": "a6a029d1fa96311b2321dd6b9c986f805663f4ebc430c2da689f845a14313bee",
+        "ironwood_hardware_shop_camSW.png": "f1001004aa29fb06d456c3ab1f914e6cd4bf9d8b0f778985ebf62dfc7db99796"
+      },
+      "meshCount": 106,
+      "projectedAxisPixels": {
+        "camNE": [
+          [
+            -44,
+            22
+          ],
+          [
+            44,
+            22
+          ]
+        ],
+        "camNW": [
+          [
+            -44,
+            -22
+          ],
+          [
+            -44,
+            22
+          ]
+        ],
+        "camSE": [
+          [
+            44,
+            22
+          ],
+          [
+            44,
+            -22
+          ]
+        ],
+        "camSW": [
+          [
+            44,
+            -22
+          ],
+          [
+            -44,
+            -22
+          ]
+        ]
+      },
+      "requiredObjectPrefixes": [
+        "HardwareDisplayWindow",
+        "HardwareParapet",
+        "HardwareSignBand",
+        "HardwareService",
+        "HardwareCrate"
+      ]
+    },
+    "lantern_row_bakery": {
+      "deterministicCanonicalPngSha256": {
+        "lantern_row_bakery_camNE.png": "166f4229393961cfd3d15e5103316eeeb4049f269b22c828271d74d515677e56",
+        "lantern_row_bakery_camNW.png": "81de42fcdb8b160372bc4a75cd65713f11a8aa84db7bf097ad24fdb3d486d8dd",
+        "lantern_row_bakery_camSE.png": "5b40693356e8023efbc5b20924102ea27997f91f31f33dde68b9889bb64eaf50",
+        "lantern_row_bakery_camSW.png": "940186027074d0086acf028ac6f30e49d3d2d9c06402ea2d79d05c66ec81550a"
+      },
+      "meshCount": 109,
+      "projectedAxisPixels": {
+        "camNE": [
+          [
+            -44,
+            22
+          ],
+          [
+            44,
+            22
+          ]
+        ],
+        "camNW": [
+          [
+            -44,
+            -22
+          ],
+          [
+            -44,
+            22
+          ]
+        ],
+        "camSE": [
+          [
+            44,
+            22
+          ],
+          [
+            44,
+            -22
+          ]
+        ],
+        "camSW": [
+          [
+            44,
+            -22
+          ],
+          [
+            -44,
+            -22
+          ]
+        ]
+      },
+      "requiredObjectPrefixes": [
+        "BakeryShopWindow",
+        "BakeryAwningStripe",
+        "BakeryRoof",
+        "BakeryPlanter",
+        "BakeryService"
+      ]
+    }
+  },
+  "blenderVersion": "4.5.12",
+  "contract": {
+    "azimuthDegrees": 45.0,
+    "cameraOrder": [
+      "camNE",
+      "camSE",
+      "camSW",
+      "camNW"
+    ],
+    "deterministicRerender": "byte-identical canonical PNGs",
+    "elevationDegrees": 30.0,
+    "orthoScale": 12.341995,
+    "pivotPixels": [
+      192,
+      300
+    ],
+    "postRenderCompensation": "none",
+    "projectedTilePixels": [
+      88,
+      44
+    ],
+    "shiftY": 0.28125
+  },
+  "familyManifestSha256": "3099904afaffb275a9d25890fd06021e8ac967769e51ca1d0fe11b08d28d33e2",
+  "previewPngSha256": {
+    "preview/lantern-ironwood-main-street-1280x800.png": "07f417cafcfbe37fa46539b150d637335541a570360d0c635e3c37b1eec3030d",
+    "preview/lantern-ironwood-main-street-900x600.png": "a7d60d71ae2bf12d56eb7b7822d6ab4a34114ca7adf9d73c5b957fc88c745b78"
+  },
+  "schema": "citysim.world-art.main-street-commerce-validation.v1",
+  "status": "PASS"
+}

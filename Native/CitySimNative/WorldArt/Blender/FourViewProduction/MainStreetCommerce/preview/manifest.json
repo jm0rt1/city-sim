@@ -1,0 +1,144 @@
+{
+  "acceptedFamilyContractOnly": true,
+  "artifacts": [
+    {
+      "bytes": 4189145,
+      "path": "preview/lantern-ironwood-main-street.blend",
+      "sha256": "0896138242b41cab9409842126fbe18071af274fc2f0e342ce9c193ee46fab6c"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 800,
+          "maxX": 1279,
+          "maxY": 799,
+          "minX": 0,
+          "minY": 0,
+          "width": 1280
+        },
+        "lowestOpaqueRowTopOrigin": 799,
+        "opaquePixelCount": 1024000,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 990709,
+      "decodedRgbaSha256": "3415ea50092670f3389454a4deac72aa729b2b63c6d9b6d8d9f8e07276af901d",
+      "dimensions": [
+        1280,
+        800
+      ],
+      "path": "preview/lantern-ironwood-main-street-1280x800.png",
+      "sha256": "07f417cafcfbe37fa46539b150d637335541a570360d0c635e3c37b1eec3030d"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 600,
+          "maxX": 899,
+          "maxY": 599,
+          "minX": 0,
+          "minY": 0,
+          "width": 900
+        },
+        "lowestOpaqueRowTopOrigin": 599,
+        "opaquePixelCount": 540000,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 530833,
+      "decodedRgbaSha256": "6120d2e89643a9dcd0a552e6bc15b61b0c8211daa89416d45cbe956a75290171",
+      "dimensions": [
+        900,
+        600
+      ],
+      "path": "preview/lantern-ironwood-main-street-900x600.png",
+      "sha256": "a7d60d71ae2bf12d56eb7b7822d6ab4a34114ca7adf9d73c5b957fc88c745b78"
+    }
+  ],
+  "camera": {
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0,
+    "perAssetCompensation": "none",
+    "projection": "orthographic"
+  },
+  "cedarMarketReused": false,
+  "grid": {
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0,
+    "exactWorldFootprint": [
+      4.0,
+      4.0
+    ],
+    "footprintTiles": [
+      2,
+      2
+    ],
+    "projectedTilePixels": [
+      88,
+      44
+    ],
+    "projection": "orthographic-2:1-dimetric",
+    "worldTileSize": 2.0
+  },
+  "lightingConvention": {
+    "color": [
+      1.0,
+      0.86,
+      0.72
+    ],
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldColor": [
+      0.2,
+      0.17,
+      0.14,
+      1.0
+    ],
+    "worldStrength": 0.72
+  },
+  "liveAsset": false,
+  "placements": [
+    {
+      "assetId": "lantern_row_bakery",
+      "commerceRole": "neighborhood-bakery",
+      "footprintTiles": [
+        2,
+        2
+      ],
+      "meshCount": 109,
+      "originWorld": [
+        -3.0,
+        -3.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "sourceBlend": "FourViewProduction/MainStreetCommerce/lantern_row_bakery/lantern_row_bakery.blend",
+      "sourceBlendSha256": "b75a2e9ae842efeea868b053c9574c0d9dfc9d12bd7c7678aed028ea3d49d32f"
+    },
+    {
+      "assetId": "ironwood_hardware_shop",
+      "commerceRole": "neighborhood-hardware",
+      "footprintTiles": [
+        2,
+        2
+      ],
+      "meshCount": 106,
+      "originWorld": [
+        3.0,
+        -3.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "sourceBlend": "FourViewProduction/MainStreetCommerce/ironwood_hardware_shop/ironwood_hardware_shop.blend",
+      "sourceBlendSha256": "a4d6f9346980df3cd4975a1c3b0f8b6bf9ce37b9ce2697ec95a6a774b1a7d485"
+    }
+  ],
+  "rejectedVectorAssetsReused": false,
+  "schema": "citysim.world-art.main-street-commerce-preview.v1",
+  "status": "source-only-review-evidence"
+}

@@ -1,0 +1,73 @@
+{
+  "family": "Cedar Market Residential + Civic",
+  "projection": {
+    "id": "citysim-isometric-2to1-southeast-v1",
+    "tile_width": 88,
+    "tile_height": 44,
+    "elevation_step": 22,
+    "renderer_rotation_degrees": 0,
+    "renderer_skew": 0,
+    "renderer_scale_override": 1
+  },
+  "ground_contract": {
+    "pivot_x": 0.5,
+    "pivot_y": 0.18,
+    "key_light": "northwest",
+    "shadow_direction": "southeast",
+    "base_inset": 0.08
+  },
+  "assets": [
+    {
+      "id": "craftsman",
+      "file": "cedar-craftsman.png",
+      "category": "residential",
+      "footprint": [2, 2],
+      "pixels": [313, 157],
+      "sha256": "01c014eceec2c8fc9bf8a9f6360e7b7335e8c0837147c349ab4a8dcb18ea8e42"
+    },
+    {
+      "id": "rowhouses",
+      "file": "cedar-rowhouses.png",
+      "category": "residential",
+      "footprint": [2, 3],
+      "pixels": [302, 201],
+      "sha256": "06f5673c616fb5e61c7d927959554c672023c73426a588a20f4b9753bdee3267"
+    },
+    {
+      "id": "courtyard-apartments",
+      "file": "cedar-courtyard-apartments.png",
+      "category": "residential",
+      "footprint": [3, 3],
+      "pixels": [406, 271],
+      "sha256": "19e14f73631b1fc2e52f9e2e6bcb3b914d09ce18a023e17a8c62e763e8be5205"
+    },
+    {
+      "id": "neighborhood-library",
+      "file": "cedar-neighborhood-library.png",
+      "category": "civic-service",
+      "footprint": [3, 3],
+      "pixels": [355, 237],
+      "sha256": "8c751d6694061adca5f88737f55262d3136fa8420e2cde86121d375cfb957f3b"
+    },
+    {
+      "id": "city-hall",
+      "file": "cedar-city-hall.png",
+      "category": "civic-landmark",
+      "footprint": [4, 4],
+      "pixels": [438, 292],
+      "sha256": "088d6a0e934c48a36794bdec68781a92b105f30fccec56bd3e49d10d98fe1072"
+    }
+  ],
+  "representative_blocks": [
+    {
+      "file": "cedar-residential-civic-block-1280x800.png",
+      "pixels": [1280, 800],
+      "sha256": "cc63e9284417b4dcb8eb0972da249959f7aff76b2603a6c5d99e68c77fbf2dde"
+    },
+    {
+      "file": "cedar-residential-civic-block-900x600.png",
+      "pixels": [900, 600],
+      "sha256": "57bdf0f52e94c42c17c98782c3fa649ac8a287ef28a24d69689c2c9756a2f40b"
+    }
+  ]
+}

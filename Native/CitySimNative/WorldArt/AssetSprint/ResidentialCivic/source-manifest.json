@@ -1,0 +1,29 @@
+{
+  "tool_mode": "OpenAI built-in image_gen",
+  "use_case": "stylized-concept",
+  "reference_policy": "The user catalog image was used only as a quality and category benchmark. Every building and lot is an original Cedar Market design.",
+  "family_contract": {
+    "projection": "fixed 88x44 2:1 3/4 isometric",
+    "elevation_step": 22,
+    "pivot": [0.5, 0.18],
+    "light": "northwest",
+    "shadow": "restrained southeast",
+    "renderer_transforms": "none"
+  },
+  "prompt_set": [
+    "Original cream clapboard craftsman cottage with slate-blue gable roof, porch, bay window, chimney, garden and stone walk on a coherent 2x2 lot.",
+    "Original three-home brick and cream rowhouse terrace with stoops, dormers, window boxes, bicycles and clipped planting on a coherent 2x3 lot.",
+    "Original four-story terracotta and teal courtyard apartments with rooftop garden, solar panels, balconies, benches and layered planting on a coherent 3x3 lot.",
+    "Original cream limestone and brick neighborhood library with hipped slate roof, accessible entrance, benches, bicycle rack and gardens on a coherent 3x3 lot.",
+    "Original limestone and terracotta city hall with mansard roof, copper-domed clock tower, portico, fountain and formal gardens on a coherent 4x4 plaza lot."
+  ],
+  "shared_prompt_constraints": "Match the Cedar Market siblings exactly: fixed 3/4 isometric 2:1 camera, readable roof and two facades, warm detailed materials, northwest key, southeast contact shadow, no perspective distortion, rotation, skew, text, watermark, UI, sprite sheet or neighboring buildings; flat #ff00ff source backdrop for local alpha extraction.",
+  "sources": [
+    {"file": "GeneratedSources/cedar-craftsman-source.png", "sha256": "d21248e143511e922665047005ac8a626d615e89ec287f9d1190d66968b1cbd2"},
+    {"file": "GeneratedSources/cedar-rowhouses-source.png", "sha256": "8bae0b921a0cc94c407cb05ddd329d260a7a3417271e555f303b9f3dee52cdb7"},
+    {"file": "GeneratedSources/cedar-courtyard-apartments-source.png", "sha256": "fa238c180fd99a78f0a3d6ac2a283711d4414a27db4f3740efba658b46eaad48"},
+    {"file": "GeneratedSources/cedar-neighborhood-library-source.png", "sha256": "bb95a76017e9e3c7fd5cd07053cfc3e01bbcab9643a9407018135420d10f93e4"},
+    {"file": "GeneratedSources/cedar-city-hall-source.png", "sha256": "7b234ea3c04256fc2f44168fae34b757cf5005997f1f2f6b5d2b5d0ecd89bccf"}
+  ],
+  "processing": "The required Pillow helper was attempted first but unavailable in the shell runtime. The checked-in deterministic Sharp processor performs border-connected chroma removal and canonical footprint normalization; it does not rotate, skew, or apply renderer scale overrides."
+}

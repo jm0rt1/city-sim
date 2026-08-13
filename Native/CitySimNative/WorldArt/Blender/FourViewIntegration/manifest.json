@@ -24,22 +24,22 @@
   "liveAsset": false,
   "outputs": [
     {
-      "bytes": 286744,
+      "bytes": 299962,
       "dimensions": [
         1280,
         800
       ],
       "path": "four-view-source-block-1280x800.png",
-      "sha256": "019141a78c246cf9d6aa6bb3e482e236c522e139c0e931285af52ba83001ab7a"
+      "sha256": "626f14ffcacc2025ce118e4368fa05d90c6e488fd891c9dbbeb9cea1eb1e18a4"
     },
     {
-      "bytes": 273654,
+      "bytes": 285342,
       "dimensions": [
         900,
         600
       ],
       "path": "four-view-source-block-900x600.png",
-      "sha256": "ae4242605fbb54f827db2deb0d5af0e56f3518bb0fc0dde1f9bd96624007f647"
+      "sha256": "1f5f7efdc2115025528802b8446c6ce43c2b12b3b3d79f7edb364a06e8578f29"
     }
   ],
   "placements": [
@@ -150,12 +150,17 @@
     {
       "assetId": "axis_civic_road",
       "path": "FourViewProduction/Environment/assets/axis_civic_road/renders/axis_civic_road_camNE.png",
-      "sha256": "7e37b44747c0d53bd8d356375c4b1edcf32f1336ed5678204038e67b406dde88"
+      "sha256": "5ce64b77e3b7b05cade4aa0fcc6b8bd018f49612ebeb0fc1996d4928467c7e84"
+    },
+    {
+      "assetId": "axis_civic_road_dressed",
+      "path": "FourViewProduction/Environment/assets/axis_civic_road_dressed/renders/axis_civic_road_dressed_camNE.png",
+      "sha256": "a8da05d1bec8e06b0470bb7dfcda7b23cfb4756325be9c9c9d78676e96307a1b"
     },
     {
       "assetId": "pocket_grove_park",
       "path": "FourViewProduction/Environment/assets/pocket_grove_park/renders/pocket_grove_park_camNE.png",
-      "sha256": "3be79d2f3bb09241348300ad9cf98784a066ab29dbfc27ad1b1ede35bc62edf9"
+      "sha256": "2b1c41cf98f0fa3e53627ba9b32336754c14cd5759b66357d965836ac5e0e2dc"
     }
   ],
   "status": "source-only-review-evidence-not-live"

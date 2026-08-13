@@ -22,6 +22,6 @@ def main():
             p=HERE/item["path"]
             if not p.is_file() or p.stat().st_size!=item["bytes"] or sha(p)!=item["sha256"]: fail("manifest drift "+item["path"])
     pm=json.loads((HERE/"preview"/"manifest.json").read_text())
-    if pm["layout"]!={"axes":"shared-world-XY","parkTileCenter":[0,2,0],"roadTileCenter":[0,0,0],"tileSize":2.0}: fail("preview grid layout")
+    if pm["layout"]!={"axes":"shared-world-XY","parkFootprintTiles":[2,2],"parkTileCenter":[0,3,0],"roadTileCenter":[0,0,0],"tileSize":2.0}: fail("preview grid layout")
     print("ENVIRONMENT_VALIDATION_PASS")
 if __name__=="__main__": main()

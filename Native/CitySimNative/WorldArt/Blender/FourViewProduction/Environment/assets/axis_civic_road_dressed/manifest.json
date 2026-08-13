@@ -1,0 +1,91 @@
+{
+  "artifacts": [
+    {
+      "bytes": 1020456,
+      "path": "assets/axis_civic_road_dressed/axis_civic_road_dressed.blend",
+      "sha256": "d1247e19e0beea5aa40dc4c710ea2edbec97c26f02c80d3079f99788c7faa8c0"
+    },
+    {
+      "bytes": 38089,
+      "dimensions": [
+        784,
+        824
+      ],
+      "path": "assets/axis_civic_road_dressed/axis_civic_road_dressed_contact-sheet.png",
+      "sha256": "ec75b3f3ea39ae8961d119188cf0e3bf42bbb8e95fa54ba71b5f2dc52f90a419"
+    },
+    {
+      "bytes": 39710,
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/axis_civic_road_dressed/renders/axis_civic_road_dressed_camNE.png",
+      "sha256": "a8da05d1bec8e06b0470bb7dfcda7b23cfb4756325be9c9c9d78676e96307a1b"
+    },
+    {
+      "bytes": 40553,
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/axis_civic_road_dressed/renders/axis_civic_road_dressed_camSE.png",
+      "sha256": "a4efa06bcf60c71b8aeb3518bdc1d355b31c7566296f0587fb3065a6d5472438"
+    },
+    {
+      "bytes": 40577,
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/axis_civic_road_dressed/renders/axis_civic_road_dressed_camSW.png",
+      "sha256": "12561e6e8c263eea7d18f44b908132ef7d57a40fe874fd3eb48a7b65b8d0d0eb"
+    },
+    {
+      "bytes": 39316,
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/axis_civic_road_dressed/renders/axis_civic_road_dressed_camNW.png",
+      "sha256": "df0b74a01b3eb048b3d241e446823dfe6153d7412b3701323c4511776fb51196"
+    }
+  ],
+  "assetId": "axis_civic_road_dressed",
+  "cameraAzimuthDegrees": {
+    "camNE": 45,
+    "camNW": 315,
+    "camSE": 135,
+    "camSW": 225
+  },
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "elevationDegrees": 30,
+  "originalGeometry": true,
+  "postRenderCompensation": "none",
+  "projectedTilePixels": [
+    88,
+    44
+  ],
+  "rootPivotWorld": [
+    0,
+    0,
+    0
+  ],
+  "schema": "citysim.world-art.environment-asset.v1",
+  "status": "source-only-not-live"
+}

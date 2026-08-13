@@ -6,7 +6,7 @@
   "cameraRig": {"distance": 32.0, "orthoScale": 12.341995, "shiftY": 0.28125, "views": [{"name":"camNE","azimuthDegrees":45.0},{"name":"camSE","azimuthDegrees":135.0},{"name":"camSW","azimuthDegrees":225.0},{"name":"camNW","azimuthDegrees":315.0}]},
   "root": {"name":"AssetRoot","pivotName":"FootprintPivot","location":[0.0,0.0,0.0],"rotationEuler":[0.0,0.0,0.0],"scale":[1.0,1.0,1.0]},
   "lighting": {"name":"CitySimKey","type":"AREA","location":[-6.0,-8.0,12.0],"energy":1100.0,"size":5.0,"color":[1.0,0.86,0.72],"worldColor":[0.20,0.17,0.14,1.0],"worldStrength":0.72},
-  "assets": ["axis_civic_road", "pocket_grove_park"],
+  "assets": ["axis_civic_road", "axis_civic_road_dressed", "pocket_grove_park"],
   "postRenderCompensation": "none",
   "status": "source-only-not-live"
 }

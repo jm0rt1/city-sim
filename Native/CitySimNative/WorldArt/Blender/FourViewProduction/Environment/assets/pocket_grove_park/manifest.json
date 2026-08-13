@@ -1,54 +1,54 @@
 {
   "artifacts": [
     {
-      "bytes": 916932,
+      "bytes": 1331324,
       "path": "assets/pocket_grove_park/pocket_grove_park.blend",
-      "sha256": "49e03f0d717c33938fa819ec484c732c2d24bf77dbaf2b85449e5bc4ffcc734d"
+      "sha256": "1b7204f062e04a419127caf49a75260aa93b12d641092db5e4192518643ed93a"
     },
     {
-      "bytes": 40536,
+      "bytes": 93015,
       "dimensions": [
         784,
         824
       ],
       "path": "assets/pocket_grove_park/pocket_grove_park_contact-sheet.png",
-      "sha256": "411924239eca97e23f3f4363098e96e662e708dcfb23e4aedec184158352877f"
+      "sha256": "73e1fde55f1ec7a9cd9bdd1f3d40259ad8db4025a29e9e135c37aae24a05b020"
     },
     {
-      "bytes": 39947,
+      "bytes": 55961,
       "dimensions": [
         384,
         384
       ],
       "path": "assets/pocket_grove_park/renders/pocket_grove_park_camNE.png",
-      "sha256": "3be79d2f3bb09241348300ad9cf98784a066ab29dbfc27ad1b1ede35bc62edf9"
+      "sha256": "2b1c41cf98f0fa3e53627ba9b32336754c14cd5759b66357d965836ac5e0e2dc"
     },
     {
-      "bytes": 42267,
+      "bytes": 56866,
       "dimensions": [
         384,
         384
       ],
       "path": "assets/pocket_grove_park/renders/pocket_grove_park_camSE.png",
-      "sha256": "8f64c37445bc5f99f1fc55668fc2744e2a1589aee1f1e6bd566cc390a3ad175c"
+      "sha256": "bafb528c765ebc87658c40f2da8d45b709b2d2b42e9f95e6eceab6fa92016c97"
     },
     {
-      "bytes": 42324,
+      "bytes": 56866,
       "dimensions": [
         384,
         384
       ],
       "path": "assets/pocket_grove_park/renders/pocket_grove_park_camSW.png",
-      "sha256": "deb540ecced9b4677bb428f168c85bd9387a996b902a92f79dd41701bf22cf10"
+      "sha256": "21efc53555ce5c7f0f275a1e789adc86df95b8635706391ee8a2fa93b2aefc46"
     },
     {
-      "bytes": 40783,
+      "bytes": 57169,
       "dimensions": [
         384,
         384
       ],
       "path": "assets/pocket_grove_park/renders/pocket_grove_park_camNW.png",
-      "sha256": "62f11e4099617442ffc3ba0600860c71cb8e40b2401ba376e7530b11db61cbb1"
+      "sha256": "e08158b66c00cbca954b55f85ba6fac3f2ecdc2d969362e94be0c5696217d17a"
     }
   ],
   "assetId": "pocket_grove_park",

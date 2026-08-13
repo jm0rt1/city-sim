@@ -31,6 +31,7 @@ ASSETS = {
     "harbor_corner_storefront": PRODUCTION_DIR / "CommercialIndustrial/harbor_corner_storefront/renders/harbor_corner_storefront_camNE.png",
     "ironleaf_service_workshop": PRODUCTION_DIR / "CommercialIndustrial/ironleaf_service_workshop/renders/ironleaf_service_workshop_camNE.png",
     "axis_civic_road": PRODUCTION_DIR / "Environment/assets/axis_civic_road/renders/axis_civic_road_camNE.png",
+    "axis_civic_road_dressed": PRODUCTION_DIR / "Environment/assets/axis_civic_road_dressed/renders/axis_civic_road_dressed_camNE.png",
     "pocket_grove_park": PRODUCTION_DIR / "Environment/assets/pocket_grove_park/renders/pocket_grove_park_camNE.png",
 }
 
@@ -162,7 +163,10 @@ def compose(width: int, height: int, output: Path, sprites: dict[str, tuple[int,
             fill = (73, 76, 74, 255) if y == 2 else (82, 102, 88, 255)
             draw_diamond(result, width, height, tile_pivot(origin, x, y), fill)
 
-    roads = [(x, 2, "axis_civic_road") for x in range(-1, 10)]
+    roads = [
+        (x, 2, "axis_civic_road_dressed" if x in (-1, 3, 7) else "axis_civic_road")
+        for x in range(-1, 10)
+    ]
     for x, y, asset_id in sorted(roads, key=lambda item: (item[0] + item[1], item[1], item[0])):
         pivot = tile_pivot(origin, x, y)
         source_width, source_height, rgba = sprites[asset_id]

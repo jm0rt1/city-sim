@@ -1,0 +1,91 @@
+{
+  "artifacts": [
+    {
+      "bytes": 644733,
+      "path": "assets/axis_civic_road/axis_civic_road.blend",
+      "sha256": "b6378b233afa2e9969d6515066416b4d3b2054fc991693fea6ce50f6b4671086"
+    },
+    {
+      "bytes": 24619,
+      "dimensions": [
+        784,
+        824
+      ],
+      "path": "assets/axis_civic_road/axis_civic_road_contact-sheet.png",
+      "sha256": "49a5b0aa604d692485463ddf9f400975f8d15d7c6416e537c148f595da04869c"
+    },
+    {
+      "bytes": 35115,
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/axis_civic_road/renders/axis_civic_road_camNE.png",
+      "sha256": "63c612928e92ed2271c1cadc0b569cd592df99c2e79e2c2f41b7a629e965df3c"
+    },
+    {
+      "bytes": 35121,
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/axis_civic_road/renders/axis_civic_road_camSE.png",
+      "sha256": "36df063abae38144dd524954570f91b3a1713415a6b111083ce41413f03035e8"
+    },
+    {
+      "bytes": 35213,
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/axis_civic_road/renders/axis_civic_road_camSW.png",
+      "sha256": "634deaefa848bd7ce7c6070c0992c070b6088ddb66bd56f2cba3fe083a225e7a"
+    },
+    {
+      "bytes": 35174,
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/axis_civic_road/renders/axis_civic_road_camNW.png",
+      "sha256": "4e1c6af58ddec361375fa1b849abe2e8795b1d5f628bcd92fecc1a919512edf7"
+    }
+  ],
+  "assetId": "axis_civic_road",
+  "cameraAzimuthDegrees": {
+    "camNE": 45,
+    "camNW": 315,
+    "camSE": 135,
+    "camSW": 225
+  },
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "elevationDegrees": 30,
+  "originalGeometry": true,
+  "postRenderCompensation": "none",
+  "projectedTilePixels": [
+    88,
+    44
+  ],
+  "rootPivotWorld": [
+    0,
+    0,
+    0
+  ],
+  "schema": "citysim.world-art.environment-asset.v1",
+  "status": "source-only-not-live"
+}

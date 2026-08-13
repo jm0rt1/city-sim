@@ -1,0 +1,91 @@
+{
+  "artifacts": [
+    {
+      "bytes": 732049,
+      "path": "assets/pocket_grove_park/pocket_grove_park.blend",
+      "sha256": "41f686bed14b0c516290f5bd6d291e7b4ffce886f15ef3df67a597a770b07a7f"
+    },
+    {
+      "bytes": 38536,
+      "dimensions": [
+        784,
+        824
+      ],
+      "path": "assets/pocket_grove_park/pocket_grove_park_contact-sheet.png",
+      "sha256": "a1381da7e45fc6b45e2646c09be596bc019511c62f88083ca15d147a544fea0e"
+    },
+    {
+      "bytes": 38525,
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/pocket_grove_park/renders/pocket_grove_park_camNE.png",
+      "sha256": "237745b8161214e1fa6ea76ff558099790f1f95445a5a1daf3dfd5aa6bd7f232"
+    },
+    {
+      "bytes": 40944,
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/pocket_grove_park/renders/pocket_grove_park_camSE.png",
+      "sha256": "7270d7b3fc4c1604b96da6922cea67e87d9265693521ac439956471bfbe62b2f"
+    },
+    {
+      "bytes": 40981,
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/pocket_grove_park/renders/pocket_grove_park_camSW.png",
+      "sha256": "168741f8442916859ed187b79ebce3bc59676f5301ea85656237bbc53f30268c"
+    },
+    {
+      "bytes": 39506,
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/pocket_grove_park/renders/pocket_grove_park_camNW.png",
+      "sha256": "f7253c1f39098a241d36adffca785d1201e37c80049092a8431cb32f910ec8be"
+    }
+  ],
+  "assetId": "pocket_grove_park",
+  "cameraAzimuthDegrees": {
+    "camNE": 45,
+    "camNW": 315,
+    "camSE": 135,
+    "camSW": 225
+  },
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "elevationDegrees": 30,
+  "originalGeometry": true,
+  "postRenderCompensation": "none",
+  "projectedTilePixels": [
+    88,
+    44
+  ],
+  "rootPivotWorld": [
+    0,
+    0,
+    0
+  ],
+  "schema": "citysim.world-art.environment-asset.v1",
+  "status": "source-only-not-live"
+}

@@ -2459,6 +2459,158 @@ final class CitySimulationTests: XCTestCase {
     }
 
     @MainActor
+    func testFourViewNativeParkCorridorProofExports() throws {
+        let proofKeys = [
+            "CITYSIM_FOUR_VIEW_PARK_CORRIDOR_BASELINE_1280_PROOF",
+            "CITYSIM_FOUR_VIEW_PARK_CORRIDOR_BASELINE_900_PROOF",
+            "CITYSIM_FOUR_VIEW_PARK_CORRIDOR_1280_PROOF",
+            "CITYSIM_FOUR_VIEW_PARK_CORRIDOR_900_PROOF",
+        ]
+        guard proofKeys.contains(where: { ProcessInfo.processInfo.environment[$0] != nil }) else {
+            return
+        }
+        let candidateRequested = [
+            "CITYSIM_FOUR_VIEW_PARK_CORRIDOR_1280_PROOF",
+            "CITYSIM_FOUR_VIEW_PARK_CORRIDOR_900_PROOF",
+        ].contains(where: { ProcessInfo.processInfo.environment[$0] != nil })
+
+        var state = CityGameState.newCity(seed: 42)
+        for coordinate in state.tiles.map(\.coordinate) {
+            state.updateTile(at: coordinate) {
+                $0 = CityTile(coordinate: coordinate, kind: .empty)
+            }
+        }
+        for y in [8, 12, 16] {
+            for x in 4...20 {
+                let coordinate = GridCoordinate(x: x, y: y)
+                state.updateTile(at: coordinate) {
+                    $0 = CityTile(coordinate: coordinate, kind: .road)
+                }
+            }
+        }
+        for x in [4, 8, 12, 16, 20] {
+            for y in 7...17 {
+                let coordinate = GridCoordinate(x: x, y: y)
+                state.updateTile(at: coordinate) {
+                    $0 = CityTile(coordinate: coordinate, kind: .road)
+                }
+            }
+        }
+
+        let parkCandidates = state.tiles
+            .filter { tile in
+                guard tile.kind == .empty,
+                      (9...15).contains(tile.coordinate.y),
+                      (5...19).contains(tile.coordinate.x) else { return false }
+                return !RoadConnectionMask.resolving(
+                    at: tile.coordinate,
+                    in: state
+                ).isEmpty
+            }
+            .sorted { ($0.coordinate.y, $0.coordinate.x) < ($1.coordinate.y, $1.coordinate.x) }
+        var parkCoordinates: [GridCoordinate] = []
+        for variant in 0..<2 {
+            parkCoordinates.append(contentsOf: parkCandidates
+                .filter {
+                    WorldVisualSeed.variant(
+                        count: 3,
+                        for: $0.coordinate,
+                        kind: .park
+                    ) == variant
+                }
+                .prefix(5)
+                .map(\.coordinate))
+        }
+        XCTAssertEqual(parkCoordinates.count, 10)
+        for coordinate in parkCoordinates {
+            state.updateTile(at: coordinate) {
+                $0 = CityTile(
+                    coordinate: coordinate,
+                    kind: .park,
+                    level: 1,
+                    condition: 1,
+                    constructionProgress: 1
+                )
+            }
+        }
+
+        let supportingLots: [(GridCoordinate, BuildingKind, Int)] = [
+            (GridCoordinate(x: 5, y: 14), .cityHall, 1),
+            (GridCoordinate(x: 9, y: 14), .school, 1),
+            (GridCoordinate(x: 13, y: 14), .commercial, 1),
+            (GridCoordinate(x: 17, y: 14), .residential, 2),
+            (GridCoordinate(x: 18, y: 10), .residential, 1),
+        ]
+        for (coordinate, kind, level) in supportingLots {
+            guard state.tile(at: coordinate)?.kind == .empty else { continue }
+            state.updateTile(at: coordinate) {
+                $0 = CityTile(
+                    coordinate: coordinate,
+                    kind: kind,
+                    level: level,
+                    condition: 1,
+                    constructionProgress: 1
+                )
+            }
+        }
+
+        let sourceScene = CityScene(size: CGSize(width: 1_280, height: 800))
+        sourceScene.reducedMotion = true
+        sourceScene.render(
+            state: state,
+            overlay: .none,
+            selection: nil,
+            interactionMode: .inspect
+        )
+        let sourceNames = sourceScene.children.flatMap(descendantNodeNames)
+        XCTAssertTrue(sourceNames.contains("lot.four-view.pocket_grove_park.camNE"))
+        if candidateRequested {
+            XCTAssertTrue(sourceNames.contains("lot.four-view.canal_lantern_park.camNE"))
+        }
+
+        let center = GridCoordinate(x: 12, y: 12)
+        let regular = try rendererProofFrame(
+            size: CGSize(width: 1_280, height: 800),
+            state: state,
+            overlay: .none,
+            selection: nil,
+            interactionMode: .inspect,
+            detail: .city,
+            centeredOn: center,
+            framingScale: 0.90,
+            hover: nil,
+            exactPixelDimensions: true
+        )
+        let compact = try rendererProofFrame(
+            size: CGSize(width: 900, height: 600),
+            state: state,
+            overlay: .none,
+            selection: nil,
+            interactionMode: .inspect,
+            detail: .city,
+            centeredOn: center,
+            framingScale: 1.02,
+            hover: nil,
+            exactPixelDimensions: true
+        )
+
+        XCTAssertEqual(regular.width, 1_280)
+        XCTAssertEqual(regular.height, 800)
+        XCTAssertEqual(compact.width, 900)
+        XCTAssertEqual(compact.height, 600)
+        XCTAssertGreaterThan(regular.png.count, 40_000)
+        XCTAssertGreaterThan(compact.png.count, 30_000)
+        try export(regular, environmentKeys: [
+            "CITYSIM_FOUR_VIEW_PARK_CORRIDOR_BASELINE_1280_PROOF",
+            "CITYSIM_FOUR_VIEW_PARK_CORRIDOR_1280_PROOF",
+        ])
+        try export(compact, environmentKeys: [
+            "CITYSIM_FOUR_VIEW_PARK_CORRIDOR_BASELINE_900_PROOF",
+            "CITYSIM_FOUR_VIEW_PARK_CORRIDOR_900_PROOF",
+        ])
+    }
+
+    @MainActor
     private func descendantNodeNames(in node: SKNode) -> [String] {
         (node.name.map { [$0] } ?? []) + node.children.flatMap(descendantNodeNames)
     }

@@ -1,0 +1,142 @@
+{
+  "acceptedFamilyContractOnly": true,
+  "artifacts": [
+    {
+      "bytes": 3221606,
+      "path": "preview/canal-lantern-green-corridor.blend",
+      "sha256": "1ec8e15c43e660e5002d19ec9c167a2073129510c366fd9341abadc9ae2fa79b"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 800,
+          "maxX": 1279,
+          "maxY": 799,
+          "minX": 0,
+          "minY": 0,
+          "width": 1280
+        },
+        "lowestOpaqueRowTopOrigin": 799,
+        "opaquePixelCount": 1024000,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 874866,
+      "decodedRgbaSha256": "dd2a98320cb084b851dc9b93b4ae3a6af614a56e5af61578f4f93dae3c7f32a7",
+      "dimensions": [
+        1280,
+        800
+      ],
+      "path": "preview/canal-lantern-green-corridor-1280x800.png",
+      "sha256": "6722acaceeccf865f410e692bc446071c8aa075ca674301fc94671be8810c8ee"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 600,
+          "maxX": 899,
+          "maxY": 599,
+          "minX": 0,
+          "minY": 0,
+          "width": 900
+        },
+        "lowestOpaqueRowTopOrigin": 599,
+        "opaquePixelCount": 540000,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 471428,
+      "decodedRgbaSha256": "3d9384582523f6ae25b97d67bb4579c27d013cee72837fa3fd5a45a191e08cbd",
+      "dimensions": [
+        900,
+        600
+      ],
+      "path": "preview/canal-lantern-green-corridor-900x600.png",
+      "sha256": "05930b301a1f1fa4088eeddb20e35a9cec76e95c92954e17ea4fde3377cde7ab"
+    }
+  ],
+  "camera": {
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0,
+    "perAssetCompensation": "none",
+    "projection": "orthographic"
+  },
+  "cedarMarketReused": false,
+  "grid": {
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0,
+    "exactWorldFootprint": [
+      4.0,
+      4.0
+    ],
+    "footprintTiles": [
+      2,
+      2
+    ],
+    "projectedTilePixels": [
+      88,
+      44
+    ],
+    "projection": "orthographic-2:1-dimetric",
+    "worldTileSize": 2.0
+  },
+  "lightingConvention": {
+    "color": [
+      1.0,
+      0.86,
+      0.72
+    ],
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldColor": [
+      0.2,
+      0.17,
+      0.14,
+      1.0
+    ],
+    "worldStrength": 0.72
+  },
+  "liveAsset": false,
+  "placements": [
+    {
+      "assetId": "canal_lantern_park",
+      "footprintTiles": [
+        2,
+        2
+      ],
+      "meshCount": 91,
+      "originWorld": [
+        -3.0,
+        -3.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "sourceBlend": "FourViewProduction/ParkExpansion/canal_lantern_park/canal_lantern_park.blend",
+      "sourceBlendSha256": "3928c3974fc872efc1944d97cefbe1e65dc3392ddb137da86c9aac06950bd5c6"
+    },
+    {
+      "assetId": "pocket_grove_park",
+      "footprintTiles": [
+        2,
+        2
+      ],
+      "meshCount": 54,
+      "originWorld": [
+        3.0,
+        -3.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "sourceBlend": "FourViewProduction/Environment/assets/pocket_grove_park/pocket_grove_park.blend",
+      "sourceBlendSha256": "1b7204f062e04a419127caf49a75260aa93b12d641092db5e4192518643ed93a"
+    }
+  ],
+  "rejectedVectorAssetsReused": false,
+  "schema": "citysim.world-art.park-expansion-preview.v1",
+  "status": "source-only-review-evidence"
+}

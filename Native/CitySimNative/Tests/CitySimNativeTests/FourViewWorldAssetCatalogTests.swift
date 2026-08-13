@@ -228,6 +228,56 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
     }
 
     @MainActor
+    func testParkVariantsUseFixedTransformWithoutChangingGameplayIdentity() throws {
+        let style = WorldVisualStyle()
+        let catalog = FourViewWorldAssetCatalog()
+        let renderer = LotRenderer(
+            style: style,
+            assets: WorldAssetCatalog(),
+            fourViewAssets: catalog
+        )
+        let assetIDs = [
+            "pocket_grove_park",
+            "canal_lantern_park",
+        ]
+
+        for variant in 0..<2 {
+            let coordinate = try XCTUnwrap((0..<32).lazy
+                .flatMap { y in (0..<32).map { GridCoordinate(x: $0, y: y) } }
+                .first {
+                    WorldVisualSeed.variant(
+                        count: 3,
+                        for: $0,
+                        kind: .park
+                    ) == variant
+                })
+            let lot = renderer.makeLot(
+                for: CityTile(
+                    coordinate: coordinate,
+                    kind: .park,
+                    level: 1,
+                    condition: 1,
+                    constructionProgress: 1
+                ),
+                adjacentRoads: .south,
+                detail: .block,
+                reducedMotion: true
+            )
+            let marker = try XCTUnwrap(
+                lot.childNode(withName: "//lot.four-view.\(assetIDs[variant]).camNE")
+            )
+            let sprite = try XCTUnwrap(marker.parent as? SKSpriteNode)
+            XCTAssertEqual(sprite.anchorPoint, FourViewWorldAssetCatalog.spriteAnchor)
+            XCTAssertEqual(sprite.xScale, style.tileWidth / 176, accuracy: 0.000_001)
+            XCTAssertEqual(sprite.yScale, style.tileWidth / 176, accuracy: 0.000_001)
+            XCTAssertEqual(sprite.zRotation, 0, accuracy: 0.000_001)
+            XCTAssertEqual(sprite.position, .zero)
+            XCTAssertEqual(sprite.colorBlendFactor, 0, accuracy: 0.000_001)
+            XCTAssertEqual(sprite.name, "lot.generated-v4.park_l01.block")
+        }
+    }
+
+    @MainActor
     func testUtilityAndServiceLotsUseCanonicalTransformAndNoLegacyRoleDecoration() throws {
         let style = WorldVisualStyle()
         let catalog = FourViewWorldAssetCatalog()

@@ -1,0 +1,94 @@
+PARK_EXPANSION_FOUR_VIEW_VALIDATION_PASS
+{
+  "assets": {
+    "canal_lantern_park": {
+      "deterministicCanonicalPngSha256": {
+        "canal_lantern_park_camNE.png": "02fd97a12f941b664ae8cd572dbf5bae866c9b4b2d9b79750594bfaab30ebf92",
+        "canal_lantern_park_camNW.png": "46993704425b46893f8cec597573334605a7c4a4dc7e57e49ece38bdccdd9caf",
+        "canal_lantern_park_camSE.png": "46513902600fd161a7de12d6aeb5f2d67776426a8c135128e9a0536933bbad8d",
+        "canal_lantern_park_camSW.png": "20f16c6b2c50952e8627c9d21dc0723aa116d62d5d8e046c15d4405ccf8c27c0"
+      },
+      "meshCount": 91,
+      "projectedAxisPixels": {
+        "camNE": [
+          [
+            -44,
+            22
+          ],
+          [
+            44,
+            22
+          ]
+        ],
+        "camNW": [
+          [
+            -44,
+            -22
+          ],
+          [
+            -44,
+            22
+          ]
+        ],
+        "camSE": [
+          [
+            44,
+            22
+          ],
+          [
+            44,
+            -22
+          ]
+        ],
+        "camSW": [
+          [
+            44,
+            -22
+          ],
+          [
+            -44,
+            -22
+          ]
+        ]
+      },
+      "requiredObjectPrefixes": [
+        "ParkBasin",
+        "ParkPergola",
+        "ParkPlanter",
+        "ParkBench",
+        "ParkLantern",
+        "ParkTree"
+      ]
+    }
+  },
+  "blenderVersion": "4.5.12",
+  "contract": {
+    "azimuthDegrees": 45.0,
+    "cameraOrder": [
+      "camNE",
+      "camSE",
+      "camSW",
+      "camNW"
+    ],
+    "deterministicRerender": "byte-identical canonical PNGs",
+    "elevationDegrees": 30.0,
+    "orthoScale": 12.341995,
+    "pivotPixels": [
+      192,
+      300
+    ],
+    "postRenderCompensation": "none",
+    "projectedTilePixels": [
+      88,
+      44
+    ],
+    "shiftY": 0.28125
+  },
+  "familyManifestSha256": "ae4a72332deee4401876557cf9b96b49ff7ce796b52b8b8256a6289a0adda1ec",
+  "previewPngSha256": {
+    "preview/canal-lantern-green-corridor-1280x800.png": "6722acaceeccf865f410e692bc446071c8aa075ca674301fc94671be8810c8ee",
+    "preview/canal-lantern-green-corridor-900x600.png": "05930b301a1f1fa4088eeddb20e35a9cec76e95c92954e17ea4fde3377cde7ab"
+  },
+  "schema": "citysim.world-art.park-expansion-validation.v1",
+  "status": "PASS"
+}

@@ -69,7 +69,7 @@ final class FourViewWorldAssetCatalog {
         case .industrial:
             deterministicAssetID(forRole: "industrial-low", variant: variant)
         case .park:
-            firstAssetID(forRole: "park")
+            deterministicAssetID(forRole: "park", variant: variant)
         case .cityHall:
             firstAssetID(forRole: "city-hall")
         case .powerPlant:

@@ -1,0 +1,253 @@
+{
+  "artifacts": [
+    {
+      "bytes": 1835775,
+      "path": "canal_lantern_park.blend",
+      "sha256": "3928c3974fc872efc1944d97cefbe1e65dc3392ddb137da86c9aac06950bd5c6"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 129,
+          "maxX": 280,
+          "maxY": 346,
+          "minX": 103,
+          "minY": 218,
+          "width": 178
+        },
+        "lowestOpaqueRowTopOrigin": 346,
+        "opaquePixelCount": 11356,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 57359,
+      "decodedRgbaSha256": "5482ef721c913f25075715d7279699f2a964d2d48aa71da38b88e0b5ca4ce24c",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/canal_lantern_park_camNE.png",
+      "sha256": "02fd97a12f941b664ae8cd572dbf5bae866c9b4b2d9b79750594bfaab30ebf92"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 129,
+          "maxX": 280,
+          "maxY": 346,
+          "minX": 103,
+          "minY": 218,
+          "width": 178
+        },
+        "lowestOpaqueRowTopOrigin": 346,
+        "opaquePixelCount": 11216,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 58392,
+      "decodedRgbaSha256": "9132eb1bb5cff5fcfaa4d4becf2eb325d9d6848d7fb0c258360b060accf9e75c",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/canal_lantern_park_camSE.png",
+      "sha256": "46513902600fd161a7de12d6aeb5f2d67776426a8c135128e9a0536933bbad8d"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 129,
+          "maxX": 280,
+          "maxY": 346,
+          "minX": 103,
+          "minY": 218,
+          "width": 178
+        },
+        "lowestOpaqueRowTopOrigin": 346,
+        "opaquePixelCount": 11699,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 58892,
+      "decodedRgbaSha256": "bbd51e91ebd7a20b25cd78b52717be1b7a00e07f141aef43d4cf6065d7702e02",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/canal_lantern_park_camSW.png",
+      "sha256": "20f16c6b2c50952e8627c9d21dc0723aa116d62d5d8e046c15d4405ccf8c27c0"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 128,
+          "maxX": 280,
+          "maxY": 346,
+          "minX": 103,
+          "minY": 219,
+          "width": 178
+        },
+        "lowestOpaqueRowTopOrigin": 346,
+        "opaquePixelCount": 11796,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 59154,
+      "decodedRgbaSha256": "2b1e8c64ba6f51852082decf60732475b84a5cca697913ae3851aa3ca9065324",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/canal_lantern_park_camNW.png",
+      "sha256": "46993704425b46893f8cec597573334605a7c4a4dc7e57e49ece38bdccdd9caf"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 622,
+          "maxX": 783,
+          "maxY": 839,
+          "minX": 0,
+          "minY": 218,
+          "width": 784
+        },
+        "lowestOpaqueRowTopOrigin": 839,
+        "opaquePixelCount": 89075,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 192119,
+      "decodedRgbaSha256": "f650ba1f421526d6d7240485e4e4efd79373e36a927c12be4441692aa6c249cc",
+      "dimensions": [
+        784,
+        840
+      ],
+      "path": "canal_lantern_park_contact-sheet.png",
+      "sha256": "0532919ba997269320f52abb80bfb8149d074e7bb7e2ac1c7f35c3e7f512b691"
+    }
+  ],
+  "assetId": "canal_lantern_park",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "cameraRig": {
+    "distance": 32.0,
+    "orthoScale": 12.341995,
+    "shiftY": 0.28125,
+    "views": [
+      {
+        "azimuthDegrees": 45.0,
+        "name": "camNE"
+      },
+      {
+        "azimuthDegrees": 135.0,
+        "name": "camSE"
+      },
+      {
+        "azimuthDegrees": 225.0,
+        "name": "camSW"
+      },
+      {
+        "azimuthDegrees": 315.0,
+        "name": "camNW"
+      }
+    ]
+  },
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "footprintPivotPixelTopOrigin": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "cedarMarketReused": false,
+  "description": "Axis-aligned neighborhood rain garden with a narrow reflecting basin, warm timber pergola, raised brick planters, benches, lanterns, and varied tree and shrub planting",
+  "grid": {
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0,
+    "exactWorldFootprint": [
+      4.0,
+      4.0
+    ],
+    "footprintTiles": [
+      2,
+      2
+    ],
+    "projectedTilePixels": [
+      88,
+      44
+    ],
+    "projection": "orthographic-2:1-dimetric",
+    "worldTileSize": 2.0
+  },
+  "lightingConvention": {
+    "color": [
+      1.0,
+      0.86,
+      0.72
+    ],
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldColor": [
+      0.2,
+      0.17,
+      0.14,
+      1.0
+    ],
+    "worldStrength": 0.72
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "parkRole": "rain-garden-promenade",
+  "perViewCompensation": {
+    "crop": false,
+    "offsetPixels": [
+      0,
+      0
+    ],
+    "rotationDegrees": 0.0,
+    "scale": 1.0,
+    "skew": [
+      0.0,
+      0.0
+    ]
+  },
+  "pipelineSchema": "citysim.world-art.park-expansion-four-view.v1",
+  "postRenderCompensation": "none",
+  "rejectedVectorAssetsReused": false,
+  "root": {
+    "location": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "name": "AssetRoot",
+    "pivotName": "FootprintPivot",
+    "rotationEuler": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "schema": "citysim.world-art.park-expansion-asset.v1",
+  "serviceRole": "rain-garden-promenade",
+  "sourcePixelsReused": false,
+  "status": "source-only-not-live"
+}

@@ -1,0 +1,31 @@
+{
+  "artifacts": [
+    {
+      "bytes": 5795,
+      "path": "canal_lantern_park/manifest.json",
+      "sha256": "7446fa169e044b60330d324445b549933d3cfc93580aefd117185b49785240e1"
+    }
+  ],
+  "assetIds": [
+    "canal_lantern_park"
+  ],
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "cedarMarketReused": false,
+  "pipelineSchema": "citysim.world-art.park-expansion-four-view.v1",
+  "pivotPixelTopOrigin": [
+    192,
+    300
+  ],
+  "postRenderCompensation": "none",
+  "projectedTilePixels": [
+    88,
+    44
+  ],
+  "schema": "citysim.world-art.park-expansion-family.v1",
+  "status": "source-only-not-live"
+}

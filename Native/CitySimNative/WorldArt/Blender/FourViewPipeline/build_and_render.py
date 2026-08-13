@@ -336,7 +336,7 @@ def configure_scene(scene: bpy.types.Scene, config: dict) -> None:
     scene.view_settings.gamma = 1.0
     scene.world.use_nodes = True
     background = scene.world.node_tree.nodes.get("Background")
-    background.inputs["Color"].default_value = (0.16, 0.19, 0.22, 1.0)
+    background.inputs["Color"].default_value = config["lighting"]["worldColor"]
     background.inputs["Strength"].default_value = config["lighting"]["worldStrength"]
     scene["pipelineSchema"] = config["schema"]
     scene["postRenderCompensation"] = "none"
@@ -398,6 +398,7 @@ def create_lighting(config: dict) -> bpy.types.Object:
     data.energy = light_config["energy"]
     data.shape = "DISK"
     data.size = light_config["size"]
+    data.color = light_config["color"]
     light = bpy.data.objects.new(light_config["name"], data)
     bpy.context.collection.objects.link(light)
     light.location = light_config["location"]

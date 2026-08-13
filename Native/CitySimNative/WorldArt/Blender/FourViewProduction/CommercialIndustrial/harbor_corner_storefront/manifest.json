@@ -3,57 +3,57 @@
     {
       "bytes": 1489843,
       "path": "harbor_corner_storefront/harbor_corner_storefront.blend",
-      "sha256": "be4797820cdf2d9bbe2ca50b63b6cb6b535ccee60b8ed60e84ac937d3cffea45"
+      "sha256": "e6b82f6db66989a87d0ba41daca45d4e1cae743ec0b61814b6f89221b5d3b065"
     },
     {
-      "bytes": 57761,
-      "decodedRgbaSha256": "7f08646fedb57569d3dfc00446f4c6e6153b726dbedbf5a4a17d5b62cfd8958a",
+      "bytes": 57142,
+      "decodedRgbaSha256": "3fa5a0507acaa06a0315b86ec7d518362570d0abd827a90562ac437455150bbe",
       "dimensions": [
         384,
         384
       ],
       "path": "harbor_corner_storefront/renders/harbor_corner_storefront_camNE.png",
-      "sha256": "84f20c7cdee8c612ed908184f333bd1808a58a2e15ea236f7e8abfe3302a6cc2"
+      "sha256": "e98cdcf50592089d7a0b6ded522af7c2892c78dda8bf0c623940e39f57241ebd"
     },
     {
-      "bytes": 67088,
-      "decodedRgbaSha256": "fc56968a231858a189d660339321e521ef41ac07289305dbfc5f0e6499d0d609",
+      "bytes": 66442,
+      "decodedRgbaSha256": "fd7b027bd6f400a3a74fea60852f855ea1505c899eb849b4ec27a784a9dee782",
       "dimensions": [
         384,
         384
       ],
       "path": "harbor_corner_storefront/renders/harbor_corner_storefront_camSE.png",
-      "sha256": "9b6d42c7c2cc5a610debe5234797d1f3427ebd636bb289848bda5bc029cf2c3b"
+      "sha256": "84afe1bbcfb53d3b05b2324155005963ec30bca27d7485e16d06b249c40583ac"
     },
     {
-      "bytes": 68524,
-      "decodedRgbaSha256": "9de8fb84edfd19514d9eda05d0bde961561d85ed9a76135623c57f10ee0fccd7",
+      "bytes": 67613,
+      "decodedRgbaSha256": "5cb4d8ed60cc8a37431566403b20f18a0ca6a8dda504b0d2f734c82a31e59a97",
       "dimensions": [
         384,
         384
       ],
       "path": "harbor_corner_storefront/renders/harbor_corner_storefront_camSW.png",
-      "sha256": "3cd9c85f21470ce9d9ab7aa06d5f2b9aced18d841afc3852dd82934cfab93c54"
+      "sha256": "1221866f86aa86e6dc26e7b32d8a6ea546303e12ae12b5a5dd9d4305e6d130db"
     },
     {
-      "bytes": 61105,
-      "decodedRgbaSha256": "fcb37c4fb85405327b55c483e34012de9c7aa80137f7acf50e4470c6dc32e71c",
+      "bytes": 60538,
+      "decodedRgbaSha256": "73e0e935d671bcca0b81ca8e64e95767f0a7474e586474b299172dc175e928c7",
       "dimensions": [
         384,
         384
       ],
       "path": "harbor_corner_storefront/renders/harbor_corner_storefront_camNW.png",
-      "sha256": "4c04253b7c9e32b2fbbccfa677387ba84ff14610c82857e327c1a23c89acd001"
+      "sha256": "059a341eaff570e62ea1149944b65303c4428b544b085da9f370c9834cd11f01"
     },
     {
-      "bytes": 216665,
-      "decodedRgbaSha256": "309bdb031ce3ea4e73936449e533641402dbcbc33a9b301d9ae38d4ddd31e7f1",
+      "bytes": 213838,
+      "decodedRgbaSha256": "4a818fc2d60f8952976fa3fde0de88102d5e5fa6f9396320987d90fce656d378",
       "dimensions": [
         784,
         832
       ],
       "path": "harbor_corner_storefront/harbor_corner_storefront_contact-sheet.png",
-      "sha256": "8f02bb8c465a9c452db90da66505d2ed3c7266d402e986a63e0ad24ed589db16"
+      "sha256": "49cdc25952265159246db6b75e9b865ee233d05f20c528140f24f59109ccd726"
     }
   ],
   "assetFamily": "small-commercial",
@@ -82,6 +82,11 @@
   },
   "elevationDegrees": 30,
   "lightingConvention": {
+    "color": [
+      1.0,
+      0.86,
+      0.72
+    ],
     "energy": 1100.0,
     "location": [
       -6.0,
@@ -91,7 +96,13 @@
     "name": "CitySimKey",
     "size": 5.0,
     "type": "AREA",
-    "worldStrength": 0.65
+    "worldColor": [
+      0.2,
+      0.17,
+      0.14,
+      1.0
+    ],
+    "worldStrength": 0.72
   },
   "liveAsset": false,
   "originalGeometry": true,

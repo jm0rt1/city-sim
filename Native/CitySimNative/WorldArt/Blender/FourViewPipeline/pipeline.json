@@ -42,7 +42,9 @@
     "location": [-6.0, -8.0, 12.0],
     "energy": 1100.0,
     "size": 5.0,
-    "worldStrength": 0.65
+    "color": [1.0, 0.86, 0.72],
+    "worldColor": [0.20, 0.17, 0.14, 1.0],
+    "worldStrength": 0.72
   },
   "output": {
     "assetId": "copper_finch_house",

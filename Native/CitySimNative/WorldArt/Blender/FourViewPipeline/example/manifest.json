@@ -3,57 +3,57 @@
     {
       "bytes": 1714728,
       "path": "example/copper_finch_house.blend",
-      "sha256": "d2738e4f9f3fb538e27e67288be3d49f5a6420fd9e1bff22ad6903c8073cc53c"
+      "sha256": "6b484c16d66a98e9c619720edd452dab727f3dbe201260b99ad75a2d5abe4b33"
     },
     {
-      "bytes": 59299,
-      "decodedRgbaSha256": "864355631b1c5fa06e68caf057c7ab0f1388434e9f87b055b2d41111a743ed6c",
+      "bytes": 59025,
+      "decodedRgbaSha256": "605e060ea9904aa259f539a2c5af7f37b222e63b18a54d09db466ec8a38bc992",
       "dimensions": [
         384,
         384
       ],
       "path": "example/renders/copper_finch_house_camNE.png",
-      "sha256": "3f359d5da177d0cdcd8ee6bfaf808274bf7eb876ee48696b5a55539eb22f1d73"
+      "sha256": "68dd822e659e006947d65547b1eadeb9afae722b6200eab6f3b6f2c10663611d"
     },
     {
-      "bytes": 64878,
-      "decodedRgbaSha256": "6b3c25fc9174813471cac18d5465f0ea883b84eb77b3dc28951075c85ff8af17",
+      "bytes": 64176,
+      "decodedRgbaSha256": "005a784927de96455c8d2bd9f09ba95783b735ef552a7b837673131a476c1404",
       "dimensions": [
         384,
         384
       ],
       "path": "example/renders/copper_finch_house_camSE.png",
-      "sha256": "07c49013a4f65f39e83d907fb680d62cbbc9178897097e2ff14a71dd526b148d"
+      "sha256": "4383dfde86a9b021867b2f219c2af8578ea13ba0069343ca2cb805994adc2cd5"
     },
     {
-      "bytes": 66452,
-      "decodedRgbaSha256": "5cb22f107daff54daad836c02fd435a75e0b0f0dd78201792fac121c29477a57",
+      "bytes": 65834,
+      "decodedRgbaSha256": "ae713a10a148cf612d33c6f9f91ecc2ea0130d79959385d18d4e6a1aca93a942",
       "dimensions": [
         384,
         384
       ],
       "path": "example/renders/copper_finch_house_camSW.png",
-      "sha256": "a216bcd6bb023cb8808b7b2a28c43b9882c3d00d6c5bc8a6a8a2dbf7566e2e9b"
+      "sha256": "ce6d1aa7ffc7fbbf658a3518a141f73e5ff55a8a97aca2b29b97013dd3dca1bf"
     },
     {
-      "bytes": 63080,
-      "decodedRgbaSha256": "6ae4bde4aec8899068d1800c016d55f16fc4cdc7fe4bae63d164f78cb97e52b2",
+      "bytes": 62227,
+      "decodedRgbaSha256": "4ef2318d02f8a14828921178a8305a343e7a4b52914f433f619589b90ad6cab6",
       "dimensions": [
         384,
         384
       ],
       "path": "example/renders/copper_finch_house_camNW.png",
-      "sha256": "565916e7728f49d09087d2c70644be2e3934b2cb0b0bbe01aed700aa35ef4bc0"
+      "sha256": "96e452f9a57a65571d4aa617bba5a59ede630043e2d84fa7ad5b2a0b80663a24"
     },
     {
-      "bytes": 214600,
-      "decodedRgbaSha256": "1170bc183873d10fc217ac7d7888faa06bce46c8c832f09702aecf138cc4b119",
+      "bytes": 211937,
+      "decodedRgbaSha256": "cee4dbe80d766762ad5ea7a9acc5dac9a52446573e7204159c777ddd3cf0e8bb",
       "dimensions": [
         784,
         784
       ],
       "path": "example/copper_finch_house_contact-sheet.png",
-      "sha256": "6ae39fd90e42140c560c21fc463f5637da2de98a21dfd262a090eded98e9cc0b"
+      "sha256": "7f75f7e37e01ff833aebf17a5721c9f0444d03cd1c4c7e42f78d4774616d2c68"
     }
   ],
   "assetId": "copper_finch_house",
@@ -91,6 +91,11 @@
   ],
   "elevationDegrees": 30.0,
   "lightingConvention": {
+    "color": [
+      1.0,
+      0.86,
+      0.72
+    ],
     "energy": 1100.0,
     "location": [
       -6.0,
@@ -100,7 +105,13 @@
     "name": "CitySimKey",
     "size": 5.0,
     "type": "AREA",
-    "worldStrength": 0.65
+    "worldColor": [
+      0.2,
+      0.17,
+      0.14,
+      1.0
+    ],
+    "worldStrength": 0.72
   },
   "liveAsset": false,
   "originalGeometry": true,

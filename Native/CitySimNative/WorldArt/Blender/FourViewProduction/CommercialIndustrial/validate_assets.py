@@ -31,6 +31,7 @@ def validate_asset(asset):
     lights=[o for o in bpy.data.objects if o.type=="LIGHT"]
     check(len(lights)==1 and lights[0].name=="CitySimKey","LIGHT_MISMATCH")
     check(tuple(lights[0].location)==tuple(CONFIG["lighting"]["location"]),"LIGHT_LOCATION_MISMATCH")
+    check(all(close(value,expected) for value,expected in zip(lights[0].data.color,CONFIG["lighting"]["color"])),"LIGHT_COLOR_MISMATCH")
     for view in CONFIG["cameraRig"]["views"]:
         cam=bpy.data.objects.get(view["name"]); check(cam is not None and cam.data.type=="ORTHO","CAMERA_MISSING")
         check(close(cam.data.ortho_scale,12.341995,1e-5) and close(cam.data.shift_y,.28125),"CAMERA_SCALE_SHIFT_MISMATCH")
@@ -56,4 +57,3 @@ check(preview["grid"]["projectedTilePixels"]==[88,44] and preview["assetScale"]=
 for item in preview["artifacts"]:
     path=HERE/item["path"]; check(hashlib.sha256(path.read_bytes()).hexdigest()==item["sha256"],"PREVIEW_DRIFT")
 print("COMMERCIAL_INDUSTRIAL_VALIDATION_PASS")
-

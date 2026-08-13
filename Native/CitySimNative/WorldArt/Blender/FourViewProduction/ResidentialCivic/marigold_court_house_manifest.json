@@ -3,57 +3,57 @@
     {
       "bytes": 1534565,
       "path": "marigold_court_house.blend",
-      "sha256": "405c217565cfa666a63bc150975305e6580166f780abbbca677b9966d167a3a0"
+      "sha256": "8f6f69d4d26d13206724f53fbd1335f9d7bb0f3ed859eac58dcfa6e4f4b35d30"
     },
     {
-      "bytes": 57939,
-      "decodedRgbaSha256": "10ada00f82d4af66d3abda92d0803c8de885ab55b8eb3582206d88943b124277",
+      "bytes": 57580,
+      "decodedRgbaSha256": "12a08106ffb0954199b0a1d29c177f12beeac0f4864e496d5025161b07bd354f",
       "dimensions": [
         384,
         384
       ],
       "path": "renders/marigold_court_house_camNE.png",
-      "sha256": "1281f9fc549b1d55daeac9968ba6fbc27cfb4916280d6be0934365e0b96ad1b1"
+      "sha256": "995eb3314aa9cfb006d93c3e7671686ff7638a25abcd68cb517cca78fadc2863"
     },
     {
-      "bytes": 63262,
-      "decodedRgbaSha256": "1c4c33f566e60c7325a437bc43e686581dec7cf3f3e3e833089c38edc0eb98e8",
+      "bytes": 62716,
+      "decodedRgbaSha256": "ca589f08e09c683a2119e805fa122cc07615b490d9f6d71b9e1eda8aae683dc0",
       "dimensions": [
         384,
         384
       ],
       "path": "renders/marigold_court_house_camSE.png",
-      "sha256": "d30d3dbd78ed3931a557d429c8c81c0204c344f809f8485715f54ad4a1ee6198"
+      "sha256": "0cb48408514bab654c98665b5f4654690d71860d7c9bb08c061415da16a62d84"
     },
     {
-      "bytes": 61279,
-      "decodedRgbaSha256": "738100142288bf4a711390784e4fca171ef367957ba8577020f591ddaceb457e",
+      "bytes": 60238,
+      "decodedRgbaSha256": "58e39c5df55ece43ace9a86ceeb91975891571b01500e72283c0a1d9cde8ca44",
       "dimensions": [
         384,
         384
       ],
       "path": "renders/marigold_court_house_camSW.png",
-      "sha256": "6eb2ce4d69475c68f802a179125042e02ca003d604de186d6a5d8e24e50f6537"
+      "sha256": "98dedb42b23babdd27e85e7898d23f6699f2824276d15079039ea011f90c3723"
     },
     {
-      "bytes": 58198,
-      "decodedRgbaSha256": "590f2bdc5c73c00877e34a9b734c9a8f626b6ec8a1cfe003ad2e367e6ee34cac",
+      "bytes": 57470,
+      "decodedRgbaSha256": "bb67278caa0109ec430fe52e4f4e91ea6a5e303ac195b55a82feb1388b928182",
       "dimensions": [
         384,
         384
       ],
       "path": "renders/marigold_court_house_camNW.png",
-      "sha256": "b022d2d3dbf90c9d5eacb9f2b7bfde48c0a1259c5ab986db43a26ec416b391bc"
+      "sha256": "df24eaec8d0e0dd26edd530f7e1346eef9f111c9cb4aeb4b20b65b142246365a"
     },
     {
-      "bytes": 201214,
-      "decodedRgbaSha256": "7ff7fcc7a0dc96bf0f45998f36345e0ab4c86b46178f985b3e6cc68d4b260d43",
+      "bytes": 198326,
+      "decodedRgbaSha256": "cbd0e621339231098eddb92d68856eddab04564a6b64931a177103fc71726a84",
       "dimensions": [
         784,
         840
       ],
       "path": "marigold_court_house_contact-sheet.png",
-      "sha256": "5b8d562b4499b508ddb87ad32344238ed159801c2cfec0cc1856502e58ec699a"
+      "sha256": "511e5f2f1d5014ca8e768b80ddf4ec0178ca5d0bebe7cf4fd97868817dbc73a9"
     }
   ],
   "assetId": "marigold_court_house",
@@ -118,6 +118,11 @@
     "worldTileSize": 2.0
   },
   "lightingConvention": {
+    "color": [
+      1.0,
+      0.86,
+      0.72
+    ],
     "energy": 1100.0,
     "location": [
       -6.0,
@@ -127,7 +132,13 @@
     "name": "CitySimKey",
     "size": 5.0,
     "type": "AREA",
-    "worldStrength": 0.65
+    "worldColor": [
+      0.2,
+      0.17,
+      0.14,
+      1.0
+    ],
+    "worldStrength": 0.72
   },
   "liveAsset": false,
   "originalGeometry": true,

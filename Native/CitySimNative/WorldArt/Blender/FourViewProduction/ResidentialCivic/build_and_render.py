@@ -170,7 +170,7 @@ def configure(scene):
     scene.view_settings.view_transform = "Standard"
     scene.view_settings.look = "Medium High Contrast"
     scene.world.use_nodes = True
-    scene.world.node_tree.nodes["Background"].inputs["Color"].default_value = (0.16,0.19,0.22,1)
+    scene.world.node_tree.nodes["Background"].inputs["Color"].default_value = CONFIG["lighting"]["worldColor"]
     scene.world.node_tree.nodes["Background"].inputs["Strength"].default_value = CONFIG["lighting"]["worldStrength"]
     scene["pipelineSchema"] = CONFIG["schema"]
     scene["postRenderCompensation"] = "none"
@@ -198,6 +198,7 @@ def rig():
     lc = CONFIG["lighting"]
     data = bpy.data.lights.new(lc["name"], lc["type"])
     data.energy, data.shape, data.size = lc["energy"], "DISK", lc["size"]
+    data.color = lc["color"]
     light = bpy.data.objects.new(lc["name"], data)
     bpy.context.collection.objects.link(light)
     light.location = lc["location"]

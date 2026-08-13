@@ -115,7 +115,7 @@ def reset(asset_id):
     scene.render.image_settings.file_format = "PNG"; scene.render.image_settings.color_mode = "RGBA"; scene.render.image_settings.color_depth = "8"
     scene.view_settings.view_transform = "Standard"; scene.view_settings.look = "Medium High Contrast"
     scene.world.use_nodes = True
-    scene.world.node_tree.nodes["Background"].inputs["Color"].default_value = (0.16,0.19,0.22,1)
+    scene.world.node_tree.nodes["Background"].inputs["Color"].default_value = CONFIG["lighting"]["worldColor"]
     scene.world.node_tree.nodes["Background"].inputs["Strength"].default_value = CONFIG["lighting"]["worldStrength"]
     scene["pipelineSchema"] = CONFIG["schema"]; scene["postRenderCompensation"] = "none"; scene["assetId"] = asset_id
     root = bpy.data.objects.new("AssetRoot", None); bpy.context.collection.objects.link(root)
@@ -135,8 +135,9 @@ def rig(scene):
         data = bpy.data.cameras.new(view["name"]); data.type = "ORTHO"; data.ortho_scale = 12.341995; data.shift_y = 0.28125
         cam = bpy.data.objects.new(view["name"], data); bpy.context.collection.objects.link(cam)
         cam.location = (horizontal*math.sin(az), horizontal*math.cos(az), distance*math.sin(elevation)); point_at(cam); cams.append(cam)
-    data = bpy.data.lights.new("CitySimKey", "AREA"); data.energy = 1100; data.shape = "DISK"; data.size = 5
-    light = bpy.data.objects.new("CitySimKey", data); bpy.context.collection.objects.link(light); light.location = (-6,-8,12); point_at(light)
+    lighting = CONFIG["lighting"]
+    data = bpy.data.lights.new(lighting["name"], lighting["type"]); data.energy = lighting["energy"]; data.shape = "DISK"; data.size = lighting["size"]; data.color = lighting["color"]
+    light = bpy.data.objects.new(lighting["name"], data); bpy.context.collection.objects.link(light); light.location = lighting["location"]; point_at(light)
     scene.camera = cams[0]
     return cams
 

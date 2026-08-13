@@ -62,7 +62,7 @@ def validate_scene(asset):
         vector(obj.scale,(1,1,1),1e-5,obj.name+".scale"); vector(obj.rotation_euler,(0,0,0),1e-5,obj.name+".rotation")
     lights=[o for o in bpy.data.objects if o.type=="LIGHT"]
     require(len(lights)==1 and lights[0].name=="CitySimKey","LIGHT_CONVENTION_MISMATCH",str([o.name for o in lights]))
-    light=lights[0]; vector(light.location,CONFIG["lighting"]["location"],1e-5,"light.location"); close(light.data.energy,1100,1e-5,"light.energy"); close(light.data.size,5,1e-5,"light.size")
+    light=lights[0]; vector(light.location,CONFIG["lighting"]["location"],1e-5,"light.location"); close(light.data.energy,1100,1e-5,"light.energy"); close(light.data.size,5,1e-5,"light.size"); vector(light.data.color,CONFIG["lighting"]["color"],1e-5,"light.color")
     views=CONFIG["cameraRig"]["views"]
     cams=[o for o in bpy.data.objects if o.type=="CAMERA"]
     require(sorted(o.name for o in cams)==sorted(v["name"] for v in views),"CAMERA_SET_MISMATCH",str([o.name for o in cams]))

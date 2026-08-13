@@ -120,6 +120,7 @@ def validate_scene(config: dict) -> dict[str, tuple[float, float]]:
     close_vector(light.location, config["lighting"]["location"], "light.location")
     close(light.data.energy, config["lighting"]["energy"], "light.energy")
     close(light.data.size, config["lighting"]["size"], "light.size")
+    close_vector(light.data.color, config["lighting"]["color"], "light.color")
 
     expected_names = [view["name"] for view in config["cameraRig"]["views"]]
     cameras = [obj for obj in bpy.data.objects if obj.type == "CAMERA"]

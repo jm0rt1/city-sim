@@ -24,22 +24,22 @@
   "liveAsset": false,
   "outputs": [
     {
-      "bytes": 290325,
+      "bytes": 286744,
       "dimensions": [
         1280,
         800
       ],
       "path": "four-view-source-block-1280x800.png",
-      "sha256": "f083417ffd45532d872de88d8d7c1766593191d011df94eb68e5ab86fa1e14c6"
+      "sha256": "019141a78c246cf9d6aa6bb3e482e236c522e139c0e931285af52ba83001ab7a"
     },
     {
-      "bytes": 276350,
+      "bytes": 273654,
       "dimensions": [
         900,
         600
       ],
       "path": "four-view-source-block-900x600.png",
-      "sha256": "8d4eff942630b742256588f26cfc2f35400e2b586d36ecb12b8f42c81b2b6b71"
+      "sha256": "ae4242605fbb54f827db2deb0d5af0e56f3518bb0fc0dde1f9bd96624007f647"
     }
   ],
   "placements": [
@@ -120,42 +120,42 @@
     {
       "assetId": "copper_finch_house",
       "path": "FourViewPipeline/example/renders/copper_finch_house_camNE.png",
-      "sha256": "3f359d5da177d0cdcd8ee6bfaf808274bf7eb876ee48696b5a55539eb22f1d73"
+      "sha256": "68dd822e659e006947d65547b1eadeb9afae722b6200eab6f3b6f2c10663611d"
     },
     {
       "assetId": "marigold_court_house",
       "path": "FourViewProduction/ResidentialCivic/renders/marigold_court_house_camNE.png",
-      "sha256": "1281f9fc549b1d55daeac9968ba6fbc27cfb4916280d6be0934365e0b96ad1b1"
+      "sha256": "995eb3314aa9cfb006d93c3e7671686ff7638a25abcd68cb517cca78fadc2863"
     },
     {
       "assetId": "hearthside_council_hall",
       "path": "FourViewProduction/ResidentialCivic/renders/hearthside_council_hall_camNE.png",
-      "sha256": "eaea53915387650e1a4eb33f8851fbbce960d880f728e504d326005abe1f4c49"
+      "sha256": "5fbdf8cfd63317218546c7eb0f728be4f81353043d9c371b07505357661d02b9"
     },
     {
       "assetId": "brickline_rowhouse_apartments",
       "path": "FourViewProduction/ResidentialExpansion/brickline_rowhouse_apartments/renders/brickline_rowhouse_apartments_camNE.png",
-      "sha256": "61112a5c245accebc2c865dcd937a5bb1171e639ef256a4ecc02f6d64c27f9af"
+      "sha256": "e5eba683df85197beb5bb601707dbf41717911829fe430d8b6ca520068111ae2"
     },
     {
       "assetId": "harbor_corner_storefront",
       "path": "FourViewProduction/CommercialIndustrial/harbor_corner_storefront/renders/harbor_corner_storefront_camNE.png",
-      "sha256": "84f20c7cdee8c612ed908184f333bd1808a58a2e15ea236f7e8abfe3302a6cc2"
+      "sha256": "e98cdcf50592089d7a0b6ded522af7c2892c78dda8bf0c623940e39f57241ebd"
     },
     {
       "assetId": "ironleaf_service_workshop",
       "path": "FourViewProduction/CommercialIndustrial/ironleaf_service_workshop/renders/ironleaf_service_workshop_camNE.png",
-      "sha256": "bbab7fda37247bb357808bc3e592bbd1d1323e245a287d1bf1167c8fe70b4608"
+      "sha256": "bdcbfe10195cf1fe0e5dda6999fa7aaf8523735afae04faa4cbc7f6ceae69550"
     },
     {
       "assetId": "axis_civic_road",
       "path": "FourViewProduction/Environment/assets/axis_civic_road/renders/axis_civic_road_camNE.png",
-      "sha256": "beb21cfd814e3482a7ef455059a189e6a7beab107092e3bc8b49e063b8d77038"
+      "sha256": "7e37b44747c0d53bd8d356375c4b1edcf32f1336ed5678204038e67b406dde88"
     },
     {
       "assetId": "pocket_grove_park",
       "path": "FourViewProduction/Environment/assets/pocket_grove_park/renders/pocket_grove_park_camNE.png",
-      "sha256": "25db8d7e63d9b624d67ef750c3f156740e8febba49a5de119a8ddf64edba51bb"
+      "sha256": "3be79d2f3bb09241348300ad9cf98784a066ab29dbfc27ad1b1ede35bc62edf9"
     }
   ],
   "status": "source-only-review-evidence-not-live"

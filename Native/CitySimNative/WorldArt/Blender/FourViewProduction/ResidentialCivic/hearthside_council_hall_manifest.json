@@ -3,57 +3,57 @@
     {
       "bytes": 1541284,
       "path": "hearthside_council_hall.blend",
-      "sha256": "94ec9820d1ab603bd090bdfd75edc1a9cf0076628e2be6663fc8b77f59984c25"
+      "sha256": "599715e4fea79dd24d38a834b222f37ecb54f7ec3b4ace3369bff199d8e56ab5"
     },
     {
-      "bytes": 59605,
-      "decodedRgbaSha256": "0273b6ce0d35252d86c45582d187622e91edbad3ec54bebf38b96937daf1b26d",
+      "bytes": 59105,
+      "decodedRgbaSha256": "a959d7eeb2b01ea7843c651ffc879d10b6f834a4de7e14e9de9e5c1509d96ef7",
       "dimensions": [
         384,
         384
       ],
       "path": "renders/hearthside_council_hall_camNE.png",
-      "sha256": "eaea53915387650e1a4eb33f8851fbbce960d880f728e504d326005abe1f4c49"
+      "sha256": "5fbdf8cfd63317218546c7eb0f728be4f81353043d9c371b07505357661d02b9"
     },
     {
-      "bytes": 67046,
-      "decodedRgbaSha256": "cde661ab43db78753ed1a39b2307f2a57e1f56bfa3072b31c153cb0cdded6746",
+      "bytes": 66138,
+      "decodedRgbaSha256": "bb79e2f7bf34b415fbf4a19583a18ace9699fe0afeaaf44a33bfbfb7ff72a4a7",
       "dimensions": [
         384,
         384
       ],
       "path": "renders/hearthside_council_hall_camSE.png",
-      "sha256": "68051f1582f84b31abdcb5b64bf08f27c1f76df0096d67fc34c1d1c06016a379"
+      "sha256": "73e1b71601e2020e634d5c95af7d790d2853f5e6c01057ee1c6b8842758ef7d8"
     },
     {
-      "bytes": 68274,
-      "decodedRgbaSha256": "51a570b22fa2bd29b938382f981c9067af0c2789a2bd89dfd898cd1526e0a7ec",
+      "bytes": 67568,
+      "decodedRgbaSha256": "1d8f2792100b34d3e047851b03e9474efc51cb499a671a45ce84c2e8520dd536",
       "dimensions": [
         384,
         384
       ],
       "path": "renders/hearthside_council_hall_camSW.png",
-      "sha256": "d9f98d306a689978b4947e684c4c7a935f9fcf24323786980eefa1ce55de4a3b"
+      "sha256": "e412c8ebc276890d1ee7929a4b6d669ab33a3605ada51626554539e76a929d93"
     },
     {
-      "bytes": 63660,
-      "decodedRgbaSha256": "3bf36d875392b5cb62f0b08b72c5c8ef9b2617c23c0eeb463e39c27499f9f9ec",
+      "bytes": 62986,
+      "decodedRgbaSha256": "61a4f3cc8ae294b5d922acce83df86e616190803b5bc7bee4da4b5dfdea0a650",
       "dimensions": [
         384,
         384
       ],
       "path": "renders/hearthside_council_hall_camNW.png",
-      "sha256": "12d5523b401bb3f683895df7d9a6e67bfcfeb29fe53023ff786550e67b8d445e"
+      "sha256": "8552263f932393764bf62217832679843b6b1c6cdcbaedac62ae90b77f9ee056"
     },
     {
-      "bytes": 221124,
-      "decodedRgbaSha256": "ca2a6ee511e700d37ebd6adb86aa158d804b7d0039016b86f295b60e00c1288f",
+      "bytes": 218189,
+      "decodedRgbaSha256": "a28e472fd14112a4b05239f5d76c449b39236ef8c9e0b7bd455f8bcb9e2a9227",
       "dimensions": [
         784,
         840
       ],
       "path": "hearthside_council_hall_contact-sheet.png",
-      "sha256": "241d055d236c388cbc4af071913983c6bb8abc8338187800faddefda7fc0d349"
+      "sha256": "a99ed4906f789e8e5adf8ea7deab8deb72e32e520badf0d531d2f8f186839cca"
     }
   ],
   "assetId": "hearthside_council_hall",
@@ -118,6 +118,11 @@
     "worldTileSize": 2.0
   },
   "lightingConvention": {
+    "color": [
+      1.0,
+      0.86,
+      0.72
+    ],
     "energy": 1100.0,
     "location": [
       -6.0,
@@ -127,7 +132,13 @@
     "name": "CitySimKey",
     "size": 5.0,
     "type": "AREA",
-    "worldStrength": 0.65
+    "worldColor": [
+      0.2,
+      0.17,
+      0.14,
+      1.0
+    ],
+    "worldStrength": 0.72
   },
   "liveAsset": false,
   "originalGeometry": true,

@@ -53,7 +53,7 @@ def configure(s):
     s.render.film_transparent=True; s.render.image_settings.file_format="PNG"; s.render.image_settings.color_mode="RGBA"; s.render.image_settings.color_depth="8"; s.render.image_settings.compression=15
     s.view_settings.view_transform="Standard"; s.view_settings.look="Medium High Contrast"
     if s.world is None: s.world=bpy.data.worlds.new("CitySimWorld")
-    s.world.use_nodes=True; s.world.node_tree.nodes["Background"].inputs["Strength"].default_value=.65
+    s.world.use_nodes=True; s.world.node_tree.nodes["Background"].inputs["Color"].default_value=CFG["lighting"]["worldColor"]; s.world.node_tree.nodes["Background"].inputs["Strength"].default_value=CFG["lighting"]["worldStrength"]
     s["pipelineSchema"]=CFG["schema"]; s["postRenderCompensation"]="none"; s["projectedTilePixels"]=[88,44]
 
 def root():
@@ -68,8 +68,8 @@ def rig(s):
     for v in CFG["cameraRig"]["views"]:
         az=math.radians(v["azimuthDegrees"]); d=bpy.data.cameras.new(v["name"]); d.type="ORTHO"; d.ortho_scale=12.341995; d.shift_y=.28125
         o=bpy.data.objects.new(v["name"],d); bpy.context.collection.objects.link(o); o.location=(horizontal*math.sin(az),horizontal*math.cos(az),dist*math.sin(elev)); point(o); cams.append(o)
-    d=bpy.data.lights.new("CitySimKey","AREA"); d.energy=1100; d.shape="DISK"; d.size=5
-    l=bpy.data.objects.new("CitySimKey",d); bpy.context.collection.objects.link(l); l.location=(-6,-8,12); point(l)
+    lighting=CFG["lighting"]; d=bpy.data.lights.new(lighting["name"],lighting["type"]); d.energy=lighting["energy"]; d.shape="DISK"; d.size=lighting["size"]; d.color=lighting["color"]
+    l=bpy.data.objects.new(lighting["name"],d); bpy.context.collection.objects.link(l); l.location=lighting["location"]; point(l)
     s.camera=cams[0]; return cams
 
 def road(r):

@@ -3,17 +3,17 @@
     {
       "bytes": 2335830,
       "path": "employment_block_preview.blend",
-      "sha256": "84be477f3af5f82550ff491e9eb1d6be8d77f359e26337889b6d744aa693c362"
+      "sha256": "b587e66940d2430d6fbf6c65768536cbbe31e51939e6916e9b5cd4b6288e3b53"
     },
     {
-      "bytes": 97810,
-      "decodedRgbaSha256": "1dfdef93de6413acb52dd06ffffafcc57132128d85f1945ca1130180f85476d1",
+      "bytes": 96437,
+      "decodedRgbaSha256": "ce1b9cddf5f3980dff130ff5cf98422b864b5608d5a0e88659c4bb63e659ed7b",
       "dimensions": [
         384,
         384
       ],
       "path": "employment_block_preview.png",
-      "sha256": "ce152a15a23133e2934f91d3348f4ac32566c4e8eaa5fde9fe9e2856481eec70"
+      "sha256": "ed194a971e55d67f542ea922a8d76080d822090523270358e35aa998aeb4b86f"
     }
   ],
   "assetScale": [

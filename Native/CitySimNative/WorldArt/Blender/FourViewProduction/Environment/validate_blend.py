@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Run in Blender after opening a produced source file."""
-import bpy, math, sys
+import bpy, json, math, sys
+from pathlib import Path
 from bpy_extras.object_utils import world_to_camera_view
 from mathutils import Vector
 def close(a,b,t=.001): return abs(a-b)<=t
@@ -8,6 +9,8 @@ root=bpy.data.objects.get("AssetRoot"); pivot=bpy.data.objects.get("FootprintPiv
 assert root and pivot and tuple(root.location)==(0,0,0) and tuple(root.scale)==(1,1,1)
 assert bpy.context.scene.get("postRenderCompensation")=="none"
 assert [o.name for o in bpy.data.objects if o.type=="LIGHT"]==["CitySimKey"]
+cfg=json.loads((Path(__file__).resolve().parent/"pipeline.json").read_text())
+assert all(close(value,expected) for value,expected in zip(bpy.data.objects["CitySimKey"].data.color,cfg["lighting"]["color"]))
 for name,az in (("camNE",45),("camSE",135),("camSW",225),("camNW",315)):
     c=bpy.data.objects[name]; assert c.data.type=="ORTHO" and close(c.data.ortho_scale,12.341995,.00001) and close(c.data.shift_y,.28125,.00001)
     got=math.degrees(math.atan2(c.location.x,c.location.y))%360; assert close(got,az)

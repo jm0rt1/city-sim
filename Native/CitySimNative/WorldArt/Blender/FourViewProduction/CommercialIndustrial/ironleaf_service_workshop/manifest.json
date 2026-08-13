@@ -3,57 +3,57 @@
     {
       "bytes": 1262784,
       "path": "ironleaf_service_workshop/ironleaf_service_workshop.blend",
-      "sha256": "9bb1a52f3b663ef8caaabfca7323e8e5974e942f6f3a5660de9619ae56b6a93c"
+      "sha256": "eb0cbf045983164fcd0a88451765dcab9e6f4ba4fc712863bcf121bd365914d8"
     },
     {
-      "bytes": 54897,
-      "decodedRgbaSha256": "a0d07912d1555b7853f82c3067f5c9f385a49500d37887c74b1e2855a3fd7b29",
+      "bytes": 54585,
+      "decodedRgbaSha256": "f4c08e47087ab45c28d1ffd3118b7bc1491c6119976595576c85dab363279043",
       "dimensions": [
         384,
         384
       ],
       "path": "ironleaf_service_workshop/renders/ironleaf_service_workshop_camNE.png",
-      "sha256": "bbab7fda37247bb357808bc3e592bbd1d1323e245a287d1bf1167c8fe70b4608"
+      "sha256": "bdcbfe10195cf1fe0e5dda6999fa7aaf8523735afae04faa4cbc7f6ceae69550"
     },
     {
-      "bytes": 65015,
-      "decodedRgbaSha256": "00a80d81af0028cd9ced199610ad05b7122369023da5c525073ada1c1c1343ac",
+      "bytes": 64510,
+      "decodedRgbaSha256": "758422ba1e5894f58c23c410e3bd338d80da7d9fa783e15ac5b1588bd0f9e428",
       "dimensions": [
         384,
         384
       ],
       "path": "ironleaf_service_workshop/renders/ironleaf_service_workshop_camSE.png",
-      "sha256": "d16003e0c2852f667fd6a99e1d88ad1de58fd03a5154781abd396a92eb46d0e1"
+      "sha256": "1a636a29ab79a72b4d0f602f70cf4ef98a26232533ef4681beb950bdb2156b35"
     },
     {
-      "bytes": 65231,
-      "decodedRgbaSha256": "32400aeff0590fb5ec8c85701aa3f0b50700f7ef325e57ddb3cad9b56ff830b5",
+      "bytes": 64631,
+      "decodedRgbaSha256": "c64d1b270928ed14f127d38faebae506ad4e0eca16a6432127dc25d9c2c45652",
       "dimensions": [
         384,
         384
       ],
       "path": "ironleaf_service_workshop/renders/ironleaf_service_workshop_camSW.png",
-      "sha256": "80c3305321644dc9816859f31ba7d1e30d4dcb82899215f697ca363101c91a96"
+      "sha256": "909e2242f73781028162795baffe94c6123c7e2fbced6087e0414538ebd0bac5"
     },
     {
-      "bytes": 56671,
-      "decodedRgbaSha256": "8e0a9b320291af96c1d627848f7a2540e698eb1b40d12765c51cf8a20cca8d38",
+      "bytes": 55765,
+      "decodedRgbaSha256": "f01d206aff9523d0af6960c9b23d88337704da1ff7e7f7de41f484df013de1cc",
       "dimensions": [
         384,
         384
       ],
       "path": "ironleaf_service_workshop/renders/ironleaf_service_workshop_camNW.png",
-      "sha256": "9315c70a9dbf415a31f5e15e70ce983f9a90da1d346da4b66481fc9282b375de"
+      "sha256": "a4ba8687fa350c7de03a2b71da828ec12cc76bcf6fbde0c4555da875fe545e1c"
     },
     {
-      "bytes": 204841,
-      "decodedRgbaSha256": "bddd3c6f610f6e0bb43e90e2e42b78dfab48f788dafaeb879a9f23fd1f8f725d",
+      "bytes": 202404,
+      "decodedRgbaSha256": "fff36cf59765bc5fd6d0fcccf5e70c3dbe25c38bc41e1efeec08ae4406450b9f",
       "dimensions": [
         784,
         832
       ],
       "path": "ironleaf_service_workshop/ironleaf_service_workshop_contact-sheet.png",
-      "sha256": "9818bde415ecf2267d1818e289b94b68f88127c6213e07bf0a8086f6c6746791"
+      "sha256": "daf30f72f8ce57221ab2bc12163961185e00a6dffad24418ab0d3b46d40fbc6d"
     }
   ],
   "assetFamily": "light-industrial",
@@ -82,6 +82,11 @@
   },
   "elevationDegrees": 30,
   "lightingConvention": {
+    "color": [
+      1.0,
+      0.86,
+      0.72
+    ],
     "energy": 1100.0,
     "location": [
       -6.0,
@@ -91,7 +96,13 @@
     "name": "CitySimKey",
     "size": 5.0,
     "type": "AREA",
-    "worldStrength": 0.65
+    "worldColor": [
+      0.2,
+      0.17,
+      0.14,
+      1.0
+    ],
+    "worldStrength": 0.72
   },
   "liveAsset": false,
   "originalGeometry": true,

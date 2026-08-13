@@ -3,67 +3,67 @@
     {
       "bytes": 3273805,
       "path": "brickline_rowhouse_apartments/brickline_rowhouse_apartments.blend",
-      "sha256": "20955fc94adf0b50505b2552b7824a898d6ef9282218f83596ca55ffb8f0e8b7"
+      "sha256": "87a81d9bfd6fe1ecfc97d41eb48e2fc66c3f438af1b74d4c55566acd80a5ee63"
     },
     {
-      "bytes": 71179,
-      "decodedRgbaSha256": "6b6ad2651de0f06aaa2e191b689b8dfcebc354d06e1b1dde2f11f1d4cca1935e",
+      "bytes": 70137,
+      "decodedRgbaSha256": "796c0f912591440b0252aea27fa05abb3729a2c1a73746b3148b4c35f783541e",
       "dimensions": [
         384,
         384
       ],
       "path": "brickline_rowhouse_apartments/renders/brickline_rowhouse_apartments_camNE.png",
-      "sha256": "61112a5c245accebc2c865dcd937a5bb1171e639ef256a4ecc02f6d64c27f9af"
+      "sha256": "e5eba683df85197beb5bb601707dbf41717911829fe430d8b6ca520068111ae2"
     },
     {
-      "bytes": 80134,
-      "decodedRgbaSha256": "410763320b07e823c2e354d25fb55e7f26618f79d7adf5a8fc2706358fd8af76",
+      "bytes": 78289,
+      "decodedRgbaSha256": "c9482a5fda1e26fc5c134ae946527fb5e88019b47c9468b7c04fead6a26d1202",
       "dimensions": [
         384,
         384
       ],
       "path": "brickline_rowhouse_apartments/renders/brickline_rowhouse_apartments_camSE.png",
-      "sha256": "1c2171de81b36ab81c81bfdc3ca076e5139bc8d3ffcc5f3c80943fc1e92830e1"
+      "sha256": "72355ef2788960428b62aca141ec594763fe0bb062899405514be18b23e67334"
     },
     {
-      "bytes": 81886,
-      "decodedRgbaSha256": "ed499c94089df7a493870e8a8498addd3d6b48e430735842e6790a37fd53281a",
+      "bytes": 80492,
+      "decodedRgbaSha256": "8db6b90c44f39bc3249c7485482f7a5ee1dc32af1838f68b45d205decfc018ea",
       "dimensions": [
         384,
         384
       ],
       "path": "brickline_rowhouse_apartments/renders/brickline_rowhouse_apartments_camSW.png",
-      "sha256": "a8559312267acedf3973d0d1bece7b68e2c9a9936a314a96997cf8567bdfe26c"
+      "sha256": "7638f645a6d42949caef745d79e4f5fcc1dfad6ba0ffe24f4e339d5699f556ae"
     },
     {
-      "bytes": 77478,
-      "decodedRgbaSha256": "db6241929b6011e7ded89f241d5d1a42664433ea7c74291f427da719d78a6cb5",
+      "bytes": 76130,
+      "decodedRgbaSha256": "3d9c977c5232f42493b148c10d794bc9c94bbe6790be2057580f852e09a8018d",
       "dimensions": [
         384,
         384
       ],
       "path": "brickline_rowhouse_apartments/renders/brickline_rowhouse_apartments_camNW.png",
-      "sha256": "6f26040ccbb8b9df1d2b6979f8eb252acc1df21da3b2e20c23e3c8b4dda622ee"
+      "sha256": "39495baa67322f861eb1cf39fcf1172a2a0dc9bab99615081c759bcfb8458b80"
     },
     {
-      "bytes": 276938,
-      "decodedRgbaSha256": "f92782e4c693833a8942c513aeeb51bbc779937756718eb39b1bedc7473aaaa4",
+      "bytes": 270987,
+      "decodedRgbaSha256": "11a9ea9625e92524bc8346a2dfa100b61ed285db79a0a25960fb1912fa8be5d4",
       "dimensions": [
         784,
         840
       ],
       "path": "brickline_rowhouse_apartments/brickline_rowhouse_apartments_contact-sheet.png",
-      "sha256": "5068def5dc25cc2eb4ea1ce4ae244f9338c1b7394f04954220e9efc3ddb0048f"
+      "sha256": "149172363e2135d84bfe4525f9f7a57a159f8e4606ac8a6ce51fac088d1c4000"
     },
     {
-      "bytes": 47648,
-      "decodedRgbaSha256": "bb889b876995613ce37f4a36cd0246e093f56cf1851769652c4e079f0db29229",
+      "bytes": 47014,
+      "decodedRgbaSha256": "39c627d8ca6dfd5e706887b0ec03e7cef0353bd7d7ca8af4e9ca6e1dc4b6ee87",
       "dimensions": [
         900,
         600
       ],
       "path": "brickline_rowhouse_apartments/brickline_rowhouse_apartments_preview_900x600.png",
-      "sha256": "ead594fdc369459e254c80c646988d84e9e4ecd500cad2e53ab254edbacee194"
+      "sha256": "b276eced6c48b0f2ec2c56d1d47720a8c2f942464683142750e089a506967851"
     }
   ],
   "assetFamily": "medium-residential",
@@ -93,6 +93,11 @@
   "cedarMarketReused": false,
   "elevationDegrees": 30.0,
   "lightingConvention": {
+    "color": [
+      1.0,
+      0.86,
+      0.72
+    ],
     "energy": 1100.0,
     "location": [
       -6.0,
@@ -102,7 +107,13 @@
     "name": "CitySimKey",
     "size": 5.0,
     "type": "AREA",
-    "worldStrength": 0.65
+    "worldColor": [
+      0.2,
+      0.17,
+      0.14,
+      1.0
+    ],
+    "worldStrength": 0.72
   },
   "liveAsset": false,
   "originalGeometry": true,

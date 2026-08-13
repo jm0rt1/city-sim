@@ -85,6 +85,7 @@ def validate_scene() -> dict[str, list[float]]:
         fail("LIGHT_RIG_MISMATCH", str([obj.name for obj in lights]))
     close_vector(lights[0].location, CONFIG["lighting"]["location"], "light.location")
     close(lights[0].data.energy, CONFIG["lighting"]["energy"], "light.energy")
+    close_vector(lights[0].data.color, CONFIG["lighting"]["color"], "light.color")
 
     result = {}
     for view in CONFIG["cameraRig"]["views"]:

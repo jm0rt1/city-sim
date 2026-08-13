@@ -1,0 +1,130 @@
+{
+  "artifacts": [
+    {
+      "bytes": 866305,
+      "path": "example/copper_finch_house.blend",
+      "sha256": "cd7d686467906979ca4bbfffaff2081aac30956416159b6db479070d575f22df"
+    },
+    {
+      "bytes": 48979,
+      "decodedRgbaSha256": "f10fe27d87758fc1206da14eec35758565ca2a6fa36ae3c710a9bc280769246c",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "example/renders/copper_finch_house_camNE.png",
+      "sha256": "b4fa2cbb0afa8156b89e82570e6618c0c4e7b830ba744b99b6fd716d8d2eb994"
+    },
+    {
+      "bytes": 56850,
+      "decodedRgbaSha256": "974daf6f86eee5af19374edc0b730b93cab541f60e21fc7bdaef7cd673c7ac30",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "example/renders/copper_finch_house_camSE.png",
+      "sha256": "0d7e43fe0815e99786387d83d4701436d9dbd6f23f8f6f4cadb8aac2489a18e9"
+    },
+    {
+      "bytes": 57146,
+      "decodedRgbaSha256": "5334aaa042ed58550d754d5326ddf0a41ea8fdb2c1c98ad0b51680785dea6a0f",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "example/renders/copper_finch_house_camSW.png",
+      "sha256": "5f36a922dc9d4f6e0e4808076cd6cb77eed448c9ccaf886e4f6340b33c2ae3ef"
+    },
+    {
+      "bytes": 53707,
+      "decodedRgbaSha256": "0bca2dfb2cd8aba83e5fdcd621d41b53331fc0e28e1f206c65649a88f26a4f5a",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "example/renders/copper_finch_house_camNW.png",
+      "sha256": "480a2487dfa34ab95e32ee5d74b9c46b4abedffc7499772914946a2edd00605e"
+    },
+    {
+      "bytes": 175968,
+      "decodedRgbaSha256": "105adacb9fe03c96489bef26ec5e2fc049064a3dbcba27b0f1ec00a2b2813a15",
+      "dimensions": [
+        784,
+        784
+      ],
+      "path": "example/copper_finch_house_contact-sheet.png",
+      "sha256": "18d8fad7af508127138ec607abd8f2c50a405161a78bd94f1e87de55ae37713d"
+    }
+  ],
+  "assetId": "copper_finch_house",
+  "cameraAzimuthDegrees": {
+    "camNE": 45.0,
+    "camNW": 315.0,
+    "camSE": 135.0,
+    "camSW": 225.0
+  },
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "contactSheetLayout": [
+    [
+      "camNE",
+      "camSE"
+    ],
+    [
+      "camSW",
+      "camNW"
+    ]
+  ],
+  "elevationDegrees": 30.0,
+  "lightingConvention": {
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldStrength": 0.65
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "pipelineSchema": "citysim.world-art.blender-four-view-pipeline.v1",
+  "postRenderCompensation": "none",
+  "projectedTilePixels": [
+    88,
+    44
+  ],
+  "projection": "orthographic-2:1-dimetric",
+  "researchReference": {
+    "fileName": "5310039E-5F9A-46A1-AF8B-D23B720BEC4E.PNG",
+    "sha256": "4b70f136fa64413549fd565abdeced1932f85f97e4c22700363d85ca9082bcea",
+    "usage": "visual production guidance only; no source pixels or geometry copied"
+  },
+  "rootPivotWorld": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "schema": "citysim.world-art.blender-four-view-example.v1",
+  "status": "source-example-only-not-live",
+  "toolchain": {
+    "blenderVersion": "4.5.12",
+    "renderEngine": "BLENDER_EEVEE_NEXT"
+  }
+}

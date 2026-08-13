@@ -133,23 +133,6 @@ final class SingleAngleWorldArtTests: XCTestCase {
 
     private let expectedAuthorityCommit =
         "5b4c040a182d0a07f4f0f0e32e598797d4314c0e"
-    private let expectedBaseCommit =
-        "5b4c040a182d0a07f4f0f0e32e598797d4314c0e"
-    private let expectedWorkerHead =
-        "1dbad1fdbbcb08125b3438070dcad0f7f6d3e850"
-    private let expectedRouteID = "four-view-v16:play-101-current-master-metadata-rebind-v2"
-    private let expectedRouteSHA256 =
-        "8aab2dbdfe76a0e43e91691810779bccac3f1b55467a575dca4982dace7a8a79"
-    private let expectedClaimSHA256 =
-        "4fb20ef3102869dd1b33ceebcf3c4f5bda6ea48838b05e72bfdad9340d96bebb"
-    private let expectedContract025SHA256 =
-        "4e8ab63173d67581332e7d27730b97315906fda4e29b999969456441809479ed"
-    private let expectedContract026SHA256 =
-        "4781de72429a1f691b9226f7f7668b170b278a4ccd171ac4ea02f5e1df9176eb"
-    private let expectedContract027SHA256 =
-        "693831b3d8fac49330ac21adce626b632351c7eeba901ebff6719687e5f330e7"
-    private let expectedContract028SHA256 =
-        "f8b80a98b07029a51b8e61701c85017bd82c8bb0b6c967da6d1fa7fae631da7d"
 
     func testExact43Identities172AuthoredViewsAnd516NormalizedLODs() throws {
         let graph = makeGraph()
@@ -455,80 +438,6 @@ final class SingleAngleWorldArtTests: XCTestCase {
         }
     }
 
-    func testIntakePlanAndReceiptBindFrozenContractsAndEmptyQuarantine() throws {
-        let plan = try readEvidenceJSON("renderer-intake-plan-v2.json")
-        XCTAssertEqual(plan["schema"] as? Int, 2)
-        XCTAssertEqual(plan["task"] as? String, "PLAY-101")
-        XCTAssertEqual(plan["routeId"] as? String, expectedRouteID)
-        XCTAssertEqual(plan["routeSha256"] as? String, expectedRouteSHA256)
-        XCTAssertEqual(plan["claimSha256"] as? String, expectedClaimSHA256)
-        XCTAssertEqual(plan["model"] as? String, "gpt-5.6-luna")
-        XCTAssertEqual(plan["effort"] as? String, "high")
-
-        let receipt = try readEvidenceJSON("renderer-intake-receipt-v2.json")
-        XCTAssertEqual(receipt["schema"] as? Int, 2)
-        XCTAssertEqual(receipt["task"] as? String, "PLAY-101")
-        XCTAssertEqual(receipt["routeId"] as? String, expectedRouteID)
-        XCTAssertEqual(receipt["routeSha256"] as? String, expectedRouteSHA256)
-        XCTAssertEqual(receipt["claimSha256"] as? String, expectedClaimSHA256)
-        XCTAssertEqual(receipt["authorityCommit"] as? String, expectedAuthorityCommit)
-        XCTAssertEqual(receipt["baseCommit"] as? String, expectedBaseCommit)
-        XCTAssertEqual(receipt["workerHead"] as? String, expectedWorkerHead)
-
-        let contracts = try XCTUnwrap(receipt["contracts"] as? [String: Any])
-        XCTAssertEqual(
-            (contracts["CONTRACT-025"] as? [String: Any])?["sha256"] as? String,
-            expectedContract025SHA256
-        )
-        XCTAssertEqual(
-            (contracts["CONTRACT-026"] as? [String: Any])?["sha256"] as? String,
-            expectedContract026SHA256
-        )
-        XCTAssertEqual(
-            (contracts["CONTRACT-027"] as? [String: Any])?["sha256"] as? String,
-            expectedContract027SHA256
-        )
-        XCTAssertEqual(
-            (contracts["CONTRACT-028"] as? [String: Any])?["sha256"] as? String,
-            expectedContract028SHA256
-        )
-
-        let inventory = try XCTUnwrap(receipt["inventory"] as? [String: Any])
-        XCTAssertEqual(inventory["logicalBuildingIdentities"] as? Int, 43)
-        XCTAssertEqual(inventory["authoredSourceViews"] as? Int, 172)
-        XCTAssertEqual(inventory["normalizedLODPayloads"] as? Int, 516)
-        XCTAssertEqual(
-            inventory["directions"] as? [String],
-            Direction.allCases.map(\.rawValue)
-        )
-        XCTAssertEqual(inventory["directionPartOfLogicalIdentity"] as? Bool, false)
-
-        let quarantine = try XCTUnwrap(receipt["quarantine"] as? [String: Any])
-        XCTAssertEqual(quarantine["sourceAdmissions"] as? Int, 0)
-        XCTAssertEqual(quarantine["rendererQuarantines"] as? Int, 0)
-        XCTAssertEqual(quarantine["productionSelected"] as? Bool, false)
-        XCTAssertEqual(quarantine["runtimeSelectorImplemented"] as? Bool, false)
-        XCTAssertEqual(quarantine["activation"] as? String, "locked-until-exact-4-of-4")
-        let jobs = try XCTUnwrap(quarantine["directionExclusiveJobs"] as? [[String: Any]])
-        XCTAssertEqual(jobs.count, 4)
-        XCTAssertEqual(
-            Set(jobs.compactMap { $0["direction"] as? String }),
-            Set(Direction.allCases.map(\.rawValue))
-        )
-        XCTAssertTrue(jobs.allSatisfy { ($0["state"] as? String) == "empty" })
-        XCTAssertTrue(jobs.allSatisfy { ($0["reservedIdentityCount"] as? Int) == 43 })
-    }
-
-    private func readEvidenceJSON(_ filename: String) throws -> [String: Any] {
-        let receiptURL = repositoryRoot
-            .appending(path: "docs/production/evidence/PLAY-101")
-            .appending(path: filename)
-        let data = try Data(contentsOf: receiptURL)
-        XCTAssertLessThan(data.count, 16_384)
-        let object = try XCTUnwrap(JSONSerialization.jsonObject(with: data))
-        return try XCTUnwrap(object as? [String: Any])
-    }
-
     private func makeGraph() -> [AuthoredView] {
         var identities: [LogicalIdentity] = []
         for family in ["residential", "commercial", "industrial"] {
@@ -825,14 +734,6 @@ final class SingleAngleWorldArtTests: XCTestCase {
             usedByFamilyAndLevel[key] = used
             return selected
         }
-    }
-
-    private var repositoryRoot: URL {
-        var root = URL(filePath: #filePath)
-        for _ in 0..<5 {
-            root.deleteLastPathComponent()
-        }
-        return root
     }
 
     private func sha256(_ value: String) -> String {

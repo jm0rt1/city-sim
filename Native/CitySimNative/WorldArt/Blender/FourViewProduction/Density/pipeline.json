@@ -1,0 +1,120 @@
+{
+  "schema": "citysim.world-art.density-four-view.v1",
+  "toolchain": {
+    "blenderVersion": "4.5.12",
+    "renderEngine": "BLENDER_EEVEE_NEXT"
+  },
+  "grid": {
+    "worldTileSize": 2.0,
+    "projectedTilePixels": [88, 44],
+    "projection": "orthographic-2:1-dimetric",
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0
+  },
+  "canvas": {
+    "width": 384,
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "footprintPivotPixel": [192, 300]
+  },
+  "cameraRig": {
+    "distance": 32.0,
+    "orthoScale": 12.341995,
+    "shiftY": 0.28125,
+    "views": [
+      {"name": "camNE", "azimuthDegrees": 45.0},
+      {"name": "camSE", "azimuthDegrees": 135.0},
+      {"name": "camSW", "azimuthDegrees": 225.0},
+      {"name": "camNW", "azimuthDegrees": 315.0}
+    ]
+  },
+  "root": {
+    "name": "AssetRoot",
+    "pivotName": "FootprintPivot",
+    "location": [0.0, 0.0, 0.0],
+    "rotationEuler": [0.0, 0.0, 0.0],
+    "scale": [1.0, 1.0, 1.0]
+  },
+  "lighting": {
+    "name": "CitySimKey",
+    "type": "AREA",
+    "location": [-6.0, -8.0, 12.0],
+    "energy": 1100.0,
+    "size": 5.0,
+    "color": [1.0, 0.86, 0.72],
+    "worldColor": [0.20, 0.17, 0.14, 1.0],
+    "worldStrength": 0.72
+  },
+  "assets": [
+    {
+      "assetId": "foundry_crown_apartments",
+      "description": "Level-3 warm-brick urban apartment tower with stepped upper floors, copper crown, balconies, roof garden, and a dense street frontage",
+      "zone": "residential",
+      "densityLevel": 3,
+      "assetFamily": "high-residential",
+      "footprintTiles": [2, 2],
+      "minimumMeshCount": 80,
+      "minimumHeight": 7.0
+    },
+    {
+      "assetId": "market_arcade_midrise",
+      "description": "Level-2 mixed-use commercial mid-rise with stone retail arcade, brick offices, corner bay, awnings, and roof terrace",
+      "zone": "commercial",
+      "densityLevel": 2,
+      "assetFamily": "medium-commercial",
+      "footprintTiles": [2, 2],
+      "minimumMeshCount": 70,
+      "minimumHeight": 5.0
+    },
+    {
+      "assetId": "aurora_exchange_tower",
+      "description": "Level-3 commercial high-rise with a limestone podium, vertically articulated teal-glass tower, stepped crown, terraces, and urban street dressing",
+      "zone": "commercial",
+      "densityLevel": 3,
+      "assetFamily": "high-commercial",
+      "footprintTiles": [2, 2],
+      "minimumMeshCount": 90,
+      "minimumHeight": 7.3
+    },
+    {
+      "assetId": "canalworks_factory",
+      "description": "Level-2 expanded industrial works with a long sawtooth hall, brick administration wing, loading doors, tanks, and pipe gantry",
+      "zone": "industrial",
+      "densityLevel": 2,
+      "assetFamily": "medium-industrial",
+      "footprintTiles": [2, 2],
+      "minimumMeshCount": 75,
+      "minimumHeight": 5.0
+    },
+    {
+      "assetId": "foundry_peak_plant",
+      "description": "Level-3 high-capacity industrial plant with massive production blocks, furnace tower, twin stacks, silos, pipe racks, and heavy service frontage",
+      "zone": "industrial",
+      "densityLevel": 3,
+      "assetFamily": "high-industrial",
+      "footprintTiles": [2, 2],
+      "minimumMeshCount": 100,
+      "minimumHeight": 7.1
+    }
+  ],
+  "progressionPreview": {
+    "name": "uptown-foundry-progression-avenue",
+    "camera": {
+      "projection": "orthographic",
+      "azimuthDegrees": 45.0,
+      "elevationDegrees": 30.0,
+      "orthoScale": 28.0
+    },
+    "levels": [1, 2, 3],
+    "zones": ["residential", "commercial", "industrial"]
+  },
+  "postRenderCompensation": "none",
+  "provenance": {
+    "originalGeometry": true,
+    "sourcePixelsReused": false,
+    "cedarMarketReused": false,
+    "liveAsset": false,
+    "purpose": "source-only density-progression family and review evidence"
+  }
+}

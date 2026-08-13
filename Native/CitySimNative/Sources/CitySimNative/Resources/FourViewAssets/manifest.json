@@ -27,19 +27,19 @@
       "assetID": "brickline_rowhouse_apartments",
       "file": "brickline_rowhouse_apartments_camNE.png",
       "sha256": "e5eba683df85197beb5bb601707dbf41717911829fe430d8b6ca520068111ae2",
-      "roles": ["residential-medium", "residential-high"]
+      "roles": ["residential-medium"]
     },
     {
       "assetID": "harbor_corner_storefront",
       "file": "harbor_corner_storefront_camNE.png",
       "sha256": "e98cdcf50592089d7a0b6ded522af7c2892c78dda8bf0c623940e39f57241ebd",
-      "roles": ["commercial"]
+      "roles": ["commercial", "commercial-low"]
     },
     {
       "assetID": "ironleaf_service_workshop",
       "file": "ironleaf_service_workshop_camNE.png",
       "sha256": "bdcbfe10195cf1fe0e5dda6999fa7aaf8523735afae04faa4cbc7f6ceae69550",
-      "roles": ["industrial"]
+      "roles": ["industrial", "industrial-low"]
     },
     {
       "assetID": "hearthside_council_hall",
@@ -82,6 +82,36 @@
       "file": "maplewood_neighborhood_school_camNE.png",
       "sha256": "2a58c706e635f41195ce24cba01264afed43fae5ad199edeb0e2d609f1231a77",
       "roles": ["school"]
+    },
+    {
+      "assetID": "foundry_crown_apartments",
+      "file": "foundry_crown_apartments_camNE.png",
+      "sha256": "92b40bf33cd57e8a5c7a402178cfbf2d4d42b9bc5b7a7e24da58f327b53e2df1",
+      "roles": ["residential-high"]
+    },
+    {
+      "assetID": "market_arcade_midrise",
+      "file": "market_arcade_midrise_camNE.png",
+      "sha256": "614c833554537f173e39e43d0af7dbd9f92971e7910fd46352bed39032df48b8",
+      "roles": ["commercial-medium"]
+    },
+    {
+      "assetID": "aurora_exchange_tower",
+      "file": "aurora_exchange_tower_camNE.png",
+      "sha256": "b5922416a312ca66cec988b89dd2af4b0d73df5615629cfef24cf126125d6ede",
+      "roles": ["commercial-high"]
+    },
+    {
+      "assetID": "canalworks_factory",
+      "file": "canalworks_factory_camNE.png",
+      "sha256": "845f01917e2acdbcdf0c4bed341db8ee6c7cb598deb79d4ba05a2a97b51e37d2",
+      "roles": ["industrial-medium"]
+    },
+    {
+      "assetID": "foundry_peak_plant",
+      "file": "foundry_peak_plant_camNE.png",
+      "sha256": "8bada091016aea4160220581de9ce3390039ad8bbf280d664619dd2937fa0ab5",
+      "roles": ["industrial-high"]
     }
   ]
 }

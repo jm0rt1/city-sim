@@ -24,8 +24,10 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
         XCTAssertEqual(Set(manifest.assets.map(\.file)).count, manifest.assets.count)
         let admittedRoles = Set(manifest.assets.flatMap(\.roles))
         XCTAssertTrue(Set([
-            "residential-low", "residential-high", "commercial",
-            "industrial", "city-hall", "park", "power-plant", "water-tower",
+            "residential-low", "residential-medium", "residential-high",
+            "commercial-low", "commercial-medium", "commercial-high",
+            "industrial-low", "industrial-medium", "industrial-high",
+            "city-hall", "park", "power-plant", "water-tower",
             "fire-station", "police-station", "school",
         ]).isSubset(of: admittedRoles))
 
@@ -57,9 +59,36 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
             variant: 2
         ), "marigold_court_house")
         XCTAssertEqual(catalog.assetID(
-            for: CityTile(coordinate: coordinate, kind: .residential, level: 3),
+            for: CityTile(coordinate: coordinate, kind: .residential, level: 2),
             variant: 1
         ), "brickline_rowhouse_apartments")
+        XCTAssertEqual(catalog.assetID(
+            for: CityTile(coordinate: coordinate, kind: .residential, level: 3),
+            variant: 1
+        ), "foundry_crown_apartments")
+        XCTAssertEqual(catalog.assetID(
+            for: CityTile(coordinate: coordinate, kind: .residential, level: 4),
+            variant: 1
+        ), "foundry_crown_apartments")
+
+        let densityExpected: [(BuildingKind, Int, String)] = [
+            (.commercial, 1, "harbor_corner_storefront"),
+            (.commercial, 2, "market_arcade_midrise"),
+            (.commercial, 3, "aurora_exchange_tower"),
+            (.commercial, 4, "aurora_exchange_tower"),
+            (.industrial, 1, "ironleaf_service_workshop"),
+            (.industrial, 2, "canalworks_factory"),
+            (.industrial, 3, "foundry_peak_plant"),
+        ]
+        for (kind, level, assetID) in densityExpected {
+            XCTAssertEqual(
+                catalog.assetID(
+                    for: CityTile(coordinate: coordinate, kind: kind, level: level),
+                    variant: 0
+                ),
+                assetID
+            )
+        }
 
         let expected: [(BuildingKind, String?)] = [
             (.commercial, "harbor_corner_storefront"),
@@ -150,7 +179,7 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
         )
 
         let marker = try XCTUnwrap(
-            lot.childNode(withName: "//lot.four-view.harbor_corner_storefront.camNE")
+            lot.childNode(withName: "//lot.four-view.market_arcade_midrise.camNE")
         )
         let sprite = try XCTUnwrap(marker.parent as? SKSpriteNode)
         let canonicalWorldScale = 72.0 / 88.0

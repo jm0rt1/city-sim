@@ -1786,7 +1786,7 @@ final class CitySimulationTests: XCTestCase {
             interactionMode: .inspect,
             detail: .city,
             centeredOn: core,
-            framingScale: 1.08,
+            framingScale: 1.22,
             hover: nil,
             exactPixelDimensions: true
         )
@@ -1798,7 +1798,7 @@ final class CitySimulationTests: XCTestCase {
             interactionMode: .inspect,
             detail: .city,
             centeredOn: compactCore,
-            framingScale: 1.24,
+            framingScale: 1.45,
             hover: nil,
             exactPixelDimensions: true
         )
@@ -1811,6 +1811,124 @@ final class CitySimulationTests: XCTestCase {
         XCTAssertGreaterThan(compact.png.count, 30_000)
         try export(regular, environmentKeys: ["CITYSIM_FOUR_VIEW_NATIVE_1280_PROOF"])
         try export(compact, environmentKeys: ["CITYSIM_FOUR_VIEW_NATIVE_900_PROOF"])
+    }
+
+    @MainActor
+    func testFourViewNativeDensityProgressionProofExports() throws {
+        let proofKeys = [
+            "CITYSIM_FOUR_VIEW_DENSITY_1280_PROOF",
+            "CITYSIM_FOUR_VIEW_DENSITY_900_PROOF",
+        ]
+        guard proofKeys.contains(where: { ProcessInfo.processInfo.environment[$0] != nil }) else {
+            return
+        }
+
+        var state = CityGameState.newCity(seed: 42)
+        for coordinate in state.tiles.map(\.coordinate) {
+            state.updateTile(at: coordinate) {
+                $0 = CityTile(coordinate: coordinate, kind: .empty)
+            }
+        }
+        for y in [9, 12, 15] {
+            for x in 4...16 {
+                let coordinate = GridCoordinate(x: x, y: y)
+                state.updateTile(at: coordinate) {
+                    $0 = CityTile(coordinate: coordinate, kind: .road)
+                }
+            }
+        }
+        for x in [4, 8, 12, 16] {
+            for y in 8...15 {
+                let coordinate = GridCoordinate(x: x, y: y)
+                state.updateTile(at: coordinate) {
+                    $0 = CityTile(coordinate: coordinate, kind: .road)
+                }
+            }
+        }
+
+        let densityLots: [(GridCoordinate, BuildingKind, Int)] = [
+            (GridCoordinate(x: 5, y: 8), .residential, 1),
+            (GridCoordinate(x: 9, y: 8), .residential, 2),
+            (GridCoordinate(x: 13, y: 8), .residential, 3),
+            (GridCoordinate(x: 5, y: 10), .commercial, 1),
+            (GridCoordinate(x: 9, y: 10), .commercial, 2),
+            (GridCoordinate(x: 13, y: 10), .commercial, 3),
+            (GridCoordinate(x: 5, y: 13), .industrial, 1),
+            (GridCoordinate(x: 9, y: 13), .industrial, 2),
+            (GridCoordinate(x: 13, y: 13), .industrial, 3),
+        ]
+        for (coordinate, kind, level) in densityLots {
+            state.updateTile(at: coordinate) {
+                $0 = CityTile(
+                    coordinate: coordinate,
+                    kind: kind,
+                    level: level,
+                    condition: 1,
+                    constructionProgress: 1
+                )
+            }
+        }
+
+        let catalog = FourViewWorldAssetCatalog()
+        let expectedAssets = Set(densityLots.compactMap { entry in
+            let (coordinate, kind, level) = entry
+            let variant = kind == .residential
+                ? ResidentialGeneratedAssetIdentity.liveVisualVariant(at: coordinate)
+                : 1
+            return catalog.assetID(
+                for: CityTile(coordinate: coordinate, kind: kind, level: level),
+                variant: variant
+            )
+        })
+        XCTAssertEqual(expectedAssets.count, 9)
+
+        let sourceScene = CityScene(size: CGSize(width: 1_280, height: 800))
+        sourceScene.reducedMotion = true
+        sourceScene.render(
+            state: state,
+            overlay: .none,
+            selection: nil,
+            interactionMode: .inspect
+        )
+        let sourceNames = sourceScene.children.flatMap(descendantNodeNames)
+        for assetID in expectedAssets {
+            XCTAssertTrue(sourceNames.contains("lot.four-view.\(assetID).camNE"), assetID)
+        }
+
+        let center = GridCoordinate(x: 9, y: 11)
+        let regular = try rendererProofFrame(
+            size: CGSize(width: 1_280, height: 800),
+            state: state,
+            overlay: .none,
+            selection: nil,
+            interactionMode: .inspect,
+            detail: .city,
+            centeredOn: center,
+            framingScale: 0.92,
+            hover: nil,
+            exactPixelDimensions: true
+        )
+        let compact = try rendererProofFrame(
+            size: CGSize(width: 900, height: 600),
+            state: state,
+            overlay: .none,
+            selection: nil,
+            interactionMode: .inspect,
+            detail: .city,
+            centeredOn: center,
+            framingScale: 1.04,
+            hover: nil,
+            exactPixelDimensions: true
+        )
+
+        XCTAssertEqual(regular.width, 1_280)
+        XCTAssertEqual(regular.height, 800)
+        XCTAssertEqual(compact.width, 900)
+        XCTAssertEqual(compact.height, 600)
+        XCTAssertGreaterThan(regular.png.count, 40_000)
+        XCTAssertGreaterThan(compact.png.count, 30_000)
+        try export(regular, environmentKeys: ["CITYSIM_FOUR_VIEW_DENSITY_1280_PROOF"])
+        try export(compact, environmentKeys: ["CITYSIM_FOUR_VIEW_DENSITY_900_PROOF"])
     }
 
     @MainActor

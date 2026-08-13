@@ -1,0 +1,269 @@
+{
+  "artifacts": [
+    {
+      "bytes": 2249958,
+      "path": "market_arcade_midrise.blend",
+      "sha256": "1ba20dc6af5d23bf57363c7997a623af81ac480a200a1436971bd91f200b4f3c"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 221,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 128,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 25792,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 71724,
+      "decodedRgbaSha256": "7a55ed6ab0a2e6ea2a4cee5c1bb80187abea8dc789ccdaae1274c3f86277780f",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/market_arcade_midrise_camNE.png",
+      "sha256": "614c833554537f173e39e43d0af7dbd9f92971e7910fd46352bed39032df48b8"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 228,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 121,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 25753,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 82175,
+      "decodedRgbaSha256": "a09715d9b1731e5f61cfaafa5ad7298eacd7e4d8e3ac320173f7a4c9bc2cab21",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/market_arcade_midrise_camSE.png",
+      "sha256": "6d42818a64a0b229a7793a0a8acfb94d48a0df036a72fdeaced010fa5b196e65"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 219,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 130,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 26136,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 85551,
+      "decodedRgbaSha256": "9a12e19ab407f5bce3882661e9ff656aaf285047bbf418359480f8da521bcd20",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/market_arcade_midrise_camSW.png",
+      "sha256": "b138ff7f31e7cd5705b8edd5c40dfda97cac4e34b9b27e5858c3694e2b585aa1"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 213,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 136,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 25114,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 77742,
+      "decodedRgbaSha256": "26b4700ae45e5ae49173e325792e7dc3b9c7841837b1f57a4a4a3aae552fb482",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/market_arcade_midrise_camNW.png",
+      "sha256": "d3f65b5c4bd949f27ba72cfdb8e11598d2fd5ac749bb2f6c37caea962b4b5602"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 719,
+          "maxX": 783,
+          "maxY": 839,
+          "minX": 0,
+          "minY": 121,
+          "width": 784
+        },
+        "lowestOpaqueRowTopOrigin": 839,
+        "opaquePixelCount": 145803,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 284461,
+      "decodedRgbaSha256": "bf92b29c31a6784a175dc6ef40a83a7d3752e1cb61cdc87f153058cfe9641b1a",
+      "dimensions": [
+        784,
+        840
+      ],
+      "path": "market_arcade_midrise_contact-sheet.png",
+      "sha256": "dcfd45cb1bb12d5ef9966178622e39e1686394f672c1e95778125aae2623e0f8"
+    }
+  ],
+  "assetFamily": "medium-commercial",
+  "assetId": "market_arcade_midrise",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "cameraRig": {
+    "distance": 32.0,
+    "orthoScale": 12.341995,
+    "shiftY": 0.28125,
+    "views": [
+      {
+        "azimuthDegrees": 45.0,
+        "name": "camNE"
+      },
+      {
+        "azimuthDegrees": 135.0,
+        "name": "camSE"
+      },
+      {
+        "azimuthDegrees": 225.0,
+        "name": "camSW"
+      },
+      {
+        "azimuthDegrees": 315.0,
+        "name": "camNW"
+      }
+    ]
+  },
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "cedarMarketReused": false,
+  "contactSheetLayout": [
+    [
+      "camNE",
+      "camSE"
+    ],
+    [
+      "camSW",
+      "camNW"
+    ]
+  ],
+  "densityLevel": 2,
+  "description": "Level-2 mixed-use commercial mid-rise with stone retail arcade, brick offices, corner bay, awnings, and roof terrace",
+  "grid": {
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0,
+    "projectedTilePixels": [
+      88,
+      44
+    ],
+    "projection": "orthographic-2:1-dimetric",
+    "worldTileSize": 2.0
+  },
+  "lightingConvention": {
+    "color": [
+      1.0,
+      0.86,
+      0.72
+    ],
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldColor": [
+      0.2,
+      0.17,
+      0.14,
+      1.0
+    ],
+    "worldStrength": 0.72
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "perViewCompensation": {
+    "crop": false,
+    "offsetPixels": [
+      0,
+      0
+    ],
+    "rotationDegrees": 0.0,
+    "scale": 1.0,
+    "skew": [
+      0.0,
+      0.0
+    ]
+  },
+  "pipelineSchema": "citysim.world-art.density-four-view.v1",
+  "postRenderCompensation": "none",
+  "root": {
+    "location": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "name": "AssetRoot",
+    "pivotName": "FootprintPivot",
+    "rotationEuler": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "schema": "citysim.world-art.density-four-view-asset.v1",
+  "sourceFiles": [
+    {
+      "path": "build_and_render.py",
+      "sha256": "ff95f26a68c53a3f2e7bc60e540c5836afbd1781a4f78f50b1bdaec76b007e41"
+    },
+    {
+      "path": "pipeline.json",
+      "sha256": "7057958876aebf6b18493469e27daa2993d0374cb9654ad63fc789db335b1b25"
+    },
+    {
+      "path": "run_pipeline.sh",
+      "sha256": "532d05471506c823329d1b29371fee92e772a60c1b591115d68685bbd84e24b2"
+    }
+  ],
+  "sourcePixelsReused": false,
+  "status": "source-only-not-live",
+  "worldFootprintTiles": [
+    2,
+    2
+  ],
+  "zone": "commercial"
+}

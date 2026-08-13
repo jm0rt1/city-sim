@@ -1,0 +1,269 @@
+{
+  "artifacts": [
+    {
+      "bytes": 2348017,
+      "path": "foundry_peak_plant.blend",
+      "sha256": "6494bcc588a1fa2abe196451abd8cf09d1bdd4009bea896c31546b2a99ce02cf"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 250,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 99,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 23967,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 68509,
+      "decodedRgbaSha256": "0ac5e9d53c2f25fd0a0cf2dff7e7f08bc3afb03f52deb36233217df02d2652f4",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/foundry_peak_plant_camNE.png",
+      "sha256": "8bada091016aea4160220581de9ce3390039ad8bbf280d664619dd2937fa0ab5"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 274,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 75,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 26792,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 84949,
+      "decodedRgbaSha256": "16d67ceab4dc3571390a2e8a7e77f718cc7f0613286623997988745e53ca7475",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/foundry_peak_plant_camSE.png",
+      "sha256": "1cb3b08a9a2352387974cc97b564d28536de185f4b34a4f217442adc01063eec"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 297,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 52,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 25029,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 85046,
+      "decodedRgbaSha256": "6fcf31576574a83628d176a5b41a3f835ddbfa1900e30913ff97b31fb90cbad6",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/foundry_peak_plant_camSW.png",
+      "sha256": "47773793bee94e6cfcf99ce5d45ecdd1d2a5d8d16a339773e25773a72fe18983"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 273,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 76,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 24946,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 78674,
+      "decodedRgbaSha256": "3b536acfc1fb62cf2c2a1b77c6c9669c96e0829bafbdeb3838895024a286d6d6",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/foundry_peak_plant_camNW.png",
+      "sha256": "14918caff47755eb5f708b971a5c3e4596ab68310adc91d69972232f709aaff6"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 765,
+          "maxX": 783,
+          "maxY": 839,
+          "minX": 0,
+          "minY": 75,
+          "width": 784
+        },
+        "lowestOpaqueRowTopOrigin": 839,
+        "opaquePixelCount": 143742,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 286113,
+      "decodedRgbaSha256": "034d34cc84336a0c9dae1f7f46691dd509a1b8d164b696e460d59f3310ae8822",
+      "dimensions": [
+        784,
+        840
+      ],
+      "path": "foundry_peak_plant_contact-sheet.png",
+      "sha256": "0b550fb12c2723c3862382b145c1145da6d0ee180a95b740265f22ee2b55289f"
+    }
+  ],
+  "assetFamily": "high-industrial",
+  "assetId": "foundry_peak_plant",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "cameraRig": {
+    "distance": 32.0,
+    "orthoScale": 12.341995,
+    "shiftY": 0.28125,
+    "views": [
+      {
+        "azimuthDegrees": 45.0,
+        "name": "camNE"
+      },
+      {
+        "azimuthDegrees": 135.0,
+        "name": "camSE"
+      },
+      {
+        "azimuthDegrees": 225.0,
+        "name": "camSW"
+      },
+      {
+        "azimuthDegrees": 315.0,
+        "name": "camNW"
+      }
+    ]
+  },
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "cedarMarketReused": false,
+  "contactSheetLayout": [
+    [
+      "camNE",
+      "camSE"
+    ],
+    [
+      "camSW",
+      "camNW"
+    ]
+  ],
+  "densityLevel": 3,
+  "description": "Level-3 high-capacity industrial plant with massive production blocks, furnace tower, twin stacks, silos, pipe racks, and heavy service frontage",
+  "grid": {
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0,
+    "projectedTilePixels": [
+      88,
+      44
+    ],
+    "projection": "orthographic-2:1-dimetric",
+    "worldTileSize": 2.0
+  },
+  "lightingConvention": {
+    "color": [
+      1.0,
+      0.86,
+      0.72
+    ],
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldColor": [
+      0.2,
+      0.17,
+      0.14,
+      1.0
+    ],
+    "worldStrength": 0.72
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "perViewCompensation": {
+    "crop": false,
+    "offsetPixels": [
+      0,
+      0
+    ],
+    "rotationDegrees": 0.0,
+    "scale": 1.0,
+    "skew": [
+      0.0,
+      0.0
+    ]
+  },
+  "pipelineSchema": "citysim.world-art.density-four-view.v1",
+  "postRenderCompensation": "none",
+  "root": {
+    "location": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "name": "AssetRoot",
+    "pivotName": "FootprintPivot",
+    "rotationEuler": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "schema": "citysim.world-art.density-four-view-asset.v1",
+  "sourceFiles": [
+    {
+      "path": "build_and_render.py",
+      "sha256": "ff95f26a68c53a3f2e7bc60e540c5836afbd1781a4f78f50b1bdaec76b007e41"
+    },
+    {
+      "path": "pipeline.json",
+      "sha256": "7057958876aebf6b18493469e27daa2993d0374cb9654ad63fc789db335b1b25"
+    },
+    {
+      "path": "run_pipeline.sh",
+      "sha256": "532d05471506c823329d1b29371fee92e772a60c1b591115d68685bbd84e24b2"
+    }
+  ],
+  "sourcePixelsReused": false,
+  "status": "source-only-not-live",
+  "worldFootprintTiles": [
+    2,
+    2
+  ],
+  "zone": "industrial"
+}

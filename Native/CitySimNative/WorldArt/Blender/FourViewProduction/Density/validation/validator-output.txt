@@ -1,0 +1,404 @@
+DENSITY_FOUR_VIEW_VALIDATION_PASS
+{
+  "assets": {
+    "aurora_exchange_tower": {
+      "densityLevel": 3,
+      "deterministicCanonicalPngSha256": {
+        "aurora_exchange_tower_camNE.png": "b5922416a312ca66cec988b89dd2af4b0d73df5615629cfef24cf126125d6ede",
+        "aurora_exchange_tower_camNW.png": "14123590249c5a3e035caf2d0c8138cdc31eb139407330d4957672cfb761b931",
+        "aurora_exchange_tower_camSE.png": "e2dc7864897eefcd40c8f175e5141e3a003a0f4348773f2a0e17e162dc1b30b0",
+        "aurora_exchange_tower_camSW.png": "856c2abc67b3ff6f2fa1420de1a4de8ad4f9c0d94e946e5b8aa076f1471b1ebd"
+      },
+      "meshCount": 159,
+      "projectedAxisPixels": {
+        "camNE": [
+          [
+            -44,
+            22
+          ],
+          [
+            44,
+            22
+          ]
+        ],
+        "camNW": [
+          [
+            -44,
+            -22
+          ],
+          [
+            -44,
+            22
+          ]
+        ],
+        "camSE": [
+          [
+            44,
+            22
+          ],
+          [
+            44,
+            -22
+          ]
+        ],
+        "camSW": [
+          [
+            44,
+            -22
+          ],
+          [
+            -44,
+            -22
+          ]
+        ]
+      },
+      "worldBounds": {
+        "maximum": [
+          2.0,
+          2.0,
+          8.460000038146973
+        ],
+        "minimum": [
+          -2.0,
+          -2.0,
+          -0.20000000298023224
+        ]
+      },
+      "zone": "commercial"
+    },
+    "canalworks_factory": {
+      "densityLevel": 2,
+      "deterministicCanonicalPngSha256": {
+        "canalworks_factory_camNE.png": "845f01917e2acdbcdf0c4bed341db8ee6c7cb598deb79d4ba05a2a97b51e37d2",
+        "canalworks_factory_camNW.png": "8f3b16fba1033f979d1a955ac8c3c5ce9f399dbb7012b5ff4d279700476589e4",
+        "canalworks_factory_camSE.png": "6449c54ac826cd76a925d8cd605aca5e12c08e6c514ebbf9e1c9ab9fc0ab60e5",
+        "canalworks_factory_camSW.png": "9eef67ae83a0c3d25a00cd960c094a2adfefb278f1bddc0993450f6671c20d2f"
+      },
+      "meshCount": 91,
+      "projectedAxisPixels": {
+        "camNE": [
+          [
+            -44,
+            22
+          ],
+          [
+            44,
+            22
+          ]
+        ],
+        "camNW": [
+          [
+            -44,
+            -22
+          ],
+          [
+            -44,
+            22
+          ]
+        ],
+        "camSE": [
+          [
+            44,
+            22
+          ],
+          [
+            44,
+            -22
+          ]
+        ],
+        "camSW": [
+          [
+            44,
+            -22
+          ],
+          [
+            -44,
+            -22
+          ]
+        ]
+      },
+      "worldBounds": {
+        "maximum": [
+          2.0,
+          2.0,
+          6.25
+        ],
+        "minimum": [
+          -2.0,
+          -2.065000057220459,
+          -0.20000000298023224
+        ]
+      },
+      "zone": "industrial"
+    },
+    "foundry_crown_apartments": {
+      "densityLevel": 3,
+      "deterministicCanonicalPngSha256": {
+        "foundry_crown_apartments_camNE.png": "92b40bf33cd57e8a5c7a402178cfbf2d4d42b9bc5b7a7e24da58f327b53e2df1",
+        "foundry_crown_apartments_camNW.png": "4a880bfce7a08984e423e8475f20e3fa720d267f79944b2affe727607ff844ca",
+        "foundry_crown_apartments_camSE.png": "ee40a8e0b844c7c73bbff3ace9ed8b2d491b689467d680c3d55908ed01efa0c7",
+        "foundry_crown_apartments_camSW.png": "4a28a5eb603008cdd90c6a66a22a95adedc51ea5d74fbe8f2054ec2740fceed5"
+      },
+      "meshCount": 193,
+      "projectedAxisPixels": {
+        "camNE": [
+          [
+            -44,
+            22
+          ],
+          [
+            44,
+            22
+          ]
+        ],
+        "camNW": [
+          [
+            -44,
+            -22
+          ],
+          [
+            -44,
+            22
+          ]
+        ],
+        "camSE": [
+          [
+            44,
+            22
+          ],
+          [
+            44,
+            -22
+          ]
+        ],
+        "camSW": [
+          [
+            44,
+            -22
+          ],
+          [
+            -44,
+            -22
+          ]
+        ]
+      },
+      "worldBounds": {
+        "maximum": [
+          2.0,
+          2.0,
+          8.289999961853027
+        ],
+        "minimum": [
+          -2.0,
+          -2.0,
+          -0.20000000298023224
+        ]
+      },
+      "zone": "residential"
+    },
+    "foundry_peak_plant": {
+      "densityLevel": 3,
+      "deterministicCanonicalPngSha256": {
+        "foundry_peak_plant_camNE.png": "8bada091016aea4160220581de9ce3390039ad8bbf280d664619dd2937fa0ab5",
+        "foundry_peak_plant_camNW.png": "14918caff47755eb5f708b971a5c3e4596ab68310adc91d69972232f709aaff6",
+        "foundry_peak_plant_camSE.png": "1cb3b08a9a2352387974cc97b564d28536de185f4b34a4f217442adc01063eec",
+        "foundry_peak_plant_camSW.png": "47773793bee94e6cfcf99ce5d45ecdd1d2a5d8d16a339773e25773a72fe18983"
+      },
+      "meshCount": 130,
+      "projectedAxisPixels": {
+        "camNE": [
+          [
+            -44,
+            22
+          ],
+          [
+            44,
+            22
+          ]
+        ],
+        "camNW": [
+          [
+            -44,
+            -22
+          ],
+          [
+            -44,
+            22
+          ]
+        ],
+        "camSE": [
+          [
+            44,
+            22
+          ],
+          [
+            44,
+            -22
+          ]
+        ],
+        "camSW": [
+          [
+            44,
+            -22
+          ],
+          [
+            -44,
+            -22
+          ]
+        ]
+      },
+      "worldBounds": {
+        "maximum": [
+          2.0,
+          2.0,
+          7.989999771118164
+        ],
+        "minimum": [
+          -2.0,
+          -2.0899999141693115,
+          -0.20000000298023224
+        ]
+      },
+      "zone": "industrial"
+    },
+    "market_arcade_midrise": {
+      "densityLevel": 2,
+      "deterministicCanonicalPngSha256": {
+        "market_arcade_midrise_camNE.png": "614c833554537f173e39e43d0af7dbd9f92971e7910fd46352bed39032df48b8",
+        "market_arcade_midrise_camNW.png": "d3f65b5c4bd949f27ba72cfdb8e11598d2fd5ac749bb2f6c37caea962b4b5602",
+        "market_arcade_midrise_camSE.png": "6d42818a64a0b229a7793a0a8acfb94d48a0df036a72fdeaced010fa5b196e65",
+        "market_arcade_midrise_camSW.png": "b138ff7f31e7cd5705b8edd5c40dfda97cac4e34b9b27e5858c3694e2b585aa1"
+      },
+      "meshCount": 136,
+      "projectedAxisPixels": {
+        "camNE": [
+          [
+            -44,
+            22
+          ],
+          [
+            44,
+            22
+          ]
+        ],
+        "camNW": [
+          [
+            -44,
+            -22
+          ],
+          [
+            -44,
+            22
+          ]
+        ],
+        "camSE": [
+          [
+            44,
+            22
+          ],
+          [
+            44,
+            -22
+          ]
+        ],
+        "camSW": [
+          [
+            44,
+            -22
+          ],
+          [
+            -44,
+            -22
+          ]
+        ]
+      },
+      "worldBounds": {
+        "maximum": [
+          2.0,
+          2.0,
+          5.714999675750732
+        ],
+        "minimum": [
+          -2.0,
+          -2.0,
+          -0.20000000298023224
+        ]
+      },
+      "zone": "commercial"
+    }
+  },
+  "blenderVersion": "4.5.12",
+  "contract": {
+    "cameraOrder": [
+      "camNE",
+      "camSE",
+      "camSW",
+      "camNW"
+    ],
+    "densityProgression": "strictly increasing source world height for each zone",
+    "deterministicRerender": "byte-identical canonical asset and preview PNGs",
+    "pivotPixels": [
+      192,
+      300
+    ],
+    "postRenderCompensation": "none",
+    "projectedTilePixels": [
+      88,
+      44
+    ]
+  },
+  "previewDeterministicRerenderSha256": {
+    "uptown-foundry-progression-avenue-1280x800.png": "4a667d822399709b0d3b761a6c1e1ae83d00441616f47e659cf9c212265f9a9f",
+    "uptown-foundry-progression-avenue-900x600.png": "d1101ac37b898c4e230baccb2bd1991deb309ea04c3117c850c01e72c7c6c9a9"
+  },
+  "previewPngSha256": {
+    "preview/uptown-foundry-progression-avenue-1280x800.png": "4a667d822399709b0d3b761a6c1e1ae83d00441616f47e659cf9c212265f9a9f",
+    "preview/uptown-foundry-progression-avenue-900x600.png": "d1101ac37b898c4e230baccb2bd1991deb309ea04c3117c850c01e72c7c6c9a9"
+  },
+  "progressionWorldHeights": {
+    "commercial": {
+      "1": {
+        "assetId": "harbor_corner_storefront",
+        "maximumWorldZ": 3.4699997901916504
+      },
+      "2": {
+        "assetId": "market_arcade_midrise",
+        "maximumWorldZ": 5.714999675750732
+      },
+      "3": {
+        "assetId": "aurora_exchange_tower",
+        "maximumWorldZ": 8.460000038146973
+      }
+    },
+    "industrial": {
+      "1": {
+        "assetId": "ironleaf_service_workshop",
+        "maximumWorldZ": 3.629999876022339
+      },
+      "2": {
+        "assetId": "canalworks_factory",
+        "maximumWorldZ": 6.25
+      },
+      "3": {
+        "assetId": "foundry_peak_plant",
+        "maximumWorldZ": 7.989999771118164
+      }
+    },
+    "residential": {
+      "1": {
+        "assetId": "copper_finch_house",
+        "maximumWorldZ": 3.700000047683716
+      },
+      "2": {
+        "assetId": "brickline_rowhouse_apartments",
+        "maximumWorldZ": 5.260000228881836
+      },
+      "3": {
+        "assetId": "foundry_crown_apartments",
+        "maximumWorldZ": 8.289999961853027
+      }
+    }
+  },
+  "schema": "citysim.world-art.density-validation.v1",
+  "status": "PASS"
+}

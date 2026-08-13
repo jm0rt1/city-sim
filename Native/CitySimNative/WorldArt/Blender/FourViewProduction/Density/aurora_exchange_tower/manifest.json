@@ -1,0 +1,269 @@
+{
+  "artifacts": [
+    {
+      "bytes": 2329193,
+      "path": "aurora_exchange_tower.blend",
+      "sha256": "002e6abae41779059d84d8439f257c62cf53f69ef281a1628a08701b649bacdc"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 274,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 75,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 30110,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 82222,
+      "decodedRgbaSha256": "8c4bfeeb60f7fffc6c24f1014dcd6a87a946695d516e1ba44c2f93e307bd7916",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/aurora_exchange_tower_camNE.png",
+      "sha256": "b5922416a312ca66cec988b89dd2af4b0d73df5615629cfef24cf126125d6ede"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 280,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 69,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 30970,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 95150,
+      "decodedRgbaSha256": "154541c71dfc66cb2d22e32dcf275ad5115496e4ac9b0ae8531e114db2c1d685",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/aurora_exchange_tower_camSE.png",
+      "sha256": "e2dc7864897eefcd40c8f175e5141e3a003a0f4348773f2a0e17e162dc1b30b0"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 283,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 66,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 30945,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 97770,
+      "decodedRgbaSha256": "80282b06d1d1687a7aba2cb8ad6efb77411a468222a1d9fcb473ff67623821ae",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/aurora_exchange_tower_camSW.png",
+      "sha256": "856c2abc67b3ff6f2fa1420de1a4de8ad4f9c0d94e946e5b8aa076f1471b1ebd"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 277,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 72,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 30578,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 89677,
+      "decodedRgbaSha256": "b4758b6460e4fbb93cc75cb960522681ed57a8e33a155ad39edb2e863da4fa7a",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/aurora_exchange_tower_camNW.png",
+      "sha256": "14123590249c5a3e035caf2d0c8138cdc31eb139407330d4957672cfb761b931"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 771,
+          "maxX": 783,
+          "maxY": 839,
+          "minX": 0,
+          "minY": 69,
+          "width": 784
+        },
+        "lowestOpaqueRowTopOrigin": 839,
+        "opaquePixelCount": 165611,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 336549,
+      "decodedRgbaSha256": "2f124dd50a8d62a66837e650f0342b284c84a47cf9679a50f89ee2487d2b66a7",
+      "dimensions": [
+        784,
+        840
+      ],
+      "path": "aurora_exchange_tower_contact-sheet.png",
+      "sha256": "b098f1f210d6c763a28f22b2284965dc0e7b598de7444a1f9f16fa7864bfbc69"
+    }
+  ],
+  "assetFamily": "high-commercial",
+  "assetId": "aurora_exchange_tower",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "cameraRig": {
+    "distance": 32.0,
+    "orthoScale": 12.341995,
+    "shiftY": 0.28125,
+    "views": [
+      {
+        "azimuthDegrees": 45.0,
+        "name": "camNE"
+      },
+      {
+        "azimuthDegrees": 135.0,
+        "name": "camSE"
+      },
+      {
+        "azimuthDegrees": 225.0,
+        "name": "camSW"
+      },
+      {
+        "azimuthDegrees": 315.0,
+        "name": "camNW"
+      }
+    ]
+  },
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "cedarMarketReused": false,
+  "contactSheetLayout": [
+    [
+      "camNE",
+      "camSE"
+    ],
+    [
+      "camSW",
+      "camNW"
+    ]
+  ],
+  "densityLevel": 3,
+  "description": "Level-3 commercial high-rise with a limestone podium, vertically articulated teal-glass tower, stepped crown, terraces, and urban street dressing",
+  "grid": {
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0,
+    "projectedTilePixels": [
+      88,
+      44
+    ],
+    "projection": "orthographic-2:1-dimetric",
+    "worldTileSize": 2.0
+  },
+  "lightingConvention": {
+    "color": [
+      1.0,
+      0.86,
+      0.72
+    ],
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldColor": [
+      0.2,
+      0.17,
+      0.14,
+      1.0
+    ],
+    "worldStrength": 0.72
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "perViewCompensation": {
+    "crop": false,
+    "offsetPixels": [
+      0,
+      0
+    ],
+    "rotationDegrees": 0.0,
+    "scale": 1.0,
+    "skew": [
+      0.0,
+      0.0
+    ]
+  },
+  "pipelineSchema": "citysim.world-art.density-four-view.v1",
+  "postRenderCompensation": "none",
+  "root": {
+    "location": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "name": "AssetRoot",
+    "pivotName": "FootprintPivot",
+    "rotationEuler": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "schema": "citysim.world-art.density-four-view-asset.v1",
+  "sourceFiles": [
+    {
+      "path": "build_and_render.py",
+      "sha256": "ff95f26a68c53a3f2e7bc60e540c5836afbd1781a4f78f50b1bdaec76b007e41"
+    },
+    {
+      "path": "pipeline.json",
+      "sha256": "7057958876aebf6b18493469e27daa2993d0374cb9654ad63fc789db335b1b25"
+    },
+    {
+      "path": "run_pipeline.sh",
+      "sha256": "532d05471506c823329d1b29371fee92e772a60c1b591115d68685bbd84e24b2"
+    }
+  ],
+  "sourcePixelsReused": false,
+  "status": "source-only-not-live",
+  "worldFootprintTiles": [
+    2,
+    2
+  ],
+  "zone": "commercial"
+}

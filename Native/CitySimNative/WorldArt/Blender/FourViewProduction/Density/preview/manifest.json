@@ -1,0 +1,291 @@
+{
+  "acceptedFamilyContractOnly": true,
+  "artifacts": [
+    {
+      "bytes": 17981189,
+      "path": "preview/uptown-foundry-progression-avenue.blend",
+      "sha256": "402a48b6c1be8e07ded24ca96f5421abb366d0da80751ac650fda57c6368626f"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 800,
+          "maxX": 1279,
+          "maxY": 799,
+          "minX": 0,
+          "minY": 0,
+          "width": 1280
+        },
+        "lowestOpaqueRowTopOrigin": 799,
+        "opaquePixelCount": 1024000,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 1045090,
+      "decodedRgbaSha256": "5d8695c3c412506a1fa94c21c16f9caf4032855af01c597f0ef3202ccaa28b14",
+      "dimensions": [
+        1280,
+        800
+      ],
+      "path": "preview/uptown-foundry-progression-avenue-1280x800.png",
+      "sha256": "4a667d822399709b0d3b761a6c1e1ae83d00441616f47e659cf9c212265f9a9f"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 600,
+          "maxX": 899,
+          "maxY": 599,
+          "minX": 0,
+          "minY": 0,
+          "width": 900
+        },
+        "lowestOpaqueRowTopOrigin": 599,
+        "opaquePixelCount": 540000,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 565716,
+      "decodedRgbaSha256": "744a468cdf44424e03d95f59b4cef9bdc043e32ae2b6b7f214b0fa61de6d0bd7",
+      "dimensions": [
+        900,
+        600
+      ],
+      "path": "preview/uptown-foundry-progression-avenue-900x600.png",
+      "sha256": "d1101ac37b898c4e230baccb2bd1991deb309ea04c3117c850c01e72c7c6c9a9"
+    }
+  ],
+  "camera": {
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0,
+    "orthoScale": 28.0,
+    "perAssetCompensation": "none",
+    "projection": "orthographic"
+  },
+  "cedarMarketReused": false,
+  "grid": {
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0,
+    "projectedTilePixels": [
+      88,
+      44
+    ],
+    "projection": "orthographic-2:1-dimetric",
+    "worldTileSize": 2.0
+  },
+  "layout": {
+    "levelColumns": [
+      -8.0,
+      0.0,
+      8.0
+    ],
+    "roadAxes": "world-X-and-world-Y",
+    "zoneRows": [
+      8.0,
+      0.0,
+      -8.0
+    ]
+  },
+  "lightingConvention": {
+    "color": [
+      1.0,
+      0.86,
+      0.72
+    ],
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldColor": [
+      0.2,
+      0.17,
+      0.14,
+      1.0
+    ],
+    "worldStrength": 0.72
+  },
+  "liveAsset": false,
+  "placements": [
+    {
+      "assetId": "copper_finch_house",
+      "densityLevel": 1,
+      "footprintTiles": [
+        2,
+        2
+      ],
+      "meshCount": 81,
+      "originWorld": [
+        -8.0,
+        8.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "sourceBlend": "FourViewPipeline/example/copper_finch_house.blend",
+      "sourceBlendSha256": "6b484c16d66a98e9c619720edd452dab727f3dbe201260b99ad75a2d5abe4b33",
+      "zone": "residential"
+    },
+    {
+      "assetId": "brickline_rowhouse_apartments",
+      "densityLevel": 2,
+      "footprintTiles": [
+        2,
+        2
+      ],
+      "meshCount": 243,
+      "originWorld": [
+        0.0,
+        8.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "sourceBlend": "FourViewProduction/ResidentialExpansion/brickline_rowhouse_apartments/brickline_rowhouse_apartments.blend",
+      "sourceBlendSha256": "87a81d9bfd6fe1ecfc97d41eb48e2fc66c3f438af1b74d4c55566acd80a5ee63",
+      "zone": "residential"
+    },
+    {
+      "assetId": "foundry_crown_apartments",
+      "densityLevel": 3,
+      "footprintTiles": [
+        2,
+        2
+      ],
+      "meshCount": 193,
+      "originWorld": [
+        8.0,
+        8.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "sourceBlend": "FourViewProduction/Density/foundry_crown_apartments/foundry_crown_apartments.blend",
+      "sourceBlendSha256": "3c0e0d9bf493eb4d385a519140804228f3c6f9cd415e13be2bff5aae81b251fa",
+      "zone": "residential"
+    },
+    {
+      "assetId": "harbor_corner_storefront",
+      "densityLevel": 1,
+      "footprintTiles": [
+        2,
+        2
+      ],
+      "meshCount": 71,
+      "originWorld": [
+        -8.0,
+        0.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "sourceBlend": "FourViewProduction/CommercialIndustrial/harbor_corner_storefront/harbor_corner_storefront.blend",
+      "sourceBlendSha256": "e6b82f6db66989a87d0ba41daca45d4e1cae743ec0b61814b6f89221b5d3b065",
+      "zone": "commercial"
+    },
+    {
+      "assetId": "market_arcade_midrise",
+      "densityLevel": 2,
+      "footprintTiles": [
+        2,
+        2
+      ],
+      "meshCount": 136,
+      "originWorld": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "sourceBlend": "FourViewProduction/Density/market_arcade_midrise/market_arcade_midrise.blend",
+      "sourceBlendSha256": "1ba20dc6af5d23bf57363c7997a623af81ac480a200a1436971bd91f200b4f3c",
+      "zone": "commercial"
+    },
+    {
+      "assetId": "aurora_exchange_tower",
+      "densityLevel": 3,
+      "footprintTiles": [
+        2,
+        2
+      ],
+      "meshCount": 159,
+      "originWorld": [
+        8.0,
+        0.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "sourceBlend": "FourViewProduction/Density/aurora_exchange_tower/aurora_exchange_tower.blend",
+      "sourceBlendSha256": "002e6abae41779059d84d8439f257c62cf53f69ef281a1628a08701b649bacdc",
+      "zone": "commercial"
+    },
+    {
+      "assetId": "ironleaf_service_workshop",
+      "densityLevel": 1,
+      "footprintTiles": [
+        2,
+        2
+      ],
+      "meshCount": 48,
+      "originWorld": [
+        -8.0,
+        -8.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "sourceBlend": "FourViewProduction/CommercialIndustrial/ironleaf_service_workshop/ironleaf_service_workshop.blend",
+      "sourceBlendSha256": "eb0cbf045983164fcd0a88451765dcab9e6f4ba4fc712863bcf121bd365914d8",
+      "zone": "industrial"
+    },
+    {
+      "assetId": "canalworks_factory",
+      "densityLevel": 2,
+      "footprintTiles": [
+        2,
+        2
+      ],
+      "meshCount": 91,
+      "originWorld": [
+        0.0,
+        -8.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "sourceBlend": "FourViewProduction/Density/canalworks_factory/canalworks_factory.blend",
+      "sourceBlendSha256": "69369e1131a28f27b229480e9e4e9e6453679b8db4f6c278f3361a332b07ee7c",
+      "zone": "industrial"
+    },
+    {
+      "assetId": "foundry_peak_plant",
+      "densityLevel": 3,
+      "footprintTiles": [
+        2,
+        2
+      ],
+      "meshCount": 130,
+      "originWorld": [
+        8.0,
+        -8.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "sourceBlend": "FourViewProduction/Density/foundry_peak_plant/foundry_peak_plant.blend",
+      "sourceBlendSha256": "6494bcc588a1fa2abe196451abd8cf09d1bdd4009bea896c31546b2a99ce02cf",
+      "zone": "industrial"
+    }
+  ],
+  "schema": "citysim.world-art.density-progression-preview.v1",
+  "sourceFiles": [
+    {
+      "path": "build_and_render.py",
+      "sha256": "ff95f26a68c53a3f2e7bc60e540c5836afbd1781a4f78f50b1bdaec76b007e41"
+    },
+    {
+      "path": "pipeline.json",
+      "sha256": "7057958876aebf6b18493469e27daa2993d0374cb9654ad63fc789db335b1b25"
+    },
+    {
+      "path": "run_pipeline.sh",
+      "sha256": "532d05471506c823329d1b29371fee92e772a60c1b591115d68685bbd84e24b2"
+    }
+  ],
+  "status": "source-only-review-evidence"
+}

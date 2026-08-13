@@ -3250,9 +3250,7 @@ final class CityCommandCatalogTests: XCTestCase {
         let store = CityGameStore(state: .newCity(seed: 42))
         let coordinator = CitySceneView.Coordinator(store: store)
         let mapView = CityMapSKView(frame: CGRect(x: 0, y: 0, width: 900, height: 600))
-        let demolitionTile = try XCTUnwrap(store.state.tiles.first {
-            $0.kind != .empty && $0.kind != .cityHall
-        })
+        let demolitionTile = try XCTUnwrap(store.state.tiles.first { $0.kind == .residential })
         store.interactionMode = .bulldoze
         store.selectedCoordinate = demolitionTile.coordinate
         coordinator.configureMapAccessibility(in: mapView)
@@ -3261,6 +3259,8 @@ final class CityCommandCatalogTests: XCTestCase {
         let expectedName = "Demolish \(demolitionTile.kind.title) at block \(demolitionTile.coordinate.x + 1), \(demolitionTile.coordinate.y + 1) for \(demolitionCost)"
         XCTAssertEqual(mapView.accessibilityCustomActions()?.first?.name, expectedName)
         XCTAssertTrue((mapView.accessibilityValue() as? String)?.contains(expectedName) == true)
+        XCTAssertTrue((mapView.accessibilityValue() as? String)?.contains("Net ") == true)
+        XCTAssertTrue((mapView.accessibilityValue() as? String)?.contains("Housing ") == true)
         XCTAssertTrue((mapView.accessibilityValue() as? String)?.contains("Undo is available") == true)
         XCTAssertTrue(store.canPerformMapCommand(.mapPrimaryAction))
         let beforeDemolition = store.state

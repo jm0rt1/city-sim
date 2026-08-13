@@ -327,6 +327,14 @@ struct InspectorView: View {
                     label: "Demolition",
                     value: store.state.usesUnlimitedFunds ? "Waived" : tile.kind.demolitionCost.currencyText
                 )
+                if let forecast = CityDemolitionForecast.make(tile: tile, state: store.state) {
+                    Text(forecast.summary)
+                        .font(.caption2.weight(.semibold))
+                        .foregroundStyle(forecast.balanceChange >= 0 ? GameTheme.accent : GameTheme.warning)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .accessibilityLabel("Demolition impact")
+                        .accessibilityValue(forecast.summary)
+                }
                 HStack(spacing: 6) {
                     compactAction("City data", symbol: "chart.dots.scatter") { store.perform(.inspectorOverview) }
                     Button(role: .destructive) { store.demolishSelected() } label: {
@@ -341,8 +349,8 @@ struct InspectorView: View {
                     )
                     .accessibilityHint(
                         store.state.usesUnlimitedFunds
-                            ? "Sandbox demolition spending is waived. Undo is available after activation."
-                            : "Demolition costs \(tile.kind.demolitionCost.currencyText). Undo is available after activation."
+                            ? "Sandbox demolition spending is waived. The operating and capacity impact is shown above. Undo is available after activation."
+                            : "Demolition costs \(tile.kind.demolitionCost.currencyText). The operating and capacity impact is shown above. Undo is available after activation."
                     )
                 }
             }

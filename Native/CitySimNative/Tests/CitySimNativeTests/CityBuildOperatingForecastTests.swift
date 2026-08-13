@@ -70,6 +70,52 @@ final class CityBuildOperatingForecastTests: XCTestCase {
         XCTAssertNotNil(decision.operatingForecast)
     }
 
+    func testDemolitionForecastNamesHousingJobsUtilitiesRoadsAndServices() throws {
+        var state = CityGameState.newCity(seed: 42)
+        state.treasury = 100_000
+        for kind in [BuildingKind.commercial, .powerPlant, .waterTower, .fireStation] {
+            let coordinate = try validTile(for: kind, in: state).coordinate
+            guard case .success = CitySimulation.build(kind, at: coordinate, in: &state) else {
+                return XCTFail("Expected \(kind.title) fixture to build")
+            }
+            state.updateTile(at: coordinate) { $0.constructionProgress = 1 }
+        }
+        state.powerCapacity = CitySimulation.powerCapacityPerPlant * 2
+        state.waterCapacity = CitySimulation.waterCapacityPerTower * 2
+
+        let residential = try XCTUnwrap(state.tiles.first { $0.kind == .residential })
+        let road = try XCTUnwrap(state.tiles.first { $0.kind == .road })
+        XCTAssertTrue(try XCTUnwrap(CityDemolitionForecast.make(tile: residential, state: state)).capacityImpact.hasPrefix("Housing "))
+        XCTAssertTrue(try XCTUnwrap(CityDemolitionForecast.make(tile: try tile(.commercial, in: state), state: state)).capacityImpact.hasPrefix("Jobs "))
+        XCTAssertTrue(try XCTUnwrap(CityDemolitionForecast.make(tile: try tile(.powerPlant, in: state), state: state)).capacityImpact.hasPrefix("Power "))
+        XCTAssertTrue(try XCTUnwrap(CityDemolitionForecast.make(tile: try tile(.waterTower, in: state), state: state)).capacityImpact.hasPrefix("Water "))
+        XCTAssertEqual(
+            try XCTUnwrap(CityDemolitionForecast.make(tile: road, state: state)).capacityImpact,
+            "Road access may change for adjacent blocks"
+        )
+        XCTAssertEqual(
+            try XCTUnwrap(CityDemolitionForecast.make(tile: try tile(.fireStation, in: state), state: state)).capacityImpact,
+            "Removes civic service and storm protection"
+        )
+    }
+
+    func testDemolitionForecastIncludesFeeDebtAndUnlimitedFundsRules() throws {
+        var funded = CityGameState.newCity(seed: 42)
+        let residential = try XCTUnwrap(funded.tiles.first { $0.kind == .residential })
+        let fundedForecast = try XCTUnwrap(CityDemolitionForecast.make(tile: residential, state: funded))
+        funded.treasury = 0
+        let debtForecast = try XCTUnwrap(CityDemolitionForecast.make(tile: residential, state: funded))
+        funded.sandboxRules = CitySandboxRules(
+            economy: .standard,
+            incidentsEnabled: true,
+            unlimitedFunds: true
+        )
+        let unlimitedForecast = try XCTUnwrap(CityDemolitionForecast.make(tile: residential, state: funded))
+
+        XCTAssertLessThan(debtForecast.balanceChange, fundedForecast.balanceChange)
+        XCTAssertGreaterThan(unlimitedForecast.balanceChange, debtForecast.balanceChange)
+    }
+
     private func validTile(for kind: BuildingKind, in state: CityGameState) throws -> CityTile {
         try XCTUnwrap(state.tiles.first { tile in
             guard tile.kind == .empty else { return false }
@@ -78,5 +124,9 @@ final class CityBuildOperatingForecastTests: XCTestCase {
             }
             return false
         })
+    }
+
+    private func tile(_ kind: BuildingKind, in state: CityGameState) throws -> CityTile {
+        try XCTUnwrap(state.tiles.first { $0.kind == kind })
     }
 }

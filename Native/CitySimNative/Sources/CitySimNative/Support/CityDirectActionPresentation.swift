@@ -667,6 +667,63 @@ struct CityBuildOperatingForecast: Equatable, Sendable {
     }
 }
 
+struct CityDemolitionForecast: Equatable, Sendable {
+    let currentBalance: Double
+    let projectedBalance: Double
+    let balanceChange: Double
+    let capacityImpact: String
+
+    var summary: String {
+        "Net \(currentBalance.signedCurrencyText) → \(projectedBalance.signedCurrencyText) / cycle "
+            + "(\(balanceChange.signedCurrencyText)) · \(capacityImpact)"
+    }
+
+    static func make(tile: CityTile, state: CityGameState) -> Self? {
+        guard tile.kind != .empty, tile.kind != .cityHall else { return nil }
+        let currentBalance = CitySimulation.projectedBalance(in: state)
+        let housingBefore = CitySimulation.housingCapacity(in: state)
+        let jobsBefore = CitySimulation.jobCapacity(in: state)
+        let powerBefore = state.powerCapacity
+        let waterBefore = state.waterCapacity
+        var projected = state
+        guard CitySimulation.demolish(at: tile.coordinate, in: &projected) else { return nil }
+        let active = CitySimulation.activeTiles(in: projected)
+        projected.powerCapacity = active.filter { $0.kind == .powerPlant }.count
+            * CitySimulation.powerCapacityPerPlant
+        projected.waterCapacity = active.filter { $0.kind == .waterTower }.count
+            * CitySimulation.waterCapacityPerTower
+        projected.jobs = min(
+            CitySimulation.jobCapacity(in: projected),
+            max(1, projected.population * 7 / 10)
+        )
+        let completedBalance = CitySimulation.projectedBalance(in: projected)
+        let impact: String = switch tile.kind {
+        case .residential:
+            "Housing \(housingBefore.formatted()) → \(CitySimulation.housingCapacity(in: projected).formatted())"
+        case .commercial, .industrial:
+            "Jobs \(jobsBefore.formatted()) → \(CitySimulation.jobCapacity(in: projected).formatted())"
+        case .powerPlant:
+            "Power \(powerBefore.formatted()) → \(projected.powerCapacity.formatted())"
+        case .waterTower:
+            "Water \(waterBefore.formatted()) → \(projected.waterCapacity.formatted())"
+        case .road:
+            "Road access may change for adjacent blocks"
+        case .park:
+            "Removes park livability and storm protection"
+        case .fireStation, .policeStation, .school:
+            "Removes civic service and storm protection"
+        case .empty, .cityHall:
+            "No removable capacity"
+        }
+        return Self(
+            currentBalance: currentBalance,
+            projectedBalance: completedBalance,
+            balanceChange: completedBalance - currentBalance,
+            capacityImpact: impact
+        )
+    }
+}
+
 struct CityBuildDecisionPresentation: Equatable, Sendable {
     let buildingTitle: String
     let buildingSymbol: String
@@ -820,9 +877,10 @@ struct CityMapPrimaryActionPresentation: Equatable, Sendable {
             let demolitionName = state.usesUnlimitedFunds
                 ? "Demolish \(tile.kind.title) at \(block)"
                 : "Demolish \(tile.kind.title) at \(block) for \(tile.kind.demolitionCost.currencyText)"
+            let forecast = CityDemolitionForecast.make(tile: tile, state: state)
             let demolitionDisclosure = state.usesUnlimitedFunds
-                ? "Available. Demolition spending is waived. Undo is available after activation."
-                : "Available. Demolition costs \(tile.kind.demolitionCost.currencyText). Undo is available after activation."
+                ? "Available. Demolition spending is waived. \(forecast?.summary ?? "Impact unavailable"). Undo is available after activation."
+                : "Available. Demolition costs \(tile.kind.demolitionCost.currencyText). \(forecast?.summary ?? "Impact unavailable"). Undo is available after activation."
             return .init(
                 name: demolitionName,
                 disclosure: demolitionDisclosure,

@@ -471,6 +471,7 @@ struct ContentView: View {
                     presentation: setup,
                     draft: store.newRegionDraft,
                     updateExperience: store.updateNewRegionExperience,
+                    updateScenario: store.updateNewRegionScenario,
                     updateCityName: store.updateNewRegionCityName,
                     updateSeed: store.updateNewRegionSeed,
                     updateStartingResources: store.updateNewRegionStartingResources,

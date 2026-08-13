@@ -82,6 +82,25 @@ final class CityNewRegionSetupTests: XCTestCase {
         XCTAssertEqual(scenario.targetTiers.map(\.medal), [.bronze, .silver, .gold])
     }
 
+    func testAuthoredScenarioDraftCarriesTheSelectedCatalogEntryIntoCreation() throws {
+        var draft = CityNewRegionDraft.initial(seed: 42)
+        draft.experience = .authoredScenario
+        draft.scenarioID = CityAuthoredScenarioCatalog.waterlineEmergency.id
+
+        let configuration = try XCTUnwrap(draft.configuration)
+        let state = configuration.makeState()
+
+        XCTAssertEqual(configuration.scenarioID, "waterline-emergency")
+        XCTAssertEqual(configuration.cityName, "Mesa Verde")
+        XCTAssertEqual(configuration.seed, CityAuthoredScenarioCatalog.waterlineEmergency.seed)
+        XCTAssertEqual(state.authoredScenario?.scenarioID, "waterline-emergency")
+        XCTAssertEqual(state, CityAuthoredScenarioCatalog.waterlineEmergency.makeState())
+
+        draft.scenarioID = "missing-scenario"
+        XCTAssertNil(draft.configuration)
+        XCTAssertFalse(draft.canStart)
+    }
+
     @MainActor
     func testSetupPausesWithoutReplacingAndCancelRestoresTheCurrentCity() throws {
         var current = CityGameState.newCity(seed: 77)
@@ -123,6 +142,7 @@ final class CityNewRegionSetupTests: XCTestCase {
                     presentation: .standard,
                     draft: draft,
                     updateExperience: { _ in },
+                    updateScenario: { _ in },
                     updateCityName: { _ in },
                     updateSeed: { _ in },
                     updateStartingResources: { _ in },

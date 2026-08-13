@@ -11,7 +11,7 @@ enum CityNewRegionExperience: String, CaseIterable, Identifiable, Equatable, Sen
     var title: String {
         switch self {
         case .guidedFoundations: "Guided Foundations"
-        case .authoredScenario: "Harbor Recovery"
+        case .authoredScenario: "Authored Scenarios"
         case .openSandbox: "Open Sandbox"
         case .benchmark: "Benchmark"
         }
@@ -31,7 +31,7 @@ enum CityNewRegionExperience: String, CaseIterable, Identifiable, Equatable, Sen
         case .guidedFoundations:
             "Rebuild New Arcadia through an authored two-act mayoral mandate."
         case .authoredScenario:
-            "Stabilize a pressured harbor town before its 40-day deadline."
+            "Choose a deterministic city challenge with deadlines and medal targets."
         case .openSandbox:
             "Choose your city identity, deterministic seed, and starting resources."
         case .benchmark:
@@ -145,24 +145,29 @@ struct CityNewRegionConfiguration: Equatable, Sendable {
     let seed: UInt64
     let startingResources: CitySandboxStartingResources
     let sandboxRules: CitySandboxRules
+    let scenarioID: String?
 
     init(
         experience: CityNewRegionExperience,
         cityName: String,
         seed: UInt64,
         startingResources: CitySandboxStartingResources,
-        sandboxRules: CitySandboxRules = .standard
+        sandboxRules: CitySandboxRules = .standard,
+        scenarioID: String? = nil
     ) {
         self.experience = experience
         self.cityName = cityName
         self.seed = seed
         self.startingResources = startingResources
         self.sandboxRules = sandboxRules
+        self.scenarioID = scenarioID
     }
 
     func makeState() -> CityGameState {
         if experience == .authoredScenario {
-            return CityAuthoredScenarioCatalog.harborRecovery.makeState()
+            return CityAuthoredScenarioCatalog.definition(
+                for: scenarioID ?? CityAuthoredScenarioCatalog.harborRecovery.id
+            )?.makeState() ?? CityAuthoredScenarioCatalog.harborRecovery.makeState()
         }
         var state = CityGameState.newCity(seed: seed)
         state.cityName = cityName
@@ -192,6 +197,7 @@ struct CityNewRegionDraft: Equatable, Sendable {
     var sandboxEconomy: CitySandboxEconomy
     var incidentsEnabled: Bool
     var unlimitedFunds: Bool
+    var scenarioID: String
 
     static func initial(seed: UInt64) -> Self {
         Self(
@@ -201,7 +207,8 @@ struct CityNewRegionDraft: Equatable, Sendable {
             startingResources: .balanced,
             sandboxEconomy: .standard,
             incidentsEnabled: true,
-            unlimitedFunds: false
+            unlimitedFunds: false,
+            scenarioID: CityAuthoredScenarioCatalog.harborRecovery.id
         )
     }
 
@@ -216,12 +223,13 @@ struct CityNewRegionDraft: Equatable, Sendable {
                 startingResources: .balanced
             )
         case .authoredScenario:
-            let scenario = CityAuthoredScenarioCatalog.harborRecovery
+            guard let scenario = selectedScenario else { return nil }
             return CityNewRegionConfiguration(
                 experience: experience,
                 cityName: scenario.cityName,
                 seed: scenario.seed,
-                startingResources: .balanced
+                startingResources: .balanced,
+                scenarioID: scenario.id
             )
         case .openSandbox:
             guard let seed = parsedSeed else { return nil }
@@ -244,6 +252,10 @@ struct CityNewRegionDraft: Equatable, Sendable {
     }
 
     var canStart: Bool { experience == .benchmark || configuration != nil }
+
+    var selectedScenario: CityAuthoredScenarioDefinition? {
+        CityAuthoredScenarioCatalog.definition(for: scenarioID)
+    }
 
     var validationMessage: String? {
         guard experience == .openSandbox else { return nil }

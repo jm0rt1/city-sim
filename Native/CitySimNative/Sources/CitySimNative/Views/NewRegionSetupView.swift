@@ -4,6 +4,7 @@ struct NewRegionSetupView: View {
     let presentation: CityNewRegionSetupPresentation
     let draft: CityNewRegionDraft
     let updateExperience: (CityNewRegionExperience) -> Void
+    let updateScenario: (String) -> Void
     let updateCityName: (String) -> Void
     let updateSeed: (String) -> Void
     let updateStartingResources: (CitySandboxStartingResources) -> Void
@@ -195,8 +196,43 @@ struct NewRegionSetupView: View {
     }
 
     private func scenarioConfiguration(compact: Bool) -> some View {
-        let scenario = CityAuthoredScenarioCatalog.harborRecovery
+        let scenario = draft.selectedScenario ?? CityAuthoredScenarioCatalog.harborRecovery
         return VStack(alignment: .leading, spacing: compact ? 8 : 10) {
+            HStack(spacing: 8) {
+                ForEach(CityAuthoredScenarioCatalog.all) { option in
+                    Button { updateScenario(option.id) } label: {
+                        HStack(spacing: 7) {
+                            Image(systemName: option.kind == .waterResilience ? "drop.fill" : "lifepreserver.fill")
+                            VStack(alignment: .leading, spacing: 1) {
+                                Text(option.title)
+                                    .font(.caption.weight(.bold))
+                                Text(option.cityName)
+                                    .font(.system(size: 9, weight: .medium))
+                                    .foregroundStyle(.secondary)
+                            }
+                            Spacer(minLength: 0)
+                            Image(systemName: scenario.id == option.id ? "checkmark.circle.fill" : "circle")
+                        }
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, compact ? 7 : 9)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .background(
+                            scenario.id == option.id
+                                ? GameTheme.accent.opacity(0.14)
+                                : Color.black.opacity(0.14),
+                            in: RoundedRectangle(cornerRadius: 10)
+                        )
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(scenario.id == option.id ? GameTheme.accent.opacity(0.7) : .white.opacity(0.08))
+                        )
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityIdentifier("new-region-setup.scenario.\(option.id)")
+                    .accessibilityAddTraits(scenario.id == option.id ? .isSelected : [])
+                }
+            }
+
             HStack {
                 Label(scenario.eyebrow, systemImage: "flag.checkered")
                     .font(.headline)
@@ -244,7 +280,7 @@ struct NewRegionSetupView: View {
                     }
                 }
             } else {
-                Text("Normal costs and crises stay active · Pause is safe · Deadline: Day 41")
+                Text("Normal costs and crises stay active · Pause is safe · Deadline: Day \(scenario.deadlineDay)")
                     .font(.caption2.weight(.semibold))
                     .foregroundStyle(.secondary)
             }

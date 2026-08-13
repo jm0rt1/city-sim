@@ -101,21 +101,28 @@ struct CityStrategyHUDPresentation: Equatable {
         _ scenario: CityAuthoredScenarioEvaluation
     ) -> CityStrategyHUDPresentation {
         let diagnostic: CityDirectResponse
-        if scenario.utilityCoverage < 1 || scenario.utilityReserve < 0.08 {
+        let waterScenario = scenario.definition.kind == .waterResilience
+        let utilityAtRisk = waterScenario
+            ? scenario.utilityCoverage < 1 || scenario.waterReserve < 0.25
+            : scenario.utilityCoverage < 1 || scenario.utilityReserve < 0.08
+        let treasuryTarget: Double = waterScenario ? 12_000 : 15_000
+        if utilityAtRisk {
             diagnostic = CityDirectResponse(
-                title: "Diagnose utilities",
+                title: waterScenario ? "Secure the waterline" : "Diagnose utilities",
                 command: .inspectorUtilities,
-                explanation: "Review power and water coverage, capacity, and reserve before committing to more growth.",
+                explanation: waterScenario
+                    ? "Review water coverage and reserve, then add capacity before accepting more demand."
+                    : "Review power and water coverage, capacity, and reserve before committing to more growth.",
                 focusesMap: false
             )
-        } else if scenario.projectedBalance < 0 || scenario.treasury < 15_000 {
+        } else if scenario.projectedBalance < 0 || scenario.treasury < treasuryTarget {
             diagnostic = CityDirectResponse(
                 title: "Diagnose cashflow",
                 command: .inspectorFinances,
                 explanation: "Review revenue, upkeep, tax policy, and the emergency reserve.",
                 focusesMap: false
             )
-        } else if scenario.population < 380 {
+        } else if !waterScenario && scenario.population < 380 {
             diagnostic = CityDirectResponse(
                 title: "Plan measured growth",
                 command: .inspectorPopulation,
@@ -135,19 +142,23 @@ struct CityStrategyHUDPresentation: Equatable {
             CityDirectResponse(
                 title: "Review finances",
                 command: .inspectorFinances,
-                explanation: "Review cashflow, tax policy, upkeep, and the $15,000 reserve requirement.",
+                explanation: "Review cashflow, tax policy, upkeep, and the \(treasuryTarget.currencyText) reserve requirement.",
                 focusesMap: false
             ),
             CityDirectResponse(
                 title: "Review utilities",
                 command: .inspectorUtilities,
-                explanation: "Review full coverage and reserve capacity for power and water.",
+                explanation: waterScenario
+                    ? "Review full coverage and the mandatory 25% water reserve."
+                    : "Review full coverage and reserve capacity for power and water.",
                 focusesMap: false
             ),
             CityDirectResponse(
-                title: "Review population",
-                command: .inspectorPopulation,
-                explanation: "Review progress toward 380 residents and the conditions supporting measured growth.",
+                title: waterScenario ? "Review happiness" : "Review population",
+                command: waterScenario ? .inspectorHappiness : .inspectorPopulation,
+                explanation: waterScenario
+                    ? "Review progress toward 52% happiness without consuming water headroom."
+                    : "Review progress toward 380 residents and the conditions supporting measured growth.",
                 focusesMap: false
             ),
         ].filter { $0.command != diagnostic.command }
@@ -168,7 +179,9 @@ struct CityStrategyHUDPresentation: Equatable {
 
         return CityStrategyHUDPresentation(
             eyebrow: scenario.definition.title.uppercased(),
-            title: "Stabilize \(scenario.definition.cityName)",
+            title: waterScenario
+                ? "Secure \(scenario.definition.cityName)"
+                : "Stabilize \(scenario.definition.cityName)",
             status: status,
             summary: scenario.adaptiveHint,
             tone: tone,

@@ -149,6 +149,7 @@ final class CityBenchmarkModeTests: XCTestCase {
                     presentation: .standard,
                     draft: draft,
                     updateExperience: { _ in },
+                    updateScenario: { _ in },
                     updateCityName: { _ in },
                     updateSeed: { _ in },
                     updateStartingResources: { _ in },

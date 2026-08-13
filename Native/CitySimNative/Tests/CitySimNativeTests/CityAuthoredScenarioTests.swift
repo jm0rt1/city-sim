@@ -19,6 +19,59 @@ final class CityAuthoredScenarioTests: XCTestCase {
         XCTAssertEqual(scenario.estimatedDuration, "15–25 minutes")
     }
 
+    func testCatalogOffersDistinctCompleteDeterministicScenarios() throws {
+        XCTAssertEqual(CityAuthoredScenarioCatalog.all.map(\.id), [
+            "harbor-recovery", "waterline-emergency"
+        ])
+        let scenario = CityAuthoredScenarioCatalog.waterlineEmergency
+        let first = scenario.makeState()
+        let second = scenario.makeState()
+        let evaluation = try XCTUnwrap(CityAuthoredScenarioEvaluation.make(state: first))
+
+        XCTAssertEqual(first, second)
+        XCTAssertEqual(scenario.kind, .waterResilience)
+        XCTAssertEqual(scenario.cityName, "Mesa Verde")
+        XCTAssertEqual(scenario.deadlineDay, 37)
+        XCTAssertEqual(first.authoredScenario?.scenarioID, "waterline-emergency")
+        XCTAssertEqual(first.authoredScenario?.deadlineTick, 144)
+        XCTAssertEqual(first.population, 390)
+        XCTAssertEqual(first.treasury, 18_000)
+        XCTAssertNil(first.progression)
+        XCTAssertFalse(evaluation.mandatoryComplete)
+        XCTAssertLessThan(evaluation.waterReserve, 0.03)
+        XCTAssertEqual(evaluation.objectives.map(\.id), [
+            "scenario-water", "scenario-stability", "scenario-reserve"
+        ])
+        XCTAssertTrue(evaluation.adaptiveHint.contains("Water reserve"))
+
+        let priority = CityStrategyHUDPresentation.make(state: first)
+        XCTAssertEqual(priority.eyebrow, "WATERLINE EMERGENCY")
+        XCTAssertEqual(priority.title, "Secure Mesa Verde")
+        XCTAssertEqual(priority.status, "36 DAYS LEFT")
+        XCTAssertEqual(priority.diagnostic?.command, .inspectorUtilities)
+    }
+
+    func testWaterlineEmergencyAwardsGoldAndBuildsScenarioSpecificDebrief() throws {
+        var state = CityAuthoredScenarioCatalog.waterlineEmergency.makeState()
+        state.treasury = 24_000
+        state.happiness = 60
+        state.waterUsed = 140
+        state.taxRate = 0.18
+        XCTAssertGreaterThanOrEqual(CitySimulation.projectedBalance(in: state), 0)
+
+        CityAuthoredScenarioEngine.evaluate(&state)
+
+        XCTAssertEqual(state.authoredScenario?.result, .gold)
+        XCTAssertEqual(state.status, .won)
+        XCTAssertEqual(state.messages.first?.title, "Waterline Emergency Complete")
+        let debrief = try XCTUnwrap(CityScenarioDebriefPresentation.make(state: state))
+        XCTAssertTrue(debrief.succeeded)
+        XCTAssertEqual(debrief.title, "Mesa Verde Water-Secure")
+        XCTAssertTrue(debrief.summary.contains("water resilience"))
+        XCTAssertTrue(debrief.metrics.contains { $0.label == "Water reserve" && $0.value == "48%" })
+        XCTAssertTrue(debrief.accessibilityLabel.contains("Gold medal"))
+    }
+
     func testScenarioStartIsDeterministicPressuredAndSeparateFromCampaignProgression() throws {
         let scenario = CityAuthoredScenarioCatalog.harborRecovery
         let first = scenario.makeState()
@@ -163,6 +216,28 @@ final class CityAuthoredScenarioTests: XCTestCase {
     }
 
     @MainActor
+    func testNewRegionJourneyStartsSelectedWaterlineScenarioAndRoutesItsObjective() {
+        let store = CityGameStore(state: .newCity(seed: 42), startsPaused: true)
+
+        XCTAssertTrue(store.perform(.newRegion))
+        store.updateNewRegionExperience(.authoredScenario)
+        store.updateNewRegionScenario(CityAuthoredScenarioCatalog.waterlineEmergency.id)
+        XCTAssertEqual(store.newRegionDraft.selectedScenario?.title, "Waterline Emergency")
+        XCTAssertTrue(store.createNewRegion())
+
+        XCTAssertEqual(store.state.cityName, "Mesa Verde")
+        XCTAssertEqual(store.state.authoredScenario?.scenarioID, "waterline-emergency")
+        XCTAssertEqual(store.objectivePresentations.map(\.id), [
+            "scenario-water", "scenario-stability", "scenario-reserve"
+        ])
+        XCTAssertTrue(store.lastFeedback?.contains("36 city days") == true)
+
+        store.openObjective(store.objectivePresentations[0].objective)
+        XCTAssertEqual(store.overlay, .utilities)
+        XCTAssertEqual(store.inspectorSection, .utilities)
+    }
+
+    @MainActor
     func testScenarioDebriefRendersAtCompactAndDefaultSizes() throws {
         var state = CityAuthoredScenarioCatalog.harborRecovery.makeState()
         state.population = 450
@@ -196,11 +271,12 @@ final class CityAuthoredScenarioTests: XCTestCase {
     func testScenarioSelectionAndLiveObjectivesRenderAtAcceptanceSizes() throws {
         var draft = CityNewRegionDraft.initial(seed: 42)
         draft.experience = .authoredScenario
+        draft.scenarioID = CityAuthoredScenarioCatalog.waterlineEmergency.id
         let defaults = try isolatedDefaults()
         defaults.set(true, forKey: CityPlayerPreferenceKey.hasSeenWelcome)
         defaults.set(true, forKey: CityPlayerPreferenceKey.reduceMotion)
         let store = CityGameStore(
-            state: CityAuthoredScenarioCatalog.harborRecovery.makeState(),
+            state: CityAuthoredScenarioCatalog.waterlineEmergency.makeState(),
             startsPaused: true
         )
         store.showObjectives = true
@@ -211,6 +287,7 @@ final class CityAuthoredScenarioTests: XCTestCase {
                     presentation: .standard,
                     draft: draft,
                     updateExperience: { _ in },
+                    updateScenario: { _ in },
                     updateCityName: { _ in },
                     updateSeed: { _ in },
                     updateStartingResources: { _ in },

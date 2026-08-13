@@ -1121,6 +1121,10 @@ final class CityGameStore: ObservableObject {
 
     func openObjective(_ objective: CityObjective) {
         switch objective.id {
+        case "scenario-water":
+            showObjectives = true
+            overlay = .utilities
+            openInspector(.utilities)
         case "scenario-stability":
             showObjectives = true
             if CitySimulation.utilityCoverage(in: state) < 1 {
@@ -1332,6 +1336,12 @@ final class CityGameStore: ObservableObject {
     func updateNewRegionExperience(_ experience: CityNewRegionExperience) {
         guard commandPolicy == .blocked(.newRegionSetup) else { return }
         newRegionDraft.experience = experience
+    }
+
+    func updateNewRegionScenario(_ scenarioID: String) {
+        guard commandPolicy == .blocked(.newRegionSetup),
+              CityAuthoredScenarioCatalog.definition(for: scenarioID) != nil else { return }
+        newRegionDraft.scenarioID = scenarioID
     }
 
     func updateNewRegionCityName(_ cityName: String) {
@@ -1565,9 +1575,11 @@ final class CityGameStore: ObservableObject {
             showFeedback("Guided Foundations ready · New Arcadia · Seed \(configuration.seed)")
         case .authoredScenario:
             showObjectives = true
-            let scenario = CityAuthoredScenarioCatalog.harborRecovery
+            let scenario = CityAuthoredScenarioCatalog.definition(
+                for: configuration.scenarioID ?? CityAuthoredScenarioCatalog.harborRecovery.id
+            ) ?? CityAuthoredScenarioCatalog.harborRecovery
             showFeedback(
-                "Scenario ready · \(scenario.title) · 40 city days · Start paused",
+                "Scenario ready · \(scenario.title) · \(scenario.deadlineDay - 1) city days · Start paused",
                 tone: .positive,
                 autoDismissAfter: nil
             )

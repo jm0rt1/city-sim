@@ -24,22 +24,22 @@
   "liveAsset": false,
   "outputs": [
     {
-      "bytes": 277815,
+      "bytes": 290325,
       "dimensions": [
         1280,
         800
       ],
       "path": "four-view-source-block-1280x800.png",
-      "sha256": "7f69d69e4b2956e31d65cf78e74c963b86ed32aa307e5722ef82f9bfdc9d1f52"
+      "sha256": "f083417ffd45532d872de88d8d7c1766593191d011df94eb68e5ab86fa1e14c6"
     },
     {
-      "bytes": 264968,
+      "bytes": 276350,
       "dimensions": [
         900,
         600
       ],
       "path": "four-view-source-block-900x600.png",
-      "sha256": "54fe34b06c87e6b60112036e9ff33109301b5b35801f6425edb4a9e16d90c4c7"
+      "sha256": "8d4eff942630b742256588f26cfc2f35400e2b586d36ecb12b8f42c81b2b6b71"
     }
   ],
   "placements": [
@@ -58,7 +58,7 @@
       ]
     },
     {
-      "assetId": "harbor_corner_storefront",
+      "assetId": "brickline_rowhouse_apartments",
       "tileCenter": [
         4,
         0
@@ -131,6 +131,11 @@
       "assetId": "hearthside_council_hall",
       "path": "FourViewProduction/ResidentialCivic/renders/hearthside_council_hall_camNE.png",
       "sha256": "eaea53915387650e1a4eb33f8851fbbce960d880f728e504d326005abe1f4c49"
+    },
+    {
+      "assetId": "brickline_rowhouse_apartments",
+      "path": "FourViewProduction/ResidentialExpansion/brickline_rowhouse_apartments/renders/brickline_rowhouse_apartments_camNE.png",
+      "sha256": "61112a5c245accebc2c865dcd937a5bb1171e639ef256a4ecc02f6d64c27f9af"
     },
     {
       "assetId": "harbor_corner_storefront",

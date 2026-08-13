@@ -27,6 +27,7 @@ ASSETS = {
     "copper_finch_house": PIPELINE_DIR / "example/renders/copper_finch_house_camNE.png",
     "marigold_court_house": PRODUCTION_DIR / "ResidentialCivic/renders/marigold_court_house_camNE.png",
     "hearthside_council_hall": PRODUCTION_DIR / "ResidentialCivic/renders/hearthside_council_hall_camNE.png",
+    "brickline_rowhouse_apartments": PRODUCTION_DIR / "ResidentialExpansion/brickline_rowhouse_apartments/renders/brickline_rowhouse_apartments_camNE.png",
     "harbor_corner_storefront": PRODUCTION_DIR / "CommercialIndustrial/harbor_corner_storefront/renders/harbor_corner_storefront_camNE.png",
     "ironleaf_service_workshop": PRODUCTION_DIR / "CommercialIndustrial/ironleaf_service_workshop/renders/ironleaf_service_workshop_camNE.png",
     "axis_civic_road": PRODUCTION_DIR / "Environment/assets/axis_civic_road/renders/axis_civic_road_camNE.png",
@@ -39,7 +40,7 @@ ASSETS = {
 PLACEMENTS = [
     (0, 0, "copper_finch_house"),
     (2, 0, "marigold_court_house"),
-    (4, 0, "harbor_corner_storefront"),
+    (4, 0, "brickline_rowhouse_apartments"),
     (6, 0, "hearthside_council_hall"),
     (8, 0, "copper_finch_house"),
     (0, 4, "pocket_grove_park"),

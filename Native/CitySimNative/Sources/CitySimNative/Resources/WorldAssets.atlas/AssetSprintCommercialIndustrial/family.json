@@ -1,0 +1,146 @@
+{
+  "assets": [
+    {
+      "category": "commercial",
+      "file": "cedar-corner-shop.png",
+      "footprint_tiles": [
+        2,
+        2
+      ],
+      "id": "cedar-corner-shop",
+      "packaged_sha256": "fd0807cee20e154884cd9416f919770a4283d80163f46532488ab4104f95180f",
+      "pixel_size": [
+        512,
+        512
+      ],
+      "renderer_rotation_degrees": 0,
+      "renderer_scale_override": 1,
+      "renderer_skew": 0,
+      "source_file": "cedar-corner-shop-source.png",
+      "source_sha256": "3549ad871071b5a90ffaded6bb50ce871c464f57899510928531bb32b454481e"
+    },
+    {
+      "category": "commercial",
+      "file": "cedar-cafe.png",
+      "footprint_tiles": [
+        2,
+        2
+      ],
+      "id": "cedar-cafe",
+      "packaged_sha256": "672ba3a0ca9460f3fb79a4dfaeac469b574eb0f2bc0191ea260014ec88b5fab5",
+      "pixel_size": [
+        512,
+        512
+      ],
+      "renderer_rotation_degrees": 0,
+      "renderer_scale_override": 1,
+      "renderer_skew": 0,
+      "source_file": "cedar-cafe-source.png",
+      "source_sha256": "b2d768f2d7cc3ce1456934b2270dbe969d67dedac029f2fccf6e36635b1de75d"
+    },
+    {
+      "category": "commercial",
+      "file": "cedar-mixed-use.png",
+      "footprint_tiles": [
+        2,
+        2
+      ],
+      "id": "cedar-mixed-use",
+      "packaged_sha256": "18dd5fb026ec1dbeae4f440a9b0b22d42e17efda4634719e8dfa74f8244fa11f",
+      "pixel_size": [
+        512,
+        576
+      ],
+      "renderer_rotation_degrees": 0,
+      "renderer_scale_override": 1,
+      "renderer_skew": 0,
+      "source_file": "cedar-mixed-use-source.png",
+      "source_sha256": "9c9f8536fcfe20eaf7319531dfcce7b7779206c905d729f97d7a360b1a656785"
+    },
+    {
+      "category": "industrial",
+      "file": "cedar-workshop.png",
+      "footprint_tiles": [
+        2,
+        3
+      ],
+      "id": "cedar-workshop",
+      "packaged_sha256": "2784d70b749a919b7105603c43937d694019f1664efa8a1892fb5540c5b847c1",
+      "pixel_size": [
+        640,
+        576
+      ],
+      "renderer_rotation_degrees": 0,
+      "renderer_scale_override": 1,
+      "renderer_skew": 0,
+      "source_file": "cedar-workshop-source.png",
+      "source_sha256": "7d27a59418d4cd7283fa5aa8fcb784aa48a53456be3b67cf66e1ff2e40879cce"
+    },
+    {
+      "category": "industrial",
+      "file": "cedar-factory.png",
+      "footprint_tiles": [
+        3,
+        3
+      ],
+      "id": "cedar-factory",
+      "packaged_sha256": "bfc0b8a7632c655d1583ab21281cebf189a672f591e5b9a8a85fa77edcc6dc33",
+      "pixel_size": [
+        768,
+        640
+      ],
+      "renderer_rotation_degrees": 0,
+      "renderer_scale_override": 1,
+      "renderer_skew": 0,
+      "source_file": "cedar-factory-source.png",
+      "source_sha256": "623359b5654b6d77c665ca9f260d9c181f09ecb2b0d354f7ca9ca6b98db133a1"
+    },
+    {
+      "category": "industrial",
+      "file": "cedar-utility-industry.png",
+      "footprint_tiles": [
+        2,
+        3
+      ],
+      "id": "cedar-utility-industry",
+      "packaged_sha256": "02e5f5cafad86b77874e9be6405d83c91650df677d6959022eb62d7ea33dc0e2",
+      "pixel_size": [
+        640,
+        576
+      ],
+      "renderer_rotation_degrees": 0,
+      "renderer_scale_override": 1,
+      "renderer_skew": 0,
+      "source_file": "cedar-utility-industry-source.png",
+      "source_sha256": "a779f6fb7918ff7f4b094ff56e2751ca72f8c529864615a27cbcd6ce9c3e1611"
+    }
+  ],
+  "family_id": "cedar-market-commercial-industrial-v1",
+  "generation_mode": "OpenAI built-in image_gen, separate generation per asset, chroma-key alpha workflow",
+  "ground_contract": {
+    "key_light": "northwest",
+    "pivot_x": 0.5,
+    "pivot_y": 0.18,
+    "shadow_direction": "southeast",
+    "shadow_offset_pixels": [
+      16,
+      -10
+    ]
+  },
+  "license": "Copyright JFM Systems; original project-bound generated artwork",
+  "projection": {
+    "elevation_step": 22,
+    "id": "citysim-isometric-2to1-southeast-v1",
+    "tile_height": 44,
+    "tile_width": 88,
+    "visible_facades": [
+      "southwest",
+      "southeast"
+    ]
+  },
+  "representative_renders": [
+    "cedar-market-commercial-industrial-block-1280x800.png",
+    "cedar-market-commercial-industrial-block-900x600.png"
+  ],
+  "schema": 1
+}

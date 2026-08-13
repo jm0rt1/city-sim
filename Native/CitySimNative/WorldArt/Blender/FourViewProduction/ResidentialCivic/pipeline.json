@@ -1,0 +1,23 @@
+{
+  "schema": "citysim.world-art.residential-civic-production.v1",
+  "toolchain": {"blenderVersion": "4.5.12", "renderEngine": "BLENDER_EEVEE_NEXT"},
+  "grid": {"worldTileSize": 2.0, "projectedTilePixels": [88, 44], "projection": "orthographic-2:1-dimetric", "azimuthDegrees": 45.0, "elevationDegrees": 30.0},
+  "canvas": {"width": 384, "height": 384, "transparent": true, "trim": false, "footprintPivotPixel": [192, 300]},
+  "cameraRig": {
+    "distance": 32.0, "orthoScale": 12.341995, "shiftY": 0.28125,
+    "views": [
+      {"name": "camNE", "azimuthDegrees": 45.0},
+      {"name": "camSE", "azimuthDegrees": 135.0},
+      {"name": "camSW", "azimuthDegrees": 225.0},
+      {"name": "camNW", "azimuthDegrees": 315.0}
+    ]
+  },
+  "root": {"name": "AssetRoot", "pivotName": "FootprintPivot", "location": [0.0, 0.0, 0.0], "rotationEuler": [0.0, 0.0, 0.0], "scale": [1.0, 1.0, 1.0]},
+  "lighting": {"name": "CitySimKey", "type": "AREA", "location": [-6.0, -8.0, 12.0], "energy": 1100.0, "size": 5.0, "worldStrength": 0.65},
+  "assets": [
+    {"assetId": "marigold_court_house", "description": "Compact L-plan stucco residence with tiled hip roofs and sheltered court", "footprintTiles": [2, 2]},
+    {"assetId": "hearthside_council_hall", "description": "Small civic hall with centered public stair, clock tower, bell arch, and flag", "footprintTiles": [2, 2]}
+  ],
+  "preview": {"assetId": "residential_civic_neighborhood_edge", "gridPlacements": [[-2.0, 0.0], [2.0, 0.0]], "camera": "camNE"},
+  "provenance": {"originalGeometry": true, "sourcePixelsReused": false, "cedarMarketReused": false, "copperFinchGeometryReused": false, "liveAsset": false, "purpose": "source-only review evidence"}
+}

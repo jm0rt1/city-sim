@@ -1,0 +1,158 @@
+{
+  "artifacts": [
+    {
+      "bytes": 1029877,
+      "path": "hearthside_council_hall.blend",
+      "sha256": "b85ab5fd70dab1c089826a7564a42159d41aa53ccc76b21a9bf5c9bb61924aeb"
+    },
+    {
+      "bytes": 51135,
+      "decodedRgbaSha256": "6c75ae7ec67c9c48d211429715f68dddd06f683920a094adcc2df1dcbe75436f",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/hearthside_council_hall_camNE.png",
+      "sha256": "ee6e38809b6d5a10c20a2ff9d74494b1374b4ac77b0dac9d9173e46ea3193380"
+    },
+    {
+      "bytes": 58646,
+      "decodedRgbaSha256": "28b26e495f249237bdc771e78dc00f0a82e6bfd98b8ab64a678520ffcd7c96b7",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/hearthside_council_hall_camSE.png",
+      "sha256": "769bdffef52e48228d704a6459f207fd133aa1af0760e44007bba90b36288998"
+    },
+    {
+      "bytes": 59702,
+      "decodedRgbaSha256": "878c9b6667f4a9ad2fea7912aa0891824295318d90402179b585e905401a2fd9",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/hearthside_council_hall_camSW.png",
+      "sha256": "03fb026b9d83ac47b9f536f4191cb78e813efb2bbe1283ea3b101081e72617f0"
+    },
+    {
+      "bytes": 54676,
+      "decodedRgbaSha256": "5f5c3ec16e5fcf31ba6d64c5a5b0d16309e0909229146d3bdee8c4a36e30b7d4",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/hearthside_council_hall_camNW.png",
+      "sha256": "20756a93ec6ed1f11d6b9027ff5bf345125007e852453188fb851465b8518ccb"
+    },
+    {
+      "bytes": 185602,
+      "decodedRgbaSha256": "1875a85a65b8e6235a33bc44a62216c2c6d5cfdecbbfba5c46368f6e5b109411",
+      "dimensions": [
+        784,
+        840
+      ],
+      "path": "hearthside_council_hall_contact-sheet.png",
+      "sha256": "5d98eb82a02bf56c972f6c23df85a95c24ce7a9b7c6b5810c9408854fec9b1d7"
+    }
+  ],
+  "assetId": "hearthside_council_hall",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "cameraRig": {
+    "distance": 32.0,
+    "orthoScale": 12.341995,
+    "shiftY": 0.28125,
+    "views": [
+      {
+        "azimuthDegrees": 45.0,
+        "name": "camNE"
+      },
+      {
+        "azimuthDegrees": 135.0,
+        "name": "camSE"
+      },
+      {
+        "azimuthDegrees": 225.0,
+        "name": "camSW"
+      },
+      {
+        "azimuthDegrees": 315.0,
+        "name": "camNW"
+      }
+    ]
+  },
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "contactSheetLayout": [
+    [
+      "camNE",
+      "camSE"
+    ],
+    [
+      "camSW",
+      "camNW"
+    ]
+  ],
+  "description": "Small civic hall with centered public stair, clock tower, bell arch, and flag",
+  "grid": {
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0,
+    "projectedTilePixels": [
+      88,
+      44
+    ],
+    "projection": "orthographic-2:1-dimetric",
+    "worldTileSize": 2.0
+  },
+  "lightingConvention": {
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldStrength": 0.65
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "pipelineSchema": "citysim.world-art.residential-civic-production.v1",
+  "postRenderCompensation": "none",
+  "root": {
+    "location": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "name": "AssetRoot",
+    "pivotName": "FootprintPivot",
+    "rotationEuler": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "schema": "citysim.world-art.residential-civic-asset.v1",
+  "sourcePixelsReused": false,
+  "status": "source-only-not-live"
+}

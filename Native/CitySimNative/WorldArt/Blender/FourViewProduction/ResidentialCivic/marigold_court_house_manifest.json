@@ -1,0 +1,158 @@
+{
+  "artifacts": [
+    {
+      "bytes": 964342,
+      "path": "marigold_court_house.blend",
+      "sha256": "f4002c227132e1b12969a3b007bd74645ffca872dd5424320b4950e59da7c438"
+    },
+    {
+      "bytes": 49406,
+      "decodedRgbaSha256": "075a6ede1fe87eb9531dc2d60b7983bf9c004c2322f9bf6efa9bd7200344acad",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/marigold_court_house_camNE.png",
+      "sha256": "75cc1d681778a27c8b258a2db940a8d81e1b8f3abebdb4b89f8ac9e44c8f0187"
+    },
+    {
+      "bytes": 55918,
+      "decodedRgbaSha256": "0a68f281067c055822c2e19bd9de3321b605145fed3551f0374ece6de76de12f",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/marigold_court_house_camSE.png",
+      "sha256": "afcd54e9175a909cb3bf2d92251c93946f436a2d410068d8af3ee1122da2a542"
+    },
+    {
+      "bytes": 54431,
+      "decodedRgbaSha256": "19297de277aca587718c8f2f4a8927a459611b2131e7f8ac9c9b77feb1c0ee40",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/marigold_court_house_camSW.png",
+      "sha256": "088563ff57eaba3ab341628ed15b7b250e83e4965494586f9d82afc3ff0c8f0b"
+    },
+    {
+      "bytes": 50477,
+      "decodedRgbaSha256": "df8003759ca13f557c95a41ae604a148bb7c0265127bd80090f6f12fae281e3f",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/marigold_court_house_camNW.png",
+      "sha256": "50f072b48a011ff9837d37a4f30d89d18a24a01675bfffebe22d10631c360fa2"
+    },
+    {
+      "bytes": 170403,
+      "decodedRgbaSha256": "6dea1e03c6f3060dfa018dc6ee969951fa0e22fe4ba531a23b41cada6e32a054",
+      "dimensions": [
+        784,
+        840
+      ],
+      "path": "marigold_court_house_contact-sheet.png",
+      "sha256": "364bc594999865ebe111beb8f612a9658a5f99993adccd6e96d6c3d31e8057a9"
+    }
+  ],
+  "assetId": "marigold_court_house",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "cameraRig": {
+    "distance": 32.0,
+    "orthoScale": 12.341995,
+    "shiftY": 0.28125,
+    "views": [
+      {
+        "azimuthDegrees": 45.0,
+        "name": "camNE"
+      },
+      {
+        "azimuthDegrees": 135.0,
+        "name": "camSE"
+      },
+      {
+        "azimuthDegrees": 225.0,
+        "name": "camSW"
+      },
+      {
+        "azimuthDegrees": 315.0,
+        "name": "camNW"
+      }
+    ]
+  },
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "contactSheetLayout": [
+    [
+      "camNE",
+      "camSE"
+    ],
+    [
+      "camSW",
+      "camNW"
+    ]
+  ],
+  "description": "Compact L-plan stucco residence with tiled hip roofs and sheltered court",
+  "grid": {
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0,
+    "projectedTilePixels": [
+      88,
+      44
+    ],
+    "projection": "orthographic-2:1-dimetric",
+    "worldTileSize": 2.0
+  },
+  "lightingConvention": {
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldStrength": 0.65
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "pipelineSchema": "citysim.world-art.residential-civic-production.v1",
+  "postRenderCompensation": "none",
+  "root": {
+    "location": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "name": "AssetRoot",
+    "pivotName": "FootprintPivot",
+    "rotationEuler": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "schema": "citysim.world-art.residential-civic-asset.v1",
+  "sourcePixelsReused": false,
+  "status": "source-only-not-live"
+}

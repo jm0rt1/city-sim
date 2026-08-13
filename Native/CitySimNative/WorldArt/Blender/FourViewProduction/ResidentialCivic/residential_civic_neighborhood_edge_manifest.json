@@ -1,19 +1,19 @@
 {
   "artifacts": [
     {
-      "bytes": 1576317,
+      "bytes": 2657947,
       "path": "residential_civic_neighborhood_edge.blend",
-      "sha256": "d9960ff0328d41d61c4c0ecc605dadc2c52ba10373f8657695ba26a3121884f9"
+      "sha256": "3a71b0cd272b968b5f0802197f1e05f0523ab98ae0f82eb1ed86db1bb3ee3c90"
     },
     {
-      "bytes": 63078,
-      "decodedRgbaSha256": "f06fbf300bad98f9c1ef1cd0733a1ba1fb0bc0b4bbd65a30c4f75e055aadefeb",
+      "bytes": 78399,
+      "decodedRgbaSha256": "e132614309b04aa4686855e0e2e8232a81db30771fd7320e7932d39198407397",
       "dimensions": [
         384,
         384
       ],
       "path": "residential_civic_neighborhood_edge_camNE.png",
-      "sha256": "ae37696a05e58c28d44fdb094defc789baa0e970cb2c6d45d4528f747a9b310c"
+      "sha256": "7627156409b22bfec74a279b454833f184581c4020f1638c480b82505ee080e2"
     }
   ],
   "grid": {

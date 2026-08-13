@@ -33,17 +33,20 @@ ASSETS = {
     "pocket_grove_park": PRODUCTION_DIR / "Environment/assets/pocket_grove_park/renders/pocket_grove_park_camNE.png",
 }
 
-# Building centers are three tile units apart. Residential/Civic declares 2x2
-# footprints; Commercial/Industrial's authored preview uses 2.5-tile spacing.
+# Every authored lot declares a 2x2-tile footprint. Adjacent centers therefore
+# sit exactly two tile units apart; the two rows touch the one-tile road corridor
+# without overlap, sprite scaling, or post-render transforms.
 PLACEMENTS = [
     (0, 0, "copper_finch_house"),
-    (3, 0, "marigold_court_house"),
-    (6, 0, "harbor_corner_storefront"),
-    (9, 0, "hearthside_council_hall"),
+    (2, 0, "marigold_court_house"),
+    (4, 0, "harbor_corner_storefront"),
+    (6, 0, "hearthside_council_hall"),
+    (8, 0, "copper_finch_house"),
     (0, 4, "pocket_grove_park"),
-    (3, 4, "ironleaf_service_workshop"),
+    (2, 4, "ironleaf_service_workshop"),
+    (4, 4, "harbor_corner_storefront"),
     (6, 4, "marigold_court_house"),
-    (9, 4, "harbor_corner_storefront"),
+    (8, 4, "hearthside_council_hall"),
 ]
 
 
@@ -158,7 +161,7 @@ def compose(width: int, height: int, output: Path, sprites: dict[str, tuple[int,
             fill = (73, 76, 74, 255) if y == 2 else (82, 102, 88, 255)
             draw_diamond(result, width, height, tile_pivot(origin, x, y), fill)
 
-    roads = [(x, 2, "axis_civic_road") for x in range(-1, 11)]
+    roads = [(x, 2, "axis_civic_road") for x in range(-1, 10)]
     for x, y, asset_id in sorted(roads, key=lambda item: (item[0] + item[1], item[1], item[0])):
         pivot = tile_pivot(origin, x, y)
         source_width, source_height, rgba = sprites[asset_id]
@@ -206,4 +209,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

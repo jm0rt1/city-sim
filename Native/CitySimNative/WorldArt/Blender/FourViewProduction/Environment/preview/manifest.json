@@ -1,14 +1,14 @@
 {
   "artifacts": [
     {
-      "bytes": 971726,
+      "bytes": 1294670,
       "path": "preview/environment_streetscape_preview.blend",
-      "sha256": "5d395f086492681f0ed30d9ee80646fe164eb922fea1359a01836e854fe02f7a"
+      "sha256": "1c57b50a40fad90bd093cef5d8dbb1d39128521f0c34250a44f19506a908c87a"
     },
     {
-      "bytes": 42240,
+      "bytes": 44552,
       "path": "preview/environment_streetscape_preview_camNE.png",
-      "sha256": "1352391ac58c87e10e0898622c794ccdfcb790ce8271aa863ec481c05197eb33"
+      "sha256": "bd60e374ae0ed027be51105dab31edc301dacf2bbefe0ce07d5ae0503653ecf5"
     }
   ],
   "layout": {

@@ -1,59 +1,59 @@
 {
   "artifacts": [
     {
-      "bytes": 866305,
+      "bytes": 1714728,
       "path": "example/copper_finch_house.blend",
-      "sha256": "cd7d686467906979ca4bbfffaff2081aac30956416159b6db479070d575f22df"
+      "sha256": "d2738e4f9f3fb538e27e67288be3d49f5a6420fd9e1bff22ad6903c8073cc53c"
     },
     {
-      "bytes": 48979,
-      "decodedRgbaSha256": "f10fe27d87758fc1206da14eec35758565ca2a6fa36ae3c710a9bc280769246c",
+      "bytes": 59299,
+      "decodedRgbaSha256": "864355631b1c5fa06e68caf057c7ab0f1388434e9f87b055b2d41111a743ed6c",
       "dimensions": [
         384,
         384
       ],
       "path": "example/renders/copper_finch_house_camNE.png",
-      "sha256": "b4fa2cbb0afa8156b89e82570e6618c0c4e7b830ba744b99b6fd716d8d2eb994"
+      "sha256": "3f359d5da177d0cdcd8ee6bfaf808274bf7eb876ee48696b5a55539eb22f1d73"
     },
     {
-      "bytes": 56850,
-      "decodedRgbaSha256": "974daf6f86eee5af19374edc0b730b93cab541f60e21fc7bdaef7cd673c7ac30",
+      "bytes": 64878,
+      "decodedRgbaSha256": "6b3c25fc9174813471cac18d5465f0ea883b84eb77b3dc28951075c85ff8af17",
       "dimensions": [
         384,
         384
       ],
       "path": "example/renders/copper_finch_house_camSE.png",
-      "sha256": "0d7e43fe0815e99786387d83d4701436d9dbd6f23f8f6f4cadb8aac2489a18e9"
+      "sha256": "07c49013a4f65f39e83d907fb680d62cbbc9178897097e2ff14a71dd526b148d"
     },
     {
-      "bytes": 57146,
-      "decodedRgbaSha256": "5334aaa042ed58550d754d5326ddf0a41ea8fdb2c1c98ad0b51680785dea6a0f",
+      "bytes": 66452,
+      "decodedRgbaSha256": "5cb22f107daff54daad836c02fd435a75e0b0f0dd78201792fac121c29477a57",
       "dimensions": [
         384,
         384
       ],
       "path": "example/renders/copper_finch_house_camSW.png",
-      "sha256": "5f36a922dc9d4f6e0e4808076cd6cb77eed448c9ccaf886e4f6340b33c2ae3ef"
+      "sha256": "a216bcd6bb023cb8808b7b2a28c43b9882c3d00d6c5bc8a6a8a2dbf7566e2e9b"
     },
     {
-      "bytes": 53707,
-      "decodedRgbaSha256": "0bca2dfb2cd8aba83e5fdcd621d41b53331fc0e28e1f206c65649a88f26a4f5a",
+      "bytes": 63080,
+      "decodedRgbaSha256": "6ae4bde4aec8899068d1800c016d55f16fc4cdc7fe4bae63d164f78cb97e52b2",
       "dimensions": [
         384,
         384
       ],
       "path": "example/renders/copper_finch_house_camNW.png",
-      "sha256": "480a2487dfa34ab95e32ee5d74b9c46b4abedffc7499772914946a2edd00605e"
+      "sha256": "565916e7728f49d09087d2c70644be2e3934b2cb0b0bbe01aed700aa35ef4bc0"
     },
     {
-      "bytes": 175968,
-      "decodedRgbaSha256": "105adacb9fe03c96489bef26ec5e2fc049064a3dbcba27b0f1ec00a2b2813a15",
+      "bytes": 214600,
+      "decodedRgbaSha256": "1170bc183873d10fc217ac7d7888faa06bce46c8c832f09702aecf138cc4b119",
       "dimensions": [
         784,
         784
       ],
       "path": "example/copper_finch_house_contact-sheet.png",
-      "sha256": "18d8fad7af508127138ec607abd8f2c50a405161a78bd94f1e87de55ae37713d"
+      "sha256": "6ae39fd90e42140c560c21fc463f5637da2de98a21dfd262a090eded98e9cc0b"
     }
   ],
   "assetId": "copper_finch_house",

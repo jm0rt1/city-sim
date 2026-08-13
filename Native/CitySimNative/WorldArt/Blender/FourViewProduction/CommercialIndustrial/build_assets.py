@@ -33,6 +33,28 @@ def material(name, color, roughness=0.72, metallic=0.0):
     shader.inputs["Base Color"].default_value = color
     shader.inputs["Roughness"].default_value = roughness
     shader.inputs["Metallic"].default_value = metallic
+    lowered = name.lower()
+    if not any(token in lowered for token in ("glass", "clockface")):
+        nodes, links = mat.node_tree.nodes, mat.node_tree.links
+        coordinates = nodes.new("ShaderNodeTexCoord")
+        noise = nodes.new("ShaderNodeTexNoise")
+        ramp = nodes.new("ShaderNodeValToRGB")
+        bump_node = nodes.new("ShaderNodeBump")
+        scale = 18.0 if "roof" in lowered else 10.0 if "terracotta" in lowered else 6.0
+        noise.inputs["Scale"].default_value = scale
+        noise.inputs["Detail"].default_value = 3.0
+        noise.inputs["Roughness"].default_value = 0.62
+        ramp.color_ramp.elements[0].position = 0.28
+        ramp.color_ramp.elements[0].color = tuple(max(0.0, channel * 0.76) for channel in color[:3]) + (color[3],)
+        ramp.color_ramp.elements[1].position = 0.74
+        ramp.color_ramp.elements[1].color = tuple(min(1.0, channel * 1.12 + 0.018) for channel in color[:3]) + (color[3],)
+        bump_node.inputs["Strength"].default_value = 0.20 if "roof" in lowered else 0.11
+        bump_node.inputs["Distance"].default_value = 0.045
+        links.new(coordinates.outputs["Generated"], noise.inputs["Vector"])
+        links.new(noise.outputs["Fac"], ramp.inputs["Fac"])
+        links.new(ramp.outputs["Color"], shader.inputs["Base Color"])
+        links.new(noise.outputs["Fac"], bump_node.inputs["Height"])
+        links.new(bump_node.outputs["Normal"], shader.inputs["Normal"])
     return mat
 
 
@@ -129,15 +151,41 @@ def storefront(root):
     }
     box(root,"LotDiamond",(0,0,-.10),(4,4,.2),m["lot"],bevel=.06)
     box(root,"FrontWalk",(0,-1.48,.035),(3.35,.82,.07),m["walk"],bevel=.02)
-    box(root,"StoreBody",(0,.22,1.05),(3.15,2.35,1.95),m["brick"],bevel=.055)
-    box(root,"ParapetBand",(0,.22,2.05),(3.28,2.46,.24),m["cream"],bevel=.035)
-    wedge_roof(root,"ShallowRoof",(0,.22,2.15),3.05,2.25,.08,.34,m["roof"])
+    box(root,"StoreBody",(0,.22,1.42),(3.15,2.35,2.68),m["brick"],bevel=.055)
+    box(root,"ParapetBand",(0,.22,2.79),(3.28,2.46,.24),m["cream"],bevel=.035)
+    wedge_roof(root,"ShallowRoof",(0,.22,2.91),3.05,2.25,.08,.34,m["roof"])
+    box(root,"RoofMechanicalCurb",(.72,.54,3.23),(.78,.62,.15),m["cream"],bevel=.025)
+    box(root,"RoofMechanicalUnit",(.72,.54,3.36),(.60,.46,.22),m["dark"],bevel=.035)
+    for x in (-1.42,1.42): box(root,"BrickPilaster",(x,-.08,1.47),(.18,2.18,2.55),m["cream"],bevel=.025)
     box(root,"RecessShadow",(0,-.985,1.02),(2.60,.09,1.50),m["dark"],bevel=.015)
     box(root,"CustomerDoor",(-.74,-1.05,.91),(.62,.12,1.46),m["door"],bevel=.025)
     box(root,"DoorGlass",(-.74,-1.12,1.18),(.38,.035,.72),m["glass"],bevel=.01)
     for i,x in enumerate((.08,.72,1.20)):
         box(root,f"DisplayWindow_{i+1}",(x,-1.05,1.08),(.50,.12,1.02),m["glass"],bevel=.018)
+        box(root,f"WindowAwning_{i+1}",(x,-1.22,1.66),(.54,.38,.08),m["sign"],rotation=(math.radians(-8),0,0),bevel=.015)
     for x in (-.41,.40,.96): box(root,"Mullion",(x,-1.13,1.08),(.055,.04,1.08),m["cream"],bevel=.01)
+    # Three recessed upper bays turn the storefront into a convincing mixed-use building.
+    for i,x in enumerate((-.88,0,.88)):
+        box(root,f"UpperWindowRecess_{i}",(x,-.985,2.14),(.63,.08,.67),m["dark"],bevel=.018)
+        box(root,f"UpperWindow_{i}",(x,-1.035,2.14),(.49,.04,.53),m["glass"],bevel=.014)
+        box(root,f"UpperMullion_{i}",(x,-1.065,2.14),(.045,.025,.49),m["cream"],bevel=.006)
+        box(root,f"UpperSill_{i}",(x,-1.07,1.82),(.66,.14,.11),m["cream"],bevel=.014)
+    for x in (-1.17,-.59,-.01,.57,1.15):
+        box(root,f"ParapetDentil{x}",(x,-1.05,2.77),(.30,.18,.23),m["cream"],bevel=.018)
+    # Secondary facades are authored geometry, not renderer compensation. Every
+    # locked camera view must retain mixed-use identity when the street frontage
+    # faces away from the viewer.
+    for i,x in enumerate((-.88,0,.88)):
+        box(root,f"RearWindowRecess_{i}",(x,1.405,1.82),(.63,.08,.78),m["dark"],bevel=.018)
+        box(root,f"RearWindow_{i}",(x,1.455,1.82),(.49,.04,.64),m["glass"],bevel=.014)
+        box(root,f"RearWindowSill_{i}",(x,1.47,1.39),(.67,.13,.11),m["cream"],bevel=.014)
+    box(root,"RearServiceDoor",(-1.05,1.41,.83),(.56,.09,1.40),m["door"],bevel=.025)
+    box(root,"RearDoorCanopy",(-1.05,1.61,1.65),(.88,.52,.12),m["roof"],rotation=(math.radians(6),0,0),bevel=.018)
+    for side in (-1,1):
+        side_x=side*1.585
+        for i,y in enumerate((-.38,.48)):
+            box(root,f"SideWindowRecess_{side}_{i}",(side_x,y,1.90),(.08,.58,.72),m["dark"],bevel=.016)
+            box(root,f"SideWindow_{side}_{i}",(side_x+side*.05,y,1.90),(.035,.45,.58),m["glass"],bevel=.012)
     box(root,"EntranceCanopy",(-.72,-1.30,1.72),(1.05,.58,.13),m["roof"],rotation=(math.radians(-5),0,0),bevel=.02)
     box(root,"BladeSign",(-1.48,-1.18,1.73),(.13,.48,.72),m["sign"],bevel=.04)
     box(root,"SignBracket",(-1.48,-.91,2.00),(.10,.32,.10),m["dark"],bevel=.015)
@@ -147,6 +195,10 @@ def storefront(root):
     for i,x in enumerate((-1.25,1.40)):
         box(root,f"Planter_{i+1}",(x,-1.35,.27),(.42,.38,.32),m["cream"],bevel=.04)
         cylinder(root,f"Plant_{i+1}",(x,-1.35,.58),.23,.48,m["green"],12)
+    box(root,"CafeTable",(.62,-1.48,.43),(.38,.38,.08),m["dark"],bevel=.03)
+    cylinder(root,"CafeTablePost",(.62,-1.48,.24),.045,.38,m["dark"],12)
+    for i,x in enumerate((.28,.96)):
+        box(root,f"CafeChair{i}",(x,-1.48,.30),(.24,.26,.48),m["sign"],bevel=.025)
     root["assetId"]="harbor_corner_storefront"; root["assetFamily"]="small-commercial"; root["sourcePixelsReused"]=False; root["liveAsset"]=False
 
 
@@ -171,10 +223,24 @@ def workshop(root):
     box(root,"DoorWindow",(-1.10,-.98,1.17),(.30,.035,.38),m["glass"],bevel=.01)
     box(root,"ServiceCanopy",(-1.10,-1.18,1.68),(.86,.52,.12),m["steel"],rotation=(math.radians(-6),0,0),bevel=.018)
     for x in (-1.05,-.28,.48,1.22): box(root,"Clerestory",(x,1.42,1.72),(.55,.05,.42),m["glass"],bevel=.015)
+    for side in (-1,1):
+        side_x=-.18+side*1.66
+        for i,y in enumerate((-.18,.52,.98)):
+            box(root,f"WorkshopSideWindow_{side}_{i}",(side_x,y,1.56),(.05,.48,.38),m["glass"],bevel=.012)
+        box(root,f"WorkshopSideStripe_{side}",(side_x+side*.02,.28,.63),(.07,2.02,.16),m["accent"],bevel=.014)
     cylinder(root,"VentStack",(-1.05,.78,3.05),.19,.88,m["steel"],16)
     cylinder(root,"VentCap",(-1.05,.78,3.52),.28,.12,m["dark"],16)
+    box(root,"RoofDuct",(.35,.65,3.03),(.88,.38,.32),m["steel"],bevel=.055)
+    # Raised clerestory monitor creates an industrial silhouette instead of another flat box.
+    box(root,"RoofMonitor",(.28,.38,3.00),(1.55,1.10,.56),m["wall"],bevel=.035)
+    wedge_roof(root,"MonitorRoof",(.28,.38,3.29),1.72,1.26,.08,.34,m["roof"])
+    for x in (-.20,.28,.76): box(root,"MonitorGlass",(x,-.185,3.04),(.32,.05,.29),m["glass"],bevel=.012)
+    for x in (-1.42,-.78): cylinder(root,"SafetyBollard",(x,-1.18,.42),.055,.84,m["accent"],12)
     for i,(x,y,z) in enumerate(((1.40,-1.42,.30),(1.10,-1.52,.30))):
         box(root,f"ShippingCrate_{i+1}",(x,y,z),(.48,.48,.58),m["crate"],bevel=.025)
+    for i,x in enumerate((-.18,.12)):
+        cylinder(root,f"ServiceDrum{i}",(x,-1.48,.37),.18,.62,m["accent"],20)
+        box(root,f"DrumBand{i}",(x,-1.48,.38),(.39,.39,.06),m["dark"],bevel=.01)
     root["assetId"]="ironleaf_service_workshop"; root["assetFamily"]="light-industrial"; root["sourcePixelsReused"]=False; root["liveAsset"]=False
 
 

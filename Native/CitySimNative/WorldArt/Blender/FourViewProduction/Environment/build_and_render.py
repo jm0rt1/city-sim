@@ -16,6 +16,15 @@ from png_canonical import canonicalize_png, decode_rgba_png
 def mat(name, color, rough=.74):
     m=bpy.data.materials.new(name); m.diffuse_color=color; m.use_nodes=True
     p=m.node_tree.nodes["Principled BSDF"]; p.inputs["Base Color"].default_value=color; p.inputs["Roughness"].default_value=rough
+    lowered=name.lower()
+    nodes,links=m.node_tree.nodes,m.node_tree.links
+    coordinates=nodes.new("ShaderNodeTexCoord"); noise=nodes.new("ShaderNodeTexNoise"); ramp=nodes.new("ShaderNodeValToRGB"); bump_node=nodes.new("ShaderNodeBump")
+    noise.inputs["Scale"].default_value=9.0 if any(token in lowered for token in ("road","walk","curb","stone")) else 5.0
+    noise.inputs["Detail"].default_value=3.0; noise.inputs["Roughness"].default_value=.62
+    ramp.color_ramp.elements[0].position=.28; ramp.color_ramp.elements[0].color=tuple(max(0.0,channel*.76) for channel in color[:3])+(color[3],)
+    ramp.color_ramp.elements[1].position=.74; ramp.color_ramp.elements[1].color=tuple(min(1.0,channel*1.12+.018) for channel in color[:3])+(color[3],)
+    bump_node.inputs["Strength"].default_value=.14; bump_node.inputs["Distance"].default_value=.04
+    links.new(coordinates.outputs["Generated"],noise.inputs["Vector"]); links.new(noise.outputs["Fac"],ramp.inputs["Fac"]); links.new(ramp.outputs["Color"],p.inputs["Base Color"]); links.new(noise.outputs["Fac"],bump_node.inputs["Height"]); links.new(bump_node.outputs["Normal"],p.inputs["Normal"])
     return m
 
 def apply(o):
@@ -72,6 +81,11 @@ def road(r):
     for x in (-.72,-.24,.24,.72): box(r,f"CenterDash_{x:+.2f}",(x,0,.012),(.28,.055,.025),m["line"],.006)
     for x in (-.72,.72):
         for y in (-.49,.49): box(r,f"Drain_{x:+.2f}_{y:+.2f}",(x,y,.058),(.22,.08,.025),m["drain"],.004)
+    cyl(r,"StreetlampPole",(.72,.76,.66),.035,1.28,m["drain"],12)
+    box(r,"StreetlampArm",(.60,.76,1.28),(.28,.045,.045),m["drain"],.008)
+    box(r,"StreetlampLantern",(.45,.76,1.23),(.16,.13,.18),m["line"],.025)
+    cyl(r,"Hydrant",(-.70,-.76,.26),.08,.42,m["line"],12)
+    cyl(r,"HydrantCap",(-.70,-.76,.49),.11,.08,m["drain"],12)
     r["assetId"]="axis_civic_road"; r["assetKind"]="road-sidewalk-treatment"; r["sourcePixelsReused"]=False; r["liveAsset"]=False
 
 def tree(r,stem,loc,trunk,leaf1,leaf2):
@@ -89,6 +103,9 @@ def park(r):
     box(r,"BenchSeat",(0,-.48,.26),(.78,.20,.10),m["stone"],.02)
     for x in (-.31,.31): box(r,f"BenchLeg_{x:+.2f}",(x,-.48,.13),(.10,.14,.25),m["stone"],.012)
     for i,(x,y) in enumerate(((-.80,-.62),(-.60,-.70),(.66,-.66),(.82,-.58))): sphere(r,f"Plant_{i+1}",(x,y,.16),(.14,.14,.18),m["flower"],1)
+    cyl(r,"ParkLampPole",(.78,-.20,.62),.032,1.18,m["trunk"],12)
+    box(r,"ParkLantern",(.78,-.20,1.24),(.16,.16,.20),m["light"],.025)
+    box(r,"LitterBin",(-.78,-.28,.26),(.24,.24,.50),m["stone"],.035)
     r["assetId"]="pocket_grove_park"; r["assetKind"]="park-vegetation-treatment"; r["sourcePixelsReused"]=False; r["liveAsset"]=False
 
 def render_asset(asset,builder):

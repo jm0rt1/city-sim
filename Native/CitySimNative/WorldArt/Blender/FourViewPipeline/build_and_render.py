@@ -59,6 +59,31 @@ def make_material(name: str, rgba: tuple[float, float, float, float], roughness:
     principled = material.node_tree.nodes.get("Principled BSDF")
     principled.inputs["Base Color"].default_value = rgba
     principled.inputs["Roughness"].default_value = roughness
+    lowered = name.lower()
+    if not any(token in lowered for token in ("glass", "clockface")):
+        nodes = material.node_tree.nodes
+        links = material.node_tree.links
+        coordinates = nodes.new("ShaderNodeTexCoord")
+        noise = nodes.new("ShaderNodeTexNoise")
+        ramp = nodes.new("ShaderNodeValToRGB")
+        bump_node = nodes.new("ShaderNodeBump")
+        scale = 18.0 if "roof" in lowered else 10.0 if "brick" in lowered else 6.0
+        noise.inputs["Scale"].default_value = scale
+        noise.inputs["Detail"].default_value = 3.0
+        noise.inputs["Roughness"].default_value = 0.62
+        low = tuple(max(0.0, channel * 0.76) for channel in rgba[:3]) + (rgba[3],)
+        high = tuple(min(1.0, channel * 1.12 + 0.018) for channel in rgba[:3]) + (rgba[3],)
+        ramp.color_ramp.elements[0].position = 0.28
+        ramp.color_ramp.elements[0].color = low
+        ramp.color_ramp.elements[1].position = 0.74
+        ramp.color_ramp.elements[1].color = high
+        bump_node.inputs["Strength"].default_value = 0.20 if "roof" in lowered else 0.11
+        bump_node.inputs["Distance"].default_value = 0.045
+        links.new(coordinates.outputs["Generated"], noise.inputs["Vector"])
+        links.new(noise.outputs["Fac"], ramp.inputs["Fac"])
+        links.new(ramp.outputs["Color"], principled.inputs["Base Color"])
+        links.new(noise.outputs["Fac"], bump_node.inputs["Height"])
+        links.new(bump_node.outputs["Normal"], principled.inputs["Normal"])
     return material
 
 
@@ -156,15 +181,60 @@ def add_gable_prism(
     return parent_to(obj, root)
 
 
+def add_roof_seams(
+    root: bpy.types.Object,
+    prefix: str,
+    location: tuple[float, float, float],
+    width: float,
+    depth: float,
+    eave_height: float,
+    ridge_height: float,
+    material: bpy.types.Material,
+) -> None:
+    """Add modeled standing seams and a ridge cap without changing roof massing."""
+    slope_angle = math.atan2(ridge_height - eave_height, width / 2.0)
+    for index, fraction in enumerate((-0.72, -0.42, 0.42, 0.72), start=1):
+        x = fraction * width / 2.0
+        z = location[2] + eave_height + (ridge_height - eave_height) * (1.0 - abs(fraction)) + 0.035
+        add_box(
+            root,
+            f"{prefix}Seam_{index:02d}",
+            (location[0] + x, location[1], z),
+            (0.045, depth + 0.08, 0.045),
+            material,
+            rotation=(0.0, slope_angle if x > 0 else -slope_angle, 0.0),
+            edge=0.008,
+        )
+    add_box(
+        root,
+        f"{prefix}RidgeCap",
+        (location[0], location[1], location[2] + ridge_height + 0.045),
+        (0.16, depth + 0.12, 0.13),
+        material,
+        edge=0.018,
+    )
+
+
 def add_window(
     root: bpy.types.Object,
     name: str,
     location: tuple[float, float, float],
     dimensions: tuple[float, float, float],
-    material: bpy.types.Material,
+    glass_material: bpy.types.Material,
+    trim_material: bpy.types.Material,
 ) -> None:
-    frame = add_box(root, f"{name}_Frame", location, dimensions, material, edge=0.018)
+    frame = add_box(root, f"{name}_Frame", location, dimensions, trim_material, edge=0.018)
     frame["reusablePart"] = "window"
+    inset = tuple(max(0.025, value - 0.12) for value in dimensions)
+    add_box(root, f"{name}_Glass", location, inset, glass_material, edge=0.008)
+    if dimensions[1] < dimensions[0]:
+        add_box(root, f"{name}_VerticalMuntin", location, (0.045, dimensions[1] + .025, max(.10, dimensions[2] - .08)), trim_material, edge=.006)
+        add_box(root, f"{name}_HorizontalMuntin", location, (max(.10, dimensions[0] - .08), dimensions[1] + .025, .045), trim_material, edge=.006)
+        add_box(root, f"{name}_Sill", (location[0], location[1], location[2] - dimensions[2] / 2 - .045), (dimensions[0] + .14, dimensions[1] + .08, .09), trim_material, edge=.012)
+    else:
+        add_box(root, f"{name}_VerticalMuntin", location, (dimensions[0] + .025, .045, max(.10, dimensions[2] - .08)), trim_material, edge=.006)
+        add_box(root, f"{name}_HorizontalMuntin", location, (dimensions[0] + .025, max(.10, dimensions[1] - .08), .045), trim_material, edge=.006)
+        add_box(root, f"{name}_Sill", (location[0], location[1], location[2] - dimensions[2] / 2 - .045), (dimensions[0] + .08, dimensions[1] + .14, .09), trim_material, edge=.012)
 
 
 def build_reference_house(root: bpy.types.Object) -> None:
@@ -179,6 +249,8 @@ def build_reference_house(root: bpy.types.Object) -> None:
         "door": make_material("DoorPlum", (0.34, 0.10, 0.16, 1.0)),
         "glass": make_material("WindowBlue", (0.20, 0.48, 0.58, 1.0), 0.32),
         "foliage": make_material("ShrubGreen", (0.16, 0.35, 0.12, 1.0)),
+        "foliage_light": make_material("LeafHighlight", (0.34, 0.52, 0.18, 1.0)),
+        "flower": make_material("CopperFinchFlower", (0.72, 0.22, 0.25, 1.0)),
         "chimney": make_material("ChimneyBrick", (0.47, 0.20, 0.12, 1.0)),
     }
 
@@ -190,6 +262,14 @@ def build_reference_house(root: bpy.types.Object) -> None:
     add_box(root, "CornerBay", (0.92, -0.74, 1.16), (0.72, 0.62, 1.55), mat["walls"], edge=0.05)
     add_box(root, "BodyTrim", (0.0, 0.22, 2.08), (2.82, 2.39, 0.16), mat["trim"], edge=0.025)
     add_gable_prism(root, "MainGableRoof", (0.0, 0.22, 2.16), 3.18, 2.72, 0.16, 1.02, mat["roof"])
+    add_roof_seams(root, "MainRoof", (0.0, 0.22, 2.16), 3.18, 2.72, 0.16, 1.02, mat["roof"])
+    # Cross-gable and dormer give the reference a distinctive silhouette in all four views.
+    add_box(root, "FrontGableWall", (0.72, -0.90, 2.22), (1.12, .42, .72), mat["walls"], edge=.04)
+    add_gable_prism(root, "FrontGableRoof", (0.72, -1.02, 2.49), 1.42, .82, .10, .55, mat["roof"])
+    add_window(root, "FrontDormerWindow", (0.72, -1.445, 2.48), (.50, .05, .47), mat["glass"], mat["trim"])
+    add_box(root, "RearDormerWall", (-.58, 1.18, 2.36), (.92, .35, .58), mat["walls"], edge=.035)
+    add_gable_prism(root, "RearDormerRoof", (-.58, 1.32, 2.56), 1.15, .66, .08, .43, mat["roof"])
+    add_window(root, "RearDormerWindow", (-.58, 1.525, 2.44), (.46, .05, .40), mat["glass"], mat["trim"])
 
     add_box(root, "PorchDeck", (-0.32, -1.16, 0.34), (1.55, 0.62, 0.16), mat["trim"], edge=0.035)
     for x in (-0.90, 0.24):
@@ -204,15 +284,32 @@ def build_reference_house(root: bpy.types.Object) -> None:
         edge=0.025,
     )
     add_box(root, "FrontDoor", (-0.33, -0.945, 1.12), (0.58, 0.07, 1.34), mat["door"], edge=0.025)
-    add_window(root, "SouthWindow", (0.77, -0.962, 1.42), (0.60, 0.06, 0.72), mat["glass"])
-    add_window(root, "NorthWindow", (-0.62, 1.382, 1.43), (0.72, 0.06, 0.70), mat["glass"])
-    add_window(root, "EastWindow", (1.382, 0.42, 1.45), (0.06, 0.70, 0.72), mat["glass"])
-    add_window(root, "WestWindow", (-1.382, 0.28, 1.45), (0.06, 0.72, 0.72), mat["glass"])
+    add_window(root, "SouthWindow", (0.77, -0.962, 1.42), (0.60, 0.06, 0.72), mat["glass"], mat["trim"])
+    add_window(root, "NorthWindow", (-0.62, 1.382, 1.43), (0.72, 0.06, 0.70), mat["glass"], mat["trim"])
+    add_window(root, "EastWindow", (1.382, 0.42, 1.45), (0.06, 0.70, 0.72), mat["glass"], mat["trim"])
+    add_window(root, "WestWindow", (-1.382, 0.28, 1.45), (0.06, 0.72, 0.72), mat["glass"], mat["trim"])
+    # Corner boards and a stone belt add facade depth without changing footprint or pivot.
+    for x in (-1.34, 1.34):
+        for y in (-.88, 1.31):
+            add_box(root, f"CornerTrim_{x}_{y}", (x, y, 1.27), (.13, .13, 1.84), mat["trim"], edge=.014)
+    for x in (-1.08, -.54, 0, .54, 1.08):
+        add_box(root, f"FoundationStone_{x}", (x, -1.18, .31), (.40, .12, .28), mat["foundation"], edge=.025)
     add_box(root, "Chimney", (-0.78, 0.60, 3.05), (0.36, 0.42, 1.12), mat["chimney"], edge=0.035)
     add_box(root, "ChimneyCap", (-0.78, 0.60, 3.64), (0.46, 0.52, 0.12), mat["trim"], edge=0.025)
 
     for index, location in enumerate(((-1.42, -1.42, 0.31), (1.44, -1.38, 0.34), (1.45, 1.32, 0.36), (-1.45, 1.28, 0.32))):
         add_uv_sphere(root, f"Shrub_{index + 1:02d}", location, (0.34, 0.30, 0.38), mat["foliage"])
+        add_uv_sphere(root, f"ShrubHighlight_{index + 1:02d}", (location[0]-.06, location[1]-.05, location[2]+.15), (.18,.16,.18), mat["foliage_light"])
+    # Flower box, small ornamental tree, and bench establish the canonical lot-dressing density.
+    add_box(root, "FlowerBox", (.77,-1.02,.94), (.72,.20,.16), mat["foundation"], edge=.025)
+    for index,x in enumerate((.55,.77,.99)):
+        add_uv_sphere(root, f"Flower_{index}", (x,-1.06,1.08), (.10,.09,.12), mat["flower"])
+    add_box(root, "TreeTrunk", (-1.18,1.24,.70), (.18,.18,1.18), mat["chimney"], edge=.025)
+    for index,loc in enumerate(((-1.18,1.24,1.45),(-1.43,1.19,1.32),(-.95,1.16,1.36))):
+        add_uv_sphere(root, f"TreeCrown_{index}", loc, (.48,.43,.55), mat["foliage"] if index == 0 else mat["foliage_light"])
+    add_box(root, "GardenBenchSeat", (-.74,-1.55,.46), (.78,.28,.10), mat["chimney"], edge=.02)
+    for x in (-1.02,-.46):
+        add_box(root, f"GardenBenchLeg_{x}", (x,-1.55,.29), (.07,.20,.28), mat["chimney"], edge=.01)
 
     root["assetId"] = "copper_finch_house"
     root["assetDescription"] = "Original modest gable house assembled from reusable procedural parts"

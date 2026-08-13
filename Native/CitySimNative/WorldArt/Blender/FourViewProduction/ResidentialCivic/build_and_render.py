@@ -31,6 +31,28 @@ def material(name, color, roughness=0.72, metallic=0.0):
     node.inputs["Base Color"].default_value = color
     node.inputs["Roughness"].default_value = roughness
     node.inputs["Metallic"].default_value = metallic
+    lowered = name.lower()
+    if not any(token in lowered for token in ("glass", "clockface")):
+        nodes, links = mat.node_tree.nodes, mat.node_tree.links
+        coordinates = nodes.new("ShaderNodeTexCoord")
+        noise = nodes.new("ShaderNodeTexNoise")
+        ramp = nodes.new("ShaderNodeValToRGB")
+        bump_node = nodes.new("ShaderNodeBump")
+        scale = 18.0 if any(token in lowered for token in ("roof", "tile", "slate")) else 10.0 if "brick" in lowered else 6.0
+        noise.inputs["Scale"].default_value = scale
+        noise.inputs["Detail"].default_value = 3.0
+        noise.inputs["Roughness"].default_value = 0.62
+        ramp.color_ramp.elements[0].position = 0.28
+        ramp.color_ramp.elements[0].color = tuple(max(0.0, channel * 0.76) for channel in color[:3]) + (color[3],)
+        ramp.color_ramp.elements[1].position = 0.74
+        ramp.color_ramp.elements[1].color = tuple(min(1.0, channel * 1.12 + 0.018) for channel in color[:3]) + (color[3],)
+        bump_node.inputs["Strength"].default_value = 0.20 if any(token in lowered for token in ("roof", "tile", "slate")) else 0.11
+        bump_node.inputs["Distance"].default_value = 0.045
+        links.new(coordinates.outputs["Generated"], noise.inputs["Vector"])
+        links.new(noise.outputs["Fac"], ramp.inputs["Fac"])
+        links.new(ramp.outputs["Color"], node.inputs["Base Color"])
+        links.new(noise.outputs["Fac"], bump_node.inputs["Height"])
+        links.new(bump_node.outputs["Normal"], node.inputs["Normal"])
     return mat
 
 
@@ -98,10 +120,28 @@ def prism(root, name, loc, width, depth, eave, ridge, mat):
     return obj
 
 
+def roof_seams(root, prefix, loc, width, depth, eave, ridge, mat):
+    slope = math.atan2(ridge - eave, width / 2)
+    for index, fraction in enumerate((-.72, -.42, .42, .72), start=1):
+        x = fraction * width / 2
+        z = loc[2] + eave + (ridge - eave) * (1 - abs(fraction)) + .035
+        box(root, f"{prefix}Seam{index}", (loc[0]+x,loc[1],z), (.045,depth+.08,.045), mat,
+            rotation=(0,slope if x>0 else -slope,0), edge=.008)
+    box(root, prefix+"RidgeCap", (loc[0],loc[1],loc[2]+ridge+.045), (.16,depth+.12,.13), mat, edge=.018)
+
+
 def window(root, name, loc, dims, frame, glass):
     box(root, name + "Frame", loc, dims, frame, edge=0.016)
     inset = tuple(max(0.025, d - 0.10) for d in dims)
     box(root, name + "Glass", loc, inset, glass, edge=0.008)
+    if dims[1] < dims[0]:
+        box(root,name+"VerticalMuntin",loc,(.045,dims[1]+.025,max(.10,dims[2]-.08)),frame,edge=.006)
+        box(root,name+"HorizontalMuntin",loc,(max(.10,dims[0]-.08),dims[1]+.025,.045),frame,edge=.006)
+        box(root,name+"Sill",(loc[0],loc[1],loc[2]-dims[2]/2-.045),(dims[0]+.12,dims[1]+.08,.08),frame,edge=.01)
+    else:
+        box(root,name+"VerticalMuntin",loc,(dims[0]+.025,.045,max(.10,dims[2]-.08)),frame,edge=.006)
+        box(root,name+"HorizontalMuntin",loc,(dims[0]+.025,max(.10,dims[1]-.08),.045),frame,edge=.006)
+        box(root,name+"Sill",(loc[0],loc[1],loc[2]-dims[2]/2-.045),(dims[0]+.08,dims[1]+.12,.08),frame,edge=.01)
 
 
 def reset():
@@ -193,6 +233,12 @@ def house(root):
     box(root,"CourtWing",(.83,.55,.92),(.95,1.72,1.30),m["wall"],edge=.05)
     prism(root,"MainRoof",(-.45,.35,1.90),2.48,2.43,.15,.73,m["roof"])
     prism(root,"CourtRoof",(.83,.55,1.60),1.18,2.02,.13,.49,m["roof"])
+    roof_seams(root,"MainRoof",(-.45,.35,1.90),2.48,2.43,.15,.73,m["roof"])
+    roof_seams(root,"CourtRoof",(.83,.55,1.60),1.18,2.02,.13,.49,m["roof"])
+    # A projecting front gable and dormer break up the roof mass at gameplay scale.
+    box(root,"FrontGableWall",(-.45,-.80,2.05),(1.04,.34,.62),m["cream"],edge=.035)
+    prism(root,"FrontGableRoof",(-.45,-.92,2.30),1.34,.68,.10,.48,m["roof"])
+    window(root,"DormerWindow",(-.45,-1.275,2.34),(.48,.05,.44),m["cream"],m["glass"])
     box(root,"CourtPaving",(.68,-.80,.27),(1.30,.83,.08),m["sand"],edge=.02)
     box(root,"EntryCanopy",(.28,-.72,1.55),(1.18,.58,.14),m["roof"],rotation=(math.radians(-7),0,0),edge=.02)
     for x in (-.18,.68): box(root,"CanopyPost"+str(x),(x,-.94,.90),(.08,.08,1.20),m["cream"],edge=.012)
@@ -202,6 +248,13 @@ def house(root):
     window(root,"EastWindow",(1.315,.55,1.02),(.06,.64,.58),m["cream"],m["glass"])
     window(root,"WestWindow",(-1.535,.43,1.18),(.06,.70,.70),m["cream"],m["glass"])
     window(root,"RearWindow",(-.55,1.405,1.17),(.68,.06,.68),m["cream"],m["glass"])
+    # Flower boxes give the facade depth, color, and a lived-in residential read.
+    for index,(x,y,z,w,d) in enumerate(((-.78,-.78,.76,.72,.18),(1.39,.55,.70,.18,.72))):
+        box(root,f"FlowerBox{index}",(x,y,z),(w,d,.15),m["stone"],edge=.025)
+        for offset in (-.22,0,.22):
+            px=x+offset if w>d else x
+            py=y if w>d else y+offset
+            sphere(root,f"FlowerPlant{index}_{offset}",(px,py,z+.16),(.10,.10,.13),m["green"])
     cylinder(root,"Chimney",(-.95,.80,2.72),.18,.70,m["stone"],vertices=16)
     cylinder(root,"ChimneyCap",(-.95,.80,3.09),.23,.08,m["metal"],vertices=16)
     for i,(x,y,s) in enumerate(((-1.45,-1.35,.31),(1.42,-1.32,.28),(1.48,1.34,.32),(.95,-1.32,.25))):
@@ -209,6 +262,10 @@ def house(root):
         sphere(root,f"Plant{i}",(x,y,.58),(s*1.15,s*.92,s*1.30),m["green"])
     box(root,"BenchSeat",(-.67,-1.40,.46),(.78,.28,.10),m["metal"],edge=.02)
     for x in (-.96,-.38): box(root,"BenchLeg"+str(x),(x,-1.40,.30),(.07,.20,.28),m["metal"],edge=.01)
+    # Low garden wall and gate establish a deliberate lot edge without obscuring the house.
+    for x in (-1.46,1.46): box(root,"GardenPier"+str(x),(x,-1.53,.42),(.18,.18,.62),m["stone"],edge=.025)
+    box(root,"GardenWall",(0,-1.55,.27),(2.55,.14,.30),m["stone"],edge=.025)
+    box(root,"GardenGate",(.45,-1.59,.47),(.70,.06,.62),m["metal"],edge=.012)
 
 
 def hall(root):
@@ -223,7 +280,14 @@ def hall(root):
     box(root,"CivicPlinth",(0,.12,.17),(3.30,2.70,.34),m["stone"],edge=.055)
     box(root,"HallBody",(0,.28,1.14),(2.95,2.22,1.75),m["brick"],edge=.05)
     box(root,"Cornice",(0,.28,2.04),(3.10,2.35,.18),m["cream"],edge=.025)
+    # Limestone quoins and a modulated cornice keep the civic facade legible at a distance.
+    for x in (-1.43,1.43):
+        for z in (.48,.82,1.16,1.50,1.84):
+            box(root,f"Quoin{x}_{z}",(x,-.865,z),(.22,.11,.20),m["cream"],edge=.016)
+    for x in (-1.22,-.73,-.24,.24,.73,1.22):
+        box(root,f"CorniceBlock{x}",(x,-.93,2.08),(.25,.18,.24),m["cream"],edge=.018)
     prism(root,"HallRoof",(0,.28,2.10),3.30,2.58,.14,.72,m["roof"])
+    roof_seams(root,"HallRoof",(0,.28,2.10),3.30,2.58,.14,.72,m["roof"])
     box(root,"PublicStair",(0,-1.26,.28),(1.55,.78,.18),m["stone"],edge=.025)
     box(root,"PublicStairLower",(0,-1.50,.15),(1.90,.34,.14),m["stone"],edge=.02)
     box(root,"PorticoDeck",(0,-.98,.42),(1.52,.50,.12),m["cream"],edge=.025)
@@ -250,6 +314,10 @@ def hall(root):
     prism(root,"TowerCap",(0,.30,4.10),1.22,1.12,.10,.62,m["roof"])
     cylinder(root,"FlagPole",(0,.30,5.12),.035,1.18,m["dark"],vertices=12)
     box(root,"CivicFlag",(.25,.30,5.35),(.50,.035,.28),m["flag"],edge=.008)
+    # Symmetrical foundation planters soften the plinth while preserving civic formality.
+    for i,x in enumerate((-1.38,1.38)):
+        box(root,f"CivicPlanter{i}",(x,-1.35,.34),(.40,.40,.34),m["stone"],edge=.035)
+        sphere(root,f"CivicShrub{i}",(x,-1.35,.67),(.30,.30,.38),m["dark"])
 
 
 def build(asset):

@@ -1,54 +1,54 @@
 {
   "artifacts": [
     {
-      "bytes": 644733,
+      "bytes": 782794,
       "path": "assets/axis_civic_road/axis_civic_road.blend",
-      "sha256": "b6378b233afa2e9969d6515066416b4d3b2054fc991693fea6ce50f6b4671086"
+      "sha256": "920ac4cb8e07b8af0256dfe7337f27cd71690ef0534d60746aba5f4a92e45098"
     },
     {
-      "bytes": 24619,
+      "bytes": 30551,
       "dimensions": [
         784,
         824
       ],
       "path": "assets/axis_civic_road/axis_civic_road_contact-sheet.png",
-      "sha256": "49a5b0aa604d692485463ddf9f400975f8d15d7c6416e537c148f595da04869c"
+      "sha256": "8d6f48059d9fbcae40422589df00006de1da8c78f46cda4024a2a333c5f41a08"
     },
     {
-      "bytes": 35115,
+      "bytes": 36608,
       "dimensions": [
         384,
         384
       ],
       "path": "assets/axis_civic_road/renders/axis_civic_road_camNE.png",
-      "sha256": "63c612928e92ed2271c1cadc0b569cd592df99c2e79e2c2f41b7a629e965df3c"
+      "sha256": "beb21cfd814e3482a7ef455059a189e6a7beab107092e3bc8b49e063b8d77038"
     },
     {
-      "bytes": 35121,
+      "bytes": 37253,
       "dimensions": [
         384,
         384
       ],
       "path": "assets/axis_civic_road/renders/axis_civic_road_camSE.png",
-      "sha256": "36df063abae38144dd524954570f91b3a1713415a6b111083ce41413f03035e8"
+      "sha256": "c0f9e558ebd9a5f602aa4553522b7f9eb1b49f03d21bb5c241be16492bf66753"
     },
     {
-      "bytes": 35213,
+      "bytes": 37224,
       "dimensions": [
         384,
         384
       ],
       "path": "assets/axis_civic_road/renders/axis_civic_road_camSW.png",
-      "sha256": "634deaefa848bd7ce7c6070c0992c070b6088ddb66bd56f2cba3fe083a225e7a"
+      "sha256": "725c03defd6ff412c297ba52c66486a99d8cd88c8bbd5bacb49572d881cb72ba"
     },
     {
-      "bytes": 35174,
+      "bytes": 37323,
       "dimensions": [
         384,
         384
       ],
       "path": "assets/axis_civic_road/renders/axis_civic_road_camNW.png",
-      "sha256": "4e1c6af58ddec361375fa1b849abe2e8795b1d5f628bcd92fecc1a919512edf7"
+      "sha256": "ec3ad7291900beb5e4e8e8d68b9bdc4ac9a0cce4c7af6931e40769daea3f0d5e"
     }
   ],
   "assetId": "axis_civic_road",

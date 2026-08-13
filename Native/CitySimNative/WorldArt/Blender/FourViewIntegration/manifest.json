@@ -24,22 +24,22 @@
   "liveAsset": false,
   "outputs": [
     {
-      "bytes": 185801,
+      "bytes": 277815,
       "dimensions": [
         1280,
         800
       ],
       "path": "four-view-source-block-1280x800.png",
-      "sha256": "ec31eeef388d405cdc7208f03c9249f5c323cd5b53637e814ecf1b492bb4e006"
+      "sha256": "7f69d69e4b2956e31d65cf78e74c963b86ed32aa307e5722ef82f9bfdc9d1f52"
     },
     {
-      "bytes": 176130,
+      "bytes": 264968,
       "dimensions": [
         900,
         600
       ],
       "path": "four-view-source-block-900x600.png",
-      "sha256": "a003435e57ca40a56f5b121699ca08100ed6b2f34b7a774f4867e57a590a2412"
+      "sha256": "54fe34b06c87e6b60112036e9ff33109301b5b35801f6425edb4a9e16d90c4c7"
     }
   ],
   "placements": [
@@ -53,21 +53,28 @@
     {
       "assetId": "marigold_court_house",
       "tileCenter": [
-        3,
+        2,
         0
       ]
     },
     {
       "assetId": "harbor_corner_storefront",
       "tileCenter": [
-        6,
+        4,
         0
       ]
     },
     {
       "assetId": "hearthside_council_hall",
       "tileCenter": [
-        9,
+        6,
+        0
+      ]
+    },
+    {
+      "assetId": "copper_finch_house",
+      "tileCenter": [
+        8,
         0
       ]
     },
@@ -81,7 +88,14 @@
     {
       "assetId": "ironleaf_service_workshop",
       "tileCenter": [
-        3,
+        2,
+        4
+      ]
+    },
+    {
+      "assetId": "harbor_corner_storefront",
+      "tileCenter": [
+        4,
         4
       ]
     },
@@ -93,9 +107,9 @@
       ]
     },
     {
-      "assetId": "harbor_corner_storefront",
+      "assetId": "hearthside_council_hall",
       "tileCenter": [
-        9,
+        8,
         4
       ]
     }
@@ -106,37 +120,37 @@
     {
       "assetId": "copper_finch_house",
       "path": "FourViewPipeline/example/renders/copper_finch_house_camNE.png",
-      "sha256": "b4fa2cbb0afa8156b89e82570e6618c0c4e7b830ba744b99b6fd716d8d2eb994"
+      "sha256": "3f359d5da177d0cdcd8ee6bfaf808274bf7eb876ee48696b5a55539eb22f1d73"
     },
     {
       "assetId": "marigold_court_house",
       "path": "FourViewProduction/ResidentialCivic/renders/marigold_court_house_camNE.png",
-      "sha256": "75cc1d681778a27c8b258a2db940a8d81e1b8f3abebdb4b89f8ac9e44c8f0187"
+      "sha256": "1281f9fc549b1d55daeac9968ba6fbc27cfb4916280d6be0934365e0b96ad1b1"
     },
     {
       "assetId": "hearthside_council_hall",
       "path": "FourViewProduction/ResidentialCivic/renders/hearthside_council_hall_camNE.png",
-      "sha256": "ee6e38809b6d5a10c20a2ff9d74494b1374b4ac77b0dac9d9173e46ea3193380"
+      "sha256": "eaea53915387650e1a4eb33f8851fbbce960d880f728e504d326005abe1f4c49"
     },
     {
       "assetId": "harbor_corner_storefront",
       "path": "FourViewProduction/CommercialIndustrial/harbor_corner_storefront/renders/harbor_corner_storefront_camNE.png",
-      "sha256": "87ca6d2dc221d4bbdfaf960b6d78ae8130c99635caa1df9a7ad0d4459cfc9240"
+      "sha256": "84f20c7cdee8c612ed908184f333bd1808a58a2e15ea236f7e8abfe3302a6cc2"
     },
     {
       "assetId": "ironleaf_service_workshop",
       "path": "FourViewProduction/CommercialIndustrial/ironleaf_service_workshop/renders/ironleaf_service_workshop_camNE.png",
-      "sha256": "0fa96cf7a8b2471f01916f7038053b24e373e016b3bd96957fed227cda3745eb"
+      "sha256": "bbab7fda37247bb357808bc3e592bbd1d1323e245a287d1bf1167c8fe70b4608"
     },
     {
       "assetId": "axis_civic_road",
       "path": "FourViewProduction/Environment/assets/axis_civic_road/renders/axis_civic_road_camNE.png",
-      "sha256": "63c612928e92ed2271c1cadc0b569cd592df99c2e79e2c2f41b7a629e965df3c"
+      "sha256": "beb21cfd814e3482a7ef455059a189e6a7beab107092e3bc8b49e063b8d77038"
     },
     {
       "assetId": "pocket_grove_park",
       "path": "FourViewProduction/Environment/assets/pocket_grove_park/renders/pocket_grove_park_camNE.png",
-      "sha256": "237745b8161214e1fa6ea76ff558099790f1f95445a5a1daf3dfd5aa6bd7f232"
+      "sha256": "25db8d7e63d9b624d67ef750c3f156740e8febba49a5de119a8ddf64edba51bb"
     }
   ],
   "status": "source-only-review-evidence-not-live"

@@ -1549,6 +1549,50 @@ final class CitySimulationTests: XCTestCase {
         }
     }
 
+    @MainActor
+    func testGrowthCapacityForecastProducesRegularAndCompactPlayerFrames() throws {
+        let defaults = UserDefaults.standard
+        let priorWelcome = defaults.object(forKey: "hasSeenCitySimWelcome")
+        defaults.set(true, forKey: "hasSeenCitySimWelcome")
+        defer {
+            if let priorWelcome { defaults.set(priorWelcome, forKey: "hasSeenCitySimWelcome") }
+            else { defaults.removeObject(forKey: "hasSeenCitySimWelcome") }
+        }
+
+        let regularStore = CityGameStore(state: .newCity(seed: 42))
+        regularStore.setSpeed(.paused)
+        regularStore.openInspector(.population)
+        let regular = try hudBitmap(size: CGSize(width: 1_280, height: 800), store: regularStore)
+
+        let compactStore = CityGameStore(state: .newCity(seed: 42))
+        compactStore.setSpeed(.paused)
+        compactStore.openInspector(.population)
+        let compact = try hudBitmap(size: CGSize(width: 900, height: 600), store: compactStore)
+
+        XCTAssertEqual(regular.size, CGSize(width: 1_280, height: 800))
+        XCTAssertEqual(compact.size, CGSize(width: 900, height: 600))
+        XCTAssertGreaterThanOrEqual(regular.pixelsWide, 1_280)
+        XCTAssertGreaterThanOrEqual(regular.pixelsHigh, 800)
+        XCTAssertGreaterThanOrEqual(compact.pixelsWide, 900)
+        XCTAssertGreaterThanOrEqual(compact.pixelsHigh, 600)
+        XCTAssertTrue(regularStore.showInspector)
+        XCTAssertTrue(compactStore.showInspector)
+        XCTAssertEqual(regularStore.inspectorSection, .population)
+        XCTAssertEqual(compactStore.inspectorSection, .population)
+        let starterForecast = CityGrowthCapacityPresentation.make(analytics: regularStore.analytics)
+        XCTAssertEqual(starterForecast.decisionTitle, "Water limits +100")
+        XCTAssertEqual(starterForecast.response.command, .buildWaterTower)
+
+        if let path = ProcessInfo.processInfo.environment["CITYSIM_GROWTH_CAPACITY_1280_PROOF"] {
+            let data = try XCTUnwrap(regular.representation(using: .png, properties: [:]))
+            try data.write(to: URL(fileURLWithPath: path), options: .atomic)
+        }
+        if let path = ProcessInfo.processInfo.environment["CITYSIM_GROWTH_CAPACITY_900_PROOF"] {
+            let data = try XCTUnwrap(compact.representation(using: .png, properties: [:]))
+            try data.write(to: URL(fileURLWithPath: path), options: .atomic)
+        }
+    }
+
     func testAnalyticsMatchSimulationEconomyContract() {
         let state = CityGameState.newCity()
         let analytics = CityAnalytics(state: state)

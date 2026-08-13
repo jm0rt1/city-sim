@@ -86,6 +86,9 @@ struct InspectorView: View {
     private var resiliencePresentation: CityResiliencePresentation {
         CityResiliencePresentation.make(analytics: analytics)
     }
+    private var growthCapacityPresentation: CityGrowthCapacityPresentation {
+        CityGrowthCapacityPresentation.make(analytics: analytics)
+    }
     private var contextColumns: [GridItem] {
         Array(
             repeating: GridItem(.flexible(), spacing: 8, alignment: .top),
@@ -467,7 +470,24 @@ struct InspectorView: View {
     }
 
     private var populationContext: some View {
-        LazyVGrid(columns: contextColumns, alignment: .leading, spacing: 8) {
+        let forecast = growthCapacityPresentation
+        return LazyVGrid(columns: contextColumns, alignment: .leading, spacing: 8) {
+            ContextCard(
+                title: forecast.decisionTitle,
+                symbol: forecast.constraint?.symbol ?? "chart.line.uptrend.xyaxis",
+                tint: growthForecastTint(forecast.phase),
+                minimumHeight: 80
+            ) {
+                compactAction(
+                    forecast.response.title,
+                    symbol: forecast.constraint?.symbol ?? "chart.bar.fill"
+                ) {
+                    perform(forecast.response)
+                }
+                .accessibilityHint(forecast.response.explanation)
+            }
+            .accessibilityElement(children: .contain)
+            .accessibilityLabel(forecast.accessibilitySummary)
             ContextCard(title: "Residents", symbol: "person.3.fill", tint: .cyan) {
                 Text(store.state.population.formatted()).font(.title3.bold().monospacedDigit())
                 ContextValueRow(label: "Housing", value: store.analytics.housingCapacity.formatted())
@@ -483,11 +503,16 @@ struct InspectorView: View {
                 ContextValueRow(label: "Residential demand", value: (store.state.demand.residential * 100).percentText)
                 compactAction("Build homes", symbol: BuildingKind.residential.symbol) { store.perform(.buildResidential) }
             }
-            ContextCard(title: "Growth balance", symbol: "person.crop.circle.badge.checkmark", tint: GameTheme.information) {
-                ContextValueRow(label: "Job openings", value: store.analytics.jobHeadroom.formatted())
-                ContextValueRow(label: "Employment target", value: (store.analytics.employmentRate * 100).percentText)
-                compactAction("Employment", symbol: "briefcase.fill") { store.perform(.inspectorEmployment) }
-            }
+        }
+    }
+
+    private func growthForecastTint(
+        _ phase: CityGrowthCapacityPresentation.Phase
+    ) -> Color {
+        switch phase {
+        case .currentShortfall: GameTheme.danger
+        case .prepare: GameTheme.warning
+        case .ready: GameTheme.accent
         }
     }
 
@@ -841,11 +866,7 @@ struct InspectorView: View {
     }
 
     private func perform(_ response: CityDirectResponse) {
-        if response.focusesMap {
-            store.performMapFocused(response.command)
-        } else {
-            store.perform(response.command)
-        }
+        StrategyCommandCenterView.perform(response, on: store)
     }
 
     private func demandCard(title: String, kind: BuildingKind, value: Double, tint: Color) -> some View {
@@ -901,12 +922,20 @@ private struct ContextCard<Content: View>: View {
     let title: String
     let symbol: String
     let tint: Color
+    let minimumHeight: CGFloat
     let content: Content
 
-    init(title: String, symbol: String, tint: Color, @ViewBuilder content: () -> Content) {
+    init(
+        title: String,
+        symbol: String,
+        tint: Color,
+        minimumHeight: CGFloat = 108,
+        @ViewBuilder content: () -> Content
+    ) {
         self.title = title
         self.symbol = symbol
         self.tint = tint
+        self.minimumHeight = minimumHeight
         self.content = content()
     }
 
@@ -920,7 +949,7 @@ private struct ContextCard<Content: View>: View {
             content
         }
         .padding(9)
-        .frame(maxWidth: .infinity, minHeight: 108, alignment: .topLeading)
+        .frame(maxWidth: .infinity, minHeight: minimumHeight, alignment: .topLeading)
         .background(GameTheme.hudRaisedFill, in: RoundedRectangle(cornerRadius: 11, style: .continuous))
         .overlay(
             RoundedRectangle(cornerRadius: 11, style: .continuous)

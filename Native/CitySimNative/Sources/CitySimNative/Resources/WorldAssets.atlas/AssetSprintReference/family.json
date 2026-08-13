@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "family_id": "cedar-market-v1",
+  "license": "Copyright JFM Systems; original deterministic repository artwork",
+  "benchmark_role": "Quality and catalog benchmark only; no source pixels sampled or copied",
+  "projection": {
+    "id": "citysim-isometric-2to1-southeast-v1",
+    "tile_width": 88,
+    "tile_height": 44,
+    "elevation_step": 22,
+    "visible_facades": ["southwest", "southeast"],
+    "renderer_rotation_degrees": 0,
+    "renderer_skew": 0,
+    "renderer_scale_override": 1
+  },
+  "ground_contract": {
+    "pivot_x": 0.5,
+    "pivot_y": 0.18,
+    "base_inset": 0.08,
+    "key_light": "northwest",
+    "shadow_direction": "southeast",
+    "shadow_offset_pixels": [16, -10]
+  },
+  "assets": [
+    "cedar-market-residential.png",
+    "cedar-market-commercial.png",
+    "cedar-market-civic.png",
+    "cedar-market-utility.png",
+    "cedar-market-terrain-roads.png",
+    "cedar-market-neighborhood-1280x800.png"
+  ]
+}
+

@@ -1,0 +1,143 @@
+{
+  "camera": "camNE",
+  "canvasPolicy": "native-sprites-no-scale-no-crop",
+  "grid": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "projectedTilePixels": [
+      88,
+      44
+    ],
+    "screenVectors": [
+      [
+        44,
+        22
+      ],
+      [
+        -44,
+        22
+      ]
+    ]
+  },
+  "liveAsset": false,
+  "outputs": [
+    {
+      "bytes": 185801,
+      "dimensions": [
+        1280,
+        800
+      ],
+      "path": "four-view-source-block-1280x800.png",
+      "sha256": "ec31eeef388d405cdc7208f03c9249f5c323cd5b53637e814ecf1b492bb4e006"
+    },
+    {
+      "bytes": 176130,
+      "dimensions": [
+        900,
+        600
+      ],
+      "path": "four-view-source-block-900x600.png",
+      "sha256": "a003435e57ca40a56f5b121699ca08100ed6b2f34b7a774f4867e57a590a2412"
+    }
+  ],
+  "placements": [
+    {
+      "assetId": "copper_finch_house",
+      "tileCenter": [
+        0,
+        0
+      ]
+    },
+    {
+      "assetId": "marigold_court_house",
+      "tileCenter": [
+        3,
+        0
+      ]
+    },
+    {
+      "assetId": "harbor_corner_storefront",
+      "tileCenter": [
+        6,
+        0
+      ]
+    },
+    {
+      "assetId": "hearthside_council_hall",
+      "tileCenter": [
+        9,
+        0
+      ]
+    },
+    {
+      "assetId": "pocket_grove_park",
+      "tileCenter": [
+        0,
+        4
+      ]
+    },
+    {
+      "assetId": "ironleaf_service_workshop",
+      "tileCenter": [
+        3,
+        4
+      ]
+    },
+    {
+      "assetId": "marigold_court_house",
+      "tileCenter": [
+        6,
+        4
+      ]
+    },
+    {
+      "assetId": "harbor_corner_storefront",
+      "tileCenter": [
+        9,
+        4
+      ]
+    }
+  ],
+  "postRenderCompensation": "none",
+  "schema": "citysim.world-art.four-view-source-integration.v1",
+  "sources": [
+    {
+      "assetId": "copper_finch_house",
+      "path": "FourViewPipeline/example/renders/copper_finch_house_camNE.png",
+      "sha256": "b4fa2cbb0afa8156b89e82570e6618c0c4e7b830ba744b99b6fd716d8d2eb994"
+    },
+    {
+      "assetId": "marigold_court_house",
+      "path": "FourViewProduction/ResidentialCivic/renders/marigold_court_house_camNE.png",
+      "sha256": "75cc1d681778a27c8b258a2db940a8d81e1b8f3abebdb4b89f8ac9e44c8f0187"
+    },
+    {
+      "assetId": "hearthside_council_hall",
+      "path": "FourViewProduction/ResidentialCivic/renders/hearthside_council_hall_camNE.png",
+      "sha256": "ee6e38809b6d5a10c20a2ff9d74494b1374b4ac77b0dac9d9173e46ea3193380"
+    },
+    {
+      "assetId": "harbor_corner_storefront",
+      "path": "FourViewProduction/CommercialIndustrial/harbor_corner_storefront/renders/harbor_corner_storefront_camNE.png",
+      "sha256": "87ca6d2dc221d4bbdfaf960b6d78ae8130c99635caa1df9a7ad0d4459cfc9240"
+    },
+    {
+      "assetId": "ironleaf_service_workshop",
+      "path": "FourViewProduction/CommercialIndustrial/ironleaf_service_workshop/renders/ironleaf_service_workshop_camNE.png",
+      "sha256": "0fa96cf7a8b2471f01916f7038053b24e373e016b3bd96957fed227cda3745eb"
+    },
+    {
+      "assetId": "axis_civic_road",
+      "path": "FourViewProduction/Environment/assets/axis_civic_road/renders/axis_civic_road_camNE.png",
+      "sha256": "63c612928e92ed2271c1cadc0b569cd592df99c2e79e2c2f41b7a629e965df3c"
+    },
+    {
+      "assetId": "pocket_grove_park",
+      "path": "FourViewProduction/Environment/assets/pocket_grove_park/renders/pocket_grove_park_camNE.png",
+      "sha256": "237745b8161214e1fa6ea76ff558099790f1f95445a5a1daf3dfd5aa6bd7f232"
+    }
+  ],
+  "status": "source-only-review-evidence-not-live"
+}

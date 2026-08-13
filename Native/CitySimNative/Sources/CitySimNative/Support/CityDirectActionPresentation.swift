@@ -638,12 +638,43 @@ struct CityRegionalCapitalDecisionSupport: Equatable, Sendable {
     }
 }
 
+struct CityBuildOperatingForecast: Equatable, Sendable {
+    let currentBalance: Double
+    let completedBalance: Double
+    let change: Double
+
+    static func make(
+        kind: BuildingKind,
+        tile: CityTile,
+        state: CityGameState
+    ) -> Self? {
+        let current = CitySimulation.projectedBalance(in: state)
+        var completed = state
+        guard case .success = CitySimulation.build(kind, at: tile.coordinate, in: &completed) else {
+            return nil
+        }
+        completed.updateTile(at: tile.coordinate) { $0.constructionProgress = 1 }
+        completed.jobs = min(
+            CitySimulation.jobCapacity(in: completed),
+            max(1, completed.population * 7 / 10)
+        )
+        let projected = CitySimulation.projectedBalance(in: completed)
+        return Self(
+            currentBalance: current,
+            completedBalance: projected,
+            change: projected - current
+        )
+    }
+}
+
 struct CityBuildDecisionPresentation: Equatable, Sendable {
     let buildingTitle: String
     let buildingSymbol: String
     let target: String
     let footprint: String
     let cost: String
+    let operatingImpact: String
+    let operatingForecast: CityBuildOperatingForecast?
     let availability: String
     let disabledReason: String?
     let likelyConsequence: String
@@ -656,6 +687,7 @@ struct CityBuildDecisionPresentation: Equatable, Sendable {
             "Target \(target)",
             "Footprint \(footprint)",
             cost,
+            operatingImpact,
             availability,
             disabledReason,
             "Likely consequence: \(likelyConsequence)",
@@ -670,23 +702,40 @@ struct CityBuildDecisionPresentation: Equatable, Sendable {
         kind: BuildingKind,
         tile: CityTile,
         rejection: BuildRejection?,
+        state: CityGameState,
         unlimitedFunds: Bool = false
     ) -> CityBuildDecisionPresentation {
         let cost = unlimitedFunds
-            ? "Cost waived · upkeep tracked only"
-            : "Cost \(kind.buildCost.currencyText) · \(kind.upkeep.currencyText) / cycle"
+            ? "Cost waived · \(kind == .road ? "online now" : "online in 4 ticks")"
+            : "Cost \(kind.buildCost.currencyText) · \(kind == .road ? "online now" : "online in 4 ticks")"
+        let forecast = rejection == nil
+            ? CityBuildOperatingForecast.make(kind: kind, tile: tile, state: state)
+            : nil
         return CityBuildDecisionPresentation(
             buildingTitle: kind.title,
             buildingSymbol: kind.symbol,
             target: "Block \(tile.coordinate.x + 1), \(tile.coordinate.y + 1)",
             footprint: "1 × 1 block",
             cost: cost,
+            operatingImpact: operatingImpact(forecast: forecast, unlimitedFunds: unlimitedFunds),
+            operatingForecast: forecast,
             availability: rejection == nil ? "Ready to build" : "Blocked",
             disabledReason: rejection?.message,
             likelyConsequence: kind.buildConsequenceSummary,
             cancellation: "Escape cancels without changing the city",
             recovery: rejection?.buildRecovery
         )
+    }
+
+    private static func operatingImpact(
+        forecast: CityBuildOperatingForecast?,
+        unlimitedFunds: Bool
+    ) -> String {
+        guard let forecast else { return "Net forecast available when ready" }
+        let prefix = unlimitedFunds ? "Tracked net" : "Net on completion"
+        return "\(prefix) \(forecast.currentBalance.signedCurrencyText) → "
+            + "\(forecast.completedBalance.signedCurrencyText) / cycle "
+            + "(\(forecast.change.signedCurrencyText))"
     }
 }
 
@@ -725,8 +774,8 @@ struct CityMapPrimaryActionPresentation: Equatable, Sendable {
             switch CitySimulation.validateBuild(kind, at: tile.coordinate, in: state) {
             case .success:
                 let disclosure = state.usesUnlimitedFunds
-                    ? "Available. Sandbox funds waive construction and operating spending."
-                    : "Available. Costs \(kind.buildCost.currencyText) and \(kind.upkeep.currencyText) upkeep per cycle."
+                    ? "Available. Sandbox funds waive spending; the tracked operating forecast is shown before placement."
+                    : "Available. Costs \(kind.buildCost.currencyText); the operating forecast is shown before placement."
                 return .init(
                     name: "Build \(kind.title) at \(block)",
                     disclosure: disclosure,
@@ -735,6 +784,7 @@ struct CityMapPrimaryActionPresentation: Equatable, Sendable {
                         kind: kind,
                         tile: tile,
                         rejection: nil,
+                        state: state,
                         unlimitedFunds: state.usesUnlimitedFunds
                     )
                 )
@@ -747,6 +797,7 @@ struct CityMapPrimaryActionPresentation: Equatable, Sendable {
                         kind: kind,
                         tile: tile,
                         rejection: rejection,
+                        state: state,
                         unlimitedFunds: state.usesUnlimitedFunds
                     )
                 )

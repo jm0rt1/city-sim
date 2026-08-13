@@ -1489,7 +1489,28 @@ final class CitySimulationTests: XCTestCase {
         let buildStore = CityGameStore(state: .newCity(seed: 42))
         buildStore.speed = .paused
         buildStore.selectTool(.commercial)
+        buildStore.selectedCoordinate = try XCTUnwrap(
+            buildStore.state.tiles.first { tile in
+                guard tile.kind == .empty else { return false }
+                if case .success = CitySimulation.validateBuild(
+                    .commercial,
+                    at: tile.coordinate,
+                    in: buildStore.state
+                ) {
+                    return true
+                }
+                return false
+            }?.coordinate
+        )
         XCTAssertEqual(buildStore.interactionMode, .build(.commercial))
+        XCTAssertNotNil(buildStore.activeMapActionTargetPresentation?.primaryAction.buildDecision)
+        let regularBuild = try hudBitmap(size: CGSize(width: 1_280, height: 800), store: buildStore)
+        XCTAssertGreaterThan(regularBuild.pixelsWide, 1_200)
+        XCTAssertGreaterThan(regularBuild.pixelsHigh, 700)
+        if let path = ProcessInfo.processInfo.environment["CITYSIM_HUD_REGULAR_BUILD_PROOF"] {
+            let data = try XCTUnwrap(regularBuild.representation(using: .png, properties: [:]))
+            try data.write(to: URL(fileURLWithPath: path), options: .atomic)
+        }
         let build = try hudBitmap(size: CGSize(width: 900, height: 600), store: buildStore)
         XCTAssertGreaterThan(build.pixelsWide, 850)
         XCTAssertGreaterThan(build.pixelsHigh, 550)

@@ -3327,7 +3327,9 @@ final class CityCommandCatalogTests: XCTestCase {
             XCTAssertEqual(decision.target, "Block \(occupied.coordinate.x + 1), \(occupied.coordinate.y + 1)")
             XCTAssertEqual(decision.footprint, "1 × 1 block")
             XCTAssertTrue(decision.cost.contains(kind.buildCost.currencyText))
-            XCTAssertTrue(decision.cost.contains(kind.upkeep.currencyText))
+            XCTAssertTrue(decision.cost.contains(kind == .road ? "online now" : "online in 4 ticks"))
+            XCTAssertEqual(decision.operatingImpact, "Net forecast available when ready")
+            XCTAssertNil(decision.operatingForecast)
             XCTAssertFalse(decision.likelyConsequence.isEmpty)
             XCTAssertTrue(decision.cancellation.contains("Escape"))
             XCTAssertTrue(decision.accessibilitySummary.contains("Likely consequence"))
@@ -3345,6 +3347,10 @@ final class CityCommandCatalogTests: XCTestCase {
         XCTAssertNil(validDecision.disabledReason)
         XCTAssertNil(validDecision.recovery)
         XCTAssertTrue(validDecision.likelyConsequence.contains("280 homes"))
+        XCTAssertTrue(validDecision.operatingImpact.contains("Net on completion"))
+        XCTAssertTrue(validDecision.operatingImpact.contains("→"))
+        XCTAssertTrue(validDecision.accessibilitySummary.contains(validDecision.operatingImpact))
+        XCTAssertNotNil(validDecision.operatingForecast)
 
         let roadDecision = try XCTUnwrap(
             CityMapPrimaryActionPresentation.make(

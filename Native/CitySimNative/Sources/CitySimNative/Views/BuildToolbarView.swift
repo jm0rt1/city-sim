@@ -303,13 +303,18 @@ struct BuildToolbarView: View {
                 .foregroundStyle(decision.disabledReason == nil ? GameTheme.accent : GameTheme.warning)
                 .lineLimit(1)
 
-                Text(decision.disabledReason ?? decision.likelyConsequence)
+                Text(decision.disabledReason ?? decision.operatingImpact)
                     .font(.system(size: GameTheme.hudCriticalTextSize - 1, weight: .semibold, design: .rounded))
                     .foregroundStyle(.primary)
                     .lineLimit(1)
 
                 if decision.disabledReason != nil {
                     Text("Likely: \(decision.likelyConsequence)")
+                        .font(.system(size: GameTheme.hudCriticalTextSize - 1, weight: .medium, design: .rounded))
+                        .foregroundStyle(.secondary)
+                        .lineLimit(1)
+                } else {
+                    Text(decision.likelyConsequence)
                         .font(.system(size: GameTheme.hudCriticalTextSize - 1, weight: .medium, design: .rounded))
                         .foregroundStyle(.secondary)
                         .lineLimit(1)

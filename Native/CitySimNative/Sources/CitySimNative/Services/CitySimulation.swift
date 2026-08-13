@@ -29,6 +29,53 @@ enum CitySimulation {
     static let industrialRevenue = 190.0
     static let upkeepMultiplier = 1.8
     static let reserveUtilityUpkeepFactor = 0.75
+    static let incidentEligibilityTick = 640
+    static let incidentReviewIntervalTicks = 160
+    static let firstOrdinaryStormTick = 800
+    static let stormRecoveryRequiredUtilityReserve = 0.15
+
+    static func nextIncidentReviewTick(in state: CityGameState) -> Int? {
+        guard state.sandboxRules?.incidentsEnabled != false,
+              state.population >= 500 else { return nil }
+        let firstPossibleTick = max(state.tick + 1, incidentEligibilityTick)
+        let remainder = firstPossibleTick % incidentReviewIntervalTicks
+        return remainder == 0
+            ? firstPossibleTick
+            : firstPossibleTick + incidentReviewIntervalTicks - remainder
+    }
+
+    static func firstGuaranteedStormReviewTick(in state: CityGameState) -> Int? {
+        guard state.stormRecovery == nil,
+              let nextReview = nextIncidentReviewTick(in: state) else { return nil }
+        return max(firstOrdinaryStormTick, nextReview)
+    }
+
+    static func stormProtection(in state: CityGameState) -> CityStormProtectionSnapshot {
+        let active = activeTiles(in: state)
+        let utilityReserve = utilityReserve(in: state)
+        let parkCount = active.filter { $0.kind == .park }.count
+        let serviceCount = active.filter {
+            [.fireStation, .policeStation, .school].contains($0.kind)
+        }.count
+        let utilityProtection = min(0.10, max(0, utilityReserve) * 0.25)
+        let parkProtection = min(0.06, Double(parkCount) * 0.02)
+        let serviceProtection = min(0.12, Double(serviceCount) * 0.04)
+        let estimatedDamage = max(
+            0.08,
+            0.38 - utilityProtection - parkProtection - serviceProtection
+        )
+        let exposedResidentialLots = min(
+            3,
+            active.filter { $0.kind == .residential }.count
+        )
+        return CityStormProtectionSnapshot(
+            utilityReserve: utilityReserve,
+            parkCount: parkCount,
+            serviceCount: serviceCount,
+            exposedResidentialLots: exposedResidentialLots,
+            estimatedConditionDamage: estimatedDamage
+        )
+    }
 
     static func validateBuild(
         _ kind: BuildingKind,
@@ -607,11 +654,11 @@ enum CitySimulation {
         projectedBalance(in: state) - kind.upkeep * upkeepMultiplier >= 0
     }
 
-    private static let firstOrdinaryStormTick = 800
-
     private static func maybeCreateEvent(_ state: inout CityGameState) {
         guard state.sandboxRules?.incidentsEnabled != false else { return }
-        guard state.population >= 500, state.tick >= 640, state.tick % 160 == 0 else { return }
+        guard state.population >= 500,
+              state.tick >= incidentEligibilityTick,
+              state.tick % incidentReviewIntervalTicks == 0 else { return }
         state.seed = state.seed &* 6_364_136_223_846_793_005 &+ 1_442_695_040_888_963_407
         let roll = Double(state.seed % 10_000) / 10_000
         let guaranteesFirstOrdinaryStorm = state.stormRecovery == nil
@@ -662,19 +709,11 @@ enum CitySimulation {
         parkCount: Int,
         serviceCount: Int
     ) {
-        let active = activeTiles(in: state)
-        let reserve = utilityReserve(in: state)
-        let parkCount = active.filter { $0.kind == .park }.count
-        let serviceCount = active.filter {
-            [.fireStation, .policeStation, .school].contains($0.kind)
-        }.count
-        let utilityProtection = min(0.10, max(0, reserve) * 0.25)
-        let parkProtection = min(0.06, Double(parkCount) * 0.02)
-        let serviceProtection = min(0.12, Double(serviceCount) * 0.04)
-        let damage = max(
-            0.08,
-            0.38 - utilityProtection - parkProtection - serviceProtection
-        )
+        let protection = stormProtection(in: state)
+        let reserve = protection.utilityReserve
+        let parkCount = protection.parkCount
+        let serviceCount = protection.serviceCount
+        let damage = protection.estimatedConditionDamage
 
         let targets = state.tiles.indices
             .filter {
@@ -789,7 +828,7 @@ enum CitySimulation {
 
         let reserve = utilityReserve(in: state)
         guard utilityCoverage(in: state) >= 1,
-              reserve >= 0.15 else {
+              reserve >= stormRecoveryRequiredUtilityReserve else {
             state.stormRecovery = recovery
             return
         }

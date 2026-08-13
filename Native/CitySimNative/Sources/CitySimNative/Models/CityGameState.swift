@@ -120,6 +120,14 @@ struct CityStormRecoveryState: Codable, Equatable, Sendable {
     var disposition: CityStormRecoveryDisposition
 }
 
+struct CityStormProtectionSnapshot: Equatable, Sendable {
+    let utilityReserve: Double
+    let parkCount: Int
+    let serviceCount: Int
+    let exposedResidentialLots: Int
+    let estimatedConditionDamage: Double
+}
+
 struct CityHistorySample: Codable, Equatable, Sendable, Identifiable {
     let tick: Int
     let treasury: Double

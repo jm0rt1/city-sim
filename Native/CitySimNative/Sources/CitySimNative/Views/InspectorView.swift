@@ -83,6 +83,9 @@ struct InspectorView: View {
     private var utilityDecisionSupport: CityUtilityDecisionSupport {
         CityUtilityDecisionSupport.make(analytics: analytics)
     }
+    private var resiliencePresentation: CityResiliencePresentation {
+        CityResiliencePresentation.make(analytics: analytics)
+    }
     private var contextColumns: [GridItem] {
         Array(
             repeating: GridItem(.flexible(), spacing: 8, alignment: .top),
@@ -222,6 +225,7 @@ struct InspectorView: View {
         case .utilities: utilityContext
         case .journal: journalContext
         case .trends: trendsContext
+        case .resilience: resilienceContext
         }
     }
 
@@ -641,6 +645,81 @@ struct InspectorView: View {
         }
     }
 
+    private var resilienceContext: some View {
+        let presentation = resiliencePresentation
+        return LazyVGrid(columns: contextColumns, alignment: .leading, spacing: 8) {
+            ContextCard(
+                title: "Incident outlook",
+                symbol: "cloud.bolt.rain.fill",
+                tint: resilienceTint(for: presentation.phase)
+            ) {
+                Text(presentation.status)
+                    .font(.title3.bold().monospaced())
+                    .foregroundStyle(resilienceTint(for: presentation.phase))
+                Text(presentation.title)
+                    .font(.caption.weight(.semibold))
+                    .lineLimit(2)
+                Text(presentation.timingLabel)
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(2)
+            }
+
+            ContextCard(title: "Exposure", symbol: "house.and.flag.fill", tint: GameTheme.warning) {
+                ContextValueRow(label: "Homes", value: presentation.exposureLabel)
+                ContextValueRow(label: "Response cost", value: "$2,000")
+                Text(presentation.protectionLabel)
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(3)
+            }
+
+            ContextCard(title: "Recovery standard", symbol: "bolt.shield.fill", tint: GameTheme.information) {
+                Text(presentation.reserveLabel)
+                    .font(.caption.weight(.semibold).monospacedDigit())
+                    .lineLimit(2)
+                Text(presentation.recoveryLabel)
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(2)
+                compactAction("Utility details", symbol: DataOverlay.utilities.symbol) {
+                    store.perform(.inspectorUtilities)
+                }
+            }
+
+            ContextCard(title: "Next preparation", symbol: "checklist", tint: GameTheme.accent) {
+                Text(presentation.detail)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(3)
+                compactAction(
+                    presentation.primaryResponse.title,
+                    symbol: "arrow.up.forward.square"
+                ) {
+                    perform(presentation.primaryResponse)
+                }
+                .accessibilityHint(presentation.primaryResponse.explanation)
+            }
+        }
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel(presentation.accessibilitySummary)
+    }
+
+    private func resilienceTint(
+        for phase: CityResiliencePresentation.Phase
+    ) -> Color {
+        switch phase {
+        case .incidentsDisabled, .ready, .recovered:
+            GameTheme.accent
+        case .growthWatch, .recovering:
+            GameTheme.information
+        case .prepare:
+            GameTheme.warning
+        case .recoveryBlocked:
+            GameTheme.danger
+        }
+    }
+
     @ViewBuilder
     private var trendsContext: some View {
         let samples = store.state.cityHistory ?? []
@@ -877,6 +956,7 @@ private extension InspectorSection {
         case .utilities: "Utilities"
         case .journal: "Journal"
         case .trends: "Trends"
+        case .resilience: "Resilience"
         }
     }
 }

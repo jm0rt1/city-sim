@@ -146,6 +146,57 @@ final class CityCommandCatalogTests: XCTestCase {
         XCTAssertEqual(TopHUDView.regularMaximumHeight, 108)
     }
 
+    @MainActor
+    func testCompactResilienceForecastRendersWithinTheDetailsBudget() throws {
+        var state = CityGameState.newCity(seed: 20260812)
+        state.population = 500
+        state.tick = 639
+        let store = CityGameStore(state: state)
+        store.openInspector(.resilience)
+        let size = CGSize(width: 854, height: BuildToolbarView.compactDetailsMaxHeight)
+
+        let resilienceDetails = try bitmap(
+            of: InspectorView(store: store, compact: true)
+                .frame(width: size.width, height: size.height, alignment: .top),
+            size: size
+        )
+
+        XCTAssertEqual(
+            resilienceDetails.size.height,
+            BuildToolbarView.compactDetailsMaxHeight,
+            accuracy: 0.5
+        )
+        XCTAssertEqual(store.inspectorSection, .resilience)
+        XCTAssertEqual(
+            CityResiliencePresentation.make(analytics: store.analytics).status,
+            "READY"
+        )
+    }
+
+    func testResilienceCommandIsSearchableAndUsesTheTenthGlobalShortcut() {
+        let descriptor = CityCommandCatalog.descriptor(for: .inspectorResilience)
+
+        XCTAssertEqual(descriptor.category, .inspectors)
+        XCTAssertEqual(descriptor.shortcut?.key, "0")
+        XCTAssertEqual(descriptor.shortcut?.display, "⌥0")
+        XCTAssertEqual(descriptor.shortcut?.modifiers, [.option])
+        XCTAssertEqual(
+            CityCommandCatalog.matchingCommand(
+                key: "0",
+                modifiers: [.option],
+                scope: .global
+            ),
+            .inspectorResilience
+        )
+        for query in ["storm", "emergency", "weather", "preparedness"] {
+            XCTAssertTrue(
+                CityCommandCatalog.matchingDescriptors(query: query).contains {
+                    $0.id == .inspectorResilience
+                }
+            )
+        }
+    }
+
     func testCatalogDeclaresEveryCommandExactlyOnceAndCoversNonSpatialInventory() {
         let descriptors = CityCommandCatalog.descriptors
         let descriptorIDs = descriptors.map(\.id)

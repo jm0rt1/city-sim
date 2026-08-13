@@ -18,13 +18,13 @@ final class CityHandbookTests: XCTestCase {
                 .accessibility
             ]
         )
-        XCTAssertEqual(presentation.sections.map(\.entries.count), [5, 3, 3, 4, 5, 4])
-        XCTAssertEqual(Set(presentation.sections.flatMap { $0.entries.map(\.id) }).count, 24)
+        XCTAssertEqual(presentation.sections.map(\.entries.count), [5, 3, 4, 4, 5, 4])
+        XCTAssertEqual(Set(presentation.sections.flatMap { $0.entries.map(\.id) }).count, 25)
 
         let all = presentation.search(query: "")
         XCTAssertEqual(all.sections, presentation.sections)
-        XCTAssertEqual(all.entryCount, 24)
-        XCTAssertEqual(all.countSummary, "6 sections · 24 items")
+        XCTAssertEqual(all.entryCount, 25)
+        XCTAssertEqual(all.countSummary, "6 sections · 25 items")
     }
 
     func testSearchMatchesTitlesSummariesKeywordsAndIndividualEntries() throws {
@@ -69,7 +69,7 @@ final class CityHandbookTests: XCTestCase {
     func testSectionFilteringAndNoResultBehaviorAreExplicit() {
         let selected = presentation.search(query: "", sectionID: .diagnoseCity)
         XCTAssertEqual(selected.sections.map(\.id), [.diagnoseCity])
-        XCTAssertEqual(selected.entryCount, 3)
+        XCTAssertEqual(selected.entryCount, 4)
 
         let noResult = presentation.search(query: "quantum ferry timetable")
         XCTAssertTrue(noResult.isEmpty)
@@ -92,6 +92,7 @@ final class CityHandbookTests: XCTestCase {
             $0.detail.contains("Land Value, Traffic Pressure, Utilities, Happiness, and Pollution")
         })
         XCTAssertTrue(diagnosis.entries.contains { $0.detail.contains("Compare more than one signal") })
+        XCTAssertTrue(diagnosis.entries.contains { $0.detail.contains("15% reserve") })
 
         let recovery = try section(.savesAndRecovery)
         XCTAssertTrue(recovery.entries.contains { $0.detail.contains("rotating autosaves") })

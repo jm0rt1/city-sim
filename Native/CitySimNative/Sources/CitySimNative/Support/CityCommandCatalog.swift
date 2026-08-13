@@ -61,6 +61,7 @@ enum CityCommandID: String, CaseIterable, Identifiable, Sendable {
     case inspectorUtilities = "inspector.utilities"
     case inspectorJournal = "inspector.journal"
     case inspectorTrends = "inspector.trends"
+    case inspectorResilience = "inspector.resilience"
 
     case openSettings = "system.settings"
     case toggleFullScreen = "system.full-screen"
@@ -347,7 +348,10 @@ enum CityCommandCatalog {
     private static let searchAliases: [CityCommandID: [String]] = [
         .inspectorFinances: [
             "tax", "tax policy", "budget", "cashflow", "storefront", "storefront slump", "revenue"
-        ]
+        ],
+        .inspectorResilience: [
+            "storm", "incident", "emergency", "recovery", "weather", "reserve", "preparedness"
+        ],
     ]
 
     static func matchingCommand(
@@ -443,6 +447,7 @@ enum CityCommandCatalog {
         case .utilities: .inspectorUtilities
         case .journal: .inspectorJournal
         case .trends: .inspectorTrends
+        case .resilience: .inspectorResilience
         }
     }
 
@@ -459,7 +464,8 @@ enum CityCommandCatalog {
     }
 
     private static func inspectorShortcutNumber(_ section: InspectorSection) -> Int {
-        InspectorSection.allCases.firstIndex(of: section)! + 1
+        let ordinal = InspectorSection.allCases.firstIndex(of: section)! + 1
+        return ordinal == 10 ? 0 : ordinal
     }
 
     private static func inspectorTitle(_ section: InspectorSection) -> String {
@@ -473,6 +479,7 @@ enum CityCommandCatalog {
         case .utilities: "Utilities"
         case .journal: "Journal"
         case .trends: "Trends"
+        case .resilience: "Resilience Forecast"
         }
     }
 }

@@ -1,0 +1,93 @@
+INDUSTRIAL_EXPANSION_FOUR_VIEW_VALIDATION_PASS
+{
+  "assets": {
+    "copperline_machine_shop": {
+      "deterministicCanonicalPngSha256": {
+        "copperline_machine_shop_camNE.png": "f83bb287c1563820c212491301a31ece249054004eec8e25a2bd016ebe1ccc15",
+        "copperline_machine_shop_camNW.png": "36edd724eedf7c118e5bad2832b3558f331e2949603d9ce777f75680bb8581d5",
+        "copperline_machine_shop_camSE.png": "f5a5b4e73f8384d3724dc1d14b29ebf06aaf5d1c3d61f57e7dd334d957189746",
+        "copperline_machine_shop_camSW.png": "f3ac5ad3acaa337fbbe031243cbf11930b490f0f5a3c98cf338ed9760752088f"
+      },
+      "meshCount": 140,
+      "projectedAxisPixels": {
+        "camNE": [
+          [
+            -44,
+            22
+          ],
+          [
+            44,
+            22
+          ]
+        ],
+        "camNW": [
+          [
+            -44,
+            -22
+          ],
+          [
+            -44,
+            22
+          ]
+        ],
+        "camSE": [
+          [
+            44,
+            22
+          ],
+          [
+            44,
+            -22
+          ]
+        ],
+        "camSW": [
+          [
+            44,
+            -22
+          ],
+          [
+            -44,
+            -22
+          ]
+        ]
+      },
+      "requiredObjectPrefixes": [
+        "MachineClerestory",
+        "MachineLoadingDoor",
+        "MachineOffice",
+        "MachineMaterial",
+        "MachineFence"
+      ]
+    }
+  },
+  "blenderVersion": "4.5.12",
+  "contract": {
+    "azimuthDegrees": 45.0,
+    "cameraOrder": [
+      "camNE",
+      "camSE",
+      "camSW",
+      "camNW"
+    ],
+    "deterministicRerender": "byte-identical canonical PNGs",
+    "elevationDegrees": 30.0,
+    "orthoScale": 12.341995,
+    "pivotPixels": [
+      192,
+      300
+    ],
+    "postRenderCompensation": "none",
+    "projectedTilePixels": [
+      88,
+      44
+    ],
+    "shiftY": 0.28125
+  },
+  "familyManifestSha256": "acbe9e14a25291cd111618912c87eeeaad5b26d5879d077dcd32df7abf6909f1",
+  "previewPngSha256": {
+    "preview/copperline-industrial-edge-1280x800.png": "d583103037e2ec1e9d3cc2b76582e614e2aa0b584d5e9483dae5c7d2557af5e4",
+    "preview/copperline-industrial-edge-900x600.png": "62bfc38eba7dae1f03fa7ca659bb87bec6ad83b53764ee624e77e3aaa6b80a77"
+  },
+  "schema": "citysim.world-art.industrial-expansion-validation.v1",
+  "status": "PASS"
+}

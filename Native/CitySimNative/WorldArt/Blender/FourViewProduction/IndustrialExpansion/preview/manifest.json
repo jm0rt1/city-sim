@@ -1,0 +1,142 @@
+{
+  "acceptedFamilyContractOnly": true,
+  "artifacts": [
+    {
+      "bytes": 3789380,
+      "path": "preview/copperline-industrial-edge.blend",
+      "sha256": "269ed16126e17784f7348533599e775d94cdf13a5b571392d14157344ba96453"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 800,
+          "maxX": 1279,
+          "maxY": 799,
+          "minX": 0,
+          "minY": 0,
+          "width": 1280
+        },
+        "lowestOpaqueRowTopOrigin": 799,
+        "opaquePixelCount": 1024000,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 956239,
+      "decodedRgbaSha256": "0ac5a09c7b62588144863f76679e81e6deecf3987c8df53f5f13211ffb8ff193",
+      "dimensions": [
+        1280,
+        800
+      ],
+      "path": "preview/copperline-industrial-edge-1280x800.png",
+      "sha256": "d583103037e2ec1e9d3cc2b76582e614e2aa0b584d5e9483dae5c7d2557af5e4"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 600,
+          "maxX": 899,
+          "maxY": 599,
+          "minX": 0,
+          "minY": 0,
+          "width": 900
+        },
+        "lowestOpaqueRowTopOrigin": 599,
+        "opaquePixelCount": 540000,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 512755,
+      "decodedRgbaSha256": "0d6967e97b844b6ff0b953f44007a6f9e0d8e36eedb3ffab1d2cf204f4a34647",
+      "dimensions": [
+        900,
+        600
+      ],
+      "path": "preview/copperline-industrial-edge-900x600.png",
+      "sha256": "62bfc38eba7dae1f03fa7ca659bb87bec6ad83b53764ee624e77e3aaa6b80a77"
+    }
+  ],
+  "camera": {
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0,
+    "perAssetCompensation": "none",
+    "projection": "orthographic"
+  },
+  "cedarMarketReused": false,
+  "grid": {
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0,
+    "exactWorldFootprint": [
+      4.0,
+      4.0
+    ],
+    "footprintTiles": [
+      2,
+      2
+    ],
+    "projectedTilePixels": [
+      88,
+      44
+    ],
+    "projection": "orthographic-2:1-dimetric",
+    "worldTileSize": 2.0
+  },
+  "lightingConvention": {
+    "color": [
+      1.0,
+      0.86,
+      0.72
+    ],
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldColor": [
+      0.2,
+      0.17,
+      0.14,
+      1.0
+    ],
+    "worldStrength": 0.72
+  },
+  "liveAsset": false,
+  "placements": [
+    {
+      "assetId": "copperline_machine_shop",
+      "footprintTiles": [
+        2,
+        2
+      ],
+      "meshCount": 140,
+      "originWorld": [
+        -3.0,
+        -3.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "sourceBlend": "FourViewProduction/IndustrialExpansion/copperline_machine_shop/copperline_machine_shop.blend",
+      "sourceBlendSha256": "c2fb5c48c711f3e48c20dd99eeb44a45a691036a6d583a4678a405fac8995d8d"
+    },
+    {
+      "assetId": "ironleaf_service_workshop",
+      "footprintTiles": [
+        2,
+        2
+      ],
+      "meshCount": 48,
+      "originWorld": [
+        3.0,
+        -3.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "sourceBlend": "FourViewProduction/CommercialIndustrial/ironleaf_service_workshop/ironleaf_service_workshop.blend",
+      "sourceBlendSha256": "eb0cbf045983164fcd0a88451765dcab9e6f4ba4fc712863bcf121bd365914d8"
+    }
+  ],
+  "rejectedVectorAssetsReused": false,
+  "schema": "citysim.world-art.industrial-expansion-preview.v1",
+  "status": "source-only-review-evidence"
+}

@@ -1,0 +1,253 @@
+{
+  "artifacts": [
+    {
+      "bytes": 2281737,
+      "path": "copperline_machine_shop.blend",
+      "sha256": "c2fb5c48c711f3e48c20dd99eeb44a45a691036a6d583a4678a405fac8995d8d"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 150,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 199,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 15403,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 60363,
+      "decodedRgbaSha256": "f9d29971ca7659bd629b9357cdff0eb888f1ca7d16b23154741df974cc9429e4",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/copperline_machine_shop_camNE.png",
+      "sha256": "f83bb287c1563820c212491301a31ece249054004eec8e25a2bd016ebe1ccc15"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 147,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 202,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 15478,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 60336,
+      "decodedRgbaSha256": "c62156eecfb549bf9e1f97ecb5145abb5da9a630f520fbf9fc04fc5edba44f67",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/copperline_machine_shop_camSE.png",
+      "sha256": "f5a5b4e73f8384d3724dc1d14b29ebf06aaf5d1c3d61f57e7dd334d957189746"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 138,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 211,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 14481,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 59065,
+      "decodedRgbaSha256": "dd5e9a2325fb5669df2c0e2e7b898f2cecdeec1288a1603ce349bea3ec9e812b",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/copperline_machine_shop_camSW.png",
+      "sha256": "f3ac5ad3acaa337fbbe031243cbf11930b490f0f5a3c98cf338ed9760752088f"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 146,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 203,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 14972,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 59627,
+      "decodedRgbaSha256": "81bfcba7d43e4b20429abff726db03f33dde3715c42b2ffaf839f77bf749fbab",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/copperline_machine_shop_camNW.png",
+      "sha256": "36edd724eedf7c118e5bad2832b3558f331e2949603d9ce777f75680bb8581d5"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 641,
+          "maxX": 783,
+          "maxY": 839,
+          "minX": 0,
+          "minY": 199,
+          "width": 784
+        },
+        "lowestOpaqueRowTopOrigin": 839,
+        "opaquePixelCount": 103342,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 199566,
+      "decodedRgbaSha256": "3f6aef925806a03234834043120d9734010307c29a5f9b8cefed6d2ee7cf9461",
+      "dimensions": [
+        784,
+        840
+      ],
+      "path": "copperline_machine_shop_contact-sheet.png",
+      "sha256": "8617aca73ab93a7baaace5af5e1488de0701524071a957283cc0af74712d8df0"
+    }
+  ],
+  "assetId": "copperline_machine_shop",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "cameraRig": {
+    "distance": 32.0,
+    "orthoScale": 12.341995,
+    "shiftY": 0.28125,
+    "views": [
+      {
+        "azimuthDegrees": 45.0,
+        "name": "camNE"
+      },
+      {
+        "azimuthDegrees": 135.0,
+        "name": "camSE"
+      },
+      {
+        "azimuthDegrees": 225.0,
+        "name": "camSW"
+      },
+      {
+        "azimuthDegrees": 315.0,
+        "name": "camNW"
+      }
+    ]
+  },
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "footprintPivotPixelTopOrigin": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "cedarMarketReused": false,
+  "description": "Warm brick neighborhood machine shop with clerestory roof monitors, front office glazing, loading doors, restrained exhaust equipment, and an axis-aligned fenced material yard",
+  "grid": {
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0,
+    "exactWorldFootprint": [
+      4.0,
+      4.0
+    ],
+    "footprintTiles": [
+      2,
+      2
+    ],
+    "projectedTilePixels": [
+      88,
+      44
+    ],
+    "projection": "orthographic-2:1-dimetric",
+    "worldTileSize": 2.0
+  },
+  "industrialRole": "neighborhood-machine-shop",
+  "lightingConvention": {
+    "color": [
+      1.0,
+      0.86,
+      0.72
+    ],
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldColor": [
+      0.2,
+      0.17,
+      0.14,
+      1.0
+    ],
+    "worldStrength": 0.72
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "perViewCompensation": {
+    "crop": false,
+    "offsetPixels": [
+      0,
+      0
+    ],
+    "rotationDegrees": 0.0,
+    "scale": 1.0,
+    "skew": [
+      0.0,
+      0.0
+    ]
+  },
+  "pipelineSchema": "citysim.world-art.industrial-expansion-four-view.v1",
+  "postRenderCompensation": "none",
+  "rejectedVectorAssetsReused": false,
+  "root": {
+    "location": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "name": "AssetRoot",
+    "pivotName": "FootprintPivot",
+    "rotationEuler": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "schema": "citysim.world-art.industrial-expansion-asset.v1",
+  "serviceRole": "neighborhood-machine-shop",
+  "sourcePixelsReused": false,
+  "status": "source-only-not-live"
+}

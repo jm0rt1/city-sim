@@ -1,0 +1,31 @@
+{
+  "artifacts": [
+    {
+      "bytes": 5865,
+      "path": "copperline_machine_shop/manifest.json",
+      "sha256": "df38da0ed33d05cd4e19a5cac070f414d3093186896679047434242730daa5ad"
+    }
+  ],
+  "assetIds": [
+    "copperline_machine_shop"
+  ],
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "cedarMarketReused": false,
+  "pipelineSchema": "citysim.world-art.industrial-expansion-four-view.v1",
+  "pivotPixelTopOrigin": [
+    192,
+    300
+  ],
+  "postRenderCompensation": "none",
+  "projectedTilePixels": [
+    88,
+    44
+  ],
+  "schema": "citysim.world-art.industrial-expansion-family.v1",
+  "status": "source-only-not-live"
+}

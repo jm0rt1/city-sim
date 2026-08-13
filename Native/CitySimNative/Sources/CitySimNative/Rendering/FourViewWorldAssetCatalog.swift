@@ -67,7 +67,7 @@ final class FourViewWorldAssetCatalog {
         case .industrial where tile.level == 2:
             firstAssetID(forRole: "industrial-medium")
         case .industrial:
-            firstAssetID(forRole: "industrial-low")
+            deterministicAssetID(forRole: "industrial-low", variant: variant)
         case .park:
             firstAssetID(forRole: "park")
         case .cityHall:

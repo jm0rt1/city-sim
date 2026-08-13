@@ -54,6 +54,12 @@
       "roles": ["industrial", "industrial-low"]
     },
     {
+      "assetID": "copperline_machine_shop",
+      "file": "copperline_machine_shop_camNE.png",
+      "sha256": "f83bb287c1563820c212491301a31ece249054004eec8e25a2bd016ebe1ccc15",
+      "roles": ["industrial", "industrial-low"]
+    },
+    {
       "assetID": "hearthside_council_hall",
       "file": "hearthside_council_hall_camNE.png",
       "sha256": "5fbdf8cfd63317218546c7eb0f728be4f81353043d9c371b07505357661d02b9",

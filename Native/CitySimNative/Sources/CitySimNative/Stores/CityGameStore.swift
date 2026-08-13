@@ -54,6 +54,7 @@ final class CityGameStore: ObservableObject {
 
     private let saves: SaveGameService
     private let playerDefaults: UserDefaults?
+    private let soundFeedback: CitySoundFeedbackController
     private let photos: CityPhotoService
     private let benchmarkReports: CityBenchmarkReportService
     private let capturesScenarioCheckpoints: Bool
@@ -94,13 +95,18 @@ final class CityGameStore: ObservableObject {
         photoService: CityPhotoService? = nil,
         benchmarkReportService: CityBenchmarkReportService? = nil,
         revealSupportReport: ((URL) -> Void)? = nil,
-        playerDefaults: UserDefaults? = nil
+        playerDefaults: UserDefaults? = nil,
+        soundPlayer: (any CitySoundPlaying)? = nil
     ) {
         self.state = state
         self.cityNameDraft = state.cityName
         self.commandPolicy = commandPolicy
         self.saves = saveService
         self.playerDefaults = playerDefaults
+        self.soundFeedback = CitySoundFeedbackController(
+            defaults: playerDefaults ?? .standard,
+            player: soundPlayer ?? CitySystemSoundPlayer()
+        )
         self.foundationsGuideProgress = playerDefaults.map {
             CityFoundationsGuidePersistence.read(from: $0)
         } ?? .fresh
@@ -1055,7 +1061,7 @@ final class CityGameStore: ObservableObject {
                     showInspector = false
                 }
                 showFeedback("\(kind.title) construction approved", tone: .positive)
-                playSound(named: "Tink")
+                soundFeedback.play(.constructionApproved)
             case .failure(let rejection):
                 publishBlockedPlacementFeedback(for: kind, reason: rejection.message)
             }
@@ -1068,7 +1074,7 @@ final class CityGameStore: ObservableObject {
             tone: .caution,
             autoDismissAfter: nil
         )
-        playSound(named: "Basso")
+        soundFeedback.play(.actionRejected)
     }
 
     func secondaryAction(at coordinate: GridCoordinate) {
@@ -1090,8 +1096,10 @@ final class CityGameStore: ObservableObject {
             showFeedback("Structure demolished · Undo is available", tone: .positive)
             selectedCoordinate = nil
             showInspector = false
+            soundFeedback.play(.demolitionApproved)
         } else {
             showFeedback("City Hall and open land cannot be demolished", tone: .caution)
+            soundFeedback.play(.actionRejected)
         }
     }
 
@@ -1868,7 +1876,7 @@ final class CityGameStore: ObservableObject {
             lastPersistenceCheckpointKind = .manual
             nextAutosaveTick = state.tick + Self.autosaveIntervalTicks
             showFeedback(CityPersistenceFeedbackPresentation.saved(state).message, tone: .positive)
-            playSound(named: "Glass")
+            soundFeedback.play(.persistenceSucceeded)
             return true
         }
         catch {
@@ -1877,6 +1885,7 @@ final class CityGameStore: ObservableObject {
                 tone: .caution,
                 autoDismissAfter: nil
             )
+            soundFeedback.play(.actionRejected)
             return false
         }
     }
@@ -2057,6 +2066,7 @@ final class CityGameStore: ObservableObject {
             autoDismissAfter: migrationError == nil && brief == nil && scenario == nil ? 3.2 : nil,
             resumeBrief: brief
         )
+        soundFeedback.play(migrationError == nil ? .persistenceSucceeded : .actionRejected)
     }
 
     private func showInvalidQuicksaveFeedback() {
@@ -2065,6 +2075,7 @@ final class CityGameStore: ObservableObject {
             tone: .caution,
             autoDismissAfter: nil
         )
+        soundFeedback.play(.actionRejected)
     }
 
     func undoLastAction() {
@@ -2080,7 +2091,7 @@ final class CityGameStore: ObservableObject {
         showInspector = false
         canUndo = !undoStates.isEmpty
         showFeedback("Last construction action undone", tone: .positive)
-        playSound(named: "Pop")
+        soundFeedback.play(.actionReversed)
     }
 
     func clearFeedback() {
@@ -2144,12 +2155,6 @@ final class CityGameStore: ObservableObject {
         let work = DispatchWorkItem { [weak self] in self?.lastFeedback = nil }
         feedbackDismissal = work
         DispatchQueue.main.asyncAfter(deadline: .now() + delay, execute: work)
-    }
-
-    private func playSound(named name: String) {
-        guard UserDefaults.standard.object(forKey: CityPlayerPreferenceKey.soundEffects) as? Bool
-            ?? true else { return }
-        NSSound(named: NSSound.Name(name))?.play()
     }
 
     private func leaveCityFocusForPresentedSurface() {

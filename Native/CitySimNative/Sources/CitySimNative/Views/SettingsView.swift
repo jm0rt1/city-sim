@@ -2,6 +2,7 @@ import SwiftUI
 
 struct SettingsView: View {
     @AppStorage private var soundEffects: Bool
+    @AppStorage private var effectsVolume: Double
     @AppStorage private var reduceMotion: Bool
     @AppStorage private var reduceTransparency: Bool
     @AppStorage private var increaseContrast: Bool
@@ -16,6 +17,11 @@ struct SettingsView: View {
         _soundEffects = AppStorage(
             wrappedValue: true,
             CityPlayerPreferenceKey.soundEffects,
+            store: defaults
+        )
+        _effectsVolume = AppStorage(
+            wrappedValue: CityPlayerPreferenceSnapshot.standard.effectsVolume,
+            CityPlayerPreferenceKey.effectsVolume,
             store: defaults
         )
         _reduceMotion = AppStorage(
@@ -60,6 +66,23 @@ struct SettingsView: View {
                     isOn: $soundEffects
                 )
                 .accessibilityIdentifier("settings.sound-effects")
+
+                LabeledContent {
+                    HStack(spacing: 10) {
+                        Slider(value: $effectsVolume, in: 0...1, step: 0.05)
+                            .frame(width: 190)
+                        Text(effectsVolume, format: .percent.precision(.fractionLength(0)))
+                            .monospacedDigit()
+                            .frame(width: 44, alignment: .trailing)
+                    }
+                } label: {
+                    Label("Effects level", systemImage: "slider.horizontal.3")
+                }
+                .disabled(!soundEffects)
+                .accessibilityLabel("Sound effects level")
+                .accessibilityValue(Text(effectsVolume, format: .percent.precision(.fractionLength(0))))
+                .accessibilityHint("Adjusts construction, save, warning, and undo feedback")
+                .accessibilityIdentifier("settings.effects-level")
             }
 
             Section("Motion") {
@@ -142,6 +165,7 @@ struct SettingsView: View {
                         CitySettingsActions.restorePreferenceDefaults(in: defaults)
                         let restored = CityPlayerPreferenceSnapshot.standard
                         soundEffects = restored.soundEffects
+                        effectsVolume = restored.effectsVolume
                         reduceMotion = restored.reduceMotion
                         reduceTransparency = restored.reduceTransparency
                         increaseContrast = restored.increaseContrast

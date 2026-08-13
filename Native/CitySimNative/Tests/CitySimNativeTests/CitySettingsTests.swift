@@ -11,6 +11,7 @@ final class CitySettingsTests: XCTestCase {
 
         let chosen = CityPlayerPreferenceSnapshot(
             soundEffects: false,
+            effectsVolume: 0.4,
             reduceMotion: true,
             reduceTransparency: true,
             increaseContrast: true,
@@ -19,6 +20,7 @@ final class CitySettingsTests: XCTestCase {
         chosen.write(to: defaults)
 
         XCTAssertEqual(CityPlayerPreferenceSnapshot.read(from: defaults), chosen)
+        XCTAssertEqual(CityPlayerPreferenceSnapshot.read(from: defaults).effectsVolume, 0.4)
     }
 
     func testPlayerAppearanceOverridesAddToRatherThanEraseSystemPreferences() {

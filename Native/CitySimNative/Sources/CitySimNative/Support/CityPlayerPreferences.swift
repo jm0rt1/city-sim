@@ -3,6 +3,7 @@ import SwiftUI
 
 enum CityPlayerPreferenceKey {
     static let soundEffects = "soundEffects"
+    static let effectsVolume = "effectsVolume"
     static let reduceMotion = "reduceGameMotion"
     static let reduceTransparency = "reduceGameTransparency"
     static let increaseContrast = "increaseGameContrast"
@@ -14,6 +15,7 @@ enum CityPlayerPreferenceKey {
 
 struct CityPlayerPreferenceSnapshot: Equatable, Sendable {
     let soundEffects: Bool
+    let effectsVolume: Double
     let reduceMotion: Bool
     let reduceTransparency: Bool
     let increaseContrast: Bool
@@ -21,15 +23,34 @@ struct CityPlayerPreferenceSnapshot: Equatable, Sendable {
 
     static let standard = Self(
         soundEffects: true,
+        effectsVolume: 0.75,
         reduceMotion: false,
         reduceTransparency: false,
         increaseContrast: false,
         differentiateWithoutColor: false
     )
 
+    init(
+        soundEffects: Bool,
+        effectsVolume: Double = 0.75,
+        reduceMotion: Bool,
+        reduceTransparency: Bool,
+        increaseContrast: Bool,
+        differentiateWithoutColor: Bool
+    ) {
+        self.soundEffects = soundEffects
+        self.effectsVolume = min(1, max(0, effectsVolume))
+        self.reduceMotion = reduceMotion
+        self.reduceTransparency = reduceTransparency
+        self.increaseContrast = increaseContrast
+        self.differentiateWithoutColor = differentiateWithoutColor
+    }
+
     static func read(from defaults: UserDefaults) -> Self {
         Self(
             soundEffects: defaults.object(forKey: CityPlayerPreferenceKey.soundEffects) as? Bool ?? true,
+            effectsVolume: defaults.object(forKey: CityPlayerPreferenceKey.effectsVolume) as? Double
+                ?? Self.standard.effectsVolume,
             reduceMotion: defaults.bool(forKey: CityPlayerPreferenceKey.reduceMotion),
             reduceTransparency: defaults.bool(forKey: CityPlayerPreferenceKey.reduceTransparency),
             increaseContrast: defaults.bool(forKey: CityPlayerPreferenceKey.increaseContrast),
@@ -41,6 +62,7 @@ struct CityPlayerPreferenceSnapshot: Equatable, Sendable {
 
     func write(to defaults: UserDefaults) {
         defaults.set(soundEffects, forKey: CityPlayerPreferenceKey.soundEffects)
+        defaults.set(effectsVolume, forKey: CityPlayerPreferenceKey.effectsVolume)
         defaults.set(reduceMotion, forKey: CityPlayerPreferenceKey.reduceMotion)
         defaults.set(reduceTransparency, forKey: CityPlayerPreferenceKey.reduceTransparency)
         defaults.set(increaseContrast, forKey: CityPlayerPreferenceKey.increaseContrast)

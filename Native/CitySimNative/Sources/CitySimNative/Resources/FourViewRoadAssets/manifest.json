@@ -1,0 +1,31 @@
+{
+  "schema": "citysim.native-four-view-roads.v1",
+  "camera": "camNE",
+  "cameraAzimuthDegrees": 45,
+  "cameraElevationDegrees": 30,
+  "projectedTilePixels": [88, 44],
+  "canvas": {
+    "width": 384,
+    "height": 384,
+    "footprintPivotPixel": [192, 300]
+  },
+  "postRenderCompensation": "none",
+  "roads": [
+    {"connectionMask": 0, "assetID": "road_mask_00", "file": "road_mask_00_camNE.png", "sha256": "a11a05e0cfd25e9d822582b99a8688ea908c051c85968983c0f99baf7ae03b0b"},
+    {"connectionMask": 1, "assetID": "road_mask_01", "file": "road_mask_01_camNE.png", "sha256": "a8da10aae57f249c946e9ac868da6165d7de74670faa9c81add50641c4baeee3"},
+    {"connectionMask": 2, "assetID": "road_mask_02", "file": "road_mask_02_camNE.png", "sha256": "25eb99571d0bed5bcc063ca175ca4604170570eb42e775e062a101951f2a4530"},
+    {"connectionMask": 3, "assetID": "road_mask_03", "file": "road_mask_03_camNE.png", "sha256": "2514e35dde8e4c10124bafce5b5cb5eb532c3a7a79463947a3f016537cb05e46"},
+    {"connectionMask": 4, "assetID": "road_mask_04", "file": "road_mask_04_camNE.png", "sha256": "00ee5fd8864e7e2dc85b5adfd40173a2b6c0991d959ffa38aaedd0d5964d6b17"},
+    {"connectionMask": 5, "assetID": "road_mask_05", "file": "road_mask_05_camNE.png", "sha256": "807eeed494b02d555dab3f14966c57ab9f0dcc42eea91c4016f876b67162f502"},
+    {"connectionMask": 6, "assetID": "road_mask_06", "file": "road_mask_06_camNE.png", "sha256": "a82fc31dbd0e74d28aeceb91127d711fd0fa32214e3e3967fc9fe8a7c84c60ad"},
+    {"connectionMask": 7, "assetID": "road_mask_07", "file": "road_mask_07_camNE.png", "sha256": "4f4a25d9157203131f5a873d9d7b0eda4bd2072ced533d929571ca68b3cec9d6"},
+    {"connectionMask": 8, "assetID": "road_mask_08", "file": "road_mask_08_camNE.png", "sha256": "78ec717486fdcbe932b758f54bf72d7a0a9b36c242dd93559c01124a597fd28f"},
+    {"connectionMask": 9, "assetID": "road_mask_09", "file": "road_mask_09_camNE.png", "sha256": "7a262ef4f2a4ff1fc55201178ece369b73b99c6a8a6ed6df97af8e86a9633e38"},
+    {"connectionMask": 10, "assetID": "road_mask_10", "file": "road_mask_10_camNE.png", "sha256": "24b29db2766e3d0662a21f747168f6ca94cffdb85e7a9c02f2c63e528bcfe5b1"},
+    {"connectionMask": 11, "assetID": "road_mask_11", "file": "road_mask_11_camNE.png", "sha256": "fcee613ccfb98164338d6d92ebbe08f15d1d64f0409ab5c32d4c8eb161e68321"},
+    {"connectionMask": 12, "assetID": "road_mask_12", "file": "road_mask_12_camNE.png", "sha256": "b4cbd5a5b9e8ba2965b0b06e79b18c842358f7a2d7d43a16de388f59095ff498"},
+    {"connectionMask": 13, "assetID": "road_mask_13", "file": "road_mask_13_camNE.png", "sha256": "87bbe57b212a0b74a3808aa8d2a8a0029a982d57a20fd1d5e6a05d31d153852a"},
+    {"connectionMask": 14, "assetID": "road_mask_14", "file": "road_mask_14_camNE.png", "sha256": "f9f4ae4cae13d2024bf2e64cca3e838d9daac4194ad2d3234f6ab0fba3b15c57"},
+    {"connectionMask": 15, "assetID": "road_mask_15", "file": "road_mask_15_camNE.png", "sha256": "8b2ff6aa31d96b9a5e267ec635b4c09f7820829be91542a8f7d9412d8fb68326"}
+  ]
+}

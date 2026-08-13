@@ -281,7 +281,11 @@ final class CityScene: SKScene {
         self.style = style
         self.assets = assets
         self.terrainRenderer = TerrainRenderer(style: style, assets: assets)
-        self.roadRenderer = RoadRenderer(style: style, assets: assets)
+        self.roadRenderer = RoadRenderer(
+            style: style,
+            assets: assets,
+            fourViewRoadAssets: .shared
+        )
         self.lotRenderer = LotRenderer(
             style: style,
             assets: assets,
@@ -1965,7 +1969,20 @@ final class CityScene: SKScene {
     private func updateGeneratedLOD(in node: SKNode, detail: CameraDetailLevel) {
         if let sprite = node as? SKSpriteNode,
            let name = sprite.name,
-           name.hasPrefix("road.generated-v4.") {
+           name.hasPrefix("road.generated-v4."),
+           sprite.children.contains(where: {
+               $0.name?.hasPrefix("road.four-view.") == true
+           }) {
+            // Four-View roads retain one fixed camNE source at every LOD.
+            // Only the diagnostic suffix changes; the canonical texture,
+            // canvas, pivot, and scale never do.
+            let components = name.split(separator: ".")
+            if components.count >= 4, let connectionMask = UInt8(components[2]) {
+                sprite.name = "road.generated-v4.\(connectionMask).\(detail.assetSuffix)"
+            }
+        } else if let sprite = node as? SKSpriteNode,
+                  let name = sprite.name,
+                  name.hasPrefix("road.generated-v4.") {
             let components = name.split(separator: ".")
             if components.count >= 4, let connectionMask = UInt8(components[2]) {
                 assets.applyGeneratedRoadLOD(
@@ -2629,6 +2646,7 @@ final class CityScene: SKScene {
         while let current = node {
             if current.children.contains(where: {
                 $0.name?.hasPrefix("lot.four-view.") == true
+                    || $0.name?.hasPrefix("road.four-view.") == true
             }) {
                 hitFourViewCanvas = true
             }

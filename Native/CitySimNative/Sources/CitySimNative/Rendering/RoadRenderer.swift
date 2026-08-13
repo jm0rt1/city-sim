@@ -171,11 +171,17 @@ final class RoadRenderer {
 
     private let style: WorldVisualStyle
     private let assets: WorldAssetCatalog
+    private let fourViewRoadAssets: FourViewRoadAssetCatalog?
     private let developedRoadbed: RoadbedPalette
 
-    init(style: WorldVisualStyle, assets: WorldAssetCatalog = .shared) {
+    init(
+        style: WorldVisualStyle,
+        assets: WorldAssetCatalog = .shared,
+        fourViewRoadAssets: FourViewRoadAssetCatalog? = nil
+    ) {
         self.style = style
         self.assets = assets
+        self.fourViewRoadAssets = fourViewRoadAssets
         self.developedRoadbed = RoadbedPalette(
             sidewalk: style.palette.sidewalk,
             curb: style.palette.curb,
@@ -270,15 +276,27 @@ final class RoadRenderer {
         root.addChild(neighborhoodLayer)
         root.addChild(blockLayer)
 
-        addDistrictFabricHierarchy(
-            for: topology,
-            emphasis: emphasis,
-            to: cityLayer
+        let fourViewRoad = fourViewRoadAssets?.makeSprite(
+            connectionMask: connections.rawValue,
+            worldTileWidth: style.tileWidth
         )
+        if fourViewRoad == nil {
+            addDistrictFabricHierarchy(
+                for: topology,
+                emphasis: emphasis,
+                to: cityLayer
+            )
+        }
 
         let corridor = SKNode()
         corridor.name = "road.production-corridor.\(emphasis.rawValue).\(connections.rawValue)"
-        if let authoredRoad = assets.generatedRoadSprite(
+        if let authoredRoad = fourViewRoad {
+            authoredRoad.name = "road.generated-v4.\(connections.rawValue).\(detail.assetSuffix)"
+            authoredRoad.color = .clear
+            authoredRoad.colorBlendFactor = 0
+            authoredRoad.alpha = 1
+            corridor.addChild(authoredRoad)
+        } else if let authoredRoad = assets.generatedRoadSprite(
             connectionMask: connections.rawValue,
             detail: detail
         ) {
@@ -292,15 +310,17 @@ final class RoadRenderer {
             authoredRoad.alpha = 1
             corridor.addChild(authoredRoad)
         }
-        addSocketSeamBlends(for: topology, to: corridor)
-        if topology.classification == .end, let connectedEdge = topology.mask.edges.first {
-            addAuthoredTerminus(
-                onUnconnectedSideOf: connectedEdge,
-                to: corridor
-            )
+        if fourViewRoad == nil {
+            addSocketSeamBlends(for: topology, to: corridor)
+            if topology.classification == .end, let connectedEdge = topology.mask.edges.first {
+                addAuthoredTerminus(
+                    onUnconnectedSideOf: connectedEdge,
+                    to: corridor
+                )
+            }
         }
         cityLayer.addChild(corridor)
-        if detailAlpha > 0, detail == .block {
+        if fourViewRoad == nil, detailAlpha > 0, detail == .block {
             addStreetFurniture(
                 at: coordinate,
                 topology: topology,

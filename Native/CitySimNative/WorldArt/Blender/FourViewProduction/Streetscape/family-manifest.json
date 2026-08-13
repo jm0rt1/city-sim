@@ -1,0 +1,315 @@
+{
+  "cameraRig": {
+    "distance": 32.0,
+    "orthoScale": 12.341995,
+    "shiftY": 0.28125,
+    "views": [
+      {
+        "azimuthDegrees": 45.0,
+        "name": "camNE"
+      },
+      {
+        "azimuthDegrees": 135.0,
+        "name": "camSE"
+      },
+      {
+        "azimuthDegrees": 225.0,
+        "name": "camSW"
+      },
+      {
+        "azimuthDegrees": 315.0,
+        "name": "camNW"
+      }
+    ]
+  },
+  "canonicalViewCount": 64,
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "familyId": "civic-works-yard-road-connection-masks",
+  "grid": {
+    "azimuthDegrees": 45.0,
+    "boundaryMidpoints": {
+      "east": [
+        1.0,
+        0.0,
+        0.035
+      ],
+      "north": [
+        0.0,
+        1.0,
+        0.035
+      ],
+      "south": [
+        0.0,
+        -1.0,
+        0.035
+      ],
+      "west": [
+        -1.0,
+        0.0,
+        0.035
+      ]
+    },
+    "elevationDegrees": 30.0,
+    "projectedTilePixels": [
+      88,
+      44
+    ],
+    "projection": "orthographic-2:1-dimetric",
+    "worldCell": [
+      2.0,
+      2.0
+    ],
+    "worldTileSize": 2.0
+  },
+  "lightingConvention": {
+    "color": [
+      1.0,
+      0.86,
+      0.72
+    ],
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldColor": [
+      0.2,
+      0.17,
+      0.14,
+      1.0
+    ],
+    "worldStrength": 0.72
+  },
+  "liveAsset": false,
+  "maskCount": 16,
+  "masks": [
+    {
+      "assetId": "road_mask_00",
+      "directions": [],
+      "manifest": "road_mask_00/manifest.json",
+      "manifestSha256": "815b96b72cb09f4ddd1c104806eef41f5777fcc01b96cd58ca0e2ec193167e95",
+      "rawValue": 0,
+      "topologyClass": "isolated"
+    },
+    {
+      "assetId": "road_mask_01",
+      "directions": [
+        "north"
+      ],
+      "manifest": "road_mask_01/manifest.json",
+      "manifestSha256": "68ee4a6ed4385ff35f2d5e24a86a6853a48075949eab78439cf8020784fe59ec",
+      "rawValue": 1,
+      "topologyClass": "end"
+    },
+    {
+      "assetId": "road_mask_02",
+      "directions": [
+        "east"
+      ],
+      "manifest": "road_mask_02/manifest.json",
+      "manifestSha256": "84ed03c0f2411b67de3c78d114bd7ce8af614a4460484994c4ec492a884e17aa",
+      "rawValue": 2,
+      "topologyClass": "end"
+    },
+    {
+      "assetId": "road_mask_03",
+      "directions": [
+        "north",
+        "east"
+      ],
+      "manifest": "road_mask_03/manifest.json",
+      "manifestSha256": "c58fbd2384f2a3547c6a5935ea2c0da30f1a4ac13ce148945360531b40421876",
+      "rawValue": 3,
+      "topologyClass": "corner"
+    },
+    {
+      "assetId": "road_mask_04",
+      "directions": [
+        "south"
+      ],
+      "manifest": "road_mask_04/manifest.json",
+      "manifestSha256": "c4de81c938a2efefe2d5067164c1940ffa0b506438767d9425db6ceb1869f053",
+      "rawValue": 4,
+      "topologyClass": "end"
+    },
+    {
+      "assetId": "road_mask_05",
+      "directions": [
+        "north",
+        "south"
+      ],
+      "manifest": "road_mask_05/manifest.json",
+      "manifestSha256": "62581099ee086939b90dc2385c9ecaf7d5a165ede43ac70f9e603779542b95c9",
+      "rawValue": 5,
+      "topologyClass": "straight"
+    },
+    {
+      "assetId": "road_mask_06",
+      "directions": [
+        "east",
+        "south"
+      ],
+      "manifest": "road_mask_06/manifest.json",
+      "manifestSha256": "3942b5a21114cf0d8d95ae406dd4f6dd2c451365d550961d0d382baf484ec01a",
+      "rawValue": 6,
+      "topologyClass": "corner"
+    },
+    {
+      "assetId": "road_mask_07",
+      "directions": [
+        "north",
+        "east",
+        "south"
+      ],
+      "manifest": "road_mask_07/manifest.json",
+      "manifestSha256": "de4a20d526311610751cf9b6637880e7b9ccd8f800f089221838d31b3c2da0f9",
+      "rawValue": 7,
+      "topologyClass": "tee"
+    },
+    {
+      "assetId": "road_mask_08",
+      "directions": [
+        "west"
+      ],
+      "manifest": "road_mask_08/manifest.json",
+      "manifestSha256": "61ad1511a5c482943359e95582ba60c59ed30bc4bf580cec731e1e7f9c1f3564",
+      "rawValue": 8,
+      "topologyClass": "end"
+    },
+    {
+      "assetId": "road_mask_09",
+      "directions": [
+        "north",
+        "west"
+      ],
+      "manifest": "road_mask_09/manifest.json",
+      "manifestSha256": "7e1f3c5ad575d95f6ed557f954fbc8a6010e068fe0e45a69e4059520f441e81a",
+      "rawValue": 9,
+      "topologyClass": "corner"
+    },
+    {
+      "assetId": "road_mask_10",
+      "directions": [
+        "east",
+        "west"
+      ],
+      "manifest": "road_mask_10/manifest.json",
+      "manifestSha256": "d46ba4ed8c5614aa17e058a873d8d95508dc44013d1cb3d47491035e96b1c176",
+      "rawValue": 10,
+      "topologyClass": "straight"
+    },
+    {
+      "assetId": "road_mask_11",
+      "directions": [
+        "north",
+        "east",
+        "west"
+      ],
+      "manifest": "road_mask_11/manifest.json",
+      "manifestSha256": "b4f0a2dd9477ab5b9747140035f1323364bffe25e25d5d36ac547f40dca2ab5f",
+      "rawValue": 11,
+      "topologyClass": "tee"
+    },
+    {
+      "assetId": "road_mask_12",
+      "directions": [
+        "south",
+        "west"
+      ],
+      "manifest": "road_mask_12/manifest.json",
+      "manifestSha256": "7c8ab11c38bbe526b9646252e8110ba4a34c7ab3a4aa03e7c968e861090e597b",
+      "rawValue": 12,
+      "topologyClass": "corner"
+    },
+    {
+      "assetId": "road_mask_13",
+      "directions": [
+        "north",
+        "south",
+        "west"
+      ],
+      "manifest": "road_mask_13/manifest.json",
+      "manifestSha256": "d3d418bc75515a2367ca747af6800d166390e3ae4c37103c681cb95e662d0e87",
+      "rawValue": 13,
+      "topologyClass": "tee"
+    },
+    {
+      "assetId": "road_mask_14",
+      "directions": [
+        "east",
+        "south",
+        "west"
+      ],
+      "manifest": "road_mask_14/manifest.json",
+      "manifestSha256": "04128c3b3eb32cf06643a0960c49e0e713c107471771b4aa6fedf9166dad2a0b",
+      "rawValue": 14,
+      "topologyClass": "tee"
+    },
+    {
+      "assetId": "road_mask_15",
+      "directions": [
+        "north",
+        "east",
+        "south",
+        "west"
+      ],
+      "manifest": "road_mask_15/manifest.json",
+      "manifestSha256": "65f20911373f14dc158c9fd0aa6f8e778979758373200c2105f7e2201662818a",
+      "rawValue": 15,
+      "topologyClass": "crossing"
+    }
+  ],
+  "postRenderCompensation": "none",
+  "previewManifest": "preview/manifest.json",
+  "provenance": {
+    "cedarMarketReused": false,
+    "liveAsset": false,
+    "originalGeometry": true,
+    "purpose": "source-only road and public-realm family production",
+    "sourcePixelsReused": false
+  },
+  "roadBits": {
+    "east": 2,
+    "north": 1,
+    "south": 4,
+    "west": 8
+  },
+  "schema": "citysim.world-art.streetscape-family-manifest.v1",
+  "sourceFiles": [
+    {
+      "path": "build_and_render.py",
+      "sha256": "08832ee9dd8335106069e9c39e6780c46966c38dd28d42063523aaf02c8e4656"
+    },
+    {
+      "path": "pipeline.json",
+      "sha256": "168ac59a3224a72c6daffd46cc994f0c6eec78b5190a1e227af782eba37e196e"
+    },
+    {
+      "path": "run_pipeline.sh",
+      "sha256": "532d05471506c823329d1b29371fee92e772a60c1b591115d68685bbd84e24b2"
+    },
+    {
+      "path": "validate.py",
+      "sha256": "3f3fde5cd7ee7c39e993f55ab2a67131041a097c5d4d61678a33ad5e5cb60bd9"
+    }
+  ],
+  "status": "source-only-not-live",
+  "validation": {
+    "deterministicRerender": "64-canonical-views-and-two-preview-proofs-byte-identical",
+    "report": "validation/validator-output.txt",
+    "status": "PASS"
+  }
+}

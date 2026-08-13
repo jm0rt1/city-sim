@@ -13,7 +13,8 @@ let package = Package(
             path: "Sources/CitySimNative",
             resources: [
                 .copy("Resources/WorldAssets.atlas"),
-                .copy("Resources/FourViewAssets")
+                .copy("Resources/FourViewAssets"),
+                .copy("Resources/FourViewRoadAssets")
             ]
         ),
         .testTarget(

@@ -1,0 +1,183 @@
+SERVICE_FOUR_VIEW_VALIDATION_PASS
+{
+  "assets": {
+    "bluecrest_police_station": {
+      "deterministicCanonicalPngSha256": {
+        "bluecrest_police_station_camNE.png": "d88563e50df4c395a296364d0f3509ba5b46699f2cc9091c009c199ae2320d6c",
+        "bluecrest_police_station_camNW.png": "87eb47bb95298444b9d5d5fece66d5d8372adafe68a11274d15799c8d8b74f1d",
+        "bluecrest_police_station_camSE.png": "9ee78fec52ee415fdff2f3742ca49fb690c88194764bece7814b6ac1d0e398d3",
+        "bluecrest_police_station_camSW.png": "90da92b7baa1d46383dc4901a46f3ca6f5d13bd6a533764aa2fd54a3289cb7a1"
+      },
+      "meshCount": 45,
+      "projectedAxisPixels": {
+        "camNE": [
+          [
+            -44,
+            22
+          ],
+          [
+            44,
+            22
+          ]
+        ],
+        "camNW": [
+          [
+            -44,
+            -22
+          ],
+          [
+            -44,
+            22
+          ]
+        ],
+        "camSE": [
+          [
+            44,
+            22
+          ],
+          [
+            44,
+            -22
+          ]
+        ],
+        "camSW": [
+          [
+            44,
+            -22
+          ],
+          [
+            -44,
+            -22
+          ]
+        ]
+      }
+    },
+    "emberline_fire_station": {
+      "deterministicCanonicalPngSha256": {
+        "emberline_fire_station_camNE.png": "8e87b77f8940aab79f83e0008ec736431e3ff112fc7333e7727bbc2b54702b91",
+        "emberline_fire_station_camNW.png": "39bf0939cbf0fff50ee9d07b00edbdb8d2692244b688ee726963bf63c81a981e",
+        "emberline_fire_station_camSE.png": "80aae16209fb9c26d4e27aba9ce28675d26867688fb1cba0916911f3987912c3",
+        "emberline_fire_station_camSW.png": "638e079b63b06033e751d5dab3c1b084a2f38527c7834275521a69294859daa6"
+      },
+      "meshCount": 43,
+      "projectedAxisPixels": {
+        "camNE": [
+          [
+            -44,
+            22
+          ],
+          [
+            44,
+            22
+          ]
+        ],
+        "camNW": [
+          [
+            -44,
+            -22
+          ],
+          [
+            -44,
+            22
+          ]
+        ],
+        "camSE": [
+          [
+            44,
+            22
+          ],
+          [
+            44,
+            -22
+          ]
+        ],
+        "camSW": [
+          [
+            44,
+            -22
+          ],
+          [
+            -44,
+            -22
+          ]
+        ]
+      }
+    },
+    "maplewood_neighborhood_school": {
+      "deterministicCanonicalPngSha256": {
+        "maplewood_neighborhood_school_camNE.png": "2a58c706e635f41195ce24cba01264afed43fae5ad199edeb0e2d609f1231a77",
+        "maplewood_neighborhood_school_camNW.png": "cfac3f5f50159b3ebd2e8929f86a56969014fb92c12e06b80c02e87cdfdf998c",
+        "maplewood_neighborhood_school_camSE.png": "ca328975cf0ea264575a0bab9ec66619e87d4562c494a8e29f3116961c01848a",
+        "maplewood_neighborhood_school_camSW.png": "298505270f9125648e433bd8f5ab04ca625c5ef4c69b3ad18a0c2dd9b09be7be"
+      },
+      "meshCount": 45,
+      "projectedAxisPixels": {
+        "camNE": [
+          [
+            -44,
+            22
+          ],
+          [
+            44,
+            22
+          ]
+        ],
+        "camNW": [
+          [
+            -44,
+            -22
+          ],
+          [
+            -44,
+            22
+          ]
+        ],
+        "camSE": [
+          [
+            44,
+            22
+          ],
+          [
+            44,
+            -22
+          ]
+        ],
+        "camSW": [
+          [
+            44,
+            -22
+          ],
+          [
+            -44,
+            -22
+          ]
+        ]
+      }
+    }
+  },
+  "blenderVersion": "4.5.12",
+  "contract": {
+    "cameraOrder": [
+      "camNE",
+      "camSE",
+      "camSW",
+      "camNW"
+    ],
+    "deterministicRerender": "byte-identical canonical PNGs",
+    "pivotPixels": [
+      192,
+      300
+    ],
+    "postRenderCompensation": "none",
+    "projectedTilePixels": [
+      88,
+      44
+    ]
+  },
+  "previewPngSha256": {
+    "preview/neighborhood-services-block-1280x800.png": "1c7a52307163dfb5b568e9efaada0cd1e4bff77f00e8b4333345875b417eb40c",
+    "preview/neighborhood-services-block-900x600.png": "6d1aad2b3a84454f0b73cba976d659148a1ee6ac39c81cd471a5a678ef7b7950"
+  },
+  "schema": "citysim.world-art.services-validation.v1",
+  "status": "PASS"
+}

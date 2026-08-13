@@ -1,0 +1,249 @@
+{
+  "artifacts": [
+    {
+      "bytes": 1266223,
+      "path": "maplewood_neighborhood_school.blend",
+      "sha256": "4ba7cf409ad58f171af23f63eefddde8c25081a7e1eb0790f4abf988092cefde"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 143,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 206,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 13916,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 55772,
+      "decodedRgbaSha256": "aee93b76a3ff7f37bb9cea797c99e825d5a2423f913fe3475e5eb0d91c92bdf5",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/maplewood_neighborhood_school_camNE.png",
+      "sha256": "2a58c706e635f41195ce24cba01264afed43fae5ad199edeb0e2d609f1231a77"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 147,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 202,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 14150,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 59153,
+      "decodedRgbaSha256": "bf39b339a4daf35e3a4ee0359c041a0f1b730097b7294cad1eba3c877c994990",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/maplewood_neighborhood_school_camSE.png",
+      "sha256": "ca328975cf0ea264575a0bab9ec66619e87d4562c494a8e29f3116961c01848a"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 147,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 202,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 14417,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 60888,
+      "decodedRgbaSha256": "ecfc73a36cbf5061089858d59db5bd7e5ed8d4bef4daa043bf6beffb7b02ea89",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/maplewood_neighborhood_school_camSW.png",
+      "sha256": "298505270f9125648e433bd8f5ab04ca625c5ef4c69b3ad18a0c2dd9b09be7be"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 146,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 203,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 13697,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 58061,
+      "decodedRgbaSha256": "8e4b8e28ba930d920ef62a0e1b89c17b8cd62f0bbd02854eb90cf8bb2adf2899",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/maplewood_neighborhood_school_camNW.png",
+      "sha256": "cfac3f5f50159b3ebd2e8929f86a56969014fb92c12e06b80c02e87cdfdf998c"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 638,
+          "maxX": 783,
+          "maxY": 839,
+          "minX": 0,
+          "minY": 202,
+          "width": 784
+        },
+        "lowestOpaqueRowTopOrigin": 839,
+        "opaquePixelCount": 99188,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 193431,
+      "decodedRgbaSha256": "872d62d682c5571c68aecfc7fb5715e970ac7356e69879b3b11b764a38601761",
+      "dimensions": [
+        784,
+        840
+      ],
+      "path": "maplewood_neighborhood_school_contact-sheet.png",
+      "sha256": "f1e62105db6f5797f20a2100f82d1dedea363184c961c6c231475bce8d3a61fb"
+    }
+  ],
+  "assetId": "maplewood_neighborhood_school",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "cameraRig": {
+    "distance": 32.0,
+    "orthoScale": 12.341995,
+    "shiftY": 0.28125,
+    "views": [
+      {
+        "azimuthDegrees": 45.0,
+        "name": "camNE"
+      },
+      {
+        "azimuthDegrees": 135.0,
+        "name": "camSE"
+      },
+      {
+        "azimuthDegrees": 225.0,
+        "name": "camSW"
+      },
+      {
+        "azimuthDegrees": 315.0,
+        "name": "camNW"
+      }
+    ]
+  },
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "cedarMarketReused": false,
+  "contactSheetLayout": [
+    [
+      "camNE",
+      "camSE"
+    ],
+    [
+      "camSW",
+      "camNW"
+    ]
+  ],
+  "description": "Warm brick neighborhood school with classroom wings, central entry, green gables, cupola, play yard, and welcoming street frontage",
+  "grid": {
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0,
+    "projectedTilePixels": [
+      88,
+      44
+    ],
+    "projection": "orthographic-2:1-dimetric",
+    "worldTileSize": 2.0
+  },
+  "lightingConvention": {
+    "color": [
+      1.0,
+      0.86,
+      0.72
+    ],
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldColor": [
+      0.2,
+      0.17,
+      0.14,
+      1.0
+    ],
+    "worldStrength": 0.72
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "perViewCompensation": {
+    "crop": false,
+    "offsetPixels": [
+      0,
+      0
+    ],
+    "rotationDegrees": 0.0,
+    "scale": 1.0,
+    "skew": [
+      0.0,
+      0.0
+    ]
+  },
+  "pipelineSchema": "citysim.world-art.services-four-view.v1",
+  "postRenderCompensation": "none",
+  "root": {
+    "location": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "name": "AssetRoot",
+    "pivotName": "FootprintPivot",
+    "rotationEuler": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "schema": "citysim.world-art.service-four-view-asset.v1",
+  "serviceRole": "school",
+  "sourcePixelsReused": false,
+  "status": "source-only-not-live"
+}

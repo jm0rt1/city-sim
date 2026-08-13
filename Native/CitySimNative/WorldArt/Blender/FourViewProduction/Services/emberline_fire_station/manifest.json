@@ -1,0 +1,249 @@
+{
+  "artifacts": [
+    {
+      "bytes": 1219822,
+      "path": "emberline_fire_station.blend",
+      "sha256": "060461e3ebdb74625b2d61313ca75c266e4e38bc3789d57bf3a3e0dc1081fc3a"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 163,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 103,
+          "minY": 186,
+          "width": 177
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 15041,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 55717,
+      "decodedRgbaSha256": "e7a701739e72fd145a0ae70e898975e51b78a5da86e710e608cca0895aa48f9c",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/emberline_fire_station_camNE.png",
+      "sha256": "8e87b77f8940aab79f83e0008ec736431e3ff112fc7333e7727bbc2b54702b91"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 179,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 103,
+          "minY": 170,
+          "width": 177
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 15630,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 61018,
+      "decodedRgbaSha256": "3a5019d1aeb960cf41af3d3f6212d373400ce49181106c0f231a67230c618b67",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/emberline_fire_station_camSE.png",
+      "sha256": "80aae16209fb9c26d4e27aba9ce28675d26867688fb1cba0916911f3987912c3"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 156,
+          "maxX": 280,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 193,
+          "width": 177
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 15655,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 61959,
+      "decodedRgbaSha256": "330770eced79046a5bd201ea83cf89b36131b6226354e7408cafdebac70b7ae9",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/emberline_fire_station_camSW.png",
+      "sha256": "638e079b63b06033e751d5dab3c1b084a2f38527c7834275521a69294859daa6"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 140,
+          "maxX": 280,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 209,
+          "width": 177
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 14372,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 57251,
+      "decodedRgbaSha256": "3b36c6cc13869d28deaa9d54fd34f8062d74ffceb24c161227bd7b66fe0cf8f2",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/emberline_fire_station_camNW.png",
+      "sha256": "39bf0939cbf0fff50ee9d07b00edbdb8d2692244b688ee726963bf63c81a981e"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 670,
+          "maxX": 783,
+          "maxY": 839,
+          "minX": 0,
+          "minY": 170,
+          "width": 784
+        },
+        "lowestOpaqueRowTopOrigin": 839,
+        "opaquePixelCount": 103706,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 196962,
+      "decodedRgbaSha256": "53956f9fd27be2b2d83a671920262710c9af5f4477702ee8decd79b4dbbeffbb",
+      "dimensions": [
+        784,
+        840
+      ],
+      "path": "emberline_fire_station_contact-sheet.png",
+      "sha256": "5c409dfb9afb03b4db422dc8041e5af4ba93002378a7630be89fd32e435783e7"
+    }
+  ],
+  "assetId": "emberline_fire_station",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "cameraRig": {
+    "distance": 32.0,
+    "orthoScale": 12.341995,
+    "shiftY": 0.28125,
+    "views": [
+      {
+        "azimuthDegrees": 45.0,
+        "name": "camNE"
+      },
+      {
+        "azimuthDegrees": 135.0,
+        "name": "camSE"
+      },
+      {
+        "azimuthDegrees": 225.0,
+        "name": "camSW"
+      },
+      {
+        "azimuthDegrees": 315.0,
+        "name": "camNW"
+      }
+    ]
+  },
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "cedarMarketReused": false,
+  "contactSheetLayout": [
+    [
+      "camNE",
+      "camSE"
+    ],
+    [
+      "camSW",
+      "camNW"
+    ]
+  ],
+  "description": "Warm brick neighborhood fire station with twin apparatus bays, hose tower, civic roofline, hydrant, and grounded forecourt",
+  "grid": {
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0,
+    "projectedTilePixels": [
+      88,
+      44
+    ],
+    "projection": "orthographic-2:1-dimetric",
+    "worldTileSize": 2.0
+  },
+  "lightingConvention": {
+    "color": [
+      1.0,
+      0.86,
+      0.72
+    ],
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldColor": [
+      0.2,
+      0.17,
+      0.14,
+      1.0
+    ],
+    "worldStrength": 0.72
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "perViewCompensation": {
+    "crop": false,
+    "offsetPixels": [
+      0,
+      0
+    ],
+    "rotationDegrees": 0.0,
+    "scale": 1.0,
+    "skew": [
+      0.0,
+      0.0
+    ]
+  },
+  "pipelineSchema": "citysim.world-art.services-four-view.v1",
+  "postRenderCompensation": "none",
+  "root": {
+    "location": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "name": "AssetRoot",
+    "pivotName": "FootprintPivot",
+    "rotationEuler": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "schema": "citysim.world-art.service-four-view-asset.v1",
+  "serviceRole": "fire-station",
+  "sourcePixelsReused": false,
+  "status": "source-only-not-live"
+}

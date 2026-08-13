@@ -317,10 +317,11 @@ final class LotRenderer {
             // Four-View family directly inspectable in live scene evidence.
             sprite.name = "lot.generated-v4.\(logicalID).\(detail.assetSuffix)"
             city.addChild(sprite)
-            // Accepted Four-View utility sources carry their own semantic
-            // equipment. Never layer the legacy transformer-bank decoration
-            // over them after admission.
-            if ![.powerPlant, .waterTower].contains(tile.kind) {
+            // Accepted Four-View utility and service sources carry their own
+            // semantic equipment. Never layer legacy role decorations over
+            // them after admission.
+            if ![.powerPlant, .waterTower, .fireStation, .policeStation, .school]
+                .contains(tile.kind) {
                 addGeneratedRoleIdentity(for: tile.kind, to: block)
             }
             return true
@@ -422,7 +423,9 @@ final class LotRenderer {
             generatedLogicalID(for: .powerPlant)
         case .waterTower:
             generatedLogicalID(for: .waterTower)
-        case .empty, .road, .fireStation, .policeStation, .school:
+        case .fireStation, .policeStation, .school:
+            civicIdentity?.logicalID
+        case .empty, .road:
             nil
         }
     }

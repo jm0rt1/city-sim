@@ -25,7 +25,8 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
         let admittedRoles = Set(manifest.assets.flatMap(\.roles))
         XCTAssertTrue(Set([
             "residential-low", "residential-high", "commercial",
-            "industrial", "city-hall", "park",
+            "industrial", "city-hall", "park", "power-plant", "water-tower",
+            "fire-station", "police-station", "school",
         ]).isSubset(of: admittedRoles))
 
         for asset in manifest.assets {
@@ -67,9 +68,9 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
             (.cityHall, "hearthside_council_hall"),
             (.powerPlant, "brick_grid_substation"),
             (.waterTower, "municipal_water_tower"),
-            (.fireStation, nil),
-            (.policeStation, nil),
-            (.school, nil),
+            (.fireStation, "emberline_fire_station"),
+            (.policeStation, "bluecrest_police_station"),
+            (.school, "maplewood_neighborhood_school"),
         ]
         for (kind, assetID) in expected {
             XCTAssertEqual(
@@ -81,7 +82,7 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
     }
 
     @MainActor
-    func testUtilityLotsUseCanonicalTransformAndNoLegacyRoleDecoration() throws {
+    func testUtilityAndServiceLotsUseCanonicalTransformAndNoLegacyRoleDecoration() throws {
         let style = WorldVisualStyle()
         let catalog = FourViewWorldAssetCatalog()
         let renderer = LotRenderer(
@@ -92,6 +93,9 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
         let cases: [(BuildingKind, String, String)] = [
             (.powerPlant, "brick_grid_substation", "industrial_l01"),
             (.waterTower, "municipal_water_tower", "water_tower_l01"),
+            (.fireStation, "emberline_fire_station", "civic_l01_v0_south"),
+            (.policeStation, "bluecrest_police_station", "civic_l01_v0_south"),
+            (.school, "maplewood_neighborhood_school", "civic_l01_v0_south"),
         ]
 
         for (index, entry) in cases.enumerated() {

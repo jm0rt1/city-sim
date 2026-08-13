@@ -1718,6 +1718,21 @@ final class CitySimulationTests: XCTestCase {
         }
 
         var state = CityGameState.newCity(seed: 42)
+        let serviceSites: [(GridCoordinate, BuildingKind)] = [
+            (GridCoordinate(x: 5, y: 10), .fireStation),
+            (GridCoordinate(x: 15, y: 10), .policeStation),
+            (GridCoordinate(x: 10, y: 13), .school),
+        ]
+        for (coordinate, kind) in serviceSites {
+            state.updateTile(at: coordinate) {
+                $0 = CityTile(
+                    coordinate: coordinate,
+                    kind: kind,
+                    condition: 1,
+                    constructionProgress: 1
+                )
+            }
+        }
         let originalDevelopedCount = state.tiles.filter {
             ![.empty, .road].contains($0.kind)
         }.count
@@ -1754,7 +1769,14 @@ final class CitySimulationTests: XCTestCase {
         let sourceNames = sourceScene.children.flatMap(descendantNodeNames)
         XCTAssertTrue(sourceNames.contains("lot.four-view.brick_grid_substation.camNE"))
         XCTAssertTrue(sourceNames.contains("lot.four-view.municipal_water_tower.camNE"))
-        XCTAssertFalse(sourceNames.contains("lot.generated-role.powerPlant"))
+        XCTAssertTrue(sourceNames.contains("lot.four-view.emberline_fire_station.camNE"))
+        XCTAssertTrue(sourceNames.contains("lot.four-view.bluecrest_police_station.camNE"))
+        XCTAssertTrue(sourceNames.contains("lot.four-view.maplewood_neighborhood_school.camNE"))
+        for kind in [
+            BuildingKind.powerPlant, .fireStation, .policeStation, .school,
+        ] {
+            XCTAssertFalse(sourceNames.contains("lot.generated-role.\(kind.rawValue)"))
+        }
 
         let regular = try rendererProofFrame(
             size: CGSize(width: 1_280, height: 800),
@@ -1765,7 +1787,8 @@ final class CitySimulationTests: XCTestCase {
             detail: .city,
             centeredOn: core,
             framingScale: 1.08,
-            hover: nil
+            hover: nil,
+            exactPixelDimensions: true
         )
         let compact = try rendererProofFrame(
             size: CGSize(width: 900, height: 600),
@@ -1776,9 +1799,14 @@ final class CitySimulationTests: XCTestCase {
             detail: .city,
             centeredOn: compactCore,
             framingScale: 1.24,
-            hover: nil
+            hover: nil,
+            exactPixelDimensions: true
         )
 
+        XCTAssertEqual(regular.width, 1_280)
+        XCTAssertEqual(regular.height, 800)
+        XCTAssertEqual(compact.width, 900)
+        XCTAssertEqual(compact.height, 600)
         XCTAssertGreaterThan(regular.png.count, 40_000)
         XCTAssertGreaterThan(compact.png.count, 30_000)
         try export(regular, environmentKeys: ["CITYSIM_FOUR_VIEW_NATIVE_1280_PROOF"])
@@ -1902,7 +1930,8 @@ final class CitySimulationTests: XCTestCase {
         detail: CameraDetailLevel?,
         centeredOn coordinate: GridCoordinate?,
         framingScale: CGFloat = 1,
-        hover: GridCoordinate?
+        hover: GridCoordinate?,
+        exactPixelDimensions: Bool = false
     ) throws -> RendererProofFrame {
         let view = SKView(frame: CGRect(origin: .zero, size: size))
         view.preferredFramesPerSecond = 60
@@ -1927,13 +1956,42 @@ final class CitySimulationTests: XCTestCase {
         RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.05))
 
         let texture = try XCTUnwrap(view.texture(from: scene))
-        let image = texture.cgImage()
-        let representation = NSBitmapImageRep(cgImage: image)
+        let sourceImage = texture.cgImage()
+        let representation: NSBitmapImageRep
+        if exactPixelDimensions,
+           (sourceImage.width != Int(size.width) || sourceImage.height != Int(size.height)) {
+            representation = try XCTUnwrap(NSBitmapImageRep(
+                bitmapDataPlanes: nil,
+                pixelsWide: Int(size.width),
+                pixelsHigh: Int(size.height),
+                bitsPerSample: 8,
+                samplesPerPixel: 4,
+                hasAlpha: true,
+                isPlanar: false,
+                colorSpaceName: .deviceRGB,
+                bytesPerRow: 0,
+                bitsPerPixel: 0
+            ))
+            representation.size = size
+            let context = try XCTUnwrap(NSGraphicsContext(bitmapImageRep: representation))
+            NSGraphicsContext.saveGraphicsState()
+            NSGraphicsContext.current = context
+            context.imageInterpolation = .high
+            NSImage(cgImage: sourceImage, size: size).draw(
+                in: CGRect(origin: .zero, size: size),
+                from: .zero,
+                operation: .copy,
+                fraction: 1
+            )
+            NSGraphicsContext.restoreGraphicsState()
+        } else {
+            representation = NSBitmapImageRep(cgImage: sourceImage)
+        }
         let data = try XCTUnwrap(representation.representation(using: .png, properties: [:]))
         return RendererProofFrame(
             png: data,
-            width: image.width,
-            height: image.height,
+            width: representation.pixelsWide,
+            height: representation.pixelsHigh,
             diagnostics: scene.diagnosticsSnapshot
         )
     }

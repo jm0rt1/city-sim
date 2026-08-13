@@ -1,0 +1,152 @@
+{
+  "acceptedFamilyContractOnly": true,
+  "artifacts": [
+    {
+      "bytes": 3405876,
+      "path": "preview/neighborhood-services-block.blend",
+      "sha256": "f5426c9ca91954de7d138081cf8be8979253ba3b7e35a0ec6ca94d7941df0938"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 800,
+          "maxX": 1279,
+          "maxY": 799,
+          "minX": 0,
+          "minY": 0,
+          "width": 1280
+        },
+        "lowestOpaqueRowTopOrigin": 799,
+        "opaquePixelCount": 1024000,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 897256,
+      "decodedRgbaSha256": "672c96ff714c06153509f051923fc8c38cb9df55a44778d945f90c473345696d",
+      "dimensions": [
+        1280,
+        800
+      ],
+      "path": "preview/neighborhood-services-block-1280x800.png",
+      "sha256": "1c7a52307163dfb5b568e9efaada0cd1e4bff77f00e8b4333345875b417eb40c"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 600,
+          "maxX": 899,
+          "maxY": 599,
+          "minX": 0,
+          "minY": 0,
+          "width": 900
+        },
+        "lowestOpaqueRowTopOrigin": 599,
+        "opaquePixelCount": 540000,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 480343,
+      "decodedRgbaSha256": "09849e0f4bcae584e59ef44c16361c631a4cffcf32d86f5d5c22c7ec7b502736",
+      "dimensions": [
+        900,
+        600
+      ],
+      "path": "preview/neighborhood-services-block-900x600.png",
+      "sha256": "6d1aad2b3a84454f0b73cba976d659148a1ee6ac39c81cd471a5a678ef7b7950"
+    }
+  ],
+  "camera": {
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0,
+    "perAssetCompensation": "none",
+    "projection": "orthographic"
+  },
+  "cedarMarketReused": false,
+  "grid": {
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0,
+    "projectedTilePixels": [
+      88,
+      44
+    ],
+    "projection": "orthographic-2:1-dimetric",
+    "worldTileSize": 2.0
+  },
+  "lightingConvention": {
+    "color": [
+      1.0,
+      0.86,
+      0.72
+    ],
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldColor": [
+      0.2,
+      0.17,
+      0.14,
+      1.0
+    ],
+    "worldStrength": 0.72
+  },
+  "liveAsset": false,
+  "placements": [
+    {
+      "assetId": "emberline_fire_station",
+      "footprintTiles": [
+        2,
+        2
+      ],
+      "meshCount": 43,
+      "originWorld": [
+        -5.0,
+        3.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "serviceRole": "fire-station",
+      "sourceBlend": "FourViewProduction/Services/emberline_fire_station/emberline_fire_station.blend",
+      "sourceBlendSha256": "060461e3ebdb74625b2d61313ca75c266e4e38bc3789d57bf3a3e0dc1081fc3a"
+    },
+    {
+      "assetId": "bluecrest_police_station",
+      "footprintTiles": [
+        2,
+        2
+      ],
+      "meshCount": 45,
+      "originWorld": [
+        -1.0,
+        3.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "serviceRole": "police-station",
+      "sourceBlend": "FourViewProduction/Services/bluecrest_police_station/bluecrest_police_station.blend",
+      "sourceBlendSha256": "afcaec330cb8847202aae5f56ad2375db0e4c0d805f8651e1b3a9b52b4efa8d8"
+    },
+    {
+      "assetId": "maplewood_neighborhood_school",
+      "footprintTiles": [
+        2,
+        2
+      ],
+      "meshCount": 45,
+      "originWorld": [
+        3.0,
+        3.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "serviceRole": "school",
+      "sourceBlend": "FourViewProduction/Services/maplewood_neighborhood_school/maplewood_neighborhood_school.blend",
+      "sourceBlendSha256": "4ba7cf409ad58f171af23f63eefddde8c25081a7e1eb0790f4abf988092cefde"
+    }
+  ],
+  "schema": "citysim.world-art.neighborhood-services-preview.v1",
+  "status": "source-only-review-evidence"
+}

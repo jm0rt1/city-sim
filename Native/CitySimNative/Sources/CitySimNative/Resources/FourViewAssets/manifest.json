@@ -64,6 +64,24 @@
       "file": "municipal_water_tower_camNE.png",
       "sha256": "ab895094fd6c7a4c0eeee8cc8009748239d410d923ced3876ec7bedfde7846d6",
       "roles": ["water-tower"]
+    },
+    {
+      "assetID": "emberline_fire_station",
+      "file": "emberline_fire_station_camNE.png",
+      "sha256": "8e87b77f8940aab79f83e0008ec736431e3ff112fc7333e7727bbc2b54702b91",
+      "roles": ["fire-station"]
+    },
+    {
+      "assetID": "bluecrest_police_station",
+      "file": "bluecrest_police_station_camNE.png",
+      "sha256": "d88563e50df4c395a296364d0f3509ba5b46699f2cc9091c009c199ae2320d6c",
+      "roles": ["police-station"]
+    },
+    {
+      "assetID": "maplewood_neighborhood_school",
+      "file": "maplewood_neighborhood_school_camNE.png",
+      "sha256": "2a58c706e635f41195ce24cba01264afed43fae5ad199edeb0e2d609f1231a77",
+      "roles": ["school"]
     }
   ]
 }

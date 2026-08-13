@@ -1,0 +1,77 @@
+{
+  "schema": "citysim.world-art.services-four-view.v1",
+  "toolchain": {
+    "blenderVersion": "4.5.12",
+    "renderEngine": "BLENDER_EEVEE_NEXT"
+  },
+  "grid": {
+    "worldTileSize": 2.0,
+    "projectedTilePixels": [88, 44],
+    "projection": "orthographic-2:1-dimetric",
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0
+  },
+  "canvas": {
+    "width": 384,
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "footprintPivotPixel": [192, 300]
+  },
+  "cameraRig": {
+    "distance": 32.0,
+    "orthoScale": 12.341995,
+    "shiftY": 0.28125,
+    "views": [
+      {"name": "camNE", "azimuthDegrees": 45.0},
+      {"name": "camSE", "azimuthDegrees": 135.0},
+      {"name": "camSW", "azimuthDegrees": 225.0},
+      {"name": "camNW", "azimuthDegrees": 315.0}
+    ]
+  },
+  "root": {
+    "name": "AssetRoot",
+    "pivotName": "FootprintPivot",
+    "location": [0.0, 0.0, 0.0],
+    "rotationEuler": [0.0, 0.0, 0.0],
+    "scale": [1.0, 1.0, 1.0]
+  },
+  "lighting": {
+    "name": "CitySimKey",
+    "type": "AREA",
+    "location": [-6.0, -8.0, 12.0],
+    "energy": 1100.0,
+    "size": 5.0,
+    "color": [1.0, 0.86, 0.72],
+    "worldColor": [0.20, 0.17, 0.14, 1.0],
+    "worldStrength": 0.72
+  },
+  "assets": [
+    {
+      "assetId": "emberline_fire_station",
+      "description": "Warm brick neighborhood fire station with twin apparatus bays, hose tower, civic roofline, hydrant, and grounded forecourt",
+      "serviceRole": "fire-station",
+      "footprintTiles": [2, 2]
+    },
+    {
+      "assetId": "bluecrest_police_station",
+      "description": "Brick and limestone neighborhood police station with columned public entry, shield crest, rooftop communications, and civic landscaping",
+      "serviceRole": "police-station",
+      "footprintTiles": [2, 2]
+    },
+    {
+      "assetId": "maplewood_neighborhood_school",
+      "description": "Warm brick neighborhood school with classroom wings, central entry, green gables, cupola, play yard, and welcoming street frontage",
+      "serviceRole": "school",
+      "footprintTiles": [2, 2]
+    }
+  ],
+  "postRenderCompensation": "none",
+  "provenance": {
+    "originalGeometry": true,
+    "sourcePixelsReused": false,
+    "cedarMarketReused": false,
+    "liveAsset": false,
+    "purpose": "source-only service-building family production and review evidence"
+  }
+}

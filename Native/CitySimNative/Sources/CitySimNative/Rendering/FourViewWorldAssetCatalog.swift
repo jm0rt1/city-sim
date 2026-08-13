@@ -61,7 +61,13 @@ final class FourViewWorldAssetCatalog {
             firstAssetID(forRole: "power-plant")
         case .waterTower:
             firstAssetID(forRole: "water-tower")
-        case .empty, .road, .fireStation, .policeStation, .school:
+        case .fireStation:
+            firstAssetID(forRole: "fire-station")
+        case .policeStation:
+            firstAssetID(forRole: "police-station")
+        case .school:
+            firstAssetID(forRole: "school")
+        case .empty, .road:
             nil
         }
     }

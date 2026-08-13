@@ -1,0 +1,249 @@
+{
+  "artifacts": [
+    {
+      "bytes": 1283362,
+      "path": "bluecrest_police_station.blend",
+      "sha256": "afcaec330cb8847202aae5f56ad2375db0e4c0d805f8651e1b3a9b52b4efa8d8"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 134,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 215,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 14551,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 55289,
+      "decodedRgbaSha256": "02a67e59fe9138e5a0da89ad87e5519a0055a85ab6d6909d1de9affd85f2a60a",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/bluecrest_police_station_camNE.png",
+      "sha256": "d88563e50df4c395a296364d0f3509ba5b46699f2cc9091c009c199ae2320d6c"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 141,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 208,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 14701,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 58786,
+      "decodedRgbaSha256": "1516ad0e8b93fa1248a1086d53a0679108ae89cf2133d631ff9da480d41921d4",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/bluecrest_police_station_camSE.png",
+      "sha256": "9ee78fec52ee415fdff2f3742ca49fb690c88194764bece7814b6ac1d0e398d3"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 161,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 188,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 14742,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 59461,
+      "decodedRgbaSha256": "31b43052e7ac7f0ecc55c53f3937fa187d75d84a1c91bd64d18f6ac987bfe2d4",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/bluecrest_police_station_camSW.png",
+      "sha256": "90da92b7baa1d46383dc4901a46f3ca6f5d13bd6a533764aa2fd54a3289cb7a1"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 149,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 200,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 14693,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 57225,
+      "decodedRgbaSha256": "9d42436762274dfcfea04311730185a7f15d012ef388e01565c00cdccc441203",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/bluecrest_police_station_camNW.png",
+      "sha256": "87eb47bb95298444b9d5d5fece66d5d8372adafe68a11274d15799c8d8b74f1d"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 632,
+          "maxX": 783,
+          "maxY": 839,
+          "minX": 0,
+          "minY": 208,
+          "width": 784
+        },
+        "lowestOpaqueRowTopOrigin": 839,
+        "opaquePixelCount": 101695,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 190943,
+      "decodedRgbaSha256": "52fbb79654bc5bd3480cd2b1ccfde23811c95560eff28ff7e9383a07ae178e9c",
+      "dimensions": [
+        784,
+        840
+      ],
+      "path": "bluecrest_police_station_contact-sheet.png",
+      "sha256": "045d5ef3856c7f0632d5ceb4052a9b817a8d87e34caefed2c200073b603743e4"
+    }
+  ],
+  "assetId": "bluecrest_police_station",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "cameraRig": {
+    "distance": 32.0,
+    "orthoScale": 12.341995,
+    "shiftY": 0.28125,
+    "views": [
+      {
+        "azimuthDegrees": 45.0,
+        "name": "camNE"
+      },
+      {
+        "azimuthDegrees": 135.0,
+        "name": "camSE"
+      },
+      {
+        "azimuthDegrees": 225.0,
+        "name": "camSW"
+      },
+      {
+        "azimuthDegrees": 315.0,
+        "name": "camNW"
+      }
+    ]
+  },
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "cedarMarketReused": false,
+  "contactSheetLayout": [
+    [
+      "camNE",
+      "camSE"
+    ],
+    [
+      "camSW",
+      "camNW"
+    ]
+  ],
+  "description": "Brick and limestone neighborhood police station with columned public entry, shield crest, rooftop communications, and civic landscaping",
+  "grid": {
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0,
+    "projectedTilePixels": [
+      88,
+      44
+    ],
+    "projection": "orthographic-2:1-dimetric",
+    "worldTileSize": 2.0
+  },
+  "lightingConvention": {
+    "color": [
+      1.0,
+      0.86,
+      0.72
+    ],
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldColor": [
+      0.2,
+      0.17,
+      0.14,
+      1.0
+    ],
+    "worldStrength": 0.72
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "perViewCompensation": {
+    "crop": false,
+    "offsetPixels": [
+      0,
+      0
+    ],
+    "rotationDegrees": 0.0,
+    "scale": 1.0,
+    "skew": [
+      0.0,
+      0.0
+    ]
+  },
+  "pipelineSchema": "citysim.world-art.services-four-view.v1",
+  "postRenderCompensation": "none",
+  "root": {
+    "location": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "name": "AssetRoot",
+    "pivotName": "FootprintPivot",
+    "rotationEuler": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "schema": "citysim.world-art.service-four-view-asset.v1",
+  "serviceRole": "police-station",
+  "sourcePixelsReused": false,
+  "status": "source-only-not-live"
+}

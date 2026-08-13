@@ -165,8 +165,8 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
             )
             let sprite = try XCTUnwrap(marker.parent as? SKSpriteNode)
             XCTAssertEqual(sprite.anchorPoint, FourViewWorldAssetCatalog.spriteAnchor)
-            XCTAssertEqual(sprite.xScale, style.tileWidth / 88, accuracy: 0.000_001)
-            XCTAssertEqual(sprite.yScale, style.tileWidth / 88, accuracy: 0.000_001)
+            XCTAssertEqual(sprite.xScale, style.tileWidth / 176, accuracy: 0.000_001)
+            XCTAssertEqual(sprite.yScale, style.tileWidth / 176, accuracy: 0.000_001)
             XCTAssertEqual(sprite.zRotation, 0, accuracy: 0.000_001)
             XCTAssertEqual(sprite.position, .zero)
             XCTAssertEqual(sprite.colorBlendFactor, 0, accuracy: 0.000_001)
@@ -209,8 +209,8 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
             )
             let sprite = try XCTUnwrap(marker.parent as? SKSpriteNode)
             XCTAssertEqual(sprite.anchorPoint, FourViewWorldAssetCatalog.spriteAnchor)
-            XCTAssertEqual(sprite.xScale, style.tileWidth / 88, accuracy: 0.000_001)
-            XCTAssertEqual(sprite.yScale, style.tileWidth / 88, accuracy: 0.000_001)
+            XCTAssertEqual(sprite.xScale, style.tileWidth / 176, accuracy: 0.000_001)
+            XCTAssertEqual(sprite.yScale, style.tileWidth / 176, accuracy: 0.000_001)
             XCTAssertEqual(sprite.zRotation, 0, accuracy: 0.000_001)
             XCTAssertEqual(sprite.position, .zero)
             XCTAssertEqual(sprite.colorBlendFactor, 0, accuracy: 0.000_001)
@@ -246,7 +246,7 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
             lot.childNode(withName: "//lot.four-view.market_arcade_midrise.camNE")
         )
         let sprite = try XCTUnwrap(marker.parent as? SKSpriteNode)
-        let canonicalWorldScale = 72.0 / 88.0
+        let canonicalWorldScale = 72.0 / 176.0
         XCTAssertEqual(sprite.anchorPoint.x, 0.5, accuracy: 0.000_001)
         XCTAssertEqual(sprite.anchorPoint.y, 84.0 / 384.0, accuracy: 0.000_001)
         XCTAssertEqual(sprite.size.width, 384 * canonicalWorldScale, accuracy: 0.000_01)
@@ -255,6 +255,16 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
         XCTAssertEqual(sprite.yScale, canonicalWorldScale, accuracy: 0.000_001)
         XCTAssertEqual(sprite.zRotation, 0, accuracy: 0.000_001)
         XCTAssertEqual(sprite.position, .zero)
+        XCTAssertEqual(
+            FourViewWorldAssetCatalog.sourceFootprintSize.width * sprite.xScale,
+            style.tileWidth,
+            accuracy: 0.000_001
+        )
+        XCTAssertEqual(
+            FourViewWorldAssetCatalog.sourceFootprintSize.height * sprite.yScale,
+            style.tileHeight,
+            accuracy: 0.000_001
+        )
         XCTAssertEqual(
             sprite.name,
             "lot.generated-v4.commercial_l02_v0_south.block"

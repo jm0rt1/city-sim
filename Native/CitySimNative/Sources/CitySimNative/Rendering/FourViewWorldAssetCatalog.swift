@@ -30,6 +30,11 @@ final class FourViewWorldAssetCatalog {
     static let shared = FourViewWorldAssetCatalog()
 
     static let sourceTileSize = CGSize(width: 88, height: 44)
+    static let sourceFootprintTileSpan: CGFloat = 2
+    static let sourceFootprintSize = CGSize(
+        width: sourceTileSize.width * sourceFootprintTileSpan,
+        height: sourceTileSize.height * sourceFootprintTileSpan
+    )
     static let sourceCanvasSize = CGSize(width: 384, height: 384)
     static let footprintPivotTopOrigin = CGPoint(x: 192, y: 300)
     static let spriteAnchor = CGPoint(x: 0.5, y: 84.0 / 384.0)
@@ -105,7 +110,7 @@ final class FourViewWorldAssetCatalog {
 
         let sprite = SKSpriteNode(texture: texture, size: Self.sourceCanvasSize)
         sprite.anchorPoint = Self.spriteAnchor
-        let canonicalWorldScale = worldTileWidth / Self.sourceTileSize.width
+        let canonicalWorldScale = worldTileWidth / Self.sourceFootprintSize.width
         sprite.setScale(canonicalWorldScale)
         sprite.zPosition = 6
 

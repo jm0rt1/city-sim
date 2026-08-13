@@ -1,0 +1,183 @@
+{
+  "artifacts": [
+    {
+      "bytes": 1825792,
+      "path": "brick_grid_substation.blend",
+      "sha256": "4e8cdda7270ea515e66f68bb2007ebe74cd8141c1904d5c7508a8d1dc1c8b7bb"
+    },
+    {
+      "bytes": 56836,
+      "decodedRgbaSha256": "7db98947438d8c1126dadcfcec3a62d744615fb5358e68fec3131fa3efe10ca2",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/brick_grid_substation_camNE.png",
+      "sha256": "1a89c746a90adc6ede4185af66beba4e45f3f9280738436f583b034ca1bc0d8e"
+    },
+    {
+      "bytes": 57974,
+      "decodedRgbaSha256": "7a9446c8e9485e91e1883b404a746297f0a6909f7f2573cba617e1b1e4981a1d",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/brick_grid_substation_camSE.png",
+      "sha256": "92c8ce52cc517166f9fdf83d636e984928d1cef2bc847b2225280ff9dcc16ab1"
+    },
+    {
+      "bytes": 59153,
+      "decodedRgbaSha256": "c64947f12dd2205e8ebd6b23c86939973a5800dbacc2ef7a84ffa7483edefbe0",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/brick_grid_substation_camSW.png",
+      "sha256": "6cf3e46b00c92f08e1d8d3d2d0352186eba4d774799981c80e955457e8d86f87"
+    },
+    {
+      "bytes": 56739,
+      "decodedRgbaSha256": "e684c11ca130f9d24f59af6aa8e2131261c85b4392c8a20fb2d212e24bde331b",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/brick_grid_substation_camNW.png",
+      "sha256": "06ca10e90a3e996e29bdcfacfd96b4ca42978c2473f096b40c61bbf878ad8bda"
+    },
+    {
+      "bytes": 189181,
+      "decodedRgbaSha256": "8d60a3800c06988b5f8fcf9d1f3e912428a32c98b5b14e9d704e6764d3d1d86d",
+      "dimensions": [
+        784,
+        840
+      ],
+      "path": "brick_grid_substation_contact-sheet.png",
+      "sha256": "7f71a51b0135e20e40c4761e4e7b194296333b06bee248e48557af10f79b5d0c"
+    }
+  ],
+  "assetId": "brick_grid_substation",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "cameraRig": {
+    "distance": 32.0,
+    "orthoScale": 12.341995,
+    "shiftY": 0.28125,
+    "views": [
+      {
+        "azimuthDegrees": 45.0,
+        "name": "camNE"
+      },
+      {
+        "azimuthDegrees": 135.0,
+        "name": "camSE"
+      },
+      {
+        "azimuthDegrees": 225.0,
+        "name": "camSW"
+      },
+      {
+        "azimuthDegrees": 315.0,
+        "name": "camNW"
+      }
+    ]
+  },
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "cedarMarketReused": false,
+  "contactSheetLayout": [
+    [
+      "camNE",
+      "camSE"
+    ],
+    [
+      "camSW",
+      "camNW"
+    ]
+  ],
+  "description": "Compact brick distribution substation with transformers, insulators, bus bars, switchgear, and safety fencing",
+  "grid": {
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0,
+    "projectedTilePixels": [
+      88,
+      44
+    ],
+    "projection": "orthographic-2:1-dimetric",
+    "worldTileSize": 2.0
+  },
+  "lightingConvention": {
+    "color": [
+      1.0,
+      0.86,
+      0.72
+    ],
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldColor": [
+      0.2,
+      0.17,
+      0.14,
+      1.0
+    ],
+    "worldStrength": 0.72
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "perViewCompensation": {
+    "crop": false,
+    "offsetPixels": [
+      0,
+      0
+    ],
+    "rotationDegrees": 0.0,
+    "scale": 1.0,
+    "skew": [
+      0.0,
+      0.0
+    ]
+  },
+  "pipelineSchema": "citysim.world-art.utilities-four-view.v1",
+  "postRenderCompensation": "none",
+  "root": {
+    "location": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "name": "AssetRoot",
+    "pivotName": "FootprintPivot",
+    "rotationEuler": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "schema": "citysim.world-art.utility-four-view-asset.v1",
+  "sourcePixelsReused": false,
+  "status": "source-only-not-live"
+}

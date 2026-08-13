@@ -46,20 +46,34 @@ final class FourViewWorldAssetCatalog {
     func assetID(for tile: CityTile, variant: Int) -> String? {
         switch tile.kind {
         case .residential where tile.level >= 2:
-            "brickline_rowhouse_apartments"
+            firstAssetID(forRole: "residential-high")
         case .residential:
-            variant.isMultiple(of: 2) ? "marigold_court_house" : "copper_finch_house"
+            deterministicAssetID(forRole: "residential-low", variant: max(0, variant - 1))
         case .commercial:
-            "harbor_corner_storefront"
+            firstAssetID(forRole: "commercial")
         case .industrial:
-            "ironleaf_service_workshop"
+            firstAssetID(forRole: "industrial")
         case .park:
-            "pocket_grove_park"
+            firstAssetID(forRole: "park")
         case .cityHall:
-            "hearthside_council_hall"
-        case .empty, .road, .powerPlant, .waterTower, .fireStation, .policeStation, .school:
+            firstAssetID(forRole: "city-hall")
+        case .powerPlant:
+            firstAssetID(forRole: "power-plant")
+        case .waterTower:
+            firstAssetID(forRole: "water-tower")
+        case .empty, .road, .fireStation, .policeStation, .school:
             nil
         }
+    }
+
+    private func firstAssetID(forRole role: String) -> String? {
+        manifest?.assets.first(where: { $0.roles.contains(role) })?.assetID
+    }
+
+    private func deterministicAssetID(forRole role: String, variant: Int) -> String? {
+        let candidates = manifest?.assets.filter { $0.roles.contains(role) } ?? []
+        guard !candidates.isEmpty else { return nil }
+        return candidates[variant % candidates.count].assetID
     }
 
     func makeSprite(

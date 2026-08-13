@@ -1,0 +1,183 @@
+{
+  "artifacts": [
+    {
+      "bytes": 1681095,
+      "path": "municipal_water_tower.blend",
+      "sha256": "b859ca6ef6b26c9538c384451814ae321bc35efb2f929ae899b5d9e83c87f84f"
+    },
+    {
+      "bytes": 67760,
+      "decodedRgbaSha256": "e1d3553a38a3d8ea43cdc9da81db605af1211d4032bb5e554ccabfcf5874f7f2",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/municipal_water_tower_camNE.png",
+      "sha256": "ab895094fd6c7a4c0eeee8cc8009748239d410d923ced3876ec7bedfde7846d6"
+    },
+    {
+      "bytes": 70405,
+      "decodedRgbaSha256": "d8473fb31a9e16635f9daaa5ad1f7afab225082749d5758c088abd636481ef65",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/municipal_water_tower_camSE.png",
+      "sha256": "b88eb0ed248df640da20bac3b90ad8c515030d839ae0e4c5cac6075fa9b99843"
+    },
+    {
+      "bytes": 68191,
+      "decodedRgbaSha256": "50a73da89cb9da60adfdddbfac723f4cfcdceb9dd16acaee0f333fa844744f37",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/municipal_water_tower_camSW.png",
+      "sha256": "c3370e2f5c99d826a235a24fc000de31cce07dbbc732e0160cd19ace1da23665"
+    },
+    {
+      "bytes": 69090,
+      "decodedRgbaSha256": "69ec1ee60bb7c9ed52a059a4a8f4acb8041f59555845fe63224c2ff2c9723d66",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/municipal_water_tower_camNW.png",
+      "sha256": "dce59bb43b06288ac212773bc2616b43272bf2bd5a4fb41c7a895b3d0fff5ec7"
+    },
+    {
+      "bytes": 236740,
+      "decodedRgbaSha256": "08d138cf48cedc45fc5d88e08d97bcf7469a4125398dc536777c3cc7af469753",
+      "dimensions": [
+        784,
+        840
+      ],
+      "path": "municipal_water_tower_contact-sheet.png",
+      "sha256": "38e6db9e90c1ab910bd1317b55677fdc32c1eb5e057fe237277e0b4d4a02f898"
+    }
+  ],
+  "assetId": "municipal_water_tower",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "cameraRig": {
+    "distance": 32.0,
+    "orthoScale": 12.341995,
+    "shiftY": 0.28125,
+    "views": [
+      {
+        "azimuthDegrees": 45.0,
+        "name": "camNE"
+      },
+      {
+        "azimuthDegrees": 135.0,
+        "name": "camSE"
+      },
+      {
+        "azimuthDegrees": 225.0,
+        "name": "camSW"
+      },
+      {
+        "azimuthDegrees": 315.0,
+        "name": "camNW"
+      }
+    ]
+  },
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "cedarMarketReused": false,
+  "contactSheetLayout": [
+    [
+      "camNE",
+      "camSE"
+    ],
+    [
+      "camSW",
+      "camNW"
+    ]
+  ],
+  "description": "Riveted municipal water tower with braced legs, grounded pump house, valves, and fenced service apron",
+  "grid": {
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0,
+    "projectedTilePixels": [
+      88,
+      44
+    ],
+    "projection": "orthographic-2:1-dimetric",
+    "worldTileSize": 2.0
+  },
+  "lightingConvention": {
+    "color": [
+      1.0,
+      0.86,
+      0.72
+    ],
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldColor": [
+      0.2,
+      0.17,
+      0.14,
+      1.0
+    ],
+    "worldStrength": 0.72
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "perViewCompensation": {
+    "crop": false,
+    "offsetPixels": [
+      0,
+      0
+    ],
+    "rotationDegrees": 0.0,
+    "scale": 1.0,
+    "skew": [
+      0.0,
+      0.0
+    ]
+  },
+  "pipelineSchema": "citysim.world-art.utilities-four-view.v1",
+  "postRenderCompensation": "none",
+  "root": {
+    "location": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "name": "AssetRoot",
+    "pivotName": "FootprintPivot",
+    "rotationEuler": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "schema": "citysim.world-art.utility-four-view-asset.v1",
+  "sourcePixelsReused": false,
+  "status": "source-only-not-live"
+}

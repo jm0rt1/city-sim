@@ -1,0 +1,48 @@
+UTILITY_FOUR_VIEW_VALIDATION_PASS
+{
+  "assets": {
+    "brick_grid_substation": {
+      "deterministicCanonicalPngSha256": {
+        "brick_grid_substation_camNE.png": "1a89c746a90adc6ede4185af66beba4e45f3f9280738436f583b034ca1bc0d8e",
+        "brick_grid_substation_camNW.png": "06ca10e90a3e996e29bdcfacfd96b4ca42978c2473f096b40c61bbf878ad8bda",
+        "brick_grid_substation_camSE.png": "92c8ce52cc517166f9fdf83d636e984928d1cef2bc847b2225280ff9dcc16ab1",
+        "brick_grid_substation_camSW.png": "6cf3e46b00c92f08e1d8d3d2d0352186eba4d774799981c80e955457e8d86f87"
+      },
+      "meshCount": 101
+    },
+    "municipal_water_tower": {
+      "deterministicCanonicalPngSha256": {
+        "municipal_water_tower_camNE.png": "ab895094fd6c7a4c0eeee8cc8009748239d410d923ced3876ec7bedfde7846d6",
+        "municipal_water_tower_camNW.png": "dce59bb43b06288ac212773bc2616b43272bf2bd5a4fb41c7a895b3d0fff5ec7",
+        "municipal_water_tower_camSE.png": "b88eb0ed248df640da20bac3b90ad8c515030d839ae0e4c5cac6075fa9b99843",
+        "municipal_water_tower_camSW.png": "c3370e2f5c99d826a235a24fc000de31cce07dbbc732e0160cd19ace1da23665"
+      },
+      "meshCount": 78
+    }
+  },
+  "blenderVersion": "4.5.12",
+  "contract": {
+    "cameraOrder": [
+      "camNE",
+      "camSE",
+      "camSW",
+      "camNW"
+    ],
+    "deterministicRerender": "byte-identical canonical PNGs",
+    "pivotPixels": [
+      192,
+      300
+    ],
+    "postRenderCompensation": "none",
+    "projectedTilePixels": [
+      88,
+      44
+    ]
+  },
+  "previewPngSha256": {
+    "preview/utilities-neighborhood-edge-1280x800.png": "4bc3c0b7361e42ea1bb400eeac2f675cdeb2a06012c9302145e469f71d1d239f",
+    "preview/utilities-neighborhood-edge-900x600.png": "2dc5fc50380d2b702ee81864347ac9cfd0db7cbf0060ba73f9a9c5fd6d411266"
+  },
+  "schema": "citysim.world-art.utilities-validation.v1",
+  "status": "PASS"
+}

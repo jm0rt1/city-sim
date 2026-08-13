@@ -1,0 +1,267 @@
+{
+  "acceptedFamilyOnly": true,
+  "artifacts": [
+    {
+      "bytes": 9647358,
+      "path": "preview/utilities-neighborhood-edge.blend",
+      "sha256": "45c0b7d9f3577bdec8b566a7f5717ad37ca774b5fffbe0df1e45fd07a66ee2d0"
+    },
+    {
+      "bytes": 1050857,
+      "decodedRgbaSha256": "7d3920a95f50db18ec31cd9ed9832debe8f5fa123512800a41bc81c9c139ebea",
+      "dimensions": [
+        1280,
+        800
+      ],
+      "path": "preview/utilities-neighborhood-edge-1280x800.png",
+      "sha256": "4bc3c0b7361e42ea1bb400eeac2f675cdeb2a06012c9302145e469f71d1d239f"
+    },
+    {
+      "bytes": 562688,
+      "decodedRgbaSha256": "691174d319ac117c53b98549fb35a4ccde73c5a5eb424b14dd12246a9d27419a",
+      "dimensions": [
+        900,
+        600
+      ],
+      "path": "preview/utilities-neighborhood-edge-900x600.png",
+      "sha256": "2dc5fc50380d2b702ee81864347ac9cfd0db7cbf0060ba73f9a9c5fd6d411266"
+    }
+  ],
+  "camera": {
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0,
+    "perAssetCompensation": "none",
+    "projection": "orthographic"
+  },
+  "cedarMarketReused": false,
+  "grid": {
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0,
+    "projectedTilePixels": [
+      88,
+      44
+    ],
+    "projection": "orthographic-2:1-dimetric",
+    "worldTileSize": 2.0
+  },
+  "lightingConvention": {
+    "color": [
+      1.0,
+      0.86,
+      0.72
+    ],
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldColor": [
+      0.2,
+      0.17,
+      0.14,
+      1.0
+    ],
+    "worldStrength": 0.72
+  },
+  "liveAsset": false,
+  "placements": [
+    {
+      "assetId": "municipal_water_tower",
+      "footprintTiles": [
+        2,
+        2
+      ],
+      "meshCount": 78,
+      "originWorld": [
+        -3.0,
+        3.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "sourceBlend": "FourViewProduction/Utilities/municipal_water_tower/municipal_water_tower.blend",
+      "sourceBlendSha256": "b859ca6ef6b26c9538c384451814ae321bc35efb2f929ae899b5d9e83c87f84f"
+    },
+    {
+      "assetId": "brick_grid_substation",
+      "footprintTiles": [
+        2,
+        2
+      ],
+      "meshCount": 101,
+      "originWorld": [
+        3.0,
+        3.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "sourceBlend": "FourViewProduction/Utilities/brick_grid_substation/brick_grid_substation.blend",
+      "sourceBlendSha256": "4e8cdda7270ea515e66f68bb2007ebe74cd8141c1904d5c7508a8d1dc1c8b7bb"
+    },
+    {
+      "assetId": "marigold_court_house",
+      "footprintTiles": [
+        2,
+        2
+      ],
+      "meshCount": 74,
+      "originWorld": [
+        -5.0,
+        -3.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "sourceBlend": "FourViewProduction/ResidentialCivic/marigold_court_house.blend",
+      "sourceBlendSha256": "8f6f69d4d26d13206724f53fbd1335f9d7bb0f3ed859eac58dcfa6e4f4b35d30"
+    },
+    {
+      "assetId": "harbor_corner_storefront",
+      "footprintTiles": [
+        2,
+        2
+      ],
+      "meshCount": 71,
+      "originWorld": [
+        -1.0,
+        -3.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "sourceBlend": "FourViewProduction/CommercialIndustrial/harbor_corner_storefront/harbor_corner_storefront.blend",
+      "sourceBlendSha256": "e6b82f6db66989a87d0ba41daca45d4e1cae743ec0b61814b6f89221b5d3b065"
+    },
+    {
+      "assetId": "ironleaf_service_workshop",
+      "footprintTiles": [
+        2,
+        2
+      ],
+      "meshCount": 48,
+      "originWorld": [
+        3.0,
+        -3.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "sourceBlend": "FourViewProduction/CommercialIndustrial/ironleaf_service_workshop/ironleaf_service_workshop.blend",
+      "sourceBlendSha256": "eb0cbf045983164fcd0a88451765dcab9e6f4ba4fc712863bcf121bd365914d8"
+    },
+    {
+      "assetId": "axis_civic_road",
+      "footprintTiles": [
+        1,
+        1
+      ],
+      "meshCount": 13,
+      "originWorld": [
+        -6.0,
+        0.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "sourceBlend": "FourViewProduction/Environment/assets/axis_civic_road/axis_civic_road.blend",
+      "sourceBlendSha256": "acb2ac8302b5b60be831633f43e73df353df3135b14683341342aca473583870"
+    },
+    {
+      "assetId": "axis_civic_road_dressed",
+      "footprintTiles": [
+        1,
+        1
+      ],
+      "meshCount": 26,
+      "originWorld": [
+        -4.0,
+        0.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "sourceBlend": "FourViewProduction/Environment/assets/axis_civic_road_dressed/axis_civic_road_dressed.blend",
+      "sourceBlendSha256": "d1247e19e0beea5aa40dc4c710ea2edbec97c26f02c80d3079f99788c7faa8c0"
+    },
+    {
+      "assetId": "axis_civic_road",
+      "footprintTiles": [
+        1,
+        1
+      ],
+      "meshCount": 13,
+      "originWorld": [
+        -2.0,
+        0.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "sourceBlend": "FourViewProduction/Environment/assets/axis_civic_road/axis_civic_road.blend",
+      "sourceBlendSha256": "acb2ac8302b5b60be831633f43e73df353df3135b14683341342aca473583870"
+    },
+    {
+      "assetId": "axis_civic_road",
+      "footprintTiles": [
+        1,
+        1
+      ],
+      "meshCount": 13,
+      "originWorld": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "sourceBlend": "FourViewProduction/Environment/assets/axis_civic_road/axis_civic_road.blend",
+      "sourceBlendSha256": "acb2ac8302b5b60be831633f43e73df353df3135b14683341342aca473583870"
+    },
+    {
+      "assetId": "axis_civic_road",
+      "footprintTiles": [
+        1,
+        1
+      ],
+      "meshCount": 13,
+      "originWorld": [
+        2.0,
+        0.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "sourceBlend": "FourViewProduction/Environment/assets/axis_civic_road/axis_civic_road.blend",
+      "sourceBlendSha256": "acb2ac8302b5b60be831633f43e73df353df3135b14683341342aca473583870"
+    },
+    {
+      "assetId": "axis_civic_road_dressed",
+      "footprintTiles": [
+        1,
+        1
+      ],
+      "meshCount": 26,
+      "originWorld": [
+        4.0,
+        0.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "sourceBlend": "FourViewProduction/Environment/assets/axis_civic_road_dressed/axis_civic_road_dressed.blend",
+      "sourceBlendSha256": "d1247e19e0beea5aa40dc4c710ea2edbec97c26f02c80d3079f99788c7faa8c0"
+    },
+    {
+      "assetId": "axis_civic_road",
+      "footprintTiles": [
+        1,
+        1
+      ],
+      "meshCount": 13,
+      "originWorld": [
+        6.0,
+        0.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "sourceBlend": "FourViewProduction/Environment/assets/axis_civic_road/axis_civic_road.blend",
+      "sourceBlendSha256": "acb2ac8302b5b60be831633f43e73df353df3135b14683341342aca473583870"
+    }
+  ],
+  "schema": "citysim.world-art.utility-neighborhood-edge-preview.v1",
+  "status": "source-only-review-evidence"
+}

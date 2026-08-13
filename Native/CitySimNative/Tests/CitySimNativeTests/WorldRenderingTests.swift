@@ -1081,7 +1081,7 @@ final class WorldRenderingTests: XCTestCase {
         let variantOneCoordinate = try XCTUnwrap(
             (0..<16).flatMap { y in (0..<16).map { GridCoordinate(x: $0, y: y) } }
                 .first {
-                    WorldVisualSeed.variant(count: 3, for: $0, kind: .residential) == 1
+                    ResidentialGeneratedAssetIdentity.liveVisualVariant(at: $0) == 1
                 }
         )
         var sourceHashes: Set<String> = []
@@ -1962,7 +1962,13 @@ final class WorldRenderingTests: XCTestCase {
         })
         let roads = RoadConnectionMask.resolving(at: tile.coordinate, in: original)
         let originalIdentity = try XCTUnwrap(
-            ResidentialGeneratedAssetIdentity(level: tile.level, adjacentRoads: roads)
+            ResidentialGeneratedAssetIdentity(
+                level: tile.level,
+                adjacentRoads: roads,
+                visualVariant: ResidentialGeneratedAssetIdentity.liveVisualVariant(
+                    at: tile.coordinate
+                )
+            )
         )
         let scene = CityScene(size: CGSize(width: 1_280, height: 800))
         scene.reducedMotion = true
@@ -2850,7 +2856,14 @@ final class WorldRenderingTests: XCTestCase {
                 detail: .block,
                 reducedMotion: true
             )
-            let expectedName = "lot.generated-v4.residential_l0\(tier)_v0_south.block"
+            let identity = ResidentialGeneratedAssetIdentity(
+                level: tier,
+                adjacentRoads: .south,
+                visualVariant: ResidentialGeneratedAssetIdentity.liveVisualVariant(
+                    at: tile.coordinate
+                )
+            )
+            let expectedName = "lot.generated-v4.\(identity!.logicalID).block"
             XCTAssertEqual(descendantNames(in: root).filter { $0 == expectedName }.count, 1)
         }
 

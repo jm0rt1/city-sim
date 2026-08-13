@@ -19,7 +19,14 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
         XCTAssertEqual(manifest.canvas.height, 384)
         XCTAssertEqual(manifest.canvas.footprintPivotPixel, [192, 300])
         XCTAssertEqual(manifest.postRenderCompensation, "none")
-        XCTAssertEqual(manifest.assets.count, 7)
+        XCTAssertGreaterThanOrEqual(manifest.assets.count, 7)
+        XCTAssertEqual(Set(manifest.assets.map(\.assetID)).count, manifest.assets.count)
+        XCTAssertEqual(Set(manifest.assets.map(\.file)).count, manifest.assets.count)
+        let admittedRoles = Set(manifest.assets.flatMap(\.roles))
+        XCTAssertTrue(Set([
+            "residential-low", "residential-high", "commercial",
+            "industrial", "city-hall", "park",
+        ]).isSubset(of: admittedRoles))
 
         for asset in manifest.assets {
             let url = try XCTUnwrap(catalog.resourceURL(for: asset.assetID), asset.assetID)
@@ -58,8 +65,8 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
             (.industrial, "ironleaf_service_workshop"),
             (.park, "pocket_grove_park"),
             (.cityHall, "hearthside_council_hall"),
-            (.powerPlant, nil),
-            (.waterTower, nil),
+            (.powerPlant, "brick_grid_substation"),
+            (.waterTower, "municipal_water_tower"),
             (.fireStation, nil),
             (.policeStation, nil),
             (.school, nil),
@@ -70,6 +77,48 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
                 assetID,
                 kind.rawValue
             )
+        }
+    }
+
+    @MainActor
+    func testUtilityLotsUseCanonicalTransformAndNoLegacyRoleDecoration() throws {
+        let style = WorldVisualStyle()
+        let catalog = FourViewWorldAssetCatalog()
+        let renderer = LotRenderer(
+            style: style,
+            assets: WorldAssetCatalog(),
+            fourViewAssets: catalog
+        )
+        let cases: [(BuildingKind, String, String)] = [
+            (.powerPlant, "brick_grid_substation", "industrial_l01"),
+            (.waterTower, "municipal_water_tower", "water_tower_l01"),
+        ]
+
+        for (index, entry) in cases.enumerated() {
+            let (kind, assetID, logicalID) = entry
+            let lot = renderer.makeLot(
+                for: CityTile(
+                    coordinate: GridCoordinate(x: 10 + index, y: 12),
+                    kind: kind,
+                    condition: 1,
+                    constructionProgress: 1
+                ),
+                adjacentRoads: .south,
+                detail: .block,
+                reducedMotion: true
+            )
+            let marker = try XCTUnwrap(
+                lot.childNode(withName: "//lot.four-view.\(assetID).camNE")
+            )
+            let sprite = try XCTUnwrap(marker.parent as? SKSpriteNode)
+            XCTAssertEqual(sprite.anchorPoint, FourViewWorldAssetCatalog.spriteAnchor)
+            XCTAssertEqual(sprite.xScale, style.tileWidth / 88, accuracy: 0.000_001)
+            XCTAssertEqual(sprite.yScale, style.tileWidth / 88, accuracy: 0.000_001)
+            XCTAssertEqual(sprite.zRotation, 0, accuracy: 0.000_001)
+            XCTAssertEqual(sprite.position, .zero)
+            XCTAssertEqual(sprite.colorBlendFactor, 0, accuracy: 0.000_001)
+            XCTAssertEqual(sprite.name, "lot.generated-v4.\(logicalID).block")
+            XCTAssertNil(lot.childNode(withName: "//lot.generated-role.\(kind.rawValue)"))
         }
     }
 

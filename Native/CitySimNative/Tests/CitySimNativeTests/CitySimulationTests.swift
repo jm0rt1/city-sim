@@ -1718,10 +1718,14 @@ final class CitySimulationTests: XCTestCase {
         }
 
         var state = CityGameState.newCity(seed: 42)
-        let unsupportedKinds: Set<BuildingKind> = [
-            .powerPlant, .waterTower, .fireStation, .policeStation, .school,
-        ]
-        for coordinate in state.tiles.filter({ unsupportedKinds.contains($0.kind) }).map(\.coordinate) {
+        let originalDevelopedCount = state.tiles.filter {
+            ![.empty, .road].contains($0.kind)
+        }.count
+        let catalog = FourViewWorldAssetCatalog()
+        for coordinate in state.tiles.filter({ tile in
+            ![.empty, .road].contains(tile.kind)
+                && catalog.assetID(for: tile, variant: 1) == nil
+        }).map(\.coordinate) {
             state.updateTile(at: coordinate) {
                 $0.kind = .empty
                 $0.level = 1
@@ -1733,11 +1737,24 @@ final class CitySimulationTests: XCTestCase {
         }
 
         let developed = state.tiles.filter { ![.empty, .road].contains($0.kind) }
-        let catalog = FourViewWorldAssetCatalog()
         let core = GridCoordinate(x: 11, y: 11)
         let compactCore = GridCoordinate(x: 10, y: 10)
         XCTAssertGreaterThanOrEqual(developed.count, 7)
+        XCTAssertEqual(developed.count, originalDevelopedCount)
         XCTAssertTrue(developed.allSatisfy { catalog.assetID(for: $0, variant: 1) != nil })
+
+        let sourceScene = CityScene(size: CGSize(width: 1_280, height: 800))
+        sourceScene.reducedMotion = true
+        sourceScene.render(
+            state: state,
+            overlay: .none,
+            selection: nil,
+            interactionMode: .inspect
+        )
+        let sourceNames = sourceScene.children.flatMap(descendantNodeNames)
+        XCTAssertTrue(sourceNames.contains("lot.four-view.brick_grid_substation.camNE"))
+        XCTAssertTrue(sourceNames.contains("lot.four-view.municipal_water_tower.camNE"))
+        XCTAssertFalse(sourceNames.contains("lot.generated-role.powerPlant"))
 
         let regular = try rendererProofFrame(
             size: CGSize(width: 1_280, height: 800),
@@ -1766,6 +1783,11 @@ final class CitySimulationTests: XCTestCase {
         XCTAssertGreaterThan(compact.png.count, 30_000)
         try export(regular, environmentKeys: ["CITYSIM_FOUR_VIEW_NATIVE_1280_PROOF"])
         try export(compact, environmentKeys: ["CITYSIM_FOUR_VIEW_NATIVE_900_PROOF"])
+    }
+
+    @MainActor
+    private func descendantNodeNames(in node: SKNode) -> [String] {
+        (node.name.map { [$0] } ?? []) + node.children.flatMap(descendantNodeNames)
     }
 
     @MainActor

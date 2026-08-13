@@ -52,6 +52,18 @@
       "file": "pocket_grove_park_camNE.png",
       "sha256": "2b1c41cf98f0fa3e53627ba9b32336754c14cd5759b66357d965836ac5e0e2dc",
       "roles": ["park"]
+    },
+    {
+      "assetID": "brick_grid_substation",
+      "file": "brick_grid_substation_camNE.png",
+      "sha256": "1a89c746a90adc6ede4185af66beba4e45f3f9280738436f583b034ca1bc0d8e",
+      "roles": ["power-plant"]
+    },
+    {
+      "assetID": "municipal_water_tower",
+      "file": "municipal_water_tower_camNE.png",
+      "sha256": "ab895094fd6c7a4c0eeee8cc8009748239d410d923ced3876ec7bedfde7846d6",
+      "roles": ["water-tower"]
     }
   ]
 }

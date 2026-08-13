@@ -1,151 +1,60 @@
+# CitySim
 
-
-## Summary:
-This project was developed on Apple Silicon (Arm64 based) Macintosh, using Microsoft Visual Studio Code Version: 1.72.0. The intention is to be compatible with any system through Python's multiplatform nature. However, this project will only be tested on Windows 10 amd64 machine and the latest MacOS version on an Arm64 machine.
-
-## Native macOS game
-
-The playable macOS-first CitySim vertical slice lives in [`Native/CitySimNative`](Native/CitySimNative). It uses SwiftUI for the desktop game shell and SpriteKit for the isometric city renderer, with deterministic simulation, construction, economy, demand, services, objectives, actionable data overlays, events, and save/load.
-
-The full native AAA release contract is defined in [`docs/aaa`](docs/aaa/README.md), including the product vision, complete gameplay and content scope, UX and accessibility, visual and audio direction, production architecture, quality gates, 81 traceable requirements, open decisions, and the dependency-ordered release backlog.
+CitySim is a playable macOS city-building game built with SwiftUI and SpriteKit. The current native vertical slice includes an isometric city, construction and demolition, deterministic simulation, economy and demand, utilities and services, objectives and authored scenarios, overlays, events, save recovery, checkpoints, photo and benchmark modes, accessible controls, and semantic sound feedback.
 
 ![CitySim native key art](Native/CitySimNative/Resources/CitySim-KeyArt.png)
 
-Build and launch the native `.app` from the repository root:
+## Play on macOS
+
+Requirements:
+
+- Apple Silicon Mac
+- macOS 14 or later
+- Xcode with the macOS SDK and Swift 6 toolchain
+
+From the repository root, build a branch-isolated app bundle and launch it:
 
 ```bash
 ./script/build_and_run.sh
 ```
 
-Run its deterministic simulation tests with:
+The script prints the exact branch, commit, bundle identifier, save-data root, staged app path, and process ID. Development branches receive isolated app identities and save directories so they do not overwrite the production app or another worktree's city.
+
+To build and inspect the app bundle without launching it:
 
 ```bash
+./script/build_and_run.sh --stage-only
+```
+
+Direct SwiftPM commands are also available:
+
+```bash
+swift build --package-path Native/CitySimNative
 swift test --package-path Native/CitySimNative
 ```
 
-**Important**: This project requires Python 3.13 or later with free-threaded mode (no Global Interpreter Lock) for optimal performance. Free-threaded Python enables true parallel execution across multiple CPU cores, providing significant performance improvements for large-scale city simulations. See [ADR-002: Free-Threaded Python](docs/adr/002-free-threaded-python.md) for detailed rationale. 
+## Start a city
 
-This program contains the following directories of interest under src:
-- `./src/` - contains the source code for the program
+The first launch opens Welcome to New Arcadia. Finish the short introduction, then:
 
+- choose a build category and tool from the lower command deck;
+- select an open map block to preview and confirm construction;
+- select developed blocks to inspect their current condition;
+- use the simulation controls or `Space`, `1`, `2`, and `3` to pause or change speed;
+- open City Data for finances, population, employment, utilities, history, and resilience;
+- use `Command-S` to save and the Load City command to recover or branch a checkpoint.
 
+The in-game Command Guide lists the complete current keyboard catalog. Settings includes sound effects and effects level, reduced motion, reduced transparency, increased contrast, and color-independent cues.
 
+## Product boundary
 
-## Scope:
-    1. Definitions
-    2. Prerequisites
-    3. Initializing the Virtual Environment
-    4. Running The Program From a Shell
-    5. Running The Program
-    6. Testing The Code base
-    7. UML
-## **1. Definitions:**
-1) `"./" or "this directory"` - meaning the top level directory of this project, which happens to be the directory that this README.md file has been saved. The README.md is at the top level of this Python project.
-2) `"Visual Studio Code"` - Microsoft Visual Studio Code integrated development environment
+`Native/CitySimNative` is the shipping product path. It is a complete, production-minded gameplay slice, not a claim that the much larger aspirational AAA catalog has already shipped. The full long-range vision and release requirements live under [`docs/aaa`](docs/aaa/README.md).
 
-## **2. Prerequisites**
-The *.sh scripts in this repository should be runnable on MacOS and Windows, as tested via the following shell programs.
+The older Python implementation remains in `src`, `run.py`, and related historical documentation for reference. It is not the current player entry point and does not require installation to build or play the native macOS game.
 
-### Shell Programs:
-These shell programs have been integrated with Visual Studio Code using its Integrated Terminal features:
-- Windows: MinGW (Minimalist GNU for Windows)
-- MacOS: Zsh (Z shell)
+## More detail
 
-Set one of these programs as the integrated terminal in Visual Studio Code.
-
-**NOTE:** It is not in the scope of this document to show how to connect these terminals with Visual Studio Code, since this is straightforward and documented online with plenty of support.
-
-
-
-### Development Environment and Interpreter:
-- Visual Studio Code + Extensions: "Pylance v2022.10.30" and "Python v2022.16.1"
-- **Python 3.13 or later (Free-Threaded Build)**: https://www.python.org/downloads/
-  - Free-threaded Python (no Global Interpreter Lock) is required for optimal performance
-  - See [Python 3.13 Release Notes](https://docs.python.org/3.13/whatsnew/3.13.html) for free-threading documentation
-  - Installation Guide: https://py-free-threading.github.io/installing_cpython/
-
-
-## **4. Initializing The Virtual Environment**
-
-### Procedure:
-In Visual Studio Code, using a system level install of Python 3.13 or later with free-threaded mode enabled.
-
-1) Give executable rights to the script "./init-venv.sh".
-2) In MinGW or Zsh run:
-    ```
-    ./init-venv.sh
-    ```
-3) A directory titled "./venv" should now be created.
-4) At this time the python extension in Visual Studio Code should show an available interpreter called "venv" located at ./venv.
-
-5) "./.vscode/settings.json" includes a setting that should automatically activate the selected virtual environment when a new integrated terminal is created (use Ctrl + ` to invoke a new terminal). 
-
-    a) If Visual Studio Code does not automatically activate the virtual environment, then it may be necessary to run the following command manually:
-    ```
-    source ./venv/bin/activate
-    ```
-
-"(venv)" should now show at the beginning of each terminal line.
-
-##  **5. Running The Program**
-
-Bundled with the source code, as stated before, is the ./.vscode folder. This folder contains a "launch.json" file. This file is used to configure the Python extension to debug the program from the program entry point ./run.py.
-
-./run.py is used to tell the interpreter that the top level of the project is the folder ".".
-
-run.py can be invoked one of two ways, either through Visual Studio Code's integrated debug features, or via the virtual environment's interpreter via the shell.
-
-### Shell and Python Interpreter Run Procedure:
-1) Follow the procedure to initialize and activate the virtual environment.
-2) Run the following command:
-    ```
-    python run.py
-    ```
-
-### Visual Studio Code Debugging
-1) Change to the debugging sidebar view.
-2) Next to the green arrow at the top of the sidebar, ensure "run.py" is selected as the current configuration.
-3) Place a breakpoint in the program.
-4) Click the green arrow.
-5) Program should be running in debug mode at this time.
-
-
-### Running the Executables
-
-Future projects may provide a "frozen" version of the program, providing an executable package to the end user, which will bundle the interpreter with the executable as one set.
-
-This is a placeholder for the procedure.
-
-
-
-## **6. Testing Code Base**
-
-Follow the above procedures for initializing the virtual environment, then run:
-
-    ./test.sh
-
-## **7. Unified Modeling Language (UML) Diagrams**
-The Unified Modeling Language diagrams for this program have been provided in the folder `./docs/models`.
-
-The model was developed using StarUML Educational License. Two output images were produced in portable network graphics and joint photographic experts group formats.
-
-Models.mdj is the raw file that can be edited using StarUML.
-
-## AI Development Documentation
-Design docs and workstreams for future implementation are available:
-
-- AAA Release Specification: [docs/aaa/README.md](docs/aaa/README.md)
-- Design Overview: [docs/design/readme.md](docs/design/readme.md)
-- Workstreams Index: [docs/design/workstreams/00-index.md](docs/design/workstreams/00-index.md)
-- System Architecture: [docs/architecture/overview.md](docs/architecture/overview.md)
-- Module Specs: [docs/specs/](docs/specs)
-- ADRs: [docs/adr/](docs/adr)
-- Guides: [docs/guides/](docs/guides)
-
-## Additional Documentation
-
-- **Documentation Completion Summary**: [COMPLETION_SUMMARY.md](COMPLETION_SUMMARY.md) - Details of comprehensive documentation expansion
-- **Integration Guide**: [INTEGRATION_GUIDE.md](INTEGRATION_GUIDE.md) - Documentation reconciliation and integration guide
-- **Testing Documentation**: [tests/_docs/](tests/_docs/) - Comprehensive testing strategy and guidelines
-- **Database/Save System**: [db/](db/) and [db/_docs/](db/_docs/) - Save system architecture and usage guide
-- **Feature Catalog**: [docs/FEATURE_CATALOG.md](docs/FEATURE_CATALOG.md) - 200+ planned features across 40+ subsystems
+- [Native app guide](Native/CitySimNative/README.md)
+- [AAA vision and requirements](docs/aaa/README.md)
+- [Architecture](docs/architecture/CITYSIM_NATIVE_RUNTIME_ARCHITECTURE.md)
+- [Feature catalog](docs/FEATURE_CATALOG.md)

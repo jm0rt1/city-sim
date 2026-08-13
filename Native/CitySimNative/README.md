@@ -1,6 +1,6 @@
 # CitySim Native
 
-CitySim Native is the macOS-first playable vertical slice for the City-Sim vision. It is a real SwiftUI application with a SpriteKit isometric renderer, deterministic simulation, construction economy, population demand, services, objectives, events, overlays, and save/load.
+CitySim Native is the macOS-first playable vertical slice for the CitySim vision. It is a real SwiftUI application with a SpriteKit isometric renderer, deterministic simulation, construction economy, population demand, services, objectives, events, overlays, checkpoint recovery, accessible controls, and semantic sound feedback.
 
 ## Run
 
@@ -8,6 +8,12 @@ From the repository root:
 
 ```bash
 ./script/build_and_run.sh
+```
+
+Build the exact branch-isolated `.app` without launching it:
+
+```bash
+./script/build_and_run.sh --stage-only
 ```
 
 Or build and test the package directly:
@@ -21,10 +27,18 @@ swift test --package-path Native/CitySimNative
 
 - Click open land to build the selected tool.
 - Click an occupied tile to inspect it.
-- Right-click a tile to demolish it.
+- Select Bulldozer, then choose a developed tile to demolish it.
 - Drag the map to pan and scroll to zoom.
 - `Space`, `1`, `2`, `3` control simulation speed.
-- `Command-S` saves and `Command-O` loads the quicksave.
+- `Command-S` saves; use Load City to recover, inspect, or branch checkpoints.
+- Open Command Guide in the app for the complete current keyboard catalog.
+
+## Player settings
+
+- Sound effects can be muted and their level persists between sessions.
+- Important construction, rejection, save/load, undo, alert, and objective outcomes use restrained semantic cues after authoritative state changes.
+- Reduced motion, reduced transparency, increased contrast, and color-independent cues are available independently.
+- Every sound-backed outcome retains equivalent visible text and state feedback.
 
 ## Product boundary
 

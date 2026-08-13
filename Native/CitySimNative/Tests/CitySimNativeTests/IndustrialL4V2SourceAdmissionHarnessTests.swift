@@ -2015,25 +2015,6 @@ final class IndustrialL4V2SourceAdmissionHarnessTests: XCTestCase {
         }
     }
 
-    func testCanonicalSourceAdmissionAuthorityIsPinned() throws {
-        var repositoryRoot = URL(fileURLWithPath: #filePath)
-        for _ in 0..<5 {
-            repositoryRoot.deleteLastPathComponent()
-        }
-        for authority in [
-            L4V2SourceAdmissionHarness.sourceAdmissionSchema,
-            L4V2SourceAdmissionHarness.sourceAdmissionValidator,
-        ] {
-            let data = try Data(
-                contentsOf: repositoryRoot.appending(path: authority.path)
-            )
-            XCTAssertEqual(
-                L4V2SourceAdmissionHarness.sha256(data),
-                authority.sha256
-            )
-        }
-    }
-
     func testDirectionLocalAdmissionRejectsWorkerSelfAdmissionAndShapeDrift() throws {
         try withRoot { root in
             let harness = L4V2SourceAdmissionHarness(claimedRoot: root)

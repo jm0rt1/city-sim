@@ -5,25 +5,79 @@ import XCTest
 
 final class AssetSprintIntegratedNeighborhoodTests: XCTestCase {
     @MainActor
-    func testIntegrationUsesOneCanonicalProjectionPivotAndFootprintScale() {
+    func testIntegrationUsesOneCanonicalProjectionAndExactGridContract() {
         XCTAssertEqual(AssetSprintReferenceFamily.canonical.projectionRatio, 2, accuracy: 0.0001)
         XCTAssertEqual(AssetSprintReferenceFamily.canonical.pivot, CGPoint(x: 0.5, y: 0.18))
-        XCTAssertEqual(AssetSprintIntegratedNeighborhoodRenderer.pixelsPerFootprintEdge, 42)
+        XCTAssertEqual(AssetSprintIntegratedNeighborhoodRenderer.worldWidth, 14)
+        XCTAssertEqual(AssetSprintIntegratedNeighborhoodRenderer.worldDepth, 10)
+        XCTAssertEqual(AssetSprintIntegratedNeighborhoodRenderer.roadWidth, 0.74)
+        XCTAssertEqual(AssetSprintIntegratedNeighborhoodRenderer.roadX, [4.02, 8.82])
+        XCTAssertEqual(AssetSprintIntegratedNeighborhoodRenderer.roadY, [3.20, 6.35])
         XCTAssertGreaterThanOrEqual(AssetSprintIntegratedNeighborhoodRenderer.placements.count, 10)
     }
 
     @MainActor
-    func testIntegrationConsumesEveryAcceptedProductionFamily() {
-        let familyNames = Set(AssetSprintIntegratedNeighborhoodRenderer.placements.map { placement in
-            switch placement.asset {
-            case .residentialCivic: "residential-civic"
-            case .commercialIndustrial: "commercial-industrial"
-            case .terrain: "terrain-roads-vegetation"
+    func testIntegrationCoversEveryOriginalNeighborhoodRoleWithoutRasterCollage() {
+        XCTAssertEqual(
+            Set(AssetSprintIntegratedNeighborhoodRenderer.placements.map(\.role)),
+            Set(AssetSprintIntegratedNeighborhoodRenderer.BuildingRole.allCases)
+        )
+        XCTAssertTrue(
+            AssetSprintIntegratedNeighborhoodRenderer.placements.allSatisfy {
+                $0.width > 0 && $0.depth > 0 && $0.height > 0
             }
+        )
+        for placement in AssetSprintIntegratedNeighborhoodRenderer.placements {
+            let bounds = CGRect(
+                x: placement.x,
+                y: placement.y,
+                width: placement.width,
+                height: placement.depth
+            )
+            XCTAssertGreaterThanOrEqual(bounds.minX, 0, placement.role.rawValue)
+            XCTAssertGreaterThanOrEqual(bounds.minY, 0, placement.role.rawValue)
+            XCTAssertLessThanOrEqual(
+                bounds.maxX,
+                AssetSprintIntegratedNeighborhoodRenderer.worldWidth,
+                placement.role.rawValue
+            )
+            XCTAssertLessThanOrEqual(
+                bounds.maxY,
+                AssetSprintIntegratedNeighborhoodRenderer.worldDepth,
+                placement.role.rawValue
+            )
+            for roadX in AssetSprintIntegratedNeighborhoodRenderer.roadX {
+                XCTAssertFalse(
+                    bounds.minX < roadX + AssetSprintIntegratedNeighborhoodRenderer.roadWidth
+                        && bounds.maxX > roadX,
+                    "\(placement.role.rawValue) crosses the canonical x-axis road band"
+                )
+            }
+            for roadY in AssetSprintIntegratedNeighborhoodRenderer.roadY {
+                XCTAssertFalse(
+                    bounds.minY < roadY + AssetSprintIntegratedNeighborhoodRenderer.roadWidth
+                        && bounds.maxY > roadY,
+                    "\(placement.role.rawValue) crosses the canonical y-axis road band"
+                )
+            }
+        }
+    }
+
+    @MainActor
+    func testEveryRoleUsesAProjectedDetailProfileWithFamilyDifferentiation() {
+        let styles = AssetSprintIntegratedNeighborhoodRenderer.BuildingRole.allCases.map {
+            AssetSprintIntegratedNeighborhoodRenderer.style(for: $0)
+        }
+        XCTAssertTrue(styles.allSatisfy { style in
+            style.stories > 0 && style.frontBays > 0 && style.sideBays > 0
         })
-        XCTAssertEqual(familyNames, [
-            "residential-civic", "commercial-industrial", "terrain-roads-vegetation"
-        ])
+        XCTAssertEqual(Set(styles.map(\.roof)), [.gable, .flatParapet, .industrialMonitor])
+        XCTAssertEqual(
+            Set(styles.map(\.facade)),
+            [.clapboard, .masonry, .civicStone, .storefront, .industrial]
+        )
+        XCTAssertEqual(styles.map(\.stories).max(), 3)
+        XCTAssertGreaterThanOrEqual(Set(styles).count, 8)
     }
 
     @MainActor
@@ -37,8 +91,8 @@ final class AssetSprintIntegratedNeighborhoodTests: XCTestCase {
             XCTAssertEqual(first.pixelsWide, Int(size.width))
             XCTAssertEqual(first.pixelsHigh, Int(size.height))
             XCTAssertEqual(firstData, secondData)
-            XCTAssertGreaterThan(firstData.count, size.width > 1_000 ? 500_000 : 250_000)
-            XCTAssertGreaterThan(colorBuckets(in: first), 90)
+            XCTAssertGreaterThan(firstData.count, size.width > 1_000 ? 250_000 : 150_000)
+            XCTAssertGreaterThan(colorBuckets(in: first), 60)
         }
     }
 

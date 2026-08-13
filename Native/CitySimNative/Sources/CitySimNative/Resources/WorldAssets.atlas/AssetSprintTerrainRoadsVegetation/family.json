@@ -1,0 +1,48 @@
+{
+  "schema": 1,
+  "family_id": "cedar-market-terrain-roads-vegetation-v1",
+  "license": "Copyright JFM Systems; original project-bound artwork",
+  "benchmark_role": "The supplied catalog image informed quality and category breadth only; no source pixels or asset designs were copied",
+  "projection": {
+    "id": "citysim-isometric-2to1-southeast-v1",
+    "tile_width": 88,
+    "tile_height": 44,
+    "elevation_step": 22,
+    "visible_facades": ["southwest", "southeast"]
+  },
+  "ground_contract": {
+    "pivot_x": 0.5,
+    "pivot_y": 0.18,
+    "base_inset": 0.08,
+    "key_light": "northwest",
+    "shadow_direction": "southeast",
+    "shadow_offset_pixels": [16, -10]
+  },
+  "runtime_transforms": {
+    "rotation_degrees": 0,
+    "skew": 0,
+    "per_asset_scale_override": false
+  },
+  "assets": [
+    "terrain-ground-grass.png",
+    "terrain-ground-lawn.png",
+    "terrain-ground-plaza.png",
+    "terrain-ground-industrial-yard.png",
+    "terrain-road-straight.png",
+    "terrain-road-corner.png",
+    "terrain-road-intersection.png",
+    "terrain-vegetation-cluster.png",
+    "terrain-street-dressing-cluster.png",
+    "terrain-park-treatment.png"
+  ],
+  "representative_renders": [
+    "cedar-market-terrain-block-1280x800.png",
+    "cedar-market-terrain-block-900x600.png"
+  ],
+  "packaged_sha256": {
+    "terrain-park-treatment.png": "fbe12cb5676c7dd47af5fc57d9f83868ff654a6b0a2bab689b9bc0076da71e7b",
+    "cedar-market-terrain-block-1280x800.png": "08bb28996d0af64d39b6b2504cff25588059f7ef3544f1f8c6ca6352fb677ade",
+    "cedar-market-terrain-block-900x600.png": "4a1ddd07cd4747acabddbbee0d2a23a34fc5589f96bb6951fe6f2fe435f563c8"
+  },
+  "source_art": "cedar-market-ground-system-source.png"
+}

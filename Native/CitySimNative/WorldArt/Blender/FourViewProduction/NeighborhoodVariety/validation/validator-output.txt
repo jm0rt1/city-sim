@@ -1,0 +1,287 @@
+NEIGHBORHOOD_VARIETY_VALIDATION_PASS
+{
+  "assets": {
+    "ember_rail_foundry": {
+      "densityLevel": 3,
+      "deterministicCanonicalPngSha256": {
+        "ember_rail_foundry_camNE.png": "85556f47b63e7f03352d5e536f667712688c89088fb5e2d7624056319fa42938",
+        "ember_rail_foundry_camNW.png": "6ab77d310e3165902a79369c11e6fc117a772f29a691fe769f6367c6428574b2",
+        "ember_rail_foundry_camSE.png": "f8eb33a3b3e1bf3ad4c81a000dd73a31ba29229ac4dcc08286bc7d09a3550eb5",
+        "ember_rail_foundry_camSW.png": "f524e2f98658b086f13b2c2da8706e181b81d3d454c00d76b00c4223852d6662"
+      },
+      "meshCount": 122,
+      "projectedAxisPixels": {
+        "camNE": [
+          [
+            -44,
+            22
+          ],
+          [
+            44,
+            22
+          ]
+        ],
+        "camNW": [
+          [
+            -44,
+            -22
+          ],
+          [
+            -44,
+            22
+          ]
+        ],
+        "camSE": [
+          [
+            44,
+            22
+          ],
+          [
+            44,
+            -22
+          ]
+        ],
+        "camSW": [
+          [
+            44,
+            -22
+          ],
+          [
+            -44,
+            -22
+          ]
+        ]
+      },
+      "worldBounds": {
+        "maximum": [
+          2.0,
+          2.0,
+          8.069999694824219
+        ],
+        "minimum": [
+          -2.0,
+          -2.0899999141693115,
+          -0.20000000298023224
+        ]
+      },
+      "zone": "industrial"
+    },
+    "juniper_terrace_tower": {
+      "densityLevel": 3,
+      "deterministicCanonicalPngSha256": {
+        "juniper_terrace_tower_camNE.png": "e379ac2391974493285e87629d05b27b39ca802e5e8204efdbca7c9cbacc0362",
+        "juniper_terrace_tower_camNW.png": "ece0ae14165779a6d469757e5831dfdfc891960eeee953b90fdb16040b313085",
+        "juniper_terrace_tower_camSE.png": "5ab0b3e779568c2ba6ca4844ccc98ab0db09df0027da7e53f5c849c0614c45f4",
+        "juniper_terrace_tower_camSW.png": "8318f41430a18f70cd6c8e67ee4bbcab19e7aab3b86b7b710428eab026833585"
+      },
+      "meshCount": 260,
+      "projectedAxisPixels": {
+        "camNE": [
+          [
+            -44,
+            22
+          ],
+          [
+            44,
+            22
+          ]
+        ],
+        "camNW": [
+          [
+            -44,
+            -22
+          ],
+          [
+            -44,
+            22
+          ]
+        ],
+        "camSE": [
+          [
+            44,
+            22
+          ],
+          [
+            44,
+            -22
+          ]
+        ],
+        "camSW": [
+          [
+            44,
+            -22
+          ],
+          [
+            -44,
+            -22
+          ]
+        ]
+      },
+      "worldBounds": {
+        "maximum": [
+          2.0,
+          2.0,
+          8.460000038146973
+        ],
+        "minimum": [
+          -2.0,
+          -2.0,
+          -0.20000000298023224
+        ]
+      },
+      "zone": "residential"
+    },
+    "maple_courtyard_apartments": {
+      "densityLevel": 2,
+      "deterministicCanonicalPngSha256": {
+        "maple_courtyard_apartments_camNE.png": "f2308ff21ca05e6e522e793833528d1d44d631eb82ec30f81d2b2babb1eded2a",
+        "maple_courtyard_apartments_camNW.png": "79a92501d4c5d9d1853867c731628891765a985a0f3a6956277b2aafdf2a134a",
+        "maple_courtyard_apartments_camSE.png": "8165f5cc352bd1638e1f308ad2f63816c295e47c3004eb55f13ceda654ae5a40",
+        "maple_courtyard_apartments_camSW.png": "4301234883f8c832bf763f70abaa95c019a51264b6e6aeec645dbf080393a2e4"
+      },
+      "meshCount": 185,
+      "projectedAxisPixels": {
+        "camNE": [
+          [
+            -44,
+            22
+          ],
+          [
+            44,
+            22
+          ]
+        ],
+        "camNW": [
+          [
+            -44,
+            -22
+          ],
+          [
+            -44,
+            22
+          ]
+        ],
+        "camSE": [
+          [
+            44,
+            22
+          ],
+          [
+            44,
+            -22
+          ]
+        ],
+        "camSW": [
+          [
+            44,
+            -22
+          ],
+          [
+            -44,
+            -22
+          ]
+        ]
+      },
+      "worldBounds": {
+        "maximum": [
+          2.0,
+          2.0,
+          5.084268569946289
+        ],
+        "minimum": [
+          -2.0,
+          -2.0,
+          -0.20000000298023224
+        ]
+      },
+      "zone": "residential"
+    },
+    "riverbend_textile_works": {
+      "densityLevel": 2,
+      "deterministicCanonicalPngSha256": {
+        "riverbend_textile_works_camNE.png": "58a29328eee403fb1b6fc735b4131212efa704da36704c09021424fc865e674d",
+        "riverbend_textile_works_camNW.png": "8515ce5facfa5c67bb21ad33085df19ce36211da0d26b125e9039289bbab1925",
+        "riverbend_textile_works_camSE.png": "150b129bec749fbf7c420897141649e2c45c57677e1d441df1dc4076efd9f024",
+        "riverbend_textile_works_camSW.png": "1754d4a925b8b6582ae9967901bea9ca73de1c9fc730701ab202410cf2265529"
+      },
+      "meshCount": 81,
+      "projectedAxisPixels": {
+        "camNE": [
+          [
+            -44,
+            22
+          ],
+          [
+            44,
+            22
+          ]
+        ],
+        "camNW": [
+          [
+            -44,
+            -22
+          ],
+          [
+            -44,
+            22
+          ]
+        ],
+        "camSE": [
+          [
+            44,
+            22
+          ],
+          [
+            44,
+            -22
+          ]
+        ],
+        "camSW": [
+          [
+            44,
+            -22
+          ],
+          [
+            -44,
+            -22
+          ]
+        ]
+      },
+      "worldBounds": {
+        "maximum": [
+          2.0,
+          2.0,
+          5.809999942779541
+        ],
+        "minimum": [
+          -2.0,
+          -2.049999952316284,
+          -0.20000000298023224
+        ]
+      },
+      "zone": "industrial"
+    }
+  },
+  "blenderVersion": "4.5.12",
+  "contract": {
+    "approvedLiveFamilyIsBaseline": true,
+    "cameraOrder": [
+      "camNE",
+      "camSE",
+      "camSW",
+      "camNW"
+    ],
+    "deterministicRerender": "byte-identical canonical PNGs",
+    "pivotPixels": [
+      192,
+      300
+    ],
+    "postRenderCompensation": "none",
+    "projectedTilePixels": [
+      88,
+      44
+    ]
+  },
+  "schema": "citysim.world-art.neighborhood-variety-validation.v1",
+  "status": "PASS"
+}

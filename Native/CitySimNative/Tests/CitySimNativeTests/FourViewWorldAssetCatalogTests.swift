@@ -60,16 +60,24 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
         ), "marigold_court_house")
         XCTAssertEqual(catalog.assetID(
             for: CityTile(coordinate: coordinate, kind: .residential, level: 2),
-            variant: 1
+            variant: 0
         ), "brickline_rowhouse_apartments")
+        XCTAssertEqual(catalog.assetID(
+            for: CityTile(coordinate: coordinate, kind: .residential, level: 2),
+            variant: 1
+        ), "maple_courtyard_apartments")
+        XCTAssertEqual(catalog.assetID(
+            for: CityTile(coordinate: coordinate, kind: .residential, level: 3),
+            variant: 0
+        ), "foundry_crown_apartments")
         XCTAssertEqual(catalog.assetID(
             for: CityTile(coordinate: coordinate, kind: .residential, level: 3),
             variant: 1
-        ), "foundry_crown_apartments")
+        ), "juniper_terrace_tower")
         XCTAssertEqual(catalog.assetID(
             for: CityTile(coordinate: coordinate, kind: .residential, level: 4),
             variant: 1
-        ), "foundry_crown_apartments")
+        ), "juniper_terrace_tower")
         let lowCommercial = CityTile(
             coordinate: coordinate,
             kind: .commercial,
@@ -98,6 +106,21 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
                 catalog.assetID(
                     for: CityTile(coordinate: coordinate, kind: kind, level: level),
                     variant: 0
+                ),
+                assetID
+            )
+        }
+        let newDensityVariants: [(BuildingKind, Int, String)] = [
+            (.commercial, 2, "sunbrick_market_lofts"),
+            (.commercial, 3, "copperglass_exchange_annex"),
+            (.industrial, 2, "riverbend_textile_works"),
+            (.industrial, 3, "ember_rail_foundry"),
+        ]
+        for (kind, level, assetID) in newDensityVariants {
+            XCTAssertEqual(
+                catalog.assetID(
+                    for: CityTile(coordinate: coordinate, kind: kind, level: level),
+                    variant: 1
                 ),
                 assetID
             )

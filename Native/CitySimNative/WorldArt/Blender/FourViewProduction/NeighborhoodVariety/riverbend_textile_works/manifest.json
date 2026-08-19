@@ -1,0 +1,277 @@
+{
+  "artifacts": [
+    {
+      "bytes": 1718808,
+      "path": "riverbend_textile_works.blend",
+      "sha256": "d9a2d61f6f8829f76de53fc25ca8ac6b49a11481f1de561a4c26ec6da251b986"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 181,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 168,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 17866,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 61008,
+      "decodedRgbaSha256": "c5a6252dd25f70a76397f4797b2742ce2193fd3e6cdcdd8fd504d45667c0118f",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/riverbend_textile_works_camNE.png",
+      "sha256": "58a29328eee403fb1b6fc735b4131212efa704da36704c09021424fc865e674d"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 210,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 139,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 20110,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 69040,
+      "decodedRgbaSha256": "6e604aeaa1e5b85775ea6608693bafbd9e57d354af645ef94713dc143f650d7a",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/riverbend_textile_works_camSE.png",
+      "sha256": "150b129bec749fbf7c420897141649e2c45c57677e1d441df1dc4076efd9f024"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 241,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 108,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 19339,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 70069,
+      "decodedRgbaSha256": "e45c01e7a798cc013fb421cd47a9dfe8796bde2e2024f4ac534870a5fc3820ac",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/riverbend_textile_works_camSW.png",
+      "sha256": "1754d4a925b8b6582ae9967901bea9ca73de1c9fc730701ab202410cf2265529"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 212,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 137,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 19066,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 67830,
+      "decodedRgbaSha256": "57a4f77ae19bebd0c108355cff52f5d3acbbfe163e84ff5b27de40f3181f303c",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/riverbend_textile_works_camNW.png",
+      "sha256": "8515ce5facfa5c67bb21ad33085df19ce36211da0d26b125e9039289bbab1925"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 701,
+          "maxX": 783,
+          "maxY": 839,
+          "minX": 0,
+          "minY": 139,
+          "width": 784
+        },
+        "lowestOpaqueRowTopOrigin": 839,
+        "opaquePixelCount": 119389,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 233107,
+      "decodedRgbaSha256": "b0f8caf4102c510af2a6e4a21b9e5604f704f31a3f045a31a7dd74864cc8341e",
+      "dimensions": [
+        784,
+        840
+      ],
+      "path": "riverbend_textile_works_contact-sheet.png",
+      "sha256": "a6a57d5f4bed0688942e4741828639aa9ffbb88ac1f14c5d355491afebed473f"
+    }
+  ],
+  "assetFamily": "medium-industrial",
+  "assetId": "riverbend_textile_works",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "cameraRig": {
+    "distance": 32.0,
+    "orthoScale": 12.341995,
+    "shiftY": 0.28125,
+    "views": [
+      {
+        "azimuthDegrees": 45.0,
+        "name": "camNE"
+      },
+      {
+        "azimuthDegrees": 135.0,
+        "name": "camSE"
+      },
+      {
+        "azimuthDegrees": 225.0,
+        "name": "camSW"
+      },
+      {
+        "azimuthDegrees": 315.0,
+        "name": "camNW"
+      }
+    ]
+  },
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "cedarMarketReused": false,
+  "contactSheetLayout": [
+    [
+      "camNE",
+      "camSE"
+    ],
+    [
+      "camSW",
+      "camNW"
+    ]
+  ],
+  "densityLevel": 2,
+  "description": "Medium industrial textile works with four sawtooth roof bays, warm-brick weaving hall, loading frontage, office wing, water tank, and service pipes",
+  "grid": {
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0,
+    "exactWorldFootprint": [
+      4.0,
+      4.0
+    ],
+    "footprintTiles": [
+      2,
+      2
+    ],
+    "projectedTilePixels": [
+      88,
+      44
+    ],
+    "projection": "orthographic-2:1-dimetric",
+    "worldTileSize": 2.0
+  },
+  "lightingConvention": {
+    "color": [
+      1.0,
+      0.86,
+      0.72
+    ],
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldColor": [
+      0.2,
+      0.17,
+      0.14,
+      1.0
+    ],
+    "worldStrength": 0.72
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "perViewCompensation": {
+    "crop": false,
+    "offsetPixels": [
+      0,
+      0
+    ],
+    "rotationDegrees": 0.0,
+    "scale": 1.0,
+    "skew": [
+      0.0,
+      0.0
+    ]
+  },
+  "pipelineSchema": "citysim.world-art.neighborhood-variety-four-view.v1",
+  "postRenderCompensation": "none",
+  "root": {
+    "location": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "name": "AssetRoot",
+    "pivotName": "FootprintPivot",
+    "rotationEuler": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "schema": "citysim.world-art.density-four-view-asset.v1",
+  "sourceFiles": [
+    {
+      "path": "build_and_render.py",
+      "sha256": "6c37afd3a43ac89fbe127803bb773896efc6a383d23ca13798f65ef40c73b125"
+    },
+    {
+      "path": "pipeline.json",
+      "sha256": "ce512eb71e6d44c5b0cbd6f4802d037797b7892dcfed2531057e5020a0fd631a"
+    },
+    {
+      "path": "run_pipeline.sh",
+      "sha256": "532d05471506c823329d1b29371fee92e772a60c1b591115d68685bbd84e24b2"
+    }
+  ],
+  "sourcePixelsReused": false,
+  "status": "source-only-not-live",
+  "worldFootprintTiles": [
+    2,
+    2
+  ],
+  "zone": "industrial"
+}

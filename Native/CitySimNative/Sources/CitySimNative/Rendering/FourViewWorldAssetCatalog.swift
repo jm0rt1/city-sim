@@ -51,21 +51,21 @@ final class FourViewWorldAssetCatalog {
     func assetID(for tile: CityTile, variant: Int) -> String? {
         switch tile.kind {
         case .residential where tile.level >= 3:
-            firstAssetID(forRole: "residential-high")
+            deterministicAssetID(forRole: "residential-high", variant: variant)
         case .residential where tile.level == 2:
-            firstAssetID(forRole: "residential-medium")
+            deterministicAssetID(forRole: "residential-medium", variant: variant)
         case .residential:
             deterministicAssetID(forRole: "residential-low", variant: max(0, variant - 1))
         case .commercial where tile.level >= 3:
-            firstAssetID(forRole: "commercial-high")
+            deterministicAssetID(forRole: "commercial-high", variant: variant)
         case .commercial where tile.level == 2:
-            firstAssetID(forRole: "commercial-medium")
+            deterministicAssetID(forRole: "commercial-medium", variant: variant)
         case .commercial:
             deterministicAssetID(forRole: "commercial-low", variant: variant)
         case .industrial where tile.level >= 3:
-            firstAssetID(forRole: "industrial-high")
+            deterministicAssetID(forRole: "industrial-high", variant: variant)
         case .industrial where tile.level == 2:
-            firstAssetID(forRole: "industrial-medium")
+            deterministicAssetID(forRole: "industrial-medium", variant: variant)
         case .industrial:
             deterministicAssetID(forRole: "industrial-low", variant: variant)
         case .park:

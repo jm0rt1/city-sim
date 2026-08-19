@@ -1,0 +1,277 @@
+{
+  "artifacts": [
+    {
+      "bytes": 3368581,
+      "path": "juniper_terrace_tower.blend",
+      "sha256": "09a9ac73b47b2bfcf85314765714e2154bd5daeb4bf97fa3117347f63fa25b1c"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 271,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 78,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 31578,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 85251,
+      "decodedRgbaSha256": "8657290bdd1552fdf2e6f8b114f4b015cf2b5f71de3707c82c7b8f9fdb26acde",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/juniper_terrace_tower_camNE.png",
+      "sha256": "e379ac2391974493285e87629d05b27b39ca802e5e8204efdbca7c9cbacc0362"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 278,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 71,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 31957,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 99115,
+      "decodedRgbaSha256": "2bb6011edd877ccbb85c0f88c796ee96ec3ce6b45196f8616d0273bde618d3c1",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/juniper_terrace_tower_camSE.png",
+      "sha256": "5ab0b3e779568c2ba6ca4844ccc98ab0db09df0027da7e53f5c849c0614c45f4"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 286,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 63,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 32174,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 102192,
+      "decodedRgbaSha256": "8930f6ab8d7d5ae5ead8d67adfe1c51b410ddefccd7774e2822c705ecb9b0277",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/juniper_terrace_tower_camSW.png",
+      "sha256": "8318f41430a18f70cd6c8e67ee4bbcab19e7aab3b86b7b710428eab026833585"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 280,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 69,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 31090,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 92376,
+      "decodedRgbaSha256": "679dfe3a20ec1583ff536548b192fd1e5b9966a40b8695182141e471608130b3",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/juniper_terrace_tower_camNW.png",
+      "sha256": "ece0ae14165779a6d469757e5831dfdfc891960eeee953b90fdb16040b313085"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 769,
+          "maxX": 783,
+          "maxY": 839,
+          "minX": 0,
+          "minY": 71,
+          "width": 784
+        },
+        "lowestOpaqueRowTopOrigin": 839,
+        "opaquePixelCount": 169807,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 349242,
+      "decodedRgbaSha256": "5824887956a711acbaf6a3868ab1f5a3c09c132b2d2a1281e8522e5d127e1829",
+      "dimensions": [
+        784,
+        840
+      ],
+      "path": "juniper_terrace_tower_contact-sheet.png",
+      "sha256": "5a351a9b8364d4a2fb693c197d11502e546dc26376a9a7a219a6689a04d6f494"
+    }
+  ],
+  "assetFamily": "high-residential",
+  "assetId": "juniper_terrace_tower",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "cameraRig": {
+    "distance": 32.0,
+    "orthoScale": 12.341995,
+    "shiftY": 0.28125,
+    "views": [
+      {
+        "azimuthDegrees": 45.0,
+        "name": "camNE"
+      },
+      {
+        "azimuthDegrees": 135.0,
+        "name": "camSE"
+      },
+      {
+        "azimuthDegrees": 225.0,
+        "name": "camSW"
+      },
+      {
+        "azimuthDegrees": 315.0,
+        "name": "camNW"
+      }
+    ]
+  },
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "cedarMarketReused": false,
+  "contactSheetLayout": [
+    [
+      "camNE",
+      "camSE"
+    ],
+    [
+      "camSW",
+      "camNW"
+    ]
+  ],
+  "densityLevel": 3,
+  "description": "High-density stepped brick apartment tower with corner bays, stacked terraces, copper roof pavilion, street canopy, and roof garden",
+  "grid": {
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0,
+    "exactWorldFootprint": [
+      4.0,
+      4.0
+    ],
+    "footprintTiles": [
+      2,
+      2
+    ],
+    "projectedTilePixels": [
+      88,
+      44
+    ],
+    "projection": "orthographic-2:1-dimetric",
+    "worldTileSize": 2.0
+  },
+  "lightingConvention": {
+    "color": [
+      1.0,
+      0.86,
+      0.72
+    ],
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldColor": [
+      0.2,
+      0.17,
+      0.14,
+      1.0
+    ],
+    "worldStrength": 0.72
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "perViewCompensation": {
+    "crop": false,
+    "offsetPixels": [
+      0,
+      0
+    ],
+    "rotationDegrees": 0.0,
+    "scale": 1.0,
+    "skew": [
+      0.0,
+      0.0
+    ]
+  },
+  "pipelineSchema": "citysim.world-art.neighborhood-variety-four-view.v1",
+  "postRenderCompensation": "none",
+  "root": {
+    "location": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "name": "AssetRoot",
+    "pivotName": "FootprintPivot",
+    "rotationEuler": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "schema": "citysim.world-art.density-four-view-asset.v1",
+  "sourceFiles": [
+    {
+      "path": "build_and_render.py",
+      "sha256": "6c37afd3a43ac89fbe127803bb773896efc6a383d23ca13798f65ef40c73b125"
+    },
+    {
+      "path": "pipeline.json",
+      "sha256": "ce512eb71e6d44c5b0cbd6f4802d037797b7892dcfed2531057e5020a0fd631a"
+    },
+    {
+      "path": "run_pipeline.sh",
+      "sha256": "532d05471506c823329d1b29371fee92e772a60c1b591115d68685bbd84e24b2"
+    }
+  ],
+  "sourcePixelsReused": false,
+  "status": "source-only-not-live",
+  "worldFootprintTiles": [
+    2,
+    2
+  ],
+  "zone": "residential"
+}

@@ -1,0 +1,102 @@
+{
+  "schema": "citysim.world-art.neighborhood-variety-four-view.v1",
+  "toolchain": {
+    "blenderVersion": "4.5.12",
+    "renderEngine": "BLENDER_EEVEE_NEXT"
+  },
+  "grid": {
+    "worldTileSize": 2.0,
+    "footprintTiles": [2, 2],
+    "exactWorldFootprint": [4.0, 4.0],
+    "projectedTilePixels": [88, 44],
+    "projection": "orthographic-2:1-dimetric",
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0
+  },
+  "canvas": {
+    "width": 384,
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "footprintPivotPixel": [192, 300]
+  },
+  "cameraRig": {
+    "distance": 32.0,
+    "orthoScale": 12.341995,
+    "shiftY": 0.28125,
+    "views": [
+      {"name": "camNE", "azimuthDegrees": 45.0},
+      {"name": "camSE", "azimuthDegrees": 135.0},
+      {"name": "camSW", "azimuthDegrees": 225.0},
+      {"name": "camNW", "azimuthDegrees": 315.0}
+    ]
+  },
+  "root": {
+    "name": "AssetRoot",
+    "pivotName": "FootprintPivot",
+    "location": [0.0, 0.0, 0.0],
+    "rotationEuler": [0.0, 0.0, 0.0],
+    "scale": [1.0, 1.0, 1.0]
+  },
+  "lighting": {
+    "name": "CitySimKey",
+    "type": "AREA",
+    "location": [-6.0, -8.0, 12.0],
+    "energy": 1100.0,
+    "size": 5.0,
+    "color": [1.0, 0.86, 0.72],
+    "worldColor": [0.20, 0.17, 0.14, 1.0],
+    "worldStrength": 0.72
+  },
+  "assets": [
+    {
+      "assetId": "maple_courtyard_apartments",
+      "description": "Four-story warm-brick courtyard apartment with paired wings, bay windows, slate roofline, planted forecourt, and authored side facades",
+      "zone": "residential",
+      "densityLevel": 2,
+      "assetFamily": "medium-residential",
+      "footprintTiles": [2, 2],
+      "minimumMeshCount": 75,
+      "minimumHeight": 5.0
+    },
+    {
+      "assetId": "juniper_terrace_tower",
+      "description": "High-density stepped brick apartment tower with corner bays, stacked terraces, copper roof pavilion, street canopy, and roof garden",
+      "zone": "residential",
+      "densityLevel": 3,
+      "assetFamily": "high-residential",
+      "footprintTiles": [2, 2],
+      "minimumMeshCount": 95,
+      "minimumHeight": 7.0
+    },
+    {
+      "assetId": "riverbend_textile_works",
+      "description": "Medium industrial textile works with four sawtooth roof bays, warm-brick weaving hall, loading frontage, office wing, water tank, and service pipes",
+      "zone": "industrial",
+      "densityLevel": 2,
+      "assetFamily": "medium-industrial",
+      "footprintTiles": [2, 2],
+      "minimumMeshCount": 75,
+      "minimumHeight": 5.0
+    },
+    {
+      "assetId": "ember_rail_foundry",
+      "description": "High-capacity brick foundry with furnace tower, crane gantry, twin stacks, casting hall, silos, loading frontage, and dense process details",
+      "zone": "industrial",
+      "densityLevel": 3,
+      "assetFamily": "high-industrial",
+      "footprintTiles": [2, 2],
+      "minimumMeshCount": 100,
+      "minimumHeight": 7.0
+    }
+  ],
+  "postRenderCompensation": "none",
+  "provenance": {
+    "originalGeometry": true,
+    "sourcePixelsReused": false,
+    "cedarMarketReused": false,
+    "rejectedVectorAssetsReused": false,
+    "approvedLiveFamilyIsBaseline": true,
+    "liveAsset": false
+  }
+}

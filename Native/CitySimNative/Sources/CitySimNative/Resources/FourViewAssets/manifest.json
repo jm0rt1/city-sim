@@ -30,6 +30,12 @@
       "roles": ["residential-medium"]
     },
     {
+      "assetID": "maple_courtyard_apartments",
+      "file": "maple_courtyard_apartments_camNE.png",
+      "sha256": "f2308ff21ca05e6e522e793833528d1d44d631eb82ec30f81d2b2babb1eded2a",
+      "roles": ["residential-medium"]
+    },
+    {
       "assetID": "harbor_corner_storefront",
       "file": "harbor_corner_storefront_camNE.png",
       "sha256": "e98cdcf50592089d7a0b6ded522af7c2892c78dda8bf0c623940e39f57241ebd",
@@ -114,9 +120,21 @@
       "roles": ["residential-high"]
     },
     {
+      "assetID": "juniper_terrace_tower",
+      "file": "juniper_terrace_tower_camNE.png",
+      "sha256": "e379ac2391974493285e87629d05b27b39ca802e5e8204efdbca7c9cbacc0362",
+      "roles": ["residential-high"]
+    },
+    {
       "assetID": "market_arcade_midrise",
       "file": "market_arcade_midrise_camNE.png",
       "sha256": "614c833554537f173e39e43d0af7dbd9f92971e7910fd46352bed39032df48b8",
+      "roles": ["commercial-medium"]
+    },
+    {
+      "assetID": "sunbrick_market_lofts",
+      "file": "sunbrick_market_lofts_camNE.png",
+      "sha256": "4afbf8ca7f94c612f33b09fb15ab72e44181cc2d510d28eb5956bb0a494c695f",
       "roles": ["commercial-medium"]
     },
     {
@@ -126,15 +144,33 @@
       "roles": ["commercial-high"]
     },
     {
+      "assetID": "copperglass_exchange_annex",
+      "file": "copperglass_exchange_annex_camNE.png",
+      "sha256": "72ff8d40763c5a1c8026fb6387f360a6ffbe7b4e0a59a9fab0e80cb407849fba",
+      "roles": ["commercial-high"]
+    },
+    {
       "assetID": "canalworks_factory",
       "file": "canalworks_factory_camNE.png",
       "sha256": "845f01917e2acdbcdf0c4bed341db8ee6c7cb598deb79d4ba05a2a97b51e37d2",
       "roles": ["industrial-medium"]
     },
     {
+      "assetID": "riverbend_textile_works",
+      "file": "riverbend_textile_works_camNE.png",
+      "sha256": "58a29328eee403fb1b6fc735b4131212efa704da36704c09021424fc865e674d",
+      "roles": ["industrial-medium"]
+    },
+    {
       "assetID": "foundry_peak_plant",
       "file": "foundry_peak_plant_camNE.png",
       "sha256": "8bada091016aea4160220581de9ce3390039ad8bbf280d664619dd2937fa0ab5",
+      "roles": ["industrial-high"]
+    },
+    {
+      "assetID": "ember_rail_foundry",
+      "file": "ember_rail_foundry_camNE.png",
+      "sha256": "85556f47b63e7f03352d5e536f667712688c89088fb5e2d7624056319fa42938",
       "roles": ["industrial-high"]
     }
   ]

@@ -22,11 +22,14 @@ from png_canonical import canonicalize_png, decode_rgba_png, encode_rgba_png  # 
 CONFIG = json.loads((HERE / "pipeline.json").read_text())
 VIEWS = CONFIG["cameraRig"]["views"]
 DIRECTIONS = {
-    "north": {"bit": 1, "point": (0.0, 1.0, 0.035), "opposite": "south"},
-    "east": {"bit": 2, "point": (1.0, 0.0, 0.035), "opposite": "west"},
-    "south": {"bit": 4, "point": (0.0, -1.0, 0.035), "opposite": "north"},
-    "west": {"bit": 8, "point": (-1.0, 0.0, 0.035), "opposite": "east"},
+    # CitySim grid x projects down-right and grid y projects down-left. Under
+    # camNE, those screen axes correspond to Blender -Y and -X respectively.
+    "north": {"bit": 1, "point": (-1.0, 0.0, 0.035), "opposite": "south"},
+    "east": {"bit": 2, "point": (0.0, -1.0, 0.035), "opposite": "west"},
+    "south": {"bit": 4, "point": (1.0, 0.0, 0.035), "opposite": "north"},
+    "west": {"bit": 8, "point": (0.0, 1.0, 0.035), "opposite": "east"},
 }
+SOURCE_DIRECTIONS = {"north": "west", "east": "south", "south": "east", "west": "north"}
 
 
 def sha256(path):
@@ -202,12 +205,15 @@ def canonical_rig(scene):
 
 def palette():
     return {
-        "asphalt": material("CivicAsphalt", (0.135, 0.145, 0.145, 1), texture_scale=23.0, bump=0.18),
-        "patch": material("AsphaltWearPatch", (0.105, 0.112, 0.108, 1), texture_scale=14.0, bump=0.11),
-        "sidewalk": material("WarmAggregateSidewalk", (0.57, 0.52, 0.44, 1), texture_scale=18.0, bump=0.13),
-        "curb": material("GraniteCurb", (0.68, 0.62, 0.52, 1), texture_scale=11.0, bump=0.10),
-        "yellow": material("RestrainedOchreLanePaint", (0.82, 0.56, 0.16, 1), roughness=0.65),
-        "white": material("WarmWhiteRoadPaint", (0.82, 0.79, 0.68, 1), roughness=0.68),
+        # Reusable road sprites must meet as one material plane. Generated
+        # coordinates restart in every sprite, so color noise creates visible
+        # checkerboard seams even when the socket geometry is exact.
+        "asphalt": material("CivicAsphalt", (0.165, 0.165, 0.155, 1), roughness=0.84),
+        "patch": material("AsphaltWearPatch", (0.125, 0.128, 0.120, 1), texture_scale=17.0, bump=0.08),
+        "sidewalk": material("WarmAggregateSidewalk", (0.365, 0.35, 0.31, 1), roughness=0.86),
+        "curb": material("GraniteCurb", (0.405, 0.385, 0.34, 1), roughness=0.82),
+        "yellow": material("RestrainedOchreLanePaint", (0.62, 0.40, 0.11, 1), roughness=0.69),
+        "white": material("WarmWhiteRoadPaint", (0.73, 0.70, 0.62, 1), roughness=0.72),
         "iron": material("DrainageIron", (0.105, 0.12, 0.115, 1), roughness=0.48, metallic=0.62, texture_scale=8.0, bump=0.08),
         "brick": material("CivicPaverAccent", (0.48, 0.25, 0.17, 1), texture_scale=17.0, bump=0.16),
         "green": material("PlanterSage", (0.22, 0.34, 0.17, 1), texture_scale=7.0, bump=0.11),
@@ -245,36 +251,75 @@ def add_socket(root, direction):
     socket["direction"] = direction
     socket["bit"] = DIRECTIONS[direction]["bit"]
     socket["boundaryMidpoint"] = list(point)
-    socket["socketWidthWorld"] = 0.84
+    socket["socketWidthWorld"] = 0.72
 
 
 def add_arm(root, direction, mats, center=(0.0, 0.0), prefix=""):
     ox, oy = center
-    road_width = 0.84
-    shoulder_width = 1.04
-    inner = 0.36
-    length = 1.0 - inner
-    if direction == "north":
-        arm_center, dimensions = (ox, oy + (inner + 1.0) / 2.0, 0.035), (road_width, length, 0.07)
+    road_width = 0.72
+    shoulder_width = 0.94
+    curb_offset = 0.375
+    curb_width = 0.03
+    inner = 0.32
+    # Keep the logical socket at exactly +/-1.0 but let identical surface
+    # geometry bleed slightly past it. Linear SpriteKit filtering otherwise
+    # samples transparent edge pixels and exposes a bright bar between two
+    # perfectly registered reusable sprites.
+    outer = 1.08
+    length = outer - inner
+    source_direction = SOURCE_DIRECTIONS[direction]
+    if source_direction == "north":
+        arm_center, dimensions = (ox, oy + (inner + outer) / 2.0, 0.035), (road_width, length, 0.07)
         shoulder_dimensions = (shoulder_width, length, 0.055)
-        curb_specs = [((ox - 0.47, oy + 0.68, 0.07), (0.10, 0.64, 0.14)), ((ox + 0.47, oy + 0.68, 0.07), (0.10, 0.64, 0.14))]
-    elif direction == "south":
-        arm_center, dimensions = (ox, oy - (inner + 1.0) / 2.0, 0.035), (road_width, length, 0.07)
+        curb_specs = [((ox - curb_offset, arm_center[1], 0.076), (curb_width, length)), ((ox + curb_offset, arm_center[1], 0.076), (curb_width, length))]
+    elif source_direction == "south":
+        arm_center, dimensions = (ox, oy - (inner + outer) / 2.0, 0.035), (road_width, length, 0.07)
         shoulder_dimensions = (shoulder_width, length, 0.055)
-        curb_specs = [((ox - 0.47, oy - 0.68, 0.07), (0.10, 0.64, 0.14)), ((ox + 0.47, oy - 0.68, 0.07), (0.10, 0.64, 0.14))]
-    elif direction == "east":
-        arm_center, dimensions = (ox + (inner + 1.0) / 2.0, oy, 0.035), (length, road_width, 0.07)
+        curb_specs = [((ox - curb_offset, arm_center[1], 0.076), (curb_width, length)), ((ox + curb_offset, arm_center[1], 0.076), (curb_width, length))]
+    elif source_direction == "east":
+        arm_center, dimensions = (ox + (inner + outer) / 2.0, oy, 0.035), (length, road_width, 0.07)
         shoulder_dimensions = (length, shoulder_width, 0.055)
-        curb_specs = [((ox + 0.68, oy - 0.47, 0.07), (0.64, 0.10, 0.14)), ((ox + 0.68, oy + 0.47, 0.07), (0.64, 0.10, 0.14))]
+        curb_specs = [((arm_center[0], oy - curb_offset, 0.076), (length, curb_width)), ((arm_center[0], oy + curb_offset, 0.076), (length, curb_width))]
     else:
-        arm_center, dimensions = (ox - (inner + 1.0) / 2.0, oy, 0.035), (length, road_width, 0.07)
+        arm_center, dimensions = (ox - (inner + outer) / 2.0, oy, 0.035), (length, road_width, 0.07)
         shoulder_dimensions = (length, shoulder_width, 0.055)
-        curb_specs = [((ox - 0.68, oy - 0.47, 0.07), (0.64, 0.10, 0.14)), ((ox - 0.68, oy + 0.47, 0.07), (0.64, 0.10, 0.14))]
+        curb_specs = [((arm_center[0], oy - curb_offset, 0.076), (length, curb_width)), ((arm_center[0], oy + curb_offset, 0.076), (length, curb_width))]
     properties = {"roadDirection": direction, "connectionBit": DIRECTIONS[direction]["bit"], "reachesBoundary": True}
     mesh_plane(root, prefix + "RoadShoulder" + direction.capitalize(), (arm_center[0], arm_center[1], 0.039), shoulder_dimensions[:2], mats["sidewalk"])
     mesh_plane(root, prefix + "RoadArm" + direction.capitalize(), (arm_center[0], arm_center[1], 0.07), dimensions[:2], mats["asphalt"], properties)
     for index, (location, size) in enumerate(curb_specs):
-        mesh_plane(root, f"{prefix}Curb{direction.capitalize()}{index}", (location[0], location[1], 0.082), size[:2], mats["curb"])
+        mesh_plane(root, f"{prefix}Curb{direction.capitalize()}{index}", location, size, mats["curb"])
+
+
+def add_crosswalk(root, direction, mats, center=(0.0, 0.0), prefix=""):
+    """Add one restrained stop/crossing bar registered to a road approach."""
+    ox, oy = center
+    offset = 0.53
+    source_direction = SOURCE_DIRECTIONS[direction]
+    if source_direction == "north":
+        location, dimensions = (ox, oy + offset, 0.102), (0.50, 0.035)
+    elif source_direction == "south":
+        location, dimensions = (ox, oy - offset, 0.102), (0.50, 0.035)
+    elif source_direction == "east":
+        location, dimensions = (ox + offset, oy, 0.102), (0.035, 0.50)
+    else:
+        location, dimensions = (ox - offset, oy, 0.102), (0.035, 0.50)
+    mesh_plane(root, f"{prefix}Crosswalk{direction.capitalize()}", location, dimensions, mats["white"])
+
+
+def add_catch_basin(root, direction, mats, center=(0.0, 0.0), prefix=""):
+    """Place one low-contrast drainage grate against the curb, off the lane."""
+    ox, oy = center
+    source_direction = SOURCE_DIRECTIONS[direction]
+    if source_direction == "north":
+        location, dimensions = (ox + 0.325, oy + 0.67, 0.103), (0.055, 0.17)
+    elif source_direction == "south":
+        location, dimensions = (ox - 0.325, oy - 0.67, 0.103), (0.055, 0.17)
+    elif source_direction == "east":
+        location, dimensions = (ox + 0.67, oy - 0.325, 0.103), (0.17, 0.055)
+    else:
+        location, dimensions = (ox - 0.67, oy + 0.325, 0.103), (0.17, 0.055)
+    mesh_plane(root, f"{prefix}CatchBasin{direction.capitalize()}", location, dimensions, mats["iron"])
 
 
 def build_road_geometry(root, mask_data, mats, center=(0.0, 0.0), prefix="", include_sockets=True):
@@ -284,8 +329,8 @@ def build_road_geometry(root, mask_data, mats, center=(0.0, 0.0), prefix="", inc
     # Roads are transparent socket pieces, not opaque square plates. A compact
     # shoulder follows the corridor while the renderer-owned terrain remains
     # visible between streets, removing the repeated checkerboard effect.
-    mesh_plane(root, prefix + "RoadShoulderCore", (ox, oy, 0.039), (1.04, 1.04), mats["sidewalk"], {"worldCell": [2.0, 2.0]})
-    mesh_plane(root, prefix + "AsphaltCore", (ox, oy, 0.07), (0.84, 0.84), mats["asphalt"], {"roadMaskRawValue": raw})
+    mesh_plane(root, prefix + "RoadShoulderCore", (ox, oy, 0.039), (0.94, 0.94), mats["sidewalk"], {"worldCell": [2.0, 2.0]})
+    mesh_plane(root, prefix + "AsphaltCore", (ox, oy, 0.07), (0.72, 0.72), mats["asphalt"], {"roadMaskRawValue": raw})
     for direction in directions:
         add_arm(root, direction, mats, center, prefix)
         if include_sockets:
@@ -294,21 +339,23 @@ def build_road_geometry(root, mask_data, mats, center=(0.0, 0.0), prefix="", inc
     # made adjacent tiles read as a collage and is intentionally absent.
     absent = [name for name in DIRECTIONS if name not in directions]
     for direction in absent:
-        if direction in ("north", "south"):
-            y = oy + (0.47 if direction == "north" else -0.47)
-            mesh_plane(root, f"{prefix}ClosedEdge{direction.capitalize()}", (ox, y, 0.082), (1.04, 0.10), mats["curb"], {"closedBoundary": direction})
+        source_direction = SOURCE_DIRECTIONS[direction]
+        if source_direction in ("north", "south"):
+            y = oy + (0.375 if source_direction == "north" else -0.375)
+            mesh_plane(root, f"{prefix}ClosedEdge{direction.capitalize()}", (ox, y, 0.076), (0.75, 0.03), mats["curb"], {"closedBoundary": direction})
         else:
-            x = ox + (0.47 if direction == "east" else -0.47)
-            mesh_plane(root, f"{prefix}ClosedEdge{direction.capitalize()}", (x, oy, 0.082), (0.10, 1.04), mats["curb"], {"closedBoundary": direction})
+            x = ox + (0.375 if source_direction == "east" else -0.375)
+            mesh_plane(root, f"{prefix}ClosedEdge{direction.capitalize()}", (x, oy, 0.076), (0.03, 0.75), mats["curb"], {"closedBoundary": direction})
     if raw == 0:
         # Deliberate isolated paved turnaround, not an accidental missing road.
         for index, (x, y) in enumerate(((-0.50, -0.50), (0.50, -0.50), (-0.50, 0.50), (0.50, 0.50))):
             mesh_cylinder(root, f"{prefix}IsolationBollard{index}", (ox + x, oy + y, 0.17), 0.055, 0.25, mats["yellow"], vertices=12)
-    elif raw in (5, 10):
-        # One restrained center dash per straight tile creates a continuous
-        # cadence without repainting every arm, corner, tee, and intersection.
-        size = (0.045, 0.40, 0.012) if raw == 5 else (0.40, 0.045, 0.012)
-        mesh_plane(root, prefix + "CenterDash", (ox, oy, 0.084), size[:2], mats["yellow"])
+    if raw == 15:
+        for direction in directions:
+            add_crosswalk(root, direction, mats, center, prefix)
+    if raw in (7, 11, 13, 14, 15):
+        # One grate is enough to break repetition while keeping topology clear.
+        add_catch_basin(root, directions[0], mats, center, prefix)
 
 
 def build_asset(mask_data):
@@ -431,7 +478,7 @@ def preview_network():
             raw |= 4
         if (x - 1, y) in coordinates and (x, y) != isolated:
             raw |= 8
-        placements.append({"coordinate": [x, y], "originWorld": [x * 2.0, y * 2.0, 0.0], "rawValue": raw})
+        placements.append({"coordinate": [x, y], "originWorld": [-y * 2.0, -x * 2.0, 0.0], "rawValue": raw})
     return placements
 
 

@@ -1,9 +1,9 @@
 {
   "artifacts": [
     {
-      "bytes": 1867791,
+      "bytes": 1925048,
       "path": "preview/civic-works-connected-district.blend",
-      "sha256": "904cbc584ddc3a71cb9fccf5844dbec5212d7f53d25cdf43e8db403a2a0a1444"
+      "sha256": "e8226947efa9be6ddb6a4e2c2fc75a9fffbff9aba055c67fe12cc1c920fc89b5"
     },
     {
       "alpha": {
@@ -19,14 +19,14 @@
         "opaquePixelCount": 1024000,
         "pivotPixelAlpha": 255
       },
-      "bytes": 676156,
-      "decodedRgbaSha256": "09a89a5b782957fd5a85aa4d057cb1418096b35c4974ab7f6a8203fb7b68d190",
+      "bytes": 649983,
+      "decodedRgbaSha256": "5a980f22f1c91f0b3dd4dd56ab94062b753805d89885a9b308b1306cd202a130",
       "dimensions": [
         1280,
         800
       ],
       "path": "preview/civic-works-connected-district-1280x800.png",
-      "sha256": "dd4ef4c2a122ca2c185fa7e8d1f3c157b80a71894d472430b59e8e6e1a563642"
+      "sha256": "1cc2d9de508dc7d535879a4fb5652c37d2791cb3a115e61ff73e656ebfc5d342"
     },
     {
       "alpha": {
@@ -42,14 +42,14 @@
         "opaquePixelCount": 540000,
         "pivotPixelAlpha": 255
       },
-      "bytes": 363290,
-      "decodedRgbaSha256": "da6a2e51f31c0d2c2b2fed65b9942edbf795c01fa9f014c4a6dbc799b07333be",
+      "bytes": 349951,
+      "decodedRgbaSha256": "4b48ec4db617e8243b3e1602a11fc5980dd15609c6b474c8c974b66ebbfcbab0",
       "dimensions": [
         900,
         600
       ],
       "path": "preview/civic-works-connected-district-900x600.png",
-      "sha256": "a42b183d9364d9ddcf8ec03df9a098acb35a1a1da2d6e779675eb6f97e6297e9"
+      "sha256": "0f70a8a9789faa84c611c2fb3b6ca9bd2d9e91e2935af4b3e5724f235d8d34a2"
     }
   ],
   "camera": {
@@ -63,23 +63,23 @@
     "azimuthDegrees": 45.0,
     "boundaryMidpoints": {
       "east": [
-        1.0,
         0.0,
+        -1.0,
         0.035
       ],
       "north": [
+        -1.0,
         0.0,
-        1.0,
         0.035
       ],
       "south": [
+        1.0,
         0.0,
-        -1.0,
         0.035
       ],
       "west": [
-        -1.0,
         0.0,
+        1.0,
         0.035
       ]
     },
@@ -136,8 +136,8 @@
         -3
       ],
       "originWorld": [
+        6.0,
         0.0,
-        -6.0,
         0.0
       ],
       "perAssetTransformCompensation": "none",
@@ -151,8 +151,8 @@
         -2
       ],
       "originWorld": [
+        4.0,
         0.0,
-        -4.0,
         0.0
       ],
       "perAssetTransformCompensation": "none",
@@ -166,8 +166,8 @@
         -1
       ],
       "originWorld": [
+        2.0,
         0.0,
-        -2.0,
         0.0
       ],
       "perAssetTransformCompensation": "none",
@@ -196,8 +196,8 @@
         -1
       ],
       "originWorld": [
-        4.0,
-        -2.0,
+        2.0,
+        -4.0,
         0.0
       ],
       "perAssetTransformCompensation": "none",
@@ -211,8 +211,8 @@
         0
       ],
       "originWorld": [
-        -6.0,
         0.0,
+        6.0,
         0.0
       ],
       "perAssetTransformCompensation": "none",
@@ -226,8 +226,8 @@
         0
       ],
       "originWorld": [
-        -4.0,
         0.0,
+        4.0,
         0.0
       ],
       "perAssetTransformCompensation": "none",
@@ -241,8 +241,8 @@
         0
       ],
       "originWorld": [
-        -2.0,
         0.0,
+        2.0,
         0.0
       ],
       "perAssetTransformCompensation": "none",
@@ -271,8 +271,8 @@
         0
       ],
       "originWorld": [
-        2.0,
         0.0,
+        -2.0,
         0.0
       ],
       "perAssetTransformCompensation": "none",
@@ -286,8 +286,8 @@
         0
       ],
       "originWorld": [
-        4.0,
         0.0,
+        -4.0,
         0.0
       ],
       "perAssetTransformCompensation": "none",
@@ -301,8 +301,8 @@
         0
       ],
       "originWorld": [
-        6.0,
         0.0,
+        -6.0,
         0.0
       ],
       "perAssetTransformCompensation": "none",
@@ -316,8 +316,8 @@
         1
       ],
       "originWorld": [
-        -4.0,
-        2.0,
+        -2.0,
+        4.0,
         0.0
       ],
       "perAssetTransformCompensation": "none",
@@ -346,8 +346,8 @@
         1
       ],
       "originWorld": [
+        -2.0,
         0.0,
-        2.0,
         0.0
       ],
       "perAssetTransformCompensation": "none",
@@ -361,8 +361,8 @@
         2
       ],
       "originWorld": [
+        -4.0,
         0.0,
-        4.0,
         0.0
       ],
       "perAssetTransformCompensation": "none",
@@ -376,8 +376,8 @@
         2
       ],
       "originWorld": [
-        8.0,
-        4.0,
+        -4.0,
+        -8.0,
         0.0
       ],
       "perAssetTransformCompensation": "none",
@@ -391,8 +391,8 @@
         3
       ],
       "originWorld": [
+        -6.0,
         0.0,
-        6.0,
         0.0
       ],
       "perAssetTransformCompensation": "none",

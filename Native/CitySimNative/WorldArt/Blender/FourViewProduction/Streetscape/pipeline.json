@@ -12,10 +12,10 @@
     "azimuthDegrees": 45.0,
     "elevationDegrees": 30.0,
     "boundaryMidpoints": {
-      "north": [0.0, 1.0, 0.035],
-      "east": [1.0, 0.0, 0.035],
-      "south": [0.0, -1.0, 0.035],
-      "west": [-1.0, 0.0, 0.035]
+      "north": [-1.0, 0.0, 0.035],
+      "east": [0.0, -1.0, 0.035],
+      "south": [1.0, 0.0, 0.035],
+      "west": [0.0, 1.0, 0.035]
     }
   },
   "canvas": {

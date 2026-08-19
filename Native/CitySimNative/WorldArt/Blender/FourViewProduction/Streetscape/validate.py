@@ -105,7 +105,7 @@ def validate_scene(mask_data):
     shoulder = bpy.data.objects.get("RoadShoulderCore")
     require(shoulder is not None, "MISSING_ROAD_SHOULDER", asset_id)
     bounds = mesh_bounds(shoulder)
-    vector((bounds["minX"], bounds["maxX"], bounds["minY"], bounds["maxY"]), (-0.52, 0.52, -0.52, 0.52), 1e-7, "roadShoulderBounds")
+    vector((bounds["minX"], bounds["maxX"], bounds["minY"], bounds["maxY"]), (-0.47, 0.47, -0.47, 0.47), 1e-7, "roadShoulderBounds")
 
     socket_report = {}
     for direction, spec in DIRECTIONS.items():
@@ -119,18 +119,19 @@ def validate_scene(mask_data):
             vector(socket.location, spec["point"], 1e-7, f"{direction}.socket")
             require(socket.get("bit") == spec["bit"] and socket.get("direction") == direction, "SOCKET_METADATA_MISMATCH", f"{asset_id}:{direction}")
             bounds = mesh_bounds(arm)
-            if direction == "north":
-                close(bounds["maxY"], 1.0, 1e-7, direction + ".boundary")
-                vector(((bounds["minX"] + bounds["maxX"]) / 2, bounds["maxY"]), (0, 1), 1e-7, direction + ".midpoint")
-            elif direction == "east":
-                close(bounds["maxX"], 1.0, 1e-7, direction + ".boundary")
-                vector((bounds["maxX"], (bounds["minY"] + bounds["maxY"]) / 2), (1, 0), 1e-7, direction + ".midpoint")
-            elif direction == "south":
-                close(bounds["minY"], -1.0, 1e-7, direction + ".boundary")
-                vector(((bounds["minX"] + bounds["maxX"]) / 2, bounds["minY"]), (0, -1), 1e-7, direction + ".midpoint")
+            point = spec["point"]
+            if point[0] > 0:
+                close(bounds["maxX"], 1.08, 1e-7, direction + ".bleedBoundary")
+                vector((socket.location.x, (bounds["minY"] + bounds["maxY"]) / 2), point[:2], 1e-7, direction + ".socketMidpoint")
+            elif point[0] < 0:
+                close(bounds["minX"], -1.08, 1e-7, direction + ".bleedBoundary")
+                vector((socket.location.x, (bounds["minY"] + bounds["maxY"]) / 2), point[:2], 1e-7, direction + ".socketMidpoint")
+            elif point[1] > 0:
+                close(bounds["maxY"], 1.08, 1e-7, direction + ".bleedBoundary")
+                vector(((bounds["minX"] + bounds["maxX"]) / 2, socket.location.y), point[:2], 1e-7, direction + ".socketMidpoint")
             else:
-                close(bounds["minX"], -1.0, 1e-7, direction + ".boundary")
-                vector((bounds["minX"], (bounds["minY"] + bounds["maxY"]) / 2), (-1, 0), 1e-7, direction + ".midpoint")
+                close(bounds["minY"], -1.08, 1e-7, direction + ".bleedBoundary")
+                vector(((bounds["minX"] + bounds["maxX"]) / 2, socket.location.y), point[:2], 1e-7, direction + ".socketMidpoint")
             socket_report[direction] = {"bit": spec["bit"], "point": list(spec["point"]), "armBounds": bounds}
         else:
             require(socket is None and arm is None, "ABSENT_SOCKET_PRESENT", f"{asset_id}:{direction}")
@@ -212,7 +213,7 @@ def validate_preview(temp_root):
     by_coordinate = {tuple(item["coordinate"]): item for item in data["placements"]}
     for coordinate, placement in by_coordinate.items():
         require(placement["perAssetTransformCompensation"] == "none", "PREVIEW_COMPENSATION_FORBIDDEN", placement)
-        vector(placement["originWorld"], (coordinate[0] * 2.0, coordinate[1] * 2.0, 0), 1e-7, "preview.gridOrigin")
+        vector(placement["originWorld"], (-coordinate[1] * 2.0, -coordinate[0] * 2.0, 0), 1e-7, "preview.gridOrigin")
         raw = placement["rawValue"]
         for direction, spec in DIRECTIONS.items():
             dx, dy = {"north": (0, 1), "east": (1, 0), "south": (0, -1), "west": (-1, 0)}[direction]

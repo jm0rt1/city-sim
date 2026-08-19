@@ -21,97 +21,97 @@
       "connectionMask": 0,
       "assetID": "road_mask_00",
       "file": "road_mask_00_camNE.png",
-      "sha256": "27aff506ae6d3d71ab89792019b6c4d615609fbf6a0223281ee421df642778d8"
+      "sha256": "cb6c4cf666104306dcb8fc235e56993e9283648ab7d6374dff5c45e944ff3acb"
     },
     {
       "connectionMask": 1,
       "assetID": "road_mask_01",
       "file": "road_mask_01_camNE.png",
-      "sha256": "bfe5e3d5225182fc0a42a3dc4805788ad0d47b9a74e59328526c976573f7af48"
+      "sha256": "11597e4f19c7f8e391af930aef406fcdd4d943328376e6bad6fa7a7ed0a81043"
     },
     {
       "connectionMask": 2,
       "assetID": "road_mask_02",
       "file": "road_mask_02_camNE.png",
-      "sha256": "dcd629cef200e6048fd2c2084cd0177a235ab805852f9f552adf7582ebd4e7d2"
+      "sha256": "86ca3671c25c6206e3409878b6f238deb5ea444397fc21d774b8ace6366ee195"
     },
     {
       "connectionMask": 3,
       "assetID": "road_mask_03",
       "file": "road_mask_03_camNE.png",
-      "sha256": "eae7003081590abeb4b91fd6e73ecbad802aa60420f62926260cd5458066efae"
+      "sha256": "b08f07de2927c65fc6e4675120d8e53e2d74b596a443e11cdacf3a9cdca5fc72"
     },
     {
       "connectionMask": 4,
       "assetID": "road_mask_04",
       "file": "road_mask_04_camNE.png",
-      "sha256": "b993c99808c7af1b708b0649459ee7f4374796f6d1f7857b716cf86aedfdb573"
+      "sha256": "52b2b64764852eefc34ce100c69c2c180bd217e7fe249b2d9489a99ef2ae0210"
     },
     {
       "connectionMask": 5,
       "assetID": "road_mask_05",
       "file": "road_mask_05_camNE.png",
-      "sha256": "e8b1501053a26bcf44990ffb335baf71ad48240309101cf166d6626abcf54773"
+      "sha256": "faa99203b9feacf89b7f74cebfba692e0ff08142d76c1b32aaf0b283984b995f"
     },
     {
       "connectionMask": 6,
       "assetID": "road_mask_06",
       "file": "road_mask_06_camNE.png",
-      "sha256": "84f5c53aa8d6d958b8b33f11459c9d78ef21122ac381a0d990161a0b8ed06954"
+      "sha256": "1c2ccada13a81682a48d3c2cb864f7a098164a4a37c3ae710bda367b961eb59f"
     },
     {
       "connectionMask": 7,
       "assetID": "road_mask_07",
       "file": "road_mask_07_camNE.png",
-      "sha256": "c9af5948640ff34e6f6057dcafe939f1a85e0c43485d0f0b13af3dc4a0580aba"
+      "sha256": "856277e012d8d5ae0260086298ce2f4967d748ada41b57d1feec346f9608fcd8"
     },
     {
       "connectionMask": 8,
       "assetID": "road_mask_08",
       "file": "road_mask_08_camNE.png",
-      "sha256": "8f13832e063634a66760ca13eef2ea07ca3a4ba146d865d6a5c4ef6b432877ae"
+      "sha256": "91fa5ba25539a3dce5667037c1e27470bff6ffb4b441630fa69503e91934dfab"
     },
     {
       "connectionMask": 9,
       "assetID": "road_mask_09",
       "file": "road_mask_09_camNE.png",
-      "sha256": "560f150dab1dad851099c96399ab5a6c949d77ebaf34dc1fe0f6a7f132ecfdb2"
+      "sha256": "6eca15ec0b88fab6ec50f20b4c74844b762fc4432fbf4c3134479935f9ed2b4a"
     },
     {
       "connectionMask": 10,
       "assetID": "road_mask_10",
       "file": "road_mask_10_camNE.png",
-      "sha256": "8d2104a06446deb2dfdb0a380f616a38e3e354e6a08e727d22ef10e5d4e72961"
+      "sha256": "b5d2447d91e8fb8107734c02b90f8796b0d32ad63c87d98abf29a6109bbacc29"
     },
     {
       "connectionMask": 11,
       "assetID": "road_mask_11",
       "file": "road_mask_11_camNE.png",
-      "sha256": "771e35be5f66c6a9d02e60f1ed201fabd6103baeb25b3b835a56b05e66de62a9"
+      "sha256": "2c57abae79d31f84424751babb603f957ce88be863d697d74def6665b5c298ac"
     },
     {
       "connectionMask": 12,
       "assetID": "road_mask_12",
       "file": "road_mask_12_camNE.png",
-      "sha256": "62f21b70ede16afeb7d25a05b1d30c96de927ddb1a709feb71f904b0022355d7"
+      "sha256": "50f3023f1a149c25cdc018e20c34a85ae013a57c3e70d8462e27beaeb9fca076"
     },
     {
       "connectionMask": 13,
       "assetID": "road_mask_13",
       "file": "road_mask_13_camNE.png",
-      "sha256": "69facd68d47b89b5b3d0b4f41651dfdfb48aa170d47db47dddfe4992914cd22b"
+      "sha256": "7334e03d8e3617b582400f79a4a3810ed769608f10f9bdd18af6c130fc4807ea"
     },
     {
       "connectionMask": 14,
       "assetID": "road_mask_14",
       "file": "road_mask_14_camNE.png",
-      "sha256": "58248e72bea153abb5a4b98fd430a7e5548c8480e0c048a137b18b334f25b59f"
+      "sha256": "f7a58f568f958884db2c87302cfc913020748bc377a8d1a5621ff17b298d9424"
     },
     {
       "connectionMask": 15,
       "assetID": "road_mask_15",
       "file": "road_mask_15_camNE.png",
-      "sha256": "1c17f19c5aebbb4941d6439688a041bae38fa5de4d5f7c16d4733f90e9585ca9"
+      "sha256": "763c5e458fe59bfc1b15f0782a2022f725fe6a69c2c3891016d10e749e89defc"
     }
   ]
 }

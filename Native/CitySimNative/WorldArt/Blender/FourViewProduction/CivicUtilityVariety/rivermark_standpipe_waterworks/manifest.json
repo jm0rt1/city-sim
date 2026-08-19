@@ -1,0 +1,277 @@
+{
+  "artifacts": [
+    {
+      "bytes": 2021174,
+      "path": "rivermark_standpipe_waterworks.blend",
+      "sha256": "ba9a05095dcbf030595d9ac77ae8d391819448421c53e845821de544f9eb3d2f"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 261,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 88,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 20550,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 67915,
+      "decodedRgbaSha256": "192b61e0c77f4a8e3f912c2ce864ed97542015485d40fc8ed63c33a31d0e7b8c",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/rivermark_standpipe_waterworks_camNE.png",
+      "sha256": "3e4e8384213a92b3c8428feb522fbda0ed78e1944426eff48df25fdc4a2ca2f3"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 268,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 81,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 19663,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 75255,
+      "decodedRgbaSha256": "3e8e66ae48a3fb3c3f092a132ebf06d0270a3400be6873bf1d55968b505fe613",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/rivermark_standpipe_waterworks_camSE.png",
+      "sha256": "b708afce974a94eab745965900e61bc70379360d8368ff11449af07139044d14"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 261,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 88,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 20861,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 77759,
+      "decodedRgbaSha256": "6415eca29e67ece3c6ec9b9754c199d6b4c15c6c26f4024093cb591e62498084",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/rivermark_standpipe_waterworks_camSW.png",
+      "sha256": "238c57f81fee7f34b409d07fcb4051b5ac1dec9946cb696612f5729175eb32ad"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 254,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 95,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 18994,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 71693,
+      "decodedRgbaSha256": "f69122777c8b03b0d37b9aa65d54c3ab73dc404739c2326bb94857ace94b5a3b",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/rivermark_standpipe_waterworks_camNW.png",
+      "sha256": "ea4da117283957bab727ac2065a2f847fb332b4ef1561b7fe61d5b7392efb9df"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 759,
+          "maxX": 783,
+          "maxY": 839,
+          "minX": 0,
+          "minY": 81,
+          "width": 784
+        },
+        "lowestOpaqueRowTopOrigin": 839,
+        "opaquePixelCount": 123076,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 257842,
+      "decodedRgbaSha256": "9403855d8132f08fee6703ffc8089392a8e79597539c3fd89b0abe9f26425af0",
+      "dimensions": [
+        784,
+        840
+      ],
+      "path": "rivermark_standpipe_waterworks_contact-sheet.png",
+      "sha256": "f96804791511477f958bcb25abdfca8b01fe97f41e142478d5b9b2ec010ea92d"
+    }
+  ],
+  "assetFamily": "water-tower",
+  "assetId": "rivermark_standpipe_waterworks",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "cameraRig": {
+    "distance": 32.0,
+    "orthoScale": 12.341995,
+    "shiftY": 0.28125,
+    "views": [
+      {
+        "azimuthDegrees": 45.0,
+        "name": "camNE"
+      },
+      {
+        "azimuthDegrees": 135.0,
+        "name": "camSE"
+      },
+      {
+        "azimuthDegrees": 225.0,
+        "name": "camSW"
+      },
+      {
+        "azimuthDegrees": 315.0,
+        "name": "camNW"
+      }
+    ]
+  },
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "cedarMarketReused": false,
+  "contactSheetLayout": [
+    [
+      "camNE",
+      "camSE"
+    ],
+    [
+      "camSW",
+      "camNW"
+    ]
+  ],
+  "densityLevel": 1,
+  "description": "Masonry standpipe waterworks with a tapered brick tower, copper tank and dome, pump-house wing, buttresses, gauges, pipes, and service garden",
+  "grid": {
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0,
+    "exactWorldFootprint": [
+      4.0,
+      4.0
+    ],
+    "footprintTiles": [
+      2,
+      2
+    ],
+    "projectedTilePixels": [
+      88,
+      44
+    ],
+    "projection": "orthographic-2:1-dimetric",
+    "worldTileSize": 2.0
+  },
+  "lightingConvention": {
+    "color": [
+      1.0,
+      0.86,
+      0.72
+    ],
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldColor": [
+      0.2,
+      0.17,
+      0.14,
+      1.0
+    ],
+    "worldStrength": 0.72
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "perViewCompensation": {
+    "crop": false,
+    "offsetPixels": [
+      0,
+      0
+    ],
+    "rotationDegrees": 0.0,
+    "scale": 1.0,
+    "skew": [
+      0.0,
+      0.0
+    ]
+  },
+  "pipelineSchema": "citysim.world-art.civic-utility-variety-four-view.v1",
+  "postRenderCompensation": "none",
+  "root": {
+    "location": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "name": "AssetRoot",
+    "pivotName": "FootprintPivot",
+    "rotationEuler": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "schema": "citysim.world-art.density-four-view-asset.v1",
+  "sourceFiles": [
+    {
+      "path": "build_and_render.py",
+      "sha256": "80c2cd66a7f8dacd523f6b3b747c60dd52bcdfe2ad711ed8f178f7574832ef64"
+    },
+    {
+      "path": "pipeline.json",
+      "sha256": "a385c87599aba5741c1c07b7fc9dbf29dcdcdafc59350e4f413357a8609a3863"
+    },
+    {
+      "path": "run_pipeline.sh",
+      "sha256": "532d05471506c823329d1b29371fee92e772a60c1b591115d68685bbd84e24b2"
+    }
+  ],
+  "sourcePixelsReused": false,
+  "status": "source-only-not-live",
+  "worldFootprintTiles": [
+    2,
+    2
+  ],
+  "zone": "utility"
+}

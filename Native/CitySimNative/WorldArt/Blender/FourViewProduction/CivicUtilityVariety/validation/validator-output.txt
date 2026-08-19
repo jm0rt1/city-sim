@@ -1,0 +1,222 @@
+CIVIC_UTILITY_VARIETY_VALIDATION_PASS
+{
+  "assets": {
+    "cedar_arch_council_hall": {
+      "assetFamily": "city-hall",
+      "deterministicCanonicalPngSha256": {
+        "cedar_arch_council_hall_camNE.png": "b7d9571f03e399978699429c19bdf2a3334a54a778f8e554f38e77f64aa11187",
+        "cedar_arch_council_hall_camNW.png": "ff7e16b492d50847f37b6a3e524e8c2982015bb3ff5a95ab2eda32370ea00009",
+        "cedar_arch_council_hall_camSE.png": "c4c48e748f6e248a306f24bde9993a8d072c74db60d02109694277de192d9cb3",
+        "cedar_arch_council_hall_camSW.png": "4754d2aebd8fd2c6e4159ea9e5d6f395e1036446a552de9c8b7889ef2c4051c8"
+      },
+      "meshCount": 113,
+      "projectedAxisPixels": {
+        "camNE": [
+          [
+            -44,
+            22
+          ],
+          [
+            44,
+            22
+          ]
+        ],
+        "camNW": [
+          [
+            -44,
+            -22
+          ],
+          [
+            -44,
+            22
+          ]
+        ],
+        "camSE": [
+          [
+            44,
+            22
+          ],
+          [
+            44,
+            -22
+          ]
+        ],
+        "camSW": [
+          [
+            44,
+            -22
+          ],
+          [
+            -44,
+            -22
+          ]
+        ]
+      },
+      "worldBounds": {
+        "maximum": [
+          2.0,
+          2.0,
+          6.049999713897705
+        ],
+        "minimum": [
+          -2.0,
+          -2.0999999046325684,
+          -0.20000000298023224
+        ]
+      },
+      "zone": "civic"
+    },
+    "copper_arc_powerhouse": {
+      "assetFamily": "power-plant",
+      "deterministicCanonicalPngSha256": {
+        "copper_arc_powerhouse_camNE.png": "9567929fdf98f6be67a2d0e756fbfcff4e97982c2e1af2171c1e0c59ff579fde",
+        "copper_arc_powerhouse_camNW.png": "456d200a494bfe4d57f36dc5ecde43eabd7377373c10dcfa10aa41f3e407d3c8",
+        "copper_arc_powerhouse_camSE.png": "86787510a69e258c6f60e3675a624507836345819a5d63d48c9590c2e90d40f6",
+        "copper_arc_powerhouse_camSW.png": "550ce7535268000037b611dc245c84b8773732b0e40984819e414e06c0517534"
+      },
+      "meshCount": 134,
+      "projectedAxisPixels": {
+        "camNE": [
+          [
+            -44,
+            22
+          ],
+          [
+            44,
+            22
+          ]
+        ],
+        "camNW": [
+          [
+            -44,
+            -22
+          ],
+          [
+            -44,
+            22
+          ]
+        ],
+        "camSE": [
+          [
+            44,
+            22
+          ],
+          [
+            44,
+            -22
+          ]
+        ],
+        "camSW": [
+          [
+            44,
+            -22
+          ],
+          [
+            -44,
+            -22
+          ]
+        ]
+      },
+      "worldBounds": {
+        "maximum": [
+          2.0,
+          2.0,
+          7.490000247955322
+        ],
+        "minimum": [
+          -2.0,
+          -2.0,
+          -0.20000000298023224
+        ]
+      },
+      "zone": "utility"
+    },
+    "rivermark_standpipe_waterworks": {
+      "assetFamily": "water-tower",
+      "deterministicCanonicalPngSha256": {
+        "rivermark_standpipe_waterworks_camNE.png": "3e4e8384213a92b3c8428feb522fbda0ed78e1944426eff48df25fdc4a2ca2f3",
+        "rivermark_standpipe_waterworks_camNW.png": "ea4da117283957bab727ac2065a2f847fb332b4ef1561b7fe61d5b7392efb9df",
+        "rivermark_standpipe_waterworks_camSE.png": "b708afce974a94eab745965900e61bc70379360d8368ff11449af07139044d14",
+        "rivermark_standpipe_waterworks_camSW.png": "238c57f81fee7f34b409d07fcb4051b5ac1dec9946cb696612f5729175eb32ad"
+      },
+      "meshCount": 100,
+      "projectedAxisPixels": {
+        "camNE": [
+          [
+            -44,
+            22
+          ],
+          [
+            44,
+            22
+          ]
+        ],
+        "camNW": [
+          [
+            -44,
+            -22
+          ],
+          [
+            -44,
+            22
+          ]
+        ],
+        "camSE": [
+          [
+            44,
+            22
+          ],
+          [
+            44,
+            -22
+          ]
+        ],
+        "camSW": [
+          [
+            44,
+            -22
+          ],
+          [
+            -44,
+            -22
+          ]
+        ]
+      },
+      "worldBounds": {
+        "maximum": [
+          2.0,
+          2.0,
+          7.799999713897705
+        ],
+        "minimum": [
+          -2.0,
+          -2.0,
+          -0.20000000298023224
+        ]
+      },
+      "zone": "utility"
+    }
+  },
+  "blenderVersion": "4.5.12",
+  "contract": {
+    "approvedLiveFamilyIsBaseline": true,
+    "cameraOrder": [
+      "camNE",
+      "camSE",
+      "camSW",
+      "camNW"
+    ],
+    "deterministicRerender": "byte-identical canonical PNGs",
+    "pivotPixels": [
+      192,
+      300
+    ],
+    "postRenderCompensation": "none",
+    "projectedTilePixels": [
+      88,
+      44
+    ]
+  },
+  "schema": "citysim.world-art.civic-utility-variety-validation.v1",
+  "status": "PASS"
+}

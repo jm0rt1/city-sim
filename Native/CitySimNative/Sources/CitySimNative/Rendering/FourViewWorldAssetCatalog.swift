@@ -71,24 +71,20 @@ final class FourViewWorldAssetCatalog {
         case .park:
             deterministicAssetID(forRole: "park", variant: variant)
         case .cityHall:
-            firstAssetID(forRole: "city-hall")
+            deterministicAssetID(forRole: "city-hall", variant: variant)
         case .powerPlant:
-            firstAssetID(forRole: "power-plant")
+            deterministicAssetID(forRole: "power-plant", variant: variant)
         case .waterTower:
-            firstAssetID(forRole: "water-tower")
+            deterministicAssetID(forRole: "water-tower", variant: variant)
         case .fireStation:
-            firstAssetID(forRole: "fire-station")
+            deterministicAssetID(forRole: "fire-station", variant: variant)
         case .policeStation:
-            firstAssetID(forRole: "police-station")
+            deterministicAssetID(forRole: "police-station", variant: variant)
         case .school:
-            firstAssetID(forRole: "school")
+            deterministicAssetID(forRole: "school", variant: variant)
         case .empty, .road:
             nil
         }
-    }
-
-    private func firstAssetID(forRole role: String) -> String? {
-        manifest?.assets.first(where: { $0.roles.contains(role) })?.assetID
     }
 
     private func deterministicAssetID(forRole role: String, variant: Int) -> String? {

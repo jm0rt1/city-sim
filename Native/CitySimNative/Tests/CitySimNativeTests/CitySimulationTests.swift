@@ -2766,7 +2766,11 @@ final class CitySimulationTests: XCTestCase {
                 ResidentialGeneratedAssetIdentity.liveVisualVariant(at: $0) == variant
             }
         }
-        _ = try place(.policeStation, near: GridCoordinate(x: 20, y: 10))
+        for (variant, targetY) in zip(0..<2, [9, 10]) {
+            _ = try place(.policeStation, near: GridCoordinate(x: 20, y: targetY)) {
+                WorldVisualSeed.variant(count: 3, for: $0, kind: .policeStation) == variant
+            }
+        }
 
         for (variant, targetX) in zip(0..<3, [5, 8, 11]) {
             _ = try place(.commercial, near: GridCoordinate(x: targetX, y: 11)) {
@@ -2800,16 +2804,36 @@ final class CitySimulationTests: XCTestCase {
             }
         }
 
-        _ = try place(.cityHall, near: GridCoordinate(x: 17, y: 14))
+        for (variant, targetX) in zip(0..<2, [17, 20]) {
+            _ = try place(.cityHall, near: GridCoordinate(x: targetX, y: 14)) {
+                WorldVisualSeed.variant(count: 3, for: $0, kind: .cityHall) == variant
+            }
+        }
         for (variant, targetX) in zip(0..<2, [5, 8]) {
             _ = try place(.park, near: GridCoordinate(x: targetX, y: 17)) {
                 WorldVisualSeed.variant(count: 3, for: $0, kind: .park) == variant
             }
         }
-        _ = try place(.powerPlant, near: GridCoordinate(x: 11, y: 17))
-        _ = try place(.waterTower, near: GridCoordinate(x: 14, y: 17))
-        _ = try place(.school, near: GridCoordinate(x: 17, y: 17))
-        _ = try place(.fireStation, near: GridCoordinate(x: 11, y: 20))
+        for (variant, targetX) in zip(0..<2, [11, 12]) {
+            _ = try place(.powerPlant, near: GridCoordinate(x: targetX, y: 17)) {
+                WorldVisualSeed.variant(count: 3, for: $0, kind: .powerPlant) == variant
+            }
+        }
+        for (variant, targetX) in zip(0..<2, [14, 15]) {
+            _ = try place(.waterTower, near: GridCoordinate(x: targetX, y: 17)) {
+                WorldVisualSeed.variant(count: 3, for: $0, kind: .waterTower) == variant
+            }
+        }
+        for (variant, targetX) in zip(0..<2, [17, 18]) {
+            _ = try place(.school, near: GridCoordinate(x: targetX, y: 17)) {
+                WorldVisualSeed.variant(count: 3, for: $0, kind: .school) == variant
+            }
+        }
+        for (variant, targetX) in zip(0..<2, [11, 12]) {
+            _ = try place(.fireStation, near: GridCoordinate(x: targetX, y: 20)) {
+                WorldVisualSeed.variant(count: 3, for: $0, kind: .fireStation) == variant
+            }
+        }
 
         let infill: [(BuildingKind, Int, GridCoordinate)] = [
             (.residential, 1, GridCoordinate(x: 20, y: 8)),
@@ -2841,7 +2865,7 @@ final class CitySimulationTests: XCTestCase {
         let admittedAssetIDs = try XCTUnwrap(
             FourViewWorldAssetCatalog().manifest
         ).assets.map(\.assetID)
-        XCTAssertEqual(admittedAssetIDs.count, 27)
+        XCTAssertEqual(admittedAssetIDs.count, 33)
         for assetID in admittedAssetIDs {
             XCTAssertTrue(
                 sourceNames.contains("lot.four-view.\(assetID).camNE"),
@@ -3033,6 +3057,168 @@ final class CitySimulationTests: XCTestCase {
             detail: .city,
             centeredOn: center,
             framingScale: 1.06,
+            hover: nil,
+            exactPixelDimensions: true
+        )
+        let compact = try rendererProofFrame(
+            size: CGSize(width: 900, height: 600),
+            state: state,
+            overlay: .none,
+            selection: nil,
+            interactionMode: .inspect,
+            detail: .city,
+            centeredOn: center,
+            framingScale: 1.30,
+            hover: nil,
+            exactPixelDimensions: true
+        )
+        XCTAssertEqual(regular.width, 1_280)
+        XCTAssertEqual(regular.height, 800)
+        XCTAssertEqual(compact.width, 900)
+        XCTAssertEqual(compact.height, 600)
+        XCTAssertGreaterThan(regular.png.count, 50_000)
+        XCTAssertGreaterThan(compact.png.count, 35_000)
+        try export(regular, environmentKeys: [regularKey])
+        try export(compact, environmentKeys: [compactKey])
+    }
+
+    @MainActor
+    func testFourViewCivicServiceUtilityVarietyProofExports() throws {
+        let regularKey = "CITYSIM_FOUR_VIEW_CIVIC_SERVICE_VARIETY_1280_PROOF"
+        let compactKey = "CITYSIM_FOUR_VIEW_CIVIC_SERVICE_VARIETY_900_PROOF"
+        guard ProcessInfo.processInfo.environment[regularKey] != nil
+                || ProcessInfo.processInfo.environment[compactKey] != nil else {
+            return
+        }
+
+        var state = CityGameState.newCity(seed: 91)
+        for coordinate in state.tiles.map(\.coordinate) {
+            state.updateTile(at: coordinate) {
+                $0 = CityTile(coordinate: coordinate, kind: .empty)
+            }
+        }
+        for y in [6, 11, 16, 21] {
+            for x in 3...23 {
+                let coordinate = GridCoordinate(x: x, y: y)
+                state.updateTile(at: coordinate) {
+                    $0 = CityTile(coordinate: coordinate, kind: .road)
+                }
+            }
+        }
+        for x in [4, 10, 16, 22] {
+            for y in 5...22 {
+                let coordinate = GridCoordinate(x: x, y: y)
+                state.updateTile(at: coordinate) {
+                    $0 = CityTile(coordinate: coordinate, kind: .road)
+                }
+            }
+        }
+
+        var used: Set<GridCoordinate> = []
+        func place(
+            _ kind: BuildingKind,
+            level: Int = 1,
+            near target: GridCoordinate,
+            variant: Int? = nil
+        ) throws {
+            let candidates = state.tiles
+                .filter { tile in
+                    guard tile.kind == .empty,
+                          (5...21).contains(tile.coordinate.x),
+                          (7...20).contains(tile.coordinate.y),
+                          !used.contains(tile.coordinate),
+                          !RoadConnectionMask.resolving(
+                            at: tile.coordinate,
+                            in: state
+                          ).isEmpty else { return false }
+                    return variant == nil || WorldVisualSeed.variant(
+                        count: 3,
+                        for: tile.coordinate,
+                        kind: kind
+                    ) == variant
+                }
+                .sorted { lhs, rhs in
+                    let left = abs(lhs.coordinate.x - target.x)
+                        + abs(lhs.coordinate.y - target.y)
+                    let right = abs(rhs.coordinate.x - target.x)
+                        + abs(rhs.coordinate.y - target.y)
+                    return (left, lhs.coordinate.y, lhs.coordinate.x)
+                        < (right, rhs.coordinate.y, rhs.coordinate.x)
+                }
+            let coordinate = try XCTUnwrap(candidates.first?.coordinate, kind.rawValue)
+            used.insert(coordinate)
+            state.updateTile(at: coordinate) {
+                $0 = CityTile(
+                    coordinate: coordinate,
+                    kind: kind,
+                    level: level,
+                    condition: 1,
+                    constructionProgress: 1
+                )
+            }
+        }
+
+        let pairedRoles: [(BuildingKind, GridCoordinate, GridCoordinate)] = [
+            (.cityHall, GridCoordinate(x: 5, y: 8), GridCoordinate(x: 8, y: 8)),
+            (.policeStation, GridCoordinate(x: 11, y: 8), GridCoordinate(x: 14, y: 8)),
+            (.fireStation, GridCoordinate(x: 17, y: 8), GridCoordinate(x: 20, y: 8)),
+            (.school, GridCoordinate(x: 5, y: 13), GridCoordinate(x: 8, y: 13)),
+            (.powerPlant, GridCoordinate(x: 11, y: 13), GridCoordinate(x: 14, y: 13)),
+            (.waterTower, GridCoordinate(x: 17, y: 13), GridCoordinate(x: 20, y: 13)),
+        ]
+        for (kind, originalTarget, newTarget) in pairedRoles {
+            try place(kind, near: originalTarget, variant: 0)
+            try place(kind, near: newTarget, variant: 1)
+        }
+
+        let neighborhoodFabric: [(BuildingKind, Int, GridCoordinate)] = [
+            (.residential, 2, GridCoordinate(x: 5, y: 18)),
+            (.residential, 3, GridCoordinate(x: 8, y: 18)),
+            (.commercial, 2, GridCoordinate(x: 11, y: 18)),
+            (.commercial, 3, GridCoordinate(x: 14, y: 18)),
+            (.industrial, 2, GridCoordinate(x: 17, y: 18)),
+            (.industrial, 3, GridCoordinate(x: 20, y: 18)),
+            (.park, 1, GridCoordinate(x: 7, y: 20)),
+            (.park, 1, GridCoordinate(x: 19, y: 20)),
+        ]
+        for (kind, level, target) in neighborhoodFabric {
+            try place(kind, level: level, near: target)
+        }
+
+        let sourceScene = CityScene(size: CGSize(width: 1_280, height: 800))
+        sourceScene.reducedMotion = true
+        sourceScene.render(
+            state: state,
+            overlay: .none,
+            selection: nil,
+            interactionMode: .inspect
+        )
+        let sourceNames = Set(sourceScene.children.flatMap(descendantNodeNames))
+        let expectedPairs = [
+            "hearthside_council_hall", "cedar_arch_council_hall",
+            "bluecrest_police_station", "harborwatch_police_precinct",
+            "emberline_fire_station", "lantern_gate_fire_house",
+            "maplewood_neighborhood_school", "oakridge_courtyard_school",
+            "brick_grid_substation", "copper_arc_powerhouse",
+            "municipal_water_tower", "rivermark_standpipe_waterworks",
+        ]
+        for assetID in expectedPairs {
+            XCTAssertTrue(
+                sourceNames.contains("lot.four-view.\(assetID).camNE"),
+                assetID
+            )
+        }
+
+        let center = GridCoordinate(x: 13, y: 14)
+        let regular = try rendererProofFrame(
+            size: CGSize(width: 1_280, height: 800),
+            state: state,
+            overlay: .none,
+            selection: nil,
+            interactionMode: .inspect,
+            detail: .city,
+            centeredOn: center,
+            framingScale: 0.98,
             hover: nil,
             exactPixelDimensions: true
         )

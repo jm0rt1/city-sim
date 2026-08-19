@@ -72,6 +72,12 @@
       "roles": ["city-hall"]
     },
     {
+      "assetID": "cedar_arch_council_hall",
+      "file": "cedar_arch_council_hall_camNE.png",
+      "sha256": "b7d9571f03e399978699429c19bdf2a3334a54a778f8e554f38e77f64aa11187",
+      "roles": ["city-hall"]
+    },
+    {
       "assetID": "pocket_grove_park",
       "file": "pocket_grove_park_camNE.png",
       "sha256": "2b1c41cf98f0fa3e53627ba9b32336754c14cd5759b66357d965836ac5e0e2dc",
@@ -90,9 +96,21 @@
       "roles": ["power-plant"]
     },
     {
+      "assetID": "copper_arc_powerhouse",
+      "file": "copper_arc_powerhouse_camNE.png",
+      "sha256": "9567929fdf98f6be67a2d0e756fbfcff4e97982c2e1af2171c1e0c59ff579fde",
+      "roles": ["power-plant"]
+    },
+    {
       "assetID": "municipal_water_tower",
       "file": "municipal_water_tower_camNE.png",
       "sha256": "ab895094fd6c7a4c0eeee8cc8009748239d410d923ced3876ec7bedfde7846d6",
+      "roles": ["water-tower"]
+    },
+    {
+      "assetID": "rivermark_standpipe_waterworks",
+      "file": "rivermark_standpipe_waterworks_camNE.png",
+      "sha256": "3e4e8384213a92b3c8428feb522fbda0ed78e1944426eff48df25fdc4a2ca2f3",
       "roles": ["water-tower"]
     },
     {
@@ -102,15 +120,33 @@
       "roles": ["fire-station"]
     },
     {
+      "assetID": "lantern_gate_fire_house",
+      "file": "lantern_gate_fire_house_camNE.png",
+      "sha256": "e55784f54caded66844a40eff0041d9e3f299db897cf58998ef47ce5fa0df6e5",
+      "roles": ["fire-station"]
+    },
+    {
       "assetID": "bluecrest_police_station",
       "file": "bluecrest_police_station_camNE.png",
       "sha256": "d88563e50df4c395a296364d0f3509ba5b46699f2cc9091c009c199ae2320d6c",
       "roles": ["police-station"]
     },
     {
+      "assetID": "harborwatch_police_precinct",
+      "file": "harborwatch_police_precinct_camNE.png",
+      "sha256": "e27884d9186b3b8843ea41fed07ebf7e125373805e1997f42f0d6f8077816443",
+      "roles": ["police-station"]
+    },
+    {
       "assetID": "maplewood_neighborhood_school",
       "file": "maplewood_neighborhood_school_camNE.png",
       "sha256": "2a58c706e635f41195ce24cba01264afed43fae5ad199edeb0e2d609f1231a77",
+      "roles": ["school"]
+    },
+    {
+      "assetID": "oakridge_courtyard_school",
+      "file": "oakridge_courtyard_school_camNE.png",
+      "sha256": "5ef37d549343b6e678159348acee8bb38a7d05e8d742589a33077e368952bc04",
       "roles": ["school"]
     },
     {

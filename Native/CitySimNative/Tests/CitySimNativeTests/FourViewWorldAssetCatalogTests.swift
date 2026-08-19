@@ -144,6 +144,25 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
                 kind.rawValue
             )
         }
+
+        let newCivicUtilityVariants: [(BuildingKind, String)] = [
+            (.cityHall, "cedar_arch_council_hall"),
+            (.powerPlant, "copper_arc_powerhouse"),
+            (.waterTower, "rivermark_standpipe_waterworks"),
+            (.fireStation, "lantern_gate_fire_house"),
+            (.policeStation, "harborwatch_police_precinct"),
+            (.school, "oakridge_courtyard_school"),
+        ]
+        for (kind, assetID) in newCivicUtilityVariants {
+            XCTAssertEqual(
+                catalog.assetID(
+                    for: CityTile(coordinate: coordinate, kind: kind),
+                    variant: 1
+                ),
+                assetID,
+                kind.rawValue
+            )
+        }
     }
 
     @MainActor
@@ -317,11 +336,20 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
             (.school, "maplewood_neighborhood_school", "civic_l01_v0_south"),
         ]
 
-        for (index, entry) in cases.enumerated() {
+        for entry in cases {
             let (kind, assetID, logicalID) = entry
+            let coordinate = try XCTUnwrap((0..<32).lazy
+                .flatMap { y in (0..<32).map { GridCoordinate(x: $0, y: y) } }
+                .first {
+                    WorldVisualSeed.variant(
+                        count: 3,
+                        for: $0,
+                        kind: kind
+                    ) == 0
+                })
             let lot = renderer.makeLot(
                 for: CityTile(
-                    coordinate: GridCoordinate(x: 10 + index, y: 12),
+                    coordinate: coordinate,
                     kind: kind,
                     condition: 1,
                     constructionProgress: 1

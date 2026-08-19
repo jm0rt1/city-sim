@@ -1,0 +1,188 @@
+SERVICES_VARIETY_VALIDATION_PASS
+{
+  "assets": {
+    "harborwatch_police_precinct": {
+      "deterministicCanonicalPngSha256": {
+        "harborwatch_police_precinct_contact-sheet.png": "875a7c2696eed68f76b16f2f340b0a22eec8deea8c6b93d607e7f07e77f76d6b",
+        "renders/harborwatch_police_precinct_camNE.png": "e27884d9186b3b8843ea41fed07ebf7e125373805e1997f42f0d6f8077816443",
+        "renders/harborwatch_police_precinct_camNW.png": "2ccaacbb5bff7da44bfee54f12725c34cbd7517c545e24c88a01e93170e66646",
+        "renders/harborwatch_police_precinct_camSE.png": "a40ffd8c1d1cf3c4147b2f64343865c92b7bb0e29953b68ec092a49c0f7cee75",
+        "renders/harborwatch_police_precinct_camSW.png": "65879c786c292c560e198d93fda018b6244dd1bbb0d782b28ef1076f225423f7"
+      },
+      "meshCount": 58,
+      "projectedAxisPixels": {
+        "camNE": [
+          [
+            -44,
+            22
+          ],
+          [
+            44,
+            22
+          ]
+        ],
+        "camNW": [
+          [
+            -44,
+            -22
+          ],
+          [
+            -44,
+            22
+          ]
+        ],
+        "camSE": [
+          [
+            44,
+            22
+          ],
+          [
+            44,
+            -22
+          ]
+        ],
+        "camSW": [
+          [
+            44,
+            -22
+          ],
+          [
+            -44,
+            -22
+          ]
+        ]
+      }
+    },
+    "lantern_gate_fire_house": {
+      "deterministicCanonicalPngSha256": {
+        "lantern_gate_fire_house_contact-sheet.png": "e2ad3a7d10cefd9a73e3ef790828da7c8fb0ded287234631f6a7aec88c8402ea",
+        "renders/lantern_gate_fire_house_camNE.png": "e55784f54caded66844a40eff0041d9e3f299db897cf58998ef47ce5fa0df6e5",
+        "renders/lantern_gate_fire_house_camNW.png": "8ac8fa6c9e122970e2c9fcc01d798fb6e4e6cc71e40121ef6d29af4a94b8673a",
+        "renders/lantern_gate_fire_house_camSE.png": "0f12b89e8571c74c9e58b02abc92485ef956afebc4f79b19cfd8d5614d20a0ba",
+        "renders/lantern_gate_fire_house_camSW.png": "977817062c831a863f28d12439771928750cfd97488a2d60072b5a5132814d3d"
+      },
+      "meshCount": 59,
+      "projectedAxisPixels": {
+        "camNE": [
+          [
+            -44,
+            22
+          ],
+          [
+            44,
+            22
+          ]
+        ],
+        "camNW": [
+          [
+            -44,
+            -22
+          ],
+          [
+            -44,
+            22
+          ]
+        ],
+        "camSE": [
+          [
+            44,
+            22
+          ],
+          [
+            44,
+            -22
+          ]
+        ],
+        "camSW": [
+          [
+            44,
+            -22
+          ],
+          [
+            -44,
+            -22
+          ]
+        ]
+      }
+    },
+    "oakridge_courtyard_school": {
+      "deterministicCanonicalPngSha256": {
+        "oakridge_courtyard_school_contact-sheet.png": "88661aa517d30347ac81ac3f27c9c2b5ab36dd747fdbf13a011e2ab8aa431dd5",
+        "renders/oakridge_courtyard_school_camNE.png": "5ef37d549343b6e678159348acee8bb38a7d05e8d742589a33077e368952bc04",
+        "renders/oakridge_courtyard_school_camNW.png": "0b459283e778c5f80515312a1147eca39413794a21c1fb163fb9ce1b3d273c62",
+        "renders/oakridge_courtyard_school_camSE.png": "f29869ca7899ec0fa4d3ec236f80b79f496c7799d60c59a8ddabd91507a49874",
+        "renders/oakridge_courtyard_school_camSW.png": "d1b692dd851921d527629f46a8c367a45650b7fccfa97a5035035adf13b0031e"
+      },
+      "meshCount": 56,
+      "projectedAxisPixels": {
+        "camNE": [
+          [
+            -44,
+            22
+          ],
+          [
+            44,
+            22
+          ]
+        ],
+        "camNW": [
+          [
+            -44,
+            -22
+          ],
+          [
+            -44,
+            22
+          ]
+        ],
+        "camSE": [
+          [
+            44,
+            22
+          ],
+          [
+            44,
+            -22
+          ]
+        ],
+        "camSW": [
+          [
+            44,
+            -22
+          ],
+          [
+            -44,
+            -22
+          ]
+        ]
+      }
+    }
+  },
+  "blenderVersion": "4.5.12",
+  "contract": {
+    "cameraOrder": [
+      "camNE",
+      "camSE",
+      "camSW",
+      "camNW"
+    ],
+    "deterministicPngCount": 17,
+    "deterministicRerender": "byte-identical canonical PNGs",
+    "pivotPixels": [
+      192,
+      300
+    ],
+    "postRenderCompensation": "none",
+    "projectedTilePixels": [
+      88,
+      44
+    ],
+    "reopenedBlendStructuralValidation": "PASS"
+  },
+  "previewPngSha256": {
+    "service-variety-block-1280x800.png": "47e12b3dd125f168147c2870b9e018446408ecdda90e59a6e2ccb03db1468bd1",
+    "service-variety-block-900x600.png": "db65d8a1ca91e34c5d925e3112063938c37c2b181d1189a75167fa0a629d76d6"
+  },
+  "schema": "citysim.world-art.services-variety-validation.v1",
+  "status": "PASS"
+}

@@ -1,0 +1,249 @@
+{
+  "artifacts": [
+    {
+      "bytes": 1362866,
+      "path": "oakridge_courtyard_school.blend",
+      "sha256": "cf9505085a5d4a4fa084b077a36ed2d2fe1db6246b8c8c817eeae14f943ae829"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 147,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 202,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 14207,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 56585,
+      "decodedRgbaSha256": "2b5b5a58aee8a74022dd4d69983ac710362b41f575ebc38ff54ef5b3f49e3869",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/oakridge_courtyard_school_camNE.png",
+      "sha256": "5ef37d549343b6e678159348acee8bb38a7d05e8d742589a33077e368952bc04"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 151,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 198,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 14248,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 60818,
+      "decodedRgbaSha256": "16f7cbb5bc7eba0d2d9b2fdbdb7626dc6e56d47be6fecb901b8da90a0ad7205c",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/oakridge_courtyard_school_camSE.png",
+      "sha256": "f29869ca7899ec0fa4d3ec236f80b79f496c7799d60c59a8ddabd91507a49874"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 151,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 198,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 14530,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 61936,
+      "decodedRgbaSha256": "451b79ec218d7cc99e947836c95894716ad8c52eb0e3cbca70945232b76a2cc7",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/oakridge_courtyard_school_camSW.png",
+      "sha256": "d1b692dd851921d527629f46a8c367a45650b7fccfa97a5035035adf13b0031e"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 147,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 202,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 13981,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 58551,
+      "decodedRgbaSha256": "ad757bad783743964ad01a2d9909bd19cf9b1c52adebd41e5e31579769fc206a",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/oakridge_courtyard_school_camNW.png",
+      "sha256": "0b459283e778c5f80515312a1147eca39413794a21c1fb163fb9ce1b3d273c62"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 642,
+          "maxX": 783,
+          "maxY": 839,
+          "minX": 0,
+          "minY": 198,
+          "width": 784
+        },
+        "lowestOpaqueRowTopOrigin": 839,
+        "opaquePixelCount": 99974,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 197642,
+      "decodedRgbaSha256": "ab1663967a959f862785251430e31515ead40abea9719a43ea8aac15f1bb6b5d",
+      "dimensions": [
+        784,
+        840
+      ],
+      "path": "oakridge_courtyard_school_contact-sheet.png",
+      "sha256": "88661aa517d30347ac81ac3f27c9c2b5ab36dd747fdbf13a011e2ab8aa431dd5"
+    }
+  ],
+  "assetId": "oakridge_courtyard_school",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "cameraRig": {
+    "distance": 32.0,
+    "orthoScale": 12.341995,
+    "shiftY": 0.28125,
+    "views": [
+      {
+        "azimuthDegrees": 45.0,
+        "name": "camNE"
+      },
+      {
+        "azimuthDegrees": 135.0,
+        "name": "camSE"
+      },
+      {
+        "azimuthDegrees": 225.0,
+        "name": "camSW"
+      },
+      {
+        "azimuthDegrees": 315.0,
+        "name": "camNW"
+      }
+    ]
+  },
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "cedarMarketReused": false,
+  "contactSheetLayout": [
+    [
+      "camNE",
+      "camSE"
+    ],
+    [
+      "camSW",
+      "camNW"
+    ]
+  ],
+  "description": "U-shaped brick courtyard school with stone clock cupola, green classroom roofs, welcoming entry arcade, play yard, and flagpole",
+  "grid": {
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0,
+    "projectedTilePixels": [
+      88,
+      44
+    ],
+    "projection": "orthographic-2:1-dimetric",
+    "worldTileSize": 2.0
+  },
+  "lightingConvention": {
+    "color": [
+      1.0,
+      0.86,
+      0.72
+    ],
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldColor": [
+      0.2,
+      0.17,
+      0.14,
+      1.0
+    ],
+    "worldStrength": 0.72
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "perViewCompensation": {
+    "crop": false,
+    "offsetPixels": [
+      0,
+      0
+    ],
+    "rotationDegrees": 0.0,
+    "scale": 1.0,
+    "skew": [
+      0.0,
+      0.0
+    ]
+  },
+  "pipelineSchema": "citysim.world-art.services-variety-four-view.v1",
+  "postRenderCompensation": "none",
+  "root": {
+    "location": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "name": "AssetRoot",
+    "pivotName": "FootprintPivot",
+    "rotationEuler": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "schema": "citysim.world-art.service-variety-four-view-asset.v1",
+  "serviceRole": "school",
+  "sourcePixelsReused": false,
+  "status": "source-only-not-live"
+}

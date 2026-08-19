@@ -1,0 +1,152 @@
+{
+  "acceptedFamilyContractOnly": true,
+  "artifacts": [
+    {
+      "bytes": 3831671,
+      "path": "preview/service-variety-block.blend",
+      "sha256": "7a3e88fe6a035901342315f77e761b6faf3b3733d6207dea8d278a43f35c2ef4"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 800,
+          "maxX": 1279,
+          "maxY": 799,
+          "minX": 0,
+          "minY": 0,
+          "width": 1280
+        },
+        "lowestOpaqueRowTopOrigin": 799,
+        "opaquePixelCount": 1024000,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 874892,
+      "decodedRgbaSha256": "ccee6d92e28b5ff6381289d882ef14b9405f38840185b38a99988232326b9820",
+      "dimensions": [
+        1280,
+        800
+      ],
+      "path": "preview/service-variety-block-1280x800.png",
+      "sha256": "47e12b3dd125f168147c2870b9e018446408ecdda90e59a6e2ccb03db1468bd1"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 600,
+          "maxX": 899,
+          "maxY": 599,
+          "minX": 0,
+          "minY": 0,
+          "width": 900
+        },
+        "lowestOpaqueRowTopOrigin": 599,
+        "opaquePixelCount": 540000,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 470335,
+      "decodedRgbaSha256": "fd74a1cfd18a5131b8f3784dc29c0c1f93357e44a3c61aac655a2c00f28db10a",
+      "dimensions": [
+        900,
+        600
+      ],
+      "path": "preview/service-variety-block-900x600.png",
+      "sha256": "db65d8a1ca91e34c5d925e3112063938c37c2b181d1189a75167fa0a629d76d6"
+    }
+  ],
+  "camera": {
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0,
+    "perAssetCompensation": "none",
+    "projection": "orthographic"
+  },
+  "cedarMarketReused": false,
+  "grid": {
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0,
+    "projectedTilePixels": [
+      88,
+      44
+    ],
+    "projection": "orthographic-2:1-dimetric",
+    "worldTileSize": 2.0
+  },
+  "lightingConvention": {
+    "color": [
+      1.0,
+      0.86,
+      0.72
+    ],
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldColor": [
+      0.2,
+      0.17,
+      0.14,
+      1.0
+    ],
+    "worldStrength": 0.72
+  },
+  "liveAsset": false,
+  "placements": [
+    {
+      "assetId": "harborwatch_police_precinct",
+      "footprintTiles": [
+        2,
+        2
+      ],
+      "meshCount": 58,
+      "originWorld": [
+        -5.0,
+        3.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "serviceRole": "police-station",
+      "sourceBlend": "FourViewProduction/ServicesVariety/harborwatch_police_precinct/harborwatch_police_precinct.blend",
+      "sourceBlendSha256": "7982af84c4cacd6ac620676a13bb68461f74e69addedda4b9abeb17086c4505e"
+    },
+    {
+      "assetId": "lantern_gate_fire_house",
+      "footprintTiles": [
+        2,
+        2
+      ],
+      "meshCount": 59,
+      "originWorld": [
+        -1.0,
+        3.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "serviceRole": "fire-station",
+      "sourceBlend": "FourViewProduction/ServicesVariety/lantern_gate_fire_house/lantern_gate_fire_house.blend",
+      "sourceBlendSha256": "b06f3ccb388f59a2dcfb7e588efc1f4acf5b5249cf2a9c294aa85b4fdf4db096"
+    },
+    {
+      "assetId": "oakridge_courtyard_school",
+      "footprintTiles": [
+        2,
+        2
+      ],
+      "meshCount": 56,
+      "originWorld": [
+        3.0,
+        3.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "serviceRole": "school",
+      "sourceBlend": "FourViewProduction/ServicesVariety/oakridge_courtyard_school/oakridge_courtyard_school.blend",
+      "sourceBlendSha256": "cf9505085a5d4a4fa084b077a36ed2d2fe1db6246b8c8c817eeae14f943ae829"
+    }
+  ],
+  "schema": "citysim.world-art.service-variety-preview.v1",
+  "status": "source-only-review-evidence"
+}

@@ -1,0 +1,249 @@
+{
+  "artifacts": [
+    {
+      "bytes": 1377657,
+      "path": "lantern_gate_fire_house.blend",
+      "sha256": "b06f3ccb388f59a2dcfb7e588efc1f4acf5b5249cf2a9c294aa85b4fdf4db096"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 146,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 103,
+          "minY": 203,
+          "width": 177
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 14942,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 56413,
+      "decodedRgbaSha256": "1a98a4efcbde8727092f3c0f2bfc67e17558528a0947cbdb9f67b34592cd8b2d",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/lantern_gate_fire_house_camNE.png",
+      "sha256": "e55784f54caded66844a40eff0041d9e3f299db897cf58998ef47ce5fa0df6e5"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 163,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 103,
+          "minY": 186,
+          "width": 177
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 16449,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 63113,
+      "decodedRgbaSha256": "e1fef3c17102f200c0365166b457a24dbe0cf8b2f32338386b8c0862cd561eaa",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/lantern_gate_fire_house_camSE.png",
+      "sha256": "0f12b89e8571c74c9e58b02abc92485ef956afebc4f79b19cfd8d5614d20a0ba"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 187,
+          "maxX": 280,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 162,
+          "width": 177
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 16509,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 63833,
+      "decodedRgbaSha256": "1b56b506dc4b4f5d82afb5bfb0306dbb602a0704004382d501eb9cd44e83053a",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/lantern_gate_fire_house_camSW.png",
+      "sha256": "977817062c831a863f28d12439771928750cfd97488a2d60072b5a5132814d3d"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 170,
+          "maxX": 280,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 179,
+          "width": 177
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 16010,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 60840,
+      "decodedRgbaSha256": "878f89ec21c107eba8f1978422b76ecfd79f716d08b8a70914c90a275ed47088",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/lantern_gate_fire_house_camNW.png",
+      "sha256": "8ac8fa6c9e122970e2c9fcc01d798fb6e4e6cc71e40121ef6d29af4a94b8673a"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 654,
+          "maxX": 783,
+          "maxY": 839,
+          "minX": 0,
+          "minY": 186,
+          "width": 784
+        },
+        "lowestOpaqueRowTopOrigin": 839,
+        "opaquePixelCount": 106918,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 206224,
+      "decodedRgbaSha256": "7c654158ce30b237903012f0088353bf076bea309a4496f0cbd149876682408e",
+      "dimensions": [
+        784,
+        840
+      ],
+      "path": "lantern_gate_fire_house_contact-sheet.png",
+      "sha256": "e2ad3a7d10cefd9a73e3ef790828da7c8fb0ded287234631f6a7aec88c8402ea"
+    }
+  ],
+  "assetId": "lantern_gate_fire_house",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "cameraRig": {
+    "distance": 32.0,
+    "orthoScale": 12.341995,
+    "shiftY": 0.28125,
+    "views": [
+      {
+        "azimuthDegrees": 45.0,
+        "name": "camNE"
+      },
+      {
+        "azimuthDegrees": 135.0,
+        "name": "camSE"
+      },
+      {
+        "azimuthDegrees": 225.0,
+        "name": "camSW"
+      },
+      {
+        "azimuthDegrees": 315.0,
+        "name": "camNW"
+      }
+    ]
+  },
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "cedarMarketReused": false,
+  "contactSheetLayout": [
+    [
+      "camNE",
+      "camSE"
+    ],
+    [
+      "camSW",
+      "camNW"
+    ]
+  ],
+  "description": "Three-bay market-street fire house with red apparatus doors, rear hose tower, rooftop siren, brass trim, hydrant, and grounded civic forecourt",
+  "grid": {
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0,
+    "projectedTilePixels": [
+      88,
+      44
+    ],
+    "projection": "orthographic-2:1-dimetric",
+    "worldTileSize": 2.0
+  },
+  "lightingConvention": {
+    "color": [
+      1.0,
+      0.86,
+      0.72
+    ],
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldColor": [
+      0.2,
+      0.17,
+      0.14,
+      1.0
+    ],
+    "worldStrength": 0.72
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "perViewCompensation": {
+    "crop": false,
+    "offsetPixels": [
+      0,
+      0
+    ],
+    "rotationDegrees": 0.0,
+    "scale": 1.0,
+    "skew": [
+      0.0,
+      0.0
+    ]
+  },
+  "pipelineSchema": "citysim.world-art.services-variety-four-view.v1",
+  "postRenderCompensation": "none",
+  "root": {
+    "location": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "name": "AssetRoot",
+    "pivotName": "FootprintPivot",
+    "rotationEuler": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "schema": "citysim.world-art.service-variety-four-view-asset.v1",
+  "serviceRole": "fire-station",
+  "sourcePixelsReused": false,
+  "status": "source-only-not-live"
+}

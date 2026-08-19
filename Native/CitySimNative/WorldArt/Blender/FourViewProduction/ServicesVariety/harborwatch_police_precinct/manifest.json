@@ -1,0 +1,249 @@
+{
+  "artifacts": [
+    {
+      "bytes": 1410034,
+      "path": "harborwatch_police_precinct.blend",
+      "sha256": "7982af84c4cacd6ac620676a13bb68461f74e69addedda4b9abeb17086c4505e"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 147,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 202,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 14589,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 57049,
+      "decodedRgbaSha256": "205f690996c04659f1be26603daa4b0056e90b36cad388756f162bd3728f7f29",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/harborwatch_police_precinct_camNE.png",
+      "sha256": "e27884d9186b3b8843ea41fed07ebf7e125373805e1997f42f0d6f8077816443"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 152,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 197,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 15078,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 60899,
+      "decodedRgbaSha256": "e425e69c2470446f33ec07d877737bb83b1249624ff2f2d7d48402fc85c84e2a",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/harborwatch_police_precinct_camSE.png",
+      "sha256": "a40ffd8c1d1cf3c4147b2f64343865c92b7bb0e29953b68ec092a49c0f7cee75"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 155,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 194,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 15211,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 61903,
+      "decodedRgbaSha256": "ea73cc839923c7f79400f3d7130924385c6b222b13aa82f4c6d4dd7742d4ffde",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/harborwatch_police_precinct_camSW.png",
+      "sha256": "65879c786c292c560e198d93fda018b6244dd1bbb0d782b28ef1076f225423f7"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 147,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 202,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 14719,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 59786,
+      "decodedRgbaSha256": "c22c17d4f0ee9d1270cd68759dfddf6c7a2735925f2df7b6e54c237d2fbc6b84",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/harborwatch_police_precinct_camNW.png",
+      "sha256": "2ccaacbb5bff7da44bfee54f12725c34cbd7517c545e24c88a01e93170e66646"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 643,
+          "maxX": 783,
+          "maxY": 839,
+          "minX": 0,
+          "minY": 197,
+          "width": 784
+        },
+        "lowestOpaqueRowTopOrigin": 839,
+        "opaquePixelCount": 102605,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 199182,
+      "decodedRgbaSha256": "285ff7e6f132adae8a65e0a80426e337beef13f95b5170fddd05d63609f7fc50",
+      "dimensions": [
+        784,
+        840
+      ],
+      "path": "harborwatch_police_precinct_contact-sheet.png",
+      "sha256": "875a7c2696eed68f76b16f2f340b0a22eec8deea8c6b93d607e7f07e77f76d6b"
+    }
+  ],
+  "assetId": "harborwatch_police_precinct",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "cameraRig": {
+    "distance": 32.0,
+    "orthoScale": 12.341995,
+    "shiftY": 0.28125,
+    "views": [
+      {
+        "azimuthDegrees": 45.0,
+        "name": "camNE"
+      },
+      {
+        "azimuthDegrees": 135.0,
+        "name": "camSE"
+      },
+      {
+        "azimuthDegrees": 225.0,
+        "name": "camSW"
+      },
+      {
+        "azimuthDegrees": 315.0,
+        "name": "camNW"
+      }
+    ]
+  },
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "cedarMarketReused": false,
+  "contactSheetLayout": [
+    [
+      "camNE",
+      "camSE"
+    ],
+    [
+      "camSW",
+      "camNW"
+    ]
+  ],
+  "description": "Stepped warm-brick neighborhood police precinct with limestone civic tower, blue beacon, covered public entry, communications mast, and landscaped frontage",
+  "grid": {
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0,
+    "projectedTilePixels": [
+      88,
+      44
+    ],
+    "projection": "orthographic-2:1-dimetric",
+    "worldTileSize": 2.0
+  },
+  "lightingConvention": {
+    "color": [
+      1.0,
+      0.86,
+      0.72
+    ],
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldColor": [
+      0.2,
+      0.17,
+      0.14,
+      1.0
+    ],
+    "worldStrength": 0.72
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "perViewCompensation": {
+    "crop": false,
+    "offsetPixels": [
+      0,
+      0
+    ],
+    "rotationDegrees": 0.0,
+    "scale": 1.0,
+    "skew": [
+      0.0,
+      0.0
+    ]
+  },
+  "pipelineSchema": "citysim.world-art.services-variety-four-view.v1",
+  "postRenderCompensation": "none",
+  "root": {
+    "location": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "name": "AssetRoot",
+    "pivotName": "FootprintPivot",
+    "rotationEuler": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "schema": "citysim.world-art.service-variety-four-view-asset.v1",
+  "serviceRole": "police-station",
+  "sourcePixelsReused": false,
+  "status": "source-only-not-live"
+}

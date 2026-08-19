@@ -1,0 +1,98 @@
+{
+  "schema": "citysim.world-art.streetscape-continuous-four-view.v1",
+  "toolchain": {
+    "blenderVersion": "4.5.12",
+    "renderEngine": "BLENDER_EEVEE_NEXT"
+  },
+  "grid": {
+    "worldTileSize": 2.0,
+    "worldCell": [2.0, 2.0],
+    "projectedTilePixels": [88, 44],
+    "projection": "orthographic-2:1-dimetric",
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0,
+    "boundaryMidpoints": {
+      "north": [-1.0, 0.0, 0.035],
+      "east": [0.0, -1.0, 0.035],
+      "south": [1.0, 0.0, 0.035],
+      "west": [0.0, 1.0, 0.035]
+    }
+  },
+  "canvas": {
+    "width": 384,
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "footprintPivotPixel": [192, 300]
+  },
+  "cameraRig": {
+    "distance": 32.0,
+    "orthoScale": 12.341995,
+    "shiftY": 0.28125,
+    "views": [
+      {"name": "camNE", "azimuthDegrees": 45.0},
+      {"name": "camSE", "azimuthDegrees": 135.0},
+      {"name": "camSW", "azimuthDegrees": 225.0},
+      {"name": "camNW", "azimuthDegrees": 315.0}
+    ]
+  },
+  "root": {
+    "name": "AssetRoot",
+    "pivotName": "FootprintPivot",
+    "location": [0.0, 0.0, 0.0],
+    "rotationEuler": [0.0, 0.0, 0.0],
+    "scale": [1.0, 1.0, 1.0]
+  },
+  "lighting": {
+    "name": "CitySimKey",
+    "type": "AREA",
+    "location": [-6.0, -8.0, 12.0],
+    "energy": 1100.0,
+    "size": 5.0,
+    "color": [1.0, 0.86, 0.72],
+    "worldColor": [0.20, 0.17, 0.14, 1.0],
+    "worldStrength": 0.72
+  },
+  "surface": {
+    "roadWidthWorld": 1.08,
+    "walkWidthWorld": 1.52,
+    "socketBleedWorld": 0.12,
+    "curbWidthWorld": 0.055,
+    "centerlineWidthWorld": 0.045,
+    "centerlineGapWorld": 0.075,
+    "junctionLineStopWorld": 0.93,
+    "cornerRadiusWorld": 0.62
+  },
+  "roadBits": {
+    "north": 1,
+    "east": 2,
+    "south": 4,
+    "west": 8
+  },
+  "masks": [
+    {"rawValue": 0, "assetId": "road_mask_00", "topologyClass": "isolated", "directions": []},
+    {"rawValue": 1, "assetId": "road_mask_01", "topologyClass": "end", "directions": ["north"]},
+    {"rawValue": 2, "assetId": "road_mask_02", "topologyClass": "end", "directions": ["east"]},
+    {"rawValue": 3, "assetId": "road_mask_03", "topologyClass": "corner", "directions": ["north", "east"]},
+    {"rawValue": 4, "assetId": "road_mask_04", "topologyClass": "end", "directions": ["south"]},
+    {"rawValue": 5, "assetId": "road_mask_05", "topologyClass": "straight", "directions": ["north", "south"]},
+    {"rawValue": 6, "assetId": "road_mask_06", "topologyClass": "corner", "directions": ["east", "south"]},
+    {"rawValue": 7, "assetId": "road_mask_07", "topologyClass": "tee", "directions": ["north", "east", "south"]},
+    {"rawValue": 8, "assetId": "road_mask_08", "topologyClass": "end", "directions": ["west"]},
+    {"rawValue": 9, "assetId": "road_mask_09", "topologyClass": "corner", "directions": ["north", "west"]},
+    {"rawValue": 10, "assetId": "road_mask_10", "topologyClass": "straight", "directions": ["east", "west"]},
+    {"rawValue": 11, "assetId": "road_mask_11", "topologyClass": "tee", "directions": ["north", "east", "west"]},
+    {"rawValue": 12, "assetId": "road_mask_12", "topologyClass": "corner", "directions": ["south", "west"]},
+    {"rawValue": 13, "assetId": "road_mask_13", "topologyClass": "tee", "directions": ["north", "south", "west"]},
+    {"rawValue": 14, "assetId": "road_mask_14", "topologyClass": "tee", "directions": ["east", "south", "west"]},
+    {"rawValue": 15, "assetId": "road_mask_15", "topologyClass": "crossing", "directions": ["north", "east", "south", "west"]}
+  ],
+  "postRenderCompensation": "none",
+  "provenance": {
+    "originalGeometry": true,
+    "sourcePixelsReused": false,
+    "cedarMarketReused": false,
+    "liveAsset": false,
+    "purpose": "source-only continuous marked roadway candidate"
+  }
+}

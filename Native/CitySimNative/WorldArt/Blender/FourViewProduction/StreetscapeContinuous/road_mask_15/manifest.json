@@ -1,0 +1,333 @@
+{
+  "absentBoundarySockets": [],
+  "artifacts": [
+    {
+      "bytes": 828875,
+      "path": "road_mask_15.blend",
+      "sha256": "91f0b8683530f76966f5119011c503c7ed3a6b80a65d5fca4ee894cb4b8ca114"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "maxX": 233,
+          "maxY": 320,
+          "minX": 150,
+          "minY": 277
+        },
+        "lowestOpaqueRowTopOrigin": 320,
+        "opaquePixelCount": 2482,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 36233,
+      "decodedRgbaSha256": "19fa73f64b4644e28adf8147faf82119fb166b157a7d51ed7e5f8235621bbdf2",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/road_mask_15_camNE.png",
+      "sha256": "1f4d3184be11a29f2a652ba7e9af02bc0faea07c5cb4abbe6e4abac818c7ca3a"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "maxX": 233,
+          "maxY": 320,
+          "minX": 150,
+          "minY": 277
+        },
+        "lowestOpaqueRowTopOrigin": 320,
+        "opaquePixelCount": 2482,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 36303,
+      "decodedRgbaSha256": "7d6b3b8e00dc18cceaee0874c5d59d1c6003458e307b54afe8476ea7a4e7f145",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/road_mask_15_camSE.png",
+      "sha256": "bd794180203732a355016b51c9e3c1d5eebfcaa29a9797565e0941c19ebddaee"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "maxX": 233,
+          "maxY": 320,
+          "minX": 150,
+          "minY": 277
+        },
+        "lowestOpaqueRowTopOrigin": 320,
+        "opaquePixelCount": 2482,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 36119,
+      "decodedRgbaSha256": "d6bcbf4891ed2799b2cf85deb52d9624560707f8c85d1372a106df0a053c4248",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/road_mask_15_camSW.png",
+      "sha256": "6c501d88f2c54dc4029489017d026c16d70a7d0ccc25105c60a29f03f05f7b10"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "maxX": 233,
+          "maxY": 320,
+          "minX": 150,
+          "minY": 277
+        },
+        "lowestOpaqueRowTopOrigin": 320,
+        "opaquePixelCount": 2482,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 36357,
+      "decodedRgbaSha256": "f92b1058d9ab0c047eeb959a7af4b61ed90b6fcde0762e44f142aae2ff1e0ee4",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/road_mask_15_camNW.png",
+      "sha256": "c58094219c30938bca7ce75157ffedd08a2d681493642c8e0834bc57cdee3c01"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "maxX": 633,
+          "maxY": 752,
+          "minX": 158,
+          "minY": 301
+        },
+        "lowestOpaqueRowTopOrigin": 752,
+        "opaquePixelCount": 9928,
+        "pivotPixelAlpha": 0
+      },
+      "bytes": 100335,
+      "decodedRgbaSha256": "91b81030e11d2f6c2270597fe3ba3649fa6565270fe707d43cdea8fb90240db0",
+      "dimensions": [
+        784,
+        840
+      ],
+      "path": "road_mask_15_contact-sheet.png",
+      "sha256": "ec0cb9d30f39b1172cc6b2ec4620e56667d80f3e6454a63f6c0fb389ad497ab3"
+    }
+  ],
+  "assetId": "road_mask_15",
+  "boundaryMaterialContract": "identical-periodic-asphalt-sidewalk-curb-and-ochre-dash-boundary-phase",
+  "boundarySockets": {
+    "east": [
+      0.0,
+      -1.0,
+      0.035
+    ],
+    "north": [
+      -1.0,
+      0.0,
+      0.035
+    ],
+    "south": [
+      1.0,
+      0.0,
+      0.035
+    ],
+    "west": [
+      0.0,
+      1.0,
+      0.035
+    ]
+  },
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "cameraRig": {
+    "distance": 32.0,
+    "orthoScale": 12.341995,
+    "shiftY": 0.28125,
+    "views": [
+      {
+        "azimuthDegrees": 45.0,
+        "name": "camNE"
+      },
+      {
+        "azimuthDegrees": 135.0,
+        "name": "camSE"
+      },
+      {
+        "azimuthDegrees": 225.0,
+        "name": "camSW"
+      },
+      {
+        "azimuthDegrees": 315.0,
+        "name": "camNW"
+      }
+    ]
+  },
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "cedarMarketReused": false,
+  "grid": {
+    "azimuthDegrees": 45.0,
+    "boundaryMidpoints": {
+      "east": [
+        0.0,
+        -1.0,
+        0.035
+      ],
+      "north": [
+        -1.0,
+        0.0,
+        0.035
+      ],
+      "south": [
+        1.0,
+        0.0,
+        0.035
+      ],
+      "west": [
+        0.0,
+        1.0,
+        0.035
+      ]
+    },
+    "elevationDegrees": 30.0,
+    "projectedTilePixels": [
+      88,
+      44
+    ],
+    "projection": "orthographic-2:1-dimetric",
+    "worldCell": [
+      2.0,
+      2.0
+    ],
+    "worldTileSize": 2.0
+  },
+  "lightingConvention": {
+    "color": [
+      1.0,
+      0.86,
+      0.72
+    ],
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldColor": [
+      0.2,
+      0.17,
+      0.14,
+      1.0
+    ],
+    "worldStrength": 0.72
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "perViewCompensation": {
+    "crop": false,
+    "offsetPixels": [
+      0,
+      0
+    ],
+    "rotationDegrees": 0.0,
+    "scale": 1.0,
+    "skew": [
+      0.0,
+      0.0
+    ]
+  },
+  "pipelineSchema": "citysim.world-art.streetscape-continuous-four-view.v1",
+  "postRenderCompensation": "none",
+  "roadConnectionMask": {
+    "bits": {
+      "east": 2,
+      "north": 1,
+      "south": 4,
+      "west": 8
+    },
+    "directions": [
+      "north",
+      "east",
+      "south",
+      "west"
+    ],
+    "rawValue": 15,
+    "topologyClass": "crossing"
+  },
+  "root": {
+    "location": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "name": "AssetRoot",
+    "pivotName": "FootprintPivot",
+    "rotationEuler": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "schema": "citysim.world-art.streetscape-continuous-mask.v1",
+  "sourceFiles": [
+    {
+      "path": "build_and_render.py",
+      "sha256": "b75486e9f750c92ee28b9a396b8ef5fa42fa8c66337f0dae19501e940f2592c7"
+    },
+    {
+      "path": "pipeline.json",
+      "sha256": "8249d35738a775d55619036e7e9fa66cd8ad599ef663bdbf82b80162546b6c09"
+    },
+    {
+      "path": "run_pipeline.sh",
+      "sha256": "3d3119a468a297bd073a909a18053b0776bb74a2f493f9e2e45044d4c4443ef2"
+    },
+    {
+      "path": "validate.py",
+      "sha256": "29a1882613ab2d0e0b7ae442126bf0ea03d364ef0d6564d6456935a242571f9f"
+    }
+  ],
+  "sourcePixelsReused": false,
+  "status": "source-only-candidate",
+  "surface": {
+    "centerlineGapWorld": 0.075,
+    "centerlineWidthWorld": 0.045,
+    "cornerRadiusWorld": 0.62,
+    "curbWidthWorld": 0.055,
+    "junctionLineStopWorld": 0.93,
+    "roadWidthWorld": 1.08,
+    "socketBleedWorld": 0.12,
+    "walkWidthWorld": 1.52
+  },
+  "transforms": {
+    "assetRoot": "identity",
+    "meshObjects": "identity",
+    "perMaskCompensation": "none"
+  },
+  "validation": {
+    "boundaryMarkingPhase": "dash-center-at-boundary",
+    "deterministicRerender": "64-canonical-views-byte-identical",
+    "report": "../validation/validator-output.txt",
+    "socketGeometry": "source-mesh-bounds",
+    "status": "PASS"
+  }
+}

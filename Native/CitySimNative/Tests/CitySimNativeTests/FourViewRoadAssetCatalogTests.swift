@@ -78,6 +78,40 @@ final class FourViewRoadAssetCatalogTests: XCTestCase {
     }
 
     @MainActor
+    func testEveryConnectedMaskCarriesVisibleLanePaint() throws {
+        let catalog = FourViewRoadAssetCatalog()
+        let manifest = try XCTUnwrap(catalog.manifest)
+
+        for road in manifest.roads where road.connectionMask != 0 {
+            let url = try XCTUnwrap(
+                catalog.resourceURL(for: road.connectionMask),
+                road.assetID
+            )
+            let data = try Data(contentsOf: url)
+            let bitmap = try XCTUnwrap(NSBitmapImageRep(data: data), road.assetID)
+            var lanePaintPixels = 0
+
+            for y in 0..<bitmap.pixelsHigh {
+                for x in 0..<bitmap.pixelsWide {
+                    guard let color = bitmap.colorAt(x: x, y: y)?.usingColorSpace(.deviceRGB),
+                          color.alphaComponent > 0.1 else { continue }
+                    if color.redComponent > color.greenComponent * 1.12,
+                       color.greenComponent > color.blueComponent * 1.15,
+                       color.redComponent > 0.25 {
+                        lanePaintPixels += 1
+                    }
+                }
+            }
+
+            XCTAssertGreaterThan(
+                lanePaintPixels,
+                24,
+                "\(road.assetID) must carry visible warm lane paint at game scale"
+            )
+        }
+    }
+
+    @MainActor
     func testLiveSceneLODChangesNeverReplaceFourViewRoadTexture() throws {
         let state = CityGameState.newCity(seed: 42)
         let roadTile = try XCTUnwrap(state.tiles.first { $0.kind == .road })

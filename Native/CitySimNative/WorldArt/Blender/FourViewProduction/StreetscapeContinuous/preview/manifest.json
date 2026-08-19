@@ -1,0 +1,931 @@
+{
+  "artifacts": [
+    {
+      "bytes": 5725021,
+      "path": "preview/continuous-connected-district.blend",
+      "sha256": "a7cb9bcfd6dbc4fde1a1d48c453074f9f628371c203446de572b8743e2c6bb09"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "maxX": 1279,
+          "maxY": 799,
+          "minX": 0,
+          "minY": 0
+        },
+        "lowestOpaqueRowTopOrigin": 799,
+        "opaquePixelCount": 1024000,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 1025846,
+      "decodedRgbaSha256": "5b47da216132a6eb9841df51913142e8d7502444e9e7f7efa722e4548fb83a5d",
+      "dimensions": [
+        1280,
+        800
+      ],
+      "path": "preview/continuous-connected-district-1280x800.png",
+      "sha256": "cbeb10df1963ccd10b91ead99abc3a31098ea5051b1199a14a086f7dc0a00fd6"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "maxX": 899,
+          "maxY": 599,
+          "minX": 0,
+          "minY": 0
+        },
+        "lowestOpaqueRowTopOrigin": 599,
+        "opaquePixelCount": 540000,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 554071,
+      "decodedRgbaSha256": "8640337705be8693cb39f7a8a0f417199d9f85b02249e479aea1c529571d497a",
+      "dimensions": [
+        900,
+        600
+      ],
+      "path": "preview/continuous-connected-district-900x600.png",
+      "sha256": "c9a3e4e080cd6d02f993c8935c4dd14e1ce0d86aa912d27b81a55da618afe2d9"
+    }
+  ],
+  "camera": {
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0,
+    "perAssetCompensation": "none",
+    "projection": "orthographic"
+  },
+  "cedarMarketReused": false,
+  "grid": {
+    "azimuthDegrees": 45.0,
+    "boundaryMidpoints": {
+      "east": [
+        0.0,
+        -1.0,
+        0.035
+      ],
+      "north": [
+        -1.0,
+        0.0,
+        0.035
+      ],
+      "south": [
+        1.0,
+        0.0,
+        0.035
+      ],
+      "west": [
+        0.0,
+        1.0,
+        0.035
+      ]
+    },
+    "elevationDegrees": 30.0,
+    "projectedTilePixels": [
+      88,
+      44
+    ],
+    "projection": "orthographic-2:1-dimetric",
+    "worldCell": [
+      2.0,
+      2.0
+    ],
+    "worldTileSize": 2.0
+  },
+  "lightingConvention": {
+    "color": [
+      1.0,
+      0.86,
+      0.72
+    ],
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldColor": [
+      0.2,
+      0.17,
+      0.14,
+      1.0
+    ],
+    "worldStrength": 0.72
+  },
+  "liveAsset": false,
+  "observedRawValues": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15
+  ],
+  "originalGeometry": true,
+  "placements": [
+    {
+      "assetId": "road_mask_04",
+      "coordinate": [
+        0,
+        4
+      ],
+      "originWorld": [
+        -8.0,
+        0.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "rawValue": 4,
+      "topologyClass": "end"
+    },
+    {
+      "assetId": "road_mask_06",
+      "coordinate": [
+        -4,
+        3
+      ],
+      "originWorld": [
+        -6.0,
+        8.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "rawValue": 6,
+      "topologyClass": "corner"
+    },
+    {
+      "assetId": "road_mask_10",
+      "coordinate": [
+        -3,
+        3
+      ],
+      "originWorld": [
+        -6.0,
+        6.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "rawValue": 10,
+      "topologyClass": "straight"
+    },
+    {
+      "assetId": "road_mask_14",
+      "coordinate": [
+        -2,
+        3
+      ],
+      "originWorld": [
+        -6.0,
+        4.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "rawValue": 14,
+      "topologyClass": "tee"
+    },
+    {
+      "assetId": "road_mask_10",
+      "coordinate": [
+        -1,
+        3
+      ],
+      "originWorld": [
+        -6.0,
+        2.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "rawValue": 10,
+      "topologyClass": "straight"
+    },
+    {
+      "assetId": "road_mask_15",
+      "coordinate": [
+        0,
+        3
+      ],
+      "originWorld": [
+        -6.0,
+        0.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "rawValue": 15,
+      "topologyClass": "crossing"
+    },
+    {
+      "assetId": "road_mask_10",
+      "coordinate": [
+        1,
+        3
+      ],
+      "originWorld": [
+        -6.0,
+        -2.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "rawValue": 10,
+      "topologyClass": "straight"
+    },
+    {
+      "assetId": "road_mask_10",
+      "coordinate": [
+        2,
+        3
+      ],
+      "originWorld": [
+        -6.0,
+        -4.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "rawValue": 10,
+      "topologyClass": "straight"
+    },
+    {
+      "assetId": "road_mask_10",
+      "coordinate": [
+        3,
+        3
+      ],
+      "originWorld": [
+        -6.0,
+        -6.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "rawValue": 10,
+      "topologyClass": "straight"
+    },
+    {
+      "assetId": "road_mask_12",
+      "coordinate": [
+        4,
+        3
+      ],
+      "originWorld": [
+        -6.0,
+        -8.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "rawValue": 12,
+      "topologyClass": "corner"
+    },
+    {
+      "assetId": "road_mask_00",
+      "coordinate": [
+        6,
+        3
+      ],
+      "originWorld": [
+        -6.0,
+        -12.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "rawValue": 0,
+      "topologyClass": "isolated"
+    },
+    {
+      "assetId": "road_mask_05",
+      "coordinate": [
+        -4,
+        2
+      ],
+      "originWorld": [
+        -4.0,
+        8.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "rawValue": 5,
+      "topologyClass": "straight"
+    },
+    {
+      "assetId": "road_mask_05",
+      "coordinate": [
+        -2,
+        2
+      ],
+      "originWorld": [
+        -4.0,
+        4.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "rawValue": 5,
+      "topologyClass": "straight"
+    },
+    {
+      "assetId": "road_mask_05",
+      "coordinate": [
+        0,
+        2
+      ],
+      "originWorld": [
+        -4.0,
+        0.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "rawValue": 5,
+      "topologyClass": "straight"
+    },
+    {
+      "assetId": "road_mask_07",
+      "coordinate": [
+        4,
+        2
+      ],
+      "originWorld": [
+        -4.0,
+        -8.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "rawValue": 7,
+      "topologyClass": "tee"
+    },
+    {
+      "assetId": "road_mask_08",
+      "coordinate": [
+        5,
+        2
+      ],
+      "originWorld": [
+        -4.0,
+        -10.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "rawValue": 8,
+      "topologyClass": "end"
+    },
+    {
+      "assetId": "road_mask_06",
+      "coordinate": [
+        -5,
+        1
+      ],
+      "originWorld": [
+        -2.0,
+        10.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "rawValue": 6,
+      "topologyClass": "corner"
+    },
+    {
+      "assetId": "road_mask_13",
+      "coordinate": [
+        -4,
+        1
+      ],
+      "originWorld": [
+        -2.0,
+        8.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "rawValue": 13,
+      "topologyClass": "tee"
+    },
+    {
+      "assetId": "road_mask_05",
+      "coordinate": [
+        -2,
+        1
+      ],
+      "originWorld": [
+        -2.0,
+        4.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "rawValue": 5,
+      "topologyClass": "straight"
+    },
+    {
+      "assetId": "road_mask_05",
+      "coordinate": [
+        0,
+        1
+      ],
+      "originWorld": [
+        -2.0,
+        0.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "rawValue": 5,
+      "topologyClass": "straight"
+    },
+    {
+      "assetId": "road_mask_05",
+      "coordinate": [
+        4,
+        1
+      ],
+      "originWorld": [
+        -2.0,
+        -8.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "rawValue": 5,
+      "topologyClass": "straight"
+    },
+    {
+      "assetId": "road_mask_03",
+      "coordinate": [
+        -5,
+        0
+      ],
+      "originWorld": [
+        0.0,
+        10.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "rawValue": 3,
+      "topologyClass": "corner"
+    },
+    {
+      "assetId": "road_mask_15",
+      "coordinate": [
+        -4,
+        0
+      ],
+      "originWorld": [
+        0.0,
+        8.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "rawValue": 15,
+      "topologyClass": "crossing"
+    },
+    {
+      "assetId": "road_mask_10",
+      "coordinate": [
+        -3,
+        0
+      ],
+      "originWorld": [
+        0.0,
+        6.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "rawValue": 10,
+      "topologyClass": "straight"
+    },
+    {
+      "assetId": "road_mask_11",
+      "coordinate": [
+        -2,
+        0
+      ],
+      "originWorld": [
+        0.0,
+        4.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "rawValue": 11,
+      "topologyClass": "tee"
+    },
+    {
+      "assetId": "road_mask_10",
+      "coordinate": [
+        -1,
+        0
+      ],
+      "originWorld": [
+        0.0,
+        2.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "rawValue": 10,
+      "topologyClass": "straight"
+    },
+    {
+      "assetId": "road_mask_15",
+      "coordinate": [
+        0,
+        0
+      ],
+      "originWorld": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "rawValue": 15,
+      "topologyClass": "crossing"
+    },
+    {
+      "assetId": "road_mask_10",
+      "coordinate": [
+        1,
+        0
+      ],
+      "originWorld": [
+        0.0,
+        -2.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "rawValue": 10,
+      "topologyClass": "straight"
+    },
+    {
+      "assetId": "road_mask_14",
+      "coordinate": [
+        2,
+        0
+      ],
+      "originWorld": [
+        0.0,
+        -4.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "rawValue": 14,
+      "topologyClass": "tee"
+    },
+    {
+      "assetId": "road_mask_10",
+      "coordinate": [
+        3,
+        0
+      ],
+      "originWorld": [
+        0.0,
+        -6.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "rawValue": 10,
+      "topologyClass": "straight"
+    },
+    {
+      "assetId": "road_mask_15",
+      "coordinate": [
+        4,
+        0
+      ],
+      "originWorld": [
+        0.0,
+        -8.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "rawValue": 15,
+      "topologyClass": "crossing"
+    },
+    {
+      "assetId": "road_mask_12",
+      "coordinate": [
+        5,
+        0
+      ],
+      "originWorld": [
+        0.0,
+        -10.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "rawValue": 12,
+      "topologyClass": "corner"
+    },
+    {
+      "assetId": "road_mask_05",
+      "coordinate": [
+        -4,
+        -1
+      ],
+      "originWorld": [
+        2.0,
+        8.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "rawValue": 5,
+      "topologyClass": "straight"
+    },
+    {
+      "assetId": "road_mask_05",
+      "coordinate": [
+        0,
+        -1
+      ],
+      "originWorld": [
+        2.0,
+        0.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "rawValue": 5,
+      "topologyClass": "straight"
+    },
+    {
+      "assetId": "road_mask_05",
+      "coordinate": [
+        2,
+        -1
+      ],
+      "originWorld": [
+        2.0,
+        -4.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "rawValue": 5,
+      "topologyClass": "straight"
+    },
+    {
+      "assetId": "road_mask_07",
+      "coordinate": [
+        4,
+        -1
+      ],
+      "originWorld": [
+        2.0,
+        -8.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "rawValue": 7,
+      "topologyClass": "tee"
+    },
+    {
+      "assetId": "road_mask_09",
+      "coordinate": [
+        5,
+        -1
+      ],
+      "originWorld": [
+        2.0,
+        -10.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "rawValue": 9,
+      "topologyClass": "corner"
+    },
+    {
+      "assetId": "road_mask_02",
+      "coordinate": [
+        -5,
+        -2
+      ],
+      "originWorld": [
+        4.0,
+        10.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "rawValue": 2,
+      "topologyClass": "end"
+    },
+    {
+      "assetId": "road_mask_13",
+      "coordinate": [
+        -4,
+        -2
+      ],
+      "originWorld": [
+        4.0,
+        8.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "rawValue": 13,
+      "topologyClass": "tee"
+    },
+    {
+      "assetId": "road_mask_05",
+      "coordinate": [
+        0,
+        -2
+      ],
+      "originWorld": [
+        4.0,
+        0.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "rawValue": 5,
+      "topologyClass": "straight"
+    },
+    {
+      "assetId": "road_mask_05",
+      "coordinate": [
+        2,
+        -2
+      ],
+      "originWorld": [
+        4.0,
+        -4.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "rawValue": 5,
+      "topologyClass": "straight"
+    },
+    {
+      "assetId": "road_mask_05",
+      "coordinate": [
+        4,
+        -2
+      ],
+      "originWorld": [
+        4.0,
+        -8.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "rawValue": 5,
+      "topologyClass": "straight"
+    },
+    {
+      "assetId": "road_mask_03",
+      "coordinate": [
+        -4,
+        -3
+      ],
+      "originWorld": [
+        6.0,
+        8.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "rawValue": 3,
+      "topologyClass": "corner"
+    },
+    {
+      "assetId": "road_mask_10",
+      "coordinate": [
+        -3,
+        -3
+      ],
+      "originWorld": [
+        6.0,
+        6.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "rawValue": 10,
+      "topologyClass": "straight"
+    },
+    {
+      "assetId": "road_mask_10",
+      "coordinate": [
+        -2,
+        -3
+      ],
+      "originWorld": [
+        6.0,
+        4.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "rawValue": 10,
+      "topologyClass": "straight"
+    },
+    {
+      "assetId": "road_mask_10",
+      "coordinate": [
+        -1,
+        -3
+      ],
+      "originWorld": [
+        6.0,
+        2.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "rawValue": 10,
+      "topologyClass": "straight"
+    },
+    {
+      "assetId": "road_mask_15",
+      "coordinate": [
+        0,
+        -3
+      ],
+      "originWorld": [
+        6.0,
+        0.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "rawValue": 15,
+      "topologyClass": "crossing"
+    },
+    {
+      "assetId": "road_mask_10",
+      "coordinate": [
+        1,
+        -3
+      ],
+      "originWorld": [
+        6.0,
+        -2.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "rawValue": 10,
+      "topologyClass": "straight"
+    },
+    {
+      "assetId": "road_mask_11",
+      "coordinate": [
+        2,
+        -3
+      ],
+      "originWorld": [
+        6.0,
+        -4.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "rawValue": 11,
+      "topologyClass": "tee"
+    },
+    {
+      "assetId": "road_mask_10",
+      "coordinate": [
+        3,
+        -3
+      ],
+      "originWorld": [
+        6.0,
+        -6.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "rawValue": 10,
+      "topologyClass": "straight"
+    },
+    {
+      "assetId": "road_mask_09",
+      "coordinate": [
+        4,
+        -3
+      ],
+      "originWorld": [
+        6.0,
+        -8.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "rawValue": 9,
+      "topologyClass": "corner"
+    },
+    {
+      "assetId": "road_mask_01",
+      "coordinate": [
+        0,
+        -4
+      ],
+      "originWorld": [
+        8.0,
+        0.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "rawValue": 1,
+      "topologyClass": "end"
+    }
+  ],
+  "schema": "citysim.world-art.streetscape-continuous-connected-district-preview.v1",
+  "status": "source-only-review-evidence",
+  "surface": {
+    "centerlineGapWorld": 0.075,
+    "centerlineWidthWorld": 0.045,
+    "cornerRadiusWorld": 0.62,
+    "curbWidthWorld": 0.055,
+    "junctionLineStopWorld": 0.93,
+    "roadWidthWorld": 1.08,
+    "socketBleedWorld": 0.12,
+    "walkWidthWorld": 1.52
+  }
+}

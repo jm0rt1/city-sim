@@ -1,0 +1,214 @@
+{
+  "approvedFamilyContractOnly": true,
+  "artifacts": [
+    {
+      "bytes": 9621759,
+      "path": "preview/copper-row-commercial-block.blend",
+      "sha256": "30abc8040e3fe65b928691d1d472bed34b852a78b82079a4eb38bb0cb7b7ba75"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 800,
+          "maxX": 1279,
+          "maxY": 799,
+          "minX": 0,
+          "minY": 0,
+          "width": 1280
+        },
+        "lowestOpaqueRowTopOrigin": 799,
+        "opaquePixelCount": 1024000,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 844778,
+      "decodedRgbaSha256": "07ed3fef896d6b6eb9601e876ba348231272a0abe5d7e1d11fa06e6e15484fee",
+      "dimensions": [
+        1280,
+        800
+      ],
+      "path": "preview/copper-row-commercial-block-1280x800.png",
+      "sha256": "105bf0cd8437bc6ac38391e790a848483d119931b3d601796122f17846fbcad7"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 600,
+          "maxX": 899,
+          "maxY": 599,
+          "minX": 0,
+          "minY": 0,
+          "width": 900
+        },
+        "lowestOpaqueRowTopOrigin": 599,
+        "opaquePixelCount": 540000,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 455075,
+      "decodedRgbaSha256": "2a7bddf6d96654d2742c27d1c3dd8ead670992121ba0745a77915210923ada16",
+      "dimensions": [
+        900,
+        600
+      ],
+      "path": "preview/copper-row-commercial-block-900x600.png",
+      "sha256": "9ecd34e7e7b310cd2ec987b4d336bce30fa6d403d0a08136271ba8238621abf7"
+    }
+  ],
+  "camera": {
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0,
+    "orthoScale": 25.5,
+    "perAssetCompensation": "none",
+    "projection": "orthographic",
+    "targetWorld": [
+      0.0,
+      0.0,
+      2.7
+    ]
+  },
+  "cedarMarketReused": false,
+  "grid": {
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0,
+    "projectedTilePixels": [
+      88,
+      44
+    ],
+    "projection": "orthographic-2:1-dimetric",
+    "worldTileSize": 2.0
+  },
+  "layout": {
+    "placementCenters": [
+      [
+        -4,
+        4
+      ],
+      [
+        4,
+        4
+      ],
+      [
+        -4,
+        -4
+      ],
+      [
+        4,
+        -4
+      ]
+    ],
+    "roadAxes": "world-X-and-world-Y"
+  },
+  "lightingConvention": {
+    "color": [
+      1.0,
+      0.86,
+      0.72
+    ],
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldColor": [
+      0.2,
+      0.17,
+      0.14,
+      1.0
+    ],
+    "worldStrength": 0.72
+  },
+  "liveAsset": false,
+  "placements": [
+    {
+      "assetId": "market_arcade_midrise",
+      "footprintTiles": [
+        2,
+        2
+      ],
+      "meshCount": 136,
+      "originWorld": [
+        -4.0,
+        4.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "role": "approved-medium-sibling",
+      "sourceBlend": "FourViewProduction/Density/market_arcade_midrise/market_arcade_midrise.blend",
+      "sourceBlendSha256": "1ba20dc6af5d23bf57363c7997a623af81ac480a200a1436971bd91f200b4f3c"
+    },
+    {
+      "assetId": "sunbrick_market_lofts",
+      "footprintTiles": [
+        2,
+        2
+      ],
+      "meshCount": 174,
+      "originWorld": [
+        4.0,
+        4.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "role": "new-medium-candidate",
+      "sourceBlend": "FourViewProduction/CommercialVariety/sunbrick_market_lofts/sunbrick_market_lofts.blend",
+      "sourceBlendSha256": "0cdf8165c5bae7b7e29586a4d06fc245a247f155ae2963ff3d9e77c8e1643e97"
+    },
+    {
+      "assetId": "aurora_exchange_tower",
+      "footprintTiles": [
+        2,
+        2
+      ],
+      "meshCount": 159,
+      "originWorld": [
+        -4.0,
+        -4.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "role": "approved-high-sibling",
+      "sourceBlend": "FourViewProduction/Density/aurora_exchange_tower/aurora_exchange_tower.blend",
+      "sourceBlendSha256": "002e6abae41779059d84d8439f257c62cf53f69ef281a1628a08701b649bacdc"
+    },
+    {
+      "assetId": "copperglass_exchange_annex",
+      "footprintTiles": [
+        2,
+        2
+      ],
+      "meshCount": 178,
+      "originWorld": [
+        4.0,
+        -4.0,
+        0.0
+      ],
+      "perAssetTransformCompensation": "none",
+      "role": "new-high-candidate",
+      "sourceBlend": "FourViewProduction/CommercialVariety/copperglass_exchange_annex/copperglass_exchange_annex.blend",
+      "sourceBlendSha256": "c5e46fb38303cf6f947b18926b1a8fc55fd9ea5d51c1e409a4cc47200b4196aa"
+    }
+  ],
+  "schema": "citysim.world-art.commercial-variety-preview.v1",
+  "sourceFiles": [
+    {
+      "path": "build_and_render.py",
+      "sha256": "fa013e8d1a66e0617dd41fda98c7d49fe9df697bb48e12b07fab04c32e5399fe"
+    },
+    {
+      "path": "pipeline.json",
+      "sha256": "e9e35b417658ce001f37dda5180b76f66f81c538f306c84b96687c1282b42271"
+    },
+    {
+      "path": "run_pipeline.sh",
+      "sha256": "532d05471506c823329d1b29371fee92e772a60c1b591115d68685bbd84e24b2"
+    },
+    {
+      "path": "validate.py",
+      "sha256": "0215825c2e800bcbf274c5cfd7e36d9c5a0f6e1cd9e406e06ad19b6e5b26f9c4"
+    }
+  ],
+  "status": "source-only-review-evidence-not-live"
+}

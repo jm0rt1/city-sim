@@ -1,0 +1,95 @@
+{
+  "schema": "citysim.world-art.commercial-variety-four-view.v1",
+  "toolchain": {
+    "blenderVersion": "4.5.12",
+    "renderEngine": "BLENDER_EEVEE_NEXT"
+  },
+  "grid": {
+    "worldTileSize": 2.0,
+    "projectedTilePixels": [88, 44],
+    "projection": "orthographic-2:1-dimetric",
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0
+  },
+  "canvas": {
+    "width": 384,
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "footprintPivotPixel": [192, 300]
+  },
+  "cameraRig": {
+    "distance": 32.0,
+    "orthoScale": 12.341995,
+    "shiftY": 0.28125,
+    "views": [
+      {"name": "camNE", "azimuthDegrees": 45.0},
+      {"name": "camSE", "azimuthDegrees": 135.0},
+      {"name": "camSW", "azimuthDegrees": 225.0},
+      {"name": "camNW", "azimuthDegrees": 315.0}
+    ]
+  },
+  "root": {
+    "name": "AssetRoot",
+    "pivotName": "FootprintPivot",
+    "location": [0.0, 0.0, 0.0],
+    "rotationEuler": [0.0, 0.0, 0.0],
+    "scale": [1.0, 1.0, 1.0]
+  },
+  "lighting": {
+    "name": "CitySimKey",
+    "type": "AREA",
+    "location": [-6.0, -8.0, 12.0],
+    "energy": 1100.0,
+    "size": 5.0,
+    "color": [1.0, 0.86, 0.72],
+    "worldColor": [0.20, 0.17, 0.14, 1.0],
+    "worldStrength": 0.72
+  },
+  "assets": [
+    {
+      "assetId": "sunbrick_market_lofts",
+      "description": "Warm sunbrick mixed-use lofts with recessed shopfronts, stepped residential massing, fire escapes, roof conservatory, and market street dressing",
+      "zone": "commercial",
+      "densityLevel": 2,
+      "assetFamily": "medium-commercial",
+      "footprintTiles": [2, 2],
+      "minimumMeshCount": 95,
+      "minimumHeight": 5.4,
+      "maximumHeight": 6.4
+    },
+    {
+      "assetId": "copperglass_exchange_annex",
+      "description": "Stepped high-commercial office annex with a limestone lobby, horizontal copperglass bays, sky terraces, external frame, and offset lantern crown",
+      "zone": "commercial",
+      "densityLevel": 3,
+      "assetFamily": "high-commercial",
+      "footprintTiles": [2, 2],
+      "minimumMeshCount": 125,
+      "minimumHeight": 7.8,
+      "maximumHeight": 8.65
+    }
+  ],
+  "preview": {
+    "name": "copper-row-commercial-block",
+    "camera": {
+      "projection": "orthographic",
+      "azimuthDegrees": 45.0,
+      "elevationDegrees": 30.0,
+      "orthoScale": 25.5,
+      "targetWorld": [0.0, 0.0, 2.7]
+    },
+    "sizes": [[1280, 800], [900, 600]],
+    "roadAxes": "world-X-and-world-Y",
+    "placementScale": [1.0, 1.0, 1.0]
+  },
+  "postRenderCompensation": "none",
+  "provenance": {
+    "originalGeometry": true,
+    "sourcePixelsReused": false,
+    "cedarMarketReused": false,
+    "liveAsset": false,
+    "approvedStyleBaseline": ["market_arcade_midrise", "aurora_exchange_tower"],
+    "purpose": "source-only commercial variety candidates and review evidence"
+  }
+}

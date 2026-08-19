@@ -1,0 +1,162 @@
+{
+  "assets": {
+    "copperglass_exchange_annex": {
+      "deterministicCanonicalPngSha256": {
+        "copperglass_exchange_annex_camNE.png": "72ff8d40763c5a1c8026fb6387f360a6ffbe7b4e0a59a9fab0e80cb407849fba",
+        "copperglass_exchange_annex_camNW.png": "2e68a3fde110d709d7e0910e59187295b0e33232ce955d97edf89db522fd4be2",
+        "copperglass_exchange_annex_camSE.png": "d843d056a5db088e5c84bcbd133c97d6a2e19a586f64502d4f802aa376f3b372",
+        "copperglass_exchange_annex_camSW.png": "08caac718e3528100c0b995a2ef8e77d86dd7fc48c8372842b71f4cccf488345"
+      },
+      "deterministicContactSheetSha256": "97891c3432e4e54f8a4ee95630d36a74cb991f136c8f6ea2e2a3dabd14fb4d82",
+      "meshCount": 178,
+      "projectedAxisPixels": {
+        "camNE": [
+          [
+            -44,
+            22
+          ],
+          [
+            44,
+            22
+          ]
+        ],
+        "camNW": [
+          [
+            -44,
+            -22
+          ],
+          [
+            -44,
+            22
+          ]
+        ],
+        "camSE": [
+          [
+            44,
+            22
+          ],
+          [
+            44,
+            -22
+          ]
+        ],
+        "camSW": [
+          [
+            44,
+            -22
+          ],
+          [
+            -44,
+            -22
+          ]
+        ]
+      },
+      "worldBounds": {
+        "maximum": [
+          2.0,
+          2.0,
+          8.537500381469727
+        ],
+        "minimum": [
+          -2.0,
+          -2.0,
+          -0.20000000298023224
+        ]
+      }
+    },
+    "sunbrick_market_lofts": {
+      "deterministicCanonicalPngSha256": {
+        "sunbrick_market_lofts_camNE.png": "4afbf8ca7f94c612f33b09fb15ab72e44181cc2d510d28eb5956bb0a494c695f",
+        "sunbrick_market_lofts_camNW.png": "04a9bec5ae23cd1c436f8001079f728a109429847383154ee40295dba5ce15fd",
+        "sunbrick_market_lofts_camSE.png": "d20b8071be9f211b7df31e4478b46f52badcc3e6b9092ff8d88bad886ebdd52f",
+        "sunbrick_market_lofts_camSW.png": "242808caf46836ee6c38a70a2fe1992938548de5a7404bd7de963fdac234b671"
+      },
+      "deterministicContactSheetSha256": "563a853d0d2b03b35248f0cb3f5ea0772d618151ad968368fccc49ede90ccf50",
+      "meshCount": 174,
+      "projectedAxisPixels": {
+        "camNE": [
+          [
+            -44,
+            22
+          ],
+          [
+            44,
+            22
+          ]
+        ],
+        "camNW": [
+          [
+            -44,
+            -22
+          ],
+          [
+            -44,
+            22
+          ]
+        ],
+        "camSE": [
+          [
+            44,
+            22
+          ],
+          [
+            44,
+            -22
+          ]
+        ],
+        "camSW": [
+          [
+            44,
+            -22
+          ],
+          [
+            -44,
+            -22
+          ]
+        ]
+      },
+      "worldBounds": {
+        "maximum": [
+          2.0,
+          2.0,
+          5.710000038146973
+        ],
+        "minimum": [
+          -2.0,
+          -2.009999990463257,
+          -0.20000000298023224
+        ]
+      }
+    }
+  },
+  "blenderVersion": "4.5.12",
+  "contract": {
+    "cameraOrder": [
+      "camNE",
+      "camSE",
+      "camSW",
+      "camNW"
+    ],
+    "deterministicRerender": "byte-identical canonical views, contact sheets, and composed previews",
+    "pivotPixels": [
+      192,
+      300
+    ],
+    "postRenderCompensation": "none",
+    "projectedTilePixels": [
+      88,
+      44
+    ]
+  },
+  "previewDeterministicRerenderSha256": {
+    "copper-row-commercial-block-1280x800.png": "105bf0cd8437bc6ac38391e790a848483d119931b3d601796122f17846fbcad7",
+    "copper-row-commercial-block-900x600.png": "9ecd34e7e7b310cd2ec987b4d336bce30fa6d403d0a08136271ba8238621abf7"
+  },
+  "previewPngSha256": {
+    "copper-row-commercial-block-1280x800.png": "105bf0cd8437bc6ac38391e790a848483d119931b3d601796122f17846fbcad7",
+    "copper-row-commercial-block-900x600.png": "9ecd34e7e7b310cd2ec987b4d336bce30fa6d403d0a08136271ba8238621abf7"
+  },
+  "schema": "citysim.world-art.commercial-variety-validation.v1",
+  "status": "PASS"
+}
+COMMERCIAL_VARIETY_VALIDATION_PASS

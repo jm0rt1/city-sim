@@ -1,0 +1,277 @@
+{
+  "approvedStyleBaseline": [
+    "market_arcade_midrise",
+    "aurora_exchange_tower"
+  ],
+  "artifacts": [
+    {
+      "bytes": 2506678,
+      "path": "copperglass_exchange_annex.blend",
+      "sha256": "c5e46fb38303cf6f947b18926b1a8fc55fd9ea5d51c1e409a4cc47200b4196aa"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 284,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 65,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 31979,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 86811,
+      "decodedRgbaSha256": "0dc2c690901c87cd2706ac198464235f34d4414c56a33e35194f2fb451a25f19",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/copperglass_exchange_annex_camNE.png",
+      "sha256": "72ff8d40763c5a1c8026fb6387f360a6ffbe7b4e0a59a9fab0e80cb407849fba"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 291,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 58,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 32510,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 95429,
+      "decodedRgbaSha256": "f1eee3e8771134a7544354deea42fedbc0b6ac00c659a5599a5c39c94c88496c",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/copperglass_exchange_annex_camSE.png",
+      "sha256": "d843d056a5db088e5c84bcbd133c97d6a2e19a586f64502d4f802aa376f3b372"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 303,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 46,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 33331,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 100647,
+      "decodedRgbaSha256": "be01d69a6e298a331c4a32af6a4faaa429de48ce7250f2789bc20ed1831da262",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/copperglass_exchange_annex_camSW.png",
+      "sha256": "08caac718e3528100c0b995a2ef8e77d86dd7fc48c8372842b71f4cccf488345"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 295,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 54,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 32348,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 91197,
+      "decodedRgbaSha256": "b4f4e9d5c53da41f6c97e1349fc64fd35ade35a744ca12a2d3c82f73cb05da0c",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/copperglass_exchange_annex_camNW.png",
+      "sha256": "2e68a3fde110d709d7e0910e59187295b0e33232ce955d97edf89db522fd4be2"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 782,
+          "maxX": 783,
+          "maxY": 839,
+          "minX": 0,
+          "minY": 58,
+          "width": 784
+        },
+        "lowestOpaqueRowTopOrigin": 839,
+        "opaquePixelCount": 173176,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 346346,
+      "decodedRgbaSha256": "89f43475bafb0507ec05e703ed10bce93d107c06d2f22bc7551041c0c2de3542",
+      "dimensions": [
+        784,
+        840
+      ],
+      "path": "copperglass_exchange_annex_contact-sheet.png",
+      "sha256": "97891c3432e4e54f8a4ee95630d36a74cb991f136c8f6ea2e2a3dabd14fb4d82"
+    }
+  ],
+  "assetFamily": "high-commercial",
+  "assetId": "copperglass_exchange_annex",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "cameraRig": {
+    "distance": 32.0,
+    "orthoScale": 12.341995,
+    "shiftY": 0.28125,
+    "views": [
+      {
+        "azimuthDegrees": 45.0,
+        "name": "camNE"
+      },
+      {
+        "azimuthDegrees": 135.0,
+        "name": "camSE"
+      },
+      {
+        "azimuthDegrees": 225.0,
+        "name": "camSW"
+      },
+      {
+        "azimuthDegrees": 315.0,
+        "name": "camNW"
+      }
+    ]
+  },
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "cedarMarketReused": false,
+  "contactSheetLayout": [
+    [
+      "camNE",
+      "camSE"
+    ],
+    [
+      "camSW",
+      "camNW"
+    ]
+  ],
+  "densityLevel": 3,
+  "description": "Stepped high-commercial office annex with a limestone lobby, horizontal copperglass bays, sky terraces, external frame, and offset lantern crown",
+  "grid": {
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0,
+    "projectedTilePixels": [
+      88,
+      44
+    ],
+    "projection": "orthographic-2:1-dimetric",
+    "worldTileSize": 2.0
+  },
+  "lightingConvention": {
+    "color": [
+      1.0,
+      0.86,
+      0.72
+    ],
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldColor": [
+      0.2,
+      0.17,
+      0.14,
+      1.0
+    ],
+    "worldStrength": 0.72
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "perViewCompensation": {
+    "crop": false,
+    "offsetPixels": [
+      0,
+      0
+    ],
+    "rotationDegrees": 0.0,
+    "scale": 1.0,
+    "skew": [
+      0.0,
+      0.0
+    ]
+  },
+  "pipelineSchema": "citysim.world-art.commercial-variety-four-view.v1",
+  "postRenderCompensation": "none",
+  "root": {
+    "location": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "name": "AssetRoot",
+    "pivotName": "FootprintPivot",
+    "rotationEuler": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "schema": "citysim.world-art.commercial-variety-asset.v1",
+  "sourceFiles": [
+    {
+      "path": "build_and_render.py",
+      "sha256": "fa013e8d1a66e0617dd41fda98c7d49fe9df697bb48e12b07fab04c32e5399fe"
+    },
+    {
+      "path": "pipeline.json",
+      "sha256": "e9e35b417658ce001f37dda5180b76f66f81c538f306c84b96687c1282b42271"
+    },
+    {
+      "path": "run_pipeline.sh",
+      "sha256": "532d05471506c823329d1b29371fee92e772a60c1b591115d68685bbd84e24b2"
+    },
+    {
+      "path": "validate.py",
+      "sha256": "0215825c2e800bcbf274c5cfd7e36d9c5a0f6e1cd9e406e06ad19b6e5b26f9c4"
+    }
+  ],
+  "sourcePixelsReused": false,
+  "status": "source-only-not-live",
+  "worldFootprintTiles": [
+    2,
+    2
+  ],
+  "zone": "commercial"
+}

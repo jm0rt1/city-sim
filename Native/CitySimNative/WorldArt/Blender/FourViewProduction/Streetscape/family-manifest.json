@@ -93,14 +93,14 @@
     ],
     "worldStrength": 0.72
   },
-  "liveAsset": false,
+  "liveAsset": true,
   "maskCount": 16,
   "masks": [
     {
       "assetId": "road_mask_00",
       "directions": [],
       "manifest": "road_mask_00/manifest.json",
-      "manifestSha256": "815b96b72cb09f4ddd1c104806eef41f5777fcc01b96cd58ca0e2ec193167e95",
+      "manifestSha256": "0ed96148ded9d3bf9ff765df92a1d536d07a07b13496b3c9cac65adb61c1982b",
       "rawValue": 0,
       "topologyClass": "isolated"
     },
@@ -110,7 +110,7 @@
         "north"
       ],
       "manifest": "road_mask_01/manifest.json",
-      "manifestSha256": "68ee4a6ed4385ff35f2d5e24a86a6853a48075949eab78439cf8020784fe59ec",
+      "manifestSha256": "3744e74cca861ddde773ff8b51aa43932bbbadd561edab9a311bb33c0d9e0da8",
       "rawValue": 1,
       "topologyClass": "end"
     },
@@ -120,7 +120,7 @@
         "east"
       ],
       "manifest": "road_mask_02/manifest.json",
-      "manifestSha256": "84ed03c0f2411b67de3c78d114bd7ce8af614a4460484994c4ec492a884e17aa",
+      "manifestSha256": "117023e7748c2f62c448bff88ffed9092e893dfaf28d3d3ecb094684a24ad239",
       "rawValue": 2,
       "topologyClass": "end"
     },
@@ -131,7 +131,7 @@
         "east"
       ],
       "manifest": "road_mask_03/manifest.json",
-      "manifestSha256": "c58fbd2384f2a3547c6a5935ea2c0da30f1a4ac13ce148945360531b40421876",
+      "manifestSha256": "534f955f293e32571209e7bacf5282ff242947b9883f747c2839f3002e92f33e",
       "rawValue": 3,
       "topologyClass": "corner"
     },
@@ -141,7 +141,7 @@
         "south"
       ],
       "manifest": "road_mask_04/manifest.json",
-      "manifestSha256": "c4de81c938a2efefe2d5067164c1940ffa0b506438767d9425db6ceb1869f053",
+      "manifestSha256": "b30c83d8abfe09dfa47e13e4b846ef5f9a7b5a350e581eb1ef082d02db56d0a1",
       "rawValue": 4,
       "topologyClass": "end"
     },
@@ -152,7 +152,7 @@
         "south"
       ],
       "manifest": "road_mask_05/manifest.json",
-      "manifestSha256": "62581099ee086939b90dc2385c9ecaf7d5a165ede43ac70f9e603779542b95c9",
+      "manifestSha256": "22cd917e887fb6e195ea2411a47c19dc2579f3943520b15aee8bee52d8053871",
       "rawValue": 5,
       "topologyClass": "straight"
     },
@@ -163,7 +163,7 @@
         "south"
       ],
       "manifest": "road_mask_06/manifest.json",
-      "manifestSha256": "3942b5a21114cf0d8d95ae406dd4f6dd2c451365d550961d0d382baf484ec01a",
+      "manifestSha256": "b3a0e79684228665b810d9f6db7f80e2fd0b52a5a21706a384807f766c309dae",
       "rawValue": 6,
       "topologyClass": "corner"
     },
@@ -175,7 +175,7 @@
         "south"
       ],
       "manifest": "road_mask_07/manifest.json",
-      "manifestSha256": "de4a20d526311610751cf9b6637880e7b9ccd8f800f089221838d31b3c2da0f9",
+      "manifestSha256": "f10a6c20e241b265442d2d9fac03a1b460dfb812c90e9b50eae625fbc8e11bce",
       "rawValue": 7,
       "topologyClass": "tee"
     },
@@ -185,7 +185,7 @@
         "west"
       ],
       "manifest": "road_mask_08/manifest.json",
-      "manifestSha256": "61ad1511a5c482943359e95582ba60c59ed30bc4bf580cec731e1e7f9c1f3564",
+      "manifestSha256": "702285cfb6d03fc997c8dd7c709aee40c002e7fd9206a76cde2fb06ea6bdab04",
       "rawValue": 8,
       "topologyClass": "end"
     },
@@ -196,7 +196,7 @@
         "west"
       ],
       "manifest": "road_mask_09/manifest.json",
-      "manifestSha256": "7e1f3c5ad575d95f6ed557f954fbc8a6010e068fe0e45a69e4059520f441e81a",
+      "manifestSha256": "bdb420212815ea279ad616da8599083f04ab8951e1b4b4b71c2ca69237b4beab",
       "rawValue": 9,
       "topologyClass": "corner"
     },
@@ -207,7 +207,7 @@
         "west"
       ],
       "manifest": "road_mask_10/manifest.json",
-      "manifestSha256": "d46ba4ed8c5614aa17e058a873d8d95508dc44013d1cb3d47491035e96b1c176",
+      "manifestSha256": "d872a0826bd0da64024a1ada975f19ec2cb1262a9d114bae856c8ea26f082fc8",
       "rawValue": 10,
       "topologyClass": "straight"
     },
@@ -219,7 +219,7 @@
         "west"
       ],
       "manifest": "road_mask_11/manifest.json",
-      "manifestSha256": "b4f0a2dd9477ab5b9747140035f1323364bffe25e25d5d36ac547f40dca2ab5f",
+      "manifestSha256": "c6961504522c3c1bca1ce9350d6b6b02683a5e291b61d2ed71eda55b1f81c755",
       "rawValue": 11,
       "topologyClass": "tee"
     },
@@ -230,7 +230,7 @@
         "west"
       ],
       "manifest": "road_mask_12/manifest.json",
-      "manifestSha256": "7c8ab11c38bbe526b9646252e8110ba4a34c7ab3a4aa03e7c968e861090e597b",
+      "manifestSha256": "ec6ce40cd2646675243c4798dcb0d3d92610aaf6a7d83ba9e5d4fe7f8eb2068a",
       "rawValue": 12,
       "topologyClass": "corner"
     },
@@ -242,7 +242,7 @@
         "west"
       ],
       "manifest": "road_mask_13/manifest.json",
-      "manifestSha256": "d3d418bc75515a2367ca747af6800d166390e3ae4c37103c681cb95e662d0e87",
+      "manifestSha256": "c9c818c2d49f81451d2a7714753f2595cccc38e61ae72923a165b68b2277948d",
       "rawValue": 13,
       "topologyClass": "tee"
     },
@@ -254,7 +254,7 @@
         "west"
       ],
       "manifest": "road_mask_14/manifest.json",
-      "manifestSha256": "04128c3b3eb32cf06643a0960c49e0e713c107471771b4aa6fedf9166dad2a0b",
+      "manifestSha256": "56f0c81a9af521969d9932f56fe62990561420a1f90fb544a31c33f614ab5a93",
       "rawValue": 14,
       "topologyClass": "tee"
     },
@@ -267,7 +267,7 @@
         "west"
       ],
       "manifest": "road_mask_15/manifest.json",
-      "manifestSha256": "65f20911373f14dc158c9fd0aa6f8e778979758373200c2105f7e2201662818a",
+      "manifestSha256": "5e7b4fc67bcf66399ca6d5c7c2a4103b110f6b50ddb1c2ab6bb2fc995650a197",
       "rawValue": 15,
       "topologyClass": "crossing"
     }
@@ -276,9 +276,9 @@
   "previewManifest": "preview/manifest.json",
   "provenance": {
     "cedarMarketReused": false,
-    "liveAsset": false,
+    "liveAsset": true,
     "originalGeometry": true,
-    "purpose": "source-only road and public-realm family production",
+    "purpose": "canonical live-game road and public-realm family",
     "sourcePixelsReused": false
   },
   "roadBits": {
@@ -291,11 +291,11 @@
   "sourceFiles": [
     {
       "path": "build_and_render.py",
-      "sha256": "08832ee9dd8335106069e9c39e6780c46966c38dd28d42063523aaf02c8e4656"
+      "sha256": "122a0736db0659a479769ab5084f35675d995b8dfaf25b121af8db75f7a7f53d"
     },
     {
       "path": "pipeline.json",
-      "sha256": "168ac59a3224a72c6daffd46cc994f0c6eec78b5190a1e227af782eba37e196e"
+      "sha256": "11ee64b343836f2c342d4ae5f211db9aa98f9073fa484f9a9e48e6799c03e03c"
     },
     {
       "path": "run_pipeline.sh",
@@ -303,10 +303,10 @@
     },
     {
       "path": "validate.py",
-      "sha256": "3f3fde5cd7ee7c39e993f55ab2a67131041a097c5d4d61678a33ad5e5cb60bd9"
+      "sha256": "32d6a2f9a0df629d5c945fd9b7d7a06d5b0c0bd7fb162b55a1dedfce418b1384"
     }
   ],
-  "status": "source-only-not-live",
+  "status": "live-game-catalog",
   "validation": {
     "deterministicRerender": "64-canonical-views-and-two-preview-proofs-byte-identical",
     "report": "validation/validator-output.txt",

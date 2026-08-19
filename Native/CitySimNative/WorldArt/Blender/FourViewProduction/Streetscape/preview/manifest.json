@@ -1,9 +1,9 @@
 {
   "artifacts": [
     {
-      "bytes": 3208742,
+      "bytes": 1867791,
       "path": "preview/civic-works-connected-district.blend",
-      "sha256": "851c41350d964819d5de8b24681f1e6edefc21ce5a8f25a4003dcb9d64a775ff"
+      "sha256": "904cbc584ddc3a71cb9fccf5844dbec5212d7f53d25cdf43e8db403a2a0a1444"
     },
     {
       "alpha": {
@@ -19,14 +19,14 @@
         "opaquePixelCount": 1024000,
         "pivotPixelAlpha": 255
       },
-      "bytes": 754282,
-      "decodedRgbaSha256": "c672da19507c5aae41592c0603e4dead3bbaa001c264f906e69afd9cf2193745",
+      "bytes": 676156,
+      "decodedRgbaSha256": "09a89a5b782957fd5a85aa4d057cb1418096b35c4974ab7f6a8203fb7b68d190",
       "dimensions": [
         1280,
         800
       ],
       "path": "preview/civic-works-connected-district-1280x800.png",
-      "sha256": "9fa86c28993f4d7a9f19596f051d49ad2967681332066b1d69a74a78a406f876"
+      "sha256": "dd4ef4c2a122ca2c185fa7e8d1f3c157b80a71894d472430b59e8e6e1a563642"
     },
     {
       "alpha": {
@@ -42,14 +42,14 @@
         "opaquePixelCount": 540000,
         "pivotPixelAlpha": 255
       },
-      "bytes": 402791,
-      "decodedRgbaSha256": "0b4322b55a61ab9cc9640ae33e42a1acc2e154898440e59f3fb62ec842bf00c6",
+      "bytes": 363290,
+      "decodedRgbaSha256": "da6a2e51f31c0d2c2b2fed65b9942edbf795c01fa9f014c4a6dbc799b07333be",
       "dimensions": [
         900,
         600
       ],
       "path": "preview/civic-works-connected-district-900x600.png",
-      "sha256": "c1d5d834636e19cb415e93736293c447dc51cf1bee2ab4a86f6bd7465f25bfef"
+      "sha256": "a42b183d9364d9ddcf8ec03df9a098acb35a1a1da2d6e779675eb6f97e6297e9"
     }
   ],
   "camera": {

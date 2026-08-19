@@ -96,16 +96,16 @@ def validate_scene(mask_data):
     require(root.get("sourcePixelsReused") is False and root.get("cedarMarketReused") is False, "PROVENANCE_MISMATCH", asset_id)
 
     meshes = [obj for obj in bpy.data.objects if obj.type == "MESH"]
-    require(len(meshes) >= 14, "GEOMETRY_TOO_SIMPLE", f"{asset_id}: {len(meshes)}")
+    require(len(meshes) >= 6, "GEOMETRY_TOO_SIMPLE", f"{asset_id}: {len(meshes)}")
     for obj in meshes:
         require(obj.parent == root, "MESH_OUTSIDE_ROOT", obj.name)
         vector(obj.location, (0, 0, 0), 1e-7, obj.name + ".location")
         vector(obj.rotation_euler, (0, 0, 0), 1e-7, obj.name + ".rotation")
         vector(obj.scale, (1, 1, 1), 1e-7, obj.name + ".scale")
-    sidewalk = bpy.data.objects.get("SidewalkCell")
-    require(sidewalk is not None, "MISSING_WORLD_CELL", asset_id)
-    bounds = mesh_bounds(sidewalk)
-    vector((bounds["minX"], bounds["maxX"], bounds["minY"], bounds["maxY"]), (-1, 1, -1, 1), 1e-7, "worldCellBounds")
+    shoulder = bpy.data.objects.get("RoadShoulderCore")
+    require(shoulder is not None, "MISSING_ROAD_SHOULDER", asset_id)
+    bounds = mesh_bounds(shoulder)
+    vector((bounds["minX"], bounds["maxX"], bounds["minY"], bounds["maxY"]), (-0.52, 0.52, -0.52, 0.52), 1e-7, "roadShoulderBounds")
 
     socket_report = {}
     for direction, spec in DIRECTIONS.items():
@@ -174,7 +174,7 @@ def validate_manifest(mask_data):
     require(data["roadConnectionMask"]["rawValue"] == mask_data["rawValue"], "MANIFEST_MASK_MISMATCH", path)
     require(data["roadConnectionMask"]["directions"] == mask_data["directions"], "MANIFEST_DIRECTIONS_MISMATCH", path)
     require(data["roadConnectionMask"]["topologyClass"] == mask_data["topologyClass"], "MANIFEST_TOPOLOGY_MISMATCH", path)
-    require(data["status"] == "source-only-not-live" and data["liveAsset"] is False, "MANIFEST_STATUS_MISMATCH", path)
+    require(data["status"] == "live-game-catalog" and data["liveAsset"] is True, "MANIFEST_STATUS_MISMATCH", path)
     require(data["originalGeometry"] is True and data["sourcePixelsReused"] is False and data["cedarMarketReused"] is False, "MANIFEST_PROVENANCE_MISMATCH", path)
     require(data["postRenderCompensation"] == "none" and data["transforms"]["perMaskCompensation"] == "none", "MANIFEST_COMPENSATION_FORBIDDEN", path)
     require(data["perViewCompensation"] == {"crop": False, "offsetPixels": [0, 0], "rotationDegrees": 0.0, "scale": 1.0, "skew": [0.0, 0.0]}, "PER_VIEW_COMPENSATION_FORBIDDEN", path)
@@ -241,6 +241,7 @@ def validate_family_manifest():
     require(path.is_file(), "MISSING_FAMILY_MANIFEST", path)
     data = json.loads(path.read_text())
     require(data["maskCount"] == 16 and data["canonicalViewCount"] == 64, "FAMILY_CARDINALITY_MISMATCH", path)
+    require(data["status"] == "live-game-catalog" and data["liveAsset"] is True, "FAMILY_STATUS_MISMATCH", path)
     require([item["rawValue"] for item in data["masks"]] == list(range(16)), "FAMILY_MASK_COVERAGE_MISMATCH", path)
     for source in data["sourceFiles"]:
         source_path = HERE / source["path"]

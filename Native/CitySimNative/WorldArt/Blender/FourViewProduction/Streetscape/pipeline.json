@@ -82,7 +82,7 @@
     "originalGeometry": true,
     "sourcePixelsReused": false,
     "cedarMarketReused": false,
-    "liveAsset": false,
-    "purpose": "source-only road and public-realm family production"
+    "liveAsset": true,
+    "purpose": "canonical live-game road and public-realm family"
   }
 }

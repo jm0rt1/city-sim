@@ -2690,7 +2690,9 @@ final class CitySimulationTests: XCTestCase {
                 $0 = CityTile(coordinate: coordinate, kind: .empty)
             }
         }
-        for y in [6, 9, 12, 15, 18, 21] {
+        // Four generous urban blocks keep the road network legible and give
+        // the admitted building silhouettes room to read at game scale.
+        for y in [6, 11, 16, 21] {
             for x in 3...23 {
                 let coordinate = GridCoordinate(x: x, y: y)
                 state.updateTile(at: coordinate) {
@@ -2698,7 +2700,7 @@ final class CitySimulationTests: XCTestCase {
                 }
             }
         }
-        for x in [4, 7, 10, 13, 16, 19, 22] {
+        for x in [4, 10, 16, 22] {
             for y in 5...22 {
                 let coordinate = GridCoordinate(x: x, y: y)
                 state.updateTile(at: coordinate) {

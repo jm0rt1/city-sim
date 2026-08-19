@@ -87,6 +87,28 @@ def mesh_box(root, name, center, dimensions, mat, properties=None):
     return obj
 
 
+def mesh_plane(root, name, center, dimensions, mat, properties=None):
+    """Create a shadow-seam-free registered road surface."""
+    cx, cy, cz = center
+    dx, dy = (value / 2.0 for value in dimensions)
+    vertices = [
+        (cx - dx, cy - dy, cz),
+        (cx + dx, cy - dy, cz),
+        (cx + dx, cy + dy, cz),
+        (cx - dx, cy + dy, cz),
+    ]
+    mesh = bpy.data.meshes.new(name + "Mesh")
+    mesh.from_pydata(vertices, [], [(0, 1, 2, 3)])
+    mesh.materials.append(mat)
+    obj = bpy.data.objects.new(name, mesh)
+    bpy.context.collection.objects.link(obj)
+    obj.parent = root
+    if properties:
+        for key, value in properties.items():
+            obj[key] = value
+    return obj
+
+
 def mesh_cylinder(root, name, center, radius, depth, mat, vertices=20, properties=None):
     cx, cy, cz = center
     half = depth / 2.0
@@ -229,79 +251,64 @@ def add_socket(root, direction):
 def add_arm(root, direction, mats, center=(0.0, 0.0), prefix=""):
     ox, oy = center
     road_width = 0.84
+    shoulder_width = 1.04
     inner = 0.36
     length = 1.0 - inner
     if direction == "north":
         arm_center, dimensions = (ox, oy + (inner + 1.0) / 2.0, 0.035), (road_width, length, 0.07)
-        line_center, line_dimensions = (ox, oy + 0.72, 0.075), (0.045, 0.36, 0.012)
+        shoulder_dimensions = (shoulder_width, length, 0.055)
         curb_specs = [((ox - 0.47, oy + 0.68, 0.07), (0.10, 0.64, 0.14)), ((ox + 0.47, oy + 0.68, 0.07), (0.10, 0.64, 0.14))]
-        drain_specs = [((ox - 0.31, oy + 0.86, 0.079), (0.13, 0.10, 0.018)), ((ox + 0.31, oy + 0.86, 0.079), (0.13, 0.10, 0.018))]
     elif direction == "south":
         arm_center, dimensions = (ox, oy - (inner + 1.0) / 2.0, 0.035), (road_width, length, 0.07)
-        line_center, line_dimensions = (ox, oy - 0.72, 0.075), (0.045, 0.36, 0.012)
+        shoulder_dimensions = (shoulder_width, length, 0.055)
         curb_specs = [((ox - 0.47, oy - 0.68, 0.07), (0.10, 0.64, 0.14)), ((ox + 0.47, oy - 0.68, 0.07), (0.10, 0.64, 0.14))]
-        drain_specs = [((ox - 0.31, oy - 0.86, 0.079), (0.13, 0.10, 0.018)), ((ox + 0.31, oy - 0.86, 0.079), (0.13, 0.10, 0.018))]
     elif direction == "east":
         arm_center, dimensions = (ox + (inner + 1.0) / 2.0, oy, 0.035), (length, road_width, 0.07)
-        line_center, line_dimensions = (ox + 0.72, oy, 0.075), (0.36, 0.045, 0.012)
+        shoulder_dimensions = (length, shoulder_width, 0.055)
         curb_specs = [((ox + 0.68, oy - 0.47, 0.07), (0.64, 0.10, 0.14)), ((ox + 0.68, oy + 0.47, 0.07), (0.64, 0.10, 0.14))]
-        drain_specs = [((ox + 0.86, oy - 0.31, 0.079), (0.10, 0.13, 0.018)), ((ox + 0.86, oy + 0.31, 0.079), (0.10, 0.13, 0.018))]
     else:
         arm_center, dimensions = (ox - (inner + 1.0) / 2.0, oy, 0.035), (length, road_width, 0.07)
-        line_center, line_dimensions = (ox - 0.72, oy, 0.075), (0.36, 0.045, 0.012)
+        shoulder_dimensions = (length, shoulder_width, 0.055)
         curb_specs = [((ox - 0.68, oy - 0.47, 0.07), (0.64, 0.10, 0.14)), ((ox - 0.68, oy + 0.47, 0.07), (0.64, 0.10, 0.14))]
-        drain_specs = [((ox - 0.86, oy - 0.31, 0.079), (0.10, 0.13, 0.018)), ((ox - 0.86, oy + 0.31, 0.079), (0.10, 0.13, 0.018))]
     properties = {"roadDirection": direction, "connectionBit": DIRECTIONS[direction]["bit"], "reachesBoundary": True}
-    mesh_box(root, prefix + "RoadArm" + direction.capitalize(), arm_center, dimensions, mats["asphalt"], properties)
-    mesh_box(root, prefix + "CenterLine" + direction.capitalize(), line_center, line_dimensions, mats["yellow"])
+    mesh_plane(root, prefix + "RoadShoulder" + direction.capitalize(), (arm_center[0], arm_center[1], 0.039), shoulder_dimensions[:2], mats["sidewalk"])
+    mesh_plane(root, prefix + "RoadArm" + direction.capitalize(), (arm_center[0], arm_center[1], 0.07), dimensions[:2], mats["asphalt"], properties)
     for index, (location, size) in enumerate(curb_specs):
-        mesh_box(root, f"{prefix}Curb{direction.capitalize()}{index}", location, size, mats["curb"])
-    for index, (location, size) in enumerate(drain_specs):
-        mesh_box(root, f"{prefix}Drain{direction.capitalize()}{index}", location, size, mats["iron"], {"drainageAtSocket": direction})
+        mesh_plane(root, f"{prefix}Curb{direction.capitalize()}{index}", (location[0], location[1], 0.082), size[:2], mats["curb"])
 
 
 def build_road_geometry(root, mask_data, mats, center=(0.0, 0.0), prefix="", include_sockets=True):
     ox, oy = center
     raw = mask_data["rawValue"]
     directions = mask_data["directions"]
-    mesh_box(root, prefix + "SidewalkCell", (ox, oy, -0.015), (2.0, 2.0, 0.11), mats["sidewalk"], {"worldCell": [2.0, 2.0]})
-    mesh_box(root, prefix + "AsphaltCore", (ox, oy, 0.035), (0.84, 0.84, 0.07), mats["asphalt"], {"roadMaskRawValue": raw})
+    # Roads are transparent socket pieces, not opaque square plates. A compact
+    # shoulder follows the corridor while the renderer-owned terrain remains
+    # visible between streets, removing the repeated checkerboard effect.
+    mesh_plane(root, prefix + "RoadShoulderCore", (ox, oy, 0.039), (1.04, 1.04), mats["sidewalk"], {"worldCell": [2.0, 2.0]})
+    mesh_plane(root, prefix + "AsphaltCore", (ox, oy, 0.07), (0.84, 0.84), mats["asphalt"], {"roadMaskRawValue": raw})
     for direction in directions:
         add_arm(root, direction, mats, center, prefix)
         if include_sockets:
             add_socket(root, direction)
-    # Boundary scoring proves an absent side remains closed public realm rather than a hidden socket.
+    # Cap only the central roadbed on closed sides. Full-cell boundary scoring
+    # made adjacent tiles read as a collage and is intentionally absent.
     absent = [name for name in DIRECTIONS if name not in directions]
     for direction in absent:
         if direction in ("north", "south"):
-            y = oy + (0.94 if direction == "north" else -0.94)
-            mesh_box(root, f"{prefix}ClosedEdge{direction.capitalize()}", (ox, y, 0.055), (1.76, 0.025, 0.012), mats["brick"], {"closedBoundary": direction})
+            y = oy + (0.47 if direction == "north" else -0.47)
+            mesh_plane(root, f"{prefix}ClosedEdge{direction.capitalize()}", (ox, y, 0.082), (1.04, 0.10), mats["curb"], {"closedBoundary": direction})
         else:
-            x = ox + (0.94 if direction == "east" else -0.94)
-            mesh_box(root, f"{prefix}ClosedEdge{direction.capitalize()}", (x, oy, 0.055), (0.025, 1.76, 0.012), mats["brick"], {"closedBoundary": direction})
-    # Sidewalk scoring and a grounded utility cover make every tile visibly authored.
-    for index, offset in enumerate((-0.72, 0.72)):
-        mesh_box(root, f"{prefix}SidewalkScoreX{index}", (ox + offset, oy, 0.047), (0.018, 1.82, 0.008), mats["curb"])
-        mesh_box(root, f"{prefix}SidewalkScoreY{index}", (ox, oy + offset, 0.047), (1.82, 0.018, 0.008), mats["curb"])
-    mesh_cylinder(root, prefix + "UtilityCover", (ox + 0.22, oy - 0.18, 0.078), 0.115, 0.018, mats["iron"], vertices=20)
-    mesh_box(root, prefix + "AsphaltWear", (ox - 0.16, oy + 0.18, 0.076), (0.24, 0.10, 0.008), mats["patch"])
+            x = ox + (0.47 if direction == "east" else -0.47)
+            mesh_plane(root, f"{prefix}ClosedEdge{direction.capitalize()}", (x, oy, 0.082), (0.10, 1.04), mats["curb"], {"closedBoundary": direction})
     if raw == 0:
-        # Deliberate isolated public-works pad, not an accidental missing road.
+        # Deliberate isolated paved turnaround, not an accidental missing road.
         for index, (x, y) in enumerate(((-0.50, -0.50), (0.50, -0.50), (-0.50, 0.50), (0.50, 0.50))):
             mesh_cylinder(root, f"{prefix}IsolationBollard{index}", (ox + x, oy + y, 0.17), 0.055, 0.25, mats["yellow"], vertices=12)
-        mesh_box(root, prefix + "IsolationPadMark", (ox, oy, 0.078), (0.38, 0.05, 0.012), mats["white"])
-    elif len(directions) >= 3:
-        # Restrained stop bars keep tees and the crossing legible at game scale.
-        for direction in directions:
-            if direction == "north":
-                location, size = (ox, oy + 0.49, 0.082), (0.72, 0.055, 0.012)
-            elif direction == "south":
-                location, size = (ox, oy - 0.49, 0.082), (0.72, 0.055, 0.012)
-            elif direction == "east":
-                location, size = (ox + 0.49, oy, 0.082), (0.055, 0.72, 0.012)
-            else:
-                location, size = (ox - 0.49, oy, 0.082), (0.055, 0.72, 0.012)
-            mesh_box(root, f"{prefix}StopBar{direction.capitalize()}", location, size, mats["white"])
+    elif raw in (5, 10):
+        # One restrained center dash per straight tile creates a continuous
+        # cadence without repainting every arm, corner, tee, and intersection.
+        size = (0.045, 0.40, 0.012) if raw == 5 else (0.40, 0.045, 0.012)
+        mesh_plane(root, prefix + "CenterDash", (ox, oy, 0.084), size[:2], mats["yellow"])
 
 
 def build_asset(mask_data):
@@ -382,8 +389,8 @@ def write_asset_manifest(mask_data, artifacts):
         "pipelineSchema": CONFIG["schema"],
         "assetId": mask_data["assetId"],
         "roadConnectionMask": {"rawValue": mask_data["rawValue"], "bits": CONFIG["roadBits"], "directions": mask_data["directions"], "topologyClass": mask_data["topologyClass"]},
-        "status": "source-only-not-live",
-        "liveAsset": False,
+        "status": "live-game-catalog",
+        "liveAsset": True,
         "originalGeometry": True,
         "sourcePixelsReused": False,
         "cedarMarketReused": False,
@@ -510,8 +517,8 @@ def build_preview(output_dir=None, write_evidence=True):
 def write_family_manifest(mask_manifests):
     data = {
         "schema": "citysim.world-art.streetscape-family-manifest.v1",
-        "status": "source-only-not-live",
-        "liveAsset": False,
+        "status": "live-game-catalog",
+        "liveAsset": True,
         "familyId": "civic-works-yard-road-connection-masks",
         "maskCount": 16,
         "canonicalViewCount": 64,

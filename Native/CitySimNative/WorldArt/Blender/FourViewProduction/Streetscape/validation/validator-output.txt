@@ -29,19 +29,19 @@ STREETSCAPE_FOUR_VIEW_VALIDATION_PASS
       2.0
     ]
   },
-  "familyManifestSha256": "04a1f6b014f52d6b5d9b3cd6ee4511fb0f3222dc498d0c7eb51c015eda380820",
+  "familyManifestSha256": "6cef4144f1ff5586e893f847fb11d17d9bcde69fabc3d55811d10e93d2cda0a1",
   "masks": {
     "00": {
       "assetId": "road_mask_00",
       "boundarySockets": {},
       "deterministicCanonicalPngSha256": {
-        "road_mask_00_camNE.png": "a11a05e0cfd25e9d822582b99a8688ea908c051c85968983c0f99baf7ae03b0b",
-        "road_mask_00_camNW.png": "ff6c8ce48ec290035eb2cb5dc13cc2ae0b512acd18fde2c478736753e0d7579e",
-        "road_mask_00_camSE.png": "b30074243d6b0430d744e2de9ede3ad5269a10b33b331bc3d870976689244ef3",
-        "road_mask_00_camSW.png": "c3e447808155d798c7ae8a62be1b5506bc4faa0cfe68c973602bf43e02df4a1b"
+        "road_mask_00_camNE.png": "eea9a9eb7be3128373e77e24a82b80010a454caace6ddcee9136469e912d6a66",
+        "road_mask_00_camNW.png": "f591f0825ca46831acbb5005245c6b681c94303c759437ddf930d4db24052d7e",
+        "road_mask_00_camSE.png": "9f01b3f66a1f53f7ecdbba972c302ffa7796f656ad030268489516ff6b27a958",
+        "road_mask_00_camSW.png": "86ec8a0623ee22a380d993a50bb2159e4ff7cc310f9bec4438a26d54c8ed8cb6"
       },
       "directions": [],
-      "meshCount": 17,
+      "meshCount": 10,
       "topologyClass": "isolated"
     },
     "01": {
@@ -54,7 +54,7 @@ STREETSCAPE_FOUR_VIEW_VALIDATION_PASS
             "maxZ": 0.07000000029802322,
             "minX": -0.41999998688697815,
             "minY": 0.36000001430511475,
-            "minZ": 0.0
+            "minZ": 0.07000000029802322
           },
           "bit": 1,
           "point": [
@@ -65,15 +65,15 @@ STREETSCAPE_FOUR_VIEW_VALIDATION_PASS
         }
       },
       "deterministicCanonicalPngSha256": {
-        "road_mask_01_camNE.png": "a8da10aae57f249c946e9ac868da6165d7de74670faa9c81add50641c4baeee3",
-        "road_mask_01_camNW.png": "1af58cdd0c97e0447c7c221a19c1df29cdf75ec821184c43c8f27f80a0e8062c",
-        "road_mask_01_camSE.png": "24efbaf175410830d7887d335bf422c4257cf894157193830e9f7bb7d365e73b",
-        "road_mask_01_camSW.png": "6668e539070f810a1323a4d38107e6c428a3930ecb4a506ccc1b8eb5591581e3"
+        "road_mask_01_camNE.png": "5ac638800e37f12720e59303f05a6b737b5292f9ee1d7ec3320da61e3fe597d9",
+        "road_mask_01_camNW.png": "1a8a41a41a5f0b3aeffab28e61b51d83c6195df593ecde8276340eb4c1a6c47a",
+        "road_mask_01_camSE.png": "d53fce4f19daea32e36632b605b44c1a2263923adc98bd7a0bfe66183deae5a4",
+        "road_mask_01_camSW.png": "8e5ce9fe21a2a4bada89575630f03cd7375f524451aa2207c20d92ad22b74005"
       },
       "directions": [
         "north"
       ],
-      "meshCount": 17,
+      "meshCount": 9,
       "topologyClass": "end"
     },
     "02": {
@@ -86,7 +86,7 @@ STREETSCAPE_FOUR_VIEW_VALIDATION_PASS
             "maxZ": 0.07000000029802322,
             "minX": 0.36000001430511475,
             "minY": -0.41999998688697815,
-            "minZ": 0.0
+            "minZ": 0.07000000029802322
           },
           "bit": 2,
           "point": [
@@ -97,15 +97,15 @@ STREETSCAPE_FOUR_VIEW_VALIDATION_PASS
         }
       },
       "deterministicCanonicalPngSha256": {
-        "road_mask_02_camNE.png": "25eb99571d0bed5bcc063ca175ca4604170570eb42e775e062a101951f2a4530",
-        "road_mask_02_camNW.png": "71de7003e1922b5fad2a5a799b5ff0b0f912f3cafa76cb3bb05e0c66ce6be1bb",
-        "road_mask_02_camSE.png": "74555710752280893bc5e64bb235ef32da7f9e9c290ded9f37720ea269bcfb05",
-        "road_mask_02_camSW.png": "d136306eb43544ad5b366c7b925056ab08e39774590e6c43283f69d6e21a7976"
+        "road_mask_02_camNE.png": "b87a5710af3a457b5c6e799f26f9fe73c129b667ec9d2d44f488406fac9ff156",
+        "road_mask_02_camNW.png": "809a4e3d00a91ab3f5316c0e87a550dc29e6b2cdb03541c5ff1aa26dd41f134d",
+        "road_mask_02_camSE.png": "af5e64454ca95804df612a0c54090c660eef5f4cb6d3b8849ce251d2e5066bcc",
+        "road_mask_02_camSW.png": "521c0c26ac03ff68dad2750ec74d9549f7d9cc7f401e0e9b29a1da48c39c6b5d"
       },
       "directions": [
         "east"
       ],
-      "meshCount": 17,
+      "meshCount": 9,
       "topologyClass": "end"
     },
     "03": {
@@ -118,7 +118,7 @@ STREETSCAPE_FOUR_VIEW_VALIDATION_PASS
             "maxZ": 0.07000000029802322,
             "minX": 0.36000001430511475,
             "minY": -0.41999998688697815,
-            "minZ": 0.0
+            "minZ": 0.07000000029802322
           },
           "bit": 2,
           "point": [
@@ -134,7 +134,7 @@ STREETSCAPE_FOUR_VIEW_VALIDATION_PASS
             "maxZ": 0.07000000029802322,
             "minX": -0.41999998688697815,
             "minY": 0.36000001430511475,
-            "minZ": 0.0
+            "minZ": 0.07000000029802322
           },
           "bit": 1,
           "point": [
@@ -145,16 +145,16 @@ STREETSCAPE_FOUR_VIEW_VALIDATION_PASS
         }
       },
       "deterministicCanonicalPngSha256": {
-        "road_mask_03_camNE.png": "2514e35dde8e4c10124bafce5b5cb5eb532c3a7a79463947a3f016537cb05e46",
-        "road_mask_03_camNW.png": "783bca39fd9f7f61b0240f8602270960fcce8855fa4f76785ae356f0d1e8c713",
-        "road_mask_03_camSE.png": "68ad9ed3eab2cb52a96f342bbbcb528fe59e294f043975abc6f8307459ca5a7f",
-        "road_mask_03_camSW.png": "14f5edc1765c5d6ce3cd80aaf4427d5df6fbf402c6a55f5f0580a748716d3d9b"
+        "road_mask_03_camNE.png": "7fe1f80e7a49a6e7c9e8ca8ff015281d9203457f2f227a5212e413c29d0753d9",
+        "road_mask_03_camNW.png": "dbe051504d7fab1c5fb9161462cc92186b97db7aaa902540895dde19a02aebd0",
+        "road_mask_03_camSE.png": "ef719bc39354157c603be152d46a8459b4879fb8bea4d34da12c3e545ca97d67",
+        "road_mask_03_camSW.png": "9416e2de1f417b0c38981163a000ab269e79d643f3430d1b5c758acbeaf6d7bd"
       },
       "directions": [
         "north",
         "east"
       ],
-      "meshCount": 22,
+      "meshCount": 12,
       "topologyClass": "corner"
     },
     "04": {
@@ -167,7 +167,7 @@ STREETSCAPE_FOUR_VIEW_VALIDATION_PASS
             "maxZ": 0.07000000029802322,
             "minX": -0.41999998688697815,
             "minY": -1.0,
-            "minZ": 0.0
+            "minZ": 0.07000000029802322
           },
           "bit": 4,
           "point": [
@@ -178,15 +178,15 @@ STREETSCAPE_FOUR_VIEW_VALIDATION_PASS
         }
       },
       "deterministicCanonicalPngSha256": {
-        "road_mask_04_camNE.png": "00ee5fd8864e7e2dc85b5adfd40173a2b6c0991d959ffa38aaedd0d5964d6b17",
-        "road_mask_04_camNW.png": "4ac5b5d72aed2e077d57518ac4efa28a988c0702549091b1bca2645ae8a2000b",
-        "road_mask_04_camSE.png": "059b870b6fe6a59d9b923a1a4488476e7db440df80d9e4915e0a78b08ac99510",
-        "road_mask_04_camSW.png": "0a2cc608d65a6a32eb93f782abf9d21fdd469676ba682480542275dcef5b1760"
+        "road_mask_04_camNE.png": "4ce5222d6cd2df3347d7b4d6184d3b76b02711ec89401c86a2a0347f5e1120eb",
+        "road_mask_04_camNW.png": "35ae9c9c23b2be00dd188057a1e96a25cefb5bc6f674b99082d41ebfe231998c",
+        "road_mask_04_camSE.png": "27d2cf050c9f950ead8b5410531dad7ddf4db8c939699664e0f4c7bb263e056d",
+        "road_mask_04_camSW.png": "54ed86ad6b8e4a5341f92d5d0d01c3618be525dc8c83b4887bf03c9205e4bbae"
       },
       "directions": [
         "south"
       ],
-      "meshCount": 17,
+      "meshCount": 9,
       "topologyClass": "end"
     },
     "05": {
@@ -199,7 +199,7 @@ STREETSCAPE_FOUR_VIEW_VALIDATION_PASS
             "maxZ": 0.07000000029802322,
             "minX": -0.41999998688697815,
             "minY": 0.36000001430511475,
-            "minZ": 0.0
+            "minZ": 0.07000000029802322
           },
           "bit": 1,
           "point": [
@@ -215,7 +215,7 @@ STREETSCAPE_FOUR_VIEW_VALIDATION_PASS
             "maxZ": 0.07000000029802322,
             "minX": -0.41999998688697815,
             "minY": -1.0,
-            "minZ": 0.0
+            "minZ": 0.07000000029802322
           },
           "bit": 4,
           "point": [
@@ -226,16 +226,16 @@ STREETSCAPE_FOUR_VIEW_VALIDATION_PASS
         }
       },
       "deterministicCanonicalPngSha256": {
-        "road_mask_05_camNE.png": "807eeed494b02d555dab3f14966c57ab9f0dcc42eea91c4016f876b67162f502",
-        "road_mask_05_camNW.png": "c8608e57daf399d553684946630caa5c396a209118160579c224467a2e258346",
-        "road_mask_05_camSE.png": "0637beede18a4c47fa2a4f5d07e24130ebfb81b4e4c9c1ca0760ec4a5d8df83e",
-        "road_mask_05_camSW.png": "6fcdd52a8628a77c1da60bef792538208bc8534c6275e7d9fd4521ccdda8a641"
+        "road_mask_05_camNE.png": "b51c4e8589d038d061cee81da7d596cee27770e5532888ab9d297a7efe26ddc1",
+        "road_mask_05_camNW.png": "c03641b72be93832495d4d5fb1e7624305777ffb066432911e68cf807cdf5838",
+        "road_mask_05_camSE.png": "99bb9b42ccac4dc412183ad3de28b4f311ef9b93bed9df638f08fb1dd0b33fa6",
+        "road_mask_05_camSW.png": "5a5cb97ea8c33f4cec8d5191d2dc4f1619dd0a39a9291f0a1e598a6469abdd3c"
       },
       "directions": [
         "north",
         "south"
       ],
-      "meshCount": 22,
+      "meshCount": 13,
       "topologyClass": "straight"
     },
     "06": {
@@ -248,7 +248,7 @@ STREETSCAPE_FOUR_VIEW_VALIDATION_PASS
             "maxZ": 0.07000000029802322,
             "minX": 0.36000001430511475,
             "minY": -0.41999998688697815,
-            "minZ": 0.0
+            "minZ": 0.07000000029802322
           },
           "bit": 2,
           "point": [
@@ -264,7 +264,7 @@ STREETSCAPE_FOUR_VIEW_VALIDATION_PASS
             "maxZ": 0.07000000029802322,
             "minX": -0.41999998688697815,
             "minY": -1.0,
-            "minZ": 0.0
+            "minZ": 0.07000000029802322
           },
           "bit": 4,
           "point": [
@@ -275,16 +275,16 @@ STREETSCAPE_FOUR_VIEW_VALIDATION_PASS
         }
       },
       "deterministicCanonicalPngSha256": {
-        "road_mask_06_camNE.png": "a82fc31dbd0e74d28aeceb91127d711fd0fa32214e3e3967fc9fe8a7c84c60ad",
-        "road_mask_06_camNW.png": "1757ee38cdfb9397941447d5d62242192c525514b84637c0ac994a97fd959496",
-        "road_mask_06_camSE.png": "81067692742e55bf2f7a054ce852f4d8f132655c965aee27955a422fbc6f9a3e",
-        "road_mask_06_camSW.png": "17ee24d040d9eaa4a79ed8b7b75042986da1329766e1e30ff96562986c59c23e"
+        "road_mask_06_camNE.png": "1ac4a5ca080a15536ab48a6dcaea22ef71ef00a1d4eba4a05e699211c0f206ca",
+        "road_mask_06_camNW.png": "83e2ddcee5939b3f79f37d12dad52b360ce788c468de324de9e58af82b69674b",
+        "road_mask_06_camSE.png": "7fcd77adc3519c710609eb3c5d7a4d94130b693e195fb063cf744c39ba645643",
+        "road_mask_06_camSW.png": "34480deaa06fe82e52ef49e47c2571cce22e29e5c6a0f6fea3f326a396a35565"
       },
       "directions": [
         "east",
         "south"
       ],
-      "meshCount": 22,
+      "meshCount": 12,
       "topologyClass": "corner"
     },
     "07": {
@@ -297,7 +297,7 @@ STREETSCAPE_FOUR_VIEW_VALIDATION_PASS
             "maxZ": 0.07000000029802322,
             "minX": 0.36000001430511475,
             "minY": -0.41999998688697815,
-            "minZ": 0.0
+            "minZ": 0.07000000029802322
           },
           "bit": 2,
           "point": [
@@ -313,7 +313,7 @@ STREETSCAPE_FOUR_VIEW_VALIDATION_PASS
             "maxZ": 0.07000000029802322,
             "minX": -0.41999998688697815,
             "minY": 0.36000001430511475,
-            "minZ": 0.0
+            "minZ": 0.07000000029802322
           },
           "bit": 1,
           "point": [
@@ -329,7 +329,7 @@ STREETSCAPE_FOUR_VIEW_VALIDATION_PASS
             "maxZ": 0.07000000029802322,
             "minX": -0.41999998688697815,
             "minY": -1.0,
-            "minZ": 0.0
+            "minZ": 0.07000000029802322
           },
           "bit": 4,
           "point": [
@@ -340,17 +340,17 @@ STREETSCAPE_FOUR_VIEW_VALIDATION_PASS
         }
       },
       "deterministicCanonicalPngSha256": {
-        "road_mask_07_camNE.png": "4f4a25d9157203131f5a873d9d7b0eda4bd2072ced533d929571ca68b3cec9d6",
-        "road_mask_07_camNW.png": "ca6f4a79bf2f4d70bd6c332f605fcd6440e869596432ec4a82f1a57a48bfa850",
-        "road_mask_07_camSE.png": "2ce37440b351dce642bf3b2a8af708c70f16610f2ce88267f0c701342883724d",
-        "road_mask_07_camSW.png": "d9d8e990f9d84c17dba8bf03fd71c0dc06ca4c8a5999e47fb1e9a7f742359777"
+        "road_mask_07_camNE.png": "d482d63e7dc981e1cc04587118831a362ac360c068e4f153d5138620d5e51788",
+        "road_mask_07_camNW.png": "51899c3884af12dee4f271a89716e62e8ef28e9fce0d31a42464b1ae13ea03ef",
+        "road_mask_07_camSE.png": "2fff4d3298834936bc018e52c103153445d54bc1cb2f07b122951356e75cab0d",
+        "road_mask_07_camSW.png": "9098a6b895c2a54cb00bd48d00c358eb9d8ee766a352f30f661c3f6448d6f750"
       },
       "directions": [
         "north",
         "east",
         "south"
       ],
-      "meshCount": 30,
+      "meshCount": 15,
       "topologyClass": "tee"
     },
     "08": {
@@ -363,7 +363,7 @@ STREETSCAPE_FOUR_VIEW_VALIDATION_PASS
             "maxZ": 0.07000000029802322,
             "minX": -1.0,
             "minY": -0.41999998688697815,
-            "minZ": 0.0
+            "minZ": 0.07000000029802322
           },
           "bit": 8,
           "point": [
@@ -374,15 +374,15 @@ STREETSCAPE_FOUR_VIEW_VALIDATION_PASS
         }
       },
       "deterministicCanonicalPngSha256": {
-        "road_mask_08_camNE.png": "78ec717486fdcbe932b758f54bf72d7a0a9b36c242dd93559c01124a597fd28f",
-        "road_mask_08_camNW.png": "f575696d08673c3446a5447a8a893f90b45c0c0398e9bd7be2bbc284e69a1674",
-        "road_mask_08_camSE.png": "96d754dc1df86c1185ee2ca8d0ee5fb4c86240ac89e64a5b271e08a8e4552f84",
-        "road_mask_08_camSW.png": "5b75bcc08461654db1d7bd0c8fba367d8d6d885611498ef27291407ecaa82803"
+        "road_mask_08_camNE.png": "fceb2da67111bc29965bf4eee9f2ef30adac46ee4b8d3efc911a4318bdc48900",
+        "road_mask_08_camNW.png": "7536f9c04a117329ddce5434cfbd704d49feddfa5559620e11c1a6525b129982",
+        "road_mask_08_camSE.png": "722b99047d3e00873bbbe1595e699738c9b277a125610046efb38ebcb010373c",
+        "road_mask_08_camSW.png": "49d0ef64105236e6e597f361af47c3582e1c7b3ae372f80df943918490aaa556"
       },
       "directions": [
         "west"
       ],
-      "meshCount": 17,
+      "meshCount": 9,
       "topologyClass": "end"
     },
     "09": {
@@ -395,7 +395,7 @@ STREETSCAPE_FOUR_VIEW_VALIDATION_PASS
             "maxZ": 0.07000000029802322,
             "minX": -0.41999998688697815,
             "minY": 0.36000001430511475,
-            "minZ": 0.0
+            "minZ": 0.07000000029802322
           },
           "bit": 1,
           "point": [
@@ -411,7 +411,7 @@ STREETSCAPE_FOUR_VIEW_VALIDATION_PASS
             "maxZ": 0.07000000029802322,
             "minX": -1.0,
             "minY": -0.41999998688697815,
-            "minZ": 0.0
+            "minZ": 0.07000000029802322
           },
           "bit": 8,
           "point": [
@@ -422,16 +422,16 @@ STREETSCAPE_FOUR_VIEW_VALIDATION_PASS
         }
       },
       "deterministicCanonicalPngSha256": {
-        "road_mask_09_camNE.png": "7a262ef4f2a4ff1fc55201178ece369b73b99c6a8a6ed6df97af8e86a9633e38",
-        "road_mask_09_camNW.png": "2f0365976bbfcb1b2ddbab69a587907e47f52e6aa6dc4b7cd81051d9d25bd3c0",
-        "road_mask_09_camSE.png": "be7d650b3be6acc0ec52a739317f1da99f4a93a85d64c5a71975f5351ee165c1",
-        "road_mask_09_camSW.png": "a62a609e91c9c050324dd06ec50583d5a6bd0697a3e6813d6f5f93406418a378"
+        "road_mask_09_camNE.png": "6f7bc188125b1bef6daa04fa638cbc797ce896295af70da9fb704c0001d2e2dc",
+        "road_mask_09_camNW.png": "7a34df7588d45eb1eba57a49f30c6040237f4a6d135ef4ab616773d1be679b4e",
+        "road_mask_09_camSE.png": "eb5fcee82e5ac56c9eb467693a7e6f58d7c4478c1df0c8f97e920f51d5dae04c",
+        "road_mask_09_camSW.png": "6ed1aeb3aef5288b6f9daca88f600cfbdcc1e16caf0ba874203d510ca04ca4a2"
       },
       "directions": [
         "north",
         "west"
       ],
-      "meshCount": 22,
+      "meshCount": 12,
       "topologyClass": "corner"
     },
     "10": {
@@ -444,7 +444,7 @@ STREETSCAPE_FOUR_VIEW_VALIDATION_PASS
             "maxZ": 0.07000000029802322,
             "minX": 0.36000001430511475,
             "minY": -0.41999998688697815,
-            "minZ": 0.0
+            "minZ": 0.07000000029802322
           },
           "bit": 2,
           "point": [
@@ -460,7 +460,7 @@ STREETSCAPE_FOUR_VIEW_VALIDATION_PASS
             "maxZ": 0.07000000029802322,
             "minX": -1.0,
             "minY": -0.41999998688697815,
-            "minZ": 0.0
+            "minZ": 0.07000000029802322
           },
           "bit": 8,
           "point": [
@@ -471,16 +471,16 @@ STREETSCAPE_FOUR_VIEW_VALIDATION_PASS
         }
       },
       "deterministicCanonicalPngSha256": {
-        "road_mask_10_camNE.png": "24b29db2766e3d0662a21f747168f6ca94cffdb85e7a9c02f2c63e528bcfe5b1",
-        "road_mask_10_camNW.png": "f8196cd6e86f56b38c63d2d42706ba78564bded85039448bb9bf9941c0c86d0f",
-        "road_mask_10_camSE.png": "d7ca25d3de763529e40427467ab94e2ad2124ff932442146e8213c4fa0bc3fe3",
-        "road_mask_10_camSW.png": "4e532548a47a9fe074087d295f5c4d26c088d12d7a4e7be076f11034cbc30876"
+        "road_mask_10_camNE.png": "61191c39cc1d9e0990bc5387c10a041a561a799ab18e950d07660af4b7b7c146",
+        "road_mask_10_camNW.png": "09e8063becf2849c126160e8c9c26c1de0053770b33457aa1b95587731664f09",
+        "road_mask_10_camSE.png": "77d10f1b324419046df3ae751212c5a35efb41cd94393dfb91670ac46b6c3a7d",
+        "road_mask_10_camSW.png": "01c5631764c76daee75641ea9607b38ba44c49d3ce7cb810ac5fa6640e1cf820"
       },
       "directions": [
         "east",
         "west"
       ],
-      "meshCount": 22,
+      "meshCount": 13,
       "topologyClass": "straight"
     },
     "11": {
@@ -493,7 +493,7 @@ STREETSCAPE_FOUR_VIEW_VALIDATION_PASS
             "maxZ": 0.07000000029802322,
             "minX": 0.36000001430511475,
             "minY": -0.41999998688697815,
-            "minZ": 0.0
+            "minZ": 0.07000000029802322
           },
           "bit": 2,
           "point": [
@@ -509,7 +509,7 @@ STREETSCAPE_FOUR_VIEW_VALIDATION_PASS
             "maxZ": 0.07000000029802322,
             "minX": -0.41999998688697815,
             "minY": 0.36000001430511475,
-            "minZ": 0.0
+            "minZ": 0.07000000029802322
           },
           "bit": 1,
           "point": [
@@ -525,7 +525,7 @@ STREETSCAPE_FOUR_VIEW_VALIDATION_PASS
             "maxZ": 0.07000000029802322,
             "minX": -1.0,
             "minY": -0.41999998688697815,
-            "minZ": 0.0
+            "minZ": 0.07000000029802322
           },
           "bit": 8,
           "point": [
@@ -536,17 +536,17 @@ STREETSCAPE_FOUR_VIEW_VALIDATION_PASS
         }
       },
       "deterministicCanonicalPngSha256": {
-        "road_mask_11_camNE.png": "fcee613ccfb98164338d6d92ebbe08f15d1d64f0409ab5c32d4c8eb161e68321",
-        "road_mask_11_camNW.png": "7bbe918dd89a257b7b757624971d53a3a797245000acf5f12500f59f858905ae",
-        "road_mask_11_camSE.png": "c2e89c0b493d4db4dea7e454aa951ba1b6058e1d7c7b3a632965992528bfcb13",
-        "road_mask_11_camSW.png": "6590913dfa443e29f56d9a1e197524bc004a155c2a912f40d04289ce810cfa72"
+        "road_mask_11_camNE.png": "58997df1a806bff3cbee93b8ed2d950e1e6af462fe1ed99066c3f9b328444f19",
+        "road_mask_11_camNW.png": "63db80169a8a2a3b8b1c7552a4967ec9ffbe44721c19fde7646be7e874c2e2b0",
+        "road_mask_11_camSE.png": "7e0e377717cb81865b9acedfcd749abf6ea135ff0747b1c445998aa71019bfb5",
+        "road_mask_11_camSW.png": "a53b203763c6013e624e4b99d1b87a5d501bc4e7ee43d14f39058155a9f0d6ef"
       },
       "directions": [
         "north",
         "east",
         "west"
       ],
-      "meshCount": 30,
+      "meshCount": 15,
       "topologyClass": "tee"
     },
     "12": {
@@ -559,7 +559,7 @@ STREETSCAPE_FOUR_VIEW_VALIDATION_PASS
             "maxZ": 0.07000000029802322,
             "minX": -0.41999998688697815,
             "minY": -1.0,
-            "minZ": 0.0
+            "minZ": 0.07000000029802322
           },
           "bit": 4,
           "point": [
@@ -575,7 +575,7 @@ STREETSCAPE_FOUR_VIEW_VALIDATION_PASS
             "maxZ": 0.07000000029802322,
             "minX": -1.0,
             "minY": -0.41999998688697815,
-            "minZ": 0.0
+            "minZ": 0.07000000029802322
           },
           "bit": 8,
           "point": [
@@ -586,16 +586,16 @@ STREETSCAPE_FOUR_VIEW_VALIDATION_PASS
         }
       },
       "deterministicCanonicalPngSha256": {
-        "road_mask_12_camNE.png": "b4cbd5a5b9e8ba2965b0b06e79b18c842358f7a2d7d43a16de388f59095ff498",
-        "road_mask_12_camNW.png": "5a8a8c90aa0b4ebf63d1cd38c275ff7ceeea10647ad6cd0102d4f7ed07f8a446",
-        "road_mask_12_camSE.png": "31c2752c1ab51409f25031a2ec51f1d0f99684e7b453008cfcb13f2a9615690d",
-        "road_mask_12_camSW.png": "b5cbf3120e681196b0e73254b1a621cc7f7635c2cf3f3fb62745d3e8ee1794de"
+        "road_mask_12_camNE.png": "b838a37092745ef70b2320a63328eff06a4e85714b09ec0e6953e78702159c39",
+        "road_mask_12_camNW.png": "a7878d107a261734b6333cf79b2fa5f447e2473e7ebd33fccc4e4d5975f4ee06",
+        "road_mask_12_camSE.png": "d8687e7b33af3ba0812355f8309dfdb72b9a3d5fe211902041d959da102cc954",
+        "road_mask_12_camSW.png": "8f46df9380f3e98c38cb2dac2150826c9eee4aadd24f19594b85383f12d53da8"
       },
       "directions": [
         "south",
         "west"
       ],
-      "meshCount": 22,
+      "meshCount": 12,
       "topologyClass": "corner"
     },
     "13": {
@@ -608,7 +608,7 @@ STREETSCAPE_FOUR_VIEW_VALIDATION_PASS
             "maxZ": 0.07000000029802322,
             "minX": -0.41999998688697815,
             "minY": 0.36000001430511475,
-            "minZ": 0.0
+            "minZ": 0.07000000029802322
           },
           "bit": 1,
           "point": [
@@ -624,7 +624,7 @@ STREETSCAPE_FOUR_VIEW_VALIDATION_PASS
             "maxZ": 0.07000000029802322,
             "minX": -0.41999998688697815,
             "minY": -1.0,
-            "minZ": 0.0
+            "minZ": 0.07000000029802322
           },
           "bit": 4,
           "point": [
@@ -640,7 +640,7 @@ STREETSCAPE_FOUR_VIEW_VALIDATION_PASS
             "maxZ": 0.07000000029802322,
             "minX": -1.0,
             "minY": -0.41999998688697815,
-            "minZ": 0.0
+            "minZ": 0.07000000029802322
           },
           "bit": 8,
           "point": [
@@ -651,17 +651,17 @@ STREETSCAPE_FOUR_VIEW_VALIDATION_PASS
         }
       },
       "deterministicCanonicalPngSha256": {
-        "road_mask_13_camNE.png": "87bbe57b212a0b74a3808aa8d2a8a0029a982d57a20fd1d5e6a05d31d153852a",
-        "road_mask_13_camNW.png": "fa53c9bd9ecfc777b4c87518e5f6b905b22b5478b6d6c0a1a93a9e70e6d7f0e8",
-        "road_mask_13_camSE.png": "8f2c329c5bb62c2159cf7882d4648e7391e08a0d3e67febbb053a8b6e3966bbe",
-        "road_mask_13_camSW.png": "c7c60a81ec44bc60d8c83d624ac3fea810fcfb7393cf0178ce09fc989f37678f"
+        "road_mask_13_camNE.png": "081d3fa9f56d6f1995ecee4fb4e149a170e3ae70a697020e8028a2e7dd5b39cd",
+        "road_mask_13_camNW.png": "2cacdb9d3fae1b1355db552ef4082ee526207bce85cafa248d91567caa483931",
+        "road_mask_13_camSE.png": "22db65f511d384b0ef1865f04aa81db8e01179dbc9d57530bc4df5a098960c49",
+        "road_mask_13_camSW.png": "c9a889481dc4450ed3a710f7490eb97de7439becf8d8df3f662c749d7dcca284"
       },
       "directions": [
         "north",
         "south",
         "west"
       ],
-      "meshCount": 30,
+      "meshCount": 15,
       "topologyClass": "tee"
     },
     "14": {
@@ -674,7 +674,7 @@ STREETSCAPE_FOUR_VIEW_VALIDATION_PASS
             "maxZ": 0.07000000029802322,
             "minX": 0.36000001430511475,
             "minY": -0.41999998688697815,
-            "minZ": 0.0
+            "minZ": 0.07000000029802322
           },
           "bit": 2,
           "point": [
@@ -690,7 +690,7 @@ STREETSCAPE_FOUR_VIEW_VALIDATION_PASS
             "maxZ": 0.07000000029802322,
             "minX": -0.41999998688697815,
             "minY": -1.0,
-            "minZ": 0.0
+            "minZ": 0.07000000029802322
           },
           "bit": 4,
           "point": [
@@ -706,7 +706,7 @@ STREETSCAPE_FOUR_VIEW_VALIDATION_PASS
             "maxZ": 0.07000000029802322,
             "minX": -1.0,
             "minY": -0.41999998688697815,
-            "minZ": 0.0
+            "minZ": 0.07000000029802322
           },
           "bit": 8,
           "point": [
@@ -717,17 +717,17 @@ STREETSCAPE_FOUR_VIEW_VALIDATION_PASS
         }
       },
       "deterministicCanonicalPngSha256": {
-        "road_mask_14_camNE.png": "f9f4ae4cae13d2024bf2e64cca3e838d9daac4194ad2d3234f6ab0fba3b15c57",
-        "road_mask_14_camNW.png": "3deed2af73db294f3370b9689da5ed843e757174e642208b7ab17a847e35103d",
-        "road_mask_14_camSE.png": "ae86cc3f7d4d0fe0db91866e5b4692745e9b7ec0302bf67836e89212d8d8cac2",
-        "road_mask_14_camSW.png": "f08685da9c910f1aedc21c7b44e27d271ac95630e57f7559ff618dc0e1fd51a1"
+        "road_mask_14_camNE.png": "5743638ff347ea45d24325351d1f9ed24ddbde3d913e0cca7cfe23780859abd3",
+        "road_mask_14_camNW.png": "76c762e1e97e5ead2495704f26fa896707a8989b51e55ee0f3a2ddeff3078a72",
+        "road_mask_14_camSE.png": "ba2cbad794c37e9c640a34dcf06e58acb414a5e376f6c5dd3357d4db139d25db",
+        "road_mask_14_camSW.png": "889a012c2b0d88d9d15f8e59bc8bca0b69748d81a16a8f0fa403c7b7aa02f94b"
       },
       "directions": [
         "east",
         "south",
         "west"
       ],
-      "meshCount": 30,
+      "meshCount": 15,
       "topologyClass": "tee"
     },
     "15": {
@@ -740,7 +740,7 @@ STREETSCAPE_FOUR_VIEW_VALIDATION_PASS
             "maxZ": 0.07000000029802322,
             "minX": 0.36000001430511475,
             "minY": -0.41999998688697815,
-            "minZ": 0.0
+            "minZ": 0.07000000029802322
           },
           "bit": 2,
           "point": [
@@ -756,7 +756,7 @@ STREETSCAPE_FOUR_VIEW_VALIDATION_PASS
             "maxZ": 0.07000000029802322,
             "minX": -0.41999998688697815,
             "minY": 0.36000001430511475,
-            "minZ": 0.0
+            "minZ": 0.07000000029802322
           },
           "bit": 1,
           "point": [
@@ -772,7 +772,7 @@ STREETSCAPE_FOUR_VIEW_VALIDATION_PASS
             "maxZ": 0.07000000029802322,
             "minX": -0.41999998688697815,
             "minY": -1.0,
-            "minZ": 0.0
+            "minZ": 0.07000000029802322
           },
           "bit": 4,
           "point": [
@@ -788,7 +788,7 @@ STREETSCAPE_FOUR_VIEW_VALIDATION_PASS
             "maxZ": 0.07000000029802322,
             "minX": -1.0,
             "minY": -0.41999998688697815,
-            "minZ": 0.0
+            "minZ": 0.07000000029802322
           },
           "bit": 8,
           "point": [
@@ -799,10 +799,10 @@ STREETSCAPE_FOUR_VIEW_VALIDATION_PASS
         }
       },
       "deterministicCanonicalPngSha256": {
-        "road_mask_15_camNE.png": "8b2ff6aa31d96b9a5e267ec635b4c09f7820829be91542a8f7d9412d8fb68326",
-        "road_mask_15_camNW.png": "a005ea83b8bbf666fee1b2b9bd5691fa063b768d7b512508e81c427907971a0e",
-        "road_mask_15_camSE.png": "d9356ceb309c818501c1ab502e83052f8f33986f2f45f7a2b7f312013a5c4649",
-        "road_mask_15_camSW.png": "aa5a8ada512313f365faa5b16f5d92eae04e959ef37547c75c0b4a2f78d6cf29"
+        "road_mask_15_camNE.png": "f378b96d53ed6de636d820feb39cc42c33769ea3f9ccbcc7193452981f39129c",
+        "road_mask_15_camNW.png": "4b1fabb3c8c597e8f8b3859c48a851b4c75ace49ef5ca9d0adb7e2ab774bccff",
+        "road_mask_15_camSE.png": "b3bb6122711c30809b1a75183fd8938b799afbc74a985bce910b837bec5b4b51",
+        "road_mask_15_camSW.png": "08875ae4b62246fc160f68c53a25a117e32fd1e039861b62098e60f82330f756"
       },
       "directions": [
         "north",
@@ -810,13 +810,13 @@ STREETSCAPE_FOUR_VIEW_VALIDATION_PASS
         "south",
         "west"
       ],
-      "meshCount": 36,
+      "meshCount": 18,
       "topologyClass": "crossing"
     }
   },
   "previewPngSha256": {
-    "civic-works-connected-district-1280x800.png": "9fa86c28993f4d7a9f19596f051d49ad2967681332066b1d69a74a78a406f876",
-    "civic-works-connected-district-900x600.png": "c1d5d834636e19cb415e93736293c447dc51cf1bee2ab4a86f6bd7465f25bfef"
+    "civic-works-connected-district-1280x800.png": "dd4ef4c2a122ca2c185fa7e8d1f3c157b80a71894d472430b59e8e6e1a563642",
+    "civic-works-connected-district-900x600.png": "a42b183d9364d9ddcf8ec03df9a098acb35a1a1da2d6e779675eb6f97e6297e9"
   },
   "schema": "citysim.world-art.streetscape-validation.v1",
   "status": "PASS"

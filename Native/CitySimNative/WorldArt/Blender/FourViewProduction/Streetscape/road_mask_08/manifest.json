@@ -6,124 +6,124 @@
   ],
   "artifacts": [
     {
-      "bytes": 779059,
+      "bytes": 581687,
       "path": "road_mask_08.blend",
-      "sha256": "44228cfe0a29fea794b3d7f37725adbfda510249925ff2ac6646922fa3119ac0"
+      "sha256": "c9d9052dfec60ac79b32ce3b7aad173174a529ea91b03ff765e74c7383f8b17a"
     },
     {
       "alpha": {
         "boundsTopOrigin": {
-          "height": 49,
-          "maxX": 236,
-          "maxY": 324,
-          "minX": 147,
-          "minY": 276,
-          "width": 90
+          "height": 31,
+          "maxX": 225,
+          "maxY": 310,
+          "minX": 168,
+          "minY": 280,
+          "width": 58
         },
-        "lowestOpaqueRowTopOrigin": 324,
-        "opaquePixelCount": 2469,
+        "lowestOpaqueRowTopOrigin": 310,
+        "opaquePixelCount": 973,
         "pivotPixelAlpha": 255
       },
-      "bytes": 35551,
-      "decodedRgbaSha256": "63ec13ae6d0c293c9d14d6bcb58c5b74a3078e2c2e2ede929688c778faddf165",
+      "bytes": 32201,
+      "decodedRgbaSha256": "8b7a72fdb98a5a8ebb93832b21b0ef63ffc95d95edcda1d0a7b00502491f7124",
       "dimensions": [
         384,
         384
       ],
       "path": "renders/road_mask_08_camNE.png",
-      "sha256": "78ec717486fdcbe932b758f54bf72d7a0a9b36c242dd93559c01124a597fd28f"
+      "sha256": "fceb2da67111bc29965bf4eee9f2ef30adac46ee4b8d3efc911a4318bdc48900"
     },
     {
       "alpha": {
         "boundsTopOrigin": {
-          "height": 49,
-          "maxX": 236,
-          "maxY": 324,
-          "minX": 147,
-          "minY": 276,
-          "width": 90
+          "height": 31,
+          "maxX": 215,
+          "maxY": 310,
+          "minX": 158,
+          "minY": 280,
+          "width": 58
         },
-        "lowestOpaqueRowTopOrigin": 324,
-        "opaquePixelCount": 2462,
+        "lowestOpaqueRowTopOrigin": 310,
+        "opaquePixelCount": 965,
         "pivotPixelAlpha": 255
       },
-      "bytes": 35770,
-      "decodedRgbaSha256": "7e1df9c357159d73766d1921a1ceb2ff49a17c1b1aa0f308ab2c7f5ddf049ac7",
+      "bytes": 32305,
+      "decodedRgbaSha256": "a00d3915fe7485a509d926d53abe7a700b032b053241580190608038d46ad607",
       "dimensions": [
         384,
         384
       ],
       "path": "renders/road_mask_08_camSE.png",
-      "sha256": "96d754dc1df86c1185ee2ca8d0ee5fb4c86240ac89e64a5b271e08a8e4552f84"
+      "sha256": "722b99047d3e00873bbbe1595e699738c9b277a125610046efb38ebcb010373c"
     },
     {
       "alpha": {
         "boundsTopOrigin": {
-          "height": 49,
-          "maxX": 236,
-          "maxY": 324,
-          "minX": 147,
-          "minY": 276,
-          "width": 90
+          "height": 32,
+          "maxX": 215,
+          "maxY": 316,
+          "minX": 158,
+          "minY": 285,
+          "width": 58
         },
-        "lowestOpaqueRowTopOrigin": 324,
-        "opaquePixelCount": 2430,
+        "lowestOpaqueRowTopOrigin": 316,
+        "opaquePixelCount": 984,
         "pivotPixelAlpha": 255
       },
-      "bytes": 35470,
-      "decodedRgbaSha256": "d0469e79cba62f4f33df2906760cf529d4af381ee3e8792ddfb40b8414e7ddcb",
+      "bytes": 32329,
+      "decodedRgbaSha256": "1e63c52aab812572d9329ffa2db09cec6bec6d5eead7a40fbb2a37833935e372",
       "dimensions": [
         384,
         384
       ],
       "path": "renders/road_mask_08_camSW.png",
-      "sha256": "5b75bcc08461654db1d7bd0c8fba367d8d6d885611498ef27291407ecaa82803"
+      "sha256": "49d0ef64105236e6e597f361af47c3582e1c7b3ae372f80df943918490aaa556"
     },
     {
       "alpha": {
         "boundsTopOrigin": {
-          "height": 49,
-          "maxX": 236,
-          "maxY": 324,
-          "minX": 147,
-          "minY": 276,
-          "width": 90
+          "height": 32,
+          "maxX": 225,
+          "maxY": 316,
+          "minX": 168,
+          "minY": 285,
+          "width": 58
         },
-        "lowestOpaqueRowTopOrigin": 324,
-        "opaquePixelCount": 2430,
+        "lowestOpaqueRowTopOrigin": 316,
+        "opaquePixelCount": 984,
         "pivotPixelAlpha": 255
       },
-      "bytes": 35593,
-      "decodedRgbaSha256": "43886c8f7cc09ef69c5296ea178fd7f1a9ef6de32e2565dec71c8779fcb88c6e",
+      "bytes": 32289,
+      "decodedRgbaSha256": "f4a5004c8bc2dedcd70ca9e3084eaa18d77ea68f1178c971d99817f73417da39",
       "dimensions": [
         384,
         384
       ],
       "path": "renders/road_mask_08_camNW.png",
-      "sha256": "f575696d08673c3446a5447a8a893f90b45c0c0398e9bd7be2bbc284e69a1674"
+      "sha256": "7536f9c04a117329ddce5434cfbd704d49feddfa5559620e11c1a6525b129982"
     },
     {
       "alpha": {
         "boundsTopOrigin": {
-          "height": 457,
-          "maxX": 636,
-          "maxY": 756,
-          "minX": 155,
-          "minY": 300,
-          "width": 482
+          "height": 445,
+          "maxX": 625,
+          "maxY": 748,
+          "minX": 166,
+          "minY": 304,
+          "width": 460
         },
-        "lowestOpaqueRowTopOrigin": 756,
-        "opaquePixelCount": 9791,
+        "lowestOpaqueRowTopOrigin": 748,
+        "opaquePixelCount": 3906,
         "pivotPixelAlpha": 0
       },
-      "bytes": 98160,
-      "decodedRgbaSha256": "123cc6e916b9acb299ad0f07bb1ce606b9aac820d5ad17e98a10421f4badb6a8",
+      "bytes": 85497,
+      "decodedRgbaSha256": "d2521d4880c9d83cf6847ce3669e1f7ce5a7f47c8a9fc8e921fd4595d7b22119",
       "dimensions": [
         784,
         840
       ],
       "path": "road_mask_08_contact-sheet.png",
-      "sha256": "65b7f4f35d66c5980791f7883e267b4f46815b6019deb1225065ccded6ae0ac1"
+      "sha256": "f71a3ba5bc7e7f111adcc43d49d3e6eed08efde6726fb1057fe12389e46c2079"
     }
   ],
   "assetId": "road_mask_08",
@@ -233,7 +233,7 @@
     ],
     "worldStrength": 0.72
   },
-  "liveAsset": false,
+  "liveAsset": true,
   "originalGeometry": true,
   "perViewCompensation": {
     "crop": false,
@@ -286,11 +286,11 @@
   "sourceFiles": [
     {
       "path": "build_and_render.py",
-      "sha256": "08832ee9dd8335106069e9c39e6780c46966c38dd28d42063523aaf02c8e4656"
+      "sha256": "122a0736db0659a479769ab5084f35675d995b8dfaf25b121af8db75f7a7f53d"
     },
     {
       "path": "pipeline.json",
-      "sha256": "168ac59a3224a72c6daffd46cc994f0c6eec78b5190a1e227af782eba37e196e"
+      "sha256": "11ee64b343836f2c342d4ae5f211db9aa98f9073fa484f9a9e48e6799c03e03c"
     },
     {
       "path": "run_pipeline.sh",
@@ -298,11 +298,11 @@
     },
     {
       "path": "validate.py",
-      "sha256": "3f3fde5cd7ee7c39e993f55ab2a67131041a097c5d4d61678a33ad5e5cb60bd9"
+      "sha256": "32d6a2f9a0df629d5c945fd9b7d7a06d5b0c0bd7fb162b55a1dedfce418b1384"
     }
   ],
   "sourcePixelsReused": false,
-  "status": "source-only-not-live",
+  "status": "live-game-catalog",
   "transforms": {
     "assetRoot": "identity",
     "meshObjects": "identity",

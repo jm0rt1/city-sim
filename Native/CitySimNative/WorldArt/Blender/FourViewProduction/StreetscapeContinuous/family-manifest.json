@@ -1,5 +1,5 @@
 {
-  "boundaryMaterialContract": "identical-periodic-asphalt-sidewalk-curb-and-ochre-dash-boundary-phase",
+  "boundaryMaterialContract": "uniform-color-periodic-microtexture-and-ochre-dash-boundary-phase",
   "cameraRig": {
     "distance": 32.0,
     "orthoScale": 12.341995,
@@ -102,7 +102,7 @@
       "assetId": "road_mask_00",
       "directions": [],
       "manifest": "road_mask_00/manifest.json",
-      "manifestSha256": "802acea88527e7287e6214e41f7a27ce66451aeefa50f33629128966b192ecf0",
+      "manifestSha256": "cbe8092031bcb69af746ae837095a4fbe1748a1f46cb79acf0f3c0d067535706",
       "rawValue": 0,
       "topologyClass": "isolated"
     },
@@ -112,7 +112,7 @@
         "north"
       ],
       "manifest": "road_mask_01/manifest.json",
-      "manifestSha256": "d23c271ff10e22ecc0abaa1c951cac62f189e8cad9feec2de9f499002170bcd3",
+      "manifestSha256": "e6d2a71ebd15336d62a470fe2962424ca2452cc3b3edd7c9ad5525c97b56f95a",
       "rawValue": 1,
       "topologyClass": "end"
     },
@@ -122,7 +122,7 @@
         "east"
       ],
       "manifest": "road_mask_02/manifest.json",
-      "manifestSha256": "7c4b0cf15587150f3c6bada715713c02117bde7b4b5a7370072ab036b2aced60",
+      "manifestSha256": "d422855144a8498b0debf24406040f33d1cbe845259f70cc06af9b46e9619419",
       "rawValue": 2,
       "topologyClass": "end"
     },
@@ -133,7 +133,7 @@
         "east"
       ],
       "manifest": "road_mask_03/manifest.json",
-      "manifestSha256": "93a782c3aebdc3636e61945b85c8fa731ee9d3418f76978dc6f47f7913855bc0",
+      "manifestSha256": "0188c8a7af1b1961df999722129443188e9cf16c1d565fc67895d0d1f6dd19c1",
       "rawValue": 3,
       "topologyClass": "corner"
     },
@@ -143,7 +143,7 @@
         "south"
       ],
       "manifest": "road_mask_04/manifest.json",
-      "manifestSha256": "9576862df83005abda4fccf07248e243089297497836562cd2a7e0ce52fa3d5b",
+      "manifestSha256": "37e6a786e5f01e7ac5b149c0b5b59a56fc486ad03bf7532d64e93de6930676cd",
       "rawValue": 4,
       "topologyClass": "end"
     },
@@ -154,7 +154,7 @@
         "south"
       ],
       "manifest": "road_mask_05/manifest.json",
-      "manifestSha256": "ab6153477b94cbbaa7e43c2a54f49fb69d2c12b90b16cdf2886431a4ba913d28",
+      "manifestSha256": "6a123b932b63ae820949716f91e2acdd3e5edb1fcf6a31c20bd2949ee74e747a",
       "rawValue": 5,
       "topologyClass": "straight"
     },
@@ -165,7 +165,7 @@
         "south"
       ],
       "manifest": "road_mask_06/manifest.json",
-      "manifestSha256": "f6fadaa35b227806ed30d31bf3dca982a5e8e0855d118caeb9d023c092181fa7",
+      "manifestSha256": "4ae214f119aae31b29a0ee81e1e81cb2a585cd64d298e3e5588dc2b9c0ece9be",
       "rawValue": 6,
       "topologyClass": "corner"
     },
@@ -177,7 +177,7 @@
         "south"
       ],
       "manifest": "road_mask_07/manifest.json",
-      "manifestSha256": "e6a1771fb6e9cbd200a02793a4bb5320f2c4e4fd77dad136008e94ffc6a998d6",
+      "manifestSha256": "ae05e64774b64f0e173dca28fc3a1c9057c558084eb554c20942e3844cf462cc",
       "rawValue": 7,
       "topologyClass": "tee"
     },
@@ -187,7 +187,7 @@
         "west"
       ],
       "manifest": "road_mask_08/manifest.json",
-      "manifestSha256": "e54a3d7985f66ed5e82813ff65ca223f8f738af077bbfb7fa0264ae855c22603",
+      "manifestSha256": "26ae8d423ce2bd0b001b52e09a6741d672e5f46ac050f236938fe3ae16a31f60",
       "rawValue": 8,
       "topologyClass": "end"
     },
@@ -198,7 +198,7 @@
         "west"
       ],
       "manifest": "road_mask_09/manifest.json",
-      "manifestSha256": "de1eb63f1a6072e57508f6ef409bc28426149d43b7c6f2d612e887e45f0ea838",
+      "manifestSha256": "e35214301aac55d8d6960d300d796192123f3e76d79317f1b4559ed96426a85e",
       "rawValue": 9,
       "topologyClass": "corner"
     },
@@ -209,7 +209,7 @@
         "west"
       ],
       "manifest": "road_mask_10/manifest.json",
-      "manifestSha256": "a14f24be0097b30343e67a3914a3eaaeec1695ca5e1fd665a4b002054e9121a2",
+      "manifestSha256": "b38230090986721f03689399f87796c8f0f22515d1b7d69fae1b8f8cc377d8bc",
       "rawValue": 10,
       "topologyClass": "straight"
     },
@@ -221,7 +221,7 @@
         "west"
       ],
       "manifest": "road_mask_11/manifest.json",
-      "manifestSha256": "e5ceae1de1ed3e1a4351c526972e8fa68738279078d8d08f2cf68fc4b94869de",
+      "manifestSha256": "ca4dd488b849d2364a6e79367d49c207e848903d655b43454103357a47461fd5",
       "rawValue": 11,
       "topologyClass": "tee"
     },
@@ -232,7 +232,7 @@
         "west"
       ],
       "manifest": "road_mask_12/manifest.json",
-      "manifestSha256": "ad0ce9cff1c3db4b773f5790e8639d0226949e98da63b4ae6ac83ecdd9ffaba6",
+      "manifestSha256": "42b747003e021bae597b3e9fc581b1db0861e3f434c1fbb50ec5319b04463168",
       "rawValue": 12,
       "topologyClass": "corner"
     },
@@ -244,7 +244,7 @@
         "west"
       ],
       "manifest": "road_mask_13/manifest.json",
-      "manifestSha256": "e2dad87270366dad81193760f1eb63f748017dfd863adaa2ac6f56631f7d131d",
+      "manifestSha256": "d8c965e15cd27b1883fdf7d8310b0bab2bab4a7593d7f42a812d091f5d9d24c8",
       "rawValue": 13,
       "topologyClass": "tee"
     },
@@ -256,7 +256,7 @@
         "west"
       ],
       "manifest": "road_mask_14/manifest.json",
-      "manifestSha256": "a8ea4a0935cea4ce5725586b95a11ad4a3dd8205c85e686c743ae004ac3e5988",
+      "manifestSha256": "14a58ac527d92ebb9a04c4e1360944d0d0959db7160301257215d05d7fad49cc",
       "rawValue": 14,
       "topologyClass": "tee"
     },
@@ -269,7 +269,7 @@
         "west"
       ],
       "manifest": "road_mask_15/manifest.json",
-      "manifestSha256": "090f3434dbe0a1878390bc32e6f4ca0d73682982504c5f982b4d8aa26661fd0d",
+      "manifestSha256": "850623b4b33b8143fd743dfde8ee1e5c70376f236099afbd652c0a23eae216a5",
       "rawValue": 15,
       "topologyClass": "crossing"
     }
@@ -294,7 +294,7 @@
   "sourceFiles": [
     {
       "path": "build_and_render.py",
-      "sha256": "b75486e9f750c92ee28b9a396b8ef5fa42fa8c66337f0dae19501e940f2592c7"
+      "sha256": "f0528e9e5707f4ff076190696ff6c899447004fe5d311659cfd226eecb01306f"
     },
     {
       "path": "pipeline.json",
@@ -306,7 +306,7 @@
     },
     {
       "path": "validate.py",
-      "sha256": "29a1882613ab2d0e0b7ae442126bf0ea03d364ef0d6564d6456935a242571f9f"
+      "sha256": "4d67f33dbb34f102636d08854170146108eb6aa2cfa7712afbe684c2ce94a33a"
     }
   ],
   "status": "source-only-candidate",

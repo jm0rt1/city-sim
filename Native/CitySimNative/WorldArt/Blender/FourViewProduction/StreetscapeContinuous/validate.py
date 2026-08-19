@@ -99,11 +99,16 @@ def expected_edge(direction):
     return -1.0 - SURFACE["socketBleedWorld"] if direction in ("north", "east") else 1.0 + SURFACE["socketBleedWorld"]
 
 
-def verify_periodic_material(mat, name):
+def verify_periodic_material(mat, name, expected_color):
     require(mat is not None and mat.name == name, "MATERIAL_MISMATCH", getattr(mat, "name", None))
     nodes = mat.node_tree.nodes if mat.use_nodes else []
     require(any(node.bl_idname == "ShaderNodeTexNoise" and getattr(node, "noise_dimensions", "") == "4D" for node in nodes), "PERIODIC_NOISE_MISSING", name)
     require(sum(1 for node in nodes if node.bl_idname == "ShaderNodeMath" and node.operation == "SINE") == 4, "PERIODIC_PHASE_NODE_MISMATCH", name)
+    shader = next((node for node in nodes if node.bl_idname == "ShaderNodeBsdfPrincipled"), None)
+    require(shader is not None, "MATERIAL_SHADER_MISSING", name)
+    base_color = shader.inputs["Base Color"]
+    require(not base_color.is_linked, "TILE_LOCAL_COLOR_GRADIENT_FORBIDDEN", name)
+    vector(base_color.default_value, expected_color, 1e-6, name + ".baseColor")
 
 
 def validate_scene(mask_data):
@@ -116,7 +121,7 @@ def validate_scene(mask_data):
     require((scene.render.resolution_x, scene.render.resolution_y) == (384, 384), "CANVAS_MISMATCH", asset_id)
     require(scene.render.film_transparent, "CANVAS_NOT_TRANSPARENT", asset_id)
     require(scene.get("postRenderCompensation") == "none", "POST_RENDER_COMPENSATION_FORBIDDEN", asset_id)
-    require(scene.get("surfaceFamily") == "continuous-rich-charcoal-v2", "SURFACE_FAMILY_MISMATCH", asset_id)
+    require(scene.get("surfaceFamily") == "continuous-uniform-charcoal-v3", "SURFACE_FAMILY_MISMATCH", asset_id)
     root = bpy.data.objects.get("AssetRoot")
     pivot = bpy.data.objects.get("FootprintPivot")
     require(root is not None and pivot is not None, "MISSING_ROOT_OR_PIVOT", asset_id)
@@ -141,8 +146,8 @@ def validate_scene(mask_data):
 
     asphalt = bpy.data.materials.get("ContinuousRichCharcoalAsphalt")
     sidewalk = bpy.data.materials.get("ContinuousWarmConcreteSidewalk")
-    verify_periodic_material(asphalt, "ContinuousRichCharcoalAsphalt")
-    verify_periodic_material(sidewalk, "ContinuousWarmConcreteSidewalk")
+    verify_periodic_material(asphalt, "ContinuousRichCharcoalAsphalt", (0.158, 0.171, 0.162, 1))
+    verify_periodic_material(sidewalk, "ContinuousWarmConcreteSidewalk", (0.485, 0.455, 0.395, 1))
     curb = bpy.data.materials.get("ContinuousCutStoneCurb")
     yellow = bpy.data.materials.get("ContinuousWarmOchreCenterMarking")
     require(curb is not None, "ROAD_MATERIAL_SET_INCOMPLETE", asset_id)
@@ -257,7 +262,7 @@ def validate_manifest(mask_data):
     require(data["postRenderCompensation"] == "none" and data["transforms"]["perMaskCompensation"] == "none", "MANIFEST_COMPENSATION_FORBIDDEN", path)
     require(data["perViewCompensation"] == {"crop": False, "offsetPixels": [0, 0], "rotationDegrees": 0.0, "scale": 1.0, "skew": [0.0, 0.0]}, "PER_VIEW_COMPENSATION_FORBIDDEN", path)
     require(data["surface"] == SURFACE, "SURFACE_CONTRACT_MISMATCH", path)
-    require(data["boundaryMaterialContract"] == "identical-periodic-asphalt-sidewalk-curb-and-ochre-dash-boundary-phase", "BOUNDARY_MATERIAL_CONTRACT_MISMATCH", path)
+    require(data["boundaryMaterialContract"] == "uniform-color-periodic-microtexture-and-ochre-dash-boundary-phase", "BOUNDARY_MATERIAL_CONTRACT_MISMATCH", path)
     expected_sockets = {name: CONFIG["grid"]["boundaryMidpoints"][name] for name in mask_data["directions"]}
     require(data["boundarySockets"] == expected_sockets, "MANIFEST_SOCKET_MISMATCH", path)
     require(data["absentBoundarySockets"] == [name for name in DIRECTIONS if name not in mask_data["directions"]], "MANIFEST_ABSENT_SOCKET_MISMATCH", path)
@@ -358,7 +363,7 @@ def validate_family_manifest():
     require(data["status"] == "source-only-candidate" and data["liveAsset"] is False, "FAMILY_STATUS_MISMATCH", path)
     require([item["rawValue"] for item in data["masks"]] == list(range(16)), "FAMILY_MASK_COVERAGE_MISMATCH", path)
     require(data["surface"] == SURFACE, "FAMILY_SURFACE_MISMATCH", path)
-    require(data["boundaryMaterialContract"] == "identical-periodic-asphalt-sidewalk-curb-and-ochre-dash-boundary-phase", "FAMILY_BOUNDARY_CONTRACT_MISMATCH", path)
+    require(data["boundaryMaterialContract"] == "uniform-color-periodic-microtexture-and-ochre-dash-boundary-phase", "FAMILY_BOUNDARY_CONTRACT_MISMATCH", path)
     for source in data["sourceFiles"]:
         source_path = HERE / source["path"]
         require(source_path.is_file() and sha256(source_path) == source["sha256"], "FAMILY_SOURCE_HASH_DRIFT", source_path)

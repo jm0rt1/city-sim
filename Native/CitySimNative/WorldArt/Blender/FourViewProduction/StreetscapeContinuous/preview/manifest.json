@@ -1,9 +1,9 @@
 {
   "artifacts": [
     {
-      "bytes": 5725021,
+      "bytes": 5715613,
       "path": "preview/continuous-connected-district.blend",
-      "sha256": "a7cb9bcfd6dbc4fde1a1d48c453074f9f628371c203446de572b8743e2c6bb09"
+      "sha256": "3ae32a15121855a2b7a9d2fd34ca257a67d1c4687051bf32447cd4640bbf7d0d"
     },
     {
       "alpha": {
@@ -17,14 +17,14 @@
         "opaquePixelCount": 1024000,
         "pivotPixelAlpha": 255
       },
-      "bytes": 1025846,
-      "decodedRgbaSha256": "5b47da216132a6eb9841df51913142e8d7502444e9e7f7efa722e4548fb83a5d",
+      "bytes": 823114,
+      "decodedRgbaSha256": "b623aac2d07b642d44f27add02631d7f5ae2f0c8da97ea5fdafd2c7f4860b32d",
       "dimensions": [
         1280,
         800
       ],
       "path": "preview/continuous-connected-district-1280x800.png",
-      "sha256": "cbeb10df1963ccd10b91ead99abc3a31098ea5051b1199a14a086f7dc0a00fd6"
+      "sha256": "8d78e5fc37729c65846b0f8e9c39e1a75cd091109b61e8e4f0a39b0920900ffe"
     },
     {
       "alpha": {
@@ -38,14 +38,14 @@
         "opaquePixelCount": 540000,
         "pivotPixelAlpha": 255
       },
-      "bytes": 554071,
-      "decodedRgbaSha256": "8640337705be8693cb39f7a8a0f417199d9f85b02249e479aea1c529571d497a",
+      "bytes": 448693,
+      "decodedRgbaSha256": "228f53dd8a6d94f66542c37a23f39c637edbf8ff14fe4069536ab39d0ff154b1",
       "dimensions": [
         900,
         600
       ],
       "path": "preview/continuous-connected-district-900x600.png",
-      "sha256": "c9a3e4e080cd6d02f993c8935c4dd14e1ce0d86aa912d27b81a55da618afe2d9"
+      "sha256": "54789b84bb8a1c0218f26ebf3d8910171703c9cd3820e979b83093e534a11c22"
     }
   ],
   "camera": {

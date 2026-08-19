@@ -1,6 +1,6 @@
 # Streetscape Continuous
 
-Canonical roadway source family for CitySim's locked 88x44 four-view pipeline. It supplies all 16 topology masks with continuous boundary sockets, modeled curb faces, warm ochre phase-registered center markings, junction-aware line stops, and deterministic connected-network proofs.
+Canonical roadway source family for CitySim's locked 88x44 four-view pipeline. It supplies all 16 topology masks with continuous boundary sockets, uniform-value asphalt and sidewalk surfaces, subtle periodic microtexture, modeled curb faces, warm ochre phase-registered center markings, junction-aware line stops, and deterministic connected-network proofs.
 
 Run the complete Blender render and validation pipeline:
 

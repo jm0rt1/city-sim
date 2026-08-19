@@ -48,14 +48,15 @@ def sha256(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def periodic_material(name, dark, light, roughness, period_scale=2.6, bump=0.035):
-    """World-position material with a two-world-unit periodic boundary phase."""
+def periodic_material(name, color, roughness, period_scale=2.6, bump=0.035):
+    """Uniform-color material with subtle periodic micro-bump at tile boundaries."""
     mat = bpy.data.materials.new(name)
-    mat.diffuse_color = light
+    mat.diffuse_color = color
     mat.use_nodes = True
     nodes = mat.node_tree.nodes
     links = mat.node_tree.links
     shader = nodes["Principled BSDF"]
+    shader.inputs["Base Color"].default_value = color
     shader.inputs["Roughness"].default_value = roughness
 
     geometry = nodes.new("ShaderNodeNewGeometry")
@@ -92,14 +93,6 @@ def periodic_material(name, dark, light, roughness, period_scale=2.6, bump=0.035
     links.new(combine.outputs["Vector"], noise.inputs["Vector"])
     links.new(channels[3].outputs[0], noise.inputs["W"])
 
-    ramp = nodes.new("ShaderNodeValToRGB")
-    ramp.color_ramp.elements[0].position = 0.22
-    ramp.color_ramp.elements[0].color = dark
-    ramp.color_ramp.elements[1].position = 0.78
-    ramp.color_ramp.elements[1].color = light
-    links.new(noise.outputs["Fac"], ramp.inputs["Fac"])
-    links.new(ramp.outputs["Color"], shader.inputs["Base Color"])
-
     bump_node = nodes.new("ShaderNodeBump")
     bump_node.inputs["Strength"].default_value = bump
     bump_node.inputs["Distance"].default_value = 0.018
@@ -116,19 +109,17 @@ def palette():
     return {
         "asphalt": periodic_material(
             "ContinuousRichCharcoalAsphalt",
-            (0.105, 0.122, 0.115, 1),
-            (0.205, 0.225, 0.205, 1),
+            (0.158, 0.171, 0.162, 1),
             roughness=0.87,
-            period_scale=3.4,
-            bump=0.055,
+            period_scale=8.0,
+            bump=0.022,
         ),
         "sidewalk": periodic_material(
             "ContinuousWarmConcreteSidewalk",
-            (0.39, 0.37, 0.33, 1),
-            (0.54, 0.505, 0.44, 1),
+            (0.485, 0.455, 0.395, 1),
             roughness=0.91,
-            period_scale=2.1,
-            bump=0.025,
+            period_scale=7.0,
+            bump=0.014,
         ),
         "curb": flat_material("ContinuousCutStoneCurb", (0.62, 0.56, 0.46, 1), roughness=0.88),
         "yellow": flat_material("ContinuousWarmOchreCenterMarking", (0.82, 0.49, 0.07, 1), roughness=0.72),
@@ -155,7 +146,7 @@ def add_root(mask_data):
     root["liveAsset"] = False
     root["postRenderCompensation"] = "none"
     root["worldCell"] = [2.0, 2.0]
-    root["surfaceFamily"] = "continuous-rich-charcoal-v2"
+    root["surfaceFamily"] = "continuous-uniform-charcoal-v3"
     root["boundaryMarkingPhase"] = "ochre-dash-centered-on-every-tile-boundary"
     return root
 
@@ -524,7 +515,7 @@ def build_road_geometry(root, mask_data, mats, center=(0.0, 0.0), prefix="", inc
 def build_asset(mask_data):
     scene = reset("CitySimContinuousStreet_" + mask_data["assetId"])
     configure_scene(scene, transparent=True)
-    scene["surfaceFamily"] = "continuous-rich-charcoal-v2"
+    scene["surfaceFamily"] = "continuous-uniform-charcoal-v3"
     root = add_root(mask_data)
     mats = palette()
     build_road_geometry(root, mask_data, mats)
@@ -608,7 +599,7 @@ def write_asset_manifest(mask_data, artifacts):
         "surface": CONFIG["surface"],
         "boundarySockets": {name: CONFIG["grid"]["boundaryMidpoints"][name] for name in mask_data["directions"]},
         "absentBoundarySockets": [name for name in DIRECTIONS if name not in mask_data["directions"]],
-        "boundaryMaterialContract": "identical-periodic-asphalt-sidewalk-curb-and-ochre-dash-boundary-phase",
+        "boundaryMaterialContract": "uniform-color-periodic-microtexture-and-ochre-dash-boundary-phase",
         "canvas": CONFIG["canvas"],
         "cameraOrder": [view["name"] for view in VIEWS],
         "cameraRig": CONFIG["cameraRig"],
@@ -707,7 +698,7 @@ def build_preview(output_dir=None, write_evidence=True):
     bpy.context.collection.objects.link(root)
     road_mats = palette()
     context = {
-        "ground": periodic_material("ContinuousDistrictGround", (0.16, 0.235, 0.13, 1), (0.275, 0.37, 0.225, 1), 0.94, 1.8, 0.025),
+        "ground": periodic_material("ContinuousDistrictGround", (0.22, 0.30, 0.18, 1), 0.94, 4.0, 0.018),
         "brick": flat_material("ContinuousWarmBrickContext", (0.43, 0.235, 0.16, 1), 0.80),
         "stone": flat_material("ContinuousWarmStoneContext", (0.49, 0.42, 0.32, 1), 0.84),
         "roof": flat_material("ContinuousWeatheredSlateContext", (0.18, 0.16, 0.15, 1), 0.79),
@@ -782,7 +773,7 @@ def write_family_manifest(mask_manifests):
         "cameraRig": CONFIG["cameraRig"],
         "lightingConvention": CONFIG["lighting"],
         "postRenderCompensation": "none",
-        "boundaryMaterialContract": "identical-periodic-asphalt-sidewalk-curb-and-ochre-dash-boundary-phase",
+        "boundaryMaterialContract": "uniform-color-periodic-microtexture-and-ochre-dash-boundary-phase",
         "provenance": CONFIG["provenance"],
         "sourceFiles": source_files(),
         "masks": [{"rawValue": item["rawValue"], "assetId": item["assetId"], "topologyClass": item["topologyClass"], "directions": item["directions"], "manifest": path.relative_to(HERE).as_posix(), "manifestSha256": sha256(path)} for item, path in zip(CONFIG["masks"], mask_manifests)],

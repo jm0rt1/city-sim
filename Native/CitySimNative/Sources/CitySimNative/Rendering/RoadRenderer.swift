@@ -280,7 +280,7 @@ final class RoadRenderer {
             connectionMask: connections.rawValue,
             worldTileWidth: style.tileWidth
         )
-        if fourViewRoad == nil {
+        if fourViewRoad == nil, fourViewRoadAssets == nil {
             addDistrictFabricHierarchy(
                 for: topology,
                 emphasis: emphasis,
@@ -296,7 +296,7 @@ final class RoadRenderer {
             authoredRoad.colorBlendFactor = 0
             authoredRoad.alpha = 1
             corridor.addChild(authoredRoad)
-        } else if let authoredRoad = assets.generatedRoadSprite(
+        } else if fourViewRoadAssets == nil, let authoredRoad = assets.generatedRoadSprite(
             connectionMask: connections.rawValue,
             detail: detail
         ) {
@@ -309,8 +309,15 @@ final class RoadRenderer {
             authoredRoad.colorBlendFactor = emphasis == .developed ? 0.16 : 0.18
             authoredRoad.alpha = 1
             corridor.addChild(authoredRoad)
+        } else {
+            let missing = SKNode()
+            missing.name = String(
+                format: "road.four-view.missing.mask-%02d",
+                connections.rawValue
+            )
+            corridor.addChild(missing)
         }
-        if fourViewRoad == nil {
+        if fourViewRoad == nil, fourViewRoadAssets == nil {
             addSocketSeamBlends(for: topology, to: corridor)
             if topology.classification == .end, let connectedEdge = topology.mask.edges.first {
                 addAuthoredTerminus(
@@ -320,7 +327,8 @@ final class RoadRenderer {
             }
         }
         cityLayer.addChild(corridor)
-        if fourViewRoad == nil, detailAlpha > 0, detail == .block {
+        if fourViewRoad == nil, fourViewRoadAssets == nil,
+           detailAlpha > 0, detail == .block {
             addStreetFurniture(
                 at: coordinate,
                 topology: topology,

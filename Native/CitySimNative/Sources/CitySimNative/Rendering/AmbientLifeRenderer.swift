@@ -146,23 +146,30 @@ final class AmbientLifeRenderer {
                    in: state,
                    near: road.coordinate,
                    excluding: occupiedVegetationCoordinates
-               ), let sprite = groundEcologyAssets?.makeSprite(
-                   assetID: assetID,
-                   worldTileWidth: style.tileWidth,
-                   zPosition: 0
-               ) {
+               ), let groundEcologyAssets {
                 occupiedVegetationCoordinates.insert(coordinate)
                 let composition = SKNode()
                 composition.name = "world.ambient.ground-ecology.\(assetID).\(index)"
                 composition.position = style.isoPosition(coordinate)
                 composition.zPosition = style.depth(for: coordinate) + 48
-                sprite.name = "\(composition.name ?? "world.ambient.ground-ecology").four-view.\(detail.assetSuffix)"
-                sprite.position = .zero
-                sprite.color = .clear
-                sprite.colorBlendFactor = 0
-                composition.addChild(sprite)
+                if let sprite = groundEcologyAssets.makeSprite(
+                    assetID: assetID,
+                    worldTileWidth: style.tileWidth,
+                    zPosition: 0
+                ) {
+                    sprite.name = "\(composition.name ?? "world.ambient.ground-ecology").four-view.\(detail.assetSuffix)"
+                    sprite.position = .zero
+                    sprite.color = .clear
+                    sprite.colorBlendFactor = 0
+                    composition.addChild(sprite)
+                } else {
+                    let missing = SKNode()
+                    missing.name = "world.ambient.ground-ecology.missing.\(assetID)"
+                    composition.addChild(missing)
+                }
                 vignette.addChild(composition)
-            } else if (index == 0 || index == 4), let coordinate = vegetationCoordinate(
+            } else if groundEcologyAssets == nil,
+                      (index == 0 || index == 4), let coordinate = vegetationCoordinate(
                 in: state,
                 near: road.coordinate,
                 excluding: occupiedVegetationCoordinates

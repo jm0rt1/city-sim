@@ -298,19 +298,25 @@ final class LotRenderer {
         neighborhood _: SKNode,
         block: SKNode
     ) -> Bool {
-        if let fourViewAssets,
-           let logicalID = fourViewCompatibilityLogicalID(
-               for: tile,
-               residentialIdentity: residentialIdentity,
-               commercialIdentity: commercialIdentity,
-               industrialIdentity: industrialIdentity,
-               civicIdentity: civicIdentity
-           ),
-           let sprite = fourViewAssets.makeSprite(
-               for: tile,
-               variant: variant,
-               worldTileWidth: style.tileWidth
-           ) {
+        if let fourViewAssets {
+            guard let assetID = fourViewAssets.assetID(for: tile, variant: variant),
+                  let sprite = fourViewAssets.makeSprite(
+                      for: tile,
+                      variant: variant,
+                      worldTileWidth: style.tileWidth
+                  ) else {
+                let missing = SKNode()
+                missing.name = "lot.four-view.missing.\(tile.kind.rawValue).level-\(tile.level)"
+                city.addChild(missing)
+                return false
+            }
+            let logicalID = fourViewCompatibilityLogicalID(
+                for: tile,
+                residentialIdentity: residentialIdentity,
+                commercialIdentity: commercialIdentity,
+                industrialIdentity: industrialIdentity,
+                civicIdentity: civicIdentity
+            ) ?? assetID
             // Keep the existing semantic node identity while replacing only
             // its pixels. This preserves save/load, LOD, and renderer
             // diagnostics contracts; the child source identity makes the new

@@ -64,17 +64,22 @@ final class TerrainRenderer {
         root.addChild(neighborhoodLayer)
         root.addChild(blockLayer)
 
-        if tile.constructionProgress >= 1,
-           let authoredGround = groundEcologyAssets?.makeGroundSprite(
-               for: tile,
-               worldTileWidth: style.tileWidth
-           ) {
-            let assetID = groundEcologyAssets?.groundAssetID(for: tile) ?? "unknown"
-            authoredGround.name = "terrain.ground-ecology.\(assetID).\(detail.assetSuffix)"
-            authoredGround.color = .clear
-            authoredGround.colorBlendFactor = 0
-            authoredGround.position = .zero
-            cityLayer.addChild(authoredGround)
+        if tile.constructionProgress >= 1, let groundEcologyAssets {
+            if let assetID = groundEcologyAssets.groundAssetID(for: tile),
+               let authoredGround = groundEcologyAssets.makeGroundSprite(
+                   for: tile,
+                   worldTileWidth: style.tileWidth
+               ) {
+                authoredGround.name = "terrain.ground-ecology.\(assetID).\(detail.assetSuffix)"
+                authoredGround.color = .clear
+                authoredGround.colorBlendFactor = 0
+                authoredGround.position = .zero
+                cityLayer.addChild(authoredGround)
+            } else {
+                let missing = SKNode()
+                missing.name = "terrain.ground-ecology.missing.\(tile.kind.rawValue)"
+                cityLayer.addChild(missing)
+            }
         } else {
             addLotSurface(for: tile, to: cityLayer)
             addStableTerrainBreakup(for: tile, to: neighborhoodLayer)
@@ -748,7 +753,13 @@ final class TerrainRenderer {
                 assetID: assetID,
                 worldTileWidth: style.tileWidth,
                 zPosition: 0.24
-            ) else { continue }
+            ) else {
+                let missing = SKNode()
+                missing.name = "terrain.ground-ecology.missing.\(assetID)"
+                missing.position = style.isoPosition(coordinate)
+                layer.addChild(missing)
+                continue
+            }
             sprite.name = "terrain.ground-ecology.\(assetID).\(detail.assetSuffix)"
             sprite.position = style.isoPosition(coordinate)
             sprite.color = .clear

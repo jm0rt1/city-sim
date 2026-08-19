@@ -1832,11 +1832,17 @@ final class CitySimulationTests: XCTestCase {
             interactionMode: .inspect
         )
         let sourceNames = sourceScene.children.flatMap(descendantNodeNames)
-        XCTAssertTrue(sourceNames.contains("lot.four-view.brick_grid_substation.camNE"))
-        XCTAssertTrue(sourceNames.contains("lot.four-view.municipal_water_tower.camNE"))
-        XCTAssertTrue(sourceNames.contains("lot.four-view.emberline_fire_station.camNE"))
-        XCTAssertTrue(sourceNames.contains("lot.four-view.bluecrest_police_station.camNE"))
-        XCTAssertTrue(sourceNames.contains("lot.four-view.maplewood_neighborhood_school.camNE"))
+        for tile in developed {
+            let variant = tile.kind == .residential
+                ? ResidentialGeneratedAssetIdentity.liveVisualVariant(at: tile.coordinate)
+                : WorldVisualSeed.variant(count: 3, for: tile.coordinate, kind: tile.kind)
+            let assetID = try XCTUnwrap(catalog.assetID(for: tile, variant: variant))
+            XCTAssertTrue(
+                sourceNames.contains("lot.four-view.\(assetID).camNE"),
+                "\(tile.kind.rawValue) at \(tile.coordinate.id) must use \(assetID)"
+            )
+        }
+        XCTAssertFalse(sourceNames.contains { $0.contains("four-view.missing") })
         for kind in [
             BuildingKind.powerPlant, .fireStation, .policeStation, .school,
         ] {

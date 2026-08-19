@@ -104,6 +104,8 @@ final class FourViewRoadAssetCatalog {
 
     private static func isCanonical(_ manifest: FourViewRoadAssetManifest) -> Bool {
         let masks = manifest.roads.map(\.connectionMask)
+        let assetIDs = manifest.roads.map(\.assetID)
+        let files = manifest.roads.map(\.file)
         return manifest.schema == "citysim.native-four-view-roads.v1"
             && manifest.camera == "camNE"
             && manifest.cameraAzimuthDegrees == 45
@@ -115,5 +117,7 @@ final class FourViewRoadAssetCatalog {
             && manifest.postRenderCompensation == "none"
             && masks.count == 16
             && Set(masks) == Set(UInt8(0)..<16)
+            && assetIDs.count == Set(assetIDs).count
+            && files.count == Set(files).count
     }
 }

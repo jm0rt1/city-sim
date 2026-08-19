@@ -29,6 +29,14 @@ struct FourViewWorldAssetManifest: Decodable, Equatable, Sendable {
 final class FourViewWorldAssetCatalog {
     static let shared = FourViewWorldAssetCatalog()
 
+    static let requiredRoles: Set<String> = [
+        "residential-low", "residential-medium", "residential-high",
+        "commercial-low", "commercial-medium", "commercial-high",
+        "industrial-low", "industrial-medium", "industrial-high",
+        "city-hall", "park", "power-plant", "water-tower",
+        "fire-station", "police-station", "school",
+    ]
+
     static let sourceTileSize = CGSize(width: 88, height: 44)
     static let sourceFootprintTileSpan: CGFloat = 2
     static let sourceFootprintSize = CGSize(
@@ -45,7 +53,8 @@ final class FourViewWorldAssetCatalog {
 
     init(bundle: Bundle = .module) {
         self.bundle = bundle
-        self.manifest = Self.loadManifest(from: bundle)
+        let loaded = Self.loadManifest(from: bundle)
+        self.manifest = if let loaded, Self.isCanonical(loaded) { loaded } else { nil }
     }
 
     func assetID(for tile: CityTile, variant: Int) -> String? {
@@ -148,5 +157,23 @@ final class FourViewWorldAssetCatalog {
             return nil
         }
         return try? JSONDecoder().decode(FourViewWorldAssetManifest.self, from: data)
+    }
+
+    private static func isCanonical(_ manifest: FourViewWorldAssetManifest) -> Bool {
+        let assetIDs = manifest.assets.map(\.assetID)
+        let files = manifest.assets.map(\.file)
+        let roles = Set(manifest.assets.flatMap(\.roles))
+        return manifest.schema == "citysim.native-four-view-assets.v1"
+            && manifest.camera == "camNE"
+            && manifest.cameraAzimuthDegrees == 45
+            && manifest.cameraElevationDegrees == 30
+            && manifest.projectedTilePixels == [88, 44]
+            && manifest.canvas.width == 384
+            && manifest.canvas.height == 384
+            && manifest.canvas.footprintPivotPixel == [192, 300]
+            && manifest.postRenderCompensation == "none"
+            && assetIDs.count == Set(assetIDs).count
+            && files.count == Set(files).count
+            && requiredRoles.isSubset(of: roles)
     }
 }

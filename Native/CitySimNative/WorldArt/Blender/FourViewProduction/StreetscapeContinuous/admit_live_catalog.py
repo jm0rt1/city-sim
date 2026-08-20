@@ -47,6 +47,8 @@ def main() -> None:
         "cameraAzimuthDegrees": 45,
         "cameraElevationDegrees": 30,
         "projectedTilePixels": [88, 44],
+        "directionRegistration": CONFIG["grid"]["directionRegistration"],
+        "projectedBoundaryPixels": CONFIG["grid"]["liveCamNEProjectedBoundaryPixels"],
         "canvas": {
             "width": 384,
             "height": 384,

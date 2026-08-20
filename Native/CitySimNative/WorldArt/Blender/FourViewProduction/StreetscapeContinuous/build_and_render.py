@@ -27,9 +27,9 @@ base.VIEWS = VIEWS
 
 DIRECTIONS = {
     "north": {"bit": 1, "vector": (-1.0, 0.0), "point": (-1.0, 0.0, 0.035), "opposite": "south"},
-    "east": {"bit": 2, "vector": (0.0, -1.0), "point": (0.0, -1.0, 0.035), "opposite": "west"},
+    "east": {"bit": 2, "vector": (0.0, 1.0), "point": (0.0, 1.0, 0.035), "opposite": "west"},
     "south": {"bit": 4, "vector": (1.0, 0.0), "point": (1.0, 0.0, 0.035), "opposite": "north"},
-    "west": {"bit": 8, "vector": (0.0, 1.0), "point": (0.0, 1.0, 0.035), "opposite": "east"},
+    "west": {"bit": 8, "vector": (0.0, -1.0), "point": (0.0, -1.0, 0.035), "opposite": "east"},
 }
 
 mesh_box = base.mesh_box
@@ -146,6 +146,7 @@ def add_root(mask_data):
     root["liveAsset"] = False
     root["postRenderCompensation"] = "none"
     root["worldCell"] = [2.0, 2.0]
+    root["directionRegistration"] = CONFIG["grid"]["directionRegistration"]
     root["surfaceFamily"] = "continuous-uniform-charcoal-v3"
     root["boundaryMarkingPhase"] = "ochre-dash-centered-on-every-tile-boundary"
     return root
@@ -596,6 +597,7 @@ def write_asset_manifest(mask_data, artifacts):
         "sourcePixelsReused": False,
         "cedarMarketReused": False,
         "grid": CONFIG["grid"],
+        "directionRegistration": CONFIG["grid"]["directionRegistration"],
         "surface": CONFIG["surface"],
         "boundarySockets": {name: CONFIG["grid"]["boundaryMidpoints"][name] for name in mask_data["directions"]},
         "absentBoundarySockets": [name for name in DIRECTIONS if name not in mask_data["directions"]],
@@ -637,11 +639,11 @@ def preview_network():
             (5, 2),
         }
     )
-    offsets = {"north": (0, 1), "east": (1, 0), "south": (0, -1), "west": (-1, 0)}
+    offsets = {"north": (0, -1), "east": (1, 0), "south": (0, 1), "west": (-1, 0)}
     placements = []
     for x, y in sorted(coords, key=lambda point: (-point[1], point[0])):
         raw = sum(spec["bit"] for name, spec in DIRECTIONS.items() if (x + offsets[name][0], y + offsets[name][1]) in coords)
-        placements.append({"coordinate": [x, y], "originWorld": [-y * 2.0, -x * 2.0, 0.0], "rawValue": raw})
+        placements.append({"coordinate": [x, y], "originWorld": [y * 2.0, x * 2.0, 0.0], "rawValue": raw})
     return placements
 
 
@@ -664,7 +666,7 @@ def mesh_hip_roof(root, name, center, footprint, height, mat):
 
 def add_preview_building(root, index, grid_coordinate, mats):
     gx, gy = grid_coordinate
-    x, y = -gy * 2.0, -gx * 2.0
+    x, y = gy * 2.0, gx * 2.0
     facade = mats["brick"] if index % 2 == 0 else mats["stone"]
     height = 1.35 + (index % 3) * 0.24
     mesh_box(root, f"ContextBuilding{index}", (x, y, height / 2.0), (1.18, 1.18, height), facade)
@@ -746,6 +748,7 @@ def build_preview(output_dir=None, write_evidence=True):
         "cedarMarketReused": False,
         "camera": {"projection": "orthographic", "azimuthDegrees": 45.0, "elevationDegrees": 30.0, "perAssetCompensation": "none"},
         "grid": CONFIG["grid"],
+        "directionRegistration": CONFIG["grid"]["directionRegistration"],
         "surface": CONFIG["surface"],
         "lightingConvention": CONFIG["lighting"],
         "observedRawValues": sorted(observed),
@@ -768,6 +771,7 @@ def write_family_manifest(mask_manifests):
         "previewCount": 2,
         "roadBits": CONFIG["roadBits"],
         "grid": CONFIG["grid"],
+        "directionRegistration": CONFIG["grid"]["directionRegistration"],
         "surface": CONFIG["surface"],
         "canvas": CONFIG["canvas"],
         "cameraRig": CONFIG["cameraRig"],

@@ -10,6 +10,25 @@ STREETSCAPE_CONTINUOUS_VALIDATION_PASS
       "camNW"
     ],
     "deterministicRerender": "64 canonical views and two connected-network proofs byte-identical",
+    "directionRegistration": "CityScene.GridCoordinate.camNE.v1",
+    "liveCamNEProjectedBoundaryPixels": {
+      "east": [
+        214.0,
+        311.0
+      ],
+      "north": [
+        214.0,
+        289.0
+      ],
+      "south": [
+        170.0,
+        311.0
+      ],
+      "west": [
+        170.0,
+        289.0
+      ]
+    },
     "pivotPixels": [
       192,
       300
@@ -40,7 +59,7 @@ STREETSCAPE_CONTINUOUS_VALIDATION_PASS
       2.0
     ]
   },
-  "familyManifestSha256": "7b1b9b9da4985925e4908b223faf48d9aae999a96dff17ed73fb396c1ef14741",
+  "familyManifestSha256": "d0a68570b6148e1a3b58a07f88f155d14ba27d6d67ab4f510243fe2d2859ad98",
   "masks": {
     "00": {
       "assetId": "road_mask_00",
@@ -111,41 +130,41 @@ STREETSCAPE_CONTINUOUS_VALIDATION_PASS
           "bit": 2,
           "markingBounds": {
             "maxX": 0.02250000089406967,
-            "maxY": -0.8700000047683716,
+            "maxY": 1.1200000047683716,
             "maxZ": 0.0729999989271164,
             "minX": -0.02250000089406967,
-            "minY": -1.1200000047683716,
+            "minY": 0.8700000047683716,
             "minZ": 0.0729999989271164
           },
           "markingPhase": "dash-center-at-boundary",
           "point": [
             0.0,
-            -1.0,
+            1.0,
             0.035
           ],
           "roadArmBounds": {
             "maxX": 0.5400000214576721,
-            "maxY": 0.0,
+            "maxY": 1.1200000047683716,
             "maxZ": 0.054999999701976776,
             "minX": -0.5400000214576721,
-            "minY": -1.1200000047683716,
+            "minY": 0.0,
             "minZ": 0.054999999701976776
           },
           "walkArmBounds": {
             "maxX": 0.7599999904632568,
-            "maxY": 0.0,
+            "maxY": 1.1200000047683716,
             "maxZ": 0.03999999910593033,
             "minX": -0.7599999904632568,
-            "minY": -1.1200000047683716,
+            "minY": 0.0,
             "minZ": 0.03999999910593033
           }
         }
       },
       "deterministicCanonicalPngSha256": {
-        "road_mask_02_camNE.png": "701c91ed6b937d0290184699cd234cdebb125696a867b564e42b075ad8e8e7f2",
-        "road_mask_02_camNW.png": "3f3cfb214c5517655e18120fc46319ca7dcceecafa86a868349daaeb1335815b",
-        "road_mask_02_camSE.png": "53ac690e6f9de0b568177da244cdd4fca23d8fb5f2b06c67a6d8471692b668a2",
-        "road_mask_02_camSW.png": "bcfdb638c470d0d1b2e3b0214ca1f25b5c531af352198d0526fc453f7c929f81"
+        "road_mask_02_camNE.png": "e3d8153183e63c1e91f64377b15e0698e3d2b3e864eb06057c5e20bd4d87eaef",
+        "road_mask_02_camNW.png": "45b6a7e5945d08c1f861e5138f44a258bc330c5bac0838286eeec29abfc71638",
+        "road_mask_02_camSE.png": "0e028b92fddbabbbd4716bf45aaf704816846ec383f855a4d9fa2a25a551464d",
+        "road_mask_02_camSW.png": "8a6bf1b04110a970504d6b20df282a17611bf5e6c0931b0964584bb28755bd36"
       },
       "directions": [
         "east"
@@ -160,32 +179,32 @@ STREETSCAPE_CONTINUOUS_VALIDATION_PASS
           "bit": 2,
           "markingBounds": {
             "maxX": 0.02250000089406967,
-            "maxY": -0.8700000047683716,
+            "maxY": 1.1200000047683716,
             "maxZ": 0.0729999989271164,
             "minX": -0.02250000089406967,
-            "minY": -1.1200000047683716,
+            "minY": 0.8700000047683716,
             "minZ": 0.0729999989271164
           },
           "markingPhase": "dash-center-at-boundary",
           "point": [
             0.0,
-            -1.0,
+            1.0,
             0.035
           ],
           "roadArmBounds": {
             "maxX": 0.5400000214576721,
-            "maxY": 0.0,
+            "maxY": 1.1200000047683716,
             "maxZ": 0.054999999701976776,
             "minX": -0.5400000214576721,
-            "minY": -1.1200000047683716,
+            "minY": 0.0,
             "minZ": 0.054999999701976776
           },
           "walkArmBounds": {
             "maxX": 0.7599999904632568,
-            "maxY": 0.0,
+            "maxY": 1.1200000047683716,
             "maxZ": 0.03999999910593033,
             "minX": -0.7599999904632568,
-            "minY": -1.1200000047683716,
+            "minY": 0.0,
             "minZ": 0.03999999910593033
           }
         },
@@ -224,10 +243,10 @@ STREETSCAPE_CONTINUOUS_VALIDATION_PASS
         }
       },
       "deterministicCanonicalPngSha256": {
-        "road_mask_03_camNE.png": "099f1d769f371318e7d3651636f7c5a42ef6566730fad18e260b9e56a7f30b8e",
-        "road_mask_03_camNW.png": "ad114e4a42700f8874a82d44a60b9b0913aba4786aa07bab15b6e8c623880a8a",
-        "road_mask_03_camSE.png": "1e36d963b41f134d21e2ae0f6dbf2db5e54c8d8a61ad0dcf5c462c1d5c380de6",
-        "road_mask_03_camSW.png": "0fb188d04453c9d7b49f875ae4afd6e5a23fddace719f43fbb1fadc6d47bb80d"
+        "road_mask_03_camNE.png": "a35b86e04d26b060c5aa67a37b0faea7ad8bcefa9b6d5b31a8edd155ba0e5fed",
+        "road_mask_03_camNW.png": "5a60585227e16fbdbde2db0f3861c16ad456c6475d7e2352d9456bf2b42f7435",
+        "road_mask_03_camSE.png": "eb8e11e143a5e749d6ca5c64bf513b5f66f1279a0e5a1802f6b0631f98ef8c20",
+        "road_mask_03_camSW.png": "f5dc9cf2d5f1abf7efe16954303bf40c5e608c64200cf5576bde5fd17a259091"
       },
       "directions": [
         "north",
@@ -375,32 +394,32 @@ STREETSCAPE_CONTINUOUS_VALIDATION_PASS
           "bit": 2,
           "markingBounds": {
             "maxX": 0.02250000089406967,
-            "maxY": -0.8700000047683716,
+            "maxY": 1.1200000047683716,
             "maxZ": 0.0729999989271164,
             "minX": -0.02250000089406967,
-            "minY": -1.1200000047683716,
+            "minY": 0.8700000047683716,
             "minZ": 0.0729999989271164
           },
           "markingPhase": "dash-center-at-boundary",
           "point": [
             0.0,
-            -1.0,
+            1.0,
             0.035
           ],
           "roadArmBounds": {
             "maxX": 0.5400000214576721,
-            "maxY": 0.0,
+            "maxY": 1.1200000047683716,
             "maxZ": 0.054999999701976776,
             "minX": -0.5400000214576721,
-            "minY": -1.1200000047683716,
+            "minY": 0.0,
             "minZ": 0.054999999701976776
           },
           "walkArmBounds": {
             "maxX": 0.7599999904632568,
-            "maxY": 0.0,
+            "maxY": 1.1200000047683716,
             "maxZ": 0.03999999910593033,
             "minX": -0.7599999904632568,
-            "minY": -1.1200000047683716,
+            "minY": 0.0,
             "minZ": 0.03999999910593033
           }
         },
@@ -439,10 +458,10 @@ STREETSCAPE_CONTINUOUS_VALIDATION_PASS
         }
       },
       "deterministicCanonicalPngSha256": {
-        "road_mask_06_camNE.png": "434f9a1af33d44e01b88c0c3f3d6f1c38d202b85ab89877c88952936c91164ea",
-        "road_mask_06_camNW.png": "34bff78c953f1ffc0a350896bac57dee139b4bfc826b8a11ab8792a95138f6e6",
-        "road_mask_06_camSE.png": "5b408a619739df0cbbd9d07784c2fa7f3a2ba9d1ab7d3486c224d3412e48de11",
-        "road_mask_06_camSW.png": "d052b79e4d67864861a1e1a2d011741f9f4c3dda8d4dfec522afb1ed19fd76d5"
+        "road_mask_06_camNE.png": "5c91169d839172bc1d77f83f68b30be1c2cfce5507740a5112d0795979f8debe",
+        "road_mask_06_camNW.png": "411c26eba5c12a099344c73d5318b115103e39ae6eab28bc43c31f1c53859c42",
+        "road_mask_06_camSE.png": "3ad3efb6c79fa13cebf1c53e532bd1c47340f0c15f7851c2bb685bead77bada5",
+        "road_mask_06_camSW.png": "e7342c56763829c4f9539b6425367ca3ee7b07aecf518f4b4e506da23fbcdb67"
       },
       "directions": [
         "east",
@@ -458,32 +477,32 @@ STREETSCAPE_CONTINUOUS_VALIDATION_PASS
           "bit": 2,
           "markingBounds": {
             "maxX": 0.02250000089406967,
-            "maxY": -0.9300000071525574,
+            "maxY": 1.1200000047683716,
             "maxZ": 0.0729999989271164,
             "minX": -0.02250000089406967,
-            "minY": -1.1200000047683716,
+            "minY": 0.9300000071525574,
             "minZ": 0.0729999989271164
           },
           "markingPhase": "dash-center-at-boundary",
           "point": [
             0.0,
-            -1.0,
+            1.0,
             0.035
           ],
           "roadArmBounds": {
             "maxX": 0.5400000214576721,
-            "maxY": 0.0,
+            "maxY": 1.1200000047683716,
             "maxZ": 0.054999999701976776,
             "minX": -0.5400000214576721,
-            "minY": -1.1200000047683716,
+            "minY": 0.0,
             "minZ": 0.054999999701976776
           },
           "walkArmBounds": {
             "maxX": 0.7599999904632568,
-            "maxY": 0.0,
+            "maxY": 1.1200000047683716,
             "maxZ": 0.03999999910593033,
             "minX": -0.7599999904632568,
-            "minY": -1.1200000047683716,
+            "minY": 0.0,
             "minZ": 0.03999999910593033
           }
         },
@@ -555,10 +574,10 @@ STREETSCAPE_CONTINUOUS_VALIDATION_PASS
         }
       },
       "deterministicCanonicalPngSha256": {
-        "road_mask_07_camNE.png": "bfe92779d2b972cbe5700e23d8d9f2a2f6b77ce8a89eca2e97173726c88bd38d",
-        "road_mask_07_camNW.png": "1cc194fdf7ceb7afc857224d20a2af92b2e02c1681ebe620f06cf8e9ba6623d3",
-        "road_mask_07_camSE.png": "dfe5a60a8d5793b05e1b467600054ad0e75af0d84c88258fab13089be938fe61",
-        "road_mask_07_camSW.png": "89f5792c4074f933e7c05faf52ce34cafb882c5f70bf45cd4874d439a73c0cd9"
+        "road_mask_07_camNE.png": "74ffcb039757db839d1a2ec555078a6ecb0ce13125746c451efef383fe81f851",
+        "road_mask_07_camNW.png": "260015a0f9457ce58278f5af904123ed690ab1a3e08ec5a906ecf107ef31afa8",
+        "road_mask_07_camSE.png": "6bc92553df8a01d9b387ae10c5e6929c639fc9528495b62ae1f089b26cdd6925",
+        "road_mask_07_camSW.png": "494cf2d78f09ce046bc5cee0b6ec039c2f6b06947d0427ef93ed1d662a773cd1"
       },
       "directions": [
         "north",
@@ -575,41 +594,41 @@ STREETSCAPE_CONTINUOUS_VALIDATION_PASS
           "bit": 8,
           "markingBounds": {
             "maxX": 0.02250000089406967,
-            "maxY": 1.1200000047683716,
+            "maxY": -0.8700000047683716,
             "maxZ": 0.0729999989271164,
             "minX": -0.02250000089406967,
-            "minY": 0.8700000047683716,
+            "minY": -1.1200000047683716,
             "minZ": 0.0729999989271164
           },
           "markingPhase": "dash-center-at-boundary",
           "point": [
             0.0,
-            1.0,
+            -1.0,
             0.035
           ],
           "roadArmBounds": {
             "maxX": 0.5400000214576721,
-            "maxY": 1.1200000047683716,
+            "maxY": 0.0,
             "maxZ": 0.054999999701976776,
             "minX": -0.5400000214576721,
-            "minY": 0.0,
+            "minY": -1.1200000047683716,
             "minZ": 0.054999999701976776
           },
           "walkArmBounds": {
             "maxX": 0.7599999904632568,
-            "maxY": 1.1200000047683716,
+            "maxY": 0.0,
             "maxZ": 0.03999999910593033,
             "minX": -0.7599999904632568,
-            "minY": 0.0,
+            "minY": -1.1200000047683716,
             "minZ": 0.03999999910593033
           }
         }
       },
       "deterministicCanonicalPngSha256": {
-        "road_mask_08_camNE.png": "e3d8153183e63c1e91f64377b15e0698e3d2b3e864eb06057c5e20bd4d87eaef",
-        "road_mask_08_camNW.png": "45b6a7e5945d08c1f861e5138f44a258bc330c5bac0838286eeec29abfc71638",
-        "road_mask_08_camSE.png": "0e028b92fddbabbbd4716bf45aaf704816846ec383f855a4d9fa2a25a551464d",
-        "road_mask_08_camSW.png": "8a6bf1b04110a970504d6b20df282a17611bf5e6c0931b0964584bb28755bd36"
+        "road_mask_08_camNE.png": "701c91ed6b937d0290184699cd234cdebb125696a867b564e42b075ad8e8e7f2",
+        "road_mask_08_camNW.png": "3f3cfb214c5517655e18120fc46319ca7dcceecafa86a868349daaeb1335815b",
+        "road_mask_08_camSE.png": "53ac690e6f9de0b568177da244cdd4fca23d8fb5f2b06c67a6d8471692b668a2",
+        "road_mask_08_camSW.png": "bcfdb638c470d0d1b2e3b0214ca1f25b5c531af352198d0526fc453f7c929f81"
       },
       "directions": [
         "west"
@@ -657,6 +676,56 @@ STREETSCAPE_CONTINUOUS_VALIDATION_PASS
           "bit": 8,
           "markingBounds": {
             "maxX": 0.02250000089406967,
+            "maxY": -0.8700000047683716,
+            "maxZ": 0.0729999989271164,
+            "minX": -0.02250000089406967,
+            "minY": -1.1200000047683716,
+            "minZ": 0.0729999989271164
+          },
+          "markingPhase": "dash-center-at-boundary",
+          "point": [
+            0.0,
+            -1.0,
+            0.035
+          ],
+          "roadArmBounds": {
+            "maxX": 0.5400000214576721,
+            "maxY": 0.0,
+            "maxZ": 0.054999999701976776,
+            "minX": -0.5400000214576721,
+            "minY": -1.1200000047683716,
+            "minZ": 0.054999999701976776
+          },
+          "walkArmBounds": {
+            "maxX": 0.7599999904632568,
+            "maxY": 0.0,
+            "maxZ": 0.03999999910593033,
+            "minX": -0.7599999904632568,
+            "minY": -1.1200000047683716,
+            "minZ": 0.03999999910593033
+          }
+        }
+      },
+      "deterministicCanonicalPngSha256": {
+        "road_mask_09_camNE.png": "099f1d769f371318e7d3651636f7c5a42ef6566730fad18e260b9e56a7f30b8e",
+        "road_mask_09_camNW.png": "ad114e4a42700f8874a82d44a60b9b0913aba4786aa07bab15b6e8c623880a8a",
+        "road_mask_09_camSE.png": "1e36d963b41f134d21e2ae0f6dbf2db5e54c8d8a61ad0dcf5c462c1d5c380de6",
+        "road_mask_09_camSW.png": "0fb188d04453c9d7b49f875ae4afd6e5a23fddace719f43fbb1fadc6d47bb80d"
+      },
+      "directions": [
+        "north",
+        "west"
+      ],
+      "meshCount": 13,
+      "topologyClass": "corner"
+    },
+    "10": {
+      "assetId": "road_mask_10",
+      "boundarySockets": {
+        "east": {
+          "bit": 2,
+          "markingBounds": {
+            "maxX": 0.02250000089406967,
             "maxY": 1.1200000047683716,
             "maxZ": 0.0729999989271164,
             "minX": -0.02250000089406967,
@@ -685,26 +754,9 @@ STREETSCAPE_CONTINUOUS_VALIDATION_PASS
             "minY": 0.0,
             "minZ": 0.03999999910593033
           }
-        }
-      },
-      "deterministicCanonicalPngSha256": {
-        "road_mask_09_camNE.png": "a35b86e04d26b060c5aa67a37b0faea7ad8bcefa9b6d5b31a8edd155ba0e5fed",
-        "road_mask_09_camNW.png": "5a60585227e16fbdbde2db0f3861c16ad456c6475d7e2352d9456bf2b42f7435",
-        "road_mask_09_camSE.png": "eb8e11e143a5e749d6ca5c64bf513b5f66f1279a0e5a1802f6b0631f98ef8c20",
-        "road_mask_09_camSW.png": "f5dc9cf2d5f1abf7efe16954303bf40c5e608c64200cf5576bde5fd17a259091"
-      },
-      "directions": [
-        "north",
-        "west"
-      ],
-      "meshCount": 13,
-      "topologyClass": "corner"
-    },
-    "10": {
-      "assetId": "road_mask_10",
-      "boundarySockets": {
-        "east": {
-          "bit": 2,
+        },
+        "west": {
+          "bit": 8,
           "markingBounds": {
             "maxX": 0.02250000089406967,
             "maxY": -0.8700000047683716,
@@ -735,39 +787,6 @@ STREETSCAPE_CONTINUOUS_VALIDATION_PASS
             "minY": -1.1200000047683716,
             "minZ": 0.03999999910593033
           }
-        },
-        "west": {
-          "bit": 8,
-          "markingBounds": {
-            "maxX": 0.02250000089406967,
-            "maxY": 1.1200000047683716,
-            "maxZ": 0.0729999989271164,
-            "minX": -0.02250000089406967,
-            "minY": 0.8700000047683716,
-            "minZ": 0.0729999989271164
-          },
-          "markingPhase": "dash-center-at-boundary",
-          "point": [
-            0.0,
-            1.0,
-            0.035
-          ],
-          "roadArmBounds": {
-            "maxX": 0.5400000214576721,
-            "maxY": 1.1200000047683716,
-            "maxZ": 0.054999999701976776,
-            "minX": -0.5400000214576721,
-            "minY": 0.0,
-            "minZ": 0.054999999701976776
-          },
-          "walkArmBounds": {
-            "maxX": 0.7599999904632568,
-            "maxY": 1.1200000047683716,
-            "maxZ": 0.03999999910593033,
-            "minX": -0.7599999904632568,
-            "minY": 0.0,
-            "minZ": 0.03999999910593033
-          }
         }
       },
       "deterministicCanonicalPngSha256": {
@@ -790,32 +809,32 @@ STREETSCAPE_CONTINUOUS_VALIDATION_PASS
           "bit": 2,
           "markingBounds": {
             "maxX": 0.02250000089406967,
-            "maxY": -0.9300000071525574,
+            "maxY": 1.1200000047683716,
             "maxZ": 0.0729999989271164,
             "minX": -0.02250000089406967,
-            "minY": -1.1200000047683716,
+            "minY": 0.9300000071525574,
             "minZ": 0.0729999989271164
           },
           "markingPhase": "dash-center-at-boundary",
           "point": [
             0.0,
-            -1.0,
+            1.0,
             0.035
           ],
           "roadArmBounds": {
             "maxX": 0.5400000214576721,
-            "maxY": 0.0,
+            "maxY": 1.1200000047683716,
             "maxZ": 0.054999999701976776,
             "minX": -0.5400000214576721,
-            "minY": -1.1200000047683716,
+            "minY": 0.0,
             "minZ": 0.054999999701976776
           },
           "walkArmBounds": {
             "maxX": 0.7599999904632568,
-            "maxY": 0.0,
+            "maxY": 1.1200000047683716,
             "maxZ": 0.03999999910593033,
             "minX": -0.7599999904632568,
-            "minY": -1.1200000047683716,
+            "minY": 0.0,
             "minZ": 0.03999999910593033
           }
         },
@@ -856,41 +875,41 @@ STREETSCAPE_CONTINUOUS_VALIDATION_PASS
           "bit": 8,
           "markingBounds": {
             "maxX": 0.02250000089406967,
-            "maxY": 1.1200000047683716,
+            "maxY": -0.9300000071525574,
             "maxZ": 0.0729999989271164,
             "minX": -0.02250000089406967,
-            "minY": 0.9300000071525574,
+            "minY": -1.1200000047683716,
             "minZ": 0.0729999989271164
           },
           "markingPhase": "dash-center-at-boundary",
           "point": [
             0.0,
-            1.0,
+            -1.0,
             0.035
           ],
           "roadArmBounds": {
             "maxX": 0.5400000214576721,
-            "maxY": 1.1200000047683716,
+            "maxY": 0.0,
             "maxZ": 0.054999999701976776,
             "minX": -0.5400000214576721,
-            "minY": 0.0,
+            "minY": -1.1200000047683716,
             "minZ": 0.054999999701976776
           },
           "walkArmBounds": {
             "maxX": 0.7599999904632568,
-            "maxY": 1.1200000047683716,
+            "maxY": 0.0,
             "maxZ": 0.03999999910593033,
             "minX": -0.7599999904632568,
-            "minY": 0.0,
+            "minY": -1.1200000047683716,
             "minZ": 0.03999999910593033
           }
         }
       },
       "deterministicCanonicalPngSha256": {
-        "road_mask_11_camNE.png": "c958f9959343f1f7669e6c4196e74edded1aba25202b081e186cd01b449a44a1",
-        "road_mask_11_camNW.png": "2e005fe49caad40e4aa577b104a084303aab4f4bb7c061451dfb1a129c14eaae",
-        "road_mask_11_camSE.png": "6c075b182ee09a6894ff40c5ee56637884dddf40a0fb47d53310344df1b30eab",
-        "road_mask_11_camSW.png": "8c43be5d291131ae894fe0a6e3e5f42c22ee031407639ff6cc7424b39b561edc"
+        "road_mask_11_camNE.png": "ae9cab532102dd759351ff8621a752337677d713612b7c5d36e2cac69ccab64b",
+        "road_mask_11_camNW.png": "36b601fc7dbe22b593acc9e031d9ca9c0b0cee81bdcf549eff19e7b364a01c5c",
+        "road_mask_11_camSE.png": "d7916b183637e91abf66e7eb1e30bb7210ee5d4f7e63cfb28b1062b54555b8af",
+        "road_mask_11_camSW.png": "4a50b02895b5a76b05364ed68ac467d1eacd726a0f89dcfac3c17d6d7d803026"
       },
       "directions": [
         "north",
@@ -940,41 +959,41 @@ STREETSCAPE_CONTINUOUS_VALIDATION_PASS
           "bit": 8,
           "markingBounds": {
             "maxX": 0.02250000089406967,
-            "maxY": 1.1200000047683716,
+            "maxY": -0.8700000047683716,
             "maxZ": 0.0729999989271164,
             "minX": -0.02250000089406967,
-            "minY": 0.8700000047683716,
+            "minY": -1.1200000047683716,
             "minZ": 0.0729999989271164
           },
           "markingPhase": "dash-center-at-boundary",
           "point": [
             0.0,
-            1.0,
+            -1.0,
             0.035
           ],
           "roadArmBounds": {
             "maxX": 0.5400000214576721,
-            "maxY": 1.1200000047683716,
+            "maxY": 0.0,
             "maxZ": 0.054999999701976776,
             "minX": -0.5400000214576721,
-            "minY": 0.0,
+            "minY": -1.1200000047683716,
             "minZ": 0.054999999701976776
           },
           "walkArmBounds": {
             "maxX": 0.7599999904632568,
-            "maxY": 1.1200000047683716,
+            "maxY": 0.0,
             "maxZ": 0.03999999910593033,
             "minX": -0.7599999904632568,
-            "minY": 0.0,
+            "minY": -1.1200000047683716,
             "minZ": 0.03999999910593033
           }
         }
       },
       "deterministicCanonicalPngSha256": {
-        "road_mask_12_camNE.png": "ced8e33cff61b4549030836bb4fcc051e76bb2945b940e99590a3177c3a6fe3a",
-        "road_mask_12_camNW.png": "411c26eba5c12a099344c73d5318b115103e39ae6eab28bc43c31f1c53859c42",
-        "road_mask_12_camSE.png": "3ad3efb6c79fa13cebf1c53e532bd1c47340f0c15f7851c2bb685bead77bada5",
-        "road_mask_12_camSW.png": "e7342c56763829c4f9539b6425367ca3ee7b07aecf518f4b4e506da23fbcdb67"
+        "road_mask_12_camNE.png": "434f9a1af33d44e01b88c0c3f3d6f1c38d202b85ab89877c88952936c91164ea",
+        "road_mask_12_camNW.png": "51ffa223ac827638059270d67f1a765e0b52d3501a063372c1ad7a5cea518405",
+        "road_mask_12_camSE.png": "5b408a619739df0cbbd9d07784c2fa7f3a2ba9d1ab7d3486c224d3412e48de11",
+        "road_mask_12_camSW.png": "d052b79e4d67864861a1e1a2d011741f9f4c3dda8d4dfec522afb1ed19fd76d5"
       },
       "directions": [
         "south",
@@ -1056,57 +1075,6 @@ STREETSCAPE_CONTINUOUS_VALIDATION_PASS
           "bit": 8,
           "markingBounds": {
             "maxX": 0.02250000089406967,
-            "maxY": 1.1200000047683716,
-            "maxZ": 0.0729999989271164,
-            "minX": -0.02250000089406967,
-            "minY": 0.9300000071525574,
-            "minZ": 0.0729999989271164
-          },
-          "markingPhase": "dash-center-at-boundary",
-          "point": [
-            0.0,
-            1.0,
-            0.035
-          ],
-          "roadArmBounds": {
-            "maxX": 0.5400000214576721,
-            "maxY": 1.1200000047683716,
-            "maxZ": 0.054999999701976776,
-            "minX": -0.5400000214576721,
-            "minY": 0.0,
-            "minZ": 0.054999999701976776
-          },
-          "walkArmBounds": {
-            "maxX": 0.7599999904632568,
-            "maxY": 1.1200000047683716,
-            "maxZ": 0.03999999910593033,
-            "minX": -0.7599999904632568,
-            "minY": 0.0,
-            "minZ": 0.03999999910593033
-          }
-        }
-      },
-      "deterministicCanonicalPngSha256": {
-        "road_mask_13_camNE.png": "0b602fc3b7f945fdbf36a787db393b8505ec503495e876035f1860b503639865",
-        "road_mask_13_camNW.png": "a91748be053df63d797139ca3a8d9da99b95051ebe25e88336099ffb2d3104fa",
-        "road_mask_13_camSE.png": "3b4069dcd5e902bcfca983ddfb2c6a8cb52af16ed0c9fc7cf760ec027a7f21fe",
-        "road_mask_13_camSW.png": "eaf511dfed1c3f9dfbbc75dc7218573b581471656720f49de2da5d94062d84b1"
-      },
-      "directions": [
-        "north",
-        "south",
-        "west"
-      ],
-      "meshCount": 22,
-      "topologyClass": "tee"
-    },
-    "14": {
-      "assetId": "road_mask_14",
-      "boundarySockets": {
-        "east": {
-          "bit": 2,
-          "markingBounds": {
-            "maxX": 0.02250000089406967,
             "maxY": -0.9300000071525574,
             "maxZ": 0.0729999989271164,
             "minX": -0.02250000089406967,
@@ -1133,6 +1101,57 @@ STREETSCAPE_CONTINUOUS_VALIDATION_PASS
             "maxZ": 0.03999999910593033,
             "minX": -0.7599999904632568,
             "minY": -1.1200000047683716,
+            "minZ": 0.03999999910593033
+          }
+        }
+      },
+      "deterministicCanonicalPngSha256": {
+        "road_mask_13_camNE.png": "14cf7561d130e29510a1191b9f958ec1415f6ee3f9e7927045c39d3dd0891318",
+        "road_mask_13_camNW.png": "9496b802c369f172f159b7f47e4e49cb5ed82eec81be1caa0ce8fea9c0ad7f79",
+        "road_mask_13_camSE.png": "47ee7cbd2c9f404bb447023eafd8a5290ff1bc3510f2aee56d1480c81aba4226",
+        "road_mask_13_camSW.png": "d6590e64b5bd4ac23223c85db25b85beab76f8b2d8a57ce59c5dd93e40581515"
+      },
+      "directions": [
+        "north",
+        "south",
+        "west"
+      ],
+      "meshCount": 22,
+      "topologyClass": "tee"
+    },
+    "14": {
+      "assetId": "road_mask_14",
+      "boundarySockets": {
+        "east": {
+          "bit": 2,
+          "markingBounds": {
+            "maxX": 0.02250000089406967,
+            "maxY": 1.1200000047683716,
+            "maxZ": 0.0729999989271164,
+            "minX": -0.02250000089406967,
+            "minY": 0.9300000071525574,
+            "minZ": 0.0729999989271164
+          },
+          "markingPhase": "dash-center-at-boundary",
+          "point": [
+            0.0,
+            1.0,
+            0.035
+          ],
+          "roadArmBounds": {
+            "maxX": 0.5400000214576721,
+            "maxY": 1.1200000047683716,
+            "maxZ": 0.054999999701976776,
+            "minX": -0.5400000214576721,
+            "minY": 0.0,
+            "minZ": 0.054999999701976776
+          },
+          "walkArmBounds": {
+            "maxX": 0.7599999904632568,
+            "maxY": 1.1200000047683716,
+            "maxZ": 0.03999999910593033,
+            "minX": -0.7599999904632568,
+            "minY": 0.0,
             "minZ": 0.03999999910593033
           }
         },
@@ -1173,57 +1192,6 @@ STREETSCAPE_CONTINUOUS_VALIDATION_PASS
           "bit": 8,
           "markingBounds": {
             "maxX": 0.02250000089406967,
-            "maxY": 1.1200000047683716,
-            "maxZ": 0.0729999989271164,
-            "minX": -0.02250000089406967,
-            "minY": 0.9300000071525574,
-            "minZ": 0.0729999989271164
-          },
-          "markingPhase": "dash-center-at-boundary",
-          "point": [
-            0.0,
-            1.0,
-            0.035
-          ],
-          "roadArmBounds": {
-            "maxX": 0.5400000214576721,
-            "maxY": 1.1200000047683716,
-            "maxZ": 0.054999999701976776,
-            "minX": -0.5400000214576721,
-            "minY": 0.0,
-            "minZ": 0.054999999701976776
-          },
-          "walkArmBounds": {
-            "maxX": 0.7599999904632568,
-            "maxY": 1.1200000047683716,
-            "maxZ": 0.03999999910593033,
-            "minX": -0.7599999904632568,
-            "minY": 0.0,
-            "minZ": 0.03999999910593033
-          }
-        }
-      },
-      "deterministicCanonicalPngSha256": {
-        "road_mask_14_camNE.png": "806884632542cb41b7188e0d72c2e338b00745a824bd1799b9fe40f3c9d912a7",
-        "road_mask_14_camNW.png": "400fdff19258866e9529032811ff5473ac56f71a08dad1a9670c63721c9341c7",
-        "road_mask_14_camSE.png": "b7dcefdbe2b295cb9a93405bb9d1ba80c35087cecb907eed804486acba358c07",
-        "road_mask_14_camSW.png": "7e21dbe81f56519c0750756ca4174cf652cafd1bcc1907928abfade81d16df0a"
-      },
-      "directions": [
-        "east",
-        "south",
-        "west"
-      ],
-      "meshCount": 22,
-      "topologyClass": "tee"
-    },
-    "15": {
-      "assetId": "road_mask_15",
-      "boundarySockets": {
-        "east": {
-          "bit": 2,
-          "markingBounds": {
-            "maxX": 0.02250000089406967,
             "maxY": -0.9300000071525574,
             "maxZ": 0.0729999989271164,
             "minX": -0.02250000089406967,
@@ -1250,6 +1218,57 @@ STREETSCAPE_CONTINUOUS_VALIDATION_PASS
             "maxZ": 0.03999999910593033,
             "minX": -0.7599999904632568,
             "minY": -1.1200000047683716,
+            "minZ": 0.03999999910593033
+          }
+        }
+      },
+      "deterministicCanonicalPngSha256": {
+        "road_mask_14_camNE.png": "2605b651177ac520a2861778b2d7403e2bb97548c406660745b82c3087b98358",
+        "road_mask_14_camNW.png": "fdc81242fb21ff31790c5ef4873457bcfc595578657289f5b022b245d0f19a3c",
+        "road_mask_14_camSE.png": "3b5b80cdd53dc37d6122972a9fdc9291bb38f8ab39b52d6ff85d7636fe198cf8",
+        "road_mask_14_camSW.png": "9fb3d3d7d8d6062821efe991eebe25126cbe3afce283dabba169be28726294f2"
+      },
+      "directions": [
+        "east",
+        "south",
+        "west"
+      ],
+      "meshCount": 22,
+      "topologyClass": "tee"
+    },
+    "15": {
+      "assetId": "road_mask_15",
+      "boundarySockets": {
+        "east": {
+          "bit": 2,
+          "markingBounds": {
+            "maxX": 0.02250000089406967,
+            "maxY": 1.1200000047683716,
+            "maxZ": 0.0729999989271164,
+            "minX": -0.02250000089406967,
+            "minY": 0.9300000071525574,
+            "minZ": 0.0729999989271164
+          },
+          "markingPhase": "dash-center-at-boundary",
+          "point": [
+            0.0,
+            1.0,
+            0.035
+          ],
+          "roadArmBounds": {
+            "maxX": 0.5400000214576721,
+            "maxY": 1.1200000047683716,
+            "maxZ": 0.054999999701976776,
+            "minX": -0.5400000214576721,
+            "minY": 0.0,
+            "minZ": 0.054999999701976776
+          },
+          "walkArmBounds": {
+            "maxX": 0.7599999904632568,
+            "maxY": 1.1200000047683716,
+            "maxZ": 0.03999999910593033,
+            "minX": -0.7599999904632568,
+            "minY": 0.0,
             "minZ": 0.03999999910593033
           }
         },
@@ -1323,41 +1342,41 @@ STREETSCAPE_CONTINUOUS_VALIDATION_PASS
           "bit": 8,
           "markingBounds": {
             "maxX": 0.02250000089406967,
-            "maxY": 1.1200000047683716,
+            "maxY": -0.9300000071525574,
             "maxZ": 0.0729999989271164,
             "minX": -0.02250000089406967,
-            "minY": 0.9300000071525574,
+            "minY": -1.1200000047683716,
             "minZ": 0.0729999989271164
           },
           "markingPhase": "dash-center-at-boundary",
           "point": [
             0.0,
-            1.0,
+            -1.0,
             0.035
           ],
           "roadArmBounds": {
             "maxX": 0.5400000214576721,
-            "maxY": 1.1200000047683716,
+            "maxY": 0.0,
             "maxZ": 0.054999999701976776,
             "minX": -0.5400000214576721,
-            "minY": 0.0,
+            "minY": -1.1200000047683716,
             "minZ": 0.054999999701976776
           },
           "walkArmBounds": {
             "maxX": 0.7599999904632568,
-            "maxY": 1.1200000047683716,
+            "maxY": 0.0,
             "maxZ": 0.03999999910593033,
             "minX": -0.7599999904632568,
-            "minY": 0.0,
+            "minY": -1.1200000047683716,
             "minZ": 0.03999999910593033
           }
         }
       },
       "deterministicCanonicalPngSha256": {
         "road_mask_15_camNE.png": "c804e1a88bd9befa1227ea0a4a585bf9f614ee1a9d3ce01536abef8cfb569c80",
-        "road_mask_15_camNW.png": "06db3adc8d3f7fdb87273271e6ca16ab54ce861a7c46c73c08fd0be3bb7870f2",
-        "road_mask_15_camSE.png": "ebbe94526afef84fe84079fcb4d311590de9e066805a3d733e27b609d6709e0b",
-        "road_mask_15_camSW.png": "cfcd94ba1fa8f81fc20f9284fcdaeb81614479179c69a6f8cd700dd459f0f5e4"
+        "road_mask_15_camNW.png": "fbfd048cbe77d49779e17beecebb35dea516cc087118e86b257b1a65edb91e2b",
+        "road_mask_15_camSE.png": "ae6d4fc2edc87afb1f6a0bd51d4faf3e9ce2c7c8d7da2fb10887687269a78681",
+        "road_mask_15_camSW.png": "64cec1763310c93968ea609736cc10e279e6f36b1864b604f99fca32de45f0ee"
       },
       "directions": [
         "north",
@@ -1370,8 +1389,8 @@ STREETSCAPE_CONTINUOUS_VALIDATION_PASS
     }
   },
   "previewPngSha256": {
-    "continuous-connected-district-1280x800.png": "8d78e5fc37729c65846b0f8e9c39e1a75cd091109b61e8e4f0a39b0920900ffe",
-    "continuous-connected-district-900x600.png": "54789b84bb8a1c0218f26ebf3d8910171703c9cd3820e979b83093e534a11c22"
+    "continuous-connected-district-1280x800.png": "2a15529b7e56ea102903c37c8d4c88e1dd6b21aba2a2f0f6d964b70bdc9fd440",
+    "continuous-connected-district-900x600.png": "2dbff137a5a0f8cee15f96be505198b56af8469a6c91f1e8934f3b7ff59021e3"
   },
   "schema": "citysim.world-art.streetscape-continuous-validation.v1",
   "status": "PASS"

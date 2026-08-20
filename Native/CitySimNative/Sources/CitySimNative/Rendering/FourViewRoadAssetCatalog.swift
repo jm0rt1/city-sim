@@ -20,6 +20,8 @@ struct FourViewRoadAssetManifest: Decodable, Equatable, Sendable {
     let cameraAzimuthDegrees: Double
     let cameraElevationDegrees: Double
     let projectedTilePixels: [Int]
+    let directionRegistration: String
+    let projectedBoundaryPixels: [String: [Double]]
     let canvas: Canvas
     let postRenderCompensation: String
     let roads: [Road]
@@ -111,6 +113,13 @@ final class FourViewRoadAssetCatalog {
             && manifest.cameraAzimuthDegrees == 45
             && manifest.cameraElevationDegrees == 30
             && manifest.projectedTilePixels == [88, 44]
+            && manifest.directionRegistration == "CityScene.GridCoordinate.camNE.v1"
+            && manifest.projectedBoundaryPixels == [
+                "north": [214, 289],
+                "east": [214, 311],
+                "south": [170, 311],
+                "west": [170, 289],
+            ]
             && manifest.canvas.width == 384
             && manifest.canvas.height == 384
             && manifest.canvas.footprintPivotPixel == [192, 300]

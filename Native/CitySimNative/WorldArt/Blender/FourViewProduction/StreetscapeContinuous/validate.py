@@ -77,16 +77,22 @@ def validate_projected_contract(scene, cameras):
         width = max(point[0] for point in points) - min(point[0] for point in points)
         height = max(point[1] for point in points) - min(point[1] for point in points)
         vector((width, height), (88, 44), 0.01, camera.name + ".projectedTilePixels")
+    live_camera = cameras["camNE"]
+    for direction, expected_pixels in CONFIG["grid"]["liveCamNEProjectedBoundaryPixels"].items():
+        point = DIRECTIONS[direction]["point"]
+        projected = world_to_camera_view(scene, live_camera, Vector((point[0], point[1], 0.0)))
+        actual_pixels = (projected.x * 384, (1.0 - projected.y) * 384)
+        vector(actual_pixels, expected_pixels, 0.01, "camNE.liveSocket." + direction)
 
 
 def connected_edge_extreme(bounds, direction):
     if direction == "north":
         return bounds["minX"]
     if direction == "east":
-        return bounds["minY"]
+        return bounds["maxY"]
     if direction == "south":
         return bounds["maxX"]
-    return bounds["maxY"]
+    return bounds["minY"]
 
 
 def boundary_cross_width(bounds, direction):
@@ -96,7 +102,7 @@ def boundary_cross_width(bounds, direction):
 
 
 def expected_edge(direction):
-    return -1.0 - SURFACE["socketBleedWorld"] if direction in ("north", "east") else 1.0 + SURFACE["socketBleedWorld"]
+    return -1.0 - SURFACE["socketBleedWorld"] if direction in ("north", "west") else 1.0 + SURFACE["socketBleedWorld"]
 
 
 def verify_periodic_material(mat, name, expected_color):
@@ -131,6 +137,7 @@ def validate_scene(mask_data):
     require(pivot.parent == root, "PIVOT_PARENT_MISMATCH", asset_id)
     require(root.get("roadMaskRawValue") == mask_data["rawValue"], "ROOT_MASK_MISMATCH", asset_id)
     require(root.get("topologyClass") == mask_data["topologyClass"], "ROOT_TOPOLOGY_MISMATCH", asset_id)
+    require(root.get("directionRegistration") == CONFIG["grid"]["directionRegistration"], "ROOT_DIRECTION_REGISTRATION_MISMATCH", asset_id)
     require(root.get("boundaryMarkingPhase") == "ochre-dash-centered-on-every-tile-boundary", "MARKING_PHASE_MISMATCH", asset_id)
     require(root.get("liveAsset") is False and root.get("sourcePixelsReused") is False and root.get("cedarMarketReused") is False, "PROVENANCE_MISMATCH", asset_id)
 
@@ -262,6 +269,7 @@ def validate_manifest(mask_data):
     require(data["postRenderCompensation"] == "none" and data["transforms"]["perMaskCompensation"] == "none", "MANIFEST_COMPENSATION_FORBIDDEN", path)
     require(data["perViewCompensation"] == {"crop": False, "offsetPixels": [0, 0], "rotationDegrees": 0.0, "scale": 1.0, "skew": [0.0, 0.0]}, "PER_VIEW_COMPENSATION_FORBIDDEN", path)
     require(data["surface"] == SURFACE, "SURFACE_CONTRACT_MISMATCH", path)
+    require(data["directionRegistration"] == CONFIG["grid"]["directionRegistration"], "MANIFEST_DIRECTION_REGISTRATION_MISMATCH", path)
     require(data["boundaryMaterialContract"] == "uniform-color-periodic-microtexture-and-ochre-dash-boundary-phase", "BOUNDARY_MATERIAL_CONTRACT_MISMATCH", path)
     expected_sockets = {name: CONFIG["grid"]["boundaryMidpoints"][name] for name in mask_data["directions"]}
     require(data["boundarySockets"] == expected_sockets, "MANIFEST_SOCKET_MISMATCH", path)
@@ -290,10 +298,10 @@ def preview_marking_reaches_boundary(coordinate, direction):
     obj = bpy.data.objects.get(prefix)
     require(obj is not None, "PREVIEW_BOUNDARY_MARKING_MISSING", prefix)
     expected_world = {
-        "north": -y * 2.0 - 1.0,
-        "south": -y * 2.0 + 1.0,
-        "east": -x * 2.0 - 1.0,
-        "west": -x * 2.0 + 1.0,
+        "north": y * 2.0 - 1.0,
+        "south": y * 2.0 + 1.0,
+        "east": x * 2.0 + 1.0,
+        "west": x * 2.0 - 1.0,
     }[direction]
     bounds = mesh_bounds(obj)
     if direction in ("north", "south"):
@@ -308,13 +316,14 @@ def validate_preview(temp_root):
     data = json.loads(path.read_text())
     require(data["liveAsset"] is False and data["originalGeometry"] is True and data["cedarMarketReused"] is False, "PREVIEW_PROVENANCE_MISMATCH", path)
     require(data["camera"] == {"projection": "orthographic", "azimuthDegrees": 45.0, "elevationDegrees": 30.0, "perAssetCompensation": "none"}, "PREVIEW_CAMERA_MISMATCH", data["camera"])
+    require(data["directionRegistration"] == CONFIG["grid"]["directionRegistration"], "PREVIEW_DIRECTION_REGISTRATION_MISMATCH", path)
     require(data["observedRawValues"] == list(range(16)), "PREVIEW_MASK_COVERAGE_MISMATCH", data["observedRawValues"])
     require(data["surface"] == SURFACE, "PREVIEW_SURFACE_MISMATCH", data["surface"])
     by_coordinate = {tuple(item["coordinate"]): item for item in data["placements"]}
-    offsets = {"north": (0, 1), "east": (1, 0), "south": (0, -1), "west": (-1, 0)}
+    offsets = {"north": (0, -1), "east": (1, 0), "south": (0, 1), "west": (-1, 0)}
     for coordinate, placement in by_coordinate.items():
         require(placement["perAssetTransformCompensation"] == "none", "PREVIEW_COMPENSATION_FORBIDDEN", placement)
-        vector(placement["originWorld"], (-coordinate[1] * 2.0, -coordinate[0] * 2.0, 0), 1e-7, "preview.gridOrigin")
+        vector(placement["originWorld"], (coordinate[1] * 2.0, coordinate[0] * 2.0, 0), 1e-7, "preview.gridOrigin")
         raw = placement["rawValue"]
         for direction, spec in DIRECTIONS.items():
             dx, dy = offsets[direction]
@@ -363,6 +372,7 @@ def validate_family_manifest():
     require(data["status"] == "source-only-candidate" and data["liveAsset"] is False, "FAMILY_STATUS_MISMATCH", path)
     require([item["rawValue"] for item in data["masks"]] == list(range(16)), "FAMILY_MASK_COVERAGE_MISMATCH", path)
     require(data["surface"] == SURFACE, "FAMILY_SURFACE_MISMATCH", path)
+    require(data["directionRegistration"] == CONFIG["grid"]["directionRegistration"], "FAMILY_DIRECTION_REGISTRATION_MISMATCH", path)
     require(data["boundaryMaterialContract"] == "uniform-color-periodic-microtexture-and-ochre-dash-boundary-phase", "FAMILY_BOUNDARY_CONTRACT_MISMATCH", path)
     for source in data["sourceFiles"]:
         source_path = HERE / source["path"]
@@ -430,6 +440,8 @@ def main():
     results["familyManifestSha256"] = sha256(HERE / "family-manifest.json")
     results["contract"] = {
         "roadBits": CONFIG["roadBits"],
+        "directionRegistration": CONFIG["grid"]["directionRegistration"],
+        "liveCamNEProjectedBoundaryPixels": CONFIG["grid"]["liveCamNEProjectedBoundaryPixels"],
         "worldCell": [2.0, 2.0],
         "projectedTilePixels": [88, 44],
         "pivotPixels": [192, 300],

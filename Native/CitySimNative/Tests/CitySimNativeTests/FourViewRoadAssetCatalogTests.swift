@@ -15,6 +15,16 @@ final class FourViewRoadAssetCatalogTests: XCTestCase {
         XCTAssertEqual(manifest.cameraAzimuthDegrees, 45)
         XCTAssertEqual(manifest.cameraElevationDegrees, 30)
         XCTAssertEqual(manifest.projectedTilePixels, [88, 44])
+        XCTAssertEqual(manifest.directionRegistration, "CityScene.GridCoordinate.camNE.v1")
+        XCTAssertEqual(
+            manifest.projectedBoundaryPixels,
+            [
+                "north": [214, 289],
+                "east": [214, 311],
+                "south": [170, 311],
+                "west": [170, 289],
+            ]
+        )
         XCTAssertEqual(manifest.canvas.width, 384)
         XCTAssertEqual(manifest.canvas.height, 384)
         XCTAssertEqual(manifest.canvas.footprintPivotPixel, [192, 300])
@@ -37,6 +47,35 @@ final class FourViewRoadAssetCatalogTests: XCTestCase {
                 road.sha256,
                 road.assetID
             )
+        }
+    }
+
+    @MainActor
+    func testProjectedRoadSocketsMatchLiveGridDirections() throws {
+        let manifest = try XCTUnwrap(FourViewRoadAssetCatalog().manifest)
+        let style = WorldVisualStyle()
+        let pivot = CGPoint(
+            x: FourViewRoadAssetCatalog.footprintPivotTopOrigin.x,
+            y: FourViewRoadAssetCatalog.footprintPivotTopOrigin.y
+        )
+        let edges: [(String, RoadConnectionMask)] = [
+            ("north", .north),
+            ("east", .east),
+            ("south", .south),
+            ("west", .west),
+        ]
+
+        for (name, edge) in edges {
+            let pixels = try XCTUnwrap(manifest.projectedBoundaryPixels[name])
+            XCTAssertEqual(pixels.count, 2)
+            let sourceOffset = CGPoint(
+                x: CGFloat(pixels[0]) - pivot.x,
+                y: pivot.y - CGFloat(pixels[1])
+            )
+            let liveScale = style.tileWidth / FourViewRoadAssetCatalog.sourceTileSize.width
+            let liveOffset = style.roadSocket(for: edge)
+            XCTAssertEqual(sourceOffset.x * liveScale, liveOffset.x, accuracy: 0.001, name)
+            XCTAssertEqual(sourceOffset.y * liveScale, liveOffset.y, accuracy: 0.001, name)
         }
     }
 

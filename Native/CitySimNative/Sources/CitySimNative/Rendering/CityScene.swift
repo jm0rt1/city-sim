@@ -956,16 +956,42 @@ final class CityScene: SKScene {
     }
 
     override func scrollWheel(with event: NSEvent) {
-        let factor = exp(event.scrollingDeltaY * 0.012)
-        zoomCamera(by: factor)
+        handleMapScrollWheel(event)
     }
 
-    private func zoomCamera(by factor: CGFloat) {
+    override func magnify(with event: NSEvent) {
+        handleMapMagnification(event)
+    }
+
+    func handleMapScrollWheel(_ event: NSEvent) {
+        let factor = exp(event.scrollingDeltaY * 0.012)
+        zoomCamera(by: factor, anchoredAt: event.location(in: self))
+    }
+
+    func handleMapMagnification(_ event: NSEvent) {
+        let factor = exp(-event.magnification)
+        zoomCamera(by: factor, anchoredAt: event.location(in: self))
+    }
+
+    func zoomCameraForTesting(by factor: CGFloat, anchoredAt anchor: CGPoint?) {
+        zoomCamera(by: factor, anchoredAt: anchor)
+    }
+
+    private func zoomCamera(by factor: CGFloat, anchoredAt anchor: CGPoint? = nil) {
         // Keep the strategic city stop focused on the lived-in corridor plus
         // honest expansion context. Showing the entire 24 x 24 board turns a
         // small starting settlement into an unreadable island and provides no
         // useful additional planning information.
-        let scale = min(cityScaleLimit, max(Self.minimumCameraScale, cameraNode.xScale * factor))
+        let previousScale = cameraNode.xScale
+        let scale = min(cityScaleLimit, max(Self.minimumCameraScale, previousScale * factor))
+        guard abs(scale - previousScale) > .ulpOfOne else { return }
+        if let anchor {
+            let scaleRatio = scale / previousScale
+            cameraNode.position = CGPoint(
+                x: anchor.x + (cameraNode.position.x - anchor.x) * scaleRatio,
+                y: anchor.y + (cameraNode.position.y - anchor.y) * scaleRatio
+            )
+        }
         cameraNode.setScale(scale)
         hasUserAdjustedCamera = true
         refreshForCameraChange()

@@ -3,7 +3,7 @@ import SwiftUI
 
 @MainActor
 final class CityMapSKView: SKView {
-    static let defaultAccessibilityHelp = "Use Arrow keys to select blocks, Shift-Arrow to jump five blocks, Return for the announced primary action, and Shift-Return to inspect."
+    static let defaultAccessibilityHelp = "Pinch or scroll to zoom, use Plus and Minus to zoom from the center, press 0 to frame the city, use Arrow keys to select blocks, Shift-Arrow to jump five blocks, Return for the announced primary action, and Shift-Return to inspect."
 
     var cityAccessibilityLabel = "City map"
     var cityAccessibilityValue: String = "No block selected"
@@ -33,6 +33,22 @@ final class CityMapSKView: SKView {
         } else {
             window?.selectNextKeyView(self)
         }
+    }
+
+    override func scrollWheel(with event: NSEvent) {
+        guard let cityScene = scene as? CityScene else {
+            super.scrollWheel(with: event)
+            return
+        }
+        cityScene.handleMapScrollWheel(event)
+    }
+
+    override func magnify(with event: NSEvent) {
+        guard let cityScene = scene as? CityScene else {
+            super.magnify(with: event)
+            return
+        }
+        cityScene.handleMapMagnification(event)
     }
 }
 

@@ -616,6 +616,50 @@ final class CitySimulationTests: XCTestCase {
     }
 
     @MainActor
+    func testPointerAnchoredZoomPreservesWorldPointAndClampsToStrategicRange() {
+        let state = rendererNeighborhoodState()
+        let scene = CityScene(size: CGSize(width: 900, height: 600))
+        scene.reducedMotion = true
+        scene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
+        scene.configureProofCamera(
+            detail: .city,
+            centeredOn: GridCoordinate(x: 3, y: 3)
+        )
+
+        let anchor = scene.scenePointForTesting(at: GridCoordinate(x: 5, y: 4))
+        let positionBefore = scene.cameraPositionForTesting
+        let scaleBefore = scene.cameraScaleForTesting
+        let normalizedAnchorBefore = CGPoint(
+            x: (anchor.x - positionBefore.x) / scaleBefore,
+            y: (anchor.y - positionBefore.y) / scaleBefore
+        )
+
+        scene.zoomCameraForTesting(by: 0.72, anchoredAt: anchor)
+
+        let positionAfter = scene.cameraPositionForTesting
+        let scaleAfter = scene.cameraScaleForTesting
+        let normalizedAnchorAfter = CGPoint(
+            x: (anchor.x - positionAfter.x) / scaleAfter,
+            y: (anchor.y - positionAfter.y) / scaleAfter
+        )
+        XCTAssertLessThan(scaleAfter, scaleBefore)
+        XCTAssertEqual(normalizedAnchorAfter.x, normalizedAnchorBefore.x, accuracy: 0.000_01)
+        XCTAssertEqual(normalizedAnchorAfter.y, normalizedAnchorBefore.y, accuracy: 0.000_01)
+
+        scene.zoomCameraForTesting(by: 0.000_1, anchoredAt: anchor)
+        let minimumScale = scene.cameraScaleForTesting
+        scene.zoomCameraForTesting(by: 0.000_1, anchoredAt: anchor)
+        XCTAssertEqual(scene.cameraScaleForTesting, minimumScale, accuracy: 0.000_001)
+
+        scene.zoomCameraForTesting(by: 10_000, anchoredAt: anchor)
+        XCTAssertEqual(
+            scene.cameraScaleForTesting,
+            scene.cityScaleLimitForTesting,
+            accuracy: 0.000_001
+        )
+    }
+
+    @MainActor
     func testInteractionModesKeepPrimaryAndSecondaryActionsUnambiguous() {
         let occupied = GridCoordinate(x: 11, y: 11)
         let store = CityGameStore(state: .newCity(seed: 42))

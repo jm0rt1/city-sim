@@ -32,6 +32,10 @@ Use this checklist before writing the corrective plan comment.
 - [ ] Scope boundaries are explicit.
 
 ## F. Publication
+Complete this section only after the user explicitly requests a post or comment
+to the specified issue/PR.
+
+- [ ] User explicitly requested a post or comment to this exact issue/PR.
 - [ ] Comment starts with @copilot if requested.
 - [ ] Comment posted to correct issue/PR.
 - [ ] Posted URL captured and shared with user.

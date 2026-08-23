@@ -1,24 +1,30 @@
 ---
 name: pr-recovery-playbook
-description: 'Recover a stalled or off-track issue/PR by combining user intent, PR code review, timeline comment history, and cross-repo in-progress context; then post a precise phased recovery plan comment to the issue/PR (including @copilot tag when requested). Use for prompts like: get this agent back on track, Copilot missed the goal, PR is drifting, write a concrete corrective plan, summarize and course-correct ongoing work.'
+description: 'Explicit-user-invocation-only workflow to research and draft a truthful recovery plan for a specified issue or PR; posts only when the user explicitly asks to comment on that exact artifact. Do not use merely because PR drift is mentioned.'
 argument-hint: 'Issue/PR URL or number + desired end-goal and constraints'
 user-invocable: true
-disable-model-invocation: false
+disable-model-invocation: true
 ---
 
 # PR Recovery Playbook
 
 ## Purpose
-Use this skill when the user wants an AI agent to recover from drift and re-align active development work with the intended goal.
+Use this skill only when the user explicitly invokes `$pr-recovery-playbook`.
+Mere mention of PR drift, Copilot, a review, or a recovery plan does not invoke
+it. Draft a plan by default.
 
 Primary outcome:
-- Post a high-signal, actionable recovery plan to the target issue/PR with explicit goals, scope boundaries, verification steps, and ownership cues.
+- Produce a high-signal, actionable draft recovery plan with explicit goals,
+  scope boundaries, verification steps, and ownership cues.
 
-## When To Use
-- User says the agent is off-track or output is not what they want.
-- A PR has merged/conflicting implementation paths, regressions, or review-loop churn.
-- The user requests a concrete correction plan to unblock progress.
-- The user asks to tag @copilot with exact implementation guidance.
+## Invocation and publication boundary
+
+- On explicit invocation, inspect the specified issue or PR and return a draft
+  unless the user explicitly asks to post or comment to that exact issue or PR.
+- Post externally only when the request names the target artifact and expressly
+  authorizes posting or commenting there. Do not infer permission from a
+  request to investigate, summarize, diagnose, draft, or recover work.
+- Include `@copilot` only when the user explicitly requests it.
 
 ## Required Inputs
 - User's target outcome in plain language.
@@ -26,7 +32,8 @@ Primary outcome:
 - Current branch context (if in workspace).
 - Any constraints: no API breaks, determinism, test expectations, release deadlines.
 
-If critical input is missing, ask minimal clarifying questions and proceed.
+If the target artifact or posting authority is missing, ask the minimum needed
+question or provide a clearly labeled local draft; do not post.
 
 ## Procedure
 1. Establish the objective from the user prompt.
@@ -73,17 +80,19 @@ If critical input is missing, ask minimal clarifying questions and proceed.
   - Risks and assumptions.
 - Avoid vague tasks like "refactor" without file-level direction.
 
-8. Post the plan to the issue/PR.
-- If user requested, include @copilot at the top.
+8. Deliver the draft to the user.
+- Label evidence that is unavailable or inferred.
 - Keep tone direct and execution-focused.
-- Post using repository-aware comment tooling.
 
-9. Confirm completion to the user.
-- Provide the posted comment URL.
-- Summarize the highest-impact next action in one sentence.
+9. Post only with explicit, artifact-specific authorization.
+- Confirm the target issue/PR matches the user's requested destination.
+- Include `@copilot` only if explicitly requested.
+- Use an available repository-aware comment tool. If none is available, return
+  the draft and state that posting requires a supported tool; do not simulate a
+  post. After a real post, provide its URL.
 
 ## Output Contract
-Final posted comment should contain:
+The draft, and any subsequently posted comment, should contain:
 - Objective alignment statement.
 - Root-cause findings.
 - Phase-by-phase recovery tasks.
@@ -98,4 +107,6 @@ Use the checklist: [Context research checklist](./references/context-research-ch
 - Call out when evidence is unavailable.
 - Preserve unrelated user changes.
 - Avoid destructive git actions unless explicitly requested.
+- Never post, comment, tag, or otherwise make an external change without the
+  user's explicit request for the specified issue or PR.
 - Keep recommendations minimal, precise, and testable.

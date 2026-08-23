@@ -1,4 +1,4 @@
-@copilot
+<!-- Add @copilot only when the user explicitly requests it. -->
 
 ## Recovery Plan: Re-align This Work With The Intended Goal
 

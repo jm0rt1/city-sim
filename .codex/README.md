@@ -6,7 +6,9 @@ agents working on City Sim.
 ## Contents
 
 - [`project.md`](project.md) — project orientation, run commands, and working conventions.
-- [`handoffs/`](handoffs/) — resumable notes for work that spans multiple sessions.
+- [`handoffs/`](handoffs/) — explicit recovery notes only when context cannot be
+  resumed from the active task or Git history.
 
 Keep generated files, virtual environments, credentials, and machine-specific
-state outside this directory.
+state outside this directory. Do not create routine handoff packets, claims,
+status ledgers, or other process artifacts.

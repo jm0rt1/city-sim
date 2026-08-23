@@ -10,10 +10,12 @@ the concrete outcomes needed to reach that mandate, escalating only critical
 product tradeoffs, material scope or budget changes, irreversible actions, or
 true external blockers.
 
-## Next outcome
+## Current sequence
 
-Make one representative city block look intentional and coherent inside the
-running game. Do not expand gameplay scope until that result is visibly better.
+The new-player journey is complete. Next, improve interruption safety, then
+dense-city runtime responsiveness, then compact usability at true 900x600;
+reassess after those outcomes. Volatile current-task details belong in the
+active Goal Driver task, and explicit user direction supersedes this sequence.
 
 ## Visual rules
 
@@ -33,7 +35,7 @@ player interaction. A passing build or isolated component test is not enough.
 
 ## Working rule
 
-Use one accountable implementer for this outcome. Bring in a short-lived
-specialist only for a genuinely independent, bounded contribution. Keep the
-task brief and proof in the task itself; do not create a standing operational
-control plane.
+Use one accountable Goal Driver with a lightweight liaison. Bring in at most
+one short-lived specialist for a genuinely independent, bounded contribution.
+Keep the task brief and proof in the task itself; do not create a standing
+operational control plane.

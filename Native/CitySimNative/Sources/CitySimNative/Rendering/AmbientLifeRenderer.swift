@@ -1,7 +1,8 @@
 import SpriteKit
 
-/// Adds one bounded, truth-safe ambient vignette without asserting traffic,
-/// occupancy, employment, prosperity, or service coverage.
+/// Adds bounded, truth-safe ambient vignettes. Pedestrians follow the typed
+/// local-activity signal, while road vehicles follow the simulation-derived
+/// traffic-pressure signal on connected road coordinates.
 @MainActor
 final class AmbientLifeRenderer {
     static func presentationBand(for value: Double?) -> UInt8? {
@@ -24,6 +25,11 @@ final class AmbientLifeRenderer {
         let intensity: Double
         let position: CGPoint
         let motionVector: CGPoint
+    }
+
+    struct RoadTrafficPlacement: Equatable, Sendable {
+        let coordinate: GridCoordinate
+        let intensity: Double
     }
 
     struct ActivityCandidates: Equatable, Sendable {
@@ -82,7 +88,8 @@ final class AmbientLifeRenderer {
         consequences: CitySpatialConsequenceMap,
         detail: CameraDetailLevel,
         reducedMotion: Bool,
-        resolvedActivityPlacements: [ActivityPlacement]? = nil
+        resolvedActivityPlacements: [ActivityPlacement]? = nil,
+        resolvedTrafficPlacements: [RoadTrafficPlacement]? = nil
     ) -> SKNode {
         lastActivityPlacements = []
         let root = SKNode()
@@ -216,6 +223,20 @@ final class AmbientLifeRenderer {
         )
         if !activity.children.isEmpty {
             root.addChild(activity)
+        }
+        let trafficPlacements = resolvedTrafficPlacements ?? roadTrafficPlacements(
+            in: state,
+            consequences: consequences,
+            detail: detail
+        )
+        let traffic = makeRoadTraffic(
+            placements: trafficPlacements,
+            in: state,
+            detail: detail,
+            reducedMotion: reducedMotion
+        )
+        if !traffic.children.isEmpty {
+            root.addChild(traffic)
         }
         addVacantLandscape(
             in: state,
@@ -494,6 +515,210 @@ final class AmbientLifeRenderer {
             activity.addChild(presence)
         }
         return activity
+    }
+
+    func roadTrafficPlacements(
+        in state: CityGameState,
+        consequences: CitySpatialConsequenceMap,
+        detail: CameraDetailLevel
+    ) -> [RoadTrafficPlacement] {
+        let limit = detail == .city ? 3 : 2
+        let candidates = state.tiles.filter { tile in
+            tile.kind == .road
+                && RoadConnectionMask.resolving(
+                    at: tile.coordinate,
+                    in: state
+                ).connectionCount >= 2
+                && (Self.presentationBand(
+                    for: consequences[tile.coordinate]?.trafficPressure
+                ) ?? 0) > 0
+        }
+        var selected: [CityTile] = []
+        for band in stride(from: 3, through: 1, by: -1) {
+            for candidate in candidates where selected.count < limit {
+                guard Self.presentationBand(
+                    for: consequences[candidate.coordinate]?.trafficPressure
+                ) == UInt8(band) else { continue }
+                let separated = selected.allSatisfy {
+                    abs($0.coordinate.x - candidate.coordinate.x)
+                        + abs($0.coordinate.y - candidate.coordinate.y) >= 3
+                }
+                guard separated else { continue }
+                selected.append(candidate)
+            }
+        }
+        if selected.count < limit {
+            for candidate in candidates where selected.count < limit {
+                guard !selected.contains(where: {
+                    $0.coordinate == candidate.coordinate
+                }) else { continue }
+                selected.append(candidate)
+            }
+        }
+        return selected.map { tile in
+            let band = Self.presentationBand(
+                for: consequences[tile.coordinate]?.trafficPressure
+            ) ?? 1
+            return RoadTrafficPlacement(
+                coordinate: tile.coordinate,
+                intensity: Double(band) / 3
+            )
+        }
+    }
+
+    func makeRoadTraffic(
+        placements: [RoadTrafficPlacement],
+        in state: CityGameState,
+        detail: CameraDetailLevel,
+        reducedMotion: Bool
+    ) -> SKNode {
+        let traffic = SKNode()
+        traffic.name = "world.traffic.local"
+        for (index, placement) in placements.enumerated() {
+            let connections = RoadConnectionMask.resolving(
+                at: placement.coordinate,
+                in: state
+            )
+            guard connections.connectionCount >= 2,
+                  let route = vehicleRoute(
+                      at: placement.coordinate,
+                      connections: connections,
+                      index: index
+                  ) else { continue }
+
+            let vehicle = makeVehicle(
+                coordinate: placement.coordinate,
+                intensity: placement.intensity,
+                detail: detail,
+                routeVector: route.vector,
+                index: index
+            )
+            vehicle.position = CGPoint(
+                x: style.isoPosition(placement.coordinate).x + route.start.x,
+                y: style.isoPosition(placement.coordinate).y + route.start.y
+            )
+            vehicle.zPosition = style.depth(for: placement.coordinate) + 54
+
+            if !reducedMotion, detail != .city {
+                let phase = Double(WorldVisualSeed.unit(
+                    for: placement.coordinate,
+                    kind: .road,
+                    salt: 0x7AFF10 + UInt64(index)
+                )) * 1.2
+                let drive = SKAction.sequence([
+                    .moveBy(x: route.vector.x, y: route.vector.y, duration: 2.8),
+                    .fadeOut(withDuration: 0.12),
+                    .moveBy(x: -route.vector.x, y: -route.vector.y, duration: 0),
+                    .fadeIn(withDuration: 0.12),
+                    .wait(forDuration: 0.45),
+                ])
+                vehicle.run(
+                    .sequence([.wait(forDuration: phase), .repeatForever(drive)]),
+                    withKey: "ambient.road-traffic"
+                )
+            }
+            traffic.addChild(vehicle)
+        }
+        return traffic
+    }
+
+    private func vehicleRoute(
+        at coordinate: GridCoordinate,
+        connections: RoadConnectionMask,
+        index: Int
+    ) -> (start: CGPoint, vector: CGPoint)? {
+        let edges = connections.edges
+        guard edges.count >= 2 else { return nil }
+        let startIndex = WorldVisualSeed.variant(
+            count: edges.count,
+            for: coordinate,
+            kind: .road,
+            salt: 0x7AFF20 + UInt64(index)
+        )
+        let incoming = edges[startIndex]
+        let outgoing = connections.contains(incoming.opposite)
+            ? incoming.opposite
+            : edges[(startIndex + 1) % edges.count]
+        let incomingSocket = style.roadSocket(for: incoming, overreach: -5)
+        let outgoingSocket = style.roadSocket(for: outgoing, overreach: -5)
+        let vector = CGPoint(
+            x: outgoingSocket.x - incomingSocket.x,
+            y: outgoingSocket.y - incomingSocket.y
+        )
+        let length = max(0.001, hypot(vector.x, vector.y))
+        let laneOffset = CGFloat(index.isMultiple(of: 2) ? 1 : -1) * 2.7
+        let perpendicular = CGPoint(x: -vector.y / length, y: vector.x / length)
+        let start = CGPoint(
+            x: incomingSocket.x + perpendicular.x * laneOffset,
+            y: incomingSocket.y + perpendicular.y * laneOffset
+        )
+        return (start, vector)
+    }
+
+    private func makeVehicle(
+        coordinate: GridCoordinate,
+        intensity: Double,
+        detail: CameraDetailLevel,
+        routeVector: CGPoint,
+        index: Int
+    ) -> SKNode {
+        let vehicle = SKNode()
+        vehicle.name = "world.traffic.vehicle.\(coordinate.x).\(coordinate.y)"
+        vehicle.zRotation = atan2(routeVector.y, routeVector.x)
+        vehicle.alpha = 0.82 + CGFloat(intensity) * 0.16
+        let scale: CGFloat = switch detail {
+        case .city: 0.94
+        case .neighborhood: 1.02
+        case .block: 1.10
+        }
+        vehicle.setScale(scale)
+
+        let shadow = SKShapeNode(ellipseOf: CGSize(width: 10.5, height: 4.1))
+        shadow.name = "world.traffic.vehicle.shadow"
+        shadow.fillColor = style.palette.shadow.withAlphaComponent(0.48)
+        shadow.strokeColor = .clear
+        shadow.position = CGPoint(x: 0.8, y: -1.2)
+        shadow.zPosition = -1
+        vehicle.addChild(shadow)
+
+        let bodyColors = [
+            NSColor(srgbRed: 0.55, green: 0.20, blue: 0.16, alpha: 1),
+            NSColor(srgbRed: 0.16, green: 0.39, blue: 0.47, alpha: 1),
+            NSColor(srgbRed: 0.73, green: 0.58, blue: 0.30, alpha: 1),
+        ]
+        let colorIndex = WorldVisualSeed.variant(
+            count: bodyColors.count,
+            for: coordinate,
+            kind: .road,
+            salt: 0x7AFF30 + UInt64(index)
+        )
+        let body = SKShapeNode(rectOf: CGSize(width: 10, height: 4.5), cornerRadius: 1.35)
+        body.name = "world.traffic.vehicle.body"
+        body.fillColor = bodyColors[colorIndex]
+        body.strokeColor = style.palette.mapEarthDark.withAlphaComponent(0.82)
+        body.lineWidth = 0.6
+        body.zPosition = 0
+        vehicle.addChild(body)
+
+        let cabin = SKShapeNode(rectOf: CGSize(width: 5.2, height: 3.4), cornerRadius: 0.8)
+        cabin.name = "world.traffic.vehicle.cabin"
+        cabin.fillColor = style.palette.glass.withAlphaComponent(0.88)
+        cabin.strokeColor = style.palette.roofDark.withAlphaComponent(0.72)
+        cabin.lineWidth = 0.45
+        cabin.position.x = -0.35
+        cabin.zPosition = 1
+        vehicle.addChild(cabin)
+
+        for side: CGFloat in [-1, 1] {
+            let headlight = SKShapeNode(circleOfRadius: 0.55)
+            headlight.name = "world.traffic.vehicle.headlight"
+            headlight.fillColor = style.palette.warmWindow
+            headlight.strokeColor = .clear
+            headlight.position = CGPoint(x: 4.7, y: side * 1.25)
+            headlight.zPosition = 2
+            vehicle.addChild(headlight)
+        }
+        return vehicle
     }
 
     private func sidewalkActivityGeometry(

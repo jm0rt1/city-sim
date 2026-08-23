@@ -445,7 +445,12 @@ final class TerrainRenderer {
         )
 
         let familyGroups = Dictionary(grouping: completed, by: \.kind)
-        for (kind, tiles) in familyGroups {
+        var seenFamilies: Set<BuildingKind> = []
+        let familyOrder = completed.compactMap { tile in
+            seenFamilies.insert(tile.kind).inserted ? tile.kind : nil
+        }
+        for kind in familyOrder {
+            guard let tiles = familyGroups[kind] else { continue }
             if kind == .park {
                 addSpecialParcelMaterial(
                     kind: kind,

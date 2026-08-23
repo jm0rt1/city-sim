@@ -97,9 +97,15 @@ private struct AmbientActivitySignature: Equatable {
     let presentationBand: UInt8
 }
 
+private struct AmbientTrafficSignature: Equatable {
+    let coordinate: GridCoordinate
+    let presentationBand: UInt8
+}
+
 private struct AmbientCorridorSignature: Equatable {
     let context: AmbientContextSignature
     let activitySamples: [AmbientActivitySignature]
+    let trafficSamples: [AmbientTrafficSignature]
 }
 
 private struct AmbientGroundSignature: Equatable {
@@ -1058,10 +1064,16 @@ final class CityScene: SKScene {
             consequences: snapshot.spatialConsequences,
             detail: currentCameraDetailLevel
         )
+        let trafficPlacements = ambientLifeRenderer.roadTrafficPlacements(
+            in: state,
+            consequences: snapshot.spatialConsequences,
+            detail: currentCameraDetailLevel
+        )
         return reconcileAmbientCorridor(
             snapshot: snapshot,
             context: context,
-            placements: placements
+            placements: placements,
+            trafficPlacements: trafficPlacements
         )
     }
 
@@ -1102,11 +1114,13 @@ final class CityScene: SKScene {
     private func reconcileAmbientCorridor(
         snapshot: CityPresentationSnapshot,
         context: AmbientContextSignature,
-        placements: [AmbientLifeRenderer.ActivityPlacement]
+        placements: [AmbientLifeRenderer.ActivityPlacement],
+        trafficPlacements: [AmbientLifeRenderer.RoadTrafficPlacement]
     ) -> Bool {
         let signature = AmbientCorridorSignature(
             context: context,
-            activitySamples: activitySignature(placements)
+            activitySamples: activitySignature(placements),
+            trafficSamples: trafficSignature(trafficPlacements)
         )
         guard signature != ambientCorridorSignature else { return false }
         ambientRebuildCountForTesting += 1
@@ -1132,7 +1146,8 @@ final class CityScene: SKScene {
                 consequences: snapshot.spatialConsequences,
                 detail: currentCameraDetailLevel,
                 reducedMotion: !ambientMotionEnabled,
-                resolvedActivityPlacements: placements
+                resolvedActivityPlacements: placements,
+                resolvedTrafficPlacements: trafficPlacements
             ))
         } else if let corridor = ambientLifeLayer.childNode(
             withName: "world.ambient.corridor"
@@ -1150,6 +1165,16 @@ final class CityScene: SKScene {
             if !activity.children.isEmpty {
                 corridor.addChild(activity)
             }
+            corridor.childNode(withName: "world.traffic.local")?.removeFromParent()
+            let traffic = ambientLifeRenderer.makeRoadTraffic(
+                placements: trafficPlacements,
+                in: snapshot.state,
+                detail: currentCameraDetailLevel,
+                reducedMotion: !ambientMotionEnabled
+            )
+            if !traffic.children.isEmpty {
+                corridor.addChild(traffic)
+            }
         } else {
             ambientLifeLayer.removeAllChildren()
             ambientLifeLayer.addChild(ambientLifeRenderer.makeCorridorLife(
@@ -1157,7 +1182,8 @@ final class CityScene: SKScene {
                 consequences: snapshot.spatialConsequences,
                 detail: currentCameraDetailLevel,
                 reducedMotion: !ambientMotionEnabled,
-                resolvedActivityPlacements: placements
+                resolvedActivityPlacements: placements,
+                resolvedTrafficPlacements: trafficPlacements
             ))
         }
         applyRuntimeDelta(
@@ -1183,10 +1209,16 @@ final class CityScene: SKScene {
             for: snapshot.state,
             changedCoordinates: nil
         )
+        let trafficPlacements = ambientLifeRenderer.roadTrafficPlacements(
+            in: snapshot.state,
+            consequences: snapshot.spatialConsequences,
+            detail: currentCameraDetailLevel
+        )
         return reconcileAmbientCorridor(
             snapshot: snapshot,
             context: context,
-            placements: placements
+            placements: placements,
+            trafficPlacements: trafficPlacements
         )
     }
 
@@ -1198,6 +1230,17 @@ final class CityScene: SKScene {
                 domain: placement.domain,
                 sourceCoordinate: placement.sourceCoordinate,
                 surfaceCoordinate: placement.surfaceCoordinate,
+                presentationBand: UInt8((placement.intensity * 3).rounded())
+            )
+        }
+    }
+
+    private func trafficSignature(
+        _ placements: [AmbientLifeRenderer.RoadTrafficPlacement]
+    ) -> [AmbientTrafficSignature] {
+        placements.map { placement in
+            AmbientTrafficSignature(
+                coordinate: placement.coordinate,
                 presentationBand: UInt8((placement.intensity * 3).rounded())
             )
         }

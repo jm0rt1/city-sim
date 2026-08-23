@@ -3105,6 +3105,11 @@ final class WorldRenderingTests: XCTestCase {
                 return components.count == 6
                     && $0.hasPrefix("world.activity.place.local-activity.")
             }.count, 1)
+            XCTAssertEqual(names.filter {
+                let components = $0.split(separator: ".")
+                return components.count == 5
+                    && $0.hasPrefix("world.traffic.vehicle.")
+            }.count, 2)
             XCTAssertEqual(
                 names.filter {
                     $0 == "world.ambient.vegetation-cluster.0"
@@ -3188,6 +3193,14 @@ final class WorldRenderingTests: XCTestCase {
             descendantNames(in: city).contains {
                 $0.hasPrefix("world.public-realm.street-furniture.")
             }
+        )
+        XCTAssertEqual(
+            descendantNames(in: city).filter {
+                let components = $0.split(separator: ".")
+                return components.count == 5
+                    && $0.hasPrefix("world.traffic.vehicle.")
+            }.count,
+            3
         )
         let landscape = try! XCTUnwrap(
             reduced.childNode(withName: "//world.environment.vacant-landscape")
@@ -3295,12 +3308,19 @@ final class WorldRenderingTests: XCTestCase {
         }
         XCTAssertFalse(animatedNames.contains { $0.hasPrefix("lot.ambient.") })
         XCTAssertFalse(animatedNames.contains { $0.contains(".banner") || $0.contains(".windsock") })
-        XCTAssertLessThanOrEqual(recursiveActiveActionCount(animated), 2)
+        XCTAssertLessThanOrEqual(recursiveActiveActionCount(animated), 4)
         let pedestrian = animated.childNode(withName: "//world.activity.street.local-activity.*")
         let stroll = pedestrian?.action(forKey: "ambient.local-activity")
         XCTAssertNotNil(stroll)
         XCTAssertGreaterThanOrEqual(stroll?.duration ?? 0, 14.4)
         XCTAssertLessThanOrEqual(stroll?.duration ?? .infinity, 15.2)
+        let vehicle = animated.childNode(withName: "//world.traffic.vehicle.*")
+        XCTAssertNotNil(vehicle?.action(forKey: "ambient.road-traffic"))
+        XCTAssertNil(
+            reduced.childNode(withName: "//world.traffic.vehicle.*")?.action(
+                forKey: "ambient.road-traffic"
+            )
+        )
         XCTAssertEqual(recursiveActiveActionCount(reduced), 0)
         XCTAssertTrue(descendantLabels(in: animated).isEmpty)
         XCTAssertTrue(descendantLabels(in: reduced).isEmpty)
@@ -3364,6 +3384,49 @@ final class WorldRenderingTests: XCTestCase {
                 XCTAssertGreaterThanOrEqual(source.constructionProgress, 1)
             }
         }
+
+        let blockTraffic = renderer.roadTrafficPlacements(
+            in: state,
+            consequences: snapshot.spatialConsequences,
+            detail: .block
+        )
+        let repeatedTraffic = renderer.roadTrafficPlacements(
+            in: state,
+            consequences: snapshot.spatialConsequences,
+            detail: .block
+        )
+        let cityTraffic = renderer.roadTrafficPlacements(
+            in: state,
+            consequences: snapshot.spatialConsequences,
+            detail: .city
+        )
+        XCTAssertEqual(blockTraffic, repeatedTraffic)
+        XCTAssertEqual(blockTraffic.count, 2)
+        XCTAssertEqual(cityTraffic.count, 3)
+        XCTAssertEqual(Set(cityTraffic.map(\.coordinate)).count, cityTraffic.count)
+        for placement in cityTraffic {
+            XCTAssertEqual(state.tile(at: placement.coordinate)?.kind, .road)
+            XCTAssertGreaterThanOrEqual(
+                RoadConnectionMask.resolving(
+                    at: placement.coordinate,
+                    in: state
+                ).connectionCount,
+                2
+            )
+            XCTAssertGreaterThan(placement.intensity, 0)
+            XCTAssertLessThanOrEqual(placement.intensity, 1)
+        }
+        var emptyState = CityGameState.newCity(seed: 42)
+        for coordinate in emptyState.tiles.map(\.coordinate) {
+            emptyState.updateTile(at: coordinate) {
+                $0 = CityTile(coordinate: coordinate, kind: .empty)
+            }
+        }
+        XCTAssertTrue(renderer.roadTrafficPlacements(
+            in: emptyState,
+            consequences: CitySpatialConsequenceMap(state: emptyState),
+            detail: .city
+        ).isEmpty)
 
         for value: Double? in [nil, 0] {
             let suppressed = renderer.activityPlacements(
@@ -3698,7 +3761,7 @@ final class WorldRenderingTests: XCTestCase {
         regular.reducedMotion = false
         regular.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
         XCTAssertTrue(regular.ambientMotionEnabledForTesting)
-        XCTAssertEqual(regular.ambientActionCountForTesting, 2)
+        XCTAssertEqual(regular.ambientActionCountForTesting, 4)
 
         let compact = CityScene(size: CGSize(width: 900, height: 600))
         compact.reducedMotion = false

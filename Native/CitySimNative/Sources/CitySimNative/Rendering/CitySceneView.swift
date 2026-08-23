@@ -277,7 +277,10 @@ struct CitySceneView: NSViewRepresentable {
                     view.cityAccessibilityActions = [
                         NSAccessibilityCustomAction(name: "Select buildable block") { [weak self] in
                             guard let self,
-                                  let coordinate = self.firstBuildableCoordinate(for: kind) else {
+                                  let coordinate = Self.firstBuildableCoordinate(
+                                      for: kind,
+                                      in: self.store.state
+                                  ) else {
                                 return false
                             }
                             guard self.store.acceptPointerMapActionCandidate(coordinate) != nil else {
@@ -349,25 +352,34 @@ struct CitySceneView: NSViewRepresentable {
             view.cityAccessibilityActions = actions
         }
 
-        private func firstBuildableCoordinate(for kind: BuildingKind) -> GridCoordinate? {
-            store.state.tiles
+        static func firstBuildableCoordinate(
+            for kind: BuildingKind,
+            in state: CityGameState
+        ) -> GridCoordinate? {
+            let candidates = state.tiles
                 .sorted {
                     if $0.coordinate.y != $1.coordinate.y {
                         return $0.coordinate.y < $1.coordinate.y
                     }
                     return $0.coordinate.x < $1.coordinate.x
                 }
-                .first {
+                .filter {
                     if case .success = CitySimulation.validateBuild(
                         kind,
                         at: $0.coordinate,
-                        in: store.state
+                        in: state
                     ) {
                         return true
                     }
                     return false
-                }?
-                .coordinate
+                }
+            if kind == .road,
+               let extensionTarget = candidates.first(where: { candidate in
+                   state.neighbors(of: candidate.coordinate).contains { $0.kind == .road }
+               }) {
+                return extensionTarget.coordinate
+            }
+            return candidates.first?.coordinate
         }
 
         func allowsPointerMapActionCandidate(in view: CityMapSKView) -> Bool {

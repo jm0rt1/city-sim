@@ -637,7 +637,10 @@ final class CityGameStore: ObservableObject {
 
     private func targetNearestBuildableParcel(for kind: BuildingKind) {
         if let selectedCoordinate,
-           case .success = CitySimulation.validateBuild(kind, at: selectedCoordinate, in: state) {
+           case .success = CitySimulation.validateBuild(kind, at: selectedCoordinate, in: state),
+           kind != .road || state.neighbors(of: selectedCoordinate).contains(where: {
+               $0.kind == .road
+           }) {
             hudContextScope = .selection
             return
         }
@@ -651,6 +654,15 @@ final class CityGameStore: ObservableObject {
                 return false
             }
             .min { lhs, rhs in
+                if kind == .road {
+                    let lhsExtendsRoad = state.neighbors(of: lhs.coordinate).contains {
+                        $0.kind == .road
+                    }
+                    let rhsExtendsRoad = state.neighbors(of: rhs.coordinate).contains {
+                        $0.kind == .road
+                    }
+                    if lhsExtendsRoad != rhsExtendsRoad { return lhsExtendsRoad }
+                }
                 let lhsDistance = abs(lhs.coordinate.x - origin.x) + abs(lhs.coordinate.y - origin.y)
                 let rhsDistance = abs(rhs.coordinate.x - origin.x) + abs(rhs.coordinate.y - origin.y)
                 if lhsDistance != rhsDistance { return lhsDistance < rhsDistance }
@@ -870,7 +882,7 @@ final class CityGameStore: ObservableObject {
         guard !startupResumeOfferWasConsidered,
               commandPolicy == .enabled,
               state.status == .playing,
-              state == .newCity(seed: state.seed) else { return }
+              isFreshStartupCity else { return }
         startupResumeOfferWasConsidered = true
         guard saves.hasResumeCandidate else { return }
         do {
@@ -883,6 +895,11 @@ final class CityGameStore: ObservableObject {
         } catch {
             showInvalidQuicksaveFeedback()
         }
+    }
+
+    private var isFreshStartupCity: Bool {
+        state == .newCity(seed: state.seed)
+            || state == .newTrackedCity(seed: state.seed)
     }
 
     @discardableResult
@@ -1299,7 +1316,8 @@ final class CityGameStore: ObservableObject {
         guard let command = foundationsGuidePresentation?.currentLesson?.command else {
             return false
         }
-        if CityCommandCatalog.mapFocusedCommands.contains(command) {
+        if CityCommandCatalog.mapFocusedCommands.contains(command)
+            || CityCommandCatalog.buildingKind(for: command) != nil {
             return performMapFocused(command)
         }
         return perform(command)

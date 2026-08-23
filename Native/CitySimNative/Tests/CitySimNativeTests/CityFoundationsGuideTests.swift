@@ -69,6 +69,53 @@ final class CityFoundationsGuideTests: XCTestCase {
     }
 
     @MainActor
+    func testGuideActionsExtendTheStreetGridAndLeaveAReadyZoneTarget() throws {
+        let defaults = try isolatedDefaults()
+        let store = CityGameStore(
+            state: .newTrackedCity(seed: 7_020),
+            startsPaused: true,
+            playerDefaults: defaults
+        )
+
+        XCTAssertTrue(store.performFoundationsGuideAction())
+        XCTAssertEqual(store.foundationsGuidePresentation?.currentLesson?.id, .roads)
+
+        let disconnectedRoadTarget = try XCTUnwrap(store.state.tiles.first { tile in
+            tile.kind == .empty
+                && !store.state.neighbors(of: tile.coordinate).contains { $0.kind == .road }
+        })
+        store.selectedCoordinate = disconnectedRoadTarget.coordinate
+        XCTAssertTrue(store.performFoundationsGuideAction())
+        let roadTarget = try XCTUnwrap(store.selectedCoordinate)
+        XCTAssertNotEqual(roadTarget, disconnectedRoadTarget.coordinate)
+        XCTAssertEqual(store.interactionMode, .build(.road))
+        XCTAssertTrue(store.state.neighbors(of: roadTarget).contains { $0.kind == .road })
+        if case .failure(let rejection) = CitySimulation.validateBuild(
+            .road,
+            at: roadTarget,
+            in: store.state
+        ) {
+            XCTFail("The guide must select a valid street extension, got \(rejection)")
+        }
+        XCTAssertTrue(store.performMapCommand(.mapPrimaryAction))
+        XCTAssertEqual(store.state.tile(at: roadTarget)?.kind, .road)
+
+        XCTAssertEqual(store.foundationsGuidePresentation?.currentLesson?.id, .zoning)
+        XCTAssertTrue(store.performFoundationsGuideAction())
+        let zoneTarget = try XCTUnwrap(store.selectedCoordinate)
+        XCTAssertNotEqual(zoneTarget, roadTarget)
+        XCTAssertEqual(store.interactionMode, .build(.residential))
+        XCTAssertTrue(store.state.neighbors(of: zoneTarget).contains { $0.kind == .road })
+        if case .failure(let rejection) = CitySimulation.validateBuild(
+            .residential,
+            at: zoneTarget,
+            in: store.state
+        ) {
+            XCTFail("The guide must recover from the occupied road and select a ready zone, got \(rejection)")
+        }
+    }
+
+    @MainActor
     func testFullGuidedJourneyCompletesFromPlayerActionsAndOneElapsedDay() throws {
         let defaults = try isolatedDefaults()
         let store = CityGameStore(
@@ -96,6 +143,73 @@ final class CityFoundationsGuideTests: XCTestCase {
         XCTAssertTrue(presentation.isComplete)
         XCTAssertEqual(presentation.completedCount, presentation.totalCount)
         XCTAssertTrue(store.foundationsGuideProgress.isComplete)
+    }
+
+    @MainActor
+    func testNewPlayerJourneyRecoversSavesQuitsAndResumesPausedAtShippingSizes() throws {
+        let root = FileManager.default.temporaryDirectory
+            .appending(path: "citysim-outcome-one-\(UUID().uuidString)", directoryHint: .isDirectory)
+        defer { try? FileManager.default.removeItem(at: root) }
+        let defaults = try isolatedDefaults()
+        let service = SaveGameService(rootURL: root)
+        let store = CityGameStore(
+            state: .newTrackedCity(seed: 7_021),
+            saveService: service,
+            startsPaused: true,
+            playerDefaults: defaults
+        )
+
+        XCTAssertTrue(store.performFoundationsGuideAction())
+        XCTAssertEqual(store.foundationsGuidePresentation?.currentLesson?.id, .roads)
+        XCTAssertTrue(store.performFoundationsGuideAction())
+
+        let occupied = try XCTUnwrap(store.state.tiles.first { $0.kind != .empty })
+        store.selectedCoordinate = occupied.coordinate
+        store.clearFeedback()
+        let beforeBlockedAttempt = store.state
+        XCTAssertTrue(store.performMapAction(primary: true))
+        XCTAssertEqual(store.state, beforeBlockedAttempt)
+        guard case .caution = store.lastFeedbackTone else {
+            return XCTFail("The rejected action must publish caution feedback")
+        }
+        XCTAssertNotNil(store.lastFeedback)
+
+        XCTAssertTrue(store.performFoundationsGuideAction())
+        let roadTarget = try XCTUnwrap(store.selectedCoordinate)
+        XCTAssertTrue(store.state.neighbors(of: roadTarget).contains { $0.kind == .road })
+        XCTAssertTrue(store.performMapCommand(.mapPrimaryAction))
+
+        XCTAssertTrue(store.performFoundationsGuideAction())
+        let zoneTarget = try XCTUnwrap(store.selectedCoordinate)
+        XCTAssertNotEqual(zoneTarget, roadTarget)
+        XCTAssertTrue(store.performMapCommand(.mapPrimaryAction))
+        XCTAssertEqual(store.state.tile(at: zoneTarget)?.kind, .residential)
+
+        store.setSpeed(.normal)
+        for _ in 0..<4 { store.pulse() }
+        XCTAssertGreaterThan(store.state.tick, 0)
+        let savedCity = store.state
+        let savedFingerprint = try CityStateFingerprinter.fingerprint(savedCity)
+        XCTAssertTrue(store.save())
+        XCTAssertFalse(store.hasUnsavedProgress)
+
+        let delegate = CitySimAppDelegate()
+        delegate.bind(store: store)
+        XCTAssertEqual(delegate.applicationShouldTerminate(.shared), .terminateNow)
+
+        let resumed = CityGameStore(
+            state: .newTrackedCity(seed: 99),
+            saveService: service,
+            startsPaused: false,
+            playerDefaults: defaults
+        )
+        resumed.prepareStartupResumeOffer()
+        XCTAssertEqual(resumed.commandPolicy, .blocked(.startupResume))
+        XCTAssertTrue(resumed.resumeStartupCity())
+        XCTAssertEqual(try CityStateFingerprinter.fingerprint(resumed.state), savedFingerprint)
+        XCTAssertEqual(resumed.state, savedCity)
+        XCTAssertEqual(resumed.speed, .paused)
+        XCTAssertEqual(resumed.persistenceStatus.kind, .saved)
     }
 
     @MainActor

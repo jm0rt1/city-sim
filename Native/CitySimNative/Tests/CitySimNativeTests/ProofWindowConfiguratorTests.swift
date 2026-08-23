@@ -4,6 +4,10 @@ import XCTest
 final class ProofWindowConfiguratorTests: XCTestCase {
     @MainActor
     func testExplicitProofRequestsAlsoDriveTheInitialSceneContentSize() {
+        XCTAssertEqual(ProofWindowConfigurator.regularProofContentSize.width, 1_280)
+        XCTAssertEqual(ProofWindowConfigurator.regularProofContentSize.height, 800)
+        XCTAssertEqual(ProofWindowConfigurator.compactContentSize.width, 900)
+        XCTAssertEqual(ProofWindowConfigurator.compactContentSize.height, 600)
         XCTAssertEqual(
             ProofWindowConfigurator.initialSceneContentSize(
                 environment: ["CITYSIM_COMPACT_WINDOW": "1"]

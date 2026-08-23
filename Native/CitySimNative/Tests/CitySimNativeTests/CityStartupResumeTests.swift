@@ -96,6 +96,32 @@ final class CityStartupResumeTests: XCTestCase {
     }
 
     @MainActor
+    func testHistoryTrackedFreshAppStateOffersAndResumesVerifiedSavePaused() throws {
+        let root = FileManager.default.temporaryDirectory
+            .appending(path: "citysim-startup-tracked-\(UUID().uuidString)", directoryHint: .isDirectory)
+        defer { try? FileManager.default.removeItem(at: root) }
+        let service = SaveGameService(rootURL: root)
+        var saved = CityGameState.newTrackedCity(seed: 92)
+        saved.cityName = "Tracked Harbor"
+        saved.tick = 12
+        try service.save(saved)
+        let store = CityGameStore(
+            state: .newTrackedCity(seed: 93),
+            saveService: service,
+            startsPaused: true
+        )
+
+        store.prepareStartupResumeOffer()
+
+        XCTAssertEqual(store.commandPolicy, .blocked(.startupResume))
+        XCTAssertEqual(store.startupResumeOffer?.checkpoint, "Tracked Harbor · Day 4 · 300 residents")
+        XCTAssertTrue(store.resumeStartupCity())
+        XCTAssertEqual(store.state, saved)
+        XCTAssertEqual(store.speed, .paused)
+        XCTAssertEqual(store.persistenceStatus.kind, .saved)
+    }
+
+    @MainActor
     func testStartFreshPreservesTheVerifiedSaveAndPriorSimulationSpeed() throws {
         let root = FileManager.default.temporaryDirectory
             .appending(path: "citysim-startup-fresh-\(UUID().uuidString)", directoryHint: .isDirectory)

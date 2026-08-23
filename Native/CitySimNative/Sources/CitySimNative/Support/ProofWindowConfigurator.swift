@@ -6,7 +6,7 @@ struct ProofWindowConfigurator: NSViewRepresentable {
     static let establishedCandidateDefaultKey = "hasEstablishedCitySimCandidateWindowDefault"
     static let defaultContentSize = NSSize(width: 1_440, height: 900)
     static let compactContentSize = NSSize(width: 900, height: 600)
-    static let regularProofContentSize = NSSize(width: 1_278, height: 768)
+    static let regularProofContentSize = NSSize(width: 1_280, height: 800)
 
     /// `WindowGroup.defaultSize` is applied before the representable has a window.
     /// Put explicit proof sizes in the scene itself so it cannot restore 1,440 × 900

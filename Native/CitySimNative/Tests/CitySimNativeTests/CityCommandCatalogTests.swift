@@ -2782,6 +2782,22 @@ final class CityCommandCatalogTests: XCTestCase {
     }
 
     @MainActor
+    func testNativeMapAccessibilityRoadTargetExtendsTheExistingNetwork() throws {
+        let store = CityGameStore(state: .newTrackedCity(seed: 2_026_082_301))
+        let target = try XCTUnwrap(
+            CitySceneView.Coordinator.firstBuildableCoordinate(for: .road, in: store.state)
+        )
+        XCTAssertTrue(store.state.neighbors(of: target).contains { $0.kind == .road })
+        if case .failure(let rejection) = CitySimulation.validateBuild(
+            .road,
+            at: target,
+            in: store.state
+        ) {
+            XCTFail("The accessibility target must be a valid street extension, got \(rejection)")
+        }
+    }
+
+    @MainActor
     func testFocusedReturnRoutesOneRejectedAttemptButTextAndWelcomeRemainQuarantined() throws {
         let store = CityGameStore(state: .newCity(seed: 42))
         let occupied = try XCTUnwrap(store.state.tiles.first { $0.kind != .empty })

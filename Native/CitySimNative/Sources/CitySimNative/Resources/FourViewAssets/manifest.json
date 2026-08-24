@@ -1,13 +1,19 @@
 {
-  "schema": "citysim.native-four-view-assets.v1",
+  "schema": "citysim.native-four-view-assets.v2",
   "camera": "camNE",
   "cameraAzimuthDegrees": 45,
   "cameraElevationDegrees": 30,
-  "projectedTilePixels": [88, 44],
+  "projectedTilePixels": [
+    88,
+    44
+  ],
   "canvas": {
     "width": 384,
     "height": 384,
-    "footprintPivotPixel": [192, 300]
+    "footprintPivotPixel": [
+      192,
+      300
+    ]
   },
   "postRenderCompensation": "none",
   "assets": [
@@ -15,199 +21,1792 @@
       "assetID": "copper_finch_house",
       "file": "copper_finch_house_camNE.png",
       "sha256": "68dd822e659e006947d65547b1eadeb9afae722b6200eab6f3b6f2c10663611d",
-      "roles": ["residential-low"]
+      "roles": [
+        "residential-low"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "copper_finch_house_camNE.png",
+          "sha256": "68dd822e659e006947d65547b1eadeb9afae722b6200eab6f3b6f2c10663611d"
+        }
+      ],
+      "family": "residential"
     },
     {
       "assetID": "marigold_court_house",
       "file": "marigold_court_house_camNE.png",
       "sha256": "995eb3314aa9cfb006d93c3e7671686ff7638a25abcd68cb517cca78fadc2863",
-      "roles": ["residential-low"]
+      "roles": [
+        "residential-low"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "marigold_court_house_camNE.png",
+          "sha256": "995eb3314aa9cfb006d93c3e7671686ff7638a25abcd68cb517cca78fadc2863"
+        }
+      ],
+      "family": "residential"
     },
     {
       "assetID": "brickline_rowhouse_apartments",
       "file": "brickline_rowhouse_apartments_camNE.png",
       "sha256": "e5eba683df85197beb5bb601707dbf41717911829fe430d8b6ca520068111ae2",
-      "roles": ["residential-medium"]
+      "roles": [
+        "residential-medium"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "brickline_rowhouse_apartments_camNE.png",
+          "sha256": "e5eba683df85197beb5bb601707dbf41717911829fe430d8b6ca520068111ae2"
+        }
+      ],
+      "family": "residential"
     },
     {
       "assetID": "maple_courtyard_apartments",
       "file": "maple_courtyard_apartments_camNE.png",
       "sha256": "f2308ff21ca05e6e522e793833528d1d44d631eb82ec30f81d2b2babb1eded2a",
-      "roles": ["residential-medium"]
+      "roles": [
+        "residential-medium"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "maple_courtyard_apartments_camNE.png",
+          "sha256": "f2308ff21ca05e6e522e793833528d1d44d631eb82ec30f81d2b2babb1eded2a"
+        }
+      ],
+      "family": "residential"
     },
     {
       "assetID": "harbor_corner_storefront",
       "file": "harbor_corner_storefront_camNE.png",
       "sha256": "e98cdcf50592089d7a0b6ded522af7c2892c78dda8bf0c623940e39f57241ebd",
-      "roles": ["commercial", "commercial-low"]
+      "roles": [
+        "commercial",
+        "commercial-low"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "harbor_corner_storefront_camNE.png",
+          "sha256": "e98cdcf50592089d7a0b6ded522af7c2892c78dda8bf0c623940e39f57241ebd"
+        }
+      ],
+      "family": "commercial"
     },
     {
       "assetID": "lantern_row_bakery",
       "file": "lantern_row_bakery_camNE.png",
       "sha256": "166f4229393961cfd3d15e5103316eeeb4049f269b22c828271d74d515677e56",
-      "roles": ["commercial", "commercial-low"]
+      "roles": [
+        "commercial",
+        "commercial-low"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "lantern_row_bakery_camNE.png",
+          "sha256": "166f4229393961cfd3d15e5103316eeeb4049f269b22c828271d74d515677e56"
+        }
+      ],
+      "family": "commercial"
     },
     {
       "assetID": "ironwood_hardware_shop",
       "file": "ironwood_hardware_shop_camNE.png",
       "sha256": "759b466b9c7a8e479e448849a8cdf613bdfff834c22d551a0316b113e18242ca",
-      "roles": ["commercial", "commercial-low"]
+      "roles": [
+        "commercial",
+        "commercial-low"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "ironwood_hardware_shop_camNE.png",
+          "sha256": "759b466b9c7a8e479e448849a8cdf613bdfff834c22d551a0316b113e18242ca"
+        }
+      ],
+      "family": "commercial"
     },
     {
       "assetID": "ironleaf_service_workshop",
       "file": "ironleaf_service_workshop_camNE.png",
       "sha256": "bdcbfe10195cf1fe0e5dda6999fa7aaf8523735afae04faa4cbc7f6ceae69550",
-      "roles": ["industrial", "industrial-low"]
+      "roles": [
+        "industrial",
+        "industrial-low"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "ironleaf_service_workshop_camNE.png",
+          "sha256": "bdcbfe10195cf1fe0e5dda6999fa7aaf8523735afae04faa4cbc7f6ceae69550"
+        }
+      ],
+      "family": "industrial"
     },
     {
       "assetID": "copperline_machine_shop",
       "file": "copperline_machine_shop_camNE.png",
       "sha256": "f83bb287c1563820c212491301a31ece249054004eec8e25a2bd016ebe1ccc15",
-      "roles": ["industrial", "industrial-low"]
+      "roles": [
+        "industrial",
+        "industrial-low"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "copperline_machine_shop_camNE.png",
+          "sha256": "f83bb287c1563820c212491301a31ece249054004eec8e25a2bd016ebe1ccc15"
+        }
+      ],
+      "family": "industrial"
     },
     {
       "assetID": "hearthside_council_hall",
       "file": "hearthside_council_hall_camNE.png",
       "sha256": "5fbdf8cfd63317218546c7eb0f728be4f81353043d9c371b07505357661d02b9",
-      "roles": ["city-hall"]
+      "roles": [
+        "city-hall"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "hearthside_council_hall_camNE.png",
+          "sha256": "5fbdf8cfd63317218546c7eb0f728be4f81353043d9c371b07505357661d02b9"
+        }
+      ],
+      "family": "civic-service"
     },
     {
       "assetID": "cedar_arch_council_hall",
       "file": "cedar_arch_council_hall_camNE.png",
       "sha256": "b7d9571f03e399978699429c19bdf2a3334a54a778f8e554f38e77f64aa11187",
-      "roles": ["city-hall"]
+      "roles": [
+        "city-hall"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "cedar_arch_council_hall_camNE.png",
+          "sha256": "b7d9571f03e399978699429c19bdf2a3334a54a778f8e554f38e77f64aa11187"
+        }
+      ],
+      "family": "civic-service"
     },
     {
       "assetID": "pocket_grove_park",
       "file": "pocket_grove_park_camNE.png",
       "sha256": "2b1c41cf98f0fa3e53627ba9b32336754c14cd5759b66357d965836ac5e0e2dc",
-      "roles": ["park"]
+      "roles": [
+        "park"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "pocket_grove_park_camNE.png",
+          "sha256": "2b1c41cf98f0fa3e53627ba9b32336754c14cd5759b66357d965836ac5e0e2dc"
+        }
+      ],
+      "family": "park-landmark"
     },
     {
       "assetID": "canal_lantern_park",
       "file": "canal_lantern_park_camNE.png",
       "sha256": "02fd97a12f941b664ae8cd572dbf5bae866c9b4b2d9b79750594bfaab30ebf92",
-      "roles": ["park"]
+      "roles": [
+        "park"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "canal_lantern_park_camNE.png",
+          "sha256": "02fd97a12f941b664ae8cd572dbf5bae866c9b4b2d9b79750594bfaab30ebf92"
+        }
+      ],
+      "family": "park-landmark"
     },
     {
       "assetID": "brick_grid_substation",
       "file": "brick_grid_substation_camNE.png",
       "sha256": "1a89c746a90adc6ede4185af66beba4e45f3f9280738436f583b034ca1bc0d8e",
-      "roles": ["power-plant"]
+      "roles": [
+        "power-plant"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "brick_grid_substation_camNE.png",
+          "sha256": "1a89c746a90adc6ede4185af66beba4e45f3f9280738436f583b034ca1bc0d8e"
+        }
+      ],
+      "family": "utility"
     },
     {
       "assetID": "copper_arc_powerhouse",
       "file": "copper_arc_powerhouse_camNE.png",
       "sha256": "9567929fdf98f6be67a2d0e756fbfcff4e97982c2e1af2171c1e0c59ff579fde",
-      "roles": ["power-plant"]
+      "roles": [
+        "power-plant"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "copper_arc_powerhouse_camNE.png",
+          "sha256": "9567929fdf98f6be67a2d0e756fbfcff4e97982c2e1af2171c1e0c59ff579fde"
+        }
+      ],
+      "family": "utility"
     },
     {
       "assetID": "municipal_water_tower",
       "file": "municipal_water_tower_camNE.png",
       "sha256": "ab895094fd6c7a4c0eeee8cc8009748239d410d923ced3876ec7bedfde7846d6",
-      "roles": ["water-tower"]
+      "roles": [
+        "water-tower"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "municipal_water_tower_camNE.png",
+          "sha256": "ab895094fd6c7a4c0eeee8cc8009748239d410d923ced3876ec7bedfde7846d6"
+        }
+      ],
+      "family": "utility"
     },
     {
       "assetID": "rivermark_standpipe_waterworks",
       "file": "rivermark_standpipe_waterworks_camNE.png",
       "sha256": "3e4e8384213a92b3c8428feb522fbda0ed78e1944426eff48df25fdc4a2ca2f3",
-      "roles": ["water-tower"]
+      "roles": [
+        "water-tower"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "rivermark_standpipe_waterworks_camNE.png",
+          "sha256": "3e4e8384213a92b3c8428feb522fbda0ed78e1944426eff48df25fdc4a2ca2f3"
+        }
+      ],
+      "family": "utility"
     },
     {
       "assetID": "emberline_fire_station",
       "file": "emberline_fire_station_camNE.png",
       "sha256": "8e87b77f8940aab79f83e0008ec736431e3ff112fc7333e7727bbc2b54702b91",
-      "roles": ["fire-station"]
+      "roles": [
+        "fire-station"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "emberline_fire_station_camNE.png",
+          "sha256": "8e87b77f8940aab79f83e0008ec736431e3ff112fc7333e7727bbc2b54702b91"
+        }
+      ],
+      "family": "civic-service"
     },
     {
       "assetID": "lantern_gate_fire_house",
       "file": "lantern_gate_fire_house_camNE.png",
       "sha256": "e55784f54caded66844a40eff0041d9e3f299db897cf58998ef47ce5fa0df6e5",
-      "roles": ["fire-station"]
+      "roles": [
+        "fire-station"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "lantern_gate_fire_house_camNE.png",
+          "sha256": "e55784f54caded66844a40eff0041d9e3f299db897cf58998ef47ce5fa0df6e5"
+        }
+      ],
+      "family": "civic-service"
     },
     {
       "assetID": "bluecrest_police_station",
       "file": "bluecrest_police_station_camNE.png",
       "sha256": "d88563e50df4c395a296364d0f3509ba5b46699f2cc9091c009c199ae2320d6c",
-      "roles": ["police-station"]
+      "roles": [
+        "police-station"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "bluecrest_police_station_camNE.png",
+          "sha256": "d88563e50df4c395a296364d0f3509ba5b46699f2cc9091c009c199ae2320d6c"
+        }
+      ],
+      "family": "civic-service"
     },
     {
       "assetID": "harborwatch_police_precinct",
       "file": "harborwatch_police_precinct_camNE.png",
       "sha256": "e27884d9186b3b8843ea41fed07ebf7e125373805e1997f42f0d6f8077816443",
-      "roles": ["police-station"]
+      "roles": [
+        "police-station"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "harborwatch_police_precinct_camNE.png",
+          "sha256": "e27884d9186b3b8843ea41fed07ebf7e125373805e1997f42f0d6f8077816443"
+        }
+      ],
+      "family": "civic-service"
     },
     {
       "assetID": "maplewood_neighborhood_school",
       "file": "maplewood_neighborhood_school_camNE.png",
       "sha256": "2a58c706e635f41195ce24cba01264afed43fae5ad199edeb0e2d609f1231a77",
-      "roles": ["school"]
+      "roles": [
+        "school"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "maplewood_neighborhood_school_camNE.png",
+          "sha256": "2a58c706e635f41195ce24cba01264afed43fae5ad199edeb0e2d609f1231a77"
+        }
+      ],
+      "family": "civic-service"
     },
     {
       "assetID": "oakridge_courtyard_school",
       "file": "oakridge_courtyard_school_camNE.png",
       "sha256": "5ef37d549343b6e678159348acee8bb38a7d05e8d742589a33077e368952bc04",
-      "roles": ["school"]
+      "roles": [
+        "school"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "oakridge_courtyard_school_camNE.png",
+          "sha256": "5ef37d549343b6e678159348acee8bb38a7d05e8d742589a33077e368952bc04"
+        }
+      ],
+      "family": "civic-service"
     },
     {
       "assetID": "foundry_crown_apartments",
       "file": "foundry_crown_apartments_camNE.png",
       "sha256": "92b40bf33cd57e8a5c7a402178cfbf2d4d42b9bc5b7a7e24da58f327b53e2df1",
-      "roles": ["residential-high"]
+      "roles": [
+        "residential-high"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "foundry_crown_apartments_camNE.png",
+          "sha256": "92b40bf33cd57e8a5c7a402178cfbf2d4d42b9bc5b7a7e24da58f327b53e2df1"
+        }
+      ],
+      "family": "residential"
     },
     {
       "assetID": "juniper_terrace_tower",
       "file": "juniper_terrace_tower_camNE.png",
       "sha256": "e379ac2391974493285e87629d05b27b39ca802e5e8204efdbca7c9cbacc0362",
-      "roles": ["residential-high"]
+      "roles": [
+        "residential-high"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "juniper_terrace_tower_camNE.png",
+          "sha256": "e379ac2391974493285e87629d05b27b39ca802e5e8204efdbca7c9cbacc0362"
+        }
+      ],
+      "family": "residential"
     },
     {
       "assetID": "market_arcade_midrise",
       "file": "market_arcade_midrise_camNE.png",
       "sha256": "614c833554537f173e39e43d0af7dbd9f92971e7910fd46352bed39032df48b8",
-      "roles": ["commercial-medium"]
+      "roles": [
+        "commercial-medium"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "market_arcade_midrise_camNE.png",
+          "sha256": "614c833554537f173e39e43d0af7dbd9f92971e7910fd46352bed39032df48b8"
+        }
+      ],
+      "family": "commercial"
     },
     {
       "assetID": "sunbrick_market_lofts",
       "file": "sunbrick_market_lofts_camNE.png",
       "sha256": "4afbf8ca7f94c612f33b09fb15ab72e44181cc2d510d28eb5956bb0a494c695f",
-      "roles": ["commercial-medium"]
+      "roles": [
+        "commercial-medium"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "sunbrick_market_lofts_camNE.png",
+          "sha256": "4afbf8ca7f94c612f33b09fb15ab72e44181cc2d510d28eb5956bb0a494c695f"
+        }
+      ],
+      "family": "commercial"
     },
     {
       "assetID": "aurora_exchange_tower",
       "file": "aurora_exchange_tower_camNE.png",
       "sha256": "b5922416a312ca66cec988b89dd2af4b0d73df5615629cfef24cf126125d6ede",
-      "roles": ["commercial-high"]
+      "roles": [
+        "commercial-high"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "aurora_exchange_tower_camNE.png",
+          "sha256": "b5922416a312ca66cec988b89dd2af4b0d73df5615629cfef24cf126125d6ede"
+        }
+      ],
+      "family": "commercial"
     },
     {
       "assetID": "copperglass_exchange_annex",
       "file": "copperglass_exchange_annex_camNE.png",
       "sha256": "72ff8d40763c5a1c8026fb6387f360a6ffbe7b4e0a59a9fab0e80cb407849fba",
-      "roles": ["commercial-high"]
+      "roles": [
+        "commercial-high"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "copperglass_exchange_annex_camNE.png",
+          "sha256": "72ff8d40763c5a1c8026fb6387f360a6ffbe7b4e0a59a9fab0e80cb407849fba"
+        }
+      ],
+      "family": "commercial"
     },
     {
       "assetID": "canalworks_factory",
       "file": "canalworks_factory_camNE.png",
       "sha256": "845f01917e2acdbcdf0c4bed341db8ee6c7cb598deb79d4ba05a2a97b51e37d2",
-      "roles": ["industrial-medium"]
+      "roles": [
+        "industrial-medium"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "canalworks_factory_camNE.png",
+          "sha256": "845f01917e2acdbcdf0c4bed341db8ee6c7cb598deb79d4ba05a2a97b51e37d2"
+        }
+      ],
+      "family": "industrial"
     },
     {
       "assetID": "riverbend_textile_works",
       "file": "riverbend_textile_works_camNE.png",
       "sha256": "58a29328eee403fb1b6fc735b4131212efa704da36704c09021424fc865e674d",
-      "roles": ["industrial-medium"]
+      "roles": [
+        "industrial-medium"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "riverbend_textile_works_camNE.png",
+          "sha256": "58a29328eee403fb1b6fc735b4131212efa704da36704c09021424fc865e674d"
+        }
+      ],
+      "family": "industrial"
     },
     {
       "assetID": "foundry_peak_plant",
       "file": "foundry_peak_plant_camNE.png",
       "sha256": "8bada091016aea4160220581de9ce3390039ad8bbf280d664619dd2937fa0ab5",
-      "roles": ["industrial-high"]
+      "roles": [
+        "industrial-high"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "foundry_peak_plant_camNE.png",
+          "sha256": "8bada091016aea4160220581de9ce3390039ad8bbf280d664619dd2937fa0ab5"
+        }
+      ],
+      "family": "industrial"
     },
     {
       "assetID": "ember_rail_foundry",
       "file": "ember_rail_foundry_camNE.png",
       "sha256": "85556f47b63e7f03352d5e536f667712688c89088fb5e2d7624056319fa42938",
-      "roles": ["industrial-high"]
+      "roles": [
+        "industrial-high"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "ember_rail_foundry_camNE.png",
+          "sha256": "85556f47b63e7f03352d5e536f667712688c89088fb5e2d7624056319fa42938"
+        }
+      ],
+      "family": "industrial"
+    },
+    {
+      "assetID": "civ_community_clinic",
+      "file": "civ_community_clinic_camNE.png",
+      "sha256": "1006dd6ed27ae6d434d6305a6eaa657fd060ce201fe9b701ab17dee0077b5f9f",
+      "roles": [
+        "city-hall"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "civ_community_clinic_camNE.png",
+          "sha256": "1006dd6ed27ae6d434d6305a6eaa657fd060ce201fe9b701ab17dee0077b5f9f"
+        },
+        {
+          "camera": "camSE",
+          "file": "civ_community_clinic_camSE.png",
+          "sha256": "63a8ac87896330f8769fd041c0ad5d91efc73bb501ef904ced4bb47e11f78815"
+        },
+        {
+          "camera": "camSW",
+          "file": "civ_community_clinic_camSW.png",
+          "sha256": "55f70532c73477456e8e2bb897f2763dcbccc8dce23cea13cde8b4edd0c152fe"
+        },
+        {
+          "camera": "camNW",
+          "file": "civ_community_clinic_camNW.png",
+          "sha256": "e85bac44545a4fae3089740b23e45f24dd477b935df36025b7f5a61cc78ee27d"
+        }
+      ],
+      "family": "civic-service"
+    },
+    {
+      "assetID": "civ_firehouse",
+      "file": "civ_firehouse_camNE.png",
+      "sha256": "e0e4bead140816a1ef808990c3a3077f94b806e872894f7983ce9a02b517ae0c",
+      "roles": [
+        "fire-station"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "civ_firehouse_camNE.png",
+          "sha256": "e0e4bead140816a1ef808990c3a3077f94b806e872894f7983ce9a02b517ae0c"
+        },
+        {
+          "camera": "camSE",
+          "file": "civ_firehouse_camSE.png",
+          "sha256": "46fcc014179d173b1a4e352218d14f4491641e3102a2c2c7c2fee6dd32e34531"
+        },
+        {
+          "camera": "camSW",
+          "file": "civ_firehouse_camSW.png",
+          "sha256": "ab3bd4766ae736241d246e4a6206019f5676cd19c8fb115615241d9e286f14a4"
+        },
+        {
+          "camera": "camNW",
+          "file": "civ_firehouse_camNW.png",
+          "sha256": "4a0aa84803475b9a3728554a4c55d994693f47fbb8b7d64f1a0e011d7d8eaff9"
+        }
+      ],
+      "family": "civic-service"
+    },
+    {
+      "assetID": "civ_police_station",
+      "file": "civ_police_station_camNE.png",
+      "sha256": "2455f758b87e9fd4ff95f37dba8f42e8106980e176eea524fa94268e7e686e11",
+      "roles": [
+        "police-station"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "civ_police_station_camNE.png",
+          "sha256": "2455f758b87e9fd4ff95f37dba8f42e8106980e176eea524fa94268e7e686e11"
+        },
+        {
+          "camera": "camSE",
+          "file": "civ_police_station_camSE.png",
+          "sha256": "69e986f234903c96c844720d5a2d31db47b52562eb0cb92ccb2c15e0f3f189d4"
+        },
+        {
+          "camera": "camSW",
+          "file": "civ_police_station_camSW.png",
+          "sha256": "f30298a3a632f1c3edac105086cbc95e7fa6f0d5e024b7e92e050338b7114e03"
+        },
+        {
+          "camera": "camNW",
+          "file": "civ_police_station_camNW.png",
+          "sha256": "0fdc754945bf6ddcdad6352951b73a87a5ed71c6097fa17322db855516463fc0"
+        }
+      ],
+      "family": "civic-service"
+    },
+    {
+      "assetID": "civ_schoolhouse",
+      "file": "civ_schoolhouse_camNE.png",
+      "sha256": "5c7f7feee07eca19193fbbfbae3c5af76047f35cb43fb5ad2df56c4c4d3c0a3f",
+      "roles": [
+        "school"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "civ_schoolhouse_camNE.png",
+          "sha256": "5c7f7feee07eca19193fbbfbae3c5af76047f35cb43fb5ad2df56c4c4d3c0a3f"
+        },
+        {
+          "camera": "camSE",
+          "file": "civ_schoolhouse_camSE.png",
+          "sha256": "c01c2953e8166e59f4c7a3153b20be45c694e4d424661b30be846972003c362b"
+        },
+        {
+          "camera": "camSW",
+          "file": "civ_schoolhouse_camSW.png",
+          "sha256": "556984985ea2a8672a5b3826ca985e9c904dce97bfd21db411f8c722d7c24222"
+        },
+        {
+          "camera": "camNW",
+          "file": "civ_schoolhouse_camNW.png",
+          "sha256": "111d1cef38e96875ba619d8edba2e312bb86222355dcb228e6b441dee83c738d"
+        }
+      ],
+      "family": "civic-service"
+    },
+    {
+      "assetID": "com_arcade_shops",
+      "file": "com_arcade_shops_camNE.png",
+      "sha256": "8d6a9e398edfe708b73f8e27a8202ffef1faa498bf2216e91a37617dd7fe38bd",
+      "roles": [
+        "commercial",
+        "commercial-low"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "com_arcade_shops_camNE.png",
+          "sha256": "8d6a9e398edfe708b73f8e27a8202ffef1faa498bf2216e91a37617dd7fe38bd"
+        },
+        {
+          "camera": "camSE",
+          "file": "com_arcade_shops_camSE.png",
+          "sha256": "e7cafbf45a97def293c3b92ebe2b49ca74235790a900f7c5d35fedc5a37dc184"
+        },
+        {
+          "camera": "camSW",
+          "file": "com_arcade_shops_camSW.png",
+          "sha256": "7ce17d043d980d25b476fb9afea4bf5fc8a18c9e38718b218566499a63b1fab6"
+        },
+        {
+          "camera": "camNW",
+          "file": "com_arcade_shops_camNW.png",
+          "sha256": "10407fc932663268039a14e2052f3a77772466db232278e0c790d12661378bf6"
+        }
+      ],
+      "family": "commercial"
+    },
+    {
+      "assetID": "com_brick_hotel",
+      "file": "com_brick_hotel_camNE.png",
+      "sha256": "9326a99d7093981f626b986bd9dabce4ef87be1e53f1e07ac0ecb51a4cf65e0c",
+      "roles": [
+        "commercial",
+        "commercial-medium"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "com_brick_hotel_camNE.png",
+          "sha256": "9326a99d7093981f626b986bd9dabce4ef87be1e53f1e07ac0ecb51a4cf65e0c"
+        },
+        {
+          "camera": "camSE",
+          "file": "com_brick_hotel_camSE.png",
+          "sha256": "86c2ab11ee966cdfeb96445201e8808a9e9ce6b278790be0416235f52fbe9218"
+        },
+        {
+          "camera": "camSW",
+          "file": "com_brick_hotel_camSW.png",
+          "sha256": "d10f22d6330937333f99453d8bd1a18f0dd2eaab9e92933a1fee69b49d70dcb8"
+        },
+        {
+          "camera": "camNW",
+          "file": "com_brick_hotel_camNW.png",
+          "sha256": "5dc345b6fb7d6806d6965bac6d1aee9de941d055182ccbdee3fdb8de41e2609e"
+        }
+      ],
+      "family": "commercial"
+    },
+    {
+      "assetID": "com_corner_grocer",
+      "file": "com_corner_grocer_camNE.png",
+      "sha256": "957a84d552be376aa510e0f3ce73dec1bc8d41818c1c22b1ece0b18575c58ca7",
+      "roles": [
+        "commercial",
+        "commercial-low"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "com_corner_grocer_camNE.png",
+          "sha256": "957a84d552be376aa510e0f3ce73dec1bc8d41818c1c22b1ece0b18575c58ca7"
+        },
+        {
+          "camera": "camSE",
+          "file": "com_corner_grocer_camSE.png",
+          "sha256": "788b9971bfe95d8729e382fbb788760338d73fd909cba45b92a25f9bb6542cd8"
+        },
+        {
+          "camera": "camSW",
+          "file": "com_corner_grocer_camSW.png",
+          "sha256": "ef8f5f8211cb72889fabbdf259a8648c9c6f7bed5ce4a5a907b306e78466af84"
+        },
+        {
+          "camera": "camNW",
+          "file": "com_corner_grocer_camNW.png",
+          "sha256": "3953c1081c66b041b2c578fd7b5dae6580332170167ca40282674b1c925747f4"
+        }
+      ],
+      "family": "commercial"
+    },
+    {
+      "assetID": "com_department_store",
+      "file": "com_department_store_camNE.png",
+      "sha256": "df763a74c739a2f3e4e474e44a9513da6044d99758a43a038aef45f84e8832a4",
+      "roles": [
+        "commercial",
+        "commercial-medium"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "com_department_store_camNE.png",
+          "sha256": "df763a74c739a2f3e4e474e44a9513da6044d99758a43a038aef45f84e8832a4"
+        },
+        {
+          "camera": "camSE",
+          "file": "com_department_store_camSE.png",
+          "sha256": "ec36a4cb8b7ccbdc016957d549b8037e9d5d758e7ff7d52b01d4f0bba2a9c1d0"
+        },
+        {
+          "camera": "camSW",
+          "file": "com_department_store_camSW.png",
+          "sha256": "227d8685bb4b6794152532d827c6b09e0ed720f747f5dec2c5ab03abb5e92d9e"
+        },
+        {
+          "camera": "camNW",
+          "file": "com_department_store_camNW.png",
+          "sha256": "e513ff43ae1842e665bd4a3a9a2b0de9027b08a1a041572838bdde9297bdb26b"
+        }
+      ],
+      "family": "commercial"
+    },
+    {
+      "assetID": "com_glass_offices",
+      "file": "com_glass_offices_camNE.png",
+      "sha256": "8c6a948678b25aac10f9e986689c1322050be9b2d27ba116d0df1dbbec7d2ce2",
+      "roles": [
+        "commercial",
+        "commercial-medium"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "com_glass_offices_camNE.png",
+          "sha256": "8c6a948678b25aac10f9e986689c1322050be9b2d27ba116d0df1dbbec7d2ce2"
+        },
+        {
+          "camera": "camSE",
+          "file": "com_glass_offices_camSE.png",
+          "sha256": "c658550038f222a7758a2d434898729407770416fb670ba6aa99cb5f746d742a"
+        },
+        {
+          "camera": "camSW",
+          "file": "com_glass_offices_camSW.png",
+          "sha256": "3f00fd0c8467f4bd9b704830358f301c6f49c94fb310f61af3775152a53804ec"
+        },
+        {
+          "camera": "camNW",
+          "file": "com_glass_offices_camNW.png",
+          "sha256": "7c6e9ad8506c375ab9b1c22345df1c939077831e63a8029cd279d499e8fb9c78"
+        }
+      ],
+      "family": "commercial"
+    },
+    {
+      "assetID": "com_market_hall",
+      "file": "com_market_hall_camNE.png",
+      "sha256": "edbe5ce86a27f3e0f0026737c96ab08ae2dcf14193e23384340908b92a8ae637",
+      "roles": [
+        "commercial",
+        "commercial-low"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "com_market_hall_camNE.png",
+          "sha256": "edbe5ce86a27f3e0f0026737c96ab08ae2dcf14193e23384340908b92a8ae637"
+        },
+        {
+          "camera": "camSE",
+          "file": "com_market_hall_camSE.png",
+          "sha256": "1e05f78b9fd962a5b7a9c5c917738f542077ee458c9f5d3c6d1484e63c72c710"
+        },
+        {
+          "camera": "camSW",
+          "file": "com_market_hall_camSW.png",
+          "sha256": "d62def3cf02a8bd1b5480a546e1de80054c4f4171ef705d3a4d1adac650f1c42"
+        },
+        {
+          "camera": "camNW",
+          "file": "com_market_hall_camNW.png",
+          "sha256": "d8ff986e9293665273c0e9792965a80612f4f35c2d8829838106a8d0ae1859ef"
+        }
+      ],
+      "family": "commercial"
+    },
+    {
+      "assetID": "com_midrise_offices",
+      "file": "com_midrise_offices_camNE.png",
+      "sha256": "c9d6fccfdd3daaafbdc7b354817be55653ecbfd258f6ad882791272beb32a1c1",
+      "roles": [
+        "commercial",
+        "commercial-high"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "com_midrise_offices_camNE.png",
+          "sha256": "c9d6fccfdd3daaafbdc7b354817be55653ecbfd258f6ad882791272beb32a1c1"
+        },
+        {
+          "camera": "camSE",
+          "file": "com_midrise_offices_camSE.png",
+          "sha256": "16d65f7632d89ad2f83ac05a5e7710f60cc736d9fe1c7860143eca8ef6ef242e"
+        },
+        {
+          "camera": "camSW",
+          "file": "com_midrise_offices_camSW.png",
+          "sha256": "038bf101b7236ddbe336922fbeb5bc2fce660bbbc2219092a2ed089b031dfd6d"
+        },
+        {
+          "camera": "camNW",
+          "file": "com_midrise_offices_camNW.png",
+          "sha256": "bbfc4276e387aca773992f4f3b8aa8208c5fa98c7f8bb5b146a76211aec6c673"
+        }
+      ],
+      "family": "commercial"
+    },
+    {
+      "assetID": "com_rooftop_cafe",
+      "file": "com_rooftop_cafe_camNE.png",
+      "sha256": "1c225e61137a08a6b4fa3990e44cbc95760b258ded61a512d3e303b8b5c74aaa",
+      "roles": [
+        "commercial",
+        "commercial-low"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "com_rooftop_cafe_camNE.png",
+          "sha256": "1c225e61137a08a6b4fa3990e44cbc95760b258ded61a512d3e303b8b5c74aaa"
+        },
+        {
+          "camera": "camSE",
+          "file": "com_rooftop_cafe_camSE.png",
+          "sha256": "120fe200c8686ea8f2d1bad0a52edfa3033427a299e15b3a8dfd36f9fab1e127"
+        },
+        {
+          "camera": "camSW",
+          "file": "com_rooftop_cafe_camSW.png",
+          "sha256": "026db5ef717dda27bbfa74cf7ee65639f6d4f401673e3dd3cf3ee101d4da9212"
+        },
+        {
+          "camera": "camNW",
+          "file": "com_rooftop_cafe_camNW.png",
+          "sha256": "3086c7584dcf4e131a1b085ce2eb4ab18a2204d330b26285c053bd1aa94b8532"
+        }
+      ],
+      "family": "commercial"
+    },
+    {
+      "assetID": "com_theater",
+      "file": "com_theater_camNE.png",
+      "sha256": "f2d6be7fc45ac2f6b33432c8021da62a637b882c33a099e635b6f46ca260f9b6",
+      "roles": [
+        "commercial",
+        "commercial-high"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "com_theater_camNE.png",
+          "sha256": "f2d6be7fc45ac2f6b33432c8021da62a637b882c33a099e635b6f46ca260f9b6"
+        },
+        {
+          "camera": "camSE",
+          "file": "com_theater_camSE.png",
+          "sha256": "6835526a7b4d08a933431dcf9451e1fd6947d1f69e756d4ae28590cf5b6fb087"
+        },
+        {
+          "camera": "camSW",
+          "file": "com_theater_camSW.png",
+          "sha256": "86e998614d42b402b63809fd2bb149b502e78a4231b98386d85512638a872f17"
+        },
+        {
+          "camera": "camNW",
+          "file": "com_theater_camNW.png",
+          "sha256": "683a497859d0cac97558af1cf41982eba113d76ce13ebe766ab5aff90be31c6f"
+        }
+      ],
+      "family": "commercial"
+    },
+    {
+      "assetID": "com_transit_mart",
+      "file": "com_transit_mart_camNE.png",
+      "sha256": "c170bae005e7bc373b3d4a5f8c01fb813b399edaad4ffcdfa0eddb6efd7c053c",
+      "roles": [
+        "commercial",
+        "commercial-high"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "com_transit_mart_camNE.png",
+          "sha256": "c170bae005e7bc373b3d4a5f8c01fb813b399edaad4ffcdfa0eddb6efd7c053c"
+        },
+        {
+          "camera": "camSE",
+          "file": "com_transit_mart_camSE.png",
+          "sha256": "c74b9c642902f6a869f5d57b75ecadde07102ae9913484cf50cb748c22b33ab5"
+        },
+        {
+          "camera": "camSW",
+          "file": "com_transit_mart_camSW.png",
+          "sha256": "4ed1ec0645047f2321a8f0b54fa571f2a81c1eb03cd29d1e606b14f9c6479b7a"
+        },
+        {
+          "camera": "camNW",
+          "file": "com_transit_mart_camNW.png",
+          "sha256": "a13096a62f729967c231fb03108572ff1cad4e121b02f3f570bbaca7a65d7d8d"
+        }
+      ],
+      "family": "commercial"
+    },
+    {
+      "assetID": "ind_brewery_tanks",
+      "file": "ind_brewery_tanks_camNE.png",
+      "sha256": "bc48d05c75f3d4f5e1c6266a2ff129242aab95b215065779562342f066aa82a0",
+      "roles": [
+        "industrial",
+        "industrial-medium"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "ind_brewery_tanks_camNE.png",
+          "sha256": "bc48d05c75f3d4f5e1c6266a2ff129242aab95b215065779562342f066aa82a0"
+        },
+        {
+          "camera": "camSE",
+          "file": "ind_brewery_tanks_camSE.png",
+          "sha256": "5e4202f7fb9dcd194c2e5c5a1e2e905fb21ed4d7dec0322a51c0ec1da0e957f7"
+        },
+        {
+          "camera": "camSW",
+          "file": "ind_brewery_tanks_camSW.png",
+          "sha256": "cca20e07590c8b9a34716ca5ea3ef507f8ed55e5ba347481ea4a61cb0702fa69"
+        },
+        {
+          "camera": "camNW",
+          "file": "ind_brewery_tanks_camNW.png",
+          "sha256": "0fbf7cfdfa13effa2b3403374049766c67449177265e77f144376cb8e71e1b90"
+        }
+      ],
+      "family": "industrial"
+    },
+    {
+      "assetID": "ind_cylinder_depot",
+      "file": "ind_cylinder_depot_camNE.png",
+      "sha256": "0372057cd653473aeb1abb26b93b1d1e22bf8e2cea1e055763cb3d14ccd6befc",
+      "roles": [
+        "industrial",
+        "industrial-high"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "ind_cylinder_depot_camNE.png",
+          "sha256": "0372057cd653473aeb1abb26b93b1d1e22bf8e2cea1e055763cb3d14ccd6befc"
+        },
+        {
+          "camera": "camSE",
+          "file": "ind_cylinder_depot_camSE.png",
+          "sha256": "f98406596ebe9d1499dcdae13a750167c607f91a1ff3c21246c66b1ae86e3c10"
+        },
+        {
+          "camera": "camSW",
+          "file": "ind_cylinder_depot_camSW.png",
+          "sha256": "81dd05d5fa1bc4b55afc3285f5e07965fb3aead1348ac8c18e2144a490d66da4"
+        },
+        {
+          "camera": "camNW",
+          "file": "ind_cylinder_depot_camNW.png",
+          "sha256": "680a9f7c258ae55915ee4f65c8bb36c29052974a328e16c9e4b63e907ed82763"
+        }
+      ],
+      "family": "industrial"
+    },
+    {
+      "assetID": "ind_foundry_hall",
+      "file": "ind_foundry_hall_camNE.png",
+      "sha256": "7e1e0972503183aa5f12caff3837197753f8b54357a2fa5c49f3f9ed0fd72fb2",
+      "roles": [
+        "industrial",
+        "industrial-medium"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "ind_foundry_hall_camNE.png",
+          "sha256": "7e1e0972503183aa5f12caff3837197753f8b54357a2fa5c49f3f9ed0fd72fb2"
+        },
+        {
+          "camera": "camSE",
+          "file": "ind_foundry_hall_camSE.png",
+          "sha256": "55c1b705460f2b5cf2d33a3ea6b6a7e87fe5381a571c31884dd66052f31e88de"
+        },
+        {
+          "camera": "camSW",
+          "file": "ind_foundry_hall_camSW.png",
+          "sha256": "eb5826495877c41165540256627833697e0585b1ef5b8bd52687609740e9b76f"
+        },
+        {
+          "camera": "camNW",
+          "file": "ind_foundry_hall_camNW.png",
+          "sha256": "d7a7340174f19f99a4dbfcc1bd75c6f2bb2dfdd4246f5d4d11ad59a288c1f5dc"
+        }
+      ],
+      "family": "industrial"
+    },
+    {
+      "assetID": "ind_freight_terminal",
+      "file": "ind_freight_terminal_camNE.png",
+      "sha256": "69aa7e9c08df23da4088e97ce472679b9cdec1a1eacb4f1fb4c59d7749c8c002",
+      "roles": [
+        "industrial",
+        "industrial-low"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "ind_freight_terminal_camNE.png",
+          "sha256": "69aa7e9c08df23da4088e97ce472679b9cdec1a1eacb4f1fb4c59d7749c8c002"
+        },
+        {
+          "camera": "camSE",
+          "file": "ind_freight_terminal_camSE.png",
+          "sha256": "69aa7b8130828ad23a8db6b268e63038be5658779cd22efbec656282968d7384"
+        },
+        {
+          "camera": "camSW",
+          "file": "ind_freight_terminal_camSW.png",
+          "sha256": "4f2f883f62ce4dd2a4f3f77c111704a8d4659873d543b232a7ae906b7c145f30"
+        },
+        {
+          "camera": "camNW",
+          "file": "ind_freight_terminal_camNW.png",
+          "sha256": "90ad795cccb3536b729997bdda82b92663aa50901f9ef80b52d37befa09f52d5"
+        }
+      ],
+      "family": "industrial"
+    },
+    {
+      "assetID": "ind_repair_shed",
+      "file": "ind_repair_shed_camNE.png",
+      "sha256": "2583f9d4d7922a91325d5166d57e838c1fdc1a05eaf7bb3e45746baa8f00c872",
+      "roles": [
+        "industrial",
+        "industrial-low"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "ind_repair_shed_camNE.png",
+          "sha256": "2583f9d4d7922a91325d5166d57e838c1fdc1a05eaf7bb3e45746baa8f00c872"
+        },
+        {
+          "camera": "camSE",
+          "file": "ind_repair_shed_camSE.png",
+          "sha256": "734b62223ceb74d38b2c818610aeacdd43300979df8bd6c19d7e07635d1aa2f0"
+        },
+        {
+          "camera": "camSW",
+          "file": "ind_repair_shed_camSW.png",
+          "sha256": "ba6d0e33edeca98463987cd4ee0079b2b197e18ca1160cdab45617749a971cfb"
+        },
+        {
+          "camera": "camNW",
+          "file": "ind_repair_shed_camNW.png",
+          "sha256": "a6b75bdb07535991cf500bedadc10e3936990cb35d5e1049875470d7ce299759"
+        }
+      ],
+      "family": "industrial"
+    },
+    {
+      "assetID": "ind_sawtooth_works",
+      "file": "ind_sawtooth_works_camNE.png",
+      "sha256": "a1183f826dc303d658c227ee3d548431dc463cc1177bde60d517c2f859735814",
+      "roles": [
+        "industrial",
+        "industrial-medium"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "ind_sawtooth_works_camNE.png",
+          "sha256": "a1183f826dc303d658c227ee3d548431dc463cc1177bde60d517c2f859735814"
+        },
+        {
+          "camera": "camSE",
+          "file": "ind_sawtooth_works_camSE.png",
+          "sha256": "0afbbeb8fe6bd71716f3c12b86031fa42c7d04b84d22bee0c9c7d4d2eb64a01e"
+        },
+        {
+          "camera": "camSW",
+          "file": "ind_sawtooth_works_camSW.png",
+          "sha256": "c9ba665fec4b5d11462cc0b9f4f0745eac39b2ff5749e797b0a9fccb6ce2ad37"
+        },
+        {
+          "camera": "camNW",
+          "file": "ind_sawtooth_works_camNW.png",
+          "sha256": "de2989084fa0f1f57f51aa37b1386eb6f7bcb365ecad72a97dec7d4f0d5cdc96"
+        }
+      ],
+      "family": "industrial"
+    },
+    {
+      "assetID": "ind_silo_yard",
+      "file": "ind_silo_yard_camNE.png",
+      "sha256": "e01da8c36aefdf26e216c2093662352f2893452561345825351eac1d08c69b33",
+      "roles": [
+        "industrial",
+        "industrial-high"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "ind_silo_yard_camNE.png",
+          "sha256": "e01da8c36aefdf26e216c2093662352f2893452561345825351eac1d08c69b33"
+        },
+        {
+          "camera": "camSE",
+          "file": "ind_silo_yard_camSE.png",
+          "sha256": "d6aef72e08281d655073a1a037e32a5c3b0017d88f75143bcbd545b4ed32a709"
+        },
+        {
+          "camera": "camSW",
+          "file": "ind_silo_yard_camSW.png",
+          "sha256": "8e910cd0a72ad57ffa03515fa745fea44d692cec65481dfa695fa96259c825f3"
+        },
+        {
+          "camera": "camNW",
+          "file": "ind_silo_yard_camNW.png",
+          "sha256": "004309b445f906946f0b61e8dfc5624ffed17e90cec8b98b640cea7da5b6bf5f"
+        }
+      ],
+      "family": "industrial"
+    },
+    {
+      "assetID": "ind_warehouse_bay",
+      "file": "ind_warehouse_bay_camNE.png",
+      "sha256": "394c2385b951125793c4269d40e4a34d3e338d611d46a58ff4eb9b97e8ded2bb",
+      "roles": [
+        "industrial",
+        "industrial-low"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "ind_warehouse_bay_camNE.png",
+          "sha256": "394c2385b951125793c4269d40e4a34d3e338d611d46a58ff4eb9b97e8ded2bb"
+        },
+        {
+          "camera": "camSE",
+          "file": "ind_warehouse_bay_camSE.png",
+          "sha256": "35eaef4d908307118f47f495bbf1ffaa6f2af942762eff96e4c494e43aa993db"
+        },
+        {
+          "camera": "camSW",
+          "file": "ind_warehouse_bay_camSW.png",
+          "sha256": "27eee8cbacd7d4e4a55ebc9104f77b2fef1ee541358c5b113086158a3a8cf0ca"
+        },
+        {
+          "camera": "camNW",
+          "file": "ind_warehouse_bay_camNW.png",
+          "sha256": "5513598b4a9749bd579ca74249b1d91ce3216ca8185ae6be5d89c9185add84da"
+        }
+      ],
+      "family": "industrial"
+    },
+    {
+      "assetID": "landmark_clock_tower",
+      "file": "landmark_clock_tower_camNE.png",
+      "sha256": "8db8f75a760d912522e721f24cc1563de4fa72c7712b1b12a1509dee3307d529",
+      "roles": [
+        "city-hall"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "landmark_clock_tower_camNE.png",
+          "sha256": "8db8f75a760d912522e721f24cc1563de4fa72c7712b1b12a1509dee3307d529"
+        },
+        {
+          "camera": "camSE",
+          "file": "landmark_clock_tower_camSE.png",
+          "sha256": "ca4c75d3ffa77f72cb32d97425485706efb31ec36450a94cabc98d9025447e51"
+        },
+        {
+          "camera": "camSW",
+          "file": "landmark_clock_tower_camSW.png",
+          "sha256": "7d02fccd77bbfdee5bf395484e74148e8f5de57ddf227ec2582b4e1c06ae309d"
+        },
+        {
+          "camera": "camNW",
+          "file": "landmark_clock_tower_camNW.png",
+          "sha256": "7d6305ff176a3e778ec45c7bea7c54e00b0350740a33e3c3725ad0f3e7c3f87d"
+        }
+      ],
+      "family": "park-landmark"
+    },
+    {
+      "assetID": "park_garden_pavilion",
+      "file": "park_garden_pavilion_camNE.png",
+      "sha256": "36f6d5fdf9854214e80cdb56a54426f9de507d728162d3a7e9096012b39d8f6c",
+      "roles": [
+        "park"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "park_garden_pavilion_camNE.png",
+          "sha256": "36f6d5fdf9854214e80cdb56a54426f9de507d728162d3a7e9096012b39d8f6c"
+        },
+        {
+          "camera": "camSE",
+          "file": "park_garden_pavilion_camSE.png",
+          "sha256": "11931e6ca4d20fa1ef879d988a535cb02bbe44034f1da4bd99558f032d26e430"
+        },
+        {
+          "camera": "camSW",
+          "file": "park_garden_pavilion_camSW.png",
+          "sha256": "2608c82be10c87fdc550063da18b54694f963571567d2348c2fd1c71126fc101"
+        },
+        {
+          "camera": "camNW",
+          "file": "park_garden_pavilion_camNW.png",
+          "sha256": "8658941c92f941ce850cbe2fdc0afa034f4c9ddc5f018083f0cc7dd19d273060"
+        }
+      ],
+      "family": "park-landmark"
+    },
+    {
+      "assetID": "res_arcade_residence",
+      "file": "res_arcade_residence_camNE.png",
+      "sha256": "f2ef47beba5ab797d0f027ee46b3de409ec8a1b751219473f6bf65cba02fbc30",
+      "roles": [
+        "residential-medium"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "res_arcade_residence_camNE.png",
+          "sha256": "f2ef47beba5ab797d0f027ee46b3de409ec8a1b751219473f6bf65cba02fbc30"
+        },
+        {
+          "camera": "camSE",
+          "file": "res_arcade_residence_camSE.png",
+          "sha256": "0e09cd63593e83c2a219f2964e99e0891117ba47eacd9c95071647aa6ddcbccf"
+        },
+        {
+          "camera": "camSW",
+          "file": "res_arcade_residence_camSW.png",
+          "sha256": "5b19ae8b57c6b2974cdd5a2a9054b93d857b578d3c2685bf7a79e0d19d1af84e"
+        },
+        {
+          "camera": "camNW",
+          "file": "res_arcade_residence_camNW.png",
+          "sha256": "6e955a0db0e5abd079b02e40a3f8dd7936197191a0fa286b2699d4180b0a7c31"
+        }
+      ],
+      "family": "residential"
+    },
+    {
+      "assetID": "res_bay_bungalow",
+      "file": "res_bay_bungalow_camNE.png",
+      "sha256": "b7f70a995759c2f4106a5653fdd214d0b1670c7347efdc276da51144f64e5418",
+      "roles": [
+        "residential-low"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "res_bay_bungalow_camNE.png",
+          "sha256": "b7f70a995759c2f4106a5653fdd214d0b1670c7347efdc276da51144f64e5418"
+        },
+        {
+          "camera": "camSE",
+          "file": "res_bay_bungalow_camSE.png",
+          "sha256": "ef113154d69292d40f7f0bce42ef555319d756d50e0ea12ea5bf15004df44419"
+        },
+        {
+          "camera": "camSW",
+          "file": "res_bay_bungalow_camSW.png",
+          "sha256": "6a3c236f50571981c40319636bc2f3eab6f0700427086674643882c6359fd7f6"
+        },
+        {
+          "camera": "camNW",
+          "file": "res_bay_bungalow_camNW.png",
+          "sha256": "686454bf68d38f07e33c42484aafc42f75c3f1a8a68660d8841420363470c400"
+        }
+      ],
+      "family": "residential"
+    },
+    {
+      "assetID": "res_brick_rowhouse",
+      "file": "res_brick_rowhouse_camNE.png",
+      "sha256": "a8f4d07a5c28eca3af3393add8d02e38a861e6add2c9b11007b4efe29e6d62dc",
+      "roles": [
+        "residential-medium"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "res_brick_rowhouse_camNE.png",
+          "sha256": "a8f4d07a5c28eca3af3393add8d02e38a861e6add2c9b11007b4efe29e6d62dc"
+        },
+        {
+          "camera": "camSE",
+          "file": "res_brick_rowhouse_camSE.png",
+          "sha256": "2a06fe003ec5f51bc3923144c4d4f856def4910df9eec8b048b8f82d2d489b96"
+        },
+        {
+          "camera": "camSW",
+          "file": "res_brick_rowhouse_camSW.png",
+          "sha256": "1a7e21515ec57184a6bc89b0ac557ac3c457f79bf8390d30cefb647e55d9786f"
+        },
+        {
+          "camera": "camNW",
+          "file": "res_brick_rowhouse_camNW.png",
+          "sha256": "5902bd87ee4056590b7eb1da4d0f76507ca35b0e02e8b42ddb36a3b2613771cc"
+        }
+      ],
+      "family": "residential"
+    },
+    {
+      "assetID": "res_cedar_cottage",
+      "file": "res_cedar_cottage_camNE.png",
+      "sha256": "6a6ba420f982ebd457308e0cf8212bb266ee6620495b4765c9ed80bfcbe3afa2",
+      "roles": [
+        "residential-low"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "res_cedar_cottage_camNE.png",
+          "sha256": "6a6ba420f982ebd457308e0cf8212bb266ee6620495b4765c9ed80bfcbe3afa2"
+        },
+        {
+          "camera": "camSE",
+          "file": "res_cedar_cottage_camSE.png",
+          "sha256": "0a4891705aae8fef5180a7b645dd440546cd5412e2dc6319b7cc51befe65696d"
+        },
+        {
+          "camera": "camSW",
+          "file": "res_cedar_cottage_camSW.png",
+          "sha256": "1e897d8ccee4cfeca534ba6730a1a319aa16de28c908b9899f993a2aed13c5de"
+        },
+        {
+          "camera": "camNW",
+          "file": "res_cedar_cottage_camNW.png",
+          "sha256": "41d215f931ebf3a633a712aa97a0f12ff3a2734db3b6279a57871d1b8a930bf3"
+        }
+      ],
+      "family": "residential"
+    },
+    {
+      "assetID": "res_corner_townhomes",
+      "file": "res_corner_townhomes_camNE.png",
+      "sha256": "6eccb7f0a57e5e36708abc8cf1be3737c5eb4558d016a429f0c9e4b28d8a330d",
+      "roles": [
+        "residential-medium"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "res_corner_townhomes_camNE.png",
+          "sha256": "6eccb7f0a57e5e36708abc8cf1be3737c5eb4558d016a429f0c9e4b28d8a330d"
+        },
+        {
+          "camera": "camSE",
+          "file": "res_corner_townhomes_camSE.png",
+          "sha256": "bd667f49b9108ee2e0e9750924ece69d24910000a200644806eb709521869292"
+        },
+        {
+          "camera": "camSW",
+          "file": "res_corner_townhomes_camSW.png",
+          "sha256": "2f6de020cceafca492973ac3acd289ae443989e32bfd8e933669d101dbfc7509"
+        },
+        {
+          "camera": "camNW",
+          "file": "res_corner_townhomes_camNW.png",
+          "sha256": "b943fb1662e9bd262338e821174e00d1c32feab160a75a1676cad085975be0b7"
+        }
+      ],
+      "family": "residential"
+    },
+    {
+      "assetID": "res_courtyard_walkup",
+      "file": "res_courtyard_walkup_camNE.png",
+      "sha256": "b83f41f11c73b5b8a76c3ed2489743407edb188cf672a7beb1657d75a86d8c25",
+      "roles": [
+        "residential-medium"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "res_courtyard_walkup_camNE.png",
+          "sha256": "b83f41f11c73b5b8a76c3ed2489743407edb188cf672a7beb1657d75a86d8c25"
+        },
+        {
+          "camera": "camSE",
+          "file": "res_courtyard_walkup_camSE.png",
+          "sha256": "e7d5869b5b6b496937f20b557a2af493f95e2832484a5e62fb1b46769046daf2"
+        },
+        {
+          "camera": "camSW",
+          "file": "res_courtyard_walkup_camSW.png",
+          "sha256": "206e0a14e87be0aa91532cedd72c9b754c3e8fb5a117af83bc5e9ab99e9caff3"
+        },
+        {
+          "camera": "camNW",
+          "file": "res_courtyard_walkup_camNW.png",
+          "sha256": "f72ef9a53077d473c3f5cb25cc80cfa6de6e889bdd664e3a31a674365a3aedbf"
+        }
+      ],
+      "family": "residential"
+    },
+    {
+      "assetID": "res_duplex_gable",
+      "file": "res_duplex_gable_camNE.png",
+      "sha256": "623f4d31dde583d878bdc2549d9d7b3645a032ca443fb5b1fa8d2aaddd509e9d",
+      "roles": [
+        "residential-low"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "res_duplex_gable_camNE.png",
+          "sha256": "623f4d31dde583d878bdc2549d9d7b3645a032ca443fb5b1fa8d2aaddd509e9d"
+        },
+        {
+          "camera": "camSE",
+          "file": "res_duplex_gable_camSE.png",
+          "sha256": "ed7304e6d2a8c7b5a5538b0d45ad2f1448cd91a8143695c83b8608b35e2a8304"
+        },
+        {
+          "camera": "camSW",
+          "file": "res_duplex_gable_camSW.png",
+          "sha256": "995d017fc5b62118d969d5df673f79c1c7306d242de3d9a477c23e7ab016d5d7"
+        },
+        {
+          "camera": "camNW",
+          "file": "res_duplex_gable_camNW.png",
+          "sha256": "8fe08dd672c4c1e1ccd58eb491cbeeaf6a7a41a21abb965a39e457ecda781558"
+        }
+      ],
+      "family": "residential"
+    },
+    {
+      "assetID": "res_lodge_apartments",
+      "file": "res_lodge_apartments_camNE.png",
+      "sha256": "65a29d2cdd118be78fab84efe59b461bfc4f50038aa9bfc4c148dc3c42580b4d",
+      "roles": [
+        "residential-medium"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "res_lodge_apartments_camNE.png",
+          "sha256": "65a29d2cdd118be78fab84efe59b461bfc4f50038aa9bfc4c148dc3c42580b4d"
+        },
+        {
+          "camera": "camSE",
+          "file": "res_lodge_apartments_camSE.png",
+          "sha256": "f141e970099cc8d12b9033fad3e37788296e2803c593f84be0db2dbffb20c418"
+        },
+        {
+          "camera": "camSW",
+          "file": "res_lodge_apartments_camSW.png",
+          "sha256": "0cf97ac5d822ec9c221589f826a059a8683276b2961e948f1f5b5b2dbdf70b21"
+        },
+        {
+          "camera": "camNW",
+          "file": "res_lodge_apartments_camNW.png",
+          "sha256": "3ae1c307e3d82974d9401b60d73b1bb8d275c5ce6c246c84d9f3dbdc111933bf"
+        }
+      ],
+      "family": "residential"
+    },
+    {
+      "assetID": "res_roof_garden_flats",
+      "file": "res_roof_garden_flats_camNE.png",
+      "sha256": "2e3065a93db4f6ec42da4bc2b1eed98c5e4822107ded216d52160e9c15127adb",
+      "roles": [
+        "residential-medium"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "res_roof_garden_flats_camNE.png",
+          "sha256": "2e3065a93db4f6ec42da4bc2b1eed98c5e4822107ded216d52160e9c15127adb"
+        },
+        {
+          "camera": "camSE",
+          "file": "res_roof_garden_flats_camSE.png",
+          "sha256": "023d96460c5b91bccc81cfeffb1d5bdd0449352f86f81949afd2fca75c0a651b"
+        },
+        {
+          "camera": "camSW",
+          "file": "res_roof_garden_flats_camSW.png",
+          "sha256": "caf2582a4d5fe6bc23859cff23b1263dd69a87f8d9ea3fc0668736818201892f"
+        },
+        {
+          "camera": "camNW",
+          "file": "res_roof_garden_flats_camNW.png",
+          "sha256": "f02affbe29c0984d6387eb02b4912825be72b9ce4e88d77b1e2aae59d2589ede"
+        }
+      ],
+      "family": "residential"
+    },
+    {
+      "assetID": "res_stacked_duplex",
+      "file": "res_stacked_duplex_camNE.png",
+      "sha256": "029c46711cd215e2b1b90010e838b97dd80a0979997c2aaf8c60ef6629ef0ab5",
+      "roles": [
+        "residential-medium"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "res_stacked_duplex_camNE.png",
+          "sha256": "029c46711cd215e2b1b90010e838b97dd80a0979997c2aaf8c60ef6629ef0ab5"
+        },
+        {
+          "camera": "camSE",
+          "file": "res_stacked_duplex_camSE.png",
+          "sha256": "6d87403b27b616d31c8c7455486fb1aaddac60f030c20f80a73ceef1fed9c653"
+        },
+        {
+          "camera": "camSW",
+          "file": "res_stacked_duplex_camSW.png",
+          "sha256": "7a8db81c187c258e3c07d28aa2d4bce1b6b373a3eb9050d166b607acdfb149dd"
+        },
+        {
+          "camera": "camNW",
+          "file": "res_stacked_duplex_camNW.png",
+          "sha256": "25bde5a0f94241ea5638be912594fd8de23b6812907a7f4bb267869915eeaa8a"
+        }
+      ],
+      "family": "residential"
+    },
+    {
+      "assetID": "res_stepped_apartments",
+      "file": "res_stepped_apartments_camNE.png",
+      "sha256": "b306d55a77f64342ddad214ca0d84780bc80f9b2609fc1612411936d6d3cbe7f",
+      "roles": [
+        "residential-high"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "res_stepped_apartments_camNE.png",
+          "sha256": "b306d55a77f64342ddad214ca0d84780bc80f9b2609fc1612411936d6d3cbe7f"
+        },
+        {
+          "camera": "camSE",
+          "file": "res_stepped_apartments_camSE.png",
+          "sha256": "5a3d556058daf0e59019d101028744b63c8937697d96d2293f53e15426234beb"
+        },
+        {
+          "camera": "camSW",
+          "file": "res_stepped_apartments_camSW.png",
+          "sha256": "68629e9fd235ae624b39371148fb6b6410f3ee8eb59eb0da68444c5bee1157bd"
+        },
+        {
+          "camera": "camNW",
+          "file": "res_stepped_apartments_camNW.png",
+          "sha256": "71ff633dfd863bd38a343dd6ba217fee9693c9b890ae49f117cb5fe76743822e"
+        }
+      ],
+      "family": "residential"
+    },
+    {
+      "assetID": "res_terrace_home",
+      "file": "res_terrace_home_camNE.png",
+      "sha256": "2fe777744af6877e52e36f0ccc97c3d8d26b67e2606c5ccec905886a17fe803c",
+      "roles": [
+        "residential-low"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "res_terrace_home_camNE.png",
+          "sha256": "2fe777744af6877e52e36f0ccc97c3d8d26b67e2606c5ccec905886a17fe803c"
+        },
+        {
+          "camera": "camSE",
+          "file": "res_terrace_home_camSE.png",
+          "sha256": "e443ddc49e894b246253a93c52bb39b35ddb21e4843beaf9ddab2a4667537622"
+        },
+        {
+          "camera": "camSW",
+          "file": "res_terrace_home_camSW.png",
+          "sha256": "ad564cb5bfb9dd7ad0a3e3a8fa19ab2f95f44461b9548d795ec2f5698f85a2c5"
+        },
+        {
+          "camera": "camNW",
+          "file": "res_terrace_home_camNW.png",
+          "sha256": "1c22f6eb0bd9af00f39d061cb7a1bdf1574f057a652c5121fdf32663472b4597"
+        }
+      ],
+      "family": "residential"
+    },
+    {
+      "assetID": "res_tower_setback",
+      "file": "res_tower_setback_camNE.png",
+      "sha256": "1909a0f84d5b54d1ff005597e472b14237a08beb2194f2ccc231fe13870a854e",
+      "roles": [
+        "residential-high"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "res_tower_setback_camNE.png",
+          "sha256": "1909a0f84d5b54d1ff005597e472b14237a08beb2194f2ccc231fe13870a854e"
+        },
+        {
+          "camera": "camSE",
+          "file": "res_tower_setback_camSE.png",
+          "sha256": "6eaff1a2e5b64524e43e4c74b3fbcd548e63b6a0bed9a80405188c32f7030d55"
+        },
+        {
+          "camera": "camSW",
+          "file": "res_tower_setback_camSW.png",
+          "sha256": "14c7607f7f47039409f97eaab9ca991dedea9496300c2f20f8d18a3eee03723b"
+        },
+        {
+          "camera": "camNW",
+          "file": "res_tower_setback_camNW.png",
+          "sha256": "893d3a974faacb3e3b3a79571991b02615c74e8f3670a59b961bbb547fa10674"
+        }
+      ],
+      "family": "residential"
+    },
+    {
+      "assetID": "res_villa_wing",
+      "file": "res_villa_wing_camNE.png",
+      "sha256": "fd95ca1be2f9215c7e285ab0d1926b65d6d4a31d966929464928d8cae9c5e4de",
+      "roles": [
+        "residential-low"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "res_villa_wing_camNE.png",
+          "sha256": "fd95ca1be2f9215c7e285ab0d1926b65d6d4a31d966929464928d8cae9c5e4de"
+        },
+        {
+          "camera": "camSE",
+          "file": "res_villa_wing_camSE.png",
+          "sha256": "c2d9acad43c8a51fd00129a98eeb7febd3be2101f055a5c4b1fbc8f2b9f6944f"
+        },
+        {
+          "camera": "camSW",
+          "file": "res_villa_wing_camSW.png",
+          "sha256": "481870051e77266c91fe00c3d5b879bed593a790cc30f864684779e0fc7e6dc7"
+        },
+        {
+          "camera": "camNW",
+          "file": "res_villa_wing_camNW.png",
+          "sha256": "f205ebc022ee3ca1dd76e671aa6e1ba7c347680a7211b1489de8330342b1a5c5"
+        }
+      ],
+      "family": "residential"
+    },
+    {
+      "assetID": "util_electric_substation",
+      "file": "util_electric_substation_camNE.png",
+      "sha256": "981a790e73dc5cf31abfa31a5350ef24de4d3a1279907a4c058e34706cd55f78",
+      "roles": [
+        "power-plant"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "util_electric_substation_camNE.png",
+          "sha256": "981a790e73dc5cf31abfa31a5350ef24de4d3a1279907a4c058e34706cd55f78"
+        },
+        {
+          "camera": "camSE",
+          "file": "util_electric_substation_camSE.png",
+          "sha256": "0c624988276bf7b7a243b458ad92ba79c8f4f1a6f63361103254a008178c11f9"
+        },
+        {
+          "camera": "camSW",
+          "file": "util_electric_substation_camSW.png",
+          "sha256": "e7e5b9c78fe65518d8c2a74e52b32c086d87b8735a64a21c37c998c73aaee411"
+        },
+        {
+          "camera": "camNW",
+          "file": "util_electric_substation_camNW.png",
+          "sha256": "61b97095b221ab966e8007e6dae0207ce79c0c0aee9e759ece322368a2bdec99"
+        }
+      ],
+      "family": "utility"
+    },
+    {
+      "assetID": "util_waterworks",
+      "file": "util_waterworks_camNE.png",
+      "sha256": "c61b3bb570d8fb9b2f18c90a6ce4d2d1eb827b3f8084dbc488efa5e197f8c82a",
+      "roles": [
+        "water-tower"
+      ],
+      "views": [
+        {
+          "camera": "camNE",
+          "file": "util_waterworks_camNE.png",
+          "sha256": "c61b3bb570d8fb9b2f18c90a6ce4d2d1eb827b3f8084dbc488efa5e197f8c82a"
+        },
+        {
+          "camera": "camSE",
+          "file": "util_waterworks_camSE.png",
+          "sha256": "e01515a0ea754a11439228729b34564772115f825439ef6be9f9432707c53adb"
+        },
+        {
+          "camera": "camSW",
+          "file": "util_waterworks_camSW.png",
+          "sha256": "035e77966aff942a487097184de2fc9578624d7024c23df2b020e07ca06d9e5e"
+        },
+        {
+          "camera": "camNW",
+          "file": "util_waterworks_camNW.png",
+          "sha256": "9032e6bdc5d7453dfce1b877195cb4c514b160229def7726635315ffe5d19ebd"
+        }
+      ],
+      "family": "utility"
     }
   ]
 }

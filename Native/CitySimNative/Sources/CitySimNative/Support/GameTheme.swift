@@ -16,6 +16,8 @@ enum GameTheme {
     static let subtleDivider = Color.white.opacity(0.16)
     static let hudSurfaceFill = Color(red: 0.075, green: 0.105, blue: 0.09).opacity(0.94)
     static let hudRaisedFill = Color(red: 0.17, green: 0.20, blue: 0.16).opacity(0.92)
+    static let hudChromeRadius: CGFloat = 12
+    static let hudShadow = Color.black.opacity(0.16)
     static let hudCriticalTextSize: CGFloat = 13
     static let hudSupportTextSize: CGFloat = 12
     static let hudMetricValueTextSize: CGFloat = 15
@@ -36,6 +38,32 @@ enum GameTheme {
 
     static func transition(edge: Edge, reduceMotion: Bool) -> AnyTransition {
         reduceMotion ? .opacity : .move(edge: edge).combined(with: .opacity)
+    }
+}
+
+private struct CityHUDSurfaceModifier: ViewModifier {
+    let prominent: Bool
+
+    func body(content: Content) -> some View {
+        let shape = RoundedRectangle(
+            cornerRadius: GameTheme.hudChromeRadius,
+            style: .continuous
+        )
+        content
+            .background(GameTheme.hudSurfaceFill, in: shape)
+            .overlay(
+                shape.stroke(
+                    prominent ? GameTheme.strongPanelStroke : GameTheme.panelStroke,
+                    lineWidth: 1
+                )
+            )
+            .shadow(color: GameTheme.hudShadow, radius: prominent ? 9 : 7, y: 3)
+    }
+}
+
+extension View {
+    func cityHUDSurface(prominent: Bool = false) -> some View {
+        modifier(CityHUDSurfaceModifier(prominent: prominent))
     }
 }
 

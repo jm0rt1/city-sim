@@ -8,7 +8,7 @@ struct FoundationsGuideView: View {
             VStack(alignment: .leading, spacing: 11) {
                 HStack(spacing: 8) {
                     Label("FOUNDATIONS GUIDE", systemImage: "signpost.right.and.left.fill")
-                        .font(.system(size: 11, weight: .heavy, design: .rounded))
+                        .font(.system(size: GameTheme.hudCriticalTextSize, weight: .heavy, design: .rounded))
                         .foregroundStyle(GameTheme.accent)
                     Spacer()
                     Text("\(presentation.completedCount)/\(presentation.totalCount)")
@@ -73,7 +73,8 @@ struct FoundationsGuideView: View {
             }
             .padding(14)
             .frame(width: 332)
-            .cityPanelBackground(.ultraThin, in: RoundedRectangle(cornerRadius: 14))
+            .cityPanelBackground(.thick, in: RoundedRectangle(cornerRadius: 14))
+            .background(GameTheme.hudSurfaceFill, in: RoundedRectangle(cornerRadius: 14))
             .overlay(RoundedRectangle(cornerRadius: 14).stroke(GameTheme.panelStroke))
             .shadow(color: .black.opacity(0.22), radius: 12, y: 6)
             .accessibilityElement(children: .contain)

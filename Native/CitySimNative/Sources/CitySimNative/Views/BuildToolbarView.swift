@@ -140,10 +140,10 @@ struct BuildToolbarView: View {
     // The low command rail is the only persistent map inset. Details are a
     // bounded contextual surface above it, so a selection never reserves city
     // height until the player explicitly asks to inspect it.
-    static let compactClosedMaximumHeight: CGFloat = 64
-    static let compactBuildDecisionMaximumHeight: CGFloat = 118
-    static let regularClosedMaximumHeight: CGFloat = 108
-    static let regularSituationalMaximumHeight: CGFloat = 64
+    static let compactClosedMaximumHeight: CGFloat = 60
+    static let compactBuildDecisionMaximumHeight: CGFloat = 112
+    static let regularClosedMaximumHeight: CGFloat = 60
+    static let regularSituationalMaximumHeight: CGFloat = 60
     static let compactOpenMaximumHeight: CGFloat = 176
     static let regularOpenMaximumHeight: CGFloat = 208
     static let compactDetailsMaxHeight: CGFloat = 112
@@ -154,8 +154,6 @@ struct BuildToolbarView: View {
             commandRow
             if let decision = activeBuildDecision {
                 buildDecisionRow(decision)
-            } else if !compact, isBuildMode {
-                operationalRow
             }
         }
         .padding(compact ? 7 : 8)
@@ -257,8 +255,7 @@ struct BuildToolbarView: View {
             }
 
             Spacer(minLength: 2)
-            cityFocusButton
-            photoModeButton
+            OverlayDiagnosticsPaletteView(store: store, compact: compact, embedded: true)
             commandGuideButton
             detailsButton
         }
@@ -269,10 +266,10 @@ struct BuildToolbarView: View {
         isBuildMode: Bool,
         hasBuildDecision: Bool = false
     ) -> CGFloat {
-        if compact {
-            return hasBuildDecision ? compactBuildDecisionMaximumHeight : compactClosedMaximumHeight
+        if hasBuildDecision {
+            return compact ? compactBuildDecisionMaximumHeight : 112
         }
-        return isBuildMode ? regularClosedMaximumHeight : regularSituationalMaximumHeight
+        return compact ? compactClosedMaximumHeight : regularSituationalMaximumHeight
     }
 
     private func buildDecisionRow(_ decision: CityBuildDecisionPresentation) -> some View {
@@ -499,7 +496,7 @@ struct BuildToolbarView: View {
     private var commandGuideButton: some View {
         let descriptor = CityCommandCatalog.descriptor(for: .openCommandGuide)
         return Button { store.perform(.openCommandGuide) } label: {
-            Label(compact ? "Cmds" : "Commands", systemImage: "command.square")
+            Label("Commands", systemImage: "command.square")
                 .font(.caption.weight(.semibold))
                 .lineLimit(1)
                 .fixedSize(horizontal: true, vertical: false)

@@ -403,12 +403,24 @@ struct ContentView: View {
         showObjectives: Bool,
         showInspector: Bool,
         hasActivity: Bool,
-        hasFoundationsGuide: Bool = false
+        hasFoundationsGuide: Bool = false,
+        hasBlockingFeedback: Bool = false
     ) -> ContextualGuidancePresentation {
         guard !showInspector else { return .hidden }
+        guard !hasBlockingFeedback else { return .hidden }
         if showObjectives { return .objectives }
         if hasFoundationsGuide { return .foundations }
         return hasActivity ? .activity : .hidden
+    }
+
+    static func presentsFeedback(
+        message: String,
+        tone: PlayerFeedbackTone,
+        hasResumeBrief: Bool
+    ) -> Bool {
+        if tone != .caution, hasResumeBrief { return false }
+        if tone != .caution, message.hasSuffix("tool selected") { return false }
+        return true
     }
 
     private var feedbackSymbol: String {
@@ -575,7 +587,8 @@ struct ContentView: View {
                                 showObjectives: store.showObjectives,
                                 showInspector: store.showInspector,
                                 hasActivity: !store.messageSummaries.isEmpty,
-                                hasFoundationsGuide: store.foundationsGuidePresentation != nil
+                                hasFoundationsGuide: store.foundationsGuidePresentation != nil,
+                                hasBlockingFeedback: store.lastFeedback != nil && store.lastFeedbackTone == .caution
                             ) {
                             case .hidden:
                                 EmptyView()
@@ -596,7 +609,12 @@ struct ContentView: View {
 
                     Spacer(minLength: 8)
 
-                    if let feedback = store.lastFeedback {
+                    if let feedback = store.lastFeedback,
+                       Self.presentsFeedback(
+                           message: feedback,
+                           tone: store.lastFeedbackTone,
+                           hasResumeBrief: store.resumeBrief != nil
+                       ) {
                         HStack(spacing: 9) {
                             Image(systemName: feedbackSymbol)
                                 .foregroundStyle(feedbackColor)
@@ -639,14 +657,11 @@ struct ContentView: View {
                     }
 
                     if !store.isCityFocusModeEnabled {
-                        VStack(spacing: compact ? 4 : 6) {
-                            OverlayDiagnosticsPaletteView(store: store, compact: compact)
-                            BuildToolbarView(
-                                store: store,
-                                compact: compact,
-                                pointerTransitionGate: pointerTransitionGate
-                            )
-                        }
+                        BuildToolbarView(
+                            store: store,
+                            compact: compact,
+                            pointerTransitionGate: pointerTransitionGate
+                        )
                             .frame(maxWidth: compact ? .infinity : 1_120)
                             .onGeometryChange(for: CGRect.self) { proxy in
                                 proxy.frame(in: .named("city.game.surface"))

@@ -855,9 +855,9 @@ final class CitySimulationTests: XCTestCase {
         XCTAssertLessThanOrEqual(BuildToolbarView.regularDetailsMaxHeight, 144)
         XCTAssertLessThanOrEqual(StrategyCommandCenterView.compactMaximumHeight, 48)
         XCTAssertLessThanOrEqual(StrategyCommandCenterView.regularMaximumHeight, 52)
-        XCTAssertEqual(BuildToolbarView.closedMaximumHeight(compact: true, isBuildMode: false), 64)
-        XCTAssertEqual(BuildToolbarView.closedMaximumHeight(compact: false, isBuildMode: false), 64)
-        XCTAssertEqual(BuildToolbarView.closedMaximumHeight(compact: false, isBuildMode: true), 108)
+        XCTAssertEqual(BuildToolbarView.closedMaximumHeight(compact: true, isBuildMode: false), 60)
+        XCTAssertEqual(BuildToolbarView.closedMaximumHeight(compact: false, isBuildMode: false), 60)
+        XCTAssertEqual(BuildToolbarView.closedMaximumHeight(compact: false, isBuildMode: true), 60)
         XCTAssertLessThanOrEqual(FocusCityHUDView.compactMaximumHeight, 98)
         XCTAssertLessThanOrEqual(FocusCityHUDView.regularMaximumHeight, 68)
         XCTAssertGreaterThanOrEqual(GameTheme.hudCriticalTextSize, 11)
@@ -867,16 +867,16 @@ final class CitySimulationTests: XCTestCase {
         XCTAssertEqual(InspectorView.compactColumnCount, 2)
         XCTAssertGreaterThanOrEqual(InspectorView.compactMinimumVisibleNoticeCount, 2)
         let compactClosedChrome = CityHUDChromeFrames(
-            top: CGRect(x: 8, y: 8, width: 884, height: 104),
-            bottom: CGRect(x: 8, y: 528, width: 884, height: 64)
+            top: CGRect(x: 8, y: 8, width: 884, height: 64),
+            bottom: CGRect(x: 8, y: 532, width: 884, height: 60)
         )
         XCTAssertGreaterThanOrEqual(
             ContentView.interactiveMapHeight(windowHeight: 600, chromeFrames: compactClosedChrome) / 600,
             0.68
         )
         let compactDetailsChrome = CityHUDChromeFrames(
-            top: CGRect(x: 8, y: 8, width: 884, height: 104),
-            bottom: CGRect(x: 8, y: 416, width: 884, height: 176)
+            top: CGRect(x: 8, y: 8, width: 884, height: 64),
+            bottom: CGRect(x: 8, y: 532, width: 884, height: 60)
         )
         XCTAssertGreaterThanOrEqual(
             ContentView.interactiveMapHeight(windowHeight: 600, chromeFrames: compactDetailsChrome) / 600,
@@ -895,8 +895,8 @@ final class CitySimulationTests: XCTestCase {
             compact: true,
             chromeFrames: compactClosedChrome
         )
-        XCTAssertEqual(compactInsets.top, 122)
-        XCTAssertEqual(compactInsets.bottom, 82)
+        XCTAssertEqual(compactInsets.top, 82)
+        XCTAssertEqual(compactInsets.bottom, 78)
         let compactFocusInsets = ContentView.mapViewportInsets(
             windowSize: CGSize(width: 900, height: 600),
             compact: true,
@@ -1220,16 +1220,16 @@ final class CitySimulationTests: XCTestCase {
         let regular = try toolbarBitmap(size: regularSize, store: store, compact: false)
         XCTAssertEqual(regular.size.width, regularSize.width, accuracy: 0.5)
         XCTAssertEqual(regular.size.height, regularSize.height, accuracy: 0.5)
-        XCTAssertEqual(BuildToolbarView.compactClosedMaximumHeight, 64)
-        XCTAssertEqual(BuildToolbarView.regularSituationalMaximumHeight, 64)
+        XCTAssertEqual(BuildToolbarView.compactClosedMaximumHeight, 60)
+        XCTAssertEqual(BuildToolbarView.regularSituationalMaximumHeight, 60)
 
         let compactChrome = CityHUDChromeFrames(
-            top: CGRect(x: 8, y: 8, width: 884, height: 104),
-            bottom: CGRect(x: 8, y: 528, width: 884, height: 64)
+            top: CGRect(x: 8, y: 8, width: 884, height: 64),
+            bottom: CGRect(x: 8, y: 532, width: 884, height: 60)
         )
         XCTAssertEqual(
             ContentView.interactiveMapHeight(windowHeight: 600, chromeFrames: compactChrome),
-            416
+            460
         )
 
         if let path = ProcessInfo.processInfo.environment["CITYSIM_PLAY082_COMPACT_BEACON_PROOF"] {
@@ -1276,33 +1276,33 @@ final class CitySimulationTests: XCTestCase {
                 name: "compact",
                 window: CGSize(width: 900, height: 600),
                 compact: true,
-                top: CGRect(x: 8, y: 8, width: 884, height: 104),
-                closedBottom: CGRect(x: 8, y: 528, width: 884, height: 64),
-                decisionBottom: CGRect(x: 8, y: 474, width: 884, height: 118),
-                detailsBottom: CGRect(x: 8, y: 416, width: 884, height: 176),
-                expectedTopInset: 122,
-                expectedClosedBottomInset: 82,
-                expectedDecisionBottomInset: 136,
-                expectedDetailsBottomInset: 194,
-                expectedClosedMapHeight: 416,
-                expectedDecisionMapHeight: 362,
-                expectedDetailsMapHeight: 304
+                top: CGRect(x: 8, y: 8, width: 884, height: 64),
+                closedBottom: CGRect(x: 8, y: 532, width: 884, height: 60),
+                decisionBottom: CGRect(x: 8, y: 480, width: 884, height: 112),
+                detailsBottom: CGRect(x: 8, y: 532, width: 884, height: 60),
+                expectedTopInset: 82,
+                expectedClosedBottomInset: 78,
+                expectedDecisionBottomInset: 130,
+                expectedDetailsBottomInset: 78,
+                expectedClosedMapHeight: 460,
+                expectedDecisionMapHeight: 408,
+                expectedDetailsMapHeight: 460
             ),
             Scenario(
                 name: "regular",
                 window: CGSize(width: 1_278, height: 768),
                 compact: false,
-                top: CGRect(x: 16, y: 16, width: 1_246, height: 118),
-                closedBottom: CGRect(x: 79, y: 688, width: 1_120, height: 64),
-                decisionBottom: CGRect(x: 79, y: 644, width: 1_120, height: 108),
-                detailsBottom: CGRect(x: 79, y: 544, width: 1_120, height: 208),
-                expectedTopInset: 144,
-                expectedClosedBottomInset: 90,
-                expectedDecisionBottomInset: 134,
-                expectedDetailsBottomInset: 234,
-                expectedClosedMapHeight: 554,
-                expectedDecisionMapHeight: 510,
-                expectedDetailsMapHeight: 410
+                top: CGRect(x: 8, y: 8, width: 1_262, height: 68),
+                closedBottom: CGRect(x: 79, y: 700, width: 1_120, height: 60),
+                decisionBottom: CGRect(x: 79, y: 648, width: 1_120, height: 112),
+                detailsBottom: CGRect(x: 79, y: 700, width: 1_120, height: 60),
+                expectedTopInset: 86,
+                expectedClosedBottomInset: 78,
+                expectedDecisionBottomInset: 130,
+                expectedDetailsBottomInset: 78,
+                expectedClosedMapHeight: 624,
+                expectedDecisionMapHeight: 572,
+                expectedDetailsMapHeight: 624
             )
         ]
 

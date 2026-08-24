@@ -9,14 +9,14 @@ enum GameTheme {
     static let opaquePanel = Color(red: 0.075, green: 0.082, blue: 0.095)
     static let panelStroke = Color.white.opacity(0.14)
     static let strongPanelStroke = Color.white.opacity(0.22)
-    static let inactiveControl = Color.primary.opacity(0.09)
-    static let contextCard = Color.primary.opacity(0.065)
+    static let inactiveControl = Color.primary.opacity(0.12)
+    static let contextCard = Color.primary.opacity(0.10)
     static let contextCardSelected = accent.opacity(0.14)
-    static let subtleDivider = Color.white.opacity(0.10)
-    static let hudSurfaceFill = Color.black.opacity(0.42)
-    static let hudRaisedFill = Color.white.opacity(0.075)
-    static let hudCriticalTextSize: CGFloat = 11
-    static let hudSupportTextSize: CGFloat = 10
+    static let subtleDivider = Color.white.opacity(0.16)
+    static let hudSurfaceFill = Color.black.opacity(0.64)
+    static let hudRaisedFill = Color.white.opacity(0.11)
+    static let hudCriticalTextSize: CGFloat = 12
+    static let hudSupportTextSize: CGFloat = 11
     static let hudMetricValueTextSize: CGFloat = 14
 
     static let controlMinimum: CGFloat = 44

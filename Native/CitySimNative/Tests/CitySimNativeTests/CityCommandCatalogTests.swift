@@ -142,8 +142,8 @@ final class CityCommandCatalogTests: XCTestCase {
             "\(coverage), \(presentation.accessibilityValue)",
             "100%, Power headroom 54, Water headroom 48"
         )
-        XCTAssertEqual(TopHUDView.compactMaximumHeight, 104)
-        XCTAssertEqual(TopHUDView.regularMaximumHeight, 108)
+        XCTAssertEqual(TopHUDView.compactMaximumHeight, 64)
+        XCTAssertEqual(TopHUDView.regularMaximumHeight, 68)
     }
 
     @MainActor

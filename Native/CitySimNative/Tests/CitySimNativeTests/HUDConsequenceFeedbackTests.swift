@@ -177,12 +177,48 @@ final class HUDConsequenceFeedbackTests: XCTestCase {
         XCTAssertEqual(store.objectives.map(\.id), ["town-charter", "regional-capital"])
     }
 
-    func testFeedbackPreservesCurrentStrategyAccessibilityAndHUDBounds() {
-        XCTAssertEqual(TopHUDView.compactMaximumHeight, 104)
-        XCTAssertEqual(TopHUDView.regularMaximumHeight, 108)
+    @MainActor
+    func testFeedbackPreservesCurrentStrategyAccessibilityAndMapFirstHUDBounds() {
+        XCTAssertEqual(TopHUDView.compactMaximumHeight, 64)
+        XCTAssertEqual(TopHUDView.regularMaximumHeight, 68)
         XCTAssertEqual(StrategyCommandCenterView.compactMaximumHeight, 48)
         XCTAssertEqual(StrategyCommandCenterView.regularMaximumHeight, 52)
         XCTAssertEqual(GameTheme.controlMinimum, 44)
+        XCTAssertEqual(GameTheme.hudCriticalTextSize, 12)
+        XCTAssertEqual(GameTheme.hudSupportTextSize, 11)
+
+        XCTAssertFalse(
+            ContentView.presentsFeedback(
+                message: "New Arcadia loaded",
+                tone: .positive,
+                hasResumeBrief: true
+            ),
+            "A resumed-city toast must not repeat paused identity and the top-rail next action"
+        )
+        XCTAssertTrue(
+            ContentView.presentsFeedback(
+                message: "Placement blocked",
+                tone: .caution,
+                hasResumeBrief: true
+            ),
+            "Blocked actions retain visible diagnosis and recovery"
+        )
+        XCTAssertTrue(
+            ContentView.presentsFeedback(
+                message: "Road construction approved",
+                tone: .positive,
+                hasResumeBrief: false
+            ),
+            "Ordinary build and save confirmations remain visible"
+        )
+        XCTAssertFalse(
+            ContentView.presentsFeedback(
+                message: "Commercial tool selected",
+                tone: .neutral,
+                hasResumeBrief: false
+            ),
+            "The selected mode and build decision already confirm a tool change"
+        )
 
         let presentation = CityStrategyHUDPresentation(
             eyebrow: "CITY PRIORITY",
@@ -235,25 +271,34 @@ final class HUDConsequenceFeedbackTests: XCTestCase {
             .hidden,
             "Open command-center details are the sole contextual layer"
         )
+        XCTAssertEqual(
+            ContentView.contextualGuidancePresentation(
+                showObjectives: false,
+                showInspector: false,
+                hasActivity: true,
+                hasFoundationsGuide: true,
+                hasBlockingFeedback: true
+            ),
+            .hidden,
+            "A blocked-action recovery displaces onboarding and activity instead of overlapping them"
+        )
 
-        let compactBefore = ContentView.interactiveMapHeight(
+        let rejectedCompactAperture = ContentView.interactiveMapHeight(
+            windowHeight: 600,
+            chromeFrames: CityHUDChromeFrames(
+                top: CGRect(x: 0, y: 0, width: 900, height: 104),
+                bottom: CGRect(x: 0, y: 600 - 112, width: 900, height: 112)
+            )
+        )
+        let mapFirstCompactAperture = ContentView.interactiveMapHeight(
             windowHeight: 600,
             chromeFrames: CityHUDChromeFrames(
                 top: CGRect(x: 0, y: 0, width: 900, height: TopHUDView.compactMaximumHeight),
-                bottom: CGRect(x: 0, y: 600 - (OverlayDiagnosticsPaletteView.compactMaximumHeight + BuildToolbarView.compactOpenMaximumHeight), width: 900, height: OverlayDiagnosticsPaletteView.compactMaximumHeight + BuildToolbarView.compactOpenMaximumHeight)
+                bottom: CGRect(x: 0, y: 600 - BuildToolbarView.compactClosedMaximumHeight, width: 900, height: BuildToolbarView.compactClosedMaximumHeight)
             )
         )
-        let compactAfter = ContentView.interactiveMapHeight(
-            windowHeight: 600,
-            chromeFrames: CityHUDChromeFrames(
-                top: CGRect(x: 0, y: 0, width: 900, height: TopHUDView.compactMaximumHeight),
-                bottom: CGRect(x: 0, y: 600 - (OverlayDiagnosticsPaletteView.compactMaximumHeight + BuildToolbarView.compactClosedMaximumHeight), width: 900, height: OverlayDiagnosticsPaletteView.compactMaximumHeight + BuildToolbarView.compactClosedMaximumHeight)
-            )
-        )
-        XCTAssertEqual(OverlayDiagnosticsPaletteView.compactMaximumHeight, 48)
-        XCTAssertEqual(OverlayDiagnosticsPaletteView.regularMaximumHeight, 48)
-        XCTAssertEqual(compactAfter - compactBefore, 112, accuracy: 0.001)
-        XCTAssertGreaterThan(compactAfter, compactBefore)
+        XCTAssertEqual(mapFirstCompactAperture - rejectedCompactAperture, 92, accuracy: 0.001)
+        XCTAssertGreaterThanOrEqual(mapFirstCompactAperture / 600, 0.79)
 
         let store = CityGameStore(state: .newCity(seed: 42))
         let compactSize = CGSize(width: 900, height: OverlayDiagnosticsPaletteView.compactMaximumHeight)
@@ -311,17 +356,13 @@ final class HUDConsequenceFeedbackTests: XCTestCase {
             windowHeight: 600,
             chromeFrames: compactFocus.frames
         )
-        let previousRegularAperture = 800 - TopHUDView.regularMaximumHeight
-            - OverlayDiagnosticsPaletteView.regularMaximumHeight
-            - BuildToolbarView.regularOpenMaximumHeight
-        let previousCompactAperture = 600 - TopHUDView.compactMaximumHeight
-            - OverlayDiagnosticsPaletteView.compactMaximumHeight
-            - BuildToolbarView.compactOpenMaximumHeight
+        let previousRegularAperture: CGFloat = 800 - 108 - 48 - 64
+        let previousCompactAperture: CGFloat = 600 - 104 - 48 - 64
 
         XCTAssertGreaterThan(regularAperture, previousRegularAperture)
         XCTAssertGreaterThan(compactAperture, previousCompactAperture)
-        XCTAssertGreaterThanOrEqual(regularAperture / 800, 0.60)
-        XCTAssertGreaterThanOrEqual(compactAperture / 600, 0.50)
+        XCTAssertGreaterThanOrEqual(regularAperture / 800, 0.78)
+        XCTAssertGreaterThanOrEqual(compactAperture / 600, 0.74)
         XCTAssertGreaterThanOrEqual(regularAperture, regularFocusAperture * 0.60)
         XCTAssertGreaterThanOrEqual(compactAperture, compactFocusAperture * 0.50)
         print(

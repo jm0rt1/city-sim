@@ -136,6 +136,7 @@ def point_at(obj, target):
 def configure(scene):
     c = CONFIG["canvas"]
     scene.name = "CitySimExpansionV1"
+    bpy.context.preferences.filepaths.save_version = 0
     scene.render.engine = CONFIG["toolchain"]["renderEngine"]
     scene.render.resolution_x, scene.render.resolution_y, scene.render.resolution_percentage = c["width"], c["height"], 100
     scene.render.film_transparent = True

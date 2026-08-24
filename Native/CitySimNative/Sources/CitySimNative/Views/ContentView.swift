@@ -596,7 +596,7 @@ struct ContentView: View {
                                 ObjectivesView(store: store)
                                     .transition(GameTheme.transition(edge: .leading, reduceMotion: reduceMotion))
                             case .foundations:
-                                FoundationsGuideView(store: store)
+                                FoundationsGuideView(store: store, compact: compact)
                                     .transition(GameTheme.transition(edge: .leading, reduceMotion: reduceMotion))
                             case .activity:
                                 Spacer(minLength: 8)
@@ -604,7 +604,9 @@ struct ContentView: View {
                                     .opacity(compact ? 1 : 0.78)
                                     .scaleEffect(compact ? 1 : 0.88, anchor: .topTrailing)
                             }
+                            Spacer(minLength: 0)
                         }
+                        .frame(maxWidth: .infinity, alignment: .leading)
                     }
 
                     Spacer(minLength: 8)
@@ -662,7 +664,7 @@ struct ContentView: View {
                             compact: compact,
                             pointerTransitionGate: pointerTransitionGate
                         )
-                            .frame(maxWidth: compact ? .infinity : 1_120)
+                            .frame(maxWidth: compact ? 780 : 860)
                             .onGeometryChange(for: CGRect.self) { proxy in
                                 proxy.frame(in: .named("city.game.surface"))
                             } action: { frame in

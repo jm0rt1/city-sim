@@ -184,8 +184,8 @@ final class HUDConsequenceFeedbackTests: XCTestCase {
         XCTAssertEqual(StrategyCommandCenterView.compactMaximumHeight, 48)
         XCTAssertEqual(StrategyCommandCenterView.regularMaximumHeight, 52)
         XCTAssertEqual(GameTheme.controlMinimum, 44)
-        XCTAssertEqual(GameTheme.hudCriticalTextSize, 12)
-        XCTAssertEqual(GameTheme.hudSupportTextSize, 11)
+        XCTAssertEqual(GameTheme.hudCriticalTextSize, 13)
+        XCTAssertEqual(GameTheme.hudSupportTextSize, 12)
 
         XCTAssertFalse(
             ContentView.presentsFeedback(

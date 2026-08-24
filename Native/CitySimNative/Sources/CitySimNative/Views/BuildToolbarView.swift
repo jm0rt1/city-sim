@@ -158,13 +158,7 @@ struct BuildToolbarView: View {
         }
         .padding(compact ? 7 : 8)
         .frame(height: persistentDeckHeight)
-        .cityPanelBackground(.thin, in: RoundedRectangle(cornerRadius: GameTheme.panelRadius, style: .continuous))
-        .background(
-            GameTheme.hudSurfaceFill,
-            in: RoundedRectangle(cornerRadius: GameTheme.panelRadius, style: .continuous)
-        )
-        .overlay(RoundedRectangle(cornerRadius: GameTheme.panelRadius).stroke(GameTheme.strongPanelStroke))
-        .shadow(color: .black.opacity(0.2), radius: 12, y: 5)
+        .cityHUDSurface(prominent: true)
         .accessibilityElement(children: .contain)
         .accessibilityLabel(store.showInspector ? "City command deck with details open" : "City command deck")
         .overlay(alignment: .bottom) {
@@ -172,19 +166,7 @@ struct BuildToolbarView: View {
                 inspectorDetails
                     .frame(maxWidth: compact ? 620 : 760)
                     .padding(8)
-                    .cityPanelBackground(
-                        .thick,
-                        in: RoundedRectangle(cornerRadius: GameTheme.panelRadius, style: .continuous)
-                    )
-                    .background(
-                        GameTheme.hudSurfaceFill,
-                        in: RoundedRectangle(cornerRadius: GameTheme.panelRadius, style: .continuous)
-                    )
-                    .overlay(
-                        RoundedRectangle(cornerRadius: GameTheme.panelRadius)
-                            .stroke(GameTheme.strongPanelStroke)
-                    )
-                    .shadow(color: .black.opacity(0.28), radius: 14, y: 5)
+                    .cityHUDSurface(prominent: true)
                     .offset(y: -persistentDeckHeight - 8)
                     .accessibilityIdentifier("hud.command.details.overlay")
             }
@@ -234,6 +216,7 @@ struct BuildToolbarView: View {
                     .layoutPriority(1)
             }
 
+            shelfDivider
             toolsMenu
             commandGuideButton
             detailsButton
@@ -264,8 +247,6 @@ struct BuildToolbarView: View {
                 action: { store.perform(.bulldozeMode) }
             )
         }
-        .padding(2)
-        .background(GameTheme.hudRaisedFill, in: RoundedRectangle(cornerRadius: 11))
         .accessibilityElement(children: .contain)
         .accessibilityLabel("Map tools")
     }
@@ -289,16 +270,23 @@ struct BuildToolbarView: View {
                 Label("Photo Mode", systemImage: "camera.aperture")
             }
         } label: {
-            Label(compact ? "More" : "City Tools", systemImage: "slider.horizontal.3")
+            Label(compact ? "More" : "Tools", systemImage: "slider.horizontal.3")
                 .font(.system(size: GameTheme.hudCriticalTextSize, weight: .bold, design: .rounded))
                 .padding(.horizontal, compact ? 4 : 8)
                 .frame(minWidth: GameTheme.controlMinimum, minHeight: GameTheme.controlMinimum)
         }
         .menuStyle(.borderlessButton)
-        .background(GameTheme.hudRaisedFill, in: RoundedRectangle(cornerRadius: 9))
         .accessibilityLabel("City tools and map layers")
         .accessibilityValue("Current layer \(store.overlay.title)")
         .accessibilityIdentifier("hud.city.tools")
+    }
+
+    private var shelfDivider: some View {
+        Rectangle()
+            .fill(GameTheme.panelStroke)
+            .frame(width: 1, height: 24)
+            .padding(.horizontal, 2)
+            .accessibilityHidden(true)
     }
 
     static func closedMaximumHeight(
@@ -528,7 +516,7 @@ struct BuildToolbarView: View {
         }
         .buttonStyle(.plain)
         .foregroundStyle(store.showInspector ? Color.black : Color.primary)
-        .background(store.showInspector ? GameTheme.accent : GameTheme.hudRaisedFill, in: RoundedRectangle(cornerRadius: 9))
+        .background(store.showInspector ? GameTheme.accent : Color.clear, in: RoundedRectangle(cornerRadius: 9))
         .help(store.showInspector ? "Close command-center details" : "Open command-center details")
         .accessibilityLabel(store.showInspector ? "Close command-center details" : "Open command-center details")
         .accessibilityValue(store.showInspector ? "Open" : "Closed")
@@ -547,7 +535,6 @@ struct BuildToolbarView: View {
                 .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
-        .background(GameTheme.hudRaisedFill, in: RoundedRectangle(cornerRadius: 9))
         .help("\(descriptor.discoverability) \(descriptor.shortcut?.display ?? "")")
         .accessibilityLabel("Open command guide")
         .accessibilityValue(descriptor.shortcut?.display ?? "No shortcut")

@@ -104,9 +104,9 @@ struct TopHUDView: View {
     private var statusRow: some View {
         HStack(spacing: compact ? 6 : 9) {
             cityIdentity
-                .frame(width: compact ? 148 : 184)
+                .frame(width: compact ? 146 : 176)
             missionSummary
-                .frame(width: compact ? 292 : 330)
+                .frame(width: compact ? 286 : 318)
                 .layoutPriority(3)
             Spacer(minLength: 4)
             timeAndNotices
@@ -150,9 +150,7 @@ struct TopHUDView: View {
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
-        .background(GameTheme.hudSurfaceFill, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
-        .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous).stroke(GameTheme.panelStroke))
-        .shadow(color: .black.opacity(0.22), radius: 9, y: 4)
+        .cityHUDSurface()
         .help(store.persistenceStatus.help)
         .accessibilityLabel("Open \(store.state.cityName) command center")
         .accessibilityValue(
@@ -217,7 +215,7 @@ struct TopHUDView: View {
             RoundedRectangle(cornerRadius: 12, style: .continuous)
                 .stroke(Color.white.opacity(0.30), lineWidth: 1)
         )
-        .shadow(color: .black.opacity(0.22), radius: 9, y: 4)
+        .shadow(color: GameTheme.hudShadow, radius: 7, y: 3)
         .disabled(response.map { !store.canPerform($0.command) } ?? false)
         .help(response.flatMap { store.disabledReason(for: $0.command) } ?? response?.explanation ?? objective.remaining)
         .accessibilityLabel(response == nil ? "Review current goal" : "Next action: \(actionTitle)")
@@ -391,7 +389,6 @@ struct TopHUDView: View {
                 .frame(minWidth: GameTheme.controlMinimum, minHeight: GameTheme.controlMinimum)
             }
             .menuStyle(.borderlessButton)
-            .background(GameTheme.hudRaisedFill, in: RoundedRectangle(cornerRadius: 9))
             .accessibilityLabel("Simulation speed")
             .accessibilityValue(simulationStatus.accessibilityValue)
 
@@ -402,15 +399,12 @@ struct TopHUDView: View {
                     .frame(minWidth: GameTheme.controlMinimum, minHeight: GameTheme.controlMinimum)
             }
             .buttonStyle(.plain)
-            .background(GameTheme.hudRaisedFill, in: RoundedRectangle(cornerRadius: 9))
             .accessibilityLabel("Open city notices")
             .accessibilityValue(noticeAccessibilityValue)
             .accessibilityIdentifier("hud.notices")
         }
-        .padding(4)
-        .background(GameTheme.hudSurfaceFill, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
-        .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous).stroke(GameTheme.panelStroke))
-        .shadow(color: .black.opacity(0.22), radius: 9, y: 4)
+        .padding(3)
+        .cityHUDSurface()
     }
 
     private var hudDivider: some View {

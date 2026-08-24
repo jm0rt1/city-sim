@@ -3374,6 +3374,152 @@ final class CitySimulationTests: XCTestCase {
         return state
     }
 
+    @MainActor
+    func testResidentialQualityFamilySavedCityProofExportsExactNativeSurfaces() throws {
+        let regularKey = "CITYSIM_RESIDENTIAL_QUALITY_1280_PROOF"
+        let compactKey = "CITYSIM_RESIDENTIAL_QUALITY_900_PROOF"
+        guard ProcessInfo.processInfo.environment[regularKey] != nil
+                || ProcessInfo.processInfo.environment[compactKey] != nil else {
+            return
+        }
+
+        var state = CityGameState.newCity(seed: 20_260_824)
+        for coordinate in state.tiles.map(\.coordinate) {
+            state.updateTile(at: coordinate) {
+                $0 = CityTile(coordinate: coordinate, kind: .empty)
+            }
+        }
+        for y in [8, 12, 16] {
+            for x in 3...24 {
+                state.updateTile(at: GridCoordinate(x: x, y: y)) {
+                    $0 = CityTile(coordinate: $0.coordinate, kind: .road)
+                }
+            }
+        }
+        for x in [4, 10, 16, 22] {
+            for y in 7...17 {
+                state.updateTile(at: GridCoordinate(x: x, y: y)) {
+                    $0 = CityTile(coordinate: $0.coordinate, kind: .road)
+                }
+            }
+        }
+
+        let catalog = FourViewWorldAssetCatalog()
+        let family = [
+            "alder_gable_cottage",
+            "birch_lane_bungalow",
+            "rosewood_turret_house",
+            "stonebridge_duplex",
+        ]
+        var used: Set<GridCoordinate> = []
+        let targets = [
+            GridCoordinate(x: 6, y: 10), GridCoordinate(x: 11, y: 10),
+            GridCoordinate(x: 17, y: 10), GridCoordinate(x: 21, y: 10),
+            GridCoordinate(x: 6, y: 14), GridCoordinate(x: 11, y: 14),
+            GridCoordinate(x: 17, y: 14), GridCoordinate(x: 21, y: 14),
+        ]
+        for (index, target) in targets.enumerated() {
+            let assetID = family[index % family.count]
+            let coordinate = try XCTUnwrap(state.tiles
+                .filter { tile in
+                    tile.kind == .empty
+                        && !used.contains(tile.coordinate)
+                        && (5...21).contains(tile.coordinate.x)
+                        && (9...15).contains(tile.coordinate.y)
+                        && !RoadConnectionMask.resolving(
+                            at: tile.coordinate,
+                            in: state
+                        ).isEmpty
+                        && catalog.assetID(
+                            for: CityTile(
+                                coordinate: tile.coordinate,
+                                kind: .residential,
+                                level: 1
+                            ),
+                            variant: 1
+                        ) == assetID
+                }
+                .map(\.coordinate)
+                .sorted { lhs, rhs in
+                    let left = abs(lhs.x - target.x) + abs(lhs.y - target.y)
+                    let right = abs(rhs.x - target.x) + abs(rhs.y - target.y)
+                    return (left, lhs.y, lhs.x) < (right, rhs.y, rhs.x)
+                }
+                .first, assetID)
+            used.insert(coordinate)
+            state.updateTile(at: coordinate) {
+                $0 = CityTile(
+                    coordinate: coordinate,
+                    kind: .residential,
+                    level: 1,
+                    condition: 1,
+                    constructionProgress: 1
+                )
+            }
+        }
+
+        let saveRoot = FileManager.default.temporaryDirectory
+            .appending(path: "citysim-residential-quality-\(UUID().uuidString)")
+        addTeardownBlock {
+            try? FileManager.default.removeItem(at: saveRoot)
+        }
+        let saves = SaveGameService(rootURL: saveRoot)
+        _ = try saves.save(state)
+        let loaded = try saves.load()
+        XCTAssertEqual(loaded.source, .primary)
+        XCTAssertEqual(loaded.state, state)
+
+        let sourceScene = CityScene(size: CGSize(width: 1_280, height: 800))
+        sourceScene.reducedMotion = true
+        sourceScene.render(
+            state: loaded.state,
+            overlay: .none,
+            selection: nil,
+            interactionMode: .inspect
+        )
+        let sourceNames = Set(sourceScene.children.flatMap(descendantNodeNames))
+        for assetID in family {
+            XCTAssertTrue(
+                sourceNames.contains("lot.four-view.\(assetID).camNE"),
+                assetID
+            )
+        }
+
+        let center = GridCoordinate(x: 13, y: 12)
+        let regular = try rendererProofFrame(
+            size: CGSize(width: 1_280, height: 800),
+            state: loaded.state,
+            overlay: .none,
+            selection: nil,
+            interactionMode: .inspect,
+            detail: .neighborhood,
+            centeredOn: center,
+            framingScale: 1.45,
+            hover: nil,
+            exactPixelDimensions: true
+        )
+        let compact = try rendererProofFrame(
+            size: CGSize(width: 900, height: 600),
+            state: loaded.state,
+            overlay: .none,
+            selection: nil,
+            interactionMode: .inspect,
+            detail: .neighborhood,
+            centeredOn: center,
+            framingScale: 1.62,
+            hover: nil,
+            exactPixelDimensions: true
+        )
+        XCTAssertEqual(regular.width, 1_280)
+        XCTAssertEqual(regular.height, 800)
+        XCTAssertEqual(compact.width, 900)
+        XCTAssertEqual(compact.height, 600)
+        XCTAssertGreaterThan(regular.png.count, 45_000)
+        XCTAssertGreaterThan(compact.png.count, 32_000)
+        try export(regular, environmentKeys: [regularKey])
+        try export(compact, environmentKeys: [compactKey])
+    }
+
     private func keyEvent(
         characters: String,
         keyCode: UInt16,

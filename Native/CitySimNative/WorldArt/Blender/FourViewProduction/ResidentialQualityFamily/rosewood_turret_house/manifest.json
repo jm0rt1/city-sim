@@ -1,0 +1,288 @@
+{
+  "artifacts": [
+    {
+      "bytes": 1847684,
+      "path": "rosewood_turret_house.blend",
+      "sha256": "f3ad2c4469594b3e60891ca339593a769528b5520757286803b4e082ec72d9ff"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 196,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 153,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 21271,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 62695,
+      "decodedRgbaSha256": "57ed78660bd1c6d946ab24f2fbfc6d6ae75b47fa39bc83d14e61cf925714b985",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/rosewood_turret_house_camNE.png",
+      "sha256": "e3826329c236d60c1691620cfe88467609e7e4187b8720a0e8cb08328465f9f5"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 207,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 142,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 20313,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 71665,
+      "decodedRgbaSha256": "9fc729c31f5e1370cd2565099e5549b0c515f3adfebf12ce183f40711544a83d",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/rosewood_turret_house_camSE.png",
+      "sha256": "737c132535e89e6933909f5cf39d9b4d7cf4aeaab50faf9548a5e0da0a205523"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 206,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 143,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 21687,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 74515,
+      "decodedRgbaSha256": "74ca6c7cf97a42d5b570b8ce644f668cc10d43889ed31fa155433b8cdec8a3a2",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/rosewood_turret_house_camSW.png",
+      "sha256": "ba9a3497e542917f928f6fd5591b7115d519bff86949d2618cdc4085b9926b92"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 219,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 130,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 20011,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 66989,
+      "decodedRgbaSha256": "a37aaeabc7ed0edd0b5fd459a8879702fd1e4ff7aba3e7fa4c40ea928471a1a9",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/rosewood_turret_house_camNW.png",
+      "sha256": "3549161baf8ce14d781ed41c3496d26bb1abd59fe74e568ec3b1febccdd920c6"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 698,
+          "maxX": 783,
+          "maxY": 839,
+          "minX": 0,
+          "minY": 142,
+          "width": 784
+        },
+        "lowestOpaqueRowTopOrigin": 839,
+        "opaquePixelCount": 126290,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 242065,
+      "decodedRgbaSha256": "3c0c70e9192e83e2539cff606380cb2ace368160ed1f933387831e032af6ca83",
+      "dimensions": [
+        784,
+        840
+      ],
+      "path": "rosewood_turret_house_contact-sheet.png",
+      "sha256": "2e2d12a92c76d4d8238309ecebfebde1f83141ec8aac09d50c1c89cdef2bdb71"
+    }
+  ],
+  "assetFamily": "residential-quality-family",
+  "assetId": "rosewood_turret_house",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "cameraRig": {
+    "distance": 32.0,
+    "orthoScale": 12.341995,
+    "shiftY": 0.28125,
+    "views": [
+      {
+        "azimuthDegrees": 45.0,
+        "name": "camNE"
+      },
+      {
+        "azimuthDegrees": 135.0,
+        "name": "camSE"
+      },
+      {
+        "azimuthDegrees": 225.0,
+        "name": "camSW"
+      },
+      {
+        "azimuthDegrees": 315.0,
+        "name": "camNW"
+      }
+    ]
+  },
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "contactSheetLayout": [
+    [
+      "camNE",
+      "camSE"
+    ],
+    [
+      "camSW",
+      "camNW"
+    ]
+  ],
+  "densityLevel": 1,
+  "dependencies": [
+    {
+      "path": "FourViewProduction/Density/build_and_render.py",
+      "sha256": "ff95f26a68c53a3f2e7bc60e540c5836afbd1781a4f78f50b1bdaec76b007e41"
+    },
+    {
+      "path": "FourViewPipeline/pipeline.json",
+      "sha256": "134c5e6561e9332cec7e1173cf55f812e8767e1d58c22a9f170134a047e610e3"
+    },
+    {
+      "path": "FourViewPipeline/png_canonical.py",
+      "sha256": "f9a913098512fab3653d89a3237f84ba82172cabec635ab8a804f639207e653a"
+    }
+  ],
+  "description": "Asymmetrical two-story residence with a round turret, conical roof, wrap porch, and tall chimney",
+  "displayName": "Rosewood Turret House",
+  "grid": {
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0,
+    "projectedTilePixels": [
+      88,
+      44
+    ],
+    "projection": "orthographic-2:1-dimetric",
+    "worldTileSize": 2.0
+  },
+  "lightingConvention": {
+    "color": [
+      1.0,
+      0.86,
+      0.72
+    ],
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldColor": [
+      0.2,
+      0.17,
+      0.14,
+      1.0
+    ],
+    "worldStrength": 0.72
+  },
+  "liveAsset": true,
+  "originalGeometry": true,
+  "perViewCompensation": {
+    "crop": false,
+    "offsetPixels": [
+      0,
+      0
+    ],
+    "rotationDegrees": 0.0,
+    "scale": 1.0,
+    "skew": [
+      0.0,
+      0.0
+    ]
+  },
+  "pipelineSchema": "citysim.world-art.residential-quality-family.v1",
+  "postRenderCompensation": "none",
+  "quarantinedExpansionV1Reused": false,
+  "root": {
+    "location": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "name": "AssetRoot",
+    "pivotName": "FootprintPivot",
+    "rotationEuler": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "schema": "citysim.world-art.residential-quality-asset.v1",
+  "sourceFiles": [
+    {
+      "path": "build_and_render.py",
+      "sha256": "2074b8e284a90bf0d7039cca41e8b4f1cba9b8eba7737153f65e835dcba65a8e"
+    },
+    {
+      "path": "pipeline.json",
+      "sha256": "159fa5f1c4e0df81a4b9d9cde665d1950b095215a9c4053f3b09554ddaf5ce32"
+    },
+    {
+      "path": "run_pipeline.sh",
+      "sha256": "b1a7c36c1a9e253ab96dca2c3c15f1705a7c478f7d6af33e171d9d93893f3a56"
+    },
+    {
+      "path": "validate.py",
+      "sha256": "986ead68f0a2bcf88d896e740c9de968ba56e34269ffd7b25d9d7fb4410c5233"
+    }
+  ],
+  "sourcePixelsReused": false,
+  "status": "quality-candidate-runtime-integrated",
+  "worldFootprintTiles": [
+    2,
+    2
+  ],
+  "zone": "residential"
+}

@@ -9,10 +9,17 @@ struct FourViewWorldAssetManifest: Decodable, Equatable, Sendable {
     }
 
     struct Asset: Decodable, Equatable, Sendable {
+        struct View: Decodable, Equatable, Sendable {
+            let camera: String
+            let file: String
+            let sha256: String
+        }
+
         let assetID: String
         let file: String
         let sha256: String
         let roles: [String]
+        let views: [View]?
     }
 
     let schema: String
@@ -27,6 +34,13 @@ struct FourViewWorldAssetManifest: Decodable, Equatable, Sendable {
 
 @MainActor
 final class FourViewWorldAssetCatalog {
+    enum Camera: String, CaseIterable, Sendable {
+        case camNE
+        case camSE
+        case camSW
+        case camNW
+    }
+
     static let shared = FourViewWorldAssetCatalog()
 
     static let requiredRoles: Set<String> = [
@@ -64,7 +78,8 @@ final class FourViewWorldAssetCatalog {
         case .residential where tile.level == 2:
             deterministicAssetID(forRole: "residential-medium", variant: variant)
         case .residential:
-            deterministicAssetID(forRole: "residential-low", variant: max(0, variant - 1))
+            residentialQualityAssetID(for: tile)
+                ?? deterministicAssetID(forRole: "residential-low", variant: max(0, variant - 1))
         case .commercial where tile.level >= 3:
             deterministicAssetID(forRole: "commercial-high", variant: variant)
         case .commercial where tile.level == 2:
@@ -102,14 +117,28 @@ final class FourViewWorldAssetCatalog {
         return candidates[variant % candidates.count].assetID
     }
 
+    private func residentialQualityAssetID(for tile: CityTile) -> String? {
+        let candidates = manifest?.assets.filter {
+            $0.roles.contains("residential-quality")
+        } ?? []
+        guard !candidates.isEmpty else { return nil }
+        let variant = WorldVisualSeed.variant(
+            count: candidates.count,
+            for: tile.coordinate,
+            kind: .residential
+        )
+        return candidates[variant].assetID
+    }
+
     func makeSprite(
         for tile: CityTile,
         variant: Int,
-        worldTileWidth: CGFloat
+        worldTileWidth: CGFloat,
+        camera: Camera = .camNE
     ) -> SKSpriteNode? {
         guard let assetID = assetID(for: tile, variant: variant),
               let descriptor = manifest?.assets.first(where: { $0.assetID == assetID }),
-              let texture = texture(for: descriptor) else {
+              let texture = texture(for: descriptor, camera: camera) else {
             return nil
         }
 
@@ -120,13 +149,21 @@ final class FourViewWorldAssetCatalog {
         sprite.zPosition = 6
 
         let sourceIdentity = SKNode()
-        sourceIdentity.name = "lot.four-view.\(assetID).camNE"
+        sourceIdentity.name = "lot.four-view.\(assetID).\(camera.rawValue)"
         sprite.addChild(sourceIdentity)
         return sprite
     }
 
-    func resourceURL(for assetID: String) -> URL? {
-        guard let file = manifest?.assets.first(where: { $0.assetID == assetID })?.file else {
+    func resourceURL(for assetID: String, camera: Camera = .camNE) -> URL? {
+        guard let descriptor = manifest?.assets.first(where: { $0.assetID == assetID }) else {
+            return nil
+        }
+        let file: String
+        if let view = descriptor.views?.first(where: { $0.camera == camera.rawValue }) {
+            file = view.file
+        } else if camera == .camNE {
+            file = descriptor.file
+        } else {
             return nil
         }
         return bundle.url(
@@ -136,15 +173,19 @@ final class FourViewWorldAssetCatalog {
         )
     }
 
-    private func texture(for descriptor: FourViewWorldAssetManifest.Asset) -> SKTexture? {
-        if let cached = textures[descriptor.assetID] { return cached }
-        guard let url = resourceURL(for: descriptor.assetID),
+    private func texture(
+        for descriptor: FourViewWorldAssetManifest.Asset,
+        camera: Camera
+    ) -> SKTexture? {
+        let cacheKey = "\(descriptor.assetID).\(camera.rawValue)"
+        if let cached = textures[cacheKey] { return cached }
+        guard let url = resourceURL(for: descriptor.assetID, camera: camera),
               let image = NSImage(contentsOf: url) else {
             return nil
         }
         let texture = SKTexture(image: image)
         texture.filteringMode = .linear
-        textures[descriptor.assetID] = texture
+        textures[cacheKey] = texture
         return texture
     }
 
@@ -163,6 +204,20 @@ final class FourViewWorldAssetCatalog {
         let assetIDs = manifest.assets.map(\.assetID)
         let files = manifest.assets.map(\.file)
         let roles = Set(manifest.assets.flatMap(\.roles))
+        let viewFiles = manifest.assets.flatMap { descriptor in
+            descriptor.views?.map(\.file) ?? []
+        }
+        let canonicalCameras = Set(Camera.allCases.map(\.rawValue))
+        let canonicalViews = manifest.assets.allSatisfy { descriptor in
+            guard let views = descriptor.views else { return true }
+            guard views.count == Camera.allCases.count,
+                  Set(views.map(\.camera)) == canonicalCameras,
+                  Set(views.map(\.file)).count == views.count,
+                  let camNE = views.first(where: { $0.camera == Camera.camNE.rawValue }) else {
+                return false
+            }
+            return camNE.file == descriptor.file && camNE.sha256 == descriptor.sha256
+        }
         return manifest.schema == "citysim.native-four-view-assets.v1"
             && manifest.camera == "camNE"
             && manifest.cameraAzimuthDegrees == 45
@@ -174,6 +229,8 @@ final class FourViewWorldAssetCatalog {
             && manifest.postRenderCompensation == "none"
             && assetIDs.count == Set(assetIDs).count
             && files.count == Set(files).count
+            && viewFiles.count == Set(viewFiles).count
+            && canonicalViews
             && requiredRoles.isSubset(of: roles)
     }
 }

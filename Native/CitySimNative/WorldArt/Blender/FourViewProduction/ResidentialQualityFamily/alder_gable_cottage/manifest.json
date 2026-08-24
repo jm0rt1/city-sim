@@ -1,0 +1,288 @@
+{
+  "artifacts": [
+    {
+      "bytes": 1879762,
+      "path": "alder_gable_cottage.blend",
+      "sha256": "cd2c144fbf9d496d6d3998e06f1aeba57b397e199ca9387515d7516fdf08957b"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 166,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 183,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 17554,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 58301,
+      "decodedRgbaSha256": "a47a9e99a5126ea2b5f91052a75e858e9182bfd097ca8054d356bb33e91a9e39",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/alder_gable_cottage_camNE.png",
+      "sha256": "2d7247d30b12b3b8ab4b27a5c12cc091b77301ee3a23f620debb8bd20c891384"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 179,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 170,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 17768,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 66661,
+      "decodedRgbaSha256": "060c49a3844c1758c559cbba5931304de5fa8499f34354bd044057c8ebcde080",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/alder_gable_cottage_camSE.png",
+      "sha256": "ddeebc8093c7862932033b83a6dde851f0dfdc20be89e2cf3c50904d7fad8ba7"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 169,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 180,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 17729,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 66444,
+      "decodedRgbaSha256": "988742d1be549536896089c8a2013e7bdcb4f98e5d570300ca482edc44311338",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/alder_gable_cottage_camSW.png",
+      "sha256": "092eb26d4365f31d8a8bb55da7f1857232063341fdd14a921b574515cee3933b"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 170,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 179,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 18003,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 63704,
+      "decodedRgbaSha256": "7a8d37edcbfd0819648e32d7f7b8303392ecb3bf636a4e8b40da52d08f1c6ba6",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/alder_gable_cottage_camNW.png",
+      "sha256": "550e9dc78d18f96479e676c34957209f790c72282607c517aa76bd1ff5e309d3"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 670,
+          "maxX": 783,
+          "maxY": 839,
+          "minX": 0,
+          "minY": 170,
+          "width": 784
+        },
+        "lowestOpaqueRowTopOrigin": 839,
+        "opaquePixelCount": 114062,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 217795,
+      "decodedRgbaSha256": "39ee5347e22bec2f5d20999005f33d8d6cc2c0ce5a7f30e28b8b2c4764af80de",
+      "dimensions": [
+        784,
+        840
+      ],
+      "path": "alder_gable_cottage_contact-sheet.png",
+      "sha256": "d7db7984b12fff8a188751ad80e8112c0719bcfecb04c12ef2fb9b6cb0b903ed"
+    }
+  ],
+  "assetFamily": "residential-quality-family",
+  "assetId": "alder_gable_cottage",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "cameraRig": {
+    "distance": 32.0,
+    "orthoScale": 12.341995,
+    "shiftY": 0.28125,
+    "views": [
+      {
+        "azimuthDegrees": 45.0,
+        "name": "camNE"
+      },
+      {
+        "azimuthDegrees": 135.0,
+        "name": "camSE"
+      },
+      {
+        "azimuthDegrees": 225.0,
+        "name": "camSW"
+      },
+      {
+        "azimuthDegrees": 315.0,
+        "name": "camNW"
+      }
+    ]
+  },
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "contactSheetLayout": [
+    [
+      "camNE",
+      "camSE"
+    ],
+    [
+      "camSW",
+      "camNW"
+    ]
+  ],
+  "densityLevel": 1,
+  "dependencies": [
+    {
+      "path": "FourViewProduction/Density/build_and_render.py",
+      "sha256": "ff95f26a68c53a3f2e7bc60e540c5836afbd1781a4f78f50b1bdaec76b007e41"
+    },
+    {
+      "path": "FourViewPipeline/pipeline.json",
+      "sha256": "134c5e6561e9332cec7e1173cf55f812e8767e1d58c22a9f170134a047e610e3"
+    },
+    {
+      "path": "FourViewPipeline/png_canonical.py",
+      "sha256": "f9a913098512fab3653d89a3237f84ba82172cabec635ab8a804f639207e653a"
+    }
+  ],
+  "description": "Cross-gabled cottage with a deep porch, corner bay, brick chimney, and layered garden edge",
+  "displayName": "Alder Gable Cottage",
+  "grid": {
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0,
+    "projectedTilePixels": [
+      88,
+      44
+    ],
+    "projection": "orthographic-2:1-dimetric",
+    "worldTileSize": 2.0
+  },
+  "lightingConvention": {
+    "color": [
+      1.0,
+      0.86,
+      0.72
+    ],
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldColor": [
+      0.2,
+      0.17,
+      0.14,
+      1.0
+    ],
+    "worldStrength": 0.72
+  },
+  "liveAsset": true,
+  "originalGeometry": true,
+  "perViewCompensation": {
+    "crop": false,
+    "offsetPixels": [
+      0,
+      0
+    ],
+    "rotationDegrees": 0.0,
+    "scale": 1.0,
+    "skew": [
+      0.0,
+      0.0
+    ]
+  },
+  "pipelineSchema": "citysim.world-art.residential-quality-family.v1",
+  "postRenderCompensation": "none",
+  "quarantinedExpansionV1Reused": false,
+  "root": {
+    "location": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "name": "AssetRoot",
+    "pivotName": "FootprintPivot",
+    "rotationEuler": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "schema": "citysim.world-art.residential-quality-asset.v1",
+  "sourceFiles": [
+    {
+      "path": "build_and_render.py",
+      "sha256": "2074b8e284a90bf0d7039cca41e8b4f1cba9b8eba7737153f65e835dcba65a8e"
+    },
+    {
+      "path": "pipeline.json",
+      "sha256": "159fa5f1c4e0df81a4b9d9cde665d1950b095215a9c4053f3b09554ddaf5ce32"
+    },
+    {
+      "path": "run_pipeline.sh",
+      "sha256": "b1a7c36c1a9e253ab96dca2c3c15f1705a7c478f7d6af33e171d9d93893f3a56"
+    },
+    {
+      "path": "validate.py",
+      "sha256": "986ead68f0a2bcf88d896e740c9de968ba56e34269ffd7b25d9d7fb4410c5233"
+    }
+  ],
+  "sourcePixelsReused": false,
+  "status": "quality-candidate-runtime-integrated",
+  "worldFootprintTiles": [
+    2,
+    2
+  ],
+  "zone": "residential"
+}

@@ -1,0 +1,288 @@
+{
+  "artifacts": [
+    {
+      "bytes": 1969599,
+      "path": "birch_lane_bungalow.blend",
+      "sha256": "b86110f3994f8589b595d69ffb3a9c3d28727aeda129276e6d75b88f08ce82be"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 159,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 190,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 17365,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 59760,
+      "decodedRgbaSha256": "966554912996d7b2bed396ae05f27fd1e6b14dac287238ee79cf8912f407224f",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/birch_lane_bungalow_camNE.png",
+      "sha256": "08773ae7d89e162ee8fecaf14b999f8e9fe26c760f1b2c5d32c4bf9a3ec137df"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 152,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 197,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 17413,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 66258,
+      "decodedRgbaSha256": "9ffd2a1b06db01c07105747e0524970fa5ac3adc667f2a744c060e7f11914868",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/birch_lane_bungalow_camSE.png",
+      "sha256": "194092b789eab2377287e6f5c7fe876c447a48c309d67d081aec2d5b689ef9d6"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 174,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 175,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 17534,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 67246,
+      "decodedRgbaSha256": "4bd9ef28cf1d20b64230f695bc1ece04d64116cc6ac5814d15806473357ca368",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/birch_lane_bungalow_camSW.png",
+      "sha256": "3f815b0c055292b7dccf708ba1ad8d4677cd649afb83a52b9385c2f6cbb7792e"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 159,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 190,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 17843,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 65001,
+      "decodedRgbaSha256": "496727cd53d51c47342273c18d8e7dbedf4c840faa0ecd19c736644f2f1d5f32",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/birch_lane_bungalow_camNW.png",
+      "sha256": "5090c8856e7ac74a131ebdd3364c5dc0677f74a0b9a7b49940216f3ece31f2cf"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 650,
+          "maxX": 783,
+          "maxY": 839,
+          "minX": 0,
+          "minY": 190,
+          "width": 784
+        },
+        "lowestOpaqueRowTopOrigin": 839,
+        "opaquePixelCount": 113163,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 221228,
+      "decodedRgbaSha256": "65b1392cd0ff38b58d241e3c929415eaf03d531e45bd588a916aa7708c2d7dd8",
+      "dimensions": [
+        784,
+        840
+      ],
+      "path": "birch_lane_bungalow_contact-sheet.png",
+      "sha256": "1d756030e167b6d5967050c419ff4956fc8e92fc9c84d6574b900a290d5d801e"
+    }
+  ],
+  "assetFamily": "residential-quality-family",
+  "assetId": "birch_lane_bungalow",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "cameraRig": {
+    "distance": 32.0,
+    "orthoScale": 12.341995,
+    "shiftY": 0.28125,
+    "views": [
+      {
+        "azimuthDegrees": 45.0,
+        "name": "camNE"
+      },
+      {
+        "azimuthDegrees": 135.0,
+        "name": "camSE"
+      },
+      {
+        "azimuthDegrees": 225.0,
+        "name": "camSW"
+      },
+      {
+        "azimuthDegrees": 315.0,
+        "name": "camNW"
+      }
+    ]
+  },
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "contactSheetLayout": [
+    [
+      "camNE",
+      "camSE"
+    ],
+    [
+      "camSW",
+      "camNW"
+    ]
+  ],
+  "densityLevel": 1,
+  "dependencies": [
+    {
+      "path": "FourViewProduction/Density/build_and_render.py",
+      "sha256": "ff95f26a68c53a3f2e7bc60e540c5836afbd1781a4f78f50b1bdaec76b007e41"
+    },
+    {
+      "path": "FourViewPipeline/pipeline.json",
+      "sha256": "134c5e6561e9332cec7e1173cf55f812e8767e1d58c22a9f170134a047e610e3"
+    },
+    {
+      "path": "FourViewPipeline/png_canonical.py",
+      "sha256": "f9a913098512fab3653d89a3237f84ba82172cabec635ab8a804f639207e653a"
+    }
+  ],
+  "description": "Broad hipped-roof bungalow with a centered dormer, full porch, tapered piers, and side garden",
+  "displayName": "Birch Lane Bungalow",
+  "grid": {
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0,
+    "projectedTilePixels": [
+      88,
+      44
+    ],
+    "projection": "orthographic-2:1-dimetric",
+    "worldTileSize": 2.0
+  },
+  "lightingConvention": {
+    "color": [
+      1.0,
+      0.86,
+      0.72
+    ],
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldColor": [
+      0.2,
+      0.17,
+      0.14,
+      1.0
+    ],
+    "worldStrength": 0.72
+  },
+  "liveAsset": true,
+  "originalGeometry": true,
+  "perViewCompensation": {
+    "crop": false,
+    "offsetPixels": [
+      0,
+      0
+    ],
+    "rotationDegrees": 0.0,
+    "scale": 1.0,
+    "skew": [
+      0.0,
+      0.0
+    ]
+  },
+  "pipelineSchema": "citysim.world-art.residential-quality-family.v1",
+  "postRenderCompensation": "none",
+  "quarantinedExpansionV1Reused": false,
+  "root": {
+    "location": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "name": "AssetRoot",
+    "pivotName": "FootprintPivot",
+    "rotationEuler": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "schema": "citysim.world-art.residential-quality-asset.v1",
+  "sourceFiles": [
+    {
+      "path": "build_and_render.py",
+      "sha256": "2074b8e284a90bf0d7039cca41e8b4f1cba9b8eba7737153f65e835dcba65a8e"
+    },
+    {
+      "path": "pipeline.json",
+      "sha256": "159fa5f1c4e0df81a4b9d9cde665d1950b095215a9c4053f3b09554ddaf5ce32"
+    },
+    {
+      "path": "run_pipeline.sh",
+      "sha256": "b1a7c36c1a9e253ab96dca2c3c15f1705a7c478f7d6af33e171d9d93893f3a56"
+    },
+    {
+      "path": "validate.py",
+      "sha256": "986ead68f0a2bcf88d896e740c9de968ba56e34269ffd7b25d9d7fb4410c5233"
+    }
+  ],
+  "sourcePixelsReused": false,
+  "status": "quality-candidate-runtime-integrated",
+  "worldFootprintTiles": [
+    2,
+    2
+  ],
+  "zone": "residential"
+}

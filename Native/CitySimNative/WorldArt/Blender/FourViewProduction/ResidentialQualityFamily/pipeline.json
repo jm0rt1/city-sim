@@ -1,0 +1,112 @@
+{
+  "schema": "citysim.world-art.residential-quality-family.v1",
+  "toolchain": {
+    "blenderVersion": "4.5.12",
+    "renderEngine": "BLENDER_EEVEE_NEXT"
+  },
+  "grid": {
+    "worldTileSize": 2.0,
+    "projectedTilePixels": [88, 44],
+    "projection": "orthographic-2:1-dimetric",
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0
+  },
+  "canvas": {
+    "width": 384,
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "footprintPivotPixel": [192, 300]
+  },
+  "cameraRig": {
+    "distance": 32.0,
+    "orthoScale": 12.341995,
+    "shiftY": 0.28125,
+    "views": [
+      {"name": "camNE", "azimuthDegrees": 45.0},
+      {"name": "camSE", "azimuthDegrees": 135.0},
+      {"name": "camSW", "azimuthDegrees": 225.0},
+      {"name": "camNW", "azimuthDegrees": 315.0}
+    ]
+  },
+  "root": {
+    "name": "AssetRoot",
+    "pivotName": "FootprintPivot",
+    "location": [0.0, 0.0, 0.0],
+    "rotationEuler": [0.0, 0.0, 0.0],
+    "scale": [1.0, 1.0, 1.0]
+  },
+  "lighting": {
+    "name": "CitySimKey",
+    "type": "AREA",
+    "location": [-6.0, -8.0, 12.0],
+    "energy": 1100.0,
+    "size": 5.0,
+    "color": [1.0, 0.86, 0.72],
+    "worldColor": [0.20, 0.17, 0.14, 1.0],
+    "worldStrength": 0.72
+  },
+  "output": {
+    "postRenderCompensation": "none",
+    "aggregateContactSheet": "residential-quality-family-four-view-contact-sheet.png",
+    "baselineComparison": "proof/residential-quality-vs-admitted-comparison.png"
+  },
+  "researchReference": {
+    "fileName": "5310039E-5F9A-46A1-AF8B-D23B720BEC4E.PNG",
+    "sha256": "4b70f136fa64413549fd565abdeced1932f85f97e4c22700363d85ca9082bcea",
+    "usage": "quality and readability direction only; no source pixels or protected geometry copied"
+  },
+  "quarantinedBaselines": [
+    {
+      "id": "expansion-v1",
+      "admitted": false,
+      "usedAsStyleBaseline": false
+    }
+  ],
+  "assets": [
+    {
+      "assetId": "alder_gable_cottage",
+      "displayName": "Alder Gable Cottage",
+      "description": "Cross-gabled cottage with a deep porch, corner bay, brick chimney, and layered garden edge",
+      "zone": "residential",
+      "densityLevel": 1,
+      "assetFamily": "residential-quality-family",
+      "footprintTiles": [2, 2],
+      "minimumMeshCount": 70,
+      "minimumHeight": 4.0
+    },
+    {
+      "assetId": "birch_lane_bungalow",
+      "displayName": "Birch Lane Bungalow",
+      "description": "Broad hipped-roof bungalow with a centered dormer, full porch, tapered piers, and side garden",
+      "zone": "residential",
+      "densityLevel": 1,
+      "assetFamily": "residential-quality-family",
+      "footprintTiles": [2, 2],
+      "minimumMeshCount": 68,
+      "minimumHeight": 3.5
+    },
+    {
+      "assetId": "rosewood_turret_house",
+      "displayName": "Rosewood Turret House",
+      "description": "Asymmetrical two-story residence with a round turret, conical roof, wrap porch, and tall chimney",
+      "zone": "residential",
+      "densityLevel": 1,
+      "assetFamily": "residential-quality-family",
+      "footprintTiles": [2, 2],
+      "minimumMeshCount": 82,
+      "minimumHeight": 5.0
+    },
+    {
+      "assetId": "stonebridge_duplex",
+      "displayName": "Stonebridge Duplex",
+      "description": "Masonry duplex with twin front gables, paired entries, rear sunrooms, and a shared stoop",
+      "zone": "residential",
+      "densityLevel": 1,
+      "assetFamily": "residential-quality-family",
+      "footprintTiles": [2, 2],
+      "minimumMeshCount": 86,
+      "minimumHeight": 4.4
+    }
+  ]
+}

@@ -1,0 +1,145 @@
+{
+  "admittedBaselineComparison": {
+    "alpha": {
+      "boundsTopOrigin": {
+        "height": 844,
+        "maxX": 2573,
+        "maxY": 843,
+        "minX": 0,
+        "minY": 0,
+        "width": 2574
+      },
+      "lowestOpaqueRowTopOrigin": 843,
+      "opaquePixelCount": 914152,
+      "pivotPixelAlpha": 255
+    },
+    "bytes": 532027,
+    "decodedRgbaSha256": "73b090b78442ccf75636a3ff5f86bcf61425ae865d23cd2decc7d3f097c476fe",
+    "dimensions": [
+      2574,
+      844
+    ],
+    "path": "proof/residential-quality-vs-admitted-comparison.png",
+    "sha256": "c9466cbfb806c5a80351f40fee8d809d5633376edbb507ef74beeb473c610cff"
+  },
+  "aggregateContactSheet": {
+    "alpha": {
+      "boundsTopOrigin": {
+        "height": 1606,
+        "maxX": 1781,
+        "maxY": 1605,
+        "minX": 0,
+        "minY": 0,
+        "width": 1782
+      },
+      "lowestOpaqueRowTopOrigin": 1605,
+      "opaquePixelCount": 810561,
+      "pivotPixelAlpha": 255
+    },
+    "bytes": 844448,
+    "decodedRgbaSha256": "2bd477520b7c79420b636c310e0fad563a24cdaeca97cadc9062a7c163a78f13",
+    "dimensions": [
+      1782,
+      1606
+    ],
+    "path": "residential-quality-family-four-view-contact-sheet.png",
+    "sha256": "d0d76bb3d30b965f13be71b2c805d9eaa701098804089b7aed55e783a4cf7c77"
+  },
+  "assets": [
+    {
+      "assetId": "alder_gable_cottage",
+      "displayName": "Alder Gable Cottage",
+      "manifest": "alder_gable_cottage/manifest.json",
+      "manifestSha256": "1eb6d5a45c4c0b942779f1043ad86c6440f39e778fdb65fdc2ede9bdaad3aab2",
+      "runtimeRole": "residential-low"
+    },
+    {
+      "assetId": "birch_lane_bungalow",
+      "displayName": "Birch Lane Bungalow",
+      "manifest": "birch_lane_bungalow/manifest.json",
+      "manifestSha256": "1acb431553c7974f1b78c35b8a2f447d63cf531129ff27b6115b65501f84c6dd",
+      "runtimeRole": "residential-low"
+    },
+    {
+      "assetId": "rosewood_turret_house",
+      "displayName": "Rosewood Turret House",
+      "manifest": "rosewood_turret_house/manifest.json",
+      "manifestSha256": "178b4295f48f5d70814020b8748f7b3227795e5a09924dc88f1349ec6e7ff831",
+      "runtimeRole": "residential-low"
+    },
+    {
+      "assetId": "stonebridge_duplex",
+      "displayName": "Stonebridge Duplex",
+      "manifest": "stonebridge_duplex/manifest.json",
+      "manifestSha256": "44bfa6d4fb99e8a49c1278f1c0985559cbd4609a6279c13cbae4fc9caaad92c1",
+      "runtimeRole": "residential-low"
+    }
+  ],
+  "cameraRig": {
+    "distance": 32.0,
+    "orthoScale": 12.341995,
+    "shiftY": 0.28125,
+    "views": [
+      {
+        "azimuthDegrees": 45.0,
+        "name": "camNE"
+      },
+      {
+        "azimuthDegrees": 135.0,
+        "name": "camSE"
+      },
+      {
+        "azimuthDegrees": 225.0,
+        "name": "camSW"
+      },
+      {
+        "azimuthDegrees": 315.0,
+        "name": "camNW"
+      }
+    ]
+  },
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "grid": {
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0,
+    "projectedTilePixels": [
+      88,
+      44
+    ],
+    "projection": "orthographic-2:1-dimetric",
+    "worldTileSize": 2.0
+  },
+  "originalGeometry": true,
+  "postRenderCompensation": "none",
+  "quarantinedExpansionV1Reused": false,
+  "referencePixelsReused": false,
+  "schema": "citysim.world-art.residential-quality-family-manifest.v1",
+  "sourceFiles": [
+    {
+      "path": "build_and_render.py",
+      "sha256": "2074b8e284a90bf0d7039cca41e8b4f1cba9b8eba7737153f65e835dcba65a8e"
+    },
+    {
+      "path": "pipeline.json",
+      "sha256": "159fa5f1c4e0df81a4b9d9cde665d1950b095215a9c4053f3b09554ddaf5ce32"
+    },
+    {
+      "path": "run_pipeline.sh",
+      "sha256": "b1a7c36c1a9e253ab96dca2c3c15f1705a7c478f7d6af33e171d9d93893f3a56"
+    },
+    {
+      "path": "validate.py",
+      "sha256": "986ead68f0a2bcf88d896e740c9de968ba56e34269ffd7b25d9d7fb4410c5233"
+    }
+  ],
+  "status": "quality-candidate-runtime-integrated"
+}

@@ -1,0 +1,295 @@
+RESIDENTIAL_QUALITY_FAMILY_VALIDATION_PASS
+{
+  "aggregateContactSheet": {
+    "path": "residential-quality-family-four-view-contact-sheet.png",
+    "sha256": "d0d76bb3d30b965f13be71b2c805d9eaa701098804089b7aed55e783a4cf7c77"
+  },
+  "assets": {
+    "alder_gable_cottage": {
+      "deterministicCanonicalPngSha256": {
+        "alder_gable_cottage_camNE.png": "2d7247d30b12b3b8ab4b27a5c12cc091b77301ee3a23f620debb8bd20c891384",
+        "alder_gable_cottage_camNW.png": "550e9dc78d18f96479e676c34957209f790c72282607c517aa76bd1ff5e309d3",
+        "alder_gable_cottage_camSE.png": "ddeebc8093c7862932033b83a6dde851f0dfdc20be89e2cf3c50904d7fad8ba7",
+        "alder_gable_cottage_camSW.png": "092eb26d4365f31d8a8bb55da7f1857232063341fdd14a921b574515cee3933b"
+      },
+      "materialCount": 16,
+      "meshCount": 89,
+      "projectedAxisPixels": {
+        "camNE": [
+          [
+            -44,
+            22
+          ],
+          [
+            44,
+            22
+          ]
+        ],
+        "camNW": [
+          [
+            -44,
+            -22
+          ],
+          [
+            -44,
+            22
+          ]
+        ],
+        "camSE": [
+          [
+            44,
+            22
+          ],
+          [
+            44,
+            -22
+          ]
+        ],
+        "camSW": [
+          [
+            44,
+            -22
+          ],
+          [
+            -44,
+            -22
+          ]
+        ]
+      },
+      "worldBounds": {
+        "maximum": [
+          2.0,
+          2.0,
+          4.010000228881836
+        ],
+        "minimum": [
+          -2.0,
+          -2.0,
+          -0.20000000298023224
+        ]
+      }
+    },
+    "birch_lane_bungalow": {
+      "deterministicCanonicalPngSha256": {
+        "birch_lane_bungalow_camNE.png": "08773ae7d89e162ee8fecaf14b999f8e9fe26c760f1b2c5d32c4bf9a3ec137df",
+        "birch_lane_bungalow_camNW.png": "5090c8856e7ac74a131ebdd3364c5dc0677f74a0b9a7b49940216f3ece31f2cf",
+        "birch_lane_bungalow_camSE.png": "194092b789eab2377287e6f5c7fe876c447a48c309d67d081aec2d5b689ef9d6",
+        "birch_lane_bungalow_camSW.png": "3f815b0c055292b7dccf708ba1ad8d4677cd649afb83a52b9385c2f6cbb7792e"
+      },
+      "materialCount": 15,
+      "meshCount": 106,
+      "projectedAxisPixels": {
+        "camNE": [
+          [
+            -44,
+            22
+          ],
+          [
+            44,
+            22
+          ]
+        ],
+        "camNW": [
+          [
+            -44,
+            -22
+          ],
+          [
+            -44,
+            22
+          ]
+        ],
+        "camSE": [
+          [
+            44,
+            22
+          ],
+          [
+            44,
+            -22
+          ]
+        ],
+        "camSW": [
+          [
+            44,
+            -22
+          ],
+          [
+            -44,
+            -22
+          ]
+        ]
+      },
+      "worldBounds": {
+        "maximum": [
+          2.0,
+          2.0,
+          3.669999837875366
+        ],
+        "minimum": [
+          -2.0,
+          -2.0,
+          -0.20000000298023224
+        ]
+      }
+    },
+    "rosewood_turret_house": {
+      "deterministicCanonicalPngSha256": {
+        "rosewood_turret_house_camNE.png": "e3826329c236d60c1691620cfe88467609e7e4187b8720a0e8cb08328465f9f5",
+        "rosewood_turret_house_camNW.png": "3549161baf8ce14d781ed41c3496d26bb1abd59fe74e568ec3b1febccdd920c6",
+        "rosewood_turret_house_camSE.png": "737c132535e89e6933909f5cf39d9b4d7cf4aeaab50faf9548a5e0da0a205523",
+        "rosewood_turret_house_camSW.png": "ba9a3497e542917f928f6fd5591b7115d519bff86949d2618cdc4085b9926b92"
+      },
+      "materialCount": 15,
+      "meshCount": 89,
+      "projectedAxisPixels": {
+        "camNE": [
+          [
+            -44,
+            22
+          ],
+          [
+            44,
+            22
+          ]
+        ],
+        "camNW": [
+          [
+            -44,
+            -22
+          ],
+          [
+            -44,
+            22
+          ]
+        ],
+        "camSE": [
+          [
+            44,
+            22
+          ],
+          [
+            44,
+            -22
+          ]
+        ],
+        "camSW": [
+          [
+            44,
+            -22
+          ],
+          [
+            -44,
+            -22
+          ]
+        ]
+      },
+      "worldBounds": {
+        "maximum": [
+          2.0,
+          2.0,
+          5.599999904632568
+        ],
+        "minimum": [
+          -2.0,
+          -2.0,
+          -0.20000000298023224
+        ]
+      }
+    },
+    "stonebridge_duplex": {
+      "deterministicCanonicalPngSha256": {
+        "stonebridge_duplex_camNE.png": "e134f944f62df9fa3b746111f69faa2eeaee855e556af71ebf6713cfdba57cbd",
+        "stonebridge_duplex_camNW.png": "86ac7a0ca21d134f302d5a1ce2115124d248858617da5f49fb0d261971c7f3c3",
+        "stonebridge_duplex_camSE.png": "813af85b43968c08c91203245e8e8eb12bd74fc2f9260a28af40ca3de6cd1e36",
+        "stonebridge_duplex_camSW.png": "0d3cd52555474c3558e4beea2824d4464a67d2a78b126f1da23d49c9d8269d3e"
+      },
+      "materialCount": 14,
+      "meshCount": 135,
+      "projectedAxisPixels": {
+        "camNE": [
+          [
+            -44,
+            22
+          ],
+          [
+            44,
+            22
+          ]
+        ],
+        "camNW": [
+          [
+            -44,
+            -22
+          ],
+          [
+            -44,
+            22
+          ]
+        ],
+        "camSE": [
+          [
+            44,
+            22
+          ],
+          [
+            44,
+            -22
+          ]
+        ],
+        "camSW": [
+          [
+            44,
+            -22
+          ],
+          [
+            -44,
+            -22
+          ]
+        ]
+      },
+      "worldBounds": {
+        "maximum": [
+          2.0,
+          2.0,
+          4.630000114440918
+        ],
+        "minimum": [
+          -2.0,
+          -2.0,
+          -0.20000000298023224
+        ]
+      }
+    }
+  },
+  "blenderVersion": "4.5.12",
+  "contract": {
+    "cameraOrder": [
+      "camNE",
+      "camSE",
+      "camSW",
+      "camNW"
+    ],
+    "deterministicRerender": "byte-identical canonical PNGs",
+    "pivotPixels": [
+      192,
+      300
+    ],
+    "postRenderCompensation": "none",
+    "projectedTilePixels": [
+      88,
+      44
+    ],
+    "quarantinedExpansionV1Reused": false
+  },
+  "pairwiseCamNESilhouetteIoUAboveGround": {
+    "alder_gable_cottage__birch_lane_bungalow": 0.7383,
+    "alder_gable_cottage__rosewood_turret_house": 0.7175,
+    "alder_gable_cottage__stonebridge_duplex": 0.7374,
+    "birch_lane_bungalow__rosewood_turret_house": 0.657,
+    "birch_lane_bungalow__stonebridge_duplex": 0.6689,
+    "rosewood_turret_house__stonebridge_duplex": 0.8669
+  },
+  "schema": "citysim.world-art.residential-quality-validation.v1",
+  "status": "PASS"
+}

@@ -67,9 +67,18 @@ final class FullGameFourViewArtIntegrationTests: XCTestCase {
                     worldCatalog.assetID(for: tile, variant: variant),
                     "\(mode) lot \(tile.coordinate.id)"
                 )
+                let descriptor = try XCTUnwrap(
+                    worldCatalog.manifest?.assets.first { $0.assetID == assetID },
+                    "\(mode) approved descriptor \(assetID)"
+                )
+                let authoredCameras = descriptor.views?.compactMap {
+                    FourViewWorldAssetCatalog.Camera(rawValue: $0.camera)
+                } ?? [.camNE]
                 XCTAssertTrue(
-                    names.contains("lot.four-view.\(assetID).camNE"),
-                    "\(mode) lot \(tile.coordinate.id) must use \(assetID)"
+                    authoredCameras.contains { camera in
+                        names.contains("lot.four-view.\(assetID).\(camera.rawValue)")
+                    },
+                    "\(mode) lot \(tile.coordinate.id) must use an authored \(assetID) view"
                 )
 
                 let groundAssetID = try XCTUnwrap(

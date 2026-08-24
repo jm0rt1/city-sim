@@ -3389,15 +3389,15 @@ final class CitySimulationTests: XCTestCase {
                 $0 = CityTile(coordinate: coordinate, kind: .empty)
             }
         }
-        for y in [8, 12, 16] {
-            for x in 3...24 {
+        for y in [5, 11, 17] {
+            for x in 2...21 {
                 state.updateTile(at: GridCoordinate(x: x, y: y)) {
                     $0 = CityTile(coordinate: $0.coordinate, kind: .road)
                 }
             }
         }
-        for x in [4, 10, 16, 22] {
-            for y in 7...17 {
+        for x in [5, 11, 17] {
+            for y in 2...20 {
                 state.updateTile(at: GridCoordinate(x: x, y: y)) {
                     $0 = CityTile(coordinate: $0.coordinate, kind: .road)
                 }
@@ -3411,52 +3411,64 @@ final class CitySimulationTests: XCTestCase {
             "rosewood_turret_house",
             "stonebridge_duplex",
         ]
-        var used: Set<GridCoordinate> = []
-        let targets = [
-            GridCoordinate(x: 6, y: 10), GridCoordinate(x: 11, y: 10),
-            GridCoordinate(x: 17, y: 10), GridCoordinate(x: 21, y: 10),
-            GridCoordinate(x: 6, y: 14), GridCoordinate(x: 11, y: 14),
-            GridCoordinate(x: 17, y: 14), GridCoordinate(x: 21, y: 14),
+        let orientations: [(RoadConnectionMask, FourViewWorldAssetCatalog.Camera)] = [
+            (.south, .camNE),
+            (.west, .camSE),
+            (.north, .camSW),
+            (.east, .camNW),
         ]
-        for (index, target) in targets.enumerated() {
-            let assetID = family[index % family.count]
-            let coordinate = try XCTUnwrap(state.tiles
-                .filter { tile in
-                    tile.kind == .empty
-                        && !used.contains(tile.coordinate)
-                        && (5...21).contains(tile.coordinate.x)
-                        && (9...15).contains(tile.coordinate.y)
-                        && !RoadConnectionMask.resolving(
-                            at: tile.coordinate,
-                            in: state
-                        ).isEmpty
-                        && catalog.assetID(
-                            for: CityTile(
-                                coordinate: tile.coordinate,
-                                kind: .residential,
-                                level: 1
-                            ),
-                            variant: 1
-                        ) == assetID
-                }
-                .map(\.coordinate)
-                .sorted { lhs, rhs in
-                    let left = abs(lhs.x - target.x) + abs(lhs.y - target.y)
-                    let right = abs(rhs.x - target.x) + abs(rhs.y - target.y)
-                    return (left, lhs.y, lhs.x) < (right, rhs.y, rhs.x)
-                }
-                .first, assetID)
-            used.insert(coordinate)
-            state.updateTile(at: coordinate) {
-                $0 = CityTile(
-                    coordinate: coordinate,
-                    kind: .residential,
-                    level: 1,
-                    condition: 1,
-                    constructionProgress: 1
+        var used: Set<GridCoordinate> = []
+        for (assetIndex, assetID) in family.enumerated() {
+            for (orientationIndex, orientation) in orientations.enumerated() {
+                let target = GridCoordinate(
+                    x: 7 + assetIndex * 3,
+                    y: 7 + orientationIndex * 3
                 )
+                let coordinate = try XCTUnwrap(state.tiles
+                    .filter { tile in
+                        tile.kind == .empty
+                            && !used.contains(tile.coordinate)
+                            && (3...20).contains(tile.coordinate.x)
+                            && (3...19).contains(tile.coordinate.y)
+                            && RoadConnectionMask.resolving(
+                                at: tile.coordinate,
+                                in: state
+                            ).connectionCount == 1
+                            && ResidentialGeneratedAssetIdentity.authoritativeFrontagePriority.first(
+                                where: RoadConnectionMask.resolving(
+                                    at: tile.coordinate,
+                                    in: state
+                                ).contains
+                            ) == orientation.0
+                            && catalog.assetID(
+                                for: CityTile(
+                                    coordinate: tile.coordinate,
+                                    kind: .residential,
+                                    level: 1
+                                ),
+                                variant: 1
+                            ) == assetID
+                    }
+                    .map(\.coordinate)
+                    .sorted { lhs, rhs in
+                        let left = abs(lhs.x - target.x) + abs(lhs.y - target.y)
+                        let right = abs(rhs.x - target.x) + abs(rhs.y - target.y)
+                        return (left, lhs.y, lhs.x) < (right, rhs.y, rhs.x)
+                    }
+                    .first, "\(assetID).\(orientation.1.rawValue)")
+                used.insert(coordinate)
+                state.updateTile(at: coordinate) {
+                    $0 = CityTile(
+                        coordinate: coordinate,
+                        kind: .residential,
+                        level: 1,
+                        condition: 1,
+                        constructionProgress: 1
+                    )
+                }
             }
         }
+        XCTAssertEqual(used.count, family.count * orientations.count)
 
         let saveRoot = FileManager.default.temporaryDirectory
             .appending(path: "citysim-residential-quality-\(UUID().uuidString)")
@@ -3479,13 +3491,15 @@ final class CitySimulationTests: XCTestCase {
         )
         let sourceNames = Set(sourceScene.children.flatMap(descendantNodeNames))
         for assetID in family {
-            XCTAssertTrue(
-                sourceNames.contains("lot.four-view.\(assetID).camNE"),
-                assetID
-            )
+            for (_, camera) in orientations {
+                XCTAssertTrue(
+                    sourceNames.contains("lot.four-view.\(assetID).\(camera.rawValue)"),
+                    "\(assetID).\(camera.rawValue)"
+                )
+            }
         }
 
-        let center = GridCoordinate(x: 13, y: 12)
+        let center = GridCoordinate(x: 11, y: 11)
         let regular = try rendererProofFrame(
             size: CGSize(width: 1_280, height: 800),
             state: loaded.state,
@@ -3494,7 +3508,7 @@ final class CitySimulationTests: XCTestCase {
             interactionMode: .inspect,
             detail: .neighborhood,
             centeredOn: center,
-            framingScale: 1.45,
+            framingScale: 1.05,
             hover: nil,
             exactPixelDimensions: true
         )
@@ -3506,7 +3520,7 @@ final class CitySimulationTests: XCTestCase {
             interactionMode: .inspect,
             detail: .neighborhood,
             centeredOn: center,
-            framingScale: 1.62,
+            framingScale: 1.16,
             hover: nil,
             exactPixelDimensions: true
         )

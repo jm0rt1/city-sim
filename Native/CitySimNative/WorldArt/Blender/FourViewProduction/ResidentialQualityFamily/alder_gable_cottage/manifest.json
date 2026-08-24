@@ -1,9 +1,9 @@
 {
   "artifacts": [
     {
-      "bytes": 1879762,
+      "bytes": 3363756,
       "path": "alder_gable_cottage.blend",
-      "sha256": "cd2c144fbf9d496d6d3998e06f1aeba57b397e199ca9387515d7516fdf08957b"
+      "sha256": "9017c0dea4dd6d4a7955c3a567867273c635a091c2a421d5cc82af55883453ad"
     },
     {
       "alpha": {
@@ -16,17 +16,17 @@
           "width": 176
         },
         "lowestOpaqueRowTopOrigin": 348,
-        "opaquePixelCount": 17554,
+        "opaquePixelCount": 18029,
         "pivotPixelAlpha": 255
       },
-      "bytes": 58301,
-      "decodedRgbaSha256": "a47a9e99a5126ea2b5f91052a75e858e9182bfd097ca8054d356bb33e91a9e39",
+      "bytes": 63566,
+      "decodedRgbaSha256": "33df0f84da09070d721fcde09030e9e33212844013d3ebb33cff569fc311ecf0",
       "dimensions": [
         384,
         384
       ],
       "path": "renders/alder_gable_cottage_camNE.png",
-      "sha256": "2d7247d30b12b3b8ab4b27a5c12cc091b77301ee3a23f620debb8bd20c891384"
+      "sha256": "da80c9033f98f7e3a85d9d7728d3ce6ac6a6d1ad90cf382f3be097129df721c9"
     },
     {
       "alpha": {
@@ -39,17 +39,17 @@
           "width": 176
         },
         "lowestOpaqueRowTopOrigin": 348,
-        "opaquePixelCount": 17768,
+        "opaquePixelCount": 18083,
         "pivotPixelAlpha": 255
       },
-      "bytes": 66661,
-      "decodedRgbaSha256": "060c49a3844c1758c559cbba5931304de5fa8499f34354bd044057c8ebcde080",
+      "bytes": 69926,
+      "decodedRgbaSha256": "f156053b6de2babc19cf3559b8c8aecfdc0edfbc47d197e31d7374682b3db5d6",
       "dimensions": [
         384,
         384
       ],
       "path": "renders/alder_gable_cottage_camSE.png",
-      "sha256": "ddeebc8093c7862932033b83a6dde851f0dfdc20be89e2cf3c50904d7fad8ba7"
+      "sha256": "88b211835d65571cdb080309dfb124572f71d46264db3a36c9219d16ffb50c72"
     },
     {
       "alpha": {
@@ -62,17 +62,17 @@
           "width": 176
         },
         "lowestOpaqueRowTopOrigin": 348,
-        "opaquePixelCount": 17729,
+        "opaquePixelCount": 18271,
         "pivotPixelAlpha": 255
       },
-      "bytes": 66444,
-      "decodedRgbaSha256": "988742d1be549536896089c8a2013e7bdcb4f98e5d570300ca482edc44311338",
+      "bytes": 70915,
+      "decodedRgbaSha256": "f239328ed044cd3279a3a7b3fed1b45ea0f25eddbef92ffb13bd3f72e5963b6f",
       "dimensions": [
         384,
         384
       ],
       "path": "renders/alder_gable_cottage_camSW.png",
-      "sha256": "092eb26d4365f31d8a8bb55da7f1857232063341fdd14a921b574515cee3933b"
+      "sha256": "d9d0be2c89661d898b4b40e9b2606ebd7729845ad61919cb29f24202a43944d4"
     },
     {
       "alpha": {
@@ -85,17 +85,17 @@
           "width": 176
         },
         "lowestOpaqueRowTopOrigin": 348,
-        "opaquePixelCount": 18003,
+        "opaquePixelCount": 18132,
         "pivotPixelAlpha": 255
       },
-      "bytes": 63704,
-      "decodedRgbaSha256": "7a8d37edcbfd0819648e32d7f7b8303392ecb3bf636a4e8b40da52d08f1c6ba6",
+      "bytes": 67788,
+      "decodedRgbaSha256": "be7e328d2167960c3fd66c2c9f5567e0ab47c4d024c23cd1eb3620fb8d18bbbf",
       "dimensions": [
         384,
         384
       ],
       "path": "renders/alder_gable_cottage_camNW.png",
-      "sha256": "550e9dc78d18f96479e676c34957209f790c72282607c517aa76bd1ff5e309d3"
+      "sha256": "a47b8ab9d46e4ffd62913c709760e9b6627ad79062bd57b34b220b9b7475757e"
     },
     {
       "alpha": {
@@ -108,17 +108,17 @@
           "width": 784
         },
         "lowestOpaqueRowTopOrigin": 839,
-        "opaquePixelCount": 114062,
+        "opaquePixelCount": 115523,
         "pivotPixelAlpha": 255
       },
-      "bytes": 217795,
-      "decodedRgbaSha256": "39ee5347e22bec2f5d20999005f33d8d6cc2c0ce5a7f30e28b8b2c4764af80de",
+      "bytes": 235575,
+      "decodedRgbaSha256": "1b74d8ac48dd8b6a4ff3912c42a5e5a83a4ab20bdbb3b65ab77cd17c3ed9200d",
       "dimensions": [
         784,
         840
       ],
       "path": "alder_gable_cottage_contact-sheet.png",
-      "sha256": "d7db7984b12fff8a188751ad80e8112c0719bcfecb04c12ef2fb9b6cb0b903ed"
+      "sha256": "f42f6629f47af0fef09142251797b3b8589eeec72951aa9fe5932f42aa62bd23"
     }
   ],
   "assetFamily": "residential-quality-family",
@@ -263,11 +263,11 @@
   "sourceFiles": [
     {
       "path": "build_and_render.py",
-      "sha256": "2074b8e284a90bf0d7039cca41e8b4f1cba9b8eba7737153f65e835dcba65a8e"
+      "sha256": "13f88f5fd43aa9cbdacbc655e0ae262edaf1cc6a03eafbcbb65950ebaa2e23a4"
     },
     {
       "path": "pipeline.json",
-      "sha256": "159fa5f1c4e0df81a4b9d9cde665d1950b095215a9c4053f3b09554ddaf5ce32"
+      "sha256": "8b37ab00c98c924726f745a314f03df14867a42d9dc96221f16cc3308814a21e"
     },
     {
       "path": "run_pipeline.sh",
@@ -275,7 +275,7 @@
     },
     {
       "path": "validate.py",
-      "sha256": "986ead68f0a2bcf88d896e740c9de968ba56e34269ffd7b25d9d7fb4410c5233"
+      "sha256": "350d9eb2c49307c7136373f88fcb6017095c386c576166e94a83ad2304aa2dd4"
     }
   ],
   "sourcePixelsReused": false,

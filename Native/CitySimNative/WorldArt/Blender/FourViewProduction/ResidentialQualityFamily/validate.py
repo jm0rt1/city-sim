@@ -155,12 +155,17 @@ def validate_family_manifest(asset_manifests):
     width, height, rgba = decode_rgba_png(aggregate_path)
     require((width, height) == (1782, 1606), "AGGREGATE_CONTACT_SHEET_SIZE_MISMATCH", (width, height))
     require(hashlib.sha256(rgba).hexdigest() == aggregate["decodedRgbaSha256"], "AGGREGATE_RGBA_HASH_DRIFT", aggregate_path)
-    comparison = data["admittedBaselineComparison"]
+    require(data["comparisonBaselineCommit"] == CONFIG["comparisonBaseline"]["commit"], "COMPARISON_BASELINE_MISMATCH", path)
+    comparison = data["refinementComparison"]
     comparison_path = HERE / comparison["path"]
     require(comparison_path.is_file() and sha256(comparison_path) == comparison["sha256"], "BASELINE_COMPARISON_DRIFT", comparison_path)
     comparison_width, comparison_height, comparison_rgba = decode_rgba_png(comparison_path)
-    require((comparison_width, comparison_height) == (2_574, 844), "BASELINE_COMPARISON_SIZE_MISMATCH", (comparison_width, comparison_height))
+    require((comparison_width, comparison_height) == (2_574, 1_272), "REFINEMENT_COMPARISON_SIZE_MISMATCH", (comparison_width, comparison_height))
     require(hashlib.sha256(comparison_rgba).hexdigest() == comparison["decodedRgbaSha256"], "BASELINE_COMPARISON_RGBA_DRIFT", comparison_path)
+    require(len(data["previousSavedCityProofs"]) == 2, "PREVIOUS_PROOF_COUNT_MISMATCH", path)
+    for proof in data["previousSavedCityProofs"]:
+        proof_path = HERE / proof["path"]
+        require(proof_path.is_file() and sha256(proof_path) == proof["sha256"], "PREVIOUS_PROOF_DRIFT", proof_path)
     for source in data["sourceFiles"]:
         source_path = HERE / source["path"]
         require(source_path.is_file() and sha256(source_path) == source["sha256"], "FAMILY_SOURCE_HASH_DRIFT", source_path)

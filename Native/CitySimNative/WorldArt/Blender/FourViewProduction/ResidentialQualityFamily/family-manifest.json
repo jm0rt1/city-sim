@@ -1,27 +1,4 @@
 {
-  "admittedBaselineComparison": {
-    "alpha": {
-      "boundsTopOrigin": {
-        "height": 844,
-        "maxX": 2573,
-        "maxY": 843,
-        "minX": 0,
-        "minY": 0,
-        "width": 2574
-      },
-      "lowestOpaqueRowTopOrigin": 843,
-      "opaquePixelCount": 914152,
-      "pivotPixelAlpha": 255
-    },
-    "bytes": 532027,
-    "decodedRgbaSha256": "73b090b78442ccf75636a3ff5f86bcf61425ae865d23cd2decc7d3f097c476fe",
-    "dimensions": [
-      2574,
-      844
-    ],
-    "path": "proof/residential-quality-vs-admitted-comparison.png",
-    "sha256": "c9466cbfb806c5a80351f40fee8d809d5633376edbb507ef74beeb473c610cff"
-  },
   "aggregateContactSheet": {
     "alpha": {
       "boundsTopOrigin": {
@@ -33,45 +10,45 @@
         "width": 1782
       },
       "lowestOpaqueRowTopOrigin": 1605,
-      "opaquePixelCount": 810561,
+      "opaquePixelCount": 816504,
       "pivotPixelAlpha": 255
     },
-    "bytes": 844448,
-    "decodedRgbaSha256": "2bd477520b7c79420b636c310e0fad563a24cdaeca97cadc9062a7c163a78f13",
+    "bytes": 912045,
+    "decodedRgbaSha256": "80d99605de77838200318c5cf91af7c730cafc6500e23708bf56e73c15b57f1b",
     "dimensions": [
       1782,
       1606
     ],
     "path": "residential-quality-family-four-view-contact-sheet.png",
-    "sha256": "d0d76bb3d30b965f13be71b2c805d9eaa701098804089b7aed55e783a4cf7c77"
+    "sha256": "3478f9d4f6a8fbd2710a3e97e34556b21936589d42fb8e0a9581f26ee2f4fd0f"
   },
   "assets": [
     {
       "assetId": "alder_gable_cottage",
       "displayName": "Alder Gable Cottage",
       "manifest": "alder_gable_cottage/manifest.json",
-      "manifestSha256": "1eb6d5a45c4c0b942779f1043ad86c6440f39e778fdb65fdc2ede9bdaad3aab2",
+      "manifestSha256": "aadecef0bdf6175e4c14077860d2e103268dd5353860e85392911f2b8ad2ca31",
       "runtimeRole": "residential-low"
     },
     {
       "assetId": "birch_lane_bungalow",
       "displayName": "Birch Lane Bungalow",
       "manifest": "birch_lane_bungalow/manifest.json",
-      "manifestSha256": "1acb431553c7974f1b78c35b8a2f447d63cf531129ff27b6115b65501f84c6dd",
+      "manifestSha256": "e03e6420aa449fccf3324f5cce5ba9432a62ac26b57ecc7b4e4d06effe4bae5c",
       "runtimeRole": "residential-low"
     },
     {
       "assetId": "rosewood_turret_house",
       "displayName": "Rosewood Turret House",
       "manifest": "rosewood_turret_house/manifest.json",
-      "manifestSha256": "178b4295f48f5d70814020b8748f7b3227795e5a09924dc88f1349ec6e7ff831",
+      "manifestSha256": "dea3b32ec178223818d463a5a3cb02f4746625ae0d3e06de619684075a8423aa",
       "runtimeRole": "residential-low"
     },
     {
       "assetId": "stonebridge_duplex",
       "displayName": "Stonebridge Duplex",
       "manifest": "stonebridge_duplex/manifest.json",
-      "manifestSha256": "44bfa6d4fb99e8a49c1278f1c0985559cbd4609a6279c13cbae4fc9caaad92c1",
+      "manifestSha256": "a16b6daeacbef8875f43938353a0c87e18c9a75946f91acf0062cf608d18158b",
       "runtimeRole": "residential-low"
     }
   ],
@@ -108,6 +85,7 @@
     "trim": false,
     "width": 384
   },
+  "comparisonBaselineCommit": "1cf6e64f8a062c8eaf680572eb97739e41e3eade",
   "grid": {
     "azimuthDegrees": 45.0,
     "elevationDegrees": 30.0,
@@ -120,17 +98,88 @@
   },
   "originalGeometry": true,
   "postRenderCompensation": "none",
+  "previousSavedCityProofs": [
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 800,
+          "maxX": 1279,
+          "maxY": 799,
+          "minX": 0,
+          "minY": 0,
+          "width": 1280
+        },
+        "lowestOpaqueRowTopOrigin": 799,
+        "opaquePixelCount": 1024000,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 731120,
+      "decodedRgbaSha256": "c55b1aa79bec8a3c07f8142e94a4bb223b6e82009a39756317e51895855f4486",
+      "dimensions": [
+        1280,
+        800
+      ],
+      "path": "proof/baseline-1cf6e64f-saved-city-1280x800.png",
+      "sha256": "cbf25a39ba11a93164735ef62447cbde660aecf1616a2c126cb650533c47f9ee"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 600,
+          "maxX": 899,
+          "maxY": 599,
+          "minX": 0,
+          "minY": 0,
+          "width": 900
+        },
+        "lowestOpaqueRowTopOrigin": 599,
+        "opaquePixelCount": 540000,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 417888,
+      "decodedRgbaSha256": "c056a749bd05b10f339484a9c9de8c32084d943dd2f67de750d2fc3e4a9cd24c",
+      "dimensions": [
+        900,
+        600
+      ],
+      "path": "proof/baseline-1cf6e64f-saved-city-900x600.png",
+      "sha256": "efbc0bb6798e85e90b592aff9d20d5672f2a1c0a84bca8645ccd7b0135bf784f"
+    }
+  ],
   "quarantinedExpansionV1Reused": false,
   "referencePixelsReused": false,
+  "refinementComparison": {
+    "alpha": {
+      "boundsTopOrigin": {
+        "height": 1272,
+        "maxX": 2573,
+        "maxY": 1271,
+        "minX": 0,
+        "minY": 0,
+        "width": 2574
+      },
+      "lowestOpaqueRowTopOrigin": 1271,
+      "opaquePixelCount": 1504509,
+      "pivotPixelAlpha": 255
+    },
+    "bytes": 754993,
+    "decodedRgbaSha256": "e323ca87e5b2d00b74e1c6773f1041d99194db9c10a6c396b45ef0c0e4185daf",
+    "dimensions": [
+      2574,
+      1272
+    ],
+    "path": "proof/residential-quality-refinement-vs-1cf6e64f-and-admitted.png",
+    "sha256": "4d7dd7b755ca9ba98f66dc5406b21617782eff4a2f0625b9cfdc3bc6350d9dca"
+  },
   "schema": "citysim.world-art.residential-quality-family-manifest.v1",
   "sourceFiles": [
     {
       "path": "build_and_render.py",
-      "sha256": "2074b8e284a90bf0d7039cca41e8b4f1cba9b8eba7737153f65e835dcba65a8e"
+      "sha256": "13f88f5fd43aa9cbdacbc655e0ae262edaf1cc6a03eafbcbb65950ebaa2e23a4"
     },
     {
       "path": "pipeline.json",
-      "sha256": "159fa5f1c4e0df81a4b9d9cde665d1950b095215a9c4053f3b09554ddaf5ce32"
+      "sha256": "8b37ab00c98c924726f745a314f03df14867a42d9dc96221f16cc3308814a21e"
     },
     {
       "path": "run_pipeline.sh",
@@ -138,7 +187,7 @@
     },
     {
       "path": "validate.py",
-      "sha256": "986ead68f0a2bcf88d896e740c9de968ba56e34269ffd7b25d9d7fb4410c5233"
+      "sha256": "350d9eb2c49307c7136373f88fcb6017095c386c576166e94a83ad2304aa2dd4"
     }
   ],
   "status": "quality-candidate-runtime-integrated"

@@ -1,9 +1,9 @@
 {
   "artifacts": [
     {
-      "bytes": 1847684,
+      "bytes": 3221306,
       "path": "rosewood_turret_house.blend",
-      "sha256": "f3ad2c4469594b3e60891ca339593a769528b5520757286803b4e082ec72d9ff"
+      "sha256": "039ddc52dd98a714326ad4b6708c62bde79ce1195512c06a44cc8f4a4acaa502"
     },
     {
       "alpha": {
@@ -16,17 +16,17 @@
           "width": 176
         },
         "lowestOpaqueRowTopOrigin": 348,
-        "opaquePixelCount": 21271,
+        "opaquePixelCount": 21475,
         "pivotPixelAlpha": 255
       },
-      "bytes": 62695,
-      "decodedRgbaSha256": "57ed78660bd1c6d946ab24f2fbfc6d6ae75b47fa39bc83d14e61cf925714b985",
+      "bytes": 65979,
+      "decodedRgbaSha256": "6c7060cf87d88402400f182e6ae0d0532b773540bf25da83a82afc924a4ff7fc",
       "dimensions": [
         384,
         384
       ],
       "path": "renders/rosewood_turret_house_camNE.png",
-      "sha256": "e3826329c236d60c1691620cfe88467609e7e4187b8720a0e8cb08328465f9f5"
+      "sha256": "ce833b88d6f10149a9e526b1a364230868689e1d84308f225dc46081ea81534a"
     },
     {
       "alpha": {
@@ -39,17 +39,17 @@
           "width": 176
         },
         "lowestOpaqueRowTopOrigin": 348,
-        "opaquePixelCount": 20313,
+        "opaquePixelCount": 21034,
         "pivotPixelAlpha": 255
       },
-      "bytes": 71665,
-      "decodedRgbaSha256": "9fc729c31f5e1370cd2565099e5549b0c515f3adfebf12ce183f40711544a83d",
+      "bytes": 75370,
+      "decodedRgbaSha256": "12ca4a3d049d95a524343a40d0e2b223f5f7e1f1f7488c49d2d90f3c0b18cc09",
       "dimensions": [
         384,
         384
       ],
       "path": "renders/rosewood_turret_house_camSE.png",
-      "sha256": "737c132535e89e6933909f5cf39d9b4d7cf4aeaab50faf9548a5e0da0a205523"
+      "sha256": "e439b0a2d7c16c984bed4f536c7e3069e093fa7c6f61f167ebce2de597c38493"
     },
     {
       "alpha": {
@@ -62,17 +62,17 @@
           "width": 176
         },
         "lowestOpaqueRowTopOrigin": 348,
-        "opaquePixelCount": 21687,
+        "opaquePixelCount": 21897,
         "pivotPixelAlpha": 255
       },
-      "bytes": 74515,
-      "decodedRgbaSha256": "74ca6c7cf97a42d5b570b8ce644f668cc10d43889ed31fa155433b8cdec8a3a2",
+      "bytes": 78281,
+      "decodedRgbaSha256": "b328467514974e1334b3f0882a940f304c6d214da2489b518a72049746e64b26",
       "dimensions": [
         384,
         384
       ],
       "path": "renders/rosewood_turret_house_camSW.png",
-      "sha256": "ba9a3497e542917f928f6fd5591b7115d519bff86949d2618cdc4085b9926b92"
+      "sha256": "f00d6b6defd12466089ade1a18bd6a440228445559dc588b1c551e61120dee1e"
     },
     {
       "alpha": {
@@ -85,17 +85,17 @@
           "width": 176
         },
         "lowestOpaqueRowTopOrigin": 348,
-        "opaquePixelCount": 20011,
+        "opaquePixelCount": 20660,
         "pivotPixelAlpha": 255
       },
-      "bytes": 66989,
-      "decodedRgbaSha256": "a37aaeabc7ed0edd0b5fd459a8879702fd1e4ff7aba3e7fa4c40ea928471a1a9",
+      "bytes": 72349,
+      "decodedRgbaSha256": "59d293560642a1726d85ce103ff1098c7503dd758315b7f35cce15d6d7b25ce6",
       "dimensions": [
         384,
         384
       ],
       "path": "renders/rosewood_turret_house_camNW.png",
-      "sha256": "3549161baf8ce14d781ed41c3496d26bb1abd59fe74e568ec3b1febccdd920c6"
+      "sha256": "d550275737617554c45bc143300cfab5ee0006eedd83f4b56e3e0fe24c52b5b8"
     },
     {
       "alpha": {
@@ -108,17 +108,17 @@
           "width": 784
         },
         "lowestOpaqueRowTopOrigin": 839,
-        "opaquePixelCount": 126290,
+        "opaquePixelCount": 128074,
         "pivotPixelAlpha": 255
       },
-      "bytes": 242065,
-      "decodedRgbaSha256": "3c0c70e9192e83e2539cff606380cb2ace368160ed1f933387831e032af6ca83",
+      "bytes": 256411,
+      "decodedRgbaSha256": "80593997ea7eab01b35503be07aa008d83cdba623c90ebe22b23b8e39a7d5fdd",
       "dimensions": [
         784,
         840
       ],
       "path": "rosewood_turret_house_contact-sheet.png",
-      "sha256": "2e2d12a92c76d4d8238309ecebfebde1f83141ec8aac09d50c1c89cdef2bdb71"
+      "sha256": "a528583ff127e3763b6c5763c8c16556c94f206933064952ee8ce9692b2578e1"
     }
   ],
   "assetFamily": "residential-quality-family",
@@ -263,11 +263,11 @@
   "sourceFiles": [
     {
       "path": "build_and_render.py",
-      "sha256": "2074b8e284a90bf0d7039cca41e8b4f1cba9b8eba7737153f65e835dcba65a8e"
+      "sha256": "13f88f5fd43aa9cbdacbc655e0ae262edaf1cc6a03eafbcbb65950ebaa2e23a4"
     },
     {
       "path": "pipeline.json",
-      "sha256": "159fa5f1c4e0df81a4b9d9cde665d1950b095215a9c4053f3b09554ddaf5ce32"
+      "sha256": "8b37ab00c98c924726f745a314f03df14867a42d9dc96221f16cc3308814a21e"
     },
     {
       "path": "run_pipeline.sh",
@@ -275,7 +275,7 @@
     },
     {
       "path": "validate.py",
-      "sha256": "986ead68f0a2bcf88d896e740c9de968ba56e34269ffd7b25d9d7fb4410c5233"
+      "sha256": "350d9eb2c49307c7136373f88fcb6017095c386c576166e94a83ad2304aa2dd4"
     }
   ],
   "sourcePixelsReused": false,

@@ -49,7 +49,12 @@
   "output": {
     "postRenderCompensation": "none",
     "aggregateContactSheet": "residential-quality-family-four-view-contact-sheet.png",
-    "baselineComparison": "proof/residential-quality-vs-admitted-comparison.png"
+    "baselineComparison": "proof/residential-quality-vs-admitted-comparison.png",
+    "refinementComparison": "proof/residential-quality-refinement-vs-1cf6e64f-and-admitted.png"
+  },
+  "comparisonBaseline": {
+    "commit": "1cf6e64f8a062c8eaf680572eb97739e41e3eade",
+    "usage": "previous candidate pixels used only for the requested visual comparison"
   },
   "researchReference": {
     "fileName": "5310039E-5F9A-46A1-AF8B-D23B720BEC4E.PNG",

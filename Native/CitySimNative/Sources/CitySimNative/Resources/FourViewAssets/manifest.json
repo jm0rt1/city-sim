@@ -26,49 +26,49 @@
     {
       "assetID": "alder_gable_cottage",
       "file": "alder_gable_cottage_camNE.png",
-      "sha256": "2d7247d30b12b3b8ab4b27a5c12cc091b77301ee3a23f620debb8bd20c891384",
+      "sha256": "da80c9033f98f7e3a85d9d7728d3ce6ac6a6d1ad90cf382f3be097129df721c9",
       "roles": ["residential-low", "residential-quality"],
       "views": [
-        {"camera": "camNE", "file": "alder_gable_cottage_camNE.png", "sha256": "2d7247d30b12b3b8ab4b27a5c12cc091b77301ee3a23f620debb8bd20c891384"},
-        {"camera": "camSE", "file": "alder_gable_cottage_camSE.png", "sha256": "ddeebc8093c7862932033b83a6dde851f0dfdc20be89e2cf3c50904d7fad8ba7"},
-        {"camera": "camSW", "file": "alder_gable_cottage_camSW.png", "sha256": "092eb26d4365f31d8a8bb55da7f1857232063341fdd14a921b574515cee3933b"},
-        {"camera": "camNW", "file": "alder_gable_cottage_camNW.png", "sha256": "550e9dc78d18f96479e676c34957209f790c72282607c517aa76bd1ff5e309d3"}
+        {"camera": "camNE", "file": "alder_gable_cottage_camNE.png", "sha256": "da80c9033f98f7e3a85d9d7728d3ce6ac6a6d1ad90cf382f3be097129df721c9"},
+        {"camera": "camSE", "file": "alder_gable_cottage_camSE.png", "sha256": "88b211835d65571cdb080309dfb124572f71d46264db3a36c9219d16ffb50c72"},
+        {"camera": "camSW", "file": "alder_gable_cottage_camSW.png", "sha256": "d9d0be2c89661d898b4b40e9b2606ebd7729845ad61919cb29f24202a43944d4"},
+        {"camera": "camNW", "file": "alder_gable_cottage_camNW.png", "sha256": "a47b8ab9d46e4ffd62913c709760e9b6627ad79062bd57b34b220b9b7475757e"}
       ]
     },
     {
       "assetID": "birch_lane_bungalow",
       "file": "birch_lane_bungalow_camNE.png",
-      "sha256": "08773ae7d89e162ee8fecaf14b999f8e9fe26c760f1b2c5d32c4bf9a3ec137df",
+      "sha256": "1ab604fa43963cd83ab21561e49e4c4f7e5a72404a32fb11da88b7132fc378d8",
       "roles": ["residential-low", "residential-quality"],
       "views": [
-        {"camera": "camNE", "file": "birch_lane_bungalow_camNE.png", "sha256": "08773ae7d89e162ee8fecaf14b999f8e9fe26c760f1b2c5d32c4bf9a3ec137df"},
-        {"camera": "camSE", "file": "birch_lane_bungalow_camSE.png", "sha256": "194092b789eab2377287e6f5c7fe876c447a48c309d67d081aec2d5b689ef9d6"},
-        {"camera": "camSW", "file": "birch_lane_bungalow_camSW.png", "sha256": "3f815b0c055292b7dccf708ba1ad8d4677cd649afb83a52b9385c2f6cbb7792e"},
-        {"camera": "camNW", "file": "birch_lane_bungalow_camNW.png", "sha256": "5090c8856e7ac74a131ebdd3364c5dc0677f74a0b9a7b49940216f3ece31f2cf"}
+        {"camera": "camNE", "file": "birch_lane_bungalow_camNE.png", "sha256": "1ab604fa43963cd83ab21561e49e4c4f7e5a72404a32fb11da88b7132fc378d8"},
+        {"camera": "camSE", "file": "birch_lane_bungalow_camSE.png", "sha256": "fe33be483add3d181d9b40d063b0498d330d434696618d1d3be6a159cb41c0cc"},
+        {"camera": "camSW", "file": "birch_lane_bungalow_camSW.png", "sha256": "a90fdfafa69647f557f51780b2b91e1968d46bec2081d43ffef387699ea31112"},
+        {"camera": "camNW", "file": "birch_lane_bungalow_camNW.png", "sha256": "7f040289511947affebd330af3e6f804c2f248c4cdd49c4a099757d987a4170b"}
       ]
     },
     {
       "assetID": "rosewood_turret_house",
       "file": "rosewood_turret_house_camNE.png",
-      "sha256": "e3826329c236d60c1691620cfe88467609e7e4187b8720a0e8cb08328465f9f5",
+      "sha256": "ce833b88d6f10149a9e526b1a364230868689e1d84308f225dc46081ea81534a",
       "roles": ["residential-low", "residential-quality"],
       "views": [
-        {"camera": "camNE", "file": "rosewood_turret_house_camNE.png", "sha256": "e3826329c236d60c1691620cfe88467609e7e4187b8720a0e8cb08328465f9f5"},
-        {"camera": "camSE", "file": "rosewood_turret_house_camSE.png", "sha256": "737c132535e89e6933909f5cf39d9b4d7cf4aeaab50faf9548a5e0da0a205523"},
-        {"camera": "camSW", "file": "rosewood_turret_house_camSW.png", "sha256": "ba9a3497e542917f928f6fd5591b7115d519bff86949d2618cdc4085b9926b92"},
-        {"camera": "camNW", "file": "rosewood_turret_house_camNW.png", "sha256": "3549161baf8ce14d781ed41c3496d26bb1abd59fe74e568ec3b1febccdd920c6"}
+        {"camera": "camNE", "file": "rosewood_turret_house_camNE.png", "sha256": "ce833b88d6f10149a9e526b1a364230868689e1d84308f225dc46081ea81534a"},
+        {"camera": "camSE", "file": "rosewood_turret_house_camSE.png", "sha256": "e439b0a2d7c16c984bed4f536c7e3069e093fa7c6f61f167ebce2de597c38493"},
+        {"camera": "camSW", "file": "rosewood_turret_house_camSW.png", "sha256": "f00d6b6defd12466089ade1a18bd6a440228445559dc588b1c551e61120dee1e"},
+        {"camera": "camNW", "file": "rosewood_turret_house_camNW.png", "sha256": "d550275737617554c45bc143300cfab5ee0006eedd83f4b56e3e0fe24c52b5b8"}
       ]
     },
     {
       "assetID": "stonebridge_duplex",
       "file": "stonebridge_duplex_camNE.png",
-      "sha256": "e134f944f62df9fa3b746111f69faa2eeaee855e556af71ebf6713cfdba57cbd",
+      "sha256": "d68f994dd70195b18a81794266d31f532b19e49f52b1fb09e6e20dc43aa51e95",
       "roles": ["residential-low", "residential-quality"],
       "views": [
-        {"camera": "camNE", "file": "stonebridge_duplex_camNE.png", "sha256": "e134f944f62df9fa3b746111f69faa2eeaee855e556af71ebf6713cfdba57cbd"},
-        {"camera": "camSE", "file": "stonebridge_duplex_camSE.png", "sha256": "813af85b43968c08c91203245e8e8eb12bd74fc2f9260a28af40ca3de6cd1e36"},
-        {"camera": "camSW", "file": "stonebridge_duplex_camSW.png", "sha256": "0d3cd52555474c3558e4beea2824d4464a67d2a78b126f1da23d49c9d8269d3e"},
-        {"camera": "camNW", "file": "stonebridge_duplex_camNW.png", "sha256": "86ac7a0ca21d134f302d5a1ce2115124d248858617da5f49fb0d261971c7f3c3"}
+        {"camera": "camNE", "file": "stonebridge_duplex_camNE.png", "sha256": "d68f994dd70195b18a81794266d31f532b19e49f52b1fb09e6e20dc43aa51e95"},
+        {"camera": "camSE", "file": "stonebridge_duplex_camSE.png", "sha256": "390a820bc0f54ae2c137cdf9a2f3b44621a54040d1164c8e83c3e7aa1c5b130f"},
+        {"camera": "camSW", "file": "stonebridge_duplex_camSW.png", "sha256": "34944ed4879ed60c791f6922a48666f40e085685b9deda1ac5b468a5fb933bbd"},
+        {"camera": "camNW", "file": "stonebridge_duplex_camNW.png", "sha256": "cf73b7982f75a5010fc222f85dc1d43be22155c51f4a31c67094bfbfbb3e8ace"}
       ]
     },
     {

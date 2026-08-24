@@ -195,6 +195,11 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
     func testResidentialQualityFamilySelectsAllFourAndLoadsEveryAuthoredOrientation() throws {
         let style = WorldVisualStyle()
         let catalog = FourViewWorldAssetCatalog()
+        let renderer = LotRenderer(
+            style: style,
+            assets: WorldAssetCatalog(),
+            fourViewAssets: catalog
+        )
         let family = [
             "alder_gable_cottage",
             "birch_lane_bungalow",
@@ -217,6 +222,12 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
             }
         }
         XCTAssertEqual(Set(coordinateByAssetID.keys), Set(family))
+        let frontageCameras: [(RoadConnectionMask, FourViewWorldAssetCatalog.Camera)] = [
+            (.south, .camNE),
+            (.west, .camSE),
+            (.north, .camSW),
+            (.east, .camNW),
+        ]
 
         for descriptor in descriptors {
             let coordinate = try XCTUnwrap(coordinateByAssetID[descriptor.assetID])
@@ -247,6 +258,20 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
                 XCTAssertEqual(sprite.yScale, style.tileWidth / 176, accuracy: 0.000_001)
                 XCTAssertEqual(sprite.zRotation, 0, accuracy: 0.000_001)
                 XCTAssertEqual(sprite.position, .zero)
+            }
+            for (frontage, camera) in frontageCameras {
+                let lot = renderer.makeLot(
+                    for: tile,
+                    adjacentRoads: frontage,
+                    detail: .block,
+                    reducedMotion: true
+                )
+                XCTAssertNotNil(
+                    lot.childNode(
+                        withName: "//lot.four-view.\(descriptor.assetID).\(camera.rawValue)"
+                    ),
+                    "\(descriptor.assetID).\(camera.rawValue)"
+                )
             }
         }
     }

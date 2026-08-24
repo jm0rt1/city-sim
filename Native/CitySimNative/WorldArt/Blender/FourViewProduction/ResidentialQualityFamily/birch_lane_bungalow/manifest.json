@@ -1,9 +1,9 @@
 {
   "artifacts": [
     {
-      "bytes": 1969599,
+      "bytes": 3793379,
       "path": "birch_lane_bungalow.blend",
-      "sha256": "b86110f3994f8589b595d69ffb3a9c3d28727aeda129276e6d75b88f08ce82be"
+      "sha256": "5b11390ebd7b167905ae747a5f9883bb1684b58133345fa08111ce79cd4a0883"
     },
     {
       "alpha": {
@@ -16,17 +16,17 @@
           "width": 176
         },
         "lowestOpaqueRowTopOrigin": 348,
-        "opaquePixelCount": 17365,
+        "opaquePixelCount": 17399,
         "pivotPixelAlpha": 255
       },
-      "bytes": 59760,
-      "decodedRgbaSha256": "966554912996d7b2bed396ae05f27fd1e6b14dac287238ee79cf8912f407224f",
+      "bytes": 63169,
+      "decodedRgbaSha256": "1b561447cf0c6c704c420cee8bb74a89e9542e6b67167fd425bc5317ed1d46cf",
       "dimensions": [
         384,
         384
       ],
       "path": "renders/birch_lane_bungalow_camNE.png",
-      "sha256": "08773ae7d89e162ee8fecaf14b999f8e9fe26c760f1b2c5d32c4bf9a3ec137df"
+      "sha256": "1ab604fa43963cd83ab21561e49e4c4f7e5a72404a32fb11da88b7132fc378d8"
     },
     {
       "alpha": {
@@ -39,17 +39,17 @@
           "width": 176
         },
         "lowestOpaqueRowTopOrigin": 348,
-        "opaquePixelCount": 17413,
+        "opaquePixelCount": 17521,
         "pivotPixelAlpha": 255
       },
-      "bytes": 66258,
-      "decodedRgbaSha256": "9ffd2a1b06db01c07105747e0524970fa5ac3adc667f2a744c060e7f11914868",
+      "bytes": 69959,
+      "decodedRgbaSha256": "4ace9aaf81b0f4e19a10e7a32823377f7b90488ffdc5d5786d8e7bcc6f4f3ad1",
       "dimensions": [
         384,
         384
       ],
       "path": "renders/birch_lane_bungalow_camSE.png",
-      "sha256": "194092b789eab2377287e6f5c7fe876c447a48c309d67d081aec2d5b689ef9d6"
+      "sha256": "fe33be483add3d181d9b40d063b0498d330d434696618d1d3be6a159cb41c0cc"
     },
     {
       "alpha": {
@@ -62,17 +62,17 @@
           "width": 176
         },
         "lowestOpaqueRowTopOrigin": 348,
-        "opaquePixelCount": 17534,
+        "opaquePixelCount": 17667,
         "pivotPixelAlpha": 255
       },
-      "bytes": 67246,
-      "decodedRgbaSha256": "4bd9ef28cf1d20b64230f695bc1ece04d64116cc6ac5814d15806473357ca368",
+      "bytes": 71449,
+      "decodedRgbaSha256": "f119af6e8a27bc4a4138b03247d3b3f848e2874ef4549f35909ffbc58cfeeaa3",
       "dimensions": [
         384,
         384
       ],
       "path": "renders/birch_lane_bungalow_camSW.png",
-      "sha256": "3f815b0c055292b7dccf708ba1ad8d4677cd649afb83a52b9385c2f6cbb7792e"
+      "sha256": "a90fdfafa69647f557f51780b2b91e1968d46bec2081d43ffef387699ea31112"
     },
     {
       "alpha": {
@@ -85,17 +85,17 @@
           "width": 176
         },
         "lowestOpaqueRowTopOrigin": 348,
-        "opaquePixelCount": 17843,
+        "opaquePixelCount": 17888,
         "pivotPixelAlpha": 255
       },
-      "bytes": 65001,
-      "decodedRgbaSha256": "496727cd53d51c47342273c18d8e7dbedf4c840faa0ecd19c736644f2f1d5f32",
+      "bytes": 68333,
+      "decodedRgbaSha256": "5543357ba8d1e70dead91dfea9a772eaf526c6ed36b24744337dd32e3584a700",
       "dimensions": [
         384,
         384
       ],
       "path": "renders/birch_lane_bungalow_camNW.png",
-      "sha256": "5090c8856e7ac74a131ebdd3364c5dc0677f74a0b9a7b49940216f3ece31f2cf"
+      "sha256": "7f040289511947affebd330af3e6f804c2f248c4cdd49c4a099757d987a4170b"
     },
     {
       "alpha": {
@@ -108,17 +108,17 @@
           "width": 784
         },
         "lowestOpaqueRowTopOrigin": 839,
-        "opaquePixelCount": 113163,
+        "opaquePixelCount": 113483,
         "pivotPixelAlpha": 255
       },
-      "bytes": 221228,
-      "decodedRgbaSha256": "65b1392cd0ff38b58d241e3c929415eaf03d531e45bd588a916aa7708c2d7dd8",
+      "bytes": 235082,
+      "decodedRgbaSha256": "e684b5d82011d2c2a5ca8ef90750799a7aed35ce653a677a8b1c6e0baa44a00d",
       "dimensions": [
         784,
         840
       ],
       "path": "birch_lane_bungalow_contact-sheet.png",
-      "sha256": "1d756030e167b6d5967050c419ff4956fc8e92fc9c84d6574b900a290d5d801e"
+      "sha256": "04addeadd09558c690d3bce9b7a2a4762128c0f38950efb503df2357772fedac"
     }
   ],
   "assetFamily": "residential-quality-family",
@@ -263,11 +263,11 @@
   "sourceFiles": [
     {
       "path": "build_and_render.py",
-      "sha256": "2074b8e284a90bf0d7039cca41e8b4f1cba9b8eba7737153f65e835dcba65a8e"
+      "sha256": "13f88f5fd43aa9cbdacbc655e0ae262edaf1cc6a03eafbcbb65950ebaa2e23a4"
     },
     {
       "path": "pipeline.json",
-      "sha256": "159fa5f1c4e0df81a4b9d9cde665d1950b095215a9c4053f3b09554ddaf5ce32"
+      "sha256": "8b37ab00c98c924726f745a314f03df14867a42d9dc96221f16cc3308814a21e"
     },
     {
       "path": "run_pipeline.sh",
@@ -275,7 +275,7 @@
     },
     {
       "path": "validate.py",
-      "sha256": "986ead68f0a2bcf88d896e740c9de968ba56e34269ffd7b25d9d7fb4410c5233"
+      "sha256": "350d9eb2c49307c7136373f88fcb6017095c386c576166e94a83ad2304aa2dd4"
     }
   ],
   "sourcePixelsReused": false,

@@ -403,12 +403,24 @@ struct ContentView: View {
         showObjectives: Bool,
         showInspector: Bool,
         hasActivity: Bool,
-        hasFoundationsGuide: Bool = false
+        hasFoundationsGuide: Bool = false,
+        hasBlockingFeedback: Bool = false
     ) -> ContextualGuidancePresentation {
         guard !showInspector else { return .hidden }
+        guard !hasBlockingFeedback else { return .hidden }
         if showObjectives { return .objectives }
         if hasFoundationsGuide { return .foundations }
         return hasActivity ? .activity : .hidden
+    }
+
+    static func presentsFeedback(
+        message: String,
+        tone: PlayerFeedbackTone,
+        hasResumeBrief: Bool
+    ) -> Bool {
+        if tone != .caution, hasResumeBrief { return false }
+        if tone != .caution, message.hasSuffix("tool selected") { return false }
+        return true
     }
 
     private var feedbackSymbol: String {
@@ -575,7 +587,8 @@ struct ContentView: View {
                                 showObjectives: store.showObjectives,
                                 showInspector: store.showInspector,
                                 hasActivity: !store.messageSummaries.isEmpty,
-                                hasFoundationsGuide: store.foundationsGuidePresentation != nil
+                                hasFoundationsGuide: store.foundationsGuidePresentation != nil,
+                                hasBlockingFeedback: store.lastFeedback != nil && store.lastFeedbackTone == .caution
                             ) {
                             case .hidden:
                                 EmptyView()
@@ -583,7 +596,7 @@ struct ContentView: View {
                                 ObjectivesView(store: store)
                                     .transition(GameTheme.transition(edge: .leading, reduceMotion: reduceMotion))
                             case .foundations:
-                                FoundationsGuideView(store: store)
+                                FoundationsGuideView(store: store, compact: compact)
                                     .transition(GameTheme.transition(edge: .leading, reduceMotion: reduceMotion))
                             case .activity:
                                 Spacer(minLength: 8)
@@ -591,12 +604,19 @@ struct ContentView: View {
                                     .opacity(compact ? 1 : 0.78)
                                     .scaleEffect(compact ? 1 : 0.88, anchor: .topTrailing)
                             }
+                            Spacer(minLength: 0)
                         }
+                        .frame(maxWidth: .infinity, alignment: .leading)
                     }
 
                     Spacer(minLength: 8)
 
-                    if let feedback = store.lastFeedback {
+                    if let feedback = store.lastFeedback,
+                       Self.presentsFeedback(
+                           message: feedback,
+                           tone: store.lastFeedbackTone,
+                           hasResumeBrief: store.resumeBrief != nil
+                       ) {
                         HStack(spacing: 9) {
                             Image(systemName: feedbackSymbol)
                                 .foregroundStyle(feedbackColor)
@@ -639,15 +659,12 @@ struct ContentView: View {
                     }
 
                     if !store.isCityFocusModeEnabled {
-                        VStack(spacing: compact ? 4 : 6) {
-                            OverlayDiagnosticsPaletteView(store: store, compact: compact)
-                            BuildToolbarView(
-                                store: store,
-                                compact: compact,
-                                pointerTransitionGate: pointerTransitionGate
-                            )
-                        }
-                            .frame(maxWidth: compact ? .infinity : 1_120)
+                        BuildToolbarView(
+                            store: store,
+                            compact: compact,
+                            pointerTransitionGate: pointerTransitionGate
+                        )
+                            .frame(maxWidth: compact ? 780 : 860)
                             .onGeometryChange(for: CGRect.self) { proxy in
                                 proxy.frame(in: .named("city.game.surface"))
                             } action: { frame in

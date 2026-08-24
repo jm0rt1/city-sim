@@ -105,6 +105,7 @@ struct OverlayDiagnosticsPalettePresentation: Equatable {
 struct OverlayDiagnosticsPaletteView: View {
     @ObservedObject var store: CityGameStore
     var compact = false
+    var embedded = false
 
     static let compactMaximumHeight: CGFloat = 48
     static let regularMaximumHeight: CGFloat = 48
@@ -127,10 +128,17 @@ struct OverlayDiagnosticsPaletteView: View {
 
     var body: some View {
         let presentation: OverlayDiagnosticsPalettePresentation = activePresentation
-        compactPalette(presentation: presentation)
+        if embedded {
+            embeddedPalette(presentation: presentation)
+        } else {
+            standalonePalette(presentation: presentation)
+        }
     }
 
-    private func compactPalette(presentation: OverlayDiagnosticsPalettePresentation) -> some View {
+    private func paletteMenu(
+        presentation: OverlayDiagnosticsPalettePresentation,
+        embedded: Bool
+    ) -> some View {
         Menu {
             ForEach(DataOverlay.allCases) { overlay in
                 let overlayPresentation = OverlayDiagnosticsPalettePresentation.make(
@@ -153,29 +161,44 @@ struct OverlayDiagnosticsPaletteView: View {
             }
         } label: {
             HStack(spacing: 6) {
-                Label("Map layers", systemImage: "square.grid.2x2.fill")
-                    .font(.system(size: 11, weight: .bold, design: .rounded))
-                Text(presentation.title + " · " + presentation.shortDetail)
-                    .font(.system(size: 10, weight: .medium, design: .rounded))
-                    .foregroundStyle(.secondary)
-                    .lineLimit(1)
-                    .truncationMode(.tail)
-                    .layoutPriority(1)
+                Label(embedded ? "Layers" : "Map layers", systemImage: "square.grid.2x2.fill")
+                    .font(.system(size: GameTheme.hudCriticalTextSize, weight: .bold, design: .rounded))
+                if !embedded {
+                    Text(presentation.title + " · " + presentation.shortDetail)
+                        .font(.system(size: GameTheme.hudSupportTextSize, weight: .medium, design: .rounded))
+                        .foregroundStyle(.secondary)
+                        .lineLimit(1)
+                        .truncationMode(.tail)
+                        .layoutPriority(1)
+                }
             }
-            .padding(.horizontal, 8)
-        .frame(maxWidth: .infinity, minHeight: GameTheme.controlMinimum, alignment: .leading)
+            .padding(.horizontal, embedded ? 4 : 8)
+            .frame(
+                minWidth: GameTheme.controlMinimum,
+                maxWidth: embedded ? nil : .infinity,
+                minHeight: GameTheme.controlMinimum,
+                alignment: .leading
+            )
         }
         .menuStyle(.borderlessButton)
-        .cityPanelBackground(.thin, in: RoundedRectangle(cornerRadius: GameTheme.panelRadius, style: .continuous))
-        .background(
-            GameTheme.hudSurfaceFill,
-            in: RoundedRectangle(cornerRadius: GameTheme.panelRadius, style: .continuous)
-        )
-        .overlay(RoundedRectangle(cornerRadius: GameTheme.panelRadius).stroke(GameTheme.strongPanelStroke))
         .accessibilityLabel("Map layers")
         .accessibilityValue(activePresentation.accessibilityValue)
         .accessibilityHint("Open to choose City or a diagnostic layer. Select a place on the map for local details.")
         .accessibilityIdentifier("hud.diagnostics.palette")
     }
 
+    private func standalonePalette(presentation: OverlayDiagnosticsPalettePresentation) -> some View {
+        paletteMenu(presentation: presentation, embedded: false)
+        .cityPanelBackground(.thin, in: RoundedRectangle(cornerRadius: GameTheme.panelRadius, style: .continuous))
+        .background(
+            GameTheme.hudSurfaceFill,
+            in: RoundedRectangle(cornerRadius: GameTheme.panelRadius, style: .continuous)
+        )
+        .overlay(RoundedRectangle(cornerRadius: GameTheme.panelRadius).stroke(GameTheme.strongPanelStroke))
+    }
+
+    private func embeddedPalette(presentation: OverlayDiagnosticsPalettePresentation) -> some View {
+        paletteMenu(presentation: presentation, embedded: true)
+            .background(GameTheme.inactiveControl, in: RoundedRectangle(cornerRadius: 9))
+    }
 }

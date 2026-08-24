@@ -140,10 +140,10 @@ struct BuildToolbarView: View {
     // The low command rail is the only persistent map inset. Details are a
     // bounded contextual surface above it, so a selection never reserves city
     // height until the player explicitly asks to inspect it.
-    static let compactClosedMaximumHeight: CGFloat = 64
-    static let compactBuildDecisionMaximumHeight: CGFloat = 118
-    static let regularClosedMaximumHeight: CGFloat = 108
-    static let regularSituationalMaximumHeight: CGFloat = 64
+    static let compactClosedMaximumHeight: CGFloat = 60
+    static let compactBuildDecisionMaximumHeight: CGFloat = 112
+    static let regularClosedMaximumHeight: CGFloat = 60
+    static let regularSituationalMaximumHeight: CGFloat = 60
     static let compactOpenMaximumHeight: CGFloat = 176
     static let regularOpenMaximumHeight: CGFloat = 208
     static let compactDetailsMaxHeight: CGFloat = 112
@@ -154,8 +154,6 @@ struct BuildToolbarView: View {
             commandRow
             if let decision = activeBuildDecision {
                 buildDecisionRow(decision)
-            } else if !compact, isBuildMode {
-                operationalRow
             }
         }
         .padding(compact ? 7 : 8)
@@ -220,6 +218,30 @@ struct BuildToolbarView: View {
 
     private var commandRow: some View {
         HStack(spacing: 6) {
+            modeCluster
+
+            if isBuildMode {
+                buildCatalogMenu
+            }
+
+            if activeBuildDecision == nil, store.selectedTile != nil || isBuildMode {
+                selectedToolSummary
+                    .frame(
+                        minWidth: compact ? 150 : 174,
+                        maxWidth: compact ? 184 : 220,
+                        alignment: .trailing
+                    )
+                    .layoutPriority(1)
+            }
+
+            toolsMenu
+            commandGuideButton
+            detailsButton
+        }
+    }
+
+    private var modeCluster: some View {
+        HStack(spacing: 2) {
             modeButton(
                 title: "Inspect",
                 symbol: "cursorarrow.rays",
@@ -241,27 +263,42 @@ struct BuildToolbarView: View {
                 tint: GameTheme.danger,
                 action: { store.perform(.bulldozeMode) }
             )
-
-            Divider().frame(height: 30)
-
-            buildCatalogMenu
-
-            if activeBuildDecision == nil {
-                selectedToolSummary
-                    .frame(
-                        minWidth: compact ? 172 : 184,
-                        maxWidth: compact ? 210 : 260,
-                        alignment: .trailing
-                    )
-                    .layoutPriority(1)
-            }
-
-            Spacer(minLength: 2)
-            cityFocusButton
-            photoModeButton
-            commandGuideButton
-            detailsButton
         }
+        .padding(2)
+        .background(GameTheme.hudRaisedFill, in: RoundedRectangle(cornerRadius: 11))
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("Map tools")
+    }
+
+    private var toolsMenu: some View {
+        Menu {
+            Section("Map layers") {
+                ForEach(DataOverlay.allCases) { overlay in
+                    Button {
+                        store.perform(CityCommandCatalog.id(for: overlay))
+                    } label: {
+                        Label(overlay.title, systemImage: overlay.symbol)
+                    }
+                }
+            }
+            Divider()
+            Button { store.perform(.toggleCityFocus) } label: {
+                Label("Focus City", systemImage: "viewfinder")
+            }
+            Button { store.perform(.togglePhotoMode) } label: {
+                Label("Photo Mode", systemImage: "camera.aperture")
+            }
+        } label: {
+            Label(compact ? "More" : "City Tools", systemImage: "slider.horizontal.3")
+                .font(.system(size: GameTheme.hudCriticalTextSize, weight: .bold, design: .rounded))
+                .padding(.horizontal, compact ? 4 : 8)
+                .frame(minWidth: GameTheme.controlMinimum, minHeight: GameTheme.controlMinimum)
+        }
+        .menuStyle(.borderlessButton)
+        .background(GameTheme.hudRaisedFill, in: RoundedRectangle(cornerRadius: 9))
+        .accessibilityLabel("City tools and map layers")
+        .accessibilityValue("Current layer \(store.overlay.title)")
+        .accessibilityIdentifier("hud.city.tools")
     }
 
     static func closedMaximumHeight(
@@ -269,10 +306,10 @@ struct BuildToolbarView: View {
         isBuildMode: Bool,
         hasBuildDecision: Bool = false
     ) -> CGFloat {
-        if compact {
-            return hasBuildDecision ? compactBuildDecisionMaximumHeight : compactClosedMaximumHeight
+        if hasBuildDecision {
+            return compact ? compactBuildDecisionMaximumHeight : 112
         }
-        return isBuildMode ? regularClosedMaximumHeight : regularSituationalMaximumHeight
+        return compact ? compactClosedMaximumHeight : regularSituationalMaximumHeight
     }
 
     private func buildDecisionRow(_ decision: CityBuildDecisionPresentation) -> some View {
@@ -282,12 +319,14 @@ struct BuildToolbarView: View {
                     .font(.system(size: GameTheme.hudCriticalTextSize, weight: .heavy, design: .rounded))
                     .foregroundStyle(GameTheme.accent)
                     .lineLimit(1)
-                Text("\(decision.target) · \(decision.footprint) · \(decision.cost)")
+                Text(compact
+                    ? "\(decision.target) · \(decision.cost)"
+                    : "\(decision.target) · \(decision.footprint) · \(decision.cost)")
                     .font(.system(size: GameTheme.hudCriticalTextSize - 1, weight: .semibold, design: .rounded))
                     .foregroundStyle(.secondary)
                     .lineLimit(compact ? 2 : 1)
             }
-            .frame(width: compact ? 230 : 280, alignment: .leading)
+            .frame(width: compact ? 205 : 280, alignment: .leading)
             .layoutPriority(3)
 
             Divider().frame(height: 36)
@@ -482,14 +521,14 @@ struct BuildToolbarView: View {
     private var detailsButton: some View {
         Button { store.perform(.toggleCommandCenter) } label: {
             Label("Details", systemImage: "rectangle.bottomthird.inset.filled")
-                .font(.caption.weight(.semibold))
+                .font(.system(size: GameTheme.hudCriticalTextSize, weight: .bold, design: .rounded))
                 .padding(.horizontal, 8)
                 .frame(minWidth: GameTheme.controlMinimum, minHeight: GameTheme.controlMinimum)
                 .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
         .foregroundStyle(store.showInspector ? Color.black : Color.primary)
-        .background(store.showInspector ? GameTheme.accent : GameTheme.inactiveControl, in: RoundedRectangle(cornerRadius: 9))
+        .background(store.showInspector ? GameTheme.accent : GameTheme.hudRaisedFill, in: RoundedRectangle(cornerRadius: 9))
         .help(store.showInspector ? "Close command-center details" : "Open command-center details")
         .accessibilityLabel(store.showInspector ? "Close command-center details" : "Open command-center details")
         .accessibilityValue(store.showInspector ? "Open" : "Closed")
@@ -499,8 +538,8 @@ struct BuildToolbarView: View {
     private var commandGuideButton: some View {
         let descriptor = CityCommandCatalog.descriptor(for: .openCommandGuide)
         return Button { store.perform(.openCommandGuide) } label: {
-            Label(compact ? "Cmds" : "Commands", systemImage: "command.square")
-                .font(.caption.weight(.semibold))
+            Label("Commands", systemImage: "command.square")
+                .font(.system(size: GameTheme.hudCriticalTextSize, weight: .bold, design: .rounded))
                 .lineLimit(1)
                 .fixedSize(horizontal: true, vertical: false)
                 .padding(.horizontal, compact ? 0 : 8)
@@ -508,7 +547,7 @@ struct BuildToolbarView: View {
                 .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
-        .background(GameTheme.inactiveControl, in: RoundedRectangle(cornerRadius: 9))
+        .background(GameTheme.hudRaisedFill, in: RoundedRectangle(cornerRadius: 9))
         .help("\(descriptor.discoverability) \(descriptor.shortcut?.display ?? "")")
         .accessibilityLabel("Open command guide")
         .accessibilityValue(descriptor.shortcut?.display ?? "No shortcut")
@@ -609,22 +648,24 @@ struct BuildToolbarView: View {
 
             Spacer(minLength: 2)
 
-            Text(presentation.status)
-                .font(.system(size: GameTheme.hudSupportTextSize, weight: .heavy, design: .rounded))
-                .foregroundStyle(tint)
-                .lineLimit(1)
-                .minimumScaleFactor(0.78)
-                .padding(.horizontal, 5)
-                .padding(.vertical, 2)
-                .background(tint.opacity(0.14), in: Capsule())
+            if presentation.opensDetails {
+                Text(presentation.status)
+                    .font(.system(size: GameTheme.hudSupportTextSize, weight: .heavy, design: .rounded))
+                    .foregroundStyle(tint)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.78)
+                    .padding(.horizontal, 5)
+                    .padding(.vertical, 2)
+                    .background(tint.opacity(0.14), in: Capsule())
+            }
         }
         .padding(.horizontal, 8)
         .frame(maxWidth: .infinity, minHeight: GameTheme.controlMinimum, alignment: .leading)
         .contentShape(Rectangle())
-        .background(GameTheme.contextCard.opacity(0.72), in: RoundedRectangle(cornerRadius: 9))
+        .background(GameTheme.contextCard.opacity(0.40), in: RoundedRectangle(cornerRadius: 9))
         .overlay(
             RoundedRectangle(cornerRadius: 9)
-                .stroke(tint.opacity(0.72), lineWidth: 1.5)
+                .stroke(presentation.opensDetails ? tint.opacity(0.55) : GameTheme.panelStroke, lineWidth: 1)
         )
     }
 
@@ -808,7 +849,7 @@ struct BuildToolbarView: View {
         }
         .buttonStyle(.plain)
         .foregroundStyle(active ? Color.black : Color.primary)
-        .background(active ? tint : GameTheme.inactiveControl, in: RoundedRectangle(cornerRadius: 9))
+        .background(active ? tint : Color.clear, in: RoundedRectangle(cornerRadius: 9))
         .accessibilityLabel("\(title) mode")
         .accessibilityValue(active ? "Selected" : "Not selected")
     }

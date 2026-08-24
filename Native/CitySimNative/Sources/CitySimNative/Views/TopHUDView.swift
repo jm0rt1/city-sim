@@ -89,47 +89,26 @@ struct TopHUDView: View {
     @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
     @AppStorage(CityPlayerPreferenceKey.reduceMotion) private var gameReduceMotion = false
 
-    static let compactMaximumHeight: CGFloat = 104
-    static let regularMaximumHeight: CGFloat = 108
+    static let compactMaximumHeight: CGFloat = 64
+    static let regularMaximumHeight: CGFloat = 68
 
     private var reduceMotion: Bool { systemReduceMotion || gameReduceMotion }
 
     var body: some View {
-        VStack(spacing: 4) {
-            statusRow
-            StrategyCommandCenterView(store: store, compact: compact)
-        }
-        .padding(.horizontal, 6)
-        .padding(.vertical, compact ? 6 : 4)
-        .frame(maxHeight: compact ? Self.compactMaximumHeight : Self.regularMaximumHeight)
-        .cityPanelBackground(
-            .thin,
-            in: RoundedRectangle(cornerRadius: GameTheme.panelRadius, style: .continuous)
-        )
-        .background(
-            GameTheme.hudSurfaceFill,
-            in: RoundedRectangle(cornerRadius: GameTheme.panelRadius, style: .continuous)
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: GameTheme.panelRadius, style: .continuous)
-                .stroke(GameTheme.strongPanelStroke)
-        )
-        .shadow(color: .black.opacity(0.2), radius: 12, y: 5)
+        statusRow
+        .frame(height: compact ? Self.compactMaximumHeight : Self.regularMaximumHeight)
         .accessibilityElement(children: .contain)
         .accessibilityLabel("City command status")
     }
 
     private var statusRow: some View {
-        HStack(spacing: compact ? 4 : 6) {
+        HStack(spacing: compact ? 6 : 9) {
             cityIdentity
-                .frame(width: compact ? 104 : 150)
-            objectiveSummary
-                .frame(width: compact ? 138 : 184)
-
-            hudDivider
-            metricRibbon
-                .layoutPriority(1)
-            hudDivider
+                .frame(width: compact ? 148 : 184)
+            missionSummary
+                .frame(width: compact ? 292 : 330)
+                .layoutPriority(3)
+            Spacer(minLength: 4)
             timeAndNotices
         }
         .frame(minHeight: GameTheme.controlMinimum)
@@ -166,12 +145,14 @@ struct TopHUDView: View {
                 }
                 .font(.system(size: GameTheme.hudCriticalTextSize, weight: .semibold, design: .rounded).monospacedDigit())
             }
-            .padding(.horizontal, 5)
+            .padding(.horizontal, 12)
             .frame(maxWidth: .infinity, minHeight: GameTheme.controlMinimum, alignment: .leading)
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
-        .background(GameTheme.contextCard.opacity(0.48), in: RoundedRectangle(cornerRadius: 9))
+        .background(GameTheme.hudSurfaceFill, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous).stroke(GameTheme.panelStroke))
+        .shadow(color: .black.opacity(0.22), radius: 9, y: 4)
         .help(store.persistenceStatus.help)
         .accessibilityLabel("Open \(store.state.cityName) command center")
         .accessibilityValue(
@@ -180,47 +161,78 @@ struct TopHUDView: View {
         .accessibilityIdentifier("hud.city.identity")
     }
 
-    private var objectiveSummary: some View {
+    private var missionSummary: some View {
         let objective = store.primaryObjective
         let mandateComplete = store.completedObjectiveCount == store.objectives.count
+        let strategy = CityStrategyHUDPresentation.make(state: store.state)
+        let response = strategy.diagnostic ?? strategy.actions.first
+        let actionTitle = response.map {
+            StrategyCommandCenterView.recoveryRouteTitle(for: $0, compact: true)
+        } ?? "Review goal"
+        let actionOutcome = response.map(StrategyCommandCenterView.recoveryRouteOutcome)
+            ?? objective.remaining
 
         return Button {
-            withAnimation(GameTheme.animation(reduceMotion: reduceMotion)) {
-                _ = store.perform(.toggleObjectives)
-            }
-        } label: {
-            HStack(spacing: 5) {
-                Image(systemName: mandateComplete ? "checkmark.circle.fill" : "flag.checkered")
-                    .foregroundStyle(mandateComplete ? GameTheme.accent : GameTheme.information)
-                    .accessibilityHidden(true)
-                VStack(alignment: .leading, spacing: 2) {
-                    HStack(spacing: 3) {
-                        Text(mandateComplete
-                            ? (store.state.authoredScenario == nil ? "Mandate complete" : "Scenario targets complete")
-                            : objective.title)
-                            .font(.system(size: GameTheme.hudCriticalTextSize, weight: .bold, design: .rounded))
-                            .lineLimit(1)
-                        Spacer(minLength: 1)
-                        if !compact {
-                            Text("\(store.completedObjectiveCount)/\(store.objectives.count)")
-                                .font(.system(size: GameTheme.hudCriticalTextSize, weight: .semibold, design: .monospaced))
-                                .foregroundStyle(.secondary)
-                        }
-                    }
-                    ProgressView(value: objective.progress)
-                        .tint(mandateComplete ? GameTheme.accent : GameTheme.information)
+            if let response {
+                StrategyCommandCenterView.perform(response, on: store)
+            } else {
+                withAnimation(GameTheme.animation(reduceMotion: reduceMotion)) {
+                    _ = store.perform(.toggleObjectives)
                 }
             }
-            .padding(.horizontal, 5)
-            .frame(maxWidth: .infinity, minHeight: GameTheme.controlMinimum)
+        } label: {
+            VStack(alignment: .leading, spacing: 3) {
+                HStack(spacing: 4) {
+                    Image(systemName: mandateComplete ? "checkmark.circle.fill" : "flag.checkered")
+                        .accessibilityHidden(true)
+                    Text(mandateComplete
+                        ? (store.state.authoredScenario == nil ? "Mandate complete" : "Scenario complete")
+                        : objective.title)
+                        .font(.system(size: GameTheme.hudSupportTextSize, weight: .heavy, design: .rounded))
+                        .textCase(.uppercase)
+                        .lineLimit(1)
+                    Spacer(minLength: 4)
+                    Text(objective.progress, format: .percent.precision(.fractionLength(0)))
+                        .font(.system(size: 11, weight: .bold, design: .rounded).monospacedDigit())
+                        .opacity(0.72)
+                }
+                HStack(spacing: 4) {
+                    Text(actionTitle)
+                        .font(.system(size: compact ? 15 : 16, weight: .heavy, design: .rounded))
+                        .lineLimit(1)
+                    Spacer(minLength: 4)
+                    Image(systemName: "arrow.right.circle.fill")
+                        .font(.system(size: 16, weight: .bold))
+                        .accessibilityHidden(true)
+                }
+            }
+            .foregroundStyle(Color.black.opacity(0.88))
+            .padding(.horizontal, 12)
+            .frame(maxWidth: .infinity, minHeight: GameTheme.controlMinimum, alignment: .leading)
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
-        .background(GameTheme.contextCard.opacity(0.48), in: RoundedRectangle(cornerRadius: 9))
-        .help(mandateComplete ? "All objectives achieved" : objective.remaining)
-        .accessibilityLabel(store.showObjectives ? "Hide objectives" : "Show objectives")
-        .accessibilityValue(mandateComplete ? "All objectives complete" : objective.remaining)
-        .accessibilityIdentifier("hud.objective.summary")
+        .background(GameTheme.primaryAction, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+        .overlay(
+            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                .stroke(Color.white.opacity(0.30), lineWidth: 1)
+        )
+        .shadow(color: .black.opacity(0.22), radius: 9, y: 4)
+        .disabled(response.map { !store.canPerform($0.command) } ?? false)
+        .help(response.flatMap { store.disabledReason(for: $0.command) } ?? response?.explanation ?? objective.remaining)
+        .accessibilityLabel(response == nil ? "Review current goal" : "Next action: \(actionTitle)")
+        .accessibilityValue("\(objective.remaining). \(actionOutcome)")
+        .accessibilityHint(response?.explanation ?? "Opens objective details")
+        .accessibilityIdentifier(response == nil ? "hud.objective.summary" : "hud.strategy.primary")
+    }
+
+    private func strategyTint(_ tone: CityStrategyHUDTone) -> Color {
+        switch tone {
+        case .decision: GameTheme.information
+        case .active: GameTheme.warning
+        case .urgent: GameTheme.danger
+        case .recovery, .resolved: GameTheme.accent
+        }
     }
 
     static func simulationState(for speed: SimulationSpeed) -> HUDSimulationStatePresentation {
@@ -294,30 +306,6 @@ struct TopHUDView: View {
                 dense: true
             ) { store.perform(.inspectorPopulation) }
 
-            MetricCard(
-                identifier: "hud.metric.happiness",
-                title: "Happiness",
-                shortTitle: "Happy",
-                value: store.state.happiness.percentText,
-                symbol: "face.smiling.fill",
-                tint: store.state.happiness >= 60 ? GameTheme.accent : GameTheme.warning,
-                detail: "Appr \(store.state.approval.percentText)",
-                progress: store.state.happiness / 100,
-                dense: true
-            ) { store.perform(.inspectorHappiness) }
-
-            MetricCard(
-                identifier: "hud.metric.employment",
-                title: "Jobs filled",
-                shortTitle: "Jobs",
-                value: store.state.jobs.compactText,
-                symbol: "briefcase.fill",
-                tint: .purple,
-                detail: "Open \(store.analytics.jobHeadroom.compactText)",
-                progress: store.analytics.jobUtilization,
-                dense: true
-            ) { store.perform(.inspectorEmployment) }
-
             if compact {
                 CompactUtilityMetricCard(
                     coverage: (store.analytics.utilityCoverage * 100).percentText,
@@ -344,7 +332,7 @@ struct TopHUDView: View {
         }
         .frame(maxWidth: .infinity)
         .accessibilityElement(children: .contain)
-        .accessibilityLabel("City status")
+        .accessibilityLabel("Essential city status")
     }
 
     private var treasuryMetricValue: String {
@@ -359,54 +347,76 @@ struct TopHUDView: View {
     }
 
     private var timeAndNotices: some View {
-        HStack(spacing: 4) {
-            ForEach(SimulationSpeed.allCases) { speed in
-                Button { store.perform(CityCommandCatalog.id(for: speed)) } label: {
-                    Text(speed.controlLabel)
-                        .font(.caption.weight(.bold))
-                        .frame(minWidth: speed == .paused ? (compact ? 48 : 52) : GameTheme.controlMinimum)
-                        .frame(minHeight: GameTheme.controlMinimum)
-                        .contentShape(Rectangle())
-                }
-                .buttonStyle(.plain)
-                .foregroundStyle(store.speed == speed ? Color.black : Color.primary)
-                .background(
-                    store.speed == speed ? GameTheme.accent : GameTheme.inactiveControl,
-                    in: RoundedRectangle(cornerRadius: 9)
+        HStack(spacing: 3) {
+            Button { store.perform(.togglePause) } label: {
+                Label(
+                    store.speed == .paused ? "Resume" : "Pause",
+                    systemImage: store.speed == .paused ? "play.fill" : "pause.fill"
                 )
-                .help(
-                    speed == .paused
-                        ? Self.simulationControlHelp(for: store.speed)
-                        : "Set simulation to \(speed.controlLabel) · \(speed.rawValue)"
-                )
-                .accessibilityLabel(
-                    speed == .paused
-                        ? Self.simulationControlAccessibilityLabel(for: store.speed)
-                        : "Set simulation speed to \(speed.controlLabel)"
-                )
-                .accessibilityValue(store.speed == speed ? "Selected" : "Not selected")
-                .accessibilityIdentifier("hud.speed.\(speed.rawValue)")
+                .font(.system(size: GameTheme.hudCriticalTextSize, weight: .heavy, design: .rounded))
+                .padding(.horizontal, compact ? 8 : 11)
+                .frame(minHeight: GameTheme.controlMinimum)
+                .contentShape(Rectangle())
             }
+            .buttonStyle(.plain)
+            .foregroundStyle(store.speed == .paused ? Color.black : Color.primary)
+            .background(
+                store.speed == .paused ? GameTheme.primaryAction : GameTheme.hudRaisedFill,
+                in: RoundedRectangle(cornerRadius: 9)
+            )
+            .help(Self.simulationControlHelp(for: store.speed))
+            .accessibilityLabel(Self.simulationControlAccessibilityLabel(for: store.speed))
+            .accessibilityValue(simulationStatus.accessibilityValue)
+            .accessibilityIdentifier("hud.speed.paused")
+
+            Menu {
+                ForEach(SimulationSpeed.allCases.filter { $0 != .paused }) { speed in
+                    Button { store.perform(CityCommandCatalog.id(for: speed)) } label: {
+                        Label(
+                            speed.controlLabel,
+                            systemImage: store.speed == speed ? "checkmark.circle.fill" : "gauge.with.dots.needle.50percent"
+                        )
+                    }
+                    .accessibilityLabel("Set simulation speed to \(speed.controlLabel)")
+                    .accessibilityValue(store.speed == speed ? "Selected" : "Not selected")
+                    .accessibilityIdentifier("hud.speed.\(speed.rawValue)")
+                }
+            } label: {
+                Label(
+                    store.speed == .paused ? "Speed" : Self.compactSimulationLabel(for: store.speed),
+                    systemImage: "gauge.with.dots.needle.50percent"
+                )
+                .font(.system(size: GameTheme.hudCriticalTextSize, weight: .bold, design: .rounded))
+                .padding(.horizontal, compact ? 5 : 8)
+                .frame(minWidth: GameTheme.controlMinimum, minHeight: GameTheme.controlMinimum)
+            }
+            .menuStyle(.borderlessButton)
+            .background(GameTheme.hudRaisedFill, in: RoundedRectangle(cornerRadius: 9))
+            .accessibilityLabel("Simulation speed")
+            .accessibilityValue(simulationStatus.accessibilityValue)
 
             Button { store.perform(.openNotices) } label: {
-                Label(compact ? "\(store.alertCount)" : "Notices \(store.alertCount)", systemImage: noticeSymbol)
-                    .font(.caption.weight(.semibold))
+                Image(systemName: noticeSymbol)
+                    .font(.system(size: 15, weight: .bold))
                     .foregroundStyle(noticeColor)
-                    .padding(.horizontal, compact ? 5 : 8)
                     .frame(minWidth: GameTheme.controlMinimum, minHeight: GameTheme.controlMinimum)
             }
             .buttonStyle(.plain)
-            .background(GameTheme.inactiveControl, in: RoundedRectangle(cornerRadius: 9))
+            .background(GameTheme.hudRaisedFill, in: RoundedRectangle(cornerRadius: 9))
             .accessibilityLabel("Open city notices")
             .accessibilityValue(noticeAccessibilityValue)
             .accessibilityIdentifier("hud.notices")
         }
+        .padding(4)
+        .background(GameTheme.hudSurfaceFill, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous).stroke(GameTheme.panelStroke))
+        .shadow(color: .black.opacity(0.22), radius: 9, y: 4)
     }
 
     private var hudDivider: some View {
         Rectangle()
             .fill(GameTheme.subtleDivider)
-            .frame(width: 1, height: 34)
+            .frame(width: 1, height: 38)
             .padding(.horizontal, compact ? 1 : 3)
     }
 

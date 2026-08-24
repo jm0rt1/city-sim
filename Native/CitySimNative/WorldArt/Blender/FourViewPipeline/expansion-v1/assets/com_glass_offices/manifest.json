@@ -1,0 +1,106 @@
+{
+  "artifacts": [
+    {
+      "bytes": 556201,
+      "path": "assets/com_glass_offices/com_glass_offices.blend",
+      "sha256": "c8e0cb0aed2f3ad5f255d6f8299129bfcbce75cb38203552f30bf5b144c892d9"
+    },
+    {
+      "bytes": 42574,
+      "decodedRgbaSha256": "89284a12467ce0704d761d6997695b507bc57377789e0f1539619621412f7608",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/com_glass_offices/renders/com_glass_offices_camNE.png",
+      "sha256": "8c6a948678b25aac10f9e986689c1322050be9b2d27ba116d0df1dbbec7d2ce2"
+    },
+    {
+      "bytes": 50337,
+      "decodedRgbaSha256": "1af18c09528114d98e1aa635599d8acaf73ca84f7833ce86e164658fc31463f8",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/com_glass_offices/renders/com_glass_offices_camSE.png",
+      "sha256": "c658550038f222a7758a2d434898729407770416fb670ba6aa99cb5f746d742a"
+    },
+    {
+      "bytes": 52591,
+      "decodedRgbaSha256": "ad5d39d758775819970a8ff3ea631c6811f7af692b56802185b3fe1339333a90",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/com_glass_offices/renders/com_glass_offices_camSW.png",
+      "sha256": "3f00fd0c8467f4bd9b704830358f301c6f49c94fb310f61af3775152a53804ec"
+    },
+    {
+      "bytes": 46559,
+      "decodedRgbaSha256": "3ce977d8cccc30ab6da8159af28607c735bbd3f20bc53eb4b3f04ada48c501f0",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/com_glass_offices/renders/com_glass_offices_camNW.png",
+      "sha256": "7c6e9ad8506c375ab9b1c22345df1c939077831e63a8029cd279d499e8fb9c78"
+    },
+    {
+      "bytes": 152251,
+      "decodedRgbaSha256": "76e2336e10a73f014ebf6aae181dd7bc72db1bb4560ec19f910aaa7406d41017",
+      "dimensions": [
+        784,
+        784
+      ],
+      "path": "assets/com_glass_offices/com_glass_offices_contact-sheet.png",
+      "sha256": "b11a6682a9d93452df60a25ba4b30d16eaaea782620615e5d432e646ab82ab07"
+    }
+  ],
+  "assetId": "com_glass_offices",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "family": "commercial",
+  "lightingConvention": {
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldStrength": 0.65
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "pipelineSchema": "citysim.world-art.blender-four-view-pipeline.v1",
+  "postRenderCompensation": "none",
+  "rootPivotWorld": [
+    0,
+    0,
+    0
+  ],
+  "schema": "citysim.world-art.expansion-v1.asset.v1",
+  "sourcePixelsReused": false,
+  "status": "generation-candidate-not-admitted",
+  "toolchain": {
+    "blenderVersion": "4.5.12",
+    "renderEngine": "BLENDER_EEVEE_NEXT"
+  },
+  "typology": "glassoffice"
+}

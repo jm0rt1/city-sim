@@ -1,0 +1,106 @@
+{
+  "artifacts": [
+    {
+      "bytes": 569990,
+      "path": "assets/com_rooftop_cafe/com_rooftop_cafe.blend",
+      "sha256": "b0eebb05fe16efaec576f57ba7eb0663ae8ad7b392637514504d97c94cb55114"
+    },
+    {
+      "bytes": 41435,
+      "decodedRgbaSha256": "4272cdff0003b82e3c0ef32ceda2e06756771ac1b72495d5a02e39aff5110ed0",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/com_rooftop_cafe/renders/com_rooftop_cafe_camNE.png",
+      "sha256": "1c225e61137a08a6b4fa3990e44cbc95760b258ded61a512d3e303b8b5c74aaa"
+    },
+    {
+      "bytes": 46846,
+      "decodedRgbaSha256": "b846d4708ca1f89558ac99bf16b9ea8c61cf3fd274ca53e701496751c8bb995e",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/com_rooftop_cafe/renders/com_rooftop_cafe_camSE.png",
+      "sha256": "120fe200c8686ea8f2d1bad0a52edfa3033427a299e15b3a8dfd36f9fab1e127"
+    },
+    {
+      "bytes": 48085,
+      "decodedRgbaSha256": "3f0693138a9206284b09e515ba42a1af82e32f2705af1b34868cc9fbbe2f508d",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/com_rooftop_cafe/renders/com_rooftop_cafe_camSW.png",
+      "sha256": "026db5ef717dda27bbfa74cf7ee65639f6d4f401673e3dd3cf3ee101d4da9212"
+    },
+    {
+      "bytes": 44321,
+      "decodedRgbaSha256": "97ee658afe6e5bb7381545a1f74b909e6e6c259f44644442ea449e53bb8b57cd",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/com_rooftop_cafe/renders/com_rooftop_cafe_camNW.png",
+      "sha256": "3086c7584dcf4e131a1b085ce2eb4ab18a2204d330b26285c053bd1aa94b8532"
+    },
+    {
+      "bytes": 140348,
+      "decodedRgbaSha256": "d775bcdae0cf5aad1cc6f4f90bf003af2baf5dbf0197f7239e9b7a26d9305495",
+      "dimensions": [
+        784,
+        784
+      ],
+      "path": "assets/com_rooftop_cafe/com_rooftop_cafe_contact-sheet.png",
+      "sha256": "aa95e5d93425ccdd5b9b4394edcf2ce08a05f6b465551a8826178ed5e0d39b78"
+    }
+  ],
+  "assetId": "com_rooftop_cafe",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "family": "commercial",
+  "lightingConvention": {
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldStrength": 0.65
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "pipelineSchema": "citysim.world-art.blender-four-view-pipeline.v1",
+  "postRenderCompensation": "none",
+  "rootPivotWorld": [
+    0,
+    0,
+    0
+  ],
+  "schema": "citysim.world-art.expansion-v1.asset.v1",
+  "sourcePixelsReused": false,
+  "status": "generation-candidate-not-admitted",
+  "toolchain": {
+    "blenderVersion": "4.5.12",
+    "renderEngine": "BLENDER_EEVEE_NEXT"
+  },
+  "typology": "cafe"
+}

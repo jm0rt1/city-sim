@@ -1,0 +1,106 @@
+{
+  "artifacts": [
+    {
+      "bytes": 559087,
+      "path": "assets/ind_repair_shed/ind_repair_shed.blend",
+      "sha256": "b78553ab066e840594e48d34f79efbe50b760b3946043e5b305b2982a780cddd"
+    },
+    {
+      "bytes": 42821,
+      "decodedRgbaSha256": "c68e70c7922c13918847ed5d78ecb4496f225afde11765ad27f65f60b8447d16",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/ind_repair_shed/renders/ind_repair_shed_camNE.png",
+      "sha256": "2583f9d4d7922a91325d5166d57e838c1fdc1a05eaf7bb3e45746baa8f00c872"
+    },
+    {
+      "bytes": 47361,
+      "decodedRgbaSha256": "cf636e3106db3e902c19258c8161c3bf59439e78cabf984a2a15bcdc781c4764",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/ind_repair_shed/renders/ind_repair_shed_camSE.png",
+      "sha256": "734b62223ceb74d38b2c818610aeacdd43300979df8bd6c19d7e07635d1aa2f0"
+    },
+    {
+      "bytes": 48610,
+      "decodedRgbaSha256": "89f67955187d67c9987843b5ec80d463ec0b02ae9365944c8eb03cf6b217d1ac",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/ind_repair_shed/renders/ind_repair_shed_camSW.png",
+      "sha256": "ba6d0e33edeca98463987cd4ee0079b2b197e18ca1160cdab45617749a971cfb"
+    },
+    {
+      "bytes": 45620,
+      "decodedRgbaSha256": "8eeb3d17918396eb9174622d1959195eabaff25a26183fb97eee6923974f861d",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/ind_repair_shed/renders/ind_repair_shed_camNW.png",
+      "sha256": "a6b75bdb07535991cf500bedadc10e3936990cb35d5e1049875470d7ce299759"
+    },
+    {
+      "bytes": 145646,
+      "decodedRgbaSha256": "710c23b54d2f0481ab5fb93801c4e4a0546aac6578d8f5e32cae84251c60e2df",
+      "dimensions": [
+        784,
+        784
+      ],
+      "path": "assets/ind_repair_shed/ind_repair_shed_contact-sheet.png",
+      "sha256": "69913678ee61ccd2c86d125a86f3aa8858ddb2e3239089784af5d82158a9bafa"
+    }
+  ],
+  "assetId": "ind_repair_shed",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "family": "industrial",
+  "lightingConvention": {
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldStrength": 0.65
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "pipelineSchema": "citysim.world-art.blender-four-view-pipeline.v1",
+  "postRenderCompensation": "none",
+  "rootPivotWorld": [
+    0,
+    0,
+    0
+  ],
+  "schema": "citysim.world-art.expansion-v1.asset.v1",
+  "sourcePixelsReused": false,
+  "status": "generation-candidate-not-admitted",
+  "toolchain": {
+    "blenderVersion": "4.5.12",
+    "renderEngine": "BLENDER_EEVEE_NEXT"
+  },
+  "typology": "repair"
+}

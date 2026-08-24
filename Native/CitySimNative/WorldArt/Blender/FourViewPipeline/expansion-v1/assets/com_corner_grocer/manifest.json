@@ -1,0 +1,106 @@
+{
+  "artifacts": [
+    {
+      "bytes": 560542,
+      "path": "assets/com_corner_grocer/com_corner_grocer.blend",
+      "sha256": "882056bbaddc8fef7a8a14dad57d48df8ab224b7d97465f1b509d8a0087b762f"
+    },
+    {
+      "bytes": 42487,
+      "decodedRgbaSha256": "43b7439386c80bb758ba5ae2a33c61027f8145056b2631fe942394f626ebdc7e",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/com_corner_grocer/renders/com_corner_grocer_camNE.png",
+      "sha256": "957a84d552be376aa510e0f3ce73dec1bc8d41818c1c22b1ece0b18575c58ca7"
+    },
+    {
+      "bytes": 45649,
+      "decodedRgbaSha256": "605467c789c1746365951b10772a895ce1b2d03ee52778aa8670676177e16ef8",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/com_corner_grocer/renders/com_corner_grocer_camSE.png",
+      "sha256": "788b9971bfe95d8729e382fbb788760338d73fd909cba45b92a25f9bb6542cd8"
+    },
+    {
+      "bytes": 46473,
+      "decodedRgbaSha256": "5f7a5a24d5b19de2b83bb2bcb75e4a83478ec3a50faffda118f3aaad75c8d3d2",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/com_corner_grocer/renders/com_corner_grocer_camSW.png",
+      "sha256": "ef8f5f8211cb72889fabbdf259a8648c9c6f7bed5ce4a5a907b306e78466af84"
+    },
+    {
+      "bytes": 44007,
+      "decodedRgbaSha256": "ab2e4a81c86332835cb81247ed6de89622db3aca2ab312ad3e2a5a4770c15e6b",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/com_corner_grocer/renders/com_corner_grocer_camNW.png",
+      "sha256": "3953c1081c66b041b2c578fd7b5dae6580332170167ca40282674b1c925747f4"
+    },
+    {
+      "bytes": 139142,
+      "decodedRgbaSha256": "f5b4ac0b00123ba76ea4752c71e43d2747227b3935824bfbae71c137004221e6",
+      "dimensions": [
+        784,
+        784
+      ],
+      "path": "assets/com_corner_grocer/com_corner_grocer_contact-sheet.png",
+      "sha256": "a21063435ce403d1b2cf9e3f53dec9663dc36e5e067361d7209196d638b1010e"
+    }
+  ],
+  "assetId": "com_corner_grocer",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "family": "commercial",
+  "lightingConvention": {
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldStrength": 0.65
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "pipelineSchema": "citysim.world-art.blender-four-view-pipeline.v1",
+  "postRenderCompensation": "none",
+  "rootPivotWorld": [
+    0,
+    0,
+    0
+  ],
+  "schema": "citysim.world-art.expansion-v1.asset.v1",
+  "sourcePixelsReused": false,
+  "status": "generation-candidate-not-admitted",
+  "toolchain": {
+    "blenderVersion": "4.5.12",
+    "renderEngine": "BLENDER_EEVEE_NEXT"
+  },
+  "typology": "grocer"
+}

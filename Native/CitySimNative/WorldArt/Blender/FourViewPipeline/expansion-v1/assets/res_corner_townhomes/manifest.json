@@ -1,0 +1,106 @@
+{
+  "artifacts": [
+    {
+      "bytes": 588902,
+      "path": "assets/res_corner_townhomes/res_corner_townhomes.blend",
+      "sha256": "43e15098f520ad308aa05cc96493323e5fb2545e6f35a8a59235aee74687fd6c"
+    },
+    {
+      "bytes": 42843,
+      "decodedRgbaSha256": "9d4c245aab4dbdd30335f62ec0d9698202832850f2195975e36a0a89f0ee8907",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/res_corner_townhomes/renders/res_corner_townhomes_camNE.png",
+      "sha256": "6eccb7f0a57e5e36708abc8cf1be3737c5eb4558d016a429f0c9e4b28d8a330d"
+    },
+    {
+      "bytes": 48058,
+      "decodedRgbaSha256": "e4674c390f5a2458958ea0af25f16a78890d8f0e6e9da19ebf44b8142ae7a7c3",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/res_corner_townhomes/renders/res_corner_townhomes_camSE.png",
+      "sha256": "bd667f49b9108ee2e0e9750924ece69d24910000a200644806eb709521869292"
+    },
+    {
+      "bytes": 49932,
+      "decodedRgbaSha256": "7f4952dc160fff7831eb9275f0ba6e47a4c0a6822c20a542b0e7aa257577041b",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/res_corner_townhomes/renders/res_corner_townhomes_camSW.png",
+      "sha256": "2f6de020cceafca492973ac3acd289ae443989e32bfd8e933669d101dbfc7509"
+    },
+    {
+      "bytes": 46459,
+      "decodedRgbaSha256": "f002c1d3f53dc12cd661fe83612f5bcff7c9d48dfa06236ee4a093358601127e",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/res_corner_townhomes/renders/res_corner_townhomes_camNW.png",
+      "sha256": "b943fb1662e9bd262338e821174e00d1c32feab160a75a1676cad085975be0b7"
+    },
+    {
+      "bytes": 148924,
+      "decodedRgbaSha256": "de878a4e4397a82105a86a81ce187a7844abc976c5253c76cc690a0780ffc9fe",
+      "dimensions": [
+        784,
+        784
+      ],
+      "path": "assets/res_corner_townhomes/res_corner_townhomes_contact-sheet.png",
+      "sha256": "3cb9a3bdead06474d210a9518087d2bd6c3bb8f63bfa5d926a3e5f2ff7662b63"
+    }
+  ],
+  "assetId": "res_corner_townhomes",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "family": "residential",
+  "lightingConvention": {
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldStrength": 0.65
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "pipelineSchema": "citysim.world-art.blender-four-view-pipeline.v1",
+  "postRenderCompensation": "none",
+  "rootPivotWorld": [
+    0,
+    0,
+    0
+  ],
+  "schema": "citysim.world-art.expansion-v1.asset.v1",
+  "sourcePixelsReused": false,
+  "status": "generation-candidate-not-admitted",
+  "toolchain": {
+    "blenderVersion": "4.5.12",
+    "renderEngine": "BLENDER_EEVEE_NEXT"
+  },
+  "typology": "townhomes"
+}

@@ -1,0 +1,106 @@
+{
+  "artifacts": [
+    {
+      "bytes": 598918,
+      "path": "assets/ind_cylinder_depot/ind_cylinder_depot.blend",
+      "sha256": "63cd586eebfd6e8e171f712e72abd58733ef2dec3f9a18bd2495584b8963b00d"
+    },
+    {
+      "bytes": 45394,
+      "decodedRgbaSha256": "a7388fa0e17294016fdeb37efffd0fb4ccea3973393e08c5d0af367397046d5d",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/ind_cylinder_depot/renders/ind_cylinder_depot_camNE.png",
+      "sha256": "0372057cd653473aeb1abb26b93b1d1e22bf8e2cea1e055763cb3d14ccd6befc"
+    },
+    {
+      "bytes": 50480,
+      "decodedRgbaSha256": "116775e41539ea94544a5465267e04da86b68df3b1fe29e427e3240df49475bb",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/ind_cylinder_depot/renders/ind_cylinder_depot_camSE.png",
+      "sha256": "f98406596ebe9d1499dcdae13a750167c607f91a1ff3c21246c66b1ae86e3c10"
+    },
+    {
+      "bytes": 51717,
+      "decodedRgbaSha256": "6544484cd62df27fb6de4ea1b2517b2a85387372d4334adc131f7cb5ddfd74ee",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/ind_cylinder_depot/renders/ind_cylinder_depot_camSW.png",
+      "sha256": "81dd05d5fa1bc4b55afc3285f5e07965fb3aead1348ac8c18e2144a490d66da4"
+    },
+    {
+      "bytes": 48097,
+      "decodedRgbaSha256": "0c665913b1a2f8c4b06171216bf68287b784ebfe2c8d4e27b3170ab9fbfee360",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/ind_cylinder_depot/renders/ind_cylinder_depot_camNW.png",
+      "sha256": "680a9f7c258ae55915ee4f65c8bb36c29052974a328e16c9e4b63e907ed82763"
+    },
+    {
+      "bytes": 154995,
+      "decodedRgbaSha256": "978fce129ef6fc5c5138f06940589943224a2ffac1b022b4e4c60102e3d36718",
+      "dimensions": [
+        784,
+        784
+      ],
+      "path": "assets/ind_cylinder_depot/ind_cylinder_depot_contact-sheet.png",
+      "sha256": "1846ba310710a486ebabca210648d72ea0fca5bd71300af718537e12cbe57121"
+    }
+  ],
+  "assetId": "ind_cylinder_depot",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "family": "industrial",
+  "lightingConvention": {
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldStrength": 0.65
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "pipelineSchema": "citysim.world-art.blender-four-view-pipeline.v1",
+  "postRenderCompensation": "none",
+  "rootPivotWorld": [
+    0,
+    0,
+    0
+  ],
+  "schema": "citysim.world-art.expansion-v1.asset.v1",
+  "sourcePixelsReused": false,
+  "status": "generation-candidate-not-admitted",
+  "toolchain": {
+    "blenderVersion": "4.5.12",
+    "renderEngine": "BLENDER_EEVEE_NEXT"
+  },
+  "typology": "cylinder"
+}

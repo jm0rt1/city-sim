@@ -1,0 +1,106 @@
+{
+  "artifacts": [
+    {
+      "bytes": 602692,
+      "path": "assets/res_tower_setback/res_tower_setback.blend",
+      "sha256": "704c00dde8b402e200a54150a61767b5b26aa836eb5864cfee1539fb0ae8e3e0"
+    },
+    {
+      "bytes": 47794,
+      "decodedRgbaSha256": "1768d4b1366c770c0d690ea4e0ee0fb202a1ef3728b8bdb2e55b37f4956f1e90",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/res_tower_setback/renders/res_tower_setback_camNE.png",
+      "sha256": "1909a0f84d5b54d1ff005597e472b14237a08beb2194f2ccc231fe13870a854e"
+    },
+    {
+      "bytes": 54623,
+      "decodedRgbaSha256": "4e2c1738dcf9f15879a274e96ce7b0571aa41192319d83a58624f4b274b46f0b",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/res_tower_setback/renders/res_tower_setback_camSE.png",
+      "sha256": "6eaff1a2e5b64524e43e4c74b3fbcd548e63b6a0bed9a80405188c32f7030d55"
+    },
+    {
+      "bytes": 57010,
+      "decodedRgbaSha256": "7eadf5c863ffe76ae34115b32efe6cf828e0ed979b7341686d4a7466ea37a85d",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/res_tower_setback/renders/res_tower_setback_camSW.png",
+      "sha256": "14c7607f7f47039409f97eaab9ca991dedea9496300c2f20f8d18a3eee03723b"
+    },
+    {
+      "bytes": 52380,
+      "decodedRgbaSha256": "cf698c39c034941ee7dce0c8d6126876288db90a472cd8321fb1295a5199133e",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/res_tower_setback/renders/res_tower_setback_camNW.png",
+      "sha256": "893d3a974faacb3e3b3a79571991b02615c74e8f3670a59b961bbb547fa10674"
+    },
+    {
+      "bytes": 171954,
+      "decodedRgbaSha256": "293b17a0c746118c5c69b6fbb588b95fd5d80a1ef0a3c194b15191b95d3765e9",
+      "dimensions": [
+        784,
+        784
+      ],
+      "path": "assets/res_tower_setback/res_tower_setback_contact-sheet.png",
+      "sha256": "f3375fa0809ddb0397369326b1eb702fb3d9dc7205a908021e40c8bb5bbf9fa3"
+    }
+  ],
+  "assetId": "res_tower_setback",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "family": "residential",
+  "lightingConvention": {
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldStrength": 0.65
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "pipelineSchema": "citysim.world-art.blender-four-view-pipeline.v1",
+  "postRenderCompensation": "none",
+  "rootPivotWorld": [
+    0,
+    0,
+    0
+  ],
+  "schema": "citysim.world-art.expansion-v1.asset.v1",
+  "sourcePixelsReused": false,
+  "status": "generation-candidate-not-admitted",
+  "toolchain": {
+    "blenderVersion": "4.5.12",
+    "renderEngine": "BLENDER_EEVEE_NEXT"
+  },
+  "typology": "tower"
+}

@@ -1,0 +1,106 @@
+{
+  "artifacts": [
+    {
+      "bytes": 592237,
+      "path": "assets/civ_firehouse/civ_firehouse.blend",
+      "sha256": "50ad2ea2f4d930be557e13caada9853a12d3c876b90d220dfafd06a787cfc726"
+    },
+    {
+      "bytes": 42744,
+      "decodedRgbaSha256": "87428517c934dbc080d8523656f1a1279a5a5f00fc0974c2f8cfb3ea9774bbac",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/civ_firehouse/renders/civ_firehouse_camNE.png",
+      "sha256": "e0e4bead140816a1ef808990c3a3077f94b806e872894f7983ce9a02b517ae0c"
+    },
+    {
+      "bytes": 49288,
+      "decodedRgbaSha256": "2c301b1b3161ec3ddc6128d9f876add327e50d62a4b784c8229a7eb907a1f4f9",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/civ_firehouse/renders/civ_firehouse_camSE.png",
+      "sha256": "46fcc014179d173b1a4e352218d14f4491641e3102a2c2c7c2fee6dd32e34531"
+    },
+    {
+      "bytes": 51081,
+      "decodedRgbaSha256": "db49b1695096aacfd893ef504189575ebea6c8404378866a2e6a8c39baca8aa5",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/civ_firehouse/renders/civ_firehouse_camSW.png",
+      "sha256": "ab3bd4766ae736241d246e4a6206019f5676cd19c8fb115615241d9e286f14a4"
+    },
+    {
+      "bytes": 46566,
+      "decodedRgbaSha256": "0a673925b74d78ffbf6dde18fced7b0e1c10ce9c3db58d63ba143b50f7fbbbde",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/civ_firehouse/renders/civ_firehouse_camNW.png",
+      "sha256": "4a0aa84803475b9a3728554a4c55d994693f47fbb8b7d64f1a0e011d7d8eaff9"
+    },
+    {
+      "bytes": 151322,
+      "decodedRgbaSha256": "d0d9e54f8593bb7dff6676eb783bcd845c6e31d8a1a20a59a20f0026a073ab8f",
+      "dimensions": [
+        784,
+        784
+      ],
+      "path": "assets/civ_firehouse/civ_firehouse_contact-sheet.png",
+      "sha256": "1ecee68e8c5a533196cef89e08d7cbd495e53003fa8e645fd62644f9173f32ab"
+    }
+  ],
+  "assetId": "civ_firehouse",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "family": "civic-service",
+  "lightingConvention": {
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldStrength": 0.65
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "pipelineSchema": "citysim.world-art.blender-four-view-pipeline.v1",
+  "postRenderCompensation": "none",
+  "rootPivotWorld": [
+    0,
+    0,
+    0
+  ],
+  "schema": "citysim.world-art.expansion-v1.asset.v1",
+  "sourcePixelsReused": false,
+  "status": "generation-candidate-not-admitted",
+  "toolchain": {
+    "blenderVersion": "4.5.12",
+    "renderEngine": "BLENDER_EEVEE_NEXT"
+  },
+  "typology": "firehouse"
+}

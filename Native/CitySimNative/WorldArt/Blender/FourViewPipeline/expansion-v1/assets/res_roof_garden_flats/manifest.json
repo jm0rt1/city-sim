@@ -1,0 +1,106 @@
+{
+  "artifacts": [
+    {
+      "bytes": 593250,
+      "path": "assets/res_roof_garden_flats/res_roof_garden_flats.blend",
+      "sha256": "3a4a2c60c2ee807d16b99e0d772d82edd64a6764f507c158df4d4a35a93b8ce6"
+    },
+    {
+      "bytes": 44457,
+      "decodedRgbaSha256": "d4f2889ff45c20d47eca5d3b4c4dcaaf5d2f6fd2f0411384da3211e4d8c6e56f",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/res_roof_garden_flats/renders/res_roof_garden_flats_camNE.png",
+      "sha256": "2e3065a93db4f6ec42da4bc2b1eed98c5e4822107ded216d52160e9c15127adb"
+    },
+    {
+      "bytes": 48731,
+      "decodedRgbaSha256": "63894fb36802bd5580959a631a595d448a4ccca3e5d5af3195e93ee4350c038f",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/res_roof_garden_flats/renders/res_roof_garden_flats_camSE.png",
+      "sha256": "023d96460c5b91bccc81cfeffb1d5bdd0449352f86f81949afd2fca75c0a651b"
+    },
+    {
+      "bytes": 50553,
+      "decodedRgbaSha256": "5e12ff4d1de16127bc7c53e6aed8714906fa51f6fb1fea2f7db82fb6c95c97d4",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/res_roof_garden_flats/renders/res_roof_garden_flats_camSW.png",
+      "sha256": "caf2582a4d5fe6bc23859cff23b1263dd69a87f8d9ea3fc0668736818201892f"
+    },
+    {
+      "bytes": 47014,
+      "decodedRgbaSha256": "d3a66a735ec6b67b3b772fe8a3ddc89914e8108d3e01c6c80144233903fa694e",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/res_roof_garden_flats/renders/res_roof_garden_flats_camNW.png",
+      "sha256": "f02affbe29c0984d6387eb02b4912825be72b9ce4e88d77b1e2aae59d2589ede"
+    },
+    {
+      "bytes": 150554,
+      "decodedRgbaSha256": "2b767da52f09cc898f4edc639bfbf90dc87e7919de79b2b6749c22dca140e32a",
+      "dimensions": [
+        784,
+        784
+      ],
+      "path": "assets/res_roof_garden_flats/res_roof_garden_flats_contact-sheet.png",
+      "sha256": "4ca9299a9471f608de06d901efb95c537cae778e9dd2788b49fa4602bc1d804a"
+    }
+  ],
+  "assetId": "res_roof_garden_flats",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "family": "residential",
+  "lightingConvention": {
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldStrength": 0.65
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "pipelineSchema": "citysim.world-art.blender-four-view-pipeline.v1",
+  "postRenderCompensation": "none",
+  "rootPivotWorld": [
+    0,
+    0,
+    0
+  ],
+  "schema": "citysim.world-art.expansion-v1.asset.v1",
+  "sourcePixelsReused": false,
+  "status": "generation-candidate-not-admitted",
+  "toolchain": {
+    "blenderVersion": "4.5.12",
+    "renderEngine": "BLENDER_EEVEE_NEXT"
+  },
+  "typology": "roofgarden"
+}

@@ -1,0 +1,106 @@
+{
+  "artifacts": [
+    {
+      "bytes": 569996,
+      "path": "assets/com_midrise_offices/com_midrise_offices.blend",
+      "sha256": "013f2dd8198958f34eab19fe9173cd5823daa2580c642adba2b28a7906df3726"
+    },
+    {
+      "bytes": 50697,
+      "decodedRgbaSha256": "7c287bbad4cdd5a9ee5dd60b03829c3f671840d8b26cd7e772c8902195fc8dfe",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/com_midrise_offices/renders/com_midrise_offices_camNE.png",
+      "sha256": "c9d6fccfdd3daaafbdc7b354817be55653ecbfd258f6ad882791272beb32a1c1"
+    },
+    {
+      "bytes": 57572,
+      "decodedRgbaSha256": "4039b3b4c4c66d7b7fc770705cb7032b161204282aa0404f46fe3cf943b6754a",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/com_midrise_offices/renders/com_midrise_offices_camSE.png",
+      "sha256": "16d65f7632d89ad2f83ac05a5e7710f60cc736d9fe1c7860143eca8ef6ef242e"
+    },
+    {
+      "bytes": 60381,
+      "decodedRgbaSha256": "a5bc6d6d4ba534d8f3d070233720a2a7761c9b0dd1dc956861335f7dcf20a003",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/com_midrise_offices/renders/com_midrise_offices_camSW.png",
+      "sha256": "038bf101b7236ddbe336922fbeb5bc2fce660bbbc2219092a2ed089b031dfd6d"
+    },
+    {
+      "bytes": 55639,
+      "decodedRgbaSha256": "dcb109f61f0328e41a2dbef9ce00ee67754ddb1b2c142bbc16ada68364ffaeeb",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/com_midrise_offices/renders/com_midrise_offices_camNW.png",
+      "sha256": "bbfc4276e387aca773992f4f3b8aa8208c5fa98c7f8bb5b146a76211aec6c673"
+    },
+    {
+      "bytes": 186560,
+      "decodedRgbaSha256": "e3812304024791ed1ab5545d2777b76b4cdc20b8630982547e676a4b733eccaf",
+      "dimensions": [
+        784,
+        784
+      ],
+      "path": "assets/com_midrise_offices/com_midrise_offices_contact-sheet.png",
+      "sha256": "96d2be60b51faa277a2e6148dcb75f24baa3c2d509400db9276defd34363ec02"
+    }
+  ],
+  "assetId": "com_midrise_offices",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "family": "commercial",
+  "lightingConvention": {
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldStrength": 0.65
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "pipelineSchema": "citysim.world-art.blender-four-view-pipeline.v1",
+  "postRenderCompensation": "none",
+  "rootPivotWorld": [
+    0,
+    0,
+    0
+  ],
+  "schema": "citysim.world-art.expansion-v1.asset.v1",
+  "sourcePixelsReused": false,
+  "status": "generation-candidate-not-admitted",
+  "toolchain": {
+    "blenderVersion": "4.5.12",
+    "renderEngine": "BLENDER_EEVEE_NEXT"
+  },
+  "typology": "midrise"
+}

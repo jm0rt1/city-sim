@@ -1,0 +1,106 @@
+{
+  "artifacts": [
+    {
+      "bytes": 598916,
+      "path": "assets/ind_brewery_tanks/ind_brewery_tanks.blend",
+      "sha256": "30afed6a735a36905fc2c0d74aba20fe5324be26c4c1e11ae82cdcad017e5ae3"
+    },
+    {
+      "bytes": 46041,
+      "decodedRgbaSha256": "4c644f0d37bfc02a841120cd91ccad6399a4054757c1bfe29cf02cb5b34a2553",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/ind_brewery_tanks/renders/ind_brewery_tanks_camNE.png",
+      "sha256": "bc48d05c75f3d4f5e1c6266a2ff129242aab95b215065779562342f066aa82a0"
+    },
+    {
+      "bytes": 51525,
+      "decodedRgbaSha256": "ce7e68fd91c93f89cd4cb369e9036918107923a529f53253eb8c18401822847c",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/ind_brewery_tanks/renders/ind_brewery_tanks_camSE.png",
+      "sha256": "5e4202f7fb9dcd194c2e5c5a1e2e905fb21ed4d7dec0322a51c0ec1da0e957f7"
+    },
+    {
+      "bytes": 52744,
+      "decodedRgbaSha256": "7fa6e7f62bd5dadd59e1a82da11476e1dc8a76f902d64ac287d5f6bfcfb190f0",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/ind_brewery_tanks/renders/ind_brewery_tanks_camSW.png",
+      "sha256": "cca20e07590c8b9a34716ca5ea3ef507f8ed55e5ba347481ea4a61cb0702fa69"
+    },
+    {
+      "bytes": 48915,
+      "decodedRgbaSha256": "50a9e0188a87a7d6a9232a1f24c91a2935e07ec57e48cb95afd00c687878f6a4",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/ind_brewery_tanks/renders/ind_brewery_tanks_camNW.png",
+      "sha256": "0fbf7cfdfa13effa2b3403374049766c67449177265e77f144376cb8e71e1b90"
+    },
+    {
+      "bytes": 159211,
+      "decodedRgbaSha256": "cd28022c54515c5200b599f522116488296c9dc5ee407c6d5ab48f093c5e94a4",
+      "dimensions": [
+        784,
+        784
+      ],
+      "path": "assets/ind_brewery_tanks/ind_brewery_tanks_contact-sheet.png",
+      "sha256": "0ba357b95b763df4daf4b030ff2021e4c79121831820e021fda637ae251d9518"
+    }
+  ],
+  "assetId": "ind_brewery_tanks",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "family": "industrial",
+  "lightingConvention": {
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldStrength": 0.65
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "pipelineSchema": "citysim.world-art.blender-four-view-pipeline.v1",
+  "postRenderCompensation": "none",
+  "rootPivotWorld": [
+    0,
+    0,
+    0
+  ],
+  "schema": "citysim.world-art.expansion-v1.asset.v1",
+  "sourcePixelsReused": false,
+  "status": "generation-candidate-not-admitted",
+  "toolchain": {
+    "blenderVersion": "4.5.12",
+    "renderEngine": "BLENDER_EEVEE_NEXT"
+  },
+  "typology": "brewery"
+}

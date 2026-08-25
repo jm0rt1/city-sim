@@ -3,6 +3,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
 source "$SCRIPT_DIR/canonical_tree_digest.sh"
+ATLAS_PAGE_INVENTORY_SCRIPT="$SCRIPT_DIR/atlas_page_inventory.py"
 
 fail() {
   printf 'error: %s\n' "$1" >&2
@@ -62,6 +63,7 @@ COMMIT_TIMESTAMP="$(git -C "$ROOT_DIR" show -s --format=%cI "$HEAD_SHA")"
 
 RELEASE_INPUTS=(
   "Native/CitySimNative"
+  "script/atlas_page_inventory.py"
   "script/build_and_run.sh"
   "script/canonical_tree_digest.sh"
   "script/package_release.sh"
@@ -266,14 +268,33 @@ SOURCE_RESOURCE_BUNDLE="$BUILD_DIR/$RESOURCE_BUNDLE_NAME"
 [[ -d "$SOURCE_RESOURCE_BUNDLE" ]] \
   || fail "committed SwiftPM resource bundle is missing: $SOURCE_RESOURCE_BUNDLE"
 
-ASSET_PATHS=(
-  "WorldAssets.atlas/generated-v4-manifest.json"
-  "WorldAssets.atlas/pages/block/page-00.png"
-  "WorldAssets.atlas/pages/block/page-01.png"
-  "WorldAssets.atlas/pages/block/page-02.png"
-  "WorldAssets.atlas/pages/city/page-00.png"
-  "WorldAssets.atlas/pages/neighborhood/page-00.png"
-)
+GENERATED_MANIFEST_PATH="WorldAssets.atlas/generated-v4-manifest.json"
+SOURCE_GENERATED_MANIFEST="$SOURCE_RESOURCE_BUNDLE/$GENERATED_MANIFEST_PATH"
+STAGED_GENERATED_MANIFEST="$RESOURCE_BUNDLE/$GENERATED_MANIFEST_PATH"
+[[ -f "$SOURCE_GENERATED_MANIFEST" ]] \
+  || fail "SwiftPM generated atlas manifest is missing"
+[[ -f "$STAGED_GENERATED_MANIFEST" ]] \
+  || fail "staged generated atlas manifest is missing"
+
+if ! SOURCE_ATLAS_PAGE_PATHS="$(
+  python3 "$ATLAS_PAGE_INVENTORY_SCRIPT" "$SOURCE_GENERATED_MANIFEST"
+)"; then
+  fail "SwiftPM generated atlas manifest has an invalid page inventory"
+fi
+if ! STAGED_ATLAS_PAGE_PATHS="$(
+  python3 "$ATLAS_PAGE_INVENTORY_SCRIPT" "$STAGED_GENERATED_MANIFEST"
+)"; then
+  fail "staged generated atlas manifest has an invalid page inventory"
+fi
+require_equal "staged atlas manifest page inventory" \
+  "$SOURCE_ATLAS_PAGE_PATHS" "$STAGED_ATLAS_PAGE_PATHS"
+
+ASSET_PATHS=("$GENERATED_MANIFEST_PATH")
+while IFS= read -r relative_path; do
+  [[ -n "$relative_path" ]] || continue
+  ASSET_PATHS+=("WorldAssets.atlas/$relative_path")
+done <<<"$SOURCE_ATLAS_PAGE_PATHS"
+EXPECTED_PAGE_COUNT="$((${#ASSET_PATHS[@]} - 1))"
 
 SOURCE_PAGE_COUNT="$(
   find "$SOURCE_RESOURCE_BUNDLE/WorldAssets.atlas/pages" -type f -name '*.png' \
@@ -285,8 +306,8 @@ STAGED_PAGE_COUNT="$(
     | wc -l \
     | tr -d '[:space:]'
 )"
-require_equal "SwiftPM atlas page count" "5" "$SOURCE_PAGE_COUNT"
-require_equal "staged atlas page count" "5" "$STAGED_PAGE_COUNT"
+require_equal "SwiftPM atlas page count" "$EXPECTED_PAGE_COUNT" "$SOURCE_PAGE_COUNT"
+require_equal "staged atlas page count" "$EXPECTED_PAGE_COUNT" "$STAGED_PAGE_COUNT"
 
 PAGE_HASH_PAIRS=()
 for relative_path in "${ASSET_PATHS[@]}"; do
@@ -313,6 +334,14 @@ else
 fi
 
 codesign --verify --deep --strict --verbose=4 "$APP_BUNDLE"
+APP_CODE_RESOURCES="$APP_BUNDLE/Contents/_CodeSignature/CodeResources"
+[[ -f "$APP_CODE_RESOURCES" ]] \
+  || fail "signed app is missing its app-level resource seal"
+SIGNATURE_DETAILS="$(codesign -dv --verbose=4 "$APP_BUNDLE" 2>&1)"
+[[ "$SIGNATURE_DETAILS" == *"Info.plist entries="* ]] \
+  || fail "signed app does not bind its Info.plist"
+[[ "$SIGNATURE_DETAILS" == *"Sealed Resources version="* ]] \
+  || fail "signed app does not report sealed resources"
 
 NOTARIZATION_PERFORMED="false"
 NOTARY_SUBMISSION_ID=""
@@ -376,8 +405,7 @@ PY
 fi
 
 SIGNATURE_CDHASH="$(
-  codesign -dv --verbose=4 "$APP_BUNDLE" 2>&1 \
-    | awk -F= '$1 == "CDHash" { print $2; exit }'
+  awk -F= '$1 == "CDHash" { print $2; exit }' <<<"$SIGNATURE_DETAILS"
 )"
 [[ -n "$SIGNATURE_CDHASH" ]] || fail "signed app did not expose a CDHash"
 
@@ -456,7 +484,6 @@ sbom = {
     "creationInfo": {
         "created": created,
         "creators": [
-            "Organization: CitySim Agent Company",
             "Tool: script/package_release.sh",
         ],
     },
@@ -477,7 +504,7 @@ sbom = {
             "name": "CitySim",
             "packageFileName": archive_name,
             "primaryPackagePurpose": "APPLICATION",
-            "supplier": "Organization: CitySim Agent Company",
+            "supplier": "NOASSERTION",
             "versionInfo": f"{version}+{build}",
         }
     ],
@@ -545,6 +572,8 @@ ditto -x -k "$TEMP_ARCHIVE_PATH" "$VERIFY_ROOT"
 EXTRACTED_APP="$VERIFY_ROOT/CitySim.app"
 [[ -d "$EXTRACTED_APP" ]] || fail "archive did not extract CitySim.app"
 codesign --verify --deep --strict --verbose=4 "$EXTRACTED_APP"
+[[ -f "$EXTRACTED_APP/Contents/_CodeSignature/CodeResources" ]] \
+  || fail "extracted app is missing its app-level resource seal"
 
 if [[ "$NOTARIZATION_PERFORMED" == "true" ]]; then
   xcrun stapler validate -v "$EXTRACTED_APP"
@@ -694,6 +723,7 @@ payload = {
         "sha256": generated_manifest_pair[1],
     },
     "verification": {
+        "appResourceSealPresent": True,
         "resourceBundleLocation": "Contents/Resources/CitySimNative_CitySimNative.bundle",
         "rootResourceBundleAbsent": True,
         "extractedResourceDigestMatches": True,

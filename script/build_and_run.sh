@@ -267,6 +267,16 @@ cat >"$INFO_PLIST" <<PLIST
 </dict></plist>
 PLIST
 
+xattr -cr "$APP_BUNDLE"
+codesign --force --deep --sign - "$APP_BUNDLE"
+codesign --verify --deep --strict --verbose=4 "$APP_BUNDLE"
+
+APP_CODE_RESOURCES="$APP_CONTENTS/_CodeSignature/CodeResources"
+if [[ ! -f "$APP_CODE_RESOURCES" ]]; then
+  echo "error: staged app is missing its app-level resource seal: $APP_CODE_RESOURCES" >&2
+  exit 1
+fi
+
 write_manifest "staged" "not-launched" "not-running"
 
 case "$MODE" in

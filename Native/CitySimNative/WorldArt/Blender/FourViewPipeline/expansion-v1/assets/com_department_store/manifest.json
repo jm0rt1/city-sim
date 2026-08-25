@@ -1,0 +1,106 @@
+{
+  "artifacts": [
+    {
+      "bytes": 560549,
+      "path": "assets/com_department_store/com_department_store.blend",
+      "sha256": "87d9687cf56468f85b19ace1bb4ce3f8f87803194bfc0fa3fb6c7529efd07b7c"
+    },
+    {
+      "bytes": 47529,
+      "decodedRgbaSha256": "6b40bea2c36bf320adadb78e084264bfb17ec81044e4efca78dde103bb9ddd29",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/com_department_store/renders/com_department_store_camNE.png",
+      "sha256": "df763a74c739a2f3e4e474e44a9513da6044d99758a43a038aef45f84e8832a4"
+    },
+    {
+      "bytes": 51650,
+      "decodedRgbaSha256": "9dc92f3fc61e3047855bae536c5b77532acff29b8b65865f76a2d8a91275b11f",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/com_department_store/renders/com_department_store_camSE.png",
+      "sha256": "ec36a4cb8b7ccbdc016957d549b8037e9d5d758e7ff7d52b01d4f0bba2a9c1d0"
+    },
+    {
+      "bytes": 53474,
+      "decodedRgbaSha256": "8420646d636c448223f75bb2d7fb0c64fd3d8ed7d74d8bbbcc0cd9fa84484d2a",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/com_department_store/renders/com_department_store_camSW.png",
+      "sha256": "227d8685bb4b6794152532d827c6b09e0ed720f747f5dec2c5ab03abb5e92d9e"
+    },
+    {
+      "bytes": 49812,
+      "decodedRgbaSha256": "fe1717cb5a3bb4ee574836b578f6f7c6494756cedde1148c0997553b33fbb969",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/com_department_store/renders/com_department_store_camNW.png",
+      "sha256": "e513ff43ae1842e665bd4a3a9a2b0de9027b08a1a041572838bdde9297bdb26b"
+    },
+    {
+      "bytes": 165387,
+      "decodedRgbaSha256": "311f6258839818262ab99d9390140a84a4e57e9e57bfa643191ad1ecdb162e68",
+      "dimensions": [
+        784,
+        784
+      ],
+      "path": "assets/com_department_store/com_department_store_contact-sheet.png",
+      "sha256": "2baf47025e9b7c403b6a2a458f12488610c793c7b7ed99a16320891dc2552742"
+    }
+  ],
+  "assetId": "com_department_store",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "family": "commercial",
+  "lightingConvention": {
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldStrength": 0.65
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "pipelineSchema": "citysim.world-art.blender-four-view-pipeline.v1",
+  "postRenderCompensation": "none",
+  "rootPivotWorld": [
+    0,
+    0,
+    0
+  ],
+  "schema": "citysim.world-art.expansion-v1.asset.v1",
+  "sourcePixelsReused": false,
+  "status": "generation-candidate-not-admitted",
+  "toolchain": {
+    "blenderVersion": "4.5.12",
+    "renderEngine": "BLENDER_EEVEE_NEXT"
+  },
+  "typology": "department"
+}

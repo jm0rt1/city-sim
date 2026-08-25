@@ -1,0 +1,106 @@
+{
+  "artifacts": [
+    {
+      "bytes": 569990,
+      "path": "assets/res_villa_wing/res_villa_wing.blend",
+      "sha256": "63933ee41b4017f314a65d8822581a6e5dfd49958065c947ee256fee065048bf"
+    },
+    {
+      "bytes": 43302,
+      "decodedRgbaSha256": "41bfb36161d6f72e36b2bca4f5a7ca0d1e0769bd31dde53ac130afe845613e00",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/res_villa_wing/renders/res_villa_wing_camNE.png",
+      "sha256": "fd95ca1be2f9215c7e285ab0d1926b65d6d4a31d966929464928d8cae9c5e4de"
+    },
+    {
+      "bytes": 48425,
+      "decodedRgbaSha256": "46bddfc3d6b7d2129985415dd1bb21792af8848d3008dd6986d23617badbfe31",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/res_villa_wing/renders/res_villa_wing_camSE.png",
+      "sha256": "c2d9acad43c8a51fd00129a98eeb7febd3be2101f055a5c4b1fbc8f2b9f6944f"
+    },
+    {
+      "bytes": 47862,
+      "decodedRgbaSha256": "cc5d6fbf10ed780973627c913ce4a897d42d090748100cc3e95f588a035f7656",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/res_villa_wing/renders/res_villa_wing_camSW.png",
+      "sha256": "481870051e77266c91fe00c3d5b879bed593a790cc30f864684779e0fc7e6dc7"
+    },
+    {
+      "bytes": 44310,
+      "decodedRgbaSha256": "51875e36e54c6f8e9137fa5d4d79316b0cb5621b53279b9968cdfd50a0c4edd8",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/res_villa_wing/renders/res_villa_wing_camNW.png",
+      "sha256": "f205ebc022ee3ca1dd76e671aa6e1ba7c347680a7211b1489de8330342b1a5c5"
+    },
+    {
+      "bytes": 144189,
+      "decodedRgbaSha256": "29a89616a0cc0436543d8a3e09312b20fa76b3a28029d6e5c951dfb77e41ad0f",
+      "dimensions": [
+        784,
+        784
+      ],
+      "path": "assets/res_villa_wing/res_villa_wing_contact-sheet.png",
+      "sha256": "cda8090f0edbefa26e50a852b19cbefbe95f367981aa5ff5aad38523b140d589"
+    }
+  ],
+  "assetId": "res_villa_wing",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "family": "residential",
+  "lightingConvention": {
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldStrength": 0.65
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "pipelineSchema": "citysim.world-art.blender-four-view-pipeline.v1",
+  "postRenderCompensation": "none",
+  "rootPivotWorld": [
+    0,
+    0,
+    0
+  ],
+  "schema": "citysim.world-art.expansion-v1.asset.v1",
+  "sourcePixelsReused": false,
+  "status": "generation-candidate-not-admitted",
+  "toolchain": {
+    "blenderVersion": "4.5.12",
+    "renderEngine": "BLENDER_EEVEE_NEXT"
+  },
+  "typology": "villa"
+}

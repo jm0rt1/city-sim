@@ -10,7 +10,7 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
         let catalog = FourViewWorldAssetCatalog()
         let manifest = try XCTUnwrap(catalog.manifest)
 
-        XCTAssertEqual(manifest.schema, "citysim.native-four-view-assets.v1")
+        XCTAssertEqual(manifest.schema, "citysim.native-four-view-assets.v2")
         XCTAssertEqual(manifest.camera, "camNE")
         XCTAssertEqual(manifest.cameraAzimuthDegrees, 45)
         XCTAssertEqual(manifest.cameraElevationDegrees, 30)
@@ -19,9 +19,21 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
         XCTAssertEqual(manifest.canvas.height, 384)
         XCTAssertEqual(manifest.canvas.footprintPivotPixel, [192, 300])
         XCTAssertEqual(manifest.postRenderCompensation, "none")
-        XCTAssertGreaterThanOrEqual(manifest.assets.count, 7)
+        XCTAssertEqual(manifest.assets.count, 77)
         XCTAssertEqual(Set(manifest.assets.map(\.assetID)).count, manifest.assets.count)
         XCTAssertEqual(Set(manifest.assets.map(\.file)).count, manifest.assets.count)
+        XCTAssertEqual(
+            Dictionary(grouping: manifest.assets, by: \.family).mapValues(\.count),
+            [
+                "residential": 24,
+                "commercial": 17,
+                "industrial": 14,
+                "civic-service": 12,
+                "utility": 6,
+                "park-landmark": 4,
+            ]
+        )
+        XCTAssertEqual(manifest.assets.filter { $0.views.count == 4 }.count, 44)
         let admittedRoles = Set(manifest.assets.flatMap(\.roles))
         XCTAssertTrue(Set([
             "residential-low", "residential-medium", "residential-high",
@@ -32,136 +44,165 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
         ]).isSubset(of: admittedRoles))
 
         for asset in manifest.assets {
-            let url = try XCTUnwrap(catalog.resourceURL(for: asset.assetID), asset.assetID)
-            let data = try Data(contentsOf: url)
-            let bitmap = try XCTUnwrap(NSBitmapImageRep(data: data), asset.assetID)
-            XCTAssertEqual(bitmap.pixelsWide, 384, asset.assetID)
-            XCTAssertEqual(bitmap.pixelsHigh, 384, asset.assetID)
-            XCTAssertEqual(
-                SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined(),
-                asset.sha256,
-                asset.assetID
-            )
+            for view in asset.views {
+                let identity = "\(asset.assetID).\(view.camera)"
+                let camera = try XCTUnwrap(
+                    FourViewWorldAssetCatalog.Camera(rawValue: view.camera),
+                    identity
+                )
+                let url = try XCTUnwrap(
+                    catalog.resourceURL(for: asset.assetID, camera: camera),
+                    identity
+                )
+                let data = try Data(contentsOf: url)
+                let bitmap = try XCTUnwrap(NSBitmapImageRep(data: data), identity)
+                XCTAssertEqual(bitmap.pixelsWide, 384, identity)
+                XCTAssertEqual(bitmap.pixelsHigh, 384, identity)
+                XCTAssertEqual(
+                    SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined(),
+                    view.sha256,
+                    identity
+                )
+            }
         }
     }
 
     @MainActor
-    func testDeterministicRoleMappingUsesOnlyAcceptedFourViewFamily() {
+    func testDeterministicRoleMappingReachesEveryAcceptedAsset() throws {
         let catalog = FourViewWorldAssetCatalog()
-        let coordinate = GridCoordinate(x: 4, y: 7)
+        let roleCases: [(role: String, kind: BuildingKind, level: Int)] = [
+            ("residential-low", .residential, 1),
+            ("residential-medium", .residential, 2),
+            ("residential-high", .residential, 3),
+            ("commercial-low", .commercial, 1),
+            ("commercial-medium", .commercial, 2),
+            ("commercial-high", .commercial, 3),
+            ("industrial-low", .industrial, 1),
+            ("industrial-medium", .industrial, 2),
+            ("industrial-high", .industrial, 3),
+            ("city-hall", .cityHall, 1),
+            ("park", .park, 1),
+            ("power-plant", .powerPlant, 1),
+            ("water-tower", .waterTower, 1),
+            ("fire-station", .fireStation, 1),
+            ("police-station", .policeStation, 1),
+            ("school", .school, 1),
+        ]
 
-        XCTAssertEqual(catalog.assetID(
-            for: CityTile(coordinate: coordinate, kind: .residential, level: 1),
-            variant: 1
-        ), "copper_finch_house")
-        XCTAssertEqual(catalog.assetID(
-            for: CityTile(coordinate: coordinate, kind: .residential, level: 1),
-            variant: 2
-        ), "marigold_court_house")
-        XCTAssertEqual(catalog.assetID(
-            for: CityTile(coordinate: coordinate, kind: .residential, level: 2),
-            variant: 0
-        ), "brickline_rowhouse_apartments")
-        XCTAssertEqual(catalog.assetID(
-            for: CityTile(coordinate: coordinate, kind: .residential, level: 2),
-            variant: 1
-        ), "maple_courtyard_apartments")
-        XCTAssertEqual(catalog.assetID(
-            for: CityTile(coordinate: coordinate, kind: .residential, level: 3),
-            variant: 0
-        ), "foundry_crown_apartments")
-        XCTAssertEqual(catalog.assetID(
-            for: CityTile(coordinate: coordinate, kind: .residential, level: 3),
-            variant: 1
-        ), "juniper_terrace_tower")
-        XCTAssertEqual(catalog.assetID(
-            for: CityTile(coordinate: coordinate, kind: .residential, level: 4),
-            variant: 1
-        ), "juniper_terrace_tower")
-        let lowCommercial = CityTile(
-            coordinate: coordinate,
-            kind: .commercial,
-            level: 1
+        for roleCase in roleCases {
+            let expected = Set(catalog.assetIDs(forRole: roleCase.role))
+            var reached: Set<String> = []
+            for y in 0..<96 {
+                for x in 0..<96 {
+                    let coordinate = GridCoordinate(x: x, y: y)
+                    let tile = CityTile(
+                        coordinate: coordinate,
+                        kind: roleCase.kind,
+                        level: roleCase.level
+                    )
+                    let variant = roleCase.kind == .residential
+                        ? ResidentialGeneratedAssetIdentity.liveVisualVariant(at: coordinate)
+                        : WorldVisualSeed.variant(
+                            count: 3,
+                            for: coordinate,
+                            kind: roleCase.kind
+                        )
+                    reached.insert(try XCTUnwrap(catalog.assetID(for: tile, variant: variant)))
+                }
+            }
+            XCTAssertEqual(reached, expected, roleCase.role)
+        }
+    }
+
+    @MainActor
+    func testResidentialQualityFamilySelectsAllFourAndLoadsEveryAuthoredOrientation() throws {
+        let style = WorldVisualStyle()
+        let catalog = FourViewWorldAssetCatalog()
+        let renderer = LotRenderer(
+            style: style,
+            assets: WorldAssetCatalog(),
+            fourViewAssets: catalog
         )
-        XCTAssertEqual(
-            (0..<3).compactMap { catalog.assetID(for: lowCommercial, variant: $0) },
-            [
-                "harbor_corner_storefront",
-                "lantern_row_bakery",
-                "ironwood_hardware_shop",
-            ]
-        )
-
-        let densityExpected: [(BuildingKind, Int, String)] = [
-            (.commercial, 1, "harbor_corner_storefront"),
-            (.commercial, 2, "market_arcade_midrise"),
-            (.commercial, 3, "aurora_exchange_tower"),
-            (.commercial, 4, "aurora_exchange_tower"),
-            (.industrial, 1, "ironleaf_service_workshop"),
-            (.industrial, 2, "canalworks_factory"),
-            (.industrial, 3, "foundry_peak_plant"),
+        let family = [
+            "alder_gable_cottage",
+            "birch_lane_bungalow",
+            "rosewood_turret_house",
+            "stonebridge_duplex",
         ]
-        for (kind, level, assetID) in densityExpected {
-            XCTAssertEqual(
-                catalog.assetID(
-                    for: CityTile(coordinate: coordinate, kind: kind, level: level),
-                    variant: 0
-                ),
-                assetID
-            )
+        let descriptors = try XCTUnwrap(catalog.manifest).assets.filter {
+            $0.roles.contains("residential-quality")
         }
-        let newDensityVariants: [(BuildingKind, Int, String)] = [
-            (.commercial, 2, "sunbrick_market_lofts"),
-            (.commercial, 3, "copperglass_exchange_annex"),
-            (.industrial, 2, "riverbend_textile_works"),
-            (.industrial, 3, "ember_rail_foundry"),
-        ]
-        for (kind, level, assetID) in newDensityVariants {
-            XCTAssertEqual(
-                catalog.assetID(
-                    for: CityTile(coordinate: coordinate, kind: kind, level: level),
-                    variant: 1
-                ),
-                assetID
-            )
-        }
+        XCTAssertEqual(descriptors.map(\.assetID), family)
 
-        let expected: [(BuildingKind, String?)] = [
-            (.commercial, "harbor_corner_storefront"),
-            (.industrial, "ironleaf_service_workshop"),
-            (.park, "pocket_grove_park"),
-            (.cityHall, "hearthside_council_hall"),
-            (.powerPlant, "brick_grid_substation"),
-            (.waterTower, "municipal_water_tower"),
-            (.fireStation, "emberline_fire_station"),
-            (.policeStation, "bluecrest_police_station"),
-            (.school, "maplewood_neighborhood_school"),
-        ]
-        for (kind, assetID) in expected {
-            XCTAssertEqual(
-                catalog.assetID(for: CityTile(coordinate: coordinate, kind: kind), variant: 0),
-                assetID,
-                kind.rawValue
-            )
+        var coordinateByAssetID: [String: GridCoordinate] = [:]
+        for y in 0..<32 {
+            for x in 0..<32 {
+                let coordinate = GridCoordinate(x: x, y: y)
+                let tile = CityTile(coordinate: coordinate, kind: .residential, level: 1)
+                let visualVariant = ResidentialGeneratedAssetIdentity.liveVisualVariant(
+                    at: coordinate
+                )
+                if let assetID = catalog.assetID(for: tile, variant: visualVariant),
+                   family.contains(assetID) {
+                    coordinateByAssetID[assetID] = coordinate
+                }
+            }
         }
-
-        let newCivicUtilityVariants: [(BuildingKind, String)] = [
-            (.cityHall, "cedar_arch_council_hall"),
-            (.powerPlant, "copper_arc_powerhouse"),
-            (.waterTower, "rivermark_standpipe_waterworks"),
-            (.fireStation, "lantern_gate_fire_house"),
-            (.policeStation, "harborwatch_police_precinct"),
-            (.school, "oakridge_courtyard_school"),
+        XCTAssertEqual(Set(coordinateByAssetID.keys), Set(family))
+        let frontageCameras: [(RoadConnectionMask, FourViewWorldAssetCatalog.Camera)] = [
+            (.south, .camNE),
+            (.west, .camSE),
+            (.north, .camSW),
+            (.east, .camNW),
         ]
-        for (kind, assetID) in newCivicUtilityVariants {
-            XCTAssertEqual(
-                catalog.assetID(
-                    for: CityTile(coordinate: coordinate, kind: kind),
-                    variant: 1
-                ),
-                assetID,
-                kind.rawValue
+
+        for descriptor in descriptors {
+            let coordinate = try XCTUnwrap(coordinateByAssetID[descriptor.assetID])
+            let tile = CityTile(coordinate: coordinate, kind: .residential, level: 1)
+            let visualVariant = ResidentialGeneratedAssetIdentity.liveVisualVariant(
+                at: coordinate
             )
+            let views = descriptor.views
+            XCTAssertEqual(views.count, 4)
+            for camera in FourViewWorldAssetCatalog.Camera.allCases {
+                let view = try XCTUnwrap(views.first { $0.camera == camera.rawValue })
+                let url = try XCTUnwrap(
+                    catalog.resourceURL(for: descriptor.assetID, camera: camera)
+                )
+                let data = try Data(contentsOf: url)
+                XCTAssertEqual(
+                    SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined(),
+                    view.sha256
+                )
+                let sprite = try XCTUnwrap(catalog.makeSprite(
+                    for: tile,
+                    variant: visualVariant,
+                    worldTileWidth: style.tileWidth,
+                    camera: camera
+                ))
+                XCTAssertNotNil(
+                    sprite.childNode(withName: "lot.four-view.\(descriptor.assetID).\(camera.rawValue)")
+                )
+                XCTAssertEqual(sprite.anchorPoint, FourViewWorldAssetCatalog.spriteAnchor)
+                XCTAssertEqual(sprite.xScale, style.tileWidth / 176, accuracy: 0.000_001)
+                XCTAssertEqual(sprite.yScale, style.tileWidth / 176, accuracy: 0.000_001)
+                XCTAssertEqual(sprite.zRotation, 0, accuracy: 0.000_001)
+                XCTAssertEqual(sprite.position, .zero)
+            }
+            for (frontage, camera) in frontageCameras {
+                let lot = renderer.makeLot(
+                    for: tile,
+                    adjacentRoads: frontage,
+                    detail: .block,
+                    reducedMotion: true
+                )
+                XCTAssertNotNil(
+                    lot.childNode(
+                        withName: "//lot.four-view.\(descriptor.assetID).\(camera.rawValue)"
+                    ),
+                    "\(descriptor.assetID).\(camera.rawValue)"
+                )
+            }
         }
     }
 
@@ -174,12 +215,6 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
             assets: WorldAssetCatalog(),
             fourViewAssets: catalog
         )
-        let assetIDs = [
-            "harbor_corner_storefront",
-            "lantern_row_bakery",
-            "ironwood_hardware_shop",
-        ]
-
         for variant in 0..<3 {
             let coordinate = try XCTUnwrap((0..<32).lazy
                 .flatMap { y in (0..<32).map { GridCoordinate(x: $0, y: y) } }
@@ -190,20 +225,22 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
                         kind: .commercial
                     ) == variant
                 })
+            let tile = CityTile(
+                coordinate: coordinate,
+                kind: .commercial,
+                level: 1,
+                condition: 1,
+                constructionProgress: 1
+            )
+            let assetID = try XCTUnwrap(catalog.assetID(for: tile, variant: variant))
             let lot = renderer.makeLot(
-                for: CityTile(
-                    coordinate: coordinate,
-                    kind: .commercial,
-                    level: 1,
-                    condition: 1,
-                    constructionProgress: 1
-                ),
+                for: tile,
                 adjacentRoads: .south,
                 detail: .block,
                 reducedMotion: true
             )
             let marker = try XCTUnwrap(
-                lot.childNode(withName: "//lot.four-view.\(assetIDs[variant]).camNE")
+                lot.childNode(withName: "//lot.four-view.\(assetID).camNE")
             )
             let sprite = try XCTUnwrap(marker.parent as? SKSpriteNode)
             XCTAssertEqual(sprite.anchorPoint, FourViewWorldAssetCatalog.spriteAnchor)
@@ -225,11 +262,6 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
             assets: WorldAssetCatalog(),
             fourViewAssets: catalog
         )
-        let assetIDs = [
-            "ironleaf_service_workshop",
-            "copperline_machine_shop",
-        ]
-
         for variant in 0..<2 {
             let coordinate = try XCTUnwrap((0..<32).lazy
                 .flatMap { y in (0..<32).map { GridCoordinate(x: $0, y: y) } }
@@ -240,20 +272,22 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
                         kind: .industrial
                     ) == variant
                 })
+            let tile = CityTile(
+                coordinate: coordinate,
+                kind: .industrial,
+                level: 1,
+                condition: 1,
+                constructionProgress: 1
+            )
+            let assetID = try XCTUnwrap(catalog.assetID(for: tile, variant: variant))
             let lot = renderer.makeLot(
-                for: CityTile(
-                    coordinate: coordinate,
-                    kind: .industrial,
-                    level: 1,
-                    condition: 1,
-                    constructionProgress: 1
-                ),
+                for: tile,
                 adjacentRoads: .south,
                 detail: .block,
                 reducedMotion: true
             )
             let marker = try XCTUnwrap(
-                lot.childNode(withName: "//lot.four-view.\(assetIDs[variant]).camNE")
+                lot.childNode(withName: "//lot.four-view.\(assetID).camNE")
             )
             let sprite = try XCTUnwrap(marker.parent as? SKSpriteNode)
             XCTAssertEqual(sprite.anchorPoint, FourViewWorldAssetCatalog.spriteAnchor)
@@ -278,11 +312,6 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
             assets: WorldAssetCatalog(),
             fourViewAssets: catalog
         )
-        let assetIDs = [
-            "pocket_grove_park",
-            "canal_lantern_park",
-        ]
-
         for variant in 0..<2 {
             let coordinate = try XCTUnwrap((0..<32).lazy
                 .flatMap { y in (0..<32).map { GridCoordinate(x: $0, y: y) } }
@@ -293,20 +322,22 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
                         kind: .park
                     ) == variant
                 })
+            let tile = CityTile(
+                coordinate: coordinate,
+                kind: .park,
+                level: 1,
+                condition: 1,
+                constructionProgress: 1
+            )
+            let assetID = try XCTUnwrap(catalog.assetID(for: tile, variant: variant))
             let lot = renderer.makeLot(
-                for: CityTile(
-                    coordinate: coordinate,
-                    kind: .park,
-                    level: 1,
-                    condition: 1,
-                    constructionProgress: 1
-                ),
+                for: tile,
                 adjacentRoads: .south,
                 detail: .block,
                 reducedMotion: true
             )
             let marker = try XCTUnwrap(
-                lot.childNode(withName: "//lot.four-view.\(assetIDs[variant]).camNE")
+                lot.childNode(withName: "//lot.four-view.\(assetID).camNE")
             )
             let sprite = try XCTUnwrap(marker.parent as? SKSpriteNode)
             XCTAssertEqual(sprite.anchorPoint, FourViewWorldAssetCatalog.spriteAnchor)
@@ -328,16 +359,16 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
             assets: WorldAssetCatalog(),
             fourViewAssets: catalog
         )
-        let cases: [(BuildingKind, String, String)] = [
-            (.powerPlant, "brick_grid_substation", "industrial_l01"),
-            (.waterTower, "municipal_water_tower", "water_tower_l01"),
-            (.fireStation, "emberline_fire_station", "civic_l01_v0_south"),
-            (.policeStation, "bluecrest_police_station", "civic_l01_v0_south"),
-            (.school, "maplewood_neighborhood_school", "civic_l01_v0_south"),
+        let cases: [(BuildingKind, String)] = [
+            (.powerPlant, "industrial_l01"),
+            (.waterTower, "water_tower_l01"),
+            (.fireStation, "civic_l01_v0_south"),
+            (.policeStation, "civic_l01_v0_south"),
+            (.school, "civic_l01_v0_south"),
         ]
 
         for entry in cases {
-            let (kind, assetID, logicalID) = entry
+            let (kind, logicalID) = entry
             let coordinate = try XCTUnwrap((0..<32).lazy
                 .flatMap { y in (0..<32).map { GridCoordinate(x: $0, y: y) } }
                 .first {
@@ -347,13 +378,15 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
                         kind: kind
                     ) == 0
                 })
+            let tile = CityTile(
+                coordinate: coordinate,
+                kind: kind,
+                condition: 1,
+                constructionProgress: 1
+            )
+            let assetID = try XCTUnwrap(catalog.assetID(for: tile, variant: 0))
             let lot = renderer.makeLot(
-                for: CityTile(
-                    coordinate: coordinate,
-                    kind: kind,
-                    condition: 1,
-                    constructionProgress: 1
-                ),
+                for: tile,
                 adjacentRoads: .south,
                 detail: .block,
                 reducedMotion: true
@@ -396,8 +429,14 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
             reducedMotion: true
         )
 
+        let visualVariant = WorldVisualSeed.variant(
+            count: 3,
+            for: tile.coordinate,
+            kind: tile.kind
+        )
+        let assetID = try XCTUnwrap(catalog.assetID(for: tile, variant: visualVariant))
         let marker = try XCTUnwrap(
-            lot.childNode(withName: "//lot.four-view.market_arcade_midrise.camNE")
+            lot.childNode(withName: "//lot.four-view.\(assetID).camNE")
         )
         let sprite = try XCTUnwrap(marker.parent as? SKSpriteNode)
         let canonicalWorldScale = 72.0 / 176.0
@@ -465,6 +504,153 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
         XCTAssertTrue(updatedSprite.name?.hasSuffix(".city") == true)
         XCTAssertEqual(updatedSprite.anchorPoint, FourViewWorldAssetCatalog.spriteAnchor)
         XCTAssertEqual(updatedSprite.zRotation, 0, accuracy: 0.000_001)
+    }
+
+    @MainActor
+    func testExpansionWaveSavedCityDisplaysEveryNewAsset() throws {
+        let catalog = FourViewWorldAssetCatalog()
+        let manifest = try XCTUnwrap(catalog.manifest)
+        let expansionAssets = manifest.assets.filter {
+            $0.views.count == 4 && !$0.roles.contains("residential-quality")
+        }
+        XCTAssertEqual(expansionAssets.count, 40)
+        XCTAssertEqual(
+            Dictionary(grouping: expansionAssets, by: \.family).mapValues(\.count),
+            [
+                "residential": 14,
+                "commercial": 10,
+                "industrial": 8,
+                "civic-service": 4,
+                "utility": 2,
+                "park-landmark": 2,
+            ]
+        )
+
+        var state = CityGameState.newCity(seed: 4_040)
+        for coordinate in state.tiles.map(\.coordinate) {
+            state.updateTile(at: coordinate) {
+                $0 = CityTile(coordinate: coordinate, kind: .empty)
+            }
+        }
+        for axis in [4, 9, 14, 19, 24, 29] {
+            for offset in 2...29 {
+                state.updateTile(at: GridCoordinate(x: axis, y: offset)) {
+                    $0 = CityTile(coordinate: $0.coordinate, kind: .road)
+                }
+                state.updateTile(at: GridCoordinate(x: offset, y: axis)) {
+                    $0 = CityTile(coordinate: $0.coordinate, kind: .road)
+                }
+            }
+        }
+
+        func placement(for asset: FourViewWorldAssetManifest.Asset) throws -> (BuildingKind, Int) {
+            let roles = Set(asset.roles)
+            if roles.contains("residential-low") { return (.residential, 1) }
+            if roles.contains("residential-medium") { return (.residential, 2) }
+            if roles.contains("residential-high") { return (.residential, 3) }
+            if roles.contains("commercial-low") { return (.commercial, 1) }
+            if roles.contains("commercial-medium") { return (.commercial, 2) }
+            if roles.contains("commercial-high") { return (.commercial, 3) }
+            if roles.contains("industrial-low") { return (.industrial, 1) }
+            if roles.contains("industrial-medium") { return (.industrial, 2) }
+            if roles.contains("industrial-high") { return (.industrial, 3) }
+            if roles.contains("city-hall") { return (.cityHall, 1) }
+            if roles.contains("park") { return (.park, 1) }
+            if roles.contains("power-plant") { return (.powerPlant, 1) }
+            if roles.contains("water-tower") { return (.waterTower, 1) }
+            if roles.contains("fire-station") { return (.fireStation, 1) }
+            if roles.contains("police-station") { return (.policeStation, 1) }
+            if roles.contains("school") { return (.school, 1) }
+            throw XCTSkip("No playable role for \(asset.assetID)")
+        }
+
+        var used: Set<GridCoordinate> = []
+        var placedIDs: Set<String> = []
+        let preferredX = [6, 11, 16, 21, 26]
+        let preferredY = [6, 8, 11, 13, 16, 18, 21, 23]
+        for (index, asset) in expansionAssets.enumerated() {
+            let (kind, level) = try placement(for: asset)
+            let preferred = GridCoordinate(
+                x: preferredX[index % preferredX.count],
+                y: preferredY[index / preferredX.count]
+            )
+            let coordinate = try XCTUnwrap(
+                state.tiles
+                    .filter { tile in
+                        guard tile.kind == .empty,
+                              !used.contains(tile.coordinate),
+                              !RoadConnectionMask.resolving(
+                                  at: tile.coordinate,
+                                  in: state
+                              ).isEmpty else { return false }
+                        let candidate = CityTile(
+                            coordinate: tile.coordinate,
+                            kind: kind,
+                            level: level
+                        )
+                        let variant = kind == .residential
+                            ? ResidentialGeneratedAssetIdentity.liveVisualVariant(
+                                at: tile.coordinate
+                            )
+                            : WorldVisualSeed.variant(
+                                count: 3,
+                                for: tile.coordinate,
+                                kind: kind
+                            )
+                        return catalog.assetID(for: candidate, variant: variant) == asset.assetID
+                    }
+                    .min { lhs, rhs in
+                        let left = abs(lhs.coordinate.x - preferred.x)
+                            + abs(lhs.coordinate.y - preferred.y)
+                        let right = abs(rhs.coordinate.x - preferred.x)
+                            + abs(rhs.coordinate.y - preferred.y)
+                        return (left, lhs.coordinate.y, lhs.coordinate.x)
+                            < (right, rhs.coordinate.y, rhs.coordinate.x)
+                    }?.coordinate,
+                asset.assetID
+            )
+            used.insert(coordinate)
+            placedIDs.insert(asset.assetID)
+            state.updateTile(at: coordinate) {
+                $0 = CityTile(
+                    coordinate: coordinate,
+                    kind: kind,
+                    level: level,
+                    condition: 1,
+                    constructionProgress: 1
+                )
+            }
+        }
+        XCTAssertEqual(placedIDs, Set(expansionAssets.map(\.assetID)))
+
+        let scene = CityScene(size: CGSize(width: 1_280, height: 800))
+        scene.reducedMotion = true
+        scene.render(
+            state: state,
+            overlay: .none,
+            selection: nil,
+            interactionMode: .inspect
+        )
+        func names(in node: SKNode) -> [String] {
+            (node.name.map { [$0] } ?? []) + node.children.flatMap(names)
+        }
+        let sourceNames = Set(names(in: scene))
+        for asset in expansionAssets {
+            XCTAssertTrue(
+                asset.views.contains { view in
+                    sourceNames.contains("lot.four-view.\(asset.assetID).\(view.camera)")
+                },
+                asset.assetID
+            )
+        }
+
+        if let rootPath = ProcessInfo.processInfo.environment["CITYSIM_EXPANSION_SAVE_ROOT"] {
+            let service = SaveGameService(
+                rootURL: URL(fileURLWithPath: rootPath, isDirectory: true)
+            )
+            _ = try service.save(state)
+            XCTAssertEqual(try service.load().state, state)
+        }
     }
 
     @MainActor

@@ -1,0 +1,106 @@
+{
+  "artifacts": [
+    {
+      "bytes": 593245,
+      "path": "assets/res_brick_rowhouse/res_brick_rowhouse.blend",
+      "sha256": "22b29dae80a9ea210496ac43f5b1885f4c70c1c6859dc3f0f924efe6d40de9fd"
+    },
+    {
+      "bytes": 41436,
+      "decodedRgbaSha256": "42532904743a07fcf4bf709b08d3f02b065c07079a86e4ca2eb3e3f548681c93",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/res_brick_rowhouse/renders/res_brick_rowhouse_camNE.png",
+      "sha256": "a8f4d07a5c28eca3af3393add8d02e38a861e6add2c9b11007b4efe29e6d62dc"
+    },
+    {
+      "bytes": 45813,
+      "decodedRgbaSha256": "8235904c28cfd2db1075b874511bf5cd6fa279f392ede26a2cb3ad80af5c917f",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/res_brick_rowhouse/renders/res_brick_rowhouse_camSE.png",
+      "sha256": "2a06fe003ec5f51bc3923144c4d4f856def4910df9eec8b048b8f82d2d489b96"
+    },
+    {
+      "bytes": 46604,
+      "decodedRgbaSha256": "b4be689dff4b44e223df7e41a56b3d44b436b3cd8026e3ba31d5816e8277c21c",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/res_brick_rowhouse/renders/res_brick_rowhouse_camSW.png",
+      "sha256": "1a7e21515ec57184a6bc89b0ac557ac3c457f79bf8390d30cefb647e55d9786f"
+    },
+    {
+      "bytes": 43123,
+      "decodedRgbaSha256": "a5e043ed48cee055ae1caf77eab034c8805aa23f00c35dcb4eb0202698521471",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/res_brick_rowhouse/renders/res_brick_rowhouse_camNW.png",
+      "sha256": "5902bd87ee4056590b7eb1da4d0f76507ca35b0e02e8b42ddb36a3b2613771cc"
+    },
+    {
+      "bytes": 137755,
+      "decodedRgbaSha256": "e757dd13bf09684cda2a014ba1e65360678b9a6b571e5c19f873de9a8d94d284",
+      "dimensions": [
+        784,
+        784
+      ],
+      "path": "assets/res_brick_rowhouse/res_brick_rowhouse_contact-sheet.png",
+      "sha256": "c95b03afda86828eba90c6993b2ff8b56d1781fd34638ca7016290511009d2f5"
+    }
+  ],
+  "assetId": "res_brick_rowhouse",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "family": "residential",
+  "lightingConvention": {
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldStrength": 0.65
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "pipelineSchema": "citysim.world-art.blender-four-view-pipeline.v1",
+  "postRenderCompensation": "none",
+  "rootPivotWorld": [
+    0,
+    0,
+    0
+  ],
+  "schema": "citysim.world-art.expansion-v1.asset.v1",
+  "sourcePixelsReused": false,
+  "status": "generation-candidate-not-admitted",
+  "toolchain": {
+    "blenderVersion": "4.5.12",
+    "renderEngine": "BLENDER_EEVEE_NEXT"
+  },
+  "typology": "rowhouse"
+}

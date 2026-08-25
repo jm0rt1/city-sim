@@ -1,0 +1,106 @@
+{
+  "artifacts": [
+    {
+      "bytes": 579451,
+      "path": "assets/res_courtyard_walkup/res_courtyard_walkup.blend",
+      "sha256": "0c77d079cc016338f888563e35633e6d9c02ffa2dd6941cad61e9f8bef024caf"
+    },
+    {
+      "bytes": 44299,
+      "decodedRgbaSha256": "1ba345a9a90439020ce29a3f43ddb1a3803ec30362ac741144dfd93b0ed39c2e",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/res_courtyard_walkup/renders/res_courtyard_walkup_camNE.png",
+      "sha256": "b83f41f11c73b5b8a76c3ed2489743407edb188cf672a7beb1657d75a86d8c25"
+    },
+    {
+      "bytes": 49208,
+      "decodedRgbaSha256": "5f5aef8953e5f54c26da100a2042e6ab9ca4a5eed4ae83a4e09c35ff17e41156",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/res_courtyard_walkup/renders/res_courtyard_walkup_camSE.png",
+      "sha256": "e7d5869b5b6b496937f20b557a2af493f95e2832484a5e62fb1b46769046daf2"
+    },
+    {
+      "bytes": 49882,
+      "decodedRgbaSha256": "dec8402d14ec6bcee12fe2300e65bf6e75037976bdad901f64ff55d7ec5274b1",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/res_courtyard_walkup/renders/res_courtyard_walkup_camSW.png",
+      "sha256": "206e0a14e87be0aa91532cedd72c9b754c3e8fb5a117af83bc5e9ab99e9caff3"
+    },
+    {
+      "bytes": 47638,
+      "decodedRgbaSha256": "5155a78da1ab5f7e6bd7208d99f516836a66c34ac21d362162d033f110d8af3c",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/res_courtyard_walkup/renders/res_courtyard_walkup_camNW.png",
+      "sha256": "f72ef9a53077d473c3f5cb25cc80cfa6de6e889bdd664e3a31a674365a3aedbf"
+    },
+    {
+      "bytes": 151112,
+      "decodedRgbaSha256": "0c5d6507c623158042594dcefee3ab0293e1382ad5eee83d63239f506308cf29",
+      "dimensions": [
+        784,
+        784
+      ],
+      "path": "assets/res_courtyard_walkup/res_courtyard_walkup_contact-sheet.png",
+      "sha256": "38a7867068fc40bae922f5a2c4e97858ace82dd3d5f86f1c7749f79b835fc678"
+    }
+  ],
+  "assetId": "res_courtyard_walkup",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "family": "residential",
+  "lightingConvention": {
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldStrength": 0.65
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "pipelineSchema": "citysim.world-art.blender-four-view-pipeline.v1",
+  "postRenderCompensation": "none",
+  "rootPivotWorld": [
+    0,
+    0,
+    0
+  ],
+  "schema": "citysim.world-art.expansion-v1.asset.v1",
+  "sourcePixelsReused": false,
+  "status": "generation-candidate-not-admitted",
+  "toolchain": {
+    "blenderVersion": "4.5.12",
+    "renderEngine": "BLENDER_EEVEE_NEXT"
+  },
+  "typology": "courtyard"
+}

@@ -1,0 +1,106 @@
+{
+  "artifacts": [
+    {
+      "bytes": 579448,
+      "path": "assets/com_arcade_shops/com_arcade_shops.blend",
+      "sha256": "2156c5e6cc54f1b143081d817b9d291f1ab827ad22054598311854f2c3055197"
+    },
+    {
+      "bytes": 40807,
+      "decodedRgbaSha256": "95dd5258c3bfd18c79b9fd8b21f8c44c3d452d0b21823ac92d13a22f0b6f0348",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/com_arcade_shops/renders/com_arcade_shops_camNE.png",
+      "sha256": "8d6a9e398edfe708b73f8e27a8202ffef1faa498bf2216e91a37617dd7fe38bd"
+    },
+    {
+      "bytes": 46998,
+      "decodedRgbaSha256": "ad1d3edca71d197d471063b62b47c69b16bc2f42cf63f1c7069ade6db3a04d50",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/com_arcade_shops/renders/com_arcade_shops_camSE.png",
+      "sha256": "e7cafbf45a97def293c3b92ebe2b49ca74235790a900f7c5d35fedc5a37dc184"
+    },
+    {
+      "bytes": 47982,
+      "decodedRgbaSha256": "71f2a9c11e49da421317899167d7d714af2f6e82062c5533920ff7c983ddd84a",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/com_arcade_shops/renders/com_arcade_shops_camSW.png",
+      "sha256": "7ce17d043d980d25b476fb9afea4bf5fc8a18c9e38718b218566499a63b1fab6"
+    },
+    {
+      "bytes": 43290,
+      "decodedRgbaSha256": "88e2ad0ed31ed05c82bbcba8f0426c06d50f7a34eedfe390552020d7cd375912",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/com_arcade_shops/renders/com_arcade_shops_camNW.png",
+      "sha256": "10407fc932663268039a14e2052f3a77772466db232278e0c790d12661378bf6"
+    },
+    {
+      "bytes": 140662,
+      "decodedRgbaSha256": "967b71b8269a965aeade393254bc5f1ede3d0cef83cdba70ae0ec39e12f02185",
+      "dimensions": [
+        784,
+        784
+      ],
+      "path": "assets/com_arcade_shops/com_arcade_shops_contact-sheet.png",
+      "sha256": "0aee83de0075b018d22047c0c931d98c7d85f26824397077d6b2d283d1c3a518"
+    }
+  ],
+  "assetId": "com_arcade_shops",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "family": "commercial",
+  "lightingConvention": {
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldStrength": 0.65
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "pipelineSchema": "citysim.world-art.blender-four-view-pipeline.v1",
+  "postRenderCompensation": "none",
+  "rootPivotWorld": [
+    0,
+    0,
+    0
+  ],
+  "schema": "citysim.world-art.expansion-v1.asset.v1",
+  "sourcePixelsReused": false,
+  "status": "generation-candidate-not-admitted",
+  "toolchain": {
+    "blenderVersion": "4.5.12",
+    "renderEngine": "BLENDER_EEVEE_NEXT"
+  },
+  "typology": "arcadeshops"
+}

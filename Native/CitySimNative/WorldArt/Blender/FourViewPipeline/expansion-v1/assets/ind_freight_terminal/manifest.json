@@ -1,0 +1,106 @@
+{
+  "artifacts": [
+    {
+      "bytes": 569997,
+      "path": "assets/ind_freight_terminal/ind_freight_terminal.blend",
+      "sha256": "4f7daf8c90849c33b431b36116850f74e3457ccc15bd2ec66cd49f5a01a9777a"
+    },
+    {
+      "bytes": 43622,
+      "decodedRgbaSha256": "0555d23464b79cd9912b8d1f12bae02a4087f104f88617a96c0f9239e8117448",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/ind_freight_terminal/renders/ind_freight_terminal_camNE.png",
+      "sha256": "69aa7e9c08df23da4088e97ce472679b9cdec1a1eacb4f1fb4c59d7749c8c002"
+    },
+    {
+      "bytes": 49757,
+      "decodedRgbaSha256": "5d4962ee2bf188f1d39a8fe82411174b3941da48d371d3d15afea4fb2c5b889f",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/ind_freight_terminal/renders/ind_freight_terminal_camSE.png",
+      "sha256": "69aa7b8130828ad23a8db6b268e63038be5658779cd22efbec656282968d7384"
+    },
+    {
+      "bytes": 50094,
+      "decodedRgbaSha256": "b4bf37da41c9968350cdd907c2ced643b2b9b8b37932303f0d0db9c091bc9205",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/ind_freight_terminal/renders/ind_freight_terminal_camSW.png",
+      "sha256": "4f2f883f62ce4dd2a4f3f77c111704a8d4659873d543b232a7ae906b7c145f30"
+    },
+    {
+      "bytes": 45863,
+      "decodedRgbaSha256": "58977a5e4cf1fa8035db9b9d53ad274d39f3888836d0c4fbd86bf00100575466",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/ind_freight_terminal/renders/ind_freight_terminal_camNW.png",
+      "sha256": "90ad795cccb3536b729997bdda82b92663aa50901f9ef80b52d37befa09f52d5"
+    },
+    {
+      "bytes": 150661,
+      "decodedRgbaSha256": "96f0e7b4f8e887aae868414ab45147fc28ba997dbe1635eee2a85b3a6aa60754",
+      "dimensions": [
+        784,
+        784
+      ],
+      "path": "assets/ind_freight_terminal/ind_freight_terminal_contact-sheet.png",
+      "sha256": "b659a9a498bd0a246dbbbb858f0f22a5b9cd08469c49ebff28f02d7b86e0fbe0"
+    }
+  ],
+  "assetId": "ind_freight_terminal",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "family": "industrial",
+  "lightingConvention": {
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldStrength": 0.65
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "pipelineSchema": "citysim.world-art.blender-four-view-pipeline.v1",
+  "postRenderCompensation": "none",
+  "rootPivotWorld": [
+    0,
+    0,
+    0
+  ],
+  "schema": "citysim.world-art.expansion-v1.asset.v1",
+  "sourcePixelsReused": false,
+  "status": "generation-candidate-not-admitted",
+  "toolchain": {
+    "blenderVersion": "4.5.12",
+    "renderEngine": "BLENDER_EEVEE_NEXT"
+  },
+  "typology": "freight"
+}

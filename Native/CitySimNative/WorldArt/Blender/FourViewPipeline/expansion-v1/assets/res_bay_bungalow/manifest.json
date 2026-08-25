@@ -1,0 +1,106 @@
+{
+  "artifacts": [
+    {
+      "bytes": 593243,
+      "path": "assets/res_bay_bungalow/res_bay_bungalow.blend",
+      "sha256": "59f6f718d914e6efe8baa7b7be962d1fced12e39bcd69de32313abab70fb73d2"
+    },
+    {
+      "bytes": 42252,
+      "decodedRgbaSha256": "ecebe0c4818398d5b16ab149e48a508fd2f1db74cc97557f14c78c1dbabf805b",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/res_bay_bungalow/renders/res_bay_bungalow_camNE.png",
+      "sha256": "b7f70a995759c2f4106a5653fdd214d0b1670c7347efdc276da51144f64e5418"
+    },
+    {
+      "bytes": 45927,
+      "decodedRgbaSha256": "f66848c4500d0fd5145677da94902da34fe051ada46986e3e7b59e927b16b404",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/res_bay_bungalow/renders/res_bay_bungalow_camSE.png",
+      "sha256": "ef113154d69292d40f7f0bce42ef555319d756d50e0ea12ea5bf15004df44419"
+    },
+    {
+      "bytes": 46644,
+      "decodedRgbaSha256": "d116d2c1e90f6dc7746e81abd018456f361b281ec62af1716b35bfd24a68d69d",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/res_bay_bungalow/renders/res_bay_bungalow_camSW.png",
+      "sha256": "6a3c236f50571981c40319636bc2f3eab6f0700427086674643882c6359fd7f6"
+    },
+    {
+      "bytes": 44388,
+      "decodedRgbaSha256": "5a3ad59367be9ca7923fdea8b57ac61910c561202c3b8f726ac9d1a3c0dd652e",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/res_bay_bungalow/renders/res_bay_bungalow_camNW.png",
+      "sha256": "686454bf68d38f07e33c42484aafc42f75c3f1a8a68660d8841420363470c400"
+    },
+    {
+      "bytes": 137927,
+      "decodedRgbaSha256": "19587ce3bc7926b38b8fc075c071cae40182f26290165aeefe025ad0f970c9a9",
+      "dimensions": [
+        784,
+        784
+      ],
+      "path": "assets/res_bay_bungalow/res_bay_bungalow_contact-sheet.png",
+      "sha256": "ff3c06d3165be20a502e62186bae749601a2932f72002c23c650538f5b8227e8"
+    }
+  ],
+  "assetId": "res_bay_bungalow",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "family": "residential",
+  "lightingConvention": {
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldStrength": 0.65
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "pipelineSchema": "citysim.world-art.blender-four-view-pipeline.v1",
+  "postRenderCompensation": "none",
+  "rootPivotWorld": [
+    0,
+    0,
+    0
+  ],
+  "schema": "citysim.world-art.expansion-v1.asset.v1",
+  "sourcePixelsReused": false,
+  "status": "generation-candidate-not-admitted",
+  "toolchain": {
+    "blenderVersion": "4.5.12",
+    "renderEngine": "BLENDER_EEVEE_NEXT"
+  },
+  "typology": "bungalow"
+}

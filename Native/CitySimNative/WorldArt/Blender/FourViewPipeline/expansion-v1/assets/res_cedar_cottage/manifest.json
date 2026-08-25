@@ -1,0 +1,106 @@
+{
+  "artifacts": [
+    {
+      "bytes": 592310,
+      "path": "assets/res_cedar_cottage/res_cedar_cottage.blend",
+      "sha256": "92233f115568bd6d47064561d8d2b63287ecf46a1615f60609747391b30289e8"
+    },
+    {
+      "bytes": 40302,
+      "decodedRgbaSha256": "5508e878a7f38a47658e4c614f0ca5f7b2ee59cef080206c1462a3697c3286f3",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/res_cedar_cottage/renders/res_cedar_cottage_camNE.png",
+      "sha256": "6a6ba420f982ebd457308e0cf8212bb266ee6620495b4765c9ed80bfcbe3afa2"
+    },
+    {
+      "bytes": 43573,
+      "decodedRgbaSha256": "00a10caad0bb57fc1939657c62fd6e14def922f3601c4c9725e3022df7acd462",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/res_cedar_cottage/renders/res_cedar_cottage_camSE.png",
+      "sha256": "0a4891705aae8fef5180a7b645dd440546cd5412e2dc6319b7cc51befe65696d"
+    },
+    {
+      "bytes": 44795,
+      "decodedRgbaSha256": "47c1a68983268ac41831e1330cff1c60c114a138f56ed68525ddeea96868a9e2",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/res_cedar_cottage/renders/res_cedar_cottage_camSW.png",
+      "sha256": "1e897d8ccee4cfeca534ba6730a1a319aa16de28c908b9899f993a2aed13c5de"
+    },
+    {
+      "bytes": 42335,
+      "decodedRgbaSha256": "801bb2935092b071d6c4d38077798b468e4df240de6cb6c723e1a1b4461949eb",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/res_cedar_cottage/renders/res_cedar_cottage_camNW.png",
+      "sha256": "41d215f931ebf3a633a712aa97a0f12ff3a2734db3b6279a57871d1b8a930bf3"
+    },
+    {
+      "bytes": 129785,
+      "decodedRgbaSha256": "883d4e6548fbd82efc89718468b5f960d719e073e9ab76ef99c6e4137e8741bd",
+      "dimensions": [
+        784,
+        784
+      ],
+      "path": "assets/res_cedar_cottage/res_cedar_cottage_contact-sheet.png",
+      "sha256": "f5d6b632fa98742a5d0abfa8f20d0e4658ae8d92fc039d3de7c4b67b11484781"
+    }
+  ],
+  "assetId": "res_cedar_cottage",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "family": "residential",
+  "lightingConvention": {
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldStrength": 0.65
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "pipelineSchema": "citysim.world-art.blender-four-view-pipeline.v1",
+  "postRenderCompensation": "none",
+  "rootPivotWorld": [
+    0,
+    0,
+    0
+  ],
+  "schema": "citysim.world-art.expansion-v1.asset.v1",
+  "sourcePixelsReused": false,
+  "status": "generation-candidate-not-admitted",
+  "toolchain": {
+    "blenderVersion": "4.5.12",
+    "renderEngine": "BLENDER_EEVEE_NEXT"
+  },
+  "typology": "cottage"
+}

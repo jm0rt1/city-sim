@@ -3374,6 +3374,166 @@ final class CitySimulationTests: XCTestCase {
         return state
     }
 
+    @MainActor
+    func testResidentialQualityFamilySavedCityProofExportsExactNativeSurfaces() throws {
+        let regularKey = "CITYSIM_RESIDENTIAL_QUALITY_1280_PROOF"
+        let compactKey = "CITYSIM_RESIDENTIAL_QUALITY_900_PROOF"
+        guard ProcessInfo.processInfo.environment[regularKey] != nil
+                || ProcessInfo.processInfo.environment[compactKey] != nil else {
+            return
+        }
+
+        var state = CityGameState.newCity(seed: 20_260_824)
+        for coordinate in state.tiles.map(\.coordinate) {
+            state.updateTile(at: coordinate) {
+                $0 = CityTile(coordinate: coordinate, kind: .empty)
+            }
+        }
+        for y in [5, 11, 17] {
+            for x in 2...21 {
+                state.updateTile(at: GridCoordinate(x: x, y: y)) {
+                    $0 = CityTile(coordinate: $0.coordinate, kind: .road)
+                }
+            }
+        }
+        for x in [5, 11, 17] {
+            for y in 2...20 {
+                state.updateTile(at: GridCoordinate(x: x, y: y)) {
+                    $0 = CityTile(coordinate: $0.coordinate, kind: .road)
+                }
+            }
+        }
+
+        let catalog = FourViewWorldAssetCatalog()
+        let family = [
+            "alder_gable_cottage",
+            "birch_lane_bungalow",
+            "rosewood_turret_house",
+            "stonebridge_duplex",
+        ]
+        let orientations: [(RoadConnectionMask, FourViewWorldAssetCatalog.Camera)] = [
+            (.south, .camNE),
+            (.west, .camSE),
+            (.north, .camSW),
+            (.east, .camNW),
+        ]
+        var used: Set<GridCoordinate> = []
+        for (assetIndex, assetID) in family.enumerated() {
+            for (orientationIndex, orientation) in orientations.enumerated() {
+                let target = GridCoordinate(
+                    x: 7 + assetIndex * 3,
+                    y: 7 + orientationIndex * 3
+                )
+                let coordinate = try XCTUnwrap(state.tiles
+                    .filter { tile in
+                        tile.kind == .empty
+                            && !used.contains(tile.coordinate)
+                            && (3...20).contains(tile.coordinate.x)
+                            && (3...19).contains(tile.coordinate.y)
+                            && RoadConnectionMask.resolving(
+                                at: tile.coordinate,
+                                in: state
+                            ).connectionCount == 1
+                            && ResidentialGeneratedAssetIdentity.authoritativeFrontagePriority.first(
+                                where: RoadConnectionMask.resolving(
+                                    at: tile.coordinate,
+                                    in: state
+                                ).contains
+                            ) == orientation.0
+                            && catalog.assetID(
+                                for: CityTile(
+                                    coordinate: tile.coordinate,
+                                    kind: .residential,
+                                    level: 1
+                                ),
+                                variant: 1
+                            ) == assetID
+                    }
+                    .map(\.coordinate)
+                    .sorted { lhs, rhs in
+                        let left = abs(lhs.x - target.x) + abs(lhs.y - target.y)
+                        let right = abs(rhs.x - target.x) + abs(rhs.y - target.y)
+                        return (left, lhs.y, lhs.x) < (right, rhs.y, rhs.x)
+                    }
+                    .first, "\(assetID).\(orientation.1.rawValue)")
+                used.insert(coordinate)
+                state.updateTile(at: coordinate) {
+                    $0 = CityTile(
+                        coordinate: coordinate,
+                        kind: .residential,
+                        level: 1,
+                        condition: 1,
+                        constructionProgress: 1
+                    )
+                }
+            }
+        }
+        XCTAssertEqual(used.count, family.count * orientations.count)
+
+        let saveRoot = FileManager.default.temporaryDirectory
+            .appending(path: "citysim-residential-quality-\(UUID().uuidString)")
+        addTeardownBlock {
+            try? FileManager.default.removeItem(at: saveRoot)
+        }
+        let saves = SaveGameService(rootURL: saveRoot)
+        _ = try saves.save(state)
+        let loaded = try saves.load()
+        XCTAssertEqual(loaded.source, .primary)
+        XCTAssertEqual(loaded.state, state)
+
+        let sourceScene = CityScene(size: CGSize(width: 1_280, height: 800))
+        sourceScene.reducedMotion = true
+        sourceScene.render(
+            state: loaded.state,
+            overlay: .none,
+            selection: nil,
+            interactionMode: .inspect
+        )
+        let sourceNames = Set(sourceScene.children.flatMap(descendantNodeNames))
+        for assetID in family {
+            for (_, camera) in orientations {
+                XCTAssertTrue(
+                    sourceNames.contains("lot.four-view.\(assetID).\(camera.rawValue)"),
+                    "\(assetID).\(camera.rawValue)"
+                )
+            }
+        }
+
+        let center = GridCoordinate(x: 11, y: 11)
+        let regular = try rendererProofFrame(
+            size: CGSize(width: 1_280, height: 800),
+            state: loaded.state,
+            overlay: .none,
+            selection: nil,
+            interactionMode: .inspect,
+            detail: .neighborhood,
+            centeredOn: center,
+            framingScale: 1.05,
+            hover: nil,
+            exactPixelDimensions: true
+        )
+        let compact = try rendererProofFrame(
+            size: CGSize(width: 900, height: 600),
+            state: loaded.state,
+            overlay: .none,
+            selection: nil,
+            interactionMode: .inspect,
+            detail: .neighborhood,
+            centeredOn: center,
+            framingScale: 1.16,
+            hover: nil,
+            exactPixelDimensions: true
+        )
+        XCTAssertEqual(regular.width, 1_280)
+        XCTAssertEqual(regular.height, 800)
+        XCTAssertEqual(compact.width, 900)
+        XCTAssertEqual(compact.height, 600)
+        XCTAssertGreaterThan(regular.png.count, 45_000)
+        XCTAssertGreaterThan(compact.png.count, 32_000)
+        try export(regular, environmentKeys: [regularKey])
+        try export(compact, environmentKeys: [compactKey])
+    }
+
     private func keyEvent(
         characters: String,
         keyCode: UInt16,

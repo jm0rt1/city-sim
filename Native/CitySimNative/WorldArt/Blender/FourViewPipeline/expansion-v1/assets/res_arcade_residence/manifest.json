@@ -1,0 +1,106 @@
+{
+  "artifacts": [
+    {
+      "bytes": 598350,
+      "path": "assets/res_arcade_residence/res_arcade_residence.blend",
+      "sha256": "5b8650880f2b2530f8030f9fc71c03afd7bb17be76f5ace94f288998e5590d14"
+    },
+    {
+      "bytes": 42859,
+      "decodedRgbaSha256": "d3d8aca446cbe87d07470f308b5435959b801c9ecd695a00c1e6e5033aca7db7",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/res_arcade_residence/renders/res_arcade_residence_camNE.png",
+      "sha256": "f2ef47beba5ab797d0f027ee46b3de409ec8a1b751219473f6bf65cba02fbc30"
+    },
+    {
+      "bytes": 50087,
+      "decodedRgbaSha256": "83abe153850b60031da9a4626f7d362100c70477ecf8d525407223ef84e00a45",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/res_arcade_residence/renders/res_arcade_residence_camSE.png",
+      "sha256": "0e09cd63593e83c2a219f2964e99e0891117ba47eacd9c95071647aa6ddcbccf"
+    },
+    {
+      "bytes": 51476,
+      "decodedRgbaSha256": "6315e5553af4abd0e3d9352c00c07b9eda05ddff5b4d37c3a9e8fef850be8dfd",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/res_arcade_residence/renders/res_arcade_residence_camSW.png",
+      "sha256": "5b19ae8b57c6b2974cdd5a2a9054b93d857b578d3c2685bf7a79e0d19d1af84e"
+    },
+    {
+      "bytes": 45650,
+      "decodedRgbaSha256": "015f56ee3576cf3893f3d5ab412dda10a3d7b349380ba0e6c8095de49831209f",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/res_arcade_residence/renders/res_arcade_residence_camNW.png",
+      "sha256": "6e955a0db0e5abd079b02e40a3f8dd7936197191a0fa286b2699d4180b0a7c31"
+    },
+    {
+      "bytes": 150753,
+      "decodedRgbaSha256": "9350dbd24ffaff41f79151d3890d85efb8f31debdfffe4dcdf0f6f96100752d3",
+      "dimensions": [
+        784,
+        784
+      ],
+      "path": "assets/res_arcade_residence/res_arcade_residence_contact-sheet.png",
+      "sha256": "8733fa81fbd3cdf267f3b8dc508f9bd1bab0469e4cfae0d5dc84cea5ccf5978c"
+    }
+  ],
+  "assetId": "res_arcade_residence",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "family": "residential",
+  "lightingConvention": {
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldStrength": 0.65
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "pipelineSchema": "citysim.world-art.blender-four-view-pipeline.v1",
+  "postRenderCompensation": "none",
+  "rootPivotWorld": [
+    0,
+    0,
+    0
+  ],
+  "schema": "citysim.world-art.expansion-v1.asset.v1",
+  "sourcePixelsReused": false,
+  "status": "generation-candidate-not-admitted",
+  "toolchain": {
+    "blenderVersion": "4.5.12",
+    "renderEngine": "BLENDER_EEVEE_NEXT"
+  },
+  "typology": "arcade"
+}

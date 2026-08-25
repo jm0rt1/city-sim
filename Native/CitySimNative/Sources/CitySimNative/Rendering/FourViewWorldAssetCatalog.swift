@@ -9,10 +9,18 @@ struct FourViewWorldAssetManifest: Decodable, Equatable, Sendable {
     }
 
     struct Asset: Decodable, Equatable, Sendable {
+        struct View: Decodable, Equatable, Sendable {
+            let camera: String
+            let file: String
+            let sha256: String
+        }
+
         let assetID: String
         let file: String
         let sha256: String
+        let family: String
         let roles: [String]
+        let views: [View]
     }
 
     let schema: String
@@ -27,7 +35,16 @@ struct FourViewWorldAssetManifest: Decodable, Equatable, Sendable {
 
 @MainActor
 final class FourViewWorldAssetCatalog {
+    enum Camera: String, CaseIterable, Sendable {
+        case camNE
+        case camSE
+        case camSW
+        case camNW
+    }
+
     static let shared = FourViewWorldAssetCatalog()
+
+    static let canonicalCameraOrder = ["camNE", "camSE", "camSW", "camNW"]
 
     static let requiredRoles: Set<String> = [
         "residential-low", "residential-medium", "residential-high",
@@ -60,56 +77,75 @@ final class FourViewWorldAssetCatalog {
     func assetID(for tile: CityTile, variant: Int) -> String? {
         switch tile.kind {
         case .residential where tile.level >= 3:
-            deterministicAssetID(forRole: "residential-high", variant: variant)
+            deterministicAssetID(forRole: "residential-high", tile: tile, variant: variant)
         case .residential where tile.level == 2:
-            deterministicAssetID(forRole: "residential-medium", variant: variant)
+            deterministicAssetID(forRole: "residential-medium", tile: tile, variant: variant)
         case .residential:
-            deterministicAssetID(forRole: "residential-low", variant: max(0, variant - 1))
+            deterministicAssetID(
+                forRole: "residential-low",
+                tile: tile,
+                variant: max(0, variant - 1)
+            )
         case .commercial where tile.level >= 3:
-            deterministicAssetID(forRole: "commercial-high", variant: variant)
+            deterministicAssetID(forRole: "commercial-high", tile: tile, variant: variant)
         case .commercial where tile.level == 2:
-            deterministicAssetID(forRole: "commercial-medium", variant: variant)
+            deterministicAssetID(forRole: "commercial-medium", tile: tile, variant: variant)
         case .commercial:
-            deterministicAssetID(forRole: "commercial-low", variant: variant)
+            deterministicAssetID(forRole: "commercial-low", tile: tile, variant: variant)
         case .industrial where tile.level >= 3:
-            deterministicAssetID(forRole: "industrial-high", variant: variant)
+            deterministicAssetID(forRole: "industrial-high", tile: tile, variant: variant)
         case .industrial where tile.level == 2:
-            deterministicAssetID(forRole: "industrial-medium", variant: variant)
+            deterministicAssetID(forRole: "industrial-medium", tile: tile, variant: variant)
         case .industrial:
-            deterministicAssetID(forRole: "industrial-low", variant: variant)
+            deterministicAssetID(forRole: "industrial-low", tile: tile, variant: variant)
         case .park:
-            deterministicAssetID(forRole: "park", variant: variant)
+            deterministicAssetID(forRole: "park", tile: tile, variant: variant)
         case .cityHall:
-            deterministicAssetID(forRole: "city-hall", variant: variant)
+            deterministicAssetID(forRole: "city-hall", tile: tile, variant: variant)
         case .powerPlant:
-            deterministicAssetID(forRole: "power-plant", variant: variant)
+            deterministicAssetID(forRole: "power-plant", tile: tile, variant: variant)
         case .waterTower:
-            deterministicAssetID(forRole: "water-tower", variant: variant)
+            deterministicAssetID(forRole: "water-tower", tile: tile, variant: variant)
         case .fireStation:
-            deterministicAssetID(forRole: "fire-station", variant: variant)
+            deterministicAssetID(forRole: "fire-station", tile: tile, variant: variant)
         case .policeStation:
-            deterministicAssetID(forRole: "police-station", variant: variant)
+            deterministicAssetID(forRole: "police-station", tile: tile, variant: variant)
         case .school:
-            deterministicAssetID(forRole: "school", variant: variant)
+            deterministicAssetID(forRole: "school", tile: tile, variant: variant)
         case .empty, .road:
             nil
         }
     }
 
-    private func deterministicAssetID(forRole role: String, variant: Int) -> String? {
+    func assetIDs(forRole role: String) -> [String] {
+        manifest?.assets.filter { $0.roles.contains(role) }.map(\.assetID) ?? []
+    }
+
+    private func deterministicAssetID(
+        forRole role: String,
+        tile: CityTile,
+        variant: Int
+    ) -> String? {
         let candidates = manifest?.assets.filter { $0.roles.contains(role) } ?? []
         guard !candidates.isEmpty else { return nil }
-        return candidates[variant % candidates.count].assetID
+        let index = WorldVisualSeed.variant(
+            count: candidates.count,
+            for: tile.coordinate,
+            kind: tile.kind,
+            salt: UInt64(max(0, variant))
+        )
+        return candidates[index].assetID
     }
 
     func makeSprite(
         for tile: CityTile,
         variant: Int,
-        worldTileWidth: CGFloat
+        worldTileWidth: CGFloat,
+        camera: Camera = .camNE
     ) -> SKSpriteNode? {
         guard let assetID = assetID(for: tile, variant: variant),
               let descriptor = manifest?.assets.first(where: { $0.assetID == assetID }),
-              let texture = texture(for: descriptor) else {
+              let texture = texture(for: descriptor, camera: camera) else {
             return nil
         }
 
@@ -120,13 +156,21 @@ final class FourViewWorldAssetCatalog {
         sprite.zPosition = 6
 
         let sourceIdentity = SKNode()
-        sourceIdentity.name = "lot.four-view.\(assetID).camNE"
+        sourceIdentity.name = "lot.four-view.\(assetID).\(camera.rawValue)"
         sprite.addChild(sourceIdentity)
         return sprite
     }
 
-    func resourceURL(for assetID: String) -> URL? {
-        guard let file = manifest?.assets.first(where: { $0.assetID == assetID })?.file else {
+    func resourceURL(for assetID: String, camera: Camera = .camNE) -> URL? {
+        guard let descriptor = manifest?.assets.first(where: { $0.assetID == assetID }) else {
+            return nil
+        }
+        let file: String
+        if let view = descriptor.views.first(where: { $0.camera == camera.rawValue }) {
+            file = view.file
+        } else if camera == .camNE {
+            file = descriptor.file
+        } else {
             return nil
         }
         return bundle.url(
@@ -136,15 +180,19 @@ final class FourViewWorldAssetCatalog {
         )
     }
 
-    private func texture(for descriptor: FourViewWorldAssetManifest.Asset) -> SKTexture? {
-        if let cached = textures[descriptor.assetID] { return cached }
-        guard let url = resourceURL(for: descriptor.assetID),
+    private func texture(
+        for descriptor: FourViewWorldAssetManifest.Asset,
+        camera: Camera
+    ) -> SKTexture? {
+        let cacheKey = "\(descriptor.assetID).\(camera.rawValue)"
+        if let cached = textures[cacheKey] { return cached }
+        guard let url = resourceURL(for: descriptor.assetID, camera: camera),
               let image = NSImage(contentsOf: url) else {
             return nil
         }
         let texture = SKTexture(image: image)
         texture.filteringMode = .linear
-        textures[descriptor.assetID] = texture
+        textures[cacheKey] = texture
         return texture
     }
 
@@ -161,9 +209,24 @@ final class FourViewWorldAssetCatalog {
 
     private static func isCanonical(_ manifest: FourViewWorldAssetManifest) -> Bool {
         let assetIDs = manifest.assets.map(\.assetID)
-        let files = manifest.assets.map(\.file)
+        let files = manifest.assets.flatMap { $0.views.map(\.file) }
         let roles = Set(manifest.assets.flatMap(\.roles))
-        return manifest.schema == "citysim.native-four-view-assets.v1"
+        let acceptedFamilies: Set<String> = [
+            "residential", "commercial", "industrial", "civic-service",
+            "utility", "park-landmark",
+        ]
+        let canonicalCameras = Set(canonicalCameraOrder)
+        let viewBindingsAreCanonical = manifest.assets.allSatisfy { asset in
+            let cameras = Set(asset.views.map(\.camera))
+            guard let primary = asset.views.first(where: { $0.camera == manifest.camera }),
+                  primary.file == asset.file,
+                  primary.sha256 == asset.sha256 else {
+                return false
+            }
+            return asset.views.count == cameras.count
+                && (cameras == [manifest.camera] || cameras == canonicalCameras)
+        }
+        return manifest.schema == "citysim.native-four-view-assets.v2"
             && manifest.camera == "camNE"
             && manifest.cameraAzimuthDegrees == 45
             && manifest.cameraElevationDegrees == 30
@@ -174,6 +237,8 @@ final class FourViewWorldAssetCatalog {
             && manifest.postRenderCompensation == "none"
             && assetIDs.count == Set(assetIDs).count
             && files.count == Set(files).count
+            && viewBindingsAreCanonical
+            && manifest.assets.allSatisfy { acceptedFamilies.contains($0.family) }
             && requiredRoles.isSubset(of: roles)
     }
 }

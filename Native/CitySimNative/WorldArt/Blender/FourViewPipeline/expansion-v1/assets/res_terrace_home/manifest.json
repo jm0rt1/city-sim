@@ -1,0 +1,106 @@
+{
+  "artifacts": [
+    {
+      "bytes": 602693,
+      "path": "assets/res_terrace_home/res_terrace_home.blend",
+      "sha256": "86b9f2d718bf74febc95d46084b34e77c497cb8aa90feb6451eb3315270d0c4c"
+    },
+    {
+      "bytes": 48677,
+      "decodedRgbaSha256": "1782618757174d534b1b4966d11a53944a7a3f067905e6d81c504270c5332119",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/res_terrace_home/renders/res_terrace_home_camNE.png",
+      "sha256": "2fe777744af6877e52e36f0ccc97c3d8d26b67e2606c5ccec905886a17fe803c"
+    },
+    {
+      "bytes": 53816,
+      "decodedRgbaSha256": "20312546ef6ce34e0da737452b7181556a1380c03c5bb15167aa5dca834b6fec",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/res_terrace_home/renders/res_terrace_home_camSE.png",
+      "sha256": "e443ddc49e894b246253a93c52bb39b35ddb21e4843beaf9ddab2a4667537622"
+    },
+    {
+      "bytes": 54300,
+      "decodedRgbaSha256": "bea90e0872ef150db3c469cf8719c63e2d70eee5235be6d3e895fe237772713d",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/res_terrace_home/renders/res_terrace_home_camSW.png",
+      "sha256": "ad564cb5bfb9dd7ad0a3e3a8fa19ab2f95f44461b9548d795ec2f5698f85a2c5"
+    },
+    {
+      "bytes": 50096,
+      "decodedRgbaSha256": "d40ba84b715b9a84aefef3b2657e1c9bb8742e8359a85960ef85f81540d6409f",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/res_terrace_home/renders/res_terrace_home_camNW.png",
+      "sha256": "1c22f6eb0bd9af00f39d061cb7a1bdf1574f057a652c5121fdf32663472b4597"
+    },
+    {
+      "bytes": 167257,
+      "decodedRgbaSha256": "c05c3030182db76479579ac3b7268f9c4b5916708a6baff744dc11562680f5f8",
+      "dimensions": [
+        784,
+        784
+      ],
+      "path": "assets/res_terrace_home/res_terrace_home_contact-sheet.png",
+      "sha256": "e1a61b32a1b8d2f8f7c51a8ed4b429826a01f1b439537a21570972448b0d5b64"
+    }
+  ],
+  "assetId": "res_terrace_home",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "family": "residential",
+  "lightingConvention": {
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldStrength": 0.65
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "pipelineSchema": "citysim.world-art.blender-four-view-pipeline.v1",
+  "postRenderCompensation": "none",
+  "rootPivotWorld": [
+    0,
+    0,
+    0
+  ],
+  "schema": "citysim.world-art.expansion-v1.asset.v1",
+  "sourcePixelsReused": false,
+  "status": "generation-candidate-not-admitted",
+  "toolchain": {
+    "blenderVersion": "4.5.12",
+    "renderEngine": "BLENDER_EEVEE_NEXT"
+  },
+  "typology": "terrace"
+}

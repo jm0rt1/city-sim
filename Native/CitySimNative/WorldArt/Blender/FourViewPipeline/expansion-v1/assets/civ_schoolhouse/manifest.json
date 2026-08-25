@@ -1,0 +1,106 @@
+{
+  "artifacts": [
+    {
+      "bytes": 591789,
+      "path": "assets/civ_schoolhouse/civ_schoolhouse.blend",
+      "sha256": "714a04d867907038f0a7f553106f39cfc82146d976dd7473937ae0ddec080da2"
+    },
+    {
+      "bytes": 46977,
+      "decodedRgbaSha256": "fb6e81b512e3a6bec962e96fcd3f40883bbbe7c59f1f632d785ea62fd5b3d8f6",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/civ_schoolhouse/renders/civ_schoolhouse_camNE.png",
+      "sha256": "5c7f7feee07eca19193fbbfbae3c5af76047f35cb43fb5ad2df56c4c4d3c0a3f"
+    },
+    {
+      "bytes": 50809,
+      "decodedRgbaSha256": "5513c81810614652267fdfa2c20bec023ede612f47de19372d27326ae5d9de5f",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/civ_schoolhouse/renders/civ_schoolhouse_camSE.png",
+      "sha256": "c01c2953e8166e59f4c7a3153b20be45c694e4d424661b30be846972003c362b"
+    },
+    {
+      "bytes": 53168,
+      "decodedRgbaSha256": "ab57c90abfca01422e49d28db72c1607c7732966232379119d418abb15551257",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/civ_schoolhouse/renders/civ_schoolhouse_camSW.png",
+      "sha256": "556984985ea2a8672a5b3826ca985e9c904dce97bfd21db411f8c722d7c24222"
+    },
+    {
+      "bytes": 49812,
+      "decodedRgbaSha256": "9ae06ee19c176e31d066f0bb95fb5901beb15e80cfc7a501516f4cccd9fab22b",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/civ_schoolhouse/renders/civ_schoolhouse_camNW.png",
+      "sha256": "111d1cef38e96875ba619d8edba2e312bb86222355dcb228e6b441dee83c738d"
+    },
+    {
+      "bytes": 162457,
+      "decodedRgbaSha256": "ae5db455fac40007227975505e8c449d1779680aafc1bf0fa4bf5c21eb01bcb7",
+      "dimensions": [
+        784,
+        784
+      ],
+      "path": "assets/civ_schoolhouse/civ_schoolhouse_contact-sheet.png",
+      "sha256": "be689d82f3e2f8b1abb040b574a6c619bfa12c02850c366a264ee3d3f5584736"
+    }
+  ],
+  "assetId": "civ_schoolhouse",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "family": "civic-service",
+  "lightingConvention": {
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldStrength": 0.65
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "pipelineSchema": "citysim.world-art.blender-four-view-pipeline.v1",
+  "postRenderCompensation": "none",
+  "rootPivotWorld": [
+    0,
+    0,
+    0
+  ],
+  "schema": "citysim.world-art.expansion-v1.asset.v1",
+  "sourcePixelsReused": false,
+  "status": "generation-candidate-not-admitted",
+  "toolchain": {
+    "blenderVersion": "4.5.12",
+    "renderEngine": "BLENDER_EEVEE_NEXT"
+  },
+  "typology": "school"
+}

@@ -1,0 +1,106 @@
+{
+  "artifacts": [
+    {
+      "bytes": 593238,
+      "path": "assets/com_brick_hotel/com_brick_hotel.blend",
+      "sha256": "a234643213e0cf1042146253f20cf20baea3c911b386d86f6b9fe6bf5111a49e"
+    },
+    {
+      "bytes": 47281,
+      "decodedRgbaSha256": "f18d724d5f25c39ad15444998b9259c1fbf4fa9ad125136a602b56d419429c22",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/com_brick_hotel/renders/com_brick_hotel_camNE.png",
+      "sha256": "9326a99d7093981f626b986bd9dabce4ef87be1e53f1e07ac0ecb51a4cf65e0c"
+    },
+    {
+      "bytes": 52714,
+      "decodedRgbaSha256": "fd3c47d29d917ca571764e96f4042112d3840fe13a1db77d8ebd604fc65f50ff",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/com_brick_hotel/renders/com_brick_hotel_camSE.png",
+      "sha256": "86c2ab11ee966cdfeb96445201e8808a9e9ce6b278790be0416235f52fbe9218"
+    },
+    {
+      "bytes": 55567,
+      "decodedRgbaSha256": "1e4616e9e89adb45ba2dabd77d2e993e2cbf8c4917c6f729a4e76d97167da74b",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/com_brick_hotel/renders/com_brick_hotel_camSW.png",
+      "sha256": "d10f22d6330937333f99453d8bd1a18f0dd2eaab9e92933a1fee69b49d70dcb8"
+    },
+    {
+      "bytes": 50340,
+      "decodedRgbaSha256": "39ceba32d9439b9819af9f5dc9c2a9acb55dff71644ed5cb513ef03baa11b5c1",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/com_brick_hotel/renders/com_brick_hotel_camNW.png",
+      "sha256": "5dc345b6fb7d6806d6965bac6d1aee9de941d055182ccbdee3fdb8de41e2609e"
+    },
+    {
+      "bytes": 167390,
+      "decodedRgbaSha256": "82f38b9f51ac69ee5c2df35c9a8d698e8e9830a5e6b1c9a7012d700f77bb6cf8",
+      "dimensions": [
+        784,
+        784
+      ],
+      "path": "assets/com_brick_hotel/com_brick_hotel_contact-sheet.png",
+      "sha256": "c5ae06ba26ecd0991d405bdb78d862aa6422134911146a551d55f7f0bd6fab74"
+    }
+  ],
+  "assetId": "com_brick_hotel",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "family": "commercial",
+  "lightingConvention": {
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldStrength": 0.65
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "pipelineSchema": "citysim.world-art.blender-four-view-pipeline.v1",
+  "postRenderCompensation": "none",
+  "rootPivotWorld": [
+    0,
+    0,
+    0
+  ],
+  "schema": "citysim.world-art.expansion-v1.asset.v1",
+  "sourcePixelsReused": false,
+  "status": "generation-candidate-not-admitted",
+  "toolchain": {
+    "blenderVersion": "4.5.12",
+    "renderEngine": "BLENDER_EEVEE_NEXT"
+  },
+  "typology": "hotel"
+}

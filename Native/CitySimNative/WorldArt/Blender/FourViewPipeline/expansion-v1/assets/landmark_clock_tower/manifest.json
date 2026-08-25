@@ -1,0 +1,106 @@
+{
+  "artifacts": [
+    {
+      "bytes": 616617,
+      "path": "assets/landmark_clock_tower/landmark_clock_tower.blend",
+      "sha256": "95de7594354b7cd008a6098825fc3d1baa3a0f7f41f062e9aaf61d3a43abc7fd"
+    },
+    {
+      "bytes": 43164,
+      "decodedRgbaSha256": "f632779934f58a63b493e9203a21225537bcc4d0f273dd7d66cdcb152d731dcc",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/landmark_clock_tower/renders/landmark_clock_tower_camNE.png",
+      "sha256": "8db8f75a760d912522e721f24cc1563de4fa72c7712b1b12a1509dee3307d529"
+    },
+    {
+      "bytes": 47911,
+      "decodedRgbaSha256": "c35911ad8b8a62c75f7df80d2a0b283d3ea3355f2c159c64f31fa212e90b9aff",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/landmark_clock_tower/renders/landmark_clock_tower_camSE.png",
+      "sha256": "ca4c75d3ffa77f72cb32d97425485706efb31ec36450a94cabc98d9025447e51"
+    },
+    {
+      "bytes": 49900,
+      "decodedRgbaSha256": "489b7d9f782a5c8c2e5e67141ed0131105ec70ae8aad3dc3607977b4b2090119",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/landmark_clock_tower/renders/landmark_clock_tower_camSW.png",
+      "sha256": "7d02fccd77bbfdee5bf395484e74148e8f5de57ddf227ec2582b4e1c06ae309d"
+    },
+    {
+      "bytes": 46850,
+      "decodedRgbaSha256": "2edecddfd7a3d8b2cfddd790baab474175f104fb80b276826088bb4be326a1a8",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/landmark_clock_tower/renders/landmark_clock_tower_camNW.png",
+      "sha256": "7d6305ff176a3e778ec45c7bea7c54e00b0350740a33e3c3725ad0f3e7c3f87d"
+    },
+    {
+      "bytes": 146245,
+      "decodedRgbaSha256": "ced40fcdee8906138b419c551d571477eb6b1261e35630ca35fd7aa80b61eafc",
+      "dimensions": [
+        784,
+        784
+      ],
+      "path": "assets/landmark_clock_tower/landmark_clock_tower_contact-sheet.png",
+      "sha256": "323090424baba6a209a1373d2087749e8625a6ce94b835cd966860c5f2430a4e"
+    }
+  ],
+  "assetId": "landmark_clock_tower",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "family": "park-landmark",
+  "lightingConvention": {
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldStrength": 0.65
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "pipelineSchema": "citysim.world-art.blender-four-view-pipeline.v1",
+  "postRenderCompensation": "none",
+  "rootPivotWorld": [
+    0,
+    0,
+    0
+  ],
+  "schema": "citysim.world-art.expansion-v1.asset.v1",
+  "sourcePixelsReused": false,
+  "status": "generation-candidate-not-admitted",
+  "toolchain": {
+    "blenderVersion": "4.5.12",
+    "renderEngine": "BLENDER_EEVEE_NEXT"
+  },
+  "typology": "clocktower"
+}

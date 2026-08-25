@@ -1,0 +1,106 @@
+{
+  "artifacts": [
+    {
+      "bytes": 569999,
+      "path": "assets/civ_community_clinic/civ_community_clinic.blend",
+      "sha256": "022cc97bb5a94f29e847b7bb754bd776bc583135be5727b76abb2d7903a7821b"
+    },
+    {
+      "bytes": 44112,
+      "decodedRgbaSha256": "cb215717896feb04a5ee376f30882c8e1d220896bd849f15a459e3de8bbba985",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/civ_community_clinic/renders/civ_community_clinic_camNE.png",
+      "sha256": "1006dd6ed27ae6d434d6305a6eaa657fd060ce201fe9b701ab17dee0077b5f9f"
+    },
+    {
+      "bytes": 52435,
+      "decodedRgbaSha256": "689f205b5bead654f4fb01d448a6eca9859ea84b858071fb39f9e7e77079d2c9",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/civ_community_clinic/renders/civ_community_clinic_camSE.png",
+      "sha256": "63a8ac87896330f8769fd041c0ad5d91efc73bb501ef904ced4bb47e11f78815"
+    },
+    {
+      "bytes": 54115,
+      "decodedRgbaSha256": "7a612ddc31df05e78be24be29e45f8e4322808c4eab99ecba805c13799924adb",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/civ_community_clinic/renders/civ_community_clinic_camSW.png",
+      "sha256": "55f70532c73477456e8e2bb897f2763dcbccc8dce23cea13cde8b4edd0c152fe"
+    },
+    {
+      "bytes": 47913,
+      "decodedRgbaSha256": "24495f52ec44186d31c1b706507232a08cf9bc9fe1ba12af979015f3c079ff45",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/civ_community_clinic/renders/civ_community_clinic_camNW.png",
+      "sha256": "e85bac44545a4fae3089740b23e45f24dd477b935df36025b7f5a61cc78ee27d"
+    },
+    {
+      "bytes": 159508,
+      "decodedRgbaSha256": "a6400850c6fa90d3bec88db64e21eddcbd8e72db6a6e55f8b21cb684226352b9",
+      "dimensions": [
+        784,
+        784
+      ],
+      "path": "assets/civ_community_clinic/civ_community_clinic_contact-sheet.png",
+      "sha256": "c0dd7f74e0347926239b3b7ca7de227501eba40a08ad513cbd38e68d37dbaf07"
+    }
+  ],
+  "assetId": "civ_community_clinic",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "family": "civic-service",
+  "lightingConvention": {
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldStrength": 0.65
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "pipelineSchema": "citysim.world-art.blender-four-view-pipeline.v1",
+  "postRenderCompensation": "none",
+  "rootPivotWorld": [
+    0,
+    0,
+    0
+  ],
+  "schema": "citysim.world-art.expansion-v1.asset.v1",
+  "sourcePixelsReused": false,
+  "status": "generation-candidate-not-admitted",
+  "toolchain": {
+    "blenderVersion": "4.5.12",
+    "renderEngine": "BLENDER_EEVEE_NEXT"
+  },
+  "typology": "clinic"
+}

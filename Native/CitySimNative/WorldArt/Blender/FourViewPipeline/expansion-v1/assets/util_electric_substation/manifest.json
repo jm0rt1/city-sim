@@ -1,0 +1,106 @@
+{
+  "artifacts": [
+    {
+      "bytes": 598923,
+      "path": "assets/util_electric_substation/util_electric_substation.blend",
+      "sha256": "65f391971db2fe5b272af7c31a5b796128a4d9d1913233cab82088f14b810d5f"
+    },
+    {
+      "bytes": 44561,
+      "decodedRgbaSha256": "b953a2a31cbd79eb61f819f7b89ed15e179929513624f42b42f87b658abaad33",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/util_electric_substation/renders/util_electric_substation_camNE.png",
+      "sha256": "981a790e73dc5cf31abfa31a5350ef24de4d3a1279907a4c058e34706cd55f78"
+    },
+    {
+      "bytes": 45705,
+      "decodedRgbaSha256": "fda9b71e6eef453e4120b4fcbfda71f493128289ff7130744c2324cdb0baa4a5",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/util_electric_substation/renders/util_electric_substation_camSE.png",
+      "sha256": "0c624988276bf7b7a243b458ad92ba79c8f4f1a6f63361103254a008178c11f9"
+    },
+    {
+      "bytes": 46296,
+      "decodedRgbaSha256": "47aa47c8e7be6dd75ed8b814b52abc75953cb784fdb611483299b4315af42d7a",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/util_electric_substation/renders/util_electric_substation_camSW.png",
+      "sha256": "e7e5b9c78fe65518d8c2a74e52b32c086d87b8735a64a21c37c998c73aaee411"
+    },
+    {
+      "bytes": 46618,
+      "decodedRgbaSha256": "6badbcaff8481cb9c407d6569e478225c50f94c17979fc2a02deb16976d6ee68",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/util_electric_substation/renders/util_electric_substation_camNW.png",
+      "sha256": "61b97095b221ab966e8007e6dae0207ce79c0c0aee9e759ece322368a2bdec99"
+    },
+    {
+      "bytes": 141502,
+      "decodedRgbaSha256": "04134f7ee530c8fccd36cfaa5097ce10afb4d7ace200143968b89cdc40c45739",
+      "dimensions": [
+        784,
+        784
+      ],
+      "path": "assets/util_electric_substation/util_electric_substation_contact-sheet.png",
+      "sha256": "d54050a27773ae878441eb09500759a9f8be51a33036909dfe9c0c7186349327"
+    }
+  ],
+  "assetId": "util_electric_substation",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "family": "utility",
+  "lightingConvention": {
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldStrength": 0.65
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "pipelineSchema": "citysim.world-art.blender-four-view-pipeline.v1",
+  "postRenderCompensation": "none",
+  "rootPivotWorld": [
+    0,
+    0,
+    0
+  ],
+  "schema": "citysim.world-art.expansion-v1.asset.v1",
+  "sourcePixelsReused": false,
+  "status": "generation-candidate-not-admitted",
+  "toolchain": {
+    "blenderVersion": "4.5.12",
+    "renderEngine": "BLENDER_EEVEE_NEXT"
+  },
+  "typology": "substation"
+}

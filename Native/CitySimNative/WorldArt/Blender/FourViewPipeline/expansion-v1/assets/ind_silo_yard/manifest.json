@@ -1,0 +1,106 @@
+{
+  "artifacts": [
+    {
+      "bytes": 598910,
+      "path": "assets/ind_silo_yard/ind_silo_yard.blend",
+      "sha256": "2bd33ae310e0b505db79a09edb1316aa263cbdd7c6b914c2141d37b3cade0285"
+    },
+    {
+      "bytes": 48048,
+      "decodedRgbaSha256": "376a089c158d9043c43d9d1d3dfa63abfdf26efcb7903bd7bff21bceac2b57e7",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/ind_silo_yard/renders/ind_silo_yard_camNE.png",
+      "sha256": "e01da8c36aefdf26e216c2093662352f2893452561345825351eac1d08c69b33"
+    },
+    {
+      "bytes": 52268,
+      "decodedRgbaSha256": "fd1554ef2e922a31cf41ad62c8e227494b7aa04b82a822da1ff30ab6172b7fe4",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/ind_silo_yard/renders/ind_silo_yard_camSE.png",
+      "sha256": "d6aef72e08281d655073a1a037e32a5c3b0017d88f75143bcbd545b4ed32a709"
+    },
+    {
+      "bytes": 53627,
+      "decodedRgbaSha256": "5e837b93e879f2906e0b1020a1f95bf1826f4d5dd9f30f2f1e64551b2fc28a04",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/ind_silo_yard/renders/ind_silo_yard_camSW.png",
+      "sha256": "8e910cd0a72ad57ffa03515fa745fea44d692cec65481dfa695fa96259c825f3"
+    },
+    {
+      "bytes": 51101,
+      "decodedRgbaSha256": "0f07b3098436aba506afbaae280fe3f04e8d365472debc134e1214820ce76d34",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/ind_silo_yard/renders/ind_silo_yard_camNW.png",
+      "sha256": "004309b445f906946f0b61e8dfc5624ffed17e90cec8b98b640cea7da5b6bf5f"
+    },
+    {
+      "bytes": 164374,
+      "decodedRgbaSha256": "ff5c6f2377f81043a17aedd2c8511c54ad6f6627ba34924e3308de7a13d844bc",
+      "dimensions": [
+        784,
+        784
+      ],
+      "path": "assets/ind_silo_yard/ind_silo_yard_contact-sheet.png",
+      "sha256": "2d2f3b441bcef47875061ed0883eba493253791f2eb0f3de0da4bb59ffd937f8"
+    }
+  ],
+  "assetId": "ind_silo_yard",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "family": "industrial",
+  "lightingConvention": {
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldStrength": 0.65
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "pipelineSchema": "citysim.world-art.blender-four-view-pipeline.v1",
+  "postRenderCompensation": "none",
+  "rootPivotWorld": [
+    0,
+    0,
+    0
+  ],
+  "schema": "citysim.world-art.expansion-v1.asset.v1",
+  "sourcePixelsReused": false,
+  "status": "generation-candidate-not-admitted",
+  "toolchain": {
+    "blenderVersion": "4.5.12",
+    "renderEngine": "BLENDER_EEVEE_NEXT"
+  },
+  "typology": "silos"
+}

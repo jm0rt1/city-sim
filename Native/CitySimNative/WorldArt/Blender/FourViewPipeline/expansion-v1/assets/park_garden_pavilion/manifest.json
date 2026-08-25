@@ -1,0 +1,106 @@
+{
+  "artifacts": [
+    {
+      "bytes": 614676,
+      "path": "assets/park_garden_pavilion/park_garden_pavilion.blend",
+      "sha256": "ee9d13b8db4e856e3d8041f0c93973410675ddcd81c1b9a5a269458824ebcfcd"
+    },
+    {
+      "bytes": 44775,
+      "decodedRgbaSha256": "9bddf9ce9441e35deb269d0d6d17ecf1a36a901ed61dd37ce528f4073bf3d6bd",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/park_garden_pavilion/renders/park_garden_pavilion_camNE.png",
+      "sha256": "36f6d5fdf9854214e80cdb56a54426f9de507d728162d3a7e9096012b39d8f6c"
+    },
+    {
+      "bytes": 47386,
+      "decodedRgbaSha256": "a4655624c22473042d8fdf2296c10956c280d80c226b6c16969367b08fc4da0c",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/park_garden_pavilion/renders/park_garden_pavilion_camSE.png",
+      "sha256": "11931e6ca4d20fa1ef879d988a535cb02bbe44034f1da4bd99558f032d26e430"
+    },
+    {
+      "bytes": 48172,
+      "decodedRgbaSha256": "a2953b8e2fa8e8d445b625b29664bbe404ae59033241fae25bc5e2ff79545353",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/park_garden_pavilion/renders/park_garden_pavilion_camSW.png",
+      "sha256": "2608c82be10c87fdc550063da18b54694f963571567d2348c2fd1c71126fc101"
+    },
+    {
+      "bytes": 47489,
+      "decodedRgbaSha256": "0b1fc0bd02a8daf58514f42fee2618175ab6d75b3cc57005f63831b55549b847",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/park_garden_pavilion/renders/park_garden_pavilion_camNW.png",
+      "sha256": "8658941c92f941ce850cbe2fdc0afa034f4c9ddc5f018083f0cc7dd19d273060"
+    },
+    {
+      "bytes": 146113,
+      "decodedRgbaSha256": "d61e52c4923995eae1147878bcdb59d5ff8f9e7113e46325371a405705e1c07c",
+      "dimensions": [
+        784,
+        784
+      ],
+      "path": "assets/park_garden_pavilion/park_garden_pavilion_contact-sheet.png",
+      "sha256": "f8605c8e95f24437c76ce086c6c2206ccd85b56edd9bc6bdd70ea3256f23fd8f"
+    }
+  ],
+  "assetId": "park_garden_pavilion",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "family": "park-landmark",
+  "lightingConvention": {
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldStrength": 0.65
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "pipelineSchema": "citysim.world-art.blender-four-view-pipeline.v1",
+  "postRenderCompensation": "none",
+  "rootPivotWorld": [
+    0,
+    0,
+    0
+  ],
+  "schema": "citysim.world-art.expansion-v1.asset.v1",
+  "sourcePixelsReused": false,
+  "status": "generation-candidate-not-admitted",
+  "toolchain": {
+    "blenderVersion": "4.5.12",
+    "renderEngine": "BLENDER_EEVEE_NEXT"
+  },
+  "typology": "pavilion"
+}

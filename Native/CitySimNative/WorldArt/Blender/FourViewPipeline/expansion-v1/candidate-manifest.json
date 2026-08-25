@@ -1,0 +1,274 @@
+{
+  "aggregateContactSheet": {
+    "path": "expansion-v1-aggregate-contact-sheet.png",
+    "sha256": "34fef068788ed65eaedb8cfdcf0f78c330c4d21c4deb5b02d465771bac7221cc"
+  },
+  "assets": [
+    {
+      "assetId": "res_cedar_cottage",
+      "family": "residential",
+      "manifest": "assets/res_cedar_cottage/manifest.json",
+      "typology": "cottage"
+    },
+    {
+      "assetId": "res_brick_rowhouse",
+      "family": "residential",
+      "manifest": "assets/res_brick_rowhouse/manifest.json",
+      "typology": "rowhouse"
+    },
+    {
+      "assetId": "res_duplex_gable",
+      "family": "residential",
+      "manifest": "assets/res_duplex_gable/manifest.json",
+      "typology": "duplex"
+    },
+    {
+      "assetId": "res_courtyard_walkup",
+      "family": "residential",
+      "manifest": "assets/res_courtyard_walkup/manifest.json",
+      "typology": "courtyard"
+    },
+    {
+      "assetId": "res_tower_setback",
+      "family": "residential",
+      "manifest": "assets/res_tower_setback/manifest.json",
+      "typology": "tower"
+    },
+    {
+      "assetId": "res_terrace_home",
+      "family": "residential",
+      "manifest": "assets/res_terrace_home/manifest.json",
+      "typology": "terrace"
+    },
+    {
+      "assetId": "res_bay_bungalow",
+      "family": "residential",
+      "manifest": "assets/res_bay_bungalow/manifest.json",
+      "typology": "bungalow"
+    },
+    {
+      "assetId": "res_lodge_apartments",
+      "family": "residential",
+      "manifest": "assets/res_lodge_apartments/manifest.json",
+      "typology": "lodge"
+    },
+    {
+      "assetId": "res_corner_townhomes",
+      "family": "residential",
+      "manifest": "assets/res_corner_townhomes/manifest.json",
+      "typology": "townhomes"
+    },
+    {
+      "assetId": "res_roof_garden_flats",
+      "family": "residential",
+      "manifest": "assets/res_roof_garden_flats/manifest.json",
+      "typology": "roofgarden"
+    },
+    {
+      "assetId": "res_stacked_duplex",
+      "family": "residential",
+      "manifest": "assets/res_stacked_duplex/manifest.json",
+      "typology": "stacked"
+    },
+    {
+      "assetId": "res_villa_wing",
+      "family": "residential",
+      "manifest": "assets/res_villa_wing/manifest.json",
+      "typology": "villa"
+    },
+    {
+      "assetId": "res_arcade_residence",
+      "family": "residential",
+      "manifest": "assets/res_arcade_residence/manifest.json",
+      "typology": "arcade"
+    },
+    {
+      "assetId": "res_stepped_apartments",
+      "family": "residential",
+      "manifest": "assets/res_stepped_apartments/manifest.json",
+      "typology": "stepped"
+    },
+    {
+      "assetId": "com_corner_grocer",
+      "family": "commercial",
+      "manifest": "assets/com_corner_grocer/manifest.json",
+      "typology": "grocer"
+    },
+    {
+      "assetId": "com_market_hall",
+      "family": "commercial",
+      "manifest": "assets/com_market_hall/manifest.json",
+      "typology": "market"
+    },
+    {
+      "assetId": "com_glass_offices",
+      "family": "commercial",
+      "manifest": "assets/com_glass_offices/manifest.json",
+      "typology": "glassoffice"
+    },
+    {
+      "assetId": "com_theater",
+      "family": "commercial",
+      "manifest": "assets/com_theater/manifest.json",
+      "typology": "theater"
+    },
+    {
+      "assetId": "com_arcade_shops",
+      "family": "commercial",
+      "manifest": "assets/com_arcade_shops/manifest.json",
+      "typology": "arcadeshops"
+    },
+    {
+      "assetId": "com_brick_hotel",
+      "family": "commercial",
+      "manifest": "assets/com_brick_hotel/manifest.json",
+      "typology": "hotel"
+    },
+    {
+      "assetId": "com_rooftop_cafe",
+      "family": "commercial",
+      "manifest": "assets/com_rooftop_cafe/manifest.json",
+      "typology": "cafe"
+    },
+    {
+      "assetId": "com_department_store",
+      "family": "commercial",
+      "manifest": "assets/com_department_store/manifest.json",
+      "typology": "department"
+    },
+    {
+      "assetId": "com_transit_mart",
+      "family": "commercial",
+      "manifest": "assets/com_transit_mart/manifest.json",
+      "typology": "transitmart"
+    },
+    {
+      "assetId": "com_midrise_offices",
+      "family": "commercial",
+      "manifest": "assets/com_midrise_offices/manifest.json",
+      "typology": "midrise"
+    },
+    {
+      "assetId": "ind_sawtooth_works",
+      "family": "industrial",
+      "manifest": "assets/ind_sawtooth_works/manifest.json",
+      "typology": "sawtooth"
+    },
+    {
+      "assetId": "ind_cylinder_depot",
+      "family": "industrial",
+      "manifest": "assets/ind_cylinder_depot/manifest.json",
+      "typology": "cylinder"
+    },
+    {
+      "assetId": "ind_warehouse_bay",
+      "family": "industrial",
+      "manifest": "assets/ind_warehouse_bay/manifest.json",
+      "typology": "warehouse"
+    },
+    {
+      "assetId": "ind_foundry_hall",
+      "family": "industrial",
+      "manifest": "assets/ind_foundry_hall/manifest.json",
+      "typology": "foundry"
+    },
+    {
+      "assetId": "ind_brewery_tanks",
+      "family": "industrial",
+      "manifest": "assets/ind_brewery_tanks/manifest.json",
+      "typology": "brewery"
+    },
+    {
+      "assetId": "ind_freight_terminal",
+      "family": "industrial",
+      "manifest": "assets/ind_freight_terminal/manifest.json",
+      "typology": "freight"
+    },
+    {
+      "assetId": "ind_silo_yard",
+      "family": "industrial",
+      "manifest": "assets/ind_silo_yard/manifest.json",
+      "typology": "silos"
+    },
+    {
+      "assetId": "ind_repair_shed",
+      "family": "industrial",
+      "manifest": "assets/ind_repair_shed/manifest.json",
+      "typology": "repair"
+    },
+    {
+      "assetId": "civ_firehouse",
+      "family": "civic-service",
+      "manifest": "assets/civ_firehouse/manifest.json",
+      "typology": "firehouse"
+    },
+    {
+      "assetId": "civ_schoolhouse",
+      "family": "civic-service",
+      "manifest": "assets/civ_schoolhouse/manifest.json",
+      "typology": "school"
+    },
+    {
+      "assetId": "civ_police_station",
+      "family": "civic-service",
+      "manifest": "assets/civ_police_station/manifest.json",
+      "typology": "police"
+    },
+    {
+      "assetId": "civ_community_clinic",
+      "family": "civic-service",
+      "manifest": "assets/civ_community_clinic/manifest.json",
+      "typology": "clinic"
+    },
+    {
+      "assetId": "util_waterworks",
+      "family": "utility",
+      "manifest": "assets/util_waterworks/manifest.json",
+      "typology": "waterworks"
+    },
+    {
+      "assetId": "util_electric_substation",
+      "family": "utility",
+      "manifest": "assets/util_electric_substation/manifest.json",
+      "typology": "substation"
+    },
+    {
+      "assetId": "park_garden_pavilion",
+      "family": "park-landmark",
+      "manifest": "assets/park_garden_pavilion/manifest.json",
+      "typology": "pavilion"
+    },
+    {
+      "assetId": "landmark_clock_tower",
+      "family": "park-landmark",
+      "manifest": "assets/landmark_clock_tower/manifest.json",
+      "typology": "clocktower"
+    }
+  ],
+  "baselineDistinctBuildingVariants": 20,
+  "candidateDistinctBuildingVariants": 60,
+  "contract": {
+    "cameraOrder": [
+      "camNE",
+      "camSE",
+      "camSW",
+      "camNW"
+    ],
+    "canvas": {
+      "footprintPivotPixel": [
+        192,
+        300
+      ],
+      "height": 384,
+      "transparent": true,
+      "trim": false,
+      "width": 384
+    },
+    "pipelineSchema": "citysim.world-art.blender-four-view-pipeline.v1",
+    "postRenderCompensation": "none"
+  },
+  "fourViewFrameCount": 160,
+  "newDistinctBuildingVariants": 40,
+  "schema": "citysim.world-art.expansion-v1.candidate-manifest.v1",
+  "status": "generation-candidate-not-admitted"
+}

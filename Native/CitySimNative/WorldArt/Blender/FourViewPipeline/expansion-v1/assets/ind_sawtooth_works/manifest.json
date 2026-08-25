@@ -1,0 +1,106 @@
+{
+  "artifacts": [
+    {
+      "bytes": 585166,
+      "path": "assets/ind_sawtooth_works/ind_sawtooth_works.blend",
+      "sha256": "d07a16a0af66feb20013165c1a016a7ed137645bd60988ed48a5c1a761e6fe42"
+    },
+    {
+      "bytes": 44261,
+      "decodedRgbaSha256": "c1a688373bfab26449ed7998a282825f1e6583a826379c52ef72d6ab98da9554",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/ind_sawtooth_works/renders/ind_sawtooth_works_camNE.png",
+      "sha256": "a1183f826dc303d658c227ee3d548431dc463cc1177bde60d517c2f859735814"
+    },
+    {
+      "bytes": 48740,
+      "decodedRgbaSha256": "e8fcc9e326ecc6107b183560042a951919b1d8959ba3d41f2ca9d1b8fd1e3424",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/ind_sawtooth_works/renders/ind_sawtooth_works_camSE.png",
+      "sha256": "0afbbeb8fe6bd71716f3c12b86031fa42c7d04b84d22bee0c9c7d4d2eb64a01e"
+    },
+    {
+      "bytes": 49764,
+      "decodedRgbaSha256": "d4473f969f2cb7687676d3e2402aee49273f51597fad10e4f9bc47b4e658c8c4",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/ind_sawtooth_works/renders/ind_sawtooth_works_camSW.png",
+      "sha256": "c9ba665fec4b5d11462cc0b9f4f0745eac39b2ff5749e797b0a9fccb6ce2ad37"
+    },
+    {
+      "bytes": 46812,
+      "decodedRgbaSha256": "68e13914cb4a6495b33ba114d0b562469b2c629462c77d6224c09fa2f4225512",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/ind_sawtooth_works/renders/ind_sawtooth_works_camNW.png",
+      "sha256": "de2989084fa0f1f57f51aa37b1386eb6f7bcb365ecad72a97dec7d4f0d5cdc96"
+    },
+    {
+      "bytes": 150028,
+      "decodedRgbaSha256": "6a923eaacb6714bdd22357ae36d1bd1fcde9c5f15419361dde83c397281b3be6",
+      "dimensions": [
+        784,
+        784
+      ],
+      "path": "assets/ind_sawtooth_works/ind_sawtooth_works_contact-sheet.png",
+      "sha256": "cfb7a7257a2acf5ec00b174b9592c461afb40dbf5fd68b7ec6136bdb0dac1601"
+    }
+  ],
+  "assetId": "ind_sawtooth_works",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "family": "industrial",
+  "lightingConvention": {
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldStrength": 0.65
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "pipelineSchema": "citysim.world-art.blender-four-view-pipeline.v1",
+  "postRenderCompensation": "none",
+  "rootPivotWorld": [
+    0,
+    0,
+    0
+  ],
+  "schema": "citysim.world-art.expansion-v1.asset.v1",
+  "sourcePixelsReused": false,
+  "status": "generation-candidate-not-admitted",
+  "toolchain": {
+    "blenderVersion": "4.5.12",
+    "renderEngine": "BLENDER_EEVEE_NEXT"
+  },
+  "typology": "sawtooth"
+}

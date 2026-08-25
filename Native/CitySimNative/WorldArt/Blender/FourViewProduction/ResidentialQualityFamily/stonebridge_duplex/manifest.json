@@ -1,0 +1,288 @@
+{
+  "artifacts": [
+    {
+      "bytes": 4800589,
+      "path": "stonebridge_duplex.blend",
+      "sha256": "32b094eaf18975ef9a54e529cd9dde75bbef92b29df55619f19e1a713f8cf81e"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 185,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 164,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 21606,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 69949,
+      "decodedRgbaSha256": "0fa5d1c38a64734fd0fc22ad7a448fd2004459b23fd9e66cd68a13ce5e84c386",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/stonebridge_duplex_camNE.png",
+      "sha256": "d68f994dd70195b18a81794266d31f532b19e49f52b1fb09e6e20dc43aa51e95"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 188,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 161,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 21329,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 74907,
+      "decodedRgbaSha256": "e2a331230822e068b228ce16d0ac2c86e47f5738c7d26b2d342f94d8613b6f48",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/stonebridge_duplex_camSE.png",
+      "sha256": "390a820bc0f54ae2c137cdf9a2f3b44621a54040d1164c8e83c3e7aa1c5b130f"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 188,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 161,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 21435,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 75896,
+      "decodedRgbaSha256": "e77adb2ac7cf7d596e311bc9737c15b83650b3a1d02d0168fb10377e78f1c287",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/stonebridge_duplex_camSW.png",
+      "sha256": "34944ed4879ed60c791f6922a48666f40e085685b9deda1ac5b468a5fb933bbd"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 185,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 164,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 21482,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 74981,
+      "decodedRgbaSha256": "a8af6350a1ba3613699a68cb30de4d1d6c3502000d91d035e0d58e572563d915",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/stonebridge_duplex_camNW.png",
+      "sha256": "cf73b7982f75a5010fc222f85dc1d43be22155c51f4a31c67094bfbfbb3e8ace"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 679,
+          "maxX": 783,
+          "maxY": 839,
+          "minX": 0,
+          "minY": 161,
+          "width": 784
+        },
+        "lowestOpaqueRowTopOrigin": 839,
+        "opaquePixelCount": 128860,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 260190,
+      "decodedRgbaSha256": "0f83c068db7e87c0a179c749547caaa1bb89839d07fe843f3a336dfd565bbf32",
+      "dimensions": [
+        784,
+        840
+      ],
+      "path": "stonebridge_duplex_contact-sheet.png",
+      "sha256": "9ae9020cdad93691e338fec79791449a45e764d3467f1180b18421de45814474"
+    }
+  ],
+  "assetFamily": "residential-quality-family",
+  "assetId": "stonebridge_duplex",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "cameraRig": {
+    "distance": 32.0,
+    "orthoScale": 12.341995,
+    "shiftY": 0.28125,
+    "views": [
+      {
+        "azimuthDegrees": 45.0,
+        "name": "camNE"
+      },
+      {
+        "azimuthDegrees": 135.0,
+        "name": "camSE"
+      },
+      {
+        "azimuthDegrees": 225.0,
+        "name": "camSW"
+      },
+      {
+        "azimuthDegrees": 315.0,
+        "name": "camNW"
+      }
+    ]
+  },
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "contactSheetLayout": [
+    [
+      "camNE",
+      "camSE"
+    ],
+    [
+      "camSW",
+      "camNW"
+    ]
+  ],
+  "densityLevel": 1,
+  "dependencies": [
+    {
+      "path": "FourViewProduction/Density/build_and_render.py",
+      "sha256": "ff95f26a68c53a3f2e7bc60e540c5836afbd1781a4f78f50b1bdaec76b007e41"
+    },
+    {
+      "path": "FourViewPipeline/pipeline.json",
+      "sha256": "134c5e6561e9332cec7e1173cf55f812e8767e1d58c22a9f170134a047e610e3"
+    },
+    {
+      "path": "FourViewPipeline/png_canonical.py",
+      "sha256": "f9a913098512fab3653d89a3237f84ba82172cabec635ab8a804f639207e653a"
+    }
+  ],
+  "description": "Masonry duplex with twin front gables, paired entries, rear sunrooms, and a shared stoop",
+  "displayName": "Stonebridge Duplex",
+  "grid": {
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0,
+    "projectedTilePixels": [
+      88,
+      44
+    ],
+    "projection": "orthographic-2:1-dimetric",
+    "worldTileSize": 2.0
+  },
+  "lightingConvention": {
+    "color": [
+      1.0,
+      0.86,
+      0.72
+    ],
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldColor": [
+      0.2,
+      0.17,
+      0.14,
+      1.0
+    ],
+    "worldStrength": 0.72
+  },
+  "liveAsset": true,
+  "originalGeometry": true,
+  "perViewCompensation": {
+    "crop": false,
+    "offsetPixels": [
+      0,
+      0
+    ],
+    "rotationDegrees": 0.0,
+    "scale": 1.0,
+    "skew": [
+      0.0,
+      0.0
+    ]
+  },
+  "pipelineSchema": "citysim.world-art.residential-quality-family.v1",
+  "postRenderCompensation": "none",
+  "quarantinedExpansionV1Reused": false,
+  "root": {
+    "location": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "name": "AssetRoot",
+    "pivotName": "FootprintPivot",
+    "rotationEuler": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "schema": "citysim.world-art.residential-quality-asset.v1",
+  "sourceFiles": [
+    {
+      "path": "build_and_render.py",
+      "sha256": "13f88f5fd43aa9cbdacbc655e0ae262edaf1cc6a03eafbcbb65950ebaa2e23a4"
+    },
+    {
+      "path": "pipeline.json",
+      "sha256": "8b37ab00c98c924726f745a314f03df14867a42d9dc96221f16cc3308814a21e"
+    },
+    {
+      "path": "run_pipeline.sh",
+      "sha256": "b1a7c36c1a9e253ab96dca2c3c15f1705a7c478f7d6af33e171d9d93893f3a56"
+    },
+    {
+      "path": "validate.py",
+      "sha256": "350d9eb2c49307c7136373f88fcb6017095c386c576166e94a83ad2304aa2dd4"
+    }
+  ],
+  "sourcePixelsReused": false,
+  "status": "quality-candidate-runtime-integrated",
+  "worldFootprintTiles": [
+    2,
+    2
+  ],
+  "zone": "residential"
+}

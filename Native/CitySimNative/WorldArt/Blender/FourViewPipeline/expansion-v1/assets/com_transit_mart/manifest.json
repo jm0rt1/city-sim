@@ -1,0 +1,106 @@
+{
+  "artifacts": [
+    {
+      "bytes": 560546,
+      "path": "assets/com_transit_mart/com_transit_mart.blend",
+      "sha256": "b424699585e097b093a57f87403341c573647228e1df8e3180fdbf0d094a6823"
+    },
+    {
+      "bytes": 42640,
+      "decodedRgbaSha256": "e8ba7dcff31eb069e773805aa3b7b3ef24e38d71370328ccf54ec74dc12125e7",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/com_transit_mart/renders/com_transit_mart_camNE.png",
+      "sha256": "c170bae005e7bc373b3d4a5f8c01fb813b399edaad4ffcdfa0eddb6efd7c053c"
+    },
+    {
+      "bytes": 48109,
+      "decodedRgbaSha256": "2e2111a1de77d43bff047968544a490a17882a5323504c81e4189912cc31beba",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/com_transit_mart/renders/com_transit_mart_camSE.png",
+      "sha256": "c74b9c642902f6a869f5d57b75ecadde07102ae9913484cf50cb748c22b33ab5"
+    },
+    {
+      "bytes": 48366,
+      "decodedRgbaSha256": "633a6fdf62867292dce002cbca793e51d0fc95e74327807b360351005eb40730",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/com_transit_mart/renders/com_transit_mart_camSW.png",
+      "sha256": "4ed1ec0645047f2321a8f0b54fa571f2a81c1eb03cd29d1e606b14f9c6479b7a"
+    },
+    {
+      "bytes": 45178,
+      "decodedRgbaSha256": "fdb084e4497b6277b6b488d961cc23019099718f9044949064dd7d4650fad8dc",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/com_transit_mart/renders/com_transit_mart_camNW.png",
+      "sha256": "a13096a62f729967c231fb03108572ff1cad4e121b02f3f570bbaca7a65d7d8d"
+    },
+    {
+      "bytes": 144699,
+      "decodedRgbaSha256": "b97f0e39b6731cc4bbc58d87d95ea4d533c6a72aba73e167e363406ff7488ffb",
+      "dimensions": [
+        784,
+        784
+      ],
+      "path": "assets/com_transit_mart/com_transit_mart_contact-sheet.png",
+      "sha256": "28155b0e72c622c9d13ad9fcefbdb18e425173075b0dd88cca6cbb472ebaefed"
+    }
+  ],
+  "assetId": "com_transit_mart",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "family": "commercial",
+  "lightingConvention": {
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldStrength": 0.65
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "pipelineSchema": "citysim.world-art.blender-four-view-pipeline.v1",
+  "postRenderCompensation": "none",
+  "rootPivotWorld": [
+    0,
+    0,
+    0
+  ],
+  "schema": "citysim.world-art.expansion-v1.asset.v1",
+  "sourcePixelsReused": false,
+  "status": "generation-candidate-not-admitted",
+  "toolchain": {
+    "blenderVersion": "4.5.12",
+    "renderEngine": "BLENDER_EEVEE_NEXT"
+  },
+  "typology": "transitmart"
+}

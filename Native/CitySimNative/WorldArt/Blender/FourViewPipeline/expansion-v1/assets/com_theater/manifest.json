@@ -1,0 +1,106 @@
+{
+  "artifacts": [
+    {
+      "bytes": 560537,
+      "path": "assets/com_theater/com_theater.blend",
+      "sha256": "d46916a7b84449e5b073ae770d97cc4ebef5dff33c35f49498b090f672d1e410"
+    },
+    {
+      "bytes": 43522,
+      "decodedRgbaSha256": "8328a17b6cede1da80295023e9e490fd8ed6c516af57b235a34a4a6dacce7fb7",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/com_theater/renders/com_theater_camNE.png",
+      "sha256": "f2d6be7fc45ac2f6b33432c8021da62a637b882c33a099e635b6f46ca260f9b6"
+    },
+    {
+      "bytes": 50539,
+      "decodedRgbaSha256": "ff4aa227eb78a0aa3e32c5115c2bc9513c4c699ae1049b34512afc964fda688b",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/com_theater/renders/com_theater_camSE.png",
+      "sha256": "6835526a7b4d08a933431dcf9451e1fd6947d1f69e756d4ae28590cf5b6fb087"
+    },
+    {
+      "bytes": 51685,
+      "decodedRgbaSha256": "5eed404e7e32b6bb0f607979c119fa26e0e7953a3ac8babc805511db778c6202",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/com_theater/renders/com_theater_camSW.png",
+      "sha256": "86e998614d42b402b63809fd2bb149b502e78a4231b98386d85512638a872f17"
+    },
+    {
+      "bytes": 46808,
+      "decodedRgbaSha256": "3d674478c1f1fe90ab1a7ae6a733aadc02edaa33b2d809ea44d276d564d7ef64",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/com_theater/renders/com_theater_camNW.png",
+      "sha256": "683a497859d0cac97558af1cf41982eba113d76ce13ebe766ab5aff90be31c6f"
+    },
+    {
+      "bytes": 154246,
+      "decodedRgbaSha256": "55acb620bc23bc9f5b5a8f82a0065e56e809bde755d0d624de623898e7e15337",
+      "dimensions": [
+        784,
+        784
+      ],
+      "path": "assets/com_theater/com_theater_contact-sheet.png",
+      "sha256": "73446376d84b49dc4bc1999bc258ccf90cfa2c55a61ac91d2af533730f550c07"
+    }
+  ],
+  "assetId": "com_theater",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "family": "commercial",
+  "lightingConvention": {
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldStrength": 0.65
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "pipelineSchema": "citysim.world-art.blender-four-view-pipeline.v1",
+  "postRenderCompensation": "none",
+  "rootPivotWorld": [
+    0,
+    0,
+    0
+  ],
+  "schema": "citysim.world-art.expansion-v1.asset.v1",
+  "sourcePixelsReused": false,
+  "status": "generation-candidate-not-admitted",
+  "toolchain": {
+    "blenderVersion": "4.5.12",
+    "renderEngine": "BLENDER_EEVEE_NEXT"
+  },
+  "typology": "theater"
+}

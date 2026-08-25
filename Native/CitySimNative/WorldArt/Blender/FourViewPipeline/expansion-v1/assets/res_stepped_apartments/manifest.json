@@ -1,0 +1,106 @@
+{
+  "artifacts": [
+    {
+      "bytes": 602699,
+      "path": "assets/res_stepped_apartments/res_stepped_apartments.blend",
+      "sha256": "09b472d0dd6917640595606699be6649cc3b749968f1065433a42273f963b485"
+    },
+    {
+      "bytes": 51568,
+      "decodedRgbaSha256": "b6b548f688777bcc22c680f6063191f46f5ad3e51de31c32350799d6626d8a63",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/res_stepped_apartments/renders/res_stepped_apartments_camNE.png",
+      "sha256": "b306d55a77f64342ddad214ca0d84780bc80f9b2609fc1612411936d6d3cbe7f"
+    },
+    {
+      "bytes": 57760,
+      "decodedRgbaSha256": "ded423473af823584b92fd05a1fc7fc2745225d867c7ef27fabfa10a7ce435fd",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/res_stepped_apartments/renders/res_stepped_apartments_camSE.png",
+      "sha256": "5a3d556058daf0e59019d101028744b63c8937697d96d2293f53e15426234beb"
+    },
+    {
+      "bytes": 60024,
+      "decodedRgbaSha256": "aa89005d1dec87c6707f801847ea4e547c819854a04aaf08b7a2dfce53d1990e",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/res_stepped_apartments/renders/res_stepped_apartments_camSW.png",
+      "sha256": "68629e9fd235ae624b39371148fb6b6410f3ee8eb59eb0da68444c5bee1157bd"
+    },
+    {
+      "bytes": 55325,
+      "decodedRgbaSha256": "3178b5c6d12d91b788dabc5b6e5867ed6d4ddb5c4566b79d40cb101837fc615a",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/res_stepped_apartments/renders/res_stepped_apartments_camNW.png",
+      "sha256": "71ff633dfd863bd38a343dd6ba217fee9693c9b890ae49f117cb5fe76743822e"
+    },
+    {
+      "bytes": 187533,
+      "decodedRgbaSha256": "3005e32b9af7e1da5ea56ac99a81302d31da804bec7def1e4ac8d500318c2473",
+      "dimensions": [
+        784,
+        784
+      ],
+      "path": "assets/res_stepped_apartments/res_stepped_apartments_contact-sheet.png",
+      "sha256": "1c974e85455cc58427f607b6051fa82a7b932d684cca92f4d4ec757a131e1a90"
+    }
+  ],
+  "assetId": "res_stepped_apartments",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "family": "residential",
+  "lightingConvention": {
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldStrength": 0.65
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "pipelineSchema": "citysim.world-art.blender-four-view-pipeline.v1",
+  "postRenderCompensation": "none",
+  "rootPivotWorld": [
+    0,
+    0,
+    0
+  ],
+  "schema": "citysim.world-art.expansion-v1.asset.v1",
+  "sourcePixelsReused": false,
+  "status": "generation-candidate-not-admitted",
+  "toolchain": {
+    "blenderVersion": "4.5.12",
+    "renderEngine": "BLENDER_EEVEE_NEXT"
+  },
+  "typology": "stepped"
+}

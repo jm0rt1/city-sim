@@ -1,0 +1,106 @@
+{
+  "artifacts": [
+    {
+      "bytes": 592311,
+      "path": "assets/res_lodge_apartments/res_lodge_apartments.blend",
+      "sha256": "f5bfdad364c184b0a5dafdb92abe1170f32cb53ae7501b18f6eea511c97f01f5"
+    },
+    {
+      "bytes": 46338,
+      "decodedRgbaSha256": "8f9837476447278aa0c75bda6295d18c9daa943850a0bfce8f64da5bbfb75ea0",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/res_lodge_apartments/renders/res_lodge_apartments_camNE.png",
+      "sha256": "65a29d2cdd118be78fab84efe59b461bfc4f50038aa9bfc4c148dc3c42580b4d"
+    },
+    {
+      "bytes": 50818,
+      "decodedRgbaSha256": "84f36b5e1056ab1855fbef50b5ec6176ca2636efbce7d000851cd7f4b374b3ad",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/res_lodge_apartments/renders/res_lodge_apartments_camSE.png",
+      "sha256": "f141e970099cc8d12b9033fad3e37788296e2803c593f84be0db2dbffb20c418"
+    },
+    {
+      "bytes": 52708,
+      "decodedRgbaSha256": "f7e3e5c52144a7de625ed6e9da3392181ea01e4c7430e86c0d1b759295b767a1",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/res_lodge_apartments/renders/res_lodge_apartments_camSW.png",
+      "sha256": "0cf97ac5d822ec9c221589f826a059a8683276b2961e948f1f5b5b2dbdf70b21"
+    },
+    {
+      "bytes": 49333,
+      "decodedRgbaSha256": "f482d8138a47450018f97b672e03f20627f355e546841f837b4d0eae5b4e59d0",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/res_lodge_apartments/renders/res_lodge_apartments_camNW.png",
+      "sha256": "3ae1c307e3d82974d9401b60d73b1bb8d275c5ce6c246c84d9f3dbdc111933bf"
+    },
+    {
+      "bytes": 159301,
+      "decodedRgbaSha256": "124af065ca2f80e79049b85ab5aa3eb8ec3e5f4f1e972586c0c83b34a9abda91",
+      "dimensions": [
+        784,
+        784
+      ],
+      "path": "assets/res_lodge_apartments/res_lodge_apartments_contact-sheet.png",
+      "sha256": "a28ac90fcedf9f370cc45280e2b698964b7d3ae3873321e85df03cb0620fe63d"
+    }
+  ],
+  "assetId": "res_lodge_apartments",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "family": "residential",
+  "lightingConvention": {
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldStrength": 0.65
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "pipelineSchema": "citysim.world-art.blender-four-view-pipeline.v1",
+  "postRenderCompensation": "none",
+  "rootPivotWorld": [
+    0,
+    0,
+    0
+  ],
+  "schema": "citysim.world-art.expansion-v1.asset.v1",
+  "sourcePixelsReused": false,
+  "status": "generation-candidate-not-admitted",
+  "toolchain": {
+    "blenderVersion": "4.5.12",
+    "renderEngine": "BLENDER_EEVEE_NEXT"
+  },
+  "typology": "lodge"
+}

@@ -1,0 +1,106 @@
+{
+  "artifacts": [
+    {
+      "bytes": 573337,
+      "path": "assets/civ_police_station/civ_police_station.blend",
+      "sha256": "7a00d15f0db140d7664d1e8202711f58b4e36dee8917090a9a102686d675498f"
+    },
+    {
+      "bytes": 45466,
+      "decodedRgbaSha256": "0d6a44db0f07ab26c88d4757476c2ddba2ec3af0c6768459a4b72e1bd4101e2b",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/civ_police_station/renders/civ_police_station_camNE.png",
+      "sha256": "2455f758b87e9fd4ff95f37dba8f42e8106980e176eea524fa94268e7e686e11"
+    },
+    {
+      "bytes": 50420,
+      "decodedRgbaSha256": "52180d6274672d28f4096281dbe44f6ec2f096c7be6c3971ac452ba0871b3488",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/civ_police_station/renders/civ_police_station_camSE.png",
+      "sha256": "69e986f234903c96c844720d5a2d31db47b52562eb0cb92ccb2c15e0f3f189d4"
+    },
+    {
+      "bytes": 52000,
+      "decodedRgbaSha256": "f53554a56d633679b7f9065216fc9d0934b839958d273593666805769e7855df",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/civ_police_station/renders/civ_police_station_camSW.png",
+      "sha256": "f30298a3a632f1c3edac105086cbc95e7fa6f0d5e024b7e92e050338b7114e03"
+    },
+    {
+      "bytes": 48521,
+      "decodedRgbaSha256": "3f7127f247f7694056f86e62b6d234fe7ff43d065ca68dcff784d875e23ed549",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/civ_police_station/renders/civ_police_station_camNW.png",
+      "sha256": "0fdc754945bf6ddcdad6352951b73a87a5ed71c6097fa17322db855516463fc0"
+    },
+    {
+      "bytes": 155826,
+      "decodedRgbaSha256": "cb496d3d8d005cd6c1b091f0a767d12d42ca49a5f529d2d45bb15a66d0f1fc5b",
+      "dimensions": [
+        784,
+        784
+      ],
+      "path": "assets/civ_police_station/civ_police_station_contact-sheet.png",
+      "sha256": "5cb3cc6a3345ba5c3433fe427afec29173a86d77f1da4757646b0891a9236c8a"
+    }
+  ],
+  "assetId": "civ_police_station",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "family": "civic-service",
+  "lightingConvention": {
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldStrength": 0.65
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "pipelineSchema": "citysim.world-art.blender-four-view-pipeline.v1",
+  "postRenderCompensation": "none",
+  "rootPivotWorld": [
+    0,
+    0,
+    0
+  ],
+  "schema": "citysim.world-art.expansion-v1.asset.v1",
+  "sourcePixelsReused": false,
+  "status": "generation-candidate-not-admitted",
+  "toolchain": {
+    "blenderVersion": "4.5.12",
+    "renderEngine": "BLENDER_EEVEE_NEXT"
+  },
+  "typology": "police"
+}

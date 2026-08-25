@@ -299,11 +299,22 @@ final class LotRenderer {
         block: SKNode
     ) -> Bool {
         if let fourViewAssets {
-            guard let assetID = fourViewAssets.assetID(for: tile, variant: variant),
-                  let sprite = fourViewAssets.makeSprite(
+            guard let assetID = fourViewAssets.assetID(for: tile, variant: variant) else {
+                let missing = SKNode()
+                missing.name = "lot.four-view.missing.\(tile.kind.rawValue).level-\(tile.level)"
+                city.addChild(missing)
+                return false
+            }
+            let authoredCamera = Self.fourViewCamera(for: residentialIdentity?.frontage)
+            let camera = fourViewAssets.resourceURL(
+                for: assetID,
+                camera: authoredCamera
+            ) == nil ? FourViewWorldAssetCatalog.Camera.camNE : authoredCamera
+            guard let sprite = fourViewAssets.makeSprite(
                       for: tile,
                       variant: variant,
-                      worldTileWidth: style.tileWidth
+                      worldTileWidth: style.tileWidth,
+                      camera: camera
                   ) else {
                 let missing = SKNode()
                 missing.name = "lot.four-view.missing.\(tile.kind.rawValue).level-\(tile.level)"
@@ -405,6 +416,22 @@ final class LotRenderer {
         // buildings. A missing generated source is counted by the catalog and
         // leaves an explicit semantic hole for staged verification to reject.
         return false
+    }
+
+    /// The sources model their entrance toward south. Selecting the camera
+    /// opposite the authored frontage is equivalent to rotating that source
+    /// in 90-degree steps while preserving its canonical pixels and pivot.
+    /// Assets without a complete view set fall back to the established camNE.
+    private static func fourViewCamera(
+        for frontage: RoadConnectionMask?
+    ) -> FourViewWorldAssetCatalog.Camera {
+        switch frontage {
+        case .south: .camNE
+        case .west: .camSE
+        case .north: .camSW
+        case .east: .camNW
+        default: .camNE
+        }
     }
 
     private func fourViewCompatibilityLogicalID(

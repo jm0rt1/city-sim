@@ -1,0 +1,106 @@
+{
+  "artifacts": [
+    {
+      "bytes": 534522,
+      "path": "assets/util_waterworks/util_waterworks.blend",
+      "sha256": "73ad4a6dade7315aafba2b871da0999f34e2e855cb137b06b21047a989347ff6"
+    },
+    {
+      "bytes": 43273,
+      "decodedRgbaSha256": "66ecccc8e3bc2cc4411a2aa453f3b6752c9856bd402116fede5af86c69a59a4f",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/util_waterworks/renders/util_waterworks_camNE.png",
+      "sha256": "c61b3bb570d8fb9b2f18c90a6ce4d2d1eb827b3f8084dbc488efa5e197f8c82a"
+    },
+    {
+      "bytes": 49916,
+      "decodedRgbaSha256": "be2fbe702c82f8568cc774603400f2642397c4b1bb26c049c9319063509e64a7",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/util_waterworks/renders/util_waterworks_camSE.png",
+      "sha256": "e01515a0ea754a11439228729b34564772115f825439ef6be9f9432707c53adb"
+    },
+    {
+      "bytes": 51711,
+      "decodedRgbaSha256": "e42f6befc825d03d1131f15b5d996eb33df6717e329ce19df508d2735d094383",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/util_waterworks/renders/util_waterworks_camSW.png",
+      "sha256": "035e77966aff942a487097184de2fc9578624d7024c23df2b020e07ca06d9e5e"
+    },
+    {
+      "bytes": 47453,
+      "decodedRgbaSha256": "4c83bacd45d7e5f32463a624612b8557893d016fde9d76c3b0cf135318d28cfd",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "assets/util_waterworks/renders/util_waterworks_camNW.png",
+      "sha256": "9032e6bdc5d7453dfce1b877195cb4c514b160229def7726635315ffe5d19ebd"
+    },
+    {
+      "bytes": 152994,
+      "decodedRgbaSha256": "817aa020592e77da47a8273f451b96c89b327e467916468cd9bf24f6eb099027",
+      "dimensions": [
+        784,
+        784
+      ],
+      "path": "assets/util_waterworks/util_waterworks_contact-sheet.png",
+      "sha256": "2133c42e2355eb9a6545bb70bfaa7e34a3b7b9c2bdea67d0e4a291ec6d2494d2"
+    }
+  ],
+  "assetId": "util_waterworks",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "family": "utility",
+  "lightingConvention": {
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldStrength": 0.65
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "pipelineSchema": "citysim.world-art.blender-four-view-pipeline.v1",
+  "postRenderCompensation": "none",
+  "rootPivotWorld": [
+    0,
+    0,
+    0
+  ],
+  "schema": "citysim.world-art.expansion-v1.asset.v1",
+  "sourcePixelsReused": false,
+  "status": "generation-candidate-not-admitted",
+  "toolchain": {
+    "blenderVersion": "4.5.12",
+    "renderEngine": "BLENDER_EEVEE_NEXT"
+  },
+  "typology": "waterworks"
+}

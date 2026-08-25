@@ -1,0 +1,10 @@
+{
+  "schema": 1,
+  "kind": "qa_handoff",
+  "taskId": "PLAY-135",
+  "route": {"path":"docs/production/evidence/INTEGRATION/PLAY-135-AFFECTED-QA-CURRENT5B/MODEL-ROUTE.json","sha256":"57ae7cc498fe647fa1ffa59f5aab41f926355e5b2088e2abdb9bd6272c4ab47b"},
+  "dispatch": {"path":"docs/production/evidence/INTEGRATION/PLAY-135-AFFECTED-QA-CURRENT5B/MODEL-DISPATCH.json","sha256":"35bc48690e1508c4d0cb03e025975eb1f0b1dd0cf96fa21530fa0473db22bb28"},
+  "candidate": {"ref":"master","commit":"5b68662e5088611384d9063055631ce5ba0aef19"},
+  "stage": {"appRoot":"/Users/James/Library/Mobile Documents/com~apple~CloudDocs/James's Files/Programming/Python/city-sim/dist/CitySim.app","sha256":"908b30447af8f87f076a7f95a936b4396f04569f50bcfa8b8d971826cf0a3572","producer":{"path":"script/canonical_tree_digest.sh","sha256":"0c08adf670765e0b5fd9f4dd62f288c4ef5dc37637771f2b08ac33d508a19dca"}},
+  "launch": {"command":["/usr/bin/open","-n","--env","CITYSIM_COMPACT_WINDOW=1","--env","CITYSIM_DATA_ROOT=/private/tmp/citysim-play135-affected-qa-5b68662e/data","/Users/James/Library/Mobile Documents/com~apple~CloudDocs/James's Files/Programming/Python/city-sim/dist/CitySim.app"],"environment":{"CITYSIM_COMPACT_WINDOW":"1","CITYSIM_DATA_ROOT":"/private/tmp/citysim-play135-affected-qa-5b68662e/data"},"expectedWindow":{"width":900,"height":600},"pidVerification":{"required":true,"command":["ps","eww","-p","{pid}"]}}
+}

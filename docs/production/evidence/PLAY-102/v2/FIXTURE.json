@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "documentType": "PLAY-102_CANDIDATE_NEUTRAL_FIXTURE",
+  "taskId": "PLAY-102",
+  "batchId": "four-view-rotation-43-building-v2",
+  "status": "FROZEN_SOURCE_READY_FOR_BASELINE_REHEARSAL",
+  "candidateNeutral": true,
+  "directions": ["north", "east", "south", "west"],
+  "lods": ["city", "neighborhood", "block"],
+  "layouts": ["regular", "compact-900x600"],
+  "captureCount": 24,
+  "logicalIdentityCount": 43,
+  "authoredSourceSpriteCount": 172,
+  "explicitLodPayloadCount": 516,
+  "sourceFixture": {
+    "id": "commercial-active-district-v3",
+    "version": "v3",
+    "path": "Native/CitySimNative/Tests/CitySimNativeTests/Fixtures/VisibleCityStates/visible-city-commercial-active-district-v3.json",
+    "fileSha256": "caa6e4deedca22c2c62f1d7664f862964258df7159f09a13d939688c5492a26b",
+    "stateHash": "6126cf6e941eb6ed98ff308992447a01a5869dd87120ebe40b92153e68b2cb8d",
+    "seed": 42,
+    "tick": 68,
+    "lifecycle": "active",
+    "status": "playing",
+    "focusCoordinate": {
+      "x": 5,
+      "y": 8
+    },
+    "focusKind": "commercial",
+    "strategy": "commercialStewardship",
+    "grid": {
+      "width": 24,
+      "height": 24
+    }
+  },
+  "placementContract": {
+    "city": "whole 24x24 source state; no candidate-specific placement edits",
+    "neighborhood": "source focus district centered on [5,8]",
+    "block": "source focus coordinate [5,8]",
+    "selection": "none before each capture",
+    "overlay": "City",
+    "focusCity": false,
+    "details": "closed",
+    "transientSurfaces": "closed",
+    "loadToast": "absent",
+    "cameraPanAllowed": false,
+    "selectionMayRecenter": false
+  },
+  "artIsolation": {
+    "candidateReceipt": null,
+    "rendererCandidateReceipt": null,
+    "productionSelection": "not admitted",
+    "sourceStateIsIndependentOf": [
+      "PLAY-101 renderer candidate",
+      "superseded single-angle sprite payloads",
+      "atlas or resource manifest selection",
+      "candidate-specific coaching"
+    ]
+  },
+  "baselineRehearsal": {
+    "requiredBeforePreregistered": true,
+    "status": "BLOCKED_BY_ROUTE_NO_APP_LAUNCH",
+    "reason": "This Luna route forbids app launch; Integration/frontier must exercise the fixture and capture contract against the accepted baseline or exact candidate.",
+    "candidateEvidenceCreated": false
+  }
+}

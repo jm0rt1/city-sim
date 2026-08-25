@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "taskId": "PLAY-102",
+  "status": "CANDIDATE_NEUTRAL_UNMEASURED",
+  "fixtureId": "commercial-active-district-v3",
+  "fixtureVersion": "v3",
+  "stateHash": "6126cf6e941eb6ed98ff308992447a01a5869dd87120ebe40b92153e68b2cb8d",
+  "maturePlacement": true,
+  "directions": ["north", "east", "south", "west"],
+  "lods": ["city", "neighborhood", "block"],
+  "layouts": ["regular", "compact-900x600"],
+  "captureCount": 24,
+  "logicalIdentityCount": 43,
+  "authoredSourceSpriteCount": 172,
+  "explicitLodPayloadCount": 516,
+  "rendererCandidateReceipt": null,
+  "observedValues": "UNMEASURED",
+  "finalDisposition": "BLOCKED_FRONTIER_ROUTE_REQUIRED"
+}

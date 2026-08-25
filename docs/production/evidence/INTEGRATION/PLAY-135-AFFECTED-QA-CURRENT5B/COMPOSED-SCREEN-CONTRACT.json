@@ -1,0 +1,16 @@
+{
+  "schema": 1,
+  "kind": "composed_screen_contract",
+  "taskId": "PLAY-135",
+  "routeId": "PLAY-135-AFFECTED-QA-CURRENT5B-V1",
+  "comparisonRequired": true,
+  "baselineCommit": "999c3a0aa81a2f369734933e932d0c670e9a94f9",
+  "candidateCommit": "5b68662e5088611384d9063055631ce5ba0aef19",
+  "fixtureSha256": "eac586f4bb8184991ee5526ce1776003456ee8a522b38d0b6203e32d8eb70f32",
+  "viewports": [
+    {"id":"regular","width":1280,"height":800,"minMapFraction":0.6,"maxGuidanceLayers":1},
+    {"id":"compact","width":900,"height":600,"minMapFraction":0.5,"maxGuidanceLayers":1}
+  ],
+  "candidateAssetProfileSha256": "a2d32f9fa9c39f50293d915906c7d2078f21c7cb85eb9cae543cec57f168cc50",
+  "aggregateCommand": "qa_real_app_journey --candidate 5b68662e5088611384d9063055631ce5ba0aef19 --compact 900x600"
+}

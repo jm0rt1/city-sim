@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 1,
+  "documentType": "PLAY-102_CANDIDATE_NEUTRAL_ACCEPTANCE_RUBRIC",
+  "taskId": "PLAY-102",
+  "batchId": "four-view-rotation-43-building-v2",
+  "status": "FROZEN_UNMEASURED",
+  "candidateNeutral": true,
+  "matrix": {"directions": ["north", "east", "south", "west"], "lods": ["city", "neighborhood", "block"], "layouts": ["regular", "compact-900x600"], "captureCount": 24},
+  "dispositionPolicy": {
+    "workerMay": [
+      "freeze mechanical checks",
+      "record reproducible measurements",
+      "return a defect packet"
+    ],
+    "workerMayNot": [
+      "score visual quality",
+      "approve production art",
+      "declare an exact candidate acceptable",
+      "replace the independent real-app journey"
+    ],
+    "frontierOwner": "Integration/frontier independent real-app gate"
+  },
+  "scales": [
+    "regular-city",
+    "regular-neighborhood",
+    "regular-block",
+    "compact-city",
+    "compact-neighborhood",
+    "compact-block"
+  ],
+  "criteria": [
+    {
+      "id": "identity-matrix",
+      "category": "mechanical",
+      "requirement": "Exactly 43 logical building identities are present with no missing, orphaned, aliased, or fallback identity.",
+      "threshold": {
+        "operator": "equal",
+        "value": 43,
+        "unit": "unique_logical_identities"
+      },
+      "status": "UNMEASURED"
+    },
+    {
+      "id": "lod-matrix",
+      "category": "mechanical",
+      "requirement": "Each of the 43 identities has explicit city, neighborhood, and block payloads.",
+      "threshold": {
+        "operator": "equal",
+        "value": 516,
+        "unit": "normalized_lod_payloads"
+      },
+      "status": "UNMEASURED"
+    },
+    {
+      "id": "four-view-integrity",
+      "category": "mechanical",
+      "requirement": "Each direction is independently authored; no runtime or pack transform rotates, mirrors, synthesizes, falls back, or aliases a sprite.",
+      "threshold": {
+        "operator": "equal",
+        "value": 0,
+        "unit": "forbidden_transform_or_alias_findings"
+      },
+      "status": "UNMEASURED"
+    },
+    {
+      "id": "camera-and-scale",
+      "category": "mechanical",
+      "requirement": "All 24 captures use the frozen layout, LOD, authored direction, center, overlay, and selection inputs.",
+      "threshold": {
+        "operator": "equal",
+        "value": 0,
+        "unit": "camera_contract_mismatches"
+      },
+      "status": "UNMEASURED"
+    },
+    {
+      "id": "fidelity-and-material-quality",
+      "category": "frontier_observation",
+      "requirement": "Buildings read as distinct, coherent, materially rich four-view city-builder assets at literal game scale.",
+      "status": "NOT_RUN_FRONTIER_ONLY"
+    },
+    {
+      "id": "silhouette-and-scale",
+      "category": "frontier_observation",
+      "requirement": "Silhouette, ground contact, frontage, pivot, and scale remain legible across city, neighborhood, block, regular, and 900x600 views.",
+      "status": "NOT_RUN_FRONTIER_ONLY"
+    },
+    {
+      "id": "overlap-clipping-seams",
+      "category": "frontier_observation",
+      "requirement": "No overlap, clipping, mixed-fidelity seam, transparent-edge artifact, or adjacent-lot collision is visible.",
+      "status": "NOT_RUN_FRONTIER_ONLY"
+    },
+    {
+      "id": "interaction-readability",
+      "category": "frontier_observation",
+      "requirement": "Selection, placement, diagnostic overlays, pointer input, keyboard input, and compact layout remain understandable.",
+      "status": "NOT_RUN_FRONTIER_ONLY"
+    },
+    {
+      "id": "accessibility-and-motion",
+      "category": "frontier_observation",
+      "requirement": "Accessibility semantics, Full Keyboard Access, VoiceOver, and Reduce Motion remain usable on the same candidate.",
+      "status": "NOT_RUN_FRONTIER_ONLY"
+    }
+  ],
+  "stopConditions": [
+    "candidate or renderer receipt is absent for a candidate-bound gate",
+    "fixture, camera, resource, or manifest identity drifts",
+    "a forbidden transform, alias, fallback, crop, overlap, or clipping defect is reproduced",
+    "author coaching or hidden state is requested",
+    "any subjective disposition is requested from this Luna packet"
+  ]
+}

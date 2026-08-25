@@ -11,6 +11,26 @@
             "program": "${workspaceFolder}/run.py",
             "console": "integratedTerminal",
             "justMyCode": true
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:city-sim}/Native/CitySimNative",
+            "name": "Debug CitySimNative (Native/CitySimNative)",
+            "target": "CitySimNative",
+            "configuration": "debug",
+            "preLaunchTask": "swift: Build Debug CitySimNative (Native/CitySimNative)"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:city-sim}/Native/CitySimNative",
+            "name": "Release CitySimNative (Native/CitySimNative)",
+            "target": "CitySimNative",
+            "configuration": "release",
+            "preLaunchTask": "swift: Build Release CitySimNative (Native/CitySimNative)"
         }
     ]
 }

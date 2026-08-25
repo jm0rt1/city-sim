@@ -1,0 +1,200 @@
+{
+  "schema": 1,
+  "batch": "industrial_l04_directional_family",
+  "phase": "prelock_north_a",
+  "issuedAt": "2026-07-30T17:05:42Z",
+  "integrationAuthorityCommit": "a0c8932f9a318ee20cb173b92a5224b4ea80cc35",
+  "familyContract": {
+    "path": "docs/production/decisions/CONTRACT-010-directional-building-art.md",
+    "sha256": "0ee2d68a9dba4694d92a864bfeb5a91970c88fe87d893e1898de7b26d38609af"
+  },
+  "appearanceLock": null,
+  "sourceProductionProfile": null,
+  "computeEnvelope": {
+    "maximumSimultaneousDCCProcesses": 1,
+    "slotIds": [
+      "dcc-1"
+    ],
+    "queueOrder": [
+      "north:A"
+    ]
+  },
+  "directionGrants": [
+    {
+      "direction": "north",
+      "claim": "PLAY-027",
+      "branch": "codex/citysim-world-art",
+      "claimSha256": "d28bf14bb3d2d5441f3df6278eef758a5babb4453d22e06fc8bd4075ad5c80a1",
+      "baseCommit": "aaee294718a8176b70a4688b738b517f216dd3a7",
+      "orchestrator": {
+        "path": "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12/process-a-schedule-adapter-v01/consume_north_process_a_schedule.py",
+        "sha256": "2c23a36797c06beb61919219f73a8b349c6c2486df50ad54733c467ebd4a3761"
+      },
+      "exclusiveRoots": [
+        "Native/CitySimNative/WorldArt/Blender/PLAY-027/industrial-l04-north-art-v12",
+        "docs/production/evidence/PLAY-027/industrial-l04/l04/blender-north-art-v12"
+      ],
+      "processes": [
+        {
+          "grantId": "north:A",
+          "process": "A",
+          "state": "granted",
+          "slotId": "dcc-1",
+          "maximumChildStarts": 1,
+          "orchestratorOnly": true,
+          "directLowLevelInvocationAllowed": false
+        },
+        {
+          "grantId": "north:B",
+          "process": "B",
+          "state": "blocked",
+          "slotId": null,
+          "maximumChildStarts": 0,
+          "orchestratorOnly": true,
+          "directLowLevelInvocationAllowed": false
+        },
+        {
+          "grantId": "north:C",
+          "process": "C",
+          "state": "blocked",
+          "slotId": null,
+          "maximumChildStarts": 0,
+          "orchestratorOnly": true,
+          "directLowLevelInvocationAllowed": false
+        }
+      ]
+    },
+    {
+      "direction": "east",
+      "claim": "PLAY-079",
+      "branch": "codex/citysim-world-art-east",
+      "claimSha256": "4cfefea0dc0502af8123305356df131ca2b19a13bedf26e82161ea052706469a",
+      "baseCommit": "aaee294718a8176b70a4688b738b517f216dd3a7",
+      "orchestrator": {
+        "path": "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01/schedule-consumer-adapter-v01/consume_parallel_schedule_v1.py",
+        "sha256": "7f3eacfdf366d87d7ce478afcf57a638ef0dfbf4e7b22b3e006a18db32e28b30"
+      },
+      "exclusiveRoots": [
+        "Native/CitySimNative/WorldArt/Blender/PLAY-079/industrial-l04-east-source-v01",
+        "docs/production/evidence/PLAY-079/industrial-l04-east-source-v01"
+      ],
+      "processes": [
+        {
+          "grantId": "east:A",
+          "process": "A",
+          "state": "blocked",
+          "slotId": null,
+          "maximumChildStarts": 0,
+          "orchestratorOnly": true,
+          "directLowLevelInvocationAllowed": false
+        },
+        {
+          "grantId": "east:B",
+          "process": "B",
+          "state": "blocked",
+          "slotId": null,
+          "maximumChildStarts": 0,
+          "orchestratorOnly": true,
+          "directLowLevelInvocationAllowed": false
+        },
+        {
+          "grantId": "east:C",
+          "process": "C",
+          "state": "blocked",
+          "slotId": null,
+          "maximumChildStarts": 0,
+          "orchestratorOnly": true,
+          "directLowLevelInvocationAllowed": false
+        }
+      ]
+    },
+    {
+      "direction": "south",
+      "claim": "PLAY-080",
+      "branch": "codex/citysim-world-art-south",
+      "claimSha256": "6f159c360545edbfbfb68b4eac9bb136f3a1dbaa923800b429bd62e7d962a23e",
+      "baseCommit": "aaee294718a8176b70a4688b738b517f216dd3a7",
+      "orchestrator": {
+        "path": "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01/schedule-consumer-adapter-v01/consume_schedule_v01.py",
+        "sha256": "5fdae88a410182b5d9e1ca2f7259dc33cddac6889bd9f20503ca519817d3cbb2"
+      },
+      "exclusiveRoots": [
+        "Native/CitySimNative/WorldArt/Blender/PLAY-080/industrial-l04-south-source-v01",
+        "docs/production/evidence/PLAY-080/industrial-l04-south-source-v01"
+      ],
+      "processes": [
+        {
+          "grantId": "south:A",
+          "process": "A",
+          "state": "blocked",
+          "slotId": null,
+          "maximumChildStarts": 0,
+          "orchestratorOnly": true,
+          "directLowLevelInvocationAllowed": false
+        },
+        {
+          "grantId": "south:B",
+          "process": "B",
+          "state": "blocked",
+          "slotId": null,
+          "maximumChildStarts": 0,
+          "orchestratorOnly": true,
+          "directLowLevelInvocationAllowed": false
+        },
+        {
+          "grantId": "south:C",
+          "process": "C",
+          "state": "blocked",
+          "slotId": null,
+          "maximumChildStarts": 0,
+          "orchestratorOnly": true,
+          "directLowLevelInvocationAllowed": false
+        }
+      ]
+    },
+    {
+      "direction": "west",
+      "claim": "PLAY-081",
+      "branch": "codex/citysim-world-art-west",
+      "claimSha256": "aa5e0acb5988807d1c934326fd6b3da7f594def8dde84b01ab273905f9753ed3",
+      "baseCommit": "aaee294718a8176b70a4688b738b517f216dd3a7",
+      "orchestrator": {
+        "path": "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01/schedule-consumer-v01/consume_west_parallel_schedule_v1.py",
+        "sha256": "4c72d5bf1b7c9d8decbe538f6926fd1ef40eb55362172235f1e62e68ec749414"
+      },
+      "exclusiveRoots": [
+        "Native/CitySimNative/WorldArt/Blender/PLAY-081/industrial-l04-west-source-v01",
+        "docs/production/evidence/PLAY-081/industrial-l04-west-source-v01"
+      ],
+      "processes": [
+        {
+          "grantId": "west:A",
+          "process": "A",
+          "state": "blocked",
+          "slotId": null,
+          "maximumChildStarts": 0,
+          "orchestratorOnly": true,
+          "directLowLevelInvocationAllowed": false
+        },
+        {
+          "grantId": "west:B",
+          "process": "B",
+          "state": "blocked",
+          "slotId": null,
+          "maximumChildStarts": 0,
+          "orchestratorOnly": true,
+          "directLowLevelInvocationAllowed": false
+        },
+        {
+          "grantId": "west:C",
+          "process": "C",
+          "state": "blocked",
+          "slotId": null,
+          "maximumChildStarts": 0,
+          "orchestratorOnly": true,
+          "directLowLevelInvocationAllowed": false
+        }
+      ]
+    }
+  ]
+}

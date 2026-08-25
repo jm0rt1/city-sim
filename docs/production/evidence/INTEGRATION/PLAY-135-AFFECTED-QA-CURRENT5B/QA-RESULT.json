@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "taskId": "PLAY-135",
+  "candidate": "5b68662e5088611384d9063055631ce5ba0aef19",
+  "disposition": "RETURN_PRODUCT_ACCESSIBILITY_BLOCKER",
+  "pid": 87796,
+  "launchContract": {"CITYSIM_COMPACT_WINDOW":"1","CITYSIM_DATA_ROOT":"/private/tmp/citysim-play135-affected-qa-5b68662e/data"},
+  "window": {"axWindows":1,"screenshotPixels":{"width":900,"height":652},"content":"900x600"},
+  "completed": ["candidate/stage/seal validation","actual PID environment validation","one compact AX window validation","Choose Commercial through native AX"],
+  "blockedStep": "Select buildable block through native AX",
+  "expected": "City map exposes an executable AX custom action named Select buildable block while Commercial Build mode is active.",
+  "actual": "City map AX container reports only map help/value and no Secondary Actions; direct AX execution is unavailable.",
+  "notPerformed": ["block placement","construction ticks","tax policy change","save/load","renderer gameplay smoke beyond initial compact visible scene"],
+  "evidence": {"axScreenshot":"/var/folders/lt/l53t4qb94_j47hhmm9ylk9nw0000gn/T/com.openai.sky.CUAService/CitySim Screenshot 2026-08-12 at 4.49.58 AM.jpeg","stagedSeal":"908b30447af8f87f076a7f95a936b4396f04569f50bcfa8b8d971826cf0a3572"}
+}

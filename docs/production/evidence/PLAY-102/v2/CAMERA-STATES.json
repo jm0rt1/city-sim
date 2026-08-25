@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 2,
+  "documentType": "PLAY-102_EXACT_FOUR_VIEW_CAMERA_STATE_SET",
+  "taskId": "PLAY-102",
+  "fixtureId": "commercial-active-district-v3",
+  "status": "FROZEN_INPUTS_UNREHEARSED",
+  "sharedState": {
+    "panAllowed": false,
+    "focusCity": false,
+    "overlay": "City",
+    "details": "closed",
+    "transientSurfaces": "closed",
+    "loadToast": "absent",
+    "selection": null,
+    "centerCoordinate": {"x": 5, "y": 8},
+    "authoredDirections": ["north", "east", "south", "west"],
+    "rotationInput": "authored direction enum; South is CONTRACT-025 rotation-zero; numeric runtime output is not fabricated",
+    "cameraCommand": {"name": "configureProofCamera", "detailInput": "city | neighborhood | block", "centerInput": "GridCoordinate(x: 5, y: 8)", "directionInput": "north | east | south | west"}
+  },
+  "layouts": [
+    {"id": "regular", "windowPixels": [1280, 800], "mapContentPixels": [1278, 768]},
+    {"id": "compact-900x600", "windowPixels": [900, 600], "mapContentPixels": [900, 600]}
+  ],
+  "captureMatrix": [
+    {"id":"north-city-regular","direction":"north","lod":"city","layout":"regular"}, {"id":"east-city-regular","direction":"east","lod":"city","layout":"regular"}, {"id":"south-city-regular","direction":"south","lod":"city","layout":"regular"}, {"id":"west-city-regular","direction":"west","lod":"city","layout":"regular"},
+    {"id":"north-neighborhood-regular","direction":"north","lod":"neighborhood","layout":"regular"}, {"id":"east-neighborhood-regular","direction":"east","lod":"neighborhood","layout":"regular"}, {"id":"south-neighborhood-regular","direction":"south","lod":"neighborhood","layout":"regular"}, {"id":"west-neighborhood-regular","direction":"west","lod":"neighborhood","layout":"regular"},
+    {"id":"north-block-regular","direction":"north","lod":"block","layout":"regular"}, {"id":"east-block-regular","direction":"east","lod":"block","layout":"regular"}, {"id":"south-block-regular","direction":"south","lod":"block","layout":"regular"}, {"id":"west-block-regular","direction":"west","lod":"block","layout":"regular"},
+    {"id":"north-city-compact","direction":"north","lod":"city","layout":"compact-900x600"}, {"id":"east-city-compact","direction":"east","lod":"city","layout":"compact-900x600"}, {"id":"south-city-compact","direction":"south","lod":"city","layout":"compact-900x600"}, {"id":"west-city-compact","direction":"west","lod":"city","layout":"compact-900x600"},
+    {"id":"north-neighborhood-compact","direction":"north","lod":"neighborhood","layout":"compact-900x600"}, {"id":"east-neighborhood-compact","direction":"east","lod":"neighborhood","layout":"compact-900x600"}, {"id":"south-neighborhood-compact","direction":"south","lod":"neighborhood","layout":"compact-900x600"}, {"id":"west-neighborhood-compact","direction":"west","lod":"neighborhood","layout":"compact-900x600"},
+    {"id":"north-block-compact","direction":"north","lod":"block","layout":"compact-900x600"}, {"id":"east-block-compact","direction":"east","lod":"block","layout":"compact-900x600"}, {"id":"south-block-compact","direction":"south","lod":"block","layout":"compact-900x600"}, {"id":"west-block-compact","direction":"west","lod":"block","layout":"compact-900x600"}
+  ],
+  "captureCount": 24,
+  "capturePathTemplate": "docs/production/evidence/PLAY-102/v2/screenshots/{id}.png",
+  "cameraOutput": {"positionAndScale": null, "observedValues": "UNMEASURED", "recordingPath": "docs/production/evidence/PLAY-102/v2/measurements/camera-output.json", "notFabricated": true}
+}

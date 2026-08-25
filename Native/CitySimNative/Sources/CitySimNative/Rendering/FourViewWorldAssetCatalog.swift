@@ -35,6 +35,13 @@ struct FourViewWorldAssetManifest: Decodable, Equatable, Sendable {
 
 @MainActor
 final class FourViewWorldAssetCatalog {
+    enum Camera: String, CaseIterable, Sendable {
+        case camNE
+        case camSE
+        case camSW
+        case camNW
+    }
+
     static let shared = FourViewWorldAssetCatalog()
 
     static let canonicalCameraOrder = ["camNE", "camSE", "camSW", "camNW"]
@@ -133,11 +140,11 @@ final class FourViewWorldAssetCatalog {
     func makeSprite(
         for tile: CityTile,
         variant: Int,
-        worldTileWidth: CGFloat
+        worldTileWidth: CGFloat,
+        camera: Camera = .camNE
     ) -> SKSpriteNode? {
         guard let assetID = assetID(for: tile, variant: variant),
               let descriptor = manifest?.assets.first(where: { $0.assetID == assetID }),
-              let camera = manifest?.camera,
               let texture = texture(for: descriptor, camera: camera) else {
             return nil
         }
@@ -149,31 +156,35 @@ final class FourViewWorldAssetCatalog {
         sprite.zPosition = 6
 
         let sourceIdentity = SKNode()
-        sourceIdentity.name = "lot.four-view.\(assetID).\(camera)"
+        sourceIdentity.name = "lot.four-view.\(assetID).\(camera.rawValue)"
         sprite.addChild(sourceIdentity)
         return sprite
     }
 
-    func resourceURL(for assetID: String, camera: String? = nil) -> URL? {
-        guard let manifest,
-              let descriptor = manifest.assets.first(where: { $0.assetID == assetID }),
-              let view = descriptor.views.first(where: {
-                  $0.camera == (camera ?? manifest.camera)
-              }) else {
+    func resourceURL(for assetID: String, camera: Camera = .camNE) -> URL? {
+        guard let descriptor = manifest?.assets.first(where: { $0.assetID == assetID }) else {
+            return nil
+        }
+        let file: String
+        if let view = descriptor.views.first(where: { $0.camera == camera.rawValue }) {
+            file = view.file
+        } else if camera == .camNE {
+            file = descriptor.file
+        } else {
             return nil
         }
         return bundle.url(
-            forResource: (view.file as NSString).deletingPathExtension,
-            withExtension: (view.file as NSString).pathExtension,
+            forResource: (file as NSString).deletingPathExtension,
+            withExtension: (file as NSString).pathExtension,
             subdirectory: "FourViewAssets"
         )
     }
 
     private func texture(
         for descriptor: FourViewWorldAssetManifest.Asset,
-        camera: String
+        camera: Camera
     ) -> SKTexture? {
-        let cacheKey = "\(descriptor.assetID).\(camera)"
+        let cacheKey = "\(descriptor.assetID).\(camera.rawValue)"
         if let cached = textures[cacheKey] { return cached }
         guard let url = resourceURL(for: descriptor.assetID, camera: camera),
               let image = NSImage(contentsOf: url) else {

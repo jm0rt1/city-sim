@@ -19,13 +19,13 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
         XCTAssertEqual(manifest.canvas.height, 384)
         XCTAssertEqual(manifest.canvas.footprintPivotPixel, [192, 300])
         XCTAssertEqual(manifest.postRenderCompensation, "none")
-        XCTAssertEqual(manifest.assets.count, 73)
+        XCTAssertEqual(manifest.assets.count, 77)
         XCTAssertEqual(Set(manifest.assets.map(\.assetID)).count, manifest.assets.count)
         XCTAssertEqual(Set(manifest.assets.map(\.file)).count, manifest.assets.count)
         XCTAssertEqual(
             Dictionary(grouping: manifest.assets, by: \.family).mapValues(\.count),
             [
-                "residential": 20,
+                "residential": 24,
                 "commercial": 17,
                 "industrial": 14,
                 "civic-service": 12,
@@ -33,7 +33,7 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
                 "park-landmark": 4,
             ]
         )
-        XCTAssertEqual(manifest.assets.filter { $0.views.count == 4 }.count, 40)
+        XCTAssertEqual(manifest.assets.filter { $0.views.count == 4 }.count, 44)
         let admittedRoles = Set(manifest.assets.flatMap(\.roles))
         XCTAssertTrue(Set([
             "residential-low", "residential-medium", "residential-high",
@@ -46,8 +46,12 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
         for asset in manifest.assets {
             for view in asset.views {
                 let identity = "\(asset.assetID).\(view.camera)"
+                let camera = try XCTUnwrap(
+                    FourViewWorldAssetCatalog.Camera(rawValue: view.camera),
+                    identity
+                )
                 let url = try XCTUnwrap(
-                    catalog.resourceURL(for: asset.assetID, camera: view.camera),
+                    catalog.resourceURL(for: asset.assetID, camera: camera),
                     identity
                 )
                 let data = try Data(contentsOf: url)
@@ -107,6 +111,98 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
                 }
             }
             XCTAssertEqual(reached, expected, roleCase.role)
+        }
+    }
+
+    @MainActor
+    func testResidentialQualityFamilySelectsAllFourAndLoadsEveryAuthoredOrientation() throws {
+        let style = WorldVisualStyle()
+        let catalog = FourViewWorldAssetCatalog()
+        let renderer = LotRenderer(
+            style: style,
+            assets: WorldAssetCatalog(),
+            fourViewAssets: catalog
+        )
+        let family = [
+            "alder_gable_cottage",
+            "birch_lane_bungalow",
+            "rosewood_turret_house",
+            "stonebridge_duplex",
+        ]
+        let descriptors = try XCTUnwrap(catalog.manifest).assets.filter {
+            $0.roles.contains("residential-quality")
+        }
+        XCTAssertEqual(descriptors.map(\.assetID), family)
+
+        var coordinateByAssetID: [String: GridCoordinate] = [:]
+        for y in 0..<32 {
+            for x in 0..<32 {
+                let coordinate = GridCoordinate(x: x, y: y)
+                let tile = CityTile(coordinate: coordinate, kind: .residential, level: 1)
+                let visualVariant = ResidentialGeneratedAssetIdentity.liveVisualVariant(
+                    at: coordinate
+                )
+                if let assetID = catalog.assetID(for: tile, variant: visualVariant),
+                   family.contains(assetID) {
+                    coordinateByAssetID[assetID] = coordinate
+                }
+            }
+        }
+        XCTAssertEqual(Set(coordinateByAssetID.keys), Set(family))
+        let frontageCameras: [(RoadConnectionMask, FourViewWorldAssetCatalog.Camera)] = [
+            (.south, .camNE),
+            (.west, .camSE),
+            (.north, .camSW),
+            (.east, .camNW),
+        ]
+
+        for descriptor in descriptors {
+            let coordinate = try XCTUnwrap(coordinateByAssetID[descriptor.assetID])
+            let tile = CityTile(coordinate: coordinate, kind: .residential, level: 1)
+            let visualVariant = ResidentialGeneratedAssetIdentity.liveVisualVariant(
+                at: coordinate
+            )
+            let views = descriptor.views
+            XCTAssertEqual(views.count, 4)
+            for camera in FourViewWorldAssetCatalog.Camera.allCases {
+                let view = try XCTUnwrap(views.first { $0.camera == camera.rawValue })
+                let url = try XCTUnwrap(
+                    catalog.resourceURL(for: descriptor.assetID, camera: camera)
+                )
+                let data = try Data(contentsOf: url)
+                XCTAssertEqual(
+                    SHA256.hash(data: data).map { String(format: "%02x", $0) }.joined(),
+                    view.sha256
+                )
+                let sprite = try XCTUnwrap(catalog.makeSprite(
+                    for: tile,
+                    variant: visualVariant,
+                    worldTileWidth: style.tileWidth,
+                    camera: camera
+                ))
+                XCTAssertNotNil(
+                    sprite.childNode(withName: "lot.four-view.\(descriptor.assetID).\(camera.rawValue)")
+                )
+                XCTAssertEqual(sprite.anchorPoint, FourViewWorldAssetCatalog.spriteAnchor)
+                XCTAssertEqual(sprite.xScale, style.tileWidth / 176, accuracy: 0.000_001)
+                XCTAssertEqual(sprite.yScale, style.tileWidth / 176, accuracy: 0.000_001)
+                XCTAssertEqual(sprite.zRotation, 0, accuracy: 0.000_001)
+                XCTAssertEqual(sprite.position, .zero)
+            }
+            for (frontage, camera) in frontageCameras {
+                let lot = renderer.makeLot(
+                    for: tile,
+                    adjacentRoads: frontage,
+                    detail: .block,
+                    reducedMotion: true
+                )
+                XCTAssertNotNil(
+                    lot.childNode(
+                        withName: "//lot.four-view.\(descriptor.assetID).\(camera.rawValue)"
+                    ),
+                    "\(descriptor.assetID).\(camera.rawValue)"
+                )
+            }
         }
     }
 
@@ -414,7 +510,9 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
     func testExpansionWaveSavedCityDisplaysEveryNewAsset() throws {
         let catalog = FourViewWorldAssetCatalog()
         let manifest = try XCTUnwrap(catalog.manifest)
-        let expansionAssets = manifest.assets.filter { $0.views.count == 4 }
+        let expansionAssets = manifest.assets.filter {
+            $0.views.count == 4 && !$0.roles.contains("residential-quality")
+        }
         XCTAssertEqual(expansionAssets.count, 40)
         XCTAssertEqual(
             Dictionary(grouping: expansionAssets, by: \.family).mapValues(\.count),
@@ -539,7 +637,9 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
         let sourceNames = Set(names(in: scene))
         for asset in expansionAssets {
             XCTAssertTrue(
-                sourceNames.contains("lot.four-view.\(asset.assetID).camNE"),
+                asset.views.contains { view in
+                    sourceNames.contains("lot.four-view.\(asset.assetID).\(view.camera)")
+                },
                 asset.assetID
             )
         }

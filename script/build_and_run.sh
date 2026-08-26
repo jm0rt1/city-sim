@@ -7,6 +7,19 @@ RESOURCE_BUNDLE_NAME="CitySimNative_CitySimNative.bundle"
 PRODUCTION_BUNDLE_ID="com.jfmortensen.citysim"
 MIN_SYSTEM_VERSION="14.0"
 
+case "$MODE" in
+  --stage-only|stage-only) DEFAULT_BUILD_CONFIGURATION="release" ;;
+  *) DEFAULT_BUILD_CONFIGURATION="debug" ;;
+esac
+BUILD_CONFIGURATION="${CITYSIM_BUILD_CONFIGURATION:-$DEFAULT_BUILD_CONFIGURATION}"
+case "$BUILD_CONFIGURATION" in
+  debug|release) ;;
+  *)
+    echo "error: CITYSIM_BUILD_CONFIGURATION must be 'debug' or 'release'" >&2
+    exit 1
+    ;;
+esac
+
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)"
 PACKAGE_DIR="$ROOT_DIR/Native/CitySimNative"
 DEFAULT_DIST_DIR="$ROOT_DIR/dist"
@@ -120,6 +133,7 @@ print_identity() {
   printf 'display_name=%s\n' "$DISPLAY_NAME"
   printf 'bundle_short_version=%s\n' "$BUNDLE_SHORT_VERSION"
   printf 'bundle_version=%s\n' "$BUNDLE_VERSION"
+  printf 'build_configuration=%s\n' "$BUILD_CONFIGURATION"
   printf 'data_root=%s\n' "$MANIFEST_DATA_ROOT"
   printf 'staged_bundle_path=%s\n' "$APP_BUNDLE"
   printf 'executable_path=%s\n' "$APP_BINARY"
@@ -144,6 +158,8 @@ preference_domain=$BUNDLE_ID
 display_name=$DISPLAY_NAME
 bundle_short_version=$BUNDLE_SHORT_VERSION
 bundle_version=$BUNDLE_VERSION
+build_configuration=$BUILD_CONFIGURATION
+source_executable_sha256=$SOURCE_EXECUTABLE_SHA256
 data_root=$MANIFEST_DATA_ROOT
 launch_time=$launch_time
 staged_bundle_path=$APP_BUNDLE
@@ -217,18 +233,35 @@ fi
 
 stop_exact_processes
 
-swift build --package-path "$PACKAGE_DIR"
-BUILD_DIR="$(swift build --package-path "$PACKAGE_DIR" --show-bin-path)"
+swift build --package-path "$PACKAGE_DIR" --configuration "$BUILD_CONFIGURATION"
+BUILD_DIR="$(
+  swift build --package-path "$PACKAGE_DIR" \
+    --configuration "$BUILD_CONFIGURATION" \
+    --show-bin-path
+)"
+case "$BUILD_DIR" in
+  */"$BUILD_CONFIGURATION") ;;
+  *)
+    echo "error: SwiftPM build path does not match requested configuration: $BUILD_DIR" >&2
+    exit 1
+    ;;
+esac
 SOURCE_RESOURCE_BUNDLE="$BUILD_DIR/$RESOURCE_BUNDLE_NAME"
+SOURCE_EXECUTABLE="$BUILD_DIR/$PACKAGE_EXECUTABLE_NAME"
 
 if [[ ! -d "$SOURCE_RESOURCE_BUNDLE" ]]; then
   echo "error: SwiftPM resource bundle is missing: $SOURCE_RESOURCE_BUNDLE" >&2
   exit 1
 fi
+if [[ ! -x "$SOURCE_EXECUTABLE" ]]; then
+  echo "error: SwiftPM executable is missing: $SOURCE_EXECUTABLE" >&2
+  exit 1
+fi
+SOURCE_EXECUTABLE_SHA256="$(shasum -a 256 "$SOURCE_EXECUTABLE" | awk '{ print $1 }')"
 
 rm -rf "$APP_BUNDLE"
 mkdir -p "$APP_MACOS" "$APP_RESOURCES"
-cp "$BUILD_DIR/$PACKAGE_EXECUTABLE_NAME" "$APP_BINARY"
+cp "$SOURCE_EXECUTABLE" "$APP_BINARY"
 cp "$PACKAGE_DIR/Resources/CitySim-KeyArt.png" "$APP_RESOURCES/CitySim-KeyArt.png"
 cp -R "$SOURCE_RESOURCE_BUNDLE" "$STAGED_RESOURCE_BUNDLE"
 chmod +x "$APP_BINARY"

@@ -25,7 +25,21 @@ MANIFEST_PATH="$(
 [[ -f "$MANIFEST_PATH" ]] || fail "staged manifest is missing"
 
 APP_BUNDLE="$(manifest_value "$MANIFEST_PATH" staged_bundle_path)"
+APP_BINARY="$(manifest_value "$MANIFEST_PATH" executable_path)"
 [[ -d "$APP_BUNDLE" ]] || fail "staged app bundle is missing"
+[[ "$(manifest_value "$MANIFEST_PATH" build_configuration)" == "release" ]] \
+  || fail "stage-only app was not built with the release configuration"
+RELEASE_BUILD_DIR="$(
+  swift build --package-path "$ROOT_DIR/Native/CitySimNative" \
+    --configuration release \
+    --show-bin-path
+)"
+RELEASE_EXECUTABLE_SHA256="$(
+  shasum -a 256 "$RELEASE_BUILD_DIR/CitySimNative" | awk '{ print $1 }'
+)"
+[[ "$(manifest_value "$MANIFEST_PATH" source_executable_sha256)" == "$RELEASE_EXECUTABLE_SHA256" ]] \
+  || fail "staged manifest is not bound to the release SwiftPM product"
+[[ -x "$APP_BINARY" ]] || fail "staged executable is missing"
 [[ -f "$APP_BUNDLE/Contents/_CodeSignature/CodeResources" ]] \
   || fail "staged app-level CodeResources seal is missing"
 
@@ -37,4 +51,5 @@ SIGNATURE_DETAILS="$(codesign -dv --verbose=4 "$APP_BUNDLE" 2>&1)"
   || fail "staged signature does not report sealed resources"
 
 printf 'CITYSIM_NATIVE_BUNDLE_SEAL status=PASS\n'
+printf 'build_configuration=release\n'
 printf 'bundle=%s\n' "$APP_BUNDLE"

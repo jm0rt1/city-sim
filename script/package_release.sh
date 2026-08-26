@@ -230,6 +230,7 @@ fi
 CITYSIM_DIST_DIR="$STAGE_ROOT" \
 CITYSIM_BUNDLE_SHORT_VERSION="$VERSION" \
 CITYSIM_BUNDLE_VERSION="$BUILD_VERSION" \
+CITYSIM_BUILD_CONFIGURATION=release \
   bash "$BUILD_SCRIPT" --stage-only
 
 [[ -f "$STAGE_MANIFEST" ]] || fail "stage manifest is missing: $STAGE_MANIFEST"
@@ -244,6 +245,8 @@ require_equal "manifest version" "$VERSION" \
   "$(manifest_value bundle_short_version "$STAGE_MANIFEST")"
 require_equal "manifest build" "$BUILD_VERSION" \
   "$(manifest_value bundle_version "$STAGE_MANIFEST")"
+require_equal "manifest build configuration" "release" \
+  "$(manifest_value build_configuration "$STAGE_MANIFEST")"
 require_equal "manifest app path" "$APP_BUNDLE" \
   "$(manifest_value staged_bundle_path "$STAGE_MANIFEST")"
 require_equal "manifest executable path" "$EXECUTABLE" \
@@ -263,10 +266,19 @@ MINIMUM_SYSTEM_VERSION="$(/usr/libexec/PlistBuddy -c 'Print :LSMinimumSystemVers
 [[ -n "$BUNDLE_IDENTIFIER" ]] || fail "Info.plist bundle identifier is missing"
 [[ -n "$MINIMUM_SYSTEM_VERSION" ]] || fail "Info.plist minimum system version is missing"
 
-BUILD_DIR="$(swift build --package-path "$PACKAGE_DIR" --show-bin-path)"
+BUILD_DIR="$(
+  swift build --package-path "$PACKAGE_DIR" \
+    --configuration release \
+    --show-bin-path
+)"
 SOURCE_RESOURCE_BUNDLE="$BUILD_DIR/$RESOURCE_BUNDLE_NAME"
+SOURCE_EXECUTABLE="$BUILD_DIR/$PACKAGE_EXECUTABLE_NAME"
 [[ -d "$SOURCE_RESOURCE_BUNDLE" ]] \
   || fail "committed SwiftPM resource bundle is missing: $SOURCE_RESOURCE_BUNDLE"
+[[ -x "$SOURCE_EXECUTABLE" ]] \
+  || fail "release SwiftPM executable is missing: $SOURCE_EXECUTABLE"
+require_equal "manifest source executable hash" "$(sha256_file "$SOURCE_EXECUTABLE")" \
+  "$(manifest_value source_executable_sha256 "$STAGE_MANIFEST")"
 
 GENERATED_MANIFEST_PATH="WorldAssets.atlas/generated-v4-manifest.json"
 SOURCE_GENERATED_MANIFEST="$SOURCE_RESOURCE_BUNDLE/$GENERATED_MANIFEST_PATH"
@@ -670,6 +682,7 @@ payload = {
     "head": head,
     "version": version,
     "build": build,
+    "buildConfiguration": "release",
     "architecture": architecture,
     "signing": {
         "mode": signing_mode,
@@ -787,6 +800,7 @@ printf 'work_root=%s\n' "$WORK_ROOT"
 printf 'head=%s\n' "$HEAD_SHA"
 printf 'version=%s\n' "$VERSION"
 printf 'build=%s\n' "$BUILD_VERSION"
+printf 'build_configuration=release\n'
 printf 'signing_mode=%s\n' "$SIGNING_MODE"
 printf 'notarization_requested=%s\n' "$NOTARIZE_REQUESTED"
 printf 'notarization_preflight_authenticated=%s\n' "$NOTARY_PREFLIGHT_AUTHENTICATED"

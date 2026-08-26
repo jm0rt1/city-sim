@@ -2,13 +2,14 @@ import Foundation
 
 struct CityBenchmarkDefinition: Equatable, Sendable {
     static let verticalSlice = CityBenchmarkDefinition(
-        id: "native-vertical-slice-v1",
-        title: "Native Vertical Slice",
-        detail: "Runs 400 deterministic simulation pulses across a fully developed 24×24 city, then verifies the final state hash.",
+        id: "native-dense-3x-v2",
+        title: "Dense City · 3×",
+        detail: "Runs 400 shipping 3× pulses (1,200 deterministic ticks) across a fully developed 24×24 city, then verifies the final state hash.",
         seed: 2_026_081_202,
         pulseCount: 400,
-        provisionalAverageBudgetMilliseconds: 16,
-        expectedFinalFingerprint: "78643578ae520d9e0963056964cc302a6d908c1cafaca202b5b5522054e3ac71"
+        ticksPerPulse: SimulationSpeed.fastest.ticksPerPulse,
+        provisionalPulseBudgetMilliseconds: 16,
+        expectedFinalFingerprint: "4d4064b3291f08b3ec7b06a54c97eaefe15194586092b9578292906d289bf5e1"
     )
 
     let id: String
@@ -16,12 +17,14 @@ struct CityBenchmarkDefinition: Equatable, Sendable {
     let detail: String
     let seed: UInt64
     let pulseCount: Int
-    let provisionalAverageBudgetMilliseconds: Double
+    let ticksPerPulse: Int
+    let provisionalPulseBudgetMilliseconds: Double
     let expectedFinalFingerprint: String?
 
     var citySize: String { "24×24 · 576 tiles" }
+    var pulseWorkload: String { "\(pulseCount) × \(ticksPerPulse) ticks" }
     var qualification: String {
-        "Local diagnostic only · results do not certify release hardware or renderer performance."
+        "Local 3× simulation diagnostic only · results do not certify release hardware or renderer performance."
     }
 
     func makeState() -> CityGameState {
@@ -106,8 +109,8 @@ struct CityBenchmarkResult: Codable, Equatable, Sendable {
     var assessment: String {
         if !fingerprintVerified { return "Deterministic workload identity did not match" }
         return withinProvisionalBudget
-            ? "Verified state · within the provisional 16 ms pulse budget"
-            : "Verified state · outside the provisional 16 ms pulse budget"
+            ? "Verified state · within the provisional 16 ms 3× pulse budget"
+            : "Verified state · outside the provisional 16 ms 3× pulse budget"
     }
 
     var shortFingerprint: String { String(finalFingerprint.prefix(12)) }
@@ -132,7 +135,9 @@ enum CityBenchmarkRunner {
         for pulse in 1...definition.pulseCount {
             if Task.isCancelled { throw CityBenchmarkRunError.canceled }
             let start = DispatchTime.now().uptimeNanoseconds
-            CitySimulation.step(&state)
+            for _ in 0..<definition.ticksPerPulse {
+                CitySimulation.step(&state)
+            }
             let end = DispatchTime.now().uptimeNanoseconds
             samples.append(Double(end - start) / 1_000_000)
             if pulse == 1 || pulse.isMultiple(of: 20) || pulse == definition.pulseCount {
@@ -146,6 +151,7 @@ enum CityBenchmarkRunner {
         let sortedSamples = samples.sorted()
         let p95Index = max(0, min(sortedSamples.count - 1, Int(ceil(Double(sortedSamples.count) * 0.95)) - 1))
         let average = samples.reduce(0, +) / Double(max(1, samples.count))
+        let p95 = sortedSamples[p95Index]
         let fingerprint = try CityStateFingerprinter.fingerprint(state).digest
         return CityBenchmarkResult(
             benchmarkID: definition.id,
@@ -154,7 +160,7 @@ enum CityBenchmarkRunner {
             developedTiles: developedTiles,
             totalMilliseconds: totalMilliseconds,
             averagePulseMilliseconds: average,
-            p95PulseMilliseconds: sortedSamples[p95Index],
+            p95PulseMilliseconds: p95,
             pulsesPerSecond: totalMilliseconds > 0
                 ? Double(definition.pulseCount) / (totalMilliseconds / 1_000)
                 : 0,
@@ -162,7 +168,8 @@ enum CityBenchmarkRunner {
             finalPopulation: state.population,
             finalTreasury: state.treasury,
             finalStatus: state.status.rawValue,
-            withinProvisionalBudget: average <= definition.provisionalAverageBudgetMilliseconds,
+            withinProvisionalBudget: average <= definition.provisionalPulseBudgetMilliseconds
+                && p95 <= definition.provisionalPulseBudgetMilliseconds,
             fingerprintVerified: definition.expectedFinalFingerprint.map { $0 == fingerprint } ?? true
         )
     }

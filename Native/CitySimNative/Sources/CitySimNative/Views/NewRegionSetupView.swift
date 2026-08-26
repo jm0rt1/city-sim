@@ -156,7 +156,7 @@ struct NewRegionSetupView: View {
             HStack(spacing: 10) {
                 benchmarkFact("Workload", benchmark.title, symbol: "building.2.fill")
                 benchmarkFact("Map", benchmark.citySize, symbol: "square.grid.3x3.fill")
-                benchmarkFact("Measurement", "Average · p95 · throughput", symbol: "chart.xyaxis.line")
+                benchmarkFact("Measurement", "3× average · p95 · 16 ms budget", symbol: "chart.xyaxis.line")
             }
             Label(
                 "Runs on a temporary city. It never autosaves, overwrites, or advances your current city.",

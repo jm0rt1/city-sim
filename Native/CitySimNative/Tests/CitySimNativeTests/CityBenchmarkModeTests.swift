@@ -12,6 +12,8 @@ final class CityBenchmarkModeTests: XCTestCase {
         XCTAssertEqual(first, second)
         XCTAssertEqual(first.gridWidth, 24)
         XCTAssertEqual(first.gridHeight, 24)
+        XCTAssertEqual(definition.ticksPerPulse, SimulationSpeed.fastest.ticksPerPulse)
+        XCTAssertEqual(definition.pulseWorkload, "400 × 3 ticks")
         XCTAssertGreaterThan(first.tiles.filter { $0.kind != .empty }.count, 300)
         XCTAssertGreaterThan(first.tiles.filter { $0.kind == .powerPlant }.count, 10)
         XCTAssertGreaterThan(first.tiles.filter { $0.kind == .waterTower }.count, 10)
@@ -25,9 +27,9 @@ final class CityBenchmarkModeTests: XCTestCase {
         let first = try await CityBenchmarkRunner.run()
         let second = try await CityBenchmarkRunner.run()
 
-        XCTAssertEqual(first.benchmarkID, "native-vertical-slice-v1")
+        XCTAssertEqual(first.benchmarkID, "native-dense-3x-v2")
         XCTAssertEqual(first.pulseCount, 400)
-        XCTAssertEqual(first.logicalTicks, 400)
+        XCTAssertEqual(first.logicalTicks, 1_200)
         XCTAssertEqual(first.finalStatus, GameStatus.playing.rawValue)
         XCTAssertEqual(first.finalFingerprint, second.finalFingerprint)
         XCTAssertEqual(first.finalFingerprint, CityBenchmarkDefinition.verticalSlice.expectedFinalFingerprint)
@@ -37,6 +39,15 @@ final class CityBenchmarkModeTests: XCTestCase {
         XCTAssertGreaterThan(first.totalMilliseconds, 0)
         XCTAssertGreaterThan(first.p95PulseMilliseconds, 0)
         XCTAssertGreaterThan(first.pulsesPerSecond, 0)
+        XCTAssertTrue(first.withinProvisionalBudget)
+        XCTAssertLessThanOrEqual(
+            first.averagePulseMilliseconds,
+            CityBenchmarkDefinition.verticalSlice.provisionalPulseBudgetMilliseconds
+        )
+        XCTAssertLessThanOrEqual(
+            first.p95PulseMilliseconds,
+            CityBenchmarkDefinition.verticalSlice.provisionalPulseBudgetMilliseconds
+        )
     }
 
     func testRunnerCancellationStopsTheTemporaryWorkload() async {
@@ -46,7 +57,8 @@ final class CityBenchmarkModeTests: XCTestCase {
             detail: "Exercises the cancellation boundary.",
             seed: 42,
             pulseCount: 100_000,
-            provisionalAverageBudgetMilliseconds: 16,
+            ticksPerPulse: SimulationSpeed.fastest.ticksPerPulse,
+            provisionalPulseBudgetMilliseconds: 16,
             expectedFinalFingerprint: nil
         )
         let task = Task { try await CityBenchmarkRunner.run(definition: definition) }
@@ -75,6 +87,8 @@ final class CityBenchmarkModeTests: XCTestCase {
         XCTAssertEqual(report.reportVersion, 1)
         XCTAssertEqual(report.generatedAt, generatedAt)
         XCTAssertEqual(report.result, result)
+        XCTAssertEqual(url.lastPathComponent, "native-dense-3x-v2.json")
+        XCTAssertTrue(report.qualification.contains("3×"))
         XCTAssertTrue(report.qualification.contains("not certify"))
         XCTAssertFalse(text.contains(FileManager.default.homeDirectoryForCurrentUser.path))
         XCTAssertFalse(text.contains("New Arcadia"))
@@ -115,7 +129,7 @@ final class CityBenchmarkModeTests: XCTestCase {
             try await Task.sleep(for: .milliseconds(10))
         }
         XCTAssertEqual(store.benchmarkSession?.phase, .complete)
-        XCTAssertEqual(store.benchmarkSession?.result?.logicalTicks, 400)
+        XCTAssertEqual(store.benchmarkSession?.result?.logicalTicks, 1_200)
         XCTAssertEqual(store.state, original)
         XCTAssertFalse(saveService.hasResumeCandidate)
 
@@ -184,14 +198,14 @@ final class CityBenchmarkModeTests: XCTestCase {
     }
 
     private static let resultFixture = CityBenchmarkResult(
-        benchmarkID: "native-vertical-slice-v1",
+        benchmarkID: "native-dense-3x-v2",
         pulseCount: 400,
-        logicalTicks: 400,
+        logicalTicks: 1_200,
         developedTiles: 364,
-        totalMilliseconds: 824,
-        averagePulseMilliseconds: 2.06,
-        p95PulseMilliseconds: 2.48,
-        pulsesPerSecond: 485,
+        totalMilliseconds: 2_760,
+        averagePulseMilliseconds: 6.9,
+        p95PulseMilliseconds: 8.2,
+        pulsesPerSecond: 145,
         finalFingerprint: "98bb126a2026e4e4e10a2ab63fd6b7673d10316bb5b7464b0ebd1f04fbecb25f",
         finalPopulation: 3_238,
         finalTreasury: 5_114_880,

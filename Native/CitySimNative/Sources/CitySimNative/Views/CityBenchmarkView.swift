@@ -75,7 +75,7 @@ struct CityBenchmarkView: View {
                 .font(.title3)
                 .foregroundStyle(.secondary)
             HStack(spacing: 10) {
-                factCard("Pulses", session.definition.pulseCount.formatted(), "waveform.path.ecg")
+                factCard("3× workload", session.definition.pulseWorkload, "waveform.path.ecg")
                 factCard("City", session.definition.citySize, "square.grid.3x3.fill")
                 factCard("Seed", String(session.definition.seed), "number")
             }

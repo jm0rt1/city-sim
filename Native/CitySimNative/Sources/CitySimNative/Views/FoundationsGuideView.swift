@@ -5,6 +5,7 @@ struct FoundationsGuideView: View {
     static let compactCompletionContextTitle = "CITY COACH"
     static let compactCompletionActionTitle = "Replay"
     static let completionReplayAccessibilityLabel = "Replay City Coach lessons"
+    static let dismissAccessibilityHint = "Hides City Coach. Restart it anytime in Settings."
 
     static func completionReplayAccessibilityHint(totalLessonCount: Int) -> String {
         "Restarts all \(totalLessonCount) guided lessons"
@@ -56,6 +57,7 @@ struct FoundationsGuideView: View {
                         .buttonStyle(.plain)
                         .foregroundStyle(.secondary)
                         .accessibilityLabel("Dismiss City Coach")
+                        .accessibilityHint(Self.dismissAccessibilityHint)
                     }
                 } else if compact, let lesson = presentation.currentLesson {
                     HStack(spacing: 6) {
@@ -99,6 +101,7 @@ struct FoundationsGuideView: View {
                         .buttonStyle(.plain)
                         .foregroundStyle(.secondary)
                         .accessibilityLabel("Dismiss City Coach")
+                        .accessibilityHint(Self.dismissAccessibilityHint)
                     }
                     .overlay(alignment: .top) {
                         Rectangle()
@@ -132,6 +135,7 @@ struct FoundationsGuideView: View {
                         .buttonStyle(.plain)
                         .foregroundStyle(.secondary)
                         .accessibilityLabel("Dismiss City Coach")
+                        .accessibilityHint(Self.dismissAccessibilityHint)
                     }
 
                     Button {
@@ -171,6 +175,7 @@ struct FoundationsGuideView: View {
                         .buttonStyle(.plain)
                         .foregroundStyle(.secondary)
                         .accessibilityLabel("Dismiss City Coach")
+                        .accessibilityHint(Self.dismissAccessibilityHint)
                     }
 
                     Button {

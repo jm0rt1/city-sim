@@ -277,6 +277,10 @@ final class CityFoundationsGuideTests: XCTestCase {
         store.dismissFoundationsGuide()
         XCTAssertNil(store.foundationsGuidePresentation)
         XCTAssertEqual(store.state, state)
+        XCTAssertEqual(
+            FoundationsGuideView.dismissAccessibilityHint,
+            "Hides City Coach. Restart it anytime in Settings."
+        )
         XCTAssertEqual(store.lastFeedback, "City Coach hidden · Restart it anytime in Settings")
         XCTAssertEqual(CityPlayerPreferenceKey.foundationsGuideProgress, "cityFoundationsGuideProgress.v1")
         XCTAssertTrue(CityFoundationsGuidePersistence.read(from: defaults).isDismissed)

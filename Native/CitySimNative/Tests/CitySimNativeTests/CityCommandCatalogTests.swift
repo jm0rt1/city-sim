@@ -146,6 +146,33 @@ final class CityCommandCatalogTests: XCTestCase {
         XCTAssertEqual(TopHUDView.regularMaximumHeight, 68)
     }
 
+    func testCompactFinancePulseKeepsCashflowLegibleAndHonest() {
+        XCTAssertEqual(
+            HUDFinancePulsePresentation.make(
+                treasury: 31_450,
+                projectedBalance: -119,
+                usesUnlimitedFunds: false
+            ),
+            HUDFinancePulsePresentation(
+                value: "$31,450",
+                detail: "Net -$119",
+                isHealthy: false
+            )
+        )
+        XCTAssertEqual(
+            HUDFinancePulsePresentation.make(
+                treasury: -50,
+                projectedBalance: -500,
+                usesUnlimitedFunds: true
+            ),
+            HUDFinancePulsePresentation(
+                value: "Unlimited",
+                detail: "Net -$500",
+                isHealthy: true
+            )
+        )
+    }
+
     @MainActor
     func testCompactResilienceForecastRendersWithinTheDetailsBudget() throws {
         var state = CityGameState.newCity(seed: 20260812)

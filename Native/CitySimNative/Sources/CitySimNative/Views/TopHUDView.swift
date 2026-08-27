@@ -24,6 +24,24 @@ struct HUDUtilityHeadroomPresentation: Equatable {
     }
 }
 
+struct HUDFinancePulsePresentation: Equatable {
+    let value: String
+    let detail: String
+    let isHealthy: Bool
+
+    static func make(
+        treasury: Double,
+        projectedBalance: Double,
+        usesUnlimitedFunds: Bool
+    ) -> Self {
+        HUDFinancePulsePresentation(
+            value: usesUnlimitedFunds ? "Unlimited" : treasury.currencyText,
+            detail: "Net \(projectedBalance.signedCurrencyText)",
+            isHealthy: usesUnlimitedFunds || projectedBalance >= 0
+        )
+    }
+}
+
 private struct CompactUtilityMetricCard: View {
     let coverage: String
     let headroom: HUDUtilityHeadroomPresentation
@@ -91,6 +109,8 @@ struct TopHUDView: View {
 
     static let compactMaximumHeight: CGFloat = 64
     static let regularMaximumHeight: CGFloat = 68
+    static let compactFinancePulseWidth: CGFloat = 164
+    static let regularFinancePulseWidth: CGFloat = 184
 
     private var reduceMotion: Bool { systemReduceMotion || gameReduceMotion }
 
@@ -108,6 +128,10 @@ struct TopHUDView: View {
             missionSummary
                 .frame(width: compact ? 286 : 318)
                 .layoutPriority(3)
+            financePulse
+                .frame(width: compact
+                    ? Self.compactFinancePulseWidth
+                    : Self.regularFinancePulseWidth)
             Spacer(minLength: 4)
             timeAndNotices
         }
@@ -231,6 +255,25 @@ struct TopHUDView: View {
         case .urgent: GameTheme.danger
         case .recovery, .resolved: GameTheme.accent
         }
+    }
+
+    private var financePulse: some View {
+        let presentation = HUDFinancePulsePresentation.make(
+            treasury: store.state.treasury,
+            projectedBalance: store.analytics.projectedBalance,
+            usesUnlimitedFunds: store.state.usesUnlimitedFunds
+        )
+        return MetricCard(
+            identifier: "hud.metric.treasury",
+            title: "Treasury",
+            shortTitle: "Cash",
+            value: presentation.value,
+            symbol: "dollarsign.circle.fill",
+            tint: presentation.isHealthy ? GameTheme.accent : GameTheme.danger,
+            detail: presentation.detail,
+            dense: true
+        ) { store.perform(.inspectorFinances) }
+        .accessibilityHint("Opens the city finances and tax decision")
     }
 
     static func simulationState(for speed: SimulationSpeed) -> HUDSimulationStatePresentation {

@@ -27,7 +27,6 @@ struct MetricCard: View {
         .frame(minWidth: dense ? 60 : 104, maxWidth: .infinity, alignment: .leading)
         .background(GameTheme.hudRaisedFill, in: RoundedRectangle(cornerRadius: 9))
         .help("Open \(title.lowercased()) details")
-        .accessibilityElement(children: .ignore)
         .accessibilityLabel(title)
         .accessibilityValue([value, detail].compactMap { $0 }.joined(separator: ", "))
         .accessibilityIdentifier(identifier)

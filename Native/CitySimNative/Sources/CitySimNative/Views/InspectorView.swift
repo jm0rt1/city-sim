@@ -99,9 +99,8 @@ struct InspectorView: View {
     var body: some View {
         Group {
             if compact {
-                HStack(alignment: .top, spacing: 8) {
+                VStack(alignment: .leading, spacing: 6) {
                     contextHeader
-                        .frame(width: 260, alignment: .topLeading)
                     Divider().overlay(GameTheme.subtleDivider)
                     contextBody
                         .frame(maxWidth: .infinity, alignment: .topLeading)
@@ -159,7 +158,7 @@ struct InspectorView: View {
             sectionNavigation
 
             Button { store.perform(.toggleCommandCenter) } label: {
-                Label(compact ? "" : "Close", systemImage: "xmark")
+                Image(systemName: "xmark")
                     .frame(minWidth: GameTheme.controlMinimum, minHeight: GameTheme.controlMinimum)
                     .contentShape(Rectangle())
             }

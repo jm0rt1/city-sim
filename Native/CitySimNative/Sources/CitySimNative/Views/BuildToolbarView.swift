@@ -144,10 +144,12 @@ struct BuildToolbarView: View {
     static let compactBuildDecisionMaximumHeight: CGFloat = 112
     static let regularClosedMaximumHeight: CGFloat = 60
     static let regularSituationalMaximumHeight: CGFloat = 60
-    static let compactOpenMaximumHeight: CGFloat = 176
+    static let compactOpenMaximumHeight: CGFloat = 264
     static let regularOpenMaximumHeight: CGFloat = 208
-    static let compactDetailsMaxHeight: CGFloat = 112
+    static let compactDetailsMaxHeight: CGFloat = 196
     static let regularDetailsMaxHeight: CGFloat = 144
+    static let compactDetailsWidth: CGFloat = 720
+    static let regularDetailsWidth: CGFloat = 840
 
     var body: some View {
         VStack(spacing: compact ? 5 : 6) {
@@ -164,7 +166,7 @@ struct BuildToolbarView: View {
         .overlay(alignment: .bottom) {
             if store.showInspector {
                 inspectorDetails
-                    .frame(maxWidth: compact ? 620 : 760)
+                    .frame(width: compact ? Self.compactDetailsWidth : Self.regularDetailsWidth)
                     .padding(8)
                     .cityHUDSurface(prominent: true)
                     .offset(y: -persistentDeckHeight - 8)
@@ -199,7 +201,7 @@ struct BuildToolbarView: View {
     }
 
     private var commandRow: some View {
-        HStack(spacing: 6) {
+        HStack(spacing: compact ? 4 : 6) {
             modeCluster
 
             if isBuildMode {
@@ -209,16 +211,20 @@ struct BuildToolbarView: View {
             if activeBuildDecision == nil, store.selectedTile != nil || isBuildMode {
                 selectedToolSummary
                     .frame(
-                        minWidth: compact ? 150 : 174,
-                        maxWidth: compact ? 184 : 220,
+                        minWidth: compact ? 170 : 174,
+                        maxWidth: 220,
                         alignment: .trailing
                     )
                     .layoutPriority(1)
             }
 
-            shelfDivider
+            if !compact {
+                shelfDivider
+            }
             toolsMenu
-            commandGuideButton
+            if !compact {
+                commandGuideButton
+            }
             detailsButton
         }
     }
@@ -268,6 +274,12 @@ struct BuildToolbarView: View {
             }
             Button { store.perform(.togglePhotoMode) } label: {
                 Label("Photo Mode", systemImage: "camera.aperture")
+            }
+            if compact {
+                Divider()
+                Button { store.perform(.openCommandGuide) } label: {
+                    Label("Command Guide", systemImage: "command.square")
+                }
             }
         } label: {
             Label(compact ? "More" : "Tools", systemImage: "slider.horizontal.3")
@@ -787,7 +799,8 @@ struct BuildToolbarView: View {
         } label: {
             Label("Catalog", systemImage: "square.grid.2x2")
                 .font(.caption.weight(.semibold))
-                .padding(.horizontal, 9)
+                .padding(.horizontal, compact ? 6 : 9)
+                .fixedSize(horizontal: true, vertical: false)
                 .frame(minHeight: GameTheme.controlMinimum)
         }
         .menuStyle(.borderlessButton)

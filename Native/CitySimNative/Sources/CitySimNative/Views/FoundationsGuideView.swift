@@ -4,6 +4,11 @@ struct FoundationsGuideView: View {
     static let compactCompletionWidth: CGFloat = 160
     static let compactCompletionContextTitle = "CITY COACH"
     static let compactCompletionActionTitle = "Replay"
+    static let completionReplayAccessibilityLabel = "Replay City Coach lessons"
+
+    static func completionReplayAccessibilityHint(totalLessonCount: Int) -> String {
+        "Restarts all \(totalLessonCount) guided lessons"
+    }
 
     @ObservedObject var store: CityGameStore
     var compact = false
@@ -39,8 +44,10 @@ struct FoundationsGuideView: View {
                         }
                         .buttonStyle(.plain)
                         .foregroundStyle(GameTheme.accent)
-                        .accessibilityLabel("Replay City Coach lessons")
-                        .accessibilityHint("Restarts all \(presentation.totalCount) guided lessons")
+                        .accessibilityLabel(Self.completionReplayAccessibilityLabel)
+                        .accessibilityHint(Self.completionReplayAccessibilityHint(
+                            totalLessonCount: presentation.totalCount
+                        ))
 
                         Button { store.dismissFoundationsGuide() } label: {
                             Image(systemName: "xmark")
@@ -179,6 +186,10 @@ struct FoundationsGuideView: View {
                         .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
+                    .accessibilityLabel(Self.completionReplayAccessibilityLabel)
+                    .accessibilityHint(Self.completionReplayAccessibilityHint(
+                        totalLessonCount: presentation.totalCount
+                    ))
                     .overlay(alignment: .top) {
                         Rectangle()
                             .fill(GameTheme.panelStroke)

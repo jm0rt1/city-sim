@@ -459,6 +459,16 @@ final class CityFoundationsGuideTests: XCTestCase {
         )
         XCTAssertEqual(FoundationsGuideView.compactCompletionContextTitle, "CITY COACH")
         XCTAssertEqual(FoundationsGuideView.compactCompletionActionTitle, "Replay")
+        XCTAssertEqual(
+            FoundationsGuideView.completionReplayAccessibilityLabel,
+            "Replay City Coach lessons"
+        )
+        XCTAssertEqual(
+            FoundationsGuideView.completionReplayAccessibilityHint(
+                totalLessonCount: presentation.totalCount
+            ),
+            "Restarts all 7 guided lessons"
+        )
 
         let compactView = NSHostingView(
             rootView: FoundationsGuideView(store: store, compact: true).fixedSize()

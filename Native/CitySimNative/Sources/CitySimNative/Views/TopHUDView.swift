@@ -42,6 +42,39 @@ struct HUDFinancePulsePresentation: Equatable {
     }
 }
 
+enum HUDMissionSummaryMode: Equatable, Sendable {
+    case mayorAction
+    case objectiveStatus
+}
+
+struct HUDObjectiveStatusPresentation: Equatable {
+    let title: String
+    let progress: String
+    let status: String
+    let accessibilityLabel: String
+    let accessibilityValue: String
+
+    static func make(
+        objective: CityObjective,
+        mandateComplete: Bool,
+        hasAuthoredScenario: Bool
+    ) -> Self {
+        let title = mandateComplete
+            ? (hasAuthoredScenario ? "Scenario complete" : "Mandate complete")
+            : objective.title
+        let progress = objective.progress.formatted(
+            .percent.precision(.fractionLength(0))
+        )
+        return Self(
+            title: title,
+            progress: progress,
+            status: mandateComplete ? "Objective complete" : "Objective in progress",
+            accessibilityLabel: "Mayor objective: \(title)",
+            accessibilityValue: "\(progress) complete. \(objective.remaining)"
+        )
+    }
+}
+
 private struct CompactUtilityMetricCard: View {
     let coverage: String
     let headroom: HUDUtilityHeadroomPresentation
@@ -183,7 +216,60 @@ struct TopHUDView: View {
         .accessibilityIdentifier("hud.city.identity")
     }
 
+    @ViewBuilder
     private var missionSummary: some View {
+        if Self.missionSummaryMode(
+            compact: compact,
+            foundationsGuide: store.foundationsGuidePresentation
+        ) == .objectiveStatus {
+            objectiveStatusSummary
+        } else {
+            missionActionSummary
+        }
+    }
+
+    private var objectiveStatusSummary: some View {
+        let presentation = HUDObjectiveStatusPresentation.make(
+            objective: store.primaryObjective,
+            mandateComplete: store.completedObjectiveCount == store.objectives.count,
+            hasAuthoredScenario: store.state.authoredScenario != nil
+        )
+
+        return VStack(alignment: .leading, spacing: 3) {
+            HStack(spacing: 4) {
+                Image(systemName: "flag.checkered")
+                    .accessibilityHidden(true)
+                Text(presentation.title)
+                    .font(.system(size: GameTheme.hudSupportTextSize, weight: .heavy, design: .rounded))
+                    .textCase(.uppercase)
+                    .lineLimit(1)
+                Spacer(minLength: 4)
+                Text(presentation.progress)
+                    .font(.system(size: 11, weight: .bold, design: .rounded).monospacedDigit())
+                    .opacity(0.72)
+            }
+            HStack(spacing: 4) {
+                Image(systemName: "chart.line.uptrend.xyaxis")
+                    .font(.system(size: 13, weight: .bold))
+                    .foregroundStyle(GameTheme.accent)
+                    .accessibilityHidden(true)
+                Text(presentation.status)
+                    .font(.system(size: 15, weight: .heavy, design: .rounded))
+                    .lineLimit(1)
+            }
+        }
+        .padding(.horizontal, 12)
+        .frame(maxWidth: .infinity, minHeight: GameTheme.controlMinimum, alignment: .leading)
+        .cityHUDSurface()
+        .help("City Coach provides the next action while this lesson is active")
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(presentation.accessibilityLabel)
+        .accessibilityValue(presentation.accessibilityValue)
+        .accessibilityHint("City Coach provides the next action while this lesson is active")
+        .accessibilityIdentifier("hud.objective.status")
+    }
+
+    private var missionActionSummary: some View {
         let objective = store.primaryObjective
         let mandateComplete = store.completedObjectiveCount == store.objectives.count
         let strategy = CityStrategyHUDPresentation.make(state: store.state)
@@ -289,6 +375,15 @@ struct TopHUDView: View {
             symbol: "play.fill",
             accessibilityValue: "Running at \(speed.controlLabel) speed"
         )
+    }
+
+    nonisolated static func missionSummaryMode(
+        compact: Bool,
+        foundationsGuide: CityFoundationsGuidePresentation?
+    ) -> HUDMissionSummaryMode {
+        compact && foundationsGuide?.currentLesson != nil
+            ? .objectiveStatus
+            : .mayorAction
     }
 
     static func compactSimulationLabel(for speed: SimulationSpeed) -> String {

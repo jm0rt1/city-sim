@@ -15,6 +15,53 @@ final class CityFoundationsGuideTests: XCTestCase {
         XCTAssertTrue(lessons.allSatisfy { !$0.actionTitle.isEmpty && !$0.detail.isEmpty })
     }
 
+    func testCompactCoachOwnsImmediateHUDActionOnlyWhileLessonIsActive() {
+        let activeGuide = CityFoundationsGuidePresentation.make(progress: .fresh)
+        let completeGuide = CityFoundationsGuidePresentation.make(
+            progress: CityFoundationsGuideProgress(
+                completedLessonIDs: Set(CityFoundationsLessonID.allCases),
+                isDismissed: false
+            )
+        )
+
+        XCTAssertEqual(
+            TopHUDView.missionSummaryMode(compact: true, foundationsGuide: activeGuide),
+            .objectiveStatus
+        )
+        XCTAssertEqual(
+            TopHUDView.missionSummaryMode(compact: true, foundationsGuide: completeGuide),
+            .mayorAction
+        )
+        XCTAssertEqual(
+            TopHUDView.missionSummaryMode(compact: true, foundationsGuide: nil),
+            .mayorAction
+        )
+        XCTAssertEqual(
+            TopHUDView.missionSummaryMode(compact: false, foundationsGuide: activeGuide),
+            .mayorAction
+        )
+
+        let objective = CityObjective(
+            id: "stabilize",
+            title: "Balance the Books",
+            detail: "Reach a non-negative operating balance",
+            progress: 0.52,
+            remaining: "Close the $119 operating gap"
+        )
+        let status = HUDObjectiveStatusPresentation.make(
+            objective: objective,
+            mandateComplete: false,
+            hasAuthoredScenario: false
+        )
+
+        XCTAssertEqual(status.title, "Balance the Books")
+        XCTAssertEqual(status.status, "Objective in progress")
+        XCTAssertEqual(status.accessibilityLabel, "Mayor objective: Balance the Books")
+        XCTAssertTrue(status.accessibilityValue.contains("Close the $119 operating gap"))
+        XCTAssertFalse(status.accessibilityLabel.contains("Choose"))
+        XCTAssertFalse(status.accessibilityValue.contains("Choose"))
+    }
+
     @MainActor
     func testProgressPersistsOutsideCityStateAndLegacyFixturesDoNotOptIn() throws {
         let defaults = try isolatedDefaults()

@@ -268,6 +268,49 @@ final class CityFoundationsGuideTests: XCTestCase {
     }
 
     @MainActor
+    func testActiveGuideLayoutFitsEveryLessonAtShippingWidths() throws {
+        for (index, lesson) in CityFoundationsLesson.curriculum.enumerated() {
+            let defaults = try isolatedDefaults()
+            let completed = Set(CityFoundationsLesson.curriculum.prefix(index).map(\.id))
+            CityFoundationsGuidePersistence.write(
+                CityFoundationsGuideProgress(completedLessonIDs: completed, isDismissed: false),
+                to: defaults
+            )
+            let store = CityGameStore(
+                state: .newTrackedCity(seed: 7_023 + UInt64(index)),
+                startsPaused: true,
+                playerDefaults: defaults
+            )
+            let presentation = try XCTUnwrap(store.foundationsGuidePresentation)
+
+            XCTAssertEqual(presentation.currentLesson?.id, lesson.id)
+            XCTAssertTrue(presentation.accessibilitySummary.contains(lesson.title))
+            XCTAssertTrue(presentation.accessibilitySummary.contains(lesson.detail))
+            XCTAssertTrue(presentation.accessibilitySummary.contains(lesson.completionRule))
+
+            let compactView = NSHostingView(
+                rootView: FoundationsGuideView(store: store, compact: true).fixedSize()
+            )
+            compactView.layoutSubtreeIfNeeded()
+            let compactSize = compactView.fittingSize
+
+            let regularView = NSHostingView(
+                rootView: FoundationsGuideView(store: store, compact: false).fixedSize()
+            )
+            regularView.layoutSubtreeIfNeeded()
+            let regularSize = regularView.fittingSize
+
+            XCTAssertEqual(compactSize.width, GameTheme.compactContextCardWidth, accuracy: 1)
+            XCTAssertLessThanOrEqual(compactSize.height, 160)
+            XCTAssertEqual(regularSize.width, 258, accuracy: 1)
+            XCTAssertLessThan(
+                compactSize.width * compactSize.height,
+                regularSize.width * regularSize.height
+            )
+        }
+    }
+
+    @MainActor
     func testCompletedGuideCollapsesOnlyAtCompactSizeAndKeepsReplayMeaning() throws {
         let defaults = try isolatedDefaults()
         let progress = CityFoundationsGuideProgress(

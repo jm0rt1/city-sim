@@ -1331,7 +1331,7 @@ final class CityGameStore: ObservableObject {
         if let playerDefaults {
             CityFoundationsGuidePersistence.write(updated, to: playerDefaults)
         }
-        showFeedback("Foundations Guide hidden · Restart it anytime in Settings")
+        showFeedback("City Coach hidden · Restart it anytime in Settings")
     }
 
     func restartFoundationsGuide() {

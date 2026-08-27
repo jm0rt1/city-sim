@@ -125,11 +125,11 @@ struct CityFoundationsGuidePresentation: Equatable, Sendable {
 
     var accessibilitySummary: String {
         if let currentLesson {
-            return "Foundations Guide. " + String(completedCount) + " of " + String(totalCount)
+            return "City Coach. " + String(completedCount) + " of " + String(totalCount)
                 + " lessons complete. " + currentLesson.title + ". " + currentLesson.detail
                 + " " + currentLesson.completionRule
         }
-        return "Foundations Guide complete. All " + String(totalCount) + " lessons finished."
+        return "City Coach complete. All " + String(totalCount) + " lessons finished."
     }
 }
 

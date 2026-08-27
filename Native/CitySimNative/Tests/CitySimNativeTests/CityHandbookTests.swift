@@ -59,6 +59,7 @@ final class CityHandbookTests: XCTestCase {
         let tutorial = try XCTUnwrap(presentation.search(query: "tutorial skip reset").sections.first)
         XCTAssertEqual(tutorial.id, .gettingStarted)
         XCTAssertEqual(tutorial.entries.map(\.id), ["start-foundations-guide"])
+        XCTAssertEqual(tutorial.entries.map(\.title), ["Learn with City Coach"])
 
         XCTAssertEqual(
             presentation.search(query: "  VOICEOVER  ").sections.map(\.id),

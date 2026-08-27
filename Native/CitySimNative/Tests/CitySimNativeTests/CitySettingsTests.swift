@@ -4,6 +4,15 @@ import XCTest
 @testable import CitySimNative
 
 final class CitySettingsTests: XCTestCase {
+    @MainActor
+    func testCityCoachRestartCopyUsesThePlayerFacingProductName() {
+        XCTAssertEqual(SettingsView.restartCityCoachTitle, "Restart City Coach")
+        XCTAssertEqual(
+            SettingsView.cityCoachRestartedFeedback,
+            "City Coach restarted in the main city window."
+        )
+    }
+
     func testPreferenceDefaultsAndPersistedOverridesAreTruthful() throws {
         let defaults = try isolatedDefaults()
 

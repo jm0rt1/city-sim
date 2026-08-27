@@ -1,6 +1,9 @@
 import SwiftUI
 
 struct SettingsView: View {
+    static let restartCityCoachTitle = "Restart City Coach"
+    static let cityCoachRestartedFeedback = "City Coach restarted in the main city window."
+
     @AppStorage private var soundEffects: Bool
     @AppStorage private var effectsVolume: Double
     @AppStorage private var reduceMotion: Bool
@@ -146,12 +149,12 @@ struct SettingsView: View {
                 .accessibilityIdentifier("settings.guidance-status")
 
                 LabeledContent {
-                    Button("Restart Foundations Guide") {
+                    Button(Self.restartCityCoachTitle) {
                         CitySettingsActions.restartFoundationsGuide(in: defaults)
                         foundationsGuideRevision = defaults.integer(
                             forKey: CityPlayerPreferenceKey.foundationsGuideRevision
                         )
-                        guidanceFeedback = "Foundations Guide restarted in the main city window."
+                        guidanceFeedback = Self.cityCoachRestartedFeedback
                     }
                     .accessibilityHint("Restarts contextual lessons without changing the current city")
                     .accessibilityIdentifier("settings.restart-foundations-guide")

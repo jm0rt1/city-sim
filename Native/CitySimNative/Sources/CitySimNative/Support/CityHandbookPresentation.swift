@@ -165,7 +165,7 @@ struct CityHandbookPresentation: Equatable, Sendable {
                     ),
                     CityHandbookEntry(
                         id: "start-foundations-guide",
-                        title: "Learn with the Foundations Guide",
+                        title: "Learn with City Coach",
                         detail: "The in-city guide responds to real inspection, road, zoning, utility, budget, service, and simulation actions. Alternate zone and service choices count. Skip it from the guide card or restart every lesson in Settings without changing the current city.",
                         symbol: "signpost.right.and.left.fill",
                         shortcut: "⌘, to restart",

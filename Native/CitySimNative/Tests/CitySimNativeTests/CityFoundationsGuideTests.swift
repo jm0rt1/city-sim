@@ -69,7 +69,14 @@ final class CityFoundationsGuideTests: XCTestCase {
         let fingerprint = try CityStateFingerprinter.fingerprint(state)
         let store = CityGameStore(state: state, startsPaused: true, playerDefaults: defaults)
 
-        XCTAssertEqual(store.foundationsGuidePresentation?.currentLesson?.id, .observe)
+        let initialPresentation = try XCTUnwrap(store.foundationsGuidePresentation)
+        XCTAssertEqual(initialPresentation.currentLesson?.id, .observe)
+        XCTAssertEqual(
+            initialPresentation.accessibilitySummary,
+            "City Coach. 0 of 7 lessons complete. Read the city. Start with evidence. "
+                + "Inspect any block or open the Command Center overview. "
+                + "Any inspected block or city overview counts."
+        )
         XCTAssertTrue(store.perform(.inspectorOverview))
         XCTAssertTrue(store.foundationsGuideProgress.completedLessonIDs.contains(.observe))
         XCTAssertEqual(store.state, state)
@@ -270,8 +277,12 @@ final class CityFoundationsGuideTests: XCTestCase {
         store.dismissFoundationsGuide()
         XCTAssertNil(store.foundationsGuidePresentation)
         XCTAssertEqual(store.state, state)
+        XCTAssertEqual(store.lastFeedback, "City Coach hidden · Restart it anytime in Settings")
+        XCTAssertEqual(CityPlayerPreferenceKey.foundationsGuideProgress, "cityFoundationsGuideProgress.v1")
+        XCTAssertTrue(CityFoundationsGuidePersistence.read(from: defaults).isDismissed)
 
         let revisionBefore = defaults.integer(forKey: CityPlayerPreferenceKey.foundationsGuideRevision)
+        XCTAssertEqual(CityPlayerPreferenceKey.foundationsGuideRevision, "cityFoundationsGuideRevision")
         CitySettingsActions.restartFoundationsGuide(in: defaults)
         store.reloadFoundationsGuideProgress()
 
@@ -444,7 +455,7 @@ final class CityFoundationsGuideTests: XCTestCase {
         XCTAssertTrue(presentation.isComplete)
         XCTAssertEqual(
             presentation.accessibilitySummary,
-            "Foundations Guide complete. All 7 lessons finished."
+            "City Coach complete. All 7 lessons finished."
         )
 
         let compactView = NSHostingView(

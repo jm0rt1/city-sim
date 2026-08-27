@@ -457,6 +457,8 @@ final class CityFoundationsGuideTests: XCTestCase {
             presentation.accessibilitySummary,
             "City Coach complete. All 7 lessons finished."
         )
+        XCTAssertEqual(FoundationsGuideView.compactCompletionContextTitle, "CITY COACH")
+        XCTAssertEqual(FoundationsGuideView.compactCompletionActionTitle, "Replay")
 
         let compactView = NSHostingView(
             rootView: FoundationsGuideView(store: store, compact: true).fixedSize()
@@ -475,7 +477,7 @@ final class CityFoundationsGuideTests: XCTestCase {
             FoundationsGuideView.compactCompletionWidth,
             accuracy: 1
         )
-        XCTAssertLessThanOrEqual(compactSize.height, 52)
+        XCTAssertEqual(compactSize.height, 50, accuracy: 1)
         XCTAssertEqual(regularSize.width, 258, accuracy: 1)
         XCTAssertGreaterThan(regularSize.height, compactSize.height + 48)
     }

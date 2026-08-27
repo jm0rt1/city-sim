@@ -2,6 +2,8 @@ import SwiftUI
 
 struct FoundationsGuideView: View {
     static let compactCompletionWidth: CGFloat = 160
+    static let compactCompletionContextTitle = "CITY COACH"
+    static let compactCompletionActionTitle = "Replay"
 
     @ObservedObject var store: CityGameStore
     var compact = false
@@ -19,14 +21,19 @@ struct FoundationsGuideView: View {
                         } label: {
                             HStack(spacing: 6) {
                                 Image(systemName: "checkmark.seal.fill")
-                                Text("Replay")
-                                Image(systemName: "arrow.counterclockwise")
+                                VStack(alignment: .leading, spacing: -1) {
+                                    Text(Self.compactCompletionContextTitle)
+                                        .font(.system(size: 9, weight: .heavy, design: .rounded))
+                                    Text(Self.compactCompletionActionTitle)
+                                        .font(.system(
+                                            size: GameTheme.hudCriticalTextSize,
+                                            weight: .bold,
+                                            design: .rounded
+                                        ))
+                                }
+                                .lineLimit(1)
+                                Spacer(minLength: 0)
                             }
-                            .font(.system(
-                                size: GameTheme.hudCriticalTextSize,
-                                weight: .bold,
-                                design: .rounded
-                            ))
                             .frame(maxWidth: .infinity, minHeight: GameTheme.controlMinimum)
                             .contentShape(Rectangle())
                         }

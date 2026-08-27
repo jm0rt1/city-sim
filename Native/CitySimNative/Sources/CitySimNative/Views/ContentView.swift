@@ -400,16 +400,20 @@ struct ContentView: View {
     }
 
     static func contextualGuidancePresentation(
+        compact: Bool = false,
         showObjectives: Bool,
         showInspector: Bool,
         hasActivity: Bool,
         hasFoundationsGuide: Bool = false,
-        hasBlockingFeedback: Bool = false
+        hasBlockingFeedback: Bool = false,
+        hasBuildDecision: Bool = false
     ) -> ContextualGuidancePresentation {
         guard !showInspector else { return .hidden }
         guard !hasBlockingFeedback else { return .hidden }
         if showObjectives { return .objectives }
-        if hasFoundationsGuide { return .foundations }
+        if hasFoundationsGuide {
+            return compact && hasBuildDecision ? .hidden : .foundations
+        }
         return hasActivity ? .activity : .hidden
     }
 
@@ -584,11 +588,14 @@ struct ContentView: View {
 
                         HStack(alignment: .top) {
                             switch Self.contextualGuidancePresentation(
+                                compact: compact,
                                 showObjectives: store.showObjectives,
                                 showInspector: store.showInspector,
                                 hasActivity: !store.messageSummaries.isEmpty,
                                 hasFoundationsGuide: store.foundationsGuidePresentation != nil,
-                                hasBlockingFeedback: store.lastFeedback != nil && store.lastFeedbackTone == .caution
+                                hasBlockingFeedback: store.lastFeedback != nil && store.lastFeedbackTone == .caution,
+                                hasBuildDecision: store.activeMapActionTargetPresentation?
+                                    .primaryAction.buildDecision != nil
                             ) {
                             case .hidden:
                                 EmptyView()

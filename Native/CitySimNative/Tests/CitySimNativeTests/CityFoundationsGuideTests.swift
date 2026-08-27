@@ -268,6 +268,75 @@ final class CityFoundationsGuideTests: XCTestCase {
     }
 
     @MainActor
+    func testCompactGuideYieldsToBuildDecisionAndReturnsUnchangedAfterCancel() throws {
+        let defaults = try isolatedDefaults()
+        let store = CityGameStore(
+            state: .newTrackedCity(seed: 7_024),
+            startsPaused: true,
+            playerDefaults: defaults
+        )
+
+        XCTAssertTrue(store.performFoundationsGuideAction())
+        XCTAssertEqual(store.foundationsGuidePresentation?.currentLesson?.id, .roads)
+        XCTAssertTrue(store.perform(.cancelInteraction))
+        store.clearFeedback()
+
+        let cityBeforeDecision = store.state
+        let fingerprintBeforeDecision = try CityStateFingerprinter.fingerprint(cityBeforeDecision)
+        let guideBeforeDecision = store.foundationsGuideProgress
+
+        XCTAssertTrue(store.performFoundationsGuideAction())
+        XCTAssertEqual(store.interactionMode, .build(.road))
+        XCTAssertNotNil(store.activeMapActionTargetPresentation?.primaryAction.buildDecision)
+        XCTAssertEqual(
+            ContentView.contextualGuidancePresentation(
+                compact: true,
+                showObjectives: store.showObjectives,
+                showInspector: store.showInspector,
+                hasActivity: !store.messageSummaries.isEmpty,
+                hasFoundationsGuide: store.foundationsGuidePresentation != nil,
+                hasBuildDecision: true
+            ),
+            .hidden
+        )
+        XCTAssertEqual(
+            ContentView.contextualGuidancePresentation(
+                compact: false,
+                showObjectives: store.showObjectives,
+                showInspector: store.showInspector,
+                hasActivity: !store.messageSummaries.isEmpty,
+                hasFoundationsGuide: store.foundationsGuidePresentation != nil,
+                hasBuildDecision: true
+            ),
+            .foundations
+        )
+        XCTAssertEqual(store.state, cityBeforeDecision)
+
+        XCTAssertTrue(store.perform(.cancelInteraction))
+
+        XCTAssertEqual(store.interactionMode, .inspect)
+        XCTAssertNil(store.activeMapActionTargetPresentation?.primaryAction.buildDecision)
+        XCTAssertEqual(store.foundationsGuideProgress, guideBeforeDecision)
+        XCTAssertEqual(store.foundationsGuidePresentation?.currentLesson?.id, .roads)
+        XCTAssertEqual(store.state, cityBeforeDecision)
+        XCTAssertEqual(
+            try CityStateFingerprinter.fingerprint(store.state),
+            fingerprintBeforeDecision
+        )
+        XCTAssertEqual(
+            ContentView.contextualGuidancePresentation(
+                compact: true,
+                showObjectives: store.showObjectives,
+                showInspector: store.showInspector,
+                hasActivity: !store.messageSummaries.isEmpty,
+                hasFoundationsGuide: store.foundationsGuidePresentation != nil,
+                hasBuildDecision: false
+            ),
+            .foundations
+        )
+    }
+
+    @MainActor
     func testActiveGuideLayoutFitsEveryLessonAtShippingWidths() throws {
         for (index, lesson) in CityFoundationsLesson.curriculum.enumerated() {
             let defaults = try isolatedDefaults()

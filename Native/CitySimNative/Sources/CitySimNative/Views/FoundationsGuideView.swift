@@ -1,13 +1,46 @@
 import SwiftUI
 
 struct FoundationsGuideView: View {
+    static let compactCompletionWidth: CGFloat = 160
+
     @ObservedObject var store: CityGameStore
     var compact = false
 
     var body: some View {
         if let presentation = store.foundationsGuidePresentation {
             VStack(alignment: .leading, spacing: 5) {
-                if let lesson = presentation.currentLesson {
+                if compact, presentation.isComplete {
+                    HStack(spacing: 4) {
+                        Button {
+                            store.restartFoundationsGuide()
+                        } label: {
+                            HStack(spacing: 6) {
+                                Image(systemName: "checkmark.seal.fill")
+                                Text("Replay")
+                                Image(systemName: "arrow.counterclockwise")
+                            }
+                            .font(.system(
+                                size: GameTheme.hudCriticalTextSize,
+                                weight: .bold,
+                                design: .rounded
+                            ))
+                            .frame(maxWidth: .infinity, minHeight: GameTheme.controlMinimum)
+                            .contentShape(Rectangle())
+                        }
+                        .buttonStyle(.plain)
+                        .foregroundStyle(GameTheme.accent)
+                        .accessibilityLabel("Replay City Coach lessons")
+                        .accessibilityHint("Restarts all \(presentation.totalCount) guided lessons")
+
+                        Button { store.dismissFoundationsGuide() } label: {
+                            Image(systemName: "xmark")
+                                .frame(width: GameTheme.controlMinimum, height: GameTheme.controlMinimum)
+                        }
+                        .buttonStyle(.plain)
+                        .foregroundStyle(.secondary)
+                        .accessibilityLabel("Dismiss City Coach")
+                    }
+                } else if let lesson = presentation.currentLesson {
                     HStack(alignment: .top, spacing: 6) {
                         VStack(alignment: .leading, spacing: 5) {
                             HStack(spacing: 6) {
@@ -96,8 +129,10 @@ struct FoundationsGuideView: View {
                 }
             }
             .padding(.horizontal, 11)
-            .padding(.vertical, 9)
-            .frame(width: compact ? 238 : 258)
+            .padding(.vertical, compact && presentation.isComplete ? 3 : 9)
+            .frame(width: compact
+                ? (presentation.isComplete ? Self.compactCompletionWidth : 238)
+                : 258)
             .cityHUDSurface()
             .accessibilityElement(children: .contain)
             .accessibilityLabel(presentation.accessibilitySummary)

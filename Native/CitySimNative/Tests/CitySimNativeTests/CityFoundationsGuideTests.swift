@@ -268,6 +268,49 @@ final class CityFoundationsGuideTests: XCTestCase {
     }
 
     @MainActor
+    func testCompletedGuideCollapsesOnlyAtCompactSizeAndKeepsReplayMeaning() throws {
+        let defaults = try isolatedDefaults()
+        let progress = CityFoundationsGuideProgress(
+            completedLessonIDs: Set(CityFoundationsLessonID.allCases),
+            isDismissed: false
+        )
+        CityFoundationsGuidePersistence.write(progress, to: defaults)
+        let store = CityGameStore(
+            state: .newTrackedCity(seed: 7_022),
+            startsPaused: true,
+            playerDefaults: defaults
+        )
+        let presentation = try XCTUnwrap(store.foundationsGuidePresentation)
+
+        XCTAssertTrue(presentation.isComplete)
+        XCTAssertEqual(
+            presentation.accessibilitySummary,
+            "Foundations Guide complete. All 7 lessons finished."
+        )
+
+        let compactView = NSHostingView(
+            rootView: FoundationsGuideView(store: store, compact: true).fixedSize()
+        )
+        compactView.layoutSubtreeIfNeeded()
+        let compactSize = compactView.fittingSize
+
+        let regularView = NSHostingView(
+            rootView: FoundationsGuideView(store: store, compact: false).fixedSize()
+        )
+        regularView.layoutSubtreeIfNeeded()
+        let regularSize = regularView.fittingSize
+
+        XCTAssertEqual(
+            compactSize.width,
+            FoundationsGuideView.compactCompletionWidth,
+            accuracy: 1
+        )
+        XCTAssertLessThanOrEqual(compactSize.height, 52)
+        XCTAssertEqual(regularSize.width, 258, accuracy: 1)
+        XCTAssertGreaterThan(regularSize.height, compactSize.height + 48)
+    }
+
+    @MainActor
     func testFoundationsGuideRendersOverCurrentCityAtRegularWindowSize() throws {
         let defaults = try isolatedDefaults()
         let store = CityGameStore(

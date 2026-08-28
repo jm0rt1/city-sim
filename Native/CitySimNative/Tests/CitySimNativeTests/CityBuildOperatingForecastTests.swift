@@ -256,6 +256,10 @@ final class CityBuildOperatingForecastTests: XCTestCase {
         state.updateTile(at: road) {
             $0 = CityTile(coordinate: road, kind: .road)
         }
+        let connector = GridCoordinate(x: 9, y: 9)
+        state.updateTile(at: connector) {
+            $0 = CityTile(coordinate: connector, kind: .road)
+        }
         let developed = [
             GridCoordinate(x: 10, y: 9),
             GridCoordinate(x: 12, y: 10),
@@ -347,6 +351,18 @@ final class CityBuildOperatingForecastTests: XCTestCase {
                 occupancy: 180,
                 constructionProgress: 1
             )
+        }
+        for x in 2..<state.gridWidth {
+            let coordinate = GridCoordinate(x: x, y: 0)
+            state.updateTile(at: coordinate) {
+                $0 = CityTile(coordinate: coordinate, kind: .road)
+            }
+        }
+        for y in 1..<(state.gridHeight - 1) {
+            let coordinate = GridCoordinate(x: state.gridWidth - 1, y: y)
+            state.updateTile(at: coordinate) {
+                $0 = CityTile(coordinate: coordinate, kind: .road)
+            }
         }
 
         let targetTile = try XCTUnwrap(state.tile(at: target))
@@ -461,6 +477,12 @@ final class CityBuildOperatingForecastTests: XCTestCase {
                 )
             }
         }
+        for y in 2...9 {
+            let coordinate = GridCoordinate(x: 9, y: y)
+            state.updateTile(at: coordinate) {
+                $0 = CityTile(coordinate: coordinate, kind: .road)
+            }
+        }
 
         let capped = try XCTUnwrap(
             CityCivicServicePlacementForecast.make(
@@ -490,6 +512,48 @@ final class CityBuildOperatingForecastTests: XCTestCase {
                 in: state
             )
         )
+    }
+
+    func testDisconnectedStreetBlocksDevelopmentWithTruthfulRecovery() throws {
+        var state = CityGameState.newCity(seed: 42)
+        state.treasury = 100_000
+        for coordinate in state.tiles.map(\.coordinate) {
+            state.updateTile(at: coordinate) {
+                $0 = CityTile(coordinate: coordinate, kind: .empty)
+            }
+        }
+        let cityHall = GridCoordinate(x: 2, y: 2)
+        let cityRoad = GridCoordinate(x: 3, y: 2)
+        let isolatedRoad = GridCoordinate(x: 9, y: 10)
+        let target = GridCoordinate(x: 10, y: 10)
+        state.updateTile(at: cityHall) {
+            $0 = CityTile(coordinate: cityHall, kind: .cityHall, constructionProgress: 1)
+        }
+        state.updateTile(at: cityRoad) {
+            $0 = CityTile(coordinate: cityRoad, kind: .road, constructionProgress: 1)
+        }
+        state.updateTile(at: isolatedRoad) {
+            $0 = CityTile(coordinate: isolatedRoad, kind: .road, constructionProgress: 1)
+        }
+
+        let tile = try XCTUnwrap(state.tile(at: target))
+        let action = CityMapPrimaryActionPresentation.make(
+            interactionMode: .build(.commercial),
+            tile: tile,
+            state: state
+        )
+        XCTAssertFalse(action.isAvailable)
+        XCTAssertTrue(action.disclosure.contains(BuildRejection.cityRoadConnectionRequired.message))
+        let decision = try XCTUnwrap(action.buildDecision)
+        XCTAssertEqual(decision.availability, "Blocked")
+        XCTAssertEqual(decision.disabledReason, BuildRejection.cityRoadConnectionRequired.message)
+        XCTAssertEqual(decision.recovery?.title, "Connect street")
+        XCTAssertEqual(decision.recovery?.command, .buildRoad)
+        XCTAssertTrue(decision.recovery?.focusesMap == true)
+        XCTAssertTrue(decision.accessibilitySummary.contains("Connect street"))
+        XCTAssertTrue(decision.accessibilitySummary.contains("active city network"))
+        XCTAssertEqual(state.tile(at: target)?.kind, .empty)
+        XCTAssertEqual(state.treasury, 100_000)
     }
 
     func testDemolitionForecastNamesHousingJobsUtilitiesRoadsAndServices() throws {

@@ -44,6 +44,133 @@ final class CitySimulationTests: XCTestCase {
         XCTAssertEqual(rejection, .roadAccessRequired)
     }
 
+    func testDevelopmentRequiresRoadConnectedToCompletedCityPlace() {
+        var state = CityGameState.newCity(seed: 42)
+        state.treasury = 100_000
+        for coordinate in state.tiles.map(\.coordinate) {
+            state.updateTile(at: coordinate) {
+                $0 = CityTile(coordinate: coordinate, kind: .empty)
+            }
+        }
+
+        let cityHall = GridCoordinate(x: 2, y: 2)
+        let cityRoad = GridCoordinate(x: 3, y: 2)
+        let isolatedRoad = GridCoordinate(x: 9, y: 10)
+        let target = GridCoordinate(x: 10, y: 10)
+        state.updateTile(at: cityHall) {
+            $0 = CityTile(coordinate: cityHall, kind: .cityHall, constructionProgress: 1)
+        }
+        state.updateTile(at: cityRoad) {
+            $0 = CityTile(coordinate: cityRoad, kind: .road, constructionProgress: 1)
+        }
+        state.updateTile(at: isolatedRoad) {
+            $0 = CityTile(coordinate: isolatedRoad, kind: .road, constructionProgress: 1)
+        }
+
+        guard case .failure(let rejection) = CitySimulation.validateBuild(
+            .commercial,
+            at: target,
+            in: state
+        ) else {
+            return XCTFail("Expected the isolated street to block development")
+        }
+        XCTAssertEqual(rejection, .cityRoadConnectionRequired)
+        var commandState = state
+        let commandBaseline = commandState
+        XCTAssertEqual(
+            CitySimulationCommandExecutor.apply(
+                .build(kind: .commercial, coordinate: target),
+                to: &commandState
+            ),
+            .rejected(.cityRoadConnectionRequired)
+        )
+        XCTAssertEqual(commandState, commandBaseline)
+
+        for x in 4...9 {
+            let coordinate = GridCoordinate(x: x, y: 2)
+            state.updateTile(at: coordinate) {
+                $0 = CityTile(coordinate: coordinate, kind: .road, constructionProgress: 1)
+            }
+        }
+        for y in 3...10 {
+            let coordinate = GridCoordinate(x: 9, y: y)
+            state.updateTile(at: coordinate) {
+                $0 = CityTile(coordinate: coordinate, kind: .road, constructionProgress: 1)
+            }
+        }
+
+        guard case .success = CitySimulation.validateBuild(
+            .commercial,
+            at: target,
+            in: state
+        ) else {
+            return XCTFail("Expected the connected street to support development")
+        }
+    }
+
+    func testCompletedLegacyDistrictAnchorsItsOwnRoadComponent() {
+        var state = CityGameState.newCity(seed: 42)
+        state.treasury = 100_000
+        for coordinate in state.tiles.map(\.coordinate) {
+            state.updateTile(at: coordinate) {
+                $0 = CityTile(coordinate: coordinate, kind: .empty)
+            }
+        }
+        let cityHall = GridCoordinate(x: 2, y: 2)
+        let cityRoad = GridCoordinate(x: 3, y: 2)
+        let legacyHome = GridCoordinate(x: 9, y: 9)
+        let legacyRoad = GridCoordinate(x: 9, y: 10)
+        let target = GridCoordinate(x: 10, y: 10)
+        state.updateTile(at: cityHall) {
+            $0 = CityTile(coordinate: cityHall, kind: .cityHall, constructionProgress: 1)
+        }
+        state.updateTile(at: cityRoad) {
+            $0 = CityTile(coordinate: cityRoad, kind: .road, constructionProgress: 1)
+        }
+        state.updateTile(at: legacyHome) {
+            $0 = CityTile(
+                coordinate: legacyHome,
+                kind: .residential,
+                occupancy: 120,
+                constructionProgress: 1
+            )
+        }
+        state.updateTile(at: legacyRoad) {
+            $0 = CityTile(coordinate: legacyRoad, kind: .road, constructionProgress: 1)
+        }
+
+        guard case .success = CitySimulation.validateBuild(
+            .commercial,
+            at: target,
+            in: state
+        ) else {
+            return XCTFail("Expected a completed legacy district to keep its own road component active")
+        }
+    }
+
+    func testFirstDevelopmentCanBootstrapBesideRoadWhenCityHasNoCompletedPlace() {
+        var state = CityGameState.newCity(seed: 42)
+        state.treasury = 100_000
+        for coordinate in state.tiles.map(\.coordinate) {
+            state.updateTile(at: coordinate) {
+                $0 = CityTile(coordinate: coordinate, kind: .empty)
+            }
+        }
+        let road = GridCoordinate(x: 9, y: 10)
+        let target = GridCoordinate(x: 10, y: 10)
+        state.updateTile(at: road) {
+            $0 = CityTile(coordinate: road, kind: .road, constructionProgress: 1)
+        }
+
+        guard case .success = CitySimulation.validateBuild(
+            .residential,
+            at: target,
+            in: state
+        ) else {
+            return XCTFail("Expected the first city place to bootstrap beside a road")
+        }
+    }
+
     func testBuildingChargesTreasuryAndStartsConstruction() {
         var state = CityGameState.newCity()
         let coordinate = GridCoordinate(x: 4, y: 8)

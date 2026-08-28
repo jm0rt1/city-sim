@@ -1490,6 +1490,13 @@ private extension BuildRejection {
                 explanation: "Select one validated open block beside this parcel, then confirm Road construction.",
                 focusesMap: true
             )
+        case .cityRoadConnectionRequired:
+            CityDirectResponse(
+                title: "Connect street",
+                command: .buildRoad,
+                explanation: "Extend this isolated street until it reaches the active city network, then return to this parcel.",
+                focusesMap: true
+            )
         case .uniqueBuildingExists:
             CityDirectResponse(
                 title: "City overview",

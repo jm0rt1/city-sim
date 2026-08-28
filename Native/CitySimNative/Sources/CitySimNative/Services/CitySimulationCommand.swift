@@ -12,6 +12,7 @@ enum CitySimulationCommandRejection: String, Codable, Equatable, Sendable {
     case occupied
     case insufficientFunds
     case roadAccessRequired
+    case cityRoadConnectionRequired
     case uniqueBuildingExists
     case demolitionNotAllowed
     case simulationNotPlaying
@@ -59,6 +60,7 @@ enum CitySimulationCommandExecutor {
         case .occupied: .occupied
         case .insufficientFunds: .insufficientFunds
         case .roadAccessRequired: .roadAccessRequired
+        case .cityRoadConnectionRequired: .cityRoadConnectionRequired
         case .uniqueBuildingExists: .uniqueBuildingExists
         }
     }

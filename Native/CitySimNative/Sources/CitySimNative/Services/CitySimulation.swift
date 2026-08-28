@@ -1,7 +1,8 @@
 import Foundation
 
 enum BuildRejection: Error, Equatable {
-    case outsideMap, occupied, insufficientFunds, roadAccessRequired, uniqueBuildingExists
+    case outsideMap, occupied, insufficientFunds, roadAccessRequired
+    case cityRoadConnectionRequired, uniqueBuildingExists
 
     var message: String {
         switch self {
@@ -9,6 +10,8 @@ enum BuildRejection: Error, Equatable {
         case .occupied: "Demolish the existing structure before building here."
         case .insufficientFunds: "The city treasury cannot fund this project."
         case .roadAccessRequired: "This building needs direct road access."
+        case .cityRoadConnectionRequired:
+            "Connect this street to the active city network before placing development."
         case .uniqueBuildingExists: "Only one City Hall may be built."
         }
     }
@@ -98,13 +101,53 @@ enum CitySimulation {
         guard state.usesUnlimitedFunds || state.treasury >= kind.buildCost else {
             return .failure(.insufficientFunds)
         }
-        if kind.requiresRoad && !state.neighbors(of: coordinate).contains(where: { $0.kind == .road }) {
-            return .failure(.roadAccessRequired)
+        if kind.requiresRoad {
+            let adjacentRoads = state.neighbors(of: coordinate).filter { $0.kind == .road }
+            guard !adjacentRoads.isEmpty else { return .failure(.roadAccessRequired) }
+            guard roadNetworkConnectsToCity(
+                from: adjacentRoads.map(\.coordinate),
+                in: state
+            ) else {
+                return .failure(.cityRoadConnectionRequired)
+            }
         }
         if kind == .cityHall && state.tiles.contains(where: { $0.kind == .cityHall }) {
             return .failure(.uniqueBuildingExists)
         }
         return .success(())
+    }
+
+    static func roadNetworkConnectsToCity(
+        from startingRoads: [GridCoordinate],
+        in state: CityGameState
+    ) -> Bool {
+        let completedPlaces = Set(state.tiles.compactMap { tile -> GridCoordinate? in
+            guard tile.kind != .empty,
+                  tile.kind != .road,
+                  tile.constructionProgress >= 1 else { return nil }
+            return tile.coordinate
+        })
+        guard !completedPlaces.isEmpty else {
+            return true
+        }
+
+        var visited = Set(startingRoads)
+        var frontier = Array(visited)
+        var index = 0
+        while index < frontier.count {
+            let road = frontier[index]
+            index += 1
+            let neighbors = state.neighbors(of: road)
+            if neighbors.contains(where: { completedPlaces.contains($0.coordinate) }) {
+                return true
+            }
+            for neighbor in neighbors where neighbor.kind == .road {
+                if visited.insert(neighbor.coordinate).inserted {
+                    frontier.append(neighbor.coordinate)
+                }
+            }
+        }
+        return false
     }
 
     static func build(_ kind: BuildingKind, at coordinate: GridCoordinate, in state: inout CityGameState) -> Result<Void, BuildRejection> {

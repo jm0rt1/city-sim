@@ -3269,7 +3269,7 @@ final class CityCommandCatalogTests: XCTestCase {
     }
 
     @MainActor
-    func testBlockedTargetBecomesAvailableAfterOneAuthoritativeRoadChange() throws {
+    func testBlockedTargetBecomesAvailableAfterOneAuthoritativeConnectedRoadChange() throws {
         var state = CityGameState.newCity(seed: 42)
         let pair = try XCTUnwrap(state.tiles.lazy.compactMap { target -> (CityTile, CityTile)? in
             guard target.kind == .empty,
@@ -3278,7 +3278,17 @@ final class CityCommandCatalogTests: XCTestCase {
                     at: target.coordinate,
                     in: state
                   ),
-                  let road = state.neighbors(of: target.coordinate).first(where: { $0.kind == .empty })
+                  let road = state.neighbors(of: target.coordinate).first(where: { road in
+                      guard road.kind == .empty else { return false }
+                      let connectedRoads = state.neighbors(of: road.coordinate).filter {
+                          $0.kind == .road
+                      }
+                      return !connectedRoads.isEmpty
+                          && CitySimulation.roadNetworkConnectsToCity(
+                              from: connectedRoads.map(\.coordinate),
+                              in: state
+                          )
+                  })
             else { return nil }
             return (target, road)
         }.first)
@@ -3509,13 +3519,26 @@ final class CityCommandCatalogTests: XCTestCase {
             roadRecovery.state.treasury,
             roadRecoveryTreasury - BuildingKind.road.buildCost
         )
-        if case .failure(let rejection) = CitySimulation.validateBuild(
+        guard case .failure(.cityRoadConnectionRequired) = CitySimulation.validateBuild(
             .residential,
             at: roadless.coordinate,
             in: roadRecovery.state
-        ) {
-            XCTFail("One confirmed adjacent road must make the original parcel eligible, got \(rejection)")
+        ) else {
+            return XCTFail("A remote road should gain direct access without pretending to join the city")
         }
+        let networkDecision = try XCTUnwrap(
+            CityMapPrimaryActionPresentation.make(
+                interactionMode: .build(.residential),
+                tile: try XCTUnwrap(roadRecovery.state.tile(at: roadless.coordinate)),
+                state: roadRecovery.state
+            ).buildDecision
+        )
+        XCTAssertEqual(
+            networkDecision.disabledReason,
+            BuildRejection.cityRoadConnectionRequired.message
+        )
+        XCTAssertEqual(networkDecision.recovery?.title, "Connect street")
+        XCTAssertTrue(networkDecision.accessibilitySummary.contains("active city network"))
         XCTAssertTrue(roadRecovery.canUndo)
         XCTAssertTrue(roadRecovery.perform(.undo))
         XCTAssertEqual(roadRecovery.state, roadRecoveryState)

@@ -3432,6 +3432,25 @@ final class WorldRenderingTests: XCTestCase {
             }.count,
             2
         )
+        let blockActivityRoots = blockActivity.compactMap { placement in
+            block.childNode(
+                withName: "//world.activity.\(placement.domain.rawValue).local-activity."
+                    + "\(placement.sourceCoordinate.x).\(placement.sourceCoordinate.y)"
+            )
+        }
+        let cityActivityRoots = cityActivity.compactMap { placement in
+            city.childNode(
+                withName: "//world.activity.\(placement.domain.rawValue).local-activity."
+                    + "\(placement.sourceCoordinate.x).\(placement.sourceCoordinate.y)"
+            )
+        }
+        XCTAssertEqual(blockActivityRoots.count, 3)
+        XCTAssertEqual(cityActivityRoots.count, 2)
+        XCTAssertTrue(blockActivityRoots.allSatisfy { $0.xScale == 1 && $0.yScale == 1 })
+        XCTAssertTrue(cityActivityRoots.allSatisfy {
+            abs($0.xScale - 0.82) < 0.001 && abs($0.yScale - 0.82) < 0.001
+        })
+        XCTAssertTrue((blockActivityRoots + cityActivityRoots).allSatisfy { $0.alpha >= 0.80 })
 
         let cityByName = Dictionary(uniqueKeysWithValues: cityPlantings.compactMap {
             node in node.name.map { ($0, node.position) }

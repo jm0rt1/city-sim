@@ -557,11 +557,11 @@ final class AmbientLifeRenderer {
                 position: placement.position,
                 zPosition: style.depth(for: placement.surfaceCoordinate) + 58
             ) else { continue }
-            presence.alpha = 0.50 + CGFloat(placement.intensity) * 0.34
+            presence.alpha = 0.72 + CGFloat(placement.intensity) * 0.26
             let scale: CGFloat = switch detail {
-            case .city: 0.58
-            case .neighborhood: 0.64
-            case .block: 0.70
+            case .city: 0.82
+            case .neighborhood: 0.92
+            case .block: 1.00
             }
             presence.setScale(scale)
             // The accepted pedestrian descriptor's ground pivot sits 18

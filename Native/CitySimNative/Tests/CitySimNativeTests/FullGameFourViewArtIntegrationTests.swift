@@ -63,21 +63,35 @@ final class FullGameFourViewArtIntegrationTests: XCTestCase {
                         for: tile.coordinate,
                         kind: tile.kind
                     )
-                if tile.kind == .commercial && tile.level == 1 {
-                    let roads = RoadConnectionMask.resolving(at: tile.coordinate, in: state)
-                    let identity = try XCTUnwrap(
-                        CommercialGeneratedAssetIdentity(level: 1, adjacentRoads: roads),
-                        "\(mode) commercial lot \(tile.coordinate.id)"
-                    )
+                let roads = RoadConnectionMask.resolving(at: tile.coordinate, in: state)
+                let productionLevelOneIdentity: String? = if tile.level == 1 {
+                    switch tile.kind {
+                    case .commercial:
+                        CommercialGeneratedAssetIdentity(
+                            level: 1,
+                            adjacentRoads: roads
+                        )?.logicalID
+                    case .industrial:
+                        IndustrialGeneratedAssetIdentity(
+                            level: 1,
+                            adjacentRoads: roads
+                        )?.logicalID
+                    default:
+                        nil
+                    }
+                } else {
+                    nil
+                }
+                if let identity = productionLevelOneIdentity {
                     XCTAssertTrue(
-                        names.contains("lot.generated-v4.\(identity.logicalID).neighborhood")
-                            || names.contains("lot.generated-v4.\(identity.logicalID).block")
-                            || names.contains("lot.generated-v4.\(identity.logicalID).city"),
-                        "\(mode) lot \(tile.coordinate.id) must use the admitted Commercial L1 family"
+                        names.contains("lot.generated-v4.\(identity).neighborhood")
+                            || names.contains("lot.generated-v4.\(identity).block")
+                            || names.contains("lot.generated-v4.\(identity).city"),
+                        "\(mode) lot \(tile.coordinate.id) must use its admitted level-one family"
                     )
                     XCTAssertFalse(
                         names.contains { $0.hasPrefix("lot.four-view.") },
-                        "\(mode) Commercial L1 must not use compatibility art"
+                        "\(mode) production level-one art must not use compatibility sources"
                     )
                 } else {
                     let assetID = try XCTUnwrap(

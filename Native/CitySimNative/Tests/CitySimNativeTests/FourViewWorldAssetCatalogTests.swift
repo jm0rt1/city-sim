@@ -76,7 +76,6 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
             ("residential-high", .residential, 3),
             ("commercial-medium", .commercial, 2),
             ("commercial-high", .commercial, 3),
-            ("industrial-low", .industrial, 1),
             ("industrial-medium", .industrial, 2),
             ("industrial-high", .industrial, 3),
             ("city-hall", .cityHall, 1),
@@ -247,52 +246,39 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
     }
 
     @MainActor
-    func testLowIndustrialVariantsUseFixedTransformWithoutChangingGameplayIdentity() throws {
-        let style = WorldVisualStyle()
+    func testLowIndustrialUsesAdmittedGeneratedDirectionalFamily() throws {
         let catalog = FourViewWorldAssetCatalog()
         let renderer = LotRenderer(
-            style: style,
+            style: WorldVisualStyle(),
             assets: WorldAssetCatalog(),
             fourViewAssets: catalog
         )
-        for variant in 0..<2 {
-            let coordinate = try XCTUnwrap((0..<32).lazy
-                .flatMap { y in (0..<32).map { GridCoordinate(x: $0, y: y) } }
-                .first {
-                    WorldVisualSeed.variant(
-                        count: 3,
-                        for: $0,
-                        kind: .industrial
-                    ) == variant
-                })
+        let frontages: [RoadConnectionMask] = [.north, .east, .south, .west]
+        for (index, frontage) in frontages.enumerated() {
+            let identity = try XCTUnwrap(
+                IndustrialGeneratedAssetIdentity(level: 1, adjacentRoads: frontage)
+            )
             let tile = CityTile(
-                coordinate: coordinate,
+                coordinate: GridCoordinate(x: index + 7, y: index + 9),
                 kind: .industrial,
                 level: 1,
                 condition: 1,
                 constructionProgress: 1
             )
-            let assetID = try XCTUnwrap(catalog.assetID(for: tile, variant: variant))
+            XCTAssertNil(catalog.assetID(for: tile, variant: index))
             let lot = renderer.makeLot(
                 for: tile,
-                adjacentRoads: .south,
+                adjacentRoads: frontage,
                 detail: .block,
                 reducedMotion: true
             )
-            let marker = try XCTUnwrap(
-                lot.childNode(withName: "//lot.four-view.\(assetID).camNE")
+            let sprite = try XCTUnwrap(
+                lot.childNode(withName: "//lot.generated-v4.\(identity.logicalID).block")
+                    as? SKSpriteNode
             )
-            let sprite = try XCTUnwrap(marker.parent as? SKSpriteNode)
-            XCTAssertEqual(sprite.anchorPoint, FourViewWorldAssetCatalog.spriteAnchor)
-            XCTAssertEqual(sprite.xScale, style.tileWidth / 176, accuracy: 0.000_001)
-            XCTAssertEqual(sprite.yScale, style.tileWidth / 176, accuracy: 0.000_001)
-            XCTAssertEqual(sprite.zRotation, 0, accuracy: 0.000_001)
-            XCTAssertEqual(sprite.position, .zero)
-            XCTAssertEqual(sprite.colorBlendFactor, 0, accuracy: 0.000_001)
-            XCTAssertEqual(
-                sprite.name,
-                "lot.generated-v4.industrial_l01_v0_south.block"
-            )
+            XCTAssertEqual(sprite.name, "lot.generated-v4.\(identity.logicalID).block")
+            XCTAssertNil(lot.childNode(withName: "//lot.four-view.*"))
+            XCTAssertNil(lot.childNode(withName: "//lot.four-view.missing.*"))
         }
     }
 
@@ -519,14 +505,15 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
             $0.views.count == 4 && !$0.roles.contains("residential-quality")
                 && !($0.family == "residential" && $0.roles.contains("residential-low"))
                 && !($0.family == "commercial" && $0.roles.contains("commercial-low"))
+                && !($0.family == "industrial" && $0.roles.contains("industrial-low"))
         }
-        XCTAssertEqual(expansionAssets.count, 31)
+        XCTAssertEqual(expansionAssets.count, 28)
         XCTAssertEqual(
             Dictionary(grouping: expansionAssets, by: \.family).mapValues(\.count),
             [
                 "residential": 9,
                 "commercial": 6,
-                "industrial": 8,
+                "industrial": 5,
                 "civic-service": 4,
                 "utility": 2,
                 "park-landmark": 2,

@@ -56,6 +56,20 @@ final class CityBuildOperatingForecastTests: XCTestCase {
         XCTAssertTrue(pipeline.accessibilitySummary.contains("\(pipeline.heldCount) held"))
     }
 
+    @MainActor
+    func testCompactDemandOrderPutsTheStrongestLiveOpportunityBesideThePipeline() {
+        let demand = DemandLevels(residential: 0.59, commercial: 0.76, industrial: 0.70)
+
+        XCTAssertEqual(
+            InspectorView.demandKindOrder(compact: true, demand: demand),
+            [.commercial, .industrial, .residential]
+        )
+        XCTAssertEqual(
+            InspectorView.demandKindOrder(compact: false, demand: demand),
+            [.residential, .commercial, .industrial]
+        )
+    }
+
     func testDevelopmentPipelineSeparatesReadyHeldBuildingAndMatureSites() {
         var state = CityGameState.newCity(seed: 42)
         for coordinate in state.tiles.map(\.coordinate) {

@@ -647,47 +647,98 @@ struct InspectorView: View {
     private var demandContext: some View {
         let pipeline = CityDevelopmentPipeline.make(state: store.state)
         return LazyVGrid(columns: contextColumns, alignment: .leading, spacing: 8) {
-            demandCard(title: "Residential", kind: .residential, value: store.state.demand.residential, tint: .cyan)
-            demandCard(title: "Commercial", kind: .commercial, value: store.state.demand.commercial, tint: .purple)
-            demandCard(title: "Industrial", kind: .industrial, value: store.state.demand.industrial, tint: .orange)
-            ContextCard(title: "Growth pipeline", symbol: "checklist", tint: GameTheme.information) {
-                HStack(alignment: .firstTextBaseline, spacing: 8) {
-                    Text("\(pipeline.readyCount) READY")
-                        .font(.title3.bold().monospacedDigit())
-                    Spacer(minLength: 4)
-                    Text("\(pipeline.heldCount) HELD")
-                        .font(.caption.weight(.bold).monospacedDigit())
-                        .foregroundStyle(pipeline.heldCount > 0 ? GameTheme.warning : .secondary)
-                }
-                .accessibilityHidden(true)
-                if let response = pipeline.response {
-                    Button {
-                        StrategyCommandCenterView.perform(response, on: store)
-                    } label: {
-                        HStack(spacing: 4) {
-                            Text(pipeline.detail)
-                                .lineLimit(1)
-                                .minimumScaleFactor(0.78)
-                            Spacer(minLength: 2)
-                            Image(systemName: "arrow.right.circle.fill")
-                                .accessibilityHidden(true)
-                        }
+            if compact {
+                developmentPipelineCard(pipeline)
+            }
+            ForEach(demandKinds, id: \.rawValue) { kind in
+                demandCard(
+                    title: kind.title,
+                    kind: kind,
+                    value: demandValue(for: kind),
+                    tint: demandTint(for: kind)
+                )
+            }
+            if !compact {
+                developmentPipelineCard(pipeline)
+            }
+        }
+    }
+
+    private var demandKinds: [BuildingKind] {
+        Self.demandKindOrder(compact: compact, demand: store.state.demand)
+    }
+
+    static func demandKindOrder(compact: Bool, demand: DemandLevels) -> [BuildingKind] {
+        let kinds = [BuildingKind.residential, .commercial, .industrial]
+        guard compact else { return kinds }
+        return kinds.sorted { lhs, rhs in
+            let left = demandValue(for: lhs, demand: demand)
+            let right = demandValue(for: rhs, demand: demand)
+            if left != right { return left > right }
+            return lhs.rawValue < rhs.rawValue
+        }
+    }
+
+    private func demandValue(for kind: BuildingKind) -> Double {
+        Self.demandValue(for: kind, demand: store.state.demand)
+    }
+
+    private static func demandValue(for kind: BuildingKind, demand: DemandLevels) -> Double {
+        switch kind {
+        case .residential: demand.residential
+        case .commercial: demand.commercial
+        case .industrial: demand.industrial
+        default: 0
+        }
+    }
+
+    private func demandTint(for kind: BuildingKind) -> Color {
+        switch kind {
+        case .residential: .cyan
+        case .commercial: .purple
+        case .industrial: .orange
+        default: GameTheme.information
+        }
+    }
+
+    private func developmentPipelineCard(_ pipeline: CityDevelopmentPipeline) -> some View {
+        ContextCard(title: "Growth pipeline", symbol: "checklist", tint: GameTheme.information) {
+            HStack(alignment: .firstTextBaseline, spacing: 8) {
+                Text("\(pipeline.readyCount) READY")
+                    .font(.title3.bold().monospacedDigit())
+                Spacer(minLength: 4)
+                Text("\(pipeline.heldCount) HELD")
+                    .font(.caption.weight(.bold).monospacedDigit())
+                    .foregroundStyle(pipeline.heldCount > 0 ? GameTheme.warning : .secondary)
+            }
+            .accessibilityHidden(true)
+            if let response = pipeline.response {
+                Button {
+                    StrategyCommandCenterView.perform(response, on: store)
+                } label: {
+                    HStack(spacing: 4) {
+                        Text(pipeline.detail)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.78)
+                        Spacer(minLength: 2)
+                        Image(systemName: "arrow.right.circle.fill")
+                            .accessibilityHidden(true)
                     }
-                    .buttonStyle(.plain)
-                    .font(.caption2.weight(.semibold))
-                    .foregroundStyle(GameTheme.information)
-                    .frame(minHeight: 24)
-                    .help(response.explanation)
-                    .accessibilityLabel(response.title)
-                    .accessibilityValue(pipeline.accessibilitySummary)
-                    .accessibilityHint(response.explanation)
-                } else {
-                    Text(pipeline.detail)
-                        .font(.caption2)
-                        .foregroundStyle(.secondary)
-                        .lineLimit(2)
-                        .accessibilityLabel(pipeline.accessibilitySummary)
                 }
+                .buttonStyle(.plain)
+                .font(.caption2.weight(.semibold))
+                .foregroundStyle(GameTheme.information)
+                .frame(minHeight: 24)
+                .help(response.explanation)
+                .accessibilityLabel(response.title)
+                .accessibilityValue(pipeline.accessibilitySummary)
+                .accessibilityHint(response.explanation)
+            } else {
+                Text(pipeline.detail)
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(2)
+                    .accessibilityLabel(pipeline.accessibilitySummary)
             }
         }
     }

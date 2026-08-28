@@ -722,6 +722,15 @@ final class CityScene: SKScene {
         }
         guard let target = onActiveActionTargetCandidate?(coordinate) else { return }
         applyActiveActionTarget(target)
+        // A place project carries a material cost and an authoritative local
+        // operating forecast. The first pointer click therefore selects the
+        // parcel and publishes that decision to the command deck; the player
+        // commits it with Build here or Return. Roads retain direct placement
+        // because they are a continuous network tool, while bulldoze keeps its
+        // existing explicit-mode behavior.
+        if case .build(let kind) = renderedInteractionMode, kind != .road {
+            return
+        }
         onPrimaryAction?(target.coordinate)
     }
 

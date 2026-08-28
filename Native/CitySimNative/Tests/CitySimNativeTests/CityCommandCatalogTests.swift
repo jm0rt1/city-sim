@@ -3130,7 +3130,7 @@ final class CityCommandCatalogTests: XCTestCase {
     }
 
     @MainActor
-    func testPointerClickAndAXUseOneStoreCommandAndMutateValidTargetExactlyOnce() throws {
+    func testPointerPlaceSelectionPublishesForecastBeforeExplicitCommitAndAXCommitsOnce() throws {
         let authored = CityGameState.newCity(seed: 42)
         let valid = try XCTUnwrap(authored.tiles.first { tile in
             if case .success = CitySimulation.validateBuild(.commercial, at: tile.coordinate, in: authored) {
@@ -3162,10 +3162,20 @@ final class CityCommandCatalogTests: XCTestCase {
 
         pointerScene.activatePrimaryActionForTesting(at: valid.coordinate)
 
-        XCTAssertEqual(pointerDispatchCount, 1)
+        XCTAssertEqual(pointerDispatchCount, 0)
         XCTAssertEqual(pointerStore.selectedCoordinate, valid.coordinate)
+        XCTAssertEqual(pointerStore.state, authored)
+        XCTAssertEqual(pointerStore.state.treasury, pointerTreasury)
+        let pointerDecision = try XCTUnwrap(
+            pointerStore.activeMapActionTargetPresentation?.primaryAction.buildDecision
+        )
+        XCTAssertEqual(pointerDecision.buildingTitle, BuildingKind.commercial.title)
+        XCTAssertTrue(pointerDecision.operatingImpact.contains("→"))
+
+        XCTAssertTrue(pointerStore.performMapCommand(.mapPrimaryAction))
         XCTAssertEqual(pointerStore.state.tile(at: valid.coordinate)?.kind, .commercial)
         XCTAssertEqual(pointerStore.state.treasury, pointerTreasury - BuildingKind.commercial.buildCost)
+        XCTAssertTrue(pointerStore.canUndo)
 
         let accessibilityStore = CityGameStore(state: authored)
         accessibilityStore.selectTool(.commercial)

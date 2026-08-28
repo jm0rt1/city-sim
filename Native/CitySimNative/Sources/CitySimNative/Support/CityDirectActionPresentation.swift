@@ -845,11 +845,51 @@ struct CityBuildOpportunityInventory: Equatable, Sendable {
     // Build mode reveals useful choices without painting the whole road grid.
     static let outlineLimit = 6
 
+    enum DevelopmentStrength: String, CaseIterable, Hashable, Sendable {
+        case utility
+        case value
+        case cleanAir
+
+        var accessibilityTitle: String {
+            switch self {
+            case .utility: "Strongest utilities"
+            case .value: "Highest land value"
+            case .cleanAir: "Lowest pollution"
+            }
+        }
+    }
+
     let totalCount: Int
     let outlinedCoordinates: [GridCoordinate]
+    let developmentForecastByCoordinate: [GridCoordinate: CityDevelopmentSiteForecast]
+    let developmentStrengthsByCoordinate: [GridCoordinate: Set<DevelopmentStrength>]
+
+    init(
+        totalCount: Int,
+        outlinedCoordinates: [GridCoordinate],
+        developmentForecastByCoordinate: [GridCoordinate: CityDevelopmentSiteForecast] = [:],
+        developmentStrengthsByCoordinate: [GridCoordinate: Set<DevelopmentStrength>] = [:]
+    ) {
+        self.totalCount = totalCount
+        self.outlinedCoordinates = outlinedCoordinates
+        self.developmentForecastByCoordinate = developmentForecastByCoordinate.filter {
+            outlinedCoordinates.contains($0.key)
+        }
+        self.developmentStrengthsByCoordinate = developmentStrengthsByCoordinate.filter {
+            outlinedCoordinates.contains($0.key)
+        }
+    }
 
     var titleSuffix: String? {
         guard !outlinedCoordinates.isEmpty else { return nil }
+        let representedStrengths = developmentStrengthsByCoordinate.values.reduce(into: Set<DevelopmentStrength>()) {
+            $0.formUnion($1)
+        }
+        if !representedStrengths.isEmpty, outlinedCoordinates.count > 1 {
+            return representedStrengths.count == 1
+                ? "1 site strength"
+                : "\(representedStrengths.count) site strengths"
+        }
         if outlinedCoordinates.count == totalCount {
             return outlinedCoordinates.count == 1
                 ? "1 site"
@@ -871,12 +911,39 @@ struct CityBuildOpportunityInventory: Equatable, Sendable {
         guard totalCount > 0 else {
             return "No eligible sites are available under current funds and placement rules."
         }
+        let strengthSummary = developmentStrengthAccessibilitySummary.map { " \($0)" } ?? ""
         if outlinedCoordinates.count == totalCount {
             let noun = totalCount == 1 ? "site is" : "sites are"
-            return "\(totalCount) eligible \(noun) outlined on the map."
+            return "\(totalCount) eligible \(noun) outlined on the map.\(strengthSummary)"
         }
         let noun = outlinedCoordinates.count == 1 ? "site is" : "sites are"
-        return "\(outlinedCoordinates.count) nearby eligible \(noun) outlined on the map; \(totalCount) sites are eligible in total."
+        return "\(outlinedCoordinates.count) nearby eligible \(noun) outlined on the map; \(totalCount) sites are eligible in total.\(strengthSummary)"
+    }
+
+    var developmentStrengthAccessibilitySummary: String? {
+        let highlights = DevelopmentStrength.allCases.compactMap {
+            strength -> String? in
+            guard let coordinate = outlinedCoordinates.first(where: {
+                developmentStrengthsByCoordinate[$0]?.contains(strength) == true
+            }), let forecast = developmentForecastByCoordinate[coordinate] else {
+                return nil
+            }
+            let block = "Block \(coordinate.x + 1), \(coordinate.y + 1)"
+            let fact = switch strength {
+            case .utility:
+                "\(Int((forecast.utilityService * 100).rounded())) percent utility service"
+            case .value:
+                "land value \(Int((forecast.landValueIndex * 100).rounded()))"
+            case .cleanAir:
+                "pollution \(Int((forecast.pollutionExposure * 100).rounded()))"
+            }
+            return "\(strength.accessibilityTitle): \(block), \(fact)"
+        }
+        guard !highlights.isEmpty else {
+            return nil
+        }
+        return "Highlighted markers expose separate site strengths rather than one recommendation. "
+            + highlights.joined(separator: ". ") + "."
     }
 
     static func make(
@@ -920,9 +987,64 @@ struct CityBuildOpportunityInventory: Equatable, Sendable {
         }
         .prefix(max(0, outlineLimit))
 
+        let outlinedCoordinates = Array(outlined)
+        let forecasts = Dictionary(uniqueKeysWithValues: outlinedCoordinates.compactMap {
+            coordinate -> (GridCoordinate, CityDevelopmentSiteForecast)? in
+            guard let forecast = CityDevelopmentSiteForecast.make(
+                kind: kind,
+                at: coordinate,
+                in: state
+            ) else { return nil }
+            return (coordinate, forecast)
+        })
+        var strengths: [GridCoordinate: Set<DevelopmentStrength>] = [:]
+        if forecasts.count == outlinedCoordinates.count, outlinedCoordinates.count > 1 {
+            let utilityValues = forecasts.values.map(\.utilityService)
+            let valueValues = forecasts.values.map(\.landValueIndex)
+            let pollutionValues = forecasts.values.map(\.pollutionExposure)
+
+            func markLeader(
+                _ strength: DevelopmentStrength,
+                values: [Double],
+                prefers: (Double, Double) -> Bool
+            ) {
+                guard let minimum = values.min(), let maximum = values.max(),
+                      maximum - minimum > 0.005 else { return }
+                var leader: GridCoordinate?
+                for coordinate in outlinedCoordinates where forecasts[coordinate] != nil {
+                    guard let current = leader else {
+                        leader = coordinate
+                        continue
+                    }
+                    let candidate = forecasts[coordinate].map {
+                        switch strength {
+                        case .utility: $0.utilityService
+                        case .value: $0.landValueIndex
+                        case .cleanAir: $0.pollutionExposure
+                        }
+                    } ?? 0
+                    let incumbent = forecasts[current].map {
+                        switch strength {
+                        case .utility: $0.utilityService
+                        case .value: $0.landValueIndex
+                        case .cleanAir: $0.pollutionExposure
+                        }
+                    } ?? 0
+                    if prefers(candidate, incumbent) { leader = coordinate }
+                }
+                if let leader { strengths[leader, default: []].insert(strength) }
+            }
+
+            markLeader(.utility, values: utilityValues, prefers: >)
+            markLeader(.value, values: valueValues, prefers: >)
+            markLeader(.cleanAir, values: pollutionValues, prefers: <)
+        }
+
         return Self(
             totalCount: eligible.count,
-            outlinedCoordinates: Array(outlined)
+            outlinedCoordinates: outlinedCoordinates,
+            developmentForecastByCoordinate: forecasts,
+            developmentStrengthsByCoordinate: strengths
         )
     }
 }

@@ -2863,13 +2863,20 @@ final class CityCommandCatalogTests: XCTestCase {
 
         let action = try XCTUnwrap(mapView.accessibilityCustomActions()?.first)
         XCTAssertTrue(action.handler?() == true)
-        let expected = GridCoordinate(x: 4, y: 8)
+        let expected = try XCTUnwrap(
+            CityBuildOpportunityInventory.make(
+                kind: .commercial,
+                in: store.state
+            )?.outlinedCoordinates.first
+        )
         XCTAssertEqual(store.selectedCoordinate, expected)
         XCTAssertEqual(store.selectedTile?.kind, .empty)
         XCTAssertTrue(store.state.neighbors(of: expected).contains { $0.kind == .road })
 
         let accessibilityValue = try XCTUnwrap(mapView.accessibilityValue() as? String)
-        XCTAssertTrue(accessibilityValue.contains("block 5, 9"))
+        XCTAssertTrue(
+            accessibilityValue.contains("block \(expected.x + 1), \(expected.y + 1)")
+        )
         XCTAssertTrue(store.performMapCommand(.mapPrimaryAction))
         XCTAssertEqual(store.state.tile(at: expected)?.kind, .commercial)
     }

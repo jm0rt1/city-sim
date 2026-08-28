@@ -380,6 +380,13 @@ struct CitySceneView: NSViewRepresentable {
                }) {
                 return extensionTarget.coordinate
             }
+            if kind != .road,
+               let visibleOpportunity = CityBuildOpportunityInventory.make(
+                   kind: kind,
+                   in: state
+               )?.outlinedCoordinates.first {
+                return visibleOpportunity
+            }
             return candidates.first?.coordinate
         }
 

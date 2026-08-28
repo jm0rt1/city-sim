@@ -4970,12 +4970,28 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertEqual(scene.buildOpportunityCoordinatesForTesting, expected)
         XCTAssertEqual(
             scene.interactionNamesForTesting.filter {
-                $0.hasPrefix("interaction.build-opportunity.")
-                    && !$0.hasSuffix(".footprint")
-                    && !$0.hasSuffix(".brackets")
+                let components = $0.split(separator: ".")
+                return components.count == 4
+                    && components[0] == "interaction"
+                    && components[1] == "build-opportunity"
+                    && Int(components[2]) != nil
+                    && Int(components[3]) != nil
             }.count,
             expected.count
         )
+        let strengths = inventory?.developmentStrengthsByCoordinate ?? [:]
+        XCTAssertFalse(strengths.isEmpty)
+        for strength in CityBuildOpportunityInventory.DevelopmentStrength.allCases {
+            let siteCount = strengths.values.filter { $0.contains(strength) }.count
+            XCTAssertEqual(siteCount, 1)
+            XCTAssertEqual(
+                scene.interactionNamesForTesting.filter {
+                    $0 == "interaction.build-opportunity.strength.\(strength.rawValue)"
+                }.count,
+                siteCount,
+                "Every \(strength.rawValue) leader publishes one distinct marker"
+            )
+        }
         XCTAssertTrue(descendantLabels(in: scene).isEmpty)
 
         if let selected = expected.first,

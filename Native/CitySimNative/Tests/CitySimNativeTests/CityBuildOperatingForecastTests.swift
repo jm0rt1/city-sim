@@ -398,6 +398,66 @@ final class CityBuildOperatingForecastTests: XCTestCase {
         XCTAssertEqual(state.treasury, 100_000)
     }
 
+    func testNearbyDevelopmentOpportunitiesPublishTruthfulTradeoffLeaders() throws {
+        let state = CityGameState.newCity(seed: 42)
+        let inventory = try XCTUnwrap(
+            CityBuildOpportunityInventory.make(kind: .commercial, in: state)
+        )
+
+        XCTAssertEqual(
+            inventory.developmentForecastByCoordinate.count,
+            inventory.outlinedCoordinates.count
+        )
+        XCTAssertFalse(inventory.outlinedCoordinates.isEmpty)
+        XCTAssertEqual(inventory.titleSuffix, "3 site strengths")
+        for strength in CityBuildOpportunityInventory.DevelopmentStrength.allCases {
+            let leaders = inventory.outlinedCoordinates.filter {
+                inventory.developmentStrengthsByCoordinate[$0]?.contains(strength) == true
+            }
+            XCTAssertEqual(leaders.count, 1)
+            let leader = try XCTUnwrap(leaders.first)
+            let leaderForecast = try XCTUnwrap(
+                inventory.developmentForecastByCoordinate[leader]
+            )
+            let forecasts = Array(inventory.developmentForecastByCoordinate.values)
+            switch strength {
+            case .utility:
+                XCTAssertEqual(
+                    leaderForecast.utilityService,
+                    try XCTUnwrap(forecasts.map(\.utilityService).max()),
+                    accuracy: 0.000_001
+                )
+            case .value:
+                XCTAssertEqual(
+                    leaderForecast.landValueIndex,
+                    try XCTUnwrap(forecasts.map(\.landValueIndex).max()),
+                    accuracy: 0.000_001
+                )
+            case .cleanAir:
+                XCTAssertEqual(
+                    leaderForecast.pollutionExposure,
+                    try XCTUnwrap(forecasts.map(\.pollutionExposure).min()),
+                    accuracy: 0.000_001
+                )
+            }
+        }
+        XCTAssertTrue(
+            inventory.accessibilitySummary.contains(
+                "separate site strengths rather than one recommendation"
+            )
+        )
+        XCTAssertTrue(inventory.accessibilitySummary.contains("Strongest utilities"))
+        XCTAssertTrue(inventory.accessibilitySummary.contains("Highest land value"))
+        XCTAssertTrue(inventory.accessibilitySummary.contains("Lowest pollution"))
+
+        let park = try XCTUnwrap(
+            CityBuildOpportunityInventory.make(kind: .park, in: state)
+        )
+        XCTAssertTrue(park.developmentForecastByCoordinate.isEmpty)
+        XCTAssertTrue(park.developmentStrengthsByCoordinate.isEmpty)
+        XCTAssertNil(park.developmentStrengthAccessibilitySummary)
+    }
+
     func testSelectedLocationConditionsCarryPlacementFactorsIntoPostBuildDetails() throws {
         let state = CityGameState.newCity(seed: 42)
         let tile = try XCTUnwrap(state.tiles.first {

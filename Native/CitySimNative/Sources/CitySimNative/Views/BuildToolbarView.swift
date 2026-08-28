@@ -677,6 +677,7 @@ struct BuildToolbarView: View {
             .accessibilityIdentifier("hud.selected.context")
         } else {
             targetBeaconLabel(presentation)
+                .help(presentation.accessibilityValue)
                 .accessibilityElement(children: .ignore)
                 .accessibilityLabel(presentation.accessibilityLabel)
                 .accessibilityValue(presentation.accessibilityValue)

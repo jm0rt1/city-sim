@@ -2181,10 +2181,11 @@ final class CityScene: SKScene {
             return
         }
 
-        let coordinates = CityBuildOpportunityInventory.make(
+        let inventory = CityBuildOpportunityInventory.make(
             kind: kind,
             in: state
-        )?.outlinedCoordinates ?? []
+        )
+        let coordinates = inventory?.outlinedCoordinates ?? []
         buildOpportunityCoordinatesForTesting = coordinates
         guard !coordinates.isEmpty else {
             buildOpportunityLayer.isHidden = true
@@ -2206,6 +2207,9 @@ final class CityScene: SKScene {
             root.name = "interaction.build-opportunity.\(coordinate.x).\(coordinate.y)"
             root.position = style.isoPosition(coordinate)
 
+            let strengths = inventory?.developmentStrengthsByCoordinate[coordinate] ?? []
+            let isHighlighted = !strengths.isEmpty
+
             let footprint = SKShapeNode(
                 path: style.diamondPath(
                     width: tileWidth * 0.74,
@@ -2213,20 +2217,81 @@ final class CityScene: SKScene {
                 )
             )
             footprint.name = "interaction.build-opportunity.footprint"
-            footprint.fillColor = color.withAlphaComponent(0.035)
+            footprint.fillColor = color.withAlphaComponent(isHighlighted ? 0.055 : 0.025)
             footprint.strokeColor = .clear
             root.addChild(footprint)
 
             let brackets = SKShapeNode(path: buildOpportunityBracketPath())
             brackets.name = "interaction.build-opportunity.brackets"
             brackets.fillColor = .clear
-            brackets.strokeColor = color.withAlphaComponent(0.78)
-            brackets.lineWidth = 1.5
+            brackets.strokeColor = color.withAlphaComponent(isHighlighted ? 0.92 : 0.64)
+            brackets.lineWidth = isHighlighted ? 1.8 : 1.35
             brackets.lineCap = .round
             brackets.lineJoin = .round
             root.addChild(brackets)
 
+            if isHighlighted {
+                addBuildOpportunityStrengths(strengths, to: root)
+            }
+
             buildOpportunityLayer.addChild(root)
+        }
+    }
+
+    private func addBuildOpportunityStrengths(
+        _ strengths: Set<CityBuildOpportunityInventory.DevelopmentStrength>,
+        to root: SKNode
+    ) {
+        let ordered = CityBuildOpportunityInventory.DevelopmentStrength.allCases.filter {
+            strengths.contains($0)
+        }
+        for (index, strength) in ordered.enumerated() {
+            let center = CGFloat(index) - CGFloat(ordered.count - 1) / 2
+            let position = CGPoint(x: center * 7.0, y: 0)
+            let marker: SKShapeNode
+            switch strength {
+            case .utility:
+                let path = CGMutablePath()
+                path.addEllipse(in: CGRect(x: -3.7, y: -1.7, width: 3.4, height: 3.4))
+                path.addEllipse(in: CGRect(x: 0.3, y: -1.7, width: 3.4, height: 3.4))
+                marker = SKShapeNode(path: path)
+                marker.fillColor = NSColor(
+                    calibratedRed: 0.38,
+                    green: 0.72,
+                    blue: 0.92,
+                    alpha: 0.92
+                )
+            case .value:
+                let path = CGMutablePath()
+                path.move(to: CGPoint(x: 0, y: 2.8))
+                path.addLine(to: CGPoint(x: 2.8, y: 0))
+                path.addLine(to: CGPoint(x: 0, y: -2.8))
+                path.addLine(to: CGPoint(x: -2.8, y: 0))
+                path.closeSubpath()
+                marker = SKShapeNode(path: path)
+                marker.fillColor = NSColor(
+                    calibratedRed: 0.96,
+                    green: 0.73,
+                    blue: 0.30,
+                    alpha: 0.94
+                )
+            case .cleanAir:
+                marker = SKShapeNode(circleOfRadius: 2.5)
+                marker.fillColor = NSColor.clear
+                marker.strokeColor = NSColor(
+                    calibratedRed: 0.45,
+                    green: 0.84,
+                    blue: 0.50,
+                    alpha: 0.96
+                )
+            }
+            marker.name = "interaction.build-opportunity.strength.\(strength.rawValue)"
+            marker.position = position
+            if strength != .cleanAir {
+                marker.strokeColor = marker.fillColor.withAlphaComponent(0.96)
+            }
+            marker.lineWidth = 1.2
+            root.addChild(marker)
         }
     }
 

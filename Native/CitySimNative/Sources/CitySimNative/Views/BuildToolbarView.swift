@@ -402,6 +402,29 @@ struct BuildToolbarView: View {
                 .help(recovery.explanation)
                 .accessibilityHint(recovery.explanation)
                 .accessibilityIdentifier("hud.build.recovery")
+            } else if let routePlan {
+                Button {
+                    store.buildRoadConnectionPlan()
+                } label: {
+                    HStack(spacing: 5) {
+                        Image(systemName: "point.topleft.down.curvedto.point.bottomright.up.fill")
+                        Text("Build route")
+                    }
+                        .font(.caption.weight(.bold))
+                        .padding(.horizontal, compact ? 7 : 10)
+                        .frame(
+                            minWidth: compact ? 86 : 104,
+                            minHeight: GameTheme.controlMinimum
+                        )
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.borderedProminent)
+                .tint(GameTheme.accent)
+                .disabled(!store.canBuildRoadConnectionPlan)
+                .help(routePlan.buildActionHint)
+                .accessibilityLabel("Build planned street route")
+                .accessibilityHint(routePlan.buildActionHint)
+                .accessibilityIdentifier("hud.build.route")
             } else {
                 Button {
                     store.performMapCommand(.mapPrimaryAction)

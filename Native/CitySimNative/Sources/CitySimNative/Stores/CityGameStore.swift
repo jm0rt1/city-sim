@@ -13,6 +13,12 @@ struct CityRoadConnectionRecovery: Equatable, Sendable {
     let blockedCoordinate: GridCoordinate
 }
 
+private struct CityRoadConnectionUndoContext {
+    let recovery: CityRoadConnectionRecovery
+    let route: [GridCoordinate]
+    let selectedCoordinate: GridCoordinate?
+}
+
 @MainActor
 final class CityGameStore: ObservableObject {
     static let autosaveIntervalTicks = 240
@@ -67,6 +73,7 @@ final class CityGameStore: ObservableObject {
     private let capturesScenarioCheckpoints: Bool
     private let revealSupportReport: (URL) -> Void
     private var undoStates: [CityGameState] = []
+    private var roadConnectionUndoContexts: [CityRoadConnectionUndoContext?] = []
     private var feedbackDismissal: DispatchWorkItem?
     private var lastNonPausedSpeed: SimulationSpeed = .normal
     private var speedBeforeSessionReplacementConfirmation: SimulationSpeed?
@@ -547,6 +554,21 @@ final class CityGameStore: ObservableObject {
         )
     }
 
+    var canBuildRoadConnectionPlan: Bool {
+        guard commandPolicy == .enabled,
+              state.status == .playing,
+              !isPhotoModeEnabled,
+              let recovery = roadConnectionRecovery,
+              !roadConnectionRecoveryRoute.isEmpty,
+              interactionMode == .build(.road) else {
+            return false
+        }
+        return builtRoadConnectionCandidate(
+            for: recovery,
+            route: roadConnectionRecoveryRoute
+        ) != nil
+    }
+
     @discardableResult
     func acceptPointerMapActionCandidate(
         _ coordinate: GridCoordinate
@@ -866,6 +888,94 @@ final class CityGameStore: ObservableObject {
             )
         }
         return true
+    }
+
+    @discardableResult
+    func buildRoadConnectionPlan() -> Bool {
+        guard commandPolicy == .enabled,
+              state.status == .playing,
+              !isPhotoModeEnabled,
+              interactionMode == .build(.road),
+              let recovery = roadConnectionRecovery,
+              !roadConnectionRecoveryRoute.isEmpty else {
+            return false
+        }
+
+        let route = roadConnectionRecoveryRoute
+        let previousState = state
+        guard let candidate = builtRoadConnectionCandidate(
+            for: recovery,
+            route: route
+        ) else {
+            let gap = roadConnectionPlanPresentation?.fundingGap ?? 0
+            let reason = gap > 0
+                ? "Route needs \(gap.currencyText) more"
+                : "Planned route changed"
+            showFeedback(
+                "\(reason) · no street construction was committed",
+                tone: .caution,
+                autoDismissAfter: nil
+            )
+            soundFeedback.play(.actionRejected)
+            return false
+        }
+
+        state = candidate
+        recordUndo(
+            previousState,
+            roadConnectionContext: CityRoadConnectionUndoContext(
+                recovery: recovery,
+                route: route,
+                selectedCoordinate: selectedCoordinate
+            )
+        )
+        completeFoundationsLesson(for: .road)
+        let destinationFundingGap = candidate.usesUnlimitedFunds
+            ? 0
+            : max(0, recovery.blockedKind.buildCost - candidate.treasury)
+        let feedback = if destinationFundingGap == 0 {
+            "\(route.count)-block street route built · "
+                + "\(recovery.blockedKind.title) is ready at block "
+                + "\(recovery.blockedCoordinate.x + 1), \(recovery.blockedCoordinate.y + 1)"
+        } else {
+            "\(route.count)-block street route built · "
+                + "\(recovery.blockedKind.title) needs \(destinationFundingGap.currencyText) more"
+        }
+        restoreRoadConnectionRecovery(
+            recovery,
+            feedback: feedback,
+            tone: .positive
+        )
+        soundFeedback.play(.constructionApproved)
+        return true
+    }
+
+    private func builtRoadConnectionCandidate(
+        for recovery: CityRoadConnectionRecovery,
+        route: [GridCoordinate]
+    ) -> CityGameState? {
+        var candidate = state
+        for coordinate in route {
+            guard case .success = CitySimulation.build(.road, at: coordinate, in: &candidate) else {
+                return nil
+            }
+        }
+
+        var connectivityCandidate = candidate
+        if !connectivityCandidate.usesUnlimitedFunds {
+            connectivityCandidate.treasury = max(
+                connectivityCandidate.treasury,
+                recovery.blockedKind.buildCost
+            )
+        }
+        guard case .success = CitySimulation.validateBuild(
+            recovery.blockedKind,
+            at: recovery.blockedCoordinate,
+            in: connectivityCandidate
+        ) else {
+            return nil
+        }
+        return candidate
     }
 
     private func restoreRoadConnectionRecovery(
@@ -1813,6 +1923,7 @@ final class CityGameStore: ObservableObject {
         showCityHandbook = false
         isCityFocusModeEnabled = false
         undoStates.removeAll()
+        roadConnectionUndoContexts.removeAll()
         canUndo = false
         requestMapFocus()
         switch configuration.experience {
@@ -2258,6 +2369,7 @@ final class CityGameStore: ObservableObject {
         showCityHandbook = false
         isCityFocusModeEnabled = false
         undoStates.removeAll()
+        roadConnectionUndoContexts.removeAll()
         canUndo = false
         let scenario = CityAuthoredScenarioEvaluation.make(state: state)
         let brief = scenario == nil ? CityResumeBriefPresentation.make(analytics: analytics) : nil
@@ -2321,15 +2433,38 @@ final class CityGameStore: ObservableObject {
             showFeedback("Nothing to undo", tone: .caution)
             return
         }
+        let roadConnectionContext = roadConnectionUndoContexts.isEmpty
+            ? nil
+            : roadConnectionUndoContexts.removeLast()
         let currentCityName = state.cityName
         state = previous
         state.cityName = currentCityName
         cityNameDraft = currentCityName
-        clearRoadConnectionRecovery()
-        selectedCoordinate = nil
-        showInspector = false
+        if let roadConnectionContext {
+            roadConnectionRecovery = roadConnectionContext.recovery
+            roadConnectionRecoveryRoute = roadConnectionContext.route
+            selectedTool = .road
+            selectedBuildCategory = .roads
+            interactionMode = .build(.road)
+            selectedCoordinate = roadConnectionContext.selectedCoordinate
+            hudContextScope = .selection
+            showInspector = false
+            requestMapFocus()
+        } else {
+            clearRoadConnectionRecovery()
+            selectedCoordinate = nil
+            showInspector = false
+        }
         canUndo = !undoStates.isEmpty
-        showFeedback("Last construction action undone", tone: .positive)
+        if let roadConnectionContext {
+            showFeedback(
+                "Street route undone · \(roadConnectionContext.route.count) blocks restored to plan",
+                tone: .positive,
+                autoDismissAfter: nil
+            )
+        } else {
+            showFeedback("Last construction action undone", tone: .positive)
+        }
         soundFeedback.play(.actionReversed)
     }
 
@@ -2371,9 +2506,16 @@ final class CityGameStore: ObservableObject {
         }
     }
 
-    private func recordUndo(_ snapshot: CityGameState) {
+    private func recordUndo(
+        _ snapshot: CityGameState,
+        roadConnectionContext: CityRoadConnectionUndoContext? = nil
+    ) {
         undoStates.append(snapshot)
-        if undoStates.count > 20 { undoStates.removeFirst() }
+        roadConnectionUndoContexts.append(roadConnectionContext)
+        if undoStates.count > 20 {
+            undoStates.removeFirst()
+            roadConnectionUndoContexts.removeFirst()
+        }
         canUndo = true
     }
 

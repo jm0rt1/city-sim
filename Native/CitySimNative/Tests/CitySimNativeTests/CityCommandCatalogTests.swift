@@ -3829,6 +3829,182 @@ final class CityCommandCatalogTests: XCTestCase {
     }
 
     @MainActor
+    func testCityStreetRecoveryBuildsTheWholePlannedRouteAsOneUndoableAction() throws {
+        var authored = CityGameState.newCity(seed: 42)
+        authored.treasury = 100_000
+        for coordinate in authored.tiles.map(\.coordinate) {
+            authored.updateTile(at: coordinate) {
+                $0 = CityTile(coordinate: coordinate, kind: .empty)
+            }
+        }
+
+        let cityHall = GridCoordinate(x: 2, y: 2)
+        let connectedRoad = GridCoordinate(x: 3, y: 2)
+        let isolatedRoad = GridCoordinate(x: 8, y: 2)
+        let blockedCoordinate = GridCoordinate(x: 8, y: 3)
+        authored.updateTile(at: cityHall) {
+            $0 = CityTile(coordinate: cityHall, kind: .cityHall, constructionProgress: 1)
+        }
+        authored.updateTile(at: connectedRoad) {
+            $0 = CityTile(coordinate: connectedRoad, kind: .road, constructionProgress: 1)
+        }
+        authored.updateTile(at: isolatedRoad) {
+            $0 = CityTile(coordinate: isolatedRoad, kind: .road, constructionProgress: 1)
+        }
+
+        let store = CityGameStore(state: authored)
+        store.selectTool(.commercial)
+        store.selectedCoordinate = blockedCoordinate
+        store.clearFeedback()
+        let recovery = try XCTUnwrap(
+            store.activeMapActionTargetPresentation?.primaryAction.buildDecision?.recovery
+        )
+        XCTAssertTrue(store.performBuildRecovery(recovery))
+
+        let route = store.roadConnectionRecoveryRoute
+        let selectedRoad = store.selectedCoordinate
+        XCTAssertEqual(route.count, 4)
+        XCTAssertTrue(store.canBuildRoadConnectionPlan)
+        XCTAssertEqual(
+            store.roadConnectionPlanPresentation?.buildActionHint,
+            "Builds all 4 blocks for $480 as one reversible construction action."
+        )
+
+        XCTAssertTrue(store.buildRoadConnectionPlan())
+        XCTAssertTrue(route.allSatisfy { store.state.tile(at: $0)?.kind == .road })
+        XCTAssertEqual(
+            store.state.treasury,
+            authored.treasury - Double(route.count) * BuildingKind.road.buildCost
+        )
+        XCTAssertNil(store.roadConnectionRecovery)
+        XCTAssertTrue(store.roadConnectionRecoveryRoute.isEmpty)
+        XCTAssertEqual(store.interactionMode, .build(.commercial))
+        XCTAssertEqual(store.selectedTool, .commercial)
+        XCTAssertEqual(store.selectedCoordinate, blockedCoordinate)
+        XCTAssertTrue(store.activeMapActionTargetPresentation?.primaryAction.isAvailable == true)
+        XCTAssertEqual(
+            store.lastFeedback,
+            "4-block street route built · Commercial is ready at block 9, 4"
+        )
+        XCTAssertTrue(store.canUndo)
+
+        XCTAssertTrue(store.perform(.undo))
+        XCTAssertEqual(store.state, authored)
+        XCTAssertEqual(
+            store.roadConnectionRecovery,
+            CityRoadConnectionRecovery(
+                blockedKind: .commercial,
+                blockedCoordinate: blockedCoordinate
+            )
+        )
+        XCTAssertEqual(store.roadConnectionRecoveryRoute, route)
+        XCTAssertEqual(store.interactionMode, .build(.road))
+        XCTAssertEqual(store.selectedTool, .road)
+        XCTAssertEqual(store.selectedCoordinate, selectedRoad)
+        XCTAssertEqual(store.roadConnectionPlanPresentation?.remainingBlocks, 4)
+        XCTAssertEqual(store.lastFeedback, "Street route undone · 4 blocks restored to plan")
+        XCTAssertFalse(store.canUndo)
+    }
+
+    @MainActor
+    func testCityStreetRecoveryRejectsAnUnfundedWholeRouteWithoutPartialConstruction() throws {
+        var authored = CityGameState.newCity(seed: 42)
+        authored.treasury = 100_000
+        for coordinate in authored.tiles.map(\.coordinate) {
+            authored.updateTile(at: coordinate) {
+                $0 = CityTile(coordinate: coordinate, kind: .empty)
+            }
+        }
+
+        let cityHall = GridCoordinate(x: 2, y: 2)
+        let connectedRoad = GridCoordinate(x: 3, y: 2)
+        let isolatedRoad = GridCoordinate(x: 8, y: 2)
+        let blockedCoordinate = GridCoordinate(x: 8, y: 3)
+        authored.updateTile(at: cityHall) {
+            $0 = CityTile(coordinate: cityHall, kind: .cityHall, constructionProgress: 1)
+        }
+        authored.updateTile(at: connectedRoad) {
+            $0 = CityTile(coordinate: connectedRoad, kind: .road, constructionProgress: 1)
+        }
+        authored.updateTile(at: isolatedRoad) {
+            $0 = CityTile(coordinate: isolatedRoad, kind: .road, constructionProgress: 1)
+        }
+
+        let store = CityGameStore(state: authored)
+        store.selectTool(.commercial)
+        store.selectedCoordinate = blockedCoordinate
+        let recovery = try XCTUnwrap(
+            store.activeMapActionTargetPresentation?.primaryAction.buildDecision?.recovery
+        )
+        XCTAssertTrue(store.performBuildRecovery(recovery))
+        store.state.treasury = 3 * BuildingKind.road.buildCost
+        store.clearFeedback()
+        let stateBeforeAttempt = store.state
+        let routeBeforeAttempt = store.roadConnectionRecoveryRoute
+
+        XCTAssertFalse(store.canBuildRoadConnectionPlan)
+        XCTAssertEqual(store.roadConnectionPlanPresentation?.fundingGap, BuildingKind.road.buildCost)
+        XCTAssertEqual(
+            store.roadConnectionPlanPresentation?.buildActionHint,
+            "Needs $120 more to build all 4 blocks without a partial route."
+        )
+        XCTAssertFalse(store.buildRoadConnectionPlan())
+        XCTAssertEqual(store.state, stateBeforeAttempt)
+        XCTAssertEqual(store.roadConnectionRecoveryRoute, routeBeforeAttempt)
+        XCTAssertTrue(routeBeforeAttempt.allSatisfy {
+            store.state.tile(at: $0)?.kind == .empty
+        })
+        XCTAssertEqual(store.lastFeedback, "Route needs $120 more · no street construction was committed")
+        XCTAssertFalse(store.canUndo)
+    }
+
+    @MainActor
+    func testCityStreetRecoveryBuildsAFundedRouteWithoutPretendingTheDestinationIsFunded() throws {
+        var authored = CityGameState.newCity(seed: 42)
+        authored.treasury = 100_000
+        for coordinate in authored.tiles.map(\.coordinate) {
+            authored.updateTile(at: coordinate) {
+                $0 = CityTile(coordinate: coordinate, kind: .empty)
+            }
+        }
+
+        let cityHall = GridCoordinate(x: 2, y: 2)
+        let connectedRoad = GridCoordinate(x: 3, y: 2)
+        let isolatedRoad = GridCoordinate(x: 8, y: 2)
+        let blockedCoordinate = GridCoordinate(x: 8, y: 3)
+        authored.updateTile(at: cityHall) {
+            $0 = CityTile(coordinate: cityHall, kind: .cityHall, constructionProgress: 1)
+        }
+        authored.updateTile(at: connectedRoad) {
+            $0 = CityTile(coordinate: connectedRoad, kind: .road, constructionProgress: 1)
+        }
+        authored.updateTile(at: isolatedRoad) {
+            $0 = CityTile(coordinate: isolatedRoad, kind: .road, constructionProgress: 1)
+        }
+
+        let store = CityGameStore(state: authored)
+        store.selectTool(.commercial)
+        store.selectedCoordinate = blockedCoordinate
+        let recovery = try XCTUnwrap(
+            store.activeMapActionTargetPresentation?.primaryAction.buildDecision?.recovery
+        )
+        XCTAssertTrue(store.performBuildRecovery(recovery))
+        store.state.treasury = 500
+        store.clearFeedback()
+
+        XCTAssertTrue(store.canBuildRoadConnectionPlan)
+        XCTAssertTrue(store.buildRoadConnectionPlan())
+        XCTAssertEqual(store.state.treasury, 20)
+        XCTAssertEqual(store.interactionMode, .build(.commercial))
+        XCTAssertEqual(
+            store.activeMapActionTargetPresentation?.primaryAction.buildDecision?.disabledReason,
+            BuildRejection.insufficientFunds.message
+        )
+        XCTAssertEqual(store.lastFeedback, "4-block street route built · Commercial needs $2,380 more")
+        XCTAssertTrue(store.canUndo)
+    }
+
+    @MainActor
     func testCancellingCityStreetRecoveryRestoresTheBlockedDevelopmentDecision() throws {
         var authored = CityGameState.newCity(seed: 42)
         authored.treasury = 100_000

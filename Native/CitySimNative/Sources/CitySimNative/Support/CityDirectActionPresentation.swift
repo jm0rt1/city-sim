@@ -697,6 +697,13 @@ struct CityRoadConnectionPlanPresentation: Equatable, Sendable {
             + "\(projectCompletedBalance.signedCurrencyText) / cycle"
     }
 
+    var buildActionHint: String {
+        if fundingGap > 0 {
+            return "Needs \(fundingGap.currencyText) more to build all \(remainingBlocks) \(blockWord) without a partial route."
+        }
+        return "Builds all \(remainingBlocks) \(blockWord) for \(constructionCost.currencyText) as one reversible construction action."
+    }
+
     var accessibilitySummary: String {
         var facts = ["Guided street route plan", "\(remainingBlocks) \(blockWord)"]
         if usesUnlimitedFunds {

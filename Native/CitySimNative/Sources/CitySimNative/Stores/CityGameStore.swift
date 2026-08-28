@@ -57,6 +57,7 @@ final class CityGameStore: ObservableObject {
     @Published private(set) var mapFocusRequestGeneration: UInt = 0
     @Published private(set) var foundationsGuideProgress: CityFoundationsGuideProgress
     @Published private(set) var roadConnectionRecovery: CityRoadConnectionRecovery? = nil
+    @Published private(set) var roadConnectionRecoveryRoute: [GridCoordinate] = []
 
     private let saves: SaveGameService
     private let playerDefaults: UserDefaults?
@@ -720,7 +721,7 @@ final class CityGameStore: ObservableObject {
         for blockedKind: BuildingKind,
         blockedCoordinate: GridCoordinate
     ) -> Bool {
-        guard let route = roadConnectionRecoveryRoute(
+        guard let route = makeRoadConnectionRecoveryRoute(
             preserving: blockedCoordinate
         ), let roadCoordinate = route.first else {
             showFeedback(
@@ -737,6 +738,7 @@ final class CityGameStore: ObservableObject {
             blockedKind: blockedKind,
             blockedCoordinate: blockedCoordinate
         )
+        roadConnectionRecoveryRoute = route
         selectedCoordinate = roadCoordinate
         hudContextScope = .selection
         requestMapFocus()
@@ -749,7 +751,7 @@ final class CityGameStore: ObservableObject {
         return true
     }
 
-    private func roadConnectionRecoveryRoute(
+    private func makeRoadConnectionRecoveryRoute(
         preserving blockedCoordinate: GridCoordinate
     ) -> [GridCoordinate]? {
         let sourceSeeds = state.neighbors(of: blockedCoordinate)
@@ -824,7 +826,7 @@ final class CityGameStore: ObservableObject {
                     + "\(recovery.blockedCoordinate.x + 1), \(recovery.blockedCoordinate.y + 1)"
             )
         case .failure(.cityRoadConnectionRequired):
-            guard let route = roadConnectionRecoveryRoute(
+            guard let route = makeRoadConnectionRecoveryRoute(
                 preserving: recovery.blockedCoordinate
             ), let next = route.first else {
                 restoreRoadConnectionRecovery(
@@ -835,6 +837,7 @@ final class CityGameStore: ObservableObject {
                 )
                 return true
             }
+            roadConnectionRecoveryRoute = route
             selectedCoordinate = next
             hudContextScope = .selection
             requestMapFocus()
@@ -860,7 +863,7 @@ final class CityGameStore: ObservableObject {
         feedback: String,
         tone: PlayerFeedbackTone = .positive
     ) {
-        roadConnectionRecovery = nil
+        clearRoadConnectionRecovery()
         selectedTool = recovery.blockedKind
         selectedBuildCategory = recovery.blockedKind.buildCategory
         interactionMode = .build(recovery.blockedKind)
@@ -869,6 +872,11 @@ final class CityGameStore: ObservableObject {
         showInspector = false
         requestMapFocus()
         showFeedback(feedback, tone: tone, autoDismissAfter: nil)
+    }
+
+    private func clearRoadConnectionRecovery() {
+        roadConnectionRecovery = nil
+        roadConnectionRecoveryRoute = []
     }
 
     private func beginRoadAccessRecovery(
@@ -1152,7 +1160,7 @@ final class CityGameStore: ObservableObject {
     }
 
     func selectTool(_ kind: BuildingKind) {
-        roadConnectionRecovery = nil
+        clearRoadConnectionRecovery()
         selectedTool = kind
         selectedBuildCategory = kind.buildCategory
         interactionMode = .build(kind)
@@ -1161,7 +1169,7 @@ final class CityGameStore: ObservableObject {
     }
 
     func selectBuildCategory(_ category: BuildCategory) {
-        roadConnectionRecovery = nil
+        clearRoadConnectionRecovery()
         selectedBuildCategory = category
         if let firstKind = category.buildingKinds.first {
             let categoryTool = category.buildingKinds.contains(selectedTool) ? selectedTool : firstKind
@@ -1172,14 +1180,14 @@ final class CityGameStore: ObservableObject {
     }
 
     func activateBuildMode() {
-        roadConnectionRecovery = nil
+        clearRoadConnectionRecovery()
         interactionMode = .build(selectedTool)
         showInspector = false
         showFeedback("Build mode · \(selectedTool.title) selected")
     }
 
     func activateInspectMode() {
-        roadConnectionRecovery = nil
+        clearRoadConnectionRecovery()
         interactionMode = .inspect
         showInspector = false
         showFeedback("Inspect mode active")
@@ -1202,7 +1210,7 @@ final class CityGameStore: ObservableObject {
     }
 
     func toggleBulldozer() {
-        roadConnectionRecovery = nil
+        clearRoadConnectionRecovery()
         if interactionMode == .bulldoze {
             interactionMode = .inspect
             showFeedback("Bulldozer deactivated · Inspect mode active")
@@ -2307,7 +2315,7 @@ final class CityGameStore: ObservableObject {
         state = previous
         state.cityName = currentCityName
         cityNameDraft = currentCityName
-        roadConnectionRecovery = nil
+        clearRoadConnectionRecovery()
         selectedCoordinate = nil
         showInspector = false
         canUndo = !undoStates.isEmpty

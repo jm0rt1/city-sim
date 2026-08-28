@@ -4746,6 +4746,70 @@ final class WorldRenderingTests: XCTestCase {
     }
 
     @MainActor
+    func testGuidedRoadRouteRendersEveryGroundedFootprintAndClearsWithoutAccumulation() {
+        let state = CityGameState.newCity(seed: 42)
+        let route = [
+            GridCoordinate(x: 7, y: 2),
+            GridCoordinate(x: 6, y: 2),
+            GridCoordinate(x: 5, y: 2),
+            GridCoordinate(x: 4, y: 2),
+        ]
+        let scene = CityScene(size: CGSize(width: 900, height: 600))
+        scene.reducedMotion = true
+
+        scene.render(
+            state: state,
+            overlay: .none,
+            selection: route[0],
+            interactionMode: .build(.road),
+            guidedRoadRoute: route
+        )
+
+        XCTAssertEqual(scene.guidedRoadRouteCoordinatesForTesting, route)
+        XCTAssertEqual(
+            scene.guidedRoadRouteFootprintPositionsForTesting,
+            route.map { scene.scenePointForTesting(at: $0) }
+        )
+        XCTAssertEqual(
+            scene.interactionNamesForTesting.filter {
+                $0.hasPrefix("interaction.guided-road-route.footprint.")
+            }.count,
+            route.count
+        )
+        XCTAssertEqual(
+            scene.interactionNamesForTesting.filter {
+                $0 == "interaction.guided-road-route.connector"
+            }.count,
+            1
+        )
+
+        let remaining = Array(route.dropFirst())
+        scene.render(
+            state: state,
+            overlay: .none,
+            selection: remaining[0],
+            interactionMode: .build(.road),
+            guidedRoadRoute: remaining
+        )
+        XCTAssertEqual(scene.guidedRoadRouteCoordinatesForTesting, remaining)
+        XCTAssertEqual(scene.guidedRoadRouteFootprintPositionsForTesting.count, remaining.count)
+
+        scene.render(
+            state: state,
+            overlay: .none,
+            selection: route[0],
+            interactionMode: .build(.road)
+        )
+        XCTAssertTrue(scene.guidedRoadRouteCoordinatesForTesting.isEmpty)
+        XCTAssertTrue(scene.guidedRoadRouteFootprintPositionsForTesting.isEmpty)
+        XCTAssertFalse(
+            scene.interactionNamesForTesting.contains {
+                $0.hasPrefix("interaction.guided-road-route.footprint.")
+            }
+        )
+    }
+
+    @MainActor
     func testTypedPlacementTargetKeepsMeaningfulDistrictAndRoadContextAtBothShippingSizes() throws {
         let state = CityGameState.newCity(seed: 42)
         let targetCoordinate = GridCoordinate(x: 15, y: 14)

@@ -176,6 +176,7 @@ final class CityScene: SKScene {
     private let ambientGroundLayer = SKNode()
     private let ambientLifeLayer = SKNode()
     private let cameraNode = SKCameraNode()
+    private let guidedRoadRouteLayer = SKNode()
     private let hoverNode = SKShapeNode()
     private let selectionNode = SKShapeNode()
     private var renderedState: CityGameState?
@@ -187,6 +188,7 @@ final class CityScene: SKScene {
     private var renderedSelection: GridCoordinate?
     private var renderedInteractionMode: CityInteractionMode = .inspect
     private var renderedActiveActionTarget: CityMapActionTargetPresentation?
+    private var renderedGuidedRoadRoute: [GridCoordinate] = []
     private var hoveredCoordinate: GridCoordinate?
     private var lastPreviewSignature: InteractionPreviewSignature?
     private var renderedGridSize: CGSize?
@@ -258,11 +260,18 @@ final class CityScene: SKScene {
     var hoverIsHiddenForTesting: Bool { hoverNode.isHidden }
     var hoverVisualBoundsForTesting: CGRect { hoverNode.calculateAccumulatedFrame() }
     var activeActionTargetForTesting: CityMapActionTargetPresentation? { renderedActiveActionTarget }
+    var guidedRoadRouteCoordinatesForTesting: [GridCoordinate] { renderedGuidedRoadRoute }
+    var guidedRoadRouteFootprintPositionsForTesting: [CGPoint] {
+        guidedRoadRouteLayer.children
+            .filter { $0.name?.hasPrefix("interaction.guided-road-route.footprint.") == true }
+            .sorted { ($0.name ?? "") < ($1.name ?? "") }
+            .map(\.position)
+    }
     var interactionNamesForTesting: [String] {
         func names(in node: SKNode) -> [String] {
             (node.name.map { [$0] } ?? []) + node.children.flatMap(names)
         }
-        return names(in: hoverNode) + names(in: selectionNode)
+        return names(in: guidedRoadRouteLayer) + names(in: hoverNode) + names(in: selectionNode)
     }
 
     func safeViewportRectForTesting(_ insets: CityMapViewportInsets) -> CGRect {
@@ -324,6 +333,8 @@ final class CityScene: SKScene {
         worldLayer.addChild(ambientLayer)
         addChild(cameraNode)
         camera = cameraNode
+        guidedRoadRouteLayer.name = "interaction.guided-road-route"
+        guidedRoadRouteLayer.zPosition = 89_998
         hoverNode.zPosition = 90_000
         configureHighlight(selectionNode, color: NSColor(calibratedRed: 0.25, green: 0.95, blue: 0.78, alpha: 1), alpha: 0.65, z: 90_001)
         selectionNode.fillColor = .clear
@@ -332,8 +343,10 @@ final class CityScene: SKScene {
         hoverNode.name = "interaction.hover"
         selectionNode.name = "interaction.selection"
         configureSelectionAdornment()
+        worldLayer.addChild(guidedRoadRouteLayer)
         worldLayer.addChild(hoverNode)
         worldLayer.addChild(selectionNode)
+        guidedRoadRouteLayer.isHidden = true
         hoverNode.isHidden = true
         selectionNode.isHidden = true
     }
@@ -353,7 +366,8 @@ final class CityScene: SKScene {
         overlay: DataOverlay,
         selection: GridCoordinate?,
         interactionMode: CityInteractionMode,
-        activeActionTarget: CityMapActionTargetPresentation? = nil
+        activeActionTarget: CityMapActionTargetPresentation? = nil,
+        guidedRoadRoute: [GridCoordinate] = []
     ) {
         let renderStarted = ProcessInfo.processInfo.systemUptime
         let assetResidencyBefore = assets.residencySnapshot()
@@ -362,6 +376,7 @@ final class CityScene: SKScene {
            renderedSelection == selection,
            renderedInteractionMode == interactionMode,
            renderedActiveActionTarget == activeActionTarget,
+           renderedGuidedRoadRoute == guidedRoadRoute,
            renderedReducedMotion == reducedMotion {
             diagnosticsSnapshot.createdTileCount = 0
             diagnosticsSnapshot.updatedTileCount = 0
@@ -383,6 +398,7 @@ final class CityScene: SKScene {
         let previousSelection = renderedSelection
         let previousActiveActionTarget = renderedActiveActionTarget
         let previousInteractionMode = renderedInteractionMode
+        let previousGuidedRoadRoute = renderedGuidedRoadRoute
         let motionChanged = renderedReducedMotion != reducedMotion
         let priorDisplayedCueCount = diagnosticsSnapshot.displayedConsequenceCueCount
         presentedConsequenceEventTicks = presentedConsequenceEventTicks.filter {
@@ -423,6 +439,7 @@ final class CityScene: SKScene {
         renderedSelection = selection
         renderedInteractionMode = interactionMode
         renderedActiveActionTarget = activeActionTarget
+        renderedGuidedRoadRoute = guidedRoadRoute
         renderedReducedMotion = reducedMotion
         diagnosticsSnapshot = updateWorld(
             snapshot: snapshot,
@@ -434,6 +451,7 @@ final class CityScene: SKScene {
         _ = updateAmbientCorridor(snapshot: snapshot)
         let expiredCueCount = expireConsequenceEvents(at: snapshot.authoritativeTick)
         let insertedCueCount = presentConsequenceEvents(consequenceEvents)
+        updateGuidedRoadRoute(guidedRoadRoute)
         updateSelection(selection)
         refreshPersistentConsequenceEmphasis(at: [previousSelection, selection])
         refreshInteractionPreview()
@@ -464,6 +482,7 @@ final class CityScene: SKScene {
             && !worldChanged
         let requiresTreeRecount = isFirstRender
             || previousSelection != selection
+            || previousGuidedRoadRoute != guidedRoadRoute
             || motionChanged
             || unexplainedCueRemoval
         let runtimeMetricsStarted = ProcessInfo.processInfo.systemUptime
@@ -486,7 +505,8 @@ final class CityScene: SKScene {
         overlay: DataOverlay,
         selection: GridCoordinate?,
         interactionMode: CityInteractionMode,
-        activeActionTarget: CityMapActionTargetPresentation? = nil
+        activeActionTarget: CityMapActionTargetPresentation? = nil,
+        guidedRoadRoute: [GridCoordinate] = []
     ) {
         let snapshot: CityPresentationSnapshot
         if let renderedSnapshot, renderedSnapshot.state == state {
@@ -500,7 +520,8 @@ final class CityScene: SKScene {
             overlay: overlay,
             selection: selection,
             interactionMode: interactionMode,
-            activeActionTarget: activeActionTarget
+            activeActionTarget: activeActionTarget,
+            guidedRoadRoute: guidedRoadRoute
         )
     }
 
@@ -2126,6 +2147,47 @@ final class CityScene: SKScene {
         }
         selectionNode.position = style.isoPosition(coordinate)
         selectionNode.isHidden = false
+    }
+
+    private func updateGuidedRoadRoute(_ route: [GridCoordinate]) {
+        guidedRoadRouteLayer.removeAllChildren()
+        guard !route.isEmpty else {
+            guidedRoadRouteLayer.isHidden = true
+            return
+        }
+
+        guidedRoadRouteLayer.isHidden = false
+        let color = style.palette.laneMark
+        let connectorPath = CGMutablePath()
+        for (index, coordinate) in route.enumerated() {
+            let position = style.isoPosition(coordinate)
+            if index == 0 {
+                connectorPath.move(to: position)
+            } else {
+                connectorPath.addLine(to: position)
+            }
+
+            let footprint = SKShapeNode(
+                path: style.diamondPath(width: tileWidth * 0.82, height: tileHeight * 0.82)
+            )
+            footprint.name = "interaction.guided-road-route.footprint.\(index)"
+            footprint.position = position
+            footprint.fillColor = color.withAlphaComponent(index == 0 ? 0.16 : 0.10)
+            footprint.strokeColor = color.withAlphaComponent(index == 0 ? 0.96 : 0.78)
+            footprint.lineWidth = index == 0 ? 2.0 : 1.4
+            footprint.zPosition = 1
+            guidedRoadRouteLayer.addChild(footprint)
+        }
+
+        if route.count > 1 {
+            let connector = SKShapeNode(path: connectorPath)
+            connector.name = "interaction.guided-road-route.connector"
+            connector.strokeColor = color.withAlphaComponent(0.70)
+            connector.lineWidth = 2.2
+            connector.lineCap = .round
+            connector.lineJoin = .round
+            guidedRoadRouteLayer.addChild(connector)
+        }
     }
 
     private func applyActiveActionTarget(_ target: CityMapActionTargetPresentation) {

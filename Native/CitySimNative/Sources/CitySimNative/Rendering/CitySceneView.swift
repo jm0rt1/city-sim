@@ -147,7 +147,8 @@ struct CitySceneView: NSViewRepresentable {
             overlay: store.overlay,
             selection: store.isPhotoModeEnabled ? nil : store.selectedCoordinate,
             interactionMode: store.isPhotoModeEnabled ? .inspect : store.interactionMode,
-            activeActionTarget: store.isPhotoModeEnabled ? nil : store.activeMapActionTargetPresentation
+            activeActionTarget: store.isPhotoModeEnabled ? nil : store.activeMapActionTargetPresentation,
+            guidedRoadRoute: store.isPhotoModeEnabled ? [] : store.roadConnectionRecoveryRoute
         )
         context.coordinator.synchronizeCityFocusCamera(
             isEnabled: store.isCityFocusModeEnabled,

@@ -713,6 +713,75 @@ struct CityRoadPlacementForecast: Equatable, Sendable {
     }
 }
 
+struct CityParkPlacementForecast: Equatable, Sendable {
+    let benefitedDevelopedBlocks: Int
+    let pollutionRelievedBlocks: Int
+    let greatestPollutionReduction: Double
+
+    var summary: String {
+        guard benefitedDevelopedBlocks > 0 else {
+            return "No additional local benefit at this site"
+        }
+        let blockLabel = benefitedDevelopedBlocks == 1 ? "block" : "blocks"
+        guard pollutionRelievedBlocks > 0 else {
+            return "Benefits \(benefitedDevelopedBlocks) \(blockLabel) · local value or happiness rises"
+        }
+        let pointValue = greatestPollutionReduction * 100
+        let reduction = pointValue < 1
+            ? "under 1 pt"
+            : "\(Int(pointValue.rounded())) pts"
+        return "Benefits \(benefitedDevelopedBlocks) \(blockLabel) · pollution up to \(reduction) lower"
+    }
+
+    static func make(
+        at coordinate: GridCoordinate,
+        in state: CityGameState
+    ) -> Self? {
+        guard state.tile(at: coordinate)?.kind == .empty else { return nil }
+
+        var completed = state
+        if !completed.usesUnlimitedFunds {
+            completed.treasury = max(completed.treasury, BuildingKind.park.buildCost)
+        }
+        guard case .success = CitySimulation.build(.park, at: coordinate, in: &completed) else {
+            return nil
+        }
+        completed.updateTile(at: coordinate) { $0.constructionProgress = 1 }
+
+        let currentConsequences = CitySpatialConsequenceMap(state: state)
+        let completedConsequences = CitySpatialConsequenceMap(state: completed)
+        var benefitedBlocks = 0
+        var relievedBlocks = 0
+        var greatestReduction = 0.0
+        let threshold = 0.000_000_001
+
+        for current in currentConsequences.samples where current.vitality != .notApplicable {
+            guard let projected = completedConsequences[current.coordinate] else { continue }
+            let pollutionReduction = current.pollutionExposure - projected.pollutionExposure
+            let landValueGain = (projected.landValueIndex ?? 0) - (current.landValueIndex ?? 0)
+            let happinessGain = (projected.localHappinessIndex ?? 0) - (current.localHappinessIndex ?? 0)
+            let vitalityGain = projected.vitalityScore - current.vitalityScore
+            guard pollutionReduction > threshold
+                    || landValueGain > threshold
+                    || happinessGain > threshold
+                    || vitalityGain > threshold else {
+                continue
+            }
+            benefitedBlocks += 1
+            if pollutionReduction > threshold {
+                relievedBlocks += 1
+                greatestReduction = max(greatestReduction, pollutionReduction)
+            }
+        }
+
+        return Self(
+            benefitedDevelopedBlocks: benefitedBlocks,
+            pollutionRelievedBlocks: relievedBlocks,
+            greatestPollutionReduction: greatestReduction
+        )
+    }
+}
+
 struct CityDemolitionForecast: Equatable, Sendable {
     let currentBalance: Double
     let projectedBalance: Double
@@ -850,9 +919,16 @@ struct CityBuildDecisionPresentation: Equatable, Sendable {
         tile: CityTile,
         state: CityGameState
     ) -> String {
-        guard kind == .road else { return kind.buildConsequenceSummary }
-        return CityRoadPlacementForecast.make(at: tile.coordinate, in: state)?.summary
-            ?? "Clear this occupied block before the road network can change"
+        switch kind {
+        case .road:
+            CityRoadPlacementForecast.make(at: tile.coordinate, in: state)?.summary
+                ?? "Clear this occupied block before the road network can change"
+        case .park:
+            CityParkPlacementForecast.make(at: tile.coordinate, in: state)?.summary
+                ?? kind.buildConsequenceSummary
+        default:
+            kind.buildConsequenceSummary
+        }
     }
 }
 

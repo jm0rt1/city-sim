@@ -141,6 +141,104 @@ final class CityBuildOperatingForecastTests: XCTestCase {
         XCTAssertNil(CityRoadPlacementForecast.make(at: target, in: state))
     }
 
+    func testParkPlacementForecastCountsCurrentLocalBenefitsAndPollutionRelief() throws {
+        var state = CityGameState.newCity(seed: 42)
+        state.treasury = 100_000
+        for coordinate in state.tiles.map(\.coordinate) {
+            state.updateTile(at: coordinate) {
+                $0 = CityTile(coordinate: coordinate, kind: .empty)
+            }
+        }
+        let target = GridCoordinate(x: 10, y: 10)
+        let developed: [(GridCoordinate, BuildingKind)] = [
+            (GridCoordinate(x: 10, y: 8), .industrial),
+            (GridCoordinate(x: 10, y: 9), .residential),
+            (GridCoordinate(x: 11, y: 10), .residential),
+            (GridCoordinate(x: 10, y: 11), .residential),
+            (GridCoordinate(x: 9, y: 10), .residential),
+        ]
+        for (coordinate, kind) in developed {
+            state.updateTile(at: coordinate) {
+                $0 = CityTile(
+                    coordinate: coordinate,
+                    kind: kind,
+                    occupancy: kind == .industrial ? 60 : 180,
+                    constructionProgress: 1
+                )
+            }
+        }
+
+        let forecast = try XCTUnwrap(
+            CityParkPlacementForecast.make(at: target, in: state)
+        )
+        XCTAssertEqual(forecast.benefitedDevelopedBlocks, 5)
+        XCTAssertEqual(forecast.pollutionRelievedBlocks, 5)
+        XCTAssertEqual(forecast.greatestPollutionReduction, 0.16 * (2.0 / 3.0), accuracy: 0.000_001)
+        XCTAssertEqual(
+            forecast.summary,
+            "Benefits 5 blocks · pollution up to 11 pts lower"
+        )
+
+        let targetTile = try XCTUnwrap(state.tile(at: target))
+        let decision = CityBuildDecisionPresentation.make(
+            kind: .park,
+            tile: targetTile,
+            rejection: nil,
+            state: state
+        )
+        XCTAssertEqual(decision.likelyConsequence, forecast.summary)
+        XCTAssertTrue(decision.accessibilitySummary.contains(forecast.summary))
+    }
+
+    func testParkPlacementForecastIsTruthfulWithNoCurrentLocalBenefitAndNoFunds() throws {
+        var state = CityGameState.newCity(seed: 42)
+        for coordinate in state.tiles.map(\.coordinate) {
+            state.updateTile(at: coordinate) {
+                $0 = CityTile(coordinate: coordinate, kind: .empty)
+            }
+        }
+        state.treasury = 0
+        let target = GridCoordinate(x: 10, y: 10)
+        let targetTile = try XCTUnwrap(state.tile(at: target))
+        let forecast = try XCTUnwrap(
+            CityParkPlacementForecast.make(at: target, in: state)
+        )
+        XCTAssertEqual(forecast.benefitedDevelopedBlocks, 0)
+        XCTAssertEqual(forecast.pollutionRelievedBlocks, 0)
+        XCTAssertEqual(forecast.greatestPollutionReduction, 0)
+        XCTAssertEqual(forecast.summary, "No additional local benefit at this site")
+
+        let neighbor = GridCoordinate(x: 10, y: 9)
+        state.updateTile(at: neighbor) {
+            $0 = CityTile(
+                coordinate: neighbor,
+                kind: .residential,
+                occupancy: 180,
+                constructionProgress: 1
+            )
+        }
+        let valueOnlyForecast = try XCTUnwrap(
+            CityParkPlacementForecast.make(at: target, in: state)
+        )
+        XCTAssertEqual(valueOnlyForecast.benefitedDevelopedBlocks, 1)
+        XCTAssertEqual(valueOnlyForecast.pollutionRelievedBlocks, 0)
+        XCTAssertEqual(
+            valueOnlyForecast.summary,
+            "Benefits 1 block · local value or happiness rises"
+        )
+
+        let blockedDecision = CityBuildDecisionPresentation.make(
+            kind: .park,
+            tile: targetTile,
+            rejection: .insufficientFunds,
+            state: state
+        )
+        XCTAssertEqual(blockedDecision.disabledReason, BuildRejection.insufficientFunds.message)
+        XCTAssertEqual(blockedDecision.likelyConsequence, valueOnlyForecast.summary)
+        XCTAssertEqual(state.treasury, 0)
+        XCTAssertEqual(state.tile(at: target)?.kind, .empty)
+    }
+
     func testDemolitionForecastNamesHousingJobsUtilitiesRoadsAndServices() throws {
         var state = CityGameState.newCity(seed: 42)
         state.treasury = 100_000

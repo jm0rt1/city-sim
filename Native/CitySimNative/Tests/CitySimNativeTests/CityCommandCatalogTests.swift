@@ -1502,9 +1502,14 @@ final class CityCommandCatalogTests: XCTestCase {
         XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration + 4)
 
         XCTAssertTrue(store.perform(.cancelInteraction))
+        XCTAssertEqual(store.interactionMode, .build(.residential))
+        XCTAssertNil(store.selectedCoordinate)
+        XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration + 5)
+
+        XCTAssertTrue(store.perform(.cancelInteraction))
         XCTAssertEqual(store.interactionMode, .inspect)
         XCTAssertNil(store.selectedCoordinate)
-        XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration + 4)
+        XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration + 5)
     }
 
     @MainActor
@@ -4108,6 +4113,58 @@ final class CityCommandCatalogTests: XCTestCase {
         XCTAssertTrue(store.canUndo)
 
         XCTAssertTrue(store.perform(.undo))
+        XCTAssertEqual(store.state, stateBefore)
+    }
+
+    @MainActor
+    func testCancellingOrdinaryBuildDecisionReturnsToTheSameOpportunityLoop() throws {
+        let store = CityGameStore(state: .newCity(seed: 42))
+        store.selectTool(.commercial)
+        let inventory = try XCTUnwrap(
+            CityBuildOpportunityInventory.make(kind: .commercial, in: store.state)
+        )
+        let first = try XCTUnwrap(inventory.outlinedCoordinates.first)
+        let second = try XCTUnwrap(inventory.outlinedCoordinates.dropFirst().first)
+        let stateBefore = store.state
+        let fingerprintBefore = try CityStateFingerprinter.fingerprint(stateBefore)
+
+        XCTAssertNotNil(store.acceptPointerMapActionCandidate(first)?.primaryAction.buildDecision)
+        XCTAssertEqual(store.interactionMode, .build(.commercial))
+        XCTAssertEqual(store.selectedCoordinate, first)
+
+        let focusBefore = store.mapFocusRequestGeneration
+        XCTAssertTrue(store.perform(.cancelInteraction))
+
+        XCTAssertEqual(store.state, stateBefore)
+        XCTAssertEqual(
+            try CityStateFingerprinter.fingerprint(store.state),
+            fingerprintBefore
+        )
+        XCTAssertEqual(store.interactionMode, .build(.commercial))
+        XCTAssertEqual(store.selectedTool, .commercial)
+        XCTAssertNil(store.selectedCoordinate)
+        XCTAssertEqual(store.hudContextScope, .city)
+        XCTAssertFalse(store.showInspector)
+        XCTAssertFalse(store.canUndo)
+        XCTAssertEqual(store.mapFocusRequestGeneration, focusBefore + 1)
+        XCTAssertEqual(
+            store.lastFeedback,
+            "Commercial remains selected · choose another block"
+        )
+        XCTAssertEqual(
+            CityBuildOpportunityInventory.make(kind: .commercial, in: store.state),
+            inventory
+        )
+
+        XCTAssertNotNil(store.acceptPointerMapActionCandidate(second)?.primaryAction.buildDecision)
+        XCTAssertEqual(store.selectedCoordinate, second)
+        XCTAssertTrue(store.perform(.cancelInteraction))
+        XCTAssertEqual(store.interactionMode, .build(.commercial))
+        XCTAssertNil(store.selectedCoordinate)
+
+        XCTAssertTrue(store.perform(.cancelInteraction))
+        XCTAssertEqual(store.interactionMode, .inspect)
+        XCTAssertNil(store.selectedCoordinate)
         XCTAssertEqual(store.state, stateBefore)
     }
 

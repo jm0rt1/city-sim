@@ -458,7 +458,7 @@ struct BuildToolbarView: View {
             }
 
             Button {
-                store.perform(.cancelInteraction)
+                store.cancelBuildDecision()
             } label: {
                 HStack(spacing: 4) {
                     Image(systemName: "xmark")

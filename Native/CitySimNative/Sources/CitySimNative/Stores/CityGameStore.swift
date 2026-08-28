@@ -74,6 +74,7 @@ final class CityGameStore: ObservableObject {
     private let revealSupportReport: (URL) -> Void
     private var undoStates: [CityGameState] = []
     private var roadConnectionUndoContexts: [CityRoadConnectionUndoContext?] = []
+    private var directRoadAccessRecoveryActive = false
     private var feedbackDismissal: DispatchWorkItem?
     private var lastNonPausedSpeed: SimulationSpeed = .normal
     private var speedBeforeSessionReplacementConfirmation: SimulationSpeed?
@@ -1014,6 +1015,7 @@ final class CityGameStore: ObservableObject {
             return false
         }
         guard perform(.buildRoad) else { return false }
+        directRoadAccessRecoveryActive = true
         selectedCoordinate = roadCoordinate
         hudContextScope = .selection
         requestMapFocus()
@@ -1263,6 +1265,8 @@ final class CityGameStore: ObservableObject {
         } else if showObjectives {
             showObjectives = false
             requestMapFocus()
+        } else if activeMapActionTargetPresentation?.primaryAction.buildDecision != nil {
+            cancelBuildDecision()
         } else {
             cancelInteraction()
         }
@@ -1280,6 +1284,7 @@ final class CityGameStore: ObservableObject {
     }
 
     func selectTool(_ kind: BuildingKind) {
+        directRoadAccessRecoveryActive = false
         clearRoadConnectionRecovery()
         selectedTool = kind
         selectedBuildCategory = kind.buildCategory
@@ -1289,6 +1294,7 @@ final class CityGameStore: ObservableObject {
     }
 
     func selectBuildCategory(_ category: BuildCategory) {
+        directRoadAccessRecoveryActive = false
         clearRoadConnectionRecovery()
         selectedBuildCategory = category
         if let firstKind = category.buildingKinds.first {
@@ -1300,6 +1306,7 @@ final class CityGameStore: ObservableObject {
     }
 
     func activateBuildMode() {
+        directRoadAccessRecoveryActive = false
         clearRoadConnectionRecovery()
         interactionMode = .build(selectedTool)
         showInspector = false
@@ -1307,6 +1314,7 @@ final class CityGameStore: ObservableObject {
     }
 
     func activateInspectMode() {
+        directRoadAccessRecoveryActive = false
         clearRoadConnectionRecovery()
         interactionMode = .inspect
         showInspector = false
@@ -1314,6 +1322,7 @@ final class CityGameStore: ObservableObject {
     }
 
     func cancelInteraction() {
+        directRoadAccessRecoveryActive = false
         if let recovery = roadConnectionRecovery {
             restoreRoadConnectionRecovery(
                 recovery,
@@ -1329,7 +1338,31 @@ final class CityGameStore: ObservableObject {
         showFeedback("Action cancelled")
     }
 
+    func cancelBuildDecision() {
+        guard roadConnectionRecovery == nil,
+              !directRoadAccessRecoveryActive,
+              case .build(let kind) = interactionMode,
+              activeMapActionTargetPresentation?.primaryAction.buildDecision != nil,
+              !foundationsGuideOwnsBuildDecision(for: kind) else {
+            cancelInteraction()
+            return
+        }
+        selectedCoordinate = nil
+        hudContextScope = .city
+        showInspector = false
+        showFeedback("\(kind.title) remains selected · choose another block")
+        requestMapFocus()
+    }
+
+    private func foundationsGuideOwnsBuildDecision(for kind: BuildingKind) -> Bool {
+        guard let command = foundationsGuidePresentation?.currentLesson?.command else {
+            return false
+        }
+        return CityCommandCatalog.buildingKind(for: command) == kind
+    }
+
     func toggleBulldozer() {
+        directRoadAccessRecoveryActive = false
         clearRoadConnectionRecovery()
         if interactionMode == .bulldoze {
             interactionMode = .inspect
@@ -1391,6 +1424,7 @@ final class CityGameStore: ObservableObject {
             let previousState = state
             switch CitySimulation.build(kind, at: coordinate, in: &state) {
             case .success:
+                directRoadAccessRecoveryActive = false
                 recordUndo(previousState)
                 completeFoundationsLesson(for: kind)
                 selectedCoordinate = coordinate
@@ -1426,6 +1460,7 @@ final class CityGameStore: ObservableObject {
 
     func secondaryAction(at coordinate: GridCoordinate) {
         guard commandPolicy == .enabled else { return }
+        directRoadAccessRecoveryActive = false
         interactionMode = .inspect
         selectedCoordinate = coordinate
         if state.tile(at: coordinate)?.kind != .empty {
@@ -1910,6 +1945,7 @@ final class CityGameStore: ObservableObject {
         cityNameDraft = state.cityName
         speed = .paused
         lastNonPausedSpeed = .normal
+        directRoadAccessRecoveryActive = false
         selectedTool = .road
         selectedBuildCategory = .roads
         interactionMode = .inspect
@@ -2437,6 +2473,7 @@ final class CityGameStore: ObservableObject {
             ? nil
             : roadConnectionUndoContexts.removeLast()
         let currentCityName = state.cityName
+        directRoadAccessRecoveryActive = false
         state = previous
         state.cityName = currentCityName
         cityNameDraft = currentCityName

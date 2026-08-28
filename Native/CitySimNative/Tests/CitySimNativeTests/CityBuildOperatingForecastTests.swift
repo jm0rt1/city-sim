@@ -393,6 +393,63 @@ final class CityBuildOperatingForecastTests: XCTestCase {
         XCTAssertEqual(weakerDecision.likelyConsequence, weakerForecast.summary)
         XCTAssertTrue(strongerDecision.accessibilitySummary.contains(strongerForecast.summary))
         XCTAssertTrue(weakerDecision.accessibilitySummary.contains(weakerForecast.summary))
+
+        let comparisonDecision = CityBuildDecisionPresentation.make(
+            kind: .commercial,
+            tile: try XCTUnwrap(state.tile(at: weaker)),
+            rejection: nil,
+            state: state,
+            siteComparisonReference: CityDevelopmentSiteReference(
+                kind: .commercial,
+                coordinate: stronger
+            )
+        )
+        let comparison = try XCTUnwrap(comparisonDecision.siteComparison)
+        XCTAssertEqual(comparison.referenceTarget, "Block 6, 4")
+        XCTAssertEqual(comparison.referenceAbbreviation, "B6,4")
+        XCTAssertEqual(comparison.capacity, weakerForecast.capacity)
+        XCTAssertEqual(
+            comparison.currentLandValue,
+            Int((weakerForecast.landValueIndex * 100).rounded())
+        )
+        XCTAssertEqual(
+            comparison.currentUtilityService,
+            Int((weakerForecast.utilityService * 100).rounded())
+        )
+        XCTAssertEqual(
+            comparison.currentPollutionExposure,
+            Int((weakerForecast.pollutionExposure * 100).rounded())
+        )
+        XCTAssertEqual(
+            comparison.landValueDelta,
+            Int(((weakerForecast.landValueIndex - strongerForecast.landValueIndex) * 100).rounded())
+        )
+        XCTAssertEqual(
+            comparison.utilityServiceDelta,
+            Int(((weakerForecast.utilityService - strongerForecast.utilityService) * 100).rounded())
+        )
+        XCTAssertEqual(
+            comparison.pollutionExposureDelta,
+            Int(((weakerForecast.pollutionExposure - strongerForecast.pollutionExposure) * 100).rounded())
+        )
+        XCTAssertTrue(comparison.accessibilitySummary.contains("Compared with Block 6, 4"))
+        XCTAssertTrue(comparison.accessibilitySummary.contains("land value"))
+        XCTAssertTrue(comparison.accessibilitySummary.contains("utility"))
+        XCTAssertTrue(comparison.accessibilitySummary.contains("pollution"))
+        XCTAssertTrue(comparisonDecision.accessibilitySummary.contains(comparison.accessibilitySummary))
+
+        XCTAssertNil(
+            CityBuildDecisionPresentation.make(
+                kind: .commercial,
+                tile: try XCTUnwrap(state.tile(at: stronger)),
+                rejection: nil,
+                state: state,
+                siteComparisonReference: CityDevelopmentSiteReference(
+                    kind: .commercial,
+                    coordinate: stronger
+                )
+            ).siteComparison
+        )
         XCTAssertEqual(state.tile(at: stronger)?.kind, .empty)
         XCTAssertEqual(state.tile(at: weaker)?.kind, .empty)
         XCTAssertEqual(state.treasury, 100_000)

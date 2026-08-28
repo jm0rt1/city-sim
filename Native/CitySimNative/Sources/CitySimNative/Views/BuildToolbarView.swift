@@ -353,7 +353,9 @@ struct BuildToolbarView: View {
             VStack(alignment: .leading, spacing: 3) {
                 Label(
                     (routePlan == nil
-                        ? decision.availability
+                        ? decision.siteComparison.map {
+                            "\(decision.availability) · vs \($0.referenceAbbreviation)"
+                        } ?? decision.availability
                         : "\(routePlan?.destinationTitle ?? "Project") route plan").uppercased(),
                     systemImage: decision.disabledReason == nil
                         ? "checkmark.circle.fill"
@@ -379,10 +381,14 @@ struct BuildToolbarView: View {
                         .foregroundStyle(.secondary)
                         .lineLimit(1)
                 } else {
-                    Text(decision.likelyConsequence)
-                        .font(.system(size: GameTheme.hudCriticalTextSize - 1, weight: .medium, design: .rounded))
-                        .foregroundStyle(.secondary)
-                        .lineLimit(1)
+                    if let comparison = decision.siteComparison {
+                        siteComparisonRow(comparison)
+                    } else {
+                        Text(decision.likelyConsequence)
+                            .font(.system(size: GameTheme.hudCriticalTextSize - 1, weight: .medium, design: .rounded))
+                            .foregroundStyle(.secondary)
+                            .lineLimit(1)
+                    }
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -487,6 +493,57 @@ struct BuildToolbarView: View {
                 .joined(separator: ". ")
         )
         .accessibilityIdentifier("hud.build.decision")
+    }
+
+    private func siteComparisonRow(
+        _ comparison: CityDevelopmentSiteComparisonPresentation
+    ) -> some View {
+        HStack(spacing: compact ? 5 : 7) {
+            Text(comparison.capacity)
+                .font(.system(size: GameTheme.hudCriticalTextSize - 2, weight: .semibold, design: .rounded))
+                .foregroundStyle(.secondary)
+            siteComparisonMetric(
+                compact ? "V" : "Value",
+                currentValue: comparison.currentLandValue,
+                deltaText: comparison.landValueDeltaText,
+                delta: comparison.landValueDelta
+            )
+            siteComparisonMetric(
+                compact ? "U" : "Util",
+                currentValue: comparison.currentUtilityService,
+                deltaText: comparison.utilityServiceDeltaText,
+                delta: comparison.utilityServiceDelta
+            )
+            siteComparisonMetric(
+                compact ? "P" : "Poll",
+                currentValue: comparison.currentPollutionExposure,
+                deltaText: comparison.pollutionExposureDeltaText,
+                delta: comparison.pollutionExposureDelta,
+                lowerIsBetter: true
+            )
+        }
+        .lineLimit(1)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(comparison.accessibilitySummary)
+        .accessibilityIdentifier("hud.build.site-comparison")
+    }
+
+    private func siteComparisonMetric(
+        _ label: String,
+        currentValue: Int,
+        deltaText: String,
+        delta: Int,
+        lowerIsBetter: Bool = false
+    ) -> some View {
+        Text("\(label) \(currentValue) (\(deltaText))")
+            .font(.system(size: GameTheme.hudCriticalTextSize - 2, weight: .bold, design: .rounded))
+            .foregroundStyle(siteComparisonColor(delta: delta, lowerIsBetter: lowerIsBetter))
+    }
+
+    private func siteComparisonColor(delta: Int, lowerIsBetter: Bool) -> Color {
+        guard delta != 0 else { return .secondary }
+        let isBetter = lowerIsBetter ? delta < 0 : delta > 0
+        return isBetter ? GameTheme.accent : GameTheme.warning
     }
 
     @ViewBuilder

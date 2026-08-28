@@ -4156,8 +4156,18 @@ final class CityCommandCatalogTests: XCTestCase {
             inventory
         )
 
-        XCTAssertNotNil(store.acceptPointerMapActionCandidate(second)?.primaryAction.buildDecision)
+        let secondDecision = try XCTUnwrap(
+            store.acceptPointerMapActionCandidate(second)?.primaryAction.buildDecision
+        )
         XCTAssertEqual(store.selectedCoordinate, second)
+        let comparison = try XCTUnwrap(secondDecision.siteComparison)
+        XCTAssertEqual(comparison.referenceTarget, "Block \(first.x + 1), \(first.y + 1)")
+        XCTAssertTrue(secondDecision.accessibilitySummary.contains(comparison.accessibilitySummary))
+        XCTAssertEqual(store.state, stateBefore)
+        XCTAssertEqual(
+            try CityStateFingerprinter.fingerprint(store.state),
+            fingerprintBefore
+        )
         XCTAssertTrue(store.perform(.cancelInteraction))
         XCTAssertEqual(store.interactionMode, .build(.commercial))
         XCTAssertNil(store.selectedCoordinate)
@@ -4166,6 +4176,52 @@ final class CityCommandCatalogTests: XCTestCase {
         XCTAssertEqual(store.interactionMode, .inspect)
         XCTAssertNil(store.selectedCoordinate)
         XCTAssertEqual(store.state, stateBefore)
+    }
+
+    @MainActor
+    func testDevelopmentSiteComparisonClearsAfterToolChangeAndCommittedBuild() throws {
+        let store = CityGameStore(state: .newCity(seed: 42))
+        store.selectTool(.commercial)
+        let commercialSites = try XCTUnwrap(
+            CityBuildOpportunityInventory.make(kind: .commercial, in: store.state)
+        ).outlinedCoordinates
+        let first = try XCTUnwrap(commercialSites.first)
+        let second = try XCTUnwrap(commercialSites.dropFirst().first)
+
+        XCTAssertNotNil(store.acceptPointerMapActionCandidate(first))
+        store.cancelBuildDecision()
+        XCTAssertNotNil(
+            store.acceptPointerMapActionCandidate(second)?
+                .primaryAction.buildDecision?.siteComparison
+        )
+
+        store.selectTool(.residential)
+        let residential = try XCTUnwrap(
+            CityBuildOpportunityInventory.make(kind: .residential, in: store.state)?
+                .outlinedCoordinates.first
+        )
+        XCTAssertNil(
+            store.acceptPointerMapActionCandidate(residential)?
+                .primaryAction.buildDecision?.siteComparison
+        )
+
+        store.selectTool(.commercial)
+        XCTAssertNotNil(store.acceptPointerMapActionCandidate(first))
+        store.cancelBuildDecision()
+        XCTAssertNotNil(
+            store.acceptPointerMapActionCandidate(second)?
+                .primaryAction.buildDecision?.siteComparison
+        )
+        let stateBeforeBuild = store.state
+        XCTAssertTrue(store.performMapCommand(.mapPrimaryAction))
+        XCTAssertTrue(store.perform(.undo))
+        XCTAssertEqual(store.state, stateBeforeBuild)
+
+        store.interactionMode = .build(.commercial)
+        XCTAssertNil(
+            store.acceptPointerMapActionCandidate(first)?
+                .primaryAction.buildDecision?.siteComparison
+        )
     }
 
     @MainActor

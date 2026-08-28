@@ -1110,6 +1110,79 @@ struct CityDevelopmentSiteForecast: Equatable, Sendable {
     }
 }
 
+struct CityDevelopmentSiteReference: Equatable, Sendable {
+    let kind: BuildingKind
+    let coordinate: GridCoordinate
+}
+
+struct CityDevelopmentSiteComparisonPresentation: Equatable, Sendable {
+    let referenceTarget: String
+    let referenceAbbreviation: String
+    let capacity: String
+    let currentLandValue: Int
+    let currentUtilityService: Int
+    let currentPollutionExposure: Int
+    let landValueDelta: Int
+    let utilityServiceDelta: Int
+    let pollutionExposureDelta: Int
+
+    var accessibilitySummary: String {
+        "Compared with \(referenceTarget): land value \(Self.changeDescription(landValueDelta)); "
+            + "utility \(Self.changeDescription(utilityServiceDelta)); "
+            + "pollution \(Self.changeDescription(pollutionExposureDelta))"
+    }
+
+    var landValueDeltaText: String { Self.signed(landValueDelta) }
+    var utilityServiceDeltaText: String { Self.signed(utilityServiceDelta) }
+    var pollutionExposureDeltaText: String { Self.signed(pollutionExposureDelta) }
+
+    static func make(
+        kind: BuildingKind,
+        coordinate: GridCoordinate,
+        currentForecast: CityDevelopmentSiteForecast?,
+        reference: CityDevelopmentSiteReference?,
+        state: CityGameState
+    ) -> Self? {
+        guard let currentForecast,
+              let reference,
+              reference.kind == kind,
+              reference.coordinate != coordinate,
+              let referenceForecast = CityDevelopmentSiteForecast.make(
+                  kind: kind,
+                  at: reference.coordinate,
+                  in: state
+              ) else {
+            return nil
+        }
+
+        return Self(
+            referenceTarget: "Block \(reference.coordinate.x + 1), \(reference.coordinate.y + 1)",
+            referenceAbbreviation: "B\(reference.coordinate.x + 1),\(reference.coordinate.y + 1)",
+            capacity: currentForecast.capacity,
+            currentLandValue: points(currentForecast.landValueIndex),
+            currentUtilityService: points(currentForecast.utilityService),
+            currentPollutionExposure: points(currentForecast.pollutionExposure),
+            landValueDelta: points(currentForecast.landValueIndex - referenceForecast.landValueIndex),
+            utilityServiceDelta: points(currentForecast.utilityService - referenceForecast.utilityService),
+            pollutionExposureDelta: points(currentForecast.pollutionExposure - referenceForecast.pollutionExposure)
+        )
+    }
+
+    private static func points(_ value: Double) -> Int {
+        Int((value * 100).rounded())
+    }
+
+    private static func signed(_ value: Int) -> String {
+        value > 0 ? "+\(value)" : "\(value)"
+    }
+
+    private static func changeDescription(_ value: Int) -> String {
+        if value > 0 { return "\(value) points higher" }
+        if value < 0 { return "\(-value) points lower" }
+        return "unchanged"
+    }
+}
+
 struct CityParkPlacementForecast: Equatable, Sendable {
     let benefitedDevelopedBlocks: Int
     let pollutionRelievedBlocks: Int
@@ -1391,6 +1464,7 @@ struct CityBuildDecisionPresentation: Equatable, Sendable {
     let cost: String
     let operatingImpact: String
     let operatingForecast: CityBuildOperatingForecast?
+    let siteComparison: CityDevelopmentSiteComparisonPresentation?
     let availability: String
     let disabledReason: String?
     let likelyConsequence: String
@@ -1404,6 +1478,7 @@ struct CityBuildDecisionPresentation: Equatable, Sendable {
             "Footprint \(footprint)",
             cost,
             operatingImpact,
+            siteComparison?.accessibilitySummary,
             availability,
             disabledReason,
             "Likely consequence: \(likelyConsequence)",
@@ -1419,13 +1494,17 @@ struct CityBuildDecisionPresentation: Equatable, Sendable {
         tile: CityTile,
         rejection: BuildRejection?,
         state: CityGameState,
-        unlimitedFunds: Bool = false
+        unlimitedFunds: Bool = false,
+        siteComparisonReference: CityDevelopmentSiteReference? = nil
     ) -> CityBuildDecisionPresentation {
         let cost = unlimitedFunds
             ? "Cost waived · \(kind == .road ? "online now" : "online in 4 ticks")"
             : "Cost \(kind.buildCost.currencyText) · \(kind == .road ? "online now" : "online in 4 ticks")"
         let forecast = rejection == nil
             ? CityBuildOperatingForecast.make(kind: kind, tile: tile, state: state)
+            : nil
+        let developmentForecast = rejection == nil
+            ? CityDevelopmentSiteForecast.make(kind: kind, at: tile.coordinate, in: state)
             : nil
         return CityBuildDecisionPresentation(
             buildingTitle: kind.title,
@@ -1435,12 +1514,20 @@ struct CityBuildDecisionPresentation: Equatable, Sendable {
             cost: cost,
             operatingImpact: operatingImpact(forecast: forecast, unlimitedFunds: unlimitedFunds),
             operatingForecast: forecast,
+            siteComparison: CityDevelopmentSiteComparisonPresentation.make(
+                kind: kind,
+                coordinate: tile.coordinate,
+                currentForecast: developmentForecast,
+                reference: siteComparisonReference,
+                state: state
+            ),
             availability: rejection == nil ? "Ready to build" : "Blocked",
             disabledReason: rejection?.message,
             likelyConsequence: likelyConsequence(
                 kind: kind,
                 tile: tile,
-                state: state
+                state: state,
+                developmentForecast: developmentForecast
             ),
             cancellation: "Escape cancels without changing the city",
             recovery: rejection?.buildRecovery
@@ -1461,15 +1548,12 @@ struct CityBuildDecisionPresentation: Equatable, Sendable {
     private static func likelyConsequence(
         kind: BuildingKind,
         tile: CityTile,
-        state: CityGameState
+        state: CityGameState,
+        developmentForecast: CityDevelopmentSiteForecast?
     ) -> String {
         switch kind {
         case .residential, .commercial, .industrial:
-            CityDevelopmentSiteForecast.make(
-                kind: kind,
-                at: tile.coordinate,
-                in: state
-            )?.summary ?? kind.buildConsequenceSummary
+            developmentForecast?.summary ?? kind.buildConsequenceSummary
         case .road:
             CityRoadPlacementForecast.make(at: tile.coordinate, in: state)?.summary
                 ?? "Clear this occupied block before the road network can change"
@@ -1515,7 +1599,8 @@ struct CityMapPrimaryActionPresentation: Equatable, Sendable {
     static func make(
         interactionMode: CityInteractionMode,
         tile: CityTile,
-        state: CityGameState
+        state: CityGameState,
+        siteComparisonReference: CityDevelopmentSiteReference? = nil
     ) -> CityMapPrimaryActionPresentation {
         let block = "block \(tile.coordinate.x + 1), \(tile.coordinate.y + 1)"
         switch interactionMode {
@@ -1540,7 +1625,8 @@ struct CityMapPrimaryActionPresentation: Equatable, Sendable {
                         tile: tile,
                         rejection: nil,
                         state: state,
-                        unlimitedFunds: state.usesUnlimitedFunds
+                        unlimitedFunds: state.usesUnlimitedFunds,
+                        siteComparisonReference: siteComparisonReference
                     )
                 )
             case .failure(let rejection):
@@ -1553,7 +1639,8 @@ struct CityMapPrimaryActionPresentation: Equatable, Sendable {
                         tile: tile,
                         rejection: rejection,
                         state: state,
-                        unlimitedFunds: state.usesUnlimitedFunds
+                        unlimitedFunds: state.usesUnlimitedFunds,
+                        siteComparisonReference: siteComparisonReference
                     )
                 )
             }

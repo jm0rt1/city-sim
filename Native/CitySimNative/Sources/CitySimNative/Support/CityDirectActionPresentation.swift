@@ -1700,6 +1700,7 @@ struct CitySelectedLocationConditions: Equatable, Sendable {
     let coordinate: GridCoordinate
     let landValueIndex: Int
     let utilityService: Int
+    let civicServiceCoverage: Int
     let pollutionExposure: Int
     let trafficExposure: Int
     let vitalityScore: Int
@@ -1708,6 +1709,7 @@ struct CitySelectedLocationConditions: Equatable, Sendable {
     var accessibilitySummary: String {
         "Block \(coordinate.x + 1), \(coordinate.y + 1). Local conditions: "
             + "land value \(landValueIndex), utilities \(utilityService) percent, "
+            + "civic service coverage \(civicServiceCoverage) percent, "
             + "traffic exposure \(trafficExposure) percent, pollution \(pollutionExposure) percent, "
             + "vitality \(vitality), \(vitalityScore) percent."
     }
@@ -1720,12 +1722,14 @@ struct CitySelectedLocationConditions: Equatable, Sendable {
               let sample = snapshot.spatialConsequences[tile.coordinate],
               let landValueIndex = sample.landValueIndex,
               let trafficExposure = sample.trafficExposure,
+              let civicService = sample.civicService,
               sample.vitality != .notApplicable else { return nil }
 
         return CitySelectedLocationConditions(
             coordinate: tile.coordinate,
             landValueIndex: points(landValueIndex),
             utilityService: points(sample.utility.combined),
+            civicServiceCoverage: points(civicService.combined),
             pollutionExposure: points(sample.pollutionExposure),
             trafficExposure: points(trafficExposure),
             vitalityScore: points(sample.vitalityScore),
@@ -2155,6 +2159,31 @@ struct CitySelectedLocationDiagnosis: Equatable, Sendable {
                 ))
             }
         }
+        if let service = sample.civicService,
+           service.combined < CityCivicServiceAnalysis.healthyCoverageThreshold {
+            let weakest = service.weakestService
+            causes.append(
+                "Civic service coverage is weak at \((service.combined * 100).percentText): "
+                    + "Fire \((service.fire * 100).percentText), "
+                    + "Police \((service.police * 100).percentText), "
+                    + "School \((service.school * 100).percentText)"
+            )
+            consequences.append(
+                "Only completed civic sites reachable over connected streets support local value, happiness, and vitality."
+            )
+            responses.append(.init(
+                title: "Build \(weakest.title.lowercased())",
+                command: CityCommandCatalog.id(for: weakest),
+                explanation: "Place a completed \(weakest.title.lowercased()) on the connected street network where it can reach this block.",
+                focusesMap: true
+            ))
+            responses.append(.init(
+                title: "Show service coverage",
+                command: .overlayServices,
+                explanation: "Compare the reachable Fire, Police, and School mix across completed places.",
+                focusesMap: true
+            ))
+        }
 
         if sample.utility.combinedBand != .healthy {
             responses.append(.init(
@@ -2173,7 +2202,7 @@ struct CitySelectedLocationDiagnosis: Equatable, Sendable {
             ))
         }
         if causes.isEmpty {
-            causes.append("Local utility service, pollution, and traffic exposure are healthy")
+            causes.append("Local utility, civic service, pollution, and traffic conditions are healthy")
             responses.append(.init(
                 title: "Review city factors",
                 command: .inspectorOverview,

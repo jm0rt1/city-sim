@@ -188,7 +188,7 @@ enum SimulationSpeed: Int, CaseIterable, Identifiable, Sendable {
 }
 
 enum DataOverlay: String, CaseIterable, Identifiable, Sendable {
-    case none, landValue, traffic, utilities, happiness, pollution
+    case none, landValue, traffic, utilities, services, happiness, pollution
     var id: String { rawValue }
     var title: String {
         switch self {
@@ -196,6 +196,7 @@ enum DataOverlay: String, CaseIterable, Identifiable, Sendable {
         case .landValue: "Land Value"
         case .traffic: "Traffic"
         case .utilities: "Utilities"
+        case .services: "Services"
         case .happiness: "Happiness"
         case .pollution: "Pollution"
         }
@@ -206,6 +207,7 @@ enum DataOverlay: String, CaseIterable, Identifiable, Sendable {
         case .landValue: "dollarsign.circle"
         case .traffic: "car.2"
         case .utilities: "bolt.horizontal"
+        case .services: "cross.case"
         case .happiness: "face.smiling"
         case .pollution: "aqi.medium"
         }
@@ -217,7 +219,7 @@ enum DataOverlay: String, CaseIterable, Identifiable, Sendable {
         switch self {
         case .none:
             return true
-        case .landValue, .happiness:
+        case .landValue, .services, .happiness:
             return completedDevelopment
         case .traffic:
             return tile.kind == .road

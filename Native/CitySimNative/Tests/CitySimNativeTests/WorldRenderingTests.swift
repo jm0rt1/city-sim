@@ -202,7 +202,7 @@ final class WorldRenderingTests: XCTestCase {
     }
 
     @MainActor
-    func testFiveOverlaysUseDistinctSparseNonColorMarksWithoutTileWashOrLabels() {
+    func testSixOverlaysUseDistinctSparseNonColorMarksWithoutTileWashOrLabels() {
         let style = WorldVisualStyle()
         let renderer = WorldOverlayRenderer(style: style)
         let tile = CityTile(coordinate: GridCoordinate(x: 2, y: 3), kind: .residential)
@@ -221,7 +221,13 @@ final class WorldRenderingTests: XCTestCase {
             vitalityScore: 0,
             vitality: .notApplicable,
             landValueIndex: 0.20,
-            localHappinessIndex: 0.20
+            localHappinessIndex: 0.20,
+            civicService: CityLocationCivicService(
+                fire: 0.20,
+                police: 0.20,
+                school: 0.20,
+                combined: 0.20
+            )
         )
         let road = CityTile(coordinate: tile.coordinate, kind: .road)
         let trafficConsequence = CitySpatialConsequence(
@@ -270,13 +276,21 @@ final class WorldRenderingTests: XCTestCase {
             overlay: .happiness,
             detail: .block
         )
+        let services = renderer.makeOverlay(
+            for: tile,
+            state: state,
+            consequence: severe,
+            overlay: .services,
+            detail: .block
+        )
 
         let utilityNames = descendantNames(in: utility)
         let pollutionNames = descendantNames(in: pollution)
         let landValueNames = descendantNames(in: landValue)
         let trafficNames = descendantNames(in: traffic)
         let happinessNames = descendantNames(in: happiness)
-        for names in [utilityNames, pollutionNames, landValueNames, trafficNames, happinessNames] {
+        let serviceNames = descendantNames(in: services)
+        for names in [utilityNames, pollutionNames, landValueNames, trafficNames, happinessNames, serviceNames] {
             XCTAssertFalse(names.contains("overlay.base"))
         }
         XCTAssertTrue(utilityNames.contains("overlay.utility.status-edge"))
@@ -285,7 +299,8 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertEqual(landValueNames.filter { $0 == "overlay.land-value.ground-contour" }.count, 3)
         XCTAssertEqual(trafficNames.filter { $0 == "overlay.traffic.pressure-tick" }.count, 6)
         XCTAssertEqual(happinessNames.filter { $0 == "overlay.happiness.ground-ripple" }.count, 3)
-        for overlay in [utility, pollution, landValue, traffic, happiness] {
+        XCTAssertEqual(serviceNames.filter { $0 == "overlay.services.reach-signal" }.count, 3)
+        for overlay in [utility, pollution, landValue, traffic, happiness, services] {
             XCTAssertTrue(descendantLabels(in: overlay).isEmpty)
             XCTAssertEqual(recursiveActiveActionCount(overlay), 0)
         }
@@ -295,6 +310,7 @@ final class WorldRenderingTests: XCTestCase {
         let landValueBounds = landValue.calculateAccumulatedFrame()
         let trafficBounds = traffic.calculateAccumulatedFrame()
         let happinessBounds = happiness.calculateAccumulatedFrame()
+        let servicesBounds = services.calculateAccumulatedFrame()
         XCTAssertLessThan(utilityBounds.width, style.tileWidth * 0.60)
         XCTAssertLessThan(utilityBounds.height, style.tileHeight * 0.50)
         XCTAssertLessThan(pollutionBounds.width, style.tileWidth * 0.40)
@@ -304,6 +320,7 @@ final class WorldRenderingTests: XCTestCase {
             ("land-value", landValueBounds),
             ("traffic-pressure", trafficBounds),
             ("happiness", happinessBounds),
+            ("services", servicesBounds),
         ] {
             XCTAssertLessThan(
                 bounds.maxY,

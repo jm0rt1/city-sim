@@ -46,6 +46,7 @@ final class SpatialConsequenceTests: XCTestCase {
                 sample.localHappinessIndex,
                 sample.trafficPressure,
                 sample.trafficExposure,
+                sample.civicService?.combined,
                 sample.streetActivityIndex,
                 sample.placeActivityIndex
             ].compactMap({ $0 }) {
@@ -74,6 +75,10 @@ final class SpatialConsequenceTests: XCTestCase {
             completedDevelopmentCount
         )
         XCTAssertEqual(
+            first.spatialConsequences.samples.compactMap(\.civicService).count,
+            completedDevelopmentCount
+        )
+        XCTAssertEqual(
             first.spatialConsequences.samples.compactMap(\.streetActivityIndex).count,
             roadCount
         )
@@ -89,6 +94,7 @@ final class SpatialConsequenceTests: XCTestCase {
         XCTAssertNotNil(developed.localHappinessIndex)
         XCTAssertNil(developed.trafficPressure)
         XCTAssertNotNil(developed.trafficExposure)
+        XCTAssertNotNil(developed.civicService)
         XCTAssertNil(developed.streetActivityIndex)
         XCTAssertNotNil(developed.placeActivityIndex)
 
@@ -99,6 +105,7 @@ final class SpatialConsequenceTests: XCTestCase {
         XCTAssertNil(road.localHappinessIndex)
         XCTAssertNotNil(road.trafficPressure)
         XCTAssertNil(road.trafficExposure)
+        XCTAssertNil(road.civicService)
         XCTAssertNotNil(road.streetActivityIndex)
         XCTAssertNil(road.placeActivityIndex)
 
@@ -109,6 +116,7 @@ final class SpatialConsequenceTests: XCTestCase {
         XCTAssertNil(empty.localHappinessIndex)
         XCTAssertNil(empty.trafficPressure)
         XCTAssertNil(empty.trafficExposure)
+        XCTAssertNil(empty.civicService)
         XCTAssertNil(empty.streetActivityIndex)
         XCTAssertNil(empty.placeActivityIndex)
 
@@ -123,6 +131,7 @@ final class SpatialConsequenceTests: XCTestCase {
         XCTAssertNil(incomplete.localHappinessIndex)
         XCTAssertNil(incomplete.trafficPressure)
         XCTAssertNil(incomplete.trafficExposure)
+        XCTAssertNil(incomplete.civicService)
         XCTAssertNil(incomplete.streetActivityIndex)
         XCTAssertNil(incomplete.placeActivityIndex)
 
@@ -145,6 +154,7 @@ final class SpatialConsequenceTests: XCTestCase {
                 sample.localHappinessIndex,
                 sample.trafficPressure,
                 sample.trafficExposure,
+                sample.civicService?.combined,
                 sample.streetActivityIndex,
                 sample.placeActivityIndex
             ].compactMap({ $0 }) {

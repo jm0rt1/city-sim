@@ -27,7 +27,7 @@ final class CityBenchmarkModeTests: XCTestCase {
         let first = try await CityBenchmarkRunner.run()
         let second = try await CityBenchmarkRunner.run()
 
-        XCTAssertEqual(first.benchmarkID, "native-dense-3x-v2")
+        XCTAssertEqual(first.benchmarkID, "native-dense-3x-v3")
         XCTAssertEqual(first.pulseCount, 400)
         XCTAssertEqual(first.logicalTicks, 1_200)
         XCTAssertEqual(first.finalStatus, GameStatus.playing.rawValue)
@@ -87,7 +87,7 @@ final class CityBenchmarkModeTests: XCTestCase {
         XCTAssertEqual(report.reportVersion, 1)
         XCTAssertEqual(report.generatedAt, generatedAt)
         XCTAssertEqual(report.result, result)
-        XCTAssertEqual(url.lastPathComponent, "native-dense-3x-v2.json")
+        XCTAssertEqual(url.lastPathComponent, "native-dense-3x-v3.json")
         XCTAssertTrue(report.qualification.contains("3×"))
         XCTAssertTrue(report.qualification.contains("not certify"))
         XCTAssertFalse(text.contains(FileManager.default.homeDirectoryForCurrentUser.path))
@@ -198,7 +198,7 @@ final class CityBenchmarkModeTests: XCTestCase {
     }
 
     private static let resultFixture = CityBenchmarkResult(
-        benchmarkID: "native-dense-3x-v2",
+        benchmarkID: "native-dense-3x-v3",
         pulseCount: 400,
         logicalTicks: 1_200,
         developedTiles: 364,

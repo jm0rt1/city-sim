@@ -10,7 +10,7 @@ struct OverlayDiagnosticHotspot: Equatable, Sendable {
         switch overlay {
         case .traffic, .pollution:
             prefix = "Peak"
-        case .landValue, .utilities, .happiness:
+        case .landValue, .utilities, .services, .happiness:
             prefix = "Lowest"
         case .none:
             prefix = "City"
@@ -29,6 +29,8 @@ struct OverlayDiagnosticHotspot: Equatable, Sendable {
             subject = "highest traffic delay road"
         case .utilities:
             subject = "weakest utility service"
+        case .services:
+            subject = "weakest civic service coverage"
         case .happiness:
             subject = "lowest local happiness"
         case .pollution:
@@ -57,7 +59,7 @@ struct OverlayDiagnosticHotspot: Equatable, Sendable {
             switch overlay {
             case .traffic, .pollution:
                 candidate.value > current.value ? candidate : current
-            case .landValue, .utilities, .happiness:
+            case .landValue, .utilities, .services, .happiness:
                 candidate.value < current.value ? candidate : current
             case .none:
                 current
@@ -82,6 +84,8 @@ struct OverlayDiagnosticHotspot: Equatable, Sendable {
             consequence.trafficPressure
         case .utilities:
             consequence.utility.combined
+        case .services:
+            consequence.civicService?.combined
         case .happiness:
             consequence.localHappinessIndex
         case .pollution:
@@ -180,6 +184,21 @@ struct OverlayDiagnosticsPalettePresentation: Equatable {
                 clickThrough: clickThrough,
                 visualKey: "More edge notches signal larger shortfall"
             )
+        case .services:
+            return Self(
+                title: title,
+                value: reading(
+                    consequence?.civicService?.combined,
+                    selectionApplies: selectionApplies,
+                    hotspot: hotspot
+                ),
+                scale: scale,
+                applicability: "Completed places",
+                source: "Completed civic sites over connected streets",
+                freshness: freshness,
+                clickThrough: clickThrough,
+                visualKey: "More reach signals show a larger service gap"
+            )
         case .happiness:
             return Self(
                 title: title,
@@ -214,7 +233,11 @@ struct OverlayDiagnosticsPalettePresentation: Equatable {
     }
 
     static func displayTitle(for overlay: DataOverlay) -> String {
-        overlay == .traffic ? "Traffic pressure" : overlay.title
+        switch overlay {
+        case .traffic: "Traffic pressure"
+        case .services: "Civic service coverage"
+        default: overlay.title
+        }
     }
 
     private static func normalized(_ value: Double?) -> String {

@@ -6,6 +6,7 @@ enum WorldOverlayPattern: String, Sendable {
     case pollutionHatch
     case landValueContour
     case trafficPressureTicks
+    case civicServiceSignals
     case happinessRipples
 }
 
@@ -52,6 +53,8 @@ final class WorldOverlayRenderer {
             emphasis = makeLandValueContour(color: sample.color, severity: severity, detail: minimumDetail)
         case .trafficPressureTicks:
             emphasis = makeTrafficPressureTicks(color: sample.color, severity: severity, detail: minimumDetail)
+        case .civicServiceSignals:
+            emphasis = makeCivicServiceSignals(color: sample.color, severity: severity, detail: minimumDetail)
         case .happinessRipples:
             emphasis = makeHappinessRipples(color: sample.color, severity: severity, detail: minimumDetail)
         }
@@ -98,6 +101,9 @@ final class WorldOverlayRenderer {
             // pressure channel for color/severity only; do not infer traffic
             // from occupancy, topology, vehicles, or state here.
             return makeSample(1 - pressure, pattern: .trafficPressureTicks)
+        case .services:
+            guard let service = consequence.civicService else { return nil }
+            return makeSample(service.combined, pattern: .civicServiceSignals)
         case .happiness:
             guard let value = consequence.localHappinessIndex else { return nil }
             return makeSample(value, pattern: .happinessRipples)
@@ -268,6 +274,34 @@ final class WorldOverlayRenderer {
             line.strokeColor = ink
             line.lineWidth = detail == .city ? 1.35 : 0.95
             line.lineCap = .round
+            root.addChild(line)
+        }
+        return root
+    }
+
+    private func makeCivicServiceSignals(
+        color: NSColor,
+        severity: Double,
+        detail: CameraDetailLevel
+    ) -> SKNode {
+        let root = SKNode()
+        let ink = color.withAlphaComponent(detail == .city ? 0.78 : 0.64)
+        let signalCount = severityMarkCount(severity)
+        let baseY = -style.tileHeight * 0.36
+        for index in 0..<signalCount {
+            let halfWidth = 4 + CGFloat(index) * 3
+            let rise = 2.4 + CGFloat(index) * 1.2
+            let signal = CGMutablePath()
+            signal.move(to: CGPoint(x: -halfWidth, y: baseY))
+            signal.addLine(to: CGPoint(x: 0, y: baseY + rise))
+            signal.addLine(to: CGPoint(x: halfWidth, y: baseY))
+            let line = SKShapeNode(path: signal)
+            line.name = "overlay.services.reach-signal"
+            line.fillColor = .clear
+            line.strokeColor = ink
+            line.lineWidth = detail == .city ? 1.35 : 0.95
+            line.lineCap = .round
+            line.lineJoin = .round
             root.addChild(line)
         }
         return root

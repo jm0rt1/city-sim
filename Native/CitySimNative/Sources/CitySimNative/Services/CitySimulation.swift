@@ -83,14 +83,7 @@ enum CitySimulation {
     }
 
     static func civicServiceHappinessBonus(in state: CityGameState) -> Double {
-        let serviceCount = activeTiles(in: state).filter {
-            [.fireStation, .policeStation, .school].contains($0.kind)
-        }.count
-        return civicServiceHappinessBonus(activeServiceCount: serviceCount)
-    }
-
-    static func civicServiceHappinessBonus(activeServiceCount: Int) -> Double {
-        min(10, Double(max(0, activeServiceCount)) * 2.5)
+        min(10, CityCivicServiceAnalysis(state: state).citywideResidentialCoverage * 10)
     }
 
     static func stormProtection(in state: CityGameState) -> CityStormProtectionSnapshot {
@@ -410,11 +403,7 @@ enum CitySimulation {
         let utilityReserve = utilityReserve(in: state)
         let employment = min(1, Double(jobCapacity) / Double(workforceTarget))
         let parkBonus = min(12, Double(counts[.park] ?? 0) * 3)
-        let services = civicServiceHappinessBonus(
-            activeServiceCount: (counts[.fireStation] ?? 0)
-                + (counts[.policeStation] ?? 0)
-                + (counts[.school] ?? 0)
-        )
+        let services = civicServiceHappinessBonus(in: state)
         let pollution = min(
             26,
             Double(industrialTiles.count) * 3.5

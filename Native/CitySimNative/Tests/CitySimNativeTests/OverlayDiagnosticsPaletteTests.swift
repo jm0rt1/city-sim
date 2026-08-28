@@ -29,6 +29,8 @@ final class OverlayDiagnosticsPaletteTests: XCTestCase {
                     return consequence.trafficPressure
                 case .utilities:
                     return consequence.utility.combined
+                case .services:
+                    return consequence.civicService?.combined
                 case .happiness:
                     return consequence.localHappinessIndex
                 case .pollution:
@@ -39,7 +41,7 @@ final class OverlayDiagnosticsPaletteTests: XCTestCase {
             switch overlay {
             case .traffic, .pollution:
                 expected = eligibleValues.max()
-            case .landValue, .utilities, .happiness:
+            case .landValue, .utilities, .services, .happiness:
                 expected = eligibleValues.min()
             case .none:
                 expected = nil
@@ -151,6 +153,8 @@ final class OverlayDiagnosticsPaletteTests: XCTestCase {
         XCTAssertTrue(DataOverlay.traffic.applies(to: road))
         XCTAssertFalse(DataOverlay.traffic.applies(to: building))
         XCTAssertTrue(DataOverlay.utilities.applies(to: building))
+        XCTAssertTrue(DataOverlay.services.applies(to: building))
+        XCTAssertFalse(DataOverlay.services.applies(to: construction))
         XCTAssertTrue(DataOverlay.pollution.applies(to: construction))
         XCTAssertFalse(DataOverlay.landValue.applies(to: construction))
         XCTAssertTrue(DataOverlay.landValue.applies(to: building))

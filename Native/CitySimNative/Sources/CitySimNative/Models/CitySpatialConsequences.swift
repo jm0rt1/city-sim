@@ -48,6 +48,7 @@ struct CitySpatialConsequence: Identifiable, Equatable, Sendable {
     let localHappinessIndex: Double?
     let trafficPressure: Double?
     let trafficExposure: Double?
+    let civicService: CityLocationCivicService?
     let streetActivityIndex: Double?
     let placeActivityIndex: Double?
 
@@ -62,6 +63,7 @@ struct CitySpatialConsequence: Identifiable, Equatable, Sendable {
         localHappinessIndex: Double? = nil,
         trafficPressure: Double? = nil,
         trafficExposure: Double? = nil,
+        civicService: CityLocationCivicService? = nil,
         streetActivityIndex: Double? = nil,
         placeActivityIndex: Double? = nil
     ) {
@@ -75,6 +77,7 @@ struct CitySpatialConsequence: Identifiable, Equatable, Sendable {
         self.localHappinessIndex = localHappinessIndex
         self.trafficPressure = trafficPressure
         self.trafficExposure = trafficExposure
+        self.civicService = civicService
         self.streetActivityIndex = streetActivityIndex
         self.placeActivityIndex = placeActivityIndex
     }
@@ -109,6 +112,7 @@ struct CitySpatialConsequenceMap: Equatable, Sendable {
         let industrialDistances = DistanceField(width: gridWidth, height: gridHeight, sources: industrialSources)
         let parkDistances = DistanceField(width: gridWidth, height: gridHeight, sources: parkSources)
         let traffic = CityTrafficAnalysis(state: state)
+        let civicServices = CityCivicServiceAnalysis(state: state)
         let powerCapacityFactor = Self.capacityFactor(capacity: state.powerCapacity, used: state.powerUsed)
         let waterCapacityFactor = Self.capacityFactor(capacity: state.waterCapacity, used: state.waterUsed)
 
@@ -157,6 +161,7 @@ struct CitySpatialConsequenceMap: Equatable, Sendable {
             let trafficPenalty = CityTrafficImpact(
                 pressure: trafficExposure ?? 0
             ).localPenalty
+            let civicService = civicServices[tile.coordinate]
             let isCompletedDevelopment = tile.kind != .empty
                 && tile.kind != .road
                 && tile.constructionProgress >= 1
@@ -171,6 +176,7 @@ struct CitySpatialConsequenceMap: Equatable, Sendable {
                         + combined * 0.20
                         + (1 - pollutionExposure) * 0.15
                         + Self.clamp(state.happiness / 100) * 0.10
+                        + (civicService?.combined ?? 0) * 0.10
                         - trafficPenalty * 0.50
                 )
                 switch vitalityScore {
@@ -202,6 +208,7 @@ struct CitySpatialConsequenceMap: Equatable, Sendable {
                         + condition * 0.25
                         + pollutionSafety * 0.20
                         + parkProximity * 0.10
+                        + (civicService?.combined ?? 0) * 0.10
                         - trafficPenalty
                 )
                 localHappinessIndex = Self.clamp(
@@ -210,6 +217,7 @@ struct CitySpatialConsequenceMap: Equatable, Sendable {
                         + condition * 0.15
                         + pollutionSafety * 0.15
                         + parkProximity * 0.10
+                        + (civicService?.combined ?? 0) * 0.10
                         - trafficPenalty * 0.80
                 )
             } else {
@@ -227,7 +235,8 @@ struct CitySpatialConsequenceMap: Equatable, Sendable {
                 landValueIndex: landValueIndex,
                 localHappinessIndex: localHappinessIndex,
                 trafficPressure: traffic[tile.coordinate]?.pressure,
-                trafficExposure: isCompletedDevelopment ? trafficExposure : nil
+                trafficExposure: isCompletedDevelopment ? trafficExposure : nil,
+                civicService: isCompletedDevelopment ? civicService : nil
             )
         }
         samples = zip(orderedTiles, baseSamples).map { tile, sample in
@@ -242,6 +251,7 @@ struct CitySpatialConsequenceMap: Equatable, Sendable {
                 localHappinessIndex: sample.localHappinessIndex,
                 trafficPressure: sample.trafficPressure,
                 trafficExposure: sample.trafficExposure,
+                civicService: sample.civicService,
                 streetActivityIndex: tile.kind == .road
                     ? Self.streetActivityIndex(
                         at: tile.coordinate,

@@ -25,6 +25,7 @@ struct OverlayLegendView: View {
         switch overlay {
         case .traffic: "Flowing"
         case .utilities: "Supplied"
+        case .services: "Covered"
         case .pollution: "Clean"
         default: "Strong"
         }
@@ -34,6 +35,7 @@ struct OverlayLegendView: View {
         switch overlay {
         case .traffic: "Congested"
         case .utilities: "Shortfall"
+        case .services: "Unserved"
         case .pollution: "Polluted"
         default: "Weak"
         }

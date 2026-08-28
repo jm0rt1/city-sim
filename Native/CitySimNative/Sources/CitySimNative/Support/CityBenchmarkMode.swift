@@ -2,14 +2,14 @@ import Foundation
 
 struct CityBenchmarkDefinition: Equatable, Sendable {
     static let verticalSlice = CityBenchmarkDefinition(
-        id: "native-dense-3x-v2",
+        id: "native-dense-3x-v3",
         title: "Dense City · 3×",
         detail: "Runs 400 shipping 3× pulses (1,200 deterministic ticks) across a fully developed 24×24 city, then verifies the final state hash.",
         seed: 2_026_081_202,
         pulseCount: 400,
         ticksPerPulse: SimulationSpeed.fastest.ticksPerPulse,
         provisionalPulseBudgetMilliseconds: 16,
-        expectedFinalFingerprint: "4d4064b3291f08b3ec7b06a54c97eaefe15194586092b9578292906d289bf5e1"
+        expectedFinalFingerprint: "08bcf6368a77ee37e9c277ccad551e2dcd3298b4724b094d4906229092bf748e"
     )
 
     let id: String

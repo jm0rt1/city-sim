@@ -533,6 +533,10 @@ final class CityBuildOperatingForecastTests: XCTestCase {
             Int((try XCTUnwrap(sample.landValueIndex) * 100).rounded())
         )
         XCTAssertEqual(conditions.utilityService, Int((sample.utility.combined * 100).rounded()))
+        XCTAssertEqual(
+            conditions.civicServiceCoverage,
+            Int((try XCTUnwrap(sample.civicService).combined * 100).rounded())
+        )
         XCTAssertEqual(conditions.pollutionExposure, Int((sample.pollutionExposure * 100).rounded()))
         XCTAssertEqual(
             conditions.trafficExposure,
@@ -541,6 +545,7 @@ final class CityBuildOperatingForecastTests: XCTestCase {
         XCTAssertEqual(conditions.vitalityScore, Int((sample.vitalityScore * 100).rounded()))
         XCTAssertTrue(conditions.accessibilitySummary.contains("land value"))
         XCTAssertTrue(conditions.accessibilitySummary.contains("utilities"))
+        XCTAssertTrue(conditions.accessibilitySummary.contains("civic service coverage"))
         XCTAssertTrue(conditions.accessibilitySummary.contains("traffic exposure"))
         XCTAssertTrue(conditions.accessibilitySummary.contains("pollution"))
         XCTAssertTrue(conditions.accessibilitySummary.contains("vitality"))
@@ -834,6 +839,15 @@ final class CityBuildOperatingForecastTests: XCTestCase {
         state.updateTile(at: road) {
             $0 = CityTile(coordinate: road, kind: .road)
         }
+        state.updateTile(at: GridCoordinate(x: 8, y: 10)) {
+            $0 = CityTile(
+                coordinate: GridCoordinate(x: 8, y: 10),
+                kind: .residential,
+                occupancy: 100,
+                constructionProgress: 1
+            )
+        }
+        state.population = 100
         let targetTile = try XCTUnwrap(state.tile(at: target))
 
         for kind in [BuildingKind.fireStation, .policeStation, .school] {
@@ -845,11 +859,11 @@ final class CityBuildOperatingForecastTests: XCTestCase {
                 )
             )
             XCTAssertEqual(forecast.kind, kind)
-            XCTAssertEqual(forecast.happinessTargetGain, 2.5, accuracy: 0.000_001)
+            XCTAssertEqual(forecast.happinessTargetGain, 10.0 / 3.0, accuracy: 0.000_001)
             XCTAssertEqual(forecast.stormDamageReduction, 0.04, accuracy: 0.000_001)
             XCTAssertEqual(
                 forecast.summary,
-                "Happiness target +2.5 pts · storm damage -4 pts"
+                "Happiness target +3.3 pts · storm damage -4 pts"
             )
 
             let decision = CityBuildDecisionPresentation.make(

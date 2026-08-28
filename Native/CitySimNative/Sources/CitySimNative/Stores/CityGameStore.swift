@@ -667,7 +667,7 @@ final class CityGameStore: ObservableObject {
             .buildRoad, .buildResidential, .buildCommercial, .buildIndustrial, .buildPark,
             .buildPowerPlant, .buildWaterTower,
             .bulldozeMode,
-            .overlayUtilities, .overlayPollution, .overlayCity
+            .overlayUtilities, .overlayServices, .overlayPollution, .overlayCity
         ]
         guard approved.contains(command), perform(command) else { return false }
         if let kind = CityCommandCatalog.buildingKind(for: command) {

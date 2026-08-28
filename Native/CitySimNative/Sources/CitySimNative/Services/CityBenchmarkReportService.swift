@@ -55,10 +55,10 @@ struct CityBenchmarkReportService {
 
     private func availableURL() -> URL {
         var suffix = 1
-        var candidate = reportDirectoryURL.appending(path: "native-dense-3x-v2.json")
+        var candidate = reportDirectoryURL.appending(path: "native-dense-3x-v3.json")
         while fileManager.fileExists(atPath: candidate.path) {
             suffix += 1
-            candidate = reportDirectoryURL.appending(path: "native-dense-3x-v2-\(suffix).json")
+            candidate = reportDirectoryURL.appending(path: "native-dense-3x-v3-\(suffix).json")
         }
         return candidate
     }

@@ -413,6 +413,68 @@ final class CityCommandCatalogTests: XCTestCase {
     }
 
     @MainActor
+    func testStrategyHUDAdvancesTheSelectedGrowthToolThroughSiteAndForecast() throws {
+        let initialState = CityGameState.newCity(seed: 42)
+        let commercialStore = CityGameStore(state: initialState, startsPaused: true)
+        commercialStore.selectTool(.commercial)
+
+        var presentation = CityStrategyHUDPresentation.make(
+            state: commercialStore.state,
+            speed: commercialStore.speed,
+            interactionMode: commercialStore.interactionMode,
+            activeTarget: commercialStore.activeMapActionTargetPresentation
+        )
+        XCTAssertEqual(presentation.actions.first?.title, "Choose a site")
+        XCTAssertEqual(presentation.actions.first?.command, .buildCommercial)
+        XCTAssertTrue(presentation.actions.first?.explanation.contains("review its forecast") == true)
+
+        let stateBeforeTargeting = commercialStore.state
+        let response = try XCTUnwrap(presentation.actions.first)
+        StrategyCommandCenterView.perform(response, on: commercialStore)
+        XCTAssertEqual(commercialStore.state, stateBeforeTargeting)
+        XCTAssertNotNil(commercialStore.activeMapActionTargetPresentation?.primaryAction.buildDecision)
+
+        presentation = CityStrategyHUDPresentation.make(
+            state: commercialStore.state,
+            speed: commercialStore.speed,
+            interactionMode: commercialStore.interactionMode,
+            activeTarget: commercialStore.activeMapActionTargetPresentation
+        )
+        XCTAssertEqual(presentation.actions.first?.title, "Review Commercial forecast")
+        XCTAssertEqual(presentation.actions.first?.command, .buildCommercial)
+        XCTAssertTrue(presentation.actions.first?.explanation.contains("before confirming") == true)
+        let targetBeforeReview = try XCTUnwrap(commercialStore.activeMapActionTargetPresentation)
+        let stateBeforeReview = commercialStore.state
+        StrategyCommandCenterView.perform(
+            try XCTUnwrap(presentation.actions.first),
+            on: commercialStore
+        )
+        XCTAssertEqual(commercialStore.activeMapActionTargetPresentation, targetBeforeReview)
+        XCTAssertEqual(commercialStore.state, stateBeforeReview)
+
+        let industrialStore = CityGameStore(state: initialState, startsPaused: true)
+        industrialStore.selectTool(.industrial)
+        let industrial = CityStrategyHUDPresentation.make(
+            state: industrialStore.state,
+            speed: industrialStore.speed,
+            interactionMode: industrialStore.interactionMode,
+            activeTarget: industrialStore.activeMapActionTargetPresentation
+        )
+        XCTAssertEqual(industrial.actions.first?.title, "Choose a site")
+        XCTAssertEqual(industrial.actions.first?.command, .buildIndustrial)
+        XCTAssertEqual(industrial.actions.last?.command, .buildCommercial)
+
+        commercialStore.activateInspectMode()
+        let reset = CityStrategyHUDPresentation.make(
+            state: commercialStore.state,
+            speed: commercialStore.speed,
+            interactionMode: commercialStore.interactionMode,
+            activeTarget: commercialStore.activeMapActionTargetPresentation
+        )
+        XCTAssertEqual(reset.actions.map(\.title), ["Choose Commercial", "Choose Industrial"])
+    }
+
+    @MainActor
     func testGrowthProjectConstructionOwnsTheImmediateActionUntilStrategyCommitment() throws {
         var state = CityGameState.newCity(seed: 42)
         let coordinate = try XCTUnwrap(state.tiles.first(where: { tile in

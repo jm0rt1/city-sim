@@ -23,12 +23,68 @@ struct CityStrategyHUDPresentation: Equatable {
 
     static func make(
         state: CityGameState,
-        speed: SimulationSpeed = .paused
+        speed: SimulationSpeed = .paused,
+        interactionMode: CityInteractionMode? = nil,
+        activeTarget: CityMapActionTargetPresentation? = nil
     ) -> CityStrategyHUDPresentation {
+        let presentation: CityStrategyHUDPresentation
         if let scenario = CityAuthoredScenarioEvaluation.make(state: state) {
-            return authoredScenario(scenario)
+            presentation = authoredScenario(scenario)
+        } else {
+            presentation = make(analytics: CityAnalytics(state: state), speed: speed)
         }
-        return make(analytics: CityAnalytics(state: state), speed: speed)
+        return presentation.alignedWithBuildContext(
+            interactionMode: interactionMode,
+            activeTarget: activeTarget
+        )
+    }
+
+    private func alignedWithBuildContext(
+        interactionMode: CityInteractionMode?,
+        activeTarget: CityMapActionTargetPresentation?
+    ) -> CityStrategyHUDPresentation {
+        guard case .build(let selectedKind) = interactionMode else { return self }
+
+        func matches(_ response: CityDirectResponse) -> Bool {
+            response.focusesMap
+                && CityCommandCatalog.buildingKind(for: response.command) == selectedKind
+        }
+
+        func aligned(_ response: CityDirectResponse) -> CityDirectResponse {
+            let hasForecast = activeTarget?.primaryAction.buildDecision != nil
+            let destination = selectedKind == .road ? "block" : "site"
+            return CityDirectResponse(
+                title: hasForecast
+                    ? "Review \(selectedKind.title) forecast"
+                    : "Choose a \(destination)",
+                command: response.command,
+                explanation: hasForecast
+                    ? "Return focus to the selected block and review its authoritative \(selectedKind.title.lowercased()) forecast before confirming."
+                    : "Select the nearest eligible \(selectedKind.title.lowercased()) \(destination) and review its forecast before building.",
+                focusesMap: response.focusesMap
+            )
+        }
+
+        var contextualActions = actions
+        if let selectedIndex = contextualActions.firstIndex(where: matches) {
+            let selectedResponse = contextualActions.remove(at: selectedIndex)
+            contextualActions.insert(aligned(selectedResponse), at: 0)
+        }
+        let contextualDiagnostic = diagnostic.map { response in
+            matches(response) ? aligned(response) : response
+        }
+        guard contextualActions != actions || contextualDiagnostic != diagnostic else {
+            return self
+        }
+        return CityStrategyHUDPresentation(
+            eyebrow: eyebrow,
+            title: title,
+            status: status,
+            summary: summary,
+            tone: tone,
+            diagnostic: contextualDiagnostic,
+            actions: contextualActions
+        )
     }
 
     static func make(
@@ -653,7 +709,12 @@ struct StrategyCommandCenterView: View {
     static let regularMaximumHeight: CGFloat = 52
 
     private var presentation: CityStrategyHUDPresentation {
-        CityStrategyHUDPresentation.make(state: store.state, speed: store.speed)
+        CityStrategyHUDPresentation.make(
+            state: store.state,
+            speed: store.speed,
+            interactionMode: store.interactionMode,
+            activeTarget: store.activeMapActionTargetPresentation
+        )
     }
 
     private var trajectory: CityTrajectoryHUDPresentation {

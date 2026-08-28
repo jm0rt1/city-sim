@@ -274,7 +274,9 @@ struct TopHUDView: View {
         let mandateComplete = store.completedObjectiveCount == store.objectives.count
         let strategy = CityStrategyHUDPresentation.make(
             state: store.state,
-            speed: store.speed
+            speed: store.speed,
+            interactionMode: store.interactionMode,
+            activeTarget: store.activeMapActionTargetPresentation
         )
         let response = strategy.diagnostic ?? strategy.actions.first
         let actionTitle = response.map {
@@ -621,7 +623,12 @@ struct FocusCityHUDView: View {
     static let regularMaximumHeight: CGFloat = 68
 
     private var strategy: CityStrategyHUDPresentation {
-        CityStrategyHUDPresentation.make(state: store.state, speed: store.speed)
+        CityStrategyHUDPresentation.make(
+            state: store.state,
+            speed: store.speed,
+            interactionMode: store.interactionMode,
+            activeTarget: store.activeMapActionTargetPresentation
+        )
     }
 
     private var simulationStatus: HUDSimulationStatePresentation {

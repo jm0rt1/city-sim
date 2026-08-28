@@ -67,6 +67,12 @@ struct InspectorView: View {
         case decisionSupport
     }
 
+    enum SelectionActionTier: Equatable {
+        case diagnosis
+        case nextAction
+        case siteActions
+    }
+
     static func financeCardOrder(compact: Bool, projectedBalance: Double) -> [FinanceCard] {
         guard compact else {
             return [.treasury, .nextCycle, .taxPolicy, .decisionSupport]
@@ -74,6 +80,19 @@ struct InspectorView: View {
         return projectedBalance < 0
             ? [.taxPolicy, .decisionSupport, .nextCycle, .treasury]
             : [.taxPolicy, .treasury, .nextCycle, .decisionSupport]
+    }
+
+    static func selectionActionOrder(
+        for kind: BuildingKind,
+        diagnosisAvailable: Bool
+    ) -> [SelectionActionTier] {
+        var order: [SelectionActionTier] = diagnosisAvailable ? [.diagnosis] : []
+        if kind == .empty || kind == .cityHall {
+            order.append(.nextAction)
+        } else {
+            order.append(.siteActions)
+        }
+        return order
     }
 
     private var analytics: CityAnalytics { store.analytics }
@@ -233,7 +252,18 @@ struct InspectorView: View {
 
     private func tileContext(_ tile: CityTile) -> some View {
         let snapshot = try? CityPresentationSnapshot(state: store.state)
+        let diagnosis = snapshot.flatMap {
+            CitySelectedLocationDiagnosis.make(tile: tile, snapshot: $0)
+        }
+        let actionOrder = Self.selectionActionOrder(
+            for: tile.kind,
+            diagnosisAvailable: diagnosis != nil
+        )
         return LazyVGrid(columns: contextColumns, alignment: .leading, spacing: 8) {
+            if actionOrder.first == .diagnosis, let diagnosis {
+                diagnosisCard(diagnosis)
+            }
+
             if let outlook = CityDevelopmentOutlook.make(tile: tile, state: store.state) {
                 let outlookTint: Color = switch outlook.status {
                 case .ready: GameTheme.accent
@@ -291,7 +321,9 @@ struct InspectorView: View {
                 .accessibilityValue(conditions.accessibilitySummary)
             }
 
-            nextActionCard(for: tile)
+            if actionOrder.contains(.nextAction) {
+                nextActionCard(for: tile)
+            }
 
             ContextCard(title: "Identity", symbol: tile.kind.symbol, tint: tile.kind.contextTint) {
                 ContextValueRow(label: "Type", value: tile.kind.title)
@@ -339,26 +371,26 @@ struct InspectorView: View {
                 }
             }
 
-            if let snapshot,
-               let diagnosis = CitySelectedLocationDiagnosis.make(
-                   tile: tile,
-                   snapshot: snapshot
-               ) {
-                ContextCard(title: "Cause · consequence · response", symbol: "cross.case.fill", tint: GameTheme.warning) {
-                    Text(diagnosis.cause)
-                        .font(.caption2.weight(.semibold))
-                        .lineLimit(compact ? 2 : 3)
-                    Text(diagnosis.consequence)
-                        .font(.caption2)
-                        .foregroundStyle(.secondary)
-                        .lineLimit(2)
-                    diagnosisActions(diagnosis)
-                }
-                .accessibilityElement(children: .contain)
-                .accessibilityLabel(diagnosis.accessibilitySummary)
+            if actionOrder.last == .siteActions {
+                siteActionsCard(for: tile)
             }
-
         }
+    }
+
+    private func diagnosisCard(_ diagnosis: CitySelectedLocationDiagnosis) -> some View {
+        ContextCard(title: "Cause · consequence · response", symbol: "cross.case.fill", tint: GameTheme.warning) {
+            Text(diagnosis.cause)
+                .font(.caption2.weight(.semibold))
+                .lineLimit(compact ? 2 : 3)
+            Text(diagnosis.consequence)
+                .font(.caption2)
+                .foregroundStyle(.secondary)
+                .lineLimit(2)
+            diagnosisActions(diagnosis)
+        }
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel(diagnosis.accessibilitySummary)
+        .accessibilityIdentifier("hud.selection.priority-response")
     }
 
     private func localConditionMetric(_ label: String, _ value: String) -> some View {
@@ -395,39 +427,44 @@ struct InspectorView: View {
                     .foregroundStyle(.secondary)
                     .lineLimit(2)
                 compactAction("City data", symbol: "chart.dots.scatter") { store.perform(.inspectorOverview) }
-            } else {
-                ContextValueRow(
-                    label: "Demolition",
-                    value: store.state.usesUnlimitedFunds ? "Waived" : tile.kind.demolitionCost.currencyText
-                )
-                if let forecast = CityDemolitionForecast.make(tile: tile, state: store.state) {
-                    Text(forecast.summary)
-                        .font(.caption2.weight(.semibold))
-                        .foregroundStyle(forecast.balanceChange >= 0 ? GameTheme.accent : GameTheme.warning)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .accessibilityLabel("Demolition impact")
-                        .accessibilityValue(forecast.summary)
-                }
-                HStack(spacing: 6) {
-                    compactAction("City data", symbol: "chart.dots.scatter") { store.perform(.inspectorOverview) }
-                    Button(role: .destructive) { store.demolishSelected() } label: {
-                        Label("Demolish", systemImage: "trash")
-                            .frame(maxWidth: .infinity, minHeight: GameTheme.controlMinimum)
-                    }
-                    .buttonStyle(.bordered)
-                    .accessibilityLabel(
-                        store.state.usesUnlimitedFunds
-                            ? "Demolish \(tile.kind.title) with spending waived"
-                            : "Demolish \(tile.kind.title) for \(tile.kind.demolitionCost.currencyText)"
-                    )
-                    .accessibilityHint(
-                        store.state.usesUnlimitedFunds
-                            ? "Sandbox demolition spending is waived. The operating and capacity impact is shown above. Undo is available after activation."
-                            : "Demolition costs \(tile.kind.demolitionCost.currencyText). The operating and capacity impact is shown above. Undo is available after activation."
-                    )
-                }
             }
         }
+    }
+
+    private func siteActionsCard(for tile: CityTile) -> some View {
+        ContextCard(title: "Site actions", symbol: "wrench.and.screwdriver.fill", tint: GameTheme.information) {
+            ContextValueRow(
+                label: "Demolition",
+                value: store.state.usesUnlimitedFunds ? "Waived" : tile.kind.demolitionCost.currencyText
+            )
+            if let forecast = CityDemolitionForecast.make(tile: tile, state: store.state) {
+                Text(forecast.summary)
+                    .font(.caption2.weight(.semibold))
+                    .foregroundStyle(forecast.balanceChange >= 0 ? GameTheme.accent : GameTheme.warning)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .accessibilityLabel("Demolition impact")
+                    .accessibilityValue(forecast.summary)
+            }
+            HStack(spacing: 6) {
+                compactAction("City data", symbol: "chart.dots.scatter") { store.perform(.inspectorOverview) }
+                Button(role: .destructive) { store.demolishSelected() } label: {
+                    Label("Demolish", systemImage: "trash")
+                        .frame(maxWidth: .infinity, minHeight: GameTheme.controlMinimum)
+                }
+                .buttonStyle(.bordered)
+                .accessibilityLabel(
+                    store.state.usesUnlimitedFunds
+                        ? "Demolish \(tile.kind.title) with spending waived"
+                        : "Demolish \(tile.kind.title) for \(tile.kind.demolitionCost.currencyText)"
+                )
+                .accessibilityHint(
+                    store.state.usesUnlimitedFunds
+                        ? "Sandbox demolition spending is waived. The operating and capacity impact is shown above. Undo is available after activation."
+                        : "Demolition costs \(tile.kind.demolitionCost.currencyText). The operating and capacity impact is shown above. Undo is available after activation."
+                )
+            }
+        }
+        .accessibilityIdentifier("hud.selection.site-actions")
     }
 
     private var overviewContext: some View {

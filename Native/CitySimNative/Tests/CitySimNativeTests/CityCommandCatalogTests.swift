@@ -4356,6 +4356,45 @@ final class CityCommandCatalogTests: XCTestCase {
     }
 
     @MainActor
+    func testSelectedProblemBlockPrioritizesDiagnosisAndDemotesDemolition() {
+        XCTAssertEqual(
+            InspectorView.selectionActionOrder(
+                for: .residential,
+                diagnosisAvailable: true
+            ),
+            [.diagnosis, .siteActions]
+        )
+        XCTAssertEqual(
+            InspectorView.selectionActionOrder(
+                for: .road,
+                diagnosisAvailable: true
+            ),
+            [.diagnosis, .siteActions]
+        )
+        XCTAssertEqual(
+            InspectorView.selectionActionOrder(
+                for: .cityHall,
+                diagnosisAvailable: true
+            ),
+            [.diagnosis, .nextAction]
+        )
+        XCTAssertEqual(
+            InspectorView.selectionActionOrder(
+                for: .empty,
+                diagnosisAvailable: false
+            ),
+            [.nextAction]
+        )
+        XCTAssertEqual(
+            InspectorView.selectionActionOrder(
+                for: .residential,
+                diagnosisAvailable: false
+            ),
+            [.siteActions]
+        )
+    }
+
+    @MainActor
     func testSelectedDiagnosisRendersAtDefaultAndCompactSizes() throws {
         let store = CityGameStore(state: .newCity(seed: 42))
         let tile = try XCTUnwrap(store.state.tiles.first { $0.kind != .empty && $0.kind != .road })

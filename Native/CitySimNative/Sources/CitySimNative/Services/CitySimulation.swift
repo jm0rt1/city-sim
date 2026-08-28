@@ -17,6 +17,35 @@ enum BuildRejection: Error, Equatable {
     }
 }
 
+enum CityDevelopmentUpgradeBlocker: Equatable, Sendable {
+    case unsupported
+    case maximumLevel
+    case construction(progress: Double)
+    case operatingBalance(current: Double)
+    case utilityCoverage(current: Double)
+    case treasury(current: Double)
+    case townCharterReview
+    case regionalReview
+    case strategyPriority(BuildingKind)
+    case condition(current: Double, required: Double)
+    case happiness(current: Double, required: Double)
+    case demand(current: Double, required: Double)
+    case developmentCashflow(projected: Double)
+    case progressionUtilityReserve
+    case utilization(current: Double, required: Double)
+}
+
+struct CityDevelopmentUpgradeEvaluation: Equatable, Sendable {
+    let kind: BuildingKind
+    let currentLevel: Int
+    let maximumLevel: Int
+    let currentCapacity: Int
+    let nextCapacity: Int
+    let blockers: [CityDevelopmentUpgradeBlocker]
+
+    var isEligible: Bool { blockers.isEmpty }
+}
+
 enum CitySimulation {
     static let townCharterQualificationCycles = 12
     static let regionalCapitalQualificationCycles = 12
@@ -492,17 +521,7 @@ enum CitySimulation {
     }
 
     private static func maybeUpgrade(_ state: inout CityGameState) {
-        let charterReviewActive = !(state.progression?.townCharterAwarded ?? false)
-            && (state.progression?.townCharterQualifyingCycles ?? 0) > 0
-        let regionalReviewActive = state.progression?.secondAct?.phase == .qualification
-            && (state.progression?.secondAct?.qualifyingCycles ?? 0) > 0
-        guard state.tick % 64 == 0,
-              state.treasury >= 5_000,
-              projectedBalance(in: state) >= 0,
-              utilityCoverage(in: state) >= 1,
-              !charterReviewActive,
-              !regionalReviewActive
-        else { return }
+        guard state.tick % 64 == 0 else { return }
 
         let strategyKind: BuildingKind? = switch state.progression?.strategy?.committedStrategy {
         case .commercialStewardship: .commercial
@@ -511,20 +530,7 @@ enum CitySimulation {
         }
         let candidates = state.tiles.indices.filter { index in
             let tile = state.tiles[index]
-            guard [.residential, .commercial, .industrial].contains(tile.kind),
-                  strategyKind == nil || tile.kind == strategyKind,
-                  tile.level < maximumDevelopmentLevel(for: tile.kind),
-                  tile.constructionProgress >= 1,
-                  tile.condition >= 0.75,
-                  state.happiness >= minimumDevelopmentHappiness(for: tile.kind),
-                  developmentDemand(for: tile.kind, in: state) >= minimumDevelopmentDemand(for: tile.kind),
-                  preservesDevelopmentCashflow(afterDeveloping: tile.kind, in: state),
-                  preservesProgressionUtilityReserve(afterDeveloping: tile.kind, in: state)
-            else { return false }
-
-            let utilization = Double(tile.occupancy)
-                / Double(max(1, developmentCapacity(for: tile.kind, level: tile.level)))
-            return utilization >= minimumDevelopmentUtilization(for: tile.level)
+            return developmentUpgradeEvaluation(for: tile, in: state).isEligible
         }
         guard let index = candidates.sorted(by: { lhs, rhs in
             let left = state.tiles[lhs]
@@ -558,6 +564,114 @@ enum CitySimulation {
                 detail: "\(upgraded.kind.title) at block \(upgraded.coordinate.x + 1), \(upgraded.coordinate.y + 1) reached level \(upgraded.level) because occupancy and demand stayed strong. Capacity and the tax base increased, but developed levels also add upkeep\(upgraded.kind == .industrial ? ", pollution," : "") and utility load."
             ),
             to: &state
+        )
+    }
+
+    static func developmentUpgradeEvaluation(
+        for tile: CityTile,
+        in state: CityGameState
+    ) -> CityDevelopmentUpgradeEvaluation {
+        guard [.residential, .commercial, .industrial].contains(tile.kind) else {
+            return CityDevelopmentUpgradeEvaluation(
+                kind: tile.kind,
+                currentLevel: tile.level,
+                maximumLevel: maximumDevelopmentLevel(for: tile.kind),
+                currentCapacity: 0,
+                nextCapacity: 0,
+                blockers: [.unsupported]
+            )
+        }
+
+        let maximumLevel = maximumDevelopmentLevel(for: tile.kind)
+        let currentCapacity = developmentCapacity(for: tile.kind, level: tile.level)
+        let nextCapacity = developmentCapacity(
+            for: tile.kind,
+            level: min(maximumLevel, tile.level + 1)
+        )
+        if tile.level >= maximumLevel {
+            return CityDevelopmentUpgradeEvaluation(
+                kind: tile.kind,
+                currentLevel: tile.level,
+                maximumLevel: maximumLevel,
+                currentCapacity: currentCapacity,
+                nextCapacity: nextCapacity,
+                blockers: [.maximumLevel]
+            )
+        }
+        if tile.constructionProgress < 1 {
+            return CityDevelopmentUpgradeEvaluation(
+                kind: tile.kind,
+                currentLevel: tile.level,
+                maximumLevel: maximumLevel,
+                currentCapacity: currentCapacity,
+                nextCapacity: nextCapacity,
+                blockers: [.construction(progress: tile.constructionProgress)]
+            )
+        }
+
+        let charterReviewActive = !(state.progression?.townCharterAwarded ?? false)
+            && (state.progression?.townCharterQualifyingCycles ?? 0) > 0
+        let regionalReviewActive = state.progression?.secondAct?.phase == .qualification
+            && (state.progression?.secondAct?.qualifyingCycles ?? 0) > 0
+        let strategyKind: BuildingKind? = switch state.progression?.strategy?.committedStrategy {
+        case .commercialStewardship: .commercial
+        case .industrialExpansion: .industrial
+        case nil: nil
+        }
+        let balance = projectedBalance(in: state)
+        let coverage = utilityCoverage(in: state)
+        let requiredHappiness = minimumDevelopmentHappiness(for: tile.kind)
+        let currentDemand = developmentDemand(for: tile.kind, in: state)
+        let requiredDemand = minimumDevelopmentDemand(for: tile.kind)
+        let requiredUtilization = minimumDevelopmentUtilization(for: tile.level)
+        let utilization = Double(tile.occupancy) / Double(max(1, currentCapacity))
+        let developedBalance = balance - tile.kind.upkeep * upkeepMultiplier
+
+        var blockers: [CityDevelopmentUpgradeBlocker] = []
+        if balance < 0 {
+            blockers.append(.operatingBalance(current: balance))
+        }
+        if coverage < 1 {
+            blockers.append(.utilityCoverage(current: coverage))
+        }
+        if state.treasury < 5_000 {
+            blockers.append(.treasury(current: state.treasury))
+        }
+        if charterReviewActive {
+            blockers.append(.townCharterReview)
+        }
+        if regionalReviewActive {
+            blockers.append(.regionalReview)
+        }
+        if let strategyKind, tile.kind != strategyKind {
+            blockers.append(.strategyPriority(strategyKind))
+        }
+        if tile.condition < 0.75 {
+            blockers.append(.condition(current: tile.condition, required: 0.75))
+        }
+        if state.happiness < requiredHappiness {
+            blockers.append(.happiness(current: state.happiness, required: requiredHappiness))
+        }
+        if currentDemand < requiredDemand {
+            blockers.append(.demand(current: currentDemand, required: requiredDemand))
+        }
+        if !preservesDevelopmentCashflow(afterDeveloping: tile.kind, in: state) {
+            blockers.append(.developmentCashflow(projected: developedBalance))
+        }
+        if !preservesProgressionUtilityReserve(afterDeveloping: tile.kind, in: state) {
+            blockers.append(.progressionUtilityReserve)
+        }
+        if utilization < requiredUtilization {
+            blockers.append(.utilization(current: utilization, required: requiredUtilization))
+        }
+
+        return CityDevelopmentUpgradeEvaluation(
+            kind: tile.kind,
+            currentLevel: tile.level,
+            maximumLevel: maximumLevel,
+            currentCapacity: currentCapacity,
+            nextCapacity: nextCapacity,
+            blockers: blockers
         )
     }
 

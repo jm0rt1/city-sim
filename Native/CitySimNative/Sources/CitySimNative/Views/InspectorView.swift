@@ -261,6 +261,36 @@ struct InspectorView: View {
                 .accessibilityValue(conditions.accessibilitySummary)
             }
 
+            if let outlook = CityDevelopmentOutlook.make(tile: tile, state: store.state) {
+                let outlookTint: Color = switch outlook.status {
+                case .ready: GameTheme.accent
+                case .held: GameTheme.warning
+                case .building, .mature: GameTheme.information
+                }
+                ContextCard(
+                    title: "Growth outlook",
+                    symbol: "arrow.up.right.square.fill",
+                    tint: outlookTint
+                ) {
+                    Text(outlook.statusLabel.uppercased())
+                        .font(.caption2.weight(.heavy))
+                        .foregroundStyle(outlookTint)
+                        .lineLimit(1)
+                    Text(outlook.detail)
+                        .font(.caption.weight(.semibold))
+                        .lineLimit(2)
+                        .minimumScaleFactor(0.82)
+                    Text(outlook.payoff)
+                        .font(.caption2.monospacedDigit())
+                        .foregroundStyle(.secondary)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.78)
+                }
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel("Growth outlook")
+                .accessibilityValue(outlook.accessibilitySummary)
+            }
+
             ContextCard(title: "Identity", symbol: tile.kind.symbol, tint: tile.kind.contextTint) {
                 ContextValueRow(label: "Type", value: tile.kind.title)
                 ContextValueRow(label: "Level", value: "\(tile.level)")

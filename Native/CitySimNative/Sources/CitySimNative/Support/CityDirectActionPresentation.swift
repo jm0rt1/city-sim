@@ -1422,6 +1422,112 @@ struct CitySelectedLocationConditions: Equatable, Sendable {
     }
 }
 
+struct CityDevelopmentOutlook: Equatable, Sendable {
+    enum Status: Equatable, Sendable {
+        case ready
+        case held
+        case building
+        case mature
+    }
+
+    let status: Status
+    let statusLabel: String
+    let detail: String
+    let payoff: String
+    let accessibilitySummary: String
+
+    static func make(tile: CityTile, state: CityGameState) -> CityDevelopmentOutlook? {
+        guard [.residential, .commercial, .industrial].contains(tile.kind) else { return nil }
+        let evaluation = CitySimulation.developmentUpgradeEvaluation(for: tile, in: state)
+        let capacityName = tile.kind == .residential ? "resident capacity" : "job capacity"
+
+        if evaluation.blockers == [.maximumLevel] {
+            let detail = "Level \(evaluation.currentLevel) is the \(tile.kind.title) cap"
+            let payoff = "\(evaluation.currentCapacity.formatted()) \(capacityName)"
+            return CityDevelopmentOutlook(
+                status: .mature,
+                statusLabel: "Mature",
+                detail: detail,
+                payoff: payoff,
+                accessibilitySummary: "Growth mature. \(detail). \(payoff)."
+            )
+        }
+
+        if case let .construction(progress) = evaluation.blockers.first {
+            let detail = "Construction \((progress * 100).percentText) complete"
+            let payoff = "Level \(evaluation.currentLevel) · \(evaluation.currentCapacity.formatted()) \(capacityName)"
+            return CityDevelopmentOutlook(
+                status: .building,
+                statusLabel: "Building",
+                detail: detail,
+                payoff: payoff,
+                accessibilitySummary: "Growth building. \(detail). \(payoff)."
+            )
+        }
+
+        let payoff = "L\(evaluation.currentLevel) → L\(evaluation.currentLevel + 1) · "
+            + "\(evaluation.currentCapacity.formatted()) → \(evaluation.nextCapacity.formatted()) \(capacityName)"
+        if evaluation.isEligible {
+            return CityDevelopmentOutlook(
+                status: .ready,
+                statusLabel: "Ready for review",
+                detail: "All upgrade gates met",
+                payoff: payoff,
+                accessibilitySummary: "Growth ready for review. All upgrade gates are met. \(payoff)."
+            )
+        }
+
+        let blockerDetails = evaluation.blockers.map(blockerDetail)
+        let primary = blockerDetails.first ?? "Upgrade requirements are not met"
+        let remaining = max(0, blockerDetails.count - 1)
+        let detail = remaining == 0
+            ? primary
+            : "\(primary) · +\(remaining) more \(remaining == 1 ? "gate" : "gates")"
+        return CityDevelopmentOutlook(
+            status: .held,
+            statusLabel: "Held",
+            detail: detail,
+            payoff: payoff,
+            accessibilitySummary: "Growth held. \(payoff). Requirements not met: \(blockerDetails.joined(separator: "; "))."
+        )
+    }
+
+    private static func blockerDetail(_ blocker: CityDevelopmentUpgradeBlocker) -> String {
+        switch blocker {
+        case .unsupported:
+            "This block does not develop"
+        case .maximumLevel:
+            "Maximum level reached"
+        case let .construction(progress):
+            "Construction \((progress * 100).percentText) complete"
+        case let .operatingBalance(current):
+            "Balance \(current.signedCurrencyText) / cycle needs $0"
+        case let .utilityCoverage(current):
+            "Utilities \((current * 100).percentText) need 100%"
+        case let .treasury(current):
+            "Treasury \(current.currencyText) needs $5,000"
+        case .townCharterReview:
+            "Town Charter review is active"
+        case .regionalReview:
+            "Regional qualification review is active"
+        case let .strategyPriority(kind):
+            "City strategy prioritizes \(kind.title) upgrades"
+        case let .condition(current, required):
+            "Condition \((current * 100).percentText) needs \((required * 100).percentText)"
+        case let .happiness(current, required):
+            "Happiness \(current.percentText) needs \(required.percentText)"
+        case let .demand(current, required):
+            "Demand \((current * 100).percentText) needs \((required * 100).percentText)"
+        case let .developmentCashflow(projected):
+            "Upgrade upkeep would leave \(projected.signedCurrencyText) / cycle"
+        case .progressionUtilityReserve:
+            "Planned utility reserve is too low"
+        case let .utilization(current, required):
+            "Occupancy \((current * 100).percentText) needs \((required * 100).percentText)"
+        }
+    }
+}
+
 struct CitySelectedLocationDiagnosis: Equatable, Sendable {
     let coordinate: GridCoordinate
     let cause: String

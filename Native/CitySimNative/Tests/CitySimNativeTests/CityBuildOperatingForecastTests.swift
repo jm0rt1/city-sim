@@ -2,6 +2,44 @@ import XCTest
 @testable import CitySimNative
 
 final class CityBuildOperatingForecastTests: XCTestCase {
+    func testDevelopmentOutlookUsesAuthoritativeUpgradeGatesAndCapacityPayoff() throws {
+        var state = CityGameState.newCity(seed: 42)
+        let commercial = try XCTUnwrap(
+            state.tiles.first(where: { $0.kind == .commercial && $0.constructionProgress >= 1 })
+        )
+        let held = try XCTUnwrap(CityDevelopmentOutlook.make(tile: commercial, state: state))
+
+        XCTAssertEqual(held.status, .held)
+        XCTAssertEqual(held.statusLabel, "Held")
+        XCTAssertTrue(held.detail.hasPrefix("Balance -$126 / cycle needs $0"))
+        XCTAssertEqual(held.payoff, "L1 → L2 · 80 → 160 job capacity")
+        XCTAssertTrue(held.accessibilitySummary.contains("Requirements not met"))
+
+        state.progression = nil
+        state.treasury = 100_000
+        state.population = 10_000
+        state.jobs = 10_000
+        state.happiness = 100
+        state.demand = DemandLevels(residential: 1, commercial: 1, industrial: 1)
+        state.powerCapacity = 100_000
+        state.waterCapacity = 100_000
+        state.powerUsed = 100
+        state.waterUsed = 100
+        state.updateTile(at: commercial.coordinate) {
+            $0.occupancy = 80
+            $0.condition = 1
+            $0.constructionProgress = 1
+        }
+        let readyTile = try XCTUnwrap(state.tile(at: commercial.coordinate))
+        let evaluation = CitySimulation.developmentUpgradeEvaluation(for: readyTile, in: state)
+        let ready = try XCTUnwrap(CityDevelopmentOutlook.make(tile: readyTile, state: state))
+
+        XCTAssertTrue(evaluation.isEligible, "Unexpected blockers: \(evaluation.blockers)")
+        XCTAssertEqual(ready.status, .ready)
+        XCTAssertEqual(ready.detail, "All upgrade gates met")
+        XCTAssertEqual(ready.payoff, held.payoff)
+    }
+
     func testServiceForecastUsesAuthoritativeOperatingCharge() throws {
         let state = CityGameState.newCity(seed: 42)
         let tile = try validTile(for: .park, in: state)

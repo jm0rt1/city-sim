@@ -3756,9 +3756,18 @@ final class CityCommandCatalogTests: XCTestCase {
             -4 * BuildingKind.road.upkeep * CitySimulation.upkeepMultiplier,
             accuracy: 0.001
         )
-        XCTAssertEqual(initialPlan.headline, "4 blocks · $480 total")
-        XCTAssertTrue(initialPlan.operatingImpact.contains("Full-route net"))
+        XCTAssertEqual(initialPlan.headline, "4 blocks · $480 route · $2,880 project")
+        XCTAssertTrue(initialPlan.operatingImpact.contains("route"))
+        XCTAssertTrue(initialPlan.operatingImpact.contains("Commercial"))
+        XCTAssertEqual(
+            initialPlan.projectConstructionCost,
+            4 * BuildingKind.road.buildCost + BuildingKind.commercial.buildCost
+        )
+        XCTAssertEqual(initialPlan.projectFundingGap, 0)
+        XCTAssertEqual(initialPlan.destinationTitle, "Commercial")
+        XCTAssertGreaterThan(initialPlan.projectCompletedBalance, initialPlan.completedBalance)
         XCTAssertTrue(initialPlan.accessibilitySummary.contains("Currently funded"))
+        XCTAssertTrue(initialPlan.accessibilitySummary.contains("Full project currently funded"))
         XCTAssertEqual(store.state, authored)
         XCTAssertEqual(store.state.tile(at: blockedCoordinate)?.kind, .empty)
         XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration + 1)
@@ -3787,6 +3796,15 @@ final class CityCommandCatalogTests: XCTestCase {
                 Double(3 - index) * BuildingKind.road.buildCost
             )
             XCTAssertEqual(remainingPlan.completedBalance, initialPlan.completedBalance, accuracy: 0.001)
+            XCTAssertEqual(
+                remainingPlan.projectConstructionCost,
+                Double(3 - index) * BuildingKind.road.buildCost + BuildingKind.commercial.buildCost
+            )
+            XCTAssertEqual(
+                remainingPlan.projectCompletedBalance,
+                initialPlan.projectCompletedBalance,
+                accuracy: 0.001
+            )
             XCTAssertEqual(store.interactionMode, .build(.road))
             XCTAssertNotNil(store.roadConnectionRecovery)
             XCTAssertEqual(store.state.tile(at: blockedCoordinate)?.kind, .empty)

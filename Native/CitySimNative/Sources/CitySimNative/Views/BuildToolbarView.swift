@@ -344,7 +344,9 @@ struct BuildToolbarView: View {
 
             VStack(alignment: .leading, spacing: 3) {
                 Label(
-                    (routePlan == nil ? decision.availability : "Route step ready").uppercased(),
+                    (routePlan == nil
+                        ? decision.availability
+                        : "\(routePlan?.destinationTitle ?? "Project") route plan").uppercased(),
                     systemImage: decision.disabledReason == nil
                         ? "checkmark.circle.fill"
                         : "exclamationmark.triangle.fill"

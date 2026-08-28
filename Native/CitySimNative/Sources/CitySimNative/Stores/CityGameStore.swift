@@ -538,9 +538,11 @@ final class CityGameStore: ObservableObject {
     }
 
     var roadConnectionPlanPresentation: CityRoadConnectionPlanPresentation? {
-        guard roadConnectionRecovery != nil else { return nil }
+        guard let recovery = roadConnectionRecovery else { return nil }
         return CityRoadConnectionPlanPresentation.make(
             route: roadConnectionRecoveryRoute,
+            destinationKind: recovery.blockedKind,
+            destinationCoordinate: recovery.blockedCoordinate,
             state: state
         )
     }

@@ -509,6 +509,7 @@ enum CitySimulation {
         case .industrialExpansion: .industrial
         case nil: nil
         }
+        let consequences = CitySpatialConsequenceMap(state: state)
         let candidates = state.tiles.indices.filter { index in
             let tile = state.tiles[index]
             guard [.residential, .commercial, .industrial].contains(tile.kind),
@@ -527,24 +528,12 @@ enum CitySimulation {
             return utilization >= minimumDevelopmentUtilization(for: tile.level)
         }
         guard let index = candidates.sorted(by: { lhs, rhs in
-            let left = state.tiles[lhs]
-            let right = state.tiles[rhs]
-            let leftPreferred = left.kind == strategyKind
-            let rightPreferred = right.kind == strategyKind
-            if leftPreferred != rightPreferred { return leftPreferred }
-
-            let leftUtilization = Double(left.occupancy)
-                / Double(max(1, developmentCapacity(for: left.kind, level: left.level)))
-            let rightUtilization = Double(right.occupancy)
-                / Double(max(1, developmentCapacity(for: right.kind, level: right.level)))
-            if leftUtilization != rightUtilization {
-                return leftUtilization > rightUtilization
-            }
-            if left.level != right.level { return left.level < right.level }
-            if left.coordinate.y != right.coordinate.y {
-                return left.coordinate.y < right.coordinate.y
-            }
-            return left.coordinate.x < right.coordinate.x
+            prefersDevelopmentUpgrade(
+                state.tiles[lhs],
+                over: state.tiles[rhs],
+                strategyKind: strategyKind,
+                consequences: consequences
+            )
         }).first else { return }
 
         state.tiles[index].level += 1
@@ -555,10 +544,43 @@ enum CitySimulation {
                 tick: state.tick,
                 severity: .good,
                 title: "Neighborhood Upgraded",
-                detail: "\(upgraded.kind.title) at block \(upgraded.coordinate.x + 1), \(upgraded.coordinate.y + 1) reached level \(upgraded.level) because occupancy and demand stayed strong. Capacity and the tax base increased, but developed levels also add upkeep\(upgraded.kind == .industrial ? ", pollution," : "") and utility load."
+                detail: "\(upgraded.kind.title) at block \(upgraded.coordinate.x + 1), \(upgraded.coordinate.y + 1) reached level \(upgraded.level) because occupancy and demand stayed strong; local value supported growth. Capacity and the tax base increased, but developed levels also add upkeep\(upgraded.kind == .industrial ? ", pollution," : "") and utility load."
             ),
             to: &state
         )
+    }
+
+    static func prefersDevelopmentUpgrade(
+        _ left: CityTile,
+        over right: CityTile,
+        strategyKind: BuildingKind?,
+        consequences: CitySpatialConsequenceMap
+    ) -> Bool {
+        let leftPreferred = left.kind == strategyKind
+        let rightPreferred = right.kind == strategyKind
+        if leftPreferred != rightPreferred { return leftPreferred }
+
+        let leftUtilization = Double(left.occupancy)
+            / Double(max(1, developmentCapacity(for: left.kind, level: left.level)))
+        let rightUtilization = Double(right.occupancy)
+            / Double(max(1, developmentCapacity(for: right.kind, level: right.level)))
+        if leftUtilization != rightUtilization {
+            return leftUtilization > rightUtilization
+        }
+        if left.level != right.level { return left.level < right.level }
+
+        // Equal development candidates no longer fall straight through to an
+        // arbitrary map coordinate. The same local value the build forecast
+        // shows the player decides which tied site earns growth first.
+        let leftSiteValue = consequences[left.coordinate]?.landValueIndex ?? 0
+        let rightSiteValue = consequences[right.coordinate]?.landValueIndex ?? 0
+        if leftSiteValue != rightSiteValue {
+            return leftSiteValue > rightSiteValue
+        }
+        if left.coordinate.y != right.coordinate.y {
+            return left.coordinate.y < right.coordinate.y
+        }
+        return left.coordinate.x < right.coordinate.x
     }
 
     private static func developmentCapacity(for kind: BuildingKind, level: Int) -> Int {

@@ -839,6 +839,67 @@ struct CityRoadPlacementForecast: Equatable, Sendable {
     }
 }
 
+struct CityDevelopmentSiteForecast: Equatable, Sendable {
+    let capacity: String
+    let landValueIndex: Double
+    let utilityService: Double
+    let pollutionExposure: Double
+
+    var summary: String {
+        "\(capacity) · value \(Self.points(landValueIndex)) · utility \(Self.points(utilityService))% · pollution \(Self.points(pollutionExposure))%"
+    }
+
+    static func make(
+        kind: BuildingKind,
+        at coordinate: GridCoordinate,
+        in state: CityGameState
+    ) -> Self? {
+        guard [.residential, .commercial, .industrial].contains(kind),
+              state.tile(at: coordinate)?.kind == .empty else {
+            return nil
+        }
+
+        var completed = state
+        if !completed.usesUnlimitedFunds {
+            completed.treasury = max(completed.treasury, kind.buildCost)
+        }
+        guard case .success = CitySimulation.build(kind, at: coordinate, in: &completed) else {
+            return nil
+        }
+        completed.updateTile(at: coordinate) {
+            $0.constructionProgress = 1
+            $0.condition = 1
+        }
+        guard let sample = CitySpatialConsequenceMap(state: completed)[coordinate],
+              let landValueIndex = sample.landValueIndex else {
+            return nil
+        }
+        return Self(
+            capacity: Self.capacity(for: kind),
+            landValueIndex: landValueIndex,
+            utilityService: sample.utility.combined,
+            pollutionExposure: sample.pollutionExposure
+        )
+    }
+
+    private static func capacity(for kind: BuildingKind) -> String {
+        switch kind {
+        case .residential:
+            "280 homes"
+        case .commercial:
+            "\(CitySimulation.commercialJobCapacity) jobs"
+        case .industrial:
+            "\(CitySimulation.industrialJobCapacity) jobs"
+        default:
+            "No development capacity"
+        }
+    }
+
+    private static func points(_ value: Double) -> Int {
+        Int((value * 100).rounded())
+    }
+}
+
 struct CityParkPlacementForecast: Equatable, Sendable {
     let benefitedDevelopedBlocks: Int
     let pollutionRelievedBlocks: Int
@@ -1193,6 +1254,12 @@ struct CityBuildDecisionPresentation: Equatable, Sendable {
         state: CityGameState
     ) -> String {
         switch kind {
+        case .residential, .commercial, .industrial:
+            CityDevelopmentSiteForecast.make(
+                kind: kind,
+                at: tile.coordinate,
+                in: state
+            )?.summary ?? kind.buildConsequenceSummary
         case .road:
             CityRoadPlacementForecast.make(at: tile.coordinate, in: state)?.summary
                 ?? "Clear this occupied block before the road network can change"

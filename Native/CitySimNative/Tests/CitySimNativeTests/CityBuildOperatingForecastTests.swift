@@ -239,6 +239,157 @@ final class CityBuildOperatingForecastTests: XCTestCase {
         XCTAssertEqual(state.tile(at: target)?.kind, .empty)
     }
 
+    func testUtilityPlacementForecastMeasuresSiteReachForPowerAndWater() throws {
+        var state = CityGameState.newCity(seed: 42)
+        state.treasury = 100_000
+        state.powerCapacity = 0
+        state.powerUsed = 150
+        state.waterCapacity = 0
+        state.waterUsed = 135
+        for coordinate in state.tiles.map(\.coordinate) {
+            state.updateTile(at: coordinate) {
+                $0 = CityTile(coordinate: coordinate, kind: .empty)
+            }
+        }
+        let target = GridCoordinate(x: 10, y: 10)
+        let road = GridCoordinate(x: 9, y: 10)
+        state.updateTile(at: road) {
+            $0 = CityTile(coordinate: road, kind: .road)
+        }
+        let developed = [
+            GridCoordinate(x: 10, y: 9),
+            GridCoordinate(x: 12, y: 10),
+            GridCoordinate(x: 10, y: 13),
+        ]
+        for coordinate in developed {
+            state.updateTile(at: coordinate) {
+                $0 = CityTile(
+                    coordinate: coordinate,
+                    kind: .residential,
+                    occupancy: 180,
+                    constructionProgress: 1
+                )
+            }
+        }
+
+        let targetTile = try XCTUnwrap(state.tile(at: target))
+        for kind in [BuildingKind.powerPlant, .waterTower] {
+            let forecast = try XCTUnwrap(
+                CityUtilityPlacementForecast.make(
+                    kind: kind,
+                    at: target,
+                    in: state
+                )
+            )
+            XCTAssertEqual(forecast.kind, kind)
+            XCTAssertEqual(forecast.improvedDevelopedBlocks, 3)
+            XCTAssertEqual(forecast.restoredHealthyBlocks, 1)
+            XCTAssertEqual(forecast.greatestServiceGain, 11.0 / 12.0, accuracy: 0.000_001)
+
+            let decision = CityBuildDecisionPresentation.make(
+                kind: kind,
+                tile: targetTile,
+                rejection: nil,
+                state: state
+            )
+            XCTAssertEqual(decision.likelyConsequence, forecast.summary)
+            XCTAssertTrue(decision.accessibilitySummary.contains(forecast.summary))
+        }
+        XCTAssertEqual(
+            CityUtilityPlacementForecast.make(
+                kind: .powerPlant,
+                at: target,
+                in: state
+            )?.summary,
+            "Power: 3 blocks improve · 1 reaches healthy"
+        )
+        XCTAssertEqual(
+            CityUtilityPlacementForecast.make(
+                kind: .waterTower,
+                at: target,
+                in: state
+            )?.summary,
+            "Water: 3 blocks improve · 1 reaches healthy"
+        )
+        XCTAssertEqual(
+            CityUtilityPlacementForecast(
+                kind: .powerPlant,
+                improvedDevelopedBlocks: 1,
+                restoredHealthyBlocks: 0,
+                greatestServiceGain: 0.004
+            ).summary,
+            "Power: 1 block improves · best under +1 pt"
+        )
+        XCTAssertEqual(state.treasury, 100_000)
+        XCTAssertEqual(state.tile(at: target)?.kind, .empty)
+    }
+
+    func testUtilityPlacementForecastNamesNoCurrentReachAndRejectsInvalidTargets() throws {
+        var state = CityGameState.newCity(seed: 42)
+        state.treasury = 0
+        state.powerCapacity = 0
+        state.powerUsed = 150
+        for coordinate in state.tiles.map(\.coordinate) {
+            state.updateTile(at: coordinate) {
+                $0 = CityTile(coordinate: coordinate, kind: .empty)
+            }
+        }
+        let target = GridCoordinate(x: 0, y: 0)
+        let road = GridCoordinate(x: 1, y: 0)
+        let remote = GridCoordinate(x: state.gridWidth - 1, y: state.gridHeight - 1)
+        state.updateTile(at: road) {
+            $0 = CityTile(coordinate: road, kind: .road)
+        }
+        state.updateTile(at: remote) {
+            $0 = CityTile(
+                coordinate: remote,
+                kind: .residential,
+                occupancy: 180,
+                constructionProgress: 1
+            )
+        }
+
+        let targetTile = try XCTUnwrap(state.tile(at: target))
+        let forecast = try XCTUnwrap(
+            CityUtilityPlacementForecast.make(
+                kind: .powerPlant,
+                at: target,
+                in: state
+            )
+        )
+        XCTAssertEqual(forecast.improvedDevelopedBlocks, 0)
+        XCTAssertEqual(forecast.restoredHealthyBlocks, 0)
+        XCTAssertEqual(forecast.greatestServiceGain, 0)
+        XCTAssertEqual(
+            forecast.summary,
+            "No current block gains power service here"
+        )
+
+        let blockedDecision = CityBuildDecisionPresentation.make(
+            kind: .powerPlant,
+            tile: targetTile,
+            rejection: .insufficientFunds,
+            state: state
+        )
+        XCTAssertEqual(blockedDecision.likelyConsequence, forecast.summary)
+        XCTAssertNil(
+            CityUtilityPlacementForecast.make(
+                kind: .park,
+                at: target,
+                in: state
+            )
+        )
+        state.updateTile(at: target) { $0.kind = .residential }
+        XCTAssertNil(
+            CityUtilityPlacementForecast.make(
+                kind: .powerPlant,
+                at: target,
+                in: state
+            )
+        )
+        XCTAssertEqual(state.treasury, 0)
+    }
+
     func testDemolitionForecastNamesHousingJobsUtilitiesRoadsAndServices() throws {
         var state = CityGameState.newCity(seed: 42)
         state.treasury = 100_000

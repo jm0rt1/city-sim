@@ -782,6 +782,96 @@ struct CityParkPlacementForecast: Equatable, Sendable {
     }
 }
 
+struct CityUtilityPlacementForecast: Equatable, Sendable {
+    let kind: BuildingKind
+    let improvedDevelopedBlocks: Int
+    let restoredHealthyBlocks: Int
+    let greatestServiceGain: Double
+
+    var summary: String {
+        let service = kind == .powerPlant ? "Power" : "Water"
+        guard improvedDevelopedBlocks > 0 else {
+            return "No current block gains \(service.lowercased()) service here"
+        }
+        let blockChange = improvedDevelopedBlocks == 1
+            ? "1 block improves"
+            : "\(improvedDevelopedBlocks) blocks improve"
+        if restoredHealthyBlocks > 0 {
+            let recovery = restoredHealthyBlocks == 1
+                ? "1 reaches healthy"
+                : "\(restoredHealthyBlocks) reach healthy"
+            return "\(service): \(blockChange) · \(recovery)"
+        }
+        let gainPoints = greatestServiceGain * 100
+        let gain = gainPoints < 1
+            ? "under +1 pt"
+            : "+\(Int(gainPoints.rounded())) pts"
+        return "\(service): \(blockChange) · best \(gain)"
+    }
+
+    static func make(
+        kind: BuildingKind,
+        at coordinate: GridCoordinate,
+        in state: CityGameState
+    ) -> Self? {
+        guard kind == .powerPlant || kind == .waterTower,
+              state.tile(at: coordinate)?.kind == .empty else {
+            return nil
+        }
+
+        var completed = state
+        if !completed.usesUnlimitedFunds {
+            completed.treasury = max(completed.treasury, kind.buildCost)
+        }
+        guard case .success = CitySimulation.build(kind, at: coordinate, in: &completed) else {
+            return nil
+        }
+        completed.updateTile(at: coordinate) { $0.constructionProgress = 1 }
+        let active = CitySimulation.activeTiles(in: completed)
+        completed.powerCapacity = active.filter { $0.kind == .powerPlant }.count
+            * CitySimulation.powerCapacityPerPlant
+        completed.waterCapacity = active.filter { $0.kind == .waterTower }.count
+            * CitySimulation.waterCapacityPerTower
+
+        let currentConsequences = CitySpatialConsequenceMap(state: state)
+        let completedConsequences = CitySpatialConsequenceMap(state: completed)
+        var improvedBlocks = 0
+        var healthyRecoveries = 0
+        var greatestGain = 0.0
+        let threshold = 0.000_000_001
+
+        for current in currentConsequences.samples where current.vitality != .notApplicable {
+            guard let projected = completedConsequences[current.coordinate] else { continue }
+            let currentService = kind == .powerPlant
+                ? current.utility.power
+                : current.utility.water
+            let projectedService = kind == .powerPlant
+                ? projected.utility.power
+                : projected.utility.water
+            let currentBand = kind == .powerPlant
+                ? current.utility.powerBand
+                : current.utility.waterBand
+            let projectedBand = kind == .powerPlant
+                ? projected.utility.powerBand
+                : projected.utility.waterBand
+            let gain = projectedService - currentService
+            guard gain > threshold else { continue }
+            improvedBlocks += 1
+            greatestGain = max(greatestGain, gain)
+            if currentBand != .healthy, projectedBand == .healthy {
+                healthyRecoveries += 1
+            }
+        }
+
+        return Self(
+            kind: kind,
+            improvedDevelopedBlocks: improvedBlocks,
+            restoredHealthyBlocks: healthyRecoveries,
+            greatestServiceGain: greatestGain
+        )
+    }
+}
+
 struct CityDemolitionForecast: Equatable, Sendable {
     let currentBalance: Double
     let projectedBalance: Double
@@ -926,6 +1016,12 @@ struct CityBuildDecisionPresentation: Equatable, Sendable {
         case .park:
             CityParkPlacementForecast.make(at: tile.coordinate, in: state)?.summary
                 ?? kind.buildConsequenceSummary
+        case .powerPlant, .waterTower:
+            CityUtilityPlacementForecast.make(
+                kind: kind,
+                at: tile.coordinate,
+                in: state
+            )?.summary ?? kind.buildConsequenceSummary
         default:
             kind.buildConsequenceSummary
         }

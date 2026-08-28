@@ -286,19 +286,17 @@ final class TerrainRenderer {
         if !expansionCoordinates.isEmpty {
             let expansion = SKShapeNode(path: combinedDiamondPath(
                 coordinates: expansionCoordinates,
-                width: style.tileWidth - 2.4,
-                height: style.tileHeight - 1.2,
-                offset: CGPoint(x: 0.2, y: -0.15)
+                width: style.tileWidth + 0.6,
+                height: style.tileHeight + 0.3
             ))
             expansion.name = "district.fabric.expansion-band"
-            expansion.fillColor = style.palette.lotGrass.withAlphaComponent(0.24)
-            expansion.strokeColor = style.palette.concreteLight.withAlphaComponent(0.22)
-            expansion.lineWidth = 0.7
+            expansion.fillColor = style.palette.lotGrass.withAlphaComponent(0.18)
+            expansion.strokeColor = .clear
             expansion.zPosition = 0.15
             cityLayer.addChild(expansion)
 
             addFourViewExpansionGround(
-                coordinates: expansionCoordinates,
+                coordinates: expansionGroundAnchors(in: expansionCoordinates),
                 detail: detail,
                 to: cityLayer
             )
@@ -520,6 +518,23 @@ final class TerrainRenderer {
         return Set(serviceCampusCoordinates(in: state, completed: completed))
     }
 
+    func expansionBandCoordinatesForTesting(
+        in state: CityGameState
+    ) -> [GridCoordinate] {
+        let completed = state.tiles.filter {
+            $0.kind != .empty && $0.kind != .road && $0.constructionProgress >= 1
+        }
+        let fabricCoordinates = completed.map(\.coordinate)
+            + connectedFrontageRoads(in: state, completed: completed).map(\.coordinate)
+        return expansionBandCoordinates(in: state, around: fabricCoordinates)
+    }
+
+    func expansionGroundAnchorCoordinatesForTesting(
+        in state: CityGameState
+    ) -> [GridCoordinate] {
+        expansionGroundAnchors(in: expansionBandCoordinatesForTesting(in: state))
+    }
+
     private struct EnclosedDistrictBlock {
         let componentCoordinates: [GridCoordinate]
         let vacantCoordinates: [GridCoordinate]
@@ -739,6 +754,47 @@ final class TerrainRenderer {
             .sorted(by: coordinateComesBefore)
     }
 
+    /// The connected renderer-only band owns the complete expansion edge.
+    /// Approved one-cell ground treatments are accents, not a second grid:
+    /// keep a small deterministic set far enough apart that vacant land reads
+    /// as continuous terrain while every empty coordinate remains an exact
+    /// build and hit target.
+    private func expansionGroundAnchors(
+        in coordinates: [GridCoordinate]
+    ) -> [GridCoordinate] {
+        guard !coordinates.isEmpty else { return [] }
+        let budget = min(6, max(2, (coordinates.count + 11) / 12))
+        let ranked = coordinates.sorted { lhs, rhs in
+            let lhsSeed = WorldVisualSeed.value(
+                for: lhs,
+                kind: .empty,
+                salt: 0x6EC1
+            )
+            let rhsSeed = WorldVisualSeed.value(
+                for: rhs,
+                kind: .empty,
+                salt: 0x6EC1
+            )
+            if lhsSeed != rhsSeed { return lhsSeed < rhsSeed }
+            return coordinateComesBefore(lhs, rhs)
+        }
+        var anchors: [GridCoordinate] = []
+        for candidate in ranked {
+            guard anchors.allSatisfy({ existing in
+                abs(existing.x - candidate.x) + abs(existing.y - candidate.y) >= 4
+            }) else { continue }
+            anchors.append(candidate)
+            if anchors.count == budget { break }
+        }
+        if anchors.count < min(2, coordinates.count) {
+            for candidate in ranked where !anchors.contains(candidate) {
+                anchors.append(candidate)
+                if anchors.count == min(2, coordinates.count) { break }
+            }
+        }
+        return anchors.sorted(by: coordinateComesBefore)
+    }
+
     private func addFourViewExpansionGround(
         coordinates: [GridCoordinate],
         detail: CameraDetailLevel,
@@ -760,15 +816,17 @@ final class TerrainRenderer {
                 zPosition: 0.24
             ) else {
                 let missing = SKNode()
-                missing.name = "terrain.ground-ecology.missing.\(assetID)"
+                missing.name = "terrain.ground-ecology.expansion.missing.\(assetID)"
                 missing.position = style.isoPosition(coordinate)
                 layer.addChild(missing)
                 continue
             }
-            sprite.name = "terrain.ground-ecology.\(assetID).\(detail.assetSuffix)"
+            sprite.name = "terrain.ground-ecology.expansion.\(assetID)."
+                + "\(coordinate.x).\(coordinate.y).\(detail.assetSuffix)"
             sprite.position = style.isoPosition(coordinate)
             sprite.color = .clear
             sprite.colorBlendFactor = 0
+            sprite.alpha = 0.72
             layer.addChild(sprite)
         }
     }

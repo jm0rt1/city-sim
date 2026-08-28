@@ -4067,7 +4067,39 @@ final class WorldRenderingTests: XCTestCase {
         let expansionBand = districtGround.childNode(
             withName: "//district.fabric.expansion-band"
         ) as? SKShapeNode
-        XCTAssertEqual(expansionBand?.fillColor.alphaComponent ?? -1, 0.24, accuracy: 0.001)
+        XCTAssertEqual(expansionBand?.fillColor.alphaComponent ?? -1, 0.18, accuracy: 0.001)
+        XCTAssertEqual(expansionBand?.strokeColor.alphaComponent ?? -1, 0, accuracy: 0.001)
+        let expansionCoordinates = renderer.expansionBandCoordinatesForTesting(in: state)
+        let expansionAnchors = renderer.expansionGroundAnchorCoordinatesForTesting(in: state)
+        XCTAssertGreaterThan(expansionCoordinates.count, 12)
+        XCTAssertGreaterThanOrEqual(expansionAnchors.count, 2)
+        XCTAssertLessThanOrEqual(expansionAnchors.count, 6)
+        XCTAssertLessThan(expansionAnchors.count * 4, expansionCoordinates.count)
+        XCTAssertTrue(expansionAnchors.allSatisfy {
+            expansionCoordinates.contains($0) && state.tile(at: $0)?.kind == .empty
+        })
+        for leftIndex in expansionAnchors.indices {
+            for rightIndex in expansionAnchors.indices where rightIndex > leftIndex {
+                let left = expansionAnchors[leftIndex]
+                let right = expansionAnchors[rightIndex]
+                XCTAssertGreaterThanOrEqual(abs(left.x - right.x) + abs(left.y - right.y), 4)
+            }
+        }
+        let authoredDistrictGround = TerrainRenderer(
+            style: WorldVisualStyle(),
+            groundEcologyAssets: FourViewGroundEcologyCatalog()
+        ).makeDevelopedDistrictGround(in: state)
+        let authoredDistrictNames = descendantNames(in: authoredDistrictGround)
+        XCTAssertEqual(
+            authoredDistrictNames.filter {
+                $0.hasPrefix("terrain.ground-ecology.expansion.")
+                    && !$0.contains(".missing.")
+            }.count,
+            expansionAnchors.count
+        )
+        XCTAssertFalse(authoredDistrictNames.contains {
+            $0.hasPrefix("terrain.ground-ecology.expansion.missing.")
+        })
         let publicEnvelope = districtGround.childNode(
             withName: "//district.fabric.public-realm-envelope"
         ) as? SKShapeNode

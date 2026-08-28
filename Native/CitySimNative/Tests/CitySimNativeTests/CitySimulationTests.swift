@@ -1331,21 +1331,49 @@ final class CitySimulationTests: XCTestCase {
             interactionMode: .build(.commercial),
             selectedTile: nil,
             target: nil,
-            demand: demand
+            demand: demand,
+            buildOpportunities: CityBuildOpportunityInventory(
+                totalCount: 40,
+                outlinedCoordinates: (0..<6).map {
+                    GridCoordinate(x: $0, y: 0)
+                }
+            )
         )
-        XCTAssertEqual(selected.detail, "High demand 76% · $2,400 · choose block for forecast")
+        XCTAssertEqual(selected.title, "Commercial · 6 nearby sites")
+        XCTAssertEqual(selected.detail, "40 eligible · High demand 76% · $2,400")
         XCTAssertTrue(selected.accessibilityValue.contains("High demand, 76 percent"))
         XCTAssertTrue(selected.accessibilityValue.contains("Cost $2,400"))
+        XCTAssertTrue(selected.accessibilityValue.contains("6 nearby eligible sites are outlined"))
+        XCTAssertTrue(selected.accessibilityValue.contains("40 sites are eligible in total"))
 
         let unlimited = BuildToolbarView.targetBeaconPresentation(
             interactionMode: .build(.commercial),
             selectedTile: nil,
             target: nil,
             unlimitedFunds: true,
-            demand: demand
+            demand: demand,
+            buildOpportunities: CityBuildOpportunityInventory(
+                totalCount: 1,
+                outlinedCoordinates: [GridCoordinate(x: 0, y: 0)]
+            )
         )
-        XCTAssertEqual(unlimited.detail, "High demand 76% · COST WAIVED · choose block for forecast")
+        XCTAssertEqual(unlimited.title, "Commercial · 1 site")
+        XCTAssertEqual(unlimited.detail, "All eligible sites outlined · High demand 76% · COST WAIVED")
         XCTAssertTrue(unlimited.accessibilityValue.contains("Spending is waived"))
+        XCTAssertTrue(unlimited.accessibilityValue.contains("1 eligible site is outlined"))
+
+        let blocked = BuildToolbarView.targetBeaconPresentation(
+            interactionMode: .build(.commercial),
+            selectedTile: nil,
+            target: nil,
+            demand: demand,
+            buildOpportunities: CityBuildOpportunityInventory(
+                totalCount: 0,
+                outlinedCoordinates: []
+            )
+        )
+        XCTAssertEqual(blocked.detail, "No eligible sites · High demand 76% · $2,400")
+        XCTAssertTrue(blocked.accessibilityValue.contains("No eligible sites are available"))
     }
 
     @MainActor

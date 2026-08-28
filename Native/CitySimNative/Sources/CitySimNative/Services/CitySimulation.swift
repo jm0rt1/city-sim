@@ -146,6 +146,24 @@ enum CitySimulation {
         return .success(())
     }
 
+    static func buildableCoordinates(
+        for kind: BuildingKind,
+        in state: CityGameState
+    ) -> [GridCoordinate] {
+        state.tiles.compactMap { tile in
+            guard case .success = validateBuild(
+                kind,
+                at: tile.coordinate,
+                in: state
+            ) else { return nil }
+            return tile.coordinate
+        }
+        .sorted { lhs, rhs in
+            if lhs.y != rhs.y { return lhs.y < rhs.y }
+            return lhs.x < rhs.x
+        }
+    }
+
     static func roadNetworkConnectsToCity(
         from startingRoads: [GridCoordinate],
         in state: CityGameState

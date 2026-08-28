@@ -656,6 +656,10 @@ struct BuildToolbarView: View {
             demand: Self.developmentDemandPresentation(
                 for: store.selectedTool,
                 in: store.state
+            ),
+            buildOpportunities: CityBuildOpportunityInventory.make(
+                kind: store.selectedTool,
+                in: store.state
             )
         )
         if presentation.opensDetails {
@@ -738,7 +742,8 @@ struct BuildToolbarView: View {
         selectedTile: CityTile?,
         target: CityMapActionTargetPresentation?,
         unlimitedFunds: Bool = false,
-        demand: DevelopmentDemandPresentation? = nil
+        demand: DevelopmentDemandPresentation? = nil,
+        buildOpportunities: CityBuildOpportunityInventory? = nil
     ) -> TargetBeaconPresentation {
         switch interactionMode {
         case .inspect:
@@ -768,16 +773,32 @@ struct BuildToolbarView: View {
             )
         case .build(let kind):
             guard let target else {
-                let demandDetail = demand.map { "\($0.summary) · " } ?? ""
-                let detail = unlimitedFunds
-                    ? "\(demandDetail)COST WAIVED · choose block for forecast"
-                    : "\(demandDetail)\(kind.buildCost.currencyText) · choose block for forecast"
+                let title = buildOpportunities?.titleSuffix.map {
+                    "\(kind.title) · \($0)"
+                } ?? kind.title
+                let costDetail = unlimitedFunds ? "COST WAIVED" : kind.buildCost.currencyText
+                let detail = if let buildOpportunities {
+                    [
+                        buildOpportunities.detail,
+                        demand?.summary,
+                        costDetail
+                    ]
+                    .compactMap { $0 }
+                    .joined(separator: " · ")
+                } else {
+                    [demand?.summary, costDetail, "choose block for forecast"]
+                        .compactMap { $0 }
+                        .joined(separator: " · ")
+                }
                 let demandAccessibility = demand.map { " \($0.accessibilitySummary)" } ?? ""
+                let opportunityAccessibility = buildOpportunities.map {
+                    " \($0.accessibilitySummary) Choose an outlined site or any other eligible block for the authoritative operating forecast."
+                } ?? " Choose a block for the authoritative operating forecast."
                 let accessibilityValue = unlimitedFunds
-                    ? "Selected \(kind.title).\(demandAccessibility) Spending is waived. Choose a block for the tracked operating forecast."
-                    : "Selected \(kind.title).\(demandAccessibility) Cost \(kind.buildCost.currencyText). Choose a block for the authoritative operating forecast."
+                    ? "Selected \(kind.title).\(demandAccessibility) Spending is waived.\(opportunityAccessibility)"
+                    : "Selected \(kind.title).\(demandAccessibility) Cost \(kind.buildCost.currencyText).\(opportunityAccessibility)"
                 return TargetBeaconPresentation(
-                    title: kind.title,
+                    title: title,
                     detail: detail,
                     status: "CHOOSE",
                     symbol: kind.symbol,

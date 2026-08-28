@@ -176,6 +176,7 @@ final class CityScene: SKScene {
     private let ambientGroundLayer = SKNode()
     private let ambientLifeLayer = SKNode()
     private let cameraNode = SKCameraNode()
+    private let buildOpportunityLayer = SKNode()
     private let guidedRoadRouteLayer = SKNode()
     private let hoverNode = SKShapeNode()
     private let selectionNode = SKShapeNode()
@@ -260,6 +261,7 @@ final class CityScene: SKScene {
     var hoverIsHiddenForTesting: Bool { hoverNode.isHidden }
     var hoverVisualBoundsForTesting: CGRect { hoverNode.calculateAccumulatedFrame() }
     var activeActionTargetForTesting: CityMapActionTargetPresentation? { renderedActiveActionTarget }
+    private(set) var buildOpportunityCoordinatesForTesting: [GridCoordinate] = []
     var guidedRoadRouteCoordinatesForTesting: [GridCoordinate] { renderedGuidedRoadRoute }
     var guidedRoadRouteFootprintPositionsForTesting: [CGPoint] {
         guidedRoadRouteLayer.children
@@ -271,7 +273,10 @@ final class CityScene: SKScene {
         func names(in node: SKNode) -> [String] {
             (node.name.map { [$0] } ?? []) + node.children.flatMap(names)
         }
-        return names(in: guidedRoadRouteLayer) + names(in: hoverNode) + names(in: selectionNode)
+        return names(in: buildOpportunityLayer)
+            + names(in: guidedRoadRouteLayer)
+            + names(in: hoverNode)
+            + names(in: selectionNode)
     }
 
     func safeViewportRectForTesting(_ insets: CityMapViewportInsets) -> CGRect {
@@ -333,6 +338,8 @@ final class CityScene: SKScene {
         worldLayer.addChild(ambientLayer)
         addChild(cameraNode)
         camera = cameraNode
+        buildOpportunityLayer.name = "interaction.build-opportunities"
+        buildOpportunityLayer.zPosition = 89_997
         guidedRoadRouteLayer.name = "interaction.guided-road-route"
         guidedRoadRouteLayer.zPosition = 89_998
         hoverNode.zPosition = 90_000
@@ -343,9 +350,11 @@ final class CityScene: SKScene {
         hoverNode.name = "interaction.hover"
         selectionNode.name = "interaction.selection"
         configureSelectionAdornment()
+        worldLayer.addChild(buildOpportunityLayer)
         worldLayer.addChild(guidedRoadRouteLayer)
         worldLayer.addChild(hoverNode)
         worldLayer.addChild(selectionNode)
+        buildOpportunityLayer.isHidden = true
         guidedRoadRouteLayer.isHidden = true
         hoverNode.isHidden = true
         selectionNode.isHidden = true
@@ -451,6 +460,7 @@ final class CityScene: SKScene {
         _ = updateAmbientCorridor(snapshot: snapshot)
         let expiredCueCount = expireConsequenceEvents(at: snapshot.authoritativeTick)
         let insertedCueCount = presentConsequenceEvents(consequenceEvents)
+        updateBuildOpportunities(for: interactionMode, state: state)
         updateGuidedRoadRoute(guidedRoadRoute)
         updateSelection(selection)
         refreshPersistentConsequenceEmphasis(at: [previousSelection, selection])
@@ -482,6 +492,7 @@ final class CityScene: SKScene {
             && !worldChanged
         let requiresTreeRecount = isFirstRender
             || previousSelection != selection
+            || previousInteractionMode != interactionMode
             || previousGuidedRoadRoute != guidedRoadRoute
             || motionChanged
             || unexplainedCueRemoval
@@ -2156,6 +2167,92 @@ final class CityScene: SKScene {
         }
         selectionNode.position = style.isoPosition(coordinate)
         selectionNode.isHidden = false
+    }
+
+    private func updateBuildOpportunities(
+        for interactionMode: CityInteractionMode,
+        state: CityGameState
+    ) {
+        buildOpportunityLayer.removeAllChildren()
+        buildOpportunityCoordinatesForTesting = []
+        guard case .build(let kind) = interactionMode,
+              kind != .road else {
+            buildOpportunityLayer.isHidden = true
+            return
+        }
+
+        let coordinates = CityBuildOpportunityInventory.make(
+            kind: kind,
+            in: state
+        )?.outlinedCoordinates ?? []
+        buildOpportunityCoordinatesForTesting = coordinates
+        guard !coordinates.isEmpty else {
+            buildOpportunityLayer.isHidden = true
+            return
+        }
+
+        buildOpportunityLayer.isHidden = false
+        // Corner brackets are interaction language, not replacement world
+        // art. Keep them quiet, non-animated, and behind the authoritative
+        // hover/selection/placement preview hierarchy.
+        let color = NSColor(
+            calibratedRed: 0.24,
+            green: 0.76,
+            blue: 0.61,
+            alpha: 1
+        )
+        for coordinate in coordinates {
+            let root = SKNode()
+            root.name = "interaction.build-opportunity.\(coordinate.x).\(coordinate.y)"
+            root.position = style.isoPosition(coordinate)
+
+            let footprint = SKShapeNode(
+                path: style.diamondPath(
+                    width: tileWidth * 0.74,
+                    height: tileHeight * 0.74
+                )
+            )
+            footprint.name = "interaction.build-opportunity.footprint"
+            footprint.fillColor = color.withAlphaComponent(0.035)
+            footprint.strokeColor = .clear
+            root.addChild(footprint)
+
+            let brackets = SKShapeNode(path: buildOpportunityBracketPath())
+            brackets.name = "interaction.build-opportunity.brackets"
+            brackets.fillColor = .clear
+            brackets.strokeColor = color.withAlphaComponent(0.78)
+            brackets.lineWidth = 1.5
+            brackets.lineCap = .round
+            brackets.lineJoin = .round
+            root.addChild(brackets)
+
+            buildOpportunityLayer.addChild(root)
+        }
+    }
+
+    private func buildOpportunityBracketPath() -> CGPath {
+        let halfWidth = tileWidth * 0.37
+        let halfHeight = tileHeight * 0.37
+        let horizontalInset = tileWidth * 0.10
+        let verticalInset = tileHeight * 0.10
+        let path = CGMutablePath()
+
+        path.move(to: CGPoint(x: -horizontalInset, y: halfHeight - verticalInset))
+        path.addLine(to: CGPoint(x: 0, y: halfHeight))
+        path.addLine(to: CGPoint(x: horizontalInset, y: halfHeight - verticalInset))
+
+        path.move(to: CGPoint(x: halfWidth - horizontalInset, y: verticalInset))
+        path.addLine(to: CGPoint(x: halfWidth, y: 0))
+        path.addLine(to: CGPoint(x: halfWidth - horizontalInset, y: -verticalInset))
+
+        path.move(to: CGPoint(x: horizontalInset, y: -halfHeight + verticalInset))
+        path.addLine(to: CGPoint(x: 0, y: -halfHeight))
+        path.addLine(to: CGPoint(x: -horizontalInset, y: -halfHeight + verticalInset))
+
+        path.move(to: CGPoint(x: -halfWidth + horizontalInset, y: -verticalInset))
+        path.addLine(to: CGPoint(x: -halfWidth, y: 0))
+        path.addLine(to: CGPoint(x: -halfWidth + horizontalInset, y: verticalInset))
+        return path
     }
 
     private func updateGuidedRoadRoute(_ route: [GridCoordinate]) {

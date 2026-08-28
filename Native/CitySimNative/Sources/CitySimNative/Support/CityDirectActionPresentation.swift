@@ -839,6 +839,94 @@ struct CityRoadPlacementForecast: Equatable, Sendable {
     }
 }
 
+struct CityBuildOpportunityInventory: Equatable, Sendable {
+    // Build legality remains wholly owned by CitySimulation. This is a
+    // presentation-only shortlist centered on the completed city so entering
+    // Build mode reveals useful choices without painting the whole road grid.
+    static let outlineLimit = 6
+
+    let totalCount: Int
+    let outlinedCoordinates: [GridCoordinate]
+
+    var titleSuffix: String? {
+        guard !outlinedCoordinates.isEmpty else { return nil }
+        if outlinedCoordinates.count == totalCount {
+            return outlinedCoordinates.count == 1
+                ? "1 site"
+                : "\(outlinedCoordinates.count) sites"
+        }
+        return outlinedCoordinates.count == 1
+            ? "1 nearby site"
+            : "\(outlinedCoordinates.count) nearby sites"
+    }
+
+    var detail: String {
+        guard totalCount > 0 else { return "No eligible sites" }
+        return outlinedCoordinates.count == totalCount
+            ? "All eligible sites outlined"
+            : "\(totalCount) eligible"
+    }
+
+    var accessibilitySummary: String {
+        guard totalCount > 0 else {
+            return "No eligible sites are available under current funds and placement rules."
+        }
+        if outlinedCoordinates.count == totalCount {
+            let noun = totalCount == 1 ? "site is" : "sites are"
+            return "\(totalCount) eligible \(noun) outlined on the map."
+        }
+        let noun = outlinedCoordinates.count == 1 ? "site is" : "sites are"
+        return "\(outlinedCoordinates.count) nearby eligible \(noun) outlined on the map; \(totalCount) sites are eligible in total."
+    }
+
+    static func make(
+        kind: BuildingKind,
+        in state: CityGameState,
+        outlineLimit: Int = Self.outlineLimit
+    ) -> Self? {
+        guard kind != .road else { return nil }
+        let eligible = CitySimulation.buildableCoordinates(for: kind, in: state)
+        guard !eligible.isEmpty else {
+            return Self(totalCount: 0, outlinedCoordinates: [])
+        }
+
+        let completedPlaces = state.tiles.filter {
+            $0.kind != .empty
+                && $0.kind != .road
+                && $0.constructionProgress >= 1
+        }
+        let centerX: Double
+        let centerY: Double
+        if completedPlaces.isEmpty {
+            centerX = Double(max(0, state.gridWidth - 1)) / 2
+            centerY = Double(max(0, state.gridHeight - 1)) / 2
+        } else {
+            centerX = completedPlaces.map { Double($0.coordinate.x) }.reduce(0, +)
+                / Double(completedPlaces.count)
+            centerY = completedPlaces.map { Double($0.coordinate.y) }.reduce(0, +)
+                / Double(completedPlaces.count)
+        }
+
+        let outlined = eligible.sorted { lhs, rhs in
+            let lhsX = Double(lhs.x) - centerX
+            let lhsY = Double(lhs.y) - centerY
+            let rhsX = Double(rhs.x) - centerX
+            let rhsY = Double(rhs.y) - centerY
+            let lhsDistance = lhsX * lhsX + lhsY * lhsY
+            let rhsDistance = rhsX * rhsX + rhsY * rhsY
+            if lhsDistance != rhsDistance { return lhsDistance < rhsDistance }
+            if lhs.y != rhs.y { return lhs.y < rhs.y }
+            return lhs.x < rhs.x
+        }
+        .prefix(max(0, outlineLimit))
+
+        return Self(
+            totalCount: eligible.count,
+            outlinedCoordinates: Array(outlined)
+        )
+    }
+}
+
 struct CityDevelopmentSiteForecast: Equatable, Sendable {
     let capacity: String
     let landValueIndex: Double

@@ -4931,6 +4931,109 @@ final class WorldRenderingTests: XCTestCase {
     }
 
     @MainActor
+    func testPlaceBuildModeOutlinesEveryAuthoritativeOpportunityAndClearsForRoadOrInspect() {
+        var state = CityGameState.newCity(seed: 42)
+        let inventory = CityBuildOpportunityInventory.make(
+            kind: .commercial,
+            in: state
+        )
+        let expected = inventory?.outlinedCoordinates ?? []
+        XCTAssertFalse(expected.isEmpty)
+        XCTAssertEqual(
+            expected.count,
+            min(
+                inventory?.totalCount ?? 0,
+                CityBuildOpportunityInventory.outlineLimit
+            )
+        )
+        XCTAssertGreaterThanOrEqual(inventory?.totalCount ?? 0, expected.count)
+        for coordinate in expected {
+            guard case .success = CitySimulation.validateBuild(
+                .commercial,
+                at: coordinate,
+                in: state
+            ) else {
+                XCTFail("Outlined coordinate \(coordinate) must be authoritatively buildable")
+                continue
+            }
+        }
+
+        let scene = CityScene(size: CGSize(width: 900, height: 600))
+        scene.reducedMotion = true
+        scene.render(
+            state: state,
+            overlay: .none,
+            selection: nil,
+            interactionMode: .build(.commercial)
+        )
+
+        XCTAssertEqual(scene.buildOpportunityCoordinatesForTesting, expected)
+        XCTAssertEqual(
+            scene.interactionNamesForTesting.filter {
+                $0.hasPrefix("interaction.build-opportunity.")
+                    && !$0.hasSuffix(".footprint")
+                    && !$0.hasSuffix(".brackets")
+            }.count,
+            expected.count
+        )
+        XCTAssertTrue(descendantLabels(in: scene).isEmpty)
+
+        if let selected = expected.first,
+           let tile = state.tile(at: selected) {
+            let target = CityMapActionTargetPresentation(
+                coordinate: selected,
+                primaryAction: CityMapPrimaryActionPresentation.make(
+                    interactionMode: .build(.commercial),
+                    tile: tile,
+                    state: state
+                )
+            )
+            scene.render(
+                state: state,
+                overlay: .none,
+                selection: selected,
+                interactionMode: .build(.commercial),
+                activeActionTarget: target
+            )
+            XCTAssertEqual(scene.buildOpportunityCoordinatesForTesting, expected)
+            XCTAssertEqual(
+                scene.interactionNamesForTesting.filter {
+                    $0 == "interaction.placementGhost"
+                }.count,
+                1
+            )
+        }
+
+        scene.render(
+            state: state,
+            overlay: .none,
+            selection: nil,
+            interactionMode: .build(.road)
+        )
+        XCTAssertTrue(scene.buildOpportunityCoordinatesForTesting.isEmpty)
+        XCTAssertFalse(scene.interactionNamesForTesting.contains {
+            $0.hasPrefix("interaction.build-opportunity.")
+        })
+
+        scene.render(
+            state: state,
+            overlay: .none,
+            selection: nil,
+            interactionMode: .inspect
+        )
+        XCTAssertTrue(scene.buildOpportunityCoordinatesForTesting.isEmpty)
+
+        state.treasury = 0
+        scene.render(
+            state: state,
+            overlay: .none,
+            selection: nil,
+            interactionMode: .build(.commercial)
+        )
+        XCTAssertTrue(scene.buildOpportunityCoordinatesForTesting.isEmpty)
+    }
+
+    @MainActor
     func testExactCompactActiveCoordinateRemainsInsideSafeWorldViewport() {
         let state = CityGameState.newCity(seed: 42)
         let active = GridCoordinate(x: 23, y: 23)

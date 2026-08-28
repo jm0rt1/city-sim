@@ -114,7 +114,10 @@ final class FourViewWorldAssetCatalog {
         case .park:
             deterministicAssetID(forRole: "park", tile: tile, variant: variant)
         case .cityHall:
-            deterministicAssetID(forRole: "city-hall", tile: tile, variant: variant)
+            // City Hall already has an admitted production four-direction
+            // civic family. Keep calibration landmarks available for focused
+            // inspection without letting them replace the live civic hall.
+            nil
         case .powerPlant:
             deterministicAssetID(forRole: "power-plant", tile: tile, variant: variant)
         case .waterTower:

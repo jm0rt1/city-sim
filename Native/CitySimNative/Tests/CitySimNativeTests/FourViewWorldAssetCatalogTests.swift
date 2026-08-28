@@ -78,7 +78,6 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
             ("commercial-high", .commercial, 3),
             ("industrial-medium", .industrial, 2),
             ("industrial-high", .industrial, 3),
-            ("city-hall", .cityHall, 1),
             ("park", .park, 1),
             ("power-plant", .powerPlant, 1),
             ("water-tower", .waterTower, 1),
@@ -261,6 +260,43 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
             let tile = CityTile(
                 coordinate: GridCoordinate(x: index + 7, y: index + 9),
                 kind: .industrial,
+                level: 1,
+                condition: 1,
+                constructionProgress: 1
+            )
+            XCTAssertNil(catalog.assetID(for: tile, variant: index))
+            let lot = renderer.makeLot(
+                for: tile,
+                adjacentRoads: frontage,
+                detail: .block,
+                reducedMotion: true
+            )
+            let sprite = try XCTUnwrap(
+                lot.childNode(withName: "//lot.generated-v4.\(identity.logicalID).block")
+                    as? SKSpriteNode
+            )
+            XCTAssertEqual(sprite.name, "lot.generated-v4.\(identity.logicalID).block")
+            XCTAssertNil(lot.childNode(withName: "//lot.four-view.*"))
+            XCTAssertNil(lot.childNode(withName: "//lot.four-view.missing.*"))
+        }
+    }
+
+    @MainActor
+    func testCityHallUsesAdmittedGeneratedDirectionalFamily() throws {
+        let catalog = FourViewWorldAssetCatalog()
+        let renderer = LotRenderer(
+            style: WorldVisualStyle(),
+            assets: WorldAssetCatalog(),
+            fourViewAssets: catalog
+        )
+        let frontages: [RoadConnectionMask] = [.north, .east, .south, .west]
+        for (index, frontage) in frontages.enumerated() {
+            let identity = try XCTUnwrap(
+                CivicGeneratedAssetIdentity(adjacentRoads: frontage)
+            )
+            let tile = CityTile(
+                coordinate: GridCoordinate(x: index + 11, y: index + 13),
+                kind: .cityHall,
                 level: 1,
                 condition: 1,
                 constructionProgress: 1
@@ -506,17 +542,18 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
                 && !($0.family == "residential" && $0.roles.contains("residential-low"))
                 && !($0.family == "commercial" && $0.roles.contains("commercial-low"))
                 && !($0.family == "industrial" && $0.roles.contains("industrial-low"))
+                && !$0.roles.contains("city-hall")
         }
-        XCTAssertEqual(expansionAssets.count, 28)
+        XCTAssertEqual(expansionAssets.count, 26)
         XCTAssertEqual(
             Dictionary(grouping: expansionAssets, by: \.family).mapValues(\.count),
             [
                 "residential": 9,
                 "commercial": 6,
                 "industrial": 5,
-                "civic-service": 4,
+                "civic-service": 3,
                 "utility": 2,
-                "park-landmark": 2,
+                "park-landmark": 1,
             ]
         )
 

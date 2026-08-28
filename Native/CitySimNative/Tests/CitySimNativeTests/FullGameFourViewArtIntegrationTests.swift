@@ -76,6 +76,8 @@ final class FullGameFourViewArtIntegrationTests: XCTestCase {
                             level: 1,
                             adjacentRoads: roads
                         )?.logicalID
+                    case .cityHall:
+                        CivicGeneratedAssetIdentity(adjacentRoads: roads)?.logicalID
                     default:
                         nil
                     }

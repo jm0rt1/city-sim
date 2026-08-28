@@ -360,17 +360,18 @@ struct InspectorView: View {
     }
 
     private func localConditionMetric(_ label: String, _ value: String) -> some View {
-        VStack(alignment: .leading, spacing: 1) {
+        HStack(spacing: 3) {
             Text(label)
                 .font(.caption2)
                 .foregroundStyle(.secondary)
                 .lineLimit(1)
             Text(value)
-                .font(.caption.weight(.semibold).monospacedDigit())
+                .font(.caption2.weight(.bold).monospacedDigit())
                 .lineLimit(1)
-                .minimumScaleFactor(0.82)
+                .minimumScaleFactor(0.72)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+        .lineLimit(1)
         .accessibilityElement(children: .combine)
     }
 

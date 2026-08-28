@@ -11,8 +11,10 @@ final class CityBuildOperatingForecastTests: XCTestCase {
 
         XCTAssertEqual(held.status, .held)
         XCTAssertEqual(held.statusLabel, "Held")
-        XCTAssertTrue(held.detail.hasPrefix("Balance -$126 / cycle needs $0"))
-        XCTAssertEqual(held.payoff, "L1 → L2 · 80 → 160 job capacity")
+        XCTAssertTrue(held.detail.hasPrefix("Balance -$126"))
+        XCTAssertEqual(held.payoff, "L1 → L2 · 80 → 160 jobs")
+        XCTAssertTrue(held.accessibilitySummary.contains("Balance -$126 / cycle needs $0"))
+        XCTAssertTrue(held.accessibilitySummary.contains("job capacity from 80 to 160"))
         XCTAssertTrue(held.accessibilitySummary.contains("Requirements not met"))
 
         state.progression = nil

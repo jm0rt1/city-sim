@@ -78,7 +78,6 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
             ("commercial-high", .commercial, 3),
             ("industrial-medium", .industrial, 2),
             ("industrial-high", .industrial, 3),
-            ("power-plant", .powerPlant, 1),
             ("water-tower", .waterTower, 1),
             ("fire-station", .fireStation, 1),
             ("police-station", .policeStation, 1),
@@ -360,6 +359,42 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
     }
 
     @MainActor
+    func testPowerPlantUsesAdmittedPowerhouseInsteadOfSubstationVariants() throws {
+        let catalog = FourViewWorldAssetCatalog()
+        let renderer = LotRenderer(
+            style: WorldVisualStyle(),
+            assets: WorldAssetCatalog(),
+            fourViewAssets: catalog
+        )
+        for variant in 0..<3 {
+            let tile = CityTile(
+                coordinate: GridCoordinate(x: 13 + variant, y: 13),
+                kind: .powerPlant,
+                level: 1,
+                condition: 1,
+                constructionProgress: 1
+            )
+            XCTAssertEqual(
+                catalog.assetID(for: tile, variant: variant),
+                "copper_arc_powerhouse"
+            )
+            let lot = renderer.makeLot(
+                for: tile,
+                adjacentRoads: .south,
+                detail: .block,
+                reducedMotion: true
+            )
+            XCTAssertNotNil(
+                lot.childNode(withName: "//lot.four-view.copper_arc_powerhouse.camNE")
+            )
+            XCTAssertNotNil(
+                lot.childNode(withName: "//lot.generated-v4.industrial_l01.block")
+            )
+            XCTAssertNil(lot.childNode(withName: "//lot.generated-role.powerPlant"))
+        }
+    }
+
+    @MainActor
     func testUtilityAndServiceLotsUseCanonicalTransformAndNoLegacyRoleDecoration() throws {
         let style = WorldVisualStyle()
         let catalog = FourViewWorldAssetCatalog()
@@ -538,8 +573,9 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
                 && !($0.family == "industrial" && $0.roles.contains("industrial-low"))
                 && !$0.roles.contains("city-hall")
                 && !$0.roles.contains("park")
+                && !$0.roles.contains("power-plant")
         }
-        XCTAssertEqual(expansionAssets.count, 25)
+        XCTAssertEqual(expansionAssets.count, 24)
         XCTAssertEqual(
             Dictionary(grouping: expansionAssets, by: \.family).mapValues(\.count),
             [
@@ -547,7 +583,7 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
                 "commercial": 6,
                 "industrial": 5,
                 "civic-service": 3,
-                "utility": 2,
+                "utility": 1,
             ]
         )
 

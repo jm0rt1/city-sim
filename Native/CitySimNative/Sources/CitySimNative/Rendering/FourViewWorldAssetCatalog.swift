@@ -122,7 +122,10 @@ final class FourViewWorldAssetCatalog {
             // inspection without letting them replace the live civic hall.
             nil
         case .powerPlant:
-            deterministicAssetID(forRole: "power-plant", tile: tile, variant: variant)
+            // The live gameplay kind is a power plant, not a substation.
+            // Select the admitted brick powerhouse while retaining the two
+            // substation sources for focused compatibility inspection.
+            admittedAssetID("copper_arc_powerhouse", forRole: "power-plant")
         case .waterTower:
             deterministicAssetID(forRole: "water-tower", tile: tile, variant: variant)
         case .fireStation:
@@ -138,6 +141,12 @@ final class FourViewWorldAssetCatalog {
 
     func assetIDs(forRole role: String) -> [String] {
         manifest?.assets.filter { $0.roles.contains(role) }.map(\.assetID) ?? []
+    }
+
+    private func admittedAssetID(_ assetID: String, forRole role: String) -> String? {
+        manifest?.assets.first {
+            $0.assetID == assetID && $0.roles.contains(role)
+        }?.assetID
     }
 
     private func deterministicAssetID(

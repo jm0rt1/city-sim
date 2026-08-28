@@ -112,7 +112,10 @@ final class FourViewWorldAssetCatalog {
         case .industrial:
             deterministicAssetID(forRole: "industrial-low", tile: tile, variant: variant)
         case .park:
-            deterministicAssetID(forRole: "park", tile: tile, variant: variant)
+            // The production atlas already carries the admitted park_l01
+            // composition with paths, planting, seating, lamps, and fountain.
+            // Keep compatibility parks inspectable without replacing it live.
+            nil
         case .cityHall:
             // City Hall already has an admitted production four-direction
             // civic family. Keep calibration landmarks available for focused

@@ -78,6 +78,8 @@ final class FullGameFourViewArtIntegrationTests: XCTestCase {
                         )?.logicalID
                     case .cityHall:
                         CivicGeneratedAssetIdentity(adjacentRoads: roads)?.logicalID
+                    case .park:
+                        "park_l01"
                     default:
                         nil
                     }
@@ -155,14 +157,26 @@ final class FullGameFourViewArtIntegrationTests: XCTestCase {
             let variant = tile.kind == .residential
                 ? ResidentialGeneratedAssetIdentity.liveVisualVariant(at: tile.coordinate)
                 : WorldVisualSeed.variant(count: 3, for: tile.coordinate, kind: tile.kind)
-            let assetID = try XCTUnwrap(catalog.assetID(for: tile, variant: variant))
             let tileRoot = try XCTUnwrap(
                 scene.childNode(withName: "//tile:\(tile.coordinate.x):\(tile.coordinate.y)")
             )
-            XCTAssertTrue(
-                descendantNames(in: tileRoot).contains("lot.four-view.\(assetID).camNE"),
-                tile.coordinate.id
-            )
+            let names = descendantNames(in: tileRoot)
+            if tile.kind == .park {
+                XCTAssertNil(catalog.assetID(for: tile, variant: variant))
+                XCTAssertTrue(
+                    names.contains("lot.generated-v4.park_l01.neighborhood")
+                        || names.contains("lot.generated-v4.park_l01.block")
+                        || names.contains("lot.generated-v4.park_l01.city"),
+                    tile.coordinate.id
+                )
+                XCTAssertFalse(names.contains { $0.hasPrefix("lot.four-view.") })
+            } else {
+                let assetID = try XCTUnwrap(catalog.assetID(for: tile, variant: variant))
+                XCTAssertTrue(
+                    names.contains("lot.four-view.\(assetID).camNE"),
+                    tile.coordinate.id
+                )
+            }
         }
     }
 

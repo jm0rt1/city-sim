@@ -78,7 +78,6 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
             ("commercial-high", .commercial, 3),
             ("industrial-medium", .industrial, 2),
             ("industrial-high", .industrial, 3),
-            ("park", .park, 1),
             ("power-plant", .powerPlant, 1),
             ("water-tower", .waterTower, 1),
             ("fire-station", .fireStation, 1),
@@ -319,15 +318,14 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
     }
 
     @MainActor
-    func testParkVariantsUseFixedTransformWithoutChangingGameplayIdentity() throws {
-        let style = WorldVisualStyle()
+    func testParkUsesAdmittedGeneratedCompositionForEveryVisualVariant() throws {
         let catalog = FourViewWorldAssetCatalog()
         let renderer = LotRenderer(
-            style: style,
+            style: WorldVisualStyle(),
             assets: WorldAssetCatalog(),
             fourViewAssets: catalog
         )
-        for variant in 0..<2 {
+        for variant in 0..<3 {
             let coordinate = try XCTUnwrap((0..<32).lazy
                 .flatMap { y in (0..<32).map { GridCoordinate(x: $0, y: y) } }
                 .first {
@@ -344,24 +342,20 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
                 condition: 1,
                 constructionProgress: 1
             )
-            let assetID = try XCTUnwrap(catalog.assetID(for: tile, variant: variant))
+            XCTAssertNil(catalog.assetID(for: tile, variant: variant))
             let lot = renderer.makeLot(
                 for: tile,
                 adjacentRoads: .south,
                 detail: .block,
                 reducedMotion: true
             )
-            let marker = try XCTUnwrap(
-                lot.childNode(withName: "//lot.four-view.\(assetID).camNE")
+            let sprite = try XCTUnwrap(
+                lot.childNode(withName: "//lot.generated-v4.park_l01.block")
+                    as? SKSpriteNode
             )
-            let sprite = try XCTUnwrap(marker.parent as? SKSpriteNode)
-            XCTAssertEqual(sprite.anchorPoint, FourViewWorldAssetCatalog.spriteAnchor)
-            XCTAssertEqual(sprite.xScale, style.tileWidth / 176, accuracy: 0.000_001)
-            XCTAssertEqual(sprite.yScale, style.tileWidth / 176, accuracy: 0.000_001)
-            XCTAssertEqual(sprite.zRotation, 0, accuracy: 0.000_001)
-            XCTAssertEqual(sprite.position, .zero)
-            XCTAssertEqual(sprite.colorBlendFactor, 0, accuracy: 0.000_001)
             XCTAssertEqual(sprite.name, "lot.generated-v4.park_l01.block")
+            XCTAssertNil(lot.childNode(withName: "//lot.four-view.*"))
+            XCTAssertNil(lot.childNode(withName: "//lot.four-view.missing.*"))
         }
     }
 
@@ -543,8 +537,9 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
                 && !($0.family == "commercial" && $0.roles.contains("commercial-low"))
                 && !($0.family == "industrial" && $0.roles.contains("industrial-low"))
                 && !$0.roles.contains("city-hall")
+                && !$0.roles.contains("park")
         }
-        XCTAssertEqual(expansionAssets.count, 26)
+        XCTAssertEqual(expansionAssets.count, 25)
         XCTAssertEqual(
             Dictionary(grouping: expansionAssets, by: \.family).mapValues(\.count),
             [
@@ -553,7 +548,6 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
                 "industrial": 5,
                 "civic-service": 3,
                 "utility": 2,
-                "park-landmark": 1,
             ]
         )
 

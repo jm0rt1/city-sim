@@ -8,6 +8,11 @@ enum PlayerFeedbackTone: Sendable {
     case caution
 }
 
+struct CityRoadConnectionRecovery: Equatable, Sendable {
+    let blockedKind: BuildingKind
+    let blockedCoordinate: GridCoordinate
+}
+
 @MainActor
 final class CityGameStore: ObservableObject {
     static let autosaveIntervalTicks = 240
@@ -51,6 +56,7 @@ final class CityGameStore: ObservableObject {
     @Published private(set) var canUndo = false
     @Published private(set) var mapFocusRequestGeneration: UInt = 0
     @Published private(set) var foundationsGuideProgress: CityFoundationsGuideProgress
+    @Published private(set) var roadConnectionRecovery: CityRoadConnectionRecovery? = nil
 
     private let saves: SaveGameService
     private let playerDefaults: UserDefaults?
@@ -691,9 +697,178 @@ final class CityGameStore: ObservableObject {
                 blockedCoordinate: blockedCoordinate
             )
         }
+        if recovery.command == .buildRoad,
+           case .build(let blockedKind) = interactionMode,
+           blockedKind.requiresRoad,
+           let blockedCoordinate = selectedCoordinate,
+           case .failure(.cityRoadConnectionRequired) = CitySimulation.validateBuild(
+               blockedKind,
+               at: blockedCoordinate,
+               in: state
+           ) {
+            return beginRoadConnectionRecovery(
+                for: blockedKind,
+                blockedCoordinate: blockedCoordinate
+            )
+        }
         return recovery.focusesMap
             ? performMapFocused(recovery.command)
             : perform(recovery.command)
+    }
+
+    private func beginRoadConnectionRecovery(
+        for blockedKind: BuildingKind,
+        blockedCoordinate: GridCoordinate
+    ) -> Bool {
+        guard let route = roadConnectionRecoveryRoute(
+            preserving: blockedCoordinate
+        ), let roadCoordinate = route.first else {
+            showFeedback(
+                "No open street route can preserve \(blockedKind.title) block "
+                    + "\(blockedCoordinate.x + 1), \(blockedCoordinate.y + 1). "
+                    + "Choose a different parcel or clear an obstruction.",
+                tone: .caution,
+                autoDismissAfter: nil
+            )
+            return false
+        }
+        guard perform(.buildRoad) else { return false }
+        roadConnectionRecovery = CityRoadConnectionRecovery(
+            blockedKind: blockedKind,
+            blockedCoordinate: blockedCoordinate
+        )
+        selectedCoordinate = roadCoordinate
+        hudContextScope = .selection
+        requestMapFocus()
+        showFeedback(
+            "Street route preserves \(blockedKind.title) block "
+                + "\(blockedCoordinate.x + 1), \(blockedCoordinate.y + 1) · "
+                + "\(route.count) \(route.count == 1 ? "road block" : "road blocks") to connect",
+            autoDismissAfter: nil
+        )
+        return true
+    }
+
+    private func roadConnectionRecoveryRoute(
+        preserving blockedCoordinate: GridCoordinate
+    ) -> [GridCoordinate]? {
+        let sourceSeeds = state.neighbors(of: blockedCoordinate)
+            .filter { $0.kind == .road }
+            .map(\.coordinate)
+        guard !sourceSeeds.isEmpty else { return nil }
+
+        var sourceSet = Set(sourceSeeds)
+        var sourceRoads = sourceSeeds
+        var sourceIndex = 0
+        while sourceIndex < sourceRoads.count {
+            let current = sourceRoads[sourceIndex]
+            sourceIndex += 1
+            for neighbor in state.neighbors(of: current) where neighbor.kind == .road {
+                if sourceSet.insert(neighbor.coordinate).inserted {
+                    sourceRoads.append(neighbor.coordinate)
+                }
+            }
+        }
+
+        let connectedRoads = Set(state.tiles.compactMap { tile -> GridCoordinate? in
+            guard tile.kind == .road,
+                  CitySimulation.roadNetworkConnectsToCity(
+                      from: [tile.coordinate],
+                      in: state
+                  ) else { return nil }
+            return tile.coordinate
+        })
+        guard !connectedRoads.isEmpty else { return nil }
+
+        var visited = sourceSet
+        var frontier = sourceRoads
+        var predecessor: [GridCoordinate: GridCoordinate] = [:]
+        var index = 0
+        while index < frontier.count {
+            let current = frontier[index]
+            index += 1
+            for neighbor in state.neighbors(of: current) {
+                if connectedRoads.contains(neighbor.coordinate) {
+                    var route: [GridCoordinate] = []
+                    var cursor = current
+                    while !sourceSet.contains(cursor) {
+                        route.append(cursor)
+                        guard let previous = predecessor[cursor] else { return nil }
+                        cursor = previous
+                    }
+                    return route.reversed()
+                }
+                guard neighbor.kind == .empty,
+                      neighbor.coordinate != blockedCoordinate,
+                      visited.insert(neighbor.coordinate).inserted else {
+                    continue
+                }
+                predecessor[neighbor.coordinate] = current
+                frontier.append(neighbor.coordinate)
+            }
+        }
+        return nil
+    }
+
+    private func advanceRoadConnectionRecovery(afterBuilding _: GridCoordinate) -> Bool {
+        guard let recovery = roadConnectionRecovery else { return false }
+        switch CitySimulation.validateBuild(
+            recovery.blockedKind,
+            at: recovery.blockedCoordinate,
+            in: state
+        ) {
+        case .success:
+            restoreRoadConnectionRecovery(
+                recovery,
+                feedback: "Street connected · \(recovery.blockedKind.title) is ready at block "
+                    + "\(recovery.blockedCoordinate.x + 1), \(recovery.blockedCoordinate.y + 1)"
+            )
+        case .failure(.cityRoadConnectionRequired):
+            guard let route = roadConnectionRecoveryRoute(
+                preserving: recovery.blockedCoordinate
+            ), let next = route.first else {
+                restoreRoadConnectionRecovery(
+                    recovery,
+                    feedback: "Street route paused · review \(recovery.blockedKind.title) at block "
+                        + "\(recovery.blockedCoordinate.x + 1), \(recovery.blockedCoordinate.y + 1)",
+                    tone: .caution
+                )
+                return true
+            }
+            selectedCoordinate = next
+            hudContextScope = .selection
+            requestMapFocus()
+            showFeedback(
+                "Road construction approved · \(route.count) "
+                    + "\(route.count == 1 ? "road block remains" : "road blocks remain") to connect",
+                tone: .positive,
+                autoDismissAfter: nil
+            )
+        case .failure:
+            restoreRoadConnectionRecovery(
+                recovery,
+                feedback: "Street connected · review \(recovery.blockedKind.title) at block "
+                    + "\(recovery.blockedCoordinate.x + 1), \(recovery.blockedCoordinate.y + 1)",
+                tone: .caution
+            )
+        }
+        return true
+    }
+
+    private func restoreRoadConnectionRecovery(
+        _ recovery: CityRoadConnectionRecovery,
+        feedback: String,
+        tone: PlayerFeedbackTone = .positive
+    ) {
+        roadConnectionRecovery = nil
+        selectedTool = recovery.blockedKind
+        selectedBuildCategory = recovery.blockedKind.buildCategory
+        interactionMode = .build(recovery.blockedKind)
+        selectedCoordinate = recovery.blockedCoordinate
+        hudContextScope = .selection
+        showInspector = false
+        requestMapFocus()
+        showFeedback(feedback, tone: tone, autoDismissAfter: nil)
     }
 
     private func beginRoadAccessRecovery(
@@ -977,6 +1152,7 @@ final class CityGameStore: ObservableObject {
     }
 
     func selectTool(_ kind: BuildingKind) {
+        roadConnectionRecovery = nil
         selectedTool = kind
         selectedBuildCategory = kind.buildCategory
         interactionMode = .build(kind)
@@ -985,6 +1161,7 @@ final class CityGameStore: ObservableObject {
     }
 
     func selectBuildCategory(_ category: BuildCategory) {
+        roadConnectionRecovery = nil
         selectedBuildCategory = category
         if let firstKind = category.buildingKinds.first {
             let categoryTool = category.buildingKinds.contains(selectedTool) ? selectedTool : firstKind
@@ -995,18 +1172,28 @@ final class CityGameStore: ObservableObject {
     }
 
     func activateBuildMode() {
+        roadConnectionRecovery = nil
         interactionMode = .build(selectedTool)
         showInspector = false
         showFeedback("Build mode · \(selectedTool.title) selected")
     }
 
     func activateInspectMode() {
+        roadConnectionRecovery = nil
         interactionMode = .inspect
         showInspector = false
         showFeedback("Inspect mode active")
     }
 
     func cancelInteraction() {
+        if let recovery = roadConnectionRecovery {
+            restoreRoadConnectionRecovery(
+                recovery,
+                feedback: "Street connection paused · \(recovery.blockedKind.title) decision restored",
+                tone: .neutral
+            )
+            return
+        }
         interactionMode = .inspect
         selectedCoordinate = nil
         hudContextScope = .city
@@ -1015,6 +1202,7 @@ final class CityGameStore: ObservableObject {
     }
 
     func toggleBulldozer() {
+        roadConnectionRecovery = nil
         if interactionMode == .bulldoze {
             interactionMode = .inspect
             showFeedback("Bulldozer deactivated · Inspect mode active")
@@ -1078,6 +1266,8 @@ final class CityGameStore: ObservableObject {
                 recordUndo(previousState)
                 completeFoundationsLesson(for: kind)
                 selectedCoordinate = coordinate
+                let handledRoadConnectionRecovery = kind == .road
+                    && advanceRoadConnectionRecovery(afterBuilding: coordinate)
                 if kind != .road {
                     // A completed one-off place should read as success, not
                     // immediately re-evaluate the newly occupied block as an
@@ -1087,7 +1277,9 @@ final class CityGameStore: ObservableObject {
                     hudContextScope = .selection
                     showInspector = false
                 }
-                showFeedback("\(kind.title) construction approved", tone: .positive)
+                if !handledRoadConnectionRecovery {
+                    showFeedback("\(kind.title) construction approved", tone: .positive)
+                }
                 soundFeedback.play(.constructionApproved)
             case .failure(let rejection):
                 publishBlockedPlacementFeedback(for: kind, reason: rejection.message)
@@ -2115,6 +2307,7 @@ final class CityGameStore: ObservableObject {
         state = previous
         state.cityName = currentCityName
         cityNameDraft = currentCityName
+        roadConnectionRecovery = nil
         selectedCoordinate = nil
         showInspector = false
         canUndo = !undoStates.isEmpty

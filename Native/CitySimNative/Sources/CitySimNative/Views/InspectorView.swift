@@ -650,7 +650,7 @@ struct InspectorView: View {
             demandCard(title: "Residential", kind: .residential, value: store.state.demand.residential, tint: .cyan)
             demandCard(title: "Commercial", kind: .commercial, value: store.state.demand.commercial, tint: .purple)
             demandCard(title: "Industrial", kind: .industrial, value: store.state.demand.industrial, tint: .orange)
-            ContextCard(title: "Development pipeline", symbol: "checklist", tint: GameTheme.information) {
+            ContextCard(title: "Growth pipeline", symbol: "checklist", tint: GameTheme.information) {
                 HStack(alignment: .firstTextBaseline, spacing: 8) {
                     Text("\(pipeline.readyCount) READY")
                         .font(.title3.bold().monospacedDigit())
@@ -660,16 +660,33 @@ struct InspectorView: View {
                         .foregroundStyle(pipeline.heldCount > 0 ? GameTheme.warning : .secondary)
                 }
                 .accessibilityHidden(true)
-                Text(pipeline.detail)
-                    .font(.caption2)
-                    .foregroundStyle(.secondary)
-                    .lineLimit(2)
-                    .accessibilityLabel(pipeline.accessibilitySummary)
                 if let response = pipeline.response {
-                    compactAction(response.title, symbol: "arrow.right.circle.fill") {
+                    Button {
                         StrategyCommandCenterView.perform(response, on: store)
+                    } label: {
+                        HStack(spacing: 4) {
+                            Text(pipeline.detail)
+                                .lineLimit(1)
+                                .minimumScaleFactor(0.78)
+                            Spacer(minLength: 2)
+                            Image(systemName: "arrow.right.circle.fill")
+                                .accessibilityHidden(true)
+                        }
                     }
+                    .buttonStyle(.plain)
+                    .font(.caption2.weight(.semibold))
+                    .foregroundStyle(GameTheme.information)
+                    .frame(minHeight: 24)
+                    .help(response.explanation)
+                    .accessibilityLabel(response.title)
+                    .accessibilityValue(pipeline.accessibilitySummary)
                     .accessibilityHint(response.explanation)
+                } else {
+                    Text(pipeline.detail)
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
+                        .lineLimit(2)
+                        .accessibilityLabel(pipeline.accessibilitySummary)
                 }
             }
         }
@@ -961,13 +978,20 @@ struct InspectorView: View {
 
     private func demandCard(title: String, kind: BuildingKind, value: Double, tint: Color) -> some View {
         ContextCard(title: title, symbol: kind.symbol, tint: tint) {
-            HStack {
+            HStack(spacing: 6) {
                 Text((value * 100).percentText).font(.title3.bold().monospacedDigit())
-                Spacer()
                 Text(value.demandLabel).font(.caption.weight(.semibold)).foregroundStyle(.secondary)
+                Spacer(minLength: 2)
+                Button("Build") {
+                    store.perform(CityCommandCatalog.id(for: kind))
+                }
+                .buttonStyle(.bordered)
+                .controlSize(.small)
+                .help("Choose \(title) and return focus to the map")
+                .accessibilityLabel("Build \(title.lowercased())")
+                .accessibilityHint("Chooses \(title) and returns focus to the map")
             }
             ProgressView(value: value).tint(tint)
-            compactAction("Build \(title.lowercased())", symbol: kind.symbol) { store.perform(CityCommandCatalog.id(for: kind)) }
         }
     }
 

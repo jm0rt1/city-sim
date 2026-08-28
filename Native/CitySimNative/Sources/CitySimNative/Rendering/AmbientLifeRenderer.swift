@@ -111,26 +111,37 @@ final class AmbientLifeRenderer {
             }.min() ?? .max
             return distance <= 4
         }
-        let roads = corridorAnchors(
+        let roads = corridorRoads(
             from: candidateRoads,
             developedCoordinates: developedCoordinates,
-            limit: 5
+            in: state
         )
         guard !roads.isEmpty else { return root }
 
+        let preferredRoadOrder = Array(roads.indices.dropFirst(2)) + Array(roads.indices.prefix(2))
+        var furniturePlacementByRoadIndex: [Int: (edge: RoadConnectionMask, side: CGFloat)] = [:]
         var furnitureByRoadIndex: [Int: SKNode] = [:]
-        if detail.includes(.neighborhood) {
-            let preferredRoadOrder = Array(roads.indices.dropFirst(2)) + Array(roads.indices.prefix(2))
-            for roadIndex in preferredRoadOrder where furnitureByRoadIndex.count < 3 {
-                let road = roads[roadIndex]
-                if let furniture = streetFurniture(
+        for roadIndex in preferredRoadOrder where furniturePlacementByRoadIndex.count < 3 {
+            let road = roads[roadIndex]
+            guard let placement = streetFurniturePlacement(
+                at: road.coordinate,
+                index: furniturePlacementByRoadIndex.count,
+                in: state
+            ), roadsidePlantingPlacement(
+                at: road.coordinate,
+                index: roadIndex,
+                in: state,
+                avoiding: placement
+            ) != nil else { continue }
+            let furnitureIndex = furniturePlacementByRoadIndex.count
+            furniturePlacementByRoadIndex[roadIndex] = placement
+            if detail.includes(.neighborhood) {
+                furnitureByRoadIndex[roadIndex] = streetFurniture(
                     at: road.coordinate,
-                    index: furnitureByRoadIndex.count,
-                    in: state,
-                    position: style.isoPosition(road.coordinate)
-                ) {
-                    furnitureByRoadIndex[roadIndex] = furniture
-                }
+                    index: furnitureIndex,
+                    position: style.isoPosition(road.coordinate),
+                    placement: placement
+                )
             }
         }
 
@@ -143,38 +154,15 @@ final class AmbientLifeRenderer {
                 vignette.addChild(furniture)
             }
 
-            let fourViewVegetation: [Int: String] = [
-                0: "maple_street_tree",
-                2: "marigold_planter_cluster",
-                4: "sage_shrub_cluster",
-            ]
-            if let assetID = fourViewVegetation[index],
-               let coordinate = vegetationCoordinate(
-                   in: state,
-                   near: road.coordinate,
-                   excluding: occupiedVegetationCoordinates
-               ), let groundEcologyAssets {
-                occupiedVegetationCoordinates.insert(coordinate)
-                let composition = SKNode()
-                composition.name = "world.ambient.ground-ecology.\(assetID).\(index)"
-                composition.position = style.isoPosition(coordinate)
-                composition.zPosition = style.depth(for: coordinate) + 48
-                if let sprite = groundEcologyAssets.makeSprite(
-                    assetID: assetID,
-                    worldTileWidth: style.tileWidth,
-                    zPosition: 0
-                ) {
-                    sprite.name = "\(composition.name ?? "world.ambient.ground-ecology").four-view.\(detail.assetSuffix)"
-                    sprite.position = .zero
-                    sprite.color = .clear
-                    sprite.colorBlendFactor = 0
-                    composition.addChild(sprite)
-                } else {
-                    let missing = SKNode()
-                    missing.name = "world.ambient.ground-ecology.missing.\(assetID)"
-                    composition.addChild(missing)
-                }
-                vignette.addChild(composition)
+            if let planting = roadsidePlanting(
+                at: road.coordinate,
+                index: index,
+                in: state,
+                detail: detail,
+                position: style.isoPosition(road.coordinate),
+                avoiding: furniturePlacementByRoadIndex[index]
+            ) {
+                vignette.addChild(planting)
             } else if groundEcologyAssets == nil,
                       (index == 0 || index == 4), let coordinate = vegetationCoordinate(
                 in: state,
@@ -207,9 +195,12 @@ final class AmbientLifeRenderer {
                 root.addChild(vignette)
             }
         }
-        let excludedActivityRoads = Set(
+        var excludedActivityRoads = Set(
             furnitureByRoadIndex.keys.map { roads[$0].coordinate }
         )
+        if groundEcologyAssets != nil {
+            excludedActivityRoads.formUnion(roads.map(\.coordinate))
+        }
         let placements = resolvedActivityPlacements ?? activityPlacements(
             in: state,
             consequences: consequences,
@@ -256,7 +247,6 @@ final class AmbientLifeRenderer {
         in state: CityGameState,
         detail: CameraDetailLevel
     ) -> Set<GridCoordinate> {
-        guard detail.includes(.neighborhood) else { return [] }
         let completed = state.tiles.filter {
             $0.kind != .empty && $0.kind != .road && $0.constructionProgress >= 1
         }
@@ -269,22 +259,27 @@ final class AmbientLifeRenderer {
             }.min() ?? .max
             return distance <= 4
         }
-        let roads = corridorAnchors(
+        let roads = corridorRoads(
             from: candidateRoads,
             developedCoordinates: developedCoordinates,
-            limit: 5
+            in: state
         )
+        var excluded = groundEcologyAssets == nil
+            ? Set<GridCoordinate>()
+            : Set(roads.map(\.coordinate))
+        guard detail.includes(.neighborhood) else { return excluded }
         let preferredRoadOrder = Array(roads.indices.dropFirst(2))
             + Array(roads.indices.prefix(2))
-        var excluded: Set<GridCoordinate> = []
-        for roadIndex in preferredRoadOrder where excluded.count < 3 {
+        var furnitureCount = 0
+        for roadIndex in preferredRoadOrder where furnitureCount < 3 {
             let road = roads[roadIndex]
             guard streetFurniturePlacement(
                 at: road.coordinate,
-                index: excluded.count,
+                index: furnitureCount,
                 in: state
             ) != nil else { continue }
             excluded.insert(road.coordinate)
+            furnitureCount += 1
         }
         return excluded
     }
@@ -1259,14 +1254,9 @@ final class AmbientLifeRenderer {
     private func streetFurniture(
         at coordinate: GridCoordinate,
         index: Int,
-        in state: CityGameState,
-        position roadPosition: CGPoint
-    ) -> SKNode? {
-        guard let placement = streetFurniturePlacement(
-            at: coordinate,
-            index: index,
-            in: state
-        ) else { return nil }
+        position roadPosition: CGPoint,
+        placement: (edge: RoadConnectionMask, side: CGFloat)
+    ) -> SKNode {
         let variant = index % 3
 
         let endpoint = style.roadSocket(for: placement.edge)
@@ -1314,6 +1304,109 @@ final class AmbientLifeRenderer {
         }
         root.setScale(0.72)
         return root
+    }
+
+    private func roadsidePlanting(
+        at coordinate: GridCoordinate,
+        index: Int,
+        in state: CityGameState,
+        detail: CameraDetailLevel,
+        position roadPosition: CGPoint,
+        avoiding furniturePlacement: (edge: RoadConnectionMask, side: CGFloat)?
+    ) -> SKNode? {
+        guard let groundEcologyAssets,
+              let placement = roadsidePlantingPlacement(
+                  at: coordinate,
+                  index: index,
+                  in: state,
+                  avoiding: furniturePlacement
+              ) else { return nil }
+        let assetIDs = [
+            "maple_street_tree",
+            "marigold_planter_cluster",
+            "sage_shrub_cluster",
+            "maple_street_tree",
+            "marigold_planter_cluster",
+        ]
+        let assetID = assetIDs[index % assetIDs.count]
+        guard let sprite = groundEcologyAssets.makeSprite(
+            assetID: assetID,
+            worldTileWidth: style.tileWidth,
+            zPosition: 0
+        ) else { return nil }
+
+        let endpoint = style.roadSocket(for: placement.edge)
+        let direction = normalized(endpoint)
+        let perpendicular = CGPoint(x: -direction.y, y: direction.x)
+        let localCenter = CGPoint(
+            x: endpoint.x * 0.50 + perpendicular.x * 11.25 * placement.side,
+            y: endpoint.y * 0.50 + perpendicular.y * 11.25 * placement.side
+        )
+        let root = SKNode()
+        root.name = "world.public-realm.street-planting.\(assetID).\(coordinate.x).\(coordinate.y)"
+        root.position = CGPoint(
+            x: roadPosition.x + localCenter.x,
+            y: roadPosition.y + localCenter.y
+        )
+        root.zPosition = style.depth(for: coordinate) + 55
+        sprite.name = "\(root.name ?? "world.public-realm.street-planting").four-view.\(detail.assetSuffix)"
+        sprite.position = .zero
+        sprite.color = .clear
+        sprite.colorBlendFactor = 0
+        root.addChild(sprite)
+        return root
+    }
+
+    private func roadsidePlantingPlacement(
+        at coordinate: GridCoordinate,
+        index: Int,
+        in state: CityGameState,
+        avoiding furniturePlacement: (edge: RoadConnectionMask, side: CGFloat)?
+    ) -> (edge: RoadConnectionMask, side: CGFloat)? {
+        let connections = RoadConnectionMask.resolving(at: coordinate, in: state)
+        let edges = connections.edges
+        guard !edges.isEmpty else { return nil }
+
+        if let furniturePlacement {
+            let opposite = (
+                edge: furniturePlacement.edge,
+                side: -furniturePlacement.side
+            )
+            if isClearSidewalkPlacement(
+                edge: opposite.edge,
+                side: opposite.side,
+                connections: connections
+            ) {
+                return opposite
+            }
+        }
+
+        let edgeRotation = WorldVisualSeed.variant(
+            count: edges.count,
+            for: coordinate,
+            kind: .road,
+            salt: 0x57A40 + UInt64(index)
+        )
+        let orderedEdges = Array(edges[edgeRotation...] + edges[..<edgeRotation])
+        let preferredSide: CGFloat = WorldVisualSeed.unit(
+            for: coordinate,
+            kind: .road,
+            salt: 0x57A50 + UInt64(index)
+        ) < 0.5 ? -1 : 1
+        let candidates = orderedEdges.flatMap { edge in
+            [preferredSide, -preferredSide].map { side in (edge: edge, side: side) }
+        }
+        return candidates.first(where: { candidate in
+            guard candidate.edge != furniturePlacement?.edge
+                    || candidate.side != furniturePlacement?.side else {
+                return false
+            }
+            return isClearSidewalkPlacement(
+                edge: candidate.edge,
+                side: candidate.side,
+                connections: connections
+            )
+        })
     }
 
     private func streetFurniturePlacement(
@@ -1539,6 +1632,37 @@ final class AmbientLifeRenderer {
                 return lhsSeparation < rhsSeparation
             }) else { break }
             selected.append(next)
+        }
+        return selected
+    }
+
+    private func corridorRoads(
+        from candidates: [CityTile],
+        developedCoordinates: [GridCoordinate],
+        in state: CityGameState
+    ) -> [CityTile] {
+        let desiredCount = 5
+        guard groundEcologyAssets != nil else {
+            return corridorAnchors(
+                from: candidates,
+                developedCoordinates: developedCoordinates,
+                limit: desiredCount
+            )
+        }
+        let expanded = corridorAnchors(
+            from: candidates,
+            developedCoordinates: developedCoordinates,
+            limit: min(candidates.count, desiredCount * 2)
+        )
+        var selected: [CityTile] = []
+        for road in expanded where selected.count < desiredCount {
+            guard roadsidePlantingPlacement(
+                at: road.coordinate,
+                index: selected.count,
+                in: state,
+                avoiding: nil
+            ) != nil else { continue }
+            selected.append(road)
         }
         return selected
     }

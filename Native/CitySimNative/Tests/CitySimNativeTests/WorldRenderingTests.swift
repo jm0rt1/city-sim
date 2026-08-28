@@ -3327,6 +3327,98 @@ final class WorldRenderingTests: XCTestCase {
     }
 
     @MainActor
+    func testProductionCorridorFormsDeterministicAuthoredRoadsidePlantingRhythm() {
+        let style = WorldVisualStyle()
+        let renderer = AmbientLifeRenderer(
+            style: style,
+            assets: WorldAssetCatalog(),
+            groundEcologyAssets: FourViewGroundEcologyCatalog()
+        )
+        let state = CityGameState.newCity(seed: 42)
+        let snapshot = try! CityPresentationSnapshot(state: state)
+        let city = renderer.makeCorridorLife(
+            in: state,
+            consequences: snapshot.spatialConsequences,
+            detail: .city,
+            reducedMotion: true
+        )
+        let block = renderer.makeCorridorLife(
+            in: state,
+            consequences: snapshot.spatialConsequences,
+            detail: .block,
+            reducedMotion: true
+        )
+        let repeated = renderer.makeCorridorLife(
+            in: state,
+            consequences: snapshot.spatialConsequences,
+            detail: .block,
+            reducedMotion: true
+        )
+
+        func plantingRoots(in root: SKNode) -> [SKNode] {
+            descendantNames(in: root).compactMap { name in
+                let components = name.split(separator: ".")
+                guard components.count == 6,
+                      components[0] == "world",
+                      components[1] == "public-realm",
+                      components[2] == "street-planting" else { return nil }
+                return root.childNode(withName: "//\(name)")
+            }
+        }
+
+        let cityPlantings = plantingRoots(in: city)
+        let blockPlantings = plantingRoots(in: block)
+        let repeatedPlantings = plantingRoots(in: repeated)
+        XCTAssertEqual(cityPlantings.count, 5)
+        XCTAssertEqual(blockPlantings.count, 5)
+        XCTAssertEqual(repeatedPlantings.count, 5)
+        XCTAssertEqual(
+            Set(blockPlantings.compactMap { $0.name?.split(separator: ".")[3] }),
+            Set(["maple_street_tree", "marigold_planter_cluster", "sage_shrub_cluster"])
+        )
+
+        let cityByName = Dictionary(uniqueKeysWithValues: cityPlantings.compactMap {
+            node in node.name.map { ($0, node.position) }
+        })
+        let blockByName = Dictionary(uniqueKeysWithValues: blockPlantings.compactMap {
+            node in node.name.map { ($0, node.position) }
+        })
+        let repeatedByName = Dictionary(uniqueKeysWithValues: repeatedPlantings.compactMap {
+            node in node.name.map { ($0, node.position) }
+        })
+        XCTAssertEqual(Set(cityByName.keys), Set(blockByName.keys))
+        XCTAssertEqual(blockByName, repeatedByName)
+
+        for planting in blockPlantings {
+            let components = try! XCTUnwrap(planting.name).split(separator: ".")
+            let coordinate = GridCoordinate(
+                x: try! XCTUnwrap(Int(components[4])),
+                y: try! XCTUnwrap(Int(components[5]))
+            )
+            XCTAssertEqual(state.tile(at: coordinate)?.kind, .road)
+            XCTAssertEqual(planting.position, cityByName[try! XCTUnwrap(planting.name)])
+            let local = CGPoint(
+                x: planting.position.x - style.isoPosition(coordinate).x,
+                y: planting.position.y - style.isoPosition(coordinate).y
+            )
+            let normalizedX = abs(local.x) / (style.tileWidth / 2)
+            let normalizedY = abs(local.y) / (style.tileHeight / 2)
+            XCTAssertLessThanOrEqual(normalizedX + normalizedY, 0.96)
+            let connections = RoadConnectionMask.resolving(at: coordinate, in: state)
+            let coreDistance = connections.edges.map {
+                pointSegmentDistanceForTesting(local, end: style.roadSocket(for: $0))
+            }.min() ?? 0
+            XCTAssertGreaterThanOrEqual(coreDistance, 9.1)
+            let sprite = try! XCTUnwrap(planting.children.first as? SKSpriteNode)
+            XCTAssertEqual(sprite.anchorPoint, FourViewGroundEcologyCatalog.spriteAnchor)
+            XCTAssertEqual(sprite.colorBlendFactor, 0)
+            XCTAssertNotNil(
+                sprite.childNode(withName: "ground-ecology.four-view.*.camNE")
+            )
+        }
+    }
+
+    @MainActor
     func testTypedLocalActivityIsDeterministicBoundedTruthSafeAndSuppressesNilOrZero() {
         let style = WorldVisualStyle()
         let renderer = AmbientLifeRenderer(style: style, assets: WorldAssetCatalog())

@@ -1346,6 +1346,26 @@ final class CitySimulationTests: XCTestCase {
         XCTAssertTrue(selected.accessibilityValue.contains("6 nearby eligible sites are outlined"))
         XCTAssertTrue(selected.accessibilityValue.contains("40 sites are eligible in total"))
 
+        let actualOpportunities = CityBuildOpportunityInventory.make(
+            kind: .commercial,
+            in: state
+        )
+        let strengthened = BuildToolbarView.targetBeaconPresentation(
+            interactionMode: .build(.commercial),
+            selectedTile: nil,
+            target: nil,
+            demand: demand,
+            buildOpportunities: actualOpportunities
+        )
+        XCTAssertEqual(strengthened.title, "Commercial · High 76% · $2.4K")
+        XCTAssertEqual(
+            strengthened.detail,
+            "\(actualOpportunities?.detail ?? "") · ◆ Value · •• Util · ○ Air"
+        )
+        XCTAssertTrue(strengthened.accessibilityValue.contains("Strongest utilities"))
+        XCTAssertTrue(strengthened.accessibilityValue.contains("Highest land value"))
+        XCTAssertTrue(strengthened.accessibilityValue.contains("Lowest pollution"))
+
         let unlimited = BuildToolbarView.targetBeaconPresentation(
             interactionMode: .build(.commercial),
             selectedTile: nil,

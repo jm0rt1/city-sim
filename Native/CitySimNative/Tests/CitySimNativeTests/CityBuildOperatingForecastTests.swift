@@ -506,12 +506,14 @@ final class CityBuildOperatingForecastTests: XCTestCase {
         XCTAssertTrue(inventory.accessibilitySummary.contains("Strongest utilities"))
         XCTAssertTrue(inventory.accessibilitySummary.contains("Highest land value"))
         XCTAssertTrue(inventory.accessibilitySummary.contains("Lowest pollution"))
+        XCTAssertEqual(inventory.visibleStrengthLegend, "◆ Value · •• Util · ○ Air")
 
         let park = try XCTUnwrap(
             CityBuildOpportunityInventory.make(kind: .park, in: state)
         )
         XCTAssertTrue(park.developmentForecastByCoordinate.isEmpty)
         XCTAssertTrue(park.developmentStrengthsByCoordinate.isEmpty)
+        XCTAssertNil(park.visibleStrengthLegend)
         XCTAssertNil(park.developmentStrengthAccessibilitySummary)
     }
 

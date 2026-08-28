@@ -142,6 +142,7 @@ struct BuildToolbarView: View {
         let level: String
 
         var summary: String { "\(level) demand \(percent)%" }
+        var railSummary: String { "\(level) \(percent)%" }
         var accessibilitySummary: String {
             "\(level) demand, \(percent) percent."
         }
@@ -795,6 +796,15 @@ struct BuildToolbarView: View {
         }
     }
 
+    private static func compactRailCurrency(_ amount: Double) -> String {
+        let wholeAmount = Int(amount.rounded())
+        let thousands = wholeAmount / 1_000
+        let hundreds = (wholeAmount % 1_000) / 100
+        return hundreds == 0
+            ? "$\(thousands)K"
+            : "$\(thousands).\(hundreds)K"
+    }
+
     static func targetBeaconPresentation(
         interactionMode: CityInteractionMode,
         selectedTile: CityTile?,
@@ -831,11 +841,28 @@ struct BuildToolbarView: View {
             )
         case .build(let kind):
             guard let target else {
-                let title = buildOpportunities?.titleSuffix.map {
-                    "\(kind.title) · \($0)"
-                } ?? kind.title
                 let costDetail = unlimitedFunds ? "COST WAIVED" : kind.buildCost.currencyText
-                let detail = if let buildOpportunities {
+                let visibleLegend = buildOpportunities?.visibleStrengthLegend
+                let railCostDetail = if unlimitedFunds {
+                    "WAIVED"
+                } else if kind.buildCost >= 1_000 {
+                    Self.compactRailCurrency(kind.buildCost)
+                } else {
+                    kind.buildCost.currencyText
+                }
+                let title = if visibleLegend != nil {
+                    [kind.title, demand?.railSummary, railCostDetail]
+                        .compactMap { $0 }
+                        .joined(separator: " · ")
+                } else {
+                    buildOpportunities?.titleSuffix.map {
+                        "\(kind.title) · \($0)"
+                    } ?? kind.title
+                }
+                let detail = if let buildOpportunities, let visibleLegend {
+                    [buildOpportunities.detail, visibleLegend]
+                        .joined(separator: " · ")
+                } else if let buildOpportunities {
                     [
                         buildOpportunities.detail,
                         demand?.summary,

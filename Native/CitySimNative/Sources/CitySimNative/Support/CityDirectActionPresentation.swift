@@ -946,6 +946,22 @@ struct CityBuildOpportunityInventory: Equatable, Sendable {
             + highlights.joined(separator: ". ") + "."
     }
 
+    var visibleStrengthLegend: String? {
+        let legendOrder: [DevelopmentStrength] = [.value, .utility, .cleanAir]
+        let represented = developmentStrengthsByCoordinate.values.reduce(into: Set<DevelopmentStrength>()) {
+            $0.formUnion($1)
+        }
+        let entries = legendOrder.compactMap { strength -> String? in
+            guard represented.contains(strength) else { return nil }
+            return switch strength {
+            case .value: "◆ Value"
+            case .utility: "•• Util"
+            case .cleanAir: "○ Air"
+            }
+        }
+        return entries.isEmpty ? nil : entries.joined(separator: " · ")
+    }
+
     static func make(
         kind: BuildingKind,
         in state: CityGameState,

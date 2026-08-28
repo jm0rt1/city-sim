@@ -4,6 +4,113 @@ import XCTest
 @testable import CitySimNative
 
 final class OverlayDiagnosticsPaletteTests: XCTestCase {
+    func testEveryDiagnosticLayerFindsItsDeterministicCitywideExtreme() throws {
+        let state = CityGameState.newCity(seed: 42)
+        let snapshot = try CityPresentationSnapshot(state: state)
+
+        for overlay in DataOverlay.allCases.dropFirst() {
+            let hotspot = try XCTUnwrap(OverlayDiagnosticHotspot.make(
+                overlay: overlay,
+                snapshot: snapshot
+            ))
+            let tile = try XCTUnwrap(state.tile(at: hotspot.coordinate))
+            XCTAssertTrue(overlay.applies(to: tile), "\(overlay.title) must focus a rendered diagnostic tile")
+
+            let eligibleValues = snapshot.spatialConsequences.samples.compactMap { consequence -> Double? in
+                guard let tile = state.tile(at: consequence.coordinate), overlay.applies(to: tile) else {
+                    return nil
+                }
+                switch overlay {
+                case .none:
+                    return nil
+                case .landValue:
+                    return consequence.landValueIndex
+                case .traffic:
+                    return consequence.trafficPressure
+                case .utilities:
+                    return consequence.utility.combined
+                case .happiness:
+                    return consequence.localHappinessIndex
+                case .pollution:
+                    return consequence.pollutionExposure
+                }
+            }
+            let expected: Double?
+            switch overlay {
+            case .traffic, .pollution:
+                expected = eligibleValues.max()
+            case .landValue, .utilities, .happiness:
+                expected = eligibleValues.min()
+            case .none:
+                expected = nil
+            }
+            XCTAssertEqual(hotspot.value, try XCTUnwrap(expected), accuracy: 0.000_001)
+            XCTAssertEqual(
+                hotspot,
+                OverlayDiagnosticHotspot.make(overlay: overlay, snapshot: snapshot),
+                "Tie-breaking must remain deterministic"
+            )
+        }
+
+        XCTAssertNil(OverlayDiagnosticHotspot.make(overlay: .none, snapshot: snapshot))
+    }
+
+    @MainActor
+    func testHotspotFocusesInspectSelectionWithoutOpeningDetailsOrChangingCityState() throws {
+        let store = CityGameStore(state: .newCity(seed: 42))
+        XCTAssertTrue(store.perform(CityCommandCatalog.id(for: .traffic)))
+        let snapshot = try CityPresentationSnapshot(state: store.state)
+        let hotspot = try XCTUnwrap(OverlayDiagnosticHotspot.make(
+            overlay: .traffic,
+            snapshot: snapshot
+        ))
+        let stateBefore = store.state
+        let focusBefore = store.mapFocusRequestGeneration
+        let feedbackBefore = store.lastFeedback
+
+        XCTAssertTrue(store.focusDiagnosticHotspot(hotspot.coordinate))
+
+        XCTAssertEqual(store.selectedCoordinate, hotspot.coordinate)
+        XCTAssertEqual(store.interactionMode, .inspect)
+        XCTAssertEqual(store.hudContextScope, .selection)
+        XCTAssertFalse(store.showInspector)
+        XCTAssertEqual(store.mapFocusRequestGeneration, focusBefore + 1)
+        XCTAssertEqual(store.lastFeedback, feedbackBefore)
+        XCTAssertEqual(store.state, stateBefore)
+
+        let selectedConsequence = try XCTUnwrap(snapshot.spatialConsequences[hotspot.coordinate])
+        let selectedPresentation = OverlayDiagnosticsPalettePresentation.make(
+            overlay: .traffic,
+            consequence: selectedConsequence,
+            tick: stateBefore.tick,
+            selectionApplies: true
+        )
+        XCTAssertEqual(
+            selectedPresentation.value,
+            "\(Int((hotspot.value * 100).rounded())) / 100"
+        )
+    }
+
+    func testUnselectedDiagnosticPresentationOffersTheActionableHotspot() throws {
+        let snapshot = try CityPresentationSnapshot(state: .newCity(seed: 42))
+        let hotspot = try XCTUnwrap(OverlayDiagnosticHotspot.make(
+            overlay: .traffic,
+            snapshot: snapshot
+        ))
+        let traffic = OverlayDiagnosticsPalettePresentation.make(
+            overlay: .traffic,
+            consequence: nil,
+            tick: snapshot.state.tick,
+            hotspot: hotspot
+        )
+
+        XCTAssertEqual(traffic.value, hotspot.conciseReading)
+        XCTAssertTrue(traffic.value.hasPrefix("Peak "))
+        XCTAssertTrue(traffic.value.contains(" · B"))
+        XCTAssertTrue(traffic.accessibilityValue.contains("Activate the citywide hotspot"))
+        XCTAssertTrue(hotspot.accessibilityLabel.contains("busiest traffic road"))
+    }
+
     @MainActor
     func testPaletteRoutesEveryLayerAndPublishesHonestNormalizedMetadata() {
         let store = CityGameStore(state: .newCity(seed: 42))

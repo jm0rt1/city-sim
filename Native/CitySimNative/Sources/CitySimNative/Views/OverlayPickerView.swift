@@ -1,5 +1,95 @@
 import SwiftUI
 
+struct OverlayDiagnosticHotspot: Equatable, Sendable {
+    let overlay: DataOverlay
+    let coordinate: GridCoordinate
+    let value: Double
+
+    var conciseReading: String {
+        let prefix: String
+        switch overlay {
+        case .traffic, .pollution:
+            prefix = "Peak"
+        case .landValue, .utilities, .happiness:
+            prefix = "Lowest"
+        case .none:
+            prefix = "City"
+        }
+        return "\(prefix) \(normalizedValue) · B\(coordinate.x + 1),\(coordinate.y + 1)"
+    }
+
+    var accessibilityLabel: String {
+        let subject: String
+        switch overlay {
+        case .none:
+            subject = "city"
+        case .landValue:
+            subject = "lowest land value"
+        case .traffic:
+            subject = "busiest traffic road"
+        case .utilities:
+            subject = "weakest utility service"
+        case .happiness:
+            subject = "lowest local happiness"
+        case .pollution:
+            subject = "highest pollution"
+        }
+        return "Focus \(subject) at Block \(coordinate.x + 1), \(coordinate.y + 1)"
+    }
+
+    static func make(
+        overlay: DataOverlay,
+        snapshot: CityPresentationSnapshot
+    ) -> Self? {
+        guard overlay != .none else { return nil }
+
+        let candidates = snapshot.spatialConsequences.samples.compactMap { consequence -> Self? in
+            guard let tile = snapshot.state.tile(at: consequence.coordinate),
+                  overlay.applies(to: tile),
+                  let value = metric(for: overlay, consequence: consequence) else {
+                return nil
+            }
+            return Self(overlay: overlay, coordinate: consequence.coordinate, value: value)
+        }
+        guard let first = candidates.first else { return nil }
+
+        return candidates.dropFirst().reduce(first) { current, candidate in
+            switch overlay {
+            case .traffic, .pollution:
+                candidate.value > current.value ? candidate : current
+            case .landValue, .utilities, .happiness:
+                candidate.value < current.value ? candidate : current
+            case .none:
+                current
+            }
+        }
+    }
+
+    private var normalizedValue: Int {
+        Int((min(1, max(0, value)) * 100).rounded())
+    }
+
+    private static func metric(
+        for overlay: DataOverlay,
+        consequence: CitySpatialConsequence
+    ) -> Double? {
+        switch overlay {
+        case .none:
+            nil
+        case .landValue:
+            consequence.landValueIndex
+        case .traffic:
+            consequence.trafficPressure
+        case .utilities:
+            consequence.utility.combined
+        case .happiness:
+            consequence.localHappinessIndex
+        case .pollution:
+            consequence.pollutionExposure
+        }
+    }
+}
+
 struct OverlayDiagnosticsPalettePresentation: Equatable {
     let title: String
     let value: String
@@ -22,13 +112,16 @@ struct OverlayDiagnosticsPalettePresentation: Equatable {
         overlay: DataOverlay,
         consequence: CitySpatialConsequence?,
         tick: Int,
-        selectionApplies: Bool? = nil
+        selectionApplies: Bool? = nil,
+        hotspot: OverlayDiagnosticHotspot? = nil
     ) -> Self {
         let title = displayTitle(for: overlay)
         let scale = "0–100"
         let source = "Spatial consequences"
         let freshness = "fresh at tick " + String(tick)
-        let clickThrough = "Click a place to open details"
+        let clickThrough = hotspot == nil
+            ? "Click a place to open details"
+            : "Activate the citywide hotspot to focus it on the map"
 
         switch overlay {
         case .none:
@@ -45,7 +138,11 @@ struct OverlayDiagnosticsPalettePresentation: Equatable {
         case .landValue:
             return Self(
                 title: title,
-                value: reading(consequence?.landValueIndex, selectionApplies: selectionApplies),
+                value: reading(
+                    consequence?.landValueIndex,
+                    selectionApplies: selectionApplies,
+                    hotspot: hotspot
+                ),
                 scale: scale,
                 applicability: "Completed places",
                 source: source,
@@ -56,7 +153,11 @@ struct OverlayDiagnosticsPalettePresentation: Equatable {
         case .traffic:
             return Self(
                 title: title,
-                value: reading(consequence?.trafficPressure, selectionApplies: selectionApplies),
+                value: reading(
+                    consequence?.trafficPressure,
+                    selectionApplies: selectionApplies,
+                    hotspot: hotspot
+                ),
                 scale: scale,
                 applicability: "Roads only",
                 source: source,
@@ -67,7 +168,11 @@ struct OverlayDiagnosticsPalettePresentation: Equatable {
         case .utilities:
             return Self(
                 title: title,
-                value: reading(consequence?.utility.combined, selectionApplies: selectionApplies),
+                value: reading(
+                    consequence?.utility.combined,
+                    selectionApplies: selectionApplies,
+                    hotspot: hotspot
+                ),
                 scale: scale,
                 applicability: "Developed places",
                 source: source,
@@ -78,7 +183,11 @@ struct OverlayDiagnosticsPalettePresentation: Equatable {
         case .happiness:
             return Self(
                 title: title,
-                value: reading(consequence?.localHappinessIndex, selectionApplies: selectionApplies),
+                value: reading(
+                    consequence?.localHappinessIndex,
+                    selectionApplies: selectionApplies,
+                    hotspot: hotspot
+                ),
                 scale: scale,
                 applicability: "Completed places",
                 source: source,
@@ -89,7 +198,11 @@ struct OverlayDiagnosticsPalettePresentation: Equatable {
         case .pollution:
             return Self(
                 title: title,
-                value: reading(consequence?.pollutionExposure, selectionApplies: selectionApplies),
+                value: reading(
+                    consequence?.pollutionExposure,
+                    selectionApplies: selectionApplies,
+                    hotspot: hotspot
+                ),
                 scale: scale,
                 applicability: "Developed places",
                 source: source,
@@ -109,8 +222,12 @@ struct OverlayDiagnosticsPalettePresentation: Equatable {
         return String(Int((min(1, max(0, value)) * 100).rounded())) + " / 100"
     }
 
-    private static func reading(_ value: Double?, selectionApplies: Bool?) -> String {
-        guard let selectionApplies else { return "Select a place" }
+    private static func reading(
+        _ value: Double?,
+        selectionApplies: Bool?,
+        hotspot: OverlayDiagnosticHotspot?
+    ) -> String {
+        guard let selectionApplies else { return hotspot?.conciseReading ?? "Select a place" }
         guard selectionApplies else { return "Not applicable here" }
         return normalized(value)
     }
@@ -124,44 +241,55 @@ struct OverlayDiagnosticsPaletteView: View {
     static let compactMaximumHeight: CGFloat = 48
     static let regularMaximumHeight: CGFloat = 48
 
-    private var selectedConsequence: CitySpatialConsequence? {
-        guard let coordinate = store.selectedCoordinate,
-              let snapshot = try? CityPresentationSnapshot(state: store.state) else {
+    private func makeHotspot(
+        for overlay: DataOverlay,
+        snapshot: CityPresentationSnapshot?
+    ) -> OverlayDiagnosticHotspot? {
+        guard store.selectedCoordinate == nil, let snapshot else {
             return nil
         }
-        return snapshot.spatialConsequences[coordinate]
+        return .make(overlay: overlay, snapshot: snapshot)
     }
 
-    private var activePresentation: OverlayDiagnosticsPalettePresentation {
-        makePresentation(for: store.overlay)
-    }
-
-    private func makePresentation(for overlay: DataOverlay) -> OverlayDiagnosticsPalettePresentation {
+    private func makePresentation(
+        for overlay: DataOverlay,
+        snapshot: CityPresentationSnapshot?
+    ) -> OverlayDiagnosticsPalettePresentation {
         let selectionApplies = store.selectedTile.map { overlay.applies(to: $0) }
+        let consequence = store.selectedCoordinate.flatMap { snapshot?.spatialConsequences[$0] }
+        let hotspot = makeHotspot(for: overlay, snapshot: snapshot)
         return .make(
             overlay: overlay,
-            consequence: selectionApplies == false ? nil : selectedConsequence,
+            consequence: selectionApplies == false ? nil : consequence,
             tick: store.state.tick,
-            selectionApplies: selectionApplies
+            selectionApplies: selectionApplies,
+            hotspot: hotspot
         )
     }
 
     var body: some View {
-        let presentation: OverlayDiagnosticsPalettePresentation = activePresentation
+        let snapshot = try? CityPresentationSnapshot(state: store.state)
+        let hotspot = makeHotspot(for: store.overlay, snapshot: snapshot)
+        let presentation = makePresentation(for: store.overlay, snapshot: snapshot)
         if embedded {
-            embeddedPalette(presentation: presentation)
+            embeddedPalette(presentation: presentation, snapshot: snapshot)
         } else {
-            standalonePalette(presentation: presentation)
+            standalonePalette(
+                presentation: presentation,
+                hotspot: hotspot,
+                snapshot: snapshot
+            )
         }
     }
 
     private func paletteMenu(
         presentation: OverlayDiagnosticsPalettePresentation,
-        embedded: Bool
+        embedded: Bool,
+        snapshot: CityPresentationSnapshot?
     ) -> some View {
         Menu {
             ForEach(DataOverlay.allCases) { overlay in
-                let overlayPresentation = makePresentation(for: overlay)
+                let overlayPresentation = makePresentation(for: overlay, snapshot: snapshot)
                 Button {
                     store.perform(CityCommandCatalog.id(for: overlay))
                 } label: {
@@ -187,33 +315,38 @@ struct OverlayDiagnosticsPaletteView: View {
         }
         .menuStyle(.borderlessButton)
         .accessibilityLabel("Map layers")
-        .accessibilityValue(activePresentation.accessibilityValue)
+        .accessibilityValue(presentation.accessibilityValue)
         .accessibilityHint("Open to choose City or a diagnostic layer. Select a place on the map for local details.")
         .accessibilityIdentifier("hud.diagnostics.palette")
     }
 
-    private func standalonePalette(presentation: OverlayDiagnosticsPalettePresentation) -> some View {
+    private func standalonePalette(
+        presentation: OverlayDiagnosticsPalettePresentation,
+        hotspot: OverlayDiagnosticHotspot?,
+        snapshot: CityPresentationSnapshot?
+    ) -> some View {
         HStack(spacing: 8) {
-            paletteMenu(presentation: presentation, embedded: false)
+            paletteMenu(presentation: presentation, embedded: false, snapshot: snapshot)
                 .fixedSize(horizontal: true, vertical: false)
             Rectangle()
                 .fill(GameTheme.panelStroke)
                 .frame(width: 1, height: 26)
                 .accessibilityHidden(true)
-            VStack(alignment: .leading, spacing: 1) {
-                Text(presentation.title + " · " + presentation.shortDetail)
-                    .font(.system(size: GameTheme.hudSupportTextSize, weight: .semibold, design: .rounded))
-                    .foregroundStyle(.primary)
-                    .accessibilityHidden(true)
-                Text(presentation.visualKey)
-                    .font(.system(size: GameTheme.hudSupportTextSize - 1, weight: .medium, design: .rounded))
-                    .foregroundStyle(.secondary)
-                    .accessibilityHidden(true)
+            if let hotspot {
+                Button {
+                    store.focusDiagnosticHotspot(hotspot.coordinate)
+                } label: {
+                    paletteSummary(presentation: presentation, showsFocusAffordance: true)
+                }
+                .buttonStyle(.plain)
+                .contentShape(Rectangle())
+                .accessibilityLabel(hotspot.accessibilityLabel)
+                .accessibilityValue(presentation.value + ". " + presentation.visualKey)
+                .accessibilityHint("Selects this map location in Inspect mode without changing the city")
+                .accessibilityIdentifier("hud.diagnostics.hotspot")
+            } else {
+                paletteSummary(presentation: presentation, showsFocusAffordance: false)
             }
-            .lineLimit(1)
-            .truncationMode(.tail)
-            .layoutPriority(1)
-            .accessibilityHidden(true)
             Spacer(minLength: 0)
         }
         .padding(.horizontal, 6)
@@ -226,8 +359,39 @@ struct OverlayDiagnosticsPaletteView: View {
         .overlay(RoundedRectangle(cornerRadius: GameTheme.panelRadius).stroke(GameTheme.strongPanelStroke))
     }
 
-    private func embeddedPalette(presentation: OverlayDiagnosticsPalettePresentation) -> some View {
-        paletteMenu(presentation: presentation, embedded: true)
+    private func paletteSummary(
+        presentation: OverlayDiagnosticsPalettePresentation,
+        showsFocusAffordance: Bool
+    ) -> some View {
+        let primaryLine = presentation.title + " · " + (
+            showsFocusAffordance ? presentation.value : presentation.shortDetail
+        )
+        return HStack(spacing: 4) {
+            VStack(alignment: .leading, spacing: 1) {
+                Text(primaryLine)
+                    .font(.system(size: GameTheme.hudSupportTextSize, weight: .semibold, design: .rounded))
+                    .foregroundStyle(.primary)
+                Text(presentation.visualKey)
+                    .font(.system(size: GameTheme.hudSupportTextSize - 1, weight: .medium, design: .rounded))
+                    .foregroundStyle(.secondary)
+            }
+            if showsFocusAffordance {
+                Image(systemName: "scope")
+                    .font(.system(size: GameTheme.hudSupportTextSize, weight: .semibold))
+                    .foregroundStyle(.secondary)
+            }
+        }
+        .lineLimit(1)
+        .truncationMode(.tail)
+        .layoutPriority(1)
+        .accessibilityHidden(true)
+    }
+
+    private func embeddedPalette(
+        presentation: OverlayDiagnosticsPalettePresentation,
+        snapshot: CityPresentationSnapshot?
+    ) -> some View {
+        paletteMenu(presentation: presentation, embedded: true, snapshot: snapshot)
             .background(GameTheme.inactiveControl, in: RoundedRectangle(cornerRadius: 9))
     }
 }

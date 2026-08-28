@@ -1278,6 +1278,25 @@ final class CityGameStore: ObservableObject {
         mapFocusRequestGeneration &+= 1
     }
 
+    @discardableResult
+    func focusDiagnosticHotspot(_ coordinate: GridCoordinate) -> Bool {
+        guard commandPolicy == .enabled,
+              overlay != .none,
+              let tile = state.tile(at: coordinate),
+              overlay.applies(to: tile) else {
+            return false
+        }
+        clearDevelopmentSiteComparison()
+        directRoadAccessRecoveryActive = false
+        clearRoadConnectionRecovery()
+        interactionMode = .inspect
+        selectedCoordinate = coordinate
+        hudContextScope = .selection
+        showInspector = false
+        requestMapFocus()
+        return true
+    }
+
     func select(_ coordinate: GridCoordinate) {
         clearDevelopmentSiteComparison()
         selectedCoordinate = coordinate

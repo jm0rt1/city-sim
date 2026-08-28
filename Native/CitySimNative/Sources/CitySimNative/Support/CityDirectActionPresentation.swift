@@ -667,6 +667,84 @@ struct CityBuildOperatingForecast: Equatable, Sendable {
     }
 }
 
+struct CityRoadConnectionPlanPresentation: Equatable, Sendable {
+    let remainingBlocks: Int
+    let constructionCost: Double
+    let fundingGap: Double
+    let currentBalance: Double
+    let completedBalance: Double
+    let balanceChange: Double
+    let usesUnlimitedFunds: Bool
+
+    var headline: String {
+        if usesUnlimitedFunds {
+            return "\(remainingBlocks) \(blockWord) · cost waived"
+        }
+        if fundingGap > 0 {
+            return "\(remainingBlocks) \(blockWord) · \(constructionCost.currencyText) · \(fundingGap.currencyText) short"
+        }
+        return "\(remainingBlocks) \(blockWord) · \(constructionCost.currencyText) total"
+    }
+
+    var operatingImpact: String {
+        let prefix = usesUnlimitedFunds ? "Tracked full-route net" : "Full-route net"
+        return "\(prefix) \(currentBalance.signedCurrencyText) → "
+            + "\(completedBalance.signedCurrencyText) / cycle "
+            + "(\(balanceChange.signedCurrencyText))"
+    }
+
+    var accessibilitySummary: String {
+        var facts = ["Guided street route plan", "\(remainingBlocks) \(blockWord)"]
+        if usesUnlimitedFunds {
+            facts.append("Construction spending is waived")
+        } else {
+            facts.append("Total construction cost \(constructionCost.currencyText)")
+            if fundingGap > 0 {
+                facts.append("Current funding shortfall \(fundingGap.currencyText)")
+            } else {
+                facts.append("Currently funded")
+            }
+        }
+        facts.append(operatingImpact)
+        return facts.joined(separator: ". ")
+    }
+
+    static func make(
+        route: [GridCoordinate],
+        state: CityGameState
+    ) -> Self? {
+        guard !route.isEmpty else { return nil }
+        let constructionCost = Double(route.count) * BuildingKind.road.buildCost
+        let currentBalance = CitySimulation.projectedBalance(in: state)
+        var completed = state
+        if !state.usesUnlimitedFunds {
+            completed.treasury = max(completed.treasury, constructionCost + 1_000_000)
+        }
+        for coordinate in route {
+            guard case .success = CitySimulation.build(.road, at: coordinate, in: &completed) else {
+                return nil
+            }
+            completed.updateTile(at: coordinate) { $0.constructionProgress = 1 }
+        }
+        let completedBalance = CitySimulation.projectedBalance(in: completed)
+        return Self(
+            remainingBlocks: route.count,
+            constructionCost: constructionCost,
+            fundingGap: state.usesUnlimitedFunds
+                ? 0
+                : max(0, constructionCost - state.treasury),
+            currentBalance: currentBalance,
+            completedBalance: completedBalance,
+            balanceChange: completedBalance - currentBalance,
+            usesUnlimitedFunds: state.usesUnlimitedFunds
+        )
+    }
+
+    private var blockWord: String {
+        remainingBlocks == 1 ? "block" : "blocks"
+    }
+}
+
 struct CityRoadPlacementForecast: Equatable, Sendable {
     let adjacentRoadApproaches: Int
     let newlyServedOpenParcels: Int

@@ -3747,6 +3747,18 @@ final class CityCommandCatalogTests: XCTestCase {
                 GridCoordinate(x: 4, y: 2),
             ]
         )
+        let initialPlan = try XCTUnwrap(store.roadConnectionPlanPresentation)
+        XCTAssertEqual(initialPlan.remainingBlocks, 4)
+        XCTAssertEqual(initialPlan.constructionCost, 4 * BuildingKind.road.buildCost)
+        XCTAssertEqual(initialPlan.fundingGap, 0)
+        XCTAssertEqual(
+            initialPlan.balanceChange,
+            -4 * BuildingKind.road.upkeep * CitySimulation.upkeepMultiplier,
+            accuracy: 0.001
+        )
+        XCTAssertEqual(initialPlan.headline, "4 blocks · $480 total")
+        XCTAssertTrue(initialPlan.operatingImpact.contains("Full-route net"))
+        XCTAssertTrue(initialPlan.accessibilitySummary.contains("Currently funded"))
         XCTAssertEqual(store.state, authored)
         XCTAssertEqual(store.state.tile(at: blockedCoordinate)?.kind, .empty)
         XCTAssertEqual(store.mapFocusRequestGeneration, focusGeneration + 1)
@@ -3768,6 +3780,13 @@ final class CityCommandCatalogTests: XCTestCase {
                     GridCoordinate(x: 4, y: 2),
                 ].dropFirst(index))
             )
+            let remainingPlan = try XCTUnwrap(store.roadConnectionPlanPresentation)
+            XCTAssertEqual(remainingPlan.remainingBlocks, 3 - index)
+            XCTAssertEqual(
+                remainingPlan.constructionCost,
+                Double(3 - index) * BuildingKind.road.buildCost
+            )
+            XCTAssertEqual(remainingPlan.completedBalance, initialPlan.completedBalance, accuracy: 0.001)
             XCTAssertEqual(store.interactionMode, .build(.road))
             XCTAssertNotNil(store.roadConnectionRecovery)
             XCTAssertEqual(store.state.tile(at: blockedCoordinate)?.kind, .empty)
@@ -3776,6 +3795,7 @@ final class CityCommandCatalogTests: XCTestCase {
         XCTAssertTrue(store.performMapCommand(.mapPrimaryAction))
         XCTAssertNil(store.roadConnectionRecovery)
         XCTAssertTrue(store.roadConnectionRecoveryRoute.isEmpty)
+        XCTAssertNil(store.roadConnectionPlanPresentation)
         XCTAssertEqual(store.interactionMode, .build(.commercial))
         XCTAssertEqual(store.selectedTool, .commercial)
         XCTAssertEqual(store.selectedCoordinate, blockedCoordinate)
@@ -3827,6 +3847,7 @@ final class CityCommandCatalogTests: XCTestCase {
         XCTAssertEqual(store.state, authored)
         XCTAssertNil(store.roadConnectionRecovery)
         XCTAssertTrue(store.roadConnectionRecoveryRoute.isEmpty)
+        XCTAssertNil(store.roadConnectionPlanPresentation)
         XCTAssertEqual(store.interactionMode, .build(.commercial))
         XCTAssertEqual(store.selectedTool, .commercial)
         XCTAssertEqual(store.selectedCoordinate, blockedCoordinate)

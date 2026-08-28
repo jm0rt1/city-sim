@@ -323,7 +323,8 @@ struct BuildToolbarView: View {
     }
 
     private func buildDecisionRow(_ decision: CityBuildDecisionPresentation) -> some View {
-        HStack(spacing: compact ? 8 : 12) {
+        let routePlan = store.roadConnectionPlanPresentation
+        return HStack(spacing: compact ? 8 : 12) {
             VStack(alignment: .leading, spacing: 3) {
                 Label("PLACE \(decision.buildingTitle.uppercased())", systemImage: decision.buildingSymbol)
                     .font(.system(size: GameTheme.hudCriticalTextSize, weight: .heavy, design: .rounded))
@@ -343,7 +344,7 @@ struct BuildToolbarView: View {
 
             VStack(alignment: .leading, spacing: 3) {
                 Label(
-                    decision.availability.uppercased(),
+                    (routePlan == nil ? decision.availability : "Route step ready").uppercased(),
                     systemImage: decision.disabledReason == nil
                         ? "checkmark.circle.fill"
                         : "exclamationmark.triangle.fill"
@@ -352,12 +353,17 @@ struct BuildToolbarView: View {
                 .foregroundStyle(decision.disabledReason == nil ? GameTheme.accent : GameTheme.warning)
                 .lineLimit(1)
 
-                Text(decision.disabledReason ?? decision.operatingImpact)
+                Text(routePlan?.headline ?? decision.disabledReason ?? decision.operatingImpact)
                     .font(.system(size: GameTheme.hudCriticalTextSize - 1, weight: .semibold, design: .rounded))
                     .foregroundStyle(.primary)
                     .lineLimit(1)
 
-                if decision.disabledReason != nil {
+                if let routePlan {
+                    Text(routePlan.operatingImpact)
+                        .font(.system(size: GameTheme.hudCriticalTextSize - 1, weight: .medium, design: .rounded))
+                        .foregroundStyle(.secondary)
+                        .lineLimit(1)
+                } else if decision.disabledReason != nil {
                     Text("Likely: \(decision.likelyConsequence)")
                         .font(.system(size: GameTheme.hudCriticalTextSize - 1, weight: .medium, design: .rounded))
                         .foregroundStyle(.secondary)
@@ -442,7 +448,11 @@ struct BuildToolbarView: View {
         .padding(.horizontal, 3)
         .accessibilityElement(children: .contain)
         .accessibilityLabel("Build decision")
-        .accessibilityValue(decision.accessibilitySummary)
+        .accessibilityValue(
+            [decision.accessibilitySummary, routePlan?.accessibilitySummary]
+                .compactMap { $0 }
+                .joined(separator: ". ")
+        )
         .accessibilityIdentifier("hud.build.decision")
     }
 

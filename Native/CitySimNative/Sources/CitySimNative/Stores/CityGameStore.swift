@@ -537,6 +537,14 @@ final class CityGameStore: ObservableObject {
         )
     }
 
+    var roadConnectionPlanPresentation: CityRoadConnectionPlanPresentation? {
+        guard roadConnectionRecovery != nil else { return nil }
+        return CityRoadConnectionPlanPresentation.make(
+            route: roadConnectionRecoveryRoute,
+            state: state
+        )
+    }
+
     @discardableResult
     func acceptPointerMapActionCandidate(
         _ coordinate: GridCoordinate

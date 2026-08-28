@@ -36,7 +36,7 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
         XCTAssertEqual(manifest.assets.filter { $0.views.count == 4 }.count, 44)
         let admittedRoles = Set(manifest.assets.flatMap(\.roles))
         XCTAssertTrue(Set([
-            "residential-low", "residential-medium", "residential-high",
+            "residential-low", "residential-quality", "residential-medium", "residential-high",
             "commercial-low", "commercial-medium", "commercial-high",
             "industrial-low", "industrial-medium", "industrial-high",
             "city-hall", "park", "power-plant", "water-tower",
@@ -68,10 +68,10 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
     }
 
     @MainActor
-    func testDeterministicRoleMappingReachesEveryAcceptedAsset() throws {
+    func testDeterministicLiveRoleMappingReachesEverySelectedAsset() throws {
         let catalog = FourViewWorldAssetCatalog()
         let roleCases: [(role: String, kind: BuildingKind, level: Int)] = [
-            ("residential-low", .residential, 1),
+            ("residential-quality", .residential, 1),
             ("residential-medium", .residential, 2),
             ("residential-high", .residential, 3),
             ("commercial-low", .commercial, 1),
@@ -142,10 +142,14 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
                 let visualVariant = ResidentialGeneratedAssetIdentity.liveVisualVariant(
                     at: coordinate
                 )
-                if let assetID = catalog.assetID(for: tile, variant: visualVariant),
-                   family.contains(assetID) {
-                    coordinateByAssetID[assetID] = coordinate
-                }
+                let assetID = try XCTUnwrap(
+                    catalog.assetID(for: tile, variant: visualVariant)
+                )
+                XCTAssertTrue(
+                    family.contains(assetID),
+                    "Live level-one residential selected non-quality asset \(assetID)"
+                )
+                coordinateByAssetID[assetID] = coordinate
             }
         }
         XCTAssertEqual(Set(coordinateByAssetID.keys), Set(family))
@@ -512,12 +516,13 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
         let manifest = try XCTUnwrap(catalog.manifest)
         let expansionAssets = manifest.assets.filter {
             $0.views.count == 4 && !$0.roles.contains("residential-quality")
+                && !($0.family == "residential" && $0.roles.contains("residential-low"))
         }
-        XCTAssertEqual(expansionAssets.count, 40)
+        XCTAssertEqual(expansionAssets.count, 35)
         XCTAssertEqual(
             Dictionary(grouping: expansionAssets, by: \.family).mapValues(\.count),
             [
-                "residential": 14,
+                "residential": 9,
                 "commercial": 10,
                 "industrial": 8,
                 "civic-service": 4,

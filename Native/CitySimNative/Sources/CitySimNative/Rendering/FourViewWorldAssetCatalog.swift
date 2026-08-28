@@ -47,7 +47,7 @@ final class FourViewWorldAssetCatalog {
     static let canonicalCameraOrder = ["camNE", "camSE", "camSW", "camNW"]
 
     static let requiredRoles: Set<String> = [
-        "residential-low", "residential-medium", "residential-high",
+        "residential-low", "residential-quality", "residential-medium", "residential-high",
         "commercial-low", "commercial-medium", "commercial-high",
         "industrial-low", "industrial-medium", "industrial-high",
         "city-hall", "park", "power-plant", "water-tower",
@@ -81,8 +81,13 @@ final class FourViewWorldAssetCatalog {
         case .residential where tile.level == 2:
             deterministicAssetID(forRole: "residential-medium", tile: tile, variant: variant)
         case .residential:
+            // The broader low-density role retains admitted calibration and
+            // expansion sources for provenance and focused inspection. Live
+            // level-one neighborhoods use the approved production-quality
+            // family so every selected home shares the canonical four-view
+            // projection, frontage response, material depth, and scale.
             deterministicAssetID(
-                forRole: "residential-low",
+                forRole: "residential-quality",
                 tile: tile,
                 variant: max(0, variant - 1)
             )

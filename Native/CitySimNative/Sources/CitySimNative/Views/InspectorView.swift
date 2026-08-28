@@ -240,15 +240,21 @@ struct InspectorView: View {
                let conditions = CitySelectedLocationConditions.make(
                    tile: tile,
                    snapshot: snapshot
-               ) {
+                ) {
                 ContextCard(title: "Local conditions", symbol: "map.fill", tint: GameTheme.information) {
-                    ContextValueRow(label: "Land value", value: conditions.landValueIndex.formatted())
-                    ContextValueRow(label: "Utilities", value: "\(conditions.utilityService)%")
-                    ContextValueRow(label: "Pollution", value: "\(conditions.pollutionExposure)%")
-                    ContextValueRow(
-                        label: "Vitality",
-                        value: "\(conditions.vitality.capitalized) \(conditions.vitalityScore)%"
-                    )
+                    LazyVGrid(
+                        columns: [GridItem(.flexible()), GridItem(.flexible())],
+                        alignment: .leading,
+                        spacing: 4
+                    ) {
+                        localConditionMetric("Land value", conditions.landValueIndex.formatted())
+                        localConditionMetric("Utilities", "\(conditions.utilityService)%")
+                        localConditionMetric("Pollution", "\(conditions.pollutionExposure)%")
+                        localConditionMetric(
+                            "Vitality",
+                            "\(conditions.vitality.capitalized) \(conditions.vitalityScore)%"
+                        )
+                    }
                 }
                 .accessibilityElement(children: .ignore)
                 .accessibilityLabel("Local conditions")
@@ -321,6 +327,21 @@ struct InspectorView: View {
             }
 
         }
+    }
+
+    private func localConditionMetric(_ label: String, _ value: String) -> some View {
+        VStack(alignment: .leading, spacing: 1) {
+            Text(label)
+                .font(.caption2)
+                .foregroundStyle(.secondary)
+                .lineLimit(1)
+            Text(value)
+                .font(.caption.weight(.semibold).monospacedDigit())
+                .lineLimit(1)
+                .minimumScaleFactor(0.82)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .accessibilityElement(children: .combine)
     }
 
     private func nextActionCard(for tile: CityTile) -> some View {

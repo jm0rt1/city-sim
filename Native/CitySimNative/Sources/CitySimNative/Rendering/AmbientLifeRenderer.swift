@@ -32,6 +32,22 @@ final class AmbientLifeRenderer {
         let intensity: Double
     }
 
+    struct SidewalkSlot: Hashable, Sendable {
+        let coordinate: GridCoordinate
+        let edge: RoadConnectionMask
+        let side: Int
+
+        init(
+            coordinate: GridCoordinate,
+            edge: RoadConnectionMask,
+            side: CGFloat
+        ) {
+            self.coordinate = coordinate
+            self.edge = edge
+            self.side = side < 0 ? -1 : 1
+        }
+    }
+
     struct ActivityCandidates: Equatable, Sendable {
         let streets: [ActivityCandidate]
         let places: [ActivityCandidate]
@@ -42,6 +58,7 @@ final class AmbientLifeRenderer {
         let domain: ActivityDomain
         let sourceCoordinate: GridCoordinate
         let surfaceCoordinate: GridCoordinate
+        let sidewalkSlot: SidewalkSlot
         let position: CGPoint
         let motionVector: CGPoint
     }
@@ -195,17 +212,14 @@ final class AmbientLifeRenderer {
                 root.addChild(vignette)
             }
         }
-        var excludedActivityRoads = Set(
-            furnitureByRoadIndex.keys.map { roads[$0].coordinate }
-        )
-        if groundEcologyAssets != nil {
-            excludedActivityRoads.formUnion(roads.map(\.coordinate))
-        }
         let placements = resolvedActivityPlacements ?? activityPlacements(
             in: state,
             consequences: consequences,
             detail: detail,
-            excluding: excludedActivityRoads
+            reserving: activityReservedSidewalkSlots(
+                in: state,
+                detail: detail
+            )
         )
         let activity = makeLocalActivity(
             placements: placements,
@@ -240,13 +254,15 @@ final class AmbientLifeRenderer {
         return root
     }
 
-    /// Returns the exact road surfaces reserved by deterministic furniture.
-    /// This is geometry-only selection: it creates no SpriteKit nodes and can
-    /// safely be reused while resolving the current activity signature.
-    func activityExcludedRoadCoordinates(
+    /// Returns the exact sidewalk slots occupied by deterministic furniture
+    /// and production planting. Reserving slots instead of whole road tiles
+    /// keeps accepted public-realm art collision-free without erasing every
+    /// pedestrian from an otherwise active corridor.
+    func activityReservedSidewalkSlots(
         in state: CityGameState,
         detail: CameraDetailLevel
-    ) -> Set<GridCoordinate> {
+    ) -> Set<SidewalkSlot> {
+        guard groundEcologyAssets != nil else { return [] }
         let completed = state.tiles.filter {
             $0.kind != .empty && $0.kind != .road && $0.constructionProgress >= 1
         }
@@ -264,24 +280,47 @@ final class AmbientLifeRenderer {
             developedCoordinates: developedCoordinates,
             in: state
         )
-        var excluded = groundEcologyAssets == nil
-            ? Set<GridCoordinate>()
-            : Set(roads.map(\.coordinate))
-        guard detail.includes(.neighborhood) else { return excluded }
+        var reserved: Set<SidewalkSlot> = []
         let preferredRoadOrder = Array(roads.indices.dropFirst(2))
             + Array(roads.indices.prefix(2))
+        var furniturePlacementByRoadIndex: [Int: (edge: RoadConnectionMask, side: CGFloat)] = [:]
         var furnitureCount = 0
         for roadIndex in preferredRoadOrder where furnitureCount < 3 {
             let road = roads[roadIndex]
-            guard streetFurniturePlacement(
+            guard let furniture = streetFurniturePlacement(
                 at: road.coordinate,
                 index: furnitureCount,
                 in: state
+            ), roadsidePlantingPlacement(
+                at: road.coordinate,
+                index: roadIndex,
+                in: state,
+                avoiding: furniture
             ) != nil else { continue }
-            excluded.insert(road.coordinate)
+            furniturePlacementByRoadIndex[roadIndex] = furniture
+            if detail.includes(.neighborhood) {
+                reserved.insert(SidewalkSlot(
+                    coordinate: road.coordinate,
+                    edge: furniture.edge,
+                    side: furniture.side
+                ))
+            }
             furnitureCount += 1
         }
-        return excluded
+        for (roadIndex, road) in roads.enumerated() {
+            guard let planting = roadsidePlantingPlacement(
+                at: road.coordinate,
+                index: roadIndex,
+                in: state,
+                avoiding: furniturePlacementByRoadIndex[roadIndex]
+            ) else { continue }
+            reserved.insert(SidewalkSlot(
+                coordinate: road.coordinate,
+                edge: planting.edge,
+                side: planting.side
+            ))
+        }
+        return reserved
     }
 
     func activityPlacements(
@@ -300,9 +339,51 @@ final class AmbientLifeRenderer {
         )
     }
 
+    func activityPlacements(
+        in state: CityGameState,
+        consequences: CitySpatialConsequenceMap,
+        detail: CameraDetailLevel,
+        reserving reservedSidewalkSlots: Set<SidewalkSlot>
+    ) -> [ActivityPlacement] {
+        let candidates = activityCandidates(
+            in: state,
+            reserving: reservedSidewalkSlots
+        )
+        return activityPlacements(
+            in: state,
+            candidates: candidates,
+            detail: detail,
+            streetActivityIndex: { consequences[$0]?.streetActivityIndex },
+            placeActivityIndex: { consequences[$0]?.placeActivityIndex }
+        )
+    }
+
     func activityCandidates(
         in state: CityGameState,
         excluding excludedRoads: Set<GridCoordinate> = []
+    ) -> ActivityCandidates {
+        activityCandidates(
+            in: state,
+            excluding: excludedRoads,
+            reserving: []
+        )
+    }
+
+    func activityCandidates(
+        in state: CityGameState,
+        reserving reservedSidewalkSlots: Set<SidewalkSlot>
+    ) -> ActivityCandidates {
+        activityCandidates(
+            in: state,
+            excluding: [],
+            reserving: reservedSidewalkSlots
+        )
+    }
+
+    private func activityCandidates(
+        in state: CityGameState,
+        excluding excludedRoads: Set<GridCoordinate>,
+        reserving reservedSidewalkSlots: Set<SidewalkSlot>
     ) -> ActivityCandidates {
         var streets: [ActivityCandidate] = []
         var places: [ActivityCandidate] = []
@@ -314,12 +395,14 @@ final class AmbientLifeRenderer {
                let geometry = sidewalkActivityGeometry(
                    at: tile.coordinate,
                    in: state,
-                   salt: 0xAC7100
+                   salt: 0xAC7100,
+                   excluding: reservedSidewalkSlots
                ) {
                 streets.append(ActivityCandidate(
                     domain: .street,
                     sourceCoordinate: tile.coordinate,
                     surfaceCoordinate: tile.coordinate,
+                    sidewalkSlot: geometry.slot,
                     position: geometry.position,
                     motionVector: geometry.motionVector
                 ))
@@ -341,12 +424,14 @@ final class AmbientLifeRenderer {
                           at: roadCoordinate,
                           in: state,
                           facing: tile.coordinate,
-                          salt: 0xAC7200
+                          salt: 0xAC7200,
+                          excluding: reservedSidewalkSlots
                       ) else { continue }
                 places.append(ActivityCandidate(
                     domain: .place,
                     sourceCoordinate: tile.coordinate,
                     surfaceCoordinate: roadCoordinate,
+                    sidewalkSlot: geometry.slot,
                     position: geometry.position,
                     motionVector: geometry.motionVector
                 ))
@@ -720,8 +805,9 @@ final class AmbientLifeRenderer {
         at coordinate: GridCoordinate,
         in state: CityGameState,
         facing target: GridCoordinate? = nil,
-        salt: UInt64
-    ) -> (position: CGPoint, motionVector: CGPoint)? {
+        salt: UInt64,
+        excluding reservedSidewalkSlots: Set<SidewalkSlot> = []
+    ) -> (position: CGPoint, motionVector: CGPoint, slot: SidewalkSlot)? {
         let connections = RoadConnectionMask.resolving(at: coordinate, in: state)
         guard !connections.isEmpty else { return nil }
         let edgeRotation = WorldVisualSeed.variant(
@@ -761,6 +847,12 @@ final class AmbientLifeRenderer {
                 side: side,
                 connections: connections
             ) {
+                let slot = SidewalkSlot(
+                    coordinate: coordinate,
+                    edge: edge,
+                    side: side
+                )
+                guard !reservedSidewalkSlots.contains(slot) else { continue }
                 let direction = normalized(style.roadSocket(for: edge))
                 let perpendicular = CGPoint(x: -direction.y, y: direction.x)
                 let center = CGPoint(
@@ -778,7 +870,8 @@ final class AmbientLifeRenderer {
                     motionVector: CGPoint(
                         x: direction.x * 3.2,
                         y: direction.y * 3.2
-                    )
+                    ),
+                    slot: slot
                 )
             }
         }

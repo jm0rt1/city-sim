@@ -195,7 +195,7 @@ final class CityScene: SKScene {
     private var ambientCorridorSignature: AmbientCorridorSignature?
     private var ambientGroundSignature: AmbientGroundSignature?
     private var ambientLayoutRoles: [UInt8] = []
-    private var ambientActivityExcludedRoadCoordinates: Set<GridCoordinate> = []
+    private var ambientActivityReservedSidewalkSlots: Set<AmbientLifeRenderer.SidewalkSlot> = []
     private var ambientActivityCandidates = AmbientLifeRenderer.ActivityCandidates(
         streets: [],
         places: [],
@@ -1069,14 +1069,14 @@ final class CityScene: SKScene {
             changedCoordinates: diagnosticsSnapshot.updatedCoordinates
         )
         if ambientCorridorSignature?.context != context {
-            ambientActivityExcludedRoadCoordinates =
-                ambientLifeRenderer.activityExcludedRoadCoordinates(
+            ambientActivityReservedSidewalkSlots =
+                ambientLifeRenderer.activityReservedSidewalkSlots(
                     in: state,
                     detail: currentCameraDetailLevel
                 )
             ambientActivityCandidates = ambientLifeRenderer.activityCandidates(
                 in: state,
-                excluding: ambientActivityExcludedRoadCoordinates
+                reserving: ambientActivityReservedSidewalkSlots
             )
         }
         let placements = ambientLifeRenderer.activityPlacements(

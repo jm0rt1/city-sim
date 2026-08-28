@@ -3377,6 +3377,62 @@ final class WorldRenderingTests: XCTestCase {
             Set(["maple_street_tree", "marigold_planter_cluster", "sage_shrub_cluster"])
         )
 
+        let cityReservations = renderer.activityReservedSidewalkSlots(
+            in: state,
+            detail: .city
+        )
+        let blockReservations = renderer.activityReservedSidewalkSlots(
+            in: state,
+            detail: .block
+        )
+        XCTAssertEqual(cityReservations.count, 5)
+        XCTAssertEqual(blockReservations.count, 8)
+        XCTAssertTrue(cityReservations.isSubset(of: blockReservations))
+
+        let blockCandidates = renderer.activityCandidates(
+            in: state,
+            reserving: blockReservations
+        )
+        XCTAssertTrue(
+            (blockCandidates.streets + blockCandidates.places).allSatisfy {
+                !blockReservations.contains($0.sidewalkSlot)
+            }
+        )
+        let blockActivity = renderer.activityPlacements(
+            in: state,
+            consequences: snapshot.spatialConsequences,
+            detail: .block,
+            reserving: blockReservations
+        )
+        let cityActivity = renderer.activityPlacements(
+            in: state,
+            consequences: snapshot.spatialConsequences,
+            detail: .city,
+            reserving: cityReservations
+        )
+        XCTAssertEqual(blockActivity.count, 3)
+        XCTAssertEqual(cityActivity.count, 2)
+        XCTAssertEqual(
+            Set(blockActivity.map(\.surfaceCoordinate)).count,
+            blockActivity.count
+        )
+        XCTAssertEqual(
+            descendantNames(in: block).filter {
+                $0.split(separator: ".").count == 6
+                    && ($0.hasPrefix("world.activity.street.local-activity.")
+                        || $0.hasPrefix("world.activity.place.local-activity."))
+            }.count,
+            3
+        )
+        XCTAssertEqual(
+            descendantNames(in: city).filter {
+                $0.split(separator: ".").count == 6
+                    && ($0.hasPrefix("world.activity.street.local-activity.")
+                        || $0.hasPrefix("world.activity.place.local-activity."))
+            }.count,
+            2
+        )
+
         let cityByName = Dictionary(uniqueKeysWithValues: cityPlantings.compactMap {
             node in node.name.map { ($0, node.position) }
         })

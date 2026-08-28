@@ -234,33 +234,6 @@ struct InspectorView: View {
     private func tileContext(_ tile: CityTile) -> some View {
         let snapshot = try? CityPresentationSnapshot(state: store.state)
         return LazyVGrid(columns: contextColumns, alignment: .leading, spacing: 8) {
-            nextActionCard(for: tile)
-
-            if let snapshot,
-               let conditions = CitySelectedLocationConditions.make(
-                   tile: tile,
-                   snapshot: snapshot
-                ) {
-                ContextCard(title: "Local conditions", symbol: "map.fill", tint: GameTheme.information) {
-                    LazyVGrid(
-                        columns: [GridItem(.flexible()), GridItem(.flexible())],
-                        alignment: .leading,
-                        spacing: 4
-                    ) {
-                        localConditionMetric("Land value", conditions.landValueIndex.formatted())
-                        localConditionMetric("Utilities", "\(conditions.utilityService)%")
-                        localConditionMetric("Pollution", "\(conditions.pollutionExposure)%")
-                        localConditionMetric(
-                            "Vitality",
-                            "\(conditions.vitality.capitalized) \(conditions.vitalityScore)%"
-                        )
-                    }
-                }
-                .accessibilityElement(children: .ignore)
-                .accessibilityLabel("Local conditions")
-                .accessibilityValue(conditions.accessibilitySummary)
-            }
-
             if let outlook = CityDevelopmentOutlook.make(tile: tile, state: store.state) {
                 let outlookTint: Color = switch outlook.status {
                 case .ready: GameTheme.accent
@@ -290,6 +263,33 @@ struct InspectorView: View {
                 .accessibilityLabel("Growth outlook")
                 .accessibilityValue(outlook.accessibilitySummary)
             }
+
+            if let snapshot,
+               let conditions = CitySelectedLocationConditions.make(
+                   tile: tile,
+                   snapshot: snapshot
+                ) {
+                ContextCard(title: "Local conditions", symbol: "map.fill", tint: GameTheme.information) {
+                    LazyVGrid(
+                        columns: [GridItem(.flexible()), GridItem(.flexible())],
+                        alignment: .leading,
+                        spacing: 4
+                    ) {
+                        localConditionMetric("Land value", conditions.landValueIndex.formatted())
+                        localConditionMetric("Utilities", "\(conditions.utilityService)%")
+                        localConditionMetric("Pollution", "\(conditions.pollutionExposure)%")
+                        localConditionMetric(
+                            "Vitality",
+                            "\(conditions.vitality.capitalized) \(conditions.vitalityScore)%"
+                        )
+                    }
+                }
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel("Local conditions")
+                .accessibilityValue(conditions.accessibilitySummary)
+            }
+
+            nextActionCard(for: tile)
 
             ContextCard(title: "Identity", symbol: tile.kind.symbol, tint: tile.kind.contextTint) {
                 ContextValueRow(label: "Type", value: tile.kind.title)

@@ -21,14 +21,27 @@ struct CityStrategyHUDPresentation: Equatable {
         [status, summary].filter { !$0.isEmpty }.joined(separator: ". ")
     }
 
-    static func make(state: CityGameState) -> CityStrategyHUDPresentation {
+    static func make(
+        state: CityGameState,
+        speed: SimulationSpeed = .paused
+    ) -> CityStrategyHUDPresentation {
         if let scenario = CityAuthoredScenarioEvaluation.make(state: state) {
             return authoredScenario(scenario)
         }
-        return make(analytics: CityAnalytics(state: state))
+        return make(analytics: CityAnalytics(state: state), speed: speed)
     }
 
-    static func make(analytics: CityAnalytics) -> CityStrategyHUDPresentation {
+    static func make(
+        analytics: CityAnalytics,
+        speed: SimulationSpeed = .paused
+    ) -> CityStrategyHUDPresentation {
+        if let construction = growthProjectConstruction(
+            analytics: analytics,
+            speed: speed
+        ) {
+            return construction
+        }
+
         guard !analytics.awaitingStrategyChoice,
               let strategy = analytics.committedStrategy else {
             return CityStrategyHUDPresentation(
@@ -95,6 +108,57 @@ struct CityStrategyHUDPresentation: Equatable {
                 resolution: analytics.strategyRecoveryResolution
             )
         }
+    }
+
+    private static func growthProjectConstruction(
+        analytics: CityAnalytics,
+        speed: SimulationSpeed
+    ) -> CityStrategyHUDPresentation? {
+        guard analytics.awaitingStrategyChoice else { return nil }
+        let projects = analytics.state.tiles.filter {
+            [.commercial, .industrial].contains($0.kind)
+                && $0.constructionProgress < 1
+        }
+        guard let project = projects.sorted(by: {
+            if $0.constructionProgress != $1.constructionProgress {
+                return $0.constructionProgress > $1.constructionProgress
+            }
+            if $0.kind.rawValue != $1.kind.rawValue {
+                return $0.kind.rawValue < $1.kind.rawValue
+            }
+            if $0.coordinate.y != $1.coordinate.y {
+                return $0.coordinate.y < $1.coordinate.y
+            }
+            return $0.coordinate.x < $1.coordinate.x
+        }).first else { return nil }
+
+        let remainingTicks = max(
+            1,
+            Int(ceil((1 - project.constructionProgress) / 0.25))
+        )
+        let remainingText = remainingTicks == 1
+            ? "1 construction tick remains"
+            : "\(remainingTicks) construction ticks remain"
+        let block = "Block \(project.coordinate.x + 1), \(project.coordinate.y + 1)"
+        let percent = Int((project.constructionProgress * 100).rounded())
+        let isPaused = speed == .paused
+        let response = CityDirectResponse(
+            title: isPaused ? "Resume \(project.kind.title)" : "Pause to inspect",
+            command: .togglePause,
+            explanation: isPaused
+                ? "Resume the simulation to finish \(project.kind.title) at \(block); \(remainingText)."
+                : "Pause the simulation to inspect \(project.kind.title) at \(block); \(remainingText).",
+            focusesMap: false
+        )
+        return CityStrategyHUDPresentation(
+            eyebrow: "GROWTH PROJECT",
+            title: "\(project.kind.title) under construction",
+            status: "BUILDING · \(percent)%",
+            summary: "\(block) is approved; \(remainingText) before its jobs and operating forecast take effect.",
+            tone: .active,
+            diagnostic: nil,
+            actions: [response]
+        )
     }
 
     private static func authoredScenario(
@@ -589,7 +653,7 @@ struct StrategyCommandCenterView: View {
     static let regularMaximumHeight: CGFloat = 52
 
     private var presentation: CityStrategyHUDPresentation {
-        CityStrategyHUDPresentation.make(state: store.state)
+        CityStrategyHUDPresentation.make(state: store.state, speed: store.speed)
     }
 
     private var trajectory: CityTrajectoryHUDPresentation {
@@ -879,7 +943,7 @@ struct StrategyCommandCenterView: View {
         } else {
             performed = store.perform(response.command)
         }
-        if performed {
+        if performed, response.command != .togglePause {
             // Strategy responses are deliberate management decisions. Freeze
             // the clock while the player inspects the destination or chooses
             // an exact parcel, preserving their prior speed for Space-resume.

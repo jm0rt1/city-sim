@@ -412,6 +412,72 @@ final class CityCommandCatalogTests: XCTestCase {
         }
     }
 
+    @MainActor
+    func testGrowthProjectConstructionOwnsTheImmediateActionUntilStrategyCommitment() throws {
+        var state = CityGameState.newCity(seed: 42)
+        let coordinate = try XCTUnwrap(state.tiles.first(where: { tile in
+            guard tile.kind == .empty else { return false }
+            if case .success = CitySimulation.validateBuild(
+                .commercial,
+                at: tile.coordinate,
+                in: state
+            ) {
+                return true
+            }
+            return false
+        })?.coordinate)
+        guard case .success = CitySimulation.build(
+            .commercial,
+            at: coordinate,
+            in: &state
+        ) else {
+            return XCTFail("Expected Commercial construction to start")
+        }
+
+        let store = CityGameStore(state: state, startsPaused: true)
+        let paused = CityStrategyHUDPresentation.make(
+            analytics: store.analytics,
+            speed: store.speed
+        )
+        XCTAssertEqual(paused.eyebrow, "GROWTH PROJECT")
+        XCTAssertEqual(paused.title, "Commercial under construction")
+        XCTAssertEqual(paused.status, "BUILDING · 0%")
+        XCTAssertEqual(paused.actions.map(\.title), ["Resume Commercial"])
+        XCTAssertEqual(paused.actions.map(\.command), [.togglePause])
+        XCTAssertFalse(paused.actions.contains { [.buildCommercial, .buildIndustrial].contains($0.command) })
+        XCTAssertTrue(paused.summary.contains("Block \(coordinate.x + 1), \(coordinate.y + 1)"))
+        XCTAssertTrue(paused.summary.contains("4 construction ticks"))
+
+        let resume = try XCTUnwrap(paused.actions.first)
+        StrategyCommandCenterView.perform(resume, on: store)
+        XCTAssertEqual(store.speed, .normal)
+        let running = CityStrategyHUDPresentation.make(
+            analytics: store.analytics,
+            speed: store.speed
+        )
+        XCTAssertEqual(running.actions.map(\.title), ["Pause to inspect"])
+        StrategyCommandCenterView.perform(try XCTUnwrap(running.actions.first), on: store)
+        XCTAssertEqual(store.speed, .paused)
+
+        CitySimulation.step(&store.state)
+        let progressing = CityStrategyHUDPresentation.make(
+            analytics: store.analytics,
+            speed: store.speed
+        )
+        XCTAssertEqual(progressing.status, "BUILDING · 25%")
+        XCTAssertTrue(progressing.summary.contains("3 construction ticks"))
+
+        for _ in 0..<3 { CitySimulation.step(&store.state) }
+        XCTAssertEqual(store.state.tile(at: coordinate)?.constructionProgress, 1)
+        XCTAssertEqual(store.analytics.committedStrategy, .commercialStewardship)
+        let committed = CityStrategyHUDPresentation.make(
+            analytics: store.analytics,
+            speed: store.speed
+        )
+        XCTAssertEqual(committed.title, "Commercial stewardship")
+        XCTAssertFalse(committed.actions.contains { [.buildCommercial, .buildIndustrial].contains($0.command) })
+    }
+
     func testStrategyHUDCountdownIgnoresMessageProseAndUrgentRoutesUseCatalogCommands() throws {
         var commercial = try XCTUnwrap(
             ProductionStoryStateBuilder().buildAll().first {

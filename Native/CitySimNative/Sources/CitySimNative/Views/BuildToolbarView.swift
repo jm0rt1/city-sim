@@ -268,7 +268,8 @@ struct BuildToolbarView: View {
     }
 
     private var toolsMenu: some View {
-        Menu {
+        let diagnosticLayerIsActive = store.overlay != .none
+        return Menu {
             Section("Map layers") {
                 ForEach(DataOverlay.allCases) { overlay in
                     Button {
@@ -292,7 +293,10 @@ struct BuildToolbarView: View {
                 }
             }
         } label: {
-            Label(compact ? "More" : "Tools", systemImage: "slider.horizontal.3")
+            Label(
+                diagnosticLayerIsActive ? store.overlay.title : (compact ? "More" : "Tools"),
+                systemImage: diagnosticLayerIsActive ? store.overlay.symbol : "slider.horizontal.3"
+            )
                 .font(.system(size: GameTheme.hudCriticalTextSize, weight: .bold, design: .rounded))
                 .padding(.horizontal, compact ? 4 : 8)
                 .frame(minWidth: GameTheme.controlMinimum, minHeight: GameTheme.controlMinimum)

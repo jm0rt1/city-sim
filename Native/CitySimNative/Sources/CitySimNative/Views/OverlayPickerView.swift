@@ -8,19 +8,21 @@ struct OverlayDiagnosticsPalettePresentation: Equatable {
     let source: String
     let freshness: String
     let clickThrough: String
+    let visualKey: String
 
     var shortDetail: String {
         value + " · " + applicability
     }
 
     var accessibilityValue: String {
-        value + ". Scale " + scale + ". " + applicability + ". Source " + source + ", " + freshness + ". " + clickThrough + "."
+        value + ". Scale " + scale + ". " + applicability + ". " + visualKey + ". Source " + source + ", " + freshness + ". " + clickThrough + "."
     }
 
     static func make(
         overlay: DataOverlay,
         consequence: CitySpatialConsequence?,
-        tick: Int
+        tick: Int,
+        selectionApplies: Bool? = nil
     ) -> Self {
         let title = displayTitle(for: overlay)
         let scale = "0–100"
@@ -37,57 +39,63 @@ struct OverlayDiagnosticsPalettePresentation: Equatable {
                 applicability: "All places",
                 source: "Live city state",
                 freshness: freshness,
-                clickThrough: clickThrough
+                clickThrough: clickThrough,
+                visualKey: "No diagnostic marks"
             )
         case .landValue:
             return Self(
                 title: title,
-                value: normalized(consequence?.landValueIndex),
+                value: reading(consequence?.landValueIndex, selectionApplies: selectionApplies),
                 scale: scale,
-                applicability: consequence?.landValueIndex == nil ? "No data · developed places" : "Developed places",
+                applicability: "Completed places",
                 source: source,
                 freshness: freshness,
-                clickThrough: clickThrough
+                clickThrough: clickThrough,
+                visualKey: "More contours signal weaker land value"
             )
         case .traffic:
             return Self(
                 title: title,
-                value: normalized(consequence?.trafficPressure),
+                value: reading(consequence?.trafficPressure, selectionApplies: selectionApplies),
                 scale: scale,
-                applicability: consequence?.trafficPressure == nil ? "No data · roads only" : "Roads only",
+                applicability: "Roads only",
                 source: source,
                 freshness: freshness,
-                clickThrough: clickThrough
+                clickThrough: clickThrough,
+                visualKey: "More road ticks signal heavier traffic"
             )
         case .utilities:
             return Self(
                 title: title,
-                value: normalized(consequence?.utility.combined),
+                value: reading(consequence?.utility.combined, selectionApplies: selectionApplies),
                 scale: scale,
                 applicability: "Developed places",
                 source: source,
                 freshness: freshness,
-                clickThrough: clickThrough
+                clickThrough: clickThrough,
+                visualKey: "More edge notches signal larger shortfall"
             )
         case .happiness:
             return Self(
                 title: title,
-                value: normalized(consequence?.localHappinessIndex),
+                value: reading(consequence?.localHappinessIndex, selectionApplies: selectionApplies),
                 scale: scale,
-                applicability: consequence?.localHappinessIndex == nil ? "No data · occupied places" : "Occupied places",
+                applicability: "Completed places",
                 source: source,
                 freshness: freshness,
-                clickThrough: clickThrough
+                clickThrough: clickThrough,
+                visualKey: "More ripples signal lower happiness"
             )
         case .pollution:
             return Self(
                 title: title,
-                value: normalized(consequence?.pollutionExposure),
+                value: reading(consequence?.pollutionExposure, selectionApplies: selectionApplies),
                 scale: scale,
-                applicability: "All places",
+                applicability: "Developed places",
                 source: source,
                 freshness: freshness,
-                clickThrough: clickThrough
+                clickThrough: clickThrough,
+                visualKey: "More hatches signal higher pollution"
             )
         }
     }
@@ -99,6 +107,12 @@ struct OverlayDiagnosticsPalettePresentation: Equatable {
     private static func normalized(_ value: Double?) -> String {
         guard let value else { return "No data" }
         return String(Int((min(1, max(0, value)) * 100).rounded())) + " / 100"
+    }
+
+    private static func reading(_ value: Double?, selectionApplies: Bool?) -> String {
+        guard let selectionApplies else { return "Select a place" }
+        guard selectionApplies else { return "Not applicable here" }
+        return normalized(value)
     }
 }
 
@@ -119,10 +133,16 @@ struct OverlayDiagnosticsPaletteView: View {
     }
 
     private var activePresentation: OverlayDiagnosticsPalettePresentation {
-        .make(
-            overlay: store.overlay,
-            consequence: selectedConsequence,
-            tick: store.state.tick
+        makePresentation(for: store.overlay)
+    }
+
+    private func makePresentation(for overlay: DataOverlay) -> OverlayDiagnosticsPalettePresentation {
+        let selectionApplies = store.selectedTile.map { overlay.applies(to: $0) }
+        return .make(
+            overlay: overlay,
+            consequence: selectionApplies == false ? nil : selectedConsequence,
+            tick: store.state.tick,
+            selectionApplies: selectionApplies
         )
     }
 
@@ -141,11 +161,7 @@ struct OverlayDiagnosticsPaletteView: View {
     ) -> some View {
         Menu {
             ForEach(DataOverlay.allCases) { overlay in
-                let overlayPresentation = OverlayDiagnosticsPalettePresentation.make(
-                    overlay: overlay,
-                    consequence: selectedConsequence,
-                    tick: store.state.tick
-                )
+                let overlayPresentation = makePresentation(for: overlay)
                 Button {
                     store.perform(CityCommandCatalog.id(for: overlay))
                 } label: {
@@ -160,22 +176,11 @@ struct OverlayDiagnosticsPaletteView: View {
                 .accessibilityHint("Switches the map to this layer")
             }
         } label: {
-            HStack(spacing: 6) {
-                Label(embedded ? "Layers" : "Map layers", systemImage: "square.grid.2x2.fill")
-                    .font(.system(size: GameTheme.hudCriticalTextSize, weight: .bold, design: .rounded))
-                if !embedded {
-                    Text(presentation.title + " · " + presentation.shortDetail)
-                        .font(.system(size: GameTheme.hudSupportTextSize, weight: .medium, design: .rounded))
-                        .foregroundStyle(.secondary)
-                        .lineLimit(1)
-                        .truncationMode(.tail)
-                        .layoutPriority(1)
-                }
-            }
+            Label(embedded ? "Layers" : "Map layers", systemImage: "square.grid.2x2.fill")
+                .font(.system(size: GameTheme.hudCriticalTextSize, weight: .bold, design: .rounded))
             .padding(.horizontal, embedded ? 4 : 8)
             .frame(
                 minWidth: GameTheme.controlMinimum,
-                maxWidth: embedded ? nil : .infinity,
                 minHeight: GameTheme.controlMinimum,
                 alignment: .leading
             )
@@ -188,7 +193,31 @@ struct OverlayDiagnosticsPaletteView: View {
     }
 
     private func standalonePalette(presentation: OverlayDiagnosticsPalettePresentation) -> some View {
-        paletteMenu(presentation: presentation, embedded: false)
+        HStack(spacing: 8) {
+            paletteMenu(presentation: presentation, embedded: false)
+                .fixedSize(horizontal: true, vertical: false)
+            Rectangle()
+                .fill(GameTheme.panelStroke)
+                .frame(width: 1, height: 26)
+                .accessibilityHidden(true)
+            VStack(alignment: .leading, spacing: 1) {
+                Text(presentation.title + " · " + presentation.shortDetail)
+                    .font(.system(size: GameTheme.hudSupportTextSize, weight: .semibold, design: .rounded))
+                    .foregroundStyle(.primary)
+                    .accessibilityHidden(true)
+                Text(presentation.visualKey)
+                    .font(.system(size: GameTheme.hudSupportTextSize - 1, weight: .medium, design: .rounded))
+                    .foregroundStyle(.secondary)
+                    .accessibilityHidden(true)
+            }
+            .lineLimit(1)
+            .truncationMode(.tail)
+            .layoutPriority(1)
+            .accessibilityHidden(true)
+            Spacer(minLength: 0)
+        }
+        .padding(.horizontal, 6)
+        .frame(maxWidth: .infinity, minHeight: GameTheme.controlMinimum, alignment: .leading)
         .cityPanelBackground(.thin, in: RoundedRectangle(cornerRadius: GameTheme.panelRadius, style: .continuous))
         .background(
             GameTheme.hudSurfaceFill,

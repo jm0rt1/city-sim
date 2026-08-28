@@ -210,6 +210,21 @@ enum DataOverlay: String, CaseIterable, Identifiable, Sendable {
         case .pollution: "aqi.medium"
         }
     }
+
+    func applies(to tile: CityTile) -> Bool {
+        let developed = tile.kind != .empty && tile.kind != .road
+        let completedDevelopment = developed && tile.constructionProgress >= 1
+        switch self {
+        case .none:
+            return true
+        case .landValue, .happiness:
+            return completedDevelopment
+        case .traffic:
+            return tile.kind == .road
+        case .utilities, .pollution:
+            return developed
+        }
+    }
 }
 
 enum InspectorSection: String, CaseIterable, Identifiable, Sendable {

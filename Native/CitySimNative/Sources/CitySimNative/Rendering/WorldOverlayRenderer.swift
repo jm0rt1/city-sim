@@ -79,34 +79,27 @@ final class WorldOverlayRenderer {
         overlay: DataOverlay
     ) -> WorldOverlaySample? {
         guard let consequence,
-              consequence.coordinate == tile.coordinate else {
+              consequence.coordinate == tile.coordinate,
+              overlay.applies(to: tile) else {
             return nil
         }
 
         switch overlay {
         case .utilities:
-            guard isDeveloped(tile) else { return nil }
             return makeSample(consequence.utility.combined, pattern: .utilityEdge)
         case .pollution:
-            guard isDeveloped(tile) else { return nil }
             return makeSample(1 - consequence.pollutionExposure, pattern: .pollutionHatch)
         case .landValue:
-            guard isCompletedDevelopment(tile), let value = consequence.landValueIndex else {
-                return nil
-            }
+            guard let value = consequence.landValueIndex else { return nil }
             return makeSample(value, pattern: .landValueContour)
         case .traffic:
-            guard tile.kind == .road, let pressure = consequence.trafficPressure else {
-                return nil
-            }
+            guard let pressure = consequence.trafficPressure else { return nil }
             // The renderer's heat scale is health-oriented. Invert the typed
             // pressure channel for color/severity only; do not infer traffic
             // from occupancy, topology, vehicles, or state here.
             return makeSample(1 - pressure, pattern: .trafficPressureTicks)
         case .happiness:
-            guard isCompletedDevelopment(tile), let value = consequence.localHappinessIndex else {
-                return nil
-            }
+            guard let value = consequence.localHappinessIndex else { return nil }
             return makeSample(value, pattern: .happinessRipples)
         case .none:
             return nil
@@ -304,13 +297,6 @@ final class WorldOverlayRenderer {
         }
     }
 
-    private func isDeveloped(_ tile: CityTile) -> Bool {
-        tile.kind != .empty && tile.kind != .road
-    }
-
-    private func isCompletedDevelopment(_ tile: CityTile) -> Bool {
-        isDeveloped(tile) && tile.constructionProgress >= 1
-    }
 }
 
 typealias OverlayRenderer = WorldOverlayRenderer

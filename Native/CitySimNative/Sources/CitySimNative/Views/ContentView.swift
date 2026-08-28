@@ -618,6 +618,32 @@ struct ContentView: View {
 
                     Spacer(minLength: 8)
 
+                    if Self.presentsOverlayDiagnostics(
+                        overlay: store.overlay,
+                        showInspector: store.showInspector,
+                        hasBuildDecision: store.activeMapActionTargetPresentation?
+                            .primaryAction.buildDecision != nil,
+                        hasPresentedFeedback: store.lastFeedback.map {
+                            Self.presentsFeedback(
+                                message: $0,
+                                tone: store.lastFeedbackTone,
+                                hasResumeBrief: store.resumeBrief != nil
+                            )
+                        } ?? false
+                    ) {
+                        HStack {
+                            OverlayDiagnosticsPaletteView(store: store, compact: compact)
+                                .frame(
+                                    width: compact ? 400 : 440,
+                                    height: compact
+                                        ? OverlayDiagnosticsPaletteView.compactMaximumHeight
+                                        : OverlayDiagnosticsPaletteView.regularMaximumHeight
+                                )
+                            Spacer(minLength: 0)
+                        }
+                        .transition(.opacity)
+                    }
+
                     if let feedback = store.lastFeedback,
                        Self.presentsFeedback(
                            message: feedback,
@@ -724,6 +750,18 @@ struct ContentView: View {
         if region == .bottom, !store.isCityFocusModeEnabled {
             focusCityChromeFrame = .zero
         }
+    }
+
+    static func presentsOverlayDiagnostics(
+        overlay: DataOverlay,
+        showInspector: Bool,
+        hasBuildDecision: Bool,
+        hasPresentedFeedback: Bool
+    ) -> Bool {
+        overlay != .none
+            && !showInspector
+            && !hasBuildDecision
+            && !hasPresentedFeedback
     }
 
     private func synchronizeWelcomePolicy() {

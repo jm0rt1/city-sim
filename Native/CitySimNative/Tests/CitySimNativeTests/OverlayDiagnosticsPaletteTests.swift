@@ -108,7 +108,7 @@ final class OverlayDiagnosticsPaletteTests: XCTestCase {
         XCTAssertTrue(traffic.value.hasPrefix("Peak "))
         XCTAssertTrue(traffic.value.contains(" · B"))
         XCTAssertTrue(traffic.accessibilityValue.contains("Activate the citywide hotspot"))
-        XCTAssertTrue(hotspot.accessibilityLabel.contains("busiest traffic road"))
+        XCTAssertTrue(hotspot.accessibilityLabel.contains("highest traffic delay road"))
     }
 
     @MainActor
@@ -129,8 +129,8 @@ final class OverlayDiagnosticsPaletteTests: XCTestCase {
         XCTAssertEqual(traffic.value, "Select a place")
         XCTAssertEqual(traffic.scale, "0–100")
         XCTAssertEqual(traffic.applicability, "Roads only")
-        XCTAssertEqual(traffic.visualKey, "More road ticks signal heavier traffic")
-        XCTAssertEqual(traffic.source, "Spatial consequences")
+        XCTAssertEqual(traffic.visualKey, "More road ticks signal higher modeled delay")
+        XCTAssertEqual(traffic.source, "Home-to-work route assignment")
         XCTAssertEqual(traffic.freshness, "fresh at tick 12")
         XCTAssertTrue(traffic.accessibilityValue.contains("Scale 0–100"))
         XCTAssertTrue(traffic.accessibilityValue.contains("More road ticks"))

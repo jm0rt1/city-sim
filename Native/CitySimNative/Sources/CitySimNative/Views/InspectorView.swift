@@ -277,6 +277,7 @@ struct InspectorView: View {
                     ) {
                         localConditionMetric("Value", conditions.landValueIndex.formatted())
                         localConditionMetric("Utility", "\(conditions.utilityService)%")
+                        localConditionMetric("Traffic", "\(conditions.trafficExposure)%")
                         localConditionMetric("Pollution", "\(conditions.pollutionExposure)%")
                         localConditionMetric(
                             conditions.vitality.capitalized,

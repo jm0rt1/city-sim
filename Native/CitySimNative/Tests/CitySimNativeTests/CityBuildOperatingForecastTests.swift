@@ -534,9 +534,14 @@ final class CityBuildOperatingForecastTests: XCTestCase {
         )
         XCTAssertEqual(conditions.utilityService, Int((sample.utility.combined * 100).rounded()))
         XCTAssertEqual(conditions.pollutionExposure, Int((sample.pollutionExposure * 100).rounded()))
+        XCTAssertEqual(
+            conditions.trafficExposure,
+            Int((try XCTUnwrap(sample.trafficExposure) * 100).rounded())
+        )
         XCTAssertEqual(conditions.vitalityScore, Int((sample.vitalityScore * 100).rounded()))
         XCTAssertTrue(conditions.accessibilitySummary.contains("land value"))
         XCTAssertTrue(conditions.accessibilitySummary.contains("utilities"))
+        XCTAssertTrue(conditions.accessibilitySummary.contains("traffic exposure"))
         XCTAssertTrue(conditions.accessibilitySummary.contains("pollution"))
         XCTAssertTrue(conditions.accessibilitySummary.contains("vitality"))
 

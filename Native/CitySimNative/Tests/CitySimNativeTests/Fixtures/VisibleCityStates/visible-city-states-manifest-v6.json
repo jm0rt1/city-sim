@@ -4,9 +4,9 @@
   "fixtureSet" : "PLAY-142 current visible-city states",
   "fixtures" : [
     {
-      "activityDigest" : "409980357ab76a2f07d77855f3a37fd8568f5f6269524e1eb5e61ea5f1b0886a",
+      "activityDigest" : "59d7e7a56b4add12828ab7600c4e4e700a3f44888428f254f789fc0689bf5000",
       "byteCount" : 131674,
-      "diagnosticDigest" : "362679c053057b7cce596b2ace390d3772875a492f5bee3cd48bf1997c4773a2",
+      "diagnosticDigest" : "c88a6521ac2f5d4072a45f851e3f5077e12556d4bf2018d7dfd848fd48add54b",
       "expectedStateDigest" : "42a6aa3f9226379d6dcfe6ab9ca9b35082901ae79bbe8a253ef25ab7c34fba14",
       "file" : "visible-city-commercial-vacant-district-v6.json",
       "fileSHA256" : "2d11870acfc078390fdfdf64df8cf7773467811487816bbc7370583261f7c7b7",
@@ -25,9 +25,9 @@
       "tick" : 64
     },
     {
-      "activityDigest" : "409980357ab76a2f07d77855f3a37fd8568f5f6269524e1eb5e61ea5f1b0886a",
+      "activityDigest" : "59d7e7a56b4add12828ab7600c4e4e700a3f44888428f254f789fc0689bf5000",
       "byteCount" : 131679,
-      "diagnosticDigest" : "362679c053057b7cce596b2ace390d3772875a492f5bee3cd48bf1997c4773a2",
+      "diagnosticDigest" : "c88a6521ac2f5d4072a45f851e3f5077e12556d4bf2018d7dfd848fd48add54b",
       "expectedStateDigest" : "0b2a9ef9161362c5e3346016a29564b0255a32bf5ad8df5e3f9cd42d21460cb5",
       "file" : "visible-city-commercial-construction-district-v6.json",
       "fileSHA256" : "e0161d570ec21374d981e99ab26c3af3f1c383e8b21247aa6e33e21c3aceb165",
@@ -46,9 +46,9 @@
       "tick" : 64
     },
     {
-      "activityDigest" : "8318c802e52692ab5276b77195d6614f3b43f81b2827e53eec2577312cecb8d9",
+      "activityDigest" : "036ab78ea212cbc88ea8054cbb5aecd9d2b709a6c53eae0de28bfc1d3392dfaa",
       "byteCount" : 132006,
-      "diagnosticDigest" : "8f4653f77689ef8875f34305934ec54b710fc438b84a1a22d34209460d42f733",
+      "diagnosticDigest" : "8ec13bc44fcef7c3fc39e76090119153be0993e32b46f37a87fcdec436ee3a57",
       "expectedStateDigest" : "1fb146515fff833f80e7b935e7b2c09f756ced6bc42c29f0bc01a039135419d2",
       "file" : "visible-city-commercial-active-district-v6.json",
       "fileSHA256" : "7586de8188f12828994dec819bcc378f60e955ba89fd063f36e11aa005c7de92",
@@ -67,9 +67,9 @@
       "tick" : 68
     },
     {
-      "activityDigest" : "3e90439e10ce26aa4fe859df56dc62b0e4e059e68c8e661199562c5ec50e66bd",
+      "activityDigest" : "3acdfef3d8f441a44485a1f374b3b1a9bc03ae44f575c9411d355a6c86dcb16e",
       "byteCount" : 134895,
-      "diagnosticDigest" : "e046c801890b1b268f69e95b4ac26102da56fd76c4c57053153e7b29e281a18a",
+      "diagnosticDigest" : "4e4381faf8425812ed3160f137463f58e3a590072aea4d4385d4bc5fe9252edd",
       "expectedStateDigest" : "d8b3198e81880338f0006519debe0ddfaff8dc1259e4f3482b3763a31db54d59",
       "file" : "visible-city-commercial-pressured-district-v6.json",
       "fileSHA256" : "8f0aecaeb4c7559277f53cac002ccadb731a2388ffbcacfaed3a7fffa0a2d343",
@@ -90,9 +90,9 @@
       "tick" : 972
     },
     {
-      "activityDigest" : "0017cf023feff8bf77b879df4f78eab335760b416b4744a044cf4965d8a037ce",
+      "activityDigest" : "433fc5f2668f221d11ae05b7e3ae82c91573ee6afe2d7e77a78d468473987330",
       "byteCount" : 135001,
-      "diagnosticDigest" : "914d988e3fc61d7cd432316d7259f6f351634e923bd3c903565360dba6ea1531",
+      "diagnosticDigest" : "f3a00efd857fb9f248468bc65cba10861bd1ccf15e1f6cc79ec865f7c1283f5c",
       "expectedStateDigest" : "b250a17020445d89538e7b9f12c728fe0930f967007c81442ca9575cc2ffab9d",
       "file" : "visible-city-commercial-recovering-district-v6.json",
       "fileSHA256" : "beeacf05f1b1032a38b68b8bd0d84c4dacc0cf6dd9eebeaf8a67cdea375658f6",
@@ -113,9 +113,9 @@
       "tick" : 976
     },
     {
-      "activityDigest" : "0f07ff64366ed3484eb609b9b436de19729451507cc204b304e4627de03f401a",
+      "activityDigest" : "b2374f1ff10b08aab2832ccc6cd3b26fc6fe0f9e781c1224ef1e57d409a1583f",
       "byteCount" : 134865,
-      "diagnosticDigest" : "27f4b6b5094323f1b2c135cb20175f2f0f5b5b14414d86db3e4b01f45e6216d3",
+      "diagnosticDigest" : "5384844508de8281506c9fb85e9fc3f205eff5fa65704d9f98c2e73f478760a0",
       "expectedStateDigest" : "0a41bcb51c0f95a9bad82c3d9e9616d4698eaa00fb66ef5e46dd261d2fb12ab0",
       "file" : "visible-city-commercial-upgraded-district-v6.json",
       "fileSHA256" : "1e18dbddb1e835d9201dafcc3e65b0374980794fdb4c39a29bf7af072b93ed7a",
@@ -136,9 +136,9 @@
       "tick" : 844
     },
     {
-      "activityDigest" : "35f87d77327416fae33216515b1b64d1b26249deb8522fc4c9578be1732ecc64",
+      "activityDigest" : "9864d6fa5edc260dcfd1fd56cb64e153536bce8c9fa513791152c325d0623377",
       "byteCount" : 135072,
-      "diagnosticDigest" : "2dede2434891c7321b929ce37fadd293f1963d3f9cb14801cf460851b2e49530",
+      "diagnosticDigest" : "f5d4fba4ad8973af11de3890e0770d03617dc4449ee79718e49bd82585518183",
       "expectedStateDigest" : "cb2e206470ec3cff22b7ba757fae6d597166e078f27988ce3db6091222c0a6bb",
       "file" : "visible-city-commercial-terminal-district-v6.json",
       "fileSHA256" : "d36fbf9097b323c3bdbae0176d6d7430e2b0a58a2fc01d56f32fadb008f16508",
@@ -159,9 +159,9 @@
       "tick" : 1024
     },
     {
-      "activityDigest" : "3a44bdda20d8e169e6190d56b2f6897ea1c6cfd139b1ccbc80aa6b2e0bf8a209",
+      "activityDigest" : "25625621c04c0a11ed92124a4fee2aab9b953a5ecefa77eff7e59d53c7b1171e",
       "byteCount" : 131649,
-      "diagnosticDigest" : "9efd6b44acbdac26dfaf187e40f8ef3d4e9be21ea5396aeab6334e88520a1c2b",
+      "diagnosticDigest" : "93f3598ead9b1ffc4ad23c5343573807ceb4608139b7e71a9e6e2ca816f1bd37",
       "expectedStateDigest" : "facc2116bfd6c51664eb9d45ec0a8c152d38aa55fc07a8f76c7443dc3278bd8b",
       "file" : "visible-city-industrial-vacant-district-v6.json",
       "fileSHA256" : "ca4e28792833e040a0d75acaebae7679963854a44a55a2fd833f174ea152c8ff",
@@ -180,9 +180,9 @@
       "tick" : 64
     },
     {
-      "activityDigest" : "3a44bdda20d8e169e6190d56b2f6897ea1c6cfd139b1ccbc80aa6b2e0bf8a209",
+      "activityDigest" : "25625621c04c0a11ed92124a4fee2aab9b953a5ecefa77eff7e59d53c7b1171e",
       "byteCount" : 131654,
-      "diagnosticDigest" : "9efd6b44acbdac26dfaf187e40f8ef3d4e9be21ea5396aeab6334e88520a1c2b",
+      "diagnosticDigest" : "93f3598ead9b1ffc4ad23c5343573807ceb4608139b7e71a9e6e2ca816f1bd37",
       "expectedStateDigest" : "c508abfadc7b7227ed93d2300eea43193637e54ae9651283b77ef5adbb1db3ad",
       "file" : "visible-city-industrial-construction-district-v6.json",
       "fileSHA256" : "4d1b1e56f59636d304eb0ede6e78fa5d8dce8983c720a638b3d8c503b6057a48",
@@ -201,9 +201,9 @@
       "tick" : 64
     },
     {
-      "activityDigest" : "de199fb7d9f0e0e03cefd31e7873c0f7f69ba07b53ea6bcccdaf5783e6bbe6de",
+      "activityDigest" : "9173d3c3b231f6e65a954d911c19b7a938e5fb0b6c013f9d3e28708adfc2bd30",
       "byteCount" : 131969,
-      "diagnosticDigest" : "62c0966c63078521177fe9eb6011c0396d2ec6ee38b571cd1d48ba46c294a63e",
+      "diagnosticDigest" : "a1e8e702406832f2e5d6c964f3cef486d53b15f6863cac0fb746d3e5afa448b1",
       "expectedStateDigest" : "f130b1d68d1c6b24b856c71030a26b980f28927c6e8c7d52a38626b401d3fbf0",
       "file" : "visible-city-industrial-active-district-v6.json",
       "fileSHA256" : "94dfb5c7a18314057373e664466461add3d6ff2bc4b38a816f64dcb4773a04b2",
@@ -222,9 +222,9 @@
       "tick" : 68
     },
     {
-      "activityDigest" : "5dd02303dfbbfa06aca15fd898c7c2288dd1b14a6ec21705961c2c5e1e566ef4",
+      "activityDigest" : "8682593ceee980e775062f9613e9dd29191fb2f1a09f08e95272a81f6ef2bd44",
       "byteCount" : 134953,
-      "diagnosticDigest" : "a0f17f824618669cbd81ae6402032e7f0ac24b4d9e6ff9d82dfaaf3d21dabcd9",
+      "diagnosticDigest" : "a71f06896251e3b0988c7557f8631a7ba61ac8aa6e053ef16dd6840c373fe365",
       "expectedStateDigest" : "6bce1e6f8817ddea665a4b2b96b12391546b457b289852244d7f40adc88e2656",
       "file" : "visible-city-industrial-pressured-district-v6.json",
       "fileSHA256" : "e3e5132153041a584ba9b34b5e1bd53e62dacbc9276d3ac2e9fd413f60f81967",
@@ -245,9 +245,9 @@
       "tick" : 996
     },
     {
-      "activityDigest" : "5d4ad636365e1b882b228ab1f96025340553aa761919f82c2b3c759f3a1d3eb7",
+      "activityDigest" : "3d54eff10df62365949008ad4c6e8910d2fabc41f6e86996e51ae291e6cf54e1",
       "byteCount" : 135236,
-      "diagnosticDigest" : "e3935c74830dcd8dfa3d3853872aade8de8c37bdeb847c209106b5820fe018d2",
+      "diagnosticDigest" : "3a56dafd8f4f9abd1c66b77a83c5f79c681d56e4ad2ac92e285de280461e99fc",
       "expectedStateDigest" : "5f0566b51c588812ca526f8e49bd3c790176e69ab66824b9d52ddb9600a8937c",
       "file" : "visible-city-industrial-recovering-district-v6.json",
       "fileSHA256" : "df6be201bd59c8435fd605c785f9b0d705a344b644ec60402f37c7b1d901e874",
@@ -268,9 +268,9 @@
       "tick" : 1016
     },
     {
-      "activityDigest" : "138f4d5d4c5f3e418ed0769ac302c8a6f1e345d92302bfed18643272256e06f4",
+      "activityDigest" : "f7fa72350354ed887d52e13887ba5e6808045d5a64c5b14ba2de23e990208765",
       "byteCount" : 134900,
-      "diagnosticDigest" : "26e5728a04545cddc9e497ffdc30a32640647cd78b8e916cfc4e7e51d0154644",
+      "diagnosticDigest" : "2f1601e18ce842414209d534a5410fb15687def7983d0e0a34e1675dd045e6b9",
       "expectedStateDigest" : "e35ac6a2d87eaeea4bdd949441e06733be420648048e93bb69bbba9c4f15d5c9",
       "file" : "visible-city-industrial-upgraded-district-v6.json",
       "fileSHA256" : "ea7e4eb8a1dd8ac949042e5f57a2c83ca1d0d5e2e3b553f95c450e419f20fe07",
@@ -291,9 +291,9 @@
       "tick" : 868
     },
     {
-      "activityDigest" : "5382db0e28430f2a96a9e74f8a8575dce442aa53df8fc844aad0f8b4359aaf8b",
+      "activityDigest" : "6687ddabbce855a106c4e0a701b5bb3bb10e9371a9484fa002af6de2808432d3",
       "byteCount" : 135190,
-      "diagnosticDigest" : "67e6cc0d266180756d4439c142c2a8bfe58b6ef4a05e24de10aeb0249c5f7767",
+      "diagnosticDigest" : "adade17b0aa713d2f1020c055f09e6ac05902dd6f108eb9b918333bee2425572",
       "expectedStateDigest" : "c170f90c381a650daf2e7bcd13d441965b7cc995299dc5606894400f6bd41c77",
       "file" : "visible-city-industrial-terminal-district-v6.json",
       "fileSHA256" : "ea2a60ebb7325db3041f57708f0f373d2e40dc57ae83a54a2052e584e7deee71",

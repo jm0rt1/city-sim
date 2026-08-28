@@ -139,10 +139,12 @@ struct VisibleCityFixtureCorpus: Equatable, Sendable {
         )
         let encoder = JSONEncoder()
         encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+        var manifestData = try encoder.encode(manifest)
+        manifestData.append(0x0A)
         return VisibleCityFixtureCorpus(
             artifacts: artifacts,
             manifest: manifest,
-            manifestData: try encoder.encode(manifest)
+            manifestData: manifestData
         )
     }
 
@@ -164,7 +166,7 @@ struct VisibleCityFixtureCorpus: Equatable, Sendable {
     }
 
     static func diagnosticDigest(_ map: CitySpatialConsequenceMap) -> String {
-        var canonical = "spatial-diagnostics-v1|\(map.width)|\(map.height)\n"
+        var canonical = "spatial-diagnostics-v2|\(map.width)|\(map.height)\n"
         for sample in map.samples {
             canonical += [
                 String(sample.coordinate.x),
@@ -172,6 +174,7 @@ struct VisibleCityFixtureCorpus: Equatable, Sendable {
                 optionalBitPattern(sample.landValueIndex),
                 optionalBitPattern(sample.localHappinessIndex),
                 optionalBitPattern(sample.trafficPressure),
+                optionalBitPattern(sample.trafficExposure),
             ].joined(separator: ",")
             canonical += "\n"
         }

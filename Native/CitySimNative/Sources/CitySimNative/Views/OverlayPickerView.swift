@@ -26,7 +26,7 @@ struct OverlayDiagnosticHotspot: Equatable, Sendable {
         case .landValue:
             subject = "lowest land value"
         case .traffic:
-            subject = "busiest traffic road"
+            subject = "highest traffic delay road"
         case .utilities:
             subject = "weakest utility service"
         case .happiness:
@@ -160,10 +160,10 @@ struct OverlayDiagnosticsPalettePresentation: Equatable {
                 ),
                 scale: scale,
                 applicability: "Roads only",
-                source: source,
+                source: "Home-to-work route assignment",
                 freshness: freshness,
                 clickThrough: clickThrough,
-                visualKey: "More road ticks signal heavier traffic"
+                visualKey: "More road ticks signal higher modeled delay"
             )
         case .utilities:
             return Self(

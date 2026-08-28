@@ -45,6 +45,7 @@ final class SpatialConsequenceTests: XCTestCase {
                 sample.landValueIndex,
                 sample.localHappinessIndex,
                 sample.trafficPressure,
+                sample.trafficExposure,
                 sample.streetActivityIndex,
                 sample.placeActivityIndex
             ].compactMap({ $0 }) {
@@ -69,6 +70,10 @@ final class SpatialConsequenceTests: XCTestCase {
             roadCount
         )
         XCTAssertEqual(
+            first.spatialConsequences.samples.compactMap(\.trafficExposure).count,
+            completedDevelopmentCount
+        )
+        XCTAssertEqual(
             first.spatialConsequences.samples.compactMap(\.streetActivityIndex).count,
             roadCount
         )
@@ -83,6 +88,7 @@ final class SpatialConsequenceTests: XCTestCase {
         XCTAssertNotNil(developed.landValueIndex)
         XCTAssertNotNil(developed.localHappinessIndex)
         XCTAssertNil(developed.trafficPressure)
+        XCTAssertNotNil(developed.trafficExposure)
         XCTAssertNil(developed.streetActivityIndex)
         XCTAssertNotNil(developed.placeActivityIndex)
 
@@ -92,6 +98,7 @@ final class SpatialConsequenceTests: XCTestCase {
         XCTAssertNil(road.landValueIndex)
         XCTAssertNil(road.localHappinessIndex)
         XCTAssertNotNil(road.trafficPressure)
+        XCTAssertNil(road.trafficExposure)
         XCTAssertNotNil(road.streetActivityIndex)
         XCTAssertNil(road.placeActivityIndex)
 
@@ -101,6 +108,7 @@ final class SpatialConsequenceTests: XCTestCase {
         XCTAssertNil(empty.landValueIndex)
         XCTAssertNil(empty.localHappinessIndex)
         XCTAssertNil(empty.trafficPressure)
+        XCTAssertNil(empty.trafficExposure)
         XCTAssertNil(empty.streetActivityIndex)
         XCTAssertNil(empty.placeActivityIndex)
 
@@ -114,6 +122,7 @@ final class SpatialConsequenceTests: XCTestCase {
         XCTAssertNil(incomplete.landValueIndex)
         XCTAssertNil(incomplete.localHappinessIndex)
         XCTAssertNil(incomplete.trafficPressure)
+        XCTAssertNil(incomplete.trafficExposure)
         XCTAssertNil(incomplete.streetActivityIndex)
         XCTAssertNil(incomplete.placeActivityIndex)
 
@@ -135,6 +144,7 @@ final class SpatialConsequenceTests: XCTestCase {
                 sample.landValueIndex,
                 sample.localHappinessIndex,
                 sample.trafficPressure,
+                sample.trafficExposure,
                 sample.streetActivityIndex,
                 sample.placeActivityIndex
             ].compactMap({ $0 }) {
@@ -219,76 +229,179 @@ final class SpatialConsequenceTests: XCTestCase {
         XCTAssertEqual(happySample.landValueIndex, unhappySample.landValueIndex)
     }
 
-    func testTrafficPressureIsRoadOnlyAndMonotonicForTopologyOccupancyAndDemand() throws {
-        let coordinate = GridCoordinate(x: 10, y: 10)
-        var sparse = CityGameState.newCity(seed: 42)
-        for index in sparse.tiles.indices {
-            sparse.tiles[index] = CityTile(
-                coordinate: sparse.tiles[index].coordinate,
-                kind: .empty
-            )
-        }
-        sparse.updateTile(at: coordinate) { $0.kind = .road }
+    func testTrafficAssignmentRequiresACompletedConnectedHomeAndWorkplace() throws {
+        let road = GridCoordinate(x: 7, y: 9)
+        let home = GridCoordinate(x: 4, y: 10)
+        var connected = trafficRouteState()
 
-        let sparseSample = try diagnosticSample(in: sparse, at: coordinate)
-        XCTAssertEqual(try XCTUnwrap(sparseSample.trafficPressure), 0)
-        XCTAssertNil(sparseSample.landValueIndex)
-        XCTAssertNil(sparseSample.localHappinessIndex)
-
-        var connected = sparse
-        connected.updateTile(at: GridCoordinate(x: 10, y: 9)) { $0.kind = .road }
+        let connectedAnalysis = CityTrafficAnalysis(state: connected)
+        let reading = try XCTUnwrap(connectedAnalysis[road])
+        XCTAssertGreaterThan(reading.assignedTrips, 0)
+        XCTAssertGreaterThan(reading.pressure, 0)
+        XCTAssertGreaterThan(reading.delay, 0)
+        XCTAssertLessThan(reading.reliability, 1)
         XCTAssertGreaterThan(
-            try XCTUnwrap(
-                diagnosticSample(in: connected, at: coordinate).trafficPressure
-            ),
-            try XCTUnwrap(sparseSample.trafficPressure)
+            try XCTUnwrap(connectedAnalysis.place(at: home)).exposure,
+            0
+        )
+        XCTAssertNil(connectedAnalysis[GridCoordinate(x: 0, y: 0)])
+
+        connected.updateTile(at: GridCoordinate(x: 7, y: 9)) { $0.kind = .empty }
+        XCTAssertEqual(
+            try XCTUnwrap(CityTrafficAnalysis(state: connected)[GridCoordinate(x: 6, y: 9)]).pressure,
+            0
         )
 
-        var occupied = sparse
-        occupied.updateTile(at: GridCoordinate(x: 11, y: 10)) {
+        var incomplete = trafficRouteState()
+        incomplete.updateTile(at: home) { $0.constructionProgress = 0.75 }
+        XCTAssertEqual(
+            try XCTUnwrap(CityTrafficAnalysis(state: incomplete)[road]).pressure,
+            0
+        )
+    }
+
+    func testNewCityAggregateOccupancySeedsReadOnlyOpeningTraffic() {
+        let state = CityGameState.newCity(seed: 42)
+        let original = state
+
+        XCTAssertTrue(
+            state.tiles
+                .filter { $0.kind == .residential || $0.kind == .commercial || $0.kind == .industrial }
+                .allSatisfy { $0.occupancy == 0 },
+            "The opening city keeps aggregate population and jobs before the first per-lot simulation review"
+        )
+
+        let analysis = CityTrafficAnalysis(state: state)
+        let assignedRoads = state.tiles.compactMap { tile -> CityTrafficRoadReading? in
+            guard tile.kind == .road else { return nil }
+            return analysis[tile.coordinate]
+        }
+
+        XCTAssertTrue(assignedRoads.contains { $0.assignedTrips > 0 })
+        XCTAssertTrue(assignedRoads.contains { $0.delay > 0 })
+        XCTAssertEqual(state, original, "Opening traffic must remain derived and save-neutral")
+    }
+
+    func testTrafficAssignmentRespondsToDemandAndAlternateRoadsShareLoad() throws {
+        let mainRoad = GridCoordinate(x: 7, y: 9)
+        let alternateRoad = GridCoordinate(x: 7, y: 11)
+
+        var lowDemand = trafficRouteState()
+        lowDemand.demand.commercial = 0
+        var highDemand = lowDemand
+        highDemand.demand.commercial = 1
+        XCTAssertGreaterThan(
+            try XCTUnwrap(CityTrafficAnalysis(state: highDemand)[mainRoad]).pressure,
+            try XCTUnwrap(CityTrafficAnalysis(state: lowDemand)[mainRoad]).pressure
+        )
+
+        let singleRoute = trafficRouteState()
+        let alternateRoute = trafficRouteState(includeAlternate: true)
+        let singleAnalysis = CityTrafficAnalysis(state: singleRoute)
+        let alternateAnalysis = CityTrafficAnalysis(state: alternateRoute)
+        XCTAssertGreaterThan(
+            try XCTUnwrap(alternateAnalysis[alternateRoad]).assignedTrips,
+            0
+        )
+        XCTAssertLessThan(
+            try XCTUnwrap(alternateAnalysis[mainRoad]).pressure,
+            try XCTUnwrap(singleAnalysis[mainRoad]).pressure
+        )
+
+        let home = GridCoordinate(x: 4, y: 10)
+        let congested = try diagnosticSample(in: singleRoute, at: home)
+        let relieved = try diagnosticSample(in: alternateRoute, at: home)
+        XCTAssertLessThan(
+            try XCTUnwrap(relieved.trafficExposure),
+            try XCTUnwrap(congested.trafficExposure)
+        )
+        XCTAssertGreaterThan(
+            try XCTUnwrap(relieved.landValueIndex),
+            try XCTUnwrap(congested.landValueIndex)
+        )
+        XCTAssertGreaterThan(
+            try XCTUnwrap(relieved.localHappinessIndex),
+            try XCTUnwrap(congested.localHappinessIndex)
+        )
+        XCTAssertGreaterThan(relieved.vitalityScore, congested.vitalityScore)
+
+        var deadEnd = singleRoute
+        deadEnd.updateTile(at: GridCoordinate(x: 4, y: 11)) { $0.kind = .road }
+        XCTAssertEqual(
+            try XCTUnwrap(
+                CityTrafficAnalysis(state: deadEnd).place(at: home)
+            ).exposure,
+            try XCTUnwrap(singleAnalysis.place(at: home)).exposure,
+            accuracy: 0.000_001,
+            "An adjacent dead end must not dilute exposure without carrying any assigned trips"
+        )
+    }
+
+    func testTrafficAssignmentSkipsDisconnectedNearerJobsForAReachableWorkplace() throws {
+        var state = emptyState()
+        state.demand.commercial = 1
+        state.updateTile(at: GridCoordinate(x: 4, y: 10)) {
             $0.kind = .residential
             $0.occupancy = 280
         }
-        XCTAssertGreaterThan(
-            try XCTUnwrap(
-                diagnosticSample(in: occupied, at: coordinate).trafficPressure
-            ),
-            try XCTUnwrap(sparseSample.trafficPressure)
-        )
-
-        var lowJobDemand = sparse
-        lowJobDemand.demand.commercial = 0
-        lowJobDemand.updateTile(at: GridCoordinate(x: 10, y: 12)) {
+        state.updateTile(at: GridCoordinate(x: 14, y: 10)) {
             $0.kind = .commercial
             $0.occupancy = CitySimulation.commercialJobCapacity
         }
-        var highJobDemand = lowJobDemand
-        highJobDemand.demand.commercial = 1
+        for x in 4...14 {
+            state.updateTile(at: GridCoordinate(x: x, y: 9)) { $0.kind = .road }
+        }
+        for x in [5, 7, 9] {
+            state.updateTile(at: GridCoordinate(x: x, y: 12)) {
+                $0.kind = .commercial
+                $0.occupancy = CitySimulation.commercialJobCapacity
+            }
+            state.updateTile(at: GridCoordinate(x: x, y: 11)) { $0.kind = .road }
+        }
+
         XCTAssertGreaterThan(
             try XCTUnwrap(
-                diagnosticSample(in: highJobDemand, at: coordinate).trafficPressure
-            ),
-            try XCTUnwrap(
-                diagnosticSample(in: lowJobDemand, at: coordinate).trafficPressure
-            )
+                CityTrafficAnalysis(state: state)[GridCoordinate(x: 8, y: 9)]
+            ).assignedTrips,
+            0
+        )
+    }
+
+    func testTrafficAnalysisIsDeterministicAndDoesNotMutateSavedCityState() throws {
+        let state = trafficRouteState(includeAlternate: true)
+        let original = state
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.sortedKeys]
+        let encoded = try encoder.encode(state)
+
+        XCTAssertEqual(CityTrafficAnalysis(state: state), CityTrafficAnalysis(state: state))
+        XCTAssertEqual(state, original)
+        XCTAssertEqual(try encoder.encode(state), encoded)
+    }
+
+    func testTrafficDiagnosisExplainsDelayPenaltyAndAnHonestRecoveryPath() throws {
+        let state = trafficRouteState()
+        let snapshot = try CityPresentationSnapshot(state: state)
+        let road = try XCTUnwrap(state.tile(at: GridCoordinate(x: 7, y: 9)))
+        let roadDiagnosis = try XCTUnwrap(
+            CitySelectedLocationDiagnosis.make(tile: road, snapshot: snapshot)
         )
 
-        var incomplete = occupied
-        incomplete.updateTile(at: GridCoordinate(x: 11, y: 10)) {
-            $0.constructionProgress = 0.75
-        }
-        XCTAssertEqual(
-            try XCTUnwrap(
-                diagnosticSample(in: incomplete, at: coordinate).trafficPressure
-            ),
-            try XCTUnwrap(sparseSample.trafficPressure)
+        XCTAssertTrue(roadDiagnosis.cause.contains("Assigned home-to-work trips"))
+        XCTAssertTrue(roadDiagnosis.cause.contains("100% pressure"))
+        XCTAssertTrue(roadDiagnosis.consequence.contains("75%"))
+        XCTAssertTrue(roadDiagnosis.consequence.contains("reliability"))
+        XCTAssertTrue(roadDiagnosis.consequence.contains("55% pressure"))
+        XCTAssertEqual(roadDiagnosis.responses.map(\.command), [.buildRoad, .overlayTraffic])
+
+        let home = try XCTUnwrap(state.tile(at: GridCoordinate(x: 4, y: 10)))
+        let homeDiagnosis = try XCTUnwrap(
+            CitySelectedLocationDiagnosis.make(tile: home, snapshot: snapshot)
         )
-        XCTAssertNil(
-            try diagnosticSample(
-                in: occupied,
-                at: GridCoordinate(x: 11, y: 10)
-            ).trafficPressure
-        )
+        XCTAssertTrue(homeDiagnosis.cause.contains("Traffic exposure is congested"))
+        XCTAssertTrue(homeDiagnosis.consequence.contains("12.0% local-value drag"))
+        XCTAssertTrue(homeDiagnosis.responses.contains { $0.command == .buildRoad })
+        XCTAssertTrue(homeDiagnosis.responses.contains { $0.command == .overlayTraffic })
     }
 
     func testLocalActivityApplicabilityCoversEveryTileFamilyAndMakesZeroExplicit() throws {
@@ -429,19 +542,19 @@ final class SpatialConsequenceTests: XCTestCase {
             "commercial-public-realm-regional-capital-v6":
                 "eb28ee767c06b09ab83f5c53f0105ac2345025ae4e616ced0f09c426b1a24871",
             "commercial-opening-v7":
-                "362679c053057b7cce596b2ace390d3772875a492f5bee3cd48bf1997c4773a2",
+                "c88a6521ac2f5d4072a45f851e3f5077e12556d4bf2018d7dfd848fd48add54b",
             "commercial-complication-v7":
-                "26ac048aa9c5003c247cd03f70423c74fa7cf2297a7d7085758bd6c834303ce5",
+                "376361ad89612d908243279fc168626ca3c2ecbbcaf31fb756770b754f8a2ae3",
             "commercial-recovery-v7":
-                "79add2062d6648b5d208f01bc4847897b71166923e8f6f8938de45f0dea576d1",
+                "219e7187e70df72bbb3157ada6332e98f33161a86bfcf7ac350fdacab7873951",
             "commercial-charter-midpoint-v7":
-                "48130f6b0ad13f98a527799f4f3380b5704ab0a1a3292455214668702348e4fc",
+                "345d5be3aad86b96c32e2d36768968c5d18ca7b2ac5222de71c7640b9517e2d0",
             "commercial-tax-relief-regional-capital-v7":
-                "e705a7664e77ece672c9937d3b882bb8e7a29278e220b0c15f2053b8a6f428fa",
+                "f78a6f5ea8056b1b2907efff3368934070a3fc34641a889eef13084e74f9835a",
             "commercial-public-realm-regional-capital-v7":
-                "eb28ee767c06b09ab83f5c53f0105ac2345025ae4e616ced0f09c426b1a24871",
+                "618bc95748cb926f5894707e6eeb7f3d0226a3fd63bade5add34ce29f2a753d4",
             "commercial-charter-victory-v1":
-                "5806de89dc766fe4041c05e3e720e8af3931f088f3098717e38c21d192f36c33",
+                "fe23c695d40b3bbeeb05dba90dd2d613b6e68e8d9b27248e494f01ccc00eb0b3",
             "industrial-opening-v5":
                 "9efd6b44acbdac26dfaf187e40f8ef3d4e9be21ea5396aeab6334e88520a1c2b",
             "industrial-complication-v5":
@@ -467,19 +580,19 @@ final class SpatialConsequenceTests: XCTestCase {
             "industrial-green-buffer-regional-capital-v6":
                 "8f494ddaaad2208b132a909f2f25aa56022814910a24fb506b7bd287f35cc5df",
             "industrial-opening-v7":
-                "9efd6b44acbdac26dfaf187e40f8ef3d4e9be21ea5396aeab6334e88520a1c2b",
+                "93f3598ead9b1ffc4ad23c5343573807ceb4608139b7e71a9e6e2ca816f1bd37",
             "industrial-complication-v7":
-                "3fb13431b5082079dde08cd0b367f874632fe5564b20cdf71c1bf82b85b4c25e",
+                "0508504ee1757e9b00f5e0211fb5f00f51418e29696c0c132ffd57671fd1ad2a",
             "industrial-recovery-v7":
-                "5bfd3e9463034be29f54630fe1969262369888d3b01152596fcb35c6956cece6",
+                "8dea366ffa6e969bb3d148269bd62ff833c5370619d19ae4acbcb9b08d6c9cf6",
             "industrial-charter-midpoint-v7":
-                "f9e72e815c8670e68ec2c0619884b9e5dd0f036bd456ba0f81f3e37f6c94881b",
+                "03306b00afde1d85ac15f5d441aa350b5c0c66bdc6b0ddc0b976a1844b061cfc",
             "industrial-utility-expansion-regional-capital-v7":
-                "3341da4c835e62cd972550cf80db515b05909038949623ea4e8c737845856bf6",
+                "9a95be71781a57882d9397ab141beeb274c4d62faf794db6ab7e26432d5bf059",
             "industrial-green-buffer-regional-capital-v7":
-                "8f494ddaaad2208b132a909f2f25aa56022814910a24fb506b7bd287f35cc5df",
+                "0e3fe11d0254001a2302776084df2ff86f62be51830bbe6c441143cb8313c6c9",
             "industrial-charter-victory-v1":
-                "dd590d6fe6ffa8f949dba2988c4605917f85650532bd5838bb286f3b7d98ab9c",
+                "ca129fd4a7c038bbcb1c9f64cdd296a5ce2e76105b5499519328ea0ebb2e54c7",
         ]
         let expectedActivityDigests = [
             "commercial-opening-v5":
@@ -507,19 +620,19 @@ final class SpatialConsequenceTests: XCTestCase {
             "commercial-public-realm-regional-capital-v6":
                 "9dca836441b4027b0a4acc5b405232197026cd48a885f8379abe61ab21319522",
             "commercial-opening-v7":
-                "409980357ab76a2f07d77855f3a37fd8568f5f6269524e1eb5e61ea5f1b0886a",
+                "59d7e7a56b4add12828ab7600c4e4e700a3f44888428f254f789fc0689bf5000",
             "commercial-complication-v7":
-                "dd617de9d484f44480224316c1cbe6b854d26a44f0466fd84cfbabb1f5e31a5a",
+                "a7976ee23545af6349d9f6e5a285ecd2251cce67f2195ff25241959933b77efd",
             "commercial-recovery-v7":
-                "9033aca3cf076c09b724667a227f323cf1a5c411e160cfe159de9a815e05cbad",
+                "1ad231de0e28d139050d800ade8fda911cdf4abddaf61cfe4c5b65d29c74df07",
             "commercial-charter-midpoint-v7":
-                "63aaba2f0c740e8893b321e2ec1128d2fff95ead7dba5e3d6e64cc0310629174",
+                "3df376cab7e11446d3b595e03378cbff8b81611748aca0528b1b0e92de638d6d",
             "commercial-tax-relief-regional-capital-v7":
-                "110f56a2bc57c186ea54886a0708136ea45203295305b65dc4c81ef146378b7e",
+                "df12d3b0a7eb70f6bda9ece5cb3de601bd42b7b78457afb46a267cf625fc60d9",
             "commercial-public-realm-regional-capital-v7":
-                "9dca836441b4027b0a4acc5b405232197026cd48a885f8379abe61ab21319522",
+                "e2e1d1a02d44c683042412f05a95f21f90e59267750622310d1ca7453bf2a1b4",
             "commercial-charter-victory-v1":
-                "a57786ae493774b289dfe51d9fbbf65b632ef24bad8dc4c193dff35653e15319",
+                "780b62f8a14c884d0ae35747c8fe2e0bcde50596899c0d7119c9ae191226fdad",
             "industrial-opening-v5":
                 "3a44bdda20d8e169e6190d56b2f6897ea1c6cfd139b1ccbc80aa6b2e0bf8a209",
             "industrial-complication-v5":
@@ -545,19 +658,19 @@ final class SpatialConsequenceTests: XCTestCase {
             "industrial-green-buffer-regional-capital-v6":
                 "f1095e39c0bec2a6188a1e46b91646e778abf29a68175681da00962926189d42",
             "industrial-opening-v7":
-                "3a44bdda20d8e169e6190d56b2f6897ea1c6cfd139b1ccbc80aa6b2e0bf8a209",
+                "25625621c04c0a11ed92124a4fee2aab9b953a5ecefa77eff7e59d53c7b1171e",
             "industrial-complication-v7":
-                "be62fcfe3e1d162e839f6cf753c11dec6585cdf09b48bb0c3303baea8e296d4e",
+                "4c5cbf8bc63cda0675b8815b05ab406e0fba035931c627c8ead592205c548290",
             "industrial-recovery-v7":
-                "a7a1f04cfe4cf1d19b48cadf841209fa25a2bcb899cecddb93e503bef564eb6e",
+                "f27b1226a6f37638819ad349b6291079d231e82237a539f8ba3bce3317c7bade",
             "industrial-charter-midpoint-v7":
-                "d32f3366be475676bf105d74df410a648832758f283693a88cfbdb05814f1e2c",
+                "0f89e990f506579a0dba9391fffb7bd1108f6d45f758e3244c7ced63cfa26108",
             "industrial-utility-expansion-regional-capital-v7":
-                "ce296786e056ca1c1ed402c44ba30e0b91cc851559b65ee712abd7dfb5f3f2d1",
+                "3df2bee88a3208e7d3e09e69e6bac18dbcdc95ffda43da4af7ad2f467f1b6258",
             "industrial-green-buffer-regional-capital-v7":
-                "f1095e39c0bec2a6188a1e46b91646e778abf29a68175681da00962926189d42",
+                "abefb6ea52c9fcc9dd0a5e75faa3882113819e0a632ef977d11c723ae8d8b11b",
             "industrial-charter-victory-v1":
-                "7a9373a5ef1506c1d3ba85e3fe05222ca89ab2d09a5a44ab5a42d9c9f13aae52",
+                "599708bad1ab3af681a560ef3fa5bdd275cefa17a5afaafb7b0e089e0b107251",
         ]
 
         for artifact in corpus.artifacts {
@@ -975,7 +1088,7 @@ final class SpatialConsequenceTests: XCTestCase {
     private func diagnosticChannelsDigest(
         _ map: CitySpatialConsequenceMap
     ) -> String {
-        var canonical = "spatial-diagnostics-v1|\(map.width)|\(map.height)\n"
+        var canonical = "spatial-diagnostics-v2|\(map.width)|\(map.height)\n"
         for sample in map.samples {
             canonical += [
                 String(sample.coordinate.x),
@@ -983,6 +1096,7 @@ final class SpatialConsequenceTests: XCTestCase {
                 optionalBitPattern(sample.landValueIndex),
                 optionalBitPattern(sample.localHappinessIndex),
                 optionalBitPattern(sample.trafficPressure),
+                optionalBitPattern(sample.trafficExposure),
             ].joined(separator: ",")
             canonical += "\n"
         }
@@ -1091,6 +1205,26 @@ final class SpatialConsequenceTests: XCTestCase {
         }
         state.population = 50_000
         state.treasury = 8_000_000
+        return state
+    }
+
+    private func trafficRouteState(includeAlternate: Bool = false) -> CityGameState {
+        var state = emptyState()
+        state.demand.commercial = 1
+        state.updateTile(at: GridCoordinate(x: 4, y: 10)) {
+            $0.kind = .residential
+            $0.occupancy = 280
+        }
+        state.updateTile(at: GridCoordinate(x: 10, y: 10)) {
+            $0.kind = .commercial
+            $0.occupancy = CitySimulation.commercialJobCapacity
+        }
+        for x in 4...10 {
+            state.updateTile(at: GridCoordinate(x: x, y: 9)) { $0.kind = .road }
+            if includeAlternate {
+                state.updateTile(at: GridCoordinate(x: x, y: 11)) { $0.kind = .road }
+            }
+        }
         return state
     }
 

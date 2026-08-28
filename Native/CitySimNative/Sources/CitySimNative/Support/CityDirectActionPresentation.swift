@@ -1701,13 +1701,14 @@ struct CitySelectedLocationConditions: Equatable, Sendable {
     let landValueIndex: Int
     let utilityService: Int
     let pollutionExposure: Int
+    let trafficExposure: Int
     let vitalityScore: Int
     let vitality: String
 
     var accessibilitySummary: String {
         "Block \(coordinate.x + 1), \(coordinate.y + 1). Local conditions: "
             + "land value \(landValueIndex), utilities \(utilityService) percent, "
-            + "pollution \(pollutionExposure) percent, "
+            + "traffic exposure \(trafficExposure) percent, pollution \(pollutionExposure) percent, "
             + "vitality \(vitality), \(vitalityScore) percent."
     }
 
@@ -1718,6 +1719,7 @@ struct CitySelectedLocationConditions: Equatable, Sendable {
         guard tile.kind != .empty, tile.kind != .road, tile.constructionProgress >= 1,
               let sample = snapshot.spatialConsequences[tile.coordinate],
               let landValueIndex = sample.landValueIndex,
+              let trafficExposure = sample.trafficExposure,
               sample.vitality != .notApplicable else { return nil }
 
         return CitySelectedLocationConditions(
@@ -1725,6 +1727,7 @@ struct CitySelectedLocationConditions: Equatable, Sendable {
             landValueIndex: points(landValueIndex),
             utilityService: points(sample.utility.combined),
             pollutionExposure: points(sample.pollutionExposure),
+            trafficExposure: points(trafficExposure),
             vitalityScore: points(sample.vitalityScore),
             vitality: sample.vitality.title
         )
@@ -2062,12 +2065,46 @@ struct CitySelectedLocationDiagnosis: Equatable, Sendable {
         tile: CityTile,
         snapshot: CityPresentationSnapshot
     ) -> CitySelectedLocationDiagnosis? {
-        guard tile.kind != .empty, tile.kind != .road, tile.constructionProgress >= 1,
+        guard tile.kind != .empty, tile.constructionProgress >= 1,
               let sample = snapshot.spatialConsequences[tile.coordinate],
-              sample.vitality != .notApplicable else { return nil }
+              tile.kind == .road || sample.vitality != .notApplicable else { return nil }
+
+        if tile.kind == .road {
+            guard let reading = CityTrafficAnalysis(state: snapshot.state)[tile.coordinate] else {
+                return nil
+            }
+            let impact = CityTrafficImpact(pressure: reading.pressure)
+            var responses = [CityDirectResponse(
+                title: "Show traffic",
+                command: .overlayTraffic,
+                explanation: "Compare modeled home-to-work route pressure across the street network.",
+                focusesMap: true
+            )]
+            if impact.appliesLocalPenalty {
+                responses.insert(.init(
+                    title: "Add alternate street",
+                    command: .buildRoad,
+                    explanation: "Add a connected alternative between nearby homes and jobs; exact relief depends on route assignment.",
+                    focusesMap: true
+                ), at: 0)
+            }
+            let threshold = Int((CityTrafficImpact.localPenaltyThreshold * 100).rounded())
+            let penaltyNote = impact.appliesLocalPenalty
+                ? " Nearby completed places can lose local value, happiness, and vitality above \(threshold)% pressure."
+                : " No local congestion penalty applies at or below \(threshold)% pressure."
+            return CitySelectedLocationDiagnosis(
+                coordinate: tile.coordinate,
+                cause: "Assigned home-to-work trips put this street at \((reading.pressure * 100).percentText) pressure",
+                consequence: "Modeled delay is \((reading.delay * 100).percentText) with \((reading.reliability * 100).percentText) reliability." + penaltyNote,
+                responses: responses
+            )
+        }
 
         var causes: [String] = []
         var responses: [CityDirectResponse] = []
+        var consequences = [
+            "This block is \(sample.vitality.title) at \((sample.vitalityScore * 100).percentText) vitality."
+        ]
 
         if sample.utility.powerBand != .healthy {
             causes.append("Power service is \(sample.utility.powerBand.title) at \((sample.utility.power * 100).percentText)")
@@ -2096,6 +2133,28 @@ struct CitySelectedLocationDiagnosis: Equatable, Sendable {
                 focusesMap: true
             ))
         }
+        if let exposure = sample.trafficExposure {
+            let impact = CityTrafficImpact(pressure: exposure)
+            if impact.appliesLocalPenalty {
+                let localValueDrag = String(format: "%.1f%%", impact.localPenalty * 100)
+                causes.append("Traffic exposure is congested at \((exposure * 100).percentText)")
+                consequences.append(
+                    "Modeled congestion adds \((impact.delay * 100).percentText) delay and applies a \(localValueDrag) local-value drag."
+                )
+                responses.append(.init(
+                    title: "Add alternate street",
+                    command: .buildRoad,
+                    explanation: "Add a connected alternative between nearby homes and jobs; exact relief depends on route assignment.",
+                    focusesMap: true
+                ))
+                responses.append(.init(
+                    title: "Show traffic",
+                    command: .overlayTraffic,
+                    explanation: "Compare modeled home-to-work route pressure across the street network.",
+                    focusesMap: true
+                ))
+            }
+        }
 
         if sample.utility.combinedBand != .healthy {
             responses.append(.init(
@@ -2114,7 +2173,7 @@ struct CitySelectedLocationDiagnosis: Equatable, Sendable {
             ))
         }
         if causes.isEmpty {
-            causes.append("Local utility service and pollution exposure are healthy")
+            causes.append("Local utility service, pollution, and traffic exposure are healthy")
             responses.append(.init(
                 title: "Review city factors",
                 command: .inspectorOverview,
@@ -2126,7 +2185,7 @@ struct CitySelectedLocationDiagnosis: Equatable, Sendable {
         return CitySelectedLocationDiagnosis(
             coordinate: tile.coordinate,
             cause: causes.joined(separator: "; "),
-            consequence: "This block is \(sample.vitality.title) at \((sample.vitalityScore * 100).percentText) vitality.",
+            consequence: consequences.joined(separator: " "),
             responses: responses.uniquedByCommand()
         )
     }

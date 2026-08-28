@@ -47,6 +47,7 @@ struct CitySpatialConsequence: Identifiable, Equatable, Sendable {
     let landValueIndex: Double?
     let localHappinessIndex: Double?
     let trafficPressure: Double?
+    let trafficExposure: Double?
     let streetActivityIndex: Double?
     let placeActivityIndex: Double?
 
@@ -60,6 +61,7 @@ struct CitySpatialConsequence: Identifiable, Equatable, Sendable {
         landValueIndex: Double? = nil,
         localHappinessIndex: Double? = nil,
         trafficPressure: Double? = nil,
+        trafficExposure: Double? = nil,
         streetActivityIndex: Double? = nil,
         placeActivityIndex: Double? = nil
     ) {
@@ -72,6 +74,7 @@ struct CitySpatialConsequence: Identifiable, Equatable, Sendable {
         self.landValueIndex = landValueIndex
         self.localHappinessIndex = localHappinessIndex
         self.trafficPressure = trafficPressure
+        self.trafficExposure = trafficExposure
         self.streetActivityIndex = streetActivityIndex
         self.placeActivityIndex = placeActivityIndex
     }
@@ -105,6 +108,7 @@ struct CitySpatialConsequenceMap: Equatable, Sendable {
         let waterDistances = DistanceField(width: gridWidth, height: gridHeight, sources: waterSources)
         let industrialDistances = DistanceField(width: gridWidth, height: gridHeight, sources: industrialSources)
         let parkDistances = DistanceField(width: gridWidth, height: gridHeight, sources: parkSources)
+        let traffic = CityTrafficAnalysis(state: state)
         let powerCapacityFactor = Self.capacityFactor(capacity: state.powerCapacity, used: state.powerUsed)
         let waterCapacityFactor = Self.capacityFactor(capacity: state.waterCapacity, used: state.waterUsed)
 
@@ -149,6 +153,10 @@ struct CitySpatialConsequenceMap: Equatable, Sendable {
 
             let vitalityScore: Double
             let vitality: CityLocationVitality
+            let trafficExposure = traffic.place(at: tile.coordinate)?.exposure
+            let trafficPenalty = CityTrafficImpact(
+                pressure: trafficExposure ?? 0
+            ).localPenalty
             let isCompletedDevelopment = tile.kind != .empty
                 && tile.kind != .road
                 && tile.constructionProgress >= 1
@@ -163,6 +171,7 @@ struct CitySpatialConsequenceMap: Equatable, Sendable {
                         + combined * 0.20
                         + (1 - pollutionExposure) * 0.15
                         + Self.clamp(state.happiness / 100) * 0.10
+                        - trafficPenalty * 0.50
                 )
                 switch vitalityScore {
                 case ..<0.45:
@@ -193,6 +202,7 @@ struct CitySpatialConsequenceMap: Equatable, Sendable {
                         + condition * 0.25
                         + pollutionSafety * 0.20
                         + parkProximity * 0.10
+                        - trafficPenalty
                 )
                 localHappinessIndex = Self.clamp(
                     Self.clamp(state.happiness / 100) * 0.40
@@ -200,6 +210,7 @@ struct CitySpatialConsequenceMap: Equatable, Sendable {
                         + condition * 0.15
                         + pollutionSafety * 0.15
                         + parkProximity * 0.10
+                        - trafficPenalty * 0.80
                 )
             } else {
                 landValueIndex = nil
@@ -215,9 +226,8 @@ struct CitySpatialConsequenceMap: Equatable, Sendable {
                 vitality: vitality,
                 landValueIndex: landValueIndex,
                 localHappinessIndex: localHappinessIndex,
-                trafficPressure: tile.kind == .road
-                    ? Self.trafficPressure(at: tile.coordinate, in: state)
-                    : nil
+                trafficPressure: traffic[tile.coordinate]?.pressure,
+                trafficExposure: isCompletedDevelopment ? trafficExposure : nil
             )
         }
         samples = zip(orderedTiles, baseSamples).map { tile, sample in
@@ -231,6 +241,7 @@ struct CitySpatialConsequenceMap: Equatable, Sendable {
                 landValueIndex: sample.landValueIndex,
                 localHappinessIndex: sample.localHappinessIndex,
                 trafficPressure: sample.trafficPressure,
+                trafficExposure: sample.trafficExposure,
                 streetActivityIndex: tile.kind == .road
                     ? Self.streetActivityIndex(
                         at: tile.coordinate,
@@ -391,47 +402,6 @@ struct CitySpatialConsequenceMap: Equatable, Sendable {
             return nil
         }
         return samples[coordinate.y * width + coordinate.x]
-    }
-
-    private static func trafficPressure(
-        at coordinate: GridCoordinate,
-        in state: CityGameState
-    ) -> Double {
-        let roadConnections = state.neighbors(of: coordinate).filter {
-            $0.kind == .road
-        }.count
-        let topologyPressure = Double(roadConnections) / 4
-
-        var nearbyActivity = 0.0
-        for yOffset in -3...3 {
-            for xOffset in -3...3 {
-                let distance = abs(xOffset) + abs(yOffset)
-                guard distance > 0, distance <= 3,
-                      let tile = state.tile(at: GridCoordinate(
-                          x: coordinate.x + xOffset,
-                          y: coordinate.y + yOffset
-                      )),
-                      tile.constructionProgress >= 1 else {
-                    continue
-                }
-
-                let demandFactor: Double
-                switch tile.kind {
-                case .residential:
-                    demandFactor = 1
-                case .commercial:
-                    demandFactor = 0.5 + Self.clamp(state.demand.commercial) * 0.5
-                case .industrial:
-                    demandFactor = 0.5 + Self.clamp(state.demand.industrial) * 0.5
-                default:
-                    continue
-                }
-                let distanceWeight = 1 - Double(distance) / 4
-                nearbyActivity += Self.utilization(of: tile) * demandFactor * distanceWeight
-            }
-        }
-        let activityPressure = Self.clamp(nearbyActivity / 4)
-        return Self.clamp(topologyPressure * 0.25 + activityPressure * 0.75)
     }
 
     private static func proximityInfluence(

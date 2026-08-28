@@ -34,6 +34,10 @@ final class PLAY083LifecycleBindingTests: XCTestCase {
                 "62c0966c63078521177fe9eb6011c0396d2ec6ee38b571cd1d48ba46c294a63e",
             activityDigest:
                 "de199fb7d9f0e0e03cefd31e7873c0f7f69ba07b53ea6bcccdaf5783e6bbe6de",
+            currentDiagnosticDigest:
+                "a1e8e702406832f2e5d6c964f3cef486d53b15f6863cac0fb746d3e5afa448b1",
+            currentActivityDigest:
+                "9173d3c3b231f6e65a954d911c19b7a938e5fb0b6c013f9d3e28708adfc2bd30",
             tick: 68,
             focusCoordinate: GridCoordinate(x: 5, y: 8)
         ),
@@ -54,6 +58,10 @@ final class PLAY083LifecycleBindingTests: XCTestCase {
                 "befd4256642557eb7d266e5f0412affeb8a6b608410258f0f943e4cd8ad84d25",
             activityDigest:
                 "c4aef758a8dc4d22fba33e234a7208a0567ee1e04790c7669566e609d45b6fee",
+            currentDiagnosticDigest:
+                "9963651fddb8014cb5a1dbd8e718da5fb85571d94b712b55b08cb4054d8b0b09",
+            currentActivityDigest:
+                "1e5fcd40448dd811dc8b8877f7e179f2a7937d2444b02e24a7c70ccca32f2ddf",
             tick: 992,
             focusCoordinate: GridCoordinate(x: 4, y: 8)
         ),
@@ -123,11 +131,11 @@ final class PLAY083LifecycleBindingTests: XCTestCase {
             )
             XCTAssertEqual(
                 VisibleCityFixtureCorpus.diagnosticDigest(snapshot.spatialConsequences),
-                loaded.binding.diagnosticDigest
+                loaded.binding.currentDiagnosticDigest
             )
             XCTAssertEqual(
                 VisibleCityFixtureCorpus.activityDigest(snapshot.spatialConsequences),
-                loaded.binding.activityDigest
+                loaded.binding.currentActivityDigest
             )
         }
     }
@@ -546,6 +554,8 @@ private struct Binding: Sendable {
     let spatialDigest: String
     let diagnosticDigest: String
     let activityDigest: String
+    let currentDiagnosticDigest: String
+    let currentActivityDigest: String
     let tick: Int
     let focusCoordinate: GridCoordinate
 }

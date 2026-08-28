@@ -322,6 +322,10 @@ struct BuildToolbarView: View {
         return compact ? compactClosedMaximumHeight : regularSituationalMaximumHeight
     }
 
+    static func roadConnectionActionTitle(compact: Bool) -> String {
+        compact ? "Build all" : "Build route"
+    }
+
     private func buildDecisionRow(_ decision: CityBuildDecisionPresentation) -> some View {
         let routePlan = store.roadConnectionPlanPresentation
         return HStack(spacing: compact ? 8 : 12) {
@@ -408,7 +412,7 @@ struct BuildToolbarView: View {
                 } label: {
                     HStack(spacing: 5) {
                         Image(systemName: "point.topleft.down.curvedto.point.bottomright.up.fill")
-                        Text("Build route")
+                        Text(Self.roadConnectionActionTitle(compact: compact))
                     }
                         .font(.caption.weight(.bold))
                         .padding(.horizontal, compact ? 7 : 10)

@@ -982,6 +982,8 @@ final class CitySimulationTests: XCTestCase {
         XCTAssertLessThanOrEqual(BuildToolbarView.regularDetailsMaxHeight, 144)
         XCTAssertEqual(BuildToolbarView.compactDetailsWidth, 720)
         XCTAssertEqual(BuildToolbarView.regularDetailsWidth, 840)
+        XCTAssertEqual(BuildToolbarView.roadConnectionActionTitle(compact: true), "Build all")
+        XCTAssertEqual(BuildToolbarView.roadConnectionActionTitle(compact: false), "Build route")
         XCTAssertLessThanOrEqual(StrategyCommandCenterView.compactMaximumHeight, 48)
         XCTAssertLessThanOrEqual(StrategyCommandCenterView.regularMaximumHeight, 52)
         XCTAssertEqual(BuildToolbarView.closedMaximumHeight(compact: true, isBuildMode: false), 60)

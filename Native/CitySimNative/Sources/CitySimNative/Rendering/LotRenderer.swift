@@ -298,13 +298,8 @@ final class LotRenderer {
         neighborhood _: SKNode,
         block: SKNode
     ) -> Bool {
-        if let fourViewAssets {
-            guard let assetID = fourViewAssets.assetID(for: tile, variant: variant) else {
-                let missing = SKNode()
-                missing.name = "lot.four-view.missing.\(tile.kind.rawValue).level-\(tile.level)"
-                city.addChild(missing)
-                return false
-            }
+        if let fourViewAssets,
+           let assetID = fourViewAssets.assetID(for: tile, variant: variant) {
             let authoredCamera = Self.fourViewCamera(for: residentialIdentity?.frontage)
             let camera = fourViewAssets.resourceURL(
                 for: assetID,

@@ -63,23 +63,41 @@ final class FullGameFourViewArtIntegrationTests: XCTestCase {
                         for: tile.coordinate,
                         kind: tile.kind
                     )
-                let assetID = try XCTUnwrap(
-                    worldCatalog.assetID(for: tile, variant: variant),
-                    "\(mode) lot \(tile.coordinate.id)"
-                )
-                let descriptor = try XCTUnwrap(
-                    worldCatalog.manifest?.assets.first { $0.assetID == assetID },
-                    "\(mode) approved descriptor \(assetID)"
-                )
-                let authoredCameras = descriptor.views.compactMap {
-                    FourViewWorldAssetCatalog.Camera(rawValue: $0.camera)
+                if tile.kind == .commercial && tile.level == 1 {
+                    let roads = RoadConnectionMask.resolving(at: tile.coordinate, in: state)
+                    let identity = try XCTUnwrap(
+                        CommercialGeneratedAssetIdentity(level: 1, adjacentRoads: roads),
+                        "\(mode) commercial lot \(tile.coordinate.id)"
+                    )
+                    XCTAssertTrue(
+                        names.contains("lot.generated-v4.\(identity.logicalID).neighborhood")
+                            || names.contains("lot.generated-v4.\(identity.logicalID).block")
+                            || names.contains("lot.generated-v4.\(identity.logicalID).city"),
+                        "\(mode) lot \(tile.coordinate.id) must use the admitted Commercial L1 family"
+                    )
+                    XCTAssertFalse(
+                        names.contains { $0.hasPrefix("lot.four-view.") },
+                        "\(mode) Commercial L1 must not use compatibility art"
+                    )
+                } else {
+                    let assetID = try XCTUnwrap(
+                        worldCatalog.assetID(for: tile, variant: variant),
+                        "\(mode) lot \(tile.coordinate.id)"
+                    )
+                    let descriptor = try XCTUnwrap(
+                        worldCatalog.manifest?.assets.first { $0.assetID == assetID },
+                        "\(mode) approved descriptor \(assetID)"
+                    )
+                    let authoredCameras = descriptor.views.compactMap {
+                        FourViewWorldAssetCatalog.Camera(rawValue: $0.camera)
+                    }
+                    XCTAssertTrue(
+                        authoredCameras.contains { camera in
+                            names.contains("lot.four-view.\(assetID).\(camera.rawValue)")
+                        },
+                        "\(mode) lot \(tile.coordinate.id) must use an authored \(assetID) view"
+                    )
                 }
-                XCTAssertTrue(
-                    authoredCameras.contains { camera in
-                        names.contains("lot.four-view.\(assetID).\(camera.rawValue)")
-                    },
-                    "\(mode) lot \(tile.coordinate.id) must use an authored \(assetID) view"
-                )
 
                 let groundAssetID = try XCTUnwrap(
                     groundCatalog.groundAssetID(for: tile),

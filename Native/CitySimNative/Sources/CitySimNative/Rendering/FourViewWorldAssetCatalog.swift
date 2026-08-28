@@ -96,7 +96,10 @@ final class FourViewWorldAssetCatalog {
         case .commercial where tile.level == 2:
             deterministicAssetID(forRole: "commercial-medium", tile: tile, variant: variant)
         case .commercial:
-            deterministicAssetID(forRole: "commercial-low", tile: tile, variant: variant)
+            // The production atlas already carries the admitted, authored
+            // four-direction Commercial L1 family. Do not replace it with the
+            // compatibility catalog's primitive calibration storefronts.
+            nil
         case .industrial where tile.level >= 3:
             deterministicAssetID(forRole: "industrial-high", tile: tile, variant: variant)
         case .industrial where tile.level == 2:

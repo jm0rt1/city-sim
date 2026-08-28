@@ -588,16 +588,6 @@ enum CitySimulation {
             for: tile.kind,
             level: min(maximumLevel, tile.level + 1)
         )
-        if tile.level >= maximumLevel {
-            return CityDevelopmentUpgradeEvaluation(
-                kind: tile.kind,
-                currentLevel: tile.level,
-                maximumLevel: maximumLevel,
-                currentCapacity: currentCapacity,
-                nextCapacity: nextCapacity,
-                blockers: [.maximumLevel]
-            )
-        }
         if tile.constructionProgress < 1 {
             return CityDevelopmentUpgradeEvaluation(
                 kind: tile.kind,
@@ -606,6 +596,16 @@ enum CitySimulation {
                 currentCapacity: currentCapacity,
                 nextCapacity: nextCapacity,
                 blockers: [.construction(progress: tile.constructionProgress)]
+            )
+        }
+        if tile.level >= maximumLevel {
+            return CityDevelopmentUpgradeEvaluation(
+                kind: tile.kind,
+                currentLevel: tile.level,
+                maximumLevel: maximumLevel,
+                currentCapacity: currentCapacity,
+                nextCapacity: nextCapacity,
+                blockers: [.maximumLevel]
             )
         }
 

@@ -1568,6 +1568,173 @@ struct CityDevelopmentOutlook: Equatable, Sendable {
     }
 }
 
+struct CityDevelopmentPipeline: Equatable, Sendable {
+    private enum Gate: CaseIterable, Hashable {
+        case finances
+        case utilities
+        case review
+        case strategy
+        case condition
+        case happiness
+        case demand
+        case utilization
+    }
+
+    let readyCount: Int
+    let heldCount: Int
+    let buildingCount: Int
+    let matureCount: Int
+    let detail: String
+    let response: CityDirectResponse?
+    let accessibilitySummary: String
+
+    static func make(state: CityGameState) -> Self {
+        var readyCount = 0
+        var heldCount = 0
+        var buildingCount = 0
+        var matureCount = 0
+        var gateCounts: [Gate: Int] = [:]
+
+        for tile in state.tiles where [.residential, .commercial, .industrial].contains(tile.kind) {
+            let evaluation = CitySimulation.developmentUpgradeEvaluation(for: tile, in: state)
+            if evaluation.blockers == [.maximumLevel] {
+                matureCount += 1
+            } else if evaluation.blockers.contains(where: { blocker in
+                if case .construction = blocker { return true }
+                return false
+            }) {
+                buildingCount += 1
+            } else if evaluation.isEligible {
+                readyCount += 1
+            } else {
+                heldCount += 1
+                let gates = Set(evaluation.blockers.compactMap(gate(for:)))
+                for gate in gates {
+                    gateCounts[gate, default: 0] += 1
+                }
+            }
+        }
+
+        let dominantGate = Gate.allCases.max { lhs, rhs in
+            gateCounts[lhs, default: 0] < gateCounts[rhs, default: 0]
+        }.flatMap { gateCounts[$0, default: 0] > 0 ? $0 : nil }
+        let dominantCount = dominantGate.map { gateCounts[$0, default: 0] } ?? 0
+        let detail: String
+        let response: CityDirectResponse?
+        if let dominantGate {
+            detail = gateDetail(dominantGate, count: dominantCount)
+            response = recommendedResponse(for: dominantGate)
+        } else if readyCount > 0 {
+            detail = "\(siteCount(readyCount)) ready for the next development review"
+            response = nil
+        } else if buildingCount > 0 {
+            detail = "\(siteCount(buildingCount)) building; none ready yet"
+            response = nil
+        } else if matureCount > 0 {
+            detail = "All \(siteCount(matureCount)) are fully developed"
+            response = nil
+        } else {
+            detail = "Build a growable block to start the pipeline"
+            response = nil
+        }
+
+        let accessibilitySummary = "Development pipeline. \(readyCount) ready, \(heldCount) held, "
+            + "\(buildingCount) building, and \(matureCount) mature. \(detail)."
+        return Self(
+            readyCount: readyCount,
+            heldCount: heldCount,
+            buildingCount: buildingCount,
+            matureCount: matureCount,
+            detail: detail,
+            response: response,
+            accessibilitySummary: accessibilitySummary
+        )
+    }
+
+    private static func gate(for blocker: CityDevelopmentUpgradeBlocker) -> Gate? {
+        switch blocker {
+        case .unsupported, .maximumLevel, .construction:
+            nil
+        case .operatingBalance, .treasury, .developmentCashflow:
+            .finances
+        case .utilityCoverage, .progressionUtilityReserve:
+            .utilities
+        case .townCharterReview, .regionalReview:
+            .review
+        case .strategyPriority:
+            .strategy
+        case .condition:
+            .condition
+        case .happiness:
+            .happiness
+        case .demand:
+            .demand
+        case .utilization:
+            .utilization
+        }
+    }
+
+    private static func gateDetail(_ gate: Gate, count: Int) -> String {
+        let sites = siteCount(count)
+        return switch gate {
+        case .finances: "Finances hold \(sites)"
+        case .utilities: "Utilities hold \(sites)"
+        case .review: "Milestone review holds \(sites)"
+        case .strategy: "City strategy holds \(sites)"
+        case .condition: "Building condition holds \(sites)"
+        case .happiness: "Happiness holds \(sites)"
+        case .demand: "Demand holds \(sites)"
+        case .utilization: "Occupancy holds \(sites)"
+        }
+    }
+
+    private static func recommendedResponse(for gate: Gate) -> CityDirectResponse? {
+        switch gate {
+        case .finances:
+            CityDirectResponse(
+                title: "Review finances",
+                command: .inspectorFinances,
+                explanation: "Review revenue, upkeep, and tax policy affecting development upgrades.",
+                focusesMap: false
+            )
+        case .utilities:
+            CityDirectResponse(
+                title: "Review utilities",
+                command: .inspectorUtilities,
+                explanation: "Review coverage and reserve capacity affecting development upgrades.",
+                focusesMap: false
+            )
+        case .review, .strategy:
+            CityDirectResponse(
+                title: "Review city progress",
+                command: .inspectorOverview,
+                explanation: "Review the active milestone and city strategy affecting development upgrades.",
+                focusesMap: false
+            )
+        case .condition, .happiness:
+            CityDirectResponse(
+                title: "Review happiness",
+                command: .inspectorHappiness,
+                explanation: "Review local conditions and resident happiness affecting development upgrades.",
+                focusesMap: false
+            )
+        case .utilization:
+            CityDirectResponse(
+                title: "Review employment",
+                command: .inspectorEmployment,
+                explanation: "Review occupied jobs and workforce capacity affecting development upgrades.",
+                focusesMap: false
+            )
+        case .demand:
+            nil
+        }
+    }
+
+    private static func siteCount(_ count: Int) -> String {
+        "\(count) \(count == 1 ? "site" : "sites")"
+    }
+}
+
 struct CitySelectedLocationDiagnosis: Equatable, Sendable {
     let coordinate: GridCoordinate
     let cause: String

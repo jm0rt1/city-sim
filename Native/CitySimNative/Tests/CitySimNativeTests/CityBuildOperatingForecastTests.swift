@@ -42,6 +42,136 @@ final class CityBuildOperatingForecastTests: XCTestCase {
         XCTAssertEqual(ready.payoff, held.payoff)
     }
 
+    func testDevelopmentPipelineAggregatesAuthoritativeUpgradeGatesAndResponse() {
+        let state = CityGameState.newCity(seed: 42)
+        let pipeline = CityDevelopmentPipeline.make(state: state)
+
+        XCTAssertEqual(pipeline.readyCount, 0)
+        XCTAssertGreaterThan(pipeline.heldCount, 0)
+        XCTAssertEqual(pipeline.buildingCount, 0)
+        XCTAssertEqual(pipeline.matureCount, 0)
+        XCTAssertEqual(pipeline.detail, "Finances hold \(pipeline.heldCount) sites")
+        XCTAssertEqual(pipeline.response?.title, "Review finances")
+        XCTAssertEqual(pipeline.response?.command, .inspectorFinances)
+        XCTAssertTrue(pipeline.accessibilitySummary.contains("\(pipeline.heldCount) held"))
+    }
+
+    func testDevelopmentPipelineSeparatesReadyHeldBuildingAndMatureSites() {
+        var state = CityGameState.newCity(seed: 42)
+        for coordinate in state.tiles.map(\.coordinate) {
+            state.updateTile(at: coordinate) {
+                $0 = CityTile(coordinate: coordinate, kind: .empty)
+            }
+        }
+        state.progression = nil
+        state.treasury = 100_000
+        state.population = 10_000
+        state.jobs = 10_000
+        state.happiness = 100
+        state.demand = DemandLevels(residential: 1, commercial: 1, industrial: 1)
+        state.powerCapacity = 100_000
+        state.waterCapacity = 100_000
+        state.powerUsed = 100
+        state.waterUsed = 100
+
+        let ready = GridCoordinate(x: 2, y: 2)
+        let held = GridCoordinate(x: 3, y: 2)
+        let building = GridCoordinate(x: 4, y: 2)
+        let mature = GridCoordinate(x: 5, y: 2)
+        state.updateTile(at: ready) {
+            $0 = CityTile(coordinate: ready, kind: .commercial, occupancy: 80)
+        }
+        state.updateTile(at: held) {
+            $0 = CityTile(coordinate: held, kind: .industrial, occupancy: 110, condition: 0.5)
+        }
+        state.updateTile(at: building) {
+            $0 = CityTile(
+                coordinate: building,
+                kind: .residential,
+                occupancy: 280,
+                constructionProgress: 0.5
+            )
+        }
+        state.updateTile(at: mature) {
+            $0 = CityTile(coordinate: mature, kind: .commercial, level: 2, occupancy: 160)
+        }
+
+        let pipeline = CityDevelopmentPipeline.make(state: state)
+
+        XCTAssertGreaterThanOrEqual(CitySimulation.projectedBalance(in: state), 0)
+        XCTAssertEqual(pipeline.readyCount, 1)
+        XCTAssertEqual(pipeline.heldCount, 1)
+        XCTAssertEqual(pipeline.buildingCount, 1)
+        XCTAssertEqual(pipeline.matureCount, 1)
+        XCTAssertEqual(pipeline.detail, "Building condition holds 1 site")
+        XCTAssertEqual(pipeline.response?.command, .inspectorHappiness)
+        XCTAssertEqual(
+            pipeline.accessibilitySummary,
+            "Development pipeline. 1 ready, 1 held, 1 building, and 1 mature. Building condition holds 1 site."
+        )
+    }
+
+    func testFinalLevelUpgradeRemainsBuildingUntilConstructionCompletes() throws {
+        var state = CityGameState.newCity(seed: 42)
+        for coordinate in state.tiles.map(\.coordinate) {
+            state.updateTile(at: coordinate) {
+                $0 = CityTile(coordinate: coordinate, kind: .empty)
+            }
+        }
+        let coordinate = GridCoordinate(x: 2, y: 2)
+        state.updateTile(at: coordinate) {
+            $0 = CityTile(
+                coordinate: coordinate,
+                kind: .commercial,
+                level: 2,
+                occupancy: 160,
+                constructionProgress: 0.6
+            )
+        }
+
+        let buildingTile = try XCTUnwrap(state.tile(at: coordinate))
+        let buildingEvaluation = CitySimulation.developmentUpgradeEvaluation(
+            for: buildingTile,
+            in: state
+        )
+        let buildingOutlook = try XCTUnwrap(
+            CityDevelopmentOutlook.make(tile: buildingTile, state: state)
+        )
+        let buildingPipeline = CityDevelopmentPipeline.make(state: state)
+
+        XCTAssertEqual(buildingEvaluation.blockers, [.construction(progress: 0.6)])
+        XCTAssertEqual(buildingOutlook.status, .building)
+        XCTAssertEqual(buildingPipeline.buildingCount, 1)
+        XCTAssertEqual(buildingPipeline.matureCount, 0)
+
+        state.updateTile(at: coordinate) { $0.constructionProgress = 1 }
+        let matureTile = try XCTUnwrap(state.tile(at: coordinate))
+        XCTAssertEqual(
+            CitySimulation.developmentUpgradeEvaluation(for: matureTile, in: state).blockers,
+            [.maximumLevel]
+        )
+        XCTAssertEqual(
+            CityDevelopmentOutlook.make(tile: matureTile, state: state)?.status,
+            .mature
+        )
+        XCTAssertEqual(CityDevelopmentPipeline.make(state: state).matureCount, 1)
+    }
+
+    @MainActor
+    func testDevelopmentPipelineResponseOpensTheDominantDecisionAndPauses() throws {
+        let store = CityGameStore(state: .newCity(seed: 42), startsPaused: false)
+        store.setSpeed(.fast)
+        let response = try XCTUnwrap(
+            CityDevelopmentPipeline.make(state: store.state).response
+        )
+
+        StrategyCommandCenterView.perform(response, on: store)
+
+        XCTAssertEqual(store.inspectorSection, .finances)
+        XCTAssertTrue(store.showInspector)
+        XCTAssertEqual(store.speed, .paused)
+    }
+
     func testServiceForecastUsesAuthoritativeOperatingCharge() throws {
         let state = CityGameState.newCity(seed: 42)
         let tile = try validTile(for: .park, in: state)

@@ -645,21 +645,32 @@ struct InspectorView: View {
     }
 
     private var demandContext: some View {
-        LazyVGrid(columns: contextColumns, alignment: .leading, spacing: 8) {
+        let pipeline = CityDevelopmentPipeline.make(state: store.state)
+        return LazyVGrid(columns: contextColumns, alignment: .leading, spacing: 8) {
             demandCard(title: "Residential", kind: .residential, value: store.state.demand.residential, tint: .cyan)
             demandCard(title: "Commercial", kind: .commercial, value: store.state.demand.commercial, tint: .purple)
             demandCard(title: "Industrial", kind: .industrial, value: store.state.demand.industrial, tint: .orange)
-            ContextCard(title: "Development readiness", symbol: "checklist", tint: GameTheme.information) {
-                ContextValueRow(
-                    label: "Treasury",
-                    value: store.state.usesUnlimitedFunds ? "Unlimited" : store.state.treasury.currencyText
-                )
-                ContextValueRow(label: "Power spare", value: store.analytics.powerHeadroom.formatted())
-                ContextValueRow(label: "Water spare", value: store.analytics.waterHeadroom.formatted())
-                Text(store.state.usesUnlimitedFunds
-                    ? "Demand is opportunity; access, utilities, and workforce still govern placement."
-                    : "Demand is opportunity; access, utilities, funds, and workforce still govern placement.")
-                    .font(.caption2).foregroundStyle(.secondary).lineLimit(2)
+            ContextCard(title: "Development pipeline", symbol: "checklist", tint: GameTheme.information) {
+                HStack(alignment: .firstTextBaseline, spacing: 8) {
+                    Text("\(pipeline.readyCount) READY")
+                        .font(.title3.bold().monospacedDigit())
+                    Spacer(minLength: 4)
+                    Text("\(pipeline.heldCount) HELD")
+                        .font(.caption.weight(.bold).monospacedDigit())
+                        .foregroundStyle(pipeline.heldCount > 0 ? GameTheme.warning : .secondary)
+                }
+                .accessibilityHidden(true)
+                Text(pipeline.detail)
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(2)
+                    .accessibilityLabel(pipeline.accessibilitySummary)
+                if let response = pipeline.response {
+                    compactAction(response.title, symbol: "arrow.right.circle.fill") {
+                        StrategyCommandCenterView.perform(response, on: store)
+                    }
+                    .accessibilityHint(response.explanation)
+                }
             }
         }
     }

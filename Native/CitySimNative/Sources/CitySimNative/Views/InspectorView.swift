@@ -232,8 +232,28 @@ struct InspectorView: View {
     }
 
     private func tileContext(_ tile: CityTile) -> some View {
-        LazyVGrid(columns: contextColumns, alignment: .leading, spacing: 8) {
+        let snapshot = try? CityPresentationSnapshot(state: store.state)
+        return LazyVGrid(columns: contextColumns, alignment: .leading, spacing: 8) {
             nextActionCard(for: tile)
+
+            if let snapshot,
+               let conditions = CitySelectedLocationConditions.make(
+                   tile: tile,
+                   snapshot: snapshot
+               ) {
+                ContextCard(title: "Local conditions", symbol: "map.fill", tint: GameTheme.information) {
+                    ContextValueRow(label: "Land value", value: conditions.landValueIndex.formatted())
+                    ContextValueRow(label: "Utilities", value: "\(conditions.utilityService)%")
+                    ContextValueRow(label: "Pollution", value: "\(conditions.pollutionExposure)%")
+                    ContextValueRow(
+                        label: "Vitality",
+                        value: "\(conditions.vitality.capitalized) \(conditions.vitalityScore)%"
+                    )
+                }
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel("Local conditions")
+                .accessibilityValue(conditions.accessibilitySummary)
+            }
 
             ContextCard(title: "Identity", symbol: tile.kind.symbol, tint: tile.kind.contextTint) {
                 ContextValueRow(label: "Type", value: tile.kind.title)
@@ -281,11 +301,11 @@ struct InspectorView: View {
                 }
             }
 
-            if let snapshot = try? CityPresentationSnapshot(state: store.state),
+            if let snapshot,
                let diagnosis = CitySelectedLocationDiagnosis.make(
-                tile: tile,
-                snapshot: snapshot
-            ) {
+                   tile: tile,
+                   snapshot: snapshot
+               ) {
                 ContextCard(title: "Cause · consequence · response", symbol: "cross.case.fill", tint: GameTheme.warning) {
                     Text(diagnosis.cause)
                         .font(.caption2.weight(.semibold))

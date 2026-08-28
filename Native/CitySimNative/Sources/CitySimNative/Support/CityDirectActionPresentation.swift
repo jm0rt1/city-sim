@@ -1383,6 +1383,45 @@ struct CityMapActionTargetPresentation: Equatable, Sendable {
     let primaryAction: CityMapPrimaryActionPresentation
 }
 
+struct CitySelectedLocationConditions: Equatable, Sendable {
+    let coordinate: GridCoordinate
+    let landValueIndex: Int
+    let utilityService: Int
+    let pollutionExposure: Int
+    let vitalityScore: Int
+    let vitality: String
+
+    var accessibilitySummary: String {
+        "Block \(coordinate.x + 1), \(coordinate.y + 1). Local conditions: "
+            + "land value \(landValueIndex), utilities \(utilityService) percent, "
+            + "pollution \(pollutionExposure) percent, "
+            + "vitality \(vitality), \(vitalityScore) percent."
+    }
+
+    static func make(
+        tile: CityTile,
+        snapshot: CityPresentationSnapshot
+    ) -> CitySelectedLocationConditions? {
+        guard tile.kind != .empty, tile.kind != .road, tile.constructionProgress >= 1,
+              let sample = snapshot.spatialConsequences[tile.coordinate],
+              let landValueIndex = sample.landValueIndex,
+              sample.vitality != .notApplicable else { return nil }
+
+        return CitySelectedLocationConditions(
+            coordinate: tile.coordinate,
+            landValueIndex: points(landValueIndex),
+            utilityService: points(sample.utility.combined),
+            pollutionExposure: points(sample.pollutionExposure),
+            vitalityScore: points(sample.vitalityScore),
+            vitality: sample.vitality.title
+        )
+    }
+
+    private static func points(_ value: Double) -> Int {
+        Int((min(max(value, 0), 1) * 100).rounded())
+    }
+}
+
 struct CitySelectedLocationDiagnosis: Equatable, Sendable {
     let coordinate: GridCoordinate
     let cause: String

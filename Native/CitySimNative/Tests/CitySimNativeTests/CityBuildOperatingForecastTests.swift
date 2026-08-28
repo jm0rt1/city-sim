@@ -214,6 +214,40 @@ final class CityBuildOperatingForecastTests: XCTestCase {
         XCTAssertEqual(state.treasury, 100_000)
     }
 
+    func testSelectedLocationConditionsCarryPlacementFactorsIntoPostBuildDetails() throws {
+        let state = CityGameState.newCity(seed: 42)
+        let tile = try XCTUnwrap(state.tiles.first {
+            $0.kind != .empty && $0.kind != .road && $0.constructionProgress >= 1
+        })
+        let snapshot = try CityPresentationSnapshot(state: state)
+        let sample = try XCTUnwrap(snapshot.spatialConsequences[tile.coordinate])
+        let conditions = try XCTUnwrap(
+            CitySelectedLocationConditions.make(tile: tile, snapshot: snapshot)
+        )
+
+        XCTAssertEqual(
+            conditions.landValueIndex,
+            Int((try XCTUnwrap(sample.landValueIndex) * 100).rounded())
+        )
+        XCTAssertEqual(conditions.utilityService, Int((sample.utility.combined * 100).rounded()))
+        XCTAssertEqual(conditions.pollutionExposure, Int((sample.pollutionExposure * 100).rounded()))
+        XCTAssertEqual(conditions.vitalityScore, Int((sample.vitalityScore * 100).rounded()))
+        XCTAssertTrue(conditions.accessibilitySummary.contains("land value"))
+        XCTAssertTrue(conditions.accessibilitySummary.contains("utilities"))
+        XCTAssertTrue(conditions.accessibilitySummary.contains("pollution"))
+        XCTAssertTrue(conditions.accessibilitySummary.contains("vitality"))
+
+        var underConstruction = tile
+        underConstruction.constructionProgress = 0.5
+        XCTAssertNil(
+            CitySelectedLocationConditions.make(
+                tile: underConstruction,
+                snapshot: snapshot
+            )
+        )
+        XCTAssertEqual(state.tile(at: tile.coordinate), tile)
+    }
+
     func testParkPlacementForecastCountsCurrentLocalBenefitsAndPollutionRelief() throws {
         var state = CityGameState.newCity(seed: 42)
         state.treasury = 100_000

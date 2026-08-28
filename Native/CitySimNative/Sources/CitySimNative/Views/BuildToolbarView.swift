@@ -137,6 +137,16 @@ struct BuildToolbarView: View {
         let opensDetails: Bool
     }
 
+    struct DevelopmentDemandPresentation: Equatable {
+        let percent: Int
+        let level: String
+
+        var summary: String { "\(level) demand \(percent)%" }
+        var accessibilitySummary: String {
+            "\(level) demand, \(percent) percent."
+        }
+    }
+
     // The low command rail is the only persistent map inset. Details are a
     // bounded contextual surface above it, so a selection never reserves city
     // height until the player explicitly asks to inspect it.
@@ -599,7 +609,11 @@ struct BuildToolbarView: View {
             interactionMode: store.interactionMode,
             selectedTile: store.selectedTile,
             target: store.activeMapActionTargetPresentation,
-            unlimitedFunds: store.state.usesUnlimitedFunds
+            unlimitedFunds: store.state.usesUnlimitedFunds,
+            demand: Self.developmentDemandPresentation(
+                for: store.selectedTool,
+                in: store.state
+            )
         )
         if presentation.opensDetails {
             Button {
@@ -680,7 +694,8 @@ struct BuildToolbarView: View {
         interactionMode: CityInteractionMode,
         selectedTile: CityTile?,
         target: CityMapActionTargetPresentation?,
-        unlimitedFunds: Bool = false
+        unlimitedFunds: Bool = false,
+        demand: DevelopmentDemandPresentation? = nil
     ) -> TargetBeaconPresentation {
         switch interactionMode {
         case .inspect:
@@ -710,12 +725,14 @@ struct BuildToolbarView: View {
             )
         case .build(let kind):
             guard let target else {
+                let demandDetail = demand.map { "\($0.summary) · " } ?? ""
                 let detail = unlimitedFunds
-                    ? "COST WAIVED · choose block for forecast"
-                    : "\(kind.buildCost.currencyText) · choose block for forecast"
+                    ? "\(demandDetail)COST WAIVED · choose block for forecast"
+                    : "\(demandDetail)\(kind.buildCost.currencyText) · choose block for forecast"
+                let demandAccessibility = demand.map { " \($0.accessibilitySummary)" } ?? ""
                 let accessibilityValue = unlimitedFunds
-                    ? "Selected \(kind.title). Spending is waived. Choose a block for the tracked operating forecast."
-                    : "Selected \(kind.title). Cost \(kind.buildCost.currencyText). Choose a block for the authoritative operating forecast."
+                    ? "Selected \(kind.title).\(demandAccessibility) Spending is waived. Choose a block for the tracked operating forecast."
+                    : "Selected \(kind.title).\(demandAccessibility) Cost \(kind.buildCost.currencyText). Choose a block for the authoritative operating forecast."
                 return TargetBeaconPresentation(
                     title: kind.title,
                     detail: detail,
@@ -789,7 +806,7 @@ struct BuildToolbarView: View {
                             )
                         } label: {
                             Label(
-                                "\(kind.title) · \(kind.buildCost.currencyText) · forecast at block",
+                                Self.buildCatalogItemTitle(for: kind, in: store.state),
                                 systemImage: kind.symbol
                             )
                         }
@@ -811,6 +828,45 @@ struct BuildToolbarView: View {
         }
         .accessibilityLabel("Open categorized build catalog")
         .accessibilityValue("Selected \(store.selectedTool.title)")
+    }
+
+    static func buildCatalogItemTitle(
+        for kind: BuildingKind,
+        in state: CityGameState
+    ) -> String {
+        var facts = [kind.title]
+        if let demand = developmentDemandPresentation(for: kind, in: state) {
+            facts.append(demand.summary)
+        }
+        facts.append(kind.buildCost.currencyText)
+        facts.append("forecast at block")
+        return facts.joined(separator: " · ")
+    }
+
+    static func developmentDemandPresentation(
+        for kind: BuildingKind,
+        in state: CityGameState
+    ) -> DevelopmentDemandPresentation? {
+        let value: Double
+        switch kind {
+        case .residential: value = state.demand.residential
+        case .commercial: value = state.demand.commercial
+        case .industrial: value = state.demand.industrial
+        default: return nil
+        }
+
+        let bounded = min(max(value, 0), 1)
+        let level = if bounded >= 0.67 {
+            "High"
+        } else if bounded >= 0.34 {
+            "Steady"
+        } else {
+            "Low"
+        }
+        return DevelopmentDemandPresentation(
+            percent: Int((bounded * 100).rounded()),
+            level: level
+        )
     }
 
     @discardableResult

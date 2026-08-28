@@ -1166,6 +1166,60 @@ final class CitySimulationTests: XCTestCase {
     }
 
     @MainActor
+    func testBuildSurfacePresentsLiveDevelopmentDemandWithoutInventingItForOtherTools() {
+        var state = CityGameState.newCity(seed: 42)
+        state.demand = DemandLevels(
+            residential: 0.587,
+            commercial: 0.756,
+            industrial: 0.704
+        )
+
+        XCTAssertEqual(
+            BuildToolbarView.buildCatalogItemTitle(for: .residential, in: state),
+            "Residential · Steady demand 59% · $1,800 · forecast at block"
+        )
+        XCTAssertEqual(
+            BuildToolbarView.buildCatalogItemTitle(for: .commercial, in: state),
+            "Commercial · High demand 76% · $2,400 · forecast at block"
+        )
+        XCTAssertEqual(
+            BuildToolbarView.buildCatalogItemTitle(for: .industrial, in: state),
+            "Industrial · High demand 70% · $3,200 · forecast at block"
+        )
+        XCTAssertEqual(
+            BuildToolbarView.buildCatalogItemTitle(for: .road, in: state),
+            "Road · $120 · forecast at block"
+        )
+        XCTAssertNil(
+            BuildToolbarView.developmentDemandPresentation(for: .park, in: state)
+        )
+
+        let demand = BuildToolbarView.developmentDemandPresentation(
+            for: .commercial,
+            in: state
+        )
+        let selected = BuildToolbarView.targetBeaconPresentation(
+            interactionMode: .build(.commercial),
+            selectedTile: nil,
+            target: nil,
+            demand: demand
+        )
+        XCTAssertEqual(selected.detail, "High demand 76% · $2,400 · choose block for forecast")
+        XCTAssertTrue(selected.accessibilityValue.contains("High demand, 76 percent"))
+        XCTAssertTrue(selected.accessibilityValue.contains("Cost $2,400"))
+
+        let unlimited = BuildToolbarView.targetBeaconPresentation(
+            interactionMode: .build(.commercial),
+            selectedTile: nil,
+            target: nil,
+            unlimitedFunds: true,
+            demand: demand
+        )
+        XCTAssertEqual(unlimited.detail, "High demand 76% · COST WAIVED · choose block for forecast")
+        XCTAssertTrue(unlimited.accessibilityValue.contains("Spending is waived"))
+    }
+
+    @MainActor
     func testSelectedTargetBeaconActivatesDetailsExactlyOnceAndEscapeRestoresMapFocus() throws {
         let state = CityGameState.newCity(seed: 42)
         let cityHall = try XCTUnwrap(state.tiles.first { $0.kind == .cityHall })

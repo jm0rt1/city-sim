@@ -667,6 +667,52 @@ struct CityBuildOperatingForecast: Equatable, Sendable {
     }
 }
 
+struct CityRoadPlacementForecast: Equatable, Sendable {
+    let adjacentRoadApproaches: Int
+    let newlyServedOpenParcels: Int
+
+    var summary: String {
+        "\(topologySummary) · \(accessSummary)"
+    }
+
+    static func make(
+        at coordinate: GridCoordinate,
+        in state: CityGameState
+    ) -> Self? {
+        guard state.tile(at: coordinate)?.kind == .empty else { return nil }
+        let neighbors = state.neighbors(of: coordinate)
+        let approaches = neighbors.filter { $0.kind == .road }.count
+        let newlyServed = neighbors.filter { neighbor in
+            guard neighbor.kind == .empty else { return false }
+            return !state.neighbors(of: neighbor.coordinate).contains {
+                $0.kind == .road
+            }
+        }.count
+        return Self(
+            adjacentRoadApproaches: approaches,
+            newlyServedOpenParcels: newlyServed
+        )
+    }
+
+    private var topologySummary: String {
+        switch adjacentRoadApproaches {
+        case 0: "Separate road segment"
+        case 1: "Extends 1 approach"
+        case 2: "Connects 2 approaches"
+        case 3: "3-way junction"
+        default: "4-way junction"
+        }
+    }
+
+    private var accessSummary: String {
+        switch newlyServedOpenParcels {
+        case 0: "serves no new open parcel"
+        case 1: "serves 1 open parcel"
+        default: "serves \(newlyServedOpenParcels) open parcels"
+        }
+    }
+}
+
 struct CityDemolitionForecast: Equatable, Sendable {
     let currentBalance: Double
     let projectedBalance: Double
@@ -778,7 +824,11 @@ struct CityBuildDecisionPresentation: Equatable, Sendable {
             operatingForecast: forecast,
             availability: rejection == nil ? "Ready to build" : "Blocked",
             disabledReason: rejection?.message,
-            likelyConsequence: kind.buildConsequenceSummary,
+            likelyConsequence: likelyConsequence(
+                kind: kind,
+                tile: tile,
+                state: state
+            ),
             cancellation: "Escape cancels without changing the city",
             recovery: rejection?.buildRecovery
         )
@@ -793,6 +843,16 @@ struct CityBuildDecisionPresentation: Equatable, Sendable {
         return "\(prefix) \(forecast.currentBalance.signedCurrencyText) → "
             + "\(forecast.completedBalance.signedCurrencyText) / cycle "
             + "(\(forecast.change.signedCurrencyText))"
+    }
+
+    private static func likelyConsequence(
+        kind: BuildingKind,
+        tile: CityTile,
+        state: CityGameState
+    ) -> String {
+        guard kind == .road else { return kind.buildConsequenceSummary }
+        return CityRoadPlacementForecast.make(at: tile.coordinate, in: state)?.summary
+            ?? "Clear this occupied block before the road network can change"
     }
 }
 

@@ -70,6 +70,77 @@ final class CityBuildOperatingForecastTests: XCTestCase {
         XCTAssertNotNil(decision.operatingForecast)
     }
 
+    func testRoadPlacementForecastDistinguishesNetworkShapeAndNewAccess() throws {
+        var state = CityGameState.newCity(seed: 42)
+        for coordinate in state.tiles.map(\.coordinate) {
+            state.updateTile(at: coordinate) {
+                $0 = CityTile(coordinate: coordinate, kind: .empty)
+            }
+        }
+        let target = GridCoordinate(x: 10, y: 10)
+        let north = GridCoordinate(x: 10, y: 9)
+        let east = GridCoordinate(x: 11, y: 10)
+        let south = GridCoordinate(x: 10, y: 11)
+        let west = GridCoordinate(x: 9, y: 10)
+
+        XCTAssertEqual(
+            CityRoadPlacementForecast.make(at: target, in: state)?.summary,
+            "Separate road segment · serves 4 open parcels"
+        )
+
+        state.updateTile(at: north) { $0.kind = .road }
+        XCTAssertEqual(
+            CityRoadPlacementForecast.make(at: target, in: state)?.summary,
+            "Extends 1 approach · serves 3 open parcels"
+        )
+
+        state.updateTile(at: south) { $0.kind = .road }
+        let twoApproach = try XCTUnwrap(
+            CityRoadPlacementForecast.make(at: target, in: state)
+        )
+        XCTAssertEqual(twoApproach.adjacentRoadApproaches, 2)
+        XCTAssertEqual(twoApproach.newlyServedOpenParcels, 2)
+        XCTAssertEqual(
+            twoApproach.summary,
+            "Connects 2 approaches · serves 2 open parcels"
+        )
+
+        let targetTile = try XCTUnwrap(state.tile(at: target))
+        let decision = CityBuildDecisionPresentation.make(
+            kind: .road,
+            tile: targetTile,
+            rejection: nil,
+            state: state
+        )
+        XCTAssertEqual(decision.likelyConsequence, twoApproach.summary)
+        XCTAssertTrue(decision.accessibilitySummary.contains(twoApproach.summary))
+
+        state.updateTile(at: east) { $0.kind = .road }
+        XCTAssertEqual(
+            CityRoadPlacementForecast.make(at: target, in: state)?.summary,
+            "3-way junction · serves 1 open parcel"
+        )
+
+        state.updateTile(at: west) { $0.kind = .road }
+        XCTAssertEqual(
+            CityRoadPlacementForecast.make(at: target, in: state)?.summary,
+            "4-way junction · serves no new open parcel"
+        )
+
+        state.updateTile(at: target) { $0.kind = .residential }
+        let occupied = CityBuildDecisionPresentation.make(
+            kind: .road,
+            tile: try XCTUnwrap(state.tile(at: target)),
+            rejection: .occupied,
+            state: state
+        )
+        XCTAssertEqual(
+            occupied.likelyConsequence,
+            "Clear this occupied block before the road network can change"
+        )
+        XCTAssertNil(CityRoadPlacementForecast.make(at: target, in: state))
+    }
+
     func testDemolitionForecastNamesHousingJobsUtilitiesRoadsAndServices() throws {
         var state = CityGameState.newCity(seed: 42)
         state.treasury = 100_000

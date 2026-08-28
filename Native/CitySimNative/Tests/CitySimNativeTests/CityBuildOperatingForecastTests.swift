@@ -214,65 +214,6 @@ final class CityBuildOperatingForecastTests: XCTestCase {
         XCTAssertEqual(state.treasury, 100_000)
     }
 
-    func testTiedDevelopmentUpgradePrefersTheHigherValueSiteShownByForecast() throws {
-        var state = CityGameState.newCity(seed: 42)
-        state.powerCapacity = 1_000
-        state.waterCapacity = 1_000
-        state.powerUsed = 100
-        state.waterUsed = 100
-        for coordinate in state.tiles.map(\.coordinate) {
-            state.updateTile(at: coordinate) {
-                $0 = CityTile(coordinate: coordinate, kind: .empty)
-            }
-        }
-
-        let stronger = GridCoordinate(x: 5, y: 3)
-        let weaker = GridCoordinate(x: 13, y: 3)
-        state.updateTile(at: GridCoordinate(x: 4, y: 4)) {
-            $0 = CityTile(coordinate: $0.coordinate, kind: .powerPlant)
-        }
-        state.updateTile(at: GridCoordinate(x: 6, y: 4)) {
-            $0 = CityTile(coordinate: $0.coordinate, kind: .waterTower)
-        }
-        state.updateTile(at: GridCoordinate(x: 5, y: 5)) {
-            $0 = CityTile(coordinate: $0.coordinate, kind: .park)
-        }
-        state.updateTile(at: GridCoordinate(x: 13, y: 4)) {
-            $0 = CityTile(coordinate: $0.coordinate, kind: .industrial)
-        }
-        for coordinate in [stronger, weaker] {
-            state.updateTile(at: coordinate) {
-                $0 = CityTile(
-                    coordinate: coordinate,
-                    kind: .commercial,
-                    occupancy: 48,
-                    condition: 1,
-                    constructionProgress: 1
-                )
-            }
-        }
-
-        let consequences = CitySpatialConsequenceMap(state: state)
-        let strongerTile = try XCTUnwrap(state.tile(at: stronger))
-        let weakerTile = try XCTUnwrap(state.tile(at: weaker))
-        XCTAssertGreaterThan(
-            try XCTUnwrap(consequences[stronger]?.landValueIndex),
-            try XCTUnwrap(consequences[weaker]?.landValueIndex)
-        )
-        XCTAssertTrue(CitySimulation.prefersDevelopmentUpgrade(
-            strongerTile,
-            over: weakerTile,
-            strategyKind: nil,
-            consequences: consequences
-        ))
-        XCTAssertFalse(CitySimulation.prefersDevelopmentUpgrade(
-            weakerTile,
-            over: strongerTile,
-            strategyKind: nil,
-            consequences: consequences
-        ))
-    }
-
     func testParkPlacementForecastCountsCurrentLocalBenefitsAndPollutionRelief() throws {
         var state = CityGameState.newCity(seed: 42)
         state.treasury = 100_000

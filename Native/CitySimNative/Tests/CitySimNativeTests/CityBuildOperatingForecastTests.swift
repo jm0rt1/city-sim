@@ -390,6 +390,108 @@ final class CityBuildOperatingForecastTests: XCTestCase {
         XCTAssertEqual(state.treasury, 0)
     }
 
+    func testCivicServicePlacementForecastNamesExactHappinessAndStormPayoff() throws {
+        var state = CityGameState.newCity(seed: 42)
+        state.treasury = 0
+        for coordinate in state.tiles.map(\.coordinate) {
+            state.updateTile(at: coordinate) {
+                $0 = CityTile(coordinate: coordinate, kind: .empty)
+            }
+        }
+        let target = GridCoordinate(x: 10, y: 10)
+        let road = GridCoordinate(x: 9, y: 10)
+        state.updateTile(at: road) {
+            $0 = CityTile(coordinate: road, kind: .road)
+        }
+        let targetTile = try XCTUnwrap(state.tile(at: target))
+
+        for kind in [BuildingKind.fireStation, .policeStation, .school] {
+            let forecast = try XCTUnwrap(
+                CityCivicServicePlacementForecast.make(
+                    kind: kind,
+                    at: target,
+                    in: state
+                )
+            )
+            XCTAssertEqual(forecast.kind, kind)
+            XCTAssertEqual(forecast.happinessTargetGain, 2.5, accuracy: 0.000_001)
+            XCTAssertEqual(forecast.stormDamageReduction, 0.04, accuracy: 0.000_001)
+            XCTAssertEqual(
+                forecast.summary,
+                "Happiness target +2.5 pts · storm damage -4 pts"
+            )
+
+            let decision = CityBuildDecisionPresentation.make(
+                kind: kind,
+                tile: targetTile,
+                rejection: .insufficientFunds,
+                state: state
+            )
+            XCTAssertEqual(decision.likelyConsequence, forecast.summary)
+            XCTAssertTrue(decision.accessibilitySummary.contains(forecast.summary))
+        }
+        XCTAssertEqual(state.treasury, 0)
+        XCTAssertEqual(state.tile(at: target)?.kind, .empty)
+    }
+
+    func testCivicServicePlacementForecastReportsBenefitCapsAndInvalidTargets() throws {
+        var state = CityGameState.newCity(seed: 42)
+        state.treasury = 100_000
+        for coordinate in state.tiles.map(\.coordinate) {
+            state.updateTile(at: coordinate) {
+                $0 = CityTile(coordinate: coordinate, kind: .empty)
+            }
+        }
+        let target = GridCoordinate(x: 10, y: 10)
+        state.updateTile(at: GridCoordinate(x: 9, y: 10)) {
+            $0 = CityTile(coordinate: GridCoordinate(x: 9, y: 10), kind: .road)
+        }
+        let services = [
+            GridCoordinate(x: 2, y: 2),
+            GridCoordinate(x: 4, y: 2),
+            GridCoordinate(x: 6, y: 2),
+            GridCoordinate(x: 8, y: 2),
+        ]
+        for (index, coordinate) in services.enumerated() {
+            state.updateTile(at: coordinate) {
+                $0 = CityTile(
+                    coordinate: coordinate,
+                    kind: index == 0 ? .fireStation : index == 1 ? .policeStation : .school,
+                    constructionProgress: 1
+                )
+            }
+        }
+
+        let capped = try XCTUnwrap(
+            CityCivicServicePlacementForecast.make(
+                kind: .fireStation,
+                at: target,
+                in: state
+            )
+        )
+        XCTAssertEqual(capped.happinessTargetGain, 0)
+        XCTAssertEqual(capped.stormDamageReduction, 0)
+        XCTAssertEqual(
+            capped.summary,
+            "No additional citywide service benefit at current staffing"
+        )
+        XCTAssertNil(
+            CityCivicServicePlacementForecast.make(
+                kind: .park,
+                at: target,
+                in: state
+            )
+        )
+        state.updateTile(at: target) { $0.kind = .residential }
+        XCTAssertNil(
+            CityCivicServicePlacementForecast.make(
+                kind: .school,
+                at: target,
+                in: state
+            )
+        )
+    }
+
     func testDemolitionForecastNamesHousingJobsUtilitiesRoadsAndServices() throws {
         var state = CityGameState.newCity(seed: 42)
         state.treasury = 100_000

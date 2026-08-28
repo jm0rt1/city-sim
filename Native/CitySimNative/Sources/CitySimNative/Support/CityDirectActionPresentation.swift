@@ -872,6 +872,63 @@ struct CityUtilityPlacementForecast: Equatable, Sendable {
     }
 }
 
+struct CityCivicServicePlacementForecast: Equatable, Sendable {
+    let kind: BuildingKind
+    let happinessTargetGain: Double
+    let stormDamageReduction: Double
+
+    var summary: String {
+        var outcomes: [String] = []
+        if happinessTargetGain > 0.000_000_001 {
+            outcomes.append("Happiness target +\(Self.points(happinessTargetGain))")
+        }
+        if stormDamageReduction > 0.000_000_001 {
+            outcomes.append("storm damage -\(Self.points(stormDamageReduction * 100))")
+        }
+        return outcomes.isEmpty
+            ? "No additional citywide service benefit at current staffing"
+            : outcomes.joined(separator: " · ")
+    }
+
+    static func make(
+        kind: BuildingKind,
+        at coordinate: GridCoordinate,
+        in state: CityGameState
+    ) -> Self? {
+        guard [.fireStation, .policeStation, .school].contains(kind),
+              state.tile(at: coordinate)?.kind == .empty else {
+            return nil
+        }
+
+        var completed = state
+        if !completed.usesUnlimitedFunds {
+            completed.treasury = max(completed.treasury, kind.buildCost)
+        }
+        guard case .success = CitySimulation.build(kind, at: coordinate, in: &completed) else {
+            return nil
+        }
+        completed.updateTile(at: coordinate) { $0.constructionProgress = 1 }
+
+        let currentHappinessBonus = CitySimulation.civicServiceHappinessBonus(in: state)
+        let projectedHappinessBonus = CitySimulation.civicServiceHappinessBonus(in: completed)
+        let currentStormDamage = CitySimulation.stormProtection(in: state).estimatedConditionDamage
+        let projectedStormDamage = CitySimulation.stormProtection(in: completed).estimatedConditionDamage
+        return Self(
+            kind: kind,
+            happinessTargetGain: max(0, projectedHappinessBonus - currentHappinessBonus),
+            stormDamageReduction: max(0, currentStormDamage - projectedStormDamage)
+        )
+    }
+
+    private static func points(_ value: Double) -> String {
+        let rounded = value.rounded()
+        if abs(value - rounded) < 0.000_001 {
+            return "\(Int(rounded)) pts"
+        }
+        return "\(String(format: "%.1f", value)) pts"
+    }
+}
+
 struct CityDemolitionForecast: Equatable, Sendable {
     let currentBalance: Double
     let projectedBalance: Double
@@ -1018,6 +1075,12 @@ struct CityBuildDecisionPresentation: Equatable, Sendable {
                 ?? kind.buildConsequenceSummary
         case .powerPlant, .waterTower:
             CityUtilityPlacementForecast.make(
+                kind: kind,
+                at: tile.coordinate,
+                in: state
+            )?.summary ?? kind.buildConsequenceSummary
+        case .fireStation, .policeStation, .school:
+            CityCivicServicePlacementForecast.make(
                 kind: kind,
                 at: tile.coordinate,
                 in: state

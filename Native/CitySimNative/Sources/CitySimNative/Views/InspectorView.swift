@@ -275,12 +275,12 @@ struct InspectorView: View {
                         alignment: .leading,
                         spacing: 4
                     ) {
-                        localConditionMetric("Land value", conditions.landValueIndex.formatted())
-                        localConditionMetric("Utilities", "\(conditions.utilityService)%")
+                        localConditionMetric("Value", conditions.landValueIndex.formatted())
+                        localConditionMetric("Utility", "\(conditions.utilityService)%")
                         localConditionMetric("Pollution", "\(conditions.pollutionExposure)%")
                         localConditionMetric(
-                            "Vitality",
-                            "\(conditions.vitality.capitalized) \(conditions.vitalityScore)%"
+                            conditions.vitality.capitalized,
+                            "\(conditions.vitalityScore)%"
                         )
                     }
                 }
@@ -360,7 +360,7 @@ struct InspectorView: View {
     }
 
     private func localConditionMetric(_ label: String, _ value: String) -> some View {
-        HStack(spacing: 3) {
+        HStack(spacing: 2) {
             Text(label)
                 .font(.caption2)
                 .foregroundStyle(.secondary)

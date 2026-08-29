@@ -1,5 +1,56 @@
 import Foundation
 
+enum CityRoadMaintenancePolicy: String, Codable, CaseIterable, Identifiable, Sendable {
+    case deferred
+    case routine
+    case preventive
+
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .deferred: "Deferred"
+        case .routine: "Routine"
+        case .preventive: "Preventive"
+        }
+    }
+
+    var fundingMultiplier: Double {
+        switch self {
+        case .deferred: 0.55
+        case .routine: 1
+        case .preventive: 1.50
+        }
+    }
+
+    var wearMultiplier: Double {
+        switch self {
+        case .deferred: 1.45
+        case .routine: 1
+        case .preventive: 0.50
+        }
+    }
+
+    var consequence: String {
+        switch self {
+        case .deferred:
+            "Lower upkeep now; busy roads wear 45% faster."
+        case .routine:
+            "Current upkeep and road wear."
+        case .preventive:
+            "Higher upkeep; busy roads wear 50% slower."
+        }
+    }
+
+    var wearSummary: String {
+        switch self {
+        case .deferred: "+45% wear"
+        case .routine: "baseline"
+        case .preventive: "−50% wear"
+        }
+    }
+}
+
 enum CityRoadConditionBand: String, Equatable, Sendable {
     case maintained
     case worn
@@ -55,10 +106,13 @@ enum CityRoadMaintenance {
         0.60 + clamp(condition) * 0.40
     }
 
-    static func dailyWear(for pressure: Double) -> Double {
+    static func dailyWear(
+        for pressure: Double,
+        policy: CityRoadMaintenancePolicy = .routine
+    ) -> Double {
         let pressure = clamp(pressure)
         guard pressure >= minimumWearPressure else { return 0 }
-        return 0.002 + pressure * pressure * 0.016
+        return (0.002 + pressure * pressure * 0.016) * policy.wearMultiplier
     }
 
     static func repairCost(for condition: Double) -> Double {

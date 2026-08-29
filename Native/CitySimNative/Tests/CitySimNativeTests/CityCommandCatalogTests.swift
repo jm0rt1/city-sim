@@ -4579,6 +4579,33 @@ final class CityCommandCatalogTests: XCTestCase {
 
         XCTAssertEqual(finance.size.height, BuildToolbarView.compactDetailsMaxHeight, accuracy: 0.5)
         XCTAssertEqual(store.inspectorSection, .finances)
+
+        let routineBalance = store.analytics.projectedBalance
+        store.setRoadMaintenancePolicy(.preventive)
+        XCTAssertLessThan(store.analytics.projectedBalance, routineBalance)
+        XCTAssertEqual(store.state.effectiveRoadMaintenancePolicy, .preventive)
+        let fundedCompact = try bitmap(
+            of: InspectorView(store: store, compact: true)
+                .frame(width: size.width, height: size.height, alignment: .top),
+            size: size
+        )
+        XCTAssertEqual(fundedCompact.size.height, BuildToolbarView.compactDetailsMaxHeight, accuracy: 0.5)
+
+        let regularSize = CGSize(width: 1_120, height: 240)
+        let fundedRegular = try bitmap(
+            of: InspectorView(store: store, compact: false)
+                .frame(width: regularSize.width, height: regularSize.height, alignment: .top),
+            size: regularSize
+        )
+        XCTAssertEqual(fundedRegular.size.width, regularSize.width, accuracy: 0.5)
+        XCTAssertEqual(
+            CityRoadMaintenancePolicy.allCases.map(\.title),
+            ["Deferred", "Routine", "Preventive"]
+        )
+        XCTAssertEqual(
+            CityRoadMaintenancePolicy.allCases.map(\.wearSummary),
+            ["+45% wear", "baseline", "−50% wear"]
+        )
     }
 
     func testFinanceDecisionSupportNamesTheFirstWholePercentThatRestoresCashflow() throws {

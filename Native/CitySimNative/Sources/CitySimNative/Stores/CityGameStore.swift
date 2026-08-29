@@ -1554,6 +1554,16 @@ final class CityGameStore: ObservableObject {
         state.taxRate = min(0.18, max(0.04, value))
     }
 
+    func setRoadMaintenancePolicy(_ policy: CityRoadMaintenancePolicy) {
+        guard policy != state.effectiveRoadMaintenancePolicy else { return }
+        state.roadMaintenancePolicy = policy == .routine ? nil : policy
+        let cost = CitySimulation.projectedRoadMaintenanceUpkeep(in: state)
+        showFeedback(
+            "Road funding · \(policy.title) · \(cost.currencyText) / cycle · \(policy.consequence)",
+            tone: .neutral
+        )
+    }
+
     func setCityName(_ value: String) {
         let cleaned = value.trimmingCharacters(in: .whitespacesAndNewlines)
         let accepted = cleaned.isEmpty ? "New Arcadia" : String(cleaned.prefix(32))

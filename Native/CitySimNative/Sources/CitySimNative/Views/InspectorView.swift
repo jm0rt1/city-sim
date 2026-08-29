@@ -607,20 +607,39 @@ struct InspectorView: View {
                 ContextValueRow(label: "Net", value: store.analytics.projectedBalance.signedCurrencyText)
             }
         case .taxPolicy:
-            ContextCard(title: "Tax policy", symbol: "percent", tint: GameTheme.warning) {
-                HStack {
-                    Text("Tax rate").font(.caption.weight(.semibold))
-                    Spacer()
-                    Text((store.state.taxRate * 100).percentText).font(.caption.monospacedDigit())
+            ContextCard(title: "Operating policy", symbol: "slider.horizontal.3", tint: GameTheme.warning) {
+                if compact {
+                    HStack {
+                        Text("Tax rate").font(.caption.weight(.semibold))
+                        Spacer()
+                        Text((store.state.taxRate * 100).percentText).font(.caption.monospacedDigit())
+                    }
+                    taxRateSlider
+
+                    Divider().overlay(GameTheme.subtleDivider)
+
+                    HStack(spacing: 6) {
+                        Text("Road funding").font(.caption.weight(.semibold))
+                        Spacer()
+                        roadMaintenancePicker
+                    }
+                    Text(
+                        "\(CitySimulation.projectedRoadMaintenanceUpkeep(in: store.state).currencyText) / cycle · "
+                            + store.state.effectiveRoadMaintenancePolicy.consequence
+                    )
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(2)
+                } else {
+                    HStack(spacing: 6) {
+                        Text("Tax \((store.state.taxRate * 100).percentText)")
+                            .font(.caption.weight(.semibold).monospacedDigit())
+                            .lineLimit(1)
+                        taxRateSlider
+                            .frame(minWidth: 48)
+                    }
+                    regularRoadMaintenanceMenu
                 }
-                Slider(
-                    value: Binding(get: { store.state.taxRate }, set: { store.setTaxRate($0) }),
-                    in: 0.04...0.18,
-                    step: 0.01
-                )
-                .accessibilityLabel("City tax rate")
-                .accessibilityValue((store.state.taxRate * 100).percentText)
-                .accessibilityHint(financeDecisionSupport.accessibilityHint)
             }
         case .decisionSupport:
             ContextCard(title: "Decision support", symbol: "lightbulb.fill", tint: GameTheme.information) {
@@ -637,6 +656,67 @@ struct InspectorView: View {
                 }
             }
         }
+    }
+
+    private var taxRateSlider: some View {
+        Slider(
+            value: Binding(get: { store.state.taxRate }, set: { store.setTaxRate($0) }),
+            in: 0.04...0.18,
+            step: 0.01
+        )
+        .accessibilityLabel("City tax rate")
+        .accessibilityValue((store.state.taxRate * 100).percentText)
+        .accessibilityHint(financeDecisionSupport.accessibilityHint)
+    }
+
+    private var roadMaintenancePicker: some View {
+        Picker(
+            "Road maintenance funding",
+            selection: Binding(
+                get: { store.state.effectiveRoadMaintenancePolicy },
+                set: { store.setRoadMaintenancePolicy($0) }
+            )
+        ) {
+            ForEach(CityRoadMaintenancePolicy.allCases) { policy in
+                Text(policy.title).tag(policy)
+            }
+        }
+        .labelsHidden()
+        .pickerStyle(.menu)
+        .accessibilityLabel("Road maintenance funding")
+        .accessibilityValue(store.state.effectiveRoadMaintenancePolicy.title)
+        .accessibilityHint(store.state.effectiveRoadMaintenancePolicy.consequence)
+    }
+
+    private var regularRoadMaintenanceMenu: some View {
+        Menu {
+            ForEach(CityRoadMaintenancePolicy.allCases) { policy in
+                Button {
+                    store.setRoadMaintenancePolicy(policy)
+                } label: {
+                    if policy == store.state.effectiveRoadMaintenancePolicy {
+                        Label(policy.title, systemImage: "checkmark")
+                    } else {
+                        Text(policy.title)
+                    }
+                }
+            }
+        } label: {
+            Text(
+                "Road · \(store.state.effectiveRoadMaintenancePolicy.title) · "
+                    + "\(CitySimulation.projectedRoadMaintenanceUpkeep(in: store.state).currencyText) · "
+                    + store.state.effectiveRoadMaintenancePolicy.wearSummary
+            )
+            .font(.caption.weight(.semibold).monospacedDigit())
+            .lineLimit(1)
+            .minimumScaleFactor(0.75)
+            .frame(maxWidth: .infinity, minHeight: 20, alignment: .leading)
+            .contentShape(Rectangle())
+        }
+        .menuStyle(.borderlessButton)
+        .accessibilityLabel("Road maintenance funding")
+        .accessibilityValue(store.state.effectiveRoadMaintenancePolicy.title)
+        .accessibilityHint(store.state.effectiveRoadMaintenancePolicy.consequence)
     }
 
     private var populationContext: some View {

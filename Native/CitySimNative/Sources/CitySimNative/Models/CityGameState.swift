@@ -166,6 +166,9 @@ struct CityGameState: Codable, Equatable, Sendable {
     var waterUsed: Int
     var waterCapacity: Int
     var taxRate: Double
+    /// `nil` is the historical routine-funding default, preserving exact legacy
+    /// save bytes until a player makes a road-maintenance budget decision.
+    var roadMaintenancePolicy: CityRoadMaintenancePolicy? = nil
     var demand: DemandLevels
     var messages: [CityMessage]
     var progression: CityProgressionState?
@@ -182,6 +185,10 @@ struct CityGameState: Codable, Equatable, Sendable {
     var formattedDay: String { "Day \(day)" }
 
     var usesUnlimitedFunds: Bool { sandboxRules?.unlimitedFunds == true }
+
+    var effectiveRoadMaintenancePolicy: CityRoadMaintenancePolicy {
+        roadMaintenancePolicy ?? .routine
+    }
 
     var preservesLegacyReplayConsequences: Bool {
         progression?.preservesLegacyReplayConsequences ?? false

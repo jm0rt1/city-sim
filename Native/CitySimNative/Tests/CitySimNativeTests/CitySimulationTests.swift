@@ -79,6 +79,115 @@ final class CitySimulationTests: XCTestCase {
         XCTAssertEqual(resumedRepaired.state.tile(at: road)?.condition, 1)
     }
 
+    func testRoadFundingTradesOperatingCostForWearAndPersistsExactly() throws {
+        let routine = CityGameState.newCity(seed: 42)
+        let traffic = CityTrafficAnalysis.dailySimulationSnapshot(in: routine)
+        let pressuredRoad = try XCTUnwrap(
+            routine.tiles
+                .filter { $0.kind == .road }
+                .max {
+                    (traffic[$0.coordinate]?.pressure ?? 0)
+                        < (traffic[$1.coordinate]?.pressure ?? 0)
+                }?
+                .coordinate
+        )
+        XCTAssertGreaterThanOrEqual(
+            traffic[pressuredRoad]?.pressure ?? 0,
+            CityRoadMaintenance.minimumWearPressure
+        )
+
+        var deferred = routine
+        var preventive = routine
+        XCTAssertEqual(
+            CitySimulationCommandExecutor.apply(
+                .setRoadMaintenancePolicy(.deferred),
+                to: &deferred
+            ),
+            .applied
+        )
+        XCTAssertEqual(
+            CitySimulationCommandExecutor.apply(
+                .setRoadMaintenancePolicy(.preventive),
+                to: &preventive
+            ),
+            .applied
+        )
+
+        let routineRoadCost = CitySimulation.projectedRoadMaintenanceUpkeep(in: routine)
+        XCTAssertEqual(
+            CitySimulation.projectedRoadMaintenanceUpkeep(in: deferred),
+            routineRoadCost * CityRoadMaintenancePolicy.deferred.fundingMultiplier,
+            accuracy: 0.000_001
+        )
+        XCTAssertEqual(
+            CitySimulation.projectedRoadMaintenanceUpkeep(in: preventive),
+            routineRoadCost * CityRoadMaintenancePolicy.preventive.fundingMultiplier,
+            accuracy: 0.000_001
+        )
+        XCTAssertLessThan(
+            CitySimulation.projectedUpkeep(in: deferred),
+            CitySimulation.projectedUpkeep(in: routine)
+        )
+        XCTAssertGreaterThan(
+            CitySimulation.projectedUpkeep(in: preventive),
+            CitySimulation.projectedUpkeep(in: routine)
+        )
+        XCTAssertNotEqual(
+            try CityStateFingerprinter.fingerprint(routine),
+            try CityStateFingerprinter.fingerprint(preventive)
+        )
+
+        var routineAfterWear = routine
+        var deferredAfterWear = deferred
+        var preventiveAfterWear = preventive
+        CitySimulation.applyDailyRoadWear(&routineAfterWear, traffic: traffic)
+        CitySimulation.applyDailyRoadWear(&deferredAfterWear, traffic: traffic)
+        CitySimulation.applyDailyRoadWear(&preventiveAfterWear, traffic: traffic)
+        let routineCondition = try XCTUnwrap(routineAfterWear.tile(at: pressuredRoad)?.condition)
+        let deferredCondition = try XCTUnwrap(deferredAfterWear.tile(at: pressuredRoad)?.condition)
+        let preventiveCondition = try XCTUnwrap(preventiveAfterWear.tile(at: pressuredRoad)?.condition)
+        XCTAssertLessThan(deferredCondition, routineCondition)
+        XCTAssertGreaterThan(preventiveCondition, routineCondition)
+
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent(
+            "citysim-road-funding-\(UUID().uuidString)",
+            isDirectory: true
+        )
+        defer { try? FileManager.default.removeItem(at: root) }
+        let saves = SaveGameService(rootURL: root)
+        _ = try saves.save(preventiveAfterWear)
+        XCTAssertEqual(try saves.load().state, preventiveAfterWear)
+
+        var normalizedRoutine = preventiveAfterWear
+        XCTAssertEqual(
+            CitySimulationCommandExecutor.apply(
+                .setRoadMaintenancePolicy(.routine),
+                to: &normalizedRoutine
+            ),
+            .applied
+        )
+        XCTAssertNil(normalizedRoutine.roadMaintenancePolicy)
+        XCTAssertEqual(normalizedRoutine.effectiveRoadMaintenancePolicy, .routine)
+    }
+
+    @MainActor
+    func testRoadFundingStorePublishesTheVisibleBudgetConsequence() {
+        let store = CityGameStore(state: .newCity(seed: 42))
+        let routineBalance = store.analytics.projectedBalance
+
+        store.setRoadMaintenancePolicy(.preventive)
+
+        XCTAssertEqual(store.state.roadMaintenancePolicy, .preventive)
+        XCTAssertLessThan(store.analytics.projectedBalance, routineBalance)
+        XCTAssertEqual(store.lastFeedbackTone, .neutral)
+        XCTAssertTrue(store.lastFeedback?.contains("Road funding · Preventive") == true)
+        XCTAssertTrue(store.lastFeedback?.contains("wear 50% slower") == true)
+
+        store.setRoadMaintenancePolicy(.routine)
+        XCTAssertNil(store.state.roadMaintenancePolicy)
+        XCTAssertEqual(store.analytics.projectedBalance, routineBalance, accuracy: 0.000_001)
+    }
+
     @MainActor
     func testSelectedRoadRepairIsPrimaryInDetailsAndRestoresThroughUndo() throws {
         var state = CityGameState.newCity(seed: 42)

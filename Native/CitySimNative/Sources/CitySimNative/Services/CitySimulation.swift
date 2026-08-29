@@ -304,13 +304,30 @@ enum CitySimulation {
         let grossUpkeep = active.reduce(0.0) {
             $0 + $1.kind.upkeep * Double(max(1, $1.level))
         }
+        let routineRoadUpkeep = active.reduce(0.0) { total, tile in
+            guard tile.kind == .road else { return total }
+            return total + tile.kind.upkeep * Double(max(1, tile.level))
+        }
+        let fundedRoadAdjustment = routineRoadUpkeep
+            * (state.effectiveRoadMaintenancePolicy.fundingMultiplier - 1)
         let reserveUtilityDiscount = [BuildingKind.powerPlant, .waterTower].reduce(0.0) { discount, kind in
             let reserveUnits = max(0, active.filter { $0.kind == kind }.count - 1)
             return discount + Double(reserveUnits) * kind.upkeep * (1 - reserveUtilityUpkeepFactor)
         }
-        let baseUpkeep = (grossUpkeep - reserveUtilityDiscount) * upkeepMultiplier
+        let baseUpkeep = (grossUpkeep + fundedRoadAdjustment - reserveUtilityDiscount) * upkeepMultiplier
             + max(0, -state.treasury) * 0.006
         return baseUpkeep * (state.sandboxRules?.economy.upkeepMultiplier ?? 1)
+    }
+
+    static func projectedRoadMaintenanceUpkeep(in state: CityGameState) -> Double {
+        let routineRoadUpkeep = activeTiles(in: state).reduce(0.0) { total, tile in
+            guard tile.kind == .road else { return total }
+            return total + tile.kind.upkeep * Double(max(1, tile.level))
+        }
+        return routineRoadUpkeep
+            * state.effectiveRoadMaintenancePolicy.fundingMultiplier
+            * upkeepMultiplier
+            * (state.sandboxRules?.economy.upkeepMultiplier ?? 1)
     }
 
     static func projectedBalance(in state: CityGameState) -> Double {
@@ -524,7 +541,10 @@ enum CitySimulation {
         for index in state.tiles.indices where state.tiles[index].kind == .road {
             let coordinate = state.tiles[index].coordinate
             guard let pressure = traffic[coordinate]?.pressure else { continue }
-            let wear = CityRoadMaintenance.dailyWear(for: pressure)
+            let wear = CityRoadMaintenance.dailyWear(
+                for: pressure,
+                policy: state.effectiveRoadMaintenancePolicy
+            )
             guard wear > 0 else { continue }
             let previous = CityRoadMaintenance.clamp(state.tiles[index].condition)
             let updated = max(0.35, previous - wear)

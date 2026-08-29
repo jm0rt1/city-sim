@@ -101,6 +101,14 @@ struct InspectorView: View {
     private var financeDecisionSupport: CityFinanceDecisionSupport {
         CityFinanceDecisionSupport.make(analytics: analytics)
     }
+    private var roadMaintenanceBacklog: CityRoadMaintenanceBacklog {
+        CityRoadMaintenanceBacklog.make(in: store.state)
+    }
+    private var roadMaintenanceBacklogTint: Color {
+        if roadMaintenanceBacklog.damagedCount > 0 { return GameTheme.danger }
+        if roadMaintenanceBacklog.wornCount > 0 { return GameTheme.warning }
+        return .secondary
+    }
     private var utilityDecisionSupport: CityUtilityDecisionSupport {
         CityUtilityDecisionSupport.make(analytics: analytics)
     }
@@ -624,7 +632,8 @@ struct InspectorView: View {
                         roadMaintenancePicker
                     }
                     Text(
-                        "\(CitySimulation.projectedRoadMaintenanceUpkeep(in: store.state).currencyText) / cycle · "
+                        "\(roadMaintenanceBacklog.statusSummary) · "
+                            + "\(CitySimulation.projectedRoadMaintenanceUpkeep(in: store.state).currencyText) / cycle · "
                             + store.state.effectiveRoadMaintenancePolicy.consequence
                     )
                     .font(.caption2)
@@ -639,6 +648,10 @@ struct InspectorView: View {
                             .frame(minWidth: 48)
                     }
                     regularRoadMaintenanceMenu
+                    Text(roadMaintenanceBacklog.statusSummary)
+                        .font(.caption2.weight(.semibold).monospacedDigit())
+                        .foregroundStyle(roadMaintenanceBacklogTint)
+                        .lineLimit(1)
                 }
             }
         case .decisionSupport:
@@ -647,12 +660,47 @@ struct InspectorView: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .lineLimit(3)
-                if financeDecisionSupport.offersParkAlternative {
-                    compactAction("Build second park", symbol: BuildingKind.park.symbol) {
-                        store.performMapFocused(.buildPark)
+                if roadMaintenanceBacklog.damagedCount > 0
+                    || financeDecisionSupport.offersParkAlternative
+                    || analytics.projectedBalance >= 0 {
+                    HStack(spacing: 6) {
+                        if roadMaintenanceBacklog.damagedCount > 0 {
+                            Button { store.resurfaceDamagedRoads() } label: {
+                                Label(
+                                    roadMaintenanceBacklog.actionTitle,
+                                    systemImage: "wrench.and.screwdriver.fill"
+                                )
+                                .font(.caption.weight(.semibold))
+                                .lineLimit(1)
+                                .frame(maxWidth: .infinity, minHeight: GameTheme.controlMinimum)
+                            }
+                            .buttonStyle(.bordered)
+                            .tint(GameTheme.danger)
+                            .disabled(!roadMaintenanceBacklog.canAffordResurfacing)
+                            .help(
+                                roadMaintenanceBacklog.canAffordResurfacing
+                                    ? "Restore every damaged road as one undoable city action."
+                                    : "Treasury funds are below the full resurfacing cost."
+                            )
+                            .accessibilityLabel(roadMaintenanceBacklog.actionTitle)
+                            .accessibilityValue(roadMaintenanceBacklog.accessibilitySummary)
+                            .accessibilityHint(
+                                roadMaintenanceBacklog.canAffordResurfacing
+                                    ? "Restores every damaged road as one undoable city action."
+                                    : "Unavailable because the treasury is below the full resurfacing cost."
+                            )
+                            .accessibilityIdentifier("finance.road-resurfacing")
+                        }
+                        if financeDecisionSupport.offersParkAlternative {
+                            compactAction("Build second park", symbol: BuildingKind.park.symbol) {
+                                store.performMapFocused(.buildPark)
+                            }
+                        } else if analytics.projectedBalance >= 0 {
+                            compactAction("Demand", symbol: "chart.bar.fill") {
+                                store.perform(.inspectorDemand)
+                            }
+                        }
                     }
-                } else if analytics.projectedBalance >= 0 {
-                    compactAction("Demand", symbol: "chart.bar.fill") { store.perform(.inspectorDemand) }
                 }
             }
         }

@@ -4568,7 +4568,10 @@ final class CityCommandCatalogTests: XCTestCase {
             [.treasury, .nextCycle, .taxPolicy, .decisionSupport]
         )
 
-        let store = CityGameStore(state: .newCity(seed: 42))
+        var state = CityGameState.newCity(seed: 42)
+        let damagedRoad = try XCTUnwrap(state.tiles.first { $0.kind == .road }?.coordinate)
+        state.updateTile(at: damagedRoad) { $0.condition = 0.40 }
+        let store = CityGameStore(state: state)
         store.openInspector(.finances)
         let size = CGSize(width: 854, height: BuildToolbarView.compactDetailsMaxHeight)
         let finance = try bitmap(
@@ -4579,6 +4582,10 @@ final class CityCommandCatalogTests: XCTestCase {
 
         XCTAssertEqual(finance.size.height, BuildToolbarView.compactDetailsMaxHeight, accuracy: 0.5)
         XCTAssertEqual(store.inspectorSection, .finances)
+        let backlog = CityRoadMaintenanceBacklog.make(in: store.state)
+        XCTAssertEqual(backlog.damagedCount, 1)
+        XCTAssertEqual(backlog.actionTitle, "Resurface 1 · $80")
+        XCTAssertTrue(backlog.canAffordResurfacing)
 
         let routineBalance = store.analytics.projectedBalance
         store.setRoadMaintenancePolicy(.preventive)
@@ -4598,6 +4605,10 @@ final class CityCommandCatalogTests: XCTestCase {
             size: regularSize
         )
         XCTAssertEqual(fundedRegular.size.width, regularSize.width, accuracy: 0.5)
+        store.resurfaceDamagedRoads()
+        XCTAssertEqual(CityRoadMaintenanceBacklog.make(in: store.state).damagedCount, 0)
+        XCTAssertEqual(store.state.tile(at: damagedRoad)?.condition, 1)
+        XCTAssertTrue(store.canUndo)
         XCTAssertEqual(
             CityRoadMaintenancePolicy.allCases.map(\.title),
             ["Deferred", "Routine", "Preventive"]

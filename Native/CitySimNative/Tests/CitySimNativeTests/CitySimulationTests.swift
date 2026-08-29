@@ -79,6 +79,89 @@ final class CitySimulationTests: XCTestCase {
         XCTAssertEqual(resumedRepaired.state.tile(at: road)?.condition, 1)
     }
 
+    @MainActor
+    func testCitywideDamagedRoadResurfacingIsFundedAtomicUndoableAndSaveExact() throws {
+        var state = CityGameState.newCity(seed: 42)
+        let roads = state.tiles.filter { $0.kind == .road }.prefix(3).map(\.coordinate)
+        XCTAssertEqual(roads.count, 3)
+        state.treasury = 500
+        state.updateTile(at: roads[0]) { $0.condition = 0.40 }
+        state.updateTile(at: roads[1]) { $0.condition = 0.50 }
+        state.updateTile(at: roads[2]) { $0.condition = 0.70 }
+
+        let backlog = CityRoadMaintenanceBacklog.make(in: state)
+        XCTAssertEqual(backlog.damagedCoordinates, Array(roads.prefix(2)).sorted {
+            $0.y == $1.y ? $0.x < $1.x : $0.y < $1.y
+        })
+        XCTAssertEqual(backlog.damagedCount, 2)
+        XCTAssertEqual(backlog.wornCount, 1)
+        XCTAssertEqual(backlog.resurfacingCost, 150)
+        XCTAssertEqual(backlog.statusSummary, "2 damaged · 1 worn")
+        XCTAssertEqual(backlog.actionTitle, "Resurface 2 · $150")
+        XCTAssertTrue(backlog.canAffordResurfacing)
+
+        var insufficient = state
+        insufficient.treasury = 149
+        let beforeRejection = insufficient
+        guard case .failure(let rejection) = CitySimulation.resurfaceDamagedRoads(
+            in: &insufficient
+        ) else {
+            return XCTFail("Expected the whole-city program to reject partial funding")
+        }
+        XCTAssertEqual(rejection, .insufficientFunds(required: 150, available: 149))
+        XCTAssertEqual(insufficient, beforeRejection)
+
+        let beforeProgram = state
+        guard case .success(let result) = CitySimulation.resurfaceDamagedRoads(in: &state) else {
+            return XCTFail("Expected funded resurfacing to succeed")
+        }
+        XCTAssertEqual(result, CityRoadResurfacingResult(repairedCount: 2, cost: 150))
+        XCTAssertEqual(state.treasury, 350)
+        XCTAssertEqual(state.tile(at: roads[0])?.condition, 1)
+        XCTAssertEqual(state.tile(at: roads[1])?.condition, 1)
+        XCTAssertEqual(state.tile(at: roads[2])?.condition, 0.70)
+        let remaining = CityRoadMaintenanceBacklog.make(in: state)
+        XCTAssertEqual(remaining.damagedCount, 0)
+        XCTAssertEqual(remaining.wornCount, 1)
+
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent(
+            "citysim-road-resurfacing-\(UUID().uuidString)",
+            isDirectory: true
+        )
+        defer { try? FileManager.default.removeItem(at: root) }
+        let saves = SaveGameService(rootURL: root)
+        _ = try saves.save(state)
+        XCTAssertEqual(try saves.load().state, state)
+
+        let store = CityGameStore(state: beforeProgram)
+        store.resurfaceDamagedRoads()
+        XCTAssertEqual(store.state, state)
+        XCTAssertTrue(store.canUndo)
+        XCTAssertEqual(store.lastFeedbackTone, .positive)
+        XCTAssertTrue(store.lastFeedback?.contains("2 damaged roads resurfaced") == true)
+        XCTAssertTrue(store.lastFeedback?.contains("$150") == true)
+        store.undoLastAction()
+        XCTAssertEqual(store.state, beforeProgram)
+
+        var unlimited = beforeProgram
+        unlimited.sandboxRules = CitySandboxRules(
+            economy: .standard,
+            incidentsEnabled: true,
+            unlimitedFunds: true
+        )
+        unlimited.treasury = 0
+        let unlimitedBacklog = CityRoadMaintenanceBacklog.make(in: unlimited)
+        XCTAssertTrue(unlimitedBacklog.canAffordResurfacing)
+        XCTAssertEqual(unlimitedBacklog.actionTitle, "Resurface 2 · Waived")
+        guard case .success(let unlimitedResult) = CitySimulation.resurfaceDamagedRoads(
+            in: &unlimited
+        ) else {
+            return XCTFail("Expected unlimited-funds resurfacing to succeed")
+        }
+        XCTAssertEqual(unlimitedResult.cost, 150)
+        XCTAssertEqual(unlimited.treasury, 0)
+    }
+
     func testRoadFundingTradesOperatingCostForWearAndPersistsExactly() throws {
         let routine = CityGameState.newCity(seed: 42)
         let traffic = CityTrafficAnalysis.dailySimulationSnapshot(in: routine)

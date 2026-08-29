@@ -1550,6 +1550,23 @@ final class CityGameStore: ObservableObject {
         }
     }
 
+    func resurfaceDamagedRoads() {
+        let previousState = state
+        switch CitySimulation.resurfaceDamagedRoads(in: &state) {
+        case .success(let result):
+            recordUndo(previousState)
+            let spending = state.usesUnlimitedFunds ? "spending waived" : result.cost.currencyText
+            showFeedback(
+                "\(result.repairedCount) damaged roads resurfaced · \(spending) · network capacity restored · Undo is available",
+                tone: .positive
+            )
+            soundFeedback.play(.constructionApproved)
+        case .failure(let rejection):
+            showFeedback(rejection.message, tone: .caution, autoDismissAfter: nil)
+            soundFeedback.play(.actionRejected)
+        }
+    }
+
     func setTaxRate(_ value: Double) {
         state.taxRate = min(0.18, max(0.04, value))
     }

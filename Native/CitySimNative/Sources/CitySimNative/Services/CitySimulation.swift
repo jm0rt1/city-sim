@@ -240,6 +240,31 @@ enum CitySimulation {
         return .success(cost)
     }
 
+    static func resurfaceDamagedRoads(
+        in state: inout CityGameState
+    ) -> Result<CityRoadResurfacingResult, CityRoadResurfacingRejection> {
+        let backlog = CityRoadMaintenanceBacklog.make(in: state)
+        guard backlog.damagedCount > 0 else {
+            return .failure(.noDamagedRoads)
+        }
+        guard backlog.canAffordResurfacing else {
+            return .failure(.insufficientFunds(
+                required: backlog.resurfacingCost,
+                available: state.treasury
+            ))
+        }
+        if !state.usesUnlimitedFunds {
+            state.treasury -= backlog.resurfacingCost
+        }
+        for coordinate in backlog.damagedCoordinates {
+            state.updateTile(at: coordinate) { $0.condition = 1 }
+        }
+        return .success(CityRoadResurfacingResult(
+            repairedCount: backlog.damagedCount,
+            cost: backlog.resurfacingCost
+        ))
+    }
+
     private static func retireActiveStormRecoveryTarget(
         at coordinate: GridCoordinate,
         in state: inout CityGameState

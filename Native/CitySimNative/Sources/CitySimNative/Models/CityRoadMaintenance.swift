@@ -93,6 +93,25 @@ enum CityRoadRepairRejection: Error, Equatable, Sendable {
     }
 }
 
+enum CityRoadResurfacingRejection: Error, Equatable, Sendable {
+    case noDamagedRoads
+    case insufficientFunds(required: Double, available: Double)
+
+    var message: String {
+        switch self {
+        case .noDamagedRoads:
+            "No damaged roads need a resurfacing program."
+        case .insufficientFunds(let required, let available):
+            "Road resurfacing needs \(required.currencyText); only \(available.currencyText) is available."
+        }
+    }
+}
+
+struct CityRoadResurfacingResult: Equatable, Sendable {
+    let repairedCount: Int
+    let cost: Double
+}
+
 enum CityRoadMaintenance {
     static let maintainedConditionThreshold = 0.86
     static let damagedConditionThreshold = 0.55
@@ -123,6 +142,64 @@ enum CityRoadMaintenance {
 
     static func clamp(_ value: Double) -> Double {
         min(1, max(0, value))
+    }
+}
+
+struct CityRoadMaintenanceBacklog: Equatable, Sendable {
+    let damagedCoordinates: [GridCoordinate]
+    let wornCount: Int
+    let maintainedCount: Int
+    let resurfacingCost: Double
+    let spendingWaived: Bool
+    let canAffordResurfacing: Bool
+
+    var damagedCount: Int { damagedCoordinates.count }
+
+    var statusSummary: String {
+        "\(damagedCount) damaged · \(wornCount) worn"
+    }
+
+    var actionTitle: String {
+        let spending = spendingWaived ? "Waived" : resurfacingCost.currencyText
+        return "Resurface \(damagedCount) · \(spending)"
+    }
+
+    var accessibilitySummary: String {
+        let spending = spendingWaived
+            ? "Resurfacing spending is waived."
+            : "Resurfacing all damaged roads costs \(resurfacingCost.currencyText)."
+        return "\(damagedCount) damaged roads and \(wornCount) worn roads. \(spending)"
+    }
+
+    static func make(in state: CityGameState) -> Self {
+        var damagedCoordinates: [GridCoordinate] = []
+        var wornCount = 0
+        var maintainedCount = 0
+        var resurfacingCost = 0.0
+
+        for tile in state.tiles where tile.kind == .road {
+            switch CityRoadMaintenance.conditionBand(tile.condition) {
+            case .damaged:
+                damagedCoordinates.append(tile.coordinate)
+                resurfacingCost += CityRoadMaintenance.repairCost(for: tile.condition)
+            case .worn:
+                wornCount += 1
+            case .maintained:
+                maintainedCount += 1
+            }
+        }
+        damagedCoordinates.sort {
+            $0.y == $1.y ? $0.x < $1.x : $0.y < $1.y
+        }
+
+        return Self(
+            damagedCoordinates: damagedCoordinates,
+            wornCount: wornCount,
+            maintainedCount: maintainedCount,
+            resurfacingCost: resurfacingCost,
+            spendingWaived: state.usesUnlimitedFunds,
+            canAffordResurfacing: state.usesUnlimitedFunds || state.treasury >= resurfacingCost
+        )
     }
 }
 

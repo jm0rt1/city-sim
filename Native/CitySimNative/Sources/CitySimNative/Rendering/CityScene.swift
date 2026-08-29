@@ -41,6 +41,7 @@ struct RendererDiagnosticsSnapshot: Equatable, Sendable {
 private struct TileRenderSignature: Equatable {
     let kind: BuildingKind
     let lotPresentation: LotConsequencePresentation?
+    let roadCondition: CityRoadConditionBand?
     let spatialConsequences: SpatialConsequenceRenderSignature
     let reducedMotion: Bool
     let roadConnections: RoadConnectionMask
@@ -50,6 +51,7 @@ private struct TileRenderSignature: Equatable {
     func matchesNonSpatialFields(of other: TileRenderSignature) -> Bool {
         kind == other.kind
             && lotPresentation == other.lotPresentation
+            && roadCondition == other.roadCondition
             && reducedMotion == other.reducedMotion
             && roadConnections == other.roadConnections
             && gridWidth == other.gridWidth
@@ -1782,7 +1784,8 @@ final class CityScene: SKScene {
                 connections: signature.roadConnections,
                 detail: currentCameraDetailLevel,
                 reducedMotion: reducedMotion,
-                developedCoordinates: developedRoadContextCoordinates
+                developedCoordinates: developedRoadContextCoordinates,
+                condition: tile.condition
             ))
             root.addChild(contentLayer)
         default:
@@ -1850,15 +1853,22 @@ final class CityScene: SKScene {
         state: CityGameState
     ) -> TileRenderSignature {
         let lotPresentation: LotConsequencePresentation?
+        let roadCondition: CityRoadConditionBand?
         switch tile.kind {
-        case .empty, .road:
+        case .empty:
             lotPresentation = nil
+            roadCondition = nil
+        case .road:
+            lotPresentation = nil
+            roadCondition = CityRoadMaintenance.conditionBand(tile.condition)
         default:
             lotPresentation = LotConsequencePresentation(tile: tile)
+            roadCondition = nil
         }
         return TileRenderSignature(
             kind: tile.kind,
             lotPresentation: lotPresentation,
+            roadCondition: roadCondition,
             spatialConsequences: SpatialConsequenceRenderSignature(consequence),
             reducedMotion: lotPresentation == nil ? false : reducedMotion,
             roadConnections: tile.kind == .empty

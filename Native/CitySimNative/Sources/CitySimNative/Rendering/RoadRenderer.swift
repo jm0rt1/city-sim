@@ -206,7 +206,8 @@ final class RoadRenderer {
             connections: RoadConnectionMask.resolving(at: coordinate, in: state),
             detail: detail,
             reducedMotion: reducedMotion,
-            developedCoordinates: contextCoordinates
+            developedCoordinates: contextCoordinates,
+            condition: state.tile(at: coordinate)?.condition ?? 1
         )
     }
 
@@ -215,7 +216,8 @@ final class RoadRenderer {
         connections: RoadConnectionMask,
         detail: CameraDetailLevel,
         reducedMotion: Bool,
-        developedCoordinates: [GridCoordinate]
+        developedCoordinates: [GridCoordinate],
+        condition: Double = 1
     ) -> SKNode {
         let distance = contextDistance(at: coordinate, developedCoordinates: developedCoordinates)
         let emphasis: ContextEmphasis = distance <= 1 ? .developed : .network
@@ -229,7 +231,8 @@ final class RoadRenderer {
             detail: detail,
             reducedMotion: reducedMotion,
             emphasis: emphasis,
-            detailAlpha: detailAlpha
+            detailAlpha: detailAlpha,
+            condition: condition
         )
         road.childNode(withName: CameraDetailLevel.neighborhood.layerName)?.alpha = detailAlpha
         road.childNode(withName: CameraDetailLevel.block.layerName)?.alpha = detailAlpha
@@ -240,7 +243,8 @@ final class RoadRenderer {
         at coordinate: GridCoordinate,
         connections: RoadConnectionMask,
         detail: CameraDetailLevel,
-        reducedMotion: Bool
+        reducedMotion: Bool,
+        condition: Double = 1
     ) -> SKNode {
         makeRoadNode(
             at: coordinate,
@@ -248,7 +252,8 @@ final class RoadRenderer {
             detail: detail,
             reducedMotion: reducedMotion,
             emphasis: .developed,
-            detailAlpha: 1
+            detailAlpha: 1,
+            condition: condition
         )
     }
 
@@ -258,7 +263,8 @@ final class RoadRenderer {
         detail: CameraDetailLevel,
         reducedMotion: Bool,
         emphasis: ContextEmphasis,
-        detailAlpha: CGFloat
+        detailAlpha: CGFloat,
+        condition: Double
     ) -> SKNode {
         let topology = RoadTopology(mask: connections)
         let root = SKNode()
@@ -327,6 +333,18 @@ final class RoadRenderer {
             }
         }
         cityLayer.addChild(corridor)
+        let maintenanceLayer = switch detail {
+        case .city: cityLayer
+        case .neighborhood: neighborhoodLayer
+        case .block: blockLayer
+        }
+        addMaintenanceState(
+            at: coordinate,
+            topology: topology,
+            condition: condition,
+            detail: detail,
+            to: maintenanceLayer
+        )
         if fourViewRoad == nil, fourViewRoadAssets == nil,
            detailAlpha > 0, detail == .block {
             addStreetFurniture(
@@ -338,6 +356,79 @@ final class RoadRenderer {
             )
         }
         return root
+    }
+
+    private func addMaintenanceState(
+        at coordinate: GridCoordinate,
+        topology: RoadTopology,
+        condition: Double,
+        detail: CameraDetailLevel,
+        to layer: SKNode
+    ) {
+        let band = CityRoadMaintenance.conditionBand(condition)
+        guard band != .maintained else { return }
+
+        let root = SKNode()
+        root.name = "road.maintenance.\(band.rawValue)"
+        root.zPosition = 18
+        let edge = topology.mask.edges.first ?? .north
+        let socket = style.roadSocket(for: edge)
+        let length = max(0.001, hypot(socket.x, socket.y))
+        let direction = CGPoint(x: socket.x / length, y: socket.y / length)
+        let perpendicular = CGPoint(x: -direction.y, y: direction.x)
+        let variant = WorldVisualSeed.variant(
+            count: 4,
+            for: coordinate,
+            kind: .road,
+            salt: 0xA17E
+        )
+        let side: CGFloat = variant.isMultiple(of: 2) ? 1 : -1
+        let anchor = CGPoint(
+            x: direction.x * CGFloat(variant - 1) * 1.4 + perpendicular.x * side * 2.4,
+            y: direction.y * CGFloat(variant - 1) * 0.7 + perpendicular.y * side * 1.2
+        )
+
+        let patch = SKShapeNode(path: style.diamondPath(
+            width: band == .damaged ? 10 : 8,
+            height: band == .damaged ? 5 : 4
+        ))
+        patch.name = "road.maintenance.surface-patch"
+        patch.fillColor = style.palette.asphaltLight.withAlphaComponent(
+            detail == .city ? 0.72 : 0.58
+        )
+        patch.strokeColor = style.palette.mapEarthDark.withAlphaComponent(0.72)
+        patch.lineWidth = band == .damaged ? 1.15 : 0.85
+        patch.position = anchor
+        root.addChild(patch)
+
+        let crackPath = CGMutablePath()
+        crackPath.move(to: CGPoint(x: anchor.x - direction.x * 7, y: anchor.y - direction.y * 3.5))
+        crackPath.addLine(to: CGPoint(x: anchor.x - perpendicular.x * 2, y: anchor.y - perpendicular.y))
+        crackPath.addLine(to: CGPoint(x: anchor.x + direction.x * 7, y: anchor.y + direction.y * 3.5))
+        let crack = SKShapeNode(path: crackPath)
+        crack.name = "road.maintenance.crack"
+        crack.fillColor = .clear
+        crack.strokeColor = NSColor.black.withAlphaComponent(band == .damaged ? 0.82 : 0.58)
+        crack.lineWidth = band == .damaged ? 1.45 : 0.9
+        crack.lineCap = .round
+        crack.lineJoin = .round
+        root.addChild(crack)
+
+        if band == .damaged {
+            for offset: CGFloat in [-1, 1] {
+                let pothole = SKShapeNode(path: style.diamondPath(width: 6.5, height: 3.25))
+                pothole.name = "road.maintenance.pothole"
+                pothole.fillColor = NSColor.black.withAlphaComponent(0.86)
+                pothole.strokeColor = style.palette.laneMark.withAlphaComponent(0.74)
+                pothole.lineWidth = 0.75
+                pothole.position = CGPoint(
+                    x: anchor.x + direction.x * offset * 7 + perpendicular.x * offset * 2,
+                    y: anchor.y + direction.y * offset * 3.5 + perpendicular.y * offset
+                )
+                root.addChild(pothole)
+            }
+        }
+        layer.addChild(root)
     }
 
     private func addDistrictFabricHierarchy(

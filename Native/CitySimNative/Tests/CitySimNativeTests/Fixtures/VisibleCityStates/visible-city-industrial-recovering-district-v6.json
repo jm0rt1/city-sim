@@ -1,18 +1,18 @@
 {
-  "digest" : "b25bd89c1f7aef28bc99d45e7eedba0d8d44e85e166d237dbd62776c76e897b0",
+  "digest" : "06a088264be44fe47049597a7a7e268ce1db38227ea3eb493b513e03ccf6ef6f",
   "fingerprintVersion" : 1,
   "schemaVersion" : 1,
   "state" : {
-    "approval" : 93.06514593524855,
+    "approval" : 92.99164015390514,
     "cityName" : "New Arcadia",
     "demand" : {
       "commercial" : 0.8440000000000001,
       "industrial" : 0.3443529411764706,
-      "residential" : 0.6957903723071535
+      "residential" : 0.6954513266073279
     },
     "gridHeight" : 24,
     "gridWidth" : 24,
-    "happiness" : 50.05231878966815,
+    "happiness" : 50.00485239169255,
     "jobs" : 387,
     "messages" : [
       {
@@ -2571,7 +2571,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.471944621798279,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 4,
@@ -2582,7 +2582,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.4786279556969388,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 5,
@@ -2593,7 +2593,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.35,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 6,
@@ -2604,7 +2604,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.9452129200380716,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 7,
@@ -2615,7 +2615,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.9497440946214428,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 8,
@@ -2626,7 +2626,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.9135577239000591,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 9,
@@ -2637,7 +2637,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.9135577239000591,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 10,
@@ -2648,7 +2648,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.9135577239000591,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 11,
@@ -2659,7 +2659,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.9239785449556205,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 12,
@@ -2835,7 +2835,7 @@
         "occupancy" : 92
       },
       {
-        "condition" : 1,
+        "condition" : 0.4786279556969388,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 4,
@@ -2923,7 +2923,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.9135577239000591,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 12,
@@ -3187,7 +3187,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.9135577239000591,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 12,
@@ -3429,7 +3429,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.9452129200380716,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 10,
@@ -3440,7 +3440,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.9452129200380716,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 11,
@@ -3451,7 +3451,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.9497440946214428,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 12,
@@ -3462,7 +3462,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.9452129200380716,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 13,

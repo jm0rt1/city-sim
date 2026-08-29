@@ -6,7 +6,7 @@ final class SessionPlatformTests: XCTestCase {
     private static let play078DenseTerminalFixtureName =
         "dense-24x24-terminal-post-play076-v8"
     private static let play078DenseTerminalFixtureDigest =
-        "f4fd3e07ae93ad3d59a3eb642dd0aff5bc60e3d7cde3b41cd0f120a48a7764fd"
+        "c557d3d0bc8a35e755cfca54f0985970ba3d7ae265f7d478cd887db1bfb79c14"
 
     func testVersionOneFingerprintFixturesAreFrozen() throws {
         let explicitProgression = CityGameState.newCity(seed: 42)
@@ -464,8 +464,8 @@ final class SessionPlatformTests: XCTestCase {
         XCTAssertEqual(commerceBeforeVictory.population, 510)
         XCTAssertEqual(industryBeforeVictory.jobs, 356)
         XCTAssertEqual(commerceBeforeVictory.jobs, 356)
-        XCTAssertEqual(industryBeforeVictory.happiness, 52.224361536114934, accuracy: 0.001)
-        XCTAssertEqual(commerceBeforeVictory.happiness, 55.620140902050494, accuracy: 0.001)
+        XCTAssertEqual(industryBeforeVictory.happiness, 52.209060243739934, accuracy: 0.001)
+        XCTAssertEqual(commerceBeforeVictory.happiness, 55.59198776401641, accuracy: 0.001)
         XCTAssertEqual(
             CityAnalytics(state: industryBeforeVictory).projectedBalance,
             413.65,
@@ -480,13 +480,13 @@ final class SessionPlatformTests: XCTestCase {
             Set(try (0..<5).map {
                 _ in try CityStateFingerprinter.fingerprint(industryBeforeVictory).digest
             }),
-            Set(["3b581d85a449bc720010877780d90640a389952855fb5b6a5211aff025a3c418"])
+            Set(["6ccce1225c9fc51bbd03811211faf34d1219dc22c2014da7fc2e615874e8ca22"])
         )
         XCTAssertEqual(
             Set(try (0..<5).map {
                 _ in try CityStateFingerprinter.fingerprint(commerceBeforeVictory).digest
             }),
-            Set(["4855ee36eee692ec9984743b3be01f89ba8671aaf17293c01aabecca6ac0d869"])
+            Set(["1bc073ad5f23e943a26dfda92a6005f431eeb6db95f8de6ddd7b02400eb15982"])
         )
 
         XCTAssertEqual(
@@ -536,19 +536,19 @@ final class SessionPlatformTests: XCTestCase {
         XCTAssertFalse(commerce.progression?.secondAct?.regionalCapitalAwarded ?? true)
         XCTAssertEqual(
             try CityStateFingerprinter.fingerprint(industry).digest,
-            "ed95cc022621295197a509737ff2e9c9198a8c5553dbf12a8eea1ffc02fd8296"
+            "2a6f9cfa7df64233bab923b9038eb4b41a78e03e9fa5468c4a5b3f60baef7498"
         )
         XCTAssertEqual(
             try CityStateFingerprinter.fingerprint(commerce).digest,
-            "cb55030b9612c051e298175e288d9f0cd1e323c97787d8d7f2a5874c75955f6d"
+            "d4cd76df1a4cd355a477d2afd839a122680fafa6454b960dbf5ec2117610ade5"
         )
         XCTAssertEqual(
             Set(try (0..<5).map { _ in try CityStateFingerprinter.fingerprint(industry).digest }),
-            Set(["ed95cc022621295197a509737ff2e9c9198a8c5553dbf12a8eea1ffc02fd8296"])
+            Set(["2a6f9cfa7df64233bab923b9038eb4b41a78e03e9fa5468c4a5b3f60baef7498"])
         )
         XCTAssertEqual(
             Set(try (0..<5).map { _ in try CityStateFingerprinter.fingerprint(commerce).digest }),
-            Set(["cb55030b9612c051e298175e288d9f0cd1e323c97787d8d7f2a5874c75955f6d"])
+            Set(["d4cd76df1a4cd355a477d2afd839a122680fafa6454b960dbf5ec2117610ade5"])
         )
     }
 
@@ -557,8 +557,8 @@ final class SessionPlatformTests: XCTestCase {
             "commercialStewardship.opportunity": "d88cfc4c057fd5535cfd4e60fa7a8905ffb9fb5b59709492cc9c5f49a88e7dec",
             "commercialStewardship.complication": "acae994bea4246f75ed2c5b1518b378803c73c7853ef7528d276e9bd769621a6",
             "commercialStewardship.setback": "3e95b463a04b4dd42ab755b3b029a67f10e42ea87143fe6f4cb9b1d8aa8c60ac",
-            "commercialStewardship.recovery": "0e0fd188e4445dbf8e1cc04e815fd4d499574365b4cdad20406cb9271228e283",
-            "commercialStewardship.completed": "847ac71aea6bada9e2232d32f71b81a921bc9a6874b090d44d9e1d181b537d42",
+            "commercialStewardship.recovery": "53561d23484f0877f563abf7e2846928d741cd429487016862d698353041acfa",
+            "commercialStewardship.completed": "0383116d8453a6335491e3a35f3df944f5102b0cc7722267411cd00f3df762c1",
             "industrialExpansion.opportunity": "06db24a5dda82e3831934871321692a4e5bd220c5414aedc02ccb87688c09dde",
             "industrialExpansion.complication": "5a09c48230c3040498e5e71b38fd38a348573460e40799b9816655bd48ad9dc8",
             "industrialExpansion.setback": "db4dfffa8cc727bbde3dad31151a749cd09d3dc5f994394efff2ccdf0a9c9b8f",

@@ -2636,6 +2636,60 @@ final class WorldRenderingTests: XCTestCase {
     }
 
     @MainActor
+    func testRoadMaintenanceBandsAddDeterministicGroundedWearWithoutLabels() {
+        let renderer = RoadRenderer(style: WorldVisualStyle())
+        let coordinate = GridCoordinate(x: 7, y: 9)
+        let mask: RoadConnectionMask = [.east, .west]
+        let maintained = renderer.makeRoad(
+            at: coordinate,
+            connections: mask,
+            detail: .city,
+            reducedMotion: true,
+            condition: 1
+        )
+        let worn = renderer.makeRoad(
+            at: coordinate,
+            connections: mask,
+            detail: .city,
+            reducedMotion: true,
+            condition: 0.70
+        )
+        let repeatedWorn = renderer.makeRoad(
+            at: coordinate,
+            connections: mask,
+            detail: .city,
+            reducedMotion: true,
+            condition: 0.70
+        )
+        let damaged = renderer.makeRoad(
+            at: coordinate,
+            connections: mask,
+            detail: .city,
+            reducedMotion: true,
+            condition: 0.40
+        )
+
+        XCTAssertFalse(descendantNames(in: maintained).contains {
+            $0.hasPrefix("road.maintenance.")
+        })
+        let wornNames = descendantNames(in: worn)
+        XCTAssertTrue(wornNames.contains("road.maintenance.worn"))
+        XCTAssertTrue(wornNames.contains("road.maintenance.surface-patch"))
+        XCTAssertTrue(wornNames.contains("road.maintenance.crack"))
+        XCTAssertFalse(wornNames.contains("road.maintenance.pothole"))
+        XCTAssertEqual(wornNames, descendantNames(in: repeatedWorn))
+
+        let damagedNames = descendantNames(in: damaged)
+        XCTAssertTrue(damagedNames.contains("road.maintenance.damaged"))
+        XCTAssertEqual(
+            damagedNames.filter { $0 == "road.maintenance.pothole" }.count,
+            2
+        )
+        XCTAssertTrue(descendantLabels(in: worn).isEmpty)
+        XCTAssertTrue(descendantLabels(in: damaged).isEmpty)
+    }
+
+    @MainActor
     func testEntireAuthoritativeRoadNetworkStaysPhysicalWithoutChangingHitGeometry() {
         let state = CityGameState.newCity(seed: 42)
         let renderer = RoadRenderer(style: WorldVisualStyle())

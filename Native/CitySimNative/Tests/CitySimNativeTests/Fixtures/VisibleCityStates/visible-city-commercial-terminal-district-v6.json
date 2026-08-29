@@ -1,5 +1,5 @@
 {
-  "digest" : "5b85048975efd63b3c3b71780afaad2507cd751264be8f20a23d192073cd89a0",
+  "digest" : "5bc068c2b8262c481d6df02b167d5e01d8a5124abd06fe8d4158be5d8de4a399",
   "fingerprintVersion" : 1,
   "schemaVersion" : 1,
   "state" : {
@@ -8,11 +8,11 @@
     "demand" : {
       "commercial" : 0.665,
       "industrial" : 0.5080266343825665,
-      "residential" : 0.7200365667960444
+      "residential" : 0.7195993667388083
     },
     "gridHeight" : 24,
     "gridWidth" : 24,
-    "happiness" : 67.29261935144622,
+    "happiness" : 67.23141134343315,
     "jobs" : 388,
     "messages" : [
       {
@@ -2571,7 +2571,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.35,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 4,
@@ -2582,7 +2582,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.35,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 5,
@@ -2593,7 +2593,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.35,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 6,
@@ -2604,7 +2604,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.9452129200380716,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 7,
@@ -2615,7 +2615,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.9497440946214428,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 8,
@@ -2626,7 +2626,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.9135577239000591,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 9,
@@ -2637,7 +2637,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.9135577239000591,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 10,
@@ -2648,7 +2648,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.9135577239000591,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 11,
@@ -2659,7 +2659,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.9239785449556205,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 12,
@@ -2835,7 +2835,7 @@
         "occupancy" : 92
       },
       {
-        "condition" : 1,
+        "condition" : 0.35,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 4,
@@ -2923,7 +2923,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.9135577239000591,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 12,
@@ -3187,7 +3187,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.9135577239000591,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 12,
@@ -3429,7 +3429,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.9452129200380716,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 10,
@@ -3440,7 +3440,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.9452129200380716,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 11,
@@ -3451,7 +3451,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.9497440946214428,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 12,
@@ -3462,7 +3462,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.9452129200380716,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 13,

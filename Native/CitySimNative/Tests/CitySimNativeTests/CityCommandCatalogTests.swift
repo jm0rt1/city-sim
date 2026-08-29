@@ -4401,7 +4401,7 @@ final class CityCommandCatalogTests: XCTestCase {
                 for: .road,
                 diagnosisAvailable: true
             ),
-            [.diagnosis, .siteActions]
+            [.diagnosis, .nextAction, .siteActions]
         )
         XCTAssertEqual(
             InspectorView.selectionActionOrder(

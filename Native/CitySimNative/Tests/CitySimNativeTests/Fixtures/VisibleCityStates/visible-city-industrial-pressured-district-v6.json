@@ -1,5 +1,5 @@
 {
-  "digest" : "7a5afd9d9dc09c9cde5ecb6caa02ed6989ec417005783de7f07a4260adf17bd3",
+  "digest" : "6021f85cad8326bca9aa960b13a4ccbbd23faf56395106b3f8ab6b76169b6528",
   "fingerprintVersion" : 1,
   "schemaVersion" : 1,
   "state" : {
@@ -8,11 +8,11 @@
     "demand" : {
       "commercial" : 0.8390000000000001,
       "industrial" : 0.3716890756302521,
-      "residential" : 0.6336169808489465
+      "residential" : 0.6333015958277601
     },
     "gridHeight" : 24,
     "gridWidth" : 24,
-    "happiness" : 43.7838773188525,
+    "happiness" : 43.73972341588641,
     "jobs" : 384,
     "messages" : [
       {
@@ -2571,7 +2571,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.49944713018459097,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 4,
@@ -2582,7 +2582,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.5060146103303379,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 5,
@@ -2593,7 +2593,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.36769001851415956,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 6,
@@ -2604,7 +2604,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.9452129200380716,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 7,
@@ -2615,7 +2615,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.9497440946214428,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 8,
@@ -2626,7 +2626,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.9135577239000591,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 9,
@@ -2637,7 +2637,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.9135577239000591,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 10,
@@ -2648,7 +2648,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.9135577239000591,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 11,
@@ -2659,7 +2659,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.9239785449556205,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 12,
@@ -2835,7 +2835,7 @@
         "occupancy" : 91
       },
       {
-        "condition" : 1,
+        "condition" : 0.5060146103303379,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 4,
@@ -2923,7 +2923,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.9135577239000591,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 12,
@@ -3187,7 +3187,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.9135577239000591,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 12,
@@ -3429,7 +3429,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.9452129200380716,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 10,
@@ -3440,7 +3440,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.9452129200380716,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 11,
@@ -3451,7 +3451,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.9497440946214428,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 12,
@@ -3462,7 +3462,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.9452129200380716,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 13,

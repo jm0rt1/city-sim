@@ -347,6 +347,53 @@ final class SpatialConsequenceTests: XCTestCase {
         )
     }
 
+    func testTrafficWearsUsedRoadsAndConditionReducesCapacityAndReliability() throws {
+        var state = trafficRouteState(includeAlternate: true)
+        state.demand.commercial = 0
+        let maintained = CityTrafficAnalysis(state: state)
+        let candidate = try XCTUnwrap(
+            state.tiles
+                .filter { $0.kind == .road }
+                .compactMap { maintained[$0.coordinate] }
+                .filter {
+                    $0.assignedTrips > 0
+                        && $0.pressure >= CityRoadMaintenance.minimumWearPressure
+                        && $0.pressure < 0.95
+                }
+                .min { $0.pressure < $1.pressure }
+        )
+        let unused = state.tiles
+            .filter { $0.kind == .road }
+            .first {
+                (maintained[$0.coordinate]?.pressure ?? 0)
+                    < CityRoadMaintenance.minimumWearPressure
+            }?.coordinate
+
+        var damaged = state
+        damaged.updateTile(at: candidate.coordinate) { $0.condition = 0.40 }
+        let damagedReading = try XCTUnwrap(
+            CityTrafficAnalysis(state: damaged)[candidate.coordinate]
+        )
+        XCTAssertEqual(
+            damagedReading.assignedTrips,
+            candidate.assignedTrips,
+            accuracy: 0.000_001
+        )
+        XCTAssertGreaterThan(damagedReading.pressure, candidate.pressure)
+        XCTAssertLessThan(damagedReading.reliability, candidate.reliability)
+
+        let changed = CitySimulation.applyDailyRoadWear(&state)
+        XCTAssertTrue(changed.contains(candidate.coordinate))
+        XCTAssertLessThan(
+            try XCTUnwrap(state.tile(at: candidate.coordinate)?.condition),
+            1
+        )
+        if let unused {
+            XCTAssertEqual(state.tile(at: unused)?.condition, 1)
+            XCTAssertFalse(changed.contains(unused))
+        }
+    }
+
     func testResidentialCommuteAccessUsesReachableJobsRouteLengthAndReliability() throws {
         let home = GridCoordinate(x: 4, y: 10)
         let connected = trafficRouteState()
@@ -644,17 +691,17 @@ final class SpatialConsequenceTests: XCTestCase {
             "commercial-public-realm-regional-capital-v6":
                 "eb28ee767c06b09ab83f5c53f0105ac2345025ae4e616ced0f09c426b1a24871",
             "commercial-opening-v7":
-                "c6b527f3de311ed856575ebcccf31a4584b6f904ca8b5196387a2814bf9405cd",
+                "e049112556e169b95ef03a13ac623403f22732a6f98d1694bce916d1eb5349d7",
             "commercial-complication-v7":
-                "832a524342931dfbb997ca1e85990004c2448e59aafa9534a4bd50a27260f7de",
+                "4c6379cb34814e350953d26f1fab5a1d13cb7f4880eddb3e2f795f699fac7265",
             "commercial-recovery-v7":
-                "48eb55e6071f889c3ba9acb4a419e79fb300aefe7cb220a62f0bfcdf7281b97e",
+                "fc6e783cc5ca4456822bd1a3cae8033f3951f02b9e3f899a10551f2e44667aeb",
             "commercial-charter-midpoint-v7":
-                "a9ae2fe980237f8207168a9ded8f96434188763a650d90ae8591a6a2482502f2",
+                "1a324ef043cb67686bdc20964d45d483e4f84bd13e7a8679c806e49cbb9d08e1",
             "commercial-tax-relief-regional-capital-v7":
-                "29e4f9b3ca38fce19e47509ba556c1e48c7597e62c94ad7216c5e58535b2950a",
+                "87fffca92c64c682cbaeb8b8c3224272722397811b1445c2ac16240da801f1c4",
             "commercial-public-realm-regional-capital-v7":
-                "589d80e201a505fbb5c84b96351e51c40f771884213fa158aa182fb3797af56e",
+                "97ce0a6fdc924c379ad533943352807e17a4453815635a38e78e1d577e69c336",
             "commercial-charter-victory-v1":
                 "d2e1150e0bc9e709a3e7d8c6253178c0546030bbb3be4b1e31afe9e17a13426e",
             "industrial-opening-v5":
@@ -682,17 +729,17 @@ final class SpatialConsequenceTests: XCTestCase {
             "industrial-green-buffer-regional-capital-v6":
                 "8f494ddaaad2208b132a909f2f25aa56022814910a24fb506b7bd287f35cc5df",
             "industrial-opening-v7":
-                "07a6f0208e34e30e47c0ab36388db0a8d2a34781ea60ce704f514397f779ea3c",
+                "fbcc5e8efa46b8bc2dfb6e83487e00c51a2ded03186108d503789122438db984",
             "industrial-complication-v7":
-                "ecd4b6d1cad67e7d6bbdf9a500a266d19097f6850544c12ed099aba36e19150d",
+                "f41eca412bc05b000e28f733bf9a9e7d2e492e5d5d0f07e73e473d22ded687ec",
             "industrial-recovery-v7":
-                "b6349b843fccfc5a53c5a4bf1c468873c14997c0efe19505a5c381bb2353c991",
+                "be45abe46f1ad025662a3e4d08fece4ae23c912ef88fd03f9c80f045f1d17d33",
             "industrial-charter-midpoint-v7":
-                "c0734a59a9c2309e3d3794736b6703ee163fa646157b015ba5c601fe66604438",
+                "17fe44d69fc3f7ca526b438efdf93a5905c68490b10ec87f1e1328b9950c07d0",
             "industrial-utility-expansion-regional-capital-v7":
-                "e845f6b6c460fe10cc94be4ab1f0b67c2b001859930155aba012cc3ade7377a5",
+                "62f297ac9135167d90bdcac56898589c556555f6397ab4db0a2b979f7ec81ee4",
             "industrial-green-buffer-regional-capital-v7":
-                "e38c58a4d5fbcd208d005fd8be8b4fcfa9d7c31e535b9adcd8d2810226a8d806",
+                "568f32223a4255ded91b414f26b1959f878b1cac5d0d492f9de4962b831adcc0",
             "industrial-charter-victory-v1":
                 "3c8fc741bf7d43c238486579a94de2c6af0d2f51f33518664a1db4ecad6d61e5",
         ]
@@ -722,17 +769,17 @@ final class SpatialConsequenceTests: XCTestCase {
             "commercial-public-realm-regional-capital-v6":
                 "9dca836441b4027b0a4acc5b405232197026cd48a885f8379abe61ab21319522",
             "commercial-opening-v7":
-                "dc717ec4a3e694825a5068420415757f1f3e1771a8b97f1dc9f2ef04eb6ac128",
+                "3c556b95a81925e008f80e9e88dc464c9f119f9d52011daedad34ef2a15de81d",
             "commercial-complication-v7":
-                "b0530508357dd9cd9523beb0218c9226ee43201f6366d3acab80da27f08078fa",
+                "a1ae4b3ba1446c09c8305d57b3a5d79c2e6a57e7cd26fe41600f905a48baef1a",
             "commercial-recovery-v7":
-                "80e4883a3d0c94c91931ff3c5da8812ef212bdec858d10d990ddf6e1a5827fc4",
+                "fad24bca93788b11f2d6dd7b06256128162c3daaa3c9ac76f83373b0e6539b4b",
             "commercial-charter-midpoint-v7":
-                "b0bfbcb885a61a2af5078103a71c9c7e4b62ff5919486381107ee04e9f395879",
+                "c94b93a153056bcac06f73ac706d6110c13e7a99a646447db02acaf7c87ee235",
             "commercial-tax-relief-regional-capital-v7":
-                "c59eca1b469a67a93c411c7f627ff0c4a6db74ce7019a7b85b98729e3c2197a1",
+                "b9866575c0c1bf58546afdb0a455e60a953763b633e13cbb58bbb295f886b9d3",
             "commercial-public-realm-regional-capital-v7":
-                "7a3684da910b714e648f8367cc7669d4fc11c1a2a3b5aea62b36bc84a440ef8d",
+                "dce7745eed02637ce52820a3f79f4c900e895aba0b06a753824c1140cca7cf13",
             "commercial-charter-victory-v1":
                 "a150bb0b748290c9c7ec246590a61c96ddea8a716526bb70c891897e3cd3cbd8",
             "industrial-opening-v5":
@@ -760,17 +807,17 @@ final class SpatialConsequenceTests: XCTestCase {
             "industrial-green-buffer-regional-capital-v6":
                 "f1095e39c0bec2a6188a1e46b91646e778abf29a68175681da00962926189d42",
             "industrial-opening-v7":
-                "0fbeaa569c14e9d0524bdd6a303173130a0923573b9b3fb8ce650dd698b48628",
+                "98b67c446c09ef073c6d219df086cce2b1edbb545122096fa36b7bc0bbbab5a1",
             "industrial-complication-v7":
-                "8788b94a3a2e50303767c9f66d0f9ba7cbf41fe84e7d06c569ea23a9b960bd0e",
+                "d2bc07e4b3cde1c6bf77b05acee1276a783bf80ae67d83ccc0fb569a928ee011",
             "industrial-recovery-v7":
-                "dffcb595589d913c7bf8cf49e4049df0ec892d605cdedc966f014b7e3fa0accb",
+                "b23dc2c70acf0d8ccca49156391df529b3ec21322e5a0742a3ce99d3b4cf3eee",
             "industrial-charter-midpoint-v7":
-                "8f84420be5a239fa84b93368d82a2c65f235c3a709d13f51dd8e404530370fa7",
+                "a97a06966e98d4ffa12fdb74bc7d75c2407d0c3033e685ef80fb14539c5253bc",
             "industrial-utility-expansion-regional-capital-v7":
-                "500f41e3ea172806601bc16af33e5f00859fc16bbf355184fc10926befd4f9c0",
+                "f5b13ce67f0343635f1f20727e7845f0ee69eca522aaac894c4a0eec2908381c",
             "industrial-green-buffer-regional-capital-v7":
-                "6aafa4b901fdb55311f862983d9899292853b25ffa53804ff31200d726077838",
+                "7cd4f9ac2e5c7a6cf3e13c5a37db6c1f057d8c329d5fbd178238fadc2e8e2bda",
             "industrial-charter-victory-v1":
                 "0cd370d11d8173139b0a52d247069dea21fef06c3b5c7ed586ca0ada463961f3",
         ]

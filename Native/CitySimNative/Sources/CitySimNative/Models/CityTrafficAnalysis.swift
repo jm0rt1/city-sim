@@ -73,15 +73,35 @@ struct CityTrafficAnalysis: Equatable, Sendable {
     }
 
     static func residentWeightedCommuteAccess(in state: CityGameState) -> Double {
-        CityTrafficAnalysis(state: state, materializesSamples: false)
+        CityTrafficAnalysis(
+            state: state,
+            materializesRoadSamples: false,
+            materializesPlaceSamples: false
+        )
             .residentWeightedCommuteAccess
     }
 
-    init(state: CityGameState) {
-        self.init(state: state, materializesSamples: true)
+    static func dailySimulationSnapshot(in state: CityGameState) -> CityTrafficAnalysis {
+        CityTrafficAnalysis(
+            state: state,
+            materializesRoadSamples: true,
+            materializesPlaceSamples: false
+        )
     }
 
-    private init(state: CityGameState, materializesSamples: Bool) {
+    init(state: CityGameState) {
+        self.init(
+            state: state,
+            materializesRoadSamples: true,
+            materializesPlaceSamples: true
+        )
+    }
+
+    private init(
+        state: CityGameState,
+        materializesRoadSamples: Bool,
+        materializesPlaceSamples: Bool
+    ) {
         width = state.gridWidth
         height = state.gridHeight
         let sampleCount = width * height
@@ -99,6 +119,7 @@ struct CityTrafficAnalysis: Equatable, Sendable {
         let capacities = Self.roadCapacities(
             coordinates: roadCoordinates,
             roadSet: roadSet,
+            state: state,
             width: width,
             height: height
         )
@@ -268,10 +289,10 @@ struct CityTrafficAnalysis: Equatable, Sendable {
             }
         }
 
-        var resolvedRoads = materializesSamples
+        var resolvedRoads = materializesRoadSamples
             ? Array<CityTrafficRoadReading?>(repeating: nil, count: sampleCount)
             : []
-        if materializesSamples {
+        if materializesRoadSamples {
             for coordinate in roadCoordinates {
                 let index = coordinate.y * width + coordinate.x
                 let load = loads[index]
@@ -321,7 +342,7 @@ struct CityTrafficAnalysis: Equatable, Sendable {
                     + routeReliability * 0.30
                     + distanceQuality * 0.15
             )
-            if materializesSamples {
+            if materializesPlaceSamples {
                 commuteReadings[residence.tile.coordinate] = CityCommuteAccessReading(
                     reachableJobs: reachableJobs,
                     requiredWorkers: requiredWorkers,
@@ -353,7 +374,7 @@ struct CityTrafficAnalysis: Equatable, Sendable {
             return $0.residenceCoordinate.y < $1.residenceCoordinate.y
         }
 
-        if materializesSamples {
+        if materializesPlaceSamples {
             var resolvedPlaces = Array<CityTrafficPlaceReading?>(repeating: nil, count: sampleCount)
             for tile in state.tiles where Self.isCompletedPlace(tile) {
                 let frontages = Self.frontageRoads(for: tile.coordinate, roadSet: roadSet)
@@ -399,14 +420,17 @@ struct CityTrafficAnalysis: Equatable, Sendable {
     private static func roadCapacities(
         coordinates: [GridCoordinate],
         roadSet: Set<GridCoordinate>,
+        state: CityGameState,
         width: Int,
         height: Int
     ) -> [Double] {
         var capacities = Array(repeating: 0.0, count: width * height)
         for coordinate in coordinates {
             let connections = orthogonalNeighbors(of: coordinate).filter(roadSet.contains).count
-            capacities[coordinate.y * width + coordinate.x] = 0.85
-                + Double(max(0, connections - 1)) * 0.10
+            let topologyCapacity = 0.85 + Double(max(0, connections - 1)) * 0.10
+            let condition = state.tile(at: coordinate)?.condition ?? 1
+            capacities[coordinate.y * width + coordinate.x] = topologyCapacity
+                * CityRoadMaintenance.capacityFactor(for: condition)
         }
         return capacities
     }

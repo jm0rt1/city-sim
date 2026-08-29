@@ -217,6 +217,29 @@ enum CitySimulation {
         return true
     }
 
+    static func repairRoad(
+        at coordinate: GridCoordinate,
+        in state: inout CityGameState
+    ) -> Result<Double, CityRoadRepairRejection> {
+        guard let tile = state.tile(at: coordinate), tile.kind == .road else {
+            return .failure(.notRoad)
+        }
+        let cost = CityRoadMaintenance.repairCost(for: tile.condition)
+        guard cost > 0 else {
+            return .failure(.alreadyMaintained)
+        }
+        guard state.usesUnlimitedFunds || state.treasury >= cost else {
+            return .failure(.insufficientFunds(required: cost, available: state.treasury))
+        }
+        if !state.usesUnlimitedFunds {
+            state.treasury -= cost
+        }
+        state.updateTile(at: coordinate) {
+            $0.condition = 1
+        }
+        return .success(cost)
+    }
+
     private static func retireActiveStormRecoveryTarget(
         at coordinate: GridCoordinate,
         in state: inout CityGameState
@@ -402,7 +425,12 @@ enum CitySimulation {
         let utilityCoverage = utilityCoverage(in: state)
         let utilityReserve = utilityReserve(in: state)
         let employment = min(1, Double(jobCapacity) / Double(workforceTarget))
-        let commuteAccess = CityTrafficAnalysis.residentWeightedCommuteAccess(in: state)
+        let roadWearTraffic = state.tick.isMultiple(of: 4)
+            && !state.preservesLegacyReplayConsequences
+            ? CityTrafficAnalysis.dailySimulationSnapshot(in: state)
+            : nil
+        let commuteAccess = roadWearTraffic?.residentWeightedCommuteAccess
+            ?? CityTrafficAnalysis.residentWeightedCommuteAccess(in: state)
         let parkBonus = min(12, Double(counts[.park] ?? 0) * 3)
         let services = civicServiceHappinessBonus(in: state)
         let pollution = min(
@@ -457,6 +485,9 @@ enum CitySimulation {
                 state.population = max(0, state.population - max(1, state.population / 150))
             }
             state.treasury += projectedBalance(in: state)
+            if let roadWearTraffic {
+                applyDailyRoadWear(&state, traffic: roadWearTraffic)
+            }
         }
 
         rebalanceOccupancy(&state, capacity: residentialCapacity)
@@ -481,6 +512,27 @@ enum CitySimulation {
         if state.tick.isMultiple(of: 4) {
             state.recordHistorySample()
         }
+    }
+
+    @discardableResult
+    static func applyDailyRoadWear(
+        _ state: inout CityGameState,
+        traffic: CityTrafficAnalysis? = nil
+    ) -> [GridCoordinate] {
+        let traffic = traffic ?? CityTrafficAnalysis.dailySimulationSnapshot(in: state)
+        var changed: [GridCoordinate] = []
+        for index in state.tiles.indices where state.tiles[index].kind == .road {
+            let coordinate = state.tiles[index].coordinate
+            guard let pressure = traffic[coordinate]?.pressure else { continue }
+            let wear = CityRoadMaintenance.dailyWear(for: pressure)
+            guard wear > 0 else { continue }
+            let previous = CityRoadMaintenance.clamp(state.tiles[index].condition)
+            let updated = max(0.35, previous - wear)
+            guard updated < previous else { continue }
+            state.tiles[index].condition = updated
+            changed.append(coordinate)
+        }
+        return changed
     }
 
     private static func announceCompletedConstruction(

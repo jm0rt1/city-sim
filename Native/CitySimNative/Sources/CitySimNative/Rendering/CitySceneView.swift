@@ -326,6 +326,12 @@ struct CitySceneView: NSViewRepresentable {
                     }
                     valueParts.append("Completed, \(condition) condition")
                 }
+            } else if tile.kind == .road,
+                      let maintenance = CityRoadMaintenancePresentation.make(
+                          tile: tile,
+                          state: store.state
+                      ) {
+                valueParts.append(maintenance.accessibilitySummary)
             }
             if store.overlay != .none {
                 valueParts.append("\(store.overlay.title) overlay active")

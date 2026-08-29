@@ -74,7 +74,7 @@ struct VisibleCityFixtureCorpus: Equatable, Sendable {
     static let authorityCommit =
         "b744319e0282df84339546dc363464089fa306c2"
     static let sourceStoryManifestSHA256 =
-        "56e13018dcc15f2e03df3bfa1eb276e75e4f6af55369c6a1878eee71874598ff"
+        "b105be25105a6b5f8d831782199c2b865a11c2344f12a0b8a2bd577954799661"
     static let manifestFile = "visible-city-states-manifest-v6.json"
     static let schemaVersion = 1
     static let fingerprintVersion = 1

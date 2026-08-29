@@ -9,7 +9,7 @@ struct CityBenchmarkDefinition: Equatable, Sendable {
         pulseCount: 400,
         ticksPerPulse: SimulationSpeed.fastest.ticksPerPulse,
         provisionalPulseBudgetMilliseconds: 16,
-        expectedFinalFingerprint: "d320716839a974905fe4c0e1a3d984424b46eb85f230791a00c83b1937394035"
+        expectedFinalFingerprint: "488896c852f0c4c541dfb1b609d5d9f025779894a4efe286e509f51b47591a08"
     )
 
     let id: String

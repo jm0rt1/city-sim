@@ -1532,6 +1532,24 @@ final class CityGameStore: ObservableObject {
         demolishSelected()
     }
 
+    func repairSelectedRoad() {
+        guard let coordinate = selectedCoordinate else { return }
+        let previousState = state
+        switch CitySimulation.repairRoad(at: coordinate, in: &state) {
+        case .success(let cost):
+            recordUndo(previousState)
+            let spending = state.usesUnlimitedFunds ? "spending waived" : cost.currencyText
+            showFeedback(
+                "Road resurfaced · \(spending) · capacity restored · Undo is available",
+                tone: .positive
+            )
+            soundFeedback.play(.constructionApproved)
+        case .failure(let rejection):
+            showFeedback(rejection.message, tone: .caution, autoDismissAfter: nil)
+            soundFeedback.play(.actionRejected)
+        }
+    }
+
     func setTaxRate(_ value: Double) {
         state.taxRate = min(0.18, max(0.04, value))
     }
@@ -2544,7 +2562,7 @@ final class CityGameStore: ObservableObject {
                 autoDismissAfter: nil
             )
         } else {
-            showFeedback("Last construction action undone", tone: .positive)
+            showFeedback("Last city action undone", tone: .positive)
         }
         soundFeedback.play(.actionReversed)
     }

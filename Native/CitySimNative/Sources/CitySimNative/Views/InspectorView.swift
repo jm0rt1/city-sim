@@ -89,6 +89,8 @@ struct InspectorView: View {
         var order: [SelectionActionTier] = diagnosisAvailable ? [.diagnosis] : []
         if kind == .empty || kind == .cityHall {
             order.append(.nextAction)
+        } else if kind == .road {
+            order.append(contentsOf: [.nextAction, .siteActions])
         } else {
             order.append(.siteActions)
         }
@@ -430,6 +432,53 @@ struct InspectorView: View {
                     .foregroundStyle(.secondary)
                     .lineLimit(2)
                 compactAction("City data", symbol: "chart.dots.scatter") { store.perform(.inspectorOverview) }
+            } else if let maintenance = CityRoadMaintenancePresentation.make(
+                tile: tile,
+                state: store.state
+            ) {
+                HStack(alignment: .firstTextBaseline, spacing: 6) {
+                    Text(maintenance.band.title.uppercased())
+                        .font(.caption.weight(.heavy))
+                        .foregroundStyle(
+                            maintenance.band == .maintained
+                                ? GameTheme.accent
+                                : maintenance.band == .worn
+                                    ? GameTheme.warning
+                                    : GameTheme.danger
+                        )
+                    Spacer(minLength: 4)
+                    Text("\(maintenance.conditionPercent)%")
+                        .font(.caption.bold().monospacedDigit())
+                }
+                Text(maintenance.statusDetail)
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(compact ? 2 : 3)
+                if maintenance.needsRepair {
+                    Button { store.repairSelectedRoad() } label: {
+                        Label(maintenance.repairTitle, systemImage: "wrench.and.screwdriver.fill")
+                            .frame(maxWidth: .infinity, minHeight: GameTheme.controlMinimum)
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .tint(maintenance.band == .damaged ? GameTheme.danger : GameTheme.warning)
+                    .disabled(!maintenance.canAfford)
+                    .help(
+                        maintenance.canAfford
+                            ? "Restore full road capacity and commute reliability. Undo is available."
+                            : "Treasury funds are below the repair cost."
+                    )
+                    .accessibilityLabel(maintenance.repairTitle)
+                    .accessibilityHint(
+                        maintenance.canAfford
+                            ? "Restores full road capacity and commute reliability. Undo is available."
+                            : "Unavailable because the treasury is below the repair cost."
+                    )
+                    .accessibilityIdentifier("hud.selection.road-repair")
+                } else {
+                    compactAction("Traffic map", symbol: DataOverlay.traffic.symbol) {
+                        store.perform(.overlayTraffic)
+                    }
+                }
             }
         }
     }

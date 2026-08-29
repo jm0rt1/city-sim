@@ -14,13 +14,13 @@ final class TerminalVictoryPlatformTests: XCTestCase {
     func testFourTerminalRoutesFreezeCommandsPersistenceBackupUndoAndSnapshots() throws {
         let expectedDigests: [CityStrategyRecoveryResolution: String] = [
             .commercialTaxRelief:
-                "fb004678de7b8f241cded82ffed6e263da0a297c80f06968e35f6a8ffae03724",
+                "62276e05fbac97fe8090c4ebf5b4d58812433f1aa9723036d5857bf6844bc62a",
             .commercialPublicRealmInvestment:
-                "e425fae65f1b4fbd00bc02bcc8b27854958ac914e26cfc24e44dd72642100673",
+                "abba22582caad1682dbdaef25a0560d76ff5de60b11eda6316b3006ceaa49423",
             .industrialUtilityExpansion:
-                "4ad8004d85331db6aa108aef218b096b391e15409665bc160e90ee316840669f",
+                "c92a70627a66b63131e50b342bc3ba022870790c3e5fd04015e48f0cc125bfb4",
             .industrialGreenBuffer:
-                "d317fa3276348a895fd7c10fd7b5937e39a566d97b60dc8c8d912ea23a549ef0",
+                "297ac66dedc8c9f1b4dec0cb1aed1e652328027299d09cfd213633cd11ee8619",
         ]
         let expectedTicks: [CityStrategyRecoveryResolution: Int] = [
             .commercialTaxRelief: 1_024,

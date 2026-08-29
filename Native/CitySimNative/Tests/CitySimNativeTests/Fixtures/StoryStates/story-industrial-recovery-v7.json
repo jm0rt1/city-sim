@@ -1,5 +1,5 @@
 {
-  "digest" : "586e9fb5b4dd2599a1aa90978184103e7f2557baacbe1060930cec091a9f7b35",
+  "digest" : "04435786b1d16967a6c93fd3ff034a1bc7c3f52bd17813a40e687994d54ffd19",
   "fingerprintVersion" : 1,
   "schemaVersion" : 1,
   "state" : {
@@ -8,11 +8,11 @@
     "demand" : {
       "commercial" : 0.653,
       "industrial" : 0.5491904761904762,
-      "residential" : 0.7103395960806307
+      "residential" : 0.7099981412879961
     },
     "gridHeight" : 24,
     "gridWidth" : 24,
-    "happiness" : 57.66004345128829,
+    "happiness" : 57.61223978031944,
     "jobs" : 254,
     "messages" : [
       {
@@ -2532,7 +2532,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.5906493804932309,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 4,
@@ -2543,7 +2543,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.8408236986777965,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 5,
@@ -2554,7 +2554,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.776362645226899,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 6,
@@ -2565,7 +2565,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.9452129200380716,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 7,
@@ -2576,7 +2576,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.9497440946214428,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 8,
@@ -2587,7 +2587,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.9135577239000591,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 9,
@@ -2598,7 +2598,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.9135577239000591,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 10,
@@ -2609,7 +2609,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.9135577239000591,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 11,
@@ -2620,7 +2620,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.9239785449556205,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 12,
@@ -2796,7 +2796,7 @@
         "occupancy" : 60
       },
       {
-        "condition" : 1,
+        "condition" : 0.8408236986777965,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 4,
@@ -2884,7 +2884,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.9135577239000591,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 12,
@@ -3148,7 +3148,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.9135577239000591,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 12,
@@ -3390,7 +3390,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.9452129200380716,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 10,
@@ -3401,7 +3401,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.9452129200380716,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 11,
@@ -3412,7 +3412,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.9497440946214428,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 12,
@@ -3423,7 +3423,7 @@
         "occupancy" : 0
       },
       {
-        "condition" : 1,
+        "condition" : 0.9452129200380716,
         "constructionProgress" : 1,
         "coordinate" : {
           "x" : 13,

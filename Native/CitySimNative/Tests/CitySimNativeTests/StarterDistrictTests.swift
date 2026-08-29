@@ -273,10 +273,10 @@ final class StarterDistrictTests: XCTestCase {
             expected: ExpectedLedger(
                 tick: 40, treasury: 30_754.5, population: 310, jobs: 190,
                 jobCapacity: 190, balance: -123.2,
-                residentialDemand: 0.6196778761725945,
+                residentialDemand: 0.6196509955132314,
                 commercialDemand: 0.7073333333333334,
                 industrialDemand: 0.6925396825396825,
-                happiness: 62.46092118268176, pollution: 28,
+                happiness: 62.45715789037091, pollution: 28,
                 powerUsed: 253, waterUsed: 228,
                 utilityReserve: 0.15555555555555556, strategy: nil
             )
@@ -286,10 +286,10 @@ final class StarterDistrictTests: XCTestCase {
             expected: ExpectedLedger(
                 tick: 40, treasury: 29_873.5, population: 310, jobs: 216,
                 jobCapacity: 270, balance: 32,
-                residentialDemand: 0.6531202628266171,
+                residentialDemand: 0.6530949427435262,
                 commercialDemand: 0.5090000000000001,
                 industrialDemand: 0.5864285714285713,
-                happiness: 63.82433679572639, pollution: 28,
+                happiness: 63.82079198409365, pollution: 28,
                 powerUsed: 260, waterUsed: 233,
                 utilityReserve: 0.13333333333333333,
                 strategy: .commercialStewardship
@@ -300,10 +300,10 @@ final class StarterDistrictTests: XCTestCase {
             expected: ExpectedLedger(
                 tick: 40, treasury: 29_537.5, population: 310, jobs: 216,
                 jobCapacity: 300, balance: 78.4,
-                residentialDemand: 0.6040030061304027,
+                residentialDemand: 0.6039826468934122,
                 commercialDemand: 0.5990000000000001,
                 industrialDemand: 0.5334285714285714,
-                happiness: 59.67792085825638, pollution: 36,
+                happiness: 59.675070565077704, pollution: 36,
                 powerUsed: 273, waterUsed: 240,
                 utilityReserve: 0.09, strategy: .industrialExpansion
             )

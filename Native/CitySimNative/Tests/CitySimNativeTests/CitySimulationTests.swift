@@ -23,6 +23,85 @@ final class CitySimulationTests: XCTestCase {
         XCTAssertEqual(lhs, rhs)
     }
 
+    func testRoadMaintenanceBandsCostsRepairAndSaveResumeRemainExact() throws {
+        XCTAssertEqual(CityRoadMaintenance.conditionBand(1), .maintained)
+        XCTAssertEqual(CityRoadMaintenance.conditionBand(0.70), .worn)
+        XCTAssertEqual(CityRoadMaintenance.conditionBand(0.40), .damaged)
+        XCTAssertEqual(CityRoadMaintenance.repairCost(for: 1), 0)
+        XCTAssertEqual(CityRoadMaintenance.repairCost(for: 0.60), 60)
+
+        var state = CityGameState.newCity(seed: 42)
+        let road = try XCTUnwrap(state.tiles.first { $0.kind == .road }?.coordinate)
+        state.treasury = 1_000
+        state.updateTile(at: road) { $0.condition = 0.60 }
+        let beforeRepair = state
+
+        guard case .success(let cost) = CitySimulation.repairRoad(at: road, in: &state) else {
+            return XCTFail("Expected worn road repair to succeed")
+        }
+        XCTAssertEqual(cost, 60)
+        XCTAssertEqual(state.treasury, 940)
+        XCTAssertEqual(state.tile(at: road)?.condition, 1)
+
+        var insufficient = beforeRepair
+        insufficient.treasury = 10
+        guard case .failure(let rejection) = CitySimulation.repairRoad(
+            at: road,
+            in: &insufficient
+        ) else {
+            return XCTFail("Expected insufficient-funds repair rejection")
+        }
+        XCTAssertEqual(rejection, .insufficientFunds(required: 60, available: 10))
+        XCTAssertEqual(insufficient.tile(at: road)?.condition, 0.60)
+
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent(
+            "citysim-road-maintenance-\(UUID().uuidString)",
+            isDirectory: true
+        )
+        defer { try? FileManager.default.removeItem(at: root) }
+        let saves = SaveGameService(rootURL: root)
+        _ = try saves.save(beforeRepair)
+        let resumedWorn = try saves.load()
+        XCTAssertEqual(resumedWorn.state, beforeRepair)
+        XCTAssertEqual(resumedWorn.state.tile(at: road)?.condition, 0.60)
+
+        var repairedAfterResume = resumedWorn.state
+        guard case .success(let resumedCost) = CitySimulation.repairRoad(
+            at: road,
+            in: &repairedAfterResume
+        ) else {
+            return XCTFail("Expected resumed worn road repair to succeed")
+        }
+        XCTAssertEqual(resumedCost, 60)
+        _ = try saves.save(repairedAfterResume)
+        let resumedRepaired = try saves.load()
+        XCTAssertEqual(resumedRepaired.state, repairedAfterResume)
+        XCTAssertEqual(resumedRepaired.state.tile(at: road)?.condition, 1)
+    }
+
+    @MainActor
+    func testSelectedRoadRepairIsPrimaryInDetailsAndRestoresThroughUndo() throws {
+        var state = CityGameState.newCity(seed: 42)
+        let road = try XCTUnwrap(state.tiles.first { $0.kind == .road }?.coordinate)
+        state.updateTile(at: road) { $0.condition = 0.50 }
+        let beforeRepair = state
+        let store = CityGameStore(state: state)
+
+        XCTAssertEqual(
+            InspectorView.selectionActionOrder(for: .road, diagnosisAvailable: false),
+            [.nextAction, .siteActions]
+        )
+        store.primaryAction(at: road)
+        store.repairSelectedRoad()
+
+        XCTAssertEqual(store.state.tile(at: road)?.condition, 1)
+        XCTAssertTrue(store.canUndo)
+        XCTAssertTrue(store.lastFeedback?.contains("capacity restored") == true)
+        store.undoLastAction()
+        XCTAssertEqual(store.state, beforeRepair)
+        XCTAssertEqual(store.lastFeedback, "Last city action undone")
+    }
+
     func testProductionStoryCorpusBuildsAreByteIdentical() throws {
         let first = try ProductionStoryFixtureCorpus.build()
         let second = try ProductionStoryFixtureCorpus.build()

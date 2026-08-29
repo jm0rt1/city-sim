@@ -3587,16 +3587,20 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertEqual(blockTraffic, repeatedTraffic)
         XCTAssertEqual(blockTraffic.count, 2)
         XCTAssertEqual(cityTraffic.count, 3)
-        XCTAssertEqual(Set(cityTraffic.map(\.coordinate)).count, cityTraffic.count)
+        XCTAssertEqual(Set(cityTraffic.map(\.residenceCoordinate)).count, cityTraffic.count)
         for placement in cityTraffic {
-            XCTAssertEqual(state.tile(at: placement.coordinate)?.kind, .road)
-            XCTAssertGreaterThanOrEqual(
-                RoadConnectionMask.resolving(
-                    at: placement.coordinate,
-                    in: state
-                ).connectionCount,
-                2
-            )
+            XCTAssertEqual(state.tile(at: placement.residenceCoordinate)?.kind, .residential)
+            XCTAssertGreaterThanOrEqual(placement.route.count, 2)
+            XCTAssertEqual(placement.coordinate, placement.route.first)
+            XCTAssertTrue(placement.route.allSatisfy {
+                state.tile(at: $0)?.kind == .road
+            })
+            for (origin, destination) in zip(placement.route, placement.route.dropFirst()) {
+                XCTAssertEqual(
+                    abs(origin.x - destination.x) + abs(origin.y - destination.y),
+                    1
+                )
+            }
             XCTAssertGreaterThan(placement.intensity, 0)
             XCTAssertLessThanOrEqual(placement.intensity, 1)
         }
@@ -3621,6 +3625,87 @@ final class WorldRenderingTests: XCTestCase {
             )
             XCTAssertTrue(suppressed.isEmpty)
         }
+    }
+
+    @MainActor
+    func testRoadTrafficFollowsAssignedCommuteRoutesAndDropsDisconnectedHomes() throws {
+        let style = WorldVisualStyle()
+        let renderer = AmbientLifeRenderer(
+            style: style,
+            assets: WorldAssetCatalog()
+        )
+        let residence = GridCoordinate(x: 6, y: 10)
+        let articulationRoad = GridCoordinate(x: 6, y: 9)
+        let connected = CityGameState.newCity(seed: 42)
+        let connectedSnapshot = try CityPresentationSnapshot(state: connected)
+        let route = try XCTUnwrap(
+            connectedSnapshot.spatialConsequences.commuteRoutes.first {
+                $0.residenceCoordinate == residence
+            }
+        )
+
+        XCTAssertEqual(route.roadCoordinates.first, articulationRoad)
+        XCTAssertGreaterThan(route.roadCoordinates.count, 2)
+        XCTAssertGreaterThan(route.assignedWorkers, 0)
+        XCTAssertTrue(route.roadCoordinates.allSatisfy {
+            connected.tile(at: $0)?.kind == .road
+        })
+
+        let visible = renderer.roadTrafficPlacements(
+            in: connected,
+            consequences: connectedSnapshot.spatialConsequences,
+            detail: .city
+        )
+        let assignedRoutes = Set(
+            connectedSnapshot.spatialConsequences.commuteRoutes.map(\.roadCoordinates)
+        )
+        XCTAssertFalse(visible.isEmpty)
+        XCTAssertTrue(visible.allSatisfy { assignedRoutes.contains($0.route) })
+        XCTAssertTrue(visible.contains { $0.route.count > 2 })
+
+        let animated = renderer.makeRoadTraffic(
+            placements: visible,
+            in: connected,
+            detail: .city,
+            reducedMotion: false
+        )
+        let reduced = renderer.makeRoadTraffic(
+            placements: visible,
+            in: connected,
+            detail: .city,
+            reducedMotion: true
+        )
+        XCTAssertEqual(animated.children.count, visible.count)
+        XCTAssertEqual(reduced.children.count, visible.count)
+        XCTAssertTrue(animated.children.allSatisfy {
+            $0.action(forKey: "ambient.road-traffic") != nil
+        })
+        XCTAssertTrue(reduced.children.allSatisfy {
+            $0.action(forKey: "ambient.road-traffic") == nil
+        })
+        for (vehicle, placement) in zip(reduced.children, visible) {
+            let routeOrigin = style.isoPosition(placement.route[0])
+            XCTAssertEqual(hypot(
+                vehicle.position.x - routeOrigin.x,
+                vehicle.position.y - routeOrigin.y
+            ), 2.7, accuracy: 0.01)
+        }
+
+        var disconnected = connected
+        disconnected.updateTile(at: articulationRoad) {
+            $0 = CityTile(coordinate: articulationRoad, kind: .empty)
+        }
+        let disconnectedSnapshot = try CityPresentationSnapshot(state: disconnected)
+        XCTAssertFalse(disconnectedSnapshot.spatialConsequences.commuteRoutes.contains {
+            $0.residenceCoordinate == residence
+        })
+        XCTAssertFalse(renderer.roadTrafficPlacements(
+            in: disconnected,
+            consequences: disconnectedSnapshot.spatialConsequences,
+            detail: .city
+        ).contains {
+            $0.residenceCoordinate == residence
+        })
     }
 
     @MainActor

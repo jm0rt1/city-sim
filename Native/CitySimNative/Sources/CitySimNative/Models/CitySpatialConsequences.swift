@@ -87,6 +87,7 @@ struct CitySpatialConsequenceMap: Equatable, Sendable {
     let width: Int
     let height: Int
     let samples: [CitySpatialConsequence]
+    let commuteRoutes: [CityCommuteRouteReading]
 
     subscript(_ coordinate: GridCoordinate) -> CitySpatialConsequence? {
         guard coordinate.x >= 0, coordinate.y >= 0,
@@ -112,6 +113,7 @@ struct CitySpatialConsequenceMap: Equatable, Sendable {
         let industrialDistances = DistanceField(width: gridWidth, height: gridHeight, sources: industrialSources)
         let parkDistances = DistanceField(width: gridWidth, height: gridHeight, sources: parkSources)
         let traffic = CityTrafficAnalysis(state: state)
+        commuteRoutes = traffic.commuteRoutes
         let civicServices = CityCivicServiceAnalysis(state: state)
         let powerCapacityFactor = Self.capacityFactor(capacity: state.powerCapacity, used: state.powerUsed)
         let waterCapacityFactor = Self.capacityFactor(capacity: state.waterCapacity, used: state.waterUsed)

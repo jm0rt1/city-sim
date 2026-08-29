@@ -28,8 +28,11 @@ final class AmbientLifeRenderer {
     }
 
     struct RoadTrafficPlacement: Equatable, Sendable {
-        let coordinate: GridCoordinate
+        let residenceCoordinate: GridCoordinate
+        let route: [GridCoordinate]
         let intensity: Double
+
+        var coordinate: GridCoordinate { route.first ?? residenceCoordinate }
     }
 
     struct SidewalkSlot: Hashable, Sendable {
@@ -603,25 +606,40 @@ final class AmbientLifeRenderer {
         detail: CameraDetailLevel
     ) -> [RoadTrafficPlacement] {
         let limit = detail == .city ? 3 : 2
-        let candidates = state.tiles.filter { tile in
-            tile.kind == .road
-                && RoadConnectionMask.resolving(
-                    at: tile.coordinate,
-                    in: state
-                ).connectionCount >= 2
-                && (Self.presentationBand(
-                    for: consequences[tile.coordinate]?.trafficPressure
-                ) ?? 0) > 0
+        let candidates: [RoadTrafficPlacement] = consequences.commuteRoutes.compactMap {
+            commute -> RoadTrafficPlacement? in
+            guard commute.roadCoordinates.count >= 2,
+                  commute.assignedWorkers > 0 else { return nil }
+            let peakPressure = commute.roadCoordinates.compactMap {
+                consequences[$0]?.trafficPressure
+            }.max() ?? 0
+            guard (Self.presentationBand(for: peakPressure) ?? 0) > 0 else {
+                return nil
+            }
+            return RoadTrafficPlacement(
+                residenceCoordinate: commute.residenceCoordinate,
+                route: commute.roadCoordinates,
+                intensity: peakPressure
+            )
+        }.sorted { lhs, rhs in
+            let leftBand = Self.presentationBand(for: lhs.intensity) ?? 0
+            let rightBand = Self.presentationBand(for: rhs.intensity) ?? 0
+            if leftBand != rightBand { return leftBand > rightBand }
+            if lhs.route.count != rhs.route.count { return lhs.route.count > rhs.route.count }
+            if lhs.residenceCoordinate.y != rhs.residenceCoordinate.y {
+                return lhs.residenceCoordinate.y < rhs.residenceCoordinate.y
+            }
+            return lhs.residenceCoordinate.x < rhs.residenceCoordinate.x
         }
-        var selected: [CityTile] = []
+        var selected: [RoadTrafficPlacement] = []
         for band in stride(from: 3, through: 1, by: -1) {
             for candidate in candidates where selected.count < limit {
-                guard Self.presentationBand(
-                    for: consequences[candidate.coordinate]?.trafficPressure
-                ) == UInt8(band) else { continue }
+                guard Self.presentationBand(for: candidate.intensity) == UInt8(band) else {
+                    continue
+                }
                 let separated = selected.allSatisfy {
-                    abs($0.coordinate.x - candidate.coordinate.x)
-                        + abs($0.coordinate.y - candidate.coordinate.y) >= 3
+                    abs($0.residenceCoordinate.x - candidate.residenceCoordinate.x)
+                        + abs($0.residenceCoordinate.y - candidate.residenceCoordinate.y) >= 3
                 }
                 guard separated else { continue }
                 selected.append(candidate)
@@ -629,19 +647,15 @@ final class AmbientLifeRenderer {
         }
         if selected.count < limit {
             for candidate in candidates where selected.count < limit {
-                guard !selected.contains(where: {
-                    $0.coordinate == candidate.coordinate
-                }) else { continue }
+                guard !selected.contains(candidate) else { continue }
                 selected.append(candidate)
             }
         }
-        return selected.map { tile in
-            let band = Self.presentationBand(
-                for: consequences[tile.coordinate]?.trafficPressure
-            ) ?? 1
-            return RoadTrafficPlacement(
-                coordinate: tile.coordinate,
-                intensity: Double(band) / 3
+        return selected.map { placement in
+            RoadTrafficPlacement(
+                residenceCoordinate: placement.residenceCoordinate,
+                route: placement.route,
+                intensity: Double(Self.presentationBand(for: placement.intensity) ?? 1) / 3
             )
         }
     }
@@ -655,43 +669,34 @@ final class AmbientLifeRenderer {
         let traffic = SKNode()
         traffic.name = "world.traffic.local"
         for (index, placement) in placements.enumerated() {
-            let connections = RoadConnectionMask.resolving(
-                at: placement.coordinate,
-                in: state
+            let points = vehicleRoutePoints(for: placement.route, index: index)
+            guard points.count >= 2 else { continue }
+            let initialVector = CGPoint(
+                x: points[1].x - points[0].x,
+                y: points[1].y - points[0].y
             )
-            guard connections.connectionCount >= 2,
-                  let route = vehicleRoute(
-                      at: placement.coordinate,
-                      connections: connections,
-                      index: index
-                  ) else { continue }
 
             let vehicle = makeVehicle(
-                coordinate: placement.coordinate,
+                coordinate: placement.residenceCoordinate,
                 intensity: placement.intensity,
                 detail: detail,
-                routeVector: route.vector,
+                routeVector: initialVector,
                 index: index
             )
-            vehicle.position = CGPoint(
-                x: style.isoPosition(placement.coordinate).x + route.start.x,
-                y: style.isoPosition(placement.coordinate).y + route.start.y
-            )
-            vehicle.zPosition = style.depth(for: placement.coordinate) + 54
+            vehicle.position = points[0]
+            vehicle.zPosition = style.depth(for: placement.route[0]) + 54
 
-            if !reducedMotion, detail != .city {
+            if !reducedMotion {
                 let phase = Double(WorldVisualSeed.unit(
-                    for: placement.coordinate,
+                    for: placement.residenceCoordinate,
                     kind: .road,
                     salt: 0x7AFF10 + UInt64(index)
                 )) * 1.2
-                let drive = SKAction.sequence([
-                    .moveBy(x: route.vector.x, y: route.vector.y, duration: 2.8),
-                    .fadeOut(withDuration: 0.12),
-                    .moveBy(x: -route.vector.x, y: -route.vector.y, duration: 0),
-                    .fadeIn(withDuration: 0.12),
-                    .wait(forDuration: 0.45),
-                ])
+                let drive = commuteDriveAction(
+                    points: points,
+                    route: placement.route,
+                    vehicle: vehicle
+                )
                 vehicle.run(
                     .sequence([.wait(forDuration: phase), .repeatForever(drive)]),
                     withKey: "ambient.road-traffic"
@@ -702,37 +707,63 @@ final class AmbientLifeRenderer {
         return traffic
     }
 
-    private func vehicleRoute(
-        at coordinate: GridCoordinate,
-        connections: RoadConnectionMask,
+    private func vehicleRoutePoints(
+        for route: [GridCoordinate],
         index: Int
-    ) -> (start: CGPoint, vector: CGPoint)? {
-        let edges = connections.edges
-        guard edges.count >= 2 else { return nil }
-        let startIndex = WorldVisualSeed.variant(
-            count: edges.count,
-            for: coordinate,
-            kind: .road,
-            salt: 0x7AFF20 + UInt64(index)
-        )
-        let incoming = edges[startIndex]
-        let outgoing = connections.contains(incoming.opposite)
-            ? incoming.opposite
-            : edges[(startIndex + 1) % edges.count]
-        let incomingSocket = style.roadSocket(for: incoming, overreach: -5)
-        let outgoingSocket = style.roadSocket(for: outgoing, overreach: -5)
-        let vector = CGPoint(
-            x: outgoingSocket.x - incomingSocket.x,
-            y: outgoingSocket.y - incomingSocket.y
-        )
-        let length = max(0.001, hypot(vector.x, vector.y))
+    ) -> [CGPoint] {
+        guard route.count >= 2 else { return [] }
+        let centers = route.map(style.isoPosition)
         let laneOffset = CGFloat(index.isMultiple(of: 2) ? 1 : -1) * 2.7
-        let perpendicular = CGPoint(x: -vector.y / length, y: vector.x / length)
-        let start = CGPoint(
-            x: incomingSocket.x + perpendicular.x * laneOffset,
-            y: incomingSocket.y + perpendicular.y * laneOffset
+        return centers.indices.map { pointIndex in
+            let prior = centers[max(0, pointIndex - 1)]
+            let next = centers[min(centers.count - 1, pointIndex + 1)]
+            let vector = CGPoint(x: next.x - prior.x, y: next.y - prior.y)
+            let length = max(0.001, hypot(vector.x, vector.y))
+            let perpendicular = CGPoint(x: -vector.y / length, y: vector.x / length)
+            return CGPoint(
+                x: centers[pointIndex].x + perpendicular.x * laneOffset,
+                y: centers[pointIndex].y + perpendicular.y * laneOffset
+            )
+        }
+    }
+
+    private func commuteDriveAction(
+        points: [CGPoint],
+        route: [GridCoordinate],
+        vehicle: SKNode
+    ) -> SKAction {
+        var actions: [SKAction] = []
+        for segmentIndex in 0..<(points.count - 1) {
+            let start = points[segmentIndex]
+            let destination = points[segmentIndex + 1]
+            let vector = CGPoint(
+                x: destination.x - start.x,
+                y: destination.y - start.y
+            )
+            let heading = atan2(vector.y, vector.x)
+            let destinationCoordinate = route[segmentIndex + 1]
+            actions.append(.run { [weak vehicle] in
+                vehicle?.zPosition = self.style.depth(for: destinationCoordinate) + 54
+            })
+            actions.append(.rotate(toAngle: heading, duration: 0.08))
+            actions.append(.move(
+                to: destination,
+                duration: max(0.45, hypot(vector.x, vector.y) / 72)
+            ))
+        }
+        let initialVector = CGPoint(
+            x: points[1].x - points[0].x,
+            y: points[1].y - points[0].y
         )
-        return (start, vector)
+        actions.append(.fadeOut(withDuration: 0.12))
+        actions.append(.run { [weak vehicle] in
+            vehicle?.position = points[0]
+            vehicle?.zPosition = self.style.depth(for: route[0]) + 54
+            vehicle?.zRotation = atan2(initialVector.y, initialVector.x)
+        })
+        actions.append(.fadeIn(withDuration: 0.12))
+        actions.append(.wait(forDuration: 0.45))
+        return .sequence(actions)
     }
 
     private func makeVehicle(

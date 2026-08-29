@@ -47,11 +47,19 @@ struct CityCommuteAccessReading: Equatable, Sendable {
     let access: Double
 }
 
+struct CityCommuteRouteReading: Equatable, Sendable {
+    let residenceCoordinate: GridCoordinate
+    let roadCoordinates: [GridCoordinate]
+    let assignedWorkers: Int
+    let access: Double
+}
+
 struct CityTrafficAnalysis: Equatable, Sendable {
     let width: Int
     let height: Int
     let roadSamples: [CityTrafficRoadReading?]
     let placeSamples: [CityTrafficPlaceReading?]
+    let commuteRoutes: [CityCommuteRouteReading]
     let residentWeightedCommuteAccess: Double
 
     subscript(_ coordinate: GridCoordinate) -> CityTrafficRoadReading? {
@@ -282,6 +290,7 @@ struct CityTrafficAnalysis: Equatable, Sendable {
         roadSamples = resolvedRoads
 
         var commuteReadings: [GridCoordinate: CityCommuteAccessReading] = [:]
+        var resolvedCommuteRoutes: [CityCommuteRouteReading] = []
         var weightedCommuteAccess = 0.0
         var residentWeight = 0.0
         let commuteSampleWidth = state.gridWidth
@@ -320,6 +329,14 @@ struct CityTrafficAnalysis: Equatable, Sendable {
                     routeReliability: routeReliability,
                     access: access
                 )
+                if let route, route.count >= 2, requiredWorkers > 0 {
+                    resolvedCommuteRoutes.append(CityCommuteRouteReading(
+                        residenceCoordinate: residence.tile.coordinate,
+                        roadCoordinates: route,
+                        assignedWorkers: min(requiredWorkers, reachableJobs),
+                        access: access
+                    ))
+                }
             }
             if residents > 0 {
                 weightedCommuteAccess += access * Double(residents)
@@ -329,6 +346,12 @@ struct CityTrafficAnalysis: Equatable, Sendable {
         residentWeightedCommuteAccess = residentWeight > 0
             ? Self.clamp(weightedCommuteAccess / residentWeight)
             : 1
+        commuteRoutes = resolvedCommuteRoutes.sorted {
+            if $0.residenceCoordinate.y == $1.residenceCoordinate.y {
+                return $0.residenceCoordinate.x < $1.residenceCoordinate.x
+            }
+            return $0.residenceCoordinate.y < $1.residenceCoordinate.y
+        }
 
         if materializesSamples {
             var resolvedPlaces = Array<CityTrafficPlaceReading?>(repeating: nil, count: sampleCount)

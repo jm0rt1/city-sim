@@ -99,6 +99,7 @@ private struct AmbientActivitySignature: Equatable {
 
 private struct AmbientTrafficSignature: Equatable {
     let coordinate: GridCoordinate
+    let route: [GridCoordinate]
     let presentationBand: UInt8
 }
 
@@ -1282,6 +1283,7 @@ final class CityScene: SKScene {
         placements.map { placement in
             AmbientTrafficSignature(
                 coordinate: placement.coordinate,
+                route: placement.route,
                 presentationBand: UInt8((placement.intensity * 3).rounded())
             )
         }

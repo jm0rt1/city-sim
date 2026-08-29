@@ -454,7 +454,7 @@ final class SessionPlatformTests: XCTestCase {
         XCTAssertEqual(commerceBeforeVictory.tick, 840)
         XCTAssertEqual(industryBeforeVictory.status, .playing)
         XCTAssertEqual(commerceBeforeVictory.status, .playing)
-        XCTAssertEqual(industryBeforeVictory.progression?.townCharterQualifyingCycles, 5)
+        XCTAssertEqual(industryBeforeVictory.progression?.townCharterQualifyingCycles, 4)
         XCTAssertEqual(commerceBeforeVictory.progression?.townCharterQualifyingCycles, 11)
         XCTAssertFalse(industryBeforeVictory.progression?.townCharterAwarded ?? true)
         XCTAssertFalse(commerceBeforeVictory.progression?.townCharterAwarded ?? true)
@@ -464,8 +464,8 @@ final class SessionPlatformTests: XCTestCase {
         XCTAssertEqual(commerceBeforeVictory.population, 510)
         XCTAssertEqual(industryBeforeVictory.jobs, 356)
         XCTAssertEqual(commerceBeforeVictory.jobs, 356)
-        XCTAssertEqual(industryBeforeVictory.happiness, 52.39538613925131, accuracy: 0.001)
-        XCTAssertEqual(commerceBeforeVictory.happiness, 55.79318448258838, accuracy: 0.001)
+        XCTAssertEqual(industryBeforeVictory.happiness, 52.224361536114934, accuracy: 0.001)
+        XCTAssertEqual(commerceBeforeVictory.happiness, 55.620140902050494, accuracy: 0.001)
         XCTAssertEqual(
             CityAnalytics(state: industryBeforeVictory).projectedBalance,
             413.65,
@@ -480,13 +480,13 @@ final class SessionPlatformTests: XCTestCase {
             Set(try (0..<5).map {
                 _ in try CityStateFingerprinter.fingerprint(industryBeforeVictory).digest
             }),
-            Set(["c8bf903f26b72d23eac03e115255e4cc5dd4d129c87ba4c18420bc544149a040"])
+            Set(["3b581d85a449bc720010877780d90640a389952855fb5b6a5211aff025a3c418"])
         )
         XCTAssertEqual(
             Set(try (0..<5).map {
                 _ in try CityStateFingerprinter.fingerprint(commerceBeforeVictory).digest
             }),
-            Set(["5d38be04617364afc08591e16954c245a1dfe49684cfc804f5899e68ec59c84a"])
+            Set(["4855ee36eee692ec9984743b3be01f89ba8671aaf17293c01aabecca6ac0d869"])
         )
 
         XCTAssertEqual(
@@ -536,34 +536,34 @@ final class SessionPlatformTests: XCTestCase {
         XCTAssertFalse(commerce.progression?.secondAct?.regionalCapitalAwarded ?? true)
         XCTAssertEqual(
             try CityStateFingerprinter.fingerprint(industry).digest,
-            "3bde7d5d2478f2b919b45be9cd2b33e309699ad28c12914cdaab60581f6af9f2"
+            "ed95cc022621295197a509737ff2e9c9198a8c5553dbf12a8eea1ffc02fd8296"
         )
         XCTAssertEqual(
             try CityStateFingerprinter.fingerprint(commerce).digest,
-            "d2f435f785770e409d450acb25b8609acfb4758c6da68fc13a2e44a9879cc751"
+            "cb55030b9612c051e298175e288d9f0cd1e323c97787d8d7f2a5874c75955f6d"
         )
         XCTAssertEqual(
             Set(try (0..<5).map { _ in try CityStateFingerprinter.fingerprint(industry).digest }),
-            Set(["3bde7d5d2478f2b919b45be9cd2b33e309699ad28c12914cdaab60581f6af9f2"])
+            Set(["ed95cc022621295197a509737ff2e9c9198a8c5553dbf12a8eea1ffc02fd8296"])
         )
         XCTAssertEqual(
             Set(try (0..<5).map { _ in try CityStateFingerprinter.fingerprint(commerce).digest }),
-            Set(["d2f435f785770e409d450acb25b8609acfb4758c6da68fc13a2e44a9879cc751"])
+            Set(["cb55030b9612c051e298175e288d9f0cd1e323c97787d8d7f2a5874c75955f6d"])
         )
     }
 
     func testStrategyPhaseFingerprintsAreFrozen() throws {
         let expected = [
-            "commercialStewardship.opportunity": "d118f62127439b6ef65dcdb25e40df9f659866f078b2841198349f9e64788814",
-            "commercialStewardship.complication": "cfe4b85423c620cb22a4669bfde2d9db13f989824a79034c46c227d8f8a8a988",
-            "commercialStewardship.setback": "f7d5c3e455a274d586d77980e110214ec49019819fe935617e3014d3e2742295",
-            "commercialStewardship.recovery": "f3ca50ee08623c0938dabaa5ce9eb9c06cc630d0cd4e50bac3d8870fb0506772",
-            "commercialStewardship.completed": "6f5a0a5d5cb61b31e94694f76a1d5e594218a55d9c652b6db8d903de70a7db2f",
-            "industrialExpansion.opportunity": "96fd9bf4381c1957ca6b159a06289738cc555c2a52193a3dbd655da560adfece",
-            "industrialExpansion.complication": "6704156aec2dd1142e17a2c6c3743c515933163230d5cc7b17c7051f8f35c299",
-            "industrialExpansion.setback": "5ff9d3f5f6ba7b5799a7321ed81172085671986c727403b687518536441aecb2",
-            "industrialExpansion.recovery": "3ed7249314dc9b6469b9bb4c42d7984dbbacc613f3a1d8a04276c8da88eb38b3",
-            "industrialExpansion.completed": "befbccb220eb27798420d63a032e6a9eab334078652f22c88b221994892ceb46"
+            "commercialStewardship.opportunity": "d88cfc4c057fd5535cfd4e60fa7a8905ffb9fb5b59709492cc9c5f49a88e7dec",
+            "commercialStewardship.complication": "acae994bea4246f75ed2c5b1518b378803c73c7853ef7528d276e9bd769621a6",
+            "commercialStewardship.setback": "3e95b463a04b4dd42ab755b3b029a67f10e42ea87143fe6f4cb9b1d8aa8c60ac",
+            "commercialStewardship.recovery": "0e0fd188e4445dbf8e1cc04e815fd4d499574365b4cdad20406cb9271228e283",
+            "commercialStewardship.completed": "847ac71aea6bada9e2232d32f71b81a921bc9a6874b090d44d9e1d181b537d42",
+            "industrialExpansion.opportunity": "06db24a5dda82e3831934871321692a4e5bd220c5414aedc02ccb87688c09dde",
+            "industrialExpansion.complication": "5a09c48230c3040498e5e71b38fd38a348573460e40799b9816655bd48ad9dc8",
+            "industrialExpansion.setback": "db4dfffa8cc727bbde3dad31151a749cd09d3dc5f994394efff2ccdf0a9c9b8f",
+            "industrialExpansion.recovery": "63cbd32c3ebe24cff5098c6a6792d3452467c6cc4fac02258f22202e076c505d",
+            "industrialExpansion.completed": "be313c6dd7d4bd1e9b1563178423814c14c4ddb733cf5bcd8349b271d937e79b"
         ]
 
         for strategy in [CityStrategy.commercialStewardship, .industrialExpansion] {

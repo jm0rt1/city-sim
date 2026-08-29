@@ -125,7 +125,11 @@ final class CityBenchmarkModeTests: XCTestCase {
         XCTAssertFalse(saveService.hasResumeCandidate)
 
         XCTAssertTrue(store.startBenchmark())
-        for _ in 0..<300 where store.benchmarkSession?.phase == .running {
+        let benchmark = CityBenchmarkDefinition.verticalSlice
+        let completionPollBudget = Int(ceil(
+            Double(benchmark.pulseCount) * benchmark.provisionalPulseBudgetMilliseconds / 10
+        )) + 100
+        for _ in 0..<completionPollBudget where store.benchmarkSession?.phase == .running {
             try await Task.sleep(for: .milliseconds(10))
         }
         XCTAssertEqual(store.benchmarkSession?.phase, .complete)

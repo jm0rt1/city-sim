@@ -1,74 +1,74 @@
 {
-  "digest" : "c170f90c381a650daf2e7bcd13d441965b7cc995299dc5606894400f6bd41c77",
+  "digest" : "7f540f5ae9fa359d88d105e4dd06720343e4a64fd77f25938905323961037fab",
   "fingerprintVersion" : 1,
   "schemaVersion" : 1,
   "state" : {
-    "approval" : 93.72120590835266,
+    "approval" : 92.65524712212668,
     "cityName" : "New Arcadia",
     "demand" : {
-      "commercial" : 0.854,
-      "industrial" : 0.34723529411764703,
-      "residential" : 0.6871075402222058
+      "commercial" : 0.855,
+      "industrial" : 0.34764705882352936,
+      "residential" : 0.6858776101686682
     },
     "gridHeight" : 24,
     "gridWidth" : 24,
-    "happiness" : 51.54505563110881,
-    "jobs" : 394,
+    "happiness" : 51.34369875694688,
+    "jobs" : 395,
     "messages" : [
       {
         "detail" : "Twelve durable days proved New Arcadia's freight network. Regional Capital recognition grants $12,000, 3 happiness, and a permanent industrial-expansion victory.",
-        "id" : "1060-Regional Capital Recognized",
+        "id" : "1064-Regional Capital Recognized",
         "severity" : "good",
-        "tick" : 1060,
+        "tick" : 1064,
         "title" : "Regional Capital Recognized"
       },
       {
         "detail" : "New utility reserves passed the grid audit. Repairs stabilized the freight district while 1 parcel remains weathered as a visible recovery record. The city recovered $4,000 and 3 happiness; now sustain 525 residents, $15,000, 44 happiness, 92% employment, balanced cashflow, and 20% utility reserve for 12 days.",
-        "id" : "1012-Regional Freight Recovery",
+        "id" : "1016-Regional Freight Recovery",
         "severity" : "good",
-        "tick" : 1012,
+        "tick" : 1016,
         "title" : "Regional Freight Recovery"
       },
       {
-        "detail" : "Water Tower at block 10, 9 came online. Water capacity is 810 against 436 current use, leaving 374 water spare. The added capacity protects growth at the next daily review.",
-        "id" : "1012-Construction Online",
+        "detail" : "Water Tower at block 10, 9 came online. Water capacity is 810 against 437 current use, leaving 373 water spare. The added capacity protects growth at the next daily review.",
+        "id" : "1016-Construction Online",
         "severity" : "good",
-        "tick" : 1012,
+        "tick" : 1016,
         "title" : "Construction Online"
       },
       {
         "detail" : "Reach 500 residents, $10,000 treasury, non-negative cashflow, 90% employment, full utilities with 15% reserve, and 52% happiness; keep every zone active for 12 consecutive days. Growth needs job openings and utility headroom.",
-        "id" : "1004-Town Charter Standards",
+        "id" : "1008-Town Charter Standards",
         "severity" : "information",
-        "tick" : 1004,
+        "tick" : 1008,
         "title" : "Town Charter Standards"
       },
       {
         "detail" : "Power Plant at block 9, 9 came online. Power capacity is 900 against 499 current use, leaving 401 power spare. The added capacity protects growth at the next daily review.",
-        "id" : "1004-Construction Online",
+        "id" : "1008-Construction Online",
         "severity" : "good",
-        "tick" : 1004,
+        "tick" : 1008,
         "title" : "Construction Online"
       },
       {
         "detail" : "The grid audit exposed freight strain, costing $7,000 and 8 happiness. 2 developed industrial parcels now show the damage. Add a third Power Plant and Water Tower to prove regional reserve capacity.",
-        "id" : "996-Regional Freight Overload",
+        "id" : "1000-Regional Freight Overload",
         "severity" : "critical",
-        "tick" : 996,
+        "tick" : 1000,
         "title" : "Regional Freight Overload"
       },
       {
-        "detail" : "The Charter has brought a regional freight-grid audit. A $7,000 repair and livability shock lands by Day 250. Add a third Power Plant and Water Tower after the pressure lands.",
-        "id" : "932-Regional Grid Mandate",
+        "detail" : "The Charter has brought a regional freight-grid audit. A $7,000 repair and livability shock lands by Day 251. Add a third Power Plant and Water Tower after the pressure lands.",
+        "id" : "936-Regional Grid Mandate",
         "severity" : "warning",
-        "tick" : 932,
+        "tick" : 936,
         "title" : "Regional Grid Mandate"
       },
       {
-        "detail" : "New Arcadia sustained healthy finances, employment, utilities, and livability for 12 consecutive days. The Charter is permanent; a Regional Capital mandate arrives by Day 234.",
-        "id" : "868-Town Charter Awarded",
+        "detail" : "New Arcadia sustained healthy finances, employment, utilities, and livability for 12 consecutive days. The Charter is permanent; a Regional Capital mandate arrives by Day 235.",
+        "id" : "872-Town Charter Awarded",
         "severity" : "good",
-        "tick" : 868,
+        "tick" : 872,
         "title" : "Town Charter Awarded"
       },
       {
@@ -100,9 +100,9 @@
         "title" : "Neighborhood Upgraded"
       }
     ],
-    "population" : 565,
+    "population" : 566,
     "powerCapacity" : 900,
-    "powerUsed" : 510,
+    "powerUsed" : 511,
     "progression" : {
       "secondAct" : {
         "phase" : "completed",
@@ -148,7 +148,7 @@
       ]
     },
     "taxRate" : 0.1,
-    "tick" : 1060,
+    "tick" : 1064,
     "tiles" : [
       {
         "condition" : 1,
@@ -6487,8 +6487,8 @@
         "occupancy" : 0
       }
     ],
-    "treasury" : 75214.45,
+    "treasury" : 75683.9,
     "waterCapacity" : 810,
-    "waterUsed" : 445
+    "waterUsed" : 446
   }
 }

@@ -404,7 +404,7 @@ final class GameplayLoopTests: XCTestCase {
         XCTAssertLessThanOrEqual(commerceAwardTick, 2_200)
         XCTAssertLessThanOrEqual(industryAwardTick, 2_200)
         XCTAssertEqual(commerceAwardTick, 844)
-        XCTAssertEqual(industryAwardTick, 868, "The deterministic first severe storm and recovery add 24 ticks.")
+        XCTAssertEqual(industryAwardTick, 872, "The deterministic first severe storm and recovery add 28 ticks.")
         XCTAssertGreaterThan(commerce.happiness, industry.happiness)
         XCTAssertGreaterThan(CityAnalytics(state: industry).pollutionPressure, CityAnalytics(state: commerce).pollutionPressure)
         XCTAssertGreaterThan(CityAnalytics(state: industry).jobCapacity, CityAnalytics(state: commerce).jobCapacity)
@@ -725,7 +725,7 @@ final class GameplayLoopTests: XCTestCase {
             XCTAssertEqual(state.progression?.strategy?.recoveryResolution, resolution)
             XCTAssertEqual(CityAnalytics(state: state).strategyRecoveryResolution, resolution)
             XCTAssertTrue(state.progression?.townCharterAwarded ?? false, resolution.rawValue)
-            let expectedCharterTick = resolution == .industrialUtilityExpansion ? 868 : 844
+            let expectedCharterTick = resolution == .industrialUtilityExpansion ? 872 : 844
             XCTAssertEqual(state.tick, expectedCharterTick, resolution.rawValue)
             XCTAssertEqual(state.status, .playing, resolution.rawValue)
             XCTAssertGreaterThan(state.treasury, 0, resolution.rawValue)

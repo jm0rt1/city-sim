@@ -34,6 +34,17 @@ struct CityTrafficPlaceReading: Identifiable, Equatable, Sendable {
 
     let coordinate: GridCoordinate
     let exposure: Double
+    let commute: CityCommuteAccessReading?
+}
+
+struct CityCommuteAccessReading: Equatable, Sendable {
+    static let healthyAccessThreshold = 0.75
+
+    let reachableJobs: Int
+    let requiredWorkers: Int
+    let routeLength: Int?
+    let routeReliability: Double
+    let access: Double
 }
 
 struct CityTrafficAnalysis: Equatable, Sendable {
@@ -41,6 +52,7 @@ struct CityTrafficAnalysis: Equatable, Sendable {
     let height: Int
     let roadSamples: [CityTrafficRoadReading?]
     let placeSamples: [CityTrafficPlaceReading?]
+    let residentWeightedCommuteAccess: Double
 
     subscript(_ coordinate: GridCoordinate) -> CityTrafficRoadReading? {
         guard let index = index(for: coordinate) else { return nil }
@@ -52,7 +64,16 @@ struct CityTrafficAnalysis: Equatable, Sendable {
         return placeSamples[index]
     }
 
+    static func residentWeightedCommuteAccess(in state: CityGameState) -> Double {
+        CityTrafficAnalysis(state: state, materializesSamples: false)
+            .residentWeightedCommuteAccess
+    }
+
     init(state: CityGameState) {
+        self.init(state: state, materializesSamples: true)
+    }
+
+    private init(state: CityGameState, materializesSamples: Bool) {
         width = state.gridWidth
         height = state.gridHeight
         let sampleCount = width * height
@@ -66,6 +87,7 @@ struct CityTrafficAnalysis: Equatable, Sendable {
             roadSet: roadSet
         )
         var loads = Array(repeating: 0.0, count: sampleCount)
+        var assignedCommuteRoutes: [GridCoordinate: [GridCoordinate]] = [:]
         let capacities = Self.roadCapacities(
             coordinates: roadCoordinates,
             roadSet: roadSet,
@@ -93,123 +115,256 @@ struct CityTrafficAnalysis: Equatable, Sendable {
             tiles: workplaces,
             aggregateOccupancy: state.jobs
         )
-
-        if !roadCoordinates.isEmpty, !residences.isEmpty, !workplaces.isEmpty {
-            for residence in residences {
-                let origins = Self.frontageRoads(for: residence.coordinate, roadSet: roadSet)
-                guard !origins.isEmpty else { continue }
-                let originComponents = Set(origins.compactMap { roadComponents[$0] })
-
-                let destinations = workplaces
-                    .sorted { lhs, rhs in
-                        let leftDistance = Self.manhattan(residence.coordinate, lhs.coordinate)
-                        let rightDistance = Self.manhattan(residence.coordinate, rhs.coordinate)
-                        if leftDistance != rightDistance { return leftDistance < rightDistance }
-                        return Self.rowMajor(lhs.coordinate, rhs.coordinate)
-                    }
-                var weightedDestinations: [WeightedDestination] = []
-                for workplace in destinations {
-                    if weightedDestinations.count == 3 { break }
-                    let frontages = Self.frontageRoads(for: workplace.coordinate, roadSet: roadSet)
-                    let reachableFrontages = frontages.filter {
-                        roadComponents[$0].map(originComponents.contains) ?? false
-                    }
-                    guard !reachableFrontages.isEmpty else { continue }
-                    let utilization = Self.utilization(
-                        of: workplace,
-                        aggregateFallback: workplaceFallbackUtilization
-                    )
-                    let demand: Double
-                    switch workplace.kind {
-                    case .commercial:
-                        demand = Self.clamp(state.demand.commercial)
-                    case .industrial:
-                        demand = Self.clamp(state.demand.industrial)
-                    default:
-                        demand = 0
-                    }
-                    let weight = utilization * (0.65 + demand * 0.35)
-                    if weight > 0 {
-                        weightedDestinations.append(
-                            WeightedDestination(frontages: reachableFrontages, weight: weight)
-                        )
-                    }
-                }
-                let totalWeight = weightedDestinations.reduce(0) { $0 + $1.weight }
-                guard totalWeight > 0 else { continue }
-
-                let averageDestinationWeight = totalWeight / Double(weightedDestinations.count)
-                let sourceDemand = Self.utilization(
+        let residenceRoutes = residences.map { residence in
+            let frontages = Self.frontageRoads(for: residence.coordinate, roadSet: roadSet)
+            return (
+                tile: residence,
+                frontages: frontages,
+                components: Set(frontages.compactMap { roadComponents[$0] }),
+                residents: Self.estimatedOccupancy(
                     of: residence,
                     aggregateFallback: residentialFallbackUtilization
                 )
+            )
+        }
+        let workplaceRoutes = workplaces.map { workplace in
+            let frontages = Self.frontageRoads(for: workplace.coordinate, roadSet: roadSet)
+            let utilization = Self.utilization(
+                of: workplace,
+                aggregateFallback: workplaceFallbackUtilization
+            )
+            let demand: Double
+            switch workplace.kind {
+            case .commercial:
+                demand = Self.clamp(state.demand.commercial)
+            case .industrial:
+                demand = Self.clamp(state.demand.industrial)
+            default:
+                demand = 0
+            }
+            return (
+                tile: workplace,
+                frontages: frontages,
+                components: Set(frontages.compactMap { roadComponents[$0] }),
+                jobs: Self.estimatedOccupancy(
+                    of: workplace,
+                    aggregateFallback: workplaceFallbackUtilization
+                ),
+                weight: utilization * (0.65 + demand * 0.35)
+            )
+        }
+        let workplaceFrontages = workplaceRoutes
+            .filter { $0.weight > 0 }
+            .flatMap(\.frontages)
+        let routeWidth = state.gridWidth
+        let routeHeight = state.gridHeight
+        let workplaceRouteTrees = [false, true].map { preferHigherIndexes in
+            Self.workplaceRouteTree(
+                sources: workplaceFrontages,
+                roadSet: roadSet,
+                width: routeWidth,
+                height: routeHeight,
+                preferHigherIndexes: preferHigherIndexes
+            )
+        }
+        var jobsByComponent: [Int: Int] = [:]
+        var activeWeightsByComponent: [Int: [Double]] = [:]
+        for workplace in workplaceRoutes {
+            for component in workplace.components {
+                jobsByComponent[component, default: 0] += workplace.jobs
+                if workplace.weight > 0 {
+                    activeWeightsByComponent[component, default: []].append(workplace.weight)
+                }
+            }
+        }
+        for component in activeWeightsByComponent.keys {
+            activeWeightsByComponent[component]?.sort(by: >)
+            activeWeightsByComponent[component] = Array(
+                activeWeightsByComponent[component, default: []].prefix(3)
+            )
+        }
+        var workplaceSummaries: [GridCoordinate: WorkplaceSummary] = [:]
+        for residence in residenceRoutes {
+            let components = residence.components
+            if components.count == 1, let component = components.first {
+                workplaceSummaries[residence.tile.coordinate] = WorkplaceSummary(
+                    reachableJobs: jobsByComponent[component, default: 0],
+                    activeWeights: activeWeightsByComponent[component, default: []]
+                )
+            } else {
+                let reachable = workplaceRoutes.filter {
+                    !$0.components.isDisjoint(with: components)
+                }
+                workplaceSummaries[residence.tile.coordinate] = WorkplaceSummary(
+                    reachableJobs: reachable.reduce(0) { $0 + $1.jobs },
+                    activeWeights: Array(
+                        reachable.map(\.weight).filter { $0 > 0 }.sorted(by: >).prefix(3)
+                    )
+                )
+            }
+        }
+
+        if !roadCoordinates.isEmpty, !residences.isEmpty, !workplaces.isEmpty {
+            for residence in residenceRoutes {
+                let origins = residence.frontages
+                guard !origins.isEmpty else { continue }
+                let summary = workplaceSummaries[residence.tile.coordinate]
+                    ?? WorkplaceSummary(reachableJobs: 0, activeWeights: [])
+                guard !summary.activeWeights.isEmpty else { continue }
+                var candidateRoutes: [[GridCoordinate]] = []
+                for (index, tree) in workplaceRouteTrees.enumerated() {
+                    guard let route = Self.route(
+                        from: origins,
+                        using: tree,
+                        width: routeWidth,
+                        height: routeHeight,
+                        preferHigherIndexes: index == 1
+                    ), !candidateRoutes.contains(route) else { continue }
+                    candidateRoutes.append(route)
+                }
+                guard let primaryRoute = candidateRoutes.first else { continue }
+                let averageDestinationWeight = summary.activeWeights.reduce(0, +)
+                    / Double(summary.activeWeights.count)
+                let sourceDemand = Self.utilization(
+                    of: residence.tile,
+                    aggregateFallback: residentialFallbackUtilization
+                )
                     * Self.clamp(averageDestinationWeight)
-                for destination in weightedDestinations {
-                    var remainingDemand = sourceDemand * destination.weight / totalWeight
-                    while remainingDemand > 0.000_001 {
-                        let quantum = min(0.20, remainingDemand)
-                        guard let route = Self.leastCostRoute(
-                            from: origins,
-                            to: Set(destination.frontages),
-                            roadSet: roadSet,
+                assignedCommuteRoutes[residence.tile.coordinate] = primaryRoute
+                var remainingDemand = sourceDemand
+                while remainingDemand > 0.000_001 {
+                    let quantum = min(0.50, remainingDemand)
+                    let route = candidateRoutes.enumerated().min { lhs, rhs in
+                        let leftScore = Self.routeLoadScore(
+                            lhs.element,
                             loads: loads,
                             capacities: capacities,
-                            width: width,
-                            height: height
-                        ) else {
-                            break
+                            width: routeWidth
+                        )
+                        let rightScore = Self.routeLoadScore(
+                            rhs.element,
+                            loads: loads,
+                            capacities: capacities,
+                            width: routeWidth
+                        )
+                        if abs(leftScore - rightScore) > 0.000_001 {
+                            return leftScore < rightScore
                         }
-                        for coordinate in route {
-                            loads[coordinate.y * width + coordinate.x] += quantum
-                        }
-                        remainingDemand -= quantum
+                        return lhs.offset < rhs.offset
+                    }?.element ?? primaryRoute
+                    for coordinate in route {
+                        loads[coordinate.y * routeWidth + coordinate.x] += quantum
                     }
+                    remainingDemand -= quantum
                 }
             }
         }
 
-        var resolvedRoads = Array<CityTrafficRoadReading?>(repeating: nil, count: sampleCount)
-        for coordinate in roadCoordinates {
-            let index = coordinate.y * width + coordinate.x
-            let load = loads[index]
-            let capacity = max(0.1, capacities[index])
-            let pressure = Self.clamp(load / capacity)
-            let impact = CityTrafficImpact(pressure: pressure)
-            resolvedRoads[index] = CityTrafficRoadReading(
-                coordinate: coordinate,
-                assignedTrips: load,
-                pressure: pressure,
-                delay: impact.delay,
-                reliability: impact.reliability
-            )
+        var resolvedRoads = materializesSamples
+            ? Array<CityTrafficRoadReading?>(repeating: nil, count: sampleCount)
+            : []
+        if materializesSamples {
+            for coordinate in roadCoordinates {
+                let index = coordinate.y * width + coordinate.x
+                let load = loads[index]
+                let capacity = max(0.1, capacities[index])
+                let pressure = Self.clamp(load / capacity)
+                let impact = CityTrafficImpact(pressure: pressure)
+                resolvedRoads[index] = CityTrafficRoadReading(
+                    coordinate: coordinate,
+                    assignedTrips: load,
+                    pressure: pressure,
+                    delay: impact.delay,
+                    reliability: impact.reliability
+                )
+            }
         }
         roadSamples = resolvedRoads
 
-        var resolvedPlaces = Array<CityTrafficPlaceReading?>(repeating: nil, count: sampleCount)
-        for tile in state.tiles where Self.isCompletedPlace(tile) {
-            let frontages = Self.frontageRoads(for: tile.coordinate, roadSet: roadSet)
-            let exposure: Double
-            if frontages.isEmpty {
-                exposure = 0
+        var commuteReadings: [GridCoordinate: CityCommuteAccessReading] = [:]
+        var weightedCommuteAccess = 0.0
+        var residentWeight = 0.0
+        let commuteSampleWidth = state.gridWidth
+        for residence in residenceRoutes {
+            let residents = residence.residents
+            let requiredWorkers = Int((Double(residents) * 0.70).rounded(.up))
+            let reachableJobs = workplaceSummaries[residence.tile.coordinate]?.reachableJobs ?? 0
+
+            let route = assignedCommuteRoutes[residence.tile.coordinate]
+            let routeLength = route.map { max(0, $0.count - 1) }
+            let routeReliability = route?.map { coordinate in
+                let index = coordinate.y * commuteSampleWidth + coordinate.x
+                let pressure = Self.clamp(loads[index] / max(0.1, capacities[index]))
+                return CityTrafficImpact(pressure: pressure).reliability
+            }.min() ?? 0
+            let jobCoverage = requiredWorkers == 0
+                ? 1
+                : Self.clamp(Double(reachableJobs) / Double(requiredWorkers))
+            let distanceQuality: Double
+            if let routeLength {
+                let excess = max(0, routeLength - 8)
+                distanceQuality = Self.clamp(1 - Double(excess) / 24)
             } else {
-                var peakPressure = 0.0
-                for coordinate in frontages {
-                    let index = coordinate.y * state.gridWidth + coordinate.x
-                    peakPressure = max(peakPressure, resolvedRoads[index]?.pressure ?? 0)
-                }
-                exposure = peakPressure
+                distanceQuality = 0
             }
-            resolvedPlaces[tile.coordinate.y * width + tile.coordinate.x] = CityTrafficPlaceReading(
-                coordinate: tile.coordinate,
-                exposure: exposure
+            let access = route == nil ? 0 : Self.clamp(
+                jobCoverage * 0.55
+                    + routeReliability * 0.30
+                    + distanceQuality * 0.15
             )
+            if materializesSamples {
+                commuteReadings[residence.tile.coordinate] = CityCommuteAccessReading(
+                    reachableJobs: reachableJobs,
+                    requiredWorkers: requiredWorkers,
+                    routeLength: routeLength,
+                    routeReliability: routeReliability,
+                    access: access
+                )
+            }
+            if residents > 0 {
+                weightedCommuteAccess += access * Double(residents)
+                residentWeight += Double(residents)
+            }
         }
-        placeSamples = resolvedPlaces
+        residentWeightedCommuteAccess = residentWeight > 0
+            ? Self.clamp(weightedCommuteAccess / residentWeight)
+            : 1
+
+        if materializesSamples {
+            var resolvedPlaces = Array<CityTrafficPlaceReading?>(repeating: nil, count: sampleCount)
+            for tile in state.tiles where Self.isCompletedPlace(tile) {
+                let frontages = Self.frontageRoads(for: tile.coordinate, roadSet: roadSet)
+                let exposure: Double
+                if frontages.isEmpty {
+                    exposure = 0
+                } else {
+                    var peakPressure = 0.0
+                    for coordinate in frontages {
+                        let index = coordinate.y * state.gridWidth + coordinate.x
+                        peakPressure = max(peakPressure, resolvedRoads[index]?.pressure ?? 0)
+                    }
+                    exposure = peakPressure
+                }
+                resolvedPlaces[tile.coordinate.y * width + tile.coordinate.x] = CityTrafficPlaceReading(
+                    coordinate: tile.coordinate,
+                    exposure: exposure,
+                    commute: commuteReadings[tile.coordinate]
+                )
+            }
+            placeSamples = resolvedPlaces
+        } else {
+            placeSamples = []
+        }
     }
 
-    private struct WeightedDestination {
-        let frontages: [GridCoordinate]
-        let weight: Double
+    private struct WorkplaceSummary {
+        let reachableJobs: Int
+        let activeWeights: [Double]
+    }
+
+    private struct WorkplaceRouteTree {
+        let distances: [Int]
+        let nextRoadIndexes: [Int?]
     }
 
     private func index(for coordinate: GridCoordinate) -> Int? {
@@ -257,61 +412,99 @@ struct CityTrafficAnalysis: Equatable, Sendable {
         return components
     }
 
-    private static func leastCostRoute(
-        from origins: [GridCoordinate],
-        to destinations: Set<GridCoordinate>,
+    private static func workplaceRouteTree(
+        sources: [GridCoordinate],
         roadSet: Set<GridCoordinate>,
-        loads: [Double],
-        capacities: [Double],
         width: Int,
-        height: Int
-    ) -> [GridCoordinate]? {
+        height: Int,
+        preferHigherIndexes: Bool
+    ) -> WorkplaceRouteTree {
         let sampleCount = width * height
-        var distances = Array(repeating: Double.infinity, count: sampleCount)
-        var predecessors = Array<Int?>(repeating: nil, count: sampleCount)
-        var queue = RouteMinHeap()
-
-        for origin in origins.sorted(by: rowMajor) {
-            let index = origin.y * width + origin.x
+        var distances = Array(repeating: Int.max, count: sampleCount)
+        var nextRoadIndexes = Array<Int?>(repeating: nil, count: sampleCount)
+        let orderedSources = Array(Set(sources)).sorted {
+            preferHigherIndexes ? rowMajor($1, $0) : rowMajor($0, $1)
+        }
+        var queue = orderedSources
+        for source in orderedSources {
+            let index = source.y * width + source.x
             distances[index] = 0
-            queue.insert(RouteQueueEntry(index: index, cost: 0))
         }
 
-        var destinationIndex: Int?
-        while let entry = queue.removeMinimum() {
-            guard entry.cost <= distances[entry.index] + 0.000_001 else { continue }
-            let coordinate = GridCoordinate(x: entry.index % width, y: entry.index / width)
-            if destinations.contains(coordinate) {
-                destinationIndex = entry.index
-                break
-            }
-
-            for neighbor in orthogonalNeighbors(of: coordinate).sorted(by: rowMajor)
+        var cursor = 0
+        while cursor < queue.count {
+            let coordinate = queue[cursor]
+            cursor += 1
+            let index = coordinate.y * width + coordinate.x
+            let candidateDistance = distances[index] + 1
+            for neighbor in orthogonalNeighbors(of: coordinate).sorted(by: {
+                preferHigherIndexes ? rowMajor($1, $0) : rowMajor($0, $1)
+            })
             where neighbor.x >= 0 && neighbor.y >= 0
                 && neighbor.x < width && neighbor.y < height
                 && roadSet.contains(neighbor) {
                 let neighborIndex = neighbor.y * width + neighbor.x
-                let utilization = loads[neighborIndex] / max(0.1, capacities[neighborIndex])
-                let candidateCost = entry.cost + 1 + utilization * 1.5
-                let currentCost = distances[neighborIndex]
-                let predecessor = predecessors[neighborIndex] ?? Int.max
-                if candidateCost < currentCost - 0.000_001
-                    || (abs(candidateCost - currentCost) <= 0.000_001 && entry.index < predecessor) {
-                    distances[neighborIndex] = candidateCost
-                    predecessors[neighborIndex] = entry.index
-                    queue.insert(RouteQueueEntry(index: neighborIndex, cost: candidateCost))
+                if candidateDistance < distances[neighborIndex] {
+                    distances[neighborIndex] = candidateDistance
+                    nextRoadIndexes[neighborIndex] = index
+                    queue.append(neighbor)
+                } else if candidateDistance == distances[neighborIndex] {
+                    let existing = nextRoadIndexes[neighborIndex]
+                        ?? (preferHigherIndexes ? Int.min : Int.max)
+                    if preferHigherIndexes ? index > existing : index < existing {
+                        nextRoadIndexes[neighborIndex] = index
+                    }
                 }
             }
         }
+        return WorkplaceRouteTree(
+            distances: distances,
+            nextRoadIndexes: nextRoadIndexes
+        )
+    }
 
-        guard var current = destinationIndex else { return nil }
+    private static func route(
+        from origins: [GridCoordinate],
+        using tree: WorkplaceRouteTree,
+        width: Int,
+        height: Int,
+        preferHigherIndexes: Bool
+    ) -> [GridCoordinate]? {
+        let originIndex = origins
+            .map { $0.y * width + $0.x }
+            .filter { tree.distances[$0] != Int.max }
+            .min { lhs, rhs in
+                if tree.distances[lhs] != tree.distances[rhs] {
+                    return tree.distances[lhs] < tree.distances[rhs]
+                }
+                return preferHigherIndexes ? lhs > rhs : lhs < rhs
+            }
+        guard var current = originIndex else { return nil }
         var route: [GridCoordinate] = []
-        while true {
+        route.reserveCapacity(tree.distances[current] + 1)
+        for _ in 0..<(width * height) {
             route.append(GridCoordinate(x: current % width, y: current / width))
-            guard let predecessor = predecessors[current] else { break }
-            current = predecessor
+            guard let next = tree.nextRoadIndexes[current] else { return route }
+            current = next
         }
-        return route.reversed()
+        return nil
+    }
+
+    private static func routeLoadScore(
+        _ route: [GridCoordinate],
+        loads: [Double],
+        capacities: [Double],
+        width: Int
+    ) -> Double {
+        var peak = 0.0
+        var total = 0.0
+        for coordinate in route {
+            let index = coordinate.y * width + coordinate.x
+            let utilization = loads[index] / max(0.1, capacities[index])
+            peak = max(peak, utilization)
+            total += utilization
+        }
+        return peak + total * 0.001
     }
 
     private static func frontageRoads(
@@ -353,6 +546,17 @@ struct CityTrafficAnalysis: Equatable, Sendable {
         return clamp(Double(aggregateOccupancy) / Double(totalCapacity))
     }
 
+    private static func estimatedOccupancy(
+        of tile: CityTile,
+        aggregateFallback: Double?
+    ) -> Int {
+        if tile.occupancy > 0 {
+            return min(capacity(of: tile), tile.occupancy)
+        }
+        guard let aggregateFallback else { return 0 }
+        return Int((Double(capacity(of: tile)) * aggregateFallback).rounded())
+    }
+
     private static func capacity(of tile: CityTile) -> Int {
         switch tile.kind {
         case .residential:
@@ -379,55 +583,5 @@ struct CityTrafficAnalysis: Equatable, Sendable {
 
     private static func clamp(_ value: Double) -> Double {
         min(1, max(0, value))
-    }
-}
-
-private struct RouteQueueEntry: Equatable {
-    let index: Int
-    let cost: Double
-
-    static func orderedBefore(_ lhs: Self, _ rhs: Self) -> Bool {
-        if abs(lhs.cost - rhs.cost) > 0.000_001 { return lhs.cost < rhs.cost }
-        return lhs.index < rhs.index
-    }
-}
-
-private struct RouteMinHeap {
-    private var storage: [RouteQueueEntry] = []
-
-    mutating func insert(_ entry: RouteQueueEntry) {
-        storage.append(entry)
-        var child = storage.count - 1
-        while child > 0 {
-            let parent = (child - 1) / 2
-            guard RouteQueueEntry.orderedBefore(storage[child], storage[parent]) else { break }
-            storage.swapAt(child, parent)
-            child = parent
-        }
-    }
-
-    mutating func removeMinimum() -> RouteQueueEntry? {
-        guard !storage.isEmpty else { return nil }
-        if storage.count == 1 { return storage.removeLast() }
-        let minimum = storage[0]
-        storage[0] = storage.removeLast()
-        var parent = 0
-        while true {
-            let left = parent * 2 + 1
-            let right = left + 1
-            var candidate = parent
-            if left < storage.count,
-               RouteQueueEntry.orderedBefore(storage[left], storage[candidate]) {
-                candidate = left
-            }
-            if right < storage.count,
-               RouteQueueEntry.orderedBefore(storage[right], storage[candidate]) {
-                candidate = right
-            }
-            guard candidate != parent else { break }
-            storage.swapAt(parent, candidate)
-            parent = candidate
-        }
-        return minimum
     }
 }

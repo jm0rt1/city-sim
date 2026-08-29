@@ -1,5 +1,5 @@
 {
-  "digest" : "eae19683ea6e8a0e12dfbe9d61f3eb0f789b97aaf3957824ad90905b39b26727",
+  "digest" : "fb004678de7b8f241cded82ffed6e263da0a297c80f06968e35f6a8ffae03724",
   "fingerprintVersion" : 1,
   "schemaVersion" : 1,
   "state" : {
@@ -8,11 +8,11 @@
     "demand" : {
       "commercial" : 0.665,
       "industrial" : 0.5080266343825665,
-      "residential" : 0.7215724202646197
+      "residential" : 0.7200365667960444
     },
     "gridHeight" : 24,
     "gridWidth" : 24,
-    "happiness" : 67.50763883704676,
+    "happiness" : 67.29261935144622,
     "jobs" : 388,
     "messages" : [
       {

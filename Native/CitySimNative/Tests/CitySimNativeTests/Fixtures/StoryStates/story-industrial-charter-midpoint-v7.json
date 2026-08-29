@@ -1,25 +1,25 @@
 {
-  "digest" : "f5e31156e8fbfa7661ba54a0557edeb844fcc3f52ac0cce1e1c1d1f20c76fbf8",
+  "digest" : "f29b812d75eb7e88507f53c1b0ab75c5ef10c4f52edc4fccec810cb585a1478f",
   "fingerprintVersion" : 1,
   "schemaVersion" : 1,
   "state" : {
     "approval" : 100,
     "cityName" : "New Arcadia",
     "demand" : {
-      "commercial" : 0.806,
+      "commercial" : 0.807,
       "industrial" : 0.3622184873949579,
-      "residential" : 0.6520347792245559
+      "residential" : 0.6510085072487383
     },
     "gridHeight" : 24,
     "gridWidth" : 24,
-    "happiness" : 52.489869091437804,
+    "happiness" : 52.31702434815669,
     "jobs" : 361,
     "messages" : [
       {
-        "detail" : "New Arcadia sustained healthy finances, employment, utilities, and livability for 12 consecutive days. The Charter is permanent; a Regional Capital mandate arrives by Day 234.",
-        "id" : "868-Town Charter Awarded",
+        "detail" : "New Arcadia sustained healthy finances, employment, utilities, and livability for 12 consecutive days. The Charter is permanent; a Regional Capital mandate arrives by Day 235.",
+        "id" : "872-Town Charter Awarded",
         "severity" : "good",
-        "tick" : 868,
+        "tick" : 872,
         "title" : "Town Charter Awarded"
       },
       {
@@ -100,12 +100,12 @@
         "title" : "Freight Network Secured"
       }
     ],
-    "population" : 517,
+    "population" : 518,
     "powerCapacity" : 600,
     "powerUsed" : 471,
     "progression" : {
       "secondAct" : {
-        "nextScheduledTick" : 932,
+        "nextScheduledTick" : 936,
         "phase" : "mandate",
         "qualifyingCycles" : 0,
         "regionalCapitalAwarded" : false
@@ -149,7 +149,7 @@
       ]
     },
     "taxRate" : 0.1,
-    "tick" : 868,
+    "tick" : 872,
     "tiles" : [
       {
         "condition" : 1,
@@ -6488,8 +6488,8 @@
         "occupancy" : 0
       }
     ],
-    "treasury" : 51215.299999999996,
+    "treasury" : 51636.35,
     "waterCapacity" : 540,
-    "waterUsed" : 409
+    "waterUsed" : 410
   }
 }

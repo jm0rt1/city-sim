@@ -4,12 +4,12 @@
   "fixtureSet" : "PLAY-142 current visible-city states",
   "fixtures" : [
     {
-      "activityDigest" : "59d7e7a56b4add12828ab7600c4e4e700a3f44888428f254f789fc0689bf5000",
+      "activityDigest" : "dc717ec4a3e694825a5068420415757f1f3e1771a8b97f1dc9f2ef04eb6ac128",
       "byteCount" : 131674,
-      "diagnosticDigest" : "c88a6521ac2f5d4072a45f851e3f5077e12556d4bf2018d7dfd848fd48add54b",
-      "expectedStateDigest" : "42a6aa3f9226379d6dcfe6ab9ca9b35082901ae79bbe8a253ef25ab7c34fba14",
+      "diagnosticDigest" : "c6b527f3de311ed856575ebcccf31a4584b6f904ca8b5196387a2814bf9405cd",
+      "expectedStateDigest" : "45357f316ecb02cf98c13850fd5e264da050af895d4e78f1ae7d8841497afe02",
       "file" : "visible-city-commercial-vacant-district-v6.json",
-      "fileSHA256" : "2d11870acfc078390fdfdf64df8cf7773467811487816bbc7370583261f7c7b7",
+      "fileSHA256" : "a9e004d920fb1d3dbf3fc98861b9edc82cc536a998f9851b63df22d51676f86c",
       "focusCoordinate" : {
         "x" : 5,
         "y" : 8
@@ -17,7 +17,7 @@
       "focusKind" : "empty",
       "id" : "commercial-vacant-district-v6",
       "lifecycle" : "vacant",
-      "spatialDigest" : "f7dee65baefeacd17cf0658b30a5810ef513ee9483f18c4ce6fcd0b2880ec743",
+      "spatialDigest" : "cd80bbcc18f419a401c601d17591fa61c587d95ddbdbfb7c90623c045e7a35d5",
       "status" : "playing",
       "strategy" : "commercialStewardship",
       "strategyDistrictKind" : "commercial",
@@ -25,12 +25,12 @@
       "tick" : 64
     },
     {
-      "activityDigest" : "59d7e7a56b4add12828ab7600c4e4e700a3f44888428f254f789fc0689bf5000",
+      "activityDigest" : "dc717ec4a3e694825a5068420415757f1f3e1771a8b97f1dc9f2ef04eb6ac128",
       "byteCount" : 131679,
-      "diagnosticDigest" : "c88a6521ac2f5d4072a45f851e3f5077e12556d4bf2018d7dfd848fd48add54b",
-      "expectedStateDigest" : "0b2a9ef9161362c5e3346016a29564b0255a32bf5ad8df5e3f9cd42d21460cb5",
+      "diagnosticDigest" : "c6b527f3de311ed856575ebcccf31a4584b6f904ca8b5196387a2814bf9405cd",
+      "expectedStateDigest" : "48b9c4bb1317a31574f77052ed554645e5be59f6a732b6bd8a27d6b9808c3844",
       "file" : "visible-city-commercial-construction-district-v6.json",
-      "fileSHA256" : "e0161d570ec21374d981e99ab26c3af3f1c383e8b21247aa6e33e21c3aceb165",
+      "fileSHA256" : "d9959b6b56d5e51c81b00eca9adb1ab1448b73b0ca955f6e9f0d976af68f065b",
       "focusCoordinate" : {
         "x" : 5,
         "y" : 8
@@ -38,7 +38,7 @@
       "focusKind" : "commercial",
       "id" : "commercial-construction-district-v6",
       "lifecycle" : "construction",
-      "spatialDigest" : "f7dee65baefeacd17cf0658b30a5810ef513ee9483f18c4ce6fcd0b2880ec743",
+      "spatialDigest" : "cd80bbcc18f419a401c601d17591fa61c587d95ddbdbfb7c90623c045e7a35d5",
       "status" : "playing",
       "strategy" : "commercialStewardship",
       "strategyDistrictKind" : "commercial",
@@ -46,12 +46,12 @@
       "tick" : 64
     },
     {
-      "activityDigest" : "036ab78ea212cbc88ea8054cbb5aecd9d2b709a6c53eae0de28bfc1d3392dfaa",
-      "byteCount" : 132006,
-      "diagnosticDigest" : "8ec13bc44fcef7c3fc39e76090119153be0993e32b46f37a87fcdec436ee3a57",
-      "expectedStateDigest" : "1fb146515fff833f80e7b935e7b2c09f756ced6bc42c29f0bc01a039135419d2",
+      "activityDigest" : "ac643324c03031c8a529119077a2d806da720c4c2663671aeedd010d6be61791",
+      "byteCount" : 132007,
+      "diagnosticDigest" : "22b2ca3ccad823af2a2c8de860eb9092895f686af3e694721efee25581d15dbb",
+      "expectedStateDigest" : "48bbc876a78755896b2c053e19590cb7213ae1ff64d4e1ed13c39f6db1cc454e",
       "file" : "visible-city-commercial-active-district-v6.json",
-      "fileSHA256" : "7586de8188f12828994dec819bcc378f60e955ba89fd063f36e11aa005c7de92",
+      "fileSHA256" : "1a3e8b0f9463cf290c4411044c7931ec746937507051d7e7f867bf3749458fb1",
       "focusCoordinate" : {
         "x" : 5,
         "y" : 8
@@ -59,7 +59,7 @@
       "focusKind" : "commercial",
       "id" : "commercial-active-district-v6",
       "lifecycle" : "active",
-      "spatialDigest" : "5ea229ece65ab0c067bee82079e146c4d77e915ff66972bef044cb5dfbb785b6",
+      "spatialDigest" : "95ab1cd94dfe77da044774e7d8c0367be2729dced9850818608ebb53abdbfb30",
       "status" : "playing",
       "strategy" : "commercialStewardship",
       "strategyDistrictKind" : "commercial",
@@ -67,12 +67,12 @@
       "tick" : 68
     },
     {
-      "activityDigest" : "3acdfef3d8f441a44485a1f374b3b1a9bc03ae44f575c9411d355a6c86dcb16e",
-      "byteCount" : 134895,
-      "diagnosticDigest" : "4e4381faf8425812ed3160f137463f58e3a590072aea4d4385d4bc5fe9252edd",
-      "expectedStateDigest" : "d8b3198e81880338f0006519debe0ddfaff8dc1259e4f3482b3763a31db54d59",
+      "activityDigest" : "a40e646a0f6f4e62316fe76f70002d5368d45c2a9f9bba197e20cd4549a9740f",
+      "byteCount" : 134897,
+      "diagnosticDigest" : "4473ee8f3ad2f565de5a92bf99c8ea22026939fb627030b0460e1ce94727b0a2",
+      "expectedStateDigest" : "4b5e01fa24ad9233c55235bf8236893ecbf0f1ba7c841b7acaef3194a787fe48",
       "file" : "visible-city-commercial-pressured-district-v6.json",
-      "fileSHA256" : "8f0aecaeb4c7559277f53cac002ccadb731a2388ffbcacfaed3a7fffa0a2d343",
+      "fileSHA256" : "242b1bc9d125ec7c3cc95fc4626c4394d63c5305789f715f9aaaee246c7528df",
       "focusCoordinate" : {
         "x" : 4,
         "y" : 8
@@ -82,7 +82,7 @@
       "lifecycle" : "pressured",
       "resolution" : "commercialTaxRelief",
       "secondActPhase" : "recovery",
-      "spatialDigest" : "14a323bd00351b5ed941a398065a8215c7daf47d60a39c214d247625d5aa189c",
+      "spatialDigest" : "3fd269e00f627f13c3ab99f0a4bd841f1984f624a9e1eb77e8d30ecc68761069",
       "status" : "playing",
       "strategy" : "commercialStewardship",
       "strategyDistrictKind" : "commercial",
@@ -90,12 +90,12 @@
       "tick" : 972
     },
     {
-      "activityDigest" : "433fc5f2668f221d11ae05b7e3ae82c91573ee6afe2d7e77a78d468473987330",
-      "byteCount" : 135001,
-      "diagnosticDigest" : "f3a00efd857fb9f248468bc65cba10861bd1ccf15e1f6cc79ec865f7c1283f5c",
-      "expectedStateDigest" : "b250a17020445d89538e7b9f12c728fe0930f967007c81442ca9575cc2ffab9d",
+      "activityDigest" : "004f3be0380f91c7b722e7a40cf049c870d61a9bc1e1a2812f1fade193a6e057",
+      "byteCount" : 135000,
+      "diagnosticDigest" : "33cdf25660d4e2c747a3027d48d75ca6a3b5932fbc5e21f06e280b29d2d9e88b",
+      "expectedStateDigest" : "044332868296434b4bce5bb1ee5adacffa80ff4431ba938bba6958d8c5a4c18e",
       "file" : "visible-city-commercial-recovering-district-v6.json",
-      "fileSHA256" : "beeacf05f1b1032a38b68b8bd0d84c4dacc0cf6dd9eebeaf8a67cdea375658f6",
+      "fileSHA256" : "642854ef43e9592a5cdc98609897569f7ffea942c1e070f096f3b36508376a2f",
       "focusCoordinate" : {
         "x" : 4,
         "y" : 8
@@ -105,7 +105,7 @@
       "lifecycle" : "recovering",
       "resolution" : "commercialTaxRelief",
       "secondActPhase" : "qualification",
-      "spatialDigest" : "8b7705fe507427620b8e6295d0ef6db4c816a8b7c3460d5a8190338bebf16493",
+      "spatialDigest" : "976de865c4337b14e6984ff6c79dd3114042a9f92ef9d547101963a18e412f91",
       "status" : "playing",
       "strategy" : "commercialStewardship",
       "strategyDistrictKind" : "commercial",
@@ -113,12 +113,12 @@
       "tick" : 976
     },
     {
-      "activityDigest" : "b2374f1ff10b08aab2832ccc6cd3b26fc6fe0f9e781c1224ef1e57d409a1583f",
+      "activityDigest" : "c627f316c8eb36be24b351681a627639515242a4f534792deb08fc167c18c03f",
       "byteCount" : 134865,
-      "diagnosticDigest" : "5384844508de8281506c9fb85e9fc3f205eff5fa65704d9f98c2e73f478760a0",
-      "expectedStateDigest" : "0a41bcb51c0f95a9bad82c3d9e9616d4698eaa00fb66ef5e46dd261d2fb12ab0",
+      "diagnosticDigest" : "7f1b5227b56a30dbe9175627de505af9a6eeba81be0e74cf8a8ce08838321568",
+      "expectedStateDigest" : "c7a4e47c9143b175496d754b38bb1bb2ddd79ed27cb723a76e97f5925ee033a2",
       "file" : "visible-city-commercial-upgraded-district-v6.json",
-      "fileSHA256" : "1e18dbddb1e835d9201dafcc3e65b0374980794fdb4c39a29bf7af072b93ed7a",
+      "fileSHA256" : "45200c234aba2464951904f54c75417444e784c97aa44146aef4abff4d89c27d",
       "focusCoordinate" : {
         "x" : 4,
         "y" : 8
@@ -128,7 +128,7 @@
       "lifecycle" : "upgraded",
       "resolution" : "commercialTaxRelief",
       "secondActPhase" : "mandate",
-      "spatialDigest" : "ec83005afdb509314ea1655cd9fe3705c0310d79eb0231ea2ac892e98ba28f89",
+      "spatialDigest" : "dd341df033259bd8e708e30e09b3f41b8e82fef8b444da20f5b6289441f449e8",
       "status" : "playing",
       "strategy" : "commercialStewardship",
       "strategyDistrictKind" : "commercial",
@@ -136,12 +136,12 @@
       "tick" : 844
     },
     {
-      "activityDigest" : "9864d6fa5edc260dcfd1fd56cb64e153536bce8c9fa513791152c325d0623377",
+      "activityDigest" : "bff5005e07f006049c31832714242f4a3d175bf4950c5db3446bd26d0290c8c3",
       "byteCount" : 135072,
-      "diagnosticDigest" : "f5d4fba4ad8973af11de3890e0770d03617dc4449ee79718e49bd82585518183",
-      "expectedStateDigest" : "cb2e206470ec3cff22b7ba757fae6d597166e078f27988ce3db6091222c0a6bb",
+      "diagnosticDigest" : "30fbca5f2266fc1dc83a6d9ca19911786c588d465f1fd03cb3b22f1d0b0d4fc3",
+      "expectedStateDigest" : "5b85048975efd63b3c3b71780afaad2507cd751264be8f20a23d192073cd89a0",
       "file" : "visible-city-commercial-terminal-district-v6.json",
-      "fileSHA256" : "d36fbf9097b323c3bdbae0176d6d7430e2b0a58a2fc01d56f32fadb008f16508",
+      "fileSHA256" : "88e2f649655eac2b1fb79aadd853047cd5381f7eb294ccd64aeec01f5edf3dd7",
       "focusCoordinate" : {
         "x" : 4,
         "y" : 8
@@ -151,7 +151,7 @@
       "lifecycle" : "terminal",
       "resolution" : "commercialTaxRelief",
       "secondActPhase" : "completed",
-      "spatialDigest" : "677c3d17faa5da2e0a7c214ba67bc2b772881094b59fb81d195d46125da1500c",
+      "spatialDigest" : "231f9ca3f1c54ab0d308c1caf732a962362a2d7d36d08721467f231a8a0d5baf",
       "status" : "won",
       "strategy" : "commercialStewardship",
       "strategyDistrictKind" : "commercial",
@@ -159,12 +159,12 @@
       "tick" : 1024
     },
     {
-      "activityDigest" : "25625621c04c0a11ed92124a4fee2aab9b953a5ecefa77eff7e59d53c7b1171e",
+      "activityDigest" : "0fbeaa569c14e9d0524bdd6a303173130a0923573b9b3fb8ce650dd698b48628",
       "byteCount" : 131649,
-      "diagnosticDigest" : "93f3598ead9b1ffc4ad23c5343573807ceb4608139b7e71a9e6e2ca816f1bd37",
-      "expectedStateDigest" : "facc2116bfd6c51664eb9d45ec0a8c152d38aa55fc07a8f76c7443dc3278bd8b",
+      "diagnosticDigest" : "07a6f0208e34e30e47c0ab36388db0a8d2a34781ea60ce704f514397f779ea3c",
+      "expectedStateDigest" : "93b870bf3e5558f183b8d54a2759ee206530a9cb37d85fec89d0fc0c95431389",
       "file" : "visible-city-industrial-vacant-district-v6.json",
-      "fileSHA256" : "ca4e28792833e040a0d75acaebae7679963854a44a55a2fd833f174ea152c8ff",
+      "fileSHA256" : "b8876d037701b30987e9d60602aad0dca7a52f2de43a0c72e69d73576e125aee",
       "focusCoordinate" : {
         "x" : 5,
         "y" : 8
@@ -172,7 +172,7 @@
       "focusKind" : "empty",
       "id" : "industrial-vacant-district-v6",
       "lifecycle" : "vacant",
-      "spatialDigest" : "d10e88bb802bb832c96dda9111a6ae6f2b59049e1e88a59051f2694df4992bdb",
+      "spatialDigest" : "2be54252d6740f761572ee4800aa9cc27f785255e049d08e073e44e7b776d82e",
       "status" : "playing",
       "strategy" : "industrialExpansion",
       "strategyDistrictKind" : "industrial",
@@ -180,12 +180,12 @@
       "tick" : 64
     },
     {
-      "activityDigest" : "25625621c04c0a11ed92124a4fee2aab9b953a5ecefa77eff7e59d53c7b1171e",
+      "activityDigest" : "0fbeaa569c14e9d0524bdd6a303173130a0923573b9b3fb8ce650dd698b48628",
       "byteCount" : 131654,
-      "diagnosticDigest" : "93f3598ead9b1ffc4ad23c5343573807ceb4608139b7e71a9e6e2ca816f1bd37",
-      "expectedStateDigest" : "c508abfadc7b7227ed93d2300eea43193637e54ae9651283b77ef5adbb1db3ad",
+      "diagnosticDigest" : "07a6f0208e34e30e47c0ab36388db0a8d2a34781ea60ce704f514397f779ea3c",
+      "expectedStateDigest" : "47ac735e4be55897b9b6db6750abb1d7c3e68cba963c212b90739c1e3a36355c",
       "file" : "visible-city-industrial-construction-district-v6.json",
-      "fileSHA256" : "4d1b1e56f59636d304eb0ede6e78fa5d8dce8983c720a638b3d8c503b6057a48",
+      "fileSHA256" : "e71a2e1fe7cb3861d71d2943a13e67384362d008abb2118e44bfdcde38564437",
       "focusCoordinate" : {
         "x" : 5,
         "y" : 8
@@ -193,7 +193,7 @@
       "focusKind" : "industrial",
       "id" : "industrial-construction-district-v6",
       "lifecycle" : "construction",
-      "spatialDigest" : "d10e88bb802bb832c96dda9111a6ae6f2b59049e1e88a59051f2694df4992bdb",
+      "spatialDigest" : "2be54252d6740f761572ee4800aa9cc27f785255e049d08e073e44e7b776d82e",
       "status" : "playing",
       "strategy" : "industrialExpansion",
       "strategyDistrictKind" : "industrial",
@@ -201,12 +201,12 @@
       "tick" : 64
     },
     {
-      "activityDigest" : "9173d3c3b231f6e65a954d911c19b7a938e5fb0b6c013f9d3e28708adfc2bd30",
-      "byteCount" : 131969,
-      "diagnosticDigest" : "a1e8e702406832f2e5d6c964f3cef486d53b15f6863cac0fb746d3e5afa448b1",
-      "expectedStateDigest" : "f130b1d68d1c6b24b856c71030a26b980f28927c6e8c7d52a38626b401d3fbf0",
+      "activityDigest" : "d519b78dc876283c241685abbcc04c648a6326e9f6767a06730b73cfc96ca54d",
+      "byteCount" : 131968,
+      "diagnosticDigest" : "dfd3a97c400385c0f946a3d447d56ed71ac3f6b471011c873742739352148390",
+      "expectedStateDigest" : "49887579f929913536ea5768843f7822c6800073bab7d510bc26acbed42e4977",
       "file" : "visible-city-industrial-active-district-v6.json",
-      "fileSHA256" : "94dfb5c7a18314057373e664466461add3d6ff2bc4b38a816f64dcb4773a04b2",
+      "fileSHA256" : "3de67ad54970418b237b7a28b8169e7b5b09c96a684a3d4316a61aa417722538",
       "focusCoordinate" : {
         "x" : 5,
         "y" : 8
@@ -214,7 +214,7 @@
       "focusKind" : "industrial",
       "id" : "industrial-active-district-v6",
       "lifecycle" : "active",
-      "spatialDigest" : "e2646bba29246376e3e3a2a5c735cd3a7b1ee718cd29fe850cc67d25e0bf7fe7",
+      "spatialDigest" : "1a7805616e7853f2a33339cdce4843c307fcf5fab783882c9349773b4613264d",
       "status" : "playing",
       "strategy" : "industrialExpansion",
       "strategyDistrictKind" : "industrial",
@@ -222,12 +222,12 @@
       "tick" : 68
     },
     {
-      "activityDigest" : "8682593ceee980e775062f9613e9dd29191fb2f1a09f08e95272a81f6ef2bd44",
-      "byteCount" : 134953,
-      "diagnosticDigest" : "a71f06896251e3b0988c7557f8631a7ba61ac8aa6e053ef16dd6840c373fe365",
-      "expectedStateDigest" : "6bce1e6f8817ddea665a4b2b96b12391546b457b289852244d7f40adc88e2656",
+      "activityDigest" : "b1a2f7100263274ed22c3d7797ad6c8b20f596c04f9e154eb8e4ab398b97e179",
+      "byteCount" : 134955,
+      "diagnosticDigest" : "43251991aa7968102b1a16c55d650165474d1c639fadd727f3ab0a9043da0b61",
+      "expectedStateDigest" : "7a5afd9d9dc09c9cde5ecb6caa02ed6989ec417005783de7f07a4260adf17bd3",
       "file" : "visible-city-industrial-pressured-district-v6.json",
-      "fileSHA256" : "e3e5132153041a584ba9b34b5e1bd53e62dacbc9276d3ac2e9fd413f60f81967",
+      "fileSHA256" : "52db9716986225aacdc3f7f99d5169b126b91fbbca2aec9a82c4c56e17727078",
       "focusCoordinate" : {
         "x" : 4,
         "y" : 8
@@ -237,20 +237,20 @@
       "lifecycle" : "pressured",
       "resolution" : "industrialUtilityExpansion",
       "secondActPhase" : "recovery",
-      "spatialDigest" : "96a5c29eda65658d66ee0054b36087878fcc5b80e2452def5e93b8def388a449",
+      "spatialDigest" : "4e0a22dea407dd1c7b0ce08c9d05ebd46b503862c38568050fa9c2ccae08780e",
       "status" : "playing",
       "strategy" : "industrialExpansion",
       "strategyDistrictKind" : "industrial",
       "strategyPhase" : "completed",
-      "tick" : 996
+      "tick" : 1000
     },
     {
-      "activityDigest" : "3d54eff10df62365949008ad4c6e8910d2fabc41f6e86996e51ae291e6cf54e1",
-      "byteCount" : 135236,
-      "diagnosticDigest" : "3a56dafd8f4f9abd1c66b77a83c5f79c681d56e4ad2ac92e285de280461e99fc",
-      "expectedStateDigest" : "5f0566b51c588812ca526f8e49bd3c790176e69ab66824b9d52ddb9600a8937c",
+      "activityDigest" : "0a5f2be91df1c2bc7d16943b329b1f948920bf35f20a4be4abd04fd9a56b5342",
+      "byteCount" : 135226,
+      "diagnosticDigest" : "ce406fd6568bfa1e24b4122405359737a51cba957496d66fade87285d7ec40c8",
+      "expectedStateDigest" : "b25bd89c1f7aef28bc99d45e7eedba0d8d44e85e166d237dbd62776c76e897b0",
       "file" : "visible-city-industrial-recovering-district-v6.json",
-      "fileSHA256" : "df6be201bd59c8435fd605c785f9b0d705a344b644ec60402f37c7b1d901e874",
+      "fileSHA256" : "6fc2a03a19db53a9c135360c9e52805637804f7b2b7ba29ef1fa60ffbf1ba3cc",
       "focusCoordinate" : {
         "x" : 4,
         "y" : 8
@@ -260,20 +260,20 @@
       "lifecycle" : "recovering",
       "resolution" : "industrialUtilityExpansion",
       "secondActPhase" : "qualification",
-      "spatialDigest" : "f835d732f860826fca749af00cee1e1e7c30fd139e820852e3f8cf8c65c8c683",
+      "spatialDigest" : "be0e3f22e13b0434d55065613bee664a4b69fd9cf16833a6e12e844b6ae47432",
       "status" : "playing",
       "strategy" : "industrialExpansion",
       "strategyDistrictKind" : "industrial",
       "strategyPhase" : "completed",
-      "tick" : 1016
+      "tick" : 1020
     },
     {
-      "activityDigest" : "f7fa72350354ed887d52e13887ba5e6808045d5a64c5b14ba2de23e990208765",
-      "byteCount" : 134900,
-      "diagnosticDigest" : "2f1601e18ce842414209d534a5410fb15687def7983d0e0a34e1675dd045e6b9",
-      "expectedStateDigest" : "e35ac6a2d87eaeea4bdd949441e06733be420648048e93bb69bbba9c4f15d5c9",
+      "activityDigest" : "3fdf8ded5df0f80a13dc4b543bc5ba426043f0efc9e03a2d4dd8f575db51ae7c",
+      "byteCount" : 134902,
+      "diagnosticDigest" : "948349403c52869aa5a7fb8c50ed06228be4f70567c4aa46a20a907f45a2d50a",
+      "expectedStateDigest" : "467d7a7d9066a169e14aee0097f71e632e15d5e0354c088e1640da7af6815c93",
       "file" : "visible-city-industrial-upgraded-district-v6.json",
-      "fileSHA256" : "ea7e4eb8a1dd8ac949042e5f57a2c83ca1d0d5e2e3b553f95c450e419f20fe07",
+      "fileSHA256" : "6378ad6e1b51a39d867e58f866d4bc43d2003606264d9ddda4c0aec733f6c28a",
       "focusCoordinate" : {
         "x" : 4,
         "y" : 8
@@ -283,20 +283,20 @@
       "lifecycle" : "upgraded",
       "resolution" : "industrialUtilityExpansion",
       "secondActPhase" : "mandate",
-      "spatialDigest" : "2bc6cb6b76ea3fce71f98fd91637480ae1888bd02ee4f2544cf6089982833de8",
+      "spatialDigest" : "1917c8da37eb02abb37897b64400b06517e6d62eb265c158f00263a5fffab9ee",
       "status" : "playing",
       "strategy" : "industrialExpansion",
       "strategyDistrictKind" : "industrial",
       "strategyPhase" : "completed",
-      "tick" : 868
+      "tick" : 872
     },
     {
-      "activityDigest" : "6687ddabbce855a106c4e0a701b5bb3bb10e9371a9484fa002af6de2808432d3",
-      "byteCount" : 135190,
-      "diagnosticDigest" : "adade17b0aa713d2f1020c055f09e6ac05902dd6f108eb9b918333bee2425572",
-      "expectedStateDigest" : "c170f90c381a650daf2e7bcd13d441965b7cc995299dc5606894400f6bd41c77",
+      "activityDigest" : "cd1a71e378498ea55a9033806680a597241a7115c22d1f76b780bac5f8cd6b5a",
+      "byteCount" : 135191,
+      "diagnosticDigest" : "da5d640a47e2e5a69bf15ae5aa6794fec1ec0436b7ba673dc932449cd02c2c0c",
+      "expectedStateDigest" : "7f540f5ae9fa359d88d105e4dd06720343e4a64fd77f25938905323961037fab",
       "file" : "visible-city-industrial-terminal-district-v6.json",
-      "fileSHA256" : "ea2a60ebb7325db3041f57708f0f373d2e40dc57ae83a54a2052e584e7deee71",
+      "fileSHA256" : "0aa048e1c0fb5bcf98e3301412c77aa3b570a5283d7b242f5b476f97bb3da439",
       "focusCoordinate" : {
         "x" : 4,
         "y" : 8
@@ -306,12 +306,12 @@
       "lifecycle" : "terminal",
       "resolution" : "industrialUtilityExpansion",
       "secondActPhase" : "completed",
-      "spatialDigest" : "2ba1b5f9245f7804ca914fbeb0b5c5824b6fb310fe5cc8a356b8a7fc3b00dd42",
+      "spatialDigest" : "2701cd8bb5d71ff5e7d2bb6c78b98ad6da52806d9315d07e8c297dcdccb14167",
       "status" : "won",
       "strategy" : "industrialExpansion",
       "strategyDistrictKind" : "industrial",
       "strategyPhase" : "completed",
-      "tick" : 1060
+      "tick" : 1064
     }
   ],
   "schemaVersion" : 1,

@@ -1,25 +1,25 @@
 {
-  "digest" : "e35ac6a2d87eaeea4bdd949441e06733be420648048e93bb69bbba9c4f15d5c9",
+  "digest" : "467d7a7d9066a169e14aee0097f71e632e15d5e0354c088e1640da7af6815c93",
   "fingerprintVersion" : 1,
   "schemaVersion" : 1,
   "state" : {
     "approval" : 100,
     "cityName" : "New Arcadia",
     "demand" : {
-      "commercial" : 0.806,
+      "commercial" : 0.807,
       "industrial" : 0.3622184873949579,
-      "residential" : 0.652034779224555
+      "residential" : 0.6510085072487378
     },
     "gridHeight" : 24,
     "gridWidth" : 24,
-    "happiness" : 52.48986909143769,
+    "happiness" : 52.31702434815662,
     "jobs" : 361,
     "messages" : [
       {
-        "detail" : "New Arcadia sustained healthy finances, employment, utilities, and livability for 12 consecutive days. The Charter is permanent; a Regional Capital mandate arrives by Day 234.",
-        "id" : "868-Town Charter Awarded",
+        "detail" : "New Arcadia sustained healthy finances, employment, utilities, and livability for 12 consecutive days. The Charter is permanent; a Regional Capital mandate arrives by Day 235.",
+        "id" : "872-Town Charter Awarded",
         "severity" : "good",
-        "tick" : 868,
+        "tick" : 872,
         "title" : "Town Charter Awarded"
       },
       {
@@ -100,12 +100,12 @@
         "title" : "Neighborhood Upgraded"
       }
     ],
-    "population" : 517,
+    "population" : 518,
     "powerCapacity" : 600,
     "powerUsed" : 471,
     "progression" : {
       "secondAct" : {
-        "nextScheduledTick" : 932,
+        "nextScheduledTick" : 936,
         "phase" : "mandate",
         "qualifyingCycles" : 0,
         "regionalCapitalAwarded" : false
@@ -149,7 +149,7 @@
       ]
     },
     "taxRate" : 0.1,
-    "tick" : 868,
+    "tick" : 872,
     "tiles" : [
       {
         "condition" : 1,
@@ -6488,8 +6488,8 @@
         "occupancy" : 0
       }
     ],
-    "treasury" : 68506.9,
+    "treasury" : 68927.95,
     "waterCapacity" : 540,
-    "waterUsed" : 409
+    "waterUsed" : 410
   }
 }

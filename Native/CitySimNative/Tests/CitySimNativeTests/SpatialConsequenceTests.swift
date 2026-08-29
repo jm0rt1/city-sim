@@ -347,6 +347,98 @@ final class SpatialConsequenceTests: XCTestCase {
         )
     }
 
+    func testResidentialCommuteAccessUsesReachableJobsRouteLengthAndReliability() throws {
+        let home = GridCoordinate(x: 4, y: 10)
+        let connected = trafficRouteState()
+        let original = connected
+        let connectedAnalysis = CityTrafficAnalysis(state: connected)
+        let connectedCommute = try XCTUnwrap(connectedAnalysis.place(at: home)?.commute)
+
+        XCTAssertEqual(connectedCommute.reachableJobs, CitySimulation.commercialJobCapacity)
+        XCTAssertEqual(connectedCommute.requiredWorkers, 196)
+        XCTAssertEqual(connectedCommute.routeLength, 6)
+        XCTAssertGreaterThan(connectedCommute.routeReliability, 0)
+        XCTAssertGreaterThan(connectedCommute.access, 0)
+        XCTAssertLessThan(connectedCommute.access, CityCommuteAccessReading.healthyAccessThreshold)
+        XCTAssertEqual(
+            connectedAnalysis.residentWeightedCommuteAccess,
+            connectedCommute.access,
+            accuracy: 0.000_001
+        )
+
+        var improved = trafficRouteState(includeAlternate: true)
+        improved.updateTile(at: GridCoordinate(x: 7, y: 8)) {
+            $0.kind = .industrial
+            $0.occupancy = CitySimulation.industrialJobCapacity
+        }
+        let improvedCommute = try XCTUnwrap(
+            CityTrafficAnalysis(state: improved).place(at: home)?.commute
+        )
+        XCTAssertEqual(
+            improvedCommute.reachableJobs,
+            CitySimulation.commercialJobCapacity + CitySimulation.industrialJobCapacity
+        )
+        XCTAssertGreaterThan(improvedCommute.access, connectedCommute.access)
+        XCTAssertGreaterThanOrEqual(
+            improvedCommute.routeReliability,
+            connectedCommute.routeReliability
+        )
+
+        var disconnected = connected
+        disconnected.updateTile(at: GridCoordinate(x: 7, y: 9)) { $0.kind = .empty }
+        let disconnectedAnalysis = CityTrafficAnalysis(state: disconnected)
+        let disconnectedCommute = try XCTUnwrap(
+            disconnectedAnalysis.place(at: home)?.commute
+        )
+        XCTAssertEqual(disconnectedCommute.reachableJobs, 0)
+        XCTAssertNil(disconnectedCommute.routeLength)
+        XCTAssertEqual(disconnectedCommute.routeReliability, 0)
+        XCTAssertEqual(disconnectedCommute.access, 0)
+        XCTAssertEqual(disconnectedAnalysis.residentWeightedCommuteAccess, 0)
+
+        let connectedSample = try diagnosticSample(in: connected, at: home)
+        let disconnectedSample = try diagnosticSample(in: disconnected, at: home)
+        XCTAssertGreaterThan(connectedSample.vitalityScore, disconnectedSample.vitalityScore)
+        XCTAssertGreaterThan(
+            try XCTUnwrap(connectedSample.landValueIndex),
+            try XCTUnwrap(disconnectedSample.landValueIndex)
+        )
+        XCTAssertGreaterThan(
+            try XCTUnwrap(connectedSample.localHappinessIndex),
+            try XCTUnwrap(disconnectedSample.localHappinessIndex)
+        )
+
+        let snapshot = try CityPresentationSnapshot(state: connected)
+        let homeTile = try XCTUnwrap(connected.tile(at: home))
+        let conditions = try XCTUnwrap(
+            CitySelectedLocationConditions.make(tile: homeTile, snapshot: snapshot)
+        )
+        XCTAssertEqual(conditions.commuteAccess, Int((connectedCommute.access * 100).rounded()))
+        XCTAssertTrue(conditions.accessibilitySummary.contains("commute access"))
+        let diagnosis = try XCTUnwrap(
+            CitySelectedLocationDiagnosis.make(tile: homeTile, snapshot: snapshot)
+        )
+        XCTAssertTrue(diagnosis.cause.contains("Commute access is strained"))
+        XCTAssertTrue(diagnosis.cause.contains("80 reachable jobs for 196 workers"))
+        XCTAssertTrue(diagnosis.consequence.contains("city happiness target"))
+        XCTAssertTrue(diagnosis.responses.contains { $0.command == .buildRoad })
+        XCTAssertTrue(diagnosis.responses.contains { $0.command == .overlayTraffic })
+        XCTAssertEqual(connected, original, "Commute access must remain derived and save-neutral")
+    }
+
+    func testDailyHappinessRewardsAConnectedHomeToWorkRoute() {
+        var connected = trafficRouteState()
+        var disconnected = connected
+        disconnected.updateTile(at: GridCoordinate(x: 7, y: 9)) { $0.kind = .empty }
+        connected.happiness = 50
+        disconnected.happiness = 50
+
+        CitySimulation.step(&connected)
+        CitySimulation.step(&disconnected)
+
+        XCTAssertGreaterThan(connected.happiness, disconnected.happiness)
+    }
+
     func testTrafficAssignmentSkipsDisconnectedNearerJobsForAReachableWorkplace() throws {
         var state = emptyState()
         state.demand.commercial = 1
@@ -552,19 +644,19 @@ final class SpatialConsequenceTests: XCTestCase {
             "commercial-public-realm-regional-capital-v6":
                 "eb28ee767c06b09ab83f5c53f0105ac2345025ae4e616ced0f09c426b1a24871",
             "commercial-opening-v7":
-                "c88a6521ac2f5d4072a45f851e3f5077e12556d4bf2018d7dfd848fd48add54b",
+                "c6b527f3de311ed856575ebcccf31a4584b6f904ca8b5196387a2814bf9405cd",
             "commercial-complication-v7":
-                "376361ad89612d908243279fc168626ca3c2ecbbcaf31fb756770b754f8a2ae3",
+                "832a524342931dfbb997ca1e85990004c2448e59aafa9534a4bd50a27260f7de",
             "commercial-recovery-v7":
-                "219e7187e70df72bbb3157ada6332e98f33161a86bfcf7ac350fdacab7873951",
+                "48eb55e6071f889c3ba9acb4a419e79fb300aefe7cb220a62f0bfcdf7281b97e",
             "commercial-charter-midpoint-v7":
-                "345d5be3aad86b96c32e2d36768968c5d18ca7b2ac5222de71c7640b9517e2d0",
+                "a9ae2fe980237f8207168a9ded8f96434188763a650d90ae8591a6a2482502f2",
             "commercial-tax-relief-regional-capital-v7":
-                "f78a6f5ea8056b1b2907efff3368934070a3fc34641a889eef13084e74f9835a",
+                "29e4f9b3ca38fce19e47509ba556c1e48c7597e62c94ad7216c5e58535b2950a",
             "commercial-public-realm-regional-capital-v7":
-                "618bc95748cb926f5894707e6eeb7f3d0226a3fd63bade5add34ce29f2a753d4",
+                "589d80e201a505fbb5c84b96351e51c40f771884213fa158aa182fb3797af56e",
             "commercial-charter-victory-v1":
-                "fe23c695d40b3bbeeb05dba90dd2d613b6e68e8d9b27248e494f01ccc00eb0b3",
+                "d2e1150e0bc9e709a3e7d8c6253178c0546030bbb3be4b1e31afe9e17a13426e",
             "industrial-opening-v5":
                 "9efd6b44acbdac26dfaf187e40f8ef3d4e9be21ea5396aeab6334e88520a1c2b",
             "industrial-complication-v5":
@@ -590,19 +682,19 @@ final class SpatialConsequenceTests: XCTestCase {
             "industrial-green-buffer-regional-capital-v6":
                 "8f494ddaaad2208b132a909f2f25aa56022814910a24fb506b7bd287f35cc5df",
             "industrial-opening-v7":
-                "93f3598ead9b1ffc4ad23c5343573807ceb4608139b7e71a9e6e2ca816f1bd37",
+                "07a6f0208e34e30e47c0ab36388db0a8d2a34781ea60ce704f514397f779ea3c",
             "industrial-complication-v7":
-                "0508504ee1757e9b00f5e0211fb5f00f51418e29696c0c132ffd57671fd1ad2a",
+                "ecd4b6d1cad67e7d6bbdf9a500a266d19097f6850544c12ed099aba36e19150d",
             "industrial-recovery-v7":
-                "8dea366ffa6e969bb3d148269bd62ff833c5370619d19ae4acbcb9b08d6c9cf6",
+                "b6349b843fccfc5a53c5a4bf1c468873c14997c0efe19505a5c381bb2353c991",
             "industrial-charter-midpoint-v7":
-                "03306b00afde1d85ac15f5d441aa350b5c0c66bdc6b0ddc0b976a1844b061cfc",
+                "c0734a59a9c2309e3d3794736b6703ee163fa646157b015ba5c601fe66604438",
             "industrial-utility-expansion-regional-capital-v7":
-                "9a95be71781a57882d9397ab141beeb274c4d62faf794db6ab7e26432d5bf059",
+                "e845f6b6c460fe10cc94be4ab1f0b67c2b001859930155aba012cc3ade7377a5",
             "industrial-green-buffer-regional-capital-v7":
-                "0e3fe11d0254001a2302776084df2ff86f62be51830bbe6c441143cb8313c6c9",
+                "e38c58a4d5fbcd208d005fd8be8b4fcfa9d7c31e535b9adcd8d2810226a8d806",
             "industrial-charter-victory-v1":
-                "ca129fd4a7c038bbcb1c9f64cdd296a5ce2e76105b5499519328ea0ebb2e54c7",
+                "3c8fc741bf7d43c238486579a94de2c6af0d2f51f33518664a1db4ecad6d61e5",
         ]
         let expectedActivityDigests = [
             "commercial-opening-v5":
@@ -630,19 +722,19 @@ final class SpatialConsequenceTests: XCTestCase {
             "commercial-public-realm-regional-capital-v6":
                 "9dca836441b4027b0a4acc5b405232197026cd48a885f8379abe61ab21319522",
             "commercial-opening-v7":
-                "59d7e7a56b4add12828ab7600c4e4e700a3f44888428f254f789fc0689bf5000",
+                "dc717ec4a3e694825a5068420415757f1f3e1771a8b97f1dc9f2ef04eb6ac128",
             "commercial-complication-v7":
-                "a7976ee23545af6349d9f6e5a285ecd2251cce67f2195ff25241959933b77efd",
+                "b0530508357dd9cd9523beb0218c9226ee43201f6366d3acab80da27f08078fa",
             "commercial-recovery-v7":
-                "1ad231de0e28d139050d800ade8fda911cdf4abddaf61cfe4c5b65d29c74df07",
+                "80e4883a3d0c94c91931ff3c5da8812ef212bdec858d10d990ddf6e1a5827fc4",
             "commercial-charter-midpoint-v7":
-                "3df376cab7e11446d3b595e03378cbff8b81611748aca0528b1b0e92de638d6d",
+                "b0bfbcb885a61a2af5078103a71c9c7e4b62ff5919486381107ee04e9f395879",
             "commercial-tax-relief-regional-capital-v7":
-                "df12d3b0a7eb70f6bda9ece5cb3de601bd42b7b78457afb46a267cf625fc60d9",
+                "c59eca1b469a67a93c411c7f627ff0c4a6db74ce7019a7b85b98729e3c2197a1",
             "commercial-public-realm-regional-capital-v7":
-                "e2e1d1a02d44c683042412f05a95f21f90e59267750622310d1ca7453bf2a1b4",
+                "7a3684da910b714e648f8367cc7669d4fc11c1a2a3b5aea62b36bc84a440ef8d",
             "commercial-charter-victory-v1":
-                "780b62f8a14c884d0ae35747c8fe2e0bcde50596899c0d7119c9ae191226fdad",
+                "a150bb0b748290c9c7ec246590a61c96ddea8a716526bb70c891897e3cd3cbd8",
             "industrial-opening-v5":
                 "3a44bdda20d8e169e6190d56b2f6897ea1c6cfd139b1ccbc80aa6b2e0bf8a209",
             "industrial-complication-v5":
@@ -668,19 +760,19 @@ final class SpatialConsequenceTests: XCTestCase {
             "industrial-green-buffer-regional-capital-v6":
                 "f1095e39c0bec2a6188a1e46b91646e778abf29a68175681da00962926189d42",
             "industrial-opening-v7":
-                "25625621c04c0a11ed92124a4fee2aab9b953a5ecefa77eff7e59d53c7b1171e",
+                "0fbeaa569c14e9d0524bdd6a303173130a0923573b9b3fb8ce650dd698b48628",
             "industrial-complication-v7":
-                "4c5cbf8bc63cda0675b8815b05ab406e0fba035931c627c8ead592205c548290",
+                "8788b94a3a2e50303767c9f66d0f9ba7cbf41fe84e7d06c569ea23a9b960bd0e",
             "industrial-recovery-v7":
-                "f27b1226a6f37638819ad349b6291079d231e82237a539f8ba3bce3317c7bade",
+                "dffcb595589d913c7bf8cf49e4049df0ec892d605cdedc966f014b7e3fa0accb",
             "industrial-charter-midpoint-v7":
-                "0f89e990f506579a0dba9391fffb7bd1108f6d45f758e3244c7ced63cfa26108",
+                "8f84420be5a239fa84b93368d82a2c65f235c3a709d13f51dd8e404530370fa7",
             "industrial-utility-expansion-regional-capital-v7":
-                "3df2bee88a3208e7d3e09e69e6bac18dbcdc95ffda43da4af7ad2f467f1b6258",
+                "500f41e3ea172806601bc16af33e5f00859fc16bbf355184fc10926befd4f9c0",
             "industrial-green-buffer-regional-capital-v7":
-                "abefb6ea52c9fcc9dd0a5e75faa3882113819e0a632ef977d11c723ae8d8b11b",
+                "6aafa4b901fdb55311f862983d9899292853b25ffa53804ff31200d726077838",
             "industrial-charter-victory-v1":
-                "599708bad1ab3af681a560ef3fa5bdd275cefa17a5afaafb7b0e089e0b107251",
+                "0cd370d11d8173139b0a52d247069dea21fef06c3b5c7ed586ca0ada463961f3",
         ]
 
         for artifact in corpus.artifacts {

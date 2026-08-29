@@ -157,10 +157,13 @@ struct CitySpatialConsequenceMap: Equatable, Sendable {
 
             let vitalityScore: Double
             let vitality: CityLocationVitality
-            let trafficExposure = traffic.place(at: tile.coordinate)?.exposure
+            let trafficPlace = traffic.place(at: tile.coordinate)
+            let trafficExposure = trafficPlace?.exposure
+            let commuteAccess = trafficPlace?.commute?.access
             let trafficPenalty = CityTrafficImpact(
                 pressure: trafficExposure ?? 0
             ).localPenalty
+            let commutePenalty = (1 - (commuteAccess ?? 1)) * 0.24
             let civicService = civicServices[tile.coordinate]
             let isCompletedDevelopment = tile.kind != .empty
                 && tile.kind != .road
@@ -178,6 +181,7 @@ struct CitySpatialConsequenceMap: Equatable, Sendable {
                         + Self.clamp(state.happiness / 100) * 0.10
                         + (civicService?.combined ?? 0) * 0.10
                         - trafficPenalty * 0.50
+                        - commutePenalty
                 )
                 switch vitalityScore {
                 case ..<0.45:
@@ -210,6 +214,7 @@ struct CitySpatialConsequenceMap: Equatable, Sendable {
                         + parkProximity * 0.10
                         + (civicService?.combined ?? 0) * 0.10
                         - trafficPenalty
+                        - commutePenalty
                 )
                 localHappinessIndex = Self.clamp(
                     Self.clamp(state.happiness / 100) * 0.40
@@ -219,6 +224,7 @@ struct CitySpatialConsequenceMap: Equatable, Sendable {
                         + parkProximity * 0.10
                         + (civicService?.combined ?? 0) * 0.10
                         - trafficPenalty * 0.80
+                        - commutePenalty
                 )
             } else {
                 landValueIndex = nil

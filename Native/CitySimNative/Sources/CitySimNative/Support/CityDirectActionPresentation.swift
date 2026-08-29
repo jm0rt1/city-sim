@@ -1701,6 +1701,7 @@ struct CitySelectedLocationConditions: Equatable, Sendable {
     let landValueIndex: Int
     let utilityService: Int
     let civicServiceCoverage: Int
+    let commuteAccess: Int?
     let pollutionExposure: Int
     let trafficExposure: Int
     let vitalityScore: Int
@@ -1710,6 +1711,7 @@ struct CitySelectedLocationConditions: Equatable, Sendable {
         "Block \(coordinate.x + 1), \(coordinate.y + 1). Local conditions: "
             + "land value \(landValueIndex), utilities \(utilityService) percent, "
             + "civic service coverage \(civicServiceCoverage) percent, "
+            + (commuteAccess.map { "commute access \($0) percent, " } ?? "")
             + "traffic exposure \(trafficExposure) percent, pollution \(pollutionExposure) percent, "
             + "vitality \(vitality), \(vitalityScore) percent."
     }
@@ -1730,6 +1732,8 @@ struct CitySelectedLocationConditions: Equatable, Sendable {
             landValueIndex: points(landValueIndex),
             utilityService: points(sample.utility.combined),
             civicServiceCoverage: points(civicService.combined),
+            commuteAccess: CityTrafficAnalysis(state: snapshot.state)
+                .place(at: tile.coordinate)?.commute.map { points($0.access) },
             pollutionExposure: points(sample.pollutionExposure),
             trafficExposure: points(trafficExposure),
             vitalityScore: points(sample.vitalityScore),
@@ -2109,10 +2113,14 @@ struct CitySelectedLocationDiagnosis: Equatable, Sendable {
         var consequences = [
             "This block is \(sample.vitality.title) at \((sample.vitalityScore * 100).percentText) vitality."
         ]
+        func appendResponse(_ response: CityDirectResponse) {
+            guard !responses.contains(where: { $0.command == response.command }) else { return }
+            responses.append(response)
+        }
 
         if sample.utility.powerBand != .healthy {
             causes.append("Power service is \(sample.utility.powerBand.title) at \((sample.utility.power * 100).percentText)")
-            responses.append(.init(
+            appendResponse(.init(
                 title: "Add power capacity",
                 command: .buildPowerPlant,
                 explanation: "Place a power plant where its service can reach this area; placement does not guarantee recovery.",
@@ -2121,7 +2129,7 @@ struct CitySelectedLocationDiagnosis: Equatable, Sendable {
         }
         if sample.utility.waterBand != .healthy {
             causes.append("Water service is \(sample.utility.waterBand.title) at \((sample.utility.water * 100).percentText)")
-            responses.append(.init(
+            appendResponse(.init(
                 title: "Add water capacity",
                 command: .buildWaterTower,
                 explanation: "Place a water tower where its service can reach this area; placement does not guarantee recovery.",
@@ -2130,7 +2138,7 @@ struct CitySelectedLocationDiagnosis: Equatable, Sendable {
         }
         if sample.pollutionBand != .healthy {
             causes.append("Pollution exposure is \(sample.pollutionBand.title) at \((sample.pollutionExposure * 100).percentText)")
-            responses.append(.init(
+            appendResponse(.init(
                 title: "Add a green buffer",
                 command: .buildPark,
                 explanation: "Place a park nearby to mitigate exposure; it does not promise a specific vitality score.",
@@ -2145,19 +2153,44 @@ struct CitySelectedLocationDiagnosis: Equatable, Sendable {
                 consequences.append(
                     "Modeled congestion adds \((impact.delay * 100).percentText) delay and applies a \(localValueDrag) local-value drag."
                 )
-                responses.append(.init(
+                appendResponse(.init(
                     title: "Add alternate street",
                     command: .buildRoad,
                     explanation: "Add a connected alternative between nearby homes and jobs; exact relief depends on route assignment.",
                     focusesMap: true
                 ))
-                responses.append(.init(
+                appendResponse(.init(
                     title: "Show traffic",
                     command: .overlayTraffic,
                     explanation: "Compare modeled home-to-work route pressure across the street network.",
                     focusesMap: true
                 ))
             }
+        }
+        if tile.kind == .residential,
+           let commute = CityTrafficAnalysis(state: snapshot.state)
+            .place(at: tile.coordinate)?.commute,
+           commute.access < CityCommuteAccessReading.healthyAccessThreshold {
+            let route = commute.routeLength.map { " over \($0) road blocks" } ?? " with no connected route"
+            causes.append(
+                "Commute access is strained at \((commute.access * 100).percentText): "
+                    + "\(commute.reachableJobs) reachable jobs for \(commute.requiredWorkers) workers\(route)"
+            )
+            consequences.append(
+                "Reachable job coverage, route length, and weakest-route reliability now affect local value, happiness, vitality, and the city happiness target."
+            )
+            appendResponse(.init(
+                title: "Connect homes and jobs",
+                command: .buildRoad,
+                explanation: "Add or shorten a connected street route between this home and occupied workplaces; exact access depends on the completed network.",
+                focusesMap: true
+            ))
+            appendResponse(.init(
+                title: "Show commute routes",
+                command: .overlayTraffic,
+                explanation: "Compare assigned home-to-work pressure and inspect route bottlenecks on the connected street network.",
+                focusesMap: true
+            ))
         }
         if let service = sample.civicService,
            service.combined < CityCivicServiceAnalysis.healthyCoverageThreshold {
@@ -2171,13 +2204,13 @@ struct CitySelectedLocationDiagnosis: Equatable, Sendable {
             consequences.append(
                 "Only completed civic sites reachable over connected streets support local value, happiness, and vitality."
             )
-            responses.append(.init(
+            appendResponse(.init(
                 title: "Build \(weakest.title.lowercased())",
                 command: CityCommandCatalog.id(for: weakest),
                 explanation: "Place a completed \(weakest.title.lowercased()) on the connected street network where it can reach this block.",
                 focusesMap: true
             ))
-            responses.append(.init(
+            appendResponse(.init(
                 title: "Show service coverage",
                 command: .overlayServices,
                 explanation: "Compare the reachable Fire, Police, and School mix across completed places.",
@@ -2186,7 +2219,7 @@ struct CitySelectedLocationDiagnosis: Equatable, Sendable {
         }
 
         if sample.utility.combinedBand != .healthy {
-            responses.append(.init(
+            appendResponse(.init(
                 title: "Show utility service",
                 command: .overlayUtilities,
                 explanation: "Compare power and water service on the map.",
@@ -2194,7 +2227,7 @@ struct CitySelectedLocationDiagnosis: Equatable, Sendable {
             ))
         }
         if sample.pollutionBand != .healthy {
-            responses.append(.init(
+            appendResponse(.init(
                 title: "Show pollution",
                 command: .overlayPollution,
                 explanation: "Inspect the accepted local pollution exposure map.",

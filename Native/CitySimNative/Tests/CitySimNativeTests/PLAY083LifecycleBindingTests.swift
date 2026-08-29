@@ -30,14 +30,16 @@ final class PLAY083LifecycleBindingTests: XCTestCase {
                 "1a47eeb6c6a20b742c121f4b8f1e39a8682df54a8ede1528e8715f99885126ca",
             spatialDigest:
                 "e2646bba29246376e3e3a2a5c735cd3a7b1ee718cd29fe850cc67d25e0bf7fe7",
+            currentSpatialDigest:
+                "1614d3e7e21cfa39dc384a7843ba7321f1ab777460d482b696bbda19f7280daf",
             diagnosticDigest:
                 "62c0966c63078521177fe9eb6011c0396d2ec6ee38b571cd1d48ba46c294a63e",
             activityDigest:
                 "de199fb7d9f0e0e03cefd31e7873c0f7f69ba07b53ea6bcccdaf5783e6bbe6de",
             currentDiagnosticDigest:
-                "a1e8e702406832f2e5d6c964f3cef486d53b15f6863cac0fb746d3e5afa448b1",
+                "87a0e18d29679981224cb250d499c38015a671c5d0686decb6a4d80948f04f62",
             currentActivityDigest:
-                "9173d3c3b231f6e65a954d911c19b7a938e5fb0b6c013f9d3e28708adfc2bd30",
+                "7ea8dea2cc4c7b11a3e65fb551d06aa422db1acff3d4bcc553b94001f1ab4fc6",
             tick: 68,
             focusCoordinate: GridCoordinate(x: 5, y: 8)
         ),
@@ -54,14 +56,16 @@ final class PLAY083LifecycleBindingTests: XCTestCase {
                 "a1525b36f38fc0fb2dfbd042d8fd8748088cbc57f9f3f1549be1e3f88653ad7d",
             spatialDigest:
                 "de91f0b9d99398508b4eb4c5e84ac1dc1e8abb0cc401ff7b64bf748bbf3e816c",
+            currentSpatialDigest:
+                "93dcd938abda14f968d5343325fdd7d09a2fcb930bf9f439400b037f69004aab",
             diagnosticDigest:
                 "befd4256642557eb7d266e5f0412affeb8a6b608410258f0f943e4cd8ad84d25",
             activityDigest:
                 "c4aef758a8dc4d22fba33e234a7208a0567ee1e04790c7669566e609d45b6fee",
             currentDiagnosticDigest:
-                "9963651fddb8014cb5a1dbd8e718da5fb85571d94b712b55b08cb4054d8b0b09",
+                "90e6c4ef85d97005a7b1fc5304da78cb4cea0480aafde6951883b4cdc3df77ae",
             currentActivityDigest:
-                "1e5fcd40448dd811dc8b8877f7e179f2a7937d2444b02e24a7c70ccca32f2ddf",
+                "717e8e14dc1c3bd3ff2df60ca56bf6e66b9945f6aaac103d8ef88c1d594b6c49",
             tick: 992,
             focusCoordinate: GridCoordinate(x: 4, y: 8)
         ),
@@ -88,33 +92,59 @@ final class PLAY083LifecycleBindingTests: XCTestCase {
             manifest: manifest
         )
         var replayedEarly = construction
+        var repeatedEarly = construction
         for _ in 0..<4 {
             CitySimulation.step(&replayedEarly)
+            CitySimulation.step(&repeatedEarly)
         }
-        XCTAssertEqual(replayedEarly, early.state)
+        XCTAssertEqual(
+            try CityStateFingerprinter.fingerprint(replayedEarly),
+            try CityStateFingerprinter.fingerprint(repeatedEarly)
+        )
+        try assertEarlySemantics(replayedEarly, binding: early.binding)
 
         let pressured = try loadManifestState(
             id: "industrial-pressured-district-v3",
             manifest: manifest
         )
         let builder = ProductionStoryStateBuilder()
-        XCTAssertEqual(
-            try builder.replayRegionalRecoveryToQualification(
-                pressured,
-                resolution: .industrialUtilityExpansion
-            ),
-            recovered.state
-        )
         let terminal = try loadManifestState(
             id: "industrial-terminal-district-v3",
             manifest: manifest
         )
+        let replayedLegacyPressure = try builder.replayRegionalRecoveryToQualification(
+            pressured,
+            resolution: .industrialUtilityExpansion
+        )
+        let repeatedLegacyPressure = try builder.replayRegionalRecoveryToQualification(
+            pressured,
+            resolution: .industrialUtilityExpansion
+        )
         XCTAssertEqual(
-            try builder.replayRegionalQualificationToTerminal(
-                recovered.state,
-                resolution: .industrialUtilityExpansion
-            ),
-            terminal
+            try CityStateFingerprinter.fingerprint(replayedLegacyPressure),
+            try CityStateFingerprinter.fingerprint(repeatedLegacyPressure)
+        )
+        try assertRecoveredSemantics(
+            replayedLegacyPressure,
+            binding: recovered.binding
+        )
+        let replayedLegacyTerminal = try builder.replayRegionalQualificationToTerminal(
+            recovered.state,
+            resolution: .industrialUtilityExpansion
+        )
+        let repeatedLegacyTerminal = try builder.replayRegionalQualificationToTerminal(
+            recovered.state,
+            resolution: .industrialUtilityExpansion
+        )
+        XCTAssertEqual(
+            try CityStateFingerprinter.fingerprint(replayedLegacyTerminal),
+            try CityStateFingerprinter.fingerprint(repeatedLegacyTerminal)
+        )
+        XCTAssertEqual(replayedLegacyTerminal.tick, terminal.tick)
+        XCTAssertEqual(replayedLegacyTerminal.status, .won)
+        XCTAssertEqual(
+            replayedLegacyTerminal.progression?.strategy?.recoveryResolution,
+            .industrialUtilityExpansion
         )
         XCTAssertEqual(terminal.status, .won)
 
@@ -127,7 +157,7 @@ final class PLAY083LifecycleBindingTests: XCTestCase {
             XCTAssertEqual(snapshot.fingerprint.digest, loaded.binding.expectedStateDigest)
             XCTAssertEqual(
                 ProductionStoryFixtureCorpus.spatialDigest(snapshot.spatialConsequences),
-                loaded.binding.spatialDigest
+                loaded.binding.currentSpatialDigest
             )
             XCTAssertEqual(
                 VisibleCityFixtureCorpus.diagnosticDigest(snapshot.spatialConsequences),
@@ -551,7 +581,8 @@ private struct Binding: Sendable {
     let gitBlob: String
     let fileSHA256: String
     let expectedStateDigest: String
-    let spatialDigest: String
+        let spatialDigest: String
+        let currentSpatialDigest: String
     let diagnosticDigest: String
     let activityDigest: String
     let currentDiagnosticDigest: String

@@ -1,39 +1,39 @@
 {
-  "digest" : "6bce1e6f8817ddea665a4b2b96b12391546b457b289852244d7f40adc88e2656",
+  "digest" : "7a5afd9d9dc09c9cde5ecb6caa02ed6989ec417005783de7f07a4260adf17bd3",
   "fingerprintVersion" : 1,
   "schemaVersion" : 1,
   "state" : {
     "approval" : 95,
     "cityName" : "New Arcadia",
     "demand" : {
-      "commercial" : 0.8380000000000001,
-      "industrial" : 0.37127731092436966,
-      "residential" : 0.6357540664257724
+      "commercial" : 0.8390000000000001,
+      "industrial" : 0.3716890756302521,
+      "residential" : 0.6336169808489465
     },
     "gridHeight" : 24,
     "gridWidth" : 24,
-    "happiness" : 44.00723596627479,
-    "jobs" : 383,
+    "happiness" : 43.7838773188525,
+    "jobs" : 384,
     "messages" : [
       {
         "detail" : "The grid audit exposed freight strain, costing $7,000 and 8 happiness. 2 developed industrial parcels now show the damage. Add a third Power Plant and Water Tower to prove regional reserve capacity.",
-        "id" : "996-Regional Freight Overload",
+        "id" : "1000-Regional Freight Overload",
         "severity" : "critical",
-        "tick" : 996,
+        "tick" : 1000,
         "title" : "Regional Freight Overload"
       },
       {
-        "detail" : "The Charter has brought a regional freight-grid audit. A $7,000 repair and livability shock lands by Day 250. Add a third Power Plant and Water Tower after the pressure lands.",
-        "id" : "932-Regional Grid Mandate",
+        "detail" : "The Charter has brought a regional freight-grid audit. A $7,000 repair and livability shock lands by Day 251. Add a third Power Plant and Water Tower after the pressure lands.",
+        "id" : "936-Regional Grid Mandate",
         "severity" : "warning",
-        "tick" : 932,
+        "tick" : 936,
         "title" : "Regional Grid Mandate"
       },
       {
-        "detail" : "New Arcadia sustained healthy finances, employment, utilities, and livability for 12 consecutive days. The Charter is permanent; a Regional Capital mandate arrives by Day 234.",
-        "id" : "868-Town Charter Awarded",
+        "detail" : "New Arcadia sustained healthy finances, employment, utilities, and livability for 12 consecutive days. The Charter is permanent; a Regional Capital mandate arrives by Day 235.",
+        "id" : "872-Town Charter Awarded",
         "severity" : "good",
-        "tick" : 868,
+        "tick" : 872,
         "title" : "Town Charter Awarded"
       },
       {
@@ -100,9 +100,9 @@
         "title" : "Town Charter Standards"
       }
     ],
-    "population" : 549,
+    "population" : 550,
     "powerCapacity" : 600,
-    "powerUsed" : 497,
+    "powerUsed" : 498,
     "progression" : {
       "secondAct" : {
         "phase" : "recovery",
@@ -148,7 +148,7 @@
       ]
     },
     "taxRate" : 0.1,
-    "tick" : 996,
+    "tick" : 1000,
     "tiles" : [
       {
         "condition" : 1,
@@ -2315,7 +2315,7 @@
         },
         "kind" : "industrial",
         "level" : 3,
-        "occupancy" : 95
+        "occupancy" : 96
       },
       {
         "condition" : 0.48,
@@ -2326,7 +2326,7 @@
         },
         "kind" : "industrial",
         "level" : 2,
-        "occupancy" : 95
+        "occupancy" : 96
       },
       {
         "condition" : 1,
@@ -3206,7 +3206,7 @@
         },
         "kind" : "commercial",
         "level" : 1,
-        "occupancy" : 95
+        "occupancy" : 96
       },
       {
         "condition" : 1,
@@ -3217,7 +3217,7 @@
         },
         "kind" : "industrial",
         "level" : 2,
-        "occupancy" : 95
+        "occupancy" : 96
       },
       {
         "condition" : 1,
@@ -6487,8 +6487,8 @@
         "occupancy" : 0
       }
     ],
-    "treasury" : 75490.3,
+    "treasury" : 75943.95,
     "waterCapacity" : 540,
-    "waterUsed" : 433
+    "waterUsed" : 434
   }
 }

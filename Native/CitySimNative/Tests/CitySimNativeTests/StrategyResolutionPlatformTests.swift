@@ -12,10 +12,10 @@ final class StrategyResolutionPlatformTests: XCTestCase {
 
     func testFourResolutionFingerprintsRoundTripAndMeetPersistenceBudgets() throws {
         let expectedDigests: [CityStrategyRecoveryResolution: String] = [
-            .commercialTaxRelief: "c52ac141c103c554914998bafcb9f2a572c2d3bf0d907db2d753135701118314",
-            .commercialPublicRealmInvestment: "b70a5fa27e97ed5ad78c768f8a7c803471a74770f8c9a3f84a8b4799d79afb7b",
-            .industrialUtilityExpansion: "5902e38d90c333e835e02c8d5a9631b351bfa0f8a267a99231ccf701f02f44e6",
-            .industrialGreenBuffer: "01c3c191df477da0774ebd7c9b8682042175004648bbffab23b14c6c41ced6c1",
+            .commercialTaxRelief: "5c90e56fb1bfcbb01ea7a70b6e4296648aeebf756b7e5f12f0a8092d35e6b3d0",
+            .commercialPublicRealmInvestment: "fb57c6a0dedc4aaa418b6a1617299aa89fa66f61618429a4e6d07ee5818e3179",
+            .industrialUtilityExpansion: "27db48374cc0947f2ee236efcfee59748568e2ae7c71fb63effd61d07c145c53",
+            .industrialGreenBuffer: "69382dc0e3bf9283234c788338e80201422926d04c5167db31be823d743e236f",
         ]
 
         for resolution in resolutions {

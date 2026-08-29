@@ -402,6 +402,7 @@ enum CitySimulation {
         let utilityCoverage = utilityCoverage(in: state)
         let utilityReserve = utilityReserve(in: state)
         let employment = min(1, Double(jobCapacity) / Double(workforceTarget))
+        let commuteAccess = CityTrafficAnalysis.residentWeightedCommuteAccess(in: state)
         let parkBonus = min(12, Double(counts[.park] ?? 0) * 3)
         let services = civicServiceHappinessBonus(in: state)
         let pollution = min(
@@ -415,6 +416,7 @@ enum CitySimulation {
         let targetHappiness = 32 + utilityCoverage * 18 + employment * 16
             + min(4, utilityReserve * 20) + parkBonus + services
             - pollution - taxPressure - shortagePressure
+            - (1 - commuteAccess) * 6
         state.happiness += (targetHappiness - state.happiness) * 0.08
         state.happiness = min(100, max(0, state.happiness))
         state.approval += ((state.happiness - 50) * 0.08 - max(0, -state.treasury / 80_000))

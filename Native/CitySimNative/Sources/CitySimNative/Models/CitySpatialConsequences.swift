@@ -97,6 +97,10 @@ struct CitySpatialConsequenceMap: Equatable, Sendable {
         return samples[index]
     }
 
+    func commuteRoute(from residenceCoordinate: GridCoordinate) -> CityCommuteRouteReading? {
+        commuteRoutes.first { $0.residenceCoordinate == residenceCoordinate }
+    }
+
     init(state: CityGameState) {
         let gridWidth = state.gridWidth
         let gridHeight = state.gridHeight

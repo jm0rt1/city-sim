@@ -330,10 +330,17 @@ struct CitySceneView: NSViewRepresentable {
             if store.overlay != .none {
                 valueParts.append("\(store.overlay.title) overlay active")
             }
-            if let snapshot = try? CityPresentationSnapshot(state: store.state),
-               let diagnosis = CitySelectedLocationDiagnosis.make(tile: tile, snapshot: snapshot) {
-                valueParts.append(diagnosis.cause)
-                valueParts.append(diagnosis.consequence)
+            if let snapshot = try? CityPresentationSnapshot(state: store.state) {
+                if let diagnosis = CitySelectedLocationDiagnosis.make(tile: tile, snapshot: snapshot) {
+                    valueParts.append(diagnosis.cause)
+                    valueParts.append(diagnosis.consequence)
+                }
+                if store.overlay == .traffic,
+                   let commute = snapshot.spatialConsequences.commuteRoute(from: coordinate) {
+                    valueParts.append(
+                        "Assigned commute route visible across \(commute.roadCoordinates.count) road blocks"
+                    )
+                }
             }
             valueParts.append("Primary action: \(primary.name). \(primary.disclosure)")
             view.cityAccessibilityValue = valueParts.joined(separator: ". ")

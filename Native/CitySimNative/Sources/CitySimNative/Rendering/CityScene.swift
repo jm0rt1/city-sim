@@ -179,6 +179,7 @@ final class CityScene: SKScene {
     private let cameraNode = SKCameraNode()
     private let buildOpportunityLayer = SKNode()
     private let guidedRoadRouteLayer = SKNode()
+    private let selectedCommuteRouteLayer = SKNode()
     private let hoverNode = SKShapeNode()
     private let selectionNode = SKShapeNode()
     private var renderedState: CityGameState?
@@ -191,6 +192,7 @@ final class CityScene: SKScene {
     private var renderedInteractionMode: CityInteractionMode = .inspect
     private var renderedActiveActionTarget: CityMapActionTargetPresentation?
     private var renderedGuidedRoadRoute: [GridCoordinate] = []
+    private var renderedSelectedCommuteRoute: CityCommuteRouteReading?
     private var hoveredCoordinate: GridCoordinate?
     private var lastPreviewSignature: InteractionPreviewSignature?
     private var renderedGridSize: CGSize?
@@ -270,12 +272,22 @@ final class CityScene: SKScene {
             .sorted { ($0.name ?? "") < ($1.name ?? "") }
             .map(\.position)
     }
+    var selectedCommuteRouteCoordinatesForTesting: [GridCoordinate] {
+        renderedSelectedCommuteRoute?.roadCoordinates ?? []
+    }
+    var selectedCommuteRouteNamesForTesting: [String] {
+        func names(in node: SKNode) -> [String] {
+            (node.name.map { [$0] } ?? []) + node.children.flatMap(names)
+        }
+        return names(in: selectedCommuteRouteLayer)
+    }
     var interactionNamesForTesting: [String] {
         func names(in node: SKNode) -> [String] {
             (node.name.map { [$0] } ?? []) + node.children.flatMap(names)
         }
         return names(in: buildOpportunityLayer)
             + names(in: guidedRoadRouteLayer)
+            + names(in: selectedCommuteRouteLayer)
             + names(in: hoverNode)
             + names(in: selectionNode)
     }
@@ -343,6 +355,8 @@ final class CityScene: SKScene {
         buildOpportunityLayer.zPosition = 89_997
         guidedRoadRouteLayer.name = "interaction.guided-road-route"
         guidedRoadRouteLayer.zPosition = 89_998
+        selectedCommuteRouteLayer.name = "interaction.selected-commute-route"
+        selectedCommuteRouteLayer.zPosition = 89_999
         hoverNode.zPosition = 90_000
         configureHighlight(selectionNode, color: NSColor(calibratedRed: 0.25, green: 0.95, blue: 0.78, alpha: 1), alpha: 0.65, z: 90_001)
         selectionNode.fillColor = .clear
@@ -353,10 +367,12 @@ final class CityScene: SKScene {
         configureSelectionAdornment()
         worldLayer.addChild(buildOpportunityLayer)
         worldLayer.addChild(guidedRoadRouteLayer)
+        worldLayer.addChild(selectedCommuteRouteLayer)
         worldLayer.addChild(hoverNode)
         worldLayer.addChild(selectionNode)
         buildOpportunityLayer.isHidden = true
         guidedRoadRouteLayer.isHidden = true
+        selectedCommuteRouteLayer.isHidden = true
         hoverNode.isHidden = true
         selectionNode.isHidden = true
     }
@@ -381,12 +397,19 @@ final class CityScene: SKScene {
     ) {
         let renderStarted = ProcessInfo.processInfo.systemUptime
         let assetResidencyBefore = assets.residencySnapshot()
+        let selectedCommuteRoute = resolvedSelectedCommuteRoute(
+            in: snapshot,
+            overlay: overlay,
+            selection: selection,
+            interactionMode: interactionMode
+        )
         if renderedSnapshot?.fingerprint == snapshot.fingerprint,
            renderedOverlay == overlay,
            renderedSelection == selection,
            renderedInteractionMode == interactionMode,
            renderedActiveActionTarget == activeActionTarget,
            renderedGuidedRoadRoute == guidedRoadRoute,
+           renderedSelectedCommuteRoute == selectedCommuteRoute,
            renderedReducedMotion == reducedMotion {
             diagnosticsSnapshot.createdTileCount = 0
             diagnosticsSnapshot.updatedTileCount = 0
@@ -409,6 +432,7 @@ final class CityScene: SKScene {
         let previousActiveActionTarget = renderedActiveActionTarget
         let previousInteractionMode = renderedInteractionMode
         let previousGuidedRoadRoute = renderedGuidedRoadRoute
+        let previousSelectedCommuteRoute = renderedSelectedCommuteRoute
         let motionChanged = renderedReducedMotion != reducedMotion
         let priorDisplayedCueCount = diagnosticsSnapshot.displayedConsequenceCueCount
         presentedConsequenceEventTicks = presentedConsequenceEventTicks.filter {
@@ -450,6 +474,7 @@ final class CityScene: SKScene {
         renderedInteractionMode = interactionMode
         renderedActiveActionTarget = activeActionTarget
         renderedGuidedRoadRoute = guidedRoadRoute
+        renderedSelectedCommuteRoute = selectedCommuteRoute
         renderedReducedMotion = reducedMotion
         diagnosticsSnapshot = updateWorld(
             snapshot: snapshot,
@@ -463,6 +488,7 @@ final class CityScene: SKScene {
         let insertedCueCount = presentConsequenceEvents(consequenceEvents)
         updateBuildOpportunities(for: interactionMode, state: state)
         updateGuidedRoadRoute(guidedRoadRoute)
+        updateSelectedCommuteRoute(selectedCommuteRoute)
         updateSelection(selection)
         refreshPersistentConsequenceEmphasis(at: [previousSelection, selection])
         refreshInteractionPreview()
@@ -495,6 +521,7 @@ final class CityScene: SKScene {
             || previousSelection != selection
             || previousInteractionMode != interactionMode
             || previousGuidedRoadRoute != guidedRoadRoute
+            || previousSelectedCommuteRoute != selectedCommuteRoute
             || motionChanged
             || unexplainedCueRemoval
         let runtimeMetricsStarted = ProcessInfo.processInfo.systemUptime
@@ -2360,6 +2387,78 @@ final class CityScene: SKScene {
             connector.lineCap = .round
             connector.lineJoin = .round
             guidedRoadRouteLayer.addChild(connector)
+        }
+    }
+
+    private func resolvedSelectedCommuteRoute(
+        in snapshot: CityPresentationSnapshot,
+        overlay: DataOverlay,
+        selection: GridCoordinate?,
+        interactionMode: CityInteractionMode
+    ) -> CityCommuteRouteReading? {
+        guard overlay == .traffic,
+              interactionMode == .inspect,
+              let selection,
+              snapshot.state.tile(at: selection)?.kind == .residential else {
+            return nil
+        }
+        return snapshot.spatialConsequences.commuteRoute(from: selection)
+    }
+
+    private func updateSelectedCommuteRoute(_ commute: CityCommuteRouteReading?) {
+        selectedCommuteRouteLayer.removeAllChildren()
+        guard let commute, commute.roadCoordinates.count >= 2 else {
+            selectedCommuteRouteLayer.isHidden = true
+            return
+        }
+
+        selectedCommuteRouteLayer.isHidden = false
+        let routeColor = NSColor(calibratedRed: 0.18, green: 0.82, blue: 0.98, alpha: 1)
+        let routePath = CGMutablePath()
+        for (index, coordinate) in commute.roadCoordinates.enumerated() {
+            let position = style.isoPosition(coordinate)
+            if index == 0 {
+                routePath.move(to: position)
+            } else {
+                routePath.addLine(to: position)
+            }
+        }
+
+        let halo = SKShapeNode(path: routePath)
+        halo.name = "interaction.selected-commute-route.halo"
+        halo.strokeColor = NSColor.black.withAlphaComponent(0.62)
+        halo.lineWidth = 5.5
+        halo.lineCap = .round
+        halo.lineJoin = .round
+        selectedCommuteRouteLayer.addChild(halo)
+
+        let route = SKShapeNode(path: routePath)
+        route.name = "interaction.selected-commute-route.path"
+        route.strokeColor = routeColor.withAlphaComponent(0.96)
+        route.lineWidth = 2.6
+        route.lineCap = .round
+        route.lineJoin = .round
+        route.zPosition = 1
+        selectedCommuteRouteLayer.addChild(route)
+
+        for (index, coordinate) in [
+            commute.roadCoordinates[0],
+            commute.roadCoordinates[commute.roadCoordinates.count - 1],
+        ].enumerated() {
+            let marker = SKShapeNode(
+                path: style.diamondPath(width: tileWidth * 0.28, height: tileHeight * 0.28)
+            )
+            marker.name = index == 0
+                ? "interaction.selected-commute-route.home-frontage"
+                : "interaction.selected-commute-route.job-frontage"
+            marker.position = style.isoPosition(coordinate)
+            marker.fillColor = index == 0
+                ? routeColor.withAlphaComponent(0.94)
+                : style.palette.laneMark.withAlphaComponent(0.96)
+            marker.strokeColor = NSColor.black.withAlphaComponent(0.78)
+            marker.lineWidth = 1.4
+            marker.zPosition = 2
+            selectedCommuteRouteLayer.addChild(marker)
         }
     }
 

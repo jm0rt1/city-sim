@@ -3709,6 +3709,105 @@ final class WorldRenderingTests: XCTestCase {
     }
 
     @MainActor
+    func testTrafficOverlayTracesOnlySelectedResidentialCommuteAndClearsAfterDisconnect() throws {
+        let residence = GridCoordinate(x: 6, y: 10)
+        let articulationRoad = GridCoordinate(x: 6, y: 9)
+        let connected = CityGameState.newCity(seed: 42)
+        let connectedSnapshot = try CityPresentationSnapshot(state: connected)
+        let expectedRoute = try XCTUnwrap(
+            connectedSnapshot.spatialConsequences.commuteRoute(from: residence)
+        )
+
+        XCTAssertEqual(expectedRoute.roadCoordinates.first, articulationRoad)
+        XCTAssertGreaterThan(expectedRoute.roadCoordinates.count, 2)
+
+        for size in [CGSize(width: 900, height: 600), CGSize(width: 1_280, height: 800)] {
+            let scene = CityScene(size: size)
+            scene.reducedMotion = true
+            scene.render(
+                snapshot: connectedSnapshot,
+                overlay: .traffic,
+                selection: residence,
+                interactionMode: .inspect
+            )
+
+            XCTAssertEqual(
+                scene.selectedCommuteRouteCoordinatesForTesting,
+                expectedRoute.roadCoordinates
+            )
+            XCTAssertEqual(
+                scene.selectedCommuteRouteNamesForTesting.filter {
+                    $0 == "interaction.selected-commute-route.path"
+                }.count,
+                1
+            )
+            XCTAssertEqual(
+                scene.selectedCommuteRouteNamesForTesting.filter {
+                    $0 == "interaction.selected-commute-route.halo"
+                }.count,
+                1
+            )
+            XCTAssertTrue(
+                scene.selectedCommuteRouteNamesForTesting.contains(
+                    "interaction.selected-commute-route.home-frontage"
+                )
+            )
+            XCTAssertTrue(
+                scene.selectedCommuteRouteNamesForTesting.contains(
+                    "interaction.selected-commute-route.job-frontage"
+                )
+            )
+
+            scene.render(
+                snapshot: connectedSnapshot,
+                overlay: .none,
+                selection: residence,
+                interactionMode: .inspect
+            )
+            XCTAssertTrue(scene.selectedCommuteRouteCoordinatesForTesting.isEmpty)
+            XCTAssertFalse(scene.selectedCommuteRouteNamesForTesting.contains {
+                $0.hasPrefix("interaction.selected-commute-route.path")
+            })
+
+            scene.render(
+                snapshot: connectedSnapshot,
+                overlay: .traffic,
+                selection: expectedRoute.roadCoordinates.last,
+                interactionMode: .inspect
+            )
+            XCTAssertTrue(scene.selectedCommuteRouteCoordinatesForTesting.isEmpty)
+
+            scene.render(
+                snapshot: connectedSnapshot,
+                overlay: .traffic,
+                selection: residence,
+                interactionMode: .build(.road)
+            )
+            XCTAssertTrue(scene.selectedCommuteRouteCoordinatesForTesting.isEmpty)
+        }
+
+        var disconnected = connected
+        disconnected.updateTile(at: articulationRoad) {
+            $0 = CityTile(coordinate: articulationRoad, kind: .empty)
+        }
+        let disconnectedSnapshot = try CityPresentationSnapshot(state: disconnected)
+        XCTAssertNil(disconnectedSnapshot.spatialConsequences.commuteRoute(from: residence))
+
+        let disconnectedScene = CityScene(size: CGSize(width: 900, height: 600))
+        disconnectedScene.reducedMotion = true
+        disconnectedScene.render(
+            snapshot: disconnectedSnapshot,
+            overlay: .traffic,
+            selection: residence,
+            interactionMode: .inspect
+        )
+        XCTAssertTrue(disconnectedScene.selectedCommuteRouteCoordinatesForTesting.isEmpty)
+        XCTAssertFalse(disconnectedScene.selectedCommuteRouteNamesForTesting.contains {
+            $0 == "interaction.selected-commute-route.path"
+        })
+    }
+
+    @MainActor
     func testTypedLocalActivityReusesAmbientTreeUntilItsVisibleBandChanges() {
         var state = CityGameState.newCity(seed: 42)
         let scene = CityScene(size: CGSize(width: 1_280, height: 800))

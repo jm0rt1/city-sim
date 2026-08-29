@@ -2904,6 +2904,38 @@ final class CityCommandCatalogTests: XCTestCase {
     }
 
     @MainActor
+    func testTrafficMapAccessibilityAnnouncesSelectedResidentialCommuteRoute() throws {
+        let residence = GridCoordinate(x: 6, y: 10)
+        let store = CityGameStore(state: .newCity(seed: 42))
+        store.interactionMode = .inspect
+        store.selectedCoordinate = residence
+        store.overlay = .traffic
+        let expectedRoute = try XCTUnwrap(
+            CityPresentationSnapshot(state: store.state)
+                .spatialConsequences.commuteRoute(from: residence)
+        )
+        let coordinator = CitySceneView.Coordinator(store: store)
+        let mapView = CityMapSKView(frame: CGRect(x: 0, y: 0, width: 900, height: 600))
+
+        coordinator.configureMapAccessibility(in: mapView)
+
+        let value = try XCTUnwrap(mapView.accessibilityValue() as? String)
+        XCTAssertTrue(value.contains("Traffic overlay active"))
+        XCTAssertTrue(
+            value.contains(
+                "Assigned commute route visible across \(expectedRoute.roadCoordinates.count) road blocks"
+            )
+        )
+
+        store.overlay = .none
+        coordinator.configureMapAccessibility(in: mapView)
+        XCTAssertFalse(
+            (mapView.accessibilityValue() as? String)?.contains("Assigned commute route visible")
+                ?? true
+        )
+    }
+
+    @MainActor
     func testNativeMapAccessibilityActionPublishesAndBuildsCommercial() throws {
         let store = CityGameStore(state: .newCity(seed: 42))
         store.selectTool(.commercial)

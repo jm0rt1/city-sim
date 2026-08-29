@@ -27,6 +27,7 @@ struct OverlayLegendView: View {
         case .utilities: "Supplied"
         case .services: "Covered"
         case .pollution: "Clean"
+        case .roadCondition: "Maintained"
         default: "Strong"
         }
     }
@@ -37,6 +38,7 @@ struct OverlayLegendView: View {
         case .utilities: "Shortfall"
         case .services: "Unserved"
         case .pollution: "Polluted"
+        case .roadCondition: "Damaged"
         default: "Weak"
         }
     }

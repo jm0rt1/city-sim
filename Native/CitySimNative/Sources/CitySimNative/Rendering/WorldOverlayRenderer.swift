@@ -8,6 +8,7 @@ enum WorldOverlayPattern: String, Sendable {
     case trafficPressureTicks
     case civicServiceSignals
     case happinessRipples
+    case roadConditionShoulderBars
 }
 
 struct WorldOverlaySample {
@@ -57,6 +58,8 @@ final class WorldOverlayRenderer {
             emphasis = makeCivicServiceSignals(color: sample.color, severity: severity, detail: minimumDetail)
         case .happinessRipples:
             emphasis = makeHappinessRipples(color: sample.color, severity: severity, detail: minimumDetail)
+        case .roadConditionShoulderBars:
+            emphasis = makeRoadConditionShoulderBars(color: sample.color, severity: severity, detail: minimumDetail)
         }
         emphasis.name = "overlay.pattern.\(sample.pattern.rawValue)"
         emphasis.zPosition = 30
@@ -107,6 +110,8 @@ final class WorldOverlayRenderer {
         case .happiness:
             guard let value = consequence.localHappinessIndex else { return nil }
             return makeSample(value, pattern: .happinessRipples)
+        case .roadCondition:
+            return makeSample(tile.condition, pattern: .roadConditionShoulderBars)
         case .none:
             return nil
         }
@@ -303,6 +308,32 @@ final class WorldOverlayRenderer {
             line.lineCap = .round
             line.lineJoin = .round
             root.addChild(line)
+        }
+        return root
+    }
+
+    private func makeRoadConditionShoulderBars(
+        color: NSColor,
+        severity: Double,
+        detail: CameraDetailLevel
+    ) -> SKNode {
+        let root = SKNode()
+        let ink = color.withAlphaComponent(detail == .city ? 0.88 : 0.74)
+        let barCount = severityMarkCount(severity)
+        let baseY = -style.tileHeight * 0.38
+        for index in 0..<barCount {
+            let y = baseY - CGFloat(index) * 1.8
+            let halfWidth = style.tileWidth * (0.11 + CGFloat(index) * 0.025)
+            let bar = SKShapeNode(path: WorldGeometryCache.line(
+                from: CGPoint(x: -halfWidth, y: y),
+                to: CGPoint(x: halfWidth, y: y)
+            ))
+            bar.name = "overlay.road-condition.shoulder-bar"
+            bar.fillColor = .clear
+            bar.strokeColor = ink
+            bar.lineWidth = detail == .city ? 1.5 : 1.1
+            bar.lineCap = .round
+            root.addChild(bar)
         }
         return root
     }

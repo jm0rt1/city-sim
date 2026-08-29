@@ -249,7 +249,7 @@ final class CityCommandCatalogTests: XCTestCase {
         ]))
         XCTAssertEqual(Set(DataOverlay.allCases.map(CityCommandCatalog.id(for:))), Set([
             .overlayCity, .overlayLandValue, .overlayTraffic, .overlayUtilities,
-            .overlayServices, .overlayHappiness, .overlayPollution
+            .overlayServices, .overlayHappiness, .overlayPollution, .overlayRoadCondition
         ]))
     }
 

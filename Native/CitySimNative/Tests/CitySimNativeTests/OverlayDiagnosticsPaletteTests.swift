@@ -35,13 +35,15 @@ final class OverlayDiagnosticsPaletteTests: XCTestCase {
                     return consequence.localHappinessIndex
                 case .pollution:
                     return consequence.pollutionExposure
+                case .roadCondition:
+                    return CityRoadMaintenance.clamp(tile.condition)
                 }
             }
             let expected: Double?
             switch overlay {
             case .traffic, .pollution:
                 expected = eligibleValues.max()
-            case .landValue, .utilities, .services, .happiness:
+            case .landValue, .utilities, .services, .happiness, .roadCondition:
                 expected = eligibleValues.min()
             case .none:
                 expected = nil
@@ -113,6 +115,34 @@ final class OverlayDiagnosticsPaletteTests: XCTestCase {
         XCTAssertTrue(hotspot.accessibilityLabel.contains("highest traffic delay road"))
     }
 
+    func testRoadConditionHotspotUsesSavedWorstRoadAndSelectedReading() throws {
+        var state = CityGameState.newCity(seed: 42)
+        let roadIndices = state.tiles.indices.filter { state.tiles[$0].kind == .road }
+        XCTAssertGreaterThanOrEqual(roadIndices.count, 2)
+        state.tiles[roadIndices[0]].condition = 0.77
+        state.tiles[roadIndices[1]].condition = 0.41
+
+        let snapshot = try CityPresentationSnapshot(state: state)
+        let hotspot = try XCTUnwrap(OverlayDiagnosticHotspot.make(
+            overlay: .roadCondition,
+            snapshot: snapshot
+        ))
+        XCTAssertEqual(hotspot.coordinate, state.tiles[roadIndices[1]].coordinate)
+        XCTAssertEqual(hotspot.value, 0.41, accuracy: 0.000_001)
+        XCTAssertEqual(hotspot.conciseReading, "Lowest 41 · B\(hotspot.coordinate.x + 1),\(hotspot.coordinate.y + 1)")
+        XCTAssertTrue(hotspot.accessibilityLabel.contains("lowest road condition"))
+
+        let presentation = OverlayDiagnosticsPalettePresentation.make(
+            overlay: .roadCondition,
+            consequence: snapshot.spatialConsequences[hotspot.coordinate],
+            tick: state.tick,
+            selectionApplies: true,
+            selectedRoadCondition: state.tiles[roadIndices[1]].condition
+        )
+        XCTAssertEqual(presentation.value, "41 / 100")
+        XCTAssertEqual(presentation.source, "Saved road condition")
+    }
+
     @MainActor
     func testPaletteRoutesEveryLayerAndPublishesHonestNormalizedMetadata() {
         let store = CityGameStore(state: .newCity(seed: 42))
@@ -152,6 +182,8 @@ final class OverlayDiagnosticsPaletteTests: XCTestCase {
         XCTAssertTrue(DataOverlay.none.applies(to: open))
         XCTAssertTrue(DataOverlay.traffic.applies(to: road))
         XCTAssertFalse(DataOverlay.traffic.applies(to: building))
+        XCTAssertTrue(DataOverlay.roadCondition.applies(to: road))
+        XCTAssertFalse(DataOverlay.roadCondition.applies(to: building))
         XCTAssertTrue(DataOverlay.utilities.applies(to: building))
         XCTAssertTrue(DataOverlay.services.applies(to: building))
         XCTAssertFalse(DataOverlay.services.applies(to: construction))
@@ -160,6 +192,19 @@ final class OverlayDiagnosticsPaletteTests: XCTestCase {
         XCTAssertTrue(DataOverlay.landValue.applies(to: building))
         XCTAssertTrue(DataOverlay.happiness.applies(to: building))
         XCTAssertFalse(DataOverlay.utilities.applies(to: open))
+
+        let roadCondition = OverlayDiagnosticsPalettePresentation.make(
+            overlay: .roadCondition,
+            consequence: nil,
+            tick: 12,
+            selectionApplies: true,
+            selectedRoadCondition: 0.42
+        )
+        XCTAssertEqual(roadCondition.title, "Road Condition")
+        XCTAssertEqual(roadCondition.value, "42 / 100")
+        XCTAssertEqual(roadCondition.applicability, "Roads only")
+        XCTAssertEqual(roadCondition.source, "Saved road condition")
+        XCTAssertEqual(roadCondition.visualKey, "More shoulder bars signal worse road condition")
 
         let keys = DataOverlay.allCases.dropFirst().map {
             OverlayDiagnosticsPalettePresentation.make(

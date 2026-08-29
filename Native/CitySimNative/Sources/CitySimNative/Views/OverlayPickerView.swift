@@ -10,7 +10,7 @@ struct OverlayDiagnosticHotspot: Equatable, Sendable {
         switch overlay {
         case .traffic, .pollution:
             prefix = "Peak"
-        case .landValue, .utilities, .services, .happiness:
+        case .landValue, .utilities, .services, .happiness, .roadCondition:
             prefix = "Lowest"
         case .none:
             prefix = "City"
@@ -35,6 +35,8 @@ struct OverlayDiagnosticHotspot: Equatable, Sendable {
             subject = "lowest local happiness"
         case .pollution:
             subject = "highest pollution"
+        case .roadCondition:
+            subject = "lowest road condition"
         }
         return "Focus \(subject) at Block \(coordinate.x + 1), \(coordinate.y + 1)"
     }
@@ -48,7 +50,7 @@ struct OverlayDiagnosticHotspot: Equatable, Sendable {
         let candidates = snapshot.spatialConsequences.samples.compactMap { consequence -> Self? in
             guard let tile = snapshot.state.tile(at: consequence.coordinate),
                   overlay.applies(to: tile),
-                  let value = metric(for: overlay, consequence: consequence) else {
+                  let value = metric(for: overlay, tile: tile, consequence: consequence) else {
                 return nil
             }
             return Self(overlay: overlay, coordinate: consequence.coordinate, value: value)
@@ -59,7 +61,7 @@ struct OverlayDiagnosticHotspot: Equatable, Sendable {
             switch overlay {
             case .traffic, .pollution:
                 candidate.value > current.value ? candidate : current
-            case .landValue, .utilities, .services, .happiness:
+            case .landValue, .utilities, .services, .happiness, .roadCondition:
                 candidate.value < current.value ? candidate : current
             case .none:
                 current
@@ -73,6 +75,7 @@ struct OverlayDiagnosticHotspot: Equatable, Sendable {
 
     private static func metric(
         for overlay: DataOverlay,
+        tile: CityTile,
         consequence: CitySpatialConsequence
     ) -> Double? {
         switch overlay {
@@ -90,6 +93,8 @@ struct OverlayDiagnosticHotspot: Equatable, Sendable {
             consequence.localHappinessIndex
         case .pollution:
             consequence.pollutionExposure
+        case .roadCondition:
+            CityRoadMaintenance.clamp(tile.condition)
         }
     }
 }
@@ -117,6 +122,7 @@ struct OverlayDiagnosticsPalettePresentation: Equatable {
         consequence: CitySpatialConsequence?,
         tick: Int,
         selectionApplies: Bool? = nil,
+        selectedRoadCondition: Double? = nil,
         hotspot: OverlayDiagnosticHotspot? = nil
     ) -> Self {
         let title = displayTitle(for: overlay)
@@ -229,6 +235,21 @@ struct OverlayDiagnosticsPalettePresentation: Equatable {
                 clickThrough: clickThrough,
                 visualKey: "More hatches signal higher pollution"
             )
+        case .roadCondition:
+            return Self(
+                title: title,
+                value: reading(
+                    selectedRoadCondition.map(CityRoadMaintenance.clamp),
+                    selectionApplies: selectionApplies,
+                    hotspot: hotspot
+                ),
+                scale: scale,
+                applicability: "Roads only",
+                source: "Saved road condition",
+                freshness: freshness,
+                clickThrough: clickThrough,
+                visualKey: "More shoulder bars signal worse road condition"
+            )
         }
     }
 
@@ -279,6 +300,9 @@ struct OverlayDiagnosticsPaletteView: View {
         snapshot: CityPresentationSnapshot?
     ) -> OverlayDiagnosticsPalettePresentation {
         let selectionApplies = store.selectedTile.map { overlay.applies(to: $0) }
+        let selectedRoadCondition = store.selectedTile.flatMap {
+            $0.kind == .road ? $0.condition : nil
+        }
         let consequence = store.selectedCoordinate.flatMap { snapshot?.spatialConsequences[$0] }
         let hotspot = makeHotspot(for: overlay, snapshot: snapshot)
         return .make(
@@ -286,6 +310,7 @@ struct OverlayDiagnosticsPaletteView: View {
             consequence: selectionApplies == false ? nil : consequence,
             tick: store.state.tick,
             selectionApplies: selectionApplies,
+            selectedRoadCondition: selectedRoadCondition,
             hotspot: hotspot
         )
     }

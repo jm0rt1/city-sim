@@ -62,7 +62,7 @@ final class WorldRenderingTests: XCTestCase {
     }
 
     @MainActor
-    func testFiveOverlaysUseOnlyApprovedSpatialSamplesAndRespectTypedDomains() throws {
+    func testSevenOverlaysUseOnlyApprovedSpatialSamplesAndRespectTypedDomains() throws {
         let renderer = WorldOverlayRenderer(style: WorldVisualStyle())
         let tile = CityTile(coordinate: GridCoordinate(x: 2, y: 3), kind: .residential)
         let consequence = CitySpatialConsequence(
@@ -82,7 +82,11 @@ final class WorldRenderingTests: XCTestCase {
             landValueIndex: 0.62,
             localHappinessIndex: 0.44
         )
-        let road = CityTile(coordinate: GridCoordinate(x: 2, y: 4), kind: .road)
+        let road = CityTile(
+            coordinate: GridCoordinate(x: 2, y: 4),
+            kind: .road,
+            condition: 0.38
+        )
         let roadConsequence = CitySpatialConsequence(
             coordinate: road.coordinate,
             utility: consequence.utility,
@@ -131,16 +135,24 @@ final class WorldRenderingTests: XCTestCase {
             consequence: roadConsequence,
             overlay: .traffic
         )
+        let roadCondition = renderer.sample(
+            for: road,
+            state: contradictoryState,
+            consequence: roadConsequence,
+            overlay: .roadCondition
+        )
         XCTAssertEqual(try XCTUnwrap(utility).value, 0.33, accuracy: 0.0001)
         XCTAssertEqual(try XCTUnwrap(pollution).value, 0.36, accuracy: 0.0001)
         XCTAssertEqual(try XCTUnwrap(landValue).value, 0.62, accuracy: 0.0001)
         XCTAssertEqual(try XCTUnwrap(happiness).value, 0.44, accuracy: 0.0001)
         XCTAssertEqual(try XCTUnwrap(traffic).value, 0.27, accuracy: 0.0001)
+        XCTAssertEqual(try XCTUnwrap(roadCondition).value, 0.38, accuracy: 0.0001)
         XCTAssertEqual(try XCTUnwrap(utility).pattern.rawValue, "utilityEdge")
         XCTAssertEqual(try XCTUnwrap(pollution).pattern.rawValue, "pollutionHatch")
         XCTAssertEqual(try XCTUnwrap(landValue).pattern.rawValue, "landValueContour")
         XCTAssertEqual(try XCTUnwrap(happiness).pattern.rawValue, "happinessRipples")
         XCTAssertEqual(try XCTUnwrap(traffic).pattern.rawValue, "trafficPressureTicks")
+        XCTAssertEqual(try XCTUnwrap(roadCondition).pattern.rawValue, "roadConditionShoulderBars")
         XCTAssertNil(renderer.sample(
             for: tile,
             state: contradictoryState,
@@ -202,7 +214,7 @@ final class WorldRenderingTests: XCTestCase {
     }
 
     @MainActor
-    func testSixOverlaysUseDistinctSparseNonColorMarksWithoutTileWashOrLabels() {
+    func testSevenOverlaysUseDistinctSparseNonColorMarksWithoutTileWashOrLabels() {
         let style = WorldVisualStyle()
         let renderer = WorldOverlayRenderer(style: style)
         let tile = CityTile(coordinate: GridCoordinate(x: 2, y: 3), kind: .residential)
@@ -229,7 +241,7 @@ final class WorldRenderingTests: XCTestCase {
                 combined: 0.20
             )
         )
-        let road = CityTile(coordinate: tile.coordinate, kind: .road)
+        let road = CityTile(coordinate: tile.coordinate, kind: .road, condition: 0.20)
         let trafficConsequence = CitySpatialConsequence(
             coordinate: tile.coordinate,
             utility: severe.utility,
@@ -283,6 +295,13 @@ final class WorldRenderingTests: XCTestCase {
             overlay: .services,
             detail: .block
         )
+        let roadCondition = renderer.makeOverlay(
+            for: road,
+            state: state,
+            consequence: trafficConsequence,
+            overlay: .roadCondition,
+            detail: .block
+        )
 
         let utilityNames = descendantNames(in: utility)
         let pollutionNames = descendantNames(in: pollution)
@@ -290,7 +309,8 @@ final class WorldRenderingTests: XCTestCase {
         let trafficNames = descendantNames(in: traffic)
         let happinessNames = descendantNames(in: happiness)
         let serviceNames = descendantNames(in: services)
-        for names in [utilityNames, pollutionNames, landValueNames, trafficNames, happinessNames, serviceNames] {
+        let roadConditionNames = descendantNames(in: roadCondition)
+        for names in [utilityNames, pollutionNames, landValueNames, trafficNames, happinessNames, serviceNames, roadConditionNames] {
             XCTAssertFalse(names.contains("overlay.base"))
         }
         XCTAssertTrue(utilityNames.contains("overlay.utility.status-edge"))
@@ -300,7 +320,8 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertEqual(trafficNames.filter { $0 == "overlay.traffic.pressure-tick" }.count, 6)
         XCTAssertEqual(happinessNames.filter { $0 == "overlay.happiness.ground-ripple" }.count, 3)
         XCTAssertEqual(serviceNames.filter { $0 == "overlay.services.reach-signal" }.count, 3)
-        for overlay in [utility, pollution, landValue, traffic, happiness, services] {
+        XCTAssertEqual(roadConditionNames.filter { $0 == "overlay.road-condition.shoulder-bar" }.count, 3)
+        for overlay in [utility, pollution, landValue, traffic, happiness, services, roadCondition] {
             XCTAssertTrue(descendantLabels(in: overlay).isEmpty)
             XCTAssertEqual(recursiveActiveActionCount(overlay), 0)
         }
@@ -311,6 +332,7 @@ final class WorldRenderingTests: XCTestCase {
         let trafficBounds = traffic.calculateAccumulatedFrame()
         let happinessBounds = happiness.calculateAccumulatedFrame()
         let servicesBounds = services.calculateAccumulatedFrame()
+        let roadConditionBounds = roadCondition.calculateAccumulatedFrame()
         XCTAssertLessThan(utilityBounds.width, style.tileWidth * 0.60)
         XCTAssertLessThan(utilityBounds.height, style.tileHeight * 0.50)
         XCTAssertLessThan(pollutionBounds.width, style.tileWidth * 0.40)
@@ -321,6 +343,7 @@ final class WorldRenderingTests: XCTestCase {
             ("traffic-pressure", trafficBounds),
             ("happiness", happinessBounds),
             ("services", servicesBounds),
+            ("road-condition", roadConditionBounds),
         ] {
             XCTAssertLessThan(
                 bounds.maxY,

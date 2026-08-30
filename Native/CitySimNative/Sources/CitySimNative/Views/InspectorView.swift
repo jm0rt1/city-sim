@@ -104,9 +104,25 @@ struct InspectorView: View {
     private var roadMaintenanceBacklog: CityRoadMaintenanceBacklog {
         CityRoadMaintenanceBacklog.make(in: store.state)
     }
-    private var roadMaintenanceBacklogTint: Color {
+    private var civicServiceAnalysis: CityCivicServiceAnalysis {
+        CityCivicServiceAnalysis(state: store.state)
+    }
+    private var civicServiceCoverageText: String {
+        (civicServiceAnalysis.citywideResidentialCoverage * 100).percentText
+    }
+    private var civicServiceCoverageNeedsAttention: Bool {
+        store.state.population > 0
+            && civicServiceAnalysis.citywideResidentialCoverage
+                < CityCivicServiceAnalysis.healthyCoverageThreshold
+    }
+    private var civicServiceCoverageTint: Color {
+        civicServiceCoverageNeedsAttention ? GameTheme.warning : .secondary
+    }
+    private var operatingPolicyStatusTint: Color {
         if roadMaintenanceBacklog.damagedCount > 0 { return GameTheme.danger }
-        if roadMaintenanceBacklog.wornCount > 0 { return GameTheme.warning }
+        if roadMaintenanceBacklog.wornCount > 0 || civicServiceCoverageNeedsAttention {
+            return GameTheme.warning
+        }
         return .secondary
     }
     private var utilityDecisionSupport: CityUtilityDecisionSupport {
@@ -617,28 +633,43 @@ struct InspectorView: View {
         case .taxPolicy:
             ContextCard(title: "Operating policy", symbol: "slider.horizontal.3", tint: GameTheme.warning) {
                 if compact {
-                    HStack {
-                        Text("Tax rate").font(.caption.weight(.semibold))
-                        Spacer()
-                        Text((store.state.taxRate * 100).percentText).font(.caption.monospacedDigit())
-                    }
-                    taxRateSlider
+                    VStack(alignment: .leading, spacing: 3) {
+                        HStack(spacing: 8) {
+                            Text("Tax").font(.caption.weight(.semibold))
+                            taxRateSlider
+                            Text((store.state.taxRate * 100).percentText).font(.caption.monospacedDigit())
+                        }
 
-                    Divider().overlay(GameTheme.subtleDivider)
+                        HStack(spacing: 6) {
+                            Text("Roads").font(.caption.weight(.semibold))
+                            Spacer()
+                            roadMaintenancePicker
+                        }
+                        Text(
+                            "\(roadMaintenanceBacklog.statusSummary) · "
+                                + "\(CitySimulation.projectedRoadMaintenanceUpkeep(in: store.state).currencyText) / cycle · "
+                                + store.state.effectiveRoadMaintenancePolicy.wearSummary
+                        )
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
+                        .lineLimit(1)
 
-                    HStack(spacing: 6) {
-                        Text("Road funding").font(.caption.weight(.semibold))
-                        Spacer()
-                        roadMaintenancePicker
+                        HStack(spacing: 6) {
+                            Text("Services").font(.caption.weight(.semibold))
+                            Spacer()
+                            civicServiceFundingPicker
+                        }
+                        Text(
+                            "\(civicServiceCoverageText) reach · "
+                                + "\(CitySimulation.projectedCivicServiceUpkeep(in: store.state).currencyText) / cycle · "
+                                + "\(store.state.effectiveCivicServiceFundingPolicy.maximumRoadDistance) blocks · "
+                                + store.state.effectiveCivicServiceFundingPolicy.stormReadinessSummary
+                        )
+                        .font(.caption2)
+                        .foregroundStyle(civicServiceCoverageTint)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.82)
                     }
-                    Text(
-                        "\(roadMaintenanceBacklog.statusSummary) · "
-                            + "\(CitySimulation.projectedRoadMaintenanceUpkeep(in: store.state).currencyText) / cycle · "
-                            + store.state.effectiveRoadMaintenancePolicy.consequence
-                    )
-                    .font(.caption2)
-                    .foregroundStyle(.secondary)
-                    .lineLimit(2)
                 } else {
                     HStack(spacing: 6) {
                         Text("Tax \((store.state.taxRate * 100).percentText)")
@@ -647,11 +678,27 @@ struct InspectorView: View {
                         taxRateSlider
                             .frame(minWidth: 48)
                     }
-                    regularRoadMaintenanceMenu
-                    Text(roadMaintenanceBacklog.statusSummary)
+                    HStack(spacing: 8) {
+                        regularRoadMaintenanceMenu
+                        regularCivicServiceFundingMenu
+                    }
+                    Text(
+                        "\(roadMaintenanceBacklog.statusSummary) · "
+                            + "service reach \(civicServiceCoverageText)"
+                    )
                         .font(.caption2.weight(.semibold).monospacedDigit())
-                        .foregroundStyle(roadMaintenanceBacklogTint)
+                        .foregroundStyle(operatingPolicyStatusTint)
                         .lineLimit(1)
+                    Text(
+                        "Road \(CitySimulation.projectedRoadMaintenanceUpkeep(in: store.state).currencyText) · "
+                            + "services \(CitySimulation.projectedCivicServiceUpkeep(in: store.state).currencyText) · "
+                            + "\(store.state.effectiveCivicServiceFundingPolicy.maximumRoadDistance) blocks · "
+                            + store.state.effectiveCivicServiceFundingPolicy.stormReadinessSummary
+                    )
+                    .font(.caption2.monospacedDigit())
+                    .foregroundStyle(.secondary)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.78)
                 }
             }
         case .decisionSupport:
@@ -750,11 +797,7 @@ struct InspectorView: View {
                 }
             }
         } label: {
-            Text(
-                "Road · \(store.state.effectiveRoadMaintenancePolicy.title) · "
-                    + "\(CitySimulation.projectedRoadMaintenanceUpkeep(in: store.state).currencyText) · "
-                    + store.state.effectiveRoadMaintenancePolicy.wearSummary
-            )
+            Text("Road · \(store.state.effectiveRoadMaintenancePolicy.title)")
             .font(.caption.weight(.semibold).monospacedDigit())
             .lineLimit(1)
             .minimumScaleFactor(0.75)
@@ -765,6 +808,52 @@ struct InspectorView: View {
         .accessibilityLabel("Road maintenance funding")
         .accessibilityValue(store.state.effectiveRoadMaintenancePolicy.title)
         .accessibilityHint(store.state.effectiveRoadMaintenancePolicy.consequence)
+    }
+
+    private var civicServiceFundingPicker: some View {
+        Picker(
+            "Civic service funding",
+            selection: Binding(
+                get: { store.state.effectiveCivicServiceFundingPolicy },
+                set: { store.setCivicServiceFundingPolicy($0) }
+            )
+        ) {
+            ForEach(CityCivicServiceFundingPolicy.allCases) { policy in
+                Text(policy.title).tag(policy)
+            }
+        }
+        .labelsHidden()
+        .pickerStyle(.menu)
+        .accessibilityLabel("Civic service funding")
+        .accessibilityValue(store.state.effectiveCivicServiceFundingPolicy.title)
+        .accessibilityHint(store.state.effectiveCivicServiceFundingPolicy.consequence)
+    }
+
+    private var regularCivicServiceFundingMenu: some View {
+        Menu {
+            ForEach(CityCivicServiceFundingPolicy.allCases) { policy in
+                Button {
+                    store.setCivicServiceFundingPolicy(policy)
+                } label: {
+                    if policy == store.state.effectiveCivicServiceFundingPolicy {
+                        Label(policy.title, systemImage: "checkmark")
+                    } else {
+                        Text(policy.title)
+                    }
+                }
+            }
+        } label: {
+            Text("Services · \(store.state.effectiveCivicServiceFundingPolicy.title)")
+            .font(.caption.weight(.semibold).monospacedDigit())
+            .lineLimit(1)
+            .minimumScaleFactor(0.75)
+            .frame(maxWidth: .infinity, minHeight: 20, alignment: .leading)
+            .contentShape(Rectangle())
+        }
+        .menuStyle(.borderlessButton)
+        .accessibilityLabel("Civic service funding")
+        .accessibilityValue(store.state.effectiveCivicServiceFundingPolicy.title)
+        .accessibilityHint(store.state.effectiveCivicServiceFundingPolicy.consequence)
     }
 
     private var populationContext: some View {

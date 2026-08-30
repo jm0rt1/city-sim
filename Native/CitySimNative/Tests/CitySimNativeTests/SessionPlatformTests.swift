@@ -244,6 +244,8 @@ final class SessionPlatformTests: XCTestCase {
     func testFixtureCommandsAreTypedBoundedAndCodable() throws {
         let commands: [CitySimulationCommand] = [
             .setTaxRate(0.14),
+            .setRoadMaintenancePolicy(.preventive),
+            .setCivicServiceFundingPolicy(.expanded),
             .build(kind: .commercial, coordinate: GridCoordinate(x: 4, y: 8)),
             .advanceOneDailyBoundary,
             .demolish(coordinate: GridCoordinate(x: 4, y: 8))
@@ -261,6 +263,8 @@ final class SessionPlatformTests: XCTestCase {
         }
         XCTAssertEqual(state.tick, 4)
         XCTAssertEqual(state.taxRate, 0.14)
+        XCTAssertEqual(state.effectiveRoadMaintenancePolicy, .preventive)
+        XCTAssertEqual(state.effectiveCivicServiceFundingPolicy, .expanded)
         XCTAssertEqual(state.tile(at: GridCoordinate(x: 4, y: 8))?.kind, .empty)
 
         XCTAssertEqual(

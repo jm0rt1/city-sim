@@ -38,7 +38,7 @@ struct CityLocationCivicService: Equatable, Sendable {
 }
 
 struct CityCivicServiceAnalysis: Equatable, Sendable {
-    static let maximumRoadDistance = 12
+    static let maximumRoadDistance = CityCivicServiceFundingPolicy.standard.maximumRoadDistance
     static let healthyCoverageThreshold = 0.75
 
     let width: Int
@@ -55,6 +55,7 @@ struct CityCivicServiceAnalysis: Equatable, Sendable {
     init(state: CityGameState) {
         width = state.gridWidth
         height = state.gridHeight
+        let fundingPolicy = state.effectiveCivicServiceFundingPolicy
         let roadCoordinates = state.tiles
             .filter { $0.kind == .road }
             .map(\.coordinate)
@@ -76,7 +77,8 @@ struct CityCivicServiceAnalysis: Equatable, Sendable {
                         from: frontage,
                         roadSet: roadSet,
                         width: state.gridWidth,
-                        height: state.gridHeight
+                        height: state.gridHeight,
+                        maximumRoadDistance: fundingPolicy.maximumRoadDistance
                     )
                 )
             }
@@ -97,7 +99,8 @@ struct CityCivicServiceAnalysis: Equatable, Sendable {
                 let coverage = Self.coverage(
                     from: source,
                     to: frontages,
-                    width: width
+                    width: width,
+                    maximumRoadDistance: fundingPolicy.maximumRoadDistance
                 )
                 switch source.kind {
                 case .fireStation:
@@ -156,7 +159,8 @@ struct CityCivicServiceAnalysis: Equatable, Sendable {
     private static func coverage(
         from source: ServiceSource,
         to frontages: [GridCoordinate],
-        width: Int
+        width: Int,
+        maximumRoadDistance: Int
     ) -> Double {
         let roadDistance = frontages
             .map { source.roadDistances[$0.y * width + $0.x] }
@@ -170,7 +174,8 @@ struct CityCivicServiceAnalysis: Equatable, Sendable {
         from origins: [GridCoordinate],
         roadSet: Set<GridCoordinate>,
         width: Int,
-        height: Int
+        height: Int,
+        maximumRoadDistance: Int
     ) -> [Int] {
         var distances = Array(repeating: Int.max, count: width * height)
         var queue: [GridCoordinate] = []

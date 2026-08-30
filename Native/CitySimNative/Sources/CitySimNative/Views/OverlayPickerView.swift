@@ -123,6 +123,7 @@ struct OverlayDiagnosticsPalettePresentation: Equatable {
         tick: Int,
         selectionApplies: Bool? = nil,
         selectedRoadCondition: Double? = nil,
+        civicServiceFundingPolicy: CityCivicServiceFundingPolicy = .standard,
         hotspot: OverlayDiagnosticHotspot? = nil
     ) -> Self {
         let title = displayTitle(for: overlay)
@@ -200,10 +201,14 @@ struct OverlayDiagnosticsPalettePresentation: Equatable {
                 ),
                 scale: scale,
                 applicability: "Completed places",
-                source: "Completed civic sites over connected streets",
+                source: "\(civicServiceFundingPolicy.title) funding · "
+                    + "completed civic sites over connected streets · "
+                    + "\(civicServiceFundingPolicy.maximumRoadDistance)-block reach",
                 freshness: freshness,
                 clickThrough: clickThrough,
-                visualKey: "More reach signals show a larger service gap"
+                visualKey: "More signals mean larger gaps · "
+                    + "\(civicServiceFundingPolicy.title) · "
+                    + "\(civicServiceFundingPolicy.maximumRoadDistance) blocks"
             )
         case .happiness:
             return Self(
@@ -311,6 +316,7 @@ struct OverlayDiagnosticsPaletteView: View {
             tick: store.state.tick,
             selectionApplies: selectionApplies,
             selectedRoadCondition: selectedRoadCondition,
+            civicServiceFundingPolicy: store.state.effectiveCivicServiceFundingPolicy,
             hotspot: hotspot
         )
     }

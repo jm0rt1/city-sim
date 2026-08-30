@@ -95,7 +95,12 @@ enum CitySimulation {
         }.count
         let utilityProtection = min(0.10, max(0, utilityReserve) * 0.25)
         let parkProtection = min(0.06, Double(parkCount) * 0.02)
-        let serviceProtection = min(0.12, Double(serviceCount) * 0.04)
+        let baselineServiceProtection = min(0.12, Double(serviceCount) * 0.04)
+        let serviceProtection = min(
+            0.15,
+            baselineServiceProtection
+                * state.effectiveCivicServiceFundingPolicy.stormProtectionMultiplier
+        )
         let estimatedDamage = max(
             0.08,
             0.38 - utilityProtection - parkProtection - serviceProtection
@@ -335,11 +340,24 @@ enum CitySimulation {
         }
         let fundedRoadAdjustment = routineRoadUpkeep
             * (state.effectiveRoadMaintenancePolicy.fundingMultiplier - 1)
+        let routineCivicServiceUpkeep = active.reduce(0.0) { total, tile in
+            guard [.fireStation, .policeStation, .school].contains(tile.kind) else {
+                return total
+            }
+            return total + tile.kind.upkeep * Double(max(1, tile.level))
+        }
+        let fundedCivicServiceAdjustment = routineCivicServiceUpkeep
+            * (state.effectiveCivicServiceFundingPolicy.fundingMultiplier - 1)
         let reserveUtilityDiscount = [BuildingKind.powerPlant, .waterTower].reduce(0.0) { discount, kind in
             let reserveUnits = max(0, active.filter { $0.kind == kind }.count - 1)
             return discount + Double(reserveUnits) * kind.upkeep * (1 - reserveUtilityUpkeepFactor)
         }
-        let baseUpkeep = (grossUpkeep + fundedRoadAdjustment - reserveUtilityDiscount) * upkeepMultiplier
+        let baseUpkeep = (
+            grossUpkeep
+                + fundedRoadAdjustment
+                + fundedCivicServiceAdjustment
+                - reserveUtilityDiscount
+        ) * upkeepMultiplier
             + max(0, -state.treasury) * 0.006
         return baseUpkeep * (state.sandboxRules?.economy.upkeepMultiplier ?? 1)
     }
@@ -351,6 +369,19 @@ enum CitySimulation {
         }
         return routineRoadUpkeep
             * state.effectiveRoadMaintenancePolicy.fundingMultiplier
+            * upkeepMultiplier
+            * (state.sandboxRules?.economy.upkeepMultiplier ?? 1)
+    }
+
+    static func projectedCivicServiceUpkeep(in state: CityGameState) -> Double {
+        let routineUpkeep = activeTiles(in: state).reduce(0.0) { total, tile in
+            guard [.fireStation, .policeStation, .school].contains(tile.kind) else {
+                return total
+            }
+            return total + tile.kind.upkeep * Double(max(1, tile.level))
+        }
+        return routineUpkeep
+            * state.effectiveCivicServiceFundingPolicy.fundingMultiplier
             * upkeepMultiplier
             * (state.sandboxRules?.economy.upkeepMultiplier ?? 1)
     }

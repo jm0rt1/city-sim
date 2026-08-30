@@ -154,8 +154,140 @@ final class CityCivicServiceAnalysisTests: XCTestCase {
         )
         XCTAssertEqual(overlay.title, "Civic service coverage")
         XCTAssertEqual(overlay.applicability, "Completed places")
-        XCTAssertEqual(overlay.source, "Completed civic sites over connected streets")
-        XCTAssertEqual(overlay.visualKey, "More reach signals show a larger service gap")
+        XCTAssertEqual(
+            overlay.source,
+            "Standard funding · completed civic sites over connected streets · 12-block reach"
+        )
+        XCTAssertEqual(
+            overlay.visualKey,
+            "More signals mean larger gaps · Standard · 12 blocks"
+        )
+
+        let expandedOverlay = OverlayDiagnosticsPalettePresentation.make(
+            overlay: .services,
+            consequence: sample,
+            tick: state.tick,
+            selectionApplies: true,
+            civicServiceFundingPolicy: .expanded
+        )
+        XCTAssertEqual(
+            expandedOverlay.source,
+            "Expanded funding · completed civic sites over connected streets · 16-block reach"
+        )
+        XCTAssertEqual(
+            expandedOverlay.visualKey,
+            "More signals mean larger gaps · Expanded · 16 blocks"
+        )
+    }
+
+    @MainActor
+    func testFundingPolicyTradesRecurringCostForReachHappinessAndStormProtection() throws {
+        var standard = serviceRouteState()
+        place(.fireStation, at: GridCoordinate(x: 14, y: 11), in: &standard)
+        let standardCoverage = CityCivicServiceAnalysis(state: standard)
+            .citywideResidentialCoverage
+        let standardUpkeep = CitySimulation.projectedCivicServiceUpkeep(in: standard)
+        let standardProtection = CitySimulation.stormProtection(in: standard)
+        let standardBytes = try sortedEncoding(standard)
+
+        var reduced = standard
+        XCTAssertEqual(
+            CitySimulationCommandExecutor.apply(
+                .setCivicServiceFundingPolicy(.reduced),
+                to: &reduced
+            ),
+            .applied
+        )
+        var expanded = standard
+        XCTAssertEqual(
+            CitySimulationCommandExecutor.apply(
+                .setCivicServiceFundingPolicy(.expanded),
+                to: &expanded
+            ),
+            .applied
+        )
+
+        let reducedCoverage = CityCivicServiceAnalysis(state: reduced)
+            .citywideResidentialCoverage
+        let expandedCoverage = CityCivicServiceAnalysis(state: expanded)
+            .citywideResidentialCoverage
+        XCTAssertEqual(reducedCoverage, 0)
+        XCTAssertGreaterThan(standardCoverage, reducedCoverage)
+        XCTAssertGreaterThan(expandedCoverage, standardCoverage)
+        XCTAssertEqual(
+            CitySimulation.projectedCivicServiceUpkeep(in: reduced),
+            standardUpkeep * CityCivicServiceFundingPolicy.reduced.fundingMultiplier,
+            accuracy: 0.000_001
+        )
+        XCTAssertEqual(
+            CitySimulation.projectedCivicServiceUpkeep(in: expanded),
+            standardUpkeep * CityCivicServiceFundingPolicy.expanded.fundingMultiplier,
+            accuracy: 0.000_001
+        )
+        XCTAssertLessThan(
+            CitySimulation.projectedUpkeep(in: reduced),
+            CitySimulation.projectedUpkeep(in: standard)
+        )
+        XCTAssertGreaterThan(
+            CitySimulation.projectedUpkeep(in: expanded),
+            CitySimulation.projectedUpkeep(in: standard)
+        )
+        XCTAssertGreaterThan(
+            standardProtection.estimatedConditionDamage,
+            CitySimulation.stormProtection(in: expanded).estimatedConditionDamage
+        )
+        XCTAssertLessThan(
+            standardProtection.estimatedConditionDamage,
+            CitySimulation.stormProtection(in: reduced).estimatedConditionDamage
+        )
+
+        var reducedAfterPulse = reduced
+        var standardAfterPulse = standard
+        var expandedAfterPulse = expanded
+        CitySimulation.step(&reducedAfterPulse)
+        CitySimulation.step(&standardAfterPulse)
+        CitySimulation.step(&expandedAfterPulse)
+        XCTAssertGreaterThan(standardAfterPulse.happiness, reducedAfterPulse.happiness)
+        XCTAssertGreaterThan(expandedAfterPulse.happiness, standardAfterPulse.happiness)
+
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent(
+            "citysim-service-funding-\(UUID().uuidString)",
+            isDirectory: true
+        )
+        defer { try? FileManager.default.removeItem(at: root) }
+        let saves = SaveGameService(rootURL: root)
+        _ = try saves.save(expanded)
+        XCTAssertEqual(try saves.load().state, expanded)
+
+        XCTAssertEqual(
+            CitySimulationCommandExecutor.apply(
+                .setCivicServiceFundingPolicy(.standard),
+                to: &expanded
+            ),
+            .applied
+        )
+        XCTAssertNil(expanded.civicServiceFundingPolicy)
+        XCTAssertEqual(try sortedEncoding(expanded), standardBytes)
+        XCTAssertEqual(
+            try CityStateFingerprinter.fingerprint(expanded),
+            try CityStateFingerprinter.fingerprint(standard)
+        )
+
+        let store = CityGameStore(state: standard)
+        store.setCivicServiceFundingPolicy(.expanded)
+        XCTAssertEqual(store.state.effectiveCivicServiceFundingPolicy, .expanded)
+        XCTAssertEqual(store.lastFeedbackTone, .neutral)
+        XCTAssertTrue(store.lastFeedback?.contains("Service funding · Expanded") == true)
+        XCTAssertTrue(store.lastFeedback?.contains("residential reach") == true)
+        XCTAssertTrue(store.lastFeedback?.contains("storm readiness improves") == true)
+        XCTAssertEqual(
+            CityCivicServiceFundingPolicy.allCases.map(\.stormReadinessSummary),
+            [
+                "storms weaker",
+                "storms baseline",
+                "storms stronger"
+            ]
+        )
     }
 
     private func serviceRouteState() -> CityGameState {

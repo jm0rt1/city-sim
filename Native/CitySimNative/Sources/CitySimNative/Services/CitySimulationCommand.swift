@@ -5,6 +5,7 @@ enum CitySimulationCommand: Codable, Equatable, Sendable {
     case demolish(coordinate: GridCoordinate)
     case setTaxRate(Double)
     case setRoadMaintenancePolicy(CityRoadMaintenancePolicy)
+    case setCivicServiceFundingPolicy(CityCivicServiceFundingPolicy)
     case advanceOneDailyBoundary
 }
 
@@ -50,6 +51,9 @@ enum CitySimulationCommandExecutor {
             return .applied
         case .setRoadMaintenancePolicy(let policy):
             state.roadMaintenancePolicy = policy == .routine ? nil : policy
+            return .applied
+        case .setCivicServiceFundingPolicy(let policy):
+            state.civicServiceFundingPolicy = policy == .standard ? nil : policy
             return .applied
         case .advanceOneDailyBoundary:
             let ticksToBoundary = 4 - state.tick % 4

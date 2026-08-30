@@ -1581,6 +1581,18 @@ final class CityGameStore: ObservableObject {
         )
     }
 
+    func setCivicServiceFundingPolicy(_ policy: CityCivicServiceFundingPolicy) {
+        guard policy != state.effectiveCivicServiceFundingPolicy else { return }
+        state.civicServiceFundingPolicy = policy == .standard ? nil : policy
+        let cost = CitySimulation.projectedCivicServiceUpkeep(in: state)
+        let coverage = CityCivicServiceAnalysis(state: state).citywideResidentialCoverage
+        showFeedback(
+            "Service funding · \(policy.title) · \(cost.currencyText) / cycle · "
+                + "\((coverage * 100).percentText) residential reach · \(policy.consequence)",
+            tone: .neutral
+        )
+    }
+
     func setCityName(_ value: String) {
         let cleaned = value.trimmingCharacters(in: .whitespacesAndNewlines)
         let accepted = cleaned.isEmpty ? "New Arcadia" : String(cleaned.prefix(32))

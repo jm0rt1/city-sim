@@ -169,6 +169,9 @@ struct CityGameState: Codable, Equatable, Sendable {
     /// `nil` is the historical routine-funding default, preserving exact legacy
     /// save bytes until a player makes a road-maintenance budget decision.
     var roadMaintenancePolicy: CityRoadMaintenancePolicy? = nil
+    /// `nil` is the historical standard service-funding default, preserving
+    /// exact legacy save bytes until the player changes the operating policy.
+    var civicServiceFundingPolicy: CityCivicServiceFundingPolicy? = nil
     var demand: DemandLevels
     var messages: [CityMessage]
     var progression: CityProgressionState?
@@ -188,6 +191,10 @@ struct CityGameState: Codable, Equatable, Sendable {
 
     var effectiveRoadMaintenancePolicy: CityRoadMaintenancePolicy {
         roadMaintenancePolicy ?? .routine
+    }
+
+    var effectiveCivicServiceFundingPolicy: CityCivicServiceFundingPolicy {
+        civicServiceFundingPolicy ?? .standard
     }
 
     var preservesLegacyReplayConsequences: Bool {

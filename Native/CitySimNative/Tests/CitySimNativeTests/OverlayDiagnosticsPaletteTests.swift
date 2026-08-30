@@ -254,6 +254,9 @@ final class OverlayDiagnosticsPaletteTests: XCTestCase {
     @MainActor
     func testPaletteRendersWithinRegularAndExactCompactBounds() throws {
         let store = CityGameStore(state: .newCity(seed: 42))
+        store.setCivicServiceFundingPolicy(.expanded)
+        XCTAssertTrue(store.perform(CityCommandCatalog.id(for: DataOverlay.services)))
+        XCTAssertEqual(store.overlay, .services)
         let compactSize = CGSize(width: 884, height: OverlayDiagnosticsPaletteView.compactMaximumHeight)
         let regularSize = CGSize(width: 1_120, height: OverlayDiagnosticsPaletteView.regularMaximumHeight)
 

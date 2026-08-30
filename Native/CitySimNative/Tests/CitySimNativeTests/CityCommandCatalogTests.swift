@@ -4571,6 +4571,10 @@ final class CityCommandCatalogTests: XCTestCase {
         var state = CityGameState.newCity(seed: 42)
         let damagedRoad = try XCTUnwrap(state.tiles.first { $0.kind == .road }?.coordinate)
         state.updateTile(at: damagedRoad) { $0.condition = 0.40 }
+        let serviceSite = GridCoordinate(x: 5, y: 10)
+        state.updateTile(at: serviceSite) {
+            $0 = CityTile(coordinate: serviceSite, kind: .fireStation)
+        }
         let store = CityGameStore(state: state)
         store.openInspector(.finances)
         let size = CGSize(width: 854, height: BuildToolbarView.compactDetailsMaxHeight)
@@ -4586,11 +4590,21 @@ final class CityCommandCatalogTests: XCTestCase {
         XCTAssertEqual(backlog.damagedCount, 1)
         XCTAssertEqual(backlog.actionTitle, "Resurface 1 · $80")
         XCTAssertTrue(backlog.canAffordResurfacing)
+        let standardServiceCoverage = CityCivicServiceAnalysis(state: store.state)
+            .citywideResidentialCoverage
+        XCTAssertGreaterThan(standardServiceCoverage, 0)
+        XCTAssertEqual(CitySimulation.projectedCivicServiceUpkeep(in: store.state), 144)
 
         let routineBalance = store.analytics.projectedBalance
         store.setRoadMaintenancePolicy(.preventive)
+        store.setCivicServiceFundingPolicy(.expanded)
         XCTAssertLessThan(store.analytics.projectedBalance, routineBalance)
         XCTAssertEqual(store.state.effectiveRoadMaintenancePolicy, .preventive)
+        XCTAssertEqual(store.state.effectiveCivicServiceFundingPolicy, .expanded)
+        XCTAssertGreaterThan(
+            CityCivicServiceAnalysis(state: store.state).citywideResidentialCoverage,
+            standardServiceCoverage
+        )
         let fundedCompact = try bitmap(
             of: InspectorView(store: store, compact: true)
                 .frame(width: size.width, height: size.height, alignment: .top),
@@ -4605,6 +4619,14 @@ final class CityCommandCatalogTests: XCTestCase {
             size: regularSize
         )
         XCTAssertEqual(fundedRegular.size.width, regularSize.width, accuracy: 0.5)
+        if let path = ProcessInfo.processInfo.environment["CITYSIM_SERVICE_FUNDING_COMPACT_PROOF"] {
+            let data = try XCTUnwrap(fundedCompact.representation(using: .png, properties: [:]))
+            try data.write(to: URL(fileURLWithPath: path), options: .atomic)
+        }
+        if let path = ProcessInfo.processInfo.environment["CITYSIM_SERVICE_FUNDING_REGULAR_PROOF"] {
+            let data = try XCTUnwrap(fundedRegular.representation(using: .png, properties: [:]))
+            try data.write(to: URL(fileURLWithPath: path), options: .atomic)
+        }
         store.resurfaceDamagedRoads()
         XCTAssertEqual(CityRoadMaintenanceBacklog.make(in: store.state).damagedCount, 0)
         XCTAssertEqual(store.state.tile(at: damagedRoad)?.condition, 1)

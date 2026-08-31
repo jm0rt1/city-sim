@@ -306,6 +306,14 @@ final class CityScene: SKScene {
         tileGroundBounds(at: style.isoPosition(coordinate))
     }
 
+    func inspectedPlaceBoundsForTesting(at coordinate: GridCoordinate) -> CGRect {
+        inspectedPlaceBounds(at: coordinate)
+    }
+
+    func inspectedPlaceViewportForTesting(_ insets: CityMapViewportInsets) -> CGRect {
+        inspectedPlaceViewport(insets)
+    }
+
     func resolvedCoordinateForTesting(at scenePoint: CGPoint) -> GridCoordinate? {
         coordinate(at: scenePoint)
     }
@@ -830,6 +838,12 @@ final class CityScene: SKScene {
         _ coordinate: GridCoordinate,
         viewportInsets: CityMapViewportInsets = .zero
     ) {
+        if renderedInteractionMode == .inspect,
+           let tile = renderedState?.tile(at: coordinate),
+           tile.kind != .empty, tile.kind != .road {
+            revealInspectedPlace(coordinate, viewportInsets: viewportInsets)
+            return
+        }
         if renderedInteractionMode != .inspect,
            renderedState != nil,
            renderedActiveActionTarget?.coordinate == coordinate {
@@ -837,6 +851,62 @@ final class CityScene: SKScene {
             return
         }
         revealCoordinateOnly(coordinate, viewportInsets: viewportInsets)
+    }
+
+    private func inspectedPlaceBounds(at coordinate: GridCoordinate) -> CGRect {
+        let ground = tileGroundBounds(at: style.isoPosition(coordinate))
+        guard let root = tileRecords[coordinate]?.root,
+              let content = root.childNode(withName: "content.layer") else { return ground }
+        // Use the actual authored sprite and lot content, including its pivot
+        // and scale. The legacy atlas proxy and the ground point alone cannot
+        // describe the height of the shipping Four-View building.
+        return ground.union(content.calculateAccumulatedFrame().offsetBy(
+            dx: root.position.x, dy: root.position.y
+        ))
+    }
+
+    private func revealInspectedPlace(
+        _ coordinate: GridCoordinate,
+        viewportInsets: CityMapViewportInsets
+    ) {
+        activeTargetContextBoundsForTesting = .null
+        activeTargetRoadFrontierForTesting = nil
+        let bounds = inspectedPlaceBounds(at: coordinate)
+        let availableWidth = size.width - viewportInsets.leading - viewportInsets.trailing - 16
+        let availableHeight = size.height - viewportInsets.top - viewportInsets.bottom - 16
+        guard availableWidth > 0, availableHeight > 0 else {
+            revealCoordinateOnly(coordinate, viewportInsets: viewportInsets)
+            return
+        }
+
+        // Preserve the player's zoom whenever the whole place fits. Only a
+        // genuinely shallow/narrow aperture needs the minimum zoom-out to fit
+        // the building. Its full visual bounds already replace the ground-point
+        // tile guard; adding that guard again would needlessly hide the district.
+        let requiredScale = max(
+            (bounds.width + 1) / availableWidth,
+            (bounds.height + 1) / availableHeight
+        )
+        cameraNode.setScale(max(cameraNode.xScale, requiredScale))
+        let safeRect = inspectedPlaceViewport(viewportInsets)
+        if bounds.minX < safeRect.minX {
+            cameraNode.position.x += bounds.minX - safeRect.minX - 0.5
+        } else if bounds.maxX > safeRect.maxX {
+            cameraNode.position.x += bounds.maxX - safeRect.maxX + 0.5
+        }
+        if bounds.minY < safeRect.minY {
+            cameraNode.position.y += bounds.minY - safeRect.minY - 0.5
+        } else if bounds.maxY > safeRect.maxY {
+            cameraNode.position.y += bounds.maxY - safeRect.maxY + 0.5
+        }
+        refreshForCameraChange()
+    }
+
+    private func inspectedPlaceViewport(_ insets: CityMapViewportInsets) -> CGRect {
+        safeViewportRect(CityMapViewportInsets(
+            top: insets.top + 8, leading: insets.leading + 8,
+            bottom: insets.bottom + 8, trailing: insets.trailing + 8
+        ), includesTileGuard: false)
     }
 
     private func revealCoordinateOnly(
@@ -981,12 +1051,15 @@ final class CityScene: SKScene {
             }
     }
 
-    private func safeViewportRect(_ viewportInsets: CityMapViewportInsets) -> CGRect {
+    private func safeViewportRect(
+        _ viewportInsets: CityMapViewportInsets,
+        includesTileGuard: Bool = true
+    ) -> CGRect {
         let scale = cameraNode.xScale
         let halfWidth = size.width * scale / 2
         let halfHeight = size.height * scale / 2
-        let tilePaddingX = tileWidth * 1.25
-        let tilePaddingY = tileHeight * 1.75
+        let tilePaddingX = includesTileGuard ? tileWidth * 1.25 : 0
+        let tilePaddingY = includesTileGuard ? tileHeight * 1.75 : 0
         let left = cameraNode.position.x - halfWidth + viewportInsets.leading * scale + tilePaddingX
         let right = cameraNode.position.x + halfWidth - viewportInsets.trailing * scale - tilePaddingX
         let bottom = cameraNode.position.y - halfHeight + viewportInsets.bottom * scale + tilePaddingY

@@ -161,6 +161,12 @@ struct BuildToolbarView: View {
     static let regularDetailsMaxHeight: CGFloat = 144
     static let compactDetailsWidth: CGFloat = 720
     static let regularDetailsWidth: CGFloat = 840
+    static let selectedBlockDetailsHeight: CGFloat = 220
+
+    static func detailsHeight(compact: Bool, selectedBlock: Bool) -> CGFloat {
+        selectedBlock ? selectedBlockDetailsHeight
+            : (compact ? compactDetailsMaxHeight : regularDetailsMaxHeight)
+    }
 
     var body: some View {
         VStack(spacing: compact ? 5 : 6) {
@@ -201,7 +207,10 @@ struct BuildToolbarView: View {
         }
         .scrollIndicators(.visible)
         .frame(
-            height: compact ? Self.compactDetailsMaxHeight : Self.regularDetailsMaxHeight,
+            height: Self.detailsHeight(
+                compact: compact,
+                selectedBlock: store.hudContextScope == .selection && store.selectedTile != nil
+            ),
             alignment: .top
         )
         .focusable()

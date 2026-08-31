@@ -285,11 +285,20 @@ struct InspectorView: View {
             for: tile.kind,
             diagnosisAvailable: diagnosis != nil
         )
-        return LazyVGrid(columns: contextColumns, alignment: .leading, spacing: 8) {
+        return VStack(alignment: .leading, spacing: 8) {
             if actionOrder.first == .diagnosis, let diagnosis {
-                diagnosisCard(diagnosis)
+                CityBlockDiagnosisView(diagnosis: diagnosis, perform: perform)
             }
+            tileFactCards(tile, snapshot: snapshot, actionOrder: actionOrder)
+        }
+    }
 
+    private func tileFactCards(
+        _ tile: CityTile,
+        snapshot: CityPresentationSnapshot?,
+        actionOrder: [SelectionActionTier]
+    ) -> some View {
+        LazyVGrid(columns: contextColumns, alignment: .leading, spacing: 8) {
             if let outlook = CityDevelopmentOutlook.make(tile: tile, state: store.state) {
                 let outlookTint: Color = switch outlook.status {
                 case .ready: GameTheme.accent
@@ -404,22 +413,6 @@ struct InspectorView: View {
                 siteActionsCard(for: tile)
             }
         }
-    }
-
-    private func diagnosisCard(_ diagnosis: CitySelectedLocationDiagnosis) -> some View {
-        ContextCard(title: "Cause · consequence · response", symbol: "cross.case.fill", tint: GameTheme.warning) {
-            Text(diagnosis.cause)
-                .font(.caption2.weight(.semibold))
-                .lineLimit(compact ? 2 : 3)
-            Text(diagnosis.consequence)
-                .font(.caption2)
-                .foregroundStyle(.secondary)
-                .lineLimit(2)
-            diagnosisActions(diagnosis)
-        }
-        .accessibilityElement(children: .contain)
-        .accessibilityLabel(diagnosis.accessibilitySummary)
-        .accessibilityIdentifier("hud.selection.priority-response")
     }
 
     private func localConditionMetric(_ label: String, _ value: String) -> some View {
@@ -1291,26 +1284,6 @@ struct InspectorView: View {
                     }
                 }
             }
-        }
-    }
-
-    @ViewBuilder
-    private func diagnosisActions(_ diagnosis: CitySelectedLocationDiagnosis) -> some View {
-        if let primary = diagnosis.responses.first {
-            compactAction(primary.title, symbol: primary.focusesMap ? "scope" : "arrow.up.forward.square") {
-                perform(primary)
-            }
-            .accessibilityHint(primary.explanation + (primary.focusesMap ? " Focus returns to the map." : ""))
-        }
-        if diagnosis.responses.count > 1 {
-            Menu("More responses") {
-                ForEach(Array(diagnosis.responses.dropFirst())) { response in
-                    Button(response.title) { perform(response) }
-                        .accessibilityHint(response.explanation + (response.focusesMap ? " Focus returns to the map." : ""))
-                }
-            }
-            .frame(minHeight: GameTheme.controlMinimum)
-            .accessibilityLabel("More honest responses for selected block")
         }
     }
 

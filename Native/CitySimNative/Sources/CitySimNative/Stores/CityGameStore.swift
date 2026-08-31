@@ -665,7 +665,7 @@ final class CityGameStore: ObservableObject {
     func performMapFocused(_ command: CityCommandID) -> Bool {
         let approved: Set<CityCommandID> = [
             .buildRoad, .buildResidential, .buildCommercial, .buildIndustrial, .buildPark,
-            .buildPowerPlant, .buildWaterTower,
+            .buildPowerPlant, .buildWaterTower, .buildFireStation, .buildPoliceStation, .buildSchool,
             .bulldozeMode,
             .overlayUtilities, .overlayServices, .overlayPollution, .overlayCity
         ]

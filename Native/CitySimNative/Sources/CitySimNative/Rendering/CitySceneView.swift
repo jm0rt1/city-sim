@@ -265,6 +265,16 @@ struct CitySceneView: NSViewRepresentable {
             observedMapFocusRequestGeneration = generation
             guard store.commandPolicy == .enabled, previousCommandPolicy == .enabled,
                   pendingFocusHandoffGeneration == nil else { return false }
+            if case .build = store.interactionMode,
+               store.selectedCoordinate != nil, let window = view.window {
+                // Closing an inspector or menu can synthesize hover over the
+                // newly exposed map. Preserve the suggested parcel until the
+                // player deliberately moves the pointer.
+                pointerTransitionGate.begin(
+                    window: window,
+                    anchor: window.convertPoint(fromScreen: NSEvent.mouseLocation)
+                )
+            }
             return enqueueFocusHandoff(in: view)
         }
 

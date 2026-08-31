@@ -29,8 +29,8 @@ final class OverlayDiagnosticsPaletteTests: XCTestCase {
                     return consequence.trafficPressure
                 case .utilities:
                     return consequence.utility.combined
-                case .services:
-                    return consequence.civicService?.combined
+                case .services, .fireCoverage, .policeCoverage, .schoolCoverage:
+                    return overlay.civicServiceValue(in: consequence.civicService)
                 case .happiness:
                     return consequence.localHappinessIndex
                 case .pollution:
@@ -43,7 +43,7 @@ final class OverlayDiagnosticsPaletteTests: XCTestCase {
             switch overlay {
             case .traffic, .pollution:
                 expected = eligibleValues.max()
-            case .landValue, .utilities, .services, .happiness, .roadCondition:
+            case .landValue, .utilities, .services, .fireCoverage, .policeCoverage, .schoolCoverage, .happiness, .roadCondition:
                 expected = eligibleValues.min()
             case .none:
                 expected = nil

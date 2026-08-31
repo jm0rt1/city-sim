@@ -10,7 +10,7 @@ struct OverlayDiagnosticHotspot: Equatable, Sendable {
         switch overlay {
         case .traffic, .pollution:
             prefix = "Peak"
-        case .landValue, .utilities, .services, .happiness, .roadCondition:
+        case .landValue, .utilities, .services, .fireCoverage, .policeCoverage, .schoolCoverage, .happiness, .roadCondition:
             prefix = "Lowest"
         case .none:
             prefix = "City"
@@ -31,6 +31,12 @@ struct OverlayDiagnosticHotspot: Equatable, Sendable {
             subject = "weakest utility service"
         case .services:
             subject = "weakest civic service coverage"
+        case .fireCoverage:
+            subject = "weakest fire coverage"
+        case .policeCoverage:
+            subject = "weakest police coverage"
+        case .schoolCoverage:
+            subject = "weakest school coverage"
         case .happiness:
             subject = "lowest local happiness"
         case .pollution:
@@ -61,7 +67,7 @@ struct OverlayDiagnosticHotspot: Equatable, Sendable {
             switch overlay {
             case .traffic, .pollution:
                 candidate.value > current.value ? candidate : current
-            case .landValue, .utilities, .services, .happiness, .roadCondition:
+            case .landValue, .utilities, .services, .fireCoverage, .policeCoverage, .schoolCoverage, .happiness, .roadCondition:
                 candidate.value < current.value ? candidate : current
             case .none:
                 current
@@ -87,8 +93,8 @@ struct OverlayDiagnosticHotspot: Equatable, Sendable {
             consequence.trafficPressure
         case .utilities:
             consequence.utility.combined
-        case .services:
-            consequence.civicService?.combined
+        case .services, .fireCoverage, .policeCoverage, .schoolCoverage:
+            overlay.civicServiceValue(in: consequence.civicService)
         case .happiness:
             consequence.localHappinessIndex
         case .pollution:
@@ -191,22 +197,25 @@ struct OverlayDiagnosticsPalettePresentation: Equatable {
                 clickThrough: clickThrough,
                 visualKey: "More edge notches signal larger shortfall"
             )
-        case .services:
+        case .services, .fireCoverage, .policeCoverage, .schoolCoverage:
+            let serviceSource = overlay.civicServiceKind.map { "completed \($0.title.lowercased()) sites" }
+                ?? "completed civic sites"
+            let serviceSignal = overlay.civicServiceKind.map { _ in overlay.title.lowercased() + " " } ?? ""
             return Self(
                 title: title,
                 value: reading(
-                    consequence?.civicService?.combined,
+                    overlay.civicServiceValue(in: consequence?.civicService),
                     selectionApplies: selectionApplies,
                     hotspot: hotspot
                 ),
                 scale: scale,
                 applicability: "Completed places",
                 source: "\(civicServiceFundingPolicy.title) funding · "
-                    + "completed civic sites over connected streets · "
+                    + "\(serviceSource) over connected streets · "
                     + "\(civicServiceFundingPolicy.maximumRoadDistance)-block reach",
                 freshness: freshness,
                 clickThrough: clickThrough,
-                visualKey: "More signals mean larger gaps · "
+                visualKey: "More signals mean larger \(serviceSignal)gaps · "
                     + "\(civicServiceFundingPolicy.title) · "
                     + "\(civicServiceFundingPolicy.maximumRoadDistance) blocks"
             )

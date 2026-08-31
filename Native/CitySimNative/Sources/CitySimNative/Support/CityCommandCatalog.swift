@@ -40,6 +40,9 @@ enum CityCommandID: String, CaseIterable, Identifiable, Sendable {
     case overlayTraffic = "data.overlay.traffic"
     case overlayUtilities = "data.overlay.utilities"
     case overlayServices = "data.overlay.services"
+    case overlayFireCoverage = "data.overlay.fire-coverage"
+    case overlayPoliceCoverage = "data.overlay.police-coverage"
+    case overlaySchoolCoverage = "data.overlay.school-coverage"
     case overlayHappiness = "data.overlay.happiness"
     case overlayPollution = "data.overlay.pollution"
     case overlayRoadCondition = "data.overlay.road-condition"
@@ -275,7 +278,7 @@ enum CityCommandCatalog {
                 overlay == .none ? "Clear Data Overlay" : "Show \(overlay.title) Overlay",
                 .overlays,
                 overlay == .none ? "Return to the normal city view." : "Show \(overlay.title.lowercased()) data on the city.",
-                shortcut: shortcut(String(number), [.control], "⌃\(number)", scope: .global)
+                shortcut: number.map { shortcut(String($0), [.control], "⌃\($0)", scope: .global) }
             )
         }
 
@@ -430,6 +433,9 @@ enum CityCommandCatalog {
         case .traffic: .overlayTraffic
         case .utilities: .overlayUtilities
         case .services: .overlayServices
+        case .fireCoverage: .overlayFireCoverage
+        case .policeCoverage: .overlayPoliceCoverage
+        case .schoolCoverage: .overlaySchoolCoverage
         case .happiness: .overlayHappiness
         case .pollution: .overlayPollution
         case .roadCondition: .overlayRoadCondition
@@ -463,8 +469,19 @@ enum CityCommandCatalog {
         BuildCategory.allCases.firstIndex(of: category)! + 1
     }
 
-    private static func overlayShortcutNumber(_ overlay: DataOverlay) -> Int {
-        DataOverlay.allCases.firstIndex(of: overlay)!
+    private static func overlayShortcutNumber(_ overlay: DataOverlay) -> Int? {
+        // Preserve the existing Control-0...7 bindings as new lenses are added.
+        switch overlay {
+        case .none: 0
+        case .landValue: 1
+        case .traffic: 2
+        case .utilities: 3
+        case .services: 4
+        case .happiness: 5
+        case .pollution: 6
+        case .roadCondition: 7
+        case .fireCoverage, .policeCoverage, .schoolCoverage: nil
+        }
     }
 
     private static func inspectorShortcutNumber(_ section: InspectorSection) -> Int {

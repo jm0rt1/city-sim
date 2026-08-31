@@ -188,7 +188,9 @@ enum SimulationSpeed: Int, CaseIterable, Identifiable, Sendable {
 }
 
 enum DataOverlay: String, CaseIterable, Identifiable, Sendable {
-    case none, landValue, traffic, utilities, services, happiness, pollution, roadCondition
+    case none, landValue, traffic, utilities, services
+    case fireCoverage, policeCoverage, schoolCoverage
+    case happiness, pollution, roadCondition
     var id: String { rawValue }
     var title: String {
         switch self {
@@ -197,6 +199,9 @@ enum DataOverlay: String, CaseIterable, Identifiable, Sendable {
         case .traffic: "Traffic"
         case .utilities: "Utilities"
         case .services: "Services"
+        case .fireCoverage: "Fire Coverage"
+        case .policeCoverage: "Police Coverage"
+        case .schoolCoverage: "School Coverage"
         case .happiness: "Happiness"
         case .pollution: "Pollution"
         case .roadCondition: "Road Condition"
@@ -209,10 +214,28 @@ enum DataOverlay: String, CaseIterable, Identifiable, Sendable {
         case .traffic: "car.2"
         case .utilities: "bolt.horizontal"
         case .services: "cross.case"
+        case .fireCoverage: "flame"
+        case .policeCoverage: "shield"
+        case .schoolCoverage: "graduationcap"
         case .happiness: "face.smiling"
         case .pollution: "aqi.medium"
         case .roadCondition: "wrench.and.screwdriver"
         }
+    }
+
+    var civicServiceKind: BuildingKind? {
+        switch self {
+        case .fireCoverage: .fireStation
+        case .policeCoverage: .policeStation
+        case .schoolCoverage: .school
+        default: nil
+        }
+    }
+
+    func civicServiceValue(in service: CityLocationCivicService?) -> Double? {
+        guard let service else { return nil }
+        if self == .services { return service.combined }
+        return civicServiceKind.flatMap { service.coverage(for: $0) }
     }
 
     func applies(to tile: CityTile) -> Bool {
@@ -221,7 +244,7 @@ enum DataOverlay: String, CaseIterable, Identifiable, Sendable {
         switch self {
         case .none:
             return true
-        case .landValue, .services, .happiness:
+        case .landValue, .services, .fireCoverage, .policeCoverage, .schoolCoverage, .happiness:
             return completedDevelopment
         case .traffic, .roadCondition:
             return tile.kind == .road

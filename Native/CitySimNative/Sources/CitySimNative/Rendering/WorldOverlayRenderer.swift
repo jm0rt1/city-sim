@@ -104,9 +104,9 @@ final class WorldOverlayRenderer {
             // pressure channel for color/severity only; do not infer traffic
             // from occupancy, topology, vehicles, or state here.
             return makeSample(1 - pressure, pattern: .trafficPressureTicks)
-        case .services:
-            guard let service = consequence.civicService else { return nil }
-            return makeSample(service.combined, pattern: .civicServiceSignals)
+        case .services, .fireCoverage, .policeCoverage, .schoolCoverage:
+            guard let coverage = overlay.civicServiceValue(in: consequence.civicService) else { return nil }
+            return makeSample(coverage, pattern: .civicServiceSignals)
         case .happiness:
             guard let value = consequence.localHappinessIndex else { return nil }
             return makeSample(value, pattern: .happinessRipples)

@@ -805,11 +805,10 @@ final class WorldAssetCatalog {
         guard let presentation = generatedPresentation(logicalID: logicalID, detail: detail) else {
             return false
         }
+        // LOD changes texture resolution, not the placed world's geometry.
+        // Reapplying raw descriptor dimensions here discards the lot's
+        // established presentation size and makes buildings jump on zoom.
         sprite.texture = presentation.sprite.texture
-        sprite.size = presentation.sprite.size
-        sprite.anchorPoint = presentation.sprite.anchorPoint
-        sprite.position = presentation.sprite.position
-        sprite.zPosition = presentation.sprite.zPosition
         sprite.name = semanticName
         return true
     }

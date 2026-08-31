@@ -715,7 +715,7 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
     }
 
     @MainActor
-    func testTransparentFourViewCanvasCannotStealGroundGridSelection() {
+    func testFourViewCanvasCannotStealConstructionGridSelection() {
         let state = CityGameState.newCity(seed: 42)
         let scene = CityScene(size: CGSize(width: 1_280, height: 800))
         scene.reducedMotion = true
@@ -726,6 +726,9 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
             interactionMode: .inspect
         )
 
+        // Construction remains ground-authoritative even where an opaque
+        // building from a nearer block covers the target's ground center.
+        scene.render(state: state, overlay: .none, selection: nil, interactionMode: .build(.road))
         for tile in state.tiles where ![.empty, .road].contains(tile.kind) {
             let point = scene.scenePointForTesting(at: tile.coordinate)
             XCTAssertEqual(

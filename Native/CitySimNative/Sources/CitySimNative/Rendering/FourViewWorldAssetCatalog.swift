@@ -67,6 +67,7 @@ final class FourViewWorldAssetCatalog {
     let manifest: FourViewWorldAssetManifest?
     private let bundle: Bundle
     private var textures: [String: SKTexture] = [:]
+    private var inspectionMasks: [String: CitySpriteAlphaMask] = [:]
 
     init(bundle: Bundle = .module) {
         self.bundle = bundle
@@ -177,7 +178,8 @@ final class FourViewWorldAssetCatalog {
             return nil
         }
 
-        let sprite = SKSpriteNode(texture: texture, size: Self.sourceCanvasSize)
+        let sprite = FourViewInspectionSprite(texture: texture, size: Self.sourceCanvasSize)
+        sprite.inspectionMask = inspectionMasks["\(assetID).\(camera.rawValue)"]
         sprite.anchorPoint = Self.spriteAnchor
         let canonicalWorldScale = worldTileWidth / Self.sourceFootprintSize.width
         sprite.setScale(canonicalWorldScale)
@@ -215,8 +217,12 @@ final class FourViewWorldAssetCatalog {
         let cacheKey = "\(descriptor.assetID).\(camera.rawValue)"
         if let cached = textures[cacheKey] { return cached }
         guard let url = resourceURL(for: descriptor.assetID, camera: camera),
-              let image = NSImage(contentsOf: url) else {
+              let data = try? Data(contentsOf: url),
+              let image = NSImage(data: data) else {
             return nil
+        }
+        if let bitmap = NSBitmapImageRep(data: data) {
+            inspectionMasks[cacheKey] = CitySpriteAlphaMask(bitmap: bitmap)
         }
         let texture = SKTexture(image: image)
         texture.filteringMode = .linear

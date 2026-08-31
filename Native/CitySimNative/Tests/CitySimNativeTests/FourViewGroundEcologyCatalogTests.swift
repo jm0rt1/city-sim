@@ -135,7 +135,7 @@ final class FourViewGroundEcologyCatalogTests: XCTestCase {
     }
 
     @MainActor
-    func testTransparentGroundAndVegetationCanvasesCannotStealGridSelection() {
+    func testGroundAndVegetationCanvasesCannotStealConstructionGridSelection() {
         let state = CityGameState.newCity(seed: 42)
         let scene = CityScene(size: CGSize(width: 1_280, height: 800))
         scene.reducedMotion = true
@@ -146,6 +146,7 @@ final class FourViewGroundEcologyCatalogTests: XCTestCase {
             interactionMode: .inspect
         )
 
+        scene.render(state: state, overlay: .none, selection: nil, interactionMode: .build(.road))
         for tile in state.tiles {
             XCTAssertEqual(
                 scene.resolvedCoordinateForTesting(

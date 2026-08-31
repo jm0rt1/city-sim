@@ -180,7 +180,7 @@ final class FourViewRoadAssetCatalogTests: XCTestCase {
     }
 
     @MainActor
-    func testTransparentRoadCanvasCannotStealGroundGridSelection() {
+    func testRoadCanvasCannotStealConstructionGridSelection() {
         let state = CityGameState.newCity(seed: 42)
         let scene = CityScene(size: CGSize(width: 1_280, height: 800))
         scene.reducedMotion = true
@@ -191,6 +191,7 @@ final class FourViewRoadAssetCatalogTests: XCTestCase {
             interactionMode: .inspect
         )
 
+        scene.render(state: state, overlay: .none, selection: nil, interactionMode: .build(.road))
         for tile in state.tiles where tile.kind == .road {
             XCTAssertEqual(
                 scene.resolvedCoordinateForTesting(

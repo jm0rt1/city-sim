@@ -3140,6 +3140,10 @@ final class CityScene: SKScene {
     }
 
     private func coordinate(at scenePoint: CGPoint) -> GridCoordinate? {
+        if renderedInteractionMode == .inspect,
+           let building = inspectedBuilding(at: scenePoint) {
+            return building
+        }
         let hoverHidden = hoverNode.isHidden
         let selectionHidden = selectionNode.isHidden
         hoverNode.isHidden = true
@@ -3170,6 +3174,34 @@ final class CityScene: SKScene {
                 gridWidth: state.gridWidth,
                 gridHeight: state.gridHeight
             )
+    }
+
+    private func inspectedBuilding(at scenePoint: CGPoint) -> GridCoordinate? {
+        var frontmost: (coordinate: GridCoordinate, depth: CGFloat)?
+        for sprite in nodes(at: scenePoint).compactMap({ $0 as? FourViewInspectionSprite }) {
+            guard sprite.containsOpaquePixel(at: sprite.convert(scenePoint, from: self)) else { continue }
+            var ancestor: SKNode? = sprite
+            var depth: CGFloat = 0
+            var hidden = false
+            var coordinate: GridCoordinate?
+            while let node = ancestor, node !== self {
+                hidden = hidden || node.isHidden || node.alpha < 0.5
+                depth += node.zPosition
+                if let name = node.name, name.hasPrefix("tile:") {
+                    let parts = name.split(separator: ":")
+                    if parts.count == 3, let x = Int(parts[1]), let y = Int(parts[2]) {
+                        let candidate = GridCoordinate(x: x, y: y)
+                        if tileRecords[candidate]?.root === node { coordinate = candidate }
+                    }
+                }
+                ancestor = node.parent
+            }
+            guard !hidden, let coordinate else { continue }
+            if frontmost == nil || depth > frontmost!.depth {
+                frontmost = (coordinate, depth)
+            }
+        }
+        return frontmost?.coordinate
     }
 
     private func configureSelectionAdornment() {

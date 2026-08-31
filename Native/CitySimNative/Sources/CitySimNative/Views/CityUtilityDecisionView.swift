@@ -123,7 +123,7 @@ struct CityUtilityDecisionView: View {
             .accessibilityHint(network.weakBlocks > 0 ? gapHint(overlay) : "No weak completed blocks to focus")
             .accessibilityIdentifier("utilities.\(overlay.rawValue).gap")
             action("Build \(overlay.title.lowercased())", symbol: kind.symbol) {
-                store.perform(CityCommandCatalog.id(for: kind))
+                beginConstruction(kind)
             }
             .frame(width: 108)
             .accessibilityIdentifier("utilities.\(overlay.rawValue).build")
@@ -155,5 +155,14 @@ struct CityUtilityDecisionView: View {
 
     private func gapHint(_ overlay: DataOverlay) -> String {
         "Focuses the weakest completed block on the \(overlay.title) map without changing the city"
+    }
+
+    @discardableResult
+    func beginConstruction(_ kind: BuildingKind) -> Bool {
+        // Citywide capacity planning starts a new-site decision, not a
+        // replacement of whichever occupied facility the player inspected.
+        guard store.performMapFocused(CityCommandCatalog.id(for: kind)) else { return false }
+        store.speed = .paused
+        return true
     }
 }

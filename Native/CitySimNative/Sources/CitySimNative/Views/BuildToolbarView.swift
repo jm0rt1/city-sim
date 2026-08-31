@@ -391,7 +391,7 @@ struct BuildToolbarView: View {
                         .font(.system(size: GameTheme.hudCriticalTextSize - 1, weight: .semibold, design: .rounded))
                         .lineLimit(1)
                         .help(decision.fundingAssumption ?? "")
-                    Text(decision.likelyConsequence)
+                    Text(decision.utilityForecast?.mapKey ?? decision.likelyConsequence)
                         .font(.system(size: GameTheme.hudCriticalTextSize - 1, weight: .medium, design: .rounded))
                         .foregroundStyle(.secondary)
                         .lineLimit(1)
@@ -401,7 +401,7 @@ struct BuildToolbarView: View {
                     Text(decision.operatingImpact)
                         .font(.system(size: GameTheme.hudCriticalTextSize - 1, weight: .semibold, design: .rounded))
                         .lineLimit(1)
-                    Text(decision.likelyConsequence)
+                    Text(decision.utilityForecast?.mapKey ?? decision.likelyConsequence)
                         .font(.system(size: GameTheme.hudCriticalTextSize - 1, weight: .medium, design: .rounded))
                         .foregroundStyle(GameTheme.accent)
                         .lineLimit(1)
@@ -446,7 +446,7 @@ struct BuildToolbarView: View {
                         if let comparison = decision.siteComparison {
                             siteComparisonRow(comparison)
                         } else {
-                            Text(decision.likelyConsequence)
+                            Text(decision.utilityForecast?.mapKey ?? decision.likelyConsequence)
                                 .font(.system(size: GameTheme.hudCriticalTextSize - 1, weight: .medium, design: .rounded))
                                 .foregroundStyle(.secondary)
                                 .lineLimit(1)

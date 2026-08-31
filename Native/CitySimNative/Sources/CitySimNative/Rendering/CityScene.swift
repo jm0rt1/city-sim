@@ -180,6 +180,7 @@ final class CityScene: SKScene {
     private let ambientLifeLayer = SKNode()
     private let cameraNode = SKCameraNode()
     private let buildOpportunityLayer = SKNode()
+    private let utilityGainLayer = SKNode()
     private let guidedRoadRouteLayer = SKNode()
     private let selectedCommuteRouteLayer = SKNode()
     private let hoverNode = SKShapeNode()
@@ -268,6 +269,7 @@ final class CityScene: SKScene {
     var hoverVisualBoundsForTesting: CGRect { hoverNode.calculateAccumulatedFrame() }
     var activeActionTargetForTesting: CityMapActionTargetPresentation? { renderedActiveActionTarget }
     private(set) var buildOpportunityCoordinatesForTesting: [GridCoordinate] = []
+    private(set) var utilityGainBlocksForTesting: [CityUtilityPlacementForecast.BlockGain] = []
     var guidedRoadRouteCoordinatesForTesting: [GridCoordinate] { renderedGuidedRoadRoute }
     var guidedRoadRouteFootprintPositionsForTesting: [CGPoint] {
         guidedRoadRouteLayer.children
@@ -289,6 +291,7 @@ final class CityScene: SKScene {
             (node.name.map { [$0] } ?? []) + node.children.flatMap(names)
         }
         return names(in: buildOpportunityLayer)
+            + names(in: utilityGainLayer)
             + names(in: guidedRoadRouteLayer)
             + names(in: selectedCommuteRouteLayer)
             + names(in: hoverNode)
@@ -364,6 +367,8 @@ final class CityScene: SKScene {
         camera = cameraNode
         buildOpportunityLayer.name = "interaction.build-opportunities"
         buildOpportunityLayer.zPosition = 89_997
+        utilityGainLayer.name = "interaction.utility-gains"
+        utilityGainLayer.zPosition = 89_996
         guidedRoadRouteLayer.name = "interaction.guided-road-route"
         guidedRoadRouteLayer.zPosition = 89_998
         selectedCommuteRouteLayer.name = "interaction.selected-commute-route"
@@ -377,11 +382,13 @@ final class CityScene: SKScene {
         selectionNode.name = "interaction.selection"
         configureSelectionAdornment()
         worldLayer.addChild(buildOpportunityLayer)
+        worldLayer.addChild(utilityGainLayer)
         worldLayer.addChild(guidedRoadRouteLayer)
         worldLayer.addChild(selectedCommuteRouteLayer)
         worldLayer.addChild(hoverNode)
         worldLayer.addChild(selectionNode)
         buildOpportunityLayer.isHidden = true
+        utilityGainLayer.isHidden = true
         guidedRoadRouteLayer.isHidden = true
         selectedCommuteRouteLayer.isHidden = true
         hoverNode.isHidden = true
@@ -444,6 +451,7 @@ final class CityScene: SKScene {
         let previousInteractionMode = renderedInteractionMode
         let previousGuidedRoadRoute = renderedGuidedRoadRoute
         let previousSelectedCommuteRoute = renderedSelectedCommuteRoute
+        let previousUtilityGains = utilityGainBlocksForTesting
         let motionChanged = renderedReducedMotion != reducedMotion
         let priorDisplayedCueCount = diagnosticsSnapshot.displayedConsequenceCueCount
         presentedConsequenceEventTicks = presentedConsequenceEventTicks.filter {
@@ -533,6 +541,7 @@ final class CityScene: SKScene {
             || previousInteractionMode != interactionMode
             || previousGuidedRoadRoute != guidedRoadRoute
             || previousSelectedCommuteRoute != selectedCommuteRoute
+            || previousUtilityGains != utilityGainBlocksForTesting
             || motionChanged
             || unexplainedCueRemoval
         let runtimeMetricsStarted = ProcessInfo.processInfo.systemUptime
@@ -2617,6 +2626,7 @@ final class CityScene: SKScene {
 
     private func clearInteractionPreview() {
         lastPreviewSignature = nil
+        updateUtilityGainPreview(nil)
         hoverNode.removeAllChildren()
         hoverNode.isHidden = true
     }
@@ -2648,6 +2658,7 @@ final class CityScene: SKScene {
         hoverNode.removeAllChildren()
 
         let presentation = previewPresentation(status)
+        updateUtilityGainPreview(primaryAction?.buildDecision?.utilityForecast)
         let color = presentation.color
         if isInspecting {
             hoverNode.path = nil
@@ -2668,6 +2679,48 @@ final class CityScene: SKScene {
         }
         if presentation.isBlocked {
             addInvalidHatch(color: color, to: hoverNode)
+        }
+    }
+
+    private func updateUtilityGainPreview(_ forecast: CityUtilityPlacementForecast?) {
+        let gains = forecast?.blockGains ?? []
+        guard gains != utilityGainBlocksForTesting else { return }
+        utilityGainBlocksForTesting = gains
+        utilityGainLayer.removeAllChildren()
+        utilityGainLayer.isHidden = gains.isEmpty
+        // Anchored interaction marks, not altered world art or projected
+        // current-state overlays. Shapes distinguish improvement from recovery.
+        for gain in gains {
+            let marker = SKShapeNode(circleOfRadius: 8)
+            marker.name = "interaction.utility-gain.\(gain.coordinate.x).\(gain.coordinate.y)"
+            let ground = style.isoPosition(gain.coordinate)
+            marker.position = CGPoint(x: ground.x, y: ground.y - tileHeight * 0.37)
+            marker.fillColor = NSColor(calibratedWhite: 0.08, alpha: 0.94)
+            marker.strokeColor = gain.reachesHealthy
+                ? NSColor(calibratedRed: 0.34, green: 0.93, blue: 0.72, alpha: 1)
+                : NSColor(calibratedRed: 0.48, green: 0.81, blue: 1, alpha: 1)
+            marker.lineWidth = 1.3
+
+            let path = CGMutablePath()
+            if gain.reachesHealthy {
+                path.move(to: CGPoint(x: -4, y: 0))
+                path.addLine(to: CGPoint(x: -1, y: -3))
+                path.addLine(to: CGPoint(x: 4, y: 3))
+            } else {
+                path.move(to: CGPoint(x: 0, y: -4))
+                path.addLine(to: CGPoint(x: 0, y: 4))
+                path.move(to: CGPoint(x: -3, y: 1))
+                path.addLine(to: CGPoint(x: 0, y: 4))
+                path.addLine(to: CGPoint(x: 3, y: 1))
+            }
+            let symbol = SKShapeNode(path: path)
+            symbol.name = gain.reachesHealthy ? "utility-gain.healthy" : "utility-gain.improves"
+            symbol.strokeColor = .white
+            symbol.lineWidth = 1.7
+            symbol.lineCap = .round
+            symbol.lineJoin = .round
+            marker.addChild(symbol)
+            utilityGainLayer.addChild(marker)
         }
     }
 

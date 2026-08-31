@@ -398,7 +398,9 @@ struct CitySceneView: NSViewRepresentable {
             }
             valueParts.append("Primary action: \(primary.name). \(primary.disclosure)")
             view.cityAccessibilityValue = valueParts.joined(separator: ". ")
-            view.cityAccessibilityHelp = primary.disclosure
+            view.cityAccessibilityHelp = [primary.disclosure,
+                primary.buildDecision?.utilityForecast?.mapAccessibilitySummary]
+                .compactMap { $0 }.joined(separator: ". ")
 
             var actions: [NSAccessibilityCustomAction] = []
             if primary.isAvailable {

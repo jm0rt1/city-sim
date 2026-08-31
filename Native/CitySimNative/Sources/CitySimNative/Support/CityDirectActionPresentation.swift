@@ -1285,11 +1285,32 @@ struct CityParkPlacementForecast: Equatable, Sendable {
 }
 
 struct CityUtilityPlacementForecast: Equatable, Sendable {
+    struct BlockGain: Equatable, Sendable {
+        let coordinate: GridCoordinate
+        let serviceGain: Double
+        let reachesHealthy: Bool
+    }
+
     let kind: BuildingKind
     let improvedDevelopedBlocks: Int
     let restoredHealthyBlocks: Int
     let greatestServiceGain: Double
     var pollutionImpact: CityPlacementPollutionImpact? = nil
+    var blockGains: [BlockGain] = []
+
+    var mapKey: String {
+        guard !blockGains.isEmpty else { return summary }
+        return "Map: ↑ \(improvedDevelopedBlocks) improve · ✓ \(restoredHealthyBlocks) reach healthy"
+    }
+
+    var mapAccessibilitySummary: String? {
+        guard !blockGains.isEmpty else { return nil }
+        let places = blockGains.map { gain in
+            "Block \(gain.coordinate.x + 1), \(gain.coordinate.y + 1)"
+                + (gain.reachesHealthy ? " reaches healthy" : " improves")
+        }.joined(separator: "; ")
+        return "Planned service map after funded construction completes: upward arrows mean improved service; checkmarks mean service reaches healthy. \(places)."
+    }
 
     var summary: String {
         let service = kind == .powerPlant ? "Power" : "Water"
@@ -1341,6 +1362,7 @@ struct CityUtilityPlacementForecast: Equatable, Sendable {
         var improvedBlocks = 0
         var healthyRecoveries = 0
         var greatestGain = 0.0
+        var blockGains: [BlockGain] = []
         var pollutedBlocks = 0
         var pollutedHomes = 0
         var greatestPollutionIncrease = 0.0
@@ -1372,7 +1394,10 @@ struct CityUtilityPlacementForecast: Equatable, Sendable {
             guard gain > threshold else { continue }
             improvedBlocks += 1
             greatestGain = max(greatestGain, gain)
-            if currentBand != .healthy, projectedBand == .healthy {
+            let reachesHealthy = currentBand != .healthy && projectedBand == .healthy
+            blockGains.append(BlockGain(coordinate: current.coordinate,
+                serviceGain: gain, reachesHealthy: reachesHealthy))
+            if reachesHealthy {
                 healthyRecoveries += 1
             }
         }
@@ -1386,7 +1411,8 @@ struct CityUtilityPlacementForecast: Equatable, Sendable {
                 affectedBlocks: pollutedBlocks,
                 affectedHomes: pollutedHomes,
                 greatestIncrease: greatestPollutionIncrease
-            ) : nil
+            ) : nil,
+            blockGains: blockGains
         )
     }
 }
@@ -1550,6 +1576,7 @@ struct CityBuildDecisionPresentation: Equatable, Sendable {
     let operatingImpact: String
     let operatingForecast: CityBuildOperatingForecast?
     let fundingShortfall: Double?
+    let utilityForecast: CityUtilityPlacementForecast?
     let siteComparison: CityDevelopmentSiteComparisonPresentation?
     let developmentUtility: CityDevelopmentUtilityPresentation?
     let availability: String
@@ -1583,6 +1610,7 @@ struct CityBuildDecisionPresentation: Equatable, Sendable {
             disabledReason,
             "Likely consequence: \(likelyConsequence)",
             pollutionImpact?.accessibilitySummary,
+            utilityForecast?.mapAccessibilitySummary,
             cancellation,
             recovery.map { "Recovery: \($0.title). \($0.explanation)" },
         ]
@@ -1621,6 +1649,7 @@ struct CityBuildDecisionPresentation: Equatable, Sendable {
                 assumesFunding: fundingPreview != nil),
             operatingForecast: forecast,
             fundingShortfall: fundingPreview == nil ? nil : max(0, kind.buildCost - state.treasury),
+            utilityForecast: utilityForecast,
             siteComparison: CityDevelopmentSiteComparisonPresentation.make(
                 kind: kind,
                 coordinate: tile.coordinate,

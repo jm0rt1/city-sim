@@ -643,6 +643,20 @@ struct CityBuildOperatingForecast: Equatable, Sendable {
     let completedBalance: Double
     let change: Double
 
+    static func utilityFundingPreview(
+        kind: BuildingKind, tile: CityTile, state: CityGameState
+    ) -> Self? {
+        guard kind == .powerPlant || kind == .waterTower,
+              case .failure(.insufficientFunds) = CitySimulation.validateBuild(kind, at: tile.coordinate, in: state) else {
+            return nil
+        }
+        // Only this disposable forecast can assume funding. The normal build
+        // still validates every site rule; the live treasury and debt never change.
+        var funded = state
+        funded.treasury = kind.buildCost
+        return make(kind: kind, tile: tile, state: funded)
+    }
+
     static func make(
         kind: BuildingKind,
         tile: CityTile,
@@ -1535,6 +1549,7 @@ struct CityBuildDecisionPresentation: Equatable, Sendable {
     let cost: String
     let operatingImpact: String
     let operatingForecast: CityBuildOperatingForecast?
+    let fundingShortfall: Double?
     let siteComparison: CityDevelopmentSiteComparisonPresentation?
     let developmentUtility: CityDevelopmentUtilityPresentation?
     let availability: String
@@ -1544,6 +1559,15 @@ struct CityBuildDecisionPresentation: Equatable, Sendable {
     let cancellation: String
     let recovery: CityDirectResponse?
 
+    var fundingStatus: String? {
+        fundingShortfall.map { "\($0.rounded(.up).currencyText) short · Blocked" }
+    }
+
+    var fundingAssumption: String? {
+        fundingShortfall == nil ? nil
+            : "Forecast assumes funding and completed construction under current policies. New financing costs are not included."
+    }
+
     var accessibilitySummary: String {
         [
             "\(buildingTitle) placement",
@@ -1551,6 +1575,8 @@ struct CityBuildDecisionPresentation: Equatable, Sendable {
             "Footprint \(footprint)",
             cost,
             operatingImpact,
+            fundingStatus,
+            fundingAssumption,
             siteComparison?.accessibilitySummary,
             developmentUtility?.accessibilitySummary,
             availability,
@@ -1575,9 +1601,12 @@ struct CityBuildDecisionPresentation: Equatable, Sendable {
         let cost = unlimitedFunds
             ? "Cost waived · \(kind == .road ? "online now" : "online in 4 ticks")"
             : "Cost \(kind.buildCost.currencyText) · \(kind == .road ? "online now" : "online in 4 ticks")"
+        let fundingPreview = rejection == .insufficientFunds
+            ? CityBuildOperatingForecast.utilityFundingPreview(kind: kind, tile: tile, state: state)
+            : nil
         let forecast = rejection == nil
             ? CityBuildOperatingForecast.make(kind: kind, tile: tile, state: state)
-            : nil
+            : fundingPreview
         let developmentForecast = rejection == nil
             ? CityDevelopmentSiteForecast.make(kind: kind, at: tile.coordinate, in: state)
             : nil
@@ -1588,8 +1617,10 @@ struct CityBuildDecisionPresentation: Equatable, Sendable {
             target: "Block \(tile.coordinate.x + 1), \(tile.coordinate.y + 1)",
             footprint: "1 × 1 block",
             cost: cost,
-            operatingImpact: operatingImpact(forecast: forecast, unlimitedFunds: unlimitedFunds),
+            operatingImpact: operatingImpact(forecast: forecast, unlimitedFunds: unlimitedFunds,
+                assumesFunding: fundingPreview != nil),
             operatingForecast: forecast,
+            fundingShortfall: fundingPreview == nil ? nil : max(0, kind.buildCost - state.treasury),
             siteComparison: CityDevelopmentSiteComparisonPresentation.make(
                 kind: kind,
                 coordinate: tile.coordinate,
@@ -1615,13 +1646,14 @@ struct CityBuildDecisionPresentation: Equatable, Sendable {
 
     private static func operatingImpact(
         forecast: CityBuildOperatingForecast?,
-        unlimitedFunds: Bool
+        unlimitedFunds: Bool,
+        assumesFunding: Bool
     ) -> String {
         guard let forecast else { return "Net forecast available when ready" }
-        let prefix = unlimitedFunds ? "Tracked net" : "Net on completion"
+        let prefix = assumesFunding ? "If funded: net" : (unlimitedFunds ? "Tracked net" : "Net on completion")
         return "\(prefix) \(forecast.currentBalance.signedCurrencyText) → "
-            + "\(forecast.completedBalance.signedCurrencyText) / cycle "
-            + "(\(forecast.change.signedCurrencyText))"
+            + "\(forecast.completedBalance.signedCurrencyText) / cycle"
+            + (assumesFunding ? "" : " (\(forecast.change.signedCurrencyText))")
     }
 
     private static func likelyConsequence(

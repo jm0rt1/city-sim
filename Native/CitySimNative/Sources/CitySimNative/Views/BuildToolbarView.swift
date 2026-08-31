@@ -382,7 +382,20 @@ struct BuildToolbarView: View {
             Divider().frame(height: 36)
 
             VStack(alignment: .leading, spacing: 3) {
-                if let pollution {
+                if let fundingStatus = decision.fundingStatus, routePlan == nil {
+                    Label(fundingStatus.uppercased(), systemImage: "exclamationmark.triangle.fill")
+                        .font(.system(size: GameTheme.hudCriticalTextSize, weight: .heavy, design: .rounded))
+                        .foregroundStyle(GameTheme.warning)
+                        .lineLimit(1)
+                    Text(decision.operatingImpact)
+                        .font(.system(size: GameTheme.hudCriticalTextSize - 1, weight: .semibold, design: .rounded))
+                        .lineLimit(1)
+                        .help(decision.fundingAssumption ?? "")
+                    Text(decision.likelyConsequence)
+                        .font(.system(size: GameTheme.hudCriticalTextSize - 1, weight: .medium, design: .rounded))
+                        .foregroundStyle(.secondary)
+                        .lineLimit(1)
+                } else if let pollution {
                     // Three lines, like the ordinary decision. Keep the service
                     // benefit and its neighborhood cost visible together.
                     Text(decision.operatingImpact)

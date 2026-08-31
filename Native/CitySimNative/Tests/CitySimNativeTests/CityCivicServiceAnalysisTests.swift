@@ -119,6 +119,119 @@ final class CityCivicServiceAnalysisTests: XCTestCase {
         XCTAssertGreaterThan(served.vitalityScore, baseline.vitalityScore)
     }
 
+    func testEachReachableServiceOwnsOneAdditionalCitywideOutcome() {
+        var baseline = serviceRouteState()
+        place(
+            .commercial,
+            at: GridCoordinate(x: 5, y: 9),
+            occupancy: CitySimulation.commercialJobCapacity,
+            in: &baseline
+        )
+        baseline.jobs = CitySimulation.commercialJobCapacity
+
+        var fire = baseline
+        var distantFire = baseline
+        var police = baseline
+        var school = baseline
+        let serviceSite = GridCoordinate(x: 4, y: 11)
+        place(.fireStation, at: serviceSite, in: &fire)
+        place(.fireStation, at: GridCoordinate(x: 20, y: 11), in: &distantFire)
+        place(.policeStation, at: serviceSite, in: &police)
+        place(.school, at: serviceSite, in: &school)
+
+        XCTAssertGreaterThan(
+            CitySimulation.stormProtection(in: baseline).estimatedConditionDamage,
+            CitySimulation.stormProtection(in: fire).estimatedConditionDamage
+        )
+        XCTAssertEqual(
+            CitySimulation.stormProtection(in: distantFire).estimatedConditionDamage,
+            CitySimulation.stormProtection(in: baseline).estimatedConditionDamage,
+            accuracy: 0.000_001
+        )
+        XCTAssertEqual(
+            CitySimulation.stormProtection(in: police).estimatedConditionDamage,
+            CitySimulation.stormProtection(in: baseline).estimatedConditionDamage,
+            accuracy: 0.000_001
+        )
+        XCTAssertEqual(
+            CitySimulation.stormProtection(in: school).estimatedConditionDamage,
+            CitySimulation.stormProtection(in: baseline).estimatedConditionDamage,
+            accuracy: 0.000_001
+        )
+        XCTAssertGreaterThan(
+            CitySimulation.civicServiceDemandBonus(for: .commercial, in: police),
+            0
+        )
+        XCTAssertEqual(
+            CitySimulation.civicServiceDemandBonus(for: .commercial, in: fire),
+            0
+        )
+        XCTAssertEqual(
+            CitySimulation.civicServiceDemandBonus(for: .commercial, in: school),
+            0
+        )
+        XCTAssertGreaterThan(
+            CitySimulation.civicServiceDemandBonus(for: .residential, in: school),
+            0
+        )
+        XCTAssertEqual(
+            CitySimulation.civicServiceDemandBonus(for: .residential, in: fire),
+            0
+        )
+        XCTAssertEqual(
+            CitySimulation.civicServiceDemandBonus(for: .residential, in: police),
+            0
+        )
+
+        CitySimulation.step(&baseline)
+        CitySimulation.step(&fire)
+        CitySimulation.step(&police)
+        CitySimulation.step(&school)
+        XCTAssertEqual(fire.demand.residential, police.demand.residential, accuracy: 0.000_001)
+        XCTAssertGreaterThan(school.demand.residential, fire.demand.residential)
+        XCTAssertEqual(fire.demand.commercial, baseline.demand.commercial, accuracy: 0.000_001)
+        XCTAssertGreaterThan(police.demand.commercial, baseline.demand.commercial)
+        XCTAssertEqual(school.demand.commercial, baseline.demand.commercial, accuracy: 0.000_001)
+    }
+
+    func testOnlyReachableFireCoverageAcceleratesStormRecovery() throws {
+        let home = GridCoordinate(x: 3, y: 9)
+        var baseline = serviceRouteState()
+        baseline.tick = 3
+        place(.powerPlant, at: GridCoordinate(x: 7, y: 11), in: &baseline)
+        place(.waterTower, at: GridCoordinate(x: 8, y: 11), in: &baseline)
+        baseline.updateTile(at: home) { $0.condition = 0.7 }
+        baseline.stormRecovery = CityStormRecoveryState(
+            latestEventTick: 0,
+            latestEventSeed: 99,
+            targets: [
+                CityStormRecoveryTarget(
+                    coordinate: home,
+                    remainingConditionDamage: 0.3
+                )
+            ],
+            disposition: .active
+        )
+        var fire = baseline
+        var police = baseline
+        place(.fireStation, at: GridCoordinate(x: 4, y: 11), in: &fire)
+        place(.policeStation, at: GridCoordinate(x: 4, y: 11), in: &police)
+
+        CitySimulation.step(&baseline)
+        CitySimulation.step(&fire)
+        CitySimulation.step(&police)
+
+        XCTAssertGreaterThan(
+            try XCTUnwrap(fire.tile(at: home)?.condition),
+            try XCTUnwrap(baseline.tile(at: home)?.condition)
+        )
+        XCTAssertEqual(
+            try XCTUnwrap(police.tile(at: home)?.condition),
+            try XCTUnwrap(baseline.tile(at: home)?.condition),
+            accuracy: 0.000_001
+        )
+    }
+
     func testWeakCoverageDiagnosisAndOverlayExposeTheMissingReachableService() throws {
         let home = GridCoordinate(x: 3, y: 9)
         var state = serviceRouteState()

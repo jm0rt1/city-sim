@@ -45,14 +45,27 @@ struct CityCivicServiceAnalysis: Equatable, Sendable {
     let height: Int
     let samples: [CityLocationCivicService?]
     let citywideResidentialCoverage: Double
+    let citywideResidentialFireCoverage: Double
+    let citywideCommercialPoliceCoverage: Double
+    let citywideResidentialSchoolCoverage: Double
+
+    func outcomeCoverage(for kind: BuildingKind) -> Double? {
+        switch kind {
+        case .fireStation: citywideResidentialFireCoverage
+        case .policeStation: citywideCommercialPoliceCoverage
+        case .school: citywideResidentialSchoolCoverage
+        default: nil
+        }
+    }
 
     subscript(_ coordinate: GridCoordinate) -> CityLocationCivicService? {
         guard coordinate.x >= 0, coordinate.y >= 0,
-              coordinate.x < width, coordinate.y < height else { return nil }
+              coordinate.x < width, coordinate.y < height,
+              samples.count == width * height else { return nil }
         return samples[coordinate.y * width + coordinate.x]
     }
 
-    init(state: CityGameState) {
+    init(state: CityGameState, retainsLocationSamples: Bool = true) {
         width = state.gridWidth
         height = state.gridHeight
         let fundingPolicy = state.effectiveCivicServiceFundingPolicy
@@ -83,13 +96,29 @@ struct CityCivicServiceAnalysis: Equatable, Sendable {
                 )
             }
 
-        var resolved = Array<CityLocationCivicService?>(
-            repeating: nil,
-            count: width * height
-        )
+        var resolved = retainsLocationSamples
+            ? Array<CityLocationCivicService?>(repeating: nil, count: width * height)
+            : []
         let completedPlaces = state.tiles
             .filter(Self.isCompletedPlace)
             .sorted { Self.rowMajor($0.coordinate, $1.coordinate) }
+        var residentialOccupancy = 0
+        var commercialOccupancy = 0
+        for tile in completedPlaces {
+            if tile.kind == .residential {
+                residentialOccupancy += max(0, tile.occupancy)
+            } else if tile.kind == .commercial {
+                commercialOccupancy += max(0, tile.occupancy)
+            }
+        }
+        let useResidentialCapacity = residentialOccupancy == 0 && state.population > 0
+        let useCommercialCapacity = commercialOccupancy == 0 && state.jobs > 0
+        var residentialCombined = 0.0
+        var residentialFire = 0.0
+        var residentialSchool = 0.0
+        var residentialWeight = 0.0
+        var commercialPolice = 0.0
+        var commercialWeight = 0.0
         for tile in completedPlaces {
             let frontages = Self.frontageRoads(for: tile.coordinate, roadSet: roadSet)
             var fire = 0.0
@@ -119,30 +148,41 @@ struct CityCivicServiceAnalysis: Equatable, Sendable {
                 school: school,
                 combined: (fire + police + school) / 3
             )
-            resolved[tile.coordinate.y * width + tile.coordinate.x] = service
+            if retainsLocationSamples {
+                resolved[tile.coordinate.y * width + tile.coordinate.x] = service
+            }
+            if tile.kind == .residential {
+                let weight = Double(
+                    useResidentialCapacity
+                        ? 280 * max(1, tile.level)
+                        : max(0, tile.occupancy)
+                )
+                residentialCombined += service.combined * weight
+                residentialFire += service.fire * weight
+                residentialSchool += service.school * weight
+                residentialWeight += weight
+            } else if tile.kind == .commercial {
+                let weight = Double(
+                    useCommercialCapacity
+                        ? CitySimulation.commercialJobCapacity * max(1, tile.level)
+                        : max(0, tile.occupancy)
+                )
+                commercialPolice += service.police * weight
+                commercialWeight += weight
+            }
         }
         samples = resolved
-
-        let residences = completedPlaces.filter { $0.kind == .residential }
-        let explicitOccupancy = residences.reduce(0) { $0 + max(0, $1.occupancy) }
-        let useCapacityFallback = explicitOccupancy == 0 && state.population > 0
-        var weightedCoverage = 0.0
-        var totalWeight = 0.0
-        for residence in residences {
-            let weight: Double
-            if useCapacityFallback {
-                weight = Double(280 * max(1, residence.level))
-            } else {
-                weight = Double(max(0, residence.occupancy))
-            }
-            guard weight > 0,
-                  let service = resolved[residence.coordinate.y * width + residence.coordinate.x]
-            else { continue }
-            weightedCoverage += service.combined * weight
-            totalWeight += weight
-        }
-        citywideResidentialCoverage = totalWeight > 0
-            ? Self.clamp(weightedCoverage / totalWeight)
+        citywideResidentialCoverage = residentialWeight > 0
+            ? Self.clamp(residentialCombined / residentialWeight)
+            : 0
+        citywideResidentialFireCoverage = residentialWeight > 0
+            ? Self.clamp(residentialFire / residentialWeight)
+            : 0
+        citywideResidentialSchoolCoverage = residentialWeight > 0
+            ? Self.clamp(residentialSchool / residentialWeight)
+            : 0
+        citywideCommercialPoliceCoverage = commercialWeight > 0
+            ? Self.clamp(commercialPolice / commercialWeight)
             : 0
     }
 
@@ -162,9 +202,13 @@ struct CityCivicServiceAnalysis: Equatable, Sendable {
         width: Int,
         maximumRoadDistance: Int
     ) -> Double {
-        let roadDistance = frontages
-            .map { source.roadDistances[$0.y * width + $0.x] }
-            .min() ?? Int.max
+        var roadDistance = Int.max
+        for frontage in frontages {
+            roadDistance = min(
+                roadDistance,
+                source.roadDistances[frontage.y * width + frontage.x]
+            )
+        }
         guard roadDistance <= maximumRoadDistance else { return 0 }
         let reach = 1 - Double(roadDistance) / Double(maximumRoadDistance + 1)
         return clamp(reach * source.condition)

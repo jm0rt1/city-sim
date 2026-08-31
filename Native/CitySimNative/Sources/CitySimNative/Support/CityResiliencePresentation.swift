@@ -35,7 +35,8 @@ struct CityResiliencePresentation: Equatable, Sendable {
             ? "1 completed home exposed"
             : "Up to \(protection.exposedResidentialLots) completed homes exposed"
         let reserveLabel = "Utility reserve \(reservePercent)% / 15% required"
-        let protectionLabel = "\(protection.parkCount) parks · \(protection.serviceCount) emergency services · about \(damagePercent)% condition at risk"
+        let fireLabel = protection.serviceCount == 1 ? "fire station" : "fire stations"
+        let protectionLabel = "\(protection.parkCount) parks · \(protection.serviceCount) \(fireLabel) · about \(damagePercent)% condition at risk"
 
         if state.sandboxRules?.incidentsEnabled == false {
             return Self(
@@ -77,7 +78,7 @@ struct CityResiliencePresentation: Equatable, Sendable {
                     ? "\(recovery.targets.count) homes are repairing"
                     : "Restore the 15% utility reserve",
                 detail: canRepair
-                    ? "Repairs advance each city day. Parks and emergency services increase the repair rate."
+                    ? "Repairs advance each city day. Parks and fire stations increase the repair rate."
                     : "Storm repairs pause until both utility networks cover current use with at least 15% reserve.",
                 timingLabel: "Latest storm Day \(recovery.latestEventTick / 4 + 1)",
                 exposureLabel: exposureLabel,
@@ -133,7 +134,7 @@ struct CityResiliencePresentation: Equatable, Sendable {
             detail: recovered
                 ? "The latest damaged homes cleared their recorded storm damage; future reviews remain active."
                 : (ready
-                    ? "Utilities can sustain storm repairs. Parks and emergency services reduce damage and accelerate recovery."
+                    ? "Utilities can sustain storm repairs. Parks and fire stations reduce damage and accelerate recovery."
                     : "A severe storm costs $2,000, lowers happiness, and can weather up to three completed homes."),
             timingLabel: timingLabel,
             exposureLabel: exposureLabel,
@@ -172,7 +173,7 @@ struct CityResiliencePresentation: Equatable, Sendable {
         return .init(
             title: "Build a fire station",
             command: .buildFireStation,
-            explanation: "Emergency services reduce storm damage and accelerate daily residential repairs.",
+            explanation: "Road-connected fire coverage reduces storm damage and accelerates daily residential repairs.",
             focusesMap: true
         )
     }

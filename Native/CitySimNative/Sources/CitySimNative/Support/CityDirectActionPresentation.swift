@@ -1360,20 +1360,32 @@ struct CityUtilityPlacementForecast: Equatable, Sendable {
 
 struct CityCivicServicePlacementForecast: Equatable, Sendable {
     let kind: BuildingKind
-    let happinessTargetGain: Double
+    let outcomeCoverageGain: Double
     let stormDamageReduction: Double
+    let residentialDemandGain: Double
+    let commercialDemandGain: Double
 
     var summary: String {
-        var outcomes: [String] = []
-        if happinessTargetGain > 0.000_000_001 {
-            outcomes.append("Happiness target +\(Self.points(happinessTargetGain))")
+        let reach = "\(outcomeTitle) reach +\(Self.points(outcomeCoverageGain * 100))"
+        return switch kind {
+        case .fireStation where stormDamageReduction > 0.000_000_001:
+            "\(reach) · storm damage -\(Self.points(stormDamageReduction * 100))"
+        case .policeStation where commercialDemandGain > 0.000_000_001:
+            "\(reach) · Commercial demand +\(Self.points(commercialDemandGain * 100))"
+        case .school where residentialDemandGain > 0.000_000_001:
+            "\(reach) · Residential demand +\(Self.points(residentialDemandGain * 100))"
+        default:
+            "No additional \(outcomeTitle.lowercased()) outcome at this site"
         }
-        if stormDamageReduction > 0.000_000_001 {
-            outcomes.append("storm damage -\(Self.points(stormDamageReduction * 100))")
+    }
+
+    private var outcomeTitle: String {
+        switch kind {
+        case .fireStation: "Fire"
+        case .policeStation: "Police"
+        case .school: "School"
+        default: "Service"
         }
-        return outcomes.isEmpty
-            ? "No additional citywide service benefit at current staffing"
-            : outcomes.joined(separator: " · ")
     }
 
     static func make(
@@ -1395,14 +1407,34 @@ struct CityCivicServicePlacementForecast: Equatable, Sendable {
         }
         completed.updateTile(at: coordinate) { $0.constructionProgress = 1 }
 
-        let currentHappinessBonus = CitySimulation.civicServiceHappinessBonus(in: state)
-        let projectedHappinessBonus = CitySimulation.civicServiceHappinessBonus(in: completed)
+        let currentServices = CityCivicServiceAnalysis(state: state)
+        let projectedServices = CityCivicServiceAnalysis(state: completed)
+        let currentCoverage = currentServices.outcomeCoverage(for: kind) ?? 0
+        let projectedCoverage = projectedServices.outcomeCoverage(for: kind) ?? 0
         let currentStormDamage = CitySimulation.stormProtection(in: state).estimatedConditionDamage
         let projectedStormDamage = CitySimulation.stormProtection(in: completed).estimatedConditionDamage
         return Self(
             kind: kind,
-            happinessTargetGain: max(0, projectedHappinessBonus - currentHappinessBonus),
-            stormDamageReduction: max(0, currentStormDamage - projectedStormDamage)
+            outcomeCoverageGain: max(0, projectedCoverage - currentCoverage),
+            stormDamageReduction: kind == .fireStation
+                ? max(0, currentStormDamage - projectedStormDamage)
+                : 0,
+            residentialDemandGain: kind == .school
+                && !state.preservesLegacyReplayConsequences
+                ? max(
+                    0,
+                    (projectedServices.citywideResidentialSchoolCoverage - currentServices.citywideResidentialSchoolCoverage)
+                        * CitySimulation.maximumSchoolResidentialDemandBonus
+                )
+                : 0,
+            commercialDemandGain: kind == .policeStation
+                && !state.preservesLegacyReplayConsequences
+                ? max(
+                    0,
+                    (projectedServices.citywideCommercialPoliceCoverage - currentServices.citywideCommercialPoliceCoverage)
+                        * CitySimulation.maximumPoliceCommercialDemandBonus
+                )
+                : 0
         )
     }
 
@@ -1458,8 +1490,12 @@ struct CityDemolitionForecast: Equatable, Sendable {
             "Road access may change for adjacent blocks"
         case .park:
             "Removes park livability and storm protection"
-        case .fireStation, .policeStation, .school:
-            "Removes civic service and storm protection"
+        case .fireStation:
+            "Removes fire reach and storm protection"
+        case .policeStation:
+            "Removes police reach and Commercial demand support"
+        case .school:
+            "Removes school reach and Residential demand support"
         case .empty, .cityHall:
             "No removable capacity"
         }
@@ -2435,8 +2471,12 @@ private extension BuildingKind {
             "Adds \(CitySimulation.powerCapacityPerPlant) citywide power capacity after construction"
         case .waterTower:
             "Adds \(CitySimulation.waterCapacityPerTower) citywide water capacity after construction"
-        case .fireStation, .policeStation, .school:
-            "Adds a civic-service contribution after construction"
+        case .fireStation:
+            "Adds road-connected fire reach for storm protection"
+        case .policeStation:
+            "Adds road-connected police reach for Commercial demand"
+        case .school:
+            "Adds road-connected school reach for Residential demand"
         case .cityHall:
             "Adds a protected civic landmark"
         }

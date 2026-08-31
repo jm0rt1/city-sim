@@ -1,5 +1,5 @@
 {
-  "digest" : "3046cc1e735051a52dcc8b2c283d0807894f1d49645d169bcbaecf5c7edf6c1f",
+  "digest" : "c2e5757edc0645f567f2b987a9893ad5256c0ef98f0d7594089aa431e26337ac",
   "fingerprintVersion" : 1,
   "schemaVersion" : 1,
   "state" : {
@@ -23,7 +23,7 @@
         "title" : "Town Charter Awarded"
       },
       {
-        "detail" : "3 Residential lots cleared their recorded storm damage. Current protection: 28% utility reserve, 1 park, and 0 emergency services. Keep utilities healthy to protect the recovery; Commercial and Industrial conditions were unchanged.",
+        "detail" : "3 Residential lots cleared their recorded storm damage. Current protection: 28% utility reserve, 1 park, and 0 fire stations. Keep utilities healthy to protect the recovery; Commercial and Industrial conditions were unchanged.",
         "id" : "824-Storm Recovery Complete",
         "severity" : "good",
         "tick" : 824,
@@ -37,7 +37,7 @@
         "title" : "Population Milestone"
       },
       {
-        "detail" : "Next decision: protect recovery by keeping utility reserve at or above 15%, or invest in a park or emergency service. Consequence: Emergency repairs cost $2,000, happiness fell 3 points, and weathered 3 completed homes at blocks 4, 11; 7, 11; 10, 11. Diagnosis: 28% utility reserve, 1 park, and 0 emergency services limited average damage to 29%. Objective: keep utilities fully covered with at least 15% reserve while parks and emergency services accelerate Residential repairs until all recorded storm damage clears.",
+        "detail" : "Next decision: protect recovery by keeping utility reserve at or above 15%, or invest in a park or fire station. Consequence: Emergency repairs cost $2,000, happiness fell 3 points, and weathered 3 completed homes at blocks 4, 11; 7, 11; 10, 11. Diagnosis: 28% utility reserve, 1 park, and 0 fire stations limited average damage to 29%. Objective: keep utilities fully covered with at least 15% reserve while parks and fire stations accelerate Residential repairs until all recorded storm damage clears.",
         "id" : "800-Severe Storm",
         "severity" : "warning",
         "tick" : 800,

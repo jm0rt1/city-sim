@@ -826,7 +826,7 @@ final class CityBuildOperatingForecastTests: XCTestCase {
         XCTAssertEqual(state.treasury, 0)
     }
 
-    func testCivicServicePlacementForecastNamesExactHappinessAndStormPayoff() throws {
+    func testCivicServicePlacementForecastNamesDistinctRolePayoffs() throws {
         var state = CityGameState.newCity(seed: 42)
         state.treasury = 0
         for coordinate in state.tiles.map(\.coordinate) {
@@ -847,10 +847,24 @@ final class CityBuildOperatingForecastTests: XCTestCase {
                 constructionProgress: 1
             )
         }
+        state.updateTile(at: GridCoordinate(x: 9, y: 9)) {
+            $0 = CityTile(
+                coordinate: GridCoordinate(x: 9, y: 9),
+                kind: .commercial,
+                occupancy: CitySimulation.commercialJobCapacity,
+                constructionProgress: 1
+            )
+        }
         state.population = 100
+        state.jobs = CitySimulation.commercialJobCapacity
         let targetTile = try XCTUnwrap(state.tile(at: target))
 
-        for kind in [BuildingKind.fireStation, .policeStation, .school] {
+        let expected: [(BuildingKind, String)] = [
+            (.fireStation, "Fire reach +100 pts · storm damage -12 pts"),
+            (.policeStation, "Police reach +100 pts · Commercial demand +12 pts"),
+            (.school, "School reach +100 pts · Residential demand +12 pts"),
+        ]
+        for (kind, summary) in expected {
             let forecast = try XCTUnwrap(
                 CityCivicServicePlacementForecast.make(
                     kind: kind,
@@ -859,12 +873,8 @@ final class CityBuildOperatingForecastTests: XCTestCase {
                 )
             )
             XCTAssertEqual(forecast.kind, kind)
-            XCTAssertEqual(forecast.happinessTargetGain, 10.0 / 3.0, accuracy: 0.000_001)
-            XCTAssertEqual(forecast.stormDamageReduction, 0.04, accuracy: 0.000_001)
-            XCTAssertEqual(
-                forecast.summary,
-                "Happiness target +3.3 pts · storm damage -4 pts"
-            )
+            XCTAssertEqual(forecast.outcomeCoverageGain, 1, accuracy: 0.000_001)
+            XCTAssertEqual(forecast.summary, summary)
 
             let decision = CityBuildDecisionPresentation.make(
                 kind: kind,
@@ -920,11 +930,13 @@ final class CityBuildOperatingForecastTests: XCTestCase {
                 in: state
             )
         )
-        XCTAssertEqual(capped.happinessTargetGain, 0)
+        XCTAssertEqual(capped.outcomeCoverageGain, 0)
         XCTAssertEqual(capped.stormDamageReduction, 0)
+        XCTAssertEqual(capped.residentialDemandGain, 0)
+        XCTAssertEqual(capped.commercialDemandGain, 0)
         XCTAssertEqual(
             capped.summary,
-            "No additional citywide service benefit at current staffing"
+            "No additional fire outcome at this site"
         )
         XCTAssertNil(
             CityCivicServicePlacementForecast.make(
@@ -1010,7 +1022,7 @@ final class CityBuildOperatingForecastTests: XCTestCase {
         )
         XCTAssertEqual(
             try XCTUnwrap(CityDemolitionForecast.make(tile: try tile(.fireStation, in: state), state: state)).capacityImpact,
-            "Removes civic service and storm protection"
+            "Removes fire reach and storm protection"
         )
     }
 

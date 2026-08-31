@@ -6,7 +6,7 @@ final class SessionPlatformTests: XCTestCase {
     private static let play078DenseTerminalFixtureName =
         "dense-24x24-terminal-post-play076-v8"
     private static let play078DenseTerminalFixtureDigest =
-        "c557d3d0bc8a35e755cfca54f0985970ba3d7ae265f7d478cd887db1bfb79c14"
+        "fe258143d3ada64d1b6e1fe39ab61d368007343fb1e3b1aa36fb71d9f3ac1d63"
 
     func testVersionOneFingerprintFixturesAreFrozen() throws {
         let explicitProgression = CityGameState.newCity(seed: 42)
@@ -484,13 +484,13 @@ final class SessionPlatformTests: XCTestCase {
             Set(try (0..<5).map {
                 _ in try CityStateFingerprinter.fingerprint(industryBeforeVictory).digest
             }),
-            Set(["6ccce1225c9fc51bbd03811211faf34d1219dc22c2014da7fc2e615874e8ca22"])
+            Set(["d407b8967e53dc8a17088ba7f17c890bb6b39973e2b3a728da69b1337f3145bc"])
         )
         XCTAssertEqual(
             Set(try (0..<5).map {
                 _ in try CityStateFingerprinter.fingerprint(commerceBeforeVictory).digest
             }),
-            Set(["1bc073ad5f23e943a26dfda92a6005f431eeb6db95f8de6ddd7b02400eb15982"])
+            Set(["8bc19c9148bf77d30d932327ff921ebacec40ff7cff5483b2db93c883f0ef039"])
         )
 
         XCTAssertEqual(
@@ -540,19 +540,19 @@ final class SessionPlatformTests: XCTestCase {
         XCTAssertFalse(commerce.progression?.secondAct?.regionalCapitalAwarded ?? true)
         XCTAssertEqual(
             try CityStateFingerprinter.fingerprint(industry).digest,
-            "2a6f9cfa7df64233bab923b9038eb4b41a78e03e9fa5468c4a5b3f60baef7498"
+            "bb81bb47b30695cb90bb84bab7ddb118bfcce46d3c46753b8f7d25bbe82ebf7b"
         )
         XCTAssertEqual(
             try CityStateFingerprinter.fingerprint(commerce).digest,
-            "d4cd76df1a4cd355a477d2afd839a122680fafa6454b960dbf5ec2117610ade5"
+            "59a98beaf54f9438640b89d023ae5e34686711cd27d313cc1df15fbe5b4c5ea0"
         )
         XCTAssertEqual(
             Set(try (0..<5).map { _ in try CityStateFingerprinter.fingerprint(industry).digest }),
-            Set(["2a6f9cfa7df64233bab923b9038eb4b41a78e03e9fa5468c4a5b3f60baef7498"])
+            Set(["bb81bb47b30695cb90bb84bab7ddb118bfcce46d3c46753b8f7d25bbe82ebf7b"])
         )
         XCTAssertEqual(
             Set(try (0..<5).map { _ in try CityStateFingerprinter.fingerprint(commerce).digest }),
-            Set(["d4cd76df1a4cd355a477d2afd839a122680fafa6454b960dbf5ec2117610ade5"])
+            Set(["59a98beaf54f9438640b89d023ae5e34686711cd27d313cc1df15fbe5b4c5ea0"])
         )
     }
 

@@ -68,11 +68,11 @@
     },
     {
       "activityDigest" : "5bbc6a00c41d739d703b0455192e1062fc5fae39a32c486f1bc8f8e13cf3eb9f",
-      "byteCount" : 135112,
+      "byteCount" : 135092,
       "diagnosticDigest" : "45340a49aaa587a61ae8e4984377f8cb220168b8ed2e948a39a73f09c883390d",
-      "expectedStateDigest" : "6ae23a0cc4d1f7e671502e10215960a7b90ae8632d4fd472809a4bacd4067613",
+      "expectedStateDigest" : "5dd3f0e7d27397327459fcf44d6a012e9a45099c45382347a0986e89d86c210c",
       "file" : "visible-city-commercial-pressured-district-v6.json",
-      "fileSHA256" : "df6a1bd99cd30365966c95086136214736fff20f5a68594d2f230bc7c989e10f",
+      "fileSHA256" : "cc808d48b67c5aa5270760a2c18f15f6ab082231cae6362cd5b3fd72323e177d",
       "focusCoordinate" : {
         "x" : 4,
         "y" : 8
@@ -91,11 +91,11 @@
     },
     {
       "activityDigest" : "047617de7be83e5f996fdd27dd183648be70c5311b89cfb543bf9bb4d784f189",
-      "byteCount" : 135216,
+      "byteCount" : 135196,
       "diagnosticDigest" : "19b03a060fbf65bce1560438471650e614384a7b63329d8598c1ab595c6cba8c",
-      "expectedStateDigest" : "2a0b62a8074a4597efc07522a5ba180c6fe8893f04ebf4e305eb2e9bd051ea70",
+      "expectedStateDigest" : "b0e71cb1da46d84ad6eba485de9f934a24bc61e95b8ae7bf3d7adfc961589874",
       "file" : "visible-city-commercial-recovering-district-v6.json",
-      "fileSHA256" : "9815ca72d3bece3202c61d366b56f289b4a2d354d598fafb8b8def1c90fbf394",
+      "fileSHA256" : "169093b8593382f40a22b8575ce9a804adbdc37b273afc22b537f0720ef343aa",
       "focusCoordinate" : {
         "x" : 4,
         "y" : 8
@@ -114,11 +114,11 @@
     },
     {
       "activityDigest" : "0c0ee8c1c309e79dec0b42c23fe7f29dddadc9d56b26e4bbecb0bf1e7d71b5cc",
-      "byteCount" : 135081,
+      "byteCount" : 135061,
       "diagnosticDigest" : "ec161090c272d6bbe8de97d454760d12eab39a2f475f36ac65a340d277b91147",
-      "expectedStateDigest" : "3046cc1e735051a52dcc8b2c283d0807894f1d49645d169bcbaecf5c7edf6c1f",
+      "expectedStateDigest" : "c2e5757edc0645f567f2b987a9893ad5256c0ef98f0d7594089aa431e26337ac",
       "file" : "visible-city-commercial-upgraded-district-v6.json",
-      "fileSHA256" : "86f0823e865b115f7f9888ecfbad55a5a06a5e47e6b5e72b3e37e2663320f32a",
+      "fileSHA256" : "db1b9068793038423145b62fc37fd08f5d33ef8ba9a3fe03be6d95199f5ff75d",
       "focusCoordinate" : {
         "x" : 4,
         "y" : 8
@@ -137,11 +137,11 @@
     },
     {
       "activityDigest" : "fb6b8c177da1ddc45e5331e91ed2112662ba944847cf852b96f2705b6e2948cc",
-      "byteCount" : 135288,
+      "byteCount" : 135268,
       "diagnosticDigest" : "eeb073e45ccde61eb9d49071a500e7b99118213bd40b946966f60d8ef003a5ee",
-      "expectedStateDigest" : "5bc068c2b8262c481d6df02b167d5e01d8a5124abd06fe8d4158be5d8de4a399",
+      "expectedStateDigest" : "8a8cbd780eee5c69a4417c3519c68f76cca6a5c7cc248534f2f8ab7fb6e9edec",
       "file" : "visible-city-commercial-terminal-district-v6.json",
-      "fileSHA256" : "9210d88b38ae2359966a901193abb7ed4f6b376753c280e16f92df46d8e76c04",
+      "fileSHA256" : "65aa119dfae845270b5db66c57e65233132f6056139df2e7293faf6182917728",
       "focusCoordinate" : {
         "x" : 4,
         "y" : 8
@@ -223,11 +223,11 @@
     },
     {
       "activityDigest" : "4d6f4628b41090c394d1498a25dfc5039d521059a79e55c6b8bb02251008cfe6",
-      "byteCount" : 135230,
+      "byteCount" : 135210,
       "diagnosticDigest" : "b7c20b69c18f8ebfe180047584a93fecfee083902141f213dfc4341e4d44687a",
-      "expectedStateDigest" : "6021f85cad8326bca9aa960b13a4ccbbd23faf56395106b3f8ab6b76169b6528",
+      "expectedStateDigest" : "c6c76b1d201439683daa1253d68971d2bd8df962f7f5212943b6fb0cdc6646f0",
       "file" : "visible-city-industrial-pressured-district-v6.json",
-      "fileSHA256" : "e7205a3f92e36593d0fec0a92f82913f60c0a07ad64a42ee383274717abd814d",
+      "fileSHA256" : "1d02011bec5fab54e1cba95c429f107d0b79bbf141da7f4e6c84d46ffc22aed0",
       "focusCoordinate" : {
         "x" : 4,
         "y" : 8
@@ -246,11 +246,11 @@
     },
     {
       "activityDigest" : "bdbebd75dd7601f31a0495d1f89d0aa259623414a209d8dd293ed3f7a675681d",
-      "byteCount" : 135483,
+      "byteCount" : 135463,
       "diagnosticDigest" : "dfacda4efc20b7185cd7bcc0df2486ef18100f48eef18ffba562b9805b793d5a",
-      "expectedStateDigest" : "06a088264be44fe47049597a7a7e268ce1db38227ea3eb493b513e03ccf6ef6f",
+      "expectedStateDigest" : "7f489a867eda70a1235a654f6e1f1f1f86790d0eaf646c7d41ad115407a8d91b",
       "file" : "visible-city-industrial-recovering-district-v6.json",
-      "fileSHA256" : "28de8728f86cf7f84dda5f35c64fa123d893c7cbc4edbeaab30da4334ac3a2ad",
+      "fileSHA256" : "9ba3082ffa89aa4c6639825a5c99a2a499867ba715e484454ea7d1aa60b152dd",
       "focusCoordinate" : {
         "x" : 4,
         "y" : 8
@@ -269,11 +269,11 @@
     },
     {
       "activityDigest" : "41a1ee19c972a54e1bad48c681c2f31d1ae034a8bd62c7eb6a5d85b93c7c4730",
-      "byteCount" : 135174,
+      "byteCount" : 135154,
       "diagnosticDigest" : "ffd21c028acd6f4c2544a53c24adeda881e65dcd44bb323299e621f07d49fbc0",
-      "expectedStateDigest" : "ca68c7d6ba4dc2392b9e430c8c437dfee43956c85af0ee8ebba07b62f3a90d0a",
+      "expectedStateDigest" : "9bca23a16b183d66592feccf16cbf1df83e2541373a9b4b8a7823ff4bdde4986",
       "file" : "visible-city-industrial-upgraded-district-v6.json",
-      "fileSHA256" : "f8aef9b925fd0613c37cb8a51526650a7417a0c1f9e706559eb6a24401b85df8",
+      "fileSHA256" : "9628d5b7e02b982ada8eaf6e544581856b3d6fd4bfb52b8cb864fb9665d4c622",
       "focusCoordinate" : {
         "x" : 4,
         "y" : 8
@@ -292,11 +292,11 @@
     },
     {
       "activityDigest" : "4091953929466b1c694e2c3a195f5abcdcad58486324716c7de3d19f08a0500a",
-      "byteCount" : 135451,
+      "byteCount" : 135431,
       "diagnosticDigest" : "14f4d4553d7aa73f8b7663e62fffd144da1e84e506412751edcde2ff6a5cc2dc",
-      "expectedStateDigest" : "b5a118796d4a130092eb553915ebcd5d72fc7a6e4e32c5e82cb229345f91a118",
+      "expectedStateDigest" : "786862dbbc15e8db096ff26bf5b053e912c18beacece2a1b8ad102ac5e3cbf53",
       "file" : "visible-city-industrial-terminal-district-v6.json",
-      "fileSHA256" : "7a2e418571c8b9175752ffa439335647c9c87e4edf3577b9aa1c3b4d4adac9f7",
+      "fileSHA256" : "2c297fea426b14012885abf0e449e7b1be1800d6d3ac1e6ea44ffb0b344f371b",
       "focusCoordinate" : {
         "x" : 4,
         "y" : 8

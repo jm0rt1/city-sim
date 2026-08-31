@@ -65,6 +65,8 @@ enum CitySimulation {
     static let incidentReviewIntervalTicks = 160
     static let firstOrdinaryStormTick = 800
     static let stormRecoveryRequiredUtilityReserve = 0.15
+    static let maximumSchoolResidentialDemandBonus = 0.12
+    static let maximumPoliceCommercialDemandBonus = 0.12
 
     static func nextIncidentReviewTick(in state: CityGameState) -> Int? {
         guard state.sandboxRules?.incidentsEnabled != false,
@@ -86,16 +88,36 @@ enum CitySimulation {
         min(10, CityCivicServiceAnalysis(state: state).citywideResidentialCoverage * 10)
     }
 
+    static func civicServiceDemandBonus(
+        for kind: BuildingKind,
+        in state: CityGameState
+    ) -> Double {
+        guard !state.preservesLegacyReplayConsequences else { return 0 }
+        let services = CityCivicServiceAnalysis(state: state)
+        return switch kind {
+        case .residential:
+            services.citywideResidentialSchoolCoverage
+                * maximumSchoolResidentialDemandBonus
+        case .commercial:
+            services.citywideCommercialPoliceCoverage
+                * maximumPoliceCommercialDemandBonus
+        default:
+            0
+        }
+    }
+
     static func stormProtection(in state: CityGameState) -> CityStormProtectionSnapshot {
         let active = activeTiles(in: state)
         let utilityReserve = utilityReserve(in: state)
         let parkCount = active.filter { $0.kind == .park }.count
-        let serviceCount = active.filter {
-            [.fireStation, .policeStation, .school].contains($0.kind)
-        }.count
+        let serviceCount = protectiveServiceCount(in: state, active: active)
         let utilityProtection = min(0.10, max(0, utilityReserve) * 0.25)
         let parkProtection = min(0.06, Double(parkCount) * 0.02)
-        let baselineServiceProtection = min(0.12, Double(serviceCount) * 0.04)
+        let baselineServiceProtection = if state.preservesLegacyReplayConsequences {
+            min(0.12, Double(serviceCount) * 0.04)
+        } else {
+            CityCivicServiceAnalysis(state: state).citywideResidentialFireCoverage * 0.12
+        }
         let serviceProtection = min(
             0.15,
             baselineServiceProtection
@@ -116,6 +138,18 @@ enum CitySimulation {
             exposedResidentialLots: exposedResidentialLots,
             estimatedConditionDamage: estimatedDamage
         )
+    }
+
+    private static func protectiveServiceCount(
+        in state: CityGameState,
+        active: [CityTile]
+    ) -> Int {
+        if state.preservesLegacyReplayConsequences {
+            return active.filter {
+                [.fireStation, .policeStation, .school].contains($0.kind)
+            }.count
+        }
+        return active.filter { $0.kind == .fireStation }.count
     }
 
     static func validateBuild(
@@ -505,7 +539,19 @@ enum CitySimulation {
         let commuteAccess = roadWearTraffic?.residentWeightedCommuteAccess
             ?? CityTrafficAnalysis.residentWeightedCommuteAccess(in: state)
         let parkBonus = min(12, Double(counts[.park] ?? 0) * 3)
-        let services = civicServiceHappinessBonus(in: state)
+        let civicServices = CityCivicServiceAnalysis(
+            state: state,
+            retainsLocationSamples: false
+        )
+        let services = min(10, civicServices.citywideResidentialCoverage * 10)
+        let residentialServiceDemandBonus = state.preservesLegacyReplayConsequences
+            ? 0
+            : civicServices.citywideResidentialSchoolCoverage
+                * maximumSchoolResidentialDemandBonus
+        let commercialServiceDemandBonus = state.preservesLegacyReplayConsequences
+            ? 0
+            : civicServices.citywideCommercialPoliceCoverage
+                * maximumPoliceCommercialDemandBonus
         let pollution = min(
             26,
             Double(industrialTiles.count) * 3.5
@@ -537,11 +583,13 @@ enum CitySimulation {
         state.demand.residential = clamp(
             0.50 + employment * 0.28 + (state.happiness - 50) / 140
                 + min(0.15, utilityReserve * 0.45) - housingVacancy * 0.35
+                + residentialServiceDemandBonus
                 - max(0, state.taxRate - 0.10) * 2.5
         )
         state.demand.commercial = clamp(
             0.38 + Double(state.population) / 1_000 + employmentGap * 0.9
                 - Double(counts[.commercial] ?? 0) * 0.09
+                + commercialServiceDemandBonus
                 - max(0, state.taxRate - 0.10) * 2
         )
         state.demand.industrial = clamp(
@@ -992,12 +1040,21 @@ enum CitySimulation {
             } else {
                 "did not weather any completed homes"
             }
+            let serviceDescription = state.preservesLegacyReplayConsequences
+                ? "\(outcome.serviceCount) emergency services"
+                : "\(outcome.serviceCount) \(outcome.serviceCount == 1 ? "fire station" : "fire stations")"
+            let serviceAction = state.preservesLegacyReplayConsequences
+                ? "emergency service"
+                : "fire station"
+            let serviceObjective = state.preservesLegacyReplayConsequences
+                ? "emergency services"
+                : "fire stations"
             post(
                 CityMessage(
                     tick: state.tick,
                     severity: .warning,
                     title: "Severe Storm",
-                    detail: "Next decision: protect recovery by keeping utility reserve at or above 15%, or invest in a park or emergency service. Consequence: Emergency repairs cost $2,000, happiness fell 3 points, and \(damageDetail). Diagnosis: \(reservePercent)% utility reserve, \(outcome.parkCount) \(outcome.parkCount == 1 ? "park" : "parks"), and \(outcome.serviceCount) emergency services limited average damage to \(damagePercent)%. Objective: keep utilities fully covered with at least 15% reserve while parks and emergency services accelerate Residential repairs until all recorded storm damage clears."
+                    detail: "Next decision: protect recovery by keeping utility reserve at or above 15%, or invest in a park or \(serviceAction). Consequence: Emergency repairs cost $2,000, happiness fell 3 points, and \(damageDetail). Diagnosis: \(reservePercent)% utility reserve, \(outcome.parkCount) \(outcome.parkCount == 1 ? "park" : "parks"), and \(serviceDescription) limited average damage to \(damagePercent)%. Objective: keep utilities fully covered with at least 15% reserve while parks and \(serviceObjective) accelerate Residential repairs until all recorded storm damage clears."
                 ),
                 to: &state
             )
@@ -1144,12 +1201,15 @@ enum CitySimulation {
 
         let active = activeTiles(in: state)
         let parkCount = active.filter { $0.kind == .park }.count
-        let serviceCount = active.filter {
-            [.fireStation, .policeStation, .school].contains($0.kind)
-        }.count
+        let serviceCount = protectiveServiceCount(in: state, active: active)
+        let fireRecoveryBonus = if state.preservesLegacyReplayConsequences {
+            min(0.03, Double(serviceCount) * 0.01)
+        } else {
+            CityCivicServiceAnalysis(state: state).citywideResidentialFireCoverage * 0.03
+        }
         let dailyRepair = 0.04
             + min(0.03, Double(parkCount) * 0.01)
-            + min(0.03, Double(serviceCount) * 0.01)
+            + fireRecoveryBonus
 
         for index in recovery.targets.indices {
             let coordinate = recovery.targets[index].coordinate
@@ -1192,19 +1252,20 @@ enum CitySimulation {
         let reserve = utilityReserve(in: state)
         let active = activeTiles(in: state)
         let parkCount = active.filter { $0.kind == .park }.count
-        let serviceCount = active.filter {
-            [.fireStation, .policeStation, .school].contains($0.kind)
-        }.count
+        let serviceCount = protectiveServiceCount(in: state, active: active)
         let reservePercent = Int((reserve * 100).rounded())
         let lotLabel = recovery.targets.count == 1
             ? "Residential lot"
             : "Residential lots"
+        let serviceDescription = state.preservesLegacyReplayConsequences
+            ? "\(serviceCount) emergency services"
+            : "\(serviceCount) \(serviceCount == 1 ? "fire station" : "fire stations")"
         post(
             CityMessage(
                 tick: state.tick,
                 severity: .good,
                 title: "Storm Recovery Complete",
-                detail: "\(recovery.targets.count) \(lotLabel) cleared their recorded storm damage. Current protection: \(reservePercent)% utility reserve, \(parkCount) \(parkCount == 1 ? "park" : "parks"), and \(serviceCount) emergency services. Keep utilities healthy to protect the recovery; Commercial and Industrial conditions were unchanged."
+                detail: "\(recovery.targets.count) \(lotLabel) cleared their recorded storm damage. Current protection: \(reservePercent)% utility reserve, \(parkCount) \(parkCount == 1 ? "park" : "parks"), and \(serviceDescription). Keep utilities healthy to protect the recovery; Commercial and Industrial conditions were unchanged."
             ),
             to: &state
         )

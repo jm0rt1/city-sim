@@ -263,7 +263,7 @@ struct CityHandbookPresentation: Equatable, Sendable {
                     CityHandbookEntry(
                         id: "diagnose-resilience",
                         title: "Prepare for severe storms",
-                        detail: "Resilience Forecast shows when incident reviews begin, the next review day, the first guaranteed ordinary storm deadline, exposed completed homes, and live recovery progress. Keep both utilities fully covered with at least 15% reserve; parks and emergency services reduce damage and accelerate repairs.",
+                        detail: "Resilience Forecast shows when incident reviews begin, the next review day, the first guaranteed ordinary storm deadline, exposed completed homes, and live recovery progress. Keep both utilities fully covered with at least 15% reserve; parks and fire stations with street access reduce damage and accelerate repairs.",
                         symbol: "shield.lefthalf.filled.badge.checkmark",
                         shortcut: "⌥0",
                         keywords: ["storm", "weather", "incident", "emergency", "preparedness", "reserve", "recovery", "damage"]

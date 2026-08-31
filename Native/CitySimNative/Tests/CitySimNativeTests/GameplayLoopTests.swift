@@ -1720,7 +1720,7 @@ final class GameplayLoopTests: XCTestCase {
         XCTAssertEqual(stormMessage.title, "Severe Storm")
         XCTAssertEqual(
             stormMessage.detail,
-            "Next decision: protect recovery by keeping utility reserve at or above 15%, or invest in a park or emergency service. Consequence: Emergency repairs cost $2,000, happiness fell 3 points, and weathered 3 completed homes at blocks 4, 11; 7, 11; 10, 11. Diagnosis: 31% utility reserve, 1 park, and 0 emergency services limited average damage to 28%. Objective: keep utilities fully covered with at least 15% reserve while parks and emergency services accelerate Residential repairs until all recorded storm damage clears."
+            "Next decision: protect recovery by keeping utility reserve at or above 15%, or invest in a park or fire station. Consequence: Emergency repairs cost $2,000, happiness fell 3 points, and weathered 3 completed homes at blocks 4, 11; 7, 11; 10, 11. Diagnosis: 31% utility reserve, 1 park, and 0 fire stations limited average damage to 28%. Objective: keep utilities fully covered with at least 15% reserve while parks and fire stations accelerate Residential repairs until all recorded storm damage clears."
         )
     }
 
@@ -1760,9 +1760,9 @@ final class GameplayLoopTests: XCTestCase {
         XCTAssertTrue(message.detail.contains("weathered 3 completed homes"))
         XCTAssertTrue(message.detail.contains("31% utility reserve"))
         XCTAssertTrue(message.detail.contains("1 park"))
-        XCTAssertTrue(message.detail.contains("0 emergency services"))
+        XCTAssertTrue(message.detail.contains("0 fire stations"))
         XCTAssertTrue(message.detail.contains("15% reserve"))
-        XCTAssertTrue(message.detail.contains("parks and emergency services accelerate"))
+        XCTAssertTrue(message.detail.contains("parks and fire stations accelerate"))
 
         let recovery = try XCTUnwrap(state.stormRecovery)
         XCTAssertEqual(recovery.latestEventTick, 640)
@@ -1788,15 +1788,15 @@ final class GameplayLoopTests: XCTestCase {
             let unmitigatedCondition = try XCTUnwrap(unmitigated.tile(at: coordinate)?.condition)
             let resilientCondition = try XCTUnwrap(resilient.tile(at: coordinate)?.condition)
             XCTAssertEqual(unmitigatedCondition, 0.718_703_703_703_703_7, accuracy: 0.000_001)
-            XCTAssertEqual(resilientCondition, 0.878_703_703_703_703_7, accuracy: 0.000_001)
+            XCTAssertEqual(resilientCondition, 0.834_088_319_088_319, accuracy: 0.000_001)
             XCTAssertGreaterThan(resilientCondition, unmitigatedCondition)
             XCTAssertLessThan(resilientCondition, 1)
         }
 
         let message = try XCTUnwrap(resilient.messages.first { $0.title == "Severe Storm" })
         XCTAssertTrue(message.detail.contains("3 parks"))
-        XCTAssertTrue(message.detail.contains("3 emergency services"))
-        XCTAssertTrue(message.detail.contains("12%"))
+        XCTAssertTrue(message.detail.contains("1 fire station"))
+        XCTAssertTrue(message.detail.contains("17%"))
     }
 
     func testHealthyDailyOperationRepairsResidentialDamageWithinTwelveDaysWithoutHealingScars() throws {

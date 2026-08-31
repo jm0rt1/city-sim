@@ -43,10 +43,10 @@
       "tick" : 256
     },
     {
-      "byteCount" : 135153,
-      "expectedStateDigest" : "b81f6a242762a9abc10cd2c8337b58c3417fac2cae7264084d289ff4c4050ebe",
+      "byteCount" : 135133,
+      "expectedStateDigest" : "1cceef02c6677d2a28730d8c027705897fbe1d4513ead148f5a798ebf6e1584b",
       "file" : "story-commercial-charter-midpoint-v7.json",
-      "fileSHA256" : "680fbb567b32fa0aec31eda642f67509e8dee12f5b01073c7896c337dc1c3a22",
+      "fileSHA256" : "9fcb4f14151b30ae8448bfcedaa16f30d40a63e57af836dba6dd3b7e38442f97",
       "id" : "commercial-charter-midpoint-v7",
       "phase" : "completed",
       "resolution" : "commercialTaxRelief",
@@ -98,10 +98,10 @@
       "tick" : 256
     },
     {
-      "byteCount" : 135168,
-      "expectedStateDigest" : "98378e705ddfb96f609a70045e5ed8ce48760ffce5f59892f6686f627974af21",
+      "byteCount" : 135148,
+      "expectedStateDigest" : "8070f064d9dfdc6318c06b8604c6dcc7ef47f9331e62faed31ba82c6a601066f",
       "file" : "story-industrial-charter-midpoint-v7.json",
-      "fileSHA256" : "057b521cc6fa6dcc6ed68228dc42145f395ec7f0c81de923c9472c2ae2090630",
+      "fileSHA256" : "113e8bd51dd64fe62799129c1d0a8bf29bae0795a92ba6867d692e19a935615a",
       "id" : "industrial-charter-midpoint-v7",
       "phase" : "completed",
       "resolution" : "industrialUtilityExpansion",
@@ -113,10 +113,10 @@
       "tick" : 872
     },
     {
-      "byteCount" : 135361,
-      "expectedStateDigest" : "62276e05fbac97fe8090c4ebf5b4d58812433f1aa9723036d5857bf6844bc62a",
+      "byteCount" : 135341,
+      "expectedStateDigest" : "38b67ec0d71bf538e8389149904fc1b90e8f1a04dbd9a682198d382b603aabdf",
       "file" : "story-commercial-tax-relief-regional-capital-v7.json",
-      "fileSHA256" : "2fa8d9bd4e85110a7ee8d43e1d1f3b2d981915304bcfad7b79c75ce15def08a2",
+      "fileSHA256" : "f79b51c1e847f42671bb096248723dc9ffd1c9b07215fb548887ec53c2de7c1a",
       "id" : "commercial-tax-relief-regional-capital-v7",
       "phase" : "completed",
       "resolution" : "commercialTaxRelief",
@@ -128,10 +128,10 @@
       "tick" : 1024
     },
     {
-      "byteCount" : 135250,
-      "expectedStateDigest" : "abba22582caad1682dbdaef25a0560d76ff5de60b11eda6316b3006ceaa49423",
+      "byteCount" : 135230,
+      "expectedStateDigest" : "5b14166a1f30bb0fc4f2041712922ea412b15eef772b46aa57694465f2aa422f",
       "file" : "story-commercial-public-realm-regional-capital-v7.json",
-      "fileSHA256" : "5193a53df972f8f5bd45cc7faa30a20cef362adc0e0d70fa3ce3a7df5ab0e2d0",
+      "fileSHA256" : "b4b355a95a6e3f9f3e52a283c86bd471b820230afcceac84cbe1adbd6d427734",
       "id" : "commercial-public-realm-regional-capital-v7",
       "phase" : "completed",
       "resolution" : "commercialPublicRealmInvestment",
@@ -143,10 +143,10 @@
       "tick" : 1024
     },
     {
-      "byteCount" : 135421,
-      "expectedStateDigest" : "c92a70627a66b63131e50b342bc3ba022870790c3e5fd04015e48f0cc125bfb4",
+      "byteCount" : 135401,
+      "expectedStateDigest" : "ea66a141d49c29474a4b2966067ef4414e877b2a1ef3992dbea0c8fee16c717c",
       "file" : "story-industrial-utility-expansion-regional-capital-v7.json",
-      "fileSHA256" : "7325b600d07cea3d8c5e1d400ac3b8634936a800e85b728feec4f3696ae14d0c",
+      "fileSHA256" : "89c7c524841937dd106e48a28327ab47f0f000d11dd3a53ec8b326d39cfe48ed",
       "id" : "industrial-utility-expansion-regional-capital-v7",
       "phase" : "completed",
       "resolution" : "industrialUtilityExpansion",
@@ -158,10 +158,10 @@
       "tick" : 1064
     },
     {
-      "byteCount" : 135356,
-      "expectedStateDigest" : "297ac66dedc8c9f1b4dec0cb1aed1e652328027299d09cfd213633cd11ee8619",
+      "byteCount" : 135336,
+      "expectedStateDigest" : "940b904b1e0c60fd528c47eacf690fa4f9673a159263894acedab9752f7cf426",
       "file" : "story-industrial-green-buffer-regional-capital-v7.json",
-      "fileSHA256" : "fd5ccaa11d9c1e04caa5419e4be4f56427286b654316ad01987556ac0c99fa61",
+      "fileSHA256" : "d8a12b203089bd6fe667e1d8c3f7182ac25a918189164a279b8c88a70c0a410d",
       "id" : "industrial-green-buffer-regional-capital-v7",
       "phase" : "completed",
       "resolution" : "industrialGreenBuffer",

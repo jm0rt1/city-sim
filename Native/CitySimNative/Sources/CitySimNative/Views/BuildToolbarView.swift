@@ -357,14 +357,17 @@ struct BuildToolbarView: View {
                     .font(.system(size: GameTheme.hudCriticalTextSize, weight: .heavy, design: .rounded))
                     .foregroundStyle(GameTheme.accent)
                     .lineLimit(1)
-                Text(compact
-                    ? "\(decision.target) · \(decision.cost)"
-                    : "\(decision.target) · \(decision.footprint) · \(decision.cost)")
+                Text("\(decision.target) · \(decision.footprint)")
                     .font(.system(size: GameTheme.hudCriticalTextSize - 1, weight: .semibold, design: .rounded))
                     .foregroundStyle(.secondary)
-                    .lineLimit(compact ? 2 : 1)
+                    .lineLimit(1)
+                Text(decision.cost)
+                    .font(.system(size: GameTheme.hudCriticalTextSize - 1, weight: .semibold, design: .rounded))
+                    .foregroundStyle(.primary)
+                    .lineLimit(1)
             }
-            .frame(width: compact ? 205 : 280, alignment: .leading)
+            .frame(width: 205, alignment: .leading)
+            .fixedSize(horizontal: false, vertical: true)
             .layoutPriority(3)
 
             Divider().frame(height: 36)
@@ -450,6 +453,7 @@ struct BuildToolbarView: View {
                 }
                 .buttonStyle(.borderedProminent)
                 .tint(GameTheme.warning)
+                .fixedSize(horizontal: true, vertical: true)
                 .disabled(!store.canPerform(recovery.command))
                 .help(recovery.explanation)
                 .accessibilityHint(recovery.explanation)
@@ -472,6 +476,7 @@ struct BuildToolbarView: View {
                 }
                 .buttonStyle(.borderedProminent)
                 .tint(GameTheme.accent)
+                .fixedSize(horizontal: true, vertical: true)
                 .disabled(!store.canBuildRoadConnectionPlan)
                 .help(routePlan.buildActionHint)
                 .accessibilityLabel("Build planned street route")
@@ -495,6 +500,7 @@ struct BuildToolbarView: View {
                 }
                 .buttonStyle(.borderedProminent)
                 .tint(GameTheme.accent)
+                .fixedSize(horizontal: true, vertical: true)
                 .disabled(!store.canPerformMapCommand(.mapPrimaryAction))
                 .help("Commit \(decision.buildingTitle) at \(decision.target) exactly once")
                 .accessibilityHint("Uses the same primary map action as Return and the city map action")
@@ -517,6 +523,7 @@ struct BuildToolbarView: View {
                     .contentShape(Rectangle())
             }
             .buttonStyle(.bordered)
+            .fixedSize(horizontal: true, vertical: true)
             .help(decision.cancellation)
             .accessibilityHint(decision.cancellation)
             .accessibilityIdentifier("hud.build.cancel")

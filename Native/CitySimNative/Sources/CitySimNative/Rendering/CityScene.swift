@@ -270,6 +270,7 @@ final class CityScene: SKScene {
     var activeActionTargetForTesting: CityMapActionTargetPresentation? { renderedActiveActionTarget }
     private(set) var buildOpportunityCoordinatesForTesting: [GridCoordinate] = []
     private(set) var utilityGainBlocksForTesting: [CityUtilityPlacementForecast.BlockGain] = []
+    private(set) var utilityPollutionBlocksForTesting: [CityPlacementPollutionImpact.BlockImpact] = []
     var guidedRoadRouteCoordinatesForTesting: [GridCoordinate] { renderedGuidedRoadRoute }
     var guidedRoadRouteFootprintPositionsForTesting: [CGPoint] {
         guidedRoadRouteLayer.children
@@ -452,6 +453,7 @@ final class CityScene: SKScene {
         let previousGuidedRoadRoute = renderedGuidedRoadRoute
         let previousSelectedCommuteRoute = renderedSelectedCommuteRoute
         let previousUtilityGains = utilityGainBlocksForTesting
+        let previousUtilityPollution = utilityPollutionBlocksForTesting
         let motionChanged = renderedReducedMotion != reducedMotion
         let priorDisplayedCueCount = diagnosticsSnapshot.displayedConsequenceCueCount
         presentedConsequenceEventTicks = presentedConsequenceEventTicks.filter {
@@ -542,6 +544,7 @@ final class CityScene: SKScene {
             || previousGuidedRoadRoute != guidedRoadRoute
             || previousSelectedCommuteRoute != selectedCommuteRoute
             || previousUtilityGains != utilityGainBlocksForTesting
+            || previousUtilityPollution != utilityPollutionBlocksForTesting
             || motionChanged
             || unexplainedCueRemoval
         let runtimeMetricsStarted = ProcessInfo.processInfo.systemUptime
@@ -2684,17 +2687,22 @@ final class CityScene: SKScene {
 
     private func updateUtilityGainPreview(_ forecast: CityUtilityPlacementForecast?) {
         let gains = forecast?.blockGains ?? []
-        guard gains != utilityGainBlocksForTesting else { return }
+        let pollution = forecast?.pollutionImpact?.blockImpacts ?? []
+        guard gains != utilityGainBlocksForTesting || pollution != utilityPollutionBlocksForTesting else { return }
         utilityGainBlocksForTesting = gains
+        utilityPollutionBlocksForTesting = pollution
         utilityGainLayer.removeAllChildren()
-        utilityGainLayer.isHidden = gains.isEmpty
+        utilityGainLayer.isHidden = gains.isEmpty && pollution.isEmpty
+        let pollutedCoordinates = Set(pollution.map(\.coordinate))
+        let improvedCoordinates = Set(gains.map(\.coordinate))
         // Anchored interaction marks, not altered world art or projected
         // current-state overlays. Shapes distinguish improvement from recovery.
         for gain in gains {
             let marker = SKShapeNode(circleOfRadius: 8)
             marker.name = "interaction.utility-gain.\(gain.coordinate.x).\(gain.coordinate.y)"
             let ground = style.isoPosition(gain.coordinate)
-            marker.position = CGPoint(x: ground.x, y: ground.y - tileHeight * 0.37)
+            marker.position = CGPoint(x: ground.x + (pollutedCoordinates.contains(gain.coordinate) ? -9 : 0),
+                y: ground.y - tileHeight * 0.37)
             marker.fillColor = NSColor(calibratedWhite: 0.08, alpha: 0.94)
             marker.strokeColor = gain.reachesHealthy
                 ? NSColor(calibratedRed: 0.34, green: 0.93, blue: 0.72, alpha: 1)
@@ -2720,6 +2728,34 @@ final class CityScene: SKScene {
             symbol.lineCap = .round
             symbol.lineJoin = .round
             marker.addChild(symbol)
+            utilityGainLayer.addChild(marker)
+        }
+        for impact in pollution {
+            let triangle = CGMutablePath()
+            triangle.move(to: CGPoint(x: 0, y: 8))
+            triangle.addLine(to: CGPoint(x: 8, y: -6))
+            triangle.addLine(to: CGPoint(x: -8, y: -6))
+            triangle.closeSubpath()
+            let marker = SKShapeNode(path: triangle)
+            marker.name = "interaction.utility-pollution.\(impact.coordinate.x).\(impact.coordinate.y)"
+            let ground = style.isoPosition(impact.coordinate)
+            marker.position = CGPoint(x: ground.x + (improvedCoordinates.contains(impact.coordinate) ? 9 : 0),
+                y: ground.y - tileHeight * 0.37)
+            marker.fillColor = NSColor(calibratedWhite: 0.08, alpha: 0.96)
+            marker.strokeColor = NSColor(calibratedRed: 1, green: 0.65, blue: 0.24, alpha: 1)
+            marker.lineWidth = 1.5
+            marker.lineJoin = .round
+            let stem = SKShapeNode(path: WorldGeometryCache.line(
+                from: CGPoint(x: 0, y: 3), to: CGPoint(x: 0, y: 0)))
+            stem.strokeColor = .white
+            stem.lineWidth = 1.7
+            stem.lineCap = .round
+            marker.addChild(stem)
+            let dot = SKShapeNode(circleOfRadius: 0.9)
+            dot.position.y = -3
+            dot.fillColor = .white
+            dot.strokeColor = .clear
+            marker.addChild(dot)
             utilityGainLayer.addChild(marker)
         }
     }

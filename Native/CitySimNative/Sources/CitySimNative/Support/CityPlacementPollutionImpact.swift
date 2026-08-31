@@ -2,9 +2,27 @@ import Foundation
 
 /// Current developed-neighborhood exposure after completion, not a future-growth prediction.
 struct CityPlacementPollutionImpact: Equatable, Sendable {
+    struct BlockImpact: Equatable, Sendable {
+        let coordinate: GridCoordinate
+        let increase: Double
+        let isResidential: Bool
+    }
+
     let affectedBlocks: Int
     let affectedHomes: Int
     let greatestIncrease: Double
+    var blockImpacts: [BlockImpact] = []
+
+    var mapSummary: String { blockImpacts.isEmpty ? summary : "⚠ \(summary)" }
+
+    var mapAccessibilitySummary: String? {
+        guard !blockImpacts.isEmpty else { return nil }
+        let places = blockImpacts.map { impact in
+            let points = impact.increase * 100 < 1 ? "under 1" : "\(Int((impact.increase * 100).rounded()))"
+            return "\(impact.isResidential ? "Residential block" : "Block") \(impact.coordinate.x + 1), \(impact.coordinate.y + 1): pollution rises \(points) percentage points"
+        }.joined(separator: "; ")
+        return "Planned pollution map after funded construction completes: warning triangles mark added pollution, including blocks that also gain service. \(places)."
+    }
 
     private var increaseText: String {
         let points = greatestIncrease * 100

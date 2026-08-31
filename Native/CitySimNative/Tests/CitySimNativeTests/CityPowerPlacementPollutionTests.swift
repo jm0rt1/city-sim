@@ -1,3 +1,7 @@
+import AppKit
+import SpriteKit
+import SwiftUI
+import Vision
 import XCTest
 @testable import CitySimNative
 
@@ -39,6 +43,16 @@ final class CityPowerPlacementPollutionTests: XCTestCase {
         }
         XCTAssertEqual(impact.affectedBlocks, increases.count)
         XCTAssertEqual(impact.greatestIncrease, try XCTUnwrap(increases.max()), accuracy: 0.000_001)
+        XCTAssertEqual(impact.blockImpacts.count, impact.affectedBlocks)
+        XCTAssertEqual(impact.blockImpacts.filter(\.isResidential).count, impact.affectedHomes)
+        for block in impact.blockImpacts {
+            XCTAssertEqual(block.increase,
+                try XCTUnwrap(newMap[block.coordinate]).pollutionExposure
+                    - XCTUnwrap(oldMap[block.coordinate]).pollutionExposure, accuracy: 0.000_001)
+            XCTAssertTrue(block.increase > 0)
+            XCTAssertNotEqual(block.coordinate, target)
+            XCTAssertEqual(state.tile(at: block.coordinate)?.constructionProgress, 1)
+        }
         XCTAssertEqual(state, before)
     }
 
@@ -89,6 +103,131 @@ final class CityPowerPlacementPollutionTests: XCTestCase {
         XCTAssertEqual(try XCTUnwrap(forecast.pollutionImpact).greatestIncrease, try XCTUnwrap(expected.max()), accuracy: 0.000_001)
         XCTAssertEqual(CityPlacementPollutionImpact(affectedBlocks: 1, affectedHomes: 1, greatestIncrease: 0.004).summary,
                        "Pollution: 1 block · max under +1 pt")
+    }
+
+    func testConditionalPollutionAndIndependentMapSummaryDoNotFundConstruction() throws {
+        var state = fixture()
+        let target = GridCoordinate(x: 10, y: 10)
+        let existingHome = GridCoordinate(x: 11, y: 10)
+        put(.powerPlant, at: .init(x: 9, y: 10), in: &state)
+        put(.road, at: .init(x: 10, y: 9), in: &state)
+        put(.road, at: .init(x: 10, y: 11), in: &state)
+        put(.residential, at: existingHome, in: &state)
+        state.powerCapacity = CitySimulation.powerCapacityPerPlant
+        state.treasury = 0
+        let original = state
+        let forecast = try XCTUnwrap(CityUtilityPlacementForecast.make(kind: .powerPlant, at: target, in: state))
+        XCTAssertTrue(forecast.blockGains.contains { $0.coordinate == existingHome })
+        let impact = try XCTUnwrap(forecast.pollutionImpact)
+        XCTAssertTrue(impact.blockImpacts.contains { $0.coordinate == existingHome && $0.increase > 0 })
+        XCTAssertTrue(try XCTUnwrap(forecast.mapAccessibilitySummary).contains("Residential block 12, 11"))
+        XCTAssertTrue(try XCTUnwrap(forecast.mapAccessibilitySummary).contains("warning triangles"))
+        XCTAssertTrue(impact.mapSummary.hasPrefix("⚠ Pollution"))
+        XCTAssertTrue(forecast.fundingMapKey.contains("polluted"))
+        // The presentation must retain harm information independently of its
+        // service-gain list, not filter it through the positive map channel.
+        let pollutionOnly = CityUtilityPlacementForecast(kind: .powerPlant,
+            improvedDevelopedBlocks: 0, restoredHealthyBlocks: 0, greatestServiceGain: 0,
+            pollutionImpact: impact)
+        XCTAssertEqual(pollutionOnly.mapAccessibilitySummary, impact.mapAccessibilitySummary)
+        guard case .failure(.insufficientFunds) = CitySimulation.validateBuild(.powerPlant, at: target, in: state) else {
+            return XCTFail("A conditional footprint must not fund actual construction")
+        }
+        XCTAssertEqual(state, original)
+    }
+
+    @MainActor
+    func testPollutionAndServiceCuesCoexistAndClearAcrossUtilityAndTargetChanges() throws {
+        let store = CityGameStore(state: .newCity(seed: 42))
+        let original = store.state
+        let scene = CityScene(size: CGSize(width: 900, height: 600))
+        func render() {
+            scene.render(state: store.state, overlay: store.overlay, selection: store.selectedCoordinate,
+                interactionMode: store.interactionMode, activeActionTarget: store.activeMapActionTargetPresentation)
+        }
+        render()
+        XCTAssertTrue(CityUtilityDecisionView(store: store).beginConstruction(.powerPlant))
+        render()
+        let target = try XCTUnwrap(store.selectedCoordinate)
+        let forecast = try XCTUnwrap(store.activeMapActionTargetPresentation?.primaryAction.buildDecision?.utilityForecast)
+        let impacts = try XCTUnwrap(forecast.pollutionImpact).blockImpacts
+        XCTAssertFalse(impacts.isEmpty)
+        XCTAssertEqual(scene.utilityPollutionBlocksForTesting, impacts)
+        XCTAssertEqual(scene.utilityGainBlocksForTesting, forecast.blockGains)
+        var overlap = 0
+        for impact in impacts {
+            let suffix = "\(impact.coordinate.x).\(impact.coordinate.y)"
+            let warning = try XCTUnwrap(scene.childNode(withName: "//interaction.utility-pollution.\(suffix)"))
+            if forecast.blockGains.contains(where: { $0.coordinate == impact.coordinate }) {
+                let benefit = try XCTUnwrap(scene.childNode(withName: "//interaction.utility-gain.\(suffix)"))
+                XCTAssertEqual(warning.position.x - benefit.position.x, 18, accuracy: 0.000_001)
+                XCTAssertEqual(warning.position.y, benefit.position.y)
+                overlap += 1
+            }
+        }
+        XCTAssertGreaterThan(overlap, 0)
+        XCTAssertEqual(scene.diagnosticsSnapshot.createdTileCount, 0)
+        store.selectTool(.waterTower)
+        store.selectedCoordinate = target
+        render()
+        XCTAssertTrue(scene.utilityPollutionBlocksForTesting.isEmpty)
+        XCTAssertFalse(scene.interactionNamesForTesting.contains { $0.hasPrefix("interaction.utility-pollution.") })
+        store.selectTool(.powerPlant)
+        store.selectedCoordinate = target
+        render()
+        XCTAssertFalse(scene.utilityPollutionBlocksForTesting.isEmpty)
+        store.selectedCoordinate = try XCTUnwrap(store.state.tiles.first { $0.kind == .powerPlant }?.coordinate)
+        render()
+        XCTAssertTrue(scene.utilityPollutionBlocksForTesting.isEmpty)
+        XCTAssertTrue(scene.utilityGainBlocksForTesting.isEmpty)
+        store.selectedCoordinate = target
+        render()
+        store.cancelBuildDecision()
+        render()
+        XCTAssertTrue(scene.utilityPollutionBlocksForTesting.isEmpty)
+        XCTAssertEqual(store.state, original)
+    }
+
+    @MainActor
+    func testUnderfundedPowerKeepsBothMapEffectsReadableAndAccessibleAtBothSizes() throws {
+        for size in [CGSize(width: 900, height: 600), CGSize(width: 1280, height: 800)] {
+            var state = CityGameState.newCity(seed: 42)
+            state.treasury = 0
+            let store = CityGameStore(state: state)
+            XCTAssertTrue(CityUtilityDecisionView(store: store).beginConstruction(.powerPlant))
+            var frames = CityHUDChromeFrames()
+            let host = NSHostingView(rootView: ContentView(store: store) { frames = $0 }
+                .transaction { $0.disablesAnimations = true }
+                .preferredColorScheme(.dark)
+                .frame(width: size.width, height: size.height))
+            host.frame = CGRect(origin: .zero, size: size)
+            for _ in 0..<4 {
+                host.layoutSubtreeIfNeeded()
+                RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.1))
+            }
+            func findMap(_ view: NSView) -> CityMapSKView? {
+                if let map = view as? CityMapSKView { return map }
+                return view.subviews.compactMap(findMap).first
+            }
+            let map = try XCTUnwrap(findMap(host))
+            XCTAssertTrue(map.cityAccessibilityHelp.contains("warning triangles"))
+            XCTAssertTrue(map.cityAccessibilityHelp.contains("after funded construction completes"))
+            XCTAssertTrue(map.cityAccessibilityHelp.contains("cannot fund"))
+            let bitmap = try XCTUnwrap(host.bitmapImageRepForCachingDisplay(in: host.bounds))
+            host.cacheDisplay(in: host.bounds, to: bitmap)
+            let request = VNRecognizeTextRequest()
+            request.recognitionLevel = .accurate
+            request.recognitionLanguages = ["en-US"]
+            try VNImageRequestHandler(cgImage: XCTUnwrap(bitmap.cgImage)).perform([request])
+            let text = (request.results ?? []).compactMap { $0.topCandidates(1).first?.string }
+                .joined(separator: " ").lowercased()
+            for expected in ["improve", "healthy", "polluted", "short", "if funded", "review finances", "cancel"] {
+                XCTAssertTrue(text.contains(expected), "\(size): missing \(expected): \(text)")
+            }
+            XCTAssertLessThanOrEqual(frames.bottom.height, 112)
+            XCTAssertEqual(store.state, state)
+            XCTAssertFalse(store.canUndo)
+        }
     }
 
     private func fixture() -> CityGameState {

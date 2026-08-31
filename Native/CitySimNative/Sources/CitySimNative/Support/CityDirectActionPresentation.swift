@@ -1303,13 +1303,19 @@ struct CityUtilityPlacementForecast: Equatable, Sendable {
         return "Map: ↑ \(improvedDevelopedBlocks) improve · ✓ \(restoredHealthyBlocks) reach healthy"
     }
 
+    var fundingMapKey: String {
+        guard let pollutionImpact, pollutionImpact.affectedBlocks > 0 else { return mapKey }
+        return "↑ \(improvedDevelopedBlocks) improve · ✓ \(restoredHealthyBlocks) healthy · ⚠ \(pollutionImpact.affectedBlocks) polluted"
+    }
+
     var mapAccessibilitySummary: String? {
-        guard !blockGains.isEmpty else { return nil }
+        guard !blockGains.isEmpty else { return pollutionImpact?.mapAccessibilitySummary }
         let places = blockGains.map { gain in
             "Block \(gain.coordinate.x + 1), \(gain.coordinate.y + 1)"
                 + (gain.reachesHealthy ? " reaches healthy" : " improves")
         }.joined(separator: "; ")
-        return "Planned service map after funded construction completes: upward arrows mean improved service; checkmarks mean service reaches healthy. \(places)."
+        let service = "Planned service map after funded construction completes: upward arrows mean improved service; checkmarks mean service reaches healthy. \(places)."
+        return [pollutionImpact?.mapAccessibilitySummary, service].compactMap { $0 }.joined(separator: " ")
     }
 
     var summary: String {
@@ -1366,16 +1372,19 @@ struct CityUtilityPlacementForecast: Equatable, Sendable {
         var pollutedBlocks = 0
         var pollutedHomes = 0
         var greatestPollutionIncrease = 0.0
+        var pollutionBlocks: [CityPlacementPollutionImpact.BlockImpact] = []
         let threshold = 0.000_000_001
 
         for current in currentConsequences.samples where current.vitality != .notApplicable {
             guard let projected = completedConsequences[current.coordinate] else { continue }
-            // Count harms independently: a block can gain pollution even when
-            // its power service was already healthy and cannot improve further.
+            // Count harms independently from the positive service-gain channel.
             let pollutionIncrease = projected.pollutionExposure - current.pollutionExposure
             if kind == .powerPlant, pollutionIncrease > threshold {
                 pollutedBlocks += 1
-                if state.tile(at: current.coordinate)?.kind == .residential { pollutedHomes += 1 }
+                let isResidential = state.tile(at: current.coordinate)?.kind == .residential
+                if isResidential { pollutedHomes += 1 }
+                pollutionBlocks.append(.init(coordinate: current.coordinate,
+                    increase: pollutionIncrease, isResidential: isResidential))
                 greatestPollutionIncrease = max(greatestPollutionIncrease, pollutionIncrease)
             }
             let currentService = kind == .powerPlant
@@ -1410,7 +1419,8 @@ struct CityUtilityPlacementForecast: Equatable, Sendable {
             pollutionImpact: kind == .powerPlant ? CityPlacementPollutionImpact(
                 affectedBlocks: pollutedBlocks,
                 affectedHomes: pollutedHomes,
-                greatestIncrease: greatestPollutionIncrease
+                greatestIncrease: greatestPollutionIncrease,
+                blockImpacts: pollutionBlocks
             ) : nil,
             blockGains: blockGains
         )

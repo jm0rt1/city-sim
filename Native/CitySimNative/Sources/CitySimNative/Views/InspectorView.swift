@@ -437,7 +437,17 @@ struct InspectorView: View {
             }
 
             ContextCard(title: "Operations", symbol: "gauge.with.dots.needle.50percent", tint: GameTheme.information) {
-                ContextValueRow(label: "Upkeep", value: "\(tile.kind.upkeep.currencyText) / cycle")
+                let upkeep = CityBlockUpkeepPresentation.make(for: tile, in: store.state)
+                ContextValueRow(label: upkeep.label, value: upkeep.value)
+                    .accessibilityLabel(upkeep.accessibilitySummary)
+                    .accessibilityIdentifier("hud.selection.upkeep")
+                    .help(upkeep.explanation)
+                if let note = upkeep.note {
+                    Text(note)
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
+                        .lineLimit(1)
+                }
                 if tile.kind.requiresRoad {
                     let connected = analytics.hasRoadAccess(at: tile.coordinate)
                     ContextValueRow(label: "Road", value: connected ? "Connected" : "Missing")

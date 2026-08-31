@@ -342,9 +342,11 @@ struct BuildToolbarView: View {
 
     private func buildDecisionRow(_ decision: CityBuildDecisionPresentation) -> some View {
         let routePlan = store.roadConnectionPlanPresentation
+        let pollution = decision.disabledReason == nil && routePlan == nil ? decision.pollutionImpact : nil
         return HStack(spacing: compact ? 8 : 12) {
             VStack(alignment: .leading, spacing: 3) {
-                Label("PLACE \(decision.buildingTitle.uppercased())", systemImage: decision.buildingSymbol)
+                Label(pollution == nil ? "PLACE \(decision.buildingTitle.uppercased())"
+                      : "\(decision.buildingTitle.uppercased()) · READY", systemImage: decision.buildingSymbol)
                     .font(.system(size: GameTheme.hudCriticalTextSize, weight: .heavy, design: .rounded))
                     .foregroundStyle(GameTheme.accent)
                     .lineLimit(1)
@@ -361,43 +363,62 @@ struct BuildToolbarView: View {
             Divider().frame(height: 36)
 
             VStack(alignment: .leading, spacing: 3) {
-                Label(
-                    (routePlan == nil
-                        ? decision.siteComparison.map {
-                            "\(decision.availability) · vs \($0.referenceAbbreviation)"
-                        } ?? decision.availability
-                        : "\(routePlan?.destinationTitle ?? "Project") route plan").uppercased(),
-                    systemImage: decision.disabledReason == nil
-                        ? "checkmark.circle.fill"
-                        : "exclamationmark.triangle.fill"
-                )
-                .font(.system(size: GameTheme.hudCriticalTextSize, weight: .heavy, design: .rounded))
-                .foregroundStyle(decision.disabledReason == nil ? GameTheme.accent : GameTheme.warning)
-                .lineLimit(1)
-
-                Text(routePlan?.headline ?? decision.disabledReason ?? decision.operatingImpact)
-                    .font(.system(size: GameTheme.hudCriticalTextSize - 1, weight: .semibold, design: .rounded))
-                    .foregroundStyle(.primary)
+                if let pollution {
+                    // Three lines, like the ordinary decision. Keep the service
+                    // benefit and its neighborhood cost visible together.
+                    Text(decision.operatingImpact)
+                        .font(.system(size: GameTheme.hudCriticalTextSize - 1, weight: .semibold, design: .rounded))
+                        .lineLimit(1)
+                    Text(decision.likelyConsequence)
+                        .font(.system(size: GameTheme.hudCriticalTextSize - 1, weight: .medium, design: .rounded))
+                        .foregroundStyle(GameTheme.accent)
+                        .lineLimit(1)
+                    Text(pollution.summary)
+                        .font(.system(size: GameTheme.hudCriticalTextSize - 1, weight: .semibold, design: .rounded))
+                        .foregroundStyle(pollution.affectedBlocks > 0 ? GameTheme.warning : Color.secondary)
+                        .lineLimit(1)
+                        .help(pollution.accessibilitySummary)
+                        .accessibilityLabel(pollution.accessibilitySummary)
+                        .accessibilityIdentifier("hud.build.pollution-impact")
+                } else {
+                    Label(
+                        (routePlan == nil
+                            ? decision.siteComparison.map {
+                                "\(decision.availability) · vs \($0.referenceAbbreviation)"
+                            } ?? decision.availability
+                            : "\(routePlan?.destinationTitle ?? "Project") route plan").uppercased(),
+                        systemImage: decision.disabledReason == nil
+                            ? "checkmark.circle.fill"
+                            : "exclamationmark.triangle.fill"
+                    )
+                    .font(.system(size: GameTheme.hudCriticalTextSize, weight: .heavy, design: .rounded))
+                    .foregroundStyle(decision.disabledReason == nil ? GameTheme.accent : GameTheme.warning)
                     .lineLimit(1)
 
-                if let routePlan {
-                    Text(routePlan.operatingImpact)
-                        .font(.system(size: GameTheme.hudCriticalTextSize - 1, weight: .medium, design: .rounded))
-                        .foregroundStyle(.secondary)
+                    Text(routePlan?.headline ?? decision.disabledReason ?? decision.operatingImpact)
+                        .font(.system(size: GameTheme.hudCriticalTextSize - 1, weight: .semibold, design: .rounded))
+                        .foregroundStyle(.primary)
                         .lineLimit(1)
-                } else if decision.disabledReason != nil {
-                    Text("Likely: \(decision.likelyConsequence)")
-                        .font(.system(size: GameTheme.hudCriticalTextSize - 1, weight: .medium, design: .rounded))
-                        .foregroundStyle(.secondary)
-                        .lineLimit(1)
-                } else {
-                    if let comparison = decision.siteComparison {
-                        siteComparisonRow(comparison)
-                    } else {
-                        Text(decision.likelyConsequence)
+
+                    if let routePlan {
+                        Text(routePlan.operatingImpact)
                             .font(.system(size: GameTheme.hudCriticalTextSize - 1, weight: .medium, design: .rounded))
                             .foregroundStyle(.secondary)
                             .lineLimit(1)
+                    } else if decision.disabledReason != nil {
+                        Text("Likely: \(decision.likelyConsequence)")
+                            .font(.system(size: GameTheme.hudCriticalTextSize - 1, weight: .medium, design: .rounded))
+                            .foregroundStyle(.secondary)
+                            .lineLimit(1)
+                    } else {
+                        if let comparison = decision.siteComparison {
+                            siteComparisonRow(comparison)
+                        } else {
+                            Text(decision.likelyConsequence)
+                                .font(.system(size: GameTheme.hudCriticalTextSize - 1, weight: .medium, design: .rounded))
+                                .foregroundStyle(.secondary)
+                                .lineLimit(1)
+                        }
                     }
                 }
             }

@@ -1273,6 +1273,7 @@ struct CityUtilityPlacementForecast: Equatable, Sendable {
     let improvedDevelopedBlocks: Int
     let restoredHealthyBlocks: Int
     let greatestServiceGain: Double
+    var pollutionImpact: CityPlacementPollutionImpact? = nil
 
     var summary: String {
         let service = kind == .powerPlant ? "Power" : "Water"
@@ -1324,10 +1325,21 @@ struct CityUtilityPlacementForecast: Equatable, Sendable {
         var improvedBlocks = 0
         var healthyRecoveries = 0
         var greatestGain = 0.0
+        var pollutedBlocks = 0
+        var pollutedHomes = 0
+        var greatestPollutionIncrease = 0.0
         let threshold = 0.000_000_001
 
         for current in currentConsequences.samples where current.vitality != .notApplicable {
             guard let projected = completedConsequences[current.coordinate] else { continue }
+            // Count harms independently: a block can gain pollution even when
+            // its power service was already healthy and cannot improve further.
+            let pollutionIncrease = projected.pollutionExposure - current.pollutionExposure
+            if kind == .powerPlant, pollutionIncrease > threshold {
+                pollutedBlocks += 1
+                if state.tile(at: current.coordinate)?.kind == .residential { pollutedHomes += 1 }
+                greatestPollutionIncrease = max(greatestPollutionIncrease, pollutionIncrease)
+            }
             let currentService = kind == .powerPlant
                 ? current.utility.power
                 : current.utility.water
@@ -1353,7 +1365,12 @@ struct CityUtilityPlacementForecast: Equatable, Sendable {
             kind: kind,
             improvedDevelopedBlocks: improvedBlocks,
             restoredHealthyBlocks: healthyRecoveries,
-            greatestServiceGain: greatestGain
+            greatestServiceGain: greatestGain,
+            pollutionImpact: kind == .powerPlant ? CityPlacementPollutionImpact(
+                affectedBlocks: pollutedBlocks,
+                affectedHomes: pollutedHomes,
+                greatestIncrease: greatestPollutionIncrease
+            ) : nil
         )
     }
 }
@@ -1520,6 +1537,7 @@ struct CityBuildDecisionPresentation: Equatable, Sendable {
     let availability: String
     let disabledReason: String?
     let likelyConsequence: String
+    let pollutionImpact: CityPlacementPollutionImpact?
     let cancellation: String
     let recovery: CityDirectResponse?
 
@@ -1534,6 +1552,7 @@ struct CityBuildDecisionPresentation: Equatable, Sendable {
             availability,
             disabledReason,
             "Likely consequence: \(likelyConsequence)",
+            pollutionImpact?.accessibilitySummary,
             cancellation,
             recovery.map { "Recovery: \($0.title). \($0.explanation)" },
         ]
@@ -1558,6 +1577,7 @@ struct CityBuildDecisionPresentation: Equatable, Sendable {
         let developmentForecast = rejection == nil
             ? CityDevelopmentSiteForecast.make(kind: kind, at: tile.coordinate, in: state)
             : nil
+        let utilityForecast = CityUtilityPlacementForecast.make(kind: kind, at: tile.coordinate, in: state)
         return CityBuildDecisionPresentation(
             buildingTitle: kind.title,
             buildingSymbol: kind.symbol,
@@ -1579,8 +1599,10 @@ struct CityBuildDecisionPresentation: Equatable, Sendable {
                 kind: kind,
                 tile: tile,
                 state: state,
-                developmentForecast: developmentForecast
+                developmentForecast: developmentForecast,
+                utilityForecast: utilityForecast
             ),
+            pollutionImpact: utilityForecast?.pollutionImpact,
             cancellation: "Escape cancels without changing the city",
             recovery: rejection?.buildRecovery
         )
@@ -1601,7 +1623,8 @@ struct CityBuildDecisionPresentation: Equatable, Sendable {
         kind: BuildingKind,
         tile: CityTile,
         state: CityGameState,
-        developmentForecast: CityDevelopmentSiteForecast?
+        developmentForecast: CityDevelopmentSiteForecast?,
+        utilityForecast: CityUtilityPlacementForecast?
     ) -> String {
         switch kind {
         case .residential, .commercial, .industrial:
@@ -1613,11 +1636,7 @@ struct CityBuildDecisionPresentation: Equatable, Sendable {
             CityParkPlacementForecast.make(at: tile.coordinate, in: state)?.summary
                 ?? kind.buildConsequenceSummary
         case .powerPlant, .waterTower:
-            CityUtilityPlacementForecast.make(
-                kind: kind,
-                at: tile.coordinate,
-                in: state
-            )?.summary ?? kind.buildConsequenceSummary
+            utilityForecast?.summary ?? kind.buildConsequenceSummary
         case .fireStation, .policeStation, .school:
             CityCivicServicePlacementForecast.make(
                 kind: kind,

@@ -1014,6 +1014,40 @@ final class CitySimulationTests: XCTestCase {
     }
 
     @MainActor
+    func testKeyboardZoomAcceptsPhysicalPlusAndPreservesCommandGuards() throws {
+        let state = rendererNeighborhoodState()
+        let scene = CityScene(size: CGSize(width: 900, height: 600))
+        scene.reducedMotion = true
+        scene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
+        let roots = tileRootIdentifiers(in: scene, state: state)
+
+        // A real Plus on the main keyboard carries Shift; keypad Plus does not.
+        for (characters, keyCode, modifiers): (String, UInt16, NSEvent.ModifierFlags) in [
+            ("+", 24, .shift), ("=", 24, .shift), ("=", 24, []), ("+", 69, []),
+        ] {
+            scene.configureProofCamera(detail: .city, centeredOn: GridCoordinate(x: 3, y: 3))
+            let initialScale = scene.cameraScaleForTesting
+            scene.keyDown(with: try keyEvent(characters: characters, keyCode: keyCode, modifiers: modifiers))
+            XCTAssertLessThan(scene.cameraScaleForTesting, initialScale, "Zoom in: \(characters), \(modifiers)")
+            let zoomedScale = scene.cameraScaleForTesting
+            scene.keyDown(with: try keyEvent(characters: "_", keyCode: 27, modifiers: .shift))
+            XCTAssertGreaterThan(scene.cameraScaleForTesting, zoomedScale)
+            XCTAssertEqual(tileRootIdentifiers(in: scene, state: state), roots)
+        }
+
+        for modifiers: NSEvent.ModifierFlags in [.command, .control, .option, [.command, .shift]] {
+            let scale = scene.cameraScaleForTesting
+            scene.keyDown(with: try keyEvent(characters: "+", keyCode: 24, modifiers: modifiers))
+            XCTAssertEqual(scene.cameraScaleForTesting, scale, "App and system shortcuts must not zoom the map")
+        }
+        scene.allowsCommand = { _ in false }
+        let blockedScale = scene.cameraScaleForTesting
+        scene.keyDown(with: try keyEvent(characters: "+", keyCode: 24, modifiers: .shift))
+        scene.keyDown(with: try keyEvent(characters: "-", keyCode: 27))
+        XCTAssertEqual(scene.cameraScaleForTesting, blockedScale, "A blocking modal must still prevent camera commands")
+    }
+
+    @MainActor
     func testPointerAnchoredZoomPreservesWorldPointAndClampsToStrategicRange() {
         let state = rendererNeighborhoodState()
         let scene = CityScene(size: CGSize(width: 900, height: 600))

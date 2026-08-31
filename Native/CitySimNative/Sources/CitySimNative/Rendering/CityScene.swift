@@ -814,7 +814,11 @@ final class CityScene: SKScene {
         var key = catalogKey(for: event)
         if key == "+" { key = "=" }
         if key == "_" { key = "-" }
-        let catalogModifiers: CityCommandModifiers = modifiers.contains(.shift) ? [.shift] : []
+        // Plus normally requires Shift. Treat it (and shifted Minus) as the
+        // same camera shortcut as the unshifted key, without changing Shift
+        // semantics for block navigation or any other gameplay command.
+        let isZoomKey = key == "=" || key == "-"
+        let catalogModifiers: CityCommandModifiers = modifiers.contains(.shift) && !isZoomKey ? [.shift] : []
         if let command = CityCommandCatalog.matchingCommand(
             key: key,
             modifiers: catalogModifiers,

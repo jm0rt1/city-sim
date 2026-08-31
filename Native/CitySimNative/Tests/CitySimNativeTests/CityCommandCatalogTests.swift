@@ -2714,6 +2714,11 @@ final class CityCommandCatalogTests: XCTestCase {
         let shiftedSelection = store.selectedCoordinate
         let stateBeforeEscape = store.state
         let focusGeneration = store.mapFocusRequestGeneration
+        // Give Focus City a genuinely different player zoom to reset. The
+        // automatic compact fit can already equal the focused city's scale.
+        let scaleBeforeKeyboardZoom = scene.cameraScale
+        scene.keyDown(with: try keyEvent(characters: "+", keyCode: 24, modifiers: .shift))
+        XCTAssertLessThan(scene.cameraScale, scaleBeforeKeyboardZoom)
         let cameraScale = scene.cameraScale
         let cameraPosition = scene.camera?.position
 

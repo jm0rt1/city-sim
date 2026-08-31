@@ -679,8 +679,15 @@ final class CityGameStore: ObservableObject {
     }
 
     private func targetNearestBuildableParcel(for kind: BuildingKind) {
+        // A local utility remedy may be needed before it is affordable. Find a
+        // physically valid site so the real build decision explains funding,
+        // rather than leaving the affected occupied block selected for demolition.
+        var sitingState = state
+        if kind == .powerPlant || kind == .waterTower {
+            sitingState.treasury = max(sitingState.treasury, kind.buildCost)
+        }
         if let selectedCoordinate,
-           case .success = CitySimulation.validateBuild(kind, at: selectedCoordinate, in: state),
+           case .success = CitySimulation.validateBuild(kind, at: selectedCoordinate, in: sitingState),
            kind != .road || state.neighbors(of: selectedCoordinate).contains(where: {
                $0.kind == .road
            }) {
@@ -691,7 +698,7 @@ final class CityGameStore: ObservableObject {
         let origin = selectedCoordinate ?? initialMapSelectionCoordinate()
         let target = state.tiles.lazy
             .filter { tile in
-                if case .success = CitySimulation.validateBuild(kind, at: tile.coordinate, in: self.state) {
+                if case .success = CitySimulation.validateBuild(kind, at: tile.coordinate, in: sitingState) {
                     return true
                 }
                 return false
@@ -1277,6 +1284,15 @@ final class CityGameStore: ObservableObject {
 
     private func requestMapFocus() {
         mapFocusRequestGeneration &+= 1
+    }
+
+    @discardableResult
+    func focusUtilityServiceGap(_ overlay: DataOverlay) -> Bool {
+        guard commandPolicy == .enabled,
+              let network = CityUtilityReachPresentation(state: state).network(for: overlay),
+              let coordinate = network.weakestCoordinate,
+              perform(CityCommandCatalog.id(for: overlay)) else { return false }
+        return focusDiagnosticHotspot(coordinate)
     }
 
     @discardableResult

@@ -1111,17 +1111,21 @@ struct InspectorView: View {
 
     private var utilityContext: some View {
         let support = utilityDecisionSupport
+        let reach = CityUtilityReachPresentation(state: store.state)
+        let localPriority = reach.priorityWhenCapacityAvailable(support)
         return LazyVGrid(columns: contextColumns, alignment: .leading, spacing: 8) {
             ContextCard(
-                title: support.title,
-                symbol: support.status == .shortfall ? "exclamationmark.octagon.fill" : "gauge.with.dots.needle.67percent",
-                tint: utilityDecisionTint
+                title: localPriority?.planningTitle ?? support.title,
+                symbol: support.status == .shortfall || localPriority != nil ? "exclamationmark.octagon.fill" : "gauge.with.dots.needle.67percent",
+                tint: localPriority == nil ? utilityDecisionTint : GameTheme.warning
             ) {
-                Text(support.detail)
+                Text(localPriority?.planningDetail ?? support.detail)
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .lineLimit(3)
-                if let response = support.response {
+                if let localPriority {
+                    utilityGapAction(localPriority)
+                } else if let response = support.response {
                     compactAction(response.title, symbol: support.priorityKind.symbol) {
                         StrategyCommandCenterView.perform(response, on: store)
                     }
@@ -1153,13 +1157,29 @@ struct InspectorView: View {
                 actionTitle: "Build water",
                 action: { store.perform(.buildWaterTower) }
             )
-            ContextCard(title: "Combined coverage", symbol: "bolt.horizontal.circle.fill", tint: store.analytics.utilityCoverage >= 1 ? GameTheme.accent : GameTheme.danger) {
-                Text((store.analytics.utilityCoverage * 100).percentText).font(.title3.bold().monospacedDigit())
-                Text(store.analytics.utilityCoverage >= 1 ? "Both networks cover current use." : "At least one network is below current use.")
-                    .font(.caption2).foregroundStyle(.secondary).lineLimit(3)
-                compactAction("Utility map", symbol: DataOverlay.utilities.symbol) { store.perform(.overlayUtilities) }
+            ContextCard(title: "Local service", symbol: "house.and.flag.fill", tint: reach.priority == nil ? GameTheme.accent : GameTheme.warning) {
+                ContextValueRow(label: "Power weak", value: reach.power.countText)
+                    .accessibilityLabel(reach.power.accessibilitySummary)
+                ContextValueRow(label: "Water weak", value: reach.water.countText)
+                    .accessibilityLabel(reach.water.accessibilitySummary)
+                Text("Completed blocks · weak = strained or severe")
+                    .font(.caption2).foregroundStyle(.secondary).lineLimit(2)
+                if let priority = reach.priority {
+                    utilityGapAction(priority)
+                } else {
+                    Text(reach.power.totalBlocks == 0 ? "Complete development to assess local service." : "Both networks provide healthy local service.")
+                        .font(.caption2).foregroundStyle(.secondary).lineLimit(2)
+                }
             }
         }
+    }
+
+    private func utilityGapAction(_ network: CityUtilityReachPresentation.Network) -> some View {
+        compactAction(network.actionTitle, symbol: "scope") {
+            store.focusUtilityServiceGap(network.overlay)
+        }
+        .accessibilityValue(network.accessibilitySummary)
+        .accessibilityHint("Focuses the weakest completed block on the \(network.overlay.title) map without changing the city")
     }
 
     private var utilityDecisionTint: Color {

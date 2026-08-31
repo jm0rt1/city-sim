@@ -5,6 +5,36 @@ import SwiftUI
 final class CityMapSKView: SKView {
     static let defaultAccessibilityHelp = "Pinch or scroll to zoom, use Plus and Minus to zoom from the center, press 0 to frame the city, use Arrow keys to select blocks, Shift-Arrow to jump five blocks, Return for the announced primary action, and Shift-Return to inspect."
 
+    private var isHandlingNativeResize = false
+    private var resizeEndPointerLocation: NSPoint?
+
+    override func viewWillStartLiveResize() {
+        isHandlingNativeResize = true
+        (scene as? CityScene)?.cancelPointerGesture()
+        super.viewWillStartLiveResize()
+    }
+
+    override func viewDidEndLiveResize() {
+        super.viewDidEndLiveResize()
+        isHandlingNativeResize = false
+        resizeEndPointerLocation = window?.mouseLocationOutsideOfEventStream
+    }
+
+    func acceptsMapPointerEvent(_ event: NSEvent) -> Bool {
+        guard !isHandlingNativeResize, !inLiveResize, window?.inLiveResize != true else { return false }
+        // The native resize perimeter belongs to the window, not to a parcel
+        // underneath it. In particular, the hover preceding a corner drag must
+        // not select a remote site and trigger its contextual camera fit.
+        let point = convert(event.locationInWindow, from: nil)
+        guard bounds.insetBy(dx: 8, dy: 8).contains(point) else { return false }
+        if let anchor = resizeEndPointerLocation {
+            guard hypot(event.locationInWindow.x - anchor.x, event.locationInWindow.y - anchor.y)
+                > CityMapPointerTransitionGate.movementThreshold else { return false }
+            resizeEndPointerLocation = nil
+        }
+        return true
+    }
+
     var cityAccessibilityLabel = "City map"
     var cityAccessibilityValue: String = "No block selected"
     var cityAccessibilityHelp = CityMapSKView.defaultAccessibilityHelp

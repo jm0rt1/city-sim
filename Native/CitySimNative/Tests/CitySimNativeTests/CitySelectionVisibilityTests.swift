@@ -5,6 +5,48 @@ import XCTest
 
 final class CitySelectionVisibilityTests: XCTestCase {
     @MainActor
+    func testPendingParcelResizeKeepsDistrictScaleAcrossChangingChromeMeasurements() throws {
+        let store = CityGameStore(state: .newCity(seed: 42))
+        store.speed = .paused
+        let compact = CGSize(width: 900, height: 600)
+        let regular = CGSize(width: 1280, height: 800)
+        var frames = CityHUDChromeFrames()
+        let host = NSHostingView(rootView: ContentView(store: store) { frames = $0 }
+            .transaction { $0.disablesAnimations = true }
+            .frame(width: compact.width, height: compact.height))
+        host.frame = CGRect(origin: .zero, size: compact)
+        settle(host)
+        let scene = try XCTUnwrap(findMap(in: host)?.scene as? CityScene)
+        store.selectTool(.commercial)
+        let target = GridCoordinate(x: 11, y: 11)
+        store.selectedCoordinate = target
+        settle(host)
+        scene.frameCity()
+        let state = store.state
+        var scale = scene.cameraScaleForTesting
+        for (index, size) in [regular, compact, regular, compact].enumerated() {
+            if index == 2 {
+                scene.zoomCameraForTesting(by: 0.9, anchoredAt: scene.scenePointForTesting(at: target))
+                scale = scene.cameraScaleForTesting
+            }
+            host.rootView = ContentView(store: store) { frames = $0 }
+                .transaction { $0.disablesAnimations = true }
+                .frame(width: size.width, height: size.height)
+            host.frame = CGRect(origin: .zero, size: size)
+            settle(host)
+            XCTAssertTrue(findMap(in: host)?.scene === scene)
+            XCTAssertEqual(scene.size, size)
+            XCTAssertEqual(scene.cameraScaleForTesting, scale, accuracy: 0.000_001,
+                "Resize must not fit pending development against intermediate chrome measurements: \(size), \(frames)")
+            let insets = ContentView.mapViewportInsets(windowSize: size,
+                compact: ContentView.isCompactLayout(size), chromeFrames: frames)
+            XCTAssertTrue(scene.safeViewportRectForTesting(insets).contains(scene.scenePointForTesting(at: target)))
+            XCTAssertEqual(store.selectedCoordinate, target)
+            XCTAssertEqual(store.state, state)
+        }
+    }
+
+    @MainActor
     func testBuildFinanceRoundTripPreservesDistrictScaleAndPlayerZoom() throws {
         for size in [CGSize(width: 900, height: 600), CGSize(width: 1280, height: 800)] {
             var state = CityGameState.newCity(seed: 42)

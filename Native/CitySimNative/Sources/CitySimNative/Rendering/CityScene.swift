@@ -608,17 +608,18 @@ final class CityScene: SKScene {
         preserveActionTargetScale: Bool = false
     ) {
         guard viewportInsets != insets || preservesActionTargetScale != preserveActionTargetScale else { return }
-        let temporaryPanelTransition = preservesActionTargetScale || preserveActionTargetScale
         preservesActionTargetScale = preserveActionTargetScale
         viewportInsets = insets
         if !hasUserAdjustedCamera, renderedState != nil {
             needsAutomaticCameraRefit = true
         }
         if let selection = renderedSelection {
-            if temporaryPanelTransition, renderedInteractionMode != .inspect {
-                // Opening or closing supplementary Details is not a request
-                // to fit the whole placement district into the smaller space.
-                // Keep the parcel visible and retain the player's current zoom.
+            if renderedInteractionMode != .inspect {
+                // Chrome measurements can arrive before the resized viewport
+                // settles. A layout change is not a request to fit the entire
+                // placement district against that intermediate aperture. Pan
+                // only; a genuinely new target still gets its contextual fit
+                // through render/revealSelection.
                 revealCoordinateOnly(selection, viewportInsets: insets)
             } else {
                 revealSelection(selection, viewportInsets: insets)
@@ -751,8 +752,18 @@ final class CityScene: SKScene {
     }
 
     override func mouseDown(with event: NSEvent) {
+        guard acceptsMapPointerEvent(event) else { return }
         lastDragLocation = event.location(in: self)
         didDrag = false
+    }
+
+    func cancelPointerGesture() {
+        lastDragLocation = nil
+        didDrag = false
+    }
+
+    private func acceptsMapPointerEvent(_ event: NSEvent) -> Bool {
+        (view as? CityMapSKView)?.acceptsMapPointerEvent(event) ?? true
     }
 
     override func mouseDragged(with event: NSEvent) {
@@ -769,7 +780,8 @@ final class CityScene: SKScene {
 
     override func mouseUp(with event: NSEvent) {
         defer { lastDragLocation = nil }
-        guard !didDrag, let coordinate = coordinate(at: event.location(in: self)) else { return }
+        guard lastDragLocation != nil, !didDrag, acceptsMapPointerEvent(event),
+              let coordinate = coordinate(at: event.location(in: self)) else { return }
         activatePrimaryAction(at: coordinate)
     }
 
@@ -797,6 +809,7 @@ final class CityScene: SKScene {
     }
 
     override func rightMouseDown(with event: NSEvent) {
+        guard acceptsMapPointerEvent(event) else { return }
         if let coordinate = coordinate(at: event.location(in: self)) { onSecondaryAction?(coordinate) }
     }
 
@@ -1104,6 +1117,7 @@ final class CityScene: SKScene {
     }
 
     override func mouseMoved(with event: NSEvent) {
+        guard acceptsMapPointerEvent(event) else { return }
         let previous = hoveredCoordinate
         guard let coordinate = coordinate(at: event.location(in: self)) else {
             if renderedInteractionMode == .inspect {

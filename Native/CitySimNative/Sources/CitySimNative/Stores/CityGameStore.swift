@@ -1287,6 +1287,19 @@ final class CityGameStore: ObservableObject {
     }
 
     @discardableResult
+    func toggleDevelopmentUtilityOverlay(_ network: DataOverlay) -> Bool {
+        guard network == .power || network == .water,
+              activeMapActionTargetPresentation?.primaryAction.buildDecision?.developmentUtility != nil,
+              perform(CityCommandCatalog.id(for: overlay == network ? .none : network)) else {
+            return false
+        }
+        // Inspect the network in place; hotspot navigation would replace the
+        // proposed development with an inspected block and lose the decision.
+        requestMapFocus()
+        return true
+    }
+
+    @discardableResult
     func focusUtilityServiceGap(_ overlay: DataOverlay) -> Bool {
         guard commandPolicy == .enabled,
               let network = CityUtilityReachPresentation(state: state).network(for: overlay),

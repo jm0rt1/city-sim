@@ -237,6 +237,10 @@ struct BuildToolbarView: View {
                 buildCatalogMenu
             }
 
+            if let utility = activeBuildDecision?.developmentUtility {
+                CityDevelopmentUtilityControls(store: store, presentation: utility)
+            }
+
             if activeBuildDecision == nil, store.selectedTile != nil || isBuildMode {
                 selectedToolSummary
                     .frame(

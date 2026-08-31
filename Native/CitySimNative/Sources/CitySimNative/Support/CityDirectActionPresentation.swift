@@ -1068,8 +1068,10 @@ struct CityBuildOpportunityInventory: Equatable, Sendable {
 struct CityDevelopmentSiteForecast: Equatable, Sendable {
     let capacity: String
     let landValueIndex: Double
-    let utilityService: Double
+    let utility: CityLocationUtilityService
     let pollutionExposure: Double
+
+    var utilityService: Double { utility.combined }
 
     var summary: String {
         "\(capacity) · value \(Self.points(landValueIndex)) · utility \(Self.points(utilityService))% · pollution \(Self.points(pollutionExposure))%"
@@ -1103,7 +1105,7 @@ struct CityDevelopmentSiteForecast: Equatable, Sendable {
         return Self(
             capacity: Self.capacity(for: kind),
             landValueIndex: landValueIndex,
-            utilityService: sample.utility.combined,
+            utility: sample.utility,
             pollutionExposure: sample.pollutionExposure
         )
     }
@@ -1534,6 +1536,7 @@ struct CityBuildDecisionPresentation: Equatable, Sendable {
     let operatingImpact: String
     let operatingForecast: CityBuildOperatingForecast?
     let siteComparison: CityDevelopmentSiteComparisonPresentation?
+    let developmentUtility: CityDevelopmentUtilityPresentation?
     let availability: String
     let disabledReason: String?
     let likelyConsequence: String
@@ -1549,6 +1552,7 @@ struct CityBuildDecisionPresentation: Equatable, Sendable {
             cost,
             operatingImpact,
             siteComparison?.accessibilitySummary,
+            developmentUtility?.accessibilitySummary,
             availability,
             disabledReason,
             "Likely consequence: \(likelyConsequence)",
@@ -1593,6 +1597,7 @@ struct CityBuildDecisionPresentation: Equatable, Sendable {
                 reference: siteComparisonReference,
                 state: state
             ),
+            developmentUtility: developmentForecast.map { CityDevelopmentUtilityPresentation(service: $0.utility) },
             availability: rejection == nil ? "Ready to build" : "Blocked",
             disabledReason: rejection?.message,
             likelyConsequence: likelyConsequence(
@@ -2461,7 +2466,7 @@ private extension Array where Element == CityDirectResponse {
     }
 }
 
-private extension CityConsequenceBand {
+extension CityConsequenceBand {
     var title: String {
         switch self {
         case .severe: "severe"

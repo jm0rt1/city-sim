@@ -55,6 +55,7 @@ struct InspectorView: View {
     @ObservedObject var store: CityGameStore
     var compact = false
     @FocusState private var cityNameFieldFocused: Bool
+    @State private var showsOperatingExpenses = false
 
     static let compactColumnCount = 2
     static let regularColumnCount = 4
@@ -98,6 +99,9 @@ struct InspectorView: View {
     }
 
     private var analytics: CityAnalytics { store.analytics }
+    private var operatingExpenses: CityOperatingExpensePresentation {
+        .make(in: store.state)
+    }
     private var financeDecisionSupport: CityFinanceDecisionSupport {
         CityFinanceDecisionSupport.make(analytics: analytics)
     }
@@ -160,6 +164,8 @@ struct InspectorView: View {
         }
         .accessibilityElement(children: .contain)
         .accessibilityLabel(contextAccessibilityLabel)
+        .onChange(of: store.inspectorSection) { _, _ in showsOperatingExpenses = false }
+        .onChange(of: store.hudContextScope) { _, _ in showsOperatingExpenses = false }
     }
 
     @ViewBuilder
@@ -188,13 +194,47 @@ struct InspectorView: View {
                         .accessibilityLabel("Show citywide data and keep block selected")
                 }
             } else {
-                Label(store.inspectorSection.deckTitle, systemImage: store.inspectorSection.symbol)
-                    .font(.callout.weight(.bold))
-                    .lineLimit(1)
+                if store.inspectorSection == .finances, showsOperatingExpenses {
+                    Button {
+                        showsOperatingExpenses = false
+                    } label: {
+                        Label("Budget", systemImage: "chevron.left")
+                    }
+                    .buttonStyle(.borderless)
+                    .frame(minHeight: GameTheme.controlMinimum)
+                    .accessibilityLabel("Return to budget controls")
+                    Text(operatingExpenses.totalText)
+                        .font(.caption.weight(.semibold).monospacedDigit())
+                        .lineLimit(1)
+                } else {
+                    Label(store.inspectorSection.deckTitle, systemImage: store.inspectorSection.symbol)
+                        .font(.callout.weight(.bold))
+                        .lineLimit(1)
+                    if store.inspectorSection == .finances {
+                        Button {
+                            showsOperatingExpenses = true
+                        } label: {
+                            Label("Expenses", systemImage: "chart.pie.fill")
+                        }
+                        .buttonStyle(.bordered)
+                        .frame(minHeight: GameTheme.controlMinimum)
+                        .accessibilityLabel("Show operating expense breakdown")
+                        .help("See which completed sites and funding choices drive upkeep, largest first.")
+                        .accessibilityIdentifier("finance.show-expenses")
+                    }
+                }
                 if store.selectedTile != nil {
-                    Button("Selected block") { store.showSelectionContext() }
+                    Button { store.showSelectionContext() } label: {
+                        if showsOperatingExpenses, !compact {
+                            Image(systemName: "scope")
+                                .frame(minWidth: GameTheme.controlMinimum)
+                        } else {
+                            Text("Selected block")
+                        }
+                    }
                         .buttonStyle(.borderless)
                         .frame(minHeight: GameTheme.controlMinimum)
+                        .help("Return to selected block details")
                         .accessibilityLabel("Return to selected block details")
                 }
             }
@@ -586,16 +626,21 @@ struct InspectorView: View {
         }
     }
 
+    @ViewBuilder
     private var financeContext: some View {
-        LazyVGrid(columns: contextColumns, alignment: .leading, spacing: 8) {
-            ForEach(
-                Self.financeCardOrder(
-                    compact: compact,
-                    projectedBalance: analytics.projectedBalance
-                ),
-                id: \.self
-            ) { card in
-                financeCard(card)
+        if showsOperatingExpenses {
+            CityOperatingExpenseBreakdownView(presentation: operatingExpenses, compact: compact)
+        } else {
+            LazyVGrid(columns: contextColumns, alignment: .leading, spacing: 8) {
+                ForEach(
+                    Self.financeCardOrder(
+                        compact: compact,
+                        projectedBalance: analytics.projectedBalance
+                    ),
+                    id: \.self
+                ) { card in
+                    financeCard(card)
+                }
             }
         }
     }

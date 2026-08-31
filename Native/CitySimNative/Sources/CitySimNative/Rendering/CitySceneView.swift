@@ -88,6 +88,7 @@ struct CitySceneView: NSViewRepresentable {
 
     @ObservedObject var store: CityGameStore
     var viewportInsets: CityMapViewportInsets = .zero
+    var viewportSize: CGSize? = nil
     let pointerTransitionGate: CityMapPointerTransitionGate
     @Environment(\.accessibilityReduceMotion) private var accessibilityReduceMotion
     @AppStorage("reduceGameMotion") private var reduceGameMotion = false
@@ -162,7 +163,10 @@ struct CitySceneView: NSViewRepresentable {
         context.coordinator.synchronizeMapFocusRequest(store.mapFocusRequestGeneration, in: view)
         context.coordinator.configureMapAccessibility(in: view)
         guard let scene = context.coordinator.scene else { return }
-        scene.resize(to: view.bounds.size)
+        // SwiftUI can publish the resized HUD before AppKit updates SKView's
+        // bounds. Pair the exclusions with the geometry that produced them;
+        // mixing new chrome with the old view size can collapse the aperture.
+        scene.resize(to: viewportSize ?? view.bounds.size)
         scene.updateViewportInsets(
             viewportInsets,
             preserveActionTargetScale: store.showInspector

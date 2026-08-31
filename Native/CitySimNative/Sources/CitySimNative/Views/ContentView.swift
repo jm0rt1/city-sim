@@ -575,6 +575,7 @@ struct ContentView: View {
                 CitySceneView(
                     store: store,
                     viewportInsets: viewportInsets,
+                    viewportSize: mapProxy.size,
                     pointerTransitionGate: pointerTransitionGate
                 )
                 .ignoresSafeArea()

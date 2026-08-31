@@ -123,9 +123,6 @@ struct InspectorView: View {
     private var civicServiceCoverageTint: Color {
         civicServiceCoverageNeedsAttention ? GameTheme.warning : .secondary
     }
-    private var utilityDecisionSupport: CityUtilityDecisionSupport {
-        CityUtilityDecisionSupport.make(analytics: analytics)
-    }
     private var resiliencePresentation: CityResiliencePresentation {
         CityResiliencePresentation.make(analytics: analytics)
     }
@@ -303,7 +300,7 @@ struct InspectorView: View {
         case .happiness: happinessContext
         case .employment: employmentContext
         case .demand: demandContext
-        case .utilities: utilityContext
+        case .utilities: CityUtilityDecisionView(store: store)
         case .journal: journalContext
         case .trends: trendsContext
         case .resilience: resilienceContext
@@ -1039,87 +1036,6 @@ struct InspectorView: View {
         return "\(rules.economy.title) economy · \(rules.incidentsEnabled ? "incidents on" : "incidents off")"
     }
 
-    private var utilityContext: some View {
-        let support = utilityDecisionSupport
-        let reach = CityUtilityReachPresentation(state: store.state)
-        let localPriority = reach.priorityWhenCapacityAvailable(support)
-        return LazyVGrid(columns: contextColumns, alignment: .leading, spacing: 8) {
-            ContextCard(
-                title: localPriority?.planningTitle ?? support.title,
-                symbol: support.status == .shortfall || localPriority != nil ? "exclamationmark.octagon.fill" : "gauge.with.dots.needle.67percent",
-                tint: localPriority == nil ? utilityDecisionTint : GameTheme.warning
-            ) {
-                Text(localPriority?.planningDetail ?? support.detail)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                    .lineLimit(3)
-                if let localPriority {
-                    utilityGapAction(localPriority)
-                } else if let response = support.response {
-                    compactAction(response.title, symbol: support.priorityKind.symbol) {
-                        StrategyCommandCenterView.perform(response, on: store)
-                    }
-                } else {
-                    compactAction("Utility map", symbol: DataOverlay.utilities.symbol) {
-                        store.performMapFocused(.overlayUtilities)
-                    }
-                }
-            }
-            utilityCard(
-                title: "Power",
-                symbol: "bolt.fill",
-                used: store.state.powerUsed,
-                capacity: store.state.powerCapacity,
-                headroom: store.analytics.powerHeadroom,
-                tint: .yellow,
-                overlay: .power,
-                actionTitle: "Build power",
-                action: { store.perform(.buildPowerPlant) }
-            )
-            utilityCard(
-                title: "Water",
-                symbol: "drop.fill",
-                used: store.state.waterUsed,
-                capacity: store.state.waterCapacity,
-                headroom: store.analytics.waterHeadroom,
-                tint: .blue,
-                overlay: .water,
-                actionTitle: "Build water",
-                action: { store.perform(.buildWaterTower) }
-            )
-            ContextCard(title: "Local service", symbol: "house.and.flag.fill", tint: reach.priority == nil ? GameTheme.accent : GameTheme.warning) {
-                ContextValueRow(label: "Power weak", value: reach.power.countText)
-                    .accessibilityLabel(reach.power.accessibilitySummary)
-                ContextValueRow(label: "Water weak", value: reach.water.countText)
-                    .accessibilityLabel(reach.water.accessibilitySummary)
-                Text("Completed blocks · weak = strained or severe")
-                    .font(.caption2).foregroundStyle(.secondary).lineLimit(2)
-                if let priority = reach.priority {
-                    utilityGapAction(priority)
-                } else {
-                    Text(reach.power.totalBlocks == 0 ? "Complete development to assess local service." : "Both networks provide healthy local service.")
-                        .font(.caption2).foregroundStyle(.secondary).lineLimit(2)
-                }
-            }
-        }
-    }
-
-    private func utilityGapAction(_ network: CityUtilityReachPresentation.Network) -> some View {
-        compactAction(network.actionTitle, symbol: "scope") {
-            store.focusUtilityServiceGap(network.overlay)
-        }
-        .accessibilityValue(network.accessibilitySummary)
-        .accessibilityHint("Focuses the weakest completed block on the \(network.overlay.title) map without changing the city")
-    }
-
-    private var utilityDecisionTint: Color {
-        switch utilityDecisionSupport.status {
-        case .healthy: GameTheme.accent
-        case .tight: GameTheme.warning
-        case .shortfall: GameTheme.danger
-        }
-    }
-
     private var journalContext: some View {
         let summaries = store.messageSummaries
         return Group {
@@ -1331,33 +1247,6 @@ struct InspectorView: View {
                 .accessibilityHint("Chooses \(title) and returns focus to the map")
             }
             ProgressView(value: value).tint(tint)
-        }
-    }
-
-    private func utilityCard(
-        title: String,
-        symbol: String,
-        used: Int,
-        capacity: Int,
-        headroom: Int,
-        tint: Color,
-        overlay: DataOverlay,
-        actionTitle: String,
-        action: @escaping () -> Void
-    ) -> some View {
-        ContextCard(title: title, symbol: symbol, tint: tint) {
-            ContextValueRow(label: "Use", value: "\(used.formatted()) / \(capacity.formatted())")
-            ContextValueRow(label: "Spare", value: headroom.formatted())
-            ProgressView(value: Double(used), total: Double(max(1, capacity))).tint(used > capacity ? GameTheme.danger : tint)
-            HStack(spacing: 6) {
-                compactAction(actionTitle, symbol: symbol, action: action)
-                compactAction("\(overlay.title) map", symbol: "map") {
-                    if store.performMapFocused(CityCommandCatalog.id(for: overlay)) {
-                        store.showInspector = false
-                    }
-                }
-                .accessibilityHint("Shows local \(overlay.title.lowercased()) service without changing the city")
-            }
         }
     }
 

@@ -5,6 +5,42 @@ import XCTest
 
 final class CitySelectionVisibilityTests: XCTestCase {
     @MainActor
+    func testUtilitiesResizeKeepsInspectedFacilityAndDistrictVisible() throws {
+        let store = CityGameStore(state: .newCity(seed: 42))
+        store.speed = .paused
+        let target = try XCTUnwrap(store.state.tiles.first { $0.kind == .waterTower }?.coordinate)
+        let compact = CGSize(width: 900, height: 600)
+        let regular = CGSize(width: 1280, height: 800)
+        var frames = CityHUDChromeFrames()
+        let host = NSHostingView(rootView: ContentView(store: store) { frames = $0 }
+            .transaction { $0.disablesAnimations = true }
+            .frame(width: compact.width, height: compact.height))
+        host.frame = CGRect(origin: .zero, size: compact)
+        settle(host)
+        store.select(target)
+        store.openInspector(.utilities)
+        settle(host)
+        let scene = try XCTUnwrap(findMap(in: host)?.scene as? CityScene)
+        let scale = scene.cameraScaleForTesting
+        let state = store.state
+        for size in [regular, compact, regular] {
+            host.rootView = ContentView(store: store) { frames = $0 }
+                .transaction { $0.disablesAnimations = true }
+                .frame(width: size.width, height: size.height)
+            host.frame = CGRect(origin: .zero, size: size)
+            settle(host)
+            XCTAssertTrue(findMap(in: host)?.scene === scene)
+            XCTAssertEqual(scene.cameraScaleForTesting, scale, accuracy: 0.000_001)
+            let insets = ContentView.mapViewportInsets(windowSize: size,
+                compact: ContentView.isCompactLayout(size), chromeFrames: frames)
+            XCTAssertTrue(scene.inspectedPlaceViewportForTesting(insets)
+                .contains(scene.inspectedPlaceBoundsForTesting(at: target)))
+            XCTAssertEqual(store.selectedCoordinate, target)
+            XCTAssertEqual(store.state, state)
+        }
+    }
+
+    @MainActor
     func testPendingParcelResizeKeepsDistrictScaleAcrossChangingChromeMeasurements() throws {
         let store = CityGameStore(state: .newCity(seed: 42))
         store.speed = .paused

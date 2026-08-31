@@ -24,7 +24,7 @@ struct OverlayLegendView: View {
     private var positiveLabel: String {
         switch overlay {
         case .traffic: "Flowing"
-        case .utilities: "Supplied"
+        case .utilities, .power, .water: "Supplied"
         case .services, .fireCoverage, .policeCoverage, .schoolCoverage: "Covered"
         case .pollution: "Clean"
         case .roadCondition: "Maintained"
@@ -35,7 +35,7 @@ struct OverlayLegendView: View {
     private var negativeLabel: String {
         switch overlay {
         case .traffic: "Congested"
-        case .utilities: "Shortfall"
+        case .utilities, .power, .water: "Shortfall"
         case .services, .fireCoverage, .policeCoverage, .schoolCoverage: "Unserved"
         case .pollution: "Polluted"
         case .roadCondition: "Damaged"

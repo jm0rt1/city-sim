@@ -1138,6 +1138,7 @@ struct InspectorView: View {
                 capacity: store.state.powerCapacity,
                 headroom: store.analytics.powerHeadroom,
                 tint: .yellow,
+                overlay: .power,
                 actionTitle: "Build power",
                 action: { store.perform(.buildPowerPlant) }
             )
@@ -1148,6 +1149,7 @@ struct InspectorView: View {
                 capacity: store.state.waterCapacity,
                 headroom: store.analytics.waterHeadroom,
                 tint: .blue,
+                overlay: .water,
                 actionTitle: "Build water",
                 action: { store.perform(.buildWaterTower) }
             )
@@ -1389,6 +1391,7 @@ struct InspectorView: View {
         capacity: Int,
         headroom: Int,
         tint: Color,
+        overlay: DataOverlay,
         actionTitle: String,
         action: @escaping () -> Void
     ) -> some View {
@@ -1396,7 +1399,15 @@ struct InspectorView: View {
             ContextValueRow(label: "Use", value: "\(used.formatted()) / \(capacity.formatted())")
             ContextValueRow(label: "Spare", value: headroom.formatted())
             ProgressView(value: Double(used), total: Double(max(1, capacity))).tint(used > capacity ? GameTheme.danger : tint)
-            compactAction(actionTitle, symbol: symbol, action: action)
+            HStack(spacing: 6) {
+                compactAction(actionTitle, symbol: symbol, action: action)
+                compactAction("\(overlay.title) map", symbol: "map") {
+                    if store.performMapFocused(CityCommandCatalog.id(for: overlay)) {
+                        store.showInspector = false
+                    }
+                }
+                .accessibilityHint("Shows local \(overlay.title.lowercased()) service without changing the city")
+            }
         }
     }
 

@@ -39,6 +39,8 @@ enum CityCommandID: String, CaseIterable, Identifiable, Sendable {
     case overlayLandValue = "data.overlay.land-value"
     case overlayTraffic = "data.overlay.traffic"
     case overlayUtilities = "data.overlay.utilities"
+    case overlayPower = "data.overlay.power"
+    case overlayWater = "data.overlay.water"
     case overlayServices = "data.overlay.services"
     case overlayFireCoverage = "data.overlay.fire-coverage"
     case overlayPoliceCoverage = "data.overlay.police-coverage"
@@ -432,6 +434,8 @@ enum CityCommandCatalog {
         case .landValue: .overlayLandValue
         case .traffic: .overlayTraffic
         case .utilities: .overlayUtilities
+        case .power: .overlayPower
+        case .water: .overlayWater
         case .services: .overlayServices
         case .fireCoverage: .overlayFireCoverage
         case .policeCoverage: .overlayPoliceCoverage
@@ -480,7 +484,7 @@ enum CityCommandCatalog {
         case .happiness: 5
         case .pollution: 6
         case .roadCondition: 7
-        case .fireCoverage, .policeCoverage, .schoolCoverage: nil
+        case .power, .water, .fireCoverage, .policeCoverage, .schoolCoverage: nil
         }
     }
 

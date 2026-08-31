@@ -188,7 +188,7 @@ enum SimulationSpeed: Int, CaseIterable, Identifiable, Sendable {
 }
 
 enum DataOverlay: String, CaseIterable, Identifiable, Sendable {
-    case none, landValue, traffic, utilities, services
+    case none, landValue, traffic, utilities, power, water, services
     case fireCoverage, policeCoverage, schoolCoverage
     case happiness, pollution, roadCondition
     var id: String { rawValue }
@@ -198,6 +198,8 @@ enum DataOverlay: String, CaseIterable, Identifiable, Sendable {
         case .landValue: "Land Value"
         case .traffic: "Traffic"
         case .utilities: "Utilities"
+        case .power: "Power"
+        case .water: "Water"
         case .services: "Services"
         case .fireCoverage: "Fire Coverage"
         case .policeCoverage: "Police Coverage"
@@ -213,6 +215,8 @@ enum DataOverlay: String, CaseIterable, Identifiable, Sendable {
         case .landValue: "dollarsign.circle"
         case .traffic: "car.2"
         case .utilities: "bolt.horizontal"
+        case .power: "bolt.fill"
+        case .water: "drop.fill"
         case .services: "cross.case"
         case .fireCoverage: "flame"
         case .policeCoverage: "shield"
@@ -220,6 +224,16 @@ enum DataOverlay: String, CaseIterable, Identifiable, Sendable {
         case .happiness: "face.smiling"
         case .pollution: "aqi.medium"
         case .roadCondition: "wrench.and.screwdriver"
+        }
+    }
+
+    func utilityValue(in utility: CityLocationUtilityService?) -> Double? {
+        guard let utility else { return nil }
+        switch self {
+        case .utilities: return utility.combined
+        case .power: return utility.power
+        case .water: return utility.water
+        default: return nil
         }
     }
 
@@ -248,7 +262,7 @@ enum DataOverlay: String, CaseIterable, Identifiable, Sendable {
             return completedDevelopment
         case .traffic, .roadCondition:
             return tile.kind == .road
-        case .utilities, .pollution:
+        case .utilities, .power, .water, .pollution:
             return developed
         }
     }

@@ -91,8 +91,9 @@ final class WorldOverlayRenderer {
         }
 
         switch overlay {
-        case .utilities:
-            return makeSample(consequence.utility.combined, pattern: .utilityEdge)
+        case .utilities, .power, .water:
+            guard let service = overlay.utilityValue(in: consequence.utility) else { return nil }
+            return makeSample(service, pattern: .utilityEdge)
         case .pollution:
             return makeSample(1 - consequence.pollutionExposure, pattern: .pollutionHatch)
         case .landValue:

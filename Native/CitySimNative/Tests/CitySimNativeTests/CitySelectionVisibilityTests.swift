@@ -5,6 +5,78 @@ import XCTest
 
 final class CitySelectionVisibilityTests: XCTestCase {
     @MainActor
+    func testBuildFinanceRoundTripPreservesDistrictScaleAndPlayerZoom() throws {
+        for size in [CGSize(width: 900, height: 600), CGSize(width: 1280, height: 800)] {
+            var state = CityGameState.newCity(seed: 42)
+            let power = try XCTUnwrap(state.tiles.first { $0.kind == .powerPlant }?.coordinate)
+            let target = try XCTUnwrap(state.tiles.filter { tile in
+                if case .success = CitySimulation.validateBuild(.waterTower, at: tile.coordinate, in: state) {
+                    return true
+                }
+                return false
+            }.min {
+                abs($0.coordinate.x - power.x) + abs($0.coordinate.y - power.y)
+                    < abs($1.coordinate.x - power.x) + abs($1.coordinate.y - power.y)
+            }?.coordinate)
+            state.treasury = 0
+            let store = CityGameStore(state: state)
+            store.speed = .paused
+            let fingerprint = try CityStateFingerprinter.fingerprint(store.state)
+            var frames = CityHUDChromeFrames()
+            let host = NSHostingView(rootView:
+                ContentView(store: store) { frames = $0 }
+                    .transaction { $0.disablesAnimations = true }
+                    .frame(width: size.width, height: size.height)
+            )
+            host.frame = CGRect(origin: .zero, size: size)
+            settle(host)
+            let scene = try XCTUnwrap(findMap(in: host)?.scene as? CityScene)
+            store.selectTool(.waterTower)
+            store.selectedCoordinate = target
+            settle(host)
+            let decision = try XCTUnwrap(store.activeMapActionTargetPresentation?.primaryAction.buildDecision)
+            let recovery = try XCTUnwrap(decision.recovery)
+            XCTAssertEqual(recovery.command, .inspectorFinances)
+            let scale = scene.cameraScaleForTesting
+
+            XCTAssertTrue(store.performBuildRecovery(recovery))
+            settle(host)
+            XCTAssertTrue(store.showInspector)
+            XCTAssertFalse(frames.inspector.isEmpty)
+            XCTAssertEqual(scene.cameraScaleForTesting, scale, accuracy: 0.000_001,
+                "Temporary finance chrome must not shrink the district: \(size)")
+            let panelInsets = ContentView.mapViewportInsets(
+                windowSize: size, compact: ContentView.isCompactLayout(size), chromeFrames: frames
+            )
+            XCTAssertTrue(scene.safeViewportRectForTesting(panelInsets).contains(scene.scenePointForTesting(at: target)))
+            store.toggleInspector()
+            settle(host)
+            XCTAssertEqual(scene.cameraScaleForTesting, scale, accuracy: 0.000_001)
+            XCTAssertEqual(store.selectedCoordinate, target)
+            XCTAssertEqual(store.interactionMode, .build(.waterTower))
+
+            XCTAssertTrue(store.performBuildRecovery(recovery))
+            settle(host)
+            XCTAssertTrue(store.performMapCommand(.mapMoveEast))
+            settle(host)
+            let movedTarget = try XCTUnwrap(store.selectedCoordinate)
+            XCTAssertNotEqual(movedTarget, target)
+            XCTAssertEqual(scene.cameraScaleForTesting, scale, accuracy: 0.000_001,
+                "Keyboard targets stay legible while temporary Details is open")
+            XCTAssertTrue(scene.safeViewportRectForTesting(panelInsets).contains(scene.scenePointForTesting(at: movedTarget)))
+            scene.zoomCameraForTesting(by: 0.9, anchoredAt: scene.scenePointForTesting(at: target))
+            let playerScale = scene.cameraScaleForTesting
+            store.toggleInspector()
+            settle(host)
+            XCTAssertEqual(scene.cameraScaleForTesting, playerScale, accuracy: 0.000_001,
+                "Closing a panel must preserve an explicit zoom made while it was open")
+            XCTAssertEqual(store.selectedCoordinate, movedTarget)
+            XCTAssertEqual(try CityStateFingerprinter.fingerprint(store.state), fingerprint)
+            XCTAssertFalse(store.canUndo)
+        }
+    }
+
+    @MainActor
     func testComposedDetailsReportsItsFloatingBoundsAndRevealsTheSameBuilding() throws {
         for size in [CGSize(width: 900, height: 600), CGSize(width: 1280, height: 800)] {
             let state = CityGameState.newCity(seed: 42)

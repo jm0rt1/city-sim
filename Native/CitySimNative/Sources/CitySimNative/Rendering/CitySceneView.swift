@@ -133,7 +133,11 @@ struct CitySceneView: NSViewRepresentable {
         context.coordinator.configureMapAccessibility(in: view)
         guard let scene = context.coordinator.scene else { return }
         scene.resize(to: view.bounds.size)
-        scene.updateViewportInsets(viewportInsets)
+        scene.updateViewportInsets(
+            viewportInsets,
+            preserveActionTargetScale: store.showInspector
+                && !store.isCityFocusModeEnabled && !store.isPhotoModeEnabled
+        )
         let proofReducedMotion: Bool
 #if DEBUG
         proofReducedMotion = ProcessInfo.processInfo.environment["CITYSIM_REDUCE_MOTION_PROOF"] == "1"

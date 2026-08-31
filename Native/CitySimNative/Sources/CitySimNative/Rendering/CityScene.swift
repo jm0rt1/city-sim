@@ -211,6 +211,7 @@ final class CityScene: SKScene {
     private var generatedResidencyTileSignatures: [GeneratedResidencyTileSignature] = []
     private var generatedResidencyDetail: CameraDetailLevel?
     private var viewportInsets: CityMapViewportInsets = .zero
+    private var preservesActionTargetScale = false
     private var hasUserAdjustedCamera = false
     private var needsSettledInitialCameraFit = true
     private var needsAutomaticCameraRefit = false
@@ -602,14 +603,26 @@ final class CityScene: SKScene {
         }
     }
 
-    func updateViewportInsets(_ insets: CityMapViewportInsets) {
-        guard viewportInsets != insets else { return }
+    func updateViewportInsets(
+        _ insets: CityMapViewportInsets,
+        preserveActionTargetScale: Bool = false
+    ) {
+        guard viewportInsets != insets || preservesActionTargetScale != preserveActionTargetScale else { return }
+        let temporaryPanelTransition = preservesActionTargetScale || preserveActionTargetScale
+        preservesActionTargetScale = preserveActionTargetScale
         viewportInsets = insets
         if !hasUserAdjustedCamera, renderedState != nil {
             needsAutomaticCameraRefit = true
         }
         if let selection = renderedSelection {
-            revealSelection(selection, viewportInsets: insets)
+            if temporaryPanelTransition, renderedInteractionMode != .inspect {
+                // Opening or closing supplementary Details is not a request
+                // to fit the whole placement district into the smaller space.
+                // Keep the parcel visible and retain the player's current zoom.
+                revealCoordinateOnly(selection, viewportInsets: insets)
+            } else {
+                revealSelection(selection, viewportInsets: insets)
+            }
         }
     }
 
@@ -944,6 +957,10 @@ final class CityScene: SKScene {
         _ coordinate: GridCoordinate,
         viewportInsets: CityMapViewportInsets
     ) {
+        if preservesActionTargetScale {
+            revealCoordinateOnly(coordinate, viewportInsets: viewportInsets)
+            return
+        }
         guard let state = renderedState else {
             revealCoordinateOnly(coordinate, viewportInsets: viewportInsets)
             return

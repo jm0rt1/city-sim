@@ -4,11 +4,13 @@ import SwiftUI
 struct CityHUDChromeFrames: Equatable {
     var top = CGRect.zero
     var bottom = CGRect.zero
+    var inspector = CGRect.zero
 }
 
 private enum CityHUDChromeRegion: Hashable {
     case top
     case bottom
+    case inspector
 }
 
 enum ObjectiveSurfacePresentation: Equatable {
@@ -344,11 +346,15 @@ struct ContentView: View {
         let fallbackTop: CGFloat = 136
         let fallbackBottom: CGFloat = 116
         let measuredTop = chromeFrames.top.maxY + 10
-        let measuredBottom = windowSize.height - chromeFrames.bottom.minY + 10
+        let bottomBoundary = chromeFrames.inspector.isEmpty
+            ? chromeFrames.bottom.minY
+            : min(chromeFrames.bottom.isEmpty ? windowSize.height : chromeFrames.bottom.minY,
+                  chromeFrames.inspector.minY)
+        let measuredBottom = windowSize.height - bottomBoundary + 10
         return CityMapViewportInsets(
             top: chromeFrames.top.isEmpty ? fallbackTop : measuredTop,
             leading: edgePadding + 10,
-            bottom: chromeFrames.bottom.isEmpty ? fallbackBottom : measuredBottom,
+            bottom: chromeFrames.bottom.isEmpty && chromeFrames.inspector.isEmpty ? fallbackBottom : measuredBottom,
             trailing: edgePadding + 10
         )
     }
@@ -372,6 +378,9 @@ struct ContentView: View {
         windowHeight: CGFloat,
         chromeFrames: CityHUDChromeFrames
     ) -> CGFloat {
+        // Persistent rail layout only. Floating Details does not consume layout
+        // space; mapViewportInsets separately protects selected world content
+        // from its measured visual occlusion.
         let topBoundary = chromeFrames.top.isEmpty ? 0 : chromeFrames.top.maxY
         let bottomBoundary = chromeFrames.bottom.isEmpty ? windowHeight : chromeFrames.bottom.minY
         return max(0, bottomBoundary - topBoundary)
@@ -534,10 +543,19 @@ struct ContentView: View {
     @ViewBuilder
     private func gameSurface(compact: Bool) -> some View {
         GeometryReader { mapProxy in
+            // Hide the exclusion with the inspector's presentation state, not
+            // its later disappearance callback. A build response must never
+            // fit its new target into the outgoing Details aperture.
+            let visibleChromeFrames = CityHUDChromeFrames(
+                top: hudChromeFrames.top,
+                bottom: hudChromeFrames.bottom,
+                inspector: store.showInspector && !store.isCityFocusModeEnabled
+                    ? hudChromeFrames.inspector : .zero
+            )
             let measuredViewportInsets = Self.mapViewportInsets(
                 windowSize: mapProxy.size,
                 compact: compact,
-                chromeFrames: hudChromeFrames
+                chromeFrames: visibleChromeFrames
             )
             let focusCityInsets = Self.focusCityViewportInsets(
                 compact: compact,
@@ -695,7 +713,8 @@ struct ContentView: View {
                         BuildToolbarView(
                             store: store,
                             compact: compact,
-                            pointerTransitionGate: pointerTransitionGate
+                            pointerTransitionGate: pointerTransitionGate,
+                            onInspectorFrame: { recordChromeFrame($0, in: .inspector) }
                         )
                             .frame(maxWidth: compact ? 780 : 860)
                             .onGeometryChange(for: CGRect.self) { proxy in
@@ -715,6 +734,7 @@ struct ContentView: View {
                 if enabled {
                     focusCityChromeFrame = .zero
                     hudChromeFrames.bottom = .zero
+                    hudChromeFrames.inspector = .zero
                 }
             }
             .onChange(of: store.isPhotoModeEnabled) { _, enabled in
@@ -730,8 +750,9 @@ struct ContentView: View {
     }
 
     private func recordChromeFrame(_ frame: CGRect, in region: CityHUDChromeRegion) {
-        guard !frame.isEmpty, !frame.isInfinite, !frame.isNull else { return }
-        if region == .bottom, store.isCityFocusModeEnabled { return }
+        guard !frame.isInfinite, !frame.isNull else { return }
+        guard !frame.isEmpty || region == .inspector else { return }
+        if region != .top, store.isCityFocusModeEnabled { return }
 
         var updated = hudChromeFrames
         switch region {
@@ -742,6 +763,8 @@ struct ContentView: View {
             }
         case .bottom:
             updated.bottom = frame
+        case .inspector:
+            updated.inspector = frame
         }
         if updated != hudChromeFrames {
             hudChromeFrames = updated

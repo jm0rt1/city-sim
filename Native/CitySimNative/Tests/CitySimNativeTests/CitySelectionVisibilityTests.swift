@@ -1,7 +1,97 @@
+import AppKit
+import SwiftUI
 import XCTest
 @testable import CitySimNative
 
 final class CitySelectionVisibilityTests: XCTestCase {
+    @MainActor
+    func testComposedDetailsReportsItsFloatingBoundsAndRevealsTheSameBuilding() throws {
+        for size in [CGSize(width: 900, height: 600), CGSize(width: 1280, height: 800)] {
+            let state = CityGameState.newCity(seed: 42)
+            let coordinate = try XCTUnwrap(state.tiles.first { $0.kind == .powerPlant }?.coordinate)
+            let store = CityGameStore(state: state)
+            store.speed = .paused
+            let fingerprint = try CityStateFingerprinter.fingerprint(store.state)
+            var frames = CityHUDChromeFrames()
+            let host = NSHostingView(rootView:
+                ContentView(store: store) { frames = $0 }
+                    .transaction { $0.disablesAnimations = true }
+                    .frame(width: size.width, height: size.height)
+            )
+            host.frame = CGRect(origin: .zero, size: size)
+            settle(host)
+            let map = try XCTUnwrap(findMap(in: host))
+            let scene = try XCTUnwrap(map.scene as? CityScene)
+            XCTAssertFalse(frames.bottom.isEmpty)
+            XCTAssertTrue(frames.inspector.isEmpty)
+            let closedRail = frames.bottom
+
+            store.select(coordinate)
+            settle(host)
+            XCTAssertTrue(store.showInspector)
+            XCTAssertFalse(frames.inspector.isEmpty, "Floating Details must be measured, not just the unchanged rail")
+            XCTAssertLessThan(frames.inspector.minY, frames.bottom.minY - 200)
+            XCTAssertLessThanOrEqual(frames.inspector.maxY, frames.bottom.minY - 7)
+            XCTAssertEqual(frames.bottom, closedRail, "Measuring Details must not expand the persistent rail")
+            let insets = ContentView.mapViewportInsets(
+                windowSize: size, compact: ContentView.isCompactLayout(size), chromeFrames: frames
+            )
+            XCTAssertGreaterThanOrEqual(insets.bottom, size.height - frames.inspector.minY)
+            XCTAssertTrue(scene.inspectedPlaceViewportForTesting(insets)
+                .contains(scene.inspectedPlaceBoundsForTesting(at: coordinate)), "\(size)")
+            let position = scene.cameraPositionForTesting
+            let scale = scene.cameraScaleForTesting
+
+            store.toggleInspector()
+            settle(host)
+            XCTAssertTrue(frames.inspector.isEmpty, "Closing Details must release the temporary exclusion")
+            XCTAssertEqual(frames.bottom, closedRail)
+            XCTAssertEqual(scene.cameraPositionForTesting, position, "Closing must not snap the inspected place away")
+            XCTAssertEqual(scene.cameraScaleForTesting, scale)
+            store.toggleInspector()
+            settle(host)
+            XCTAssertFalse(frames.inspector.isEmpty)
+            XCTAssertEqual(store.selectedCoordinate, coordinate)
+            XCTAssertEqual(scene.cameraPositionForTesting, position, "Repeated open/close must not drift")
+            XCTAssertEqual(scene.cameraScaleForTesting, scale)
+
+            XCTAssertTrue(store.performMapFocused(.buildWaterTower))
+            settle(host)
+            XCTAssertFalse(store.showInspector)
+            XCTAssertTrue(frames.inspector.isEmpty)
+            let buildInsets = ContentView.mapViewportInsets(
+                windowSize: size, compact: ContentView.isCompactLayout(size), chromeFrames: frames
+            )
+            let expected = CityScene(size: scene.size)
+            expected.reducedMotion = true
+            expected.updateViewportInsets(buildInsets)
+            expected.render(state: state, overlay: store.overlay, selection: nil, interactionMode: .inspect)
+            expected.camera?.position = position
+            expected.camera?.setScale(scale)
+            expected.render(
+                state: state, overlay: store.overlay, selection: store.selectedCoordinate,
+                interactionMode: store.interactionMode,
+                activeActionTarget: store.activeMapActionTargetPresentation
+            )
+            XCTAssertLessThanOrEqual(scene.cameraScaleForTesting, expected.cameraScaleForTesting + 0.001,
+                "A build response must not retain a zoom-out calculated against outgoing Details")
+            XCTAssertEqual(try CityStateFingerprinter.fingerprint(store.state), fingerprint)
+        }
+    }
+
+    @MainActor
+    private func settle(_ view: NSView) {
+        view.layoutSubtreeIfNeeded()
+        RunLoop.main.run(until: Date(timeIntervalSinceNow: 0.3))
+        view.layoutSubtreeIfNeeded()
+    }
+
+    @MainActor
+    private func findMap(in view: NSView) -> CityMapSKView? {
+        if let map = view as? CityMapSKView { return map }
+        return view.subviews.lazy.compactMap { self.findMap(in: $0) }.first
+    }
+
     @MainActor
     func testInspectedTallBuildingFitsBothNativeAperturesWithoutChangingCityOrNormalZoom() throws {
         for size in [CGSize(width: 900, height: 600), CGSize(width: 1280, height: 800)] {

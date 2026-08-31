@@ -119,6 +119,7 @@ struct BuildToolbarView: View {
     @ObservedObject var store: CityGameStore
     var compact = false
     let pointerTransitionGate: CityMapPointerTransitionGate
+    var onInspectorFrame: ((CGRect) -> Void)? = nil
 
     enum TargetBeaconTone: Equatable {
         case information
@@ -186,6 +187,12 @@ struct BuildToolbarView: View {
                     .frame(width: compact ? Self.compactDetailsWidth : Self.regularDetailsWidth)
                     .padding(8)
                     .cityHUDSurface(prominent: true)
+                    .onGeometryChange(for: CGRect.self) { proxy in
+                        proxy.frame(in: .named("city.game.surface"))
+                    } action: { frame in
+                        onInspectorFrame?(frame)
+                    }
+                    .onDisappear { onInspectorFrame?(.zero) }
                     .offset(y: -persistentDeckHeight - 8)
                     .accessibilityIdentifier("hud.command.details.overlay")
             }

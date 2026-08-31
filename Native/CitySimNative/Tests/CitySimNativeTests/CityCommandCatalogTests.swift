@@ -4567,7 +4567,7 @@ final class CityCommandCatalogTests: XCTestCase {
         )
         XCTAssertEqual(
             InspectorView.financeCardOrder(compact: false, projectedBalance: -168),
-            [.treasury, .nextCycle, .taxPolicy, .decisionSupport]
+            [.budget, .taxPolicy, .decisionSupport]
         )
 
         var state = CityGameState.newCity(seed: 42)

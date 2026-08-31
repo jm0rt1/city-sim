@@ -160,13 +160,14 @@ struct BuildToolbarView: View {
     static let regularOpenMaximumHeight: CGFloat = 208
     static let compactDetailsMaxHeight: CGFloat = 196
     static let regularDetailsMaxHeight: CGFloat = 144
+    static let regularFinanceDetailsHeight: CGFloat = 216
     static let compactDetailsWidth: CGFloat = 720
     static let regularDetailsWidth: CGFloat = 840
     static let selectedBlockDetailsHeight: CGFloat = 220
 
-    static func detailsHeight(compact: Bool, selectedBlock: Bool) -> CGFloat {
+    static func detailsHeight(compact: Bool, selectedBlock: Bool, finances: Bool = false) -> CGFloat {
         selectedBlock ? selectedBlockDetailsHeight
-            : (compact ? compactDetailsMaxHeight : regularDetailsMaxHeight)
+            : (compact ? compactDetailsMaxHeight : (finances ? regularFinanceDetailsHeight : regularDetailsMaxHeight))
     }
 
     var body: some View {
@@ -216,7 +217,8 @@ struct BuildToolbarView: View {
         .frame(
             height: Self.detailsHeight(
                 compact: compact,
-                selectedBlock: store.hudContextScope == .selection && store.selectedTile != nil
+                selectedBlock: store.hudContextScope == .selection && store.selectedTile != nil,
+                finances: store.hudContextScope == .city && store.inspectorSection == .finances
             ),
             alignment: .top
         )

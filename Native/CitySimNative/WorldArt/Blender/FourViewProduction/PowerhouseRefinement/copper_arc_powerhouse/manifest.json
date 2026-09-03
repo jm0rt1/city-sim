@@ -1,0 +1,277 @@
+{
+  "artifacts": [
+    {
+      "bytes": 3040928,
+      "path": "copper_arc_powerhouse.blend",
+      "sha256": "2260ad319134654e101a57ec860b3548af445a5b5533783695ea0689d9c0c073"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 253,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 96,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 23282,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 72967,
+      "decodedRgbaSha256": "9421eff44ba6ca57b8427feb5dd7ebc47ac05727c8c3185b3ae4ddc6aed65353",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/copper_arc_powerhouse_camNE.png",
+      "sha256": "cf3b568b96f18b061ca25ac7dd27ef19ff15cfeb847033a705483e50ccf8ad71"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 279,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 70,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 23391,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 81480,
+      "decodedRgbaSha256": "cb31866b0c97ff3fd820c76de8c039b60a69be0f79e5fc4ee30ac20c830d7ce7",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/copper_arc_powerhouse_camSE.png",
+      "sha256": "c09c56d3cf6c1b1679b079eb82b907d08af02f3d9af955b56bcf66deff7b8812"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 268,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 81,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 23352,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 81491,
+      "decodedRgbaSha256": "f74b3fb6a7f35fdc072dd538eca6258e284df579dd6b1a934b34f22260a4fe8c",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/copper_arc_powerhouse_camSW.png",
+      "sha256": "4b623e7a61a0e1f22b5ab91cf42dd0bae3dda5a64bdac8d864ffa2724a762320"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 242,
+          "maxX": 279,
+          "maxY": 348,
+          "minX": 104,
+          "minY": 107,
+          "width": 176
+        },
+        "lowestOpaqueRowTopOrigin": 348,
+        "opaquePixelCount": 21046,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 73737,
+      "decodedRgbaSha256": "4a6b9de172cf25c2cb3f5c84b30ca70f980cfa10a0be0c7c48f4ce79ddf25996",
+      "dimensions": [
+        384,
+        384
+      ],
+      "path": "renders/copper_arc_powerhouse_camNW.png",
+      "sha256": "74a0100920ac85bdafa640c065b8e2e312202ad909c862cd4a75b0852c2b1a95"
+    },
+    {
+      "alpha": {
+        "boundsTopOrigin": {
+          "height": 770,
+          "maxX": 783,
+          "maxY": 839,
+          "minX": 0,
+          "minY": 70,
+          "width": 784
+        },
+        "lowestOpaqueRowTopOrigin": 839,
+        "opaquePixelCount": 134079,
+        "pivotPixelAlpha": 255
+      },
+      "bytes": 277206,
+      "decodedRgbaSha256": "aec7edfce24683603a3ae1a432460573d326d4030a8b5cbd9b7550c050c5b240",
+      "dimensions": [
+        784,
+        840
+      ],
+      "path": "copper_arc_powerhouse_contact-sheet.png",
+      "sha256": "faedb953235b6a5908820bddf998988f143868f2747c713b8dac189f17eaf59f"
+    }
+  ],
+  "assetFamily": "power-plant",
+  "assetId": "copper_arc_powerhouse",
+  "cameraOrder": [
+    "camNE",
+    "camSE",
+    "camSW",
+    "camNW"
+  ],
+  "cameraRig": {
+    "distance": 32.0,
+    "orthoScale": 12.341995,
+    "shiftY": 0.28125,
+    "views": [
+      {
+        "azimuthDegrees": 45.0,
+        "name": "camNE"
+      },
+      {
+        "azimuthDegrees": 135.0,
+        "name": "camSE"
+      },
+      {
+        "azimuthDegrees": 225.0,
+        "name": "camSW"
+      },
+      {
+        "azimuthDegrees": 315.0,
+        "name": "camNW"
+      }
+    ]
+  },
+  "canvas": {
+    "footprintPivotPixel": [
+      192,
+      300
+    ],
+    "height": 384,
+    "transparent": true,
+    "trim": false,
+    "width": 384
+  },
+  "cedarMarketReused": false,
+  "contactSheetLayout": [
+    [
+      "camNE",
+      "camSE"
+    ],
+    [
+      "camSW",
+      "camNW"
+    ]
+  ],
+  "densityLevel": 1,
+  "description": "Refined Art Deco municipal power house with preserved twin stacks, articulated turbine-hall masonry, deep industrial glazing, roof monitor, transformer court, service pipes, and modeled stack throats",
+  "grid": {
+    "azimuthDegrees": 45.0,
+    "elevationDegrees": 30.0,
+    "exactWorldFootprint": [
+      4.0,
+      4.0
+    ],
+    "footprintTiles": [
+      2,
+      2
+    ],
+    "projectedTilePixels": [
+      88,
+      44
+    ],
+    "projection": "orthographic-2:1-dimetric",
+    "worldTileSize": 2.0
+  },
+  "lightingConvention": {
+    "color": [
+      1.0,
+      0.86,
+      0.72
+    ],
+    "energy": 1100.0,
+    "location": [
+      -6.0,
+      -8.0,
+      12.0
+    ],
+    "name": "CitySimKey",
+    "size": 5.0,
+    "type": "AREA",
+    "worldColor": [
+      0.2,
+      0.17,
+      0.14,
+      1.0
+    ],
+    "worldStrength": 0.72
+  },
+  "liveAsset": false,
+  "originalGeometry": true,
+  "perViewCompensation": {
+    "crop": false,
+    "offsetPixels": [
+      0,
+      0
+    ],
+    "rotationDegrees": 0.0,
+    "scale": 1.0,
+    "skew": [
+      0.0,
+      0.0
+    ]
+  },
+  "pipelineSchema": "citysim.world-art.copper-arc-powerhouse-refinement.v1",
+  "postRenderCompensation": "none",
+  "root": {
+    "location": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "name": "AssetRoot",
+    "pivotName": "FootprintPivot",
+    "rotationEuler": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "schema": "citysim.world-art.density-four-view-asset.v1",
+  "sourceFiles": [
+    {
+      "path": "build_and_render.py",
+      "sha256": "243b978506792fbdd6ecefcad07c6f717dd1d56db6719164dcb7663e143cb95b"
+    },
+    {
+      "path": "pipeline.json",
+      "sha256": "28e583b2dc2dc99dbbe4686ae39031688e284437b2348fb79c2bbaaf8d7b6bf9"
+    },
+    {
+      "path": "run_pipeline.sh",
+      "sha256": "532d05471506c823329d1b29371fee92e772a60c1b591115d68685bbd84e24b2"
+    }
+  ],
+  "sourcePixelsReused": false,
+  "status": "source-only-not-live",
+  "worldFootprintTiles": [
+    2,
+    2
+  ],
+  "zone": "utility"
+}

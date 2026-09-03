@@ -1,0 +1,58 @@
+{
+  "assetId": "copper_arc_powerhouse",
+  "baseGeometryReused": true,
+  "baselineGeometryAdapted": true,
+  "baselineReference": "../CivicUtilityVariety/copper_arc_powerhouse",
+  "dependencies": [
+    {
+      "path": "../Density/build_and_render.py",
+      "sha256": "ff95f26a68c53a3f2e7bc60e540c5836afbd1781a4f78f50b1bdaec76b007e41"
+    },
+    {
+      "path": "../../FourViewPipeline/png_canonical.py",
+      "sha256": "f9a913098512fab3653d89a3237f84ba82172cabec635ab8a804f639207e653a"
+    },
+    {
+      "path": "../CivicUtilityVariety/build_and_render.py",
+      "sha256": "80c2cd66a7f8dacd523f6b3b747c60dd52bcdfe2ad711ed8f178f7574832ef64"
+    },
+    {
+      "path": "../CivicUtilityVariety/pipeline.json",
+      "sha256": "a385c87599aba5741c1c07b7fc9dbf29dcdcdafc59350e4f413357a8609a3863"
+    },
+    {
+      "path": "../CivicUtilityVariety/copper_arc_powerhouse/copper_arc_powerhouse.blend",
+      "sha256": "06a94988d909790abc0429267a7996c52e916e45408281baf23f857844aefb21"
+    },
+    {
+      "path": "../CivicUtilityVariety/copper_arc_powerhouse/copper_arc_powerhouse_contact-sheet.png",
+      "sha256": "17ae1ae8dc4b440d01b6eda4eae591c9562e8d044096e30df115f7735987348d"
+    }
+  ],
+  "originalGeometry": true,
+  "schema": "citysim.world-art.source-dependency-manifest.v1",
+  "sourceFiles": [
+    {
+      "path": "README.md",
+      "sha256": "4ffce5e5c6fa9094a5e5435c253abbcbb3015f5b1f39e18de43feeca3cc0d1c8"
+    },
+    {
+      "path": "build_and_render.py",
+      "sha256": "243b978506792fbdd6ecefcad07c6f717dd1d56db6719164dcb7663e143cb95b"
+    },
+    {
+      "path": "pipeline.json",
+      "sha256": "28e583b2dc2dc99dbbe4686ae39031688e284437b2348fb79c2bbaaf8d7b6bf9"
+    },
+    {
+      "path": "run_pipeline.sh",
+      "sha256": "532d05471506c823329d1b29371fee92e772a60c1b591115d68685bbd84e24b2"
+    },
+    {
+      "path": "validate.py",
+      "sha256": "460285bcc9ab3edcac77486cf6001c05f659a29676859ad88b46ed38d83eee34"
+    }
+  ],
+  "sourcePixelsReused": false,
+  "status": "source-only-not-live"
+}

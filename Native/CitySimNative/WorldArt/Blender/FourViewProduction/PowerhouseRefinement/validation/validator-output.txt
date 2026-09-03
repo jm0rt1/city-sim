@@ -1,0 +1,127 @@
+POWERHOUSE_REFINEMENT_VALIDATION_PASS
+{
+  "asset": {
+    "assetId": "copper_arc_powerhouse",
+    "deterministicCanonicalPngSha256": {
+      "copper_arc_powerhouse_camNE.png": "cf3b568b96f18b061ca25ac7dd27ef19ff15cfeb847033a705483e50ccf8ad71",
+      "copper_arc_powerhouse_camNW.png": "74a0100920ac85bdafa640c065b8e2e312202ad909c862cd4a75b0852c2b1a95",
+      "copper_arc_powerhouse_camSE.png": "c09c56d3cf6c1b1679b079eb82b907d08af02f3d9af955b56bcf66deff7b8812",
+      "copper_arc_powerhouse_camSW.png": "4b623e7a61a0e1f22b5ab91cf42dd0bae3dda5a64bdac8d864ffa2724a762320"
+    },
+    "meshCount": 200,
+    "projectedAxisPixels": {
+      "camNE": [
+        [
+          -44,
+          22
+        ],
+        [
+          44,
+          22
+        ]
+      ],
+      "camNW": [
+        [
+          -44,
+          -22
+        ],
+        [
+          -44,
+          22
+        ]
+      ],
+      "camSE": [
+        [
+          44,
+          22
+        ],
+        [
+          44,
+          -22
+        ]
+      ],
+      "camSW": [
+        [
+          44,
+          -22
+        ],
+        [
+          -44,
+          -22
+        ]
+      ]
+    },
+    "worldBounds": {
+      "maximum": [
+        2.0,
+        2.0,
+        7.497000217437744
+      ],
+      "minimum": [
+        -2.0,
+        -2.0,
+        -0.20000000298023224
+      ]
+    }
+  },
+  "blenderVersion": "4.5.12",
+  "contract": {
+    "cameraOrder": [
+      "camNE",
+      "camSE",
+      "camSW",
+      "camNW"
+    ],
+    "deterministicRerender": "byte-identical canonical PNGs",
+    "pivotPixels": [
+      192,
+      300
+    ],
+    "postRenderCompensation": "none",
+    "projectedTilePixels": [
+      88,
+      44
+    ]
+  },
+  "refinement": {
+    "meshCount": 200,
+    "requiredGeometry": [
+      "CopperArcEastUpperClerestory0",
+      "CopperArcEastUpperClerestory1",
+      "CopperArcEastUpperClerestory2",
+      "CopperArcRoofMonitorBase",
+      "CopperArcRoofMonitorCopperEdge-0.18",
+      "CopperArcRoofMonitorCopperEdge-0.82",
+      "CopperArcRoofMonitorNorthGlass",
+      "CopperArcRoofMonitorSouthGlass",
+      "CopperArcServicePipe",
+      "CopperArcStack0OpenThroat",
+      "CopperArcStack1OpenThroat",
+      "CopperArcWestHallBay0TallGlass",
+      "CopperArcWestHallBay1TallGlass",
+      "CopperArcWestHallBay2TallGlass"
+    ],
+    "worldBounds": {
+      "maximum": [
+        2.0,
+        2.0,
+        7.497000217437744
+      ],
+      "minimum": [
+        -2.0,
+        -2.0,
+        -0.20000000298023224
+      ]
+    }
+  },
+  "schema": "citysim.world-art.copper-arc-powerhouse-refinement-validation.v1",
+  "sourceManifestDependencies": [
+    "../Density/build_and_render.py",
+    "../../FourViewPipeline/png_canonical.py",
+    "../CivicUtilityVariety/build_and_render.py",
+    "../CivicUtilityVariety/pipeline.json",
+    "../CivicUtilityVariety/copper_arc_powerhouse/copper_arc_powerhouse.blend",
+    "../CivicUtilityVariety/copper_arc_powerhouse/copper_arc_powerhouse_contact-sheet.png"
+  ],
+  "status": "PASS"
+}

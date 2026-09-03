@@ -301,7 +301,7 @@
     {
       "assetID": "copper_arc_powerhouse",
       "file": "copper_arc_powerhouse_camNE.png",
-      "sha256": "9567929fdf98f6be67a2d0e756fbfcff4e97982c2e1af2171c1e0c59ff579fde",
+      "sha256": "cf3b568b96f18b061ca25ac7dd27ef19ff15cfeb847033a705483e50ccf8ad71",
       "roles": [
         "power-plant"
       ],
@@ -309,7 +309,7 @@
         {
           "camera": "camNE",
           "file": "copper_arc_powerhouse_camNE.png",
-          "sha256": "9567929fdf98f6be67a2d0e756fbfcff4e97982c2e1af2171c1e0c59ff579fde"
+          "sha256": "cf3b568b96f18b061ca25ac7dd27ef19ff15cfeb847033a705483e50ccf8ad71"
         }
       ],
       "family": "utility"

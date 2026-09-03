@@ -1,0 +1,36 @@
+{
+  "assetId": "maple_street_tree",
+  "baselineReference": "../GroundEcology/maple_street_tree",
+  "files": [
+    {
+      "path": "build_and_render.py",
+      "sha256": "4ad2ad7a5ea1f239ced37f4b3c636765dcbae3ff1b1ca2fe2579ab1c54870e0b"
+    },
+    {
+      "path": "validate.py",
+      "sha256": "cab40307fc120b50a64cbcdbe66987e71110f089c52b97763780b019b00dd0de"
+    },
+    {
+      "path": "README.md",
+      "sha256": "d7a0c20aab34c8d04865b9648a6a68baeac80cf10f3eb3934d88b3dffcd4cec9"
+    },
+    {
+      "path": "../GroundEcology/build_and_render.py",
+      "sha256": "513dcbf4188239550de90239e1cac682b0761c289803dc4856f7ea7c165ea3f0"
+    },
+    {
+      "path": "../GroundEcology/pipeline.json",
+      "sha256": "67205cb438cfbd5adaf7a9af010338f039d35bc79550d28059b052a2c49345e9"
+    },
+    {
+      "path": "../GroundEcology/validate.py",
+      "sha256": "2a48af0262609e65a90c8c2c6a43c40868f0e779a8e04e576c34c3c6cd99e7d8"
+    },
+    {
+      "path": "../../FourViewPipeline/png_canonical.py",
+      "sha256": "f9a913098512fab3653d89a3237f84ba82172cabec635ab8a804f639207e653a"
+    }
+  ],
+  "originalGeometry": true,
+  "sourcePixelsReused": false
+}

@@ -4891,6 +4891,53 @@ final class WorldRenderingTests: XCTestCase {
     }
 
     @MainActor
+    func testDisplayFillingViewportUsesItsAreaForTheCityWithoutChangingReferenceSizes() {
+        let referenceInsets = CityMapViewportInsets(top: 104, leading: 24, bottom: 126, trailing: 24)
+        let reference = CityScene(size: CGSize(width: 1_440, height: 900))
+        reference.updateViewportInsets(referenceInsets)
+
+        let displayFilling = CityScene(size: CGSize(width: 1_800, height: 1_130))
+        displayFilling.updateViewportInsets(referenceInsets)
+
+        let state = CityGameState.newCity(seed: 42)
+        reference.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
+        displayFilling.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
+        XCTAssertLessThan(displayFilling.cameraScaleForTesting, 0.40)
+        XCTAssertLessThan(displayFilling.cameraScaleForTesting, reference.cameraScaleForTesting)
+        XCTAssertGreaterThanOrEqual(
+            displayFilling.occupiedDevelopedViewportOccupancyForTesting().width,
+            0.72
+        )
+
+        let compact = CityScene(size: CGSize(width: 900, height: 600))
+        compact.updateViewportInsets(CityMapViewportInsets(top: 138, leading: 19, bottom: 236, trailing: 19))
+        compact.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
+        XCTAssertGreaterThan(compact.cameraScaleForTesting, displayFilling.cameraScaleForTesting)
+    }
+
+    @MainActor
+    func testPausedCachedSnapshotRefitsAfterFullscreenResizeButPreservesPlayerZoom() throws {
+        let snapshot = try CityPresentationSnapshot(state: .newCity(seed: 42))
+        let insets = CityMapViewportInsets(top: 104, leading: 24, bottom: 126, trailing: 24)
+        let scene = CityScene(size: CGSize(width: 1_280, height: 800))
+        scene.updateViewportInsets(insets)
+        scene.render(snapshot: snapshot, overlay: .none, selection: nil, interactionMode: .inspect)
+        let regularScale = scene.cameraScaleForTesting
+
+        scene.resize(to: CGSize(width: 1_800, height: 1_130))
+        scene.render(snapshot: snapshot, overlay: .none, selection: nil, interactionMode: .inspect)
+        XCTAssertLessThan(scene.cameraScaleForTesting, regularScale)
+        XCTAssertLessThan(scene.cameraScaleForTesting, 0.40)
+        XCTAssertGreaterThanOrEqual(scene.occupiedDevelopedViewportOccupancyForTesting().width, 0.72)
+
+        scene.zoomCameraForTesting(by: 0.9, anchoredAt: nil)
+        let playerScale = scene.cameraScaleForTesting
+        scene.resize(to: CGSize(width: 1_440, height: 900))
+        scene.render(snapshot: snapshot, overlay: .none, selection: nil, interactionMode: .inspect)
+        XCTAssertEqual(scene.cameraScaleForTesting, playerScale, accuracy: 0.000_001)
+    }
+
+    @MainActor
     func testFocusCityConsumesPublishedSafeApertureWithOneRefit() throws {
         let size = CGSize(width: 1_280, height: 800)
         let defaultInsets = CityMapViewportInsets(

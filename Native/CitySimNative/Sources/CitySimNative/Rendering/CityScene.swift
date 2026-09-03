@@ -430,6 +430,17 @@ final class CityScene: SKScene {
            renderedGuidedRoadRoute == guidedRoadRoute,
            renderedSelectedCommuteRoute == selectedCommuteRoute,
            renderedReducedMotion == reducedMotion {
+            // Paused cities reuse this snapshot during native resize. Consume
+            // the new aperture without rebuilding unchanged world tiles or
+            // taking the camera away from a player's zoom or active parcel.
+            if needsSettledInitialCameraFit || needsAutomaticCameraRefit {
+                if !hasUserAdjustedCamera, selection == nil {
+                    applyDevelopedCoreCamera(snapshot.state)
+                    refreshForCameraChange(preservingUpdateDiagnostics: true)
+                }
+                needsSettledInitialCameraFit = false
+                needsAutomaticCameraRefit = false
+            }
             diagnosticsSnapshot.createdTileCount = 0
             diagnosticsSnapshot.updatedTileCount = 0
             diagnosticsSnapshot.reusedTileCount = tileRecords.count
@@ -2930,12 +2941,13 @@ final class CityScene: SKScene {
         // shadows may extend beneath translucent chrome instead of forcing the
         // settlement back into the rejected toy-island scale.
         let isCompact = size.width <= 900 || size.height <= 600
-        let targetWidthOccupancy: CGFloat = isCompact ? 0.68 : 0.90
+        let fillsDisplay = !isCompact && (safeWidth > 1_440 || safeHeight > 900)
+        let targetWidthOccupancy: CGFloat = isCompact ? 0.68 : (fillsDisplay ? 1.08 : 0.90)
         // The authoritative two-block opening is taller than the retired
         // one-cross fixture. Give that real vertical mass the same under-chrome
         // breathing room as its horizontal frontage so the new district does
         // not regress to a smaller default composition.
-        let allowedHeightOccupancy: CGFloat = isCompact ? 1.50 : 1.36
+        let allowedHeightOccupancy: CGFloat = isCompact ? 1.50 : (fillsDisplay ? 1.63 : 1.36)
         var scale = max(
             cameraBounds.width / (safeWidth * targetWidthOccupancy),
             cameraBounds.height / (safeHeight * allowedHeightOccupancy)

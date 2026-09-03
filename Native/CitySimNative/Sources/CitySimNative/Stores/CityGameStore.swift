@@ -1598,7 +1598,16 @@ final class CityGameStore: ObservableObject {
     }
 
     func setTaxRate(_ value: Double) {
-        state.taxRate = min(0.18, max(0.04, value))
+        guard state.status == .playing, value.isFinite else { return }
+        let rate = min(0.18, max(0.04, value))
+        guard abs(rate - state.taxRate) > 0.000_001 else { return }
+        let previousState = state
+        state.taxRate = rate
+        recordUndo(previousState)
+        showFeedback(
+            "Tax policy · \((rate * 100).percentText) · Net \(analytics.projectedBalance.signedCurrencyText) / cycle · Undo is available",
+            tone: .neutral
+        )
     }
 
     func setRoadMaintenancePolicy(_ policy: CityRoadMaintenancePolicy) {

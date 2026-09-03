@@ -56,6 +56,7 @@ struct InspectorView: View {
     var compact = false
     @FocusState private var cityNameFieldFocused: Bool
     @State private var showsOperatingExpenses = false
+    @State private var showsTaxPreview = false
 
     static let compactColumnCount = 2
     static let regularColumnCount = 4
@@ -155,8 +156,14 @@ struct InspectorView: View {
         }
         .accessibilityElement(children: .contain)
         .accessibilityLabel(contextAccessibilityLabel)
-        .onChange(of: store.inspectorSection) { _, _ in showsOperatingExpenses = false }
-        .onChange(of: store.hudContextScope) { _, _ in showsOperatingExpenses = false }
+        .onChange(of: store.inspectorSection) { _, _ in
+            showsOperatingExpenses = false
+            showsTaxPreview = false
+        }
+        .onChange(of: store.hudContextScope) { _, _ in
+            showsOperatingExpenses = false
+            showsTaxPreview = false
+        }
     }
 
     @ViewBuilder
@@ -203,6 +210,7 @@ struct InspectorView: View {
                         .lineLimit(1)
                     if store.inspectorSection == .finances {
                         Button {
+                            showsTaxPreview = false
                             showsOperatingExpenses = true
                         } label: {
                             Label("Expenses", systemImage: "chart.pie.fill")
@@ -629,7 +637,9 @@ struct InspectorView: View {
 
     @ViewBuilder
     private var financeContext: some View {
-        if showsOperatingExpenses {
+        if showsTaxPreview {
+            CityTaxPolicyEditor(store: store, compact: compact) { showsTaxPreview = false }
+        } else if showsOperatingExpenses {
             CityOperatingExpenseBreakdownView(presentation: operatingExpenses, compact: compact)
         } else {
             LazyVGrid(
@@ -695,8 +705,14 @@ struct InspectorView: View {
                 VStack(alignment: .leading, spacing: 3) {
                     HStack(spacing: 8) {
                         Text("Tax").font(.caption.weight(.semibold))
-                        taxRateSlider
+                        Spacer(minLength: 4)
                         Text((store.state.taxRate * 100).percentText).font(.caption.monospacedDigit())
+                        Button("Review tax…") { showsTaxPreview = true }
+                            .buttonStyle(.bordered)
+                            .controlSize(.small)
+                            .accessibilityLabel("Review city tax policy")
+                            .accessibilityHint("Compare a proposed rate and its budget impact before applying it.")
+                            .accessibilityIdentifier("finance.tax.review")
                     }
 
                     HStack(spacing: 6) {
@@ -780,17 +796,6 @@ struct InspectorView: View {
                 }
             }
         }
-    }
-
-    private var taxRateSlider: some View {
-        Slider(
-            value: Binding(get: { store.state.taxRate }, set: { store.setTaxRate($0) }),
-            in: 0.04...0.18,
-            step: 0.01
-        )
-        .accessibilityLabel("City tax rate")
-        .accessibilityValue((store.state.taxRate * 100).percentText)
-        .accessibilityHint(financeDecisionSupport.accessibilityHint)
     }
 
     private var roadMaintenancePicker: some View {

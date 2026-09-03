@@ -37,7 +37,7 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
         let admittedRoles = Set(manifest.assets.flatMap(\.roles))
         XCTAssertTrue(Set([
             "residential-low", "residential-quality", "residential-medium", "residential-high",
-            "commercial-low", "commercial-medium", "commercial-high",
+            "commercial-low", "commercial-medium", "commercial-medium-quality", "commercial-high",
             "industrial-low", "industrial-medium", "industrial-high",
             "city-hall", "park", "power-plant", "water-tower",
             "fire-station", "police-station", "school",
@@ -74,7 +74,7 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
             ("residential-quality", .residential, 1),
             ("residential-medium", .residential, 2),
             ("residential-high", .residential, 3),
-            ("commercial-medium", .commercial, 2),
+            ("commercial-medium-quality", .commercial, 2),
             ("commercial-high", .commercial, 3),
             ("industrial-medium", .industrial, 2),
             ("industrial-high", .industrial, 3),
@@ -201,6 +201,55 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
                     ),
                     "\(descriptor.assetID).\(camera.rawValue)"
                 )
+            }
+        }
+    }
+
+    @MainActor
+    func testMediumCommercialGrowthUsesAuthoredMidrisesWithoutChangingRegistration() throws {
+        let catalog = FourViewWorldAssetCatalog()
+        let style = WorldVisualStyle()
+        let renderer = LotRenderer(style: style, assets: WorldAssetCatalog(), fourViewAssets: catalog)
+        let family: Set<String> = ["market_arcade_midrise", "sunbrick_market_lofts"]
+        XCTAssertEqual(Set(catalog.assetIDs(forRole: "commercial-medium-quality")), family)
+        XCTAssertTrue(Set(catalog.assetIDs(forRole: "commercial-medium")).isSuperset(of: [
+            "com_brick_hotel", "com_department_store", "com_glass_offices",
+        ]), "Calibration assets remain available for focused inspection")
+
+        var coordinates: [String: GridCoordinate] = [:]
+        for y in 0..<32 {
+            for x in 0..<32 {
+                let tile = CityTile(coordinate: GridCoordinate(x: x, y: y), kind: .commercial, level: 2)
+                for variant in 0..<3 {
+                    let assetID = try XCTUnwrap(catalog.assetID(for: tile, variant: variant))
+                    XCTAssertTrue(family.contains(assetID))
+                }
+                let variant = WorldVisualSeed.variant(count: 3, for: tile.coordinate, kind: tile.kind)
+                coordinates[try XCTUnwrap(catalog.assetID(for: tile, variant: variant))] = tile.coordinate
+            }
+        }
+        XCTAssertEqual(Set(coordinates.keys), family)
+
+        // Include the actual grown block that exposed the gray placeholder.
+        for coordinate in Array(coordinates.values) + [GridCoordinate(x: 9, y: 8)] {
+            let tile = CityTile(coordinate: coordinate, kind: .commercial, level: 2,
+                                condition: 1, constructionProgress: 1)
+            let variant = WorldVisualSeed.variant(count: 3, for: coordinate, kind: .commercial)
+            let assetID = try XCTUnwrap(catalog.assetID(for: tile, variant: variant))
+            XCTAssertTrue(family.contains(assetID))
+            for frontage: RoadConnectionMask in [.north, .east, .south, .west] {
+                for detail: CameraDetailLevel in [.city, .neighborhood, .block] {
+                    let lot = renderer.makeLot(for: tile, adjacentRoads: frontage,
+                                               detail: detail, reducedMotion: true)
+                    let marker = try XCTUnwrap(lot.childNode(withName: "//lot.four-view.\(assetID).camNE"))
+                    let sprite = try XCTUnwrap(marker.parent as? SKSpriteNode)
+                    XCTAssertNotNil(sprite.texture)
+                    XCTAssertEqual(sprite.anchorPoint, FourViewWorldAssetCatalog.spriteAnchor)
+                    XCTAssertEqual(sprite.xScale, style.tileWidth / 176, accuracy: 0.000_001)
+                    XCTAssertEqual(sprite.yScale, style.tileWidth / 176, accuracy: 0.000_001)
+                    XCTAssertEqual(sprite.zRotation, 0, accuracy: 0.000_001)
+                    XCTAssertEqual(sprite.position, .zero)
+                }
             }
         }
     }
@@ -568,6 +617,7 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
         let manifest = try XCTUnwrap(catalog.manifest)
         let expansionAssets = manifest.assets.filter {
             $0.views.count == 4 && !$0.roles.contains("residential-quality")
+                && !$0.roles.contains("commercial-medium")
                 && !($0.family == "residential" && $0.roles.contains("residential-low"))
                 && !($0.family == "commercial" && $0.roles.contains("commercial-low"))
                 && !($0.family == "industrial" && $0.roles.contains("industrial-low"))
@@ -575,12 +625,12 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
                 && !$0.roles.contains("park")
                 && !$0.roles.contains("power-plant")
         }
-        XCTAssertEqual(expansionAssets.count, 24)
+        XCTAssertEqual(expansionAssets.count, 21)
         XCTAssertEqual(
             Dictionary(grouping: expansionAssets, by: \.family).mapValues(\.count),
             [
                 "residential": 9,
-                "commercial": 6,
+                "commercial": 3,
                 "industrial": 5,
                 "civic-service": 3,
                 "utility": 1,

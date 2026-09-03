@@ -479,7 +479,8 @@
       "file": "market_arcade_midrise_camNE.png",
       "sha256": "614c833554537f173e39e43d0af7dbd9f92971e7910fd46352bed39032df48b8",
       "roles": [
-        "commercial-medium"
+        "commercial-medium",
+        "commercial-medium-quality"
       ],
       "views": [
         {
@@ -495,7 +496,8 @@
       "file": "sunbrick_market_lofts_camNE.png",
       "sha256": "4afbf8ca7f94c612f33b09fb15ab72e44181cc2d510d28eb5956bb0a494c695f",
       "roles": [
-        "commercial-medium"
+        "commercial-medium",
+        "commercial-medium-quality"
       ],
       "views": [
         {

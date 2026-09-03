@@ -1929,6 +1929,7 @@ struct CityDevelopmentOutlook: Equatable, Sendable {
     let statusLabel: String
     let detail: String
     let payoff: String
+    let requirements: [String]
     let accessibilitySummary: String
 
     static func make(tile: CityTile, state: CityGameState) -> CityDevelopmentOutlook? {
@@ -1945,6 +1946,7 @@ struct CityDevelopmentOutlook: Equatable, Sendable {
                 statusLabel: "Mature",
                 detail: detail,
                 payoff: payoff,
+                requirements: [],
                 accessibilitySummary: "Growth mature. \(detail). \(payoff)."
             )
         }
@@ -1957,6 +1959,7 @@ struct CityDevelopmentOutlook: Equatable, Sendable {
                 statusLabel: "Building",
                 detail: detail,
                 payoff: payoff,
+                requirements: [],
                 accessibilitySummary: "Growth building. \(detail). \(payoff)."
             )
         }
@@ -1972,6 +1975,7 @@ struct CityDevelopmentOutlook: Equatable, Sendable {
                 statusLabel: "Ready for review",
                 detail: "All upgrade gates met",
                 payoff: payoff,
+                requirements: [],
                 accessibilitySummary: "Growth ready for review. All upgrade gates are met. \(accessibilityPayoff)."
             )
         }
@@ -1988,6 +1992,7 @@ struct CityDevelopmentOutlook: Equatable, Sendable {
             statusLabel: "Held",
             detail: detail,
             payoff: payoff,
+            requirements: blockerDetails,
             accessibilitySummary: "Growth held. \(accessibilityPayoff). Requirements not met: \(blockerDetails.joined(separator: "; "))."
         )
     }

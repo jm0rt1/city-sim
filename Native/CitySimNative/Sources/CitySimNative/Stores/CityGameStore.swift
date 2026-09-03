@@ -1335,6 +1335,22 @@ final class CityGameStore: ObservableObject {
         completeFoundationsLesson(.observe)
     }
 
+    @discardableResult
+    func inspectGrowthSite(_ coordinate: GridCoordinate) -> Bool {
+        guard commandPolicy == .enabled, !isPhotoModeEnabled,
+              let tile = state.tile(at: coordinate),
+              [.residential, .commercial, .industrial].contains(tile.kind) else { return false }
+        clearDevelopmentSiteComparison()
+        directRoadAccessRecoveryActive = false
+        clearRoadConnectionRecovery()
+        speed = .paused
+        interactionMode = .inspect
+        selectedCoordinate = coordinate
+        hudContextScope = .selection
+        showInspector = true
+        return true
+    }
+
     func selectTool(_ kind: BuildingKind) {
         clearDevelopmentSiteComparison()
         directRoadAccessRecoveryActive = false

@@ -54,9 +54,18 @@ struct CityFinanceDecisionSupport: Equatable {
 struct InspectorView: View {
     @ObservedObject var store: CityGameStore
     var compact = false
+    @Binding var showsGrowthQueue: Bool
     @FocusState private var cityNameFieldFocused: Bool
     @State private var showsOperatingExpenses = false
     @State private var showsTaxPreview = false
+    @State private var growthQueueFilter: CityGrowthQueue.Filter = .held
+    @State private var growthQueuePage = 0
+
+    init(store: CityGameStore, compact: Bool = false, showsGrowthQueue: Binding<Bool> = .constant(false)) {
+        self.store = store
+        self.compact = compact
+        _showsGrowthQueue = showsGrowthQueue
+    }
 
     static let compactColumnCount = 2
     static let regularColumnCount = 4
@@ -156,9 +165,10 @@ struct InspectorView: View {
         }
         .accessibilityElement(children: .contain)
         .accessibilityLabel(contextAccessibilityLabel)
-        .onChange(of: store.inspectorSection) { _, _ in
+        .onChange(of: store.inspectorSection) { _, section in
             showsOperatingExpenses = false
             showsTaxPreview = false
+            if section != .demand { showsGrowthQueue = false }
         }
         .onChange(of: store.hudContextScope) { _, _ in
             showsOperatingExpenses = false
@@ -185,14 +195,29 @@ struct InspectorView: View {
                     .font(.caption.monospacedDigit())
                     .foregroundStyle(.secondary)
                     .lineLimit(1)
-                if !compact {
+                if showsGrowthQueue {
+                    Button("Growth queue") { store.perform(.inspectorDemand) }
+                        .buttonStyle(.borderless)
+                        .frame(minHeight: GameTheme.controlMinimum)
+                        .accessibilityLabel("Return to growth queue")
+                        .accessibilityIdentifier("growth.queue.return")
+                } else if !compact {
                     Button("City data") { store.perform(.inspectorOverview) }
                         .buttonStyle(.borderless)
                         .frame(minHeight: GameTheme.controlMinimum)
                         .accessibilityLabel("Show citywide data and keep block selected")
                 }
             } else {
-                if store.inspectorSection == .finances, showsOperatingExpenses {
+                if store.inspectorSection == .demand, showsGrowthQueue {
+                    Button { showsGrowthQueue = false } label: {
+                        Label("Demand", systemImage: "chevron.left")
+                    }
+                    .buttonStyle(.borderless)
+                    .frame(minHeight: GameTheme.controlMinimum)
+                    .accessibilityLabel("Return to demand overview")
+                    .accessibilityIdentifier("growth.queue.back")
+                    Text("Growth queue").font(.callout.weight(.bold))
+                } else if store.inspectorSection == .finances, showsOperatingExpenses {
                     Button {
                         showsOperatingExpenses = false
                     } label: {
@@ -208,6 +233,9 @@ struct InspectorView: View {
                     Label(store.inspectorSection.deckTitle, systemImage: store.inspectorSection.symbol)
                         .font(.callout.weight(.bold))
                         .lineLimit(1)
+                    if store.inspectorSection == .demand, !compact {
+                        growthQueueButton(CityDevelopmentPipeline.make(state: store.state))
+                    }
                     if store.inspectorSection == .finances {
                         Button {
                             showsTaxPreview = false
@@ -307,7 +335,17 @@ struct InspectorView: View {
         case .population: populationContext
         case .happiness: happinessContext
         case .employment: employmentContext
-        case .demand: demandContext
+        case .demand:
+            if showsGrowthQueue {
+                CityGrowthQueueView(
+                    queue: CityGrowthQueue(state: store.state),
+                    filter: $growthQueueFilter,
+                    page: $growthQueuePage,
+                    inspect: { store.inspectGrowthSite($0) }
+                )
+            } else {
+                demandContext
+            }
         case .utilities: CityUtilityDecisionView(store: store)
         case .journal: journalContext
         case .trends: trendsContext
@@ -1000,6 +1038,9 @@ struct InspectorView: View {
                     .foregroundStyle(pipeline.heldCount > 0 ? GameTheme.warning : .secondary)
             }
             .accessibilityHidden(true)
+            if compact {
+                growthQueueButton(pipeline)
+            }
             if let response = pipeline.response {
                 Button {
                     StrategyCommandCenterView.perform(response, on: store)
@@ -1029,6 +1070,22 @@ struct InspectorView: View {
                     .accessibilityLabel(pipeline.accessibilitySummary)
             }
         }
+    }
+
+    private func growthQueueButton(_ pipeline: CityDevelopmentPipeline) -> some View {
+        Button {
+            growthQueueFilter = pipeline.heldCount > 0 ? .held : (pipeline.readyCount > 0 ? .ready : .all)
+            growthQueuePage = 0
+            showsGrowthQueue = true
+        } label: {
+            Label(compact ? "Review sites" : "Growth queue", systemImage: "list.bullet.rectangle")
+        }
+        .buttonStyle(.borderless)
+        .font(.caption.weight(.semibold))
+        .accessibilityLabel("Review growth queue")
+        .accessibilityValue(pipeline.accessibilitySummary)
+        .accessibilityHint("See each site's requirements and inspect it on the map.")
+        .accessibilityIdentifier("growth.queue.open")
     }
 
     private var treasuryDetail: String {

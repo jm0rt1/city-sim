@@ -120,6 +120,7 @@ struct BuildToolbarView: View {
     var compact = false
     let pointerTransitionGate: CityMapPointerTransitionGate
     var onInspectorFrame: ((CGRect) -> Void)? = nil
+    @State private var showsGrowthQueue = false
 
     enum TargetBeaconTone: Equatable {
         case information
@@ -162,13 +163,14 @@ struct BuildToolbarView: View {
     static let regularDetailsMaxHeight: CGFloat = 144
     static let regularFinanceDetailsHeight: CGFloat = 216
     static let utilityDetailsHeight: CGFloat = 248
+    static let growthQueueDetailsHeight: CGFloat = 248
     static let compactDetailsWidth: CGFloat = 720
     static let regularDetailsWidth: CGFloat = 840
     static let selectedBlockDetailsHeight: CGFloat = 220
 
-    static func detailsHeight(compact: Bool, selectedBlock: Bool, finances: Bool = false, utilities: Bool = false) -> CGFloat {
+    static func detailsHeight(compact: Bool, selectedBlock: Bool, finances: Bool = false, utilities: Bool = false, growthQueue: Bool = false) -> CGFloat {
         selectedBlock ? selectedBlockDetailsHeight
-            : (utilities ? utilityDetailsHeight
+            : (growthQueue ? growthQueueDetailsHeight : utilities ? utilityDetailsHeight
                 : (compact ? compactDetailsMaxHeight : (finances ? regularFinanceDetailsHeight : regularDetailsMaxHeight)))
     }
 
@@ -184,6 +186,9 @@ struct BuildToolbarView: View {
         .cityHUDSurface(prominent: true)
         .accessibilityElement(children: .contain)
         .accessibilityLabel(store.showInspector ? "City command deck with details open" : "City command deck")
+        .onChange(of: store.showInspector) { _, shown in
+            if !shown { showsGrowthQueue = false }
+        }
         .overlay(alignment: .bottom) {
             if store.showInspector {
                 inspectorDetails
@@ -212,7 +217,7 @@ struct BuildToolbarView: View {
 
     private var inspectorDetails: some View {
         ScrollView(.vertical) {
-            InspectorView(store: store, compact: compact)
+            InspectorView(store: store, compact: compact, showsGrowthQueue: $showsGrowthQueue)
                 .padding(.trailing, 6)
         }
         .scrollIndicators(.visible)
@@ -221,7 +226,8 @@ struct BuildToolbarView: View {
                 compact: compact,
                 selectedBlock: store.hudContextScope == .selection && store.selectedTile != nil,
                 finances: store.hudContextScope == .city && store.inspectorSection == .finances,
-                utilities: store.hudContextScope == .city && store.inspectorSection == .utilities
+                utilities: store.hudContextScope == .city && store.inspectorSection == .utilities,
+                growthQueue: store.hudContextScope == .city && store.inspectorSection == .demand && showsGrowthQueue
             ),
             alignment: .top
         )

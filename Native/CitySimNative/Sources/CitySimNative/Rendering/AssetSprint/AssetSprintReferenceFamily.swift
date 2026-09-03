@@ -28,7 +28,7 @@ struct AssetSprintReferenceFamily: Equatable, Sendable {
     var projectionRatio: CGFloat { tileWidth / tileHeight }
 
     static var resourceDirectoryURL: URL? {
-        Bundle.module.resourceURL?
+        CityResourceBundle.shared.resourceURL?
             .appendingPathComponent("WorldAssets.atlas", isDirectory: true)
             .appendingPathComponent("AssetSprintReference", isDirectory: true)
     }

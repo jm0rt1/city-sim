@@ -16,7 +16,7 @@ struct AssetSprintTerrainRoadsVegetationFamily: Equatable, Sendable {
     let assetCanvas: CGSize
 
     static var resourceDirectoryURL: URL? {
-        Bundle.module.resourceURL?
+        CityResourceBundle.shared.resourceURL?
             .appendingPathComponent("WorldAssets.atlas", isDirectory: true)
             .appendingPathComponent("AssetSprintTerrainRoadsVegetation", isDirectory: true)
     }

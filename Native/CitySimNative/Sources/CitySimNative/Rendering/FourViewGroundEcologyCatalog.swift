@@ -58,7 +58,7 @@ final class FourViewGroundEcologyCatalog {
     private let assetsByID: [String: FourViewGroundEcologyManifest.Asset]
     private var textures: [String: SKTexture] = [:]
 
-    init(bundle: Bundle = .module) {
+    init(bundle: Bundle = CityResourceBundle.shared) {
         self.bundle = bundle
         let loaded = Self.loadManifest(from: bundle)
         if let loaded, Self.isCanonical(loaded) {

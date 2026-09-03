@@ -41,7 +41,7 @@ final class FourViewRoadAssetCatalog {
     private let roadsByMask: [UInt8: FourViewRoadAssetManifest.Road]
     private var textures: [UInt8: SKTexture] = [:]
 
-    init(bundle: Bundle = .module) {
+    init(bundle: Bundle = CityResourceBundle.shared) {
         self.bundle = bundle
         let loaded = Self.loadManifest(from: bundle)
         if let loaded, Self.isCanonical(loaded) {

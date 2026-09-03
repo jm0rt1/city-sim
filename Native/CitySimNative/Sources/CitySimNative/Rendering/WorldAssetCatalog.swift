@@ -68,7 +68,7 @@ final class WorldAssetCatalog {
     private static let generatedPackID = "generated-v4-calibration"
     private static let rollbackPackID = "legacy-v2"
     private static let maximumFallbackDiagnostics = 32
-    static let resourceBundleName = "CitySimNative_CitySimNative.bundle"
+    static let resourceBundleName = CityResourceBundle.name
 
     private struct TextureRecord {
         let texture: SKTexture
@@ -113,15 +113,7 @@ final class WorldAssetCatalog {
         packOverride: String? = nil,
         environment: [String: String] = ProcessInfo.processInfo.environment
     ) {
-        if let resourceBundle {
-            self.resourceBundle = resourceBundle
-        } else if let packagedBundle = Self.packagedResourceBundle(
-            mainResourceURL: Bundle.main.resourceURL
-        ) {
-            self.resourceBundle = packagedBundle
-        } else {
-            self.resourceBundle = .module
-        }
+        self.resourceBundle = resourceBundle ?? CityResourceBundle.shared
         #if DEBUG
         let requested = packOverride ?? environment["CITYSIM_WORLD_ASSET_PACK"]
         #else
@@ -134,12 +126,7 @@ final class WorldAssetCatalog {
     }
 
     static func packagedResourceBundle(mainResourceURL: URL?) -> Bundle? {
-        guard let mainResourceURL else { return nil }
-        let bundleURL = mainResourceURL.appendingPathComponent(
-            resourceBundleName,
-            isDirectory: true
-        )
-        return Bundle(path: bundleURL.path)
+        CityResourceBundle.packagedResourceBundle(mainResourceURL: mainResourceURL)
     }
 
     private func loadGeneratedManifest() -> GeneratedWorldAssetManifest? {

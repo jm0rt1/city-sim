@@ -34,7 +34,7 @@ struct AssetSprintResidentialCivicCatalog {
     static let family = AssetSprintReferenceFamily.canonical
 
     static var resourceDirectoryURL: URL? {
-        Bundle.module.resourceURL?
+        CityResourceBundle.shared.resourceURL?
             .appendingPathComponent("WorldAssets.atlas", isDirectory: true)
             .appendingPathComponent("AssetSprintResidentialCivic", isDirectory: true)
     }

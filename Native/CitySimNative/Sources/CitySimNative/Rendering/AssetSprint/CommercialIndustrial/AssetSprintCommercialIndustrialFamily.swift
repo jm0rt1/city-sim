@@ -15,7 +15,7 @@ struct AssetSprintCommercialIndustrialFamily: Equatable, Sendable {
     var shadowOffset: CGVector { reference.shadowOffset }
 
     static var resourceDirectoryURL: URL? {
-        Bundle.module.resourceURL?
+        CityResourceBundle.shared.resourceURL?
             .appendingPathComponent("WorldAssets.atlas", isDirectory: true)
             .appendingPathComponent("AssetSprintCommercialIndustrial", isDirectory: true)
     }

@@ -69,7 +69,7 @@ final class FourViewWorldAssetCatalog {
     private var textures: [String: SKTexture] = [:]
     private var inspectionMasks: [String: CitySpriteAlphaMask] = [:]
 
-    init(bundle: Bundle = .module) {
+    init(bundle: Bundle = CityResourceBundle.shared) {
         self.bundle = bundle
         let loaded = Self.loadManifest(from: bundle)
         self.manifest = if let loaded, Self.isCanonical(loaded) { loaded } else { nil }

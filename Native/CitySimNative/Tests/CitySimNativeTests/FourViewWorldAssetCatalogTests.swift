@@ -33,12 +33,14 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
                 "park-landmark": 4,
             ]
         )
-        XCTAssertEqual(manifest.assets.filter { $0.views.count == 4 }.count, 44)
+        XCTAssertEqual(manifest.assets.filter { $0.views.count == 4 }.count, 48)
         let admittedRoles = Set(manifest.assets.flatMap(\.roles))
         XCTAssertTrue(Set([
             "residential-low", "residential-quality", "residential-medium", "residential-high",
             "commercial-low", "commercial-medium", "commercial-medium-quality", "commercial-high",
             "industrial-low", "industrial-medium", "industrial-high",
+            "residential-medium-quality", "residential-high-quality",
+            "commercial-high-quality", "industrial-medium-quality", "industrial-high-quality",
             "city-hall", "park", "power-plant", "water-tower",
             "fire-station", "police-station", "school",
         ]).isSubset(of: admittedRoles))
@@ -72,12 +74,12 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
         let catalog = FourViewWorldAssetCatalog()
         let roleCases: [(role: String, kind: BuildingKind, level: Int)] = [
             ("residential-quality", .residential, 1),
-            ("residential-medium", .residential, 2),
-            ("residential-high", .residential, 3),
+            ("residential-medium-quality", .residential, 2),
+            ("residential-high-quality", .residential, 3),
             ("commercial-medium-quality", .commercial, 2),
-            ("commercial-high", .commercial, 3),
-            ("industrial-medium", .industrial, 2),
-            ("industrial-high", .industrial, 3),
+            ("commercial-high-quality", .commercial, 3),
+            ("industrial-medium-quality", .industrial, 2),
+            ("industrial-high-quality", .industrial, 3),
             ("water-tower", .waterTower, 1),
             ("fire-station", .fireStation, 1),
             ("police-station", .policeStation, 1),
@@ -249,6 +251,64 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
                     XCTAssertEqual(sprite.yScale, style.tileWidth / 176, accuracy: 0.000_001)
                     XCTAssertEqual(sprite.zRotation, 0, accuracy: 0.000_001)
                     XCTAssertEqual(sprite.position, .zero)
+                }
+            }
+        }
+    }
+
+    @MainActor
+    func testGrownNeighborhoodsKeepAuthoredQualityAndResidentialFrontage() throws {
+        let catalog = FourViewWorldAssetCatalog()
+        let style = WorldVisualStyle()
+        let renderer = LotRenderer(style: style, assets: WorldAssetCatalog(), fourViewAssets: catalog)
+        let families: [(role: String, kind: BuildingKind, level: Int, ids: Set<String>)] = [
+            ("residential-medium", .residential, 2, ["brickline_rowhouse_apartments", "maple_courtyard_apartments"]),
+            ("residential-high", .residential, 3, ["foundry_crown_apartments", "juniper_terrace_tower"]),
+            ("commercial-high", .commercial, 3, ["aurora_exchange_tower", "copperglass_exchange_annex"]),
+            ("industrial-medium", .industrial, 2, ["canalworks_factory", "riverbend_textile_works"]),
+            ("industrial-high", .industrial, 3, ["foundry_peak_plant", "ember_rail_foundry"]),
+        ]
+        let frontages: [(RoadConnectionMask, FourViewWorldAssetCatalog.Camera)] = [
+            (.south, .camNE), (.west, .camSE), (.north, .camSW), (.east, .camNW),
+        ]
+        for family in families {
+            XCTAssertEqual(Set(catalog.assetIDs(forRole: family.role + "-quality")), family.ids)
+            XCTAssertGreaterThan(catalog.assetIDs(forRole: family.role).count, family.ids.count,
+                                 "Keep calibration sources available outside live selection")
+            var coordinates: [String: GridCoordinate] = [:]
+            for y in 0..<16 {
+                for x in 0..<16 {
+                    let tile = CityTile(coordinate: GridCoordinate(x: x, y: y), kind: family.kind, level: family.level)
+                    for variant in 0..<3 {
+                        XCTAssertTrue(family.ids.contains(try XCTUnwrap(catalog.assetID(for: tile, variant: variant))))
+                    }
+                    let variant = family.kind == .residential
+                        ? ResidentialGeneratedAssetIdentity.liveVisualVariant(at: tile.coordinate)
+                        : WorldVisualSeed.variant(count: 3, for: tile.coordinate, kind: tile.kind)
+                    coordinates[try XCTUnwrap(catalog.assetID(for: tile, variant: variant))] = tile.coordinate
+                }
+            }
+            XCTAssertEqual(Set(coordinates.keys), family.ids)
+            for (assetID, coordinate) in coordinates {
+                for level in (family.level == 3 ? [3, 4] : [2]) {
+                    let tile = CityTile(coordinate: coordinate, kind: family.kind, level: level,
+                                        condition: 1, constructionProgress: 1)
+                    for (frontage, residentialCamera) in frontages {
+                        let camera: FourViewWorldAssetCatalog.Camera = family.kind == .residential ? residentialCamera : .camNE
+                        XCTAssertNotNil(catalog.resourceURL(for: assetID, camera: camera))
+                        for detail: CameraDetailLevel in [.city, .neighborhood, .block] {
+                            let lot = renderer.makeLot(for: tile, adjacentRoads: frontage,
+                                                       detail: detail, reducedMotion: true)
+                            let marker = try XCTUnwrap(lot.childNode(withName: "//lot.four-view.\(assetID).\(camera.rawValue)"))
+                            let sprite = try XCTUnwrap(marker.parent as? SKSpriteNode)
+                            XCTAssertNotNil(sprite.texture)
+                            XCTAssertEqual(sprite.anchorPoint, FourViewWorldAssetCatalog.spriteAnchor)
+                            XCTAssertEqual(sprite.xScale, style.tileWidth / 176, accuracy: 0.000_001)
+                            XCTAssertEqual(sprite.yScale, style.tileWidth / 176, accuracy: 0.000_001)
+                            XCTAssertEqual(sprite.zRotation, 0, accuracy: 0.000_001)
+                            XCTAssertEqual(sprite.position, .zero)
+                        }
+                    }
                 }
             }
         }
@@ -615,9 +675,16 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
     func testExpansionWaveSavedCityDisplaysEveryNewAsset() throws {
         let catalog = FourViewWorldAssetCatalog()
         let manifest = try XCTUnwrap(catalog.manifest)
+        let upgradeRoles: Set<String> = [
+            "residential-medium", "residential-high", "commercial-medium", "commercial-high",
+            "industrial-medium", "industrial-high",
+        ]
         let expansionAssets = manifest.assets.filter {
-            $0.views.count == 4 && !$0.roles.contains("residential-quality")
-                && !$0.roles.contains("commercial-medium")
+            let isUpgrade = !upgradeRoles.isDisjoint(with: $0.roles)
+            let isQuality = $0.roles.contains { $0.hasSuffix("-quality") }
+            return ($0.views.count == 4 || (isUpgrade && isQuality))
+                && (!isUpgrade || isQuality)
+                && !$0.roles.contains("residential-quality")
                 && !($0.family == "residential" && $0.roles.contains("residential-low"))
                 && !($0.family == "commercial" && $0.roles.contains("commercial-low"))
                 && !($0.family == "industrial" && $0.roles.contains("industrial-low"))
@@ -625,13 +692,13 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
                 && !$0.roles.contains("park")
                 && !$0.roles.contains("power-plant")
         }
-        XCTAssertEqual(expansionAssets.count, 21)
+        XCTAssertEqual(expansionAssets.count, 16)
         XCTAssertEqual(
             Dictionary(grouping: expansionAssets, by: \.family).mapValues(\.count),
             [
-                "residential": 9,
-                "commercial": 3,
-                "industrial": 5,
+                "residential": 4,
+                "commercial": 4,
+                "industrial": 4,
                 "civic-service": 3,
                 "utility": 1,
             ]

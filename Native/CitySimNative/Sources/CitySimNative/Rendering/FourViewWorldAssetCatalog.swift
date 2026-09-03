@@ -50,6 +50,8 @@ final class FourViewWorldAssetCatalog {
         "residential-low", "residential-quality", "residential-medium", "residential-high",
         "commercial-low", "commercial-medium", "commercial-medium-quality", "commercial-high",
         "industrial-low", "industrial-medium", "industrial-high",
+        "residential-medium-quality", "residential-high-quality",
+        "commercial-high-quality", "industrial-medium-quality", "industrial-high-quality",
         "city-hall", "park", "power-plant", "water-tower",
         "fire-station", "police-station", "school",
     ]
@@ -78,9 +80,9 @@ final class FourViewWorldAssetCatalog {
     func assetID(for tile: CityTile, variant: Int) -> String? {
         switch tile.kind {
         case .residential where tile.level >= 3:
-            deterministicAssetID(forRole: "residential-high", tile: tile, variant: variant)
+            deterministicAssetID(forRole: "residential-high-quality", tile: tile, variant: variant)
         case .residential where tile.level == 2:
-            deterministicAssetID(forRole: "residential-medium", tile: tile, variant: variant)
+            deterministicAssetID(forRole: "residential-medium-quality", tile: tile, variant: variant)
         case .residential:
             // The broader low-density role retains admitted calibration and
             // expansion sources for provenance and focused inspection. Live
@@ -93,7 +95,7 @@ final class FourViewWorldAssetCatalog {
                 variant: max(0, variant - 1)
             )
         case .commercial where tile.level >= 3:
-            deterministicAssetID(forRole: "commercial-high", tile: tile, variant: variant)
+            deterministicAssetID(forRole: "commercial-high-quality", tile: tile, variant: variant)
         case .commercial where tile.level == 2:
             // Keep calibration towers inspectable through the broader role,
             // but reward live growth with the admitted authored midrises.
@@ -104,9 +106,9 @@ final class FourViewWorldAssetCatalog {
             // compatibility catalog's primitive calibration storefronts.
             nil
         case .industrial where tile.level >= 3:
-            deterministicAssetID(forRole: "industrial-high", tile: tile, variant: variant)
+            deterministicAssetID(forRole: "industrial-high-quality", tile: tile, variant: variant)
         case .industrial where tile.level == 2:
-            deterministicAssetID(forRole: "industrial-medium", tile: tile, variant: variant)
+            deterministicAssetID(forRole: "industrial-medium-quality", tile: tile, variant: variant)
         case .industrial where tile.level == 1:
             // The production atlas already carries the admitted, authored
             // four-direction Industrial L1 family. Do not replace it with the

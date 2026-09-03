@@ -106,13 +106,29 @@
       "file": "brickline_rowhouse_apartments_camNE.png",
       "sha256": "e5eba683df85197beb5bb601707dbf41717911829fe430d8b6ca520068111ae2",
       "roles": [
-        "residential-medium"
+        "residential-medium",
+        "residential-medium-quality"
       ],
       "views": [
         {
           "camera": "camNE",
           "file": "brickline_rowhouse_apartments_camNE.png",
           "sha256": "e5eba683df85197beb5bb601707dbf41717911829fe430d8b6ca520068111ae2"
+        },
+        {
+          "camera": "camSE",
+          "file": "brickline_rowhouse_apartments_camSE.png",
+          "sha256": "72355ef2788960428b62aca141ec594763fe0bb062899405514be18b23e67334"
+        },
+        {
+          "camera": "camSW",
+          "file": "brickline_rowhouse_apartments_camSW.png",
+          "sha256": "7638f645a6d42949caef745d79e4f5fcc1dfad6ba0ffe24f4e339d5699f556ae"
+        },
+        {
+          "camera": "camNW",
+          "file": "brickline_rowhouse_apartments_camNW.png",
+          "sha256": "39495baa67322f861eb1cf39fcf1172a2a0dc9bab99615081c759bcfb8458b80"
         }
       ],
       "family": "residential"
@@ -122,13 +138,29 @@
       "file": "maple_courtyard_apartments_camNE.png",
       "sha256": "f2308ff21ca05e6e522e793833528d1d44d631eb82ec30f81d2b2babb1eded2a",
       "roles": [
-        "residential-medium"
+        "residential-medium",
+        "residential-medium-quality"
       ],
       "views": [
         {
           "camera": "camNE",
           "file": "maple_courtyard_apartments_camNE.png",
           "sha256": "f2308ff21ca05e6e522e793833528d1d44d631eb82ec30f81d2b2babb1eded2a"
+        },
+        {
+          "camera": "camSE",
+          "file": "maple_courtyard_apartments_camSE.png",
+          "sha256": "8165f5cc352bd1638e1f308ad2f63816c295e47c3004eb55f13ceda654ae5a40"
+        },
+        {
+          "camera": "camSW",
+          "file": "maple_courtyard_apartments_camSW.png",
+          "sha256": "4301234883f8c832bf763f70abaa95c019a51264b6e6aeec645dbf080393a2e4"
+        },
+        {
+          "camera": "camNW",
+          "file": "maple_courtyard_apartments_camNW.png",
+          "sha256": "79a92501d4c5d9d1853867c731628891765a985a0f3a6956277b2aafdf2a134a"
         }
       ],
       "family": "residential"
@@ -447,13 +479,29 @@
       "file": "foundry_crown_apartments_camNE.png",
       "sha256": "92b40bf33cd57e8a5c7a402178cfbf2d4d42b9bc5b7a7e24da58f327b53e2df1",
       "roles": [
-        "residential-high"
+        "residential-high",
+        "residential-high-quality"
       ],
       "views": [
         {
           "camera": "camNE",
           "file": "foundry_crown_apartments_camNE.png",
           "sha256": "92b40bf33cd57e8a5c7a402178cfbf2d4d42b9bc5b7a7e24da58f327b53e2df1"
+        },
+        {
+          "camera": "camSE",
+          "file": "foundry_crown_apartments_camSE.png",
+          "sha256": "ee40a8e0b844c7c73bbff3ace9ed8b2d491b689467d680c3d55908ed01efa0c7"
+        },
+        {
+          "camera": "camSW",
+          "file": "foundry_crown_apartments_camSW.png",
+          "sha256": "4a28a5eb603008cdd90c6a66a22a95adedc51ea5d74fbe8f2054ec2740fceed5"
+        },
+        {
+          "camera": "camNW",
+          "file": "foundry_crown_apartments_camNW.png",
+          "sha256": "4a880bfce7a08984e423e8475f20e3fa720d267f79944b2affe727607ff844ca"
         }
       ],
       "family": "residential"
@@ -463,13 +511,29 @@
       "file": "juniper_terrace_tower_camNE.png",
       "sha256": "e379ac2391974493285e87629d05b27b39ca802e5e8204efdbca7c9cbacc0362",
       "roles": [
-        "residential-high"
+        "residential-high",
+        "residential-high-quality"
       ],
       "views": [
         {
           "camera": "camNE",
           "file": "juniper_terrace_tower_camNE.png",
           "sha256": "e379ac2391974493285e87629d05b27b39ca802e5e8204efdbca7c9cbacc0362"
+        },
+        {
+          "camera": "camSE",
+          "file": "juniper_terrace_tower_camSE.png",
+          "sha256": "5ab0b3e779568c2ba6ca4844ccc98ab0db09df0027da7e53f5c849c0614c45f4"
+        },
+        {
+          "camera": "camSW",
+          "file": "juniper_terrace_tower_camSW.png",
+          "sha256": "8318f41430a18f70cd6c8e67ee4bbcab19e7aab3b86b7b710428eab026833585"
+        },
+        {
+          "camera": "camNW",
+          "file": "juniper_terrace_tower_camNW.png",
+          "sha256": "ece0ae14165779a6d469757e5831dfdfc891960eeee953b90fdb16040b313085"
         }
       ],
       "family": "residential"
@@ -513,7 +577,8 @@
       "file": "aurora_exchange_tower_camNE.png",
       "sha256": "b5922416a312ca66cec988b89dd2af4b0d73df5615629cfef24cf126125d6ede",
       "roles": [
-        "commercial-high"
+        "commercial-high",
+        "commercial-high-quality"
       ],
       "views": [
         {
@@ -529,7 +594,8 @@
       "file": "copperglass_exchange_annex_camNE.png",
       "sha256": "72ff8d40763c5a1c8026fb6387f360a6ffbe7b4e0a59a9fab0e80cb407849fba",
       "roles": [
-        "commercial-high"
+        "commercial-high",
+        "commercial-high-quality"
       ],
       "views": [
         {
@@ -545,7 +611,8 @@
       "file": "canalworks_factory_camNE.png",
       "sha256": "845f01917e2acdbcdf0c4bed341db8ee6c7cb598deb79d4ba05a2a97b51e37d2",
       "roles": [
-        "industrial-medium"
+        "industrial-medium",
+        "industrial-medium-quality"
       ],
       "views": [
         {
@@ -561,7 +628,8 @@
       "file": "riverbend_textile_works_camNE.png",
       "sha256": "58a29328eee403fb1b6fc735b4131212efa704da36704c09021424fc865e674d",
       "roles": [
-        "industrial-medium"
+        "industrial-medium",
+        "industrial-medium-quality"
       ],
       "views": [
         {
@@ -577,7 +645,8 @@
       "file": "foundry_peak_plant_camNE.png",
       "sha256": "8bada091016aea4160220581de9ce3390039ad8bbf280d664619dd2937fa0ab5",
       "roles": [
-        "industrial-high"
+        "industrial-high",
+        "industrial-high-quality"
       ],
       "views": [
         {
@@ -593,7 +662,8 @@
       "file": "ember_rail_foundry_camNE.png",
       "sha256": "85556f47b63e7f03352d5e536f667712688c89088fb5e2d7624056319fa42938",
       "roles": [
-        "industrial-high"
+        "industrial-high",
+        "industrial-high-quality"
       ],
       "views": [
         {

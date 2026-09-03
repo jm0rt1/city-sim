@@ -2,6 +2,89 @@ import XCTest
 @testable import CitySimNative
 
 final class CityBuildOperatingForecastTests: XCTestCase {
+    func testNextBuildBudgetIncludesAlreadyApprovedUtilityUpkeepWithoutChangingState() throws {
+        var state = CityGameState.newCity(seed: 42)
+        state.treasury = 100_000
+        let water = try validTile(for: .waterTower, in: state).coordinate
+        guard case .success = CitySimulation.build(.waterTower, at: water, in: &state) else {
+            return XCTFail("Expected approved water tower")
+        }
+        let target = try validTile(for: .commercial, in: state)
+        let before = try CityStateFingerprinter.fingerprint(state)
+        let forecast = try XCTUnwrap(CityBuildOperatingForecast.make(kind: .commercial, tile: target, state: state))
+
+        var proposalOnly = state
+        guard case .success = CitySimulation.build(.commercial, at: target.coordinate, in: &proposalOnly) else {
+            return XCTFail("Expected commercial proposal")
+        }
+        proposalOnly.updateTile(at: target.coordinate) { $0.constructionProgress = 1 }
+        proposalOnly.jobs = min(CitySimulation.jobCapacity(in: proposalOnly), max(1, proposalOnly.population * 7 / 10))
+        let misleadingBudget = CitySimulation.projectedBalance(in: proposalOnly)
+        proposalOnly.updateTile(at: water) { $0.constructionProgress = 1 }
+        XCTAssertEqual(forecast.completedBalance, CitySimulation.projectedBalance(in: proposalOnly), accuracy: 0.001)
+        XCTAssertEqual(misleadingBudget - forecast.completedBalance,
+                       BuildingKind.waterTower.upkeep * CitySimulation.reserveUtilityUpkeepFactor * CitySimulation.upkeepMultiplier,
+                       accuracy: 0.001)
+        XCTAssertEqual(forecast.currentBalance, CitySimulation.projectedBalance(in: state), accuracy: 0.001)
+        XCTAssertEqual(forecast.change, forecast.completedBalance - forecast.currentBalance, accuracy: 0.001)
+        XCTAssertEqual(forecast.approvedConstructionCount, 1)
+        XCTAssertEqual(try CityStateFingerprinter.fingerprint(state), before)
+        XCTAssertEqual(state.tile(at: water)?.constructionProgress, 0)
+        XCTAssertEqual(state.tile(at: target.coordinate)?.kind, .empty)
+
+        let decision = CityBuildDecisionPresentation.make(kind: .commercial, tile: target, rejection: nil, state: state)
+        XCTAssertTrue(decision.operatingImpact.hasPrefix("Net with 1 queued"))
+        XCTAssertTrue(decision.accessibilitySummary.contains("1 already approved construction project"))
+        XCTAssertTrue(decision.accessibilitySummary.contains("Current population and policies are held constant"))
+        XCTAssertTrue(decision.accessibilitySummary.contains("no further construction charges"))
+    }
+
+    func testCommittedBudgetIncludesProductiveConstructionAndUpgradesOnlyOnce() throws {
+        var state = CityGameState.newCity(seed: 42)
+        state.treasury = 100_000
+        state.sandboxRules = CitySandboxRules(economy: .demanding, incidentsEnabled: true, unlimitedFunds: true)
+        let workplace = try validTile(for: .commercial, in: state).coordinate
+        guard case .success = CitySimulation.build(.commercial, at: workplace, in: &state) else {
+            return XCTFail("Expected approved workplace")
+        }
+        let upgrade = try tile(.industrial, in: state).coordinate
+        state.updateTile(at: upgrade) { $0.level = 2; $0.constructionProgress = 0.6 }
+        let proposal = try validTile(for: .park, in: state)
+        let before = state
+        let forecast = try XCTUnwrap(CityBuildOperatingForecast.make(kind: .park, tile: proposal, state: state))
+        var allFinished = state
+        allFinished.updateTile(at: workplace) { $0.constructionProgress = 1 }
+        allFinished.updateTile(at: upgrade) { $0.constructionProgress = 1 }
+        let afterQueue = try XCTUnwrap(CityBuildOperatingForecast.make(kind: .park, tile: proposal, state: allFinished))
+        XCTAssertEqual(forecast.approvedConstructionCount, 2)
+        XCTAssertEqual(afterQueue.approvedConstructionCount, 0)
+        XCTAssertEqual(forecast.completedBalance, afterQueue.completedBalance, accuracy: 0.001)
+        XCTAssertEqual(state, before)
+        XCTAssertNil(afterQueue.completionAssumption)
+        let decision = CityBuildDecisionPresentation.make(kind: .park, tile: proposal, rejection: nil, state: state, unlimitedFunds: true)
+        XCTAssertTrue(decision.operatingImpact.hasPrefix("Tracked net with 2 queued"))
+    }
+
+    func testFundingPreviewIncludesApprovedProjectsWithoutAuthorizingTheBuild() throws {
+        var state = CityGameState.newCity(seed: 42)
+        let approved = try validTile(for: .waterTower, in: state).coordinate
+        guard case .success = CitySimulation.build(.waterTower, at: approved, in: &state) else {
+            return XCTFail("Expected approved tower")
+        }
+        let target = try validTile(for: .powerPlant, in: state)
+        state.treasury = 1
+        let before = state
+        let decision = CityBuildDecisionPresentation.make(kind: .powerPlant, tile: target, rejection: .insufficientFunds, state: state)
+        XCTAssertEqual(decision.operatingForecast?.approvedConstructionCount, 1)
+        XCTAssertTrue(decision.operatingImpact.hasPrefix("If funded with 1 queued"))
+        XCTAssertEqual(decision.availability, "Blocked")
+        XCTAssertEqual(decision.fundingShortfall, BuildingKind.powerPlant.buildCost - 1)
+        XCTAssertEqual(state, before)
+        guard case .failure(.insufficientFunds) = CitySimulation.validateBuild(.powerPlant, at: target.coordinate, in: state) else {
+            return XCTFail("Forecast must not fund the live project")
+        }
+    }
+
     func testDevelopmentOutlookUsesAuthoritativeUpgradeGatesAndCapacityPayoff() throws {
         var state = CityGameState.newCity(seed: 42)
         let commercial = try XCTUnwrap(

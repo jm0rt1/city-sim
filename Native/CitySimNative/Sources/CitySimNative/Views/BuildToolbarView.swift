@@ -490,6 +490,7 @@ struct BuildToolbarView: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .layoutPriority(2)
+            .help(decision.operatingForecast?.completionAssumption ?? decision.operatingImpact)
 
             if let recovery = decision.recovery {
                 Button {

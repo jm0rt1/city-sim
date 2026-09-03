@@ -642,6 +642,13 @@ struct CityBuildOperatingForecast: Equatable, Sendable {
     let currentBalance: Double
     let completedBalance: Double
     let change: Double
+    let approvedConstructionCount: Int
+
+    var completionAssumption: String? {
+        guard approvedConstructionCount > 0 else { return nil }
+        let projects = approvedConstructionCount == 1 ? "project" : "projects"
+        return "Budget includes this proposal and \(approvedConstructionCount) already approved construction \(projects), including upgrades, after all finish. Current population and policies are held constant; no further construction charges are assumed for approved projects."
+    }
 
     static func utilityFundingPreview(
         kind: BuildingKind, tile: CityTile, state: CityGameState
@@ -663,11 +670,17 @@ struct CityBuildOperatingForecast: Equatable, Sendable {
         state: CityGameState
     ) -> Self? {
         let current = CitySimulation.projectedBalance(in: state)
+        let approved = state.tiles.filter { $0.kind != .empty && $0.constructionProgress < 1 }.count
         var completed = state
         guard case .success = CitySimulation.build(kind, at: tile.coordinate, in: &completed) else {
             return nil
         }
-        completed.updateTile(at: tile.coordinate) { $0.constructionProgress = 1 }
+        // Construction has already been paid for, but its operating costs and
+        // revenue do not enter the live budget until completion. Forecast the
+        // whole committed pipeline, not just this next proposal in isolation.
+        for index in completed.tiles.indices where completed.tiles[index].kind != .empty {
+            completed.tiles[index].constructionProgress = 1
+        }
         completed.jobs = min(
             CitySimulation.jobCapacity(in: completed),
             max(1, completed.population * 7 / 10)
@@ -676,7 +689,8 @@ struct CityBuildOperatingForecast: Equatable, Sendable {
         return Self(
             currentBalance: current,
             completedBalance: projected,
-            change: projected - current
+            change: projected - current,
+            approvedConstructionCount: approved
         )
     }
 }
@@ -1651,6 +1665,7 @@ struct CityBuildDecisionPresentation: Equatable, Sendable {
             "Footprint \(footprint)",
             cost,
             operatingImpact,
+            operatingForecast?.completionAssumption,
             fundingStatus,
             fundingAssumption,
             siteComparison?.accessibilitySummary,
@@ -1732,6 +1747,11 @@ struct CityBuildDecisionPresentation: Equatable, Sendable {
         assumesFunding: Bool
     ) -> String {
         guard let forecast else { return "Net forecast available when ready" }
+        if forecast.approvedConstructionCount > 0 {
+            let prefix = assumesFunding ? "If funded" : (unlimitedFunds ? "Tracked net" : "Net")
+            return "\(prefix) with \(forecast.approvedConstructionCount) queued "
+                + "\(forecast.currentBalance.signedCurrencyText) → \(forecast.completedBalance.signedCurrencyText) / cycle"
+        }
         let prefix = assumesFunding ? "If funded: net" : (unlimitedFunds ? "Tracked net" : "Net on completion")
         return "\(prefix) \(forecast.currentBalance.signedCurrencyText) → "
             + "\(forecast.completedBalance.signedCurrencyText) / cycle"

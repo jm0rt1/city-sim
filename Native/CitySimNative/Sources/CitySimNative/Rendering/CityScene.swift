@@ -180,7 +180,7 @@ final class CityScene: SKScene {
     private let ambientLifeLayer = SKNode()
     private let cameraNode = SKCameraNode()
     private let buildOpportunityLayer = SKNode()
-    private let utilityGainLayer = SKNode()
+    private let placementGainLayer = SKNode()
     private let guidedRoadRouteLayer = SKNode()
     private let selectedCommuteRouteLayer = SKNode()
     private let hoverNode = SKShapeNode()
@@ -270,6 +270,7 @@ final class CityScene: SKScene {
     var activeActionTargetForTesting: CityMapActionTargetPresentation? { renderedActiveActionTarget }
     private(set) var buildOpportunityCoordinatesForTesting: [GridCoordinate] = []
     private(set) var utilityGainBlocksForTesting: [CityUtilityPlacementForecast.BlockGain] = []
+    private(set) var civicGainBlocksForTesting: [CityCivicServicePlacementForecast.BlockGain] = []
     private(set) var utilityPollutionBlocksForTesting: [CityPlacementPollutionImpact.BlockImpact] = []
     var guidedRoadRouteCoordinatesForTesting: [GridCoordinate] { renderedGuidedRoadRoute }
     var guidedRoadRouteFootprintPositionsForTesting: [CGPoint] {
@@ -292,7 +293,7 @@ final class CityScene: SKScene {
             (node.name.map { [$0] } ?? []) + node.children.flatMap(names)
         }
         return names(in: buildOpportunityLayer)
-            + names(in: utilityGainLayer)
+            + names(in: placementGainLayer)
             + names(in: guidedRoadRouteLayer)
             + names(in: selectedCommuteRouteLayer)
             + names(in: hoverNode)
@@ -368,8 +369,8 @@ final class CityScene: SKScene {
         camera = cameraNode
         buildOpportunityLayer.name = "interaction.build-opportunities"
         buildOpportunityLayer.zPosition = 89_997
-        utilityGainLayer.name = "interaction.utility-gains"
-        utilityGainLayer.zPosition = 89_996
+        placementGainLayer.name = "interaction.placement-gains"
+        placementGainLayer.zPosition = 89_996
         guidedRoadRouteLayer.name = "interaction.guided-road-route"
         guidedRoadRouteLayer.zPosition = 89_998
         selectedCommuteRouteLayer.name = "interaction.selected-commute-route"
@@ -383,13 +384,13 @@ final class CityScene: SKScene {
         selectionNode.name = "interaction.selection"
         configureSelectionAdornment()
         worldLayer.addChild(buildOpportunityLayer)
-        worldLayer.addChild(utilityGainLayer)
+        worldLayer.addChild(placementGainLayer)
         worldLayer.addChild(guidedRoadRouteLayer)
         worldLayer.addChild(selectedCommuteRouteLayer)
         worldLayer.addChild(hoverNode)
         worldLayer.addChild(selectionNode)
         buildOpportunityLayer.isHidden = true
-        utilityGainLayer.isHidden = true
+        placementGainLayer.isHidden = true
         guidedRoadRouteLayer.isHidden = true
         selectedCommuteRouteLayer.isHidden = true
         hoverNode.isHidden = true
@@ -464,6 +465,7 @@ final class CityScene: SKScene {
         let previousGuidedRoadRoute = renderedGuidedRoadRoute
         let previousSelectedCommuteRoute = renderedSelectedCommuteRoute
         let previousUtilityGains = utilityGainBlocksForTesting
+        let previousCivicGains = civicGainBlocksForTesting
         let previousUtilityPollution = utilityPollutionBlocksForTesting
         let motionChanged = renderedReducedMotion != reducedMotion
         let priorDisplayedCueCount = diagnosticsSnapshot.displayedConsequenceCueCount
@@ -555,6 +557,7 @@ final class CityScene: SKScene {
             || previousGuidedRoadRoute != guidedRoadRoute
             || previousSelectedCommuteRoute != selectedCommuteRoute
             || previousUtilityGains != utilityGainBlocksForTesting
+            || previousCivicGains != civicGainBlocksForTesting
             || previousUtilityPollution != utilityPollutionBlocksForTesting
             || motionChanged
             || unexplainedCueRemoval
@@ -2640,7 +2643,7 @@ final class CityScene: SKScene {
 
     private func clearInteractionPreview() {
         lastPreviewSignature = nil
-        updateUtilityGainPreview(nil)
+        updatePlacementGainPreview(utility: nil, civic: nil)
         hoverNode.removeAllChildren()
         hoverNode.isHidden = true
     }
@@ -2672,7 +2675,8 @@ final class CityScene: SKScene {
         hoverNode.removeAllChildren()
 
         let presentation = previewPresentation(status)
-        updateUtilityGainPreview(primaryAction?.buildDecision?.utilityForecast)
+        updatePlacementGainPreview(utility: primaryAction?.buildDecision?.utilityForecast,
+            civic: primaryAction?.buildDecision?.civicForecast)
         let color = presentation.color
         if isInspecting {
             hoverNode.path = nil
@@ -2696,21 +2700,28 @@ final class CityScene: SKScene {
         }
     }
 
-    private func updateUtilityGainPreview(_ forecast: CityUtilityPlacementForecast?) {
-        let gains = forecast?.blockGains ?? []
-        let pollution = forecast?.pollutionImpact?.blockImpacts ?? []
-        guard gains != utilityGainBlocksForTesting || pollution != utilityPollutionBlocksForTesting else { return }
+    private func updatePlacementGainPreview(
+        utility: CityUtilityPlacementForecast?, civic: CityCivicServicePlacementForecast?
+    ) {
+        let gains = utility?.blockGains ?? []
+        let civicGains = civic?.blockGains ?? []
+        let pollution = utility?.pollutionImpact?.blockImpacts ?? []
+        guard gains != utilityGainBlocksForTesting || pollution != utilityPollutionBlocksForTesting
+            || civicGains != civicGainBlocksForTesting else { return }
         utilityGainBlocksForTesting = gains
+        civicGainBlocksForTesting = civicGains
         utilityPollutionBlocksForTesting = pollution
-        utilityGainLayer.removeAllChildren()
-        utilityGainLayer.isHidden = gains.isEmpty && pollution.isEmpty
+        placementGainLayer.removeAllChildren()
+        placementGainLayer.isHidden = gains.isEmpty && pollution.isEmpty && civicGains.isEmpty
         let pollutedCoordinates = Set(pollution.map(\.coordinate))
         let improvedCoordinates = Set(gains.map(\.coordinate))
+        let markers = gains.map { (coordinate: $0.coordinate, reachesHealthy: $0.reachesHealthy, namespace: "utility-gain") }
+            + civicGains.map { (coordinate: $0.coordinate, reachesHealthy: $0.reachesHealthy, namespace: "civic-gain") }
         // Anchored interaction marks, not altered world art or projected
         // current-state overlays. Shapes distinguish improvement from recovery.
-        for gain in gains {
+        for gain in markers {
             let marker = SKShapeNode(circleOfRadius: 8)
-            marker.name = "interaction.utility-gain.\(gain.coordinate.x).\(gain.coordinate.y)"
+            marker.name = "interaction.\(gain.namespace).\(gain.coordinate.x).\(gain.coordinate.y)"
             let ground = style.isoPosition(gain.coordinate)
             marker.position = CGPoint(x: ground.x + (pollutedCoordinates.contains(gain.coordinate) ? -9 : 0),
                 y: ground.y - tileHeight * 0.37)
@@ -2733,13 +2744,13 @@ final class CityScene: SKScene {
                 path.addLine(to: CGPoint(x: 3, y: 1))
             }
             let symbol = SKShapeNode(path: path)
-            symbol.name = gain.reachesHealthy ? "utility-gain.healthy" : "utility-gain.improves"
+            symbol.name = "\(gain.namespace).\(gain.reachesHealthy ? "healthy" : "improves")"
             symbol.strokeColor = .white
             symbol.lineWidth = 1.7
             symbol.lineCap = .round
             symbol.lineJoin = .round
             marker.addChild(symbol)
-            utilityGainLayer.addChild(marker)
+            placementGainLayer.addChild(marker)
         }
         for impact in pollution {
             let triangle = CGMutablePath()
@@ -2767,7 +2778,7 @@ final class CityScene: SKScene {
             dot.fillColor = .white
             dot.strokeColor = .clear
             marker.addChild(dot)
-            utilityGainLayer.addChild(marker)
+            placementGainLayer.addChild(marker)
         }
     }
 

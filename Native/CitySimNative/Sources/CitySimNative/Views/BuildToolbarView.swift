@@ -359,9 +359,11 @@ struct BuildToolbarView: View {
     private func buildDecisionRow(_ decision: CityBuildDecisionPresentation) -> some View {
         let routePlan = store.roadConnectionPlanPresentation
         let pollution = decision.disabledReason == nil && routePlan == nil ? decision.pollutionImpact : nil
+        let civic = routePlan == nil ? decision.civicForecast : nil
+        let readyInTitle = pollution != nil || (civic != nil && decision.disabledReason == nil)
         return HStack(spacing: compact ? 8 : 12) {
             VStack(alignment: .leading, spacing: 3) {
-                Label(pollution == nil ? "PLACE \(decision.buildingTitle.uppercased())"
+                Label(!readyInTitle ? "PLACE \(decision.buildingTitle.uppercased())"
                       : "\(decision.buildingTitle.uppercased()) · READY", systemImage: decision.buildingSymbol)
                     .font(.system(size: GameTheme.hudCriticalTextSize, weight: .heavy, design: .rounded))
                     .foregroundStyle(GameTheme.accent)
@@ -412,6 +414,32 @@ struct BuildToolbarView: View {
                         .help(pollution.accessibilitySummary)
                         .accessibilityLabel(pollution.accessibilitySummary)
                         .accessibilityIdentifier("hud.build.pollution-impact")
+                } else if let civic {
+                    if let reason = decision.disabledReason {
+                        Text("BLOCKED · \(civic.compactMapKey)")
+                            .font(.system(size: GameTheme.hudCriticalTextSize - 1, weight: .semibold, design: .rounded))
+                            .foregroundStyle(GameTheme.warning)
+                            .lineLimit(1)
+                        Text(reason)
+                            .font(.system(size: GameTheme.hudCriticalTextSize - 1, weight: .semibold, design: .rounded))
+                            .lineLimit(1)
+                        Text(civic.summary)
+                            .font(.system(size: GameTheme.hudCriticalTextSize - 1, weight: .medium, design: .rounded))
+                            .foregroundStyle(.secondary)
+                            .lineLimit(1)
+                    } else {
+                        Text(decision.operatingImpact)
+                            .font(.system(size: GameTheme.hudCriticalTextSize - 1, weight: .semibold, design: .rounded))
+                            .lineLimit(1)
+                        Text(civic.summary)
+                            .font(.system(size: GameTheme.hudCriticalTextSize - 1, weight: .medium, design: .rounded))
+                            .foregroundStyle(.secondary)
+                            .lineLimit(1)
+                        Text(civic.mapKey)
+                            .font(.system(size: GameTheme.hudCriticalTextSize - 1, weight: .medium, design: .rounded))
+                            .foregroundStyle(GameTheme.accent)
+                            .lineLimit(1)
+                    }
                 } else {
                     Label(
                         (routePlan == nil
@@ -512,6 +540,7 @@ struct BuildToolbarView: View {
                         Image(systemName: "hammer.circle.fill")
                         Text("Build here")
                     }
+                        .foregroundStyle(.black)
                         .font(.caption.weight(.bold))
                         .padding(.horizontal, compact ? 7 : 10)
                         .frame(
@@ -527,6 +556,7 @@ struct BuildToolbarView: View {
                 .help("Commit \(decision.buildingTitle) at \(decision.target) exactly once")
                 .accessibilityHint("Uses the same primary map action as Return and the city map action")
                 .accessibilityIdentifier("hud.build.commit")
+                .id("build-confirm.\(decision.buildingTitle)")
             }
 
             Button {

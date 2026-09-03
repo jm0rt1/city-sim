@@ -214,6 +214,7 @@ final class CityScene: SKScene {
     private var viewportInsets: CityMapViewportInsets = .zero
     private var preservesActionTargetScale = false
     private var hasUserAdjustedCamera = false
+    private var inspectionCameraRecovery: (scale: CGFloat, position: CGPoint)?
     private var needsSettledInitialCameraFit = true
     private var needsAutomaticCameraRefit = false
     private var lastValidDevelopedComposition: CityVisualCompositionBounds?
@@ -460,6 +461,9 @@ final class CityScene: SKScene {
         let previousSnapshot = renderedSnapshot
         let previousOverlay = renderedOverlay
         let previousSelection = renderedSelection
+        if selection == nil || interactionMode != .inspect {
+            inspectionCameraRecovery = nil
+        }
         let previousActiveActionTarget = renderedActiveActionTarget
         let previousInteractionMode = renderedInteractionMode
         let previousGuidedRoadRoute = renderedGuidedRoadRoute
@@ -655,6 +659,7 @@ final class CityScene: SKScene {
 
     func frameCity() {
         if let state = renderedState {
+            inspectionCameraRecovery = nil
             hasUserAdjustedCamera = false
             focusDevelopedCore(state)
         }
@@ -740,6 +745,7 @@ final class CityScene: SKScene {
         centeredOn coordinate: GridCoordinate? = nil,
         framingScale: CGFloat = 1
     ) {
+        inspectionCameraRecovery = nil
         let canonicalScale: CGFloat
         switch detail {
         case .city: canonicalScale = Self.canonicalCityCameraScale
@@ -801,6 +807,7 @@ final class CityScene: SKScene {
         cameraNode.position.x -= dx * cameraNode.xScale
         cameraNode.position.y -= dy * cameraNode.yScale
         hasUserAdjustedCamera = true
+        inspectionCameraRecovery = nil
         lastDragLocation = point
     }
 
@@ -943,7 +950,17 @@ final class CityScene: SKScene {
             (bounds.width + 1) / availableWidth,
             (bounds.height + 1) / availableHeight
         )
-        cameraNode.setScale(max(cameraNode.xScale, requiredScale))
+        // A fit forced by temporary chrome is not a new player zoom. Retain
+        // the prior view so a larger aperture gives the district its space
+        // back, while still keeping the complete inspected building visible.
+        let preferred = inspectionCameraRecovery ?? (cameraNode.xScale, cameraNode.position)
+        if requiredScale > preferred.scale {
+            inspectionCameraRecovery = preferred
+        } else {
+            cameraNode.position = preferred.position
+            inspectionCameraRecovery = nil
+        }
+        cameraNode.setScale(max(preferred.scale, requiredScale))
         let safeRect = inspectedPlaceViewport(viewportInsets)
         if bounds.minX < safeRect.minX {
             cameraNode.position.x += bounds.minX - safeRect.minX - 0.5
@@ -1205,6 +1222,7 @@ final class CityScene: SKScene {
         }
         cameraNode.setScale(scale)
         hasUserAdjustedCamera = true
+        inspectionCameraRecovery = nil
         refreshForCameraChange()
     }
 

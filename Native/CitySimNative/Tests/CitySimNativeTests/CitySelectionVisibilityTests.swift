@@ -17,6 +17,7 @@ final class CitySelectionVisibilityTests: XCTestCase {
             .frame(width: compact.width, height: compact.height))
         host.frame = CGRect(origin: .zero, size: compact)
         settle(host)
+        let entryScale = try XCTUnwrap(findMap(in: host)?.scene as? CityScene).cameraScaleForTesting
         store.select(target)
         store.openInspector(.utilities)
         settle(host)
@@ -30,7 +31,8 @@ final class CitySelectionVisibilityTests: XCTestCase {
             host.frame = CGRect(origin: .zero, size: size)
             settle(host)
             XCTAssertTrue(findMap(in: host)?.scene === scene)
-            XCTAssertEqual(scene.cameraScaleForTesting, scale, accuracy: 0.000_001)
+            XCTAssertEqual(scene.cameraScaleForTesting, size == compact ? scale : entryScale,
+                accuracy: 0.000_001, "Only a shallow aperture should retain the automatic inspection fit")
             let insets = ContentView.mapViewportInsets(windowSize: size,
                 compact: ContentView.isCompactLayout(size), chromeFrames: frames)
             XCTAssertTrue(scene.inspectedPlaceViewportForTesting(insets)
@@ -175,6 +177,7 @@ final class CitySelectionVisibilityTests: XCTestCase {
             XCTAssertFalse(frames.bottom.isEmpty)
             XCTAssertTrue(frames.inspector.isEmpty)
             let closedRail = frames.bottom
+            let entryScale = scene.cameraScaleForTesting
 
             store.select(coordinate)
             settle(host)
@@ -189,20 +192,24 @@ final class CitySelectionVisibilityTests: XCTestCase {
             XCTAssertGreaterThanOrEqual(insets.bottom, size.height - frames.inspector.minY)
             XCTAssertTrue(scene.inspectedPlaceViewportForTesting(insets)
                 .contains(scene.inspectedPlaceBoundsForTesting(at: coordinate)), "\(size)")
-            let position = scene.cameraPositionForTesting
             let scale = scene.cameraScaleForTesting
 
             store.toggleInspector()
             settle(host)
             XCTAssertTrue(frames.inspector.isEmpty, "Closing Details must release the temporary exclusion")
             XCTAssertEqual(frames.bottom, closedRail)
-            XCTAssertEqual(scene.cameraPositionForTesting, position, "Closing must not snap the inspected place away")
-            XCTAssertEqual(scene.cameraScaleForTesting, scale)
+            XCTAssertEqual(scene.cameraScaleForTesting, entryScale, accuracy: 0.000_001,
+                "Closing must release a temporary inspection zoom-out")
+            let closedInsets = ContentView.mapViewportInsets(
+                windowSize: size, compact: ContentView.isCompactLayout(size), chromeFrames: frames
+            )
+            XCTAssertTrue(scene.inspectedPlaceViewportForTesting(closedInsets)
+                .contains(scene.inspectedPlaceBoundsForTesting(at: coordinate)))
+            let recoveredPosition = scene.cameraPositionForTesting
             store.toggleInspector()
             settle(host)
             XCTAssertFalse(frames.inspector.isEmpty)
             XCTAssertEqual(store.selectedCoordinate, coordinate)
-            XCTAssertEqual(scene.cameraPositionForTesting, position, "Repeated open/close must not drift")
             XCTAssertEqual(scene.cameraScaleForTesting, scale)
 
             XCTAssertTrue(store.performMapFocused(.buildWaterTower))
@@ -216,8 +223,8 @@ final class CitySelectionVisibilityTests: XCTestCase {
             expected.reducedMotion = true
             expected.updateViewportInsets(buildInsets)
             expected.render(state: state, overlay: store.overlay, selection: nil, interactionMode: .inspect)
-            expected.camera?.position = position
-            expected.camera?.setScale(scale)
+            expected.camera?.position = recoveredPosition
+            expected.camera?.setScale(entryScale)
             expected.render(
                 state: state, overlay: store.overlay, selection: store.selectedCoordinate,
                 interactionMode: store.interactionMode,
@@ -301,6 +308,71 @@ final class CitySelectionVisibilityTests: XCTestCase {
         XCTAssertEqual(scene.cameraScaleForTesting, scale)
         scene.updateViewportInsets(closed)
         XCTAssertTrue(scene.inspectedPlaceViewportForTesting(closed).contains(scene.inspectedPlaceBoundsForTesting(at: coordinate)))
+    }
+
+    @MainActor
+    func testInspectionZoomOutRecoversAsTemporaryApertureExpands() throws {
+        let state = CityGameState.newCity(seed: 42)
+        let coordinate = try XCTUnwrap(state.tiles.first { $0.kind == .powerPlant }?.coordinate)
+        let scene = CityScene(size: CGSize(width: 900, height: 600))
+        let closed = CityMapViewportInsets(top: 86, leading: 24, bottom: 90, trailing: 24)
+        let details = CityMapViewportInsets(top: 86, leading: 24, bottom: 330, trailing: 24)
+        let partial = CityMapViewportInsets(top: 86, leading: 24, bottom: 260, trailing: 24)
+        scene.updateViewportInsets(closed)
+        scene.render(state: state, overlay: .none, selection: coordinate, interactionMode: .inspect)
+        let preferredScale = scene.cameraScaleForTesting
+        let preferredPosition = scene.cameraPositionForTesting
+        for _ in 0..<3 {
+            scene.updateViewportInsets(details)
+            let fittedScale = scene.cameraScaleForTesting
+            XCTAssertGreaterThan(fittedScale, preferredScale)
+            scene.updateViewportInsets(partial)
+            XCTAssertLessThan(scene.cameraScaleForTesting, fittedScale)
+            XCTAssertGreaterThanOrEqual(scene.cameraScaleForTesting, preferredScale)
+            scene.updateViewportInsets(closed)
+            XCTAssertEqual(scene.cameraScaleForTesting, preferredScale, accuracy: 0.000_001)
+            XCTAssertEqual(scene.cameraPositionForTesting.x, preferredPosition.x, accuracy: 0.000_001)
+            XCTAssertEqual(scene.cameraPositionForTesting.y, preferredPosition.y, accuracy: 0.000_001)
+            XCTAssertTrue(scene.inspectedPlaceViewportForTesting(closed)
+                .contains(scene.inspectedPlaceBoundsForTesting(at: coordinate)))
+        }
+    }
+
+    @MainActor
+    func testPlayerZoomDuringInspectionReplacesAutomaticRecoveryScale() throws {
+        let state = CityGameState.newCity(seed: 42)
+        let coordinate = try XCTUnwrap(state.tiles.first { $0.kind == .powerPlant }?.coordinate)
+        let scene = CityScene(size: CGSize(width: 900, height: 600))
+        let closed = CityMapViewportInsets(top: 86, leading: 24, bottom: 90, trailing: 24)
+        let details = CityMapViewportInsets(top: 86, leading: 24, bottom: 330, trailing: 24)
+        scene.updateViewportInsets(closed)
+        scene.render(state: state, overlay: .none, selection: coordinate, interactionMode: .inspect)
+        let initialScale = scene.cameraScaleForTesting
+        scene.updateViewportInsets(details)
+        scene.zoomCameraForTesting(by: 0.9, anchoredAt: scene.scenePointForTesting(at: coordinate))
+        let playerScale = scene.cameraScaleForTesting
+        XCTAssertNotEqual(playerScale, initialScale)
+        scene.updateViewportInsets(closed)
+        XCTAssertEqual(scene.cameraScaleForTesting, playerScale, accuracy: 0.000_001)
+    }
+
+    @MainActor
+    func testInspectingAnotherBuildingDoesNotAdoptTemporaryZoomAsPlayerScale() throws {
+        let state = CityGameState.newCity(seed: 42)
+        let power = try XCTUnwrap(state.tiles.first { $0.kind == .powerPlant }?.coordinate)
+        let water = try XCTUnwrap(state.tiles.first { $0.kind == .waterTower }?.coordinate)
+        let scene = CityScene(size: CGSize(width: 900, height: 600))
+        let closed = CityMapViewportInsets(top: 86, leading: 24, bottom: 90, trailing: 24)
+        let details = CityMapViewportInsets(top: 86, leading: 24, bottom: 330, trailing: 24)
+        scene.updateViewportInsets(closed)
+        scene.render(state: state, overlay: .none, selection: power, interactionMode: .inspect)
+        let preferredScale = scene.cameraScaleForTesting
+        scene.updateViewportInsets(details)
+        scene.render(state: state, overlay: .none, selection: water, interactionMode: .inspect)
+        XCTAssertTrue(scene.inspectedPlaceViewportForTesting(details)
+            .contains(scene.inspectedPlaceBoundsForTesting(at: water)))
+        scene.updateViewportInsets(closed)
+        XCTAssertEqual(scene.cameraScaleForTesting, preferredScale, accuracy: 0.000_001)
     }
 
     @MainActor

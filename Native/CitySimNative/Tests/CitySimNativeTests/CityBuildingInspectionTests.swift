@@ -104,6 +104,71 @@ final class CityBuildingInspectionTests: XCTestCase {
         XCTAssertEqual(scene.resolvedCoordinateForTesting(at: overlap), back)
     }
 
+    @MainActor
+    func testInspectionCutawayRevealsOnlyForegroundOverlapAndRestoresNormalTools() throws {
+        let back = GridCoordinate(x: 12, y: 12)
+        let front = GridCoordinate(x: 13, y: 13)
+        let distant = GridCoordinate(x: 20, y: 20)
+        let state = district(buildings: [back, front, distant])
+        let fingerprint = try CityStateFingerprinter.fingerprint(state)
+        for size in [CGSize(width: 900, height: 600), CGSize(width: 1280, height: 800)] {
+            let scene = CityScene(size: size)
+            scene.reducedMotion = true
+            scene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
+            let backSprite = try inspectionSprite(in: scene, at: back)
+            let frontSprite = try inspectionSprite(in: scene, at: front)
+            let distantSprite = try inspectionSprite(in: scene, at: distant)
+            let overlap = try sourceOpaquePoint(on: frontSprite, in: scene) {
+                backSprite.containsOpaquePixel(at: backSprite.convert($0, from: scene))
+            }
+            let frame = frontSprite.frame
+            let anchor = frontSprite.anchorPoint
+            let texture = frontSprite.texture
+            XCTAssertEqual(scene.resolvedCoordinateForTesting(at: overlap), front)
+            for detail in CameraDetailLevel.allCases {
+                scene.configureProofCamera(detail: detail, centeredOn: back)
+                scene.render(state: state, overlay: .services, selection: back, interactionMode: .inspect)
+                XCTAssertEqual(frontSprite.alpha, 0.18, accuracy: 0.0001)
+                XCTAssertEqual(backSprite.alpha, 1)
+                XCTAssertEqual(distantSprite.alpha, 1)
+                XCTAssertEqual(frontSprite.frame, frame)
+                XCTAssertEqual(frontSprite.anchorPoint, anchor)
+                XCTAssertTrue(frontSprite.texture === texture)
+                XCTAssertEqual(scene.resolvedCoordinateForTesting(at: overlap), back)
+                scene.render(state: state, overlay: .services, selection: front, interactionMode: .inspect)
+                XCTAssertEqual(frontSprite.alpha, 1, "Selecting the foreground lot restores its art")
+                XCTAssertEqual(backSprite.alpha, 1, "The building behind selection never fades")
+            }
+            for mode in [CityInteractionMode.inspect, .build(.road), .bulldoze] {
+                scene.render(state: state, overlay: .none, selection: back, interactionMode: .inspect)
+                scene.render(state: state, overlay: .none,
+                             selection: mode == .inspect ? nil : back, interactionMode: mode)
+                XCTAssertEqual(frontSprite.alpha, 1)
+                XCTAssertEqual(backSprite.alpha, 1)
+            }
+            XCTAssertEqual(try CityStateFingerprinter.fingerprint(state), fingerprint)
+        }
+    }
+
+    @MainActor
+    func testCutawaySurvivesWorldRebuildAndDoesNotLeaveStaleFadedBuildings() throws {
+        let back = GridCoordinate(x: 12, y: 12)
+        let front = GridCoordinate(x: 13, y: 13)
+        var state = district(buildings: [back, front])
+        let scene = CityScene(size: CGSize(width: 900, height: 600))
+        scene.reducedMotion = true
+        scene.render(state: state, overlay: .none, selection: back, interactionMode: .inspect)
+        let oldFront = try inspectionSprite(in: scene, at: front)
+        XCTAssertLessThan(oldFront.alpha, 0.5)
+        state.updateTile(at: front) { $0.condition = 0.4 }
+        scene.render(state: state, overlay: .water, selection: back, interactionMode: .inspect)
+        let rebuiltFront = try inspectionSprite(in: scene, at: front)
+        XCTAssertLessThan(rebuiltFront.alpha, 0.5)
+        scene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
+        XCTAssertGreaterThanOrEqual(rebuiltFront.alpha, 0.5)
+        XCTAssertGreaterThanOrEqual(oldFront.alpha, 0.5)
+    }
+
     private func district(buildings: [GridCoordinate]) -> CityGameState {
         var state = CityGameState.newCity(seed: 42)
         for index in state.tiles.indices {

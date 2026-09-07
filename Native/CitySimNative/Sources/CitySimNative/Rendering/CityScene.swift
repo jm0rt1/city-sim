@@ -185,6 +185,7 @@ final class CityScene: SKScene {
     private let selectedCommuteRouteLayer = SKNode()
     private let hoverNode = SKShapeNode()
     private let selectionNode = SKShapeNode()
+    private let inspectionCutaway = CityInspectionCutaway()
     private var renderedState: CityGameState?
     private var renderedSnapshot: CityPresentationSnapshot?
     private var renderedReducedMotion = false
@@ -2349,6 +2350,13 @@ final class CityScene: SKScene {
     }
 
     private func updateSelection(_ coordinate: GridCoordinate?) {
+        inspectionCutaway.update(
+            selectedRoot: renderedInteractionMode == .inspect
+                ? coordinate.flatMap { tileRecords[$0]?.root } : nil,
+            roots: tileRecords.values.map(\.root),
+            in: tileLayer,
+            groundHeight: tileHeight
+        )
         selectionNode.removeAction(forKey: "selection.pulse")
         selectionNode.alpha = 1
         lastPreviewSignature = nil

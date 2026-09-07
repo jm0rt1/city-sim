@@ -61,6 +61,7 @@ final class CityGameStore: ObservableObject {
     @Published private(set) var sessionReplacementConfirmation: CitySessionReplacementConfirmationPresentation?
     @Published private(set) var canUndo = false
     @Published private(set) var mapFocusRequestGeneration: UInt = 0
+    @Published private(set) var diagnosticFocusRequestGeneration: UInt = 0
     @Published private(set) var foundationsGuideProgress: CityFoundationsGuideProgress
     @Published private(set) var roadConnectionRecovery: CityRoadConnectionRecovery? = nil
     @Published private(set) var roadConnectionRecoveryRoute: [GridCoordinate] = []
@@ -1323,6 +1324,7 @@ final class CityGameStore: ObservableObject {
         selectedCoordinate = coordinate
         hudContextScope = .selection
         showInspector = false
+        diagnosticFocusRequestGeneration &+= 1
         requestMapFocus()
         return true
     }

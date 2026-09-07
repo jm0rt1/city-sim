@@ -905,6 +905,29 @@ final class CityScene: SKScene {
         super.keyDown(with: event)
     }
 
+    func focusDiagnosticLocation(
+        _ coordinate: GridCoordinate,
+        viewportInsets: CityMapViewportInsets
+    ) {
+        guard renderedInteractionMode == .inspect,
+              renderedState?.tile(at: coordinate) != nil else { return }
+        // Find is an explicit navigation request, unlike ordinary selection.
+        // Give the real place a readable footprint with nearby street context;
+        // do not retain a whole-district fit forced by the now-closed panel.
+        let bounds = inspectedPlaceBounds(at: coordinate)
+        let readableScale = max(Self.minimumCameraScale,
+            max(bounds.height / 180, bounds.width / 220))
+        inspectionCameraRecovery = nil
+        hasUserAdjustedCamera = true
+        cameraNode.setScale(min(cameraNode.xScale, readableScale))
+        let aperture = inspectedPlaceViewport(viewportInsets)
+        cameraNode.position.x += bounds.midX - aperture.midX
+        cameraNode.position.y += bounds.midY - aperture.midY
+        // Retain the existing full-art fit and recovery when SwiftUI briefly
+        // publishes the old panel exclusion before its closing layout settles.
+        revealSelection(coordinate, viewportInsets: viewportInsets)
+    }
+
     func revealSelection(
         _ coordinate: GridCoordinate,
         viewportInsets: CityMapViewportInsets = .zero

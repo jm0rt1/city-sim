@@ -206,6 +206,7 @@ struct CitySceneView: NSViewRepresentable {
             context.coordinator.hasFramedInitialState = true
             scene.frameCity()
         }
+        context.coordinator.synchronizeDiagnosticFocusRequest(store.diagnosticFocusRequestGeneration)
     }
 
     @MainActor
@@ -222,6 +223,7 @@ struct CitySceneView: NSViewRepresentable {
         private(set) var focusHandoffGeneration: UInt = 0
         private(set) var pendingFocusHandoffGeneration: UInt?
         private(set) var observedMapFocusRequestGeneration: UInt
+        private var observedDiagnosticFocusRequestGeneration: UInt
         private var observedPhotoCaptureRequestGeneration: UInt
         private var previousCityFocusModeEnabled: Bool
         private var cachedPresentationSnapshot: CityPresentationSnapshot?
@@ -238,9 +240,21 @@ struct CitySceneView: NSViewRepresentable {
             self.pointerTransitionGate = pointerTransitionGate
             previousCommandPolicy = store.commandPolicy
             observedMapFocusRequestGeneration = store.mapFocusRequestGeneration
+            observedDiagnosticFocusRequestGeneration = store.diagnosticFocusRequestGeneration
             observedPhotoCaptureRequestGeneration = store.photoCaptureRequestGeneration
             previousCityFocusModeEnabled = store.isCityFocusModeEnabled
             self.enqueueOnMain = enqueueOnMain
+        }
+
+        @discardableResult
+        func synchronizeDiagnosticFocusRequest(_ generation: UInt) -> Bool {
+            guard generation != observedDiagnosticFocusRequestGeneration else { return false }
+            observedDiagnosticFocusRequestGeneration = generation
+            guard store.commandPolicy == .enabled, !store.isPhotoModeEnabled,
+                  store.overlay != .none, store.interactionMode == .inspect,
+                  let coordinate = store.selectedCoordinate, let scene else { return false }
+            scene.focusDiagnosticLocation(coordinate, viewportInsets: viewportInsets)
+            return true
         }
 
         @discardableResult

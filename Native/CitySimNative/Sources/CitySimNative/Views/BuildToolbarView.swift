@@ -366,7 +366,8 @@ struct BuildToolbarView: View {
         let routePlan = store.roadConnectionPlanPresentation
         let pollution = decision.disabledReason == nil && routePlan == nil ? decision.pollutionImpact : nil
         let civic = routePlan == nil ? decision.civicForecast : nil
-        let readyInTitle = pollution != nil || (civic != nil && decision.disabledReason == nil)
+        let park = routePlan == nil ? decision.parkForecast : nil
+        let readyInTitle = pollution != nil || ((park != nil || civic != nil) && decision.disabledReason == nil)
         return HStack(spacing: compact ? 8 : 12) {
             VStack(alignment: .leading, spacing: 3) {
                 Label(!readyInTitle ? "PLACE \(decision.buildingTitle.uppercased())"
@@ -420,6 +421,20 @@ struct BuildToolbarView: View {
                         .help(pollution.accessibilitySummary)
                         .accessibilityLabel(pollution.accessibilitySummary)
                         .accessibilityIdentifier("hud.build.pollution-impact")
+                } else if let park {
+                    Text(decision.disabledReason == nil ? decision.operatingImpact : "BLOCKED · \(park.mapKey)")
+                        .font(.system(size: GameTheme.hudCriticalTextSize - 1, weight: .semibold, design: .rounded))
+                        .foregroundStyle(decision.disabledReason == nil ? Color.primary : GameTheme.warning)
+                        .lineLimit(1)
+                    Text(decision.disabledReason ?? park.summary)
+                        .font(.system(size: GameTheme.hudCriticalTextSize - 1, weight: .medium, design: .rounded))
+                        .foregroundStyle(.secondary)
+                        .lineLimit(1)
+                    Text(decision.disabledReason == nil ? park.mapKey : park.summary)
+                        .font(.system(size: GameTheme.hudCriticalTextSize - 1, weight: .medium, design: .rounded))
+                        .foregroundStyle(GameTheme.accent)
+                        .lineLimit(1)
+                        .help(park.mapAccessibilitySummary)
                 } else if let civic {
                     if let reason = decision.disabledReason {
                         Text("BLOCKED · \(civic.compactMapKey)")

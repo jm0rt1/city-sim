@@ -414,7 +414,8 @@ struct CitySceneView: NSViewRepresentable {
             view.cityAccessibilityValue = valueParts.joined(separator: ". ")
             view.cityAccessibilityHelp = [primary.disclosure,
                 primary.buildDecision?.utilityForecast?.mapAccessibilitySummary,
-                primary.buildDecision?.civicForecast?.mapAccessibilitySummary]
+                primary.buildDecision?.civicForecast?.mapAccessibilitySummary,
+                primary.buildDecision?.parkForecast?.mapAccessibilitySummary]
                 .compactMap { $0 }.joined(separator: ". ")
 
             var actions: [NSAccessibilityCustomAction] = []

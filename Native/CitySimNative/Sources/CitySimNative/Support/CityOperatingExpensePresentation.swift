@@ -49,8 +49,18 @@ struct CityOperatingExpensePresentation: Equatable {
         }
     }
 
+    struct UtilitySite: Equatable, Identifiable {
+        let coordinate: GridCoordinate
+        let kind: BuildingKind
+        let upkeep: CityBlockUpkeepPresentation
+        var id: GridCoordinate { coordinate }
+        var block: String { "Block \(coordinate.x + 1), \(coordinate.y + 1)" }
+        var accessibilitySummary: String { "\(kind.title), \(block). \(upkeep.accessibilitySummary)" }
+    }
+
     let total: Double
     let rows: [Row]
+    let utilitySites: [UtilitySite]
     var totalText: String { "Upkeep \(Self.money(total)) / cycle" }
 
     static func make(in state: CityGameState) -> Self {
@@ -81,11 +91,18 @@ struct CityOperatingExpensePresentation: Equatable {
             (.buildingsAndParks, gross(buildings) * siteMultiplier, buildings.count),
             (.debtInterest, max(0, -state.treasury) * 0.006 * economyMultiplier, 0)
         ]
+        let utilitySites = utilities.map {
+            UtilitySite(coordinate: $0.coordinate, kind: $0.kind, upkeep: .make(for: $0, in: state))
+        }.sorted {
+            if $0.upkeep.amount != $1.upkeep.amount { return $0.upkeep.amount > $1.upkeep.amount }
+            if $0.coordinate.y != $1.coordinate.y { return $0.coordinate.y < $1.coordinate.y }
+            return $0.coordinate.x < $1.coordinate.x
+        }
         return Self(total: total, rows: components.map { category, amount, count in
             Row(category: category, amount: amount, completedSites: count, share: total > 0 ? amount / total : 0)
         }.sorted {
             $0.amount == $1.amount ? $0.category.rawValue < $1.category.rawValue : $0.amount > $1.amount
-        })
+        }, utilitySites: utilitySites)
     }
 
     private static func money(_ amount: Double) -> String {

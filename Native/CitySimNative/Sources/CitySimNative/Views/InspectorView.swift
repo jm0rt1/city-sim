@@ -694,7 +694,9 @@ struct InspectorView: View {
         if showsTaxPreview {
             CityTaxPolicyEditor(store: store, compact: compact) { showsTaxPreview = false }
         } else if showsOperatingExpenses {
-            CityOperatingExpenseBreakdownView(presentation: operatingExpenses, compact: compact)
+            CityOperatingExpenseBreakdownView(presentation: operatingExpenses, compact: compact) {
+                CityUtilityExpenseSitesView.find($0, on: store)
+            }
         } else {
             LazyVGrid(
                 columns: compact ? contextColumns : [

@@ -43,6 +43,7 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
             "commercial-high-quality", "industrial-medium-quality", "industrial-high-quality",
             "city-hall", "park", "power-plant", "water-tower",
             "fire-station", "police-station", "school",
+            "water-tower-quality", "fire-station-quality", "police-station-quality", "school-quality",
         ]).isSubset(of: admittedRoles))
 
         for asset in manifest.assets {
@@ -80,10 +81,10 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
             ("commercial-high-quality", .commercial, 3),
             ("industrial-medium-quality", .industrial, 2),
             ("industrial-high-quality", .industrial, 3),
-            ("water-tower", .waterTower, 1),
-            ("fire-station", .fireStation, 1),
-            ("police-station", .policeStation, 1),
-            ("school", .school, 1),
+            ("water-tower-quality", .waterTower, 1),
+            ("fire-station-quality", .fireStation, 1),
+            ("police-station-quality", .policeStation, 1),
+            ("school-quality", .school, 1),
         ]
 
         for roleCase in roleCases {
@@ -257,7 +258,7 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
     }
 
     @MainActor
-    func testGrownNeighborhoodsKeepAuthoredQualityAndResidentialFrontage() throws {
+    func testLiveQualityFamiliesPreserveSelectionRegistrationAndResidentialFrontage() throws {
         let catalog = FourViewWorldAssetCatalog()
         let style = WorldVisualStyle()
         let renderer = LotRenderer(style: style, assets: WorldAssetCatalog(), fourViewAssets: catalog)
@@ -267,6 +268,10 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
             ("commercial-high", .commercial, 3, ["aurora_exchange_tower", "copperglass_exchange_annex"]),
             ("industrial-medium", .industrial, 2, ["canalworks_factory", "riverbend_textile_works"]),
             ("industrial-high", .industrial, 3, ["foundry_peak_plant", "ember_rail_foundry"]),
+            ("water-tower", .waterTower, 1, ["municipal_water_tower", "rivermark_standpipe_waterworks"]),
+            ("fire-station", .fireStation, 1, ["emberline_fire_station", "lantern_gate_fire_house"]),
+            ("police-station", .policeStation, 1, ["bluecrest_police_station", "harborwatch_police_precinct"]),
+            ("school", .school, 1, ["maplewood_neighborhood_school", "oakridge_courtyard_school"]),
         ]
         let frontages: [(RoadConnectionMask, FourViewWorldAssetCatalog.Camera)] = [
             (.south, .camNE), (.west, .camSE), (.north, .camSW), (.east, .camNW),
@@ -290,7 +295,7 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
             }
             XCTAssertEqual(Set(coordinates.keys), family.ids)
             for (assetID, coordinate) in coordinates {
-                for level in (family.level == 3 ? [3, 4] : [2]) {
+                for level in (family.level == 3 ? [3, 4] : [family.level]) {
                     let tile = CityTile(coordinate: coordinate, kind: family.kind, level: level,
                                         condition: 1, constructionProgress: 1)
                     for (frontage, residentialCamera) in frontages {
@@ -672,35 +677,22 @@ final class FourViewWorldAssetCatalogTests: XCTestCase {
     }
 
     @MainActor
-    func testExpansionWaveSavedCityDisplaysEveryNewAsset() throws {
+    func testQualityFamiliesSavedCityDisplaysEverySelectedAsset() throws {
         let catalog = FourViewWorldAssetCatalog()
         let manifest = try XCTUnwrap(catalog.manifest)
-        let upgradeRoles: Set<String> = [
-            "residential-medium", "residential-high", "commercial-medium", "commercial-high",
-            "industrial-medium", "industrial-high",
-        ]
         let expansionAssets = manifest.assets.filter {
-            let isUpgrade = !upgradeRoles.isDisjoint(with: $0.roles)
-            let isQuality = $0.roles.contains { $0.hasSuffix("-quality") }
-            return ($0.views.count == 4 || (isUpgrade && isQuality))
-                && (!isUpgrade || isQuality)
+            $0.roles.contains { $0.hasSuffix("-quality") }
                 && !$0.roles.contains("residential-quality")
-                && !($0.family == "residential" && $0.roles.contains("residential-low"))
-                && !($0.family == "commercial" && $0.roles.contains("commercial-low"))
-                && !($0.family == "industrial" && $0.roles.contains("industrial-low"))
-                && !$0.roles.contains("city-hall")
-                && !$0.roles.contains("park")
-                && !$0.roles.contains("power-plant")
         }
-        XCTAssertEqual(expansionAssets.count, 16)
+        XCTAssertEqual(expansionAssets.count, 20)
         XCTAssertEqual(
             Dictionary(grouping: expansionAssets, by: \.family).mapValues(\.count),
             [
                 "residential": 4,
                 "commercial": 4,
                 "industrial": 4,
-                "civic-service": 3,
-                "utility": 1,
+                "civic-service": 6,
+                "utility": 2,
             ]
         )
 

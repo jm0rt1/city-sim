@@ -54,6 +54,7 @@ final class FourViewWorldAssetCatalog {
         "commercial-high-quality", "industrial-medium-quality", "industrial-high-quality",
         "city-hall", "park", "power-plant", "water-tower",
         "fire-station", "police-station", "school",
+        "water-tower-quality", "fire-station-quality", "police-station-quality", "school-quality",
     ]
 
     static let sourceTileSize = CGSize(width: 88, height: 44)
@@ -132,13 +133,15 @@ final class FourViewWorldAssetCatalog {
             // substation sources for focused compatibility inspection.
             admittedAssetID("copper_arc_powerhouse", forRole: "power-plant")
         case .waterTower:
-            deterministicAssetID(forRole: "water-tower", tile: tile, variant: variant)
+            // Public investments should always use the authored role family,
+            // not the calibration buildings retained for focused inspection.
+            deterministicAssetID(forRole: "water-tower-quality", tile: tile, variant: variant)
         case .fireStation:
-            deterministicAssetID(forRole: "fire-station", tile: tile, variant: variant)
+            deterministicAssetID(forRole: "fire-station-quality", tile: tile, variant: variant)
         case .policeStation:
-            deterministicAssetID(forRole: "police-station", tile: tile, variant: variant)
+            deterministicAssetID(forRole: "police-station-quality", tile: tile, variant: variant)
         case .school:
-            deterministicAssetID(forRole: "school", tile: tile, variant: variant)
+            deterministicAssetID(forRole: "school-quality", tile: tile, variant: variant)
         case .empty, .road:
             nil
         }

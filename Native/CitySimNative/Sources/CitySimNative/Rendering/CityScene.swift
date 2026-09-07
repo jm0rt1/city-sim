@@ -219,6 +219,7 @@ final class CityScene: SKScene {
     private var needsSettledInitialCameraFit = true
     private var needsAutomaticCameraRefit = false
     private var lastValidDevelopedComposition: CityVisualCompositionBounds?
+    private var developedArtworkMinimumFitScale: CGFloat = 0
     private(set) var occupiedDevelopedVisualBoundsForTesting: CGRect = .null
     private(set) var cameraPriorityVisualBoundsForTesting: CGRect = .null
     private(set) var networkOpportunityVisualBoundsForTesting: CGRect = .null
@@ -522,6 +523,12 @@ final class CityScene: SKScene {
             previousOverlay: previousOverlay,
             defersRuntimeMetricsToFullRecount: isFirstRender
         )
+        if isFirstRender, selection == nil, !hasUserAdjustedCamera {
+            // The initial estimate precedes sprite creation. Finish that fit
+            // against the shipping artwork once its real bounds exist.
+            fitDevelopedArtworkInsideViewport()
+            refreshForCameraChange(preservingUpdateDiagnostics: true)
+        }
         _ = updateAmbientCorridor(snapshot: snapshot)
         let expiredCueCount = expireConsequenceEvents(at: snapshot.authoritativeTick)
         let insertedCueCount = presentConsequenceEvents(consequenceEvents)
@@ -1239,10 +1246,10 @@ final class CityScene: SKScene {
         let safeWidth = max(1, size.width - viewportInsets.leading - viewportInsets.trailing)
         let occupiedWidthLimit = cameraPriorityVisualBoundsForTesting.width
             / (safeWidth * Self.cityOccupiedWidthTarget)
-        return min(
+        return max(developedArtworkMinimumFitScale, min(
             Self.canonicalCityCameraScale,
             max(Self.minimumCameraScale + 0.01, occupiedWidthLimit)
-        )
+        ))
     }
 
     private func canonicalCameraScale(for actualScale: CGFloat) -> CGFloat {
@@ -2938,6 +2945,7 @@ final class CityScene: SKScene {
     }
 
     private func applyDevelopedCoreCamera(_ state: CityGameState) {
+        developedArtworkMinimumFitScale = 0
         activeTargetContextBoundsForTesting = .null
         activeTargetRoadFrontierForTesting = nil
         let composition = visualCompositionBounds(in: state)
@@ -3037,6 +3045,41 @@ final class CityScene: SKScene {
             x: cameraBounds.midX - safeCenterOffset.x,
             y: cameraBounds.midY - safeCenterOffset.y
         )
+        fitDevelopedArtworkInsideViewport()
+    }
+
+    private func fitDevelopedArtworkInsideViewport() {
+        // Legacy atlas estimates still choose the lived district and its
+        // expansion frontage. They cannot bound the taller Four-View roofs.
+        // Fit only actual places in that district, not remote empty acreage,
+        // transient map cues, or ambient decoration.
+        var bounds = cameraPriorityVisualBoundsForTesting
+        var hasRenderedPlace = false
+        for coordinate in cameraPriorityCoordinatesForTesting {
+            guard tileRecords[coordinate]?.root.childNode(withName: "content.layer") != nil else { continue }
+            bounds = bounds.union(inspectedPlaceBounds(at: coordinate))
+            hasRenderedPlace = true
+        }
+        let availableWidth = size.width - viewportInsets.leading - viewportInsets.trailing - 16
+        let availableHeight = size.height - viewportInsets.top - viewportInsets.bottom - 16
+        guard hasRenderedPlace, !bounds.isNull,
+              availableWidth > 0, availableHeight > 0 else { return }
+        developedArtworkMinimumFitScale = max(
+            (bounds.width + 1) / availableWidth,
+            (bounds.height + 1) / availableHeight
+        )
+        cameraNode.setScale(max(cameraNode.xScale, developedArtworkMinimumFitScale))
+        let safeRect = inspectedPlaceViewport(viewportInsets)
+        if bounds.minX < safeRect.minX {
+            cameraNode.position.x += bounds.minX - safeRect.minX - 0.5
+        } else if bounds.maxX > safeRect.maxX {
+            cameraNode.position.x += bounds.maxX - safeRect.maxX + 0.5
+        }
+        if bounds.minY < safeRect.minY {
+            cameraNode.position.y += bounds.minY - safeRect.minY - 0.5
+        } else if bounds.maxY > safeRect.maxY {
+            cameraNode.position.y += bounds.maxY - safeRect.maxY + 0.5
+        }
     }
 
     private func visualCompositionBounds(in state: CityGameState) -> CityVisualCompositionBounds {

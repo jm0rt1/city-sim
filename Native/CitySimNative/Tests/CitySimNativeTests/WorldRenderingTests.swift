@@ -4573,11 +4573,11 @@ final class WorldRenderingTests: XCTestCase {
         defaultView.presentScene(defaultScene)
         defaultScene.updateViewportInsets(defaultInsets)
         defaultScene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
-        XCTAssertEqual(defaultScene.currentCameraDetailLevel, .neighborhood)
+        XCTAssertEqual(defaultScene.currentCameraDetailLevel, .city)
         let defaultOccupancy = defaultScene.occupiedDevelopedViewportOccupancyForTesting()
-        let defaultPriorityOccupancy = defaultScene.cameraPriorityViewportOccupancyForTesting()
-        XCTAssertEqual(defaultOccupancy.width, 0.7280898870748186, accuracy: 0.000_001)
-        XCTAssertEqual(defaultPriorityOccupancy.width, 0.8646067409013471, accuracy: 0.000_001)
+        assertRenderedDistrictFits(defaultScene, insets: defaultInsets)
+        let defaultFramedScale = defaultScene.cameraScaleForTesting
+        let defaultFramedPosition = defaultScene.cameraPositionForTesting
         XCTAssertEqual(defaultScene.occupiedDevelopedVisualBoundsForTesting.width, 576, accuracy: 0.001)
         XCTAssertEqual(defaultScene.occupiedDevelopedVisualBoundsForTesting.height, 318.43652344, accuracy: 0.001)
         XCTAssertEqual(defaultScene.networkOpportunityVisualBoundsForTesting.width, 684, accuracy: 0.001)
@@ -4590,26 +4590,8 @@ final class WorldRenderingTests: XCTestCase {
         compactView.presentScene(compactScene)
         compactScene.updateViewportInsets(compactInsets)
         compactScene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
-        XCTAssertEqual(compactScene.currentCameraDetailLevel, .neighborhood)
-        let compactOccupancy = compactScene.occupiedDevelopedViewportOccupancyForTesting()
-        let compactPriorityOccupancy = compactScene.cameraPriorityViewportOccupancyForTesting()
-        XCTAssertEqual(compactOccupancy.width, 1.0201732614716905, accuracy: 0.000_001)
-        XCTAssertEqual(compactPriorityOccupancy.width, 1.2114557479976324, accuracy: 0.000_001)
-
-        let defaultOffset = CGPoint(
-            x: (defaultInsets.leading - defaultInsets.trailing) * defaultScene.cameraScaleForTesting / 2,
-            y: (defaultInsets.bottom - defaultInsets.top) * defaultScene.cameraScaleForTesting / 2
-        )
-        XCTAssertEqual(
-            defaultScene.cameraPositionForTesting.x,
-            defaultScene.cameraPriorityVisualBoundsForTesting.midX - defaultOffset.x,
-            accuracy: 0.001
-        )
-        XCTAssertEqual(
-            defaultScene.cameraPositionForTesting.y,
-            defaultScene.cameraPriorityVisualBoundsForTesting.midY - defaultOffset.y,
-            accuracy: 0.001
-        )
+        XCTAssertEqual(compactScene.currentCameraDetailLevel, .city)
+        assertRenderedDistrictFits(compactScene, insets: compactInsets)
         XCTAssertGreaterThan(
             max(
                 defaultScene.networkOpportunityViewportOccupancyForTesting().width,
@@ -4623,15 +4605,12 @@ final class WorldRenderingTests: XCTestCase {
         XCTAssertEqual(cityHallRoadMask, 11)
         let defaultCityHallRoot = defaultScene.tileRootIdentifier(at: cityHall)
         XCTAssertTrue(defaultScene.tileDescendantNamesForTesting(at: cityHall)
-            .contains("lot.generated-v4.civic_l01_v0_south.neighborhood"))
+            .contains("lot.generated-v4.civic_l01_v0_south.city"))
 
         defaultScene.configureProofCamera(detail: .city, centeredOn: cityHall)
         let defaultCityScale = defaultScene.cameraScaleForTesting
         XCTAssertEqual(defaultScene.currentCameraDetailLevel, .city)
-        XCTAssertGreaterThanOrEqual(
-            defaultScene.cameraPriorityViewportOccupancyForTesting().width,
-            0.67
-        )
+        XCTAssertEqual(defaultCityScale, defaultScene.cityScaleLimitForTesting, accuracy: 0.000_001)
         XCTAssertTrue(defaultScene.tileDescendantNamesForTesting(at: cityHall)
             .contains("lot.generated-v4.civic_l01_v0_south.city"))
         if let texture = defaultView.texture(from: defaultScene),
@@ -4705,10 +4684,7 @@ final class WorldRenderingTests: XCTestCase {
         let compactCityHallRoot = compactScene.tileRootIdentifier(at: cityHall)
         compactScene.configureProofCamera(detail: .city, centeredOn: cityHall)
         XCTAssertEqual(compactScene.currentCameraDetailLevel, .city)
-        XCTAssertGreaterThanOrEqual(
-            compactScene.cameraPriorityViewportOccupancyForTesting().width,
-            0.78
-        )
+        XCTAssertEqual(compactScene.cameraScaleForTesting, compactScene.cityScaleLimitForTesting, accuracy: 0.000_001)
         XCTAssertTrue(compactScene.tileDescendantNamesForTesting(at: cityHall)
             .contains("lot.generated-v4.civic_l01_v0_south.city"))
         if let texture = compactView.texture(from: compactScene),
@@ -4750,17 +4726,25 @@ final class WorldRenderingTests: XCTestCase {
 
         defaultScene.configureProofCamera(detail: .city, centeredOn: GridCoordinate(x: 0, y: 0))
         defaultScene.frameCity()
-        XCTAssertEqual(defaultScene.currentCameraDetailLevel, .neighborhood)
-        XCTAssertEqual(
-            defaultScene.cameraPositionForTesting.x,
-            defaultScene.cameraPriorityVisualBoundsForTesting.midX - defaultOffset.x,
-            accuracy: 0.001
-        )
-        XCTAssertEqual(
-            defaultScene.cameraPositionForTesting.y,
-            defaultScene.cameraPriorityVisualBoundsForTesting.midY - defaultOffset.y,
-            accuracy: 0.001
-        )
+        XCTAssertEqual(defaultScene.currentCameraDetailLevel, .city)
+        XCTAssertEqual(defaultScene.cameraScaleForTesting, defaultFramedScale, accuracy: 0.001)
+        XCTAssertEqual(defaultScene.cameraPositionForTesting, defaultFramedPosition)
+        assertRenderedDistrictFits(defaultScene, insets: defaultInsets)
+    }
+
+    @MainActor
+    private func assertRenderedDistrictFits(_ scene: CityScene, insets: CityMapViewportInsets,
+                                           file: StaticString = #filePath, line: UInt = #line) {
+        let aperture = scene.inspectedPlaceViewportForTesting(insets)
+        var artwork = CGRect.null
+        for coordinate in scene.cameraPriorityCoordinatesForTesting {
+            let place = scene.inspectedPlaceBoundsForTesting(at: coordinate)
+            XCTAssertTrue(aperture.contains(place), "Clipped rendered place \(coordinate)", file: file, line: line)
+            artwork = artwork.union(place)
+        }
+        XCTAssertFalse(artwork.isNull, file: file, line: line)
+        XCTAssertGreaterThan(max(artwork.width / aperture.width, artwork.height / aperture.height), 0.8,
+            "Use the available aperture without cropping roofs to satisfy a width-only estimate", file: file, line: line)
     }
 
     @MainActor
@@ -4782,12 +4766,8 @@ final class WorldRenderingTests: XCTestCase {
         }
         scene.render(state: firstPulse, overlay: .none, selection: nil, interactionMode: .inspect)
         let settledScale = scene.cameraScaleForTesting
-        XCTAssertLessThan(settledScale, provisionalScale)
-        XCTAssertEqual(settledScale, 0.6421356426344977, accuracy: 0.001)
-        XCTAssertGreaterThanOrEqual(
-            scene.occupiedDevelopedViewportOccupancyForTesting().width,
-            0.60
-        )
+        XCTAssertNotEqual(settledScale, provisionalScale)
+        assertRenderedDistrictFits(scene, insets: insets)
 
         var secondPulse = firstPulse
         secondPulse.updateTile(at: GridCoordinate(x: 10, y: 11)) {
@@ -4824,14 +4804,7 @@ final class WorldRenderingTests: XCTestCase {
             XCTAssertFalse(scene.occupiedDevelopedVisualBoundsForTesting.isNull)
             XCTAssertFalse(scene.cameraPriorityVisualBoundsForTesting.isNull)
             XCTAssertEqual(scene.cameraPriorityCoordinatesForTesting, baselineCoordinates)
-            XCTAssertGreaterThanOrEqual(
-                scene.occupiedDevelopedViewportOccupancyForTesting().width,
-                0.60
-            )
-            XCTAssertGreaterThanOrEqual(
-                scene.cameraPriorityViewportOccupancyForTesting().width,
-                0.60
-            )
+            assertRenderedDistrictFits(scene, insets: scene.size == regularSize ? regularInsets : maximizedInsets)
         }
 
         let regularToMax = makeScene(size: regularSize, insets: regularInsets)
@@ -4902,12 +4875,8 @@ final class WorldRenderingTests: XCTestCase {
         let state = CityGameState.newCity(seed: 42)
         reference.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
         displayFilling.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
-        XCTAssertLessThan(displayFilling.cameraScaleForTesting, 0.40)
         XCTAssertLessThan(displayFilling.cameraScaleForTesting, reference.cameraScaleForTesting)
-        XCTAssertGreaterThanOrEqual(
-            displayFilling.occupiedDevelopedViewportOccupancyForTesting().width,
-            0.72
-        )
+        assertRenderedDistrictFits(displayFilling, insets: referenceInsets)
 
         let compact = CityScene(size: CGSize(width: 900, height: 600))
         compact.updateViewportInsets(CityMapViewportInsets(top: 138, leading: 19, bottom: 236, trailing: 19))
@@ -4927,8 +4896,7 @@ final class WorldRenderingTests: XCTestCase {
         scene.resize(to: CGSize(width: 1_800, height: 1_130))
         scene.render(snapshot: snapshot, overlay: .none, selection: nil, interactionMode: .inspect)
         XCTAssertLessThan(scene.cameraScaleForTesting, regularScale)
-        XCTAssertLessThan(scene.cameraScaleForTesting, 0.40)
-        XCTAssertGreaterThanOrEqual(scene.occupiedDevelopedViewportOccupancyForTesting().width, 0.72)
+        assertRenderedDistrictFits(scene, insets: insets)
 
         scene.zoomCameraForTesting(by: 0.9, anchoredAt: nil)
         let playerScale = scene.cameraScaleForTesting
@@ -5027,18 +4995,14 @@ final class WorldRenderingTests: XCTestCase {
         let centralWaterTower = GridCoordinate(x: 15, y: 13)
         XCTAssertEqual(state.tile(at: remoteIndustry)?.kind, .industrial)
 
-        for (size, insets, expectedScale, expectedPriorityOccupancy) in [
+        for (size, insets) in [
             (
                 CGSize(width: 1_280, height: 800),
-                CityMapViewportInsets(top: 104, leading: 24, bottom: 160, trailing: 24),
-                CGFloat(0.6421356426344977),
-                CGSize(width: 0.8646067409013471, height: 1.1621638564001857)
+                CityMapViewportInsets(top: 104, leading: 24, bottom: 160, trailing: 24)
             ),
             (
                 CGSize(width: 900, height: 600),
-                CityMapViewportInsets(top: 138, leading: 19, bottom: 236, trailing: 19),
-                CGFloat(0.6549999713897705),
-                CGSize(width: 1.2114557479976324, height: 2.7021484895754506)
+                CityMapViewportInsets(top: 138, leading: 19, bottom: 236, trailing: 19)
             ),
         ] {
             let scene = CityScene(size: size)
@@ -5054,18 +5018,7 @@ final class WorldRenderingTests: XCTestCase {
                 scene.cameraPriorityVisualBoundsForTesting.width,
                 scene.occupiedDevelopedVisualBoundsForTesting.width
             )
-            let priorityOccupancy = scene.cameraPriorityViewportOccupancyForTesting()
-            XCTAssertEqual(scene.cameraScaleForTesting, expectedScale, accuracy: 0.000_001)
-            XCTAssertEqual(
-                priorityOccupancy.width,
-                expectedPriorityOccupancy.width,
-                accuracy: 0.000_001
-            )
-            XCTAssertEqual(
-                priorityOccupancy.height,
-                expectedPriorityOccupancy.height,
-                accuracy: 0.000_001
-            )
+            assertRenderedDistrictFits(scene, insets: insets)
             // The remote authoritative industrial lot remains a normal
             // semantic object and an exact inverse-isometric hit target. The
             // camera prioritization changes no world geometry.

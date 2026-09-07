@@ -2314,32 +2314,38 @@ struct CitySelectedLocationDiagnosis: Equatable, Sendable {
             responses.append(response)
         }
 
-        if sample.utility.powerBand != .healthy {
-            causes.append("Power service is \(sample.utility.powerBand.title) at \((sample.utility.power * 100).percentText)")
-            appendResponse(.init(
-                title: "Add power capacity",
-                command: .buildPowerPlant,
-                explanation: "Place a power plant where its service can reach this area; placement does not guarantee recovery.",
-                focusesMap: true
-            ))
-        }
-        if sample.utility.waterBand != .healthy {
-            causes.append("Water service is \(sample.utility.waterBand.title) at \((sample.utility.water * 100).percentText)")
-            appendResponse(.init(
-                title: "Add water capacity",
-                command: .buildWaterTower,
-                explanation: "Place a water tower where its service can reach this area; placement does not guarantee recovery.",
-                focusesMap: true
-            ))
-        }
-        if sample.pollutionBand != .healthy {
-            causes.append("Pollution exposure is \(sample.pollutionBand.title) at \((sample.pollutionExposure * 100).percentText)")
-            appendResponse(.init(
-                title: "Add a green buffer",
-                command: .buildPark,
-                explanation: "Place a park nearby to mitigate exposure; it does not promise a specific vitality score.",
-                focusesMap: true
-            ))
+        // Lead with the more urgent accepted local band, not a fixed utility
+        // category. A successful power investment must not keep recommending
+        // another plant ahead of the severe pollution it may have introduced.
+        // Equal bands retain the established power, water, pollution order.
+        for band in [CityConsequenceBand.severe, .strained] {
+            if sample.utility.powerBand == band {
+                causes.append("Power service is \(sample.utility.powerBand.title) at \((sample.utility.power * 100).percentText)")
+                appendResponse(.init(
+                    title: "Add power capacity",
+                    command: .buildPowerPlant,
+                    explanation: "Place a power plant where its service can reach this area; placement does not guarantee recovery.",
+                    focusesMap: true
+                ))
+            }
+            if sample.utility.waterBand == band {
+                causes.append("Water service is \(sample.utility.waterBand.title) at \((sample.utility.water * 100).percentText)")
+                appendResponse(.init(
+                    title: "Add water capacity",
+                    command: .buildWaterTower,
+                    explanation: "Place a water tower where its service can reach this area; placement does not guarantee recovery.",
+                    focusesMap: true
+                ))
+            }
+            if sample.pollutionBand == band {
+                causes.append("Pollution exposure is \(sample.pollutionBand.title) at \((sample.pollutionExposure * 100).percentText)")
+                appendResponse(.init(
+                    title: "Add a green buffer",
+                    command: .buildPark,
+                    explanation: "Place a park nearby to mitigate exposure; it does not promise a specific vitality score.",
+                    focusesMap: true
+                ))
+            }
         }
         if let exposure = sample.trafficExposure {
             let impact = CityTrafficImpact(pressure: exposure)

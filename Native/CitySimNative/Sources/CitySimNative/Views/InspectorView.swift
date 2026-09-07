@@ -58,6 +58,7 @@ struct InspectorView: View {
     @FocusState private var cityNameFieldFocused: Bool
     @State private var showsOperatingExpenses = false
     @State private var showsTaxPreview = false
+    @State private var showsFullBlockDiagnosis = false
     @State private var growthQueueFilter: CityGrowthQueue.Filter = .held
     @State private var growthQueuePage = 0
 
@@ -165,6 +166,9 @@ struct InspectorView: View {
         }
         .accessibilityElement(children: .contain)
         .accessibilityLabel(contextAccessibilityLabel)
+        .onChange(of: store.selectedTile?.coordinate) { _, _ in
+            showsFullBlockDiagnosis = false
+        }
         .onChange(of: store.inspectorSection) { _, section in
             showsOperatingExpenses = false
             showsTaxPreview = false
@@ -363,8 +367,20 @@ struct InspectorView: View {
             diagnosisAvailable: diagnosis != nil
         )
         return VStack(alignment: .leading, spacing: 8) {
+            if compact, !showsFullBlockDiagnosis, diagnosis != nil {
+                CityCompactBlockFactsView(
+                    tile: tile,
+                    upkeep: CityBlockUpkeepPresentation.make(for: tile, in: store.state),
+                    hasRoadAccess: analytics.hasRoadAccess(at: tile.coordinate)
+                )
+            }
             if actionOrder.first == .diagnosis, let diagnosis {
-                CityBlockDiagnosisView(diagnosis: diagnosis, perform: perform)
+                CityBlockDiagnosisView(
+                    diagnosis: diagnosis,
+                    compact: compact,
+                    showsFullDiagnosis: $showsFullBlockDiagnosis,
+                    perform: perform
+                )
             }
             tileFactCards(tile, snapshot: snapshot, actionOrder: actionOrder)
         }

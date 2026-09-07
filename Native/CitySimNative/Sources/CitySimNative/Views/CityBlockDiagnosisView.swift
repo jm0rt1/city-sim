@@ -2,15 +2,46 @@ import SwiftUI
 
 struct CityBlockDiagnosisView: View {
     let diagnosis: CitySelectedLocationDiagnosis
+    var compact = false
     let perform: (CityDirectResponse) -> Void
+    @Binding var showsFullDiagnosis: Bool
+
+    init(
+        diagnosis: CitySelectedLocationDiagnosis,
+        compact: Bool = false,
+        showsFullDiagnosis: Binding<Bool> = .constant(false),
+        perform: @escaping (CityDirectResponse) -> Void
+    ) {
+        self.diagnosis = diagnosis
+        self.compact = compact
+        _showsFullDiagnosis = showsFullDiagnosis
+        self.perform = perform
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
             HStack(spacing: 8) {
-                Label("BLOCK DIAGNOSIS", systemImage: "cross.case.fill")
-                    .font(.system(size: GameTheme.hudCriticalTextSize, weight: .heavy, design: .rounded))
-                    .foregroundStyle(GameTheme.warning)
-                    .lineLimit(1)
+                if compact {
+                    Button { showsFullDiagnosis.toggle() } label: {
+                        Label("BLOCK DIAGNOSIS", systemImage: showsFullDiagnosis ? "chevron.down" : "chevron.right")
+                            .font(.system(size: GameTheme.hudCriticalTextSize, weight: .heavy, design: .rounded))
+                            .foregroundStyle(GameTheme.warning)
+                            .lineLimit(1)
+                            .frame(minHeight: GameTheme.controlMinimum)
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel(showsFullDiagnosis ? "Collapse block diagnosis" : "Show full block diagnosis")
+                    .accessibilityValue(showsFullDiagnosis ? "Expanded" : "Collapsed")
+                    .accessibilityHint(showsFullDiagnosis
+                        ? "Returns to operating facts and the short diagnosis without changing the city."
+                        : "Uses the operating facts space to show all causes and consequences without changing the city.")
+                    .accessibilityIdentifier("hud.selection.diagnosis.disclosure")
+                } else {
+                    Label("BLOCK DIAGNOSIS", systemImage: "cross.case.fill")
+                        .font(.system(size: GameTheme.hudCriticalTextSize, weight: .heavy, design: .rounded))
+                        .foregroundStyle(GameTheme.warning)
+                        .lineLimit(1)
+                }
                 Spacer(minLength: 4)
                 if let primary = diagnosis.responses.first {
                     Button { perform(primary) } label: {
@@ -37,11 +68,14 @@ struct CityBlockDiagnosisView: View {
             }
             Text(diagnosis.cause)
                 .font(.system(size: GameTheme.hudCriticalTextSize, weight: .semibold))
+                .lineLimit(compact && !showsFullDiagnosis ? 2 : nil)
                 .fixedSize(horizontal: false, vertical: true)
-            Text(diagnosis.consequence)
-                .font(.system(size: GameTheme.hudSupportTextSize))
-                .foregroundStyle(.secondary)
-                .fixedSize(horizontal: false, vertical: true)
+            if !compact || showsFullDiagnosis {
+                Text(diagnosis.consequence)
+                    .font(.system(size: GameTheme.hudSupportTextSize))
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
         }
         .padding(9)
         .frame(maxWidth: .infinity, alignment: .leading)

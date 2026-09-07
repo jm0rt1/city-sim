@@ -31,6 +31,53 @@ final class CityBlockDiagnosisViewTests: XCTestCase {
                 "Complete causes, consequences, and both action controls must fit without scrolling"
             )
         }
+
+        let state = CityGameState.newCity(seed: 42)
+        let tile = CityTile(coordinate: diagnosis.coordinate, kind: .fireStation)
+        let compactHost = NSHostingView(rootView: VStack(spacing: 8) {
+            CityCompactBlockFactsView(
+                tile: tile, upkeep: .make(for: tile, in: state), hasRoadAccess: true
+            )
+            CityBlockDiagnosisView(diagnosis: diagnosis, compact: true) { _ in
+                XCTFail("Rendering compact facts must not perform a remedy")
+            }
+        }.frame(width: BuildToolbarView.compactDetailsWidth - 6))
+        compactHost.layoutSubtreeIfNeeded()
+        XCTAssertLessThanOrEqual(
+            compactHost.fittingSize.height + 59,
+            BuildToolbarView.detailsHeight(compact: true, selectedBlock: true),
+            "Operating facts, initial causes, and remedy/disclosure controls must fit together"
+        )
+        let expandedHost = NSHostingView(rootView: CityBlockDiagnosisView(
+            diagnosis: diagnosis, compact: true, showsFullDiagnosis: .constant(true)
+        ) { _ in
+            XCTFail("Expanding a diagnosis must not perform a remedy")
+        }.frame(width: BuildToolbarView.compactDetailsWidth - 6))
+        expandedHost.layoutSubtreeIfNeeded()
+        XCTAssertLessThanOrEqual(
+            expandedHost.fittingSize.height + 59,
+            BuildToolbarView.detailsHeight(compact: true, selectedBlock: true),
+            "Expanded compact diagnosis replaces the facts row and shows its full consequence"
+        )
+    }
+
+    @MainActor
+    func testCompactOperatingFactsDoNotCallConstructionOperationalOrInventRoadRequirements() {
+        let state = CityGameState.newCity(seed: 42)
+        let site = CityTile(coordinate: GridCoordinate(x: 3, y: 10), kind: .school,
+                            constructionProgress: 0.5)
+        let building = CityCompactBlockFactsView(
+            tile: site, upkeep: .make(for: site, in: state), hasRoadAccess: false
+        )
+        XCTAssertEqual(building.status, "Building 50%")
+        XCTAssertEqual(building.roadStatus, "Missing")
+        XCTAssertEqual(building.upkeep.amount, 0)
+
+        let land = CityTile(coordinate: site.coordinate, kind: .empty)
+        let unbuilt = CityCompactBlockFactsView(
+            tile: land, upkeep: .make(for: land, in: state), hasRoadAccess: false
+        )
+        XCTAssertEqual(unbuilt.roadStatus, "Not required")
     }
 
     @MainActor

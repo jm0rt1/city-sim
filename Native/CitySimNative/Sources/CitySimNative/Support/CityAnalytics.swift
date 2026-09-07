@@ -190,6 +190,14 @@ struct CityAnalytics {
         case .completed: 1
         }
 
+        if let prepared = CityStrategyPreparedResponse.make(analytics: self) {
+            return CityObjective(
+                id: "strategy", title: prepared.title,
+                detail: "Maintain the prepared response until the scheduled strategy review.",
+                progress: progress, remaining: prepared.detail
+            )
+        }
+
         switch strategy {
         case .commercialStewardship:
             let response = strategyRecoveryResolution == nil

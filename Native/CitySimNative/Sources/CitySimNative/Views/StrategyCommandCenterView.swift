@@ -150,6 +150,32 @@ struct CityStrategyHUDPresentation: Equatable {
             )
         }
 
+        if let prepared = CityStrategyPreparedResponse.make(analytics: analytics) {
+            let paused = speed == .paused
+            let review = CityDirectResponse(
+                title: paused ? "Resume to review" : "Pause to inspect",
+                command: .togglePause,
+                explanation: paused
+                    ? "Resume simulation toward the next scheduled review; keep the prepared response in place."
+                    : "Pause simulation to inspect the prepared response without changing it.",
+                focusesMap: false
+            )
+            return .init(
+                eyebrow: strategy == .commercialStewardship ? "MAIN STREET STRATEGY" : "FREIGHT STRATEGY",
+                title: prepared.title,
+                status: timedStatus("PREPARED", days: prepared.days),
+                summary: prepared.detail,
+                tone: .active,
+                diagnostic: review,
+                actions: [CityDirectResponse(
+                    title: "Review operating budget",
+                    command: .inspectorFinances,
+                    explanation: "Review revenue and upkeep while keeping the prepared response in place.",
+                    focusesMap: false
+                )]
+            )
+        }
+
         return switch strategy {
         case .commercialStewardship:
             commercial(

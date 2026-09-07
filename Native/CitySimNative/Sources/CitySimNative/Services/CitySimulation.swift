@@ -1386,7 +1386,8 @@ enum CitySimulation {
         story.recoveryResolution = qualifyingResolution(for: story.committedStrategy, in: state)
     }
 
-    private static func qualifyingResolution(
+    // Shared read-only rule for live preparedness and the scheduled resolution.
+    static func qualifyingResolution(
         for strategy: CityStrategy,
         in state: CityGameState
     ) -> CityStrategyRecoveryResolution? {

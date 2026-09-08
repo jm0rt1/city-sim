@@ -19,10 +19,58 @@ final class CityTaxPolicyPreviewTests: XCTestCase {
                 XCTAssertEqual(preview.proposedRevenue, CitySimulation.projectedRevenue(in: applied))
                 XCTAssertEqual(preview.proposedBalance, CitySimulation.projectedBalance(in: applied))
                 XCTAssertEqual(preview.upkeep, CitySimulation.projectedUpkeep(in: applied))
+                applied.demand = CitySimulation.projectedDemand(in: applied)
+                XCTAssertEqual(preview.proposedDemand, applied.demand)
+                XCTAssertEqual(preview.proposedEligibleUpgrades,
+                    CityGrowthQueue(state: applied).sites(matching: .ready).count)
                 XCTAssertEqual(preview.currentBalance, CitySimulation.projectedBalance(in: state))
                 XCTAssertEqual(preview.balanceChange, preview.proposedRevenue - preview.currentRevenue, accuracy: 0.000_001)
                 XCTAssertEqual(try CityStateFingerprinter.fingerprint(state), before)
             }
+        }
+    }
+
+    func testHigherRevenueCanCloseCommercialUpgradesAfterDemandRefresh() throws {
+        var state = CityGameState.newCity(seed: 42)
+        state.progression = nil
+        state.population = 334
+        state.jobs = 233
+        state.happiness = 70
+        state.treasury = 100_000
+        state.taxRate = 0.09
+        state.powerCapacity = 100_000
+        state.waterCapacity = 100_000
+        state.powerUsed = 100
+        state.waterUsed = 100
+        state.demand = DemandLevels(residential: 1, commercial: 1, industrial: 1)
+        // A second roadside commercial site fills the workforce, as in the grown city.
+        state.tiles[10 * state.gridWidth + 10].kind = .commercial
+        for index in state.tiles.indices {
+            state.tiles[index].condition = 1
+            state.tiles[index].constructionProgress = 1
+            state.tiles[index].occupancy = 280
+        }
+        let before = try CityStateFingerprinter.fingerprint(state)
+        let moderate = CityTaxPolicyPreview.make(in: state, proposedRate: 0.17)
+        let high = CityTaxPolicyPreview.make(in: state, proposedRate: 0.18)
+        XCTAssertGreaterThan(moderate.proposedBalance, 0)
+        XCTAssertGreaterThan(high.proposedBalance, moderate.proposedBalance)
+        XCTAssertEqual(moderate.proposedDemand.commercial, 0.394, accuracy: 0.000_001)
+        XCTAssertEqual(high.proposedDemand.commercial, 0.374, accuracy: 0.000_001)
+        XCTAssertGreaterThan(moderate.proposedEligibleUpgrades, high.proposedEligibleUpgrades)
+        XCTAssertLessThan(high.proposedDemand.residential, moderate.proposedDemand.residential)
+        XCTAssertLessThan(high.proposedDemand.industrial, moderate.proposedDemand.industrial)
+        XCTAssertTrue(high.developmentAccessibilitySummary.contains("upgrades are not guaranteed"))
+        XCTAssertEqual(try CityStateFingerprinter.fingerprint(state), before)
+    }
+
+    func testDemandEstimateMatchesANonDailySimulationRefreshWithoutAdvancingPreview() {
+        for rate in [0.04, 0.09, 0.17, 0.18] {
+            var state = CityGameState.newCity(seed: 123)
+            state.taxRate = rate
+            CitySimulation.step(&state)
+            XCTAssertEqual(state.tick, 1)
+            XCTAssertEqual(CitySimulation.projectedDemand(in: state), state.demand)
         }
     }
 
@@ -109,7 +157,7 @@ final class CityTaxPolicyPreviewTests: XCTestCase {
             try VNImageRequestHandler(cgImage: XCTUnwrap(bitmap.cgImage)).perform([request])
             let text = (request.results ?? []).compactMap { $0.topCandidates(1).first?.string }
                 .joined(separator: " ").lowercased()
-            for required in ["tax preview", "not applied", "revenue", "upkeep", "net", "cancel", "apply 9%", "change", "main street"] {
+            for required in ["tax preview", "not applied", "revenue", "upkeep", "net", "cancel", "apply 9%", "change", "main street", "demand estimate", "residential", "commercial", "industrial", "eligible upgrades"] {
                 XCTAssertTrue(text.contains(required), "\(compact): Missing \(required): \(text)")
             }
             XCTAssertEqual(store.state, before, "A visible proposal is not saved city state")

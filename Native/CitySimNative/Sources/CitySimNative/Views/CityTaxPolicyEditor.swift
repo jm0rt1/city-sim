@@ -18,7 +18,8 @@ struct CityTaxPolicyEditor: View {
     }
 
     var body: some View {
-        HStack(alignment: .top, spacing: compact ? 16 : 24) {
+        let preview = self.preview
+        HStack(alignment: .top, spacing: compact ? 12 : 18) {
             VStack(alignment: .leading, spacing: 5) {
                 HStack {
                     Text("TAX PREVIEW").font(.caption.weight(.bold)).foregroundStyle(GameTheme.warning)
@@ -30,7 +31,7 @@ struct CityTaxPolicyEditor: View {
                     Slider(value: $proposedPercent, in: 4...18, step: 1)
                         .accessibilityLabel("Proposed city tax rate")
                         .accessibilityValue(preview.proposedRateText)
-                        .accessibilityHint("Previews the operating impact. Policy changes only when you choose Apply.")
+                        .accessibilityHint("Previews the budget, demand, and upgrade eligibility. Policy changes only when you choose Apply.")
                         .accessibilityIdentifier("finance.tax.proposed-rate")
                     rateButton(1, label: "Raise proposed tax by one percentage point", symbol: "plus")
                     Text(preview.proposedRateText)
@@ -84,8 +85,35 @@ struct CityTaxPolicyEditor: View {
                     .font(.caption2).foregroundStyle(.secondary)
             }
             .frame(maxWidth: .infinity, alignment: .topLeading)
+
+            VStack(alignment: .leading, spacing: 5) {
+                Grid(alignment: .leading, horizontalSpacing: 8, verticalSpacing: 4) {
+                    GridRow {
+                        Text("Demand estimate").foregroundStyle(GameTheme.information).fixedSize()
+                        Text(preview.currentRateText)
+                        Text(preview.proposedRateText)
+                    }.font(.caption2.weight(.semibold))
+                    comparisonRow("Residential", (preview.currentDemand.residential * 100).percentText,
+                                  (preview.proposedDemand.residential * 100).percentText)
+                    comparisonRow("Commercial", (preview.currentDemand.commercial * 100).percentText,
+                                  (preview.proposedDemand.commercial * 100).percentText)
+                    comparisonRow("Industrial", (preview.currentDemand.industrial * 100).percentText,
+                                  (preview.proposedDemand.industrial * 100).percentText)
+                    comparisonRow("Eligible upgrades", "\(preview.currentEligibleUpgrades)", "\(preview.proposedEligibleUpgrades)")
+                }
+                .font(.caption.monospacedDigit())
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel(preview.developmentAccessibilitySummary)
+                .accessibilityIdentifier("finance.tax.development-forecast")
+                Text("Fixed city; sites checked individually.")
+                    .font(.caption2).foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .help("After demand refresh, with other city conditions held fixed. Each site is checked independently; upgrades are not guaranteed.")
+            }
+            .frame(maxWidth: .infinity, alignment: .topLeading)
         }
-        .padding(8)
+        .padding(.horizontal, 8)
+        .padding(.vertical, 6)
         .background(GameTheme.hudRaisedFill, in: RoundedRectangle(cornerRadius: 11))
         .accessibilityElement(children: .contain)
         .accessibilityLabel("Tax policy preview, not applied")
@@ -110,7 +138,7 @@ struct CityTaxPolicyEditor: View {
 
     private func comparisonRow(_ label: String, _ current: String, _ proposed: String) -> some View {
         GridRow {
-            Text(label).foregroundStyle(.secondary)
+            Text(label).foregroundStyle(.secondary).fixedSize()
             Text(current).frame(maxWidth: .infinity, alignment: .trailing)
             Text(proposed).frame(maxWidth: .infinity, alignment: .trailing)
         }

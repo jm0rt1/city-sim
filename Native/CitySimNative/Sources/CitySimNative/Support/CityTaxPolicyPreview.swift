@@ -10,6 +10,19 @@ struct CityTaxPolicyPreview: Equatable {
     let proposedBalance: Double
     let tradeoff: String
     let canApply: Bool
+    let currentDemand: DemandLevels
+    let proposedDemand: DemandLevels
+    let currentEligibleUpgrades: Int
+    let proposedEligibleUpgrades: Int
+
+    var developmentAccessibilitySummary: String {
+        "Development estimate at \(currentRateText) versus \(proposedRateText), after demand refresh. "
+            + "Residential demand \((currentDemand.residential * 100).percentText) to \((proposedDemand.residential * 100).percentText). "
+            + "Commercial demand \((currentDemand.commercial * 100).percentText) to \((proposedDemand.commercial * 100).percentText). "
+            + "Industrial demand \((currentDemand.industrial * 100).percentText) to \((proposedDemand.industrial * 100).percentText). "
+            + "Eligible upgrades \(currentEligibleUpgrades) to \(proposedEligibleUpgrades). "
+            + "Other city conditions held fixed. Each site is checked independently; upgrades are not guaranteed."
+    }
 
     var balanceChange: Double { proposedBalance - currentBalance }
     var currentRateText: String { (currentRate * 100).percentText }
@@ -26,6 +39,9 @@ struct CityTaxPolicyPreview: Equatable {
         let rate = proposedRate.isFinite ? min(0.18, max(0.04, proposedRate)) : state.taxRate
         var proposal = state
         proposal.taxRate = rate
+        var currentDevelopment = state
+        currentDevelopment.demand = CitySimulation.projectedDemand(in: state)
+        proposal.demand = CitySimulation.projectedDemand(in: proposal)
         let changed = abs(rate - state.taxRate) > 0.000_001
         let mainStreet = state.progression?.strategy
         let taxReliefOpen = mainStreet?.committedStrategy == .commercialStewardship
@@ -51,7 +67,15 @@ struct CityTaxPolicyPreview: Equatable {
             currentBalance: CitySimulation.projectedBalance(in: state),
             proposedBalance: CitySimulation.projectedBalance(in: proposal),
             tradeoff: tradeoff,
-            canApply: state.status == .playing && changed
+            canApply: state.status == .playing && changed,
+            currentDemand: currentDevelopment.demand,
+            proposedDemand: proposal.demand,
+            currentEligibleUpgrades: eligibleUpgrades(in: currentDevelopment),
+            proposedEligibleUpgrades: eligibleUpgrades(in: proposal)
         )
+    }
+
+    private static func eligibleUpgrades(in state: CityGameState) -> Int {
+        state.tiles.filter { CitySimulation.developmentUpgradeEvaluation(for: $0, in: state).isEligible }.count
     }
 }

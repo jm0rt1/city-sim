@@ -544,14 +544,6 @@ enum CitySimulation {
             retainsLocationSamples: false
         )
         let services = min(10, civicServices.citywideResidentialCoverage * 10)
-        let residentialServiceDemandBonus = state.preservesLegacyReplayConsequences
-            ? 0
-            : civicServices.citywideResidentialSchoolCoverage
-                * maximumSchoolResidentialDemandBonus
-        let commercialServiceDemandBonus = state.preservesLegacyReplayConsequences
-            ? 0
-            : civicServices.citywideCommercialPoliceCoverage
-                * maximumPoliceCommercialDemandBonus
         let pollution = min(
             26,
             Double(industrialTiles.count) * 3.5
@@ -569,33 +561,7 @@ enum CitySimulation {
         state.approval += ((state.happiness - 50) * 0.08 - max(0, -state.treasury / 80_000))
         state.approval = min(100, max(0, state.approval))
 
-        let housingVacancy = max(
-            0,
-            Double(residentialCapacity - state.population)
-                / Double(max(1, residentialCapacity))
-        )
-        let employmentGap = max(0, 1 - employment)
-        let jobCapacityUtilization = min(
-            1,
-            Double(state.jobs) / Double(max(1, jobCapacity))
-        )
-        let industrialEmploymentPressure = employment * jobCapacityUtilization
-        state.demand.residential = clamp(
-            0.50 + employment * 0.28 + (state.happiness - 50) / 140
-                + min(0.15, utilityReserve * 0.45) - housingVacancy * 0.35
-                + residentialServiceDemandBonus
-                - max(0, state.taxRate - 0.10) * 2.5
-        )
-        state.demand.commercial = clamp(
-            0.38 + Double(state.population) / 1_000 + employmentGap * 0.9
-                - Double(counts[.commercial] ?? 0) * 0.09
-                + commercialServiceDemandBonus
-                - max(0, state.taxRate - 0.10) * 2
-        )
-        state.demand.industrial = clamp(
-            0.36 + industrialEmploymentPressure * 0.35 + employmentGap * 0.65
-                - pollution / 140 - max(0, state.taxRate - 0.10)
-        )
+        state.demand = projectedDemand(in: state, civicServices: civicServices)
 
         if state.tick.isMultiple(of: 4) {
             let attractiveCapacity = min(residentialCapacity, max(120, jobCapacity * 2))
@@ -693,6 +659,45 @@ enum CitySimulation {
                 to: &state
             )
         }
+    }
+
+    /// The simulation's demand calculation, also available to policy previews.
+    /// This evaluates the current footprint and conditions without advancing
+    /// happiness, population, construction, the clock, or any saved state.
+    static func projectedDemand(
+        in state: CityGameState,
+        civicServices: CityCivicServiceAnalysis? = nil
+    ) -> DemandLevels {
+        let active = activeTiles(in: state)
+        let counts = Dictionary(grouping: active, by: \.kind).mapValues(\.count)
+        let residentialCapacity = housingCapacity(in: state)
+        let jobCapacity = jobCapacity(in: state)
+        let employment = min(1, Double(jobCapacity) / Double(max(1, state.population * 7 / 10)))
+        let utilityReserve = utilityReserve(in: state)
+        let services = civicServices ?? CityCivicServiceAnalysis(state: state, retainsLocationSamples: false)
+        let residentialServiceDemandBonus = state.preservesLegacyReplayConsequences
+            ? 0 : services.citywideResidentialSchoolCoverage * maximumSchoolResidentialDemandBonus
+        let commercialServiceDemandBonus = state.preservesLegacyReplayConsequences
+            ? 0 : services.citywideCommercialPoliceCoverage * maximumPoliceCommercialDemandBonus
+        let industrialTiles = active.filter { $0.kind == .industrial }
+        let industrialLevelGrowth = industrialTiles.reduce(0) { $0 + max(0, $1.level - 1) }
+        let pollution = min(26, Double(industrialTiles.count) * 3.5
+            + Double(industrialLevelGrowth) * 0.5 + Double(counts[.powerPlant] ?? 0) * 4)
+        let housingVacancy = max(0, Double(residentialCapacity - state.population)
+            / Double(max(1, residentialCapacity)))
+        let employmentGap = max(0, 1 - employment)
+        let jobCapacityUtilization = min(1, Double(state.jobs) / Double(max(1, jobCapacity)))
+        let industrialEmploymentPressure = employment * jobCapacityUtilization
+        return DemandLevels(
+            residential: clamp(0.50 + employment * 0.28 + (state.happiness - 50) / 140
+                + min(0.15, utilityReserve * 0.45) - housingVacancy * 0.35
+                + residentialServiceDemandBonus - max(0, state.taxRate - 0.10) * 2.5),
+            commercial: clamp(0.38 + Double(state.population) / 1_000 + employmentGap * 0.9
+                - Double(counts[.commercial] ?? 0) * 0.09
+                + commercialServiceDemandBonus - max(0, state.taxRate - 0.10) * 2),
+            industrial: clamp(0.36 + industrialEmploymentPressure * 0.35 + employmentGap * 0.65
+                - pollution / 140 - max(0, state.taxRate - 0.10))
+        )
     }
 
     private static func rebalanceOccupancy(_ state: inout CityGameState, capacity: Int) {

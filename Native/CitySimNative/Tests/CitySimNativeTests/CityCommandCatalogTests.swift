@@ -609,8 +609,8 @@ final class CityCommandCatalogTests: XCTestCase {
         XCTAssertEqual(population.title, "Grow to 525 residents")
         XCTAssertEqual(population.status, "INTERRUPTED · 0/12")
         XCTAssertEqual(population.tone, .recovery)
-        XCTAssertEqual(population.diagnostic?.command, .buildResidential)
-        XCTAssertTrue(population.actions.contains { $0.command == .inspectorPopulation })
+        XCTAssertEqual(population.diagnostic?.command, .inspectorPopulation)
+        XCTAssertTrue(population.summary.contains("Existing housing supports 525"))
         XCTAssertTrue(population.summary.contains("Also below standard:"))
 
         let regionalObjective = try XCTUnwrap(
@@ -621,20 +621,14 @@ final class CityCommandCatalogTests: XCTestCase {
         XCTAssertTrue(populationStore.showObjectives)
         XCTAssertEqual(populationStore.inspectorSection, .population)
 
-        let homes = try XCTUnwrap(population.diagnostic)
-        let focusBeforeHomes = populationStore.mapFocusRequestGeneration
-        StrategyCommandCenterView.perform(homes, on: populationStore)
-        XCTAssertEqual(populationStore.interactionMode, .build(.residential))
-        XCTAssertEqual(populationStore.mapFocusRequestGeneration, focusBeforeHomes + 1)
+        let populationResponse = try XCTUnwrap(population.diagnostic)
+        let focusBeforePopulation = populationStore.mapFocusRequestGeneration
+        StrategyCommandCenterView.perform(populationResponse, on: populationStore)
+        XCTAssertEqual(populationStore.interactionMode, .inspect)
+        XCTAssertEqual(populationStore.mapFocusRequestGeneration, focusBeforePopulation)
+        XCTAssertEqual(populationStore.inspectorSection, .population)
         XCTAssertEqual(populationStore.speed, .paused)
-        let homeTarget = try XCTUnwrap(populationStore.selectedCoordinate)
-        if case .failure(let rejection) = CitySimulation.validateBuild(
-            .residential,
-            at: homeTarget,
-            in: populationStore.state
-        ) {
-            XCTFail("Regional housing route selected a blocked parcel: \(rejection)")
-        }
+        XCTAssertNil(populationStore.selectedCoordinate)
 
         var utilityState = try XCTUnwrap(
             ProductionStoryStateBuilder().buildAll().first {
@@ -692,11 +686,11 @@ final class CityCommandCatalogTests: XCTestCase {
         store.speed = .fastest
         let blocked = CityStrategyHUDPresentation.make(analytics: store.analytics)
         XCTAssertEqual(blocked.eyebrow, "TOWN CHARTER")
-        XCTAssertEqual(blocked.title, "Grow to 500 residents")
+        XCTAssertEqual(blocked.title, "Grow into existing homes")
         XCTAssertEqual(blocked.status, "AT RISK · 4/12")
         XCTAssertEqual(blocked.tone, .recovery)
-        XCTAssertEqual(blocked.diagnostic?.command, .buildResidential)
-        XCTAssertTrue(blocked.actions.contains { $0.command == .inspectorPopulation })
+        XCTAssertEqual(blocked.diagnostic?.command, .inspectorPopulation)
+        XCTAssertFalse(blocked.actions.contains { $0.command == .buildResidential })
 
         let interruption = CityMessage(
             tick: state.tick,
@@ -708,7 +702,7 @@ final class CityCommandCatalogTests: XCTestCase {
             for: interruption.title,
             analytics: store.analytics
         )
-        XCTAssertEqual(interruptionActions.first?.command, .buildResidential)
+        XCTAssertEqual(interruptionActions.first?.command, .inspectorPopulation)
         XCTAssertTrue(interruptionActions.contains { $0.command == .inspectorPopulation })
         store.openMessage(interruption)
         XCTAssertEqual(store.inspectorSection, .population)
@@ -720,18 +714,12 @@ final class CityCommandCatalogTests: XCTestCase {
         XCTAssertTrue(store.showObjectives)
         XCTAssertEqual(store.inspectorSection, .population)
 
-        let homes = try XCTUnwrap(blocked.diagnostic)
-        StrategyCommandCenterView.perform(homes, on: store)
-        XCTAssertEqual(store.interactionMode, .build(.residential))
+        let populationResponse = try XCTUnwrap(blocked.diagnostic)
+        StrategyCommandCenterView.perform(populationResponse, on: store)
+        XCTAssertEqual(store.interactionMode, .inspect)
+        XCTAssertEqual(store.inspectorSection, .population)
         XCTAssertEqual(store.speed, .paused)
-        let target = try XCTUnwrap(store.selectedCoordinate)
-        if case .failure(let rejection) = CitySimulation.validateBuild(
-            .residential,
-            at: target,
-            in: store.state
-        ) {
-            XCTFail("Town Charter housing route selected a blocked parcel: \(rejection)")
-        }
+        XCTAssertNil(store.selectedCoordinate)
 
         state.population = 500
         let healthyAnalytics = CityAnalytics(state: state)
@@ -770,7 +758,7 @@ final class CityCommandCatalogTests: XCTestCase {
             for: notice.title,
             analytics: store.analytics
         )
-        XCTAssertEqual(actions.first?.command, .buildResidential)
+        XCTAssertEqual(actions.first?.command, .inspectorPopulation)
         XCTAssertTrue(actions.contains { $0.command == .inspectorPopulation })
 
         store.openMessage(notice)

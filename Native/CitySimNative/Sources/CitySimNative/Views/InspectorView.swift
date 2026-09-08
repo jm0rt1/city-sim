@@ -894,23 +894,24 @@ struct InspectorView: View {
 
     private var populationContext: some View {
         let forecast = growthCapacityPresentation
+        let growth = CityPopulationGrowthPresentation.make(analytics: store.analytics, speed: store.speed)
         return LazyVGrid(columns: contextColumns, alignment: .leading, spacing: 8) {
             ContextCard(
-                title: forecast.decisionTitle,
-                symbol: forecast.constraint?.symbol ?? "chart.line.uptrend.xyaxis",
-                tint: growthForecastTint(forecast.phase),
+                title: growth.title,
+                symbol: "person.badge.plus",
+                tint: growth.dailyChange > 0 ? GameTheme.accent : GameTheme.warning,
                 minimumHeight: 80
             ) {
-                compactAction(
-                    forecast.response.title,
-                    symbol: forecast.constraint?.symbol ?? "chart.bar.fill"
-                ) {
-                    perform(forecast.response)
+                if compact {
+                    Text("At current conditions").font(.caption2).foregroundStyle(.secondary)
                 }
-                .accessibilityHint(forecast.response.explanation)
+                compactAction(growth.response.title, symbol: growth.response.command == .togglePause ? "playpause.fill" : "magnifyingglass") { perform(growth.response) }
+                    .accessibilityHint(growth.response.explanation)
             }
             .accessibilityElement(children: .contain)
-            .accessibilityLabel(forecast.accessibilitySummary)
+            .accessibilityLabel(growth.accessibilitySummary)
+            .accessibilityIdentifier("population.move-ins")
+            .help(growth.detail)
             ContextCard(title: "Residents", symbol: "person.3.fill", tint: .cyan) {
                 Text(store.state.population.formatted()).font(.title3.bold().monospacedDigit())
                 ContextValueRow(label: "Housing", value: store.analytics.housingCapacity.formatted())
@@ -918,14 +919,19 @@ struct InspectorView: View {
             }
             ContextCard(title: "Housing reserve", symbol: "house.fill", tint: .cyan) {
                 Text(store.analytics.housingHeadroom.formatted()).font(.title3.bold().monospacedDigit())
-                Text("homes available before new residential capacity is needed")
+                Text("more residents fit before new housing is needed")
                     .font(.caption2).foregroundStyle(.secondary).lineLimit(3)
             }
-            ContextCard(title: "Neighborhoods", symbol: BuildingKind.residential.symbol, tint: .cyan) {
-                ContextValueRow(label: "Buildings", value: store.analytics.count(.residential).formatted())
-                ContextValueRow(label: "Residential demand", value: (store.state.demand.residential * 100).percentText)
-                compactAction("Build homes", symbol: BuildingKind.residential.symbol) { store.perform(.buildResidential) }
+            ContextCard(title: forecast.decisionTitle,
+                        symbol: forecast.constraint?.symbol ?? "chart.line.uptrend.xyaxis",
+                        tint: growthForecastTint(forecast.phase), minimumHeight: 80) {
+                compactAction(forecast.response.title, symbol: forecast.constraint?.symbol ?? "chart.bar.fill") {
+                    perform(forecast.response)
+                }
+                .accessibilityHint(forecast.response.explanation)
             }
+            .accessibilityElement(children: .contain)
+            .accessibilityLabel(forecast.accessibilitySummary)
         }
     }
 

@@ -564,13 +564,7 @@ enum CitySimulation {
         state.demand = projectedDemand(in: state, civicServices: civicServices)
 
         if state.tick.isMultiple(of: 4) {
-            let attractiveCapacity = min(residentialCapacity, max(120, jobCapacity * 2))
-            if state.population < attractiveCapacity && utilityCoverage > 0.88 && state.happiness > 45 {
-                let growth = max(1, Int(Double(state.population) * (0.0015 + state.demand.residential * 0.0015)))
-                state.population = min(attractiveCapacity, state.population + growth)
-            } else if utilityCoverage < 0.82 || state.happiness < 32 {
-                state.population = max(0, state.population - max(1, state.population / 150))
-            }
+            state.population += projectedDailyPopulationChange(in: state)
             state.treasury += projectedBalance(in: state)
             if let roadWearTraffic {
                 applyDailyRoadWear(&state, traffic: roadWearTraffic)
@@ -659,6 +653,20 @@ enum CitySimulation {
                 to: &state
             )
         }
+    }
+
+    /// The daily move-in calculation at current conditions. A preview does not
+    /// advance demand, happiness, construction, or the city clock.
+    static func projectedDailyPopulationChange(in state: CityGameState) -> Int {
+        let attractiveCapacity = min(housingCapacity(in: state), max(120, jobCapacity(in: state) * 2))
+        let coverage = utilityCoverage(in: state)
+        if state.population < attractiveCapacity && coverage > 0.88 && state.happiness > 45 {
+            let growth = max(1, Int(Double(state.population) * (0.0015 + state.demand.residential * 0.0015)))
+            return min(attractiveCapacity, state.population + growth) - state.population
+        } else if coverage < 0.82 || state.happiness < 32 {
+            return max(0, state.population - max(1, state.population / 150)) - state.population
+        }
+        return 0
     }
 
     /// The simulation's demand calculation, also available to policy previews.

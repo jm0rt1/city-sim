@@ -288,6 +288,17 @@ struct CityTownCharterDecisionSupport: Equatable, Sendable {
                     title: "Prepare \((charterJobCapacity - analytics.jobCapacity).formatted()) jobs"
                 )
             }
+            if analytics.housingCapacity >= 500 {
+                return Self(
+                    title: "Grow into existing homes",
+                    primaryResponse: inspect(
+                        title: "Review population",
+                        command: .inspectorPopulation,
+                        explanation: "Existing housing supports 500 residents, with \(analytics.housingHeadroom.formatted()) places available now. Review move-in conditions before spending on more homes."
+                    ),
+                    secondaryResponses: []
+                )
+            }
             return build(
                 title: "Grow to 500 residents",
                 kind: .residential,
@@ -453,17 +464,22 @@ struct CityRegionalCapitalDecisionSupport: Equatable, Sendable {
         var requirements: [Requirement] = []
 
         if analytics.state.population < 525 {
+            let housingReady = analytics.housingCapacity >= 525
             requirements.append(.init(
                 title: "Grow to 525 residents",
-                detail: "Add housing for \((525 - analytics.state.population).formatted()) more residents while protecting the other standards.",
+                detail: housingReady
+                    ? "Existing housing supports 525 residents. Review move-in conditions for the remaining \((525 - analytics.state.population).formatted()) residents before building more homes."
+                    : "Add housing for \((525 - analytics.state.population).formatted()) more residents while protecting the other standards.",
                 shortfall: "population \(analytics.state.population.formatted()) / 525",
                 primaryResponse: .init(
-                    title: "Build homes",
-                    command: .buildResidential,
-                    explanation: "Select Residential and target the nearest valid parcel to create growth capacity.",
-                    focusesMap: true
+                    title: housingReady ? "Review population" : "Build homes",
+                    command: housingReady ? .inspectorPopulation : .buildResidential,
+                    explanation: housingReady
+                        ? "Review move-ins, current housing reserve, and growth constraints without committing construction."
+                        : "Select Residential and target the nearest valid parcel to create growth capacity.",
+                    focusesMap: !housingReady
                 ),
-                secondaryResponses: [inspect(
+                secondaryResponses: housingReady ? [] : [inspect(
                     title: "Review population",
                     command: .inspectorPopulation,
                     explanation: "Review residents, housing capacity, and current growth conditions."

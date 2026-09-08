@@ -7,6 +7,7 @@ struct CitySpriteAlphaMask {
     let width: Int
     let height: Int
     private let alpha: [UInt8]
+    let roofAnchor: CGPoint?
 
     init?(bitmap: NSBitmapImageRep) {
         guard let source = bitmap.cgImage else { return nil }
@@ -27,7 +28,18 @@ struct CitySpriteAlphaMask {
             return true
         }
         guard decoded else { return nil }
-        alpha = stride(from: 3, to: samples.count, by: 4).map { samples[$0] }
+        let decodedAlpha = stride(from: 3, to: samples.count, by: 4).map { samples[$0] }
+        alpha = decodedAlpha
+        if let first = decodedAlpha.firstIndex(where: { $0 >= 128 }) {
+            let row = first / bitmapWidth
+            let columns = (0..<bitmapWidth).filter { decodedAlpha[row * bitmapWidth + $0] >= 128 }
+            roofAnchor = CGPoint(
+                x: (CGFloat(columns.first! + columns.last!) / 2 + 0.5) / CGFloat(width),
+                y: 1 - CGFloat(row) / CGFloat(height)
+            )
+        } else {
+            roofAnchor = nil
+        }
     }
 
     /// Sprite texture coordinates are bottom-up; source bitmap rows are top-down.
@@ -46,6 +58,13 @@ struct CitySpriteAlphaMask {
 @MainActor
 final class FourViewInspectionSprite: SKSpriteNode {
     var inspectionMask: CitySpriteAlphaMask?
+
+    var roofAnchor: CGPoint? {
+        guard let anchor = inspectionMask?.roofAnchor,
+              size.width > 0, size.height > 0, xScale != 0, yScale != 0 else { return nil }
+        return CGPoint(x: (anchor.x - anchorPoint.x) * size.width / abs(xScale),
+                       y: (anchor.y - anchorPoint.y) * size.height / abs(yScale))
+    }
 
     func containsOpaquePixel(at localPoint: CGPoint) -> Bool {
         guard size.width > 0, size.height > 0, xScale != 0, yScale != 0 else { return false }

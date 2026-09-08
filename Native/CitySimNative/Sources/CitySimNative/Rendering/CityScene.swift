@@ -186,6 +186,7 @@ final class CityScene: SKScene {
     private let hoverNode = SKShapeNode()
     private let selectionNode = SKShapeNode()
     private let inspectionCutaway = CityInspectionCutaway()
+    private let inspectionMarker = CityInspectionMarker()
     private var renderedState: CityGameState?
     private var renderedSnapshot: CityPresentationSnapshot?
     private var renderedReducedMotion = false
@@ -393,6 +394,7 @@ final class CityScene: SKScene {
         worldLayer.addChild(selectedCommuteRouteLayer)
         worldLayer.addChild(hoverNode)
         worldLayer.addChild(selectionNode)
+        worldLayer.addChild(inspectionMarker.node)
         buildOpportunityLayer.isHidden = true
         placementGainLayer.isHidden = true
         guidedRoadRouteLayer.isHidden = true
@@ -957,9 +959,17 @@ final class CityScene: SKScene {
         // Use the actual authored sprite and lot content, including its pivot
         // and scale. The legacy atlas proxy and the ground point alone cannot
         // describe the height of the shipping Four-View building.
-        return ground.union(content.calculateAccumulatedFrame().offsetBy(
+        var bounds = ground.union(content.calculateAccumulatedFrame().offsetBy(
             dx: root.position.x, dy: root.position.y
         ))
+        // Keep the roof pointer clear of the HUD when revealing another tall
+        // building. Its screen-sized extent is interaction chrome, not art.
+        if let roof = CityInspectionMarker.roofPosition(of: root, in: tileLayer) {
+            let scale = cameraNode.xScale
+            bounds = bounds.union(CGRect(x: roof.x - 14 * scale, y: roof.y,
+                                        width: 28 * scale, height: 31 * scale))
+        }
+        return bounds
     }
 
     private func revealInspectedPlace(
@@ -2273,6 +2283,7 @@ final class CityScene: SKScene {
     }
 
     private func refreshForCameraChange(preservingUpdateDiagnostics: Bool = false) {
+        updateInspectionMarker(renderedSelection)
         let detail = resolvedCameraDetailLevel(for: cameraNode.xScale)
         guard detail != currentCameraDetailLevel else { return }
         currentCameraDetailLevel = detail
@@ -2390,6 +2401,7 @@ final class CityScene: SKScene {
             in: tileLayer,
             groundHeight: tileHeight
         )
+        updateInspectionMarker(coordinate)
         selectionNode.removeAction(forKey: "selection.pulse")
         selectionNode.alpha = 1
         lastPreviewSignature = nil
@@ -2399,6 +2411,14 @@ final class CityScene: SKScene {
         }
         selectionNode.position = style.isoPosition(coordinate)
         selectionNode.isHidden = false
+    }
+
+    private func updateInspectionMarker(_ coordinate: GridCoordinate?) {
+        inspectionMarker.update(
+            selectedRoot: renderedInteractionMode == .inspect
+                ? coordinate.flatMap { tileRecords[$0]?.root } : nil,
+            cameraScale: cameraNode.xScale
+        )
     }
 
     private func updateBuildOpportunities(
@@ -3415,6 +3435,11 @@ final class CityScene: SKScene {
     }
 
     private func coordinate(at scenePoint: CGPoint) -> GridCoordinate? {
+        if renderedInteractionMode == .inspect, !inspectionMarker.node.isHidden,
+           let parent = inspectionMarker.node.parent,
+           inspectionMarker.node.calculateAccumulatedFrame().contains(parent.convert(scenePoint, from: self)) {
+            return renderedSelection
+        }
         if renderedInteractionMode == .inspect,
            let building = inspectedBuilding(at: scenePoint) {
             return building

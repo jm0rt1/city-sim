@@ -19,12 +19,78 @@ final class CityBuildingInspectionTests: XCTestCase {
             }
         }
         let mask = try XCTUnwrap(CitySpriteAlphaMask(bitmap: bitmap))
+        XCTAssertEqual(mask.roofAnchor, CGPoint(x: 0.25, y: 1))
         XCTAssertTrue(mask.containsOpaquePixel(at: .init(x: 0.25, y: 0.75)))
         XCTAssertFalse(mask.containsOpaquePixel(at: .init(x: 0.75, y: 0.75)))
         XCTAssertFalse(mask.containsOpaquePixel(at: .init(x: 0.25, y: 0.25)))
         XCTAssertTrue(mask.containsOpaquePixel(at: .init(x: 0.75, y: 0.25)))
         for point in [CGPoint(x: -0.01, y: 0.5), .init(x: 1, y: 0.5), .init(x: 0.5, y: 1), .init(x: CGFloat.infinity, y: 0)] {
             XCTAssertFalse(mask.containsOpaquePixel(at: point))
+        }
+        // Each image is immutable once CGImage has been requested; mutating
+        // NSBitmapImageRep's raw bytes then would reuse its cached CGImage.
+        for (alphas, expected) in [
+            ([UInt8(51), 0, 51, 255], CGPoint(x: 0.75, y: 0.5) as CGPoint?),
+            ([UInt8(51), 0, 51, 0], nil),
+        ] {
+            let fixture = try XCTUnwrap(NSBitmapImageRep(
+                bitmapDataPlanes: nil, pixelsWide: 2, pixelsHigh: 2,
+                bitsPerSample: 8, samplesPerPixel: 4, hasAlpha: true, isPlanar: false,
+                colorSpaceName: .deviceRGB, bytesPerRow: 0, bitsPerPixel: 0
+            ))
+            let pixels = try XCTUnwrap(fixture.bitmapData)
+            for y in 0..<2 {
+                for x in 0..<2 {
+                    let offset = y * fixture.bytesPerRow + x * 4
+                    for channel in 0..<3 { pixels[offset + channel] = 0 }
+                    pixels[offset + 3] = alphas[y * 2 + x]
+                }
+            }
+            XCTAssertEqual(try XCTUnwrap(CitySpriteAlphaMask(bitmap: fixture)).roofAnchor, expected)
+        }
+    }
+
+    @MainActor
+    func testSelectedRoofMarkerTracksTheAuthoredBuildingAndClearsOutsideInspection() throws {
+        let target = GridCoordinate(x: 12, y: 12)
+        let other = GridCoordinate(x: 13, y: 13)
+        let state = district(buildings: [target, other])
+        let fingerprint = try CityStateFingerprinter.fingerprint(state)
+        for size in [CGSize(width: 900, height: 600), CGSize(width: 1280, height: 800)] {
+            let scene = CityScene(size: size)
+            scene.reducedMotion = true
+            scene.render(state: state, overlay: .services, selection: target, interactionMode: .inspect)
+            let marker = try XCTUnwrap(scene.childNode(withName: "//interaction.inspection-marker"))
+            let parent = try XCTUnwrap(marker.parent)
+            for selected in [target, other] {
+                scene.render(state: state, overlay: .services, selection: selected, interactionMode: .inspect)
+                let sprite = try inspectionSprite(in: scene, at: selected)
+                let roof = sprite.convert(try XCTUnwrap(sprite.roofAnchor), to: parent)
+                let texture = sprite.texture
+                let frame = sprite.frame
+                for detail in CameraDetailLevel.allCases {
+                    scene.configureProofCamera(detail: detail, centeredOn: selected)
+                    XCTAssertFalse(marker.isHidden)
+                    XCTAssertEqual(marker.position.x, roof.x, accuracy: 0.001)
+                    XCTAssertEqual(marker.position.y, roof.y + 4 * scene.cameraScaleForTesting, accuracy: 0.001)
+                    XCTAssertEqual(marker.xScale, scene.cameraScaleForTesting, accuracy: 0.001)
+                    XCTAssertTrue(scene.inspectedPlaceBoundsForTesting(at: selected)
+                        .contains(marker.calculateAccumulatedFrame()), "Inspection framing must reserve the roof pointer above the art")
+                    XCTAssertEqual(scene.resolvedCoordinateForTesting(at: marker.convert(CGPoint(x: 0, y: 15), to: scene)), selected)
+                    XCTAssertEqual(sprite.frame, frame)
+                    XCTAssertTrue(sprite.texture === texture)
+                    XCTAssertFalse(marker.hasActions())
+                }
+            }
+            for mode in [CityInteractionMode.build(.road), .bulldoze] {
+                scene.render(state: state, overlay: .none, selection: target, interactionMode: mode)
+                XCTAssertTrue(marker.isHidden)
+            }
+            scene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
+            XCTAssertTrue(marker.isHidden)
+            scene.render(state: state, overlay: .none, selection: GridCoordinate(x: 0, y: 0), interactionMode: .inspect)
+            XCTAssertTrue(marker.isHidden, "Empty ground has no authored roof")
+            XCTAssertEqual(try CityStateFingerprinter.fingerprint(state), fingerprint)
         }
     }
 
@@ -164,9 +230,15 @@ final class CityBuildingInspectionTests: XCTestCase {
         scene.render(state: state, overlay: .water, selection: back, interactionMode: .inspect)
         let rebuiltFront = try inspectionSprite(in: scene, at: front)
         XCTAssertLessThan(rebuiltFront.alpha, 0.5)
+        let marker = try XCTUnwrap(scene.childNode(withName: "//interaction.inspection-marker"))
+        XCTAssertFalse(marker.isHidden)
         scene.render(state: state, overlay: .none, selection: nil, interactionMode: .inspect)
+        XCTAssertTrue(marker.isHidden)
         XCTAssertGreaterThanOrEqual(rebuiltFront.alpha, 0.5)
         XCTAssertGreaterThanOrEqual(oldFront.alpha, 0.5)
+        state.updateTile(at: back) { $0 = CityTile(coordinate: back, kind: .empty) }
+        scene.render(state: state, overlay: .none, selection: back, interactionMode: .inspect)
+        XCTAssertTrue(marker.isHidden, "Removed buildings must not leave a floating selection marker")
     }
 
     private func district(buildings: [GridCoordinate]) -> CityGameState {

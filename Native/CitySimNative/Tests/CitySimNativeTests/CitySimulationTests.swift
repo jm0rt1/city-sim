@@ -1303,7 +1303,7 @@ final class CitySimulationTests: XCTestCase {
         XCTAssertGreaterThanOrEqual(TopHUDView.compactFinancePulseWidth, 160)
         XCTAssertLessThanOrEqual(TopHUDView.compactFinancePulseWidth, 170)
         XCTAssertEqual(InspectorView.compactColumnCount, 2)
-        XCTAssertGreaterThanOrEqual(InspectorView.compactMinimumVisibleNoticeCount, 2)
+        XCTAssertEqual(BuildToolbarView.detailsHeight(compact: true, selectedBlock: false, journal: true), 196)
         let compactClosedChrome = CityHUDChromeFrames(
             top: CGRect(x: 8, y: 8, width: 884, height: 64),
             bottom: CGRect(x: 8, y: 532, width: 884, height: 60)

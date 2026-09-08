@@ -3,6 +3,17 @@ import XCTest
 
 final class ProofWindowConfiguratorTests: XCTestCase {
     @MainActor
+    func testLiteralProofSizeExcludesToolbarWithoutAssumingItsHeight() {
+        for content in [NSSize(width: 900, height: 600), NSSize(width: 1280, height: 800)] {
+            XCTAssertEqual(ProofWindowConfigurator.frameSize(forPlayableContent: content,
+                frameSize: NSSize(width: 1280, height: 800), layoutSize: NSSize(width: 1280, height: 748)),
+                NSSize(width: content.width, height: content.height + 52))
+            XCTAssertEqual(ProofWindowConfigurator.frameSize(forPlayableContent: content,
+                frameSize: content, layoutSize: content), content)
+        }
+    }
+
+    @MainActor
     func testExplicitProofRequestsAlsoDriveTheInitialSceneContentSize() {
         XCTAssertEqual(ProofWindowConfigurator.regularProofContentSize.width, 1_280)
         XCTAssertEqual(ProofWindowConfigurator.regularProofContentSize.height, 800)

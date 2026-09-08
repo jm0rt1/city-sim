@@ -70,7 +70,6 @@ struct InspectorView: View {
 
     static let compactColumnCount = 2
     static let regularColumnCount = 4
-    static let compactMinimumVisibleNoticeCount = 2
 
     enum FinanceCard: Hashable {
         case budget
@@ -1123,19 +1122,7 @@ struct InspectorView: View {
     }
 
     private var journalContext: some View {
-        let summaries = store.messageSummaries
-        return Group {
-            if summaries.count > 4 && !compact {
-                ScrollView(.vertical) {
-                    journalGrid(summaries)
-                }
-                .scrollIndicators(.visible)
-                .frame(maxHeight: compact ? 168 : 180, alignment: .top)
-                .accessibilityLabel("City notice journal")
-            } else {
-                journalGrid(summaries)
-            }
-        }
+        CityNoticeJournalView(store: store, compact: compact)
     }
 
     private var resilienceContext: some View {
@@ -1258,59 +1245,6 @@ struct InspectorView: View {
         }
         .accessibilityElement(children: .combine)
         .accessibilityLabel(metric.accessibilityLabel(first: first, latest: latest, change: change, firstDay: firstDay, latestDay: latestDay))
-    }
-
-    @ViewBuilder
-    private func journalGrid(_ summaries: [CityMessageSummary]) -> some View {
-        LazyVGrid(columns: contextColumns, alignment: .leading, spacing: 8) {
-            if summaries.isEmpty {
-                ContextCard(title: "All clear", symbol: "checkmark.circle.fill", tint: GameTheme.accent) {
-                    Text("There are no active city notices.")
-                        .font(.caption).foregroundStyle(.secondary)
-                }
-            } else {
-                ForEach(summaries) { summary in
-                    ContextCard(title: summary.message.title, symbol: summary.message.severity.symbol, tint: summary.message.severity.tint) {
-                        HStack {
-                            Text("Day \(summary.message.tick / 4 + 1)")
-                            Spacer()
-                            if summary.count > 1 { Text("×\(summary.count)") }
-                        }
-                        .font(.system(size: GameTheme.hudSupportTextSize, weight: .semibold, design: .monospaced))
-                        .foregroundStyle(.secondary)
-                        Text(summary.message.detail)
-                            .font(.system(size: GameTheme.hudSupportTextSize, weight: .medium))
-                            .foregroundStyle(.secondary)
-                            .lineLimit(3)
-                        HStack(spacing: 6) {
-                            compactAction("Related data", symbol: "arrow.up.forward.square") { store.openMessage(summary.message) }
-                            noticeActionMenu(summary.message)
-                            Button("Dismiss") { store.dismissMessageSummary(summary) }
-                                .buttonStyle(.borderless)
-                                .frame(minHeight: GameTheme.controlMinimum)
-                                .accessibilityLabel("Dismiss \(summary.message.title) notices")
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    @ViewBuilder
-    private func noticeActionMenu(_ message: CityMessage) -> some View {
-        let actions = CityNoticeActionCatalog.actions(for: message.title, analytics: analytics)
-        if !actions.isEmpty {
-            Menu("Act") {
-                ForEach(actions) { response in
-                    Button(response.title) {
-                        StrategyCommandCenterView.perform(response, on: store)
-                    }
-                        .accessibilityHint(response.explanation + (response.focusesMap ? " Focus returns to the map." : ""))
-                }
-            }
-            .frame(minHeight: GameTheme.controlMinimum)
-            .accessibilityLabel("Act on \(message.title)")
-        }
     }
 
     private func perform(_ response: CityDirectResponse) {
@@ -1568,26 +1502,6 @@ private extension BuildingKind {
         case .school: "Education and neighborhood service capacity."
         case .cityHall: "Protected civic landmark and city administration."
         default: "Active city property."
-        }
-    }
-}
-
-private extension MessageSeverity {
-    var symbol: String {
-        switch self {
-        case .good: "sparkles"
-        case .information: "info.circle.fill"
-        case .warning: "exclamationmark.triangle.fill"
-        case .critical: "xmark.octagon.fill"
-        }
-    }
-
-    var tint: Color {
-        switch self {
-        case .good: GameTheme.accent
-        case .information: GameTheme.information
-        case .warning: GameTheme.warning
-        case .critical: GameTheme.danger
         }
     }
 }

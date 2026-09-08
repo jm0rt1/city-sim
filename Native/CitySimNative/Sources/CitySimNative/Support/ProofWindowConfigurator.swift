@@ -42,6 +42,11 @@ struct ProofWindowConfigurator: NSViewRepresentable {
             || environment["CITYSIM_REGULAR_WINDOW"] == "1"
     }
 
+    static func frameSize(forPlayableContent size: NSSize, frameSize: NSSize, layoutSize: NSSize) -> NSSize {
+        NSSize(width: size.width + max(0, frameSize.width - layoutSize.width),
+               height: size.height + max(0, frameSize.height - layoutSize.height))
+    }
+
     func makeNSView(context: Context) -> NSView {
         let view = ProofWindowView(frame: .zero)
         let environment = ProcessInfo.processInfo.environment
@@ -53,7 +58,16 @@ struct ProofWindowConfigurator: NSViewRepresentable {
         )
         guard let proofSize else { return view }
         view.configure = { window in
-            window.setContentSize(proofSize)
+            if Self.reassertsSizeAfterWindowActivation(environment: environment) {
+                // A full-size SwiftUI content view also covers the toolbar.
+                // Literal play-area proof must instead use contentLayoutRect.
+                var frame = window.frame
+                frame.size = Self.frameSize(forPlayableContent: proofSize,
+                    frameSize: frame.size, layoutSize: window.contentLayoutRect.size)
+                window.setFrame(frame, display: true)
+            } else {
+                window.setContentSize(proofSize)
+            }
             window.center()
             if environment[SaveGameService.dataRootEnvironmentKey] != nil,
                environment["CITYSIM_COMPACT_WINDOW"] != "1",

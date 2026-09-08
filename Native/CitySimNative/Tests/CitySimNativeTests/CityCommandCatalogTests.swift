@@ -4538,7 +4538,7 @@ final class CityCommandCatalogTests: XCTestCase {
             size: size
         )
         XCTAssertEqual(journal.size.height, BuildToolbarView.compactDetailsMaxHeight, accuracy: 0.5)
-        XCTAssertGreaterThanOrEqual(store.messageSummaries.count, InspectorView.compactMinimumVisibleNoticeCount)
+        XCTAssertFalse(store.messageSummaries.isEmpty)
         XCTAssertTrue(store.messageSummaries.prefix(2).allSatisfy { !$0.message.detail.isEmpty })
         XCTAssertTrue(
             store.messageSummaries.prefix(2).allSatisfy {
